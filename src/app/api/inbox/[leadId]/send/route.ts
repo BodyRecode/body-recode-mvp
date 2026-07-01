@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
-import { darkEmailShell } from '@/lib/email-shell'
+import { fromCoach, darkEmailShell } from '@/lib/email-shell'
 
 export async function POST(
   request: NextRequest,
@@ -41,7 +41,7 @@ export async function POST(
   const resend = new Resend(process.env.RESEND_API_KEY)
 
   const { data: sent, error } = await resend.emails.send({
-    from: 'Kade at Body Recode <kade@bodyrecode.au>',
+    from: fromCoach(),
     replyTo: 'kade@replies.bodyrecode.au',
     to: lead.email,
     subject,

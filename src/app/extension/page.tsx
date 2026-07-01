@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Play } from 'lucide-react'
 import { isProductLive } from '@/lib/product-launch'
 import { WaitlistCTA } from '@/components/product-waitlist-cta'
+import { logoUrl } from '@/config/tenant'
 
 function CheckoutForm({ teal }: { teal?: boolean }) {
   // Pre-launch: capture waitlist instead of Stripe checkout until NEXT_PUBLIC_EXTENSION_LIVE=true.
@@ -73,7 +74,7 @@ export default function ExtensionPage() {
     <div style={{ minHeight: '100vh', background: '#FFFFFF', color: '#1A1A1A', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
       <div style={{ padding: '20px 24px' }}>
         <div style={{ maxWidth: '680px', margin: '0 auto' }}>
-          <img src="https://bodyrecode.au/logo-black.png" width="160" alt="Body Recode" style={{ display: 'block' }} />
+          <img src={logoUrl()} width="160" alt="Body Recode" style={{ display: 'block' }} />
         </div>
       </div>
 

@@ -1,7 +1,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
-import { darkEmailShell } from '@/lib/email-shell'
+import { fromCoach, darkEmailShell } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 
 interface PortalAccessClient {
@@ -52,7 +52,7 @@ export async function sendPortalAccessEmail({
   const resend = new Resend(process.env.RESEND_API_KEY)
   try {
     await resend.emails.send({
-    from: 'Kade at Body Recode <kade@bodyrecode.au>',
+    from: fromCoach(),
     to: client.email,
     subject,
     html: darkEmailShell(`

@@ -4,6 +4,7 @@ import { buildReportEmail } from '@/lib/generate-report'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { buildPortalOrientationEmail } from '@/lib/portal-orientation-email'
 import { appUrl } from '@/lib/app-url'
+import { fromCoach } from '@/lib/email-shell'
 
 const SAMPLE_ANSWERS: Record<string, number> = {
   effort_vs_result: 2,
@@ -74,7 +75,7 @@ export async function POST(request: NextRequest) {
       </body></html>`
 
     const result = await resend.emails.send({
-      from: 'Kade at Body Recode <kade@bodyrecode.au>',
+      from: fromCoach(),
       to: 'kade@bodyrecode.au',
       subject: 'Preview — Lead re-engagement report email',
       html: combined,
@@ -96,7 +97,7 @@ export async function POST(request: NextRequest) {
       portalUrl: `${appUrl()}/portal/test-token`,
     })
     const result = await resend.emails.send({
-      from: 'Kade at Body Recode <kade@bodyrecode.au>',
+      from: fromCoach(),
       to: 'kade@bodyrecode.au',
       subject: `[TEST] ${subject}`,
       html,

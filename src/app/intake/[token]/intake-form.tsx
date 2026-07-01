@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { INTAKE_SECTIONS, Question } from '@/lib/intake-questions'
 import { useFormDraft } from '@/lib/use-form-draft'
+import { logoUrl } from '@/config/tenant'
 
 type FormValue = string | number | boolean | string[]
 type FormData = Record<string, FormValue>
@@ -461,7 +462,7 @@ export default function IntakeForm({ token, clientName, portalToken, identity }:
 
       {/* Sticky header */}
       <div className="sticky top-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-b border-stone-200 px-5 py-3 flex items-center justify-between">
-        <img src="https://bodyrecode.au/logo-black.png" width="100" alt="Body Recode" style={{ display: 'block' }} />
+        <img src={logoUrl()} width="100" alt="Body Recode" style={{ display: 'block' }} />
         <p className="text-[11px] font-medium text-stone-500">{sectionIndex + 1} / {INTAKE_SECTIONS.length}</p>
       </div>
 

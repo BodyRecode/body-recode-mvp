@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
-import { darkEmailShell } from '@/lib/email-shell'
+import { fromCoach, darkEmailShell } from '@/lib/email-shell'
 import { sendSms, formatPhone } from '@/lib/twilio'
 
 export async function POST(
@@ -100,7 +100,7 @@ export async function POST(
           .replace(/\{\{first_name\}\}/g, firstName)
 
         await resend.emails.send({
-          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          from: fromCoach(),
           to: recipient.email,
           subject: campaign.subject ?? campaign.name,
           html: darkEmailShell(`

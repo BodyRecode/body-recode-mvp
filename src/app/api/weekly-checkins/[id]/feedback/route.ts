@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildWeeklyCheckinFeedbackEmail } from '@/lib/weekly-checkin-feedback-email'
 import { logClientCommunication } from '@/lib/client-communications'
-import { COACH_BCC } from '@/lib/email-shell'
+import { fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { appUrlFor } from '@/lib/app-url'
 
 interface FeedbackPayload {
@@ -121,7 +121,7 @@ export async function POST(
 
   const resend = new Resend(process.env.RESEND_API_KEY)
   await resend.emails.send({
-    from: 'Kade at Body Recode <kade@bodyrecode.au>',
+    from: fromCoach(),
     to: client.email,
     bcc: COACH_BCC,
     subject,

@@ -3,7 +3,7 @@ import Stripe from 'stripe'
 import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { darkEmailSignature } from '@/lib/email-signature'
-import { darkEmailShell } from '@/lib/email-shell'
+import { fromCoach, darkEmailShell } from '@/lib/email-shell'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { appUrl } from '@/lib/app-url'
 
@@ -119,7 +119,7 @@ export async function POST(
     : `Here is the $240 commencement link to get started. This covers the foundational read I do on your body before coaching begins, so the program you start on is built around your actual state, not a template.`
 
   const sendResult = await resend.emails.send({
-    from: 'Kade at Body Recode <kade@bodyrecode.au>',
+    from: fromCoach(),
     to: lead.email,
     subject,
     html: darkEmailShell(`

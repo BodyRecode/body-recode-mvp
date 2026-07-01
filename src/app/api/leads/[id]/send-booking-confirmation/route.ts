@@ -7,6 +7,7 @@ import {
   darkEmailShell, emailUrlFallback,
   emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
   emailCta, emailStatusCard,
+  fromCoach,
 } from '@/lib/email-shell'
 import { logLeadEvent } from '@/lib/log-lead-event'
 
@@ -75,7 +76,7 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
   const resend = new Resend(process.env.RESEND_API_KEY)
 
   await resend.emails.send({
-    from: 'Kade at Body Recode <kade@bodyrecode.au>',
+    from: fromCoach(),
     to: lead.email,
     subject: `Your strategy call is locked in: ${dateStr}`,
     attachments: [{ filename: 'booking.ics', content: Buffer.from(ics).toString('base64') }],
@@ -110,7 +111,7 @@ ${darkEmailSignature()}
 
   for (const reminder of reminders) {
     await resend.emails.send({
-      from: 'Kade at Body Recode <kade@bodyrecode.au>',
+      from: fromCoach(),
       to: lead.email!,
       subject: `Your strategy call starts in ${reminder.label}`,
       scheduledAt: reminder.at.toISOString(),

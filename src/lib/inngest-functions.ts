@@ -24,6 +24,7 @@ import {
   buildBlueprintWeekEmail,
   buildBlueprintWeek7FollowupEmail,
 } from './blueprint-emails'
+import { fromCoach, fromBrand } from '@/lib/email-shell'
 import {
   buildMembershipCheckinPromptEmail,
   buildMembershipCheckinReminderEmail,
@@ -126,7 +127,7 @@ export const challengeSequenceFunction = inngest.createFunction(
       const sessionVideoUrl = process.env.CHALLENGE_SESSION_VIDEO_URL ?? portalUrl
       const built = buildDay5UnlockEmail({ firstName, portalUrl, sessionVideoUrl })
       await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: email,
         subject: built.subject,
         html: built.html,
@@ -171,7 +172,7 @@ export const challengeSequenceFunction = inngest.createFunction(
         })
 
         await resend.emails.send({
-          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          from: fromCoach(),
           to: email,
           subject: built.subject,
           html: built.html,
@@ -180,7 +181,7 @@ export const challengeSequenceFunction = inngest.createFunction(
         // No Check-In on record. Plain ascension push, no result content.
         const built = buildDay14FallbackEmail({ firstName, enrollmentToken: token })
         await resend.emails.send({
-          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          from: fromCoach(),
           to: email,
           subject: built.subject,
           html: built.html,
@@ -228,7 +229,7 @@ export const challengeSequenceFunction = inngest.createFunction(
 
       const built = buildDay21FeedbackEmail({ firstName, enrollmentToken: token })
       await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: email,
         subject: built.subject,
         html: built.html,
@@ -355,7 +356,7 @@ async function executeAction(
         .replace(/\n/g, '<br/>')
       const interpolatedSubject = interpolate(config.subject ?? '', templateVars)
       const { data: sent, error: sendError } = await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: contact.email,
         subject: interpolatedSubject,
         html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="light only"/></head>
@@ -401,7 +402,7 @@ async function executeAction(
       if (!process.env.RESEND_API_KEY) break
       const resend = new Resend(process.env.RESEND_API_KEY)
       await resend.emails.send({
-        from: 'Body Recode <kade@bodyrecode.au>',
+        from: fromBrand(),
         to: 'kade@bodyrecode.au',
         subject: `Automation: ${interpolate(config.message ?? 'Action triggered', templateVars)}`,
         html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
@@ -525,7 +526,7 @@ export const blueprintEmailSequenceFunction = inngest.createFunction(
           pattern,
         })
         await resend.emails.send({
-          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          from: fromCoach(),
           to: email,
           subject: built.subject,
           html: built.html,
@@ -549,7 +550,7 @@ export const blueprintEmailSequenceFunction = inngest.createFunction(
       const pattern = enrollment.pattern === 'pending' ? 'stress-stored' : enrollment.pattern
       const built = buildBlueprintWeek7FollowupEmail({ firstName, portalUrl, pattern })
       await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: email,
         subject: built.subject,
         html: built.html,
@@ -600,7 +601,7 @@ export const blueprintWeekAdvanceFunction = inngest.createFunction(
             portalUrl,
           })
           await resend.emails.send({
-            from: 'Kade at Body Recode <kade@bodyrecode.au>',
+            from: fromCoach(),
             to: email,
             subject: built.subject,
             html: built.html,
@@ -640,7 +641,7 @@ export const blueprintWeekAdvanceFunction = inngest.createFunction(
             portalUrl,
           })
           await resend.emails.send({
-            from: 'Kade at Body Recode <kade@bodyrecode.au>',
+            from: fromCoach(),
             to: email,
             subject: built.subject,
             html: built.html,
@@ -737,7 +738,7 @@ export const membershipWeekAdvanceFunction = inngest.createFunction(
               portalUrl,
             })
             await resend.emails.send({
-              from: 'Kade at Body Recode <kade@bodyrecode.au>',
+              from: fromCoach(),
               to: email,
               subject: built.subject,
               html: built.html,
@@ -780,7 +781,7 @@ export const membershipWeekAdvanceFunction = inngest.createFunction(
               portalUrl,
             })
             await resend.emails.send({
-              from: 'Kade at Body Recode <kade@bodyrecode.au>',
+              from: fromCoach(),
               to: email,
               subject: built.subject,
               html: built.html,
@@ -848,7 +849,7 @@ export const extensionWeekAdvanceFunction = inngest.createFunction(
           const resend = new Resend(process.env.RESEND_API_KEY)
           const portalUrl = `${appUrl()}/extension/${token}`
           await resend.emails.send({
-            from: 'Kade at Body Recode <kade@bodyrecode.au>',
+            from: fromCoach(),
             to: email,
             subject: `Extension Week ${completedWeek} check-in is due`,
             html: darkEmailShell(`
@@ -954,7 +955,7 @@ export const reengagementSequenceFunction = inngest.createFunction(
           ? 'You completed the 6-Week Blueprint a few days ago.'
           : 'Your Body Recode membership has ended.'
       await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: email,
         subject: `Checking in, ${firstName}`,
         html: reengagementEmailShell(`
@@ -980,7 +981,7 @@ ${emailBody("Reply to this email if you want to talk through where you're at. I 
         ? `The 6-Week Blueprint is where the work you started gets structure and direction. It's built around your biological pattern — not a generic plan.`
         : `The 90-Day Extension is designed for exactly where you are — you've done the foundation work, and you need time to consolidate it before committing to the full membership.`
       await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: email,
         subject: `What the next step looks like for you`,
         html: reengagementEmailShell(`
@@ -1003,7 +1004,7 @@ ${emailBody("Reply if you have questions or want to know which pathway fits wher
       if (!process.env.RESEND_API_KEY) return
       const resend = new Resend(process.env.RESEND_API_KEY)
       await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: email,
         subject: `A lower-commitment way back in`,
         html: reengagementEmailShell(`
@@ -1031,7 +1032,7 @@ ${emailBody("Not ready yet? That's fine. I'll check back in.", { size: 14 })}
       if (!process.env.RESEND_API_KEY) return
       const resend = new Resend(process.env.RESEND_API_KEY)
       await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: email,
         subject: `Still here if you want it`,
         html: reengagementEmailShell(`
@@ -1055,7 +1056,7 @@ ${emailBody('Reply any time if you want to talk through it.', { size: 14 })}
       if (!process.env.RESEND_API_KEY) return
       const resend = new Resend(process.env.RESEND_API_KEY)
       await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: email,
         subject: `The membership is still open`,
         html: reengagementEmailShell(`
@@ -1087,7 +1088,7 @@ ${emailUrlFallback(membershipUrl, 'Or paste this link into your browser')}
       if (!process.env.RESEND_API_KEY) return
       const resend = new Resend(process.env.RESEND_API_KEY)
       await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: email,
         subject: `Last one from me`,
         html: reengagementEmailShell(`

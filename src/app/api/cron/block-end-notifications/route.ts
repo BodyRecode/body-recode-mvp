@@ -22,6 +22,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { daysUntilBlockEnd } from '@/lib/workout-logging'
 import { appUrl } from '@/lib/app-url'
+import { fromBrand } from '@/lib/email-shell'
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
@@ -108,7 +109,7 @@ export async function GET(request: NextRequest) {
 
     try {
       await resend.emails.send({
-        from: 'Body Recode <kade@bodyrecode.au>',
+        from: fromBrand(),
         to: COACH_EMAIL,
         subject,
         html: buildCoachNotificationEmail({

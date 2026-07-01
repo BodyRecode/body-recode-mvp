@@ -21,6 +21,7 @@ import {
   emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
   emailCta, emailStatusCard,
   EMAIL_FF,
+  fromBrand,
 } from '@/lib/email-shell'
 import { darkEmailSignature } from '@/lib/email-signature'
 
@@ -352,7 +353,7 @@ ${darkEmailSignature()}
 `
 
     await resend.emails.send({
-      from: 'Body Recode <kade@bodyrecode.au>',
+      from: fromBrand(),
       to: 'kade@bodyrecode.au',
       subject: `New Scorecard — ${first_name} (${body_state}, ${score}/15)`,
       html: darkEmailShell(coachInner, { previewText: `${first_name} just completed the scorecard — ${body_state}, ${score}/15.` }),

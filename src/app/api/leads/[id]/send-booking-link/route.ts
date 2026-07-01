@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { logLeadEvent } from '@/lib/log-lead-event'
+import { fromCoach } from '@/lib/email-shell'
 
 export async function POST(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient()
@@ -20,7 +21,7 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
 
   const resend = new Resend(process.env.RESEND_API_KEY)
   await resend.emails.send({
-    from: 'Kade at Body Recode <kade@bodyrecode.au>',
+    from: fromCoach(),
     to: lead.email,
     subject: `${firstName}, lock in your strategy call`,
     html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="light only"/></head>

@@ -6,6 +6,7 @@ import { logClientCommunication } from '@/lib/client-communications'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notifyOnboardingCompleteIfReady } from '@/lib/onboarding-complete-notification'
 import { appUrl } from '@/lib/app-url'
+import { fromCoach, fromBrand } from '@/lib/email-shell'
 
 export const maxDuration = 300
 
@@ -171,7 +172,7 @@ export async function POST(request: NextRequest) {
     // already in (rare path), the onboarding-complete helper sends its
     // own notification right after this one.
     await resend.emails.send({
-      from: 'Body Recode <kade@bodyrecode.au>',
+      from: fromBrand(),
       to: 'kade@bodyrecode.au',
       subject: `${clientName} submitted their intake`,
       html: buildCoachNotificationEmail({
@@ -199,7 +200,7 @@ export async function POST(request: NextRequest) {
       const { subject, html } = buildPortalOrientationEmail({ firstName, portalUrl })
       try {
         await resend.emails.send({
-          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          from: fromCoach(),
           to: clientRow.email,
           subject,
           html,

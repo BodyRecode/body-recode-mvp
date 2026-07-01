@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { appUrl } from '@/lib/app-url'
+import { fromBrand } from '@/lib/email-shell'
 
 const CATEGORIES = new Set([
   'portal_experience',
@@ -82,7 +83,7 @@ export async function POST(request: NextRequest) {
     const resend = new Resend(process.env.RESEND_API_KEY)
     const baseUrl = appUrl()
     await resend.emails.send({
-      from: 'Body Recode <kade@bodyrecode.au>',
+      from: fromBrand(),
       to: 'kade@bodyrecode.au',
       subject: `${client.name} sent feedback: ${CATEGORY_LABELS[category]}`,
       html: buildCoachNotificationEmail({

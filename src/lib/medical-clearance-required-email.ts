@@ -5,6 +5,7 @@ import {
   darkEmailShell, emailUrlFallback,
   emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
   emailCta, emailFeaturedCard, emailNumberedList,
+  fromCoach,
 } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 
@@ -49,7 +50,7 @@ export async function sendMedicalClearanceRequiredEmail({
 
   const resend = new Resend(process.env.RESEND_API_KEY)
   await resend.emails.send({
-    from: 'Kade at Body Recode <kade@bodyrecode.au>',
+    from: fromCoach(),
     to: client.email,
     subject,
     html: darkEmailShell(`

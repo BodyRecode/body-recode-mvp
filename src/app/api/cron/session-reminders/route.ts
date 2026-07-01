@@ -6,6 +6,7 @@ import {
   darkEmailShell, emailUrlFallback,
   emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
   emailCta, emailStatusCard,
+  fromCoach,
 } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
@@ -58,7 +59,7 @@ export async function GET(request: NextRequest) {
 
     try {
       await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: client.email as string,
         subject,
         html: darkEmailShell(`

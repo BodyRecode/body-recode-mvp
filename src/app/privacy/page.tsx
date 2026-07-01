@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
+import { logoUrl } from '@/config/tenant'
 
 const section = (n: number, title: string, children: React.ReactNode) => (
   <div style={{ marginBottom: '32px' }}>
@@ -54,7 +55,7 @@ export default function PrivacyPage() {
       <div style={{ borderBottom: '1px solid rgba(255,255,255,0.08)', padding: '18px 24px', background: '#08090B' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Link href="/">
-            <img src="https://bodyrecode.au/logo-black.png" width="160" alt="Body Recode" style={{ display: 'block', filter: 'brightness(0) invert(1)' }} />
+            <img src={logoUrl()} width="160" alt="Body Recode" style={{ display: 'block', filter: 'brightness(0) invert(1)' }} />
           </Link>
           <Link href="/" style={{ fontSize: '13px', color: '#5390FF', textDecoration: 'none', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
             <ArrowLeft size={13} />

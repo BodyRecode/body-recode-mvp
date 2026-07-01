@@ -11,6 +11,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { logoUrl } from '@/config/tenant'
 
 type LibraryItem = {
   slug: string
@@ -119,7 +120,7 @@ export default async function LibraryIndexPage({ params }: { params: Promise<{ t
               ← Membership home
             </Link>
           ) : <span />}
-          <img src="https://bodyrecode.au/logo-black.png" width="140" alt="Body Recode" style={{ display: 'block' }} />
+          <img src={logoUrl()} width="140" alt="Body Recode" style={{ display: 'block' }} />
         </div>
       </div>
 

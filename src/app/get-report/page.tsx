@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
-import { brand, coach } from '@/config/tenant'
+import { brand, coach, products } from '@/config/tenant'
 
 const INCLUDED: { eyebrow: string; title: string; body: string }[] = [
   {
@@ -34,6 +34,7 @@ export default function GetReportPage() {
   const [error, setError] = useState('')
   const t = brand()
   const c = coach()
+  const p = products()
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -91,7 +92,7 @@ export default function GetReportPage() {
 
         <div style={{ maxWidth: '720px', margin: '0 auto', padding: '56px 24px 24px', position: 'relative' }}>
           <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '14px' }}>
-            Body Decode Report · $37
+            {p.reportProductName} · ${p.reportPrice}
           </p>
           <h1 style={{
             fontSize: 'clamp(30px, 5.5vw, 44px)', fontWeight: 900,
@@ -148,7 +149,7 @@ export default function GetReportPage() {
         }}>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '6px', gap: '8px', flexWrap: 'wrap' }}>
             <p style={{ fontSize: '13px', fontWeight: 800, color: '#1B6DFC', letterSpacing: '0.08em', textTransform: 'uppercase', margin: 0 }}>
-              One-time · $37 AUD
+              One-time · ${p.reportPrice} AUD
             </p>
             <p style={{ fontSize: '11px', color: '#6B6B6B', margin: 0 }}>
               Delivered in minutes
@@ -190,7 +191,7 @@ export default function GetReportPage() {
                 transition: 'all 0.15s ease',
               }}
             >
-              {loading ? 'Loading…' : 'Get my Body Decode Report · $37'}
+              {loading ? 'Loading…' : `Get my ${p.reportProductName} · $${p.reportPrice}`}
             </button>
           </form>
           <p style={{ fontSize: '11px', color: '#999999', textAlign: 'center', marginTop: '14px', lineHeight: 1.5 }}>

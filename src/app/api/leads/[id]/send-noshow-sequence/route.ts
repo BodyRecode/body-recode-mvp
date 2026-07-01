@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildNoShowEmails, nextMorning9amBrisbane, daysAfter9amBrisbane } from '@/lib/generate-report'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { appUrl } from '@/lib/app-url'
+import { fromCoach } from '@/lib/email-shell'
 
 const BOOKING_LINK = process.env.BOOKING_LINK ?? `${appUrl()}/book`
 
@@ -38,21 +39,21 @@ export async function POST(
 
   const [r1, r2, r3] = await Promise.all([
     resend.emails.send({
-      from: 'Kade at Body Recode <kade@bodyrecode.au>',
+      from: fromCoach(),
       to: lead.email,
       subject: email1.subject,
       html: email1.html,
       scheduledAt: email1At.toISOString(),
     }),
     resend.emails.send({
-      from: 'Kade at Body Recode <kade@bodyrecode.au>',
+      from: fromCoach(),
       to: lead.email,
       subject: email2.subject,
       html: email2.html,
       scheduledAt: email2At.toISOString(),
     }),
     resend.emails.send({
-      from: 'Kade at Body Recode <kade@bodyrecode.au>',
+      from: fromCoach(),
       to: lead.email,
       subject: email3.subject,
       html: email3.html,

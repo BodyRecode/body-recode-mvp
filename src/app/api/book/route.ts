@@ -10,6 +10,7 @@ import {
   darkEmailShell, emailUrlFallback,
   emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
   emailCta, emailStatusCard,
+  fromCoach, fromBrand,
 } from '@/lib/email-shell'
 import { appUrl } from '@/lib/app-url'
 
@@ -188,7 +189,7 @@ export async function POST(request: NextRequest) {
 
     // Email to lead — Zoom confirmation
     await resend.emails.send({
-      from: 'Kade at Body Recode <kade@bodyrecode.au>',
+      from: fromCoach(),
       to: lead.email,
       subject: `Your Zoom call is confirmed — ${dateStr}`,
       attachments: [{ filename: 'booking.ics', content: Buffer.from(ics).toString('base64') }],
@@ -238,7 +239,7 @@ ${darkEmailSignature()}
 
     if (reminder2hTime.getTime() > now + 60_000) {
       await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: lead.email,
         subject: `Your Zoom call is in 2 hours — ${timeStr} Brisbane`,
         scheduledAt: reminder2hTime.toISOString(),
@@ -248,7 +249,7 @@ ${darkEmailSignature()}
 
     if (reminder30mTime.getTime() > now + 60_000) {
       await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: lead.email,
         subject: `Your Zoom call is in 30 minutes — ${timeStr} Brisbane`,
         scheduledAt: reminder30mTime.toISOString(),
@@ -258,7 +259,7 @@ ${darkEmailSignature()}
 
     // Email to coach — booking notification
     await resend.emails.send({
-      from: 'Body Recode <kade@bodyrecode.au>',
+      from: fromBrand(),
       to: 'kade@bodyrecode.au',
       subject: `Zoom booked — ${lead.name}`,
       html: darkEmailShell(`

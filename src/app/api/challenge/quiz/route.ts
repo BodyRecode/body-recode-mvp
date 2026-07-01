@@ -3,6 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { pickPatternSlug, type Gender, type QuizAnswer } from '@/lib/pattern-mapping'
 import { buildDay7ProgressEmail, buildDay14BodyDecodeReportEmail } from '@/lib/challenge-checkin-emails'
+import { fromCoach } from '@/lib/email-shell'
 
 export async function POST(request: NextRequest) {
   let body: Record<string, unknown>
@@ -97,7 +98,7 @@ export async function POST(request: NextRequest) {
         ? buildDay14BodyDecodeReportEmail({ firstName, patternSlug, progressScore })
         : buildDay7ProgressEmail({ firstName, progressScore, markerRatings })
       await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: email,
         subject: built.subject,
         html: built.html,

@@ -15,6 +15,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import FieldGuideCheckoutForm from './checkout-form'
+import { logoUrl } from '@/config/tenant'
 
 const STATE_LABELS: Record<string, { title: string; subtitle: string; bodyLine: string }> = {
   depleted: {
@@ -85,7 +86,7 @@ export default async function FieldGuideLandingPage({
       {/* Header */}
       <div style={{ borderBottom: '1px solid #E5E5E5', padding: '18px 24px' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto' }}>
-          <img src="https://bodyrecode.au/logo-black.png" width="160" alt="Body Recode" style={{ display: 'block' }} />
+          <img src={logoUrl()} width="160" alt="Body Recode" style={{ display: 'block' }} />
         </div>
       </div>
 

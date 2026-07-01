@@ -15,6 +15,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import Link from 'next/link'
 import { BOLT_ON_AD_COPY } from '@/lib/bolt-on-ad-copy'
+import { logoUrl } from '@/config/tenant'
 
 type Member = {
   token: string
@@ -121,7 +122,7 @@ function UpgradePrompt() {
     }}>
       <div style={{ borderBottom: '1px solid #E5E5E5', padding: '20px 24px' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto' }}>
-          <img src="https://bodyrecode.au/logo-black.png" width="160" alt="Body Recode" style={{ display: 'block' }} />
+          <img src={logoUrl()} width="160" alt="Body Recode" style={{ display: 'block' }} />
         </div>
       </div>
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '88px 24px', textAlign: 'center' }}>
@@ -178,7 +179,7 @@ export default async function BoltOnStorePage({ params }: { params: Promise<{ to
             <Link href={`/membership/${token}`} style={{ fontSize: '13px', color: '#1B6DFC', textDecoration: 'none', fontWeight: 600 }}>
               Membership home →
             </Link>
-            <img src="https://bodyrecode.au/logo-black.png" width="140" alt="Body Recode" style={{ display: 'block' }} />
+            <img src={logoUrl()} width="140" alt="Body Recode" style={{ display: 'block' }} />
           </div>
         </div>
       </div>

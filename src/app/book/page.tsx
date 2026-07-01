@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Calendar, Clock, CheckCircle2, Loader2, ChevronLeft } from 'lucide-react'
+import { logoUrl } from '@/config/tenant'
 
 type Step = 'slots' | 'details' | 'confirmed' | 'request' | 'request_confirmed'
 
@@ -124,7 +125,7 @@ export default function BookPage() {
     <div className="min-h-screen bg-stone-50 text-[#1A1A1A]">
       {/* Header */}
       <div className="border-b border-stone-200 px-6 py-5 flex items-center justify-between">
-        <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" />
+        <img src={logoUrl()} width="110" alt="Body Recode" />
         <a
           href="https://performance.bodyrecode.au"
           className="text-sm text-stone-500 hover:text-stone-700 transition-colors"

@@ -17,6 +17,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { appUrl } from '@/lib/app-url'
 import { buildDigitalAssetDeliveryEmail, ascensionCtaFor, type AscensionTarget } from '@/lib/digital-asset-emails'
+import { fromCoach } from '@/lib/email-shell'
 
 const LIBRARY_BUCKET = 'library-assets'
 
@@ -172,7 +173,7 @@ async function handle(request: NextRequest) {
     })
     try {
       await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: email,
         subject: `[TEST] ${built.subject}`,
         html: built.html,

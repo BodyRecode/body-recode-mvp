@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og'
 import { coach } from '@/config/tenant'
 
 export const runtime = 'edge'
-export const alt = "Knowing your pattern is not correcting it. The 6-Week Body Rewire is focused corrective work built specifically for your pattern. $97."
+export const alt = "Knowing your pattern is not correcting it. The 6-Week Body Rewire is focused corrective work built specifically for your pattern. $${products().blueprintPrice}."
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 

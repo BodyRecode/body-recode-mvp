@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { sendMedicalClearanceRequiredEmail } from '@/lib/medical-clearance-required-email'
 import { appUrl } from '@/lib/app-url'
+import { fromBrand } from '@/lib/email-shell'
 
 export async function POST(req: NextRequest) {
   const { clientId, requiresClearance, data } = await req.json()
@@ -117,7 +118,7 @@ export async function POST(req: NextRequest) {
       : `${name} has completed their health declaration. No medical clearance flagged. Their Foundational Intake task is now unlocked.`
 
     await resend.emails.send({
-      from: 'Body Recode <kade@bodyrecode.au>',
+      from: fromBrand(),
       to: 'kade@bodyrecode.au',
       subject: `${name} submitted their health declaration${requiresClearance ? ' (clearance required)' : ''}`,
       html: buildCoachNotificationEmail({

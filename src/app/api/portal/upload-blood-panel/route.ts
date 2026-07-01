@@ -5,6 +5,7 @@ import { Resend } from 'resend'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { appUrl } from '@/lib/app-url'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import { fromBrand } from '@/lib/email-shell'
 import {
   buildExtractionSystemPrompt,
   buildExtractionUserText,
@@ -195,7 +196,7 @@ export async function POST(req: NextRequest) {
       ? `${markerCount} marker${markerCount === 1 ? '' : 's'} were read automatically and are ready for your review.`
       : `The automatic read did not land cleanly, so review the file and re-run extraction from their profile.`
     await resend.emails.send({
-      from: 'Body Recode <kade@bodyrecode.au>',
+      from: fromBrand(),
       to: 'kade@bodyrecode.au',
       subject: `${name} uploaded blood test results`,
       html: buildCoachNotificationEmail({

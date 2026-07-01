@@ -8,6 +8,7 @@ import {
   darkEmailShell, emailUrlFallback,
   emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
   emailCta, emailStatusCard,
+  fromCoach, fromBrand,
 } from '@/lib/email-shell'
 
 const typeLabel: Record<string, string> = {
@@ -170,7 +171,7 @@ export async function POST(request: NextRequest) {
       })
 
       await resend.emails.send({
-        from: 'Body Recode <kade@bodyrecode.au>',
+        from: fromBrand(),
         to: 'kade@bodyrecode.au',
         subject: `Booking confirmed — ${contactName} — ${typeLabel[body.type] ?? 'Session'}`,
         html: darkEmailShell(`
@@ -201,7 +202,7 @@ ${darkEmailSignature()}
         const durationMinutes = body.duration_minutes ?? 60
 
         await resend.emails.send({
-          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          from: fromCoach(),
           to: contactEmail,
           subject: `Your Zoom call is confirmed. ${dateStr}`,
           attachments: [
@@ -256,7 +257,7 @@ ${darkEmailSignature()}
 
         if (reminder2hTime.getTime() > now + 60_000) {
           await resend.emails.send({
-            from: 'Kade at Body Recode <kade@bodyrecode.au>',
+            from: fromCoach(),
             to: contactEmail,
             subject: `Your Zoom call is in 2 hours. ${timeStr} Brisbane`,
             scheduledAt: reminder2hTime.toISOString(),
@@ -266,7 +267,7 @@ ${darkEmailSignature()}
 
         if (reminder30mTime.getTime() > now + 60_000) {
           await resend.emails.send({
-            from: 'Kade at Body Recode <kade@bodyrecode.au>',
+            from: fromCoach(),
             to: contactEmail,
             subject: `Your Zoom call is in 30 minutes. ${timeStr} Brisbane`,
             scheduledAt: reminder30mTime.toISOString(),

@@ -5,6 +5,7 @@ import {
   emailCta, emailFeaturedCard, emailNumberedList, emailStatusCard,
 } from './email-shell'
 import { darkEmailSignature } from './email-signature'
+import { fromCoach, fromBrand } from '@/lib/email-shell'
 
 export interface ChallengeWelcomeParams {
   to: string
@@ -102,7 +103,7 @@ export async function sendChallengeWelcomeEmail({
 
   try {
     const { data, error } = await resend.emails.send({
-      from: 'Kade at Body Recode <kade@bodyrecode.au>',
+      from: fromCoach(),
       to,
       subject,
       html,
@@ -169,7 +170,7 @@ ${emailCta({ href: portalUrl, label: 'View their portal' })}
 
   try {
     const { data, error } = await resend.emails.send({
-      from: 'Body Recode <kade@bodyrecode.au>',
+      from: fromBrand(),
       to: 'kade@bodyrecode.au',
       subject,
       html,

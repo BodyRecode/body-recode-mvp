@@ -3,7 +3,7 @@ import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildTrajectoryReadingEmail } from '@/lib/trajectory-reading-email'
-import { COACH_BCC } from '@/lib/email-shell'
+import { fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { appUrl } from '@/lib/app-url'
 
 // Coach-gated "Notify Client" send for a published trajectory reading.
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
     await resend.emails.send({
-      from: 'Kade at Body Recode <kade@bodyrecode.au>',
+      from: fromCoach(),
       to: client.email,
       bcc: COACH_BCC,
       subject,

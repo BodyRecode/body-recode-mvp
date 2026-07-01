@@ -4,6 +4,7 @@ import { useState } from 'react'
 import ClientHeader from '@/components/client-header'
 import { useFormDraft } from '@/lib/use-form-draft'
 import { compressImage } from '@/lib/compress-image'
+import { logoUrl } from '@/config/tenant'
 
 interface Props {
   clientId: string
@@ -167,7 +168,7 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style={{ display: 'block', margin: '0 auto 20px' }} />
+          <img src={logoUrl()} width="110" alt="Body Recode" style={{ display: 'block', margin: '0 auto 20px' }} />
           <h1 className="text-2xl font-bold text-[#1A1A1A] mb-3">Baseline received.</h1>
           <p className="text-[#6B6B6B] text-sm leading-relaxed">Baseline documentation protects interpretive integrity. It allows exposure to be guided by structure rather than emotion. This marks the starting calibration point of your coaching arc.</p>
           <p className="text-[#999999] text-xs mt-4 mb-7">Your coach will review your documentation and your Deliberate Start Window will begin shortly.</p>

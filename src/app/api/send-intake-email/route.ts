@@ -6,6 +6,7 @@ import { darkEmailSignature } from '@/lib/email-signature'
 import {
   darkEmailShell, emailUrlFallback,
   emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody, emailCta,
+  fromCoach,
 } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
@@ -27,7 +28,7 @@ export async function POST(request: NextRequest) {
   const resend = new Resend(process.env.RESEND_API_KEY)
 
   const { error } = await resend.emails.send({
-    from: 'Kade at Body Recode <kade@bodyrecode.au>',
+    from: fromCoach(),
     to: clientEmail,
     subject,
     html: darkEmailShell(`

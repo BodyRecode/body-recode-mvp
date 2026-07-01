@@ -4,7 +4,7 @@ import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCFWSSystemPrompt, buildCFWSUserPrompt, WeeklyCheckInPair } from '@/lib/cfws-prompt'
 import { darkEmailSignature } from '@/lib/email-signature'
-import { darkEmailShell, emailUrlFallback } from '@/lib/email-shell'
+import { fromCoach, fromBrand, darkEmailShell, emailUrlFallback } from '@/lib/email-shell'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { writeRecoverySignalBlock, evaluateRouterAfterCheckin } from '@/lib/recovery-ingest'
 import { appUrl } from '@/lib/app-url'
@@ -138,7 +138,7 @@ async function sendNotifications(
 
   // Notify Kade
   await resend.emails.send({
-    from: 'Body Recode <kade@bodyrecode.au>',
+    from: fromBrand(),
     to: 'kade@bodyrecode.au',
     subject: `${client.name}, Week ${weekNumber} check-in submitted`,
     html: buildCoachNotificationEmail({
@@ -153,7 +153,7 @@ async function sendNotifications(
   // Confirm to client
   if (client.email) {
     await resend.emails.send({
-      from: 'Kade at Body Recode <kade@bodyrecode.au>',
+      from: fromCoach(),
       to: client.email,
       subject: `Week ${weekNumber} check-in received`,
       html: darkEmailShell(`

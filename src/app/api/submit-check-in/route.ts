@@ -6,6 +6,7 @@ import { buildReportEmail, buildFollowUpEmails, nextMorning9amBrisbane, daysAfte
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { appUrl } from '@/lib/app-url'
+import { fromCoach } from '@/lib/email-shell'
 
 export const maxDuration = 300
 
@@ -242,7 +243,7 @@ async function scheduleReport(
   const scheduledAt = nextMorning9amBrisbane()
 
   const { data: reportResult } = await resend.emails.send({
-    from: 'Kade at Body Recode <kade@bodyrecode.au>',
+    from: fromCoach(),
     to: email,
     subject: 'Your Performance Check-In report',
     html,
@@ -273,7 +274,7 @@ async function scheduleReport(
     try {
       const sendAt = daysAfter9amBrisbane(scheduledAt, fu.days)
       const { data } = await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: email,
         subject: fu.subject,
         html: fu.html,

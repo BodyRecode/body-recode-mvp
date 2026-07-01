@@ -3,7 +3,7 @@ import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildNutritionReadingEmail } from '@/lib/nutrition-reading-email'
-import { COACH_BCC } from '@/lib/email-shell'
+import { fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { appUrl } from '@/lib/app-url'
 
 // Coach-gated "Notify client" send for an active nutrition plan.
@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
     await resend.emails.send({
-      from: 'Kade at Body Recode <kade@bodyrecode.au>',
+      from: fromCoach(),
       to: client.email,
       bcc: COACH_BCC,
       subject,

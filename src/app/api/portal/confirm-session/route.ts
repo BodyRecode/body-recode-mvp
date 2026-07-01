@@ -4,6 +4,7 @@ import { Resend } from 'resend'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { appUrl } from '@/lib/app-url'
+import { fromBrand } from '@/lib/email-shell'
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl
@@ -61,7 +62,7 @@ export async function GET(request: NextRequest) {
     const baseUrl = appUrl()
     const clientName = (client as { name: string }).name
     await resend.emails.send({
-      from: 'Body Recode <kade@bodyrecode.au>',
+      from: fromBrand(),
       to: 'kade@bodyrecode.au',
       subject: `${clientName} confirmed their session: ${displayDate}`,
       html: buildCoachNotificationEmail({

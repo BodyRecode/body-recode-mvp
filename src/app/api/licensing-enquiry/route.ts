@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
+import { fromBrand } from '@/lib/email-shell'
 
 export const runtime = 'nodejs'
 
@@ -125,7 +126,7 @@ export async function POST(request: Request) {
 
   try {
     const { error } = await resend.emails.send({
-      from: 'Body Recode <kade@bodyrecode.au>',
+      from: fromBrand(),
       to: 'kade@bodyrecode.au',
       replyTo: email,
       subject: subjectLine,

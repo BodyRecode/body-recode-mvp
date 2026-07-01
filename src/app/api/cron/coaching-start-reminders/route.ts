@@ -5,6 +5,7 @@ import { darkEmailSignature } from '@/lib/email-signature'
 import {
   darkEmailShell, emailUrlFallback,
   emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody, emailCta,
+  fromCoach,
 } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 
@@ -45,7 +46,7 @@ export async function GET(request: NextRequest) {
       : 'https://app.bodyrecode.au/portal/login'
 
     await resend.emails.send({
-      from: 'Kade at Body Recode <kade@bodyrecode.au>',
+      from: fromCoach(),
       to: client.email,
       subject,
       html: darkEmailShell(`

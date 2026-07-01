@@ -49,6 +49,27 @@ export const COACH_BCC: string[] =
     : [process.env.COACH_BCC_EMAIL ?? coach().adminEmail]
 
 /**
+ * Standard "Kade at Body Recode <kade@send.bodyrecode.au>"-style from-address.
+ * Personal — feels like a person is emailing you. Use for coaching-facing sends
+ * (welcome, check-ins, follow-ups, offers). Templated from tenant config.
+ */
+export function fromCoach(): string {
+  const t = brand()
+  const c = coach()
+  return `${c.firstName} at ${t.name} <${t.fromEmail}>`
+}
+
+/**
+ * Bare brand from-address "Body Recode <kade@send.bodyrecode.au>". Use for
+ * transactional / system sends where a coach-signed voice would feel off
+ * (receipts, invoices, "your program is ready"). Templated from tenant config.
+ */
+export function fromBrand(): string {
+  const t = brand()
+  return `${t.name} <${t.fromEmail}>`
+}
+
+/**
  * Plain-text URL fallback block. Required at the bottom of every email that
  * has a CTA button, because corporate Microsoft 365 deployments (Defender
  * Safe Links / ATP) often rewrite or strip clickable `<a>` URLs - Samantha

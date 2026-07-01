@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { darkEmailShell, emailUrlFallback, COACH_BCC } from '@/lib/email-shell'
+import { fromCoach, darkEmailShell, emailUrlFallback, COACH_BCC } from '@/lib/email-shell'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { logClientCommunication } from '@/lib/client-communications'
 
@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
 
   const resend = new Resend(process.env.RESEND_API_KEY)
   const sendResult = await resend.emails.send({
-    from: 'Kade at Body Recode <kade@bodyrecode.au>',
+    from: fromCoach(),
     to: client.email,
     bcc: COACH_BCC,
     subject,

@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildPortalOrientationEmail } from '@/lib/portal-orientation-email'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
+import { fromCoach } from '@/lib/email-shell'
 export async function POST(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -36,7 +37,7 @@ export async function POST(
 
   const resend = new Resend(process.env.RESEND_API_KEY)
   await resend.emails.send({
-    from: 'Kade at Body Recode <kade@bodyrecode.au>',
+    from: fromCoach(),
     to: client.email,
     subject,
     html,

@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { appUrl } from '@/lib/app-url'
+import { fromBrand } from '@/lib/email-shell'
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
@@ -55,7 +56,7 @@ export async function POST(req: NextRequest) {
       .replace(/\n/g, '<br/>')
     try {
       await resend.emails.send({
-        from: 'Body Recode <kade@bodyrecode.au>',
+        from: fromBrand(),
         to: 'kade@bodyrecode.au',
         replyTo: client.email ?? undefined,
         subject: `Message from ${client.name}`,

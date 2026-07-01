@@ -162,3 +162,9 @@ export function coach(): TenantConfig['coach'] {
 export function products(): TenantConfig['products'] {
   return getTenant().products
 }
+
+/** Absolute logo URL for the current tenant. Use in <img src={logoUrl()}> or email HTML. */
+export function logoUrl(variant: 'light' | 'dark' = 'light'): string {
+  const t = brand()
+  return `${t.marketingDomain}${variant === 'dark' ? t.logoUrlDark : t.logoUrlLight}`
+}

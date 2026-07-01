@@ -13,6 +13,7 @@ import {
   darkEmailShell, emailUrlFallback,
   emailLogo, emailEyebrow, emailHeading, emailDivider,
   emailBody, emailStatusCard, emailCta, emailNumberedList, emailFeaturedCard,
+  fromCoach, fromBrand,
 } from '@/lib/email-shell'
 import {
   buildBlueprintPurchaseWelcomeEmail,
@@ -80,7 +81,7 @@ async function fulfilInstantPdf(args: {
       ascensionCtaUrl: ascension.url,
     })
     await resend.emails.send({
-      from: 'Kade at Body Recode <kade@bodyrecode.au>',
+      from: fromCoach(),
       to: args.email,
       subject: built.subject,
       html: built.html,
@@ -213,7 +214,7 @@ export async function POST(request: NextRequest) {
               if (process.env.RESEND_API_KEY) {
                 const resend = new Resend(process.env.RESEND_API_KEY)
                 await resend.emails.send({
-                  from: 'Body Recode <kade@bodyrecode.au>',
+                  from: fromBrand(),
                   to: 'kade@bodyrecode.au',
                   subject: `Second commencement installment received — ${lead.name}`,
                   html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
@@ -545,7 +546,7 @@ ${darkEmailSignature()}
 
       // Delivery email to customer
       await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: email,
         subject: `Your ${stateLabel} State Program`,
         html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="light only"/></head>
@@ -580,7 +581,7 @@ ${darkEmailSignature()}
 
       // Notify Kade
       await resend.emails.send({
-        from: 'Body Recode <kade@bodyrecode.au>',
+        from: fromBrand(),
         to: 'kade@bodyrecode.au',
         subject: `Self-Guided Program sold - ${name}`,
         html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
@@ -601,21 +602,21 @@ ${darkEmailSignature()}
 
       await Promise.all([
         resend.emails.send({
-          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          from: fromCoach(),
           to: email,
           subject: n1.subject,
           html: n1.html,
           scheduledAt: week4.toISOString(),
         }),
         resend.emails.send({
-          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          from: fromCoach(),
           to: email,
           subject: n2.subject,
           html: n2.html,
           scheduledAt: week8.toISOString(),
         }),
         resend.emails.send({
-          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          from: fromCoach(),
           to: email,
           subject: n3.subject,
           html: n3.html,
@@ -672,7 +673,7 @@ ${emailUrlFallback(reportUrl, 'Or paste this link into your browser')}
 ${darkEmailSignature()}
 `
       await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: email,
         subject: `Your Body Decode Report is ready`,
         html: darkEmailShell(reportInner, { previewText: `${firstName}, your Body Decode Report is ready.` }),
@@ -748,21 +749,21 @@ ${darkEmailSignature()}
 
       const [rf1, rf2, rf3] = await Promise.all([
         resend.emails.send({
-          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          from: fromCoach(),
           to: email,
           subject: f1.subject,
           html: f1.html,
           scheduledAt: day2.toISOString(),
         }),
         resend.emails.send({
-          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          from: fromCoach(),
           to: email,
           subject: f2.subject,
           html: f2.html,
           scheduledAt: day5.toISOString(),
         }),
         resend.emails.send({
-          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          from: fromCoach(),
           to: email,
           subject: f3.subject,
           html: f3.html,
@@ -832,7 +833,7 @@ ${darkEmailSignature()}
 
       const welcome = buildBlueprintPurchaseWelcomeEmail({ firstName, portalUrl, pattern })
       await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: email,
         subject: welcome.subject,
         html: welcome.html,
@@ -846,7 +847,7 @@ ${darkEmailSignature()}
 
       const coachNotify = buildBlueprintCoachNotificationEmail({ name, email, pattern })
       await resend.emails.send({
-        from: 'Body Recode <kade@bodyrecode.au>',
+        from: fromBrand(),
         to: 'kade@bodyrecode.au',
         subject: coachNotify.subject,
         html: coachNotify.html,
@@ -887,7 +888,7 @@ ${darkEmailSignature()}
 
       const welcome = buildMembershipPurchaseWelcomeEmail({ firstName: first_name, portalUrl })
       await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: email,
         subject: welcome.subject,
         html: welcome.html,
@@ -900,7 +901,7 @@ ${darkEmailSignature()}
         blueprintToken: blueprint_token || null,
       })
       await resend.emails.send({
-        from: 'Body Recode <kade@bodyrecode.au>',
+        from: fromBrand(),
         to: 'kade@bodyrecode.au',
         subject: coachNotify.subject,
         html: coachNotify.html,
@@ -951,7 +952,7 @@ ${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
 ${darkEmailSignature()}
 `
       await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: email,
         subject: `Your 90-Day Body Rewire Extension is ready`,
         html: darkEmailShell(extensionInner, { previewText: `${first_name}, your 90-Day Extension is ready.` }),
@@ -970,7 +971,7 @@ ${emailStatusCard({
 ${darkEmailSignature()}
 `
       await resend.emails.send({
-        from: 'Body Recode <kade@bodyrecode.au>',
+        from: fromBrand(),
         to: 'kade@bodyrecode.au',
         subject: `Extension purchased - ${first_name}`,
         html: darkEmailShell(extensionCoachInner, { previewText: `${first_name} bought the 90-Day Extension.` }),
@@ -1066,7 +1067,7 @@ ${darkEmailSignature()}
             etaMinutes: 10,
           })
           await resend.emails.send({
-            from: 'Kade at Body Recode <kade@bodyrecode.au>',
+            from: fromCoach(),
             to: email,
             subject: built.subject,
             html: built.html,
@@ -1209,7 +1210,7 @@ ${darkEmailSignature()}
     if (process.env.RESEND_API_KEY) {
       const resend = new Resend(process.env.RESEND_API_KEY)
       await resend.emails.send({
-        from: 'Body Recode <kade@bodyrecode.au>',
+        from: fromBrand(),
         to: 'kade@bodyrecode.au',
         subject: `Commencement fee received — ${client.name}`,
         html: `
@@ -1351,7 +1352,7 @@ ${emailCta({ href: `${appUrl()}/dashboard/leads/${lead.id}`, label: 'View lead' 
 ${darkEmailSignature()}
 `
     await resend.emails.send({
-      from: 'Body Recode <kade@bodyrecode.au>',
+      from: fromBrand(),
       to: 'kade@bodyrecode.au',
       subject: `Payment received - ${lead.name}`,
       html: darkEmailShell(coachInner, { previewText: `${lead.name} paid the commencement fee.` }),
@@ -1391,7 +1392,7 @@ ${darkEmailSignature()}
 `
 
     await resend.emails.send({
-      from: 'Kade at Body Recode <kade@bodyrecode.au>',
+      from: fromCoach(),
       to: lead.email,
       subject: `Welcome to Body Recode, ${firstName}`,
       html: darkEmailShell(welcomeInner, { previewText: `Welcome ${firstName} — your portal is ready.` }),

@@ -3,6 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { appUrl } from '@/lib/app-url'
+import { fromBrand } from '@/lib/email-shell'
 
 export const maxDuration = 60
 
@@ -66,7 +67,7 @@ export async function POST(req: NextRequest) {
     const baseUrl = appUrl()
     const name = client?.name ?? 'A client'
     await resend.emails.send({
-      from: 'Body Recode <kade@bodyrecode.au>',
+      from: fromBrand(),
       to: 'kade@bodyrecode.au',
       subject: `${name} uploaded their medical clearance`,
       html: buildCoachNotificationEmail({

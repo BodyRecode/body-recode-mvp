@@ -8,6 +8,7 @@ import {
   emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
   EMAIL_BLUE, EMAIL_BLUE_BG, EMAIL_BLUE_BORDER, EMAIL_BLUE_DARK,
   EMAIL_GRAPHITE, EMAIL_MUTED, EMAIL_FF, EMAIL_MONO,
+  fromBrand,
 } from '@/lib/email-shell'
 import { darkEmailSignature } from '@/lib/email-signature'
 
@@ -70,7 +71,7 @@ ${darkEmailSignature()}
   void EMAIL_BLUE
 
   const { error: sendError } = await resend.emails.send({
-    from: 'Body Recode <kade@bodyrecode.au>',
+    from: fromBrand(),
     to: cleanEmail,
     subject,
     html: darkEmailShell(inner, { previewText: `Your Body Recode sign-in code: ${code}` }),

@@ -5,6 +5,7 @@ import { darkEmailSignature } from '@/lib/email-signature'
 import {
   darkEmailShell, emailUrlFallback,
   emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody, emailCta,
+  fromCoach,
 } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
@@ -188,7 +189,7 @@ export async function GET(request: NextRequest) {
 
       try {
         await resend.emails.send({
-          from: 'Kade at Body Recode <kade@bodyrecode.au>',
+          from: fromCoach(),
           to: client.email,
           subject,
           html: reminderEmail(firstName, task.id, task.title, threshold, portalUrl),

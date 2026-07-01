@@ -6,6 +6,7 @@ import {
   darkEmailShell, emailUrlFallback,
   emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
   emailCta, emailCallout,
+  fromCoach,
 } from '@/lib/email-shell'
 import { sendSms, formatPhone } from '@/lib/twilio'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
@@ -93,7 +94,7 @@ export async function GET(request: NextRequest) {
     // Email
     if (client.email) {
       await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: client.email,
         subject,
         html: darkEmailShell(`

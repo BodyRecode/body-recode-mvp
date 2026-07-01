@@ -48,6 +48,7 @@ import {
   type WeeklyPatternResult,
 } from '@/lib/weekly-pattern-generator'
 import { buildDeepDiveReadyEmail } from '@/lib/digital-asset-engine-emails'
+import { fromCoach } from '@/lib/email-shell'
 
 const LIBRARY_BUCKET = 'library-assets'
 const DEEP_DIVE_PREFIX = 'deep-dives'
@@ -314,7 +315,7 @@ export async function fulfilInstantEngine(purchaseId: string): Promise<void> {
       readerUrl,
     })
     await resend.emails.send({
-      from: 'Kade at Body Recode <kade@bodyrecode.au>',
+      from: fromCoach(),
       to: purchase.email_at_purchase,
       subject: built.subject,
       html: built.html,

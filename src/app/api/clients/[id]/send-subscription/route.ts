@@ -3,7 +3,7 @@ import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
-import { darkEmailShell } from '@/lib/email-shell'
+import { fromCoach, darkEmailShell } from '@/lib/email-shell'
 import { getCoachingPackage } from '@/lib/coaching-packages'
 import { logClientCommunication } from '@/lib/client-communications'
 import { createSubscriptionCheckoutForClient } from '@/lib/subscription-checkout'
@@ -60,7 +60,7 @@ export async function POST(
   const subject = `${firstName}, lock in your weekly subscription`
 
   await resend.emails.send({
-    from: 'Kade at Body Recode <kade@bodyrecode.au>',
+    from: fromCoach(),
     to: client.email,
     subject,
     html: darkEmailShell(`

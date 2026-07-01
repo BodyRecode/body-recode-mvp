@@ -3,6 +3,7 @@ import { Resend } from 'resend'
 import { SupabaseClient } from '@supabase/supabase-js'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { appUrl } from '@/lib/app-url'
+import { fromCoach } from '@/lib/email-shell'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -81,7 +82,7 @@ export async function sendDownsellOffer(
   const resend = new Resend(process.env.RESEND_API_KEY)
 
   await resend.emails.send({
-    from: 'Kade at Body Recode <kade@bodyrecode.au>',
+    from: fromCoach(),
     to: lead.email,
     subject: `${firstName}, the self-guided ${stateLabel} program - $97`,
     html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="light only"/></head>

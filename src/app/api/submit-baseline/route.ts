@@ -4,6 +4,7 @@ import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notifyOnboardingCompleteIfReady } from '@/lib/onboarding-complete-notification'
 import { appUrl } from '@/lib/app-url'
+import { fromBrand } from '@/lib/email-shell'
 
 export const maxDuration = 300
 
@@ -75,7 +76,7 @@ export async function POST(req: NextRequest) {
       const name = client?.name ?? 'A client'
       const baseUrl = appUrl()
       await resend.emails.send({
-        from: 'Body Recode <kade@bodyrecode.au>',
+        from: fromBrand(),
         to: 'kade@bodyrecode.au',
         subject: `${name} submitted their baseline`,
         html: buildCoachNotificationEmail({

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
+import { fromBrand } from '@/lib/email-shell'
 
 type Tier = 'green' | 'yellow' | 'red'
 type StatusCounts = Record<string, number>
@@ -243,7 +244,7 @@ export async function GET(request: NextRequest) {
     try {
       const resend = new Resend(process.env.RESEND_API_KEY)
       await resend.emails.send({
-        from: 'Body Recode <kade@bodyrecode.au>',
+        from: fromBrand(),
         to: 'kade@bodyrecode.au',
         subject: `Lead Quality Report — ${(windowLeads ?? []).length} new leads this week`,
         html,

@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildReportEmail, buildFollowUpEmails, daysAfter9amBrisbane } from '@/lib/generate-report'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { logLeadEvent } from '@/lib/log-lead-event'
+import { fromCoach } from '@/lib/email-shell'
 
 const QUESTIONS: Record<string, string> = {
   effort_vs_result: 'Effort relative to result',
@@ -117,7 +118,7 @@ export async function POST(request: NextRequest) {
       }
 
       await resend.emails.send({
-        from: 'Kade at Body Recode <kade@bodyrecode.au>',
+        from: fromCoach(),
         to: lead.email,
         subject: `${firstName}, your Body Recode performance report`,
         html: combined,
@@ -144,7 +145,7 @@ export async function POST(request: NextRequest) {
           try {
             const sendAt = daysAfter9amBrisbane(now, fu.days)
             const { data } = await resend.emails.send({
-              from: 'Kade at Body Recode <kade@bodyrecode.au>',
+              from: fromCoach(),
               to: lead.email,
               subject: fu.subject,
               html: fu.html,
