@@ -1,7 +1,9 @@
+import { brand, coach } from '@/config/tenant'
+
 /**
- * Outlook-safe Body Recode email shell.
+ * Outlook-safe tenant email shell (originally Body Recode).
  *
- * Background. The Body Recode email canvas is Pure White (#FFFFFF) with
+ * Background. The email canvas is Pure White (#FFFFFF) with
  * Graphite Black (#1A1A1A) text and Signal Blue (#1B6DFC) accents - matching
  * the landing pages, customer portals, and coach dashboard. Outlook for
  * Windows renders mail with Word's HTML engine and STRIPS `background:` CSS
@@ -44,7 +46,7 @@
 export const COACH_BCC: string[] =
   process.env.COACH_BCC_EMAIL === ''
     ? []
-    : [process.env.COACH_BCC_EMAIL ?? 'kade@bodyrecode.au']
+    : [process.env.COACH_BCC_EMAIL ?? coach().adminEmail]
 
 /**
  * Plain-text URL fallback block. Required at the bottom of every email that
@@ -92,7 +94,8 @@ export const EMAIL_GREY_BG = '#F7F7F7'
 
 /** Logo at the top of every email. Defaults to the 150px width used on /challenge. */
 export function emailLogo(width = 150): string {
-  return `<div style="margin-bottom:36px;"><img src="https://bodyrecode.au/logo-black.png" width="${width}" alt="Body Recode" style="display:block;border:0;" /></div>`
+  const t = brand()
+  return `<div style="margin-bottom:36px;"><img src="${t.marketingDomain}${t.logoUrlLight}" width="${width}" alt="${t.name}" style="display:block;border:0;" /></div>`
 }
 
 /** Small uppercase Signal Blue label that sits above headings (the "ACCOUNT UPDATE" line on Samantha's refund email, the "FREE 14-DAY CHALLENGE" badge on /challenge). */
@@ -157,6 +160,7 @@ export function emailCta(opts: { href: string; label: string; bg?: string }): st
 
 export function darkEmailShell(inner: string, opts?: { previewText?: string }): string {
   const preview = opts?.previewText ?? ''
+  const t = brand()
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -165,7 +169,7 @@ export function darkEmailShell(inner: string, opts?: { previewText?: string }): 
 <meta name="x-apple-disable-message-reformatting" />
 <meta name="color-scheme" content="light only" />
 <meta name="supported-color-schemes" content="light" />
-<title>Body Recode</title>
+<title>${t.name}</title>
 <!--[if mso]>
 <style type="text/css">
   body, table, td, p, a { font-family: -apple-system, 'Segoe UI', Arial, sans-serif !important; }

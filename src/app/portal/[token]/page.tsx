@@ -9,6 +9,7 @@ import { brand } from '@/config/tenant'
 
 export default async function PortalPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
+  const t = brand()
 
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -27,7 +28,6 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   const userEmail = (user.email ?? '').toLowerCase()
   const clientEmail = (client.email ?? '').toLowerCase()
   if (userEmail !== clientEmail && !isCoachEmail(userEmail)) {
-    const t = brand()
     return (
       <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A] flex flex-col items-center justify-center px-6 py-12">
         <div className="w-full max-w-md bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-8">
@@ -713,7 +713,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
           </Link>
           <a
-            href="https://app.bodyrecode.au/coaching-guide"
+            href={`${t.appDomain}/coaching-guide`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-between w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl px-5 py-4 hover:border-[#E5E5E5] transition-colors mb-3"

@@ -43,6 +43,7 @@ export type TenantConfig = {
     credentials: string             // "Human Movement Science + Business"
     instagramHandle: string         // "@body_recode_"
     personalInstagramHandle: string // "@kade_dunstone_"
+    whatsAppNumber: string          // "61400336284" (E.164 without + prefix, for wa.me links)
   }
 
   /** Layer 2: Product wrapping — prices, product names, offer structure */
@@ -106,6 +107,7 @@ const BODY_RECODE_TENANT: TenantConfig = {
     credentials: 'Human Movement Science + Business',
     instagramHandle: '@body_recode_',
     personalInstagramHandle: '@kade_dunstone_',
+    whatsAppNumber: '61400336284',
   },
   products: {
     scorecardName: 'Body State Scorecard',

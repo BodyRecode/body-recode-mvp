@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
+import { brand, coach } from '@/config/tenant'
 
 const INCLUDED: { eyebrow: string; title: string; body: string }[] = [
   {
@@ -31,6 +32,8 @@ export default function GetReportPage() {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const t = brand()
+  const c = coach()
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -63,8 +66,8 @@ export default function GetReportPage() {
       {/* Header */}
       <div style={{ borderBottom: '1px solid #E5E5E5', padding: '18px 24px', background: '#FFFFFF' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <img src="https://bodyrecode.au/logo-black.png" width="160" alt="Body Recode" style={{ display: 'block' }} />
-          <Link href="https://performance.bodyrecode.au/scorecard" style={{ fontSize: '13px', color: '#1B6DFC', textDecoration: 'none', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+          <img src={`${t.marketingDomain}${t.logoUrlLight}`} width="160" alt={t.name} style={{ display: 'block' }} />
+          <Link href={`${t.performanceDomain}/scorecard`} style={{ fontSize: '13px', color: '#1B6DFC', textDecoration: 'none', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
             <ArrowLeft size={13} />
             Back to scorecard
           </Link>
@@ -204,8 +207,8 @@ export default function GetReportPage() {
           display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap',
         }}>
           <img
-            src="https://bodyrecode.au/kade.jpg"
-            alt="Kade Dunstone"
+            src={c.photoUrl}
+            alt={c.fullName}
             style={{
               width: '44px', height: '44px', borderRadius: '50%',
               objectFit: 'cover', objectPosition: 'top center',
@@ -214,7 +217,7 @@ export default function GetReportPage() {
           />
           <div style={{ flex: 1, minWidth: '200px' }}>
             <p style={{ fontSize: '13px', fontWeight: 800, color: '#1A1A1A', margin: 0, lineHeight: 1.3 }}>
-              Built by Kade Dunstone
+              Built by {c.fullName}
             </p>
             <p style={{ fontSize: '11px', color: '#6B6B6B', margin: 0, lineHeight: 1.45 }}>
               Sports Scientist · Business Entrepreneur · Body Recode Founder
@@ -227,7 +230,7 @@ export default function GetReportPage() {
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '32px 24px 80px' }}>
         <p style={{ fontSize: '13px', color: '#6B6B6B', textAlign: 'center', lineHeight: 1.65, margin: 0 }}>
           Have not completed the scorecard yet?{' '}
-          <a href="https://performance.bodyrecode.au/scorecard" style={{ color: '#1B6DFC', textDecoration: 'underline', fontWeight: 700 }}>
+          <a href={`${t.performanceDomain}/scorecard`} style={{ color: '#1B6DFC', textDecoration: 'underline', fontWeight: 700 }}>
             Take it here first
           </a>
           {' '} (2 minutes, free).
