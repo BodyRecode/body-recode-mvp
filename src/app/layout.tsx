@@ -2,14 +2,15 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+import { brand } from "@/config/tenant";
 
 const geist = Geist({ subsets: ["latin"] });
 
+const t = brand();
 export const metadata: Metadata = {
-  metadataBase: new URL('https://bodyrecode.au'),
-  title: 'Body Recode™ | Biological Interpretation Platform',
-  description:
-    'Body Recode™ is a biological interpretation system. One interpretive engine. Five environments. Licensable across performance coaching, executive, tactical, clinical and developmental contexts.',
+  metadataBase: new URL(t.marketingDomain),
+  title: `${t.nameWithMark} | ${t.tagline}`,
+  description: `${t.nameWithMark} is a biological interpretation system. One interpretive engine. Five environments. Licensable across performance coaching, executive, tactical, clinical and developmental contexts.`,
   other: {
     'facebook-domain-verification': '4krhdl24q7osiw8uhnvyf93htlv3nj',
   },

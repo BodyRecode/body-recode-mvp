@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { getCheckInWindowStatus, getWeekNumber, isCheckinTestMode } from '@/lib/weekly-checkin-questions'
 import ClientHeader from '@/components/client-header'
 import { isCoachEmail } from '@/lib/coach-auth'
+import { brand } from '@/config/tenant'
 
 export default async function PortalPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
@@ -26,10 +27,11 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   const userEmail = (user.email ?? '').toLowerCase()
   const clientEmail = (client.email ?? '').toLowerCase()
   if (userEmail !== clientEmail && !isCoachEmail(userEmail)) {
+    const t = brand()
     return (
       <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A] flex flex-col items-center justify-center px-6 py-12">
         <div className="w-full max-w-md bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-8">
-          <img src="https://bodyrecode.au/logo-black.png" width="220" alt="Body Recode" className="mb-8" />
+          <img src={`${t.marketingDomain}${t.logoUrlLight}`} width="220" alt={t.name} className="mb-8" />
           <h1 className="text-xl font-bold text-[#1A1A1A] mb-3">Wrong account signed in</h1>
           <p className="text-sm text-[#6B6B6B] leading-relaxed mb-2">
             This portal link belongs to a different account. You&apos;re currently signed in as{' '}
