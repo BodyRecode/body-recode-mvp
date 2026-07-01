@@ -2,7 +2,8 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { ChevronDown } from 'lucide-react'
 
 type NavLink = { href: string; label: string; exact?: boolean }
@@ -121,27 +122,51 @@ function ClusterDropdown({
 }) {
   const active = clusterActive(pathname, cluster)
   const open = openKey === cluster.key
-  const ref = useRef<HTMLDivElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
+  const [menuPos, setMenuPos] = useState<{ top: number; left: number } | null>(null)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => setMounted(true), [])
+
+  useLayoutEffect(() => {
+    if (!open || !buttonRef.current) return
+    const rect = buttonRef.current.getBoundingClientRect()
+    setMenuPos({ top: rect.bottom + 8, left: rect.left })
+  }, [open])
 
   useEffect(() => {
     if (!open) return
     const onClickOutside = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpenKey(null)
+      const target = e.target as Node
+      if (buttonRef.current?.contains(target)) return
+      if (menuRef.current?.contains(target)) return
+      setOpenKey(null)
     }
     const onEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setOpenKey(null)
     }
+    const onScroll = () => {
+      if (!buttonRef.current) return
+      const rect = buttonRef.current.getBoundingClientRect()
+      setMenuPos({ top: rect.bottom + 8, left: rect.left })
+    }
     document.addEventListener('mousedown', onClickOutside)
     document.addEventListener('keydown', onEscape)
+    window.addEventListener('scroll', onScroll, true)
+    window.addEventListener('resize', onScroll)
     return () => {
       document.removeEventListener('mousedown', onClickOutside)
       document.removeEventListener('keydown', onEscape)
+      window.removeEventListener('scroll', onScroll, true)
+      window.removeEventListener('resize', onScroll)
     }
   }, [open, setOpenKey])
 
   return (
-    <div ref={ref} className="relative">
+    <>
       <button
+        ref={buttonRef}
         type="button"
         onClick={() => setOpenKey(open ? null : cluster.key)}
         className={`relative flex items-center gap-1 text-[13px] px-3.5 py-2 rounded-md transition-colors whitespace-nowrap ${
@@ -162,10 +187,12 @@ function ClusterDropdown({
           <span className="absolute left-1/2 -translate-x-1/2 -bottom-[17px] w-6 h-[2px] rounded-full bg-[#1B6DFC]" />
         )}
       </button>
-      {open && (
+      {mounted && open && menuPos && createPortal(
         <div
+          ref={menuRef}
           role="menu"
-          className="absolute left-0 top-[calc(100%+8px)] min-w-[180px] rounded-lg border border-[#E5E5E5] bg-white shadow-[0_8px_24px_-6px_rgba(0,0,0,0.12)] py-1.5 z-50"
+          className="fixed min-w-[180px] rounded-lg border border-[#E5E5E5] bg-white shadow-[0_8px_24px_-6px_rgba(0,0,0,0.12)] py-1.5"
+          style={{ top: menuPos.top, left: menuPos.left, zIndex: 60 }}
         >
           {cluster.items.map((item) => {
             const itemActive = isLinkActive(pathname, item)
@@ -184,9 +211,10 @@ function ClusterDropdown({
               </Link>
             )
           })}
-        </div>
+        </div>,
+        document.body
       )}
-    </div>
+    </>
   )
 }
 
