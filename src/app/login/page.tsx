@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import { logoUrl } from '@/config/tenant'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -32,7 +33,7 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-10">
           <img
-            src="https://bodyrecode.au/logo-black.png"
+            src={logoUrl()}
             width="280"
             alt="Body Recode"
             className="mx-auto mb-8"

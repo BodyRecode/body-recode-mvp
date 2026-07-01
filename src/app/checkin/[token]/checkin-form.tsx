@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { FORM_A_SECTIONS, FORM_B_SECTIONS, CheckInSection } from '@/lib/weekly-checkin-questions'
 import { useFormDraft } from '@/lib/use-form-draft'
+import { logoUrl } from '@/config/tenant'
 
 interface Props {
   clientId: string
@@ -200,7 +201,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
     return (
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-8">
         <div className="text-center max-w-sm">
-          <img src="https://bodyrecode.au/logo-black.png" width="120" alt="Body Recode" style={{ display: 'block', margin: '0 auto 24px' }} />
+          <img src={logoUrl()} width="120" alt="Body Recode" style={{ display: 'block', margin: '0 auto 24px' }} />
           <div className="w-14 h-14 bg-blue-500/10 border border-blue-500/30 rounded-full flex items-center justify-center mx-auto mb-6">
             <svg className="w-7 h-7 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
@@ -228,7 +229,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
 
       {/* Header */}
       <div className="sticky top-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-b border-stone-200 px-5 py-3 flex items-center justify-between">
-        <img src="https://bodyrecode.au/logo-black.png" width="100" alt="Body Recode" style={{ display: 'block' }} />
+        <img src={logoUrl()} width="100" alt="Body Recode" style={{ display: 'block' }} />
         <p className="text-[11px] font-medium text-stone-600">{sectionIndex + 1} / {sections.length}</p>
       </div>
 

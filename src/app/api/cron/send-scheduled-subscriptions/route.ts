@@ -6,6 +6,7 @@ import { fromCoach, darkEmailShell } from '@/lib/email-shell'
 import { getCoachingPackage } from '@/lib/coaching-packages'
 import { logClientCommunication } from '@/lib/client-communications'
 import { createSubscriptionCheckoutForClient } from '@/lib/subscription-checkout'
+import { logoUrl } from '@/config/tenant'
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
@@ -63,7 +64,7 @@ export async function GET(request: NextRequest) {
         subject,
         html: darkEmailShell(`
       <div style="margin-bottom:40px;">
-        <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;border:0;" />
+        <img src="${logoUrl()}" width="130" alt="Body Recode" style="display:block;border:0;" />
       </div>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Here is your weekly subscription link for Body Recode Performance Coaching.</p>

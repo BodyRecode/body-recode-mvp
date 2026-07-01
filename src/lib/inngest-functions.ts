@@ -25,6 +25,7 @@ import {
   buildBlueprintWeek7FollowupEmail,
 } from './blueprint-emails'
 import { fromCoach, fromBrand } from '@/lib/email-shell'
+import { logoUrl } from '@/config/tenant'
 import {
   buildMembershipCheckinPromptEmail,
   buildMembershipCheckinReminderEmail,
@@ -367,7 +368,7 @@ async function executeAction(
         <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
           <tr>
             <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-              <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
+              <img src="${logoUrl()}" width="130" alt="Body Recode" style="display:block;" />
             </td>
           </tr>
           <tr>
@@ -406,7 +407,7 @@ async function executeAction(
         to: 'kade@bodyrecode.au',
         subject: `Automation: ${interpolate(config.message ?? 'Action triggered', templateVars)}`,
         html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
-          <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
+          <img src="${logoUrl()}" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
           <p style="font-size:16px;color:#fff;font-weight:600;">${interpolate(config.message ?? '', templateVars)}</p>
           ${contact ? `<p style="color:#aaa;">Contact: ${contact.name} (${contact.email ?? 'no email'})</p>` : ''}
         </div>`,

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { logoUrl } from '@/config/tenant'
 
 const SIGNALS = [
   { name: 'Hunger', interpretation: 'If your hunger feels more predictable this week, that is your blood sugar stabilising. Your meals are arriving at consistent intervals and your body is learning to trust the rhythm.' },
@@ -95,7 +96,7 @@ export default async function Day5Page({ params }: { params: Promise<{ token: st
       {/* Header */}
       <div style={{ borderBottom: '1px solid #E5E5E5', padding: '18px 24px', background: '#FFFFFF' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <img src="https://bodyrecode.au/logo-black.png" width="160" alt="Body Recode" style={{ display: 'block' }} />
+          <img src={logoUrl()} width="160" alt="Body Recode" style={{ display: 'block' }} />
           <Link href={`/challenge/${token}`} style={{ fontSize: '13px', color: '#1B6DFC', textDecoration: 'none', fontWeight: 500 }}>
             Back to portal
           </Link>

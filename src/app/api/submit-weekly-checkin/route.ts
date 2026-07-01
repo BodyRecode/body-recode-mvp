@@ -9,6 +9,7 @@ import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { writeRecoverySignalBlock, evaluateRouterAfterCheckin } from '@/lib/recovery-ingest'
 import { appUrl } from '@/lib/app-url'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import { logoUrl } from '@/config/tenant'
 
 export const maxDuration = 300
 
@@ -158,7 +159,7 @@ async function sendNotifications(
       subject: `Week ${weekNumber} check-in received`,
       html: darkEmailShell(`
       <div style="margin-bottom:40px;">
-        <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;border:0;" />
+        <img src="${logoUrl()}" width="130" alt="Body Recode" style="display:block;border:0;" />
       </div>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Your Week ${weekNumber} check-in has been received. I'll review it and it'll inform your coaching this week.</p>

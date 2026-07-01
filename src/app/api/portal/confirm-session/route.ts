@@ -5,6 +5,7 @@ import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { appUrl } from '@/lib/app-url'
 import { fromBrand } from '@/lib/email-shell'
+import { logoUrl } from '@/config/tenant'
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl
@@ -96,7 +97,7 @@ function confirmPage(message: string, success: boolean): string {
 </head>
 <body style="margin:0;padding:0;background:#FFFFFF;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;">
   <div style="max-width:440px;margin:0 auto;padding:48px 24px;text-align:center;">
-    <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style="display:block;margin:0 auto 40px;"/>
+    <img src="${logoUrl()}" width="110" alt="Body Recode" style="display:block;margin:0 auto 40px;"/>
     <div style="width:56px;height:56px;border-radius:50%;background:${success ? '#B5CFFC' : '#1c1010'};display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
       <span style="font-size:24px;">${success ? '✓' : '✗'}</span>
     </div>

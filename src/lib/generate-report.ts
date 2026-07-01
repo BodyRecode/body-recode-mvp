@@ -1,6 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { SLS_BLOCKS, RPS_BLOCKS, RILS_BLOCKS, FIXED_SECTIONS, selectBlocks } from './report-blocks'
 import { darkEmailSignature } from './email-signature'
+import { logoUrl } from '@/config/tenant'
 import {
   darkEmailShell, emailUrlFallback,
   emailLogo, emailEyebrow, emailHeading, emailDivider, emailCta,
@@ -152,7 +153,7 @@ export async function buildReportEmail(
           <!-- Header -->
           <tr>
             <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:32px 40px 28px;border-bottom:1px solid #E5E5E5;">
-              <img src="https://bodyrecode.au/logo-black.png" width="150" alt="Body Recode" style="display:block;margin-bottom:20px;" />
+              <img src="${logoUrl()}" width="150" alt="Body Recode" style="display:block;margin-bottom:20px;" />
               <p style="margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#1B6DFC;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Performance Check-In Report</p>
               <p style="margin:0;font-size:24px;font-weight:800;letter-spacing:-0.025em;color:#1A1A1A;line-height:1.2;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Prepared for ${firstName}.</p>
             </td>

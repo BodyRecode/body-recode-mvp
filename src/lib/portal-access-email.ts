@@ -3,6 +3,7 @@ import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { fromCoach, darkEmailShell } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
+import { logoUrl } from '@/config/tenant'
 
 interface PortalAccessClient {
   id: string
@@ -57,7 +58,7 @@ export async function sendPortalAccessEmail({
     subject,
     html: darkEmailShell(`
       <div style="margin-bottom:40px;">
-        <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;border:0;" />
+        <img src="${logoUrl()}" width="130" alt="Body Recode" style="display:block;border:0;" />
       </div>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Your portal is open. Four steps to complete before we start coaching:</p>

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { fromBrand } from '@/lib/email-shell'
+import { logoUrl } from '@/config/tenant'
 
 type Tier = 'green' | 'yellow' | 'red'
 type StatusCounts = Record<string, number>
@@ -181,7 +182,7 @@ export async function GET(request: NextRequest) {
         <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:560px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
           <tr>
             <td style="padding:28px 32px;border-bottom:1px solid #E5E5E5;">
-              <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style="display:block;" />
+              <img src="${logoUrl()}" width="110" alt="Body Recode" style="display:block;" />
             </td>
           </tr>
           <tr>

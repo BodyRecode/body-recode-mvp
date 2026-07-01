@@ -6,6 +6,7 @@ import { logLeadEvent } from '@/lib/log-lead-event'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { appUrl } from '@/lib/app-url'
 import { fromCoach, fromBrand } from '@/lib/email-shell'
+import { logoUrl } from '@/config/tenant'
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
@@ -81,7 +82,7 @@ export async function POST(request: NextRequest) {
       <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
         <tr>
           <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-            <img src="https://bodyrecode.au/logo-black.png" width="110" alt="Body Recode" style="display:block;"/>
+            <img src="${logoUrl()}" width="110" alt="Body Recode" style="display:block;"/>
           </td>
         </tr>
         <tr>
@@ -128,7 +129,7 @@ export async function POST(request: NextRequest) {
       <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
         <tr>
           <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-            <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;"/>
+            <img src="${logoUrl()}" width="130" alt="Body Recode" style="display:block;"/>
           </td>
         </tr>
         <tr>

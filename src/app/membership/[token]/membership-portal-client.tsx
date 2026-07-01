@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { CoachingAscensionCTA } from '@/components/coaching-ascension-cta'
+import { logoUrl } from '@/config/tenant'
 
 type MemberEnrollment = {
   id: string
@@ -1136,7 +1137,7 @@ export default function MembershipPortalClient({
       {/* Header */}
       <div style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E5E5', padding: '16px 24px' }}>
         <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <img src="https://bodyrecode.au/logo-black.png" width={140} alt="Body Recode" />
+          <img src={logoUrl()} width={140} alt="Body Recode" />
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A' }}>{enrollment.first_name}</div>
             <div style={{ fontSize: 12, color: config.colour, fontWeight: 600 }}>Membership - Block {block}</div>

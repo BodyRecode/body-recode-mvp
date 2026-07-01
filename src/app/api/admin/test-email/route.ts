@@ -5,6 +5,7 @@ import { darkEmailSignature } from '@/lib/email-signature'
 import { buildPortalOrientationEmail } from '@/lib/portal-orientation-email'
 import { appUrl } from '@/lib/app-url'
 import { fromCoach } from '@/lib/email-shell'
+import { logoUrl } from '@/config/tenant'
 
 const SAMPLE_ANSWERS: Record<string, number> = {
   effort_vs_result: 2,
@@ -45,7 +46,7 @@ export async function POST(request: NextRequest) {
         <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:580px;background-color:#FFFFFF;border-radius:16px 16px 0 0;border:1px solid #E5E5E5;border-bottom:none;overflow:hidden;">
           <tr>
             <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:32px 40px 28px;border-bottom:1px solid #E5E5E5;">
-              <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
+              <img src="${logoUrl()}" width="130" alt="Body Recode" style="display:block;" />
             </td>
           </tr>
           <tr>

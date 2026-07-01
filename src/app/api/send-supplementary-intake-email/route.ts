@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { fromCoach, darkEmailShell, emailUrlFallback, COACH_BCC } from '@/lib/email-shell'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { logClientCommunication } from '@/lib/client-communications'
+import { logoUrl } from '@/config/tenant'
 
 /**
  * Sends the supplementary intake reminder email.
@@ -80,7 +81,7 @@ export async function POST(request: NextRequest) {
     subject,
     html: darkEmailShell(`
       <div style="margin-bottom:40px;">
-        <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;border:0;" />
+        <img src="${logoUrl()}" width="130" alt="Body Recode" style="display:block;border:0;" />
       </div>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Since you completed your original intake I've added five short follow-up questions covering medications and dietary context. They feed straight into your Foundational Reading and program, so the next iteration is built on the most accurate picture of where you actually are.</p>

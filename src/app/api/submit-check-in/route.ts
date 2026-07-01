@@ -7,6 +7,7 @@ import { logLeadEvent } from '@/lib/log-lead-event'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { appUrl } from '@/lib/app-url'
 import { fromCoach } from '@/lib/email-shell'
+import { logoUrl } from '@/config/tenant'
 
 export const maxDuration = 300
 
@@ -115,7 +116,7 @@ export async function POST(request: NextRequest) {
 
           <tr>
             <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px 24px;border-bottom:1px solid #E5E5E5;">
-              <img src="https://bodyrecode.au/logo-black.png" width="120" alt="Body Recode" style="display:block;margin-bottom:20px;" />
+              <img src="${logoUrl()}" width="120" alt="Body Recode" style="display:block;margin-bottom:20px;" />
               <p style="margin:0 0 6px;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#555;">New Check-In</p>
               <h1 style="margin:0;font-size:22px;font-weight:700;color:#1A1A1A;">${name}</h1>
             </td>
@@ -187,7 +188,7 @@ export async function POST(request: NextRequest) {
           <!-- Header -->
           <tr>
             <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:32px 40px 28px;border-bottom:1px solid #E5E5E5;">
-              <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;" />
+              <img src="${logoUrl()}" width="130" alt="Body Recode" style="display:block;" />
             </td>
           </tr>
 

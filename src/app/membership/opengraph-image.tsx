@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og'
-import { coach } from '@/config/tenant'
+import { coach, logoUrl } from '@/config/tenant'
 
 export const runtime = 'edge'
 export const alt = "You do the work. The results come. They never last. The Body Recode Membership is the infrastructure for the long arc. $49/week."
@@ -45,7 +45,7 @@ export default async function Image() {
           }}
         >
           <img
-            src="https://bodyrecode.au/logo-black.png"
+            src={logoUrl()}
             width={200}
             alt="Body Recode"
             style={{ display: 'block' }}

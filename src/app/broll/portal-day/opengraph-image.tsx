@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og'
+import { logoUrl } from '@/config/tenant'
 
 export const runtime = 'edge'
 export const alt = 'B-Roll Canvas: Portal Day-in-the-Life. Production utility page for the Body Decode Challenge explainer video.'
@@ -43,7 +44,7 @@ export default async function Image() {
           }}
         >
           <img
-            src="https://bodyrecode.au/logo-black.png"
+            src={logoUrl()}
             width={200}
             alt="Body Recode"
             style={{ display: 'block' }}

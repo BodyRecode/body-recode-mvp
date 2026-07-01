@@ -3,6 +3,7 @@ import { emailUrlFallback } from './email-shell'
 import fs from 'node:fs'
 import path from 'node:path'
 import { appUrl } from '@/lib/app-url'
+import { logoUrl } from '@/config/tenant'
 
 export interface PortalOrientationEmailParams {
   firstName: string
@@ -61,7 +62,7 @@ export function buildPortalOrientationEmail({
         <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:600px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
           <tr>
             <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-              <img src="https://bodyrecode.au/logo-black.png" width="140" alt="Body Recode" style="display:block;" />
+              <img src="${logoUrl()}" width="140" alt="Body Recode" style="display:block;" />
             </td>
           </tr>
           <tr>

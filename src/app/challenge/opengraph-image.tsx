@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og'
-import { coach } from '@/config/tenant'
+import { coach, logoUrl } from '@/config/tenant'
 
 export const runtime = 'edge'
 export const alt = "You're training. You're eating clean. The fat won't move. The 14-Day Body Decode reads your body first. Free."
@@ -45,7 +45,7 @@ export default async function Image() {
           }}
         >
           <img
-            src="https://bodyrecode.au/logo-black.png"
+            src={logoUrl()}
             width={200}
             alt="Body Recode"
             style={{ display: 'block' }}

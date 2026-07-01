@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Dumbbell, Salad, Video, Users, Library, LineChart, BarChart3, FileText } from 'lucide-react'
 import { isProductLive } from '@/lib/product-launch'
 import { WaitlistCTA } from '@/components/product-waitlist-cta'
-import { coach } from '@/config/tenant'
+import { coach, logoUrl } from '@/config/tenant'
 
 function CheckoutForm({ position, teal, darkBg }: { position: string; teal?: boolean; darkBg?: boolean }) {
   // Pre-launch: capture waitlist instead of Stripe checkout until NEXT_PUBLIC_MEMBERSHIP_LIVE=true.
@@ -213,7 +213,7 @@ export default function MembershipPage() {
       {/* Nav */}
       <div style={{ padding: '20px 24px' }}>
         <div style={{ maxWidth: '680px', margin: '0 auto' }}>
-          <img src="https://bodyrecode.au/logo-black.png" width="160" alt="Body Recode" style={{ display: 'block' }} />
+          <img src={logoUrl()} width="160" alt="Body Recode" style={{ display: 'block' }} />
         </div>
       </div>
 

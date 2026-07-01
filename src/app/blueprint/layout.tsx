@@ -1,21 +1,25 @@
 import type { Metadata } from 'next'
+import { brand, products } from '@/config/tenant'
+
+const t = brand()
+const p = products()
+const title = `The 6-Week Body Rewire. $${p.blueprintPrice}.`
+const shortDesc = 'Knowing your pattern is not correcting it. The 6-Week Body Rewire is focused corrective work built specifically for your pattern.'
 
 export const metadata: Metadata = {
-  title: "The 6-Week Body Rewire. $97.",
-  description: "Knowing your pattern is not correcting it. The 6-Week Body Rewire is focused corrective work built specifically for your pattern. Training calibrated. Nutrition timed. Weekly coaching written for your pattern. By Week 6 the pattern is corrected and your body is ready to compound. $97 AUD.",
+  title,
+  description: `${shortDesc} Training calibrated. Nutrition timed. Weekly coaching written for your pattern. By Week 6 the pattern is corrected and your body is ready to compound. $${p.blueprintPrice} AUD.`,
   openGraph: {
-    title: "The 6-Week Body Rewire. $97.",
-    description: "Knowing your pattern is not correcting it. The 6-Week Body Rewire is focused corrective work built specifically for your pattern.",
-    url: 'https://bodyrecode.au/blueprint',
-    siteName: 'Body Recode',
+    title,
+    description: shortDesc,
+    url: `${t.marketingDomain}/blueprint`,
+    siteName: t.name,
     type: 'website',
-    // og image auto-generated from opengraph-image.tsx in this folder
   },
   twitter: {
     card: 'summary_large_image',
-    title: "The 6-Week Body Rewire. $97.",
-    description: "Knowing your pattern is not correcting it. The 6-Week Body Rewire is focused corrective work built specifically for your pattern.",
-    // twitter image auto-generated from opengraph-image.tsx in this folder
+    title,
+    description: shortDesc,
   },
 }
 

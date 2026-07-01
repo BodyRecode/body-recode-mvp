@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { fromCoach, darkEmailShell } from '@/lib/email-shell'
+import { logoUrl } from '@/config/tenant'
 
 export async function POST(
   request: NextRequest,
@@ -46,7 +47,7 @@ export async function POST(
     to: lead.email,
     subject,
     html: darkEmailShell(`
-      <img src="https://bodyrecode.au/logo-black.png" width="130" alt="Body Recode" style="display:block;margin-bottom:40px;border:0;"/>
+      <img src="${logoUrl()}" width="130" alt="Body Recode" style="display:block;margin-bottom:40px;border:0;"/>
       <div style="font-size:15px;color:#4A4A4A;line-height:1.9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
         ${message.replace(/\n/g, '<br/>')}
       </div>

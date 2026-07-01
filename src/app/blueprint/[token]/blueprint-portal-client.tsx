@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { logoUrl } from '@/config/tenant'
 
 type Enrollment = {
   id: string
@@ -237,7 +238,7 @@ function PatternAssessment({ onComplete, token }: PatternAssessmentProps) {
   return (
     <div style={{ minHeight: '100vh', background: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 24px' }}>
       <div style={{ maxWidth: 560, width: '100%' }}>
-        <img src="https://bodyrecode.au/logo-black.png" width={110} alt="Body Recode" style={{ display: 'block', marginBottom: 40 }} />
+        <img src={logoUrl()} width={110} alt="Body Recode" style={{ display: 'block', marginBottom: 40 }} />
         <h1 style={{ fontSize: 24, fontWeight: 700, color: '#1A1A1A', margin: '0 0 12px', fontFamily: 'system-ui, sans-serif' }}>
           One last step before your portal opens
         </h1>
@@ -1456,7 +1457,7 @@ export default function BlueprintPortalClient({
 
       {/* Top bar */}
       <div style={{ borderBottom: '1px solid #E5E5E5', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <img src="https://bodyrecode.au/logo-black.png" width={140} alt="Body Recode" />
+        <img src={logoUrl()} width={140} alt="Body Recode" />
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div style={{ width: 8, height: 8, borderRadius: '50%', background: config.colour }} />
           <span style={{ fontSize: 13, color: '#6B6B6B', fontWeight: 600 }}>{config.label}</span>
