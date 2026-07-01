@@ -392,34 +392,62 @@ function renderInstructionsWithLinks(text: string): React.ReactNode[] {
   return nodes
 }
 
-// RunbookLink - clickable open + copy-path button.
-// Browsers block file:// from https:// origins for security, so the open link
-// usually only works in Safari (which is more permissive). Copy-path button
-// is the reliable fallback: paste into Finder ⌘+Shift+G to jump to the file.
+// RunbookLink - opens local PDF via server-side `open` command on localhost.
+// Browsers block file:// links from http:// origins for security, so the
+// only reliable way to open a local file from a web page is to spawn the
+// OS handler server-side. See /api/dev/open-file (POST-only, localhost-only,
+// path-whitelisted).
 function RunbookLink({ label, path }: { label: string; path: string }) {
-  const [copied, setCopied] = useState(false)
+  const [status, setStatus] = useState<'idle' | 'opening' | 'opened' | 'copied' | 'error'>('idle')
+
+  async function open() {
+    setStatus('opening')
+    try {
+      const res = await fetch('/api/dev/open-file', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path }),
+      })
+      if (res.ok) {
+        setStatus('opened')
+        setTimeout(() => setStatus('idle'), 2000)
+      } else {
+        setStatus('error')
+        setTimeout(() => setStatus('idle'), 3000)
+      }
+    } catch {
+      setStatus('error')
+      setTimeout(() => setStatus('idle'), 3000)
+    }
+  }
+
   async function copy() {
     try {
       await navigator.clipboard.writeText(path)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
+      setStatus('copied')
+      setTimeout(() => setStatus('idle'), 2000)
     } catch {
-      // navigator.clipboard fails in some contexts; user falls back to right-click
+      // navigator.clipboard fails in some contexts
     }
   }
+
+  const labelText =
+    status === 'opening' ? 'Opening…' :
+    status === 'opened' ? '✓ Opened' :
+    status === 'error' ? '× Failed - try Copy path' :
+    label
+
   return (
     <div className="flex items-center gap-2 text-xs">
-      <a
-        href={`file://${path}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-blue-600 hover:text-blue-700 underline font-medium"
-        title="Click to open in new tab (works in Safari; if it does nothing, use the Copy button instead)"
+      <button
+        onClick={open}
+        className="text-blue-600 hover:text-blue-700 underline font-medium text-left"
+        title="Click to open the PDF in Preview"
       >
-        {label}
-      </a>
-      <button onClick={copy} className={`text-[10px] font-semibold px-2 py-0.5 rounded border transition-colors ${copied ? 'bg-green-50 text-green-700 border-green-300' : 'bg-stone-100 text-stone-600 border-stone-300 hover:bg-stone-200'}`}>
-        {copied ? '✓ Copied path' : 'Copy path'}
+        {labelText}
+      </button>
+      <button onClick={copy} className={`text-[10px] font-semibold px-2 py-0.5 rounded border transition-colors ${status === 'copied' ? 'bg-green-50 text-green-700 border-green-300' : 'bg-stone-100 text-stone-600 border-stone-300 hover:bg-stone-200'}`}>
+        {status === 'copied' ? '✓ Copied path' : 'Copy path'}
       </button>
     </div>
   )
