@@ -66,6 +66,14 @@ export type TenantConfig = {
     poweredBy: boolean              // false = own brand; true = "Powered by Body Recode"
     version: string                 // config version for change tracking
   }
+
+  /** Modality — third configurability axis (see POWERED_PLATFORM_BUILD_PLAN §7) */
+  modality: {
+    id: 'strength' | 'yoga'         // extend as new modality packs land
+    label: string                   // display label
+    /** doctrine mode: 'A' = tenant runs BR doctrine branded; 'B' = injected method (post-Founding-Ten) */
+    doctrineMode: 'A' | 'B'
+  }
 }
 
 /**
@@ -116,6 +124,11 @@ const BODY_RECODE_TENANT: TenantConfig = {
     tenantId: 'body-recode',
     poweredBy: false,
     version: '2026-07-01',
+  },
+  modality: {
+    id: 'strength',
+    label: 'Strength',
+    doctrineMode: 'A',
   },
 }
 
