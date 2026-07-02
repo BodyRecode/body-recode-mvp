@@ -655,7 +655,7 @@ Book here: ${brand().marketingDomain}/book
 
 Want the written breakdown first? The Body Decode Report ($37) covers what your {{scorecard_state}} result means biologically, what is actively working against you right now, and what needs to change first.
 
-Get your report here: https://bodyrecode.au/get-report
+Get your report here: ${brand().marketingDomain}/get-report
 
 Kade
 Body Recode`,
@@ -728,7 +728,7 @@ Book here: ${brand().marketingDomain}/book
 
 If you would rather start with the written read of your state instead, the {{scorecard_state}} Field Guide is $19. 25 pages. What this state means, why standard moves are not landing, the first four moves to bring the load down. Instant delivery to your inbox.
 
-Get the {{scorecard_state}} Field Guide: https://bodyrecode.au/field-guide/{{scorecard_state}}?email={{email}}&source=email_descension_day8
+Get the {{scorecard_state}} Field Guide: ${brand().marketingDomain}/field-guide/{{scorecard_state}}?email={{email}}&source=email_descension_day8
 
 Kade
 Body Recode`,
@@ -748,8 +748,8 @@ Your scorecard result is still there whenever you want to act on it. The call is
 No follow-up after this.
 
 Book a call: ${brand().marketingDomain}/book
-Get the report + bundled Field Guide: https://bodyrecode.au/get-report
-Or just the Field Guide ($19): https://bodyrecode.au/field-guide/{{scorecard_state}}?email={{email}}&source=email_descension_day13
+Get the report + bundled Field Guide: ${brand().marketingDomain}/get-report
+Or just the Field Guide ($19): ${brand().marketingDomain}/field-guide/{{scorecard_state}}?email={{email}}&source=email_descension_day13
 
 Kade
 Body Recode`,

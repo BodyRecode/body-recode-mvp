@@ -44,7 +44,7 @@ $37. Delivered in 5 minutes. Yours to keep.
 
 Get your report: ${brand().marketingDomain}/get-report
 
-If you would rather talk it through first, you can book a free 15-minute strategy call: https://bodyrecode.au/book
+If you would rather talk it through first, you can book a free 15-minute strategy call: ${brand().marketingDomain}/book
 
 Kade
 Body Recode`,
@@ -90,7 +90,7 @@ Knowing your state is the first piece. Knowing what to do about it is the second
 
 Book here: ${brand().marketingDomain}/book
 
-If you would rather have the breakdown in writing first, the report is at https://bodyrecode.au/get-report.
+If you would rather have the breakdown in writing first, the report is at ${brand().marketingDomain}/get-report.
 
 Kade
 Body Recode`,
@@ -133,7 +133,7 @@ Your scorecard result is still there whenever you want to act on it. Two doors b
 2. Free 15-minute call. Best if you would rather talk it through first.
 
 Get the report: ${brand().marketingDomain}/get-report
-Book the call: https://bodyrecode.au/book
+Book the call: ${brand().marketingDomain}/book
 
 No follow-up after this.
 
