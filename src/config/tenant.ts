@@ -135,17 +135,65 @@ const BODY_RECODE_TENANT: TenantConfig = {
 }
 
 /**
- * Get the active tenant config. Currently returns the Body Recode tenant.
+ * Get the active tenant config.
  *
- * When multi-tenancy is wired (post-launch Wk 3-4), this will:
- * - Read tenant_id from the request context (subdomain, JWT, header)
- * - Look up the tenant row in Supabase
- * - Return the parsed TenantConfig
+ * Behavior:
+ *   - NEXT_PUBLIC_TENANT_DB_ENABLED != 'true' (default): returns BODY_RECODE_TENANT
+ *     (Phase 1 in-code config, unchanged from before Phase 2 wiring).
+ *   - NEXT_PUBLIC_TENANT_DB_ENABLED == 'true': returns cached DB config if warm,
+ *     else returns BODY_RECODE_TENANT as safe fallback.
  *
- * For now: always returns BODY_RECODE_TENANT.
+ * Must be synchronous — 260+ consumers expect sync access. Cache warming
+ * happens via prefetchTenant() called from root layout server component.
+ * If cache is cold on first request, returns hardcoded default. This is
+ * safe for BR (DB row = hardcoded values) but tenant-inaccurate for first
+ * request from a non-BR tenant. Second request onwards is correct.
  */
 export function getTenant(): TenantConfig {
+  if (process.env.NEXT_PUBLIC_TENANT_DB_ENABLED === 'true') {
+    if (cachedTenant && cachedTenant.expiresAt > Date.now()) {
+      return cachedTenant.config
+    }
+  }
   return BODY_RECODE_TENANT
+}
+
+// ─── Cache machinery for DB-backed getTenant() ───────────────────────────
+// Module-level cache: 5 min TTL per Vercel function instance. Populated by
+// prefetchTenant() which is called from the root layout server component
+// (so it runs once per SSR request, before any getTenant() call fires).
+
+let cachedTenant: { config: TenantConfig; expiresAt: number } | null = null
+const TENANT_CACHE_TTL_MS = 5 * 60 * 1000
+
+/**
+ * Prefetch and cache the tenant config from the DB. No-op if:
+ *   - Feature flag NEXT_PUBLIC_TENANT_DB_ENABLED is not 'true'
+ *   - Cache is still warm (within TTL)
+ *   - DB lookup fails (silent — falls back to in-code default at read time)
+ *
+ * Call once per SSR request from a server component (typically root layout).
+ * Safe to call multiple times; only fetches when cache is cold.
+ */
+export async function prefetchTenant(tenantId: string): Promise<void> {
+  if (process.env.NEXT_PUBLIC_TENANT_DB_ENABLED !== 'true') return
+  if (cachedTenant && cachedTenant.expiresAt > Date.now() && cachedTenant.config.licence.tenantId === tenantId) return
+
+  try {
+    // Dynamic import to avoid pulling the resolver into every consumer
+    const { loadTenantFromDb } = await import('@/lib/tenant-resolver')
+    const loaded = await loadTenantFromDb(tenantId)
+    if (loaded) {
+      cachedTenant = { config: loaded, expiresAt: Date.now() + TENANT_CACHE_TTL_MS }
+    }
+  } catch {
+    // Never let a DB blip crash rendering. getTenant() falls back to in-code.
+  }
+}
+
+/** Test helper: clear the module-level cache. */
+export function _resetTenantCache(): void {
+  cachedTenant = null
 }
 
 /** Convenience helper: get a brand field */

@@ -1,6 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { resolveTenantIdFromHost } from '@/lib/tenant-resolver'
 
 const APEX_HOST = 'bodyrecode.au'
 const WWW_HOST = 'www.bodyrecode.au'
@@ -18,6 +19,15 @@ const SKIP_AUTH_REFRESH_API = [
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const host = (request.headers.get('host') || '').toLowerCase().split(':')[0]
+
+  /* ----------------------------------------------------------------
+   * 0. Resolve tenant from host. Sets x-tenant-id request header for
+   *    downstream getTenant() lookups. Always safe — resolver returns
+   *    'body-recode' for BR domains and unknown hosts.
+   * ---------------------------------------------------------------- */
+  const tenantId = resolveTenantIdFromHost(host)
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set('x-tenant-id', tenantId)
 
   /* ----------------------------------------------------------------
    * 1. www.bodyrecode.au → apex (production only)
@@ -54,10 +64,10 @@ export async function middleware(request: NextRequest) {
     (isApi && !isSkippedApi)
 
   if (!needsAuthRefresh) {
-    return NextResponse.next()
+    return NextResponse.next({ request: { headers: requestHeaders } })
   }
 
-  let response = NextResponse.next({ request })
+  let response = NextResponse.next({ request: { headers: requestHeaders } })
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
