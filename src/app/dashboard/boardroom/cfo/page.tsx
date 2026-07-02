@@ -1,11 +1,21 @@
 import { PageHeader } from '@/components/dashboard/ui'
 import Link from 'next/link'
+import { Suspense } from 'react'
 import { getCfoSnapshot } from '@/lib/cfo-metrics'
 import { products } from '@/config/tenant'
+import { BriefingCards } from '../briefing-cards'
 
 export const metadata = { title: 'CFO · Boardroom' }
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
+
+function BriefingSkeleton({ persona }: { persona: string }) {
+  return (
+    <div className="mb-8 p-4 rounded-xl border border-stone-200 bg-stone-50 text-[13px] text-stone-500 leading-relaxed">
+      <strong className="text-stone-900">{persona}</strong> is drafting the briefing…
+    </div>
+  )
+}
 
 export default async function CfoPage() {
   const snap = await getCfoSnapshot()
@@ -16,8 +26,12 @@ export default async function CfoPage() {
       <PageHeader
         eyebrow="Boardroom · CFO"
         title="Financial officer view"
-        subtitle="MRR, revenue, refunds, churn, and unit economics. Weekly ritual: Fri 4pm close. Named persona (Sarah) + AI advisor ships in Phase 2."
+        subtitle="MRR, revenue, refunds, churn, and unit economics. Weekly ritual: Fri 4pm close."
       />
+
+      <Suspense fallback={<BriefingSkeleton persona="Sarah" />}>
+        <BriefingCards role="cfo" contextJson={JSON.stringify({ snapshot: snap, products: p })} />
+      </Suspense>
 
       <div className="mb-6 flex items-center gap-3">
         <span className="text-[9px] font-bold uppercase tracking-widest bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Live data</span>
@@ -100,10 +114,6 @@ export default async function CfoPage() {
         <p className="text-[12px] text-stone-500 mt-3 leading-relaxed">
           These are the current tenant pricing values. Change via <Link href="/dashboard/settings/tenant" className="text-blue-600 hover:text-blue-700 underline">/dashboard/settings/tenant → Product wrapping</Link>.
         </p>
-      </div>
-
-      <div className="mb-8 p-4 rounded-xl border border-blue-200 bg-blue-50 text-[13px] text-blue-900 leading-relaxed">
-        <strong>Phase 2 (Wk 3-4 post-launch):</strong> Ask Sarah panel opens on the right — grounded advisory queries like &quot;should I raise prices?&quot; run against real churn/LTV/CAC. Task queue: &quot;3 subs renew this week — expected revenue $X, all green.&quot; Named persona voice: warm, patient, cash-first.
       </div>
 
       <Link href="/dashboard/boardroom" className="text-[12px] text-blue-600 hover:text-blue-700 underline">

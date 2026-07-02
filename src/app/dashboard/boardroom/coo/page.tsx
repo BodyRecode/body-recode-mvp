@@ -1,10 +1,20 @@
 import { PageHeader } from '@/components/dashboard/ui'
 import Link from 'next/link'
+import { Suspense } from 'react'
 import { getCooSnapshot } from '@/lib/coo-metrics'
+import { BriefingCards } from '../briefing-cards'
 
 export const metadata = { title: 'COO · Boardroom' }
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
+
+function BriefingSkeleton({ persona }: { persona: string }) {
+  return (
+    <div className="mb-8 p-4 rounded-xl border border-stone-200 bg-stone-50 text-[13px] text-stone-500 leading-relaxed">
+      <strong className="text-stone-900">{persona}</strong> is drafting the briefing…
+    </div>
+  )
+}
 
 export default async function CooPage() {
   const snap = await getCooSnapshot()
@@ -14,8 +24,12 @@ export default async function CooPage() {
       <PageHeader
         eyebrow="Boardroom · COO"
         title="Operations officer view"
-        subtitle="Capacity, service delivery, reading queues, onboarding pipeline. Weekly ritual: Thu 3pm review. Named persona (James) + AI advisor ships Wk 8+ post-launch."
+        subtitle="Capacity, service delivery, reading queues, onboarding pipeline. Weekly ritual: Thu 3pm review."
       />
+
+      <Suspense fallback={<BriefingSkeleton persona="James" />}>
+        <BriefingCards role="coo" contextJson={JSON.stringify({ snapshot: snap })} />
+      </Suspense>
 
       <div className="mb-6 flex items-center gap-3">
         <span className="text-[9px] font-bold uppercase tracking-widest bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Live data</span>
@@ -166,10 +180,6 @@ export default async function CooPage() {
         <Link href="/dashboard/feedback" className="text-blue-600 hover:text-blue-700 underline font-semibold">
           → Feedback triage
         </Link>
-      </div>
-
-      <div className="mb-8 p-4 rounded-xl border border-blue-200 bg-blue-50 text-[13px] text-blue-900 leading-relaxed">
-        <strong>Phase 2 (Wk 8+ post-launch):</strong> Ask James panel — grounded advisory: &quot;review my ops SOPs and suggest gaps.&quot; Task queue: &quot;Coaching intake queue at 12/15 — hold new leads?&quot; Named persona voice: systems thinker, ops-obsessive.
       </div>
 
       <Link href="/dashboard/boardroom" className="text-[12px] text-blue-600 hover:text-blue-700 underline">

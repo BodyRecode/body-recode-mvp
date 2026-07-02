@@ -1,10 +1,20 @@
 import { PageHeader } from '@/components/dashboard/ui'
 import Link from 'next/link'
+import { Suspense } from 'react'
 import { getCmoSnapshot } from '@/lib/cmo-metrics'
+import { BriefingCards } from '../briefing-cards'
 
 export const metadata = { title: 'CMO · Boardroom' }
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
+
+function BriefingSkeleton({ persona }: { persona: string }) {
+  return (
+    <div className="mb-8 p-4 rounded-xl border border-stone-200 bg-stone-50 text-[13px] text-stone-500 leading-relaxed">
+      <strong className="text-stone-900">{persona}</strong> is drafting the briefing…
+    </div>
+  )
+}
 
 export default async function CmoPage() {
   const snap = await getCmoSnapshot()
@@ -14,8 +24,12 @@ export default async function CmoPage() {
       <PageHeader
         eyebrow="Boardroom · CMO"
         title="Marketing officer view"
-        subtitle="Funnel CVR, CPL, wave fill, content pulse. Weekly ritual: Wed 10am review. Named persona (Marcus) + AI advisor ships Wk 5-6 post-launch."
+        subtitle="Funnel CVR, CPL, wave fill, content pulse. Weekly ritual: Wed 10am review."
       />
+
+      <Suspense fallback={<BriefingSkeleton persona="Marcus" />}>
+        <BriefingCards role="cmo" contextJson={JSON.stringify({ snapshot: snap })} />
+      </Suspense>
 
       <div className="mb-6 flex items-center gap-3">
         <span className="text-[9px] font-bold uppercase tracking-widest bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Live data</span>
@@ -150,10 +164,6 @@ export default async function CmoPage() {
           value={snap.contentPosts30d !== null ? String(snap.contentPosts30d) : '—'}
           hint="Full month cadence"
         />
-      </div>
-
-      <div className="mb-8 p-4 rounded-xl border border-blue-200 bg-blue-50 text-[13px] text-blue-900 leading-relaxed">
-        <strong>Phase 2 (Wk 5-6 post-launch):</strong> Ask Marcus panel opens on the right — grounded advisory like &quot;why did Wk 3 CVR drop?&quot; runs against real funnel data. Task queue: &quot;Ad-variant hook02 CVR dropped 40% wk-over-wk — kill or iterate?&quot; Named persona voice: sharp, challenging, brand-obsessed.
       </div>
 
       <Link href="/dashboard/boardroom" className="text-[12px] text-blue-600 hover:text-blue-700 underline">

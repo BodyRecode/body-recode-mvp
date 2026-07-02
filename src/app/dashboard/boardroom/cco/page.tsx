@@ -1,10 +1,20 @@
 import { PageHeader } from '@/components/dashboard/ui'
 import Link from 'next/link'
+import { Suspense } from 'react'
 import { getCcoSnapshot } from '@/lib/cco-metrics'
+import { BriefingCards } from '../briefing-cards'
 
 export const metadata = { title: 'CCO · Boardroom' }
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
+
+function BriefingSkeleton({ persona }: { persona: string }) {
+  return (
+    <div className="mb-8 p-4 rounded-xl border border-stone-200 bg-stone-50 text-[13px] text-stone-500 leading-relaxed">
+      <strong className="text-stone-900">{persona}</strong> is drafting the briefing…
+    </div>
+  )
+}
 
 export default async function CcoPage() {
   const snap = await getCcoSnapshot()
@@ -14,8 +24,12 @@ export default async function CcoPage() {
       <PageHeader
         eyebrow="Boardroom · CCO"
         title="Chief Client Officer view"
-        subtitle="Retention, at-risk signals, feedback triage. Weekly ritual: Tue 11am review. Named persona (Priya) + AI advisor ships Wk 7+ post-launch."
+        subtitle="Retention, at-risk signals, feedback triage. Weekly ritual: Tue 11am review."
       />
+
+      <Suspense fallback={<BriefingSkeleton persona="Priya" />}>
+        <BriefingCards role="cco" contextJson={JSON.stringify({ snapshot: snap })} />
+      </Suspense>
 
       <div className="mb-6 flex items-center gap-3">
         <span className="text-[9px] font-bold uppercase tracking-widest bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Live data</span>
@@ -194,10 +208,6 @@ export default async function CcoPage() {
         <Link href="/dashboard/coaching" className="text-blue-600 hover:text-blue-700 underline font-semibold">
           → Coaching queue
         </Link>
-      </div>
-
-      <div className="mb-8 p-4 rounded-xl border border-blue-200 bg-blue-50 text-[13px] text-blue-900 leading-relaxed">
-        <strong>Phase 2 (Wk 7+ post-launch):</strong> Ask Priya panel — grounded advisory: &quot;which clients need intervention this week?&quot; runs across readiness monitoring + engagement signals. Task queue: &quot;Sarah&apos;s engagement dropped 40% — outreach today?&quot; Named persona voice: empathetic, retention-native.
       </div>
 
       <Link href="/dashboard/boardroom" className="text-[12px] text-blue-600 hover:text-blue-700 underline">
