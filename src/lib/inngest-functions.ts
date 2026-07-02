@@ -112,8 +112,10 @@ export const challengeSequenceFunction = inngest.createFunction(
     // Zoom was retired; the Day 5 deliverable is now the in-portal Week One
     // Progress Session video. The email body + subject + CTA already point at
     // the in-portal session (see buildDay5UnlockEmail). This step just gates
-    // the timing.
+    // the timing. Sleep 4d then realign to next 7am AEST so the email always
+    // lands in the morning regardless of enrollment hour.
     await step.sleep('wait-for-day-5', '4d')
+    await alignToNextMorningAEST(step, 'wait-for-day-5-morning')
 
     await step.run('send-day5-session-unlock', async () => {
       // Check enrollment is still active before sending
@@ -136,7 +138,9 @@ export const challengeSequenceFunction = inngest.createFunction(
     })
 
     // ── Step 2: Wait 9 more days → Day 14 ascension ───────────────────────
+    // Realign to morning after the 9d sleep so Day 14 email lands 7am AEST.
     await step.sleep('wait-for-day-14', '9d')
+    await alignToNextMorningAEST(step, 'wait-for-day-14-morning')
 
     await step.run('send-day14-ascension', async () => {
       const admin = createAdminClient()
@@ -249,20 +253,29 @@ export const challengeSequenceFunction = inngest.createFunction(
  */
 function nextMorningAEST(from: Date): Date {
   // 7am AEST = 21:00 UTC (previous UTC day, since Brisbane is UTC+10)
-  // Find the UTC instant that IS 7am AEST on or after `from`.
   const target = new Date(from)
   target.setUTCHours(21, 0, 0, 0)  // 21:00 UTC = 07:00 AEST next day
-  // If the computed 21:00 UTC is already past → shift forward one day
   if (target <= from) {
     target.setUTCDate(target.getUTCDate() + 1)
   }
-  // Note: setUTCHours(21) computes 21:00 UTC = 7am the NEXT AEST day.
-  // If `from` is e.g. 2026-07-02 05:00 UTC (15:00 AEST Wed), target =
-  // 2026-07-02 21:00 UTC = 07:00 AEST Thu (correct).
-  // If `from` is 2026-07-02 22:00 UTC (08:00 AEST Thu), target would be
-  // 2026-07-02 21:00 UTC (before now) → shifts to 2026-07-03 21:00 UTC
-  // = 07:00 AEST Fri (correct — Thu 7am already passed).
   return target
+}
+
+/**
+ * Inngest helper: after any preceding step.sleep(), sleep further until the
+ * next 7am AEST. Use when a durable workflow wants a "fire at morning after
+ * N days" cadence — a 24h/7d step.sleep drifts to whatever hour the enrollment
+ * happened; this realigns to 7am.
+ *
+ * Wraps the current-time read in step.run() for Inngest determinism (replay
+ * safety). The subsequent step.sleepUntil() waits for the computed anchor.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function alignToNextMorningAEST(step: any, id: string): Promise<void> {
+  const anchorIso = await step.run(`${id}-compute-anchor`, async () =>
+    nextMorningAEST(new Date()).toISOString()
+  )
+  await step.sleepUntil(id, new Date(anchorIso))
 }
 
 export const challengeSmsFunction = inngest.createFunction(
@@ -533,6 +546,7 @@ export const blueprintEmailSequenceFunction = inngest.createFunction(
     for (let week = 1; week <= 6; week++) {
       // Week 1 fires after 1 day, subsequent weeks at 7-day intervals
       await step.sleep(`wait-before-week-${week}-email`, week === 1 ? '1d' : '7d')
+      await alignToNextMorningAEST(step, `wait-before-week-${week}-morning`)
 
       await step.run(`send-week-${week}-email`, async () => {
         const admin = createAdminClient()
@@ -562,8 +576,9 @@ export const blueprintEmailSequenceFunction = inngest.createFunction(
       })
     }
 
-    // Week 7 follow-up (7 days after week 6 email)
+    // Week 7 follow-up (7 days after week 6 email, aligned to 7am AEST)
     await step.sleep('wait-before-week-7-followup', '7d')
+    await alignToNextMorningAEST(step, 'wait-before-week-7-followup-morning')
 
     await step.run('send-week-7-followup', async () => {
       const admin = createAdminClient()
@@ -600,6 +615,7 @@ export const blueprintWeekAdvanceFunction = inngest.createFunction(
 
     for (let week = 2; week <= 6; week++) {
       await step.sleep(`wait-for-week-${week}`, '7d')
+      await alignToNextMorningAEST(step, `wait-for-week-${week}-morning`)
 
       await step.run(`advance-to-week-${week}`, async () => {
         const admin = createAdminClient()
@@ -637,8 +653,9 @@ export const blueprintWeekAdvanceFunction = inngest.createFunction(
         }
       })
 
-      // 2-day reminder if check-in not submitted
+      // 2-day reminder if check-in not submitted (aligned to 7am AEST)
       await step.sleep(`reminder-delay-week-${week}`, '2d')
+      await alignToNextMorningAEST(step, `reminder-delay-week-${week}-morning`)
 
       await step.run(`checkin-reminder-week-${week}`, async () => {
         const admin = createAdminClient()
@@ -734,6 +751,7 @@ export const membershipWeekAdvanceFunction = inngest.createFunction(
     for (const block of BLOCKS) {
       for (let week = (block === 'A' ? 2 : 1); week <= WEEKS_PER_BLOCK; week++) {
         await step.sleep(`wait-block-${block}-week-${week}`, '7d')
+        await alignToNextMorningAEST(step, `wait-block-${block}-week-${week}-morning`)
 
         await step.run(`advance-block-${block}-week-${week}`, async () => {
           const admin = createAdminClient()
@@ -774,8 +792,9 @@ export const membershipWeekAdvanceFunction = inngest.createFunction(
           }
         })
 
-        // 2-day reminder if check-in not submitted
+        // 2-day reminder if check-in not submitted (aligned to 7am AEST)
         await step.sleep(`reminder-delay-block-${block}-week-${week}`, '2d')
+        await alignToNextMorningAEST(step, `reminder-delay-block-${block}-week-${week}-morning`)
 
         await step.run(`checkin-reminder-block-${block}-week-${week}`, async () => {
           const admin = createAdminClient()
@@ -855,6 +874,7 @@ export const extensionWeekAdvanceFunction = inngest.createFunction(
 
     for (let week = 2; week <= 12; week++) {
       await step.sleep(`wait-extension-week-${week}`, '7d')
+      await alignToNextMorningAEST(step, `wait-extension-week-${week}-morning`)
 
       await step.run(`advance-extension-week-${week}`, async () => {
         const admin = createAdminClient()
@@ -1509,6 +1529,7 @@ export const weeklyPatternReportSequenceFunction = inngest.createFunction(
       if (week > 1) {
         // Inngest holds sleeps across the function lifetime; no in-process cost.
         await step.sleep(`wait-week-${week}`, '7d')
+        await alignToNextMorningAEST(step, `wait-week-${week}-morning`)
       }
       await step.run(`deliver-week-${week}`, async () => {
         const admin = createAdminClient()
