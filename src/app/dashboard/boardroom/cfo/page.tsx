@@ -1,36 +1,109 @@
 import { PageHeader } from '@/components/dashboard/ui'
 import Link from 'next/link'
+import { getCfoSnapshot } from '@/lib/cfo-metrics'
+import { products } from '@/config/tenant'
 
 export const metadata = { title: 'CFO · Boardroom' }
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
-export default function CfoPage() {
+export default async function CfoPage() {
+  const snap = await getCfoSnapshot()
+  const p = products()
+
   return (
     <div className="max-w-[1100px]">
       <PageHeader
         eyebrow="Boardroom · CFO"
-        title="Sarah (draft persona)"
-        subtitle="Financial officer view — MRR, cash runway, refund rate, LTV, unit economics, renewals. Weekly ritual: Fri 4pm close."
+        title="Financial officer view"
+        subtitle="MRR, revenue, refunds, churn, and unit economics. Weekly ritual: Fri 4pm close. Named persona (Sarah) + AI advisor ships in Phase 2."
       />
 
-      <div className="mb-6 p-4 rounded-xl border border-amber-200 bg-amber-50 text-[13px] text-amber-900 leading-relaxed">
-        <strong>Phase 1 stub.</strong> This page defines the URL structure + role framing. Real data + Sarah AI advisor land in Phase 2 (Wk 3-4 post-launch per <code className="bg-amber-100 px-1 py-0.5 rounded text-[12px]">2026-07-01_BOARDROOM_ROLE_DASHBOARDS_SPEC.md</code>).
+      <div className="mb-6 flex items-center gap-3">
+        <span className="text-[9px] font-bold uppercase tracking-widest bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Live data</span>
+        <span className="text-[11px] text-stone-500 font-mono">
+          Snapshot at {new Date(snap.computedAt).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane' })} AEST
+        </span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-        <MetricStub label="MRR" hint="Sum of active subscriptions" source="be_payments + client_subscriptions" />
-        <MetricStub label="Cash runway" hint="Manual bank balance input + monthly burn" source="be_bank_balance table (new)" />
-        <MetricStub label="Refund rate (30d)" hint="Refunds / total charges last 30 days" source="Stripe webhook events" />
-        <MetricStub label="LTV : CAC (90d cohort)" hint="Average lifetime revenue vs acquisition cost" source="Enrollments × subscription duration ÷ ad spend" />
+      <h3 className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">Recurring revenue</h3>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <Metric
+          label="MRR"
+          value={formatCurrency(snap.mrr)}
+          hint={`${snap.activeSubscriptions ?? 0} active subscription${snap.activeSubscriptions === 1 ? '' : 's'} normalized to monthly`}
+          tone={snap.mrr && snap.mrr > 0 ? 'green' : 'stone'}
+          large
+        />
+        <Metric
+          label="Weekly recurring"
+          value={formatCurrency(snap.weeklyRecurring)}
+          hint={`Sum of active week-billed subs`}
+        />
+        <Metric
+          label="Monthly recurring (direct)"
+          value={formatCurrency(snap.monthlyRecurring)}
+          hint="Subs billed monthly (not normalized)"
+        />
+      </div>
+
+      <h3 className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">Revenue windows</h3>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <Metric
+          label="Revenue last 30d"
+          value={formatCurrency(snap.revenue30d)}
+          hint={`${snap.paymentCount30d ?? 0} payments captured`}
+          large
+        />
+        <Metric
+          label="Lifetime revenue"
+          value={formatCurrency(snap.revenueLifetime)}
+          hint="All be_payments captured"
+        />
+        <Metric
+          label="Avg revenue / client"
+          value={formatCurrency(snap.averageRevenuePerClient)}
+          hint={`Lifetime revenue / ${snap.activeClients ?? '?'} active clients`}
+        />
+      </div>
+
+      <h3 className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">Risk signals</h3>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <Metric
+          label="Refund rate 30d"
+          value={snap.refundRate30d !== null ? `${snap.refundRate30d.toFixed(1)}%` : '—'}
+          hint={snap.refundedAmount30d !== null ? `${formatCurrency(snap.refundedAmount30d)} refunded of ${formatCurrency(snap.revenue30d)}` : ''}
+          tone={snap.refundRate30d !== null && snap.refundRate30d > 5 ? 'red' : 'green'}
+        />
+        <Metric
+          label="Churned this month"
+          value={snap.churnedThisMonth !== null ? String(snap.churnedThisMonth) : '—'}
+          hint="Subscriptions canceled since start of month"
+          tone={snap.churnedThisMonth !== null && snap.churnedThisMonth > 0 ? 'amber' : 'green'}
+        />
+        <Metric
+          label="Cash runway"
+          value="—"
+          hint="Manual bank balance / monthly burn — needs be_bank_balance table (Phase 2 build)"
+          tone="stone"
+        />
       </div>
 
       <div className="mb-8 bg-white border border-stone-200 rounded-2xl p-5">
-        <h3 className="text-[13px] font-bold text-stone-900 uppercase tracking-widest mb-3">This week&apos;s ritual (Fri 4pm close)</h3>
-        <p className="text-[13px] text-stone-700 leading-relaxed mb-4">
-          Phase 2 will surface a task queue here: <em>&ldquo;3 subscriptions renew this week — expected revenue $147, all green.&rdquo;</em> Ask Sarah panel opens on the right for grounded advisory (&ldquo;should I raise prices?&rdquo; analysed against your churn/LTV/CAC).
+        <h3 className="text-[13px] font-bold text-stone-900 uppercase tracking-widest mb-3">Product config context</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-[13px] font-mono text-stone-700">
+          <div>Report price: <span className="text-stone-900 font-bold">${p.reportPrice}</span></div>
+          <div>Blueprint price: <span className="text-stone-900 font-bold">${p.blueprintPrice}</span></div>
+          <div>Membership: <span className="text-stone-900 font-bold">${p.membershipPrice}/wk</span></div>
+          <div>Coaching commencement: <span className="text-stone-900 font-bold">${p.coachingPackage2xPrice}</span></div>
+        </div>
+        <p className="text-[12px] text-stone-500 mt-3 leading-relaxed">
+          These are the current tenant pricing values. Change via <Link href="/dashboard/settings/tenant" className="text-blue-600 hover:text-blue-700 underline">/dashboard/settings/tenant → Product wrapping</Link>.
         </p>
-        <p className="text-[13px] text-stone-500 leading-relaxed">
-          Persona voice draft: warm, patient, cash-first. Sarah opens meetings with &ldquo;what&apos;s the runway impact?&rdquo; and closes with &ldquo;show me the numbers behind the intuition.&rdquo;
-        </p>
+      </div>
+
+      <div className="mb-8 p-4 rounded-xl border border-blue-200 bg-blue-50 text-[13px] text-blue-900 leading-relaxed">
+        <strong>Phase 2 (Wk 3-4 post-launch):</strong> Ask Sarah panel opens on the right — grounded advisory queries like &quot;should I raise prices?&quot; run against real churn/LTV/CAC. Task queue: &quot;3 subs renew this week — expected revenue $X, all green.&quot; Named persona voice: warm, patient, cash-first.
       </div>
 
       <Link href="/dashboard/boardroom" className="text-[12px] text-blue-600 hover:text-blue-700 underline">
@@ -40,13 +113,42 @@ export default function CfoPage() {
   )
 }
 
-function MetricStub({ label, hint, source }: { label: string; hint: string; source: string }) {
+function Metric({
+  label,
+  value,
+  hint,
+  tone = 'default',
+  large,
+}: {
+  label: string
+  value: string
+  hint?: string
+  tone?: 'default' | 'stone' | 'green' | 'amber' | 'red'
+  large?: boolean
+}) {
+  const valueColor = {
+    default: 'text-stone-900',
+    stone: 'text-stone-400',
+    green: 'text-green-700',
+    amber: 'text-amber-700',
+    red: 'text-red-700',
+  }[tone]
+  const size = large ? 'text-[28px]' : 'text-[22px]'
   return (
     <div className="bg-white border border-stone-200 rounded-2xl p-5">
       <div className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-2">{label}</div>
-      <div className="text-[24px] font-bold text-stone-300 mb-2 font-mono">—</div>
-      <div className="text-[12px] text-stone-500 leading-relaxed mb-1">{hint}</div>
-      <div className="text-[11px] font-mono text-stone-400">Source: {source}</div>
+      <div className={`${size} font-bold ${valueColor} mb-1 font-mono`}>{value}</div>
+      {hint && <div className="text-[11px] text-stone-500 leading-relaxed">{hint}</div>}
     </div>
   )
+}
+
+function formatCurrency(v: number | null | undefined): string {
+  if (v === null || v === undefined) return '—'
+  if (v === 0) return '$0'
+  return new Intl.NumberFormat('en-AU', {
+    style: 'currency',
+    currency: 'AUD',
+    maximumFractionDigits: 0,
+  }).format(v)
 }
