@@ -241,6 +241,30 @@ export const challengeSequenceFunction = inngest.createFunction(
 
 // ─── Challenge SMS Sequence Function ─────────────────────────────────────────
 
+/**
+ * Compute the next 7am Brisbane time (AEST, UTC+10 year-round — Queensland
+ * doesn't observe daylight saving). Returns the next occurrence at or after
+ * `from`, meaning: if `from` is before today's 7am AEST, returns today 7am;
+ * otherwise returns tomorrow 7am.
+ */
+function nextMorningAEST(from: Date): Date {
+  // 7am AEST = 21:00 UTC (previous UTC day, since Brisbane is UTC+10)
+  // Find the UTC instant that IS 7am AEST on or after `from`.
+  const target = new Date(from)
+  target.setUTCHours(21, 0, 0, 0)  // 21:00 UTC = 07:00 AEST next day
+  // If the computed 21:00 UTC is already past → shift forward one day
+  if (target <= from) {
+    target.setUTCDate(target.getUTCDate() + 1)
+  }
+  // Note: setUTCHours(21) computes 21:00 UTC = 7am the NEXT AEST day.
+  // If `from` is e.g. 2026-07-02 05:00 UTC (15:00 AEST Wed), target =
+  // 2026-07-02 21:00 UTC = 07:00 AEST Thu (correct).
+  // If `from` is 2026-07-02 22:00 UTC (08:00 AEST Thu), target would be
+  // 2026-07-02 21:00 UTC (before now) → shifts to 2026-07-03 21:00 UTC
+  // = 07:00 AEST Fri (correct — Thu 7am already passed).
+  return target
+}
+
 export const challengeSmsFunction = inngest.createFunction(
   {
     id: 'challenge-sms-sequence',
@@ -260,8 +284,11 @@ export const challengeSmsFunction = inngest.createFunction(
     const formattedPhone = formatPhone(phone)
     const portalUrl = `${brand().marketingDomain}/challenge/${token}`
 
-    // Wait 1 hour after enrollment before first message
-    await step.sleep('sms-initial-wait', '1h')
+    // Anchor Day 1 morning nudge to next 7am Brisbane (AEST, UTC+10 year-round).
+    // Was: sleep 1h then fire — landed at enrollment_time + 1h which drifted
+    // into PM for afternoon enrollments. All downstream day-N mornings inherit
+    // this anchor via the +24h cascade below.
+    await step.sleepUntil('sms-initial-wait-until-7am-aest', nextMorningAEST(new Date()))
 
     // Minimal Pulse cadence:
     //   - Day 1-14: one morning nudge per day pointing to the portal
