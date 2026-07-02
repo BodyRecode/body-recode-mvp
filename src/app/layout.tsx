@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import Script from "next/script";
+import { headers } from "next/headers";
 import "./globals.css";
-import { brand } from "@/config/tenant";
+import { brand, prefetchTenant } from "@/config/tenant";
 
 const geist = Geist({ subsets: ["latin"] });
 
@@ -18,11 +19,18 @@ export const metadata: Metadata = {
 
 const META_PIXEL_ID = '972772552072010';
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Warm the tenant config cache from x-tenant-id header (set by middleware).
+  // No-op when NEXT_PUBLIC_TENANT_DB_ENABLED != 'true' (Phase 1 default).
+  // Failure is silent — getTenant() falls back to hardcoded BODY_RECODE_TENANT.
+  const h = await headers();
+  const tenantId = h.get('x-tenant-id') ?? 'body-recode';
+  await prefetchTenant(tenantId);
+
   return (
     <html lang="en" style={{ background: '#FFFFFF' }}>
       <head>
