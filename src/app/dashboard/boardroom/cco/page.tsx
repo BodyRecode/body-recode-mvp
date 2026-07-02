@@ -1,36 +1,203 @@
 import { PageHeader } from '@/components/dashboard/ui'
 import Link from 'next/link'
+import { getCcoSnapshot } from '@/lib/cco-metrics'
 
 export const metadata = { title: 'CCO · Boardroom' }
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
-export default function CcoPage() {
+export default async function CcoPage() {
+  const snap = await getCcoSnapshot()
+
   return (
     <div className="max-w-[1100px]">
       <PageHeader
         eyebrow="Boardroom · CCO"
-        title="Priya (draft persona)"
-        subtitle="Chief Client Officer — retention, churn signals, feedback triage, NPS, at-risk clients. Weekly ritual: Tue 11am review."
+        title="Chief Client Officer view"
+        subtitle="Retention, at-risk signals, feedback triage. Weekly ritual: Tue 11am review. Named persona (Priya) + AI advisor ships Wk 7+ post-launch."
       />
 
-      <div className="mb-6 p-4 rounded-xl border border-amber-200 bg-amber-50 text-[13px] text-amber-900 leading-relaxed">
-        <strong>Phase 1 stub.</strong> URL + role framing. Real data + Priya AI advisor in Phase 2 (Wk 7+ post-launch after CFO+CMO ship).
+      <div className="mb-6 flex items-center gap-3">
+        <span className="text-[9px] font-bold uppercase tracking-widest bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Live data</span>
+        <span className="text-[11px] text-stone-500 font-mono">
+          Snapshot at {new Date(snap.computedAt).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane' })} AEST
+        </span>
       </div>
 
+      <h3 className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">Client base</h3>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <Metric label="Active clients" value={fmtNum(snap.activeClients)} large />
+        <Metric label="Added last 30d" value={fmtNum(snap.clientsAdded30d)} hint="New client records" />
+        <Metric label="Lifetime clients" value={fmtNum(snap.clientsLifetime)} hint="Since day zero" />
+      </div>
+
+      <h3 className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">Churn signals</h3>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <Metric
+          label="Churn rate 30d"
+          value={snap.churnRate30d !== null ? `${snap.churnRate30d.toFixed(1)}%` : '—'}
+          hint={
+            snap.churn30d !== null
+              ? `${snap.churn30d} cancellations last 30d`
+              : ''
+          }
+          tone={
+            snap.churnRate30d === null
+              ? 'stone'
+              : snap.churnRate30d > 15
+                ? 'red'
+                : snap.churnRate30d > 5
+                  ? 'amber'
+                  : 'green'
+          }
+          large
+        />
+        <Metric
+          label="Churned 90d"
+          value={fmtNum(snap.churn90d)}
+          hint="Rolling quarter"
+        />
+        <Metric
+          label="At-risk (no check-in 14d)"
+          value={fmtNum(snap.activeClientsWithoutCheckin14d)}
+          hint="Active clients with no submitted check-in in 14 days"
+          tone={
+            snap.activeClientsWithoutCheckin14d === null
+              ? 'stone'
+              : snap.activeClientsWithoutCheckin14d > 3
+                ? 'red'
+                : snap.activeClientsWithoutCheckin14d > 0
+                  ? 'amber'
+                  : 'green'
+          }
+        />
+      </div>
+
+      <h3 className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">Engagement</h3>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <Metric
+          label="Checked in last 7d"
+          value={fmtNum(snap.activeClientsWithCheckin7d)}
+          hint={
+            snap.activeClients !== null && snap.activeClientsWithCheckin7d !== null
+              ? `of ${snap.activeClients} active`
+              : ''
+          }
+        />
+        <Metric
+          label="Check-in response rate 30d"
+          value={snap.checkinResponseRate30d !== null ? `${Math.round(snap.checkinResponseRate30d)}%` : '—'}
+          hint="Actual / expected weekly cadence"
+          tone={
+            snap.checkinResponseRate30d === null
+              ? 'stone'
+              : snap.checkinResponseRate30d >= 70
+                ? 'green'
+                : snap.checkinResponseRate30d >= 40
+                  ? 'amber'
+                  : 'red'
+          }
+        />
+        <Metric
+          label="Ratio at-risk"
+          value={
+            snap.activeClients !== null &&
+            snap.activeClientsWithoutCheckin14d !== null &&
+            snap.activeClients > 0
+              ? `${Math.round((snap.activeClientsWithoutCheckin14d / snap.activeClients) * 100)}%`
+              : '—'
+          }
+          hint="At-risk / active clients"
+        />
+      </div>
+
+      <h3 className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">Feedback triage</h3>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <Metric
+          label="Unseen feedback"
+          value={fmtNum(snap.feedbackUnseen)}
+          hint="Awaiting coach review"
+          tone={
+            snap.feedbackUnseen === null
+              ? 'stone'
+              : snap.feedbackUnseen > 10
+                ? 'red'
+                : snap.feedbackUnseen > 3
+                  ? 'amber'
+                  : 'green'
+          }
+        />
+        <Metric
+          label="Churn-risk flagged"
+          value={fmtNum(snap.feedbackChurnRisk)}
+          hint="Feedback flagged by coach as risk"
+          tone={
+            snap.feedbackChurnRisk === null
+              ? 'stone'
+              : snap.feedbackChurnRisk > 0
+                ? 'red'
+                : 'green'
+          }
+        />
+        <Metric
+          label="Awaiting consent"
+          value={fmtNum(snap.feedbackAwaitingConsent)}
+          hint="Testimonials in permission flow"
+        />
+      </div>
+
+      <h3 className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">Sentiment (last 30d)</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-        <MetricStub label="Active clients" hint="Currently coaching" source="clients where status = active" />
-        <MetricStub label="At-risk (last 14d)" hint="Engagement drop &gt; 40% wk-over-wk" source="weekly_checkins + readiness signals" />
-        <MetricStub label="Feedback pending consent" hint="Testimonials awaiting client permission" source="feedback_responses status" />
-        <MetricStub label="Trailing 90d churn" hint="Cancellations / active at start of period" source="client_subscriptions cancelled_at" />
+        <Metric
+          label="Avg accuracy score"
+          value={
+            snap.feedbackAvgAccuracy30d !== null
+              ? `${snap.feedbackAvgAccuracy30d.toFixed(1)}/10`
+              : '—'
+          }
+          hint="How accurate clients found the reading"
+          tone={
+            snap.feedbackAvgAccuracy30d === null
+              ? 'stone'
+              : snap.feedbackAvgAccuracy30d >= 8
+                ? 'green'
+                : snap.feedbackAvgAccuracy30d >= 6
+                  ? 'amber'
+                  : 'red'
+          }
+        />
+        <Metric
+          label="Avg NPS score"
+          value={
+            snap.feedbackAvgNps30d !== null
+              ? `${snap.feedbackAvgNps30d.toFixed(1)}/10`
+              : '—'
+          }
+          hint="Recommend likelihood"
+          tone={
+            snap.feedbackAvgNps30d === null
+              ? 'stone'
+              : snap.feedbackAvgNps30d >= 8
+                ? 'green'
+                : snap.feedbackAvgNps30d >= 6
+                  ? 'amber'
+                  : 'red'
+          }
+        />
       </div>
 
-      <div className="mb-8 bg-white border border-stone-200 rounded-2xl p-5">
-        <h3 className="text-[13px] font-bold text-stone-900 uppercase tracking-widest mb-3">This week&apos;s ritual (Tue 11am review)</h3>
-        <p className="text-[13px] text-stone-700 leading-relaxed mb-4">
-          Phase 2 will surface a task queue: <em>&ldquo;Sarah&apos;s engagement dropped 40% — outreach today?&rdquo;</em> Ask Priya: &ldquo;which clients need intervention this week?&rdquo; runs across readiness monitoring signals.
-        </p>
-        <p className="text-[13px] text-stone-500 leading-relaxed">
-          Persona voice draft: empathetic, retention-native, brings every conversation back to the client experience.
-        </p>
+      <div className="mb-8 flex items-center gap-3 text-[13px]">
+        <Link href="/dashboard/feedback" className="text-blue-600 hover:text-blue-700 underline font-semibold">
+          → Open Feedback Triage
+        </Link>
+        <span className="text-stone-400">·</span>
+        <Link href="/dashboard/coaching" className="text-blue-600 hover:text-blue-700 underline font-semibold">
+          → Coaching queue
+        </Link>
+      </div>
+
+      <div className="mb-8 p-4 rounded-xl border border-blue-200 bg-blue-50 text-[13px] text-blue-900 leading-relaxed">
+        <strong>Phase 2 (Wk 7+ post-launch):</strong> Ask Priya panel — grounded advisory: &quot;which clients need intervention this week?&quot; runs across readiness monitoring + engagement signals. Task queue: &quot;Sarah&apos;s engagement dropped 40% — outreach today?&quot; Named persona voice: empathetic, retention-native.
       </div>
 
       <Link href="/dashboard/boardroom" className="text-[12px] text-blue-600 hover:text-blue-700 underline">
@@ -40,13 +207,37 @@ export default function CcoPage() {
   )
 }
 
-function MetricStub({ label, hint, source }: { label: string; hint: string; source: string }) {
+function Metric({
+  label,
+  value,
+  hint,
+  tone = 'default',
+  large,
+}: {
+  label: string
+  value: string
+  hint?: string
+  tone?: 'default' | 'stone' | 'green' | 'amber' | 'red'
+  large?: boolean
+}) {
+  const valueColor = {
+    default: 'text-stone-900',
+    stone: 'text-stone-400',
+    green: 'text-green-700',
+    amber: 'text-amber-700',
+    red: 'text-red-700',
+  }[tone]
+  const size = large ? 'text-[28px]' : 'text-[22px]'
   return (
     <div className="bg-white border border-stone-200 rounded-2xl p-5">
       <div className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-2">{label}</div>
-      <div className="text-[24px] font-bold text-stone-300 mb-2 font-mono">—</div>
-      <div className="text-[12px] text-stone-500 leading-relaxed mb-1">{hint}</div>
-      <div className="text-[11px] font-mono text-stone-400">Source: {source}</div>
+      <div className={`${size} font-bold ${valueColor} mb-1 font-mono`}>{value}</div>
+      {hint && <div className="text-[11px] text-stone-500 leading-relaxed">{hint}</div>}
     </div>
   )
+}
+
+function fmtNum(v: number | null | undefined): string {
+  if (v === null || v === undefined) return '—'
+  return v.toLocaleString()
 }
