@@ -1,7 +1,9 @@
 import { headers } from 'next/headers'
 import { getTenant, type TenantConfig } from '@/config/tenant'
 import { loadTenantFromDb } from '@/lib/tenant-resolver'
+import { createClient } from '@/lib/supabase/server'
 import { PageHeader } from '@/components/dashboard/ui'
+import { EditableSection } from './edit-section'
 
 export const dynamic = 'force-dynamic'
 
@@ -10,35 +12,92 @@ export default async function TenantSettingsPage() {
   const tenantId = h.get('x-tenant-id') ?? 'body-recode'
   const flagEnabled = process.env.NEXT_PUBLIC_TENANT_DB_ENABLED === 'true'
 
-  // Show both the in-code default AND (if DB-backed enabled) the DB row.
-  // This lets the coach see exactly what's in each layer.
-  const inCode = getTenant()
-  const inDb: TenantConfig | null = flagEnabled ? await loadTenantFromDb(tenantId) : null
+  // Determine if the current user has an editable DB row (they're a coach + tenant_config row exists for their coach_id)
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  let dbRow: TenantConfig | null = null
+  if (user) {
+    const { data } = await supabase
+      .from('tenant_config')
+      .select('brand, coach, products, licence, modality')
+      .eq('coach_id', user.id)
+      .maybeSingle()
+    if (data) {
+      dbRow = data as unknown as TenantConfig
+    }
+  }
+
+  const canEdit = Boolean(dbRow)
+  // Prefer the DB row for display when editing is possible; otherwise fall back to in-code
+  const displayed = canEdit && dbRow ? dbRow : getTenant()
+  const inDbForFlag: TenantConfig | null = flagEnabled ? await loadTenantFromDb(tenantId) : null
 
   return (
     <div className="max-w-[1100px]">
       <PageHeader
         eyebrow="Settings"
         title="Tenant configuration"
-        subtitle="How your brand renders across the platform. Values come from the DB when NEXT_PUBLIC_TENANT_DB_ENABLED=true, otherwise from the in-code fallback."
+        subtitle="How your brand renders across the platform. Edit any section below — saves apply immediately + invalidate the tenant cache."
       />
 
-      <StatusBanner tenantId={tenantId} flagEnabled={flagEnabled} inDb={inDb} />
+      <StatusBanner tenantId={tenantId} flagEnabled={flagEnabled} inDb={inDbForFlag} canEdit={canEdit} />
 
-      <ConfigCard title="Brand shell" fields={brandFields(inCode.brand)} />
-      <ConfigCard title="Coach identity" fields={coachFields(inCode.coach)} />
-      <ConfigCard title="Product wrapping" fields={productFields(inCode.products)} />
-      <ConfigCard title="Licence" fields={licenceFields(inCode.licence)} />
-      <ConfigCard title="Modality" fields={modalityFields(inCode.modality)} />
+      {canEdit ? (
+        <>
+          <EditableSection
+            section="brand"
+            title="Brand shell"
+            fields={brandFields(displayed.brand)}
+            colorKeys={new Set(['accentColor'])}
+          />
+          <EditableSection
+            section="coach"
+            title="Coach identity"
+            fields={coachFields(displayed.coach)}
+          />
+          <EditableSection
+            section="products"
+            title="Product wrapping"
+            fields={productFields(displayed.products)}
+            numericKeys={
+              new Set([
+                'reportPrice',
+                'challengePrice',
+                'blueprintPrice',
+                'membershipPrice',
+                'coachingPackage2xPrice',
+              ])
+            }
+          />
+          <EditableSection
+            section="licence"
+            title="Licence"
+            fields={licenceFields(displayed.licence)}
+            booleanKeys={new Set(['poweredBy'])}
+          />
+          <EditableSection
+            section="modality"
+            title="Modality"
+            fields={modalityFields(displayed.modality)}
+          />
+        </>
+      ) : (
+        <>
+          <ReadOnlyCard title="Brand shell" fields={brandFields(displayed.brand)} />
+          <ReadOnlyCard title="Coach identity" fields={coachFields(displayed.coach)} />
+          <ReadOnlyCard title="Product wrapping" fields={productFields(displayed.products)} />
+          <ReadOnlyCard title="Licence" fields={licenceFields(displayed.licence)} />
+          <ReadOnlyCard title="Modality" fields={modalityFields(displayed.modality)} />
 
-      <div className="mt-8 p-4 rounded-xl border border-amber-200 bg-amber-50 text-[13px] text-amber-900 leading-relaxed">
-        <strong>Read-only for now.</strong> Editing UI lands next pass. To change values today:
-        <ul className="list-disc ml-5 mt-2 space-y-1">
-          <li>Values shown are the in-code fallback from <code className="bg-amber-100 px-1 py-0.5 rounded text-[12px]">src/config/tenant.ts</code>.</li>
-          <li>DB row lives in the <code className="bg-amber-100 px-1 py-0.5 rounded text-[12px]">tenant_config</code> table (keyed by coach_id).</li>
-          <li>Update via <code className="bg-amber-100 px-1 py-0.5 rounded text-[12px]">supabase db query --linked</code> or edit tenant.ts directly.</li>
-        </ul>
-      </div>
+          <div className="mt-6 p-4 rounded-xl border border-amber-200 bg-amber-50 text-[13px] text-amber-900 leading-relaxed">
+            <strong>Read-only:</strong> no tenant_config row exists for your coach_id yet. Values shown are the in-code fallback from
+            <code className="mx-1 bg-amber-100 px-1 py-0.5 rounded text-[12px]">src/config/tenant.ts</code>.
+            To enable editing, ensure a row exists in the
+            <code className="mx-1 bg-amber-100 px-1 py-0.5 rounded text-[12px]">tenant_config</code>
+            table with your coach_id.
+          </div>
+        </>
+      )}
     </div>
   )
 }
@@ -47,10 +106,12 @@ function StatusBanner({
   tenantId,
   flagEnabled,
   inDb,
+  canEdit,
 }: {
   tenantId: string
   flagEnabled: boolean
   inDb: TenantConfig | null
+  canEdit: boolean
 }) {
   const status = flagEnabled
     ? inDb
@@ -69,13 +130,14 @@ function StatusBanner({
       <div className="flex items-center gap-3 mb-1">
         <span className="text-[11px] font-bold uppercase tracking-widest">{status.label}</span>
         <span className="text-[11px] font-mono opacity-70">tenant_id: {tenantId}</span>
+        {canEdit && <span className="text-[10px] font-bold uppercase tracking-widest bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">Editable</span>}
       </div>
       <p className="text-[13px] leading-relaxed">{status.detail}</p>
     </div>
   )
 }
 
-function ConfigCard({
+function ReadOnlyCard({
   title,
   fields,
 }: {
@@ -91,7 +153,9 @@ function ConfigCard({
         {fields.map((f) => (
           <div key={f.label} className="px-5 py-3 flex items-baseline gap-4">
             <div className="w-52 shrink-0 text-[12px] text-stone-500 font-mono">{f.label}</div>
-            <div className="flex-1 text-[13px] text-stone-900 font-mono break-all">{f.value || <span className="text-stone-400 italic">(empty)</span>}</div>
+            <div className="flex-1 text-[13px] text-stone-900 font-mono break-all">
+              {f.value || <span className="text-stone-400 italic">(empty)</span>}
+            </div>
           </div>
         ))}
       </div>
