@@ -1363,7 +1363,7 @@ export default function HelpPage() {
             <p>The platform runs an automated health check every morning and sends a report to {coach().email}. Every run is also saved and viewable at <strong>Dashboard → System</strong> (top nav).</p>
 
             <p className="font-semibold text-[#1A1A1A] mt-4">What it checks</p>
-            <p>The check runs 17 tests across four groups every day:</p>
+            <p>The check runs 19 tests across four groups every day:</p>
 
             <p className="font-semibold text-[#1A1A1A] mt-3">1. Infrastructure</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
@@ -1397,6 +1397,8 @@ export default function HelpPage() {
             <p className="font-semibold text-[#1A1A1A] mt-3">4. Automation + Pipeline</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
               <li><strong>Scorecard Automation</strong> - verifies the 9-step follow-up sequence is active and intact.</li>
+              <li><strong>Content Publishing Pulse</strong> - finds any BR IG post whose <code>scheduled_publish_at</code> is 30+ minutes in the past with no <code>posted_at</code>. Catches missed posts caused by Inngest cron pausing, an unsynced function in Inngest cloud, a Meta token failure, or an image-fetch error. Added 2026-07-03 after a 3-day silent outage where <code>ig-publisher-cron</code> had been deployed but never resynced in Inngest cloud, and 4 scheduled posts silently didn&apos;t ship.</li>
+              <li><strong>Inngest Registration</strong> - fetches <code>/api/inngest</code> and confirms both event and signing keys are present + the <code>function_count</code> matches the expected number (currently 12). Catches code-side registration drops. Cloud-side sync drift is caught by Content Publishing Pulse as the symptom. Bump <code>EXPECTED_INNGEST_FUNCTION_COUNT</code> in <code>src/app/api/cron/daily-health-check/route.ts</code> every time a new <code>inngest.createFunction</code> is added.</li>
               <li><strong>Funnel Activity (24h)</strong> - reports how many scorecards were completed in the last 24 hours. Informational only.</li>
             </ul>
 
