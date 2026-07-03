@@ -26,6 +26,7 @@ import { appUrlFor } from '@/lib/app-url'
 import { fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 import { buildWeeklyCheckinFeedbackEmail } from '@/lib/weekly-checkin-feedback-email'
+import { brand } from '@/config/tenant'
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
@@ -50,7 +51,7 @@ function statusPage({
 </head>
 <body style="margin:0;padding:0;background:#F8F9FB;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1A1A1A;">
   <div style="max-width:520px;margin:60px auto;background:#FFFFFF;border:1px solid #E5E5E5;border-radius:16px;padding:48px 40px;">
-    <p style="font-size:11px;font-weight:700;letter-spacing:0.18em;color:${accent};text-transform:uppercase;margin:0 0 12px;">Body Recode</p>
+    <p style="font-size:11px;font-weight:700;letter-spacing:0.18em;color:${accent};text-transform:uppercase;margin:0 0 12px;">${brand().name}</p>
     <h1 style="font-size:22px;font-weight:800;margin:0 0 12px;line-height:1.3;">${heading}</h1>
     <p style="font-size:15px;line-height:1.7;color:#3A3A3A;margin:0 0 24px;">${body}</p>
     ${dashboardUrl ? `<a href="${dashboardUrl}" style="display:inline-block;padding:12px 22px;background:${accent};color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:10px;">Open dashboard</a>` : ''}

@@ -2,6 +2,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getWeekNumber, getCheckInWindowStatus } from '@/lib/weekly-checkin-questions'
+import { brand } from '@/config/tenant'
 
 export default async function ClientDashboardPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
@@ -35,7 +36,7 @@ export default async function ClientDashboardPage({ params }: { params: Promise<
 
         {/* Header */}
         <div className="mb-10">
-          <p className="text-xs font-bold tracking-widest text-blue-500 uppercase mb-6">Body Recode</p>
+          <p className="text-xs font-bold tracking-widest text-blue-500 uppercase mb-6">{brand().name}</p>
           <h1 className="text-2xl font-semibold mb-1">Hi {firstName}</h1>
           <p className="text-stone-400 text-sm">Week {weekNumber} of your coaching programme</p>
         </div>

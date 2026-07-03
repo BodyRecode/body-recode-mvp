@@ -5,6 +5,7 @@ import LogoutButton from '@/components/LogoutButton'
 import DashboardNav from './nav'
 import CommandPalette from './command-palette'
 import CommandKHint from './command-k-hint'
+import { brand } from '@/config/tenant'
 
 export default async function DashboardLayout({
   children,
@@ -15,6 +16,9 @@ export default async function DashboardLayout({
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) redirect('/login')
+
+  const tenantBrand = brand()
+  const brandInitials = tenantBrand.name.split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase() || tenantBrand.name.slice(0, 2).toUpperCase()
 
   return (
     <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
@@ -29,9 +33,9 @@ export default async function DashboardLayout({
                 className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-[#1B6DFC] text-[#FFFFFF] font-bold text-[13px] tracking-tight"
                 style={{ fontFamily: "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace" }}
               >
-                BR
+                {brandInitials}
               </span>
-              <span className="text-[16px] font-semibold text-[#1A1A1A] tracking-tight">Body Recode</span>
+              <span className="text-[16px] font-semibold text-[#1A1A1A] tracking-tight">{tenantBrand.name}</span>
             </Link>
             <DashboardNav />
           </div>
