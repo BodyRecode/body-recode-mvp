@@ -66,6 +66,12 @@ export type TenantConfig = {
     tenantId: string                // "body-recode" (the primary tenant)
     poweredBy: boolean              // false = own brand; true = "Powered by Body Recode"
     version: string                 // config version for change tracking
+    /** Stripe Connect account id (acct_...) — null if not yet onboarded. When
+     *  set, checkout callsites route payments to this tenant's Stripe account
+     *  via Direct Charges (Connect). BR is always null — uses platform key. */
+    stripeAccountId?: string | null
+    /** Stripe onboarding lifecycle: 'pending' | 'active' | 'restricted' | null */
+    stripeAccountStatus?: 'pending' | 'active' | 'restricted' | null
   }
 
   /** Modality — third configurability axis (see POWERED_PLATFORM_BUILD_PLAN §7) */
@@ -126,6 +132,8 @@ const BODY_RECODE_TENANT: TenantConfig = {
     tenantId: 'body-recode',
     poweredBy: false,
     version: '2026-07-01',
+    stripeAccountId: null,
+    stripeAccountStatus: null,
   },
   modality: {
     id: 'strength',

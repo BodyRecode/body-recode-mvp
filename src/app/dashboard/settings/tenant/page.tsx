@@ -5,13 +5,19 @@ import { createClient } from '@/lib/supabase/server'
 import { PageHeader } from '@/components/dashboard/ui'
 import { EditableSection } from './edit-section'
 import { DomainsSection } from './domains-section'
+import { StripeConnectSection } from './stripe-section'
 
 export const dynamic = 'force-dynamic'
 
-export default async function TenantSettingsPage() {
+export default async function TenantSettingsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ stripe_result?: string }>
+}) {
   const h = await headers()
   const tenantId = h.get('x-tenant-id') ?? 'body-recode'
   const flagEnabled = process.env.NEXT_PUBLIC_TENANT_DB_ENABLED === 'true'
+  const { stripe_result } = await searchParams
 
   // Determine if the current user has an editable DB row (they're a coach + tenant_config row exists for their coach_id)
   const supabase = await createClient()
@@ -82,6 +88,11 @@ export default async function TenantSettingsPage() {
             fields={modalityFields(displayed.modality)}
           />
           <DomainsSection />
+          <StripeConnectSection
+            stripeAccountId={displayed.licence.stripeAccountId ?? null}
+            stripeAccountStatus={displayed.licence.stripeAccountStatus ?? null}
+            searchStatus={stripe_result ?? null}
+          />
         </>
       ) : (
         <>
