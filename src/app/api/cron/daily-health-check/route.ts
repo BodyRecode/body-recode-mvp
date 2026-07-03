@@ -782,6 +782,120 @@ Body Recode`,
   }
 }
 
+// ─── Content publishing pulse ────────────────────────────────────────────
+//
+// Catches the class of bug where scheduled BR IG posts stop shipping
+// (Inngest cron paused, function not synced in Inngest cloud, Meta token
+// expired, all of them). Any BR IG post whose scheduled_publish_at is
+// more than 30 minutes in the past AND has no posted_at is a red flag —
+// the publisher cron runs every 5 minutes, so 30 min = 6 missed ticks.
+//
+// Recovery: run `npx tsx scripts/ig-publish-cron-diagnostic.ts` locally
+// against prod env to drain the backlog. Then check Inngest cloud →
+// Apps → body-recode → Resync.
+async function checkContentPublishingPulse(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
+  try {
+    const staleThreshold = new Date(Date.now() - 30 * 60 * 1000).toISOString()
+
+    const { data, error } = await admin
+      .from('calendar_posts')
+      .select('id, title, scheduled_publish_at, publish_attempts, publish_error')
+      .eq('brand', 'body_recode')
+      .eq('platform', 'instagram')
+      .neq('type', 'story')
+      .is('posted_at', null)
+      .not('scheduled_publish_at', 'is', null)
+      .lte('scheduled_publish_at', staleThreshold)
+      .order('scheduled_publish_at', { ascending: true })
+      .limit(20)
+
+    if (error) {
+      return {
+        name: 'Content Publishing Pulse',
+        status: 'failed',
+        detail: `Could not query calendar_posts: ${error.message}`,
+        manualFix: 'Check Supabase — the calendar_posts table may be missing columns or RLS may be blocking service-role reads.',
+      }
+    }
+
+    const overdue = data ?? []
+    if (overdue.length === 0) {
+      return { name: 'Content Publishing Pulse', status: 'ok', detail: 'No overdue BR IG posts (all scheduled posts published on time)' }
+    }
+
+    const oldestMinutes = Math.round((Date.now() - new Date(overdue[0].scheduled_publish_at).getTime()) / 60000)
+    const withErrors = overdue.filter(r => r.publish_error).length
+    const errorSummary = withErrors > 0 ? ` (${withErrors} with publish_error stamped)` : ''
+
+    return {
+      name: 'Content Publishing Pulse',
+      status: 'failed',
+      detail: `${overdue.length} BR IG post${overdue.length === 1 ? '' : 's'} overdue by 30min+ — oldest is ${oldestMinutes} min late${errorSummary}. Publisher cron may not be firing.`,
+      manualFix: 'Run `npx tsx scripts/ig-publish-cron-diagnostic.ts` locally to drain the backlog. Then check app.inngest.com → Apps → body-recode → Resync to make sure ig-publisher-cron is registered.',
+    }
+  } catch (e) {
+    return {
+      name: 'Content Publishing Pulse',
+      status: 'failed',
+      detail: String(e),
+      manualFix: 'Check Supabase connectivity + calendar_posts table.',
+    }
+  }
+}
+
+// ─── Inngest function registration ───────────────────────────────────────
+//
+// Verifies /api/inngest exposes the expected number of functions AND that
+// Inngest cloud is properly connected (has_event_key + has_signing_key).
+// Does NOT detect Inngest-cloud-side sync drift (would need Inngest's REST
+// API + an INNGEST_API_KEY). The Content Publishing Pulse check catches
+// the practical symptom of drift; this check catches code-side breakage.
+//
+// BUMP `EXPECTED_INNGEST_FUNCTION_COUNT` every time you add or remove an
+// inngest.createFunction(...) in src/lib/inngest-functions.ts.
+const EXPECTED_INNGEST_FUNCTION_COUNT = 12
+async function checkInngestRegistration(): Promise<CheckResult> {
+  try {
+    const res = await fetch(`${appUrl()}/api/inngest`, { method: 'GET', cache: 'no-store' })
+    if (!res.ok) {
+      return {
+        name: 'Inngest Registration',
+        status: 'failed',
+        detail: `/api/inngest returned ${res.status}`,
+        manualFix: 'Check Vercel logs for /api/inngest — the endpoint may be crashing on boot.',
+      }
+    }
+    const body = await res.json() as { function_count?: number; has_event_key?: boolean; has_signing_key?: boolean; mode?: string }
+
+    if (!body.has_event_key || !body.has_signing_key) {
+      return {
+        name: 'Inngest Registration',
+        status: 'failed',
+        detail: `Missing keys — event_key=${body.has_event_key} signing_key=${body.has_signing_key}`,
+        manualFix: 'Set INNGEST_EVENT_KEY and INNGEST_SIGNING_KEY in Vercel prod env, then redeploy.',
+      }
+    }
+
+    if (body.function_count !== EXPECTED_INNGEST_FUNCTION_COUNT) {
+      return {
+        name: 'Inngest Registration',
+        status: 'failed',
+        detail: `/api/inngest reports function_count=${body.function_count}, expected ${EXPECTED_INNGEST_FUNCTION_COUNT}. Either a function was added/removed without bumping EXPECTED_INNGEST_FUNCTION_COUNT, or a registration was silently dropped.`,
+        manualFix: 'Bump EXPECTED_INNGEST_FUNCTION_COUNT in src/app/api/cron/daily-health-check/route.ts if the change was intentional. Then go to app.inngest.com → Apps → body-recode → Resync to publish the change to Inngest cloud.',
+      }
+    }
+
+    return { name: 'Inngest Registration', status: 'ok', detail: `${body.function_count} functions registered, ${body.mode ?? 'unknown'} mode, both keys present` }
+  } catch (e) {
+    return {
+      name: 'Inngest Registration',
+      status: 'failed',
+      detail: String(e),
+      manualFix: 'Check /api/inngest is reachable and Vercel is up.',
+    }
+  }
+}
+
 async function checkFunnelActivity(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
   try {
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
@@ -919,6 +1033,8 @@ export async function GET(request: NextRequest) {
     pendingIntakes,
     missedCheckins,
     automation,
+    publishingPulse,
+    inngestRegistration,
     funnel,
   ] = await Promise.all([
     checkBookingWrite(admin),
@@ -933,6 +1049,8 @@ export async function GET(request: NextRequest) {
     checkPendingIntakes(admin),
     checkClientsWithMissedCheckins(admin),
     checkScorecardAutomation(admin),
+    checkContentPublishingPulse(admin),
+    checkInngestRegistration(),
     checkFunnelActivity(admin),
   ])
 
@@ -944,7 +1062,7 @@ export async function GET(request: NextRequest) {
     // Data integrity
     clientsIntake, activePrograms, activeNutrition, stuckLeads, pendingIntakes, missedCheckins,
     // Automation + pipeline
-    automation, funnel,
+    automation, publishingPulse, inngestRegistration, funnel,
   ]
 
   const failures = checks.filter(c => c.status === 'failed')
