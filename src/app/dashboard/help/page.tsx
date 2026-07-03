@@ -33,6 +33,7 @@ const SECTIONS = [
   { id: 'assets',           title: '16b. Assets',            colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'admin-actions',    title: '17. Admin Actions',      colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'system-health',    title: '17b. System Health',     colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'platform-buildout', title: '17e. Platform Buildout', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'licensee-readiness', title: '17d. Licensee Readiness Audits', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'onboarding-nudges',title: '17c. Onboarding Nudges', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'stripe-payments',  title: '19. Stripe Payments',    colour: 'teal' as const, category: 'coaching' as Category },
@@ -1413,6 +1414,35 @@ export default function HelpPage() {
             <p>Open any run in Dashboard → System and click <strong>Download .md</strong> in the top right of the report. This saves a markdown file named <code>body-recode-health-YYYY-MM-DD.md</code> to your machine. Move it to Dropbox → 01_BODY_RECODE → 06_SAAS_PLATFORM_BUILD → SYSTEM-HEALTH-CHECK to keep a permanent record.</p>
 
             <Note>The health check runs on Vercel&apos;s servers and cannot write directly to your local Dropbox. The download button in the dashboard is the bridge - one click saves the file locally.</Note>
+          </Section>
+
+          <Section id="platform-buildout" title="17e. Platform Buildout (SaaS / white-label)" colour="teal">
+            <p>Manifest-driven dashboard at <strong>Dashboard → Settings → Platform Buildout</strong> that shows every phase (0-4) of the powered-platform build, every step, current status, commit refs, and gaps. One place to answer &quot;where are we?&quot; without hunting through Dropbox docs, git history, and memory files.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">What each phase covers</p>
+            <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
+              <li><strong>Phase 0 · Decide &amp; verify</strong> — pricing lock, founding-partner agreement, doctrine mode A confirmation, verify unknowns.</li>
+              <li><strong>Phase 1 · Pilot-ready (hand-gloved)</strong> — Melisa onboarding as pilot zero with targeted branding override before the full de-hardcode.</li>
+              <li><strong>Phase 2 · Product-ready</strong> — tenant_config + resolver + settings UI + de-hardcode + custom domains + per-tenant Resend wiring.</li>
+              <li><strong>Phase 3 · Billing</strong> — Stripe Connect for tenant-side (their clients pay them) + Kade&apos;s separate billing of partners.</li>
+              <li><strong>Phase 4 · Scale &amp; doctrine mode B</strong> — yoga modality, per-tenant doctrine parameters, method injection for the post-Founding-Ten wave.</li>
+            </ul>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">How to read it</p>
+            <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
+              <li><strong>Overall progress bar</strong> at the top: shipped / non-deferred steps.</li>
+              <li><strong>Next up</strong> callout: the highest-priority actionable step (first in-progress step, else first planned step with no blockers).</li>
+              <li><strong>Phase gate</strong> callout: appears when a phase is complete but the next hasn&apos;t started — a moment to review before absorbing the next phase&apos;s cost.</li>
+              <li><strong>Per-phase progress bars</strong>: shipped / non-deferred count and %.</li>
+              <li><strong>Step rows</strong>: status badge (Shipped / In progress / Planned / Blocked / Deferred), effort sizing (S/M/L), commit SHAs as chips, expandable Surfaces list of touched files.</li>
+            </ul>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">The Today runbook hook</p>
+            <p>Dashboard → Today surfaces a <strong>🏗 SaaS buildout</strong> section when there&apos;s a next-up step or a phase gate to close. It hides when there&apos;s nothing actionable so it stays out of the way.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">Source of truth &amp; discipline</p>
+            <p>The buildout lives in <code>src/lib/saas-buildout-manifest.ts</code>. Every commit that ships or changes state on a SaaS/white-label step MUST update the corresponding manifest entry in the same commit — bump <code>status</code>, add the commit SHA to <code>commits</code>, stamp <code>shippedAt</code> if now shipped. See <code>feedback_ship_checklist</code> auto-memory (updated 2026-07-03) for the enforcement rule.</p>
+            <p>Strategic scope doc: <code>~/Dropbox/03_STUDIO_OF_TEN/00_FOUNDING_TEN/POWERED_PLATFORM_BUILD_PLAN.md</code>. Deployment runbook: <code>PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.md</code>.</p>
           </Section>
 
           <Section id="licensee-readiness" title="17d. Licensee Readiness: Audits + Versioning + Validators" colour="teal">
