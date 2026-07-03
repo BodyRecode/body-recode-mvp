@@ -49,5 +49,9 @@ find "$DEST" -type f -name "*.md" | while read f; do
 done
 
 echo ""
+echo "Rebuilding SOT-branded PDFs..."
+"$(dirname "$0")/build-buildout-pdfs.sh"
+
+echo ""
 echo "Done. Commit the changes:"
-echo "  git add public/docs/saas-buildout/ && git commit -m 'sync: refresh saas-buildout docs'"
+echo "  git add public/docs/saas-buildout/ && git commit -m 'sync: refresh saas-buildout docs + pdfs'"

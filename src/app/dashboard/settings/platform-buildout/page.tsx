@@ -256,6 +256,16 @@ function DocCard({ doc }: { doc: Doc }) {
       <div className="text-[13px] font-semibold text-stone-900 mb-1 break-all">{doc.title}</div>
       <p className="text-[11px] text-stone-600 leading-relaxed mb-2">{doc.description}</p>
       <div className="flex items-center gap-2 flex-wrap">
+        {doc.pdfUrl && (
+          <a
+            href={doc.pdfUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[11px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-blue-600 text-white hover:bg-blue-700"
+          >
+            View .pdf
+          </a>
+        )}
         <a
           href={doc.mdUrl}
           target="_blank"

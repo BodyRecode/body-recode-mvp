@@ -33,6 +33,9 @@ export type Doc = {
   mdUrl: string
   /** Absolute /-prefixed URL to the .docx (Word-friendly download) */
   docxUrl: string
+  /** Absolute /-prefixed URL to the SOT-branded .pdf (share-with-someone version).
+   *  Undefined for SQL files or docs where a designed PDF doesn't apply. */
+  pdfUrl?: string
 }
 
 export type Step = {
@@ -81,24 +84,28 @@ export const CROSS_PHASE_DOCS: Doc[] = [
     description: 'Kade\'s canonical Phase 0-4 build plan. Original strategic scoping — every phase reads from this.',
     mdUrl: '/docs/saas-buildout/founding-ten/POWERED_PLATFORM_BUILD_PLAN.md',
     docxUrl: '/docs/saas-buildout/founding-ten/POWERED_PLATFORM_BUILD_PLAN.docx',
+    pdfUrl: '/docs/saas-buildout/founding-ten/POWERED_PLATFORM_BUILD_PLAN.pdf',
   },
   {
     title: 'README.md (Founding Ten)',
     description: 'What SOT is now: the powered-platform proposition, capped at 10 founding partners.',
     mdUrl: '/docs/saas-buildout/founding-ten/README.md',
     docxUrl: '/docs/saas-buildout/founding-ten/README.docx',
+    pdfUrl: '/docs/saas-buildout/founding-ten/README.pdf',
   },
   {
     title: 'PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.md',
     description: 'Step-by-step onboarding runbook for each new tenant. Live-updated with every Phase 2 increment.',
     mdUrl: '/docs/saas-buildout/founding-ten/onboarding/PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.md',
     docxUrl: '/docs/saas-buildout/founding-ten/onboarding/PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.docx',
+    pdfUrl: '/docs/saas-buildout/founding-ten/onboarding/PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.pdf',
   },
   {
     title: 'PARTNER_JOURNEY.md',
     description: '8-stage business process (Attract → Run) for founding partners.',
     mdUrl: '/docs/saas-buildout/founding-ten/onboarding/PARTNER_JOURNEY.md',
     docxUrl: '/docs/saas-buildout/founding-ten/onboarding/PARTNER_JOURNEY.docx',
+    pdfUrl: '/docs/saas-buildout/founding-ten/onboarding/PARTNER_JOURNEY.pdf',
   },
 ]
 
@@ -114,6 +121,7 @@ export const PHASES: Phase[] = [
         description: 'The canonical founding-partner offer: setup fee + monthly subscription + per-active-client meter. Locked commercially.',
         mdUrl: '/docs/saas-buildout/founding-ten/OFFER_ARCHITECTURE.md',
         docxUrl: '/docs/saas-buildout/founding-ten/OFFER_ARCHITECTURE.docx',
+        pdfUrl: '/docs/saas-buildout/founding-ten/OFFER_ARCHITECTURE.pdf',
       },
     ],
     longDescription: [
@@ -179,12 +187,14 @@ export const PHASES: Phase[] = [
         description: 'Shape A separate-deploy runbook for Melisa. Step-by-step for the pilot-zero go-live.',
         mdUrl: '/docs/saas-buildout/founding-ten/onboarding/MELISA_PILOT_ZERO_DEPLOYMENT_RUNBOOK.md',
         docxUrl: '/docs/saas-buildout/founding-ten/onboarding/MELISA_PILOT_ZERO_DEPLOYMENT_RUNBOOK.docx',
+        pdfUrl: '/docs/saas-buildout/founding-ten/onboarding/MELISA_PILOT_ZERO_DEPLOYMENT_RUNBOOK.pdf',
       },
       {
         title: 'onboarding/README.md',
         description: 'Onboarding folder index — points to the checklist + runbook + partner journey.',
         mdUrl: '/docs/saas-buildout/founding-ten/onboarding/README.md',
         docxUrl: '/docs/saas-buildout/founding-ten/onboarding/README.docx',
+        pdfUrl: '/docs/saas-buildout/founding-ten/onboarding/README.pdf',
       },
     ],
     longDescription: [
@@ -246,6 +256,7 @@ export const PHASES: Phase[] = [
         description: 'Full step-by-step for onboarding a new tenant. Ship logs at the top; discipline is to keep it fresh with each Phase 2 increment.',
         mdUrl: '/docs/saas-buildout/founding-ten/onboarding/PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.md',
         docxUrl: '/docs/saas-buildout/founding-ten/onboarding/PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.docx',
+        pdfUrl: '/docs/saas-buildout/founding-ten/onboarding/PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.pdf',
       },
     ],
     longDescription: [
@@ -432,12 +443,14 @@ export const PHASES: Phase[] = [
         description: 'Complete doctrine pack for the yoga modality — universal safety constraints, prescription schema, exercise vocabulary.',
         mdUrl: '/docs/saas-buildout/founding-ten/modalities/YOGA_DOCTRINE_v1.md',
         docxUrl: '/docs/saas-buildout/founding-ten/modalities/YOGA_DOCTRINE_v1.docx',
+        pdfUrl: '/docs/saas-buildout/founding-ten/modalities/YOGA_DOCTRINE_v1.pdf',
       },
       {
         title: 'YOGA_MODALITY_SCOPE.md',
         description: 'Scoping doc for the yoga modality build — what changed between strength and yoga at the Layer 2 prescription surface.',
         mdUrl: '/docs/saas-buildout/founding-ten/modalities/YOGA_MODALITY_SCOPE.md',
         docxUrl: '/docs/saas-buildout/founding-ten/modalities/YOGA_MODALITY_SCOPE.docx',
+        pdfUrl: '/docs/saas-buildout/founding-ten/modalities/YOGA_MODALITY_SCOPE.pdf',
       },
     ],
     longDescription: [
