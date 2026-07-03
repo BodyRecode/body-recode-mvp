@@ -41,6 +41,9 @@ type Replacement = {
   expression: string        // e.g. 'coach().email'
   importFrom: '@/config/tenant' | '@/lib/app-url'
   importName: 'coach' | 'brand' | 'appUrl'
+  // If true, ONLY replace when the literal matches EXACTLY (no path/prefix logic).
+  // Use for the plain brand name where "starts-with" would produce false positives.
+  exactOnly?: boolean
 }
 
 // Note: order matters. Longer patterns first so we don't accidentally
@@ -88,6 +91,17 @@ const REPLACEMENTS: Replacement[] = [
     importFrom: '@/config/tenant',
     importName: 'brand',
   },
+  // Plain brand name — replace ONLY on exact match. Never expand to path/prefix
+  // matches because "Body Recode Membership" is a product name (leave alone —
+  // it's captured separately via products().membershipName), and "Body Recode
+  // Playbook" etc are internal docs.
+  {
+    literal: 'Body Recode',
+    expression: 'brand().name',
+    importFrom: '@/config/tenant',
+    importName: 'brand',
+    exactOnly: true,
+  },
 ]
 
 // Files to skip
@@ -96,6 +110,15 @@ const SKIP_FILES = [
   'src/lib/tenant-resolver.ts',
   'src/lib/app-url.ts',
   'src/middleware.ts',        // hardcoded host constants for redirect logic
+  // Kade-only dashboards — these reference "Body Recode" as one BRAND in Kade's
+  // multi-brand architecture (BR / PC / Arete / AICM / SOT), not as the current
+  // tenant. Replacing here would break the multi-brand strategy views.
+  'src/app/dashboard/business/strategy/page.tsx',
+  'src/app/dashboard/business/personal-brand/page.tsx',
+  'src/app/dashboard/business/ai-cofounder/page.tsx',
+  'src/app/dashboard/business/brand/page.tsx',
+  // Boardroom personas + help guide reference BR-specific playbook content.
+  'src/app/dashboard/help/page.tsx',
 ]
 
 function shouldSkip(filePath: string): boolean {
@@ -133,6 +156,7 @@ function transformStringLiteral(node: Node, filePath: string): boolean {
       markImportNeeded(filePath, r.importFrom, r.importName)
       return true
     }
+    if (r.exactOnly) continue
     // Starts-with match with path → template literal with expression + path
     if (value.startsWith(r.literal + '/')) {
       const tail = value.slice(r.literal.length)  // includes leading /
@@ -157,6 +181,7 @@ function transformTemplateLiteral(node: Node, filePath: string): boolean {
   let newText = fullText
 
   for (const r of REPLACEMENTS) {
+    if (r.exactOnly) continue  // Skip fuzzy matching for brand-name-style patterns
     // Replace occurrences of the literal INSIDE the template (not already interpolated)
     // Simple substring check — the template already has ${...} for existing interpolations
     if (newText.includes(r.literal)) {
@@ -188,6 +213,24 @@ function transformJsxText(node: Node, filePath: string): boolean {
 
   // Find first matching replacement
   for (const r of REPLACEMENTS) {
+    if (r.exactOnly) {
+      // Whole-word match: adjacent chars (or edges) must be non-word to avoid
+      // over-matching "Body Recode Membership" (leave — that's a product name)
+      // or "Body Recode Playbook" etc.
+      const escaped = r.literal.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      const re = new RegExp(`(^|\\W)${escaped}(?=$|\\W)`, 'g')
+      if (re.test(text)) {
+        const reGlobal = new RegExp(`(^|\\W)${escaped}(?=$|\\W)`, 'g')
+        // Preserve the leading non-word capture group
+        const newText = text.replace(reGlobal, (_m, lead) => `${lead}{${r.expression}}`)
+        // But we can't put a JSX expression right in JSX text — need to reset the entire text as a
+        // string+expression sequence. The JSX child parser accepts this: `foo {expr} bar` is valid.
+        node.replaceWithText(newText)
+        markImportNeeded(filePath, r.importFrom, r.importName)
+        return true
+      }
+      continue
+    }
     if (text.includes(r.literal)) {
       // Split around the match and reconstruct with JSX expression
       const idx = text.indexOf(r.literal)
@@ -215,6 +258,7 @@ function transformPrefixedLiteral(node: Node, filePath: string): boolean {
   // (exact match logic is in transformStringLiteral; here we handle "contains")
 
   for (const r of REPLACEMENTS) {
+    if (r.exactOnly) continue  // Skip fuzzy contain-match for brand-name patterns
     // Exact match + path match handled elsewhere. Handle "contains but not at
     // start" and "starts with prefix like mailto:".
     const idx = value.indexOf(r.literal)
@@ -256,7 +300,11 @@ function processFile(sf: SourceFile): number {
     if (Node.isStringLiteral(n) || Node.isNoSubstitutionTemplateLiteral(n)) {
       const value = (n as any).getLiteralValue?.() as string | undefined
       if (typeof value !== 'string') return
-      if (REPLACEMENTS.some((r) => value === r.literal || value.startsWith(r.literal + '/'))) {
+      if (REPLACEMENTS.some((r) => {
+        if (value === r.literal) return true
+        if (r.exactOnly) return false
+        return value.startsWith(r.literal + '/')
+      })) {
         stringNodes.push(n)
       }
     }
