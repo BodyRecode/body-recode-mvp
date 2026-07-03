@@ -35,6 +35,62 @@ export default function PlatformBuildoutPage() {
         subtitle="End-to-end plan for the powered platform. Every phase, every step, current status. Manifest at src/lib/saas-buildout-manifest.ts is the source of truth — the ship checklist requires updating it on every SaaS commit."
       />
 
+      {/* Page explainer — how to read this page */}
+      <details className="mb-6 p-4 rounded-2xl border border-blue-200 bg-blue-50/40">
+        <summary className="cursor-pointer text-[13px] font-bold text-blue-900 uppercase tracking-widest select-none">
+          How to read this page
+        </summary>
+        <div className="mt-3 space-y-3 text-[13px] text-stone-700 leading-relaxed">
+          <p><strong>What this is.</strong> The platform buildout is Kade&apos;s already-scoped plan to turn Body Recode from a solo coach business into a licensable multi-tenant platform (Studio of Ten). It has five phases (0-4) that must be tackled in order — earlier phases lock decisions and unblock later ones.</p>
+          <p><strong>What the manifest tracks.</strong> Every phase has a list of concrete steps. Each step has a status (shipped / in progress / planned / blocked / deferred), an effort estimate (S/M/L), commit SHAs where it was landed, files it touched, and notes on blockers or deferrals. Deferred steps don&apos;t count against progress — they&apos;re decisions to skip, not incomplete work.</p>
+          <p><strong>What the callouts mean.</strong> The blue &quot;Next up&quot; card at the top surfaces the highest-priority actionable step (the first in-progress step, or the first planned step with no blocker). The green &quot;Phase gate&quot; card appears when a phase is 100% shipped but the next phase hasn&apos;t started — a signal to pause + review before absorbing the next phase&apos;s cost.</p>
+          <p><strong>Where it&apos;s enforced.</strong> The manifest is at <code className="bg-white px-1 py-0.5 rounded border border-blue-200 text-[11px]">src/lib/saas-buildout-manifest.ts</code>. The ship checklist (<code className="bg-white px-1 py-0.5 rounded border border-blue-200 text-[11px]">feedback_ship_checklist</code>) requires updating the manifest entry on every SaaS/white-label commit — status bump + commit SHA + shippedAt in the same commit. Silent drift is not allowed.</p>
+        </div>
+      </details>
+
+      {/* Legend: statuses + effort */}
+      <details className="mb-6 p-4 rounded-2xl border border-stone-200 bg-stone-50/60">
+        <summary className="cursor-pointer text-[13px] font-bold text-stone-900 uppercase tracking-widest select-none">
+          Legend · statuses + effort
+        </summary>
+        <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-4 text-[13px] text-stone-700 leading-relaxed">
+          <div>
+            <div className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-2">Status badges</div>
+            <ul className="space-y-2">
+              <li className="flex items-start gap-2">
+                <StatusChip status="shipped" />
+                <span>Landed in production. <code className="text-[11px]">shippedAt</code> is stamped and commit SHAs are attached.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <StatusChip status="in_progress" />
+                <span>Currently being worked on. At most one step per phase should be in progress at a time.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <StatusChip status="planned" />
+                <span>Scoped and ready to build. Not started. If it has a <code className="text-[11px]">blockedBy</code> ref, it&apos;s waiting on that step to ship.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <StatusChip status="blocked" />
+                <span>Was in progress but hit a wall. The <code className="text-[11px]">notes</code> field explains the blocker + what unblocks it.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <StatusChip status="deferred" />
+                <span>Deliberately deprioritised — decided-not-now, not incomplete. Excluded from progress %. Notes explain why.</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <div className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-2">Effort sizing</div>
+            <ul className="space-y-2">
+              <li><span className="inline-block w-6 text-[11px] font-mono font-bold text-stone-500">S</span> <strong>Small</strong> — a few hours to a day. Config change, small helper, single-file fix, non-build decision.</li>
+              <li><span className="inline-block w-6 text-[11px] font-mono font-bold text-stone-500">M</span> <strong>Medium</strong> — 1-2 weeks. New schema + a handful of endpoints + a UI, or a codemod across a bounded set of files.</li>
+              <li><span className="inline-block w-6 text-[11px] font-mono font-bold text-stone-500">L</span> <strong>Large</strong> — weeks. Cross-cutting refactor, new subsystem, or 100+ file mutation with per-file decisions.</li>
+            </ul>
+            <p className="text-[11px] text-stone-500 mt-3 italic">Sizes match the original build-plan notation. A single L can bundle several M work units — the estimate captures elapsed calendar time, not lines of code.</p>
+          </div>
+        </div>
+      </details>
+
       {/* Progress overview */}
       <div className="mb-8 p-5 rounded-2xl border border-stone-200 bg-white">
         <div className="flex items-baseline justify-between mb-3 gap-3 flex-wrap">
@@ -58,6 +114,9 @@ export default function PlatformBuildoutPage() {
             style={{ width: `${overallPct}%` }}
           />
         </div>
+        <p className="text-[11px] text-stone-500 mt-3 leading-relaxed">
+          Overall progress = shipped steps ÷ (total steps − deferred). Deferred steps are decided-not-now (excluded from the denominator), not incomplete. 100% means the platform is ready to license as-is; realistic target is 100% of Phase 2 before partner #2 signs, all phases before scaling past ten partners.
+        </p>
       </div>
 
       {/* Next up + phase gate */}
@@ -68,7 +127,10 @@ export default function PlatformBuildoutPage() {
             <div className="text-[15px] font-semibold text-stone-900 mb-1">
               Phase {next.phase.id} · {next.step.title}
             </div>
-            <p className="text-[13px] text-stone-700 leading-relaxed">{next.step.description}</p>
+            <p className="text-[13px] text-stone-700 leading-relaxed mb-2">{next.step.description}</p>
+            <p className="text-[11px] text-blue-800/80 italic leading-relaxed">
+              Why this: it&apos;s the first in-progress step (or the first planned step with no active blocker) across all phases in order.
+            </p>
           </div>
         )}
         {gate && (
@@ -77,8 +139,11 @@ export default function PlatformBuildoutPage() {
             <div className="text-[15px] font-semibold text-stone-900 mb-1">
               Phase {gate.id} complete — review before starting Phase {gate.id + 1}
             </div>
-            <p className="text-[13px] text-stone-700 leading-relaxed">
+            <p className="text-[13px] text-stone-700 leading-relaxed mb-2">
               All non-deferred steps in this phase have shipped. Take a beat to validate outcomes before absorbing the next phase&apos;s cost.
+            </p>
+            <p className="text-[11px] text-green-800/80 italic leading-relaxed">
+              Why this: this phase has zero non-deferred planned/in-progress steps left, and the next phase has zero shipped/in-progress steps. That&apos;s a natural checkpoint.
             </p>
           </div>
         )}
@@ -133,12 +198,33 @@ function PhaseCard({ phase }: { phase: Phase }) {
         </div>
       </div>
 
+      {/* Phase explainer — full context on what this phase means, why it exists, when to tackle it */}
+      <details className="px-5 py-3 border-b border-stone-100 bg-blue-50/20">
+        <summary className="cursor-pointer text-[11px] font-bold text-blue-900 uppercase tracking-widest select-none">
+          What this phase means
+        </summary>
+        <div className="mt-3 space-y-2 text-[13px] text-stone-700 leading-relaxed">
+          {phase.longDescription.map((para, i) => (
+            <p key={i}>{para}</p>
+          ))}
+        </div>
+      </details>
+
       <ul className="divide-y divide-stone-100">
         {phase.steps.map((step) => (
           <StepRow key={step.id} step={step} />
         ))}
       </ul>
     </section>
+  )
+}
+
+function StatusChip({ status }: { status: StepStatus }) {
+  const badge = statusBadge(status)
+  return (
+    <span className={`inline-block text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded flex-shrink-0 ${badge.classes}`}>
+      {badge.label}
+    </span>
   )
 }
 

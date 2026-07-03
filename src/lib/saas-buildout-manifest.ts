@@ -41,7 +41,12 @@ export type Step = {
 export type Phase = {
   id: 0 | 1 | 2 | 3 | 4
   title: string
+  /** One-line summary shown next to the phase title */
   description: string
+  /** Multi-paragraph explainer covering WHY this phase exists, WHAT it accomplishes,
+   *  WHEN it should be tackled, and the key strategic decisions inside it. Renders
+   *  as an expandable "What this phase means" panel on the buildout page. */
+  longDescription: string[]
   /** Order in which phases should be tackled (matches build plan) */
   order: number
   steps: Step[]
@@ -53,6 +58,11 @@ export const PHASES: Phase[] = [
     id: 0,
     title: 'Decide & verify',
     description: 'Non-build. Lock the offer + verify what already exists.',
+    longDescription: [
+      'Before any code work, lock down the commercial + doctrine shape of the offer. This phase is mostly non-build — it prevents building the wrong thing.',
+      'What gets decided here: per-seat pricing (setup / subscription / per-active-client), the founding-partner licence agreement, that partners run BR doctrine branded as theirs (mode A) versus injecting their own method (mode B — reserved for post-Founding-Ten), and whether the platform can support what partners actually need today (coach onboarding flow existence, manual plan authoring, etc.).',
+      'The output of Phase 0 is a signed one-pager + a punch list of unknowns to verify against the codebase. Wrong answers here compound expensively downstream.',
+    ],
     order: 0,
     steps: [
       {
@@ -105,6 +115,12 @@ export const PHASES: Phase[] = [
     id: 1,
     title: 'Pilot-ready (hand-gloved)',
     description: 'Onboard partner #1 (Melisa) with targeted branding override before the full de-hardcode.',
+    longDescription: [
+      'The point of Phase 1 is to onboard ONE partner (Melisa) with active support, without waiting for the whole multi-tenant product to be shippable. Because every meaningful table already has coach_id + RLS (Phase 3 of the original build plan §3), a single coach can go live on their own subdomain with a targeted branding override well before the full de-hardcode is done.',
+      'Melisa is "pilot zero" — treated as a controlled experiment, not a repeatable product. What we learn from her (which manual steps hurt, which fields should have better defaults, what her clients notice first) tightens the Phase 2 deployment checklist for partners #2-#10.',
+      'Shape A vs Shape B: Melisa can either get a separate Vercel deploy (Shape A — isolated, faster to reason about) or share the single multi-tenant deploy (Shape B — the eventual scale pattern). Pilot zero can start on Shape A and migrate to Shape B once the shared deploy path is battle-tested.',
+      'This phase ends when Melisa has been live + stable for 30 days AND we make a GO/NO-GO decision on partner #2.',
+    ],
     order: 1,
     steps: [
       {
@@ -140,6 +156,12 @@ export const PHASES: Phase[] = [
     id: 2,
     title: 'Product-ready',
     description: 'Repeatable via tenant_config DB row + resolver. Self-serve-ish onboarding.',
+    longDescription: [
+      'Phase 2 turns "one hand-gloved partner" (Phase 1) into "a repeatable product." The multi-tenant scaffold — one DB row per tenant, a resolver that maps a request host to a tenant, a settings UI so each coach can edit their own brand — is what makes partner #2 possible without a bespoke deploy.',
+      'The mountain in this phase is the de-hardcode: ~230 files historically say "Body Recode" and "kade@bodyrecode.au" as literal strings baked into JSX, email templates, and hard-coded URLs. Codemod-driven refactoring routes them all through brand() / coach() helpers so the tenant config drives what a client sees.',
+      'The other three product-ready pillars: (a) custom-domain routing — a tenant on their own domain, not a subdomain; (b) per-tenant email from-address wiring — emails come from THEIR address, not Kade\'s; (c) tenant-editable configuration UI at /dashboard/settings/tenant so a coach can update their own brand without SQL.',
+      'Phase 2 does NOT include billing (Phase 3) or per-tenant doctrine (Phase 4). It\'s brand shell + surfaces only.',
+    ],
     order: 2,
     steps: [
       {
@@ -255,6 +277,13 @@ export const PHASES: Phase[] = [
     id: 3,
     title: 'Billing',
     description: 'Per-tenant Stripe (tenant\'s clients pay tenant) + Kade\'s billing of partners.',
+    longDescription: [
+      'Phase 3 handles TWO separate money flows that were both hand-waved in earlier phases.',
+      '(1) Tenant\'s clients pay the tenant. Uses Stripe Connect Standard accounts — each tenant onboards their own Stripe, their customers pay them directly via Direct Charges, Stripe deposits into their bank. The platform takes an application fee on top. This is what makes the offer "run your own coaching business on our engine" rather than "run your business through Kade\'s Stripe."',
+      '(2) Kade\'s billing of partners. Separate integration entirely — Kade\'s Stripe against Kade\'s own SKUs: one-time setup fee + monthly platform subscription + per-active-client metering. This is the SOT licensing revenue.',
+      'The heavy lifting inside Phase 3 is the callsite refactor. 15+ existing checkout endpoints currently pass process.env.STRIPE_SECRET_KEY directly. Each has to be updated to consult tenantStripeContext() — but each also needs a per-flow decision: is this charge platform-billed (bolt-on store — BR IP) or tenant-billed (a coach\'s coaching commencement fee — the tenant\'s product)? No universal rule; needs a per-callsite call.',
+      'Phase 3 does not block Melisa\'s pilot — she can start on the platform without accepting Stripe payments and Kade can invoice her directly during pilot zero.',
+    ],
     order: 3,
     steps: [
       {
@@ -305,6 +334,13 @@ export const PHASES: Phase[] = [
     id: 4,
     title: 'Scale & doctrine mode B',
     description: 'Per-tenant doctrine parameters. Method-injection pipeline. Modality axis.',
+    longDescription: [
+      'Phase 4 is post-Founding-Ten territory. The first ten partners run on BR\'s doctrine, mode A — same interpretation engine, same safety floors, their branding on top. That works because the engine is the moat and the branded shell is the product.',
+      'Post-ten, partners will start pushing for their OWN doctrine. Mode B — "method injection" — lets a partner\'s method (their thresholds, their preferred exercises, their language) be encoded as doctrine config that the engine consumes. Stage 00 IP Extraction (starting with Kim) is the upstream pipeline: partner walks their method → we structure it → we inject it as config, not code.',
+      'The modality axis is a related-but-separate concept. Modality = strength training vs yoga vs breathwork. Different exercise libraries, different prescription schemas, different safety constraints. Yoga modality is already built on a feature branch — merges when a yoga-modality partner signs.',
+      'Phase 4 also finishes anything Phase 0 flagged as blocking. If verification found coaches need manual plan authoring (not just generate-then-edit), that plan builder ships here.',
+      'This phase is deliberately fuzzy right now — its shape depends on what pilot zero and the first few partners teach us.',
+    ],
     order: 4,
     steps: [
       {
