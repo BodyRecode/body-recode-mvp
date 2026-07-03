@@ -49,6 +49,7 @@ const MARKETING_CLUSTER: NavCluster = {
     { href: '/dashboard/business/content', label: 'Content' },
     { href: '/dashboard/business/ads', label: 'Ads' },
     { href: '/dashboard/business/automations', label: 'Automations' },
+    { href: '/dashboard/sms', label: 'SMS Pulse' },
     { href: '/dashboard/business/website', label: 'Website' },
   ],
 }
