@@ -7,9 +7,11 @@ import {
   phaseProgress,
   nextUpStep,
   phaseGateReview,
+  CROSS_PHASE_DOCS,
   type Phase,
   type Step,
   type StepStatus,
+  type Doc,
 } from '@/lib/saas-buildout-manifest'
 
 export const metadata = { title: 'Platform Buildout · Settings' }
@@ -149,6 +151,22 @@ export default function PlatformBuildoutPage() {
         )}
       </div>
 
+      {/* Reference library — cross-phase docs */}
+      <div className="mb-8 bg-white border border-stone-200 rounded-2xl overflow-hidden">
+        <div className="px-5 py-4 border-b border-stone-200 bg-stone-50">
+          <div className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">Reference library</div>
+          <h2 className="text-[16px] font-bold text-stone-900 mt-0.5">Cross-phase docs</h2>
+          <p className="text-[12px] text-stone-600 leading-relaxed mt-1">
+            The strategic + operational docs that span multiple phases. Both .md (source) and .docx (Word-friendly) versions served from the deployment — click either to open.
+          </p>
+        </div>
+        <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+          {CROSS_PHASE_DOCS.map((d) => (
+            <DocCard key={d.mdUrl} doc={d} />
+          ))}
+        </div>
+      </div>
+
       {/* Phases */}
       <div className="space-y-6">
         {PHASES.map((phase) => (
@@ -210,12 +228,53 @@ function PhaseCard({ phase }: { phase: Phase }) {
         </div>
       </details>
 
+      {/* Phase docs */}
+      {phase.docs && phase.docs.length > 0 && (
+        <div className="px-5 py-3 border-b border-stone-100 bg-stone-50/50">
+          <div className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">Docs for this phase</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {phase.docs.map((d) => (
+              <DocCard key={d.mdUrl} doc={d} />
+            ))}
+          </div>
+        </div>
+      )}
+
       <ul className="divide-y divide-stone-100">
         {phase.steps.map((step) => (
           <StepRow key={step.id} step={step} />
         ))}
       </ul>
     </section>
+  )
+}
+
+function DocCard({ doc }: { doc: Doc }) {
+  const isSql = doc.mdUrl.endsWith('.sql')
+  return (
+    <div className="p-3 rounded-xl border border-stone-200 bg-white hover:border-blue-300 transition-colors">
+      <div className="text-[13px] font-semibold text-stone-900 mb-1 break-all">{doc.title}</div>
+      <p className="text-[11px] text-stone-600 leading-relaxed mb-2">{doc.description}</p>
+      <div className="flex items-center gap-2 flex-wrap">
+        <a
+          href={doc.mdUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[11px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-stone-100 text-stone-700 hover:bg-blue-100 hover:text-blue-700"
+        >
+          {isSql ? 'View .sql' : 'View .md'}
+        </a>
+        {!isSql && (
+          <a
+            href={doc.docxUrl}
+            download
+            className="text-[11px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-stone-100 text-stone-700 hover:bg-blue-100 hover:text-blue-700"
+          >
+            Download .docx
+          </a>
+        )}
+      </div>
+    </div>
   )
 }
 

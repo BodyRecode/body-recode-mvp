@@ -18,6 +18,23 @@
 
 export type StepStatus = 'planned' | 'in_progress' | 'shipped' | 'blocked' | 'deferred'
 
+/**
+ * A doc bundled into public/docs/saas-buildout/. Both .md (source) and .docx
+ * (Word-friendly copy) are served from Vercel — clickable from anywhere, no
+ * dev-only endpoint needed. Kept in sync from ~/Dropbox via
+ * `scripts/sync-saas-buildout-docs.sh` (run manually when the Dropbox source
+ * changes).
+ */
+export type Doc = {
+  title: string
+  /** One-line description of what's in it */
+  description: string
+  /** Absolute /-prefixed URL to the .md (view in browser) */
+  mdUrl: string
+  /** Absolute /-prefixed URL to the .docx (Word-friendly download) */
+  docxUrl: string
+}
+
 export type Step = {
   id: string
   title: string
@@ -47,10 +64,43 @@ export type Phase = {
    *  WHEN it should be tackled, and the key strategic decisions inside it. Renders
    *  as an expandable "What this phase means" panel on the buildout page. */
   longDescription: string[]
+  /** Docs that belong to this phase (bundled to public/docs/saas-buildout/). */
+  docs?: Doc[]
   /** Order in which phases should be tackled (matches build plan) */
   order: number
   steps: Step[]
 }
+
+/**
+ * Docs that span multiple phases (build plan, deployment checklists, etc.).
+ * Rendered as a persistent "Reference library" section on the buildout page.
+ */
+export const CROSS_PHASE_DOCS: Doc[] = [
+  {
+    title: 'POWERED_PLATFORM_BUILD_PLAN.md',
+    description: 'Kade\'s canonical Phase 0-4 build plan. Original strategic scoping — every phase reads from this.',
+    mdUrl: '/docs/saas-buildout/founding-ten/POWERED_PLATFORM_BUILD_PLAN.md',
+    docxUrl: '/docs/saas-buildout/founding-ten/POWERED_PLATFORM_BUILD_PLAN.docx',
+  },
+  {
+    title: 'README.md (Founding Ten)',
+    description: 'What SOT is now: the powered-platform proposition, capped at 10 founding partners.',
+    mdUrl: '/docs/saas-buildout/founding-ten/README.md',
+    docxUrl: '/docs/saas-buildout/founding-ten/README.docx',
+  },
+  {
+    title: 'PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.md',
+    description: 'Step-by-step onboarding runbook for each new tenant. Live-updated with every Phase 2 increment.',
+    mdUrl: '/docs/saas-buildout/founding-ten/onboarding/PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.md',
+    docxUrl: '/docs/saas-buildout/founding-ten/onboarding/PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.docx',
+  },
+  {
+    title: 'PARTNER_JOURNEY.md',
+    description: '8-stage business process (Attract → Run) for founding partners.',
+    mdUrl: '/docs/saas-buildout/founding-ten/onboarding/PARTNER_JOURNEY.md',
+    docxUrl: '/docs/saas-buildout/founding-ten/onboarding/PARTNER_JOURNEY.docx',
+  },
+]
 
 export const PHASES: Phase[] = [
   // ─────────────────────────────────────────────────────────────
@@ -58,6 +108,14 @@ export const PHASES: Phase[] = [
     id: 0,
     title: 'Decide & verify',
     description: 'Non-build. Lock the offer + verify what already exists.',
+    docs: [
+      {
+        title: 'OFFER_ARCHITECTURE.md',
+        description: 'The canonical founding-partner offer: setup fee + monthly subscription + per-active-client meter. Locked commercially.',
+        mdUrl: '/docs/saas-buildout/founding-ten/OFFER_ARCHITECTURE.md',
+        docxUrl: '/docs/saas-buildout/founding-ten/OFFER_ARCHITECTURE.docx',
+      },
+    ],
     longDescription: [
       'Before any code work, lock down the commercial + doctrine shape of the offer. This phase is mostly non-build — it prevents building the wrong thing.',
       'What gets decided here: per-seat pricing (setup / subscription / per-active-client), the founding-partner licence agreement, that partners run BR doctrine branded as theirs (mode A) versus injecting their own method (mode B — reserved for post-Founding-Ten), and whether the platform can support what partners actually need today (coach onboarding flow existence, manual plan authoring, etc.).',
@@ -115,6 +173,20 @@ export const PHASES: Phase[] = [
     id: 1,
     title: 'Pilot-ready (hand-gloved)',
     description: 'Onboard partner #1 (Melisa) with targeted branding override before the full de-hardcode.',
+    docs: [
+      {
+        title: 'MELISA_PILOT_ZERO_DEPLOYMENT_RUNBOOK.md',
+        description: 'Shape A separate-deploy runbook for Melisa. Step-by-step for the pilot-zero go-live.',
+        mdUrl: '/docs/saas-buildout/founding-ten/onboarding/MELISA_PILOT_ZERO_DEPLOYMENT_RUNBOOK.md',
+        docxUrl: '/docs/saas-buildout/founding-ten/onboarding/MELISA_PILOT_ZERO_DEPLOYMENT_RUNBOOK.docx',
+      },
+      {
+        title: 'onboarding/README.md',
+        description: 'Onboarding folder index — points to the checklist + runbook + partner journey.',
+        mdUrl: '/docs/saas-buildout/founding-ten/onboarding/README.md',
+        docxUrl: '/docs/saas-buildout/founding-ten/onboarding/README.docx',
+      },
+    ],
     longDescription: [
       'The point of Phase 1 is to onboard ONE partner (Melisa) with active support, without waiting for the whole multi-tenant product to be shippable. Because every meaningful table already has coach_id + RLS (Phase 3 of the original build plan §3), a single coach can go live on their own subdomain with a targeted branding override well before the full de-hardcode is done.',
       'Melisa is "pilot zero" — treated as a controlled experiment, not a repeatable product. What we learn from her (which manual steps hurt, which fields should have better defaults, what her clients notice first) tightens the Phase 2 deployment checklist for partners #2-#10.',
@@ -156,6 +228,26 @@ export const PHASES: Phase[] = [
     id: 2,
     title: 'Product-ready',
     description: 'Repeatable via tenant_config DB row + resolver. Self-serve-ish onboarding.',
+    docs: [
+      {
+        title: 'tenant_config schema (SQL)',
+        description: 'The Phase 2 tenant_config table. JSONB brand/coach/products/licence/modality columns + RLS by coach_id.',
+        mdUrl: '/docs/saas-buildout/sql/2026-07-01_tenant_config_schema.sql',
+        docxUrl: '/docs/saas-buildout/sql/2026-07-01_tenant_config_schema.sql',
+      },
+      {
+        title: 'tenant_domains schema (SQL)',
+        description: 'The Phase 2 custom-domain routing table + normalisation trigger + single-primary enforcement.',
+        mdUrl: '/docs/saas-buildout/sql/2026-07-03_tenant_domains_schema.sql',
+        docxUrl: '/docs/saas-buildout/sql/2026-07-03_tenant_domains_schema.sql',
+      },
+      {
+        title: 'PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.md',
+        description: 'Full step-by-step for onboarding a new tenant. Ship logs at the top; discipline is to keep it fresh with each Phase 2 increment.',
+        mdUrl: '/docs/saas-buildout/founding-ten/onboarding/PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.md',
+        docxUrl: '/docs/saas-buildout/founding-ten/onboarding/PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.docx',
+      },
+    ],
     longDescription: [
       'Phase 2 turns "one hand-gloved partner" (Phase 1) into "a repeatable product." The multi-tenant scaffold — one DB row per tenant, a resolver that maps a request host to a tenant, a settings UI so each coach can edit their own brand — is what makes partner #2 possible without a bespoke deploy.',
       'The mountain in this phase is the de-hardcode: ~230 files historically say "Body Recode" and "kade@bodyrecode.au" as literal strings baked into JSX, email templates, and hard-coded URLs. Codemod-driven refactoring routes them all through brand() / coach() helpers so the tenant config drives what a client sees.',
@@ -334,6 +426,20 @@ export const PHASES: Phase[] = [
     id: 4,
     title: 'Scale & doctrine mode B',
     description: 'Per-tenant doctrine parameters. Method-injection pipeline. Modality axis.',
+    docs: [
+      {
+        title: 'YOGA_DOCTRINE_v1.md',
+        description: 'Complete doctrine pack for the yoga modality — universal safety constraints, prescription schema, exercise vocabulary.',
+        mdUrl: '/docs/saas-buildout/founding-ten/modalities/YOGA_DOCTRINE_v1.md',
+        docxUrl: '/docs/saas-buildout/founding-ten/modalities/YOGA_DOCTRINE_v1.docx',
+      },
+      {
+        title: 'YOGA_MODALITY_SCOPE.md',
+        description: 'Scoping doc for the yoga modality build — what changed between strength and yoga at the Layer 2 prescription surface.',
+        mdUrl: '/docs/saas-buildout/founding-ten/modalities/YOGA_MODALITY_SCOPE.md',
+        docxUrl: '/docs/saas-buildout/founding-ten/modalities/YOGA_MODALITY_SCOPE.docx',
+      },
+    ],
     longDescription: [
       'Phase 4 is post-Founding-Ten territory. The first ten partners run on BR\'s doctrine, mode A — same interpretation engine, same safety floors, their branding on top. That works because the engine is the moat and the branded shell is the product.',
       'Post-ten, partners will start pushing for their OWN doctrine. Mode B — "method injection" — lets a partner\'s method (their thresholds, their preferred exercises, their language) be encoded as doctrine config that the engine consumes. Stage 00 IP Extraction (starting with Kim) is the upstream pipeline: partner walks their method → we structure it → we inject it as config, not code.',
