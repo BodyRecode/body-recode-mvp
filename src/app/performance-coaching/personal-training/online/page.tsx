@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import MarketingNav from '@/components/marketing/nav'
 import MarketingFooter from '@/components/marketing/footer'
+import { brand } from "@/config/tenant";
 
 export const metadata: Metadata = {
   title: 'Online Personal Trainer | Body Recode™',
@@ -21,8 +22,8 @@ export default function OnlinePersonalTrainerPage() {
             Online Personal Trainer
           </h1>
           <p className="text-xl text-stone-600 leading-relaxed max-w-2xl mb-12">
-            Body Recode™ is not standard personal training. It is a structured, biology-first coaching system that builds around how your body actually works, not a program written for the average person. Delivered 1:1, fully online.
-          </p>
+            {brand().name}™ is not standard personal training. It is a structured, biology-first coaching system that builds around how your body actually works, not a program written for the average person. Delivered 1:1, fully online.
+                                </p>
           <Link
             href="/performance-check-in"
             className="inline-block bg-[#1B6DFC] text-white font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
@@ -43,15 +44,15 @@ export default function OnlinePersonalTrainerPage() {
             It is missing the biological context. What body state are you in? How is your nervous system coping with total load from training, work, sleep, and stress combined? Is your body currently in a condition where the prescribed training can actually produce adaptation?
           </p>
           <p className="text-stone-600 text-lg leading-relaxed">
-            Without this context, even a well-designed program can produce poor results or make things worse. Body Recode™ builds this context first, then designs the program around it.
-          </p>
+            Without this context, even a well-designed program can produce poor results or make things worse. {brand().name}™ builds this context first, then designs the program around it.
+                                </p>
         </div>
       </section>
 
       {/* Comparison */}
       <section className="bg-white py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">Standard online PT vs Body Recode™</h2>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">Standard online PT vs {brand().name}™</h2>
           <div className="grid md:grid-cols-2 gap-10">
             <div className="border border-stone-200 rounded-xl p-6">
               <p className="text-sm font-bold text-stone-500 uppercase tracking-wider mb-4">Standard Online Personal Training</p>
@@ -72,7 +73,7 @@ export default function OnlinePersonalTrainerPage() {
               </ul>
             </div>
             <div className="border border-blue-200 rounded-xl p-6 bg-blue-50">
-              <p className="text-sm font-bold text-[#1B6DFC] uppercase tracking-wider mb-4">Body Recode™</p>
+              <p className="text-sm font-bold text-[#1B6DFC] uppercase tracking-wider mb-4">{brand().name}™</p>
               <ul className="space-y-3">
                 {[
                   'Program built on a complete biological assessment',
@@ -124,10 +125,10 @@ export default function OnlinePersonalTrainerPage() {
       {/* Who it's for */}
       <section className="bg-white py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">Who Body Recode™ is for</h2>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">Who {brand().name}™ is for</h2>
           <p className="text-stone-600 text-lg leading-relaxed mb-12">
-            Body Recode™ is for people who are serious about understanding what is happening in their body and building results that actually last. If you are looking for a casual check-in and a generic program, this is not the right fit. If you want a precision coaching system built around your individual biology, it is.
-          </p>
+            {brand().name}™ is for people who are serious about understanding what is happening in their body and building results that actually last. If you are looking for a casual check-in and a generic program, this is not the right fit. If you want a precision coaching system built around your individual biology, it is.
+                                </p>
           <div className="grid md:grid-cols-2 gap-10">
             {[
               'You\'ve been training for a while but results have stalled',

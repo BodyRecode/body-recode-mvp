@@ -1,6 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import PrintTrigger from '@/app/dashboard/clients/[id]/cffs-report/print-trigger'
+import { brand } from "@/config/tenant";
 
 function Row({ label, value }: { label: string; value: unknown }) {
   if (value === null || value === undefined || value === '') return null
@@ -53,7 +54,7 @@ export default async function HealthDeclarationPrintPage({ params }: { params: P
       <div style={{ maxWidth: '740px', margin: '0 auto', padding: '48px 40px' }}>
         <div style={{ borderBottom: `3px solid ${G}`, paddingBottom: '24px', marginBottom: '32px' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-black.png" alt="Body Recode" style={{ height: '36px', marginBottom: '24px', display: 'block' }} />
+          <img src="/logo-black.png" alt={brand().name} style={{ height: '36px', marginBottom: '24px', display: 'block' }} />
           <h1 style={{ fontSize: '22px', fontWeight: 800, color: G, marginBottom: '4px' }}>Health Declaration</h1>
           <div style={{ display: 'flex', gap: '40px', marginTop: '16px' }}>
             <div>
@@ -137,7 +138,7 @@ export default async function HealthDeclarationPrintPage({ params }: { params: P
         )}
 
         <div style={{ marginTop: '40px', paddingTop: '16px', borderTop: '1px solid #e5e5e5', display: 'flex', justifyContent: 'space-between' }}>
-          <p style={{ fontSize: '10px', color: '#aaa' }}>© Body Recode™ · www.bodyrecode.au</p>
+          <p style={{ fontSize: '10px', color: '#aaa' }}>© {brand().name}™ · www.bodyrecode.au</p>
           <p style={{ fontSize: '10px', color: '#aaa' }}>Confidential</p>
         </div>
       </div>

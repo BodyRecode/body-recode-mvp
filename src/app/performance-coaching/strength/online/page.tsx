@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import MarketingNav from '@/components/marketing/nav'
 import MarketingFooter from '@/components/marketing/footer'
+import { brand } from "@/config/tenant";
 
 export const metadata: Metadata = {
   title: 'Online Strength Coaching | Body Recode™',
@@ -43,8 +44,8 @@ export default function OnlineStrengthCoachingPage() {
             Hard-working people who train consistently but make slow or no progress, because the training load doesn&apos;t match the body&apos;s actual capacity to adapt, is one of the most common patterns we see.
           </p>
           <p className="text-stone-600 text-lg leading-relaxed">
-            Body Recode™ starts by establishing what that capacity actually is, before any loading decisions are made.
-          </p>
+            {brand().name}™ starts by establishing what that capacity actually is, before any loading decisions are made.
+                                </p>
         </div>
       </section>
 

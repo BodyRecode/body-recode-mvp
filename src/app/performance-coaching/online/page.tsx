@@ -22,8 +22,8 @@ export default function OnlinePerformanceCoachingPage() {
             Online Performance Coaching
           </h1>
           <p className="text-xl text-stone-600 leading-relaxed max-w-2xl mb-12">
-            Body Recode™ is a biology-first coaching system built for high-functioning adults whose bodies have stopped responding to effort. Delivered 1:1 online, same system, same depth, available anywhere in the world.
-          </p>
+            {brand().name}™ is a biology-first coaching system built for high-functioning adults whose bodies have stopped responding to effort. Delivered 1:1 online, same system, same depth, available anywhere in the world.
+                                </p>
           <Link
             href="/performance-check-in"
             className="inline-block bg-[#1B6DFC] text-white font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
@@ -60,8 +60,8 @@ export default function OnlinePerformanceCoachingPage() {
             ))}
           </div>
           <p className="text-stone-500 text-base text-center leading-relaxed mt-12 max-w-2xl mx-auto">
-            These are not discipline problems. They are biological signals. Body Recode™ is built to read them.
-          </p>
+            These are not discipline problems. They are biological signals. {brand().name}™ is built to read them.
+                                </p>
         </div>
       </section>
 
@@ -73,8 +73,8 @@ export default function OnlinePerformanceCoachingPage() {
             Biology first. Training second.
           </h2>
           <p className="text-stone-600 text-lg leading-relaxed mb-6">
-            Most online coaching sends you a program and checks in once a week. Body Recode™ does something different. Before any training is prescribed, we establish what your biology is actually doing and why.
-          </p>
+            Most online coaching sends you a program and checks in once a week. {brand().name}™ does something different. Before any training is prescribed, we establish what your biology is actually doing and why.
+                                </p>
           <p className="text-stone-600 text-lg leading-relaxed mb-6">
             This means building a complete picture across eight domains: training history, stress load, sleep and recovery, body pattern signals, nutrition behaviours, schedule, stimulant use, and hormonal context. Not a fitness questionnaire. A full read of your system.
           </p>
@@ -235,8 +235,8 @@ export default function OnlinePerformanceCoachingPage() {
             Four biological patterns.<br />One system built around all of them.
           </h2>
           <p className="text-stone-500 text-lg leading-relaxed text-center max-w-2xl mx-auto mb-16">
-            Body Recode™ recognises four distinct biological profiles, each with predictable symptoms and patterns. Understanding which one applies to you changes everything about how coaching should proceed.
-          </p>
+            {brand().name}™ recognises four distinct biological profiles, each with predictable symptoms and patterns. Understanding which one applies to you changes everything about how coaching should proceed.
+                                </p>
           <div className="grid md:grid-cols-2 gap-6 mb-12">
             {[
               {
@@ -287,8 +287,8 @@ export default function OnlinePerformanceCoachingPage() {
             <div>
               <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A] tracking-tight mb-3">Kade Dunstone</h2>
               <p className="text-sm text-stone-500 uppercase tracking-wider font-semibold mb-10">
-                Performance Coach · Founder, Body Recode™
-              </p>
+                Performance Coach · Founder, {brand().name}™
+                                            </p>
               <div className="space-y-5 text-stone-600 text-base leading-relaxed">
                 <p>
                   I spent years competing nationally and internationally. Winning titles. Understanding the body at a level most people never reach. I knew how to train. I knew how to eat. I knew how to shape my body with precision.
@@ -309,8 +309,8 @@ export default function OnlinePerformanceCoachingPage() {
                   What I had to learn, and what took far longer than it should have, is that my body was not broken. It was signalling. Loudly. And everything I had been trained to do was making it worse, not better.
                 </p>
                 <p className="text-stone-700 font-medium">
-                  Body Recode™ exists because of that experience. Not as a theory. As a system built from understanding what happens when biology stops responding to effort, and what actually has to change first.
-                </p>
+                  {brand().name}™ exists because of that experience. Not as a theory. As a system built from understanding what happens when biology stops responding to effort, and what actually has to change first.
+                                                  </p>
               </div>
               <p className="mt-10 text-sm text-stone-400 leading-relaxed">
                 <a href={`mailto:${brand().supportEmail}`} className="text-[#1B6DFC] hover:underline">{brand().supportEmail}</a> · Also available face-to-face at <a href="https://www.anytimefitness.com/en-au/locations/newstead-queensland-au-1937" target="_blank" rel="noopener noreferrer" className="text-[#1B6DFC] hover:underline">Anytime Fitness Newstead</a>, Brisbane

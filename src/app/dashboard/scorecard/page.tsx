@@ -16,6 +16,7 @@ import {
   MONO_FONT,
 } from '@/components/dashboard/ui'
 import { TrendingUp, Users, Wallet, ClipboardCheck } from 'lucide-react'
+import { brand } from "@/config/tenant";
 
 // The scorecard must reflect reality the moment it is opened, not a build-time
 // snapshot. Always render fresh.
@@ -54,10 +55,10 @@ export default async function ScorecardPage() {
         title="The numbers that run the business."
         subtitle={
           <>
-            Every metric mirrors a stage in your Value Engines — how Body Recode
-            acquires customers and how it serves them. Auto-pulled from the live
-            system. Review targets each quarter.
-          </>
+            Every metric mirrors a stage in your Value Engines — how {brand().name}
+                            acquires customers and how it serves them. Auto-pulled from the live
+                            system. Review targets each quarter.
+                          </>
         }
       />
 

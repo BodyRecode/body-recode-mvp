@@ -1,5 +1,7 @@
 'use client'
 
+import { brand } from "@/config/tenant";
+
 /**
  * B-roll canvas: Funnel B - State-First Product Arc (Full Funnel)
  *
@@ -149,7 +151,7 @@ export default function FunnelBProductArcPage() {
             letterSpacing: '-0.035em', lineHeight: 1.05,
             color: C.text, marginBottom: '14px', textAlign: 'center',
           }}>
-            The full <span style={{ color: C.blue }}>Body Recode funnel.</span>
+            The full <span style={{ color: C.blue }}>{brand().name} funnel.</span>
           </h1>
           <p style={{
             fontSize: '17px', color: C.body,
@@ -284,7 +286,7 @@ export default function FunnelBProductArcPage() {
               <div style={zone1Card(C.blueDeeper)}>
                 <div>
                   <span style={stageBadge(C.blueDeeper)}>Stage 3</span>
-                  <p style={cardTitle}>Body Recode Membership</p>
+                  <p style={cardTitle}>{brand().name} Membership</p>
                   <p style={cardSub}>$49/wk · Fat Map intro</p>
                 </div>
                 <p style={cardPrice}>$49/wk</p>

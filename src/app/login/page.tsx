@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
-import { logoUrl } from '@/config/tenant'
+import { logoUrl, brand } from '@/config/tenant'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -35,7 +35,7 @@ export default function LoginPage() {
           <img
             src={logoUrl()}
             width="280"
-            alt="Body Recode"
+            alt={brand().name}
             className="mx-auto mb-8"
           />
           <h1 className="text-2xl font-bold text-[#1A1A1A] mb-2">Coach Portal</h1>

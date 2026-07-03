@@ -51,7 +51,7 @@ export default function MembershipWelcomePage() {
       {/* Header */}
       <div style={{ borderBottom: '1px solid #E5E5E5', padding: '18px 24px', background: '#FFFFFF' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
-          <img src={logoUrl()} width="160" alt="Body Recode" style={{ display: 'block' }} />
+          <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block' }} />
         </div>
       </div>
 
@@ -87,7 +87,7 @@ export default function MembershipWelcomePage() {
           }}>
             Welcome to the
             <br />
-            <span style={{ color: '#1B6DFC' }}>Body Recode Membership.</span>
+            <span style={{ color: '#1B6DFC' }}>{brand().name} Membership.</span>
           </h1>
           <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '24px' }} />
           <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>

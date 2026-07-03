@@ -36,7 +36,7 @@ const INPUT_BUY_CONFIG: Record<string, {
   },
 }
 import { BOLT_ON_AD_COPY } from '@/lib/bolt-on-ad-copy'
-import { logoUrl } from '@/config/tenant'
+import { logoUrl, brand } from '@/config/tenant'
 
 type Member = { token: string; first_name: string; email: string }
 
@@ -107,7 +107,7 @@ function UpgradePrompt() {
     }}>
       <div style={{ borderBottom: '1px solid #E5E5E5', padding: '20px 24px' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto' }}>
-          <img src={logoUrl()} width="160" alt="Body Recode" style={{ display: 'block' }} />
+          <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block' }} />
         </div>
       </div>
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '88px 24px', textAlign: 'center' }}>
@@ -179,7 +179,7 @@ export default async function BoltOnDetailPage({ params }: { params: Promise<{ t
             <Link href={`/membership/${token}`} style={{ fontSize: '13px', color: '#1B6DFC', textDecoration: 'none', fontWeight: 600 }}>
               Membership home →
             </Link>
-            <img src={logoUrl()} width="140" alt="Body Recode" style={{ display: 'block' }} />
+            <img src={logoUrl()} width="140" alt={brand().name} style={{ display: 'block' }} />
           </div>
         </div>
       </div>

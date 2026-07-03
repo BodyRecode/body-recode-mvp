@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useFormDraft } from '@/lib/use-form-draft'
+import { brand } from "@/config/tenant";
 
 interface Initial {
   medications: string
@@ -146,7 +147,7 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
       <div className="min-h-screen bg-stone-50 text-stone-800 flex items-center justify-center px-6 py-12">
         <div className="max-w-md text-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-black.png" alt="Body Recode" className="h-20 w-auto mx-auto mb-8" />
+          <img src="/logo-black.png" alt={brand().name} className="h-20 w-auto mx-auto mb-8" />
           <h1 className="text-2xl font-semibold text-[#1A1A1A] mb-3">Thanks, that&apos;s in.</h1>
           <p className="text-stone-600 text-sm leading-relaxed">
             Your follow-up answers have been saved to your file. Kade will weave them into the next program and nutrition cycle.
@@ -162,7 +163,7 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
         {/* Header */}
         <div className="mb-10">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-black.png" alt="Body Recode" className="h-20 w-auto mb-8" />
+          <img src="/logo-black.png" alt={brand().name} className="h-20 w-auto mb-8" />
           <p className="text-[11px] font-bold text-[#1B6DFC] uppercase tracking-[0.2em] mb-2">Follow-up Intake</p>
           <h1 className="text-2xl font-semibold text-[#1A1A1A] mb-3">Hi {clientName.split(' ')[0]}, just a few more questions.</h1>
           <p className="text-stone-600 text-sm leading-relaxed">

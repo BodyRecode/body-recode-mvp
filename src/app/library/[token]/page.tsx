@@ -11,7 +11,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { logoUrl } from '@/config/tenant'
+import { logoUrl, brand } from '@/config/tenant'
 
 type LibraryItem = {
   slug: string
@@ -120,7 +120,7 @@ export default async function LibraryIndexPage({ params }: { params: Promise<{ t
               ← Membership home
             </Link>
           ) : <span />}
-          <img src={logoUrl()} width="140" alt="Body Recode" style={{ display: 'block' }} />
+          <img src={logoUrl()} width="140" alt={brand().name} style={{ display: 'block' }} />
         </div>
       </div>
 
@@ -141,8 +141,8 @@ export default async function LibraryIndexPage({ params }: { params: Promise<{ t
           letterSpacing: '0.14em', textTransform: 'uppercase',
           marginBottom: '14px',
         }}>
-          Body Recode Library
-        </p>
+          {brand().name} Library
+                          </p>
         <h1 style={{
           fontSize: 'clamp(30px, 5vw, 42px)', fontWeight: 900,
           letterSpacing: '-0.035em', lineHeight: 1.1,

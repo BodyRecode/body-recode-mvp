@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og'
-import { coach, logoUrl } from '@/config/tenant'
+import { coach, logoUrl, brand } from '@/config/tenant'
 
 export const runtime = 'edge'
 export const alt = "Knowing your pattern is not correcting it. The 6-Week Body Rewire is focused corrective work built specifically for your pattern. $${products().blueprintPrice}."
@@ -47,7 +47,7 @@ export default async function Image() {
           <img
             src={logoUrl()}
             width={200}
-            alt="Body Recode"
+            alt={brand().name}
             style={{ display: 'block' }}
           />
           <div

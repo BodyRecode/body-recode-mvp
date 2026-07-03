@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og'
-import { logoUrl } from '@/config/tenant'
+import { logoUrl, brand } from '@/config/tenant'
 
 export const runtime = 'edge'
 export const alt = 'B-Roll Canvas: Inside the Membership. Production utility page for the Body Recode Membership explainer video.'
@@ -34,7 +34,7 @@ export default async function Image() {
         />
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative' }}>
-          <img src={logoUrl()} width={200} alt="Body Recode" style={{ display: 'block' }} />
+          <img src={logoUrl()} width={200} alt={brand().name} style={{ display: 'block' }} />
           <div style={{
             display: 'flex', alignItems: 'center', gap: '10px',
             padding: '10px 20px', borderRadius: '99px', background: '#1A1A1A',

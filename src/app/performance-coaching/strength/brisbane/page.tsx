@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import MarketingNav from '@/components/marketing/nav'
 import MarketingFooter from '@/components/marketing/footer'
+import { brand } from "@/config/tenant";
 
 export const metadata: Metadata = {
   title: 'Strength Coach Brisbane | Body Recode™',
@@ -43,15 +44,15 @@ export default function StrengthCoachBrisbanePage() {
             This is one of the most common patterns in Brisbane gyms: hard-working clients who train consistently but make slow or no progress because the training load doesn&apos;t match the body&apos;s actual capacity to adapt.
           </p>
           <p className="text-stone-600 text-lg leading-relaxed">
-            Body Recode™ starts by establishing what that capacity actually is, before any loading decisions are made.
-          </p>
+            {brand().name}™ starts by establishing what that capacity actually is, before any loading decisions are made.
+                                </p>
         </div>
       </section>
 
       {/* How strength coaching works */}
       <section className="bg-white py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">How strength coaching works at Body Recode™</h2>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">How strength coaching works at {brand().name}™</h2>
           <p className="text-stone-600 text-lg leading-relaxed mb-12">
             Every client begins with a full biological intake. This is not a movement screen or a fitness test. It is a structured assessment of the eight domains that determine how your body responds to training load.
           </p>
@@ -77,7 +78,7 @@ export default function StrengthCoachBrisbanePage() {
       {/* Who this is for */}
       <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">Who strength coaching at Body Recode™ is for</h2>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">Who strength coaching at {brand().name}™ is for</h2>
           <div className="grid md:grid-cols-2 gap-10 mb-12">
             {[
               'You want to build genuine, lasting strength, not just short-term numbers',
@@ -106,11 +107,11 @@ export default function StrengthCoachBrisbanePage() {
             Face-to-face strength coaching is conducted at Anytime Fitness Newstead, Brisbane. All sessions are one-on-one. Availability is intentionally limited to maintain the quality and depth of coaching that the system requires.
           </p>
           <p className="text-stone-600 text-lg leading-relaxed mb-4">
-            Body Recode™ strength coaching is also available fully online for clients anywhere in the world. Same system, same depth, delivered remotely through your dedicated client portal.
-          </p>
+            {brand().name}™ strength coaching is also available fully online for clients anywhere in the world. Same system, same depth, delivered remotely through your dedicated client portal.
+                                </p>
           <p className="text-stone-600 text-lg leading-relaxed mb-12">
-            The starting point is always the free Performance Check-In. It is a structured intake that tells you exactly where your body is right now and how the Body Recode™ system applies to you.
-          </p>
+            The starting point is always the free Performance Check-In. It is a structured intake that tells you exactly where your body is right now and how the {brand().name}™ system applies to you.
+                                </p>
           <div className="flex flex-wrap gap-6">
             <Link href="/performance-coaching/strength/online" className="text-[#1B6DFC] text-sm font-semibold hover:underline">Online strength coaching →</Link>
             <Link href="/performance-coaching/brisbane" className="text-[#1B6DFC] text-sm font-semibold hover:underline">Performance coaching →</Link>

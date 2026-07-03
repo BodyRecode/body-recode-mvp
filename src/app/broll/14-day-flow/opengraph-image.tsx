@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og'
-import { logoUrl } from '@/config/tenant'
+import { logoUrl, brand } from '@/config/tenant'
 
 export const runtime = 'edge'
 export const alt = 'B-Roll Canvas: The 14-Day Flow. Production utility page for the Body Decode Challenge explainer video.'
@@ -46,7 +46,7 @@ export default async function Image() {
           <img
             src={logoUrl()}
             width={200}
-            alt="Body Recode"
+            alt={brand().name}
             style={{ display: 'block' }}
           />
           <div

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, use as usePromise } from 'react'
+import { brand } from "@/config/tenant";
 
 interface FeedbackPreview {
   id: string
@@ -84,8 +85,8 @@ export default function ConsentPage({ params }: { params: Promise<{ token: strin
   if (done === 'granted') {
     return <div style={wrapStyle}><div style={cardStyle}>
       <h1 style={{ fontSize: 22, fontWeight: 700, color: '#1A1A1A', marginBottom: 12 }}>Permission granted - thank you</h1>
-      <p style={{ color: '#3A3A3A', lineHeight: 1.6, marginBottom: 12 }}>Your words may appear on the Body Recode website, Instagram, or other marketing surfaces, attributed as: <strong>{publishAs === 'first_name' ? preview.first_name : publishAs === 'first_last_initial' ? `${preview.first_name} ${preview.last_initial ? preview.last_initial + '.' : ''}` : 'Anonymous'}</strong>.</p>
-      <p style={{ color: '#6B6B6B', fontSize: 13, lineHeight: 1.5 }}>You can withdraw permission at any time by replying to your original Body Recode email with &ldquo;withdraw quote&rdquo;.</p>
+      <p style={{ color: '#3A3A3A', lineHeight: 1.6, marginBottom: 12 }}>Your words may appear on the {brand().name} website, Instagram, or other marketing surfaces, attributed as: <strong>{publishAs === 'first_name' ? preview.first_name : publishAs === 'first_last_initial' ? `${preview.first_name} ${preview.last_initial ? preview.last_initial + '.' : ''}` : 'Anonymous'}</strong>.</p>
+      <p style={{ color: '#6B6B6B', fontSize: 13, lineHeight: 1.5 }}>You can withdraw permission at any time by replying to your original {brand().name} email with &ldquo;withdraw quote&rdquo;.</p>
     </div></div>
   }
   if (done === 'denied') {
@@ -97,9 +98,9 @@ export default function ConsentPage({ params }: { params: Promise<{ token: strin
 
   // The actual consent form
   return <div style={wrapStyle}><div style={cardStyle}>
-    <p style={{ color: '#1B6DFC', fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>Body Recode · Permission to Share</p>
+    <p style={{ color: '#1B6DFC', fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>{brand().name} · Permission to Share</p>
     <h1 style={{ fontSize: 24, fontWeight: 800, color: '#1A1A1A', marginBottom: 16, letterSpacing: '-0.02em' }}>Can we share what you wrote?</h1>
-    <p style={{ color: '#3A3A3A', lineHeight: 1.6, marginBottom: 20 }}>You recently shared feedback after your {preview.stage === 'challenge' ? '14-Day Body Decode Challenge' : preview.stage}. With your permission, we&apos;d love to use what you said as a testimonial on the Body Recode website, Instagram, or other marketing.</p>
+    <p style={{ color: '#3A3A3A', lineHeight: 1.6, marginBottom: 20 }}>You recently shared feedback after your {preview.stage === 'challenge' ? '14-Day Body Decode Challenge' : preview.stage}. With your permission, we&apos;d love to use what you said as a testimonial on the {brand().name} website, Instagram, or other marketing.</p>
 
     <div style={{ background: '#F3E9E1', borderLeft: '3px solid #1B6DFC', borderRadius: 4, padding: '16px 18px', margin: '20px 0', fontStyle: 'italic', color: '#1A1A1A', lineHeight: 1.55 }}>
       &ldquo;{preview.response_text ?? '(no text on file)'}&rdquo;
@@ -128,6 +129,6 @@ export default function ConsentPage({ params }: { params: Promise<{ token: strin
       </button>
     </div>
 
-    <p style={{ color: '#6B6B6B', fontSize: 12, lineHeight: 1.5, marginTop: 20 }}>You can withdraw permission at any time by replying to your original Body Recode email with &ldquo;withdraw quote&rdquo;. We&apos;ll remove it within 48 hours.</p>
+    <p style={{ color: '#6B6B6B', fontSize: 12, lineHeight: 1.5, marginTop: 20 }}>You can withdraw permission at any time by replying to your original {brand().name} email with &ldquo;withdraw quote&rdquo;. We&apos;ll remove it within 48 hours.</p>
   </div></div>
 }

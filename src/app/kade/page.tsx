@@ -46,7 +46,7 @@ export default function KadePage() {
           {/* Section eyebrow with Clay rules either side */}
           <div className="flex items-center gap-3 mb-5">
             <div className="flex-1 h-px bg-[#B5552F]/30" />
-            <p className="text-[10px] font-bold tracking-[0.3em] text-[#B5552F] uppercase whitespace-nowrap">Featured · Body Recode</p>
+            <p className="text-[10px] font-bold tracking-[0.3em] text-[#B5552F] uppercase whitespace-nowrap">Featured · {brand().name}</p>
             <div className="flex-1 h-px bg-[#B5552F]/30" />
           </div>
 
@@ -168,7 +168,7 @@ export default function KadePage() {
             className="group flex items-center justify-between w-full bg-[#FAF3EB] border border-[#E0D1C0] hover:border-[#B5552F] hover:bg-[#EFE4D8] rounded-xl px-5 py-4 transition-colors"
           >
             <div>
-              <p className="text-base font-semibold text-[#2A1E16] group-hover:text-[#B5552F] transition-colors">Body Recode™</p>
+              <p className="text-base font-semibold text-[#2A1E16] group-hover:text-[#B5552F] transition-colors">{brand().name}™</p>
               <p className="text-xs text-[#6E5B4D] mt-0.5 italic">The biological interpretation platform</p>
             </div>
             <span className="text-[#2A1E16] group-hover:text-[#B5552F] text-lg transition-colors" aria-hidden>→</span>

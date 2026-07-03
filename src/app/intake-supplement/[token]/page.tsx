@@ -1,6 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import SupplementForm from './supplement-form'
+import { brand } from "@/config/tenant";
 
 /**
  * Supplementary intake form. Asks only the questions added to the intake
@@ -44,7 +45,7 @@ export default async function SupplementaryIntakePage({
       <div className="min-h-screen bg-stone-50 text-stone-700 flex items-center justify-center px-6 py-12">
         <div className="max-w-md text-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-black.png" alt="Body Recode" className="h-20 w-auto mx-auto mb-8" />
+          <img src="/logo-black.png" alt={brand().name} className="h-20 w-auto mx-auto mb-8" />
           <h1 className="text-2xl font-semibold text-[#1A1A1A] mb-3">Thanks, this is already in.</h1>
           <p className="text-stone-400 text-sm leading-relaxed">
             You have already submitted this follow-up intake. Nothing more to do. Kade has your updated answers.

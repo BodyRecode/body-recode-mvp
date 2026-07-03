@@ -253,7 +253,7 @@ export default function EnginePage() {
           <StageHead n="01" title="The CFFS" sub="Coach-Facing Foundational Synthesis. The heart of the engine. Interpretation terminates here." accent />
           <div style={{ border: '1px solid rgba(27,109,252,0.45)', borderRadius: 18, padding: 'clamp(22px, 4vw, 34px)', background: 'linear-gradient(180deg, rgba(27,109,252,0.10), rgba(27,109,252,0.02))', boxShadow: `0 0 60px -20px ${BLUE}` }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10, marginBottom: 24 }}>
-              <p style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: '0.14em', color: BLUE_LIGHT, textTransform: 'uppercase' }}>Body Recode™ Interpretation Engine</p>
+              <p style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: '0.14em', color: BLUE_LIGHT, textTransform: 'uppercase' }}>{brand().name}™ Interpretation Engine</p>
               <ModelBadge>{HAIKU} · multimodal</ModelBadge>
             </div>
             <Grid min={260} gap={20}>
@@ -453,7 +453,7 @@ export default function EnginePage() {
 
       {/* FOOTER */}
       <footer style={{ padding: '64px 24px', textAlign: 'center' }}>
-        <p style={{ fontFamily: MONO, fontSize: 11, letterSpacing: '0.18em', color: TXT_MUTE, textTransform: 'uppercase', marginBottom: 14 }}>Body Recode™ · Biological Interpretation Platform</p>
+        <p style={{ fontFamily: MONO, fontSize: 11, letterSpacing: '0.18em', color: TXT_MUTE, textTransform: 'uppercase', marginBottom: 14 }}>{brand().name}™ · Biological Interpretation Platform</p>
         <div style={{ display: 'flex', gap: 20, justifyContent: 'center', flexWrap: 'wrap' }}>
           <a href="/" style={navLink}>Home</a>
           <a href="/#engine" style={navLink}>The schematic</a>

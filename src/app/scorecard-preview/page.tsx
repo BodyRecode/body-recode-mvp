@@ -1,5 +1,7 @@
 'use client'
 
+import { brand } from "@/config/tenant";
+
 export default function ScorecardPreview() {
   const sections = [
     {
@@ -85,7 +87,7 @@ export default function ScorecardPreview() {
 
       {/* Print button */}
       <div className="no-print" style={{ background: '#FFFFFF', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <span style={{ color: '#6B6B6B', fontSize: '13px' }}>Scorecard Preview / Body Recode</span>
+        <span style={{ color: '#6B6B6B', fontSize: '13px' }}>Scorecard Preview / {brand().name}</span>
         <button
           onClick={() => window.print()}
           style={{ background: '#1B6DFC', color: '#FFFFFF', fontWeight: 700, fontSize: '13px', padding: '8px 20px', borderRadius: '8px', border: 'none', cursor: 'pointer' }}
@@ -99,7 +101,7 @@ export default function ScorecardPreview() {
 
         {/* Header */}
         <div style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E5E5', padding: '56px 64px 48px' }}>
-          <img src="/logo-black.png" alt="Body Recode" style={{ height: '52px', marginBottom: '40px', display: 'block' }} />
+          <img src="/logo-black.png" alt={brand().name} style={{ height: '52px', marginBottom: '40px', display: 'block' }} />
           <div style={{ width: '40px', height: '3px', background: '#1B6DFC', marginBottom: '24px' }} />
           <h1 style={{ fontSize: '42px', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '16px' }}>
             The Body State<br />Scorecard

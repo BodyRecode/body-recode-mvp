@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { brand } from "@/config/tenant";
 
 type Tab = 'positioning' | 'story' | 'pillars' | 'scripts' | 'cadence' | 'launch'
 
@@ -70,7 +71,7 @@ function PositioningTab() {
           </div>
         </div>
         <div className="mt-4 p-3 bg-blue-500/5 border border-blue-500/20 rounded-lg">
-          <p className="text-xs text-blue-700">Body Recode is the case study. We built and run a full custom platform for it - lead capture, AI reports, client portal, automations. Now we ship the same level of work for clients in the same niche.</p>
+          <p className="text-xs text-blue-700">{brand().name} is the case study. We built and run a full custom platform for it - lead capture, AI reports, client portal, automations. Now we ship the same level of work for clients in the same niche.</p>
         </div>
       </Card>
 
@@ -232,7 +233,7 @@ function StoryTab() {
       </Card>
 
       <Card>
-        <SectionLabel>Relationship to Body Recode</SectionLabel>
+        <SectionLabel>Relationship to {brand().name}</SectionLabel>
         <p className="text-sm text-stone-600 mb-3">Fully separate brand, audience, and offer. But the bridge is always the same.</p>
         <div className="space-y-2">
           {[

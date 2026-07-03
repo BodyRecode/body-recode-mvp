@@ -5,6 +5,7 @@
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { PDFDocument, StandardFonts, rgb, type PDFFont, type PDFImage, type PDFPage } from 'pdf-lib'
+import { brand } from "@/config/tenant";
 
 const PAGE_WIDTH = 595.28
 const PAGE_HEIGHT = 841.89
@@ -230,7 +231,7 @@ export async function renderMedicalClearancePdf(opts: {
 }): Promise<Uint8Array> {
   const doc = await PDFDocument.create()
   doc.setTitle('Body Recode Medical Clearance Request Form')
-  doc.setAuthor('Body Recode')
+  doc.setAuthor(brand().name)
   doc.setSubject('Medical Clearance Request Form')
   doc.setCreator('Body Recode Performance Coaching')
 

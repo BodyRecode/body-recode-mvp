@@ -2,6 +2,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import { AGREEMENT_SECTIONS } from '@/lib/agreement-sections'
 import PrintTrigger from '@/app/dashboard/clients/[id]/cffs-report/print-trigger'
+import { brand } from "@/config/tenant";
 
 export default async function AgreementPrintPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -40,8 +41,8 @@ export default async function AgreementPrintPage({ params }: { params: Promise<{
         {/* Header */}
         <div style={{ borderBottom: `3px solid ${G}`, paddingBottom: '24px', marginBottom: '32px' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-black.png" alt="Body Recode" style={{ height: '36px', marginBottom: '24px', display: 'block' }} />
-          <h1 style={{ fontSize: '22px', fontWeight: 800, color: G, marginBottom: '4px' }}>Body Recode™ Coaching Agreement</h1>
+          <img src="/logo-black.png" alt={brand().name} style={{ height: '36px', marginBottom: '24px', display: 'block' }} />
+          <h1 style={{ fontSize: '22px', fontWeight: 800, color: G, marginBottom: '4px' }}>{brand().name}™ Coaching Agreement</h1>
           <p style={{ fontSize: '12px', color: '#666', marginBottom: '20px' }}>Version 2.5 - Sole Trader, Queensland, Australia</p>
           <div style={{ display: 'flex', gap: '40px' }}>
             <div>
@@ -101,7 +102,7 @@ export default async function AgreementPrintPage({ params }: { params: Promise<{
 
         {/* Footer */}
         <div style={{ marginTop: '32px', paddingTop: '16px', borderTop: '1px solid #e5e5e5', display: 'flex', justifyContent: 'space-between' }}>
-          <p style={{ fontSize: '10px', color: '#aaa' }}>© Body Recode™ · www.bodyrecode.au</p>
+          <p style={{ fontSize: '10px', color: '#aaa' }}>© {brand().name}™ · www.bodyrecode.au</p>
           <p style={{ fontSize: '10px', color: '#aaa' }}>Confidential</p>
         </div>
       </div>

@@ -213,7 +213,7 @@ export default function MembershipPage() {
       {/* Nav */}
       <div style={{ padding: '20px 24px' }}>
         <div style={{ maxWidth: '680px', margin: '0 auto' }}>
-          <img src={logoUrl()} width="160" alt="Body Recode" style={{ display: 'block' }} />
+          <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block' }} />
         </div>
       </div>
 
@@ -240,8 +240,8 @@ export default function MembershipPage() {
           }}>
             <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#1B6DFC' }} />
             <span style={{ fontSize: '12px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-              Body Recode Membership
-            </span>
+              {brand().name} Membership
+                                      </span>
           </div>
 
           {/* Founder byline */}
@@ -343,8 +343,8 @@ export default function MembershipPage() {
             Most programmes deliver the work for a fixed window. Six weeks. Twelve weeks. Three months. The window closes, the structure disappears, and the body slowly returns to where it was.
           </p>
           <p style={{ fontSize: '19px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '40px' }}>
-            The Body Recode Membership is the infrastructure for the long arc. Block by block. Pattern continuity. A monthly Loom from me reading your check-in data. $49 per week. Cancel anytime.
-          </p>
+            The {brand().name} Membership is the infrastructure for the long arc. Block by block. Pattern continuity. A monthly Loom from me reading your check-in data. $49 per week. Cancel anytime.
+                                </p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginBottom: '32px' }}>
             {[
@@ -741,8 +741,8 @@ export default function MembershipPage() {
       <div style={{ borderTop: '1px solid #E5E5E5', padding: '28px 24px' }}>
         <div style={{ maxWidth: '680px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center', justifyContent: 'space-between' }}>
           <p style={{ fontSize: '13px', color: '#4A4A4A', margin: 0 }}>
-            &copy; {new Date().getFullYear()} Body Recode. All rights reserved.
-          </p>
+            &copy; {new Date().getFullYear()} {brand().name}. All rights reserved.
+                                </p>
           <div style={{ display: 'flex', gap: '20px' }}>
             <a href="/privacy" style={{ fontSize: '13px', color: '#6B6B6B', textDecoration: 'none' }}>Privacy Policy</a>
             <a href="/terms" style={{ fontSize: '13px', color: '#6B6B6B', textDecoration: 'none' }}>Terms</a>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { brand } from "@/config/tenant";
 
 // Mirrors the public scorecard SECTIONS structure verbatim. Same 5 sections,
 // same 1-3 scoring, same wording. An enroller's signal here reads the same
@@ -326,8 +327,8 @@ export default function BodyDecodeIntakeForm({ token, onComplete }: {
 
           {/* Lead paragraph */}
           <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 28px' }}>
-            Two minutes. The same questions every Body Recode client answers at the start. This tells us what your body is actually doing right now and shapes what you see across the next 14 days.
-          </p>
+            Two minutes. The same questions every {brand().name} client answers at the start. This tells us what your body is actually doing right now and shapes what you see across the next 14 days.
+                                </p>
 
           {/* Stats grid */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>

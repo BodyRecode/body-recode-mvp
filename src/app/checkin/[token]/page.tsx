@@ -17,7 +17,7 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
     return (
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
-          <p className="text-xs font-bold tracking-widest text-blue-500 uppercase mb-6"><a href={brand().marketingDomain} className="text-xs font-bold tracking-widest text-blue-500 uppercase">Body Recode™</a></p>
+          <p className="text-xs font-bold tracking-widest text-blue-500 uppercase mb-6"><a href={brand().marketingDomain} className="text-xs font-bold tracking-widest text-blue-500 uppercase">{brand().name}™</a></p>
           <h1 className="text-xl font-semibold text-[#1A1A1A] mb-2">Link not found</h1>
           <p className="text-stone-500 text-sm">This check-in link is invalid. Please contact your coach.</p>
         </div>
@@ -45,7 +45,7 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
     return (
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
-          <p className="text-xs font-bold tracking-widest text-blue-500 uppercase mb-6"><a href={brand().marketingDomain} className="text-xs font-bold tracking-widest text-blue-500 uppercase">Body Recode™</a></p>
+          <p className="text-xs font-bold tracking-widest text-blue-500 uppercase mb-6"><a href={brand().marketingDomain} className="text-xs font-bold tracking-widest text-blue-500 uppercase">{brand().name}™</a></p>
           <h1 className="text-xl font-semibold text-[#1A1A1A] mb-2">Window not open</h1>
           <p className="text-stone-500 text-sm mb-4">The check-in window opens <span className="text-[#1A1A1A]">Friday at 6:00pm</span> and closes Sunday at 6:00pm Brisbane time.</p>
           <p className="text-stone-400 text-xs">Next window opens {opensAt} (Brisbane)</p>
@@ -71,7 +71,7 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
     return (
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
-          <p className="text-xs font-bold tracking-widest text-blue-500 uppercase mb-6"><a href={brand().marketingDomain} className="text-xs font-bold tracking-widest text-blue-500 uppercase">Body Recode™</a></p>
+          <p className="text-xs font-bold tracking-widest text-blue-500 uppercase mb-6"><a href={brand().marketingDomain} className="text-xs font-bold tracking-widest text-blue-500 uppercase">{brand().name}™</a></p>
           <div className="w-14 h-14 bg-stone-100 border border-stone-200 rounded-full flex items-center justify-center mx-auto mb-5">
             <svg className="w-7 h-7 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />

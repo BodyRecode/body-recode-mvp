@@ -1,6 +1,7 @@
 'use client'
 
 import { Layers, Dumbbell, Salad, BookOpen, Video, Users, LineChart } from 'lucide-react'
+import { brand } from "@/config/tenant";
 
 /**
  * B-roll canvas: Inside the Membership
@@ -193,8 +194,8 @@ export default function InsideTheMembershipPage() {
             }}>
               <div>
                 <p style={{ fontSize: '11px', fontWeight: 700, color: '#999999', letterSpacing: '0.12em', textTransform: 'uppercase', margin: 0 }}>
-                  Body Recode Membership · Block A
-                </p>
+                  {brand().name} Membership · Block A
+                                                  </p>
                 <p style={{ fontSize: '20px', fontWeight: 800, color: '#FFFFFF', margin: 0 }}>
                   Week 9 of 24 · Stress-Stored Pattern
                 </p>

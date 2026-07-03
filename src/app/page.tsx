@@ -157,7 +157,7 @@ export default function HomePage() {
           <a href="/" style={{ display: 'block' }}>
             <Image
               src="/logo-black.png"
-              alt="Body Recode"
+              alt={brand().name}
               width={220}
               height={97}
               priority
@@ -258,11 +258,11 @@ export default function HomePage() {
             before prescription.
           </h1>
           <p style={{ fontSize: 18, lineHeight: 1.7, color: TXT_DIM, maxWidth: 620, marginBottom: 40 }}>
-            Body Recode™ is the upstream interpretive layer for performance, clinical and tactical
-            practice. One engine reads body state across 221 structured signals before any
-            intervention is designed. The system terminates at interpretation. What is built on top
-            of it is yours.
-          </p>
+            {brand().name}™ is the upstream interpretive layer for performance, clinical and tactical
+                                  practice. One engine reads body state across 221 structured signals before any
+                                  intervention is designed. The system terminates at interpretation. What is built on top
+                                  of it is yours.
+                                </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
             <a
               href="#enquire"
@@ -321,10 +321,10 @@ export default function HomePage() {
         <SectionLabel>The Solution</SectionLabel>
         <SectionHeading>Read the body first. Then prescribe.</SectionHeading>
         <Prose style={{ marginBottom: 44 }}>
-          Body Recode™ sits one layer upstream of every intervention. Before anything is prescribed,
-          the system asks one question: what state is this body actually in right now, and why is it
-          organised that way?
-        </Prose>
+          {brand().name}™ sits one layer upstream of every intervention. Before anything is prescribed,
+                            the system asks one question: what state is this body actually in right now, and why is it
+                            organised that way?
+                          </Prose>
         <Grid min={220}>
           <StatCard value="221" label="Intake data points" detail="Structured across eight signal domains. Not a questionnaire. A biological read." />
           <StatCard value="5" label="Interpretive pillars" detail="Each reads a different domain. The output is always a synthesis." />
@@ -337,10 +337,10 @@ export default function HomePage() {
         <SectionLabel>Architecture</SectionLabel>
         <SectionHeading>Two layers. Neither collapses into the other.</SectionHeading>
         <Prose style={{ maxWidth: 720, marginBottom: 44 }}>
-          The interpretive layer is owned by Body Recode™. The execution layer is owned by the
-          practitioner. The separation is architectural, not stylistic. It is what makes the system
-          defensible and licensable.
-        </Prose>
+          The interpretive layer is owned by {brand().name}™. The execution layer is owned by the
+                            practitioner. The separation is architectural, not stylistic. It is what makes the system
+                            defensible and licensable.
+                          </Prose>
         <Grid min={300}>
           <LayerCard
             accent
@@ -412,8 +412,8 @@ export default function HomePage() {
             >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, flexWrap: 'wrap', gap: 8 }}>
                 <p style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: '0.16em', color: BLUE_LIGHT, textTransform: 'uppercase' }}>
-                  Body Recode™ Interpretation Engine
-                </p>
+                  {brand().name}™ Interpretation Engine
+                                                  </p>
                 <span style={{ ...chip, borderColor: 'rgba(27,109,252,0.4)', color: BLUE_LIGHT }}>Owned · Layer 1</span>
               </div>
               <Grid min={150} gap={10}>
@@ -649,10 +649,10 @@ export default function HomePage() {
         <SectionLabel>For Practitioners and Organisations</SectionLabel>
         <SectionHeading>The interpretation engine is licensable.</SectionHeading>
         <Prose style={{ maxWidth: 720, marginBottom: 44 }}>
-          Body Recode™ is built as one interpretive core with multiple execution layers on top. The
-          interpretation engine, the intake architecture and the CFFS methodology are available for
-          licensing, white-labelling or integration into existing workflows.
-        </Prose>
+          {brand().name}™ is built as one interpretive core with multiple execution layers on top. The
+                            interpretation engine, the intake architecture and the CFFS methodology are available for
+                            licensing, white-labelling or integration into existing workflows.
+                          </Prose>
         <Grid min={260}>
           <LicenseCard title="License" desc="Use the Body Recode™ interpretation system within your practice. Full access to the intake architecture, the five interpretive pillars and the CFFS output framework." />
           <LicenseCard title="White-label" desc="Deploy the system under your own brand. The engine, intake and output documents are built to operate independently of the Body Recode™ identity where required." />
@@ -680,7 +680,7 @@ export default function HomePage() {
             <div>
               <Image
                 src="/logo-black.png"
-                alt="Body Recode"
+                alt={brand().name}
                 width={220}
                 height={97}
                 style={{ height: 56, width: 'auto', marginBottom: 18, filter: 'brightness(0) invert(1)' }}
@@ -719,7 +719,7 @@ export default function HomePage() {
             </div>
           </div>
           <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 24, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
-            <p style={{ fontFamily: MONO, fontSize: 11, color: TXT_MUTE, letterSpacing: '0.04em' }}>© {YEAR} Body Recode™. All rights reserved.</p>
+            <p style={{ fontFamily: MONO, fontSize: 11, color: TXT_MUTE, letterSpacing: '0.04em' }}>© {YEAR} {brand().name}™. All rights reserved.</p>
             <p style={{ fontFamily: MONO, fontSize: 11, color: TXT_MUTE, letterSpacing: '0.04em' }}>Interpretation before prescription.</p>
           </div>
         </div>

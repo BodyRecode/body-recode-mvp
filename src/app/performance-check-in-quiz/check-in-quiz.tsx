@@ -172,7 +172,7 @@ export default function CheckInQuiz() {
         </div>
 
         <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border-b border-stone-200 px-5 py-3 flex items-center justify-between">
-          <a href={brand().marketingDomain} className="text-[11px] font-bold tracking-[0.15em] text-[#1A1A1A] uppercase hover:text-stone-600 transition-colors">Body Recode™</a>
+          <a href={brand().marketingDomain} className="text-[11px] font-bold tracking-[0.15em] text-[#1A1A1A] uppercase hover:text-stone-600 transition-colors">{brand().name}™</a>
           <p className="text-[11px] font-medium text-stone-500">Last step</p>
         </div>
 
@@ -264,7 +264,7 @@ export default function CheckInQuiz() {
       </div>
 
       <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border-b border-stone-200 px-5 py-3 flex items-center justify-between">
-        <p className="text-[11px] font-bold tracking-[0.15em] text-[#1A1A1A] uppercase">Body Recode™</p>
+        <p className="text-[11px] font-bold tracking-[0.15em] text-[#1A1A1A] uppercase">{brand().name}™</p>
         <p className="text-[11px] font-medium text-stone-500">{current + 1} / {QUESTIONS.length}</p>
       </div>
 

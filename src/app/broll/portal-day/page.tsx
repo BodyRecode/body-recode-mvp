@@ -1,6 +1,7 @@
 'use client'
 
 import { CheckCircle2, FileText, Dumbbell, Salad, Sunrise, Moon, Video, MessageCircle, Lock } from 'lucide-react'
+import { brand } from "@/config/tenant";
 
 /**
  * B-roll canvas: Portal Day-in-the-Life
@@ -149,8 +150,8 @@ export default function PortalDayPage() {
             }}>
               <div>
                 <p style={{ fontSize: '11px', fontWeight: 700, color: '#999999', letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 4px' }}>
-                  Body Recode · 14-Day Body Decode
-                </p>
+                  {brand().name} · 14-Day Body Decode
+                                                  </p>
                 <p style={{ fontSize: '22px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.015em', margin: 0 }}>
                   Welcome back, Sarah
                 </p>
@@ -349,8 +350,8 @@ export default function PortalDayPage() {
               </div>
               <div>
                 <p style={{ fontSize: '14px', fontWeight: 800, color: '#FFFFFF', margin: 0 }}>
-                  Body Recode
-                </p>
+                  {brand().name}
+                                                  </p>
                 <p style={{ fontSize: '11px', color: '#999999', margin: 0 }}>
                   Coach &middot; SMS
                 </p>

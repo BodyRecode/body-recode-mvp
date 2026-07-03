@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import MarketingNav from '@/components/marketing/nav'
 import MarketingFooter from '@/components/marketing/footer'
+import { brand } from "@/config/tenant";
 
 export const metadata: Metadata = {
   title: 'Online Fat Loss Coaching | Body Recode™',
@@ -21,8 +22,8 @@ export default function OnlineFatLossCoachingPage() {
             Online Fat Loss Coaching
           </h1>
           <p className="text-xl text-stone-600 leading-relaxed max-w-2xl mb-12">
-            Fat loss isn&apos;t a willpower problem. It&apos;s a biological one. Body Recode™ addresses the system driving your body composition, not just the calories in and out. Delivered 1:1, fully online.
-          </p>
+            Fat loss isn&apos;t a willpower problem. It&apos;s a biological one. {brand().name}™ addresses the system driving your body composition, not just the calories in and out. Delivered 1:1, fully online.
+                                </p>
           <Link
             href="/performance-check-in"
             className="inline-block bg-[#1B6DFC] text-white font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors"
@@ -43,8 +44,8 @@ export default function OnlineFatLossCoachingPage() {
             Cortisol elevates. Insulin sensitivity drops. Muscle is broken down for energy while fat storage is preserved. This is not a failure of effort. It is a predictable biological response to a system under strain.
           </p>
           <p className="text-stone-600 text-lg leading-relaxed">
-            Body Recode™ starts by identifying whether your system is in a state where fat loss is biologically viable, and if not, what needs to change first.
-          </p>
+            {brand().name}™ starts by identifying whether your system is in a state where fat loss is biologically viable, and if not, what needs to change first.
+                                </p>
         </div>
       </section>
 
@@ -76,10 +77,10 @@ export default function OnlineFatLossCoachingPage() {
       {/* The Body Recode approach */}
       <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-200">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">The Body Recode™ approach to fat loss</h2>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">The {brand().name}™ approach to fat loss</h2>
           <p className="text-stone-600 text-lg leading-relaxed mb-4">
-            Before any fat loss prescription is made, Body Recode™ builds a complete picture of your biological state using a structured eight-domain intake. This tells us whether fat loss is viable right now, what is currently working against it, and what needs to change first.
-          </p>
+            Before any fat loss prescription is made, {brand().name}™ builds a complete picture of your biological state using a structured eight-domain intake. This tells us whether fat loss is viable right now, what is currently working against it, and what needs to change first.
+                                </p>
           <p className="text-stone-600 text-lg leading-relaxed mb-4">
             For clients whose regulatory system is under stress, attempting aggressive fat loss is counterproductive. The body fights back. The first phase is stabilisation, not restriction.
           </p>
@@ -87,8 +88,8 @@ export default function OnlineFatLossCoachingPage() {
             Once the system is stable, fat loss becomes realistic and sustainable. Training load, nutrition structure, and lifestyle adjustments are all calibrated to the individual, not applied from a template.
           </p>
           <Link href="/performance-coaching/online" className="text-[#1B6DFC] text-sm font-semibold hover:underline">
-            Learn about the full Body Recode™ system →
-          </Link>
+            Learn about the full {brand().name}™ system →
+                                </Link>
         </div>
       </section>
 

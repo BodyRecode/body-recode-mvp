@@ -86,7 +86,7 @@ export default async function PreviewProgramPage({
       {/* Header */}
       <div style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E5E5', padding: '18px 24px' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap' }}>
-          <img src={logoUrl()} width="160" alt="Body Recode" style={{ display: 'block' }} />
+          <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block' }} />
           <span style={{
             fontSize: '11px', fontWeight: 800, letterSpacing: '0.12em',
             textTransform: 'uppercase' as const,

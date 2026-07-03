@@ -125,7 +125,7 @@ export default function BookPage() {
     <div className="min-h-screen bg-stone-50 text-[#1A1A1A]">
       {/* Header */}
       <div className="border-b border-stone-200 px-6 py-5 flex items-center justify-between">
-        <img src={logoUrl()} width="110" alt="Body Recode" />
+        <img src={logoUrl()} width="110" alt={brand().name} />
         <a
           href={brand().performanceDomain}
           className="text-sm text-stone-500 hover:text-stone-700 transition-colors"
@@ -303,8 +303,8 @@ export default function BookPage() {
               href={brand().performanceDomain}
               className="text-sm text-blue-500 hover:text-blue-300 transition-colors"
             >
-              ← Back to Body Recode
-            </a>
+              ← Back to {brand().name}
+                                      </a>
           </div>
         )}
 
@@ -419,8 +419,8 @@ export default function BookPage() {
               href={brand().performanceDomain}
               className="text-sm text-blue-500 hover:text-blue-300 transition-colors"
             >
-              ← Back to Body Recode
-            </a>
+              ← Back to {brand().name}
+                                      </a>
           </div>
         )}
       </div>

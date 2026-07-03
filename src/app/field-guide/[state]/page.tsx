@@ -15,7 +15,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import FieldGuideCheckoutForm from './checkout-form'
-import { logoUrl, coach } from '@/config/tenant'
+import { logoUrl, coach, brand } from '@/config/tenant'
 
 const STATE_LABELS: Record<string, { title: string; subtitle: string; bodyLine: string }> = {
   depleted: {
@@ -86,7 +86,7 @@ export default async function FieldGuideLandingPage({
       {/* Header */}
       <div style={{ borderBottom: '1px solid #E5E5E5', padding: '18px 24px' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto' }}>
-          <img src={logoUrl()} width="160" alt="Body Recode" style={{ display: 'block' }} />
+          <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block' }} />
         </div>
       </div>
 
@@ -101,7 +101,7 @@ export default async function FieldGuideLandingPage({
 
         <div style={{ maxWidth: '720px', margin: '0 auto', padding: '52px 24px 24px', position: 'relative' }}>
           <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '14px' }}>
-            Body Recode Field Guide · {state.charAt(0).toUpperCase() + state.slice(1)} state
+            {brand().name} Field Guide · {state.charAt(0).toUpperCase() + state.slice(1)} state
           </p>
           <h1 style={{
             fontSize: 'clamp(30px, 5vw, 42px)', fontWeight: 900,
@@ -175,7 +175,7 @@ export default async function FieldGuideLandingPage({
       {/* Footer */}
       <div style={{ borderTop: '1px solid #E5E5E5', padding: '24px', marginTop: '40px' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '14px', fontSize: '12px', color: '#999999' }}>
-          <span>Body Recode · bodyrecode.au</span>
+          <span>{brand().name} · bodyrecode.au</span>
           <span>Read once. Reference often.</span>
         </div>
       </div>

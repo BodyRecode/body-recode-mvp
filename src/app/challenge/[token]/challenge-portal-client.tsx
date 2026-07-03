@@ -491,7 +491,7 @@ export default function ChallengePortalClient({
       {/* Header */}
       <div style={{ borderBottom: '1px solid #E5E5E5', padding: '18px 24px' }}>
         <div style={{ maxWidth: '640px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <img src={logoUrl()} width="160" alt="Body Recode" style={{ display: 'block' }} />
+          <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block' }} />
           <div style={{
             background: 'rgba(27, 109, 252,0.08)', border: '1px solid rgba(27, 109, 252,0.2)',
             borderRadius: '99px', padding: '5px 14px',
@@ -912,8 +912,8 @@ export default function ChallengePortalClient({
               You have built the foundation. Now build on it.
             </p>
             <p style={{ fontSize: '14px', color: '#1A1A1A', lineHeight: 1.7, marginBottom: '20px' }}>
-              The 6-Week Body Recode Blueprint takes everything you have started here and adds structure, pattern recognition, and education to help you understand exactly why your body responds the way it does.
-            </p>
+              The 6-Week {brand().name} Blueprint takes everything you have started here and adds structure, pattern recognition, and education to help you understand exactly why your body responds the way it does.
+                                              </p>
             <a
               href={`${brand().marketingDomain}/blueprint?source=challenge_day14_portal`}
               style={{

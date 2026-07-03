@@ -45,7 +45,7 @@ export default async function PortalCheckinPage({
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
           <p className="text-xs font-bold tracking-widest text-[#1B6DFC] uppercase mb-6">
-            <a href={brand().marketingDomain} className="text-xs font-bold tracking-widest text-[#1B6DFC] uppercase">Body Recode™</a>
+            <a href={brand().marketingDomain} className="text-xs font-bold tracking-widest text-[#1B6DFC] uppercase">{brand().name}™</a>
           </p>
           <h1 className="text-xl font-semibold text-[#1A1A1A] mb-2">Your program is being built</h1>
           <p className="text-[#999999] text-sm mb-4">Weekly check-ins begin once your training program is in place. Your coach is reviewing your intake and baseline now.</p>
@@ -76,7 +76,7 @@ export default async function PortalCheckinPage({
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
           <p className="text-xs font-bold tracking-widest text-[#1B6DFC] uppercase mb-6">
-            <a href={brand().marketingDomain} className="text-xs font-bold tracking-widest text-[#1B6DFC] uppercase">Body Recode™</a>
+            <a href={brand().marketingDomain} className="text-xs font-bold tracking-widest text-[#1B6DFC] uppercase">{brand().name}™</a>
           </p>
           <h1 className="text-xl font-semibold text-[#1A1A1A] mb-2">Window not open</h1>
           <p className="text-[#999999] text-sm mb-4">The check-in window opens <span className="text-[#1A1A1A]">Friday at 6:00pm</span> and closes Sunday at 6:00pm Brisbane time.</p>
@@ -131,7 +131,7 @@ export default async function PortalCheckinPage({
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
           <p className="text-xs font-bold tracking-widest text-[#1B6DFC] uppercase mb-6">
-            <a href={brand().marketingDomain} className="text-xs font-bold tracking-widest text-[#1B6DFC] uppercase">Body Recode™</a>
+            <a href={brand().marketingDomain} className="text-xs font-bold tracking-widest text-[#1B6DFC] uppercase">{brand().name}™</a>
           </p>
           <div className="w-14 h-14 bg-[#FFFFFF] border border-[#E5E5E5] rounded-full flex items-center justify-center mx-auto mb-5">
             <svg className="w-7 h-7 text-[#1B6DFC]" fill="none" viewBox="0 0 24 24" stroke="currentColor">

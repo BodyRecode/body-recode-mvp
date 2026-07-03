@@ -1,5 +1,6 @@
 import { ImageResponse } from 'next/og'
 import { NextRequest } from 'next/server'
+import { brand } from "@/config/tenant";
 
 export const runtime = 'edge'
 
@@ -63,7 +64,7 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
       (
         <div style={{ width: '1080px', height: '1080px', background: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'sans-serif' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ width: '700px', objectFit: 'contain' }} />
+          <img src={logoSrc} alt={brand().name} style={{ width: '700px', objectFit: 'contain' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -107,7 +108,7 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
             <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#1A1A1A', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '28px' }}>{displayText}</div>
             {sub && <div style={{ fontSize: '52px', color: '#6B6B6B', lineHeight: 1.5, fontWeight: 400 }}>{sub}</div>}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', right: '80px', height: '80px', objectFit: 'contain' }} />
+            <img src={logoSrc} alt={brand().name} style={{ position: 'absolute', bottom: '60px', right: '80px', height: '80px', objectFit: 'contain' }} />
           </div>
         </div>
       ),
@@ -127,7 +128,7 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
           </div>
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={logoSrc} alt="Body Recode" style={{ height: '80px', objectFit: 'contain' }} />
+            <img src={logoSrc} alt={brand().name} style={{ height: '80px', objectFit: 'contain' }} />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={photoSrc} style={{ width: '320px', height: '400px', objectFit: 'cover', objectPosition: 'center top', borderRadius: '12px', border: '2px solid #E5E5E5' }} alt="" />
           </div>
@@ -154,7 +155,7 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
             <div style={{ fontSize: '44px', fontWeight: 800, color: '#1A1A1A', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '14px' }}>{displayText}</div>
             {sub && <div style={{ fontSize: '38px', color: '#6B6B6B', lineHeight: 1.45 }}>{sub.length > 80 ? sub.slice(0, 77) + '...' : sub}</div>}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '36px', right: '80px', height: '80px', objectFit: 'contain' }} />
+            <img src={logoSrc} alt={brand().name} style={{ position: 'absolute', bottom: '36px', right: '80px', height: '80px', objectFit: 'contain' }} />
           </div>
         </div>
       ),
@@ -211,7 +212,7 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
             <div style={{ fontSize: fontSize(displayText.length), fontWeight: 800, color: '#1A1A1A', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '28px' }}>{displayText}</div>
             {sub && <div style={{ fontSize: '52px', color: '#6B6B6B', lineHeight: 1.5, fontWeight: 400 }}>{sub}</div>}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '80px', height: '80px', objectFit: 'contain' }} />
+            <img src={logoSrc} alt={brand().name} style={{ position: 'absolute', bottom: '60px', left: '80px', height: '80px', objectFit: 'contain' }} />
           </div>
           {/* Photo right — portrait, full height, crops from centre */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -250,7 +251,7 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
           )}
           {/* Logo bottom left */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '80px', objectFit: 'contain' }} />
+          <img src={logoSrc} alt={brand().name} style={{ position: 'absolute', bottom: '60px', left: '100px', height: '80px', objectFit: 'contain' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -294,7 +295,7 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
             )}
             {/* Logo — absolutely anchored to bottom-left of card, same position on all three */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '48px', left: '64px', height: '80px', objectFit: 'contain' }} />
+            <img src={logoSrc} alt={brand().name} style={{ position: 'absolute', bottom: '48px', left: '64px', height: '80px', objectFit: 'contain' }} />
           </div>
         </div>
       ),
@@ -349,7 +350,7 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
 
           {/* Logo sits below all content, never overlaps */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ height: '80px', objectFit: 'contain', alignSelf: 'flex-start' }} />
+          <img src={logoSrc} alt={brand().name} style={{ height: '80px', objectFit: 'contain', alignSelf: 'flex-start' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -397,7 +398,7 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
           </div>
 
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ height: '72px', objectFit: 'contain', alignSelf: 'flex-start' }} />
+          <img src={logoSrc} alt={brand().name} style={{ height: '72px', objectFit: 'contain', alignSelf: 'flex-start' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -434,7 +435,7 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
 
           {/* Logo bottom left */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '80px', objectFit: 'contain' }} />
+          <img src={logoSrc} alt={brand().name} style={{ position: 'absolute', bottom: '60px', left: '100px', height: '80px', objectFit: 'contain' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -464,7 +465,7 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
 
           {/* Logo bottom left */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', left: '100px', height: '80px', objectFit: 'contain' }} />
+          <img src={logoSrc} alt={brand().name} style={{ position: 'absolute', bottom: '60px', left: '100px', height: '80px', objectFit: 'contain' }} />
 
           {/* Slide number small bottom right */}
           <div style={{ position: 'absolute', bottom: '76px', right: '100px', fontSize: '26px', fontWeight: 600, color: '#6B6B6B', letterSpacing: '0.08em' }}>{slideNum}</div>
@@ -508,7 +509,7 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
 
           {/* Logo bottom centre */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ position: 'absolute', bottom: '60px', height: '80px', objectFit: 'contain' }} />
+          <img src={logoSrc} alt={brand().name} style={{ position: 'absolute', bottom: '60px', height: '80px', objectFit: 'contain' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -568,7 +569,7 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={logoSrc}
-            alt="Body Recode"
+            alt={brand().name}
             style={{
               position: 'absolute',
               bottom: '60px',
@@ -637,7 +638,7 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={logoSrc}
-            alt="Body Recode"
+            alt={brand().name}
             style={{
               position: 'absolute',
               bottom: '60px',
@@ -664,7 +665,7 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
             {sub && <div style={{ fontSize: '52px', color: '#6B6B6B', lineHeight: 1.5, fontWeight: 400, maxWidth: '820px', marginTop: '32px' }}>{sub}</div>}
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} alt="Body Recode" style={{ height: '110px', objectFit: 'contain', alignSelf: 'flex-start' }} />
+          <img src={logoSrc} alt={brand().name} style={{ height: '110px', objectFit: 'contain', alignSelf: 'flex-start' }} />
         </div>
       ),
       { width: 1080, height: 1080 }
@@ -1027,7 +1028,7 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={logoSrc}
-          alt="Body Recode"
+          alt={brand().name}
           style={{
             position: 'absolute',
             bottom: '60px',

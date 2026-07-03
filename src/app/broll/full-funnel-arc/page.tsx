@@ -1,5 +1,7 @@
 'use client'
 
+import { brand } from "@/config/tenant";
+
 /**
  * B-roll canvas: Full Body Recode Funnel Arc
  *
@@ -137,8 +139,8 @@ export default function FullFunnelArcPage() {
             letterSpacing: '0.18em', textTransform: 'uppercase',
             marginBottom: '24px', textAlign: 'center',
           }}>
-            The Body Recode Funnel · Full Arc
-          </p>
+            The {brand().name} Funnel · Full Arc
+                                </p>
           <h1 style={{
             fontSize: 'clamp(40px, 5vw, 60px)', fontWeight: 900,
             letterSpacing: '-0.035em', lineHeight: 1.05,

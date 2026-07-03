@@ -1,5 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
+import { brand } from "@/config/tenant";
 
 export default async function PortalClearancePrintPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
@@ -19,7 +20,7 @@ export default async function PortalClearancePrintPage({ params }: { params: Pro
 
       <div className="flex items-start justify-between mb-10">
         <div>
-          <p className="text-xs font-bold tracking-widest uppercase text-[#6B6B6B] mb-1">Body Recode™</p>
+          <p className="text-xs font-bold tracking-widest uppercase text-[#6B6B6B] mb-1">{brand().name}™</p>
           <h1 className="text-2xl font-bold text-black">Medical Clearance Request Form</h1>
           <p className="text-sm text-[#999999] mt-1">Version 1.1</p>
         </div>
@@ -34,7 +35,7 @@ export default async function PortalClearancePrintPage({ params }: { params: Pro
       <div className="space-y-8 text-sm">
         <section>
           <h2 className="font-bold text-base mb-2">1. Purpose</h2>
-          <p className="text-[#999999] leading-relaxed">This document requests confirmation that the individual named below is medically cleared to participate in supervised progressive resistance and conditioning training within Body Recode™ Performance Coaching.</p>
+          <p className="text-[#999999] leading-relaxed">This document requests confirmation that the individual named below is medically cleared to participate in supervised progressive resistance and conditioning training within {brand().name}™ Performance Coaching.</p>
           <p className="text-[#999999] leading-relaxed mt-2">This form does not request diagnosis, treatment planning, or clinical interpretation. It requests confirmation of exercise participation eligibility only.</p>
         </section>
 
@@ -69,7 +70,7 @@ export default async function PortalClearancePrintPage({ params }: { params: Pro
 
         <section>
           <h2 className="font-bold text-base mb-3">4. Nature of Training Exposure</h2>
-          <p className="text-[#999999] mb-2">Body Recode™ Performance Coaching includes supervised progressive exercise exposure, which may involve:</p>
+          <p className="text-[#999999] mb-2">{brand().name}™ Performance Coaching includes supervised progressive exercise exposure, which may involve:</p>
           <ul className="list-disc list-inside text-[#999999] space-y-1 ml-2">
             <li>Progressive resistance training</li>
             <li>Moderate to high effort strength training</li>
@@ -107,7 +108,7 @@ export default async function PortalClearancePrintPage({ params }: { params: Pro
 
         <section>
           <h2 className="font-bold text-base mb-2">6. Scope Acknowledgement</h2>
-          <p className="text-[#999999]">This declaration confirms medical permission for participation only. It does not transfer clinical responsibility to Body Recode™. Body Recode™ will operate within any limitations specified above and within its professional scope of practice.</p>
+          <p className="text-[#999999]">This declaration confirms medical permission for participation only. It does not transfer clinical responsibility to {brand().name}™. {brand().name}™ will operate within any limitations specified above and within its professional scope of practice.</p>
         </section>
 
         <section>
@@ -140,7 +141,7 @@ export default async function PortalClearancePrintPage({ params }: { params: Pro
         </section>
 
         <div className="border-t border-stone-200 pt-6 text-xs text-[#6B6B6B]">
-          <p>Body Recode™ | Kade Dunstone | ABN 90 535 525 708 | Anytime Fitness Newstead, Brisbane</p>
+          <p>{brand().name}™ | Kade Dunstone | ABN 90 535 525 708 | Anytime Fitness Newstead, Brisbane</p>
         </div>
       </div>
     </div>

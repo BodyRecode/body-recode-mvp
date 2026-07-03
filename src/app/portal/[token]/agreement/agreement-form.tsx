@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AGREEMENT_SECTIONS } from '@/lib/agreement-sections'
 import ClientHeader from '@/components/client-header'
+import { brand } from "@/config/tenant";
 
 export default function AgreementForm({
   clientId,
@@ -133,7 +134,7 @@ export default function AgreementForm({
                   }}
                   className="mt-0.5 w-4 h-4 rounded accent-blue-500"
                 />
-                <span className={`text-sm ${missing.has('accepted') ? 'text-red-700' : 'text-[#3A3A3A]'}`}>I have read and agree to the Body Recode™ Coaching Agreement.</span>
+                <span className={`text-sm ${missing.has('accepted') ? 'text-red-700' : 'text-[#3A3A3A]'}`}>I have read and agree to the {brand().name}™ Coaching Agreement.</span>
               </label>
               {missing.has('accepted') && <p className="text-red-700 text-xs -mt-2 ml-7 font-medium">Please tick this box to continue.</p>}
             </div>

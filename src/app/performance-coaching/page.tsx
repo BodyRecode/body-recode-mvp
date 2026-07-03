@@ -26,8 +26,8 @@ export default function PerformanceCoachingPage() {
             Performance Coaching
           </h1>
           <p className="text-xl text-stone-600 leading-relaxed max-w-2xl mb-8">
-            The first execution layer of the Body Recode™ system. 1:1 coaching for high-functioning adults whose bodies have stopped responding to effort. Every training decision, every nutrition structure, every recovery adjustment is derived from the biological interpretation. Not from goals, not from preference, not from a template.
-          </p>
+            The first execution layer of the {brand().name}™ system. 1:1 coaching for high-functioning adults whose bodies have stopped responding to effort. Every training decision, every nutrition structure, every recovery adjustment is derived from the biological interpretation. Not from goals, not from preference, not from a template.
+                                </p>
           <p className="text-stone-500 text-base leading-relaxed max-w-xl">
             Available online worldwide and face-to-face in Brisbane.
           </p>
@@ -43,8 +43,8 @@ export default function PerformanceCoachingPage() {
           </h2>
           <div className="max-w-2xl space-y-6 text-stone-600 text-lg leading-relaxed">
             <p>
-              Performance Coaching is the downstream application of the Body Recode™ interpretive system in the health and fitness environment. It does not begin with a program. It begins with interpretation. A full biological intake across eight domains produces the CFFS: the Coach-Facing Foundational Synthesis. Every decision operates within the boundaries the CFFS defines.
-            </p>
+              Performance Coaching is the downstream application of the {brand().name}™ interpretive system in the health and fitness environment. It does not begin with a program. It begins with interpretation. A full biological intake across eight domains produces the CFFS: the Coach-Facing Foundational Synthesis. Every decision operates within the boundaries the CFFS defines.
+                                      </p>
             <p>
               The coaching system runs on two parallel documents throughout the entire client relationship: the CFFS, foundational and non-temporal, produced at intake; and the CFWS, the Coach-Facing Weekly Synthesis, which captures how the system is responding to applied load in real time. Both feed a continuous loop: interpretation informs execution, execution informs interpretation.
             </p>
@@ -100,8 +100,8 @@ export default function PerformanceCoachingPage() {
                 <span className="text-[10px] font-bold text-stone-400 border border-stone-200 px-2.5 py-1 rounded-full uppercase tracking-wider">Brisbane</span>
               </div>
               <p className="text-stone-600 text-base leading-relaxed mb-6">
-                The same Body Recode™ system delivered face-to-face at Anytime Fitness Newstead. One-on-one only. Availability is intentionally limited to maintain the coaching depth the system requires.
-              </p>
+                The same {brand().name}™ system delivered face-to-face at Anytime Fitness Newstead. One-on-one only. Availability is intentionally limited to maintain the coaching depth the system requires.
+                                            </p>
               <a href={`${brand().performanceDomain}/brisbane`} className="text-sm font-semibold text-stone-500 hover:text-stone-600 transition-colors">Brisbane Coaching →</a>
             </div>
           </div>
@@ -116,8 +116,8 @@ export default function PerformanceCoachingPage() {
             Built, validated, and accepting clients.
           </h2>
           <p className="text-stone-500 text-lg leading-relaxed mb-10 max-w-xl mx-auto">
-            Performance Coaching is the first live deployment of the Body Recode™ system. Available online worldwide and face-to-face in Brisbane.
-          </p>
+            Performance Coaching is the first live deployment of the {brand().name}™ system. Available online worldwide and face-to-face in Brisbane.
+                                </p>
           <a
             href={brand().performanceDomain}
             className="inline-block bg-[#1B6DFC] text-white font-bold px-8 py-4 rounded-full text-base hover:bg-[#1056D6] transition-colors mb-4"

@@ -238,7 +238,7 @@ function PatternAssessment({ onComplete, token }: PatternAssessmentProps) {
   return (
     <div style={{ minHeight: '100vh', background: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 24px' }}>
       <div style={{ maxWidth: 560, width: '100%' }}>
-        <img src={logoUrl()} width={110} alt="Body Recode" style={{ display: 'block', marginBottom: 40 }} />
+        <img src={logoUrl()} width={110} alt={brand().name} style={{ display: 'block', marginBottom: 40 }} />
         <h1 style={{ fontSize: 24, fontWeight: 700, color: '#1A1A1A', margin: '0 0 12px', fontFamily: 'system-ui, sans-serif' }}>
           One last step before your portal opens
         </h1>
@@ -1457,7 +1457,7 @@ export default function BlueprintPortalClient({
 
       {/* Top bar */}
       <div style={{ borderBottom: '1px solid #E5E5E5', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <img src={logoUrl()} width={140} alt="Body Recode" />
+        <img src={logoUrl()} width={140} alt={brand().name} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div style={{ width: 8, height: 8, borderRadius: '50%', background: config.colour }} />
           <span style={{ fontSize: 13, color: '#6B6B6B', fontWeight: 600 }}>{config.label}</span>
@@ -1593,8 +1593,8 @@ export default function BlueprintPortalClient({
                   You built the foundation. Now keep going.
                 </div>
                 <p style={{ fontSize: 14, color: '#4A4A4A', margin: '0 0 20px', lineHeight: 1.8 }}>
-                  Six weeks established the rhythm. The Body Recode Membership is where that work compounds. Same coaching system, same pattern continuity - new blocks every six weeks with a coach watching your numbers.
-                </p>
+                  Six weeks established the rhythm. The {brand().name} Membership is where that work compounds. Same coaching system, same pattern continuity - new blocks every six weeks with a coach watching your numbers.
+                                                  </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
                   {[
                     'Progressive 6-week training blocks built on your Blueprint foundation',

@@ -49,7 +49,7 @@ export default function TermsPage() {
       <div style={{ borderBottom: '1px solid rgba(255,255,255,0.08)', padding: '18px 24px', background: '#08090B' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Link href="/">
-            <img src={logoUrl()} width="160" alt="Body Recode" style={{ display: 'block', filter: 'brightness(0) invert(1)' }} />
+            <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block', filter: 'brightness(0) invert(1)' }} />
           </Link>
           <Link href="/" style={{ fontSize: '13px', color: '#5390FF', textDecoration: 'none', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
             <ArrowLeft size={13} />
@@ -91,8 +91,8 @@ export default function TermsPage() {
           padding: '24px 26px',
         }}>
           <p style={{ fontSize: '15px', color: '#C5C8D2', lineHeight: 1.75, margin: 0 }}>
-            Please read these Terms and Conditions carefully before using bodyrecode.au, participating in the 14-Day Body Decode Challenge, or accessing any Body Recode programs including the Blueprint, Membership, or personalised coaching. By accessing our website or programs, you agree to these Terms.
-          </p>
+            Please read these Terms and Conditions carefully before using bodyrecode.au, participating in the 14-Day Body Decode Challenge, or accessing any {brand().name} programs including the Blueprint, Membership, or personalised coaching. By accessing our website or programs, you agree to these Terms.
+                                </p>
         </div>
       </div>
 
@@ -152,8 +152,8 @@ export default function TermsPage() {
             borderRadius: '10px', padding: '16px 18px',
           }}>
             <p style={{ fontSize: '11px', fontWeight: 800, color: '#5390FF', letterSpacing: '0.08em', textTransform: 'uppercase', margin: '0 0 6px' }}>
-              Body Recode
-            </p>
+              {brand().name}
+                                </p>
             <p style={{ fontSize: '14px', color: '#FFFFFF', fontWeight: 600, margin: '0 0 2px' }}>
               Email: <a href={`mailto:${brand().supportEmail}`} style={{ color: '#5390FF', textDecoration: 'none' }}>{brand().supportEmail}</a>
             </p>

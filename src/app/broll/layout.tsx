@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { brand } from "@/config/tenant";
 
 // B-roll utility pages. Not linked publicly. Designed for screen recording
 // to use as B-roll cutaway footage in the Body Recode explainer videos.
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'B-Roll Canvas · Body Recode',
     description: 'Internal production canvas. Used for screen recording footage in Body Recode explainer videos.',
-    siteName: 'Body Recode',
+    siteName: brand().name,
     type: 'website',
     // og image overridden per-page via opengraph-image.tsx in each subfolder
   },

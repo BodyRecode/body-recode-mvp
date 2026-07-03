@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     title: "The 14-Day Body Decode. Free.",
     description: "You're training. You're eating clean. The fat won't move. The 14-Day Body Decode reads your body first.",
     url: `${brand().marketingDomain}/challenge`,
-    siteName: 'Body Recode',
+    siteName: brand().name,
     type: 'website',
     // og image auto-generated from opengraph-image.tsx in this folder
   },

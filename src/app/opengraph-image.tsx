@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og'
+import { brand } from "@/config/tenant";
 
 export const runtime = 'edge'
 export const alt = 'Body Recode™ | Biological Interpretation Platform'
@@ -75,8 +76,8 @@ export default async function Image() {
               letterSpacing: '-0.02em',
             }}
           >
-            Body Recode™
-          </div>
+            {brand().name}™
+                                </div>
           <div
             style={{
               fontSize: '24px',

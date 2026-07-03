@@ -15,7 +15,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import Link from 'next/link'
 import { BOLT_ON_AD_COPY } from '@/lib/bolt-on-ad-copy'
-import { logoUrl } from '@/config/tenant'
+import { logoUrl, brand } from '@/config/tenant'
 
 type Member = {
   token: string
@@ -122,7 +122,7 @@ function UpgradePrompt() {
     }}>
       <div style={{ borderBottom: '1px solid #E5E5E5', padding: '20px 24px' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto' }}>
-          <img src={logoUrl()} width="160" alt="Body Recode" style={{ display: 'block' }} />
+          <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block' }} />
         </div>
       </div>
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '88px 24px', textAlign: 'center' }}>
@@ -134,8 +134,8 @@ function UpgradePrompt() {
         </h1>
         <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', margin: '0 auto 24px' }} />
         <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '32px' }}>
-          Protocol packs and AI deep-dives are members-only à-la-carte add-ons. They unlock the moment you join the Body Recode Membership at $49 per week.
-        </p>
+          Protocol packs and AI deep-dives are members-only à-la-carte add-ons. They unlock the moment you join the {brand().name} Membership at $49 per week.
+                          </p>
         <Link
           href="/membership?source=bolt_on_store_locked"
           style={{
@@ -179,7 +179,7 @@ export default async function BoltOnStorePage({ params }: { params: Promise<{ to
             <Link href={`/membership/${token}`} style={{ fontSize: '13px', color: '#1B6DFC', textDecoration: 'none', fontWeight: 600 }}>
               Membership home →
             </Link>
-            <img src={logoUrl()} width="140" alt="Body Recode" style={{ display: 'block' }} />
+            <img src={logoUrl()} width="140" alt={brand().name} style={{ display: 'block' }} />
           </div>
         </div>
       </div>

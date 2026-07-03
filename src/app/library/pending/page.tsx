@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { coach } from "@/config/tenant";
+import { coach, brand } from "@/config/tenant";
 
 export default async function LibraryPendingPage({
   searchParams,
@@ -24,8 +24,8 @@ export default async function LibraryPendingPage({
           letterSpacing: '0.14em', textTransform: 'uppercase',
           marginBottom: '14px',
         }}>
-          Body Recode Library
-        </p>
+          {brand().name} Library
+                          </p>
         <h1 style={{
           fontSize: 'clamp(28px, 4vw, 36px)', fontWeight: 900,
           letterSpacing: '-0.035em', lineHeight: 1.1,
@@ -104,8 +104,8 @@ export default async function LibraryPendingPage({
             border: '1px solid #1B6DFC', borderRadius: '8px',
           }}
         >
-          Back to Body Recode
-        </Link>
+          Back to {brand().name}
+                          </Link>
 
         {slug && (
           <p style={{ fontSize: '12px', color: '#999999', marginTop: '32px' }}>

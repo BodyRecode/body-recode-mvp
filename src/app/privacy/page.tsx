@@ -55,7 +55,7 @@ export default function PrivacyPage() {
       <div style={{ borderBottom: '1px solid rgba(255,255,255,0.08)', padding: '18px 24px', background: '#08090B' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Link href="/">
-            <img src={logoUrl()} width="160" alt="Body Recode" style={{ display: 'block', filter: 'brightness(0) invert(1)' }} />
+            <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block', filter: 'brightness(0) invert(1)' }} />
           </Link>
           <Link href="/" style={{ fontSize: '13px', color: '#5390FF', textDecoration: 'none', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
             <ArrowLeft size={13} />
@@ -97,8 +97,8 @@ export default function PrivacyPage() {
           padding: '24px 26px',
         }}>
           <p style={{ fontSize: '15px', color: '#C5C8D2', lineHeight: 1.75, margin: 0 }}>
-            This Privacy Policy explains how Body Recode collects, uses, and protects your information when you visit bodyrecode.au, participate in the 14-Day Body Decode Challenge, join the Body Recode Blueprint or Membership, or interact with our coaching programs, content, or communications. By using our website or participating in our programs, you agree to the practices described in this Privacy Policy.
-          </p>
+            This Privacy Policy explains how {brand().name} collects, uses, and protects your information when you visit bodyrecode.au, participate in the 14-Day Body Decode Challenge, join the {brand().name} Blueprint or Membership, or interact with our coaching programs, content, or communications. By using our website or participating in our programs, you agree to the practices described in this Privacy Policy.
+                                </p>
         </div>
       </div>
 
@@ -151,8 +151,8 @@ export default function PrivacyPage() {
             borderRadius: '10px', padding: '16px 18px',
           }}>
             <p style={{ fontSize: '11px', fontWeight: 800, color: '#5390FF', letterSpacing: '0.08em', textTransform: 'uppercase', margin: '0 0 6px' }}>
-              Body Recode
-            </p>
+              {brand().name}
+                                </p>
             <p style={{ fontSize: '14px', color: '#FFFFFF', fontWeight: 600, margin: '0 0 2px' }}>
               Email: <a href={`mailto:${brand().supportEmail}`} style={{ color: '#5390FF', textDecoration: 'none' }}>{brand().supportEmail}</a>
             </p>

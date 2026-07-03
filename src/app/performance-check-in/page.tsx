@@ -17,7 +17,7 @@ export default function PerformanceCheckInPage() {
       {/* Hero */}
       <section className="bg-white pt-44 pb-28 px-5">
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-4"><a href={brand().marketingDomain} className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase">Body Recode™</a> Performance Coaching</p>
+          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-4"><a href={brand().marketingDomain} className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase">{brand().name}™</a> Performance Coaching</p>
           <h1 className="text-4xl md:text-5xl font-extrabold text-[#1A1A1A] leading-tight tracking-tight mb-12">
             Performance Check-In
           </h1>
@@ -116,8 +116,8 @@ export default function PerformanceCheckInPage() {
         <div className="max-w-3xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-12">Why it exists</h2>
           <p className="text-stone-600 text-lg leading-relaxed mb-4">
-            Most coaching escalates when progress slows. Body Recode™ interprets first.
-          </p>
+            Most coaching escalates when progress slows. {brand().name}™ interprets first.
+                                </p>
           <p className="text-stone-600 text-lg leading-relaxed mb-4">
             The Performance Check-In was built around that distinction. It identifies how effort, recovery, external load, and consistency are currently interacting, before any coaching conversation begins. It creates clarity before prescription.
           </p>

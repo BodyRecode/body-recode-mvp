@@ -1,3 +1,5 @@
+import { brand } from "@/config/tenant";
+
 /**
  * Shared layout for the Nutrition Reading (standalone, premium-deliverable view).
  *
@@ -95,7 +97,7 @@ export default function NutritionReadingLayout({
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/logo-black.png"
-              alt="Body Recode"
+              alt={brand().name}
               style={{ height: 28, width: 'auto', display: 'block', marginBottom: 56 }}
             />
             <p style={{ fontSize: 10, fontWeight: 700, color: TEAL, textTransform: 'uppercase', letterSpacing: '0.24em', marginBottom: 24 }}>
@@ -151,8 +153,8 @@ export default function NutritionReadingLayout({
           {/* Colophon */}
           <div style={{ marginTop: 32, paddingTop: 32, borderTop: `1px solid ${HAIRLINE}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
             <p style={{ fontSize: 11, fontWeight: 600, color: SUBTLE, letterSpacing: '0.06em' }}>
-              © Body Recode · www.bodyrecode.au
-            </p>
+              © {brand().name} · www.bodyrecode.au
+                                      </p>
             <p style={{ fontSize: 11, fontWeight: 600, color: SUBTLE, letterSpacing: '0.06em' }}>
               Issued for {client.name}
             </p>

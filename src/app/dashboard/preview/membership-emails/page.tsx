@@ -93,8 +93,8 @@ export default async function MembershipEmailsPreview({
         <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
           <div>
             <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 6px' }}>
-              Body Recode Membership · Email preview
-            </p>
+              {brand().name} Membership · Email preview
+                                      </p>
             <h1 style={{ fontSize: '22px', fontWeight: 800, color: '#1A1A1A', margin: 0, letterSpacing: '-0.02em' }}>
               All four Membership emails, rendered via the actual production builders.
             </h1>

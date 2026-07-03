@@ -195,8 +195,8 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
         <a href="/privacy" style={{ color: darkBg ? '#6B9BFC' : '#1056D6', textDecoration: 'underline' }}>Privacy Policy</a>
         {' '}and{' '}
         <a href="/terms" style={{ color: darkBg ? '#6B9BFC' : '#1056D6', textDecoration: 'underline' }}>Terms</a>.
-        You will receive challenge emails from Body Recode.
-      </p>
+                      You will receive challenge emails from {brand().name}.
+                    </p>
     </form>
   )
 }
@@ -279,7 +279,7 @@ export default function ChallengePage() {
       {/* Nav */}
       <div style={{ padding: '20px 24px', position: 'relative', zIndex: 10 }}>
         <div style={{ maxWidth: '680px', margin: '0 auto' }}>
-          <img src={logoUrl()} width="160" alt="Body Recode" style={{ display: 'block' }} />
+          <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block' }} />
         </div>
       </div>
 
@@ -668,8 +668,8 @@ export default function ChallengePage() {
       {/* ABOUT */}
       <div style={{ maxWidth: '680px', margin: '0 auto', padding: '88px 24px' }}>
         <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '14px' }}>
-          The coach behind Body Recode
-        </p>
+          The coach behind {brand().name}
+                          </p>
         <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '28px', color: '#1A1A1A' }}>
           I built this from my own Depleted State.
         </h2>
@@ -698,14 +698,14 @@ export default function ChallengePage() {
           <div style={{ position: 'absolute', bottom: '22px', left: '24px', right: '24px' }}>
             <p style={{ fontSize: '17px', fontWeight: 800, color: '#ffffff', margin: '0 0 3px' }}>{c.fullName}</p>
             <p style={{ fontSize: '13px', color: '#1B6DFC', margin: 0, fontWeight: 600 }}>
-              Founder, Body Recode · Sports Scientist · Business Entrepreneur · National and International Competitor
-            </p>
+              Founder, {brand().name} · Sports Scientist · Business Entrepreneur · National and International Competitor
+                                      </p>
           </div>
         </div>
 
         <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '24px' }}>
-          After two decades competing nationally and internationally in fitness, my body collapsed under personal stress in a way training and discipline could not explain. The patterns I had to learn to come back out of that became Body Recode.
-        </p>
+          After two decades competing nationally and internationally in fitness, my body collapsed under personal stress in a way training and discipline could not explain. The patterns I had to learn to come back out of that became {brand().name}.
+                          </p>
         <div style={{
           background: '#ffffff', border: '1px solid #E5E5E5',
           borderLeft: '3px solid #1B6DFC',
@@ -808,8 +808,8 @@ export default function ChallengePage() {
       <div style={{ borderTop: '1px solid #E5E5E5', padding: '28px 24px' }}>
         <div style={{ maxWidth: '680px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center', justifyContent: 'space-between' }}>
           <p style={{ fontSize: '13px', color: '#999999', margin: 0 }}>
-            &copy; {new Date().getFullYear()} Body Recode. All rights reserved.
-          </p>
+            &copy; {new Date().getFullYear()} {brand().name}. All rights reserved.
+                                </p>
           <div style={{ display: 'flex', gap: '20px' }}>
             <a href="/privacy" style={{ fontSize: '13px', color: '#6B6B6B', textDecoration: 'none' }}>Privacy Policy</a>
             <a href="/terms" style={{ fontSize: '13px', color: '#6B6B6B', textDecoration: 'none' }}>Terms</a>

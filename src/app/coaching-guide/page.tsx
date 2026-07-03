@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { coach } from '@/config/tenant'
+import { coach, brand } from '@/config/tenant'
 
 const sections = [
   { id: 'coach', label: 'Note from Your Coach' },
@@ -87,14 +87,14 @@ export default function CoachingGuidePage() {
 
           {/* Header */}
           <div className="mb-16">
-            <p className="text-[10px] text-stone-400 uppercase tracking-[0.25em] font-semibold mb-10">Body Recode&trade; &middot; Performance Coaching</p>
+            <p className="text-[10px] text-stone-400 uppercase tracking-[0.25em] font-semibold mb-10">{brand().name}&trade; &middot; Performance Coaching</p>
             <div className="w-8 h-px bg-blue-500/60 mb-8" />
             <h1 className="text-4xl font-light text-[#1A1A1A] mb-4 leading-tight tracking-tight">Active Coaching<br />Client Guide</h1>
             <p className="text-stone-600 text-base leading-relaxed">Your roadmap for how coaching works, how we train, and how progress is built.</p>
           </div>
 
           <div className="border-l-2 border-blue-500/30 pl-6 mb-16">
-            <p className="text-stone-600 text-sm leading-relaxed italic">This guide explains the structure, expectations, and process you will follow throughout your coaching journey inside the Body Recode&trade; system.</p>
+            <p className="text-stone-600 text-sm leading-relaxed italic">This guide explains the structure, expectations, and process you will follow throughout your coaching journey inside the {brand().name}&trade; system.</p>
           </div>
 
           <div className="space-y-20 text-stone-700 text-[15px] leading-relaxed">
@@ -110,7 +110,7 @@ export default function CoachingGuidePage() {
                 />
                 <div>
                   <p className="text-[#1A1A1A] font-semibold text-sm">{c.fullName}</p>
-                  <p className="text-stone-500 text-xs mt-0.5">Performance Coach · Founder, Body Recode&trade;</p>
+                  <p className="text-stone-500 text-xs mt-0.5">Performance Coach · Founder, {brand().name}&trade;</p>
                 </div>
               </div>
               <p>I have spent more than two decades in the health and performance industry, working inside high-intensity models, physique-driven environments, and traditional personal training. I competed nationally and internationally and held multiple titles in the sport. I saw dedication and discipline in abundance.</p>
@@ -118,14 +118,14 @@ export default function CoachingGuidePage() {
               <p>Clients would commit fully and achieve short-term change. Then fatigue accumulated, recovery declined, body composition fluctuated, motivation oscillated, and the cycle repeated. The issue was rarely commitment. It was volatility.</p>
               <p>My understanding deepened during a period of significant instability in my own life. Structure disappeared, stress increased, and effort alone did not correct it.</p>
               <Emphasis>It was not a discipline problem. It was biological instability.</Emphasis>
-              <p>Body Recode&trade; emerged from those questions. It is an interpretive system designed to regulate exposure, protect recovery, and sequence progression intelligently. It is built to function under real-life conditions, where biological tolerance and lifestyle load fluctuate.</p>
+              <p>{brand().name}&trade; emerged from those questions. It is an interpretive system designed to regulate exposure, protect recovery, and sequence progression intelligently. It is built to function under real-life conditions, where biological tolerance and lifestyle load fluctuate.</p>
               <p>If you have chosen to enter this process, I do not take that lightly. I am invested in your stability and your progress.</p>
-              <Emphasis>Body Recode Performance Coaching is the application of that system in practice.</Emphasis>
+              <Emphasis>{brand().name} Performance Coaching is the application of that system in practice.</Emphasis>
             </GuideSection>
 
             <GuideSection id="welcome" title="Welcome to Active Coaching">
               <p>You have formally commenced Active Coaching. This is the execution phase, where structure becomes lived practice and your weekly rhythm takes shape.</p>
-              <p>Active Coaching is not a schedule of training sessions. It is the structured application of the Body Recode&trade; system in real time:</p>
+              <p>Active Coaching is not a schedule of training sessions. It is the structured application of the {brand().name}&trade; system in real time:</p>
               <SimpleList items={[
                 'Decisions are sequenced deliberately, not made impulsively',
                 'Progress is evaluated across defined review windows',
@@ -136,8 +136,8 @@ export default function CoachingGuidePage() {
             </GuideSection>
 
             <GuideSection id="biology" title="Performance, Biology, and Body Composition">
-              <p>Clients enter Body Recode Performance Coaching for different reasons. Some come for body composition. Others come for biological stability, recovery capacity, renewed training rhythm, or a stronger sense of identity around performance.</p>
-              <Emphasis>Within Body Recode&trade;, these drivers are not separated. They are interconnected.</Emphasis>
+              <p>Clients enter {brand().name} Performance Coaching for different reasons. Some come for body composition. Others come for biological stability, recovery capacity, renewed training rhythm, or a stronger sense of identity around performance.</p>
+              <Emphasis>Within {brand().name}&trade;, these drivers are not separated. They are interconnected.</Emphasis>
               <p>Body composition, identity, performance, and biological regulation are expressions of the same underlying processes. When stress exceeds recovery tolerance, the body compensates. When intensity outpaces stability, volatility replaces progress.</p>
               <p>Rather than chasing change through extremes, the system stabilises inputs:</p>
               <SimpleList items={[
@@ -151,7 +151,7 @@ export default function CoachingGuidePage() {
             <GuideSection id="activation" title="Commitment and Activation">
               <p>Active Coaching is formally activated once your Commencement Fee has been processed and your Coaching Agreement becomes available in your portal. From that point, your onboarding sequence begins.</p>
               <Emphasis>The Commencement Fee does not begin training exposure. It activates configuration.</Emphasis>
-              <p>Body Recode operates on governed sequencing. Load is not introduced until contractual alignment, health status, and readiness have been confirmed. Your coaching phase is now active. Structured exposure has not yet begun.</p>
+              <p>{brand().name} operates on governed sequencing. Load is not introduced until contractual alignment, health status, and readiness have been confirmed. Your coaching phase is now active. Structured exposure has not yet begun.</p>
               <Emphasis>Once foundational documentation is returned, the next stage opens.</Emphasis>
             </GuideSection>
 
@@ -192,7 +192,7 @@ export default function CoachingGuidePage() {
             <GuideSection id="cffs" title="Coach-Facing Foundational Synthesis (CFFS)">
               <p>Your submitted data is synthesised into the Coach-Facing Foundational Synthesis. This document is not client-facing. It exists as a coaching reference that governs the architecture of your entire program.</p>
               <Emphasis>The CFFS identifies your current Body State.</Emphasis>
-              <p>Within Body Recode&trade;, Body State is classified across three structural stages:</p>
+              <p>Within {brand().name}&trade;, Body State is classified across three structural stages:</p>
               <BulletList items={[
                 { label: 'Remediation', desc: 'Stability must be restored or reinforced before progression can be sustained.' },
                 { label: 'Optimisation', desc: 'A position of balanced capacity where adaptation can accumulate predictably.' },
@@ -223,19 +223,19 @@ export default function CoachingGuidePage() {
                 { label: 'My role', desc: 'Govern exposure. Sequence load and progression. Position recovery. Reduce or hold load when structural stability requires it.' },
               ]} />
               <p>Honest reporting is essential. If sleep declines, stress rises, or recovery shifts, that information informs exposure decisions. Withholding data disrupts the interpretive process.</p>
-              <Emphasis>Coaching within Body Recode&trade; is not performative. It is interpretive.</Emphasis>
+              <Emphasis>Coaching within {brand().name}&trade; is not performative. It is interpretive.</Emphasis>
               <p>You bring execution and communication. I bring interpretation and governance. Structure protects both of us.</p>
             </GuideSection>
 
             <GuideSection id="how-it-works" title="How Coaching Actually Works">
-              <p>Body Recode operates in structured phases. These are biological positioning periods, not aesthetic blocks. Progression is not linear. Expect three rhythms:</p>
+              <p>{brand().name} operates in structured phases. These are biological positioning periods, not aesthetic blocks. Progression is not linear. Expect three rhythms:</p>
               <SimpleList items={[
                 'Periods of visible change',
                 'Periods of consolidation',
                 'Periods where progress appears quiet',
               ]} />
               <p>All three are functional. Load is applied. Adaptation accumulates. Consolidation is respected. Escalation is introduced only when capacity supports it.</p>
-              <Emphasis>Regression within Body Recode&trade; is not failure. It is strategic.</Emphasis>
+              <Emphasis>Regression within {brand().name}&trade; is not failure. It is strategic.</Emphasis>
               <p>If fatigue accumulates beyond tolerance or biological markers indicate instability, exposure may be reduced intentionally. This protects long-term adaptation. Fatigue is information, not proof of effectiveness.</p>
               <Emphasis>Adaptation is measured across weeks and months, not sessions.</Emphasis>
             </GuideSection>
@@ -269,7 +269,7 @@ export default function CoachingGuidePage() {
               ]} />
               <p>Progression is earned through pattern stability, never granted on enthusiasm or urgency.</p>
               <Emphasis>Protective adjustments can occur immediately if instability appears. Protection does not require permission. Progression does.</Emphasis>
-              <p>The CFWS evaluates trend consistency, regulatory tolerance, load handling, and behavioural rhythm across multiple weeks. Most coaching models react to single data points. Body Recode evaluates pattern integrity.</p>
+              <p>The CFWS evaluates trend consistency, regulatory tolerance, load handling, and behavioural rhythm across multiple weeks. Most coaching models react to single data points. {brand().name} evaluates pattern integrity.</p>
               <Emphasis>The result is progression that accumulates rather than oscillates.</Emphasis>
             </GuideSection>
 
@@ -330,7 +330,7 @@ export default function CoachingGuidePage() {
             </GuideSection>
 
             <GuideSection id="closing" title="Closing Confirmation">
-              <p>You are now entering the structured phase of Body Recode Performance Coaching. Everything in this guide exists to protect progression, regulate exposure, and ensure that performance and body composition are built on biological stability rather than force.</p>
+              <p>You are now entering the structured phase of {brand().name} Performance Coaching. Everything in this guide exists to protect progression, regulate exposure, and ensure that performance and body composition are built on biological stability rather than force.</p>
               <Emphasis>You are not entering a program. You are entering a system.</Emphasis>
               <p>As your coach, I am invested in this process. Your foundational synthesis, your exposure sequencing, and your weekly interpretation are not automated decisions. They are deliberate.</p>
               <Emphasis>This is my craft. This is my discipline. This is my passion.</Emphasis>
@@ -349,7 +349,7 @@ export default function CoachingGuidePage() {
 
           </div>
 
-          <p className="text-[10px] text-stone-700 uppercase tracking-[0.25em] mt-24">Body Recode&trade;</p>
+          <p className="text-[10px] text-stone-700 uppercase tracking-[0.25em] mt-24">{brand().name}&trade;</p>
         </main>
       </div>
     </div>

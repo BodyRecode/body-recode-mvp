@@ -29,7 +29,7 @@ export default function MarketingFooter({ variant = 'consumer' }: { variant?: Va
           <div>
             <Image
               src="/logo-black.png"
-              alt="Body Recode"
+              alt={brand().name}
               width={220}
               height={97}
               style={{ height: 48, width: 'auto', marginBottom: 18 }}
@@ -43,8 +43,8 @@ export default function MarketingFooter({ variant = 'consumer' }: { variant?: Va
                 </>
               ) : (
                 <>
-                  Performance Coaching, the consumer arm of the Body Recode™ system.
-                </>
+                  Performance Coaching, the consumer arm of the {brand().name}™ system.
+                                                      </>
               )}
             </p>
           </div>
@@ -102,7 +102,7 @@ export default function MarketingFooter({ variant = 'consumer' }: { variant?: Va
                 <a href="/performance-coaching" style={footerLink}>Online 1:1</a>
                 <a href="/scorecard" style={footerLink}>Body State Scorecard</a>
                 <a href="/book" style={footerLink}>Book a call</a>
-                <a href={brand().marketingDomain} style={footerLinkMuted}>Body Recode™ Platform →</a>
+                <a href={brand().marketingDomain} style={footerLinkMuted}>{brand().name}™ Platform →</a>
               </>
             )}
           </div>
@@ -154,8 +154,8 @@ export default function MarketingFooter({ variant = 'consumer' }: { variant?: Va
           }}
         >
           <p style={{ fontSize: 11, color: '#3f3936' }}>
-            ©2026 Body Recode™. All rights reserved.
-          </p>
+            ©2026 {brand().name}™. All rights reserved.
+                                </p>
           <p style={{ fontSize: 11, color: '#3f3936' }}>
             {isIp ? 'www.bodyrecode.au' : 'performance.bodyrecode.au'}
           </p>

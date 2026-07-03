@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { ExternalLink, Plus, Trash2, ChevronDown, ChevronUp, Copy, Check } from 'lucide-react'
+import { brand } from "@/config/tenant";
 
 type ReviewerStatus = 'Not contacted' | 'Contacted' | 'Accessed site' | 'Responded' | 'Call booked' | 'Complete'
 
@@ -235,8 +236,8 @@ export default function PeerReviewPage() {
         </div>
         <h1 className="text-2xl font-bold text-[#1A1A1A] mb-2">Peer Review Program</h1>
         <p className="text-sm text-stone-600 max-w-2xl">
-          Manage the Body Recode™ peer review process. Track outreach, reviewer status, and feedback from medical, allied health, and performance professionals.
-        </p>
+          Manage the {brand().name}™ peer review process. Track outreach, reviewer status, and feedback from medical, allied health, and performance professionals.
+                          </p>
       </div>
 
       {/* Stats */}

@@ -7,6 +7,7 @@ import {
   TrendingUp, FileText, BookOpen, Compass, MessageSquare, Settings, ArrowUpRight,
 } from 'lucide-react'
 import { isCoachEmail } from '@/lib/coach-auth'
+import { brand } from "@/config/tenant";
 
 const MONO_FONT = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
 
@@ -113,8 +114,8 @@ export default async function ResourcesHubPage({ params }: { params: Promise<{ t
           className="text-[10px] text-[#999999] uppercase mt-10 text-center"
           style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
         >
-          Body Recode · client portal
-        </p>
+          {brand().name} · client portal
+                          </p>
         <div className="h-16" />
       </div>
     </div>

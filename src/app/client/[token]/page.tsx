@@ -116,8 +116,8 @@ export default async function ClientDashboardPage({ params }: { params: Promise<
 
         {/* Footer */}
         <p className="text-stone-600 text-xs text-center mt-8">
-          Body Recode Performance Coaching · Questions? Reply to your coach&apos;s emails.
-        </p>
+          {brand().name} Performance Coaching · Questions? Reply to your coach&apos;s emails.
+                          </p>
 
       </div>
     </div>

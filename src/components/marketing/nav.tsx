@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { brand } from "@/config/tenant";
 
 type Variant = 'ip' | 'consumer'
 
@@ -35,7 +36,7 @@ export default function MarketingNav({ variant = 'consumer' }: { variant?: Varia
         <a href="/" style={{ display: 'block', cursor: 'pointer' }}>
           <Image
             src="/logo-black.png"
-            alt="Body Recode"
+            alt={brand().name}
             width={220}
             height={97}
             style={{ height: 56, width: 'auto' }}

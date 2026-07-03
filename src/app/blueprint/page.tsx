@@ -221,7 +221,7 @@ export default function BlueprintPage() {
       {/* Nav */}
       <div style={{ padding: '20px 24px' }}>
         <div style={{ maxWidth: '680px', margin: '0 auto' }}>
-          <img src={logoUrl()} width="160" alt="Body Recode" style={{ display: 'block' }} />
+          <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block' }} />
         </div>
       </div>
 
@@ -880,8 +880,8 @@ export default function BlueprintPage() {
       <div style={{ borderTop: '1px solid #E5E5E5', padding: '28px 24px' }}>
         <div style={{ maxWidth: '680px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center', justifyContent: 'space-between' }}>
           <p style={{ fontSize: '13px', color: '#999999', margin: 0 }}>
-            &copy; {new Date().getFullYear()} Body Recode. All rights reserved.
-          </p>
+            &copy; {new Date().getFullYear()} {brand().name}. All rights reserved.
+                                </p>
           <div style={{ display: 'flex', gap: '20px' }}>
             <a href="/privacy" style={{ fontSize: '13px', color: '#6B6B6B', textDecoration: 'none' }}>Privacy Policy</a>
             <a href="/terms" style={{ fontSize: '13px', color: '#6B6B6B', textDecoration: 'none' }}>Terms</a>

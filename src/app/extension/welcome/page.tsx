@@ -4,7 +4,7 @@ export default function ExtensionWelcomePage() {
   return (
     <div style={{ minHeight: '100vh', background: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 24px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
       <div style={{ maxWidth: 520, width: '100%', textAlign: 'center' }}>
-        <img src={logoUrl()} width={110} alt="Body Recode" style={{ display: 'block', margin: '0 auto 40px' }} />
+        <img src={logoUrl()} width={110} alt={brand().name} style={{ display: 'block', margin: '0 auto 40px' }} />
         <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'rgba(27, 109, 252,0.15)', border: '1px solid rgba(27, 109, 252,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 28px' }}>
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1B6DFC" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
         </div>
