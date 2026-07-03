@@ -275,6 +275,33 @@ function patternActionsCard(patternSlug: string): string {
 `
 }
 
+// PLACEHOLDER — Day 14 ascension reel. Swap the poster block for a real
+// thumbnail image + hosted-video link once Amanda delivers the 60-90s reel.
+// Email clients cannot play inline video, so the real version becomes a
+// clickable poster image linking to the hosted reel / portal.
+function ascensionReelPlaceholderCard(): string {
+  const href = `${brand().marketingDomain}/blueprint?source=challenge_day14_report`
+  return `
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0 0 24px;">
+  <tr>
+    <td align="center">
+      <a href="${href}" style="text-decoration:none;">
+        <table cellpadding="0" cellspacing="0" border="0" width="260" style="width:260px;">
+          <tr>
+            <td style="background:#1A1A1A;border:1px dashed rgba(27,109,252,0.5);border-radius:16px;height:462px;text-align:center;vertical-align:middle;color:#B5CFFC;">
+              <div style="font-size:40px;line-height:1;color:#1B6DFC;margin:0 0 14px;">&#9654;</div>
+              <div style="font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#B5CFFC;margin:0 0 6px;">Reel placeholder</div>
+              <div style="font-size:13px;color:#8FB4F5;padding:0 24px;line-height:1.5;">Day 14 ascension reel<br/>(60-90 sec) drops here</div>
+            </td>
+          </tr>
+        </table>
+      </a>
+    </td>
+  </tr>
+</table>
+`
+}
+
 function blueprintCtaCard(): string {
   return `
 <div style="background:#1A1A1A;border:1px solid rgba(27,109,252,0.3);border-radius:14px;padding:28px 26px;margin:0 0 24px;">
@@ -369,6 +396,7 @@ export function buildDay14BodyDecodeReportEmail({
     <p style="color:#4A4A4A;font-size:15px;line-height:1.7;margin:0 0 20px;">
       This is your baseline now. The question is what you build on top of it.
     </p>
+    ${ascensionReelPlaceholderCard()}
     ${blueprintCtaCard()}
     <p style="color:#4A4A4A;font-size:14px;line-height:1.7;margin:0;">Or just reply to this email and I will personally help you figure out the right next step.</p>
   `)
