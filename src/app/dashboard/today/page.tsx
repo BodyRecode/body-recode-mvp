@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { getRunbookForDate, getUpcomingDecisions, RUNBOOK } from '@/lib/today-runbook'
+import { nextUpStep, phaseGateReview } from '@/lib/saas-buildout-manifest'
 
 interface CalendarPost {
   id: string
@@ -299,6 +300,9 @@ export default function TodayDashboardPage() {
               </Section>
             )}
 
+            {/* 🏗 SAAS BUILDOUT — next up + phase gate (only shows when actionable) */}
+            <SaasBuildoutSection />
+
             {/* 📚 RUNBOOK CONTEXT */}
             {runbookEntry && (
               <Section title="📚 Runbook context" tone="default">
@@ -335,6 +339,40 @@ export default function TodayDashboardPage() {
         )}
       </div>
     </div>
+  )
+}
+
+function SaasBuildoutSection() {
+  const next = nextUpStep()
+  const gate = phaseGateReview()
+  if (!next && !gate) return null
+
+  return (
+    <Section title="🏗 SaaS buildout" tone={gate ? 'success' : 'default'}>
+      {gate && (
+        <Row>
+          <div className="flex items-start gap-2 mb-1">
+            <span className="text-xs font-bold text-green-700 bg-green-100 border border-green-300 px-2 py-0.5 rounded shrink-0">GATE</span>
+            <span className="text-sm font-semibold text-stone-800">Phase {gate.id} complete — review before starting Phase {gate.id + 1}</span>
+          </div>
+          <p className="text-xs text-stone-600 leading-relaxed ml-14">
+            All non-deferred steps in this phase have shipped. Take a beat to validate outcomes before absorbing the next phase&apos;s cost.
+          </p>
+        </Row>
+      )}
+      {next && (
+        <Row>
+          <div className="flex items-start gap-2 mb-1">
+            <span className="text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded shrink-0">NEXT UP</span>
+            <span className="text-sm font-semibold text-stone-800">Phase {next.phase.id} · {next.step.title}</span>
+          </div>
+          <p className="text-xs text-stone-600 leading-relaxed ml-14">{next.step.description}</p>
+        </Row>
+      )}
+      <Row>
+        <a href="/dashboard/settings/platform-buildout" className="text-xs font-semibold text-blue-600 hover:text-blue-700">→ Open Platform Buildout</a>
+      </Row>
+    </Section>
   )
 }
 
