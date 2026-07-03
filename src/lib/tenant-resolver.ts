@@ -26,6 +26,27 @@ const cache = new Map<string, CacheEntry>()
 const CACHE_TTL_MS = 5 * 60 * 1000  // 5 minutes
 
 /**
+ * Custom domain map parsed once at module load from
+ * NEXT_PUBLIC_TENANT_DOMAIN_MAP. Format: `domain1:tenant1,domain2:tenant2`.
+ * Example: `melisa.com:melisa,coachjane.co:jane`. Lowercased on parse.
+ *
+ * Middleware runs on the edge — no async DB call possible in the resolver.
+ * The `tenant_domains` DB table is source of truth for the admin UI; when
+ * Kade adds/edits a row, he gets a copy-paste env var line to update in
+ * Vercel + redeploy. Manageable at founding-ten scale (max ~30 mappings).
+ */
+const CUSTOM_DOMAIN_MAP: Map<string, string> = (() => {
+  const raw = process.env.NEXT_PUBLIC_TENANT_DOMAIN_MAP ?? ''
+  const map = new Map<string, string>()
+  if (!raw.trim()) return map
+  for (const pair of raw.split(',')) {
+    const [domain, tenant] = pair.split(':').map((s) => s.trim().toLowerCase())
+    if (domain && tenant) map.set(domain, tenant)
+  }
+  return map
+})()
+
+/**
  * Given a request host, extract the tenant identifier.
  *
  * Rules (ordered):
@@ -33,8 +54,8 @@ const CACHE_TTL_MS = 5 * 60 * 1000  // 5 minutes
  *   www.bodyrecode.au        → 'body-recode'
  *   performance.bodyrecode.au → 'body-recode' (BR product subdomain)
  *   app.bodyrecode.au        → 'body-recode' (BR app subdomain)
+ *   {custom-domain}          → looked up in CUSTOM_DOMAIN_MAP (env var)
  *   *.sot-platform.com       → subdomain slug (e.g. 'melisa' for melisa.sot-platform.com)
- *   custom-domain.com        → looked up in a tenant_domains table (not yet built)
  *   unknown                  → 'body-recode' (safe default)
  *
  * Called from middleware. Returns synchronously; no DB hit.
@@ -55,6 +76,16 @@ export function resolveTenantIdFromHost(host: string | null): string {
     return 'body-recode'
   }
 
+  // Custom domain fast-path (env-var-parsed map)
+  const custom = CUSTOM_DOMAIN_MAP.get(cleanHost)
+  if (custom) return custom
+  // Also try without www. prefix
+  if (cleanHost.startsWith('www.')) {
+    const bare = cleanHost.slice(4)
+    const customBare = CUSTOM_DOMAIN_MAP.get(bare)
+    if (customBare) return customBare
+  }
+
   // SOT tenant subdomain: {tenant}.sot-platform.com or similar future scheme
   // For now, extract the first subdomain label as the tenant id
   const parts = cleanHost.split('.')
@@ -62,7 +93,7 @@ export function resolveTenantIdFromHost(host: string | null): string {
     return parts[0]  // e.g. 'melisa' from 'melisa.sot-platform.com'
   }
 
-  // Custom domain: would look up tenant_domains table here (post-Melisa work)
+  // Custom domain not in map → safe fallback to BR
   return 'body-recode'
 }
 

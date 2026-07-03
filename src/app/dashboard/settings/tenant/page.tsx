@@ -4,6 +4,7 @@ import { loadTenantFromDb } from '@/lib/tenant-resolver'
 import { createClient } from '@/lib/supabase/server'
 import { PageHeader } from '@/components/dashboard/ui'
 import { EditableSection } from './edit-section'
+import { DomainsSection } from './domains-section'
 
 export const dynamic = 'force-dynamic'
 
@@ -80,6 +81,7 @@ export default async function TenantSettingsPage() {
             title="Modality"
             fields={modalityFields(displayed.modality)}
           />
+          <DomainsSection />
         </>
       ) : (
         <>

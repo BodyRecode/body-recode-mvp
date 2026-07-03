@@ -1,0 +1,200 @@
+'use client'
+
+import { useEffect, useState, useTransition } from 'react'
+
+type Domain = {
+  id: string
+  tenant_id: string
+  domain: string
+  is_primary: boolean
+  verified_at: string | null
+  notes: string | null
+  created_at: string
+  updated_at: string
+}
+
+export function DomainsSection() {
+  const [domains, setDomains] = useState<Domain[]>([])
+  const [envVarLine, setEnvVarLine] = useState<string>('')
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [newDomain, setNewDomain] = useState('')
+  const [newNotes, setNewNotes] = useState('')
+  const [newIsPrimary, setNewIsPrimary] = useState(false)
+  const [pending, startTransition] = useTransition()
+
+  async function reload() {
+    setLoading(true)
+    const r = await fetch('/api/tenant/domains')
+    if (!r.ok) {
+      setError((await r.json().catch(() => ({ error: 'load failed' }))).error ?? 'load failed')
+      setLoading(false)
+      return
+    }
+    const data = await r.json()
+    setDomains(data.domains ?? [])
+    setEnvVarLine(data.env_var_line ?? '')
+    setLoading(false)
+    setError(null)
+  }
+
+  useEffect(() => {
+    reload()
+  }, [])
+
+  async function handleAdd(e: React.FormEvent) {
+    e.preventDefault()
+    if (!newDomain.trim()) return
+    startTransition(async () => {
+      const r = await fetch('/api/tenant/domains', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          domain: newDomain.trim(),
+          notes: newNotes.trim() || undefined,
+          is_primary: newIsPrimary,
+        }),
+      })
+      if (!r.ok) {
+        const body = await r.json().catch(() => ({ error: 'add failed' }))
+        setError(body.error ?? 'add failed')
+        return
+      }
+      setNewDomain('')
+      setNewNotes('')
+      setNewIsPrimary(false)
+      await reload()
+    })
+  }
+
+  async function handleDelete(id: string) {
+    if (!confirm('Remove this domain?')) return
+    startTransition(async () => {
+      const r = await fetch(`/api/tenant/domains?id=${id}`, { method: 'DELETE' })
+      if (!r.ok) {
+        const body = await r.json().catch(() => ({ error: 'delete failed' }))
+        setError(body.error ?? 'delete failed')
+        return
+      }
+      await reload()
+    })
+  }
+
+  return (
+    <div className="mb-4 bg-white border border-stone-200 rounded-xl overflow-hidden">
+      <div className="px-5 py-3 border-b border-stone-200 bg-stone-50">
+        <h3 className="text-[13px] font-bold text-stone-900 uppercase tracking-widest">Custom domains</h3>
+      </div>
+      <div className="p-5">
+        <p className="text-[13px] text-stone-600 leading-relaxed mb-4">
+          Route additional domains to this tenant. After adding a domain, point it via CNAME to <code className="bg-stone-100 px-1 py-0.5 rounded text-[12px]">cname.vercel-dns.com</code> in your DNS registrar, then copy the env var line below into Vercel and redeploy.
+        </p>
+
+        {error && (
+          <div className="mb-3 p-3 rounded-lg border border-red-200 bg-red-50 text-[12px] text-red-800">{error}</div>
+        )}
+
+        {loading ? (
+          <div className="text-[13px] text-stone-500">Loading domains…</div>
+        ) : domains.length === 0 ? (
+          <div className="text-[13px] text-stone-500 italic mb-4">No custom domains yet.</div>
+        ) : (
+          <div className="mb-4 border border-stone-200 rounded-lg overflow-hidden">
+            <table className="w-full text-[13px]">
+              <thead className="bg-stone-50">
+                <tr>
+                  <th className="text-left px-3 py-2 text-[11px] font-bold text-stone-500 uppercase tracking-widest">Domain</th>
+                  <th className="text-left px-3 py-2 text-[11px] font-bold text-stone-500 uppercase tracking-widest">Primary</th>
+                  <th className="text-left px-3 py-2 text-[11px] font-bold text-stone-500 uppercase tracking-widest">Verified</th>
+                  <th className="text-left px-3 py-2 text-[11px] font-bold text-stone-500 uppercase tracking-widest">Notes</th>
+                  <th className="text-right px-3 py-2 text-[11px] font-bold text-stone-500 uppercase tracking-widest"></th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-stone-100">
+                {domains.map((d) => (
+                  <tr key={d.id}>
+                    <td className="px-3 py-2 font-mono text-stone-900">{d.domain}</td>
+                    <td className="px-3 py-2">
+                      {d.is_primary ? (
+                        <span className="text-[10px] font-bold uppercase tracking-widest bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">Primary</span>
+                      ) : (
+                        <span className="text-stone-400">—</span>
+                      )}
+                    </td>
+                    <td className="px-3 py-2 text-stone-600">
+                      {d.verified_at ? new Date(d.verified_at).toLocaleDateString('en-AU') : <span className="text-amber-600">Pending</span>}
+                    </td>
+                    <td className="px-3 py-2 text-stone-600">{d.notes ?? <span className="text-stone-400">—</span>}</td>
+                    <td className="px-3 py-2 text-right">
+                      <button
+                        onClick={() => handleDelete(d.id)}
+                        disabled={pending}
+                        className="text-[12px] text-red-600 hover:text-red-700 underline disabled:opacity-40"
+                      >
+                        Remove
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        <form onSubmit={handleAdd} className="mb-4 p-3 rounded-lg border border-stone-200 bg-stone-50">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-3 items-end">
+            <label className="block">
+              <span className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-1 block">Domain</span>
+              <input
+                type="text"
+                required
+                placeholder="mycoach.com"
+                value={newDomain}
+                onChange={(e) => setNewDomain(e.target.value)}
+                className="w-full px-3 py-2 rounded-md border border-stone-300 text-[13px] font-mono focus:outline-none focus:ring-2 focus:ring-blue-400"
+                disabled={pending}
+              />
+            </label>
+            <label className="block">
+              <span className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-1 block">Notes (optional)</span>
+              <input
+                type="text"
+                placeholder="e.g. rebrand, regional"
+                value={newNotes}
+                onChange={(e) => setNewNotes(e.target.value)}
+                className="w-full px-3 py-2 rounded-md border border-stone-300 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-400"
+                disabled={pending}
+              />
+            </label>
+            <button
+              type="submit"
+              disabled={pending || !newDomain.trim()}
+              className="px-4 py-2 rounded-md bg-blue-600 text-white text-[13px] font-semibold hover:bg-blue-700 disabled:opacity-40"
+            >
+              {pending ? 'Adding…' : 'Add'}
+            </button>
+          </div>
+          <label className="flex items-center gap-2 mt-3">
+            <input
+              type="checkbox"
+              checked={newIsPrimary}
+              onChange={(e) => setNewIsPrimary(e.target.checked)}
+              disabled={pending}
+            />
+            <span className="text-[12px] text-stone-700">Mark as primary (used for absolute URLs in emails, deposes any existing primary)</span>
+          </label>
+        </form>
+
+        {envVarLine && (
+          <div className="p-3 rounded-lg border border-blue-200 bg-blue-50">
+            <p className="text-[11px] font-bold text-blue-900 uppercase tracking-widest mb-2">Vercel env var update</p>
+            <p className="text-[12px] text-blue-800 leading-relaxed mb-2">
+              Copy this line into <code className="bg-blue-100 px-1 py-0.5 rounded text-[11px]">NEXT_PUBLIC_TENANT_DOMAIN_MAP</code> in Vercel &rarr; Project settings &rarr; Environment variables, then trigger a redeploy. The map applies at edge middleware load, so a redeploy is required.
+            </p>
+            <div className="p-2 rounded bg-white border border-blue-100 font-mono text-[12px] text-stone-900 break-all select-all">{envVarLine}</div>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
