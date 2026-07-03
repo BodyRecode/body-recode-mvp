@@ -7,6 +7,7 @@ import { inngest } from '@/lib/inngest'
 import { sendChallengeWelcomeEmail, sendCoachEnrollmentNotification } from '@/lib/challenge-welcome-email'
 import { fireMetaCapiEvent, extractClientContext } from '@/lib/meta-capi'
 import { reserveWaveSlot } from '@/lib/challenge-waves'
+import { persistSmsOptIn } from '@/lib/speed-to-lead-sms'
 import { brand } from "@/config/tenant";
 
 export async function POST(request: NextRequest) {
@@ -17,12 +18,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 })
   }
 
-  const { first_name, last_name, email, phone, gender } = body as {
+  const { first_name, last_name, email, phone, gender, sms_opt_in } = body as {
     first_name: string
     last_name?: string
     email: string
     phone: string
     gender?: string
+    sms_opt_in?: boolean
   }
 
   if (!first_name?.trim() || !last_name?.trim() || !email?.trim() || !phone?.trim()) {
@@ -154,6 +156,16 @@ export async function POST(request: NextRequest) {
       })
     } catch (e) {
       console.error('[challenge/enroll] inngest.send failed:', e)
+    }
+
+    // Persist SMS opt-in for speed-to-lead pipeline. Silent-fail — enrolment
+    // never depends on the SMS pipeline succeeding.
+    if (sms_opt_in && phone?.trim()) {
+      try {
+        await persistSmsOptIn(leadId, phone.trim())
+      } catch (smsErr) {
+        console.error('[challenge/enroll] SMS opt-in persist failed:', smsErr)
+      }
     }
   }
 

@@ -42,6 +42,7 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
     />
   }
   const [form, setForm] = useState({ first_name: '', last_name: '', email: '', phone: '', gender: '' })
+  const [smsOptIn, setSmsOptIn] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -55,7 +56,7 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
       const res = await fetch('/api/challenge/enroll', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, position }),
+        body: JSON.stringify({ ...form, sms_opt_in: smsOptIn, position }),
       })
       const data = await res.json()
       if (!res.ok) {
@@ -170,6 +171,15 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
         <option value="female">Female</option>
         <option value="prefer_not_to_say">Prefer not to say</option>
       </select>
+      <label style={{ display: 'flex', gap: '8px', alignItems: 'flex-start', fontSize: '12.5px', color: darkBg ? '#B4BAC3' : '#4a4640', cursor: 'pointer', lineHeight: 1.5 }}>
+        <input
+          type="checkbox"
+          checked={smsOptIn}
+          onChange={e => setSmsOptIn(e.target.checked)}
+          style={{ marginTop: '3px', accentColor: '#1B6DFC' }}
+        />
+        <span>{coach().firstName} can text me about the challenge (reply STOP to opt out).</span>
+      </label>
       {error && (
         <p style={{ fontSize: '13px', color: '#dc2626', margin: 0 }}>{error}</p>
       )}

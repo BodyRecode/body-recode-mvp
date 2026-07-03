@@ -1700,3 +1700,76 @@ export const igPublisherCron = inngest.createFunction(
     return { processed: results.length, sent, failed, results }
   }
 )
+
+// ── Speed-to-lead SMS ────────────────────────────────────────────────
+// Contact-within-60s pipeline. Fires an SMS as soon as a lead completes
+// the scorecard or enrols in the Challenge, respecting Aussie Spam Act
+// consent + AEST send-window rules. Reads sms_opt_in_at / sms_opted_out_at
+// on the lead; caps at 1 SMS per lead per 24h + 3 per week.
+//
+// See project_speed_to_lead_sms + feedback_ship_checklist for the ops rules.
+
+async function processSpeedToLeadStep(
+  leadId: string,
+  trigger: 'scorecard_completed' | 'challenge_enrolled',
+  bookingUrl: string | undefined,
+  step: {
+    run: <T>(id: string, fn: () => Promise<T>) => Promise<T>
+    sleepUntil: (id: string, at: Date) => Promise<void>
+  },
+): Promise<{ ok: boolean; reason?: string; error?: string; sendAt?: string }> {
+  const { computeSendAt } = await import('@/lib/sms-send-window')
+  const { sendLeadSms } = await import('@/lib/speed-to-lead-sms')
+  const { tplScorecardCompleted, tplChallengeEnrolled } = await import('@/lib/sms-templates')
+
+  const scheduled = await step.run('compute-send-at', async () => {
+    return computeSendAt(new Date(), trigger).toISOString()
+  })
+  await step.sleepUntil(`wait-for-send-window-${leadId}`, new Date(scheduled))
+
+  const admin = createAdminClient()
+  const { data: lead } = await admin
+    .from('leads')
+    .select('id, first_name, name, sms_opt_in_at, sms_opted_out_at')
+    .eq('id', leadId)
+    .maybeSingle()
+  if (!lead) return { ok: false, reason: 'lead_not_found' }
+  const firstName = lead.first_name ?? (lead.name?.split(' ')[0] ?? null)
+
+  const body =
+    trigger === 'scorecard_completed'
+      ? tplScorecardCompleted({ firstName, bookingUrl })
+      : tplChallengeEnrolled({ firstName })
+
+  const result = await step.run(`send-${leadId}`, async () => sendLeadSms({ leadId, trigger, body }))
+  return { ok: result.ok, reason: result.ok ? undefined : result.reason, error: result.ok ? undefined : result.error, sendAt: scheduled }
+}
+
+export const speedToLeadScorecardFunction = inngest.createFunction(
+  {
+    id: 'speed-to-lead-scorecard',
+    name: 'Speed-to-lead · scorecard SMS',
+    retries: 2,
+    triggers: [{ event: 'scorecard/completed' }],
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async ({ event, step }: { event: { data: { leadId: string; bookingUrl?: string } }; step: any }) => {
+    const { leadId, bookingUrl } = event.data
+    return processSpeedToLeadStep(leadId, 'scorecard_completed', bookingUrl, step)
+  },
+)
+
+export const speedToLeadChallengeFunction = inngest.createFunction(
+  {
+    id: 'speed-to-lead-challenge',
+    name: 'Speed-to-lead · challenge SMS',
+    retries: 2,
+    triggers: [{ event: 'challenge/enrolled' }],
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async ({ event, step }: { event: { data: { leadId?: string; token?: string } }; step: any }) => {
+    const { leadId } = event.data
+    if (!leadId) return { ok: false, reason: 'no_lead_id' }
+    return processSpeedToLeadStep(leadId, 'challenge_enrolled', undefined, step)
+  },
+)

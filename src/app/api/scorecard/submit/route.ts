@@ -4,6 +4,8 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { getDefaultCoachId } from '@/lib/default-coach'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { fireTrigger } from '@/lib/automation-engine'
+import { inngest } from '@/lib/inngest'
+import { persistSmsOptIn } from '@/lib/speed-to-lead-sms'
 import { generatePreCallBrief } from '@/lib/pre-call-brief'
 import {
   typeFatMapProfile,
@@ -68,11 +70,12 @@ export async function POST(request: NextRequest) {
     console.error('[scorecard/submit] Failed to parse JSON body:', e)
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400, headers: CORS })
   }
-  const { first_name, last_name, email, phone, score, body_state, source, section_scores, approach_response, investment_readiness, biological_sex, age_band, fat_storage, cycle_status } = body as {
+  const { first_name, last_name, email, phone, sms_opt_in, score, body_state, source, section_scores, approach_response, investment_readiness, biological_sex, age_band, fat_storage, cycle_status } = body as {
     first_name: string
     last_name?: string
     email: string
     phone?: string
+    sms_opt_in?: boolean
     score: number
     body_state: string
     source: string
@@ -244,6 +247,21 @@ export async function POST(request: NextRequest) {
     notes: `Score: ${score}/15. Body state: ${body_state}.${qualifierNote}${section_scores ? ' Sections: ' + JSON.stringify(section_scores) : ''}`,
   })
   console.log('[scorecard/submit] Event logged for lead:', leadId)
+
+  // Persist SMS opt-in + fire speed-to-lead pipeline. Both silent-fail —
+  // scorecard submission never depends on the SMS pipeline succeeding.
+  if (sms_opt_in && phone?.trim()) {
+    try {
+      await persistSmsOptIn(leadId, phone.trim())
+      await inngest.send({
+        name: 'scorecard/completed',
+        data: { leadId, bookingUrl: `${brand().marketingDomain}/scorecard?intent=challenge` },
+      })
+      console.log('[scorecard/submit] SMS opt-in persisted + speed-to-lead event fired for lead:', leadId)
+    } catch (smsErr) {
+      console.error('[scorecard/submit] SMS opt-in / speed-to-lead failed:', smsErr)
+    }
+  }
 
   // Fire form_submitted trigger for scorecard-specific automations
   await fireTrigger('form_submitted', { leadId }, { form: 'scorecard' })
