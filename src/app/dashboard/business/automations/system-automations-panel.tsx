@@ -14,6 +14,13 @@ const AUTOMATIC_AUTOMATIONS = [
     steps: 5,
   },
   {
+    id: 'speed-to-lead-sms',
+    name: 'Speed-to-Lead SMS',
+    description: 'Contact-within-60s SMS on scorecard completion + challenge enrolment. Consent-checked, frequency-capped (1 per 24h + 3 per 7d), AEST window-aware. STOP triggers hard opt-out. Full audit log in sms_logs. Dashboard at /dashboard/sms.',
+    trigger: 'scorecard/completed or challenge/enrolled Inngest event, when sms_opt_in was ticked',
+    steps: 1,
+  },
+  {
     id: 'report-followup',
     name: 'Body Decode Report Follow-up',
     description: '3-email sequence sent after a $37 Body Decode Report is purchased. Cancels the scorecard sequence and replaces it.',

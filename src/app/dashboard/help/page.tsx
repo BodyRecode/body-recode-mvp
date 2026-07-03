@@ -34,6 +34,7 @@ const SECTIONS = [
   { id: 'admin-actions',    title: '17. Admin Actions',      colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'system-health',    title: '17b. System Health',     colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'platform-buildout', title: '17e. Platform Buildout', colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'speed-to-lead-sms', title: '17f. Speed-to-Lead SMS', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'licensee-readiness', title: '17d. Licensee Readiness Audits', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'onboarding-nudges',title: '17c. Onboarding Nudges', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'stripe-payments',  title: '19. Stripe Payments',    colour: 'teal' as const, category: 'coaching' as Category },
@@ -1443,6 +1444,53 @@ export default function HelpPage() {
             <p className="font-semibold text-[#1A1A1A] mt-4">Source of truth &amp; discipline</p>
             <p>The buildout lives in <code>src/lib/saas-buildout-manifest.ts</code>. Every commit that ships or changes state on a SaaS/white-label step MUST update the corresponding manifest entry in the same commit — bump <code>status</code>, add the commit SHA to <code>commits</code>, stamp <code>shippedAt</code> if now shipped. See <code>feedback_ship_checklist</code> auto-memory (updated 2026-07-03) for the enforcement rule.</p>
             <p>Strategic scope doc: <code>~/Dropbox/03_STUDIO_OF_TEN/00_FOUNDING_TEN/POWERED_PLATFORM_BUILD_PLAN.md</code>. Deployment runbook: <code>PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.md</code>.</p>
+          </Section>
+
+          <Section id="speed-to-lead-sms" title="17f. Speed-to-Lead SMS" colour="teal">
+            <p>Contact-within-60s SMS on scorecard completion + challenge enrolment. Shipped 2026-07-03 (Hormozi speed-to-lead pattern). Every send is opt-in-checked, frequency-capped, and audit-logged - Aussie Spam Act 2003 compliant end to end.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">What triggers a send</p>
+            <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
+              <li><strong>Scorecard completed</strong> - when the frontend POSTs <code>sms_opt_in: true</code> and a phone. Fires <code>scorecard/completed</code> in Inngest, sends within 60s (subject to send-window rules).</li>
+              <li><strong>Challenge enrolled</strong> - challenge form has an opt-in checkbox pre-ticked. Uncheck to opt out. Fires <code>challenge/enrolled</code> and follows the same Inngest path.</li>
+              <li><strong>Purchase report</strong> and <strong>no-show reminder</strong> templates exist but the triggers are not wired yet - queued as <code>purchase-and-noshow-sms-triggers</code> in the buildout manifest.</li>
+            </ul>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">Send-window rules (AEST)</p>
+            <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
+              <li><strong>Scorecard:</strong> Mon-Fri 08:30-20:00 + Sat 08:30-18:00. No Sunday.</li>
+              <li><strong>Challenge:</strong> Mon-Sat 08:30-20:00. No Sunday.</li>
+              <li><strong>Purchase:</strong> Anytime except 22:00-06:00 (queued to 08:30 next day). Sunday OK - peak intent.</li>
+              <li><strong>No-show:</strong> Mon-Sat 08:30-20:00. Queued outside window.</li>
+              <li>Outside window → sleep-until next window opening via <code>step.sleepUntil</code>.</li>
+            </ul>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">Send guards (enforced in <code>sendLeadSms</code>)</p>
+            <ol className="space-y-1 list-decimal list-inside text-[#3A3A3A] text-sm">
+              <li>Lead has phone (<code>phone_e164</code> preferred, <code>phone</code> fallback).</li>
+              <li><code>sms_opted_out_at IS NULL</code> - hard stop otherwise.</li>
+              <li><code>sms_opt_in_at IS NOT NULL</code> - no send without express opt-in.</li>
+              <li>Max 1 outbound per lead per 24h.</li>
+              <li>Max 3 outbound per lead per rolling 7 days.</li>
+            </ol>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">STOP / opt-out</p>
+            <p>Twilio inbound webhook at <code>/api/webhooks/twilio/inbound</code>. Recognises STOP, STOPALL, UNSUBSCRIBE, CANCEL, QUIT, END, REVOKE (case + punctuation insensitive). Sets <code>leads.sms_opted_out_at</code> + logs inbound + returns Twilio auto-forwarded confirmation. Non-STOP replies email you at your admin address with a deep link to the matched lead.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">Dashboard</p>
+            <p>Live at <strong>Dashboard → Marketing → SMS Pulse</strong> (<code>/dashboard/sms</code>). Shows sent 24h / delivered 24h / failed 24h / inbound 24h / sent 7d / opt-outs 7d / consented leads / cost 7d, plus a live log of the last 30 messages with status, trigger, timestamp, and lead links.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">Canonical docs</p>
+            <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
+              <li><code>~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/SMS_INVENTORY.md</code> - every outbound template + trigger + window rule. Ship-checklist artefact.</li>
+              <li><code>sql/2026-07-03_speed_to_lead_sms_schema.sql</code> - schema for the two new columns on <code>leads</code> + the <code>sms_logs</code> audit table.</li>
+              <li><code>src/lib/sms-send-window.ts</code> - window rules per trigger.</li>
+              <li><code>src/lib/speed-to-lead-sms.ts</code> - send + logging + STOP/reply persistence.</li>
+              <li><code>src/lib/sms-templates.ts</code> - copy. Tenant-aware via <code>coach()</code> / <code>brand()</code>.</li>
+            </ul>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">Tenancy note (SOT)</p>
+            <p>Templates and copy already read from <code>coach()</code> / <code>brand()</code> so SOT partners get their own voice without rewriting anything. Twilio credentials are shared right now (one account for all tenants). Per-tenant Twilio Subaccounts are queued in the buildout manifest as <code>per-tenant-twilio-subaccounts</code> - a small extension for when partner #2 signs.</p>
           </Section>
 
           <Section id="licensee-readiness" title="17d. Licensee Readiness: Audits + Versioning + Validators" colour="teal">
