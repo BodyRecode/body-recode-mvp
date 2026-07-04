@@ -1,3 +1,4 @@
+import { ListChecks, MessageCircle, FileText, CalendarDays, NotebookPen, LayoutGrid, Dumbbell, Salad, LineChart, Activity, BookOpen, type LucideIcon } from 'lucide-react'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { notFound, redirect } from 'next/navigation'
@@ -6,6 +7,15 @@ import { getCheckInWindowStatus, getWeekNumber, isCheckinTestMode } from '@/lib/
 import ClientHeader from '@/components/client-header'
 import { isCoachEmail } from '@/lib/coach-auth'
 import { brand } from '@/config/tenant'
+
+function SectionLabel({ icon: Icon, text }: { icon: LucideIcon; text: string }) {
+  return (
+    <div className="flex items-center gap-2.5 mb-4">
+      <span className="w-8 h-8 rounded-lg bg-[#1B6DFC]/10 flex items-center justify-center text-[#1B6DFC]"><Icon size={16} strokeWidth={2.5} /></span>
+      <p className="text-[11px] font-bold tracking-widest text-[#1B6DFC] uppercase">{text}</p>
+    </div>
+  )
+}
 
 export default async function PortalPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
@@ -294,7 +304,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         {/* Onboarding tasks */}
         {!allOnboardingDone && (
           <div className="mb-10">
-            <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1B6DFC] uppercase">Getting started</p></div>
+            <SectionLabel icon={ListChecks} text="Getting started" />
             <div className="space-y-3">
               {tasks.map((task) => (
                 <div
@@ -345,7 +355,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             content so the client sees and completes it on next sign-in. */}
         {pendingSupplementary && (
           <div className="mb-10">
-            <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1B6DFC] uppercase">A quick follow-up from Kade</p></div>
+            <SectionLabel icon={MessageCircle} text="A quick follow-up from Kade" />
             <Link
               href={`/intake-supplement/${pendingSupplementary.token}`}
               className="block rounded-2xl border border-blue-200 bg-blue-50 p-5 hover:border-[#1B6DFC]/60 hover:bg-blue-50 transition-colors"
@@ -366,7 +376,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         {/* Foundational Reading - shown the moment Kade publishes it */}
         {publishedReading && (
           <div className="mb-10">
-            <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1B6DFC] uppercase">Your Reading</p></div>
+            <SectionLabel icon={FileText} text="Your Reading" />
             <Link
               href={`/portal/${token}/foundational-reading`}
               className="block rounded-2xl border border-[#ECEEF2] shadow-[0_1px_2px_rgba(16,24,40,0.04),0_8px_20px_rgba(16,24,40,0.05)] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors mb-3"
@@ -404,7 +414,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         {/* Sessions - face-to-face clients */}
         {allOnboardingDone && client.session_type === 'face_to_face' && (
           <div className="mb-10">
-            <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1B6DFC] uppercase">Sessions</p></div>
+            <SectionLabel icon={CalendarDays} text="Sessions" />
             <Link
               href={`/portal/${token}/sessions`}
               className="block rounded-2xl border border-[#ECEEF2] shadow-[0_1px_2px_rgba(16,24,40,0.04),0_8px_20px_rgba(16,24,40,0.05)] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors"
@@ -435,7 +445,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             evaluates training response, so it only opens once a program exists. */}
         {allOnboardingDone && client.coaching_started_at && (
           <div className="mb-10">
-            <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1B6DFC] uppercase">This week</p></div>
+            <SectionLabel icon={NotebookPen} text="This week" />
             {!activeProgram ? (
               <div className="rounded-2xl border border-[#ECEEF2] shadow-[0_1px_2px_rgba(16,24,40,0.04),0_8px_20px_rgba(16,24,40,0.05)] bg-[#FFFFFF] p-5">
                 <p className="text-sm font-semibold text-[#1A1A1A] mb-1">Your program is being built</p>
@@ -500,14 +510,14 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         {/* Preview header during onboarding */}
         {!allOnboardingDone && (
           <div className="mb-6">
-            <div className="flex items-center gap-2.5 mb-2"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1B6DFC] uppercase">Your portal</p></div>
+            <SectionLabel icon={LayoutGrid} text="Your portal" />
             <p className="text-xs text-[#999999] leading-relaxed">A look at what unlocks as your coach builds your plan. You can take measurements anytime.</p>
           </div>
         )}
 
         {/* Training */}
         <div className="mb-10">
-          <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1B6DFC] uppercase">Training</p></div>
+          <SectionLabel icon={Dumbbell} text="Training" />
             {activeProgram ? (
               <div className="space-y-3">
                 {programReviewedThisWeek ? (
@@ -561,7 +571,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
 
         {/* Nutrition */}
         <div className="mb-10">
-          <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1B6DFC] uppercase">Nutrition</p></div>
+          <SectionLabel icon={Salad} text="Nutrition" />
             {activeNutritionPlan ? (
               <div className="space-y-3">
                 {nutritionReviewedThisWeek ? (
@@ -615,7 +625,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
 
         {/* Progress */}
         <div className="mb-10">
-          <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1B6DFC] uppercase">Progress</p></div>
+          <SectionLabel icon={LineChart} text="Progress" />
           <Link
             href={`/portal/${token}/progress`}
             className="block rounded-2xl border border-[#ECEEF2] shadow-[0_1px_2px_rgba(16,24,40,0.04),0_8px_20px_rgba(16,24,40,0.05)] bg-[#FFFFFF]/50 p-4 hover:border-[#ECEEF2] transition-colors"
@@ -632,7 +642,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
 
         {/* Health Markers - always-on self-serve blood test upload */}
         <div className="mb-10">
-          <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1B6DFC] uppercase">Health Markers</p></div>
+          <SectionLabel icon={Activity} text="Health Markers" />
           <Link
             href={`/portal/${token}/bloods`}
             className="block rounded-2xl border border-[#ECEEF2] shadow-[0_1px_2px_rgba(16,24,40,0.04),0_8px_20px_rgba(16,24,40,0.05)] bg-[#FFFFFF]/50 p-4 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors"
@@ -650,7 +660,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         {/* Coach feedback */}
         {(latestProgramReview?.coach_notes || latestNutritionReview?.coach_notes) && (
           <div className="mb-10">
-            <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1B6DFC] uppercase">From your coach</p></div>
+            <SectionLabel icon={MessageCircle} text="From your coach" />
             <div className="space-y-3">
               {latestProgramReview?.coach_notes && (
                 <div className="bg-[#FFFFFF] border border-[#ECEEF2] rounded-2xl p-5">
@@ -706,7 +716,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
 
         {/* Resources */}
         <div className="mb-10">
-          <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><p className="text-[11px] font-bold tracking-widest text-[#1B6DFC] uppercase">Resources</p></div>
+          <SectionLabel icon={BookOpen} text="Resources" />
           <Link
             href={`/portal/${token}/resources`}
             className="flex items-center justify-between w-full bg-[#FFFFFF] border border-[#ECEEF2] rounded-2xl px-5 py-4 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors mb-3"
