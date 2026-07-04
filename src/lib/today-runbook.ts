@@ -170,7 +170,7 @@ export const RUNBOOK: RunbookEntry[] = [
     label: 'Pre-launch · ~2 weeks out',
     phase: 'pre_launch',
     checks: [...DAILY_RITUAL, 'Verify launch readiness - run `npm run check:launch`'],
-    decisions: ['Awaiting Aimee response on AF Newstead Founding Partner proposal (target tomorrow Tue 1 Jul)'],
+    decisions: ['RESOLVED (5 Jul): Aimee APPROVED the AF Newstead Founding Partner proposal.'],
     notes: ['Most build is shipped. Remaining = external action (Aimee, Meta UI, Amanda HeyGen).'],
   },
   {
@@ -178,7 +178,7 @@ export const RUNBOOK: RunbookEntry[] = [
     label: 'Pre-launch · Aimee deadline',
     phase: 'pre_launch',
     checks: [...DAILY_RITUAL],
-    decisions: ['🚨 Aimee response on AF Newstead deadline TODAY - if no answer by EOD, default to "no" path (delete DRAFT assets + email --no-af-newstead flag)'],
+    decisions: ['RESOLVED (5 Jul): Aimee APPROVED the AF Newstead Founding Partner partnership. DRAFT assets finalized (kept), email keeps the founding-partner block.'],
   },
   ...generatePreLaunchDays(),
 
@@ -221,7 +221,7 @@ export const RUNBOOK: RunbookEntry[] = [
           '2. Run: `cd ~/body-recode-mvp && set -a && source .env.local && set +a && npx tsx scripts/launch-day-waitlist-email.ts --live --wave=1`',
           '3. Expect console output: `[launch-email] Wave 1 broadcast (initial launch)` then `[launch-email] DONE. Sent N · Failed 0`',
           `4. Spot-check ${coach().email} inbox for BCC copies arriving (should see ~N BCCs where N = waitlist row count).`,
-          '5. If Aimee declined AF Newstead partnership: add `--no-af-newstead` flag to strip the founding-partner block.',
+          '5. Aimee APPROVED the AF Newstead partnership (5 Jul) - KEEP the founding-partner block. Do NOT use `--no-af-newstead`.',
         ].join('\n'),
       },
       {
