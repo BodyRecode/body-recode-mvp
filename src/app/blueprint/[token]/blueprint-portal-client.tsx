@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { Dumbbell, BookOpen, ClipboardCheck, ChevronRight } from 'lucide-react'
 import { logoUrl, brand, coach } from '@/config/tenant'
 
 // Branded video placeholder shown wherever a Blueprint video will embed but
@@ -1609,6 +1610,31 @@ export default function BlueprintPortalClient({
               </div>
             </div>
 
+            {/* Quick-action dashboard tiles */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 24 }}>
+              {[
+                { icon: Dumbbell, eyebrow: 'Training', label: "This week's sessions", tab: 'training' },
+                { icon: BookOpen, eyebrow: 'Lesson', label: LESSONS[currentWeek - 1]?.title ?? 'Review all lessons', tab: 'education' },
+                { icon: ClipboardCheck, eyebrow: 'Check-In', label: 'Rate your 8 markers', tab: 'checkin' },
+              ].map(t => {
+                const Icon = t.icon
+                return (
+                  <button key={t.tab} onClick={() => setActiveTab(t.tab)} style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, padding: '16px', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', cursor: 'pointer', textAlign: 'left', display: 'flex', flexDirection: 'column', gap: 14 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(27,109,252,0.1)', color: '#1B6DFC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Icon size={19} />
+                      </div>
+                      <ChevronRight size={16} color="#C4C8D0" />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: 10, fontWeight: 700, color: '#6B6B6B', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 3 }}>{t.eyebrow}</div>
+                      <div style={{ fontSize: 13.5, fontWeight: 700, color: '#1A1A1A', lineHeight: 1.3 }}>{t.label}</div>
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
+
             {/* Pattern welcome video - Week 1 only */}
             {currentWeek === 1 && (
               <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px', marginBottom: 24 }}>
@@ -1621,8 +1647,12 @@ export default function BlueprintPortalClient({
 
             {COACHING_NOTES[pattern]?.[currentWeek] && (
               <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '24px', marginBottom: 24 }}>
-                <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
-                  Week {currentWeek} - Coaching Note
+                <div style={{ display: 'flex', alignItems: 'center', gap: 11, marginBottom: 16 }}>
+                  <img src={coach().photoUrl} width={38} height={38} style={{ borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} alt={coach().firstName} />
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A' }}>{coach().firstName}</div>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: config.colour, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Week {currentWeek} coaching note</div>
+                  </div>
                 </div>
                 {COACHING_NOTES[pattern][currentWeek].split('\n\n').map((para, i) => (
                   <p key={i} style={{ fontSize: 14, color: '#4A4A4A', lineHeight: 1.8, margin: i === 0 ? '0 0 14px' : '0' }}>{para}</p>
