@@ -1717,10 +1717,11 @@ export default function BlueprintPortalClient({
                         {i < 2 && <div style={{ width: 2, flex: 1, background: '#E5E5E5', marginTop: 4 }} />}
                       </div>
                       <div style={{ paddingTop: 4, paddingBottom: i < 2 ? 8 : 0 }}>
-                        <div style={{ fontSize: 14, fontWeight: 600, color: isActive ? '#fff' : '#4A4A4A', marginBottom: 2 }}>
-                          {phase.name} <span style={{ fontWeight: 400, color: '#3d3935' }}>- Weeks {phase.weeks}</span>
+                        <div style={{ fontSize: 14, fontWeight: isActive ? 700 : 600, color: isActive ? '#1B6DFC' : '#1A1A1A', marginBottom: 2 }}>
+                          {phase.name} <span style={{ fontWeight: 400, color: '#6B6B6B' }}>· Weeks {phase.weeks}</span>
+                          {isActive && <span style={{ fontSize: 10, fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.08em', textTransform: 'uppercase', background: 'rgba(27,109,252,0.1)', padding: '2px 8px', borderRadius: 99, marginLeft: 8, verticalAlign: 'middle' }}>Current</span>}
                         </div>
-                        <div style={{ fontSize: 13, color: isActive ? '#6B6B6B' : '#3d3935', lineHeight: 1.6 }}>{phase.description}</div>
+                        <div style={{ fontSize: 13, color: '#4A4A4A', lineHeight: 1.6 }}>{phase.description}</div>
                       </div>
                     </div>
                   )
