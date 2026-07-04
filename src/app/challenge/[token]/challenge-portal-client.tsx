@@ -114,7 +114,7 @@ function ExpandableResource({ resource }: { resource: typeof RESOURCES_STATIC[0]
 
   return (
     <div style={{
-      background: '#FFFFFF', border: '1px solid #E5E5E5',
+      background: '#FFFFFF', border: '1px solid #ECEEF2', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)',
       borderRadius: '12px', overflow: 'hidden',
     }}>
       <div
@@ -194,7 +194,7 @@ function LockedMilestoneCard({
         {label}
       </p>
       <div style={{
-        background: '#FFFFFF', border: '1px solid #E5E5E5',
+        background: '#FFFFFF', border: '1px solid #ECEEF2', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)',
         borderRadius: '12px', padding: '24px', textAlign: 'center',
       }}>
         <div style={{
@@ -274,7 +274,7 @@ function ParqForm({ token, onComplete }: { token: string; onComplete: () => void
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '20px' }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', borderRadius: '12px', padding: '20px' }}>
         <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.7, margin: 0 }}>
           The PAR-Q is a standard physical activity readiness questionnaire. Please answer all questions honestly. If you answer YES to any question, you must consult a doctor before beginning the training component of this challenge.
         </p>
@@ -391,7 +391,7 @@ function HealthDecForm({ token, onComplete }: { token: string; onComplete: () =>
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '20px' }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', borderRadius: '12px', padding: '20px' }}>
         <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.7, margin: 0 }}>
           Please read and confirm each declaration below. By submitting this form you acknowledge and agree to the following statements.
         </p>
@@ -484,12 +484,13 @@ export default function ChallengePortalClient({
 
   return (
     <div style={{
-      minHeight: '100vh', background: '#FFFFFF', color: '#1A1A1A',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+      minHeight: '100vh', background: '#F5F7FA', color: '#1A1A1A',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', position: 'relative',
     }}>
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 340, background: 'radial-gradient(1000px 280px at 50% -50px, rgba(27,109,252,0.07), transparent 70%)', pointerEvents: 'none' }} />
 
       {/* Header */}
-      <div style={{ borderBottom: '1px solid #E5E5E5', padding: '18px 24px' }}>
+      <div style={{ borderBottom: '1px solid #ECEEF2', padding: '18px 24px', background: '#FFFFFF', position: 'sticky', top: 0, zIndex: 20 }}>
         <div style={{ maxWidth: '640px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block' }} />
           <div style={{
@@ -505,36 +506,29 @@ export default function ChallengePortalClient({
 
       <div style={{ maxWidth: '640px', margin: '0 auto', padding: '40px 24px 80px' }}>
 
-        {/* Welcome */}
-        <div style={{ marginBottom: '40px' }}>
-          <h1 style={{ fontSize: '26px', fontWeight: 800, letterSpacing: '-0.02em', marginBottom: '6px' }}>
-            {intakeDone ? `Welcome back, ${firstName}.` : `Welcome, ${firstName}.`}
-          </h1>
-          <p style={{ fontSize: '15px', color: '#4A4A4A', margin: 0 }}>
-            {intakeDone ? '14-Day Body Decode Challenge' : 'Before your 14-Day Body Decode Challenge begins'}
-          </p>
-        </div>
-
-        {/* Progress bar — hidden during Day 0 setup; only meaningful once the
-            Challenge has actually started (post-intake). */}
-        {intakeDone && (
-        <div style={{ marginBottom: '48px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-            <span style={{ fontSize: '12px', fontWeight: 700, color: '#4A4A4A', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Progress</span>
-            <span style={{ fontSize: '12px', fontWeight: 700, color: '#1B6DFC' }}>{progress}%</span>
-          </div>
-          <div style={{ height: '6px', background: '#E5E5E5', borderRadius: '99px', overflow: 'hidden' }}>
-            <div style={{
-              height: '100%', background: '#1B6DFC', borderRadius: '99px',
-              width: `${progress}%`, transition: 'width 0.4s ease',
-            }} />
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '6px' }}>
-            <span style={{ fontSize: '11px', color: '#999999' }}>Day 1</span>
-            <span style={{ fontSize: '11px', color: '#999999' }}>Day 14</span>
+        {/* Premium hero panel */}
+        <div style={{ background: 'linear-gradient(140deg, #17191F 0%, #0C1B33 100%)', borderRadius: 18, padding: '28px 28px 26px', marginBottom: 40, position: 'relative', overflow: 'hidden', boxShadow: '0 14px 34px rgba(11,31,51,0.28)' }}>
+          <div style={{ position: 'absolute', top: -90, right: -70, width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(27,109,252,0.3), transparent 70%)', pointerEvents: 'none' }} />
+          <div style={{ position: 'relative' }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: '#8FB4F5', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 12 }}>
+              {intakeDone ? '14-Day Body Decode Challenge' : 'Before your Challenge begins'}
+            </div>
+            <h1 style={{ fontSize: 28, fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em', margin: 0 }}>
+              {intakeDone ? `Welcome back, ${firstName}.` : `Welcome, ${firstName}.`}
+            </h1>
+            {intakeDone && (
+              <div style={{ marginTop: 24 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 9 }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.9)', letterSpacing: '0.05em' }}>DAY {currentDay} OF 14</span>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: '#8FB4F5' }}>{progress}%</span>
+                </div>
+                <div style={{ height: 7, background: 'rgba(255,255,255,0.14)', borderRadius: 99, overflow: 'hidden' }}>
+                  <div style={{ height: '100%', background: '#1B6DFC', borderRadius: 99, width: `${progress}%`, transition: 'width 0.4s ease', boxShadow: '0 0 10px rgba(27,109,252,0.5)' }} />
+                </div>
+              </div>
+            )}
           </div>
         </div>
-        )}
 
         {/* Day 0 Body Decode Intake — gates everything else until done.
             Scorecard signups arrive with intakeDone=true (skip the form,
@@ -667,7 +661,7 @@ export default function ChallengePortalClient({
               Today · Day {currentDay}
             </p>
             <div style={{
-              background: '#FFFFFF', border: '1px solid #E5E5E5',
+              background: '#FFFFFF', border: '1px solid #ECEEF2', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)',
               borderLeft: '3px solid #1B6DFC',
               borderRadius: '12px', padding: '22px 22px',
             }}>
