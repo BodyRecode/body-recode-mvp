@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { logoUrl, brand } from '@/config/tenant'
+import { Beef, Apple, Zap, Repeat } from 'lucide-react'
 
 const card: React.CSSProperties = {
   background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: '14px', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 22px',
@@ -78,13 +79,15 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
             {[
-              { icon: '🥩', text: 'Protein and fat anchor every meal' },
-              { icon: '🍊', text: 'Fruit is your carbohydrate base' },
-              { icon: '⚡', text: 'Clean carbs only around training' },
-              { icon: '🔁', text: 'Meals are simple and repeatable' },
+              { icon: Beef, text: 'Protein and fat anchor every meal' },
+              { icon: Apple, text: 'Fruit is your carbohydrate base' },
+              { icon: Zap, text: 'Clean carbs only around training' },
+              { icon: Repeat, text: 'Meals are simple and repeatable' },
             ].map(p => (
-              <div key={p.text} style={{ ...card, display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                <span style={{ fontSize: '18px', lineHeight: 1 }}>{p.icon}</span>
+              <div key={p.text} style={{ ...card, display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <span style={{ width: 32, height: 32, borderRadius: 9, background: 'rgba(27,109,252,0.10)', color: '#1B6DFC', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <p.icon size={16} strokeWidth={2.2} />
+                </span>
                 <p style={{ fontSize: '13px', color: '#6B6B6B', margin: 0, lineHeight: 1.55 }}>{p.text}</p>
               </div>
             ))}

@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 import BodyDecodeIntakeForm, { type IntakeResult } from './body-decode-intake'
 import BodyDecodeIntakeResult from './body-decode-intake-result'
 import { logoUrl, brand, coach } from '@/config/tenant'
-import { BookOpen, LineChart, ClipboardCheck, FileText, Compass, Lock, Dumbbell, Salad, Sunrise, Moon, ChevronDown, ChevronUp } from 'lucide-react'
+import { BookOpen, LineChart, ClipboardCheck, FileText, Compass, Lock, Dumbbell, Salad, Sunrise, Moon, ChevronDown, ChevronUp, AlertTriangle } from 'lucide-react'
 
 function SectionLabel({ icon: Icon, text }: { icon: React.ElementType; text: string }) {
   return (
@@ -584,7 +584,7 @@ export default function ChallengePortalClient({
               borderRadius: '12px', padding: '16px 20px', marginBottom: '20px',
               display: 'flex', gap: '12px', alignItems: 'flex-start',
             }}>
-              <span style={{ fontSize: '18px', flexShrink: 0 }}>⚠️</span>
+              <span style={{ flexShrink: 0, display: 'inline-flex', color: '#D97706', marginTop: '1px' }}><AlertTriangle size={18} strokeWidth={2.2} /></span>
               <div>
                 <p style={{ fontSize: '14px', fontWeight: 700, color: '#8A5A14', marginBottom: '4px' }}>
                   Required before training

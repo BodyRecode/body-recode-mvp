@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
 import BodyDecodeCheckIn from '../body-decode-check-in'
 import { logoUrl, brand } from '@/config/tenant'
+import { Lock } from 'lucide-react'
 
 export default async function CheckInPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
@@ -103,10 +104,10 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
           }}>
             <div style={{
               width: '56px', height: '56px', borderRadius: '50%',
-              background: '#E5E5E5', display: 'flex', alignItems: 'center',
-              justifyContent: 'center', margin: '0 auto 16px', fontSize: '26px',
+              background: 'rgba(27,109,252,0.10)', color: '#1B6DFC', display: 'flex', alignItems: 'center',
+              justifyContent: 'center', margin: '0 auto 16px',
             }}>
-              🔒
+              <Lock size={24} strokeWidth={2.5} />
             </div>
             <p style={{ fontSize: '16px', fontWeight: 700, color: '#4A4A4A', marginBottom: '6px' }}>
               Unlocks on Day 7

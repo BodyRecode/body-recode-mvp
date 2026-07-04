@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Dumbbell, BookOpen, ClipboardCheck, ChevronRight, Salad, GraduationCap, Compass, ListChecks } from 'lucide-react'
+import { Dumbbell, BookOpen, ClipboardCheck, ChevronRight, Salad, GraduationCap, Compass, ListChecks, X } from 'lucide-react'
 import { logoUrl, brand, coach } from '@/config/tenant'
 
 // Consistent icon-led header for each portal tab.
@@ -680,7 +680,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
               {nutritionData.avoid.map((item, i) => (
                 <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                   <div style={{ width: 14, height: 14, borderRadius: 3, background: '#E5E5E5', border: '1px solid #D4D4D4', flexShrink: 0, marginTop: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <span style={{ fontSize: 10, color: '#DC2626' }}>✕</span>
+                    <X size={9} strokeWidth={3} color="#DC2626" />
                   </div>
                   <span style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.6 }}>{item}</span>
                 </div>
@@ -788,7 +788,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
               {REMOVE_FOODS.map((item, i) => (
                 <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                   <div style={{ width: 14, height: 14, borderRadius: 3, background: '#E5E5E5', border: '1px solid #D4D4D4', flexShrink: 0, marginTop: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <span style={{ fontSize: 10, color: '#DC2626' }}>✕</span>
+                    <X size={9} strokeWidth={3} color="#DC2626" />
                   </div>
                   <span style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.6 }}>{item}</span>
                 </div>
