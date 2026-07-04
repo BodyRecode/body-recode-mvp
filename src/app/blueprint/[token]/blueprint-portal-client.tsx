@@ -3,6 +3,28 @@
 import { useState, useEffect } from 'react'
 import { logoUrl, brand, coach } from '@/config/tenant'
 
+// Branded video placeholder shown wherever a Blueprint video will embed but
+// has not been produced yet. Swap for the real <iframe>/<video> when the
+// asset lands. 16:9 by default.
+function VideoPlaceholder({ label }: { label: string }) {
+  return (
+    <div style={{
+      position: 'relative', width: '100%', aspectRatio: '16 / 9', borderRadius: 12, overflow: 'hidden',
+      background: 'linear-gradient(135deg, #1A1A1A 0%, #0B1F3F 100%)', border: '1px dashed rgba(27,109,252,0.45)',
+      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: 20,
+    }}>
+      <div style={{
+        width: 54, height: 54, borderRadius: '50%', background: 'rgba(27,109,252,0.95)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14, boxShadow: '0 6px 18px rgba(27,109,252,0.4)',
+      }}>
+        <div style={{ width: 0, height: 0, borderTop: '9px solid transparent', borderBottom: '9px solid transparent', borderLeft: '15px solid #FFFFFF', marginLeft: 4 }} />
+      </div>
+      <div style={{ fontSize: 14, fontWeight: 700, color: '#FFFFFF', marginBottom: 4 }}>{label}</div>
+      <div style={{ fontSize: 12, color: '#8FB4F5', letterSpacing: '0.04em' }}>In production with Amanda</div>
+    </div>
+  )
+}
+
 type Enrollment = {
   id: string
   first_name: string
@@ -970,9 +992,8 @@ function EducationTab({ pattern, currentWeek }: { pattern: string; currentWeek: 
                         />
                       </div>
                     ) : (
-                      <div style={{ background: '#E5E5E5', border: '1px dashed #D4D4D4', borderRadius: 10, padding: '40px 20px', textAlign: 'center', marginBottom: 20 }}>
-                        <div style={{ fontSize: 13, color: '#4A4A4A', marginBottom: 6 }}>Video coming soon</div>
-                        <div style={{ fontSize: 12, color: '#3d3935' }}>Paste Loom embed URL into LESSONS[{lesson.week - 1}].loomUrl</div>
+                      <div style={{ marginBottom: 20 }}>
+                        <VideoPlaceholder label={`${lesson.title} · lesson video`} />
                       </div>
                     )}
                   </div>
@@ -1498,6 +1519,16 @@ export default function BlueprintPortalClient({
               <p style={{ fontSize: 14, color: '#6B6B6B', lineHeight: 1.75, margin: 0 }}>{config.description}</p>
             </div>
 
+            {/* Pattern welcome video - Week 1 only */}
+            {currentWeek === 1 && (
+              <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px', marginBottom: 24 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>
+                  Start here · Welcome
+                </div>
+                <VideoPlaceholder label={`Welcome to your ${config.label} Blueprint`} />
+              </div>
+            )}
+
             {COACHING_NOTES[pattern]?.[currentWeek] && (
               <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '24px', marginBottom: 24 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
@@ -1595,6 +1626,9 @@ export default function BlueprintPortalClient({
                 <p style={{ fontSize: 14, color: '#4A4A4A', margin: '0 0 20px', lineHeight: 1.8 }}>
                   Six weeks established the rhythm. The {brand().name} Membership is where that work compounds. Same coaching system, same pattern continuity - new blocks every six weeks with a coach watching your numbers.
                                                   </p>
+                <div style={{ marginBottom: 20 }}>
+                  <VideoPlaceholder label="Week 6 · What comes next" />
+                </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
                   {[
                     'Progressive 6-week training blocks built on your Blueprint foundation',

@@ -37,6 +37,31 @@ export const BLUEPRINT_PATTERN_COLOURS: Record<string, string> = {
   'system-overload': '#1B6DFC',
 }
 
+// PLACEHOLDER — swap the poster block for a real thumbnail image + hosted-video
+// link once the video lands. Email clients cannot play inline video, so the real
+// version is a clickable poster linking to the hosted video / portal.
+function blueprintVideoPlaceholderCard(label: string, href: string): string {
+  return `
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0 0 24px;">
+  <tr>
+    <td align="center">
+      <a href="${href}" style="text-decoration:none;display:block;">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:520px;">
+          <tr>
+            <td style="background:#1A1A1A;border:1px dashed rgba(27,109,252,0.5);border-radius:14px;height:290px;text-align:center;vertical-align:middle;">
+              <div style="font-size:42px;line-height:1;color:#1B6DFC;margin:0 0 12px;">&#9654;</div>
+              <div style="font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#B5CFFC;margin:0 0 6px;">Video placeholder</div>
+              <div style="font-size:13px;color:#8FB4F5;padding:0 28px;line-height:1.5;">${label}</div>
+            </td>
+          </tr>
+        </table>
+      </a>
+    </td>
+  </tr>
+</table>
+`
+}
+
 function blueprintShell(body: string): string {
   return darkEmailShell(`
 ${emailLogo()}
@@ -115,6 +140,10 @@ export function buildBlueprintPurchaseWelcomeEmail({
     ? `Your programme has been built around your <strong style="color:#1A1A1A;">${patternDisplay}</strong> pattern.`
     : 'Your first step is a short pattern assessment so the programme can be built around your biology.'
 
+  const welcomeVideoBlock = patternDisplay
+    ? emailBody(`A short welcome video, made for your ${patternDisplay} pattern, walks you through what the next six weeks is built to do.`) + blueprintVideoPlaceholderCard(`Your ${patternDisplay} welcome video drops here`, portalUrl)
+    : ''
+
   const inner = `
 ${emailLogo()}
 ${emailEyebrow('Body Rewire Blueprint')}
@@ -122,6 +151,7 @@ ${emailHeading('Your 6-week programme is ready.')}
 ${emailDivider()}
 ${emailBody(`Hi ${firstName},`)}
 ${emailBody(patternLine)}
+${welcomeVideoBlock}
 ${emailBody('The programme runs across three phases:')}
 ${emailFeaturedCard(emailNumberedList(phaseLines), { eyebrow: 'How the six weeks unfold' })}
 ${emailCta({ href: portalUrl, label: 'Open my Blueprint' })}
@@ -301,6 +331,7 @@ ${emailBody(`Hi ${n},`)}
 ${emailBody('Final week. This is a deload week — training volume drops by 30 percent, intensity stays controlled, and nutrition stays exactly the same. The body makes its biggest adaptations when load drops and recovery takes over.')}
 ${emailBody('Take some time this week to compare where you are now with where you started. Energy through the day. Sleep quality. Afternoon crashes. Hunger between meals. Training recovery. These are the markers that the programme targets first, and after six weeks of consistent work they should look different to Week 1.')}
 ${emailBody('The 6-Week Blueprint was Stage 2. What you have built here is the hormonal foundation that makes Stage 3 possible. Your portal will show you what comes next.', { bottom: 28 })}
+${blueprintVideoPlaceholderCard('Week 6 ascension video drops here', url)}
 ${emailCta({ href: url, label: 'See what comes next' })}
 ${emailUrlFallback(url, 'Or paste this link into your browser')}
 `,
