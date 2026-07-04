@@ -29,7 +29,7 @@ export default function ClientHeader({ homeHref: explicitHomeHref }: { homeHref?
 
   return (
     <>
-      <div className="sticky top-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-b border-[#E5E5E5] px-5 py-4 flex items-center justify-between print:hidden">
+      <div className="sticky top-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-b border-[#ECEEF2] px-5 py-4 flex items-center justify-between print:hidden">
         {homeHref ? (
           <Link href={homeHref} aria-label="Back to portal home" className="block">
             {logo}
@@ -39,7 +39,7 @@ export default function ClientHeader({ homeHref: explicitHomeHref }: { homeHref?
         )}
         <PortalSignOutButton />
       </div>
-      <div className="fixed bottom-0 left-0 right-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-t border-[#E5E5E5] px-5 py-3 text-center print:hidden">
+      <div className="fixed bottom-0 left-0 right-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-t border-[#ECEEF2] px-5 py-3 text-center print:hidden">
         <a
           href={`https://wa.me/${c.whatsAppNumber}`}
           target="_blank"
