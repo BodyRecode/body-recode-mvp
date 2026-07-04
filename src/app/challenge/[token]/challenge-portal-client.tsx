@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 import BodyDecodeIntakeForm, { type IntakeResult } from './body-decode-intake'
 import BodyDecodeIntakeResult from './body-decode-intake-result'
 import { logoUrl, brand, coach } from '@/config/tenant'
-import { BookOpen, LineChart, ClipboardCheck, FileText, Compass, Lock } from 'lucide-react'
+import { BookOpen, LineChart, ClipboardCheck, FileText, Compass, Lock, Dumbbell, Salad, Sunrise, Moon, ChevronDown, ChevronUp } from 'lucide-react'
 
 function SectionLabel({ icon: Icon, text }: { icon: React.ElementType; text: string }) {
   return (
@@ -81,21 +81,21 @@ const RESOURCES_STATIC = [
     id: 'training',
     title: '14-Day Training Plan',
     desc: 'Your session-by-session training structure for all 14 days.',
-    icon: '🏋️',
+    icon: Dumbbell,
     href: '__training__',
   },
   {
     id: 'nutrition',
     title: 'Nutrition Guide',
     desc: 'Simple whole foods, meal timing, and digestion-friendly choices.',
-    icon: '🥗',
+    icon: Salad,
     href: '__nutrition__',
   },
   {
     id: 'morning',
     title: 'Morning Reset Sequence',
     desc: '5 minutes every morning. Do this before caffeine.',
-    icon: '☀️',
+    icon: Sunrise,
     href: null,
     steps: [
       '2 minutes of slow nasal breathing before getting out of bed',
@@ -109,7 +109,7 @@ const RESOURCES_STATIC = [
     id: 'evening',
     title: 'Evening Rhythm Sequence',
     desc: 'Wind down your nervous system before sleep.',
-    icon: '🌙',
+    icon: Moon,
     href: null,
     steps: [
       'Dim lights and reduce screen brightness after 8pm',
@@ -140,9 +140,9 @@ function ExpandableResource({ resource }: { resource: typeof RESOURCES_STATIC[0]
           width: '42px', height: '42px', borderRadius: '10px',
           background: 'rgba(27, 109, 252,0.1)', border: '1px solid rgba(27, 109, 252,0.2)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          flexShrink: 0, fontSize: '20px',
+          flexShrink: 0, color: '#1B6DFC',
         }}>
-          {resource.icon}
+          <resource.icon size={20} strokeWidth={2} />
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <p style={{ fontSize: '15px', fontWeight: 700, color: '#1A1A1A', margin: '0 0 3px' }}>{resource.title}</p>
@@ -151,10 +151,11 @@ function ExpandableResource({ resource }: { resource: typeof RESOURCES_STATIC[0]
         {resource.locked ? (
           <span style={{
             flexShrink: 0, padding: '8px 14px', borderRadius: '8px',
-            background: '#E5E5E5', color: '#D4D4D4',
+            background: '#F0F1F4', color: '#9AA0AA',
             fontSize: '12px', fontWeight: 700, whiteSpace: 'nowrap',
+            display: 'inline-flex', alignItems: 'center', gap: '6px',
           }}>
-            🔒 Locked
+            <Lock size={13} strokeWidth={2.5} /> Locked
           </span>
         ) : resource.href ? (
           <a
@@ -172,8 +173,8 @@ function ExpandableResource({ resource }: { resource: typeof RESOURCES_STATIC[0]
             View
           </a>
         ) : (
-          <span style={{ fontSize: '13px', color: '#4A4A4A', flexShrink: 0 }}>
-            {open ? '▲' : '▼'}
+          <span style={{ color: '#8A9099', flexShrink: 0, display: 'inline-flex' }}>
+            {open ? <ChevronUp size={18} strokeWidth={2.5} /> : <ChevronDown size={18} strokeWidth={2.5} />}
           </span>
         )}
       </div>
@@ -209,10 +210,10 @@ function LockedMilestoneCard({
       }}>
         <div style={{
           width: '48px', height: '48px', borderRadius: '50%',
-          background: '#E5E5E5', display: 'flex', alignItems: 'center',
-          justifyContent: 'center', margin: '0 auto 14px', fontSize: '22px',
+          background: 'rgba(27,109,252,0.10)', color: '#1B6DFC', display: 'flex', alignItems: 'center',
+          justifyContent: 'center', margin: '0 auto 14px',
         }}>
-          🔒
+          <Lock size={20} strokeWidth={2.5} />
         </div>
         <p style={{ fontSize: '15px', fontWeight: 700, color: '#4A4A4A', marginBottom: '6px' }}>
           Unlocks on Day {unlockDay}
