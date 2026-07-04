@@ -1,8 +1,23 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Dumbbell, BookOpen, ClipboardCheck, ChevronRight } from 'lucide-react'
+import { Dumbbell, BookOpen, ClipboardCheck, ChevronRight, Salad, GraduationCap, Compass, ListChecks } from 'lucide-react'
 import { logoUrl, brand, coach } from '@/config/tenant'
+
+// Consistent icon-led header for each portal tab.
+function TabHeader({ icon: Icon, title, subtitle, colour }: { icon: React.ElementType; title: string; subtitle: React.ReactNode; colour: string }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14, marginBottom: 28 }}>
+      <div style={{ width: 44, height: 44, borderRadius: 12, background: `${colour}14`, color: colour, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+        <Icon size={22} />
+      </div>
+      <div>
+        <h2 style={{ fontSize: 22, fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.01em', margin: '0 0 4px' }}>{title}</h2>
+        <p style={{ fontSize: 14, color: '#6B6B6B', margin: 0, lineHeight: 1.6 }}>{subtitle}</p>
+      </div>
+    </div>
+  )
+}
 
 // Branded video placeholder shown wherever a Blueprint video will embed but
 // has not been produced yet. Swap for the real <iframe>/<video> when the
@@ -610,12 +625,8 @@ function NutritionTab({ pattern }: { pattern: string }) {
 
   return (
     <div>
-      <div style={{ marginBottom: 28 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#1A1A1A', margin: '0 0 6px' }}>Nutrition Framework</h2>
-        <p style={{ fontSize: 14, color: '#6B6B6B', margin: 0, lineHeight: 1.7 }}>
-          Built on the HABNS foundation with {config.label} pattern emphasis applied across all 6 weeks.
-        </p>
-      </div>
+      <TabHeader icon={Salad} colour={config.colour} title="Nutrition Framework"
+        subtitle={<>Built on the HABNS foundation with {config.label} pattern emphasis applied across all 6 weeks.</>} />
 
       {/* Section nav */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 24 }}>
@@ -1024,12 +1035,8 @@ function EducationTab({ pattern, currentWeek }: { pattern: string; currentWeek: 
 
   return (
     <div>
-      <div style={{ marginBottom: 28 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#1A1A1A', margin: '0 0 6px' }}>Education Hub</h2>
-        <p style={{ fontSize: 14, color: '#6B6B6B', margin: 0, lineHeight: 1.7 }}>
-          One lesson unlocks each week. Each covers the biology behind your pattern and what the programme is doing about it.
-        </p>
-      </div>
+      <TabHeader icon={GraduationCap} colour={config.colour} title="Education Hub"
+        subtitle="One lesson unlocks each week. Each covers the biology behind your pattern and what the programme is doing about it." />
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         {LESSONS.map((lesson) => {
@@ -1123,12 +1130,8 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
 
   return (
     <div>
-      <div style={{ marginBottom: 28 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#1A1A1A', margin: '0 0 6px' }}>Training Programme</h2>
-        <p style={{ fontSize: 14, color: '#6B6B6B', margin: 0, lineHeight: 1.7 }}>
-          3 days per week. Full body hybrid split. Sessions A, B, and C rotate each week.
-        </p>
-      </div>
+      <TabHeader icon={Dumbbell} colour={config.colour} title="Training Programme"
+        subtitle="3 days per week. Full body hybrid split. Sessions A, B, and C rotate each week." />
 
       {/* Suggested training days */}
       <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 24px', marginBottom: 20 }}>
@@ -1412,12 +1415,8 @@ function CheckInTab({ pattern, currentWeek, token }: { pattern: string; currentW
 
   return (
     <div>
-      <div style={{ marginBottom: 28 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#1A1A1A', margin: '0 0 6px' }}>Weekly Check-In</h2>
-        <p style={{ fontSize: 14, color: '#6B6B6B', margin: 0, lineHeight: 1.7 }}>
-          8 biological markers. Rated 1-5. Takes about 2 minutes. Submit once per week.
-        </p>
-      </div>
+      <TabHeader icon={ClipboardCheck} colour={config.colour} title="Weekly Check-In"
+        subtitle="8 biological markers. Rated 1-5. Takes about 2 minutes. Submit once per week." />
 
       {/* This week's form */}
       {loading ? (
@@ -1558,6 +1557,10 @@ export default function BlueprintPortalClient({
 
   return (
     <div style={{ minHeight: '100vh', background: '#F5F7FA', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', position: 'relative' }}>
+      <style>{`
+        .bp-lift { transition: transform .15s ease, box-shadow .15s ease; }
+        .bp-lift:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(16,24,40,0.08), 0 20px 38px rgba(16,24,40,0.13) !important; }
+      `}</style>
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 360, background: 'radial-gradient(1100px 300px at 50% -60px, rgba(27,109,252,0.07), transparent 70%)', pointerEvents: 'none' }} />
 
       {/* Top bar */}
@@ -1619,7 +1622,7 @@ export default function BlueprintPortalClient({
               ].map(t => {
                 const Icon = t.icon
                 return (
-                  <button key={t.tab} onClick={() => setActiveTab(t.tab)} style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, padding: '16px', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', cursor: 'pointer', textAlign: 'left', display: 'flex', flexDirection: 'column', gap: 14 }}>
+                  <button key={t.tab} className="bp-lift" onClick={() => setActiveTab(t.tab)} style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, padding: '16px', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', cursor: 'pointer', textAlign: 'left', display: 'flex', flexDirection: 'column', gap: 14 }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                       <div style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(27,109,252,0.1)', color: '#1B6DFC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <Icon size={19} />
@@ -1809,8 +1812,8 @@ export default function BlueprintPortalClient({
             )}
 
             <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '24px', marginBottom: 24 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
-                Current Phase
+              <div style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
+                <Compass size={14} /> Current Phase
               </div>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 8 }}>
                 <span style={{ fontSize: 20, fontWeight: 700, color: '#1A1A1A' }}>Phase {currentPhase.number} - {currentPhase.name}</span>
@@ -1821,8 +1824,8 @@ export default function BlueprintPortalClient({
             </div>
 
             <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '24px' }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 16 }}>
-                Programme Phases
+              <div style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 16 }}>
+                <ListChecks size={14} /> Programme Phases
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
                 {PHASES.map((phase, i) => {
