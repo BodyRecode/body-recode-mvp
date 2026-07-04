@@ -1140,8 +1140,8 @@ export default function MembershipPortalClient({
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 360, background: `radial-gradient(1100px 300px at 50% -60px, ${config.colour}12, transparent 70%)`, pointerEvents: 'none' }} />
 
       {/* Header */}
-      <div style={{ background: '#FFFFFF', borderBottom: '1px solid #ECEEF2', padding: '16px 24px', position: 'sticky', top: 0, zIndex: 20 }}>
-        <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ background: '#FFFFFF', borderBottom: '1px solid #ECEEF2', padding: '16px 0', position: 'sticky', top: 0, zIndex: 20 }}>
+        <div style={{ maxWidth: 720, margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <img src={logoUrl()} width={140} alt={brand().name} />
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A' }}>{enrollment.first_name}</div>
@@ -1152,7 +1152,7 @@ export default function MembershipPortalClient({
 
       {/* Nav */}
       <div style={{ background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(6px)', borderBottom: '1px solid #ECEEF2', overflowX: 'auto', position: 'sticky', top: 57, zIndex: 20 }}>
-        <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', gap: 6, padding: '10px 20px' }}>
+        <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', gap: 6, padding: '10px 24px' }}>
           {NAV_ITEMS.map(item => (
             <button
               key={item.id}

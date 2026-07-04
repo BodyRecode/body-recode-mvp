@@ -1564,16 +1564,19 @@ export default function BlueprintPortalClient({
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 360, background: 'radial-gradient(1100px 300px at 50% -60px, rgba(27,109,252,0.07), transparent 70%)', pointerEvents: 'none' }} />
 
       {/* Top bar */}
-      <div style={{ borderBottom: '1px solid #ECEEF2', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#FFFFFF', position: 'sticky', top: 0, zIndex: 20 }}>
-        <img src={logoUrl()} width={140} alt={brand().name} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: `${config.colour}12`, padding: '6px 12px', borderRadius: 99 }}>
-          <div style={{ width: 8, height: 8, borderRadius: '50%', background: config.colour }} />
-          <span style={{ fontSize: 13, color: config.colour, fontWeight: 700 }}>{config.label}</span>
+      <div style={{ borderBottom: '1px solid #ECEEF2', padding: '16px 0', background: '#FFFFFF', position: 'sticky', top: 0, zIndex: 20 }}>
+        <div style={{ maxWidth: 800, margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <img src={logoUrl()} width={140} alt={brand().name} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: `${config.colour}12`, padding: '6px 12px', borderRadius: 99 }}>
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: config.colour }} />
+            <span style={{ fontSize: 13, color: config.colour, fontWeight: 700 }}>{config.label}</span>
+          </div>
         </div>
       </div>
 
       {/* Nav */}
-      <div style={{ borderBottom: '1px solid #ECEEF2', padding: '10px 20px', display: 'flex', gap: 6, overflowX: 'auto', background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(6px)', position: 'sticky', top: 57, zIndex: 20 }}>
+      <div style={{ borderBottom: '1px solid #ECEEF2', background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(6px)', overflowX: 'auto', position: 'sticky', top: 57, zIndex: 20 }}>
+        <div style={{ maxWidth: 800, margin: '0 auto', display: 'flex', gap: 6, padding: '10px 24px' }}>
         {NAV_ITEMS.map(item => (
           <button
             key={item.id}
@@ -1583,6 +1586,7 @@ export default function BlueprintPortalClient({
             {item.label}
           </button>
         ))}
+        </div>
       </div>
 
       <div style={{ maxWidth: 800, margin: '0 auto', padding: '32px 24px', position: 'relative' }}>
