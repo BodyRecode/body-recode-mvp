@@ -230,7 +230,7 @@ const WHAT_YOU_GET = [
     icon: Video,
     title: 'Week One Progress Session',
     timing: 'Day 5',
-    desc: 'Seven focused minutes walking you through what your body has been doing for the first five days, why rhythm beats restriction, and what to focus on through Week Two.',
+    desc: 'A focused session walking you through what your body has been doing for the first five days, why rhythm beats restriction, and what to focus on through Week Two.',
     featured: false,
   },
   {

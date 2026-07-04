@@ -405,8 +405,8 @@ export function buildDay14BodyDecodeReportEmail({
 
 // ─── Day 5 Week One Progress Session Unlock Email ────────────────────────
 // Sent at Day 5 by Inngest when the Week One Progress Session video unlocks.
-// 7-minute single HeyGen render walking participants through what their
-// body has done across the first five days. Runtime + framing locked v6.1
+// Single HeyGen render walking participants through what their
+// body has done across the first five days. Framing locked v6.1
 // (2026-06-04). sessionVideoUrl points at the hosted .mp4 (or the portal
 // page if no env var is set).
 export function buildDay5UnlockEmail({
@@ -425,7 +425,7 @@ ${emailHeading('Your Week One session is ready.')}
 ${emailDivider()}
 ${emailBody(`Hi ${firstName},`)}
 ${emailBody('You have made it to Day 5. That puts you ahead of most people who started.')}
-${emailBody('Your Week One Progress Session is now available to watch. Seven focused minutes I recorded specifically for this point in the challenge.')}
+${emailBody('Your Week One Progress Session is now available to watch. I recorded it specifically for this point in the challenge.')}
 ${emailFeaturedCard(
   emailNumberedList([
     'What your body has actually been doing this week',
@@ -437,7 +437,7 @@ ${emailFeaturedCard(
   { eyebrow: 'In this session' },
 )}
 ${emailBody('I also share the personal story behind how I built this system. Watch it today while you are in the middle of the reset — it will make Week 2 feel much clearer.', { bottom: 28 })}
-${emailCta({ href: sessionVideoUrl, label: 'Watch the session (7 min)' })}
+${emailCta({ href: sessionVideoUrl, label: 'Watch the session' })}
 ${emailUrlFallback(sessionVideoUrl, 'Or find this in your portal under the Live Session section')}
 `)
   return { subject, html }

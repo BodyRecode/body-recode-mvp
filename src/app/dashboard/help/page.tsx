@@ -3134,7 +3134,7 @@ export default function HelpPage() {
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Recording</p>
             <div className="space-y-2">
-              <ChecklistItem text="Record the Day 5 Week One Progress Session (~7 minutes, v6.1 single HeyGen render). Script is at 02_AMANDA_PRODUCTION/00_SCRIPTS_INBOX/DAY5_SESSION_SCRIPT_v6.docx (internal v6.1) in Dropbox." />
+              <ChecklistItem text="Record the Day 5 Week One Progress Session (v6.1 single HeyGen render). Script is at 02_AMANDA_PRODUCTION/00_SCRIPTS_INBOX/DAY5_SESSION_SCRIPT_v6.docx (internal v6.1) in Dropbox." />
               <ChecklistItem text="Upload the recording to a hosting platform (Vimeo or YouTube unlisted recommended)." />
             </div>
 
