@@ -276,7 +276,7 @@ function PatternAssessment({ onComplete, token }: PatternAssessmentProps) {
               {q1Options.map(opt => (
                 <label key={opt.value} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', cursor: 'pointer', padding: '14px 16px', background: q1 === opt.value ? '#E5E5E5' : '#FFFFFF', border: `1px solid ${q1 === opt.value ? '#1B6DFC' : '#D4D4D4'}`, borderRadius: 8 }}>
                   <input type="radio" name="q1" value={opt.value} checked={q1 === opt.value} onChange={() => setQ1(opt.value)} style={{ marginTop: 2, accentColor: '#1B6DFC' }} />
-                  <span style={{ fontSize: 14, color: '#d4d0cc', lineHeight: 1.6, fontFamily: 'system-ui, sans-serif' }}>{opt.label}</span>
+                  <span style={{ fontSize: 14, color: '#1A1A1A', lineHeight: 1.6, fontFamily: 'system-ui, sans-serif' }}>{opt.label}</span>
                 </label>
               ))}
             </div>
@@ -289,7 +289,7 @@ function PatternAssessment({ onComplete, token }: PatternAssessmentProps) {
               {q2Options.map(opt => (
                 <label key={opt.value} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', cursor: 'pointer', padding: '14px 16px', background: q2 === opt.value ? '#E5E5E5' : '#FFFFFF', border: `1px solid ${q2 === opt.value ? '#1B6DFC' : '#D4D4D4'}`, borderRadius: 8 }}>
                   <input type="radio" name="q2" value={opt.value} checked={q2 === opt.value} onChange={() => setQ2(opt.value)} style={{ marginTop: 2, accentColor: '#1B6DFC' }} />
-                  <span style={{ fontSize: 14, color: '#d4d0cc', lineHeight: 1.6, fontFamily: 'system-ui, sans-serif' }}>{opt.label}</span>
+                  <span style={{ fontSize: 14, color: '#1A1A1A', lineHeight: 1.6, fontFamily: 'system-ui, sans-serif' }}>{opt.label}</span>
                 </label>
               ))}
             </div>
@@ -511,7 +511,7 @@ function MorningToggle({ preTrainingNote }: { preTrainingNote: string }) {
           <div key={i} style={{ display: 'grid', gridTemplateColumns: '110px 1fr', gap: 16, padding: '11px 0', borderBottom: i < rhythms[timing].length - 1 ? '1px solid #E5E5E5' : 'none' }}>
             <span style={{ fontSize: 12, color: '#4A4A4A', paddingTop: 1 }}>{row.time}</span>
             <div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: '#d4d0cc', marginBottom: 2 }}>{row.food}</div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#1A1A1A', marginBottom: 2 }}>{row.food}</div>
               <div style={{ fontSize: 12, color: '#3d3935' }}>{row.note}</div>
             </div>
           </div>
@@ -967,7 +967,7 @@ function EducationTab({ pattern, currentWeek }: { pattern: string; currentWeek: 
                     <span style={{ fontSize: 12, fontWeight: 700, color: unlocked ? '#FFFFFF' : '#4A4A4A' }}>{lesson.week}</span>
                   </div>
                   <div>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: unlocked ? '#fff' : '#4A4A4A' }}>{lesson.title}</div>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: unlocked ? '#1A1A1A' : '#4A4A4A' }}>{lesson.title}</div>
                     <div style={{ fontSize: 12, color: '#4A4A4A', marginTop: 2 }}>{unlocked ? `Week ${lesson.week}` : `Unlocks Week ${lesson.week}`}</div>
                   </div>
                 </div>
@@ -1111,8 +1111,8 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
             const isActive = row === currentPhaseRow
             return (
               <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 60px 80px', gap: 12, padding: '12px 0', borderBottom: i < 3 ? '1px solid #E5E5E5' : 'none', background: isActive ? 'rgba(27, 109, 252,0.04)' : 'transparent', borderRadius: isActive ? 6 : 0 }}>
-                <span style={{ fontSize: 13, color: isActive ? '#fff' : '#6B6B6B', fontWeight: isActive ? 600 : 400 }}>{row.phase}</span>
-                <span style={{ fontSize: 13, color: isActive ? '#999999' : '#4A4A4A' }}>{row.weeks}</span>
+                <span style={{ fontSize: 13, color: isActive ? '#1B6DFC' : '#1A1A1A', fontWeight: isActive ? 700 : 400 }}>{row.phase}</span>
+                <span style={{ fontSize: 13, color: '#4A4A4A' }}>{row.weeks}</span>
                 <span style={{ fontSize: 13, color: isActive ? config.colour : '#4A4A4A', fontWeight: isActive ? 600 : 400 }}>{row.rir}</span>
               </div>
             )
@@ -1183,7 +1183,7 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
                   const finisherSkipped = isFinisher && (pattern === 'stress-stored' || pattern === 'system-overload')
                   return (
                     <tr key={i} style={{ borderBottom: i < exercises.length - 1 ? '1px solid #E5E5E5' : 'none', opacity: finisherSkipped ? 0.4 : 1 }}>
-                      <td style={{ padding: '14px 20px', fontSize: 14, color: finisherSkipped ? '#4A4A4A' : '#d4d0cc', fontWeight: isFinisher ? 600 : 400 }}>
+                      <td style={{ padding: '14px 20px', fontSize: 14, color: '#1A1A1A', fontWeight: isFinisher ? 600 : 500 }}>
                         {ex.name}
                         {finisherSkipped && <span style={{ fontSize: 11, color: '#4A4A4A', marginLeft: 8 }}>(skipped)</span>}
                       </td>
@@ -1357,7 +1357,7 @@ function CheckInTab({ pattern, currentWeek, token }: { pattern: string; currentW
             <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
               {CHECKIN_MARKERS.map((marker, i) => (
                 <div key={marker.key} style={{ paddingBottom: i < CHECKIN_MARKERS.length - 1 ? 24 : 0, borderBottom: i < CHECKIN_MARKERS.length - 1 ? '1px solid #E5E5E5' : 'none' }}>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: '#d4d0cc', marginBottom: 12 }}>{marker.label}</div>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: '#1A1A1A', marginBottom: 12 }}>{marker.label}</div>
                   <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
                     {[1, 2, 3, 4, 5].map(val => (
                       <button
@@ -1389,7 +1389,7 @@ function CheckInTab({ pattern, currentWeek, token }: { pattern: string; currentW
             </div>
 
             <div style={{ marginTop: 24 }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: '#d4d0cc', marginBottom: 8 }}>Anything else to flag this week? <span style={{ fontWeight: 400, color: '#4A4A4A' }}>(optional)</span></div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#1A1A1A', marginBottom: 8 }}>Anything else to flag this week? <span style={{ fontWeight: 400, color: '#4A4A4A' }}>(optional)</span></div>
               <textarea
                 value={notes}
                 onChange={e => setNotes(e.target.value)}
