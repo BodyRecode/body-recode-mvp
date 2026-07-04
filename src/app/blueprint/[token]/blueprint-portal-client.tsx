@@ -1569,12 +1569,12 @@ export default function BlueprintPortalClient({
       </div>
 
       {/* Nav */}
-      <div style={{ borderBottom: '1px solid #ECEEF2', padding: '0 24px', display: 'flex', gap: 4, overflowX: 'auto', background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(6px)', position: 'sticky', top: 57, zIndex: 20 }}>
+      <div style={{ borderBottom: '1px solid #ECEEF2', padding: '10px 20px', display: 'flex', gap: 6, overflowX: 'auto', background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(6px)', position: 'sticky', top: 57, zIndex: 20 }}>
         {NAV_ITEMS.map(item => (
           <button
             key={item.id}
             onClick={() => setActiveTab(item.id)}
-            style={{ padding: '14px 16px', fontSize: 13, fontWeight: 600, color: activeTab === item.id ? '#1B6DFC' : '#4A4A4A', background: 'none', border: 'none', borderBottom: `2px solid ${activeTab === item.id ? '#1B6DFC' : 'transparent'}`, cursor: 'pointer', whiteSpace: 'nowrap' }}
+            style={{ padding: '9px 16px', fontSize: 13, fontWeight: 700, color: activeTab === item.id ? '#FFFFFF' : '#4A4A4A', background: activeTab === item.id ? '#1B6DFC' : 'transparent', border: 'none', borderRadius: 99, cursor: 'pointer', whiteSpace: 'nowrap', boxShadow: activeTab === item.id ? '0 2px 8px rgba(27,109,252,0.3)' : 'none', transition: 'all 0.15s' }}
           >
             {item.label}
           </button>
@@ -1585,30 +1585,28 @@ export default function BlueprintPortalClient({
 
         {activeTab === 'home' && (
           <div>
-            <div style={{ marginBottom: 28 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 10 }}>
-                6-Week Body Rewire Blueprint
+            {/* Premium hero panel */}
+            <div style={{ background: 'linear-gradient(140deg, #17191F 0%, #0C1B33 100%)', borderRadius: 18, padding: '30px 30px 28px', marginBottom: 24, position: 'relative', overflow: 'hidden', boxShadow: '0 14px 34px rgba(11,31,51,0.28)' }}>
+              <div style={{ position: 'absolute', top: -90, right: -70, width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(27,109,252,0.28), transparent 70%)', pointerEvents: 'none' }} />
+              <div style={{ position: 'relative' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#8FB4F5', letterSpacing: '0.12em', textTransform: 'uppercase' }}>6-Week Body Rewire</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#FFFFFF', background: config.colour, padding: '3px 11px', borderRadius: 99, letterSpacing: '0.04em' }}>{config.label}</span>
+                </div>
+                <h1 style={{ fontSize: 30, fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em', margin: '0 0 8px' }}>
+                  Welcome back, {enrollment.first_name}
+                </h1>
+                <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.68)', lineHeight: 1.65, margin: '0 0 24px', maxWidth: 580 }}>{config.description}</p>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.9)', letterSpacing: '0.05em' }}>WEEK {currentWeek} OF 6</span>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: '#8FB4F5' }}>{currentPhase.name} phase</span>
+                </div>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  {[1, 2, 3, 4, 5, 6].map(w => (
+                    <div key={w} style={{ flex: 1, height: 7, borderRadius: 99, background: w <= currentWeek ? '#1B6DFC' : 'rgba(255,255,255,0.14)', boxShadow: w <= currentWeek ? '0 0 10px rgba(27,109,252,0.5)' : 'none', transition: 'background 0.3s' }} />
+                  ))}
+                </div>
               </div>
-              <h1 style={{ fontSize: 30, fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', margin: '0 0 20px' }}>
-                Welcome back, {enrollment.first_name}
-              </h1>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 9 }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.04em' }}>WEEK {currentWeek} OF 6</span>
-                <span style={{ fontSize: 12, fontWeight: 700, color: config.colour }}>{currentPhase.name} phase</span>
-              </div>
-              <div style={{ display: 'flex', gap: 6 }}>
-                {[1, 2, 3, 4, 5, 6].map(w => (
-                  <div key={w} style={{ flex: 1, height: 7, borderRadius: 99, background: w <= currentWeek ? '#1B6DFC' : '#E3E7EE', transition: 'background 0.3s' }} />
-                ))}
-              </div>
-            </div>
-
-            <div style={{ background: '#FFFFFF', border: `1px solid #E5E5E5`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '24px', marginBottom: 24 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
-                Your Pattern
-              </div>
-              <div style={{ fontSize: 20, fontWeight: 700, color: '#1A1A1A', marginBottom: 12 }}>{config.label}</div>
-              <p style={{ fontSize: 14, color: '#6B6B6B', lineHeight: 1.75, margin: 0 }}>{config.description}</p>
             </div>
 
             {/* Pattern welcome video - Week 1 only */}
