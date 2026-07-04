@@ -645,7 +645,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
           </div>
 
           {/* Pattern rules */}
-          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 24px', marginBottom: 20 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Rules for Your Pattern
             </div>
@@ -660,7 +660,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
           </div>
 
           {/* Avoid */}
-          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 24px', marginBottom: 20 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Avoid for 6 Weeks
             </div>
@@ -677,7 +677,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
           </div>
 
           {/* Phase notes */}
-          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px' }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 24px' }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Phase Adjustments
             </div>
@@ -699,7 +699,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
       {section === 'portions' && (
         <div>
           {/* How to measure */}
-          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 24px', marginBottom: 20 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6 }}>
               How to Measure
             </div>
@@ -741,7 +741,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
           </div>
 
           {/* General rule */}
-          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '18px 20px' }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '18px 20px' }}>
             <p style={{ fontSize: 13, color: '#4A4A4A', margin: 0, lineHeight: 1.7 }}>
               These are starting portions. If you are losing weight too fast, add more protein and fat. If you are not progressing, review the avoid list and tighten carb timing before adjusting portions.
             </p>
@@ -752,7 +752,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
       {section === 'foundation' && (
         <div>
           {/* Foundation foods */}
-          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 24px', marginBottom: 20 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Foundation Foods
             </div>
@@ -768,7 +768,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
           </div>
 
           {/* Remove list */}
-          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 24px', marginBottom: 20 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Remove for 6 Weeks (All Patterns)
             </div>
@@ -785,7 +785,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
           </div>
 
           {/* Hydration */}
-          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px' }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 24px' }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Hydration
             </div>
@@ -840,7 +840,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
               ? 'Small snack required - banana, honey, or yoghurt. Never fully fasted.'
               : 'Small snack - banana or yoghurt. Keep it light.'
             return (
-              <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+              <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 24px', marginBottom: 20 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
                   Daily Rhythm - Training Day
                 </div>
@@ -851,7 +851,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
           })()}
 
           {/* Meal builder */}
-          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 24px', marginBottom: 20 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Meal Builder
             </div>
@@ -878,7 +878,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
           </div>
 
           {/* Example meals */}
-          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 24px', marginBottom: 20 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Example Meals
             </div>
@@ -900,7 +900,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
           </div>
 
           {/* Shopping list */}
-          <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px' }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 24px' }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
               Shopping List
             </div>
@@ -1130,7 +1130,7 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
       </div>
 
       {/* Suggested training days */}
-      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px', marginBottom: 20 }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 24px', marginBottom: 20 }}>
         <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
           Suggested Schedule
         </div>
@@ -1164,7 +1164,7 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
       </div>
 
       {/* Pattern rules */}
-      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px', marginBottom: 24 }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 24px', marginBottom: 24 }}>
         <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
           {config.label} - Training Rules
         </div>
@@ -1179,7 +1179,7 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
       </div>
 
       {/* Full progression table */}
-      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px', marginBottom: 24 }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 24px', marginBottom: 24 }}>
         <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
           Phase Progression
         </div>
@@ -1237,7 +1237,7 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
           ))}
         </div>
 
-        <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, overflow: 'hidden' }}>
+        <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', overflow: 'hidden' }}>
           <div style={{ padding: '18px 20px', borderBottom: '1px solid #E5E5E5', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
               <div style={{ fontSize: 16, fontWeight: 700, color: '#1A1A1A' }}>{activeSessionData.name}</div>
@@ -1282,7 +1282,7 @@ function TrainingTab({ pattern, currentWeek }: { pattern: string; currentWeek: n
       </div>
 
       {/* RIR explainer */}
-      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '18px 20px' }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '18px 20px' }}>
         <div style={{ fontSize: 12, fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 10 }}>
           What is RIR?
         </div>
@@ -1496,7 +1496,7 @@ function CheckInTab({ pattern, currentWeek, token }: { pattern: string; currentW
 
       {/* History */}
       {checkins.length > 0 && (
-        <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 24px' }}>
+        <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 24px' }}>
           <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 16 }}>
             Check-In History
           </div>
@@ -1556,19 +1556,20 @@ export default function BlueprintPortalClient({
   const currentPhase = currentWeek <= 2 ? PHASES[0] : currentWeek <= 4 ? PHASES[1] : PHASES[2]
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FFFFFF', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#F5F7FA', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', position: 'relative' }}>
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 360, background: 'radial-gradient(1100px 300px at 50% -60px, rgba(27,109,252,0.07), transparent 70%)', pointerEvents: 'none' }} />
 
       {/* Top bar */}
-      <div style={{ borderBottom: '1px solid #E5E5E5', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ borderBottom: '1px solid #ECEEF2', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#FFFFFF', position: 'sticky', top: 0, zIndex: 20 }}>
         <img src={logoUrl()} width={140} alt={brand().name} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: `${config.colour}12`, padding: '6px 12px', borderRadius: 99 }}>
           <div style={{ width: 8, height: 8, borderRadius: '50%', background: config.colour }} />
-          <span style={{ fontSize: 13, color: '#6B6B6B', fontWeight: 600 }}>{config.label}</span>
+          <span style={{ fontSize: 13, color: config.colour, fontWeight: 700 }}>{config.label}</span>
         </div>
       </div>
 
       {/* Nav */}
-      <div style={{ borderBottom: '1px solid #E5E5E5', padding: '0 24px', display: 'flex', gap: 4, overflowX: 'auto' }}>
+      <div style={{ borderBottom: '1px solid #ECEEF2', padding: '0 24px', display: 'flex', gap: 4, overflowX: 'auto', background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(6px)', position: 'sticky', top: 57, zIndex: 20 }}>
         {NAV_ITEMS.map(item => (
           <button
             key={item.id}
@@ -1580,17 +1581,26 @@ export default function BlueprintPortalClient({
         ))}
       </div>
 
-      <div style={{ maxWidth: 800, margin: '0 auto', padding: '32px 24px' }}>
+      <div style={{ maxWidth: 800, margin: '0 auto', padding: '32px 24px', position: 'relative' }}>
 
         {activeTab === 'home' && (
           <div>
-            <div style={{ marginBottom: 32 }}>
-              <h1 style={{ fontSize: 26, fontWeight: 700, color: '#1A1A1A', margin: '0 0 8px' }}>
-                Welcome, {enrollment.first_name}
-              </h1>
-              <p style={{ fontSize: 15, color: '#6B6B6B', margin: 0, lineHeight: 1.75 }}>
+            <div style={{ marginBottom: 28 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 10 }}>
                 6-Week Body Rewire Blueprint
-              </p>
+              </div>
+              <h1 style={{ fontSize: 30, fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', margin: '0 0 20px' }}>
+                Welcome back, {enrollment.first_name}
+              </h1>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 9 }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.04em' }}>WEEK {currentWeek} OF 6</span>
+                <span style={{ fontSize: 12, fontWeight: 700, color: config.colour }}>{currentPhase.name} phase</span>
+              </div>
+              <div style={{ display: 'flex', gap: 6 }}>
+                {[1, 2, 3, 4, 5, 6].map(w => (
+                  <div key={w} style={{ flex: 1, height: 7, borderRadius: 99, background: w <= currentWeek ? '#1B6DFC' : '#E3E7EE', transition: 'background 0.3s' }} />
+                ))}
+              </div>
             </div>
 
             <div style={{ background: '#FFFFFF', border: `1px solid #E5E5E5`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '24px', marginBottom: 24 }}>
@@ -1603,7 +1613,7 @@ export default function BlueprintPortalClient({
 
             {/* Pattern welcome video - Week 1 only */}
             {currentWeek === 1 && (
-              <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px', marginBottom: 24 }}>
+              <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px', marginBottom: 24 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>
                   Start here · Welcome
                 </div>
@@ -1612,7 +1622,7 @@ export default function BlueprintPortalClient({
             )}
 
             {COACHING_NOTES[pattern]?.[currentWeek] && (
-              <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '24px', marginBottom: 24 }}>
+              <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '24px', marginBottom: 24 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 14 }}>
                   Week {currentWeek} - Coaching Note
                 </div>
@@ -1770,7 +1780,7 @@ export default function BlueprintPortalClient({
               </div>
             )}
 
-            <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '24px', marginBottom: 24 }}>
+            <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '24px', marginBottom: 24 }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
                 Current Phase
               </div>
@@ -1782,7 +1792,7 @@ export default function BlueprintPortalClient({
               <div style={{ fontSize: 13, color: '#4A4A4A' }}>Week {currentWeek} of 6</div>
             </div>
 
-            <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '24px' }}>
+            <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '24px' }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 16 }}>
                 Programme Phases
               </div>
