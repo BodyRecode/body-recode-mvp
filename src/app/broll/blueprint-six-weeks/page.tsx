@@ -135,7 +135,7 @@ export default function BlueprintSixWeeksPage() {
               {[
                 { icon: Dumbbell, label: 'This week training', sub: 'Session A · 3 RIR throughout · Skip the finisher · 90s rest minimum' },
                 { icon: Salad, label: 'This week nutrition', sub: '3 meals per day · Eat within 60min of waking · Caffeine cutoff 10am' },
-                { icon: BookOpen, label: 'This week lesson', sub: 'Cortisol and the Stress Response · 9 minute video + 5-section breakdown' },
+                { icon: BookOpen, label: 'This week lesson', sub: 'Cortisol and the Stress Response · video + 5-section breakdown' },
               ].map((t, i) => {
                 const Icon = t.icon
                 return (
