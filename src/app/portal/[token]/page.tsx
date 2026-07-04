@@ -290,7 +290,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   return (
     <div className="min-h-screen bg-[#F5F7FA] text-[#1A1A1A]">
       <ClientHeader />
-      <div className="max-w-lg mx-auto px-6 py-8">
+      <div className="max-w-[720px] mx-auto px-6 py-8">
         {/* Premium hero panel */}
         <div className="relative overflow-hidden rounded-[18px] p-7 mb-8 shadow-[0_14px_34px_rgba(11,31,51,0.28)]" style={{ background: 'linear-gradient(140deg, #17191F 0%, #0C1B33 100%)' }}>
           <div className="pointer-events-none absolute -top-24 -right-16 w-72 h-72 rounded-full" style={{ background: 'radial-gradient(circle, rgba(27,109,252,0.28), transparent 70%)' }} />

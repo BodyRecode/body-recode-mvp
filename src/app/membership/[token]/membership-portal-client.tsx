@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { CoachingAscensionCTA } from '@/components/coaching-ascension-cta'
 import { logoUrl, brand, coach } from '@/config/tenant'
+import { Compass, ListChecks, LineChart, Salad, FileText, BookOpen, ClipboardCheck, CalendarDays } from 'lucide-react'
 
 type MemberEnrollment = {
   id: string
@@ -1125,11 +1126,19 @@ export default function MembershipPortalClient({
     </div>
   )
 
-  const label = (text: string, colour?: string) => (
-    <div style={{ fontSize: 11, fontWeight: 700, color: colour ?? config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
-      {text}
-    </div>
-  )
+  const label = (text: string, icon?: React.ElementType, colour?: string) => {
+    const Icon = icon
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: Icon ? 14 : 8 }}>
+        {Icon ? (
+          <span style={{ width: 32, height: 32, borderRadius: 9, background: 'rgba(27,109,252,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1B6DFC', flexShrink: 0 }}>
+            <Icon size={16} strokeWidth={2.5} />
+          </span>
+        ) : null}
+        <span style={{ fontSize: 11, fontWeight: 700, color: colour ?? config.colour, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{text}</span>
+      </div>
+    )
+  }
 
   return (
     <div style={{ minHeight: '100vh', background: '#F5F7FA', color: '#1A1A1A', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', position: 'relative' }}>
@@ -1202,7 +1211,7 @@ export default function MembershipPortalClient({
 
             {/* Block and week status */}
             {card(<>
-              {label('Current Position')}
+              {label('Current Position', Compass)}
               <div style={{ display: 'flex', gap: 16, marginBottom: 12 }}>
                 <div style={{ flex: 1, background: '#FFFFFF', borderRadius: 8, padding: '12px 16px', textAlign: 'center' }}>
                   <div style={{ fontSize: 24, fontWeight: 800, color: config.colour }}>Block {block}</div>
@@ -1297,7 +1306,7 @@ export default function MembershipPortalClient({
 
             {/* Phase structure */}
             {card(<>
-              {label('Block A Phases')}
+              {label('Block A Phases', ListChecks)}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {phases.map(phase => {
                   const isActive = currentPhase.number === phase.number
@@ -1339,7 +1348,7 @@ export default function MembershipPortalClient({
 
             {/* RIR progression */}
             {card(<>
-              {label('Block A Progression')}
+              {label('Block A Progression', LineChart)}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {trainingData.progression.map((p, i) => (
                   <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', paddingBottom: 8, borderBottom: i < trainingData.progression.length - 1 ? '1px solid #E5E5E5' : 'none' }}>
@@ -1356,7 +1365,7 @@ export default function MembershipPortalClient({
 
             {/* Pattern rules */}
             {card(<>
-              {label('Pattern Rules - Block A')}
+              {label('Pattern Rules - Block A', BookOpen)}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {trainingData.rules.map((rule, i) => (
                   <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
@@ -1406,7 +1415,7 @@ export default function MembershipPortalClient({
         {activeTab === 'nutrition' && (
           <div>
             {card(<>
-              {label('Block A Nutrition Strategy')}
+              {label('Block A Nutrition Strategy', Salad)}
               <p style={{ fontSize: 14, color: '#4A4A4A', lineHeight: 1.8, margin: 0 }}>{nutritionData.headline}</p>
             </>)}
 
@@ -1430,7 +1439,7 @@ export default function MembershipPortalClient({
             ))}
 
             {card(<>
-              {label('Phase Notes')}
+              {label('Phase Notes', FileText)}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {nutritionData.phaseNotes.map((note, i) => (
                   <div key={i} style={{ background: '#FFFFFF', borderRadius: 8, padding: '12px 14px' }}>
@@ -1450,7 +1459,7 @@ export default function MembershipPortalClient({
         {activeTab === 'resources' && (
           <div>
             {card(<>
-              {label('Pattern Resource Library')}
+              {label('Pattern Resource Library', BookOpen)}
               <p style={{ fontSize: 14, color: '#4A4A4A', margin: 0, lineHeight: 1.7 }}>Deep-dive guides for the {config.label} pattern. These go beyond the programme - they explain the biology, the protocols, and how to apply them.</p>
             </>)}
 
@@ -1483,7 +1492,7 @@ export default function MembershipPortalClient({
         {activeTab === 'checkin' && (
           <div>
             {card(<>
-              {label('Weekly Check-In')}
+              {label('Weekly Check-In', ClipboardCheck)}
               <p style={{ fontSize: 14, color: '#4A4A4A', margin: '0 0 4px', lineHeight: 1.7 }}>Week {currentWeek} of Block {block}. Rate each marker from 1 (poor) to 5 (excellent).</p>
             </>)}
 
@@ -1555,7 +1564,7 @@ export default function MembershipPortalClient({
 
             {checkins.length > 0 && (
               <div style={{ marginTop: 24 }}>
-                {label('Previous Check-Ins')}
+                {label('Previous Check-Ins', CalendarDays)}
                 {[...checkins].sort((a, b) => b.week_number - a.week_number).slice(0, 5).map(c => (
                   <div key={c.id} style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 10, padding: '14px 16px', marginBottom: 10 }}>
                     <div style={{ fontSize: 13, fontWeight: 700, color: '#4A4A4A', marginBottom: 8 }}>Block {block} - Week {c.week_number}</div>
@@ -1577,7 +1586,7 @@ export default function MembershipPortalClient({
         {activeTab === 'trends' && (
           <div>
             {card(<>
-              {label('Check-In Trend Dashboard')}
+              {label('Check-In Trend Dashboard', LineChart)}
               <p style={{ fontSize: 14, color: '#4A4A4A', margin: 0, lineHeight: 1.7 }}>Your 8 biological markers visualised over time. Data from weekly check-ins.</p>
             </>)}
 

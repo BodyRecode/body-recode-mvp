@@ -4,6 +4,18 @@ import { useRef, useState } from 'react'
 import BodyDecodeIntakeForm, { type IntakeResult } from './body-decode-intake'
 import BodyDecodeIntakeResult from './body-decode-intake-result'
 import { logoUrl, brand, coach } from '@/config/tenant'
+import { BookOpen, LineChart, ClipboardCheck, FileText, Compass, Lock } from 'lucide-react'
+
+function SectionLabel({ icon: Icon, text }: { icon: React.ElementType; text: string }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+      <span style={{ width: 32, height: 32, borderRadius: 9, background: 'rgba(27,109,252,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1B6DFC', flexShrink: 0 }}>
+        <Icon size={16} strokeWidth={2.5} />
+      </span>
+      <span style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{text}</span>
+    </div>
+  )
+}
 
 const DAILY_NOTES: Record<number, { focus: string; note: string }> = {
   1: {
@@ -190,9 +202,7 @@ function LockedMilestoneCard({
   const days = Math.max(unlockDay - currentDay, 0)
   return (
     <div style={{ marginBottom: '48px' }}>
-      <p style={{ fontSize: '11px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
-        {label}
-      </p>
+      <SectionLabel icon={Lock} text={label} />
       <div style={{
         background: '#FFFFFF', border: '1px solid #ECEEF2', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)',
         borderRadius: '12px', padding: '24px', textAlign: 'center',
@@ -491,7 +501,7 @@ export default function ChallengePortalClient({
 
       {/* Header */}
       <div style={{ borderBottom: '1px solid #ECEEF2', padding: '18px 24px', background: '#FFFFFF', position: 'sticky', top: 0, zIndex: 20 }}>
-        <div style={{ maxWidth: '640px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ maxWidth: '720px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block' }} />
           <div style={{
             background: 'rgba(27, 109, 252,0.08)', border: '1px solid rgba(27, 109, 252,0.2)',
@@ -504,7 +514,7 @@ export default function ChallengePortalClient({
         </div>
       </div>
 
-      <div style={{ maxWidth: '640px', margin: '0 auto', padding: '40px 24px 80px' }}>
+      <div style={{ maxWidth: '720px', margin: '0 auto', padding: '40px 24px 80px' }}>
 
         {/* Premium hero panel */}
         <div style={{ background: 'linear-gradient(140deg, #17191F 0%, #0C1B33 100%)', borderRadius: 18, padding: '28px 28px 26px', marginBottom: 40, position: 'relative', overflow: 'hidden', boxShadow: '0 14px 34px rgba(11,31,51,0.28)' }}>
@@ -678,9 +688,7 @@ export default function ChallengePortalClient({
 
         {/* Resources */}
         <div style={{ marginBottom: '48px' }}>
-          <p style={{ fontSize: '11px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
-            Your Resources
-          </p>
+          <SectionLabel icon={BookOpen} text="Your Resources" />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {RESOURCES.map(r => (
               <ExpandableResource key={r.id} resource={r} />
@@ -694,9 +702,7 @@ export default function ChallengePortalClient({
         )}
         {currentDay >= 5 && (
           <div style={{ marginBottom: '48px' }}>
-            <p style={{ fontSize: '11px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
-              Week One Progress
-            </p>
+            <SectionLabel icon={LineChart} text="Week One Progress" />
             <div style={{
               background: '#FFFFFF',
               border: '1px solid #E5E5E5',
@@ -774,9 +780,7 @@ export default function ChallengePortalClient({
         )}
         {currentDay >= 7 && (
           <div style={{ marginBottom: '48px' }}>
-            <p style={{ fontSize: '11px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
-              Body Decode Check-In
-            </p>
+            <SectionLabel icon={ClipboardCheck} text="Body Decode Check-In" />
             <div style={{
               background: '#FFFFFF',
               border: '1px solid #E5E5E5',
@@ -838,9 +842,7 @@ export default function ChallengePortalClient({
         )}
         {currentDay >= 14 && (
           <div style={{ marginBottom: '48px' }}>
-            <p style={{ fontSize: '11px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
-              Body Decode Report
-            </p>
+            <SectionLabel icon={FileText} text="Body Decode Report" />
             <div style={{
               background: '#FFFFFF',
               border: '1px solid #E5E5E5',
@@ -900,9 +902,7 @@ export default function ChallengePortalClient({
             border: '1px solid rgba(27, 109, 252,0.25)',
             borderRadius: '16px', padding: '28px 24px', marginBottom: '48px',
           }}>
-            <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px' }}>
-              What comes next
-            </p>
+            <SectionLabel icon={Compass} text="What comes next" />
             <p style={{ fontSize: '20px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', marginBottom: '12px', lineHeight: 1.3 }}>
               You have built the foundation. Now build on it.
             </p>

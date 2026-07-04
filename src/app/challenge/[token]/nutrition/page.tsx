@@ -34,7 +34,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
     }}>
       {/* Header */}
       <div style={{ borderBottom: '1px solid #ECEEF2', padding: '18px 24px', background: '#FFFFFF', position: 'sticky', top: 0, zIndex: 20 }}>
-        <div style={{ maxWidth: '640px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ maxWidth: '720px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block' }} />
           <Link href={`/challenge/${token}`} style={{ fontSize: '13px', color: '#1B6DFC', textDecoration: 'none', fontWeight: 500 }}>
             Back to portal
@@ -43,7 +43,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
       </div>
 
       {/* Premium dark hero */}
-      <div style={{ maxWidth: '640px', margin: '0 auto', padding: '32px 24px 0' }}>
+      <div style={{ maxWidth: '720px', margin: '0 auto', padding: '32px 24px 0' }}>
         <div style={{ background: 'linear-gradient(140deg, #17191F 0%, #0C1B33 100%)', borderRadius: 18, padding: '28px', position: 'relative', overflow: 'hidden', boxShadow: '0 14px 34px rgba(11,31,51,0.28)' }}>
           <div style={{ position: 'absolute', top: -90, right: -70, width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(27,109,252,0.28), transparent 70%)', pointerEvents: 'none' }} />
           <div style={{ position: 'relative' }}>
@@ -56,7 +56,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
         </div>
       </div>
 
-      <div style={{ maxWidth: '640px', margin: '0 auto', padding: '32px 24px 80px' }}>
+      <div style={{ maxWidth: '720px', margin: '0 auto', padding: '32px 24px 80px' }}>
 
         {/* HABNS System */}
         <div style={{ marginBottom: '48px' }}>
