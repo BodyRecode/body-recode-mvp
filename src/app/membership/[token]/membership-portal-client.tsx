@@ -1120,7 +1120,7 @@ export default function MembershipPortalClient({
   const thisWeekCheckin = checkins.find(c => c.week_number === currentWeek)
 
   const card = (children: React.ReactNode, style?: React.CSSProperties) => (
-    <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 22px', marginBottom: 16, ...style }}>
+    <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 22px', marginBottom: 16, ...style }}>
       {children}
     </div>
   )
@@ -1132,10 +1132,15 @@ export default function MembershipPortalClient({
   )
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FFFFFF', color: '#1A1A1A', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#F5F7FA', color: '#1A1A1A', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', position: 'relative' }}>
+      <style>{`
+        .bp-lift { transition: transform .15s ease, box-shadow .15s ease; }
+        .bp-lift:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(16,24,40,0.08), 0 20px 38px rgba(16,24,40,0.13) !important; }
+      `}</style>
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 360, background: `radial-gradient(1100px 300px at 50% -60px, ${config.colour}12, transparent 70%)`, pointerEvents: 'none' }} />
 
       {/* Header */}
-      <div style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E5E5', padding: '16px 24px' }}>
+      <div style={{ background: '#FFFFFF', borderBottom: '1px solid #ECEEF2', padding: '16px 24px', position: 'sticky', top: 0, zIndex: 20 }}>
         <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <img src={logoUrl()} width={140} alt={brand().name} />
           <div style={{ textAlign: 'right' }}>
@@ -1146,18 +1151,18 @@ export default function MembershipPortalClient({
       </div>
 
       {/* Nav */}
-      <div style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E5E5', overflowX: 'auto' }}>
-        <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', padding: '0 24px' }}>
+      <div style={{ background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(6px)', borderBottom: '1px solid #ECEEF2', overflowX: 'auto', position: 'sticky', top: 57, zIndex: 20 }}>
+        <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', gap: 6, padding: '10px 20px' }}>
           {NAV_ITEMS.map(item => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               style={{
-                padding: '14px 16px', fontSize: 13, fontWeight: 600,
-                color: activeTab === item.id ? config.colour : '#4A4A4A',
-                background: 'transparent', border: 'none', cursor: 'pointer',
-                borderBottom: `2px solid ${activeTab === item.id ? config.colour : 'transparent'}`,
-                whiteSpace: 'nowrap',
+                padding: '9px 16px', fontSize: 13, fontWeight: 700,
+                color: activeTab === item.id ? '#FFFFFF' : '#4A4A4A',
+                background: activeTab === item.id ? config.colour : 'transparent', border: 'none', cursor: 'pointer',
+                borderRadius: 99, whiteSpace: 'nowrap',
+                boxShadow: activeTab === item.id ? `0 2px 8px ${config.colour}55` : 'none', transition: 'all 0.15s',
               }}
             >
               {item.label}
@@ -1166,16 +1171,33 @@ export default function MembershipPortalClient({
         </div>
       </div>
 
-      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px' }}>
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px 24px 80px', position: 'relative' }}>
 
         {/* HOME TAB */}
         {activeTab === 'home' && (
           <div>
-            {/* Pattern banner */}
-            <div style={{ background: '#FFFFFF', border: `1px solid ${config.colour}30`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '20px 22px', marginBottom: 16 }}>
-              {label('Your Pattern')}
-              <div style={{ fontSize: 22, fontWeight: 700, color: '#1A1A1A', marginBottom: 8 }}>{config.label}</div>
-              <p style={{ fontSize: 14, color: '#4A4A4A', margin: 0, lineHeight: 1.7 }}>{config.description}</p>
+            {/* Premium hero panel */}
+            <div style={{ background: 'linear-gradient(140deg, #17191F 0%, #0C1B33 100%)', borderRadius: 18, padding: '30px 30px 28px', marginBottom: 16, position: 'relative', overflow: 'hidden', boxShadow: '0 14px 34px rgba(11,31,51,0.28)' }}>
+              <div style={{ position: 'absolute', top: -90, right: -70, width: 300, height: 300, borderRadius: '50%', background: `radial-gradient(circle, ${config.colour}47, transparent 70%)`, pointerEvents: 'none' }} />
+              <div style={{ position: 'relative' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#8FB4F5', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Body Recode Membership · Block {block}</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#FFFFFF', background: config.colour, padding: '3px 11px', borderRadius: 99, letterSpacing: '0.04em' }}>{config.label}</span>
+                </div>
+                <h1 style={{ fontSize: 30, fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em', margin: '0 0 8px' }}>
+                  Welcome back, {enrollment.first_name}
+                </h1>
+                <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.68)', lineHeight: 1.65, margin: '0 0 24px', maxWidth: 560 }}>{config.description}</p>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.9)', letterSpacing: '0.05em' }}>WEEK {currentWeek} OF 6</span>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: '#8FB4F5' }}>{currentPhase.name} phase</span>
+                </div>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  {[1, 2, 3, 4, 5, 6].map(w => (
+                    <div key={w} style={{ flex: 1, height: 7, borderRadius: 99, background: w <= currentWeek ? config.colour : 'rgba(255,255,255,0.14)', transition: 'background 0.3s' }} />
+                  ))}
+                </div>
+              </div>
             </div>
 
             {/* Block and week status */}
@@ -1264,7 +1286,7 @@ export default function MembershipPortalClient({
             {/* Weekly coaching note */}
             {coachingNote && card(<>
               {label('This Week')}
-              <p style={{ fontSize: 14, color: '#d4d0cc', lineHeight: 1.8, margin: 0 }}>{coachingNote}</p>
+              <p style={{ fontSize: 14, color: '#4A4A4A', lineHeight: 1.8, margin: 0 }}>{coachingNote}</p>
             </>)}
 
             {/* Phase structure */}
@@ -1379,7 +1401,7 @@ export default function MembershipPortalClient({
           <div>
             {card(<>
               {label('Block A Nutrition Strategy')}
-              <p style={{ fontSize: 14, color: '#d4d0cc', lineHeight: 1.8, margin: 0 }}>{nutritionData.headline}</p>
+              <p style={{ fontSize: 14, color: '#4A4A4A', lineHeight: 1.8, margin: 0 }}>{nutritionData.headline}</p>
             </>)}
 
             <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '16px 20px', marginBottom: 16 }}>
