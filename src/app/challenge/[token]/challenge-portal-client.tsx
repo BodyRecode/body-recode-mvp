@@ -657,17 +657,18 @@ export default function ChallengePortalClient({
         {/* Today's note */}
         {todayNote && (
           <div style={{ marginBottom: '48px' }}>
-            <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
-              Today · Day {currentDay}
-            </p>
             <div style={{
               background: '#FFFFFF', border: '1px solid #ECEEF2', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)',
               borderLeft: '3px solid #1B6DFC',
               borderRadius: '12px', padding: '22px 22px',
             }}>
-              <p style={{ fontSize: '13px', fontWeight: 700, color: '#1B6DFC', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>
-                {todayNote.focus}
-              </p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 11, marginBottom: 16 }}>
+                <img src={coach().photoUrl} width={38} height={38} style={{ borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} alt={coach().firstName} />
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A' }}>{coach().firstName}</div>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Day {currentDay} · {todayNote.focus}</div>
+                </div>
+              </div>
               <p style={{ fontSize: '15px', color: '#3A3A3A', lineHeight: 1.75, margin: 0 }}>
                 {todayNote.note}
               </p>

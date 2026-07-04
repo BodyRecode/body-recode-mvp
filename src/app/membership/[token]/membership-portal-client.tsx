@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { CoachingAscensionCTA } from '@/components/coaching-ascension-cta'
-import { logoUrl, brand } from '@/config/tenant'
+import { logoUrl, brand, coach } from '@/config/tenant'
 
 type MemberEnrollment = {
   id: string
@@ -1285,7 +1285,13 @@ export default function MembershipPortalClient({
 
             {/* Weekly coaching note */}
             {coachingNote && card(<>
-              {label('This Week')}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 11, marginBottom: 16 }}>
+                <img src={coach().photoUrl} width={38} height={38} style={{ borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} alt={coach().firstName} />
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A' }}>{coach().firstName}</div>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: config.colour, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Week {currentWeek} coaching note</div>
+                </div>
+              </div>
               <p style={{ fontSize: 14, color: '#4A4A4A', lineHeight: 1.8, margin: 0 }}>{coachingNote}</p>
             </>)}
 
