@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { TWO_SESSION_PACKAGE_VALUES, THREE_SESSION_PACKAGE_VALUES } from '@/lib/coaching-packages'
+import { MessageCircle } from 'lucide-react'
 
 const STAGES = [
   {
@@ -216,7 +217,12 @@ export default function UpgradeCompanion({ clientName, clientId, weekNumber, cur
                           : 'text-stone-700'
                       }`}
                     >
-                      {p}
+                      {isReframe ? (
+                        <span className="inline-flex items-start gap-1.5">
+                          <MessageCircle size={14} strokeWidth={2.2} className="shrink-0 mt-0.5" />
+                          <span>{p.replace(/^💬\s*/, '')}</span>
+                        </span>
+                      ) : p}
                     </li>
                   )
                 })}

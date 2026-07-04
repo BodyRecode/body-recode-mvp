@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { AlertTriangle } from 'lucide-react'
 
 export default function ConvertButton({ leadId, leadName, alreadyConverted, clientId }: {
   leadId: string
@@ -84,7 +85,7 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
         )}
         {portalEmailSent === false && (
           <div className="rounded-lg border border-red-300 bg-red-50 px-4 py-3 space-y-1">
-            <p className="text-sm text-red-700 font-bold">⚠ Portal access email did NOT send{portalEmailReason ? ` (${portalEmailReason})` : ''}.</p>
+            <p className="text-sm text-red-700 font-bold inline-flex items-center gap-1.5"><AlertTriangle size={14} strokeWidth={2.5} className="shrink-0" /> Portal access email did NOT send{portalEmailReason ? ` (${portalEmailReason})` : ''}.</p>
             <p className="text-xs text-red-700">Send the client their portal link manually (below). I&apos;ve also emailed you an alert.</p>
           </div>
         )}

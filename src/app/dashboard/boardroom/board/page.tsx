@@ -6,6 +6,7 @@ import { getCmoSnapshot } from '@/lib/cmo-metrics'
 import { getCcoSnapshot } from '@/lib/cco-metrics'
 import { getCooSnapshot } from '@/lib/coo-metrics'
 import { coach } from '@/config/tenant'
+import { BarChart3, TrendingUp, Users, Settings } from 'lucide-react'
 import { BriefingCards } from '../briefing-cards'
 
 export const metadata = { title: 'Board of Advisors · Boardroom' }
@@ -91,10 +92,10 @@ export default async function BoardPage() {
           The Board sees everything the C-suite sees + your stated goals + current pre-launch blockers. It synthesises across silos. Individual C-suite views are for depth; the Board is for altitude.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-[13px]">
-          <BoardInput icon="📊" label="CFO snapshot (Sarah)" href="/dashboard/boardroom/cfo" />
-          <BoardInput icon="📈" label="CMO snapshot (Marcus)" href="/dashboard/boardroom/cmo" />
-          <BoardInput icon="👥" label="CCO snapshot (Priya)" href="/dashboard/boardroom/cco" />
-          <BoardInput icon="⚙️" label="COO snapshot (James)" href="/dashboard/boardroom/coo" />
+          <BoardInput icon={BarChart3} label="CFO snapshot (Sarah)" href="/dashboard/boardroom/cfo" />
+          <BoardInput icon={TrendingUp} label="CMO snapshot (Marcus)" href="/dashboard/boardroom/cmo" />
+          <BoardInput icon={Users} label="CCO snapshot (Priya)" href="/dashboard/boardroom/cco" />
+          <BoardInput icon={Settings} label="COO snapshot (James)" href="/dashboard/boardroom/coo" />
         </div>
       </div>
 
@@ -113,13 +114,13 @@ export default async function BoardPage() {
   )
 }
 
-function BoardInput({ icon, label, href }: { icon: string; label: string; href: string }) {
+function BoardInput({ icon: Icon, label, href }: { icon: React.ElementType; label: string; href: string }) {
   return (
     <Link
       href={href}
       className="flex items-center gap-3 p-3 rounded-xl border border-stone-200 bg-stone-50 hover:bg-stone-100 transition-colors"
     >
-      <span className="text-[18px]">{icon}</span>
+      <span className="w-8 h-8 rounded-lg bg-[#1B6DFC]/10 flex items-center justify-center text-[#1B6DFC] shrink-0"><Icon size={16} strokeWidth={2.5} /></span>
       <span className="text-stone-700 font-semibold">{label}</span>
     </Link>
   )

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { brand } from "@/config/tenant";
+import { Clock } from 'lucide-react'
 
 type Tab = 'overview' | 'positioning' | 'content' | 'prelaunch' | 'organic' | 'ads' | 'linkedin' | 'timeline' | 'pages' | 'calendar'
 
@@ -421,7 +422,7 @@ function ContentCalendar() {
                             className="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 px-2 py-0.5 rounded-full shrink-0"
                             title={`Will publish via our cron at ${new Date(p.scheduled_publish_at).toLocaleString('en-AU')}`}
                           >
-                            ⏱ Scheduled
+                            <Clock size={11} strokeWidth={2.5} className="inline mr-0.5 align-[-1px]" /> Scheduled
                           </span>
                         )}
                         {!p.posted_at && !p.scheduled_publish_at && p.scheduled && (
@@ -429,7 +430,7 @@ function ContentCalendar() {
                             className="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 px-2 py-0.5 rounded-full shrink-0"
                             title="Marked as scheduled manually (you scheduled this in IG / Meta Business Suite / etc)"
                           >
-                            ⏱ Scheduled
+                            <Clock size={11} strokeWidth={2.5} className="inline mr-0.5 align-[-1px]" /> Scheduled
                           </span>
                         )}
                         {!p.posted_at && p.publish_error && (
@@ -889,7 +890,7 @@ function PostToIgButton({ post, onPublished }: { post: ScheduledPost; onPublishe
         title={isMarked ? 'Mark this post as not yet scheduled' : 'Mark this post as scheduled (you scheduled it manually in IG / Meta Business Suite / etc)'}
         className={`text-xs font-semibold px-2.5 py-1 rounded transition-colors ${isMarked ? 'bg-blue-50 text-blue-700 border border-blue-300 hover:bg-blue-100' : 'bg-stone-200 hover:bg-stone-300 text-stone-700'}`}
       >
-        {isMarked ? '⏱ Marked scheduled' : 'Mark as scheduled'}
+        {isMarked ? <><Clock size={11} strokeWidth={2.5} className="inline mr-0.5 align-[-1px]" /> Marked scheduled</> : 'Mark as scheduled'}
       </button>
     )
   }
@@ -908,7 +909,7 @@ function PostToIgButton({ post, onPublished }: { post: ScheduledPost; onPublishe
   }
   if (post.scheduled_publish_at) {
     const when = new Date(post.scheduled_publish_at).toLocaleString('en-AU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
-    return <span className="text-xs font-semibold text-blue-600">⏱ Scheduled {when}</span>
+    return <span className="text-xs font-semibold text-blue-600"><Clock size={11} strokeWidth={2.5} className="inline mr-0.5 align-[-1px]" /> Scheduled {when}</span>
   }
 
   async function publish(schedule: boolean) {

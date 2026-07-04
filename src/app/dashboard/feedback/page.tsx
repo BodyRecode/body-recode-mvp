@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { Pin, AlertTriangle, Smile, Frown, Meh, Mail } from 'lucide-react'
 
 interface FeedbackRow {
   id: string
@@ -168,7 +169,7 @@ export default function FeedbackDashboardPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-semibold px-2 py-0.5 rounded border" style={{ background: statusStyle.bg, color: statusStyle.color, borderColor: statusStyle.border }}>{statusStyle.label}</span>
-                    {r.churn_risk && <span className="text-xs font-semibold px-2 py-0.5 rounded border bg-red-50 text-red-700 border-red-300">⚠ Churn risk</span>}
+                    {r.churn_risk && <span className="text-xs font-semibold px-2 py-0.5 rounded border bg-red-50 text-red-700 border-red-300 inline-flex items-center gap-1"><AlertTriangle size={12} strokeWidth={2.5} /> Churn risk</span>}
                     {r.testimonial_published_at && <span className="text-xs font-semibold px-2 py-0.5 rounded border bg-green-50 text-green-700 border-green-300">✓ Published</span>}
                   </div>
                 </div>
@@ -201,19 +202,19 @@ export default function FeedbackDashboardPage() {
                     <button onClick={() => markSeen(r.id)} className="text-xs bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded font-medium">✓ Mark seen</button>
                   )}
                   {r.permission_status === 'pending' && r.response_text && (
-                    <button onClick={() => sendConsent(r.id)} className="text-xs bg-stone-200 hover:bg-stone-300 text-stone-700 px-3 py-1.5 rounded font-medium">📧 Send consent email</button>
+                    <button onClick={() => sendConsent(r.id)} className="text-xs bg-stone-200 hover:bg-stone-300 text-stone-700 px-3 py-1.5 rounded font-medium inline-flex items-center gap-1"><Mail size={12} strokeWidth={2.5} /> Send consent email</button>
                   )}
                   {r.permission_status === 'granted' && !r.testimonial_published_at && (
                     <button onClick={() => {
                       const where = prompt('Where published? e.g. site_homepage, IG_story_2026-07-20, blueprint_lp')
                       if (where) markPublished(r.id, where)
-                    }} className="text-xs bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded font-medium">📌 Mark published</button>
+                    }} className="text-xs bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded font-medium inline-flex items-center gap-1"><Pin size={12} strokeWidth={2.5} /> Mark published</button>
                   )}
-                  <button onClick={() => flipChurnRisk(r.id, r.churn_risk)} className={`text-xs px-3 py-1.5 rounded font-medium ${r.churn_risk ? 'bg-red-100 text-red-700 border border-red-300' : 'bg-stone-100 hover:bg-red-50 text-stone-600 border border-stone-300'}`}>⚠ {r.churn_risk ? 'Clear churn risk' : 'Flag churn risk'}</button>
+                  <button onClick={() => flipChurnRisk(r.id, r.churn_risk)} className={`text-xs px-3 py-1.5 rounded font-medium ${r.churn_risk ? 'bg-red-100 text-red-700 border border-red-300' : 'bg-stone-100 hover:bg-red-50 text-stone-600 border border-stone-300'}`}><span className="inline-flex items-center gap-1"><AlertTriangle size={12} strokeWidth={2.5} /> {r.churn_risk ? 'Clear churn risk' : 'Flag churn risk'}</span></button>
                   <div className="flex gap-1">
                     {(['positive', 'neutral', 'negative'] as const).map(s => (
                       <button key={s} onClick={() => setSentiment(r.id, s)} className={`text-xs px-2 py-1.5 rounded font-medium ${r.sentiment === s ? (s === 'positive' ? 'bg-green-500 text-white' : s === 'negative' ? 'bg-red-500 text-white' : 'bg-stone-500 text-white') : 'bg-stone-100 text-stone-500 hover:bg-stone-200'}`}>
-                        {s === 'positive' ? '😊' : s === 'negative' ? '😟' : '😐'}
+                        {s === 'positive' ? <Smile size={16} strokeWidth={2.2} /> : s === 'negative' ? <Frown size={16} strokeWidth={2.2} /> : <Meh size={16} strokeWidth={2.2} />}
                       </button>
                     ))}
                   </div>

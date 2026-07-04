@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { getRunbookForDate, getUpcomingDecisions, RUNBOOK } from '@/lib/today-runbook'
 import { nextUpStep, phaseGateReview } from '@/lib/saas-buildout-manifest'
+import { Zap, Calendar, Camera, Target, BarChart3, Gavel, Inbox, BookOpen, Palmtree, Construction, Clock } from 'lucide-react'
 
 interface CalendarPost {
   id: string
@@ -164,7 +165,7 @@ export default function TodayDashboardPage() {
           <>
             {/* ⚡ TIME-SENSITIVE */}
             {timeSensitive.length > 0 && (
-              <Section title="⚡ Time-sensitive" tone="urgent">
+              <Section icon={Zap} title="Time-sensitive" tone="urgent">
                 {timeSensitive.map(({ post, tr }) => (
                   <Row key={post.id}>
                     <div className="flex items-start gap-2 flex-wrap">
@@ -180,13 +181,13 @@ export default function TodayDashboardPage() {
 
             {/* 📅 SCHEDULED FEED POSTS */}
             {feedPosts.length > 0 && (
-              <Section title="📅 Feed posts today" tone="default">
+              <Section icon={Calendar} title="Feed posts today" tone="default">
                 {feedPosts.map(p => {
                   const status = p.posted_at ? 'posted' : p.scheduled_publish_at ? 'scheduled' : p.scheduled ? 'marked_scheduled' : 'pending'
                   const statusEl = status === 'posted'
                     ? <a href={p.ig_post_url ?? '#'} target="_blank" rel="noopener noreferrer" className="text-xs font-semibold text-green-700 bg-green-50 border border-green-300 px-2 py-0.5 rounded">✓ Posted</a>
-                    : status === 'scheduled' ? <span className="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 px-2 py-0.5 rounded">⏱ Scheduled</span>
-                    : status === 'marked_scheduled' ? <span className="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 px-2 py-0.5 rounded">⏱ Marked</span>
+                    : status === 'scheduled' ? <span className="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 px-2 py-0.5 rounded inline-flex items-center gap-1"><Clock size={11} strokeWidth={2.5} /> Scheduled</span>
+                    : status === 'marked_scheduled' ? <span className="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 px-2 py-0.5 rounded inline-flex items-center gap-1"><Clock size={11} strokeWidth={2.5} /> Marked</span>
                     : <span className="text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-300 px-2 py-0.5 rounded">Pending</span>
                   return (
                     <Row key={p.id}>
@@ -206,7 +207,7 @@ export default function TodayDashboardPage() {
 
             {/* 📸 STORIES */}
             {stories.length > 0 && (
-              <Section title={`📸 Stories today (${stories.length})`} tone="default">
+              <Section icon={Camera} title={`Stories today (${stories.length})`} tone="default">
                 {stories.map(s => {
                   const checked = checkedItems.has(`story:${s.id}`)
                   return (
@@ -224,7 +225,7 @@ export default function TodayDashboardPage() {
 
             {/* 🎯 OPS CHECKS */}
             {runbookEntry && runbookEntry.checks.length > 0 && (
-              <Section title="🎯 Ops checks today" tone="default">
+              <Section icon={Target} title="Ops checks today" tone="default">
                 {runbookEntry.checks.map((check, i) => {
                   const key = `check:${date}:${i}`
                   const checked = checkedItems.has(key)
@@ -249,7 +250,7 @@ export default function TodayDashboardPage() {
             )}
 
             {/* 📊 LIVE METRICS */}
-            <Section title="📊 Live metrics" tone="default">
+            <Section icon={BarChart3} title="Live metrics" tone="default">
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {wave && !wave.isEvergreen && (
                   <Metric label={`Wave ${wave.current.number}`} value={`${wave.taken}/${wave.current.cap ?? '—'}`} sub={`${wave.remaining} left`} tone={wave.isFull ? 'urgent' : 'default'} />
@@ -263,7 +264,7 @@ export default function TodayDashboardPage() {
 
             {/* 🚦 DECISIONS DUE */}
             {(decisionsToday.length > 0 || upcomingDecisions.length > 1) && (
-              <Section title="🚦 Decisions" tone={decisionsToday.length > 0 ? 'urgent' : 'default'}>
+              <Section icon={Gavel} title="Decisions" tone={decisionsToday.length > 0 ? 'urgent' : 'default'}>
                 {decisionsToday.map((d, i) => (
                   <Row key={`today-${i}`}>
                     <div className="flex items-start gap-2">
@@ -283,7 +284,7 @@ export default function TodayDashboardPage() {
 
             {/* 📨 UNSEEN FEEDBACK */}
             {feedback.length > 0 && (
-              <Section title={`📨 Unseen feedback (${feedback.length})`} tone="default">
+              <Section icon={Inbox} title={`Unseen feedback (${feedback.length})`} tone="default">
                 {feedback.slice(0, 5).map(f => (
                   <Row key={f.id}>
                     <div className="flex items-start gap-2 flex-wrap">
@@ -305,7 +306,7 @@ export default function TodayDashboardPage() {
 
             {/* 📚 RUNBOOK CONTEXT */}
             {runbookEntry && (
-              <Section title="📚 Runbook context" tone="default">
+              <Section icon={BookOpen} title="Runbook context" tone="default">
                 <p className="text-xs text-stone-600 mb-2">Phase: <strong>{runbookEntry.phase.replace('_', ' ')}</strong></p>
                 {runbookEntry.notes?.map((n, i) => <p key={i} className="text-sm text-stone-700 leading-relaxed">{n}</p>)}
                 <div className="mt-3 space-y-1.5">
@@ -331,7 +332,7 @@ export default function TodayDashboardPage() {
 
             {/* Empty-day fallback */}
             {!runbookEntry && posts.length === 0 && (
-              <Section title="🌴 Light day" tone="default">
+              <Section icon={Palmtree} title="Light day" tone="default">
                 <p className="text-sm text-stone-600">No runbook items for this date. No posts scheduled. {date < todayIso() ? 'Past date.' : 'Take the day.'}</p>
               </Section>
             )}
@@ -348,7 +349,7 @@ function SaasBuildoutSection() {
   if (!next && !gate) return null
 
   return (
-    <Section title="🏗 SaaS buildout" tone={gate ? 'success' : 'default'}>
+    <Section icon={Construction} title="SaaS buildout" tone={gate ? 'success' : 'default'}>
       {gate && (
         <Row>
           <div className="flex items-start gap-2 mb-1">
@@ -376,11 +377,15 @@ function SaasBuildoutSection() {
   )
 }
 
-function Section({ title, tone, children }: { title: string; tone: 'urgent' | 'default' | 'success'; children: React.ReactNode }) {
+function Section({ icon: Icon, title, tone, children }: { icon?: React.ElementType; title: string; tone: 'urgent' | 'default' | 'success'; children: React.ReactNode }) {
   const border = tone === 'urgent' ? 'border-red-300' : tone === 'success' ? 'border-green-300' : 'border-stone-200'
+  const chip = tone === 'urgent' ? 'bg-red-500/10 text-red-600' : tone === 'success' ? 'bg-green-500/10 text-green-600' : 'bg-[#1B6DFC]/10 text-[#1B6DFC]'
   return (
     <div className={`bg-white border ${border} rounded-xl p-4 sm:p-5 mb-4`}>
-      <h2 className="text-sm font-bold text-stone-700 mb-3 uppercase tracking-wide">{title}</h2>
+      <h2 className="text-sm font-bold text-stone-700 mb-3 uppercase tracking-wide flex items-center gap-2">
+        {Icon ? <span className={`w-6 h-6 rounded-md flex items-center justify-center shrink-0 ${chip}`}><Icon size={14} strokeWidth={2.5} /></span> : null}
+        {title}
+      </h2>
       <div className="space-y-2">{children}</div>
     </div>
   )

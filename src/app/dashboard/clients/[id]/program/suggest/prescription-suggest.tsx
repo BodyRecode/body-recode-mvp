@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
 import GenerationProgressOverlay from '@/components/generation-progress-overlay'
+import { AlertTriangle } from 'lucide-react'
 
 const NAV_SECTIONS = [
   { id: 'rationale', title: 'Rationale' },
@@ -314,7 +315,7 @@ export default function PrescriptionSuggest({
       {recoveryNotice && (
         <div className="mb-8 rounded-2xl border border-amber-300 bg-gradient-to-br from-amber-500/15 to-amber-500/5 px-5 py-4">
           <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-amber-700 font-semibold mb-2">
-            ⚠ Active recovery state · {recoveryNotice.playbookSource} · Tier {recoveryNotice.tier} · {recoveryNotice.enforcementMode === 'hard' ? 'HARD GATE' : 'SOFT GATE'}
+            <AlertTriangle size={13} strokeWidth={2.5} className="shrink-0" /> Active recovery state · {recoveryNotice.playbookSource} · Tier {recoveryNotice.tier} · {recoveryNotice.enforcementMode === 'hard' ? 'HARD GATE' : 'SOFT GATE'}
           </div>
           <h2 className="text-base font-bold text-[#1A1A1A] mb-1">{recoveryNotice.playbookName}</h2>
           <p className="text-xs text-stone-700 mb-3">{recoveryNotice.purpose}</p>
