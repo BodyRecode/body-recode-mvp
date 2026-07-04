@@ -103,7 +103,7 @@ const SESSION_C = [
 ]
 
 const card: React.CSSProperties = {
-  background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '18px 20px',
+  background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: '14px', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '18px 20px',
 }
 
 const label: React.CSSProperties = {
@@ -119,14 +119,14 @@ function ExerciseCard({ ex, index }: { ex: { name: string; sets: string; rir: st
   return (
     <div style={{
       background: '#FFFFFF',
-      border: '1px solid #E5E5E5',
+      border: '1px solid #ECEEF2',
       borderLeft: '3px solid #1B6DFC',
-      borderRadius: '12px',
+      boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)',
+      borderRadius: '14px',
       padding: '20px 22px',
       display: 'flex',
       flexDirection: 'column',
       gap: '14px',
-      boxShadow: '0 1px 3px rgba(27, 109, 252, 0.06)',
     }}>
       <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
         <span style={{
@@ -158,7 +158,7 @@ function ExerciseCard({ ex, index }: { ex: { name: string; sets: string; rir: st
       <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' as const, paddingLeft: '48px' }}>
         <span style={{
           fontSize: '12px', fontWeight: 700, color: '#3A3A3A',
-          background: '#F5F5F5', border: '1px solid #E5E5E5',
+          background: '#F5F5F5', border: '1px solid #ECEEF2',
           borderRadius: '6px', padding: '5px 11px', letterSpacing: '0.01em',
         }}>{ex.sets}</span>
         <span style={{
@@ -167,7 +167,7 @@ function ExerciseCard({ ex, index }: { ex: { name: string; sets: string; rir: st
           borderRadius: '6px', padding: '5px 11px', letterSpacing: '0.01em',
         }}>{ex.rir}</span>
       </div>
-      <div style={{ paddingLeft: '48px', borderTop: '1px solid #E5E5E5', paddingTop: '12px' }}>
+      <div style={{ paddingLeft: '48px', borderTop: '1px solid #ECEEF2', paddingTop: '12px' }}>
         <p style={{ fontSize: '13px', color: '#4A4A4A', margin: 0, lineHeight: 1.7 }}>{ex.cue}</p>
       </div>
     </div>
@@ -187,11 +187,11 @@ export default async function TrainingPage({ params }: { params: Promise<{ token
 
   return (
     <div style={{
-      minHeight: '100vh', background: '#FFFFFF', color: '#1A1A1A',
+      minHeight: '100vh', background: '#F5F7FA', color: '#1A1A1A',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     }}>
       {/* Header */}
-      <div style={{ borderBottom: '1px solid #E5E5E5', padding: '18px 24px', background: '#FFFFFF' }}>
+      <div style={{ borderBottom: '1px solid #ECEEF2', padding: '18px 24px', background: '#FFFFFF', position: 'sticky', top: 0, zIndex: 20 }}>
         <div style={{ maxWidth: '640px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block' }} />
           <Link href={`/challenge/${token}`} style={{ fontSize: '13px', color: '#1B6DFC', textDecoration: 'none', fontWeight: 500 }}>
@@ -200,37 +200,21 @@ export default async function TrainingPage({ params }: { params: Promise<{ token
         </div>
       </div>
 
-      {/* Hero with Signal Blue radial glow — pulls in line with /challenge */}
-      <div style={{ position: 'relative', overflow: 'hidden' }}>
-        <div style={{
-          position: 'absolute', top: '-140px', right: '-140px',
-          width: '480px', height: '480px', borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(27, 109, 252, 0.12) 0%, transparent 65%)',
-          pointerEvents: 'none',
-        }} />
-        <div style={{
-          position: 'absolute', bottom: '0', left: '-100px',
-          width: '320px', height: '320px', borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(27, 109, 252, 0.06) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }} />
-
-        <div style={{ maxWidth: '640px', margin: '0 auto', padding: '56px 24px 32px', position: 'relative' }}>
-          <p style={label}>14-Day Body Decode Challenge</p>
-          <h1 style={{
-            fontSize: 'clamp(34px, 6vw, 44px)', fontWeight: 900,
-            letterSpacing: '-0.03em', margin: '8px 0 18px', color: '#1A1A1A', lineHeight: 1.05,
-          }}>
-            Training Plan
-          </h1>
-          <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '24px' }} />
-          <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
-            This plan is not about intensity. It is about rhythm. Your goal is to give your nervous system consistent, structured stimulus so your body starts adapting and rebuilding its baseline. Three to four sessions across two weeks.
-          </p>
+      {/* Premium dark hero */}
+      <div style={{ maxWidth: '640px', margin: '0 auto', padding: '32px 24px 0' }}>
+        <div style={{ background: 'linear-gradient(140deg, #17191F 0%, #0C1B33 100%)', borderRadius: 18, padding: '28px', position: 'relative', overflow: 'hidden', boxShadow: '0 14px 34px rgba(11,31,51,0.28)' }}>
+          <div style={{ position: 'absolute', top: -90, right: -70, width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(27,109,252,0.28), transparent 70%)', pointerEvents: 'none' }} />
+          <div style={{ position: 'relative' }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: '#8FB4F5', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 12 }}>14-Day Body Decode Challenge</p>
+            <h1 style={{ fontSize: 'clamp(28px, 6vw, 36px)', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em', margin: '0 0 12px', lineHeight: 1.1 }}>Training Plan</h1>
+            <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.68)', lineHeight: 1.6, margin: 0 }}>
+              This plan is not about intensity. It is about rhythm. Your goal is to give your nervous system consistent, structured stimulus so your body starts adapting and rebuilding its baseline. Three to four sessions across two weeks.
+            </p>
+          </div>
         </div>
       </div>
 
-      <div style={{ maxWidth: '640px', margin: '0 auto', padding: '24px 24px 80px' }}>
+      <div style={{ maxWidth: '640px', margin: '0 auto', padding: '32px 24px 80px' }}>
 
         {/* Core principles */}
         <div style={{ marginBottom: '48px' }}>
