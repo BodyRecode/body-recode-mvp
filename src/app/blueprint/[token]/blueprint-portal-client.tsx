@@ -25,6 +25,87 @@ function VideoPlaceholder({ label }: { label: string }) {
   )
 }
 
+// Inline mechanism figures for the education lessons - the same diagrams as the
+// /broll canvases, sized for the lesson card. Give immediate teaching value
+// while the lesson videos are in production.
+function LessonFigure({ eyebrow, caption, children }: { eyebrow: string; caption: string; children: React.ReactNode }) {
+  return (
+    <div style={{ background: '#FAFBFF', border: '1px solid #E9EEF9', borderRadius: 12, padding: '16px 18px', marginBottom: 20 }}>
+      <div style={{ fontSize: 11, fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>{eyebrow}</div>
+      {children}
+      <div style={{ fontSize: 12, color: '#6B6B6B', marginTop: 10, lineHeight: 1.55 }}>{caption}</div>
+    </div>
+  )
+}
+
+const CORTISOL_CURVE = 'M50,130 C90,100 120,30 160,25 C210,18 245,60 300,92 C360,124 420,142 470,152 C500,158 520,161 530,163'
+function CortisolCurveFigure() {
+  return (
+    <LessonFigure eyebrow="The cortisol curve" caption="Peaks 30 to 45 minutes after waking, declines through the day, and drops low by evening so melatonin can take over.">
+      <svg viewBox="0 0 580 208" style={{ width: '100%', height: 'auto', display: 'block' }}>
+        <defs>
+          <linearGradient id="ccFig" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#1B6DFC" stopOpacity="0.12" />
+            <stop offset="100%" stopColor="#1B6DFC" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <line x1="50" y1="180" x2="530" y2="180" stroke="#E5E5E5" strokeWidth="1.5" />
+        <path d={`${CORTISOL_CURVE} L530,180 L50,180 Z`} fill="url(#ccFig)" />
+        <path d={CORTISOL_CURVE} fill="none" stroke="#1B6DFC" strokeWidth="3" strokeLinecap="round" />
+        <circle cx="50" cy="130" r="4.5" fill="#1B6DFC" />
+        <circle cx="160" cy="25" r="5" fill="#1B6DFC" />
+        <circle cx="530" cy="163" r="4.5" fill="#1B6DFC" />
+        <text x="50" y="199" fill="#6B6B6B" fontSize="11" fontWeight="700" textAnchor="middle">WAKE</text>
+        <text x="160" y="15" fill="#1A1A1A" fontSize="12" fontWeight="800" textAnchor="middle">PEAK</text>
+        <text x="530" y="199" fill="#1A1A1A" fontSize="11" fontWeight="700" textAnchor="end">LOW BY EVENING</text>
+      </svg>
+    </LessonFigure>
+  )
+}
+
+// Compact step-flow used by the insulin / testosterone / thyroid / sleep figures.
+function ChipFlow({ steps, loop }: { steps: string[]; loop?: boolean }) {
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'stretch', gap: 6 }}>
+        {steps.map((s, i) => (
+          <div key={i} style={{ display: 'contents' }}>
+            <div style={{ flex: 1, minWidth: 0, background: '#FFFFFF', border: '1px solid #E9EEF9', borderRadius: 9, padding: '12px 10px', textAlign: 'center', fontSize: 12.5, fontWeight: 600, color: '#1A1A1A', lineHeight: 1.3, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{s}</div>
+            {i < steps.length - 1 && <div style={{ display: 'flex', alignItems: 'center', color: '#1B6DFC', fontWeight: 700, fontSize: 16, flexShrink: 0 }}>→</div>}
+          </div>
+        ))}
+      </div>
+      {loop && <div style={{ fontSize: 11, fontWeight: 700, color: '#1B6DFC', textAlign: 'center', marginTop: 10, letterSpacing: '0.04em' }}>↻ the loop reinforces itself</div>}
+    </div>
+  )
+}
+
+// Renders the matching mechanism figure for a lesson week.
+function LessonDiagram({ week }: { week: number }) {
+  if (week === 1) return <CortisolCurveFigure />
+  if (week === 2) return (
+    <LessonFigure eyebrow="The insulin loop" caption="While insulin is up, fat-burning is off. Meaningful gaps between meals let insulin clear so your body can burn fat again.">
+      <ChipFlow steps={['Eat carbs', 'Insulin rises, fat-burning off', 'Gaps clear insulin', 'Fat-burning resumes']} />
+    </LessonFigure>
+  )
+  if (week === 3) return (
+    <LessonFigure eyebrow="The self-reinforcing loop" caption="Fat cells convert testosterone into oestrogen, which makes fat harder to lose - so the loop keeps running.">
+      <ChipFlow steps={['More body fat', 'More aromatase', 'Testosterone to oestrogen', 'Harder to lose fat']} loop />
+    </LessonFigure>
+  )
+  if (week === 4) return (
+    <LessonFigure eyebrow="The famine response" caption="Your body cannot tell a diet from a famine. Cut food hard and it slows the metabolic rate to match.">
+      <ChipFlow steps={['Cut food hard', 'Body reads famine', 'Less T4 to T3', 'Metabolic rate slows']} />
+    </LessonFigure>
+  )
+  if (week === 5) return (
+    <LessonFigure eyebrow="What sleep resets" caption="Every major hormone resets overnight. Poor sleep quietly undoes the work the rest of the programme is doing.">
+      <ChipFlow steps={['Cortisol resets', 'Insulin restored', 'Testosterone made', 'Growth hormone pulses']} />
+    </LessonFigure>
+  )
+  return null
+}
+
 type Enrollment = {
   id: string
   first_name: string
@@ -981,8 +1062,9 @@ function EducationTab({ pattern, currentWeek }: { pattern: string; currentWeek: 
               {/* Expanded content */}
               {isOpen && (
                 <div style={{ borderTop: '1px solid #E5E5E5' }}>
-                  {/* Video */}
+                  {/* Mechanism figure + Video */}
                   <div style={{ padding: '20px 20px 0' }}>
+                    <LessonDiagram week={lesson.week} />
                     {lesson.loomUrl ? (
                       <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, borderRadius: 10, overflow: 'hidden', marginBottom: 20 }}>
                         <iframe
