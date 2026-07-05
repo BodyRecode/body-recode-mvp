@@ -90,7 +90,9 @@ export function WaitlistCTA({
           You&apos;re on the list.
         </p>
         <p style={{ fontSize: '14px', color: darkBg ? '#B5CFFC' : '#1056D6', lineHeight: 1.6, margin: 0 }}>
-          We&apos;ll email you the moment the {productName} opens. You&apos;ll be first in.
+          {smsOptIn
+            ? `${coach().firstName} will text you the moment the ${productName} opens. You'll be first in.`
+            : `We'll email you the moment the ${productName} opens. You'll be first in.`}
         </p>
       </div>
     )
