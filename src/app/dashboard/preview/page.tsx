@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { FileText, Mail, BookOpen, ExternalLink, ArrowUpRight, type LucideIcon } from 'lucide-react'
+import { FileText, Mail, BookOpen, ExternalLink, ArrowUpRight, Sparkles, type LucideIcon } from 'lucide-react'
 import { PageHeader, MONO_FONT, accentColour } from '@/components/dashboard/ui'
 
 type StateAccent = 'red' | 'amber' | 'teal' | 'neutral'
@@ -61,6 +61,13 @@ const ASSET_GROUPS: AssetGroup[] = [
       { label: 'Challenge Emails (6 total)',  description: 'Welcome (new + returning), Day 5 unlock, Day 7 Progress, Day 14 Body Decode Report (×4 patterns), Day 14 fallback. All rendered via the production builders.', href: '/dashboard/preview/challenge-emails',  tag: 'Stage 1', tagAccent: 'neutral' },
       { label: 'Blueprint Emails (9 total)',  description: 'Purchase welcome, coach notification, Weeks 1-6 programme emails (per pattern), Week 7 follow-up, weekly check-in prompt, 2-day reminder.',                                href: '/dashboard/preview/blueprint-emails',  tag: 'Stage 2', tagAccent: 'neutral' },
       { label: 'Membership Emails (4 total)', description: 'Purchase welcome, coach notification, weekly check-in prompt (per Block × Week), 2-day reminder.',                                                                          href: '/dashboard/preview/membership-emails', tag: 'Stage 3', tagAccent: 'neutral' },
+    ],
+  },
+  {
+    title: 'SaaS / Founding Ten',
+    icon: Sparkles,
+    assets: [
+      { label: 'Melisa tenant preview',    description: 'Mockup of what Melisa\'s dashboard will look like once she\'s provisioned as Founding Partner #1. Yoga breath-forward preset applied to placeholder brand + hand-written sample content. No LLM calls, nothing persists.',    href: '/dashboard/preview/melisa',    tag: 'Preview',    tagAccent: 'neutral' },
     ],
   },
   {
