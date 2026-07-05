@@ -67,7 +67,7 @@ const ASSET_GROUPS: AssetGroup[] = [
     title: 'SaaS / Founding Ten',
     icon: Sparkles,
     assets: [
-      { label: 'Melisa tenant preview',    description: 'Mockup of what Melisa\'s dashboard will look like once she\'s provisioned as Founding Partner #1. Yoga breath-forward preset applied to placeholder brand + hand-written sample content. No LLM calls, nothing persists.',    href: '/dashboard/preview/melisa',    tag: 'Preview',    tagAccent: 'neutral' },
+      { label: 'Melisa tenant preview',    description: 'Full branded mockup of what Melisa\'s dashboard will look like once she\'s provisioned as Founding Partner #1. Multi-page walkthrough: Home, Students, Check-ins, Plans, Content, Insights, Settings. Yoga breath-forward voice throughout. Sales-ready to show her.',    href: '/dashboard/preview/melisa',    tag: 'Preview',    tagAccent: 'neutral' },
     ],
   },
   {
