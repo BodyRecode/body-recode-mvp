@@ -28,6 +28,11 @@ export default async function SettingsIndex() {
       title: 'Tenant registry (admin)',
       description: 'All coaches on the platform + their tenant_config rows. Admin-only.',
     },
+    isKade && {
+      href: '/dashboard/settings/partner-billing',
+      title: 'Partner billing (admin)',
+      description: 'Kade\'s billing of Founding Ten partners. Setup fee + locked monthly subscription + per-active-client counts. Read here monthly to invoice via Stripe dashboard.',
+    },
   ].filter(Boolean) as Array<{ href: string; title: string; description: string }>
 
   return (

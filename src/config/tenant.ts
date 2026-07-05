@@ -81,6 +81,26 @@ export type TenantConfig = {
      *  + AU number attached to this messaging service. Required if
      *  twilioSubaccountSid is set. */
     twilioMessagingServiceSid?: string | null
+    /** Kade's billing of THIS partner (as distinct from tenant billing their
+     *  own clients). See the Founding Partner Agreement §6. Null for BR (no
+     *  self-billing) and for non-partner tenants. */
+    partnerBilling?: {
+      /** Tier of the Founding Ten partnership */
+      tier: 'launch' | 'studio'
+      /** Stripe Customer id in Kade's Stripe account (cus_...) */
+      customerId?: string | null
+      /** Stripe Subscription id for the recurring platform subscription (sub_...) */
+      subscriptionId?: string | null
+      /** ISO date when partnership began. Used to compute the first billable month. */
+      activeFrom?: string | null
+      /** Founding Ten locked prices (cents, AUD) - override standard rates for life */
+      lockedSetupFeeCents?: number | null       // 250000 (Launch) or 600000 (Studio)
+      lockedSubscriptionCents?: number | null   // 40000 (Launch) or 60000 (Studio)
+      /** Per Active Client fee cents (AUD). Default 2000 = $20. */
+      perActiveClientCents?: number | null
+      /** Setup fee lifecycle: 'not_invoiced' | 'invoiced' | 'paid' | null */
+      setupFeeStatus?: 'not_invoiced' | 'invoiced' | 'paid' | null
+    } | null
   }
 
   /** Modality — third configurability axis (see POWERED_PLATFORM_BUILD_PLAN §7) */
@@ -145,6 +165,7 @@ const BODY_RECODE_TENANT: TenantConfig = {
     stripeAccountStatus: null,
     twilioSubaccountSid: null,
     twilioMessagingServiceSid: null,
+    partnerBilling: null,
   },
   modality: {
     id: 'strength',

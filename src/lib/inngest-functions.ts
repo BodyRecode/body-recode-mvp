@@ -1814,6 +1814,56 @@ export const speedToLeadPurchaseFunction = inngest.createFunction(
 // No-show reminder. Fires on booking/scheduled, sleeps until scheduled + 30 min,
 // checks if the lead status is still zoom_1_booked (i.e. coach has not marked
 // the call as completed or no-show). If yes, sends the no-show SMS.
+// ── Partner Active Client Counter (monthly cron) ────────────────────
+// Runs on the 1st of each month at 22:00 UTC (08:00 AEST). For every tenant
+// with licence.partnerBilling set, computes the previous month's Active
+// Client count and upserts into partner_active_client_counts. Kade reads
+// these on the admin dashboard to invoice partners.
+export const partnerActiveClientCounterCron = inngest.createFunction(
+  {
+    id: 'partner-active-client-counter',
+    name: 'Partner active-client counter · monthly',
+    retries: 2,
+    triggers: [{ cron: '0 22 1 * *' }], // 22:00 UTC on the 1st = 08:00 AEST on the 1st
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async ({ step }: { step: any }) => {
+    const { computeActiveClientCount, upsertActiveClientCount, monthStartIso } = await import('@/lib/partner-billing')
+
+    const admin = createAdminClient()
+
+    // Compute the previous month's start (the month we're now billing for)
+    const now = new Date()
+    const prevMonth = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 1, 1))
+    const monthStart = monthStartIso(prevMonth)
+
+    const tenants = await step.run('fetch-billable-tenants', async () => {
+      const { data } = await admin
+        .from('tenant_config')
+        .select('licence')
+        .not('licence->partnerBilling', 'is', null)
+      const rows = (data ?? []) as Array<{ licence: { tenantId: string; partnerBilling: unknown } }>
+      return rows
+        .filter((r) => r.licence?.partnerBilling)
+        .map((r) => r.licence.tenantId)
+    })
+
+    const results: Array<{ tenantId: string; count: number; error?: string }> = []
+    for (const tenantId of tenants) {
+      try {
+        const count = await step.run(`count-${tenantId}`, async () => computeActiveClientCount(tenantId, monthStart))
+        await step.run(`persist-${tenantId}`, async () => upsertActiveClientCount(tenantId, monthStart, count))
+        results.push({ tenantId, count })
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : String(e)
+        results.push({ tenantId, count: 0, error: msg })
+      }
+    }
+
+    return { processed: results.length, monthStart, results }
+  },
+)
+
 export const speedToLeadNoShowFunction = inngest.createFunction(
   {
     id: 'speed-to-lead-noshow',
