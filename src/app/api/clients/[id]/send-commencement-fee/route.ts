@@ -11,7 +11,6 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import Stripe from 'stripe'
 import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
@@ -19,9 +18,8 @@ import { darkEmailSignature } from '@/lib/email-signature'
 import { fromCoach, darkEmailShell } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
-import { logoUrl } from '@/config/tenant'
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+import { logoUrl, brand } from '@/config/tenant'
+import { createTenantAwareCheckoutSession } from '@/lib/tenant-stripe'
 
 export async function POST(
   _request: NextRequest,
@@ -59,7 +57,7 @@ export async function POST(
     )
   }
 
-  const session = await stripe.checkout.sessions.create({
+  const { session, routedTo } = await createTenantAwareCheckoutSession({
     mode: 'payment',
     payment_method_types: ['card'],
     customer_email: client.email,
@@ -69,8 +67,8 @@ export async function POST(
           currency: 'aud',
           unit_amount: 24000,
           product_data: {
-            name: 'Body Recode - Commencement Fee',
-            description: 'One-time commencement fee for Body Recode Performance Coaching.',
+            name: `${brand().name} - Commencement Fee`,
+            description: `One-time commencement fee for ${brand().name} Performance Coaching.`,
           },
         },
         quantity: 1,
@@ -83,6 +81,7 @@ export async function POST(
     success_url: `${appUrl()}/payment-success`,
     cancel_url: `${appUrl()}/dashboard/clients/${id}`,
   })
+  console.log(`[send-commencement-fee] checkout routed to: ${routedTo} for client ${id}`)
 
   const firstName = client.name.split(' ')[0]
   const resend = new Resend(process.env.RESEND_API_KEY)
@@ -177,7 +176,7 @@ export async function PUT(
     .maybeSingle()
   if (!client?.email) return NextResponse.json({ error: 'No email on client' }, { status: 400 })
 
-  const session = await stripe.checkout.sessions.create({
+  const { session } = await createTenantAwareCheckoutSession({
     mode: 'payment',
     payment_method_types: ['card'],
     customer_email: client.email,
@@ -187,8 +186,8 @@ export async function PUT(
           currency: 'aud',
           unit_amount: 24000,
           product_data: {
-            name: 'Body Recode - Commencement Fee',
-            description: 'One-time commencement fee for Body Recode Performance Coaching.',
+            name: `${brand().name} - Commencement Fee`,
+            description: `One-time commencement fee for ${brand().name} Performance Coaching.`,
           },
         },
         quantity: 1,

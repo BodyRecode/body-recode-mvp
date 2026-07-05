@@ -489,11 +489,16 @@ export const PHASES: Phase[] = [
       {
         id: 'stripe-callsite-refactor',
         title: 'Refactor 15 checkout callsites to use tenantStripeContext()',
-        description: 'Per-callsite decision: platform-billed (BR content) vs tenant-billed (tenant product). Bolt-on store stays platform; commencement fees route to tenant.',
-        status: 'planned',
+        description: 'Per-callsite decision: platform-billed (BR content) vs tenant-billed (tenant product). Bolt-on store stays platform; commencement fees route to tenant. Pattern established 2026-07-05 via createTenantAwareCheckoutSession helper + one representative callsite refactored (send-commencement-fee). Remaining 14 callsites deferred to post-Funnel B launch (Mon 13 Jul).',
+        status: 'in_progress',
         effort: 'L',
         blockedBy: 'stripe-connect-foundation',
-        notes: 'Each callsite needs a per-flow decision. Do incrementally as tenants come online with specific paying products.',
+        commits: ['pending'],
+        notes: 'Pattern documented in src/lib/tenant-stripe.ts (see file docstring for per-callsite decision matrix). Full refactor is risky pre-launch — 14 callsites include the entire Funnel B checkout path that must not break on Mon 13 Jul.',
+        surfaces: [
+          'src/lib/tenant-stripe.ts',
+          'src/app/api/clients/[id]/send-commencement-fee/route.ts',
+        ],
       },
       {
         id: 'stripe-connect-webhooks',

@@ -74,3 +74,68 @@ export function isStripeConnectActive(): boolean {
   const t = getTenant()
   return t.licence.stripeAccountStatus === 'active' && !!t.licence.stripeAccountId
 }
+
+/**
+ * Convenience wrapper for `stripe.checkout.sessions.create` that routes the
+ * charge to the current tenant's Connect account if one is active.
+ *
+ * For BR (no Connect account) this is equivalent to
+ * `stripe.checkout.sessions.create(params)` — no behaviour change.
+ *
+ * For a tenant with active Connect, the session is created ON THE CONNECTED
+ * ACCOUNT via the `stripeAccount` option. This means the Prices / Products
+ * referenced in the params MUST live on the connected account, not on the
+ * platform account. Callers refactoring an existing endpoint must:
+ *   1. Confirm the flow should be tenant-billed (some flows are BR IP and
+ *      should stay platform-billed — see bolt-on store).
+ *   2. Ensure tenant has Products + Prices seeded on their Connect account
+ *      (this is done during onboarding, not per-call).
+ *   3. Attribute correctly: metadata.tenant_id + metadata.lead_id + any
+ *      other identifiers needed on the webhook side.
+ *
+ * Returns the Stripe.Checkout.Session and the account context so callers
+ * can log which path fired.
+ */
+export async function createTenantAwareCheckoutSession(
+  params: Stripe.Checkout.SessionCreateParams,
+): Promise<{
+  session: Stripe.Checkout.Session
+  routedTo: 'platform' | 'connect'
+  stripeAccount?: string
+}> {
+  const ctx = tenantStripeContext()
+  const s = stripe()
+  if (ctx.platform) {
+    const session = await s.checkout.sessions.create(params)
+    return { session, routedTo: 'platform' }
+  }
+  const session = await s.checkout.sessions.create(params, { stripeAccount: ctx.stripeAccount })
+  return { session, routedTo: 'connect', stripeAccount: ctx.stripeAccount }
+}
+
+/**
+ * Guidance for refactoring existing checkout callsites:
+ *
+ * BEFORE:
+ *   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+ *   const session = await stripe.checkout.sessions.create({...})
+ *
+ * AFTER:
+ *   import { createTenantAwareCheckoutSession } from '@/lib/tenant-stripe'
+ *   const { session, routedTo } = await createTenantAwareCheckoutSession({...})
+ *   console.log('[endpoint] checkout routed to:', routedTo)
+ *
+ * Per-callsite decision matrix:
+ * - **Bolt-on store** (BR IP content): STAY platform-billed. Do NOT refactor.
+ * - **Digital assets checkout**: STAY platform-billed. Do NOT refactor.
+ * - **Report / Blueprint / Membership / Extension**: tenant-billed. Refactor.
+ * - **Coaching commencement fee**: tenant-billed. Refactor.
+ * - **Downsell offer**: tenant-billed. Refactor.
+ * - **Admin backfill / test scripts**: platform-only. Do NOT refactor.
+ * - **Webhook handler**: hybrid — needs to accept both platform and connect
+ *   events; add a separate /api/webhooks/stripe/connect endpoint for
+ *   Connect account events.
+ *
+ * Full refactor is deferred until after Funnel B launch (Mon 13 Jul).
+ */
+
