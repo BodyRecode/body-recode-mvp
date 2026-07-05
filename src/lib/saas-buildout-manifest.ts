@@ -607,8 +607,9 @@ export const PHASES: Phase[] = [
           'src/lib/doctrine-parameters-validator.ts',
           'src/app/api/tenant/update/route.ts',
           'scripts/test-doctrine-parameters-validator.ts',
+          'scripts/test-doctrine-parameters-runtime.ts',
         ],
-        notes: 'Runs BEFORE the DB write. Additive — layers over the platform Hard Safety Floors. Test runner: `npm run test:doctrine-params` (22 passed 0 failed). Rationale: without this, a partner could set `bannedPhrases: ["Optimisation"]` in the settings UI and every subsequent Foundational Reading / Program Reading / Trajectory Reading audit would fail because clients see "Optimisation" as a state name.',
+        notes: 'Runs BEFORE the DB write. Additive - layers over the platform Hard Safety Floors. Two test suites via `npm run test:doctrine-params`: (a) 22 save-time validator assertions, (b) 21 runtime helper assertions covering applyTerminologyWith + findBannedIn (regex-escape, chained subs, substring-vs-word-boundary, case-insensitive, empty-to-skip). Runtime helpers are on the hot path - called on every FR/PR/NR/MR/TR/WCCF draft. Refactored applyPartnerTerminology + findPartnerBannedPhrase to delegate to pure test hooks so tests don`t require mocking getTenant().',
       },
       {
         id: 'doctrine-mode-b',

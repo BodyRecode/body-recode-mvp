@@ -56,15 +56,20 @@ export function partnerNutritionGenerationGuidance(): string | undefined {
 }
 
 /**
- * Apply the partner's terminology substitutions to a body of text.
- * Case-insensitive replacement, preserves original case of surrounding text.
- * Used as a post-generation filter to enforce partner-preferred wording.
+ * Pure helper: apply a substitution map to text. Case-insensitive.
+ * Substitution keys are iterated in insertion order; the output of one
+ * substitution IS visible to subsequent substitutions (a=>b, b=>c on
+ * "a" yields "c"). This is intentional so partners can chain rewrites;
+ * the save-time validator refuses cycles by other means.
+ * Exported for testing; production consumers should call
+ * applyPartnerTerminology() which reads the tenant's live subs.
  */
-export function applyPartnerTerminology(text: string): string {
-  const subs = partnerTerminologySubstitutions()
+export function applyTerminologyWith(
+  text: string,
+  subs: Record<string, string>,
+): string {
   const keys = Object.keys(subs)
   if (keys.length === 0) return text
-
   let out = text
   for (const from of keys) {
     const to = subs[from]
@@ -76,6 +81,30 @@ export function applyPartnerTerminology(text: string): string {
 }
 
 /**
+ * Apply the partner's terminology substitutions to a body of text.
+ * Case-insensitive replacement, preserves original case of surrounding text.
+ * Used as a post-generation filter to enforce partner-preferred wording.
+ */
+export function applyPartnerTerminology(text: string): string {
+  return applyTerminologyWith(text, partnerTerminologySubstitutions())
+}
+
+/**
+ * Pure helper: return the first banned phrase found in `text`, or null.
+ * Case-insensitive substring match, iterates `banned` in given order.
+ * Exported for testing.
+ */
+export function findBannedIn(text: string, banned: string[]): string | null {
+  const lower = text.toLowerCase()
+  for (const phrase of banned) {
+    const trimmed = phrase.trim()
+    if (trimmed.length === 0) continue
+    if (lower.includes(trimmed.toLowerCase())) return trimmed
+  }
+  return null
+}
+
+/**
  * Detect if generated content contains any partner-specific banned phrases.
  * Returns the first matched phrase, or null if none. Case-insensitive.
  *
@@ -83,10 +112,5 @@ export function applyPartnerTerminology(text: string): string {
  * not replace it. Both platform and partner banned lists apply.
  */
 export function findPartnerBannedPhrase(text: string): string | null {
-  const banned = partnerBannedPhrases()
-  const lower = text.toLowerCase()
-  for (const phrase of banned) {
-    if (lower.includes(phrase.toLowerCase())) return phrase
-  }
-  return null
+  return findBannedIn(text, partnerBannedPhrases())
 }
