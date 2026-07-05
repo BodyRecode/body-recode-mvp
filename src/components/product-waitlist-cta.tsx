@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import type { LaunchProduct } from '@/lib/product-launch'
+import { coach } from '@/config/tenant'
 
 /**
  * Pre-launch waitlist capture, used in place of the live enroll form /
@@ -33,6 +34,7 @@ export function WaitlistCTA({
   copy?: string
 }) {
   const [form, setForm] = useState({ first_name: '', last_name: '', email: '', phone: '', gender: '' })
+  const [smsOptIn, setSmsOptIn] = useState(true)
   const [status, setStatus] = useState<'idle' | 'submitting' | 'done' | 'error'>('idle')
   const [error, setError] = useState<string | null>(null)
 
@@ -59,6 +61,7 @@ export function WaitlistCTA({
           gender: form.gender || null,
           product,
           source: `${product}_lp_${position}`,
+          sms_opt_in: smsOptIn,
         }),
       })
       if (!res.ok) {
@@ -146,6 +149,15 @@ export function WaitlistCTA({
         <option value="female">Female</option>
         <option value="prefer_not_to_say">Prefer not to say</option>
       </select>
+      <label style={{ display: 'flex', gap: '8px', alignItems: 'flex-start', fontSize: '12.5px', color: subText, cursor: 'pointer', lineHeight: 1.5 }}>
+        <input
+          type="checkbox"
+          checked={smsOptIn}
+          onChange={e => setSmsOptIn(e.target.checked)}
+          style={{ marginTop: '3px', accentColor: '#1B6DFC' }}
+        />
+        <span>{coach().firstName} can text me the moment {productName} opens (reply STOP to opt out).</span>
+      </label>
       {error && <p style={{ fontSize: '13px', color: '#dc2626', margin: 0 }}>{error}</p>}
       <button type="submit" disabled={status === 'submitting' || !canSubmit}
         style={{

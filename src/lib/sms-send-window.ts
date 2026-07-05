@@ -21,6 +21,7 @@
 export type SmsTrigger =
   | 'scorecard_completed'
   | 'challenge_enrolled'
+  | 'waitlist_joined'
   | 'purchase_report'
   | 'noshow_reminder'
   | 'manual'
@@ -62,6 +63,15 @@ export function computeSendAt(now: Date, trigger: SmsTrigger): Date {
   if (trigger === 'challenge_enrolled') {
     if (isSunday) return nextWindowStart(aest, true)
     if (timeMinutes >= CLOSE_WEEKDAY) return nextWindowStart(aest, true)
+    if (timeMinutes < OPEN) return nextWindowStart(aest, true)
+    return new Date(now.getTime() + shortDelayMs)
+  }
+
+  // Waitlist joiner - lower urgency than enrolment, same window as scorecard.
+  if (trigger === 'waitlist_joined') {
+    if (isSunday) return nextWindowStart(aest, true)
+    if (isSaturday && timeMinutes >= CLOSE_SATURDAY) return nextWindowStart(aest, true)
+    if (isWeekday && timeMinutes >= CLOSE_WEEKDAY) return nextWindowStart(aest, true)
     if (timeMinutes < OPEN) return nextWindowStart(aest, true)
     return new Date(now.getTime() + shortDelayMs)
   }
@@ -120,6 +130,8 @@ export function describeWindow(trigger: SmsTrigger): string {
       return 'Mon-Fri 08:30-20:00 AEST + Sat 08:30-18:00. No Sunday.'
     case 'challenge_enrolled':
       return 'Mon-Sat 08:30-20:00 AEST. No Sunday.'
+    case 'waitlist_joined':
+      return 'Mon-Fri 08:30-20:00 AEST + Sat 08:30-18:00. No Sunday.'
     case 'purchase_report':
       return 'Anytime except 22:00-06:00 AEST (queued to 08:30 next day).'
     case 'noshow_reminder':

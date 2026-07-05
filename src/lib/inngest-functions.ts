@@ -1711,16 +1711,17 @@ export const igPublisherCron = inngest.createFunction(
 
 async function processSpeedToLeadStep(
   leadId: string,
-  trigger: 'scorecard_completed' | 'challenge_enrolled',
+  trigger: 'scorecard_completed' | 'challenge_enrolled' | 'waitlist_joined',
   bookingUrl: string | undefined,
   step: {
     run: <T>(id: string, fn: () => Promise<T>) => Promise<T>
     sleepUntil: (id: string, at: Date) => Promise<void>
   },
+  extra?: { productName?: string },
 ): Promise<{ ok: boolean; reason?: string; error?: string; sendAt?: string }> {
   const { computeSendAt } = await import('@/lib/sms-send-window')
   const { sendLeadSms } = await import('@/lib/speed-to-lead-sms')
-  const { tplScorecardCompleted, tplChallengeEnrolled } = await import('@/lib/sms-templates')
+  const { tplScorecardCompleted, tplChallengeEnrolled, tplWaitlistJoined } = await import('@/lib/sms-templates')
 
   const scheduled = await step.run('compute-send-at', async () => {
     return computeSendAt(new Date(), trigger).toISOString()
@@ -1739,7 +1740,9 @@ async function processSpeedToLeadStep(
   const body =
     trigger === 'scorecard_completed'
       ? tplScorecardCompleted({ firstName, bookingUrl })
-      : tplChallengeEnrolled({ firstName })
+      : trigger === 'challenge_enrolled'
+        ? tplChallengeEnrolled({ firstName })
+        : tplWaitlistJoined({ firstName, productName: extra?.productName })
 
   const result = await step.run(`send-${leadId}`, async () => sendLeadSms({ leadId, trigger, body }))
   return { ok: result.ok, reason: result.ok ? undefined : result.reason, error: result.ok ? undefined : result.error, sendAt: scheduled }
@@ -1771,5 +1774,20 @@ export const speedToLeadChallengeFunction = inngest.createFunction(
     const { leadId } = event.data
     if (!leadId) return { ok: false, reason: 'no_lead_id' }
     return processSpeedToLeadStep(leadId, 'challenge_enrolled', undefined, step)
+  },
+)
+
+export const speedToLeadWaitlistFunction = inngest.createFunction(
+  {
+    id: 'speed-to-lead-waitlist',
+    name: 'Speed-to-lead · waitlist SMS',
+    retries: 2,
+    triggers: [{ event: 'waitlist/joined' }],
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async ({ event, step }: { event: { data: { leadId?: string; productName?: string } }; step: any }) => {
+    const { leadId, productName } = event.data
+    if (!leadId) return { ok: false, reason: 'no_lead_id' }
+    return processSpeedToLeadStep(leadId, 'waitlist_joined', undefined, step, { productName })
   },
 )

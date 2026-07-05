@@ -47,3 +47,12 @@ export function tplNoShowReminder({ firstName, bookingUrl }: TemplateInputs): st
   const url = bookingUrl ?? `${brand().marketingDomain}/book`
   return `${name}we had a call scheduled and I missed you. Grab a new time: ${url}. STOP to opt out. -${c.firstName[0]}`
 }
+
+/** Waitlist joined (pre-launch). Kept product-agnostic so the same template
+ *  serves Challenge / Blueprint / Membership waitlist joiners. */
+export function tplWaitlistJoined({ firstName, productName }: TemplateInputs & { productName?: string }): string {
+  const name = firstName ? `Hi ${firstName}, ` : 'Hi, '
+  const c = coach()
+  const product = productName ?? '14-Day Body Decode'
+  return `${name}${c.firstName} here. You are on the list for the ${product}. I will text you the moment doors open. STOP to opt out. -${c.firstName[0]}`
+}

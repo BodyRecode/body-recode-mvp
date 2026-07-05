@@ -8,6 +8,9 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { fireMetaCapiEvent, extractClientContext } from '@/lib/meta-capi'
+import { inngest } from '@/lib/inngest'
+import { persistSmsOptIn } from '@/lib/speed-to-lead-sms'
+import { getDefaultCoachId } from '@/lib/default-coach'
 import { brand } from "@/config/tenant";
 
 type Product = 'challenge' | 'blueprint' | 'membership' | 'extension'
@@ -48,6 +51,7 @@ export async function POST(req: Request) {
     body_state?: string
     product?: string
     source?: string
+    sms_opt_in?: boolean
   }
   try {
     body = await req.json()
@@ -65,6 +69,7 @@ export async function POST(req: Request) {
     : null
   const body_state = body.body_state?.trim() || null
   const source = body.source?.trim() || null
+  const sms_opt_in = body.sms_opt_in === true
 
   if (!email || !email.includes('@')) {
     return NextResponse.json({ error: 'Valid email is required' }, { status: 400, headers })
@@ -88,6 +93,63 @@ export async function POST(req: Request) {
   if (error) {
     console.error('[product-waitlist] insert error', error)
     return NextResponse.json({ error: 'Failed to join waitlist' }, { status: 500, headers })
+  }
+
+  // Speed-to-lead SMS path. Silent-fail - waitlist success never depends on
+  // the SMS pipeline. Only runs when opt-in is ticked + phone is present.
+  if (sms_opt_in && phone) {
+    try {
+      // Find-or-create a lead row so persistSmsOptIn + Inngest have something
+      // to attach to. Upsert on email; the leads table doesn't have a
+      // unique index on email so we do the check-then-insert manually.
+      const { data: existingLead } = await admin
+        .from('leads')
+        .select('id')
+        .eq('email', email)
+        .maybeSingle()
+
+      let leadId: string | null = existingLead?.id ?? null
+
+      if (!leadId) {
+        const coachId = await getDefaultCoachId(admin)
+        const fullName = [first_name, last_name].filter(Boolean).join(' ').trim() || null
+        const { data: inserted, error: leadErr } = await admin
+          .from('leads')
+          .insert({
+            coach_id: coachId,
+            email,
+            name: fullName,
+            phone,
+            gender,
+            source: source ?? `waitlist_${product}`,
+            stage: 'waitlist',
+          })
+          .select('id')
+          .single()
+        if (leadErr) throw leadErr
+        leadId = inserted.id
+      } else if (phone) {
+        // Update phone if changed / previously null
+        await admin.from('leads').update({ phone }).eq('id', leadId)
+      }
+
+      if (leadId) {
+        await persistSmsOptIn(leadId, phone)
+        await inngest.send({
+          name: 'waitlist/joined',
+          data: {
+            leadId,
+            product,
+            productName: product === 'challenge' ? '14-Day Body Decode'
+              : product === 'blueprint' ? '6-Week Body Rewire Blueprint'
+              : product === 'membership' ? 'Body Recode Membership'
+              : 'Body Recode',
+          },
+        })
+      }
+    } catch (smsErr) {
+      console.error('[product-waitlist] SMS opt-in / speed-to-lead failed (non-fatal):', smsErr)
+    }
   }
 
   // Fire Meta CAPI Lead event server-side. Waitlist signup = strong intent
