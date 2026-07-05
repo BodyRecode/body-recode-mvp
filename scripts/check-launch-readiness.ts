@@ -192,6 +192,71 @@ async function main() {
     return { verdict: PASS, detail: 'EAA-prefix format matches Meta access token shape' }
   })
 
+  // ── 6. Inngest + SMS pipeline ───────────────────────────────────────────
+  header('6. Inngest + SMS pipeline')
+
+  await check('Inngest endpoint reachable + function count', async () => {
+    try {
+      const r = await fetch('https://bodyrecode.au/api/inngest', { method: 'GET', cache: 'no-store' })
+      if (!r.ok) return { verdict: FAIL, detail: `endpoint returned ${r.status}` }
+      const body = (await r.json()) as { function_count?: number; has_event_key?: boolean; has_signing_key?: boolean; mode?: string }
+      if (!body.has_event_key || !body.has_signing_key) return { verdict: FAIL, detail: `missing key(s) - event_key=${body.has_event_key} signing_key=${body.has_signing_key}` }
+      if (body.function_count !== 18) return { verdict: FAIL, detail: `function_count=${body.function_count}, expected 18 - bump EXPECTED_INNGEST_FUNCTION_COUNT and click Resync at app.inngest.com` }
+      return { verdict: PASS, detail: `${body.function_count} functions registered, ${body.mode} mode` }
+    } catch (e) {
+      return { verdict: FAIL, detail: `fetch failed: ${e instanceof Error ? e.message : String(e)}` }
+    }
+  })
+
+  await check('TWILIO_ACCOUNT_SID present', async () => process.env.TWILIO_ACCOUNT_SID
+    ? { verdict: PASS, detail: process.env.TWILIO_ACCOUNT_SID.slice(0, 8) + '...' }
+    : { verdict: FAIL, detail: 'not set' })
+
+  await check('TWILIO_AUTH_TOKEN present', async () => process.env.TWILIO_AUTH_TOKEN
+    ? { verdict: PASS }
+    : { verdict: FAIL, detail: 'not set' })
+
+  await check('TWILIO_MESSAGING_SERVICE_SID present', async () => process.env.TWILIO_MESSAGING_SERVICE_SID
+    ? { verdict: PASS, detail: process.env.TWILIO_MESSAGING_SERVICE_SID.slice(0, 8) + '...' }
+    : { verdict: FAIL, detail: 'not set' })
+
+  await check('sms_logs table exists', async () => {
+    const { error } = await supabase!.from('sms_logs').select('id', { head: true, count: 'exact' }).limit(1)
+    if (error) return { verdict: FAIL, detail: `query failed: ${error.message}` }
+    return { verdict: PASS, detail: 'reachable' }
+  })
+
+  await check('leads.sms_opt_in_at column exists', async () => {
+    const { data, error } = await supabase!.from('leads').select('id, sms_opt_in_at').limit(1)
+    if (error) return { verdict: FAIL, detail: `query failed: ${error.message}` }
+    return { verdict: PASS, detail: `${data?.length ?? 0} lead row(s) accessible` }
+  })
+
+  await check('Twilio inbound webhook configured (manual check)', async () => {
+    return { verdict: WARN, detail: 'CANNOT auto-verify - confirm at console.twilio.com Messaging Services > your service > Integration set to POST https://bodyrecode.au/api/webhooks/twilio/inbound' }
+  })
+
+  // ── 7. SaaS / partner billing pipeline ──────────────────────────────────
+  header('7. SaaS / partner billing pipeline')
+
+  await check('partner_active_client_counts table exists', async () => {
+    const { error } = await supabase!.from('partner_active_client_counts').select('id', { head: true, count: 'exact' }).limit(1)
+    if (error) return { verdict: FAIL, detail: `query failed: ${error.message}` }
+    return { verdict: PASS, detail: 'reachable' }
+  })
+
+  await check('tenant_config table exists (multi-tenant)', async () => {
+    const { data, error } = await supabase!.from('tenant_config').select('coach_id').limit(5)
+    if (error) return { verdict: FAIL, detail: `query failed: ${error.message}` }
+    return { verdict: PASS, detail: `${data?.length ?? 0} tenant(s) on file` }
+  })
+
+  await check('tenant_domains table exists (custom domain routing)', async () => {
+    const { error } = await supabase!.from('tenant_domains').select('id', { head: true, count: 'exact' }).limit(1)
+    if (error) return { verdict: FAIL, detail: `query failed: ${error.message}` }
+    return { verdict: PASS, detail: 'reachable' }
+  })
+
   // ── Final verdict ──────────────────────────────────────────────────────
   console.log('\n' + '━'.repeat(78))
   if (failCount === 0 && warnCount === 0) {
