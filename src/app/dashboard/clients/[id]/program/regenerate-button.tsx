@@ -3,6 +3,7 @@
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { Loader2, RefreshCcw } from 'lucide-react'
+import GenerationProgressOverlay from '@/components/generation-progress-overlay'
 
 /**
  * RegenerateButton
@@ -16,6 +17,13 @@ import { Loader2, RefreshCcw } from 'lucide-react'
  *
  * Generate-program already auto-replaces the draft for the client, so this
  * button doesn't need to delete anything first.
+ *
+ * 2026-07-05: added GenerationProgressOverlay to match every other
+ * generator surface in the dashboard. Previously the only feedback was a
+ * 12px inline spinner on the button itself, so the coach had no clear
+ * signal that anything was happening during the 60-120s Sonnet call.
+ * Kade hit this on Amanda's Block 2 regen with new coach guidance —
+ * clicked, waited, thought it was frozen.
  */
 export default function RegenerateButton({ programId }: { programId: string }) {
   const router = useRouter()
@@ -46,6 +54,19 @@ export default function RegenerateButton({ programId }: { programId: string }) {
 
   return (
     <div className="flex flex-col items-end gap-1">
+      <GenerationProgressOverlay
+        active={busy}
+        title="Regenerating Training Program"
+        stages={[
+          { start: 0,   label: 'Reading CFFS, active recovery state, intake, and coach guidance' },
+          { start: 6,   label: 'Drafting per-session structure (primaries, accessories, sets / reps / RPE)' },
+          { start: 40,  label: 'Applying coach guidance and RRS clamps to the prescription' },
+          { start: 70,  label: 'Validating against doctrine ceilings and eligibility floors' },
+          { start: 90,  label: 'Replacing the previous draft and redirecting to the program view' },
+          { start: 130, label: 'Taking longer than usual, give it another moment' },
+        ]}
+        disclaimer="Program regeneration uses Claude Sonnet 4.6 for high-accuracy constraint satisfaction across exercise selection, set / rep design, RPE, and RRS recovery clamps. Typical: 60 to 120 seconds. The page is not frozen, please don't refresh."
+      />
       <button
         onClick={regenerate}
         disabled={busy || isPending}
