@@ -24,7 +24,6 @@ type LeadRow = {
   phone_e164: string | null
   sms_opt_in_at: string | null
   sms_opted_out_at: string | null
-  first_name: string | null
   name: string | null
 }
 
@@ -52,7 +51,7 @@ export async function sendLeadSms({
 
   const { data: leadRaw, error: leadErr } = await admin
     .from('leads')
-    .select('id, phone, phone_e164, sms_opt_in_at, sms_opted_out_at, first_name, name')
+    .select('id, phone, phone_e164, sms_opt_in_at, sms_opted_out_at, name')
     .eq('id', leadId)
     .maybeSingle()
 

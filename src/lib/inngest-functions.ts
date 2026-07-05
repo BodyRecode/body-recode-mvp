@@ -1731,11 +1731,11 @@ async function processSpeedToLeadStep(
   const admin = createAdminClient()
   const { data: lead } = await admin
     .from('leads')
-    .select('id, first_name, name, sms_opt_in_at, sms_opted_out_at')
+    .select('id, name, sms_opt_in_at, sms_opted_out_at')
     .eq('id', leadId)
     .maybeSingle()
   if (!lead) return { ok: false, reason: 'lead_not_found' }
-  const firstName = lead.first_name ?? (lead.name?.split(' ')[0] ?? null)
+  const firstName = lead.name?.split(' ')[0] ?? null
 
   const body =
     trigger === 'scorecard_completed'
