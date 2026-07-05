@@ -40,12 +40,12 @@ export default function HermonyHome() {
     commencement_fee_paid: 'Fee Paid',
   }
 
-  const statusAccent: Record<string, 'teal' | 'amber' | 'red' | 'neutral'> = {
-    new_check_in: 'teal',
-    report_sent: 'teal',
+  const statusAccent: Record<string, 'sage' | 'amber' | 'red' | 'neutral'> = {
+    new_check_in: 'sage',
+    report_sent: 'sage',
     cold_no_booking: 'neutral',
     zoom_booked: 'amber',
-    commencement_fee_paid: 'teal',
+    commencement_fee_paid: 'sage',
   }
 
   const todayLabel = new Date().toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' })
@@ -56,6 +56,7 @@ export default function HermonyHome() {
         eyebrow={`Overview · ${todayLabel}`}
         title={`Good morning, ${HERMONY.founder}.`}
         subtitle="Here is what is happening in your coaching system."
+        accent="sage"
       />
 
       {/* Payments status card - inline (mirrors PaymentsStatusCard) */}
@@ -109,14 +110,14 @@ export default function HermonyHome() {
           label="Active Students"
           value={activeStudents}
           sub="of 10 in Founding tier"
-          accent="teal"
+          accent="sage"
           icon={UserCheck}
         />
         <StatCard
           label="Check-Ins This Week"
           value={checkinsThisWeek}
           sub="Across all active students"
-          accent="teal"
+          accent="sage"
           icon={ClipboardCheck}
         />
       </div>
@@ -125,8 +126,9 @@ export default function HermonyHome() {
       <div className="grid md:grid-cols-2 gap-4 mb-10">
         <Card>
           <SectionLabel
+            accent="sage"
             cta={
-              <span className="text-[12px] text-[#1B6DFC]">View all →</span>
+              <span className="text-[12px]" style={{ color: HERMONY.accentText }}>View all →</span>
             }
           >
             Recent Leads
@@ -150,8 +152,9 @@ export default function HermonyHome() {
 
         <Card>
           <SectionLabel
+            accent="sage"
             cta={
-              <span className="text-[12px] text-[#1B6DFC]">View coaching →</span>
+              <span className="text-[12px]" style={{ color: HERMONY.accentText }}>View coaching →</span>
             }
           >
             Recent Check-Ins

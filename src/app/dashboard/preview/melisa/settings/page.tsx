@@ -18,11 +18,12 @@ export default function HermonySettings() {
         eyebrow="Settings"
         title="Your studio configuration"
         subtitle="Brand, voice, doctrine parameters, and billing. Everything that makes this platform yours."
+        accent="sage"
       />
 
       {/* Brand */}
       <Card className="mb-6">
-        <SectionLabel>Brand</SectionLabel>
+        <SectionLabel accent="sage">Brand</SectionLabel>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <div className="text-[10px] text-[#6B6B6B] uppercase mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>Wordmark</div>
@@ -67,7 +68,7 @@ export default function HermonySettings() {
 
       {/* Voice + doctrine parameters (Mode A+) */}
       <Card className="mb-6">
-        <SectionLabel meta={`Preset: ${yoga.label}`}>
+        <SectionLabel accent="sage" meta={`Preset: ${yoga.label}`}>
           Voice + coaching guidance
         </SectionLabel>
         <div className="space-y-5">
@@ -106,7 +107,7 @@ export default function HermonySettings() {
 
       {/* Billing */}
       <Card>
-        <SectionLabel>Billing</SectionLabel>
+        <SectionLabel accent="sage">Billing</SectionLabel>
         <div className="grid md:grid-cols-3 gap-4">
           <div className="p-4 rounded-xl border border-[#E5E5E5] bg-[#FAFBFD]">
             <div className="text-[10px] text-[#6B6B6B] uppercase mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>Tier</div>
