@@ -70,7 +70,7 @@ PROHIBITED:
 - Em dashes. Use commas, periods, or rewrite. Em dashes are a non-negotiable style rule.
 - Exclamation marks.
 
-OUTPUT FORMAT:
+${renderPartnerTuningSection()}OUTPUT FORMAT:
 Return ONLY valid JSON. No prose before or after. The JSON must have exactly these five string fields:
 
 {
@@ -184,4 +184,30 @@ Sessions (shape only, do not name exercises in the reading):
 ${summariseSessions(program.sessions)}
 
 Now produce the Program Reading JSON.`
+}
+
+/**
+ * Partner-tuning overlay for Mode A+ tenants. Renders an additive block that
+ * appends to the base BR voice/discipline. Returns empty string for BR or any
+ * tenant with no doctrineParameters set — so BR prompt is byte-identical.
+ *
+ * Mode A+ rules: additive only. Never overrides Kade's core voice discipline
+ * or the platform-wide banned-terms list. Hard Safety Floors + prescription
+ * rules remain immutable and are not exposed here.
+ */
+function renderPartnerTuningSection(): string {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { partnerVoiceTone, partnerBannedPhrases, partnerProgramGenerationGuidance } = require('./doctrine-parameters') as typeof import('./doctrine-parameters')
+
+  const tone = partnerVoiceTone()
+  const banned = partnerBannedPhrases()
+  const guidance = partnerProgramGenerationGuidance()
+  if (!tone && banned.length === 0 && !guidance) return ''
+
+  const lines: string[] = []
+  lines.push("PARTNER TUNING (Mode A+ overlay — additive to the above, does not replace Kade's voice discipline):")
+  if (tone) lines.push(`- Additional tone cue to apply throughout: ${tone}`)
+  if (banned.length > 0) lines.push(`- Additional banned phrases (do NOT use, in addition to the platform-wide banned-terms list): ${banned.map(p => `"${p}"`).join(', ')}`)
+  if (guidance) lines.push(`- Partner program coaching philosophy: ${guidance}`)
+  return lines.join('\n') + '\n\n'
 }

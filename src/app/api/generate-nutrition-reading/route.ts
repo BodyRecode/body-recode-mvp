@@ -177,19 +177,40 @@ export async function POST(request: NextRequest) {
     }
 
     const audit = auditClientReadingFields(reading as Record<string, string>, required as unknown as string[])
-    if (audit.ok) {
-      cleaned = audit.cleaned as Record<string, string>
+
+    // Partner-specific banned phrase check (Mode A+ overlay). Additive to
+    // the platform-wide audit; feeds into the same retry loop.
+    const { findPartnerBannedPhrase } = await import('@/lib/doctrine-parameters')
+    const partnerLeaks: string[] = []
+    for (const key of required) {
+      const val = (reading as Record<string, unknown>)[key]
+      if (typeof val !== 'string') continue
+      const hit = findPartnerBannedPhrase(val)
+      if (hit && !partnerLeaks.includes(hit)) partnerLeaks.push(hit)
+    }
+
+    if (audit.ok && partnerLeaks.length === 0) {
+      // Apply partner terminology substitutions post-audit (Mode A+ overlay).
+      // No-op for BR (empty substitutions map). For a tenant with configured
+      // substitutions, rewrites "from => to" case-insensitively.
+      const { applyPartnerTerminology } = await import('@/lib/doctrine-parameters')
+      const rewritten: Record<string, string> = {}
+      for (const [k, v] of Object.entries(audit.cleaned as Record<string, string>)) {
+        rewritten[k] = applyPartnerTerminology(v)
+      }
+      cleaned = rewritten
       break
     }
 
-    leaksSeen = Array.from(new Set([...leaksSeen, ...audit.leaks].map(t => t.toLowerCase())))
+    const allLeaks = [...audit.leaks, ...partnerLeaks]
+    leaksSeen = Array.from(new Set([...leaksSeen, ...allLeaks].map(t => t.toLowerCase())))
     if (attempt < 3) {
       conversation.push({ role: 'assistant', content: jsonText })
       conversation.push({
         role: 'user',
-        content: `That draft contained internal terminology the client has never seen and the system will reject. These terms must not appear anywhere in the output: ${audit.leaks.map(t => `"${t}"`).join(', ')}. Rewrite the entire JSON object using ONLY plain client-facing words to express the same idea. Return only the corrected JSON, no commentary.`,
+        content: `That draft contained internal terminology the client has never seen and the system will reject. These terms must not appear anywhere in the output: ${allLeaks.map(t => `"${t}"`).join(', ')}. Rewrite the entire JSON object using ONLY plain client-facing words to express the same idea. Return only the corrected JSON, no commentary.`,
       })
-      lastError = `Leaked: ${audit.leaks.join(', ')}`
+      lastError = `Leaked: ${allLeaks.join(', ')}`
     }
   }
 
