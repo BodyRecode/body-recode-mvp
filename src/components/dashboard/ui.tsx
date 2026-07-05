@@ -3,7 +3,7 @@ import type { ComponentType, ReactNode } from 'react'
 
 export const MONO_FONT = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
 
-type Accent = 'teal' | 'amber' | 'red' | 'neutral' | 'blue' | 'sage'
+type Accent = 'teal' | 'amber' | 'red' | 'neutral' | 'blue' | 'sage' | 'ink'
 
 const ACCENT: Record<Accent, { bar: string; text: string; bg: string; ring: string }> = {
   teal:    { bar: '#1B6DFC', text: '#1B6DFC', bg: 'rgba(27,109,252,0.08)',  ring: '#B5CFFC' },
@@ -12,6 +12,7 @@ const ACCENT: Record<Accent, { bar: string; text: string; bg: string; ring: stri
   blue:    { bar: '#1B6DFC', text: '#1B6DFC', bg: 'rgba(27,109,252,0.08)',  ring: '#B5CFFC' },
   neutral: { bar: '#999999', text: '#6B6B6B', bg: 'rgba(153,153,153,0.06)', ring: '#E5E5E5' },
   sage:    { bar: '#7A8A6B', text: '#4D5A41', bg: 'rgba(122,138,107,0.10)', ring: '#C5CFBA' },
+  ink:     { bar: '#1A1A1A', text: '#1A1A1A', bg: 'rgba(26,26,26,0.06)',    ring: '#D4D4D4' },
 }
 
 export function accentColour(a: Accent = 'teal') {

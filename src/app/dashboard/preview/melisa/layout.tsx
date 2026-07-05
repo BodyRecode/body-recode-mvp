@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { isCoachEmail } from '@/lib/coach-auth'
-import { HermonyShell } from './_lib/shell'
+import { HarmonyShell } from './_lib/shell'
 
 /**
  * Wraps every /dashboard/preview/melisa/* page in the Hermony-branded
@@ -17,5 +17,5 @@ export default async function MelisaPreviewLayout({ children }: { children: Reac
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !isCoachEmail(user.email)) redirect('/dashboard')
 
-  return <HermonyShell>{children}</HermonyShell>
+  return <HarmonyShell>{children}</HarmonyShell>
 }

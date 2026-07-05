@@ -17,7 +17,7 @@ import {
   Pill,
   MONO_FONT,
 } from '@/components/dashboard/ui'
-import { HERMONY, HERMONY_RECENT_LEADS, HERMONY_RECENT_CHECKINS, HERMONY_STUDENTS } from './_lib/brand'
+import { HARMONY, HARMONY_RECENT_LEADS, HARMONY_RECENT_CHECKINS, HARMONY_STUDENTS } from './_lib/brand'
 
 /**
  * Mirror of /dashboard - the "Live" overview page. Same layout, same
@@ -29,7 +29,7 @@ export default function HermonyHome() {
   const newLeads7d = 5
   const pipelineLeads = 6
   const zoomBooked = 2
-  const activeStudents = HERMONY_STUDENTS.length
+  const activeStudents = HARMONY_STUDENTS.length
   const checkinsThisWeek = 4
 
   const statusLabel: Record<string, string> = {
@@ -40,12 +40,12 @@ export default function HermonyHome() {
     commencement_fee_paid: 'Fee Paid',
   }
 
-  const statusAccent: Record<string, 'sage' | 'amber' | 'red' | 'neutral'> = {
-    new_check_in: 'sage',
-    report_sent: 'sage',
+  const statusAccent: Record<string, 'ink' | 'amber' | 'red' | 'neutral'> = {
+    new_check_in: 'ink',
+    report_sent: 'ink',
     cold_no_booking: 'neutral',
     zoom_booked: 'amber',
-    commencement_fee_paid: 'sage',
+    commencement_fee_paid: 'ink',
   }
 
   const todayLabel = new Date().toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' })
@@ -54,9 +54,9 @@ export default function HermonyHome() {
     <div className="max-w-[1100px]">
       <PageHeader
         eyebrow={`Overview · ${todayLabel}`}
-        title={`Good morning, ${HERMONY.founder}.`}
+        title={`Good morning, ${HARMONY.founder}.`}
         subtitle="Here is what is happening in your coaching system."
-        accent="sage"
+        accent="ink"
       />
 
       {/* Payments status card - inline (mirrors PaymentsStatusCard) */}
@@ -65,12 +65,12 @@ export default function HermonyHome() {
           className="rounded-2xl border bg-[#FFFFFF] px-5 py-4 flex items-center gap-4 transition-colors group-hover:border-[#D4D4D4]"
           style={{ borderColor: '#E5E5E5' }}
         >
-          <span className="w-1 h-10 rounded-full" style={{ background: HERMONY.accentBar }} />
+          <span className="w-1 h-10 rounded-full" style={{ background: HARMONY.accentBar }} />
           <div
             className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border"
-            style={{ background: HERMONY.accentSoftBg, borderColor: HERMONY.accentRing }}
+            style={{ background: HARMONY.accentSoftBg, borderColor: HARMONY.accentRing }}
           >
-            <CheckCircle2 size={16} style={{ color: HERMONY.accentText }} />
+            <CheckCircle2 size={16} style={{ color: HARMONY.accentText }} />
           </div>
           <div className="min-w-0 flex-1">
             <p
@@ -79,7 +79,7 @@ export default function HermonyHome() {
             >
               Payments
             </p>
-            <p className="text-[14px] font-bold truncate" style={{ color: HERMONY.accentText }}>
+            <p className="text-[14px] font-bold truncate" style={{ color: HARMONY.accentText }}>
               All students current
             </p>
           </div>
@@ -110,14 +110,14 @@ export default function HermonyHome() {
           label="Active Students"
           value={activeStudents}
           sub="of 10 in Founding tier"
-          accent="sage"
+          accent="ink"
           icon={UserCheck}
         />
         <StatCard
           label="Check-Ins This Week"
           value={checkinsThisWeek}
           sub="Across all active students"
-          accent="sage"
+          accent="ink"
           icon={ClipboardCheck}
         />
       </div>
@@ -126,15 +126,15 @@ export default function HermonyHome() {
       <div className="grid md:grid-cols-2 gap-4 mb-10">
         <Card>
           <SectionLabel
-            accent="sage"
+            accent="ink"
             cta={
-              <span className="text-[12px]" style={{ color: HERMONY.accentText }}>View all →</span>
+              <span className="text-[12px]" style={{ color: HARMONY.accentText }}>View all →</span>
             }
           >
             Recent Leads
           </SectionLabel>
           <div className="space-y-1">
-            {HERMONY_RECENT_LEADS.map((lead) => (
+            {HARMONY_RECENT_LEADS.map((lead) => (
               <DataRow
                 key={lead.id}
                 href="#"
@@ -152,15 +152,15 @@ export default function HermonyHome() {
 
         <Card>
           <SectionLabel
-            accent="sage"
+            accent="ink"
             cta={
-              <span className="text-[12px]" style={{ color: HERMONY.accentText }}>View coaching →</span>
+              <span className="text-[12px]" style={{ color: HARMONY.accentText }}>View coaching →</span>
             }
           >
             Recent Check-Ins
           </SectionLabel>
           <div className="space-y-1">
-            {HERMONY_RECENT_CHECKINS.map((ci) => (
+            {HARMONY_RECENT_CHECKINS.map((ci) => (
               <DataRow
                 key={ci.id}
                 href="#"
@@ -199,7 +199,7 @@ export default function HermonyHome() {
       {/* Sub-footer note about IP boundary */}
       <div className="mt-10 pt-6 border-t border-[#E5E5E5] flex items-center justify-between text-[10px] text-[#999999]" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>
         <div className="uppercase">INTERPRETATION ENGINE · DOCTRINE · SAFETY FLOORS — POWERED BY BODY RECODE</div>
-        <div className="uppercase">BRAND · VOICE · PRACTICE — {HERMONY.name.toUpperCase()}</div>
+        <div className="uppercase">BRAND · VOICE · PRACTICE — {HARMONY.name.toUpperCase()}</div>
       </div>
     </div>
   )

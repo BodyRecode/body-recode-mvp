@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { ChevronDown } from 'lucide-react'
-import { HERMONY } from './brand'
+import { HARMONY } from './brand'
 
 /**
  * Mirror of the real dashboard header/nav layout, rebranded for the
@@ -76,7 +76,7 @@ const META: NavLink[] = [
   { href: `${BASE}/settings`, label: 'Settings' },
 ]
 
-export function HermonyShell({ children }: { children: React.ReactNode }) {
+export function HarmonyShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() || BASE
 
   return (
@@ -98,24 +98,25 @@ export function HermonyShell({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-9 min-w-0">
             <Link href={BASE} className="flex items-center gap-3 shrink-0">
               <span
-                className="inline-flex items-center justify-center w-9 h-9 rounded-lg font-bold text-[13px] tracking-tight text-white"
-                style={{ background: HERMONY.accentBar, fontFamily: MONO }}
+                className="inline-flex items-center justify-center w-9 h-9 rounded-full overflow-hidden bg-white border"
+                style={{ borderColor: '#1A1A1A' }}
               >
-                {HERMONY.initials}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={HARMONY.logoUrl} alt="" className="w-full h-full object-cover" />
               </span>
-              <span className="text-[16px] font-semibold text-[#1A1A1A] tracking-tight">{HERMONY.name}</span>
+              <span className="text-[16px] font-semibold text-[#1A1A1A] tracking-tight">{HARMONY.name}</span>
             </Link>
-            <HermonyNav pathname={pathname} />
+            <HarmonyNav pathname={pathname} />
           </div>
           <div className="flex items-center gap-3 shrink-0">
             <span
               className="hidden md:inline-flex items-center gap-1.5 text-[11px] text-[#6B6B6B] px-2.5 py-1 rounded-full border border-[#E5E5E5] bg-[#F8F8F8]"
               style={{ fontFamily: MONO }}
             >
-              <span className="w-1.5 h-1.5 rounded-full shadow-[0_0_6px] shadow-current" style={{ background: HERMONY.accentBar, color: HERMONY.accentBar }} />
+              <span className="w-1.5 h-1.5 rounded-full shadow-[0_0_6px] shadow-current" style={{ background: HARMONY.accentBar, color: HARMONY.accentBar }} />
               live
             </span>
-            <span className="hidden lg:inline text-[#999999] text-[11px] tracking-wide">{HERMONY.founder.toLowerCase()}@hermony.com.au</span>
+            <span className="hidden lg:inline text-[#999999] text-[11px] tracking-wide">{HARMONY.founder.toLowerCase()}@hermony.com.au</span>
           </div>
         </div>
       </header>
@@ -136,7 +137,7 @@ function clusterActive(pathname: string, cluster: NavCluster): boolean {
   return cluster.items.some((item) => isLinkActive(pathname, item))
 }
 
-function HermonyNav({ pathname }: { pathname: string }) {
+function HarmonyNav({ pathname }: { pathname: string }) {
   return (
     <nav className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide">
       {OVERVIEW.map((link) => (
@@ -170,7 +171,7 @@ function TopLink({ link, pathname }: { link: NavLink; pathname: string }) {
       {active && (
         <span
           className="absolute left-1/2 -translate-x-1/2 -bottom-[17px] w-6 h-[2px] rounded-full"
-          style={{ background: HERMONY.accentBar }}
+          style={{ background: HARMONY.accentBar }}
         />
       )}
     </Link>
@@ -195,7 +196,7 @@ function ClusterButton({ cluster, pathname }: { cluster: NavCluster; pathname: s
       {active && (
         <span
           className="absolute left-1/2 -translate-x-1/2 -bottom-[17px] w-6 h-[2px] rounded-full"
-          style={{ background: HERMONY.accentBar }}
+          style={{ background: HARMONY.accentBar }}
         />
       )}
     </Link>

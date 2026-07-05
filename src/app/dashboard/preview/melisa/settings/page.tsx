@@ -1,5 +1,5 @@
 import { PageHeader, Card, SectionLabel, MONO_FONT } from '@/components/dashboard/ui'
-import { HERMONY } from '../_lib/brand'
+import { HARMONY } from '../_lib/brand'
 import { getPreset } from '@/lib/doctrine-parameters-presets'
 
 /**
@@ -18,49 +18,63 @@ export default function HermonySettings() {
         eyebrow="Settings"
         title="Your studio configuration"
         subtitle="Brand, voice, doctrine parameters, and billing. Everything that makes this platform yours."
-        accent="sage"
+        accent="ink"
       />
 
       {/* Brand */}
       <Card className="mb-6">
-        <SectionLabel accent="sage">Brand</SectionLabel>
+        <SectionLabel accent="ink">Brand</SectionLabel>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <div className="text-[10px] text-[#6B6B6B] uppercase mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>Wordmark</div>
-            <div className="p-8 rounded-xl border border-[#E5E5E5] bg-[#FAFBFD] flex items-center gap-4">
-              <span
-                className="inline-flex items-center justify-center w-14 h-14 rounded-lg font-bold text-[20px] tracking-tight text-white"
-                style={{ background: HERMONY.accentBar, fontFamily: MONO_FONT }}
-              >
-                {HERMONY.initials}
+            <div className="p-8 rounded-xl border border-[#E5E5E5] bg-white flex items-center gap-5">
+              <span className="inline-flex items-center justify-center w-20 h-20 rounded-full overflow-hidden bg-white border" style={{ borderColor: '#1A1A1A' }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={HARMONY.logoUrl} alt={`${HARMONY.name} logo`} className="w-full h-full object-cover" />
               </span>
               <div>
-                <div className="text-[24px] font-semibold text-[#1A1A1A] tracking-tight">{HERMONY.name}</div>
+                <div className="text-[26px] font-semibold text-[#1A1A1A] tracking-tight" style={{ letterSpacing: '0.02em' }}>{HARMONY.name.toUpperCase()}</div>
                 <div className="text-[11px] text-[#6B6B6B]" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>
-                  {HERMONY.sub.toUpperCase()}
+                  {HARMONY.sub.toUpperCase()}
                 </div>
               </div>
             </div>
           </div>
           <div className="space-y-4">
-            <KV label="Studio name" value={HERMONY.name} />
-            <KV label="Sub-mark" value={HERMONY.sub} />
-            <KV label="Founder" value={`${HERMONY.founder} · ${HERMONY.location}`} />
-            <KV label="Domain" value="hermony.com.au" />
-            <KV label="Support email" value={`${HERMONY.founder.toLowerCase()}@hermony.com.au`} />
+            <KV label="Studio name" value={HARMONY.name} />
+            <KV label="Sub-mark" value={HARMONY.sub} />
+            <KV label="Founder" value={`${HARMONY.founder} · ${HARMONY.location}`} />
+            <KV label="Domain" value="harmony.com.au" />
+            <KV label="Support email" value={`${HARMONY.founder.toLowerCase()}@harmony.com.au`} />
           </div>
         </div>
 
         <div className="pt-6 mt-6 border-t border-[#E5E5E5]">
-          <div className="text-[10px] text-[#6B6B6B] uppercase mb-3" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>Accent</div>
-          <div className="flex items-center gap-3">
-            <div className="w-16 h-10 rounded-lg" style={{ background: HERMONY.accentBar }} />
-            <div>
-              <div className="text-[13px] font-semibold text-[#1A1A1A]">Sage</div>
-              <div className="text-[11px] text-[#6B6B6B]" style={{ fontFamily: MONO_FONT }}>{HERMONY.accentBar}</div>
+          <div className="text-[10px] text-[#6B6B6B] uppercase mb-3" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>Palette</div>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <div className="w-12 h-10 rounded-lg border" style={{ background: HARMONY.accentBar, borderColor: '#E5E5E5' }} />
+              <div>
+                <div className="text-[13px] font-semibold text-[#1A1A1A]">Ink</div>
+                <div className="text-[10px] text-[#6B6B6B]" style={{ fontFamily: MONO_FONT }}>{HARMONY.accentBar}</div>
+              </div>
             </div>
-            <div className="ml-6 text-[11px] text-[#999999]">
-              Used across nav, buttons, callouts, brand mark.
+            <div className="flex items-center gap-2">
+              <div className="w-12 h-10 rounded-lg border" style={{ background: '#FFFFFF', borderColor: '#E5E5E5' }} />
+              <div>
+                <div className="text-[13px] font-semibold text-[#1A1A1A]">Bone</div>
+                <div className="text-[10px] text-[#6B6B6B]" style={{ fontFamily: MONO_FONT }}>#FFFFFF</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-12 h-10 rounded-lg border" style={{ background: '#D4D4D4', borderColor: '#E5E5E5' }} />
+              <div>
+                <div className="text-[13px] font-semibold text-[#1A1A1A]">Silver</div>
+                <div className="text-[10px] text-[#6B6B6B]" style={{ fontFamily: MONO_FONT }}>#D4D4D4</div>
+              </div>
+            </div>
+            <div className="ml-4 text-[11px] text-[#999999] italic">
+              Monochrome. Wordmark, mountain-at-moon mark, and accents share the greyscale range.
             </div>
           </div>
         </div>
@@ -68,7 +82,7 @@ export default function HermonySettings() {
 
       {/* Voice + doctrine parameters (Mode A+) */}
       <Card className="mb-6">
-        <SectionLabel accent="sage" meta={`Preset: ${yoga.label}`}>
+        <SectionLabel accent="ink" meta={`Preset: ${yoga.label}`}>
           Voice + coaching guidance
         </SectionLabel>
         <div className="space-y-5">
@@ -107,7 +121,7 @@ export default function HermonySettings() {
 
       {/* Billing */}
       <Card>
-        <SectionLabel accent="sage">Billing</SectionLabel>
+        <SectionLabel accent="ink">Billing</SectionLabel>
         <div className="grid md:grid-cols-3 gap-4">
           <div className="p-4 rounded-xl border border-[#E5E5E5] bg-[#FAFBFD]">
             <div className="text-[10px] text-[#6B6B6B] uppercase mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>Tier</div>
@@ -129,7 +143,7 @@ export default function HermonySettings() {
 
       <div className="mt-10 pt-6 border-t border-[#E5E5E5] flex items-center justify-between text-[10px] text-[#999999]" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>
         <div className="uppercase">INTERPRETATION ENGINE · DOCTRINE · SAFETY FLOORS — POWERED BY BODY RECODE</div>
-        <div className="uppercase">BRAND · VOICE · PRACTICE — {HERMONY.name.toUpperCase()}</div>
+        <div className="uppercase">BRAND · VOICE · PRACTICE — {HARMONY.name.toUpperCase()}</div>
       </div>
     </div>
   )

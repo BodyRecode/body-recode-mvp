@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Users, ArrowUpRight, Activity, UserPlus } from 'lucide-react'
 import { PageHeader, Card, SectionLabel, Pill, MONO_FONT } from '@/components/dashboard/ui'
-import { HERMONY, HERMONY_STUDENTS } from '../_lib/brand'
+import { HARMONY, HARMONY_STUDENTS } from '../_lib/brand'
 
 /**
  * Mirror of /dashboard/coaching - active student roster. Same table
@@ -9,12 +9,12 @@ import { HERMONY, HERMONY_STUDENTS } from '../_lib/brand'
  * check-in status, actions), Hermony's fake data.
  */
 export default function HermonyCoaching() {
-  const active = HERMONY_STUDENTS.length
+  const active = HARMONY_STUDENTS.length
 
-  const statusToPill: Record<string, { label: string; accent: 'sage' | 'amber' | 'red' | 'neutral' }> = {
+  const statusToPill: Record<string, { label: string; accent: 'ink' | 'amber' | 'red' | 'neutral' }> = {
     active_settling:   { label: 'Settling',   accent: 'amber' },
-    active_building:   { label: 'Building',   accent: 'sage' },
-    active_expression: { label: 'Expression', accent: 'sage' },
+    active_building:   { label: 'Building',   accent: 'ink' },
+    active_expression: { label: 'Expression', accent: 'ink' },
     new:               { label: 'New',        accent: 'neutral' },
   }
 
@@ -24,7 +24,7 @@ export default function HermonyCoaching() {
         eyebrow="Students"
         title="Active roster"
         subtitle={`${active} students in active practice. ${10 - active} seats left in your Founding tier.`}
-        accent="sage"
+        accent="ink"
         cta={
           <button
             className="inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-2 rounded-lg border border-[#E5E5E5] bg-white text-[#1A1A1A] hover:bg-[#F4F4F4] transition-colors"
@@ -36,10 +36,10 @@ export default function HermonyCoaching() {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
         {[
-          { label: 'Active', value: HERMONY_STUDENTS.length, sub: 'Practicing this week' },
-          { label: 'Settling', value: HERMONY_STUDENTS.filter((s) => s.status === 'active_settling').length, sub: 'Block 1 · orient' },
-          { label: 'Building', value: HERMONY_STUDENTS.filter((s) => s.status === 'active_building').length, sub: 'Block 2 · capacity' },
-          { label: 'Expression', value: HERMONY_STUDENTS.filter((s) => s.status === 'active_expression').length, sub: 'Block 3+ · advanced' },
+          { label: 'Active', value: HARMONY_STUDENTS.length, sub: 'Practicing this week' },
+          { label: 'Settling', value: HARMONY_STUDENTS.filter((s) => s.status === 'active_settling').length, sub: 'Block 1 · orient' },
+          { label: 'Building', value: HARMONY_STUDENTS.filter((s) => s.status === 'active_building').length, sub: 'Block 2 · capacity' },
+          { label: 'Expression', value: HARMONY_STUDENTS.filter((s) => s.status === 'active_expression').length, sub: 'Block 3+ · advanced' },
         ].map((s, i) => (
           <div
             key={i}
@@ -47,7 +47,7 @@ export default function HermonyCoaching() {
           >
             <div
               className="absolute top-5 left-5 w-7 h-[3px] rounded-full"
-              style={{ background: HERMONY.accentBar }}
+              style={{ background: HARMONY.accentBar }}
             />
             <p
               className="text-[10px] text-[#6B6B6B] uppercase mt-4 mb-3"
@@ -68,7 +68,7 @@ export default function HermonyCoaching() {
 
       <Card padding="none">
         <SectionLabel
-          accent="sage"
+          accent="ink"
           cta={
             <div className="flex items-center gap-2">
               <button className="text-[12px] text-[#6B6B6B] hover:text-[#1A1A1A]">Active</button>
@@ -92,7 +92,7 @@ export default function HermonyCoaching() {
             <div>Last check-in</div>
             <div></div>
           </div>
-          {HERMONY_STUDENTS.map((s) => {
+          {HARMONY_STUDENTS.map((s) => {
             const pill = statusToPill[s.status] || statusToPill.new
             return (
               <Link
@@ -104,7 +104,7 @@ export default function HermonyCoaching() {
                   <div className="flex items-center gap-3">
                     <div
                       className="w-8 h-8 rounded-full flex items-center justify-center text-white text-[11px] font-bold"
-                      style={{ background: HERMONY.accentBar }}
+                      style={{ background: HARMONY.accentBar }}
                     >
                       {s.name.split(' ').map((n) => n[0]).join('')}
                     </div>
@@ -135,17 +135,17 @@ export default function HermonyCoaching() {
           <p className="text-[13px] text-[#4B4B4B] leading-relaxed mb-3">
             2 weekly check-ins ready. Both have AI-drafted feedback in your voice waiting for your review and send.
           </p>
-          <Link href="#" className="inline-flex items-center gap-1 text-[12px] font-semibold" style={{ color: HERMONY.accentText }}>
+          <Link href="#" className="inline-flex items-center gap-1 text-[12px] font-semibold" style={{ color: HARMONY.accentText }}>
             Open queue <ArrowUpRight size={12} />
           </Link>
         </Card>
 
         <Card>
-          <SectionLabel accent="sage">Readings ready to notify</SectionLabel>
+          <SectionLabel accent="ink">Readings ready to notify</SectionLabel>
           <p className="text-[13px] text-[#4B4B4B] leading-relaxed mb-3">
             1 nutrition plan and 1 block-end trajectory reading are drafted and waiting for you to click Notify.
           </p>
-          <Link href="#" className="inline-flex items-center gap-1 text-[12px] font-semibold" style={{ color: HERMONY.accentText }}>
+          <Link href="#" className="inline-flex items-center gap-1 text-[12px] font-semibold" style={{ color: HARMONY.accentText }}>
             Review + send <ArrowUpRight size={12} />
           </Link>
         </Card>
@@ -153,7 +153,7 @@ export default function HermonyCoaching() {
 
       <div className="mt-10 pt-6 border-t border-[#E5E5E5] flex items-center justify-between text-[10px] text-[#999999]" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>
         <div className="uppercase">INTERPRETATION ENGINE · POWERED BY BODY RECODE</div>
-        <div className="uppercase">STUDENTS · {HERMONY.name.toUpperCase()}</div>
+        <div className="uppercase">STUDENTS · {HARMONY.name.toUpperCase()}</div>
       </div>
     </div>
   )
