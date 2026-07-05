@@ -1,15 +1,18 @@
 # Melisa · Pilot Zero Deployment Runbook
 
-**Status:** DRAFT · Prepared 2026-07-01. Execute post-launch (Wk 2+ after Mon 13 Jul 2026 BR launch stabilises).
+**Status:** LIVE runbook · Substantially updated 2026-07-05 with everything shipped through Wk 27.
 **Owner:** Kade.
+**Sequencing:** Execute post-launch (Wk 2+ after Mon 13 Jul 2026 BR launch stabilises).
 
 Pilot zero = the first hand-gloved SOT partner deployment. Purpose: prove the deployment shape end-to-end so the runbook can be tightened before onboarding partners #2-#10.
 
-Per [POWERED_PLATFORM_BUILD_PLAN.md](../POWERED_PLATFORM_BUILD_PLAN.md) §4 Phase 1: Melisa runs on a **hand-gloved deployment with targeted branding override**, before the full de-hardcode. Multi-tenant DB is already there (coach_id + RLS); we just need to make her instance LOOK like hers, not BR.
+Per [POWERED_PLATFORM_BUILD_PLAN.md](../POWERED_PLATFORM_BUILD_PLAN.md) §4 Phase 1: Melisa was originally scoped to run on a hand-gloved deployment with targeted branding override, before the full de-hardcode. **As of 2026-07-05 that is no longer necessary.** De-hardcode is done, tenant_config is DB-backed with a full editor UI, custom-domain routing is shipped, per-tenant Stripe Connect + Twilio Subaccounts + Mode A+ doctrine tuning all live. Her deployment is now Shape B (single production deployment, multi-tenant), not Shape A (separate deploy).
 
 Two hard truths ([PARTNER_JOURNEY.md](PARTNER_JOURNEY.md)):
-1. Doctrine A — she runs BR's doctrine branded as hers. NOT method-injection.
-2. Multi-tenancy isn't fully product-ised — her deployment is manual and careful.
+1. **Doctrine A + Mode A+ overlay** — she runs BR's doctrine branded as hers, with a partner-tuning overlay (voiceTone, bannedPhrases, terminologySubstitutions, coaching guidance). NOT full method-injection (Mode B).
+2. **Multi-tenancy IS now product-ised** — most of the manual work from the original v0 runbook is now handled by the tenant seed SQL + the [Phase 2 Deployment Checklist](PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.md). This runbook is now a companion, not the whole story.
+
+Pre-built starting point: **[../../../01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/sql/2026-07-05_melisa_seed.sql](../../../01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/sql/2026-07-05_melisa_seed.sql)** ships with Founding Ten Launch tier defaults, Yoga modality, and doctrine parameters pre-tuned for a warm/grounded/breath-forward voice. Fill placeholders + run to provision.
 
 ---
 
@@ -17,12 +20,13 @@ Two hard truths ([PARTNER_JOURNEY.md](PARTNER_JOURNEY.md)):
 
 Confirm all before touching code:
 
-- [ ] Founding Partner Agreement signed (one-pager pilot-grade — see `05_LEGAL/`)
-- [ ] Setup deposit cleared
-- [ ] Modality confirmed: Yoga (modality 2 — on `feature/yoga-modality` branch)
-- [ ] Brand pack in hand (name, colours, logo variants, tagline, voice sample)
+- [ ] **Founding Partner Agreement + IP Licence Deed v1.0 signed** — drafts at `../legal/` (v0.1). Awaiting Ange review. Both must be signed together.
+- [ ] **Setup fee cleared** — $2,500 Launch tier (Founding Ten locked rate) invoiced + paid via Kade's Stripe
+- [ ] Modality confirmed: Yoga (modality 2 — on `feature/yoga-modality` branch; merge to main before Melisa provisioning)
+- [ ] Brand pack in hand (name, colours, logo variants light + dark, tagline, voice sample)
 - [ ] Domain acquired + DNS access confirmed (her domain)
-- [ ] Stripe account created (her business — separate from BR Stripe)
+- [ ] **Melisa's own Stripe account** created — for her clients paying HER via Stripe Connect. Separate from Kade's Stripe.
+- [ ] **Kade's Stripe Customer + Subscription for Melisa's platform sub** — for Kade's own billing of Melisa per Agreement §6 ($400/mo Launch tier locked for life). Stripe Customer id + Subscription id captured for licence.partnerBilling.
 - [ ] Email domain configured (Resend inbound + DKIM/SPF)
 - [ ] 1Password vault created for her credentials
 - [ ] BR launch has stabilised (Wk 2+ post 13 Jul launch, no critical incidents)
