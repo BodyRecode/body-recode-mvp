@@ -1,4 +1,5 @@
 import { FORM_A_SECTIONS, FORM_B_SECTIONS } from './weekly-checkin-questions'
+import { partnerVoiceTone, partnerBannedPhrases, partnerCheckinCoachingGuidance } from './doctrine-parameters'
 
 /**
  * Weekly Check-In Coach Feedback — prompt builders.
@@ -283,7 +284,7 @@ Before returning your JSON, walk through these six questions in order. If any fa
 
 A draft that fails any of these six audits is NOT a finished draft. Iterate inside this response until all six pass, then return the JSON.
 
-OUTPUT FORMAT:
+${renderPartnerTuningSection()}OUTPUT FORMAT:
 Return ONLY a single JSON object, no preamble, no markdown fences. Schema:
 
 {
@@ -293,6 +294,31 @@ Return ONLY a single JSON object, no preamble, no markdown fences. Schema:
 }
 
 If reframe is not warranted, the value MUST be the JSON literal null, not an empty string and not the string "null".`
+}
+
+/**
+ * Partner-tuning overlay for Mode A+ tenants. Renders an additive block that
+ * appends to the base BR voice/discipline. Returns empty string for BR or any
+ * tenant with no doctrineParameters set - so BR prompt is byte-identical.
+ *
+ * Mode A+ rules:
+ *   - Additive only. Never overrides Kade's core voice discipline or the
+ *     platform-wide banned-terms list.
+ *   - Guidance is coach-facing style/philosophy. Hard Safety Floors remain
+ *     immutable and are not exposed here.
+ */
+function renderPartnerTuningSection(): string {
+  const tone = partnerVoiceTone()
+  const banned = partnerBannedPhrases()
+  const guidance = partnerCheckinCoachingGuidance()
+  if (!tone && banned.length === 0 && !guidance) return ''
+
+  const lines: string[] = []
+  lines.push('PARTNER TUNING (Mode A+ overlay — additive to the above, does not replace Kade\'s voice discipline):')
+  if (tone) lines.push(`- Additional tone cue to apply throughout: ${tone}`)
+  if (banned.length > 0) lines.push(`- Additional banned phrases (do NOT use, in addition to the platform-wide banned-terms list): ${banned.map(p => `"${p}"`).join(', ')}`)
+  if (guidance) lines.push(`- Partner coaching philosophy: ${guidance}`)
+  return lines.join('\n') + '\n\n'
 }
 
 export function buildFeedbackUserPrompt(input: {

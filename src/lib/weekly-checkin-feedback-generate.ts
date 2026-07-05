@@ -231,11 +231,28 @@ export async function generateFeedbackDraft(
       next_focus: parsed.next_focus,
     })
 
+    // Apply partner terminology substitutions post-generation. No-op for BR
+    // (returns text unchanged). For Mode A+ tenants, rewrites "from => to"
+    // pairs configured in doctrineParameters.
+    const { applyPartnerTerminology, findPartnerBannedPhrase } = await import('./doctrine-parameters')
+    candidate.interpretation = applyPartnerTerminology(candidate.interpretation)
+    if (candidate.reframe) candidate.reframe = applyPartnerTerminology(candidate.reframe)
+    candidate.next_focus = applyPartnerTerminology(candidate.next_focus)
+
     const leakedTerms = [
       ...findLeakedTerms(candidate.interpretation),
       ...(candidate.reframe ? findLeakedTerms(candidate.reframe) : []),
       ...findLeakedTerms(candidate.next_focus),
     ]
+
+    // Partner-specific banned phrase check. Additive to the platform-wide list.
+    const partnerBanned: string[] = []
+    for (const field of [candidate.interpretation, candidate.reframe, candidate.next_focus]) {
+      if (!field) continue
+      const hit = findPartnerBannedPhrase(field)
+      if (hit && !partnerBanned.includes(hit)) partnerBanned.push(hit)
+    }
+    if (partnerBanned.length > 0) leakedTerms.push(...partnerBanned)
 
     // Nutrition-prescription grounding: if the active plan has a meal
     // frequency, scan every field for "(N) meals" / "(N) snacks" patterns
