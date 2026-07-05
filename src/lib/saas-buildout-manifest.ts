@@ -430,11 +430,16 @@ export const PHASES: Phase[] = [
       {
         id: 'per-tenant-twilio-subaccounts',
         title: 'Per-tenant Twilio Subaccounts (Founding Ten)',
-        description: 'Each SOT partner gets a Twilio Subaccount with their own AU number + separate billing. Adds tenant_config.messaging.twilioSubaccountSid + swaps sender in sendLeadSms.',
-        status: 'planned',
+        description: 'sendSms() now routes through licence.twilioSubaccountSid + licence.twilioMessagingServiceSid if set. Falls back to platform Twilio if not. Tenant onboarding creates a Subaccount, provisions AU number, adds SIDs to their tenant_config row.',
+        status: 'shipped',
+        shippedAt: '2026-07-05',
         effort: 'S',
-        blockedBy: 'speed-to-lead-sms',
-        notes: 'Shared account works for BR + pilot zero. Add when partner #2 signs.',
+        commits: ['pending'],
+        surfaces: [
+          'src/lib/twilio.ts',
+          'src/config/tenant.ts',
+        ],
+        notes: 'BR path unchanged (both SIDs null, falls back to platform Twilio). Inbound webhook routing still shared - tenant identification via AccountSid in Twilio POST body is a follow-up refinement.',
       },
       {
         id: 'purchase-and-noshow-sms-triggers',

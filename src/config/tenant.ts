@@ -72,6 +72,15 @@ export type TenantConfig = {
     stripeAccountId?: string | null
     /** Stripe onboarding lifecycle: 'pending' | 'active' | 'restricted' | null */
     stripeAccountStatus?: 'pending' | 'active' | 'restricted' | null
+    /** Twilio Subaccount SID (AC...) - if set, SMS sends route through this
+     *  subaccount instead of the platform account. Optional per-tenant
+     *  extension for SOT partners who want their own AU number + billing
+     *  separation. BR is always null - uses platform Twilio. */
+    twilioSubaccountSid?: string | null
+    /** Twilio Messaging Service SID (MG...) scoped to the subaccount. Sender pool
+     *  + AU number attached to this messaging service. Required if
+     *  twilioSubaccountSid is set. */
+    twilioMessagingServiceSid?: string | null
   }
 
   /** Modality — third configurability axis (see POWERED_PLATFORM_BUILD_PLAN §7) */
@@ -134,6 +143,8 @@ const BODY_RECODE_TENANT: TenantConfig = {
     version: '2026-07-01',
     stripeAccountId: null,
     stripeAccountStatus: null,
+    twilioSubaccountSid: null,
+    twilioMessagingServiceSid: null,
   },
   modality: {
     id: 'strength',
