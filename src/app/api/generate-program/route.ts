@@ -359,6 +359,13 @@ export async function POST(request: NextRequest) {
       progression_notes: programData.progression_notes || null,
       client_note: programData.client_note || null,
       prescription_rationale: prescription_rationale || null,
+      // 2026-07-05 coach-facing rationale summary. Generator produces this
+      // alongside the verbose weekly_pattern_summary / progression_notes /
+      // prescription_rationale so the coach dashboard can lead with a
+      // scannable card and hide the clinical wall behind an expand. If the
+      // model didn't produce it (unlikely — prompt now requires it), the
+      // UI falls back to the current verbose fields.
+      rationale_summary: (programData as { rationale_summary?: unknown }).rationale_summary ?? null,
       status: 'draft',
       is_active: false,
     })

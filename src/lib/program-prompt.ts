@@ -726,8 +726,32 @@ Execute the full 9-stage generation pipeline. Run the pre-delivery QA checklist 
     "Week 3: continue or adjust — one entry.",
     "Week 4: final week strategy — one entry."
   ],
-  "client_note": "3-5 sentences. Write like a coach wrote this in a text message to a client. Conversational but direct. Cover: what the block is, how many sessions, what the focus is, and what the client should expect. No dashes of any kind (no hyphens used as pauses, no em dashes, no long dashes). No motivational language. No over-explaining. Example: 'Eight weeks, two sessions per week. We are keeping intensity low and sticking to movements that do not stress your knees. Upper body and hip work only for now. Sessions are short so do not rush through them. Show up, do the work, and we will reassess after a few weeks.'"
+  "client_note": "3-5 sentences. Write like a coach wrote this in a text message to a client. Conversational but direct. Cover: what the block is, how many sessions, what the focus is, and what the client should expect. No dashes of any kind (no hyphens used as pauses, no em dashes, no long dashes). No motivational language. No over-explaining. Example: 'Eight weeks, two sessions per week. We are keeping intensity low and sticking to movements that do not stress your knees. Upper body and hip work only for now. Sessions are short so do not rush through them. Show up, do the work, and we will reassess after a few weeks.'",
+  "rationale_summary": {
+    "headline": "2-3 lines MAX. The block decision + the single most important reason. Written for a coach scanning between sessions. Example: 'Full-body 3x/week, restoration phase held. Sleep architecture is still the binding constraint even though W9 recovery scored 4/5, and the peptide-adjustment window means load stays flat for one week before we open up.'",
+    "scan": {
+      "phase": "one of: restoration | stabilisation | accumulation | intensification | realization",
+      "rpe_ceiling": "e.g. '6-7' or '7-8' or 'no ceiling'",
+      "frequency": "e.g. '3x full-body' or '4x upper/lower'",
+      "load_direction": "e.g. 'hold W1, +5-10% W2-8' or 'linear +5% weekly' or 'deload'",
+      "flags_count": "integer: how many red flags in this block (peptide risk, medication interaction, injury, sleep, etc.)"
+    },
+    "operating_rules": [
+      "3-5 bullets MAX. Each one LINE, no more than 12 words. The things a coach genuinely needs to remember while running this block. Not the full clinical rationale, just the scan-and-remember list. Example: 'Hold load W1 - peptide-adjustment window'",
+      "Example: 'Peptide + maternal history - clinician review pending'",
+      "Example: 'Watch: sleep architecture (2-3 wk stabilisation gate)'",
+      "Example: 'Pain-free-domain only: step-ups / glute bridges / modified squats'",
+      "Example: 'Session length ceiling 55 min'"
+    ]
+  }
 }
+
+RATIONALE_SUMMARY QUALITY BAR (2026-07-05):
+The summary must pass the "coach reads only this and still knows what to do" test.
+- headline: MAXIMUM 3 short lines. If it runs longer, cut. State the decision, state the one reason it holds.
+- scan: EXACT tokens only. Not sentences. This is a pill row, not prose.
+- operating_rules: MAXIMUM 5 bullets, each MAXIMUM 12 words. If a rule needs a full sentence to survive, it's a clinical detail, not an operating rule — leave it in weekly_pattern_summary instead.
+- Do NOT duplicate the weekly_pattern_summary content into operating_rules. The summary is the coach's dashboard; weekly_pattern_summary is the clinical archive.
 
 One JSON object only. No markdown. No commentary. All exercise names must exactly match the approved library. Do not add slots. Do not blend phases. Do not improvise exercises.`)
 

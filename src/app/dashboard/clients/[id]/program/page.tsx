@@ -52,6 +52,22 @@ interface Program {
   current_direction: string | null
   last_review_at: string | null
   prescription_rationale: string | null
+  // Coach-facing summary card (2026-07-05). Generator produces this
+  // alongside prescription_rationale so the coach page can lead with
+  // a scannable read and hide the clinical wall behind an expand. Null
+  // on programs generated before this shipped — UI falls through to the
+  // verbose fields in that case.
+  rationale_summary: {
+    headline?: string
+    scan?: {
+      phase?: string
+      rpe_ceiling?: string
+      frequency?: string
+      load_direction?: string
+      flags_count?: number | string
+    }
+    operating_rules?: string[]
+  } | null
   // 2026-06-09: client-facing notification decoupled from reading state.
   published_to_client_at?: string | null
   published_to_client_by?: string | null
@@ -144,8 +160,142 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
         </p>
       </div>
 
-      {/* Prescription Rationale */}
-      {program.prescription_rationale && (() => {
+      {/* Rationale Summary — coach-facing scannable card (2026-07-05).
+          Leads the page. Headline + scan pills + 3-5 operating rules.
+          Full clinical detail (prescription_rationale + weekly_pattern_summary
+          + progression_notes) is collapsed underneath. Programs generated
+          before this shipped have rationale_summary = null; those fall
+          through to the verbose sections in-line as before. */}
+      {program.rationale_summary?.headline && (
+        <div id={`${idPrefix}rationale`} className="scroll-mt-8 bg-blue-50 border border-blue-200/40 rounded-xl px-5 py-4">
+          <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-3">Rationale Summary</p>
+          <p className="text-sm text-stone-800 leading-relaxed whitespace-pre-wrap mb-4">{clean(program.rationale_summary.headline)}</p>
+          {program.rationale_summary.scan && (
+            <div className="flex flex-wrap gap-1.5 mb-4">
+              {program.rationale_summary.scan.phase && (
+                <span className="text-[10px] font-semibold px-2 py-1 rounded-full bg-white border border-blue-200 text-[#1B6DFC] uppercase tracking-wide">
+                  {program.rationale_summary.scan.phase}
+                </span>
+              )}
+              {program.rationale_summary.scan.rpe_ceiling && (
+                <span className="text-[10px] font-semibold px-2 py-1 rounded-full bg-white border border-blue-200 text-[#1B6DFC] uppercase tracking-wide">
+                  RPE {program.rationale_summary.scan.rpe_ceiling}
+                </span>
+              )}
+              {program.rationale_summary.scan.frequency && (
+                <span className="text-[10px] font-semibold px-2 py-1 rounded-full bg-white border border-blue-200 text-[#1B6DFC] uppercase tracking-wide">
+                  {program.rationale_summary.scan.frequency}
+                </span>
+              )}
+              {program.rationale_summary.scan.load_direction && (
+                <span className="text-[10px] font-semibold px-2 py-1 rounded-full bg-white border border-blue-200 text-[#1B6DFC] uppercase tracking-wide">
+                  {program.rationale_summary.scan.load_direction}
+                </span>
+              )}
+              {(() => {
+                const raw = program.rationale_summary.scan.flags_count
+                const n = typeof raw === 'number' ? raw : (typeof raw === 'string' ? parseInt(raw, 10) : NaN)
+                if (!Number.isFinite(n) || n <= 0) return null
+                return (
+                  <span className="text-[10px] font-semibold px-2 py-1 rounded-full bg-amber-50 border border-amber-300 text-amber-800 uppercase tracking-wide">
+                    {n} flag{n === 1 ? '' : 's'}
+                  </span>
+                )
+              })()}
+            </div>
+          )}
+          {program.rationale_summary.operating_rules && program.rationale_summary.operating_rules.length > 0 && (
+            <div className="space-y-1.5">
+              {program.rationale_summary.operating_rules.map((rule, i) => (
+                <div key={i} className="flex items-start gap-2">
+                  <span className="text-[#1B6DFC] mt-0.5 shrink-0">·</span>
+                  <p className="text-sm text-stone-800 leading-snug">{clean(rule)}</p>
+                </div>
+              ))}
+            </div>
+          )}
+          {/* Collapsible full clinical rationale */}
+          {(program.prescription_rationale || program.weekly_pattern_summary || program.progression_notes) && (
+            <details className="mt-5 group">
+              <summary className="cursor-pointer text-[11px] font-semibold text-[#1B6DFC] hover:text-blue-700 select-none list-none flex items-center gap-1.5">
+                <span className="inline-block transition-transform group-open:rotate-90">▸</span>
+                Open full clinical rationale
+              </summary>
+              <div className="mt-4 space-y-3">
+                {program.prescription_rationale && (() => {
+                  const { intro, points } = parseText(clean(program.prescription_rationale))
+                  return (
+                    <div className="bg-white/60 border border-blue-100 rounded-lg px-4 py-3">
+                      <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-2">Prescription Rationale</p>
+                      <div className="space-y-2">
+                        {intro && <p className="text-sm text-stone-800 leading-relaxed">{intro}</p>}
+                        {points.length > 1 ? (
+                          <div className="space-y-2">
+                            {points.map((point, i) => (
+                              <div key={i} className="flex items-start gap-2.5 border-l-2 border-blue-200/30 pl-3">
+                                <p className="text-sm text-stone-700 leading-relaxed">{point}</p>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-sm text-stone-700 leading-relaxed">{points[0]}</p>
+                        )}
+                      </div>
+                    </div>
+                  )
+                })()}
+                {program.weekly_pattern_summary && (
+                  <div id={`${idPrefix}weekly-structure`} className="scroll-mt-8 bg-white/60 border border-stone-200 rounded-lg overflow-hidden">
+                    <div className="flex items-center gap-3 px-4 py-2.5 border-b border-stone-200">
+                      <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Weekly Structure</p>
+                    </div>
+                    <div className="px-4 py-3 space-y-3">
+                      {parseLines(program.weekly_pattern_summary, /(?=(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|Day \d+)[^a-z]|Overall program|Constraints applied)/g).map((entry, i) => {
+                        const colonIdx = entry.indexOf(':')
+                        const hasLabel = colonIdx > 0 && colonIdx < 80
+                        const label = hasLabel ? entry.slice(0, colonIdx).trim() : null
+                        const content = hasLabel ? entry.slice(colonIdx + 1).trim() : entry.trim()
+                        return (
+                          <div key={i} className="border-l-2 border-stone-300 pl-3">
+                            {label && <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-wider mb-1">{clean(label)}</p>}
+                            <p className="text-sm text-stone-800 leading-relaxed">{clean(content)}</p>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+                {program.progression_notes && (
+                  <div id={`${idPrefix}progression`} className="scroll-mt-8 bg-white/60 border border-stone-200 rounded-lg overflow-hidden">
+                    <div className="flex items-center gap-3 px-4 py-2.5 border-b border-stone-200">
+                      <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Progression Strategy</p>
+                    </div>
+                    <div className="px-4 py-3 space-y-3">
+                      {parseLines(program.progression_notes, /(?=Week \d+)/g).map((entry, i) => {
+                        const colonIdx = entry.indexOf(':')
+                        const hasLabel = colonIdx > 0 && colonIdx < 80
+                        const label = hasLabel ? entry.slice(0, colonIdx).trim() : null
+                        const content = hasLabel ? entry.slice(colonIdx + 1).trim() : entry.trim()
+                        return (
+                          <div key={i} className="border-l-2 border-stone-300 pl-3">
+                            {label && <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-wider mb-1">{clean(label)}</p>}
+                            <p className="text-sm text-stone-800 leading-relaxed">{clean(content)}</p>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </details>
+          )}
+        </div>
+      )}
+
+      {/* Fallback: legacy verbose sections when no rationale_summary exists.
+          Programs generated before 2026-07-05 don't have the summary shape,
+          so we render the pre-2026-07-05 layout instead. */}
+      {!program.rationale_summary?.headline && program.prescription_rationale && (() => {
         const { intro, points } = parseText(clean(program.prescription_rationale))
         return (
           <div id={`${idPrefix}rationale`} className="scroll-mt-8 bg-blue-50 border border-blue-200/40 rounded-xl px-5 py-4">
@@ -168,8 +318,7 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
         )
       })()}
 
-      {/* Weekly Structure */}
-      {program.weekly_pattern_summary && (
+      {!program.rationale_summary?.headline && program.weekly_pattern_summary && (
         <div id={`${idPrefix}weekly-structure`} className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
           <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-200 bg-stone-100/80">
             <span className="text-[11px] font-black text-[#1B6DFC]">01</span>
@@ -192,8 +341,7 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
         </div>
       )}
 
-      {/* Progression Notes */}
-      {program.progression_notes && (
+      {!program.rationale_summary?.headline && program.progression_notes && (
         <div id={`${idPrefix}progression`} className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
           <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-200 bg-stone-100/80">
             <span className="text-[11px] font-black text-[#1B6DFC]">02</span>
