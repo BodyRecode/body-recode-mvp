@@ -243,10 +243,13 @@ export const PHASES: Phase[] = [
       {
         id: 'provision-melisa-account',
         title: 'Manually provision Melisa coach account + workspace',
-        description: 'Coach row + auth user + initial tenant_config seed.',
-        status: 'planned',
+        description: 'Coach row + auth user + initial tenant_config seed. Pre-built seed SQL ready at ~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/sql/2026-07-05_melisa_seed.sql with founding-partner defaults (Launch tier, yoga modality, $2,500 setup, $400/mo locked, doctrine parameters pre-tuned for yoga voice). Awaiting: (1) Melisa signs Founding Partner Agreement + IP Licence, (2) Kade collects business name + domain + brand assets + IG handles, (3) run scripts/create-coach-auth-user.ts to get UUID, (4) replace placeholders in seed + apply.',
+        status: 'in_progress',
         effort: 'S',
-        surfaces: ['~/Dropbox/03_STUDIO_OF_TEN/00_FOUNDING_TEN/onboarding/MELISA_PILOT_ZERO_DEPLOYMENT_RUNBOOK.md'],
+        surfaces: [
+          '~/Dropbox/03_STUDIO_OF_TEN/00_FOUNDING_TEN/onboarding/MELISA_PILOT_ZERO_DEPLOYMENT_RUNBOOK.md',
+          '~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/sql/2026-07-05_melisa_seed.sql',
+        ],
       },
       {
         id: 'melisa-pilot-runbook',
