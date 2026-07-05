@@ -1,50 +1,47 @@
 /**
- * Melisa preview brand tokens. Single source of truth for the mock
- * tenant so every preview page reads the same values. When Melisa hands
- * over her real brand pack at seed time, these get replaced by her
- * tenant_config.brand JSON - this file gets deleted.
+ * Hermony brand tokens (Melisa's business). Represents the white-label
+ * shape her tenant will run: same BR platform layout, same components,
+ * her brand name + accent applied at the header + accent-bar callsites.
+ *
+ * When the real tenant is provisioned at seed time, these values live
+ * in tenant_config.brand; this file is retired.
  */
-export const MELISA_BRAND = {
-  name: 'Melisa',
-  sub: 'Yoga and Somatic Practice',
-  tagline: 'Movement is the practice. Attention is the point.',
-  location: 'Brisbane',
+export const HERMONY = {
+  name: 'Hermony',
+  sub: 'Yoga & Meditation',
+  initials: 'H',
   founder: 'Melisa',
-  monogram: 'M',
+  location: 'Brisbane',
 
-  // Palette - warm-neutral yoga-luxe
-  bg: '#faf6ef',           // page cream
-  bgDeep: '#f4ede0',       // sidebar / muted panel
-  card: '#ffffff',
-  border: '#e8dfd0',       // warm cream border
-  ink: '#2c2418',          // deep espresso
-  inkMid: '#6b5f4d',
-  inkLight: '#a89b85',
-
-  // Accents
-  accent: '#7a8a6b',       // sage
-  accentText: '#4d5a41',   // deeper sage for text on light
-  accentSoft: 'rgba(122, 138, 107, 0.1)',
-  accentBorder: '#c5cfba',
-
-  warm: '#b06c47',         // terracotta - state indicator
-  warmSoft: 'rgba(176, 108, 71, 0.1)',
-
-  danger: '#a63b2d',       // reddish-terra for warnings
-  ok: '#5b7a4d',           // muted green for confirmations
-
-  // Typography
-  serif: "'Cormorant Garamond', 'Playfair Display', Georgia, 'Times New Roman', serif",
-  sans: "-apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif",
-  mono: "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace",
+  // Accent - warm sage instead of BR's Signal Blue #1B6DFC
+  accentBar: '#7A8A6B',
+  accentText: '#4D5A41',
+  accentSoftBg: 'rgba(122, 138, 107, 0.08)',
+  accentRing: '#C5CFBA',
 } as const
 
-export const MELISA_NAV = [
-  { slug: '',           label: 'Home',       kind: 'home' },
-  { slug: 'students',   label: 'Students',   kind: 'students' },
-  { slug: 'check-ins',  label: 'Check-ins',  kind: 'check-ins' },
-  { slug: 'plans',      label: 'Plans',      kind: 'plans' },
-  { slug: 'content',    label: 'Content',    kind: 'content' },
-  { slug: 'insights',   label: 'Insights',   kind: 'insights' },
-  { slug: 'settings',   label: 'Settings',   kind: 'settings' },
+export const HERMONY_STUDENTS = [
+  { id: '1', name: 'Sarah Whittaker', email: 'sarah@example.com',  status: 'active_settling',   week: 3,  block: 'Capacity Foundation' },
+  { id: '2', name: 'Emma Prescott',   email: 'emma@example.com',   status: 'active_settling',   week: 2,  block: 'Stabilisation' },
+  { id: '3', name: 'Anaya Rao',       email: 'anaya@example.com',  status: 'active_expression', week: 5,  block: 'Performance Expression' },
+  { id: '4', name: 'Jenna Tomlin',    email: 'jenna@example.com',  status: 'active_building',   week: 4,  block: 'Capacity Foundation' },
+  { id: '5', name: 'Ruth Larkin',     email: 'ruth@example.com',   status: 'new',               week: 1,  block: 'Stabilisation' },
+  { id: '6', name: 'Priya Menon',     email: 'priya@example.com',  status: 'active_expression', week: 3,  block: 'Performance Expression' },
+  { id: '7', name: 'Kate Beattie',    email: 'kate@example.com',   status: 'active_building',   week: 6,  block: 'Capacity Foundation' },
+] as const
+
+export const HERMONY_RECENT_LEADS = [
+  { id: 'l1', name: 'Lauren Chen',   email: 'lauren@example.com',   status: 'new_check_in' },
+  { id: 'l2', name: 'Freya Adamson', email: 'freya@example.com',    status: 'report_sent' },
+  { id: 'l3', name: 'Mia Ortega',    email: 'mia@example.com',      status: 'zoom_booked' },
+  { id: 'l4', name: 'Hana Ito',      email: 'hana@example.com',     status: 'cold_no_booking' },
+  { id: 'l5', name: 'Anya Fitzgerald', email: 'anya@example.com',   status: 'commencement_fee_paid' },
+] as const
+
+export const HERMONY_RECENT_CHECKINS = [
+  { id: 'c1', client_name: 'Sarah Whittaker', week: 3, form_type: 'B', submitted_at: '2026-07-05' },
+  { id: 'c2', client_name: 'Emma Prescott',   week: 2, form_type: 'A', submitted_at: '2026-07-04' },
+  { id: 'c3', client_name: 'Anaya Rao',       week: 5, form_type: 'C', submitted_at: '2026-07-04' },
+  { id: 'c4', client_name: 'Priya Menon',     week: 3, form_type: 'B', submitted_at: '2026-07-03' },
+  { id: 'c5', client_name: 'Kate Beattie',    week: 6, form_type: 'C', submitted_at: '2026-07-02' },
 ] as const

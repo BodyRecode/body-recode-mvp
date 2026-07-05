@@ -1,128 +1,144 @@
-import { ShieldCheck, Palette, DollarSign, Sparkles } from 'lucide-react'
-import { MELISA_BRAND } from '../_lib/brand'
+import { PageHeader, Card, SectionLabel, MONO_FONT } from '@/components/dashboard/ui'
+import { HERMONY } from '../_lib/brand'
 import { getPreset } from '@/lib/doctrine-parameters-presets'
-import { EyebrowH1, SectionH2, Card, KV, PowerLine } from '../_lib/ui'
 
-export default function SettingsPage() {
+/**
+ * Mirror of /dashboard/settings - Hermony's tenant configuration.
+ * Same tabbed sections a real tenant sees: brand, doctrine parameters,
+ * safety floors, billing. The doctrine parameters section shows the
+ * yoga preset applied (that's what Melisa loads when she first opens
+ * this page).
+ */
+export default function HermonySettings() {
   const yoga = getPreset('yoga-breath-forward')!
 
   return (
-    <div className="pb-24">
-      <EyebrowH1
+    <div className="max-w-[1100px]">
+      <PageHeader
         eyebrow="Settings"
-        title="Your brand, your voice, your business shape."
-        subtitle="Everything that makes this platform yours. Change any of it and every generator in the system - check-ins, plans, content - reads the new values on the next call."
+        title="Your studio configuration"
+        subtitle="Brand, voice, doctrine parameters, and billing. Everything that makes this platform yours."
       />
 
       {/* Brand */}
-      <div className="flex items-center gap-2 mb-4">
-        <Palette className="w-4 h-4" style={{ color: MELISA_BRAND.accent }} />
-        <SectionH2 title="Brand" sub="Name, wordmark, palette, tagline" />
-      </div>
-      <Card>
-        <div className="grid grid-cols-2 gap-6 mb-6">
+      <Card className="mb-6">
+        <SectionLabel>Brand</SectionLabel>
+        <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <div className="text-[10px] uppercase mb-2" style={{ color: MELISA_BRAND.inkLight, fontFamily: MELISA_BRAND.mono, letterSpacing: '0.14em' }}>Wordmark</div>
-            <div className="p-6 rounded-lg border flex items-center justify-center" style={{ borderColor: MELISA_BRAND.border, backgroundColor: MELISA_BRAND.bgDeep }}>
-              <div
-                className="text-[42px] font-normal tracking-[0.14em] uppercase"
-                style={{ fontFamily: MELISA_BRAND.serif, color: MELISA_BRAND.ink }}
+            <div className="text-[10px] text-[#6B6B6B] uppercase mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>Wordmark</div>
+            <div className="p-8 rounded-xl border border-[#E5E5E5] bg-[#FAFBFD] flex items-center gap-4">
+              <span
+                className="inline-flex items-center justify-center w-14 h-14 rounded-lg font-bold text-[20px] tracking-tight text-white"
+                style={{ background: HERMONY.accentBar, fontFamily: MONO_FONT }}
               >
-                {MELISA_BRAND.name}
+                {HERMONY.initials}
+              </span>
+              <div>
+                <div className="text-[24px] font-semibold text-[#1A1A1A] tracking-tight">{HERMONY.name}</div>
+                <div className="text-[11px] text-[#6B6B6B]" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>
+                  {HERMONY.sub.toUpperCase()}
+                </div>
               </div>
             </div>
           </div>
           <div className="space-y-4">
-            <KV label="Studio name" value={MELISA_BRAND.name} />
-            <KV label="Sub-mark" value={MELISA_BRAND.sub} />
-            <KV label="Tagline" value={`"${MELISA_BRAND.tagline}"`} />
-            <KV label="Location" value={MELISA_BRAND.location} />
+            <KV label="Studio name" value={HERMONY.name} />
+            <KV label="Sub-mark" value={HERMONY.sub} />
+            <KV label="Founder" value={`${HERMONY.founder} · ${HERMONY.location}`} />
+            <KV label="Domain" value="hermony.com.au" />
+            <KV label="Support email" value={`${HERMONY.founder.toLowerCase()}@hermony.com.au`} />
           </div>
         </div>
 
-        <div className="pt-6 border-t" style={{ borderColor: MELISA_BRAND.border }}>
-          <div className="text-[10px] uppercase mb-3" style={{ color: MELISA_BRAND.inkLight, fontFamily: MELISA_BRAND.mono, letterSpacing: '0.14em' }}>Palette</div>
-          <div className="grid grid-cols-6 gap-3">
-            {[
-              { label: 'Page', color: MELISA_BRAND.bg },
-              { label: 'Card', color: MELISA_BRAND.card },
-              { label: 'Ink', color: MELISA_BRAND.ink },
-              { label: 'Accent', color: MELISA_BRAND.accent },
-              { label: 'Warm', color: MELISA_BRAND.warm },
-              { label: 'Border', color: MELISA_BRAND.border },
-            ].map((s, i) => (
-              <div key={i}>
-                <div className="w-full h-16 rounded-lg border" style={{ backgroundColor: s.color, borderColor: MELISA_BRAND.border }} />
-                <div className="text-[10px] mt-1" style={{ color: MELISA_BRAND.inkLight, fontFamily: MELISA_BRAND.mono, letterSpacing: '0.1em' }}>{s.label.toUpperCase()}</div>
-                <div className="text-[9px]" style={{ color: MELISA_BRAND.inkLight, fontFamily: MELISA_BRAND.mono }}>{s.color}</div>
-              </div>
-            ))}
+        <div className="pt-6 mt-6 border-t border-[#E5E5E5]">
+          <div className="text-[10px] text-[#6B6B6B] uppercase mb-3" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>Accent</div>
+          <div className="flex items-center gap-3">
+            <div className="w-16 h-10 rounded-lg" style={{ background: HERMONY.accentBar }} />
+            <div>
+              <div className="text-[13px] font-semibold text-[#1A1A1A]">Sage</div>
+              <div className="text-[11px] text-[#6B6B6B]" style={{ fontFamily: MONO_FONT }}>{HERMONY.accentBar}</div>
+            </div>
+            <div className="ml-6 text-[11px] text-[#999999]">
+              Used across nav, buttons, callouts, brand mark.
+            </div>
           </div>
         </div>
       </Card>
 
-      {/* Doctrine parameters (Mode A+) */}
-      <div className="flex items-center gap-2 mt-14 mb-4">
-        <Sparkles className="w-4 h-4" style={{ color: MELISA_BRAND.accent }} />
-        <SectionH2 title="Voice + coaching guidance (Mode A+)" sub={`Preset applied: ${yoga.label}`} />
-      </div>
-      <Card>
+      {/* Voice + doctrine parameters (Mode A+) */}
+      <Card className="mb-6">
+        <SectionLabel meta={`Preset: ${yoga.label}`}>
+          Voice + coaching guidance
+        </SectionLabel>
         <div className="space-y-5">
           <KV label="Voice tone" value={yoga.parameters.voiceTone} />
           <KV label="Banned phrases" value={yoga.parameters.bannedPhrases.map((p) => `"${p}"`).join(' · ')} />
           <KV label="Terminology substitutions" value={Object.entries(yoga.parameters.terminologySubstitutions).map(([f, t]) => `${f} → ${t}`).join(' · ')} />
-          <div>
-            <div className="text-[10px] uppercase mb-1" style={{ color: MELISA_BRAND.inkLight, fontFamily: MELISA_BRAND.mono, letterSpacing: '0.14em' }}>Weekly check-in coaching guidance</div>
-            <p className="text-[13px] leading-relaxed" style={{ color: MELISA_BRAND.ink }}>{yoga.parameters.checkinCoachingGuidance}</p>
-          </div>
-          <div>
-            <div className="text-[10px] uppercase mb-1" style={{ color: MELISA_BRAND.inkLight, fontFamily: MELISA_BRAND.mono, letterSpacing: '0.14em' }}>Program generation guidance</div>
-            <p className="text-[13px] leading-relaxed" style={{ color: MELISA_BRAND.ink }}>{yoga.parameters.programGenerationGuidance}</p>
-          </div>
-          <div>
-            <div className="text-[10px] uppercase mb-1" style={{ color: MELISA_BRAND.inkLight, fontFamily: MELISA_BRAND.mono, letterSpacing: '0.14em' }}>Nutrition generation guidance</div>
-            <p className="text-[13px] leading-relaxed" style={{ color: MELISA_BRAND.ink }}>{yoga.parameters.nutritionGenerationGuidance}</p>
-          </div>
+          <KV label="Weekly check-in coaching philosophy" value={yoga.parameters.checkinCoachingGuidance} />
+          <KV label="Program generation guidance" value={yoga.parameters.programGenerationGuidance} />
+          <KV label="Nutrition generation guidance" value={yoga.parameters.nutritionGenerationGuidance} />
         </div>
+        <p className="text-[11px] text-[#999999] italic mt-5 pt-5 border-t border-[#E5E5E5]">
+          Every generator - check-in feedback, plan readings, content drafts - reads these on the next call. Edit any of them and the next draft respects the change.
+        </p>
       </Card>
 
       {/* Safety floors */}
-      <div className="flex items-center gap-2 mt-14 mb-4">
-        <ShieldCheck className="w-4 h-4" style={{ color: MELISA_BRAND.accent }} />
-        <SectionH2 title="Safety floors" sub="Immutable · your platform indemnity" />
-      </div>
-      <Card>
-        <p className="text-[13px] leading-relaxed mb-4" style={{ color: MELISA_BRAND.inkMid }}>
-          The engine holds a set of safety limits that your Mode A+ tuning cannot override. This is the layer that makes it legally defensible for you to run other people&apos;s practice.
+      <Card className="mb-6" accent="amber">
+        <SectionLabel accent="amber" meta="Immutable">
+          Safety floors
+        </SectionLabel>
+        <p className="text-[13px] text-[#4B4B4B] leading-relaxed mb-4">
+          The engine holds a set of safety limits that your voice + guidance tuning cannot override. This is what makes it legally defensible for you to run other people&apos;s practice on the platform.
         </p>
-        <ul className="text-[13px] space-y-2" style={{ color: MELISA_BRAND.ink }}>
-          <li>• Regulation Readiness Score clamps + drift monitoring</li>
-          <li>• Fat Map training limits per body state</li>
-          <li>• Injury contraindications applied to every prescribed session</li>
-          <li>• Eligibility floors (age, medical clearance, medication interactions)</li>
-          <li>• Minimum protein + calorie floors on every nutrition plan</li>
-          <li>• Platform banned client-terms (Body Recode brand-internal vocabulary)</li>
+        <ul className="text-[13px] text-[#1A1A1A] leading-relaxed space-y-2 list-disc pl-5">
+          <li>Regulation Readiness Score clamps + drift monitoring</li>
+          <li>Fat Map training limits per body state</li>
+          <li>Injury contraindications applied to every prescribed session</li>
+          <li>Eligibility floors (age, medical clearance, medication interactions)</li>
+          <li>Minimum protein + calorie floors on every nutrition plan</li>
+          <li>Platform banned client-terms (Body Recode brand-internal vocabulary)</li>
         </ul>
-        <p className="text-[11px] italic mt-4" style={{ color: MELISA_BRAND.inkLight }}>
-          Per Founding Partner Agreement §7 + IP Licence Deed clause 4.1(h). These cannot be tuned by you or by us.
+        <p className="text-[11px] text-[#999999] italic mt-4">
+          Per Founding Partner Agreement §7 + IP Licence Deed clause 4.1(h).
         </p>
       </Card>
 
       {/* Billing */}
-      <div className="flex items-center gap-2 mt-14 mb-4">
-        <DollarSign className="w-4 h-4" style={{ color: MELISA_BRAND.accent }} />
-        <SectionH2 title="Billing" sub="Your Body Recode subscription · locked for life at Founding Ten rate" />
-      </div>
-      <div className="grid grid-cols-3 gap-4">
-        <Card><KV label="Tier" value="Launch (Founding Ten)" /></Card>
-        <Card><KV label="Subscription" value="$400 / month" /></Card>
-        <Card><KV label="Per active student" value="$40 / mo · billed in arrears" /></Card>
-      </div>
-      <p className="text-[11px] italic mt-3" style={{ color: MELISA_BRAND.inkLight }}>
-        Locked at signing under the Founding Ten discount. Body Recode cannot raise your rate for as long as your subscription is continuous - even under change of control.
-      </p>
+      <Card>
+        <SectionLabel>Billing</SectionLabel>
+        <div className="grid md:grid-cols-3 gap-4">
+          <div className="p-4 rounded-xl border border-[#E5E5E5] bg-[#FAFBFD]">
+            <div className="text-[10px] text-[#6B6B6B] uppercase mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>Tier</div>
+            <div className="text-[15px] font-semibold text-[#1A1A1A]">Launch (Founding Ten)</div>
+          </div>
+          <div className="p-4 rounded-xl border border-[#E5E5E5] bg-[#FAFBFD]">
+            <div className="text-[10px] text-[#6B6B6B] uppercase mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>Platform subscription</div>
+            <div className="text-[15px] font-semibold text-[#1A1A1A]">$400 / month</div>
+          </div>
+          <div className="p-4 rounded-xl border border-[#E5E5E5] bg-[#FAFBFD]">
+            <div className="text-[10px] text-[#6B6B6B] uppercase mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>Per active student</div>
+            <div className="text-[15px] font-semibold text-[#1A1A1A]">$40 / mo · arrears</div>
+          </div>
+        </div>
+        <p className="text-[11px] text-[#999999] italic mt-4">
+          Locked at signing under the Founding Ten discount. Body Recode cannot raise your rate for as long as your subscription is continuous - even under change of control.
+        </p>
+      </Card>
 
-      <PowerLine />
+      <div className="mt-10 pt-6 border-t border-[#E5E5E5] flex items-center justify-between text-[10px] text-[#999999]" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>
+        <div className="uppercase">INTERPRETATION ENGINE · DOCTRINE · SAFETY FLOORS — POWERED BY BODY RECODE</div>
+        <div className="uppercase">BRAND · VOICE · PRACTICE — {HERMONY.name.toUpperCase()}</div>
+      </div>
+    </div>
+  )
+}
+
+function KV({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <div className="text-[10px] text-[#6B6B6B] uppercase mb-1" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>{label}</div>
+      <div className="text-[13px] text-[#1A1A1A] leading-relaxed">{value}</div>
     </div>
   )
 }

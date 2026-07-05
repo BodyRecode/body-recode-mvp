@@ -1,116 +1,203 @@
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
-import { MELISA_BRAND } from './_lib/brand'
-import { PENDING_CHECKINS, TODAY_SESSIONS, RECENT_ACTIVITY, INSIGHTS } from './_lib/data'
-import { EyebrowH1, SectionH2, Card, StatFigure, PowerLine } from './_lib/ui'
+import {
+  Users,
+  Workflow,
+  UserCheck,
+  ClipboardCheck,
+  MessageCircle,
+  CheckCircle2,
+  ArrowUpRight,
+} from 'lucide-react'
+import {
+  Card,
+  PageHeader,
+  SectionLabel,
+  StatCard,
+  DataRow,
+  Pill,
+  MONO_FONT,
+} from '@/components/dashboard/ui'
+import { HERMONY, HERMONY_RECENT_LEADS, HERMONY_RECENT_CHECKINS, HERMONY_STUDENTS } from './_lib/brand'
 
-const BASE = '/dashboard/preview/melisa'
+/**
+ * Mirror of /dashboard - the "Live" overview page. Same layout, same
+ * components, Hermony's data. This is the visual sales artefact for
+ * showing Melisa what her Body Recode-powered platform looks like.
+ */
+export default function HermonyHome() {
+  const totalLeads = 14
+  const newLeads7d = 5
+  const pipelineLeads = 6
+  const zoomBooked = 2
+  const activeStudents = HERMONY_STUDENTS.length
+  const checkinsThisWeek = 4
 
-export default function MelisaHome() {
+  const statusLabel: Record<string, string> = {
+    new_check_in: 'New Check-In',
+    report_sent: 'Report Sent',
+    cold_no_booking: 'Cold',
+    zoom_booked: 'Zoom Booked',
+    commencement_fee_paid: 'Fee Paid',
+  }
+
+  const statusAccent: Record<string, 'teal' | 'amber' | 'red' | 'neutral'> = {
+    new_check_in: 'teal',
+    report_sent: 'teal',
+    cold_no_booking: 'neutral',
+    zoom_booked: 'amber',
+    commencement_fee_paid: 'teal',
+  }
+
+  const todayLabel = new Date().toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' })
+
   return (
-    <div className="pb-24">
-      <EyebrowH1
-        eyebrow="Your studio · Wednesday morning"
-        title="Two check-ins waiting. One nourishment plan ready to send. One block-end review queued."
+    <div className="max-w-[1100px]">
+      <PageHeader
+        eyebrow={`Overview · ${todayLabel}`}
+        title={`Good morning, ${HERMONY.founder}.`}
+        subtitle="Here is what is happening in your coaching system."
       />
 
-      {/* Top row: focus tiles */}
-      <div className="grid grid-cols-3 gap-5 mb-14">
-        <StatFigure label="Active students" value={String(INSIGHTS.activeStudents)} sub="of 10 in your Launch tier" />
-        <StatFigure label="Check-ins pending" value={String(PENDING_CHECKINS.length)} sub="Sarah W. · Emma P." accent="warm" />
-        <StatFigure label="Weekly engagement" value={`${Math.round(INSIGHTS.weeklyEngagement * 100)}%`} sub="of prescribed practice complete" accent="ok" />
-      </div>
-
-      {/* Two-col: today + activity */}
-      <div className="grid grid-cols-2 gap-5 mb-14">
-        <div>
-          <SectionH2 title="Today" sub="Live from your calendar" />
-          <Card>
-            <ul className="divide-y" style={{ borderColor: MELISA_BRAND.border }}>
-              {TODAY_SESSIONS.map((s, i) => (
-                <li key={i} className="py-3 flex items-center gap-4 first:pt-0 last:pb-0">
-                  <div
-                    className="w-14 text-center text-[13px] font-semibold"
-                    style={{ color: MELISA_BRAND.ink, fontFamily: MELISA_BRAND.mono }}
-                  >
-                    {s.time}
-                  </div>
-                  <div className="flex-1">
-                    <div className="text-[13px] font-semibold" style={{ color: MELISA_BRAND.ink }}>{s.label}</div>
-                    <div className="text-[11px]" style={{ color: MELISA_BRAND.inkLight }}>{s.who}</div>
-                  </div>
-                  <span
-                    className="text-[9px] uppercase px-2 py-0.5 rounded"
-                    style={{
-                      color: s.kind === 'group' ? MELISA_BRAND.accentText : MELISA_BRAND.warm,
-                      backgroundColor: s.kind === 'group' ? MELISA_BRAND.accentSoft : MELISA_BRAND.warmSoft,
-                      fontFamily: MELISA_BRAND.mono,
-                      letterSpacing: '0.12em',
-                    }}
-                  >
-                    {s.kind}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </Card>
+      {/* Payments status card - inline (mirrors PaymentsStatusCard) */}
+      <Link href="#" className="block mb-6 group">
+        <div
+          className="rounded-2xl border bg-[#FFFFFF] px-5 py-4 flex items-center gap-4 transition-colors group-hover:border-[#D4D4D4]"
+          style={{ borderColor: '#E5E5E5' }}
+        >
+          <span className="w-1 h-10 rounded-full" style={{ background: HERMONY.accentBar }} />
+          <div
+            className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border"
+            style={{ background: HERMONY.accentSoftBg, borderColor: HERMONY.accentRing }}
+          >
+            <CheckCircle2 size={16} style={{ color: HERMONY.accentText }} />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p
+              className="text-[10px] text-[#6B6B6B] uppercase mb-0.5"
+              style={{ fontFamily: MONO_FONT, letterSpacing: '0.12em' }}
+            >
+              Payments
+            </p>
+            <p className="text-[14px] font-bold truncate" style={{ color: HERMONY.accentText }}>
+              All students current
+            </p>
+          </div>
+          <ArrowUpRight
+            size={16}
+            className="text-[#999999] group-hover:text-[#1A1A1A] transition-colors shrink-0"
+          />
         </div>
+      </Link>
 
-        <div>
-          <SectionH2 title="Studio activity" sub="Last 48 hours" />
-          <Card>
-            <ul className="space-y-2.5">
-              {RECENT_ACTIVITY.map((a, i) => (
-                <li key={i} className="flex gap-3 text-[13px]">
+      {/* Stat grid - identical to real dashboard */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
+        <StatCard
+          label="Total Leads"
+          value={totalLeads}
+          sub={`+${newLeads7d} in last 7 days`}
+          accent="neutral"
+          icon={Users}
+        />
+        <StatCard
+          label="In Pipeline"
+          value={pipelineLeads}
+          sub={`${zoomBooked} Zooms booked`}
+          accent="amber"
+          icon={Workflow}
+        />
+        <StatCard
+          label="Active Students"
+          value={activeStudents}
+          sub="of 10 in Founding tier"
+          accent="teal"
+          icon={UserCheck}
+        />
+        <StatCard
+          label="Check-Ins This Week"
+          value={checkinsThisWeek}
+          sub="Across all active students"
+          accent="teal"
+          icon={ClipboardCheck}
+        />
+      </div>
+
+      {/* Two-col: Recent Leads + Recent Check-Ins */}
+      <div className="grid md:grid-cols-2 gap-4 mb-10">
+        <Card>
+          <SectionLabel
+            cta={
+              <span className="text-[12px] text-[#1B6DFC]">View all →</span>
+            }
+          >
+            Recent Leads
+          </SectionLabel>
+          <div className="space-y-1">
+            {HERMONY_RECENT_LEADS.map((lead) => (
+              <DataRow
+                key={lead.id}
+                href="#"
+                primary={lead.name}
+                secondary={lead.email}
+                trailing={
+                  <Pill accent={statusAccent[lead.status] ?? 'neutral'}>
+                    {statusLabel[lead.status] ?? lead.status}
+                  </Pill>
+                }
+              />
+            ))}
+          </div>
+        </Card>
+
+        <Card>
+          <SectionLabel
+            cta={
+              <span className="text-[12px] text-[#1B6DFC]">View coaching →</span>
+            }
+          >
+            Recent Check-Ins
+          </SectionLabel>
+          <div className="space-y-1">
+            {HERMONY_RECENT_CHECKINS.map((ci) => (
+              <DataRow
+                key={ci.id}
+                href="#"
+                primary={ci.client_name}
+                secondary={`Week ${ci.week} · Form ${ci.form_type}`}
+                trailing={
                   <span
-                    className="w-16 shrink-0 text-[10px] uppercase pt-0.5"
-                    style={{ color: MELISA_BRAND.inkLight, fontFamily: MELISA_BRAND.mono, letterSpacing: '0.1em' }}
+                    className="text-[10px] text-[#6B6B6B]"
+                    style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
                   >
-                    {a.when}
+                    {new Date(ci.submitted_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
                   </span>
-                  <span style={{ color: MELISA_BRAND.ink }}>{a.what}</span>
-                </li>
-              ))}
-            </ul>
-          </Card>
+                }
+              />
+            ))}
+          </div>
+        </Card>
+      </div>
+
+      <Card>
+        <SectionLabel accent="amber" meta="Use with care">
+          Admin Actions
+        </SectionLabel>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+          {['Send bulk email', 'Recalculate scores', 'Publish weekly brief', 'Roll block boundaries', 'Backfill readings', 'System diagnostics'].map((label) => (
+            <button
+              key={label}
+              className="text-[12px] px-3 py-2 rounded-lg border border-[#E5E5E5] bg-[#F8F8F8] text-[#4B4B4B] hover:text-[#1A1A1A] hover:bg-[#F0F0F0] transition-colors"
+            >
+              {label}
+            </button>
+          ))}
         </div>
-      </div>
+      </Card>
 
-      {/* Pending check-ins panel */}
-      <SectionH2 title="Waiting on your reply" sub="AI has drafted feedback in your voice - review and send" />
-      <div className="space-y-4 mb-14">
-        {PENDING_CHECKINS.map((c) => (
-          <Link key={c.studentSlug} href={`${BASE}/check-ins`} className="block">
-            <Card hover>
-              <div className="flex items-start gap-4">
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-white text-[12px] font-bold shrink-0"
-                  style={{ backgroundColor: MELISA_BRAND.accent }}
-                >
-                  {c.initials}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-3 mb-1">
-                    <div className="text-[14px] font-semibold" style={{ color: MELISA_BRAND.ink }}>{c.studentName}</div>
-                    <div className="text-[11px]" style={{ color: MELISA_BRAND.inkLight }}>· {c.block} · Week {c.week}</div>
-                    <div
-                      className="text-[10px] uppercase ml-auto"
-                      style={{ color: MELISA_BRAND.inkLight, fontFamily: MELISA_BRAND.mono, letterSpacing: '0.1em' }}
-                    >
-                      {c.submittedAgo}
-                    </div>
-                  </div>
-                  <p className="text-[13px] leading-relaxed" style={{ color: MELISA_BRAND.inkMid }}>{c.summary}</p>
-                </div>
-                <ArrowRight className="w-4 h-4 mt-1 shrink-0" style={{ color: MELISA_BRAND.inkLight }} />
-              </div>
-            </Card>
-          </Link>
-        ))}
+      {/* Sub-footer note about IP boundary */}
+      <div className="mt-10 pt-6 border-t border-[#E5E5E5] flex items-center justify-between text-[10px] text-[#999999]" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>
+        <div className="uppercase">INTERPRETATION ENGINE · DOCTRINE · SAFETY FLOORS — POWERED BY BODY RECODE</div>
+        <div className="uppercase">BRAND · VOICE · PRACTICE — {HERMONY.name.toUpperCase()}</div>
       </div>
-
-      {/* Powered-by line */}
-      <PowerLine />
     </div>
   )
 }
