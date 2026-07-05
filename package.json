@@ -9,7 +9,7 @@
     "lint": "eslint",
     "test:nutrition": "npx tsx scripts/test-nutrition-corpus.ts",
     "test:research-lens": "npx tsx scripts/test-research-lens.ts",
-    "test:doctrine-params": "npx tsx scripts/test-doctrine-parameters-validator.ts && npx tsx scripts/test-doctrine-parameters-runtime.ts",
+    "test:doctrine-params": "npx tsx scripts/test-doctrine-parameters-validator.ts && npx tsx scripts/test-doctrine-parameters-runtime.ts && npx tsx scripts/test-doctrine-parameters-presets-and-preview.ts",
     "check:launch": "set -a && source .env.local && set +a && npx tsx scripts/check-launch-readiness.ts"
   },
   "dependencies": {

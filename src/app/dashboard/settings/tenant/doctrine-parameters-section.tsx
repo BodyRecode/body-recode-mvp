@@ -2,6 +2,8 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
+import { PRESETS, getPreset } from '@/lib/doctrine-parameters-presets'
+import type { PreviewOutput } from '@/lib/doctrine-parameters-preview'
 
 type DoctrineParameters = {
   voiceTone?: string
@@ -19,8 +21,10 @@ export function DoctrineParametersSection({
 }) {
   const router = useRouter()
   const [pending, startTransition] = useTransition()
+  const [previewPending, startPreviewTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
+  const [preview, setPreview] = useState<PreviewOutput | null>(null)
 
   const [voiceTone, setVoiceTone] = useState(initial?.voiceTone ?? '')
   const [bannedPhrasesText, setBannedPhrasesText] = useState(
@@ -34,6 +38,60 @@ export function DoctrineParametersSection({
   const [checkinGuidance, setCheckinGuidance] = useState(initial?.checkinCoachingGuidance ?? '')
   const [programGuidance, setProgramGuidance] = useState(initial?.programGenerationGuidance ?? '')
   const [nutritionGuidance, setNutritionGuidance] = useState(initial?.nutritionGenerationGuidance ?? '')
+
+  function applyPreset(presetId: string) {
+    if (!presetId) return
+    const preset = getPreset(presetId)
+    if (!preset) return
+    const confirmed = window.confirm(
+      `Load "${preset.label}"? This overwrites the current form values. You can still tune after loading, and nothing is saved until you click Save.`,
+    )
+    if (!confirmed) return
+    setVoiceTone(preset.parameters.voiceTone)
+    setBannedPhrasesText(preset.parameters.bannedPhrases.join('\n'))
+    setTerminologyText(
+      Object.entries(preset.parameters.terminologySubstitutions)
+        .map(([from, to]) => `${from} => ${to}`)
+        .join('\n'),
+    )
+    setCheckinGuidance(preset.parameters.checkinCoachingGuidance)
+    setProgramGuidance(preset.parameters.programGenerationGuidance)
+    setNutritionGuidance(preset.parameters.nutritionGenerationGuidance)
+    setPreview(null)
+    setError(null)
+    setSuccess(null)
+  }
+
+  function currentPayload(): DoctrineParameters {
+    return {
+      voiceTone: voiceTone.trim() || undefined,
+      bannedPhrases: parsePhrasesLines(bannedPhrasesText),
+      terminologySubstitutions: parseTerminologyLines(terminologyText),
+      checkinCoachingGuidance: checkinGuidance.trim() || undefined,
+      programGenerationGuidance: programGuidance.trim() || undefined,
+      nutritionGenerationGuidance: nutritionGuidance.trim() || undefined,
+    }
+  }
+
+  function handlePreview() {
+    setError(null)
+    setSuccess(null)
+    setPreview(null)
+    startPreviewTransition(async () => {
+      const r = await fetch('/api/tenant/doctrine-parameters/preview', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ doctrineParameters: currentPayload() }),
+      })
+      if (!r.ok) {
+        const body = await r.json().catch(() => ({ error: 'preview failed' }))
+        setError(body.error ?? 'preview failed')
+        return
+      }
+      const body = await r.json() as { preview: PreviewOutput }
+      setPreview(body.preview)
+    })
+  }
 
   function parsePhrasesLines(text: string): string[] {
     return text
@@ -59,14 +117,7 @@ export function DoctrineParametersSection({
     setError(null)
     setSuccess(null)
 
-    const payload: DoctrineParameters = {
-      voiceTone: voiceTone.trim() || undefined,
-      bannedPhrases: parsePhrasesLines(bannedPhrasesText),
-      terminologySubstitutions: parseTerminologyLines(terminologyText),
-      checkinCoachingGuidance: checkinGuidance.trim() || undefined,
-      programGenerationGuidance: programGuidance.trim() || undefined,
-      nutritionGenerationGuidance: nutritionGuidance.trim() || undefined,
-    }
+    const payload = currentPayload()
 
     startTransition(async () => {
       const r = await fetch('/api/tenant/update', {
@@ -103,6 +154,22 @@ export function DoctrineParametersSection({
         {success && (
           <div className="mb-3 p-3 rounded-lg border border-green-200 bg-green-50 text-[12px] text-green-800">{success}</div>
         )}
+
+        <div className="mb-5 p-4 rounded-lg border border-blue-100 bg-blue-50/40">
+          <div className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-1">Start from a preset</div>
+          <p className="text-[11px] text-stone-500 leading-relaxed mb-2">Overwrites the current form values. Nothing is saved until you click Save; tune the loaded shape as you like.</p>
+          <select
+            defaultValue=""
+            onChange={(e) => { applyPreset(e.target.value); e.target.value = '' }}
+            className="w-full px-3 py-2 rounded-md border border-stone-300 text-[13px] bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+            disabled={pending || previewPending}
+          >
+            <option value="" disabled>Choose a preset...</option>
+            {PRESETS.map((p) => (
+              <option key={p.id} value={p.id}>{p.label} - {p.description}</option>
+            ))}
+          </select>
+        </div>
 
         <form onSubmit={handleSave} className="space-y-5">
           <Field
@@ -189,21 +256,129 @@ export function DoctrineParametersSection({
             />
           </Field>
 
-          <div className="flex items-center justify-between pt-2 border-t border-stone-100">
-            <p className="text-[11px] text-stone-500 italic">
+          <div className="flex items-center justify-between pt-2 border-t border-stone-100 gap-3">
+            <p className="text-[11px] text-stone-500 italic flex-1">
               Cache is invalidated on save. Generators read new values on their next call.
             </p>
             <button
+              type="button"
+              onClick={handlePreview}
+              disabled={pending || previewPending}
+              className="px-4 py-2 rounded-md border border-stone-300 bg-white text-stone-700 text-[13px] font-semibold hover:bg-stone-50 disabled:opacity-40"
+            >
+              {previewPending ? 'Previewing…' : 'Preview'}
+            </button>
+            <button
               type="submit"
-              disabled={pending}
+              disabled={pending || previewPending}
               className="px-4 py-2 rounded-md bg-blue-600 text-white text-[13px] font-semibold hover:bg-blue-700 disabled:opacity-40"
             >
               {pending ? 'Saving…' : 'Save doctrine parameters'}
             </button>
           </div>
         </form>
+
+        {preview && <PreviewPanel preview={preview} onDismiss={() => setPreview(null)} />}
       </div>
     </div>
+  )
+}
+
+function PreviewPanel({
+  preview,
+  onDismiss,
+}: {
+  preview: PreviewOutput
+  onDismiss: () => void
+}) {
+  return (
+    <div className="mt-5 border border-blue-200 rounded-xl bg-blue-50/30 overflow-hidden">
+      <div className="px-5 py-3 border-b border-blue-200 bg-blue-50 flex items-center justify-between">
+        <h4 className="text-[12px] font-bold text-blue-900 uppercase tracking-widest">Preview (deterministic - no LLM call)</h4>
+        <button
+          type="button"
+          onClick={onDismiss}
+          className="text-[11px] text-blue-700 hover:text-blue-900 underline"
+        >
+          Dismiss
+        </button>
+      </div>
+      <div className="p-5 space-y-5">
+        <div>
+          <div className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-1">Summary</div>
+          <div className="text-[12px] text-stone-700 flex flex-wrap gap-2">
+            <SummaryChip on={preview.summary.hasVoiceTone} label="voice tone" />
+            <SummaryChip on={preview.summary.bannedPhraseCount > 0} label={`${preview.summary.bannedPhraseCount} banned phrase${preview.summary.bannedPhraseCount === 1 ? '' : 's'}`} />
+            <SummaryChip on={preview.summary.substitutionCount > 0} label={`${preview.summary.substitutionCount} substitution${preview.summary.substitutionCount === 1 ? '' : 's'}`} />
+            <SummaryChip on={preview.summary.guidanceFieldsSet > 0} label={`${preview.summary.guidanceFieldsSet}/3 guidance fields`} />
+          </div>
+        </div>
+
+        <div>
+          <div className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-1">What gets added to each generator&apos;s system prompt</div>
+          <div className="space-y-2">
+            {preview.systemPromptBlocks.map((block) => (
+              <div key={block.generator} className="border border-stone-200 rounded-md bg-white">
+                <div className="px-3 py-1.5 border-b border-stone-100 text-[11px] font-bold text-stone-600">{block.generator}</div>
+                <pre className="p-3 text-[11px] text-stone-800 whitespace-pre-wrap font-mono leading-relaxed">{block.text}</pre>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <div className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-1">Terminology substitution demo</div>
+          {preview.substitutionDemo.substitutionsApplied.length === 0 ? (
+            <p className="text-[12px] text-stone-500 italic">No substitutions matched the demo sentence.</p>
+          ) : (
+            <>
+              <p className="text-[11px] text-stone-500 mb-1">Applied: {preview.substitutionDemo.substitutionsApplied.join(', ')}</p>
+              <div className="grid gap-2 md:grid-cols-2">
+                <div className="p-3 rounded-md border border-stone-200 bg-white">
+                  <div className="text-[10px] font-bold text-stone-500 uppercase mb-1">Before</div>
+                  <p className="text-[12px] text-stone-700 leading-relaxed">{preview.substitutionDemo.before}</p>
+                </div>
+                <div className="p-3 rounded-md border border-blue-200 bg-blue-50/60">
+                  <div className="text-[10px] font-bold text-blue-700 uppercase mb-1">After (post-generation rewrite)</div>
+                  <p className="text-[12px] text-stone-800 leading-relaxed">{preview.substitutionDemo.after}</p>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+
+        <div>
+          <div className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-1">Banned phrase demo</div>
+          <p className="text-[11px] text-stone-500 mb-1">If a draft contained the sentence below, these phrases would fire the audit + trigger regeneration:</p>
+          <div className="p-3 rounded-md border border-stone-200 bg-white mb-2">
+            <p className="text-[12px] text-stone-700 leading-relaxed italic">&quot;{preview.bannedPhraseDemo.sample}&quot;</p>
+          </div>
+          {preview.bannedPhraseDemo.hits.length === 0 ? (
+            <p className="text-[12px] text-stone-500 italic">No configured banned phrases matched the demo sentence. Add phrases above to see hits.</p>
+          ) : (
+            <div className="flex flex-wrap gap-1.5">
+              {preview.bannedPhraseDemo.hits.map((hit, i) => (
+                <span key={i} className="px-2 py-0.5 rounded-md bg-red-100 text-red-800 text-[11px] font-mono">{hit}</span>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function SummaryChip({ on, label }: { on: boolean; label: string }) {
+  return (
+    <span
+      className={
+        on
+          ? 'px-2 py-0.5 rounded-md bg-blue-100 text-blue-800 text-[11px] font-semibold'
+          : 'px-2 py-0.5 rounded-md bg-stone-100 text-stone-500 text-[11px]'
+      }
+    >
+      {label}
+    </span>
   )
 }
 

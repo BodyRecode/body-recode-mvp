@@ -612,6 +612,23 @@ export const PHASES: Phase[] = [
         notes: 'Runs BEFORE the DB write. Additive - layers over the platform Hard Safety Floors. Two test suites via `npm run test:doctrine-params`: (a) 22 save-time validator assertions, (b) 21 runtime helper assertions covering applyTerminologyWith + findBannedIn (regex-escape, chained subs, substring-vs-word-boundary, case-insensitive, empty-to-skip). Runtime helpers are on the hot path - called on every FR/PR/NR/MR/TR/WCCF draft. Refactored applyPartnerTerminology + findPartnerBannedPhrase to delegate to pure test hooks so tests don`t require mocking getTenant().',
       },
       {
+        id: 'doctrine-parameters-presets-preview',
+        title: 'Mode A+ presets + deterministic preview',
+        description: 'Onboarding-time UX layer over the doctrine-parameters editor. Four preset shapes (Yoga breath-forward, Powerlifting blunt, Corporate wellness, Rehab gentle) that partners can load as a starting point instead of an empty form. Every preset is validator-clean by test. Adds a "Preview" button that renders the per-generator PARTNER TUNING system-prompt block + a terminology-substitution demo + a banned-phrase-hit demo, without spending an Anthropic API call. Deterministic, free, fast. Powers Melisa\'s onboarding: pick "Yoga breath-forward", preview to see the shape, tune, save.',
+        status: 'shipped',
+        shippedAt: '2026-07-05',
+        effort: 'S',
+        commits: ['pending'],
+        surfaces: [
+          'src/lib/doctrine-parameters-presets.ts',
+          'src/lib/doctrine-parameters-preview.ts',
+          'src/app/api/tenant/doctrine-parameters/preview/route.ts',
+          'src/app/dashboard/settings/tenant/doctrine-parameters-section.tsx',
+          'scripts/test-doctrine-parameters-presets-and-preview.ts',
+        ],
+        notes: 'Preview endpoint runs the same validator as the save endpoint, so a config that would fail to save also fails to preview with the exact save-time error (fast feedback loop before Save is clicked). 28 new assertions in `npm run test:doctrine-params`, running total 71 pass. Live-LLM preview (real generation with tuning applied) is a queued future add-on; deterministic preview covers 90% of "what does my config do" without cost.',
+      },
+      {
         id: 'doctrine-mode-b',
         title: 'Doctrine mode B: method-injection pipeline',
         description: 'IP-extraction to doctrine config. Each partner\'s method injected into the engine.',
