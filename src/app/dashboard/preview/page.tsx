@@ -67,7 +67,8 @@ const ASSET_GROUPS: AssetGroup[] = [
     title: 'SaaS / Founding Ten',
     icon: Sparkles,
     assets: [
-      { label: 'Harmony (Melisa) tenant preview',    description: 'White-label mockup: the actual BR dashboard shell wearing Melisa\'s Harmony brand (Yoga & Meditation, monochrome ink palette, mountain-at-moon logo). Same header, same nav clusters, same StatCard grid - only the brand mark, name, and accent change. Home + Students + Settings pages walkable. Sales-ready to show her what her tenant will look like.',    href: '/dashboard/preview/melisa',    tag: 'Preview',    tagAccent: 'neutral' },
+      { label: 'Harmony (Melisa) tenant preview',    description: 'White-label mockup: the actual BR dashboard shell wearing Melisa\'s Harmony brand (Yoga & Meditation, terracotta accent, H initial mark). Same header, same nav clusters, same StatCard grid - only the brand mark, name, and accent change. Home + Students + Settings pages walkable. Sales-ready to show her what her tenant will look like.',    href: '/dashboard/preview/melisa',    tag: 'Dashboard',    tagAccent: 'neutral' },
+      { label: 'Harmony marketing website',           description: 'Editorial premium yoga marketing site: hero + trust bar + Practice Readiness Assessment (scorecard funnel entry) + 3-pillar Method + 5-step Path (scorecard → read → call → onboarding → membership) + 3 pricing cards + testimonials + about Melisa + FAQ + final CTA. Cream/terracotta palette, serif hero, Powered by Body Recode footer. Home + Scorecard + Method pages walkable.', href: '/dashboard/preview/harmony',  tag: 'Website',   tagAccent: 'neutral' },
     ],
   },
   {
