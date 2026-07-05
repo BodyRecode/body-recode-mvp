@@ -6,6 +6,7 @@ import { PageHeader } from '@/components/dashboard/ui'
 import { EditableSection } from './edit-section'
 import { DomainsSection } from './domains-section'
 import { StripeConnectSection } from './stripe-section'
+import { DoctrineParametersSection } from './doctrine-parameters-section'
 
 export const dynamic = 'force-dynamic'
 
@@ -87,6 +88,7 @@ export default async function TenantSettingsPage({
             title="Modality"
             fields={modalityFields(displayed.modality)}
           />
+          <DoctrineParametersSection initial={displayed.licence.doctrineParameters ?? null} />
           <DomainsSection />
           <StripeConnectSection
             stripeAccountId={displayed.licence.stripeAccountId ?? null}

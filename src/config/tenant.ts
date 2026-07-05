@@ -101,6 +101,44 @@ export type TenantConfig = {
       /** Setup fee lifecycle: 'not_invoiced' | 'invoiced' | 'paid' | null */
       setupFeeStatus?: 'not_invoiced' | 'invoiced' | 'paid' | null
     } | null
+
+    /** Doctrine parameters (Mode A+ tuning).
+     *
+     *  Middle ground between Mode A (partner runs BR doctrine unchanged) and
+     *  Mode B (partner injects their own method - reserved for post-Founding-Ten).
+     *
+     *  Partners can tune tone, add partner-specific banned phrases, substitute
+     *  terminology, and append coaching-style guidance to generators.
+     *
+     *  What Mode A+ can NOT tune: Hard Safety Floors (RRS clamps, Fat Map
+     *  limits, injury contraindications, eligibility floors). These are the
+     *  platform's liability shield and remain immutable per the Founding
+     *  Partner Agreement §7 and IP Licence Deed clause 4.1(h). */
+    doctrineParameters?: {
+      /** Tone cues appended to system prompts for client-facing content.
+       *  Read by nutrition + program + check-in feedback generators.
+       *  Examples: "warm and encouraging", "gentle and grounding", "direct and clinical". */
+      voiceTone?: string
+
+      /** Partner-specific banned phrases (in addition to platform-wide list).
+       *  Applied to all client-facing generated content post-generation. */
+      bannedPhrases?: string[]
+
+      /** Terminology substitutions applied at generation time.
+       *  Example: { "winding down": "settling" } replaces "winding down" with "settling". */
+      terminologySubstitutions?: Record<string, string>
+
+      /** Additional coaching guidance for weekly check-in feedback prompt.
+       *  Partner-specific coaching philosophy that shapes weekly feedback. */
+      checkinCoachingGuidance?: string
+
+      /** Additional guidance for program generation (frequency, structure, session
+       *  emphasis). NOT a safety override. */
+      programGenerationGuidance?: string
+
+      /** Additional guidance for nutrition plan generation. NOT a safety override. */
+      nutritionGenerationGuidance?: string
+    } | null
   }
 
   /** Modality — third configurability axis (see POWERED_PLATFORM_BUILD_PLAN §7) */
@@ -166,6 +204,7 @@ const BODY_RECODE_TENANT: TenantConfig = {
     twilioSubaccountSid: null,
     twilioMessagingServiceSid: null,
     partnerBilling: null,
+    doctrineParameters: null,
   },
   modality: {
     id: 'strength',

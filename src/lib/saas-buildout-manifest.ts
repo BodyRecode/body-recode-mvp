@@ -568,9 +568,17 @@ export const PHASES: Phase[] = [
       {
         id: 'doctrine-parameters',
         title: 'Per-tenant doctrine parameters (Mode A+)',
-        description: 'Middle ground: tenant can tune tone + thresholds without full method injection.',
-        status: 'planned',
-        effort: 'M',
+        description: 'Surface + storage shipped. tenant_config.licence.doctrineParameters extends with voiceTone, bannedPhrases, terminologySubstitutions, checkinCoachingGuidance, programGenerationGuidance, nutritionGenerationGuidance. Editable at /dashboard/settings/tenant. Accessor helpers at src/lib/doctrine-parameters.ts. Hard Safety Floors deliberately excluded from tunable surface.',
+        status: 'shipped',
+        shippedAt: '2026-07-05',
+        effort: 'S',
+        commits: ['pending'],
+        surfaces: [
+          'src/config/tenant.ts',
+          'src/lib/doctrine-parameters.ts',
+          'src/app/dashboard/settings/tenant/doctrine-parameters-section.tsx',
+        ],
+        notes: 'Generator consumption is deferred: each generator that reads a parameter should import the relevant accessor. For v1 the surface is defined and editable; wiring into nutrition/program/check-in prompts happens as each is refactored.',
       },
       {
         id: 'doctrine-mode-b',
