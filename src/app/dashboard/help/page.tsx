@@ -35,6 +35,8 @@ const SECTIONS = [
   { id: 'system-health',    title: '17b. System Health',     colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'platform-buildout', title: '17e. Platform Buildout', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'speed-to-lead-sms', title: '17f. Speed-to-Lead SMS', colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'partner-billing',  title: '17g. Partner Billing (SOT)', colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'doctrine-parameters', title: '17h. Doctrine Parameters (Mode A+)', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'licensee-readiness', title: '17d. Licensee Readiness Audits', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'onboarding-nudges',title: '17c. Onboarding Nudges', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'stripe-payments',  title: '19. Stripe Payments',    colour: 'teal' as const, category: 'coaching' as Category },
@@ -1492,7 +1494,56 @@ export default function HelpPage() {
             </ul>
 
             <p className="font-semibold text-[#1A1A1A] mt-4">Tenancy note (SOT)</p>
-            <p>Templates and copy already read from <code>coach()</code> / <code>brand()</code> so SOT partners get their own voice without rewriting anything. Twilio credentials are shared right now (one account for all tenants). Per-tenant Twilio Subaccounts are queued in the buildout manifest as <code>per-tenant-twilio-subaccounts</code> - a small extension for when partner #2 signs.</p>
+            <p>Templates and copy already read from <code>coach()</code> / <code>brand()</code> so SOT partners get their own voice without rewriting anything. Per-tenant Twilio Subaccount routing shipped 2026-07-05: <code>licence.twilioSubaccountSid</code> + <code>licence.twilioMessagingServiceSid</code> if set send through the tenant&apos;s subaccount + AU number; otherwise falls back to Kade&apos;s platform Twilio.</p>
+          </Section>
+
+          <Section id="partner-billing" title="17g. Partner Billing (Kade's billing of Founding Ten)" colour="teal">
+            <p>Kade&apos;s billing of Founding Ten partners (as distinct from tenants billing their own clients via Stripe Connect). Three-line commercial model per Founding Partner Agreement §6:</p>
+            <ol className="space-y-1 list-decimal list-inside text-[#3A3A3A] text-sm">
+              <li><strong>Setup fee</strong> - one-time at commencement. Launch $2,500 / Studio $6,000 for Founding Ten (locked half-price).</li>
+              <li><strong>Platform subscription</strong> - locked at founding rate for life. Launch $400/mo / Studio $600/mo.</li>
+              <li><strong>Per Active Client</strong> - $20 per active client per month, billed in arrears.</li>
+            </ol>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">Dashboard</p>
+            <p>Live at <strong>Dashboard → Settings → Partner billing</strong>. Kade-only. Summary tiles (partner count, MRR, active clients last month, per-client revenue last month) + per-partner card showing tier, locked setup + subscription, active clients this month, 6-month history table, deep links to Stripe customer + subscription in Kade&apos;s Stripe account.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">Active Client counter</p>
+            <p>Inngest cron <code>partner-active-client-counter</code> fires monthly on the 1st at 08:00 AEST. For every tenant with <code>licence.partnerBilling</code> set, computes the previous month&apos;s Active Client count per Agreement §1 definition (distinct clients with a training plan or nutrition plan updated in the month, OR a weekly check-in submitted in the month). Upserts to <code>partner_active_client_counts</code>. Kade reads the numbers to invoice via Stripe dashboard.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">Invoicing (v1 is manual)</p>
+            <p>Auto-invoicing via Stripe API is a v2 build. For v1, when a partner signs, Kade manually creates the Stripe Customer + Subscription in his own Stripe, writes the IDs to <code>licence.partnerBilling.customerId</code> + <code>subscriptionId</code>. Setup fee is a one-time invoice at signing. Monthly per-client fee is invoiced in arrears using the number the cron computed.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">Canonical files</p>
+            <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
+              <li><code>sql/2026-07-05_partner_billing_schema.sql</code> - table schema</li>
+              <li><code>src/lib/partner-billing.ts</code> - helpers (compute + persist + fetch history)</li>
+              <li><code>src/app/dashboard/settings/partner-billing/page.tsx</code> - admin page</li>
+              <li>Auto-memory <code>project_founding_partner_offer</code> - locked commercial numbers</li>
+            </ul>
+          </Section>
+
+          <Section id="doctrine-parameters" title="17h. Doctrine Parameters (Mode A+)" colour="teal">
+            <p>Middle ground between running BR&apos;s doctrine unchanged (Mode A) and injecting a partner&apos;s own method (Mode B, reserved for post-Founding-Ten). Partners can tune tone, add partner-specific banned phrases, substitute terminology, and append coaching-style guidance to platform generators.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">What can be tuned (six parameters, all optional)</p>
+            <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
+              <li><strong>voiceTone</strong> - single line appended to system prompts (e.g. &quot;warm and grounded&quot;).</li>
+              <li><strong>bannedPhrases</strong> - partner-specific banned phrases, added to the platform-wide banned list. Post-generation audit fails if any leak.</li>
+              <li><strong>terminologySubstitutions</strong> - post-generation rewrites (e.g. &quot;winding down =&gt; settling&quot;).</li>
+              <li><strong>checkinCoachingGuidance</strong> - partner-specific coaching philosophy appended to weekly check-in feedback prompt.</li>
+              <li><strong>programGenerationGuidance</strong> - appended to program generation prompt (frequency, structure, session emphasis).</li>
+              <li><strong>nutritionGenerationGuidance</strong> - appended to nutrition plan generation prompt (food philosophy, cultural context).</li>
+            </ul>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">What can NOT be tuned</p>
+            <p>Hard Safety Floors remain immutable per Founding Partner Agreement §7 and IP Licence Deed clause 4.1(h): RRS clamps, Fat Map training limits, injury contraindications, eligibility floors, minimum-calorie floors, platform-wide banned client-terms. The Mode A+ surface can only ADD guidance, never bypass safety.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">Editing</p>
+            <p>Live at <strong>Dashboard → Settings → Tenant configuration → Doctrine parameters (Mode A+)</strong>. Each coach edits their own via the tenant-scoped form. Save posts to <code>/api/tenant/update</code> with <code>section: &apos;licence&apos;</code> and a <code>doctrineParameters</code> patch. Cache invalidates on save; generators read new values on their next call.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">Consumption (v1 surface, v2 wiring)</p>
+            <p>v1 delivers the storage + editor. Generator consumption is incremental: each generator that reads a parameter imports the relevant accessor from <code>src/lib/doctrine-parameters.ts</code> (<code>partnerVoiceTone()</code>, <code>partnerBannedPhrases()</code>, <code>applyPartnerTerminology(text)</code>, etc.). As we refactor nutrition + program + check-in generators, they pick up the tenant&apos;s parameters automatically.</p>
           </Section>
 
           <Section id="licensee-readiness" title="17d. Licensee Readiness: Audits + Versioning + Validators" colour="teal">
