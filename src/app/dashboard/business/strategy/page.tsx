@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { brand } from "@/config/tenant";
-import { Clock } from 'lucide-react'
+import { Clock, Handshake } from 'lucide-react'
 
 type Tab = 'overview' | 'positioning' | 'content' | 'prelaunch' | 'organic' | 'ads' | 'linkedin' | 'timeline' | 'pages' | 'calendar'
 
@@ -72,6 +72,14 @@ const POST_TYPE_DEFAULT_TIMES: Record<PostType, string> = {
 function isAicmPost(p: { title?: string; notes?: string }): boolean {
   return (p.title ?? '').startsWith('AICM ') || (p.notes ?? '').toUpperCase().includes('AICM')
 }
+
+// A post is an Instagram Collab when its notes flag "IG COLLAB" (the founding-partner
+// feed posts). Story tag-and-reshare notes say "cannot use Collab" and are excluded.
+function isCollabPost(p: { notes?: string }): boolean {
+  return (p.notes ?? '').toUpperCase().includes('IG COLLAB')
+}
+
+const COLLAB_BADGE_CLASS = 'bg-amber-500/15 text-amber-700 border-amber-500/30'
 
 const AICM_BADGE_CLASS = 'bg-indigo-500/10 text-indigo-300 border-indigo-500/30'
 
@@ -356,6 +364,7 @@ function ContentCalendar() {
                       <div key={p.id} className={`text-[10px] font-medium px-1 py-0.5 rounded truncate flex items-center gap-1 ${p.scheduled ? 'opacity-50 line-through decoration-1' : ''}`} style={{ color: s.color, background: s.bg }}>
                         <span className={`inline-block w-1 h-1 rounded-full shrink-0 ${bd.dot}`} />
                         {isAicmPost(p) && <span className="inline-block w-1 h-1 rounded-full shrink-0 bg-indigo-400" />}
+                        {isCollabPost(p) && <Handshake size={10} strokeWidth={2.5} className="shrink-0 text-amber-600" />}
                         {p.scheduled && <span className="text-blue-500 shrink-0">✓</span>}
                         <span className="opacity-70 mr-0.5">{p.time ?? POST_TYPE_DEFAULT_TIMES[p.type as PostType] ?? '07:00'}</span>
                         <span className="truncate">{p.title}</span>
@@ -400,6 +409,7 @@ function ContentCalendar() {
                         <span className={`text-xs ${ph.color}`}>· {ph.label}</span>
                         {(() => { const bd = BRAND_STYLES[(p.brand ?? 'body_recode') as Brand]; return <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${bd.filter}`}>{bd.label}</span> })()}
                         {isAicmPost(p) && <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${AICM_BADGE_CLASS}`}>AICM</span>}
+                        {isCollabPost(p) && <span className={`inline-flex items-center gap-0.5 text-[10px] px-1.5 py-0.5 rounded border font-medium ${COLLAB_BADGE_CLASS}`}><Handshake size={10} strokeWidth={2.5} /> Collab</span>}
                         {(() => { const pl = PLATFORM_STYLES[(p.platform ?? 'instagram') as Platform]; return <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${pl.badge}`}>{pl.label}</span> })()}
                       </div>
                       <div className="flex items-center gap-2 flex-wrap">
@@ -575,6 +585,7 @@ function ContentCalendar() {
                         <div className="flex items-center gap-1.5">
                           <p className="text-xs text-stone-400">{bd.label}</p>
                           {isAicmPost(activePost) && <span className={`text-[9px] px-1.5 py-0.5 rounded border font-medium ${AICM_BADGE_CLASS}`}>AICM</span>}
+                          {isCollabPost(activePost) && <span className={`inline-flex items-center gap-0.5 text-[9px] px-1.5 py-0.5 rounded border font-medium ${COLLAB_BADGE_CLASS}`}><Handshake size={10} strokeWidth={2.5} /> Collab</span>}
                         </div>
                       </div>
                     </div>
