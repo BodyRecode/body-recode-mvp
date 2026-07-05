@@ -60,7 +60,7 @@ WHAT BODY RECODE ALWAYS PROVIDES (NEVER SAY THESE ARE BEING DEFERRED OR WITHHELD
 
 The "what we are not doing yet" section is about INTENSITY, TARGETS, and APPROACH, never about whether we are providing the service. Acceptable framings include: aggressive fat loss targets, high-intensity or complex training, calorie restriction, performance benchmarks, restrictive nutrition rules, specific bodyweight goals, advanced loading, complex macro tracking, and similar targeting choices. Unacceptable framings: "we are not doing nutrition", "we are not giving you a program", "we are not doing weekly check-ins". The work is happening. The intensity and targets are calibrated to the body state.
 
-OUTPUT FORMAT:
+${renderPartnerTuningSection()}OUTPUT FORMAT:
 Return ONLY valid JSON. No prose before or after. The JSON must have exactly these five string fields:
 
 {
@@ -160,4 +160,27 @@ INTAKE (raw client responses, for additional grounding):
 ${JSON.stringify(intake, null, 2)}
 
 Now produce the Foundational Reading JSON.`
+}
+
+/**
+ * Partner-tuning overlay for Mode A+ tenants. Returns empty for BR — prompt
+ * byte-identical. See project_doctrine_parameters_mode_a_plus memory.
+ *
+ * Additive only. Hard Safety Floors + CFFS interpretation rules remain
+ * immutable per Founding Partner Agreement §7 + IP Licence Deed clause
+ * 4.1(h).
+ */
+function renderPartnerTuningSection(): string {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { partnerVoiceTone, partnerBannedPhrases } = require('./doctrine-parameters') as typeof import('./doctrine-parameters')
+
+  const tone = partnerVoiceTone()
+  const banned = partnerBannedPhrases()
+  if (!tone && banned.length === 0) return ''
+
+  const lines: string[] = []
+  lines.push("PARTNER TUNING (Mode A+ overlay — additive to the above, does not replace Kade's voice discipline):")
+  if (tone) lines.push(`- Additional tone cue to apply throughout: ${tone}`)
+  if (banned.length > 0) lines.push(`- Additional banned phrases (do NOT use, in addition to the platform-wide banned-terms list): ${banned.map(p => `"${p}"`).join(', ')}`)
+  return lines.join('\n') + '\n\n'
 }

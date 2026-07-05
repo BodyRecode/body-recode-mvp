@@ -83,7 +83,7 @@ PROHIBITED:
 - Em dashes. Use commas, periods, or rewrite. Em dashes are a non-negotiable style rule.
 - Exclamation marks.
 
-OUTPUT FORMAT:
+${renderPartnerTuningSection()}OUTPUT FORMAT:
 Return ONLY valid JSON. No prose before or after. The JSON must have exactly these five string fields:
 
 {
@@ -185,4 +185,23 @@ THE WEEKLY SYNTHESES ACROSS THIS BLOCK (oldest first, this is the arc to read):
 ${weeksBlock}
 
 Now read the arc and produce the Block-end Trajectory Reading JSON.`
+}
+
+/**
+ * Partner-tuning overlay for Mode A+ tenants. Returns empty for BR.
+ * See project_doctrine_parameters_mode_a_plus memory.
+ */
+function renderPartnerTuningSection(): string {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { partnerVoiceTone, partnerBannedPhrases } = require('./doctrine-parameters') as typeof import('./doctrine-parameters')
+
+  const tone = partnerVoiceTone()
+  const banned = partnerBannedPhrases()
+  if (!tone && banned.length === 0) return ''
+
+  const lines: string[] = []
+  lines.push("PARTNER TUNING (Mode A+ overlay — additive to the above, does not replace Kade's voice discipline):")
+  if (tone) lines.push(`- Additional tone cue to apply throughout: ${tone}`)
+  if (banned.length > 0) lines.push(`- Additional banned phrases (do NOT use, in addition to the platform-wide banned-terms list): ${banned.map(p => `"${p}"`).join(', ')}`)
+  return lines.join('\n') + '\n\n'
 }
