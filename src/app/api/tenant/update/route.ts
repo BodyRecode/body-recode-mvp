@@ -38,6 +38,18 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'patch required' }, { status: 400 })
   }
 
+  // Mode A+ doctrine parameter validation. Runs before the DB write so a
+  // partner cannot save a config that would silently break their content
+  // pipeline (e.g. banning a platform-mandated state name).
+  if (body.section === 'licence' && 'doctrineParameters' in body.patch) {
+    const { validateDoctrineParameters } = await import('@/lib/doctrine-parameters-validator')
+    const dp = body.patch.doctrineParameters as Parameters<typeof validateDoctrineParameters>[0]
+    const result = validateDoctrineParameters(dp)
+    if (!result.ok) {
+      return NextResponse.json({ error: result.error }, { status: 400 })
+    }
+  }
+
   // Fetch existing row + merge the patch into the section
   const { data: existing, error: fetchErr } = await supabase
     .from('tenant_config')

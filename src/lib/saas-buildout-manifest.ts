@@ -596,6 +596,21 @@ export const PHASES: Phase[] = [
         notes: 'All six client-facing generators now Mode A+ aware. Pattern: prompt has renderPartnerTuningSection() before OUTPUT FORMAT (empty for BR); route audit adds partner banned check + applyPartnerTerminology on cleaned output. Retry-loop routes (nutrition + program + foundational + medications) feed partner leaks into existing platform-audit retry. Single-pass routes (trajectory) return 500 on either kind of leak. Coach-facing surfaces (Medications Analysis, Research Lens) intentionally NOT Mode A+ - they are internal.',
       },
       {
+        id: 'doctrine-parameters-validator',
+        title: 'Mode A+ save-time input validator',
+        description: 'Validator runs on POST /api/tenant/update when the patch includes doctrineParameters. Blocks partners from setting configs that would silently break their content pipeline: banning platform-mandated state names (Optimisation, Remediation, Post-Optimisation) or Fat Map zone names (Insulin-Drift, Stress-Stored, Estrogen-Shift, Androgen-Decline) or nutrition units (protein/carbs/fat/kcal); substituting into or out of those same protected terms; adding banned phrases shorter than 3 chars or common stopwords like "the" that would flag most drafts; oversized guidance blocks. Ships with 22-assertion test suite. Returns first-violation error to the editor UI with the specific reason.',
+        status: 'shipped',
+        shippedAt: '2026-07-05',
+        effort: 'S',
+        commits: ['pending'],
+        surfaces: [
+          'src/lib/doctrine-parameters-validator.ts',
+          'src/app/api/tenant/update/route.ts',
+          'scripts/test-doctrine-parameters-validator.ts',
+        ],
+        notes: 'Runs BEFORE the DB write. Additive — layers over the platform Hard Safety Floors. Test runner: `npm run test:doctrine-params` (22 passed 0 failed). Rationale: without this, a partner could set `bannedPhrases: ["Optimisation"]` in the settings UI and every subsequent Foundational Reading / Program Reading / Trajectory Reading audit would fail because clients see "Optimisation" as a state name.',
+      },
+      {
         id: 'doctrine-mode-b',
         title: 'Doctrine mode B: method-injection pipeline',
         description: 'IP-extraction to doctrine config. Each partner\'s method injected into the engine.',
