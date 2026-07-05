@@ -154,18 +154,36 @@ export async function POST(
 
     const allText = REQUIRED.map(k => candidate[k]).join(' ')
     const leaks = findLeakedTerms(allText)
-    if (leaks.length === 0) {
-      reading = candidate
+
+    // Partner-specific banned phrase check (Mode A+ overlay). Additive.
+    const { findPartnerBannedPhrase, applyPartnerTerminology } = await import('@/lib/doctrine-parameters')
+    const partnerLeaks: string[] = []
+    for (const key of REQUIRED) {
+      const val = candidate[key]
+      if (typeof val !== 'string') continue
+      const hit = findPartnerBannedPhrase(val)
+      if (hit && !partnerLeaks.includes(hit)) partnerLeaks.push(hit)
+    }
+
+    if (leaks.length === 0 && partnerLeaks.length === 0) {
+      // Apply partner terminology substitutions. No-op for BR.
+      const rewritten: Record<string, string> = {}
+      for (const [k, v] of Object.entries(candidate)) {
+        rewritten[k] = applyPartnerTerminology(v as string)
+      }
+      reading = rewritten
       break
     }
-    leaksSeen = Array.from(new Set([...leaksSeen, ...leaks].map(t => t.toLowerCase())))
+
+    const allLeaks = [...leaks, ...partnerLeaks]
+    leaksSeen = Array.from(new Set([...leaksSeen, ...allLeaks].map(t => t.toLowerCase())))
     if (attempt < 3) {
       conversation.push({ role: 'assistant', content: jsonText })
       conversation.push({
         role: 'user',
-        content: `That draft contained internal terminology the client has never seen. These terms must not appear: ${leaks.map(t => `"${t}"`).join(', ')}. Rewrite the entire JSON object using ONLY plain client-facing words. Return only the corrected JSON.`,
+        content: `That draft contained internal terminology the client has never seen. These terms must not appear: ${allLeaks.map(t => `"${t}"`).join(', ')}. Rewrite the entire JSON object using ONLY plain client-facing words. Return only the corrected JSON.`,
       })
-      lastError = `Leaked: ${leaks.join(', ')}`
+      lastError = `Leaked: ${allLeaks.join(', ')}`
     }
   }
 

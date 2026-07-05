@@ -204,7 +204,7 @@ PROHIBITED:
 - Optimisation promises, outcome guarantees, motivational language.
 - "Your body is broken" or any framing of the client as a problem.
 
-OUTPUT FORMAT:
+${renderPartnerTuningSection()}OUTPUT FORMAT:
 Return ONLY a single JSON object, no preamble, no markdown fences. Schema:
 
 {
@@ -266,3 +266,22 @@ export function buildClientReadingUserPrompt(input: {
 // stripEmDashes + findLeakedTerms moved to src/lib/banned-client-terms.ts
 // (2026-06-09). Re-exported here so existing callers keep working.
 export { stripEmDashes, findLeakedTerms } from './banned-client-terms'
+
+/**
+ * Partner-tuning overlay for Mode A+ tenants. Returns empty for BR.
+ * Applies to the CLIENT-facing Medications Reading only.
+ */
+function renderPartnerTuningSection(): string {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { partnerVoiceTone, partnerBannedPhrases } = require('./doctrine-parameters') as typeof import('./doctrine-parameters')
+
+  const tone = partnerVoiceTone()
+  const banned = partnerBannedPhrases()
+  if (!tone && banned.length === 0) return ''
+
+  const lines: string[] = []
+  lines.push("PARTNER TUNING (Mode A+ overlay — additive to the above, does not replace Kade's voice discipline):")
+  if (tone) lines.push(`- Additional tone cue to apply throughout: ${tone}`)
+  if (banned.length > 0) lines.push(`- Additional banned phrases (do NOT use, in addition to the platform-wide banned-terms list): ${banned.map(p => `"${p}"`).join(', ')}`)
+  return lines.join('\n') + '\n\n'
+}

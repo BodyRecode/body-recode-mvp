@@ -571,11 +571,11 @@ export const PHASES: Phase[] = [
       {
         id: 'doctrine-parameters',
         title: 'Per-tenant doctrine parameters (Mode A+)',
-        description: 'Surface + storage + editor + FIVE generator consumers shipped. tenant_config.licence.doctrineParameters extends with voiceTone, bannedPhrases, terminologySubstitutions, checkinCoachingGuidance, programGenerationGuidance, nutritionGenerationGuidance. Consumers wired: weekly check-in feedback, nutrition-reading, program-reading, foundational-reading, trajectory-reading. Only medications + blood-panel readings still queued.',
+        description: 'Surface + storage + editor + all SIX client-facing generator consumers shipped. tenant_config.licence.doctrineParameters extends with voiceTone, bannedPhrases, terminologySubstitutions, checkinCoachingGuidance, programGenerationGuidance, nutritionGenerationGuidance. Consumers wired: weekly check-in feedback, nutrition-reading, program-reading, foundational-reading, trajectory-reading, medications-reading. Blood-panel Research Lens is coach-only, doesn\'t need Mode A+.',
         status: 'shipped',
         shippedAt: '2026-07-05',
         effort: 'S',
-        commits: ['7f3bae5a', 'a6386b9f', '6ce8b90a', 'pending'],
+        commits: ['7f3bae5a', 'a6386b9f', '6ce8b90a', '5617ae74', 'pending'],
         surfaces: [
           'src/config/tenant.ts',
           'src/lib/doctrine-parameters.ts',
@@ -590,8 +590,10 @@ export const PHASES: Phase[] = [
           'src/app/api/generate-client-reading/route.ts',
           'src/lib/client-trajectory-reading-prompt.ts',
           'src/app/api/generate-trajectory-reading/route.ts',
+          'src/lib/medications-analysis-prompt.ts',
+          'src/app/api/clients/[id]/medications/reading/generate/route.ts',
         ],
-        notes: 'Five of six client-facing generators now Mode A+ aware. Medications reading + blood-panel reading (coach-only Research Lens does not need Mode A+) still queued - same pattern (system-prompt PARTNER TUNING block + post-generation terminology + banned check into existing retry loop).',
+        notes: 'All six client-facing generators now Mode A+ aware. Pattern: prompt has renderPartnerTuningSection() before OUTPUT FORMAT (empty for BR); route audit adds partner banned check + applyPartnerTerminology on cleaned output. Retry-loop routes (nutrition + program + foundational + medications) feed partner leaks into existing platform-audit retry. Single-pass routes (trajectory) return 500 on either kind of leak. Coach-facing surfaces (Medications Analysis, Research Lens) intentionally NOT Mode A+ - they are internal.',
       },
       {
         id: 'doctrine-mode-b',
