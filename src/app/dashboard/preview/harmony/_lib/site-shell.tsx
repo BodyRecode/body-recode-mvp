@@ -17,7 +17,7 @@ const BASE = '/dashboard/preview/harmony'
 
 const NAV = [
   { href: `${BASE}/method`,     label: 'The Method' },
-  { href: `${BASE}/scorecard`,  label: 'The Assessment' },
+  { href: `${BASE}/assessment`,  label: 'The Assessment' },
   { href: `${BASE}#programmes`, label: 'Programmes' },
   { href: `${BASE}#about`,      label: 'About' },
 ]
@@ -92,7 +92,7 @@ function SiteHeader({ pathname }: { pathname: string }) {
         </nav>
 
         <Link
-          href={`${BASE}/scorecard`}
+          href={`${BASE}/assessment`}
           className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-full text-[12px] font-semibold uppercase transition-transform hover:scale-[1.02]"
           style={{
             background: H.terracotta,
@@ -128,7 +128,7 @@ function SiteFooter() {
           <div>
             <div className="text-[10px] uppercase mb-4" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.2em' }}>Practice</div>
             <ul className="space-y-2 text-[13px]" style={{ color: H.inkSoft }}>
-              <li><Link href={`${BASE}/scorecard`}>The Assessment</Link></li>
+              <li><Link href={`${BASE}/assessment`}>The Assessment</Link></li>
               <li><Link href={`${BASE}/method`}>The Method</Link></li>
               <li><Link href={`${BASE}#programmes`}>Programmes</Link></li>
               <li><Link href={`${BASE}#about`}>About Melisa</Link></li>

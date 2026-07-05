@@ -110,7 +110,7 @@ export default function HarmonyMethod() {
             The way to see how the method meets your body is to take the Assessment.
           </h2>
           <Link
-            href={`${BASE}/scorecard`}
+            href={`${BASE}/assessment`}
             className="inline-flex items-center gap-2 px-8 py-5 rounded-full text-[13px] font-semibold uppercase"
             style={{
               background: H.terracotta,

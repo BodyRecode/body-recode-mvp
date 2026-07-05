@@ -61,7 +61,7 @@ function Hero() {
             </p>
             <div className="flex items-center gap-5">
               <Link
-                href={`${BASE}/scorecard`}
+                href={`${BASE}/assessment`}
                 className="inline-flex items-center gap-2 px-6 py-4 rounded-full text-[13px] font-semibold uppercase transition-transform hover:scale-[1.02]"
                 style={{
                   background: H.terracotta,
@@ -175,7 +175,7 @@ function FunnelStrip() {
         </p>
         <div className="flex items-center justify-center gap-3 mb-8">
           <Link
-            href={`${BASE}/scorecard`}
+            href={`${BASE}/assessment`}
             className="inline-flex items-center gap-2 px-8 py-5 rounded-full text-[13px] font-semibold uppercase transition-transform hover:scale-[1.02]"
             style={{
               background: H.terracotta,
@@ -361,7 +361,7 @@ function Programmes() {
       priceSub: '2 min · no card',
       body: 'Start here. Twelve questions, one written Practice Read delivered within 24 hours.',
       cta: 'Begin the Assessment',
-      href: `${BASE}/scorecard`,
+      href: `${BASE}/assessment`,
       feature: false,
     },
     {
@@ -371,7 +371,7 @@ function Programmes() {
       priceSub: 'one-time',
       body: 'Your first block programme, nourishment foundation, in-studio welcome. For practitioners ready to commit to a block.',
       cta: 'Speak with Melisa',
-      href: `${BASE}/scorecard`,
+      href: `${BASE}/assessment`,
       feature: true,
     },
     {
@@ -381,7 +381,7 @@ function Programmes() {
       priceSub: 'per month · cancel anytime',
       body: 'The ongoing studio. Weekly practice plans, monthly readings, unlimited in-studio + at-home classes.',
       cta: 'Learn more',
-      href: `${BASE}/scorecard`,
+      href: `${BASE}/assessment`,
       feature: false,
     },
   ]
@@ -666,7 +666,7 @@ function FinalCTA() {
           Twelve questions. One Practice Read. Nothing else on your calendar.
         </h2>
         <Link
-          href={`${BASE}/scorecard`}
+          href={`${BASE}/assessment`}
           className="inline-flex items-center gap-2 px-8 py-5 rounded-full text-[13px] font-semibold uppercase transition-transform hover:scale-[1.02]"
           style={{
             background: H.terracotta,
