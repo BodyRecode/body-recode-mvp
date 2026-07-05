@@ -21,6 +21,32 @@ Phase 2 pipeline shipped 2026-07-02 across commits `cc7d05c6 · 239655d0 · 213c
 
 ---
 
+## Wk 27 shipping update (2026-07-04 → 2026-07-05)
+
+**2026-07-04 Speed-to-lead SMS pipeline (commit `283e0932` + `6df4da3c` + `a52c2afc`).** Aussie Spam Act 2003 compliant SMS pipeline triggered on scorecard completion, challenge enrolment, and waitlist join. Opt-in guarded, frequency capped (1/24h + 3/7d), AEST-window aware. STOP handling via `/api/webhooks/twilio/inbound`. Dashboard at `/dashboard/sms`. Templates read from `coach()`/`brand()` for tenant-aware voice.
+
+**2026-07-05 Per-tenant Twilio Subaccount routing (commit `f1bdd32f`).** `sendSms()` reads `licence.twilioSubaccountSid` + `licence.twilioMessagingServiceSid` from tenant config; routes SMS through the tenant's own AU number when set. Falls back to platform Twilio otherwise. Founding-Ten scale onwards — inbound webhook routing still shared for now.
+
+**2026-07-05 Purchase + no-show SMS triggers (commit `f6fee35c`).** Extends speed-to-lead: Stripe report checkout fires `purchase/report` with 30s delay to SMS; `/api/leads/[id]/send-booking-confirmation` fires `booking/scheduled` and Inngest sleeps until scheduled + 30 min then sends the no-show SMS if lead status is still `zoom_1_booked`. Function count 15 → 17.
+
+**2026-07-05 Kade's billing of partners v1 (commit `f5ca8424`).** Founding Partner Agreement §6 tracked. `licence.partnerBilling` extends tenant config with tier + locked prices + Stripe customer/sub + setup fee lifecycle. Monthly Inngest cron `partner-active-client-counter` computes Active Client counts per Agreement §1 definition (function count 17 → 18). Admin dashboard at `/dashboard/settings/partner-billing`. v1 is manual invoicing via Stripe dashboard; v2 auto-invoicing queued.
+
+**2026-07-05 Founding Partner Agreement + IP Licence Deed v0.1 drafts (commit `c7416819`).** Full commercial contract (~10 pages, 17 clauses + 5 schedules) + companion IP licence executed as a deed (~6 pages, 11 clauses + 2 schedules) + cover note for Ange + README. Bundled to `public/docs/saas-buildout/founding-ten/legal/` in .md + .docx + SOT-branded .pdf. Awaiting legal review. Manifest step flipped to `in_progress`.
+
+**2026-07-05 Stripe callsite refactor pattern (commit `2b244252`).** `createTenantAwareCheckoutSession()` helper wraps `stripe.checkout.sessions.create()` with tenant-aware routing (Direct Charges when `licence.stripeAccountId` active, platform otherwise). One representative low-risk callsite refactored (`send-commencement-fee`) as the reference. Remaining 14 callsites deliberately deferred to post-Funnel B launch — pattern is proven, execution is a per-callsite decision each carrying launch risk.
+
+**2026-07-05 Doctrine parameters Mode A+ (commit `7f3bae5a` + `a6386b9f`).** Middle ground between Mode A (BR doctrine unchanged) and Mode B (method injection, post-Founding-Ten). `licence.doctrineParameters` extends tenant config with `voiceTone`, `bannedPhrases`, `terminologySubstitutions`, `checkinCoachingGuidance`, `programGenerationGuidance`, `nutritionGenerationGuidance`. Editor UI in tenant settings. First generator consumer wired (weekly check-in feedback). Hard Safety Floors remain immutable per Agreement §7. Consumer wiring for nutrition/program readings is incremental post-launch.
+
+**2026-07-05 Melisa tenant seed pre-built (commit `61ef3b84`).** Ready-to-run SQL at `~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/sql/2026-07-05_melisa_seed.sql`. Founding Ten Launch tier defaults ($2,500 setup / $400 monthly locked / $20 per active client), yoga modality, doctrine parameters pre-tuned for warm/grounded/breath-forward voice. Fill 8 placeholders + run. Melisa provisioning step flipped to `in_progress` in manifest.
+
+**2026-07-05 Launch readiness check extended (commit `7ea9aef2`).** `scripts/check-launch-readiness.ts` gains sections 6 (Inngest + SMS pipeline) + 7 (SaaS / partner billing pipeline). 12 new checks validate Inngest function count = 18, Twilio env vars, sms_logs/leads.sms_opt_in_at/partner_active_client_counts/tenant_config/tenant_domains tables. Kade runs Sun 12 Jul evening for the launch-eve go/no-go.
+
+**2026-07-05 Help guide 17g Partner Billing + 17h Doctrine Parameters (commit `a70a4cf9`).** Coach-facing docs for both new admin surfaces.
+
+**Function count summary.** Inngest went 12 → 18 across this window (added: 3 speed-to-lead functions + purchase + no-show + partner-active-client-counter monthly cron). `EXPECTED_INNGEST_FUNCTION_COUNT` in `daily-health-check` route reflects current. **Kade must Resync in Inngest cloud** after each new-function commit or the functions register in code but not in cloud (silent-fail class).
+
+---
+
 ## Pre-flight
 
 - [ ] Tenant signed the licence agreement + paid setup deposit (per PARTNER_JOURNEY Stage 3)
