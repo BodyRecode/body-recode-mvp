@@ -800,6 +800,16 @@ ${darkEmailSignature()}
           notes: 'Report follow-up sequence scheduled (Day 2, Day 5, Day 10)',
           sent_at: new Date().toISOString(),
         })
+
+        // Fire speed-to-lead purchase SMS trigger. Non-fatal on failure.
+        try {
+          await inngest.send({
+            name: 'purchase/report',
+            data: { leadId: lead.id, bookingUrl: BOOKING_LINK },
+          })
+        } catch (e) {
+          console.error('[stripe webhook] purchase/report inngest.send failed:', e)
+        }
       }
     }
 

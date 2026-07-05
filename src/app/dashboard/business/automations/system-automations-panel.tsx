@@ -16,8 +16,8 @@ const AUTOMATIC_AUTOMATIONS = [
   {
     id: 'speed-to-lead-sms',
     name: 'Speed-to-Lead SMS',
-    description: 'Contact-within-60s SMS on scorecard completion, challenge enrolment, and product waitlist join. Consent-checked, frequency-capped (1 per 24h + 3 per 7d), AEST window-aware. STOP triggers hard opt-out. Full audit log in sms_logs. Dashboard at /dashboard/sms.',
-    trigger: 'scorecard/completed, challenge/enrolled, or waitlist/joined Inngest event, when sms_opt_in was ticked',
+    description: 'Contact-within-60s SMS on scorecard completion, challenge enrolment, waitlist join, report purchase, and Zoom no-show. Consent-checked, frequency-capped (1 per 24h + 3 per 7d), AEST window-aware. STOP triggers hard opt-out. Full audit log in sms_logs. Dashboard at /dashboard/sms.',
+    trigger: 'scorecard/completed, challenge/enrolled, waitlist/joined, purchase/report, or booking/scheduled Inngest event',
     steps: 1,
   },
   {

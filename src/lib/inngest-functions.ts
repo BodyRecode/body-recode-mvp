@@ -1711,7 +1711,7 @@ export const igPublisherCron = inngest.createFunction(
 
 async function processSpeedToLeadStep(
   leadId: string,
-  trigger: 'scorecard_completed' | 'challenge_enrolled' | 'waitlist_joined',
+  trigger: 'scorecard_completed' | 'challenge_enrolled' | 'waitlist_joined' | 'purchase_report' | 'noshow_reminder',
   bookingUrl: string | undefined,
   step: {
     run: <T>(id: string, fn: () => Promise<T>) => Promise<T>
@@ -1721,7 +1721,7 @@ async function processSpeedToLeadStep(
 ): Promise<{ ok: boolean; reason?: string; error?: string; sendAt?: string }> {
   const { computeSendAt } = await import('@/lib/sms-send-window')
   const { sendLeadSms } = await import('@/lib/speed-to-lead-sms')
-  const { tplScorecardCompleted, tplChallengeEnrolled, tplWaitlistJoined } = await import('@/lib/sms-templates')
+  const { tplScorecardCompleted, tplChallengeEnrolled, tplWaitlistJoined, tplPurchaseReport, tplNoShowReminder } = await import('@/lib/sms-templates')
 
   const scheduled = await step.run('compute-send-at', async () => {
     return computeSendAt(new Date(), trigger).toISOString()
@@ -1742,7 +1742,11 @@ async function processSpeedToLeadStep(
       ? tplScorecardCompleted({ firstName, bookingUrl })
       : trigger === 'challenge_enrolled'
         ? tplChallengeEnrolled({ firstName })
-        : tplWaitlistJoined({ firstName, productName: extra?.productName })
+        : trigger === 'waitlist_joined'
+          ? tplWaitlistJoined({ firstName, productName: extra?.productName })
+          : trigger === 'purchase_report'
+            ? tplPurchaseReport({ firstName, bookingUrl })
+            : tplNoShowReminder({ firstName, bookingUrl })
 
   const result = await step.run(`send-${leadId}`, async () => sendLeadSms({ leadId, trigger, body }))
   return { ok: result.ok, reason: result.ok ? undefined : result.reason, error: result.ok ? undefined : result.error, sendAt: scheduled }
@@ -1789,5 +1793,57 @@ export const speedToLeadWaitlistFunction = inngest.createFunction(
     const { leadId, productName } = event.data
     if (!leadId) return { ok: false, reason: 'no_lead_id' }
     return processSpeedToLeadStep(leadId, 'waitlist_joined', undefined, step, { productName })
+  },
+)
+
+export const speedToLeadPurchaseFunction = inngest.createFunction(
+  {
+    id: 'speed-to-lead-purchase',
+    name: 'Speed-to-lead · report purchase SMS',
+    retries: 2,
+    triggers: [{ event: 'purchase/report' }],
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async ({ event, step }: { event: { data: { leadId?: string; bookingUrl?: string } }; step: any }) => {
+    const { leadId, bookingUrl } = event.data
+    if (!leadId) return { ok: false, reason: 'no_lead_id' }
+    return processSpeedToLeadStep(leadId, 'purchase_report', bookingUrl, step)
+  },
+)
+
+// No-show reminder. Fires on booking/scheduled, sleeps until scheduled + 30 min,
+// checks if the lead status is still zoom_1_booked (i.e. coach has not marked
+// the call as completed or no-show). If yes, sends the no-show SMS.
+export const speedToLeadNoShowFunction = inngest.createFunction(
+  {
+    id: 'speed-to-lead-noshow',
+    name: 'Speed-to-lead · no-show SMS',
+    retries: 2,
+    triggers: [{ event: 'booking/scheduled' }],
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async ({ event, step }: { event: { data: { leadId?: string; scheduledAt?: string } }; step: any }) => {
+    const { leadId, scheduledAt } = event.data
+    if (!leadId || !scheduledAt) return { ok: false, reason: 'missing_data' }
+
+    // Sleep until scheduled_at + 30 minutes
+    const noShowCheckAt = new Date(new Date(scheduledAt).getTime() + 30 * 60 * 1000)
+    await step.sleepUntil(`wait-for-noshow-check-${leadId}`, noShowCheckAt)
+
+    // Check lead status. If moved on (completed / closed_no_show / advanced),
+    // do nothing. Only fire the SMS if status is still zoom_1_booked.
+    const admin = createAdminClient()
+    const stillBooked = await step.run('check-status', async () => {
+      const { data: lead } = await admin
+        .from('leads')
+        .select('status')
+        .eq('id', leadId)
+        .maybeSingle()
+      return lead?.status === 'zoom_1_booked' || lead?.status === 'zoom_booked'
+    })
+
+    if (!stillBooked) return { ok: false, reason: 'coach_handled_or_advanced' }
+
+    return processSpeedToLeadStep(leadId, 'noshow_reminder', undefined, step)
   },
 )

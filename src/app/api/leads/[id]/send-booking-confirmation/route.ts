@@ -10,6 +10,7 @@ import {
   fromCoach,
 } from '@/lib/email-shell'
 import { logLeadEvent } from '@/lib/log-lead-event'
+import { inngest } from '@/lib/inngest'
 
 function generateIcs({ title, startTime, durationMinutes, location, description, uid }: {
   title: string; startTime: string; durationMinutes: number
@@ -147,6 +148,21 @@ ${darkEmailSignature()}
     })} Brisbane${reminders.length > 0 ? ` + ${reminders.length} reminder${reminders.length > 1 ? 's' : ''} scheduled` : ''}`,
     sentAt: new Date(),
   })
+
+  // Fire speed-to-lead no-show trigger. Inngest sleeps until scheduled + 30 min
+  // and, if the lead status is still zoom_1_booked (coach hasn't marked
+  // completed or no-show), sends the no-show SMS. Non-fatal on failure.
+  try {
+    await inngest.send({
+      name: 'booking/scheduled',
+      data: {
+        leadId: lead.id,
+        scheduledAt: slotStart.toISOString(),
+      },
+    })
+  } catch (e) {
+    console.error('[booking-confirmation] booking/scheduled inngest.send failed:', e)
+  }
 
   return NextResponse.json({ success: true })
 }

@@ -1454,7 +1454,8 @@ export default function HelpPage() {
               <li><strong>Scorecard completed</strong> - when the frontend POSTs <code>sms_opt_in: true</code> and a phone. Fires <code>scorecard/completed</code> in Inngest, sends within 60s (subject to send-window rules).</li>
               <li><strong>Challenge enrolled</strong> - challenge form has an opt-in checkbox pre-ticked. Uncheck to opt out. Fires <code>challenge/enrolled</code> and follows the same Inngest path.</li>
               <li><strong>Product waitlist joined</strong> - pre-launch waitlist form (WaitlistCTA) has the same opt-in checkbox. Fires <code>waitlist/joined</code> with the product name. Applies to challenge / blueprint / membership / extension waitlist paths.</li>
-              <li><strong>Purchase report</strong> and <strong>no-show reminder</strong> templates exist but the triggers are not wired yet - queued as <code>purchase-and-noshow-sms-triggers</code> in the buildout manifest.</li>
+              <li><strong>Report purchase</strong> - Stripe webhook on <code>scorecard_report</code> checkout success fires <code>purchase/report</code>. SMS sends within 30s (anytime except overnight 22:00-06:00 AEST which queues to 08:30). Sunday OK - peak intent.</li>
+              <li><strong>No-show reminder</strong> - when a coach confirms a Zoom booking with a lead, fires <code>booking/scheduled</code>. Inngest sleeps until scheduled + 30 min, then checks the lead's status. Sends SMS only if lead is still <code>zoom_1_booked</code> (coach has not marked completed/no-show/advanced).</li>
             </ul>
 
             <p className="font-semibold text-[#1A1A1A] mt-4">Send-window rules (AEST)</p>

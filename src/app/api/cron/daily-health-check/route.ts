@@ -853,7 +853,7 @@ async function checkContentPublishingPulse(admin: ReturnType<typeof createAdminC
 //
 // BUMP `EXPECTED_INNGEST_FUNCTION_COUNT` every time you add or remove an
 // inngest.createFunction(...) in src/lib/inngest-functions.ts.
-const EXPECTED_INNGEST_FUNCTION_COUNT = 15
+const EXPECTED_INNGEST_FUNCTION_COUNT = 17
 async function checkInngestRegistration(): Promise<CheckResult> {
   try {
     const res = await fetch(`${appUrl()}/api/inngest`, { method: 'GET', cache: 'no-store' })
