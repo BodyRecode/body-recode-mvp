@@ -122,7 +122,6 @@ export async function POST(req: Request) {
             phone,
             gender,
             source: source ?? `waitlist_${product}`,
-            stage: 'waitlist',
           })
           .select('id')
           .single()
