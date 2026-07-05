@@ -14,13 +14,15 @@ export const HARMONY = {
   location: 'Brisbane',
   logoUrl: '/preview/hermony/logo-cropped.png',
 
-  // Palette - monochrome to match the logo (black wordmark + white +
-  // silver, mountain-at-moon silhouette). Accent bar is ink black; hover
-  // and soft surfaces stay in the greyscale range.
-  accentBar: '#1A1A1A',
-  accentText: '#1A1A1A',
-  accentSoftBg: 'rgba(26, 26, 26, 0.06)',
-  accentRing: '#D4D4D4',
+  // Palette - warm terracotta as placeholder brand accent. The logo
+  // Melisa shared was a plain black-and-white starter so does not fix
+  // her final brand colour; terracotta is a warm, grounded, editorial
+  // colour that reads yoga+meditation without falling to sage-cliche.
+  // Swap once Melisa hands over her actual brand palette.
+  accentBar: '#B06C47',
+  accentText: '#8A5335',
+  accentSoftBg: 'rgba(176, 108, 71, 0.09)',
+  accentRing: '#E4C4B4',
 } as const
 
 // Backwards-compat alias so imports in older files still resolve during

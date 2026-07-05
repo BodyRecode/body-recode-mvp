@@ -11,10 +11,10 @@ import { HARMONY, HARMONY_STUDENTS } from '../_lib/brand'
 export default function HermonyCoaching() {
   const active = HARMONY_STUDENTS.length
 
-  const statusToPill: Record<string, { label: string; accent: 'ink' | 'amber' | 'red' | 'neutral' }> = {
+  const statusToPill: Record<string, { label: string; accent: 'terracotta' | 'amber' | 'red' | 'neutral' }> = {
     active_settling:   { label: 'Settling',   accent: 'amber' },
-    active_building:   { label: 'Building',   accent: 'ink' },
-    active_expression: { label: 'Expression', accent: 'ink' },
+    active_building:   { label: 'Building',   accent: 'terracotta' },
+    active_expression: { label: 'Expression', accent: 'terracotta' },
     new:               { label: 'New',        accent: 'neutral' },
   }
 
@@ -24,7 +24,7 @@ export default function HermonyCoaching() {
         eyebrow="Students"
         title="Active roster"
         subtitle={`${active} students in active practice. ${10 - active} seats left in your Founding tier.`}
-        accent="ink"
+        accent="terracotta"
         cta={
           <button
             className="inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-2 rounded-lg border border-[#E5E5E5] bg-white text-[#1A1A1A] hover:bg-[#F4F4F4] transition-colors"
@@ -68,7 +68,7 @@ export default function HermonyCoaching() {
 
       <Card padding="none">
         <SectionLabel
-          accent="ink"
+          accent="terracotta"
           cta={
             <div className="flex items-center gap-2">
               <button className="text-[12px] text-[#6B6B6B] hover:text-[#1A1A1A]">Active</button>
@@ -141,7 +141,7 @@ export default function HermonyCoaching() {
         </Card>
 
         <Card>
-          <SectionLabel accent="ink">Readings ready to notify</SectionLabel>
+          <SectionLabel accent="terracotta">Readings ready to notify</SectionLabel>
           <p className="text-[13px] text-[#4B4B4B] leading-relaxed mb-3">
             1 nutrition plan and 1 block-end trajectory reading are drafted and waiting for you to click Notify.
           </p>

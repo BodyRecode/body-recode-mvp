@@ -98,11 +98,10 @@ export function HarmonyShell({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-9 min-w-0">
             <Link href={BASE} className="flex items-center gap-3 shrink-0">
               <span
-                className="inline-flex items-center justify-center w-9 h-9 rounded-full overflow-hidden bg-white border"
-                style={{ borderColor: '#1A1A1A' }}
+                className="inline-flex items-center justify-center w-9 h-9 rounded-lg font-bold text-[13px] tracking-tight text-white"
+                style={{ background: HARMONY.accentBar, fontFamily: MONO }}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={HARMONY.logoUrl} alt="" className="w-full h-full object-cover" />
+                {HARMONY.initials}
               </span>
               <span className="text-[16px] font-semibold text-[#1A1A1A] tracking-tight">{HARMONY.name}</span>
             </Link>

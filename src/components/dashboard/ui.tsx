@@ -3,16 +3,17 @@ import type { ComponentType, ReactNode } from 'react'
 
 export const MONO_FONT = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
 
-type Accent = 'teal' | 'amber' | 'red' | 'neutral' | 'blue' | 'sage' | 'ink'
+type Accent = 'teal' | 'amber' | 'red' | 'neutral' | 'blue' | 'sage' | 'ink' | 'terracotta'
 
 const ACCENT: Record<Accent, { bar: string; text: string; bg: string; ring: string }> = {
-  teal:    { bar: '#1B6DFC', text: '#1B6DFC', bg: 'rgba(27,109,252,0.08)',  ring: '#B5CFFC' },
-  amber:   { bar: '#B7791F', text: '#B7791F', bg: 'rgba(183,121,31,0.08)',  ring: '#F0DCB4' },
-  red:     { bar: '#DC2626', text: '#DC2626', bg: 'rgba(220,38,38,0.08)',   ring: '#F5C6C6' },
-  blue:    { bar: '#1B6DFC', text: '#1B6DFC', bg: 'rgba(27,109,252,0.08)',  ring: '#B5CFFC' },
-  neutral: { bar: '#999999', text: '#6B6B6B', bg: 'rgba(153,153,153,0.06)', ring: '#E5E5E5' },
-  sage:    { bar: '#7A8A6B', text: '#4D5A41', bg: 'rgba(122,138,107,0.10)', ring: '#C5CFBA' },
-  ink:     { bar: '#1A1A1A', text: '#1A1A1A', bg: 'rgba(26,26,26,0.06)',    ring: '#D4D4D4' },
+  teal:       { bar: '#1B6DFC', text: '#1B6DFC', bg: 'rgba(27,109,252,0.08)',  ring: '#B5CFFC' },
+  amber:      { bar: '#B7791F', text: '#B7791F', bg: 'rgba(183,121,31,0.08)',  ring: '#F0DCB4' },
+  red:        { bar: '#DC2626', text: '#DC2626', bg: 'rgba(220,38,38,0.08)',   ring: '#F5C6C6' },
+  blue:       { bar: '#1B6DFC', text: '#1B6DFC', bg: 'rgba(27,109,252,0.08)',  ring: '#B5CFFC' },
+  neutral:    { bar: '#999999', text: '#6B6B6B', bg: 'rgba(153,153,153,0.06)', ring: '#E5E5E5' },
+  sage:       { bar: '#7A8A6B', text: '#4D5A41', bg: 'rgba(122,138,107,0.10)', ring: '#C5CFBA' },
+  ink:        { bar: '#1A1A1A', text: '#1A1A1A', bg: 'rgba(26,26,26,0.06)',    ring: '#D4D4D4' },
+  terracotta: { bar: '#B06C47', text: '#8A5335', bg: 'rgba(176,108,71,0.09)',  ring: '#E4C4B4' },
 }
 
 export function accentColour(a: Accent = 'teal') {
