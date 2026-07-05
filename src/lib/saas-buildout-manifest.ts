@@ -376,11 +376,11 @@ export const PHASES: Phase[] = [
       {
         id: 'speed-to-lead-sms',
         title: 'Speed-to-lead SMS pipeline',
-        description: 'Contact-within-60s SMS on scorecard + challenge triggers. Consent-checked, frequency-capped, AEST window-aware, audit-logged. Templates are tenant-aware via coach()/brand().',
+        description: 'Contact-within-60s SMS on scorecard + challenge + waitlist triggers. Consent-checked, frequency-capped, AEST window-aware, audit-logged. Templates are tenant-aware via coach()/brand().',
         status: 'shipped',
         shippedAt: '2026-07-03',
         effort: 'M',
-        commits: ['283e0932', '6df4da3c'],
+        commits: ['283e0932', '6df4da3c', 'a52c2afc'],
         surfaces: [
           '~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/sql/2026-07-03_speed_to_lead_sms_schema.sql',
           '~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/SMS_INVENTORY.md',

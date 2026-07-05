@@ -1453,6 +1453,7 @@ export default function HelpPage() {
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
               <li><strong>Scorecard completed</strong> - when the frontend POSTs <code>sms_opt_in: true</code> and a phone. Fires <code>scorecard/completed</code> in Inngest, sends within 60s (subject to send-window rules).</li>
               <li><strong>Challenge enrolled</strong> - challenge form has an opt-in checkbox pre-ticked. Uncheck to opt out. Fires <code>challenge/enrolled</code> and follows the same Inngest path.</li>
+              <li><strong>Product waitlist joined</strong> - pre-launch waitlist form (WaitlistCTA) has the same opt-in checkbox. Fires <code>waitlist/joined</code> with the product name. Applies to challenge / blueprint / membership / extension waitlist paths.</li>
               <li><strong>Purchase report</strong> and <strong>no-show reminder</strong> templates exist but the triggers are not wired yet - queued as <code>purchase-and-noshow-sms-triggers</code> in the buildout manifest.</li>
             </ul>
 
