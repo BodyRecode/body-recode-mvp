@@ -106,6 +106,35 @@ build_one \
   "v1.0 · 2026-07" \
   "what changes between strength and yoga at layer 2"
 
+# ─── Legal docs ──────────────────────────────────────────────
+build_one \
+  "$DOCS/founding-ten/legal/README.md" \
+  "Founding Ten · Legal Package" \
+  "Legal Package" \
+  "v0.1 · 2026-07" \
+  "package overview + how to use these drafts"
+
+build_one \
+  "$DOCS/founding-ten/legal/COVER_NOTE_TO_LEGAL.md" \
+  "Cover Note to Legal Reviewer" \
+  "Legal Package" \
+  "v0.1 · 2026-07" \
+  "specific review priorities + areas of concern"
+
+build_one \
+  "$DOCS/founding-ten/legal/FOUNDING_PARTNER_AGREEMENT_v0.1.md" \
+  "Founding Partner Agreement" \
+  "Legal Package" \
+  "v0.1 · 2026-07" \
+  "commercial contract · Founding Ten programme"
+
+build_one \
+  "$DOCS/founding-ten/legal/IP_LICENCE_DEED_v0.1.md" \
+  "IP Licence Deed" \
+  "Legal Package" \
+  "v0.1 · 2026-07" \
+  "companion licence · Founding Ten programme"
+
 echo ""
 echo "Done. Commit the PDFs:"
 echo "  git add public/docs/saas-buildout/ && git commit -m 'build: refresh saas-buildout PDFs'"

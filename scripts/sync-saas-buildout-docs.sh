@@ -18,7 +18,7 @@ if ! command -v pandoc >/dev/null 2>&1; then
   exit 1
 fi
 
-mkdir -p "$DEST/founding-ten" "$DEST/founding-ten/onboarding" "$DEST/founding-ten/modalities" "$DEST/sql"
+mkdir -p "$DEST/founding-ten" "$DEST/founding-ten/onboarding" "$DEST/founding-ten/modalities" "$DEST/founding-ten/legal" "$DEST/sql"
 
 # ─── Founding Ten root docs ──────────────────────────────────
 for f in POWERED_PLATFORM_BUILD_PLAN OFFER_ARCHITECTURE README; do
@@ -33,6 +33,11 @@ done
 # ─── Modality docs ───────────────────────────────────────────
 for f in YOGA_DOCTRINE_v1 YOGA_MODALITY_SCOPE; do
   cp "$SRC/03_STUDIO_OF_TEN/00_FOUNDING_TEN/modalities/$f.md" "$DEST/founding-ten/modalities/$f.md"
+done
+
+# ─── Legal docs (Founding Ten agreement + IP licence) ────────
+for f in README COVER_NOTE_TO_LEGAL FOUNDING_PARTNER_AGREEMENT_v0.1 IP_LICENCE_DEED_v0.1; do
+  cp "$SRC/03_STUDIO_OF_TEN/00_FOUNDING_TEN/legal/$f.md" "$DEST/founding-ten/legal/$f.md"
 done
 
 # ─── SQL schemas ─────────────────────────────────────────────
