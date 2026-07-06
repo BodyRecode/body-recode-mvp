@@ -21,6 +21,24 @@ export async function POST(request: NextRequest) {
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
 
   const body = await request.json()
+  return runNutritionGenerationInternal(body)
+}
+
+/**
+ * Internal generation entrypoint. Skips the coach auth check so that
+ * server-side admin scripts (nutrition regen for a specific client, batch
+ * backfills, ops recovery) can call it with a fully-formed input object.
+ *
+ * Not exposed on any public route. Same validator + retry + telemetry path
+ * as the coach-driven POST above — only difference is the caller.
+ *
+ * 2026-07-06 (Brisbane): extracted after Amanda's Stage 2 regen hit a
+ * suggest-page state bug that reverted the coach's edits to protein
+ * anchor + kcal floor before submit, causing 4 failed generation cycles.
+ * Bypassing the buggy UI required calling the core generation directly.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function runNutritionGenerationInternal(body: any): Promise<NextResponse> {
   const {
     client_id,
     plan_name,
@@ -154,22 +172,31 @@ export async function POST(request: NextRequest) {
   }
   const intakeText: string | null = intakeLines.join('\n')
 
-  // Floor the protein anchor against bodyweight if known. Coach can pass any
-  // value through the form; we only override when the form value falls below
-  // the bodyweight × 1.4 floor (catches stale 85g defaults from upstream
-  // suggestions when bodyweight wasn't yet wired in).
+  // Floor the protein anchor against bodyweight if known. As of 2026-07-06
+  // the floor is 1.0 g/kg (was 1.4). At or above 1.0 g/kg we trust the coach
+  // entirely — the guard only steps in when the input is missing or is
+  // sub-therapeutic. Prev logic overrode any input below 1.4 g/kg silently,
+  // which made coach-driven bridge-mode Stage 2 plans impossible to prescribe
+  // (Amanda 2026-07-06: coach set 135g at 102.3kg = 1.32 g/kg, route
+  // silently upgraded to 174g / 1.7 g/kg, math then didn't fit the appetite-
+  // suppression cap × 4 meals, engine spun in retry loops for hours).
+  //
+  // Intent preserved: still catches stale 85g defaults from upstream
+  // suggestions when bodyweight wasn't yet wired in (85g at 100kg = 0.85 g/kg
+  // is below the 1.0 floor and gets overridden). Coach-set 1.2-1.4 g/kg
+  // values now flow through untouched.
   const inboundProtein = Number(protein_anchor_g)
   let resolvedProtein = inboundProtein
   if (bodyweightKg) {
-    const floor = Math.round(bodyweightKg * 1.4)
-    if (!inboundProtein || inboundProtein < floor) {
+    const hardFloor = Math.round(bodyweightKg * 1.0)
+    if (!inboundProtein || inboundProtein < hardFloor) {
       const stateNorm = String(entry_state).toLowerCase()
       const multiplier =
         stateNorm.includes('high_output') || stateNorm.includes('high output') ? 2.0
         : stateNorm.includes('training_support') || stateNorm.includes('training support') ? 1.9
         : 1.7
       resolvedProtein = Math.round(bodyweightKg * multiplier)
-      console.warn(`[generate-nutrition] Protein floor applied: ${inboundProtein || 'missing'}g → ${resolvedProtein}g (bodyweight ${bodyweightKg}kg × ${multiplier})`)
+      console.warn(`[generate-nutrition] Protein anchor overridden: ${inboundProtein || 'missing'}g → ${resolvedProtein}g (input below sub-therapeutic 1.0 g/kg floor; bodyweight ${bodyweightKg}kg × ${multiplier})`)
     }
   }
 
@@ -263,9 +290,28 @@ export async function POST(request: NextRequest) {
     })
     const content = message.content[0]
     if (content.type !== 'text') throw new Error('Unexpected AI response')
+    // 2026-07-06 parse resilience: brace-counter extract → whole-text JSON.parse
+    // fallback → diagnostic error with stop_reason + usage + preview.
+    // Sonnet's parse failures on Amanda's Stage 2 attempts were surfacing as
+    // "Could not parse nutrition plan output" with no diagnostic info, making
+    // it impossible to know whether the model truncated, wrapped in prose, or
+    // emitted unbalanced JSON. Now each failure explains itself.
     const jsonText = extractFirstJsonObject(content.text)
-    if (!jsonText) throw new Error('Could not parse nutrition plan output')
-    return JSON.parse(jsonText)
+    if (jsonText) return JSON.parse(jsonText)
+    // Fallback: try parsing the entire response as JSON in case the model
+    // emitted a clean object with no prose wrapper.
+    const trimmed = content.text.trim()
+    if (trimmed.startsWith('{')) {
+      try {
+        return JSON.parse(trimmed)
+      } catch {
+        // fall through to diagnostic
+      }
+    }
+    const stopReason = message.stop_reason
+    const usage = message.usage
+    const preview = content.text.slice(0, 300).replace(/\s+/g, ' ')
+    throw new Error(`Could not parse nutrition plan output from ${modelId} (stop_reason=${stopReason}, in=${usage?.input_tokens ?? '?'}, out=${usage?.output_tokens ?? '?'}). Response preview: "${preview}"`)
   }
 
   // Generation + validation loop. The model writes structured foods; we

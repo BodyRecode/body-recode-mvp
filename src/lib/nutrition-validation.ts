@@ -580,11 +580,18 @@ export function validateNutritionPlan(
   // documented justification stored on the plan, auto-expires after 4 weeks.
   const override = input.transitional_override
   if (override?.active && override.floor_kcal > 0) {
+    // 2026-07-06: added ±25 kcal tolerance below the floor. Meal-level kcal
+    // are recomputed to nearest integer from portion sizes that themselves
+    // have implicit rounding — a plan landing at 1898 kcal vs a 1900 floor
+    // (Amanda's Stage 2 attempt) is a rounding artefact, not an
+    // under-feeding failure. The ceiling side stays strict because there is
+    // no such rounding artefact when the model overshoots.
+    const FLOOR_TOLERANCE_KCAL = 25
     const ceilingKcal = override.floor_kcal + BRIDGE_CEILING_BUFFER
-    if (totals.kcal < override.floor_kcal) {
+    if (totals.kcal < override.floor_kcal - FLOOR_TOLERANCE_KCAL) {
       issues.push({
         code: 'TRANSITIONAL_FLOOR_NOT_MET',
-        message: `Daily kcal ${totals.kcal} is below the transitional floor of ${override.floor_kcal} kcal you set on this plan.`,
+        message: `Daily kcal ${totals.kcal} is below the transitional floor of ${override.floor_kcal} kcal (tolerance ±${FLOOR_TOLERANCE_KCAL}) you set on this plan.`,
       })
     }
     if (totals.kcal > ceilingKcal) {
