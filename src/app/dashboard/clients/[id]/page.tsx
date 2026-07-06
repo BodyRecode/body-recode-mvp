@@ -135,6 +135,35 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
   const pendingTrajectory = pendingTrajectoryRows?.[0] ?? null
 
+  // Re-intake status: the ReintakeButton in the CFFS section shows a "Sent
+  // [when]" / "Completed [when]" status line so the coach can see at a glance
+  // whether a re-intake has been sent recently, matching the pattern the
+  // Subscription link section uses. Two lookups:
+  //   1. Latest kind='reintake' invitation (created_at, status, completed_at)
+  //   2. Latest intake_invite email in client_communications tagged with
+  //      meta.mode='reintake' (actual send timestamp — invitation creation
+  //      doesn't imply the email went; the coach might have copied the link
+  //      manually).
+  const [{ data: latestReintakeInvitations }, { data: latestReintakeSends }] = await Promise.all([
+    admin
+      .from('intake_invitations')
+      .select('id, token, created_at, completed_at, status')
+      .eq('client_id', id)
+      .eq('kind', 'reintake')
+      .order('created_at', { ascending: false })
+      .limit(1),
+    admin
+      .from('client_communications')
+      .select('sent_at, subject, meta')
+      .eq('client_id', id)
+      .eq('kind', 'intake_invite')
+      .contains('meta', { mode: 'reintake' })
+      .order('sent_at', { ascending: false })
+      .limit(1),
+  ])
+  const latestReintakeInvitation = latestReintakeInvitations?.[0] ?? null
+  const latestReintakeSend = latestReintakeSends?.[0] ?? null
+
   // Client-uploaded blood panels (Health Markers feature). Newest first.
   const { data: bloodPanels } = await admin
     .from('blood_panels')
@@ -907,6 +936,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   clientId={client.id}
                   clientName={client.name}
                   clientEmail={client.email}
+                  latestInvitation={latestReintakeInvitation}
+                  latestSentAt={latestReintakeSend?.sent_at ?? null}
                 />
               </div>
             </div>

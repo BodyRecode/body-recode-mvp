@@ -13,9 +13,55 @@ interface Props {
   clientId: string
   clientName: string
   clientEmail?: string
+  /** Latest kind='reintake' invitation (created_at, completed_at, status) — surfaces a compact status line above the button so the coach can see at a glance whether a re-intake has been sent recently. */
+  latestInvitation?: {
+    created_at: string
+    completed_at: string | null
+    status: string
+  } | null
+  /** Latest client_communications row of kind='intake_invite' with meta.mode='reintake' — the actual email send timestamp. Preferred over invitation.created_at because the coach might create an invitation and only copy the link, never firing the email. */
+  latestSentAt?: string | null
 }
 
-export default function ReintakeButton({ clientId, clientName, clientEmail }: Props) {
+function formatWhen(iso: string): string {
+  const d = new Date(iso)
+  return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Australia/Brisbane' })
+}
+
+function StatusLine({
+  latestInvitation,
+  latestSentAt,
+}: {
+  latestInvitation: Props['latestInvitation']
+  latestSentAt: Props['latestSentAt']
+}) {
+  if (!latestInvitation) return null
+  const completed = latestInvitation.status === 'complete'
+  if (completed && latestInvitation.completed_at) {
+    return (
+      <p className="text-[11px] font-medium text-emerald-700 mb-2 flex items-center gap-1.5">
+        <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
+        Re-intake completed {formatWhen(latestInvitation.completed_at)}
+      </p>
+    )
+  }
+  if (latestSentAt) {
+    return (
+      <p className="text-[11px] font-medium text-[#1B6DFC] mb-2 flex items-center gap-1.5">
+        <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#1B6DFC]" />
+        Re-intake sent {formatWhen(latestSentAt)} · awaiting submission
+      </p>
+    )
+  }
+  return (
+    <p className="text-[11px] font-medium text-amber-700 mb-2 flex items-center gap-1.5">
+      <span className="inline-block w-1.5 h-1.5 rounded-full bg-amber-500" />
+      Re-intake link created {formatWhen(latestInvitation.created_at)} · not emailed yet
+    </p>
+  )
+}
+
+export default function ReintakeButton({ clientId, clientName, clientEmail, latestInvitation, latestSentAt }: Props) {
   const [status, setStatus] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
   const [token, setToken] = useState('')
@@ -50,19 +96,23 @@ export default function ReintakeButton({ clientId, clientName, clientEmail }: Pr
 
   if (status === 'idle' || status === 'loading' || status === 'error') {
     return (
-      <button
-        onClick={createInvitation}
-        disabled={status === 'loading'}
-        className="text-sm px-4 py-2 border border-[#E5E5E5] text-[#3A3A3A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 transition-colors disabled:opacity-50"
-        title={status === 'error' ? errorMsg : 'Send a fresh 221-question intake to an existing client for reassessment (block-end, life-context shift, etc). Uses the same form as New Intake but with re-intake email copy.'}
-      >
-        {status === 'loading' ? 'Creating…' : status === 'error' ? `Error: ${errorMsg}` : 'Re-intake'}
-      </button>
+      <div className="inline-flex flex-col items-start">
+        <StatusLine latestInvitation={latestInvitation} latestSentAt={latestSentAt} />
+        <button
+          onClick={createInvitation}
+          disabled={status === 'loading'}
+          className="text-sm px-4 py-2 border border-[#E5E5E5] text-[#3A3A3A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 transition-colors disabled:opacity-50"
+          title={status === 'error' ? errorMsg : 'Send a fresh 221-question intake to an existing client for reassessment (block-end, life-context shift, etc). Uses the same form as New Intake but with re-intake email copy.'}
+        >
+          {status === 'loading' ? 'Creating…' : status === 'error' ? `Error: ${errorMsg}` : 'Re-intake'}
+        </button>
+      </div>
     )
   }
 
   return (
     <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl p-5 mt-4">
+      <StatusLine latestInvitation={latestInvitation} latestSentAt={latestSentAt} />
       <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1B6DFC] mb-3">Re-intake link ready</p>
       <p className="text-xs text-[#6B6B6B] mb-3">
         This will send the re-intake email variant when you click Send email — copy acknowledges the client is already coaching and asks for a fresh read for reassessment.

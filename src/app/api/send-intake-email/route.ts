@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { fromCoach } from '@/lib/email-shell'
+import { fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { buildIntakeInviteEmail, type IntakeInviteMode } from '@/lib/intake-invite-email'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
@@ -47,6 +47,7 @@ export async function POST(request: NextRequest) {
   const { error } = await resend.emails.send({
     from: fromCoach(),
     to: clientEmail,
+    bcc: COACH_BCC,
     subject,
     html,
   })
