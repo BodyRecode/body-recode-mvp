@@ -398,12 +398,21 @@ ${darkEmailSignature()}
   // Duplicate-subscription guard (added 2026-05-22 after Samantha was billed
   // three times for three separate subscriptions in 14 days — the static
   // Stripe Payment Link is reusable and there was no client-level idempotency).
-  // The guard distinguishes three cases:
+  // The guard distinguishes four cases:
   //   1. Same subscription, webhook retry → already-recorded payment exists →
   //      ack and exit, do NOT insert another row.
-  //   2. Different subscription, client already has subscription_active=true →
-  //      auto-cancel the new sub immediately, alert Kade, do NOT mark/record.
-  //   3. Fresh subscription, client is inactive → standard path.
+  //   2. subscription_active=true BUT Stripe verify shows no other live sub →
+  //      stale flag (typical cause: prior sub cancelled via
+  //      cancel_at_period_end and the natural-expiry deletion webhook was
+  //      missed or didn't flip the flag). Recover by flipping to false and
+  //      falling through to the fresh-subscription path. Log-warn so it's
+  //      visible in server logs. Added 2026-07-07 after Samantha was
+  //      charged $149.50 today and the guard auto-cancelled the new sub
+  //      because her flag had gone stale 27 days earlier.
+  //   3. Different subscription, client HAS at least one other live sub in
+  //      Stripe → real duplicate, auto-cancel the new sub immediately,
+  //      alert Kade, do NOT mark/record.
+  //   4. Fresh subscription, client is inactive → standard path.
   if (session.mode === 'subscription' && session.client_reference_id) {
     const admin = createAdminClient()
     const incomingSubId = session.subscription as string | null
@@ -421,41 +430,89 @@ ${darkEmailSignature()}
 
     const { data: existingClient } = await admin
       .from('clients')
-      .select('subscription_active, name, email, package')
+      .select('subscription_active, name, email, package, stripe_customer_id')
       .eq('id', session.client_reference_id)
       .maybeSingle()
 
     if (existingClient?.subscription_active && incomingSubId) {
-      try {
-        await stripe.subscriptions.cancel(incomingSubId, { prorate: false, invoice_now: false })
-      } catch (e) {
-        console.error('duplicate-sub guard: failed to auto-cancel', incomingSubId, e)
+      // Verify against Stripe before treating this as a duplicate. The
+      // subscription_active flag can go stale when a prior sub was cancelled
+      // via cancel_at_period_end and the natural-expiry deletion webhook
+      // was missed or didn't flip the flag. Trusting the flag alone caused
+      // Samantha to be charged $149.50 on 2026-07-06 for a sub that was
+      // then auto-cancelled 7 seconds later.
+      //
+      // We check both the incoming session's customer AND any tracked
+      // customer_id on the client row, because Stripe silently creates a
+      // fresh customer for every Checkout Session that provides a
+      // customer_email but no explicit customer id — Samantha ended up
+      // with 4 different customer objects over 2 months. Union both and
+      // look for any live sub other than the incoming one.
+      const customerIdsToCheck = new Set<string>()
+      if (typeof session.customer === 'string') customerIdsToCheck.add(session.customer)
+      const clientStripeCustomerId = existingClient.stripe_customer_id as string | null | undefined
+      if (clientStripeCustomerId) customerIdsToCheck.add(clientStripeCustomerId)
+
+      const otherLiveSubIds: string[] = []
+      for (const cid of customerIdsToCheck) {
+        for (const status of ['active', 'trialing', 'past_due'] as const) {
+          try {
+            const subs = await stripe.subscriptions.list({ customer: cid, status, limit: 20 })
+            for (const s of subs.data) {
+              if (s.id !== incomingSubId) otherLiveSubIds.push(s.id)
+            }
+          } catch (e) {
+            console.warn(`duplicate-sub guard: Stripe verify failed for customer ${cid} status ${status}`, e)
+          }
+        }
       }
 
-      if (process.env.RESEND_API_KEY) {
-        const resend = new Resend(process.env.RESEND_API_KEY)
-        const inner = `
+      if (otherLiveSubIds.length === 0) {
+        // Case 2: stale flag. Correct it and fall through so this checkout
+        // proceeds as a normal fresh subscription. Downstream code will
+        // re-flip subscription_active to true and record the payment.
+        console.warn(
+          `[stale-flag-recovery] client ${session.client_reference_id} had subscription_active=true but Stripe shows no other live subs across customers [${[...customerIdsToCheck].join(', ')}]. Flipping flag to false and continuing.`,
+        )
+        await admin
+          .from('clients')
+          .update({ subscription_active: false })
+          .eq('id', session.client_reference_id)
+        // Deliberate fall-through — no early return.
+      } else {
+        // Case 3: real duplicate. Auto-cancel the incoming sub, alert
+        // coach, exit before recording.
+        try {
+          await stripe.subscriptions.cancel(incomingSubId, { prorate: false, invoice_now: false })
+        } catch (e) {
+          console.error('duplicate-sub guard: failed to auto-cancel', incomingSubId, e)
+        }
+
+        if (process.env.RESEND_API_KEY) {
+          const resend = new Resend(process.env.RESEND_API_KEY)
+          const inner = `
 ${emailLogo()}
 ${emailEyebrow('Duplicate Subscription Caught')}
 ${emailHeading(`${existingClient.name ?? 'A client'} just completed a 2nd subscription.`)}
 ${emailDivider()}
-${emailBody(`The Stripe webhook saw a checkout.session.completed for this client, but their <strong>subscription_active</strong> flag was already true. The new subscription has been auto-cancelled before any charge could land beyond the first invoice that Stripe already captured. Issue a refund for that first invoice in the Stripe dashboard if the client did not intend to subscribe twice.`)}
+${emailBody(`The Stripe webhook saw a checkout.session.completed for this client, and Stripe confirms they already have at least one live subscription (${otherLiveSubIds.join(', ')}). The new subscription has been auto-cancelled before any charge could land beyond the first invoice that Stripe already captured. Issue a refund for that first invoice in the Stripe dashboard if the client did not intend to subscribe twice.`)}
 ${emailStatusCard({
   eyebrow: 'Details',
   headline: `${existingClient.name ?? '(unknown)'} · sub ${incomingSubId} auto-cancelled`,
-  body: `Client email: ${existingClient.email ?? '(unknown)'}. If this 2nd subscription was intentional (e.g. an upgrade or replacement), reactivate it in Stripe and adjust the client's payment plan manually. Otherwise issue a refund for the captured first invoice.`,
+  body: `Client email: ${existingClient.email ?? '(unknown)'}. Existing live sub(s): ${otherLiveSubIds.join(', ')}. If this 2nd subscription was intentional (e.g. an upgrade or replacement), reactivate it in Stripe and adjust the client's payment plan manually. Otherwise issue a refund for the captured first invoice.`,
 })}
 ${darkEmailSignature()}
 `
-        await resend.emails.send({
-          from: `Body Recode System <${coach().email}>`,
-          to: coach().email,
-          subject: `Duplicate subscription auto-cancelled - ${existingClient.name ?? 'client'}`,
-          html: darkEmailShell(inner, { previewText: `Duplicate sub auto-cancelled for ${existingClient.name ?? 'a client'}` }),
-        })
-      }
+          await resend.emails.send({
+            from: `Body Recode System <${coach().email}>`,
+            to: coach().email,
+            subject: `Duplicate subscription auto-cancelled - ${existingClient.name ?? 'client'}`,
+            html: darkEmailShell(inner, { previewText: `Duplicate sub auto-cancelled for ${existingClient.name ?? 'a client'}` }),
+          })
+        }
 
-      return NextResponse.json({ received: true, note: 'duplicate subscription auto-cancelled', cancelled: incomingSubId })
+        return NextResponse.json({ received: true, note: 'duplicate subscription auto-cancelled', cancelled: incomingSubId, existingLiveSubs: otherLiveSubIds })
+      }
     }
 
     await admin
