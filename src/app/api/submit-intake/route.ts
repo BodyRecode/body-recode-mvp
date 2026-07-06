@@ -159,78 +159,100 @@ export async function POST(request: NextRequest) {
       .eq('id', invitation.client_id)
   }
 
-  // Notify coach + send Portal Orientation to the client
+  // Branch on invitation.kind. First-time onboarding (kind='foundational')
+  // fires the full sequence: coach "baseline is remaining" notification,
+  // Portal Orientation to the client, and the onboarding-complete-if-ready
+  // check. Re-intake (kind='reintake') is a reassessment for an existing
+  // client, so it uses a different coach notification ("regenerate CFFS
+  // from your dashboard") and skips Portal Orientation entirely — the
+  // client already has portal orientation from months back and doesn't
+  // need a duplicate welcome email.
+  const isReintake = invitation.kind === 'reintake'
+
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
     const clientName = intake.full_name || 'A client'
     const baseUrl = appUrl()
 
-    // Notify Kade. CFFS is no longer auto-generated at intake-time (the
-    // notifyOnboardingCompleteIfReady call further down handles the
-    // "ready to generate" trigger once baseline is also in). If the client
-    // is doing intake first and baseline later (the common path), this
-    // email surfaces only the intake completion. If baseline is somehow
-    // already in (rare path), the onboarding-complete helper sends its
-    // own notification right after this one.
-    await resend.emails.send({
-      from: fromBrand(),
-      to: coach().email,
-      subject: `${clientName} submitted their intake`,
-      html: buildCoachNotificationEmail({
-        eyebrow: 'Foundational Intake',
-        heading: `${clientName} submitted their intake`,
-        body: `${clientName} has completed and submitted all 221 questions of their foundational intake. Their baseline (measurements and front/side/back photos) is the remaining onboarding step. Once that lands you will receive a second email confirming the CFFS is ready to generate from your dashboard, and the Fat Map will read the photos as part of Spatial Patterning. The Portal Orientation email has been sent to them automatically so they can read through the portal while baseline is still outstanding.`,
-        ctaLabel: 'Open client profile',
-        ctaUrl: `${baseUrl}/dashboard/clients/${invitation.client_id}`,
-        footnote: 'Their next portal task (Baseline Documentation) is now unlocked.',
-      }),
-    })
+    if (isReintake) {
+      // Re-intake coach notification: signal the reassessment is in and the
+      // next step is regenerating the CFFS from the newest intake row.
+      await resend.emails.send({
+        from: fromBrand(),
+        to: coach().email,
+        subject: `${clientName} submitted their re-intake`,
+        html: buildCoachNotificationEmail({
+          eyebrow: 'Re-intake · Reassessment',
+          heading: `${clientName} submitted their re-intake`,
+          body: `${clientName} has completed and submitted a fresh 221-question intake for reassessment. The intakes table now has a newer row that will be picked up on your next CFFS regenerate — head to the client profile and click Regenerate CFFS to run a fresh interpretation against the updated data. No new baseline or portal orientation was sent (existing client, existing portal).`,
+          ctaLabel: 'Open client profile',
+          ctaUrl: `${baseUrl}/dashboard/clients/${invitation.client_id}`,
+          footnote: 'Next step: regenerate CFFS to inform the next training block.',
+        }),
+      })
+      // Deliberately skip Portal Orientation email + onboarding-complete-if-ready
+      // for re-intake — both are first-time-only flows.
+    } else {
+      // First-time onboarding notification. CFFS auto-generation was removed
+      // 2026-05-13; the notifyOnboardingCompleteIfReady call further down
+      // handles the "ready to generate" trigger once baseline is also in.
+      await resend.emails.send({
+        from: fromBrand(),
+        to: coach().email,
+        subject: `${clientName} submitted their intake`,
+        html: buildCoachNotificationEmail({
+          eyebrow: 'Foundational Intake',
+          heading: `${clientName} submitted their intake`,
+          body: `${clientName} has completed and submitted all 221 questions of their foundational intake. Their baseline (measurements and front/side/back photos) is the remaining onboarding step. Once that lands you will receive a second email confirming the CFFS is ready to generate from your dashboard, and the Fat Map will read the photos as part of Spatial Patterning. The Portal Orientation email has been sent to them automatically so they can read through the portal while baseline is still outstanding.`,
+          ctaLabel: 'Open client profile',
+          ctaUrl: `${baseUrl}/dashboard/clients/${invitation.client_id}`,
+          footnote: 'Their next portal task (Baseline Documentation) is now unlocked.',
+        }),
+      })
 
-    // Send Portal Orientation to the client (auto-fires here so the client
-    // has time to read through the portal while baseline is still being
-    // completed and the program is being built).
-    const { data: clientRow } = await admin
-      .from('clients')
-      .select('email, name, onboarding_token')
-      .eq('id', invitation.client_id)
-      .maybeSingle()
+      // Send Portal Orientation to the client (first-time only — existing
+      // clients doing a re-intake already have portal orientation from
+      // months back and don't need a duplicate welcome email).
+      const { data: clientRow } = await admin
+        .from('clients')
+        .select('email, name, onboarding_token')
+        .eq('id', invitation.client_id)
+        .maybeSingle()
 
-    if (clientRow?.email && clientRow.onboarding_token) {
-      const firstName = clientRow.name?.split(' ')[0] ?? 'there'
-      const portalUrl = `${baseUrl}/portal/${clientRow.onboarding_token}`
-      const { subject, html } = buildPortalOrientationEmail({ firstName, portalUrl })
-      try {
-        await resend.emails.send({
-          from: fromCoach(),
-          to: clientRow.email,
-          subject,
-          html,
-        })
-        await logClientCommunication(admin, {
-          clientId: invitation.client_id,
-          kind: 'portal_orientation',
-          subject,
-          toAddress: clientRow.email,
-          meta: { trigger: 'intake_submission' },
-        })
-      } catch (e) {
-        console.error('Portal orientation email failed:', e)
+      if (clientRow?.email && clientRow.onboarding_token) {
+        const firstName = clientRow.name?.split(' ')[0] ?? 'there'
+        const portalUrl = `${baseUrl}/portal/${clientRow.onboarding_token}`
+        const { subject, html } = buildPortalOrientationEmail({ firstName, portalUrl })
+        try {
+          await resend.emails.send({
+            from: fromCoach(),
+            to: clientRow.email,
+            subject,
+            html,
+          })
+          await logClientCommunication(admin, {
+            clientId: invitation.client_id,
+            kind: 'portal_orientation',
+            subject,
+            toAddress: clientRow.email,
+            meta: { trigger: 'intake_submission' },
+          })
+        } catch (e) {
+          console.error('Portal orientation email failed:', e)
+        }
       }
     }
   } catch (e) {
     console.error('Notification email failed:', e)
   }
 
-  // CFFS auto-generation removed 2026-05-13. The CFFS is now coach-triggered
-  // after BOTH onboarding forms are complete (intake + baseline), so the
-  // Fat Map's Spatial Patterning pillar can read the baseline photos as
-  // part of the same call. Coach generates manually from the dashboard.
-  //
-  // Edge case handled here: if the baseline was somehow submitted FIRST
-  // (rare ordering — portal flow is intake-then-baseline by default), this
-  // intake submission is the second of the two and the onboarding is now
-  // complete. The helper fires the "ready to generate" notification.
-  await notifyOnboardingCompleteIfReady(admin, invitation.client_id, { trigger: 'intake' })
+  // Onboarding-complete-if-ready check only makes sense for first-time
+  // intakes. Re-intake clients are already fully onboarded — this helper
+  // would be a no-op or (worse) misinterpret the new intake row as a
+  // trigger to re-fire onboarding sequencing.
+  if (!isReintake) {
+    await notifyOnboardingCompleteIfReady(admin, invitation.client_id, { trigger: 'intake' })
+  }
 
-  return NextResponse.json({ success: true })
+  return NextResponse.json({ success: true, mode: isReintake ? 'reintake' : 'first_time' })
 }

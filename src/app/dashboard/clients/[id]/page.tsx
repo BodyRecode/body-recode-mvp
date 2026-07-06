@@ -28,6 +28,7 @@ import MedicationsAnalysisPanel from './medications-analysis-panel'
 import ReopenCheckinButton from './reopen-checkin-button'
 import BloodPanelsPanel, { type BloodPanelData } from './blood-panels-panel'
 import NewIntakeButton from '@/components/new-intake-button'
+import ReintakeButton from '@/components/re-intake-button'
 import PortalInviteButton from '@/components/portal-invite-button'
 import SendPortalEmailButton from '@/components/send-portal-email-button'
 import SendPortalOrientationButton from '@/components/send-portal-orientation-button'
@@ -358,11 +359,18 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             </span>
           }
           cta={
-            <NewIntakeButton
-              clientId={client.id}
-              clientName={client.name}
-              clientEmail={client.email}
-            />
+            <div className="flex items-center gap-2 flex-wrap">
+              <NewIntakeButton
+                clientId={client.id}
+                clientName={client.name}
+                clientEmail={client.email}
+              />
+              <ReintakeButton
+                clientId={client.id}
+                clientName={client.name}
+                clientEmail={client.email}
+              />
+            </div>
           }
         />
       </div>

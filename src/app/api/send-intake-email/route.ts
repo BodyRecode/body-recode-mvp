@@ -2,14 +2,18 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { darkEmailSignature } from '@/lib/email-signature'
-import {
-  darkEmailShell, emailUrlFallback,
-  emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody, emailCta,
-  fromCoach,
-} from '@/lib/email-shell'
+import { fromCoach } from '@/lib/email-shell'
+import { buildIntakeInviteEmail, type IntakeInviteMode } from '@/lib/intake-invite-email'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
+
+// Picks the email copy variant by looking up the invitation's kind:
+//   kind='foundational' → first-time onboarding copy ("Before we begin…")
+//   kind='reintake'     → re-intake / reassessment copy ("Time to re-read where
+//                          you are now…")
+// The coach controls which mode by clicking either the New Intake or the
+// Re-intake button on the client profile. Each button creates an invitation
+// with the corresponding kind; this route just reads it.
 
 export async function POST(request: NextRequest) {
   const { clientId, clientName, clientEmail, intakeToken } = await request.json()
@@ -21,9 +25,22 @@ export async function POST(request: NextRequest) {
   if (!clientEmail) return NextResponse.json({ error: 'No email address' }, { status: 400 })
   if (!intakeToken) return NextResponse.json({ error: 'No intake token' }, { status: 400 })
 
+  const admin = createAdminClient()
+
+  // Look up the invitation's kind to choose email copy. Defaults to 'first_time'
+  // if the invitation isn't found or has no kind (grandfathers pre-migration
+  // rows so behaviour is unchanged for anything already in the system).
+  let mode: IntakeInviteMode = 'first_time'
+  const { data: invitation } = await admin
+    .from('intake_invitations')
+    .select('kind')
+    .eq('token', intakeToken)
+    .maybeSingle()
+  if (invitation?.kind === 'reintake') mode = 'reintake'
+
   const firstName = clientName.split(' ')[0]
   const intakeUrl = `${appUrl()}/intake/${intakeToken}`
-  const subject = `${firstName}, your Body Recode intake is ready`
+  const { subject, html } = buildIntakeInviteEmail({ firstName, intakeUrl, mode })
 
   const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -31,18 +48,7 @@ export async function POST(request: NextRequest) {
     from: fromCoach(),
     to: clientEmail,
     subject,
-    html: darkEmailShell(`
-${emailLogo()}
-${emailEyebrow('Foundational Intake')}
-${emailHeading(`${firstName}, your intake is ready.`)}
-${emailDivider()}
-${emailBody(`Hi ${firstName},`)}
-${emailBody('Before we begin, I need you to complete your foundational intake. This is how I build an accurate picture of where you are starting from: your training history, recovery patterns, stress load, sleep, and lifestyle.')}
-${emailBody('It takes around 15 to 20 minutes and there are no right or wrong answers. Just answer based on your typical experience, not your best or worst days. This intake forms the foundation of everything we do together, so take your time with it.', { bottom: 28 })}
-${emailCta({ href: intakeUrl, label: 'Complete my intake' })}
-${emailUrlFallback(intakeUrl, 'Or paste this link into your browser')}
-${darkEmailSignature()}
-`, { previewText: `${firstName}, your foundational intake is ready.` }),
+    html,
   })
 
   if (error) {
@@ -51,16 +57,15 @@ ${darkEmailSignature()}
   }
 
   if (clientId) {
-    const admin = createAdminClient()
     await logClientCommunication(admin, {
       clientId,
       kind: 'intake_invite',
       subject,
       toAddress: clientEmail,
       sentBy: user.id,
-      meta: { url: intakeUrl, trigger: 'manual' },
+      meta: { url: intakeUrl, trigger: 'manual', mode },
     })
   }
 
-  return NextResponse.json({ sent: true })
+  return NextResponse.json({ sent: true, mode })
 }
