@@ -359,18 +359,11 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             </span>
           }
           cta={
-            <div className="flex items-center gap-2 flex-wrap">
-              <NewIntakeButton
-                clientId={client.id}
-                clientName={client.name}
-                clientEmail={client.email}
-              />
-              <ReintakeButton
-                clientId={client.id}
-                clientName={client.name}
-                clientEmail={client.email}
-              />
-            </div>
+            <NewIntakeButton
+              clientId={client.id}
+              clientName={client.name}
+              clientEmail={client.email}
+            />
           }
         />
       </div>
@@ -892,7 +885,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   </span>
                 )}
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <Link
                   href={`/dashboard/clients/${client.id}/cffs-report`}
                   target="_blank"
@@ -903,6 +896,18 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 {latestIntakeId && (
                   <RegenerateCFFSButton clientId={client.id} intakeId={latestIntakeId} />
                 )}
+                {/* Re-intake: sends the client a fresh 221-question intake.
+                    Placed alongside Regenerate CFFS because the two actions
+                    live on the same axis: "the CFFS needs a refresh — do I
+                    regenerate against existing intake data, or ask the client
+                    for a full data refresh first?" Re-intake is the heavier
+                    of the two; use when enough has shifted since the original
+                    intake that the readiness signals themselves are stale. */}
+                <ReintakeButton
+                  clientId={client.id}
+                  clientName={client.name}
+                  clientEmail={client.email}
+                />
               </div>
             </div>
           </div>
