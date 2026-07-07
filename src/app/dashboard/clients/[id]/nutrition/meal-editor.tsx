@@ -110,6 +110,23 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals }
   const mealMacros = useMemo(() => sumFoods(draftFoods), [draftFoods])
   const mealKcal = kcalFromMacros(mealMacros.protein_g, mealMacros.carb_g, mealMacros.fat_g)
 
+  // Daily band preview must be computed at the top of the component (before
+  // any conditional return) so hook order is stable between view / edit
+  // mode renders. Rules of Hooks: previously this was defined after the
+  // if (!editing) early return, which threw "Rendered more hooks than
+  // during the previous render" on the first toggle into edit mode.
+  const dailyPreview = useMemo(() => {
+    const totalP = siblingMeals.reduce((acc, m) => acc + (m.meal_number === meal.meal_number ? mealMacros.protein_g : (Number(m.protein_g) || 0)), 0)
+    const totalC = siblingMeals.reduce((acc, m) => acc + (m.meal_number === meal.meal_number ? mealMacros.carb_g : (Number(m.carb_g) || 0)), 0)
+    const totalF = siblingMeals.reduce((acc, m) => acc + (m.meal_number === meal.meal_number ? mealMacros.fat_g : (Number(m.fat_g) || 0)), 0)
+    return {
+      protein_g: Math.round(totalP),
+      carb_g: Math.round(totalC),
+      fat_g: Math.round(totalF),
+      kcal: kcalFromMacros(totalP, totalC, totalF),
+    }
+  }, [siblingMeals, mealMacros, meal.meal_number])
+
   // View-mode display: keep parity with the current page.tsx render.
   if (!editing) {
     const view = computeMealMacros(meal)
@@ -255,19 +272,6 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals }
     setError(null)
     setEditing(false)
   }
-
-  // Daily band preview (sum of all meals with this edit applied).
-  const dailyPreview = useMemo(() => {
-    const totalP = siblingMeals.reduce((acc, m) => acc + (m.meal_number === meal.meal_number ? mealMacros.protein_g : (Number(m.protein_g) || 0)), 0)
-    const totalC = siblingMeals.reduce((acc, m) => acc + (m.meal_number === meal.meal_number ? mealMacros.carb_g : (Number(m.carb_g) || 0)), 0)
-    const totalF = siblingMeals.reduce((acc, m) => acc + (m.meal_number === meal.meal_number ? mealMacros.fat_g : (Number(m.fat_g) || 0)), 0)
-    return {
-      protein_g: Math.round(totalP),
-      carb_g: Math.round(totalC),
-      fat_g: Math.round(totalF),
-      kcal: kcalFromMacros(totalP, totalC, totalF),
-    }
-  }, [siblingMeals, mealMacros, meal.meal_number])
 
   return (
     <div className="bg-white border-2 border-[#1B6DFC] rounded-xl overflow-hidden">
