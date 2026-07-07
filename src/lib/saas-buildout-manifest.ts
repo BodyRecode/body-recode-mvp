@@ -629,6 +629,20 @@ export const PHASES: Phase[] = [
         notes: 'Sits alongside /settings/tenants (registry) + /settings/partner-billing (billing). Uses admin (service-role) client for cross-tenant queries; auth still gated by isCoachEmail at the route. Legend chips: filled dot = configured, empty dot = not configured. Cap thresholds: 10 for Launch tier, 30 for Studio tier per Founding Ten Agreement. Refresh link at top re-runs the SSR queries.',
       },
       {
+        id: 'partner-getting-started',
+        title: 'Tenant-scoped Getting Started checklist',
+        description: 'The first thing a fresh partner sees when they log in. Reads their current tenant_config + ambient signals (student count on their coach_id, weekly-checkin count) and shows a 7-step checklist: (1) Brand shell, (2) Voice + coaching guidance, (3) Stripe Connect onboarding, (4) SMS number, (5) Custom domain, (6) First student invited, (7) First check-in reviewed. Each step shows done/not-done + a "Open the settings" link. Steps that Kade handles show "Kade to complete" instead. Progress bar at top uses the tenant\'s own accent colour. Reminder about Hard Safety Floors + IP Licence 4.1(h) at the footer.',
+        status: 'shipped',
+        shippedAt: '2026-07-07',
+        effort: 'S',
+        commits: ['pending'],
+        surfaces: [
+          'src/app/dashboard/getting-started/page.tsx',
+          'src/app/dashboard/nav.tsx',
+        ],
+        notes: 'Linked from nav under META (`Setup`). BR (Kade) tenant always reads as fully done - the page becomes a no-op for the base tenant. For a fresh partner (Melisa on day one), every step is open. Deep-links to /dashboard/settings/tenant + /dashboard/coaching for the tune-and-invite motion.',
+      },
+      {
         id: 'doctrine-parameters-live-preview',
         title: 'Mode A+ live-LLM preview add-on',
         description: 'Complements the deterministic preview with a "Generate a real sample" button. Runs ONE Anthropic call using the coach\'s current form values as tuning, applied to a fixed stub weekly check-in (Sarah, Week 3). Returns interpretation / reframe / next_focus fields with terminology substitutions applied. Panel shows generated fields + latency + tokens + platform-audit + partner-audit + subs-applied. Costs ~$0.001/click (Haiku, ~1500 in + ~500 out). Fixed stub so two clicks with different tunings show the effect cleanly.',

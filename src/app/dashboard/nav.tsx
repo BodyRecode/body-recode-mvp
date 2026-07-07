@@ -74,6 +74,7 @@ const BRANDS_CLUSTER_BASE: NavLink[] = [
 ]
 
 const META: NavLink[] = [
+  { href: '/dashboard/getting-started', label: 'Setup' },
   { href: '/dashboard/help', label: 'Guide' },
   { href: '/dashboard/system-health', label: 'System' },
   { href: '/dashboard/settings', label: 'Settings' },
