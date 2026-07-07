@@ -57,7 +57,7 @@
     { "slug": "story-2026-07-08_02_hook", "type": "story", "category": "hook", "label": "THE TRAP", "hook_1": "If every diet has stopped working, the diet isn't the variable.", "sub_1": "Your body is operating in a specific state. The state decides which diet works." },
     { "slug": "story-2026-07-08_03_pattern", "type": "story", "category": "pattern", "label": "ESTROGEN-SHIFT", "pattern_name": "Estrogen-Shift", "pattern_color": "#8b5cf6", "hook_1": "Storage settling in hips, glutes, outer thighs. Sleep lighter. Mood variable.", "sub_1": "This pattern responds to consistency and fuelling. It conserves harder when you restrict." },
     { "slug": "story-2026-07-08_04_quote", "type": "story", "category": "quote", "hook_1": "What if your body was misread, not broken?" },
-    { "slug": "story-2026-07-08_05_launch_reveal", "type": "story", "category": "launch_reveal", "label": "FIVE DAYS TO GO", "date_line": "OPENS MONDAY", "hook_1": "14 days. Free. Decide what's next from a real read.", "sub_1": "13 July at 7am." },
+    { "slug": "story-2026-07-08_05_launch_reveal", "type": "story", "category": "launch_reveal", "label": "FIVE DAYS TO GO", "date_line": "Monday 13 July", "hook_1": "14 days. Free. Decide what's next from a real read.", "sub_1": "7am AEST." },
     { "slug": "story-2026-07-08_06_photo", "type": "story", "category": "photo_overlay", "photo": "6", "hook_1": "Stop guessing which plan fits. Read the state behind the symptoms.", "sub_1": "Opens Monday." },
 
     { "slug": "story-2026-07-09_01_countdown", "type": "story", "category": "countdown", "countdown": "4" },
