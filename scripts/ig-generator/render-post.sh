@@ -436,14 +436,27 @@ case "$TYPE" in
       inside_challenge)
         # Day X / Day Y card. White background, Signal Blue numbered badge.
         # Sizes bumped 2026-06-29 for accessibility.
-        DAY_NUM="$(JN '.day_num')"  # "Day 1", "Day 7", "Day 14"
+        # Label auto-scales 2026-07-08 so longer labels ("The Work") fit
+        # inside the badge without clipping.
+        DAY_NUM="$(JN '.day_num')"  # "Day 1", "Day 7", "Day 14", "The Work" etc
         CMD+=( -size 1080x1920 xc:white )
         CMD+=( "$LOGO_B_STORY" -gravity northwest -geometry +96+96 -compose over -composite )
         # Eyebrow
         CMD+=( -font "$SANS_BOLD" -pointsize 36 -fill "#1B6DFC" -gravity center -annotate +0-560 "INSIDE THE CHALLENGE" )
+        # Auto-size the badge + label: short labels get the punchy sizing;
+        # longer ones (> 6 chars) get a wider box + smaller font so nothing
+        # clips out of the badge.
+        DN_LEN=${#DAY_NUM}
+        if [ "$DN_LEN" -le 6 ]; then
+          BOX_L=340; BOX_R=740; LABEL_PT=100
+        elif [ "$DN_LEN" -le 9 ]; then
+          BOX_L=260; BOX_R=820; LABEL_PT=76
+        else
+          BOX_L=200; BOX_R=880; LABEL_PT=60
+        fi
         # Day badge (larger)
-        CMD+=( -fill "#1B6DFC" -draw "roundrectangle 340,460 740,660 18,18" )
-        CMD+=( -font "$SANS_BOLD" -pointsize 100 -fill white -gravity center -annotate +0-360 "$DAY_NUM" )
+        CMD+=( -fill "#1B6DFC" -draw "roundrectangle $BOX_L,460 $BOX_R,660 18,18" )
+        CMD+=( -font "$SANS_BOLD" -pointsize "$LABEL_PT" -fill white -gravity center -annotate +0-360 "$DAY_NUM" )
         # Hook
         CMD+=( \( -background white -fill "#1A1A1A" -font "$SANS_BOLD" -pointsize 88 -size 888x -gravity center caption:"$HOOK1" \) -gravity center -geometry +0+40 -composite )
         # Sub
