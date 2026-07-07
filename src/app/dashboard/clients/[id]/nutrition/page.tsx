@@ -19,6 +19,7 @@ import {
   type FoodInput,
 } from '@/lib/nutrition-validation'
 import { DOCTRINE_VERSIONS, isDoctrineStale } from '@/lib/doctrine-versions'
+import MealEditor from './meal-editor'
 
 interface Meal {
   meal_number: number
@@ -502,62 +503,22 @@ function NutritionPlanBody({
         )
       })()}
 
-      {/* Meals */}
+      {/* Meals — coach-editable via inline MealEditor (2026-07-07). Each meal
+          renders in view mode by default, with an Edit button that opens
+          per-food + macro editing including a "Swap food" dropdown backed by
+          the FOOD_DB reference table. */}
       <div id={`${idPrefix}meals`} className="scroll-mt-8">
         <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3 px-1">Meal Structure</p>
         <div className="space-y-3">
-          {plan.meals.map((meal) => {
-            const mealMacros = computeMealMacros(meal)
-            const denom = mealMacros.kcal || 1
-            const pp = Math.round((meal.protein_g * 4 / denom) * 100)
-            const cp = Math.round((meal.carb_g * 4 / denom) * 100)
-            const fp = 100 - pp - cp
-            return (
-              <div key={meal.meal_number} className="bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
-                <div className="px-5 py-3 border-b border-stone-200 flex items-center justify-between">
-                  <div>
-                    <h3 className="font-semibold text-stone-900 text-sm">{meal.meal_name}</h3>
-                    <p className="text-[10px] text-stone-400 mt-0.5">{meal.timing}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-semibold text-[#1A1A1A] tabular-nums">{mealMacros.kcal} kcal</p>
-                    <p className="text-[10px] text-stone-500 mt-0.5 tabular-nums">
-                      {meal.protein_g}g P · {meal.carb_g}g C · {meal.fat_g}g F
-                    </p>
-                    <p className="text-[10px] text-stone-400 mt-0.5 tabular-nums uppercase tracking-wider">
-                      P {pp}% · C {cp}% · F {fp}%
-                    </p>
-                  </div>
-                </div>
-                <div className="px-5 py-4">
-                  <div className="space-y-1.5">
-                    {meal.foods.map((food, i) => {
-                      const f = normalizeFood(food)
-                      return (
-                        <div key={i} className="flex items-start justify-between gap-3">
-                          <div className="flex items-start gap-2 flex-1 min-w-0">
-                            <span className="text-stone-400 mt-0.5 shrink-0">•</span>
-                            <p className="text-sm text-stone-700">{clean(f.name)}</p>
-                          </div>
-                          {f.protein_g !== null && (
-                            <div className="flex items-baseline gap-3 shrink-0 tabular-nums text-xs pt-0.5">
-                              <span className="text-stone-500"><span className="text-[10px] text-stone-400">P</span> {f.protein_g}g</span>
-                              <span className="text-stone-500"><span className="text-[10px] text-stone-400">C</span> {f.carb_g}g</span>
-                              <span className="text-stone-500"><span className="text-[10px] text-stone-400">F</span> {f.fat_g}g</span>
-                              <span className="text-stone-600 font-medium w-[60px] text-right">{f.kcal} kcal</span>
-                            </div>
-                          )}
-                        </div>
-                      )
-                    })}
-                  </div>
-                  {meal.notes && (
-                    <p className="text-xs text-stone-400 italic mt-2">{clean(meal.notes)}</p>
-                  )}
-                </div>
-              </div>
-            )
-          })}
+          {plan.meals.map((meal) => (
+            <MealEditor
+              key={meal.meal_number}
+              planId={plan.id}
+              meal={meal as unknown as Parameters<typeof MealEditor>[0]['meal']}
+              proteinAnchor={plan.protein_anchor_g}
+              siblingMeals={plan.meals as unknown as Parameters<typeof MealEditor>[0]['siblingMeals']}
+            />
+          ))}
         </div>
       </div>
 
