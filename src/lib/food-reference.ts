@@ -190,6 +190,53 @@ export const FOOD_DB: Record<string, FoodMacros> = {
     pg_protein: 0.009, pg_carb: 0.001, pg_fat: 0.81, pg_kcal: 7.34,
     state: 'fresh', aliases: ['butter', 'unsalted butter', 'salted butter'],
   },
+  // ─── Added 2026-07-06 (Phase 2 reference-table expansion) ───────────
+  // Coach variety guidance for Amanda Stage 2 surfaced 10+ foods the
+  // engine emitted that weren't in the table. Adding cooked variants of
+  // the starches, kangaroo, apple, and a few phrasings coach nutrition
+  // plans reach for regularly.
+  'kangaroo mince (raw)': {
+    pg_protein: 0.24, pg_carb: 0, pg_fat: 0.02, pg_kcal: 1.14,
+    state: 'raw', aliases: ['kangaroo mince', 'kangaroo', 'roo mince', 'kangaroo mince raw'],
+  },
+  'kangaroo steak (raw)': {
+    pg_protein: 0.22, pg_carb: 0, pg_fat: 0.02, pg_kcal: 1.06,
+    state: 'raw', aliases: ['kangaroo steak', 'roo steak'],
+  },
+  'apple (fresh)': {
+    pg_protein: 0.003, pg_carb: 0.138, pg_fat: 0.002, pg_kcal: 0.57,
+    state: 'fresh', aliases: ['apple', 'medium apple', 'fresh apple', 'apple medium'],
+  },
+  'white potato (cooked)': {
+    // Boiled/baked potato flesh, no oil. ~77 kcal/100g cooked.
+    pg_protein: 0.02, pg_carb: 0.17, pg_fat: 0.001, pg_kcal: 0.77,
+    state: 'cooked', aliases: ['white potato cooked', 'potato cooked', 'boiled potato', 'baked potato', 'white potato boiled', 'white potato baked'],
+  },
+  'sweet potato (cooked)': {
+    // Boiled/baked sweet potato flesh, no oil. ~86 kcal/100g cooked.
+    pg_protein: 0.016, pg_carb: 0.20, pg_fat: 0.001, pg_kcal: 0.86,
+    state: 'cooked', aliases: ['sweet potato cooked', 'sweet potato boiled', 'sweet potato baked'],
+  },
+  'oats (dry)': {
+    pg_protein: 0.13, pg_carb: 0.66, pg_fat: 0.07, pg_kcal: 3.79,
+    state: 'dry', aliases: ['oats', 'rolled oats', 'oats dry', 'dry oats'],
+  },
+  'quinoa (cooked)': {
+    pg_protein: 0.044, pg_carb: 0.213, pg_fat: 0.019, pg_kcal: 1.20,
+    state: 'cooked', aliases: ['quinoa', 'cooked quinoa', 'quinoa cooked'],
+  },
+  'beef mince 10% fat (raw)': {
+    pg_protein: 0.20, pg_carb: 0, pg_fat: 0.10, pg_kcal: 1.70,
+    state: 'raw', aliases: ['beef mince 10%', '10% beef mince', 'beef mince 10% fat', 'medium-fat beef mince'],
+  },
+  'lamb chops (raw)': {
+    pg_protein: 0.20, pg_carb: 0, pg_fat: 0.14, pg_kcal: 2.06,
+    state: 'raw', aliases: ['lamb chops', 'lamb chop', 'lamb cutlet', 'lamb cutlets'],
+  },
+  'chicken thigh skin-on (raw)': {
+    pg_protein: 0.17, pg_carb: 0, pg_fat: 0.11, pg_kcal: 1.67,
+    state: 'raw', aliases: ['chicken thigh skin on', 'chicken thigh with skin', 'chicken thigh (skin on)'],
+  },
 }
 
 /**
@@ -203,21 +250,43 @@ export const FOOD_DB: Record<string, FoodMacros> = {
  */
 export function lookupFood(name: string): { canonical: string; macros: FoodMacros } | null {
   const cleaned = name.toLowerCase().trim()
-  // Variants to try, in order. The match takes the first hit, so put the
-  // more-specific variants first.
+
+  // Variant expansion pipeline. Each transformation adds candidates the
+  // 2026-07-06 audit found the engine emitting on Amanda Stage 2 that
+  // didn't match anything:
+  //   - "Beef mince, 5% fat" — comma between food + qualifier
+  //   - "White rice, cooked" — comma between food + state
+  //   - "Tinned tuna in springwater" — smushed alias
+  //   - "Salmon, fresh" — leading article stripped as trailing qualifier
+  //   - "1/2 banana (~60g)" — fractional count + parenthesised weight
+  // Match takes the first hit; more-specific variants tried first.
   const variants = new Set<string>()
   variants.add(cleaned)
+
   // Strip trailing parenthesised qualifier ("chicken breast (raw)" → "chicken breast")
-  variants.add(cleaned.replace(/\s*\([^)]*\)\s*$/, '').trim())
-  // Strip leading count tokens ("1 banana" → "banana", "3 whole eggs" → "whole eggs")
-  variants.add(cleaned.replace(/^(?:\d+(?:\.\d+)?|one|two|three|four|five|six|seven|eight)\s+/, '').trim())
-  // Strip BOTH leading count AND trailing qualifier
-  variants.add(
-    cleaned
-      .replace(/^(?:\d+(?:\.\d+)?|one|two|three|four|five|six|seven|eight)\s+/, '')
-      .replace(/\s*\([^)]*\)\s*$/, '')
-      .trim()
-  )
+  const stripParen = (s: string) => s.replace(/\s*\([^)]*\)\s*$/, '').trim()
+  // Strip leading count tokens including fractions ("1 banana" / "1/2 banana" / "3 whole eggs" → root food)
+  const stripCount = (s: string) => s.replace(/^(?:\d+\/\d+|\d+(?:\.\d+)?|one|two|three|four|five|six|seven|eight|half|quarter)\s+/, '').trim()
+  // Collapse comma-separated qualifier into a canonical form:
+  //   "beef mince, 5% fat" → "beef mince 5% fat"
+  //   "white rice, cooked" → "white rice cooked"
+  const stripComma = (s: string) => s.replace(/,\s+/g, ' ').trim()
+  // Normalise repeated whitespace collapses ("chicken  thigh" → "chicken thigh")
+  const collapseSpace = (s: string) => s.replace(/\s+/g, ' ').trim()
+
+  const transforms: Array<(s: string) => string> = [
+    (s) => s,
+    stripParen,
+    stripCount,
+    stripComma,
+    (s) => stripComma(stripParen(s)),
+    (s) => stripCount(stripParen(s)),
+    (s) => stripCount(stripComma(s)),
+    (s) => stripCount(stripComma(stripParen(s))),
+  ]
+  for (const t of transforms) {
+    variants.add(collapseSpace(t(cleaned)))
+  }
 
   for (const v of variants) {
     if (!v) continue

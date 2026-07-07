@@ -202,6 +202,16 @@ export default function NutritionPrescriptionSuggest({
     const controller = new AbortController()
     bridgeFetchAbortRef.current = controller
     setBridgeSuggesting(true)
+    // 2026-07-06 (Bug 5 fix): mark prefill-done at fetch START, not complete.
+    // Prev logic marked at complete, which left an open race window between
+    // fetch start and complete during which coach edits (step-up presets,
+    // manual field edits) could be silently overwritten when the async
+    // response landed with stale suggestions. Setting at start closes the
+    // window: any coach action during the in-flight fetch takes priority
+    // over the AI suggestion when it eventually returns. On `force=true`
+    // (explicit "Regenerate suggestion" click) the guard on individual
+    // setters still allows overwrite.
+    if (!force) setBridgePrefillDone(true)
     try {
       const res = await fetch('/api/suggest-bridge-mode', {
         method: 'POST',
@@ -214,7 +224,14 @@ export default function NutritionPrescriptionSuggest({
       // with the response. AbortController catches most cases but this is the
       // belt-and-braces backstop.
       if (!overrideActive) return
-      if (data?.suggested_floor_kcal) setOverrideFloorKcal(data.suggested_floor_kcal)
+      // 2026-07-06 (Bug 5 fix): floor now guarded same as justification and
+      // anchor. Previously any fetch overwrote the floor which meant a coach
+      // clicking "Step up +200 kcal → 1900" during the in-flight prefill
+      // would see the floor revert to whatever the AI suggested when the
+      // response landed. Amanda 2026-07-06 hit this repeatedly.
+      if (data?.suggested_floor_kcal && (force || !bridgePrefillDone)) {
+        setOverrideFloorKcal(data.suggested_floor_kcal)
+      }
       // Only overwrite the justification on first fetch (toggle-on) or when
       // the coach explicitly clicks "Regenerate suggestion". Don't clobber
       // edits the coach has typed.
