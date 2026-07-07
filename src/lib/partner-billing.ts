@@ -24,6 +24,46 @@ export function monthStartIso(date: Date = new Date()): string {
 }
 
 /**
+ * First day of the month AFTER monthStart (UTC), as YYYY-MM-DD. Used to
+ * cap the SQL range: [monthStart, nextMonthStart). Handles year rollover
+ * (Dec 2026 -> Jan 2027).
+ * Exported for reuse + isolated testability.
+ */
+export function nextMonthStartIso(monthStart: string): string {
+  const [y, m] = monthStart.split('-').map(Number)
+  if (!Number.isFinite(y) || !Number.isFinite(m) || m < 1 || m > 12) {
+    throw new Error(`Invalid monthStart: "${monthStart}". Expected YYYY-MM-01.`)
+  }
+  const nextY = m === 12 ? y + 1 : y
+  const nextM = m === 12 ? 1 : m + 1
+  return `${nextY}-${String(nextM).padStart(2, '0')}-01`
+}
+
+/**
+ * Pure helper: given the three row arrays, return the count of DISTINCT
+ * client_ids that appear in any of them. Nulls and empty strings are
+ * ignored. Case-sensitive on client_id (they're UUIDs).
+ *
+ * Exported for isolated testing. computeActiveClientCount() calls this
+ * after fetching the rows.
+ */
+export type ClientRow = { client_id: string | null } | { client_id: string }
+export function countDistinctActiveClients(
+  planRows: readonly ClientRow[] | null | undefined,
+  nutritionRows: readonly ClientRow[] | null | undefined,
+  checkinRows: readonly ClientRow[] | null | undefined,
+): number {
+  const ids = new Set<string>()
+  for (const rows of [planRows ?? [], nutritionRows ?? [], checkinRows ?? []]) {
+    for (const row of rows) {
+      const cid = row.client_id
+      if (typeof cid === 'string' && cid.length > 0) ids.add(cid)
+    }
+  }
+  return ids.size
+}
+
+/**
  * Count Active Clients on the given tenant for the month starting on monthStart.
  * Reads tenant_config.coach_id, then joins client-scoped tables filtered by
  * updated_at (plans) or submitted_at (weekly_checkins) within the month.
@@ -41,11 +81,7 @@ export async function computeActiveClientCount(tenantId: string, monthStart: str
   if (!tenant?.coach_id) return 0
   const coachId = tenant.coach_id as string
 
-  const monthEndDate = new Date(monthStart)
-  monthEndDate.setUTCMonth(monthEndDate.getUTCMonth() + 1)
-  const monthEnd = monthEndDate.toISOString().slice(0, 10)
-
-  const activeIds = new Set<string>()
+  const monthEnd = nextMonthStartIso(monthStart)
 
   // (a) Clients with a training or nutrition plan updated in the month
   const { data: planRows } = await admin
@@ -54,7 +90,6 @@ export async function computeActiveClientCount(tenantId: string, monthStart: str
     .eq('coach_id', coachId)
     .gte('updated_at', `${monthStart}T00:00:00Z`)
     .lt('updated_at', `${monthEnd}T00:00:00Z`)
-  for (const row of planRows ?? []) if (row.client_id) activeIds.add(row.client_id as string)
 
   const { data: nutritionRows } = await admin
     .from('nutrition_plans')
@@ -62,7 +97,6 @@ export async function computeActiveClientCount(tenantId: string, monthStart: str
     .eq('coach_id', coachId)
     .gte('updated_at', `${monthStart}T00:00:00Z`)
     .lt('updated_at', `${monthEnd}T00:00:00Z`)
-  for (const row of nutritionRows ?? []) if (row.client_id) activeIds.add(row.client_id as string)
 
   // (b) Clients who submitted a weekly check-in in the month
   const { data: checkinRows } = await admin
@@ -71,9 +105,8 @@ export async function computeActiveClientCount(tenantId: string, monthStart: str
     .eq('coach_id', coachId)
     .gte('submitted_at', `${monthStart}T00:00:00Z`)
     .lt('submitted_at', `${monthEnd}T00:00:00Z`)
-  for (const row of checkinRows ?? []) if (row.client_id) activeIds.add(row.client_id as string)
 
-  return activeIds.size
+  return countDistinctActiveClients(planRows, nutritionRows, checkinRows)
 }
 
 /**
