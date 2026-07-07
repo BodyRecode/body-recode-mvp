@@ -614,6 +614,21 @@ export const PHASES: Phase[] = [
         notes: 'Runs BEFORE the DB write. Additive - layers over the platform Hard Safety Floors. Two test suites via `npm run test:doctrine-params`: (a) 22 save-time validator assertions, (b) 21 runtime helper assertions covering applyTerminologyWith + findBannedIn (regex-escape, chained subs, substring-vs-word-boundary, case-insensitive, empty-to-skip). Runtime helpers are on the hot path - called on every FR/PR/NR/MR/TR/WCCF draft. Refactored applyPartnerTerminology + findPartnerBannedPhrase to delegate to pure test hooks so tests don`t require mocking getTenant().',
       },
       {
+        id: 'doctrine-parameters-live-preview',
+        title: 'Mode A+ live-LLM preview add-on',
+        description: 'Complements the deterministic preview with a "Generate a real sample" button. Runs ONE Anthropic call using the coach\'s current form values as tuning, applied to a fixed stub weekly check-in (Sarah, Week 3). Returns interpretation / reframe / next_focus fields with terminology substitutions applied. Panel shows generated fields + latency + tokens + platform-audit + partner-audit + subs-applied. Costs ~$0.001/click (Haiku, ~1500 in + ~500 out). Fixed stub so two clicks with different tunings show the effect cleanly.',
+        status: 'shipped',
+        shippedAt: '2026-07-07',
+        effort: 'S',
+        commits: ['pending'],
+        surfaces: [
+          'src/lib/doctrine-parameters-live-preview.ts',
+          'src/app/api/tenant/doctrine-parameters/preview/live/route.ts',
+          'src/app/dashboard/settings/tenant/doctrine-parameters-section.tsx',
+        ],
+        notes: 'Runs the same validator as the save + deterministic preview endpoints; invalid configs return 400 without spending an API call. Coach-authenticated only. Complements not replaces the deterministic preview - the coach can click one, both, or neither. Fixed-stub design keeps previews comparable across tuning iterations.',
+      },
+      {
         id: 'doctrine-parameters-presets-preview',
         title: 'Mode A+ presets + deterministic preview',
         description: 'Onboarding-time UX layer over the doctrine-parameters editor. Four preset shapes (Yoga breath-forward, Powerlifting blunt, Corporate wellness, Rehab gentle) that partners can load as a starting point instead of an empty form. Every preset is validator-clean by test. Adds a "Preview" button that renders the per-generator PARTNER TUNING system-prompt block + a terminology-substitution demo + a banned-phrase-hit demo, without spending an Anthropic API call. Deterministic, free, fast. Powers Melisa\'s onboarding: pick "Yoga breath-forward", preview to see the shape, tune, save.',

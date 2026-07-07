@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { PRESETS, getPreset } from '@/lib/doctrine-parameters-presets'
 import type { PreviewOutput } from '@/lib/doctrine-parameters-preview'
+import type { LivePreviewResult } from '@/lib/doctrine-parameters-live-preview'
 
 type DoctrineParameters = {
   voiceTone?: string
@@ -22,9 +23,11 @@ export function DoctrineParametersSection({
   const router = useRouter()
   const [pending, startTransition] = useTransition()
   const [previewPending, startPreviewTransition] = useTransition()
+  const [livePending, startLiveTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
   const [preview, setPreview] = useState<PreviewOutput | null>(null)
+  const [live, setLive] = useState<LivePreviewResult | null>(null)
 
   const [voiceTone, setVoiceTone] = useState(initial?.voiceTone ?? '')
   const [bannedPhrasesText, setBannedPhrasesText] = useState(
@@ -90,6 +93,26 @@ export function DoctrineParametersSection({
       }
       const body = await r.json() as { preview: PreviewOutput }
       setPreview(body.preview)
+    })
+  }
+
+  function handleLivePreview() {
+    setError(null)
+    setSuccess(null)
+    setLive(null)
+    startLiveTransition(async () => {
+      const r = await fetch('/api/tenant/doctrine-parameters/preview/live', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ doctrineParameters: currentPayload() }),
+      })
+      if (!r.ok) {
+        const body = await r.json().catch(() => ({ error: 'live preview failed' }))
+        setError(body.error ?? 'live preview failed')
+        return
+      }
+      const body = await r.json() as { result: LivePreviewResult }
+      setLive(body.result)
     })
   }
 
@@ -256,21 +279,31 @@ export function DoctrineParametersSection({
             />
           </Field>
 
-          <div className="flex items-center justify-between pt-2 border-t border-stone-100 gap-3">
-            <p className="text-[11px] text-stone-500 italic flex-1">
-              Cache is invalidated on save. Generators read new values on their next call.
+          <div className="flex items-center justify-between pt-2 border-t border-stone-100 gap-3 flex-wrap">
+            <p className="text-[11px] text-stone-500 italic flex-1 min-w-[220px]">
+              Cache invalidates on save. Generators read new values on their next call.
             </p>
             <button
               type="button"
               onClick={handlePreview}
-              disabled={pending || previewPending}
+              disabled={pending || previewPending || livePending}
               className="px-4 py-2 rounded-md border border-stone-300 bg-white text-stone-700 text-[13px] font-semibold hover:bg-stone-50 disabled:opacity-40"
+              title="Deterministic. Free. Fast. Renders the exact system-prompt block + shows terminology substitutions on a sample sentence."
             >
               {previewPending ? 'Previewing…' : 'Preview'}
             </button>
             <button
+              type="button"
+              onClick={handleLivePreview}
+              disabled={pending || previewPending || livePending}
+              className="px-4 py-2 rounded-md border border-stone-300 bg-white text-stone-700 text-[13px] font-semibold hover:bg-stone-50 disabled:opacity-40"
+              title="One real Anthropic call using your current tuning applied to a fixed stub check-in. Costs ~$0.001/click."
+            >
+              {livePending ? 'Generating…' : 'Generate a real sample'}
+            </button>
+            <button
               type="submit"
-              disabled={pending || previewPending}
+              disabled={pending || previewPending || livePending}
               className="px-4 py-2 rounded-md bg-blue-600 text-white text-[13px] font-semibold hover:bg-blue-700 disabled:opacity-40"
             >
               {pending ? 'Saving…' : 'Save doctrine parameters'}
@@ -279,6 +312,78 @@ export function DoctrineParametersSection({
         </form>
 
         {preview && <PreviewPanel preview={preview} onDismiss={() => setPreview(null)} />}
+        {live && <LivePreviewPanel live={live} onDismiss={() => setLive(null)} />}
+      </div>
+    </div>
+  )
+}
+
+function LivePreviewPanel({ live, onDismiss }: { live: LivePreviewResult; onDismiss: () => void }) {
+  const platformClean = live.meta.platformBannedHits.length === 0
+  const partnerClean = live.meta.partnerBannedHits.length === 0
+  return (
+    <div className="mt-5 border border-emerald-200 rounded-xl bg-emerald-50/30 overflow-hidden">
+      <div className="px-5 py-3 border-b border-emerald-200 bg-emerald-50 flex items-center justify-between">
+        <h4 className="text-[12px] font-bold text-emerald-900 uppercase tracking-widest">Live sample · one Anthropic call</h4>
+        <button
+          type="button"
+          onClick={onDismiss}
+          className="text-[11px] text-emerald-700 hover:text-emerald-900 underline"
+        >
+          Dismiss
+        </button>
+      </div>
+      <div className="p-5 space-y-5">
+        <div className="grid gap-2 md:grid-cols-4 text-[11px] text-stone-600">
+          <div>Model · <span className="font-mono">{live.meta.modelId.replace(/-\d{8}$/, '')}</span></div>
+          <div>Latency · <span className="font-mono">{live.meta.latencyMs} ms</span></div>
+          <div>Tokens in · <span className="font-mono">{live.meta.inputTokens ?? '?'}</span></div>
+          <div>Tokens out · <span className="font-mono">{live.meta.outputTokens ?? '?'}</span></div>
+        </div>
+
+        <div className="p-4 rounded-md border border-stone-200 bg-white">
+          <div className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-2">Interpretation</div>
+          <p className="text-[13px] text-stone-800 leading-relaxed">{live.interpretation}</p>
+        </div>
+        <div className="p-4 rounded-md border border-stone-200 bg-white">
+          <div className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-2">Reframe</div>
+          <p className="text-[13px] text-stone-800 leading-relaxed">{live.reframe}</p>
+        </div>
+        <div className="p-4 rounded-md border border-stone-200 bg-white">
+          <div className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-2">Next focus</div>
+          <p className="text-[13px] text-stone-800 leading-relaxed">{live.next_focus}</p>
+        </div>
+
+        <div className="grid gap-3 md:grid-cols-3">
+          <div className={`p-3 rounded-md border ${platformClean ? 'border-emerald-200 bg-emerald-50/50' : 'border-red-200 bg-red-50'}`}>
+            <div className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: platformClean ? '#047857' : '#b91c1c' }}>Platform audit</div>
+            {platformClean ? (
+              <div className="text-[11px] text-emerald-800">Clean · no platform-banned terms leaked</div>
+            ) : (
+              <div className="text-[11px] text-red-800">Leaked: {live.meta.platformBannedHits.join(', ')}</div>
+            )}
+          </div>
+          <div className={`p-3 rounded-md border ${partnerClean ? 'border-emerald-200 bg-emerald-50/50' : 'border-red-200 bg-red-50'}`}>
+            <div className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: partnerClean ? '#047857' : '#b91c1c' }}>Partner audit</div>
+            {partnerClean ? (
+              <div className="text-[11px] text-emerald-800">Clean · none of your banned phrases fired</div>
+            ) : (
+              <div className="text-[11px] text-red-800">Fired: {live.meta.partnerBannedHits.join(', ')}</div>
+            )}
+          </div>
+          <div className="p-3 rounded-md border border-stone-200 bg-white">
+            <div className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Substitutions applied</div>
+            {live.meta.terminologySubsApplied.length === 0 ? (
+              <div className="text-[11px] text-stone-500 italic">None matched the output</div>
+            ) : (
+              <div className="text-[11px] text-stone-700 font-mono">{live.meta.terminologySubsApplied.join('  ·  ')}</div>
+            )}
+          </div>
+        </div>
+
+        <p className="text-[10px] text-stone-500 italic pt-2 border-t border-stone-100">
+          Sample based on a fixed stub check-in (Sarah, Week 3). Comparable across previews so you can iterate on tuning. Real check-ins use the full generator with retry-on-leak.
+        </p>
       </div>
     </div>
   )
