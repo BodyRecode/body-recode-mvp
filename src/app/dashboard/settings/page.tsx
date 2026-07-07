@@ -33,6 +33,11 @@ export default async function SettingsIndex() {
       title: 'Partner billing (admin)',
       description: 'Kade\'s billing of Founding Ten partners. Setup fee + locked monthly subscription + per-active-client counts. Read here monthly to invoice via Stripe dashboard.',
     },
+    isKade && {
+      href: '/dashboard/settings/tenants-health',
+      title: 'Tenants health (admin)',
+      description: 'One-row-per-tenant overview of provisioning + activity signals: last coach login, active clients vs cap, Stripe Connect status, Twilio configured, custom domain wired, Mode A+ fields set. For eyeballing all partners at once as the Founding Ten fills up.',
+    },
   ].filter(Boolean) as Array<{ href: string; title: string; description: string }>
 
   return (

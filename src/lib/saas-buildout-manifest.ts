@@ -614,6 +614,20 @@ export const PHASES: Phase[] = [
         notes: 'Runs BEFORE the DB write. Additive - layers over the platform Hard Safety Floors. Two test suites via `npm run test:doctrine-params`: (a) 22 save-time validator assertions, (b) 21 runtime helper assertions covering applyTerminologyWith + findBannedIn (regex-escape, chained subs, substring-vs-word-boundary, case-insensitive, empty-to-skip). Runtime helpers are on the hot path - called on every FR/PR/NR/MR/TR/WCCF draft. Refactored applyPartnerTerminology + findPartnerBannedPhrase to delegate to pure test hooks so tests don`t require mocking getTenant().',
       },
       {
+        id: 'tenants-health-dashboard',
+        title: 'Kade-only tenants health dashboard',
+        description: 'One-row-per-tenant overview at /dashboard/settings/tenants-health showing load-bearing provisioning + activity signals: coach last_sign_in_at (yellows after 14d idle), active clients vs tier cap (yellow at 80%, red at 100%), subscription status, Stripe Connect status, Twilio configured, custom domain wired, Mode A+ fields set (X of 6). Four top-strip roll-up stats. Built for the moment partners #2+ arrive and eyeballing them one-at-a-time stops working. Kade-only via isCoachEmail gate at route level.',
+        status: 'shipped',
+        shippedAt: '2026-07-07',
+        effort: 'S',
+        commits: ['pending'],
+        surfaces: [
+          'src/app/dashboard/settings/tenants-health/page.tsx',
+          'src/app/dashboard/settings/page.tsx',
+        ],
+        notes: 'Sits alongside /settings/tenants (registry) + /settings/partner-billing (billing). Uses admin (service-role) client for cross-tenant queries; auth still gated by isCoachEmail at the route. Legend chips: filled dot = configured, empty dot = not configured. Cap thresholds: 10 for Launch tier, 30 for Studio tier per Founding Ten Agreement. Refresh link at top re-runs the SSR queries.',
+      },
+      {
         id: 'doctrine-parameters-live-preview',
         title: 'Mode A+ live-LLM preview add-on',
         description: 'Complements the deterministic preview with a "Generate a real sample" button. Runs ONE Anthropic call using the coach\'s current form values as tuning, applied to a fixed stub weekly check-in (Sarah, Week 3). Returns interpretation / reframe / next_focus fields with terminology substitutions applied. Panel shows generated fields + latency + tokens + platform-audit + partner-audit + subs-applied. Costs ~$0.001/click (Haiku, ~1500 in + ~500 out). Fixed stub so two clicks with different tunings show the effect cleanly.',
