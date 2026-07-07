@@ -1,0 +1,53 @@
+{
+  "_comment": "Fill this in, save as partners/<slug>.json, then run: npx tsx scripts/provision-tenant.ts <slug>. See partners/README.md.",
+
+  "tenantId": "slug-lowercase-no-spaces",
+  "apexDomain": "example.com.au",
+
+  "coach": {
+    "email": "coach@example.com.au",
+    "firstName": "First",
+    "fullName": "First Last",
+    "location": "Brisbane",
+    "credentials": "Yoga & Meditation Teacher",
+    "photoUrl": "https://example.com.au/coach.jpg",
+    "phoneE164NoPlus": "614...",
+    "brandInstagram": "@coach.brand",
+    "personalInstagram": "@coach"
+  },
+
+  "brand": {
+    "name": "Studio Name",
+    "nameWithMark": "Studio Name",
+    "tagline": "One-line brand tagline",
+    "logoUrlLight": "/logo-slug-black.png",
+    "logoUrlDark": "/logo-slug-white.png",
+    "accentColor": "#B06C47"
+  },
+
+  "products": {
+    "reportPrice": 47,
+    "blueprintPrice": 97,
+    "membershipPrice": 49,
+    "membershipName": "Studio Membership",
+    "coachingPackage2xPrice": 240,
+    "coachingPackagePriceLabel": "$240 commencement fee"
+  },
+
+  "licence": {
+    "tenantId": "slug-lowercase-no-spaces",
+    "poweredBy": true,
+    "partnerBillingTier": "launch",
+    "lockedSetupFeeCents": 250000,
+    "lockedSubscriptionCents": 40000,
+    "lockedPerActiveClientCents": 4000
+  },
+
+  "modality": {
+    "id": "yoga",
+    "label": "Yoga & Movement",
+    "doctrineMode": "A"
+  },
+
+  "doctrinePreset": "yoga-breath-forward"
+}

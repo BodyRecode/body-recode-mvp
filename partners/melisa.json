@@ -1,0 +1,53 @@
+{
+  "_comment": "Melisa · Founding Partner #1 (Harmony · Yoga & Meditation, Brisbane). Placeholders below are the ones we still need Melisa to hand over: photo URL, phone, IG handles, real logo asset paths, palette. Terracotta accent is Kade's placeholder pick.",
+
+  "tenantId": "melisa",
+  "apexDomain": "harmony.com.au",
+
+  "coach": {
+    "email": "melisa@harmony.com.au",
+    "firstName": "Melisa",
+    "fullName": "Melisa {{LAST_NAME}}",
+    "location": "Brisbane",
+    "credentials": "Yoga & Meditation Teacher",
+    "photoUrl": "{{PHOTO_URL}}",
+    "phoneE164NoPlus": "{{PHONE_E164_NO_PLUS}}",
+    "brandInstagram": "@harmony.practice",
+    "personalInstagram": "{{PERSONAL_IG}}"
+  },
+
+  "brand": {
+    "name": "Harmony",
+    "nameWithMark": "Harmony",
+    "tagline": "Yoga & Meditation",
+    "logoUrlLight": "/logo-harmony-black.png",
+    "logoUrlDark": "/logo-harmony-white.png",
+    "accentColor": "#B06C47"
+  },
+
+  "products": {
+    "reportPrice": 47,
+    "blueprintPrice": 97,
+    "membershipPrice": 180,
+    "membershipName": "Harmony Studio Membership",
+    "coachingPackage2xPrice": 260,
+    "coachingPackagePriceLabel": "$260 onboarding"
+  },
+
+  "licence": {
+    "tenantId": "melisa",
+    "poweredBy": true,
+    "partnerBillingTier": "launch",
+    "lockedSetupFeeCents": 250000,
+    "lockedSubscriptionCents": 40000,
+    "lockedPerActiveClientCents": 4000
+  },
+
+  "modality": {
+    "id": "yoga",
+    "label": "Yoga & Movement",
+    "doctrineMode": "A"
+  },
+
+  "doctrinePreset": "yoga-breath-forward"
+}
