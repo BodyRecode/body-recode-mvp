@@ -415,11 +415,28 @@ function generatePreLaunchDays(): RunbookEntry[] {
   const days: RunbookEntry[] = []
   const dates = ['2026-07-02', '2026-07-03', '2026-07-04', '2026-07-05', '2026-07-06', '2026-07-07', '2026-07-08', '2026-07-09', '2026-07-10', '2026-07-11']
   for (const d of dates) {
+    const baseChecks: RunbookCheck[] = [...DAILY_RITUAL.slice(0, 3), 'Schedule next-day posts via Content Calendar Schedule button if not done yet']
+    // Sat 11 Jul: extra 07:30 LinkedIn amplification check for the pre-launch push.
+    if (d === '2026-07-11') {
+      baseChecks.unshift({
+        task: '07:30 — Comment on the LinkedIn post + drop Challenge link in first comment',
+        instructions: [
+          '1. Open [LinkedIn (Kade)](https://www.linkedin.com/in/kadedunstone/) or your notifications tab.',
+          '2. Find the most recent Authority / pre-launch LinkedIn post (the one you want to amplify).',
+          '3. Post a first comment (from your own account) that reads naturally alongside your voice - short, adds one concrete idea, and includes the link:',
+          '',
+          '   `https://bodyrecode.au/challenge`',
+          '',
+          '4. Reason: LinkedIn compresses / hides links in the body of a post but shows them in comments. Dropping the link in the FIRST comment is the standard tactic to keep the post surfaced by the algorithm AND still route qualified traffic to the Challenge signup.',
+          '5. Optional follow-up: pin the comment so it stays visible above other engagement.',
+        ].join('\n'),
+      })
+    }
     days.push({
       date: d,
       label: 'Pre-launch · post-content sweep',
       phase: 'pre_launch',
-      checks: [...DAILY_RITUAL.slice(0, 3), 'Schedule next-day posts via Content Calendar Schedule button if not done yet'],
+      checks: baseChecks,
       decisions: ['Meta Ads UI work pending (target Fri 10 Jul EOB)', 'Amanda HeyGen reel chase'],
     })
   }
