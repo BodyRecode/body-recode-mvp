@@ -421,7 +421,7 @@ function generatePreLaunchDays(): RunbookEntry[] {
       baseChecks.unshift({
         task: '07:30 — Comment on the LinkedIn post + drop Challenge link in first comment',
         instructions: [
-          '1. Open [LinkedIn (Kade)](https://www.linkedin.com/in/kadedunstone/) or your notifications tab.',
+          '1. Open [LinkedIn (Kade)](https://www.linkedin.com/in/kade-dunstone-5b4535a2/) or your notifications tab.',
           '2. Find the most recent Authority / pre-launch LinkedIn post (the one you want to amplify).',
           '3. Post a first comment (from your own account) that reads naturally alongside your voice - short, adds one concrete idea, and includes the link:',
           '',

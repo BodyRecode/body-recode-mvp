@@ -53,7 +53,7 @@ const LI_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="${SOCIAL_ICON_SIZ
 const BRAND_IG_URL = 'https://www.instagram.com/body_recode_/'
 const BRAND_FB_URL = 'https://www.facebook.com/bodyrecode.au'
 const KADE_IG_URL = 'https://www.instagram.com/kade_dunstone_/'
-const KADE_LI_URL = 'https://www.linkedin.com/in/kadedunstone/'
+const KADE_LI_URL = 'https://www.linkedin.com/in/kade-dunstone-5b4535a2/'
 
 /** Public wrapper: renders the social icon strip. Exported so a caller can
  *  inject it independently of the signature if needed. */
