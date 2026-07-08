@@ -376,10 +376,10 @@ const MANUAL_AUTOMATIONS = [
   },
   {
     id: 'collective-eoi-emails',
-    name: 'Collective EOI · Applicant Confirmation + Coach Notify',
-    description: 'Fires immediately on any new expression of interest via POST /api/collective/submit (after the multi-step Fit Scorecard at bodyrecode.au/collective/apply). Two emails: (1) Collective-branded applicant confirmation to the coach who applied (BCC Kade) - warm-professional acknowledgment, 3-5 business day timeline, three-outcome "what happens next" card, does NOT reveal the internal fit tier; (2) Kade coach-notification from fromBrand() with prominent tier badge, dimension chips (method / audience / modality / readiness · green/amber/red), full applicant details table, mailto reply CTA. Both use the distinct Collective sub-brand (warm-charcoal accent + editorial "The Collective" wordmark) to signal the B2B partner programme identity vs consumer BR emails. Independent try/catch - one failure never blocks the other, and the application row is already saved before either fires.',
+    name: 'Collective EOI · Applicant Confirmation + Coach Notify (+ ready-tier SMS)',
+    description: 'Fires immediately on any new expression of interest via POST /api/collective/submit (after the multi-step Fit Scorecard at bodyrecode.au/collective/apply). Three sends: (1) Collective-branded applicant confirmation to the coach who applied (BCC Kade) - warm-professional acknowledgment, 3-5 business day timeline, three-outcome "what happens next" card, does NOT reveal the internal fit tier; (2) Kade coach-notification from fromBrand() with prominent tier badge, dimension chips (method / audience / modality / readiness · green/amber/red), full applicant details table, mailto reply CTA; (3) ONLY IF tier === "ready": speed-to-lead SMS to Kade\'s whatsAppNumber during Mon-Sat 08:30-20:00 AEST (outside window = skip, no queue) with copy "BR Collective · Ready-tier application from {firstName}. Full details + reply CTA in your inbox." Both emails use the distinct Collective sub-brand (warm-charcoal + editorial "The Collective" wordmark). All three sends have independent try/catch - one failure never blocks the others, and the application row is already saved before any fire.',
     trigger: 'POST /api/collective/submit (silent-fail non-blocking)',
-    steps: 2,
+    steps: 3,
   },
   {
     id: 'product-waitlist-welcome-pair',

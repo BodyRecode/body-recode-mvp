@@ -6,6 +6,7 @@ import {
   sendCoachApplicationNotifyEmail,
   type FitTier,
 } from '@/lib/collective-eoi-emails'
+import { sendCollectiveReadyCoachSms } from '@/lib/collective-ready-coach-sms'
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -85,6 +86,17 @@ export async function POST(request: NextRequest) {
     await sendApplicantConfirmationEmail({ to: email, firstName })
   } catch (e) {
     console.error('[collective/submit] applicant confirmation failed (non-fatal):', e)
+  }
+
+  // (2a) Speed-to-lead SMS to Kade - ONLY on ready-tier applicants
+  // (per COLLECTIVE_FIT_SCORECARD.md doc). AEST-windowed inside the
+  // helper; silent-fail; independent of the email path.
+  if (fit.tier === 'ready') {
+    try {
+      await sendCollectiveReadyCoachSms(firstName)
+    } catch (e) {
+      console.error('[collective/submit] ready-tier SMS to coach failed (non-fatal):', e)
+    }
   }
 
   // (2) Kade coach notification (structured tier + dimensions + full details).
