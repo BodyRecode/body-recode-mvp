@@ -375,6 +375,13 @@ const MANUAL_AUTOMATIONS = [
     steps: 1,
   },
   {
+    id: 'collective-eoi-emails',
+    name: 'Collective EOI · Applicant Confirmation + Coach Notify',
+    description: 'Fires immediately on any new expression of interest via POST /api/collective/submit (after the multi-step Fit Scorecard at bodyrecode.au/collective/apply). Two emails: (1) Collective-branded applicant confirmation to the coach who applied (BCC Kade) - warm-professional acknowledgment, 3-5 business day timeline, three-outcome "what happens next" card, does NOT reveal the internal fit tier; (2) Kade coach-notification from fromBrand() with prominent tier badge, dimension chips (method / audience / modality / readiness · green/amber/red), full applicant details table, mailto reply CTA. Both use the distinct Collective sub-brand (warm-charcoal accent + editorial "The Collective" wordmark) to signal the B2B partner programme identity vs consumer BR emails. Independent try/catch - one failure never blocks the other, and the application row is already saved before either fires.',
+    trigger: 'POST /api/collective/submit (silent-fail non-blocking)',
+    steps: 2,
+  },
+  {
     id: 'product-waitlist-welcome-pair',
     name: 'Product-Waitlist Welcome + Coach-Notify Pair',
     description: 'Fires immediately on any NEW join to product_waitlist for challenge / blueprint / membership. Two emails: (1) branded welcome to the joiner (BCC Kade), state-matched copy per project_bodystate_stage_recommendation_mapping — Challenge (Depleted → doors open Mon 13 Jul), Blueprint (Transitioning → 6-week pattern-corrective work, opens Mon 20 Jul, $97 one-time), Membership (Ready → long-arc infrastructure, opens Mon 10 Aug, $49/week). Blueprint + Membership emails include a soft optional-Challenge card ("recommendation, not a gate") mirroring the scorecard result page. (2) Coach-notification to Kade only with lead details (email, phone, gender, body state, source, SMS opt-in). Skips re-clicks of the same (email, product) pair.',

@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { Resend } from 'resend'
 import { scoreFit, type FitAnswers } from '@/lib/collective-fit'
-import { coach } from '@/config/tenant'
-import { fromCoach } from '@/lib/email-shell'
+import {
+  sendApplicantConfirmationEmail,
+  sendCoachApplicationNotifyEmail,
+  type FitTier,
+} from '@/lib/collective-eoi-emails'
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -73,30 +75,42 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Could not save your application.' }, { status: 500, headers: CORS })
   }
 
-  // Notify Kade. Non-fatal — a notify failure must not lose the application.
+  // Two Collective-branded emails. Both non-fatal - a send failure must
+  // never lose the application. Each wrapped in its own try/catch so one
+  // failure doesn't block the other.
+  const firstName = (name.split(' ')[0] || name).trim()
+
+  // (1) Applicant confirmation (to the coach who applied, BCC Kade).
   try {
-    if (process.env.RESEND_API_KEY) {
-      const resend = new Resend(process.env.RESEND_API_KEY)
-      const tierLabel = fit.tier === 'ready' ? '🟢 Collective-ready' : fit.tier === 'building' ? '🟡 Building' : '🔴 Not yet'
-      const row = (k: string, v: unknown) => v ? `<tr><td style="padding:4px 12px 4px 0;color:#6B6B6B;">${k}</td><td style="padding:4px 0;color:#1A1A1A;">${String(v)}</td></tr>` : ''
-      await resend.emails.send({
-        from: fromCoach(),
-        to: coach().adminEmail,
-        subject: `New Collective application — ${name} (${fit.tier})`,
-        html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;color:#1A1A1A;">
-          <p style="font-size:18px;font-weight:700;margin:0 0 4px;">${tierLabel}</p>
-          <p style="font-size:13px;color:#6B6B6B;margin:0 0 16px;">Method ${fit.dimensions.method} · Audience ${fit.dimensions.audience} · Modality ${fit.dimensions.modality} · Readiness ${fit.dimensions.readiness}</p>
-          <table style="font-size:14px;border-collapse:collapse;">
-            ${row('Name', name)}${row('Business', body.business_name)}${row('Email', email)}${row('Phone', body.phone)}${row('Website', body.website)}
-            ${row('Modality', fitAnswers.modality)}${row('One-liner', body.one_liner)}${row('Method', fitAnswers.method_clarity)}${row('Track record', body.track_record)}
-            ${row('Audience', `${fitAnswers.audience} (${body.audience_size ?? '—'})`)}${row('Setup', Array.isArray(body.current_setup) ? (body.current_setup as string[]).join(', ') : '')}${row("What's broken", body.whats_broken)}
-            ${row('Timeline', fitAnswers.timeline)}${row('Mindset', fitAnswers.mindset)}${row('Heard via', body.heard_from)}
-          </table>
-        </div>`,
-      })
-    }
+    await sendApplicantConfirmationEmail({ to: email, firstName })
   } catch (e) {
-    console.error('[collective/submit] notify failed (non-fatal):', e)
+    console.error('[collective/submit] applicant confirmation failed (non-fatal):', e)
+  }
+
+  // (2) Kade coach notification (structured tier + dimensions + full details).
+  try {
+    await sendCoachApplicationNotifyEmail({
+      applicantName: name,
+      email,
+      businessName: (body.business_name as string) || null,
+      phone: (body.phone as string) || null,
+      website: (body.website as string) || null,
+      heardFrom: (body.heard_from as string) || null,
+      modality: fitAnswers.modality,
+      oneLiner: (body.one_liner as string) || null,
+      methodClarity: fitAnswers.method_clarity,
+      trackRecord: (body.track_record as string) || null,
+      audience: fitAnswers.audience,
+      audienceSize: (body.audience_size as string) || null,
+      currentSetup: Array.isArray(body.current_setup) ? (body.current_setup as string[]) : null,
+      whatsBroken: (body.whats_broken as string) || null,
+      timeline: fitAnswers.timeline,
+      mindset: fitAnswers.mindset,
+      tier: fit.tier as FitTier,
+      dimensions: fit.dimensions,
+    })
+  } catch (e) {
+    console.error('[collective/submit] coach notify failed (non-fatal):', e)
   }
 
   return NextResponse.json(
