@@ -20,14 +20,20 @@ import { coach } from '@/config/tenant'
  *   - Launch-Day Waitlist broadcast: manual script on Mon 13 Jul that
  *     converts every un-notified waitlist row into an enrolment CTA.
  *
- * Product-aware:
- *   - challenge:  confirms waitlist, sets exact launch moment,
- *                 IG follow CTA.
- *   - blueprint:  acknowledges Blueprint list, explains Blueprint lands
- *                 after the read, funnels to the free Challenge as the
- *                 read that comes first.
- *   - membership: same funnel pattern - Membership works on a body
- *                 that has already been read via the Challenge.
+ * Product-aware and state-matched (per project_bodystate_stage_recommendation_mapping):
+ *   - challenge:   Depleted-state matched. Body is in protection mode;
+ *                  Challenge is the free structured reset. Opens Mon
+ *                  13 Jul 2026 7am AEST.
+ *   - blueprint:   Transitioning-state matched. Foundation is there;
+ *                  a specific pattern is holding the result back.
+ *                  Blueprint is 6 weeks of pattern-specific corrective
+ *                  work. Opens Mon 20 Jul 2026 7am AEST. Soft mention
+ *                  of the Challenge as an optional free open door
+ *                  (mirrors the scorecard result page's soft opt-in).
+ *   - membership:  Ready-state matched. Foundation is done; what's
+ *                  left is calibrated continuation across rotating
+ *                  blocks. $49/week ongoing, cancel anytime. Opens Mon
+ *                  10 Aug 2026 7am AEST. Same soft Challenge mention.
  *
  * Voice matches the documented BR brand voice: clear, warm, authority
  * with restraint. No hype, no scarcity language, no fake urgency.
@@ -61,14 +67,14 @@ function subjectFor(product: WaitlistProduct, firstName: string | null): string 
   const name = firstName?.trim() || null
   const prefix = name ? `You're on the list, ${name}.` : `You're on the list.`
   if (product === 'challenge') return `${prefix} Doors open Monday 13 July.`
-  if (product === 'blueprint') return `${prefix} The Challenge comes first.`
-  return `${prefix} Start with the read.` // membership
+  if (product === 'blueprint') return `${prefix} Blueprint opens Monday 20 July.`
+  return `${prefix} Membership opens Monday 10 August.` // membership
 }
 
 function previewTextFor(product: WaitlistProduct): string {
   if (product === 'challenge') return 'The 14-Day Body Decode Challenge opens 7am AEST Monday 13 July. I will email you the moment doors open.'
-  if (product === 'blueprint') return 'The Blueprint lands harder when your pattern is already identified. The 14-Day Challenge is the read that comes first. Free.'
-  return 'The Membership works on a body that has already been read. The 14-Day Challenge is the read. Free.'
+  if (product === 'blueprint') return 'The 6-Week Body Rewire Blueprint opens 7am AEST Monday 20 July. Six weeks of pattern-specific corrective work, calibrated to a Transitioning-state result.'
+  return 'The Body Recode Membership opens 7am AEST Monday 10 August. Long-arc infrastructure calibrated to a Ready-state result. $49 per week, cancel anytime.'
 }
 
 const IG_URL = 'https://www.instagram.com/body_recode_/'
@@ -108,15 +114,26 @@ ${emailEyebrow('6-Week Body Rewire Blueprint · waitlist')}
 ${emailHeading(`You're on the Blueprint list, ${name}.`)}
 ${emailDivider()}
 ${emailBody(`Hi ${name},`)}
-${emailBody('Confirming you are on the waitlist for the 6-Week Body Rewire Blueprint.')}
-${emailBody('The Blueprint will open in the weeks after the Challenge launches. It is designed to work on a body whose pattern has already been named - which is what the free 14-Day Body Decode Challenge does. The Challenge opens 7am AEST Monday 13 July. Take it first.')}
+${emailBody('Confirming you are on the waitlist for the 6-Week Body Rewire Blueprint. Doors open at 7am AEST on Monday 20 July. I will email you the moment they do with the link to enrol.')}
+${emailBody('Your scorecard placed you in the Transitioning State - the foundation is there, but a specific compensation pattern is still holding the result back. That is precisely the shape the Blueprint is written for.')}
+${emailFeaturedCard(
+  emailNumberedList([
+    'Training calibrated to your pattern (not to a generic week)',
+    'Nutrition timed to clear the noise around the pattern',
+    'Weekly coaching notes written for what your body is actually doing this week',
+    'A Week 3 Check-In that recalibrates the second half based on your first-half response',
+    'A Week 6 Report at the end - the pattern named, corrected, and the next-arc call',
+  ]),
+  { eyebrow: 'What the six weeks actually look like' },
+)}
+${emailBody('The Blueprint costs $97 one-time. No subscription. The 6 weeks land in your portal on Day 1 and you keep everything after.', { bottom: 28 })}
 ${emailFeaturedCard(`
-  <p style="margin:0 0 10px;font-size:16px;font-weight:800;color:#1A1A1A;letter-spacing:-0.01em;line-height:1.35;">Why the Challenge comes first</p>
-  <p style="margin:0;font-size:14px;color:#3A3A3A;line-height:1.7;">On Day 14 the Body Decode Report reveals the pattern your biology has settled into - what it means, the misreads it produces, and the three actions specific to it. Only then does the Blueprint know what to work on. Without the read, it is guessing.</p>
-`, { eyebrow: 'The read before the prescription' })}
-${emailBody('I will email you again the moment the Challenge doors open. The Blueprint waitlist stays live - the moment you have your Day 14 read, the Blueprint will be waiting.', { bottom: 28 })}
+  <p style="margin:0 0 8px;font-size:13px;font-weight:800;color:#1A1A1A;letter-spacing:0.02em;line-height:1.35;text-transform:uppercase;">Optional · ease in first</p>
+  <p style="margin:0;font-size:14px;color:#3A3A3A;line-height:1.7;">Your result points to the Blueprint, but it is a recommendation, not a gate. If you would rather start with the free 14-Day Body Decode Challenge and see what your Day 14 Report says before committing to the Blueprint, that path is open. Challenge doors open Monday 13 July.</p>
+`, { eyebrow: undefined })}
+${emailBody('Nothing you need to do between now and 20 July. If you want a sense of the corrective work the Blueprint does, the pattern breakdowns on Instagram are the best preview:', { bottom: 12 })}
 ${emailCta({ href: IG_URL, label: 'Follow @body_recode_ on Instagram' })}
-${emailUrlFallback(IG_URL, 'The launch morning email lands in your inbox first.')}
+${emailUrlFallback(IG_URL, 'The Blueprint opening email lands in your inbox first.')}
 `
   }
 
@@ -126,15 +143,26 @@ ${emailEyebrow('Body Recode Membership · waitlist')}
 ${emailHeading(`You're on the Membership list, ${name}.`)}
 ${emailDivider()}
 ${emailBody(`Hi ${name},`)}
-${emailBody('Confirming you are on the waitlist for the Body Recode Membership.')}
-${emailBody('The Membership will open in the weeks after the Challenge launches. It is the long-arc coaching container - designed to run on a body whose pattern has already been read. That read is the free 14-Day Body Decode Challenge, and it opens 7am AEST Monday 13 July.')}
+${emailBody('Confirming you are on the waitlist for the Body Recode Membership. Doors open at 7am AEST on Monday 10 August. I will email you the moment they do with the link to enrol.')}
+${emailBody('Your scorecard placed you in the Ready State - your biology is in a position to respond, and the foundation is done. What is left is calibrated continuation across rotating training blocks. That is exactly what the Membership is built for.')}
+${emailFeaturedCard(
+  emailNumberedList([
+    'Rotating training blocks (capacity, expression, restoration) written to your pattern',
+    'Nutrition kept simple and calibrated block-to-block',
+    'A weekly Check-In that shapes the coming week',
+    'A monthly Loom from Kade reading your check-in data - the block-boundary call, what to lean into, what to hold back',
+    'Direct access to the coaching thread for questions between check-ins',
+  ]),
+  { eyebrow: 'What the Membership actually is' },
+)}
+${emailBody('The Membership is $49 per week. Cancel anytime, no contract, no minimum term. The infrastructure is designed to compound over time, but the door out is open whenever you want it.', { bottom: 28 })}
 ${emailFeaturedCard(`
-  <p style="margin:0 0 10px;font-size:16px;font-weight:800;color:#1A1A1A;letter-spacing:-0.01em;line-height:1.35;">The read comes before the container</p>
-  <p style="margin:0;font-size:14px;color:#3A3A3A;line-height:1.7;">The Membership is where the work becomes ongoing. But the coaching only lands when the pattern is known. Take the free 14-Day Challenge first - the Day 14 Report names what your biology has settled into, and the Membership picks up from there.</p>
-`, { eyebrow: 'Why the Challenge comes first' })}
-${emailBody('I will email you again the moment the Challenge doors open. The Membership waitlist stays live - the moment you have your Day 14 read, the Membership will be waiting.', { bottom: 28 })}
+  <p style="margin:0 0 8px;font-size:13px;font-weight:800;color:#1A1A1A;letter-spacing:0.02em;line-height:1.35;text-transform:uppercase;">Optional · ease in first</p>
+  <p style="margin:0;font-size:14px;color:#3A3A3A;line-height:1.7;">Your result points to the Membership, but it is a recommendation, not a gate. If you would rather start with the free 14-Day Body Decode Challenge to see the work firsthand before committing to the long arc, that path is open. Challenge doors open Monday 13 July.</p>
+`, { eyebrow: undefined })}
+${emailBody('Nothing you need to do between now and 10 August. If you want a sense of what the ongoing work looks like, the pattern breakdowns on Instagram are the best preview:', { bottom: 12 })}
 ${emailCta({ href: IG_URL, label: 'Follow @body_recode_ on Instagram' })}
-${emailUrlFallback(IG_URL, 'The launch morning email lands in your inbox first.')}
+${emailUrlFallback(IG_URL, 'The Membership opening email lands in your inbox first.')}
 `
 }
 

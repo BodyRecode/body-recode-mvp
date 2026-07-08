@@ -377,7 +377,7 @@ const MANUAL_AUTOMATIONS = [
   {
     id: 'product-waitlist-welcome-pair',
     name: 'Product-Waitlist Welcome + Coach-Notify Pair',
-    description: 'Fires immediately on any NEW join to product_waitlist for challenge / blueprint / membership. Two emails: (1) branded welcome to the joiner (BCC Kade) with product-aware framing; (2) coach-notification to Kade only with lead details (email, phone, gender, body state, source, SMS opt-in). Skips re-clicks of the same (email, product) pair. Fills the previously-silent gap between join and the Mon 13 Jul launch broadcast.',
+    description: 'Fires immediately on any NEW join to product_waitlist for challenge / blueprint / membership. Two emails: (1) branded welcome to the joiner (BCC Kade), state-matched copy per project_bodystate_stage_recommendation_mapping — Challenge (Depleted → doors open Mon 13 Jul), Blueprint (Transitioning → 6-week pattern-corrective work, opens Mon 20 Jul, $97 one-time), Membership (Ready → long-arc infrastructure, opens Mon 10 Aug, $49/week). Blueprint + Membership emails include a soft optional-Challenge card ("recommendation, not a gate") mirroring the scorecard result page. (2) Coach-notification to Kade only with lead details (email, phone, gender, body state, source, SMS opt-in). Skips re-clicks of the same (email, product) pair.',
     trigger: 'POST /api/product-waitlist (new row only, silent-fail non-blocking)',
     steps: 2,
   },
