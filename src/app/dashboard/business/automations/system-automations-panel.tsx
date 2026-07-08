@@ -374,6 +374,13 @@ const MANUAL_AUTOMATIONS = [
     trigger: 'Type a message in the lead inbox view, click Send',
     steps: 1,
   },
+  {
+    id: 'product-waitlist-welcome-pair',
+    name: 'Product-Waitlist Welcome + Coach-Notify Pair',
+    description: 'Fires immediately on any NEW join to product_waitlist for challenge / blueprint / membership. Two emails: (1) branded welcome to the joiner (BCC Kade) with product-aware framing; (2) coach-notification to Kade only with lead details (email, phone, gender, body state, source, SMS opt-in). Skips re-clicks of the same (email, product) pair. Fills the previously-silent gap between join and the Mon 13 Jul launch broadcast.',
+    trigger: 'POST /api/product-waitlist (new row only, silent-fail non-blocking)',
+    steps: 2,
+  },
   // Terminal-triggered broadcast scripts (single-event launch comms)
   {
     id: 'launch-day-waitlist-email',

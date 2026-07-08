@@ -12,6 +12,7 @@ import { inngest } from '@/lib/inngest'
 import { persistSmsOptIn } from '@/lib/speed-to-lead-sms'
 import { getDefaultCoachId } from '@/lib/default-coach'
 import { brand } from "@/config/tenant";
+import { sendProductWaitlistWelcomeEmail, sendCoachWaitlistNotification, type WaitlistProduct } from '@/lib/product-waitlist-welcome-email'
 
 type Product = 'challenge' | 'blueprint' | 'membership' | 'extension'
 
@@ -80,19 +81,59 @@ export async function POST(req: Request) {
 
   const admin = createAdminClient()
 
-  // Upsert on (email, product) - the unique index makes this idempotent.
-  // If the row already exists, the conflict-on-do-nothing behavior keeps the
-  // original first_name / body_state / source from the first signup.
-  const { error } = await admin
+  // Explicit new-vs-existing check so we only fire welcome + coach-notify
+  // emails on the FIRST join. Re-clicks (same email, same product) return
+  // 200 but skip the send path.
+  const { data: existingRow } = await admin
     .from('product_waitlist')
-    .upsert(
-      { email, first_name, last_name, phone, gender, body_state, product, source },
-      { onConflict: 'email,product', ignoreDuplicates: true },
-    )
+    .select('id')
+    .eq('email', email)
+    .eq('product', product)
+    .maybeSingle()
 
-  if (error) {
-    console.error('[product-waitlist] insert error', error)
-    return NextResponse.json({ error: 'Failed to join waitlist' }, { status: 500, headers })
+  const isNewRow = !existingRow
+
+  if (isNewRow) {
+    const { error } = await admin
+      .from('product_waitlist')
+      .insert({ email, first_name, last_name, phone, gender, body_state, product, source })
+
+    if (error) {
+      console.error('[product-waitlist] insert error', error)
+      return NextResponse.json({ error: 'Failed to join waitlist' }, { status: 500, headers })
+    }
+  }
+
+  // Welcome + coach-notify emails. Only fire on NEW row (not on re-clicks)
+  // and only for the three consumer products (skip 'extension' which is an
+  // internal signup path). Silent-fail so waitlist response never depends
+  // on email pipeline health.
+  const EMAIL_PRODUCTS: Product[] = ['challenge', 'blueprint', 'membership']
+  if (isNewRow && EMAIL_PRODUCTS.includes(product)) {
+    try {
+      await sendProductWaitlistWelcomeEmail({
+        to: email,
+        firstName: first_name,
+        product: product as WaitlistProduct,
+      })
+    } catch (err) {
+      console.error('[product-waitlist] welcome email failed (non-fatal):', err)
+    }
+    try {
+      await sendCoachWaitlistNotification({
+        email,
+        firstName: first_name,
+        lastName: last_name,
+        phone,
+        gender,
+        bodyState: body_state,
+        product: product as WaitlistProduct,
+        source,
+        smsOptIn: sms_opt_in,
+      })
+    } catch (err) {
+      console.error('[product-waitlist] coach notify failed (non-fatal):', err)
+    }
   }
 
   // Speed-to-lead SMS path. Silent-fail - waitlist success never depends on
