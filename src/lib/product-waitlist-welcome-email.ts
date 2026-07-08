@@ -77,7 +77,8 @@ function previewTextFor(product: WaitlistProduct): string {
   return 'The Body Recode Membership opens 7am AEST Monday 10 August. Long-arc infrastructure calibrated to a Ready-state result. $49 per week, cancel anytime.'
 }
 
-const IG_URL = 'https://www.instagram.com/body_recode_/'
+const IG_URL_BRAND = 'https://www.instagram.com/body_recode_/'
+const IG_URL_KADE = 'https://www.instagram.com/kade_dunstone_/'
 
 function bodyFor(product: WaitlistProduct, firstName: string | null): string {
   const name = firstName?.trim() || 'there'
@@ -96,6 +97,7 @@ ${emailFeaturedCard(
     'A 14-day training plan calibrated to your state, not to a generic week',
     'A HABNS nutrition guide (Habit-Anchored, Body-Numeric, Sustainable)',
     'A morning and an evening reset sequence',
+    'The Week One Progress Session on Day 5 - the first checkpoint of how your body is responding',
     'The Body Decode Check-In on Day 7',
     'The Body Decode Report on Day 14 - a personalised read of what your body has been telling you',
   ]),
@@ -103,8 +105,9 @@ ${emailFeaturedCard(
 )}
 ${emailBody('This is not a program to grind through. It is a structure that lets your body settle enough that we can read what is actually going on.', { bottom: 28 })}
 ${emailBody('Nothing you need to do between now and Monday. If you want a sense of the read that comes at Day 14, the pattern breakdowns on Instagram are the best preview:', { bottom: 12 })}
-${emailCta({ href: IG_URL, label: 'Follow @body_recode_ on Instagram' })}
-${emailUrlFallback(IG_URL, 'The launch morning email lands in your inbox first.')}
+${emailCta({ href: IG_URL_BRAND, label: 'Follow @body_recode_ on Instagram' })}
+${emailCta({ href: IG_URL_KADE, label: 'Follow @kade_dunstone_ on Instagram' })}
+${emailUrlFallback(IG_URL_BRAND, 'The launch morning email lands in your inbox first.')}
 `
   }
 
@@ -132,8 +135,9 @@ ${emailFeaturedCard(`
   <p style="margin:0;font-size:14px;color:#3A3A3A;line-height:1.7;">Your result points to the Blueprint, but it is a recommendation, not a gate. If you would rather start with the free 14-Day Body Decode Challenge and see what your Day 14 Report says before committing to the Blueprint, that path is open. Challenge doors open Monday 13 July.</p>
 `, { eyebrow: undefined })}
 ${emailBody('Nothing you need to do between now and 20 July. If you want a sense of the corrective work the Blueprint does, the pattern breakdowns on Instagram are the best preview:', { bottom: 12 })}
-${emailCta({ href: IG_URL, label: 'Follow @body_recode_ on Instagram' })}
-${emailUrlFallback(IG_URL, 'The Blueprint opening email lands in your inbox first.')}
+${emailCta({ href: IG_URL_BRAND, label: 'Follow @body_recode_ on Instagram' })}
+${emailCta({ href: IG_URL_KADE, label: 'Follow @kade_dunstone_ on Instagram' })}
+${emailUrlFallback(IG_URL_BRAND, 'The Blueprint opening email lands in your inbox first.')}
 `
   }
 
@@ -161,8 +165,9 @@ ${emailFeaturedCard(`
   <p style="margin:0;font-size:14px;color:#3A3A3A;line-height:1.7;">Your result points to the Membership, but it is a recommendation, not a gate. If you would rather start with the free 14-Day Body Decode Challenge to see the work firsthand before committing to the long arc, that path is open. Challenge doors open Monday 13 July.</p>
 `, { eyebrow: undefined })}
 ${emailBody('Nothing you need to do between now and 10 August. If you want a sense of what the ongoing work looks like, the pattern breakdowns on Instagram are the best preview:', { bottom: 12 })}
-${emailCta({ href: IG_URL, label: 'Follow @body_recode_ on Instagram' })}
-${emailUrlFallback(IG_URL, 'The Membership opening email lands in your inbox first.')}
+${emailCta({ href: IG_URL_BRAND, label: 'Follow @body_recode_ on Instagram' })}
+${emailCta({ href: IG_URL_KADE, label: 'Follow @kade_dunstone_ on Instagram' })}
+${emailUrlFallback(IG_URL_BRAND, 'The Membership opening email lands in your inbox first.')}
 `
 }
 

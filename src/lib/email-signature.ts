@@ -33,6 +33,37 @@ const SEP = `<span style="font-size:12px;color:#C8C8C8;font-family:${FF};">&nbsp
 /** The link row (performance site | marketing site | Instagram), Signal Blue, shared by both signature variants. */
 const LINK_ROW = `<a href="${URL}" style="${LINK_STYLE}">${URL_LABEL}</a>${SEP}<a href="${SITE_URL}" style="${LINK_STYLE}">${SITE_LABEL}</a>${SEP}<a href="${IG_URL}" style="${LINK_STYLE}">${IG_LABEL}</a>`
 
+// Social icon strip - Instagram (brand) + Facebook (brand) + Instagram
+// (personal) + LinkedIn (personal). Landed 2026-07-08 as part of the
+// waitlist welcome revision - rendered at signature time so it lands on
+// EVERY email using darkEmailShell + darkEmailSignature (which is all
+// of them). Icons are inline SVG data URIs so no external asset host is
+// needed and no images-blocked-by-Outlook risk.
+//
+// Palette: monochrome graphite so it reads as brand-adjacent metadata,
+// not a competing CTA. Hover intent is provided by the underlying <a>.
+const SOCIAL_ICON_SIZE = 24
+const SOCIAL_ICON_STYLE = `display:inline-block;width:${SOCIAL_ICON_SIZE}px;height:${SOCIAL_ICON_SIZE}px;line-height:0;`
+const SOCIAL_ICON_GAP = `<span style="display:inline-block;width:14px;">&nbsp;</span>`
+
+const IG_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="${SOCIAL_ICON_SIZE}" height="${SOCIAL_ICON_SIZE}" viewBox="0 0 24 24" fill="none" stroke="#3A3A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>`
+const FB_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="${SOCIAL_ICON_SIZE}" height="${SOCIAL_ICON_SIZE}" viewBox="0 0 24 24" fill="none" stroke="#3A3A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>`
+const LI_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="${SOCIAL_ICON_SIZE}" height="${SOCIAL_ICON_SIZE}" viewBox="0 0 24 24" fill="none" stroke="#3A3A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>`
+
+const BRAND_IG_URL = 'https://www.instagram.com/body_recode_/'
+const BRAND_FB_URL = 'https://www.facebook.com/bodyrecode.au'
+const KADE_IG_URL = 'https://www.instagram.com/kade_dunstone_/'
+const KADE_LI_URL = 'https://www.linkedin.com/in/kadedunstone/'
+
+/** Public wrapper: renders the social icon strip. Exported so a caller can
+ *  inject it independently of the signature if needed. */
+export function socialIconStrip(): string {
+  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:18px;"><tr><td style="line-height:0;">
+    <a href="${BRAND_IG_URL}" style="${SOCIAL_ICON_STYLE}" title="@body_recode_ on Instagram">${IG_SVG}</a>${SOCIAL_ICON_GAP}<a href="${BRAND_FB_URL}" style="${SOCIAL_ICON_STYLE}" title="Body Recode on Facebook">${FB_SVG}</a>${SOCIAL_ICON_GAP}<a href="${KADE_IG_URL}" style="${SOCIAL_ICON_STYLE}" title="@kade_dunstone_ on Instagram">${IG_SVG}</a>${SOCIAL_ICON_GAP}<a href="${KADE_LI_URL}" style="${SOCIAL_ICON_STYLE}" title="Kade Dunstone on LinkedIn">${LI_SVG}</a>
+  </td></tr></table>`
+}
+const SOCIAL_STRIP = socialIconStrip()
+
 // Daily-rotating tagline strip under the signature (see src/app/api/sig-tag +
 // src/lib/sig-taglines.ts). One brand line per UTC day, so a recipient who gets
 // two emails in a week sees it change. Rendered 960x80, shown at 480x40.
@@ -54,6 +85,7 @@ export function emailSignature(): string {
         </td>
       </tr>
     </table>
+    ${SOCIAL_STRIP}
     ${SIG_TAG}`
 }
 
@@ -80,5 +112,6 @@ export function darkEmailSignature(): string {
         </td>
       </tr>
     </table>
+    ${SOCIAL_STRIP}
     ${SIG_TAG}`
 }
