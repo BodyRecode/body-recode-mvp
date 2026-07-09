@@ -1248,11 +1248,11 @@ const BODY_STATE_REF: BodyStateRef[] = [
   },
   {
     id: 'scorecard',
-    label: 'The Fit Scorecard',
-    summary: 'The 4-minute assessment that placed them into one of the three states.',
-    what: 'A short signal-pattern assessment. It surveys energy, sleep, digestion, training response, hormonal cues, recovery, mood, and appetite. Free, no card, ~4 minutes. The read layer\'s front door.',
-    why: 'Without a read, any prescription is guesswork — that\'s the entire Body Recode thesis. The scorecard\'s job isn\'t to sell. It\'s to route them honestly to the entry point on the ladder that fits their current state.',
-    how: 'Their answers scored against the three states and the four patterns. State came from their compensation load; pattern indication came from the dominant signal cluster (the full pattern read only lands after Day 14). The result page then recommended the state-matched product — which is why we\'re on this call.',
+    label: 'The Body State Scorecard',
+    summary: 'The short assessment at bodyrecode.au/scorecard that placed them into one of the three states.',
+    what: 'A short signal-pattern assessment at bodyrecode.au/scorecard. It surveys energy, sleep, digestion, training response, hormonal cues, recovery, mood, and appetite. Free, no card, a few minutes. The read layer\'s front door.',
+    why: 'Without a read, any prescription is guesswork — that\'s the entire Body Recode thesis. The Body State Scorecard\'s job isn\'t to sell. It\'s to route them honestly to the entry point on the ladder that fits their current state.',
+    how: 'Their answers scored against the three body states. State came from their compensation load — the mix of signals across energy, recovery, sleep, and hormonal cues. The result page then recommended the state-matched product on the ladder — which is why we\'re on this call. The pattern-level read (Stress-Stored, Insulin-Drift, Estrogen-Shift, Androgen-Decline) only lands after Day 14 of the Challenge.',
     howLabel: 'How it worked',
   },
 ]
