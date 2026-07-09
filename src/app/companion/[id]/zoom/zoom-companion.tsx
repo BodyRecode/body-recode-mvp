@@ -1223,7 +1223,7 @@ const BODY_STATE_REF: BodyStateRef[] = [
     matchesState: 'Depleted State',
     what: 'The nervous system is running high, energy is scarce, recovery is slow. The body is compensating for a chronic stressor — under-eating, over-training, sleep debt, life stress, or a mix. Pushing harder here backfires; it deepens the depletion. This is the most misdiagnosed state — people assume they need more intensity when the body is signalling the opposite.',
     why: 'Something has been drawing more out of the body than has been put back in. That gap can be nutritional, hormonal, stress-related, or a legacy of past dieting. The body has downshifted output to protect itself.',
-    how: 'Rebuild capacity first. Reset the nutrition floor, restore sleep, low-intensity movement. The 14-Day Body Decode Challenge is calibrated to this state — gentle structure that lets the body settle enough for the pattern underneath to be read cleanly.',
+    how: 'Rebuild capacity first. Reset the nutrition floor, restore sleep, low-intensity movement. The 14-Day Body Decode Challenge is calibrated to this state — gentle structure that lets the body settle so the pattern underneath (initially read on the scorecard, often at low confidence in this state) can be confirmed cleanly.',
     howLabel: 'How they move forward',
   },
   {
@@ -1233,7 +1233,7 @@ const BODY_STATE_REF: BodyStateRef[] = [
     matchesState: 'Transitioning State',
     what: 'The body has settled out of Depleted but is now stuck in a compensation loop — one of the four patterns: Stress-Stored, Insulin-Drift, Estrogen-Shift, or Androgen-Decline. The body isn\'t broken; it\'s adapted to a stressor that\'s still active.',
     why: 'Adaptation to a stressor became chronic. Once the body has learned to hold fat, resist insulin, buffer hormones, or dampen androgen signalling, generic training and generic eating won\'t unwind it. It needs work written to the pattern.',
-    how: 'The 6-Week Body Rewire Blueprint. Pattern-specific corrective work written to whichever of the four patterns their Day 14 Report named. Not a generic 12-week plan — the pattern names the prescription.',
+    how: 'The 6-Week Body Rewire Blueprint. Pattern-specific corrective work written to whichever of the four patterns their read named — the scorecard names it at high confidence for most people in this state; the Day 14 Report confirms it for anyone who did the Challenge first. Either way, the pattern names the prescription. Not a generic 12-week plan.',
     howLabel: 'How they move forward',
   },
   {
@@ -1252,7 +1252,7 @@ const BODY_STATE_REF: BodyStateRef[] = [
     summary: 'The short assessment at bodyrecode.au/scorecard that placed them into one of the three states.',
     what: 'A short signal-pattern assessment at bodyrecode.au/scorecard. It surveys energy, sleep, digestion, training response, hormonal cues, recovery, mood, and appetite. Free, no card, a few minutes. The read layer\'s front door.',
     why: 'Without a read, any prescription is guesswork — that\'s the entire Body Recode thesis. The Body State Scorecard\'s job isn\'t to sell. It\'s to route them honestly to the entry point on the ladder that fits their current state.',
-    how: 'Their answers scored against the three body states. State came from their compensation load — the mix of signals across energy, recovery, sleep, and hormonal cues. The result page then recommended the state-matched product on the ladder — which is why we\'re on this call. The pattern-level read (Stress-Stored, Insulin-Drift, Estrogen-Shift, Androgen-Decline) only lands after Day 14 of the Challenge.',
+    how: 'The scorecard delivers two reads at once. First: their body state (Depleted, Transitioning, or Ready) from the mix of signals across energy, recovery, sleep, and hormonal cues. Second: their fat-storage pattern (Stress-Stored, Insulin-Drift, Estrogen-Shift, or Androgen-Decline) with a confidence tier — high confidence = pattern named outright; low confidence = "points toward X, we confirm on the call". The result page then recommends the state-matched product on the ladder — which is why we\'re on this call. Day 14 of the Challenge confirms and settles the pattern read for anyone whose scorecard came back low-confidence.',
     howLabel: 'How it worked',
   },
 ]
@@ -1372,7 +1372,7 @@ const LADDER: LadderProduct[] = [
     duration: '14 days',
     opens: 'Mon 13 Jul · 7am AEST',
     headline: 'The read that comes before the prescription.',
-    body: 'Fourteen days of structure designed to read what the body is actually doing. Day 7 they take a short Check-In. Day 14 the Report names the pattern their biology has settled into, what it means, what it isn\'t, and the three actions specific to it. No payment. Every lead should end up here first.',
+    body: 'Fourteen days of structure designed to confirm what the scorecard indicated. Day 7 they take a short Check-In. Day 14 the Report confirms and settles the pattern read the scorecard opened — what it means, what it isn\'t, and the three actions specific to it. For anyone whose scorecard came back low-confidence (common in Depleted), this is where the pattern lands cleanly. No payment. Every lead should end up here first.',
     matchesState: 'Depleted State',
     faq: 'Free. Fully digital. 14 days from Day 1 to the Report. Nothing to install; everything lands in the portal.',
     includes: [
@@ -1400,14 +1400,14 @@ const LADDER: LadderProduct[] = [
         items: [
           'Day 5 · Week One Progress Session - the first checkpoint of how their body is responding',
           'Day 7 · Body Decode Check-In - a short reflection they submit (~5 min)',
-          'Day 14 · Body Decode Report - personalised written read of the pattern their biology has settled into, what it means, what it isn\'t, and three actions specific to it',
+          'Day 14 · Body Decode Report - confirmed read of the pattern (the scorecard opened this; Day 14 settles it after the body has been read against 14 days of structured behaviour), what it means, what it isn\'t, and three actions specific to it',
         ],
       },
       {
         heading: 'What happens after',
         items: [
           'The Day 14 Report stays in their portal permanently',
-          'If they want the Blueprint next, the Report names the pattern the Blueprint is written to',
+          'If they want the Blueprint next, the confirmed Day 14 pattern is what the Blueprint is written to (they can also come straight from the scorecard if their scorecard read was already high confidence)',
           'If they want to keep going alone, the Report gives them the direction',
           'No auto-charge, no continuation trap',
         ],
@@ -1421,14 +1421,14 @@ const LADDER: LadderProduct[] = [
     duration: '6 weeks · one-time',
     opens: 'Mon 20 Jul · 7am AEST',
     headline: 'Pattern-specific corrective work, once the read is in.',
-    body: 'Six weeks written to the pattern named at Day 14. Training calibrated. Nutrition timed. Weekly coaching notes written for what their body is actually doing this week. Week 3 Check-In recalibrates the second half. Week 6 Report names what was corrected + the next-arc call.',
+    body: 'Six weeks written to their named pattern (from the scorecard if their read was high confidence, from the Day 14 Report if they did the Challenge first). Training calibrated. Nutrition timed. Weekly coaching notes written for what their body is actually doing this week. Week 3 Check-In recalibrates the second half. Week 6 Report names what was corrected + the next-arc call.',
     matchesState: 'Transitioning State',
-    faq: 'One-time $97. Six weeks from Day 1 to the Report. No subscription, no continuation charge. Requires their Day 14 Report to land properly - the whole Blueprint is written to the pattern named there.',
+    faq: 'One-time $97. Six weeks from Day 1 to the Report. No subscription, no continuation charge. The Blueprint is written to their named pattern - the scorecard names it directly for most Transitioning-state clients; anyone with a low-confidence scorecard read is routed through the Challenge first so the pattern lands cleanly at Day 14.',
     includes: [
       {
         heading: 'The prescription',
         items: [
-          '6-week training programme written to the specific pattern named at Day 14',
+          '6-week training programme written to their specific named pattern (from the scorecard or the Day 14 Report, whichever is the confirmed read)',
           'Session-by-session briefs (what to do, why, what to notice, expected feel)',
           '4-5 training sessions per week (~30-60 min each depending on their state)',
           'Nutrition timed to the pattern - protein anchors, timing rules, block-specific targets',
@@ -1553,7 +1553,7 @@ function LadderStage({ bodyState, firstName }: { bodyState: string; firstName: s
         <p className="text-xs font-bold text-white/60 uppercase tracking-widest mb-3">The arc</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-5">
           {[
-            { step: '01 · READ', name: '14-Day Challenge', line: 'Name the pattern the body has settled into.' },
+            { step: '01 · READ', name: '14-Day Challenge', line: 'Confirms the pattern the scorecard opened. The body is settled enough for a clean read.' },
             { step: '02 · PRESCRIBE', name: '6-Week Blueprint', line: 'Pattern-specific corrective work written to the read.' },
             { step: '03 · SUSTAIN', name: 'Membership', line: 'Rotating training blocks + weekly + monthly rhythm.' },
           ].map((s, i) => (
