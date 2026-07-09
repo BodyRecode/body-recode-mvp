@@ -1378,6 +1378,51 @@ function LadderStage({ bodyState, firstName }: { bodyState: string; firstName: s
 
   return (
     <div className="max-w-3xl">
+      {/* Anchor: Body Recode in 60 seconds — talking track BEFORE the ladder.
+          Kade reads from this first so the ladder isn't the opening. */}
+      <div className="mb-6 rounded-2xl border-2 border-stone-800 bg-[#1A1A1A] text-white p-6 shadow-sm">
+        <p className="text-xs font-bold text-white/60 uppercase tracking-widest mb-4">
+          Anchor · Body Recode in 60 seconds
+        </p>
+
+        {/* Philosophy line */}
+        <p className="text-base leading-relaxed mb-5 font-medium">
+          We read the body before we prescribe. Most plans skip the read — which is why they stop working after week 3. Body Recode names the pattern first, then writes the work to that named pattern. Nothing prescribed until the read is on the table.
+        </p>
+
+        <div className="h-px bg-white/15 my-5" />
+
+        {/* The three-stage arc */}
+        <p className="text-xs font-bold text-white/60 uppercase tracking-widest mb-3">The arc</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-5">
+          {[
+            { step: '01 · READ', name: '14-Day Challenge', line: 'Name the pattern the body has settled into.' },
+            { step: '02 · PRESCRIBE', name: '6-Week Blueprint', line: 'Pattern-specific corrective work written to the read.' },
+            { step: '03 · SUSTAIN', name: 'Membership', line: 'Rotating training blocks + weekly + monthly rhythm.' },
+          ].map((s, i) => (
+            <div key={i} className="rounded-lg border border-white/15 bg-white/[0.04] p-3">
+              <p className="text-[10px] font-bold text-[#5B9BFF] uppercase tracking-widest mb-1.5">{s.step}</p>
+              <p className="text-sm font-semibold text-white mb-1">{s.name}</p>
+              <p className="text-xs text-white/70 leading-relaxed">{s.line}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="h-px bg-white/15 my-5" />
+
+        {/* 1:1 ascension */}
+        <p className="text-xs font-bold text-white/60 uppercase tracking-widest mb-2">The 1:1 ascension</p>
+        <p className="text-sm text-white/85 leading-relaxed">
+          Members who want to go deeper can ascend into a 1:1 coaching layer from inside Membership — it&apos;s an upgrade path, not a separate tier. The three-stage arc is the base of the system; 1:1 opens once the sustain layer is in place and they want closer access. No pressure to raise it early — the point is that the ladder keeps going if they want it to.
+        </p>
+
+        <div className="mt-5 pt-4 border-t border-white/15">
+          <p className="text-[11px] text-white/50 leading-relaxed italic">
+            Coach cue · Read this frame first. Then move into &ldquo;where {firstName} sits&rdquo; below — the ladder cards make sense faster once the philosophy and the arc are on the table.
+          </p>
+        </div>
+      </div>
+
       {/* Coach opener + state-match callout */}
       <div className="mb-6 p-5 rounded-2xl border border-blue-200 bg-blue-50 flex items-start justify-between gap-4 flex-wrap">
         <div className="flex-1 min-w-[240px]">
