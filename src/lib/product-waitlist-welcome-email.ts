@@ -96,7 +96,7 @@ ${emailFeaturedCard(
     'A daily coaching note that sets the practice for the day',
     'A 14-day training plan calibrated to your state, not to a generic week',
     'A HABNS nutrition guide (Habit-Anchored, Body-Numeric, Sustainable)',
-    'A morning and an evening reset sequence',
+    'A Morning Reset Sequence and an Evening Rhythm Sequence',
     'The Week One Progress Session on Day 5 - the first checkpoint of how your body is responding',
     'The Body Decode Check-In on Day 7',
     'The Body Decode Report on Day 14 - a personalised read of what your body has been telling you',

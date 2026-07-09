@@ -68,7 +68,7 @@ ${emailFeaturedCard(
     'Your daily coaching note — opens each morning',
     'Your 14-day training plan',
     'Your HABNS nutrition guide',
-    'Your morning and evening reset sequences',
+    'Your Morning Reset Sequence and Evening Rhythm Sequence',
     'Week One Progress Session — unlocks Day 5',
     'The Body Decode Check-In — unlocks Day 7',
     'Your Body Decode Report — released Day 14',

@@ -1228,8 +1228,8 @@ const LADDER: LadderProduct[] = [
         items: [
           'Portal opens Day 1 with the full 14-day map + baseline check',
           'A daily coaching note (opens each morning · ~3-5 min read)',
-          'Morning reset sequence (~5 min, every day)',
-          'Evening reset sequence (~5 min, every day)',
+          'Morning Reset Sequence (~5 min, every day)',
+          'Evening Rhythm Sequence (~5 min, every day)',
           'Everything at-home. No gym required. No equipment beyond a mat.',
         ],
       },
