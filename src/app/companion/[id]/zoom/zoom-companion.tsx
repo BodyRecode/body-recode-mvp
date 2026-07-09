@@ -1242,7 +1242,7 @@ const BODY_STATE_REF: BodyStateRef[] = [
     summary: 'Responsive and capable. Ready for progressive work.',
     matchesState: 'Ready State',
     what: 'No underlying compensation pattern to correct. The nervous system, hormonal axis, and recovery capacity are in range. Training produces the expected adaptation; nutrition changes produce the expected physical response.',
-    why: 'Either the read + prescribe layers have already been done, or they walked in without the compensations that require them. This is where most fitness content assumes people are — but it\'s actually the smallest cohort.',
+    why: 'Either the Decode + Rewire phases have already been done, or they walked in without the compensations that require them. This is where most fitness content assumes people are — but it\'s actually the smallest cohort.',
     how: 'The Body Recode Membership. Rotating training blocks (Capacity Foundation → Performance Expression → Restoration Return), weekly Check-Ins, and a monthly Loom reading their data. Keeps the read fresh as the body adapts.',
     howLabel: 'How they progress',
   },
@@ -1250,7 +1250,7 @@ const BODY_STATE_REF: BodyStateRef[] = [
     id: 'scorecard',
     label: 'The Body State Scorecard',
     summary: 'The short assessment at bodyrecode.au/scorecard that placed them into one of the three states.',
-    what: 'A short signal-pattern assessment at bodyrecode.au/scorecard. It surveys energy, sleep, digestion, training response, hormonal cues, recovery, mood, and appetite. Free, no card, a few minutes. The read layer\'s front door.',
+    what: 'A short signal-pattern assessment at bodyrecode.au/scorecard. It surveys energy, sleep, digestion, training response, hormonal cues, recovery, mood, and appetite. Free, no card, a few minutes. The doorway into the Decode phase — the scorecard opens the read that the 14-Day Challenge then settles.',
     why: 'Without a read, any prescription is guesswork — that\'s the entire Body Recode thesis. The Body State Scorecard\'s job isn\'t to sell. It\'s to route them honestly to the entry point on the ladder that fits their current state.',
     how: 'The scorecard delivers two reads at once. First: their body state (Depleted, Transitioning, or Ready) from the mix of signals across energy, recovery, sleep, and hormonal cues. Second: their fat-storage pattern (Stress-Stored, Insulin-Drift, Estrogen-Shift, or Androgen-Decline) with a confidence tier — high confidence = pattern named outright; low confidence = "points toward X, we confirm on the call". The result page then recommends the state-matched product on the ladder — which is why we\'re on this call. Day 14 of the Challenge confirms and settles the pattern read for anyone whose scorecard came back low-confidence.',
     howLabel: 'How it worked',
@@ -1544,7 +1544,7 @@ function LadderStage({ bodyState, firstName }: { bodyState: string; firstName: s
 
         {/* Philosophy line */}
         <p className="text-base leading-relaxed mb-5 font-medium">
-          We read the body before we prescribe. Most plans skip the read — which is why they stop working after week 3. Body Recode names the pattern first, then writes the work to that named pattern. Nothing prescribed until the read is on the table.
+          Decode first — read what the body has actually settled into. Then Rewire — correct the specific compensation pattern. Then Rebuild — return the body to progressive, capacity-driven work. Most plans skip step one entirely; that&apos;s why they stop working after week 3. Nothing gets prescribed until the read is in.
         </p>
 
         <div className="h-px bg-white/15 my-5" />
@@ -1553,9 +1553,9 @@ function LadderStage({ bodyState, firstName }: { bodyState: string; firstName: s
         <p className="text-xs font-bold text-white/60 uppercase tracking-widest mb-3">The arc</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-5">
           {[
-            { step: '01 · READ', name: '14-Day Challenge', line: 'Confirms the pattern the scorecard opened. The body is settled enough for a clean read.' },
-            { step: '02 · PRESCRIBE', name: '6-Week Blueprint', line: 'Pattern-specific corrective work written to the read.' },
-            { step: '03 · SUSTAIN', name: 'Membership', line: 'Rotating training blocks + weekly + monthly rhythm.' },
+            { step: '01 · DECODE', name: '14-Day Body Decode Challenge', line: 'Read the body and confirm the pattern the scorecard opened. Fourteen days of settling makes the read clean.' },
+            { step: '02 · REWIRE', name: '6-Week Body Rewire Blueprint', line: 'Corrective work written to the named pattern. Training, nutrition, and coaching notes shaped to unwind it.' },
+            { step: '03 · REBUILD', name: 'Body Recode Membership', line: 'Long-arc rebuild across rotating training blocks. Capacity → Expression → Restoration, with monthly reads keeping it honest.' },
           ].map((s, i) => (
             <div key={i} className="rounded-lg border border-white/15 bg-white/[0.04] p-3">
               <p className="text-[10px] font-bold text-[#5B9BFF] uppercase tracking-widest mb-1.5">{s.step}</p>
@@ -1570,7 +1570,7 @@ function LadderStage({ bodyState, firstName }: { bodyState: string; firstName: s
         {/* 1:1 ascension */}
         <p className="text-xs font-bold text-white/60 uppercase tracking-widest mb-2">The 1:1 ascension</p>
         <p className="text-sm text-white/85 leading-relaxed">
-          Members who want to go deeper can ascend into a 1:1 coaching layer from inside Membership — it&apos;s an upgrade path, not a separate tier. The three-stage arc is the base of the system; 1:1 opens once the sustain layer is in place and they want closer access. No pressure to raise it early — the point is that the ladder keeps going if they want it to.
+          Members who want to go deeper can ascend into a 1:1 coaching layer from inside Membership — it&apos;s an upgrade path, not a separate tier. The Decode → Rewire → Rebuild arc is the base of the system; 1:1 opens once the Rebuild layer is in place and they want closer access. No pressure to raise it early — the point is that the ladder keeps going if they want it to.
         </p>
 
         <div className="mt-5 pt-4 border-t border-white/15">
