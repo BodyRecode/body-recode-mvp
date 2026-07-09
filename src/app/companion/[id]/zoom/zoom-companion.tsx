@@ -1198,6 +1198,159 @@ type LadderIncludeGroup = {
   items: string[]
 }
 
+// ──────────────────────────────────────────────────────────────────────
+// Body-state + scorecard reference block. Sits at the very top of
+// Stage 5 as a collapsed reference Kade can open mid-call if the client
+// asks "what does Transitioning mean?" or "how did the scorecard
+// decide?" Not part of the pitch flow — the Anchor below is.
+// ──────────────────────────────────────────────────────────────────────
+type BodyStateRef = {
+  id: 'depleted' | 'transitioning' | 'ready' | 'scorecard'
+  label: string
+  summary: string
+  matchesState?: 'Depleted State' | 'Transitioning State' | 'Ready State'
+  what: string
+  why: string
+  how: string
+  howLabel?: string  // override "How they get out" → e.g. "How it worked"
+}
+
+const BODY_STATE_REF: BodyStateRef[] = [
+  {
+    id: 'depleted',
+    label: 'Depleted State',
+    summary: 'Under-fuelled or under-recovered. Cannot respond to hard work yet.',
+    matchesState: 'Depleted State',
+    what: 'The nervous system is running high, energy is scarce, recovery is slow. The body is compensating for a chronic stressor — under-eating, over-training, sleep debt, life stress, or a mix. Pushing harder here backfires; it deepens the depletion. This is the most misdiagnosed state — people assume they need more intensity when the body is signalling the opposite.',
+    why: 'Something has been drawing more out of the body than has been put back in. That gap can be nutritional, hormonal, stress-related, or a legacy of past dieting. The body has downshifted output to protect itself.',
+    how: 'Rebuild capacity first. Reset the nutrition floor, restore sleep, low-intensity movement. The 14-Day Body Decode Challenge is calibrated to this state — gentle structure that lets the body settle enough for the pattern underneath to be read cleanly.',
+    howLabel: 'How they move forward',
+  },
+  {
+    id: 'transitioning',
+    label: 'Transitioning State',
+    summary: 'A specific pattern has taken root. Training and eating aren\'t producing the expected response.',
+    matchesState: 'Transitioning State',
+    what: 'The body has settled out of Depleted but is now stuck in a compensation loop — one of the four patterns: Stress-Stored, Insulin-Drift, Estrogen-Shift, or Androgen-Decline. The body isn\'t broken; it\'s adapted to a stressor that\'s still active.',
+    why: 'Adaptation to a stressor became chronic. Once the body has learned to hold fat, resist insulin, buffer hormones, or dampen androgen signalling, generic training and generic eating won\'t unwind it. It needs work written to the pattern.',
+    how: 'The 6-Week Body Rewire Blueprint. Pattern-specific corrective work written to whichever of the four patterns their Day 14 Report named. Not a generic 12-week plan — the pattern names the prescription.',
+    howLabel: 'How they move forward',
+  },
+  {
+    id: 'ready',
+    label: 'Ready State',
+    summary: 'Responsive and capable. Ready for progressive work.',
+    matchesState: 'Ready State',
+    what: 'No underlying compensation pattern to correct. The nervous system, hormonal axis, and recovery capacity are in range. Training produces the expected adaptation; nutrition changes produce the expected physical response.',
+    why: 'Either the read + prescribe layers have already been done, or they walked in without the compensations that require them. This is where most fitness content assumes people are — but it\'s actually the smallest cohort.',
+    how: 'The Body Recode Membership. Rotating training blocks (Capacity Foundation → Performance Expression → Restoration Return), weekly Check-Ins, and a monthly Loom reading their data. Keeps the read fresh as the body adapts.',
+    howLabel: 'How they progress',
+  },
+  {
+    id: 'scorecard',
+    label: 'The Fit Scorecard',
+    summary: 'The 4-minute assessment that placed them into one of the three states.',
+    what: 'A short signal-pattern assessment. It surveys energy, sleep, digestion, training response, hormonal cues, recovery, mood, and appetite. Free, no card, ~4 minutes. The read layer\'s front door.',
+    why: 'Without a read, any prescription is guesswork — that\'s the entire Body Recode thesis. The scorecard\'s job isn\'t to sell. It\'s to route them honestly to the entry point on the ladder that fits their current state.',
+    how: 'Their answers scored against the three states and the four patterns. State came from their compensation load; pattern indication came from the dominant signal cluster (the full pattern read only lands after Day 14). The result page then recommended the state-matched product — which is why we\'re on this call.',
+    howLabel: 'How it worked',
+  },
+]
+
+function StateReferenceBlock({ bodyState }: { bodyState: string }) {
+  const [open, setOpen] = useState(false)
+  const [expanded, setExpanded] = useState<Record<BodyStateRef['id'], boolean>>({
+    depleted: false, transitioning: false, ready: false, scorecard: false,
+  })
+  const clientState = (bodyState || '') as BodyStateRef['matchesState']
+
+  const toggleCard = (id: BodyStateRef['id']) =>
+    setExpanded(prev => ({ ...prev, [id]: !prev[id] }))
+
+  return (
+    <div className="mb-6">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className={`w-full flex items-center justify-between px-5 py-4 rounded-2xl border transition-colors ${
+          open
+            ? 'border-stone-300 bg-white'
+            : 'border-stone-200 bg-stone-50 hover:bg-white hover:border-stone-300'
+        }`}
+        aria-expanded={open}
+      >
+        <div className="flex items-center gap-3 min-w-0">
+          <span className="text-sm font-bold text-stone-700">{open ? '▾' : '▸'}</span>
+          <div className="text-left min-w-0">
+            <p className="text-xs font-bold text-stone-500 uppercase tracking-widest">Reference</p>
+            <p className="text-sm font-semibold text-stone-800 truncate">The three body states + the scorecard</p>
+          </div>
+        </div>
+        <p className="text-xs text-stone-500 hidden md:block shrink-0 ml-4">Open if they ask &ldquo;what does that mean&rdquo;</p>
+      </button>
+
+      {open && (
+        <div className="mt-3 space-y-3">
+          {BODY_STATE_REF.map((ref) => {
+            const isClientState = ref.matchesState && ref.matchesState === clientState
+            const isCardOpen = expanded[ref.id]
+            return (
+              <div
+                key={ref.id}
+                className={`rounded-xl border ${
+                  isClientState
+                    ? 'border-[#1B6DFC] bg-blue-50/40'
+                    : 'border-stone-200 bg-white'
+                }`}
+              >
+                <button
+                  onClick={() => toggleCard(ref.id)}
+                  className="w-full flex items-start justify-between gap-4 p-4 text-left"
+                  aria-expanded={isCardOpen}
+                >
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 mb-1 flex-wrap">
+                      <span className="text-sm font-bold text-stone-800">{isCardOpen ? '▾' : '▸'} {ref.label}</span>
+                      {isClientState && (
+                        <span className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest px-2 py-0.5 rounded bg-blue-100">
+                          Where they scored
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-stone-600 leading-relaxed">{ref.summary}</p>
+                  </div>
+                </button>
+
+                {isCardOpen && (
+                  <div className="px-4 pb-4 space-y-3 border-t border-stone-100 pt-3">
+                    <div>
+                      <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">
+                        {ref.id === 'scorecard' ? 'What it is' : 'What it is'}
+                      </p>
+                      <p className="text-sm text-stone-700 leading-relaxed">{ref.what}</p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">
+                        {ref.id === 'scorecard' ? 'Why it matters' : 'Why the body is here'}
+                      </p>
+                      <p className="text-sm text-stone-700 leading-relaxed">{ref.why}</p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">
+                        {ref.howLabel ?? 'How'}
+                      </p>
+                      <p className="text-sm text-stone-700 leading-relaxed">{ref.how}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
+
 type LadderProduct = {
   id: 'challenge' | 'blueprint' | 'membership'
   name: string
@@ -1378,6 +1531,10 @@ function LadderStage({ bodyState, firstName }: { bodyState: string; firstName: s
 
   return (
     <div className="max-w-3xl">
+      {/* Reference · body states + scorecard — collapsed by default.
+          One click away if the client asks "what does that mean" mid-call. */}
+      <StateReferenceBlock bodyState={bodyState} />
+
       {/* Anchor: Body Recode in 60 seconds — talking track BEFORE the ladder.
           Kade reads from this first so the ladder isn't the opening. */}
       <div className="mb-6 rounded-2xl border-2 border-stone-800 bg-[#1A1A1A] text-white p-6 shadow-sm">
