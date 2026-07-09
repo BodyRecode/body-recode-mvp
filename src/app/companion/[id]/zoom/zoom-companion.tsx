@@ -1193,6 +1193,11 @@ export default function ZoomCompanion({
  * / Membership waitlist) rather than in-person coaching enquiry.
  * ───────────────────────────────────────────────────────────── */
 
+type LadderIncludeGroup = {
+  heading: string
+  items: string[]
+}
+
 type LadderProduct = {
   id: 'challenge' | 'blueprint' | 'membership'
   name: string
@@ -1202,6 +1207,8 @@ type LadderProduct = {
   headline: string
   body: string
   matchesState: 'Depleted State' | 'Transitioning State' | 'Ready State'
+  faq: string   // one-liner Kade can use to preface the expansion
+  includes: LadderIncludeGroup[]
 }
 
 const LADDER: LadderProduct[] = [
@@ -1214,6 +1221,45 @@ const LADDER: LadderProduct[] = [
     headline: 'The read that comes before the prescription.',
     body: 'Fourteen days of structure designed to read what the body is actually doing. Day 7 they take a short Check-In. Day 14 the Report names the pattern their biology has settled into, what it means, what it isn\'t, and the three actions specific to it. No payment. Every lead should end up here first.',
     matchesState: 'Depleted State',
+    faq: 'Free. Fully digital. 14 days from Day 1 to the Report. Nothing to install; everything lands in the portal.',
+    includes: [
+      {
+        heading: 'Daily structure',
+        items: [
+          'Portal opens Day 1 with the full 14-day map + baseline check',
+          'A daily coaching note (opens each morning · ~3-5 min read)',
+          'Morning reset sequence (~5 min, every day)',
+          'Evening reset sequence (~5 min, every day)',
+          'Everything at-home. No gym required. No equipment beyond a mat.',
+        ],
+      },
+      {
+        heading: 'Training + nutrition',
+        items: [
+          '14-day training plan calibrated to their body state (not a generic week)',
+          'Modifications for injury / restriction submitted at intake',
+          'HABNS nutrition guide (Habit-Anchored, Body-Numeric, Sustainable) - not a meal plan; a structure',
+          'No calorie targets, no macro tracking - HABNS anchors habits first',
+        ],
+      },
+      {
+        heading: 'Milestones',
+        items: [
+          'Day 5 · Week One Progress Session - the first checkpoint of how their body is responding',
+          'Day 7 · Body Decode Check-In - a short reflection they submit (~5 min)',
+          'Day 14 · Body Decode Report - personalised written read of the pattern their biology has settled into, what it means, what it isn\'t, and three actions specific to it',
+        ],
+      },
+      {
+        heading: 'What happens after',
+        items: [
+          'The Day 14 Report stays in their portal permanently',
+          'If they want the Blueprint next, the Report names the pattern the Blueprint is written to',
+          'If they want to keep going alone, the Report gives them the direction',
+          'No auto-charge, no continuation trap',
+        ],
+      },
+    ],
   },
   {
     id: 'blueprint',
@@ -1224,6 +1270,44 @@ const LADDER: LadderProduct[] = [
     headline: 'Pattern-specific corrective work, once the read is in.',
     body: 'Six weeks written to the pattern named at Day 14. Training calibrated. Nutrition timed. Weekly coaching notes written for what their body is actually doing this week. Week 3 Check-In recalibrates the second half. Week 6 Report names what was corrected + the next-arc call.',
     matchesState: 'Transitioning State',
+    faq: 'One-time $97. Six weeks from Day 1 to the Report. No subscription, no continuation charge. Requires their Day 14 Report to land properly - the whole Blueprint is written to the pattern named there.',
+    includes: [
+      {
+        heading: 'The prescription',
+        items: [
+          '6-week training programme written to the specific pattern named at Day 14',
+          'Session-by-session briefs (what to do, why, what to notice, expected feel)',
+          '4-5 training sessions per week (~30-60 min each depending on their state)',
+          'Nutrition timed to the pattern - protein anchors, timing rules, block-specific targets',
+          'Recovery + regulation practice woven into every week (not an afterthought)',
+        ],
+      },
+      {
+        heading: 'Weekly coaching rhythm',
+        items: [
+          'Monday morning: a coaching note in their inbox explaining the week ahead',
+          'Every session brief tells them what to notice in their body during it',
+          'End of every week: a two-minute reflection prompt (optional, but they land better if they use it)',
+          'Direct email access to Kade for pattern-specific questions',
+        ],
+      },
+      {
+        heading: 'Milestones',
+        items: [
+          'Week 3 · Check-In - they submit a short reflection; the second-half training + nutrition recalibrates based on their first-half response',
+          'Week 6 · Report - names what was corrected, what didn\'t shift, and the next-arc call (Membership, or self-guided from here)',
+        ],
+      },
+      {
+        heading: 'What happens after',
+        items: [
+          'Portal access retained after Week 6',
+          'The Week 6 Report gives them the honest next-move call',
+          'If they want ongoing coaching, the Membership picks up from there',
+          'If they want to keep going alone, the Report gives them the direction',
+        ],
+      },
+    ],
   },
   {
     id: 'membership',
@@ -1234,6 +1318,44 @@ const LADDER: LadderProduct[] = [
     headline: 'The long-arc container. Compound the response.',
     body: 'Rotating training blocks (capacity, expression, restoration) written to the pattern. Nutrition kept simple + calibrated block-to-block. Weekly Check-In shapes the coming week. Monthly Loom from you reading their data. Direct coaching-thread access between check-ins.',
     matchesState: 'Ready State',
+    faq: '$49 per week, no minimum term, no contract, cancel anytime from the portal. Designed to compound over months but the door out is open whenever.',
+    includes: [
+      {
+        heading: 'Rotating training blocks',
+        items: [
+          'Blocks rotate: Capacity Foundation → Performance Expression → Restoration Return',
+          'Each block ~6-8 weeks; the shape changes with what their body\'s been doing',
+          '4-5 sessions per week (~30-60 min), all with session briefs',
+          'Blocks are re-shaped in response to the monthly Loom + weekly Check-Ins',
+        ],
+      },
+      {
+        heading: 'Nutrition',
+        items: [
+          'Kept simple and calibrated block-to-block',
+          'Not a meal plan - a nutrition structure that flexes with the block',
+          'Adjusted at each block boundary based on how their body is responding',
+        ],
+      },
+      {
+        heading: 'Weekly + monthly coaching rhythm',
+        items: [
+          'Weekly Check-In every Sunday (~10 min) - shapes the coming week',
+          'Monthly 10-15 min Loom from Kade reading their check-in data - block-boundary call, what to lean into, what to hold back',
+          'Direct coaching-thread access between check-ins for questions',
+          'All past reports (Day 14 + Week 6 + monthly Looms) stay accessible in the portal',
+        ],
+      },
+      {
+        heading: 'The commercials',
+        items: [
+          '$49 per week, billed weekly',
+          'No minimum term - cancel any Sunday for the next week',
+          'Pausable for up to 4 weeks per year (holiday / life)',
+          'No lock-in, no early-exit fee, no upsell inside',
+        ],
+      },
+    ],
   },
 ]
 
@@ -1241,21 +1363,50 @@ function LadderStage({ bodyState, firstName }: { bodyState: string; firstName: s
   const state = (bodyState || 'Transitioning State') as LadderProduct['matchesState']
   const primaryId = LADDER.find(p => p.matchesState === state)?.id ?? 'challenge'
   const stateName = state.replace(' State', '')
+  // Expand the primary card by default so Kade opens the stage already
+  // showing the details for the lead's state-matched product.
+  const [expanded, setExpanded] = useState<Record<LadderProduct['id'], boolean>>({
+    challenge: primaryId === 'challenge',
+    blueprint: primaryId === 'blueprint',
+    membership: primaryId === 'membership',
+  })
+
+  const toggle = (id: LadderProduct['id']) =>
+    setExpanded(prev => ({ ...prev, [id]: !prev[id] }))
+  const expandAll = () => setExpanded({ challenge: true, blueprint: true, membership: true })
+  const collapseAll = () => setExpanded({ challenge: false, blueprint: false, membership: false })
 
   return (
     <div className="max-w-3xl">
       {/* Coach opener + state-match callout */}
-      <div className="mb-6 p-5 rounded-2xl border border-blue-200 bg-blue-50">
-        <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">Where {firstName} sits</p>
-        <p className="text-stone-800 text-sm leading-relaxed">
-          Their scorecard placed them in <strong>{stateName}</strong>. The state-matched primary is highlighted below. The other two are context, not competing pitches — walk the ladder, then anchor on where they land.
-        </p>
+      <div className="mb-6 p-5 rounded-2xl border border-blue-200 bg-blue-50 flex items-start justify-between gap-4 flex-wrap">
+        <div className="flex-1 min-w-[240px]">
+          <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">Where {firstName} sits</p>
+          <p className="text-stone-800 text-sm leading-relaxed">
+            Their scorecard placed them in <strong>{stateName}</strong>. The state-matched primary is highlighted + auto-expanded. The other two are context, not competing pitches — walk the ladder, then anchor on where they land.
+          </p>
+        </div>
+        <div className="flex flex-col gap-1.5 shrink-0">
+          <button
+            onClick={expandAll}
+            className="text-xs font-semibold px-3 py-1.5 rounded-md border border-blue-300 text-[#1B6DFC] hover:bg-blue-100 transition-colors whitespace-nowrap"
+          >
+            Expand all
+          </button>
+          <button
+            onClick={collapseAll}
+            className="text-xs font-semibold px-3 py-1.5 rounded-md border border-stone-300 text-stone-600 hover:bg-white transition-colors whitespace-nowrap"
+          >
+            Collapse all
+          </button>
+        </div>
       </div>
 
       {/* Product cards */}
       <div className="space-y-4">
         {LADDER.map((p) => {
           const isPrimary = p.id === primaryId
+          const isOpen = expanded[p.id]
           return (
             <div
               key={p.id}
@@ -1287,7 +1438,43 @@ function LadderStage({ bodyState, firstName }: { bodyState: string; firstName: s
               <p className={`text-sm leading-relaxed ${isPrimary ? 'text-stone-700' : 'text-stone-500'}`}>
                 {p.body}
               </p>
-              <div className="mt-3 pt-3 border-t border-stone-200 flex items-center gap-2 text-xs text-stone-500">
+
+              {/* Expand/collapse toggle */}
+              <button
+                onClick={() => toggle(p.id)}
+                className={`mt-4 w-full flex items-center justify-between px-4 py-3 rounded-lg border transition-colors ${
+                  isOpen
+                    ? 'border-stone-300 bg-white text-[#1A1A1A]'
+                    : 'border-stone-200 bg-white/60 text-stone-700 hover:bg-white hover:border-stone-300'
+                }`}
+                aria-expanded={isOpen}
+              >
+                <span className="text-sm font-semibold">
+                  {isOpen ? '▾' : '▸'} What&apos;s included
+                </span>
+                <span className="text-xs text-stone-500 truncate ml-3 hidden md:inline">{p.faq}</span>
+              </button>
+
+              {isOpen && (
+                <div className="mt-4 space-y-4">
+                  <p className="text-xs text-stone-500 leading-relaxed md:hidden">{p.faq}</p>
+                  {p.includes.map((group, gi) => (
+                    <div key={gi} className="pl-4 border-l-2 border-stone-200">
+                      <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">{group.heading}</p>
+                      <ul className="space-y-1.5">
+                        {group.items.map((item, ii) => (
+                          <li key={ii} className="text-sm text-stone-700 leading-relaxed flex gap-2">
+                            <span className="text-stone-400 shrink-0 mt-0.5">·</span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="mt-4 pt-3 border-t border-stone-200 flex items-center gap-2 text-xs text-stone-500">
                 <span className="font-semibold">Opens:</span>
                 <span>{p.opens}</span>
               </div>
@@ -1300,7 +1487,7 @@ function LadderStage({ bodyState, firstName }: { bodyState: string; firstName: s
       <div className="mt-6 p-4 rounded-xl border border-amber-200 bg-amber-50">
         <p className="text-xs font-bold text-amber-800 uppercase tracking-widest mb-1.5">Coach note</p>
         <p className="text-stone-700 text-sm leading-relaxed">
-          Anchor on the primary. Mention the other two so {firstName} sees the ladder, not just their tier. If they want to start with the free Challenge before the Blueprint, that path is open (soft opt-in mirrors the scorecard result page). Recommendation, not a gate.
+          Anchor on the primary. Mention the other two so {firstName} sees the ladder, not just their tier. Tap <strong>What&apos;s included</strong> on any card to open the full detail — read from it when they ask specifics. If they want to start with the free Challenge before the Blueprint, that path is open (soft opt-in mirrors the scorecard result page). Recommendation, not a gate.
         </p>
       </div>
     </div>
