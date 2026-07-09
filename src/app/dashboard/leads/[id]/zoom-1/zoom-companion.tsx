@@ -213,6 +213,18 @@ If NO: close cleanly. No follow-up pressure.`,
       tips: 'Don\'t oversell. Don\'t rush. If they\'re not ready, that\'s valid information. If they say yes, transition straight into the pricing and decision stages within this same call.',
       boundary: null,
     },
+    {
+      id: 6,
+      name: 'The Ladder',
+      duration: '5-8 min',
+      goal: `Show ${firstName} the three stages of the Body Recode ladder and where their scorecard result places them by default. Their state-matched product is highlighted as PRIMARY; the other two are context, not competing pitches.`,
+      // Rendered by <LadderStage /> - script/prompts/tips left null so the
+      // ladder card grid takes over the main pane.
+      script: null,
+      prompts: [],
+      tips: null,
+      boundary: null,
+    },
   ]
 }
 
@@ -518,7 +530,14 @@ export default function ZoomCompanion({
               <h2 className="text-xl font-bold text-[#1A1A1A] mb-3">{stage.name}</h2>
               <p className="text-stone-600 text-sm leading-relaxed mb-6">{stage.goal}</p>
 
+              {/* Stage 6 · The Ladder - custom render, no tabs */}
+              {stage.id === 6 && (
+                <LadderStage bodyState={bodyState} firstName={leadName.split(' ')[0]} />
+              )}
+
               {/* Tabs */}
+              {stage.id !== 6 && (
+              <>
               <div className="flex gap-1 mb-5 border-b border-stone-200">
                 {(['prompts', 'scorecard', 'language'] as const).map(tab => (
                   <button
@@ -612,6 +631,8 @@ export default function ZoomCompanion({
                   )}
                 </div>
               )}
+              </>
+              )}
             </div>
           </div>
 
@@ -669,3 +690,135 @@ export default function ZoomCompanion({
     </div>
   )
 }
+
+/* ─────────────────────────────────────────────────────────────
+ * LadderStage - Stage 6 · The Body Recode Ladder
+ *
+ * Renders all three products (Challenge · Blueprint · Membership) with
+ * the lead's state-matched product highlighted as PRIMARY. Copy mirrors
+ * the scorecard result page (~/performance-bodyrecode/app/scorecard/
+ * page.tsx lines 1040-1072) and the waitlist welcome emails so tone is
+ * consistent across surfaces.
+ *
+ * State → primary product mapping per project_bodystate_stage_
+ * recommendation_mapping:
+ *   Depleted State     → Challenge (free 14-day read + reset)
+ *   Transitioning State → Blueprint ($97 6-week pattern-corrective)
+ *   Ready State        → Membership ($49/wk long-arc container)
+ * ───────────────────────────────────────────────────────────── */
+
+type LadderProduct = {
+  id: 'challenge' | 'blueprint' | 'membership'
+  name: string
+  price: string
+  duration: string
+  opens: string
+  headline: string
+  body: string
+  matchesState: 'Depleted State' | 'Transitioning State' | 'Ready State'
+}
+
+const LADDER: LadderProduct[] = [
+  {
+    id: 'challenge',
+    name: '14-Day Body Decode Challenge',
+    price: 'Free',
+    duration: '14 days',
+    opens: 'Mon 13 Jul · 7am AEST',
+    headline: 'The read that comes before the prescription.',
+    body: 'Fourteen days of structure designed to read what the body is actually doing. Day 7 they take a short Check-In. Day 14 the Report names the pattern their biology has settled into, what it means, what it isn\'t, and the three actions specific to it. No payment. Every lead should end up here first.',
+    matchesState: 'Depleted State',
+  },
+  {
+    id: 'blueprint',
+    name: '6-Week Body Rewire Blueprint',
+    price: '$97',
+    duration: '6 weeks · one-time',
+    opens: 'Mon 20 Jul · 7am AEST',
+    headline: 'Pattern-specific corrective work, once the read is in.',
+    body: 'Six weeks written to the pattern named at Day 14. Training calibrated. Nutrition timed. Weekly coaching notes written for what their body is actually doing this week. Week 3 Check-In recalibrates the second half. Week 6 Report names what was corrected + the next-arc call.',
+    matchesState: 'Transitioning State',
+  },
+  {
+    id: 'membership',
+    name: 'Body Recode Membership',
+    price: '$49 / week',
+    duration: 'ongoing · cancel anytime',
+    opens: 'Mon 10 Aug · 7am AEST',
+    headline: 'The long-arc container. Compound the response.',
+    body: 'Rotating training blocks (capacity, expression, restoration) written to the pattern. Nutrition kept simple + calibrated block-to-block. Weekly Check-In shapes the coming week. Monthly Loom from you reading their data. Direct coaching-thread access between check-ins.',
+    matchesState: 'Ready State',
+  },
+]
+
+function LadderStage({ bodyState, firstName }: { bodyState: string; firstName: string }) {
+  const state = (bodyState || 'Transitioning State') as LadderProduct['matchesState']
+  const primaryId = LADDER.find(p => p.matchesState === state)?.id ?? 'challenge'
+
+  const stateName = state.replace(' State', '')
+
+  return (
+    <div className="max-w-3xl">
+      {/* Coach opener + state-match callout */}
+      <div className="mb-6 p-5 rounded-2xl border border-blue-200 bg-blue-50">
+        <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">Where {firstName} sits</p>
+        <p className="text-stone-800 text-sm leading-relaxed">
+          Their scorecard placed them in <strong>{stateName}</strong>. The state-matched primary is highlighted below. The other two are context, not competing pitches — walk the ladder, then anchor on where they land.
+        </p>
+      </div>
+
+      {/* Product cards */}
+      <div className="space-y-4">
+        {LADDER.map((p) => {
+          const isPrimary = p.id === primaryId
+          return (
+            <div
+              key={p.id}
+              className={`rounded-2xl border-2 p-6 transition-colors ${
+                isPrimary
+                  ? 'border-[#1B6DFC] bg-white shadow-sm'
+                  : 'border-stone-200 bg-stone-50'
+              }`}
+            >
+              <div className="flex items-start justify-between gap-4 mb-3 flex-wrap">
+                <div className="min-w-0 flex-1">
+                  {isPrimary && (
+                    <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-widest mb-1.5">
+                      Primary for {stateName}
+                    </p>
+                  )}
+                  <h3 className={`font-bold leading-tight ${isPrimary ? 'text-[#1A1A1A] text-lg' : 'text-stone-700 text-base'}`}>
+                    {p.name}
+                  </h3>
+                </div>
+                <div className="text-right shrink-0">
+                  <p className={`font-bold ${isPrimary ? 'text-[#1B6DFC] text-lg' : 'text-stone-700 text-base'}`}>{p.price}</p>
+                  <p className="text-xs text-stone-500 mt-0.5">{p.duration}</p>
+                </div>
+              </div>
+              <p className={`text-sm leading-relaxed mb-3 ${isPrimary ? 'text-stone-800 font-medium' : 'text-stone-600'}`}>
+                {p.headline}
+              </p>
+              <p className={`text-sm leading-relaxed ${isPrimary ? 'text-stone-700' : 'text-stone-500'}`}>
+                {p.body}
+              </p>
+              <div className="mt-3 pt-3 border-t border-stone-200 flex items-center gap-2 text-xs text-stone-500">
+                <span className="font-semibold">Opens:</span>
+                <span>{p.opens}</span>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Coach note */}
+      <div className="mt-6 p-4 rounded-xl border border-amber-200 bg-amber-50">
+        <p className="text-xs font-bold text-amber-800 uppercase tracking-widest mb-1.5">Coach note</p>
+        <p className="text-stone-700 text-sm leading-relaxed">
+          Anchor on the primary. Mention the other two so {firstName} sees the ladder, not just their tier. If they want to start with the free Challenge before the Blueprint, that path is open (soft opt-in mirrors the scorecard result page). Recommendation, not a gate.
+        </p>
+      </div>
+    </div>
+  )
+}
+
