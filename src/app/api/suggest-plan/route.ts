@@ -202,30 +202,75 @@ OUTPUT FORMAT — return ONLY valid JSON, no markdown:
 
   contextLines.push(`\nSuggest a macro training arc for this client. Design 3–5 meso blocks appropriate to current state. If Remediation/Red signals present, begin conservative. Return valid JSON only.`)
 
-  let message
-  try {
-    message = await anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 6000,
-      system: systemPrompt,
-      messages: [{ role: 'user', content: contextLines.join('\n') }],
-    })
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err)
-    return NextResponse.json({ error: `AI error: ${msg}` }, { status: 500 })
+  // Retry loop + truncation guard (2026-07-11), matching generate-cffs.
+  // Previously single-shot at 6000 tokens with no truncation detection, so a
+  // large multi-block macro arc could truncate mid-object and surface the
+  // opaque "Could not parse suggestion" error. Now: 12k cap, max_tokens
+  // detection, empty-content guard, blocks-present check, 3 attempts.
+  const MAX_TOKENS = 12000
+  let suggestion = null
+  let lastError = 'unknown error'
+
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    let message
+    try {
+      message = await anthropic.messages.create({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: MAX_TOKENS,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: contextLines.join('\n') }],
+      })
+    } catch (err) {
+      lastError = `AI error: ${err instanceof Error ? err.message : String(err)}`
+      console.error(`[suggest-plan] Anthropic API error (attempt ${attempt}/3):`, lastError)
+      continue
+    }
+
+    const textBlock = message.content.find(b => b.type === 'text')
+    if (!textBlock || textBlock.type !== 'text') {
+      lastError = `AI returned no text content (stop_reason=${message.stop_reason})`
+      console.warn(`[suggest-plan] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    if (message.stop_reason === 'max_tokens') {
+      lastError = `AI output was truncated at the ${MAX_TOKENS}-token limit`
+      console.warn(`[suggest-plan] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    const jsonText = extractFirstJsonObject(textBlock.text)
+    if (!jsonText) {
+      lastError = `Could not locate a JSON object in AI output: ${textBlock.text.slice(0, 200)}`
+      console.warn(`[suggest-plan] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    let candidate
+    try {
+      candidate = JSON.parse(jsonText)
+    } catch (err) {
+      lastError = `JSON parse failed: ${(err as Error).message}`
+      console.warn(`[suggest-plan] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    if (!Array.isArray(candidate.blocks) || candidate.blocks.length === 0) {
+      lastError = 'AI output contained no plan blocks'
+      console.warn(`[suggest-plan] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    suggestion = candidate
+    break
   }
 
-  const content = message.content[0]
-  if (content.type !== 'text') return NextResponse.json({ error: 'Unexpected AI response' }, { status: 500 })
-
-  const jsonText = extractFirstJsonObject(content.text)
-  if (!jsonText) return NextResponse.json({ error: 'Could not parse suggestion' }, { status: 500 })
-
-  let suggestion
-  try {
-    suggestion = JSON.parse(jsonText)
-  } catch {
-    return NextResponse.json({ error: 'JSON parse failed' }, { status: 500 })
+  if (!suggestion) {
+    console.error('[suggest-plan] generation failed after 3 attempts:', lastError)
+    return NextResponse.json(
+      { error: `Plan suggestion failed after 3 attempts (${lastError}). Please try again.` },
+      { status: 500 }
+    )
   }
 
   // Normalise enum values that Claude sometimes gets wrong. The DB CHECK

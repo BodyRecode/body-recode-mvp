@@ -338,30 +338,74 @@ Output valid JSON only — no markdown, no commentary:
   "overall_rationale": "string — 3-4 sentences: what phase intent governs this prescription, what the prescription is trying to achieve, what signals are blocking escalation, and what would need to change for the next phase"
 }`
 
-  let message
-  try {
-    message = await anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 6000,
-      system: systemPrompt,
-      messages: [{ role: 'user', content: contextParts.join('\n') + '\n\nGenerate the prescription suggestion. JSON only.' }],
-    })
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err)
-    return NextResponse.json({ error: `AI error: ${msg}` }, { status: 500 })
+  // Retry loop + truncation guard (2026-07-11), matching generate-cffs.
+  // Previously single-shot at 6000 tokens with no truncation detection. Now:
+  // 12k cap, max_tokens detection, empty-content guard, progression_phase
+  // present check, 3 attempts.
+  const MAX_TOKENS = 12000
+  let suggestion = null
+  let lastError = 'unknown error'
+
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    let message
+    try {
+      message = await anthropic.messages.create({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: MAX_TOKENS,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: contextParts.join('\n') + '\n\nGenerate the prescription suggestion. JSON only.' }],
+      })
+    } catch (err) {
+      lastError = `AI error: ${err instanceof Error ? err.message : String(err)}`
+      console.error(`[suggest-prescription] Anthropic API error (attempt ${attempt}/3):`, lastError)
+      continue
+    }
+
+    const textBlock = message.content.find(b => b.type === 'text')
+    if (!textBlock || textBlock.type !== 'text') {
+      lastError = `AI returned no text content (stop_reason=${message.stop_reason})`
+      console.warn(`[suggest-prescription] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    if (message.stop_reason === 'max_tokens') {
+      lastError = `AI output was truncated at the ${MAX_TOKENS}-token limit`
+      console.warn(`[suggest-prescription] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    const jsonText = extractFirstJsonObject(textBlock.text)
+    if (!jsonText) {
+      lastError = `Could not locate a JSON object in AI output: ${textBlock.text.slice(0, 200)}`
+      console.warn(`[suggest-prescription] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    let candidate
+    try {
+      candidate = JSON.parse(jsonText)
+    } catch (err) {
+      lastError = `JSON parse failed: ${(err as Error).message}`
+      console.warn(`[suggest-prescription] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    if (typeof candidate.progression_phase !== 'string' || !candidate.progression_phase.trim()) {
+      lastError = 'AI output missing progression_phase'
+      console.warn(`[suggest-prescription] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    suggestion = candidate
+    break
   }
 
-  const content = message.content[0]
-  if (content.type !== 'text') return NextResponse.json({ error: 'Unexpected AI response' }, { status: 500 })
-
-  const jsonText = extractFirstJsonObject(content.text)
-  if (!jsonText) return NextResponse.json({ error: 'Could not parse suggestion' }, { status: 500 })
-
-  let suggestion
-  try {
-    suggestion = JSON.parse(jsonText)
-  } catch {
-    return NextResponse.json({ error: 'JSON parse failed' }, { status: 500 })
+  if (!suggestion) {
+    console.error('[suggest-prescription] generation failed after 3 attempts:', lastError)
+    return NextResponse.json(
+      { error: `Prescription suggestion failed after 3 attempts (${lastError}). Please try again.` },
+      { status: 500 }
+    )
   }
 
   // If the coach has set a frequency on the macro-plan block, that's

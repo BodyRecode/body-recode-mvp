@@ -122,7 +122,7 @@ export async function POST(request: NextRequest) {
     try {
       message = await anthropic.messages.create({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: 6000,
+        max_tokens: 12000,
         system: buildClientReadingSystemPrompt(),
         messages: conversation,
       })
@@ -135,6 +135,14 @@ export async function POST(request: NextRequest) {
     const content = message.content[0]
     if (!content || content.type !== 'text') {
       lastError = 'Unexpected response from AI'
+      continue
+    }
+
+    // Truncated mid-object: the JSON never closed, so parsing will fail. Retry
+    // rather than feeding a garbled half-object into extraction. (2026-07-11)
+    if (message.stop_reason === 'max_tokens') {
+      lastError = 'AI output was truncated at the 12000-token limit'
+      console.warn('[client-reading] output truncated, retrying')
       continue
     }
 
