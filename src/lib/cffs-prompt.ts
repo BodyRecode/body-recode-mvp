@@ -248,8 +248,29 @@ Produce the CFFS as JSON only — no markdown, no commentary:
   "exposure_readiness_capacity": "Green" | "Amber" | "Red",
   "exposure_readiness_schedule": "Green" | "Amber" | "Red",
   "exposure_readiness_regulation": "Green" | "Amber" | "Red",
-  "exposure_readiness_behaviour": "Green" | "Amber" | "Red"
+  "exposure_readiness_behaviour": "Green" | "Amber" | "Red",
+  "rationale_summary": {
+    "headline": "2-3 lines MAX. Where this client's body is right now + the single most important reason it matters. Written for a coach opening this client cold, scanning before a session. Plain and direct. Example: 'Remediation, partially resolved. Stress regulation is the binding constraint, and sleep and recovery sit downstream of it, so nothing loads hard until regulation lifts.'",
+    "scan": {
+      "body_state": "one of: Remediation | Optimisation | Post-Optimisation (MUST match body_state_classification above)",
+      "resolution": "one of: Fully Resolved | Partially Resolved | Unresolved (MUST match resolution_state above)",
+      "binding_constraint": "3-4 words MAX naming the single biggest current limiter, e.g. 'Stress regulation' or 'Sleep architecture' or 'Energy availability'",
+      "flags_count": "integer: how many distinct risk / watch items you raised in risk_flags_and_watch_items"
+    },
+    "operating_rules": [
+      "3-5 bullets MAX. Each one LINE, no more than 12 words. The things a coach genuinely needs to hold in mind for this client. Scan-and-remember only, NOT the full interpretation. Example: 'Do not load hard until regulation lifts'",
+      "Example: 'Watch sleep architecture - downstream of stress load'",
+      "Example: 'Energy availability constrained - protein floor non-negotiable'"
+    ]
+  }
 }
+
+RATIONALE_SUMMARY QUALITY BAR:
+This is the coach's at-a-glance card on the client profile. It must pass the "coach reads only this and still knows how to hold this client" test.
+- headline: MAXIMUM 3 short lines. State the body-state position and the one reason it holds. If it runs longer, cut.
+- scan: EXACT tokens only, not sentences. This is a pill row. body_state and resolution MUST match the classification fields above verbatim.
+- operating_rules: MAXIMUM 5 bullets, each MAXIMUM 12 words. If a rule needs a full sentence to survive, it is a clinical detail, not an operating rule - leave it in the interpretive sections.
+- Do NOT duplicate the interpretive section prose into operating_rules. The summary is the coach's dashboard; the sections are the clinical archive.
 
 VISUAL SIGNAL SUMMARY (the new field):
 When baseline photos were provided alongside this intake, you must produce a dedicated visual_signal_summary of 2-4 sentences that names plainly:

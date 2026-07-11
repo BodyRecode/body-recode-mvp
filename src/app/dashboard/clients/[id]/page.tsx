@@ -307,6 +307,17 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       ]
     : []
 
+  // Coach-facing at-a-glance summary (2026-07-11 rationale compression, Phase 1).
+  // jsonb column typed loosely off the row; null on legacy CFFS rows generated
+  // before this shipped (those fall through to the inline sections).
+  const cffsSummary = (activeCffs as {
+    rationale_summary?: {
+      headline?: string
+      scan?: { body_state?: string; resolution?: string; binding_constraint?: string; flags_count?: number | string }
+      operating_rules?: string[]
+    }
+  } | null)?.rationale_summary ?? null
+
   const statusColour = {
     pending: 'text-[#6B6B6B] bg-stone-100 border-stone-200',
     started: 'text-amber-700 bg-amber-50 border-amber-200',
@@ -698,7 +709,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   )}
                 </div>
               ) : (
-                <p className="text-xs text-[#999999]">Not sent yet — adds a 9-question follow-up card (meds + dietary/consumption) to the client's portal.</p>
+                <p className="text-xs text-[#999999]">Not sent yet — adds a 9-question follow-up card (meds + dietary/consumption) to the client&apos;s portal.</p>
               )}
               {latestSupplementaryInvitation?.status === 'complete' && (
                 <p className="text-[11px] text-[#999999] mt-1">Need to update meds or dietary context again? Send a fresh one.</p>
@@ -1104,6 +1115,59 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           {/* Recovery Router (Phase 2 / observe-only) */}
           <RecoveryRouterPanel snapshot={recoverySnapshot} mode={recoveryMode} />
 
+          {/* Coach-facing at-a-glance summary (2026-07-11 rationale compression).
+              Leads the CFFS block; the 7 interpretive sections collapse below.
+              Legacy CFFS rows (no rationale_summary) skip this and show the
+              sections inline, unchanged. */}
+          {cffsSummary?.headline && (
+            <div className="border border-[#E5E5E5] bg-[#FFFFFF] rounded-2xl overflow-hidden mb-4">
+              <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E5E5E5] bg-[#FAFAF7]">
+                <p
+                  className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest"
+                  style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+                >
+                  At a glance
+                </p>
+              </div>
+              <div className="px-5 py-4">
+                <p className="text-sm text-[#1A1A1A] leading-relaxed whitespace-pre-wrap mb-4">{cffsSummary.headline}</p>
+                {cffsSummary.scan && (
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {cffsSummary.scan.body_state && (
+                      <span className="text-[11px] font-semibold text-[#1A1A1A] bg-[#F5F3EE] border border-[#E5E5E5] rounded-full px-3 py-1">{cffsSummary.scan.body_state}</span>
+                    )}
+                    {cffsSummary.scan.resolution && (
+                      <span className="text-[11px] font-semibold text-[#1A1A1A] bg-[#F5F3EE] border border-[#E5E5E5] rounded-full px-3 py-1">{cffsSummary.scan.resolution}</span>
+                    )}
+                    {cffsSummary.scan.binding_constraint && (
+                      <span className="text-[11px] font-semibold text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] rounded-full px-3 py-1">Binding: {cffsSummary.scan.binding_constraint}</span>
+                    )}
+                    {(() => {
+                      const raw = cffsSummary.scan.flags_count
+                      const n = typeof raw === 'number' ? raw : parseInt(String(raw ?? ''), 10)
+                      if (!Number.isFinite(n)) return null
+                      return (
+                        <span className={`text-[11px] font-semibold rounded-full px-3 py-1 border ${n > 0 ? 'text-amber-700 bg-amber-50 border-amber-200' : 'text-[#6B6B6B] bg-stone-100 border-stone-200'}`}>
+                          {n} flag{n === 1 ? '' : 's'}
+                        </span>
+                      )
+                    })()}
+                  </div>
+                )}
+                {Array.isArray(cffsSummary.operating_rules) && cffsSummary.operating_rules.length > 0 && (
+                  <ul className="space-y-1.5">
+                    {cffsSummary.operating_rules.map((rule: string, i: number) => (
+                      <li key={i} className="flex items-start gap-2 text-[13px] text-[#2A2A2A] leading-snug">
+                        <span className="text-[#1B6DFC] mt-0.5">•</span>
+                        <span>{rule}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* What is a CFFS */}
           <div className="border-l-2 border-[#1B6DFC] bg-[#FFFFFF]/50 border border-[#E5E5E5] rounded-2xl p-5 mb-4">
             <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-3">About This Report</p>
@@ -1142,20 +1206,29 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             </div>
           )}
 
-          {/* CFFS Sections */}
-          <div className="space-y-2 mb-6">
-            {cffsSections.map((section, i) => (
-              <div key={section.label} className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl overflow-hidden">
-                <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E5E5E5] bg-[#FFFFFF]/80">
-                  <span className="text-[11px] font-black text-[#1B6DFC]">{String(i + 1).padStart(2, '0')}</span>
-                  <p className="text-[10px] font-bold text-[#6B6B6B] uppercase tracking-widest">{section.label}</p>
+          {/* CFFS Sections — the full interpretive analysis. When the at-a-glance
+              summary exists (2026-07-11+), these collapse behind a toggle so the
+              coach scans the card first. Legacy rows with no summary render the
+              sections open by default (unchanged behaviour). */}
+          <details className="mb-6 group" open={!cffsSummary?.headline}>
+            <summary className="cursor-pointer text-[11px] font-semibold text-[#1B6DFC] hover:text-blue-700 select-none list-none flex items-center gap-1.5 mb-3">
+              <span className="transition-transform group-open:rotate-90">▸</span>
+              Full interpretive analysis ({cffsSections.length} sections)
+            </summary>
+            <div className="space-y-2">
+              {cffsSections.map((section, i) => (
+                <div key={section.label} className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl overflow-hidden">
+                  <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E5E5E5] bg-[#FFFFFF]/80">
+                    <span className="text-[11px] font-black text-[#1B6DFC]">{String(i + 1).padStart(2, '0')}</span>
+                    <p className="text-[10px] font-bold text-[#6B6B6B] uppercase tracking-widest">{section.label}</p>
+                  </div>
+                  <div className="px-5 py-4">
+                    <p className="text-sm text-[#1A1A1A] leading-relaxed">{section.content}</p>
+                  </div>
                 </div>
-                <div className="px-5 py-4">
-                  <p className="text-sm text-[#1A1A1A] leading-relaxed">{section.content}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </details>
 
           <ClientReadingPanel
             cffs={activeCffs as Parameters<typeof ClientReadingPanel>[0]['cffs']}
