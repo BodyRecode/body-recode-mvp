@@ -59,7 +59,7 @@ export type Step = {
 }
 
 export type Phase = {
-  id: 0 | 1 | 2 | 3 | 4
+  id: 0 | 1 | 2 | 3 | 4 | 5
   title: string
   /** One-line summary shown next to the phase title */
   description: string
@@ -689,6 +689,55 @@ export const PHASES: Phase[] = [
         status: 'deferred',
         effort: 'M',
         notes: 'Verify item closed 2026-07-05. Verified generate-then-edit is the current path; macro/block manual authoring exists; program-level manual authoring does not. Deferred because Founding Ten (Mode A) opt in for the BR engine, so manual bypass defeats the purpose. Reserved for Mode B if partners want fully manual.',
+      },
+    ],
+  },
+  {
+    id: 5,
+    title: 'Coach Co-Pilot',
+    description: 'Conversational doctrine tutor (+ later: draft & refine plans). The white-label differentiator: every coach practising to one standard.',
+    longDescription: [
+      'A doctrine-trained co-pilot the coach talks with, on a specific client, that has read that client\'s record and can explain, teach, and pressure-test coaching decisions against the Body Recode doctrine — with the coach always the final approver.',
+      'Reframed 2026-07-12 to DOCTRINE TUTOR FIRST, drafting second. The engine already drafts plans one-shot; the unique value of a conversation is teaching and alignment ("why is she in Remediation? talk me out of progressing him"). That is what lets a good-but-not-Kade coach reach Kade-level decisions — the literal white-label thesis of "a collective of coaches practising to one standard". So the tutor is the moat; drafting/refining are bonuses layered on once trust is earned.',
+      'Built ON TOP of what already exists: doctrine prompt builders + canon (its brain), the hardened generators (its hands for drafting), the rationale_summary "At a glance" cards from 2026-07-11 (compact per-client context, so it never re-reads the raw 221-q firehose), and the draft→review→publish + archive flow (its approval + audit rail).',
+      'Lives in the dashboard app (= the SaaS foundation), coach-scoped from day one — build once, rides into white-label with no rebuild. Trust mechanisms: it cites the data it draws on, and a thumbs-down "flag for review" loop catches mistakes + doctrine drift (reviewer = Kade now; per-practice lead coach at white-label time).',
+      'Design doc: 06_SAAS_PLATFORM_BUILD/02_FEATURE_SPECS/2026-07-12_Coach_Copilot_Conversational_Build_Design.md (v0.2). Not yet started — sequence post-launch against the role-dashboards bank.',
+    ],
+    order: 5,
+    steps: [
+      {
+        id: 'copilot-tutor',
+        title: 'Phase 1 — Doctrine Tutor (read-only) + thumbs-down feedback',
+        description: 'Per-client chat panel that explains, teaches, and pressure-tests decisions against doctrine, grounded in the client record and CITING its sources. Read-only (writes nothing). Ships with the thumbs-down "flag for review" loop (reviewer = Kade). The hero capability.',
+        status: 'planned',
+        effort: 'L',
+        surfaces: ['src/app/dashboard/clients/[id] (co-pilot panel)', 'new chat/agent-loop lib', 'flagged-exchanges storage (coach-scoped)', '06_SAAS_PLATFORM_BUILD/02_FEATURE_SPECS/2026-07-12_Coach_Copilot_Conversational_Build_Design.md'],
+        notes: 'Coach-scoped from day one. Feeds on rationale_summary cards + current saved artefact state (never a re-derivation). Confirmed 2026-07-12: thumbs-down ships in Phase 1.',
+      },
+      {
+        id: 'copilot-draft',
+        title: 'Phase 2 — Draft with me',
+        description: 'Chat can propose an artefact (start with the training program) by calling the existing generators as tools; output is a draft the coach reviews, never auto-saved or client-sent. All doctrine guardrails still fire because it routes through the engine.',
+        status: 'planned',
+        effort: 'M',
+        blockedBy: 'copilot-tutor',
+        notes: 'First drafting target = training program (highest coach effort today).',
+      },
+      {
+        id: 'copilot-refine',
+        title: 'Phase 3 — Refine with surgical edits',
+        description: 'Conversational in-place edits that change ONLY the named part (one exercise, one day, one macro, one paragraph) and leave the rest of the draft untouched. Full regeneration on every tweak is explicitly rejected — it would silently change the rest and feel broken.',
+        status: 'planned',
+        effort: 'L',
+        blockedBy: 'copilot-draft',
+      },
+      {
+        id: 'copilot-broaden',
+        title: 'Phase 4 — Broaden (practice-wide + proactive)',
+        description: 'Practice-wide questions, proactive cross-client triage ("3 clients hit a readiness gate this week"), coach-style memory within doctrine bounds, and the per-practice reviewer setting for the flag-for-review queue at white-label.',
+        status: 'planned',
+        effort: 'L',
+        blockedBy: 'copilot-refine',
       },
     ],
   },
