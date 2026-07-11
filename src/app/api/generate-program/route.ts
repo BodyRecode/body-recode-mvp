@@ -219,37 +219,85 @@ export async function POST(request: NextRequest) {
   // Generate program via Claude. Switched from Sonnet 4.6 to Haiku 4.5 for
   // speed (~3-5x faster). Programs are structure-heavy and rule-driven, so
   // the smaller model holds up well; revisit if quality drops.
-  let message
-  try {
-    message = await anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 6000,
-      system: buildProgramSystemPrompt() + recoveryPromptSection,
-      messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, cffs, exercises as ExerciseRow[], macroPlanContext, client.medications, coachGuidance) }],
-    })
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err)
-    console.error('Anthropic API error:', msg)
-    return NextResponse.json({ error: `AI error: ${msg}` }, { status: 500 })
+  //
+  // Retry loop + truncation guard (2026-07-11), matching generate-cffs. The
+  // program JSON is the largest artefact the engine emits (every session x
+  // exercise x set), so the old single-shot 6000-token cap truncated
+  // mid-object for 4-5 day blocks: extractFirstJsonObject returned null and
+  // the coach saw the opaque "Could not parse program" error that only cleared
+  // on a lucky re-click. Unacceptable for white-label coaches. Now: 12k cap,
+  // explicit stop_reason === 'max_tokens' detection, empty-content guard,
+  // sessions-present check, 3 attempts, then a specific honest failure.
+  const MAX_TOKENS = 12000
+  // Evolving-any (bare `= null`), matching the original untyped JSON.parse
+  // result, so the downstream doctrine/recovery clamps keep their loose access.
+  let programData = null
+  let lastError = 'unknown error'
+
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    let message
+    try {
+      message = await anthropic.messages.create({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: MAX_TOKENS,
+        system: buildProgramSystemPrompt() + recoveryPromptSection,
+        messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, cffs, exercises as ExerciseRow[], macroPlanContext, client.medications, coachGuidance) }],
+      })
+    } catch (err) {
+      lastError = `AI error: ${err instanceof Error ? err.message : String(err)}`
+      console.error(`[generate-program] Anthropic API error (attempt ${attempt}/3):`, lastError)
+      continue
+    }
+
+    const textBlock = message.content.find(b => b.type === 'text')
+    if (!textBlock || textBlock.type !== 'text') {
+      lastError = `AI returned no text content (stop_reason=${message.stop_reason})`
+      console.warn(`[generate-program] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    console.log(`[generate-program] attempt ${attempt}/3 response (stop_reason=${message.stop_reason}, first 300):`, textBlock.text.slice(0, 300))
+
+    if (message.stop_reason === 'max_tokens') {
+      lastError = `AI output was truncated at the ${MAX_TOKENS}-token limit`
+      console.warn(`[generate-program] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    const jsonText = extractFirstJsonObject(textBlock.text)
+    if (!jsonText) {
+      lastError = `Could not locate a JSON object in AI output: ${textBlock.text.slice(0, 200)}`
+      console.warn(`[generate-program] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    let candidate
+    try {
+      candidate = JSON.parse(jsonText)
+    } catch (err) {
+      lastError = `JSON parse failed: ${(err as Error).message}`
+      console.warn(`[generate-program] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    // A truncated-but-parseable object can still be missing the sessions array.
+    // Never save a program with no training sessions.
+    if (!Array.isArray(candidate.sessions) || candidate.sessions.length === 0) {
+      lastError = 'AI output contained no training sessions'
+      console.warn(`[generate-program] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    programData = candidate
+    break
   }
 
-  const content = message.content[0]
-  if (content.type !== 'text') {
-    return NextResponse.json({ error: 'Unexpected response from AI' }, { status: 500 })
-  }
-
-  console.log('Claude program response (first 300 chars):', content.text.slice(0, 300))
-
-  const jsonText = extractFirstJsonObject(content.text)
-  if (!jsonText) {
-    return NextResponse.json({ error: `Could not parse program — AI returned: ${content.text.slice(0, 200)}` }, { status: 500 })
-  }
-
-  let programData
-  try {
-    programData = JSON.parse(jsonText)
-  } catch {
-    return NextResponse.json({ error: `JSON parse failed: ${jsonText.slice(0, 100)}` }, { status: 500 })
+  if (!programData) {
+    console.error('[generate-program] generation failed after 3 attempts:', lastError)
+    return NextResponse.json(
+      { error: `Program generation failed after 3 attempts (${lastError}). Please try again.` },
+      { status: 500 }
+    )
   }
 
   // Doctrine enforcement — never trust the LLM for RPE ceilings or set
@@ -374,7 +422,7 @@ export async function POST(request: NextRequest) {
 
   if (insertError) {
     console.error('Program insert error:', insertError)
-    return NextResponse.json({ error: 'Failed to save program' }, { status: 500 })
+    return NextResponse.json({ error: `Failed to save program: ${insertError.message}` }, { status: 500 })
   }
 
   // Link program back to plan block

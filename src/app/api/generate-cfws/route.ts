@@ -84,33 +84,81 @@ export async function POST(request: NextRequest) {
     .limit(1)
   const cffsBaseline = cffsRows?.[0] ?? null
 
-  let message
-  try {
-    message = await anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 6000,
-      system: buildCFWSSystemPrompt(),
-      messages: [{ role: 'user', content: buildCFWSUserPrompt(client.name, currentPair, recentPairs, cffsBaseline) }],
-    })
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err)
-    return NextResponse.json({ error: `AI error: ${msg}` }, { status: 500 })
+  // Generation + parse retry loop + truncation guard (2026-07-11), matching
+  // generate-cffs. The weekly synthesis is a large 14-field JSON; the old
+  // single-shot 6000-token cap could truncate it mid-object so
+  // extractFirstJsonObject returned null and the coach saw "Could not parse
+  // CFWS". Now: 12k cap, explicit max_tokens truncation detection, empty
+  // content-block guard, resolution_state present check, 3 attempts.
+  const MAX_TOKENS = 12000
+  let parsed: Record<string, unknown> | null = null
+  let lastError = 'unknown error'
+
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    let message
+    try {
+      message = await anthropic.messages.create({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: MAX_TOKENS,
+        system: buildCFWSSystemPrompt(),
+        messages: [{ role: 'user', content: buildCFWSUserPrompt(client.name, currentPair, recentPairs, cffsBaseline) }],
+      })
+    } catch (err) {
+      lastError = `AI error: ${err instanceof Error ? err.message : String(err)}`
+      console.error(`[CFWS] Anthropic API error (attempt ${attempt}/3):`, lastError)
+      continue
+    }
+
+    const textBlock = message.content.find(b => b.type === 'text')
+    if (!textBlock || textBlock.type !== 'text') {
+      lastError = `AI returned no text content (stop_reason=${message.stop_reason})`
+      console.warn(`[CFWS] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    console.log(`[CFWS] attempt ${attempt}/3 raw response (stop_reason=${message.stop_reason}):`, textBlock.text.slice(0, 200))
+
+    if (message.stop_reason === 'max_tokens') {
+      lastError = `AI output was truncated at the ${MAX_TOKENS}-token limit`
+      console.warn(`[CFWS] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    const jsonText = extractFirstJsonObject(textBlock.text)
+    if (!jsonText) {
+      lastError = `Could not locate a JSON object in AI output: ${textBlock.text.slice(0, 200)}`
+      console.warn(`[CFWS] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    let candidate: Record<string, unknown>
+    try {
+      candidate = JSON.parse(jsonText)
+    } catch (err) {
+      lastError = `JSON parse failed: ${(err as Error).message}`
+      console.warn(`[CFWS] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    if (typeof candidate.resolution_state !== 'string' || !candidate.resolution_state.trim()) {
+      lastError = 'AI output missing resolution_state'
+      console.warn(`[CFWS] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    parsed = candidate
+    break
   }
 
-  const content = message.content[0]
-  if (content.type !== 'text') return NextResponse.json({ error: 'Unexpected AI response' }, { status: 500 })
-
-  const jsonText = extractFirstJsonObject(content.text)
-  if (!jsonText) return NextResponse.json({ error: 'Could not parse CFWS from AI response' }, { status: 500 })
-
-  let cfwsData
-  try {
-    cfwsData = JSON.parse(jsonText)
-  } catch {
-    return NextResponse.json({ error: 'JSON parse failed' }, { status: 500 })
+  if (!parsed) {
+    console.error('[CFWS] generation failed after 3 attempts:', lastError)
+    return NextResponse.json(
+      { error: `CFWS generation failed after 3 attempts (${lastError}). Please try again.` },
+      { status: 500 }
+    )
   }
 
-  cfwsData = stripEmDashes(cfwsData)
+  const cfwsData = stripEmDashes(parsed) as Record<string, unknown>
 
   await admin.from('cfws').update({ is_archived: true }).eq('client_id', client_id).eq('week_number', week_number)
 
@@ -121,7 +169,10 @@ export async function POST(request: NextRequest) {
     ...(cfwsData as Record<string, unknown>),
   })
 
-  if (insertError) return NextResponse.json({ error: 'Failed to save CFWS' }, { status: 500 })
+  if (insertError) {
+    console.error('[CFWS] failed to save CFWS:', insertError.message)
+    return NextResponse.json({ error: `Failed to save CFWS: ${insertError.message}` }, { status: 500 })
+  }
 
   return NextResponse.json({ success: true })
 }
