@@ -168,44 +168,97 @@ export async function POST(request: NextRequest) {
     text: buildCFFSUserPrompt(intake, clientRow?.medications ?? null, baselineContext, bloodMarkerSection),
   })
 
-  // Generate CFFS via Claude
+  // Generate CFFS via Claude.
+  //
+  // Generation + parse retry loop (2026-07-11). Pre-this-date the route was
+  // single-shot with a 6000-token cap. For data-rich clients (full 221-question
+  // intake + baseline + 3 photos + an approved blood panel) the 14-field CFFS
+  // JSON occasionally ran past the cap, truncated mid-object, and
+  // extractFirstJsonObject returned null — surfacing to the coach as the opaque
+  // "Could not parse CFFS" error that only cleared on a lucky re-click. That is
+  // unacceptable for white-label coaches who can't diagnose it. We now:
+  //   (a) give the model real output headroom (12k tokens),
+  //   (b) detect stop_reason === 'max_tokens' truncation explicitly,
+  //   (c) tolerate a missing/empty content block, and
+  //   (d) retry up to 3 times before failing with a specific, honest message.
+  // The Anthropic SDK's own maxRetries handles transient network/5xx; this loop
+  // handles content-level failures (truncation, unparseable output) it can't.
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 5 })
 
-  let message
-  try {
-    message = await anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 6000,
-      system: buildCFFSSystemPrompt(),
-      messages: [{ role: 'user', content: userContent }],
-    })
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err)
-    console.error('Anthropic API error:', msg)
-    return NextResponse.json({ error: `AI error: ${msg}` }, { status: 500 })
+  const MAX_TOKENS = 12000
+  let parsed: Record<string, unknown> | null = null
+  let lastError = 'unknown error'
+
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    let message
+    try {
+      message = await anthropic.messages.create({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: MAX_TOKENS,
+        system: buildCFFSSystemPrompt(),
+        messages: [{ role: 'user', content: userContent }],
+      })
+    } catch (err) {
+      lastError = `AI error: ${err instanceof Error ? err.message : String(err)}`
+      console.error(`[CFFS] Anthropic API error (attempt ${attempt}/3):`, lastError)
+      continue
+    }
+
+    const textBlock = message.content.find(b => b.type === 'text')
+    if (!textBlock || textBlock.type !== 'text') {
+      lastError = `AI returned no text content (stop_reason=${message.stop_reason})`
+      console.warn(`[CFFS] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    console.log(`[CFFS] attempt ${attempt}/3 raw response (stop_reason=${message.stop_reason}):`, textBlock.text.slice(0, 200))
+
+    // Truncated mid-object: the JSON never closed, so parsing is guaranteed to
+    // fail. Retry rather than dumping a garbled half-object into extraction.
+    if (message.stop_reason === 'max_tokens') {
+      lastError = `AI output was truncated at the ${MAX_TOKENS}-token limit`
+      console.warn(`[CFFS] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    const jsonText = extractFirstJsonObject(textBlock.text)
+    if (!jsonText) {
+      lastError = `Could not locate a JSON object in AI output: ${textBlock.text.slice(0, 200)}`
+      console.warn(`[CFFS] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    let candidate: Record<string, unknown>
+    try {
+      candidate = JSON.parse(jsonText)
+    } catch (err) {
+      lastError = `JSON parse failed: ${(err as Error).message}`
+      console.warn(`[CFFS] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    // Structurally valid but content-empty output (e.g. the model returned `{}`
+    // or dropped the core classification) must not be saved as a real CFFS.
+    if (typeof candidate.body_state_classification !== 'string' || !candidate.body_state_classification.trim()) {
+      lastError = 'AI output missing body_state_classification'
+      console.warn(`[CFFS] attempt ${attempt}/3: ${lastError}`)
+      continue
+    }
+
+    parsed = candidate
+    break
   }
 
-  const content = message.content[0]
-  if (content.type !== 'text') {
-    return NextResponse.json({ error: 'Unexpected response from AI' }, { status: 500 })
-  }
-
-  console.log('Claude raw response:', content.text.slice(0, 200))
-
-  const jsonText = extractFirstJsonObject(content.text)
-  if (!jsonText) {
-    return NextResponse.json({ error: `Could not parse CFFS — AI returned: ${content.text.slice(0, 100)}` }, { status: 500 })
-  }
-
-  let cffsData
-  try {
-    cffsData = JSON.parse(jsonText)
-  } catch (err) {
-    return NextResponse.json({ error: `JSON parse failed: ${jsonText.slice(0, 100)}` }, { status: 500 })
+  if (!parsed) {
+    console.error('[CFFS] generation failed after 3 attempts:', lastError)
+    return NextResponse.json(
+      { error: `CFFS generation failed after 3 attempts (${lastError}). Please click Regenerate to try again.` },
+      { status: 500 }
+    )
   }
 
   // Strip em dashes from all generated text fields
-  cffsData = stripEmDashes(cffsData)
+  const cffsData = stripEmDashes(parsed) as Record<string, unknown>
 
   // Record how many photos actually made it into the prompt. Surfaces as a
   // coach-facing badge ("Photos: ✓ 3/3") on the CFFS panel; null on rows
@@ -236,7 +289,8 @@ export async function POST(request: NextRequest) {
     .single()
 
   if (cffsError) {
-    return NextResponse.json({ error: 'Failed to save CFFS' }, { status: 500 })
+    console.error('[CFFS] failed to save CFFS:', cffsError.message)
+    return NextResponse.json({ error: `Failed to save CFFS: ${cffsError.message}` }, { status: 500 })
   }
 
   return NextResponse.json({ cffs })
