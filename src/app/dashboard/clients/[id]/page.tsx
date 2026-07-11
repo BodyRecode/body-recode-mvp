@@ -238,6 +238,16 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   const latestIntakeId = latestIntake?.id || null
   const intakeDone = !!latestIntakeId || latestFoundationalInvitation?.status === 'complete'
   const latestCfws = cfwsRecords?.[0] || null
+
+  // Coach-facing at-a-glance summary for the weekly synthesis (2026-07-11
+  // rationale compression). Null on CFWS rows generated before this shipped.
+  const cfwsSummary = (latestCfws as {
+    rationale_summary?: {
+      headline?: string
+      scan?: { resolution?: string; trajectory?: string; binding_constraint?: string; flags_count?: number | string }
+      operating_rules?: string[]
+    }
+  } | null)?.rationale_summary ?? null
   const checkinToken = client.checkin_token as string | undefined
 
   // Find the most recent week with both A and B submitted
@@ -1398,6 +1408,58 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               </div>
             </div>
 
+            {/* Coach-facing at-a-glance summary (2026-07-11 rationale compression).
+                Leads the weekly synthesis; the sections collapse below. Legacy
+                CFWS rows (no rationale_summary) render sections inline. */}
+            {cfwsSummary?.headline && (
+              <div className="border border-[#E5E5E5] bg-[#FFFFFF] rounded-2xl overflow-hidden mb-4">
+                <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E5E5E5] bg-[#FAFAF7]">
+                  <p
+                    className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest"
+                    style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+                  >
+                    At a glance
+                  </p>
+                </div>
+                <div className="px-5 py-4">
+                  <p className="text-sm text-[#1A1A1A] leading-relaxed whitespace-pre-wrap mb-4">{cfwsSummary.headline}</p>
+                  {cfwsSummary.scan && (
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {cfwsSummary.scan.trajectory && (
+                        <span className="text-[11px] font-semibold text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] rounded-full px-3 py-1">{cfwsSummary.scan.trajectory}</span>
+                      )}
+                      {cfwsSummary.scan.resolution && (
+                        <span className="text-[11px] font-semibold text-[#1A1A1A] bg-[#F5F3EE] border border-[#E5E5E5] rounded-full px-3 py-1">{cfwsSummary.scan.resolution}</span>
+                      )}
+                      {cfwsSummary.scan.binding_constraint && (
+                        <span className="text-[11px] font-semibold text-[#1A1A1A] bg-[#F5F3EE] border border-[#E5E5E5] rounded-full px-3 py-1">Binding: {cfwsSummary.scan.binding_constraint}</span>
+                      )}
+                      {(() => {
+                        const raw = cfwsSummary.scan.flags_count
+                        const n = typeof raw === 'number' ? raw : parseInt(String(raw ?? ''), 10)
+                        if (!Number.isFinite(n)) return null
+                        return (
+                          <span className={`text-[11px] font-semibold rounded-full px-3 py-1 border ${n > 0 ? 'text-amber-700 bg-amber-50 border-amber-200' : 'text-[#6B6B6B] bg-stone-100 border-stone-200'}`}>
+                            {n} flag{n === 1 ? '' : 's'}
+                          </span>
+                        )
+                      })()}
+                    </div>
+                  )}
+                  {Array.isArray(cfwsSummary.operating_rules) && cfwsSummary.operating_rules.length > 0 && (
+                    <ul className="space-y-1.5">
+                      {cfwsSummary.operating_rules.map((rule: string, i: number) => (
+                        <li key={i} className="flex items-start gap-2 text-[13px] text-[#2A2A2A] leading-snug">
+                          <span className="text-[#1B6DFC] mt-0.5">•</span>
+                          <span>{rule}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* About block */}
             <div className="border-l-2 border-[#1B6DFC] bg-[#FFFFFF]/50 border border-[#E5E5E5] rounded-2xl p-5 mb-4">
               <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-3">About This Report</p>
@@ -1409,9 +1471,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               </p>
             </div>
 
-            {/* CFWS Sections */}
-            <div className="space-y-2 mb-6">
-              {[
+            {/* CFWS Sections — collapse behind a toggle when the summary exists. */}
+            {(() => {
+              const cfwsSections = [
                 { label: 'Context Snapshot', content: latestCfws.client_context_snapshot },
                 { label: 'Dominant Weekly Patterns', content: latestCfws.dominant_weekly_patterns },
                 { label: 'Capacity Constraints', content: latestCfws.weekly_capacity_constraints },
@@ -1419,18 +1481,29 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 { label: 'Tensions & Trade-Offs', content: latestCfws.weekly_tensions_tradeoffs },
                 { label: 'Explicit Non-Directives', content: latestCfws.explicit_weekly_non_directives },
                 { label: 'Closing Notes', content: latestCfws.closing_weekly_notes },
-              ].filter(s => s.content).map((section, i) => (
-                <div key={section.label} className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl overflow-hidden">
-                  <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E5E5E5] bg-[#FFFFFF]/80">
-                    <span className="text-[11px] font-black text-[#1B6DFC]">{String(i + 1).padStart(2, '0')}</span>
-                    <p className="text-[10px] font-bold text-[#6B6B6B] uppercase tracking-widest">{section.label}</p>
+              ].filter(s => s.content)
+              return (
+                <details className="mb-6 group" open={!cfwsSummary?.headline}>
+                  <summary className="cursor-pointer text-[11px] font-semibold text-[#1B6DFC] hover:text-blue-700 select-none list-none flex items-center gap-1.5 mb-3">
+                    <span className="transition-transform group-open:rotate-90">▸</span>
+                    Full weekly analysis ({cfwsSections.length} sections)
+                  </summary>
+                  <div className="space-y-2">
+                    {cfwsSections.map((section, i) => (
+                      <div key={section.label} className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl overflow-hidden">
+                        <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E5E5E5] bg-[#FFFFFF]/80">
+                          <span className="text-[11px] font-black text-[#1B6DFC]">{String(i + 1).padStart(2, '0')}</span>
+                          <p className="text-[10px] font-bold text-[#6B6B6B] uppercase tracking-widest">{section.label}</p>
+                        </div>
+                        <div className="px-5 py-4">
+                          <p className="text-sm text-[#1A1A1A] leading-relaxed">{section.content}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div className="px-5 py-4">
-                    <p className="text-sm text-[#1A1A1A] leading-relaxed">{section.content}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+                </details>
+              )
+            })()}
           </>
         ) : (
           <div className="bg-[#FFFFFF]/50 border border-[#E5E5E5] rounded-xl p-5 mb-3 text-center">

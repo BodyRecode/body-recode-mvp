@@ -143,8 +143,27 @@ Produce JSON only — no markdown, no commentary:
   "exposure_readiness_schedule": "Green" | "Amber" | "Red",
   "exposure_readiness_regulation": "Green" | "Amber" | "Red",
   "exposure_readiness_behaviour": "Green" | "Amber" | "Red",
-  "reassessment_language_triggered": false
+  "reassessment_language_triggered": false,
+  "rationale_summary": {
+    "headline": "2-3 lines MAX. How this week actually went for this client + the one thing that most matters going into the coaching conversation. Written for a coach scanning before a check-in. Plain and direct. Example: 'Holding steady. Sleep improved but training recovery is still lagging, so keep load flat this week rather than progressing.'",
+    "scan": {
+      "resolution": "one of: Fully Resolved | Partially Resolved | Unresolved (MUST match resolution_state above)",
+      "trajectory": "one of: Improving | Holding steady | Mixed | Regressing (this week read against the rolling window)",
+      "binding_constraint": "3-4 words MAX naming the biggest current limiter this week, e.g. 'Recovery margin' or 'Sleep' or 'Adherence'",
+      "flags_count": "integer: how many distinct items you raised in weekly_risk_flags"
+    },
+    "operating_rules": [
+      "3-5 bullets MAX. Each one LINE, no more than 12 words. What the coach should hold or do this week. Scan-and-remember only. Example: 'Keep load flat - recovery still lagging'"
+    ]
+  }
 }
+
+RATIONALE_SUMMARY QUALITY BAR:
+This is the coach's at-a-glance card on the client profile, read before the weekly check-in call. It must pass the "coach reads only this and still knows how to run this week" test.
+- headline: MAXIMUM 3 short lines. State how the week went and the one thing that matters. If longer, cut.
+- scan: EXACT tokens only, not sentences. resolution MUST match resolution_state above verbatim.
+- operating_rules: MAXIMUM 5 bullets, each MAXIMUM 12 words. If a rule needs a full sentence, it belongs in the weekly sections, not here.
+- Do NOT duplicate the weekly section prose into operating_rules. The summary is the dashboard; the sections are the archive.
 
 Conservative language throughout. No prescriptions. No readiness declarations. No outcome predictions.`
 }
