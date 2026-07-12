@@ -1,0 +1,135 @@
+// Coach Co-Pilot — client context builder.
+//
+// Assembles a compact-but-grounded picture of one client for the doctrine
+// tutor: the coach-facing synthesis (CFFS) incl. its "At a glance" summary and
+// full interpretive fields, the latest weekly synthesis (CFWS), the active
+// program + nutrition plan headlines, medications synthesis, and recent
+// check-in direction. This is what the tutor cites from — it must only assert
+// what appears here (or general doctrine), never invent.
+//
+// Reads the CURRENT saved state (including coach edits), never a re-derivation.
+
+import type { SupabaseClient } from '@supabase/supabase-js'
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+function fmtSummary(rs: any): string | null {
+  if (!rs || typeof rs !== 'object') return null
+  const parts: string[] = []
+  if (rs.headline) parts.push(String(rs.headline))
+  if (rs.scan && typeof rs.scan === 'object') {
+    const pills = Object.entries(rs.scan)
+      .filter(([, v]) => v !== null && v !== undefined && String(v).trim() !== '')
+      .map(([k, v]) => `${k}=${v}`)
+      .join(', ')
+    if (pills) parts.push(`[${pills}]`)
+  }
+  if (Array.isArray(rs.operating_rules) && rs.operating_rules.length) {
+    parts.push('Operating rules: ' + rs.operating_rules.map((r: string) => `- ${r}`).join('\n'))
+  }
+  return parts.length ? parts.join('\n') : null
+}
+
+export async function buildCopilotContext(
+  admin: SupabaseClient,
+  clientId: string,
+): Promise<{ clientName: string; coachId: string | null; context: string } | null> {
+  const { data: client } = await admin
+    .from('clients')
+    .select('id, name, coach_id, medications, medications_analysis')
+    .eq('id', clientId)
+    .maybeSingle()
+  if (!client) return null
+
+  const [{ data: cffsRows }, { data: cfwsRows }, { data: programRows }, { data: nutritionRows }, { data: checkinRows }, { data: intakeRows }] = await Promise.all([
+    admin.from('cffs').select('*').eq('client_id', clientId).eq('is_archived', false).order('generated_at', { ascending: false }).limit(1),
+    admin.from('cfws').select('*').eq('client_id', clientId).order('week_number', { ascending: false }).limit(1),
+    admin.from('programs').select('block_name, progression_phase, training_goal, training_frequency, week_duration, rationale_summary, is_active').eq('client_id', clientId).eq('is_active', true).limit(1),
+    admin.from('nutrition_plans').select('plan_name, entry_state, carb_demand_level, entry_state_summary, is_active, status').eq('client_id', clientId).eq('status', 'active').limit(1),
+    admin.from('weekly_checkins').select('week_number, form_type, submitted_at').eq('client_id', clientId).order('week_number', { ascending: false }).limit(4),
+    admin.from('intakes').select('primary_goal, secondary_goals, desired_timeline, training_days_available, injury_location_current, injury_primary_concern').eq('client_id', clientId).order('submitted_at', { ascending: false }).limit(1),
+  ])
+
+  const cffs = cffsRows?.[0] ?? null
+  const cfws = cfwsRows?.[0] ?? null
+  const program = programRows?.[0] ?? null
+  const nutrition = nutritionRows?.[0] ?? null
+  const intake = intakeRows?.[0] ?? null
+
+  const S: string[] = []
+  S.push(`CLIENT: ${client.name}`)
+
+  if (intake) {
+    const bits: string[] = []
+    if (intake.primary_goal) bits.push(`Primary goal: ${intake.primary_goal}`)
+    if (intake.secondary_goals) bits.push(`Secondary goals: ${intake.secondary_goals}`)
+    if (intake.desired_timeline) bits.push(`Desired timeline: ${intake.desired_timeline}`)
+    if (intake.training_days_available) bits.push(`Training days available: ${JSON.stringify(intake.training_days_available)}`)
+    if (intake.injury_location_current) bits.push(`Current injuries: ${JSON.stringify(intake.injury_location_current)}`)
+    if (intake.injury_primary_concern) bits.push(`Primary injury concern: ${intake.injury_primary_concern}`)
+    if (bits.length) S.push(`\nFROM INTAKE:\n${bits.join('\n')}`)
+  }
+
+  if (cffs) {
+    S.push(`\nFOUNDATIONAL SYNTHESIS (CFFS):`)
+    S.push(`Body state: ${cffs.body_state_classification} · Resolution: ${cffs.resolution_state}`)
+    S.push(`Readiness — capacity: ${cffs.exposure_readiness_capacity}, schedule: ${cffs.exposure_readiness_schedule}, regulation: ${cffs.exposure_readiness_regulation}, behaviour: ${cffs.exposure_readiness_behaviour}`)
+    const sum = fmtSummary(cffs.rationale_summary)
+    if (sum) S.push(`At-a-glance summary:\n${sum}`)
+    const sections: Array<[string, string | null]> = [
+      ['Client context', cffs.client_context_summary],
+      ['Primary patterns & signals', cffs.primary_patterns_and_signals],
+      ['Capacity constraints & guardrails', cffs.capacity_constraints_and_guardrails],
+      ['Risk flags & watch items', cffs.risk_flags_and_watch_items],
+      ['Tensions & trade-offs', cffs.tensions_and_tradeoffs],
+      ['Explicit non-directives', cffs.explicit_non_directives],
+      ['Closing interpretive notes', cffs.closing_interpretive_notes],
+    ]
+    for (const [label, val] of sections) if (val) S.push(`${label}: ${val}`)
+  } else {
+    S.push(`\nFOUNDATIONAL SYNTHESIS (CFFS): none yet.`)
+  }
+
+  if (cfws) {
+    S.push(`\nLATEST WEEKLY SYNTHESIS (CFWS) — week ${cfws.week_number}:`)
+    S.push(`Resolution: ${cfws.resolution_state}`)
+    const sum = fmtSummary(cfws.rationale_summary)
+    if (sum) S.push(`At-a-glance summary:\n${sum}`)
+    const sections: Array<[string, string | null]> = [
+      ['Context snapshot', cfws.client_context_snapshot],
+      ['Dominant weekly patterns', cfws.dominant_weekly_patterns],
+      ['Weekly capacity constraints', cfws.weekly_capacity_constraints],
+      ['Weekly risk flags', cfws.weekly_risk_flags],
+    ]
+    for (const [label, val] of sections) if (val) S.push(`${label}: ${val}`)
+  }
+
+  if (program) {
+    S.push(`\nACTIVE TRAINING PROGRAM: ${program.block_name} — ${program.progression_phase}, ${program.training_goal}, ${program.training_frequency}x/week, ${program.week_duration} weeks`)
+    const sum = fmtSummary(program.rationale_summary)
+    if (sum) S.push(sum)
+  } else {
+    S.push(`\nACTIVE TRAINING PROGRAM: none.`)
+  }
+
+  if (nutrition) {
+    S.push(`\nACTIVE NUTRITION PLAN: ${nutrition.plan_name ?? ''} — entry state ${nutrition.entry_state}, carb demand ${nutrition.carb_demand_level}`)
+    const es: any = nutrition.entry_state_summary
+    if (es && typeof es === 'object' && es.current_focus) S.push(`Current focus: ${es.current_focus}${es.what_this_means ? ` — ${es.what_this_means}` : ''}`)
+  } else {
+    S.push(`\nACTIVE NUTRITION PLAN: none.`)
+  }
+
+  if (client.medications) {
+    S.push(`\nMEDICATIONS: ${client.medications}`)
+    const ma: any = client.medications_analysis
+    if (ma && typeof ma === 'object' && ma.combined_picture) S.push(`Combined picture: ${ma.combined_picture}`)
+  }
+
+  if (checkinRows && checkinRows.length) {
+    const weeks = Array.from(new Set(checkinRows.map((c: any) => c.week_number))).slice(0, 3)
+    S.push(`\nRECENT CHECK-INS: weeks ${weeks.join(', ')} submitted.`)
+  }
+
+  return { clientName: client.name, coachId: client.coach_id ?? null, context: S.join('\n') }
+}

@@ -16,6 +16,7 @@ import IssueLoginCodeButton from './issue-login-code-button'
 import SendEmailButton from '@/components/send-email-button'
 import RegenerateCFFSButton from '@/components/regenerate-cffs-button'
 import ClientReadingPanel from './client-reading-panel'
+import CopilotPanel from './copilot-panel'
 import MedicationsEditor from './medications-editor'
 import DietaryConsumptionEditor from './dietary-consumption-editor'
 import RegenerateCFWSButton from '@/components/regenerate-cfws-button'
@@ -238,6 +239,20 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   const latestIntakeId = latestIntake?.id || null
   const intakeDone = !!latestIntakeId || latestFoundationalInvitation?.status === 'complete'
   const latestCfws = cfwsRecords?.[0] || null
+
+  // Co-Pilot (Phase 1) conversation history for this client, oldest first.
+  const { data: copilotRows } = await admin
+    .from('copilot_messages')
+    .select('id, role, content, flagged, created_at')
+    .eq('client_id', id)
+    .order('created_at', { ascending: true })
+    .limit(200)
+  const copilotMessages = (copilotRows ?? []).map(m => ({
+    id: m.id as string,
+    role: m.role as 'user' | 'assistant',
+    content: m.content as string,
+    flagged: !!m.flagged,
+  }))
 
   // Coach-facing at-a-glance summary for the weekly synthesis (2026-07-11
   // rationale compression). Null on CFWS rows generated before this shipped.
@@ -829,6 +844,22 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           the CFFS; coach reviews and regenerates manually. Triggered by Kade
           seeing a "Foundational Synthesis generated 21 June 2026" he hadn't
           asked for after Amanda's W7 supplementary submission. */}
+      {/* Coach Co-Pilot (Phase 1, 2026-07-12) — read-only doctrine tutor. Talks
+          about this client, grounded in their file + doctrine; never changes
+          plans. Thumbs-down flags an answer for review (reviewer = Kade). */}
+      <MajorSection
+        id="copilot"
+        title="Co-Pilot"
+        subtitle="- doctrine tutor"
+        defaultOpen={false}
+      >
+        <CopilotPanel
+          clientId={client.id}
+          clientFirstName={client.name?.split(' ')[0] ?? 'this client'}
+          initialMessages={copilotMessages}
+        />
+      </MajorSection>
+
       <MajorSection
         id="cffs"
         title="Foundational Synthesis"

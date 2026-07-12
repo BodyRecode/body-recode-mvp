@@ -482,8 +482,10 @@ case "$TYPE" in
         # Sizes bumped 2026-06-29 for accessibility.
         PHOTO_FILE="$(photo_path "$PHOTO")"
         CMD+=( -size 1080x1920 xc:'#0F0F0F' )
-        # Photo at top (cover, top-aligned to preserve face)
-        CMD+=( \( "$PHOTO_FILE" -resize 1080x1180^ -gravity north -crop 1080x1180+0+0 +repage \) -gravity north -compose over -composite )
+        # Photo at top (cover, top-aligned to preserve face). Greyscale
+        # to match the BR photo treatment used in every other photo-based
+        # category (authority, contrarian, coach, diagnostic).
+        CMD+=( \( "$PHOTO_FILE" -resize 1080x1180^ -gravity north -crop 1080x1180+0+0 +repage -colorspace gray -colorspace sRGB \) -gravity north -compose over -composite )
         # Dark gradient overlay at bottom for legibility
         CMD+=( \( -size 1080x320 gradient:'rgba(15,15,15,0)-rgba(15,15,15,1)' \) -gravity north -geometry +0+860 -compose over -composite )
         CMD+=( "$LOGO_W_STORY" -gravity northwest -geometry +96+96 -compose over -composite )
