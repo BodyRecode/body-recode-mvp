@@ -65,6 +65,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [suggestion, setSuggestion] = useState<Suggestion | null>(null)
+  const [coachGuidance, setCoachGuidance] = useState('')
 
   const [planName, setPlanName] = useState('')
   const [macroObjective, setMacroObjective] = useState('')
@@ -100,6 +101,32 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
       })
     return () => ac.abort()
   }, [clientId])
+
+  // Regenerate the arc with the coach's guidance steering it. Reuses `loading`
+  // so the standard progress overlay shows while it runs.
+  async function regenerate() {
+    setLoading(true)
+    setError(null)
+    try {
+      const res = await fetch('/api/suggest-plan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ client_id: clientId, coach_guidance: coachGuidance }),
+      })
+      const data = await res.json()
+      if (data.error) { setError(data.error); setLoading(false); return }
+      const s: Suggestion = data.suggestion
+      setSuggestion(s)
+      setPlanName(s.plan_name)
+      setMacroObjective(s.macro_objective)
+      setBlocks(s.blocks)
+      setError(null)
+      setLoading(false)
+    } catch {
+      setError('Failed to regenerate the arc')
+      setLoading(false)
+    }
+  }
 
   function updateBlock(i: number, updates: Partial<SuggestedBlock>) {
     setBlocks(prev => prev.map((b, idx) => idx === i ? { ...b, ...updates } : b))
@@ -212,6 +239,30 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
     <div className="flex gap-8 max-w-5xl">
       <StickyScrollNav sections={NAV_SECTIONS} />
       <div className="flex-1 min-w-0 space-y-4">
+
+      {/* Coach guidance — steer the arc, then regenerate (2026-07-12) */}
+      <div className="bg-[#FFFFFF] border border-stone-200 rounded-xl p-5">
+        <div className="flex items-center gap-2 mb-2 flex-wrap">
+          <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest">Coach Guidance</p>
+          <span className="text-[10px] text-stone-400">optional — steers the arc within doctrine, never breaks the safety gates</span>
+        </div>
+        <textarea
+          value={coachGuidance}
+          onChange={e => setCoachGuidance(e.target.value)}
+          rows={3}
+          placeholder="e.g. Bring body composition in sooner (hypertrophy-leaning, not a strength peak). Keep the running scaled right back this phase. Put a stress-management buffer around week 8 for his FIFO transition."
+          className="w-full resize-none text-sm bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 text-[#1A1A1A] focus:outline-none focus:border-blue-500"
+        />
+        <div className="flex justify-end mt-2">
+          <button
+            onClick={regenerate}
+            disabled={loading || !coachGuidance.trim()}
+            className="text-[13px] font-semibold px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            Regenerate arc with guidance
+          </button>
+        </div>
+      </div>
 
       {/* Overall rationale */}
       <div id="rationale" className="scroll-mt-8 bg-blue-50 border border-blue-200/40 rounded-xl px-5 py-4">

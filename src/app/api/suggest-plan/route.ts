@@ -13,8 +13,9 @@ export async function POST(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
 
-  const { client_id } = await request.json()
+  const { client_id, coach_guidance } = await request.json()
   if (!client_id) return NextResponse.json({ error: 'client_id required' }, { status: 400 })
+  const guidance = typeof coach_guidance === 'string' ? coach_guidance.trim() : ''
 
   const admin = createAdminClient()
 
@@ -41,6 +42,8 @@ export async function POST(request: NextRequest) {
   const systemPrompt = `You are the Body Recode™ Macro Plan Suggestion Engine. You read a client's current state and suggest a sequenced macro training arc — a series of meso blocks that govern training direction over months.
 
 You are a suggestion engine. The coach reviews and approves before anything is activated.
+
+COACH GUIDANCE (CONTEXT-LEVEL STEER): the user message may include a section labelled "COACH GUIDANCE". When present, treat it as the coach's authoritative intent for THIS client and THIS arc. It overrides engine-default conservatism that doctrine permits (e.g. how soon the client's goal is introduced, block emphasis, phase durations and frequencies within their ranges, whether to peak or stay hypertrophy-leaning). It CANNOT break doctrine: readiness gates, the never-skip phase order (Restoration -> Accumulation -> Intensification -> Realization), phase-appropriate goals, and frequency ceilings still hold. If guidance conflicts with a safety gate, follow the gate and note the tension in overall_rationale.
 
 ═══════════════════════════════════════
 CROSS-PILLAR AUTHORITY ORDER (governs all arc design decisions)
@@ -135,6 +138,13 @@ OUTPUT FORMAT — return ONLY valid JSON, no markdown:
 }`
 
   const contextLines: string[] = []
+
+  // Coach guidance first, so it frames every downstream choice (mirrors the
+  // program generator's placement). Overrides engine-default conservatism
+  // within doctrine, never the safety gates.
+  if (guidance) {
+    contextLines.push(`COACH GUIDANCE (apply throughout — the coach's intent for this arc; overrides engine-default conservatism within doctrine, never the safety gates):\n${guidance}\n`)
+  }
 
   if (client.medications) {
     contextLines.push(`MEDICATIONS (CRITICAL — hormonal-class drugs shape recovery capacity, load tolerance, and arc pace; non-hormonal drugs may constrain exercise selection, signal interpretation, or pace of progression):\n${client.medications}\n`)
