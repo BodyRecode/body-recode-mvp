@@ -55,19 +55,35 @@ export async function POST(request: NextRequest) {
   // pre-fills these from intake on first generation, so regen mirrors that.
   const { data: latestIntake } = await admin
     .from('intakes')
-    .select('id, training_days_available')
+    .select('id, training_days_available, primary_goal, subjective_motivator')
     .eq('client_id', program.client_id)
     .order('submitted_at', { ascending: false })
     .limit(1)
     .maybeSingle()
 
-  // Active CFFS — same lookup pattern as generate-program when cffs_id absent
+  // Active CFFS — same lookup pattern as generate-program when cffs_id absent.
+  // Pull the history-bearing fields so we can re-classify training age.
   const { data: activeCffs } = await admin
     .from('cffs')
-    .select('id')
+    .select('id, body_state_classification, client_context_summary, primary_patterns_and_signals')
     .eq('client_id', program.client_id)
     .eq('is_archived', false)
     .maybeSingle()
+
+  // Re-classify training age from HISTORY on every regenerate, so the fixed
+  // classification doctrine (2026-07-12) reaches existing programs instead of
+  // perpetuating a stale/under-classified value from the original prescription.
+  // Falls back to the stored value if the classifier can't decide.
+  const { classifyTrainingAge } = await import('@/lib/classify-training-age')
+  const classifierContext = [
+    `Primary goal: ${latestIntake?.primary_goal ?? 'unknown'}`,
+    latestIntake?.subjective_motivator ? `What's driving this: ${latestIntake.subjective_motivator}` : '',
+    activeCffs?.client_context_summary ? `Coach synthesis of the client: ${activeCffs.client_context_summary}` : '',
+    activeCffs?.primary_patterns_and_signals ? `Primary patterns/signals: ${activeCffs.primary_patterns_and_signals}` : '',
+    `(Current body state: ${activeCffs?.body_state_classification ?? 'unknown'} — this is current readiness, NOT training history.)`,
+  ].filter(Boolean).join('\n')
+  const reclassified = await classifyTrainingAge(classifierContext)
+  const effectiveTrainingAge = reclassified ?? program.training_age
 
   // Build the generate-program body using the program row as the source of
   // truth for the primary inputs the coach chose on first generation.
@@ -81,7 +97,7 @@ export async function POST(request: NextRequest) {
     prescription_rationale: program.prescription_rationale,
     training_frequency: program.training_frequency,
     training_goal: program.training_goal,
-    training_age: program.training_age,
+    training_age: effectiveTrainingAge,
     movement_competency: 'developing',
     progression_phase: program.progression_phase,
     equipment_access: program.equipment_access,
