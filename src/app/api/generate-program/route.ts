@@ -52,12 +52,24 @@ export async function POST(request: NextRequest) {
   // Fetch client
   const { data: client, error: clientError } = await admin
     .from('clients')
-    .select('id, name, medications')
+    .select('id, name, medications, fixed_session_day')
     .eq('id', client_id)
     .maybeSingle()
 
   if (clientError) console.error('Client fetch error:', clientError)
   if (!client) return NextResponse.json({ error: `Client not found (id: ${client_id}, db error: ${clientError?.message ?? 'none'})` }, { status: 404 })
+
+  // Fixed in-person coaching day(s): recurring slots + the legacy single day.
+  // These become mandatory + anchor sessions in the generated program.
+  const { data: fixedSlots } = await admin
+    .from('client_fixed_slots')
+    .select('day_of_week')
+    .eq('client_id', client_id)
+  const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+  const fixedDayInts = new Set<number>()
+  for (const s of fixedSlots ?? []) if (typeof s.day_of_week === 'number') fixedDayInts.add(s.day_of_week)
+  if (typeof client.fixed_session_day === 'number') fixedDayInts.add(client.fixed_session_day)
+  const anchorDays = [...fixedDayInts].sort((a, b) => a - b).map(i => DAY_NAMES[i]).filter(Boolean)
 
   // Fetch CFFS (body state context) — non-blocking if not present
   let cffs = null
@@ -122,10 +134,13 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  // Use preferred_training_days from request body if provided, otherwise fall back to intake data
-  const resolvedTrainingDays: string[] = (preferred_training_days && preferred_training_days.length > 0)
+  // Use preferred_training_days from request body if provided, otherwise fall back to intake data.
+  // Fixed in-person day(s) are unioned in so they're always in the pool, even if
+  // the coach didn't explicitly pick them.
+  const baseTrainingDays: string[] = (preferred_training_days && preferred_training_days.length > 0)
     ? preferred_training_days
     : intakeTrainingDays
+  const resolvedTrainingDays: string[] = Array.from(new Set([...(baseTrainingDays ?? []), ...anchorDays]))
 
   // Fetch macro plan context if plan_block_id provided
   let macroPlanContext = null
@@ -198,6 +213,7 @@ export async function POST(request: NextRequest) {
     week_duration,
     block_name,
     preferred_training_days: resolvedTrainingDays,
+    anchor_days: anchorDays,
     ...injuryContext,
   }
 

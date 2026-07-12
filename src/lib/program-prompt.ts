@@ -13,6 +13,8 @@ export interface ProgramPrescriptionInputs {
   injury_primary_concern: string
   injury_aggravating_movements: string
   preferred_training_days: string[] // e.g. ['Monday', 'Thursday'] — exact days to assign sessions to
+  /** Fixed in-person coaching day(s) that MUST be scheduled and treated as the week's anchor session. Full day names, e.g. ['Friday']. */
+  anchor_days?: string[]
 }
 
 export interface ExerciseRow {
@@ -623,6 +625,16 @@ DAY-SELECTION RULES (apply in order):
 5. If the pool size equals the frequency, use all pool days as given — the coach has curated.
 
 Use the actual day name as the day_label (e.g. "Monday — Upper Push"). Do NOT take the first N days from the pool when better-spaced options exist within it.`)
+
+    if (inputs.anchor_days && inputs.anchor_days.length > 0) {
+      parts.push(`
+FIXED IN-PERSON COACHING SESSION(S) — MANDATORY + ANCHOR: ${inputs.anchor_days.join(', ')}
+These day(s) are the client's recurring in-person coaching session. They are NOT optional pool days:
+- You MUST place a session on each of these day(s). Select them FIRST, before applying spacing/selection to the rest of the pool. They are never dropped.
+- Treat each as the week's ANCHOR / PRIMARY session: the highest-value session of the week, built around technique, movement quality, and the work that benefits most from live supervision, appropriate to the phase. In Restoration this means the best-coached session but still submaximal (quality, NOT intensity — do not make it the hardest day just because it is in person).
+- Distribute the remaining sessions (training_frequency minus the number of anchor days) across the other pool days using the recovery-spacing rules above.
+- In weekly_pattern_summary, name which day is the in-person anchor session.`)
+    }
   } else {
     parts.push(`
 AVAILABLE TRAINING DAYS: Not specified. Use abstract labels (Day 1, Day 2, etc.) and distribute the ${inputs.training_frequency} sessions assuming a 7-day week with maximum recovery spacing (e.g. 3x/week = Day 1 / Day 3 / Day 5; 4x/week = Day 1 / Day 2 / Day 4 / Day 5).`)
