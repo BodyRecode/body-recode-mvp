@@ -220,25 +220,44 @@ export async function POST(request: NextRequest) {
   try {
     const { clientIp, clientUserAgent } = extractClientContext(request)
     const [enrollFirstName, ...enrollLastNameParts] = fullName.split(' ')
+    const capiUserData = {
+      email: trimmedEmail,
+      phone: trimmedPhone,
+      firstName: enrollFirstName,
+      lastName: enrollLastNameParts.join(' ') || undefined,
+      country: 'AU',
+      clientIp,
+      clientUserAgent,
+    }
+    const capiCustomData = {
+      content_name: 'challenge_enrolled',
+      content_category: gender || 'unknown',
+      source: 'challenge_signup_form',
+      returning: isReturning,
+    }
+    const capiSourceUrl = `${brand().marketingDomain}/challenge`
+    // Fire BOTH events on enrolment:
+    //   - Lead: the long-term optimisation event (the swap target).
+    //   - CompleteRegistration: what the launched BR-FunnelB-Leads-2026Q3 ad
+    //     set is actually optimising for. Meta locks an ad set's conversion
+    //     event after publish, so instead of rebuilding the ad set (which
+    //     resets learning) we fire the event Meta already wants. A Challenge
+    //     enrolment IS a completed registration, so this is semantically true.
+    // Both are the same enrolment action; firing both keeps the Lead-swap
+    // option open without any Meta-side change.
     await fireMetaCapiEvent({
       eventName: 'Lead',
-      eventSourceUrl: `${brand().marketingDomain}/challenge`,
+      eventSourceUrl: capiSourceUrl,
       actionSource: 'website',
-      userData: {
-        email: trimmedEmail,
-        phone: trimmedPhone,
-        firstName: enrollFirstName,
-        lastName: enrollLastNameParts.join(' ') || undefined,
-        country: 'AU',
-        clientIp,
-        clientUserAgent,
-      },
-      customData: {
-        content_name: 'challenge_enrolled',
-        content_category: gender || 'unknown',
-        source: 'challenge_signup_form',
-        returning: isReturning,
-      },
+      userData: capiUserData,
+      customData: capiCustomData,
+    })
+    await fireMetaCapiEvent({
+      eventName: 'CompleteRegistration',
+      eventSourceUrl: capiSourceUrl,
+      actionSource: 'website',
+      userData: capiUserData,
+      customData: capiCustomData,
     })
   } catch (capiErr) {
     console.error('[challenge/enroll] CAPI fire threw (non-fatal):', capiErr)
