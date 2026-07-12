@@ -5,6 +5,7 @@ import LogoutButton from '@/components/LogoutButton'
 import DashboardNav from './nav'
 import CommandPalette from './command-palette'
 import CommandKHint from './command-k-hint'
+import GlobalCopilotBubble from '@/components/global-copilot-bubble'
 import { brand } from '@/config/tenant'
 
 export default async function DashboardLayout({
@@ -57,6 +58,7 @@ export default async function DashboardLayout({
         {children}
       </main>
       <CommandPalette />
+      <GlobalCopilotBubble />
     </div>
   )
 }
