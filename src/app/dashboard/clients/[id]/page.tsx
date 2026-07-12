@@ -434,6 +434,63 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         />
       </div>
 
+      {/* Status strip + one "next step" (2026-07-12 client-file redesign, safest-first
+          slice: additive, reads existing data). Full tabbed restructure to follow post-launch. */}
+      {(() => {
+        const dot = (v?: string | null) =>
+          v === 'Green' ? 'bg-emerald-500' : v === 'Amber' ? 'bg-amber-500' : v === 'Red' ? 'bg-red-500' : 'bg-stone-300'
+        const READY = [
+          { label: 'Capacity', v: activeCffs?.exposure_readiness_capacity as string | null | undefined },
+          { label: 'Schedule', v: activeCffs?.exposure_readiness_schedule as string | null | undefined },
+          { label: 'Regulation', v: activeCffs?.exposure_readiness_regulation as string | null | undefined },
+          { label: 'Behaviour', v: activeCffs?.exposure_readiness_behaviour as string | null | undefined },
+        ]
+        const hasActiveProgram = !!activePrograms
+        const hasActiveNutrition = !!activeNutritionPlans
+        const next =
+          !intakeDone ? { t: 'Waiting on intake', s: 'Client to complete their foundational intake.', href: null } :
+          !latestBaseline ? { t: 'Waiting on baseline', s: 'Client to upload measurements and progress photos.', href: `/dashboard/clients/${id}/baseline` } :
+          !activeCffs ? { t: 'Generate the Foundational Synthesis', s: 'Onboarding complete - ready to synthesise.', href: `#cffs` } :
+          !frPublished ? { t: 'Publish the Foundational Reading', s: 'Synthesis done - the client is waiting on their reading.', href: `#cffs` } :
+          latestCheckinNeedsResponse ? { t: 'Respond to the weekly check-in', s: 'Latest check-in needs your response.', href: `#cfws` } :
+          !hasActiveProgram ? { t: 'Generate the first training plan', s: 'Reading published. Design the first block.', href: `/dashboard/clients/${id}/program` } :
+          !hasActiveNutrition ? { t: 'Generate the nutrition plan', s: 'Training plan is live - add nutrition.', href: `/dashboard/clients/${id}/nutrition` } :
+          { t: 'Weekly loop active', s: 'Everything is up to date - watch the weekly check-ins.', href: null }
+        return (
+          <div className="mb-6 space-y-3">
+            {activeCffs && (
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-[11px] font-semibold px-3 py-1 rounded-full bg-[#F5F3EE] border border-[#E5E5E5] text-[#1A1A1A]">{activeCffs.body_state_classification}</span>
+                {activeCffs.resolution_state && (
+                  <span className="text-[11px] font-semibold px-3 py-1 rounded-full bg-[#F5F3EE] border border-[#E5E5E5] text-[#1A1A1A]">{activeCffs.resolution_state}</span>
+                )}
+                {!hasActiveProgram && (
+                  <span className="text-[11px] font-semibold px-3 py-1 rounded-full bg-stone-100 border border-stone-200 text-[#6B6B6B]">No active plan</span>
+                )}
+                <span className="mx-1 h-4 w-px bg-[#E5E5E5]" />
+                {READY.map(r => (
+                  <span key={r.label} className="inline-flex items-center gap-1.5 text-[11px] text-[#6B6B6B] px-2.5 py-1 rounded-full border border-[#E5E5E5] bg-[#FFFFFF]">
+                    <span className={`w-2 h-2 rounded-full ${dot(r.v)}`} /> {r.label}
+                  </span>
+                ))}
+              </div>
+            )}
+            <div className="flex items-center gap-4 bg-[#FFFFFF] border border-[#E5E5E5] border-l-4 border-l-[#1B6DFC] rounded-2xl px-5 py-4">
+              <div className="flex-1 min-w-0">
+                <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-0.5" style={{ fontFamily: MONO_FONT }}>Next step</p>
+                <p className="text-[15px] font-bold text-[#1A1A1A] leading-snug">{next.t}</p>
+                <p className="text-[13px] text-[#6B6B6B]">{next.s}</p>
+              </div>
+              {next.href && (
+                <Link href={next.href} className="shrink-0 text-[13px] font-semibold px-4 py-2 rounded-xl bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#1558d6] transition-colors">
+                  Go →
+                </Link>
+              )}
+            </div>
+          </div>
+        )
+      })()}
+
       {/* Pending block-end Trajectory Reading. Surfaces at top of profile so
           a skipped block-end reading isn't only discoverable from the program
           page (where it sits inline above the active block's panel). */}
