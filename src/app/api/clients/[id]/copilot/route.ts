@@ -44,23 +44,31 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 3 })
 
+  // Retry loop: the model occasionally returns an empty text block (a transient
+  // blip the SDK's own retries don't cover). Try up to 3 times before failing,
+  // so the chat doesn't surface an "empty response" for a one-off.
   let answer = ''
-  try {
-    const resp = await anthropic.messages.create({
-      model: 'claude-sonnet-5',
-      max_tokens: 1600,
-      system: buildCopilotSystemPrompt(ctx.clientName, ctx.context),
-      messages: [...history, { role: 'user', content: message }],
-    })
-    const block = resp.content.find(b => b.type === 'text')
-    answer = block && block.type === 'text' ? block.text.trim() : ''
-    if (!answer) {
-      return NextResponse.json({ error: 'The co-pilot returned an empty response. Please try again.' }, { status: 502 })
+  let lastErr = 'unknown error'
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const resp = await anthropic.messages.create({
+        model: 'claude-sonnet-5',
+        max_tokens: 1600,
+        system: buildCopilotSystemPrompt(ctx.clientName, ctx.context),
+        messages: [...history, { role: 'user', content: message }],
+      })
+      const block = resp.content.find(b => b.type === 'text')
+      answer = block && block.type === 'text' ? block.text.trim() : ''
+      if (answer) break
+      lastErr = `empty response (stop_reason=${resp.stop_reason})`
+      console.warn(`[copilot] attempt ${attempt}/3: ${lastErr}`)
+    } catch (err) {
+      lastErr = err instanceof Error ? err.message : String(err)
+      console.error(`[copilot] attempt ${attempt}/3 API error:`, lastErr)
     }
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err)
-    console.error('[copilot] AI error:', msg)
-    return NextResponse.json({ error: `Co-pilot error: ${msg}` }, { status: 502 })
+  }
+  if (!answer) {
+    return NextResponse.json({ error: `The co-pilot couldn't respond after 3 tries (${lastErr}). Please try again.` }, { status: 502 })
   }
 
   // Suggested follow-ups — a fast, cheap second pass so the coach can keep the
