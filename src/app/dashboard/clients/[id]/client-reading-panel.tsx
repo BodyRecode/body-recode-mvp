@@ -55,10 +55,33 @@ export default function ClientReadingPanel({
   const [publishing, setPublishing] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [emailNotice, setEmailNotice] = useState<string | null>(null)
+  const [notifying, setNotifying] = useState(false)
 
   const generated = !!cffs.client_reading_generated_at
   const published = !!cffs.client_reading_published_at
   const emailSent = !!cffs.client_reading_email_sent_at
+
+  async function notifyClient() {
+    if (notifying) return
+    setError(null)
+    setEmailNotice(null)
+    setNotifying(true)
+    try {
+      const res = await fetch('/api/notify-client-foundational-reading', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cffs_id: cffs.id }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`)
+      setEmailNotice(emailSent ? 'Client re-notified — their reading is live.' : 'Client notified — their reading is live.')
+      startTransition(() => router.refresh())
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not notify the client')
+    } finally {
+      setNotifying(false)
+    }
+  }
 
   const generate = async () => {
     if (generating) return
@@ -190,6 +213,21 @@ export default function ClientReadingPanel({
               {publishing ? 'Updating...' : (published ? 'Unpublish' : 'Republish')}
             </button>
           )}
+          {published && (
+            <button
+              onClick={notifyClient}
+              disabled={notifying || isPending}
+              title={emailSent ? 'Send the client another email that their reading is live' : 'Email the client that their reading is live in the portal'}
+              className={`inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
+                emailSent
+                  ? 'border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
+                  : 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#5390FF] border border-[#1B6DFC]'
+              }`}
+            >
+              {notifying ? <Loader2 size={13} className="animate-spin" /> : <Mail size={13} />}
+              {notifying ? 'Notifying...' : emailSent ? 'Re-notify client' : 'Notify client'}
+            </button>
+          )}
         </div>
       </div>
 
@@ -212,7 +250,7 @@ export default function ClientReadingPanel({
         <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-8 text-center">
           <p className="text-[#6B6B6B] text-[14px] mb-2">No client-facing reading yet</p>
           <p className="text-[#999999] text-[12px]">
-            Click Generate &amp; Publish. The reading goes live in the client portal and an email is sent to let them know it is ready.
+            Click Generate &amp; Publish. The reading goes live in the client portal. Then use Notify client to email them it is ready.
           </p>
         </div>
       ) : (
