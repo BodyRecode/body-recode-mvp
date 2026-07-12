@@ -712,8 +712,8 @@ export const PHASES: Phase[] = [
         status: 'shipped',
         shippedAt: '2026-07-12',
         effort: 'L',
-        surfaces: ['src/app/dashboard/clients/[id]/copilot-panel.tsx (inline section)', 'src/app/api/clients/[id]/copilot/route.ts + flag/route.ts', 'src/lib/copilot-context.ts + copilot-prompt.ts', 'copilot_messages table (sql/2026-07-12_copilot_messages.sql)', '06_SAAS_PLATFORM_BUILD/02_FEATURE_SPECS/2026-07-12_Coach_Copilot_Conversational_Build_Design.md'],
-        notes: 'Inline "Co-Pilot" section on the client profile (Kade chose inline over floating bubble 2026-07-12; bubble deferred to Phase 4 when practice-wide). Model claude-sonnet-5. Coach-scoped; feeds on rationale_summary cards + current saved artefact state (never a re-derivation). Thumbs-down flags an assistant message (flagged=true); flagged-exchanges review page still to build (reviewer = Kade).',
+        surfaces: ['src/app/dashboard/clients/[id]/copilot-bubble.tsx (floating launcher) + copilot-panel.tsx (chat body)', 'src/app/api/clients/[id]/copilot/route.ts + flag/route.ts', 'src/lib/copilot-context.ts + copilot-prompt.ts', 'copilot_messages table (sql/2026-07-12_copilot_messages.sql)', '06_SAAS_PLATFORM_BUILD/02_FEATURE_SPECS/2026-07-12_Coach_Copilot_Conversational_Build_Design.md'],
+        notes: 'Floating bubble (bottom-right) on the client profile, scoped to that client (Kade chose bubble over inline 2026-07-12). Neutral brand-glyph avatar (sparkle), NOT a coach photo, so it white-labels. Model claude-sonnet-5. Coach-scoped; feeds on rationale_summary cards + current saved artefact state (never a re-derivation). Thumbs-down flags an assistant message (flagged=true); flagged-exchanges review page still to build (reviewer = Kade).',
       },
       {
         id: 'copilot-draft',

@@ -17,10 +17,16 @@ export default function CopilotPanel({
   clientId,
   clientFirstName,
   initialMessages,
+  onClose,
+  className,
 }: {
   clientId: string
   clientFirstName: string
   initialMessages: Msg[]
+  /** When provided (bubble mode), a ✕ shows in the header. */
+  onClose?: () => void
+  /** Extra classes for the outer card (bubble mode makes it fill its popover). */
+  className?: string
 }) {
   const [messages, setMessages] = useState<Msg[]>(initialMessages)
   const [input, setInput] = useState('')
@@ -79,15 +85,18 @@ export default function CopilotPanel({
   }
 
   return (
-    <div className="border border-[#E5E5E5] bg-[#FFFFFF] rounded-2xl overflow-hidden">
-      <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E5E5E5] bg-[#FAFAF7]">
+    <div className={`border border-[#E5E5E5] bg-[#FFFFFF] rounded-2xl overflow-hidden flex flex-col ${className ?? ''}`}>
+      <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E5E5E5] bg-[#FAFAF7] shrink-0">
         <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest" style={{ fontFamily: MONO, letterSpacing: '0.14em' }}>
           Co-Pilot · Doctrine tutor
         </p>
         <span className="ml-auto text-[10px] text-[#999999]" style={{ fontFamily: MONO }}>read-only · coach only</span>
+        {onClose && (
+          <button onClick={onClose} aria-label="Close co-pilot" className="text-[#999999] hover:text-[#1A1A1A] text-lg leading-none -my-1">✕</button>
+        )}
       </div>
 
-      <div ref={scrollRef} className="px-5 py-4 space-y-4 max-h-[460px] overflow-y-auto">
+      <div ref={scrollRef} className="px-5 py-4 space-y-4 flex-1 min-h-0 overflow-y-auto">
         {messages.length === 0 && (
           <div className="text-sm text-[#6B6B6B]">
             <p className="mb-3">Ask about {clientFirstName} and the doctrine behind their read. It explains and pressure-tests, grounded in their file. It doesn&apos;t change plans.</p>

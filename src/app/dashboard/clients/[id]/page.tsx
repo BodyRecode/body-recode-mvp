@@ -16,7 +16,7 @@ import IssueLoginCodeButton from './issue-login-code-button'
 import SendEmailButton from '@/components/send-email-button'
 import RegenerateCFFSButton from '@/components/regenerate-cffs-button'
 import ClientReadingPanel from './client-reading-panel'
-import CopilotPanel from './copilot-panel'
+import CopilotBubble from './copilot-bubble'
 import MedicationsEditor from './medications-editor'
 import DietaryConsumptionEditor from './dietary-consumption-editor'
 import RegenerateCFWSButton from '@/components/regenerate-cfws-button'
@@ -844,21 +844,15 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           the CFFS; coach reviews and regenerates manually. Triggered by Kade
           seeing a "Foundational Synthesis generated 21 June 2026" he hadn't
           asked for after Amanda's W7 supplementary submission. */}
-      {/* Coach Co-Pilot (Phase 1, 2026-07-12) — read-only doctrine tutor. Talks
-          about this client, grounded in their file + doctrine; never changes
-          plans. Thumbs-down flags an answer for review (reviewer = Kade). */}
-      <MajorSection
-        id="copilot"
-        title="Co-Pilot"
-        subtitle="- doctrine tutor"
-        defaultOpen={false}
-      >
-        <CopilotPanel
-          clientId={client.id}
-          clientFirstName={client.name?.split(' ')[0] ?? 'this client'}
-          initialMessages={copilotMessages}
-        />
-      </MajorSection>
+      {/* Coach Co-Pilot (Phase 1, 2026-07-12) — read-only doctrine tutor as a
+          floating bubble (bottom-right), scoped to this client. Talks about the
+          client grounded in their file + doctrine; never changes plans.
+          Thumbs-down flags an answer for review (reviewer = Kade). */}
+      <CopilotBubble
+        clientId={client.id}
+        clientFirstName={client.name?.split(' ')[0] ?? 'this client'}
+        initialMessages={copilotMessages}
+      />
 
       <MajorSection
         id="cffs"
