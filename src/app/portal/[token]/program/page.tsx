@@ -54,7 +54,7 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
 
   const { data: program } = await admin
     .from('programs')
-    .select('id, block_name, progression_phase, training_goal, training_frequency, week_duration, sessions, weekly_pattern_summary, progression_notes, client_note, current_direction, last_review_at, pr_why_this_block, pr_what_this_program_is_doing, pr_how_well_know_its_working, pr_what_were_not_doing_yet, pr_coach_note, program_reading_published_at, tr_where_this_block_started, tr_how_your_signal_moved, tr_what_held_steady, tr_what_this_sets_up_next, tr_coach_note, trajectory_reading_published_at')
+    .select('id, block_name, progression_phase, training_goal, training_frequency, week_duration, sessions, weekly_pattern_summary, progression_notes, client_note, conditioning, current_direction, last_review_at, pr_why_this_block, pr_what_this_program_is_doing, pr_how_well_know_its_working, pr_what_were_not_doing_yet, pr_coach_note, program_reading_published_at, tr_where_this_block_started, tr_how_your_signal_moved, tr_what_held_steady, tr_what_this_sets_up_next, tr_coach_note, trajectory_reading_published_at')
     .eq('client_id', client.id)
     .eq('is_active', true)
     .maybeSingle()
@@ -113,6 +113,14 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
               <div className="bg-blue-50 border border-blue-200 rounded-2xl px-5 py-4">
                 <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">About this block</p>
                 <p className="text-sm text-[#3A3A3A] leading-relaxed">{program.client_note}</p>
+              </div>
+            )}
+
+            {/* Conditioning / cardio prescription (interim field until the conditioning modality) */}
+            {program.conditioning && (
+              <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl px-5 py-4">
+                <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">Conditioning / Cardio</p>
+                <p className="text-sm text-[#3A3A3A] leading-relaxed whitespace-pre-line">{program.conditioning}</p>
               </div>
             )}
 

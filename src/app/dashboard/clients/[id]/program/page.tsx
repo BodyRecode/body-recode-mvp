@@ -6,6 +6,7 @@ import DeleteProgramButton from './delete-button'
 import NotifyClientButton from './notify-client-button'
 import ProgramWeeklyReview from './weekly-review'
 import ProgramReadingPanel from './program-reading-panel'
+import ConditioningEditor from './conditioning-editor'
 import TrajectoryReadingPanel from './trajectory-reading-panel'
 import CoachGuidanceEditor from './coach-guidance-editor'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
@@ -44,6 +45,7 @@ interface Program {
   week_duration: number
   equipment_access: string[]
   sessions: Session[]
+  conditioning: string | null
   weekly_pattern_summary: string | string[] | null
   progression_notes: string | string[] | null
   generated_at: string
@@ -363,6 +365,10 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
           </div>
         </div>
       )}
+
+      {/* Conditioning / Cardio — interim coach-editable field until the
+          conditioning modality generates it. Shown to the client too. */}
+      <ConditioningEditor clientId={program.client_id} programId={program.id} initial={program.conditioning} />
 
       {/* Sessions */}
       <div id={`${idPrefix}sessions`} className="scroll-mt-8 mt-2">
