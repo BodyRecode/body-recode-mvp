@@ -97,56 +97,56 @@ const WHAT_YOU_GET = [
     title: 'Pattern-specific programme',
     timing: 'Day 1',
     featured: true,
-    desc: 'Every part of this programme is calibrated to your specific pattern. Training intensity, nutrition timing, weekly coaching, biology lessons all read the same pattern. Not a generic template with adjustments.',
+    desc: 'Every part of this is built around your specific pattern. Training intensity, nutrition timing, weekly coaching, biology lessons, all built for the same pattern. Not a generic template with a few tweaks.',
   },
   {
     icon: Dumbbell,
     title: '6-week training programme',
     timing: 'Day 1',
     featured: false,
-    desc: 'Three sessions a week across three phases. Pattern-specific RIR targets, finisher rules, and rest intervals. Gym, home with dumbbells, or bodyweight. Every session has a version for your setup.',
+    desc: 'Three sessions a week across three phases. Effort targets, finisher rules, and rest times set for your pattern. Gym, home with dumbbells, or bodyweight. Every session has a version for your setup.',
   },
   {
     icon: Salad,
     title: 'Nutrition framework',
     timing: 'Day 1',
     featured: false,
-    desc: 'Whole foods structured around your pattern\'s demand curve. Portion guidance, meal timing, training-day adaptations. No tracking. No calorie counting. No restriction.',
+    desc: 'Whole foods, structured around what your pattern actually needs. Portion guidance, meal timing, training-day tweaks. No tracking. No calorie counting. No cutting things out.',
   },
   {
     icon: BookOpen,
     title: '5 biology lessons',
     timing: 'Weekly',
     featured: false,
-    desc: 'One per week. Cortisol, insulin, testosterone, thyroid, sleep. Each lesson explains the hormone driving your pattern, why this programme is structured the way it is, and what to expect this phase. Pattern-specific callout in every lesson.',
+    desc: 'One per week. Cortisol, insulin, testosterone, thyroid, sleep. Each lesson explains the hormone driving your pattern, why the programme is built the way it is, and what to expect this phase. A note for your specific pattern in every lesson.',
   },
   {
     icon: FileText,
     title: 'Weekly coaching notes',
     timing: 'Every week',
     featured: true,
-    desc: 'A note from me each week, written for your pattern specifically. What is shifting biologically. What to expect this week. Where to put your attention. Twenty-four unique notes across the four patterns and six weeks.',
+    desc: 'A note from me each week, written for your pattern. What is changing inside your body. What to expect this week. Where to put your focus. Twenty-four different notes across the four patterns and six weeks.',
   },
   {
     icon: BarChart3,
     title: 'Weekly Check-In',
     timing: 'Every week',
     featured: false,
-    desc: 'In-portal tracking across 8 biological markers. Tracks what is moving and what still needs work. The data feeds your pattern read so the work can be calibrated as the system responds.',
+    desc: 'Tracking across 8 body markers, right in your portal. Shows what is moving and what still needs work. Your answers feed back in so the plan adjusts as your body responds.',
   },
   {
     icon: Compass,
     title: 'Midpoint reflection',
     timing: 'Week 3',
     featured: false,
-    desc: 'Structured review at the halfway point. Four pattern-specific questions to surface what has already shifted before the Adapt phase intensifies. Recalibrates the back half if your body has moved faster or slower than expected.',
+    desc: 'A structured check at the halfway point. Four questions for your pattern to surface what has already changed before the Adapt phase steps up. Adjusts the back half if your body has moved faster or slower than expected.',
   },
   {
     icon: ArrowRight,
-    title: 'Ascension to the Membership',
+    title: 'Straight into the Membership',
     timing: 'Week 6',
     featured: false,
-    desc: 'Week 6 bridges directly into the Body Recode Membership. Your pattern continuity carries through. No gap between stages. Optional, skip if you do not want it.',
+    desc: 'Week 6 flows straight into the Body Recode Membership. Everything about your pattern carries across. No gap between stages. Optional, skip it if you do not want it.',
   },
 ]
 
@@ -156,28 +156,28 @@ const PATTERNS = [
     colour: '#DC2626',
     driver: 'Cortisol driver',
     signal: 'Abdominal fat, morning puffiness, afternoon crashes. Wired and tired.',
-    correction: 'The Blueprint pulls stress load first. Sleep outranks training. The system comes out of compensation, and fat starts releasing.',
+    correction: 'The Blueprint takes stress off first. Sleep matters more than training here. Your body lets go of the holding pattern, and fat starts to move.',
   },
   {
     name: 'Insulin-Drift',
     colour: '#B7791F',
     driver: 'Insulin driver',
     signal: 'Full-body softening, carb cravings, post-meal fatigue, energy variability through the day.',
-    correction: 'The Blueprint times carbs to a narrow post-session window. Blood sugar stabilises and insulin signalling rebuilds. The softening reverses.',
+    correction: 'The Blueprint times your carbs to a tight window after training. Blood sugar steadies, insulin starts working properly again, and the softness reverses.',
   },
   {
     name: 'Estrogen-Shift',
     colour: '#8b5cf6',
     driver: 'Oestrogen driver',
     signal: 'Hip and thigh storage, water retention, cycle irregularity, mood variability.',
-    correction: 'The Blueprint stops the restriction cycle that makes this pattern worse. Cycle-aware adjustments throughout. Recovery is the lever.',
+    correction: 'The Blueprint breaks the under-eating cycle that makes this pattern worse. It adjusts around your cycle the whole way through. Recovery is the lever that moves it.',
   },
   {
     name: 'Androgen-Decline',
     colour: '#1B6DFC',
     driver: 'Testosterone driver',
     signal: 'Reduced muscle tone, reduced drive, capacity slipping despite consistent effort.',
-    correction: 'The Blueprint protects muscle by controlling load and prioritising recovery. Testosterone signalling rebuilds. Drive and capacity return.',
+    correction: 'The Blueprint protects your muscle by managing load and putting recovery first. Testosterone starts working properly again. Drive and capacity come back.',
   },
 ]
 
@@ -186,19 +186,19 @@ const PHASES = [
     number: '01',
     name: 'Regulate',
     weeks: 'Weeks 1-2',
-    desc: 'Lower the load on your specific pattern. Bring sleep, training, and eating into a structure your body can actually metabolise. Stop adding noise to a system that is already compensating.',
+    desc: 'Take the load off your specific pattern. Get sleep, training, and food into a rhythm your body can actually handle. Stop piling stress onto a system that is already struggling.',
   },
   {
     number: '02',
     name: 'Adapt',
     weeks: 'Weeks 3-4',
-    desc: 'Progressive load applied to a system that can now respond. Energy lifts. Strength returns. Fat starts moving in the way your biology actually allows.',
+    desc: 'Now that your body can respond, the work steps up. Energy lifts. Strength comes back. Fat starts moving the way your biology actually allows.',
   },
   {
     number: '03',
     name: 'Embed',
     weeks: 'Weeks 5-6',
-    desc: 'Consolidate the new baseline. The corrective work becomes the way your body operates by default. Ready to move to ongoing prescription without a gap.',
+    desc: 'Lock in the new normal. The changes become the way your body runs by default. You are ready to keep going without a gap.',
   },
 ]
 
@@ -286,9 +286,9 @@ export default function BlueprintPage() {
             color: '#1A1A1A',
             marginBottom: '24px',
           }}>
-            Knowing your pattern
+            You&apos;ve done the work.
             <br />
-            <span style={{ color: '#1B6DFC' }}>is not correcting it.</span>
+            <span style={{ color: '#1B6DFC' }}>Your body hasn&apos;t moved.</span>
           </h1>
 
           <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '32px' }} />
@@ -352,10 +352,10 @@ export default function BlueprintPage() {
           </div>
 
           <p style={{ fontSize: '19px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '14px' }}>
-            Most people, once they know their pattern, look for the right programme. But programmes that do not read your pattern cannot correct your pattern. They prescribe into the same compensation that stalled you before.
+            Here&apos;s what almost no programme accounts for: bodies stall for different reasons. Yours has a specific pattern behind it, a specific reason it is holding on. A plan that does not know that pattern cannot fix it. Worse, the standard plan pushes harder on the exact thing keeping you stuck. Same plan everyone gets. On you, it backfires.
           </p>
           <p style={{ fontSize: '19px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '40px' }}>
-            The 6-Week Body Rewire is six weeks of focused corrective work built specifically for your pattern. Training calibrated. Nutrition timed. Weekly coaching written for your pattern. By Week 6 the pattern is corrected and your body is ready to compound. $97.
+            The 6-Week Body Rewire is built the opposite way. First we find your pattern, a 2-minute read if you do not already know it. Then six weeks shaped entirely around it. Training set to you. Nutrition timed to you. A coaching note written for you, every week. By Week 6 the thing holding your fat loss is gone, and your body is finally ready to build. $97.
           </p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginBottom: '32px' }}>
@@ -386,23 +386,23 @@ export default function BlueprintPage() {
           Where the challenge left off
         </p>
         <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '8px', color: '#1A1A1A' }}>
-          The Challenge identified the pattern.
+          The Challenge found your pattern.
         </h2>
         <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, color: '#999999', marginBottom: '28px' }}>
-          The Blueprint corrects it.
+          The Blueprint fixes it.
         </h2>
         <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '18px' }}>
-          Fourteen days lowered the load enough for your body to be read. The Day 7 Check-In and Day 14 Result told you which of four patterns is holding your fat loss. That is the diagnostic.
+          Fourteen days took enough pressure off your body to see it clearly. The Day 7 Check-In and Day 14 Result showed you which of the four patterns is holding your fat loss. That was the diagnosis.
         </p>
         <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '28px' }}>
-          Knowing the pattern is not correcting it. The 6-Week Body Rewire is focused corrective work, six weeks, built around your specific pattern. The training emphasis, nutrition timing, weekly coaching notes, and biology lessons all read the same pattern. Your body is still Depleted, but now the work is targeted.
+          Knowing your pattern is not the same as fixing it. The 6-Week Body Rewire is six weeks of focused work, built around your specific pattern. Training, nutrition timing, weekly coaching notes, and biology lessons, all built around the same pattern. Your body is still Depleted, but now the work is aimed straight at what is holding you.
         </p>
         <div style={{
           background: 'rgba(27, 109, 252,0.08)', border: '1px solid rgba(27, 109, 252,0.2)',
           borderRadius: '12px', padding: '20px 22px',
         }}>
           <p style={{ fontSize: '16px', color: '#1A1A1A', fontWeight: 700, margin: 0, lineHeight: 1.55 }}>
-            If you skipped the Challenge and came straight here, a two-question pattern assessment runs before your portal opens. Same routing, same programme.
+            New here and skipped the Challenge? No problem. A quick two-question check finds your pattern before your portal opens. Same result, same programme.
           </p>
         </div>
       </div>
@@ -419,20 +419,20 @@ export default function BlueprintPage() {
             Why the standard answer fails
           </p>
           <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '24px', color: '#1A1A1A' }}>
-            Generic programmes prescribe into compensation.
+            Generic programmes push on the exact thing that is stuck.
           </h2>
           <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '18px' }}>
-            Every body that has stalled is in some form of compensation. But the compensation is not generic. Cortisol-driven storage looks different to insulin-driven storage looks different to oestrogen-driven storage. The signal a Stress-Stored body needs to come out of compensation is the opposite of what an Insulin-Drift body needs. Same prescription, opposite effect.
+            When a body stalls, it is stuck in a holding pattern. But that holding pattern is not the same for everyone. Cortisol-driven storage is nothing like insulin-driven storage, which is nothing like oestrogen-driven storage. What a Stress-Stored body needs to unstick is the opposite of what an Insulin-Drift body needs. Same plan, opposite result.
           </p>
           <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '28px' }}>
-            Generic programmes prescribe the same intensity, the same nutrition timing, the same set count to every body. When your body has a specific pattern holding it, that uniform prescription either does nothing or makes the compensation tighter. The Blueprint is built around your specific pattern. Training intensity, nutrition timing, weekly coaching, biology lessons. Four pattern variants because the prescription has to match the pattern.
+            A generic programme gives everyone the same intensity, the same meal timing, the same number of sets. When your body has a specific pattern holding it, that one-size plan either does nothing or pulls the knot tighter. The Blueprint is built around your specific pattern instead. Training intensity, nutrition timing, weekly coaching, biology lessons. Four versions, because the plan has to match the pattern.
           </p>
           <div style={{
             background: 'rgba(27, 109, 252, 0.1)', border: '1px solid rgba(27, 109, 252, 0.25)',
             borderRadius: '12px', padding: '20px 22px',
           }}>
             <p style={{ fontSize: '17px', color: '#1A1A1A', fontWeight: 700, margin: 0, lineHeight: 1.5 }}>
-              The pattern determines the order. Which stressor to pull first. Which input to add first. Which intensity to hold.
+              Your pattern sets the order. What to take off first. What to add first. How hard to push, and when.
             </p>
           </div>
         </div>
@@ -444,7 +444,7 @@ export default function BlueprintPage() {
           The four patterns
         </p>
         <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '24px', color: '#1A1A1A' }}>
-          One of these is yours. The Blueprint corrects it directly.
+          One of these is yours. The Blueprint is built to fix it.
         </h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {PATTERNS.map(p => (
@@ -482,7 +482,7 @@ export default function BlueprintPage() {
             The difference
           </p>
           <h2 style={{ fontSize: 'clamp(28px, 4.5vw, 38px)', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1.15, color: '#FFFFFF', margin: 0 }}>
-            Most programmes prescribe into compensation. We pull the compensation first, then prescribe to your pattern.
+            Most programmes push harder on what is already stuck. We take that off first. Then we build to your pattern.
           </h2>
         </div>
       </div>
@@ -501,7 +501,7 @@ export default function BlueprintPage() {
             Regulate. Adapt. Embed.
           </h2>
           <p style={{ fontSize: '16px', color: '#6B6B6B', lineHeight: 1.7, marginBottom: '32px' }}>
-            Each phase has a specific biological purpose. The progression is not arbitrary. It follows how the body actually adapts.
+            Each phase has a job. The order is not random. It follows how the body actually changes.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {PHASES.map((phase, i) => (
@@ -601,7 +601,7 @@ export default function BlueprintPage() {
             What your Week 1 looks like.
           </h2>
           <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '36px' }}>
-            Same six-week structure across all four patterns, but every variable that matters is calibrated to yours. Here is Week 1 for a Stress-Stored buyer.
+            Same six-week structure for all four patterns, but everything that matters is set to yours. Here is Week 1 for someone who is Stress-Stored.
           </p>
 
           {/* Mockup card */}
@@ -720,13 +720,13 @@ export default function BlueprintPage() {
         }} />
         <div style={{ maxWidth: '680px', margin: '0 auto', padding: '88px 24px', position: 'relative' }}>
           <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '14px' }}>
-            Start the correction
+            Start the fix
           </p>
           <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', marginBottom: '12px', lineHeight: 1.2, color: '#FFFFFF' }}>
-            Six weeks. Pattern-specific. Done.
+            Six weeks. Built to your pattern. Done.
           </h2>
           <p style={{ fontSize: '16px', color: '#999999', marginBottom: '32px', lineHeight: 1.65 }}>
-            One-time $97 AUD. Instant portal access. Pattern assessment runs in 2 minutes if you skipped the Challenge.
+            One-time $97 AUD. Instant portal access. Do not know your pattern yet? A 2-minute check sorts it before you start.
           </p>
           <CheckoutForm position="mid" darkBg />
         </div>
@@ -772,10 +772,10 @@ export default function BlueprintPage() {
         </div>
 
         <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '18px' }}>
-          After two decades of writing training programmes, I kept watching the same thing. Programmes worked for some bodies, did nothing for others, made some worse. Same prescription. Different outcomes. The bodies that did not respond were not broken. They had a specific pattern.
+          After two decades of writing training programmes, I kept seeing the same thing. The same programme worked for some bodies, did nothing for others, and made a few worse. Same plan. Different results. The bodies that did not respond were not broken. They had a specific pattern.
         </p>
         <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '28px' }}>
-          The 6-Week Body Rewire is built around that observation. Four pattern variants of the same six-week structure. Each calibrated to the hormone driving that pattern. The prescription matches the pattern.
+          The 6-Week Body Rewire is built around that one observation. Four versions of the same six-week structure. Each one built around the hormone driving that pattern. The plan matches the pattern.
         </p>
 
         <div style={{
@@ -784,7 +784,7 @@ export default function BlueprintPage() {
           borderRadius: '14px', padding: '22px 24px',
         }}>
           <p style={{ fontSize: '16px', color: '#1A1A1A', fontWeight: 600, lineHeight: 1.7, margin: 0 }}>
-            Generic prescription is a guess. Pattern-specific prescription is a read. The Blueprint is the read made into a programme.
+            A generic plan is a guess. A plan built to your pattern is a read on what is actually happening. The Blueprint is that read, built into six weeks of work.
           </p>
         </div>
       </div>
@@ -803,7 +803,7 @@ export default function BlueprintPage() {
             Still Depleted. Pattern identified.
           </h2>
           <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '20px' }}>
-            The 6-Week Body Rewire is built for adults still in a Depleted State who now know their pattern. Fourteen days of structured reset is not enough to bring a body out of Depleted. Six weeks of focused pattern-specific correction is the next dose.
+            The 6-Week Body Rewire is built for adults still in a Depleted State who now know their pattern. Fourteen days of reset is not enough on its own to bring a body out of Depleted. Six weeks of focused, pattern-specific work is the next step.
           </p>
           <p style={{ fontSize: '15px', color: '#1A1A1A', lineHeight: 1.7, marginBottom: '24px', fontWeight: 700 }}>
             If you are at a different stage, the right starting point is different.
@@ -812,14 +812,14 @@ export default function BlueprintPage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '32px' }}>
             {[
               {
-                state: 'No pattern read yet',
-                desc: 'Start with the free 2-minute Body State Scorecard. It captures your state and routes you into the free 14-Day Challenge if you are Depleted. By Day 14 of the Challenge your pattern is identified through the Body Decode Check-In. Then you come back here.',
+                state: 'Don\'t know your pattern yet',
+                desc: 'Start with the free 2-minute Body State Scorecard. It reads your state and points you to the free 14-Day Challenge if you are Depleted. By Day 14, the Body Decode Check-In shows you your pattern. Then you come back here.',
                 cta: 'Start with the Scorecard',
                 href: `${brand().performanceDomain}/scorecard?intent=challenge&source=blueprint_filter`,
               },
               {
                 state: 'Past Depleted (Ready State)',
-                desc: 'Your biology is already responding. You do not need a six-week corrective block. You need the ongoing precision system that takes you from responding to compounding.',
+                desc: 'Your body is already responding. You do not need a six-week reset. You need the ongoing system that takes you from responding to really building.',
                 cta: 'See the Membership',
                 href: '/membership',
               },
@@ -858,7 +858,7 @@ export default function BlueprintPage() {
           </div>
 
           <p style={{ fontSize: '17px', color: '#1A1A1A', fontWeight: 700, lineHeight: 1.5, margin: 0 }}>
-            If you are Depleted with your pattern read, your starting point is right here. Sign up below.
+            If you are Depleted and you know your pattern, this is your starting point. Sign up below.
           </p>
         </div>
       </div>
@@ -868,10 +868,10 @@ export default function BlueprintPage() {
         <div style={{ width: '40px', height: '3px', background: '#1B6DFC', marginBottom: '28px', borderRadius: '2px' }} />
         <h2 style={{ fontSize: 'clamp(28px, 5vw, 40px)', fontWeight: 900, letterSpacing: '-0.035em', lineHeight: 1.1, marginBottom: '20px', color: '#1A1A1A' }}>
           Six concentrated weeks.<br />
-          <span style={{ color: '#999999' }}>Your pattern. The correction.</span>
+          <span style={{ color: '#999999' }}>Your pattern. Fixed.</span>
         </h2>
         <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '36px' }}>
-          $97 AUD. Instant portal access. Your pattern is mapped before Week 1. By Week 6 the pattern is corrected and your body is ready to compound. Then continuity through the Membership, if you want it.
+          $97 AUD. Instant portal access. Your pattern is mapped before Week 1. By Week 6 the thing holding your fat loss is gone and your body is ready to build. Then straight into the Membership, if you want it.
         </p>
         <CheckoutForm position="footer" />
       </div>
