@@ -47,7 +47,7 @@ export default function PrintTrigger({
     <div
       className="no-print sticky top-0 z-50"
       style={{
-        background: 'rgba(12, 10, 9, 0.78)',
+        background: 'rgba(255, 255, 255, 0.85)',
         backdropFilter: 'blur(12px)',
         borderBottom: '1px solid #E5E5E5',
       }}
@@ -84,7 +84,7 @@ export default function PrintTrigger({
             className="inline-flex items-center gap-2 transition-colors"
             style={{
               background: downloading ? '#1056D6' : '#1B6DFC',
-              color: '#1A1A1A',
+              color: '#FFFFFF',
               border: 'none',
               padding: '8px 16px',
               fontSize: 12,
