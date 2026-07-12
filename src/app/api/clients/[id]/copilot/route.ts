@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { isCoachEmail } from '@/lib/coach-auth'
 import { buildCopilotContext } from '@/lib/copilot-context'
 import { buildCopilotSystemPrompt } from '@/lib/copilot-prompt'
+import { extractFirstJsonObject } from '@/lib/extract-json'
 
 export const maxDuration = 120
 
@@ -62,21 +63,43 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     return NextResponse.json({ error: `Co-pilot error: ${msg}` }, { status: 502 })
   }
 
+  // Suggested follow-ups — a fast, cheap second pass so the coach can keep the
+  // thread moving without typing. Non-blocking: on any failure we omit them.
+  let followups: string[] = []
+  try {
+    const fu = await anthropic.messages.create({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 220,
+      system: 'You suggest what a COACH might ask next in a doctrine-coaching conversation about a client. Given the last question and answer, propose exactly 3 short follow-up questions or steers the coach could tap next. Each 9 words or fewer, specific to what was just discussed, no numbering, no quotes. Return ONLY JSON: {"followups":["...","...","..."]}',
+      messages: [{ role: 'user', content: `QUESTION:\n${message}\n\nANSWER:\n${answer}\n\nPropose 3 follow-ups.` }],
+    })
+    const fblock = fu.content.find(b => b.type === 'text')
+    if (fblock && fblock.type === 'text') {
+      const json = extractFirstJsonObject(fblock.text)
+      if (json) {
+        const parsed = JSON.parse(json)
+        if (Array.isArray(parsed.followups)) {
+          followups = parsed.followups.filter((s: unknown) => typeof s === 'string' && s.trim()).slice(0, 3)
+        }
+      }
+    }
+  } catch { /* non-blocking — chips just won't show */ }
+
   // Persist the exchange (user then assistant). Best-effort ids returned so the
-  // UI can wire the thumbs-down flag to the assistant message.
+  // UI can wire the thumbs-down flag + follow-up chips to the assistant message.
   const nowUser = new Date().toISOString()
   const { data: inserted, error: insErr } = await admin
     .from('copilot_messages')
     .insert([
       { client_id: clientId, coach_id: ctx.coachId, role: 'user', content: message, created_at: nowUser },
-      { client_id: clientId, coach_id: ctx.coachId, role: 'assistant', content: answer, created_at: new Date(Date.parse(nowUser) + 1).toISOString() },
+      { client_id: clientId, coach_id: ctx.coachId, role: 'assistant', content: answer, followups, created_at: new Date(Date.parse(nowUser) + 1).toISOString() },
     ])
-    .select('id, role, content, flagged, created_at')
+    .select('id, role, content, flagged, followups, created_at')
 
   if (insErr) {
     console.error('[copilot] failed to store messages:', insErr.message)
     // The answer is still valuable; return it without persisted ids.
-    return NextResponse.json({ assistant: { content: answer, id: null, flagged: false } })
+    return NextResponse.json({ assistant: { content: answer, id: null, flagged: false, followups } })
   }
 
   const assistant = inserted?.find(m => m.role === 'assistant') ?? null

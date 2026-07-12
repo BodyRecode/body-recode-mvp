@@ -243,7 +243,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   // Co-Pilot (Phase 1) conversation history for this client, oldest first.
   const { data: copilotRows } = await admin
     .from('copilot_messages')
-    .select('id, role, content, flagged, created_at')
+    .select('id, role, content, flagged, followups, created_at')
     .eq('client_id', id)
     .order('created_at', { ascending: true })
     .limit(200)
@@ -252,6 +252,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
     role: m.role as 'user' | 'assistant',
     content: m.content as string,
     flagged: !!m.flagged,
+    followups: Array.isArray(m.followups) ? (m.followups as string[]) : [],
   }))
 
   // Coach-facing at-a-glance summary for the weekly synthesis (2026-07-11

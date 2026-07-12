@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 
-type Msg = { id: string | null; role: 'user' | 'assistant'; content: string; flagged: boolean }
+type Msg = { id: string | null; role: 'user' | 'assistant'; content: string; flagged: boolean; followups?: string[] }
 
 const MONO = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
 
@@ -58,6 +58,7 @@ export default function CopilotPanel({
         role: 'assistant',
         content: data.assistant?.content ?? '',
         flagged: !!data.assistant?.flagged,
+        followups: Array.isArray(data.assistant?.followups) ? data.assistant.followups : [],
       }])
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong')
@@ -134,8 +135,33 @@ export default function CopilotPanel({
         ))}
 
         {loading && (
-          <div className="text-[13px] text-[#999999]" style={{ fontFamily: MONO }}>Thinking…</div>
+          <div className="bg-[#F5F3EE] rounded-2xl rounded-bl-sm px-4 py-3 inline-flex items-center gap-1.5 w-fit" aria-label="Co-pilot is typing">
+            <span className="w-2 h-2 rounded-full bg-[#9AA3AF] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '0ms' }} />
+            <span className="w-2 h-2 rounded-full bg-[#9AA3AF] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '150ms' }} />
+            <span className="w-2 h-2 rounded-full bg-[#9AA3AF] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '300ms' }} />
+          </div>
         )}
+
+        {/* Suggested follow-ups under the latest answer — tap to continue or steer. */}
+        {!loading && (() => {
+          const last = messages[messages.length - 1]
+          if (!last || last.role !== 'assistant' || !last.followups?.length) return null
+          return (
+            <div className="flex flex-col gap-1.5 pt-1">
+              <p className="text-[10px] font-bold text-[#999999] uppercase tracking-widest" style={{ fontFamily: MONO }}>Follow up</p>
+              {last.followups.map((f, i) => (
+                <button
+                  key={i}
+                  onClick={() => send(f)}
+                  className="text-left text-[13px] text-[#1B6DFC] border border-[#B5CFFC] bg-[rgba(27,109,252,0.05)] hover:bg-[rgba(27,109,252,0.1)] rounded-lg px-3 py-1.5 transition-colors"
+                >
+                  {f}
+                </button>
+              ))}
+            </div>
+          )
+        })()}
+
         {error && (
           <div className="text-[13px] text-red-600">{error}</div>
         )}
