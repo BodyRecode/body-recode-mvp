@@ -13,6 +13,15 @@ const STARTERS = [
   'What am I most at risk of missing with this client?',
 ]
 
+// What the co-pilot can help with — shown in the persistent "What I can help
+// with" panel. Client-scoped variant.
+const CAPABILITIES: { title: string; body: string }[] = [
+  { title: 'Explain this client’s read', body: 'Why they landed in this state or phase, and what’s driving it.' },
+  { title: 'Teach the doctrine', body: 'The rule behind the call, in plain terms.' },
+  { title: 'Pressure-test your decision', body: '“Talk me out of progressing them.” “Should this be Restoration?”' },
+  { title: 'Draft coach guidance', body: 'A short, paste-ready steer for the plan or nutrition generator.' },
+]
+
 export default function CopilotPanel({
   clientId,
   clientFirstName,
@@ -32,6 +41,7 @@ export default function CopilotPanel({
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [showHelp, setShowHelp] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -97,8 +107,37 @@ export default function CopilotPanel({
         )}
       </div>
 
+      {/* Persistent "What I can help with" bar — available any time. */}
+      <button
+        onClick={() => setShowHelp(s => !s)}
+        aria-expanded={showHelp}
+        className="flex items-center gap-2 px-5 py-2 border-b border-[#EDEDED] bg-white text-[#1B6DFC] hover:bg-[rgba(27,109,252,0.04)] transition-colors shrink-0"
+      >
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" stroke="#1B6DFC" strokeWidth="1.6" />
+          <path d="M9.5 9.2a2.5 2.5 0 1 1 3.2 2.4c-.7.25-1.2.9-1.2 1.65v.35" stroke="#1B6DFC" strokeWidth="1.6" strokeLinecap="round" />
+          <circle cx="12" cy="16.4" r="1" fill="#1B6DFC" />
+        </svg>
+        <span className="text-[13px] font-semibold">What I can help with</span>
+        <span className="ml-auto text-[#9AA3AF] text-xs">{showHelp ? '▲' : '▼'}</span>
+      </button>
+
       <div ref={scrollRef} className="px-5 py-4 space-y-4 flex-1 min-h-0 overflow-y-auto">
-        {messages.length === 0 && (
+        {showHelp && (
+          <div className="text-sm text-[#3A3A3A]">
+            <p className="mb-3 text-[#1A1A1A] font-semibold">Here for {clientFirstName}. What I can help with:</p>
+            <div className="space-y-2.5 mb-3">
+              {CAPABILITIES.map(c => (
+                <div key={c.title} className="border border-[#EDEDED] rounded-xl px-3.5 py-2.5">
+                  <p className="text-[13px] font-bold text-[#1A1A1A] mb-0.5">{c.title}</p>
+                  <p className="text-[12.5px] text-[#6B6B6B] leading-relaxed">{c.body}</p>
+                </div>
+              ))}
+            </div>
+            <p className="text-[12.5px] text-[#8A8A8E] leading-relaxed">I read {clientFirstName}’s file to answer. I never change a plan myself, and nothing I say reaches the client.</p>
+          </div>
+        )}
+        {!showHelp && messages.length === 0 && (
           <div className="text-sm text-[#6B6B6B]">
             <p className="mb-3">Ask about {clientFirstName} and the doctrine behind their read. It explains and pressure-tests, grounded in their file. It doesn&apos;t change plans.</p>
             <div className="flex flex-col gap-2">
