@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
+import GenerationProgressOverlay from '@/components/generation-progress-overlay'
 
 const NAV_SECTIONS = [
   { id: 'rationale', title: 'Rationale' },
@@ -177,19 +178,18 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
 
   if (loading) {
     return (
-      <div className="space-y-3">
-        <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-            <p className="text-sm text-stone-600">Reading client context and designing macro arc...</p>
-          </div>
-          <div className="space-y-2">
-            {[...Array(5)].map((_, i) => (
-              <div key={i} className="h-4 bg-stone-200 rounded animate-pulse" style={{ width: `${50 + (i % 3) * 20}%` }} />
-            ))}
-          </div>
-        </div>
-      </div>
+      <GenerationProgressOverlay
+        active
+        title="Designing macro arc"
+        stages={[
+          { start: 0,  label: 'Reading body state, readiness, and training history' },
+          { start: 5,  label: 'Selecting the phase sequence and entry point' },
+          { start: 12, label: 'Designing the meso blocks (phase, goal, duration, frequency)' },
+          { start: 30, label: 'Writing the arc rationale' },
+          { start: 55, label: 'Taking longer than usual, give it another moment' },
+        ]}
+        disclaimer="Arc suggestion reads the full client context and designs a sequenced macro plan (3 to 5 meso blocks) grounded in body state and readiness. Typical: 20 to 45 seconds. The page is not frozen, please don't refresh."
+      />
     )
   }
 
