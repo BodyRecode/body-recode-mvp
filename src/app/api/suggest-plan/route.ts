@@ -98,9 +98,10 @@ MACRO ARC DESIGN RULES
 - Arc must reflect current body state. Remediation clients start with restoration regardless of goals.
 - Each block: 4–12 weeks (restore longer, accumulate moderate, express shorter)
 - Total arc: 12–24 weeks typical
-- Nutrition entry state informs carb demand context per block — inform only, do not prescribe
+- Nutrition context is QUALITATIVE and INFORM-ONLY. NEVER state calorie targets, energy deficits/surpluses (e.g. "300–500 kcal deficit"), or gram macros in any block. Body composition and energy balance are the nutrition engine's job, not the training arc's. If a block's intent relates to body composition, describe the training role only (e.g. "supports lean mass retention") and leave the numbers to nutrition.
 - Training frequency must respect constraint level and schedule readiness per block
 - Do not prescribe hypertrophy as goal in restoration blocks
+- CONDITIONING / RUNNING INTENSITY BY PHASE: in Restoration, any running or conditioning is EASY / aerobic / conversational ONLY — no tempo, threshold, interval, repeat, or strides work, regardless of the client's running background. Intensity re-enters no earlier than Accumulation, and only once readiness gates permit. Scaling a client's running means cutting the hard sessions first (intervals, tempo, long runs), keeping easy volume. This holds even when a block also reduces total running volume.
 - Each block must logically follow from the prior block's expected outcome
 
 ═══════════════════════════════════════
