@@ -2365,7 +2365,7 @@ export default function StrategyPage() {
                 { k: 'Phase 1 daily budget', v: '$25 AUD on Stressed Exec ad set only' },
                 { k: 'Phase 1 other ad sets', v: 'Perimenopausal + Slipping HP CREATED but PAUSED' },
                 { k: 'Phase 2 daily budget (post stage gate)', v: '$25 AUD per ad set × 3 = $75/day total' },
-                { k: 'Optimization event', v: 'CompleteRegistration → Lead (swap 24-48h post-flip)' },
+                { k: 'Optimization event', v: 'CompleteRegistration (ad set optimises on this; fires on enrolment via CAPI). Lead also fires — swap ad set to Lead later if desired.' },
                 { k: 'Action source', v: 'Website' },
                 { k: 'CTA button', v: 'Learn More' },
                 { k: 'Schedule start', v: 'Monday 13 July 2026 (locked 2026-06-29) - same day NEXT_PUBLIC_CHALLENGE_LIVE flips' },
