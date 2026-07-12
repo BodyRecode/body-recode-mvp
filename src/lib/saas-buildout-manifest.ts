@@ -713,7 +713,7 @@ export const PHASES: Phase[] = [
         shippedAt: '2026-07-12',
         effort: 'L',
         surfaces: ['src/app/dashboard/clients/[id]/copilot-bubble.tsx (floating launcher) + copilot-panel.tsx (chat body)', 'src/app/api/clients/[id]/copilot/route.ts + flag/route.ts', 'src/lib/copilot-context.ts + copilot-prompt.ts', 'copilot_messages table (sql/2026-07-12_copilot_messages.sql)', '06_SAAS_PLATFORM_BUILD/02_FEATURE_SPECS/2026-07-12_Coach_Copilot_Conversational_Build_Design.md'],
-        notes: 'Floating bubble (bottom-right) on the client profile, scoped to that client (Kade chose bubble over inline 2026-07-12). Neutral brand-glyph avatar (sparkle), NOT a coach photo, so it white-labels. Model claude-sonnet-5. Coach-scoped; feeds on rationale_summary cards + current saved artefact state (never a re-derivation). Thumbs-down flags an assistant message (flagged=true); flagged-exchanges review page still to build (reviewer = Kade).',
+        notes: 'Floating bubble (bottom-right) on the client profile, scoped to that client (Kade chose bubble over inline 2026-07-12). Neutral brand-glyph avatar ("Aperture" = concentric focus rings, the read instrument; Kade picked it 2026-07-12), NOT a coach photo, so it white-labels; swappable per practice later. Model claude-sonnet-5. Coach-scoped; feeds on rationale_summary cards + current saved artefact state (never a re-derivation). Thumbs-down flags an assistant message (flagged=true); flagged-exchanges review page still to build (reviewer = Kade).',
       },
       {
         id: 'copilot-draft',

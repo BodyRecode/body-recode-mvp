@@ -49,9 +49,12 @@ export default function CopilotBubble({
         {open ? (
           <span className="text-2xl leading-none">✕</span>
         ) : (
-          // Neutral brand glyph (sparkle = "AI assist"). White-label-swappable.
+          // Neutral brand glyph — "Aperture": concentric focus rings = the read
+          // instrument (reads signals, interprets). White-label-swappable.
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M12 2.5l1.9 5.1a4 4 0 0 0 2.5 2.5l5.1 1.9-5.1 1.9a4 4 0 0 0-2.5 2.5L12 21.5l-1.9-5.1a4 4 0 0 0-2.5-2.5L2.5 12l5.1-1.9a4 4 0 0 0 2.5-2.5L12 2.5z" fill="white"/>
+            <circle cx="12" cy="12" r="9" stroke="white" strokeWidth="1.6" />
+            <circle cx="12" cy="12" r="5" stroke="white" strokeWidth="1.6" opacity="0.55" />
+            <circle cx="12" cy="12" r="1.9" fill="white" />
           </svg>
         )}
       </button>
