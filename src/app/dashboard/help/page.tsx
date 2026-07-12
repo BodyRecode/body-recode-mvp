@@ -772,12 +772,12 @@ export default function HelpPage() {
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-1">How to generate</p>
             <p>On the client profile, scroll to the <strong>Foundational Reading - Client Facing</strong> section directly under the CFFS. Click <strong>Generate &amp; Publish</strong>.</p>
-            <p>One click does three things at once:</p>
+            <p>That does two things:</p>
             <ol className="space-y-1 list-decimal list-inside text-[#3A3A3A] text-sm">
               <li>Drafts the reading via Claude (~10 seconds).</li>
               <li>Auto-publishes it to the client portal at <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">/portal/[token]/foundational-reading</code>.</li>
-              <li>Sends a branded email from <strong>{coach().email}</strong> letting the client know the reading is ready.</li>
             </ol>
+            <p className="mt-2">Generating does <strong>not</strong> email the client. When you&apos;re ready to tell them it&apos;s live, click the <strong>Notify client</strong> button on the same panel (it appears once the reading is published). It sends a branded email from <strong>{coach().email}</strong> linking straight to their reading, and the pill flips to <strong>Notified</strong>. Use this for a brand-new client whose reading is their first deliverable; otherwise the client is also brought into the portal when you publish their first training or nutrition plan.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-1">Pills and state</p>
             <p>Two pills surface the reading state at a glance, sitting next to the section title:</p>
