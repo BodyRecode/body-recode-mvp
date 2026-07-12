@@ -572,6 +572,22 @@ export const PHASES: Phase[] = [
         notes: 'Built on `feature/yoga-modality` branch. NOT merged to main yet — merge when a yoga-modality partner signs.',
       },
       {
+        id: 'conditioning-modality',
+        title: 'Conditioning / cardio modality',
+        description: 'Prescribe conditioning/cardio (running, energy-system work: type, days, duration, intensity, progression). Higher priority: closes a live gap — the strength engine prescribes NO conditioning, so a client\'s scaled running currently has nowhere to be prescribed (surfaced via Cristobal 2026-07-12).',
+        status: 'planned',
+        effort: 'L',
+        notes: 'KEY: unlike yoga/pilates, cardio must integrate CONCURRENTLY with strength — prescribed alongside the lifting program, shown in the same program + portal. Not just a modality picker; a conditioning layer that composes with strength. See project_modality_roadmap. Interim: running Rx in the program client_note.',
+      },
+      {
+        id: 'pilates-modality',
+        title: 'Pilates modality pack',
+        description: 'Fourth modality (after strength/yoga/cardio): Pilates movement vocabulary + prescription schema + safety constraints. Same shape as the yoga pack.',
+        status: 'planned',
+        effort: 'L',
+        notes: 'See project_modality_roadmap.',
+      },
+      {
         id: 'doctrine-parameters',
         title: 'Per-tenant doctrine parameters (Mode A+)',
         description: 'Surface + storage + editor + all SIX client-facing generator consumers shipped. tenant_config.licence.doctrineParameters extends with voiceTone, bannedPhrases, terminologySubstitutions, checkinCoachingGuidance, programGenerationGuidance, nutritionGenerationGuidance. Consumers wired: weekly check-in feedback, nutrition-reading, program-reading, foundational-reading, trajectory-reading, medications-reading. Blood-panel Research Lens is coach-only, doesn\'t need Mode A+.',
