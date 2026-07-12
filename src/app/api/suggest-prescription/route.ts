@@ -192,6 +192,17 @@ The THRESHOLD of "sub-maximal" however MUST scale with training age. An advanced
 - Too light for an advanced trainer → they detrain inside 2 weeks AND quit. We lose the client.
 - Too heavy for a beginner → CNS overload, regulation drops further, injury risk.
 
+═══════════════════════════════════════
+HOW TO CLASSIFY training_age (READ FIRST — this is where the engine goes wrong)
+═══════════════════════════════════════
+Classify training_age from the client's DEMONSTRATED TRAINING HISTORY, not from how they present right now. It describes who they ARE as a trainer, read from the intake: years of structured training, established compound lifts, tolerance to real load, endurance/competitive background.
+- ADVANCED: multiple years of consistent structured training, established lifts, and/or demonstrated tolerance to serious load or endurance volume (e.g. runs distance events, long training history, clearly "trains seriously"). A client who has trained hard for years is ADVANCED even if they are currently deconditioned, stressed, injured, or dysregulated.
+- INTERMEDIATE: roughly 1–3 years consistent training, competent with the main movement patterns, some load history.
+- BEGINNER: genuinely new to structured training, or a long lay-off with no established lifts.
+
+CRITICAL — REGULATION STATE DOES NOT CHANGE TRAINING AGE. A Red regulation gate or a Remediation body state means the client's SYSTEM needs settling. It does NOT make an experienced trainer a beginner. Red / Remediation lower the PHASE (restoration), the INTENSITY (RPE ceiling), and the PROGRESSION — they must NEVER lower the training_age classification or the per-session volume floor. Do NOT downgrade an advanced or intermediate trainer just because they present stressed, deconditioned, or Red. Classify their history; let the phase and RPE ceiling carry all the caution. (Historically the engine has under-classified nearly every Red/Remediation client — that is the exact error to stop.)
+When history is genuinely ambiguous, default UPWARD, never downward.
+
 Calibration by training age:
 
 BEGINNER / DEVELOPING competency
