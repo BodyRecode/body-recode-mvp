@@ -386,19 +386,18 @@ export default function PrescriptionSuggest({
         </div>
       )}
 
-      {loading && (
-        <div className="space-y-3">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="bg-stone-100 border border-stone-200 rounded-xl p-4 animate-pulse">
-              <div className="h-3 bg-stone-200 rounded w-24 mb-3" />
-              <div className="h-5 bg-stone-200 rounded w-40 mb-3" />
-              <div className="h-3 bg-stone-200 rounded w-full" />
-              <div className="h-3 bg-stone-200 rounded w-3/4 mt-1" />
-            </div>
-          ))}
-          <p className="text-xs text-stone-400 text-center pt-2">Analysing client context and generating prescription…</p>
-        </div>
-      )}
+      <GenerationProgressOverlay
+        active={loading}
+        title="Suggesting prescription"
+        stages={[
+          { start: 0,  label: 'Reading CFFS, intake, injury history, and recent training' },
+          { start: 5,  label: 'Selecting phase, goal, frequency, and training age' },
+          { start: 12, label: 'Calibrating RPE ceilings and volume to his readiness' },
+          { start: 30, label: 'Writing the prescription rationale' },
+          { start: 50, label: 'Taking longer than usual, give it another moment' },
+        ]}
+        disclaimer="The prescription engine reads his full context and proposes the block's phase, goal, frequency and effort ceilings for you to review. Typical: 20 to 40 seconds. The page is not frozen, please don't refresh."
+      />
 
       {error && !loading && (
         <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-4">
