@@ -2,7 +2,8 @@
   "_meta": {
     "out_dir": "/Users/kadedunstone/body-recode-mvp/public/stories/week-1-launch",
     "week": "2026-07-14 → 2026-07-19",
-    "theme": "First week of the 14-Day Challenge · Day 2 → Day 7"
+    "theme": "First week of the 14-Day Challenge · Day 2 → Day 7",
+    "photo_rotation": "Each photo_overlay uses a unique kade-N photo. Min 7-day gap on reuses across the whole 14-26 Jul window."
   },
   "posts": [
     { "slug": "story-2026-07-14_01_hook",    "type": "story", "category": "hook",             "label": "DAY 2",  "hook_1": "Day 2. The body is starting to notice the change in rhythm.",       "sub_1": "Nothing dramatic. Just less noise. That is the point." },
@@ -19,7 +20,7 @@
 
     { "slug": "story-2026-07-17_01_hook",    "type": "story", "category": "hook",             "label": "DAY 5",  "hook_1": "Day 5. Week One Progress Session unlocks in the portal today.",   "sub_1": "First checkpoint. What has actually shifted vs what you thought would." },
     { "slug": "story-2026-07-17_02_inside",  "type": "story", "category": "inside_challenge", "day_num": "Day 5","hook_1": "Progress Session · look at the signal, not the number.",           "sub_1": "Energy, sleep, mood, appetite. The body is telling you where it is." },
-    { "slug": "story-2026-07-17_03_photo",   "type": "story", "category": "photo_overlay",    "photo": "4",      "hook_1": "The read is not a moment. It is a week.",                            "sub_1": "Day 5. The first checkpoint." },
+    { "slug": "story-2026-07-17_03_photo",   "type": "story", "category": "photo_overlay",    "photo": "5",      "hook_1": "The read is not a moment. It is a week.",                            "sub_1": "Day 5. The first checkpoint." },
 
     { "slug": "story-2026-07-18_01_quote",   "type": "story", "category": "quote",            "hook_1": "The pattern was always there. You just needed the structure to name it." },
     { "slug": "story-2026-07-18_02_photo",   "type": "story", "category": "photo_overlay",    "photo": "6",      "hook_1": "Day 6. Rest, walk, eat clean, read the note.",                       "sub_1": "The Saturday is part of the read. Not a pause." },
@@ -27,6 +28,6 @@
 
     { "slug": "story-2026-07-19_01_hook",    "type": "story", "category": "hook",             "label": "DAY 7",  "hook_1": "Day 7. The Body Decode Check-In unlocks in the portal today.",     "sub_1": "Halfway. The signal is going to sharpen from here." },
     { "slug": "story-2026-07-19_02_inside",  "type": "story", "category": "inside_challenge", "day_num": "Day 7","hook_1": "Check-In · short reflection. Signals, not scores.",                 "sub_1": "The Report at Day 14 uses this to sharpen the read." },
-    { "slug": "story-2026-07-19_03_photo",   "type": "story", "category": "photo_overlay",    "photo": "7",      "hook_1": "Halfway. The pattern is on the way.",                                "sub_1": "Day 7. Seven more to the Report." }
+    { "slug": "story-2026-07-19_03_photo",   "type": "story", "category": "photo_overlay",    "photo": "8",      "hook_1": "Halfway. The pattern is on the way.",                                "sub_1": "Day 7. Seven more to the Report." }
   ]
 }
