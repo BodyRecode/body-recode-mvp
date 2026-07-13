@@ -1,0 +1,35 @@
+{
+  "_meta": {
+    "out_dir": "/Users/kadedunstone/body-recode-mvp/public/stories/post-launch/week-2",
+    "week": "2026-07-20 → 2026-07-26",
+    "theme": "Day 14 reveals + Blueprint preview + Wave 2 (if applicable)"
+  },
+  "posts": [
+    { "slug": "story-2026-07-20_01_hook",         "type": "story", "category": "hook",              "label": "WEEK 2", "hook_1": "The first Day-14 Reports land this week.", "sub_1": "Fourteen days of read. Then the pattern is named." },
+    { "slug": "story-2026-07-20_02_inside",       "type": "story", "category": "inside_challenge",  "day_num": "Day 8", "hook_1": "This is where the signal starts to separate from the noise.", "sub_1": "Week 1 was the reset. Week 2 is the read." },
+    { "slug": "story-2026-07-20_03_photo",        "type": "story", "category": "photo_overlay",     "photo": "2", "hook_1": "The read most people never get.", "sub_1": "Because most plans start with prescription." },
+
+    { "slug": "story-2026-07-21_01_pattern",      "type": "story", "category": "pattern",           "label": "01 · DEPLETED",  "pattern_name": "Stress-Stored", "hook_1": "Cortisol decides where you store fat.", "sub_1": "The pattern most Depleted-state clients settle into." },
+    { "slug": "story-2026-07-21_02_quote",        "type": "story", "category": "quote",             "hook_1": "The read is the work. The prescription is the follow-through." },
+    { "slug": "story-2026-07-21_03_photo",        "type": "story", "category": "photo_overlay",     "photo": "4", "hook_1": "Six weeks of pattern-specific work.", "sub_1": "The Blueprint. Once the read is in." },
+
+    { "slug": "story-2026-07-22_01_hook",         "type": "story", "category": "hook",              "label": "MID-WEEK", "hook_1": "Day 9. The pattern is starting to name itself.", "sub_1": "This is what the read looks like when the body settles." },
+    { "slug": "story-2026-07-22_02_inside",       "type": "story", "category": "inside_challenge",  "day_num": "Day 9", "hook_1": "Morning Reset. Training block. Evening Rhythm. Repeat.", "sub_1": "The rhythm is doing the reading." },
+    { "slug": "story-2026-07-22_03_pattern",      "type": "story", "category": "pattern",           "label": "02 · TRANSITIONING", "pattern_name": "Insulin-Drift", "hook_1": "Carb tolerance quietly changed under you.", "sub_1": "Explains why the old approach stopped working." },
+
+    { "slug": "story-2026-07-23_01_quote",        "type": "story", "category": "quote",             "hook_1": "You can't correct what you haven't named." },
+    { "slug": "story-2026-07-23_02_inside",       "type": "story", "category": "inside_challenge",  "day_num": "Day 10", "hook_1": "The Day 7 Check-In has landed. The Day 14 Report is on its way.", "sub_1": "Everything from here is the read confirming itself." },
+    { "slug": "story-2026-07-23_03_photo",        "type": "story", "category": "photo_overlay",     "photo": "6", "hook_1": "Same discipline. Different outcome.", "sub_1": "Because the state was different underneath." },
+
+    { "slug": "story-2026-07-24_01_hook",         "type": "story", "category": "hook",              "label": "TWO DAYS", "hook_1": "Two days from Day 14. The Report is being written.", "sub_1": "Pattern, mechanism, three actions. Ready Sunday." },
+    { "slug": "story-2026-07-24_02_pattern",      "type": "story", "category": "pattern",           "label": "03 · PERIMENOPAUSAL", "pattern_name": "Estrogen-Shift", "hook_1": "The perimenopausal state doesn't need more discipline.", "sub_1": "It needs a re-read." },
+    { "slug": "story-2026-07-24_03_photo",        "type": "story", "category": "photo_overlay",     "photo": "8", "hook_1": "The Blueprint doesn't guess.", "sub_1": "It reads the Report. Then writes the six weeks." },
+
+    { "slug": "story-2026-07-25_01_quote",        "type": "story", "category": "quote",             "hook_1": "The body was always telling you. You just needed the structure to hear it." },
+    { "slug": "story-2026-07-25_02_inside",       "type": "story", "category": "inside_challenge",  "day_num": "Day 12", "hook_1": "Two days out from the Report.", "sub_1": "The pattern is close to fully named." },
+
+    { "slug": "story-2026-07-26_01_hook",         "type": "story", "category": "hook",              "label": "DAY 14",  "hook_1": "Today the Report lands.", "sub_1": "Pattern named. Mechanism explained. Three actions." },
+    { "slug": "story-2026-07-26_02_photo",        "type": "story", "category": "photo_overlay",     "photo": "9", "hook_1": "The read is the doorway. Not the destination.", "sub_1": "The Blueprint is the follow-through. Doors open Monday." },
+    { "slug": "story-2026-07-26_03_inside",       "type": "story", "category": "inside_challenge",  "day_num": "Day 14", "hook_1": "The 14-day arc closes here.", "sub_1": "Report + next-move call in the portal." }
+  ]
+}
