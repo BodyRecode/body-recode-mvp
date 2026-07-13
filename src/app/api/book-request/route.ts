@@ -6,7 +6,7 @@ import { logLeadEvent } from '@/lib/log-lead-event'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { appUrl } from '@/lib/app-url'
 import { fromCoach, fromBrand } from '@/lib/email-shell'
-import { coach, logoUrl } from '@/config/tenant'
+import { coach, logoUrl, brand } from '@/config/tenant'
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
@@ -141,6 +141,14 @@ export async function POST(request: NextRequest) {
                 <td style="padding:14px 20px;background:#1a1a1a;border-radius:10px;border:1px solid #222;">
                   <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#999999;letter-spacing:0.08em;text-transform:uppercase;">You requested</p>
                   <p style="margin:0;font-size:15px;color:#1A1A1A;white-space:pre-wrap;">${cleanPreferredTime}</p>
+                </td>
+              </tr>
+            </table>
+            <p style="margin:0 0 8px;font-size:15px;color:#999999;line-height:1.75;">One thing before we talk: please take 3-4 minutes to fill this in. It means I walk into our call already understanding where you're at, so we can go straight to what matters.</p>
+            <table cellpadding="0" cellspacing="0" style="margin:8px 0 20px;">
+              <tr>
+                <td style="border-radius:10px;background:#1B6DFC;">
+                  <a href="${brand().marketingDomain}/book/prep/${lead.id}" style="display:inline-block;padding:14px 26px;font-size:15px;font-weight:700;color:#FFFFFF;text-decoration:none;">Complete this before our call →</a>
                 </td>
               </tr>
             </table>
