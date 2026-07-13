@@ -1,0 +1,32 @@
+{
+  "_meta": {
+    "out_dir": "/Users/kadedunstone/body-recode-mvp/public/stories/week-1-launch",
+    "week": "2026-07-14 → 2026-07-19",
+    "theme": "First week of the 14-Day Challenge · Day 2 → Day 7"
+  },
+  "posts": [
+    { "slug": "story-2026-07-14_01_hook",    "type": "story", "category": "hook",             "label": "DAY 2",  "hook_1": "Day 2. The body is starting to notice the change in rhythm.",       "sub_1": "Nothing dramatic. Just less noise. That is the point." },
+    { "slug": "story-2026-07-14_02_inside",  "type": "story", "category": "inside_challenge", "day_num": "Day 2","hook_1": "Morning Reset. First real training day. Evening Rhythm.",           "sub_1": "The 14-day arc begins with structure, not intensity." },
+    { "slug": "story-2026-07-14_03_photo",   "type": "story", "category": "photo_overlay",    "photo": "1",      "hook_1": "The body listens when you stop shouting at it.",                    "sub_1": "Day 2. Just show up to the structure." },
+
+    { "slug": "story-2026-07-15_01_hook",    "type": "story", "category": "hook",             "label": "DAY 3",  "hook_1": "Day 3. The lightness of \"finally doing the right thing\" starts to fade.", "sub_1": "This is where the practice becomes the practice." },
+    { "slug": "story-2026-07-15_02_inside",  "type": "story", "category": "inside_challenge", "day_num": "Day 3","hook_1": "The rhythm is meant to feel repetitive.",                            "sub_1": "The read only lands after the noise settles." },
+    { "slug": "story-2026-07-15_03_photo",   "type": "story", "category": "photo_overlay",    "photo": "2",      "hook_1": "The body does not need convincing. It needs structure.",            "sub_1": "Day 3. Same protocol. Same rhythm." },
+
+    { "slug": "story-2026-07-16_01_quote",   "type": "story", "category": "quote",            "hook_1": "You cannot outperform a body you have never read." },
+    { "slug": "story-2026-07-16_02_inside",  "type": "story", "category": "inside_challenge", "day_num": "Day 4","hook_1": "Day 4. The nervous system is starting to trust the rhythm.",       "sub_1": "This is the ground under the eventual pattern read." },
+    { "slug": "story-2026-07-16_03_photo",   "type": "story", "category": "photo_overlay",    "photo": "3",      "hook_1": "Read first. Prescribe second. Every time.",                          "sub_1": "Day 4. The read is being built." },
+
+    { "slug": "story-2026-07-17_01_hook",    "type": "story", "category": "hook",             "label": "DAY 5",  "hook_1": "Day 5. Week One Progress Session unlocks in the portal today.",   "sub_1": "First checkpoint. What has actually shifted vs what you thought would." },
+    { "slug": "story-2026-07-17_02_inside",  "type": "story", "category": "inside_challenge", "day_num": "Day 5","hook_1": "Progress Session · look at the signal, not the number.",           "sub_1": "Energy, sleep, mood, appetite. The body is telling you where it is." },
+    { "slug": "story-2026-07-17_03_photo",   "type": "story", "category": "photo_overlay",    "photo": "4",      "hook_1": "The read is not a moment. It is a week.",                            "sub_1": "Day 5. The first checkpoint." },
+
+    { "slug": "story-2026-07-18_01_quote",   "type": "story", "category": "quote",            "hook_1": "The pattern was always there. You just needed the structure to name it." },
+    { "slug": "story-2026-07-18_02_photo",   "type": "story", "category": "photo_overlay",    "photo": "6",      "hook_1": "Day 6. Rest, walk, eat clean, read the note.",                       "sub_1": "The Saturday is part of the read. Not a pause." },
+    { "slug": "story-2026-07-18_03_inside",  "type": "story", "category": "inside_challenge", "day_num": "Day 6","hook_1": "The Saturday session is deliberate.",                                "sub_1": "Recovery is not an off day. It is a read of how the body integrates." },
+
+    { "slug": "story-2026-07-19_01_hook",    "type": "story", "category": "hook",             "label": "DAY 7",  "hook_1": "Day 7. The Body Decode Check-In unlocks in the portal today.",     "sub_1": "Halfway. The signal is going to sharpen from here." },
+    { "slug": "story-2026-07-19_02_inside",  "type": "story", "category": "inside_challenge", "day_num": "Day 7","hook_1": "Check-In · short reflection. Signals, not scores.",                 "sub_1": "The Report at Day 14 uses this to sharpen the read." },
+    { "slug": "story-2026-07-19_03_photo",   "type": "story", "category": "photo_overlay",    "photo": "7",      "hook_1": "Halfway. The pattern is on the way.",                                "sub_1": "Day 7. Seven more to the Report." }
+  ]
+}
