@@ -255,7 +255,7 @@ export async function POST(request: NextRequest) {
       await persistSmsOptIn(leadId, phone.trim())
       await inngest.send({
         name: 'scorecard/completed',
-        data: { leadId, bookingUrl: `${brand().marketingDomain}/scorecard?intent=challenge` },
+        data: { leadId, bookingUrl: `${brand().marketingDomain}/book` },
       })
       console.log('[scorecard/submit] SMS opt-in persisted + speed-to-lead event fired for lead:', leadId)
     } catch (smsErr) {
