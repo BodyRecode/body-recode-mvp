@@ -83,6 +83,30 @@ ${darkEmailSignature()}
 `)
 }
 
+// Render a plain-text automation email body (from the seeded workflow steps)
+// into branded inner HTML: paragraphs via emailBody, "Label: https://…" lines
+// as CTA buttons, "---" as a divider, and inline URLs linkified. The trailing
+// manual "Kade / Body Recode" sign-off is stripped because darkEmailSignature()
+// supplies the real one (otherwise the email double-signs).
+function renderAutomationBody(body: string): string {
+  const text = body
+    .replace(/\n+Kade\s*\n+Body Recode\s*$/i, '')
+    .trimEnd()
+  const parts: string[] = []
+  for (const raw of text.split(/\n{2,}/)) {
+    const block = raw.trim()
+    if (!block) continue
+    if (/^-{3,}$/.test(block)) { parts.push(emailDivider()); continue }
+    const cta = block.match(/^([^:\n]{2,40}):\s*(https?:\/\/\S+)$/)
+    if (cta) { parts.push(emailCta({ href: cta[2], label: cta[1].trim() })); continue }
+    const withLinks = block
+      .replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" style="color:#1B6DFC;text-decoration:underline;">$1</a>')
+      .replace(/\n/g, '<br/>')
+    parts.push(emailBody(withLinks))
+  }
+  return parts.join('\n')
+}
+
 // ─── Challenge Sequence Function ─────────────────────────────────────────────
 
 export const challengeSequenceFunction = inngest.createFunction(
@@ -393,35 +417,20 @@ async function executeAction(
     case 'send_email': {
       if (!contact?.email || !process.env.RESEND_API_KEY) break
       const resend = new Resend(process.env.RESEND_API_KEY)
-      const bodyHtml = interpolate(config.body ?? '', templateVars)
-        .replace(/\n/g, '<br/>')
+      const interpolatedBody = interpolate(config.body ?? '', templateVars)
       const interpolatedSubject = interpolate(config.subject ?? '', templateVars)
+      // Branded shell — same darkEmailShell + primitives the rest of the system
+      // uses, so automation emails match the design instead of the old faded
+      // plain-text look.
+      const html = darkEmailShell(
+        `${emailLogo()}\n${renderAutomationBody(interpolatedBody)}\n${darkEmailSignature()}`,
+        { previewText: interpolatedSubject },
+      )
       const { data: sent, error: sendError } = await resend.emails.send({
         from: fromCoach(),
         to: contact.email,
         subject: interpolatedSubject,
-        html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="light only"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr>
-      <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
-          <tr>
-            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-              <img src="${logoUrl()}" width="130" alt="Body Recode" style="display:block;" />
-            </td>
-          </tr>
-          <tr>
-            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#999999;">
-              ${bodyHtml}
-              ${darkEmailSignature()}
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body></html>`,
+        html,
       })
       if (sendError) {
         console.error('[automation send_email] Resend error:', sendError, 'to:', contact.email, 'subject:', interpolatedSubject)
