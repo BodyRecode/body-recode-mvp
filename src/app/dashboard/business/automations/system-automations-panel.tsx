@@ -9,9 +9,52 @@ const AUTOMATIC_AUTOMATIONS = [
   {
     id: 'scorecard-followup',
     name: 'Scorecard Follow-up Sequence',
-    description: '5-email sequence triggered when someone completes the Body State Scorecard. Buyer-language voice, alternates between $37 report and free strategy call.',
+    description: '5-email sequence triggered when someone completes the Body State Scorecard. Buyer-language voice, alternates between $37 report and free strategy call. (One canonical workflow; a legacy em-dash duplicate was deactivated 2026-06-24 to stop double-sends.)',
     trigger: 'Scorecard completed',
     steps: 5,
+  },
+  // ─── Funnel B product portal sequences (fire once each product is launched via NEXT_PUBLIC_*_LIVE) ───
+  {
+    id: 'challenge-email-sequence',
+    name: 'Challenge Email Sequence',
+    description: 'Milestone emails across the free 14-Day Body Decode Challenge (welcome, Day 5 session, Day 7 pre-check-in, Day 14 reveal). Branded shell. Dormant until the Challenge goes live.',
+    trigger: 'challenge/enrolled Inngest event',
+    steps: 4,
+  },
+  {
+    id: 'challenge-sms-sequence',
+    name: 'Challenge SMS Sequence',
+    description: 'SMS nudges alongside the Challenge portal (daily nudge + milestone reminders). Consent + frequency capped. Dormant until the Challenge goes live.',
+    trigger: 'challenge/enrolled Inngest event',
+    steps: 2,
+  },
+  {
+    id: 'blueprint-email-sequence',
+    name: 'Blueprint Email Sequence',
+    description: 'Onboarding + phase emails for the 6-Week Body Rewire Blueprint. Branded shell. Dormant until the Blueprint goes live.',
+    trigger: 'blueprint/enrolled Inngest event',
+    steps: 2,
+  },
+  {
+    id: 'blueprint-week-advance',
+    name: 'Blueprint Week Advance',
+    description: 'Weekly block-progression emails through the Blueprint (one per week, Weeks 1-6). Dormant until the Blueprint goes live.',
+    trigger: 'blueprint/enrolled Inngest event (weekly step)',
+    steps: 6,
+  },
+  {
+    id: 'membership-week-advance',
+    name: 'Membership Week Advance',
+    description: 'Block-progression emails through the Membership (a new block every 6 weeks, Block A onward). Dormant until the Membership goes live.',
+    trigger: 'membership/enrolled Inngest event (recurring)',
+    steps: 1,
+  },
+  {
+    id: 'extension-week-advance',
+    name: 'Extension Week Advance',
+    description: 'Weekly "check-in due" nudge for extension blocks. Dormant until live.',
+    trigger: 'extension/enrolled Inngest event (weekly step)',
+    steps: 1,
   },
   {
     id: 'speed-to-lead-sms',
