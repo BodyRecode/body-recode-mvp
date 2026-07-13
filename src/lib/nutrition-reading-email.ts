@@ -1,6 +1,13 @@
 import { darkEmailSignature } from './email-signature'
-import { emailUrlFallback } from './email-shell'
-import { logoUrl } from '@/config/tenant'
+import {
+  darkEmailShell,
+  emailLogo,
+  emailEyebrow,
+  emailHeading,
+  emailBody,
+  emailCta,
+  emailUrlFallback,
+} from './email-shell'
 
 export interface NutritionReadingEmailParams {
   firstName: string
@@ -15,47 +22,17 @@ export function buildNutritionReadingEmail({
 }: NutritionReadingEmailParams): { subject: string; html: string } {
   const subject = `${firstName}, your new nutrition plan is ready`
 
-  const html = `<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"/><meta name="color-scheme" content="light only"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr>
-      <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:560px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
-          <tr>
-            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-              <img src="${logoUrl()}" width="140" alt="Body Recode" style="display:block;" />
-            </td>
-          </tr>
-          <tr>
-            <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.75;color:#6B6B6B;">
-              <p style="font-size:11px;font-weight:700;letter-spacing:0.18em;color:#1B6DFC;text-transform:uppercase;margin:0 0 14px;">Nutrition Reading</p>
-              <p style="color:#1A1A1A;font-size:22px;font-weight:800;letter-spacing:-0.02em;line-height:1.25;margin:0 0 18px;">
-                Your new nutrition plan is ready, ${escapeHtml(firstName)}.
-              </p>
-              <p>${escapeHtml(planName)} is live in your portal. Before the meals, you will find your Nutrition Reading: the read of what this plan is for, what it is asking of your body, and how we will know it is working.</p>
-              <p>The reading sits at the top of your plan so the why frames how you eat to it.</p>
-              <table cellpadding="0" cellspacing="0" style="margin:28px 0;">
-                <tr>
-                  <td bgcolor="#1B6DFC" style="background-color:#1B6DFC;border-radius:10px;">
-                    <a href="${portalUrl}" style="display:inline-block;padding:14px 28px;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.02em;">
-                      Open your nutrition plan
-                    </a>
-                  </td>
-                </tr>
-              </table>
-              <p style="font-size:13px;color:#6B6B6B;">Take a minute to read the framing before you sit down to your first meal of the week. It is short and it sets the lens.</p>
-              ${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
-              ${darkEmailSignature()}
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>`
+  const html = darkEmailShell(`
+${emailLogo()}
+${emailEyebrow('Nutrition Reading')}
+${emailHeading(`Your new nutrition plan is ready, ${escapeHtml(firstName)}.`)}
+${emailBody(`${escapeHtml(planName)} is live in your portal. Before the meals, you will find your Nutrition Reading: the read of what this plan is for, what it is asking of your body, and how we will know it is working.`)}
+${emailBody(`The reading sits at the top of your plan so the why frames how you eat to it.`)}
+${emailCta({ href: portalUrl, label: 'Open your nutrition plan' })}
+${emailBody('Take a minute to read the framing before you sit down to your first meal of the week. It is short and it sets the lens.', { size: 13, color: '#6B6B6B' })}
+${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
+${darkEmailSignature()}
+`, { previewText: subject })
 
   return { subject, html }
 }
