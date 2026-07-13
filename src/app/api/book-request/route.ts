@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
           <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:32px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
             <p style="margin:0 0 4px;font-size:20px;font-weight:700;color:#1A1A1A;">Custom time request — ${cleanName}</p>
             <p style="margin:0 0 8px;font-size:14px;color:#6B6B6B;">${cleanEmail}${cleanPhone ? ' · ' + cleanPhone : ''}</p>
-            <p style="margin:0 0 24px;font-size:13px;color:#666666;">None of the published slots worked. They suggested a time below — confirm by replying to this email or follow up directly.</p>
+            <p style="margin:0 0 24px;font-size:13px;color:#666666;">They want to book a call and suggested the times below — reply to this email to confirm and book them in.</p>
             <table cellpadding="0" cellspacing="0" style="margin-bottom:16px;width:100%;">
               <tr>
                 <td style="padding:14px 20px;background:#1a1a1a;border-radius:10px;border:1px solid #222;">
