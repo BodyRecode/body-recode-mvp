@@ -9,7 +9,7 @@ const AUTOMATIC_AUTOMATIONS = [
   {
     id: 'scorecard-followup',
     name: 'Scorecard Follow-up Sequence',
-    description: '5-email sequence triggered when someone completes the Body State Scorecard. Buyer-language voice, alternates between $37 report and free strategy call. (One canonical workflow; a legacy em-dash duplicate was deactivated 2026-06-24 to stop double-sends.)',
+    description: '5-email sequence triggered when someone completes the Body State Scorecard. Buyer-language voice, alternates between $37 report and free strategy call. (One canonical workflow; a legacy em-dash duplicate was removed 2026-06-24 to stop double-sends.)',
     trigger: 'Scorecard completed',
     steps: 5,
   },
