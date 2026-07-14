@@ -15,7 +15,14 @@ export default function ClientDangerActions({ clientId, isActive }: { clientId: 
       body: JSON.stringify({ active: !isActive }),
     })
     setLoading(null)
-    router.refresh()
+    // Deactivating removes them from the active roster, so there's nothing
+    // useful left on this page — send the coach back to the all-clients list.
+    // Reactivating keeps them here and just refreshes the now-active view.
+    if (isActive) {
+      router.push('/dashboard/coaching')
+    } else {
+      router.refresh()
+    }
   }
 
   async function deleteClient() {
