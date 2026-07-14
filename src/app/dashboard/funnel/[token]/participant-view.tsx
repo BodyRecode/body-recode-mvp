@@ -22,8 +22,9 @@ type Lead = {
   name: string | null
   email: string | null
   phone: string | null
-  body_state: string | null
-  scorecard_total: number | null
+  scorecard_body_state: string | null
+  scorecard_score: number | null
+  scorecard_profile: string | null
   source: string | null
   created_at: string
 } | null
@@ -252,7 +253,7 @@ export default function ParticipantView({
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
         <InfoTile icon={Mail} label="Email" value={lead?.email ?? '-'} />
         <InfoTile icon={Phone} label="Phone" value={lead?.phone ?? '-'} />
-        <InfoTile icon={MapPin} label="Body state" value={lead?.body_state ?? '-'} />
+        <InfoTile icon={MapPin} label="Body state" value={lead?.scorecard_body_state ?? '-'} />
         <InfoTile icon={Calendar} label="Enrolled" value={fmtDateOnly(enrollment.enrolled_at)} />
       </div>
 

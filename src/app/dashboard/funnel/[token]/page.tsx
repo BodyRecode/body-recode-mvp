@@ -26,8 +26,9 @@ type Lead = {
   name: string | null
   email: string | null
   phone: string | null
-  body_state: string | null
-  scorecard_total: number | null
+  scorecard_body_state: string | null
+  scorecard_score: number | null
+  scorecard_profile: string | null
   source: string | null
   created_at: string
 }
@@ -69,7 +70,7 @@ export default async function ParticipantPage({ params }: { params: Promise<{ to
   const [{ data: lead }, { data: events }] = await Promise.all([
     admin
       .from('leads')
-      .select('id, name, email, phone, body_state, scorecard_total, source, created_at')
+      .select('id, name, email, phone, scorecard_body_state, scorecard_score, scorecard_profile, source, created_at')
       .eq('id', enrollment.lead_id)
       .single<Lead>(),
     admin
