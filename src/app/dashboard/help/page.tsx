@@ -647,7 +647,7 @@ export default function HelpPage() {
               <li>Weekly training check-in - if they have an active program</li>
               <li>Weekly nutrition check-in - if they have an active nutrition plan</li>
               <li>View your program - full session-by-session program view</li>
-              <li>View your nutrition plan - full meal-by-meal plan view</li>
+              <li>View your nutrition plan - full meal-by-meal plan view, including a collapsible <strong>Food swaps</strong> card (added 2026-07-14) that surfaces the engine&apos;s approved, macro-matched substitutions to the client. Collapsed by default; carries a note that recent manual meal edits may not be reflected in the swap list.</li>
               <li>Active Coaching Client Guide link</li>
               <li>Share feedback - dedicated form at <strong>/portal/[token]/feedback</strong> (see below)</li>
             </ul>
@@ -1917,6 +1917,8 @@ export default function HelpPage() {
 
           <Section id="nutrition-plan" title="22. Nutrition Plan - HABNS" colour="teal">
             <p>The Nutrition Plan engine generates a doctrine-compliant daily nutrition prescription under the Hybrid Animal-Based Nutrition System (HABNS) - the 5th pillar of the Body Recode system. Plans follow a two-stage pipeline: draft → active. The same approval flow as the training program.</p>
+
+            <Note><strong>Food swaps are now client-visible (2026-07-14).</strong> The <strong>Food Substitutions</strong> block on this coach page is the same engine-generated swap list the client now sees, restyled, in a collapsible <strong>Food swaps</strong> card on their <code>/portal/[token]/my-plan</code> view. It gives the client permission to flex to macro-matched alternatives without messaging you. Caveat: swaps are generated with the plan and are <strong>not</strong> re-derived when you hand-edit a meal in the meal editor, so after a manual meal change the swap list can name a food no longer in the plan. The client card carries a note to this effect; regenerate the plan if you want the swaps to re-sync exactly.</Note>
 
             <Note><strong>Coach Guidance lever (2026-06-09).</strong> The Generate form now exposes a <strong>Coach Guidance</strong> textarea that mirrors <code>training_plans.coach_guidance</code>. Free-text standing context (travel block, mid-plan dietary change, post-illness framing, life-event constraints) read by the generator on every call. Bounded by HABNS doctrine and validator hard floors — it cannot override calorie floors, per-meal protein caps, appetite-suppression rules, or dietary restrictions/preferences. Persists on the plan; the route precedence is &ldquo;explicit body value wins, else carry forward from the most recent plan&rdquo;, so guidance survives every Regenerate until you replace it. Leave blank to keep the prior plan&apos;s guidance, pass a new value to overwrite. First use: Samantha&apos;s 4-week travel block. See <code>project_nutrition_coach_guidance</code>.</Note>
 

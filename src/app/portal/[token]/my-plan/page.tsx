@@ -61,7 +61,7 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
   // her plan today after 3 regens. Fixed 2026-05-26.
   const { data: plan } = await admin
     .from('nutrition_plans')
-    .select('id, plan_name, entry_state, estimated_calorie_band, meal_frequency, meals, training_day_adjustments, rest_day_adjustments, execution_rules, what_not_to_change, entry_state_summary, current_direction, last_review_at, nr_why_this_plan, nr_what_this_nutrition_is_doing, nr_how_well_know_its_working, nr_what_were_not_doing_yet, nr_coach_note, nutrition_reading_published_at, transitional_override_active, transitional_override_floor_kcal, transitional_override_expires_at, carb_demand_level')
+    .select('id, plan_name, entry_state, estimated_calorie_band, meal_frequency, meals, training_day_adjustments, rest_day_adjustments, execution_rules, what_not_to_change, entry_state_summary, current_direction, last_review_at, nr_why_this_plan, nr_what_this_nutrition_is_doing, nr_how_well_know_its_working, nr_what_were_not_doing_yet, nr_coach_note, nutrition_reading_published_at, transitional_override_active, transitional_override_floor_kcal, transitional_override_expires_at, carb_demand_level, substitution_options')
     .eq('client_id', client.id)
     .eq('is_active', true)
     .maybeSingle()
@@ -337,6 +337,55 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
                 })}
               </div>
             )}
+
+            {/* Food substitutions: client-facing, collapsed by default so it
+                doesn't crowd the meals. Same engine-generated swap lists the
+                coach sees, restyled for the portal. Each item string is
+                "base food (arrow) alt, alt, alt"; we split on the arrow to lead
+                with the food in their plan and list the approved swaps after. */}
+            {plan.substitution_options && (() => {
+              const subs = plan.substitution_options as { protein?: string[]; carbohydrate?: string[]; fat?: string[] }
+              const catLabel: Record<string, string> = { protein: 'Protein', carbohydrate: 'Carbs', fat: 'Fat' }
+              const hasAny = (['protein', 'carbohydrate', 'fat'] as const).some(c => (subs[c]?.length ?? 0) > 0)
+              if (!hasAny) return null
+              return (
+                <details className="group bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl overflow-hidden">
+                  <summary className="px-5 py-4 flex items-center justify-between cursor-pointer list-none select-none">
+                    <div>
+                      <p className="text-xs font-bold text-[#999999] uppercase tracking-widest">Food swaps</p>
+                      <p className="text-xs text-[#6B6B6B] mt-0.5">Approved, macro-matched alternatives for each food.</p>
+                    </div>
+                    <span className="text-[#999999] text-sm transition-transform group-open:rotate-180">⌄</span>
+                  </summary>
+                  <div className="px-5 pb-5 space-y-4 border-t border-[#E5E5E5] pt-4">
+                    {(['protein', 'carbohydrate', 'fat'] as const).map(cat => (
+                      (subs[cat]?.length ?? 0) > 0 && (
+                        <div key={cat}>
+                          <p className="text-xs font-semibold text-[#1B6DFC] mb-2">{catLabel[cat]}</p>
+                          <ul className="space-y-2">
+                            {subs[cat]!.map((item, i) => {
+                              const [base, ...rest] = item.split('↔')
+                              const alts = rest.join('↔').trim()
+                              return (
+                                <li key={i} className="text-xs leading-relaxed">
+                                  <span className="font-semibold text-[#1A1A1A]">{base.trim()}</span>
+                                  {alts && (
+                                    <span className="text-[#6B6B6B]"> · swap for {alts}</span>
+                                  )}
+                                </li>
+                              )
+                            })}
+                          </ul>
+                        </div>
+                      )
+                    ))}
+                    <p className="text-[11px] text-[#999999] leading-relaxed pt-1">
+                      Swaps keep your macros roughly the same. If your coach has recently hand-adjusted a meal, these may not reflect the latest change, so check with them if unsure.
+                    </p>
+                  </div>
+                </details>
+              )
+            })()}
 
             {/* Training day adjustments */}
             {plan.training_day_adjustments && (() => {
