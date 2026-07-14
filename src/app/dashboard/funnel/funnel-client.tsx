@@ -27,6 +27,29 @@ type ChallengeRow = {
   id: string; token: string; name: string; email: string; phone: string
   currentDay: number; enrolledAt: string; quizResult: string | null
   quizCompleted: boolean; hasBlueprintPurchase: boolean
+  scorecardDone: boolean; parqDone: boolean; healthDone: boolean
+}
+
+// Compact onboarding-status indicator for the Challenge table: shows, per
+// signup, whether they have completed the in-portal Scorecard, PAR-Q, and
+// Health Declaration yet.
+function OnboardTicks({ scorecard, parq, health }: { scorecard: boolean; parq: boolean; health: boolean }) {
+  const item = (label: string, done: boolean) => (
+    <span
+      title={done ? `${label}: done` : `${label}: not yet`}
+      className={`inline-flex items-center gap-0.5 text-[10px] font-semibold px-1.5 py-0.5 rounded ${done ? 'text-[#15803D] bg-[#DCFCE7]' : 'text-[#999999] bg-[#F0F0F0]'}`}
+      style={{ fontFamily: MONO_FONT }}
+    >
+      {done ? '✓' : '·'} {label}
+    </span>
+  )
+  return (
+    <div className="flex items-center gap-1 flex-wrap">
+      {item('Scorecard', scorecard)}
+      {item('PAR-Q', parq)}
+      {item('Health', health)}
+    </div>
+  )
 }
 
 type BlueprintRow = {
@@ -188,7 +211,7 @@ export default function FunnelClient({
   const amber = accentColour('amber')
 
   const summary = [
-    { label: 'Challenge', count: challengeEnrollments.length, sub: `${challengeEnrollments.filter(e => e.quizCompleted).length} completed quiz`, accent: '#1B6DFC' },
+    { label: 'Challenge', count: challengeEnrollments.length, sub: `${challengeEnrollments.filter(e => e.scorecardDone).length} did scorecard`, accent: '#1B6DFC' },
     { label: 'Blueprint', count: blueprintEnrollments.length, sub: `${blueprintEnrollments.filter(e => e.hasMembership).length} ascended to membership`, accent: '#8b5cf6' },
     { label: 'Membership', count: membershipEnrollments.length, sub: `${membershipEnrollments.filter(e => !e.cancelledAt).length} active`, accent: '#B7791F' },
   ]
@@ -289,7 +312,7 @@ export default function FunnelClient({
       <Card padding="none" className={`overflow-hidden ${tab === 'pages' ? 'hidden' : ''}`}>
 
         {tab === 'challenge' && (
-          <Table headers={['Name', 'Day', 'Pattern', 'Quiz', 'Blueprint', 'Enrolled']}>
+          <Table headers={['Name', 'Day', 'Setup', 'Pattern', 'Quiz', 'Blueprint', 'Enrolled']}>
             {filteredChallenge.length === 0 && (
               <TR><TD><span className="text-[#999999]">No enrollments yet.</span></TD></TR>
             )}
@@ -301,6 +324,9 @@ export default function FunnelClient({
                   <TD>
                     <span className="font-bold text-[#1A1A1A]" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Day {Math.min(e.currentDay, 14)}</span>
                     <span className="text-[11px] text-[#999999]" style={{ fontFamily: MONO_FONT }}> / 14</span>
+                  </TD>
+                  <TD>
+                    <OnboardTicks scorecard={e.scorecardDone} parq={e.parqDone} health={e.healthDone} />
                   </TD>
                   <TD>
                     {e.quizResult ? <PatternBadge pattern={e.quizResult} /> : <span className="text-[#999999] text-[12px]">No quiz</span>}
