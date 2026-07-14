@@ -81,8 +81,10 @@ ${emailBody(
     : 'Start simple. Follow the structure. Do not try to be perfect on Day 1.',
   { bottom: 28 },
 )}
+${emailBody('Your first step inside: a quick scorecard that reads your starting point. A couple of minutes, then your 14 days begin.', { bottom: 20 })}
 ${emailCta({ href: portalUrl, label: 'Open my challenge portal' })}
 ${emailUrlFallback(portalUrl, 'Bookmark this link — your portal for the full 14 days')}
+${emailBody('Not seeing our emails? Check your junk or spam folder and move this one to your inbox (or mark it "not spam"). That way your daily coaching and reminders land every morning.')}
 `)
 
   return { subject, html }

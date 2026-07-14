@@ -100,8 +100,11 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
         <p style={{ fontSize: '20px', fontWeight: 800, color: '#1A1A1A', marginBottom: '8px', letterSpacing: '-0.02em' }}>
           You are in.
         </p>
-        <p style={{ fontSize: '15px', color: '#1056D6', lineHeight: 1.6, margin: 0 }}>
-          Check your email for portal access. Your daily coaching opens each morning in the portal. Reminders and check-ins land on your phone. Day 1 starts now.
+        <p style={{ fontSize: '15px', color: '#1056D6', lineHeight: 1.6, margin: '0 0 12px' }}>
+          Check your email for your portal link. The first thing inside is a quick scorecard that reads your starting point - then your 14 days begin.
+        </p>
+        <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.6, margin: 0 }}>
+          Don&apos;t see it? Check your junk or spam folder and move the email to your inbox so your daily coaching lands every morning.
         </p>
       </div>
     )
