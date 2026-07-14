@@ -53,7 +53,10 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     try {
       const resp = await anthropic.messages.create({
         model: 'claude-sonnet-5',
-        max_tokens: 1600,
+        // 4096, not 1600: substantive doctrine answers (e.g. "given this CFFS,
+        // what goes in every training-program field?") were hitting the cap and
+        // returning an empty text block with stop_reason=max_tokens.
+        max_tokens: 4096,
         system: buildCopilotSystemPrompt(ctx.clientName, ctx.context),
         messages: [...history, { role: 'user', content: message }],
       })

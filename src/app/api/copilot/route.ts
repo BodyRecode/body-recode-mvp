@@ -56,7 +56,10 @@ export async function POST(request: NextRequest) {
     try {
       const resp = await anthropic.messages.create({
         model: 'claude-sonnet-5',
-        max_tokens: 1600,
+        // 4096, not 1600: long doctrine answers were hitting the cap and
+        // returning an empty text block (stop_reason=max_tokens). Kept in sync
+        // with the client-scoped copilot route.
+        max_tokens: 4096,
         system: buildGeneralCopilotSystemPrompt(),
         messages: [...history, { role: 'user', content: message }],
       })
