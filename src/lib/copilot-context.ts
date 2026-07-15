@@ -30,6 +30,56 @@ function fmtSummary(rs: any): string | null {
   return parts.length ? parts.join('\n') : null
 }
 
+// Compact rendering of the ACTUAL prescribed training sessions so the tutor can
+// review the plan against doctrine (phase-appropriate loading, restoration =
+// easy-only, RPE/volume sanity, no conditioning in a Red-regulation block, etc.)
+// rather than only reasoning off headlines. Kept terse: one line per exercise.
+function fmtSessions(sessions: any): string | null {
+  if (!Array.isArray(sessions) || sessions.length === 0) return null
+  const out: string[] = []
+  for (const s of sessions) {
+    if (!s || typeof s !== 'object') continue
+    out.push(`• ${s.day_label ?? 'Session'}${s.skeleton ? ` (${s.skeleton})` : ''}`)
+    for (const b of s.blocks ?? []) {
+      if (!b || typeof b !== 'object') continue
+      out.push(`   ${b.block_label ?? 'Block'}:`)
+      for (const ex of b.exercises ?? []) {
+        if (!ex || typeof ex !== 'object') continue
+        const bits = [
+          ex.sets != null ? `${ex.sets}x` : null,
+          ex.reps != null ? `${ex.reps}` : null,
+          ex.rpe != null ? `@RPE ${ex.rpe}` : null,
+          ex.rest ? `rest ${ex.rest}` : null,
+        ].filter(Boolean).join(' ')
+        out.push(`     - ${ex.exercise_name ?? 'exercise'}${bits ? ` — ${bits}` : ''}${ex.notes ? ` (${ex.notes})` : ''}`)
+      }
+    }
+  }
+  return out.length ? out.join('\n') : null
+}
+
+// Compact rendering of the ACTUAL prescribed meals + daily macro targets, so the
+// tutor can review nutrition against doctrine (protein anchor honoured, calorie
+// floor respected, carb demand matches phase, appetite-suppression meal count).
+function fmtMeals(meals: any, proteinAnchor: any, calorieBand: any): string | null {
+  const out: string[] = []
+  if (proteinAnchor != null || calorieBand) {
+    out.push(`Daily targets: ${proteinAnchor != null ? `protein anchor ${proteinAnchor}g` : ''}${proteinAnchor != null && calorieBand ? ', ' : ''}${calorieBand ? `calories ~${calorieBand}` : ''}`)
+  }
+  if (Array.isArray(meals) && meals.length) {
+    for (const m of meals) {
+      if (!m || typeof m !== 'object') continue
+      const macros = [
+        m.protein_g != null ? `P ${m.protein_g}g` : null,
+        m.carb_g != null ? `C ${m.carb_g}g` : null,
+        m.fat_g != null ? `F ${m.fat_g}g` : null,
+      ].filter(Boolean).join(' / ')
+      out.push(`• ${m.name ?? m.meal_name ?? 'Meal'}${macros ? ` — ${macros}` : ''}`)
+    }
+  }
+  return out.length ? out.join('\n') : null
+}
+
 export async function buildCopilotContext(
   admin: SupabaseClient,
   clientId: string,
@@ -44,8 +94,8 @@ export async function buildCopilotContext(
   const [{ data: cffsRows }, { data: cfwsRows }, { data: programRows }, { data: nutritionRows }, { data: checkinRows }, { data: intakeRows }] = await Promise.all([
     admin.from('cffs').select('*').eq('client_id', clientId).eq('is_archived', false).order('generated_at', { ascending: false }).limit(1),
     admin.from('cfws').select('*').eq('client_id', clientId).order('week_number', { ascending: false }).limit(1),
-    admin.from('programs').select('block_name, progression_phase, training_goal, training_frequency, week_duration, rationale_summary, is_active').eq('client_id', clientId).eq('is_active', true).limit(1),
-    admin.from('nutrition_plans').select('plan_name, entry_state, carb_demand_level, entry_state_summary, is_active, status').eq('client_id', clientId).eq('status', 'active').limit(1),
+    admin.from('programs').select('block_name, progression_phase, training_goal, training_frequency, week_duration, rationale_summary, sessions, is_active').eq('client_id', clientId).eq('is_active', true).limit(1),
+    admin.from('nutrition_plans').select('plan_name, entry_state, carb_demand_level, entry_state_summary, meals, protein_anchor_g, estimated_calorie_band, is_active, status').eq('client_id', clientId).eq('status', 'active').limit(1),
     admin.from('weekly_checkins').select('week_number, form_type, submitted_at').eq('client_id', clientId).order('week_number', { ascending: false }).limit(4),
     admin.from('intakes').select('primary_goal, secondary_goals, desired_timeline, training_days_available, injury_location_current, injury_primary_concern').eq('client_id', clientId).order('submitted_at', { ascending: false }).limit(1),
   ])
@@ -108,6 +158,8 @@ export async function buildCopilotContext(
     S.push(`\nACTIVE TRAINING PROGRAM: ${program.block_name} — ${program.progression_phase}, ${program.training_goal}, ${program.training_frequency}x/week, ${program.week_duration} weeks`)
     const sum = fmtSummary(program.rationale_summary)
     if (sum) S.push(sum)
+    const sess = fmtSessions(program.sessions)
+    if (sess) S.push(`Prescribed sessions (review against phase + gates):\n${sess}`)
   } else {
     S.push(`\nACTIVE TRAINING PROGRAM: none.`)
   }
@@ -116,6 +168,8 @@ export async function buildCopilotContext(
     S.push(`\nACTIVE NUTRITION PLAN: ${nutrition.plan_name ?? ''} — entry state ${nutrition.entry_state}, carb demand ${nutrition.carb_demand_level}`)
     const es: any = nutrition.entry_state_summary
     if (es && typeof es === 'object' && es.current_focus) S.push(`Current focus: ${es.current_focus}${es.what_this_means ? ` — ${es.what_this_means}` : ''}`)
+    const meals = fmtMeals(nutrition.meals, nutrition.protein_anchor_g, nutrition.estimated_calorie_band)
+    if (meals) S.push(`Prescribed nutrition (review against anchor + phase):\n${meals}`)
   } else {
     S.push(`\nACTIVE NUTRITION PLAN: none.`)
   }
