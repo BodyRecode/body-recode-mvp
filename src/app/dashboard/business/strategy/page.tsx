@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { BR_IG_FOOTER, appendBrFooter, stripBrFooter } from '@/lib/br-post-footer'
 import { brand } from "@/config/tenant";
 import { Clock, Handshake } from 'lucide-react'
 
@@ -197,17 +198,23 @@ function ContentCalendar() {
     setSaving(true)
     const brandVal = form.brand ?? 'body_recode'
     const platformVal = form.platform ?? 'instagram'
+    // Normalise the caption: strip any existing footer to get the raw body, then
+    // re-stamp it for Body Recode IG posts. Keeps the founder follow line on
+    // every BR IG caption, off other brands, and treats footer-only as empty.
+    const isBrIg = brandVal === 'body_recode' && platformVal === 'instagram'
+    const body = stripBrFooter(form.caption ?? '').trim()
+    const captionVal = body ? (isBrIg ? appendBrFooter(body) : body) : null
     if (editId) {
       const { error } = await supabase
         .from('calendar_posts')
-        .update({ date: form.date, time: form.time ?? null, brand: brandVal, platform: platformVal, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null, caption: form.caption ?? null, graphic: form.graphic ?? null })
+        .update({ date: form.date, time: form.time ?? null, brand: brandVal, platform: platformVal, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null, caption: captionVal, graphic: form.graphic ?? null })
         .eq('id', editId)
-      if (!error) setPosts(ps => sortPosts(ps.map(p => p.id === editId ? { ...p, ...form } as ScheduledPost : p)))
+      if (!error) setPosts(ps => sortPosts(ps.map(p => p.id === editId ? { ...p, ...form, caption: captionVal ?? undefined } as ScheduledPost : p)))
       setEditId(null)
     } else {
       const { data, error } = await supabase
         .from('calendar_posts')
-        .insert({ date: form.date, time: form.time ?? null, brand: brandVal, platform: platformVal, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null, caption: form.caption ?? null, graphic: form.graphic ?? null })
+        .insert({ date: form.date, time: form.time ?? null, brand: brandVal, platform: platformVal, type: form.type, phase: form.phase, title: form.title, notes: form.notes ?? null, caption: captionVal, graphic: form.graphic ?? null })
         .select()
         .single()
       if (!error && data) setPosts(ps => sortPosts([...ps, data as ScheduledPost]))
@@ -228,8 +235,24 @@ function ContentCalendar() {
     await supabase.from('calendar_posts').update({ scheduled: next }).eq('id', p.id)
   }
 
+  // Apply a brand/platform change to the form and keep the founder follow line
+  // in sync: present (footer visible in the textarea) only for Body Recode IG.
+  function syncFooter(f: Partial<ScheduledPost>, patch: Partial<ScheduledPost>): Partial<ScheduledPost> {
+    const next = { ...f, ...patch }
+    const isBrIg = (next.brand ?? 'body_recode') === 'body_recode' && (next.platform ?? 'instagram') === 'instagram'
+    const body = stripBrFooter(next.caption ?? '')
+    const caption = isBrIg
+      ? (body.trim() ? appendBrFooter(body) : `\n\n${BR_IG_FOOTER}`)
+      : (body.trim() ? body : undefined)
+    return { ...next, caption }
+  }
+
   function startEdit(p: ScheduledPost) {
-    setForm({ ...p })
+    // Seed the founder follow line for a BR IG post that has no caption yet, so
+    // it's visible in the editor and you write your body text above it.
+    const isBrIg = (p.brand ?? 'body_recode') === 'body_recode' && (p.platform ?? 'instagram') === 'instagram'
+    const caption = p.caption ?? (isBrIg ? `\n\n${BR_IG_FOOTER}` : undefined)
+    setForm({ ...p, caption })
     setEditId(p.id)
     setShowForm(true)
   }
@@ -388,7 +411,7 @@ function ContentCalendar() {
               {new Date(selected + 'T00:00:00').toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' })}
             </p>
             <button
-              onClick={() => { setForm({ type: 'authority', phase: 'prelaunch', brand: brandFilter !== 'all' ? brandFilter : 'body_recode', platform: 'instagram', date: selected, time: POST_TYPE_DEFAULT_TIMES['authority'] }); setEditId(null); setShowForm(true) }}
+              onClick={() => { const b = brandFilter !== 'all' ? brandFilter : 'body_recode'; setForm({ type: 'authority', phase: 'prelaunch', brand: b, platform: 'instagram', date: selected, time: POST_TYPE_DEFAULT_TIMES['authority'], caption: b === 'body_recode' ? `\n\n${BR_IG_FOOTER}` : undefined }); setEditId(null); setShowForm(true) }}
               className="text-xs text-blue-500 hover:text-blue-700 transition-colors font-medium"
             >
               + Add post
@@ -632,7 +655,7 @@ function ContentCalendar() {
             <div className="grid grid-cols-5 gap-3">
               <div>
                 <label className="block text-xs text-stone-500 mb-1">Brand</label>
-                <select value={form.brand ?? 'body_recode'} onChange={e => setForm(f => ({ ...f, brand: e.target.value as Brand }))}
+                <select value={form.brand ?? 'body_recode'} onChange={e => setForm(f => syncFooter(f, { brand: e.target.value as Brand }))}
                   className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500">
                   {(Object.entries(BRAND_STYLES) as [Brand, typeof BRAND_STYLES[Brand]][]).map(([k, s]) => (
                     <option key={k} value={k}>{s.label}</option>
@@ -641,7 +664,7 @@ function ContentCalendar() {
               </div>
               <div>
                 <label className="block text-xs text-stone-500 mb-1">Platform</label>
-                <select value={form.platform ?? 'instagram'} onChange={e => setForm(f => ({ ...f, platform: e.target.value as Platform }))}
+                <select value={form.platform ?? 'instagram'} onChange={e => setForm(f => syncFooter(f, { platform: e.target.value as Platform }))}
                   className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500">
                   {(Object.entries(PLATFORM_STYLES) as [Platform, typeof PLATFORM_STYLES[Platform]][]).map(([k, s]) => (
                     <option key={k} value={k}>{s.label}</option>

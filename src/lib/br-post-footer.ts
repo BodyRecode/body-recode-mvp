@@ -10,3 +10,10 @@ export function appendBrFooter(caption: string): string {
   if (trimmed.includes('@kade_dunstone_')) return trimmed
   return `${trimmed}\n\n${BR_IG_FOOTER}`
 }
+
+// Remove a trailing footer (and the blank line above it) from a caption, so the
+// editor can re-derive the raw body when a post is switched to another brand or
+// re-normalised on save. Only strips the footer when it sits at the very end.
+export function stripBrFooter(caption: string): string {
+  return caption.replace(/(\r?\n)*[ \t]*↳ More from me → @kade_dunstone_[ \t\r\n]*$/, '').trimEnd()
+}
