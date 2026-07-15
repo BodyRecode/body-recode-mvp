@@ -37,6 +37,7 @@ const CLIENTS_CLUSTER: NavCluster = {
     { href: '/dashboard/group-classes', label: 'Classes' },
     { href: '/dashboard/recovery-regulation', label: 'Recovery' },
     { href: '/dashboard/feedback', label: 'Feedback' },
+    { href: '/dashboard/copilot-review', label: 'Co-Pilot Review' },
   ],
 }
 
