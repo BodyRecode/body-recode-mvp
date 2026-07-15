@@ -10,6 +10,7 @@ type Category = 'flows' | 'coaching' | 'business' | 'content' | 'challenge' | 'b
 const SECTIONS = [
   { id: 'operator-flow',         title: 'Operator Flow',         colour: 'violet' as const, category: 'flows' as Category },
   { id: 'brand-voice',           title: 'Brand Voice',           colour: 'violet' as const, category: 'flows' as Category },
+  { id: 'coach-copilot',         title: 'Coach Co-Pilot',        colour: 'violet' as const, category: 'flows' as Category },
   { id: 'lead-pipeline',    title: '1. Lead Pipeline',       colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'zoom-1',           title: '2. Zoom Companion',      colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'coaching-entry',   title: '3. Coaching Entry',      colour: 'teal' as const, category: 'coaching' as Category },
@@ -363,6 +364,37 @@ export default function HelpPage() {
             </ul>
 
             <Note>When you draft anything new (DM, email, post, ad creative, script), check it against these rules before publishing. The cold-layer rule is the most often violated - it&apos;s tempting to lead with brand vocabulary because it&apos;s sharp. Resist. Lead with what they&apos;re feeling first.</Note>
+          </Section>
+
+          <Section id="coach-copilot" title="Coach Co-Pilot - Doctrine Tutor" colour="violet">
+            <p>The co-pilot is a doctrine-trained mentor you talk with. It rides on every dashboard page as a floating bubble (bottom-right, the concentric-ring &quot;Aperture&quot; glyph). It is coach-facing only and never talks to clients. Its job is to help you think, not to run the plan for you.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-3">Where it works, and how it changes by page</p>
+            <StatusList items={[
+              { label: 'On a client profile', desc: 'It has read that client\'s file (their synthesis, readiness, active program and nutrition, medications, recent check-ins) and answers grounded in it, citing what it drew on.' },
+              { label: 'On any other page', desc: 'No client is loaded, so it answers about the method and doctrine in general. Ask it about a specific client and it will tell you to open that client\'s profile.' },
+            ]} />
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">What you can ask it (read-only, it writes nothing)</p>
+            <StatusList items={[
+              { label: 'Explain / teach', desc: '"Why did the synthesis put her in Remediation?" "Walk me through his fat map." It teaches the reasoning in plain terms a newer coach can follow.' },
+              { label: 'Pressure-test a decision', desc: '"Doctrine says hold. Talk me out of progressing him." This is the moat: it holds you to the one standard.' },
+              { label: 'Review a generated plan', desc: '"Review his program against the doctrine." It reads the actual sessions and macros and flags what is off: intensity in a Restoration block, a gate breach, a calorie target hiding in the training plan, a meal count fighting appetite suppression. Says what is sound too.' },
+              { label: 'Set up a generation', desc: '"What do I put in these fields to generate his program?" It recommends each field value plus a coach-guidance steer, grounded in that client. You still click Generate (you are the approver); then bring the draft back and ask it to review.' },
+              { label: 'Draft coach guidance', desc: 'Ask it to write the short steer for the program or nutrition generator. It produces a paste-ready directive.' },
+            ]} />
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">The feedback loop</p>
+            <p>Every answer has a quiet thumbs-down. Use it when an answer is wrong or drifts from doctrine. Flagged exchanges land in <strong>Clients &rarr; Co-Pilot Review</strong> for you to review and mark reviewed. This is how doctrine drift gets caught before it spreads (essential once other Collective coaches rely on it).</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">What it will NOT do</p>
+            <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm mt-1">
+              <li>It does not build or change a plan itself. It advises; you make the change via Generate / the editors, and you approve everything.</li>
+              <li>It is not a general assistant. It is scoped to coaching, the doctrine, and the client in front of you (not marketing, content, or ops).</li>
+              <li>It never invents facts. If the data is not in the file, it says so.</li>
+            </ul>
+
+            <Note>Treat it like a senior coach looking over your shoulder. The highest-value habit: after you generate any program or nutrition plan, open the co-pilot on that client and ask it to review the result against doctrine before you publish.</Note>
           </Section>
 
           {/* Section 1 */}
