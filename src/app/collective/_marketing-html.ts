@@ -436,7 +436,7 @@ export const MARKETING_HTML = String.raw`
     <h2>From signed to live, in weeks.</h2>
     <div class="steps">
       <div class="step"><div class="num">01</div><div><h4>Apply</h4><p>A short application and a call. Membership is by application, not open enrolment &mdash; we make sure you are a fit.</p></div></div>
-      <div class="step"><div class="num">02</div><div><h4>Onboard you</h4><p>A working session to set your modality, your branding and your scorecard, and get you fluent in the platform. You launch on a proven engine and steer it from day one.</p></div></div>
+      <div class="step"><div class="num">02</div><div><h4>Your setup pack</h4><p>You fill in one simple pack &mdash; your brand, domain, prices and modality &mdash; and we get you fluent in the platform. Everything downstream is built from it, and anything you are missing starts on a smart default.</p></div></div>
       <div class="step"><div class="num">03</div><div><h4>Build sprint</h4><p>We brand it, configure it, and stand up your site, funnel and platform.</p></div></div>
       <div class="step"><div class="num">04</div><div><h4>Launch</h4><p>Your scorecard goes live to your audience. Your first clients come in.</p></div></div>
       <div class="step"><div class="num">05</div><div><h4>Run and grow</h4><p>We host, maintain and improve it. You inherit every upgrade we ship, automatically.</p></div></div>
@@ -520,9 +520,9 @@ export const MARKETING_HTML = String.raw`
     <h2>We only win when you win.</h2>
     <p class="lead">You are not buying a licence and getting left alone. The model is built so our incentives line up. When you sign more clients, we both do better.</p>
     <div class="layers">
-      <div class="layer"><div class="step-n">Layer 01</div><h4>Setup</h4><p>A one-time fee to configure, build and brand the platform, and stand it up.</p></div>
-      <div class="layer"><div class="step-n">Layer 02</div><h4>Membership</h4><p>A flat monthly membership — hosting, support, and every upgrade we ship.</p></div>
-      <div class="layer"><div class="step-n">Layer 03</div><h4>Per active client</h4><p>A small amount for each client on the platform, so its cost only grows as your practice does.</p></div>
+      <div class="layer"><div class="step-n">Build it</div><h4>Setup</h4><p>A one-time fee to configure, build and brand your platform, and stand it up.</p></div>
+      <div class="layer"><div class="step-n">Run it</div><h4>Membership</h4><p>A monthly membership for hosting, support and every upgrade we ship. It ramps up as you build, so you get runway before the full rate.</p></div>
+      <div class="layer"><div class="step-n">Power it</div><h4>Per active client</h4><p>A small share of what each active client pays you, so the cost scales with your pricing and only grows as your practice does.</p></div>
     </div>
     <p class="winline">// exact numbers depend on your starting point, and we walk through them on the call</p>
   </div>
