@@ -13,6 +13,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { publishToInstagram } from '@/lib/instagram-publish'
+import { appendBrFooter } from '@/lib/br-post-footer'
 import { createClient as createServerSupabaseClient } from '@/lib/supabase/server'
 import { appUrl } from '@/lib/app-url'
 
@@ -135,7 +136,8 @@ export async function POST(request: NextRequest) {
     .update({ publish_attempts: (post.publish_attempts ?? 0) + 1, publish_error: null })
     .eq('id', post.id)
 
-  const result = await publishToInstagram({ imageUrls, caption })
+  // Stamp the founder follow line on the end just before publishing.
+  const result = await publishToInstagram({ imageUrls, caption: appendBrFooter(caption) })
 
   if (!result.ok) {
     await admin

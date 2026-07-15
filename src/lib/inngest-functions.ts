@@ -1628,6 +1628,7 @@ export const igPublisherCron = inngest.createFunction(
     }
 
     const { publishToInstagram } = await import('@/lib/instagram-publish')
+    const { appendBrFooter } = await import('@/lib/br-post-footer')
     const { appUrl } = await import('@/lib/app-url')
 
     type RowResult = { id: string; title: string; ok: boolean; postUrl?: string | null; error?: string }
@@ -1673,7 +1674,7 @@ export const igPublisherCron = inngest.createFunction(
           }).eq('id', row.id)
 
           // Fire (immediate path - no scheduled_publish_time -> no Meta whitelist gate)
-          const r = await publishToInstagram({ imageUrls, caption })
+          const r = await publishToInstagram({ imageUrls, caption: appendBrFooter(caption) })
 
           if (!r.ok) {
             await admin.from('calendar_posts').update({
