@@ -527,7 +527,10 @@ VALIDATION RULES BEFORE OUTPUT (auto-checked — plans that fail any rule are re
 - active_strategies must be empty array if modulation_level is prohibited
 - all meals must contain protein_g > 0
 - meal_frequency must equal the number of meals in the meals array
-- food_exclusions provided in inputs must not appear in any meal foods list`
+- food_exclusions provided in inputs must not appear in any meal foods list
+- PER-MEAL PROTEIN EVENNESS: every meal.protein_g must fall within ±25% of the per-meal target (protein_anchor_g ÷ meal_frequency), and NO meal may sit below 70% of that target. The first meal of the day especially must not be the low outlier — a light breakfast is what drives later reactive/undereating. Example: a 130g / 4-meal plan targets ~32g per meal; a 19g breakfast alongside a 43g meal is REJECTED — redistribute the protein across the day.
+- NUMBERS MUST MATCH THE WORDS: any macro gram figure you state in execution_rules, what_not_to_change, key_priorities, notes, weekly_structure_notes, or coach_reasoning MUST equal the actual summed meals. If you state a daily carbohydrate figure it must equal Σ carb_g (±10%); if you state a per-meal protein figure it must equal the real per-meal number. NEVER write "~100g carbs/day" over meals that total ~150g, and NEVER claim "even ~Xg protein per meal" unless the meals actually deliver that. Derive every stated number FROM the meals — do not assert a target the plan does not meet.
+- FINAL SELF-AUDIT (do this before returning): re-sum every meal's protein, carb, fat and recompute Σkcal, then confirm that EVERY number written anywhere in the plan — the calorie band, the protein anchor, and every gram figure inside execution_rules / what_not_to_change / key_priorities / notes / weekly_structure_notes / coach_reasoning — is consistent with those actual meal totals. If any stated number contradicts the meals, fix it (adjust the meals or the wording) before output. A plan whose words disagree with its own numbers is rejected.`
 }
 
 export function buildNutritionUserPrompt(
