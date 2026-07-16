@@ -94,8 +94,11 @@ export async function buildCopilotContext(
   const [{ data: cffsRows }, { data: cfwsRows }, { data: programRows }, { data: nutritionRows }, { data: checkinRows }, { data: intakeRows }] = await Promise.all([
     admin.from('cffs').select('*').eq('client_id', clientId).eq('is_archived', false).order('generated_at', { ascending: false }).limit(1),
     admin.from('cfws').select('*').eq('client_id', clientId).order('week_number', { ascending: false }).limit(1),
-    admin.from('programs').select('block_name, progression_phase, training_goal, training_frequency, week_duration, rationale_summary, sessions, is_active').eq('client_id', clientId).eq('is_active', true).limit(1),
-    admin.from('nutrition_plans').select('plan_name, entry_state, carb_demand_level, entry_state_summary, meals, protein_anchor_g, estimated_calorie_band, is_active, status').eq('client_id', clientId).eq('status', 'active').limit(1),
+    // Draft-first: a pending draft is exactly what the coach wants reviewed
+    // BEFORE approving, so prefer it (newest) over the active plan; fall back to
+    // the active plan when no draft is pending. Archived plans are excluded.
+    admin.from('programs').select('block_name, progression_phase, training_goal, training_frequency, week_duration, rationale_summary, sessions, is_active, status').eq('client_id', clientId).or('status.eq.draft,is_active.eq.true').order('generated_at', { ascending: false }).limit(1),
+    admin.from('nutrition_plans').select('plan_name, entry_state, carb_demand_level, entry_state_summary, meals, protein_anchor_g, estimated_calorie_band, is_active, status').eq('client_id', clientId).in('status', ['draft', 'active']).order('generated_at', { ascending: false }).limit(1),
     admin.from('weekly_checkins').select('week_number, form_type, submitted_at').eq('client_id', clientId).order('week_number', { ascending: false }).limit(4),
     admin.from('intakes').select('primary_goal, secondary_goals, desired_timeline, training_days_available, injury_location_current, injury_primary_concern').eq('client_id', clientId).order('submitted_at', { ascending: false }).limit(1),
   ])
@@ -155,23 +158,29 @@ export async function buildCopilotContext(
   }
 
   if (program) {
-    S.push(`\nACTIVE TRAINING PROGRAM: ${program.block_name} — ${program.progression_phase}, ${program.training_goal}, ${program.training_frequency}x/week, ${program.week_duration} weeks`)
+    const progLabel = program.status === 'draft'
+      ? 'DRAFT TRAINING PROGRAM (pending coach approval — review it before it is published)'
+      : 'ACTIVE TRAINING PROGRAM'
+    S.push(`\n${progLabel}: ${program.block_name} — ${program.progression_phase}, ${program.training_goal}, ${program.training_frequency}x/week, ${program.week_duration} weeks`)
     const sum = fmtSummary(program.rationale_summary)
     if (sum) S.push(sum)
     const sess = fmtSessions(program.sessions)
     if (sess) S.push(`Prescribed sessions (review against phase + gates):\n${sess}`)
   } else {
-    S.push(`\nACTIVE TRAINING PROGRAM: none.`)
+    S.push(`\nTRAINING PROGRAM: none (no draft or active program on file).`)
   }
 
   if (nutrition) {
-    S.push(`\nACTIVE NUTRITION PLAN: ${nutrition.plan_name ?? ''} — entry state ${nutrition.entry_state}, carb demand ${nutrition.carb_demand_level}`)
+    const nutLabel = nutrition.status === 'draft'
+      ? 'DRAFT NUTRITION PLAN (pending coach approval — review it before it is published)'
+      : 'ACTIVE NUTRITION PLAN'
+    S.push(`\n${nutLabel}: ${nutrition.plan_name ?? ''} — entry state ${nutrition.entry_state}, carb demand ${nutrition.carb_demand_level}`)
     const es: any = nutrition.entry_state_summary
     if (es && typeof es === 'object' && es.current_focus) S.push(`Current focus: ${es.current_focus}${es.what_this_means ? ` — ${es.what_this_means}` : ''}`)
     const meals = fmtMeals(nutrition.meals, nutrition.protein_anchor_g, nutrition.estimated_calorie_band)
     if (meals) S.push(`Prescribed nutrition (review against anchor + phase):\n${meals}`)
   } else {
-    S.push(`\nACTIVE NUTRITION PLAN: none.`)
+    S.push(`\nNUTRITION PLAN: none (no draft or active plan on file).`)
   }
 
   if (client.medications) {
