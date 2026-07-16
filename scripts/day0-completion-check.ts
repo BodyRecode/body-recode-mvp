@@ -17,7 +17,13 @@
 
 import { createClient } from '@supabase/supabase-js'
 import { Resend } from 'resend'
-import { fromBrand } from '@/lib/email-shell'
+import {
+  fromBrand,
+  darkEmailShell,
+  emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
+  emailStatusCard, emailFeaturedCard,
+  EMAIL_FF, EMAIL_BODY_SOFT, EMAIL_MUTED,
+} from '@/lib/email-shell'
 
 const PRINT_ONLY = process.argv.includes('--print')
 const NUDGED_COHORT = ['Andrea L', 'Gemma Sier', 'Kiki Dlynn', 'Connie Kotevski']
@@ -72,19 +78,41 @@ async function main() {
   console.log('\n' + textReport + '\n')
   if (PRINT_ONLY) return
 
-  const html = `
-    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1A1A1A;font-size:15px;line-height:1.7;max-width:560px;">
-      <h2 style="font-size:18px;margin:0 0 4px;">Day 0 scorecard completion</h2>
-      <p style="color:#6B6B6B;margin:0 0 20px;font-size:13px;">14-Day Body Decode Challenge · automated check</p>
-      <div style="background:#F5F7FB;border:1px solid #E5E5E5;border-radius:12px;padding:20px;margin-bottom:20px;">
-        <p style="margin:0 0 6px;"><strong>${done.length} of ${all.length}</strong> active enrollers (last 21 days) have completed the scorecard <strong>(${rate}%)</strong>.</p>
-        <p style="margin:0;color:#6B6B6B;">${pending.length} still pending.</p>
-      </div>
-      <p style="font-weight:700;margin:0 0 6px;">Nudged cohort (sent 16 Jul):</p>
-      <pre style="font-family:inherit;white-space:pre-wrap;margin:0 0 20px;color:#3A3A3A;">${cohortLines}</pre>
-      <p style="font-weight:700;margin:0 0 6px;">Everyone still pending:</p>
-      <pre style="font-family:inherit;white-space:pre-wrap;margin:0;color:#3A3A3A;">${pendingLines}</pre>
-    </div>`
+  // Branded email built from the shared email-shell helpers (Pure White +
+  // Signal Blue, color-scheme light only), same system look as every other
+  // platform email.
+  const row = (label: string, value: string, valueColor: string) =>
+    `<div style="font-family:${EMAIL_FF};font-size:15px;line-height:1.6;color:${EMAIL_BODY_SOFT};padding:6px 0;border-bottom:1px solid #EEEEEE;">
+       <span>${label}</span>
+       <span style="float:right;font-weight:700;color:${valueColor};">${value}</span>
+     </div>`
+
+  const cohortInner = NUDGED_COHORT.map(name => {
+    const hit = cohort.find(c => c.name === name)
+    const [value, color] = !hit
+      ? ['inactive', EMAIL_MUTED]
+      : hit.done ? ['Done', '#1DA05B'] : ['Pending', EMAIL_MUTED]
+    return row(name, value, color)
+  }).join('')
+
+  const pendingInner = pending.length
+    ? pending.map((r: any) => row((r.leads as any)?.name ?? 'Unknown', 'Pending', EMAIL_MUTED)).join('')
+    : `<div style="font-family:${EMAIL_FF};font-size:15px;color:${EMAIL_MUTED};padding:6px 0;">Nobody pending - everyone's done.</div>`
+
+  const html = darkEmailShell(`
+${emailLogo()}
+${emailEyebrow('Challenge · Day 0 Scorecard')}
+${emailHeading(`${done.length} of ${all.length} enrollers have completed`)}
+${emailDivider()}
+${emailBody('Automated daily read on the in-portal Day 0 scorecard for the 14-Day Body Decode Challenge.')}
+${emailStatusCard({
+  eyebrow: 'Completion rate',
+  headline: `${rate}%`,
+  body: `${done.length} of ${all.length} active enrollers (last 21 days) have done the scorecard. ${pending.length} still pending.`,
+})}
+${emailFeaturedCard(cohortInner, { eyebrow: 'Nudged cohort (sent 16 Jul)' })}
+${emailFeaturedCard(pendingInner, { eyebrow: 'Everyone still pending' })}
+`, { previewText: `${done.length}/${all.length} completed (${rate}%)` })
 
   const resend = new Resend(process.env.RESEND_API_KEY!)
   const res = await resend.emails.send({
