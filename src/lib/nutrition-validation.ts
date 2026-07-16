@@ -177,6 +177,8 @@ export function humaniseValidationIssue(issue: ValidationIssue): string {
       return `${issue.message} The doctrine requires more meal touchpoints when appetite is pharmacologically suppressed, so each portion stays achievable.`
     case 'APPETITE_SUPPRESSED_PER_MEAL_PROTEIN_TOO_HIGH':
       return `${issue.message} A meal loaded too heavily with protein won't be finished by a suppressed client. The engine needs to spread it.`
+    case 'FIRST_MEAL_PROTEIN_TOO_LOW':
+      return `${issue.message} The daily total can be right while breakfast is starved — classically a light eggs-only first meal — which fragments amino-acid availability and, for reactive eaters, feeds later snacking. The engine needs to bring breakfast up; retrying with this feedback usually fixes it.`
     case 'STIMULANT_FIRST_MEAL_PROTEIN_TOO_HIGH':
       return `${issue.message} Stimulant suppression peaks in the morning; heavy breakfast protein guarantees the meal gets skipped.`
     case 'CARB_FLOOR_NOT_MET':
@@ -567,6 +569,31 @@ export function validateNutritionPlan(
           message: `${firstName}: ${firstP}g protein is too high for the morning stimulant-suppression window. Cap at 35g and shift protein to later meals.`,
         })
       }
+    }
+  }
+
+  // First-meal (breakfast) protein FLOOR — non-suppressed clients only. The
+  // anchor check above only constrains the DAILY total, so the engine could
+  // (and repeatedly did across multiple regenerations) land the total
+  // correctly while STARVING breakfast — a 19g eggs breakfast against 37-38g
+  // later meals. A light first meal fragments amino-acid availability and, for
+  // reactive eaters, feeds later snacking; prompt-level instruction proved
+  // unreliable, so the first meal is floored here with a retry. Scoped to the
+  // FIRST meal only (a lighter afternoon snack later in the day is legitimate,
+  // so we do not floor every meal). Suppressed clients are EXEMPT: their first
+  // meal is deliberately kept low (stimulant suppression peaks in the morning)
+  // and is governed by the caps above, not this floor.
+  if (input.protein_anchor_g && !suppression.any && input.meals.length > 0) {
+    const perMealTarget = input.protein_anchor_g / input.meals.length
+    const floor = Math.round(perMealTarget * 0.65)
+    const first = input.meals[0]
+    const firstP = Number(first.protein_g) || 0
+    const firstName = first.meal_name ?? 'first meal'
+    if (firstP < floor) {
+      issues.push({
+        code: 'FIRST_MEAL_PROTEIN_TOO_LOW',
+        message: `${firstName}: ${firstP}g protein is below the ${floor}g floor for the day's first meal (target ~${Math.round(perMealTarget)}g across ${input.meals.length} meals). Do not leave breakfast the starved meal — bring its protein up.`,
+      })
     }
   }
 

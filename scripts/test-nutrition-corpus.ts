@@ -166,6 +166,32 @@ const standardMale4Meal: MealLike[] = [
 ]
 // Totals: P141 C146 F71 — protein 141 vs 152 anchor, -11g, within tolerance.
 
+/** Hits the daily anchor but STARVES breakfast (13g) — must trip the first-meal
+ *  protein floor added 2026-07-17. Per-meal target 152/4 = 38g, floor ~25g. */
+const standardMaleStarvedBreakfast: MealLike[] = [
+  mealOf('Breakfast', [
+    { name: '2 whole eggs', protein_g: 12, carb_g: 0, fat_g: 10 },
+    { name: '100g berries', protein_g: 1, carb_g: 14, fat_g: 0 },
+  ]), // P13 — starved first meal
+  mealOf('Lunch', [
+    { name: '220g chicken breast (raw)', protein_g: 48, carb_g: 0, fat_g: 5 },
+    { name: '250g white potato (cooked)', protein_g: 5, carb_g: 40, fat_g: 0 },
+    { name: '10g olive oil', protein_g: 0, carb_g: 0, fat_g: 10 },
+  ]), // P53
+  mealOf('Afternoon snack', [
+    { name: '150g cottage cheese', protein_g: 17, carb_g: 5, fat_g: 6 },
+    { name: '30g almonds', protein_g: 6, carb_g: 7, fat_g: 15 },
+  ]), // P23
+  mealOf('Dinner', [
+    { name: '200g beef mince 5% (raw)', protein_g: 44, carb_g: 0, fat_g: 10 },
+    { name: '120g white rice (cooked)', protein_g: 2, carb_g: 34, fat_g: 0 },
+    { name: '150g broccoli', protein_g: 4, carb_g: 10, fat_g: 0 },
+    { name: '10g butter', protein_g: 0, carb_g: 0, fat_g: 8 },
+  ]), // P50
+]
+// Totals: P139 C110 F64 — protein 139 vs 152 anchor (within ±20), but breakfast
+// at 13g is far below the ~25g first-meal floor.
+
 /** A clearly-bad plan: 3 meals, big breakfast, big lunch — should fail multiple rules for Amanda */
 const amandaBadPlan_3Meals: MealLike[] = [
   mealOf('Breakfast', [
@@ -230,6 +256,14 @@ const cases: TestCase[] = [
     profile: profiles.standard_male,
     plan: standardMale4Meal,
     expected: { ok: true },
+  },
+
+  // ── First-meal protein floor fires on a starved breakfast (2026-07-17) ────
+  {
+    name: 'starved 13g breakfast trips FIRST_MEAL_PROTEIN_TOO_LOW (non-suppressed)',
+    profile: profiles.standard_male,
+    plan: standardMaleStarvedBreakfast,
+    expected: { ok: false, must_contain: ['FIRST_MEAL_PROTEIN_TOO_LOW'] },
   },
 
   // ── Appetite-suppression rule fires for Amanda's 3-meal plan ──────────
