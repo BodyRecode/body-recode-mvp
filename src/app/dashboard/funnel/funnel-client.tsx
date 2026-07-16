@@ -366,7 +366,7 @@ export default function FunnelClient({
                       ? <StatusBadge label="Purchased" colour="#8b5cf6" />
                       : e.currentDay >= 14
                         ? <StatusBadge label="Not yet" colour="#DC2626" />
-                        : <StatusBadge label="In progress" colour="#999999" />}
+                        : <StatusBadge label="In challenge" colour="#999999" />}
                   </TD>
                   <TD>
                     <div className="flex items-center justify-between gap-2">
