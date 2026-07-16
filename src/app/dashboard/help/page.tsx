@@ -3157,6 +3157,13 @@ export default function HelpPage() {
               <ChecklistItem text="Step 2 (Day 14, 9-day sleep after Day 5): Day 14 step branches on quiz_completed_at. If Check-In was completed: calls buildDay14BodyDecodeReportEmail() - subject 'your Body Decode Report is ready', pattern-focused body (bridge callback + pattern hero + What this pattern means + Where this shows up + What this is NOT + three pattern actions + Blueprint ascension). Visually identical to the late-taker email sent inline by the API route. If Check-In NOT completed: sends the original plain ascension email - subject 'you finished the 14 days.', no result content. Both branches mark enrollment status as completed in Supabase. Report CTA -> /blueprint?source=challenge_day14_report. Plain ascension CTA -> /blueprint?source=challenge_day14_ascension." />
             </div>
 
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">challengeIntakeReminderFunction - Day 0 scorecard reminder (Inngest)</p>
+            <p>Chases enrollers who have not completed the Day 0 Body Decode Intake (the in-portal scorecard). Runs on the same challenge/enrolled event, in parallel with the sequence above. Each step re-reads challenge_enrollments and bails the moment body_decode_intake_completed_at is set or status is not active, so completers are never chased. Safe for scorecard-path enrollers (arrive intake-complete) - the guard short-circuits before any send.</p>
+            <div className="space-y-2 mt-1">
+              <ChecklistItem text="Nudge 1 (~24h, 1-day sleep realigned to 7am AEST): buildDayZeroIntakeReminderEmail({ second: false }) - subject '[name], one 2-minute step before your Challenge begins'. Warm reminder that the 2-minute read is waiting in the portal and the Challenge unlocks calibrated to it. CTA -> portal." />
+              <ChecklistItem text="Nudge 2 (~72h, 2-day sleep after Nudge 1, realigned to 7am AEST): buildDayZeroIntakeReminderEmail({ second: true }) - subject '[name], your Challenge is on hold until you do this'. Firmer copy: the 14 days stay on hold until the starting read is done. CTA -> portal. Invites a reply if something got in the way." />
+            </div>
+
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Environment variables required</p>
             <StatusList items={[
               { label: 'RESEND_API_KEY', desc: 'Used for all email sends. Set in Vercel environment variables.' },

@@ -443,6 +443,47 @@ ${emailUrlFallback(sessionVideoUrl, 'Or find this in your portal under the Live 
   return { subject, html }
 }
 
+// ─── Day 0 Intake (Scorecard) Reminder Email ─────────────────────────────
+// Sent by Inngest when a Challenge enroller has NOT completed the Day 0
+// Body Decode Intake (the in-portal scorecard) after ~24h (first nudge) and
+// again after ~72h (second, firmer nudge). Auto-stops the moment the intake
+// is done or the enrollment is no longer active.
+//
+// Why this exists: the scorecard is the first thing inside the portal, and
+// enrollers who land directly on /challenge (bypassing the public
+// scorecard-first routing) only get one welcome email pointing at it. If
+// they do not complete it in that first sitting, nothing chases them back
+// until Day 5 - by which point the challenge assumes they are already
+// state-typed. ~40% of enrollers were leaking here. This closes the gap.
+export function buildDayZeroIntakeReminderEmail({
+  firstName,
+  portalUrl,
+  second = false,
+}: {
+  firstName: string
+  portalUrl: string
+  second?: boolean
+}): { subject: string; html: string } {
+  const subject = second
+    ? `${firstName}, your Challenge is on hold until you do this`
+    : `${firstName}, one 2-minute step before your Challenge begins`
+  const html = challengeArcShell(`
+${emailEyebrow('Day 0 · Your starting read')}
+${emailHeading(second ? 'Your Challenge is waiting on one step.' : 'Before Day 1, read your starting point.')}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${second
+  ? emailBody('You signed up for the 14-Day Body Decode Challenge, but you have not done your starting read yet. Until you do, your Challenge stays on hold - the whole point is that the 14 days are built around the state your body is actually in, and right now I cannot see it.')
+  : emailBody('Welcome again. There is one quick step waiting inside your portal before your 14 days begin: a 2-minute read that tells you which state your body is in right now.')}
+${emailBody('It is five short questions. No prep, no numbers to look up. At the end you get your body state and the pattern driving it - and your Challenge unlocks, calibrated to that read.', { bottom: 28 })}
+${emailCta({ href: portalUrl, label: 'Do your 2-minute read' })}
+${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
+${emailBody('It is the difference between 14 generic days and 14 days built for your body. Takes less time than reading this email.', { size: 14, bottom: 12 })}
+${second ? emailBody('If something got in the way, just reply and tell me - I read every one.', { size: 13, color: '#6B6B6B', bottom: 0 }) : ''}
+`)
+  return { subject, html }
+}
+
 // ─── Day 14 Plain Ascension Fallback Email ───────────────────────────────
 // Sent at Day 14 by Inngest when the participant did NOT complete the
 // Body Decode Check-In. No result to reveal — acknowledgement of the 14

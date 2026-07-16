@@ -22,6 +22,13 @@ const AUTOMATIC_AUTOMATIONS = [
     steps: 4,
   },
   {
+    id: 'challenge-intake-reminder',
+    name: 'Challenge Day 0 Scorecard Reminder',
+    description: 'Chases enrollers who have not completed the Day 0 Body Decode Intake (the in-portal scorecard). Two email nudges: ~24h then ~72h after enrolment, both realigned to 7am AEST. Auto-stops the moment the intake is completed or the enrolment goes inactive, so completers are never chased. Closes the ~40% Day 0 scorecard leak for enrollers who arrived direct on /challenge.',
+    trigger: 'challenge/enrolled Inngest event',
+    steps: 2,
+  },
+  {
     id: 'challenge-sms-sequence',
     name: 'Challenge SMS Sequence',
     description: 'SMS nudges alongside the Challenge portal (daily nudge + milestone reminders). Consent + frequency capped. Dormant until the Challenge goes live.',

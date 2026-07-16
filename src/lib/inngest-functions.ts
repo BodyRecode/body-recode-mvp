@@ -17,6 +17,7 @@ import {
   buildDay5UnlockEmail,
   buildDay14FallbackEmail,
   buildDay21FeedbackEmail,
+  buildDayZeroIntakeReminderEmail,
 } from './challenge-checkin-emails'
 import {
   buildBlueprintCheckinPromptEmail,
@@ -264,6 +265,82 @@ export const challengeSequenceFunction = inngest.createFunction(
         html: built.html,
       })
     })
+  }
+)
+
+// ─── Day 0 Intake (Scorecard) Reminder Function ──────────────────────────────
+// Chases Challenge enrollers who have not completed the Day 0 Body Decode
+// Intake (the in-portal scorecard). Two nudges: ~24h then ~72h after
+// enrollment, both realigned to 7am AEST so they land in the morning. Each
+// step re-reads the enrollment and bails the moment the intake is done or the
+// enrollment is no longer active, so completers never get chased.
+//
+// Runs on the same 'challenge/enrolled' trigger as the main sequence. It is
+// safe even for scorecard-path enrollers (who arrive intake-complete): the
+// completion guard short-circuits before any email is sent.
+export const challengeIntakeReminderFunction = inngest.createFunction(
+  {
+    id: 'challenge-intake-reminder',
+    retries: 2,
+    triggers: [{ event: 'challenge/enrolled' }],
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async ({ event, step }: { event: any; step: any }) => {
+    const { token, email, firstName } = event.data as {
+      token: string
+      email: string
+      firstName: string
+    }
+
+    const portalUrl = `${brand().marketingDomain}/challenge/${token}`
+    const resend = new Resend(process.env.RESEND_API_KEY)
+
+    // Returns true if a reminder should still be sent (enrollment active AND
+    // intake not yet completed). Reading fresh each time makes the guard the
+    // single source of truth for "do they still need chasing".
+    const stillNeedsIntake = async (stepId: string): Promise<boolean> =>
+      step.run(stepId, async () => {
+        const admin = createAdminClient()
+        const { data: enrollment } = await admin
+          .from('challenge_enrollments')
+          .select('status, body_decode_intake_completed_at')
+          .eq('token', token)
+          .single()
+        if (!enrollment || enrollment.status !== 'active') return false
+        return !enrollment.body_decode_intake_completed_at
+      })
+
+    // ── Nudge 1: ~24h after enrollment, realigned to next 7am AEST ──────
+    await step.sleep('intake-reminder-1-wait', '1d')
+    await alignToNextMorningAEST(step, 'intake-reminder-1-morning')
+
+    if (await stillNeedsIntake('intake-reminder-1-check')) {
+      await step.run('send-intake-reminder-1', async () => {
+        const built = buildDayZeroIntakeReminderEmail({ firstName, portalUrl, second: false })
+        await resend.emails.send({
+          from: fromCoach(),
+          to: email,
+          subject: built.subject,
+          html: built.html,
+        })
+      })
+    }
+
+    // ── Nudge 2: ~72h after enrollment (2 more days), firmer copy ───────
+    await step.sleep('intake-reminder-2-wait', '2d')
+    await alignToNextMorningAEST(step, 'intake-reminder-2-morning')
+
+    if (await stillNeedsIntake('intake-reminder-2-check')) {
+      await step.run('send-intake-reminder-2', async () => {
+        const built = buildDayZeroIntakeReminderEmail({ firstName, portalUrl, second: true })
+        await resend.emails.send({
+          from: fromCoach(),
+          to: email,
+          subject: built.subject,
+          html: built.html,
+        })
+      })
+    }
   }
 )
 
