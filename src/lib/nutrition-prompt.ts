@@ -526,7 +526,8 @@ VALIDATION RULES BEFORE OUTPUT (auto-checked — plans that fail any rule are re
 - carb_demand_level must respect entry state ceiling
 - active_strategies must be empty array if modulation_level is prohibited
 - all meals must contain protein_g > 0
-- meal_frequency must equal the number of meals in the meals array
+- meal_frequency must equal the number of meals in the meals array, AND must equal the fixed input meal_frequency — never emit fewer meals than requested by consolidating
+- MEAL SCHEDULE FOR REACTIVE EATERS: for Stabilisation / Recovery Reset entry states where the client context indicates reactive afternoon or evening snacking (grazing, post-dinner sweets, ice cream / chocolate / gummies, stress-eating), the meal timings MUST include a mid-afternoon eating occasion (around 15:00–16:00) positioned to occupy that snack window. Do NOT schedule a long midday-to-evening gap for these clients — the empty afternoon is exactly where the reactive eating lives, and a structured afternoon meal is the intervention.
 - food_exclusions provided in inputs must not appear in any meal foods list
 - PER-MEAL PROTEIN EVENNESS: every meal.protein_g must fall within ±20% of the per-meal target (protein_anchor_g ÷ meal_frequency), and NO meal may sit below 80% of that target. The first meal of the day especially must not be the low outlier — a light breakfast is what drives later reactive/undereating. Example: a 130g / 4-meal plan targets ~32g per meal (each meal 26–39g); a 19g breakfast alongside a 43g meal is REJECTED — actually rebuild the meals so the protein is genuinely even, do not just describe evenness you have not built.
 - NO PER-MEAL GRAM FIGURES IN PROSE (the reliable way to never self-contradict): do NOT write specific per-meal macro gram numbers into execution_rules, what_not_to_change, key_priorities, notes, weekly_structure_notes, or coach_reasoning — e.g. never write "43g breakfast, 43g lunch, 44g dinner" or "~32g protein per meal". The exact per-meal numbers live ONLY in the meals array. In prose, refer to distribution qualitatively ("protein is spread evenly across your meals", "each meal carries a similar protein load"). Stating a per-meal gram figure the meals do not exactly match is the single most common self-contradiction; the way to never make it is to not state per-meal grams in prose at all.
@@ -619,7 +620,7 @@ export function buildNutritionUserPrompt(
   lines.push('')
   lines.push(`Protein Anchor: ${inputs.protein_anchor_g}g/day`)
   lines.push(`Carbohydrate Demand Level: ${inputs.carb_demand_level}`)
-  lines.push(`Meal Frequency: ${inputs.meal_frequency} meals/day`)
+  lines.push(`Meal Frequency: ${inputs.meal_frequency} meals/day — this is FIXED by the coach. Emit EXACTLY ${inputs.meal_frequency} meals, never fewer and never more. Do NOT consolidate to fewer, larger meals; the meal count is a deliberate adherence and appetite decision, not yours to change.`)
   lines.push(`Training Days/Week: ${inputs.training_days_per_week}`)
   lines.push(`Food Exclusions: ${inputs.food_exclusions.length > 0 ? inputs.food_exclusions.join(', ') : 'None'}`)
 
