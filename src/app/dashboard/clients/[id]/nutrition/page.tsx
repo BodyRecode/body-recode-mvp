@@ -10,6 +10,7 @@ import NotifyClientButton from './notify-client-button'
 import NutritionCoachGuidanceEditor from './coach-guidance-editor'
 import NutritionRegenerateButton from './regenerate-button'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
+import { GlanceCard } from '@/components/glance-card'
 import {
   computeNutritionTotals,
   computeMealMacros,
@@ -376,41 +377,15 @@ function NutritionPlanBody({
 
       {/* Entry State Summary */}
       {plan.entry_state_summary && (
-        <div id={`${idPrefix}current-focus`} className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
-          <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-200">
-            <span className="text-[11px] font-black text-[#1B6DFC]">01</span>
-            <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Current Focus</p>
-          </div>
-          <div className="px-5 py-4 space-y-3">
-            <p className="text-sm text-[#1A1A1A] font-medium">{clean(plan.entry_state_summary.current_focus)}</p>
-            <p className="text-sm text-stone-700 leading-relaxed">{clean(plan.entry_state_summary.what_this_means)}</p>
-            {plan.entry_state_summary.prioritise?.length > 0 && (
-              <div>
-                <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-wider mb-1.5">Prioritise</p>
-                <div className="space-y-1">
-                  {plan.entry_state_summary.prioritise.map((item, i) => (
-                    <div key={i} className="flex items-start gap-2">
-                      <span className="text-blue-500 mt-0.5">•</span>
-                      <p className="text-sm text-stone-700">{clean(item)}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-            {plan.entry_state_summary.avoid?.length > 0 && (
-              <div>
-                <p className="text-[10px] font-bold text-stone-500 uppercase tracking-wider mb-1.5">Avoid</p>
-                <div className="space-y-1">
-                  {plan.entry_state_summary.avoid.map((item, i) => (
-                    <div key={i} className="flex items-start gap-2">
-                      <span className="text-stone-400 mt-0.5">•</span>
-                      <p className="text-sm text-stone-600">{clean(item)}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
+        <div id={`${idPrefix}current-focus`} className="scroll-mt-8">
+          <GlanceCard
+            headline={clean(plan.entry_state_summary.current_focus)}
+            subline={clean(plan.entry_state_summary.what_this_means)}
+            bulletGroups={[
+              { label: 'Prioritise', tone: 'accent', items: (plan.entry_state_summary.prioritise ?? []).map(clean).filter(Boolean) },
+              { label: 'Avoid', tone: 'muted', items: (plan.entry_state_summary.avoid ?? []).map(clean).filter(Boolean) },
+            ]}
+          />
         </div>
       )}
 
@@ -420,7 +395,7 @@ function NutritionPlanBody({
         return (
           <div id={`${idPrefix}structure`} className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
             <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-200">
-              <span className="text-[11px] font-black text-[#1B6DFC]">02</span>
+              <span className="text-[11px] font-black text-[#1B6DFC]">01</span>
               <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Structure Logic</p>
             </div>
             <div className="px-5 py-4 space-y-2">
@@ -526,7 +501,7 @@ function NutritionPlanBody({
       {plan.training_day_adjustments && (
         <div id={`${idPrefix}adjustments`} className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
           <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-200">
-            <span className="text-[11px] font-black text-[#1B6DFC]">03</span>
+            <span className="text-[11px] font-black text-[#1B6DFC]">02</span>
             <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Training Day Adjustments</p>
           </div>
           <div className="px-5 py-4 space-y-2">
@@ -550,7 +525,7 @@ function NutritionPlanBody({
       {plan.execution_rules?.length > 0 && (
         <div id={`${idPrefix}execution`} className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
           <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-200">
-            <span className="text-[11px] font-black text-[#1B6DFC]">04</span>
+            <span className="text-[11px] font-black text-[#1B6DFC]">03</span>
             <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Execution Rules</p>
           </div>
           <div className="px-5 py-4 space-y-2">
@@ -585,7 +560,7 @@ function NutritionPlanBody({
         return (
           <div id={`${idPrefix}progression`} className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
             <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-200">
-              <span className="text-[11px] font-black text-[#1B6DFC]">05</span>
+              <span className="text-[11px] font-black text-[#1B6DFC]">04</span>
               <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Progression Notes</p>
             </div>
             <div className="px-5 py-4 space-y-2">

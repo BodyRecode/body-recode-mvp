@@ -12,6 +12,7 @@ import CoachGuidanceEditor from './coach-guidance-editor'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 import RegenerateButton from './regenerate-button'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
+import { GlanceCard, flagsPill, type GlancePill } from '@/components/glance-card'
 
 interface Exercise {
   exercise_name: string
@@ -169,53 +170,18 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
           before this shipped have rationale_summary = null; those fall
           through to the verbose sections in-line as before. */}
       {program.rationale_summary?.headline && (
-        <div id={`${idPrefix}rationale`} className="scroll-mt-8 bg-blue-50 border border-blue-200/40 rounded-xl px-5 py-4">
-          <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-3">Rationale Summary</p>
-          <p className="text-sm text-stone-800 leading-relaxed whitespace-pre-wrap mb-4">{clean(program.rationale_summary.headline)}</p>
-          {program.rationale_summary.scan && (
-            <div className="flex flex-wrap gap-1.5 mb-4">
-              {program.rationale_summary.scan.phase && (
-                <span className="text-[10px] font-semibold px-2 py-1 rounded-full bg-white border border-blue-200 text-[#1B6DFC] uppercase tracking-wide">
-                  {program.rationale_summary.scan.phase}
-                </span>
-              )}
-              {program.rationale_summary.scan.rpe_ceiling && (
-                <span className="text-[10px] font-semibold px-2 py-1 rounded-full bg-white border border-blue-200 text-[#1B6DFC] uppercase tracking-wide">
-                  RPE {program.rationale_summary.scan.rpe_ceiling}
-                </span>
-              )}
-              {program.rationale_summary.scan.frequency && (
-                <span className="text-[10px] font-semibold px-2 py-1 rounded-full bg-white border border-blue-200 text-[#1B6DFC] uppercase tracking-wide">
-                  {program.rationale_summary.scan.frequency}
-                </span>
-              )}
-              {program.rationale_summary.scan.load_direction && (
-                <span className="text-[10px] font-semibold px-2 py-1 rounded-full bg-white border border-blue-200 text-[#1B6DFC] uppercase tracking-wide">
-                  {program.rationale_summary.scan.load_direction}
-                </span>
-              )}
-              {(() => {
-                const raw = program.rationale_summary.scan.flags_count
-                const n = typeof raw === 'number' ? raw : (typeof raw === 'string' ? parseInt(raw, 10) : NaN)
-                if (!Number.isFinite(n) || n <= 0) return null
-                return (
-                  <span className="text-[10px] font-semibold px-2 py-1 rounded-full bg-amber-50 border border-amber-300 text-amber-800 uppercase tracking-wide">
-                    {n} flag{n === 1 ? '' : 's'}
-                  </span>
-                )
-              })()}
-            </div>
-          )}
-          {program.rationale_summary.operating_rules && program.rationale_summary.operating_rules.length > 0 && (
-            <div className="space-y-1.5">
-              {program.rationale_summary.operating_rules.map((rule, i) => (
-                <div key={i} className="flex items-start gap-2">
-                  <span className="text-[#1B6DFC] mt-0.5 shrink-0">·</span>
-                  <p className="text-sm text-stone-800 leading-snug">{clean(rule)}</p>
-                </div>
-              ))}
-            </div>
-          )}
+        <div id={`${idPrefix}rationale`} className="scroll-mt-8">
+          <GlanceCard
+            headline={clean(program.rationale_summary.headline)}
+            pills={[
+              program.rationale_summary.scan?.phase ? { text: program.rationale_summary.scan.phase, tone: 'neutral' } : null,
+              program.rationale_summary.scan?.rpe_ceiling ? { text: `RPE ${program.rationale_summary.scan.rpe_ceiling}`, tone: 'neutral' } : null,
+              program.rationale_summary.scan?.frequency ? { text: program.rationale_summary.scan.frequency, tone: 'neutral' } : null,
+              program.rationale_summary.scan?.load_direction ? { text: program.rationale_summary.scan.load_direction, tone: 'neutral' } : null,
+              flagsPill(program.rationale_summary.scan?.flags_count),
+            ].filter(Boolean) as GlancePill[]}
+            bulletGroups={[{ tone: 'accent', items: (program.rationale_summary.operating_rules ?? []).map(clean).filter(Boolean) }]}
+          >
           {/* Collapsible full clinical rationale */}
           {(program.prescription_rationale || program.weekly_pattern_summary || program.progression_notes) && (
             <details className="mt-5 group">
@@ -291,6 +257,7 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
               </div>
             </details>
           )}
+          </GlanceCard>
         </div>
       )}
 

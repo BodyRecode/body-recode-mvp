@@ -4,6 +4,7 @@ import { ChevronLeft, Activity, RefreshCw, AlertTriangle as AlertTriangleIcon, E
 import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
 import Link from 'next/link'
 import { PageHeader, MONO_FONT } from '@/components/dashboard/ui'
+import { GlanceCard, flagsPill, type GlancePill } from '@/components/glance-card'
 import { evaluateReadiness } from '@/lib/readiness-monitor'
 import { evaluateRpeCreep } from '@/lib/rpe-creep-monitor'
 import { currentBlockWeek } from '@/lib/workout-logging'
@@ -1187,52 +1188,17 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               Legacy CFFS rows (no rationale_summary) skip this and show the
               sections inline, unchanged. */}
           {cffsSummary?.headline && (
-            <div className="border border-[#E5E5E5] bg-[#FFFFFF] rounded-2xl overflow-hidden mb-4">
-              <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E5E5E5] bg-[#FAFAF7]">
-                <p
-                  className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest"
-                  style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
-                >
-                  At a glance
-                </p>
-              </div>
-              <div className="px-5 py-4">
-                <p className="text-sm text-[#1A1A1A] leading-relaxed whitespace-pre-wrap mb-4">{cffsSummary.headline}</p>
-                {cffsSummary.scan && (
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {cffsSummary.scan.body_state && (
-                      <span className="text-[11px] font-semibold text-[#1A1A1A] bg-[#F5F3EE] border border-[#E5E5E5] rounded-full px-3 py-1">{cffsSummary.scan.body_state}</span>
-                    )}
-                    {cffsSummary.scan.resolution && (
-                      <span className="text-[11px] font-semibold text-[#1A1A1A] bg-[#F5F3EE] border border-[#E5E5E5] rounded-full px-3 py-1">{cffsSummary.scan.resolution}</span>
-                    )}
-                    {cffsSummary.scan.binding_constraint && (
-                      <span className="text-[11px] font-semibold text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] rounded-full px-3 py-1">Binding: {cffsSummary.scan.binding_constraint}</span>
-                    )}
-                    {(() => {
-                      const raw = cffsSummary.scan.flags_count
-                      const n = typeof raw === 'number' ? raw : parseInt(String(raw ?? ''), 10)
-                      if (!Number.isFinite(n)) return null
-                      return (
-                        <span className={`text-[11px] font-semibold rounded-full px-3 py-1 border ${n > 0 ? 'text-amber-700 bg-amber-50 border-amber-200' : 'text-[#6B6B6B] bg-stone-100 border-stone-200'}`}>
-                          {n} flag{n === 1 ? '' : 's'}
-                        </span>
-                      )
-                    })()}
-                  </div>
-                )}
-                {Array.isArray(cffsSummary.operating_rules) && cffsSummary.operating_rules.length > 0 && (
-                  <ul className="space-y-1.5">
-                    {cffsSummary.operating_rules.map((rule: string, i: number) => (
-                      <li key={i} className="flex items-start gap-2 text-[13px] text-[#2A2A2A] leading-snug">
-                        <span className="text-[#1B6DFC] mt-0.5">•</span>
-                        <span>{rule}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            </div>
+            <GlanceCard
+              className="mb-4"
+              headline={cffsSummary.headline}
+              pills={[
+                cffsSummary.scan?.body_state ? { text: cffsSummary.scan.body_state, tone: 'neutral' } : null,
+                cffsSummary.scan?.resolution ? { text: cffsSummary.scan.resolution, tone: 'neutral' } : null,
+                cffsSummary.scan?.binding_constraint ? { text: `Binding: ${cffsSummary.scan.binding_constraint}`, tone: 'accent' } : null,
+                flagsPill(cffsSummary.scan?.flags_count),
+              ].filter(Boolean) as GlancePill[]}
+              bulletGroups={[{ tone: 'accent', items: (cffsSummary.operating_rules ?? []).filter(Boolean) }]}
+            />
           )}
 
           {/* What is a CFFS */}
@@ -1469,52 +1435,17 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 Leads the weekly synthesis; the sections collapse below. Legacy
                 CFWS rows (no rationale_summary) render sections inline. */}
             {cfwsSummary?.headline && (
-              <div className="border border-[#E5E5E5] bg-[#FFFFFF] rounded-2xl overflow-hidden mb-4">
-                <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E5E5E5] bg-[#FAFAF7]">
-                  <p
-                    className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest"
-                    style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
-                  >
-                    At a glance
-                  </p>
-                </div>
-                <div className="px-5 py-4">
-                  <p className="text-sm text-[#1A1A1A] leading-relaxed whitespace-pre-wrap mb-4">{cfwsSummary.headline}</p>
-                  {cfwsSummary.scan && (
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {cfwsSummary.scan.trajectory && (
-                        <span className="text-[11px] font-semibold text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] rounded-full px-3 py-1">{cfwsSummary.scan.trajectory}</span>
-                      )}
-                      {cfwsSummary.scan.resolution && (
-                        <span className="text-[11px] font-semibold text-[#1A1A1A] bg-[#F5F3EE] border border-[#E5E5E5] rounded-full px-3 py-1">{cfwsSummary.scan.resolution}</span>
-                      )}
-                      {cfwsSummary.scan.binding_constraint && (
-                        <span className="text-[11px] font-semibold text-[#1A1A1A] bg-[#F5F3EE] border border-[#E5E5E5] rounded-full px-3 py-1">Binding: {cfwsSummary.scan.binding_constraint}</span>
-                      )}
-                      {(() => {
-                        const raw = cfwsSummary.scan.flags_count
-                        const n = typeof raw === 'number' ? raw : parseInt(String(raw ?? ''), 10)
-                        if (!Number.isFinite(n)) return null
-                        return (
-                          <span className={`text-[11px] font-semibold rounded-full px-3 py-1 border ${n > 0 ? 'text-amber-700 bg-amber-50 border-amber-200' : 'text-[#6B6B6B] bg-stone-100 border-stone-200'}`}>
-                            {n} flag{n === 1 ? '' : 's'}
-                          </span>
-                        )
-                      })()}
-                    </div>
-                  )}
-                  {Array.isArray(cfwsSummary.operating_rules) && cfwsSummary.operating_rules.length > 0 && (
-                    <ul className="space-y-1.5">
-                      {cfwsSummary.operating_rules.map((rule: string, i: number) => (
-                        <li key={i} className="flex items-start gap-2 text-[13px] text-[#2A2A2A] leading-snug">
-                          <span className="text-[#1B6DFC] mt-0.5">•</span>
-                          <span>{rule}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </div>
+              <GlanceCard
+                className="mb-4"
+                headline={cfwsSummary.headline}
+                pills={[
+                  cfwsSummary.scan?.trajectory ? { text: cfwsSummary.scan.trajectory, tone: 'accent' } : null,
+                  cfwsSummary.scan?.resolution ? { text: cfwsSummary.scan.resolution, tone: 'neutral' } : null,
+                  cfwsSummary.scan?.binding_constraint ? { text: `Binding: ${cfwsSummary.scan.binding_constraint}`, tone: 'neutral' } : null,
+                  flagsPill(cfwsSummary.scan?.flags_count),
+                ].filter(Boolean) as GlancePill[]}
+                bulletGroups={[{ tone: 'accent', items: (cfwsSummary.operating_rules ?? []).filter(Boolean) }]}
+              />
             )}
 
             {/* About block */}
