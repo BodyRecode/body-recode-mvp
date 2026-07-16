@@ -64,17 +64,32 @@ function fmtSessions(sessions: any): string | null {
 function fmtMeals(meals: any, proteinAnchor: any, calorieBand: any): string | null {
   const out: string[] = []
   if (proteinAnchor != null || calorieBand) {
-    out.push(`Daily targets: ${proteinAnchor != null ? `protein anchor ${proteinAnchor}g` : ''}${proteinAnchor != null && calorieBand ? ', ' : ''}${calorieBand ? `calories ~${calorieBand}` : ''}`)
+    out.push(`Daily targets (stated): ${proteinAnchor != null ? `protein anchor ${proteinAnchor}g` : ''}${proteinAnchor != null && calorieBand ? ', ' : ''}${calorieBand ? `calories ~${calorieBand}` : ''}`)
   }
+  const num = (v: any) => { const n = typeof v === 'number' ? v : parseFloat(String(v ?? '')); return Number.isFinite(n) ? n : 0 }
   if (Array.isArray(meals) && meals.length) {
+    const pSpread: number[] = []
+    let tp = 0, tc = 0, tf = 0
     for (const m of meals) {
       if (!m || typeof m !== 'object') continue
+      const p = num(m.protein_g), c = num(m.carb_g), f = num(m.fat_g)
+      tp += p; tc += c; tf += f; pSpread.push(p)
       const macros = [
         m.protein_g != null ? `P ${m.protein_g}g` : null,
         m.carb_g != null ? `C ${m.carb_g}g` : null,
         m.fat_g != null ? `F ${m.fat_g}g` : null,
       ].filter(Boolean).join(' / ')
       out.push(`• ${m.name ?? m.meal_name ?? 'Meal'}${macros ? ` — ${macros}` : ''}`)
+    }
+    // Pre-computed actuals so the tutor COMPARES, never has to sum (LLMs sum
+    // unreliably; this is the fix for the missed carb/protein reconciliation).
+    const kcal = Math.round(tp * 4 + tc * 4 + tf * 9)
+    out.push(`ACTUAL TOTALS (summed for you — compare against the plan's own claims, do not re-add): protein ${tp}g / carbs ${tc}g / fat ${tf}g / ~${kcal} kcal, across ${pSpread.length} meals.`)
+    if (proteinAnchor != null) {
+      const delta = tp - num(proteinAnchor)
+      out.push(`Protein delivered ${tp}g vs anchor ${num(proteinAnchor)}g (${delta >= 0 ? '+' : ''}${delta}g). Per-meal protein spread: ${pSpread.join(' / ')}g.`)
+    } else {
+      out.push(`Per-meal protein spread: ${pSpread.join(' / ')}g.`)
     }
   }
   return out.length ? out.join('\n') : null
@@ -98,7 +113,7 @@ export async function buildCopilotContext(
     // BEFORE approving, so prefer it (newest) over the active plan; fall back to
     // the active plan when no draft is pending. Archived plans are excluded.
     admin.from('programs').select('block_name, progression_phase, training_goal, training_frequency, week_duration, rationale_summary, sessions, is_active, status').eq('client_id', clientId).or('status.eq.draft,is_active.eq.true').order('generated_at', { ascending: false }).limit(1),
-    admin.from('nutrition_plans').select('plan_name, entry_state, carb_demand_level, entry_state_summary, meals, protein_anchor_g, estimated_calorie_band, is_active, status').eq('client_id', clientId).in('status', ['draft', 'active']).order('generated_at', { ascending: false }).limit(1),
+    admin.from('nutrition_plans').select('plan_name, entry_state, carb_demand_level, entry_state_summary, meals, protein_anchor_g, estimated_calorie_band, execution_rules, is_active, status').eq('client_id', clientId).in('status', ['draft', 'active']).order('generated_at', { ascending: false }).limit(1),
     admin.from('weekly_checkins').select('week_number, form_type, submitted_at').eq('client_id', clientId).order('week_number', { ascending: false }).limit(4),
     admin.from('intakes').select('primary_goal, secondary_goals, desired_timeline, training_days_available, injury_location_current, injury_primary_concern').eq('client_id', clientId).order('submitted_at', { ascending: false }).limit(1),
   ])
@@ -179,6 +194,10 @@ export async function buildCopilotContext(
     if (es && typeof es === 'object' && es.current_focus) S.push(`Current focus: ${es.current_focus}${es.what_this_means ? ` — ${es.what_this_means}` : ''}`)
     const meals = fmtMeals(nutrition.meals, nutrition.protein_anchor_g, nutrition.estimated_calorie_band)
     if (meals) S.push(`Prescribed nutrition (review against anchor + phase):\n${meals}`)
+    const rules: any = nutrition.execution_rules
+    if (Array.isArray(rules) && rules.length) {
+      S.push(`Stated execution rules — RECONCILE every numeric claim here against the ACTUAL TOTALS above and flag any mismatch (e.g. a rule says "carbs fixed at ~100g/day" but the meals total more; a rule says "even ~32g protein per meal" but the spread is uneven):\n${rules.map((r: string) => `• ${r}`).join('\n')}`)
+    }
   } else {
     S.push(`\nNUTRITION PLAN: none (no draft or active plan on file).`)
   }
