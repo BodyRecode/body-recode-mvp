@@ -1,17 +1,13 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
+import { CopilotStarters } from '@/components/copilot-starters'
+import { clientStarterCategories } from '@/lib/copilot-starter-questions'
 
 type Msg = { id: string | null; role: 'user' | 'assistant'; content: string; flagged: boolean; followups?: string[] }
 
 const MONO = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
-
-const STARTERS = [
-  'Why did the synthesis land them where it did?',
-  'What is the binding constraint right now, and why?',
-  'The doctrine says hold. Talk me out of progressing them.',
-  'What am I most at risk of missing with this client?',
-]
 
 // What the co-pilot can help with — shown in the persistent "What I can help
 // with" panel. Client-scoped variant.
@@ -37,6 +33,7 @@ export default function CopilotPanel({
   /** Extra classes for the outer card (bubble mode makes it fill its popover). */
   className?: string
 }) {
+  const pathname = usePathname() ?? ''
   const [messages, setMessages] = useState<Msg[]>(initialMessages)
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
@@ -139,18 +136,8 @@ export default function CopilotPanel({
         )}
         {!showHelp && messages.length === 0 && (
           <div className="text-sm text-[#6B6B6B]">
-            <p className="mb-3">Ask about {clientFirstName} and the doctrine behind their read. It explains and pressure-tests, grounded in their file. It doesn&apos;t change plans.</p>
-            <div className="flex flex-col gap-2">
-              {STARTERS.map(s => (
-                <button
-                  key={s}
-                  onClick={() => send(s)}
-                  className="text-left text-[13px] text-[#1B6DFC] border border-[#B5CFFC] bg-[rgba(27,109,252,0.05)] hover:bg-[rgba(27,109,252,0.1)] rounded-lg px-3 py-2 transition-colors"
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
+            <p className="mb-3">Ask about {clientFirstName} and the doctrine behind their read. It explains and pressure-tests, grounded in their file. It doesn&apos;t change plans. Pick a category to see the questions worth asking here.</p>
+            <CopilotStarters categories={clientStarterCategories(pathname, clientFirstName)} onPick={send} />
           </div>
         )}
 

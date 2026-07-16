@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
+import { CopilotStarters } from '@/components/copilot-starters'
+import { generalStarterCategories } from '@/lib/copilot-starter-questions'
 
 /**
  * Global Coach Co-Pilot bubble (2026-07-13). The SAME co-pilot as the
@@ -22,13 +24,6 @@ import { usePathname } from 'next/navigation'
 type Msg = { role: 'user' | 'assistant'; content: string; followups?: string[] }
 
 const MONO = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
-
-const STARTERS = [
-  'Explain the cross-pillar authority order in plain terms.',
-  'When must a client enter Restoration, and why?',
-  'Walk me through the four readiness gates.',
-  'Why is progression permissioned, never assumed?',
-]
 
 // What the co-pilot can help with — shown in the persistent "What I can help
 // with" panel and as the empty-state intro.
@@ -168,34 +163,14 @@ export default function GlobalCopilotBubble() {
                   </div>
                   <p className="text-[12.5px] text-[#8A8A8E] mb-3 leading-relaxed">I never change a plan myself, and nothing I say reaches your client. For a grounded read on a specific person, open their profile — the co-pilot there reads their file.</p>
                   <p className="mb-1.5 text-[11px] font-bold text-[#999999] uppercase tracking-widest" style={{ fontFamily: MONO }}>Try asking</p>
-                  <div className="flex flex-col gap-2">
-                    {STARTERS.map(s => (
-                      <button
-                        key={s}
-                        onClick={() => send(s)}
-                        className="text-left text-[13px] text-[#1B6DFC] border border-[#B5CFFC] bg-[rgba(27,109,252,0.05)] hover:bg-[rgba(27,109,252,0.1)] rounded-lg px-3 py-2 transition-colors"
-                      >
-                        {s}
-                      </button>
-                    ))}
-                  </div>
+                  <CopilotStarters categories={generalStarterCategories(pathname)} onPick={send} />
                 </div>
               ) : (
                 <>
                   {messages.length === 0 && (
                     <div className="text-sm text-[#6B6B6B]">
-                      <p className="mb-3">Ask me anything about the Body Recode method. Tap <span className="font-semibold text-[#1B6DFC]">What I can help with</span> above to see how I can help, or try one of these:</p>
-                      <div className="flex flex-col gap-2">
-                        {STARTERS.map(s => (
-                          <button
-                            key={s}
-                            onClick={() => send(s)}
-                            className="text-left text-[13px] text-[#1B6DFC] border border-[#B5CFFC] bg-[rgba(27,109,252,0.05)] hover:bg-[rgba(27,109,252,0.1)] rounded-lg px-3 py-2 transition-colors"
-                          >
-                            {s}
-                          </button>
-                        ))}
-                      </div>
+                      <p className="mb-3">Ask me anything about the Body Recode method. Tap <span className="font-semibold text-[#1B6DFC]">What I can help with</span> above, or pick a category:</p>
+                      <CopilotStarters categories={generalStarterCategories(pathname)} onPick={send} />
                     </div>
                   )}
 
