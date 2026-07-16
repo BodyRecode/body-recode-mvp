@@ -399,6 +399,30 @@ async function alignToNextMorningAEST(step: any, id: string): Promise<void> {
   await step.sleepUntil(id, new Date(anchorIso))
 }
 
+// Send a consent-gated SMS to a lead resolved by email. Used by the Blueprint,
+// Membership and re-engagement sequences (which key off email/token, not
+// leadId) to mirror a key email touchpoint as an SMS. Routes through
+// sendLeadSms so it is opt-in only, STOP-respecting, frequency-capped
+// (1/24h, 3/7d) and logged to sms_logs. Silent no-op if no matching lead or
+// the lead never opted into SMS - the email still carries them. Never throws
+// (so a sequence step can't fail on the SMS path).
+async function smsLeadByEmail(email: string, body: string): Promise<void> {
+  try {
+    const admin = createAdminClient()
+    const { data: lead } = await admin
+      .from('leads')
+      .select('id')
+      .ilike('email', email)
+      .limit(1)
+      .maybeSingle()
+    if (!lead) return
+    const { sendLeadSms } = await import('@/lib/speed-to-lead-sms')
+    await sendLeadSms({ leadId: lead.id, trigger: 'manual', body })
+  } catch (e) {
+    console.error('[smsLeadByEmail] failed:', e)
+  }
+}
+
 export const challengeSmsFunction = inngest.createFunction(
   {
     id: 'challenge-sms-sequence',
@@ -797,6 +821,9 @@ export const blueprintWeekAdvanceFunction = inngest.createFunction(
             subject: built.subject,
             html: built.html,
           })
+          // Mirror the reminder as an SMS - only reached when the check-in is
+          // still outstanding (guarded by the `existing` check above).
+          await smsLeadByEmail(email, `${firstName}, your Week ${completedWeek} Blueprint check-in is still open - it takes 2 minutes in the portal: ${portalUrl}`)
         }
       })
     }
@@ -939,6 +966,9 @@ export const membershipWeekAdvanceFunction = inngest.createFunction(
               subject: built.subject,
               html: built.html,
             })
+            // Mirror the reminder as an SMS - only reached when the check-in is
+            // still outstanding (guarded by the `existing` check above).
+            await smsLeadByEmail(email, `${first_name}, your Block ${block} Week ${completedWeek} check-in is still open - it takes 2 minutes in the portal: ${portalUrl}`)
           }
         })
       }
@@ -1158,6 +1188,12 @@ ${emailBody("Reply to this email if you want to talk through where you're at. I 
       })
     })
 
+    // Mirror the soft check-in as an SMS (consent-gated + capped).
+    await step.run('sms-day3', async () => {
+      const ctx = source === 'challenge' ? 'challenge' : source === 'blueprint' ? 'Blueprint' : 'membership'
+      await smsLeadByEmail(email, `Hi ${firstName}, checking in after your ${ctx}. No pressure - just seeing how you are going. Reply any time and I will read it.`)
+    })
+
     await step.sleep('wait-day3-to-14', '11d')
 
     // Email 2: Day 14 - what the next stage looks like
@@ -1270,6 +1306,11 @@ ${emailCta({ href: membershipUrl, label: 'See the Membership' })}
 ${emailUrlFallback(membershipUrl, 'Or paste this link into your browser')}
 `),
       })
+    })
+
+    // Mirror the Membership offer as an SMS (consent-gated + capped).
+    await step.run('sms-day60', async () => {
+      await smsLeadByEmail(email, `${firstName}, the Body Recode Membership is open if you want the full system - progressive blocks built around your pattern, $49/wk, cancel anytime: ${membershipUrl}`)
     })
 
     await step.sleep('wait-day60-to-90', '30d')

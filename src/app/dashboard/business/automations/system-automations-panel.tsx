@@ -45,14 +45,14 @@ const AUTOMATIC_AUTOMATIONS = [
   {
     id: 'blueprint-week-advance',
     name: 'Blueprint Week Advance',
-    description: 'Weekly block-progression emails through the Blueprint (one per week, Weeks 1-6). Dormant until the Blueprint goes live.',
+    description: 'Weekly block-progression emails through the Blueprint (one per week, Weeks 1-6), each with a check-in prompt + a 2-day reminder if the check-in is still outstanding. The reminder is also mirrored as a consent-gated SMS (opt-in only, STOP-respecting, capped 1/24h + 3/7d). Dormant until the Blueprint goes live.',
     trigger: 'blueprint/enrolled Inngest event (weekly step)',
     steps: 6,
   },
   {
     id: 'membership-week-advance',
     name: 'Membership Week Advance',
-    description: 'Block-progression emails through the Membership (a new block every 6 weeks, Block A onward). Dormant until the Membership goes live.',
+    description: 'Block-progression emails through the Membership (a new block every 6 weeks, Block A onward), each with a check-in prompt + a 2-day reminder if the check-in is still outstanding. The reminder is also mirrored as a consent-gated SMS (opt-in only, STOP-respecting, capped 1/24h + 3/7d). Dormant until the Membership goes live.',
     trigger: 'membership/enrolled Inngest event (recurring)',
     steps: 1,
   },
