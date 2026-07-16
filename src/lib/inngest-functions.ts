@@ -286,7 +286,8 @@ export const challengeIntakeReminderFunction = inngest.createFunction(
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async ({ event, step }: { event: any; step: any }) => {
-    const { token, email, firstName } = event.data as {
+    const { leadId, token, email, firstName } = event.data as {
+      leadId: string
       token: string
       email: string
       firstName: string
@@ -310,6 +311,17 @@ export const challengeIntakeReminderFunction = inngest.createFunction(
         return !enrollment.body_decode_intake_completed_at
       })
 
+    // SMS reminder runs alongside the email. Routed through sendLeadSms so it
+    // is consent-gated (skips anyone not opted-in or opted-out via STOP),
+    // frequency-capped, and logged to sms_logs. Silent no-op for the ~half of
+    // enrollers who never opted into SMS - the email still carries them.
+    const sendIntakeSms = async (stepId: string, body: string): Promise<void> => {
+      await step.run(stepId, async () => {
+        const { sendLeadSms } = await import('@/lib/speed-to-lead-sms')
+        await sendLeadSms({ leadId, trigger: 'challenge_enrolled', body })
+      })
+    }
+
     // ── Nudge 1: ~24h after enrollment, realigned to next 7am AEST ──────
     await step.sleep('intake-reminder-1-wait', '1d')
     await alignToNextMorningAEST(step, 'intake-reminder-1-morning')
@@ -324,6 +336,10 @@ export const challengeIntakeReminderFunction = inngest.createFunction(
           html: built.html,
         })
       })
+      await sendIntakeSms(
+        'send-intake-reminder-1-sms',
+        `Hi ${firstName}, your 14-Day Body Decode Challenge is waiting on one 2-minute step - your starting read. Do it and your Challenge unlocks: ${portalUrl}`,
+      )
     }
 
     // ── Nudge 2: ~72h after enrollment (2 more days), firmer copy ───────
@@ -340,6 +356,10 @@ export const challengeIntakeReminderFunction = inngest.createFunction(
           html: built.html,
         })
       })
+      await sendIntakeSms(
+        'send-intake-reminder-2-sms',
+        `${firstName}, your Challenge is still on hold. Your 2-minute starting read is all that is between you and Day 1: ${portalUrl}. Reply if something got in the way.`,
+      )
     }
   }
 )
