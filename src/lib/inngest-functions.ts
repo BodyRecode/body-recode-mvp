@@ -1099,7 +1099,40 @@ export const reengagementSequenceFunction = inngest.createFunction(
     const membershipUrl = `${appUrl()}/membership`
     const patternNote = patternLabel ? ` Your ${patternLabel} pattern doesn't reset when you stop - it's still there when you come back.` : ''
 
+    // Conversion guard: has this person taken a paid step SINCE the sequence
+    // started? Checked before every email so we stop the instant they convert
+    // and never pitch someone a product they've already bought.
+    //
+    // Source-aware, because "converted" means different things per entry point:
+    //   - challenge  → bought the Blueprint, or an active Membership
+    //   - blueprint  → an active Membership (they already own the Blueprint)
+    //   - membership → re-subscribed (any active Membership row again)
+    // (Extension is not counted yet — extension_enrollments doesn't exist until
+    //  that product launches; add it here when it does.)
+    const emailLower = email.toLowerCase()
+    const hasConverted = async (stepId: string): Promise<boolean> =>
+      step.run(stepId, async () => {
+        const admin = createAdminClient()
+        const { data: mem } = await admin
+          .from('membership_enrollments')
+          .select('id')
+          .ilike('email', emailLower)
+          .is('cancelled_at', null)
+          .limit(1)
+        if (mem && mem.length > 0) return true
+        if (source === 'challenge') {
+          const { data: bp } = await admin
+            .from('blueprint_enrollments')
+            .select('id')
+            .ilike('email', emailLower)
+            .limit(1)
+          if (bp && bp.length > 0) return true
+        }
+        return false
+      })
+
     // Email 1: Day 3 - check in
+    if (await hasConverted('convert-check-before-day3')) return
     await step.run('send-day3', async () => {
       if (!process.env.RESEND_API_KEY) return
       const resend = new Resend(process.env.RESEND_API_KEY)
@@ -1128,6 +1161,7 @@ ${emailBody("Reply to this email if you want to talk through where you're at. I 
     await step.sleep('wait-day3-to-14', '11d')
 
     // Email 2: Day 14 - what the next stage looks like
+    if (await hasConverted('convert-check-before-day14')) return
     await step.run('send-day14', async () => {
       if (!process.env.RESEND_API_KEY) return
       const resend = new Resend(process.env.RESEND_API_KEY)
@@ -1154,6 +1188,7 @@ ${emailBody("Reply if you have questions or want to know which pathway fits wher
     await step.sleep('wait-day14-to-30', '16d')
 
     // Email 3: Day 30 - re-entry offer
+    if (await hasConverted('convert-check-before-day30')) return
     await step.run('send-day30', async () => {
       if (!process.env.RESEND_API_KEY) return
       const resend = new Resend(process.env.RESEND_API_KEY)
@@ -1182,6 +1217,7 @@ ${emailBody("Not ready yet? That's fine. I'll check back in.", { size: 14 })}
     await step.sleep('wait-day30-to-45', '15d')
 
     // Email 4: Day 45 - reminder
+    if (await hasConverted('convert-check-before-day45')) return
     await step.run('send-day45', async () => {
       if (!process.env.RESEND_API_KEY) return
       const resend = new Resend(process.env.RESEND_API_KEY)
@@ -1206,6 +1242,7 @@ ${emailBody('Reply any time if you want to talk through it.', { size: 14 })}
     await step.sleep('wait-day45-to-60', '15d')
 
     // Email 5: Day 60 - membership offer direct
+    if (await hasConverted('convert-check-before-day60')) return
     await step.run('send-day60', async () => {
       if (!process.env.RESEND_API_KEY) return
       const resend = new Resend(process.env.RESEND_API_KEY)
@@ -1238,6 +1275,7 @@ ${emailUrlFallback(membershipUrl, 'Or paste this link into your browser')}
     await step.sleep('wait-day60-to-90', '30d')
 
     // Email 6: Day 90 - final touchpoint + referral
+    if (await hasConverted('convert-check-before-day90')) return
     await step.run('send-day90', async () => {
       if (!process.env.RESEND_API_KEY) return
       const resend = new Resend(process.env.RESEND_API_KEY)
