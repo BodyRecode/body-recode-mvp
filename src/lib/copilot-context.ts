@@ -79,7 +79,10 @@ function fmtMeals(meals: any, proteinAnchor: any, calorieBand: any): string | nu
         m.carb_g != null ? `C ${m.carb_g}g` : null,
         m.fat_g != null ? `F ${m.fat_g}g` : null,
       ].filter(Boolean).join(' / ')
-      out.push(`• ${m.name ?? m.meal_name ?? 'Meal'}${macros ? ` — ${macros}` : ''}`)
+      // Include the meal TIME so timing gaps against the client's problem
+      // eating-windows (e.g. a 3-5pm snacking window left uncovered) are visible.
+      const timing = typeof m.timing === 'string' && m.timing.trim() ? ` @ ${m.timing.trim()}` : ''
+      out.push(`• ${m.name ?? m.meal_name ?? 'Meal'}${timing}${macros ? ` — ${macros}` : ''}`)
     }
     // Pre-computed actuals so the tutor COMPARES, never has to sum (LLMs sum
     // unreliably; this is the fix for the missed carb/protein reconciliation).
