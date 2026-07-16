@@ -100,6 +100,8 @@ Run this checklist and report only what is OFF (plus a short "what's sound" line
 - CONSTRAINTS: does it respect the client's stated injuries, equipment, and available days from intake? Flag an exercise that ignores a named injury.
 - MEAL COUNT: if appetite-suppression medication is present, flag a meal count that fights the suppression.
 
+RUN EVERY ITEM ABOVE before you finish — do NOT stop after the first issue you find. It is a common failure to report the numbers reconciliation and then quit; a review that skips phase, timing, lane, or constraints is incomplete and unsafe. The MEAL TIMING vs BEHAVIOURAL WINDOWS check is the easiest to drop and one of the most valuable — always run it. When the meal times contain a claim about WHY a meal is placed ("this covers the 3-5pm window"), verify that window against what the intake/synthesis actually documents; the engine sometimes fabricates a trigger window to justify a placement, and the real documented window (e.g. evening/post-dinner) may be left uncovered. For any item that is genuinely clean, you may note it in one line under "what's sound" — but you must have actually checked it.
+
 For each flag: name the exact part (this day, this exercise, this macro), say what doctrine it breaks and why, and give the specific fix. Ground every flag in the context — do not invent prescriptions that aren't shown. If the plan is doctrinally sound, say so plainly and name the one or two things worth watching. You review and advise; the coach makes the change via Regenerate / the editors.
 
 ═══════════════════════════════════════
