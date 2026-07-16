@@ -28,6 +28,7 @@ type ChallengeRow = {
   currentDay: number; enrolledAt: string; quizResult: string | null
   quizCompleted: boolean; hasBlueprintPurchase: boolean
   scorecardDone: boolean; parqDone: boolean; healthDone: boolean
+  scorecardScore: number | null; scorecardBodyState: string | null; scorecardProfile: string | null
 }
 
 // Compact onboarding-status indicator for the Challenge table: shows, per
@@ -49,6 +50,27 @@ function OnboardTicks({ scorecard, parq, health }: { scorecard: boolean; parq: b
       {item('PAR-Q', parq)}
       {item('Health', health)}
     </div>
+  )
+}
+
+// Scorecard result cell for the Challenge table: when the Day 0 scorecard is
+// done, shows the score + body state (the actual result, not just a tick);
+// otherwise a muted "Pending". Colour keyed to body state.
+function ScorecardResult({ done, score, bodyState }: { done: boolean; score: number | null; bodyState: string | null }) {
+  if (!done) {
+    return <span className="text-[#999999] text-[12px]" style={{ fontFamily: MONO_FONT }}>Pending</span>
+  }
+  const state = (bodyState ?? '').replace(/ State$/, '') || 'Done'
+  const colour = state === 'Depleted' ? '#DC2626' : state === 'Transitioning' ? '#1B6DFC' : state === 'Ready' ? '#15803D' : '#666666'
+  return (
+    <span
+      className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full border"
+      style={{ fontFamily: MONO_FONT, color: colour, background: colour + '14', borderColor: colour + '33' }}
+      title={`Scorecard: ${state}${score != null ? ` (${score}/15)` : ''}`}
+    >
+      {score != null && <span style={{ fontVariantNumeric: 'tabular-nums' }}>{score}/15</span>}
+      {state}
+    </span>
   )
 }
 
@@ -312,7 +334,7 @@ export default function FunnelClient({
       <Card padding="none" className={`overflow-hidden ${tab === 'pages' ? 'hidden' : ''}`}>
 
         {tab === 'challenge' && (
-          <Table headers={['Name', 'Day', 'Setup', 'Pattern', 'Quiz', 'Blueprint', 'Enrolled']}>
+          <Table headers={['Name', 'Day', 'Setup', 'Scorecard', 'Pattern', 'Quiz', 'Blueprint', 'Enrolled']}>
             {filteredChallenge.length === 0 && (
               <TR><TD><span className="text-[#999999]">No enrollments yet.</span></TD></TR>
             )}
@@ -327,6 +349,9 @@ export default function FunnelClient({
                   </TD>
                   <TD>
                     <OnboardTicks scorecard={e.scorecardDone} parq={e.parqDone} health={e.healthDone} />
+                  </TD>
+                  <TD>
+                    <ScorecardResult done={e.scorecardDone} score={e.scorecardScore} bodyState={e.scorecardBodyState} />
                   </TD>
                   <TD>
                     {e.quizResult ? <PatternBadge pattern={e.quizResult} /> : <span className="text-[#999999] text-[12px]">No quiz</span>}

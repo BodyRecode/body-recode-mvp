@@ -22,7 +22,7 @@ export default async function FunnelPage() {
   ] = await Promise.all([
     admin
       .from('challenge_enrollments')
-      .select('id, token, current_day, enrolled_at, quiz_result, quiz_completed_at, parq_completed_at, health_dec_completed_at, body_decode_intake_completed_at, leads(name, email, phone, scorecard_profile)')
+      .select('id, token, current_day, enrolled_at, quiz_result, quiz_completed_at, parq_completed_at, health_dec_completed_at, body_decode_intake_completed_at, leads(name, email, phone, scorecard_profile, scorecard_score, scorecard_body_state)')
       .order('enrolled_at', { ascending: false }),
     admin
       .from('blueprint_enrollments')
@@ -103,6 +103,9 @@ export default async function FunnelPage() {
         quizResult: e.quiz_result,
         quizCompleted: !!e.quiz_completed_at,
         scorecardDone: !!e.body_decode_intake_completed_at || !!(e.leads as any)?.scorecard_profile,
+        scorecardScore: (e.leads as any)?.scorecard_score ?? null,
+        scorecardBodyState: (e.leads as any)?.scorecard_body_state ?? null,
+        scorecardProfile: (e.leads as any)?.scorecard_profile ?? null,
         parqDone: !!e.parq_completed_at,
         healthDone: !!e.health_dec_completed_at,
         hasBlueprintPurchase: blueprintEmails.has(((e.leads as any)?.email ?? '').toLowerCase()),
