@@ -57,6 +57,10 @@ export function portalLoginUrl(): string {
 export function intakeUrl(token: string): string {
   return `${safe()}/intake/${token}`
 }
+/** Personal access link to a prospective partner's private Partner Room. */
+export function partnerRoomUrl(token: string): string {
+  return `${safe()}/room/${token}`
+}
 export function supplementaryIntakeUrl(token: string): string {
   return `${safe()}/intake-supplement/${token}`
 }

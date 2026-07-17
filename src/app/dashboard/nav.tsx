@@ -66,6 +66,7 @@ const BUSINESS_CLUSTER: NavCluster = {
     { href: '/dashboard/business/availability', label: 'Availability' },
     { href: '/dashboard/business/analytics', label: 'Analytics' },
     { href: '/dashboard/business/strategy', label: 'Strategy' },
+    { href: '/dashboard/partner-room', label: 'Partner Room' },
   ],
 }
 
