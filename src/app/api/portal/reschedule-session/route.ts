@@ -3,20 +3,9 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { Resend } from 'resend'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
-import { darkEmailSignature } from '@/lib/email-signature'
 import { appUrl } from '@/lib/app-url'
-import {
-  fromBrand,
-  darkEmailShell,
-  emailLogo,
-  emailHeading,
-  emailBody,
-  emailFeaturedCard,
-  EMAIL_GRAPHITE,
-  EMAIL_MUTED,
-  EMAIL_BLUE_DARK,
-  EMAIL_FF,
-} from '@/lib/email-shell'
+import { fromBrand } from '@/lib/email-shell'
+import { buildSessionConfirmedEmail } from '@/lib/booking-emails'
 import { coach } from '@/config/tenant'
 
 export async function POST(req: NextRequest) {
@@ -87,23 +76,17 @@ export async function POST(req: NextRequest) {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
 
+    const sessionEmail = buildSessionConfirmedEmail({
+      firstName,
+      displayDate,
+      displayTime,
+      durationMinutes,
+    })
     await resend.emails.send({
       from: fromBrand(),
       to: client.email,
-      subject: `Session booked: ${displayDate} at ${displayTime}`,
-      html: darkEmailShell(
-        `${emailLogo(130)}
-${emailHeading('Session confirmed', { size: 28 })}
-${emailBody(`Hey ${firstName}, your session has been booked.`)}
-${emailFeaturedCard(
-          `<p style="margin:0 0 6px;font-size:11px;font-weight:700;color:${EMAIL_BLUE_DARK};letter-spacing:0.12em;text-transform:uppercase;font-family:${EMAIL_FF};">Face-to-Face Session</p>
-<p style="margin:0 0 4px;font-size:18px;font-weight:800;color:${EMAIL_GRAPHITE};font-family:${EMAIL_FF};">${displayDate}</p>
-<p style="margin:0;font-size:14px;color:${EMAIL_MUTED};font-family:${EMAIL_FF};">${displayTime} · ${durationMinutes} min · AF Newstead</p>`,
-        )}
-${emailBody('If you need to make any changes, log in to your client portal and visit the Sessions page.')}
-${darkEmailSignature()}`,
-        { previewText: `Session booked: ${displayDate} at ${displayTime}` },
-      ),
+      subject: sessionEmail.subject,
+      html: sessionEmail.html,
     })
 
     const baseUrl = appUrl()

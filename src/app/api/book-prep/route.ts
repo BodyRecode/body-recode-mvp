@@ -2,29 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { logLeadEvent } from '@/lib/log-lead-event'
-import { darkEmailSignature } from '@/lib/email-signature'
 import { appUrl } from '@/lib/app-url'
-import {
-  fromBrand,
-  darkEmailShell,
-  emailLogo,
-  emailEyebrow,
-  emailHeading,
-  emailBody,
-  emailFeaturedCard,
-  emailCta,
-  EMAIL_GRAPHITE,
-  EMAIL_BODY,
-  EMAIL_MUTED,
-  EMAIL_FF,
-} from '@/lib/email-shell'
+import { fromBrand } from '@/lib/email-shell'
+import { buildCallPrepEmail } from '@/lib/booking-emails'
 import { coach } from '@/config/tenant'
 import { generateCallPrepReport, type PrepAnswers } from '@/lib/call-prep-report'
-
-/** Preformatted multi-line block for AI report / raw answers inside a card. */
-function preBlock(text: string, color: string): string {
-  return `<pre style="margin:0;font-family:${EMAIL_FF};font-size:14px;line-height:1.65;color:${color};white-space:pre-wrap;word-wrap:break-word;">${text}</pre>`
-}
 
 // The AI synthesis can take a few seconds; give the route room.
 export const maxDuration = 120
@@ -124,23 +106,19 @@ export async function POST(request: NextRequest) {
     const cleanEmail = (lead.email as string) || ''
     const rawAnswers = notesLines.join('\n')
     try {
+      const prepEmail = buildCallPrepEmail({
+        name: esc(name),
+        email: esc(cleanEmail),
+        report: esc(report),
+        rawAnswers: esc(rawAnswers),
+        leadUrl,
+      })
       await resend.emails.send({
         from: fromBrand(),
         to: coach().email,
         replyTo: cleanEmail || undefined,
-        subject: `Call prep — ${name}`,
-        html: darkEmailShell(
-          `${emailLogo(130)}
-${emailEyebrow('Pre-call brief')}
-${emailHeading(`Call prep — ${esc(name)}`, { size: 26 })}
-${emailBody(esc(cleanEmail), { color: EMAIL_MUTED, size: 14, bottom: 10 })}
-${emailBody('They completed the pre-call form. Here is your prep read.', { size: 15, bottom: 22 })}
-${emailFeaturedCard(preBlock(esc(report), EMAIL_GRAPHITE))}
-${emailFeaturedCard(preBlock(esc(rawAnswers || '(none)'), EMAIL_BODY), { eyebrow: 'Their raw answers' })}
-${emailCta({ href: leadUrl, label: 'View lead →' })}
-${darkEmailSignature()}`,
-          { previewText: `Pre-call brief for ${esc(name)}` },
-        ),
+        subject: prepEmail.subject,
+        html: prepEmail.html,
       })
     } catch (e) {
       console.error('[book-prep] email send failed:', e)
