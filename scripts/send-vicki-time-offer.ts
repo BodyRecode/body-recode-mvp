@@ -16,6 +16,7 @@ import {
   emailBody,
   emailFeaturedCard,
   fromCoach,
+  COACH_BCC,
   EMAIL_GRAPHITE,
   EMAIL_FF,
 } from '../src/lib/email-shell'
@@ -53,9 +54,14 @@ async function main() {
   const to = SEND_FOR_REAL ? VICKI : KADE
   const subject = SEND_FOR_REAL ? SUBJECT : `[PREVIEW] ${SUBJECT}`
 
+  // Coach keeps a copy of manual client sends (house convention: BCC, not CC,
+  // so Vicki never sees Kade copying himself).
+  const bcc = SEND_FOR_REAL ? COACH_BCC : undefined
+
   const sent = await resend.emails.send({
     from: fromCoach(),
     to,
+    bcc,
     replyTo: KADE,
     subject,
     html,
@@ -69,6 +75,7 @@ async function main() {
   console.log(SEND_FOR_REAL ? `SENT to Vicki (${to})` : `Preview sent to ${to}`)
   console.log('  Subject:', subject)
   console.log('  From:', fromCoach())
+  console.log('  BCC:', bcc ?? '(none - preview)')
   console.log('  Resend id:', sent.data?.id)
 }
 
