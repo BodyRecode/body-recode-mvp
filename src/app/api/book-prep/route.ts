@@ -4,9 +4,27 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { appUrl } from '@/lib/app-url'
-import { fromBrand } from '@/lib/email-shell'
-import { coach, logoUrl } from '@/config/tenant'
+import {
+  fromBrand,
+  darkEmailShell,
+  emailLogo,
+  emailEyebrow,
+  emailHeading,
+  emailBody,
+  emailFeaturedCard,
+  emailCta,
+  EMAIL_GRAPHITE,
+  EMAIL_BODY,
+  EMAIL_MUTED,
+  EMAIL_FF,
+} from '@/lib/email-shell'
+import { coach } from '@/config/tenant'
 import { generateCallPrepReport, type PrepAnswers } from '@/lib/call-prep-report'
+
+/** Preformatted multi-line block for AI report / raw answers inside a card. */
+function preBlock(text: string, color: string): string {
+  return `<pre style="margin:0;font-family:${EMAIL_FF};font-size:14px;line-height:1.65;color:${color};white-space:pre-wrap;word-wrap:break-word;">${text}</pre>`
+}
 
 // The AI synthesis can take a few seconds; give the route room.
 export const maxDuration = 120
@@ -111,36 +129,18 @@ export async function POST(request: NextRequest) {
         to: coach().email,
         replyTo: cleanEmail || undefined,
         subject: `Call prep — ${name}`,
-        html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="light only"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:560px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
-        <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-            <img src="${logoUrl()}" width="110" alt="Body Recode" style="display:block;"/>
-          </td>
-        </tr>
-        <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:32px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-            <p style="margin:0 0 4px;font-size:20px;font-weight:700;color:#1A1A1A;">Call prep — ${esc(name)}</p>
-            <p style="margin:0 0 20px;font-size:14px;color:#6B6B6B;">${esc(cleanEmail)}</p>
-            <p style="margin:0 0 20px;font-size:13px;color:#666666;">They completed the pre-call form. Here is your prep read.</p>
-            <div style="padding:20px 22px;background:#F7F7F7;border-radius:12px;border:1px solid #E5E5E5;margin-bottom:24px;">
-              <pre style="margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;line-height:1.6;color:#1A1A1A;white-space:pre-wrap;word-wrap:break-word;">${esc(report)}</pre>
-            </div>
-            <p style="margin:0 0 8px;font-size:11px;font-weight:700;color:#999999;letter-spacing:0.08em;text-transform:uppercase;">Their raw answers</p>
-            <div style="padding:16px 20px;background:#1a1a1a;border-radius:10px;border:1px solid #222;margin-bottom:24px;">
-              <pre style="margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;line-height:1.6;color:#E5E5E5;white-space:pre-wrap;word-wrap:break-word;">${esc(rawAnswers || '(none)')}</pre>
-            </div>
-            <a href="${leadUrl}" style="display:inline-block;padding:12px 20px;border:1px solid #333;color:#6B6B6B;font-size:13px;text-decoration:none;border-radius:8px;">View Lead →</a>
-            ${darkEmailSignature()}
-          </td>
-        </tr>
-      </table>
-    </td></tr>
-  </table>
-</body></html>`,
+        html: darkEmailShell(
+          `${emailLogo(130)}
+${emailEyebrow('Pre-call brief')}
+${emailHeading(`Call prep — ${esc(name)}`, { size: 26 })}
+${emailBody(esc(cleanEmail), { color: EMAIL_MUTED, size: 14, bottom: 10 })}
+${emailBody('They completed the pre-call form. Here is your prep read.', { size: 15, bottom: 22 })}
+${emailFeaturedCard(preBlock(esc(report), EMAIL_GRAPHITE))}
+${emailFeaturedCard(preBlock(esc(rawAnswers || '(none)'), EMAIL_BODY), { eyebrow: 'Their raw answers' })}
+${emailCta({ href: leadUrl, label: 'View lead →' })}
+${darkEmailSignature()}`,
+          { previewText: `Pre-call brief for ${esc(name)}` },
+        ),
       })
     } catch (e) {
       console.error('[book-prep] email send failed:', e)

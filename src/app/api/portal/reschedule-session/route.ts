@@ -5,8 +5,19 @@ import { Resend } from 'resend'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { appUrl } from '@/lib/app-url'
-import { fromBrand } from '@/lib/email-shell'
-import { coach, logoUrl } from '@/config/tenant'
+import {
+  fromBrand,
+  darkEmailShell,
+  emailLogo,
+  emailHeading,
+  emailBody,
+  emailFeaturedCard,
+  EMAIL_GRAPHITE,
+  EMAIL_MUTED,
+  EMAIL_BLUE_DARK,
+  EMAIL_FF,
+} from '@/lib/email-shell'
+import { coach } from '@/config/tenant'
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
@@ -80,24 +91,19 @@ export async function POST(req: NextRequest) {
       from: fromBrand(),
       to: client.email,
       subject: `Session booked: ${displayDate} at ${displayTime}`,
-      html: `
-        <div style="background:#FFFFFF;padding:40px 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-          <div style="max-width:480px;margin:0 auto;background:#FFFFFF;border-radius:16px;padding:36px;">
-            <img src="${logoUrl()}" width="110" style="display:block;margin-bottom:28px;" alt="Body Recode" />
-            <p style="margin:0 0 8px;font-size:18px;font-weight:700;color:#1A1A1A;">Session confirmed</p>
-            <p style="margin:0 0 24px;font-size:14px;color:#6B6B6B;line-height:1.6;">Hey ${firstName}, your session has been booked.</p>
-            <div style="background:#1a1a1a;border-radius:12px;padding:20px;margin-bottom:24px;">
-              <p style="margin:0 0 4px;font-size:13px;font-weight:600;color:#3F85FD;text-transform:uppercase;letter-spacing:0.08em;">Face-to-Face Session</p>
-              <p style="margin:0 0 4px;font-size:16px;font-weight:700;color:#1A1A1A;">${displayDate}</p>
-              <p style="margin:0;font-size:14px;color:#6B6B6B;">${displayTime} · ${durationMinutes} min · AF Newstead</p>
-            </div>
-            <p style="margin:0 0 24px;font-size:14px;color:#6B6B6B;line-height:1.6;">
-              If you need to make any changes, log in to your client portal and visit the Sessions page.
-            </p>
-            ${darkEmailSignature()}
-          </div>
-        </div>
-      `,
+      html: darkEmailShell(
+        `${emailLogo(130)}
+${emailHeading('Session confirmed', { size: 28 })}
+${emailBody(`Hey ${firstName}, your session has been booked.`)}
+${emailFeaturedCard(
+          `<p style="margin:0 0 6px;font-size:11px;font-weight:700;color:${EMAIL_BLUE_DARK};letter-spacing:0.12em;text-transform:uppercase;font-family:${EMAIL_FF};">Face-to-Face Session</p>
+<p style="margin:0 0 4px;font-size:18px;font-weight:800;color:${EMAIL_GRAPHITE};font-family:${EMAIL_FF};">${displayDate}</p>
+<p style="margin:0;font-size:14px;color:${EMAIL_MUTED};font-family:${EMAIL_FF};">${displayTime} · ${durationMinutes} min · AF Newstead</p>`,
+        )}
+${emailBody('If you need to make any changes, log in to your client portal and visit the Sessions page.')}
+${darkEmailSignature()}`,
+        { previewText: `Session booked: ${displayDate} at ${displayTime}` },
+      ),
     })
 
     const baseUrl = appUrl()

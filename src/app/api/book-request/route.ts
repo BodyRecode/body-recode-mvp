@@ -5,8 +5,27 @@ import { getDefaultCoachId } from '@/lib/default-coach'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { appUrl } from '@/lib/app-url'
-import { fromCoach, fromBrand } from '@/lib/email-shell'
-import { coach, logoUrl, brand } from '@/config/tenant'
+import {
+  fromCoach,
+  fromBrand,
+  darkEmailShell,
+  emailLogo,
+  emailEyebrow,
+  emailHeading,
+  emailBody,
+  emailFeaturedCard,
+  emailCta,
+  emailUrlFallback,
+  EMAIL_GRAPHITE,
+  EMAIL_MUTED,
+  EMAIL_FF,
+} from '@/lib/email-shell'
+import { coach, brand } from '@/config/tenant'
+
+/** Graphite value line for a featured card (e.g. the requested time). Preserves line breaks. */
+function prefTimeValue(value: string): string {
+  return `<p style="margin:0;font-size:16px;color:${EMAIL_GRAPHITE};line-height:1.6;white-space:pre-wrap;font-family:${EMAIL_FF};">${value}</p>`
+}
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
@@ -75,45 +94,18 @@ export async function POST(request: NextRequest) {
       to: coach().email,
       replyTo: cleanEmail,
       subject: `Custom time request — ${cleanName}`,
-      html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="light only"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
-        <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-            <img src="${logoUrl()}" width="110" alt="Body Recode" style="display:block;"/>
-          </td>
-        </tr>
-        <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:32px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-            <p style="margin:0 0 4px;font-size:20px;font-weight:700;color:#1A1A1A;">Custom time request — ${cleanName}</p>
-            <p style="margin:0 0 8px;font-size:14px;color:#6B6B6B;">${cleanEmail}${cleanPhone ? ' · ' + cleanPhone : ''}</p>
-            <p style="margin:0 0 24px;font-size:13px;color:#666666;">They want to book a call and suggested the times below — reply to this email to confirm and book them in.</p>
-            <table cellpadding="0" cellspacing="0" style="margin-bottom:16px;width:100%;">
-              <tr>
-                <td style="padding:14px 20px;background:#1a1a1a;border-radius:10px;border:1px solid #222;">
-                  <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#999999;letter-spacing:0.08em;text-transform:uppercase;">Preferred time</p>
-                  <p style="margin:0;font-size:15px;color:#1A1A1A;white-space:pre-wrap;">${cleanPreferredTime}</p>
-                </td>
-              </tr>
-            </table>
-            ${cleanNote ? `<table cellpadding="0" cellspacing="0" style="margin-bottom:24px;width:100%;">
-              <tr>
-                <td style="padding:14px 20px;background:#1a1a1a;border-radius:10px;border:1px solid #222;">
-                  <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#999999;letter-spacing:0.08em;text-transform:uppercase;">Note</p>
-                  <p style="margin:0;font-size:15px;color:#1A1A1A;white-space:pre-wrap;">${cleanNote}</p>
-                </td>
-              </tr>
-            </table>` : ''}
-            <a href="${leadUrl}" style="display:inline-block;padding:12px 20px;border:1px solid #333;color:#6B6B6B;font-size:13px;text-decoration:none;border-radius:8px;">View Lead →</a>
-            ${darkEmailSignature()}
-          </td>
-        </tr>
-      </table>
-    </td></tr>
-  </table>
-</body></html>`,
+      html: darkEmailShell(
+        `${emailLogo(130)}
+${emailEyebrow('New booking request')}
+${emailHeading(`Custom time request — ${cleanName}`, { size: 26 })}
+${emailBody(`${cleanEmail}${cleanPhone ? ' · ' + cleanPhone : ''}`, { color: EMAIL_MUTED, size: 14, bottom: 10 })}
+${emailBody('They want to book a call and suggested the times below — reply to this email to confirm and book them in.', { size: 15, bottom: 22 })}
+${emailFeaturedCard(prefTimeValue(cleanPreferredTime), { eyebrow: 'Preferred time' })}
+${cleanNote ? emailFeaturedCard(prefTimeValue(cleanNote), { eyebrow: 'Note' }) : ''}
+${emailCta({ href: leadUrl, label: 'View lead →' })}
+${darkEmailSignature()}`,
+        { previewText: `${cleanName} suggested: ${cleanPreferredTime}` },
+      ),
     })
 
     // Confirmation to lead
@@ -122,43 +114,21 @@ export async function POST(request: NextRequest) {
       from: fromCoach(),
       to: cleanEmail,
       subject: `Got your time request, ${firstName}`,
-      html: `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="color-scheme" content="light only"/></head>
-<body style="margin:0;padding:0;background-color:#FFFFFF;">
-  <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
-    <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
-        <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
-            <img src="${logoUrl()}" width="130" alt="Body Recode" style="display:block;"/>
-          </td>
-        </tr>
-        <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:36px 40px 40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-            <p style="margin:0 0 18px;font-size:15px;color:#999999;line-height:1.75;">Hi ${firstName},</p>
-            <p style="margin:0 0 18px;font-size:15px;color:#999999;line-height:1.75;">Got your request. I'll get back to you within 24 hours to either confirm the time or suggest the closest slot that works.</p>
-            <table cellpadding="0" cellspacing="0" style="width:100%;margin:0 0 20px;">
-              <tr>
-                <td style="padding:14px 20px;background:#1a1a1a;border-radius:10px;border:1px solid #222;">
-                  <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#999999;letter-spacing:0.08em;text-transform:uppercase;">You requested</p>
-                  <p style="margin:0;font-size:15px;color:#1A1A1A;white-space:pre-wrap;">${cleanPreferredTime}</p>
-                </td>
-              </tr>
-            </table>
-            <p style="margin:0 0 8px;font-size:15px;color:#999999;line-height:1.75;">One thing before we talk: please take 3-4 minutes to fill this in. It means I walk into our call already understanding where you're at, so we can go straight to what matters.</p>
-            <table cellpadding="0" cellspacing="0" style="margin:8px 0 20px;">
-              <tr>
-                <td style="border-radius:10px;background:#1B6DFC;">
-                  <a href="${brand().marketingDomain}/book/prep/${lead.id}" style="display:inline-block;padding:14px 26px;font-size:15px;font-weight:700;color:#FFFFFF;text-decoration:none;">Complete this before our call →</a>
-                </td>
-              </tr>
-            </table>
-            ${darkEmailSignature()}
-          </td>
-        </tr>
-      </table>
-    </td></tr>
-  </table>
-</body></html>`,
+      html: (() => {
+        const prepUrl = `${brand().marketingDomain}/book/prep/${lead.id}`
+        return darkEmailShell(
+          `${emailLogo(150)}
+${emailEyebrow('Booking request received')}
+${emailHeading(`Thanks, ${firstName}`)}
+${emailBody("Got your request. I'll get back to you within 24 hours to either confirm the time or suggest the closest slot that works.")}
+${emailFeaturedCard(prefTimeValue(cleanPreferredTime), { eyebrow: 'You requested' })}
+${emailBody('One thing before we talk: please take 3-4 minutes to fill this in. It means I walk into our call already understanding where you\'re at, so we can go straight to what matters.')}
+${emailCta({ href: prepUrl, label: 'Complete this before our call →' })}
+${emailUrlFallback(prepUrl)}
+${darkEmailSignature()}`,
+          { previewText: "Got your request — I'll confirm within 24 hours." },
+        )
+      })(),
     })
   }
 
