@@ -51,6 +51,7 @@ const SECTIONS = [
   { id: 'nutrition-reading', title: '22b. Nutrition Reading', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'business-engine',  title: 'Business Engine',        colour: 'amber' as const, category: 'business' as Category },
   { id: 'ceo-dashboard',    title: 'CEO Dashboard - Scorecard', colour: 'amber' as const, category: 'business' as Category },
+  { id: 'partner-room',     title: 'Partner Room',           colour: 'amber' as const, category: 'business' as Category },
   { id: 'be-crm',           title: '23. CRM & Pipeline',     colour: 'amber' as const, category: 'business' as Category },
   { id: 'be-bookings',      title: '24. Bookings',           colour: 'amber' as const, category: 'business' as Category },
   { id: 'be-automations',   title: '25. Automations',        colour: 'amber' as const, category: 'business' as Category },
@@ -2492,6 +2493,22 @@ export default function HelpPage() {
             ]} />
 
             <Note>The source breakdown at the bottom of the page shows how many leads came from each channel. Use this to evaluate which entry points are producing leads before running ads.</Note>
+          </Section>
+
+          <Section id="partner-room" title="Partner Room - Private Investor / Partner Overview" colour="amber">
+            <p>A private page you hand to a prospective investor or partner (e.g. someone weighing an investment) so they can look back over the Body Recode story anytime. It walks them through how Body Recode, Performance Coaching, the Collective and Arete fit together as one system - vision-level, no numbers.</p>
+            <p className="mt-3"><strong>One room, one door per person.</strong> You mint a personal link per guest. The link itself is the key - no login, no password. It greets them by name, remembers their visits, and you can shut off one person&apos;s link without touching anyone else&apos;s.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">How to use it</p>
+            <StatusList items={[
+              { label: 'Add a guest', desc: 'Go to Business - Partner Room, type their name (company + a private note are optional), and hit Create link. The link copies to your clipboard automatically - paste it into a message to them.' },
+              { label: 'Watch engagement', desc: 'Each guest row shows how many times they have opened their room and when they last did. Someone returning a few times before your next meeting is a strong signal.' },
+              { label: 'Revoke or restore', desc: 'Hit Revoke to instantly close one person&apos;s link (they see a polite "no longer active" page). Restore re-opens it. Other guests are unaffected.' },
+            ]} />
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">The one rule</p>
+            <p>Keep it vision-level. A link like this can be forwarded, so treat it like a nice business card, not a vault. Anything sensitive - Arete&apos;s regulated detail, real revenue or pricing - stays in person, never behind the link.</p>
+            <p className="mt-3 text-sm text-[#6B6B6B]">Guest link format: <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">app.bodyrecode.au/room/&#123;token&#125;</code>. Data lives in the <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">partner_rooms</code> table.</p>
           </Section>
 
           <Section id="be-ads" title="32. Ads" colour="amber">
