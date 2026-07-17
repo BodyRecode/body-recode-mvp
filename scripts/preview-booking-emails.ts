@@ -2,8 +2,12 @@
 // src/lib/booking-emails.ts, so what lands in the inbox is byte-for-byte what
 // the live routes send.
 //
-// Sample data mirrors the real Vicki lead (custom time request + pre-call
-// brief) so the cards are exercised with realistic multi-line content.
+// The call-prep preview pulls the REAL stored brief (leads.pre_call_brief) and
+// the REAL raw answers (lead_events.notes) for SAMPLE_LEAD_EMAIL. It used to
+// use a hand-typed abridged sample, which rendered ~8% of the true content and
+// made the email look like it had lost information. A preview that shortens its
+// own input is worse than no preview - if you change the sample lead, change it
+// to another real lead, never to invented text.
 //
 // Usage: cd ~/body-recode-mvp && set -a && source .env.local && set +a && npx tsx scripts/preview-booking-emails.ts
 
@@ -22,34 +26,46 @@ const PREP_URL = 'https://bodyrecode.au/book/prep/preview-sample'
 
 const PREFERRED_TIME = 'Friday before 11am or after 3pm; other weekdays after 6pm'
 
-const SAMPLE_REPORT = `VICKI S - PRE-CALL BRIEF
-52F | 70kg | 158cm | Scorecard: 8/15 Depleted | GREEN lead
+// Real lead the previews are rendered from.
+const SAMPLE_LEAD_EMAIL = 'dragonkindred@optusnet.com.au'
 
----
+/** Pull the real stored brief + raw answers so the preview renders true content. */
+async function loadRealLeadContent(): Promise<{ name: string; email: string; report: string; rawAnswers: string }> {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!url || !key) throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY')
+  const headers = { apikey: key, Authorization: `Bearer ${key}` }
 
-SNAPSHOT
+  const leadRes = await fetch(
+    `${url}/rest/v1/leads?select=id,name,email,pre_call_brief&email=ilike.${encodeURIComponent(SAMPLE_LEAD_EMAIL)}`,
+    { headers },
+  )
+  const leads = (await leadRes.json()) as Array<{ id: string; name: string; email: string; pre_call_brief: string | null }>
+  const lead = leads?.[0]
+  if (!lead) throw new Error(`No lead found for ${SAMPLE_LEAD_EMAIL}`)
+  if (!lead.pre_call_brief) throw new Error(`Lead ${SAMPLE_LEAD_EMAIL} has no stored pre_call_brief to preview`)
 
-52-year-old woman coming off a brutal medical year - breast cancer surgery (Jan/Feb), radiotherapy (April), BCC removal (June) - plus chronic facial pain from a 2021 cycling accident and long-term ankle restrictions. Confirmed Depleted, Stress-Stored.
+  // NB: lead_events has no created_at column - it orders by sent_at.
+  const evRes = await fetch(
+    `${url}/rest/v1/lead_events?select=notes&lead_id=eq.${lead.id}&type=eq.prep_form_completed&order=sent_at.desc&limit=1`,
+    { headers },
+  )
+  const events = await evRes.json()
+  if (!Array.isArray(events)) {
+    throw new Error(`lead_events query failed: ${JSON.stringify(events)}`)
+  }
+  const rawAnswers = (events[0] as { notes: string | null } | undefined)?.notes ?? ''
+  if (!rawAnswers) {
+    throw new Error(`No prep_form_completed answers found for ${SAMPLE_LEAD_EMAIL} - preview would render "(none)" and misrepresent the email`)
+  }
 
----
-
-WHAT THEY WANT
-
-Goal: stamina and strength back, and shift the 10kg that arrived during treatment.
-
----
-
-LIKELY OBJECTION + ANGLE
-
-She will probably question whether now is the right time - she may say she wants to wait until she's "more recovered" before investing in coaching.`
-
-const SAMPLE_RAW_ANSWERS = `#1 goal: Working on getting back stamina and strength. Coming back from medical drama (see last question).
-Biggest frustration: Not having sufficient energy to do everything and can't seem to lose the weight I put on over the past 6 months (about 10kg).
-Stats: age 52, Female, 158, 70kg
-Other: Surgery in January and February for breast cancer (DCIS Stage 0) then radiotherapy throughout April.`
+  return { name: lead.name, email: lead.email, report: lead.pre_call_brief, rawAnswers }
+}
 
 async function main() {
   const resend = new Resend(process.env.RESEND_API_KEY)
+  const real = await loadRealLeadContent()
+  console.log(`Loaded real content for ${real.name}: brief ${real.report.length} chars, raw answers ${real.rawAnswers.length} chars\n`)
 
   const emails = [
     {
@@ -74,10 +90,10 @@ async function main() {
     {
       tag: '3/4 coach: call prep brief',
       ...buildCallPrepEmail({
-        name: 'Vicki S',
-        email: 'dragonkindred@optusnet.com.au',
-        report: SAMPLE_REPORT,
-        rawAnswers: SAMPLE_RAW_ANSWERS,
+        name: real.name,
+        email: real.email,
+        report: real.report,
+        rawAnswers: real.rawAnswers,
         leadUrl: LEAD_URL,
       }),
     },

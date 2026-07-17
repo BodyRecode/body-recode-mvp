@@ -34,14 +34,24 @@ import {
 } from '@/lib/email-shell'
 import { darkEmailSignature } from '@/lib/email-signature'
 
+/**
+ * HTML-escape lead-supplied text. Owned by the builders (not the call sites) so
+ * a caller cannot forget it and so previews render identically to live sends.
+ * Every field below that originates from a lead or from AI output is escaped
+ * exactly once, here. Do not pass pre-escaped values in.
+ */
+function esc(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+}
+
 /** Graphite value line for a featured card (e.g. the requested time). Preserves line breaks. */
 function valueLine(value: string): string {
-  return `<p style="margin:0;font-size:16px;color:${EMAIL_GRAPHITE};line-height:1.6;white-space:pre-wrap;font-family:${EMAIL_FF};">${value}</p>`
+  return `<p style="margin:0;font-size:16px;color:${EMAIL_GRAPHITE};line-height:1.6;white-space:pre-wrap;font-family:${EMAIL_FF};">${esc(value)}</p>`
 }
 
 /** Preformatted multi-line block for AI report / raw answers inside a card. */
 function preBlock(text: string, color: string): string {
-  return `<pre style="margin:0;font-family:${EMAIL_FF};font-size:14px;line-height:1.65;color:${color};white-space:pre-wrap;word-wrap:break-word;">${text}</pre>`
+  return `<pre style="margin:0;font-family:${EMAIL_FF};font-size:14px;line-height:1.65;color:${color};white-space:pre-wrap;word-wrap:break-word;">${esc(text)}</pre>`
 }
 
 /** 1. Lead asked for a custom call time -> notify the coach. Reply-to is the lead. */
@@ -57,14 +67,14 @@ export function buildCustomTimeRequestEmail(opts: {
   const html = darkEmailShell(
     `${emailLogo(130)}
 ${emailEyebrow('New booking request')}
-${emailHeading(subject, { size: 26 })}
-${emailBody(`${opts.email}${opts.phone ? ' · ' + opts.phone : ''}`, { color: EMAIL_MUTED, size: 14, bottom: 10 })}
+${emailHeading(esc(subject), { size: 26 })}
+${emailBody(esc(`${opts.email}${opts.phone ? ' · ' + opts.phone : ''}`), { color: EMAIL_MUTED, size: 14, bottom: 10 })}
 ${emailBody('They want to book a call and suggested the times below — reply to this email to confirm and book them in.', { size: 15, bottom: 22 })}
 ${emailFeaturedCard(valueLine(opts.preferredTime), { eyebrow: 'Preferred time' })}
 ${opts.note ? emailFeaturedCard(valueLine(opts.note), { eyebrow: 'Note' }) : ''}
 ${emailCta({ href: opts.leadUrl, label: 'View lead →' })}
 ${darkEmailSignature()}`,
-    { previewText: `${opts.name} suggested: ${opts.preferredTime}` },
+    { previewText: esc(`${opts.name} suggested: ${opts.preferredTime}`) },
   )
   return { subject, html }
 }
@@ -79,7 +89,7 @@ export function buildBookingConfirmationEmail(opts: {
   const html = darkEmailShell(
     `${emailLogo(150)}
 ${emailEyebrow('Booking request received')}
-${emailHeading(`Thanks, ${opts.firstName}`)}
+${emailHeading(`Thanks, ${esc(opts.firstName)}`)}
 ${emailBody("Got your request. I'll get back to you within 24 hours to either confirm the time or suggest the closest slot that works.")}
 ${emailFeaturedCard(valueLine(opts.preferredTime), { eyebrow: 'You requested' })}
 ${emailBody("One thing before we talk: please take 3-4 minutes to fill this in. It means I walk into our call already understanding where you're at, so we can go straight to what matters.")}
@@ -103,14 +113,14 @@ export function buildCallPrepEmail(opts: {
   const html = darkEmailShell(
     `${emailLogo(130)}
 ${emailEyebrow('Pre-call brief')}
-${emailHeading(subject, { size: 26 })}
-${emailBody(opts.email, { color: EMAIL_MUTED, size: 14, bottom: 10 })}
+${emailHeading(esc(subject), { size: 26 })}
+${emailBody(esc(opts.email), { color: EMAIL_MUTED, size: 14, bottom: 10 })}
 ${emailBody('They completed the pre-call form. Here is your prep read.', { size: 15, bottom: 22 })}
 ${emailFeaturedCard(preBlock(opts.report, EMAIL_GRAPHITE))}
 ${emailFeaturedCard(preBlock(opts.rawAnswers || '(none)', EMAIL_BODY), { eyebrow: 'Their raw answers' })}
 ${emailCta({ href: opts.leadUrl, label: 'View lead →' })}
 ${darkEmailSignature()}`,
-    { previewText: `Pre-call brief for ${opts.name}` },
+    { previewText: esc(`Pre-call brief for ${opts.name}`) },
   )
   return { subject, html }
 }
@@ -128,15 +138,15 @@ export function buildSessionConfirmedEmail(opts: {
   const html = darkEmailShell(
     `${emailLogo(130)}
 ${emailHeading('Session confirmed', { size: 28 })}
-${emailBody(`Hey ${opts.firstName}, your session has been booked.`)}
+${emailBody(`Hey ${esc(opts.firstName)}, your session has been booked.`)}
 ${emailFeaturedCard(
       `<p style="margin:0 0 6px;font-size:11px;font-weight:700;color:${EMAIL_BLUE_DARK};letter-spacing:0.12em;text-transform:uppercase;font-family:${EMAIL_FF};">Face-to-Face Session</p>
-<p style="margin:0 0 4px;font-size:18px;font-weight:800;color:${EMAIL_GRAPHITE};font-family:${EMAIL_FF};">${opts.displayDate}</p>
-<p style="margin:0;font-size:14px;color:${EMAIL_MUTED};font-family:${EMAIL_FF};">${opts.displayTime} · ${opts.durationMinutes} min · ${location}</p>`,
+<p style="margin:0 0 4px;font-size:18px;font-weight:800;color:${EMAIL_GRAPHITE};font-family:${EMAIL_FF};">${esc(opts.displayDate)}</p>
+<p style="margin:0;font-size:14px;color:${EMAIL_MUTED};font-family:${EMAIL_FF};">${esc(opts.displayTime)} · ${opts.durationMinutes} min · ${esc(location)}</p>`,
     )}
 ${emailBody('If you need to make any changes, log in to your client portal and visit the Sessions page.')}
 ${darkEmailSignature()}`,
-    { previewText: subject },
+    { previewText: esc(subject) },
   )
   return { subject, html }
 }

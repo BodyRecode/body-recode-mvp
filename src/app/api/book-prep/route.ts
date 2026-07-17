@@ -11,10 +11,6 @@ import { generateCallPrepReport, type PrepAnswers } from '@/lib/call-prep-report
 // The AI synthesis can take a few seconds; give the route room.
 export const maxDuration = 120
 
-function esc(s: string): string {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-}
-
 export async function POST(request: NextRequest) {
   let body: Record<string, unknown>
   try {
@@ -106,11 +102,13 @@ export async function POST(request: NextRequest) {
     const cleanEmail = (lead.email as string) || ''
     const rawAnswers = notesLines.join('\n')
     try {
+      // Raw values: buildCallPrepEmail escapes internally. Passing esc()'d
+      // text here would double-escape (& -> &amp;amp;).
       const prepEmail = buildCallPrepEmail({
-        name: esc(name),
-        email: esc(cleanEmail),
-        report: esc(report),
-        rawAnswers: esc(rawAnswers),
+        name,
+        email: cleanEmail,
+        report,
+        rawAnswers,
         leadUrl,
       })
       await resend.emails.send({
