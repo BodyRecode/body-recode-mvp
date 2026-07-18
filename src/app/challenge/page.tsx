@@ -180,7 +180,7 @@ const WHAT_YOU_GET = [
   { icon: FileText, title: 'Daily Coaching Notes', timing: 'Every day', featured: false,
     desc: 'One note from me each morning inside your portal. What is happening in your body that day, what to expect, and what to actually pay attention to. Sixty seconds.' },
   { icon: Dumbbell, title: '14-Day Training Plan', timing: 'Day 1', featured: false,
-    desc: 'Built for a body in a Depleted State, not a body that is already responding. Lower intensity by design. The job is to pull load, not add it.' },
+    desc: 'Built for a body in a Depleted State, not a body that is already responding. Lower intensity by design, the job is to pull load, not add it. Every session comes two ways, in the gym or at home with a backpack, a band and a chair, so you can start wherever you are.' },
   { icon: Salad, title: 'Nutrition Guide', timing: 'Day 1', featured: false,
     desc: 'Predictable food, predictable timing. The goal is to signal safety to a body that has been in protection mode. Not a diet. Not a deficit. A reset of the inputs.' },
   { icon: Sunrise, title: 'Morning Reset Sequence', timing: 'Day 1', featured: false,
@@ -216,8 +216,8 @@ const FAQS = [
     a: 'Small. A sixty-second coaching note each morning, your normal meals timed a little differently, and short sessions built to be low-intensity. This is not a bootcamp. The work is precision, not volume.',
   },
   {
-    q: 'Do I need a gym?', /* CORRECTED 2026-07-18: plan uses loaded compound lifts (trap bar, DB press, pull-ups) — gym or equivalent home setup IS required */
-    a: 'Yes. The 14-day plan is built around loaded compound lifts like trap bar deadlifts, dumbbell presses and rows, so you need a gym or a home setup with dumbbells, a bar and a pull-up option. The load stays deliberately moderate. The point of these two weeks is to pull load off a depleted body, not train it to failure, but the lifts themselves need equipment.',
+    q: 'Do I need a gym?',
+    a: 'No, you can do this either way. Every session comes in two versions: a gym version with loaded lifts, and an at-home version that needs only a loaded backpack, a resistance band, and a chair or stairs. Follow whichever suits you, and switch any time. The load stays deliberately moderate either way. The point of these two weeks is to pull load off a depleted body, not train it to failure.',
   },
   {
     q: 'I am in perimenopause or menopause, or on medication like a GLP-1. Does this still apply?', /* CONFIRM medical framing with Kade */
