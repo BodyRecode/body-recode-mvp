@@ -208,8 +208,7 @@ const CLIENT_VOICES = [
   },
 ]
 
-// NEW: FAQ content. Answers drafted in BR voice. Two answers flagged for Kade
-// to confirm (equipment + medical) are marked with  /* CONFIRM */  in source.
+// FAQ content, in BR voice. Equipment + medical answers confirmed by Kade 2026-07-18.
 const FAQS = [
   {
     q: 'How much time does this take each day?',
@@ -220,7 +219,7 @@ const FAQS = [
     a: 'No, you can do this either way. Every session comes in two versions: a gym version with loaded lifts, and an at-home version that needs only a loaded backpack, a resistance band, and a chair or stairs. Follow whichever suits you, and switch any time. The load stays deliberately moderate either way. The point of these two weeks is to pull load off a depleted body, not train it to failure.',
   },
   {
-    q: 'I am in perimenopause or menopause, or on medication like a GLP-1. Does this still apply?', /* CONFIRM medical framing with Kade */
+    q: 'I am in perimenopause or menopause, or on medication like a GLP-1. Does this still apply?',
     a: 'Yes. This challenge is built for exactly this kind of body, one where hormones and medications are part of the picture. The read accounts for your biological sex and where you are, which is why it asks. It does not replace medical advice, and nothing here asks you to change your medication.',
   },
   {
