@@ -843,6 +843,69 @@ async function checkContentPublishingPulse(admin: ReturnType<typeof createAdminC
   }
 }
 
+// ─── Personal brand cadence ──────────────────────────────────────────────
+//
+// @kade_dunstone_ is posted MANUALLY (the app never auto-publishes personal
+// brand). So the failure mode is silent: nobody notices when the calendar runs
+// dry and the account goes quiet. This check flags when there's no personal
+// brand post READY (caption written) in the next 3 days, so it pings before a
+// gap opens rather than after.
+function bneDateStr(offsetDays: number): string {
+  const d = new Date(Date.now() + offsetDays * 86400000)
+  return d.toLocaleDateString('en-CA', { timeZone: 'Australia/Brisbane' }) // YYYY-MM-DD
+}
+async function checkPersonalBrandCadence(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
+  try {
+    const days = [0, 1, 2].map(bneDateStr)
+    const { data, error } = await admin
+      .from('calendar_posts')
+      .select('date, title, caption, graphic')
+      .eq('brand', 'personal_brand')
+      .eq('platform', 'instagram')
+      .in('date', days)
+      .order('date', { ascending: true })
+
+    if (error) {
+      return {
+        name: 'Personal Brand Cadence',
+        status: 'failed',
+        detail: `Could not query calendar_posts: ${error.message}`,
+        manualFix: 'Check Supabase — calendar_posts may be missing columns or RLS may be blocking service-role reads.',
+      }
+    }
+
+    const rows = data ?? []
+    const ready = rows.filter(r => r.caption && r.caption.trim())
+
+    if (ready.length === 0) {
+      const detail = rows.length === 0
+        ? `No personal-brand (@kade_dunstone_) posts scheduled for ${days[0]} → ${days[2]}. The account will go quiet.`
+        : `${rows.length} personal-brand slot${rows.length === 1 ? '' : 's'} in the next 3 days but none have a caption written yet.`
+      return {
+        name: 'Personal Brand Cadence',
+        status: 'failed',
+        detail,
+        manualFix: 'Open Content Calendar, add/write a personal-brand post. @kade_dunstone_ is posted by hand from your phone — nothing auto-publishes it.',
+      }
+    }
+
+    const next = ready[0]
+    const missingGraphic = ready.filter(r => !r.graphic || !r.graphic.trim()).length
+    return {
+      name: 'Personal Brand Cadence',
+      status: 'ok',
+      detail: `${ready.length} personal post${ready.length === 1 ? '' : 's'} ready in the next 3 days (next: ${next.date} "${next.title}")${missingGraphic ? ` — heads up: ${missingGraphic} still need a graphic` : ''}`,
+    }
+  } catch (e) {
+    return {
+      name: 'Personal Brand Cadence',
+      status: 'failed',
+      detail: String(e),
+      manualFix: 'Check Supabase connectivity + calendar_posts table.',
+    }
+  }
+}
+
 // ─── Inngest function registration ───────────────────────────────────────
 //
 // Verifies /api/inngest exposes the expected number of functions AND that
@@ -1036,6 +1099,7 @@ export async function GET(request: NextRequest) {
     publishingPulse,
     inngestRegistration,
     funnel,
+    personalBrandCadence,
   ] = await Promise.all([
     checkBookingWrite(admin),
     checkLeadWrite(admin),
@@ -1052,6 +1116,7 @@ export async function GET(request: NextRequest) {
     checkContentPublishingPulse(admin),
     checkInngestRegistration(),
     checkFunnelActivity(admin),
+    checkPersonalBrandCadence(admin),
   ])
 
   const checks: CheckResult[] = [
@@ -1062,7 +1127,7 @@ export async function GET(request: NextRequest) {
     // Data integrity
     clientsIntake, activePrograms, activeNutrition, stuckLeads, pendingIntakes, missedCheckins,
     // Automation + pipeline
-    automation, publishingPulse, inngestRegistration, funnel,
+    automation, publishingPulse, inngestRegistration, funnel, personalBrandCadence,
   ]
 
   const failures = checks.filter(c => c.status === 'failed')
