@@ -31,6 +31,7 @@ import {
   buildMembershipCheckinPromptEmail,
   buildMembershipCheckinReminderEmail,
 } from './membership-emails'
+import { EMAIL_SEQUENCE, STOP_STATUSES as BOOKING_AGENT_STOP_STATUSES } from './booking-agent/sequence'
 
 // ─── Challenge SMS Messages ───────────────────────────────────────────────────
 // Rebuilt 2026-05-30 as Minimal Pulse: 1 morning nudge per day (14 messages)
@@ -2081,5 +2082,65 @@ export const speedToLeadNoShowFunction = inngest.createFunction(
     if (!stillBooked) return { ok: false, reason: 'coach_handled_or_advanced' }
 
     return processSpeedToLeadStep(leadId, 'noshow_reminder', undefined, step)
+  },
+)
+
+// ─── Booking Agent Sequence ──────────────────────────────────────────────────
+// Adapts Brian Mark's "0 to $100K/month" outreach into the BR system: for a
+// scorecard lead who hasn't booked a call, draft a short series of branded
+// touches toward a booked strategy call, then STOP the moment they book.
+//
+// Option A: every touch is DRAFTED for Kade's approval (see draftTouch) — this
+// function never sends. Between touches it re-checks that the lead is still
+// eligible, so it winds itself down as soon as they book, opt out, or Kade
+// pauses/takes over the conversation.
+export const bookingAgentSequenceFunction = inngest.createFunction(
+  {
+    id: 'booking-agent-sequence',
+    retries: 2,
+    // One run per lead — a re-enrol for an already-running lead is ignored.
+    concurrency: [{ key: 'event.data.leadId', limit: 1 }],
+    triggers: [{ event: 'booking-agent/start' }],
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async ({ event, step }: { event: any; step: any }) => {
+    const { leadId } = event.data as { leadId: string }
+    if (!leadId) return { ok: false, reason: 'no_lead' }
+
+    for (const touch of EMAIL_SEQUENCE) {
+      // Wait out this touch's delay (from enrolment for touch 1, else from the
+      // previous touch).
+      await step.sleep(`wait-${touch.key}`, touch.delay)
+
+      // Stop-check: has the lead booked, gone inactive, or been paused by Kade?
+      const stop = await step.run(`stop-check-${touch.key}`, async () => {
+        const admin = createAdminClient()
+        const { data: lead } = await admin
+          .from('leads')
+          .select('status, active, booking_agent_state')
+          .eq('id', leadId)
+          .maybeSingle()
+        if (!lead) return true
+        if (lead.active === false) return true
+        if (lead.booking_agent_state !== 'active') return true
+        return BOOKING_AGENT_STOP_STATUSES.has(lead.status)
+      })
+      if (stop) return { ok: true, stoppedAt: touch.key }
+
+      // Draft the touch into the approval queue (no send).
+      await step.run(`draft-${touch.key}`, async () => {
+        const { draftTouch } = await import('./booking-agent/draft-touch')
+        return draftTouch(leadId, touch)
+      })
+    }
+
+    // Sequence exhausted with no booking — mark the agent done so it won't be
+    // re-checked, and leave the lead for Kade / re-engagement flows.
+    await step.run('mark-done', async () => {
+      const admin = createAdminClient()
+      await admin.from('leads').update({ booking_agent_state: 'done' }).eq('id', leadId)
+    })
+
+    return { ok: true, completed: true }
   },
 )

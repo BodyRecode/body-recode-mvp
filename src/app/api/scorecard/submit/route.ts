@@ -267,6 +267,27 @@ export async function POST(request: NextRequest) {
   await fireTrigger('form_submitted', { leadId }, { form: 'scorecard' })
   console.log('[scorecard/submit] Automation triggered for lead:', leadId)
 
+  // Enrol qualifying leads into the Booking Agent — a short branded outreach
+  // sequence toward a booked strategy call. Option A: it only DRAFTS touches
+  // for Kade to approve, so enrolling here sends nothing on its own. Skip red
+  // flags / red-quality leads, and never re-enrol a lead already in a sequence.
+  if (leadQuality !== 'red' && !redFlag) {
+    try {
+      const { data: agentRow } = await supabase
+        .from('leads')
+        .select('booking_agent_state')
+        .eq('id', leadId)
+        .maybeSingle()
+      if (!agentRow?.booking_agent_state) {
+        await supabase.from('leads').update({ booking_agent_state: 'active' }).eq('id', leadId)
+        await inngest.send({ name: 'booking-agent/start', data: { leadId } })
+        console.log('[scorecard/submit] Booking agent enrolled lead:', leadId)
+      }
+    } catch (agentErr) {
+      console.error('[scorecard/submit] Booking agent enrol failed:', agentErr)
+    }
+  }
+
   // Map body state to its display color
   const stateColor =
     body_state === 'Depleted State' ? '#DC2626' :

@@ -24,6 +24,7 @@ const CRM_CLUSTER: NavCluster = {
     { href: '/dashboard/funnel', label: 'Funnel' },
     { href: '/dashboard/business/crm', label: 'CRM' },
     { href: '/dashboard/business/inbox', label: 'Inbox' },
+    { href: '/dashboard/business/outreach', label: 'Booking Agent' },
   ],
 }
 
