@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 /**
  * The Partner Room — a private, vision-level walkthrough of how Body Recode,
@@ -165,6 +165,8 @@ export default function RoomClient({
               </div>
             </div>
           </div>
+
+          <EngineDemo />
         </div>
       </section>
 
@@ -259,6 +261,150 @@ export default function RoomClient({
   )
 }
 
+/**
+ * Illustrative "see it work" walkthrough embedded in the Engine section.
+ * Everything here is FAKE and canned — a made-up client (Maya), surface-level
+ * reasoning only. No data, no live engine, no model calls. Safe on a public link.
+ */
+const DEMO_TABS = ['Intake', 'The read', 'The plan', 'The check']
+
+function EngineDemo() {
+  const [step, setStep] = useState(0)
+  return (
+    <div className="demo fade">
+      <div className="demo-head">
+        <span className="demo-eyebrow">See it work</span>
+        <p className="demo-sub">
+          A quick example. Meet Maya, a made-up client, so nothing here is real data. Step through
+          how the engine takes her from a first conversation to a checked plan.
+        </p>
+      </div>
+
+      <div className="demo-rail">
+        {DEMO_TABS.map((t, i) => (
+          <button
+            key={t}
+            type="button"
+            className={`demo-tab ${i === step ? 'on' : ''} ${i < step ? 'done' : ''}`}
+            onClick={() => setStep(i)}
+          >
+            <span className="demo-tab-n">{i + 1}</span>
+            {t}
+          </button>
+        ))}
+      </div>
+
+      <div className="demo-stage">
+        {step === 0 && (
+          <div className="d-card">
+            <div className="d-person">
+              <div className="d-av">M</div>
+              <div>
+                <p className="d-name">Maya, 41</p>
+                <p className="d-meta">New client &middot; returning after a long break</p>
+              </div>
+            </div>
+            <p className="d-line">
+              &ldquo;I want to lose fat and stop the 3pm crash. I train three mornings a week, but I&rsquo;m
+              sleeping badly and stress is high.&rdquo;
+            </p>
+            <div className="d-chips">
+              <span>Goal: fat loss</span>
+              <span>3 days / week</span>
+              <span>Poor sleep</span>
+              <span>High stress</span>
+            </div>
+          </div>
+        )}
+
+        {step === 1 && (
+          <div className="d-card">
+            <p className="d-ksmall">What the engine sees</p>
+            <span className="d-badge">Remediation &middot; Restoration</span>
+            <p className="d-read">
+              Maya is depleted, not unfit. Her body needs its floor rebuilt before the ceiling is
+              touched.
+            </p>
+            <div className="d-gates">
+              <div><span>Recovery</span><b className="low">Low</b></div>
+              <div><span>Schedule</span><b className="ok">Good</b></div>
+              <div><span>Regulation</span><b className="low">Low</b></div>
+            </div>
+            <p className="d-binding">Binding constraint: recovery, not effort.</p>
+          </div>
+        )}
+
+        {step === 2 && (
+          <>
+            <div className="d-two">
+              <div className="d-card">
+                <p className="d-ksmall">Training</p>
+                <p className="d-ptitle">Restoration block</p>
+                <ul>
+                  <li>Three sessions a week</li>
+                  <li>Submaximal effort, no failure work</li>
+                  <li>Rebuild capacity, protect recovery</li>
+                </ul>
+              </div>
+              <div className="d-card">
+                <p className="d-ksmall">Nutrition</p>
+                <p className="d-ptitle">Stabilise first</p>
+                <ul>
+                  <li>Protein floor set and even</li>
+                  <li>Fuel the day, end the crashes</li>
+                  <li>No aggressive cut yet</li>
+                </ul>
+              </div>
+            </div>
+            <p className="d-note">Built to the same standard every client gets.</p>
+          </>
+        )}
+
+        {step === 3 && (
+          <div className="d-card d-chat">
+            <p className="d-ksmall">The co-pilot checks it against the doctrine</p>
+            <div className="d-bubble coach">
+              <span className="d-who">Coach</span>
+              Anything off in this plan?
+            </div>
+            <div className="d-bubble ai">
+              <span className="d-who">Co-pilot</span>
+              One thing. The Friday session pushes near-max effort. For a restoration block with
+              recovery this low, that&rsquo;s too hot. Ease it back to submaximal and it fits.
+            </div>
+            <p className="d-caught">Caught before it ever reached the client.</p>
+          </div>
+        )}
+      </div>
+
+      <div className="d-nav">
+        <button
+          type="button"
+          className="d-btn"
+          onClick={() => setStep((s) => Math.max(0, s - 1))}
+          disabled={step === 0}
+        >
+          Back
+        </button>
+        <div className="d-dots">
+          {DEMO_TABS.map((t, i) => (
+            <span key={t} className={i === step ? 'on' : ''} onClick={() => setStep(i)} />
+          ))}
+        </div>
+        {step < 3 ? (
+          <button type="button" className="d-btn primary" onClick={() => setStep((s) => s + 1)}>
+            Next
+          </button>
+        ) : (
+          <button type="button" className="d-btn primary" onClick={() => setStep(0)}>
+            Replay
+          </button>
+        )}
+      </div>
+    </div>
+  )
+}
+
 const CSS = `
 #pr{
   --bg:#0C0F14;--panel:#12161E;--panel-2:#161B25;--line:#232A36;
@@ -339,6 +485,54 @@ const CSS = `
 #pr .close h2{max-width:20ch;}
 #pr .signoff{margin-top:40px;padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px;font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--slate);}
 #pr .signoff b{color:var(--ink);font-weight:600;}
+#pr .demo{margin-top:34px;background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--line);border-radius:18px;padding:24px 22px;}
+#pr .demo-head{margin-bottom:18px;}
+#pr .demo-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-2);}
+#pr .demo-sub{margin:9px 0 0;font-size:14px;color:var(--slate);max-width:60ch;}
+#pr .demo-rail{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+#pr .demo-tab{display:flex;align-items:center;gap:8px;font-family:var(--sans);font-size:13px;color:var(--ink-2);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:7px 14px 7px 8px;cursor:pointer;transition:border-color .2s,color .2s,background .2s;}
+#pr .demo-tab .demo-tab-n{font-family:var(--mono);font-size:11px;width:19px;height:19px;border-radius:50%;background:var(--line);color:var(--ink-2);display:flex;align-items:center;justify-content:center;transition:background .2s,color .2s;}
+#pr .demo-tab.on{border-color:var(--accent);color:var(--ink);background:rgba(76,141,255,.10);}
+#pr .demo-tab.on .demo-tab-n{background:var(--accent);color:#fff;}
+#pr .demo-tab.done .demo-tab-n{background:var(--live);color:#0C0F14;}
+#pr .demo-stage{min-height:236px;}
+#pr .d-card{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:18px;}
+#pr .d-person{display:flex;align-items:center;gap:12px;margin-bottom:13px;}
+#pr .d-av{width:40px;height:40px;border-radius:50%;background:rgba(76,141,255,.14);color:var(--accent-2);font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+#pr .d-name{margin:0;font-weight:700;font-size:15px;color:var(--ink);}
+#pr .d-meta{margin:2px 0 0;font-size:12.5px;color:var(--slate);}
+#pr .d-line{margin:0 0 14px;font-size:15.5px;color:var(--ink);font-style:italic;line-height:1.5;}
+#pr .d-chips{display:flex;flex-wrap:wrap;gap:8px;}
+#pr .d-chips span{font-family:var(--mono);font-size:11px;letter-spacing:.03em;color:var(--ink-2);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:5px 11px;}
+#pr .d-ksmall{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-2);margin:0 0 12px;}
+#pr .d-badge{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#ffce7a;background:rgba(245,165,36,.10);border:1px solid rgba(245,165,36,.3);border-radius:999px;padding:5px 12px;margin-bottom:13px;}
+#pr .d-read{margin:0 0 16px;font-size:16px;color:var(--ink);line-height:1.5;max-width:52ch;}
+#pr .d-gates{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:13px;}
+#pr .d-gates>div{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 12px;text-align:center;}
+#pr .d-gates span{display:block;font-size:10.5px;color:var(--slate);font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;}
+#pr .d-gates b{font-size:14px;font-weight:700;}
+#pr .d-gates b.low{color:#ff9a9a;}
+#pr .d-gates b.ok{color:var(--live);}
+#pr .d-binding{margin:0;font-size:14px;color:var(--ink-2);}
+#pr .d-two{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+#pr .d-ptitle{margin:0 0 9px;font-size:16px;font-weight:700;color:var(--ink);}
+#pr .d-two ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px;}
+#pr .d-two li{font-size:13.5px;color:var(--ink-2);padding-left:16px;position:relative;line-height:1.35;}
+#pr .d-two li::before{content:"";position:absolute;left:2px;top:8px;width:5px;height:5px;border-radius:50%;background:var(--accent);}
+#pr .d-note{margin:14px 0 0;font-size:13.5px;color:var(--slate);text-align:center;}
+#pr .d-chat .d-bubble{border-radius:12px;padding:12px 14px;margin-bottom:10px;font-size:14.5px;line-height:1.5;}
+#pr .d-bubble .d-who{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px;opacity:.7;}
+#pr .d-bubble.coach{background:var(--panel);border:1px solid var(--line);color:var(--ink-2);max-width:70%;}
+#pr .d-bubble.ai{background:rgba(76,141,255,.10);border:1px solid rgba(76,141,255,.3);color:var(--ink);}
+#pr .d-caught{margin:8px 0 0;font-size:13.5px;color:#8ff0c4;font-weight:600;}
+#pr .d-nav{display:flex;align-items:center;justify-content:space-between;margin-top:18px;}
+#pr .d-btn{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--ink-2);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 18px;cursor:pointer;transition:opacity .2s,border-color .2s;}
+#pr .d-btn:disabled{opacity:.4;cursor:default;}
+#pr .d-btn.primary{background:var(--accent);color:#fff;border-color:transparent;}
+#pr .d-dots{display:flex;gap:8px;}
+#pr .d-dots span{width:8px;height:8px;border-radius:50%;background:var(--line);cursor:pointer;transition:background .2s;}
+#pr .d-dots span.on{background:var(--accent);}
+@media (max-width:760px){#pr .d-two{grid-template-columns:1fr;}#pr .d-bubble.coach{max-width:100%;}}
 #pr .fade{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease;}
 #pr .fade.in{opacity:1;transform:none;}
 @media (prefers-reduced-motion:reduce){#pr .fade{opacity:1;transform:none;transition:none;}}
