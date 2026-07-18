@@ -82,6 +82,26 @@ async function graphGet(path: string, fields?: string): Promise<Record<string, u
   return data
 }
 
+const sleep = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms))
+
+// Meta fetches image_url ASYNCHRONOUSLY after /media returns a container id.
+// Calling /media_publish before the container has finished processing throws
+// "Media API 400: Media ID is not available". So we poll the container's
+// status_code until it's FINISHED (or fails) before publishing. Small images
+// usually finish in 1-3 polls; the cap keeps us inside the function timeout.
+async function waitForContainerReady(containerId: string, tries = 15, delayMs = 2000): Promise<void> {
+  for (let i = 0; i < tries; i++) {
+    const data = await graphGet(`/${containerId}`, 'status_code')
+    const status = data.status_code as string | undefined
+    if (status === 'FINISHED') return
+    if (status === 'ERROR' || status === 'EXPIRED') {
+      throw new Error(`Container ${containerId} processing ${status} (Meta could not use the image)`)
+    }
+    await sleep(delayMs) // IN_PROGRESS - wait and re-check
+  }
+  throw new Error(`Container ${containerId} never reached FINISHED after ${(tries * delayMs) / 1000}s`)
+}
+
 export async function publishToInstagram(input: PublishInput): Promise<PublishResult | PublishError> {
   let igId: string
   try {
@@ -105,6 +125,8 @@ export async function publishToInstagram(input: PublishInput): Promise<PublishRe
         })
         childIds.push(child.id)
       }
+      // Each child must finish processing before it can go in a carousel
+      for (const id of childIds) await waitForContainerReady(id)
       // Step 2: create carousel container referencing the children
       const carousel = await graphPost(`/${igId}/media`, {
         media_type: 'CAROUSEL',
@@ -133,9 +155,11 @@ export async function publishToInstagram(input: PublishInput): Promise<PublishRe
     return { ok: true, containerId, postId: null, postUrl: null, scheduled: true }
   }
 
-  // Immediate publish
+  // Immediate publish - wait for Meta to finish processing the container first,
+  // otherwise media_publish throws "Media ID is not available".
   let postId: string
   try {
+    await waitForContainerReady(containerId)
     const published = await graphPost(`/${igId}/media_publish`, { creation_id: containerId })
     postId = published.id
   } catch (e) {
