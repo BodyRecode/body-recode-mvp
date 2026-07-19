@@ -1786,7 +1786,7 @@ export default function StrategyPage() {
                 { day: 'Tuesday', type: 'Contrarian', temp: 'Cold', archetype: 'Rotate 1→4', format: 'Short video or statement graphic', cta: 'None' },
                 { day: 'Wednesday', type: 'Pattern Recognition', temp: 'Cold', archetype: 'Rotate 1→4', format: 'Carousel or graphic card', cta: 'Soft' },
                 { day: 'Friday', type: 'Coach Perspective', temp: 'Warm', archetype: 'Rotate 1→4', format: 'Talking video or photo card', cta: 'Soft' },
-                { day: 'Sunday', type: 'Diagnostic / Funnel', temp: 'Hot', archetype: '01 Stressed Exec', format: 'Graphic card or reel', cta: 'Hard - scorecard link' },
+                { day: 'Sunday', type: 'Challenge Promo (Door 2)', temp: 'Hot', archetype: '01 Stressed Exec', format: 'Graphic card or reel', cta: 'Hard - join the free 14-day Challenge' },
               ].map(row => (
                 <div key={row.day} className="grid grid-cols-6 gap-3 p-3 bg-stone-50 rounded-lg border border-stone-200 text-xs">
                   <div><p className="text-stone-400 mb-0.5">Day</p><p className="font-semibold text-[#1A1A1A]">{row.day}</p></div>
@@ -2223,13 +2223,13 @@ export default function StrategyPage() {
             <p className="text-stone-500 text-xs mb-3">Steady-state ongoing rhythm. Pre-launch is complete - this is the cadence to maintain week after week. What to do each week beyond just posting.</p>
             <div className="space-y-2">
               {[
-                { day: 'Mon', post: true,  action: 'Post (Pattern Recognition - Cold). Reply to all weekend comments within 1hr.' },
-                { day: 'Tue', post: true,  action: 'Post (Contrarian - Cold). DM the last 5 new followers - soft intro, no pitch.' },
-                { day: 'Wed', post: true,  action: 'Post (Coach Perspective - Warm). Check story viewers from last 48hrs - DM anyone warm.' },
+                { day: 'Mon', post: true,  action: 'Post (Authority - Cold · Door 1). Reply to all weekend comments within 1hr.' },
+                { day: 'Tue', post: true,  action: 'Post (Contrarian - Cold · Door 1). DM the last 5 new followers - soft intro, no pitch.' },
+                { day: 'Wed', post: true,  action: 'Post (Pattern Recognition - Cold · Door 1). Check story viewers from last 48hrs - DM anyone warm.' },
                 { day: 'Thu', post: false, action: 'No post. DM anyone who saved a post this week. Review engagement on last 3 posts - note what performed.' },
-                { day: 'Fri', post: true,  action: 'Post (Authority - Cold). Reply to all comments. DM anyone who replies to stories.' },
-                { day: 'Sat', post: false, action: 'No post. Review the week: profile visits, scorecard submissions, follower growth. Note in weekly log.' },
-                { day: 'Sun', post: true,  action: 'Post (Diagnostic/Funnel - Hot → Scorecard CTA). Actively DM anyone who comments asking how to do it.' },
+                { day: 'Fri', post: true,  action: 'Post (Coach Perspective - Warm · Door 1). Reply to all comments. DM anyone who replies to stories.' },
+                { day: 'Sat', post: false, action: 'No post. Review the week: profile visits, scorecard submissions, Challenge sign-ups, follower growth. Note in weekly log.' },
+                { day: 'Sun', post: true,  action: 'Post (Challenge Promo - Hot · Door 2 → "Join the free 14-day Challenge"). The weekly promo slot; turn up wave-scarcity when a wave opens. DM anyone who comments asking how to join.' },
               ].map(r => (
                 <div key={r.day} className="flex items-start gap-3 p-2.5 rounded-lg bg-stone-50 border border-stone-200">
                   <span className="text-xs font-bold text-stone-500 w-7 shrink-0 pt-0.5">{r.day}</span>

@@ -154,7 +154,7 @@ Weekly structure = your canonical 5-post-type week (the Content System tab), wit
 | Tue | **Contrarian** | The Autopsy |
 | Wed | **Pattern Recognition** | What Your ___ Says · The Scenario |
 | Fri | **Coach Perspective** | Receipts · React to DMs |
-| Sun | **Diagnostic / Funnel** | The Read · comment-to-DM read |
+| Sun | **Challenge Promo (Door 2)** | the weekly Challenge invite — "join the free 14-day Challenge" (wave-scarcity when a wave opens) |
 
 One CTA per post, and which one depends on the post **type**: doctrine/engagement posts -> **the scorecard** ("find your state"); Challenge promo posts -> **join the Challenge**. Engagement-first posts earn the comment first. Stories run alongside daily: the "which state are you" mini-quiz, polls, behind-the-scenes reads.
 
