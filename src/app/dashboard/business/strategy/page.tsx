@@ -1318,16 +1318,33 @@ export default function StrategyPage() {
             <Body>Social media is not the funnel - it feeds the funnel. Every piece of content drives curiosity. The scorecard converts that curiosity into qualified leads.</Body>
           </Card>
 
-          {/* Funnel flow */}
+          {/* Funnel flow — two paths off the scorecard */}
           <Card>
-            <SectionLabel>The Funnel</SectionLabel>
-            <div className="flex items-center gap-2 flex-wrap">
-              {['Content / Ad', 'Curiosity', 'Scorecard', 'Zoom 1 Booking', 'Zoom 1 → Zoom 2', 'Client'].map((step, i, arr) => (
-                <div key={step} className="flex items-center gap-2">
-                  <div className="bg-stone-200 border border-stone-300 rounded-lg px-3 py-1.5 text-xs font-medium text-stone-700">{step}</div>
-                  {i < arr.length - 1 && <span className="text-stone-400 text-xs">→</span>}
+            <SectionLabel>The Funnel — two paths off the Scorecard</SectionLabel>
+            <div className="space-y-3">
+              <div>
+                <p className="text-[11px] font-bold text-blue-600 uppercase tracking-widest mb-1.5">Funnel B — primary (consumer)</p>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {['Content / Ad', 'Scorecard', '14-Day Challenge', 'Blueprint $97', 'Membership'].map((step, i, arr) => (
+                    <div key={step} className="flex items-center gap-2">
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg px-3 py-1.5 text-xs font-medium text-blue-700">{step}</div>
+                      {i < arr.length - 1 && <span className="text-stone-400 text-xs">→</span>}
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
+              <div>
+                <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-1.5">Funnel A — higher-intent coaching path</p>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {['Scorecard', 'Performance Check-In', 'Zoom Consult', '1:1 Coaching $299–409/wk'].map((step, i, arr) => (
+                    <div key={step} className="flex items-center gap-2">
+                      <div className="bg-stone-200 border border-stone-300 rounded-lg px-3 py-1.5 text-xs font-medium text-stone-700">{step}</div>
+                      {i < arr.length - 1 && <span className="text-stone-400 text-xs">→</span>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <p className="text-xs text-stone-500">Both share the Scorecard as the front door. Social feeds curiosity; the Scorecard converts it into a qualified, segmented lead.</p>
             </div>
           </Card>
 
@@ -1344,8 +1361,8 @@ export default function StrategyPage() {
             </Card>
             <Card>
               <SectionLabel>Ad Budget</SectionLabel>
-              <p className="text-[#1A1A1A] font-semibold">$20–30/day AUD</p>
-              <p className="text-xs text-stone-500 mt-1">Meta only. LinkedIn stays organic.</p>
+              <p className="text-[#1A1A1A] font-semibold">$25 → $75/day AUD</p>
+              <p className="text-xs text-stone-500 mt-1">Meta only (Option D ramp: $25/day wk 1-2, then $75/day). LinkedIn stays organic.</p>
             </Card>
           </div>
 
@@ -1354,11 +1371,11 @@ export default function StrategyPage() {
             <div className="space-y-3">
               <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
                 {[
-                  { label: 'Attraction', value: 'Scorecard', note: 'Free', color: 'text-stone-700' },
-                  { label: 'Upsell', value: '$37 Report', note: 'Immediate', color: 'text-amber-700' },
-                  { label: 'Commencement', value: '$240 Fee', note: 'On conversion', color: 'text-blue-500' },
-                  { label: 'Continuity', value: '$299–$409/wk', note: 'Recurring', color: 'text-blue-500' },
-                  { label: 'Downsell', value: '$97 Program', note: 'Zoom 1 decline', color: 'text-violet-700' },
+                  { label: 'Front door', value: 'Scorecard', note: 'Free (both funnels)', color: 'text-stone-700' },
+                  { label: 'Funnel B (primary)', value: 'Challenge → Blueprint', note: 'Free → $97 → Membership', color: 'text-blue-500' },
+                  { label: 'Funnel A (coaching)', value: '$240 → $299–409/wk', note: 'Zoom → 1:1', color: 'text-blue-500' },
+                  { label: 'A upsell', value: '$37 Report', note: 'On the coaching path', color: 'text-amber-700' },
+                  { label: 'A downsell', value: '$97 Self-guided', note: 'Zoom decline (≠ Blueprint)', color: 'text-violet-700' },
                 ].map(item => (
                   <div key={item.label} className="bg-stone-200/50 border border-stone-300 rounded-lg px-3 py-2.5 text-center">
                     <p className="text-xs text-stone-500 mb-1">{item.label}</p>
@@ -1653,6 +1670,22 @@ export default function StrategyPage() {
               <li>Reels, captions, ads, emails, landing pages, even error states - all bend back to state-first.</li>
               <li>"I said that already" is the wrong instinct. The next viewer is new. Say it again.</li>
             </ul>
+          </Card>
+
+          <Card className="border-emerald-500/30 bg-emerald-500/5">
+            <SectionLabel>Content Engine · Stop Teaching, Start Reading</SectionLabel>
+            <p className="text-sm text-stone-700 leading-relaxed mb-3">
+              Engagement comes from self-recognition, not information. Every post should make someone <strong>feel seen</strong>, <strong>prove you can read them</strong>, or hand them a <strong>result about themselves</strong> - never just explain a concept. Lead with the feeling in their words, name the state, then interpret. Write sharp enough to catch the high performer who self-scores &quot;fine, just stuck&quot; but is clinically Depleted.
+            </p>
+            <p className="text-xs text-stone-700 leading-relaxed mb-1.5"><strong className="text-[#1A1A1A]">Signature formats, mapped into the 5 post types below:</strong></p>
+            <ul className="text-xs text-stone-700 leading-relaxed space-y-1 list-disc pl-5">
+              <li><strong>Authority</strong> → State of the Data (your real scorecard patterns) · Receipts of the Read (screenshots of &quot;you nailed it&quot;, not before/afters)</li>
+              <li><strong>Pattern Recognition</strong> → What Your ___ Says (cravings / 3pm crash / sleep) · The Scenario (named-character self-recognition)</li>
+              <li><strong>Coach Perspective</strong> → React to DMs · Receipts</li>
+              <li><strong>Contrarian</strong> → The Autopsy (dismantle a viral piece of wrong advice)</li>
+              <li><strong>Diagnostic / Funnel</strong> → The Read (&quot;drop your 3 symptoms, I&apos;ll name your state&quot;) · The Prediction Flex · comment-to-DM personalised read</li>
+            </ul>
+            <p className="text-xs text-stone-500 mt-2">Full detail in <strong className="text-blue-700">Strategy Docs → Body Recode</strong> (Part II). Same 5 types, same archetype rotation - the formats just give each a sharper, repeatable shape.</p>
           </Card>
 
           <Card>
@@ -2468,7 +2501,7 @@ export default function StrategyPage() {
                 { k: 'Phase 1 daily budget', v: '$25 AUD on Stressed Exec ad set only' },
                 { k: 'Phase 1 other ad sets', v: 'Perimenopausal + Slipping HP CREATED but PAUSED' },
                 { k: 'Phase 2 daily budget (post stage gate)', v: '$25 AUD per ad set × 3 = $75/day total' },
-                { k: 'Optimization event', v: 'CompleteRegistration (ad set optimises on this; fires on enrolment via CAPI). Lead also fires — swap ad set to Lead later if desired.' },
+                { k: 'Optimization event', v: 'Lead — the ONLY event the site actually fires. Optimise every ad set on Lead. (CompleteRegistration was never wired; do not select it.)' },
                 { k: 'Action source', v: 'Website' },
                 { k: 'CTA button', v: 'Learn More' },
                 { k: 'Schedule start', v: 'Monday 13 July 2026 (locked 2026-06-29) - same day NEXT_PUBLIC_CHALLENGE_LIVE flips' },

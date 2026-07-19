@@ -38,18 +38,24 @@ The body operates in one of three states, and each needs a different approach - 
 
 Supporting assets: the **Body State Scorecard** (names state + pattern with a confidence tier), the **Fat Map**, the **Six Pillars**, the canonical patterns (Stress-Stored / Insulin-Drift / Estrogen-Shift / Androgen-Decline). Arc verbs: **Decode -> Rewire -> Rebuild** (baked into product names; never invent alternates).
 
-## 4. The funnel (scorecard-first)
+## 4. The funnel (scorecard-first, two paths)
 
-Everything routes to the **Body State Scorecard** first - the free, no-email-until-result diagnostic that turns a stranger into a named, segmented lead. The ladder from there:
+Everything routes to the **Body State Scorecard** first - the free, no-email-until-result diagnostic that turns a stranger into a named, segmented lead. From the one front door, two paths run:
+
+**Funnel B - the PRIMARY consumer path (Challenge-led):**
 
 | Stage | What it is | Price |
 |---|---|---|
-| **Body State Scorecard** | Free 2-minute diagnostic. Names your state + pattern. The universal front door. | Free |
-| **14-Day Body Decode Challenge** | Free 14-day challenge (Funnel B). Day-0 intake, in-portal experience, Day-14 reveal. | Free |
-| **The Blueprint** | The paid next step after the Challenge - your personalised plan off the read. | $97 |
-| **Coaching / Membership** | Ongoing Performance Coaching + membership - the delivery arm the funnel feeds. | Paid tiers |
+| **Body State Scorecard** | Free 2-minute diagnostic. The universal front door. | Free |
+| **14-Day Body Decode Challenge** | Free 14-day challenge. Day-0 intake, in-portal experience, Day-14 reveal - proof the read works before any purchase. | Free |
+| **The Blueprint** | The paid step after the Challenge - your personalised plan off the read. | $97 |
+| **Membership** | Ongoing membership. | Paid |
 
-Two ad streams feed the top: **cold -> Scorecard** (diagnosis-led) and **retargeting -> Challenge + Membership**. Local/warm can route straight to the Challenge. Promos always route to `/scorecard?intent=challenge`, never straight to a sales page. Reach is upstream of conversion - fix the earliest broken gate before blaming a caption.
+**Funnel A - the higher-intent COACHING path:**
+
+Scorecard -> Performance Check-In -> Zoom consultation -> 1:1 Performance Coaching ($299-409/wk). For people ready to work with a coach directly instead of self-serving. The $37 report and $240 commencement fee sit on this path. (Note: a separate Zoom-decline **downsell** offers a $97 self-guided program - distinct from the Blueprint despite the shared price.)
+
+Both paths share the Scorecard as the front door. Promos always route to `/scorecard?intent=challenge`, never straight to a sales page. **Cold -> Scorecard; retargeting -> Challenge + Membership.** Reach is upstream of conversion - fix the earliest broken gate before blaming a caption.
 
 ## 5. How this brand relates to the others
 
@@ -99,6 +105,16 @@ The **pillars** are the themes; the **signature formats** are the repeatable sho
 | **State of the Data** | Aggregate scorecard patterns nobody else has | Authority + un-copyable | Carousel |
 | **The Scenario** | Named-character self-recognition post | Engagement | Static / carousel |
 
+**These formats are variants within your canonical 5 post types** (see the Content System tab) - not a competing system:
+
+- **Authority** -> State of the Data, Receipts of the Read
+- **Pattern Recognition** -> What Your ___ Says, The Scenario
+- **Coach Perspective** -> React to DMs, Receipts
+- **Contrarian** -> The Autopsy
+- **Diagnostic / Funnel** -> The Read, The Prediction Flex, the comment-to-DM read
+
+Same 5 types, same archetype rotation and hook banks - the formats just give each type a sharper, more repeatable, more scroll-stopping shape.
+
 ## 9. The enemy
 
 Give people something to be against: the **eat-less-move-more machine.** Protocol without interpretation. A brand with an enemy builds a movement, not an audience - people share what they're angry about, and being the calm expert who defends them is a magnetic position.
@@ -111,17 +127,17 @@ The giveaway is **a personalised micro-read, not a PDF.** Comment the keyword ->
 
 - **Instagram `@body_recode_` - primary.** 5x/week. **Cold-paid (Meta):** statics only (no reels/video), optimised for the `Lead` event, budget ramps deliberately. **Bio/links -> Scorecard.** **Email:** post-scorecard nurture, Challenge sequence, Blueprint CTA, weekly check-ins.
 
-Starting weekly grid (E = engagement-first, no link; C = click/lead):
+Weekly structure = your canonical 5-post-type week (the Content System tab), with the signature formats slotted in and archetypes rotating 1 -> 4 across the week (Sunday always archetype 01, the Stressed Exec Woman):
 
-| Day | Format | Job | Medium |
-|---|---|---|---|
-| Mon | **The Read** | E | Reel / carousel |
-| Tue | **What Your ___ Says** | E | Carousel |
-| Wed | **The Scenario** or **The Autopsy** | E | Static / reel |
-| Thu | **Receipts** or **React to DMs** | E (proof) | Reel |
-| Fri | **Comment-to-DM read** or **State of the Data** | C | Static + DM |
+| Day | Post type (canonical) | Formats it can run |
+|---|---|---|
+| Mon | **Authority** | State of the Data · The Read |
+| Tue | **Contrarian** | The Autopsy |
+| Wed | **Pattern Recognition** | What Your ___ Says · The Scenario |
+| Fri | **Coach Perspective** | Receipts · React to DMs |
+| Sun | **Diagnostic / Funnel** | The Read · comment-to-DM read |
 
-Stories run alongside daily: the "which state are you" mini-quiz, polls, behind-the-scenes reads. Appointment content: The Read is always Monday, so the audience learns to show up.
+One CTA per post = the Scorecard (engagement-first posts still earn the comment first; the Scorecard stays the single funnel CTA). Stories run alongside daily: the "which state are you" mini-quiz, polls, behind-the-scenes reads.
 
 ## 12. Atomisation (volume without more thinking)
 
