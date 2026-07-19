@@ -41,7 +41,7 @@ export default function KadePage() {
         {/* Clay rule */}
         <div className="w-12 h-px bg-[#B5552F] mx-auto mb-10" />
 
-        {/* FEATURED SECTION — Challenge as hero product, Scorecard as the visible 2-step door */}
+        {/* FEATURED SECTION — Challenge as hero product; scorecard now runs as the Day-0 in-portal gate */}
         <section className="mb-12">
           {/* Section eyebrow with Clay rules either side */}
           <div className="flex items-center gap-3 mb-5">
@@ -51,7 +51,7 @@ export default function KadePage() {
           </div>
 
           <a
-            href={`${brand().marketingDomain}/scorecard?intent=challenge&source=kade`}
+            href={`${brand().marketingDomain}/challenge?source=kade`}
             className="group block w-full rounded-2xl px-7 py-8 transition-all shadow-lg hover:shadow-xl overflow-hidden relative"
             style={{
               background: 'radial-gradient(circle at 20% 0%, #3a2a1f 0%, #2A1E16 55%, #1d130c 100%)',
@@ -110,7 +110,7 @@ export default function KadePage() {
                     1
                   </span>
                   <p className="text-[13px] text-[#D8CDB5] leading-relaxed">
-                    Take the <span className="text-[#FAF3EB] font-semibold">2-minute Body State Scorecard</span>. It reads your starting state and confirms the Challenge is your fit.
+                    <span className="text-[#FAF3EB] font-semibold">Join the free Challenge</span> &mdash; no payment, no card.
                   </p>
                 </div>
                 <div className="flex items-start gap-3.5">
@@ -118,7 +118,7 @@ export default function KadePage() {
                     2
                   </span>
                   <p className="text-[13px] text-[#D8CDB5] leading-relaxed">
-                    Get your state result + your <span className="text-[#FAF3EB] font-semibold">Challenge access in one go.</span>
+                    On Day 0 in the portal, a <span className="text-[#FAF3EB] font-semibold">2-minute Body State Scorecard</span> reads your state and sets your path.
                   </p>
                 </div>
               </div>
@@ -126,7 +126,7 @@ export default function KadePage() {
 
             {/* Full-width CTA button — more presence, clearer click target */}
             <div className="relative flex items-center justify-center gap-2 bg-[#B5552F] group-hover:bg-[#C9633A] text-[#FAF3EB] font-semibold text-base px-5 py-3.5 rounded-lg transition-colors w-full text-center">
-              Start with the Scorecard
+              Join the free Challenge
               <span aria-hidden className="text-lg transition-transform group-hover:translate-x-0.5">→</span>
             </div>
           </a>
