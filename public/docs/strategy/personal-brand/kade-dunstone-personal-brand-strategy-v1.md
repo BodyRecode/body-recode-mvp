@@ -214,9 +214,12 @@ Body state interpretation. Training. Nutrition.
 
 ### Funnel
 
-Ad or content → Body State Scorecard → Performance Check-In → Consultation → Client
+All traffic goes to the Body State Scorecard first. Never direct to purchase. From the scorecard, two funnels run in parallel:
 
-All traffic goes to the scorecard. Never direct to purchase.
+- **Funnel A (consultation):** Scorecard → Performance Check-In → Consultation → coaching client. The warm, higher-touch path.
+- **Funnel B (challenge):** Scorecard → free 14-Day Body Decode Challenge → the Blueprint ($97) → coaching / membership. The self-serve proof path - the free Challenge lets the read prove itself before any purchase.
+
+The scorecard is the shared front door; the two funnels give both a direct consultation route and a low-friction, proof-first route.
 
 ### Target Audience
 
