@@ -1,0 +1,44 @@
+{
+  "_meta": { "out_dir": "/Users/kadedunstone/body-recode-mvp/public/calendar" },
+  "posts": [
+    { "slug": "br-w1_mon_state-of-data", "type": "carousel", "slides": [
+      { "hook": "Here's something", "hook_2": "about our clients." },
+      { "hook": "Every single one", "hook_2": "has the same thing", "sub": "going on underneath." },
+      { "hook": "And it's not", "hook_2": "their age or their job." },
+      { "hook": "It's the state", "hook_2": "their body's in.", "blue": true },
+      { "hook": "They're all", "hook_2": "Depleted.", "sub": "Every one of them.", "blue": true },
+      { "hook": "And these are", "hook_2": "execs. Athletes.", "sub": "The last people you'd call depleted." },
+      { "hook": "That's the catch.", "hook_2": "Discipline hides it.", "sub": "You can feel fine and be running on empty." },
+      { "hook": "So where are", "hook_2": "you actually at?", "sub": "Two minutes. Find out, free.", "is_cta": true, "cta_text": "→ Find your state" }
+    ]},
+    { "slug": "br-w1_tue_autopsy", "type": "contrarian",
+      "hook_1": "It's not menopause.", "hook_2": "It's a misread.",
+      "hook_3": "Your body changed. The old plan didn't.", "hook_3_blue": "true",
+      "sub_1": "And 'just eat less' tells a stressed body it's still under threat." },
+    { "slug": "br-w1_wed_3pm-crash", "type": "carousel", "slides": [
+      { "hook": "Let's talk about", "hook_2": "your 3pm crash." },
+      { "hook": "It's not really", "hook_2": "a coffee problem." },
+      { "hook": "It's a cortisol", "hook_2": "rhythm problem.", "blue": true },
+      { "hook": "It should peak", "hook_2": "in the morning.", "sub": "Under stress, it fires at the wrong times." },
+      { "hook": "So you're wired", "hook_2": "at night, flat by 3.", "sub": "You can't out-discipline a rhythm." },
+      { "hook": "Want to know", "hook_2": "which state you're in?", "sub": "Free. Two minutes.", "is_cta": true, "cta_text": "→ Find your state" }
+    ]},
+    { "slug": "br-w1_fri_slipping-scenario", "type": "carousel", "slides": [
+      { "hook": "A guy came to me.", "hook_2": "52, a partner." },
+      { "hook": "Convinced it was", "hook_2": "just getting old." },
+      { "hook": "No drive.", "hook_2": "No recovery.", "sub": "Sharp one day, foggy the next." },
+      { "hook": "His GP said", "hook_2": "his bloods were fine." },
+      { "hook": "But it wasn't age.", "sub": "Years of stress in a depleted body." },
+      { "hook": "Nobody had", "hook_2": "actually read it.", "sub": "They just said train harder.", "blue": true },
+      { "hook": "If you've accepted", "hook_2": "'getting older' —", "sub": "get the read first.", "is_cta": true, "cta_text": "→ Find your state" }
+    ]},
+    { "slug": "br-w1_sun_challenge-promo", "type": "carousel", "slides": [
+      { "hook": "You don't need", "hook_2": "another meal plan." },
+      { "hook": "Honestly?", "hook_2": "You need a read.", "blue": true },
+      { "hook": "That's what the", "hook_2": "14-day Challenge is.", "sub": "Free. We read what your body's doing." },
+      { "hook": "No slashing calories.", "hook_2": "No punishing sessions.", "sub": "Just the read." },
+      { "hook": "By day 14", "hook_2": "you'll know your state.", "sub": "The thing that should come first." },
+      { "hook": "Come do it", "hook_2": "with us. It's free.", "sub": "No card. You keep the result.", "is_cta": true, "cta_text": "→ Join the Challenge" }
+    ]}
+  ]
+}
