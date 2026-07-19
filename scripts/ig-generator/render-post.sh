@@ -73,6 +73,18 @@ CTA_TEXT="$(JN '.cta_text')"
 CTA_EYEBROW="$(JN '.cta_eyebrow')"
 SOFT_CTA="$(JN '.soft_cta')"
 
+# Auto-shrink the hook pointsize so a long headline never runs off the page.
+# Bold-sans char width is ~0.45*pt; keep the longest hook line under ~920px.
+MAXHOOK=${#HOOK1}
+[ "${#HOOK2}" -gt "$MAXHOOK" ] && MAXHOOK=${#HOOK2}
+[ "${#HOOK3}" -gt "$MAXHOOK" ] && MAXHOOK=${#HOOK3}
+fit_pt() {  # $1 = base pointsize; returns it shrunk if the longest hook would overflow
+  local base=$1
+  [ "${MAXHOOK:-0}" -le 0 ] && { echo "$base"; return; }
+  local ptmax=$(( 92000 / (MAXHOOK * 45) ))
+  if [ "$ptmax" -lt "$base" ]; then echo "$ptmax"; else echo "$base"; fi
+}
+
 if [ -z "$LABEL" ]; then
   case "$TYPE" in
     authority)  LABEL="AUTHORITY" ;;
@@ -93,8 +105,8 @@ case "$TYPE" in
     CMD+=( "$LOGO_B_180" -gravity northwest -geometry +96+96 -compose over -composite )
     CMD+=( -fill "#1B6DFC" -draw "rectangle 96,515 160,523" )
     CMD+=( -font "$SANS_BOLD" -pointsize 20 -fill "#1B6DFC" -annotate +176+537 "$LABEL" )
-    CMD+=( -font "$SANS_BOLD" -pointsize 68 -fill "#1A1A1A" -annotate +96+655 "$HOOK1" )
-    [ -n "$HOOK2" ] && CMD+=( -font "$SANS_BOLD" -pointsize 68 -fill "#1A1A1A" -annotate +96+755 "$HOOK2" )
+    CMD+=( -font "$SANS_BOLD" -pointsize $(fit_pt 68) -fill "#1A1A1A" -annotate +96+655 "$HOOK1" )
+    [ -n "$HOOK2" ] && CMD+=( -font "$SANS_BOLD" -pointsize $(fit_pt 68) -fill "#1A1A1A" -annotate +96+755 "$HOOK2" )
     [ -n "$SUB1"  ] && CMD+=( -font "$SANS"      -pointsize 36 -fill "#3A3A3A" -annotate +96+855 "$SUB1" )
     [ -n "$SUB2"  ] && CMD+=( -font "$SANS"      -pointsize 36 -fill "#3A3A3A" -annotate +96+910 "$SUB2" )
     CMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "#7C7C7C" -gravity south -annotate +0+96 "$HANDLE" )
@@ -109,12 +121,12 @@ case "$TYPE" in
     CMD+=( -size 1080x1350 xc:'#0F0F0F' )
     CMD+=( "$LOGO_W_180" -gravity northwest -geometry +96+96 -compose over -composite )
     if [ -n "$HOOK3" ]; then
-      CMD+=( -font "$SANS_BOLD" -pointsize 96 -fill white       -gravity center -annotate +0-120 "$HOOK1" )
-      CMD+=( -font "$SANS_BOLD" -pointsize 96 -fill "$H2_COLOR" -gravity center -annotate +0-10  "$HOOK2" )
-      CMD+=( -font "$SANS_BOLD" -pointsize 96 -fill "$H3_COLOR" -gravity center -annotate +0+100 "$HOOK3" )
+      CMD+=( -font "$SANS_BOLD" -pointsize $(fit_pt 96) -fill white       -gravity center -annotate +0-120 "$HOOK1" )
+      CMD+=( -font "$SANS_BOLD" -pointsize $(fit_pt 96) -fill "$H2_COLOR" -gravity center -annotate +0-10  "$HOOK2" )
+      CMD+=( -font "$SANS_BOLD" -pointsize $(fit_pt 96) -fill "$H3_COLOR" -gravity center -annotate +0+100 "$HOOK3" )
     else
-      CMD+=( -font "$SANS_BOLD" -pointsize 96 -fill white       -gravity center -annotate +0-60 "$HOOK1" )
-      [ -n "$HOOK2" ] && CMD+=( -font "$SANS_BOLD" -pointsize 96 -fill "$H2_COLOR" -gravity center -annotate +0+50 "$HOOK2" )
+      CMD+=( -font "$SANS_BOLD" -pointsize $(fit_pt 96) -fill white       -gravity center -annotate +0-60 "$HOOK1" )
+      [ -n "$HOOK2" ] && CMD+=( -font "$SANS_BOLD" -pointsize $(fit_pt 96) -fill "$H2_COLOR" -gravity center -annotate +0+50 "$HOOK2" )
     fi
     [ -n "$SUB1" ] && CMD+=( -font "$SANS" -pointsize 36 -fill "rgba(255,255,255,0.88)" -gravity center -annotate +0+260 "$SUB1" )
     [ -n "$SUB2" ] && CMD+=( -font "$SANS" -pointsize 36 -fill "rgba(255,255,255,0.88)" -gravity center -annotate +0+310 "$SUB2" )
@@ -126,8 +138,8 @@ case "$TYPE" in
     CMD+=( "$LOGO_B_180" -gravity northwest -geometry +96+96 -compose over -composite )
     CMD+=( -fill "#1B6DFC" -draw "rectangle 96,495 160,503" )
     CMD+=( -font "$SANS_BOLD" -pointsize 20 -fill "#1B6DFC" -annotate +176+517 "$LABEL" )
-    CMD+=( -font "$GEORGIA_BOLD" -pointsize 58 -fill "#1A1A1A" -annotate +96+625 "$HOOK1" )
-    [ -n "$HOOK2" ] && CMD+=( -font "$GEORGIA_BOLD_ITALIC" -pointsize 58 -fill "#1A1A1A" -annotate +96+695 "$HOOK2" )
+    CMD+=( -font "$GEORGIA_BOLD" -pointsize $(fit_pt 58) -fill "#1A1A1A" -annotate +96+625 "$HOOK1" )
+    [ -n "$HOOK2" ] && CMD+=( -font "$GEORGIA_BOLD_ITALIC" -pointsize $(fit_pt 58) -fill "#1A1A1A" -annotate +96+695 "$HOOK2" )
 
     LIST_COUNT="$(echo "$SPEC" | jq -r '.list // [] | length')"
     Y=805
@@ -193,8 +205,8 @@ case "$TYPE" in
     CMD+=( "$LOGO_W_180" -gravity northwest -geometry +96+96 -compose over -composite )
     CMD+=( -fill "#1B6DFC" -draw "rectangle 96,855 160,863" )
     CMD+=( -font "$SANS_BOLD" -pointsize 20 -fill "#1B6DFC" -gravity northwest -annotate +176+849 "$CTA_EYEBROW" )
-    CMD+=( -font "$SANS_BOLD" -pointsize 56 -fill white -gravity northwest -annotate +96+895 "$HOOK1" )
-    [ -n "$HOOK2" ] && CMD+=( -font "$SANS_BOLD" -pointsize 56 -fill white -gravity northwest -annotate +96+963 "$HOOK2" )
+    CMD+=( -font "$SANS_BOLD" -pointsize $(fit_pt 56) -fill white -gravity northwest -annotate +96+895 "$HOOK1" )
+    [ -n "$HOOK2" ] && CMD+=( -font "$SANS_BOLD" -pointsize $(fit_pt 56) -fill white -gravity northwest -annotate +96+963 "$HOOK2" )
     [ -n "$SUB1"  ] && CMD+=( -font "$SANS"      -pointsize 36 -fill "rgba(255,255,255,0.92)" -gravity northwest -annotate +96+1045 "$SUB1" )
     [ -n "$SUB2"  ] && CMD+=( -font "$SANS"      -pointsize 36 -fill "rgba(255,255,255,0.92)" -gravity northwest -annotate +96+1095 "$SUB2" )
     CMD+=( -fill "#1B6DFC" -draw "roundrectangle 96,1140 396,1192 8,8" )
