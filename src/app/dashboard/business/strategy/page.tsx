@@ -2014,7 +2014,7 @@ export default function StrategyPage() {
 
           <Card className="border-stone-300 bg-stone-100/60">
             <SectionLabel>Historical Reference</SectionLabel>
-            <p className="text-sm text-stone-600 leading-relaxed">The 5-post pre-launch sequence ran <strong className="text-stone-700">8-15 April 2026</strong> and is complete. Kept here as the brand-arrival template for future channels (LinkedIn launch, future products, white-label rollouts). The Founding Client Program references that originally followed Post 5 have been removed - that program is no longer running.</p>
+            <p className="text-sm text-stone-600 leading-relaxed">The 5-post pre-launch sequence ran <strong className="text-stone-700">8-15 April 2026</strong> and is complete. Kept here as the brand-arrival template for future channels (LinkedIn launch, future products, white-label rollouts). The Founding Client Program references that originally followed Post 5 have been removed - that program is no longer running. <strong className="text-amber-700">Note:</strong> the sample-caption CTAs here predate the two-door model - the current rule is CTA by post type (doctrine → scorecard, promo → Challenge; see Overview / Content System).</p>
           </Card>
 
           {/* Tracker */}
@@ -2143,7 +2143,7 @@ export default function StrategyPage() {
 
           <Card className="border-pink-500/30 bg-pink-500/5">
             <SectionLabel>Instagram Organic System</SectionLabel>
-            <p className="text-sm text-stone-700 leading-relaxed">This tab is the <strong className="text-[#1A1A1A]">Instagram</strong> organic-to-ads pathway. LinkedIn runs a separate organic channel (1-2 BR posts/week, executive reframe) with no ad spend tied to it - it&apos;s a slow-burn parallel feed into the same scorecard. See the <strong className="text-blue-700">LinkedIn tab</strong> for that system.</p>
+            <p className="text-sm text-stone-700 leading-relaxed">This tab is the <strong className="text-[#1A1A1A]">Instagram</strong> organic-to-ads pathway. LinkedIn runs a separate organic channel (1-2 BR posts/week, executive reframe) with no ad spend tied to it - it&apos;s a slow-burn parallel feed into the same funnel (two-door model: scorecard + Challenge — see Overview). See the <strong className="text-blue-700">LinkedIn tab</strong> for that system.</p>
           </Card>
 
           {/* Goal */}
@@ -2151,6 +2151,7 @@ export default function StrategyPage() {
             <SectionLabel>The Goal</SectionLabel>
             <p className="text-blue-700 font-semibold text-sm">3 scorecard submissions per week from organic Instagram, for 2 consecutive weeks. That&apos;s the signal that the funnel converts. Then Meta ads go on.</p>
             <p className="text-stone-600 text-sm mt-2">Ads placed on a funnel that doesn&apos;t convert waste money. Ads placed on a funnel that already converts multiply what&apos;s working. Organic proves the model first.</p>
+            <p className="text-xs text-stone-500 mt-2">Two-door model (see Overview): scorecard submissions are the <strong>Door 1</strong> signal; also track <strong>Challenge sign-ups</strong> from promo posts (Door 2). Both count as conversion.</p>
           </Card>
 
           {/* Three levers */}
@@ -2546,7 +2547,7 @@ export default function StrategyPage() {
                       color: 'violet' as const,
                     },
                     {
-                      arch: '03 Slipping High Performer',
+                      arch: '04 Slipping High Performer',
                       demo: 'Men 42-55, Brisbane / interstate, executives + professionals',
                       interests: 'Executive burnout, TRT, men\'s health 40+, longevity, Huberman Lab, Peter Attia, Tim Ferriss, Bryan Johnson',
                       color: 'orange' as const,
@@ -2611,7 +2612,7 @@ export default function StrategyPage() {
             {[
               { name: 'Archetype 01 · Stressed Executive Woman', ads: COLD_ADS.filter(a => a.archetype === 'Stressed Executive Woman') },
               { name: 'Archetype 02 · Perimenopausal Performer', ads: COLD_ADS.filter(a => a.archetype === 'Perimenopausal Performer') },
-              { name: 'Archetype 03 · Slipping High Performer',  ads: COLD_ADS.filter(a => a.archetype === 'Slipping High Performer') },
+              { name: 'Archetype 04 · Slipping High Performer',  ads: COLD_ADS.filter(a => a.archetype === 'Slipping High Performer') },
             ].map(group => (
               <div key={group.name}>
                 <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-2">{group.name}</p>
@@ -2876,7 +2877,7 @@ export default function StrategyPage() {
           {/* How IG and LinkedIn coexist */}
           <Card>
             <SectionLabel>How Instagram and LinkedIn Coexist</SectionLabel>
-            <Body>Both feed the same scorecard. Both reach the same demographic. Different language for the same physiology.</Body>
+            <Body>Both feed the same funnel via the two-door model: LinkedIn drives to the scorecard (Door 1 — &quot;find your state&quot;), with the Challenge as the direct door (Door 2). Same demographic, same physiology, executive language.</Body>
             <div className="mt-4 grid grid-cols-2 gap-3">
               <div className="p-3 rounded-lg bg-pink-500/5 border border-pink-500/20">
                 <p className="text-[10px] font-bold text-pink-400 uppercase tracking-widest mb-2">Instagram</p>
@@ -2973,7 +2974,7 @@ export default function StrategyPage() {
             <Card>
               <SectionLabel>60-Day Launch Plan</SectionLabel>
               <Body>Consistent for 60-90 days while the funnel launches. After that, ads and retargeting carry acquisition. Organic content maintains authority and warm audience.</Body>
-              <p className="text-xs text-stone-400 mt-3">Anchor date: <strong className="text-stone-600">8 April 2026</strong> (Pre-Launch Post 1 = Day 1).</p>
+              <p className="text-xs text-stone-400 mt-3">Anchor date: <strong className="text-stone-600">8 April 2026</strong> (Pre-Launch Post 1 = Day 1). <strong className="text-amber-700">Historical:</strong> this is the original April launch plan and its ad-angle names (Silent Frustration / Contrarian / Diagnosis). Superseded by the current Challenge-led, two-door strategy + archetype ad sets (see Overview / Paid Ads). Kept for reference.</p>
             </Card>
 
             <Card className="border-blue-200 bg-blue-500/5">
