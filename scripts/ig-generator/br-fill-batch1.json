@@ -1,0 +1,11 @@
+{
+  "_meta": { "out_dir": "/Users/kadedunstone/body-recode-mvp/public/calendar" },
+  "posts": [
+    { "slug":"br-fill_0722_belly-fat","type":"contrarian","hook_1":"Belly fat at 45","hook_2":"isn't ageing.","hook_3":"It's a stress readout.","hook_3_blue":"true","sub_1":"Cortisol, not calories. The old rules quietly changed." },
+    { "slug":"br-fill_0727_broken-sleep","type":"authority","hook_1":"5 years of broken sleep","hook_2":"rewired your stress.","sub_1":"The weight you're carrying is downstream of that. Not the cause." },
+    { "slug":"br-fill_0727_blueprint-correction","type":"authority","hook_1":"The Challenge reads it.","hook_2":"The Blueprint corrects it.","sub_1":"The read comes first. Then the work. Never the other way." },
+    { "slug":"br-fill_0728_trt","type":"contrarian","hook_1":"TRT isn't first.","hook_2":"Reading the state is.","sub_1":"'Normal' bloods aren't an optimal state. Read before you medicate." },
+    { "slug":"br-fill_0803_membership-longarc","type":"authority","hook_1":"The read was step one.","hook_2":"The structure is next.","sub_1":"Membership is the layer that compounds the correction over time." },
+    { "slug":"br-fill_0804_protocol","type":"contrarian","hook_1":"The protocol","hook_2":"isn't the work.","hook_3":"The read is.","hook_3_blue":"true","sub_1":"The protocol is just the consequence of reading the state first." }
+  ]
+}

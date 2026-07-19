@@ -107,8 +107,8 @@ case "$TYPE" in
     CMD+=( -font "$SANS_BOLD" -pointsize 20 -fill "#1B6DFC" -annotate +176+537 "$LABEL" )
     CMD+=( -font "$SANS_BOLD" -pointsize $(fit_pt 68) -fill "#1A1A1A" -annotate +96+655 "$HOOK1" )
     [ -n "$HOOK2" ] && CMD+=( -font "$SANS_BOLD" -pointsize $(fit_pt 68) -fill "#1A1A1A" -annotate +96+755 "$HOOK2" )
-    [ -n "$SUB1"  ] && CMD+=( -font "$SANS"      -pointsize 36 -fill "#3A3A3A" -annotate +96+855 "$SUB1" )
-    [ -n "$SUB2"  ] && CMD+=( -font "$SANS"      -pointsize 36 -fill "#3A3A3A" -annotate +96+910 "$SUB2" )
+    [ -n "$SUB1"  ] && CMD+=( \( -size 888x -background white -fill "#3A3A3A" -font "$SANS" -pointsize 36 -gravity northwest caption:"$SUB1" \) -gravity northwest -geometry +96+855 -composite )
+    [ -n "$SUB2"  ] && CMD+=( -font "$SANS"      -pointsize 36 -fill "#3A3A3A" -annotate +96+950 "$SUB2" )
     CMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "#7C7C7C" -gravity south -annotate +0+96 "$HANDLE" )
     ;;
 
@@ -128,8 +128,8 @@ case "$TYPE" in
       CMD+=( -font "$SANS_BOLD" -pointsize $(fit_pt 96) -fill white       -gravity center -annotate +0-60 "$HOOK1" )
       [ -n "$HOOK2" ] && CMD+=( -font "$SANS_BOLD" -pointsize $(fit_pt 96) -fill "$H2_COLOR" -gravity center -annotate +0+50 "$HOOK2" )
     fi
-    [ -n "$SUB1" ] && CMD+=( -font "$SANS" -pointsize 36 -fill "rgba(255,255,255,0.88)" -gravity center -annotate +0+260 "$SUB1" )
-    [ -n "$SUB2" ] && CMD+=( -font "$SANS" -pointsize 36 -fill "rgba(255,255,255,0.88)" -gravity center -annotate +0+310 "$SUB2" )
+    [ -n "$SUB1" ] && CMD+=( \( -size 888x -background none -fill "rgba(255,255,255,0.88)" -font "$SANS" -pointsize 36 -gravity center caption:"$SUB1" \) -gravity center -geometry +0+300 -composite )
+    [ -n "$SUB2" ] && CMD+=( -font "$SANS" -pointsize 36 -fill "rgba(255,255,255,0.88)" -gravity center -annotate +0+380 "$SUB2" )
     CMD+=( -font "$SANS_BOLD" -pointsize 18 -fill "rgba(255,255,255,0.55)" -gravity south -annotate +0+96 "$HANDLE" )
     ;;
 
