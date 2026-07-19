@@ -6,7 +6,7 @@ import { BR_IG_FOOTER, appendBrFooter, stripBrFooter } from '@/lib/br-post-foote
 import { brand } from "@/config/tenant";
 import { Clock, Handshake } from 'lucide-react'
 
-type Tab = 'overview' | 'positioning' | 'content' | 'prelaunch' | 'organic' | 'ads' | 'linkedin' | 'timeline' | 'pages' | 'calendar'
+type Tab = 'overview' | 'positioning' | 'content' | 'prelaunch' | 'organic' | 'ads' | 'linkedin' | 'timeline' | 'pages' | 'calendar' | 'docs'
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'overview', label: 'Overview' },
@@ -19,6 +19,45 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'timeline', label: 'Launch Timeline' },
   { id: 'pages', label: 'Pages' },
   { id: 'calendar', label: 'Content Calendar' },
+  { id: 'docs', label: 'Strategy Docs' },
+]
+
+// Designed, shareable strategy documents per brand. Files live in
+// public/docs/strategy/<brand>/ as .md + .docx + .pdf and are served statically,
+// same pattern as the SaaS-buildout doc library. Regenerate the PDFs via
+// ~/Dropbox/03_BODY_RECODE_COLLECTIVE/_pdf_build/build-sot-pattern-pdf.sh <md> "Title" "Category" "Version" "Subtitle" <brand>.
+type StrategyDoc = { title: string; description: string; mdUrl: string; docxUrl: string; pdfUrl: string }
+const STRATEGY_DOC_GROUPS: { label: string; dot: string; docs: StrategyDoc[] }[] = [
+  {
+    label: 'Body Recode', dot: 'bg-blue-500',
+    docs: [{
+      title: 'Body Recode — Consumer Marketing Strategy',
+      description: 'The consumer demand brand: @body_recode_, the scorecard → Challenge → Blueprint funnel, body-state doctrine, channels, pillars and messaging rules.',
+      mdUrl: '/docs/strategy/body-recode/body-recode-consumer-marketing-strategy-v1.md',
+      docxUrl: '/docs/strategy/body-recode/body-recode-consumer-marketing-strategy-v1.docx',
+      pdfUrl: '/docs/strategy/body-recode/body-recode-consumer-marketing-strategy-v1.pdf',
+    }],
+  },
+  {
+    label: 'Personal Brand', dot: 'bg-violet-400',
+    docs: [{
+      title: 'Kade Dunstone — Personal Brand Strategy',
+      description: 'The @kade_dunstone_ personal brand: positioning, story, the four content pillars, cadence and launch sequence.',
+      mdUrl: '/docs/strategy/personal-brand/kade-dunstone-personal-brand-strategy-v1.md',
+      docxUrl: '/docs/strategy/personal-brand/kade-dunstone-personal-brand-strategy-v1.docx',
+      pdfUrl: '/docs/strategy/personal-brand/kade-dunstone-personal-brand-strategy-v1.pdf',
+    }],
+  },
+  {
+    label: 'The Body Recode Collective', dot: 'bg-sky-400',
+    docs: [{
+      title: 'The Body Recode Collective — GTM & Content Strategy',
+      description: 'The B2B licensing engine: positioning, demand-gen + waitlist posture, the Fit Scorecard funnel, five content pillars, the Emerging Coach lane, cadence and dependencies.',
+      mdUrl: '/docs/strategy/collective/collective-gtm-content-strategy-v1.md',
+      docxUrl: '/docs/strategy/collective/collective-gtm-content-strategy-v1.docx',
+      pdfUrl: '/docs/strategy/collective/collective-gtm-content-strategy-v1.pdf',
+    }],
+  },
 ]
 
 // ── CALENDAR ────────────────────────────────────────────────
@@ -129,6 +168,47 @@ function getDaysInMonth(year: number, month: number) {
 
 function getFirstDayOfMonth(year: number, month: number) {
   return new Date(year, month, 1).getDay()
+}
+
+function StrategyDocCard({ doc }: { doc: StrategyDoc }) {
+  return (
+    <div className="p-3 rounded-xl border border-stone-200 bg-white hover:border-blue-300 transition-colors">
+      <div className="text-[13px] font-semibold text-stone-900 mb-1">{doc.title}</div>
+      <p className="text-[11px] text-stone-600 leading-relaxed mb-2">{doc.description}</p>
+      <div className="flex items-center gap-2 flex-wrap">
+        <a href={doc.pdfUrl} target="_blank" rel="noopener noreferrer"
+          className="text-[11px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-blue-600 text-white hover:bg-blue-700">View .pdf</a>
+        <a href={doc.mdUrl} target="_blank" rel="noopener noreferrer"
+          className="text-[11px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-stone-100 text-stone-700 hover:bg-blue-100 hover:text-blue-700">View .md</a>
+        <a href={doc.docxUrl} download
+          className="text-[11px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-stone-100 text-stone-700 hover:bg-blue-100 hover:text-blue-700">Download .docx</a>
+      </div>
+    </div>
+  )
+}
+
+function StrategyDocs() {
+  return (
+    <Card>
+      <SectionLabel>Strategy Documents</SectionLabel>
+      <p className="text-sm text-stone-600 leading-relaxed mb-5">
+        The full written strategy for each brand, as a designed PDF (share-ready), the editable Word version, and the raw markdown. Each PDF is branded to its own brand.
+      </p>
+      <div className="space-y-6">
+        {STRATEGY_DOC_GROUPS.map(group => (
+          <div key={group.label}>
+            <div className="flex items-center gap-2 mb-2">
+              <span className={`w-2 h-2 rounded-full ${group.dot}`} />
+              <p className="text-xs font-bold text-stone-500 uppercase tracking-widest">{group.label}</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {group.docs.map(doc => <StrategyDocCard key={doc.pdfUrl} doc={doc} />)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </Card>
+  )
 }
 
 function ContentCalendar() {
@@ -3122,6 +3202,8 @@ export default function StrategyPage() {
 
       {/* ── CALENDAR ── */}
       {tab === 'calendar' && <ContentCalendar />}
+
+      {tab === 'docs' && <StrategyDocs />}
     </div>
   )
 }

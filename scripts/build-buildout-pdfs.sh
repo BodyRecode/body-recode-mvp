@@ -2,7 +2,7 @@
 # Build SOT-branded PDFs for every SaaS buildout doc in public/docs/saas-buildout/.
 #
 # Uses the canonical SOT PDF builder at
-# ~/Dropbox/03_STUDIO_OF_TEN/_pdf_build/build-sot-pattern-pdf.sh so every buildout
+# ~/Dropbox/03_BODY_RECODE_COLLECTIVE/_pdf_build/build-sot-pattern-pdf.sh so every buildout
 # doc shares the same brand DNA as other SOT client-facing patterns (warm off-
 # white background, Inter + JetBrains Mono, electric blue accent, "10" logo
 # lockup, category badge, dot-grid + diagonal cover accent).
@@ -17,7 +17,7 @@
 
 set -e
 
-BUILDER="$HOME/Dropbox/03_STUDIO_OF_TEN/_pdf_build/build-sot-pattern-pdf.sh"
+BUILDER="$HOME/Dropbox/03_BODY_RECODE_COLLECTIVE/_pdf_build/build-sot-pattern-pdf.sh"
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 DOCS="$REPO/public/docs/saas-buildout"
 
