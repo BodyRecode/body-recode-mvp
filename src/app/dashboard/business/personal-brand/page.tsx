@@ -101,7 +101,7 @@ function ContentKitTab() {
       <Card>
         <SectionLabel>Brand Colour — Clay</SectionLabel>
         <p className="text-sm text-stone-600 leading-relaxed">
-          One signature colour across the whole @kade_dunstone_ feed &mdash; warm <span className="font-medium text-[#1A1A1A]">Clay</span>, deliberately distinct from Body Recode (Signal Blue), AI Co-Founder (indigo) and Studio of Ten (dark). Pillars are told apart by the eyebrow label, not by colour. Variety comes from format (photo, carousel) and the solid-clay close slide &mdash; not from switching hue.
+          One signature colour across the whole @kade_dunstone_ feed &mdash; warm <span className="font-medium text-[#1A1A1A]">Clay</span>, deliberately distinct from Body Recode (Signal Blue), AI Co-Founder (indigo) and The Collective (sky blue). Pillars are told apart by the eyebrow label, not by colour. Variety comes from format (photo, carousel) and the solid-clay close slide &mdash; not from switching hue.
         </p>
         <div className="mt-4 flex flex-wrap gap-3">
           {[
@@ -707,11 +707,11 @@ function CadenceTab() {
           <Tag color="amber">1 personal-brand post per week</Tag>
         </div>
         <p className="text-sm text-stone-600 leading-relaxed mb-3">
-          Personal brand content (the four pillars) also goes on LinkedIn alongside Studio of Ten posts and Body Recode executive reframe posts. Total LinkedIn feed: 4-6 posts/week across all three channels, posted from the same personal profile.
+          Personal brand content (the four pillars) also goes on LinkedIn alongside The Collective posts and Body Recode executive reframe posts. Total LinkedIn feed: 4-6 posts/week across all three channels, posted from the same personal profile.
         </p>
         <div className="space-y-2">
           {[
-            { channel: 'Studio of Ten', freq: '2-3 posts/wk' },
+            { channel: 'The Collective', freq: '2-3 posts/wk' },
             { channel: 'Personal Brand', freq: '1 post/wk' },
             { channel: 'Body Recode (NEW May 2026)', freq: '1-2 posts/wk' },
           ].map(r => (

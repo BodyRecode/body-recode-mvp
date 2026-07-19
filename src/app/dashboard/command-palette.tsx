@@ -78,7 +78,7 @@ const COMMANDS: CommandItem[] = [
   { id: 'biz-cofounder',   label: 'AI Co-Founder',    href: '/dashboard/business/ai-cofounder',icon: Sparkles,     group: 'Business' },
   { id: 'biz-personal',    label: 'Personal Brand',   href: '/dashboard/business/personal-brand', icon: Sparkles,  group: 'Business' },
   { id: 'biz-website',     label: 'Website',          href: '/dashboard/business/website',     icon: ImageIcon,    group: 'Business' },
-  { id: 'biz-studio',      label: 'Studio of Ten',    href: '/dashboard/business/studio-of-ten', icon: Briefcase,  group: 'Business' },
+  { id: 'biz-collective',  label: 'The Collective',   href: '/dashboard/business/collective', icon: Briefcase,  group: 'Business' },
   { id: 'biz-peer',        label: 'Peer Review',      href: '/dashboard/business/peer-review', icon: Users,        group: 'Business' },
 ]
 

@@ -135,14 +135,14 @@ export default function KadePage() {
         {/* Links — single clay accent across the whole stack */}
         <div className="space-y-3">
 
-          {/* Studio of Ten */}
+          {/* The Collective */}
           <a
-            href="https://studiooften.com"
+            href="https://bodyrecode.au/collective"
             className="group flex items-center justify-between w-full bg-[#FAF3EB] border border-[#E0D1C0] hover:border-[#B5552F] hover:bg-[#EFE4D8] rounded-xl px-5 py-4 transition-colors"
           >
             <div>
               <div className="flex items-center gap-2 mb-0.5">
-                <p className="text-base font-semibold text-[#2A1E16] group-hover:text-[#B5552F] transition-colors">Studio of Ten</p>
+                <p className="text-base font-semibold text-[#2A1E16] group-hover:text-[#B5552F] transition-colors">The Collective</p>
                 <span className="text-[9px] font-bold tracking-[0.15em] text-[#B5552F] uppercase">Launching soon</span>
               </div>
               <p className="text-xs text-[#6E5B4D] italic">Capped 10-client build studio for solo operators</p>

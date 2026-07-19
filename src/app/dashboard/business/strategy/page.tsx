@@ -64,7 +64,7 @@ const STRATEGY_DOC_GROUPS: { label: string; dot: string; docs: StrategyDoc[] }[]
 
 type PostType = 'authority' | 'pattern' | 'contrarian' | 'coach' | 'diagnostic' | 'ad' | 'prelaunch' | 'thread' | 'video' | 'story'
 type CampaignPhase = 'prelaunch' | 'ads' | 'optimise' | 'scale'
-type Brand = 'body_recode' | 'personal_brand' | 'ai_cofounder' | 'studio_of_ten'
+type Brand = 'body_recode' | 'personal_brand' | 'ai_cofounder' | 'collective'
 type Platform = 'instagram' | 'facebook' | 'linkedin'
 
 const PLATFORM_STYLES: Record<Platform, { label: string; badge: string }> = {
@@ -127,7 +127,7 @@ const BRAND_STYLES: Record<Brand, { label: string; handle: string; dot: string; 
   body_recode:    { label: 'Body Recode',    handle: 'body_recode_',       dot: 'bg-blue-500',   filter: 'bg-blue-50 text-blue-500 border-blue-200' },
   personal_brand: { label: 'Personal Brand', handle: 'kade_dunstone_',     dot: 'bg-violet-400', filter: 'bg-violet-500/10 text-violet-700 border-violet-500/30' },
   ai_cofounder:   { label: 'AI Co-Founder',  handle: 'aicofoundermethod.com', dot: 'bg-amber-400',  filter: 'bg-amber-50 text-amber-700 border-amber-200' },
-  studio_of_ten:  { label: 'Studio of Ten',  handle: 'studiooften.com',    dot: 'bg-blue-400',   filter: 'bg-blue-50 text-blue-700 border-blue-200' },
+  collective:     { label: 'The Collective', handle: 'bodyrecode.au/collective', dot: 'bg-sky-500',  filter: 'bg-sky-50 text-sky-700 border-sky-200' },
 }
 
 const POST_TYPE_STYLES: Record<PostType, { label: string; color: string; bg: string; border: string }> = {
@@ -2653,7 +2653,7 @@ export default function StrategyPage() {
             <SectionLabel>Cadence</SectionLabel>
             <div className="space-y-1.5">
               {[
-                { channel: 'Studio of Ten',    freq: '2-3 posts/week', note: 'Already running' },
+                { channel: 'The Collective',   freq: '2-3 posts/week', note: 'Already running' },
                 { channel: 'Personal Brand',   freq: '1 post/week',    note: '4 personal pillars (Body, Thinking, AI, Rebuild)' },
                 { channel: 'Body Recode (NEW)', freq: '1-2 posts/week', note: 'Executive/performance reframe' },
                 { channel: 'TOTAL FEED',        freq: '4-6 posts/week', note: 'Sustainable for one person' },
@@ -3115,7 +3115,7 @@ export default function StrategyPage() {
           {/* LinkedIn */}
           <Card className="border-blue-500/20 bg-blue-500/5">
             <SectionLabel>LinkedIn Profile</SectionLabel>
-            <p className="text-xs text-stone-600 mb-4 leading-relaxed">Posted from Kade&apos;s personal LinkedIn profile. No separate Body Recode LinkedIn page. The profile carries Studio of Ten + Personal Brand + Body Recode (executive reframe) content - 4 to 6 posts/week total. See <strong className="text-blue-700">LinkedIn tab</strong> for the BR pillars and pipeline.</p>
+            <p className="text-xs text-stone-600 mb-4 leading-relaxed">Posted from Kade&apos;s personal LinkedIn profile. No separate Body Recode LinkedIn page. The profile carries The Collective + Personal Brand + Body Recode (executive reframe) content - 4 to 6 posts/week total. See <strong className="text-blue-700">LinkedIn tab</strong> for the BR pillars and pipeline.</p>
             <div className="grid sm:grid-cols-2 gap-3 text-xs">
               <div className="p-3 bg-stone-50 rounded-lg border border-stone-200">
                 <p className="text-stone-400 mb-1">Profile</p>
@@ -3175,7 +3175,7 @@ export default function StrategyPage() {
                 // LinkedIn (launching)
                 { key: 'li_bio',     item: 'LinkedIn personal bio includes Body Recode positioning', defaultDone: false, group: 'LinkedIn' },
                 { key: 'li_biolink', item: 'LinkedIn profile link set to performance.bodyrecode.au/scorecard?source=linkedin_profile', defaultDone: false, group: 'LinkedIn' },
-                { key: 'li_banner',  item: 'LinkedIn banner image set (Studio of Ten banner can carry over until BR-specific is made)', defaultDone: false, group: 'LinkedIn' },
+                { key: 'li_banner',  item: 'LinkedIn banner image set (Collective banner can carry over until BR-specific is made)', defaultDone: false, group: 'LinkedIn' },
                 { key: 'li_post1',   item: 'First BR LinkedIn post scheduled / drafted (Tue 19 May 2026)', defaultDone: false, group: 'LinkedIn' },
               ].map(({ key, item, defaultDone, group }) => {
                 const done = profileSetup[key] ?? defaultDone

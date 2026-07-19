@@ -7,7 +7,7 @@ const CATEGORY_OPTIONS = [
   { value: '',                       label: 'Untagged' },
   { value: 'performance_coaching',   label: 'Performance Coaching' },
   { value: 'body_recode',            label: 'Body Recode (report / Blueprint / Membership)' },
-  { value: 'studio_of_ten',          label: 'Studio of Ten' },
+  { value: 'studio_of_ten',          label: 'The Collective' },
   { value: 'overhead',               label: 'Overhead' },
   { value: 'other',                  label: 'Other' },
 ] as const

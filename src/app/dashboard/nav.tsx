@@ -73,7 +73,7 @@ const BUSINESS_CLUSTER: NavCluster = {
 
 const BRANDS_CLUSTER_BASE: NavLink[] = [
   { href: '/dashboard/business/personal-brand', label: 'Personal Brand' },
-  { href: '/dashboard/business/studio-of-ten', label: 'Studio of Ten' },
+  { href: '/dashboard/business/collective', label: 'The Collective' },
 ]
 
 const META: NavLink[] = [
