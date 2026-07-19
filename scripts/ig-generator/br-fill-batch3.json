@@ -1,0 +1,31 @@
+{
+  "_meta": { "out_dir": "/Users/kadedunstone/body-recode-mvp/public/calendar" },
+  "posts": [
+    { "slug": "br-fill_0805_blueprint-week-carousel", "type": "carousel", "slides": [
+      { "hook": "What a Blueprint", "hook_2": "week looks like." },
+      { "hook": "Not a meal plan.", "hook_2": "Not a bootcamp.", "blue": true },
+      { "hook": "It starts with", "hook_2": "your read.", "sub": "Your pattern sets the week - not a template." },
+      { "hook": "Training set", "hook_2": "to your state.", "sub": "Hard where you can recover. Not everywhere." },
+      { "hook": "Nutrition timed", "hook_2": "to your rhythm.", "sub": "Working with your cortisol, not against it.", "blue": true },
+      { "hook": "Want the read", "hook_2": "it's built on?", "sub": "Start free.", "is_cta": true, "cta_text": "→ Find your state" }
+    ]},
+    { "slug": "br-fill_0807_coach-read-first", "type": "coach", "photo": "2",
+      "hook_1": "Everyone wants", "hook_2": "the plan first.", "sub_1": "I read first." },
+    { "slug": "br-fill_0809_diagnostic-stressed-exec", "type": "diagnostic", "photo": "6",
+      "cta_eyebrow": "FREE · 2 MINUTES",
+      "hook_1": "Wired at night.", "hook_2": "Flat by 3pm?",
+      "sub_1": "That's a cortisol rhythm.",
+      "cta_text": "→ Find your state" },
+    { "slug": "br-fill_0810_authority-read-reveals", "type": "authority",
+      "hook_1": "Read reveals it.", "hook_2": "Blueprint fixes it.",
+      "sub_1": "The free 14-day read names your pattern. The Blueprint is the six-week correction, built for exactly that." },
+    { "slug": "br-fill_0812_two-step-carousel", "type": "carousel", "slides": [
+      { "hook": "Fat loss that holds", "hook_2": "is two steps." },
+      { "hook": "Step one:", "hook_2": "read the pattern.", "blue": true },
+      { "hook": "Most people skip", "hook_2": "step one.", "sub": "They jump straight to the plan." },
+      { "hook": "Step two:", "hook_2": "correct it.", "sub": "Targeted at what the read found.", "blue": true },
+      { "hook": "Read = Challenge.", "hook_2": "Correct = Blueprint." },
+      { "hook": "Start with", "hook_2": "the read. Free.", "sub": "14 days.", "is_cta": true, "cta_text": "→ Find your state" }
+    ]}
+  ]
+}
