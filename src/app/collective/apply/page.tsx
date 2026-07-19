@@ -36,6 +36,11 @@ const CSS = `
 .ca .inp{width:100%;padding:13px 16px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-size:15px;font-family:inherit;color:var(--ink);outline:none;}
 .ca .inp:focus{border-color:var(--acc);}
 .ca .note{font-size:15px;line-height:1.6;color:var(--ink);background:var(--accsoft);border:1px solid var(--accmut);border-radius:14px;padding:18px 20px;}
+@media (max-width:480px){
+  .ca h1{font-size:28px;}
+  .ca .mid{padding:32px 20px;}
+  .ca .barin{padding:14px 20px;}
+}
 `
 
 type Opt = { value: string; label: string }
