@@ -1315,7 +1315,7 @@ export default function StrategyPage() {
           <Card>
             <SectionLabel>Mission</SectionLabel>
             <p className="text-lg font-semibold text-[#1A1A1A] leading-snug mb-2">Interpretation before prescription.</p>
-            <Body>Social media is not the funnel - it feeds the funnel. Every piece of content drives curiosity. The scorecard converts that curiosity into qualified leads.</Body>
+            <Body>Social media is not the funnel - it feeds the funnel. Every piece of content drives curiosity to the Challenge landing page. Sign-up captures the lead; the scorecard (Day-0 in-portal gate) reads their state and routes them.</Body>
           </Card>
 
           {/* Funnel flow — two paths off the scorecard */}
@@ -1325,7 +1325,7 @@ export default function StrategyPage() {
               <div>
                 <p className="text-[11px] font-bold text-blue-600 uppercase tracking-widest mb-1.5">Funnel B — primary (consumer)</p>
                 <div className="flex items-center gap-2 flex-wrap">
-                  {['Content / Ad', 'Scorecard', '14-Day Challenge', 'Blueprint $97', 'Membership'].map((step, i, arr) => (
+                  {['Content / Ad', 'Challenge Landing Page', 'Sign Up', 'Scorecard (portal gate → routes)', 'Blueprint $97', 'Membership'].map((step, i, arr) => (
                     <div key={step} className="flex items-center gap-2">
                       <div className="bg-blue-50 border border-blue-200 rounded-lg px-3 py-1.5 text-xs font-medium text-blue-700">{step}</div>
                       {i < arr.length - 1 && <span className="text-stone-400 text-xs">→</span>}
@@ -1344,7 +1344,7 @@ export default function StrategyPage() {
                   ))}
                 </div>
               </div>
-              <p className="text-xs text-stone-500">Both share the Scorecard as the front door. Social feeds curiosity; the Scorecard converts it into a qualified, segmented lead.</p>
+              <p className="text-xs text-stone-500"><strong className="text-stone-700">All marketing points to the Challenge landing page</strong> (the front door), not the scorecard. After sign-up, the Scorecard is the Day-0 in-portal gate that reads state and routes (including flagging coaching-ready leads into Funnel A). Standalone <code className="bg-stone-200 px-1 rounded">/scorecard</code> stays for direct/legacy links.</p>
             </div>
           </Card>
 

@@ -1,7 +1,7 @@
 # Body Recode - Consumer Marketing Strategy
 
 **Status:** v2.0 - 2026-07-19. One document: the strategy (what and why) and the content engine (how) in one place.
-**Scope:** the **consumer demand brand** - `@body_recode_`, bodyrecode.au marketing, and the scorecard -> Challenge -> Blueprint -> coaching/membership funnel. Not the licensing engine (see the Collective strategy) or the internal coaching delivery (Performance Coaching).
+**Scope:** the **consumer demand brand** - `@body_recode_`, bodyrecode.au marketing, and the Challenge -> Blueprint -> membership funnel (with the scorecard as the Day-0 in-portal routing gate). Not the licensing engine (see the Collective strategy) or the internal coaching delivery (Performance Coaching).
 
 ---
 
@@ -38,24 +38,28 @@ The body operates in one of three states, and each needs a different approach - 
 
 Supporting assets: the **Body State Scorecard** (names state + pattern with a confidence tier), the **Fat Map**, the **Six Pillars**, the canonical patterns (Stress-Stored / Insulin-Drift / Estrogen-Shift / Androgen-Decline). Arc verbs: **Decode -> Rewire -> Rebuild** (baked into product names; never invent alternates).
 
-## 4. The funnel (scorecard-first, two paths)
+## 4. The funnel (Challenge-led; the scorecard is the routing gate, not the front door)
 
-Everything routes to the **Body State Scorecard** first - the free, no-email-until-result diagnostic that turns a stranger into a named, segmented lead. From the one front door, two paths run:
+**All marketing now drives to the Challenge landing page - NOT the scorecard.** The scorecard sits *inside* the Challenge as the Day-0 gate. The flow:
+
+**Content / Ad -> Challenge landing page -> sign up (free 14-Day Body Decode Challenge) -> first portal gate: complete the Body State Scorecard -> the scorecard reads their state and routes them** (which Challenge experience they get, and whether they're flagged coaching-ready).
+
+So the scorecard is no longer the front door - it's the first in-portal gate after signup, and the router. **The Challenge landing page is the front door.**
 
 **Funnel B - the PRIMARY consumer path (Challenge-led):**
 
 | Stage | What it is | Price |
 |---|---|---|
-| **Body State Scorecard** | Free 2-minute diagnostic. The universal front door. | Free |
-| **14-Day Body Decode Challenge** | Free 14-day challenge. Day-0 intake, in-portal experience, Day-14 reveal - proof the read works before any purchase. | Free |
-| **The Blueprint** | The paid step after the Challenge - your personalised plan off the read. | $97 |
+| **Challenge landing page** | Where all marketing points. The front door. | - |
+| **14-Day Body Decode Challenge** | Free. After signup, the **Scorecard is the Day-0 gate** that reads state + routes. Then the in-portal experience, Day-14 reveal - proof the read works before any purchase. | Free |
+| **The Blueprint** | The paid step after the Challenge - personalised plan off the read. | $97 |
 | **Membership** | Ongoing membership. | Paid |
 
 **Funnel A - the higher-intent COACHING path:**
 
-Scorecard -> Performance Check-In -> Zoom consultation -> 1:1 Performance Coaching ($299-409/wk). For people ready to work with a coach directly instead of self-serving. The $37 report and $240 commencement fee sit on this path. (Note: a separate Zoom-decline **downsell** offers a $97 self-guided program - distinct from the Blueprint despite the shared price.)
+For people who want a coach directly (or whom the scorecard flags coaching-ready): Check-In -> Zoom consultation -> 1:1 Performance Coaching ($299-409/wk), with the $37 report + $240 commencement fee. The standalone scorecard at `/scorecard` still exists for direct/legacy links. (The $97 Zoom-decline self-guided **downsell** is distinct from the Blueprint despite the shared price.)
 
-Both paths share the Scorecard as the front door. Promos always route to `/scorecard?intent=challenge`, never straight to a sales page. **Cold -> Scorecard; retargeting -> Challenge + Membership.** Reach is upstream of conversion - fix the earliest broken gate before blaming a caption.
+**Cold -> Challenge landing page; retargeting -> Challenge + Membership.** Reach is upstream of conversion - fix the earliest broken gate before blaming a caption.
 
 ## 5. How this brand relates to the others
 
@@ -76,7 +80,7 @@ Both paths share the Scorecard as the front door. Promos always route to `/score
 
 1. **Scenarios over concepts.** A specific person in a specific moment. "You're 42, training five mornings, cut the wine, scale hasn't moved in eight months" beats "your body may be depleted" every time.
 2. **Their words, not ours.** Open with the exact phrases people write in their scorecard answers and DMs. Sound like the voice already in their head. Keep a swipe file of real lines and pull from it.
-3. **Split the job.** Some posts earn comments and saves (pure value, end on a question, no link). Others drive the click (scorecard). Never ask one post to do both - that's why they currently land neither.
+3. **Split the job.** Some posts earn comments and saves (pure value, end on a question, no link). Others drive the click (the Challenge). Never ask one post to do both - that's why they currently land neither.
 
 ## 8. Pillars x formats (themes meet shows)
 
@@ -137,7 +141,7 @@ Weekly structure = your canonical 5-post-type week (the Content System tab), wit
 | Fri | **Coach Perspective** | Receipts · React to DMs |
 | Sun | **Diagnostic / Funnel** | The Read · comment-to-DM read |
 
-One CTA per post = the Scorecard (engagement-first posts still earn the comment first; the Scorecard stays the single funnel CTA). Stories run alongside daily: the "which state are you" mini-quiz, polls, behind-the-scenes reads.
+One CTA per post = the **Challenge landing page** (engagement-first posts still earn the comment first; the Challenge stays the single funnel CTA). The scorecard is now the in-portal gate, not the marketing destination. Stories run alongside daily: the "which state are you" mini-quiz, polls, behind-the-scenes reads.
 
 ## 12. Atomisation (volume without more thinking)
 
@@ -174,15 +178,15 @@ Run against the current style for 2-3 weeks; let the numbers pick winners, then 
 
 ## 17. Messaging rules (do / don't)
 
-**Do:** lead with the stuck feeling; name the state; **write sharp enough to catch the high performer who self-scores "fine, just stuck" but is clinically Depleted** (the scorecard underestimates depletion - do not soft-pedal); make the Scorecard the destination; use proof (real trajectories, with consent); keep the read ahead of the prescription; prove you can read people rather than teach them.
+**Do:** lead with the stuck feeling; name the state; **write sharp enough to catch the high performer who self-scores "fine, just stuck" but is clinically Depleted** (the scorecard underestimates depletion - do not soft-pedal); make the **Challenge landing page** the destination; use proof (real trajectories, with consent); keep the read ahead of the prescription; prove you can read people rather than teach them.
 
 **Don't:** open cold with doctrine vocabulary; sell the Blueprint/coaching before the Scorecard; run reels/video in cold-paid ad sets; use colour photos of Kade in BR graphics; ask one post to both earn engagement and drive a click; blur into the coach-licensing (Collective) audience.
 
 **Never say or do:** fitness clichés ("crush it", "no excuses", "grind", "hustle"); blame the client for biological symptoms; shame or guilt messaging; hype or exaggerated promises; long-winded clinical explanations; direct selling (always guide, never push).
 
-**CTA rules:** Instagram = **one CTA per post**, and it's "take the Scorecard" (one job per post). LinkedIn = CTA every **4-5 posts only**; most posts build credibility without selling.
+**CTA rules:** Instagram = **one CTA per post**, and it's "join the Challenge" (the free 14-day Challenge landing page - one job per post). LinkedIn = CTA every **4-5 posts only**; most posts build credibility without selling.
 
-**Every post follows the 5-step frame:** (1) **Insight** - the physiological truth; (2) **Signal** - what it means for them; (3) **Shift** - reframe their understanding; (4) **Solution** - the Body Recode system or action; (5) **Momentum** - end with clarity or direction. It must make them **feel** *"finally, someone gets it,"* then **think** *"I need to take that scorecard."*
+**Every post follows the 5-step frame:** (1) **Insight** - the physiological truth; (2) **Signal** - what it means for them; (3) **Shift** - reframe their understanding; (4) **Solution** - the Body Recode system or action; (5) **Momentum** - end with clarity or direction. It must make them **feel** *"finally, someone gets it,"* then **think** *"I need to join that challenge."*
 
 **Tone (6 principles):** intelligent not complicated · confident not arrogant · direct not blunt · warm not soft · scientific not clinical · forward-thinking not abstract.
 
