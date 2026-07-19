@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
     console.error('[scorecard/submit] Failed to parse JSON body:', e)
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400, headers: CORS })
   }
-  const { first_name, last_name, email, phone, sms_opt_in, score, body_state, source, section_scores, approach_response, investment_readiness, biological_sex, age_band, fat_storage, cycle_status } = body as {
+  const { first_name, last_name, email, phone, sms_opt_in, score, body_state, source, section_scores, approach_response, investment_readiness, biological_sex, age_band, fat_storage, cycle_status, situation_text } = body as {
     first_name: string
     last_name?: string
     email: string
@@ -86,7 +86,12 @@ export async function POST(request: NextRequest) {
     age_band?: AgeBand
     fat_storage?: FatStorage
     cycle_status?: CycleStatus
+    situation_text?: string
   }
+  // Voice-of-customer: the taker's own words. Trim + cap length defensively.
+  const situationText: string | null = typeof situation_text === 'string' && situation_text.trim()
+    ? situation_text.trim().slice(0, 600)
+    : null
 
   // Whitelist the Fat Map typing signals so a malformed payload can never
   // write a junk value or violate the leads CHECK constraints.
@@ -209,6 +214,7 @@ export async function POST(request: NextRequest) {
       cycle_status: cycleVal,
       scorecard_profile: fatMapProfile,
       scorecard_profile_confidence: profileConfidence,
+      situation_text: situationText,
       updated_at: new Date().toISOString(),
     })
     .eq('id', leadId)
