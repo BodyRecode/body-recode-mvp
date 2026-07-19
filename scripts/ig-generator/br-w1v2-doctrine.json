@@ -1,0 +1,30 @@
+{
+  "_meta": { "out_dir": "/Users/kadedunstone/body-recode-mvp/public/calendar" },
+  "posts": [
+    { "slug": "br-w1v2_mon_state-of-data", "type": "ad",
+      "label": "FREE · 2-MINUTE BODY STATE SCORECARD", "soft_cta": "Find your state. No payment.",
+      "hook_1": "Every client. Same read.", "hook_2": "Depleted.",
+      "sub_1": "Doesn't matter their age or job. Discipline just hides it. So where are you actually at?",
+      "cta_text": "Find your state" },
+    { "slug": "br-w1v2_tue_autopsy", "type": "ad",
+      "label": "FREE · 2-MINUTE BODY STATE SCORECARD", "soft_cta": "Find your state. No payment.",
+      "hook_1": "It's not menopause.", "hook_2": "It's a misread.",
+      "sub_1": "Your body changed states, and 'just eat less' only tells a stressed body it's still under threat.",
+      "cta_text": "Find your state" },
+    { "slug": "br-w1v2_wed_3pm-crash", "type": "ad",
+      "label": "FREE · 2-MINUTE BODY STATE SCORECARD", "soft_cta": "Find your state. No payment.",
+      "hook_1": "Wired at night.", "hook_2": "Flat by 3pm.",
+      "sub_1": "That's not a caffeine problem. It's your cortisol rhythm, stuck in protection mode.",
+      "cta_text": "Find your state" },
+    { "slug": "br-w1v2_fri_slipping-scenario", "type": "ad",
+      "label": "FREE · 2-MINUTE BODY STATE SCORECARD", "soft_cta": "Find your state. No payment.",
+      "hook_1": "52, and sure it was", "hook_2": "just getting old.",
+      "sub_1": "His bloods were 'fine.' But nobody had read the state underneath. That was the whole problem.",
+      "cta_text": "Find your state" },
+    { "slug": "br-w1v2_sun_challenge-promo", "type": "ad",
+      "label": "FREE · 14-DAY BODY DECODE CHALLENGE", "soft_cta": "Find your pattern in 14 days. No payment.",
+      "hook_1": "You don't need", "hook_2": "another meal plan.",
+      "sub_1": "You need a read. That's exactly what the free 14-day Challenge gives you.",
+      "cta_text": "Join the free 14-day Challenge" }
+  ]
+}
