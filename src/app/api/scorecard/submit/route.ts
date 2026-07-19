@@ -219,6 +219,33 @@ export async function POST(request: NextRequest) {
     })
     .eq('id', leadId)
 
+  // Enrol qualifying leads into the Booking Agent — a short branded outreach
+  // sequence toward a booked strategy call. Option A: it only DRAFTS touches
+  // for Kade to approve, so enrolling here sends nothing on its own. Skip red
+  // flags / red-quality leads, and never re-enrol a lead already in a sequence.
+  //
+  // Runs HERE (right after the scorecard write) rather than at the tail of the
+  // handler: the earlier position guarantees enrollment survives even if a
+  // later step (brief gen, event logging, workflow trigger) throws. Diagnosed
+  // 2026-07-19 after finding 0/119 leads enrolled — the tail-position block
+  // was being skipped whenever anything upstream aborted the request.
+  if (leadQuality !== 'red' && !redFlag) {
+    try {
+      const { data: agentRow } = await supabase
+        .from('leads')
+        .select('booking_agent_state')
+        .eq('id', leadId)
+        .maybeSingle()
+      if (!agentRow?.booking_agent_state) {
+        await supabase.from('leads').update({ booking_agent_state: 'active' }).eq('id', leadId)
+        await inngest.send({ name: 'booking-agent/start', data: { leadId } })
+        console.log('[scorecard/submit] Booking agent enrolled lead:', leadId)
+      }
+    } catch (agentErr) {
+      console.error('[scorecard/submit] Booking agent enrol failed:', agentErr)
+    }
+  }
+
   // Auto-generate the pre-call brief from the scorecard data.
   // Wrapped so any failure here never blocks the submit flow.
   try {
@@ -246,13 +273,17 @@ export async function POST(request: NextRequest) {
   const qualifierNote = leadQuality
     ? ` Quality: ${leadQuality}${redFlag ? ' (RED FLAG)' : ''}. Approach: ${approach_response}. Investment: ${investment_readiness}.`
     : ''
-  await logLeadEvent({
-    leadId,
-    type: 'scorecard_completed',
-    subject: 'Scorecard completed',
-    notes: `Score: ${score}/15. Body state: ${body_state}.${qualifierNote}${section_scores ? ' Sections: ' + JSON.stringify(section_scores) : ''}`,
-  })
-  console.log('[scorecard/submit] Event logged for lead:', leadId)
+  try {
+    await logLeadEvent({
+      leadId,
+      type: 'scorecard_completed',
+      subject: 'Scorecard completed',
+      notes: `Score: ${score}/15. Body state: ${body_state}.${qualifierNote}${section_scores ? ' Sections: ' + JSON.stringify(section_scores) : ''}`,
+    })
+    console.log('[scorecard/submit] Event logged for lead:', leadId)
+  } catch (logErr) {
+    console.error('[scorecard/submit] Lead event logging failed:', logErr)
+  }
 
   // Persist SMS opt-in + fire speed-to-lead pipeline. Both silent-fail —
   // scorecard submission never depends on the SMS pipeline succeeding.
@@ -269,30 +300,19 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  // Fire form_submitted trigger for scorecard-specific automations
-  await fireTrigger('form_submitted', { leadId }, { form: 'scorecard' })
-  console.log('[scorecard/submit] Automation triggered for lead:', leadId)
-
-  // Enrol qualifying leads into the Booking Agent — a short branded outreach
-  // sequence toward a booked strategy call. Option A: it only DRAFTS touches
-  // for Kade to approve, so enrolling here sends nothing on its own. Skip red
-  // flags / red-quality leads, and never re-enrol a lead already in a sequence.
-  if (leadQuality !== 'red' && !redFlag) {
-    try {
-      const { data: agentRow } = await supabase
-        .from('leads')
-        .select('booking_agent_state')
-        .eq('id', leadId)
-        .maybeSingle()
-      if (!agentRow?.booking_agent_state) {
-        await supabase.from('leads').update({ booking_agent_state: 'active' }).eq('id', leadId)
-        await inngest.send({ name: 'booking-agent/start', data: { leadId } })
-        console.log('[scorecard/submit] Booking agent enrolled lead:', leadId)
-      }
-    } catch (agentErr) {
-      console.error('[scorecard/submit] Booking agent enrol failed:', agentErr)
-    }
+  // Fire form_submitted trigger for scorecard-specific automations.
+  // Wrapped so a workflow-trigger failure can never abort the submit flow
+  // (and, historically, silently skip the Booking Agent enrollment that used
+  // to sit right after this call).
+  try {
+    await fireTrigger('form_submitted', { leadId }, { form: 'scorecard' })
+    console.log('[scorecard/submit] Automation triggered for lead:', leadId)
+  } catch (triggerErr) {
+    console.error('[scorecard/submit] form_submitted trigger failed:', triggerErr)
   }
+
+  // (Booking Agent enrollment now runs earlier, right after the scorecard
+  // write — see above.)
 
   // Map body state to its display color
   const stateColor =
