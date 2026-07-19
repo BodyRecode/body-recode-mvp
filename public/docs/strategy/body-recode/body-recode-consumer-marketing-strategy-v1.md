@@ -62,6 +62,34 @@ For people who want a coach directly (or whom the scorecard flags coaching-ready
 
 **Cold -> either door by content type; retargeting -> Challenge + Membership.** Reach is upstream of conversion - fix the earliest broken gate before blaming a caption.
 
+## 4b. The evergreen ladder (always-on marketing model)
+
+**All three stages are evergreen. Nothing "launches" - the ladder runs continuously.** The Challenge is always open (fed by ads), the Blueprint is always available, and Membership joins the same always-on loop once live. So we market it as a steady engine, not a launch sequence. No false urgency, no "doors closing" - just a permanent rhythm that fills the top and monetises the back.
+
+**Timeline (evergreen from each go-live):** Challenge live (13 Jul, ongoing). **Blueprint live 27 Jul.** **Membership ~7 Sep** (≈6 weeks after the Blueprint). Every stage stays on after its go-live.
+
+**1. Protect the Challenge engine - never disrupt what works.** Cold Meta ads -> the free Challenge, unchanged. That ~2-3 sign-ups/day is the volume engine; it runs untouched. Organic doctrine content keeps feeding the scorecard/Challenge too. **Cold traffic always enters through the free Challenge** - low friction is why it converts. We never point cold ads at a paid product.
+
+**2. The Blueprint is a monetisation layer aimed at WARM audiences only.** It's the paid "now correct it" step *after* the read, so we promote it to people who've already met us - never to cold. Three warm channels:
+- **The Day-14 -> Blueprint handoff (primary path).** At the Day-14 reveal the portal delivers the read, then the CTA becomes the Blueprint: *"you've seen the pattern - the Blueprint is the 6-week correction."* Email + in-portal. Warmest possible audience (they just watched the read prove itself), so this converts hardest. Built into the Challenge flow - runs automatically for every cohort, forever.
+- **Retargeting ads -> Blueprint.** Audience = Challenge completers + scorecard finishers + video-viewers/engagers. Optimise for Blueprint purchase. Stand this up ~27 Jul.
+- **~1 organic Blueprint post/week** to existing followers (the rotating Sunday promo slot, below).
+
+**3. Content = a permanent weekly loop with a rotating promo slot.** Run the section-11 weekly structure (Mon Authority / Tue Contrarian / Wed Pattern / Fri Coach doctrine -> scorecard; **Sun = the promo slot**) *forever*. The only thing that changes over time is what the Sunday promo points at:
+- **now -> 27 Jul:** promo = Challenge invite (keep filling it)
+- **from 27 Jul:** rotate the promo ~**2 Challenge : 1 Blueprint** (Blueprint's live; warm followers get it)
+- **from mid-Aug:** fold in soft **Membership teases** ("what comes after the correction") building toward ~7 Sep
+- **from ~7 Sep:** Membership joins the rotation; the loop then cycles all three indefinitely
+
+Doctrine posts (Mon-Fri) always drive to the scorecard/Challenge regardless of date - they're top-of-funnel and never change.
+
+**4. Ads = always-on campaigns (two now, three from Sep):**
+- **Cold -> Challenge** - the engine. Never stops. (Meta, optimise for `Lead`.)
+- **Retargeting -> Blueprint** - monetise the warm audience. Live ~27 Jul.
+- **+ Retargeting -> Membership** - from ~Sep, audience = Blueprint buyers.
+
+**5. No launch urgency, ever.** Evergreen means steady positioning, not "launching now / spots closing." The line is always the same: *the Challenge reads your state (free), the Blueprint corrects it ($97), Membership compounds it (ongoing)* - all three always available, each promoted to the right temperature of audience.
+
 ## 5. How this brand relates to the others
 
 - **Body Recode (this doc)** = consumer demand. Fills the funnel and feeds coaching.
@@ -132,7 +160,9 @@ Alongside the doctrine content, run a **direct Challenge-invite layer** - the po
 - **Why now** - wave scarcity (spots left).
 - **Objection-kill** - "free, no credit card, you keep the result."
 
-Promo posts carry the **Door 2 CTA** ("join the free 14-day Challenge"); doctrine posts carry the **Door 1 CTA** ("find your state"). A typical week = 4 doctrine + 1 promo, with promo turned up at wave-open.
+Promo posts carry the **Door 2 CTA** ("join the free 14-day Challenge"); doctrine posts carry the **Door 1 CTA** ("find your state"). A typical week = 4 doctrine + 1 promo.
+
+**The promo slot rotates its target over time (see 4b - evergreen ladder):** Challenge-only until 27 Jul, then ~2 Challenge : 1 Blueprint once the Blueprint's live, then soft Membership teases folded in from mid-Aug toward the ~7 Sep Membership go-live. Blueprint/Membership promo goes to the **warm** audience (existing followers); the Challenge invite stays the cold/curiosity front door. Because the ladder is evergreen, lean on genuine reasons-to-act (the read, the result, the correction) rather than "spots closing" - the only real scarcity is the Challenge wave cap, used sparingly at wave-open, not a permanent countdown.
 
 ## 9. The enemy
 
@@ -154,7 +184,7 @@ Weekly structure = your canonical 5-post-type week (the Content System tab), wit
 | Tue | **Contrarian** | The Autopsy |
 | Wed | **Pattern Recognition** | What Your ___ Says · The Scenario |
 | Fri | **Coach Perspective** | Receipts · React to DMs |
-| Sun | **Challenge Promo (Door 2)** | the weekly Challenge invite — "join the free 14-day Challenge" (wave-scarcity when a wave opens) |
+| Sun | **Promo slot (Door 2, rotating)** | the weekly promo — Challenge invite by default; rotates to Blueprint (from 27 Jul, ~1-in-3, warm audience) and soft Membership teases (mid-Aug -> ~7 Sep). See 4b. |
 
 One CTA per post, and which one depends on the post **type**: doctrine/engagement posts -> **the scorecard** ("find your state"); Challenge promo posts -> **join the Challenge**. Engagement-first posts earn the comment first. Stories run alongside daily: the "which state are you" mini-quiz, polls, behind-the-scenes reads.
 
