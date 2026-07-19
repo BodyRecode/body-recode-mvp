@@ -218,6 +218,30 @@ export const MARKETING_HTML = String.raw`
   .foot .meta{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--mut);}
   .foot .meta b{color:var(--brblue);}
   .col{min-height:100vh;}
+  /* ===== Mobile responsive (added 2026-07-20) ===== */
+  @media (max-width: 860px){
+    .col{overflow-x:hidden;}
+    .wrap{padding:0 22px;}
+    .navin{padding:14px 22px;}
+    .navlinks{gap:14px;}
+    .navlinks .pwr{display:none;}
+    .sec{padding:64px 0;}
+    .hero{grid-template-columns:1fr;gap:34px;padding:34px 0 44px;}
+    .grid2,.three,.offergrid,.fgrid,.shots,.fitgrid,.terms,.statband,.layers,.founder,.qa{grid-template-columns:1fr;}
+    .stackin{padding:16px 22px;}
+    .glow{width:340px;height:340px;top:-120px;}
+    img{max-width:100%;height:auto;}
+    h1{font-size:37px;}
+    h2,.final h2{font-size:28px;}
+    .num{font-size:30px;}
+    .lead,.hsub{font-size:16px;}
+  }
+  @media (max-width: 460px){
+    h1{font-size:30px;}
+    h2,.final h2{font-size:24px;}
+    .cta{flex-direction:column;align-items:stretch;}
+    .cta .primary,.cta .ghost{text-align:center;}
+  }
 </style>
 <div class="col">
 
