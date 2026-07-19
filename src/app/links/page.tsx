@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function LinksPage() {
   const t = brand()
   const challengeLive = isProductLive('challenge')
-  const scorecardChallenge = `${t.marketingDomain}/scorecard?intent=challenge&source=bio`
+  const challengeSignup = `${t.marketingDomain}/challenge?source=bio`
 
   const links = [
     {
@@ -49,9 +49,9 @@ export default function LinksPage() {
           </p>
         </div>
 
-        {/* Featured — the Challenge, via the Scorecard */}
+        {/* Featured — the Challenge (scorecard now runs as the Day-0 in-portal gate) */}
         <a
-          href={scorecardChallenge}
+          href={challengeSignup}
           className="group block w-full rounded-[18px] p-7 mb-6 relative overflow-hidden transition-shadow hover:shadow-2xl"
           style={{ background: 'linear-gradient(140deg, #17191F 0%, #0C1B33 100%)', boxShadow: '0 14px 34px rgba(11,31,51,0.28)' }}
         >
@@ -99,11 +99,11 @@ export default function LinksPage() {
               className="flex items-center justify-center gap-2 font-bold text-[15px] px-5 py-3.5 rounded-xl w-full text-center transition-colors"
               style={{ background: '#1B6DFC', color: '#FFFFFF' }}
             >
-              {challengeLive ? 'Start with the Scorecard' : 'Join the waitlist'}
+              {challengeLive ? 'Join the free Challenge' : 'Join the waitlist'}
               <span aria-hidden className="transition-transform group-hover:translate-x-0.5">&rarr;</span>
             </div>
             <p className="text-center text-[11px] mt-3" style={{ color: 'rgba(255,255,255,0.45)' }}>
-              Start with the 2-minute Body State Scorecard. It reads your state and confirms your fit.
+              Free to join. On Day 0 inside the portal, a 2-minute scorecard reads your state and sets your path.
             </p>
           </div>
         </a>
