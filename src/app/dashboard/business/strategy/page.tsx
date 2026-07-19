@@ -36,6 +36,12 @@ const STRATEGY_DOC_GROUPS: { label: string; dot: string; docs: StrategyDoc[] }[]
       mdUrl: '/docs/strategy/body-recode/body-recode-consumer-marketing-strategy-v1.md',
       docxUrl: '/docs/strategy/body-recode/body-recode-consumer-marketing-strategy-v1.docx',
       pdfUrl: '/docs/strategy/body-recode/body-recode-consumer-marketing-strategy-v1.pdf',
+    }, {
+      title: 'The Content Engine',
+      description: 'How @body_recode_ content actually works: stop teaching, start reading. Signature formats (The Read, State of the Data, What Your ___ Says), the weekly rhythm, the comment-to-DM personalised-read mechanic, and the first plays to test.',
+      mdUrl: '/docs/strategy/body-recode/body-recode-content-engine-v1.md',
+      docxUrl: '/docs/strategy/body-recode/body-recode-content-engine-v1.docx',
+      pdfUrl: '/docs/strategy/body-recode/body-recode-content-engine-v1.pdf',
     }],
   },
   {
