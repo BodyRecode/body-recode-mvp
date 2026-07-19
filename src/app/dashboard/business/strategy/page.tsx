@@ -1315,7 +1315,7 @@ export default function StrategyPage() {
           <Card>
             <SectionLabel>Mission</SectionLabel>
             <p className="text-lg font-semibold text-[#1A1A1A] leading-snug mb-2">Interpretation before prescription.</p>
-            <Body>Social media is not the funnel - it feeds the funnel. Every piece of content drives curiosity to the Challenge landing page. Sign-up captures the lead; the scorecard (Day-0 in-portal gate) reads their state and routes them.</Body>
+            <Body>Social media is not the funnel - it feeds the funnel through two doors by post type: doctrine/engagement posts → the scorecard (&quot;find your state&quot;); Challenge promo posts → the Challenge landing page. The scorecard reads their state and routes them - both doors converge on the Challenge.</Body>
           </Card>
 
           {/* Funnel flow — two paths off the scorecard */}
@@ -1325,7 +1325,7 @@ export default function StrategyPage() {
               <div>
                 <p className="text-[11px] font-bold text-blue-600 uppercase tracking-widest mb-1.5">Funnel B — primary (consumer)</p>
                 <div className="flex items-center gap-2 flex-wrap">
-                  {['Content / Ad', 'Challenge Landing Page', 'Sign Up', 'Scorecard (portal gate → routes)', 'Blueprint $97', 'Membership'].map((step, i, arr) => (
+                  {['Content / Ad', 'Door 1 Scorecard  ·  Door 2 Challenge', '14-Day Challenge', 'Blueprint $97', 'Membership'].map((step, i, arr) => (
                     <div key={step} className="flex items-center gap-2">
                       <div className="bg-blue-50 border border-blue-200 rounded-lg px-3 py-1.5 text-xs font-medium text-blue-700">{step}</div>
                       {i < arr.length - 1 && <span className="text-stone-400 text-xs">→</span>}
@@ -1344,7 +1344,7 @@ export default function StrategyPage() {
                   ))}
                 </div>
               </div>
-              <p className="text-xs text-stone-500"><strong className="text-stone-700">All marketing points to the Challenge landing page</strong> (the front door), not the scorecard. After sign-up, the Scorecard is the Day-0 in-portal gate that reads state and routes (including flagging coaching-ready leads into Funnel A). Standalone <code className="bg-stone-200 px-1 rounded">/scorecard</code> stays for direct/legacy links.</p>
+              <p className="text-xs text-stone-500"><strong className="text-stone-700">Two doors, both routed by the scorecard:</strong> doctrine/engagement content → <strong>standalone scorecard</strong> (&quot;find your state&quot;, low friction) → routes most into the Challenge; Challenge promo content → <strong>Challenge landing page</strong> → sign-up → the scorecard runs as the Day-0 in-portal gate. Both feed Funnel B; coaching-ready leads flagged into Funnel A.</p>
             </div>
           </Card>
 
@@ -1575,8 +1575,8 @@ export default function StrategyPage() {
             <div className="space-y-2">
               {[
                 { label: 'Make them feel', value: '"Finally, someone gets it."' },
-                { label: 'Then make them think', value: '"I need to take that scorecard."' },
-                { label: 'CTA rule - Instagram', value: 'One CTA per post. Take the scorecard. One job per post.' },
+                { label: 'Then make them think', value: '"I need to find my state" (doctrine) or "I need to join that challenge" (promo).' },
+                { label: 'CTA rule - Instagram', value: 'One CTA per post, matched to type: doctrine → "find your state, take the scorecard" (standalone scorecard); Challenge promo → "join the free 14-day Challenge". One job per post.' },
                 { label: 'CTA rule - LinkedIn', value: 'CTA every 4-5 posts only. Most posts build credibility without selling.' },
               ].map(({ label, value }) => (
                 <div key={label} className="flex items-start gap-3 py-2 border-b border-stone-200 last:border-0">
@@ -1686,6 +1686,10 @@ export default function StrategyPage() {
               <li><strong>Diagnostic / Funnel</strong> → The Read (&quot;drop your 3 symptoms, I&apos;ll name your state&quot;) · The Prediction Flex · comment-to-DM personalised read</li>
             </ul>
             <p className="text-xs text-stone-500 mt-2">Full detail in <strong className="text-blue-700">Strategy Docs → Body Recode</strong> (Part II). Same 5 types, same archetype rotation - the formats just give each a sharper, repeatable shape.</p>
+            <div className="mt-3 p-3 bg-white border border-emerald-500/30 rounded-lg">
+              <p className="text-[10px] font-bold tracking-[0.18em] text-emerald-700 uppercase mb-1.5">Two doors + the Challenge promo layer</p>
+              <p className="text-xs text-stone-700 leading-relaxed">CTA by post type: <strong>doctrine/engagement → &quot;find your state&quot; (scorecard)</strong>; <strong>Challenge promo → &quot;join the free 14-day Challenge&quot;</strong>. Run ~1 explicit Challenge-promo post/week (rotating angles: what it is / what you get / who it&apos;s for / proof / why now / objection-kill), with a heavier burst when a wave opens. Typical week = 4 doctrine + 1 promo.</p>
+            </div>
           </Card>
 
           <Card>

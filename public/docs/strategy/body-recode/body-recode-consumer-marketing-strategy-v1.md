@@ -38,19 +38,20 @@ The body operates in one of three states, and each needs a different approach - 
 
 Supporting assets: the **Body State Scorecard** (names state + pattern with a confidence tier), the **Fat Map**, the **Six Pillars**, the canonical patterns (Stress-Stored / Insulin-Drift / Estrogen-Shift / Androgen-Decline). Arc verbs: **Decode -> Rewire -> Rebuild** (baked into product names; never invent alternates).
 
-## 4. The funnel (Challenge-led; the scorecard is the routing gate, not the front door)
+## 4. The funnel (two doors, both routed by the scorecard)
 
-**All marketing now drives to the Challenge landing page - NOT the scorecard.** The scorecard sits *inside* the Challenge as the Day-0 gate. The flow:
+Consumer content runs through **two entry doors, matched to the post's intent - and both converge on the Challenge:**
 
-**Content / Ad -> Challenge landing page -> sign up (free 14-Day Body Decode Challenge) -> first portal gate: complete the Body State Scorecard -> the scorecard reads their state and routes them** (which Challenge experience they get, and whether they're flagged coaching-ready).
+- **Door 1 - the curiosity door (doctrine / engagement content).** CTA = *"find your state, take the scorecard."* Links to the **standalone scorecard**. Low friction - people love finding out something about themselves. When they finish, the scorecard reads their state and **routes them, primarily into the free Challenge** (coaching-ready leads get flagged for Funnel A).
+- **Door 2 - the direct door (Challenge promo content).** CTA = *"join the free 14-day Challenge."* Links to the **Challenge landing page** -> sign up -> the scorecard runs as the **Day-0 in-portal gate** and routes them.
 
-So the scorecard is no longer the front door - it's the first in-portal gate after signup, and the router. **The Challenge landing page is the front door.**
+So the **scorecard lives in two places** (standalone, and the Day-0 in-portal gate) and is the router in both. Both doors feed Funnel B.
 
 **Funnel B - the PRIMARY consumer path (Challenge-led):**
 
 | Stage | What it is | Price |
 |---|---|---|
-| **Challenge landing page** | Where all marketing points. The front door. | - |
+| **Two front doors** | Door 1 = standalone scorecard (curiosity content); Door 2 = Challenge landing page (promo content). | Free |
 | **14-Day Body Decode Challenge** | Free. After signup, the **Scorecard is the Day-0 gate** that reads state + routes. Then the in-portal experience, Day-14 reveal - proof the read works before any purchase. | Free |
 | **The Blueprint** | The paid step after the Challenge - personalised plan off the read. | $97 |
 | **Membership** | Ongoing membership. | Paid |
@@ -59,7 +60,7 @@ So the scorecard is no longer the front door - it's the first in-portal gate aft
 
 For people who want a coach directly (or whom the scorecard flags coaching-ready): Check-In -> Zoom consultation -> 1:1 Performance Coaching ($299-409/wk), with the $37 report + $240 commencement fee. The standalone scorecard at `/scorecard` still exists for direct/legacy links. (The $97 Zoom-decline self-guided **downsell** is distinct from the Blueprint despite the shared price.)
 
-**Cold -> Challenge landing page; retargeting -> Challenge + Membership.** Reach is upstream of conversion - fix the earliest broken gate before blaming a caption.
+**Cold -> either door by content type; retargeting -> Challenge + Membership.** Reach is upstream of conversion - fix the earliest broken gate before blaming a caption.
 
 ## 5. How this brand relates to the others
 
@@ -80,7 +81,7 @@ For people who want a coach directly (or whom the scorecard flags coaching-ready
 
 1. **Scenarios over concepts.** A specific person in a specific moment. "You're 42, training five mornings, cut the wine, scale hasn't moved in eight months" beats "your body may be depleted" every time.
 2. **Their words, not ours.** Open with the exact phrases people write in their scorecard answers and DMs. Sound like the voice already in their head. Keep a swipe file of real lines and pull from it.
-3. **Split the job.** Some posts earn comments and saves (pure value, end on a question, no link). Others drive the click (the Challenge). Never ask one post to do both - that's why they currently land neither.
+3. **Split the job.** Some posts earn comments and saves (pure value, end on a question, no link). Others drive the click (scorecard for doctrine, Challenge for promo). Never ask one post to do both - that's why they currently land neither.
 
 ## 8. Pillars x formats (themes meet shows)
 
@@ -119,6 +120,20 @@ The **pillars** are the themes; the **signature formats** are the repeatable sho
 
 Same 5 types, same archetype rotation and hook banks - the formats just give each type a sharper, more repeatable, more scroll-stopping shape.
 
+## 8b. The Challenge promo layer (Door 2)
+
+Alongside the doctrine content, run a **direct Challenge-invite layer** - the posts whose whole job is to fill the Challenge. Not every post (over-promoting trains the scroll-past); **~1 explicit promo/week**, plus a **heavier burst when a new wave opens** (tie to the wave-cap plan: W1=50, W2=+25...).
+
+**Rotating promo angles (don't repeat the same one):**
+- **What it is** - "A free 14-day read of your body, not another meal plan."
+- **What you get** - the Day-14 reveal, your personalised read.
+- **Who it's for** - the archetype mirror ("if you're doing everything and nothing's moving...").
+- **Proof** - a real, consented result/quote, or State-of-the-Data.
+- **Why now** - wave scarcity (spots left).
+- **Objection-kill** - "free, no credit card, you keep the result."
+
+Promo posts carry the **Door 2 CTA** ("join the free 14-day Challenge"); doctrine posts carry the **Door 1 CTA** ("find your state"). A typical week = 4 doctrine + 1 promo, with promo turned up at wave-open.
+
 ## 9. The enemy
 
 Give people something to be against: the **eat-less-move-more machine.** Protocol without interpretation. A brand with an enemy builds a movement, not an audience - people share what they're angry about, and being the calm expert who defends them is a magnetic position.
@@ -141,7 +156,7 @@ Weekly structure = your canonical 5-post-type week (the Content System tab), wit
 | Fri | **Coach Perspective** | Receipts · React to DMs |
 | Sun | **Diagnostic / Funnel** | The Read · comment-to-DM read |
 
-One CTA per post = the **Challenge landing page** (engagement-first posts still earn the comment first; the Challenge stays the single funnel CTA). The scorecard is now the in-portal gate, not the marketing destination. Stories run alongside daily: the "which state are you" mini-quiz, polls, behind-the-scenes reads.
+One CTA per post, and which one depends on the post **type**: doctrine/engagement posts -> **the scorecard** ("find your state"); Challenge promo posts -> **join the Challenge**. Engagement-first posts earn the comment first. Stories run alongside daily: the "which state are you" mini-quiz, polls, behind-the-scenes reads.
 
 ## 12. Atomisation (volume without more thinking)
 
@@ -178,15 +193,15 @@ Run against the current style for 2-3 weeks; let the numbers pick winners, then 
 
 ## 17. Messaging rules (do / don't)
 
-**Do:** lead with the stuck feeling; name the state; **write sharp enough to catch the high performer who self-scores "fine, just stuck" but is clinically Depleted** (the scorecard underestimates depletion - do not soft-pedal); make the **Challenge landing page** the destination; use proof (real trajectories, with consent); keep the read ahead of the prescription; prove you can read people rather than teach them.
+**Do:** lead with the stuck feeling; name the state; **write sharp enough to catch the high performer who self-scores "fine, just stuck" but is clinically Depleted** (the scorecard underestimates depletion - do not soft-pedal); match the CTA to the post type (doctrine -> scorecard, promo -> Challenge); use proof (real trajectories, with consent); keep the read ahead of the prescription; prove you can read people rather than teach them.
 
 **Don't:** open cold with doctrine vocabulary; sell the Blueprint/coaching before the Scorecard; run reels/video in cold-paid ad sets; use colour photos of Kade in BR graphics; ask one post to both earn engagement and drive a click; blur into the coach-licensing (Collective) audience.
 
 **Never say or do:** fitness clichés ("crush it", "no excuses", "grind", "hustle"); blame the client for biological symptoms; shame or guilt messaging; hype or exaggerated promises; long-winded clinical explanations; direct selling (always guide, never push).
 
-**CTA rules:** Instagram = **one CTA per post**, and it's "join the Challenge" (the free 14-day Challenge landing page - one job per post). LinkedIn = CTA every **4-5 posts only**; most posts build credibility without selling.
+**CTA rules:** Instagram = **one CTA per post, matched to type**: doctrine/engagement -> "find your state, take the scorecard" (standalone scorecard); Challenge promo -> "join the free 14-day Challenge" (Challenge landing page). One job per post. LinkedIn = CTA every **4-5 posts only**; most posts build credibility without selling.
 
-**Every post follows the 5-step frame:** (1) **Insight** - the physiological truth; (2) **Signal** - what it means for them; (3) **Shift** - reframe their understanding; (4) **Solution** - the Body Recode system or action; (5) **Momentum** - end with clarity or direction. It must make them **feel** *"finally, someone gets it,"* then **think** *"I need to join that challenge."*
+**Every post follows the 5-step frame:** (1) **Insight** - the physiological truth; (2) **Signal** - what it means for them; (3) **Shift** - reframe their understanding; (4) **Solution** - the Body Recode system or action; (5) **Momentum** - end with clarity or direction. It must make them **feel** *"finally, someone gets it,"* then **think** *"I need to find my state"* (doctrine) or *"I need to join that challenge"* (promo).
 
 **Tone (6 principles):** intelligent not complicated · confident not arrogant · direct not blunt · warm not soft · scientific not clinical · forward-thinking not abstract.
 
