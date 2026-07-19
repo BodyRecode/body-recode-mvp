@@ -1,0 +1,19 @@
+{
+  "_meta": { "out_dir": "/Users/kadedunstone/body-recode-mvp/public/calendar" },
+  "posts": [
+    { "slug": "br-fill_0816_diagnostic-insulin", "type": "diagnostic", "photo": "4",
+      "cta_eyebrow": "FREE · 2 MINUTES",
+      "hook_1": "Carbs hitting", "hook_2": "different lately?",
+      "sub_1": "That's insulin drift.",
+      "cta_text": "→ Find your state" },
+    { "slug": "br-fill_0817_authority-read-led-system", "type": "authority",
+      "hook_1": "Read first.", "hook_2": "Then correct.",
+      "sub_1": "Everything starts with reading your state, then correcting it. No guessing, no generic plans. That is the whole system." },
+    { "slug": "br-fill_0818_contrarian-pattern-not-discipline", "type": "contrarian",
+      "hook_1": "It's not", "hook_2": "your discipline.",
+      "hook_3": "It's your pattern.", "hook_3_blue": "true",
+      "sub_1": "You've got plenty of discipline. What you're missing is a read on what your body is actually doing." },
+    { "slug": "br-fill_0821_coach-read-before-prescribe", "type": "coach", "photo": "7",
+      "hook_1": "I don't guess.", "hook_2": "I read.", "sub_1": "Then I prescribe." }
+  ]
+}
