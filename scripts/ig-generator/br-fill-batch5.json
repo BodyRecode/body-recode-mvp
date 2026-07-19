@@ -1,0 +1,19 @@
+{
+  "_meta": { "out_dir": "/Users/kadedunstone/body-recode-mvp/public/calendar" },
+  "posts": [
+    { "slug": "br-fill_0819_four-patterns-carousel", "type": "carousel", "slides": [
+      { "hook": "Nearly everyone", "hook_2": "we read fits", "sub": "one of four patterns." },
+      { "hook": "Stress-Stored", "blue": true, "sub": "Cortisol running the show. Fat holds under load." },
+      { "hook": "Insulin-Drift", "blue": true, "sub": "Carbs stopped working the way they used to." },
+      { "hook": "Estrogen-Shift", "blue": true, "sub": "The perimenopausal rewrite of the rules." },
+      { "hook": "Androgen-Decline", "blue": true, "sub": "Drive, recovery and output quietly fading." },
+      { "hook": "Which one", "hook_2": "is yours?", "sub": "The read tells you. Free.", "is_cta": true, "cta_text": "→ Find your state" }
+    ]},
+    { "slug": "br-fill_0823_authority-always-a-read", "type": "authority",
+      "hook_1": "Your body is", "hook_2": "always talking.",
+      "sub_1": "Bloating, 3pm crashes, stalled fat loss, flat mornings - none of it is random. It is a read, if you know how to take it." },
+    { "slug": "br-fill_0831_authority-longarc-tease", "type": "authority",
+      "hook_1": "Read it.", "hook_2": "Correct it.",
+      "sub_1": "Then comes the part that compounds - holding the correction for the long arc. More on that soon." }
+  ]
+}
