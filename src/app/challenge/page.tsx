@@ -200,11 +200,16 @@ const CLIENT_VOICES = [
     quote: "After my very first sessions I felt completely fatigued and slept most of the weekend. It's improved a lot since then. The sessions feel easier now, and I'm planning my weeks well and handling them much better.",
     name: 'Razia',
     meta: 'Coaching client · week 8',
+    stateShift: '',
   },
   {
     quote: "Cutting back the wine was genuinely hard at the start and I knew it would take real discipline. Ten weeks in, it's none. And the muscle soreness I used to avoid actually feels good now.",
     name: 'Amanda',
-    meta: 'Coaching client · week 10',
+    meta: 'Coaching client · 11 weeks in',
+    // Factual coach-side read (not Amanda's words): her latest check-in moved
+    // her out of a Depleted State into a Transitioning State. This is the exact
+    // arc the page argues — the state shifts before the fat does.
+    stateShift: 'Depleted → Transitioning',
   },
 ]
 
@@ -491,6 +496,11 @@ export default function ChallengePage() {
           <div style={{ display: 'grid', gap: '12px' }}>
             {CLIENT_VOICES.map(v => (
               <div key={v.name} style={{ background: 'rgba(27,109,252,0.08)', border: '1px solid rgba(77,141,255,0.35)', borderRadius: '14px', padding: '22px 24px' }}>
+                {v.stateShift && (
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '7px', background: 'rgba(16,160,100,0.14)', border: '1px solid rgba(16,160,100,0.35)', borderRadius: '999px', padding: '5px 12px', marginBottom: '14px' }}>
+                    <span style={{ fontSize: '11px', fontWeight: 800, color: '#4FD6A0', letterSpacing: '0.06em', textTransform: 'uppercase' }}>State progress · {v.stateShift}</span>
+                  </div>
+                )}
                 <p style={{ fontSize: '16.5px', color: '#FFFFFF', lineHeight: 1.6, margin: '0 0 12px', fontWeight: 500, fontStyle: 'italic' }}>
                   &ldquo;{v.quote}&rdquo;
                 </p>
