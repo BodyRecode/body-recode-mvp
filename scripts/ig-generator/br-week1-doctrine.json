@@ -13,7 +13,7 @@
     ]},
     { "slug": "br-w1_tue_autopsy", "type": "contrarian",
       "hook_1": "It's not menopause.", "hook_2": "It's a misread.",
-      "hook_3": "Your body changed. The old plan didn't.", "hook_3_blue": "true",
+      "hook_3": "Your body changed.", "hook_3_blue": "true",
       "sub_1": "And 'just eat less' tells a stressed body it's still under threat." },
     { "slug": "br-w1_wed_3pm-crash", "type": "carousel", "slides": [
       { "hook": "Let's talk about", "hook_2": "your 3pm crash." },
