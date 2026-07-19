@@ -15,9 +15,16 @@ The consumer promise: *"You are doing the work and getting nothing back. That is
 
 ## 2. Who we talk to
 
-High-functioning adults whose bodies have stopped responding to effort - training hard, eating well, consistent, and getting nothing back. Four archetypes, skewed toward the **Depleted** end (bodies in protection/remediation, not the lean-and-optimising end).
+High-functioning adults whose bodies have stopped giving back what the effort should return - training hard, eating well, consistent.
 
-Lead with the feeling, not the vocabulary: *"You're training. You're eating well. You're consistent. And nothing is moving."* Name what they feel first, then reveal the read underneath it.
+**What the data says (116 leads / 77 scorecards, 2026-07):** the audience splits **Transitioning 48% · Depleted 32% · Ready 19%.** The earlier "Depleted-skewed" assumption is wrong - the single biggest group is **Transitioning** (responding, but stalled and needing directed load), with Depleted second. So the message has to speak to **both**, not just the fully-stuck reader:
+
+- **Depleted:** *"You're doing everything and nothing is moving."* Protection mode - more effort backfires.
+- **Transitioning:** *"It's started to work, then it stalls and you can't tell why."* Responding, but the load isn't directed.
+
+Lead with the feeling, not the vocabulary, and make sure the hook lets a **Transitioning** reader see themselves too - if every post only says "nothing is moving," half the room scrolls past. Name what they feel first, then reveal the read underneath it.
+
+*Caveat: age/sex is not captured for most leads, so the "women 35-50" part of the ICP is unconfirmed - tighten capture before leaning on it. And note only ~3% of leads currently come from social, so this audience is barely tested on Instagram yet; get the content engine (Part II) driving real social volume before judging the audience.*
 
 ## 3. The body-state doctrine (the spine)
 
@@ -147,7 +154,7 @@ Run against the current style for 2-3 weeks; let the numbers pick winners, then 
 
 ## 17. Messaging rules (do / don't)
 
-**Do:** lead with the stuck feeling; name the state; make the Scorecard the destination; use proof (real trajectories, with consent); keep the read ahead of the prescription; prove you can read people rather than teach them.
+**Do:** lead with the stuck feeling; name the state; **write for Transitioning as well as Depleted** (nearly half the audience is Transitioning - a "nothing's moving" hook alone misses them; also speak to "it works then stalls"); make the Scorecard the destination; use proof (real trajectories, with consent); keep the read ahead of the prescription; prove you can read people rather than teach them.
 
 **Don't:** open cold with doctrine vocabulary; sell the Blueprint/coaching before the Scorecard; run reels/video in cold-paid ad sets; use colour photos of Kade in BR graphics; ask one post to both earn engagement and drive a click; blur into the coach-licensing (Collective) audience.
 
