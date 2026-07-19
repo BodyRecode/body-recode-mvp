@@ -15,16 +15,18 @@ The consumer promise: *"You are doing the work and getting nothing back. That is
 
 ## 2. Who we talk to
 
-High-functioning adults whose bodies have stopped giving back what the effort should return - training hard, eating well, consistent.
+**The audience is Depleted. Full stop.** 100% of paying clients (May 2026, full client list) classify as **Remediation / Depleted** by CFFS - the real, validated read. Four validated archetypes, all Depleted-leaning, in observed prevalence order:
 
-**What the data says (116 leads / 77 scorecards, 2026-07):** the audience splits **Transitioning 48% · Depleted 32% · Ready 19%.** The earlier "Depleted-skewed" assumption is wrong - the single biggest group is **Transitioning** (responding, but stalled and needing directed load), with Depleted second. So the message has to speak to **both**, not just the fully-stuck reader:
+1. **The Stressed Executive Woman** *(DOMINANT · Stress-Stored)* - 35-48, corporate/finance/law/consulting/health/gov, Brisbane, often kids, $100K-180K+. Abdominal fat won't budge, wired-and-tired, 3pm crash, wakes at 3am. Self-story: *"I just need to be more disciplined."* Channel: IG (lunch) + LinkedIn (morning).
+2. **The Perimenopausal Performer** *(STRONG · Estrogen-Shift)* - 40-50, was lean in her 30s, mother of teens. 5-10kg gained over 2-3 years, storage to hips/thighs + bra-line, cycle irregular. *"It's just menopause / my bloods are fine."* Channel: IG (evening).
+3. **The Postnatal Athlete** *(Stress-Stored / Estrogen-Shift hybrid)* - 32-42, kids 2-7 years ago, athletic pre-kids, underslept for years. Never got back to baseline, carries 3-7kg, recovery broken. *"My body changed after kids."* Channel: IG (evening / naptime).
+4. **The Slipping High Performer** *(male · Androgen-Decline + Stress-Stored)* - 42-55, executive/partner-track/surgeon, travels. Capacity, drive, recovery, sharpness slipping; performance is the flag, not weight. *"I'm just getting older / bloods are normal."* Channel: LinkedIn (morning).
 
-- **Depleted:** *"You're doing everything and nothing is moving."* Protection mode - more effort backfires.
-- **Transitioning:** *"It's started to work, then it stalls and you can't tell why."* Responding, but the load isn't directed.
+Watch list (do NOT target in primary content/ads yet): the Ex-Athlete Founder (Insulin-Drift, male) - may appear as the LinkedIn/founder audience grows. Full personas: `~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/AUDIENCE-ARCHETYPES-V1.md`.
 
-Lead with the feeling, not the vocabulary, and make sure the hook lets a **Transitioning** reader see themselves too - if every post only says "nothing is moving," half the room scrolls past. Name what they feel first, then reveal the read underneath it.
+**Critical - the scorecard UNDERESTIMATES depletion.** High performers self-report better than they are. The 5-question scorecard is a coarse signal; the 200-question intake is the real read. Example: Michael scored 12 (Ready) on the scorecard, then classified Depleted by CFFS once a client. Discipline hides depletion in self-reporting. **So a raw scorecard state distribution that looks "Transitioning-heavy" is a measurement artifact - do not calibrate marketing to it. The clients are Depleted.**
 
-*Caveat: age/sex is not captured for most leads, so the "women 35-50" part of the ICP is unconfirmed - tighten capture before leaning on it. And note only ~3% of leads currently come from social, so this audience is barely tested on Instagram yet; get the content engine (Part II) driving real social volume before judging the audience.*
+**Implication for hooks:** write **sharp enough to catch a high performer who would self-score Ready on a 5-question quiz but is clinically Depleted.** Do not soft-pedal because their self-image is "I'm doing fine, just stuck." Lead with the feeling in their words, name the state, then interpret.
 
 ## 3. The body-state doctrine (the spine)
 
@@ -73,6 +75,8 @@ Two ad streams feed the top: **cold -> Scorecard** (diagnosis-led) and **retarge
 ## 8. Pillars x formats (themes meet shows)
 
 The **pillars** are the themes; the **signature formats** are the repeatable shows that deliver them. Run the formats until the audience knows them on sight.
+
+**The 5 topics you own (intellectual territory - nothing outside these):** (1) **Body State** - Depleted/Transitioning/Ready and why it determines everything; (2) **Why Effort Isn't Working** - the train-harder/eat-less trap; (3) **Cortisol & Fat Storage** - stress belt, protection mode, why the body resists fat loss under load; (4) **Prescription Without Interpretation** - the core flaw in mainstream fitness; (5) **The Intelligent Approach** - what reading the body first looks like (the BR system). Every post maps to one of these.
 
 | Pillar (theme) | Delivered by these formats |
 |---|---|
@@ -154,9 +158,17 @@ Run against the current style for 2-3 weeks; let the numbers pick winners, then 
 
 ## 17. Messaging rules (do / don't)
 
-**Do:** lead with the stuck feeling; name the state; **write for Transitioning as well as Depleted** (nearly half the audience is Transitioning - a "nothing's moving" hook alone misses them; also speak to "it works then stalls"); make the Scorecard the destination; use proof (real trajectories, with consent); keep the read ahead of the prescription; prove you can read people rather than teach them.
+**Do:** lead with the stuck feeling; name the state; **write sharp enough to catch the high performer who self-scores "fine, just stuck" but is clinically Depleted** (the scorecard underestimates depletion - do not soft-pedal); make the Scorecard the destination; use proof (real trajectories, with consent); keep the read ahead of the prescription; prove you can read people rather than teach them.
 
 **Don't:** open cold with doctrine vocabulary; sell the Blueprint/coaching before the Scorecard; run reels/video in cold-paid ad sets; use colour photos of Kade in BR graphics; ask one post to both earn engagement and drive a click; blur into the coach-licensing (Collective) audience.
+
+**Never say or do:** fitness clichés ("crush it", "no excuses", "grind", "hustle"); blame the client for biological symptoms; shame or guilt messaging; hype or exaggerated promises; long-winded clinical explanations; direct selling (always guide, never push).
+
+**CTA rules:** Instagram = **one CTA per post**, and it's "take the Scorecard" (one job per post). LinkedIn = CTA every **4-5 posts only**; most posts build credibility without selling.
+
+**Every post follows the 5-step frame:** (1) **Insight** - the physiological truth; (2) **Signal** - what it means for them; (3) **Shift** - reframe their understanding; (4) **Solution** - the Body Recode system or action; (5) **Momentum** - end with clarity or direction. It must make them **feel** *"finally, someone gets it,"* then **think** *"I need to take that scorecard."*
+
+**Tone (6 principles):** intelligent not complicated · confident not arrogant · direct not blunt · warm not soft · scientific not clinical · forward-thinking not abstract.
 
 ## 18. What we measure
 
