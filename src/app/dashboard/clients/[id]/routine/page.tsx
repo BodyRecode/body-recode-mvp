@@ -1,14 +1,14 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { resolveDailyRoutine, CANONICAL_DAILY_ROUTINE } from '@/lib/daily-routine-defaults'
+import { resolveDailyRoutine, CANONICAL_DAILY_ROUTINE, type DailyRoutine } from '@/lib/daily-routine-defaults'
 import RoutineEditor from './routine-editor'
+import DraftPanel from './draft-panel'
 
 /**
  * Coach editor for a client's Morning Reset Sequence + Evening Rhythm
- * Sequence. Server component fetches the current stored value, resolves
- * against defaults (so blank slots inherit the canonical Body Recode
- * sequences), and hands off to the client-side RoutineEditor.
+ * Sequence. Two panels: LLM-generated draft (if present) and the live
+ * routine the client sees. Coach reviews draft, tweaks, publishes.
  */
 export default async function CoachRoutineEditorPage({
   params,
@@ -20,7 +20,7 @@ export default async function CoachRoutineEditorPage({
 
   const { data: client } = await admin
     .from('clients')
-    .select('id, name, daily_routine')
+    .select('id, name, daily_routine, daily_routine_draft, daily_routine_generated_at, daily_routine_generation_rationale')
     .eq('id', id)
     .maybeSingle()
 
@@ -28,6 +28,9 @@ export default async function CoachRoutineEditorPage({
 
   const resolved = resolveDailyRoutine(client.daily_routine)
   const hasCustomisations = client.daily_routine !== null && client.daily_routine !== undefined
+  const draftRaw = client.daily_routine_draft as DailyRoutine | null
+  const hasDraft = draftRaw !== null && draftRaw !== undefined
+  const draftResolved = hasDraft ? resolveDailyRoutine(draftRaw) : null
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -39,13 +42,27 @@ export default async function CoachRoutineEditorPage({
         </div>
         <h1 className="text-2xl font-semibold text-[#1A1A1A]">Morning Reset + Evening Rhythm</h1>
         <p className="text-stone-600 text-sm mt-2 leading-relaxed">
-          The two daily anchor sequences the client sees on their portal. Every client starts with the canonical Body Recode defaults (same as the Challenge product). Personalise steps or add a coach note per section.
+          Generate a personalised routine from {client.name}&apos;s data. Review the draft, tweak any step, then publish. The client sees only the live version.
         </p>
-        {!hasCustomisations && (
+        {!hasCustomisations && !hasDraft && (
           <p className="text-[11px] text-stone-500 mt-2 uppercase tracking-widest">
-            Currently using canonical defaults (no coach overrides saved).
+            No live routine and no draft yet. Click Generate to create one from client data.
           </p>
         )}
+      </div>
+
+      <DraftPanel
+        clientId={id}
+        clientName={client.name}
+        draft={draftResolved}
+        rationale={client.daily_routine_generation_rationale}
+        generatedAt={client.daily_routine_generated_at}
+        hasLive={hasCustomisations}
+      />
+
+      <div className="mt-10 mb-4 flex items-center gap-3">
+        <h2 className="text-lg font-semibold text-[#1A1A1A]">Live routine</h2>
+        <span className="text-[10px] text-stone-500 uppercase tracking-widest">What the client sees on their portal</span>
       </div>
 
       <RoutineEditor
