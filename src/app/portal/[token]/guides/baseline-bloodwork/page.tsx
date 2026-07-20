@@ -34,7 +34,7 @@ export default async function BaselineBloodworkGuidePage({ params }: { params: P
   const admin = createAdminClient()
   const { data: client } = await admin
     .from('clients')
-    .select('id, name, email, gender')
+    .select('id, name, email')
     .eq('onboarding_token', token)
     .maybeSingle()
 
@@ -44,11 +44,18 @@ export default async function BaselineBloodworkGuidePage({ params }: { params: P
     redirect(`/portal/${token}`)
   }
 
-  const normalisedGender = (client.gender ?? '').toLowerCase()
+  // Gender lives on intakes.gender, not clients.
+  const { data: intake } = await admin
+    .from('intakes')
+    .select('gender')
+    .eq('client_id', client.id)
+    .order('submitted_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+  const normalisedGender = (intake?.gender ?? '').toLowerCase()
   if (normalisedGender !== 'male' && normalisedGender !== 'female') {
-    // No gender set → coach hasn't classified this client for the gender-slanted
-    // content yet. Send them back to the guides index. If they hit this URL
-    // directly the tile wouldn't have been shown to them anyway.
+    // No intake / gender not resolved → guide tile wouldn't have been shown.
+    // If they hit this URL directly, bounce them back to the guides index.
     redirect(`/portal/${token}/guides`)
   }
 

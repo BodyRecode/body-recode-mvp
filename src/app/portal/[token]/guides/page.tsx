@@ -32,7 +32,7 @@ export default async function GuidesIndexPage({ params }: { params: Promise<{ to
   const admin = createAdminClient()
   const { data: client } = await admin
     .from('clients')
-    .select('id, email, gender')
+    .select('id, email')
     .eq('onboarding_token', token)
     .maybeSingle()
 
@@ -42,10 +42,17 @@ export default async function GuidesIndexPage({ params }: { params: Promise<{ to
     redirect(`/portal/${token}`)
   }
 
-  // Filter out gender-gated guides for clients without a resolvable gender.
-  // Baseline-bloodwork is heavily male/female slanted (either hormonal panel);
-  // hide unless we can point them at the right version.
-  const normalisedGender = (client.gender ?? '').toLowerCase()
+  // Gender lives on intakes.gender, not clients. Pull the most recent intake
+  // to resolve. If no intake exists yet, gender is unknown and gender-gated
+  // guides are hidden (safer than defaulting a male/female slant).
+  const { data: intake } = await admin
+    .from('intakes')
+    .select('gender')
+    .eq('client_id', client.id)
+    .order('submitted_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+  const normalisedGender = (intake?.gender ?? '').toLowerCase()
   const genderKnown = normalisedGender === 'male' || normalisedGender === 'female'
   const visibleGuides = GUIDES.filter(g => !g.requiresGender || genderKnown)
 
