@@ -2,7 +2,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
-import ClientHeader from '@/components/client-header'
+import PortalPageShell from '../portal-page-shell'
 import { isCoachEmail } from '@/lib/coach-auth'
 import BloodUploadForm from './blood-upload-form'
 
@@ -40,19 +40,13 @@ export default async function BloodsPage({ params }: { params: Promise<{ token: 
   const list = panels ?? []
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
-      <ClientHeader />
-      <div className="max-w-lg mx-auto px-6 py-10">
-        <div className="mb-8">
-          <Link href={`/portal/${token}`} className="text-[#999999] hover:text-[#3A3A3A] text-sm transition-colors">← Back</Link>
-          <p className="text-[11px] font-bold tracking-widest text-[#1B6DFC] uppercase mt-5 mb-2">Health Markers</p>
-          <h1 className="text-2xl font-bold text-[#1A1A1A] tracking-tight mb-2">Your blood test results</h1>
-          <p className="text-[#6B6B6B] text-sm leading-relaxed">
-            If you have recent blood work, you can upload a copy here. Your coach reads it as one more signal alongside everything else, so your training and nutrition account for what is actually happening in your body. We are not your doctor: anything medical stays with your GP, and we will always point you back to them when that is the right call.
-          </p>
-        </div>
-
-        <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5 mb-8">
+    <PortalPageShell
+      backHref={`/portal/${token}`}
+      eyebrow="Health Markers"
+      title="Your blood test results"
+      description="If you have recent blood work, you can upload a copy here. Your coach reads it as one more signal alongside everything else, so your training and nutrition account for what is actually happening in your body. We are not your doctor: anything medical stays with your GP, and we will always point you back to them when that is the right call."
+    >
+      <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5 mb-8">
           <p className="text-xs font-bold tracking-widest text-[#999999] uppercase mb-3">Upload results</p>
           <BloodUploadForm clientId={client.id} />
         </div>
@@ -97,13 +91,10 @@ export default async function BloodsPage({ params }: { params: Promise<{ token: 
                     </div>
                   </div>
                 )
-              })}
-            </div>
+            })}
           </div>
-        )}
-
-        <div className="h-10" />
-      </div>
-    </div>
+        </div>
+      )}
+    </PortalPageShell>
   )
 }

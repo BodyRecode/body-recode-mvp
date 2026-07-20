@@ -1,8 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { notFound, redirect } from 'next/navigation'
-import Link from 'next/link'
-import ClientHeader from '@/components/client-header'
+import PortalPageShell from '../../../portal-page-shell'
 import { isCoachEmail } from '@/lib/coach-auth'
 
 /**
@@ -72,17 +71,14 @@ export default async function PortalCheckinDetail({
   const answeredCount = Object.values(responses).filter(v => (v ?? '').toString().trim().length > 0).length
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
-      <ClientHeader />
-      <div className="max-w-lg mx-auto px-6 py-10">
-        <div className="mb-8">
-          <Link href={`/portal/${token}/checkin-history`} className="text-[#999999] hover:text-[#3A3A3A] text-sm transition-colors">← All check-ins</Link>
-          <p className="text-[11px] font-bold tracking-widest text-[#1B6DFC] uppercase mt-5 mb-2">Week {weekNumber} · Form {formType}</p>
-          <h1 className="text-2xl font-bold text-[#1A1A1A] tracking-tight mb-1">Your check-in</h1>
-          <p className="text-[#999999] text-sm">Submitted {submittedAt} · {answeredCount} responses</p>
-        </div>
-
-        {feedback ? (
+    <PortalPageShell
+      backHref={`/portal/${token}/checkin-history`}
+      backLabel="← All check-ins"
+      eyebrow={`Week ${weekNumber} · Form ${formType}`}
+      title="Your check-in"
+      description={`Submitted ${submittedAt} · ${answeredCount} responses`}
+    >
+      {feedback ? (
           <div className="mb-10 rounded-2xl border border-blue-200 bg-[#FFFFFF] overflow-hidden">
             <div className="px-5 py-3 border-b border-[#E5E5E5] flex items-center justify-between">
               <p className="text-[11px] font-bold uppercase tracking-widest text-[#1B6DFC]">Coach response</p>
@@ -105,16 +101,13 @@ export default async function PortalCheckinDetail({
           </div>
         )}
 
-        <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] px-5 py-5">
-          <p className="text-[11px] font-bold uppercase tracking-widest text-[#999999] mb-3">Your responses</p>
-          <p className="text-sm text-[#6B6B6B] leading-relaxed">
-            Your full {answeredCount}-response check-in is in your coach's view. If you want to see your own answers again, your coach can share them.
-          </p>
-        </div>
-
-        <div className="h-10" />
+      <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] px-5 py-5">
+        <p className="text-[11px] font-bold uppercase tracking-widest text-[#999999] mb-3">Your responses</p>
+        <p className="text-sm text-[#6B6B6B] leading-relaxed">
+          Your full {answeredCount}-response check-in is in your coach's view. If you want to see your own answers again, your coach can share them.
+        </p>
       </div>
-    </div>
+    </PortalPageShell>
   )
 }
 

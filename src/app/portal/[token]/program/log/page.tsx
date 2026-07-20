@@ -8,8 +8,7 @@
 
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
-import Link from 'next/link'
-import ClientHeader from '@/components/client-header'
+import PortalPageShell from '../../portal-page-shell'
 import {
   parsePrescribedSessions,
   currentBlockWeek,
@@ -39,13 +38,14 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
 
   if (!program) {
     return (
-      <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
-        <ClientHeader />
-        <div className="max-w-lg mx-auto px-6 py-10">
-          <h1 className="text-2xl font-bold mb-3">No active program</h1>
-          <p className="text-[#6B6B6B] text-sm">Your training program isn&apos;t set up yet. Once Kade publishes it, you&apos;ll be able to log sessions from here.</p>
-        </div>
-      </div>
+      <PortalPageShell
+        backHref={`/portal/${token}`}
+        eyebrow="Training Log"
+        title="No active program"
+        description="Your training program isn't set up yet. Once Kade publishes it, you'll be able to log sessions from here."
+      >
+        <div />
+      </PortalPageShell>
     )
   }
 
@@ -76,22 +76,14 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
   const blockEnded = daysLeft < 0
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A] pb-24">
-      <ClientHeader />
-      <div className="max-w-lg mx-auto px-5 py-8">
-        <Link href={`/portal/${token}`} className="text-[#999999] hover:text-[#3A3A3A] text-sm transition-colors">
-          ← Back
-        </Link>
-
-        <div className="mt-6 mb-2">
-          <p className="text-[10px] text-blue-500 uppercase tracking-widest mb-2">Training Log</p>
-          <h1 className="text-2xl font-bold text-[#1A1A1A]">Log this week</h1>
-        </div>
-
-        {/* Block status pill */}
-        <div className="flex items-center gap-2 text-xs text-[#6B6B6B] mb-6">
+    <PortalPageShell
+      backHref={`/portal/${token}`}
+      eyebrow="Training Log"
+      title="Log this week"
+      description={
+        <div className="flex flex-wrap items-center gap-2 text-xs">
           <span className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-full px-2.5 py-0.5">
-            Week <span className="text-[#1A1A1A]">{blockWeek}</span> of {program.week_duration}
+            Week <span className="text-[#1A1A1A] font-semibold">{blockWeek}</span> of {program.week_duration}
           </span>
           {blockEndingSoon && (
             <span className="bg-amber-50 border border-amber-200 text-amber-700 rounded-full px-2.5 py-0.5">
@@ -104,26 +96,27 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
             </span>
           )}
         </div>
-
-        {/* Today's session callout */}
-        {todaySessionIndex >= 0 && (
-          <div className="mb-6 bg-gradient-to-br from-blue-500/15 to-blue-500/5 border border-blue-200 rounded-2xl p-5">
-            <p className="text-[10px] text-blue-500 uppercase tracking-widest font-semibold mb-2">Today · {today}</p>
-            <h2 className="text-xl font-bold text-[#1A1A1A] mb-1">{prescribedSessions[todaySessionIndex].day_label} · {prescribedSessions[todaySessionIndex].skeleton ?? 'Session'}</h2>
-            <p className="text-sm text-[#6B6B6B] mb-4">
-              {prescribedSessions[todaySessionIndex].flatExercises.length} exercise{prescribedSessions[todaySessionIndex].flatExercises.length === 1 ? '' : 's'}
-            </p>
-            <StartSessionButton
-              token={token}
-              clientId={client.id}
-              sessionIndex={todaySessionIndex}
-              weekNumberInBlock={blockWeek}
-              existingCompletionId={completionByIndex.get(todaySessionIndex)?.id ?? null}
-              status={completionByIndex.get(todaySessionIndex)?.status ?? null}
-              variant="primary"
-            />
-          </div>
-        )}
+      }
+    >
+      {/* Today's session callout - canonical card, Signal Blue accent, no gradient */}
+      {todaySessionIndex >= 0 && (
+        <div className="mb-6 rounded-2xl border border-[#1B6DFC] bg-blue-50 p-5">
+          <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">Today · {today}</p>
+          <h2 className="text-xl font-bold text-[#1A1A1A] mb-1">{prescribedSessions[todaySessionIndex].day_label} · {prescribedSessions[todaySessionIndex].skeleton ?? 'Session'}</h2>
+          <p className="text-sm text-[#6B6B6B] mb-4">
+            {prescribedSessions[todaySessionIndex].flatExercises.length} exercise{prescribedSessions[todaySessionIndex].flatExercises.length === 1 ? '' : 's'}
+          </p>
+          <StartSessionButton
+            token={token}
+            clientId={client.id}
+            sessionIndex={todaySessionIndex}
+            weekNumberInBlock={blockWeek}
+            existingCompletionId={completionByIndex.get(todaySessionIndex)?.id ?? null}
+            status={completionByIndex.get(todaySessionIndex)?.status ?? null}
+            variant="primary"
+          />
+        </div>
+      )}
 
         {/* All sessions for this week */}
         <p className="text-[10px] text-[#6B6B6B] uppercase tracking-widest font-semibold mb-3">All sessions, week {blockWeek}</p>
@@ -136,11 +129,11 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
                 key={idx}
                 className={`bg-[#FFFFFF] border rounded-2xl p-4 ${
                   completion?.status === 'completed'
-                    ? 'border-blue-300'
+                    ? 'border-[#1B6DFC]/60'
                     : completion?.status === 'in_progress'
                       ? 'border-amber-300'
                       : isToday
-                        ? 'border-blue-500/20'
+                        ? 'border-[#1B6DFC]/40'
                         : 'border-[#E5E5E5]'
                 }`}
               >
@@ -150,7 +143,7 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
                     <p className="text-xs text-[#6B6B6B]">{s.flatExercises.length} exercise{s.flatExercises.length === 1 ? '' : 's'}</p>
                   </div>
                   {completion?.status === 'completed' && (
-                    <span className="text-[10px] uppercase tracking-widest text-blue-500 shrink-0">Completed</span>
+                    <span className="text-[10px] uppercase tracking-widest text-[#1B6DFC] shrink-0">Completed</span>
                   )}
                   {completion?.status === 'in_progress' && (
                     <span className="text-[10px] uppercase tracking-widest text-amber-700 shrink-0">In progress</span>
@@ -168,8 +161,7 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
               </div>
             )
           })}
-        </div>
       </div>
-    </div>
+    </PortalPageShell>
   )
 }

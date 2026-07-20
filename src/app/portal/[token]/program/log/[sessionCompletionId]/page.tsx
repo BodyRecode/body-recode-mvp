@@ -6,8 +6,7 @@
 
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
-import Link from 'next/link'
-import ClientHeader from '@/components/client-header'
+import PortalPageShell from '../../../portal-page-shell'
 import LogClient from './log-client'
 
 export default async function PortalLogSessionPage({
@@ -49,22 +48,16 @@ export default async function PortalLogSessionPage({
     : { data: [] }
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A] pb-32">
-      <ClientHeader />
-      <div className="max-w-lg mx-auto px-5 py-6">
-        <Link href={`/portal/${token}/program/log`} className="text-[#999999] hover:text-[#3A3A3A] text-sm transition-colors">
-          ← Back to log
-        </Link>
-
-        <div className="mt-5 mb-1">
-          <p className="text-[10px] text-blue-500 uppercase tracking-widest">Week {session.week_number_in_block}</p>
-          <h1 className="text-2xl font-bold text-[#1A1A1A]">{session.day_label}{session.session_name ? ` · ${session.session_name}` : ''}</h1>
-        </div>
-        {session.status === 'completed' && (
-          <p className="text-xs text-blue-500 mb-4">Logged {session.completed_at ? new Date(session.completed_at).toLocaleString('en-AU', { dateStyle: 'medium', timeStyle: 'short' }) : ''}</p>
-        )}
-
-        <LogClient
+    <PortalPageShell
+      backHref={`/portal/${token}/program/log`}
+      backLabel="← Back to log"
+      eyebrow={`Week ${session.week_number_in_block}`}
+      title={`${session.day_label}${session.session_name ? ` · ${session.session_name}` : ''}`}
+      description={session.status === 'completed' && session.completed_at
+        ? <span className="text-[#1B6DFC]">Logged {new Date(session.completed_at).toLocaleString('en-AU', { dateStyle: 'medium', timeStyle: 'short' })}</span>
+        : undefined}
+    >
+      <LogClient
           token={token}
           clientId={client.id}
           sessionCompletionId={session.id}
@@ -84,16 +77,15 @@ export default async function PortalLogSessionPage({
             substitution_reason: e.substitution_reason,
             exercise_notes: e.exercise_notes,
           }))}
-          initialSetLogs={(setLogs ?? []).map(s => ({
-            id: s.id,
-            session_exercise_completion_id: s.session_exercise_completion_id,
-            set_number: s.set_number,
-            weight_kg: s.weight_kg,
-            reps_completed: s.reps_completed,
-            rpe: s.rpe,
-          }))}
-        />
-      </div>
-    </div>
+        initialSetLogs={(setLogs ?? []).map(s => ({
+          id: s.id,
+          session_exercise_completion_id: s.session_exercise_completion_id,
+          set_number: s.set_number,
+          weight_kg: s.weight_kg,
+          reps_completed: s.reps_completed,
+          rpe: s.rpe,
+        }))}
+      />
+    </PortalPageShell>
   )
 }
