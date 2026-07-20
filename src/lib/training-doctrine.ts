@@ -42,13 +42,58 @@ const TRT_KEYWORDS = [
  * field (beta-blockers, SSRIs, statins, etc.) are ignored here — they
  * don't shift the training tier, only signal interpretation, which is
  * handled in the program prompt MEDICATIONS DOCTRINE section.
+ *
+ * Robustness (2026-07-20 fix):
+ *  - Uses word-boundary matching, not naive substring. Previous naive
+ *    `t.includes('eq')` matched inside "requires", "adequate", "request",
+ *    "equipment" etc. Any client whose medications field contained one of
+ *    those common English words was silently flagged as on an
+ *    equipoise/supraphysiological compound. Luke's Week 11 case had
+ *    "requires baseline labs" in the text → parser saw "eq" → tier
+ *    shifted +2 to advanced, RPE ceilings jumped, coach couldn't force it
+ *    back down.
+ *  - Sentence-level planned/pending detection. If a hormonal keyword
+ *    appears in the same sentence as a planning/negation marker (e.g.
+ *    "planned start of X", "no current TRT", "before starting Y"), that
+ *    match is treated as documentation of a future/absent intervention
+ *    rather than a current one.
+ *  - Global "no current medications" opener treated as a hard negation
+ *    (returns 'none' regardless of downstream planning documentation).
  */
+const PLANNING_MARKERS = /\b(planned|plan(?:s|ning)?\s+to|will\s+start|not\s+yet|not\s+currently|not\s+on\s+any|not\s+started|before\s+starting|preparing\s+to\s+start|pending|awaiting|after\s+bloods|after\s+labs|to\s+be\s+started|to\s+start|previously\s+on|discontinued|off\s+all|considering)\b/
+
+function escapeRegex(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+function matchesKeywordAtWordBoundary(text: string, keywords: readonly string[]): boolean {
+  return keywords.some(k => new RegExp(`\\b${escapeRegex(k)}\\b`, 'i').test(text))
+}
+
 export function readHormonalLoad(medications: string | null | undefined):
   'none' | 'trt' | 'supraphysiological' {
   if (!medications) return 'none'
-  const t = medications.toLowerCase()
-  if (SUPRAPHYSIOLOGICAL_KEYWORDS.some(k => t.includes(k))) return 'supraphysiological'
-  if (TRT_KEYWORDS.some(k => t.includes(k))) return 'trt'
+  const t = medications.toLowerCase().trim()
+
+  // Hard global negation: coach opened the field with "no current medications"
+  // (or similar). Downstream sentences may document PLANNED interventions,
+  // but the client is not currently on anything hormonal.
+  if (/^(no\s+(current|active|regular)\s+medications?|none\s+current|not\s+currently\s+taking)/i.test(t)) {
+    return 'none'
+  }
+
+  // Sentence-by-sentence check. A keyword match in a sentence that also
+  // contains a planning marker is treated as future/absent, not current.
+  const sentences = t.split(/[.!?\n]+/).filter(s => s.trim().length > 0)
+  let hasSupra = false
+  let hasTrt = false
+  for (const s of sentences) {
+    if (PLANNING_MARKERS.test(s)) continue
+    if (matchesKeywordAtWordBoundary(s, SUPRAPHYSIOLOGICAL_KEYWORDS)) hasSupra = true
+    else if (matchesKeywordAtWordBoundary(s, TRT_KEYWORDS)) hasTrt = true
+  }
+  if (hasSupra) return 'supraphysiological'
+  if (hasTrt) return 'trt'
   return 'none'
 }
 
