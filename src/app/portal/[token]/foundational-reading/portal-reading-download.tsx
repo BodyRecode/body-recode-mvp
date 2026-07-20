@@ -24,7 +24,12 @@ export default function PortalReadingDownload({
     setDownloading(true)
     try {
       const res = await fetch(pdfHref, { credentials: 'include' })
-      if (!res.ok) throw new Error(`Server returned ${res.status}`)
+      if (!res.ok) {
+        // Surface the server-side error message when generation fails so we
+        // can debug in production instead of showing a generic message.
+        const serverMsg = await res.text().catch(() => '')
+        throw new Error(serverMsg || `Server returned ${res.status}`)
+      }
       const blob = await res.blob()
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
@@ -35,8 +40,9 @@ export default function PortalReadingDownload({
       document.body.removeChild(a)
       URL.revokeObjectURL(url)
     } catch (e) {
-      setError('Could not generate PDF')
-      console.error(e)
+      const msg = e instanceof Error ? e.message : 'Could not generate PDF'
+      setError(msg.length > 200 ? msg.slice(0, 200) + '…' : msg)
+      console.error('[PDF download failed]', e)
     } finally {
       setDownloading(false)
     }

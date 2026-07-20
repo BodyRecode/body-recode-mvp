@@ -57,6 +57,17 @@ export interface RenderPdfOptions {
 /**
  * Renders an authenticated dashboard URL to PDF using the caller's session
  * cookies and returns a Response with the binary attachment.
+ *
+ * Wait strategy: `domcontentloaded` (fires as soon as HTML parsed) + explicit
+ * `document.fonts.ready` + a soft `waitForNetworkIdle` (500ms idle window,
+ * ignores failure). Previously used `networkidle0` which would time out at
+ * 45s if any request kept the page busy (a slow marketing-site avatar image,
+ * a hanging third-party script, etc.). The relaxed strategy is more robust
+ * for pages that include external assets - if fonts/images take too long,
+ * PDF still generates with what's loaded rather than 500-ing.
+ *
+ * Errors are surfaced with the underlying message in the response body so
+ * calling routes can pass them through to the client for real diagnostics.
  */
 export async function renderDashboardPdf(opts: RenderPdfOptions): Promise<Response> {
   const reqHeaders = await headers()
@@ -71,8 +82,9 @@ export async function renderDashboardPdf(opts: RenderPdfOptions): Promise<Respon
   const cookieStore = await cookies()
   const allCookies = cookieStore.getAll()
 
-  const browser = await launchBrowser()
+  let browser: Browser | null = null
   try {
+    browser = await launchBrowser()
     const page = await browser.newPage()
 
     // Forward the user's session cookies to the headless browser so it can
@@ -89,7 +101,12 @@ export async function renderDashboardPdf(opts: RenderPdfOptions): Promise<Respon
     }
 
     await page.emulateMediaType('print')
-    await page.goto(url, { waitUntil: 'networkidle0', timeout: 45_000 })
+
+    // Load the page (HTML parsed) then wait for fonts + a short network idle
+    // window. If either soft-wait hangs it doesn't abort PDF generation.
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30_000 })
+    await page.evaluate(() => document.fonts?.ready ?? Promise.resolve()).catch(() => {})
+    await page.waitForNetworkIdle({ idleTime: 500, timeout: 8_000 }).catch(() => {})
 
     const pdf = await page.pdf({
       format: 'A4',
@@ -105,7 +122,14 @@ export async function renderDashboardPdf(opts: RenderPdfOptions): Promise<Respon
         'Cache-Control': 'private, no-store',
       },
     })
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error('[pdf] renderDashboardPdf failed:', { url, error: msg })
+    return new Response(`PDF generation failed: ${msg}`, {
+      status: 500,
+      headers: { 'Content-Type': 'text/plain', 'Cache-Control': 'no-store' },
+    })
   } finally {
-    await browser.close().catch(() => {})
+    if (browser) await browser.close().catch(() => {})
   }
 }
