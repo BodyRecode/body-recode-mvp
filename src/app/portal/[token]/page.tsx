@@ -1,4 +1,4 @@
-import { ListChecks, MessageCircle, FileText, CalendarDays, NotebookPen, LayoutGrid, Dumbbell, Salad, LineChart, Activity, BookOpen, type LucideIcon } from 'lucide-react'
+import { ListChecks, MessageCircle, FileText, CalendarDays, NotebookPen, LayoutGrid, Dumbbell, Salad, LineChart, Activity, BookOpen, Sunrise, type LucideIcon } from 'lucide-react'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { notFound, redirect } from 'next/navigation'
@@ -408,6 +408,27 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                 </div>
               </Link>
             )}
+          </div>
+        )}
+
+        {/* Daily anchors - Morning Reset + Evening Rhythm sequences.
+            Always shown post-onboarding: these are foundation practices,
+            not gated on any specific artefact being published. */}
+        {allOnboardingDone && (
+          <div className="mb-10">
+            <SectionLabel icon={Sunrise} text="Daily Sequences" />
+            <Link
+              href={`/portal/${token}/routine`}
+              className="block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-[#1A1A1A] mb-1">Morning Reset + Evening Rhythm</p>
+                  <p className="text-xs text-[#6B6B6B] leading-relaxed">Two short sequences that anchor your day — one on waking, one before sleep. Do them consistently before you worry about optimising anything else.</p>
+                </div>
+                <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">Open →</span>
+              </div>
+            </Link>
           </div>
         )}
 
