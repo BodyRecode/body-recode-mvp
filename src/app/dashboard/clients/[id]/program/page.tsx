@@ -439,6 +439,15 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
   // Same resolution for the active program so the coach can update guidance
   // and trigger a regeneration without first having to advance to a new
   // macro block.
+  // Resolve the active client's training plan with a fallback chain so the
+  // Regenerate button + Coach Guidance editor NEVER go missing just because
+  // the plan_block → program link got orphaned (e.g. after a discarded draft).
+  //   1. plan_block → training_plan (canonical macro-arc link)
+  //   2. training_plans.is_active for this client (fallback)
+  //   3. any training_plan for this client (last resort)
+  // Bug history: prior to 2026-07-20 the button was gated on step 1 alone,
+  // so any workflow that orphaned the plan_block hid the Regenerate button
+  // even though the training plan and its coach guidance were still intact.
   let activeTrainingPlan: { id: string; coach_guidance: string | null } | null = null
   if (activeProgram) {
     const { data: planBlock } = await admin
@@ -451,6 +460,25 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
         .from('training_plans')
         .select('id, coach_guidance')
         .eq('id', planBlock.plan_id)
+        .maybeSingle()
+      if (tp) activeTrainingPlan = tp
+    }
+    if (!activeTrainingPlan) {
+      const { data: tp } = await admin
+        .from('training_plans')
+        .select('id, coach_guidance')
+        .eq('client_id', activeProgram.client_id)
+        .eq('is_active', true)
+        .maybeSingle()
+      if (tp) activeTrainingPlan = tp
+    }
+    if (!activeTrainingPlan) {
+      const { data: tp } = await admin
+        .from('training_plans')
+        .select('id, coach_guidance')
+        .eq('client_id', activeProgram.client_id)
+        .order('created_at', { ascending: false })
+        .limit(1)
         .maybeSingle()
       if (tp) activeTrainingPlan = tp
     }
@@ -637,7 +665,10 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
           <div className="mb-3 flex items-center justify-between">
             <p className="text-xs font-bold text-stone-400 uppercase tracking-widest">Sessions</p>
             <div className="flex items-center gap-2">
-              {activeTrainingPlan && <RegenerateButton programId={activeProgram.id} />}
+              {/* Regenerate is available whenever there IS an active program.
+                  It used to be gated on activeTrainingPlan too, which meant
+                  a broken plan_block link hid the button — never again. */}
+              <RegenerateButton programId={activeProgram.id} />
               <Link
                 href={`/dashboard/clients/${id}/program/draft/${activeProgram.id}`}
                 className="text-xs font-medium px-3 py-1.5 border border-stone-300 text-stone-600 rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors"
