@@ -17,6 +17,14 @@ import type { NextConfig } from "next";
  * here permanently.
  */
 const nextConfig: NextConfig = {
+  // Externalise the headless-Chromium binary so Vercel's serverless bundler
+  // does not try to include /var/task/node_modules/@sparticuz/chromium/bin
+  // in the function bundle (which fails at runtime with "input directory
+  // does not exist"). @sparticuz/chromium ships its own binary tarball that
+  // must be loaded from node_modules at cold-start, not from the bundle.
+  // Fix for the 2026-07-20 PDF regression on Foundational Reading download.
+  serverExternalPackages: ['@sparticuz/chromium', 'puppeteer-core'],
+
   async redirects() {
     return [
       // Scorecard: marketing entry lives on the perf domain.
