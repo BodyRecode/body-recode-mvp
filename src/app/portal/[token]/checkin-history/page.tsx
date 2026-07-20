@@ -1,7 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
-import ClientHeader from '@/components/client-header'
 import Link from 'next/link'
+import PortalPageShell from '../portal-page-shell'
 
 export default async function CheckinHistoryPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
@@ -38,16 +38,13 @@ export default async function CheckinHistoryPage({ params }: { params: Promise<{
   }, {} as Record<string, typeof checkins>)
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
-      <ClientHeader />
-      <div className="max-w-lg mx-auto px-6 py-10">
-        <div className="mb-8">
-          <Link href={`/portal/${token}`} className="text-[#999999] hover:text-[#3A3A3A] text-sm transition-colors">← Back</Link>
-          <h1 className="text-2xl font-bold text-[#1A1A1A] mt-4 mb-1">Check-in History</h1>
-          <p className="text-[#6B6B6B] text-sm">All your weekly check-in submissions.</p>
-        </div>
-
-        {!checkins || checkins.length === 0 ? (
+    <PortalPageShell
+      backHref={`/portal/${token}`}
+      eyebrow="Check-in History"
+      title="Check-in history"
+      description="All your weekly check-in submissions."
+    >
+      {!checkins || checkins.length === 0 ? (
           <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-6 text-center">
             <p className="text-[#999999] text-sm">No check-ins submitted yet.</p>
           </div>
@@ -83,12 +80,9 @@ export default async function CheckinHistoryPage({ params }: { params: Promise<{
                   ))}
                 </div>
               </div>
-            ))}
-          </div>
-        )}
-
-        <div className="h-10" />
-      </div>
-    </div>
+          ))}
+        </div>
+      )}
+    </PortalPageShell>
   )
 }

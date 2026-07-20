@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AGREEMENT_SECTIONS } from '@/lib/agreement-sections'
-import ClientHeader from '@/components/client-header'
+import PortalPageShell from '../portal-page-shell'
 import { brand } from "@/config/tenant";
 
 export default function AgreementForm({
@@ -65,16 +65,17 @@ export default function AgreementForm({
   }
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
-      <ClientHeader />
-      <div className="max-w-lg mx-auto px-6 py-10">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-[#1A1A1A] mb-1">Coaching Agreement</h1>
-          <p className="text-[#999999] text-xs mb-1">Version 2.5 - Sole Trader, Queensland, Australia</p>
-          <p className="text-[#6B6B6B] text-sm">Please read the full agreement before signing.</p>
-        </div>
-
-        <div className="space-y-8 mb-10">
+    <PortalPageShell
+      eyebrow="Coaching Agreement"
+      title="Coaching agreement"
+      description={
+        <>
+          <span className="block text-[12px] text-[#999999] mb-1">Version 2.5 · Sole Trader, Queensland, Australia</span>
+          Please read the full agreement before signing.
+        </>
+      }
+    >
+      <div className="space-y-8 mb-10">
           {AGREEMENT_SECTIONS.map((section) => (
             <div key={section.title}>
               <h2 className="text-xs font-bold tracking-widest text-[#1B6DFC] uppercase mb-4">{section.title}</h2>
@@ -142,15 +143,14 @@ export default function AgreementForm({
 
           {error && <p className="text-red-700 text-sm">{error}</p>}
 
-          <button
-            type="submit"
-            disabled={submitting}
-            className="w-full bg-[#1B6DFC] text-white text-sm font-bold py-4 rounded-2xl hover:bg-[#5390FF] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-          >
-            {submitting ? 'Saving…' : 'Sign and continue →'}
-          </button>
-        </form>
-      </div>
-    </div>
+        <button
+          type="submit"
+          disabled={submitting}
+          className="w-full bg-[#1B6DFC] text-white text-sm font-bold py-4 rounded-2xl hover:bg-[#5390FF] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          {submitting ? 'Saving…' : 'Sign and continue →'}
+        </button>
+      </form>
+    </PortalPageShell>
   )
 }

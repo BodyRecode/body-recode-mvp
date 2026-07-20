@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import ClientHeader from '@/components/client-header'
+import PortalPageShell from '../portal-page-shell'
 import { useDraftState, clearDraftsByPrefix } from '@/lib/use-form-draft'
 
 const CARDIO_SYMPTOMS = [
@@ -232,15 +232,12 @@ export default function HealthDeclarationForm({
   }
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
-      <ClientHeader />
-      <div className="max-w-lg mx-auto px-6 py-10">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-[#1A1A1A] mb-1">Health Declaration</h1>
-          <p className="text-[#6B6B6B] text-sm leading-relaxed">This screening ensures your coaching program is structured safely and appropriately for you. Answer all questions honestly and completely.</p>
-        </div>
-
-        {validationMessage && (
+    <PortalPageShell
+      eyebrow="Health Declaration"
+      title="Health declaration"
+      description="This screening ensures your coaching program is structured safely and appropriately for you. Answer all questions honestly and completely."
+    >
+      {validationMessage && (
           <div className="mb-6 border-l-2 border-red-500 bg-red-50 rounded-r-2xl px-4 py-3">
             <p className="text-red-700 text-sm font-medium">{validationMessage}</p>
             <p className="text-red-700/70 text-xs mt-1">Missing fields are highlighted in red below.</p>
@@ -650,17 +647,16 @@ export default function HealthDeclarationForm({
             </div>
           </section>
 
-          {error && <p className="text-red-700 text-sm">{error}</p>}
+        {error && <p className="text-red-700 text-sm">{error}</p>}
 
-          <button
-            type="submit"
-            disabled={submitting}
-            className="w-full bg-[#1B6DFC] text-white text-sm font-bold py-4 rounded-2xl hover:bg-[#5390FF] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-          >
-            {submitting ? 'Saving…' : 'Submit Health Declaration →'}
-          </button>
-        </form>
-      </div>
-    </div>
+        <button
+          type="submit"
+          disabled={submitting}
+          className="w-full bg-[#1B6DFC] text-white text-sm font-bold py-4 rounded-2xl hover:bg-[#5390FF] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          {submitting ? 'Saving…' : 'Submit Health Declaration →'}
+        </button>
+      </form>
+    </PortalPageShell>
   )
 }

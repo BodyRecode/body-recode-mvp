@@ -1,8 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { notFound, redirect } from 'next/navigation'
-import Link from 'next/link'
-import ClientHeader from '@/components/client-header'
+import PortalPageShell from '../portal-page-shell'
 import SessionsClient from './sessions-client'
 
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -119,18 +118,14 @@ export default async function SessionsPage({ params }: { params: Promise<{ token
   ].sort((a, b) => new Date(a.startUtc).getTime() - new Date(b.startUtc).getTime())
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
-      <ClientHeader />
-      <div className="max-w-lg mx-auto px-6 py-10">
-        <div className="mb-8">
-          <Link href={`/portal/${token}`} className="text-xs text-[#999999] hover:text-[#3A3A3A] transition-colors mb-4 block">
-            ← Back to portal
-          </Link>
-          <h1 className="text-2xl font-bold text-[#1A1A1A] mb-1">Your Sessions</h1>
-          <p className="text-[#6B6B6B] text-sm">Face-to-face coaching at AF Newstead.</p>
-        </div>
-
-        {!hasFixedSlots ? (
+    <PortalPageShell
+      backHref={`/portal/${token}`}
+      backLabel="← Back to portal"
+      eyebrow="Sessions"
+      title="Your sessions"
+      description="Face-to-face coaching at AF Newstead."
+    >
+      {!hasFixedSlots ? (
           <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF]/50 p-6">
             <p className="text-sm font-semibold text-[#6B6B6B] mb-1">No fixed session assigned yet</p>
             <p className="text-xs text-[#999999] leading-relaxed">Your coach will assign your fixed session slot. You will see your schedule here once it is set up.</p>
@@ -181,7 +176,6 @@ export default async function SessionsPage({ params }: { params: Promise<{ token
             <SessionsClient token={token} clientId={client.id} />
           </>
         )}
-      </div>
-    </div>
+    </PortalPageShell>
   )
 }

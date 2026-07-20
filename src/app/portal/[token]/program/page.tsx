@@ -1,9 +1,9 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
-import ClientHeader from '@/components/client-header'
 import ProgramReadingInline from '@/components/program-reading-inline'
 import TrajectoryReadingInline from '@/components/trajectory-reading-inline'
 import Link from 'next/link'
+import PortalPageShell from '../portal-page-shell'
 
 interface Exercise {
   exercise_name: string
@@ -63,16 +63,13 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
   const trajectoryReadingPublished = !!program?.trajectory_reading_published_at
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
-      <ClientHeader />
-      <div className="max-w-2xl mx-auto px-6 py-10">
-        <div className="mb-8">
-          <Link href={`/portal/${token}`} className="text-[#999999] hover:text-[#3A3A3A] text-sm transition-colors">← Back</Link>
-          <h1 className="text-2xl font-bold text-[#1A1A1A] mt-4 mb-1">Your Program</h1>
-          <p className="text-[#6B6B6B] text-sm">Your current training block.</p>
-        </div>
-
-        {!program ? (
+    <PortalPageShell
+      backHref={`/portal/${token}`}
+      eyebrow="Program"
+      title="Your program"
+      description="Your current training block."
+    >
+      {!program ? (
           <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-6 text-center">
             <p className="text-[#999999] text-sm">No active training program yet. Your coach will set this up for you.</p>
           </div>
@@ -209,13 +206,12 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
 
             <Link
               href={`/portal/${token}/training`}
-              className="block w-full py-3.5 bg-[#E5E5E5] hover:bg-[#E5E5E5] text-[#1A1A1A] font-semibold text-sm rounded-2xl text-center transition-colors"
-            >
-              Submit weekly training check-in →
-            </Link>
-          </div>
-        )}
-      </div>
-    </div>
+            className="block w-full py-3.5 bg-[#E5E5E5] hover:bg-[#E5E5E5] text-[#1A1A1A] font-semibold text-sm rounded-2xl text-center transition-colors"
+          >
+            Submit weekly training check-in →
+          </Link>
+        </div>
+      )}
+    </PortalPageShell>
   )
 }

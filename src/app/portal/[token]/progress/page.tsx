@@ -1,7 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
-import ClientHeader from '@/components/client-header'
-import Link from 'next/link'
+import PortalPageShell from '../portal-page-shell'
 
 interface Baseline {
   id: string
@@ -51,16 +50,13 @@ export default async function PortalProgressPage({ params }: { params: Promise<{
   const recaptures = sorted.slice(1).reverse() // most recent first
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
-      <ClientHeader />
-      <div className="max-w-lg mx-auto px-6 py-10">
-        <div className="mb-8">
-          <Link href={`/portal/${token}`} className="text-[#999999] hover:text-[#3A3A3A] text-sm transition-colors">← Back</Link>
-          <h1 className="text-2xl font-bold text-[#1A1A1A] mt-4 mb-1">Your Progress</h1>
-          <p className="text-[#6B6B6B] text-sm">Measurements captured at key points throughout your coaching.</p>
-        </div>
-
-        {!baseline ? (
+    <PortalPageShell
+      backHref={`/portal/${token}`}
+      eyebrow="Progress"
+      title="Your progress"
+      description="Measurements captured at key points throughout your coaching."
+    >
+      {!baseline ? (
           <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-6 text-center">
             <p className="text-[#999999] text-sm">No measurements recorded yet.</p>
           </div>
@@ -118,11 +114,8 @@ export default async function PortalProgressPage({ params }: { params: Promise<{
                 <p className="text-[#999999] text-sm">Re-capture measurements will appear here every 6–8 weeks.</p>
               </div>
             )}
-          </div>
-        )}
-
-        <div className="h-10" />
-      </div>
-    </div>
+        </div>
+      )}
+    </PortalPageShell>
   )
 }
