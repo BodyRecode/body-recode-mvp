@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Loader2, RefreshCcw } from 'lucide-react'
 import GenerationProgressOverlay from '@/components/generation-progress-overlay'
@@ -19,36 +19,83 @@ import GenerationProgressOverlay from '@/components/generation-progress-overlay'
  * button doesn't need to delete anything first.
  *
  * 2026-07-05: added GenerationProgressOverlay to match every other
- * generator surface in the dashboard. Previously the only feedback was a
- * 12px inline spinner on the button itself, so the coach had no clear
- * signal that anything was happening during the 60-120s Sonnet call.
- * Kade hit this on Amanda's Block 2 regen with new coach guidance —
- * clicked, waited, thought it was frozen.
+ * generator surface in the dashboard.
+ *
+ * 2026-07-20: switched from blocking fetch to fire-and-poll UX. The
+ * server can take 60-120s, and browsers (or the Vercel edge) frequently
+ * abort long-idle fetches around 60s with a "failed to fetch" — but the
+ * server keeps running and saves the draft. Previously the coach saw
+ * "Could not regenerate" while the draft was actually landing behind
+ * them. Now: fire the POST, and REGARDLESS of whether it succeeds or
+ * fails at the network layer, poll the page state every 15s until either
+ *  (a) the fetch returns with a real response, or
+ *  (b) 3 minutes pass without a resolution.
+ * The coach sees the progress overlay throughout and the draft appears
+ * on the page when the server finishes.
  */
 export default function RegenerateButton({ programId }: { programId: string }) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const timersRef = useRef<{ pollId: ReturnType<typeof setInterval> | null; giveUpId: ReturnType<typeof setTimeout> | null }>({ pollId: null, giveUpId: null })
+
+  useEffect(() => {
+    return () => {
+      if (timersRef.current.pollId !== null) clearInterval(timersRef.current.pollId)
+      if (timersRef.current.giveUpId !== null) clearTimeout(timersRef.current.giveUpId)
+    }
+  }, [])
+
+  const stopTimers = () => {
+    if (timersRef.current.pollId !== null) {
+      clearInterval(timersRef.current.pollId)
+      timersRef.current.pollId = null
+    }
+    if (timersRef.current.giveUpId !== null) {
+      clearTimeout(timersRef.current.giveUpId)
+      timersRef.current.giveUpId = null
+    }
+  }
 
   const regenerate = async () => {
     if (busy) return
     if (!confirm('Regenerate this draft? The current draft will be replaced. Coach guidance on the macro arc will be applied.')) return
     setError(null)
     setBusy(true)
+
+    // Fire-and-poll: refresh every 15s so the draft appears as soon as
+    // the server saves it, and hard-give-up at 3 minutes.
+    timersRef.current.pollId = setInterval(() => {
+      startTransition(() => router.refresh())
+    }, 15_000)
+    timersRef.current.giveUpId = setTimeout(() => {
+      stopTimers()
+      startTransition(() => router.refresh())
+      setBusy(false)
+    }, 3 * 60 * 1000)
+
     try {
       const res = await fetch('/api/regenerate-program', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ program_id: programId }),
       })
-      const data = await res.json().catch(() => ({}))
-      if (!res.ok) throw new Error(data.error || `Server returned ${res.status}`)
+      stopTimers()
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        setError(data.error || `Server returned ${res.status}`)
+        setBusy(false)
+        return
+      }
       startTransition(() => router.refresh())
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'Could not regenerate')
-    } finally {
       setBusy(false)
+    } catch (e) {
+      // Network-layer failure (browser aborted long fetch, connection
+      // dropped, etc). Server likely still running. Do NOT clear timers
+      // and do NOT show an error — the polling above continues and the
+      // draft will appear when the server saves it. Overlay stays up.
+      void e
     }
   }
 
