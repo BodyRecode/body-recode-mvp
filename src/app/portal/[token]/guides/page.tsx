@@ -3,15 +3,24 @@ import { notFound, redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import ClientHeader from '@/components/client-header'
-import { Moon, Wind, Footprints, Snowflake, Calendar, ArrowUpRight } from 'lucide-react'
+import { Moon, Wind, Footprints, Snowflake, Calendar, Droplet, ArrowUpRight } from 'lucide-react'
 import { isCoachEmail } from '@/lib/coach-auth'
 
-const GUIDES = [
+interface Guide {
+  slug: string
+  title: string
+  desc: string
+  icon: typeof Moon
+  requiresGender?: boolean
+}
+
+const GUIDES: Guide[] = [
   { slug: 'sleep',            title: 'Sleep hygiene',       desc: 'The single biggest lever on recovery. Practical patterns to make sleep restorative.', icon: Moon },
   { slug: 'stress',           title: 'Stress regulation',   desc: 'Box breathing, vagal practices, and short routines for nervous system regulation.', icon: Wind },
   { slug: 'pre-session',      title: 'Pre-session prep',    desc: 'What to do in the 30-60 minutes before a training session to walk in primed.', icon: Footprints },
   { slug: 'post-session',     title: 'Post-session recovery', desc: 'The hour after training matters more than most clients realise. Here is the order of operations.', icon: Snowflake },
   { slug: 'weekly-structure', title: 'Weekly structure',    desc: 'How to think about your week as a system: training, eating, sleeping, recovering.', icon: Calendar },
+  { slug: 'baseline-bloodwork', title: 'Understanding your baseline bloodwork', desc: 'What a comprehensive baseline panel covers and what each marker measures. Download to keep and take to your GP.', icon: Droplet, requiresGender: true },
 ]
 
 export default async function GuidesIndexPage({ params }: { params: Promise<{ token: string }> }) {
@@ -23,7 +32,7 @@ export default async function GuidesIndexPage({ params }: { params: Promise<{ to
   const admin = createAdminClient()
   const { data: client } = await admin
     .from('clients')
-    .select('id, email')
+    .select('id, email, gender')
     .eq('onboarding_token', token)
     .maybeSingle()
 
@@ -32,6 +41,13 @@ export default async function GuidesIndexPage({ params }: { params: Promise<{ to
   if (userEmail !== (client.email ?? '').toLowerCase() && !isCoachEmail(userEmail)) {
     redirect(`/portal/${token}`)
   }
+
+  // Filter out gender-gated guides for clients without a resolvable gender.
+  // Baseline-bloodwork is heavily male/female slanted (either hormonal panel);
+  // hide unless we can point them at the right version.
+  const normalisedGender = (client.gender ?? '').toLowerCase()
+  const genderKnown = normalisedGender === 'male' || normalisedGender === 'female'
+  const visibleGuides = GUIDES.filter(g => !g.requiresGender || genderKnown)
 
   return (
     <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
@@ -44,7 +60,7 @@ export default async function GuidesIndexPage({ params }: { params: Promise<{ to
         </div>
 
         <div className="space-y-3">
-          {GUIDES.map(g => {
+          {visibleGuides.map(g => {
             const Icon = g.icon
             return (
               <Link
