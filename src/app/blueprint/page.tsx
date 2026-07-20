@@ -14,7 +14,7 @@ import { coach, logoUrl, brand } from '@/config/tenant'
 import {
   LandingRoot, Nav, Section, Eyebrow, Heading, Callout, Hero, ProofStrip, LandingVideo,
   FeatureList, ColorCardList, EdgeLine, StepList, ContrastBlock, ProofVoices, FounderBlock,
-  StateFilter, CTASection, RiskReversalRow, FAQ, Footer, BLUE,
+  StateFilter, CTASection, RiskReversalRow, FAQ, Footer, BLUE, SignalsList, Mechanism,
 } from '@/components/landing/kit'
 import type { Feature, ColorCard, Step, Voice, FilterRow } from '@/components/landing/kit'
 
@@ -132,6 +132,37 @@ export default function BlueprintPage() {
           form={<CheckoutForm position="hero" />}
         />
       </div>
+
+      {/* Signals (ported from challenge) */}
+      <Section borderTop pad="72px 24px">
+        <SignalsList
+          eyebrow="What you have been feeling"
+          headline="You've done the work."
+          headlineMuted="It keeps slipping back."
+          items={[
+            'You lost weight before, then watched it climb back on',
+            'You finally know your pattern, but not what to do with it',
+            'Every plan is generic - none of them account for your read',
+            'Progress that only holds while you white-knuckle it',
+            'Training hard and eating clean, still stuck in the same place',
+            'The stall comes back the moment you ease off',
+          ]}
+          closing="None of this is a discipline problem. It is a plan that was never built for the pattern your read named. That is exactly what the next six weeks fix."
+        />
+      </Section>
+
+      {/* Mechanism (ported from challenge) */}
+      <Mechanism
+        eyebrow="The real problem"
+        headline="Why the result never held."
+        body="You corrected the symptom, not the pattern. A generic plan pushes the same levers for everyone - eat less, train more - which a stressed, pattern-locked body reads as more threat, so it holds on. The read named your pattern. The plan has to be built around it, or the body snaps back the moment the pressure comes off."
+        steps={[
+          { k: 'Your read', v: 'Named the exact pattern holding you' },
+          { k: 'Generic plan', v: 'Ignores it, pushes the same levers' },
+          { k: 'Result', v: 'Short-term drop, then straight back' },
+        ]}
+        takeaway="The fix is not more effort. It is six weeks of correction built for the one pattern your read named."
+      />
 
       {/* Bridge from challenge */}
       <Section borderTop pad="72px 24px 0">

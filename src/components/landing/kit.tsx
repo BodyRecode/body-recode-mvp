@@ -12,7 +12,7 @@
 
 import { useState } from 'react'
 import type { ReactNode, CSSProperties } from 'react'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, Zap } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
 export const BLUE = '#1B6DFC'
@@ -417,6 +417,58 @@ function FaqItem({ q, a }: { q: string; a: string }) {
         <ChevronDown size={18} strokeWidth={2.5} color={BLUE} style={{ flexShrink: 0, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
       </button>
       {open && <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 20px' }}>{a}</p>}
+    </div>
+  )
+}
+
+// ---- Signals list (the "symptoms / what you have been feeling" section) ----
+// Ported 1:1 from the challenge page so every page can carry the same
+// recognition beat. Inner content — place inside a <Section borderTop>.
+export function SignalsList({ eyebrow, headline, headlineMuted, items, closing, icon: Icon = Zap }: { eyebrow: string; headline: string; headlineMuted: string; items: string[]; closing?: string; icon?: LucideIcon }) {
+  return (
+    <>
+      <p style={{ fontSize: '11px', fontWeight: 700, color: BLUE, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>{eyebrow}</p>
+      <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '6px', color: INK }}>{headline}</h2>
+      <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, color: '#999999', marginBottom: '28px' }}>{headlineMuted}</h2>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0', borderTop: '1px solid #E5E5E5' }}>
+        {items.map(item => (
+          <div key={item} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '18px 0', borderBottom: '1px solid #E5E5E5' }}>
+            <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(27, 109, 252, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Icon size={14} strokeWidth={2.5} color={BLUE} />
+            </div>
+            <p style={{ fontSize: '16px', color: '#3A3A3A', margin: 0, lineHeight: 1.4 }}>{item}</p>
+          </div>
+        ))}
+      </div>
+      {closing && (
+        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, marginTop: '32px', marginBottom: 0 }}>{closing}</p>
+      )}
+    </>
+  )
+}
+
+// ---- Mechanism (the "here is why / the real problem" science band) ---------
+// Self-contained blue-tint band (ported from the challenge page). 3-step
+// physiology chain + a takeaway callout. Stacks on mobile via .lt-3col.
+export function Mechanism({ eyebrow, headline, body, steps, takeaway }: { eyebrow: string; headline: string; body: string; steps: { k: string; v: string }[]; takeaway: string }) {
+  return (
+    <div style={{ background: '#F3F7FF', borderTop: '1px solid rgba(27, 109, 252,0.2)', borderBottom: '1px solid rgba(27, 109, 252,0.2)' }}>
+      <div style={{ maxWidth: CONTAINER, margin: '0 auto', padding: '72px 24px' }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: BLUE, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>{eyebrow}</p>
+        <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '24px', color: INK }}>{headline}</h2>
+        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '18px' }}>{body}</p>
+        <div className="lt-3col" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', margin: '24px 0 28px' }}>
+          {steps.map(step => (
+            <div key={step.k} style={{ background: '#ffffff', border: '1px solid rgba(27,109,252,0.2)', borderRadius: '12px', padding: '16px 14px' }}>
+              <p style={{ fontSize: '10px', fontWeight: 800, color: BLUE, letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>{step.k}</p>
+              <p style={{ fontSize: '13px', color: '#3A3A3A', margin: 0, lineHeight: 1.5 }}>{step.v}</p>
+            </div>
+          ))}
+        </div>
+        <div style={{ background: 'rgba(27, 109, 252,0.1)', border: '1px solid rgba(27, 109, 252,0.25)', borderRadius: '12px', padding: '20px 22px' }}>
+          <p style={{ fontSize: '17px', color: INK, fontWeight: 700, margin: 0, lineHeight: 1.5 }}>{takeaway}</p>
+        </div>
+      </div>
     </div>
   )
 }

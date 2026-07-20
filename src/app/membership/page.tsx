@@ -15,7 +15,7 @@ import { coach, logoUrl, brand } from '@/config/tenant'
 import {
   LandingRoot, Nav, Section, Eyebrow, Heading, Callout, Hero, ProofStrip, VideoComingSoon,
   FeatureList, ColorCardList, EdgeLine, StepList, ContrastBlock, ProofVoices, FounderBlock,
-  StateFilter, CTASection, RiskReversalRow, FAQ, Footer, BLUE,
+  StateFilter, CTASection, RiskReversalRow, FAQ, Footer, BLUE, SignalsList, Mechanism,
 } from '@/components/landing/kit'
 import type { Feature, ColorCard, Step, Voice, FilterRow } from '@/components/landing/kit'
 
@@ -132,6 +132,37 @@ export default function MembershipPage() {
           form={<CheckoutForm position="hero" />}
         />
       </div>
+
+      {/* Signals (ported from challenge) */}
+      <Section borderTop pad="72px 24px">
+        <SignalsList
+          eyebrow="What you have been feeling"
+          headline="The results come."
+          headlineMuted="They never last."
+          items={[
+            'You get a result, then slowly watch it undo itself',
+            'Every plan has an end date, and that is where it falls apart',
+            'Motivation runs out long before the change is locked in',
+            'You are strong for six weeks, then drift for six more',
+            'No one is reading your numbers once the programme ends',
+            'You have proven you can do it - you just cannot hold it alone',
+          ]}
+          closing="Holding a correction is not a six-week job. It is an arc - and an arc needs someone reading the state the whole way through."
+        />
+      </Section>
+
+      {/* Mechanism (ported from challenge) */}
+      <Mechanism
+        eyebrow="The real problem"
+        headline="Why every result unwinds."
+        body="A body coming out of protection does not lock in overnight. It moves through states - Depleted to Transitioning to Ready - over months, not weeks. Every fixed-length plan stops in the middle of that arc, the check-ins stop, and the body quietly drifts back to the state it knew. The change was real. It just was not held long enough to become the new normal."
+        steps={[
+          { k: 'Correction', v: 'The pattern starts to shift' },
+          { k: 'Plan ends', v: 'Check-ins stop, no one is reading' },
+          { k: 'Result', v: 'The state drifts back to baseline' },
+        ]}
+        takeaway="The results last when someone keeps reading your state and adjusting the work - block after block, for the whole arc."
+      />
 
       {/* What this is */}
       <Section borderTop pad="88px 24px 0">
