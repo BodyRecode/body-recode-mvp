@@ -25,6 +25,17 @@ const nextConfig: NextConfig = {
   // Fix for the 2026-07-20 PDF regression on Foundational Reading download.
   serverExternalPackages: ['@sparticuz/chromium', 'puppeteer-core'],
 
+  // Even with the package externalised, Vercel's file tracer only ships JS
+  // files it can statically analyse as reachable. The chromium binary is a
+  // brotli-compressed tarball at node_modules/@sparticuz/chromium/bin/ and
+  // won't be traced automatically. Tell the tracer to include the whole
+  // chromium package tree so the bin/ directory lands on disk at /var/task.
+  // Scoped to /api/**/* since only API routes launch puppeteer; keeps other
+  // function bundles slim.
+  outputFileTracingIncludes: {
+    '/api/**/*': ['./node_modules/@sparticuz/chromium/**/*'],
+  },
+
   async redirects() {
     return [
       // Scorecard: marketing entry lives on the perf domain.
