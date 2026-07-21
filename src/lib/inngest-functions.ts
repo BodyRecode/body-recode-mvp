@@ -1192,7 +1192,11 @@ ${emailBody("Reply to this email if you want to talk through where you're at. I 
     // Mirror the soft check-in as an SMS (consent-gated + capped).
     await step.run('sms-day3', async () => {
       const ctx = source === 'challenge' ? 'challenge' : source === 'blueprint' ? 'Blueprint' : 'membership'
-      await smsLeadByEmail(email, `Hi ${firstName}, checking in after your ${ctx}. No pressure - just seeing how you are going. Reply any time and I will read it.`)
+      // NOTE: BR SMS sends from the one-way alphanumeric sender ID "BodyRecode"
+      // (Twilio Messaging Service MG3cab…, 0 numbers / 1 alpha sender) — recipients
+      // CANNOT reply to a text. Never promise an SMS reply here; point to the paired
+      // email (which does take replies). See project_sms_one_way_sender.
+      await smsLeadByEmail(email, `Hi ${firstName}, checking in after your ${ctx}. No pressure, just seeing how you're going. I've emailed you too - reply there any time. - Kade`)
     })
 
     await step.sleep('wait-day3-to-14', '11d')
