@@ -23,7 +23,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 function Tag({ children, color = 'sky' }: { children: React.ReactNode; color?: 'sky' | 'amber' | 'violet' | 'stone' | 'green' | 'red' }) {
   const styles: Record<string, string> = {
-    sky:    'bg-sky-50 text-sky-700 border-sky-500/20',
+    sky:    'bg-[#1B6DFC]/10 text-[#1056D6] border-[#1B6DFC]/25',
     amber:  'bg-amber-50 text-amber-700 border-amber-500/20',
     violet: 'bg-violet-500/10 text-violet-700 border-violet-500/20',
     stone:  'bg-stone-500/10 text-stone-600 border-stone-500/20',
@@ -35,7 +35,7 @@ function Tag({ children, color = 'sky' }: { children: React.ReactNode; color?: '
 
 function Bullets({ items, tone = 'stone' }: { items: string[]; tone?: 'stone' | 'plus' | 'minus' }) {
   const mark = tone === 'plus' ? '+' : tone === 'minus' ? '-' : '·'
-  const cls = tone === 'plus' ? 'text-sky-600' : tone === 'minus' ? 'text-red-600' : 'text-stone-400'
+  const cls = tone === 'plus' ? 'text-[#1B6DFC]' : tone === 'minus' ? 'text-red-600' : 'text-stone-400'
   return (
     <div className="space-y-1.5">
       {items.map(s => (
@@ -199,7 +199,7 @@ function PillarsTab() {
       {pillars.map(p => (
         <Card key={p.n}>
           <div className="flex items-start gap-4">
-            <span className="text-2xl font-bold font-mono text-sky-500/40">{p.n}</span>
+            <span className="text-2xl font-bold font-mono text-[#1B6DFC]/40">{p.n}</span>
             <div>
               <p className="text-base font-semibold text-[#1A1A1A] mb-1">{p.t}</p>
               <p className="text-sm text-stone-600 leading-relaxed">{p.d}</p>
@@ -210,7 +210,7 @@ function PillarsTab() {
       <Card>
         <SectionLabel>Messaging split (critical)</SectionLabel>
         <p className="text-sm text-stone-600 leading-relaxed">
-          Established coaches hear <em className="text-sky-700 not-italic font-medium">"own a business, not rent a tool"</em> (they already have a business). Emerging coaches hear <em className="text-sky-700 not-italic font-medium">"learn to practise to one standard, and grow into the platform"</em> (aspirational / educational). Never mix the two in one post - different audience, different stage.
+          Established coaches hear <em className="text-[#1B6DFC] not-italic font-medium">"own a business, not rent a tool"</em> (they already have a business). Emerging coaches hear <em className="text-[#1B6DFC] not-italic font-medium">"learn to practise to one standard, and grow into the platform"</em> (aspirational / educational). Never mix the two in one post - different audience, different stage.
         </p>
       </Card>
     </div>
