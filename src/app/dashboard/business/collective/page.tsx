@@ -86,6 +86,28 @@ function OverviewTab() {
       </Card>
 
       <Card>
+        <SectionLabel>Visual identity - social cards (locked 2026-07-21)</SectionLabel>
+        <p className="text-sm text-stone-600 leading-relaxed mb-3">
+          The Collective has its own social-card look, deliberately distinct from Body Recode and Kade&apos;s personal brand. A Collective post must never look like a BR post.
+        </p>
+        <div className="space-y-3">
+          {[
+            { k: 'Body Recode', v: 'Pure white · Signal Blue #1B6DFC · sans-bold · BR logo' },
+            { k: 'Kade personal', v: 'Warm clay #F3E9E1 · editorial serif · wordmark, no logo' },
+            { k: 'The Collective', v: 'Warm off-white #faf9f7 · ink · blue accent · "The Collective · Powered by Body Recode" wordmark, no BR logo' },
+          ].map(r => (
+            <div key={r.k} className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3 py-2 border-b border-stone-200/60 last:border-0">
+              <p className="text-sm font-medium text-[#1A1A1A] w-32 shrink-0">{r.k}</p>
+              <p className="text-sm text-stone-600">{r.v}</p>
+            </div>
+          ))}
+        </div>
+        <p className="text-xs text-stone-500 mt-3">
+          Made via <span className="font-mono text-[11px]">/api/content/graphic?style=collective</span> · never use style=authority (that is the BR card) for Collective content.
+        </p>
+      </Card>
+
+      <Card>
         <SectionLabel>Posture right now</SectionLabel>
         <div className="flex items-center gap-2 mb-3"><Tag color="amber">Demand-gen + curated waitlist</Tag><Tag color="stone">Not hard-sell yet</Tag></div>
         <p className="text-sm text-stone-600 leading-relaxed">
