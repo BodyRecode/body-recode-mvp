@@ -18,13 +18,17 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 })
   }
 
-  const { first_name, last_name, email, phone, gender, sms_opt_in } = body as {
+  const { first_name, last_name, email, phone, gender, sms_opt_in, utm_source, utm_medium, utm_campaign, utm_content } = body as {
     first_name: string
     last_name?: string
     email: string
     phone: string
     gender?: string
     sms_opt_in?: boolean
+    utm_source?: string
+    utm_medium?: string
+    utm_campaign?: string
+    utm_content?: string
   }
 
   if (!first_name?.trim() || !last_name?.trim() || !email?.trim() || !phone?.trim()) {
@@ -65,10 +69,14 @@ export async function POST(request: NextRequest) {
         email: email.toLowerCase().trim(),
         phone: phone.trim(),
         gender: validGender,
-        source: 'other',
+        source: utm_source === 'meta' ? 'meta' : 'other',
         source_detail: '14-day-body-decode-challenge',
         status: 'new_check_in',
         active: true,
+        utm_source: utm_source ?? null,
+        utm_medium: utm_medium ?? null,
+        utm_campaign: utm_campaign ?? null,
+        utm_content: utm_content ?? null,
       })
       .select('id')
       .single()

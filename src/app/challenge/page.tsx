@@ -45,6 +45,17 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
   const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [utms, setUtms] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    const p = new URLSearchParams(window.location.search)
+    const captured: Record<string, string> = {}
+    for (const key of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content']) {
+      const v = p.get(key)
+      if (v) captured[key] = v
+    }
+    setUtms(captured)
+  }, [])
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
@@ -55,7 +66,7 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
       const res = await fetch('/api/challenge/enroll', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, sms_opt_in: smsOptIn, position }),
+        body: JSON.stringify({ ...form, sms_opt_in: smsOptIn, position, ...utms }),
       })
       const data = await res.json()
       if (!res.ok) {
