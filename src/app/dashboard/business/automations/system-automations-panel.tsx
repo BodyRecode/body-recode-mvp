@@ -315,6 +315,13 @@ const AUTOMATIC_AUTOMATIONS = [
     steps: 1,
   },
   {
+    id: 'july27-gate-reminder',
+    name: 'July 27 Gate Decision Reminder (one-shot)',
+    description: 'macOS launchd plist au.bodyrecode.july27-gate.plist fires once at 8am on 27 July 2026. Runs ~/Dropbox/01_BODY_RECODE/07_ADS/july27_gate_reminder.py — sends a branded HTML email to kade@bodyrecode.au with the 7-step Option D Phase 2 action checklist: scale to $75/day ABO, unpause Perimenopausal + Slipping HP ad sets, stand up Blueprint retargeting, confirm Blueprint page live, shift Sunday promo rotation, lock Hook01 structure for Peri/HP briefing. One-shot — remove plist after it fires.',
+    trigger: 'macOS launchd — 8am 27 July 2026 (one-shot)',
+    steps: 1,
+  },
+  {
     id: 'meta-ads-weekly-report',
     name: 'Meta Ads Weekly Report',
     description: 'macOS launchd plist fires every Friday 9am Brisbane, running ~/Dropbox/01_BODY_RECODE/07_ADS/generate_report.py. Script reads the latest Meta Ads Manager .numbers or .csv export from the RAW_DATA folder, parses ad-set metrics (spend / reach / clicks / landing page views / CTR / CPC / CPM / Results / CPL), saves a Markdown copy to ANALYSIS/, and emails Kade a branded HTML report via Gmail SMTP (kade.dunstone@gmail.com → kade@bodyrecode.au). Campaign tracked: BR-FunnelB-Leads-2026Q3 (Option D Stage Gate strategy). NOT a Vercel or Inngest automation — runs entirely on Kade\'s MacBook via macOS Keychain for credentials.',
