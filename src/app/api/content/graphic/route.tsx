@@ -91,6 +91,30 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
     return '34px'
   }
 
+  // Collective — warm off-white B2B card, matches the /collective identity.
+  // Deliberately distinct from Body Recode (pure white / Signal Blue / BR logo):
+  // warm paper bg, ink text, blue accent, "The Collective · Powered by Body
+  // Recode" wordmark, NO BR logo. (Satori can't render the dot-grid pattern, so
+  // the warm bg + wordmark carry the brand distinction.)
+  if (style === 'collective') {
+    return new ImageResponse(
+      (
+        <div style={{ width: '1080px', height: '1080px', background: '#faf9f7', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '110px 100px', fontFamily: 'sans-serif', position: 'relative' }}>
+          <div style={{ width: '48px', height: '4px', background: '#1B6DFC', marginBottom: '28px' }} />
+          {label && <div style={{ fontSize: '30px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: '28px' }}>{label}</div>}
+          <div style={{ fontSize: hookSize(displayText.length), fontWeight: 800, color: '#1a1816', lineHeight: 1.12, letterSpacing: '-0.02em' }}>{displayText}</div>
+          {sub && <div style={{ fontSize: '34px', color: '#6b6762', lineHeight: 1.5, fontWeight: 400, marginTop: '32px', maxWidth: '860px' }}>{sub}</div>}
+          <div style={{ position: 'absolute', bottom: '80px', left: '100px', display: 'flex', alignItems: 'center', gap: '14px' }}>
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#1B6DFC' }} />
+            <div style={{ fontSize: '24px', fontWeight: 700, color: '#1a1816', letterSpacing: '-0.01em' }}>The Collective</div>
+            <div style={{ fontSize: '20px', fontWeight: 500, color: '#6b6762', letterSpacing: '0.02em' }}>· Powered by Body Recode</div>
+          </div>
+        </div>
+      ),
+      { width: 1080, height: 1080 }
+    )
+  }
+
   // Style 1: Photo left, text right
   if (style === 'photo-split') {
     return new ImageResponse(
