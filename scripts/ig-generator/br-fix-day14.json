@@ -1,0 +1,13 @@
+{
+  "_meta": { "out_dir": "/Users/kadedunstone/body-recode-mvp/public/calendar" },
+  "posts": [
+    { "slug": "br-fill_0722_day14-carousel", "type": "carousel", "slides": [
+      { "hook": "What happens", "hook_2": "at Day 14.", "sub": "And what comes next." },
+      { "hook": "Day 14 isn't", "hook_2": "the end of the read.", "blue": true },
+      { "hook": "Day 14:", "hook_2": "the Report drops.", "sub": "Your pattern named, in plain language." },
+      { "hook": "The next move", "hook_2": "is right there.", "sub": "No gap. The read hands straight to the fix.", "blue": true },
+      { "hook": "The Blueprint:", "hook_2": "six weeks, your pattern.", "sub": "Written to the one your Day 14 named." },
+      { "hook": "Want the read", "hook_2": "first? It's free.", "sub": "14 days. No card.", "is_cta": true, "cta_text": "→ Join the Challenge" }
+    ]}
+  ]
+}
