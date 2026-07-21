@@ -23,6 +23,7 @@ export default function ProfileSidebar({ clientId }: { clientId: string }) {
   const isProfilePage = pathname === `/dashboard/clients/${clientId}`
   const isDirectionPage = pathname === `/dashboard/clients/${clientId}/direction`
   const isRoutinePage = pathname === `/dashboard/clients/${clientId}/routine`
+  const isRecoveryPage = pathname === `/dashboard/clients/${clientId}/recovery`
 
   useEffect(() => {
     if (!isProfilePage) return
@@ -107,6 +108,17 @@ export default function ProfileSidebar({ clientId }: { clientId: string }) {
           }`}
         >
           Daily Sequences
+        </Link>
+
+        <Link
+          href={`/dashboard/clients/${clientId}/recovery`}
+          className={`block w-full text-left px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+            isRecoveryPage
+              ? 'bg-blue-50 text-blue-500'
+              : 'text-[#6B6B6B] hover:text-[#1A1A1A] hover:bg-[#E5E5E5]/50'
+          }`}
+        >
+          Recovery Protocols
         </Link>
       </nav>
     </div>
