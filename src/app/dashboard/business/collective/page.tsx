@@ -58,7 +58,7 @@ function OverviewTab() {
         </p>
         <div className="mt-4">
           <a href="/docs/strategy/collective/collective-gtm-content-strategy-v1.pdf" target="_blank" rel="noopener noreferrer"
-            className="text-[11px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-sky-600 text-white hover:bg-sky-700">View full strategy .pdf</a>
+            className="text-[11px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-[#1B6DFC] text-white hover:bg-[#1056D6]">View full strategy .pdf</a>
         </div>
       </Card>
 
