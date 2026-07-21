@@ -149,6 +149,22 @@ Five recurring themes. Every Collective post is one of these:
 
 ---
 
+## 9b. Visual identity - social cards (LOCKED 2026-07-21)
+
+The Collective has its **own** social-graphic look, deliberately distinct from Body Recode and from Kade's personal brand. This is part of "never blur the brands" (section 3) - a Collective post must not look like a BR post.
+
+| Brand | Social card look |
+|---|---|
+| **Body Recode** (`@body_recode_`) | Pure white / Signal Blue `#1B6DFC` / sans-bold / **BR logo** |
+| **Kade personal** (`@kade_dunstone_`) | Warm **clay** `#F3E9E1` / editorial **serif** / wordmark, no logo |
+| **The Collective** | Warm off-white `#faf9f7` / ink `#1a1816` / blue accent `#1B6DFC` / **"The Collective · Powered by Body Recode"** wordmark, **NO BR logo** |
+
+**The Collective card** = the `/collective` page identity ported to a social card: warm paper background, blue eyebrow rule + uppercase label, ink sans-bold headline, muted sub, and the "The Collective · Powered by Body Recode" wordmark at the foot. Matches the warm off-white / dot-grid feel of the marketing site (the dot-grid itself can't render in the card engine, so the warm bg + wordmark carry the distinction).
+
+**How it's made:** `bodyrecode.au/api/content/graphic?style=collective&label=...&text=...&sub=...` (1080x1080). Collective calendar posts store this URL in the `graphic` field. **Never** use `style=authority` (that is the BR blue/white card) for Collective content.
+
+---
+
 ## 10. What we measure
 
 - **Fit Scorecard applications / week** (top of funnel).
