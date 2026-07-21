@@ -1,0 +1,35 @@
+{
+  "_meta": { "out_dir": "/Users/kadedunstone/body-recode-mvp/public/calendar" },
+  "posts": [
+    { "slug": "br-fill_0902_inside-membership-carousel", "type": "carousel", "slides": [
+      { "hook": "Inside the", "hook_2": "Membership." },
+      { "hook": "The Blueprint", "hook_2": "corrected the pattern.", "blue": true },
+      { "hook": "Membership", "hook_2": "holds it there.", "sub": "Block after block, for the long arc." },
+      { "hook": "Your state,", "hook_2": "read every week.", "sub": "Numbers in, the work recalibrated." },
+      { "hook": "Not more content.", "hook_2": "Calibration.", "sub": "Someone reading you, not another video library.", "blue": true },
+      { "hook": "Ready to hold", "hook_2": "the correction?", "sub": "Start with the read. Free.", "is_cta": true, "cta_text": "→ Find your state" }
+    ]},
+    { "slug": "br-fill_0904_coach-membership-concept", "type": "coach", "photo": "6",
+      "hook_1": "The plan ends.", "hook_2": "The reading", "sub_1": "shouldn't." },
+    { "slug": "br-fill_0907_authority-membership-launch", "type": "authority",
+      "hook_1": "Read. Correct.", "hook_2": "Hold.",
+      "sub_1": "The Challenge reads your state. The Blueprint corrects it. Membership holds it - the ladder is now complete." },
+    { "slug": "br-fill_0907_what-membership-is-carousel", "type": "carousel", "slides": [
+      { "hook": "What Membership", "hook_2": "is. And isn't." },
+      { "hook": "It is NOT", "hook_2": "a content library.", "sub": "Not more videos to ignore.", "blue": true },
+      { "hook": "It IS someone", "hook_2": "reading your state.", "sub": "Weekly. The work adjusted to your numbers." },
+      { "hook": "It is NOT", "hook_2": "another program.", "blue": true },
+      { "hook": "It IS continuity.", "hook_2": "The read never stops.", "sub": "So the correction becomes your baseline." },
+      { "hook": "Start with", "hook_2": "the read. Free.", "is_cta": true, "cta_text": "→ Find your state" }
+    ]},
+    { "slug": "br-fill_0908_diagnostic-post-correction", "type": "diagnostic", "photo": "4",
+      "cta_eyebrow": "FREE · 2 MINUTES",
+      "hook_1": "Corrected it,", "hook_2": "but can't hold it?",
+      "sub_1": "That's the long arc.",
+      "cta_text": "→ Find your state" },
+    { "slug": "br-fill_0909_pattern-continuity", "type": "pattern",
+      "hook_1": "Pattern continuity.", "hook_2": "How it holds.",
+      "list": ["Your pattern is read every week", "The block adjusts to your numbers", "Nothing is guessed or bolted on", "The correction becomes the baseline"],
+      "soft_cta": "→ Find your state" }
+  ]
+}
