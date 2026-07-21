@@ -764,7 +764,7 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
               <div style={{ width: '36px', height: '2px', background: T.rule }} />
-              <div style={{ fontSize: '27px', fontWeight: 500, color: T.muted, letterSpacing: '0.06em', fontFamily: 'sans-serif' }}>@kade_dunstone_</div>
+              <div style={{ fontSize: '27px', fontWeight: 500, color: T.muted, letterSpacing: '0.06em', fontFamily: 'sans-serif' }}>{searchParams.get('handle') ?? '@kade_dunstone_'}</div>
             </div>
             {cue === 'swipe' && (
               <div style={{ fontSize: '24px', fontWeight: 700, color: T.accent, letterSpacing: '0.12em', textTransform: 'uppercase', fontFamily: 'sans-serif' }}>Swipe →</div>
