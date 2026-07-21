@@ -315,6 +315,13 @@ const AUTOMATIC_AUTOMATIONS = [
     steps: 1,
   },
   {
+    id: 'meta-ads-weekly-report',
+    name: 'Meta Ads Weekly Report',
+    description: 'macOS launchd plist fires every Friday 9am Brisbane, running ~/Dropbox/01_BODY_RECODE/07_ADS/generate_report.py. Script reads the latest Meta Ads Manager .numbers or .csv export from the RAW_DATA folder, parses ad-set metrics (spend / reach / clicks / landing page views / CTR / CPC / CPM / Results / CPL), saves a Markdown copy to ANALYSIS/, and emails Kade a branded HTML report via Gmail SMTP (kade.dunstone@gmail.com → kade@bodyrecode.au). Campaign tracked: BR-FunnelB-Leads-2026Q3 (Option D Stage Gate strategy). NOT a Vercel or Inngest automation — runs entirely on Kade\'s MacBook via macOS Keychain for credentials.',
+    trigger: 'macOS launchd — Fridays 9am Brisbane',
+    steps: 1,
+  },
+  {
     id: 'digital-asset-instant-pdf',
     name: 'Digital Asset — Instant PDF Delivery',
     description: 'Phase A fulfilment branch. Stripe webhook receives checkout.session.completed for a digital_asset_purchase with fulfilment_kind=\'instant_pdf\' (Field Guides + Protocol Packs). Synchronously signs a 24h Supabase Storage URL, sends the branded delivery email, marks the purchase fulfilled with output_ref = signed URL. Lives at src/app/api/webhooks/stripe/route.ts::fulfilInstantPdf.',
