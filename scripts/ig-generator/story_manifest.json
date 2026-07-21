@@ -1,0 +1,654 @@
+{
+ "_meta": {
+  "out_dir": "/Users/kadedunstone/body-recode-mvp/public/stories/filled"
+ },
+ "posts": [
+  {
+   "slug": "story_7b723049",
+   "type": "story",
+   "category": "hook",
+   "label": "READ THE STATE",
+   "hook_1": "You're doing everything right and the scale won't move.",
+   "sub_1": "It's not your effort. It's the state your body is in."
+  },
+  {
+   "slug": "story_d4c152c6",
+   "type": "story",
+   "category": "pattern",
+   "label": "01 \u00b7 DEPLETED",
+   "pattern_name": "Stress-Stored",
+   "hook_1": "Cortisol running the show, fat holding under load.",
+   "sub_1": "The pattern most Depleted-state bodies settle into."
+  },
+  {
+   "slug": "story_7e7151b8",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "It's a state problem, not a discipline problem."
+  },
+  {
+   "slug": "story_74d83046",
+   "type": "story",
+   "category": "inside_challenge",
+   "day_num": "Day 1",
+   "hook_1": "Inside the 14-day read: a small daily act, then the pattern.",
+   "sub_1": "No slashing calories. No punishing sessions. Just the read."
+  },
+  {
+   "slug": "story_1623430f",
+   "type": "story",
+   "category": "photo_overlay",
+   "photo": "1",
+   "hook_1": "Read the state first. Then prescribe.",
+   "sub_1": "Most plans skip the read. That's why they miss."
+  },
+  {
+   "slug": "story_024653c5",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "Read the state first. Then prescribe."
+  },
+  {
+   "slug": "story_31a5c992",
+   "type": "story",
+   "category": "hook",
+   "label": "THE READ",
+   "hook_1": "Sharp one day, foggy the next.",
+   "sub_1": "That's a pattern, not age. And it can be read."
+  },
+  {
+   "slug": "story_53b6685a",
+   "type": "story",
+   "category": "inside_challenge",
+   "day_num": "Day 5",
+   "hook_1": "The Morning Reset anchors the whole day.",
+   "sub_1": "Two minutes that set the cortisol curve."
+  },
+  {
+   "slug": "story_73af45ed",
+   "type": "story",
+   "category": "pattern",
+   "label": "02 \u00b7 TRANSITIONING",
+   "pattern_name": "Insulin-Drift",
+   "hook_1": "Carb tolerance quietly changed under you.",
+   "sub_1": "Explains why the old approach stopped working."
+  },
+  {
+   "slug": "story_3f49c7dc",
+   "type": "story",
+   "category": "pattern",
+   "label": "03 \u00b7 PERIMENOPAUSAL",
+   "pattern_name": "Estrogen-Shift",
+   "hook_1": "The perimenopausal rewrite of the rules.",
+   "sub_1": "It doesn't need more discipline. It needs a re-read."
+  },
+  {
+   "slug": "story_819a6c9d",
+   "type": "story",
+   "category": "photo_overlay",
+   "photo": "2",
+   "hook_1": "Same discipline. Different outcome.",
+   "sub_1": "Because the state was different underneath."
+  },
+  {
+   "slug": "story_e6025a1c",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "You can't out-discipline a rhythm."
+  },
+  {
+   "slug": "story_e9198542",
+   "type": "story",
+   "category": "hook",
+   "label": "THE RHYTHM",
+   "hook_1": "Wired at night, flat by 3pm.",
+   "sub_1": "A cortisol rhythm firing at the wrong times."
+  },
+  {
+   "slug": "story_585229a0",
+   "type": "story",
+   "category": "inside_challenge",
+   "day_num": "Day 7",
+   "hook_1": "The Check-In lands. The Report is on its way.",
+   "sub_1": "Everything from here is the read confirming itself."
+  },
+  {
+   "slug": "story_eb9f810b",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "Effort doesn't fix a body in protection mode. Conditions do."
+  },
+  {
+   "slug": "story_6453849d",
+   "type": "story",
+   "category": "photo_overlay",
+   "photo": "3",
+   "hook_1": "The read is the doorway.",
+   "sub_1": "Not the destination. The correction is the follow-through."
+  },
+  {
+   "slug": "story_949bf26e",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "Most people aren't undisciplined. They're unread."
+  },
+  {
+   "slug": "story_95c253ad",
+   "type": "story",
+   "category": "hook",
+   "label": "THE STRESS READOUT",
+   "hook_1": "Belly fat at 45 isn't ageing.",
+   "sub_1": "It's a stress readout. Cortisol, not calories."
+  },
+  {
+   "slug": "story_249fbd69",
+   "type": "story",
+   "category": "pattern",
+   "label": "04 \u00b7 SLIPPING",
+   "pattern_name": "Androgen-Decline",
+   "hook_1": "Drive, recovery and output quietly fading.",
+   "sub_1": "Not just age. A pattern with a specific correction."
+  },
+  {
+   "slug": "story_454f99a3",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "You can't correct what you haven't named."
+  },
+  {
+   "slug": "story_e3feac85",
+   "type": "story",
+   "category": "hook",
+   "label": "THE WRONG MAP",
+   "hook_1": "You're not behind.",
+   "sub_1": "You were handed the wrong map for your body."
+  },
+  {
+   "slug": "story_26b8d995",
+   "type": "story",
+   "category": "pattern",
+   "label": "01 \u00b7 DEPLETED",
+   "pattern_name": "Stress-Stored",
+   "hook_1": "Cortisol running the show, fat holding under load.",
+   "sub_1": "The pattern most Depleted-state bodies settle into."
+  },
+  {
+   "slug": "story_cce7d2ff",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "The correction is only as good as the read underneath it."
+  },
+  {
+   "slug": "story_a6757271",
+   "type": "story",
+   "category": "pattern",
+   "label": "02 \u00b7 TRANSITIONING",
+   "pattern_name": "Insulin-Drift",
+   "hook_1": "Carb tolerance quietly changed under you.",
+   "sub_1": "Explains why the old approach stopped working."
+  },
+  {
+   "slug": "story_0efae8fc",
+   "type": "story",
+   "category": "photo_overlay",
+   "photo": "4",
+   "hook_1": "You can't out-train a body in protection.",
+   "sub_1": "You read it, then bring it out of protection."
+  },
+  {
+   "slug": "story_186c3b8a",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "You can't fix a pattern you've never read."
+  },
+  {
+   "slug": "story_bb4f648a",
+   "type": "story",
+   "category": "hook",
+   "label": "INSULIN DRIFT",
+   "hook_1": "Carbs hitting different lately?",
+   "sub_1": "Your body handles fuel the way it didn't used to."
+  },
+  {
+   "slug": "story_c582bc3d",
+   "type": "story",
+   "category": "inside_challenge",
+   "day_num": "Day 14",
+   "hook_1": "Today the pattern is named.",
+   "sub_1": "Pattern, mechanism, three actions. The read is yours."
+  },
+  {
+   "slug": "story_d29c53c3",
+   "type": "story",
+   "category": "photo_overlay",
+   "photo": "5",
+   "hook_1": "Effort was never your problem.",
+   "sub_1": "Direction was. The read sets the direction."
+  },
+  {
+   "slug": "story_fe45d56f",
+   "type": "story",
+   "category": "inside_challenge",
+   "day_num": "Week 2",
+   "hook_1": "You stop 'doing a challenge'. You live with the read.",
+   "sub_1": "The rhythm is doing the reading."
+  },
+  {
+   "slug": "story_eeffda64",
+   "type": "story",
+   "category": "pattern",
+   "label": "03 \u00b7 PERIMENOPAUSAL",
+   "pattern_name": "Estrogen-Shift",
+   "hook_1": "The perimenopausal rewrite of the rules.",
+   "sub_1": "It doesn't need more discipline. It needs a re-read."
+  },
+  {
+   "slug": "story_832ac809",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "The plan that fits beats the plan that's clever."
+  },
+  {
+   "slug": "story_d400787e",
+   "type": "story",
+   "category": "hook",
+   "label": "THE STALL",
+   "hook_1": "Trained hard, ate clean, nothing held.",
+   "sub_1": "Because the plan was never built for your pattern."
+  },
+  {
+   "slug": "story_b476ead2",
+   "type": "story",
+   "category": "pattern",
+   "label": "04 \u00b7 SLIPPING",
+   "pattern_name": "Androgen-Decline",
+   "hook_1": "Drive, recovery and output quietly fading.",
+   "sub_1": "Not just age. A pattern with a specific correction."
+  },
+  {
+   "slug": "story_31d5a7b8",
+   "type": "story",
+   "category": "photo_overlay",
+   "photo": "6",
+   "hook_1": "The body keeps the score.",
+   "sub_1": "And it's always giving a read, if you know how to take it."
+  },
+  {
+   "slug": "story_487dd60c",
+   "type": "story",
+   "category": "pattern",
+   "label": "01 \u00b7 DEPLETED",
+   "pattern_name": "Stress-Stored",
+   "hook_1": "Cortisol running the show, fat holding under load.",
+   "sub_1": "The pattern most Depleted-state bodies settle into."
+  },
+  {
+   "slug": "story_2c3801ee",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "Discipline hides depletion. You can feel fine and be running on empty."
+  },
+  {
+   "slug": "story_69c99e80",
+   "type": "story",
+   "category": "hook",
+   "label": "THE NEW RULES",
+   "hook_1": "Your body changed the rules.",
+   "sub_1": "And nobody told you. A read tells you what changed."
+  },
+  {
+   "slug": "story_540dec8f",
+   "type": "story",
+   "category": "photo_overlay",
+   "photo": "7",
+   "hook_1": "Read the state first. Then prescribe.",
+   "sub_1": "Most plans skip the read. That's why they miss."
+  },
+  {
+   "slug": "story_cdc9ae85",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "The read is the reward for the work."
+  },
+  {
+   "slug": "story_7c58717e",
+   "type": "story",
+   "category": "hook",
+   "label": "STATE OVER EFFORT",
+   "hook_1": "More cardio isn't the answer.",
+   "sub_1": "A read is. Until the state changes, inputs don't land."
+  },
+  {
+   "slug": "story_a06a9340",
+   "type": "story",
+   "category": "inside_challenge",
+   "day_num": "Beyond",
+   "hook_1": "The read is step one. The correction is next.",
+   "sub_1": "The Blueprint takes the pattern and runs six weeks."
+  },
+  {
+   "slug": "story_369a94a9",
+   "type": "story",
+   "category": "hook",
+   "label": "LIVE NOW",
+   "hook_1": "The 14-Day Body Decode Challenge is live.",
+   "sub_1": "A free read of your body's current state."
+  },
+  {
+   "slug": "story_4362eb64",
+   "type": "story",
+   "category": "photo_overlay",
+   "photo": "1",
+   "hook_1": "Same discipline. Different outcome.",
+   "sub_1": "Because the state was different underneath."
+  },
+  {
+   "slug": "story_208b44ee",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "The body was always telling you. You just needed the structure to hear it."
+  },
+  {
+   "slug": "story_c4b27c59",
+   "type": "story",
+   "category": "hook",
+   "label": "DOWNSTREAM",
+   "hook_1": "Five years of broken sleep rewired your stress system.",
+   "sub_1": "The weight is downstream of that. Not the cause."
+  },
+  {
+   "slug": "story_6630f9ad",
+   "type": "story",
+   "category": "inside_challenge",
+   "day_num": "Day 1",
+   "hook_1": "Inside the 14-day read: a small daily act, then the pattern.",
+   "sub_1": "No slashing calories. No punishing sessions. Just the read."
+  },
+  {
+   "slug": "story_5ddd8452",
+   "type": "story",
+   "category": "pattern",
+   "label": "02 \u00b7 TRANSITIONING",
+   "pattern_name": "Insulin-Drift",
+   "hook_1": "Carb tolerance quietly changed under you.",
+   "sub_1": "Explains why the old approach stopped working."
+  },
+  {
+   "slug": "story_587b6e38",
+   "type": "story",
+   "category": "photo_overlay",
+   "photo": "2",
+   "hook_1": "The read is the doorway.",
+   "sub_1": "Not the destination. The correction is the follow-through."
+  },
+  {
+   "slug": "story_374e49ab",
+   "type": "story",
+   "category": "inside_challenge",
+   "day_num": "Day 5",
+   "hook_1": "The Morning Reset anchors the whole day.",
+   "sub_1": "Two minutes that set the cortisol curve."
+  },
+  {
+   "slug": "story_f8538bf7",
+   "type": "story",
+   "category": "pattern",
+   "label": "03 \u00b7 PERIMENOPAUSAL",
+   "pattern_name": "Estrogen-Shift",
+   "hook_1": "The perimenopausal rewrite of the rules.",
+   "sub_1": "It doesn't need more discipline. It needs a re-read."
+  },
+  {
+   "slug": "story_62f9950e",
+   "type": "story",
+   "category": "photo_overlay",
+   "photo": "3",
+   "hook_1": "You can't out-train a body in protection.",
+   "sub_1": "You read it, then bring it out of protection."
+  },
+  {
+   "slug": "story_5ca15f0e",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "It's a state problem, not a discipline problem."
+  },
+  {
+   "slug": "story_bc0f9485",
+   "type": "story",
+   "category": "hook",
+   "label": "READ THE STATE",
+   "hook_1": "You're doing everything right and the scale won't move.",
+   "sub_1": "It's not your effort. It's the state your body is in."
+  },
+  {
+   "slug": "story_92dce91e",
+   "type": "story",
+   "category": "pattern",
+   "label": "04 \u00b7 SLIPPING",
+   "pattern_name": "Androgen-Decline",
+   "hook_1": "Drive, recovery and output quietly fading.",
+   "sub_1": "Not just age. A pattern with a specific correction."
+  },
+  {
+   "slug": "story_c4b32520",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "Read the state first. Then prescribe."
+  },
+  {
+   "slug": "story_7332750e",
+   "type": "story",
+   "category": "inside_challenge",
+   "day_num": "Day 7",
+   "hook_1": "The Check-In lands. The Report is on its way.",
+   "sub_1": "Everything from here is the read confirming itself."
+  },
+  {
+   "slug": "story_badbeb59",
+   "type": "story",
+   "category": "photo_overlay",
+   "photo": "4",
+   "hook_1": "Effort was never your problem.",
+   "sub_1": "Direction was. The read sets the direction."
+  },
+  {
+   "slug": "story_87d0184c",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "You can't out-discipline a rhythm."
+  },
+  {
+   "slug": "story_18f50e1a",
+   "type": "story",
+   "category": "hook",
+   "label": "THE READ",
+   "hook_1": "Sharp one day, foggy the next.",
+   "sub_1": "That's a pattern, not age. And it can be read."
+  },
+  {
+   "slug": "story_2baf7dff",
+   "type": "story",
+   "category": "pattern",
+   "label": "01 \u00b7 DEPLETED",
+   "pattern_name": "Stress-Stored",
+   "hook_1": "Cortisol running the show, fat holding under load.",
+   "sub_1": "The pattern most Depleted-state bodies settle into."
+  },
+  {
+   "slug": "story_2de28631",
+   "type": "story",
+   "category": "hook",
+   "label": "THE RHYTHM",
+   "hook_1": "Wired at night, flat by 3pm.",
+   "sub_1": "A cortisol rhythm firing at the wrong times."
+  },
+  {
+   "slug": "story_0b36f001",
+   "type": "story",
+   "category": "pattern",
+   "label": "02 \u00b7 TRANSITIONING",
+   "pattern_name": "Insulin-Drift",
+   "hook_1": "Carb tolerance quietly changed under you.",
+   "sub_1": "Explains why the old approach stopped working."
+  },
+  {
+   "slug": "story_83599d44",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "Effort doesn't fix a body in protection mode. Conditions do."
+  },
+  {
+   "slug": "story_06b33ace",
+   "type": "story",
+   "category": "hook",
+   "label": "THE STRESS READOUT",
+   "hook_1": "Belly fat at 45 isn't ageing.",
+   "sub_1": "It's a stress readout. Cortisol, not calories."
+  },
+  {
+   "slug": "story_2334f5da",
+   "type": "story",
+   "category": "pattern",
+   "label": "03 \u00b7 PERIMENOPAUSAL",
+   "pattern_name": "Estrogen-Shift",
+   "hook_1": "The perimenopausal rewrite of the rules.",
+   "sub_1": "It doesn't need more discipline. It needs a re-read."
+  },
+  {
+   "slug": "story_fed91310",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "Most people aren't undisciplined. They're unread."
+  },
+  {
+   "slug": "story_c837eea4",
+   "type": "story",
+   "category": "pattern",
+   "label": "04 \u00b7 SLIPPING",
+   "pattern_name": "Androgen-Decline",
+   "hook_1": "Drive, recovery and output quietly fading.",
+   "sub_1": "Not just age. A pattern with a specific correction."
+  },
+  {
+   "slug": "story_4437b42d",
+   "type": "story",
+   "category": "photo_overlay",
+   "photo": "5",
+   "hook_1": "The body keeps the score.",
+   "sub_1": "And it's always giving a read, if you know how to take it."
+  },
+  {
+   "slug": "story_30d8173e",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "You can't correct what you haven't named."
+  },
+  {
+   "slug": "story_8ccbf01a",
+   "type": "story",
+   "category": "hook",
+   "label": "THE WRONG MAP",
+   "hook_1": "You're not behind.",
+   "sub_1": "You were handed the wrong map for your body."
+  },
+  {
+   "slug": "story_335f0e71",
+   "type": "story",
+   "category": "inside_challenge",
+   "day_num": "Day 14",
+   "hook_1": "Today the pattern is named.",
+   "sub_1": "Pattern, mechanism, three actions. The read is yours."
+  },
+  {
+   "slug": "story_386311f3",
+   "type": "story",
+   "category": "photo_overlay",
+   "photo": "6",
+   "hook_1": "Read the state first. Then prescribe.",
+   "sub_1": "Most plans skip the read. That's why they miss."
+  },
+  {
+   "slug": "story_2b04ea0d",
+   "type": "story",
+   "category": "inside_challenge",
+   "day_num": "Week 2",
+   "hook_1": "You stop 'doing a challenge'. You live with the read.",
+   "sub_1": "The rhythm is doing the reading."
+  },
+  {
+   "slug": "story_4e4fac01",
+   "type": "story",
+   "category": "pattern",
+   "label": "01 \u00b7 DEPLETED",
+   "pattern_name": "Stress-Stored",
+   "hook_1": "Cortisol running the show, fat holding under load.",
+   "sub_1": "The pattern most Depleted-state bodies settle into."
+  },
+  {
+   "slug": "story_308b9821",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "The correction is only as good as the read underneath it."
+  },
+  {
+   "slug": "story_6a92836c",
+   "type": "story",
+   "category": "hook",
+   "label": "INSULIN DRIFT",
+   "hook_1": "Carbs hitting different lately?",
+   "sub_1": "Your body handles fuel the way it didn't used to."
+  },
+  {
+   "slug": "story_cf8e9fad",
+   "type": "story",
+   "category": "pattern",
+   "label": "02 \u00b7 TRANSITIONING",
+   "pattern_name": "Insulin-Drift",
+   "hook_1": "Carb tolerance quietly changed under you.",
+   "sub_1": "Explains why the old approach stopped working."
+  },
+  {
+   "slug": "story_145745f4",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "You can't fix a pattern you've never read."
+  },
+  {
+   "slug": "story_080de9dc",
+   "type": "story",
+   "category": "photo_overlay",
+   "photo": "7",
+   "hook_1": "Same discipline. Different outcome.",
+   "sub_1": "Because the state was different underneath."
+  },
+  {
+   "slug": "story_6254ae10",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "The plan that fits beats the plan that's clever."
+  },
+  {
+   "slug": "story_8f83009e",
+   "type": "story",
+   "category": "hook",
+   "label": "THE STALL",
+   "hook_1": "Trained hard, ate clean, nothing held.",
+   "sub_1": "Because the plan was never built for your pattern."
+  },
+  {
+   "slug": "story_42204eb5",
+   "type": "story",
+   "category": "pattern",
+   "label": "03 \u00b7 PERIMENOPAUSAL",
+   "pattern_name": "Estrogen-Shift",
+   "hook_1": "The perimenopausal rewrite of the rules.",
+   "sub_1": "It doesn't need more discipline. It needs a re-read."
+  },
+  {
+   "slug": "story_88245ffb",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "Discipline hides depletion. You can feel fine and be running on empty."
+  }
+ ]
+}

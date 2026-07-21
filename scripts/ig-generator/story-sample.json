@@ -1,0 +1,10 @@
+{
+  "_meta": { "out_dir": "/private/tmp/claude-501/-Users-kadedunstone/dead408a-06d0-43c2-a4ef-2fe8a68afd96/scratchpad/story-samples" },
+  "posts": [
+    { "slug": "s_hook", "type": "story", "category": "hook", "label": "READ THE STATE", "hook_1": "You're doing everything right and the scale won't move.", "sub_1": "It's not your effort. It's the state your body is in." },
+    { "slug": "s_quote", "type": "story", "category": "quote", "hook_1": "It's a state problem, not a discipline problem." },
+    { "slug": "s_pattern", "type": "story", "category": "pattern", "label": "01 · DEPLETED", "pattern_name": "Stress-Stored", "hook_1": "Cortisol running the show, fat holding under load.", "sub_1": "The pattern most Depleted-state bodies settle into." },
+    { "slug": "s_photo", "type": "story", "category": "photo_overlay", "photo": "5", "hook_1": "Read the state first. Then prescribe.", "sub_1": "Most plans skip the read. That's why they miss." },
+    { "slug": "s_inside", "type": "story", "category": "inside_challenge", "day_num": "Day 1", "hook_1": "Inside the 14-day read: a small daily act, then the pattern.", "sub_1": "No slashing calories. No punishing sessions. Just the read." }
+  ]
+}
