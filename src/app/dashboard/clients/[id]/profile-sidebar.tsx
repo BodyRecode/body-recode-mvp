@@ -24,6 +24,7 @@ export default function ProfileSidebar({ clientId }: { clientId: string }) {
   const isDirectionPage = pathname === `/dashboard/clients/${clientId}/direction`
   const isRoutinePage = pathname === `/dashboard/clients/${clientId}/routine`
   const isRecoveryPage = pathname === `/dashboard/clients/${clientId}/recovery`
+  const isSupplementsPage = pathname === `/dashboard/clients/${clientId}/supplements`
 
   useEffect(() => {
     if (!isProfilePage) return
@@ -119,6 +120,17 @@ export default function ProfileSidebar({ clientId }: { clientId: string }) {
           }`}
         >
           Recovery Protocols
+        </Link>
+
+        <Link
+          href={`/dashboard/clients/${clientId}/supplements`}
+          className={`block w-full text-left px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+            isSupplementsPage
+              ? 'bg-blue-50 text-blue-500'
+              : 'text-[#6B6B6B] hover:text-[#1A1A1A] hover:bg-[#E5E5E5]/50'
+          }`}
+        >
+          Supplements
         </Link>
       </nav>
     </div>

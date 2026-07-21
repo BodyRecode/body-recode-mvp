@@ -1,4 +1,4 @@
-import { ListChecks, MessageCircle, FileText, CalendarDays, NotebookPen, LayoutGrid, Dumbbell, Salad, LineChart, Activity, BookOpen, Sunrise, Snowflake, type LucideIcon } from 'lucide-react'
+import { ListChecks, MessageCircle, FileText, CalendarDays, NotebookPen, LayoutGrid, Dumbbell, Salad, LineChart, Activity, BookOpen, Sunrise, Snowflake, Pill, type LucideIcon } from 'lucide-react'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { notFound, redirect } from 'next/navigation'
@@ -85,6 +85,12 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
 
   const { count: activeRecoveryCount } = await admin
     .from('recovery_protocol_assignments')
+    .select('id', { count: 'exact', head: true })
+    .eq('client_id', client?.id ?? '')
+    .eq('status', 'active')
+
+  const { count: activeSupplementCount } = await admin
+    .from('supplement_assignments')
     .select('id', { count: 'exact', head: true })
     .eq('client_id', client?.id ?? '')
     .eq('status', 'active')
@@ -449,6 +455,24 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                 <div className="min-w-0">
                   <p className="text-sm font-semibold text-[#1A1A1A] mb-1">{activeRecoveryCount} recovery protocol{activeRecoveryCount === 1 ? '' : 's'} active</p>
                   <p className="text-xs text-[#6B6B6B] leading-relaxed">Situational tools your coach has assigned. Do these when your body signals it needs them, not every day.</p>
+                </div>
+                <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">Open →</span>
+              </div>
+            </Link>
+          </div>
+        )}
+
+        {allOnboardingDone && (activeSupplementCount ?? 0) > 0 && (
+          <div className="mb-10">
+            <SectionLabel icon={Pill} text="Supplement Stack" />
+            <Link
+              href={`/portal/${token}/supplements`}
+              className="block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-[#1A1A1A] mb-1">{activeSupplementCount} substance{activeSupplementCount === 1 ? '' : 's'} prescribed</p>
+                  <p className="text-xs text-[#6B6B6B] leading-relaxed">Each has three tiers - Essential, Enhanced, Elite. Pick the tier that fits your budget and commitment level.</p>
                 </div>
                 <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">Open →</span>
               </div>
