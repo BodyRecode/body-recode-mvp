@@ -63,7 +63,7 @@ const STRATEGY_DOC_GROUPS: { label: string; dot: string; docs: StrategyDoc[] }[]
 // ── CALENDAR ────────────────────────────────────────────────
 
 type PostType = 'authority' | 'pattern' | 'contrarian' | 'coach' | 'diagnostic' | 'ad' | 'prelaunch' | 'thread' | 'video' | 'story'
-type CampaignPhase = 'prelaunch' | 'ads' | 'optimise' | 'scale'
+type CampaignPhase = 'prelaunch' | 'ads' | 'optimise' | 'scale' | 'evergreen' | 'ascension' | 'membership_launch' | 'collective' | 'founder' | 'launch'
 type Brand = 'body_recode' | 'personal_brand' | 'ai_cofounder' | 'collective'
 type Platform = 'instagram' | 'facebook' | 'linkedin'
 
@@ -144,10 +144,16 @@ const POST_TYPE_STYLES: Record<PostType, { label: string; color: string; bg: str
 }
 
 const PHASE_STYLES: Record<CampaignPhase, { label: string; color: string }> = {
-  prelaunch: { label: 'Pre-Launch',    color: 'text-stone-600' },
-  ads:       { label: 'Ads Launch',    color: 'text-blue-700' },
-  optimise:  { label: 'Optimise',      color: 'text-amber-700' },
-  scale:     { label: 'Scale',         color: 'text-blue-500' },
+  prelaunch:         { label: 'Pre-Launch',      color: 'text-stone-600' },
+  ads:               { label: 'Ads Launch',      color: 'text-blue-700' },
+  optimise:          { label: 'Optimise',        color: 'text-amber-700' },
+  scale:             { label: 'Scale',           color: 'text-blue-500' },
+  evergreen:         { label: 'Evergreen',       color: 'text-emerald-600' },
+  ascension:         { label: 'Blueprint Drive', color: 'text-blue-600' },
+  membership_launch: { label: 'Membership',      color: 'text-violet-600' },
+  collective:        { label: 'Collective',      color: 'text-teal-600' },
+  founder:           { label: 'Founder',         color: 'text-amber-600' },
+  launch:            { label: 'Launch',          color: 'text-rose-600' },
 }
 
 // Phase date ranges for calendar highlighting
