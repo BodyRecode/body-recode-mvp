@@ -1699,6 +1699,36 @@ export default function StrategyPage() {
             </div>
           </Card>
 
+          <Card className="border-[#1B6DFC]/30 bg-[#1B6DFC]/5">
+            <SectionLabel>Comment-to-DM Lead Mechanic</SectionLabel>
+            <p className="text-sm text-stone-700 leading-relaxed mb-3">
+              The lead-capture layer: a post says <strong>&quot;comment KEYWORD and I&apos;ll send you X&quot;</strong> → ManyChat auto-replies on the comment + DMs the asset → warms them → funnels to the scorecard / Challenge. The giveaway is a <strong>personalised micro-read or a real one-pager</strong>, never a generic PDF. <strong>Cadence: 1-2 comment-to-DM posts/week</strong> (inside the 5x/week, on a scenario hook - not extra load).
+            </p>
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead><tr className="text-stone-500 text-left border-b border-[#1B6DFC]/20">
+                  <th className="py-1.5 pr-3 font-semibold">Keyword</th><th className="py-1.5 pr-3 font-semibold">Lead magnet</th><th className="py-1.5 font-semibold">Funnels to</th>
+                </tr></thead>
+                <tbody className="text-stone-700">
+                  {[
+                    { k: 'STATE', m: 'The 3-State Cheat Sheet (Depleted / Transitioning / Ready)', f: 'Scorecard → Field Guide' },
+                    { k: 'DRIFT', m: 'The Insulin-Drift Checklist (7 signs)', f: 'Scorecard → Challenge' },
+                    { k: 'ENERGY', m: 'The 3pm Energy Map', f: 'Scorecard' },
+                    { k: 'STUCK', m: 'Eat Less, Gain More? (protection-mode one-pager)', f: 'Challenge' },
+                    { k: 'RESET', m: 'The Stress-Stored Reset (mini cortisol wind-down)', f: 'Sleep Reset ($19)' },
+                  ].map(r => (
+                    <tr key={r.k} className="border-b border-stone-200/60 last:border-0">
+                      <td className="py-1.5 pr-3 font-mono font-bold text-[#1B6DFC]">{r.k}</td>
+                      <td className="py-1.5 pr-3">{r.m}</td>
+                      <td className="py-1.5 text-stone-500">{r.f}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs text-stone-500 mt-2.5">Built: ManyChat automation + the 5 assets exist. Keyword flows + public replies live in <strong className="text-[#1B6DFC]">comment-to-dm-asset-map-v1.md</strong>. The delivery truck is ready - this just schedules the cargo (1-2 posts/week).</p>
+          </Card>
+
           <Card>
             <SectionLabel>Content Temperature - Hormozi Engagement Ladder</SectionLabel>
             <Body className="mb-4">Every post targets one temperature level. Cold content moves people from unaware to problem aware. Warm content moves them from problem aware to solution aware. Hot content pushes them to act. The ratio should be roughly 60% cold, 30% warm, 10% hot.</Body>
