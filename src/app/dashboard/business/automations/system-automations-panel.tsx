@@ -2,7 +2,7 @@
 
 import { Zap, ChevronRight, Hand } from 'lucide-react'
 import Link from 'next/link'
-import { brand } from "@/config/tenant";
+import { brand, coach } from "@/config/tenant";
 
 const AUTOMATIC_AUTOMATIONS = [
   // Lead-stage automations
@@ -12,6 +12,13 @@ const AUTOMATIC_AUTOMATIONS = [
     description: '5-email sequence triggered when someone completes the Body State Scorecard. Buyer-language voice, alternates between $37 report and free strategy call. (One canonical workflow; a legacy em-dash duplicate was removed 2026-06-24 to stop double-sends.)',
     trigger: 'Scorecard completed',
     steps: 5,
+  },
+  {
+    id: 'inbound-reply-forward',
+    name: 'Inbound Reply Forward + Alert',
+    description: `When anyone replies to an app-sent email (reply-to routes to replies.bodyrecode.au → Postmark inbound webhook), the full reply is forwarded to ${coach().email} with Reply-To set to the original sender, so Kade reads and answers it straight from his normal inbox - no dashboard trip needed. Known leads/clients also thread into Business → Inbox as a "Reply received" event; replies from unknown senders (which were previously logged-and-discarded) are now rescued to the inbox too, flagged as not-a-saved-contact. A window-gated SMS heads-up (Mon-Sat 08:30-20:00 AEST, to Kade's number) fires alongside so a reply is never missed. Forward + SMS are best-effort and never block the webhook.`,
+    trigger: 'Inbound email reply (Postmark webhook)',
+    steps: 3,
   },
   // ─── Funnel B product portal sequences (fire once each product is launched via NEXT_PUBLIC_*_LIVE) ───
   {
