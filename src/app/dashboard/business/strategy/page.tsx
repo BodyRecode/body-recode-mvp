@@ -63,7 +63,7 @@ const STRATEGY_DOC_GROUPS: { label: string; dot: string; docs: StrategyDoc[] }[]
 // ── CALENDAR ────────────────────────────────────────────────
 
 type PostType = 'authority' | 'pattern' | 'contrarian' | 'coach' | 'diagnostic' | 'ad' | 'prelaunch' | 'thread' | 'video' | 'story'
-type CampaignPhase = 'prelaunch' | 'ads' | 'optimise' | 'scale' | 'evergreen' | 'ascension' | 'membership_launch' | 'collective' | 'founder' | 'launch'
+type CampaignPhase = 'prelaunch' | 'ads' | 'optimise' | 'scale' | 'evergreen' | 'ascension' | 'membership_launch' | 'collective' | 'founder' | 'launch' | 'personal'
 type Brand = 'body_recode' | 'personal_brand' | 'ai_cofounder' | 'collective'
 type Platform = 'instagram' | 'facebook' | 'linkedin'
 
@@ -154,6 +154,7 @@ const PHASE_STYLES: Record<CampaignPhase, { label: string; color: string }> = {
   collective:        { label: 'Collective',      color: 'text-teal-600' },
   founder:           { label: 'Founder',         color: 'text-amber-600' },
   launch:            { label: 'Launch',          color: 'text-rose-600' },
+  personal:          { label: 'Personal',        color: 'text-orange-700' },
 }
 
 // Phase date ranges for calendar highlighting
