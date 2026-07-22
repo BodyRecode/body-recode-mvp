@@ -1,6 +1,9 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
-import { ChevronLeft, Activity, RefreshCw, AlertTriangle as AlertTriangleIcon, Eye } from 'lucide-react'
+import { ChevronLeft, Activity, RefreshCw, AlertTriangle as AlertTriangleIcon, Eye, Sparkles } from 'lucide-react'
+import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
+import { getSuggestionsForState } from '@/lib/rrs-protocol-suggestions'
+import type { RecoveryPlaybookId } from '@/lib/recovery-doctrine'
 import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
 import Link from 'next/link'
 import { PageHeader, MONO_FONT } from '@/components/dashboard/ui'
@@ -224,6 +227,19 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
     .limit(15)
   const communications = communicationsData ?? []
 
+  // RRS -> Recovery chip data. Fetch active state so the header can surface
+  // an "RRS state active" chip that deep-links into /recovery for suggestions.
+  const activeRrsState = await getActiveConstraintManifest(id)
+  const rrsChip = activeRrsState
+    ? {
+        playbook_id: activeRrsState.playbook.id as RecoveryPlaybookId,
+        playbook_name: activeRrsState.playbook.name,
+        days_active: activeRrsState.state.days_active,
+        suggestion_count: getSuggestionsForState(activeRrsState.playbook.id as RecoveryPlaybookId).suggested_protocol_slugs.length,
+        sbst_remove: getSuggestionsForState(activeRrsState.playbook.id as RecoveryPlaybookId).sbst_action === 'remove',
+      }
+    : null
+
   const activeCffs = cffsRecords?.find(c => !c.is_archived) || null
   const archivedCffs = cffsRecords?.filter(c => c.is_archived) || []
   // Split by kind. The foundational invitation is the original 221-question
@@ -418,6 +434,33 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           }
         />
       </div>
+
+      {/* RRS state chip - deep-links into /recovery where suggestions render */}
+      {rrsChip && (
+        <div className="mb-4">
+          <Link
+            href={`/dashboard/clients/${id}/recovery`}
+            className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-[12px] transition-colors ${
+              rrsChip.sbst_remove
+                ? 'border-red-300 bg-red-50 text-red-900 hover:bg-red-100'
+                : 'border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100'
+            }`}
+          >
+            <AlertTriangleIcon size={14} className="shrink-0" />
+            <span className="font-semibold">RRS state active:</span>
+            <span>{rrsChip.playbook_name}</span>
+            <span className="text-[10px] opacity-70">({rrsChip.days_active}d)</span>
+            <span className="text-[10px] opacity-60">·</span>
+            <span className="inline-flex items-center gap-1 text-[11px] font-bold">
+              <Sparkles size={11} />
+              {rrsChip.sbst_remove
+                ? 'SBST removal action required'
+                : `${rrsChip.suggestion_count} recovery suggestion${rrsChip.suggestion_count === 1 ? '' : 's'}`}
+            </span>
+            <span className="text-[10px] opacity-70 ml-1">Open →</span>
+          </Link>
+        </div>
+      )}
 
       {/* Status strip + one "next step" (2026-07-12 client-file redesign, safest-first
           slice: additive, reads existing data). Full tabbed restructure to follow post-launch. */}
