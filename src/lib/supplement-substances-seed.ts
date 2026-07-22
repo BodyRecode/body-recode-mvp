@@ -354,6 +354,47 @@ export const SUPPLEMENT_SUBSTANCES: SupplementSubstance[] = [
       },
     },
   },
+  {
+    slug: 'glycine',
+    name: 'Glycine',
+    category: 'sleep_recovery',
+    short_description: 'The strongest benign, non-sedative sleep-onset tool available OTC. 3g pre-bed shortens sleep-onset latency and improves morning freshness via core body temperature drop (thermoregulatory, not sedative). Also a collagen and glutathione substrate at higher daytime doses.',
+    what_it_does: 'Glycine is both an inhibitory neurotransmitter (via glycine receptors) and an obligatory NMDA co-agonist. The sleep effect is mediated by NMDA receptors in the suprachiasmatic nucleus - driving peripheral vasodilation, heat loss, and core temperature drop, which is the same physiological cue that normally initiates sleep. NOT melatonin-mediated (does not shift circadian phase). At higher daytime doses (5-15g split), acts as a substrate for collagen (glycine is ~1/3 of collagen), glutathione synthesis (glycine + NAC + cysteine), and methylation pool support. The 3g sleep dose and the higher metabolic doses are separate use cases with separate evidence bases.',
+    contraindications: [
+      'On clozapine or other atypical antipsychotics - glycine may REDUCE antipsychotic efficacy. Refer to prescriber before use',
+      'Pregnancy / breastfeeding - safety not established, avoid unless cleared by treating clinician',
+      'Kidney or liver disease at higher doses - defer to GP',
+    ],
+    safety_notes: 'Very benign profile. Main adverse effects are mild GI (nausea, soft stools, bloating), dose-related and uncommon at 3g. No sedation, no tolerance, no dependence, no morning grogginess. Not a controlled substance for tested athletes; standard practice is to use batch-tested HASTA or Informed Sport product where available. Very high single acute doses (0.8g/kg orally / ~50-60g) IMPAIR sensorimotor gating and cognition - do NOT recommend bulk single-dose experimentation. Above 3g provides no added sleep benefit and rising GI risk. AUST-L means "safe and correctly labelled" NOT "proven effective" - keep client-facing claims to permitted low-level indications ("supports sleep quality"), avoid disease claims.',
+    coach_doctrine: 'The signature effect is FASTER, SMOOTHER onset and CLEANER morning - NOT more deep sleep or REM (PSG shows architecture largely unchanged; latency to slow-wave sleep is shortened but total time in SWS/REM is not meaningfully altered). Frame it as "faster onset and cleaner morning," not "more deep sleep." 3g is the validated dose AND the practical ceiling for sleep - every positive RCT used 3g. Mechanism is thermoregulatory (core temp drop via SCN NMDA), not GABAergic/sedative - which is exactly why it suits the "wired-tired, brain won\'t switch off" presentation better than a sedating agent. Also NOT melatonin-mediated - it will not shift circadian phase, so pair with light timing for true jet lag or shift-work circadian shifts. Anxiolytic and cognitive benefits are DOWNSTREAM of sleep, not standalone (no dedicated anxiety RCTs in non-psychiatric populations; cognitive gains are sleep-mediated). Metabolic/longevity claims run on 15g/day in diseased populations OR on GlyNAC (glycine + N-acetylcysteine), NOT on the 3g sleep dose in healthy people - do not let the sleep dose borrow the longevity headline. Collagen substrate rationale is mechanistically strong (Melendez-Hevia deficit modelling: ~10g/day shortfall for many adults) but has no outcome RCTs at supplementation doses. Frame Elite tier substrate benefits as "substrate insurance in likely-deficient people" not demonstrated outcomes. Magnesium glycinate is NOT a substitute for 3g pure glycine - a typical 250mg elemental Mg dose from bisglycinate delivers only ~1.5g glycine (half the sleep-effective dose). Evidence base for sleep is small and largely from one manufacturer-linked research group (Ajinomoto: Yamadera, Inagawa, Bannai, Kawai) - real and consistent, but not a large multi-site literature. Trial nightly for 1-2 weeks; often works from night 1.',
+    research_reference: '~/Dropbox/01_BODY_RECODE/00_PLAYBOOK/supplement_research/2026-07-22_Glycine_Sleep_Onset_and_Substrate_Support.md',
+    tiers: {
+      essential: {
+        label: 'Essential',
+        form: 'Pure glycine powder (food-grade, mildly sweet, mixes into water). Any reputable AUST-L product.',
+        dose: '3g single serve',
+        timing: '30-60 minutes before bed',
+        notes: 'The validated sleep protocol - every positive RCT used this exact protocol. Trial nightly for 1-2 weeks and judge on sleep onset + morning freshness. Often works from night 1. No sedation, no tolerance, no hangover. NOT a substitute for magnesium glycinate for magnesium purposes (they solve different problems).',
+        fits_client_profile: 'First-line sleep-onset support across all cohorts. Especially the wired-anxiety perimenopausal presentation where the mechanism (core-temp drop) matches the "can\'t switch off" problem better than a sedating agent.',
+      },
+      enhanced: {
+        label: 'Enhanced',
+        form: 'Pure glycine powder + magnesium bisglycinate capsules',
+        dose: 'Glycine 3-5g pre-bed + magnesium bisglycinate 200-300mg elemental',
+        timing: 'Both 30-60 minutes before bed',
+        notes: 'Two mechanisms working together (glycine = thermoregulatory onset; magnesium = broader sleep + relaxation, with its own modest RCT support). Magnesium bisglycinate contributes a bonus glycine trickle but is NOT a substitute for the 3g glycine dose. Both substances already exist in the library - Enhanced tier formalises the pairing recommendation.',
+        fits_client_profile: 'Wired-anxiety onset that does not fully resolve on glycine alone. Clients likely low in magnesium (most perimenopausal and older adults). The primary Body Recode cohort default when Essential tier is insufficient.',
+      },
+      elite: {
+        label: 'Elite',
+        form: 'Pure glycine powder used both pre-bed AND split with meals during the day. Pair the daytime serves with vitamin C (~40-50mg) as a collagen-synthesis cofactor. Optional serine or B-vitamins/folate at the high end to protect the one-carbon methylation pool.',
+        dose: '3g pre-bed for sleep + 5-10g total split across meals during the day (substrate)',
+        timing: 'Pre-bed for sleep, split AM+midday+PM for substrate',
+        notes: 'Substrate benefits are mechanistically strong (Melendez-Hevia collagen deficit modelling suggests ~10g/day shortfall for many adults) but NOT RCT-proven at these doses. Frame honestly as "substrate insurance in likely-deficient people," not demonstrated outcomes. Pairs naturally with the Whey Protein Elite tier collagen slot - glycine is the primary amino in collagen. High-dose glycine can potentially deplete the one-carbon methylation pool via serine-hydroxymethyltransferase, hence the optional serine / B-vitamin co-supply at the top end.',
+        fits_client_profile: 'Older adults, low-collagen diets (low meat-on-bone / skin / gelatine intake), hard-training performance clients wanting recovery + connective-tissue + antioxidant substrate, TRT men optimising, anyone wanting the full sleep + substrate protocol.',
+      },
+    },
+  },
 ]
 
 export const CATEGORY_LABELS: Record<SupplementCategory, string> = {
