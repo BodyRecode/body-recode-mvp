@@ -439,6 +439,50 @@ export const SUPPLEMENT_SUBSTANCES: SupplementSubstance[] = [
       },
     },
   },
+  {
+    slug: 'zinc',
+    name: 'Zinc (Bisglycinate)',
+    category: 'sleep_recovery',
+    short_description: 'Deficiency-correction mineral, NOT a broad enhancer. Real signals in immunity (high-dose lozenges only), thyroid (fT3 support in hypothyroid women), testosterone (deficient/subfertile men only, NOT healthy or TRT), mood (adjunct to antidepressants, strongest >=40yo), acne, and glucose (T2D/prediabetes). Default form is zinc bisglycinate at 15mg elemental for the depleted-leaning BR cohort. Copper co-supplementation becomes mandatory above 25-30mg/day.',
+    what_it_does: 'Zinc is an essential trace mineral required by more than 300 enzymes. In the coaching-relevant systems: (1) immune - ionic zinc in the oropharynx (from high-dose acetate/gluconate lozenges, NOT swallowed capsules) modestly shortens common-cold duration; systemic supplementation reduces infection incidence in older adults. (2) Thyroid - required for deiodinase enzymes that convert T4 to active T3, for TSH synthesis, and for thyroid-hormone-receptor zinc-finger binding. (3) Testosterone - deficiency lowers T and repletion raises it; NULL effect in zinc-replete men. (4) Skin/acne - deficient acne patients have lower serum zinc than controls; correction reduces inflammatory papule counts. (5) Glucose - reduces fasting glucose, HbA1c and HOMA-IR in T2D (BJN 2022 MR-supported). (6) Mood - adjunct to antidepressants (SMD -0.36; -0.61 in >=40yo). All effects are strongest where deficiency exists; healthy replete people see little.',
+    contraindications: [
+      'NEVER intranasal - imported zinc cold sprays/gels cause permanent anosmia (FDA 2009 Zicam withdrawal). Oral and dissolve-in-mouth lozenges are safe',
+      'Long-term PPI use - reduces zinc absorption and depletes stores. Screen zinc status, do not just blanket-supplement without addressing the PPI',
+      'On levothyroxine - separate zinc dose from thyroxine by ~4 hours (thyroxine fasted first thing, zinc with evening meal)',
+      'On tetracyclines or fluoroquinolones (doxycycline, ciprofloxacin) - bidirectional chelation reduces both drug and zinc absorption. Separate by >=2 hours or pause zinc during the course',
+      'On thiazide/loop diuretics or ACE inhibitors long-term - increased urinary zinc loss / reduced cellular zinc over months; consider status',
+      'Any unexplained anaemia, neutropenia, sensory ataxia, or spastic gait while on chronic zinc - refer IMMEDIATELY for copper + ceruloplasmin bloods (zinc-induced copper deficiency mimics B12 deficiency, MDS, and paraneoplastic syndrome, and neurological damage can be partially irreversible)',
+    ],
+    safety_notes: 'AU NHMRC Upper Level of Intake = 40mg/day elemental zinc for adults - treat as the routine chronic ceiling. Nausea is the dose-limiting acute side effect (dose- and form-dependent; sulphate and oxide are astringent/irritant, bisglycinate is the gentlest with food; 50-150mg/day causes GI distress, more than 200mg/day causes vomiting). ALWAYS dose by ELEMENTAL zinc, not label weight - a "50mg zinc bisglycinate" and a "50mg zinc sulphate" capsule deliver very different actual zinc. TGA-listed AU products declare elemental; insist on that. Zinc bisglycinate is ~25% elemental (NOT ~14% - that is the magnesium bisglycinate figure). Fasted dosing maximises fractional absorption but is the main nausea trigger; with food wins for the BR audience. AUST-L means "safe and correctly labelled" not "proven effective" - keep client-facing claims to permitted low-level indications (supports immune function, supports thyroid function). Never intranasal. Refer clients on levothyroxine, PPIs, antihypertensives, or with unexplained anaemia/neurological symptoms to their GP or pharmacist.',
+    coach_doctrine: 'Zinc is a DEFICIENCY-CORRECTION supplement not a broad enhancer. Almost every endpoint with a real signal (testosterone, thyroid, mood, glucose, immunity, acne, hair) shows benefit ONLY in people who are deficient or have the relevant condition and little-to-nothing in already-replete healthy people. Position it that way with clients - "fixes a deficiency-driven problem, does not upgrade normal function." Populations most likely to actually benefit from screening/supplementation: vegetarians/vegans (plant zinc is poorly bioavailable, phytate binds it, requirement may be ~50% higher; overlaps heavily with BR female audience), older adults (more than half of over-70s have inadequate intake in NHANES), long-term PPI users (acid suppression collapses zinc absorption), heavy sweaters/athletes on high training loads in QLD climate (loss replacement not ergogenic), menstruating women (recognised zinc-loss route), alcohol use disorder, post-bariatric (absorption reduced more than 50%), GI malabsorption (IBD/coeliac). Cold LOZENGES are a different intervention to swallowed capsules - dissolve-in-mouth acetate/gluconate more than 75mg/day shortens colds ~33% via ionic zinc in the oropharynx, started within 24h of symptoms. Swallowed capsules do NOT reproduce this. Testosterone marketing is oversold - zinc raises T only where deficiency constrains it; ZMA trial in replete healthy men found NO effect. For TRT clients (e.g. Luke), zinc will NOT add to exogenous testosterone; legitimate uses are deficiency insurance, fertility/seminal parameters, and sweat-loss replacement, NOT a T-booster stacked on TRT. Thyroid RCT base is small and often combined with selenium; reasonable to correct a documented/likely deficiency in a subclinical-hypothyroid client, NOT a substitute for levothyroxine or iodine/selenium assessment. Bisglycinate is the sensible default form (best-quality single-form trial, chelate protects against phytate, best GI tolerance) but the absorption gap over citrate/gluconate is small - do not oversell form. Copper is the defining chronic risk - post-COVID case series document zinc-mega-dosing myeloneuropathy that can be partially IRREVERSIBLE. Any chronic dose >=25-30mg/day MUST carry copper (1-2mg bisglycinate per ~15mg zinc above baseline; target ~15:1 zinc:copper ratio). Refer clients on levothyroxine, PPIs, antihypertensives or with unexplained anaemia/neuropathy.',
+    research_reference: '~/Dropbox/01_BODY_RECODE/00_PLAYBOOK/supplement_research/2026-07-22_Zinc_Bisglycinate_Immune_Testosterone_Thyroid.md',
+    tiers: {
+      essential: {
+        label: 'Essential',
+        form: 'Zinc bisglycinate (any reputable TGA-listed AU product that declares ELEMENTAL zinc on the label)',
+        dose: '15mg elemental zinc daily',
+        timing: 'With the evening meal, away from calcium and iron supplements',
+        notes: 'General maintenance / insurance dose. Sits well under the 40mg AU UL. No copper co-supplementation needed at this dose for most people. Fine long-term. Dose by ELEMENTAL zinc not label weight - insist on products that state it. If client is on levothyroxine, separate by ~4 hours (thyroxine fasted first thing, zinc with evening meal).',
+        fits_client_profile: 'Default OTC zinc for the depleted-leaning BR cohort - vegetarian-leaning perimenopausal women 40s-50s, menstruating women, light-training clients, mixed-diet clients wanting insurance against a common shortfall.',
+      },
+      enhanced: {
+        label: 'Enhanced',
+        form: 'Zinc bisglycinate PLUS copper bisglycinate. Copper is MANDATORY at this tier - non-negotiable.',
+        dose: '22-30mg elemental zinc daily + 1-2mg elemental copper (bisglycinate)',
+        timing: 'Both with the evening meal, spaced from iron/calcium/magnesium and ~4 hours from levothyroxine. If on tetracyclines or fluoroquinolones, separate >=2 hours or pause zinc during the course',
+        notes: 'For documented or likely deficiency, long-term PPI users, post-bariatric clients, heavy-training or heavy-sweat clients, acne or subclinical-hypothyroid support, older adults with reduced absorption. Copper co-supplementation is mandatory because chronic zinc >=25-30mg/day reliably depletes copper (case series of anaemia, neutropenia and partially-irreversible myeloneuropathy from post-COVID zinc mega-dosing). Rule: ~1-2mg copper per ~15mg zinc above baseline. Keep total chronic zinc <=40mg/day (AU UL).',
+        fits_client_profile: 'Clients with a real reason to push above 15mg - documented low serum zinc, PPI-user gastroparesis, post-bariatric malabsorption, high sweat losses, acne adjunct, thyroid support (with GP oversight).',
+      },
+      elite: {
+        label: 'Elite',
+        form: 'Blood-test-guided zinc bisglycinate + copper bisglycinate + optional acute lozenges for cold episodes. Prescribed to status.',
+        dose: 'Titrated to baseline serum (preferably RBC) zinc + serum copper + ceruloplasmin. Copper co-supplemented at ~15:1 zinc:copper. Re-test at 8-12 weeks. Any short-term dose above 40mg/day is time-limited, copper-covered and monitored',
+        timing: 'As Enhanced. If using acute cold lozenges: dissolve-in-mouth acetate or gluconate >75mg/day, started within 24 hours of symptoms, continued through the cold - NOT swallowed capsules',
+        notes: 'RBC zinc is a more stable read than serum (serum swings with time-of-day, meals, inflammation, stress). Use bloods to rule the intervention IN or OUT rather than assume. For TRT clients (Luke framing): TRT means exogenous testosterone sets serum T; zinc will NOT add to it. Legitimate use is deficiency insurance, fertility/seminal parameters if relevant, and sweat-loss replacement - NOT a T-booster stacked on TRT.',
+        fits_client_profile: 'TRT men wanting to know if zinc actually fits their protocol, athletes with high sweat losses on very high training loads, subclinical-hypothyroid clients considering a support trial with GP oversight, anyone contemplating a short-term dose above the AU 40mg UL (e.g. an acute lozenge protocol during infection).',
+      },
+    },
+  },
 ]
 
 export const CATEGORY_LABELS: Record<SupplementCategory, string> = {
