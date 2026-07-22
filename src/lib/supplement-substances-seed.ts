@@ -182,6 +182,48 @@ export const SUPPLEMENT_SUBSTANCES: SupplementSubstance[] = [
       },
     },
   },
+  {
+    slug: 'omega-3-epa-dha',
+    name: 'Omega-3 (EPA + DHA)',
+    category: 'foundational',
+    short_description: 'Foundational marine fatty acid stack. Most adults are underdosed (typical Omega-3 Index ~4-5% vs 8% cardioprotective target). Modest but reliable effects on triglycerides, blood pressure, inflammation and mood at adequate doses.',
+    what_it_does: 'Long-chain omega-3s (EPA, DHA) incorporate into cell membranes, shift eicosanoid signalling toward resolution of inflammation, lower triglycerides and blood pressure, and support mood (via EPA-derived mediators) and brain structure (via DHA). Endpoint effects are dose- and ratio-dependent: EPA drives mood/inflammation/cardiac; DHA drives structural/cognitive/pregnancy endpoints. Chronic Omega-3 Index (%EPA+DHA in RBC membranes) is the best individual-response biomarker; target >8%.',
+    contraindications: [
+      'Atrial fibrillation history or palpitations - AF signal at >1.5g/day in high-CV-risk clients (OR 1.48). Refer before higher doses',
+      'Anticoagulant medication (warfarin, DOACs) - theoretical bleeding-time interaction at high dose. GP oversight required',
+      'Established cardiovascular disease requiring pharmacotherapy - refer for prescription icosapent ethyl consideration, not OTC',
+      'Pregnancy / lactation - refer to GP/midwife (dosing is defensible but outside solo S&ES prescribing)',
+    ],
+    safety_notes: 'FDA cap: no more than 3g/day total EPA+DHA (including up to 2g from supplements). Above 3g requires medical decision. AF risk is dose-dependent and concentrated in high-CV-risk clients: 1000 mg/day increased AF risk ~12%, 1800-4000 mg/day increased it ~50% in high-risk patients, whereas dietary/moderate intake (600-700 mg/day) is associated with LOWER AF risk. For clients with any cardiac risk, keep <=1.5g/day or refer. Oxidation is under-appreciated: 30-40% of shelf products exceed TOTOX 26. Prefer TOTOX <26 (ideally <10), IFOS 5-star certification, opaque packaging, tocopherol/rosemary added, cool storage. Bin any oil with strong fishy odour/burps - rancid oil loses potency and may be pro-oxidant. LDL-C can rise modestly at low doses or with DHA-predominant formulas.',
+    coach_doctrine: 'Most adults are underdosed. Typical Western Omega-3 Index is 4-5%; cardioprotective target is >8%. Sub-1g/day products (majority on shelves) are below threshold for measurable benefits beyond basic sufficiency. Dose matters more than brand hype. RATIO is the single most useful practical lever: EPA >=60% for mood/depression (Sublette threshold, one of the most reproduced findings), DHA-weighted for pregnancy/cognitive rationale. FORM matters at equal dose: rTG (re-esterified triglyceride) > TG > EE (ethyl ester) for absorption; EE requires fat to absorb properly. The "omega-3 failed" narrative from VITAL was wrong dose (0.84g) in the wrong population (unselected healthy). REDUCE-IT (4g pure EPA, high-risk statin patients) cut events ~25%. Both true. Softer endpoints (TG, BP, CRP) move reliably with dose; event reduction is where trials diverge. DO NOT sell as a testosterone booster (irrelevant), an antidepressant (adjunct only, refer for clinical depression), or a magic bullet. Frame as a foundational nutrient with modest, dose-dependent effects. IFOS-certified is the simplest quality proxy. Consistency > timing (membrane build-up is slow). Retest Omega-3 Index at 8-12 weeks minimum. Perimenopausal cohort is sweet spot (overlapping CV + mood + cognitive concerns on a typically low-fish background). AF caution is most relevant for older TRT men.',
+    research_reference: '~/Dropbox/01_BODY_RECODE/00_PLAYBOOK/supplement_research/2026-07-22_Omega_3_EPA_DHA_Cardiovascular_Mood_Inflammation.md',
+    tiers: {
+      essential: {
+        label: 'Essential',
+        form: 'IFOS-certified fish oil, TG or rTG form. Vegan alternative: algae oil (DHA-primary).',
+        dose: '1-2g/day combined EPA+DHA (READ THE ACTIVES on the label - a "1000mg fish oil" cap is often only ~300mg EPA+DHA)',
+        timing: 'With a fat-containing meal (non-negotiable for EE, still helpful for TG/rTG)',
+        notes: 'Foundational sufficiency. Corrects the near-universal Western deficit. Nudges Omega-3 Index toward 6-8%. Any reputable IFOS-certified brand. ~1:1 EPA:DHA ratio is fine; lean EPA-heavy if mood is a stated concern.',
+        fits_client_profile: 'General clients as foundational nutrient. Default for the majority. Anyone with low fish intake (2 or fewer servings per week).',
+      },
+      enhanced: {
+        label: 'Enhanced',
+        form: 'Higher-quality rTG (re-esterified triglyceride), IFOS-certified. Or algae oil if vegan/pregnancy pathway.',
+        dose: '2-3g/day combined EPA+DHA, ratio matched to goal',
+        timing: 'With largest fat-containing meal. Split doses if GI intolerance or reflux/fish-burps.',
+        notes: 'Ratio matters at this tier. Mood/inflammation/recovery path: EPA-predominant (>=60% EPA), targeting 1-2g EPA. Cognitive/vegan/pregnancy-planning path: DHA-weighted (algae acceptable). Reliable TG/BP/CRP movement. Consider baseline Omega-3 Index test to personalise.',
+        fits_client_profile: 'Perimenopausal women wanting the CV + mood + cognitive stack. Athletes in hard training blocks (recovery + cardiovascular). TRT men (with AF-history check first). Mood-support clients (adjunct to GP care). High inflammatory load.',
+      },
+      elite: {
+        label: 'Elite',
+        form: 'Pharmaceutical-grade rTG or high-EPA formula, Omega-3 Index-guided',
+        dose: '3-4g/day combined EPA+DHA, Omega-3 Index-guided: test then dose then retest at 12 weeks, titrate to >8% (some push 8-10%)',
+        timing: 'Split doses across meals. Retest at 12 weeks minimum, then quarterly if titrating.',
+        notes: 'CRITICAL AF SAFETY GATE. AF signal at >1.5g/day in high-CV-risk clients (OR 1.48) - SCREEN for AF history, palpitations, cardiac disease before going above 1.5g in older or TRT men. FDA cap: no more than 3g/day total (2g from supplements) without medical oversight. Do NOT exceed 3g/day supplemental without practitioner sign-off. Not a first move for a general client - reserved for high inflammatory load, athlete recovery blocks, or Index-optimisation projects.',
+        fits_client_profile: 'High inflammatory load or joint pain that responded at Enhanced tier. Athlete recovery block optimisation. Omega-3 Index projects (testing available). NOT older TRT men without AF-history screen. NOT anyone with cardiac disease absent GP sign-off.',
+      },
+    },
+  },
 ]
 
 export const CATEGORY_LABELS: Record<SupplementCategory, string> = {
