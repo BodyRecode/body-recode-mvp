@@ -265,6 +265,51 @@ export const SUPPLEMENT_SUBSTANCES: SupplementSubstance[] = [
       },
     },
   },
+  {
+    slug: 'ashwagandha',
+    name: 'Ashwagandha (Withania somnifera)',
+    category: 'sleep_recovery',
+    short_description: 'HPA-axis / cortisol / sleep / perimenopause support with an evidence base concentrated in short trials (<=12 weeks) and a genuine safety profile that demands pre-screening. Best fit for the depleted-leaning cohort - who also concentrate the contraindications. NOT a testosterone booster in healthy men.',
+    what_it_does: 'Ayurvedic adaptogen; bioactives are withanolides (steroidal lactones). Down-regulates HPA-axis output (lowers morning cortisol reliably by ~2.4 mcg/dL at 8 weeks). GABAergic activity supports sleep quality and anxiety reduction. Mild thyroid-stimulating (raises T3/T4, lowers TSH) and pro-oestrogenic (raises oestradiol, lowers FSH/LH in perimenopausal women) effects - these are efficacy AND safety mechanisms. The leaf fraction is richer in withaferin A (theoretical cytotoxicity concern), which is why root-only extracts (KSM-66) are the default choice.',
+    contraindications: [
+      'Pregnancy, trying to conceive, or breastfeeding - CONTRAINDICATED. Mandatory TGA pregnancy warning; traditional abortifacient use',
+      'Known liver disease, prior liver injury, or heavy alcohol use - AVOID (rare but real idiosyncratic hepatotoxicity signal, fatal in pre-existing liver disease)',
+      'Thyroid disease OR on thyroid medication (levothyroxine, antithyroid) - medical supervision or avoid (ashwagandha raises T3/T4, additive with thyroid meds toward iatrogenic hyperthyroidism)',
+      'Autoimmune disease (Hashimoto\'s, RA, lupus, MS) or on immunosuppressants/biologics/post-transplant - avoid or specialist review (bidirectional immunomodulation)',
+      'Oestrogen-sensitive history (breast/uterine pathology, endometriosis) - caution given oestradiol effect',
+      'On benzodiazepines, Z-drugs, sedatives, sedating antihistamines, or significant alcohol - additive sedation risk',
+      'Upcoming elective surgery - stop 1-2 weeks prior (possible antiplatelet activity)',
+    ],
+    safety_notes: 'ACTIVE TGA SAFETY ADVISORY (2024, updated 7 July 2026): rare idiosyncratic hepatotoxicity signal (NIH LiverTox documents ~23 published cases; Philips 2023 India case series had 3 deaths in pre-existing liver disease; US transplant case reported 2023). Onset typically ~1 month, cholestatic hepatitis pattern, usually reversible on stopping but FATAL in pre-existing liver disease. Danish food-supplement BAN (April 2023) based on DTU 2020 risk assessment (thyroid/sex-hormone disruption, abortifacient concerns - hormone basis is scientifically contested; hepatotoxicity signal is separately corroborated across US, India, EU, Australia). Netherlands RIVM 2024 flagged liver injury, thyrotoxicosis, adrenal suppression in sensitive individuals. GI upset (nausea, loose stools) is most common side effect - take with food. Lowers blood glucose and blood pressure - monitor if on antidiabetics/antihypertensives. Discontinuation rebound reported after abrupt cessation of higher doses - taper the final week. AUST-L TGA-listed products only; not unregulated online/overseas. Teach every client the red-flag symptoms: jaundice, dark urine, itching, right-upper-quadrant pain, unusual fatigue, sudden severe GI - stop immediately and see a doctor.',
+    coach_doctrine: 'Cortisol/stress reduction is the strongest, most consistent effect (biochemical). Perceived stress reduction is more heterogeneous (biochemical-subjective dissociation - not everyone who lowers cortisol FEELS calmer). Testosterone story is oversold: real ~10-20% rise in stressed/subfertile/overweight/training men, small-to-null in healthy eugonadal men. It is NOT a testosterone therapy. Dose-response is NON-LINEAR for psychological endpoints - <=500-600mg/day is sufficient and may outperform higher doses (Alsanie/Askarpour 2026 dose-response MA of 22 RCTs). Sleep is the exception where >=600mg for >=8 weeks performs better. Extract matters more than mg number: KSM-66 (root, ~5% withanolides) has the deepest trial base and cleanest withaferin-A profile; Sensoril (root+leaf ~10%) and Shoden (root+leaf ~35%) are more concentrated at lower dose but contain leaf/withaferin A. Generic "full-spectrum" powder has minimal direct evidence - treat mg as meaningless without a NAMED, STANDARDISED extract. Perimenopausal women see oestradiol UP + FSH/LH DOWN with symptom relief (Gopal 2021) - this is a benefit for symptomatic climacteric women but a caution flag for oestrogen-sensitive history. Ashwagandha raises thyroid hormones - beneficial for subclinical hypothyroid, harmful for hyperthyroid/on levothyroxine, unpredictable in Hashimoto\'s. Baseline TSH (+/- free T4, TPO antibodies) should precede recommendation in the primary Body Recode cohort. RCT base is <=12 weeks - no robust long-term safety data. Cycle 8-12 weeks on / 2-4 weeks off with periodic reassessment. Taper to avoid rebound. Evening dose is the rational default (leverages sleep/GABAergic benefit; "adaptogens must be morning" is folklore). 8-week trial minimum before judging - not an "instant calm" supplement. Compared to other sleep aids: ashwagandha SMD -0.59 (moderate) on weeks timescale via stress; magnesium glycinate d=0.2 (small) days-weeks; glycine 3g and L-theanine 200mg act SAME NIGHT for acute racing-mind - these are COMPLEMENTARY not competing (basis for the Elite stack). "434% testosterone increase" is a misleading marketing frame (relative comparison of two small absolute changes in one training study). Screen every client BEFORE recommending - the depleted-leaning 40s-50s cohort is a strong symptomatic fit but concentrates the contraindications (thyroid, autoimmune, oestrogen-sensitive history, polypharmacy).',
+    research_reference: '~/Dropbox/01_BODY_RECODE/00_PLAYBOOK/supplement_research/2026-07-22_Ashwagandha_HPA_Sleep_Perimenopause.md',
+    tiers: {
+      essential: {
+        label: 'Essential',
+        form: 'Named KSM-66 branded extract (Ixoreal), root-only, TGA AUST-L product only. NOT generic full-spectrum powder.',
+        dose: '300-600mg KSM-66 once daily',
+        timing: 'With the evening meal (leverages the sleep/GABAergic benefit for the tired-but-wired cohort)',
+        notes: '8-week trial minimum before judging effect. Early read at 4 weeks. Screen the client FIRST (see contraindications). GI upset is the most common side effect - take with food to fix it. Do NOT push above 600mg for psychological endpoints - dose-response is non-linear.',
+        fits_client_profile: 'High-stress clients with elevated baseline cortisol. Subclinical anxiety. Poor sleep (weeks-scale improvement). Perimenopausal women with climacteric symptoms. ALL after the safety screen clears.',
+      },
+      enhanced: {
+        label: 'Enhanced',
+        form: 'KSM-66 (split AM+PM if >600mg), OR 250mg Sensoril evening (root+leaf, more sedating, lower pill burden), OR 120-240mg Shoden evening (root+leaf, high potency)',
+        dose: 'KSM-66 500-1000mg split AM+PM, or Sensoril 125-250mg evening, or Shoden 120-240mg evening',
+        timing: 'KSM-66 split for higher totals. Sensoril/Shoden evening. All with meals for GI tolerance.',
+        notes: 'Use when Essential is tolerated but under-effective, OR where sleep is the dominant complaint (favours the >=600mg / >=8-week sleep data). Push past ~600mg only for sleep or strength/androgen goals - psychological benefit does NOT scale linearly. Sensoril/Shoden achieve significant cortisol/anxiety effects at 1/3 the mg of KSM-66 (higher withanolide concentration).',
+        fits_client_profile: 'Clients tolerating Essential but needing more sleep effect. Clients wanting low pill burden. Training/androgen-focused men who responded to Essential and want to push further.',
+      },
+      elite: {
+        label: 'Elite',
+        form: 'KSM-66 600mg (performance/androgen or sleep goal) OR Shoden 120-240mg (concentrated evening) + complementary sleep/stress stack: magnesium glycinate 200-300mg elemental evening + glycine 3g pre-bed + L-theanine 200mg',
+        dose: 'Ashwagandha as above + stack. Cycle 8-12 weeks ON / 2-4 weeks OFF. Taper the final week.',
+        timing: 'PM-weighted. Magnesium glycinate + ashwagandha with evening meal. Glycine and L-theanine 30 min pre-bed for acute same-night support.',
+        notes: 'MANDATORY BEFORE ELITE: baseline TSH (+/- free T4, TPO antibodies), autoimmune/medication screen, consider baseline LFTs and repeat if symptomatic. Coach-GP co-management expected at this tier. Stack pairs ashwagandha (weeks-scale HPA down-regulation) with acute same-night calming (glycine, L-theanine) and magnesium repletion - complementary mechanisms and time-courses.',
+        fits_client_profile: 'Clients where the Body Recode primary presentation (tired-but-wired + poor sleep + perimenopausal or high-stress) is dominant, Enhanced was insufficient, screening cleared, and client is willing to invest in baseline bloodwork and periodic monitoring.',
+      },
+    },
+  },
 ]
 
 export const CATEGORY_LABELS: Record<SupplementCategory, string> = {
