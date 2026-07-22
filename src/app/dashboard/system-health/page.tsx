@@ -66,6 +66,12 @@ export default async function SystemHealthPage({
         >
           Banned-terms audit →
         </Link>
+        <Link
+          href="/dashboard/system-health/rrs-suggestions"
+          className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold border border-stone-300 text-stone-700 rounded-lg hover:border-stone-500 hover:text-stone-900 transition-colors"
+        >
+          RRS suggestion acceptance →
+        </Link>
       </div>
 
       {!runs || runs.length === 0 ? (
