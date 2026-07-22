@@ -395,6 +395,50 @@ export const SUPPLEMENT_SUBSTANCES: SupplementSubstance[] = [
       },
     },
   },
+  {
+    slug: 'tart-cherry',
+    name: 'Tart Cherry (Montmorency)',
+    category: 'sleep_recovery',
+    short_description: 'Whole-food polyphenol with a real but modest evidence base. Strongest signal is post-exercise recovery of strength and power (via anthocyanins blunting CRP and IL-6). Secondary signal is sleep - objective sleep time and efficiency improve more reliably than how people feel they slept. Not a dose-equivalent replacement for supplemental melatonin.',
+    what_it_does: 'Anthocyanin-rich (cyanidin glycosides) polyphenol with three converging mechanisms: (1) modest genuine melatonin content plus procyanidin B-2 that may raise tryptophan bioavailability for endogenous melatonin/serotonin synthesis, (2) anthocyanins reducing exercise-induced CRP, IL-6 and oxidative stress (blunts the inflammatory response that impairs strength recovery between hard sessions), (3) plausible xanthine oxidase inhibition (rate-limiting enzyme in uric acid synthesis) - the mechanism behind the observational gout attack-frequency signal. Effects are cultivar-, form- and dose-dependent: Montmorency skews toward melatonin plus total phenolics (sleep story), Balaton toward anthocyanins (theoretically recovery/gout) - but overwhelmingly the RCT evidence base is Montmorency, so that is the default.',
+    contraindications: [
+      'Chronic kidney disease - AVOID concentrates (case reports of acute kidney injury; concentrated fruit carries a potassium load with hyperkalaemia risk). Hardest single caution',
+      'On warfarin, DOACs, or antiplatelets - theoretical interaction (quercetin, salicylate content). Refer prescriber before initiating high-dose concentrate; keep intake consistent',
+      'Poorly controlled diabetes on glucose-lowering therapy - route to capsule form (concentrate/juice carry meaningful sugar/fructose load)',
+      'IBS or FODMAP-sensitive - concentrate contains sorbitol, can cause GI upset. Capsule form avoids this',
+      'Pregnancy / breastfeeding - safety data thin, refer',
+      'Cherry / birch pollen allergy (oral allergy syndrome)',
+    ],
+    safety_notes: 'Overall well tolerated - randomised trials typically do not report adverse effects at recommended doses. No established anthocyanin upper limit and no significant adverse events at typical supplement doses. Kidney-stone risk: cherries are naturally low in oxalate so calcium-oxalate stone risk is minimal (uric-acid stones may actually benefit via urate lowering); the bigger stone-adjacent issue is the CKD/potassium concern above. AUST-L / food-supplement in Australia - client-facing claims must be kept to permitted low-level indications (supports sleep quality, supports recovery from exercise), avoid disease claims. Refer gout, CKD, anticoagulation, and diabetes-medication questions to GP/pharmacist.',
+    coach_doctrine: 'Modest, not magic. Rank the claims honestly by evidence strength: exercise recovery (strongest, meta-analytic across MVC + CRP + IL-6) > sleep (moderate, objective better than subjective) > gout attack prevention (moderate observational signal, weaker RCT for serum urate lowering) > joint / anti-inflammatory in older women (Kuehl 2012, directly relevant to the perimenopausal cohort) > cardiovascular (weak-to-modest, conditional on older age + elevated baseline + at least 12 weeks) > cognitive (preliminary; strongest in one Australian dementia RCT). Cultivar matters: default Montmorency across all tiers - it is the cultivar essentially every published RCT used, has 6x the melatonin and 33% higher total phenolics vs Balaton; Balaton has 6x more anthocyanins but no direct trial support. Product quality is the number-one client-facing failure mode - reject generic "1500mg tart cherry" capsules that do not declare anthocyanin content or a named standardised raw material. Total mg is meaningless without standardisation. Sleep is NOT a dose-equivalent swap for supplemental melatonin (13.46 ng/g melatonin in Montmorency fruit is orders of magnitude below OTC melatonin mg doses); position it as a food-based, gentle, non-hormonal option for clients who dislike synthetic melatonin, not as an equivalent replacement. For recovery, the reliable win is maintaining and restoring strength and power between hard sessions plus CRP/IL-6 reduction, most valuable for back-to-back training days and heavy eccentric loading - treat DOMS reduction as a bonus, not the headline. Effective anthocyanin dose window sits around 250-350mg/day for recovery. Trial for 2-4 weeks (sleep) or across one training block (recovery); if no subjective or objective change, check anthocyanin content and product quality before abandoning the compound. Best-fit BR cohort is perimenopausal women 40s-50s with the sleep + joint-pain + inflammatory drift cluster (mirrors the Kuehl population directly).',
+    research_reference: '~/Dropbox/01_BODY_RECODE/00_PLAYBOOK/supplement_research/2026-07-22_Tart_Cherry_Sleep_Recovery_Anti_Inflammatory.md',
+    tiers: {
+      essential: {
+        label: 'Essential',
+        form: 'Montmorency tart cherry concentrate (single-strength or 5:1 concentrate that states Montmorency on the label). Diluted in water.',
+        dose: '30 mL concentrate (delivers approximately 60mg anthocyanins per serve)',
+        timing: '30-60 minutes before bed (single evening serve)',
+        notes: 'Matches the concentrate format with the strongest sleep and recovery RCT evidence (Howatson 2012, Stretton 2023). Cheapest option that actually reproduces the trial protocol. Sugar load is the main drawback - not first-line for poorly controlled diabetes; route those to the Enhanced capsule tier instead. Trial for 2-4 weeks.',
+        fits_client_profile: 'Clients whose primary complaint is sleep and wind-down. Anyone wanting a food-first trial before capsules. Perimenopausal wired-tired presentation who wants a gentle non-hormonal alternative to synthetic melatonin.',
+      },
+      enhanced: {
+        label: 'Enhanced',
+        form: 'Standardised freeze-dried Montmorency capsule (CherryPURE-type or equivalent). Product MUST state anthocyanin content or a named standardised raw material - reject generic high-mg/low-anthocyanin capsules.',
+        dose: '480-500mg twice daily (targets 250-350mg anthocyanins/day recovery window)',
+        timing: 'Evening (sleep) plus morning (recovery)',
+        notes: 'Twice-daily capsule hits the effective recovery anthocyanin dose window with negligible sugar - suits metabolic and perimenopausal clients. Evening dose retains sleep support. Directly matches the Kuehl 2012 population (40-70yo women with inflammatory osteoarthritis - twice-daily tart cherry juice reduced inflammation markers, especially in those with the highest baseline inflammation).',
+        fits_client_profile: 'Training clients needing between-session strength and power recovery. Perimenopausal women with the sleep + joint-pain + inflammatory drift cluster (core Body Recode cohort). Sugar-sensitive or diabetic clients who cannot use the concentrate.',
+      },
+      elite: {
+        label: 'Elite',
+        form: 'Montmorency concentrate (evening) PLUS standardised freeze-dried Montmorency capsule (mid-day). Periodised, not year-round.',
+        dose: '30 mL concentrate pre-bed (sleep) + 480mg standardised capsule mid-day (anti-inflammatory)',
+        timing: 'Layered during hard training blocks or acute recovery periods. Load 4-5 days before a hard event, continue 2-3 days post. Step down to Essential (evening-only concentrate) in maintenance phases',
+        notes: 'Separates the two jobs - concentrate melatonin/phenolic profile pre-bed for sleep, capsule clean anthocyanin dose for daytime inflammatory load. Combined sugar (concentrate) plus cost mean this is a peak-block protocol, not year-round default. Drop to Essential or Enhanced out of peak blocks.',
+        fits_client_profile: 'Competitive athletes, congested training/competition schedules, clients in acute flare or recovery windows (heavy eccentric block, tournament weekend, stage event).',
+      },
+    },
+  },
 ]
 
 export const CATEGORY_LABELS: Record<SupplementCategory, string> = {
