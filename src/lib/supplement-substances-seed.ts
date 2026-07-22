@@ -310,6 +310,50 @@ export const SUPPLEMENT_SUBSTANCES: SupplementSubstance[] = [
       },
     },
   },
+  {
+    slug: 'l-theanine-caffeine',
+    name: 'L-Theanine + Caffeine',
+    category: 'cognitive_focus',
+    short_description: 'The classic calm-focus stack. Reproducible small-to-moderate wins on attention accuracy and reaction time (peaks in the SECOND hour after dosing). Caffeine does the cognitive lifting; theanine measurably reduces jitter and headache. L-theanine ALONE is a legitimate stand-alone tool for the caffeine-sensitive client (calm daytime, sleep-onset evening).',
+    what_it_does: 'L-theanine (N-ethyl-L-glutamine, from tea) crosses the blood-brain barrier via L-type amino acid transporters, modulates glutamatergic signalling and nudges GABA/dopamine/serotonin - most characteristically INCREASES alpha-band EEG activity (the signature of relaxed alertness). Caffeine is an adenosine-receptor antagonist (A1/A2A) - removes the brake on arousal, dopamine and noradrenaline. Combining them: caffeine supplies stimulation, theanine dampens the sympathetic cost. The mechanisms are SEPARABLE - which is why theanine buffers jitter but NOT tolerance. L-theanine alone at 200mg produces genuine calm and improves acute stress response and sleep-onset perception without sedating.',
+    contraindications: [
+      'Pregnancy / breastfeeding - cap total caffeine at 200mg/day (FSANZ); theanine supplements need medical sign-off (caffeine half-life doubles in pregnancy)',
+      'Anxiety disorders / panic - theanine buffer is partial, not absolute; default to theanine-alone (no caffeine)',
+      'Cardiovascular disease, hypertension, arrhythmias, palpitations - caffeine cautions apply; theanine buffer does NOT make caffeine cardiac-safe',
+      'Insomnia / sleep disorders - enforce 8-10hr caffeine cutoff before bed, or shift to theanine-only',
+      'On antihypertensive medication - theanine can modestly lower BP and may potentiate antihypertensives, monitor',
+      'On SSRIs, antipsychotics, or other psychotropic medication - flag for practitioner review before daily theanine',
+    ],
+    safety_notes: 'L-theanine is remarkably safe - no serious adverse events across dozens of trials, well tolerated at 400mg+ doses. Caffeine is where the real cautions live. Adult ceiling 400mg caffeine/day from ALL sources (coffee, tea, pre-workout, chocolate). Anxiety threshold appears at ~3mg/kg/day (~210-240mg for adults). Anxiety-prone clients often best at <=100mg per dose. Pregnancy/breastfeeding cap is 200mg/day (FSANZ). AU listed-medicine rule caps caffeine-as-single-ingredient at 100mg/day and 100mg/3hr - a conservative anchor. NEVER recommend un-weighed bulk caffeine powder - a single ~3g dose has been fatal. Caffeine half-life is ~5hr (doubled in pregnancy and with oral contraceptives; halved in smokers). Withdrawal from regular use begins 12-24hr after last dose, peaks 20-48hr, lasts 2-9 days - taper, do not stop cold. Theanine can modestly lower BP.',
+    coach_doctrine: 'The single most reproducible effect is small-to-moderate improvement in ATTENTION accuracy (switching, sustained-attention) and REACTION TIME - most reliably in the SECOND HOUR after dosing (Payne 2025, 50 RCTs). Working memory, subjective alertness, and overall mood show inconsistent, non-significant pooled effects. Position honestly: caffeine does the cognitive lifting; theanine measurably reduces jitter (-3.25 VAS) and headache (-6.83 VAS). The stack is helpful and low-risk, NOT dramatic. 200mg L-theanine is the research standard; 100mg is a genuine floor for reaction time; 400mg is where sustained-attention/RVIP tightens up. 2:1 ratio (200:100mg) is the calm-focus standard - no RCT isolates ratio, its the mechanistically defensible compromise (100mg caffeine = low jitter; 200mg theanine = validated dose). Jitter reduction: lower CAFFEINE first, then raise theanine (2:1 at 100mg caffeine, or 4:1 if still reactive). Theanine ALONE at 200mg is a legitimate stand-alone tool for the caffeine-sensitive client - calm daytime, sleep-onset evening (SMD 0.15 subjective sleep-onset; SMD 0.33 daytime dysfunction; short 1hr half-life = no grogginess). Theanine buffers jitter but NOT tolerance - caffeine tolerance is chronic adenosine receptor adaptation on a different system. Cycling is required: 5:2 weekday/weekend, 3-7 day taper deload every 6-8 weeks, bridge with theanine-only. Hard caffeine cutoff 8-10hr before bed (a 2pm 100mg dose leaves 50mg circulating at 7pm). Effects peak in the SECOND HOUR after dosing - dose 30-40min ahead for coverage. Perimenopausal cohort (primary Body Recode audience): caffeine WORSENS hot flushes/night sweats but IMPROVES mood/memory/concentration (Faubion 2014) - the woman who values the cognitive lift but is destabilised by caffeine typically does well on coffee + theanine by day, theanine alone by night. CYP1A2 genotype matters MOST at high dose (>=3mg/kg) for endurance - for low-dose cognitive (100mg), phenotype (client feels wired/palpitant/sleep-disrupted) > genotype. L-theanine form: verified >=98% L-enantiomer purity is what matters (racemic DL dilutes active dose). Suntheanine and AlphaWave are branded assurances; a quality generic with COA is pharmacologically equivalent. Caffeine source (coffee vs anhydrous vs matcha) does NOT change the theanine synergy chemically - the difference is DOSE PRECISION. Matcha delivers only ~25-45mg theanine per cup - insufficient for therapeutic effect on its own. "434% testosterone boost" style marketing is nowhere in the L-theanine literature; the actual effect sizes are small-to-moderate and CIs are wide.',
+    research_reference: '~/Dropbox/01_BODY_RECODE/00_PLAYBOOK/supplement_research/2026-07-22_L_Theanine_Caffeine_Cognitive_Calm_Focus.md',
+    tiers: {
+      essential: {
+        label: 'Essential',
+        form: 'L-theanine capsule (verified >=98% L-enantiomer, third-party tested, or branded Suntheanine / AlphaWave) + the coffee the client already drinks',
+        dose: '200mg L-theanine + client\'s usual coffee dose',
+        timing: '30-40 min before deep work or high-cognitive-demand event. Hard caffeine cutoff 8-10hr before bed.',
+        notes: 'Cheapest working option. Uses caffeine the client already consumes. Coffee dose is approximate (a cup ranges 80-120mg). Delivers the buffered smooth-focus experience and stand-alone theanine benefits without changing habits.',
+        fits_client_profile: 'Depleted-leaning women who drink coffee but feel wired. Anyone wanting to try the buffered experience without buying caffeine anhydrous. Habit-stacked entry point.',
+      },
+      enhanced: {
+        label: 'Enhanced',
+        form: '200mg L-theanine + 100mg caffeine anhydrous (precise dosing, single capsule or split-dose)',
+        dose: '200:100 ratio (2:1). Jitter-prone client not settled? Shift to 4:1 (400mg theanine : 100mg caffeine) BEFORE adding caffeine.',
+        timing: '30 min pre-cognitive work. Cognitive benefits often peak in the SECOND hour - a 2-hour deep-work block or exam is well-covered by dosing 30 min ahead.',
+        notes: 'Precise, reproducible. The default for knowledge workers, executives, TRT men, general cognitive-performance clients. 200mg theanine is the research standard - going to 400mg buys smoothness and calm, not extra cognitive horsepower.',
+        fits_client_profile: 'Knowledge workers, executives, TRT men, performance clients pre-cognitive event (not training - see Elite for training-dose caffeine), most general users wanting reliable calm focus.',
+      },
+      elite: {
+        label: 'Elite',
+        form: 'Suntheanine (or verified branded) 400mg + caffeine anhydrous 2-3mg/kg bodyweight pre-training/high-demand work. PLUS L-theanine 200mg alone in the evening for sleep-onset support.',
+        dose: 'Pre-session: 400mg theanine + 130-210mg caffeine (bodyweight-dosed 2-3mg/kg). Evening: 200mg theanine alone. Caffeine cycling: 5:2 weekday/weekend, 3-7 day taper deload every 6-8 weeks - bridge with theanine-only on off days.',
+        timing: 'Pre-session stack 45-60 min before training. Evening theanine-alone 30-60 min pre-bed (short 1hr half-life = no lingering grogginess).',
+        notes: 'CYP1A2 / ADORA2A genotyping is optional for performance clients wanting to fine-tune caffeine dose/timing - useful, not essential; phenotype (client\'s own reaction) is the practical guide. Full stack for performance days + evening sleep-onset support. Best fit for perimenopausal "wired anxiety" clients who need day-time cognitive stack AND evening theanine-alone.',
+        fits_client_profile: 'Performance clients (pre-training bodyweight-dosed caffeine). Shift workers and jet-lagged travellers. Perimenopausal "wired anxiety" clients needing day-time stack + evening theanine-alone. Anyone wanting the full protocol with cycling.',
+      },
+    },
+  },
 ]
 
 export const CATEGORY_LABELS: Record<SupplementCategory, string> = {
