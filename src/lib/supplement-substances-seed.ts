@@ -224,6 +224,47 @@ export const SUPPLEMENT_SUBSTANCES: SupplementSubstance[] = [
       },
     },
   },
+  {
+    slug: 'whey-protein',
+    name: 'Whey Protein (WPI / WPC)',
+    category: 'foundational',
+    short_description: 'Highest practical protein quality (DIAAS ~1.1) and the workhorse vehicle for hitting daily protein targets. The Body Recode default is WPI - fast digestion, ~1g leucine per 20g serve, minimal lactose, cheap per gram, lowest heavy-metal risk of the powder categories.',
+    what_it_does: 'Delivers a rapid, high-leucine amino acid pulse that triggers muscle protein synthesis (MPS) via the mTORC1 pathway. Per-meal ~0.4g/kg (30-40g, >=2.5-3g leucine) maximises the anabolic signal. Total daily protein is the master variable: 1.6-2.2g/kg for trained adults, top of range (1.8-2.0+g/kg) for older adults, peri/postmenopausal women, and dieters, all of whom face anabolic resistance. Trommelen 2023 debunked the "30g ceiling" - larger boluses extend the anabolic response for hours with negligible extra oxidation.',
+    contraindications: [
+      'True cow\'s milk protein allergy (IgE) - all whey and casein forms must be avoided; use plant blends, soy, egg-white, or beef isolate',
+      'Severe lactose intolerance and WPC (>3g lactose per serve) - switch to WPI (<1g) or add a lactase enzyme',
+      'Renal disease - protein intake >2g/kg should be discussed with prescriber',
+    ],
+    safety_notes: 'Whey is well-tolerated. Nearly half of top-selling protein powders exceeded California Prop 65 lead/cadmium limits in 2024-25 testing - WHEY was the cleanest category (~28% over) versus plant-based/organic worst (~80% over). Chocolate flavours accumulate up to ~110x the cadmium of vanilla. Insist on HASTA (Australian) or Informed Sport batch-tested products. In healthy kidneys, protein intake up to ~2.2g/kg is safe long-term; higher provides no additional muscle benefit. TRT and other hormone therapy is the doctor\'s lane - our role is nutrition and training only.',
+    coach_doctrine: 'Total daily protein is the master variable, not timing or "which powder." 1.6-2.2g/kg for trained adults; peri/postmenopausal women belong at 1.8-2.0+g/kg (chronic under-intake is the real failure mode in this cohort). The 30g "anabolic ceiling" is a MYTH - Trommelen 2023 (100g whey) showed the anabolic response scales past 40g with no waste. Use 0.4g/kg per meal as a FLOOR not a cap. The post-workout "anabolic window" is essentially dead as a 30-min rule (Schoenfeld 2013 meta-analysis); muscle is sensitised for ~24h. Real timing exceptions: fasted early-AM training, older adults hitting the per-meal leucine threshold, and pre-sleep casein. Distribute 30-40g (>=3g leucine) across 3-4 meals - depleted women typically load protein at dinner and miss breakfast/lunch thresholds. FIX BREAKFAST FIRST. Hydrolysate rarely justifies its premium (hydrolysis cleaves peptide bonds, NOT lactose). Modern pea+rice(+/- canola/soy) blends match whey for MPS at adequate leucine-matched dose (Pinckaers 2023; van der Heijden 2024) - hemp is a leucine-diluter, use for fibre only. Collagen is NOT muscle protein (DIAAS ~0, leucine-poor) - separate tendon/skin slot with vitamin C, never count toward daily protein. Cycle-phase protein tweaking is over-engineered; keep daily total consistent.',
+    research_reference: '~/Dropbox/01_BODY_RECODE/00_PLAYBOOK/supplement_research/2026-07-22_Whey_Protein_and_Protein_Powders.md',
+    tiers: {
+      essential: {
+        label: 'Essential',
+        form: 'Whey Concentrate (WPC), third-party tested (HASTA or Informed Sport in AU)',
+        dose: '25-30g serve delivering ~2.5g leucine, as needed to hit daily protein target (1.6-2.2g/kg)',
+        timing: 'Any time. Post-training or as a meal top-up. Distribute across 3-4 feedings for maximum MPS.',
+        notes: 'Lowest cost per gram of protein. Lowest contaminant risk of the powder categories. Watch for lactose bloat (3-8g per serve) - swap to WPI if problematic. Cheapest working option.',
+        fits_client_profile: 'Budget-conscious general clients. Anyone topping up daily total protein. Fine for the majority of clients as a starting point.',
+      },
+      enhanced: {
+        label: 'Enhanced',
+        form: 'Whey Isolate (WPI), batch-tested (Informed Sport, Informed Choice, or HASTA)',
+        dose: '25-30g serve delivering ~2.5-2.7g leucine (~1g leucine per 20g serve). Per meal 0.4g/kg. Daily 1.6-2.2g/kg (1.8-2.0+ for peri/postmenopausal women).',
+        timing: 'Distributed across breakfast, lunch, dinner. FRONT-LOAD BREAKFAST for perimenopausal women to rescue the worst meal. Optional add-on: 30-40g casein pre-bed for older / sarcopenia-focused clients or hard-training performance clients (Res 2012 showed +22% overnight MPS).',
+        notes: 'The Body Recode default vehicle. Low lactose (<1g/serve), fast, satiating. Cleanest contaminant profile. If lactose bloating persists on WPI, try a lactase enzyme before switching to plant. Genuine milk protein allergy needs plant/soy/egg alternative.',
+        fits_client_profile: 'Peri/postmenopausal women (primary cohort). Most general clients. TRT men (Luke). Performance clients wanting a reliable base.',
+      },
+      elite: {
+        label: 'Elite',
+        form: 'Grass-fed WPI base + high-leucine adjunct + micellar casein + hydrolysed collagen (separate slot)',
+        dose: 'WPI 25-30g x 3-4 daily + leucine top-up (~1-2g) to reliably clear 3g leucine/meal + casein 30-40g pre-bed + collagen 15g + vitamin C ~40-50mg in a SEPARATE daily slot',
+        timing: 'WPI distributed with meals. Casein ~30 min before sleep. Collagen + vitamin C 30-60 min BEFORE tendon-loading work or training.',
+        notes: 'Collagen has its OWN daily slot and MUST NOT be counted toward the muscle-protein target (DIAAS ~0). Vitamin C is a required cofactor for collagen cross-linking. Full stack for bone + tendon + skin + overnight recovery. Reserved for clients with clear tendon/joint priorities, sarcopenia focus, or high-training-load recovery blocks.',
+        fits_client_profile: 'Older / anabolically-resistant clients. Hard-training performance clients wanting overnight recovery support. Clients with tendon/joint priorities (Achilles, patellar tendinopathy, skin/hair goals). Sarcopenia focus.',
+      },
+    },
+  },
 ]
 
 export const CATEGORY_LABELS: Record<SupplementCategory, string> = {
