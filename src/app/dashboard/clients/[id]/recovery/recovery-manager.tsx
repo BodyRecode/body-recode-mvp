@@ -16,7 +16,7 @@ interface Assignment {
   completed_at: string | null
 }
 
-const HOME_EQUIPMENT: EquipmentTag[] = ['ice_water_bowl', 'shower', 'magnesium_bath', 'red_light_panel', 'compression_boots', 'massage_gun']
+const HOME_EQUIPMENT: EquipmentTag[] = ['ice_water_bowl', 'shower', 'magnesium_bath', 'red_light_panel', 'compression_boots', 'massage_gun', 'sleep_breathing_kit']
 const GYM_EQUIPMENT: EquipmentTag[] = ['sauna_traditional', 'sauna_infrared', 'steam_room', 'cold_plunge_full', 'cryo_chamber', 'red_light_bed', 'vibration_plate']
 
 export default function RecoveryManager({
@@ -208,15 +208,36 @@ export default function RecoveryManager({
         {(['heat', 'cold', 'contrast', 'compression', 'light', 'breathwork', 'systemic'] as RecoveryCategory[]).map(cat => {
           const catProtocols = availableProtocols.filter(p => p.category === cat)
           if (catProtocols.length === 0) return null
+          // Sort so progression-grouped protocols cluster together, ordered by level;
+          // non-progression protocols keep their seed order.
+          const sortedProtocols = [...catProtocols].sort((a, b) => {
+            if (a.progression && b.progression && a.progression.group === b.progression.group) {
+              return a.progression.level - b.progression.level
+            }
+            if (a.progression && !b.progression) return 1
+            if (!a.progression && b.progression) return -1
+            return 0
+          })
+          let lastProgressionGroup: string | null = null
           return (
             <div key={cat} className="mb-6">
               <h3 className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-2">{CATEGORY_LABELS[cat]}</h3>
               <div className="space-y-2">
-                {catProtocols.map(p => {
+                {sortedProtocols.map(p => {
                   const isActive = activeSlugs.has(p.slug)
                   const isExpanded = expandedProtocol === p.slug
+                  const isNewProgressionGroup = p.progression && p.progression.group !== lastProgressionGroup
+                  if (p.progression) lastProgressionGroup = p.progression.group
+                  else lastProgressionGroup = null
                   return (
-                    <div key={p.slug} className={`rounded-xl border overflow-hidden transition-colors ${isActive ? 'border-[#1B6DFC]/30 bg-blue-50/30' : 'border-stone-200 bg-white'}`}>
+                    <div key={p.slug}>
+                      {isNewProgressionGroup && p.progression && (
+                        <div className="rounded-xl border border-amber-200 bg-amber-50/50 px-4 py-3 mb-2">
+                          <p className="text-[10px] font-bold text-amber-800 uppercase tracking-widest mb-1">{p.progression.group_label} - tiered progression</p>
+                          <p className="text-[12px] text-amber-900 leading-relaxed">{p.progression.group_rule}</p>
+                        </div>
+                      )}
+                    <div className={`rounded-xl border overflow-hidden transition-colors ${isActive ? 'border-[#1B6DFC]/30 bg-blue-50/30' : 'border-stone-200 bg-white'}`}>
                       <div className="flex items-start justify-between gap-3 px-4 py-3">
                         <div className="flex-1 min-w-0">
                           <button
@@ -225,7 +246,12 @@ export default function RecoveryManager({
                           >
                             {isExpanded ? <ChevronUp size={14} className="text-stone-400 mt-1 shrink-0" /> : <ChevronDown size={14} className="text-stone-400 mt-1 shrink-0" />}
                             <div>
-                              <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                {p.progression && (
+                                  <span className="text-[9px] font-bold text-amber-800 uppercase tracking-widest bg-amber-100 border border-amber-200 px-1.5 py-0.5 rounded">
+                                    Level {p.progression.level}
+                                  </span>
+                                )}
                                 <span className="text-sm font-semibold text-[#1A1A1A]">{p.name}</span>
                                 {isActive && <span className="text-[9px] font-bold text-[#1B6DFC] uppercase tracking-widest bg-[#1B6DFC]/10 px-1.5 py-0.5 rounded">Active</span>}
                               </div>
@@ -278,6 +304,7 @@ export default function RecoveryManager({
                           </div>
                         </div>
                       )}
+                    </div>
                     </div>
                   )
                 })}

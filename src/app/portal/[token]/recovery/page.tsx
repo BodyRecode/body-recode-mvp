@@ -88,6 +88,11 @@ export default async function ClientRecoveryPage({
                 {byCategory[cat].map(a => (
                   <div key={a.id} className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] overflow-hidden">
                     <div className="px-5 py-4 border-b border-[#E5E5E5]">
+                      {a.protocol.progression && (
+                        <p className="text-[10px] font-bold text-amber-800 uppercase tracking-widest mb-1">
+                          {a.protocol.progression.group_label} · Level {a.protocol.progression.level}
+                        </p>
+                      )}
                       <h2 className="text-lg font-semibold text-[#1A1A1A] leading-tight">{a.protocol.name}</h2>
                       <p className="text-[13px] text-[#6B6B6B] mt-1">{a.protocol.short_description}</p>
                     </div>

@@ -38,6 +38,7 @@ export type EquipmentTag =
   | 'compression_boots'
   | 'massage_gun'
   | 'vibration_plate'
+  | 'sleep_breathing_kit'
   | 'none_needed'
 
 export interface ProtocolDosing {
@@ -45,6 +46,24 @@ export interface ProtocolDosing {
   duration: string
   intensity_notes?: string
   timing?: string
+}
+
+/**
+ * Groups protocols that require strict tiered progression (never skip levels;
+ * escalate only after evaluation window with no improvement; de-escalate to
+ * lowest effective level). See 13D_16 Sleep Breathing Support Tools doctrine.
+ */
+export type ProgressionGroup = 'sbst'
+
+export interface ProgressionMeta {
+  /** Group this protocol belongs to (e.g. "sbst" = Sleep Breathing Support Tools). */
+  group: ProgressionGroup
+  /** 1 = first-line, 2 = secondary, 3 = advanced. Higher levels only after lower fails. */
+  level: 1 | 2 | 3
+  /** Short label for the group shown in the coach UI. */
+  group_label: string
+  /** One-line group doctrine shown above the grouped protocols. */
+  group_rule: string
 }
 
 export interface RecoveryProtocol {
@@ -59,6 +78,8 @@ export interface RecoveryProtocol {
   contraindications: string[]
   safety_notes: string
   coach_doctrine: string
+  /** Optional: marks this protocol as part of a stepped/tiered progression group. */
+  progression?: ProgressionMeta
 }
 
 export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
@@ -598,6 +619,117 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     safety_notes: 'Fasting during long-haul flights is well tolerated for most healthy adults. Adjust if diabetic or pregnant.',
     coach_doctrine: 'The single biggest lever for jet lag is meal timing followed by light exposure. Everything else (melatonin, sleep meds) is secondary. Pair with reduced training intensity for the first 3 days at destination.',
   },
+  {
+    slug: 'sbst-nose-tape',
+    name: 'Nose Tape / Nasal Strips (SBST Level 1)',
+    category: 'breathwork',
+    short_description: 'First-line sleep breathing support. Low intrusion, high compliance. Reduces nasal resistance and encourages natural nasal breathing during sleep.',
+    what_it_does: 'External nasal strips or nose tape mechanically hold the nostrils open, reducing nasal airflow resistance. Encourages nasal breathing during sleep without any behavioural or oral intervention. Supports airflow efficiency; does not resolve systemic sleep disruption.',
+    steps: [
+      'Wash and dry the bridge of the nose before bed',
+      'Apply the nasal strip (or nose tape) across the bridge of the nose per product instructions',
+      'Sleep normally; peel off in the morning',
+      'Evaluate after 3-7 nights: subjective sleep quality, wake frequency, morning readiness',
+      'If no improvement after 7-10 days AND behaviour/load is not the driver: consider progression to Level 2 (mouth tape)',
+      'If sleep improves: hold at Level 1 as the minimum effective support',
+    ],
+    dosing: {
+      frequency: 'Nightly (baseline environmental use if sleep stable) OR during sleep disruption episodes (intervention use)',
+      duration: '3-7 night evaluation window minimum before judging effect',
+      timing: 'Applied at bedtime',
+    },
+    required_equipment: ['sleep_breathing_kit'],
+    contraindications: [
+      'Skin sensitivity or allergy to adhesives on the nasal bridge',
+      'Active nasal skin infection or open wound',
+      'Diagnosed sleep apnoea should be managed by GP or sleep physician - SBST is not a substitute for CPAP',
+    ],
+    safety_notes: 'Very low risk. Skin irritation on the nasal bridge is the main issue - trial a hypoallergenic tape or brand switch if reactive. NOT a substitute for CPAP or a diagnostic tool for sleep apnoea - if the client snores heavily, has witnessed apnoeas, or wakes gasping, refer to a GP for a sleep study.',
+    coach_doctrine: 'ALWAYS start here before progressing. Low intervention, low behavioural disruption, high compliance - the first-line SBST tool. Governed by 13D_16 Sleep Breathing Support Tools doctrine: SBST supports airflow but does NOT resolve systemic instability. Non-substitution rule: cannot be used to replace sleep schedule consistency, offset poor recovery behaviours, maintain excessive training load, or avoid reducing stress. If the client is in RRS ns_overload state, REMOVE this tool (not just avoid). If in RRS sleep_disruption, allowed as secondary support. If in chronic_recovery_debt, do not prioritise. Baseline / environmental use permitted continuously when sleep and recovery are stable and no active 13D playbook is engaged.',
+    progression: {
+      group: 'sbst',
+      level: 1,
+      group_label: 'Sleep Breathing Support Tools (SBST)',
+      group_rule: 'Strict tiered progression per 13D_16 doctrine. Never skip levels. Escalate only after 3-7 nights at current level with no improvement AND behaviour/load is not the driver. De-escalate to lowest effective level once sleep improves. Remove entirely if RRS enters ns_overload state.',
+    },
+  },
+  {
+    slug: 'sbst-mouth-tape',
+    name: 'Mouth Tape (SBST Level 2)',
+    category: 'breathwork',
+    short_description: 'Secondary sleep breathing support. Moderate intrusion. Introduced only if Level 1 (nose tape / nasal strips) is insufficient. Encourages nasal breathing by mechanically discouraging mouth breathing during sleep.',
+    what_it_does: 'A vertical strip or structured mouth-tape system across the closed lips reduces oral breathing during sleep, encouraging nasal breathing pattern. Behaviourally more intrusive than Level 1. Must not create anxiety or disrupt sleep continuity.',
+    steps: [
+      'Confirm Level 1 (nose tape / nasal strips) has been trialled for 3-7 nights with insufficient benefit',
+      'Ensure nasal airway is patent (no cold/congestion; if congested, delay introduction)',
+      'Apply a purpose-built mouth tape system (vertical strip or structured; e.g. Respire mouth tape) across the closed lips at bedtime',
+      'Sleep normally; peel off in the morning',
+      'Evaluate after 3-7 nights: sleep continuity, morning readiness, no anxiety or discomfort',
+      'If sleep continuity or comfort worsens: REMOVE and return to Level 1',
+      'If no improvement after 7-10 nights AND behaviour/load is not the driver: consider progression to Level 3 (mouthpiece)',
+      'If sleep improves: hold at Level 2 as the minimum effective support',
+    ],
+    dosing: {
+      frequency: 'Nightly once introduced (baseline environmental) OR during sleep disruption episodes (intervention)',
+      duration: '3-7 night evaluation window minimum before judging effect',
+      timing: 'Applied at bedtime after Level 1 has been tolerated',
+    },
+    required_equipment: ['sleep_breathing_kit'],
+    contraindications: [
+      'Nasal obstruction (cold, sinusitis, deviated septum causing significant unilateral obstruction) - client cannot breathe adequately through the nose',
+      'Diagnosed or suspected sleep apnoea (untreated) - refer to sleep physician first; mouth tape can worsen unmanaged sleep apnoea',
+      'Anxiety about airway obstruction / claustrophobia around the mouth',
+      'Skin sensitivity or allergy to adhesives on the peri-oral skin',
+      'Alcohol intoxication or sedative use that impairs arousal response',
+      'GORD / severe reflux - risk of overnight reflux without oral airway escape',
+    ],
+    safety_notes: 'Never use in a client with untreated obstructive sleep apnoea - mouth tape can worsen it. If nasal airway is not patent (cold, allergy flare, congestion), DELAY use until it clears. Confirm the client is not on sedatives or alcohol that impair arousal response. Skin irritation around the mouth is the second most common issue - switch tape brand or use a smaller vertical strip. If any anxiety about airway obstruction, do not use - the doctrine explicitly requires no anxiety or discomfort. If the client wakes gasping, has episodes of witnessed apnoea, or heavy snoring - stop and refer to GP for sleep study.',
+    coach_doctrine: 'Introduced ONLY after Level 1 has been trialled for 3-7 nights with insufficient benefit. Never skip Level 1. Must not create anxiety or disrupt sleep continuity - if it does, REMOVE and return to Level 1. Behaviourally more intrusive than Level 1 so tolerance and comfort are prerequisites. Governed by 13D_16 SBST doctrine: non-substitution rule applies (cannot replace sleep schedule consistency, offset poor recovery, maintain excessive training load, avoid reducing stress). If the client is in RRS ns_overload state, REMOVE this tool. If in RRS sleep_disruption, allowed as secondary support only. Kade uses mouth tape personally and reports it works well - the doctrine is written from that direct experience but respects the escalation model regardless.',
+    progression: {
+      group: 'sbst',
+      level: 2,
+      group_label: 'Sleep Breathing Support Tools (SBST)',
+      group_rule: 'Strict tiered progression per 13D_16 doctrine. Never skip levels. Escalate only after 3-7 nights at current level with no improvement AND behaviour/load is not the driver. De-escalate to lowest effective level once sleep improves. Remove entirely if RRS enters ns_overload state.',
+    },
+  },
+  {
+    slug: 'sbst-airway-mouthpiece',
+    name: 'Airway Positioning Mouthpiece (SBST Level 3)',
+    category: 'breathwork',
+    short_description: 'Advanced sleep breathing support. Highest intrusion. Introduced only if Levels 1 and 2 have failed after adequate trial. Maintains airway positioning to support structural breathing limitations during sleep.',
+    what_it_does: 'A dentist-fitted or OTC mandibular-advancement or airway-positioning device holds the jaw or tongue in a position that maintains airway patency during sleep. Addresses structural airway limitations that nose tape and mouth tape cannot resolve. Highest intervention level and requires ongoing monitoring.',
+    steps: [
+      'Confirm Levels 1 and 2 have both been trialled adequately (3-7 nights each) with no meaningful improvement',
+      'Confirm the persistent non-response is not driven by behaviour or excessive training load',
+      'Refer client to GP or dentist for assessment and fitting where possible - OTC options exist but a fitted device is safer',
+      'Fit and wear per device instructions at bedtime',
+      'Sleep normally; monitor for jaw discomfort, tooth sensitivity, TMJ symptoms',
+      'Evaluate at 2-4 weeks: sleep quality, morning readiness, no new pain or bite changes',
+      'If no improvement or new discomfort: REMOVE, refer to sleep physician for assessment (may need formal sleep study)',
+      'If sleep improves: monitor ongoing tolerance; annual dental review recommended',
+    ],
+    dosing: {
+      frequency: 'Nightly once introduced',
+      duration: '2-4 week evaluation window (longer than L1/L2 because of adjustment period)',
+      timing: 'Applied at bedtime per device instructions',
+    },
+    required_equipment: ['sleep_breathing_kit'],
+    contraindications: [
+      'Untreated obstructive sleep apnoea - requires sleep physician assessment before any device',
+      'Severe TMJ dysfunction or recent dental / jaw surgery',
+      'Loose teeth, extensive dental restorations, or gum disease',
+      'Age under 18 (developmental)',
+      'Any active airway pathology or upper respiratory infection',
+    ],
+    safety_notes: 'This tier warrants coach-GP or coach-dentist co-management. OTC mandibular-advancement devices exist but a professionally fitted device is safer. Common side effects: jaw soreness (usually settles in 1-2 weeks), tooth movement, TMJ discomfort, hypersalivation, dry mouth. Any persistent pain, bite change, or worsening symptoms - REMOVE immediately and refer. NOT a substitute for CPAP in diagnosed obstructive sleep apnoea - refer to sleep physician for formal assessment if suspected.',
+    coach_doctrine: 'Only introduced if Levels 1 and 2 have failed. Not default or first-line. Must be justified by persistent non-response with behaviour and load already corrected. Requires monitoring - this is where the coach role should be shared with a GP or dentist. Governed by 13D_16 SBST doctrine: non-substitution rule applies. If the client is in RRS ns_overload state, REMOVE this tool. If in RRS sleep_disruption, allowed as tertiary support only. The doctrine acknowledges this level is intrusive - clients may reasonably decline in favour of maintaining Level 1 or 2 and accepting incomplete resolution rather than escalating.',
+    progression: {
+      group: 'sbst',
+      level: 3,
+      group_label: 'Sleep Breathing Support Tools (SBST)',
+      group_rule: 'Strict tiered progression per 13D_16 doctrine. Never skip levels. Escalate only after 3-7 nights at current level with no improvement AND behaviour/load is not the driver. De-escalate to lowest effective level once sleep improves. Remove entirely if RRS enters ns_overload state.',
+    },
+  },
 ]
 
 export const EQUIPMENT_LABELS: Record<EquipmentTag, string> = {
@@ -614,6 +746,7 @@ export const EQUIPMENT_LABELS: Record<EquipmentTag, string> = {
   compression_boots: 'Compression boots (Normatec / Hyperice / similar)',
   massage_gun: 'Percussion massage gun',
   vibration_plate: 'Vibration plate',
+  sleep_breathing_kit: 'Sleep breathing tools (nose tape, mouth tape, or airway mouthpiece as prescribed)',
   none_needed: 'No equipment needed',
 }
 
