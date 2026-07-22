@@ -138,6 +138,50 @@ export const SUPPLEMENT_SUBSTANCES: SupplementSubstance[] = [
       },
     },
   },
+  {
+    slug: 'vitamin-d3-k2',
+    name: 'Vitamin D3 + K2',
+    category: 'foundational',
+    short_description: 'Deficiency-correction tool, not a disease-prevention drug. Real wins in the genuinely deficient (a large slice of the depleted-women cohort); most beyond-bone marketing is oversold. K2 is a defensible adjunct for calcium partitioning, not a required safety buffer.',
+    what_it_does: 'D3 (cholecalciferol) corrects serum 25(OH)D deficiency at roughly 10 nmol/L per 1000 IU per day in normal-weight adults, plateauing at 8-12 weeks. Response is blunted 2-2.5x by obesity, larger in the older and more deficient. K2 (MK-7) carboxylates osteocalcin (calcium into bone) and matrix Gla protein (calcium out of arteries). Physiological rationale for pairing K2 with higher-dose D3 is calcium partitioning, though hard outcome trials for K2 are not established.',
+    contraindications: [
+      'Warfarin / coumarin anticoagulants (K2 antagonises them) - refer to GP before adding K2. DOACs/apixaban not affected the same way but still flag',
+      'Sarcoidosis / granulomatous disease (dysregulated vitamin D activation)',
+      'Primary hyperparathyroidism',
+      'Known hypercalcaemia',
+      'Recurrent kidney stones or CKD (medical oversight required)',
+      'Thiazide diuretic use (calcium interaction, medical oversight)',
+    ],
+    safety_notes: 'Australian NHMRC UL is 4000 IU/day D3 - deliberately conservative. Doses above 4000 IU/day should be blood-test-guided and reviewed. Overt toxicity generally requires sustained intake >10,000 IU/day and/or 25(OH)D pushed above 125-150 nmol/L. Ceiling target 125 nmol/L; hard stop 150 nmol/L. Hypercalcaemia at 3200-4000 IU/day for >=6 months is rare (~4 extra cases per 1000). The kidney stone signal in the literature came from calcium+D combinations, not D3 alone. NEVER program single annual or 6-monthly megadoses - the 500,000 IU annual bolus RCT raised falls by 15% and fractures by 26%. Daily is safest; weekly/monthly acceptable. Retest 25(OH)D at 8-12 weeks (levels plateau by 3 months) before concluding a dose failed.',
+    coach_doctrine: 'Lead with correcting deficiency, NOT curing disease. VITAL, D2d, and D-Health mega-trials all showed NO reduction in cancer, cardiovascular events, diabetes, fractures, depression, or mortality in the already-replete. The real, modest benefits sit in the deficient: autoimmune incidence (VITAL, HR 0.78 - requires sustained intake), falls in older/deficient (800-1000 IU/day, 22% reduction), respiratory infections in the deficient (attenuated in 2024-25 update). D3 > D2 decisively - always use cholecalciferol. K2 is optional and rational, NOT obligatory - the "K2 buffers D3" story is mechanistically plausible but no outcome trial shows physiologic D3 doses cause calcification that K2 prevents. K2 flagship vascular RCT was negative (aortic valve calcification). DO NOT sell D3 as a testosterone booster in TRT/performance men - the only positive androgen signal was in obese men undergoing weight loss. Perimenopausal midlife women are the sweet spot: indoor lives + sun avoidance + age-related synthesis decline + oestrogen-driven bone loss = the classic "sun-rich country, D-poor woman" pattern. Australian winter/spring insufficiency runs 40-67% in women depending on region. Response rule: 10 nmol/L per 1000 IU, halve for obese, plateau at 8-12 weeks. Take with the largest/fattiest meal (biggest absorption lever).',
+    research_reference: '~/Dropbox/01_BODY_RECODE/00_PLAYBOOK/supplement_research/2026-07-22_Vitamin_D3_K2_Deficiency_Correction.md',
+    tiers: {
+      essential: {
+        label: 'Essential',
+        form: 'D3 (cholecalciferol) softgel or oil-based drops. Never D2.',
+        dose: '2000-4000 IU/day D3',
+        timing: 'With the largest / fattiest meal of the day (biggest absorption lever)',
+        notes: 'No blood test required for low-risk clients. Fully within the AU NHMRC 4000 IU/day UL and aligned with 2024 Endocrine Society empiric-dosing guidance. Ensure dietary magnesium is adequate (magnesium is a cofactor for D metabolism). Any reputable third-party tested brand.',
+        fits_client_profile: 'General clients, low-risk, maintenance or mild-insufficiency correction. Cheapest working option.',
+      },
+      enhanced: {
+        label: 'Enhanced',
+        form: 'D3 softgel + separate MK-7 (K2) capsule + magnesium glycinate',
+        dose: 'D3 4000-5000 IU/day + MK-7 90-180 mcg/day + magnesium glycinate 200-400 mg elemental',
+        timing: 'D3 + K2 with the largest meal (both fat-soluble). Magnesium in the evening.',
+        notes: '5000 IU exceeds the AU NHMRC 4000 IU/day UL - flag as tolerability-guided and worth checking bloods. Screen out warfarin/coumarin anticoagulants before adding K2. Rationale is the perimenopausal bone-and-artery use case: D3 to correct/optimise, K2 to support calcium partitioning (bone in, arteries out). Hold 25(OH)D below 125 nmol/L.',
+        fits_client_profile: 'At-risk / perimenopausal clients wanting the bone+vascular story. Autoimmune-leaning clients (VITAL autoimmune signal requires sustained intake). Higher-BMI clients needing higher correction dose. Anyone wanting the light monitoring touch.',
+      },
+      elite: {
+        label: 'Elite',
+        form: 'Personalised D3 (blood-test-guided) + MK-7 180 mcg + magnesium glycinate + boron',
+        dose: 'D3 blood-test-guided to target 100-125 nmol/L (10 nmol/L per 1000 IU rule; 2-2.5x for obese) + MK-7 180 mcg/day + magnesium glycinate 200-400 mg + boron ~3 mg/day',
+        timing: 'D3 + K2 + boron with largest meal. Magnesium evening. Retest 25(OH)D at 8-12 weeks after starting or dose change; then annual monitoring at end-of-winter (seasonal trough).',
+        notes: 'Doses >4000 IU/day are test-guided, time-limited, and reviewed. Hold 25(OH)D at 75-125 nmol/L (aim 100-125). Ceiling 125 nmol/L; hard stop 150 nmol/L. Medical oversight mandatory if warfarin, CKD/stones, hypercalcaemia, sarcoidosis, hyperparathyroidism, or thiazides. Boron modestly influences D metabolism - thin evidence, low risk, positioned as nice-to-have not a core claim.',
+        fits_client_profile: 'High-risk deficiency profiles (winter Tasmania, higher-melanin skin, chronic indoor workers). Performance clients wanting personalisation. TRT men (for substrate / general health only - NOT promised a testosterone rise). Anyone wanting the full target-and-hold protocol.',
+      },
+    },
+  },
 ]
 
 export const CATEGORY_LABELS: Record<SupplementCategory, string> = {
