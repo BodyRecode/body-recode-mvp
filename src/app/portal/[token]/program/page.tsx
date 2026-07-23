@@ -75,6 +75,15 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
           </div>
         ) : (
           <div className="space-y-5">
+            {/* Log a session — at the top so it's the first thing seen, mirroring
+                "Log today's meals" on the nutrition plan. */}
+            <Link
+              href={`/portal/${token}/program/log`}
+              className="block w-full py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] text-white font-bold text-sm rounded-2xl text-center transition-colors"
+            >
+              Log a session →
+            </Link>
+
             {/* Program Reading - the why frames every session view below */}
             {programReadingPublished && (
               <ProgramReadingInline
@@ -195,14 +204,6 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
                 ))}
               </div>
             )}
-
-
-            <Link
-              href={`/portal/${token}/program/log`}
-              className="block w-full py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] text-white font-bold text-sm rounded-2xl text-center transition-colors"
-            >
-              Log a session →
-            </Link>
         </div>
       )}
     </PortalPageShell>
