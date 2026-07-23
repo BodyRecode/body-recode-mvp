@@ -1,5 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 import NutritionReadingInline from '@/components/nutrition-reading-inline'
 import PortalPageShell from '../portal-page-shell'
 import { computeNutritionTotals, normalizeFood, type FoodInput } from '@/lib/nutrition-validation'
@@ -124,6 +125,15 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
           </div>
         ) : (
           <div className="space-y-5">
+            {/* Log today's meals — the daily adherence logger lives inside the
+                plan (mirrors how workout logging lives inside the program). */}
+            <Link
+              href={`/portal/${token}/my-plan/log`}
+              className="block w-full py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] text-white font-bold text-sm rounded-2xl text-center transition-colors"
+            >
+              Log today&apos;s meals →
+            </Link>
+
             {/* Bridge mode framing — friendly version of the coach-side bridge
                 banner. Staged framing: client sees the current stage, the
                 next stage, and the eventual target, all in plain language.
