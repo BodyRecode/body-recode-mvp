@@ -25,6 +25,7 @@ import DietaryConsumptionEditor from './dietary-consumption-editor'
 import RegenerateCFWSButton from '@/components/regenerate-cfws-button'
 import CoachResponseCard from './coach-response-card'
 import MajorSection from './major-section'
+import ClientProfileTabs from './client-profile-tabs'
 import ArtefactAuditPill from './artefact-audit-pill'
 import { auditFoundationalReading, auditProgramReading, auditNutritionPlan } from '@/lib/artefact-audit'
 import AutoResponseToggle from './auto-response-toggle'
@@ -392,6 +393,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         />
       </div>
 
+      <ClientProfileTabs>
+      <div data-tab="overview">
+
       {/* RRS state chip - deep-links into /recovery where suggestions render */}
       {rrsChip && (
         <div className="mb-4">
@@ -495,6 +499,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           </Link>
         )
       })()}
+
+      </div>
+      <div data-tab="admin">
 
       {/* Deliberate Start Window */}
       <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-2xl p-5 mb-4">
@@ -810,6 +817,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         </div>
       )}
 
+      </div>
+      <div data-tab="health">
+
       <MajorSection
         id="medications"
         title="Medications"
@@ -881,6 +891,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           panels={(bloodPanels ?? []) as BloodPanelData[]}
         />
       </MajorSection>
+
+      </div>
+      <div data-tab="overview">
 
       {/* Supplementary intake newer than active CFFS → coach action prompt.
           As of 2026-06-21 the supplementary intake no longer auto-regenerates
@@ -1308,6 +1321,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       )}
       </MajorSection>
 
+      </div>
+      <div data-tab="health">
+
       {/* Baseline Section */}
       <MajorSection
         id="baseline"
@@ -1375,6 +1391,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           </div>
         )}
       </MajorSection>
+
+      </div>
+      <div data-tab="overview">
 
       {/* Weekly Check-In Section */}
       <MajorSection
@@ -1577,6 +1596,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         )}
       </MajorSection>
 
+      </div>
+      <div data-tab="training">
+
       {/* Training Program Section */}
       <MajorSection
         id="training"
@@ -1649,6 +1671,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         </div>
       </MajorSection>
 
+      </div>
+      <div data-tab="nutrition">
+
       {/* Nutrition Plan Section */}
       <MajorSection
         id="nutrition"
@@ -1720,6 +1745,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         </div>
       </MajorSection>
 
+      </div>
+      <div data-tab="admin">
+
       {/* Payments Section */}
       <MajorSection
         id="payments"
@@ -1730,6 +1758,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       </MajorSection>
 
       <ClientDangerActions clientId={id} isActive={client.active !== false} />
+      </div>
+      </ClientProfileTabs>
 
       </div>
     </div>
