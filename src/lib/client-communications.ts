@@ -21,6 +21,7 @@ export type ClientCommunicationKind =
   | 'checkin_window_closing'
   | 'supplementary_intake_invite'
   | 'weekly_checkin_feedback'
+  | 'program_log_nudge'
 
 export const COMMUNICATION_KIND_LABELS: Record<ClientCommunicationKind, string> = {
   subscription_link: 'Subscription link',
@@ -38,6 +39,7 @@ export const COMMUNICATION_KIND_LABELS: Record<ClientCommunicationKind, string> 
   checkin_window_closing: 'Check-in window closing',
   supplementary_intake_invite: 'Supplementary intake invite',
   weekly_checkin_feedback: 'Weekly check-in feedback',
+  program_log_nudge: 'Log-your-session nudge',
 }
 
 export interface LogClientCommunicationInput {

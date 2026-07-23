@@ -231,6 +231,13 @@ const AUTOMATIC_AUTOMATIONS = [
     steps: 1,
   },
   {
+    id: 'program-log-nudge',
+    name: 'Log-Your-Session Nudge',
+    description: 'Daily 8:30pm Brisbane cron. If today is a client\'s prescribed training day and they haven\'t logged (or started) that session yet, sends one SMS with a link to the log screen. One-way sender, no reply CTA. Phone-gated (matches the check-in crons), with a built-in cap of 1 nudge/day and 3/7 days so it never nags. Skips clients who already logged, aren\'t training today, or have no active program.',
+    trigger: 'Vercel cron daily (8:30pm AEST)',
+    steps: 1,
+  },
+  {
     id: 'weekly-scorecard-pulse',
     name: 'Weekly Pulse (CEO Scorecard)',
     description: 'Monday 7am Brisbane cron. Freezes the week\'s scorecard into scorecard_snapshots, then emails Kade the CEO Dashboard already read: what flipped red, biggest movers vs last week, full metric table, and the 15-minute review steps. Internal report — to kade@ only, no client send.',

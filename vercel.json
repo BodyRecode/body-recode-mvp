@@ -51,6 +51,10 @@
     {
       "path": "/api/cron/weekly-checkin-auto-rescue",
       "schedule": "0 */4 * * *"
+    },
+    {
+      "path": "/api/cron/program-log-nudge",
+      "schedule": "30 10 * * *"
     }
   ]
 }
