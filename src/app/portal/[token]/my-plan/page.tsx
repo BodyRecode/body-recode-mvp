@@ -1,7 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import NutritionReadingInline from '@/components/nutrition-reading-inline'
-import Link from 'next/link'
 import PortalPageShell from '../portal-page-shell'
 import { computeNutritionTotals, normalizeFood, type FoodInput } from '@/lib/nutrition-validation'
 
@@ -441,13 +440,6 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
                 </ul>
               </div>
             )}
-
-          <Link
-            href={`/portal/${token}/nutrition`}
-            className="block w-full py-3.5 bg-[#E5E5E5] hover:bg-[#E5E5E5] text-[#1A1A1A] font-semibold text-sm rounded-2xl text-center transition-colors"
-          >
-            Submit weekly nutrition check-in →
-          </Link>
         </div>
       )}
     </PortalPageShell>
