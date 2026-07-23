@@ -621,6 +621,33 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
   const activePlan = plans?.find(p => p.is_active) as NutritionPlan | undefined
   const archivedPlans = plans?.filter(p => !p.is_active && p.status !== 'draft') as NutritionPlan[]
 
+  // Daily meal-adherence rollup for the last 7 days, so the coach sees at a
+  // glance how the plan is landing day to day (complements the weekly review).
+  let mealAdherence: { days: number; ate: number; swapped: number; skipped: number; total: number; pct: number } | null = null
+  if (activePlan) {
+    const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10)
+    const { data: recentDays } = await admin
+      .from('meal_adherence_days')
+      .select('id')
+      .eq('client_id', id)
+      .eq('nutrition_plan_id', activePlan.id)
+      .gte('log_date', weekAgo)
+    const dayIds = (recentDays ?? []).map(d => d.id)
+    let ate = 0, swapped = 0, skipped = 0
+    if (dayIds.length > 0) {
+      const { data: entryRows } = await admin
+        .from('meal_adherence_entries')
+        .select('outcome')
+        .in('meal_adherence_day_id', dayIds)
+        .not('outcome', 'is', null)
+      ate = (entryRows ?? []).filter(e => e.outcome === 'ate').length
+      swapped = (entryRows ?? []).filter(e => e.outcome === 'swapped').length
+      skipped = (entryRows ?? []).filter(e => e.outcome === 'skipped').length
+    }
+    const total = ate + swapped + skipped
+    mealAdherence = { days: dayIds.length, ate, swapped, skipped, total, pct: total ? Math.round((ate / total) * 100) : 0 }
+  }
+
   // Bridge-mode context: compute target kcal from baseline bodyweight and pull
   // recent check-in responses for the readiness-to-step-up signal. Only
   // fetched when there's an active bridge plan, to avoid the wasted query
@@ -667,6 +694,14 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
         </div>
         <div className="flex items-center gap-2">
           {activePlan && (
+            <Link
+              href={`/dashboard/clients/${id}/nutrition/log`}
+              className="text-xs font-bold px-3 py-1.5 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors"
+            >
+              Log today&apos;s meals →
+            </Link>
+          )}
+          {activePlan && (
             <NotifyClientButton
               planId={activePlan.id}
               publishedToClientAt={activePlan.published_to_client_at ?? null}
@@ -691,6 +726,27 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
           </Link>
         </div>
       </div>
+
+      {/* Daily meal adherence — last 7 days */}
+      {activePlan && mealAdherence && mealAdherence.days > 0 && (
+        <div className="mb-8 rounded-2xl border border-[#E5E5E5] bg-white p-4">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-[10px] font-bold text-[#6B6B6B] uppercase tracking-widest">Meal adherence · last 7 days</p>
+            <span className="text-xs font-semibold text-[#1A1A1A] tabular-nums">{mealAdherence.pct}% on plan</span>
+          </div>
+          <div className="flex h-2 rounded-full overflow-hidden bg-[#E5E5E5]">
+            <div className="bg-[#1B6DFC]" style={{ width: `${mealAdherence.total ? (mealAdherence.ate / mealAdherence.total) * 100 : 0}%` }} />
+            <div className="bg-amber-400" style={{ width: `${mealAdherence.total ? (mealAdherence.swapped / mealAdherence.total) * 100 : 0}%` }} />
+            <div className="bg-[#D4D4D4]" style={{ width: `${mealAdherence.total ? (mealAdherence.skipped / mealAdherence.total) * 100 : 0}%` }} />
+          </div>
+          <div className="flex gap-4 mt-2 text-xs text-[#6B6B6B]">
+            <span><span className="font-semibold text-[#1B6DFC]">{mealAdherence.ate}</span> ate</span>
+            <span><span className="font-semibold text-amber-700">{mealAdherence.swapped}</span> swapped</span>
+            <span><span className="font-semibold text-[#6B6B6B]">{mealAdherence.skipped}</span> skipped</span>
+            <span className="ml-auto text-[#999999]">{mealAdherence.days} day{mealAdherence.days === 1 ? '' : 's'} logged</span>
+          </div>
+        </div>
+      )}
 
       {/* Draft */}
       {draftPlan && (

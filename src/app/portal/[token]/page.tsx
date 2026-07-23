@@ -628,6 +628,18 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             {activeNutritionPlan ? (
               <div className="space-y-3">
                 <Link
+                  href={`/portal/${token}/my-plan/log`}
+                  className="block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-semibold text-[#1A1A1A] mb-1">Log today&apos;s meals</p>
+                      <p className="text-xs text-[#6B6B6B]">Tick off your meals so your coach can see how the plan&apos;s landing.</p>
+                    </div>
+                    <span className="text-xs font-bold text-[#1B6DFC] ml-4">Log →</span>
+                  </div>
+                </Link>
+                <Link
                   href={`/portal/${token}/my-plan`}
                   className="block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF]/50 p-4 hover:border-[#E5E5E5] transition-colors"
                 >
