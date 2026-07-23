@@ -14,6 +14,7 @@ import {
   currentBlockWeek,
   daysUntilBlockEnd,
   todayBrisbaneDayName,
+  computeLoggingMomentum,
 } from '@/lib/workout-logging'
 import StartSessionButton from './start-session-button'
 
@@ -67,6 +68,31 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
     (completions ?? []).map(c => [c.session_index, c]),
   )
 
+  // Momentum (carrot): block-completion arc + trailing fully-logged-week
+  // streak. Pulls completed counts across every week of the block.
+  const { data: blockCompletions } = await admin
+    .from('session_completions')
+    .select('week_number_in_block, status')
+    .eq('client_id', client.id)
+    .eq('program_id', program.id)
+    .neq('status', 'abandoned')
+
+  const completedByWeek = new Map<number, number>()
+  for (const c of blockCompletions ?? []) {
+    if (c.status === 'completed') {
+      completedByWeek.set(c.week_number_in_block, (completedByWeek.get(c.week_number_in_block) ?? 0) + 1)
+    }
+  }
+  const momentum = computeLoggingMomentum({
+    completedByWeek,
+    prescribedPerWeek: prescribedSessions.length,
+    currentWeek: blockWeek,
+    weekDuration: program.week_duration,
+  })
+  const momentumPct = momentum.blockTotal > 0
+    ? Math.round((momentum.loggedThisBlock / momentum.blockTotal) * 100)
+    : 0
+
   // Highlight today's session if it matches one of the prescribed day_labels
   const todaySessionIndex = prescribedSessions.findIndex(
     s => s.day_label.toLowerCase() === today.toLowerCase(),
@@ -98,6 +124,28 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
         </div>
       }
     >
+      {/* Momentum: block-completion arc + fully-logged-week streak */}
+      {momentum.blockTotal > 0 && (
+        <div className="mb-6 rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-4">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-[10px] font-bold text-[#6B6B6B] uppercase tracking-widest">This block</p>
+            {momentum.streakWeeks >= 2 && (
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#1B6DFC] bg-blue-50 border border-[#1B6DFC]/30 rounded-full px-2 py-0.5">
+                {momentum.streakWeeks} weeks fully logged
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex-1 h-2 rounded-full bg-[#E5E5E5] overflow-hidden">
+              <div className="h-full bg-[#1B6DFC] transition-[width] duration-500" style={{ width: `${momentumPct}%` }} />
+            </div>
+            <p className="text-xs font-semibold text-[#1A1A1A] tabular-nums whitespace-nowrap">
+              {momentum.loggedThisBlock} / {momentum.blockTotal} logged
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Today's session callout - canonical card, Signal Blue accent, no gradient */}
       {todaySessionIndex >= 0 && (
         <div className="mb-6 rounded-2xl border border-[#1B6DFC] bg-blue-50 p-5">

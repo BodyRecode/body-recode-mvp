@@ -108,6 +108,47 @@ export function daysUntilBlockEnd(programGeneratedAt: string, weekDuration: numb
 }
 
 /**
+ * Epley estimated 1-rep-max — used to rank sets so a personal-record check
+ * accounts for reps, not just raw weight (62.5kg × 8 beats 60kg × 8, and
+ * 60kg × 10 beats 60kg × 8). Returns 0 for non-positive weight so it never
+ * flags a bodyweight/blank row as a record.
+ */
+export function estimate1RM(weightKg: number | null, reps: number | null): number {
+  if (!weightKg || weightKg <= 0) return 0
+  const r = reps && reps > 0 ? reps : 1
+  return weightKg * (1 + r / 30)
+}
+
+/**
+ * Consistency momentum for the client-facing log index: how much of the block
+ * has been logged, and the trailing run of fully-logged weeks.
+ *
+ * A week counts as "fully logged" when completed sessions >= prescribed per
+ * week. The streak counts backward from the current week; an in-progress
+ * current week never breaks it (we start from currentWeek-1 when the current
+ * week isn't full yet), so the streak only ever reflects finished weeks.
+ */
+export function computeLoggingMomentum(opts: {
+  completedByWeek: Map<number, number>
+  prescribedPerWeek: number
+  currentWeek: number
+  weekDuration: number
+}): { streakWeeks: number; loggedThisBlock: number; blockTotal: number } {
+  const { completedByWeek, prescribedPerWeek, currentWeek, weekDuration } = opts
+  const blockTotal = Math.max(0, prescribedPerWeek * weekDuration)
+  let loggedThisBlock = 0
+  for (const c of completedByWeek.values()) loggedThisBlock += c
+  const isFull = (w: number) => prescribedPerWeek > 0 && (completedByWeek.get(w) ?? 0) >= prescribedPerWeek
+  let streakWeeks = 0
+  let w = isFull(currentWeek) ? currentWeek : currentWeek - 1
+  while (w >= 1 && isFull(w)) {
+    streakWeeks++
+    w--
+  }
+  return { streakWeeks, loggedThisBlock, blockTotal }
+}
+
+/**
  * For UI: which day of the week is "today" in Brisbane (the operational tz)?
  * Returns "Monday" / "Tuesday" / ... so the logging index can match against
  * session.day_label.

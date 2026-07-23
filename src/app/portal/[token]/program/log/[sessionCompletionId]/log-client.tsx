@@ -19,6 +19,7 @@
 import { useCallback, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import RestTimer, { RestTimerHandle } from './rest-timer'
+import { estimate1RM } from '@/lib/workout-logging'
 
 /**
  * Turn a prescribed-rest string into seconds for the rest timer.
@@ -69,6 +70,29 @@ interface Props {
   initialSessionNotes: string
   exercises: ExerciseRow[]
   initialSetLogs: SetLog[]
+  /** Per-exercise-name: last session's sets + when, for the "last time" line. */
+  lastTime?: Record<string, { sets: Array<{ weight: number | null; reps: number | null }>; when: string | null }>
+  /** Per-exercise-name: best prior estimated 1RM, for personal-record detection. */
+  priorBest?: Record<string, number>
+}
+
+/** "60 × 8, 60 × 8, 57.5 × 7" from a set list. */
+function formatSets(sets: Array<{ weight: number | null; reps: number | null }>): string {
+  return sets
+    .filter(s => s.weight != null || s.reps != null)
+    .map(s => `${s.weight ?? '–'} × ${s.reps ?? '–'}`)
+    .join(', ')
+}
+
+/** "today" / "yesterday" / "last Tue" / "3 Jun" — a light relative label. */
+function relativeWhen(iso: string | null): string {
+  if (!iso) return ''
+  const then = new Date(iso)
+  const days = Math.floor((Date.now() - then.getTime()) / (1000 * 60 * 60 * 24))
+  if (days <= 0) return 'today'
+  if (days === 1) return 'yesterday'
+  if (days < 7) return then.toLocaleDateString('en-AU', { weekday: 'long' })
+  return then.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })
 }
 
 type SetState = {
@@ -86,6 +110,15 @@ export default function LogClient(props: Props) {
   const router = useRouter()
   const isCompleted = props.sessionStatus === 'completed'
   const restRef = useRef<RestTimerHandle>(null)
+
+  // Personal-record tracking. Seed the running best per exercise from the
+  // client's prior best (estimated 1RM). When a committed set beats it AND the
+  // client had prior history for that lift, we show a quiet "new best" badge.
+  const bestByExerciseRef = useRef<Record<string, number>>({ ...(props.priorBest ?? {}) })
+  const hadPriorRef = useRef<Record<string, boolean>>(
+    Object.fromEntries(Object.entries(props.priorBest ?? {}).map(([k, v]) => [k, v > 0])),
+  )
+  const [prBadges, setPrBadges] = useState<Record<string, string>>({})
 
   // Per-set state, keyed by exerciseId:setNumber
   const initialSets: Record<string, SetState> = {}
@@ -176,6 +209,27 @@ export default function LogClient(props: Props) {
         const ex = props.exercises.find(e => e.id === exerciseId)
         const restSec = parseRestToSeconds(ex?.prescribed_rest ?? null)
         if (restSec) restRef.current?.start(restSec)
+
+        // Personal-record check: did this set beat their prior best on this
+        // lift? Only celebrate when they have history (no PR on a first-ever
+        // log) and the set has both weight + reps.
+        if (ex) {
+          const name = ex.prescribed_exercise_name
+          const w = s.weight === '' ? null : parseFloat(s.weight)
+          const r = s.reps === '' ? null : parseInt(s.reps, 10)
+          if (w != null && w > 0 && r != null && r > 0) {
+            const e1rm = estimate1RM(w, r)
+            const prevBest = bestByExerciseRef.current[name] ?? 0
+            if (hadPriorRef.current[name] && e1rm > prevBest) {
+              bestByExerciseRef.current[name] = e1rm
+              setPrBadges(prev => ({ ...prev, [name]: `${w}kg × ${r}` }))
+            } else if (e1rm > prevBest) {
+              // Update the running best silently so the first log becomes the
+              // baseline to beat later this session.
+              bestByExerciseRef.current[name] = e1rm
+            }
+          }
+        }
       } catch (err) {
         setSetStates(prev => ({
           ...prev,
@@ -279,12 +333,29 @@ export default function LogClient(props: Props) {
             {/* Exercise header */}
             <div className="mb-3">
               {ex.block_label && <p className="text-[10px] text-[#999999] uppercase tracking-widest mb-1">{ex.block_label}</p>}
-              <h3 className="text-base font-bold text-[#1A1A1A]">{ex.prescribed_exercise_name}</h3>
+              <div className="flex items-center gap-2 flex-wrap">
+                <h3 className="text-base font-bold text-[#1A1A1A]">{ex.prescribed_exercise_name}</h3>
+                {prBadges[ex.prescribed_exercise_name] && (
+                  <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-[#1B6DFC] bg-blue-50 border border-[#1B6DFC]/30 rounded-full px-2 py-0.5">
+                    ▲ New best · {prBadges[ex.prescribed_exercise_name]}
+                  </span>
+                )}
+              </div>
               <p className="text-xs text-[#6B6B6B] mt-0.5">
                 {ex.prescribed_sets ?? '?'} × {ex.prescribed_reps ?? '?'}
                 {ex.prescribed_rpe != null ? ` @ RPE ${ex.prescribed_rpe}` : ''}
                 {ex.prescribed_rest ? ` · ${ex.prescribed_rest}` : ''}
               </p>
+              {(() => {
+                const lt = props.lastTime?.[ex.prescribed_exercise_name]
+                if (!lt || lt.sets.length === 0) return null
+                return (
+                  <p className="text-xs text-[#1B6DFC] mt-1.5 leading-relaxed">
+                    <span className="font-semibold">Last time:</span> {formatSets(lt.sets)}
+                    {lt.when ? <span className="text-[#999999]"> · {relativeWhen(lt.when)}</span> : null}
+                  </p>
+                )
+              })()}
               {ex.prescribed_notes && <p className="text-xs text-[#6B6B6B] mt-1.5 leading-relaxed">{ex.prescribed_notes}</p>}
             </div>
 

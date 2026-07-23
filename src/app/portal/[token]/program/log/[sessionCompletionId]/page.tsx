@@ -8,6 +8,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import PortalPageShell from '../../../portal-page-shell'
 import LogClient from './log-client'
+import { estimate1RM } from '@/lib/workout-logging'
 
 export default async function PortalLogSessionPage({
   params,
@@ -47,6 +48,50 @@ export default async function PortalLogSessionPage({
         .order('set_number', { ascending: true })
     : { data: [] }
 
+  // "Last time" reference + prior personal-best per exercise — the carrot
+  // mechanics. One query pulls every prior logged instance of these exercises
+  // for this client, with its set logs nested, excluding the current session.
+  const exerciseNames = Array.from(new Set((exercises ?? []).map(e => e.prescribed_exercise_name)))
+  const lastTime: Record<string, { sets: Array<{ weight: number | null; reps: number | null }>; when: string | null }> = {}
+  const priorBest: Record<string, number> = {}
+
+  if (exerciseNames.length > 0) {
+    const { data: priorRows } = await admin
+      .from('session_exercise_completions')
+      .select('prescribed_exercise_name, session_completion_id, session_completions!inner(client_id, status, completed_at, started_at), exercise_set_logs(set_number, weight_kg, reps_completed)')
+      .eq('session_completions.client_id', client.id)
+      .neq('session_completion_id', sessionCompletionId)
+      .in('prescribed_exercise_name', exerciseNames)
+
+    type PriorRow = {
+      prescribed_exercise_name: string
+      session_completions: { completed_at: string | null; started_at: string | null } | null
+      exercise_set_logs: Array<{ set_number: number; weight_kg: number | null; reps_completed: number | null }> | null
+    }
+    const rows = (priorRows ?? []) as unknown as PriorRow[]
+    const latestWhen: Record<string, number> = {}
+    for (const row of rows) {
+      const name = row.prescribed_exercise_name
+      const sets = (row.exercise_set_logs ?? []).filter(s => s.weight_kg != null || s.reps_completed != null)
+      for (const s of sets) {
+        const e = estimate1RM(s.weight_kg, s.reps_completed)
+        if (e > (priorBest[name] ?? 0)) priorBest[name] = e
+      }
+      if (sets.length === 0) continue
+      const whenIso = row.session_completions?.completed_at ?? row.session_completions?.started_at ?? null
+      const whenMs = whenIso ? new Date(whenIso).getTime() : 0
+      if (whenMs >= (latestWhen[name] ?? -1)) {
+        latestWhen[name] = whenMs
+        lastTime[name] = {
+          sets: [...sets]
+            .sort((a, b) => a.set_number - b.set_number)
+            .map(s => ({ weight: s.weight_kg, reps: s.reps_completed })),
+          when: whenIso,
+        }
+      }
+    }
+  }
+
   return (
     <PortalPageShell
       backHref={`/portal/${token}/program/log`}
@@ -85,6 +130,8 @@ export default async function PortalLogSessionPage({
           reps_completed: s.reps_completed,
           rpe: s.rpe,
         }))}
+        lastTime={lastTime}
+        priorBest={priorBest}
       />
     </PortalPageShell>
   )
