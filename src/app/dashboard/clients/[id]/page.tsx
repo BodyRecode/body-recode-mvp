@@ -139,97 +139,68 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
   const pendingTrajectory = pendingTrajectoryRows?.[0] ?? null
 
-  // Re-intake status: the ReintakeButton in the CFFS section shows a "Sent
-  // [when]" / "Completed [when]" status line so the coach can see at a glance
-  // whether a re-intake has been sent recently, matching the pattern the
-  // Subscription link section uses. Two lookups:
-  //   1. Latest kind='reintake' invitation (created_at, status, completed_at)
-  //   2. Latest intake_invite email in client_communications tagged with
-  //      meta.mode='reintake' (actual send timestamp — invitation creation
-  //      doesn't imply the email went; the coach might have copied the link
-  //      manually).
-  const [{ data: latestReintakeInvitations }, { data: latestReintakeSends }] = await Promise.all([
-    admin
-      .from('intake_invitations')
-      .select('id, token, created_at, completed_at, status')
-      .eq('client_id', id)
-      .eq('kind', 'reintake')
-      .order('created_at', { ascending: false })
-      .limit(1),
-    admin
-      .from('client_communications')
-      .select('sent_at, subject, meta')
-      .eq('client_id', id)
-      .eq('kind', 'intake_invite')
-      .contains('meta', { mode: 'reintake' })
-      .order('sent_at', { ascending: false })
-      .limit(1),
+  // Derive the active program + current block week now (pure, from the batch
+  // above) so the RPE-creep read can join the parallel batch below.
+  const activeProgram = activePrograms || null
+  const blockWeek = activeProgram?.generated_at
+    ? currentBlockWeek(activeProgram.generated_at)
+    : null
+
+  // Everything here depends only on `id` / `client.id` / `activeProgram` — all
+  // known now — so run it as ONE parallel batch rather than ~11 serial DB
+  // round-trips. This was the main reason the profile page was slow to open.
+  //   - reintake status: latest kind='reintake' invitation + latest reintake
+  //     intake_invite send (invitation creation != the email actually going)
+  //   - blood panels, coach-feedback history, the three pre-publish audits,
+  //     upcoming + fixed sessions, comms log, RRS state, RPE creep, recovery
+  //     snapshot, block progress.
+  const [
+    { data: latestReintakeInvitations },
+    { data: latestReintakeSends },
+    { data: bloodPanels },
+    { data: feedbackHistory },
+    frAudit,
+    prAudit,
+    nrAudit,
+    { data: upcomingClientSessions },
+    { data: clientFixedSlots },
+    { data: communicationsData },
+    activeRrsState,
+    rpeCreep,
+    recoverySnapshot,
+    blockProgress,
+  ] = await Promise.all([
+    admin.from('intake_invitations').select('id, token, created_at, completed_at, status').eq('client_id', id).eq('kind', 'reintake').order('created_at', { ascending: false }).limit(1),
+    admin.from('client_communications').select('sent_at, subject, meta').eq('client_id', id).eq('kind', 'intake_invite').contains('meta', { mode: 'reintake' }).order('sent_at', { ascending: false }).limit(1),
+    admin.from('blood_panels').select('id, status, approved_for_plan, submitted_at, collected_on, lab_name, original_filename, client_note, panel_summary, markers, gp_flags, extraction_meta, analysis, analyzed_at, reading, reading_generated_at, reading_published_at, approved_at').eq('client_id', id).order('submitted_at', { ascending: false }),
+    admin.from('weekly_checkin_feedback').select('id, weekly_checkin_id, interpretation, reframe, next_focus, email_sent_at, updated_at, created_at').eq('client_id', id).order('created_at', { ascending: false }),
+    auditFoundationalReading(admin, id),
+    auditProgramReading(admin, id),
+    auditNutritionPlan(admin, id),
+    admin.from('client_sessions').select('id, scheduled_at, duration_minutes, status, confirmed_at').eq('client_id', id).eq('status', 'scheduled').gte('scheduled_at', new Date().toISOString()).order('scheduled_at', { ascending: true }).limit(6),
+    admin.from('client_fixed_slots').select('id, day_of_week, session_time, duration_minutes').eq('client_id', id).order('day_of_week', { ascending: true }),
+    admin.from('client_communications').select('id, kind, channel, subject, to_address, meta, sent_at').eq('client_id', id).order('sent_at', { ascending: false }).limit(15),
+    getActiveConstraintManifest(id),
+    activeProgram?.id && blockWeek ? evaluateRpeCreep(admin, client.id, activeProgram.id, blockWeek) : Promise.resolve(null),
+    loadRecoverySnapshot(admin, client.id),
+    loadBlockProgress(admin, client.id),
   ])
+
   const latestReintakeInvitation = latestReintakeInvitations?.[0] ?? null
   const latestReintakeSend = latestReintakeSends?.[0] ?? null
-
-  // Client-uploaded blood panels (Health Markers feature). Newest first.
-  const { data: bloodPanels } = await admin
-    .from('blood_panels')
-    .select('id, status, approved_for_plan, submitted_at, collected_on, lab_name, original_filename, client_note, panel_summary, markers, gp_flags, extraction_meta, analysis, analyzed_at, reading, reading_generated_at, reading_published_at, approved_at')
-    .eq('client_id', id)
-    .order('submitted_at', { ascending: false })
-
-  // Coach response history for this client. Joined to recentCheckins by id
-  // so the UI can show a "Coach response" pill on the submission rows AND
-  // render the full text in a dedicated history section below.
-  const { data: feedbackHistory } = await admin
-    .from('weekly_checkin_feedback')
-    .select('id, weekly_checkin_id, interpretation, reframe, next_focus, email_sent_at, updated_at, created_at')
-    .eq('client_id', id)
-    .order('created_at', { ascending: false })
+  const communications = communicationsData ?? []
 
   const feedbackByCheckinId = new Map<string, NonNullable<typeof feedbackHistory>[number]>()
   for (const f of feedbackHistory ?? []) feedbackByCheckinId.set(f.weekly_checkin_id, f)
 
-  // Pre-publish dry-run audits (item H, 2026-06-09). Each helper returns null
-  // when the corresponding artefact isn't yet published. Pill renders as
-  // green/amber/red on the relevant MajorSection header so the coach sees
-  // audit status before opening the section.
-  const [frAudit, prAudit, nrAudit] = await Promise.all([
-    auditFoundationalReading(admin, id),
-    auditProgramReading(admin, id),
-    auditNutritionPlan(admin, id),
-  ])
-
-  // Lookup from feedback row back to its check-in (week + form), for the
-  // history section headers.
+  // Lookup from feedback row back to its check-in (week + form), for history headers.
   const checkinMetaById = new Map<string, { week_number: number; form_type: string; submitted_at: string }>()
   for (const ci of recentCheckins ?? []) {
     if (ci.id) checkinMetaById.set(ci.id, { week_number: ci.week_number, form_type: ci.form_type, submitted_at: ci.submitted_at })
   }
 
-  const { data: upcomingClientSessions } = await admin
-    .from('client_sessions')
-    .select('id, scheduled_at, duration_minutes, status, confirmed_at')
-    .eq('client_id', id)
-    .eq('status', 'scheduled')
-    .gte('scheduled_at', new Date().toISOString())
-    .order('scheduled_at', { ascending: true })
-    .limit(6)
-
-  const { data: clientFixedSlots } = await admin
-    .from('client_fixed_slots')
-    .select('id, day_of_week, session_time, duration_minutes')
-    .eq('client_id', id)
-    .order('day_of_week', { ascending: true })
-
-  const { data: communicationsData } = await admin
-    .from('client_communications')
-    .select('id, kind, channel, subject, to_address, meta, sent_at')
-    .eq('client_id', id)
-    .order('sent_at', { ascending: false })
-    .limit(15)
-  const communications = communicationsData ?? []
-
-  // RRS -> Recovery chip data. Fetch active state so the header can surface
-  // an "RRS state active" chip that deep-links into /recovery for suggestions.
-  const activeRrsState = await getActiveConstraintManifest(id)
+  // RRS -> Recovery chip. Header surfaces an "RRS state active" chip that
+  // deep-links into /recovery for suggestions.
   const rrsChip = activeRrsState
     ? {
         playbook_id: activeRrsState.playbook.id as RecoveryPlaybookId,
@@ -278,20 +249,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
     .sort((a, b) => b[0] - a[0])[0]?.[0] ?? null
   const latestBaseline = baselines?.[0] || null
   const baselineToken = client.baseline_token as string | undefined
-  const activeProgram = activePrograms || null
 
   // Doctrine: Signal Monitoring and Reassessment Triggers v1.0
+  // (activeProgram, blockWeek and rpeCreep are resolved in the parallel batch above.)
   const cfwsForMonitor = (cfwsRecords || []).filter(c => !c.is_archived)
-
-  // RPE creep — Workout Logging Phase C signal. Evaluated for the current
-  // week of the active block. Falls into evaluateReadiness as drift on the
-  // 'capacity' key + an optional reassessment recommendation.
-  const blockWeek = activeProgram?.generated_at
-    ? currentBlockWeek(activeProgram.generated_at)
-    : null
-  const rpeCreep = activeProgram?.id && blockWeek
-    ? await evaluateRpeCreep(admin, client.id, activeProgram.id, blockWeek)
-    : null
 
   const readinessReport = client.coaching_started_at
     ? evaluateReadiness({
@@ -303,12 +264,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       })
     : null
 
-  // Recovery and Regulation — Phase 2 shadow log + active state snapshot
-  const recoverySnapshot = await loadRecoverySnapshot(admin, client.id)
+  // Recovery mode + recoverySnapshot/blockProgress are resolved in the batch above.
   const recoveryMode = resolveRouterMode()
-
-  // Workout logging Phase A — block + session completion snapshot
-  const blockProgress = await loadBlockProgress(admin, client.id)
   const draftProgram = draftPrograms || null
   const activeNutritionPlan = activeNutritionPlans || null
   const draftNutritionPlan = draftNutritionPlans || null
