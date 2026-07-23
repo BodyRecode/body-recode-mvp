@@ -17,23 +17,11 @@ export default async function ClientLayout({
   const { id } = await params
   const admin = createAdminClient()
 
-  const [{ data: client }, { data: copilotRows }] = await Promise.all([
-    admin.from('clients').select('name').eq('id', id).maybeSingle(),
-    admin
-      .from('copilot_messages')
-      .select('id, role, content, flagged, followups, created_at')
-      .eq('client_id', id)
-      .order('created_at', { ascending: true })
-      .limit(200),
-  ])
-
-  const copilotMessages = (copilotRows ?? []).map(m => ({
-    id: m.id as string,
-    role: m.role as 'user' | 'assistant',
-    content: m.content as string,
-    flagged: !!m.flagged,
-    followups: Array.isArray(m.followups) ? (m.followups as string[]) : [],
-  }))
+  // Only the light client-name lookup runs on every client sub-page now. The
+  // co-pilot history (up to 200 messages) is loaded lazily by the bubble when
+  // the coach actually opens it — it used to load on every page whether or not
+  // the chat was ever opened, taxing every navigation.
+  const { data: client } = await admin.from('clients').select('name').eq('id', id).maybeSingle()
 
   return (
     <>
@@ -42,7 +30,6 @@ export default async function ClientLayout({
         <CopilotBubble
           clientId={id}
           clientFirstName={client.name?.split(' ')[0] ?? 'this client'}
-          initialMessages={copilotMessages}
         />
       )}
     </>

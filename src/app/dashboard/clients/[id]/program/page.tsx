@@ -398,91 +398,90 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
   const { id } = await params
   const admin = createAdminClient()
 
-  const { data: client } = await admin
-    .from('clients')
-    .select('id, name, onboarding_token, coaching_started_at')
-    .eq('id', id)
-    .maybeSingle()
+  // Perf: only the active + draft programs render their full prescription, so
+  // only they need the large `sessions` JSONB. Archived programs render as a
+  // one-line summary, so we fetch just the light columns for those. Pulling
+  // every archived block's full `sessions` was the main cost of opening this
+  // page for long-tenured clients. All three loads run in parallel.
+  const ARCHIVED_COLS = 'id, block_name, generated_at, progression_phase, training_goal, week_duration, trajectory_reading_published_at, is_active, status'
+  const [{ data: client }, { data: livePrograms }, { data: archivedRaw }] = await Promise.all([
+    admin.from('clients').select('id, name, onboarding_token, coaching_started_at').eq('id', id).maybeSingle(),
+    admin.from('programs').select('*').eq('client_id', id).or('is_active.eq.true,status.eq.draft').order('generated_at', { ascending: false }),
+    admin.from('programs').select(ARCHIVED_COLS).eq('client_id', id).eq('is_active', false).neq('status', 'draft').order('generated_at', { ascending: false }),
+  ])
 
   if (!client) notFound()
 
-  const { data: programs } = await admin
-    .from('programs')
-    .select('*')
-    .eq('client_id', id)
-    .order('generated_at', { ascending: false })
+  const draftProgram = livePrograms?.find(p => p.status === 'draft') as Program | undefined
+  const activeProgram = livePrograms?.find(p => p.is_active) as Program | undefined
+  const archivedPrograms = (archivedRaw ?? []) as unknown as Program[]
 
-  const draftProgram = programs?.find(p => p.status === 'draft') as Program | undefined
-  const activeProgram = programs?.find(p => p.is_active) as Program | undefined
-  const archivedPrograms = programs?.filter(p => !p.is_active && p.status !== 'draft') as Program[]
+  type TrainingPlanLite = { id: string; coach_guidance: string | null }
 
-  // Resolve the parent training_plan for the draft (via plan_blocks). If the
-  // draft was generated outside the macro-arc flow there will be no link and
-  // we skip the coach-guidance editor for that draft.
-  let draftTrainingPlan: { id: string; coach_guidance: string | null } | null = null
-  if (draftProgram) {
-    const { data: planBlock } = await admin
-      .from('plan_blocks')
-      .select('plan_id')
-      .eq('program_id', draftProgram.id)
-      .maybeSingle()
-    if (planBlock?.plan_id) {
-      const { data: tp } = await admin
-        .from('training_plans')
-        .select('id, coach_guidance')
-        .eq('id', planBlock.plan_id)
+  // The draft and active training-plan resolutions are independent, so run them
+  // concurrently. Each chain stays sequential internally (each step depends on
+  // the previous), but the two chains no longer wait on each other.
+  const [draftTrainingPlan, activeTrainingPlan] = await Promise.all([
+    // Draft: resolve the parent training_plan via plan_blocks. If the draft was
+    // generated outside the macro-arc flow there's no link and we skip the
+    // coach-guidance editor for it.
+    (async (): Promise<TrainingPlanLite | null> => {
+      if (!draftProgram) return null
+      const { data: planBlock } = await admin
+        .from('plan_blocks')
+        .select('plan_id')
+        .eq('program_id', draftProgram.id)
         .maybeSingle()
-      if (tp) draftTrainingPlan = tp
-    }
-  }
-
-  // Same resolution for the active program so the coach can update guidance
-  // and trigger a regeneration without first having to advance to a new
-  // macro block.
-  // Resolve the active client's training plan with a fallback chain so the
-  // Regenerate button + Coach Guidance editor NEVER go missing just because
-  // the plan_block → program link got orphaned (e.g. after a discarded draft).
-  //   1. plan_block → training_plan (canonical macro-arc link)
-  //   2. training_plans.is_active for this client (fallback)
-  //   3. any training_plan for this client (last resort)
-  // Bug history: prior to 2026-07-20 the button was gated on step 1 alone,
-  // so any workflow that orphaned the plan_block hid the Regenerate button
-  // even though the training plan and its coach guidance were still intact.
-  let activeTrainingPlan: { id: string; coach_guidance: string | null } | null = null
-  if (activeProgram) {
-    const { data: planBlock } = await admin
-      .from('plan_blocks')
-      .select('plan_id')
-      .eq('program_id', activeProgram.id)
-      .maybeSingle()
-    if (planBlock?.plan_id) {
-      const { data: tp } = await admin
-        .from('training_plans')
-        .select('id, coach_guidance')
-        .eq('id', planBlock.plan_id)
+      if (planBlock?.plan_id) {
+        const { data: tp } = await admin
+          .from('training_plans')
+          .select('id, coach_guidance')
+          .eq('id', planBlock.plan_id)
+          .maybeSingle()
+        if (tp) return tp
+      }
+      return null
+    })(),
+    // Active: fallback chain so the Regenerate button + Coach Guidance editor
+    // NEVER go missing just because the plan_block → program link got orphaned:
+    //   1. plan_block → training_plan (canonical macro-arc link)
+    //   2. training_plans.is_active for this client (fallback)
+    //   3. any training_plan for this client (last resort)
+    // Bug history: prior to 2026-07-20 the button was gated on step 1 alone,
+    // so any workflow that orphaned the plan_block hid the Regenerate button
+    // even though the training plan and its coach guidance were still intact.
+    (async (): Promise<TrainingPlanLite | null> => {
+      if (!activeProgram) return null
+      const { data: planBlock } = await admin
+        .from('plan_blocks')
+        .select('plan_id')
+        .eq('program_id', activeProgram.id)
         .maybeSingle()
-      if (tp) activeTrainingPlan = tp
-    }
-    if (!activeTrainingPlan) {
-      const { data: tp } = await admin
+      if (planBlock?.plan_id) {
+        const { data: tp } = await admin
+          .from('training_plans')
+          .select('id, coach_guidance')
+          .eq('id', planBlock.plan_id)
+          .maybeSingle()
+        if (tp) return tp
+      }
+      const { data: activeTp } = await admin
         .from('training_plans')
         .select('id, coach_guidance')
         .eq('client_id', activeProgram.client_id)
         .eq('is_active', true)
         .maybeSingle()
-      if (tp) activeTrainingPlan = tp
-    }
-    if (!activeTrainingPlan) {
-      const { data: tp } = await admin
+      if (activeTp) return activeTp
+      const { data: anyTp } = await admin
         .from('training_plans')
         .select('id, coach_guidance')
         .eq('client_id', activeProgram.client_id)
         .order('created_at', { ascending: false })
         .limit(1)
         .maybeSingle()
-      if (tp) activeTrainingPlan = tp
-    }
-  }
+      return anyTp ?? null
+    })(),
+  ])
 
   return (
     <div className="max-w-5xl mx-auto">

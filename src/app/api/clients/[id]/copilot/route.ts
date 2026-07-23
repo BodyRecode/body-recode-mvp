@@ -12,6 +12,37 @@ export const maxDuration = 120
 // Cap how much prior conversation we replay, to bound tokens + latency.
 const HISTORY_LIMIT = 24
 
+/**
+ * GET — the client's co-pilot history, loaded lazily when the coach first
+ * opens the bubble (rather than eagerly in the client layout on every page).
+ * Coach-only, same as POST.
+ */
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id: clientId } = await params
+
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!isCoachEmail(user.email)) return NextResponse.json({ error: 'Coach access only' }, { status: 403 })
+
+  const admin = createAdminClient()
+  const { data: rows } = await admin
+    .from('copilot_messages')
+    .select('id, role, content, flagged, followups, created_at')
+    .eq('client_id', clientId)
+    .order('created_at', { ascending: true })
+    .limit(200)
+
+  const messages = (rows ?? []).map(m => ({
+    id: m.id as string,
+    role: m.role as 'user' | 'assistant',
+    content: m.content as string,
+    flagged: !!m.flagged,
+    followups: Array.isArray(m.followups) ? (m.followups as string[]) : [],
+  }))
+  return NextResponse.json({ messages })
+}
+
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id: clientId } = await params
 
