@@ -16,8 +16,26 @@
  *   - Notes / substitution save on blur (350ms debounce)
  */
 
-import { useCallback, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import RestTimer, { RestTimerHandle } from './rest-timer'
+
+/**
+ * Turn a prescribed-rest string into seconds for the rest timer.
+ * Handles "90s", "90 sec", "2 min", "1:30", "60-90s" (takes the first number).
+ * Returns null when nothing parseable is found.
+ */
+function parseRestToSeconds(rest: string | null): number | null {
+  if (!rest) return null
+  const str = rest.toLowerCase().trim()
+  const clock = str.match(/(\d+):(\d{1,2})/)
+  if (clock) return parseInt(clock[1], 10) * 60 + parseInt(clock[2], 10)
+  const num = str.match(/\d+(\.\d+)?/)
+  if (!num) return null
+  let val = parseFloat(num[0])
+  if (str.includes('min') || /\d\s*m(?![a-z])/.test(str)) val *= 60
+  return Math.round(val)
+}
 
 interface ExerciseRow {
   id: string
@@ -67,6 +85,7 @@ const ROW_KEY = (exerciseId: string, setNumber: number) => `${exerciseId}:${setN
 export default function LogClient(props: Props) {
   const router = useRouter()
   const isCompleted = props.sessionStatus === 'completed'
+  const restRef = useRef<RestTimerHandle>(null)
 
   // Per-set state, keyed by exerciseId:setNumber
   const initialSets: Record<string, SetState> = {}
@@ -152,6 +171,11 @@ export default function LogClient(props: Props) {
           return
         }
         setSetStates(prev => ({ ...prev, [key]: { ...prev[key], saving: false, saved: true, error: null } }))
+        // Committing a set kicks off the rest timer with this exercise's
+        // prescribed rest, so the client doesn't have to start it manually.
+        const ex = props.exercises.find(e => e.id === exerciseId)
+        const restSec = parseRestToSeconds(ex?.prescribed_rest ?? null)
+        if (restSec) restRef.current?.start(restSec)
       } catch (err) {
         setSetStates(prev => ({
           ...prev,
@@ -159,7 +183,7 @@ export default function LogClient(props: Props) {
         }))
       }
     },
-    [setStates, props.token, props.clientId],
+    [setStates, props.token, props.clientId, props.exercises],
   )
 
   /* ===========================================================
@@ -400,6 +424,15 @@ export default function LogClient(props: Props) {
         </button>
       )}
       {completeError && <p className="text-xs text-red-700 text-center">{completeError}</p>}
+
+      {/* Rest timer: fixed bar at the bottom. Only on a live session. The
+          spacer keeps the last button clear of the fixed bar. */}
+      {!isCompleted && (
+        <>
+          <div className="h-24" aria-hidden />
+          <RestTimer ref={restRef} />
+        </>
+      )}
     </div>
   )
 }

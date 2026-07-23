@@ -1778,6 +1778,7 @@ export default function HelpPage() {
               <li>Tapping <strong>Start logging</strong> opens the live UI: each prescribed exercise as a card, with set rows for weight × reps × RPE. Tap ✓ to commit each set. Saves are upserts — re-tapping updates the row in place.</li>
               <li>Per-exercise notes saved on blur. Substitution toggle: client picks a swap (&quot;did goblet squat instead of back squat&quot;) and a reason. The log captures both prescribed and actually-performed.</li>
               <li>Session-level notes textarea at the bottom. <strong>Mark session complete</strong> button finalises and routes back to the index.</li>
+              <li><strong>Rest timer</strong> (added 2026-07-23): a bar fixed to the bottom of the logging screen. It auto-starts with the exercise&apos;s prescribed rest the moment the client taps ✓ to commit a set, or they can tap a preset (1:00 / 1:30 / 2:00 / 3:00). Counts down with a progress bar, ±15s, pause/resume and skip, and beeps + vibrates at zero. Purely on the client&apos;s device — nothing is stored.</li>
             </ul>
             <p className="mt-2">On your client profile page, the new <strong>Block progress</strong> card sits above the Recovery Router panel. It shows: week N of M, days until block end (with amber pill at ≤ 7 days), sessions completed this week / prescribed, in-progress count, total sessions logged this block, last logged time. <strong>Block ending in N days</strong> banners appear automatically as the block approaches its end.</p>
 
