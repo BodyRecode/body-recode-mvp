@@ -6,6 +6,7 @@ import DashboardNav from './nav'
 import CommandPalette from './command-palette'
 import CommandKHint from './command-k-hint'
 import GlobalCopilotBubble from '@/components/global-copilot-bubble'
+import SupportLauncher from '@/components/support/support-launcher'
 import { brand } from '@/config/tenant'
 
 export default async function DashboardLayout({
@@ -59,6 +60,7 @@ export default async function DashboardLayout({
       </main>
       <CommandPalette />
       <GlobalCopilotBubble />
+      <SupportLauncher />
     </div>
   )
 }
