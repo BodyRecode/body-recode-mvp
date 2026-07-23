@@ -497,6 +497,14 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
         </div>
         <div className="flex items-center gap-2">
           {activeProgram && (
+            <Link
+              href={`/dashboard/clients/${id}/train`}
+              className="text-xs font-bold px-3 py-1.5 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors"
+            >
+              Log a session →
+            </Link>
+          )}
+          {activeProgram && (
             <NotifyClientButton
               programId={activeProgram.id}
               publishedToClientAt={activeProgram.published_to_client_at ?? null}
