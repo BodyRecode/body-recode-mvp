@@ -3,7 +3,8 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import NutritionReadingInline from '@/components/nutrition-reading-inline'
 import PortalPageShell from '../portal-page-shell'
-import { computeNutritionTotals, normalizeFood, type FoodInput } from '@/lib/nutrition-validation'
+import { computeNutritionTotals, type FoodInput } from '@/lib/nutrition-validation'
+import PlanMeals from './plan-meals'
 
 interface Meal {
   meal_number: number
@@ -279,69 +280,9 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
               )
             })()}
 
-            {/* Meals */}
+            {/* Meals — collapsible; tap a meal to see macros + foods */}
             {Array.isArray(plan.meals) && plan.meals.length > 0 && (
-              <div className="space-y-3">
-                <p className="text-xs font-bold text-[#999999] uppercase tracking-widest">Meals</p>
-                {(plan.meals as Meal[]).map((meal, i) => {
-                  const totalCals = Math.round(meal.protein_g * 4 + meal.carb_g * 4 + meal.fat_g * 9)
-                  const denom = totalCals || 1
-                  const pp = Math.round((meal.protein_g * 4 / denom) * 100)
-                  const cp = Math.round((meal.carb_g * 4 / denom) * 100)
-                  const fp = 100 - pp - cp
-                  return (
-                    <div key={i} className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl overflow-hidden">
-                      <div className="px-5 py-3 border-b border-[#E5E5E5]">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm font-bold text-[#1A1A1A]">{meal.meal_name}</p>
-                            <p className="text-xs text-[#999999] mt-0.5">{meal.timing}</p>
-                          </div>
-                          <p className="text-xs text-[#999999]">{totalCals} kcal</p>
-                        </div>
-                        <div className="flex gap-3 mt-3">
-                          <div className="text-center">
-                            <p className="text-sm font-bold text-[#1A1A1A]">{meal.protein_g}g</p>
-                            <p className="text-xs text-[#999999]">Protein</p>
-                          </div>
-                          <div className="text-center">
-                            <p className="text-sm font-bold text-[#1A1A1A]">{meal.carb_g}g</p>
-                            <p className="text-xs text-[#999999]">Carbs</p>
-                          </div>
-                          <div className="text-center">
-                            <p className="text-sm font-bold text-[#1A1A1A]">{meal.fat_g}g</p>
-                            <p className="text-xs text-[#999999]">Fat</p>
-                          </div>
-                        </div>
-                        <p className="text-[10px] text-[#999999] text-center mt-2 tabular-nums uppercase tracking-wider">
-                          P {pp}% · C {cp}% · F {fp}%
-                        </p>
-                      </div>
-                      {meal.foods && meal.foods.length > 0 && (
-                        <div className="px-5 py-3">
-                          <ul className="space-y-1.5">
-                            {meal.foods.map((food, fi) => {
-                              const f = normalizeFood(food)
-                              return (
-                                <li key={fi} className="text-xs text-[#6B6B6B] flex items-start justify-between gap-3">
-                                  <div className="flex items-start gap-2 flex-1 min-w-0">
-                                    <span className="text-[#999999] shrink-0">·</span>
-                                    <span>{f.name}</span>
-                                  </div>
-                                  {f.kcal !== null && (
-                                    <span className="text-[#999999] tabular-nums shrink-0">{f.kcal} kcal</span>
-                                  )}
-                                </li>
-                              )
-                            })}
-                          </ul>
-                          {meal.notes && <p className="text-xs text-[#999999] mt-2 italic">{meal.notes}</p>}
-                        </div>
-                      )}
-                    </div>
-                  )
-                })}
-              </div>
+              <PlanMeals meals={plan.meals as Meal[]} />
             )}
 
             {/* Food substitutions: client-facing, collapsed by default so it
