@@ -11,6 +11,7 @@ const SECTIONS = [
   { id: 'operator-flow',         title: 'Operator Flow',         colour: 'violet' as const, category: 'flows' as Category },
   { id: 'brand-voice',           title: 'Brand Voice',           colour: 'violet' as const, category: 'flows' as Category },
   { id: 'coach-copilot',         title: 'Coach Co-Pilot',        colour: 'violet' as const, category: 'flows' as Category },
+  { id: 'support',               title: 'Support Tickets',       colour: 'violet' as const, category: 'flows' as Category },
   { id: 'lead-pipeline',    title: '1. Lead Pipeline',       colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'zoom-1',           title: '2. Zoom Companion',      colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'coaching-entry',   title: '3. Coaching Entry',      colour: 'teal' as const, category: 'coaching' as Category },
@@ -396,6 +397,32 @@ export default function HelpPage() {
             </ul>
 
             <Note>Treat it like a senior coach looking over your shoulder. The highest-value habit: after you generate any program or nutrition plan, open the co-pilot on that client and ask it to review the result against doctrine before you publish.</Note>
+          </Section>
+
+          <Section id="support" title="Support Tickets - Report an Issue" colour="violet">
+            <p>Every dashboard page carries a floating <strong>Support</strong> pill in the bottom-left. Tap it when something is broken, unclear, or missing. It opens a drawer with two tabs.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-3">Tab 1: Report</p>
+            <p>Pick a category, write a one-line subject, describe what happened. The page you are on when you file is captured automatically, so Kade sees the context without you having to name the URL.</p>
+            <StatusList items={[
+              { label: 'Bug', desc: 'Something is broken or behaving differently than expected.' },
+              { label: 'Question', desc: 'You are not sure how a feature works or where to find something.' },
+              { label: 'Feature request', desc: 'A change or addition that would help you get work done.' },
+              { label: 'Something is wrong right now', desc: 'Urgent - blocks you from doing your job.' },
+            ]} />
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">Tab 2: My tickets</p>
+            <p>Your recent tickets with their current status. Every ticket carries one of four states:</p>
+            <StatusList items={[
+              { label: 'New', desc: 'Kade has not opened it yet.' },
+              { label: 'Looking', desc: 'Kade is investigating.' },
+              { label: 'Fixed', desc: 'Change is deployed. If Kade left a note, it is on the ticket.' },
+              { label: "Won't fix", desc: 'Kade decided against action. Reason will be on the ticket.' },
+            ]} />
+
+            <p className="mt-3">When Kade updates a ticket, you get an email with the status and any note verbatim - and the ticket in the drawer updates the next time you open it. Kade sees every ticket in his own admin inbox at <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">/dashboard/support</code>.</p>
+
+            <Note>Use this instead of email or DM for anything platform-related. It routes into the right place, keeps a trail, and gives you visibility on where the fix stands.</Note>
           </Section>
 
           {/* Section 1 */}

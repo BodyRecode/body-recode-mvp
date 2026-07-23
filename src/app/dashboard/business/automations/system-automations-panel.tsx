@@ -20,6 +20,13 @@ const AUTOMATIC_AUTOMATIONS = [
     trigger: 'Inbound email reply (Postmark webhook)',
     steps: 3,
   },
+  {
+    id: 'support-ticket-notify',
+    name: 'Support Ticket - New + Status Change',
+    description: `Coach files a ticket in the Support drawer (bottom-left pill on any /dashboard page) → row lands in support_tickets and a branded email fires to ${coach().email} (accent = red for urgent, amber for bug, Signal Blue otherwise). Includes the page URL they were on when they filed. When Kade updates a ticket's status in /dashboard/support/{id} with the notify checkbox ticked, the filer gets an email with the status + any note verbatim, BCC'd to Kade. Both sends skip when the filer IS Kade (no self-email noise during testing).`,
+    trigger: 'POST /api/support/tickets (new), PATCH /api/support/tickets/[id] (status change)',
+    steps: 2,
+  },
   // ─── Funnel B product portal sequences (fire once each product is launched via NEXT_PUBLIC_*_LIVE) ───
   {
     id: 'challenge-email-sequence',
