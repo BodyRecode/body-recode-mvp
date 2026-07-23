@@ -5,6 +5,8 @@ import TrajectoryReadingInline from '@/components/trajectory-reading-inline'
 import Link from 'next/link'
 import PortalPageShell from '../portal-page-shell'
 
+import ProgramSessions from './program-sessions'
+
 interface Exercise {
   exercise_name: string
   sets: number
@@ -155,54 +157,9 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
               </div>
             </div>
 
-            {/* Sessions */}
+            {/* Sessions — collapsible; tap a session to see the full workout */}
             {Array.isArray(program.sessions) && program.sessions.length > 0 && (
-              <div className="space-y-4">
-                <p className="text-xs font-bold text-[#999999] uppercase tracking-widest">Sessions</p>
-                {(program.sessions as Session[]).map((session, si) => (
-                  <div key={si} className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl overflow-hidden">
-                    <div className="px-5 py-3 border-b border-[#E5E5E5]">
-                      <p className="text-sm font-bold text-[#1A1A1A]">{session.day_label}</p>
-                      <p className="text-xs text-[#999999] mt-0.5">{session.skeleton}</p>
-                    </div>
-
-                    {/* Movement prep */}
-                    {session.movement_prep && session.movement_prep.length > 0 && (
-                      <div className="px-5 py-3 border-b border-[#E5E5E5]/60">
-                        <p className="text-xs font-semibold text-[#999999] uppercase tracking-wider mb-2">Movement Preparation</p>
-                        <ul className="space-y-1">
-                          {session.movement_prep.map((item, i) => (
-                            <li key={i} className="text-xs text-[#6B6B6B] flex gap-2">
-                              <span className="text-[#999999] shrink-0">·</span>
-                              <span>{item}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* Blocks */}
-                    {session.blocks.map((block, bi) => (
-                      <div key={bi} className="px-5 py-3 border-b border-[#E5E5E5]/40 last:border-0">
-                        <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">{block.block_label}</p>
-                        <div className="space-y-3">
-                          {block.exercises.map((ex, ei) => (
-                            <div key={ei} className="flex flex-col gap-1">
-                              <p className="text-sm font-semibold text-[#1A1A1A]">{ex.exercise_name}</p>
-                              <div className="flex flex-wrap gap-2">
-                                <span className="text-xs bg-[#E5E5E5] text-[#3A3A3A] px-2 py-0.5 rounded-lg">{ex.sets} × {ex.reps}</span>
-                                {ex.rpe && <span className="text-xs bg-[#E5E5E5] text-[#6B6B6B] px-2 py-0.5 rounded-lg">RPE {ex.rpe}</span>}
-                                {ex.rest && <span className="text-xs bg-[#E5E5E5] text-[#6B6B6B] px-2 py-0.5 rounded-lg">{ex.rest} rest</span>}
-                              </div>
-                              {ex.notes && <p className="text-xs text-[#999999] leading-relaxed">{ex.notes}</p>}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ))}
-              </div>
+              <ProgramSessions sessions={program.sessions as Session[]} />
             )}
         </div>
       )}
