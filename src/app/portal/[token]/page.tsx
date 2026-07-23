@@ -287,8 +287,25 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   const brisbaneDay = new Date(nowDate.getTime() + 10 * 60 * 60 * 1000).getUTCDay()
   const isClosingDay = brisbaneDay === 0 // Sunday
 
-  // Did client miss last week's check-in? Window closed and no submission for current week
-  const missedCheckin = !windowOpen && !checkinDoneThisWeek && weekNumber && weekNumber > 1
+  // Did the client miss last week's check-in?
+  //
+  // We must NOT key this on the current per-client weekNumber: the per-client
+  // week rolls over on the client's own start-day, so from the moment their
+  // week ticks over (e.g. Sunday night) until the next global window opens
+  // (Friday 6pm), there is legitimately no submission for the *new* week yet —
+  // the window hasn't happened. Keying on that made the portal tell clients
+  // who checked in last weekend that they "missed", every Mon–Thu.
+  //
+  // Correct signal: did they submit during the most recently CLOSED window?
+  // When the window is closed, checkinWindow.opensAt is the NEXT Friday 6pm, so
+  // the previous window opened 7 days earlier. Any submission at/after that
+  // timestamp means the last window was completed → not missed.
+  const previousWindowOpenMs = checkinWindow.opensAt.getTime() - 7 * 24 * 60 * 60 * 1000
+  const submittedInLastWindow = Array.isArray(client.weekly_checkins)
+    ? client.weekly_checkins.some((c: { submitted_at?: string | null }) =>
+        c.submitted_at && new Date(c.submitted_at).getTime() >= previousWindowOpenMs)
+    : false
+  const missedCheckin = !windowOpen && !submittedInLastWindow && weekNumber && weekNumber > 1
 
   return (
     <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
