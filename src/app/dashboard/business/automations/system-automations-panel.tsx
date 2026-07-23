@@ -152,7 +152,7 @@ const AUTOMATIC_AUTOMATIONS = [
   {
     id: 'weekly-checkin-submitted',
     name: 'Weekly Check-In Submitted',
-    description: 'Coach notification + client confirmation when a weekly check-in (Form A or Form B) is submitted. Triggers CFWS generation when both forms for the week are in.',
+    description: 'Coach notification + client confirmation when a weekly check-in (Form A or Form B) is submitted. Triggers CFWS generation when both forms for the week are in. The check-in now also carries the training + nutrition review blocks (folded in 2026-07-23), so on submit it files the same program_reviews / nutrition_reviews rows and updates each plan direction.',
     trigger: 'Client submits weekly check-in via portal',
     steps: 2,
   },

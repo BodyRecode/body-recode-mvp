@@ -40,6 +40,16 @@ export default async function PortalCheckinPage({
     .eq('is_active', true)
     .maybeSingle()
 
+  // Nutrition section is folded into the check-in only when the client has an
+  // active nutrition plan (mirrors the old standalone nutrition check-in gate).
+  const { data: activeNutritionPlan } = await admin
+    .from('nutrition_plans')
+    .select('id')
+    .eq('client_id', client.id)
+    .eq('is_active', true)
+    .maybeSingle()
+  const includeNutrition = !!activeNutritionPlan
+
   if (!activeProgram) {
     return (
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-6">
@@ -152,6 +162,7 @@ export default async function PortalCheckinPage({
       clientName={client.name}
       weekNumber={weekNumber}
       formType={formType}
+      includeNutrition={includeNutrition}
     />
   )
 }

@@ -7,6 +7,7 @@ import { darkEmailSignature } from '@/lib/email-signature'
 import { fromCoach, fromBrand, darkEmailShell, emailUrlFallback } from '@/lib/email-shell'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { writeRecoverySignalBlock, evaluateRouterAfterCheckin } from '@/lib/recovery-ingest'
+import { extractTrainingReview, extractNutritionReview, stripReviewKeys } from '@/lib/weekly-checkin-questions'
 import { appUrl } from '@/lib/app-url'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { coach, logoUrl } from '@/config/tenant'
@@ -65,6 +66,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to save check-in' }, { status: 500 })
   }
 
+  // Training + Nutrition reviews are now folded into the weekly check-in, so
+  // the client has ONE thing to complete. Replicate exactly what the old
+  // standalone /api/portal/program-review and /nutrition-review routes did:
+  // insert the review row and update the plan's current_direction +
+  // last_review_at, so the coach-facing direction signals keep flowing.
+  // Guarded so a review write can never fail the parent check-in.
+  await writeMergedReviews(admin, clientId, responses).catch(err =>
+    console.error('Merged review write error:', err)
+  )
+
   // Send notifications (fire-and-forget)
   sendNotifications(client, weekNumber, formType).catch(err =>
     console.error('Notification error:', err)
@@ -109,8 +120,12 @@ export async function POST(request: NextRequest) {
     .maybeSingle()
 
   if (otherForm) {
-    const formAResponses = formType === 'A' ? responses : (otherForm.responses as Record<string, string>)
-    const formBResponses = formType === 'B' ? responses : (otherForm.responses as Record<string, string>)
+    // Strip the merged Training/Nutrition keys so the CFWS interpretation
+    // engine sees only the original reflective responses (behaviour unchanged).
+    const currentResponses = stripReviewKeys(responses)
+    const otherResponses = stripReviewKeys(otherForm.responses as Record<string, string>)
+    const formAResponses = formType === 'A' ? currentResponses : otherResponses
+    const formBResponses = formType === 'B' ? currentResponses : otherResponses
     await generateCFWS(admin, client, weekNumber, formAResponses, formBResponses).catch(
       err => console.error('CFWS generation error:', err)
     )
@@ -239,6 +254,74 @@ async function generateCFWS(
     rolling_window_weeks: [weekNumber, ...recentPairs.map(p => p.weekNumber)],
     ...(cfwsData as Record<string, unknown>),
   })
+}
+
+async function writeMergedReviews(
+  admin: ReturnType<typeof createAdminClient>,
+  clientId: string,
+  responses: Record<string, string>
+) {
+  const nowIso = new Date().toISOString()
+
+  // --- Training review (mirrors /api/portal/program-review) ---
+  const training = extractTrainingReview(responses)
+  if (training) {
+    const { data: program } = await admin
+      .from('programs')
+      .select('id')
+      .eq('client_id', clientId)
+      .eq('is_active', true)
+      .maybeSingle()
+
+    if (program) {
+      const { error } = await admin.from('program_reviews').insert({
+        program_id: program.id,
+        client_id: clientId,
+        adherence_confirmed: training.adherence_confirmed,
+        signal_category: training.signal_category,
+        signal_strength: 'moderate',
+        days_under_observation: 7,
+        signals_noted: training.signals_noted,
+        direction: training.direction,
+      })
+      if (error) console.error('program_reviews insert error:', error)
+      else
+        await admin
+          .from('programs')
+          .update({ current_direction: training.direction, last_review_at: nowIso })
+          .eq('id', program.id)
+    }
+  }
+
+  // --- Nutrition review (mirrors /api/portal/nutrition-review) ---
+  const nutrition = extractNutritionReview(responses)
+  if (nutrition) {
+    const { data: plan } = await admin
+      .from('nutrition_plans')
+      .select('id')
+      .eq('client_id', clientId)
+      .eq('is_active', true)
+      .maybeSingle()
+
+    if (plan) {
+      const { error } = await admin.from('nutrition_reviews').insert({
+        nutrition_plan_id: plan.id,
+        client_id: clientId,
+        adherence_confirmed: nutrition.adherence_confirmed,
+        signal_category: nutrition.signal_category,
+        signal_strength: 'moderate',
+        days_under_observation: 7,
+        signals_noted: nutrition.signals_noted,
+        direction: nutrition.direction,
+      })
+      if (error) console.error('nutrition_reviews insert error:', error)
+      else
+        await admin
+          .from('nutrition_plans')
+          .update({ current_direction: nutrition.direction, last_review_at: nowIso })
+          .eq('id', plan.id)
+    }
+  }
 }
 
 function stripEmDashes(obj: unknown): unknown {

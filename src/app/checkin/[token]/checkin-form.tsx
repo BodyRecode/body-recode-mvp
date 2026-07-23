@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { FORM_A_SECTIONS, FORM_B_SECTIONS, CheckInSection } from '@/lib/weekly-checkin-questions'
+import { getCheckinSections, CheckInSection } from '@/lib/weekly-checkin-questions'
 import { useFormDraft } from '@/lib/use-form-draft'
 import { logoUrl, brand } from '@/config/tenant'
 
@@ -10,6 +10,7 @@ interface Props {
   clientName: string
   weekNumber: number
   formType: 'A' | 'B'
+  includeNutrition: boolean
 }
 
 type Responses = Record<string, string>
@@ -20,7 +21,7 @@ function QuestionInput({
   onChange,
   hasError,
 }: {
-  question: { id: string; type: 'text' | 'choice'; text: string; helper?: string; options?: string[] }
+  question: { id: string; type: 'text' | 'choice'; text: string; helper?: string; options?: string[]; multi?: boolean }
   value: string | undefined
   onChange: (val: string) => void
   hasError: boolean
@@ -44,6 +45,13 @@ function QuestionInput({
   }
 
   if (question.type === 'choice') {
+    const selected = question.multi ? (value ? value.split(', ') : []) : []
+    const isSelected = (opt: string) => (question.multi ? selected.includes(opt) : value === opt)
+    const handleClick = (opt: string) => {
+      if (!question.multi) return onChange(opt)
+      const next = selected.includes(opt) ? selected.filter(o => o !== opt) : [...selected, opt]
+      onChange(next.join(', '))
+    }
     return (
       <div>
         <p className={`text-[15px] font-medium mb-3 leading-snug ${hasError ? 'text-red-700' : 'text-[#1A1A1A]'}`}>{question.text}</p>
@@ -52,9 +60,9 @@ function QuestionInput({
             <button
               key={opt}
               type="button"
-              onClick={() => onChange(opt)}
+              onClick={() => handleClick(opt)}
               className={`w-full text-left text-[14px] px-4 py-3 rounded-xl border transition-all duration-150 ${
-                value === opt
+                isSelected(opt)
                   ? 'bg-blue-500/10 border-blue-500 text-blue-300'
                   : hasError
                   ? 'bg-stone-50 border-red-400 text-stone-700'
@@ -74,8 +82,8 @@ function QuestionInput({
 
 type CheckinDraft = { sectionIndex: number; responses: Responses }
 
-export default function CheckInForm({ clientId, clientName, weekNumber, formType }: Props) {
-  const sections: CheckInSection[] = formType === 'A' ? FORM_A_SECTIONS : FORM_B_SECTIONS
+export default function CheckInForm({ clientId, clientName, weekNumber, formType, includeNutrition }: Props) {
+  const sections: CheckInSection[] = getCheckinSections(formType, { includeNutrition })
   const [draft, setDraft, clearDraft] = useFormDraft<CheckinDraft>(
     `checkin:${clientId}:w${weekNumber}:${formType}`,
     { sectionIndex: 0, responses: {} }
@@ -115,7 +123,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
 
   function findMissedInSection(idx: number): string[] {
     return sections[idx].questions
-      .filter(q => !(responses[q.id] && responses[q.id].trim().length > 0))
+      .filter(q => !q.optional && !(responses[q.id] && responses[q.id].trim().length > 0))
       .map(q => q.id)
   }
 

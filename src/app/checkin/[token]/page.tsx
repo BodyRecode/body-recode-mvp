@@ -84,12 +84,21 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
     )
   }
 
+  // Nutrition section folds into the check-in only when there's an active plan.
+  const { data: activeNutritionPlan } = await admin
+    .from('nutrition_plans')
+    .select('id')
+    .eq('client_id', client.id)
+    .eq('is_active', true)
+    .maybeSingle()
+
   return (
     <CheckInForm
       clientId={client.id}
       clientName={client.name}
       weekNumber={weekNumber}
       formType={formType}
+      includeNutrition={!!activeNutritionPlan}
     />
   )
 }

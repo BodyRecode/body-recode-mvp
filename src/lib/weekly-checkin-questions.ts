@@ -4,6 +4,10 @@ export interface CheckInQuestion {
   text: string
   helper?: string
   options?: string[]
+  /** Choice questions only: allow multiple selections (stored comma-joined). */
+  multi?: boolean
+  /** Skip the "must be answered" validation for this question. */
+  optional?: boolean
 }
 
 export interface CheckInSection {
@@ -335,6 +339,184 @@ export const FORM_B_SECTIONS: CheckInSection[] = [
     ],
   },
 ]
+
+// ---------------------------------------------------------------------------
+// Training + Nutrition review sections (merged into the weekly check-in so the
+// client has ONE thing to complete each week). These append to both Form A and
+// Form B. On submit, submit-weekly-checkin extracts them and writes the same
+// program_reviews / nutrition_reviews rows the standalone check-ins used to,
+// so the coach-facing "direction" signals keep flowing unchanged.
+// ---------------------------------------------------------------------------
+
+/** Display label -> program_reviews.signal_category value */
+export const TRAINING_SIGNAL_MAP: Record<string, string> = {
+  'Feeling stronger': 'performance_up',
+  'Struggling with sessions': 'performance_down',
+  'No change, sessions felt flat': 'stalled',
+  'Recovering poorly': 'recovery_constraint',
+  'Ticking along as normal': 'neutral_stable',
+}
+
+/** Display label -> nutrition_reviews.signal_category value */
+export const NUTRITION_SIGNAL_MAP: Record<string, string> = {
+  'Under-fuelled (hungry, low energy)': 'under_fuelling',
+  'Over-fuelled (sluggish, heavy)': 'over_fuelling',
+  'Recovery issues (tired, run down)': 'recovery_constraint',
+  'Hard to stick to': 'adherence_constraint',
+  'Feeling good, on track': 'neutral_stable',
+}
+
+/** Display label -> direction enum */
+export const DIRECTION_MAP: Record<string, 'progress' | 'hold' | 'rebuild'> = {
+  'Making progress': 'progress',
+  'Staying steady': 'hold',
+  'Struggling': 'rebuild',
+}
+
+const DIRECTION_OPTIONS = ['Making progress', 'Staying steady', 'Struggling']
+
+export const TRAINING_SECTION: CheckInSection = {
+  title: 'Training',
+  questions: [
+    {
+      id: 'training_adherence',
+      type: 'choice',
+      text: 'Did you complete your training sessions this week?',
+      options: [
+        'Yes, I completed my sessions as programmed',
+        'I completed most of them',
+        'No, I missed most sessions',
+      ],
+    },
+    {
+      id: 'training_signal',
+      type: 'choice',
+      multi: true,
+      optional: true,
+      text: 'How did training feel? (choose any that apply)',
+      options: Object.keys(TRAINING_SIGNAL_MAP),
+    },
+    {
+      id: 'training_direction',
+      type: 'choice',
+      text: 'Overall, how is your training going?',
+      options: DIRECTION_OPTIONS,
+    },
+    {
+      id: 'training_notes',
+      type: 'text',
+      optional: true,
+      text: 'Anything else to note about your training? (optional)',
+      helper: 'e.g. left knee was sore on squats, energy was low Thursday.',
+    },
+  ],
+}
+
+export const NUTRITION_SECTION: CheckInSection = {
+  title: 'Nutrition',
+  questions: [
+    {
+      id: 'nutrition_adherence',
+      type: 'choice',
+      text: 'Did you follow your nutrition plan this week?',
+      options: [
+        'Yes, I followed my nutrition plan',
+        'I followed most of it',
+        'No, I struggled to stick to it',
+      ],
+    },
+    {
+      id: 'nutrition_signal',
+      type: 'choice',
+      multi: true,
+      optional: true,
+      text: 'What did you notice with your nutrition? (choose any that apply)',
+      options: Object.keys(NUTRITION_SIGNAL_MAP),
+    },
+    {
+      id: 'nutrition_direction',
+      type: 'choice',
+      text: 'Overall, how is your nutrition going?',
+      options: DIRECTION_OPTIONS,
+    },
+    {
+      id: 'nutrition_notes',
+      type: 'text',
+      optional: true,
+      text: 'Anything else to note about your nutrition? (optional)',
+      helper: 'e.g. energy was low mid-week, struggled with meal 3.',
+    },
+  ],
+}
+
+/**
+ * Build the full ordered section list for a check-in. Base reflective form
+ * (A or B) first, then Training, then Nutrition (only when the client has an
+ * active nutrition plan). Used by both the check-in page and the form.
+ */
+export function getCheckinSections(
+  formType: 'A' | 'B',
+  opts: { includeNutrition: boolean },
+): CheckInSection[] {
+  const base = formType === 'A' ? FORM_A_SECTIONS : FORM_B_SECTIONS
+  return [...base, TRAINING_SECTION, ...(opts.includeNutrition ? [NUTRITION_SECTION] : [])]
+}
+
+/** Response keys added by the Training + Nutrition sections. */
+export const REVIEW_RESPONSE_KEYS = [
+  'training_adherence', 'training_signal', 'training_direction', 'training_notes',
+  'nutrition_adherence', 'nutrition_signal', 'nutrition_direction', 'nutrition_notes',
+]
+
+/** Strip the merged Training/Nutrition keys so the CFWS prompt sees only the
+ *  original reflective responses (keeps CFWS behaviour unchanged). */
+export function stripReviewKeys(responses: Record<string, string>): Record<string, string> {
+  const out: Record<string, string> = {}
+  for (const [k, v] of Object.entries(responses)) {
+    if (!REVIEW_RESPONSE_KEYS.includes(k)) out[k] = v
+  }
+  return out
+}
+
+interface ReviewPayload {
+  adherence_confirmed: boolean
+  signal_category: string | null
+  signals_noted: string | null
+  direction: 'progress' | 'hold' | 'rebuild'
+}
+
+function mapSignals(joined: string | undefined, map: Record<string, string>): string | null {
+  if (!joined) return null
+  const values = joined
+    .split(', ')
+    .map(label => map[label.trim()])
+    .filter(Boolean)
+  return values.length > 0 ? values.join(',') : null
+}
+
+/** Pull the training review out of a weekly-checkin response set, or null. */
+export function extractTrainingReview(responses: Record<string, string>): ReviewPayload | null {
+  const direction = DIRECTION_MAP[responses.training_direction?.trim()]
+  if (!direction) return null
+  return {
+    adherence_confirmed: responses.training_adherence === 'Yes, I completed my sessions as programmed',
+    signal_category: mapSignals(responses.training_signal, TRAINING_SIGNAL_MAP),
+    signals_noted: responses.training_notes?.trim() || null,
+    direction,
+  }
+}
+
+/** Pull the nutrition review out of a weekly-checkin response set, or null. */
+export function extractNutritionReview(responses: Record<string, string>): ReviewPayload | null {
+  const direction = DIRECTION_MAP[responses.nutrition_direction?.trim()]
+  if (!direction) return null
+  return {
+    adherence_confirmed: responses.nutrition_adherence === 'Yes, I followed my nutrition plan',
+    signal_category: mapSignals(responses.nutrition_signal, NUTRITION_SIGNAL_MAP),
+    signals_noted: responses.nutrition_notes?.trim() || null,
+    direction,
+  }
+}
 
 /** Determine which week number a client is on (1-indexed) based on coaching start date */
 // Global system anchor: Monday 23 March 2026 = Week A

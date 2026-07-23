@@ -289,7 +289,7 @@ export default function HelpPage() {
                   <ChecklistItem text="Confirm equipment access, then click Approve & Generate Program (takes 30–60 seconds)" />
                   <ChecklistItem text="Review the full draft on the Training Program page - check sessions, blocks, exercises, and progression strategy" />
                   <ChecklistItem text="Click Approve Program to promote the draft to active" />
-                  <ChecklistItem text="Each week, the client submits their training review via the portal - you see the results as a read-only feed on the Training Program page (direction, signal, adherence, notes). No data entry required on your side." />
+                  <ChecklistItem text="Each week, the client's training review comes in as part of their single weekly check-in (folded in 2026-07-23, no longer a separate form) - you see the results as a read-only feed on the Training Program page (direction, signal, adherence, notes). No data entry required on your side." />
                 </div>
               </div>
 
@@ -301,7 +301,7 @@ export default function HelpPage() {
                   <ChecklistItem text="Click Approve & Generate Plan (or Fill in manually instead if preferred)" />
                   <ChecklistItem text="Review the full draft on the Nutrition Plan page - meal structure, macros, training day adjustments, execution rules, and progression notes" />
                   <ChecklistItem text="Click Approve Plan to promote the draft to active" />
-                  <ChecklistItem text="Each week, the client submits their nutrition review via the portal - you see the results as a read-only feed on the Nutrition Plan page. No form to fill in on your side." />
+                  <ChecklistItem text="Each week, the client's nutrition review comes in as part of their single weekly check-in (folded in 2026-07-23, no longer a separate form) - you see the results as a read-only feed on the Nutrition Plan page. No form to fill in on your side." />
                 </div>
               </div>
 
@@ -910,6 +910,7 @@ export default function HelpPage() {
               <li>Window closed state with the next open time if outside the Friday-Sunday window.</li>
             </ul>
             <p>Clicking Start takes the client to the check-in form at <strong>/portal/[token]/checkin</strong>.</p>
+            <Note>One check-in, everything in it (updated 2026-07-23). The separate weekly training check-in and nutrition check-in have been folded into this single weekly check-in, so the client has <strong>one thing</strong> to complete each week. After the reflective questions, the form now asks a short Training block (did you train, how it felt, overall direction) and, when the client has an active nutrition plan, a short Nutrition block (did you follow the plan, what you noticed, overall direction). On submit these still file the same read-only training and nutrition review feeds on the Training Program and Nutrition Plan pages, and still update each plan&apos;s direction - nothing changed on your side. Because it&apos;s now one form, the training and nutrition answers are only collected during the Friday-Sunday window (they used to be submittable any day). The Training and Nutrition answers are deliberately kept out of the CFWS so its interpretation is unchanged.</Note>
             <p>When both Form A and Form B have been submitted for the week:</p>
             <ol className="space-y-1.5 list-decimal list-inside text-[#3A3A3A] text-sm">
               <li>The client receives a confirmation email.</li>

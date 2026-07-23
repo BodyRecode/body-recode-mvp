@@ -215,15 +215,6 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     : { data: [] as Array<{ weekly_checkin_id: string }> }
   const checkinIdsWithFeedback = new Set((recentFeedbackRows ?? []).map(r => r.weekly_checkin_id))
 
-  const now = Date.now()
-  const sevenDays = 7 * 24 * 60 * 60 * 1000
-  const programReviewedThisWeek = activeProgram?.last_review_at
-    ? (now - new Date(activeProgram.last_review_at).getTime()) < sevenDays
-    : false
-  const nutritionReviewedThisWeek = activeNutritionPlan?.last_review_at
-    ? (now - new Date(activeNutritionPlan.last_review_at).getTime()) < sevenDays
-    : false
-
   const checkinWindow = getCheckInWindowStatus()
   const testMode = isCheckinTestMode()
   // Per-client override (set by coach via the Reopen button on the client
@@ -584,39 +575,13 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
           </div>
         )}
 
-        {/* Training */}
+        {/* Training. The weekly training check-in is now folded into the single
+            "This week" check-in above, so this section is just the read-only
+            program viewer. */}
         <div className="mb-10">
           <SectionLabel icon={Dumbbell} text="Training" />
             {activeProgram ? (
               <div className="space-y-3">
-                {programReviewedThisWeek ? (
-                  <div className="rounded-2xl border border-blue-200 bg-blue-50 p-5">
-                    <div className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-full bg-[#1B6DFC] flex items-center justify-center flex-shrink-0">
-                        <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-[#1B6DFC]">Training check-in submitted</p>
-                        <p className="text-xs text-[#999999] mt-0.5">Your coach will review shortly.</p>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <Link
-                    href={`/portal/${token}/training`}
-                    className="block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm font-semibold text-[#1A1A1A] mb-1">Weekly training check-in</p>
-                        <p className="text-xs text-[#6B6B6B]">How did your sessions go this week?</p>
-                      </div>
-                      <span className="text-xs font-bold text-[#1B6DFC] ml-4">Start →</span>
-                    </div>
-                  </Link>
-                )}
                 <Link
                   href={`/portal/${token}/program`}
                   className="block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF]/50 p-4 hover:border-[#E5E5E5] transition-colors"
@@ -638,39 +603,13 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             )}
         </div>
 
-        {/* Nutrition */}
+        {/* Nutrition. The weekly nutrition check-in is now folded into the single
+            "This week" check-in above, so this section is just the read-only
+            plan viewer. */}
         <div className="mb-10">
           <SectionLabel icon={Salad} text="Nutrition" />
             {activeNutritionPlan ? (
               <div className="space-y-3">
-                {nutritionReviewedThisWeek ? (
-                  <div className="rounded-2xl border border-blue-200 bg-blue-50 p-5">
-                    <div className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-full bg-[#1B6DFC] flex items-center justify-center flex-shrink-0">
-                        <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-[#1B6DFC]">Nutrition check-in submitted</p>
-                        <p className="text-xs text-[#999999] mt-0.5">Your coach will review shortly.</p>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <Link
-                    href={`/portal/${token}/nutrition`}
-                    className="block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm font-semibold text-[#1A1A1A] mb-1">Weekly nutrition check-in</p>
-                        <p className="text-xs text-[#6B6B6B]">How are you going with your plan?</p>
-                      </div>
-                      <span className="text-xs font-bold text-[#1B6DFC] ml-4">Start →</span>
-                    </div>
-                  </Link>
-                )}
                 <Link
                   href={`/portal/${token}/my-plan`}
                   className="block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF]/50 p-4 hover:border-[#E5E5E5] transition-colors"
