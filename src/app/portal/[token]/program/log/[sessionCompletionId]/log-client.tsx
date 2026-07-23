@@ -108,6 +108,9 @@ type SetState = {
   saved: boolean
   saving: boolean
   error: string | null
+  /** weight/reps were pre-filled from last time and not yet confirmed/edited —
+   *  shown muted so the client knows to tap ✓ or type over. */
+  prefilled: boolean
 }
 
 const ROW_KEY = (exerciseId: string, setNumber: number) => `${exerciseId}:${setNumber}`
@@ -132,17 +135,23 @@ export default function LogClient(props: Props) {
   const initialSets: Record<string, SetState> = {}
   for (const ex of props.exercises) {
     const setCount = ex.prescribed_sets ?? 0
+    const lastSets = props.lastTime?.[ex.prescribed_exercise_name]?.sets
     for (let n = 1; n <= setCount; n++) {
       const existing = props.initialSetLogs.find(
         s => s.session_exercise_completion_id === ex.id && s.set_number === n,
       )
+      // No log yet for this set? Pre-fill weight + reps from the matching set
+      // last time, so the client just taps ✓ to confirm or types over it.
+      const ltSet = existing == null ? lastSets?.[n - 1] : undefined
+      const prefilled = !!ltSet && (ltSet.weight != null || ltSet.reps != null)
       initialSets[ROW_KEY(ex.id, n)] = {
-        weight: existing?.weight_kg != null ? String(existing.weight_kg) : '',
-        reps: existing?.reps_completed != null ? String(existing.reps_completed) : '',
+        weight: existing?.weight_kg != null ? String(existing.weight_kg) : (ltSet?.weight != null ? String(ltSet.weight) : ''),
+        reps: existing?.reps_completed != null ? String(existing.reps_completed) : (ltSet?.reps != null ? String(ltSet.reps) : ''),
         rpe: existing?.rpe != null ? String(existing.rpe) : '',
         saved: existing != null,
         saving: false,
         error: null,
+        prefilled,
       }
     }
   }
@@ -211,7 +220,7 @@ export default function LogClient(props: Props) {
           setSetStates(prev => ({ ...prev, [key]: { ...prev[key], saving: false, error: data.error ?? 'Failed' } }))
           return
         }
-        setSetStates(prev => ({ ...prev, [key]: { ...prev[key], saving: false, saved: true, error: null } }))
+        setSetStates(prev => ({ ...prev, [key]: { ...prev[key], saving: false, saved: true, error: null, prefilled: false } }))
         // Committing a set kicks off the rest timer with this exercise's
         // prescribed rest, so the client doesn't have to start it manually.
         const ex = props.exercises.find(e => e.id === exerciseId)
@@ -419,8 +428,8 @@ export default function LogClient(props: Props) {
                       placeholder="kg"
                       value={s.weight}
                       disabled={isCompleted}
-                      onChange={e => setSetStates(prev => ({ ...prev, [key]: { ...prev[key], weight: e.target.value, saved: false } }))}
-                      className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-2 py-2.5 text-sm text-[#1A1A1A] text-center placeholder-[#999999] focus:outline-none focus:border-[#D4D4D4] tabular-nums"
+                      onChange={e => setSetStates(prev => ({ ...prev, [key]: { ...prev[key], weight: e.target.value, saved: false, prefilled: false } }))}
+                      className={`w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-2 py-2.5 text-sm text-center placeholder-[#999999] focus:outline-none focus:border-[#D4D4D4] tabular-nums ${s.prefilled ? 'text-[#B0B0B0]' : 'text-[#1A1A1A]'}`}
                     />
                     <input
                       type="number"
@@ -428,8 +437,8 @@ export default function LogClient(props: Props) {
                       placeholder="reps"
                       value={s.reps}
                       disabled={isCompleted}
-                      onChange={e => setSetStates(prev => ({ ...prev, [key]: { ...prev[key], reps: e.target.value, saved: false } }))}
-                      className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-2 py-2.5 text-sm text-[#1A1A1A] text-center placeholder-[#999999] focus:outline-none focus:border-[#D4D4D4] tabular-nums"
+                      onChange={e => setSetStates(prev => ({ ...prev, [key]: { ...prev[key], reps: e.target.value, saved: false, prefilled: false } }))}
+                      className={`w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-2 py-2.5 text-sm text-center placeholder-[#999999] focus:outline-none focus:border-[#D4D4D4] tabular-nums ${s.prefilled ? 'text-[#B0B0B0]' : 'text-[#1A1A1A]'}`}
                     />
                     <input
                       type="number"
