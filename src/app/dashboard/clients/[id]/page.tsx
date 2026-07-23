@@ -101,7 +101,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       .order('created_at', { ascending: false }),
     admin
       .from('programs')
-      .select('id, block_name, progression_phase, training_goal, training_frequency, week_duration, generated_at')
+      .select('id, block_name, progression_phase, training_goal, training_frequency, week_duration, generated_at, current_direction, pr_why_this_block')
       .eq('client_id', id)
       .eq('is_active', true)
       .maybeSingle(),
@@ -113,7 +113,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       .maybeSingle(),
     admin
       .from('nutrition_plans')
-      .select('id, plan_name, entry_state, carb_demand_level, generated_at, current_direction')
+      .select('id, plan_name, entry_state, carb_demand_level, generated_at, current_direction, nr_what_this_nutrition_is_doing')
       .eq('client_id', id)
       .eq('is_active', true)
       .maybeSingle(),
@@ -393,8 +393,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         />
       </div>
 
-      <ClientProfileTabs>
-      <div data-tab="overview">
+      {/* Always-visible cockpit: RRS chip + next-step + pending banner sit
+          above the tabs so key state shows on every tab. */}
 
       {/* RRS state chip - deep-links into /recovery where suggestions render */}
       {rrsChip && (
@@ -500,7 +500,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         )
       })()}
 
-      </div>
+      <ClientProfileTabs>
       <div data-tab="admin">
 
       {/* Deliberate Start Window */}
@@ -1660,6 +1660,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               <p className="text-xs text-[#999999]">
                 {activeProgram.training_frequency}x/week · {activeProgram.week_duration} weeks · Generated {formatDate(activeProgram.generated_at)}
               </p>
+              {activeProgram.pr_why_this_block && (
+                <p className="text-xs text-[#6B6B6B] mt-2 leading-relaxed line-clamp-3">{activeProgram.pr_why_this_block}</p>
+              )}
               <p className="text-xs text-[#1B6DFC] mt-2">View full program →</p>
             </Link>
           ) : !draftProgram ? (
@@ -1734,6 +1737,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 </div>
               </div>
               <p className="text-xs text-[#999999]">Generated {formatDate(activeNutritionPlan.generated_at)}</p>
+              {activeNutritionPlan.nr_what_this_nutrition_is_doing && (
+                <p className="text-xs text-[#6B6B6B] mt-2 leading-relaxed line-clamp-3">{activeNutritionPlan.nr_what_this_nutrition_is_doing}</p>
+              )}
               <p className="text-xs text-[#1B6DFC] mt-2">View full nutrition plan →</p>
             </Link>
           ) : !draftNutritionPlan ? (
