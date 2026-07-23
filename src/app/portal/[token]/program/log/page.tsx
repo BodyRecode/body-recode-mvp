@@ -187,7 +187,7 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
               >
                 <div className="flex items-center justify-between gap-3 mb-1">
                   <div className="min-w-0">
-                    <p className="text-sm font-bold text-[#1A1A1A] truncate">{s.day_label}{s.skeleton ? ` · ${s.skeleton}` : ''}</p>
+                    <p className="text-sm font-bold text-[#1A1A1A]">{s.day_label}{s.skeleton ? ` · ${s.skeleton}` : ''}</p>
                     <p className="text-xs text-[#6B6B6B]">{s.flatExercises.length} exercise{s.flatExercises.length === 1 ? '' : 's'}</p>
                   </div>
                   {completion?.status === 'completed' && (
