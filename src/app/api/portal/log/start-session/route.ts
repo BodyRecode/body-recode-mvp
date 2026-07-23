@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
     .ilike('email', user.email!)
     .single()
 
-  if (!client) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+  if (!client) return NextResponse.json({ error: 'Sign in to your own portal to log this session.' }, { status: 403 })
 
   const result = await startSession(admin, { clientId: client.id, sessionIndex, weekNumberInBlock })
   return NextResponse.json(result.body, { status: result.status })
