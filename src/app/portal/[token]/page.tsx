@@ -608,7 +608,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                       <p className="text-sm font-medium text-[#3A3A3A]">View your program</p>
                       <p className="text-xs text-[#999999] mt-0.5">{activeProgram.block_name}</p>
                     </div>
-                    <span className="text-xs text-[#999999] ml-4">→</span>
+                    <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
                   </div>
                 </Link>
               </div>
@@ -648,7 +648,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                       <p className="text-sm font-medium text-[#3A3A3A]">View your nutrition plan</p>
                       <p className="text-xs text-[#999999] mt-0.5">{activeNutritionPlan.plan_name}</p>
                     </div>
-                    <span className="text-xs text-[#999999] ml-4">→</span>
+                    <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
                   </div>
                 </Link>
               </div>
@@ -672,7 +672,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                 <p className="text-sm font-medium text-[#3A3A3A]">Measurements</p>
                 <p className="text-xs text-[#999999] mt-0.5">Track your bodyweight, waist, hips and chest over time.</p>
               </div>
-              <span className="text-xs text-[#999999] ml-4">→</span>
+              <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
             </div>
           </Link>
         </div>
@@ -689,7 +689,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                 <p className="text-sm font-medium text-[#3A3A3A]">Blood test results</p>
                 <p className="text-xs text-[#999999] mt-0.5">Have recent blood work? Upload a copy so your coach can factor it into your plan.</p>
               </div>
-              <span className="text-xs text-[#999999] ml-4">→</span>
+              <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
             </div>
           </Link>
         </div>
