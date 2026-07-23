@@ -74,6 +74,12 @@ interface Props {
   lastTime?: Record<string, { sets: Array<{ weight: number | null; reps: number | null }>; when: string | null }>
   /** Per-exercise-name: best prior estimated 1RM, for personal-record detection. */
   priorBest?: Record<string, number>
+  /** API base for the log write routes. Client portal uses the default;
+   *  the coach dashboard passes '/api/coach/log'. */
+  apiBase?: string
+  /** Where to go after "Mark session complete". Defaults to the client portal
+   *  log index; the coach passes their client's train index. */
+  completeHref?: string
 }
 
 /** "60 × 8, 60 × 8, 57.5 × 7" from a set list. */
@@ -110,6 +116,8 @@ export default function LogClient(props: Props) {
   const router = useRouter()
   const isCompleted = props.sessionStatus === 'completed'
   const restRef = useRef<RestTimerHandle>(null)
+  const apiBase = props.apiBase ?? '/api/portal/log'
+  const completeHref = props.completeHref ?? `/portal/${props.token}/program/log`
 
   // Personal-record tracking. Seed the running best per exercise from the
   // client's prior best (estimated 1RM). When a committed set beats it AND the
@@ -185,7 +193,7 @@ export default function LogClient(props: Props) {
       setSetStates(prev => ({ ...prev, [key]: { ...prev[key], saving: true, error: null } }))
 
       try {
-        const res = await fetch('/api/portal/log/set', {
+        const res = await fetch(`${apiBase}/set`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -237,7 +245,7 @@ export default function LogClient(props: Props) {
         }))
       }
     },
-    [setStates, props.token, props.clientId, props.exercises],
+    [setStates, props.token, props.clientId, props.exercises, apiBase],
   )
 
   /* ===========================================================
@@ -250,7 +258,7 @@ export default function LogClient(props: Props) {
       if (!e) return
       setExStates(prev => ({ ...prev, [exerciseId]: { ...prev[exerciseId], saving: true, error: null } }))
       try {
-        const res = await fetch('/api/portal/log/exercise', {
+        const res = await fetch(`${apiBase}/exercise`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -276,7 +284,7 @@ export default function LogClient(props: Props) {
         }))
       }
     },
-    [exStates, props.token, props.clientId],
+    [exStates, props.token, props.clientId, apiBase],
   )
 
   /* ===========================================================
@@ -287,7 +295,7 @@ export default function LogClient(props: Props) {
     setCompleting(true)
     setCompleteError('')
     try {
-      const res = await fetch('/api/portal/log/complete-session', {
+      const res = await fetch(`${apiBase}/complete-session`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -303,7 +311,7 @@ export default function LogClient(props: Props) {
         setCompleting(false)
         return
       }
-      router.push(`/portal/${props.token}/program/log`)
+      router.push(completeHref)
       router.refresh()
     } catch (err) {
       setCompleteError(err instanceof Error ? err.message : 'Network error')

@@ -13,6 +13,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
+import { upsertSet } from '@/lib/workout-log-write'
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
@@ -44,24 +45,7 @@ export async function POST(req: NextRequest) {
 
   const admin = createAdminClient()
 
-  // Verify this exercise completion belongs to this client (token-scoped)
-  const { data: ownership } = await admin
-    .from('session_exercise_completions')
-    .select('id, session_completion_id, session_completions!inner(client_id, status)')
-    .eq('id', sessionExerciseCompletionId)
-    .single()
-
-  if (!ownership) return NextResponse.json({ error: 'Not found' }, { status: 404 })
-
-  const sessionRow = (ownership.session_completions as unknown) as { client_id: string; status: string }
-  if (sessionRow.client_id !== clientId) {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-  }
-  if (sessionRow.status === 'completed') {
-    return NextResponse.json({ error: 'Session already completed - cannot edit' }, { status: 409 })
-  }
-
-  // Confirm the client's identity matches the token
+  // Confirm the client's identity matches the token (portal identity bind).
   const { data: client } = await admin
     .from('clients')
     .select('id')
@@ -71,25 +55,13 @@ export async function POST(req: NextRequest) {
     .single()
   if (!client) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
-  // Upsert the set log
-  const { error } = await admin
-    .from('exercise_set_logs')
-    .upsert(
-      {
-        session_exercise_completion_id: sessionExerciseCompletionId,
-        set_number: setNumber,
-        weight_kg: weightKg ?? null,
-        reps_completed: repsCompleted ?? null,
-        rpe: rpe ?? null,
-        logged_at: new Date().toISOString(),
-      },
-      { onConflict: 'session_exercise_completion_id,set_number' },
-    )
-
-  if (error) {
-    console.error('[log-set] upsert failed:', error)
-    return NextResponse.json({ error: 'Failed to log set' }, { status: 500 })
-  }
-
-  return NextResponse.json({ ok: true })
+  const result = await upsertSet(admin, {
+    clientId: client.id,
+    sessionExerciseCompletionId,
+    setNumber,
+    weightKg,
+    repsCompleted,
+    rpe,
+  })
+  return NextResponse.json(result.body, { status: result.status })
 }

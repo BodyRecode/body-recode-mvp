@@ -13,6 +13,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
+import { completeSession } from '@/lib/workout-log-write'
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
@@ -33,16 +34,6 @@ export async function POST(req: NextRequest) {
 
   const admin = createAdminClient()
 
-  // Verify ownership
-  const { data: session } = await admin
-    .from('session_completions')
-    .select('id, client_id, status')
-    .eq('id', sessionCompletionId)
-    .single()
-
-  if (!session) return NextResponse.json({ error: 'Not found' }, { status: 404 })
-  if (session.client_id !== clientId) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-
   const { data: client } = await admin
     .from('clients')
     .select('id')
@@ -52,23 +43,6 @@ export async function POST(req: NextRequest) {
     .single()
   if (!client) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
-  if (session.status === 'completed') {
-    return NextResponse.json({ ok: true, alreadyCompleted: true })
-  }
-
-  const { error } = await admin
-    .from('session_completions')
-    .update({
-      status: 'completed',
-      completed_at: new Date().toISOString(),
-      session_notes: sessionNotes ?? null,
-    })
-    .eq('id', sessionCompletionId)
-
-  if (error) {
-    console.error('[complete-session] update failed:', error)
-    return NextResponse.json({ error: 'Failed to complete session' }, { status: 500 })
-  }
-
-  return NextResponse.json({ ok: true })
+  const result = await completeSession(admin, { clientId: client.id, sessionCompletionId, sessionNotes })
+  return NextResponse.json(result.body, { status: result.status })
 }

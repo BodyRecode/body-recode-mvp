@@ -1223,6 +1223,20 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           {/* Block progress + workout logging (Phase A) */}
           <BlockProgressPanel data={blockProgress} />
 
+          {/* Coach-side logging: log a session for this client (e.g. in-person).
+              Writes to the same tables as the client portal logger. */}
+          {activeProgram && (
+            <div className="mt-3">
+              <Link
+                href={`/dashboard/clients/${id}/train`}
+                className="inline-flex items-center gap-2 rounded-xl bg-[#1B6DFC] px-4 py-2.5 text-sm font-bold text-white hover:bg-[#5390FF] transition-colors"
+              >
+                Log a session →
+              </Link>
+              <p className="mt-1.5 text-xs text-[#999999]">Log a workout on {(client.name ?? 'the client').split(' ')[0]}&apos;s behalf when you train them in person. It appears in their portal too.</p>
+            </div>
+          )}
+
           {/* Recovery Router (Phase 2 / observe-only) */}
           <RecoveryRouterPanel snapshot={recoverySnapshot} mode={recoveryMode} />
 

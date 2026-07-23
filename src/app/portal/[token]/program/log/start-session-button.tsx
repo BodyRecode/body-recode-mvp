@@ -20,6 +20,12 @@ interface Props {
   existingCompletionId: string | null
   status: string | null
   variant: 'primary' | 'secondary'
+  /** POST target for start-session. Default is the client portal route;
+   *  the coach dashboard passes '/api/coach/log/start-session'. */
+  startEndpoint?: string
+  /** Base path the session id is appended to for navigation. Default is the
+   *  client portal log; the coach passes '/dashboard/clients/{id}/train'. */
+  logHrefBase?: string
 }
 
 export default function StartSessionButton(props: Props) {
@@ -32,16 +38,19 @@ export default function StartSessionButton(props: Props) {
 
   const label = isCompleted ? 'View logged session' : isInProgress ? 'Resume' : 'Start logging'
 
+  const startEndpoint = props.startEndpoint ?? '/api/portal/log/start-session'
+  const logHrefBase = props.logHrefBase ?? `/portal/${props.token}/program/log`
+
   async function handleClick() {
     setLoading(true)
     setError('')
     try {
       // If the session is already created, just navigate
       if (props.existingCompletionId) {
-        router.push(`/portal/${props.token}/program/log/${props.existingCompletionId}`)
+        router.push(`${logHrefBase}/${props.existingCompletionId}`)
         return
       }
-      const res = await fetch('/api/portal/log/start-session', {
+      const res = await fetch(startEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -56,7 +65,7 @@ export default function StartSessionButton(props: Props) {
         setError(data.error ?? 'Could not start session')
         return
       }
-      router.push(`/portal/${props.token}/program/log/${data.sessionCompletionId}`)
+      router.push(`${logHrefBase}/${data.sessionCompletionId}`)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Network error')
     } finally {

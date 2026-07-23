@@ -1,12 +1,7 @@
 /**
- * POST /api/portal/log/exercise
- *
- * Update exercise-level metadata: substitution and per-exercise notes.
- *
- * Body:
- *   { token: string, clientId: string, sessionExerciseCompletionId: string,
- *     substituted?: boolean, substitutedExerciseName?: string,
- *     substitutionReason?: string, exerciseNotes?: string }
+ * POST /api/coach/log/exercise — coach-side twin of /api/portal/log/exercise.
+ * Auth = dashboard session cookie. Body: { clientId, sessionExerciseCompletionId,
+ * substituted?, substitutedExerciseName?, substitutionReason?, exerciseNotes? }.
  */
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -21,7 +16,6 @@ export async function POST(req: NextRequest) {
 
   const body = await req.json()
   const {
-    token,
     clientId,
     sessionExerciseCompletionId,
     substituted,
@@ -29,7 +23,6 @@ export async function POST(req: NextRequest) {
     substitutionReason,
     exerciseNotes,
   } = body as {
-    token?: string
     clientId?: string
     sessionExerciseCompletionId?: string
     substituted?: boolean
@@ -38,23 +31,13 @@ export async function POST(req: NextRequest) {
     exerciseNotes?: string | null
   }
 
-  if (!token || !clientId || !sessionExerciseCompletionId) {
+  if (!clientId || !sessionExerciseCompletionId) {
     return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
   }
 
   const admin = createAdminClient()
-
-  const { data: client } = await admin
-    .from('clients')
-    .select('id')
-    .eq('id', clientId)
-    .eq('onboarding_token', token)
-    .ilike('email', user.email!)
-    .single()
-  if (!client) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-
   const result = await updateExercise(admin, {
-    clientId: client.id,
+    clientId,
     sessionExerciseCompletionId,
     substituted,
     substitutedExerciseName,
