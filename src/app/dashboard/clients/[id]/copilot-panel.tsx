@@ -5,17 +5,44 @@ import { usePathname } from 'next/navigation'
 import { CopilotStarters } from '@/components/copilot-starters'
 import { clientStarterCategories } from '@/lib/copilot-starter-questions'
 
-type Msg = { id: string | null; role: 'user' | 'assistant'; content: string; flagged: boolean; followups?: string[] }
+// A proposed training-program generation spec (Phase 2 "draft with me"). The
+// co-pilot derives it from the read-only suggest-prescription engine (the vetted
+// doctrine input-deriver), the coach reviews it, and only an explicit "Generate"
+// click fires the real generator. Nothing is ever auto-published to a client.
+type DraftSpec = {
+  block_name: string
+  progression_phase: string
+  training_goal: string
+  training_frequency: number
+  training_age: string
+  movement_competency: string
+  week_duration: number
+  equipment_access: string[]
+  reasons: Record<string, string>
+}
+
+type Msg = {
+  id: string | null
+  role: 'user' | 'assistant'
+  content: string
+  flagged: boolean
+  followups?: string[]
+  /** Special assistant cards for the draft flow. Absent = plain text bubble. */
+  kind?: 'draft-proposal' | 'draft-done'
+  draft?: DraftSpec
+}
 
 const MONO = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
+
+const cap = (s: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s)
 
 // What the co-pilot can help with — shown in the persistent "What I can help
 // with" panel. Client-scoped variant.
 const CAPABILITIES: { title: string; body: string }[] = [
   { title: 'Explain this client’s read', body: 'Why they landed in this state or phase, and what’s driving it.' },
-  { title: 'Teach the doctrine', body: 'The rule behind the call, in plain terms.' },
+  { title: 'Review a generated plan', body: 'Check the program or nutrition against doctrine and flag what’s off.' },
   { title: 'Pressure-test your decision', body: '“Talk me out of progressing them.” “Should this be Restoration?”' },
-  { title: 'Draft coach guidance', body: 'A short, paste-ready steer for the plan or nutrition generator.' },
+  { title: 'Draft a training program', body: 'Propose a full generation spec you review and approve before it runs.' },
 ]
 
 export default function CopilotPanel({
@@ -39,15 +66,21 @@ export default function CopilotPanel({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [showHelp, setShowHelp] = useState(false)
+  // Draft flow: `proposing` = fetching the spec; `generatingIdx` = which
+  // proposal card is currently running the real generator.
+  const [proposing, setProposing] = useState(false)
+  const [generatingIdx, setGeneratingIdx] = useState<number | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
+
+  const busy = loading || proposing || generatingIdx !== null
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
-  }, [messages, loading])
+  }, [messages, loading, proposing, generatingIdx])
 
   async function send(text: string) {
     const q = text.trim()
-    if (!q || loading) return
+    if (!q || busy) return
     setError('')
     setInput('')
     setMessages(prev => [...prev, { id: null, role: 'user', content: q, flagged: false }])
@@ -74,6 +107,93 @@ export default function CopilotPanel({
     }
   }
 
+  // Step 1 (read-only): ask the vetted suggest-prescription engine for the
+  // doctrine-correct inputs, then show them as an editable proposal card.
+  async function proposeDraft() {
+    if (busy) return
+    setError('')
+    setMessages(prev => [...prev, { id: null, role: 'user', content: 'Draft a training program', flagged: false }])
+    setProposing(true)
+    try {
+      const res = await fetch('/api/suggest-prescription', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ client_id: clientId }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`)
+      const s = data.suggestion || {}
+      const spec: DraftSpec = {
+        block_name: `${cap(s.progression_phase ?? '')} · ${cap(s.training_goal ?? '')}`.trim(),
+        progression_phase: s.progression_phase ?? 'accumulation',
+        training_goal: s.training_goal ?? 'strength',
+        training_frequency: Number(s.training_frequency) || 3,
+        training_age: s.training_age ?? 'intermediate',
+        movement_competency: s.movement_competency ?? 'developing',
+        week_duration: Number(s.week_duration) || 4,
+        equipment_access: ['barbell', 'dumbbell', 'bodyweight'],
+        reasons: {
+          progression_phase: s.progression_phase_reason ?? '',
+          training_goal: s.training_goal_reason ?? '',
+          training_frequency: s.training_frequency_reason ?? '',
+          training_age: s.training_age_reason ?? '',
+          movement_competency: s.movement_competency_reason ?? '',
+          week_duration: s.week_duration_reason ?? '',
+        },
+      }
+      setMessages(prev => [...prev, { id: null, role: 'assistant', content: '', flagged: false, kind: 'draft-proposal', draft: spec }])
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not build a proposal')
+    } finally {
+      setProposing(false)
+    }
+  }
+
+  function updateDraft(idx: number, patch: Partial<DraftSpec>) {
+    setMessages(prev => prev.map((m, i) => (i === idx && m.draft ? { ...m, draft: { ...m.draft, ...patch } } : m)))
+  }
+
+  // Step 2 (mutation, explicit coach action): fire the real generator. Output is
+  // a DRAFT (status=draft, is_active=false) — it never reaches the client until
+  // the coach publishes it on the program page. All engine clamps still fire.
+  async function generateDraft(idx: number) {
+    const spec = messages[idx]?.draft
+    if (!spec || busy) return
+    if (!spec.block_name.trim()) { setError('Give the block a name first.'); return }
+    setError('')
+    setGeneratingIdx(idx)
+    try {
+      const res = await fetch('/api/generate-program', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          client_id: clientId,
+          plan_block_id: null,
+          preferred_training_days: [],
+          block_name: spec.block_name,
+          progression_phase: spec.progression_phase,
+          training_goal: spec.training_goal,
+          training_frequency: spec.training_frequency,
+          training_age: spec.training_age,
+          movement_competency: spec.movement_competency,
+          week_duration: spec.week_duration,
+          equipment_access: spec.equipment_access,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Generation failed')
+      setMessages(prev => prev.map((m, i) => (i === idx ? { ...m, kind: 'draft-done' } : m)))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Generation failed')
+    } finally {
+      setGeneratingIdx(null)
+    }
+  }
+
+  function dismissProposal(idx: number) {
+    setMessages(prev => prev.filter((_, i) => i !== idx))
+  }
+
   async function toggleFlag(idx: number) {
     const m = messages[idx]
     if (!m.id) return
@@ -98,7 +218,7 @@ export default function CopilotPanel({
         <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest" style={{ fontFamily: MONO, letterSpacing: '0.14em' }}>
           Co-Pilot · Doctrine tutor
         </p>
-        <span className="ml-auto text-[10px] text-[#999999]" style={{ fontFamily: MONO }}>read-only · coach only</span>
+        <span className="ml-auto text-[10px] text-[#999999]" style={{ fontFamily: MONO }}>coach only · you approve every change</span>
         {onClose && (
           <button onClick={onClose} aria-label="Close co-pilot" className="text-[#999999] hover:text-[#1A1A1A] text-lg leading-none -my-1">✕</button>
         )}
@@ -131,37 +251,117 @@ export default function CopilotPanel({
                 </div>
               ))}
             </div>
-            <p className="text-[12.5px] text-[#8A8A8E] leading-relaxed">I read {clientFirstName}’s file to answer. I never change a plan myself, and nothing I say reaches the client.</p>
+            <p className="text-[12.5px] text-[#8A8A8E] leading-relaxed">I read {clientFirstName}’s file to answer. I never publish anything to the client, and any plan I draft is a draft you review and approve.</p>
           </div>
         )}
         {!showHelp && messages.length === 0 && (
           <div className="text-sm text-[#6B6B6B]">
-            <p className="mb-3">Ask about {clientFirstName} and the doctrine behind their read. It explains and pressure-tests, grounded in their file. It doesn&apos;t change plans. Pick a category to see the questions worth asking here.</p>
+            <p className="mb-3">Ask about {clientFirstName} and the doctrine behind their read. It explains, pressure-tests, and reviews plans, grounded in their file. It can also draft a program for you to approve. Pick a category to see the questions worth asking here.</p>
             <CopilotStarters categories={clientStarterCategories(pathname, clientFirstName)} onPick={send} />
           </div>
         )}
 
-        {messages.map((m, i) => (
-          <div key={i} className={m.role === 'user' ? 'flex justify-end' : ''}>
-            <div className={m.role === 'user'
-              ? 'max-w-[85%] bg-[#1B6DFC] text-white rounded-2xl rounded-br-sm px-4 py-2.5 text-sm leading-relaxed'
-              : 'max-w-[92%] bg-[#F5F3EE] text-[#1A1A1A] rounded-2xl rounded-bl-sm px-4 py-3 text-sm leading-relaxed'}>
-              <p className="whitespace-pre-wrap">{m.content}</p>
-              {m.role === 'assistant' && m.id && (
-                <button
-                  onClick={() => toggleFlag(i)}
-                  title={m.flagged ? 'Flagged for review — click to unflag' : 'Flag this answer for review'}
-                  className={`mt-2 inline-flex items-center gap-1 text-[11px] ${m.flagged ? 'text-amber-700 font-semibold' : 'text-[#999999] hover:text-[#6B6B6B]'} transition-colors`}
-                >
-                  👎 {m.flagged ? 'Flagged for review' : 'Flag'}
-                </button>
-              )}
-            </div>
-          </div>
-        ))}
+        {messages.map((m, i) => {
+          // Draft proposal card — the coach reviews the spec and approves.
+          if (m.role === 'assistant' && m.kind === 'draft-proposal' && m.draft) {
+            const d = m.draft
+            const gen = generatingIdx === i
+            const rows: [string, string, string][] = [
+              ['Phase', cap(d.progression_phase), d.reasons.progression_phase],
+              ['Goal', cap(d.training_goal), d.reasons.training_goal],
+              ['Frequency', `${d.training_frequency}x/week`, d.reasons.training_frequency],
+              ['Duration', `${d.week_duration} weeks`, d.reasons.week_duration],
+              ['Training age', cap(d.training_age), d.reasons.training_age],
+              ['Movement competency', cap(d.movement_competency), d.reasons.movement_competency],
+            ]
+            return (
+              <div key={i} className="border border-[#B5CFFC] bg-[rgba(27,109,252,0.04)] rounded-2xl px-4 py-3.5">
+                <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-2.5" style={{ fontFamily: MONO }}>Proposed program draft</p>
+                <label className="block text-[11px] font-bold text-[#6B6B6B] uppercase tracking-wider mb-1">Block name</label>
+                <input
+                  value={d.block_name}
+                  onChange={e => updateDraft(i, { block_name: e.target.value })}
+                  disabled={gen}
+                  className="w-full text-sm border border-[#CBD9F2] rounded-lg px-2.5 py-1.5 mb-3 bg-white focus:outline-none focus:border-[#1B6DFC] disabled:opacity-60"
+                />
+                <div className="space-y-2 mb-3">
+                  {rows.map(([label, val, reason]) => (
+                    <div key={label}>
+                      <div className="flex items-baseline justify-between gap-3">
+                        <span className="text-[12px] text-[#6B6B6B]">{label}</span>
+                        <span className="text-[13px] font-semibold text-[#1A1A1A] text-right">{val}</span>
+                      </div>
+                      {reason && <p className="text-[11.5px] text-[#8A8A8E] leading-snug mt-0.5">{reason}</p>}
+                    </div>
+                  ))}
+                </div>
+                <p className="text-[11.5px] text-[#8A8A8E] leading-snug mb-3">Equipment defaults to barbell, dumbbell, bodyweight. Change it on the full generator if this client differs. Generating creates a <strong>draft</strong> only. Nothing reaches {clientFirstName} until you publish it.</p>
+                {gen ? (
+                  <div className="flex items-center gap-2 text-[13px] text-[#1B6DFC]">
+                    <span className="w-2 h-2 rounded-full bg-[#1B6DFC] animate-bounce motion-reduce:animate-none" />
+                    Generating the draft. This takes 1 to 2 minutes, keep the panel open.
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => generateDraft(i)}
+                      disabled={busy}
+                      className="text-[13px] font-semibold px-3.5 py-1.5 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1558d6] transition-colors disabled:opacity-40"
+                    >
+                      Generate this draft
+                    </button>
+                    <button
+                      onClick={() => dismissProposal(i)}
+                      disabled={busy}
+                      className="text-[13px] px-3 py-1.5 text-[#6B6B6B] hover:text-[#1A1A1A] transition-colors disabled:opacity-40"
+                    >
+                      Dismiss
+                    </button>
+                  </div>
+                )}
+              </div>
+            )
+          }
 
-        {loading && (
-          <div className="bg-[#F5F3EE] rounded-2xl rounded-bl-sm px-4 py-3 inline-flex items-center gap-1.5 w-fit" aria-label="Co-pilot is typing">
+          // Draft created — link the coach to the program page to review + publish.
+          if (m.role === 'assistant' && m.kind === 'draft-done' && m.draft) {
+            return (
+              <div key={i} className="border border-[#BBE3C8] bg-[rgba(34,160,84,0.06)] rounded-2xl px-4 py-3.5">
+                <p className="text-[13px] font-semibold text-[#1A1A1A] mb-1">Draft created: {m.draft.block_name}</p>
+                <p className="text-[12.5px] text-[#6B6B6B] leading-relaxed mb-2.5">It’s saved as a draft (not live). Open the program page to review every session, edit if needed, and publish when you’re happy.</p>
+                <a
+                  href={`/dashboard/clients/${clientId}/program`}
+                  className="inline-block text-[13px] font-semibold px-3.5 py-1.5 bg-[#1A1A1A] text-white rounded-lg hover:bg-black transition-colors"
+                >
+                  Review the draft
+                </a>
+              </div>
+            )
+          }
+
+          // Plain text bubble (default).
+          return (
+            <div key={i} className={m.role === 'user' ? 'flex justify-end' : ''}>
+              <div className={m.role === 'user'
+                ? 'max-w-[85%] bg-[#1B6DFC] text-white rounded-2xl rounded-br-sm px-4 py-2.5 text-sm leading-relaxed'
+                : 'max-w-[92%] bg-[#F5F3EE] text-[#1A1A1A] rounded-2xl rounded-bl-sm px-4 py-3 text-sm leading-relaxed'}>
+                <p className="whitespace-pre-wrap">{m.content}</p>
+                {m.role === 'assistant' && m.id && (
+                  <button
+                    onClick={() => toggleFlag(i)}
+                    title={m.flagged ? 'Flagged for review — click to unflag' : 'Flag this answer for review'}
+                    className={`mt-2 inline-flex items-center gap-1 text-[11px] ${m.flagged ? 'text-amber-700 font-semibold' : 'text-[#999999] hover:text-[#6B6B6B]'} transition-colors`}
+                  >
+                    👎 {m.flagged ? 'Flagged for review' : 'Flag'}
+                  </button>
+                )}
+              </div>
+            </div>
+          )
+        })}
+
+        {(loading || proposing) && (
+          <div className="bg-[#F5F3EE] rounded-2xl rounded-bl-sm px-4 py-3 inline-flex items-center gap-1.5 w-fit" aria-label="Co-pilot is working">
             <span className="w-2 h-2 rounded-full bg-[#9AA3AF] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '0ms' }} />
             <span className="w-2 h-2 rounded-full bg-[#9AA3AF] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '150ms' }} />
             <span className="w-2 h-2 rounded-full bg-[#9AA3AF] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '300ms' }} />
@@ -169,7 +369,7 @@ export default function CopilotPanel({
         )}
 
         {/* Suggested follow-ups under the latest answer — tap to continue or steer. */}
-        {!loading && (() => {
+        {!busy && (() => {
           const last = messages[messages.length - 1]
           if (!last || last.role !== 'assistant' || !last.followups?.length) return null
           return (
@@ -193,7 +393,18 @@ export default function CopilotPanel({
         )}
       </div>
 
-      <div className="border-t border-[#E5E5E5] p-3">
+      {/* Draft-a-program quick action — the Phase 2 entry point. */}
+      <div className="px-3 pt-2 shrink-0">
+        <button
+          onClick={proposeDraft}
+          disabled={busy}
+          className="w-full text-[13px] font-medium px-3 py-2 border border-[#B5CFFC] text-[#1B6DFC] rounded-xl hover:bg-[rgba(27,109,252,0.05)] transition-colors disabled:opacity-40"
+        >
+          ＋ Draft a training program
+        </button>
+      </div>
+
+      <div className="border-t border-[#E5E5E5] p-3 mt-2">
         <form
           onSubmit={e => { e.preventDefault(); send(input) }}
           className="flex items-end gap-2"
@@ -208,7 +419,7 @@ export default function CopilotPanel({
           />
           <button
             type="submit"
-            disabled={loading || !input.trim()}
+            disabled={busy || !input.trim()}
             className="text-sm font-medium px-4 py-2 bg-[#1B6DFC] text-white rounded-xl hover:bg-[#1558d6] transition-colors disabled:opacity-40"
           >
             Ask
