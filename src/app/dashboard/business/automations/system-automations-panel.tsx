@@ -259,6 +259,13 @@ const AUTOMATIC_AUTOMATIONS = [
     steps: 1,
   },
   {
+    id: 'greg-session-reminder',
+    name: 'In-Person Session Reminder (30 min before) — Greg',
+    description: 'Standing SMS 30 minutes before Greg\'s fixed weekly in-person sessions with Kade (Mon 2pm, Wed 2pm, Fri 9am Brisbane). Fires at Mon/Wed 1:30pm and Fri 8:30am via two Vercel crons on one path. One-way "BodyRecode" sender, no reply CTA. Phone fetched fresh at runtime by client id, with a 25-minute dedup guard so a double fire never texts twice. Unlike the day-before Session Reminder (email, driven by client_sessions rows), this is a per-client standing schedule driven off the clock — Greg has no session rows.',
+    trigger: 'Vercel cron (Mon/Wed 1:30pm + Fri 8:30am Brisbane)',
+    steps: 1,
+  },
+  {
     id: 'coaching-start-reminder',
     name: 'Coaching Start Reminder',
     description: 'Daily cron. Sent to a client whose coaching_started_at is tomorrow.',
