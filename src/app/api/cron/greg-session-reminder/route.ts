@@ -42,6 +42,8 @@ const GREG_CLIENT_ID = '027cabc0-42ef-4b1e-b9b7-c7827ba113e1'
 const GREG_PROFILE = `Greg is no-nonsense and doesn't like to stuff around, so keep it short and get straight to the point.
 He likes a laugh though, so a bit of light, easy humour lands well (never forced or corny).
 He's not chasing numbers in the gym. He trains to feel good and to get some balance against a stressful project he's building: a golf simulator. An occasional, natural nod to the golf sim, or to stepping away from a stressful build, works nicely, but don't force it into every message.
+The deeper why: he works hard and often gets mentally drained to the point of feeling fried and over it. These three sessions matter because they're HIS - a reset and some headspace, an hour that's just for him away from the pressure. Lean into that framing when it fits: this is your time, your reset, one thing today that's just for you, step away and come back clearer.
+Keep it light, warm and affirming. Do NOT name stress, burnout, mental health, or how he might be feeling directly, and never sound like therapy or a wellness app. Just quietly make the session feel like the good, restoring part of his day.
 Keep the energy relaxed and human, not intense or hype.`
 
 // Coach-approved line used verbatim if AI generation fails or looks off, so a
