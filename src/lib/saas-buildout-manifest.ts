@@ -717,7 +717,7 @@ export const PHASES: Phase[] = [
       'Reframed 2026-07-12 to DOCTRINE TUTOR FIRST, drafting second. The engine already drafts plans one-shot; the unique value of a conversation is teaching and alignment ("why is she in Remediation? talk me out of progressing him"). That is what lets a good-but-not-Kade coach reach Kade-level decisions — the literal white-label thesis of "a collective of coaches practising to one standard". So the tutor is the moat; drafting/refining are bonuses layered on once trust is earned.',
       'Built ON TOP of what already exists: doctrine prompt builders + canon (its brain), the hardened generators (its hands for drafting), the rationale_summary "At a glance" cards from 2026-07-11 (compact per-client context, so it never re-reads the raw 221-q firehose), and the draft→review→publish + archive flow (its approval + audit rail).',
       'Lives in the dashboard app (= the SaaS foundation), coach-scoped from day one — build once, rides into white-label with no rebuild. Trust mechanisms: it cites the data it draws on, and a thumbs-down "flag for review" loop catches mistakes + doctrine drift (reviewer = Kade now; per-practice lead coach at white-label time).',
-      'Design doc: 06_SAAS_PLATFORM_BUILD/02_FEATURE_SPECS/2026-07-12_Coach_Copilot_Conversational_Build_Design.md (v0.2). Phase 1 tutor shipped (global on every page); 2026-07-24 added Plan Review (doctrine-critique of the actual generated plan) + advisory plan-generation setup + the flagged-exchanges review page. Remaining: the data-mutating phases (co-pilot calls the generator as a tool; surgical in-place edits) — deferred until they can be click-tested alongside Kade.',
+      'Design doc: 06_SAAS_PLATFORM_BUILD/02_FEATURE_SPECS/2026-07-12_Coach_Copilot_Conversational_Build_Design.md (v0.2). Phase 1 tutor shipped (global on every page); 2026-07-24 added Plan Review (doctrine-critique of the actual generated plan), advisory plan-generation setup, the flagged-exchanges review page, and Phase 2 draft-a-program (confirm-first: co-pilot proposes a spec via read-only suggest-prescription, coach approves, generator saves a draft). Remaining: Phase 3 surgical in-place edits and Phase 4 broaden. Kade to click-test the Phase 2 draft loop.',
     ],
     order: 5,
     steps: [
@@ -744,12 +744,14 @@ export const PHASES: Phase[] = [
       },
       {
         id: 'copilot-draft',
-        title: 'Phase 2 — Draft with me (co-pilot calls the generator)',
-        description: 'Chat can propose an artefact (start with the training program) by calling the existing generators as tools; output is a draft the coach reviews, never auto-saved or client-sent. All doctrine guardrails still fire because it routes through the engine.',
-        status: 'planned',
+        title: 'Phase 2 — Draft with me (training program)',
+        description: 'The client-scoped co-pilot drafts a training program, confirm-first. "＋ Draft a training program" proposes a full generation spec the coach reviews; an explicit Generate click fires the engine and saves a DRAFT (never auto-published). All doctrine guardrails fire because it routes through the existing generator.',
+        status: 'shipped',
+        shippedAt: '2026-07-24',
         effort: 'M',
         blockedBy: 'copilot-review',
-        notes: 'First drafting target = training program. The ADVISORY half shipped 2026-07-24 (tutor recommends the generation setup; coach clicks Generate). This step is now specifically the DATA-MUTATING half: the co-pilot triggers the generate itself. Deferred until it can be click-tested alongside Kade (auth-gated; mutates live client drafts) — do not ship unattended.',
+        surfaces: ['src/app/dashboard/clients/[id]/copilot-panel.tsx (draft-proposal + draft-done cards, proposeDraft/generateDraft)', 'reuses /api/suggest-prescription (read-only input-deriver) + /api/generate-program (existing clamps)', 'src/lib/copilot-prompt.ts (points coach to the draft button)'],
+        notes: 'Shipped confirm-first + safe: propose = read-only suggest-prescription (the vetted doctrine input-deriver, so no LLM-guessed client facts); generate = existing /api/generate-program which saves status=draft, is_active=false. Equipment defaults to barbell/dumbbell/bodyweight (matches the form default); block name is coach-editable in the card. No new API route, no autonomous mutation. NOT yet click-tested by Claude (auth-gated) — Kade verifies the full propose→generate→review loop on a real client. Nutrition drafting in-panel not yet built.',
       },
       {
         id: 'copilot-refine',

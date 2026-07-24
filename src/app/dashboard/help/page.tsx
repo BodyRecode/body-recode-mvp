@@ -383,6 +383,7 @@ export default function HelpPage() {
               { label: 'Review a generated plan', desc: '"Review his program against the doctrine." It reads the actual sessions and macros and flags what is off: intensity in a Restoration block, a gate breach, a calorie target hiding in the training plan, a meal count fighting appetite suppression. Says what is sound too.' },
               { label: 'Set up a generation', desc: '"What do I put in these fields to generate his program?" It recommends each field value plus a coach-guidance steer, grounded in that client. You still click Generate (you are the approver); then bring the draft back and ask it to review.' },
               { label: 'Draft coach guidance', desc: 'Ask it to write the short steer for the program or nutrition generator. It produces a paste-ready directive.' },
+              { label: 'Draft a training program', desc: 'Tap "＋ Draft a training program" in the client\'s co-pilot panel. It proposes a full generation spec (phase, goal, frequency, duration, training age, competency), each with a reason, using the same doctrine engine the Suggest flow uses. You review and edit the block name, then tap Generate. It saves a DRAFT only. Nothing reaches the client until you publish it on the program page.' },
             ]} />
 
             <p className="font-semibold text-[#1A1A1A] mt-4">The feedback loop</p>
@@ -390,7 +391,7 @@ export default function HelpPage() {
 
             <p className="font-semibold text-[#1A1A1A] mt-4">What it will NOT do</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm mt-1">
-              <li>It does not build or change a plan itself. It advises; you make the change via Generate / the editors, and you approve everything.</li>
+              <li>It never changes a live plan on its own. It can draft a training program, but only a draft, and only when you tap Generate. Nutrition and edits still go through the generators / editors, and you approve and publish everything.</li>
               <li>It is not a general assistant. It is scoped to coaching, the doctrine, and the client in front of you (not marketing, content, or ops).</li>
               <li>It never invents facts. If the data is not in the file, it says so.</li>
             </ul>
