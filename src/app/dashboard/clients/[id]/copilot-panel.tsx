@@ -21,15 +21,21 @@ type DraftSpec = {
   reasons: Record<string, string>
 }
 
+// A proposed surgical edit to the draft (Phase 3). `operations` is an opaque
+// list of validated patch ops the server applies deterministically; `summary`
+// is the plain-English description the coach approves.
+type EditProposal = { operations: unknown[]; summary: string }
+
 type Msg = {
   id: string | null
   role: 'user' | 'assistant'
   content: string
   flagged: boolean
   followups?: string[]
-  /** Special assistant cards for the draft flow. Absent = plain text bubble. */
-  kind?: 'draft-proposal' | 'draft-done'
+  /** Special assistant cards for the draft + refine flows. Absent = text bubble. */
+  kind?: 'draft-proposal' | 'draft-done' | 'edit-proposal' | 'edit-done'
   draft?: DraftSpec
+  edit?: EditProposal
 }
 
 const MONO = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
@@ -70,13 +76,18 @@ export default function CopilotPanel({
   // proposal card is currently running the real generator.
   const [proposing, setProposing] = useState(false)
   const [generatingIdx, setGeneratingIdx] = useState<number | null>(null)
+  // Refine flow (Phase 3): `editMode` routes the composer to draft edits;
+  // `proposingEdit` = working out the patch; `applyingIdx` = card being saved.
+  const [editMode, setEditMode] = useState(false)
+  const [proposingEdit, setProposingEdit] = useState(false)
+  const [applyingIdx, setApplyingIdx] = useState<number | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  const busy = loading || proposing || generatingIdx !== null
+  const busy = loading || proposing || generatingIdx !== null || proposingEdit || applyingIdx !== null
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
-  }, [messages, loading, proposing, generatingIdx])
+  }, [messages, loading, proposing, generatingIdx, proposingEdit, applyingIdx])
 
   async function send(text: string) {
     const q = text.trim()
@@ -192,6 +203,60 @@ export default function CopilotPanel({
 
   function dismissProposal(idx: number) {
     setMessages(prev => prev.filter((_, i) => i !== idx))
+  }
+
+  // Phase 3 step 1 (read-only): ask the model for a minimal patch for one change.
+  async function proposeEdit(text: string) {
+    const instruction = text.trim()
+    if (!instruction || busy) return
+    setError('')
+    setInput('')
+    setMessages(prev => [...prev, { id: null, role: 'user', content: instruction, flagged: false }])
+    setProposingEdit(true)
+    try {
+      const res = await fetch(`/api/clients/${clientId}/copilot/edit-draft`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'propose', instruction }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`)
+      const operations: unknown[] = Array.isArray(data.operations) ? data.operations : []
+      const summary: string = typeof data.summary === 'string' ? data.summary : ''
+      if (operations.length === 0) {
+        // Ambiguous, unsupported, or refused on doctrine — show the reason, no Apply.
+        setMessages(prev => [...prev, { id: null, role: 'assistant', content: summary || 'I could not make that change. Try naming the exact exercise and what to change.', flagged: false }])
+      } else {
+        setMessages(prev => [...prev, { id: null, role: 'assistant', content: '', flagged: false, kind: 'edit-proposal', edit: { operations, summary } }])
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not work out the edit')
+    } finally {
+      setProposingEdit(false)
+    }
+  }
+
+  // Phase 3 step 2 (mutation, explicit coach action): apply the patch to the draft.
+  async function applyEdit(idx: number) {
+    const proposal = messages[idx]?.edit
+    if (!proposal || busy) return
+    setError('')
+    setApplyingIdx(idx)
+    try {
+      const res = await fetch(`/api/clients/${clientId}/copilot/edit-draft`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'apply', operations: proposal.operations }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Could not apply the change')
+      const applied: string[] = Array.isArray(data.applied) ? data.applied : []
+      setMessages(prev => prev.map((m, i) => (i === idx ? { ...m, kind: 'edit-done', content: applied.join(' ') } : m)))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not apply the change')
+    } finally {
+      setApplyingIdx(null)
+    }
   }
 
   async function toggleFlag(idx: number) {
@@ -339,6 +404,57 @@ export default function CopilotPanel({
             )
           }
 
+          // Surgical edit proposal — the coach approves one named change.
+          if (m.role === 'assistant' && m.kind === 'edit-proposal' && m.edit) {
+            const applying = applyingIdx === i
+            return (
+              <div key={i} className="border border-[#E7C9A0] bg-[rgba(180,120,20,0.05)] rounded-2xl px-4 py-3.5">
+                <p className="text-[10px] font-bold text-[#B4780E] uppercase tracking-widest mb-2" style={{ fontFamily: MONO }}>Proposed change</p>
+                <p className="text-[13px] text-[#1A1A1A] leading-relaxed mb-3 whitespace-pre-wrap">{m.edit.summary || 'Apply this change to the draft.'}</p>
+                <p className="text-[11.5px] text-[#8A8A8E] leading-snug mb-3">Only this changes. The rest of the draft stays exactly as it is, and it stays a draft until you publish it.</p>
+                {applying ? (
+                  <div className="flex items-center gap-2 text-[13px] text-[#B4780E]">
+                    <span className="w-2 h-2 rounded-full bg-[#B4780E] animate-bounce motion-reduce:animate-none" />
+                    Applying to the draft…
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => applyEdit(i)}
+                      disabled={busy}
+                      className="text-[13px] font-semibold px-3.5 py-1.5 bg-[#B4780E] text-white rounded-lg hover:bg-[#996408] transition-colors disabled:opacity-40"
+                    >
+                      Apply this change
+                    </button>
+                    <button
+                      onClick={() => dismissProposal(i)}
+                      disabled={busy}
+                      className="text-[13px] px-3 py-1.5 text-[#6B6B6B] hover:text-[#1A1A1A] transition-colors disabled:opacity-40"
+                    >
+                      Dismiss
+                    </button>
+                  </div>
+                )}
+              </div>
+            )
+          }
+
+          // Edit applied — confirm + link back to review the updated draft.
+          if (m.role === 'assistant' && m.kind === 'edit-done') {
+            return (
+              <div key={i} className="border border-[#BBE3C8] bg-[rgba(34,160,84,0.06)] rounded-2xl px-4 py-3.5">
+                <p className="text-[13px] font-semibold text-[#1A1A1A] mb-1">Change applied to the draft</p>
+                {m.content && <p className="text-[12.5px] text-[#6B6B6B] leading-relaxed mb-2.5">{m.content}</p>}
+                <a
+                  href={`/dashboard/clients/${clientId}/program`}
+                  className="inline-block text-[13px] font-semibold px-3.5 py-1.5 bg-[#1A1A1A] text-white rounded-lg hover:bg-black transition-colors"
+                >
+                  Review the draft
+                </a>
+              </div>
+            )
+          }
+
           // Plain text bubble (default).
           return (
             <div key={i} className={m.role === 'user' ? 'flex justify-end' : ''}>
@@ -360,7 +476,7 @@ export default function CopilotPanel({
           )
         })}
 
-        {(loading || proposing) && (
+        {(loading || proposing || proposingEdit) && (
           <div className="bg-[#F5F3EE] rounded-2xl rounded-bl-sm px-4 py-3 inline-flex items-center gap-1.5 w-fit" aria-label="Co-pilot is working">
             <span className="w-2 h-2 rounded-full bg-[#9AA3AF] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '0ms' }} />
             <span className="w-2 h-2 rounded-full bg-[#9AA3AF] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '150ms' }} />
@@ -393,36 +509,53 @@ export default function CopilotPanel({
         )}
       </div>
 
-      {/* Draft-a-program quick action — the Phase 2 entry point. */}
-      <div className="px-3 pt-2 shrink-0">
+      {/* Program actions — Phase 2 draft + Phase 3 refine entry points. */}
+      <div className="px-3 pt-2 shrink-0 flex gap-2">
         <button
-          onClick={proposeDraft}
+          onClick={() => { setEditMode(false); proposeDraft() }}
           disabled={busy}
-          className="w-full text-[13px] font-medium px-3 py-2 border border-[#B5CFFC] text-[#1B6DFC] rounded-xl hover:bg-[rgba(27,109,252,0.05)] transition-colors disabled:opacity-40"
+          className="flex-1 text-[13px] font-medium px-3 py-2 border border-[#B5CFFC] text-[#1B6DFC] rounded-xl hover:bg-[rgba(27,109,252,0.05)] transition-colors disabled:opacity-40"
         >
-          ＋ Draft a training program
+          ＋ Draft a program
+        </button>
+        <button
+          onClick={() => { setError(''); setEditMode(m => !m) }}
+          disabled={busy}
+          aria-pressed={editMode}
+          className={`flex-1 text-[13px] font-medium px-3 py-2 border rounded-xl transition-colors disabled:opacity-40 ${
+            editMode
+              ? 'border-[#E7C9A0] bg-[rgba(180,120,20,0.08)] text-[#B4780E]'
+              : 'border-[#E7C9A0] text-[#B4780E] hover:bg-[rgba(180,120,20,0.05)]'
+          }`}
+        >
+          ✎ Refine the draft
         </button>
       </div>
+      {editMode && (
+        <p className="px-4 pt-1.5 text-[11.5px] text-[#8A8A8E] leading-snug shrink-0">
+          Refine mode: describe one change to the draft program (e.g. “swap the barbell squat for a hip thrust”, “drop the bench to 3 sets”). I’ll show it before it’s applied.
+        </p>
+      )}
 
       <div className="border-t border-[#E5E5E5] p-3 mt-2">
         <form
-          onSubmit={e => { e.preventDefault(); send(input) }}
+          onSubmit={e => { e.preventDefault(); editMode ? proposeEdit(input) : send(input) }}
           className="flex items-end gap-2"
         >
           <textarea
             value={input}
             onChange={e => setInput(e.target.value)}
-            onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(input) } }}
-            placeholder={`Ask about ${clientFirstName}…`}
+            onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); editMode ? proposeEdit(input) : send(input) } }}
+            placeholder={editMode ? 'Describe one change to the draft…' : `Ask about ${clientFirstName}…`}
             rows={2}
-            className="flex-1 resize-none text-sm border border-[#E5E5E5] rounded-xl px-3 py-2 focus:outline-none focus:border-[#1B6DFC]"
+            className={`flex-1 resize-none text-sm border rounded-xl px-3 py-2 focus:outline-none ${editMode ? 'border-[#E7C9A0] focus:border-[#B4780E]' : 'border-[#E5E5E5] focus:border-[#1B6DFC]'}`}
           />
           <button
             type="submit"
             disabled={busy || !input.trim()}
-            className="text-sm font-medium px-4 py-2 bg-[#1B6DFC] text-white rounded-xl hover:bg-[#1558d6] transition-colors disabled:opacity-40"
+            className={`text-sm font-medium px-4 py-2 text-white rounded-xl transition-colors disabled:opacity-40 ${editMode ? 'bg-[#B4780E] hover:bg-[#996408]' : 'bg-[#1B6DFC] hover:bg-[#1558d6]'}`}
           >
-            Ask
+            {editMode ? 'Propose' : 'Ask'}
           </button>
         </form>
       </div>
