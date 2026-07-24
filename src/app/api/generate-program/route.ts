@@ -338,7 +338,7 @@ export async function POST(request: NextRequest) {
     programData.weekly_pattern_summary = Array.isArray(programData.weekly_pattern_summary)
       ? [doctrineNote, ...programData.weekly_pattern_summary]
       : [doctrineNote, ...(programData.weekly_pattern_summary ? [programData.weekly_pattern_summary] : [])]
-    console.log('[generate-program] Doctrine clamp:', { rpeClamps: clamp.rpeClamps, setsAdded: clamp.setsAdded, tier: effectiveTier, phase: phaseForDoctrine })
+    console.log('[generate-program] Doctrine clamp:', { rpeClamps: clamp.rpeClamps, setsAdded: clamp.setsAdded, setsTrimmed: clamp.setsTrimmed, tier: effectiveTier, phase: phaseForDoctrine })
   }
 
   // Recovery and Regulation clamp — runs AFTER training-doctrine clamp.

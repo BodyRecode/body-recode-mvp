@@ -277,16 +277,21 @@ Recovery spacing:
 ═══════════════════════════════════════
 VOLUME DISTRIBUTION RULES
 ═══════════════════════════════════════
-Session volume targets by goal:
+Session volume targets by goal (ACCUMULATION AND BEYOND — do NOT apply these in Restoration):
 - Strength: 10–16 total working sets
 - Hypertrophy: 14–22 total working sets
 - Capacity: 12–18 total working sets
 
-Block distribution (typical):
+Block distribution (typical, non-Restoration):
 - Block A — Primary compound: 3–5 sets
 - Block B — Secondary movement: 3–4 sets
 - Block C — Accessory: 2–4 sets
 - Block D — Trunk/conditioning: 2–3 sets
+
+RESTORATION VOLUME (authoritative in Restoration — this OVERRIDES the goal targets above):
+- Restoration suppresses ALL load variables. Govern total volume by the tier × Restoration working-sets range in TRAINING AGE MODULATION below, and bias to its FLOOR/MIN, not the target or top.
+- SPREAD, DON'T PILE. No single working-set movement gets more than 2–3 sets. Reach the session total with MORE distinct movements at low set counts (e.g. 3–4 working movements at 2–3 sets each), NEVER 2 movements at 4–5 sets. Piling sets onto one lift is the exact failure Restoration must avoid for a stressed, deconditioned, or Remediation client.
+- Preferred Restoration shape: one primary, one secondary, one to two accessories, plus trunk/stability — each at 2–3 sets — rather than a two-movement session with high set counts.
 
 Rules:
 - Reduce accessory volume when heavy compounds are present

@@ -224,6 +224,7 @@ interface ClampResult {
   sessions: Session[]
   rpeClamps: number
   setsAdded: number
+  setsTrimmed: number
   notes: string[]
 }
 
@@ -248,6 +249,7 @@ export function clampProgramToDoctrine(
   const notes: string[] = []
   let rpeClamps = 0
   let setsAdded = 0
+  let setsTrimmed = 0
 
   for (const session of cloned) {
     let workingSets = 0
@@ -275,9 +277,32 @@ export function clampProgramToDoctrine(
       }
     }
 
-    // Bump session sets up to the floor if short. Add to Primary first,
-    // then Secondary, then Capacity. Bias toward target, not minimum.
-    if (workingSets < range.target) {
+    if (workingSets > range.max) {
+      // Over the doctrine ceiling: trim toward target. This enforces the max
+      // the doctrine already defines but the clamp never applied (it only ever
+      // added sets). Remove from Accessory first, then Secondary, then Primary
+      // (protect the primary stimulus), and never drop a movement below 1 set.
+      let over = workingSets - range.target
+      for (const role of ['capacity', 'secondary', 'primary'] as const) {
+        if (over <= 0) break
+        for (const block of session.blocks ?? []) {
+          if (over <= 0) break
+          if (blockRole(block.block_label) !== role) continue
+          for (const ex of block.exercises ?? []) {
+            if (over <= 0) break
+            const cur = parseInt(String(ex.sets ?? 0)) || 0
+            if (cur <= 1) continue
+            const cut = Math.min(cur - 1, over)
+            ex.sets = cur - cut
+            over -= cut
+            setsTrimmed += cut
+          }
+        }
+      }
+      notes.push(`${session.day_label ?? 'session'}: trimmed working sets toward the ${phase} target of ${range.target} (was over the ${tier} ceiling of ${range.max}).`)
+    } else if (workingSets < range.target) {
+      // Bump session sets up to the floor if short. Add to Primary first,
+      // then Secondary, then Capacity. Bias toward target, not minimum.
       const need = range.target - workingSets
       let remaining = need
       for (const role of ['primary', 'secondary', 'capacity'] as const) {
@@ -306,5 +331,5 @@ export function clampProgramToDoctrine(
     notes.unshift(`${rpeClamps} RPE values adjusted to doctrine ceiling (${tier} ${phase}: primary ${ceilings.primary}, secondary ${ceilings.secondary}, capacity ${ceilings.capacity}).`)
   }
 
-  return { sessions: cloned, rpeClamps, setsAdded, notes }
+  return { sessions: cloned, rpeClamps, setsAdded, setsTrimmed, notes }
 }
