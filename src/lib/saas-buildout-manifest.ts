@@ -717,7 +717,7 @@ export const PHASES: Phase[] = [
       'Reframed 2026-07-12 to DOCTRINE TUTOR FIRST, drafting second. The engine already drafts plans one-shot; the unique value of a conversation is teaching and alignment ("why is she in Remediation? talk me out of progressing him"). That is what lets a good-but-not-Kade coach reach Kade-level decisions — the literal white-label thesis of "a collective of coaches practising to one standard". So the tutor is the moat; drafting/refining are bonuses layered on once trust is earned.',
       'Built ON TOP of what already exists: doctrine prompt builders + canon (its brain), the hardened generators (its hands for drafting), the rationale_summary "At a glance" cards from 2026-07-11 (compact per-client context, so it never re-reads the raw 221-q firehose), and the draft→review→publish + archive flow (its approval + audit rail).',
       'Lives in the dashboard app (= the SaaS foundation), coach-scoped from day one — build once, rides into white-label with no rebuild. Trust mechanisms: it cites the data it draws on, and a thumbs-down "flag for review" loop catches mistakes + doctrine drift (reviewer = Kade now; per-practice lead coach at white-label time).',
-      'Design doc: 06_SAAS_PLATFORM_BUILD/02_FEATURE_SPECS/2026-07-12_Coach_Copilot_Conversational_Build_Design.md (v0.2). Phase 1 tutor shipped (global on every page); 2026-07-24 added Plan Review (doctrine-critique of the actual generated plan), advisory plan-generation setup, the flagged-exchanges review page, and Phase 2 draft-a-program (confirm-first: co-pilot proposes a spec via read-only suggest-prescription, coach approves, generator saves a draft). Remaining: Phase 3 surgical in-place edits and Phase 4 broaden. Kade to click-test the Phase 2 draft loop.',
+      'Design doc: 06_SAAS_PLATFORM_BUILD/02_FEATURE_SPECS/2026-07-12_Coach_Copilot_Conversational_Build_Design.md (v0.2). Phase 1 tutor shipped (global on every page); 2026-07-24 added Plan Review (doctrine-critique of the actual generated plan), advisory plan-generation setup, the flagged-exchanges review page, and Phase 2 draft-a-program (confirm-first: co-pilot proposes a spec via read-only suggest-prescription, coach approves, generator saves a draft). 2026-07-24 also added Phase 3 surgical draft edits (confirm-first refine mode: model proposes a minimal patch, server applies it deterministically to a draft, unnamed parts untouched). Remaining: Phase 4 broaden; add/remove/reorder + whole-day edits + nutrition drafting not yet built. Kade to click-test the full draft → refine → publish loop.',
     ],
     order: 5,
     steps: [
@@ -756,11 +756,13 @@ export const PHASES: Phase[] = [
       {
         id: 'copilot-refine',
         title: 'Phase 3 — Refine with surgical edits',
-        description: 'Conversational in-place edits that change ONLY the named part (one exercise, one day, one macro, one paragraph) and leave the rest of the draft untouched. Full regeneration on every tweak is explicitly rejected — it would silently change the rest and feel broken.',
-        status: 'planned',
+        description: 'Conversational in-place edits to a DRAFT program that change ONLY the named part (one exercise, or the client note) and leave the rest byte-identical. "✎ Refine the draft" in the client panel; confirm-first. Full regeneration on every tweak is explicitly rejected.',
+        status: 'shipped',
+        shippedAt: '2026-07-24',
         effort: 'L',
         blockedBy: 'copilot-draft',
-        notes: 'Data-mutating (edits a saved draft). Like Phase 2 draft, deferred until it can be click-tested alongside Kade — do not ship unattended.',
+        surfaces: ['src/lib/program-patch.ts (indexed render + deterministic applyProgramEdits + validateEditOps)', 'src/app/api/clients/[id]/copilot/edit-draft/route.ts (propose + apply)', 'src/app/dashboard/clients/[id]/copilot-panel.tsx (refine-mode composer + edit-proposal/edit-done cards)'],
+        notes: 'Model returns a MINIMAL structured patch (update_exercise by day/block/exercise index, or edit_client_note) + a plain summary; server applies it deterministically to a deep copy of sessions so unnamed parts are untouched by construction. Doctrine still binds (refuses phase/gate/injury/safety-breaking edits with empty ops + reason). Add/remove/reorder exercises + whole-day edits NOT yet supported (says so). Only ever edits status=draft. NOT click-tested by Claude (auth-gated) — Kade verifies in the full runthrough.',
       },
       {
         id: 'copilot-broaden',
