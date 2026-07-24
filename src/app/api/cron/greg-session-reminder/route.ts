@@ -38,10 +38,11 @@ const GREG_CLIENT_ID = '027cabc0-42ef-4b1e-b9b7-c7827ba113e1'
 
 // Kade's "about Greg" colour — the human context the database doesn't hold
 // (personality, what motivates him, banter level, in-jokes, no-go topics).
-// Fed to Claude on every send so the texts stay in character. Leave empty until
-// Kade supplies it; with it empty the model still personalises off the live
-// training detail below and the Body Recode voice.
-const GREG_PROFILE = ''
+// Fed to Claude on every send so the texts stay in character.
+const GREG_PROFILE = `Greg is no-nonsense and doesn't like to stuff around, so keep it short and get straight to the point.
+He likes a laugh though, so a bit of light, easy humour lands well (never forced or corny).
+He's not chasing numbers in the gym. He trains to feel good and to get some balance against a stressful project he's building: a golf simulator. An occasional, natural nod to the golf sim, or to stepping away from a stressful build, works nicely, but don't force it into every message.
+Keep the energy relaxed and human, not intense or hype.`
 
 // Coach-approved line used verbatim if AI generation fails or looks off, so a
 // text always goes out.
