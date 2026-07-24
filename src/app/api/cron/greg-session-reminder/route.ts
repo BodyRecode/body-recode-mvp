@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
   }
 
   const firstName = greg.name.split(' ')[0]
-  const message = `Hi ${firstName}, reminder from Body Recode: your session with Kade starts in 30 minutes. See you there.`
+  const message = `Hi ${firstName}, you're on with Kade in 30 minutes at AF Newstead. Come ready to work, see you there.`
 
   await sendSms({ to: formatPhone(greg.phone), message })
   await logClientCommunication(admin, {
