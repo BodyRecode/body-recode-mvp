@@ -22,7 +22,7 @@ export default async function FunnelPage() {
   ] = await Promise.all([
     admin
       .from('challenge_enrollments')
-      .select('id, token, current_day, enrolled_at, quiz_result, quiz_completed_at, parq_completed_at, health_dec_completed_at, body_decode_intake_completed_at, leads(name, email, phone, scorecard_profile, scorecard_score, scorecard_body_state)')
+      .select('id, token, status, current_day, enrolled_at, quiz_result, quiz_completed_at, parq_completed_at, health_dec_completed_at, body_decode_intake_completed_at, leads(name, email, phone, scorecard_profile, scorecard_score, scorecard_body_state)')
       .order('enrolled_at', { ascending: false }),
     admin
       .from('blueprint_enrollments')
@@ -92,7 +92,9 @@ export default async function FunnelPage() {
 
   return (
     <FunnelClient
-      challengeEnrollments={(challengeEnrollments ?? []).map(e => ({
+      challengeEnrollments={(challengeEnrollments ?? [])
+        .filter(e => !['inactive', 'duplicate', 'deactivated', 'withdrawn'].includes((e.status ?? '').toLowerCase()))
+        .map(e => ({
         id: e.id,
         token: e.token,
         name: (e.leads as any)?.name ?? 'Unknown',

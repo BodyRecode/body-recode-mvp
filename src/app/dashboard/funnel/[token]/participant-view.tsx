@@ -3,6 +3,7 @@
 import { useMemo } from 'react'
 import { ExternalLink, Mail, MessageSquare, CheckCircle2, Clock, AlertCircle, ChevronRight, User, Phone, MapPin, Calendar } from 'lucide-react'
 import { PageHeader } from '@/components/dashboard/ui'
+import EnrollmentStatusActions from './enrollment-status-actions'
 
 type Enrollment = {
   id: string
@@ -343,6 +344,9 @@ export default function ParticipantView({
             label="Open full lead record"
             sub="Pre-Challenge history, communications, source"
           />
+        </div>
+        <div className="mt-3">
+          <EnrollmentStatusActions token={enrollment.token} status={enrollment.status} />
         </div>
       </Section>
 
