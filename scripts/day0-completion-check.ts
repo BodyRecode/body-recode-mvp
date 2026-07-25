@@ -59,7 +59,10 @@ async function main() {
     return `  - ${name}: ${hit ? (hit.done ? 'DONE ✓' : 'still pending') : 'not found / inactive'}`
   }).join('\n')
 
-  const pendingLines = pending.map((r: any) => `  - ${(r.leads as any)?.name}`).join('\n') || '  (none)'
+  // Everyone still pending EXCEPT the nudged cohort - those are already listed
+  // in their own section above, so listing them again here double-counts them.
+  const otherPending = pending.filter((r: any) => !NUDGED_COHORT.includes((r.leads as any)?.name))
+  const pendingLines = otherPending.map((r: any) => `  - ${(r.leads as any)?.name}`).join('\n') || '  (none)'
 
   const textReport = [
     `14-Day Body Decode Challenge - Day 0 scorecard completion`,
@@ -71,7 +74,7 @@ async function main() {
     `Manually-nudged cohort (sent 2026-07-16):`,
     cohortLines,
     ``,
-    `Everyone still pending:`,
+    `Other still pending (beyond the nudged cohort):`,
     pendingLines,
   ].join('\n')
 
@@ -95,9 +98,9 @@ async function main() {
     return row(name, value, color)
   }).join('')
 
-  const pendingInner = pending.length
-    ? pending.map((r: any) => row((r.leads as any)?.name ?? 'Unknown', 'Pending', EMAIL_MUTED)).join('')
-    : `<div style="font-family:${EMAIL_FF};font-size:15px;color:${EMAIL_MUTED};padding:6px 0;">Nobody pending - everyone's done.</div>`
+  const pendingInner = otherPending.length
+    ? otherPending.map((r: any) => row((r.leads as any)?.name ?? 'Unknown', 'Pending', EMAIL_MUTED)).join('')
+    : `<div style="font-family:${EMAIL_FF};font-size:15px;color:${EMAIL_MUTED};padding:6px 0;">Nobody else pending - just the nudged cohort above.</div>`
 
   const html = darkEmailShell(`
 ${emailLogo()}
@@ -111,7 +114,7 @@ ${emailStatusCard({
   body: `${done.length} of ${all.length} active enrollers (last 21 days) have done the scorecard. ${pending.length} still pending.`,
 })}
 ${emailFeaturedCard(cohortInner, { eyebrow: 'Nudged cohort (sent 16 Jul)' })}
-${emailFeaturedCard(pendingInner, { eyebrow: 'Everyone still pending' })}
+${emailFeaturedCard(pendingInner, { eyebrow: 'Other still pending (beyond nudged)' })}
 `, { previewText: `${done.length}/${all.length} completed (${rate}%)` })
 
   const resend = new Resend(process.env.RESEND_API_KEY!)
