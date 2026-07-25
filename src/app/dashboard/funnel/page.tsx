@@ -100,7 +100,13 @@ export default async function FunnelPage() {
         name: (e.leads as any)?.name ?? 'Unknown',
         email: (e.leads as any)?.email ?? '',
         phone: (e.leads as any)?.phone ?? '',
-        currentDay: e.current_day ?? 1,
+        // Day computed live from enrolled_at (same as the participant detail
+        // page) - the stored current_day column is not kept up to date, so
+        // reading it left every row stuck on "Day 1".
+        currentDay: Math.min(
+          Math.max(1, Math.floor((Date.now() - new Date(e.enrolled_at).getTime()) / (1000 * 60 * 60 * 24)) + 1),
+          14,
+        ),
         enrolledAt: e.enrolled_at,
         quizResult: e.quiz_result,
         quizCompleted: !!e.quiz_completed_at,
