@@ -1699,6 +1699,17 @@ export default function StrategyPage() {
             </div>
           </Card>
 
+          <Card className="border-blue-500/30 bg-blue-500/5">
+            <SectionLabel>Stories · Daily Rhythm + Weekly Blueprint Beat</SectionLabel>
+            <p className="text-sm text-stone-700 leading-relaxed mb-3">
+              ~3 IG Stories/day carry the doctrine in short form (hook · pattern spotlight · quote · inside-the-challenge · photo overlay). Their link sticker points to the <strong>free Challenge</strong> - stories are cold / top-of-funnel, so they feed the Challenge entry, not the paid product.
+            </p>
+            <div className="p-3 bg-white border border-blue-500/30 rounded-lg">
+              <p className="text-[10px] font-bold tracking-[0.18em] text-blue-600 uppercase mb-1.5">Weekly Blueprint beat (added Jul 2026)</p>
+              <p className="text-xs text-stone-700 leading-relaxed">One story/week (Thursday, 5pm) drives the <strong>warm</strong> audience to <strong>bodyrecode.au/blueprint</strong> rather than the Challenge - the story-level expression of &quot;August = Blueprint drive.&quot; Keeps cold traffic on the free Challenge (per the evergreen ladder, Blueprint is warm-only) while giving Blueprint a consistent organic beat. Posting-reminder link stickers route automatically: Blueprint → /blueprint, every other story → /challenge.</p>
+            </div>
+          </Card>
+
           <Card className="border-[#1B6DFC]/30 bg-[#1B6DFC]/5">
             <SectionLabel>Comment-to-DM Lead Mechanic</SectionLabel>
             <p className="text-sm text-stone-700 leading-relaxed mb-3">
