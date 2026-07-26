@@ -2256,6 +2256,11 @@ export default function HelpPage() {
             <p className="mt-1 font-mono text-xs text-blue-700 bg-[#FFFFFF] rounded-lg px-4 py-2">webcal://bodyrecode.au/api/calendar/feed?key=CALENDAR_FEED_KEY</p>
             <p className="mt-2">To subscribe: open Calendar on your Mac → File → New Calendar Subscription → paste the webcal:// URL → set auto-refresh to Every 15 Minutes. The calendar updates automatically as bookings are made or changed. No manual export needed.</p>
 
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">IG Story Posting Reminders (Mac Calendar)</p>
+            <p>Your ~3-a-day Body Recode IG story posting slots sync the same way, as a separate calendar (with a 5-minute alert on each, the caption, the graphic download link, and the link-sticker destination). The feed URL is:</p>
+            <p className="mt-1 font-mono text-xs text-blue-700 bg-[#FFFFFF] rounded-lg px-4 py-2">webcal://bodyrecode.au/api/calendar/feed/stories?key=CALENDAR_FEED_KEY</p>
+            <p className="mt-2">Use the <strong>same key</strong> as the bookings feed above (just change the path to <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">/feed/stories</code>). Subscribe the same way (New Calendar Subscription → auto-refresh Every 15 Minutes). Once subscribed it is fully automatic - new stories, copy changes, and the weekly Blueprint beat all flow in with no manual import. <strong>One-time:</strong> if you previously imported a static story-reminders file, delete that calendar first so it does not double up with the live feed.</p>
+
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Manual Bookings</p>
             <p>You can also create bookings from <strong>Business → Bookings → New Booking</strong>. Select the contact, type (Zoom or Other), date/time, and duration. Zoom is created automatically. The lead/client receives a branded confirmation email with the Zoom link, .ics calendar invite, and scheduled 2-hour and 30-minute reminders. You also get a coach notification with the .ics attached. (The legacy Zoom 1 / Zoom 2 split was deprecated 2026-04-29 - the funnel is now single-call.)</p>
 

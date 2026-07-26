@@ -1,24 +1,18 @@
-// Generate a single .ics calendar file with one event per scheduled IG story
-// in a date range. User double-clicks the .ics file on macOS to import to
-// Calendar; events sync to iPhone via iCloud automatically. A 5-minute alert
-// fires before each story slot so the posting time is never missed.
+// Generate a one-off .ics file of IG story posting reminders for a date range,
+// saved to the Desktop. This is the manual-import fallback; the primary path is
+// now the LIVE subscription feed at /api/calendar/feed/stories (subscribe once,
+// updates flow in automatically). Both share src/lib/story-reminders-ics.ts so
+// they render identically.
 //
-// Date range defaults to today (Brisbane) through +90 days, so re-running it
-// always refreshes the upcoming reminders. Override with CLI args:
+// Date range defaults to today (Brisbane) through +90 days. Override:
 //   npx tsx scripts/generate-story-reminders-ics.ts 2026-07-27 2026-08-23
-//
-// Re-importing is safe: each event's UID is deterministic (date+time+index),
-// so macOS Calendar UPDATES the matching event in place rather than creating a
-// duplicate - which is how a missing alert gets added to reminders you already
-// imported.
 //
 // Run: cd ~/body-recode-mvp && set -a && source .env.local && set +a && \
 //        npx tsx scripts/generate-story-reminders-ics.ts
 
 import { createClient } from '@supabase/supabase-js'
 import { writeFileSync } from 'node:fs'
-
-const ALERT_MINUTES = 5
+import { buildStoryRemindersIcs, type StoryRow } from '../src/lib/story-reminders-ics'
 
 // Brisbane is UTC+10 year-round (no DST).
 function brisbaneToday(): string {
@@ -36,64 +30,6 @@ const START_DATE = process.argv[2] ?? brisbaneToday()
 const END_DATE = process.argv[3] ?? addDays(START_DATE, 90)
 const OUT = `/Users/kadedunstone/Desktop/body-recode-story-reminders-${START_DATE}-to-${END_DATE}.ics`
 
-interface Row {
-  date: string
-  time: string | null
-  title: string
-  caption: string | null
-  graphic: string | null
-  brand: string | null
-}
-
-// Link-sticker destination for story CTAs. Cold story traffic goes to the free
-// Challenge (the evergreen ladder's cold entry). The weekly Blueprint beat is a
-// warm-audience story and points to the Blueprint page instead.
-const LINK_CHALLENGE = 'bodyrecode.au/challenge'
-const LINK_BLUEPRINT = 'bodyrecode.au/blueprint'
-
-// "Hook · W3 1" -> "Hook". The "W3 1" suffix is an internal week/slot code and
-// is meaningless on a reminder, so it is dropped from what Kade sees.
-function storyKind(title: string): string {
-  return (title || 'Story').split('·')[0].trim() || 'Story'
-}
-
-// Blueprint stories drive to /blueprint; everything else to /challenge.
-function linkSticker(kind: string): string {
-  return kind.toLowerCase().includes('blueprint') ? LINK_BLUEPRINT : LINK_CHALLENGE
-}
-
-function pad(n: number) { return n.toString().padStart(2, '0') }
-
-// Convert "2026-06-30" + "14:00" → "20260630T140000" (Brisbane LOCAL time, no Z)
-// Brisbane is AEST UTC+10 year-round (no DST).
-function toIcsLocalDateTime(date: string, time: string): string {
-  const [y, m, d] = date.split('-')
-  const [hh, mm] = time.split(':')
-  return `${y}${m}${d}T${pad(parseInt(hh))}${pad(parseInt(mm))}00`
-}
-
-function addMinutes(date: string, time: string, mins: number): { date: string; time: string } {
-  const [y, m, d] = date.split('-').map(Number)
-  const [hh, mm] = time.split(':').map(Number)
-  const totalMin = hh * 60 + mm + mins
-  const newHh = Math.floor((totalMin + 24 * 60) / 60) % 24
-  const newMm = ((totalMin + 24 * 60) % 60)
-  // If the addition didn't cross midnight, date stays same. We never schedule across midnight, so simplify:
-  if (totalMin >= 0 && totalMin < 24 * 60) {
-    return { date: `${y}-${pad(m)}-${pad(d)}`, time: `${pad(newHh)}:${pad(newMm)}` }
-  }
-  // Cross-midnight case (rare here): bump date by one day
-  const nextDate = new Date(Date.UTC(y, m - 1, d + (totalMin >= 24 * 60 ? 1 : -1)))
-  return {
-    date: `${nextDate.getUTCFullYear()}-${pad(nextDate.getUTCMonth() + 1)}-${pad(nextDate.getUTCDate())}`,
-    time: `${pad(newHh)}:${pad(newMm)}`,
-  }
-}
-
-function escapeIcs(s: string): string {
-  return s.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n')
-}
-
 async function main() {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
     throw new Error('Supabase env missing')
@@ -102,7 +38,7 @@ async function main() {
 
   const { data: rows, error } = await supabase
     .from('calendar_posts')
-    .select('date, time, title, caption, graphic, brand')
+    .select('date, time, title, caption, graphic')
     .eq('type', 'story')
     .eq('brand', 'body_recode')
     .gte('date', START_DATE)
@@ -116,112 +52,15 @@ async function main() {
     process.exit(1)
   }
 
-  // Number each story within its day (1/3, 2/3, 3/3) from the time order, so a
-  // reminder says which post of the day it is.
-  const perDayTotal: Record<string, number> = {}
-  for (const r of rows as Row[]) {
-    if (r.time) perDayTotal[r.date] = (perDayTotal[r.date] ?? 0) + 1
-  }
-  const perDaySeen: Record<string, number> = {}
-
-  const lines: string[] = []
-  lines.push('BEGIN:VCALENDAR')
-  lines.push('VERSION:2.0')
-  lines.push('PRODID:-//Body Recode//Story Posting Reminders//EN')
-  lines.push('CALSCALE:GREGORIAN')
-  lines.push('METHOD:PUBLISH')
-  lines.push('X-WR-CALNAME:Body Recode · IG Story Posting')
-  lines.push('X-WR-TIMEZONE:Australia/Brisbane')
-
-  // Brisbane timezone block (UTC+10 year-round, no DST)
-  lines.push('BEGIN:VTIMEZONE')
-  lines.push('TZID:Australia/Brisbane')
-  lines.push('BEGIN:STANDARD')
-  lines.push('DTSTART:19700101T000000')
-  lines.push('TZOFFSETFROM:+1000')
-  lines.push('TZOFFSETTO:+1000')
-  lines.push('TZNAME:AEST')
-  lines.push('END:STANDARD')
-  lines.push('END:VTIMEZONE')
-
-  let count = 0
-  for (const row of rows as Row[]) {
-    if (!row.time) continue
-    const startDt = toIcsLocalDateTime(row.date, row.time)
-    const endTime = addMinutes(row.date, row.time, 15) // 15-min "block" for the story
-    const endDt = toIcsLocalDateTime(endTime.date, endTime.time)
-
-    const kind = storyKind(row.title)
-    const caption = row.caption?.trim() || ''
-    const slotIdx = (perDaySeen[row.date] = (perDaySeen[row.date] ?? 0) + 1)
-    const slotTotal = perDayTotal[row.date] ?? slotIdx
-
-    // The alert itself shows the SUMMARY, so put the identifying detail there:
-    // which post of the day, the story kind, and the caption/hook.
-    const summaryText = caption
-      ? `📸 Story ${slotIdx}/${slotTotal} · ${kind}: ${caption}`
-      : `📸 Story ${slotIdx}/${slotTotal} · ${kind}`
-    const title = escapeIcs(summaryText)
-
-    const filename = row.graphic?.split('/').pop() ?? ''
-    const description = escapeIcs([
-      `${kind} story — post ${slotIdx} of ${slotTotal} today on @body_recode_.`,
-      ``,
-      `ON-STORY TEXT:`,
-      caption || '(see graphic)',
-      ``,
-      `GRAPHIC: ${filename}`,
-      `Download to phone: https://bodyrecode.au${row.graphic ?? ''}`,
-      `On this Mac: ~/body-recode-mvp/public${row.graphic ?? ''}`,
-      ``,
-      `Add the link sticker → ${linkSticker(kind)}`,
-    ].join('\n'))
-
-    // UID is keyed on date+time ONLY (a story slot is unique per day/time), NOT
-    // the running count. That keeps UIDs stable when a slot is inserted (e.g.
-    // the 17:00 Blueprint beat), so re-importing UPDATES events in place instead
-    // of creating duplicates for everything after the insertion point.
-    const uid = `body-recode-story-${row.date}-${row.time.replace(':', '')}@bodyrecode.au`
-
-    lines.push('BEGIN:VEVENT')
-    lines.push(`UID:${uid}`)
-    lines.push(`DTSTAMP:20260630T000000Z`) // arbitrary fixed stamp (creation time)
-    lines.push(`DTSTART;TZID=Australia/Brisbane:${startDt}`)
-    lines.push(`DTEND;TZID=Australia/Brisbane:${endDt}`)
-    lines.push(`SUMMARY:${title}`)
-    lines.push(`DESCRIPTION:${description}`)
-    lines.push(`LOCATION:Instagram - @body_recode_`)
-    lines.push(`CATEGORIES:Body Recode,Stories`)
-    // Reminder: 5 minutes before
-    lines.push('BEGIN:VALARM')
-    lines.push('ACTION:DISPLAY')
-    lines.push(`TRIGGER:-PT${ALERT_MINUTES}M`)
-    lines.push(`DESCRIPTION:${title}`)
-    lines.push('END:VALARM')
-    lines.push('END:VEVENT')
-
-    count++
-  }
-
-  lines.push('END:VCALENDAR')
-
-  // .ics requires CRLF line endings
-  const ics = lines.join('\r\n') + '\r\n'
+  const ics = buildStoryRemindersIcs(rows as StoryRow[])
   writeFileSync(OUT, ics, 'utf-8')
 
-  console.log(`Generated ${count} story reminder events.`)
-  console.log(`Date range: ${rows[0].date} → ${rows[rows.length - 1].date}`)
+  const eventCount = (ics.match(/BEGIN:VEVENT/g) ?? []).length
+  console.log(`Generated ${eventCount} story reminder events (${rows[0].date} → ${rows[rows.length - 1].date}).`)
   console.log(`Saved to: ${OUT}`)
-  console.log(`Size: ${ics.length} bytes`)
+  console.log('Every event has a 5-minute alert.')
   console.log('')
-  console.log(`Every event has a ${ALERT_MINUTES}-minute alert (VALARM count = event count).`)
-  console.log('')
-  console.log('Next steps for Kade:')
-  console.log('  1. Double-click the .ics file on Desktop')
-  console.log('  2. macOS Calendar opens + asks which calendar to import to')
-  console.log('  3. Recommend creating a new calendar "Body Recode Stories" so you can hide/show it independently')
-  console.log('  4. Events sync to iPhone automatically via iCloud')
-  console.log(`  5. Each event fires a notification ${ALERT_MINUTES} min before its slot`)
+  console.log('Preferred path is the live feed (subscribe once): /api/calendar/feed/stories?key=...')
 }
 
 main().catch(err => {
