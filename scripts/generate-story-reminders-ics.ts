@@ -46,14 +46,20 @@ interface Row {
 }
 
 // Link-sticker destination for story CTAs. Cold story traffic goes to the free
-// Challenge (the evergreen ladder's cold entry); Blueprint is warm-only and
-// driven through email, not the story link sticker.
-const LINK_STICKER = 'bodyrecode.au/challenge'
+// Challenge (the evergreen ladder's cold entry). The weekly Blueprint beat is a
+// warm-audience story and points to the Blueprint page instead.
+const LINK_CHALLENGE = 'bodyrecode.au/challenge'
+const LINK_BLUEPRINT = 'bodyrecode.au/blueprint'
 
 // "Hook · W3 1" -> "Hook". The "W3 1" suffix is an internal week/slot code and
 // is meaningless on a reminder, so it is dropped from what Kade sees.
 function storyKind(title: string): string {
   return (title || 'Story').split('·')[0].trim() || 'Story'
+}
+
+// Blueprint stories drive to /blueprint; everything else to /challenge.
+function linkSticker(kind: string): string {
+  return kind.toLowerCase().includes('blueprint') ? LINK_BLUEPRINT : LINK_CHALLENGE
 }
 
 function pad(n: number) { return n.toString().padStart(2, '0') }
@@ -168,7 +174,7 @@ async function main() {
       `Download to phone: https://bodyrecode.au${row.graphic ?? ''}`,
       `On this Mac: ~/body-recode-mvp/public${row.graphic ?? ''}`,
       ``,
-      `Add the link sticker → ${LINK_STICKER}`,
+      `Add the link sticker → ${linkSticker(kind)}`,
     ].join('\n'))
 
     const uid = `body-recode-story-${row.date}-${row.time.replace(':', '')}-${count}@bodyrecode.au`
