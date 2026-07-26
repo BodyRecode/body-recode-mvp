@@ -118,7 +118,7 @@ export default function ExtensionPage() {
           badge="90-Day Body Rewire Extension"
           coachName={c.fullName}
           credentials={c.credentials}
-          headline={<>Six weeks in. The change is real.</>}
+          headline={<>Six weeks in.<br />The change is real.</>}
           headlineAccent={<>Twelve more locks it in.</>}
           videoSlot={<VideoComingSoon eyebrow="Explainer · 60 seconds" title="In production with Amanda" />}
           leads={[
