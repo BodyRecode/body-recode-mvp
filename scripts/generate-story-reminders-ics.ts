@@ -40,8 +40,20 @@ interface Row {
   date: string
   time: string | null
   title: string
+  caption: string | null
   graphic: string | null
   brand: string | null
+}
+
+// Link-sticker destination for story CTAs. Cold story traffic goes to the free
+// Challenge (the evergreen ladder's cold entry); Blueprint is warm-only and
+// driven through email, not the story link sticker.
+const LINK_STICKER = 'bodyrecode.au/challenge'
+
+// "Hook · W3 1" -> "Hook". The "W3 1" suffix is an internal week/slot code and
+// is meaningless on a reminder, so it is dropped from what Kade sees.
+function storyKind(title: string): string {
+  return (title || 'Story').split('·')[0].trim() || 'Story'
 }
 
 function pad(n: number) { return n.toString().padStart(2, '0') }
@@ -84,7 +96,7 @@ async function main() {
 
   const { data: rows, error } = await supabase
     .from('calendar_posts')
-    .select('date, time, title, graphic, brand')
+    .select('date, time, title, caption, graphic, brand')
     .eq('type', 'story')
     .eq('brand', 'body_recode')
     .gte('date', START_DATE)
@@ -97,6 +109,14 @@ async function main() {
     console.error(`No Body Recode story rows between ${START_DATE} and ${END_DATE}. Aborting.`)
     process.exit(1)
   }
+
+  // Number each story within its day (1/3, 2/3, 3/3) from the time order, so a
+  // reminder says which post of the day it is.
+  const perDayTotal: Record<string, number> = {}
+  for (const r of rows as Row[]) {
+    if (r.time) perDayTotal[r.date] = (perDayTotal[r.date] ?? 0) + 1
+  }
+  const perDaySeen: Record<string, number> = {}
 
   const lines: string[] = []
   lines.push('BEGIN:VCALENDAR')
@@ -125,18 +145,30 @@ async function main() {
     const endTime = addMinutes(row.date, row.time, 15) // 15-min "block" for the story
     const endDt = toIcsLocalDateTime(endTime.date, endTime.time)
 
-    const title = escapeIcs(`📸 IG Story: ${row.title}`)
+    const kind = storyKind(row.title)
+    const caption = row.caption?.trim() || ''
+    const slotIdx = (perDaySeen[row.date] = (perDaySeen[row.date] ?? 0) + 1)
+    const slotTotal = perDayTotal[row.date] ?? slotIdx
+
+    // The alert itself shows the SUMMARY, so put the identifying detail there:
+    // which post of the day, the story kind, and the caption/hook.
+    const summaryText = caption
+      ? `📸 Story ${slotIdx}/${slotTotal} · ${kind}: ${caption}`
+      : `📸 Story ${slotIdx}/${slotTotal} · ${kind}`
+    const title = escapeIcs(summaryText)
+
     const filename = row.graphic?.split('/').pop() ?? ''
     const description = escapeIcs([
-      `Post this story now on @body_recode_.`,
+      `${kind} story — post ${slotIdx} of ${slotTotal} today on @body_recode_.`,
       ``,
-      `File: ${filename}`,
-      `Path: ~/body-recode-mvp${row.graphic ?? ''}`,
+      `ON-STORY TEXT:`,
+      caption || '(see graphic)',
       ``,
-      `Public URL (for AirDrop / phone download):`,
-      `https://bodyrecode.au${row.graphic ?? ''}`,
+      `GRAPHIC: ${filename}`,
+      `Download to phone: https://bodyrecode.au${row.graphic ?? ''}`,
+      `On this Mac: ~/body-recode-mvp${row.graphic ?? ''}`,
       ``,
-      `Don't forget to add the link sticker → bodyrecode.au/challenge`,
+      `Add the link sticker → ${LINK_STICKER}`,
     ].join('\n'))
 
     const uid = `body-recode-story-${row.date}-${row.time.replace(':', '')}-${count}@bodyrecode.au`
@@ -149,7 +181,7 @@ async function main() {
     lines.push(`SUMMARY:${title}`)
     lines.push(`DESCRIPTION:${description}`)
     lines.push(`LOCATION:Instagram - @body_recode_`)
-    lines.push(`CATEGORIES:Body Recode,Stories,Launch`)
+    lines.push(`CATEGORIES:Body Recode,Stories`)
     // Reminder: 5 minutes before
     lines.push('BEGIN:VALARM')
     lines.push('ACTION:DISPLAY')
