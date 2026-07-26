@@ -31,6 +31,7 @@ import {
   buildMembershipCheckinPromptEmail,
   buildMembershipCheckinReminderEmail,
 } from './membership-emails'
+import { buildExtensionWeekEmail } from './extension-emails'
 import { EMAIL_SEQUENCE, STOP_STATUSES as BOOKING_AGENT_STOP_STATUSES } from './booking-agent/sequence'
 
 // ─── Challenge SMS Messages ───────────────────────────────────────────────────
@@ -1029,7 +1030,7 @@ export const extensionWeekAdvanceFunction = inngest.createFunction(
         const admin = createAdminClient()
         const { data } = await admin
           .from('extension_enrollments')
-          .select('current_week')
+          .select('current_week, pattern')
           .eq('token', token)
           .single()
 
@@ -1041,25 +1042,17 @@ export const extensionWeekAdvanceFunction = inngest.createFunction(
           .update({ current_week: week })
           .eq('token', token)
 
-        const completedWeek = week - 1
         if (process.env.RESEND_API_KEY) {
           const resend = new Resend(process.env.RESEND_API_KEY)
           const portalUrl = `${appUrl()}/extension/${token}`
+          // Pattern-aware weekly email for the new week; it opens the week and
+          // prompts the just-completed week's check-in in one touch.
+          const built = buildExtensionWeekEmail({ week, firstName, portalUrl, pattern: data.pattern })
           await resend.emails.send({
             from: fromCoach(),
             to: email,
-            subject: `Extension Week ${completedWeek} check-in is due`,
-            html: darkEmailShell(`
-${emailLogo()}
-${emailEyebrow(`90-Day Extension · Week ${completedWeek}`)}
-${emailHeading(`Week ${completedWeek} check-in is due.`)}
-${emailDivider()}
-${emailBody(`Hi ${firstName},`)}
-${emailBody(`Extension Week ${completedWeek} is complete. Week ${week} is now live. Submit your check-in before moving on.`, { bottom: 28 })}
-${emailCta({ href: portalUrl, label: `Submit Week ${completedWeek} check-in` })}
-${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
-${darkEmailSignature()}
-`, { previewText: `${firstName}, submit your Extension Week ${completedWeek} check-in.` }),
+            subject: built.subject,
+            html: built.html,
           })
         }
       })
