@@ -1042,10 +1042,18 @@ export default function MembershipPortalClient({
   enrollment,
   featuredBoltOns,
   libraryToken,
+  checkinEndpoint = '/api/membership/checkin',
+  checkinWeekNumber,
 }: {
   enrollment: MemberEnrollment
   featuredBoltOns?: FeaturedBoltOn[]
   libraryToken?: string
+  // The Extension reuses this portal but stores check-ins in its own table
+  // keyed by the true 1-12 week. These props let it override where check-ins
+  // are read/written and which week number is recorded (block-relative weeks
+  // would collide - Extension week 8 maps to Block B week 2, same as week 2).
+  checkinEndpoint?: string
+  checkinWeekNumber?: number
 }) {
   const [activeTab, setActiveTab] = useState('home')
   const [equipment, setEquipment] = useState<'gym' | 'home' | 'bodyweight'>('gym')
@@ -1062,6 +1070,9 @@ export default function MembershipPortalClient({
   const config = PATTERN_CONFIG[pattern] ?? PATTERN_CONFIG['stress-stored']
   const block = enrollment.current_block ?? 'A'
   const currentWeek = enrollment.current_week ?? 1
+  // Week recorded on check-ins. Defaults to the block-relative week (membership);
+  // the Extension passes its true 1-12 week so its 12 check-ins stay distinct.
+  const checkinWeek = checkinWeekNumber ?? currentWeek
   const phases = BLOCK_PHASES[block] ?? BLOCK_PHASES['A']
   const sessions = block === 'C' ? BLOCK_C_SESSIONS : block === 'B' ? BLOCK_B_SESSIONS : BLOCK_A_SESSIONS
   const trainingData = block === 'C'
@@ -1089,28 +1100,28 @@ export default function MembershipPortalClient({
   })()
 
   useEffect(() => {
-    fetch(`/api/membership/checkin?token=${enrollment.token}`)
+    fetch(`${checkinEndpoint}?token=${enrollment.token}`)
       .then(r => r.json())
       .then(data => { if (data.checkins) setCheckins(data.checkins) })
       .catch(() => {})
-  }, [enrollment.token])
+  }, [enrollment.token, checkinEndpoint])
 
   async function submitCheckin(e: React.FormEvent) {
     e.preventDefault()
     if (CHECKIN_MARKERS.some(m => !checkinForm[m.key])) return
     setCheckinSubmitting(true)
     setCheckinError(null)
-    const res = await fetch('/api/membership/checkin', {
+    const res = await fetch(checkinEndpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: enrollment.token, week_number: currentWeek, notes: checkinNotes, ...checkinForm }),
+      body: JSON.stringify({ token: enrollment.token, week_number: checkinWeek, notes: checkinNotes, ...checkinForm }),
     })
     const data = await res.json()
     if (res.ok) {
       setCheckinSuccess(true)
       setCheckinForm({})
       setCheckinNotes('')
-      const updated = await fetch(`/api/membership/checkin?token=${enrollment.token}`).then(r => r.json())
+      const updated = await fetch(`${checkinEndpoint}?token=${enrollment.token}`).then(r => r.json())
       if (updated.checkins) setCheckins(updated.checkins)
     } else {
       setCheckinError(data.error ?? 'Failed to save check-in.')
@@ -1118,7 +1129,7 @@ export default function MembershipPortalClient({
     setCheckinSubmitting(false)
   }
 
-  const thisWeekCheckin = checkins.find(c => c.week_number === currentWeek)
+  const thisWeekCheckin = checkins.find(c => c.week_number === checkinWeek)
 
   const card = (children: React.ReactNode, style?: React.CSSProperties) => (
     <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 22px', marginBottom: 16, ...style }}>

@@ -997,11 +997,16 @@ ${darkEmailSignature()}
     const { first_name, email, pattern_from_blueprint, blueprint_token } = session.metadata
     const admin = createAdminClient()
 
+    // Phone from Stripe checkout, normalised to E.164 for cross-email matching.
+    const buyerPhoneRaw = session.customer_details?.phone
+    const buyerPhone = buyerPhoneRaw ? formatPhone(buyerPhoneRaw) : null
+
     const { data: enrollment } = await admin
       .from('extension_enrollments')
       .insert({
         email: email.toLowerCase(),
         first_name,
+        phone: buyerPhone,
         pattern: pattern_from_blueprint || 'pending',
         pattern_source: pattern_from_blueprint ? 'blueprint' : 'assessment',
         blueprint_token: blueprint_token || null,

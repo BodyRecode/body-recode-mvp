@@ -34,5 +34,11 @@ export default function ExtensionPortalClient({ enrollment }: { enrollment: Exte
     joined_at: enrollment.purchase_date,
   }
 
-  return <MembershipPortalClient enrollment={membershipEnrollment} />
+  return (
+    <MembershipPortalClient
+      enrollment={membershipEnrollment}
+      checkinEndpoint="/api/extension/checkin"
+      checkinWeekNumber={enrollment.current_week}
+    />
+  )
 }

@@ -1148,16 +1148,28 @@ export const reengagementSequenceFunction = inngest.createFunction(
     // and never pitch someone a product they've already bought.
     //
     // Source-aware, because "converted" means different things per entry point:
-    //   - challenge  → bought the Blueprint, or an active Membership
-    //   - blueprint  → an active Membership (they already own the Blueprint)
+    //   - challenge  → bought the Blueprint, the Extension, or an active Membership
+    //   - blueprint  → bought the Extension, or an active Membership (owns Blueprint)
     //   - membership → re-subscribed (any active Membership row again)
-    // (Extension is not counted yet — extension_enrollments doesn't exist until
-    //  that product launches; add it here when it does.)
+    // Each product is matched on email first, then on the phone captured at
+    // checkout (catches a buyer who paid under a different email than enrolled).
     const emailLower = email.toLowerCase()
     const phoneE164 = phone ? formatPhone(phone) : null
     const hasConverted = async (stepId: string): Promise<boolean> =>
       step.run(stepId, async () => {
         const admin = createAdminClient()
+
+        // Bought this product? Matched by email, then phone fallback.
+        const boughtProduct = async (table: 'blueprint_enrollments' | 'extension_enrollments'): Promise<boolean> => {
+          const { data: byEmail } = await admin.from(table).select('id').ilike('email', emailLower).limit(1)
+          if (byEmail && byEmail.length > 0) return true
+          if (phoneE164) {
+            const { data: byPhone } = await admin.from(table).select('id').eq('phone', phoneE164).limit(1)
+            if (byPhone && byPhone.length > 0) return true
+          }
+          return false
+        }
+
         const { data: mem } = await admin
           .from('membership_enrollments')
           .select('id')
@@ -1165,24 +1177,12 @@ export const reengagementSequenceFunction = inngest.createFunction(
           .is('cancelled_at', null)
           .limit(1)
         if (mem && mem.length > 0) return true
-        if (source === 'challenge') {
-          const { data: bp } = await admin
-            .from('blueprint_enrollments')
-            .select('id')
-            .ilike('email', emailLower)
-            .limit(1)
-          if (bp && bp.length > 0) return true
-          // Fallback: bought the Blueprint under a different email (matched on
-          // the phone captured at checkout).
-          if (phoneE164) {
-            const { data: bpPhone } = await admin
-              .from('blueprint_enrollments')
-              .select('id')
-              .eq('phone', phoneE164)
-              .limit(1)
-            if (bpPhone && bpPhone.length > 0) return true
-          }
-        }
+
+        // Challenge entrants convert by buying the Blueprint (the next step).
+        if (source === 'challenge' && await boughtProduct('blueprint_enrollments')) return true
+        // Both challenge and blueprint entrants convert by buying the Extension.
+        if ((source === 'challenge' || source === 'blueprint') && await boughtProduct('extension_enrollments')) return true
+
         return false
       })
 
