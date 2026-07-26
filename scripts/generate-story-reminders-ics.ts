@@ -1,7 +1,16 @@
 // Generate a single .ics calendar file with one event per scheduled IG story
-// from today (2026-06-30) through launch day (2026-07-13). User double-clicks
-// the .ics file on macOS to import to Calendar; events sync to iPhone via
-// iCloud automatically. 5-minute alert fires before each story slot.
+// in a date range. User double-clicks the .ics file on macOS to import to
+// Calendar; events sync to iPhone via iCloud automatically. A 5-minute alert
+// fires before each story slot so the posting time is never missed.
+//
+// Date range defaults to today (Brisbane) through +90 days, so re-running it
+// always refreshes the upcoming reminders. Override with CLI args:
+//   npx tsx scripts/generate-story-reminders-ics.ts 2026-07-27 2026-08-23
+//
+// Re-importing is safe: each event's UID is deterministic (date+time+index),
+// so macOS Calendar UPDATES the matching event in place rather than creating a
+// duplicate - which is how a missing alert gets added to reminders you already
+// imported.
 //
 // Run: cd ~/body-recode-mvp && set -a && source .env.local && set +a && \
 //        npx tsx scripts/generate-story-reminders-ics.ts
@@ -9,8 +18,23 @@
 import { createClient } from '@supabase/supabase-js'
 import { writeFileSync } from 'node:fs'
 
-const OUT = '/Users/kadedunstone/Desktop/body-recode-story-reminders.ics'
 const ALERT_MINUTES = 5
+
+// Brisbane is UTC+10 year-round (no DST).
+function brisbaneToday(): string {
+  const nowBrisbane = new Date(Date.now() + 10 * 60 * 60 * 1000)
+  return nowBrisbane.toISOString().slice(0, 10)
+}
+
+function addDays(isoDate: string, days: number): string {
+  const [y, m, d] = isoDate.split('-').map(Number)
+  const dt = new Date(Date.UTC(y, m - 1, d + days))
+  return dt.toISOString().slice(0, 10)
+}
+
+const START_DATE = process.argv[2] ?? brisbaneToday()
+const END_DATE = process.argv[3] ?? addDays(START_DATE, 90)
+const OUT = `/Users/kadedunstone/Desktop/body-recode-story-reminders-${START_DATE}-to-${END_DATE}.ics`
 
 interface Row {
   date: string
@@ -62,14 +86,15 @@ async function main() {
     .from('calendar_posts')
     .select('date, time, title, graphic, brand')
     .eq('type', 'story')
-    .gte('date', '2026-06-30')
-    .lte('date', '2026-07-13')
+    .eq('brand', 'body_recode')
+    .gte('date', START_DATE)
+    .lte('date', END_DATE)
     .order('date', { ascending: true })
     .order('time', { ascending: true })
 
   if (error) throw error
   if (!rows || rows.length === 0) {
-    console.error('No story rows in scope. Aborting.')
+    console.error(`No Body Recode story rows between ${START_DATE} and ${END_DATE}. Aborting.`)
     process.exit(1)
   }
 
@@ -147,12 +172,14 @@ async function main() {
   console.log(`Saved to: ${OUT}`)
   console.log(`Size: ${ics.length} bytes`)
   console.log('')
+  console.log(`Every event has a ${ALERT_MINUTES}-minute alert (VALARM count = event count).`)
+  console.log('')
   console.log('Next steps for Kade:')
   console.log('  1. Double-click the .ics file on Desktop')
   console.log('  2. macOS Calendar opens + asks which calendar to import to')
   console.log('  3. Recommend creating a new calendar "Body Recode Stories" so you can hide/show it independently')
   console.log('  4. Events sync to iPhone automatically via iCloud')
-  console.log('  5. Each event fires a notification 5 min before its slot')
+  console.log(`  5. Each event fires a notification ${ALERT_MINUTES} min before its slot`)
 }
 
 main().catch(err => {
