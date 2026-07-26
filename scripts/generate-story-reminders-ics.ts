@@ -166,7 +166,7 @@ async function main() {
       ``,
       `GRAPHIC: ${filename}`,
       `Download to phone: https://bodyrecode.au${row.graphic ?? ''}`,
-      `On this Mac: ~/body-recode-mvp${row.graphic ?? ''}`,
+      `On this Mac: ~/body-recode-mvp/public${row.graphic ?? ''}`,
       ``,
       `Add the link sticker → ${LINK_STICKER}`,
     ].join('\n'))
