@@ -8,6 +8,7 @@ import { inngest } from '@/lib/inngest'
 import { syncSubscriptionFromStripe, markCommencementPaid } from '@/lib/stripe-sync'
 import { getDefaultCoachId } from '@/lib/default-coach'
 import { appUrl } from '@/lib/app-url'
+import { formatPhone } from '@/lib/twilio'
 import { getCoachingPackage } from '@/lib/coaching-packages'
 import {
   darkEmailShell, emailUrlFallback,
@@ -883,11 +884,18 @@ ${darkEmailSignature()}
     // If no pattern, portal will show assessment gate
     const pattern = pattern_from_challenge || null
 
+    // Phone collected by Stripe checkout, normalised to E.164 so it matches the
+    // challenge lead's phone. Lets the re-engagement guards recognise a buyer
+    // who paid under a different email than they enrolled with.
+    const buyerPhoneRaw = session.customer_details?.phone
+    const buyerPhone = buyerPhoneRaw ? formatPhone(buyerPhoneRaw) : null
+
     const { data: enrollment } = await admin
       .from('blueprint_enrollments')
       .insert({
         email: email.toLowerCase(),
         first_name: firstName,
+        phone: buyerPhone,
         pattern: pattern ?? 'pending',
         pattern_source: pattern ? 'challenge' : 'assessment',
         stripe_payment_intent_id: session.payment_intent as string ?? null,

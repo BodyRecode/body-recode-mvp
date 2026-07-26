@@ -29,6 +29,10 @@ export async function POST(request: NextRequest) {
     mode: 'payment',
     payment_method_types: ['card'],
     customer_email: email.toLowerCase().trim(),
+    // Collect phone so a buyer who purchases under a different email than they
+    // enrolled with can still be matched back to their challenge lead (the
+    // re-engagement guards match on email OR phone).
+    phone_number_collection: { enabled: true },
     line_items: [
       {
         price_data: {

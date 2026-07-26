@@ -231,17 +231,29 @@ export const challengeSequenceFunction = inngest.createFunction(
 
     await step.run('check-challenge-ascension', async () => {
       const admin = createAdminClient()
-      const { data: blueprint } = await admin
+
+      // Matched on email first; if they bought under a different email, fall
+      // back to the phone captured at Blueprint checkout (normalised E.164).
+      const { data: byEmail } = await admin
         .from('blueprint_enrollments')
         .select('id')
         .ilike('email', email)
         .maybeSingle()
+      if (byEmail) return // ascended - no re-engagement needed
 
-      if (blueprint) return // ascended - no re-engagement needed
+      const phoneE164 = phone ? formatPhone(phone) : null
+      if (phoneE164) {
+        const { data: byPhone } = await admin
+          .from('blueprint_enrollments')
+          .select('id')
+          .eq('phone', phoneE164)
+          .limit(1)
+        if (byPhone && byPhone.length > 0) return // bought under a different email
+      }
 
       await inngest.send({
         name: 'reengagement/challenge-no-ascension',
-        data: { email, firstName, source: 'challenge' },
+        data: { email, firstName, phone: phone ?? null, source: 'challenge' },
       })
     })
 
@@ -1119,11 +1131,12 @@ export const reengagementSequenceFunction = inngest.createFunction(
     ],
   },
   async ({ event, step }: { event: any; step: any }) => {
-    const { email, firstName, source, patternLabel } = event.data as {
+    const { email, firstName, source, patternLabel, phone } = event.data as {
       email: string
       firstName: string
       source: 'challenge' | 'blueprint' | 'membership'
       patternLabel?: string
+      phone?: string | null
     }
 
     const extensionUrl = `${appUrl()}/extension`
@@ -1141,6 +1154,7 @@ export const reengagementSequenceFunction = inngest.createFunction(
     // (Extension is not counted yet — extension_enrollments doesn't exist until
     //  that product launches; add it here when it does.)
     const emailLower = email.toLowerCase()
+    const phoneE164 = phone ? formatPhone(phone) : null
     const hasConverted = async (stepId: string): Promise<boolean> =>
       step.run(stepId, async () => {
         const admin = createAdminClient()
@@ -1158,6 +1172,16 @@ export const reengagementSequenceFunction = inngest.createFunction(
             .ilike('email', emailLower)
             .limit(1)
           if (bp && bp.length > 0) return true
+          // Fallback: bought the Blueprint under a different email (matched on
+          // the phone captured at checkout).
+          if (phoneE164) {
+            const { data: bpPhone } = await admin
+              .from('blueprint_enrollments')
+              .select('id')
+              .eq('phone', phoneE164)
+              .limit(1)
+            if (bpPhone && bpPhone.length > 0) return true
+          }
         }
         return false
       })
