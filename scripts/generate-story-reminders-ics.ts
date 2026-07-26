@@ -177,7 +177,11 @@ async function main() {
       `Add the link sticker → ${linkSticker(kind)}`,
     ].join('\n'))
 
-    const uid = `body-recode-story-${row.date}-${row.time.replace(':', '')}-${count}@bodyrecode.au`
+    // UID is keyed on date+time ONLY (a story slot is unique per day/time), NOT
+    // the running count. That keeps UIDs stable when a slot is inserted (e.g.
+    // the 17:00 Blueprint beat), so re-importing UPDATES events in place instead
+    // of creating duplicates for everything after the insertion point.
+    const uid = `body-recode-story-${row.date}-${row.time.replace(':', '')}@bodyrecode.au`
 
     lines.push('BEGIN:VEVENT')
     lines.push(`UID:${uid}`)
