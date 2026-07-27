@@ -460,6 +460,13 @@ const MANUAL_AUTOMATIONS = [
     steps: 5,
   },
   {
+    id: 'coach-message-reply',
+    name: 'Coach Message Reply (client portal thread)',
+    description: 'Reply to a client from /dashboard/messages. Writes the reply into client_messages as sender="coach" so it appears in the client\'s portal thread, then emails them the reply in full (BCC Kade) with a CTA back to /portal/{token}/message. The email quotes their most recent unanswered message for context, so they can read the answer without logging in. Sending also stamps responded_at + read_at on every outstanding message in that thread, clearing it from the "Awaiting reply" queue on the inbox and the Today dashboard. Logs to client_communications as kind "coach_message_reply". The email is best-effort: the reply is saved and visible in the portal even if Resend fails.',
+    trigger: 'Type a reply on /dashboard/messages, click "Send reply"',
+    steps: 1,
+  },
+  {
     id: 'inbox-reply',
     name: 'Inbox Reply (free-text)',
     description: `Manually compose a custom email to a lead from the inbox view. Reply-To is set to ${brand().replyToEmail} so threading works.`,

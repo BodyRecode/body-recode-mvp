@@ -63,6 +63,7 @@ export default function TodayDashboardPage() {
   const [date, setDate] = useState(todayIso())
   const [posts, setPosts] = useState<CalendarPost[]>([])
   const [feedback, setFeedback] = useState<FeedbackRow[]>([])
+  const [clientsAwaitingReply, setClientsAwaitingReply] = useState(0)
   const [wave, setWave] = useState<WaveStatus | null>(null)
   const [enrolmentsLast24h, setEnrolmentsLast24h] = useState<number>(0)
   const [loading, setLoading] = useState(true)
@@ -84,16 +85,22 @@ export default function TodayDashboardPage() {
 
   async function load() {
     setLoading(true)
-    const [postsRes, feedbackRes, waveRes, enrolRes] = await Promise.all([
+    const [postsRes, feedbackRes, waveRes, enrolRes, unansweredRes] = await Promise.all([
       supabase.from('calendar_posts').select('id, date, time, brand, platform, type, title, caption, graphic, scheduled, posted_at, scheduled_publish_at, ig_post_url').eq('date', date).order('time', { ascending: true, nullsFirst: false }),
       supabase.from('feedback_responses').select('id, created_at, stage, moment, response_text, coach_seen_at, permission_status').is('coach_seen_at', null).order('created_at', { ascending: false }).limit(10),
       fetch('/api/challenge/wave-status').then(r => r.json()).catch(() => null),
       supabase.from('challenge_enrollments').select('*', { count: 'exact', head: true }).gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()),
+      supabase.from('client_messages').select('client_id').eq('sender', 'client').is('responded_at', null),
     ])
     setPosts((postsRes.data ?? []) as CalendarPost[])
     setFeedback((feedbackRes.data ?? []) as FeedbackRow[])
     setWave(waveRes as WaveStatus | null)
     setEnrolmentsLast24h(enrolRes.count ?? 0)
+    // Count distinct clients waiting, not raw messages: three questions from
+    // one person is one conversation to answer, not three.
+    setClientsAwaitingReply(
+      new Set(((unansweredRes.data ?? []) as { client_id: string }[]).map(r => r.client_id)).size
+    )
     setLoading(false)
   }
 
@@ -258,6 +265,7 @@ export default function TodayDashboardPage() {
                 {wave?.isEvergreen && <Metric label="Wave" value="Evergreen" sub="No cap" tone="success" />}
                 <Metric label="Enrolments 24h" value={String(enrolmentsLast24h)} sub="last day" tone="default" />
                 <Metric label="Unseen feedback" value={String(feedback.length)} sub="triage queue" tone={feedback.length > 0 ? 'urgent' : 'default'} />
+                <Metric label="Awaiting reply" value={String(clientsAwaitingReply)} sub="client messages" tone={clientsAwaitingReply > 0 ? 'urgent' : 'default'} />
                 <Metric label="Posts today" value={String(posts.length)} sub={`${feedPosts.length} feed + ${stories.length} stories`} tone="default" />
               </div>
             </Section>

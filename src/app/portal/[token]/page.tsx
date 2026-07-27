@@ -7,7 +7,7 @@ import { getCheckInWindowStatus, getWeekNumber, isCheckinTestMode } from '@/lib/
 import ClientHeader from '@/components/client-header'
 import { isCoachEmail } from '@/lib/coach-auth'
 import { getGpRequestUrl } from '@/lib/gp-request'
-import { brand } from '@/config/tenant'
+import { brand, coach } from '@/config/tenant'
 
 function SectionLabel({ icon: Icon, text }: { icon: LucideIcon; text: string }) {
   return (
@@ -138,6 +138,15 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
 
   // Personal GP request list, if the coach has prepared one for this client.
   const gpRequestUrl = await getGpRequestUrl(admin, client.id)
+
+  // Unread coach replies drive the message card near the top of the portal.
+  const { count: unreadCoachRepliesCount } = await admin
+    .from('client_messages')
+    .select('id', { count: 'exact', head: true })
+    .eq('client_id', client.id)
+    .eq('sender', 'coach')
+    .is('client_read_at', null)
+  const unreadCoachReplies = unreadCoachRepliesCount ?? 0
 
   // Foundational Reading (only the published one)
   const { data: publishedReadingRows } = await admin
@@ -386,6 +395,31 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Unread reply from the coach. Sits above everything else that is
+            optional: a message waiting is the one thing the client should not
+            have to go looking for. */}
+        {unreadCoachReplies > 0 && (
+          <div className="mb-10">
+            <SectionLabel icon={MessageCircle} text={`New from ${coach().firstName}`} />
+            <Link
+              href={`/portal/${token}/message`}
+              className="block rounded-2xl border border-blue-200 bg-blue-50 p-5 hover:border-[#1B6DFC]/60 transition-colors"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-[#1A1A1A] mb-1">
+                    {unreadCoachReplies === 1 ? 'You have a new message' : `You have ${unreadCoachReplies} new messages`}
+                  </p>
+                  <p className="text-xs text-[#6B6B6B] leading-relaxed">
+                    {coach().firstName} replied to you. Open the conversation to read it and reply.
+                  </p>
+                </div>
+                <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">Read →</span>
+              </div>
+            </Link>
           </div>
         )}
 

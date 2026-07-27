@@ -16,6 +16,8 @@ interface ResourceCard {
   description: string
   href: string
   icon: typeof TrendingUp
+  /** Unread count shown as a Signal Blue pill on the right of the tile. */
+  badge?: number
 }
 
 export default async function ResourcesHubPage({ params }: { params: Promise<{ token: string }> }) {
@@ -36,6 +38,14 @@ export default async function ResourcesHubPage({ params }: { params: Promise<{ t
   if (userEmail !== (client.email ?? '').toLowerCase() && !isCoachEmail(userEmail)) {
     redirect(`/portal/${token}`)
   }
+
+  // Unread replies from the coach, so the tile can carry a badge.
+  const { count: unreadReplies } = await admin
+    .from('client_messages')
+    .select('id', { count: 'exact', head: true })
+    .eq('client_id', client.id)
+    .eq('sender', 'coach')
+    .is('client_read_at', null)
 
   const cards: ResourceCard[] = [
     {
@@ -63,10 +73,11 @@ export default async function ResourcesHubPage({ params }: { params: Promise<{ t
       icon: Compass,
     },
     {
-      title: 'Message your coach',
-      description: 'Send a non-urgent question. For urgent things, use WhatsApp.',
+      title: 'Messages',
+      description: 'Your conversation with your coach. Ask a question, read their replies.',
       href: `/portal/${token}/message`,
       icon: MessageSquare,
+      badge: unreadReplies ?? 0,
     },
     {
       title: 'Account and service',
@@ -100,7 +111,14 @@ export default async function ResourcesHubPage({ params }: { params: Promise<{ t
                     <Icon size={16} className="text-[#1B6DFC]" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[15px] font-semibold text-[#1A1A1A] mb-1 group-hover:text-[#1B6DFC] transition-colors">{card.title}</p>
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="text-[15px] font-semibold text-[#1A1A1A] group-hover:text-[#1B6DFC] transition-colors">{card.title}</p>
+                      {!!card.badge && card.badge > 0 && (
+                        <span className="text-[10px] font-bold text-[#FFFFFF] bg-[#1B6DFC] rounded-full px-2 py-0.5 leading-none">
+                          {card.badge} new
+                        </span>
+                      )}
+                    </div>
                     <p className="text-[12px] text-[#6B6B6B] leading-relaxed">{card.description}</p>
                   </div>
                   <ArrowUpRight size={14} className="text-[#999999] group-hover:text-[#1B6DFC] transition-colors shrink-0 mt-2" />

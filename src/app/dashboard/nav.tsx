@@ -33,6 +33,7 @@ const CLIENTS_CLUSTER: NavCluster = {
   label: 'Clients',
   items: [
     { href: '/dashboard/coaching', label: 'Coaching' },
+    { href: '/dashboard/messages', label: 'Messages' },
     { href: '/dashboard/programs', label: 'Programs' },
     { href: '/dashboard/gym-sessions', label: 'Gym' },
     { href: '/dashboard/group-classes', label: 'Classes' },

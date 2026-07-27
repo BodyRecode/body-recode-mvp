@@ -23,6 +23,7 @@ export type ClientCommunicationKind =
   | 'weekly_checkin_feedback'
   | 'program_log_nudge'
   | 'in_person_session_reminder'
+  | 'coach_message_reply'
 
 export const COMMUNICATION_KIND_LABELS: Record<ClientCommunicationKind, string> = {
   subscription_link: 'Subscription link',
@@ -42,6 +43,7 @@ export const COMMUNICATION_KIND_LABELS: Record<ClientCommunicationKind, string> 
   weekly_checkin_feedback: 'Weekly check-in feedback',
   program_log_nudge: 'Log-your-session nudge',
   in_person_session_reminder: 'In-person session reminder (SMS)',
+  coach_message_reply: 'Coach replied to a message',
 }
 
 export interface LogClientCommunicationInput {
