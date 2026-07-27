@@ -3,6 +3,7 @@ import { notFound, redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { isCoachEmail } from '@/lib/coach-auth'
 import PortalPageShell from '../portal-page-shell'
+import AskAboutThis from '@/components/ask-about-this'
 import { protocolBySlug, CATEGORY_LABELS, type RecoveryCategory, type RecoveryProtocol } from '@/lib/recovery-protocols-seed'
 import { Sparkles } from 'lucide-react'
 
@@ -149,6 +150,9 @@ export default async function ClientRecoveryPage({
           ))}
         </div>
       )}
+      <div className="mt-5">
+        <AskAboutThis token={token} kind="recovery" />
+      </div>
     </PortalPageShell>
   )
 }

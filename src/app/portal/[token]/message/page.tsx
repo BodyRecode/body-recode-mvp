@@ -6,11 +6,19 @@ import ClientHeader from '@/components/client-header'
 import MessageThread from './message-thread'
 import { isCoachEmail } from '@/lib/coach-auth'
 import { coach } from '@/config/tenant'
+import { isAnchorKind } from '@/lib/message-anchors'
 
 export const dynamic = 'force-dynamic'
 
-export default async function MessageCoachPage({ params }: { params: Promise<{ token: string }> }) {
+export default async function MessageCoachPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ token: string }>
+  searchParams: Promise<{ about?: string; label?: string }>
+}) {
   const { token } = await params
+  const sp = await searchParams
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/portal/login')
@@ -31,11 +39,16 @@ export default async function MessageCoachPage({ params }: { params: Promise<{ t
   // Full conversation, oldest first so it reads top to bottom like a thread.
   const { data: messages } = await admin
     .from('client_messages')
-    .select('id, body, sender, created_at')
+    .select('id, body, sender, created_at, anchor_kind, anchor_label')
     .eq('client_id', client.id)
     .order('created_at', { ascending: true })
 
   const coachFirstName = coach().firstName
+
+  // Arrived via "Ask about this" on an artefact page: pre-anchor the composer.
+  const pendingAnchor = isAnchorKind(sp.about)
+    ? { kind: sp.about, label: sp.label?.slice(0, 120) ?? null }
+    : null
 
   return (
     <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
@@ -56,11 +69,14 @@ export default async function MessageCoachPage({ params }: { params: Promise<{ t
           clientName={client.name}
           coachFirstName={coachFirstName}
           portalToken={token}
+          pendingAnchor={pendingAnchor}
           initialMessages={(messages ?? []).map(m => ({
             id: m.id as string,
             body: m.body as string,
             sender: ((m.sender as string) ?? 'client') as 'client' | 'coach',
             created_at: m.created_at as string,
+            anchor_kind: isAnchorKind(m.anchor_kind) ? m.anchor_kind : null,
+            anchor_label: (m.anchor_label as string | null) ?? null,
           }))}
         />
 

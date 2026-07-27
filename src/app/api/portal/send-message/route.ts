@@ -6,6 +6,11 @@ import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { appUrl } from '@/lib/app-url'
 import { fromBrand } from '@/lib/email-shell'
 import { coach } from '@/config/tenant'
+import { isAnchorKind, anchorChipLabel } from '@/lib/message-anchors'
+
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+}
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
@@ -14,7 +19,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
   }
 
-  const { clientId, body, portalToken } = await req.json()
+  const { clientId, body, portalToken, anchorKind, anchorId, anchorLabel } = await req.json()
   if (!clientId || typeof body !== 'string' || !body.trim()) {
     return NextResponse.json({ error: 'Missing message' }, { status: 400 })
   }
@@ -39,9 +44,22 @@ export async function POST(req: NextRequest) {
   // Strip em dashes per content rule (this lands in Kade's email + Supabase)
   const cleaned = body.trim().replace(/—/g, ', ')
 
+  // Anchor is optional and comes from the client, so validate the kind against
+  // the allow-list rather than trusting it into a checked column.
+  const anchor = isAnchorKind(anchorKind)
+    ? {
+        anchor_kind: anchorKind,
+        anchor_id: typeof anchorId === 'string' && anchorId ? anchorId : null,
+        anchor_label:
+          typeof anchorLabel === 'string' && anchorLabel.trim()
+            ? anchorLabel.trim().slice(0, 120)
+            : null,
+      }
+    : {}
+
   const { error: insertErr } = await admin
     .from('client_messages')
-    .insert({ client_id: clientId, body: cleaned, sender: 'client' })
+    .insert({ client_id: clientId, body: cleaned, sender: 'client', ...anchor })
 
   if (insertErr) {
     console.error('Failed to log client message:', insertErr)
@@ -66,6 +84,9 @@ export async function POST(req: NextRequest) {
           heading: `${client.name} sent you a message`,
           body: [
             `<em style="color:#999999;">Sent via the client portal. Reply from the Messages panel on their profile and it lands in their portal thread, not a separate email chain.</em>`,
+            ...(isAnchorKind(anchorKind)
+              ? [`<p style="margin:12px 0 0 0;font-size:13px;color:#6B6B6B;">About: <strong style="color:#1B6DFC;">${escapeHtml(anchorChipLabel(anchorKind, anchorLabel))}</strong></p>`]
+              : []),
             `<div style="background:#FFFFFF;border:1px solid #E5E5E5;border-radius:12px;padding:16px;margin:16px 0;color:#E5E5E5;font-size:14px;line-height:1.7;">${escapedBody}</div>`,
           ],
           ctaLabel: 'Open the conversation',

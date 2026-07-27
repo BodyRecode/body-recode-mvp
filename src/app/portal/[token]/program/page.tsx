@@ -4,6 +4,7 @@ import ProgramReadingInline from '@/components/program-reading-inline'
 import TrajectoryReadingInline from '@/components/trajectory-reading-inline'
 import Link from 'next/link'
 import PortalPageShell from '../portal-page-shell'
+import AskAboutThis from '@/components/ask-about-this'
 
 import ProgramSessions from './program-sessions'
 
@@ -161,6 +162,8 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
             {Array.isArray(program.sessions) && program.sessions.length > 0 && (
               <ProgramSessions sessions={program.sessions as Session[]} />
             )}
+
+            <AskAboutThis token={token} kind="program" label={program.block_name ?? null} />
         </div>
       )}
     </PortalPageShell>

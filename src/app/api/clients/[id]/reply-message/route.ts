@@ -52,6 +52,27 @@ export async function POST(
   // Em dashes are a house style rule and this lands in the client's inbox.
   const cleaned = body.trim().replace(/—/g, ', ')
 
+  // The most recent unanswered client message, used to quote context in the
+  // email, to close off the outstanding items in the coach inbox, and to
+  // inherit the anchor so a reply about the nutrition plan stays filed under
+  // the nutrition plan rather than becoming a loose general message.
+  const { data: pending } = await admin
+    .from('client_messages')
+    .select('id, body, anchor_kind, anchor_id, anchor_label')
+    .eq('client_id', clientId)
+    .eq('sender', 'client')
+    .is('responded_at', null)
+    .order('created_at', { ascending: false })
+
+  const answering = pending?.[0] ?? null
+  const inheritedAnchor = answering?.anchor_kind
+    ? {
+        anchor_kind: answering.anchor_kind,
+        anchor_id: answering.anchor_id ?? null,
+        anchor_label: answering.anchor_label ?? null,
+      }
+    : {}
+
   const { data: inserted, error: insertErr } = await admin
     .from('client_messages')
     .insert({
@@ -60,6 +81,7 @@ export async function POST(
       sender: 'coach',
       sent_by: user.id,
       read_at: new Date().toISOString(), // a coach's own message is never unread to them
+      ...inheritedAnchor,
     })
     .select('id, created_at')
     .maybeSingle()
@@ -68,16 +90,6 @@ export async function POST(
     console.error('[reply-message] insert failed:', insertErr)
     return NextResponse.json({ error: 'Could not save reply' }, { status: 500 })
   }
-
-  // The most recent unanswered client message, used to quote context in the
-  // email and to close off the outstanding items in the coach inbox.
-  const { data: pending } = await admin
-    .from('client_messages')
-    .select('id, body')
-    .eq('client_id', clientId)
-    .eq('sender', 'client')
-    .is('responded_at', null)
-    .order('created_at', { ascending: false })
 
   const pendingIds = (pending ?? []).map(m => m.id)
   if (pendingIds.length > 0) {
@@ -97,7 +109,7 @@ export async function POST(
       firstName: client.name?.split(' ')[0] ?? 'there',
       coachFirstName: coach().firstName,
       replyBody: cleaned,
-      inReplyTo: pending?.[0]?.body ?? null,
+      inReplyTo: answering?.body ?? null,
       threadUrl,
     })
     try {

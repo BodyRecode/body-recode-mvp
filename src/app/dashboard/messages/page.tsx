@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { MessageSquare } from 'lucide-react'
 import { PageHeader, Card, StatCard, EmptyState } from '@/components/dashboard/ui'
+import { isAnchorKind, anchorChipLabel, anchorPortalHref } from '@/lib/message-anchors'
 import ReplyBox from './reply-box'
 
 export const dynamic = 'force-dynamic'
@@ -18,6 +19,8 @@ type MessageRow = {
   read_at: string | null
   responded_at: string | null
   client_read_at: string | null
+  anchor_kind: string | null
+  anchor_label: string | null
 }
 
 function when(iso: string): string {
@@ -40,7 +43,7 @@ export default async function MessagesInboxPage() {
 
   const { data: messageRows } = await admin
     .from('client_messages')
-    .select('id, client_id, body, sender, created_at, read_at, responded_at, client_read_at')
+    .select('id, client_id, body, sender, created_at, read_at, responded_at, client_read_at, anchor_kind, anchor_label')
     .order('created_at', { ascending: false })
     .limit(500)
 
@@ -142,6 +145,18 @@ export default async function MessagesInboxPage() {
                           {m.sender === 'coach' && (m.client_read_at ? ' · read' : ' · unread')}
                         </p>
                       </div>
+                      {isAnchorKind(m.anchor_kind) && (
+                        <Link
+                          href={
+                            client?.onboarding_token
+                              ? anchorPortalHref(client.onboarding_token, m.anchor_kind)
+                              : `/dashboard/clients/${clientId}`
+                          }
+                          className="inline-block text-[10px] font-medium text-[#1B6DFC] bg-[#FFFFFF] border border-[rgba(27,109,252,0.25)] rounded-full px-2 py-0.5 mb-2 hover:bg-[#F3F7FF] transition-colors"
+                        >
+                          {anchorChipLabel(m.anchor_kind, m.anchor_label)} →
+                        </Link>
+                      )}
                       <p className="text-[14px] text-[#3A3A3A] leading-relaxed whitespace-pre-wrap">{m.body}</p>
                     </div>
                   ))}

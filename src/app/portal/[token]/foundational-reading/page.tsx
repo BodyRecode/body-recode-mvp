@@ -6,6 +6,7 @@ import { ChevronLeft, Download } from 'lucide-react'
 import ReadingLayout from '@/components/foundational-reading-layout'
 import PortalReadingDownload from './portal-reading-download'
 import { isCoachEmail } from '@/lib/coach-auth'
+import AskAboutThis from '@/components/ask-about-this'
 
 export default async function PortalFoundationalReadingPage({
   params,
@@ -82,6 +83,13 @@ export default async function PortalFoundationalReadingPage({
         }}
         client={{ name: client.name }}
       />
+      <div className="max-w-2xl mx-auto px-6 pb-16">
+        <AskAboutThis
+          token={token}
+          kind="foundational_reading"
+          label={cffs.body_state_classification ?? null}
+        />
+      </div>
     </>
   )
 }

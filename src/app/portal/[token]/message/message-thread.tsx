@@ -2,13 +2,21 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Loader2, Send } from 'lucide-react'
+import { Loader2, Send, X } from 'lucide-react'
+import { anchorChipLabel, type AnchorKind } from '@/lib/message-anchors'
 
 export interface ThreadMessage {
   id: string
   body: string
   sender: 'client' | 'coach'
   created_at: string
+  anchor_kind: AnchorKind | null
+  anchor_label: string | null
+}
+
+export interface PendingAnchor {
+  kind: AnchorKind
+  label: string | null
 }
 
 function when(iso: string): string {
@@ -27,17 +35,22 @@ export default function MessageThread({
   coachFirstName,
   portalToken,
   initialMessages,
+  pendingAnchor,
 }: {
   clientId: string
   clientName: string
   coachFirstName: string
   portalToken: string
   initialMessages: ThreadMessage[]
+  pendingAnchor: PendingAnchor | null
 }) {
   const router = useRouter()
   const [body, setBody] = useState('')
   const [sending, setSending] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  // Kept in state so the client can drop the anchor and ask something general
+  // without navigating away and losing what they have already typed.
+  const [anchor, setAnchor] = useState<PendingAnchor | null>(pendingAnchor)
   const marked = useRef(false)
 
   // Clear the unread badge once the thread is actually on screen. Done here
@@ -65,11 +78,20 @@ export default function MessageThread({
       const res = await fetch('/api/portal/send-message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ clientId, body, portalToken }),
+        body: JSON.stringify({
+          clientId,
+          body,
+          portalToken,
+          anchorKind: anchor?.kind ?? null,
+          anchorLabel: anchor?.label ?? null,
+        }),
       })
       const data = await res.json().catch(() => ({}))
       if (!res.ok) throw new Error(data.error || `Server returned ${res.status}`)
       setBody('')
+      setAnchor(null)
+      // Drop ?about= so a refresh doesn't silently re-anchor the next message.
+      router.replace(`/portal/${portalToken}/message`)
       router.refresh()
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Could not send')
@@ -99,6 +121,11 @@ export default function MessageThread({
                 </p>
                 <p className="text-[10px] text-[#999999]">{when(m.created_at)}</p>
               </div>
+              {m.anchor_kind && (
+                <p className="inline-block text-[10px] font-medium text-[#1B6DFC] bg-[#FFFFFF] border border-[rgba(27,109,252,0.25)] rounded-full px-2 py-0.5 mb-2">
+                  {anchorChipLabel(m.anchor_kind, m.anchor_label)}
+                </p>
+              )}
               <p className="text-[14px] text-[#3A3A3A] leading-relaxed whitespace-pre-wrap">{m.body}</p>
             </div>
           ))}
@@ -106,6 +133,22 @@ export default function MessageThread({
       )}
 
       <form onSubmit={submit} className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5">
+        {anchor && (
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-[11px] text-[#999999]">Asking about</span>
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-[#1B6DFC] bg-[#F3F7FF] border border-[rgba(27,109,252,0.25)] rounded-full pl-2.5 pr-1.5 py-1">
+              {anchorChipLabel(anchor.kind, anchor.label)}
+              <button
+                type="button"
+                onClick={() => setAnchor(null)}
+                aria-label="Remove this topic"
+                className="text-[#1B6DFC] hover:text-[#1A1A1A] transition-colors"
+              >
+                <X size={11} />
+              </button>
+            </span>
+          </div>
+        )}
         <textarea
           value={body}
           onChange={e => setBody(e.target.value)}

@@ -5,6 +5,7 @@ import NutritionReadingInline from '@/components/nutrition-reading-inline'
 import PortalPageShell from '../portal-page-shell'
 import { computeNutritionTotals, type FoodInput } from '@/lib/nutrition-validation'
 import PlanMeals from './plan-meals'
+import AskAboutThis from '@/components/ask-about-this'
 
 interface Meal {
   meal_number: number
@@ -391,6 +392,8 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
                 </ul>
               </div>
             )}
+
+            <AskAboutThis token={token} kind="nutrition" label={plan.plan_name ?? null} />
         </div>
       )}
     </PortalPageShell>
