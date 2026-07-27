@@ -1,0 +1,12 @@
+{
+  "_meta": { "out_dir": "/Users/kadedunstone/body-recode-mvp/public/calendar" },
+  "posts": [
+    { "slug": "br-fill_0728_receipts-carousel", "type": "carousel", "slides": [
+      { "hook": "The first reads", "hook_2": "just landed.", "sub": "Real words. Day 14." },
+      { "hook": "\"By Day 7 the", "hook_2": "crash was gone.\"", "sub": "Bridgett · Day 14 · Depleted to Transitioning" },
+      { "hook": "\"It named", "hook_2": "the pattern.\"", "sub": "Amanda · Day 14 · at home", "blue": true },
+      { "hook": "\"Two weeks gave", "hook_2": "me the reason.\"", "sub": "kim · Day 14 · at home" },
+      { "hook": "Want your own", "hook_2": "read? It's free.", "sub": "14 days. No card.", "is_cta": true, "cta_text": "→ Join the Challenge" }
+    ]}
+  ]
+}
