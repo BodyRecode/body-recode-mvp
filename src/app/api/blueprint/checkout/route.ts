@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
-import { createAdminClient } from '@/lib/supabase/admin'
 import { appUrl } from '@/lib/app-url'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
@@ -12,17 +11,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Name and email are required.' }, { status: 400 })
   }
 
-  // Check if this buyer already has a pattern from the challenge
-  const admin = createAdminClient()
-  const { data: challengeEnrollment } = await admin
-    .from('challenge_enrollments')
-    .select('quiz_result')
-    .ilike('email', email.trim())
-    .not('quiz_result', 'is', null)
-    .maybeSingle()
-
-  const patternFromChallenge = challengeEnrollment?.quiz_result ?? null
-
+  // Pattern is resolved authoritatively in the Stripe webhook (see
+  // resolveBuyerPattern): it anchors on the lead by email OR the Stripe-collected
+  // phone, then Challenge quiz → high-confidence scorecard → in-portal
+  // assessment. Nothing to look up here (the old email query hit a non-existent
+  // challenge_enrollments.email column and silently no-op'd anyway).
   let session
   try {
     session = await stripe.checkout.sessions.create({
@@ -50,7 +43,6 @@ export async function POST(request: NextRequest) {
       type: 'blueprint_purchase',
       name: name.trim(),
       email: email.toLowerCase().trim(),
-      pattern_from_challenge: patternFromChallenge ?? '',
     },
       success_url: `${appUrl()}/blueprint/pending?email=${encodeURIComponent(email.toLowerCase().trim())}`,
       cancel_url: `${appUrl()}/blueprint`,

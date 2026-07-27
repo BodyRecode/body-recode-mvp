@@ -10,6 +10,7 @@ import { getDefaultCoachId } from '@/lib/default-coach'
 import { appUrl } from '@/lib/app-url'
 import { formatPhone } from '@/lib/twilio'
 import { getCoachingPackage } from '@/lib/coaching-packages'
+import { resolveBuyerPattern, toBlueprintSlug } from '@/lib/pattern-taxonomy'
 import {
   darkEmailShell, emailUrlFallback,
   emailLogo, emailEyebrow, emailHeading, emailDivider,
@@ -876,19 +877,23 @@ ${darkEmailSignature()}
 
   // Handle Blueprint purchase
   if (session.metadata?.type === 'blueprint_purchase') {
-    const { name, email, pattern_from_challenge } = session.metadata
+    const { name, email } = session.metadata
     const admin = createAdminClient()
     const firstName = name.split(' ')[0]
 
-    // If buyer came through challenge, pattern is pre-loaded — create enrollment directly
-    // If no pattern, portal will show assessment gate
-    const pattern = pattern_from_challenge || null
-
-    // Phone collected by Stripe checkout, normalised to E.164 so it matches the
-    // challenge lead's phone. Lets the re-engagement guards recognise a buyer
-    // who paid under a different email than they enrolled with.
+    // Phone collected by Stripe checkout, normalised to E.164 so a buyer who
+    // paid under a different email than they used in the funnel still matches.
     const buyerPhoneRaw = session.customer_details?.phone
     const buyerPhone = buyerPhoneRaw ? formatPhone(buyerPhoneRaw) : null
+
+    // Resolve their pattern from the best read already on file (Challenge quiz →
+    // high-confidence scorecard), matched by email OR phone. If nothing usable,
+    // the portal shows the assessment gate. Legacy metadata is a last resort for
+    // any checkout session created before this resolver shipped.
+    const resolved = await resolveBuyerPattern(admin, { email, phone: buyerPhone })
+    const legacySlug = toBlueprintSlug(session.metadata.pattern_from_challenge)
+    const pattern = resolved.slug ?? legacySlug
+    const patternSource = resolved.slug ? resolved.source : legacySlug ? 'challenge' : null
 
     const { data: enrollment } = await admin
       .from('blueprint_enrollments')
@@ -897,7 +902,7 @@ ${darkEmailSignature()}
         first_name: firstName,
         phone: buyerPhone,
         pattern: pattern ?? 'pending',
-        pattern_source: pattern ? 'challenge' : 'assessment',
+        pattern_source: patternSource ?? 'assessment',
         stripe_payment_intent_id: session.payment_intent as string ?? null,
       })
       .select('token')
@@ -939,13 +944,25 @@ ${darkEmailSignature()}
     const admin = createAdminClient()
     const stripeSubscriptionId = session.subscription as string ?? null
 
+    // Priority: pattern carried from their Blueprint; else resolve from the
+    // Challenge / high-confidence scorecard read on file (by email). Only then
+    // fall back to the in-portal assessment.
+    const bpSlug = toBlueprintSlug(pattern_from_blueprint)
+    let mPattern = bpSlug
+    let mSource: string | null = bpSlug ? 'blueprint' : null
+    if (!mPattern) {
+      const r = await resolveBuyerPattern(admin, { email, phone: null })
+      mPattern = r.slug
+      mSource = r.source
+    }
+
     const { data: membership } = await admin
       .from('membership_enrollments')
       .insert({
         email: email.toLowerCase(),
         first_name,
-        pattern: pattern_from_blueprint || 'pending',
-        pattern_source: pattern_from_blueprint ? 'blueprint' : 'assessment',
+        pattern: mPattern ?? 'pending',
+        pattern_source: mSource ?? 'assessment',
         blueprint_token: blueprint_token || null,
         stripe_subscription_id: stripeSubscriptionId,
         current_block: 'A',
@@ -973,7 +990,7 @@ ${darkEmailSignature()}
       const coachNotify = buildMembershipCoachNotificationEmail({
         firstName: first_name,
         email,
-        pattern: pattern_from_blueprint || null,
+        pattern: mPattern,
         blueprintToken: blueprint_token || null,
       })
       await resend.emails.send({
@@ -1001,14 +1018,25 @@ ${darkEmailSignature()}
     const buyerPhoneRaw = session.customer_details?.phone
     const buyerPhone = buyerPhoneRaw ? formatPhone(buyerPhoneRaw) : null
 
+    // Priority: pattern carried from their Blueprint; else resolve from the
+    // Challenge / high-confidence scorecard read (by email OR phone); else assess.
+    const bpSlug = toBlueprintSlug(pattern_from_blueprint)
+    let extPattern = bpSlug
+    let extSource: string | null = bpSlug ? 'blueprint' : null
+    if (!extPattern) {
+      const r = await resolveBuyerPattern(admin, { email, phone: buyerPhone })
+      extPattern = r.slug
+      extSource = r.source
+    }
+
     const { data: enrollment } = await admin
       .from('extension_enrollments')
       .insert({
         email: email.toLowerCase(),
         first_name,
         phone: buyerPhone,
-        pattern: pattern_from_blueprint || 'pending',
-        pattern_source: pattern_from_blueprint ? 'blueprint' : 'assessment',
+        pattern: extPattern ?? 'pending',
+        pattern_source: extSource ?? 'assessment',
         blueprint_token: blueprint_token || null,
         stripe_payment_intent_id: session.payment_intent as string ?? null,
         current_week: 1,
