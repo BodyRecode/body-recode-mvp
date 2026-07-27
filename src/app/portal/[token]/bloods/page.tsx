@@ -39,6 +39,19 @@ export default async function BloodsPage({ params }: { params: Promise<{ token: 
 
   const list = panels ?? []
 
+  // Gender-matched education guide. Lives on intakes, not clients. Hidden when
+  // gender is unset or is neither male nor female — there is no appropriate
+  // version to serve, and the guide page bounces direct URL hits anyway.
+  const { data: genderIntake } = await admin
+    .from('intakes')
+    .select('gender')
+    .eq('client_id', client.id)
+    .order('submitted_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+  const guideGender = (genderIntake?.gender ?? '').toLowerCase()
+  const showBloodworkGuide = guideGender === 'male' || guideGender === 'female'
+
   return (
     <PortalPageShell
       backHref={`/portal/${token}`}
@@ -46,6 +59,22 @@ export default async function BloodsPage({ params }: { params: Promise<{ token: 
       title="Your blood test results"
       description="If you have recent blood work, you can upload a copy here. Your coach reads it as one more signal alongside everything else, so your training and nutrition account for what is actually happening in your body. We are not your doctor: anything medical stays with your GP, and we will always point you back to them when that is the right call."
     >
+      {showBloodworkGuide && (
+        <Link
+          href={`/portal/${token}/guides/baseline-bloodwork`}
+          className="block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5 mb-8 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors"
+        >
+          <p className="text-xs font-bold tracking-widest text-[#999999] uppercase mb-3">Before you start</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-[#3A3A3A]">Understanding your baseline bloodwork</p>
+              <p className="text-xs text-[#999999] mt-0.5">What a comprehensive baseline panel covers and what each marker measures. Download the guide to keep.</p>
+            </div>
+            <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
+          </div>
+        </Link>
+      )}
+
       <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5 mb-8">
           <p className="text-xs font-bold tracking-widest text-[#999999] uppercase mb-3">Upload results</p>
           <BloodUploadForm clientId={client.id} />

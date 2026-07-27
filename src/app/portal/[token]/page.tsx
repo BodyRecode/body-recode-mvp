@@ -120,6 +120,21 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     .eq('client_id', client.id)
     .order('day_of_week', { ascending: true })
 
+  // Gender drives which baseline-bloodwork education PDF we surface in the
+  // Health Markers section. Lives on intakes, not clients. Clients whose
+  // gender is unset or neither male nor female don't see the card at all —
+  // there is no appropriate version to serve them, and the guide page itself
+  // bounces them if they reach the URL directly.
+  const { data: genderIntake } = await admin
+    .from('intakes')
+    .select('gender')
+    .eq('client_id', client.id)
+    .order('submitted_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+  const bloodworkGuideGender = (genderIntake?.gender ?? '').toLowerCase()
+  const showBloodworkGuide = bloodworkGuideGender === 'male' || bloodworkGuideGender === 'female'
+
   // Foundational Reading (only the published one)
   const { data: publishedReadingRows } = await admin
     .from('cffs')
@@ -665,21 +680,38 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
           </Link>
         </div>
 
-        {/* Health Markers - always-on self-serve blood test upload */}
+        {/* Health Markers - always-on self-serve blood test upload, plus the
+            gender-matched baseline-bloodwork education guide. */}
         <div className="mb-10">
           <SectionLabel icon={Activity} text="Health Markers" />
-          <Link
-            href={`/portal/${token}/bloods`}
-            className="block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF]/50 p-4 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-[#3A3A3A]">Blood test results</p>
-                <p className="text-xs text-[#999999] mt-0.5">Have recent blood work? Upload a copy so your coach can factor it into your plan.</p>
+          <div className="space-y-3">
+            <Link
+              href={`/portal/${token}/bloods`}
+              className="block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF]/50 p-4 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-[#3A3A3A]">Blood test results</p>
+                  <p className="text-xs text-[#999999] mt-0.5">Have recent blood work? Upload a copy so your coach can factor it into your plan.</p>
+                </div>
+                <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
               </div>
-              <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
-            </div>
-          </Link>
+            </Link>
+            {showBloodworkGuide && (
+              <Link
+                href={`/portal/${token}/guides/baseline-bloodwork`}
+                className="block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF]/50 p-4 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-[#3A3A3A]">Understanding your baseline bloodwork</p>
+                    <p className="text-xs text-[#999999] mt-0.5">What a comprehensive baseline panel covers and what each marker measures. Download the guide to keep.</p>
+                  </div>
+                  <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
+                </div>
+              </Link>
+            )}
+          </div>
         </div>
 
         {/* Coach feedback */}

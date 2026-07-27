@@ -11,7 +11,6 @@ interface Guide {
   title: string
   desc: string
   icon: typeof Moon
-  requiresGender?: boolean
 }
 
 const GUIDES: Guide[] = [
@@ -20,7 +19,10 @@ const GUIDES: Guide[] = [
   { slug: 'pre-session',      title: 'Pre-session prep',    desc: 'What to do in the 30-60 minutes before a training session to walk in primed.', icon: Footprints },
   { slug: 'post-session',     title: 'Post-session recovery', desc: 'The hour after training matters more than most clients realise. Here is the order of operations.', icon: Snowflake },
   { slug: 'weekly-structure', title: 'Weekly structure',    desc: 'How to think about your week as a system: training, eating, sleeping, recovering.', icon: Calendar },
-  { slug: 'baseline-bloodwork', title: 'Understanding your baseline bloodwork', desc: 'What a comprehensive baseline panel covers and what each marker measures. Download to keep and take to your GP.', icon: Droplet, requiresGender: true },
+  // "Understanding your baseline bloodwork" lives in the portal's Health
+  // Markers section, not here — it sits with the blood-test upload it relates
+  // to. The page itself is still at /guides/baseline-bloodwork; only the tile
+  // moved. It is gender-gated at the point it is surfaced.
 ]
 
 export default async function GuidesIndexPage({ params }: { params: Promise<{ token: string }> }) {
@@ -42,19 +44,7 @@ export default async function GuidesIndexPage({ params }: { params: Promise<{ to
     redirect(`/portal/${token}`)
   }
 
-  // Gender lives on intakes.gender, not clients. Pull the most recent intake
-  // to resolve. If no intake exists yet, gender is unknown and gender-gated
-  // guides are hidden (safer than defaulting a male/female slant).
-  const { data: intake } = await admin
-    .from('intakes')
-    .select('gender')
-    .eq('client_id', client.id)
-    .order('submitted_at', { ascending: false })
-    .limit(1)
-    .maybeSingle()
-  const normalisedGender = (intake?.gender ?? '').toLowerCase()
-  const genderKnown = normalisedGender === 'male' || normalisedGender === 'female'
-  const visibleGuides = GUIDES.filter(g => !g.requiresGender || genderKnown)
+  const visibleGuides = GUIDES
 
   return (
     <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">

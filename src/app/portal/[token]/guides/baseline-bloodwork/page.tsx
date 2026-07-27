@@ -55,8 +55,9 @@ export default async function BaselineBloodworkGuidePage({ params }: { params: P
   const normalisedGender = (intake?.gender ?? '').toLowerCase()
   if (normalisedGender !== 'male' && normalisedGender !== 'female') {
     // No intake / gender not resolved → guide tile wouldn't have been shown.
-    // If they hit this URL directly, bounce them back to the guides index.
-    redirect(`/portal/${token}/guides`)
+    // If they hit this URL directly, bounce them back to Health Markers,
+    // which is where the card is surfaced from.
+    redirect(`/portal/${token}/bloods`)
   }
 
   const storagePath = normalisedGender === 'male'
@@ -88,7 +89,7 @@ export default async function BaselineBloodworkGuidePage({ params }: { params: P
       <ClientHeader />
       <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-8">
-          <Link href={`/portal/${token}/guides`} className="text-[12px] text-[#999999] hover:text-[#3A3A3A] transition-colors">← Back to guides</Link>
+          <Link href={`/portal/${token}/bloods`} className="text-[12px] text-[#999999] hover:text-[#3A3A3A] transition-colors">← Back to health markers</Link>
           <p
             className="text-[10px] font-bold text-[#1B6DFC] uppercase mt-4 mb-3"
             style={{ fontFamily: MONO_FONT, letterSpacing: '0.18em' }}
@@ -114,7 +115,7 @@ export default async function BaselineBloodworkGuidePage({ params }: { params: P
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-[15px] font-semibold text-[#1A1A1A] mb-0.5 group-hover:text-[#1B6DFC] transition-colors">Download the guide (PDF)</p>
-              <p className="text-[12px] text-[#6B6B6B] leading-relaxed">Save it, print it, take it to your GP appointment.</p>
+              <p className="text-[12px] text-[#6B6B6B] leading-relaxed">Read it before your appointment so you understand what is being measured and why.</p>
             </div>
           </a>
         ) : (
