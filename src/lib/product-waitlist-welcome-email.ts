@@ -136,7 +136,7 @@ ${emailFeaturedCard(
 ${emailBody('The Blueprint costs $97 one-time. No subscription. The 6 weeks land in your portal on Day 1 and you keep everything after.', { bottom: 28 })}
 ${emailFeaturedCard(`
   <p style="margin:0 0 8px;font-size:13px;font-weight:800;color:#1A1A1A;letter-spacing:0.02em;line-height:1.35;text-transform:uppercase;">Optional · ease in first</p>
-  <p style="margin:0;font-size:14px;color:#3A3A3A;line-height:1.7;">Your result points to the Blueprint, but it is a recommendation, not a gate. If you would rather start with the free 14-Day Body Decode Challenge and see what your Day 14 Report says before committing to the Blueprint, that path is open. The free 14-Day Body Decode Challenge is open now.</p>
+  <p style="margin:0;font-size:14px;color:#3A3A3A;line-height:1.7;">Your result points to the Blueprint, but it is a recommendation, not a gate. If you would rather start with the free 14-Day Body Decode Challenge and see what your Day 14 Report says before committing to the Blueprint, that path is open. You sign up on the Challenge page, and the first step inside is a quick scorecard that reads your state.</p>
 `, { eyebrow: undefined })}
 ${emailBody('Nothing you need to do right now. If you want a sense of the corrective work the Blueprint does, the pattern breakdowns on Instagram are the best preview:', { bottom: 12 })}
 ${emailCta({ href: IG_URL_BRAND, label: 'Follow @body_recode_ on Instagram' })}
@@ -166,7 +166,7 @@ ${emailFeaturedCard(
 ${emailBody('The Membership is $49 per week. Cancel anytime, no contract, no minimum term. The infrastructure is designed to compound over time, but the door out is open whenever you want it.', { bottom: 28 })}
 ${emailFeaturedCard(`
   <p style="margin:0 0 8px;font-size:13px;font-weight:800;color:#1A1A1A;letter-spacing:0.02em;line-height:1.35;text-transform:uppercase;">Optional · ease in first</p>
-  <p style="margin:0;font-size:14px;color:#3A3A3A;line-height:1.7;">Your result points to the Membership, but it is a recommendation, not a gate. If you would rather start with the free 14-Day Body Decode Challenge to see the work firsthand before committing to the long arc, that path is open. The free 14-Day Body Decode Challenge is open now.</p>
+  <p style="margin:0;font-size:14px;color:#3A3A3A;line-height:1.7;">Your result points to the Membership, but it is a recommendation, not a gate. If you would rather start with the free 14-Day Body Decode Challenge to see the work firsthand before committing to the long arc, that path is open. You sign up on the Challenge page, and the first step inside is a quick scorecard that reads your state.</p>
 `, { eyebrow: undefined })}
 ${emailBody('Nothing you need to do right now. If you want a sense of what the ongoing work looks like, the pattern breakdowns on Instagram are the best preview:', { bottom: 12 })}
 ${emailCta({ href: IG_URL_BRAND, label: 'Follow @body_recode_ on Instagram' })}
