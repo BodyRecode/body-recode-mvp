@@ -28,6 +28,7 @@ const MONO = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
 // What the co-pilot can help with — shown in the persistent "What I can help
 // with" panel and as the empty-state intro.
 const CAPABILITIES: { title: string; body: string }[] = [
+  { title: 'Read your roster', body: 'Who needs attention today, who is drifting, who is due to progress — across all your clients.' },
   { title: 'Explain a read', body: 'Why a client landed in this state or phase, and what is driving it.' },
   { title: 'Teach the doctrine', body: 'The rule behind a decision, in plain terms a newer coach can follow.' },
   { title: 'Pressure-test your call', body: '"Talk me out of progressing them." "Should this be Restoration?"' },

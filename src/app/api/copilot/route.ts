@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { isCoachEmail } from '@/lib/coach-auth'
 import { buildGeneralCopilotSystemPrompt } from '@/lib/copilot-prompt'
+import { buildRosterContext } from '@/lib/copilot-context'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 
 // Global co-pilot endpoint — the SAME co-pilot as the client-scoped one, but for
@@ -46,6 +48,15 @@ export async function POST(request: NextRequest) {
 
   const history = sanitiseHistory(body.history)
 
+  // Practice-wide roster snapshot (Phase 4). Best-effort: if it fails, the
+  // co-pilot still answers as the general doctrine tutor without it.
+  let rosterContext = ''
+  try {
+    rosterContext = await buildRosterContext(createAdminClient())
+  } catch (err) {
+    console.error('[copilot-general] roster context failed:', err instanceof Error ? err.message : String(err))
+  }
+
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 3 })
 
   // Retry loop mirrors the client-scoped route: the model occasionally returns
@@ -60,7 +71,7 @@ export async function POST(request: NextRequest) {
         // returning an empty text block (stop_reason=max_tokens). Kept in sync
         // with the client-scoped copilot route.
         max_tokens: 4096,
-        system: buildGeneralCopilotSystemPrompt(),
+        system: buildGeneralCopilotSystemPrompt(rosterContext),
         messages: [...history, { role: 'user', content: message }],
       })
       const block = resp.content.find(b => b.type === 'text')

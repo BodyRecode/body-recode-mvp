@@ -64,6 +64,15 @@ export function clientStarterCategories(pathname: string, firstName: string): St
 export function generalStarterCategories(_pathname: string): StarterCategory[] {
   return [
     {
+      label: 'My roster',
+      questions: [
+        'What needs my attention across my clients today?',
+        "Who's drifting or hit a readiness gate this week?",
+        "Who's steady and due to progress?",
+        'Give me the state of my roster.',
+      ],
+    },
+    {
       label: 'Doctrine',
       questions: [
         'Explain the cross-pillar authority order in plain terms.',

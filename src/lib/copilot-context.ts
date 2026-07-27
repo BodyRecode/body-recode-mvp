@@ -10,8 +10,34 @@
 // Reads the CURRENT saved state (including coach edits), never a re-derivation.
 
 import type { SupabaseClient } from '@supabase/supabase-js'
+import { computeRosterNextActions } from '@/lib/roster-next-actions'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+// Practice-wide roster snapshot for the GENERAL (no-client) co-pilot (Phase 4).
+// Runs the same ranked triage as the Today's Focus board and renders it compact
+// so the everywhere-bubble can answer "who needs attention?", "who's due to
+// progress?", "state of my roster?" — grounded in real data, not invented.
+// Read-only. Priority: 10 = most urgent (awaiting the coach) → 50 = steady.
+export async function buildRosterContext(admin: SupabaseClient): Promise<string> {
+  const { actions, totalFeedback } = await computeRosterNextActions(admin)
+  if (!actions.length) return 'ROSTER: no active clients right now.'
+
+  const awaiting = actions.filter(a => a.priority <= 20)
+  const drifting = actions.filter(a => a.priority === 30)
+  const steady = actions.filter(a => a.priority >= 40)
+
+  const S: string[] = []
+  S.push(`ROSTER SNAPSHOT — ${actions.length} active client${actions.length === 1 ? '' : 's'}. Awaiting you (need an action): ${awaiting.length}. Drifting (watch): ${drifting.length}. Steady: ${steady.length}. Unacknowledged feedback items: ${totalFeedback}.`)
+  S.push('')
+  S.push('Each client and their single most-relevant next action (p10 = most urgent → p50 = steady). This is the SAME ranking the coach sees on the Today\'s Focus board:')
+  for (const a of actions) {
+    const badge = a.badge ? ` (${a.badge})` : ''
+    const sub = a.sublabel ? ` — ${a.sublabel}` : ''
+    S.push(`- ${a.clientName} [p${a.priority} ${a.stage}] ${a.headline}${sub}${badge}`)
+  }
+  return S.join('\n')
+}
 
 function fmtSummary(rs: any): string | null {
   if (!rs || typeof rs !== 'object') return null
