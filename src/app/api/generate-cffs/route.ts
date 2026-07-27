@@ -9,6 +9,11 @@ import {
 } from '@/lib/cffs-prompt'
 import { buildBloodMarkerCFFSSection, type BloodMarker } from '@/lib/blood-panel-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import {
+  sniffImageMediaType,
+  describeImageFormat,
+  type ImageMediaType,
+} from '@/lib/image-media-type'
 
 export const maxDuration = 300
 
@@ -16,7 +21,6 @@ export const maxDuration = 300
 // compresses to 1600px / 0.82 JPEG (~400KB) so we never approach the cap, but
 // the timeout keeps a stuck S3 fetch from blocking the whole CFFS generation.
 const IMAGE_FETCH_TIMEOUT_MS = 15_000
-type ImageMediaType = 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp'
 
 async function fetchImageAsBase64(
   url: string,
@@ -30,13 +34,15 @@ async function fetchImageAsBase64(
       console.warn(`[CFFS] baseline photo fetch failed: ${res.status} ${url.slice(0, 80)}…`)
       return null
     }
-    const ct = (res.headers.get('content-type') ?? 'image/jpeg').toLowerCase()
-    const media_type: ImageMediaType =
-      ct.includes('png')  ? 'image/png'  :
-      ct.includes('gif')  ? 'image/gif'  :
-      ct.includes('webp') ? 'image/webp' :
-      'image/jpeg'
     const buf = Buffer.from(await res.arrayBuffer())
+    const media_type = sniffImageMediaType(buf)
+    if (!media_type) {
+      console.warn(
+        `[CFFS] baseline photo skipped — ${describeImageFormat(buf)} is not readable by Anthropic vision ` +
+        `(JPEG/PNG/GIF/WebP only). Client should retake with the camera set to JPEG. ${url.slice(0, 120)}`
+      )
+      return null
+    }
     return { base64: buf.toString('base64'), media_type }
   } catch (err) {
     console.warn('[CFFS] baseline photo fetch threw:', err instanceof Error ? err.message : err)

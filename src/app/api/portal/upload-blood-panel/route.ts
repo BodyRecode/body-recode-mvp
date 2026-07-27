@@ -5,6 +5,7 @@ import { Resend } from 'resend'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { appUrl } from '@/lib/app-url'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import { sniffImageMediaType, describeImageFormat } from '@/lib/image-media-type'
 import { fromBrand } from '@/lib/email-shell'
 import {
   buildExtractionSystemPrompt,
@@ -23,15 +24,6 @@ import { coach } from '@/config/tenant'
  */
 export const maxDuration = 300
 
-type ImageMediaType = 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp'
-
-function imageMediaType(mime: string): ImageMediaType {
-  const m = mime.toLowerCase()
-  if (m.includes('png')) return 'image/png'
-  if (m.includes('gif')) return 'image/gif'
-  if (m.includes('webp')) return 'image/webp'
-  return 'image/jpeg'
-}
 
 export async function POST(req: NextRequest) {
   const formData = await req.formData()
@@ -62,10 +54,28 @@ export async function POST(req: NextRequest) {
 
   const admin = createAdminClient()
 
+  const buffer = Buffer.from(await file.arrayBuffer())
+
+  // Reject unreadable image formats before storing anything. Phones set to
+  // "high efficiency" produce HEIC, which we cannot transcribe — better to
+  // tell the client now, while they still have the report in front of them,
+  // than to store a file that silently fails extraction.
+  const imageMediaTypeOrNull = isPdf ? null : sniffImageMediaType(buffer)
+  if (!isPdf && !imageMediaTypeOrNull) {
+    return NextResponse.json(
+      {
+        error:
+          `That photo is in ${describeImageFormat(buffer)}, which we can't read. ` +
+          `Please upload the report as a PDF, or change your camera format to JPEG and retake it ` +
+          `(iPhone: Settings → Camera → Formats → Most Compatible).`,
+      },
+      { status: 415 }
+    )
+  }
+
   // Upload to the private blood-test-docs bucket.
   const ext = file.name.split('.').pop()?.toLowerCase() ?? (isPdf ? 'pdf' : 'jpg')
   const path = `${clientId}/${Date.now()}_bloods.${ext}`
-  const buffer = Buffer.from(await file.arrayBuffer())
 
   const { error: uploadError } = await admin.storage
     .from('blood-test-docs')
@@ -134,7 +144,7 @@ export async function POST(req: NextRequest) {
 
       const fileBlock: Anthropic.Messages.ContentBlockParam = isPdf
         ? { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } }
-        : { type: 'image', source: { type: 'base64', media_type: imageMediaType(file.type), data: base64 } }
+        : { type: 'image', source: { type: 'base64', media_type: imageMediaTypeOrNull!, data: base64 } }
 
       const message = await anthropic.messages.create({
         model: 'claude-haiku-4-5-20251001',

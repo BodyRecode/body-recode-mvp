@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import ClientHeader from '@/components/client-header'
 import { useFormDraft } from '@/lib/use-form-draft'
-import { compressImage } from '@/lib/compress-image'
+import { compressImage, isUnreadableImageFormat } from '@/lib/compress-image'
 import { logoUrl, brand } from '@/config/tenant'
 
 interface Props {
@@ -54,13 +54,28 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
   const [photoBack, setPhotoBack] = useState<File | null>(null)
   const [processing, setProcessing] = useState<Set<string>>(new Set())
 
+  // Photos whose format we could not convert to JPEG in the browser. These
+  // still upload, so onboarding is never blocked, but we tell the client now
+  // so they can retake rather than have the visual read silently skipped.
+  const [unreadable, setUnreadable] = useState<Set<string>>(new Set())
+
   async function handlePhotoPick(id: string, file: File | null, set: (f: File | null) => void) {
-    if (!file) { set(null); return }
+    if (!file) {
+      set(null)
+      setUnreadable(prev => { const next = new Set(prev); next.delete(id); return next })
+      return
+    }
     setProcessing(prev => new Set(prev).add(id))
     try {
       const compressed = await compressImage(file)
       set(compressed)
       clearMissing(id)
+      setUnreadable(prev => {
+        const next = new Set(prev)
+        if (isUnreadableImageFormat(compressed)) next.add(id)
+        else next.delete(id)
+        return next
+      })
     } finally {
       setProcessing(prev => { const next = new Set(prev); next.delete(id); return next })
     }
@@ -369,6 +384,14 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
                       </label>
                     )}
                     {hasError && <p className="text-red-700 text-xs mt-2 font-medium">Please upload this photo.</p>}
+                    {unreadable.has(id) && (
+                      <p className="text-amber-700 text-xs mt-2 leading-relaxed">
+                        This photo is in HEIC format, which we can&apos;t read for the visual assessment.
+                        Your baseline will still save, but to get the full read please switch your camera
+                        to JPEG and retake it — iPhone: Settings → Camera → Formats → Most Compatible.
+                        Samsung: Camera → Settings → turn off HEIF/high efficiency pictures.
+                      </p>
+                    )}
                   </div>
                 )
               })}

@@ -3,6 +3,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import { sniffImageMediaType, describeImageFormat } from '@/lib/image-media-type'
 import {
   buildExtractionSystemPrompt,
   buildExtractionUserText,
@@ -17,15 +18,6 @@ import {
  */
 export const maxDuration = 300
 
-type ImageMediaType = 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp'
-
-function imageMediaType(mime: string): ImageMediaType {
-  const m = (mime ?? '').toLowerCase()
-  if (m.includes('png')) return 'image/png'
-  if (m.includes('gif')) return 'image/gif'
-  if (m.includes('webp')) return 'image/webp'
-  return 'image/jpeg'
-}
 
 export async function POST(
   _req: NextRequest,
@@ -76,9 +68,27 @@ export async function POST(
   }
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY, maxRetries: 3 })
 
-  const fileBlock: Anthropic.Messages.ContentBlockParam = isPdf
-    ? { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } }
-    : { type: 'image', source: { type: 'base64', media_type: imageMediaType(panel.file_type ?? ''), data: base64 } }
+  // Sniff the real format from the bytes. A HEIC photo stored here would
+  // otherwise be sent labelled as JPEG and fail the whole extraction with an
+  // opaque "Could not process image" from the API.
+  let fileBlock: Anthropic.Messages.ContentBlockParam
+  if (isPdf) {
+    fileBlock = { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } }
+  } else {
+    const mediaType = sniffImageMediaType(buffer)
+    if (!mediaType) {
+      return NextResponse.json(
+        {
+          error:
+            `This panel was uploaded as ${describeImageFormat(buffer)}, which cannot be read. ` +
+            `Ask the client to re-upload it as a PDF, or retake the photo with their camera set to JPEG ` +
+            `(iPhone: Settings → Camera → Formats → Most Compatible).`,
+        },
+        { status: 422 }
+      )
+    }
+    fileBlock = { type: 'image', source: { type: 'base64', media_type: mediaType, data: base64 } }
+  }
 
   let message
   try {

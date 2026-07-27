@@ -42,3 +42,16 @@ export async function compressImage(
 // Conservative client-side limit. Vercel's hard limit is 4.5MB and we
 // want headroom for FormData boundary + other fields.
 export const MAX_UPLOAD_BYTES = 4 * 1024 * 1024
+
+// True when a file is in a format our AI vision pipeline cannot read. HEIC is
+// the one that bites: it is the iPhone default and a Samsung option, and most
+// browsers outside Safari cannot decode it, so compressImage() above silently
+// returns the original instead of a JPEG. The file then uploads fine, looks
+// fine in the coach dashboard, and only fails much later when we try to read
+// it. Call this after compressImage — if it is still true, re-encoding did
+// not happen and the photo will not be readable.
+export function isUnreadableImageFormat(file: File): boolean {
+  const type = (file.type || '').toLowerCase()
+  if (/heic|heif|avif|tiff/.test(type)) return true
+  return /\.(heic|heif|avif|tiff?)$/i.test(file.name)
+}
