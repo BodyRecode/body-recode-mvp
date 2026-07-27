@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { getCheckInWindowStatus, getWeekNumber, isCheckinTestMode } from '@/lib/weekly-checkin-questions'
 import ClientHeader from '@/components/client-header'
 import { isCoachEmail } from '@/lib/coach-auth'
+import { getGpRequestUrl } from '@/lib/gp-request'
 import { brand } from '@/config/tenant'
 
 function SectionLabel({ icon: Icon, text }: { icon: LucideIcon; text: string }) {
@@ -134,6 +135,9 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     .maybeSingle()
   const bloodworkGuideGender = (genderIntake?.gender ?? '').toLowerCase()
   const showBloodworkGuide = bloodworkGuideGender === 'male' || bloodworkGuideGender === 'female'
+
+  // Personal GP request list, if the coach has prepared one for this client.
+  const gpRequestUrl = await getGpRequestUrl(admin, client.id)
 
   // Foundational Reading (only the published one)
   const { data: publishedReadingRows } = await admin
@@ -685,6 +689,22 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         <div className="mb-10">
           <SectionLabel icon={Activity} text="Health Markers" />
           <div className="space-y-3">
+            {gpRequestUrl && (
+              <a
+                href={gpRequestUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block rounded-2xl border border-[#1B6DFC] bg-blue-50 p-4 hover:bg-blue-100 transition-colors"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-[#1A1A1A]">Your blood test request — for your GP</p>
+                    <p className="text-xs text-[#6B6B6B] mt-0.5">A list of the markers to discuss, prepared for you. Print or save it and take it to your appointment.</p>
+                  </div>
+                  <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">Open →</span>
+                </div>
+              </a>
+            )}
             <Link
               href={`/portal/${token}/bloods`}
               className="block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF]/50 p-4 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors"

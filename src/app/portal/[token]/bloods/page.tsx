@@ -4,6 +4,7 @@ import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import PortalPageShell from '../portal-page-shell'
 import { isCoachEmail } from '@/lib/coach-auth'
+import { getGpRequestUrl } from '@/lib/gp-request'
 import BloodUploadForm from './blood-upload-form'
 
 /**
@@ -52,6 +53,9 @@ export default async function BloodsPage({ params }: { params: Promise<{ token: 
   const guideGender = (genderIntake?.gender ?? '').toLowerCase()
   const showBloodworkGuide = guideGender === 'male' || guideGender === 'female'
 
+  // Personal GP request list, if the coach has prepared one for this client.
+  const gpRequestUrl = await getGpRequestUrl(admin, client.id)
+
   return (
     <PortalPageShell
       backHref={`/portal/${token}`}
@@ -59,20 +63,42 @@ export default async function BloodsPage({ params }: { params: Promise<{ token: 
       title="Your blood test results"
       description="If you have recent blood work, you can upload a copy here. Your coach reads it as one more signal alongside everything else, so your training and nutrition account for what is actually happening in your body. We are not your doctor: anything medical stays with your GP, and we will always point you back to them when that is the right call."
     >
-      {showBloodworkGuide && (
-        <Link
-          href={`/portal/${token}/guides/baseline-bloodwork`}
-          className="block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5 mb-8 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors"
-        >
+      {(gpRequestUrl || showBloodworkGuide) && (
+        <div className="mb-8">
           <p className="text-xs font-bold tracking-widest text-[#999999] uppercase mb-3">Before you start</p>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-[#3A3A3A]">Understanding your baseline bloodwork</p>
-              <p className="text-xs text-[#999999] mt-0.5">What a comprehensive baseline panel covers and what each marker measures. Download the guide to keep.</p>
-            </div>
-            <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
+          <div className="space-y-3">
+            {gpRequestUrl && (
+              <a
+                href={gpRequestUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block rounded-2xl border border-[#1B6DFC] bg-blue-50 p-5 hover:bg-blue-100 transition-colors"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-[#1A1A1A]">Your blood test request — for your GP</p>
+                    <p className="text-xs text-[#6B6B6B] mt-0.5">A list of the markers to discuss, prepared for you. Opens as a PDF you can print or save — take it to your appointment.</p>
+                  </div>
+                  <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">Open →</span>
+                </div>
+              </a>
+            )}
+            {showBloodworkGuide && (
+              <Link
+                href={`/portal/${token}/guides/baseline-bloodwork`}
+                className="block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-[#3A3A3A]">Understanding your baseline bloodwork</p>
+                    <p className="text-xs text-[#999999] mt-0.5">What a comprehensive baseline panel covers and what each marker measures. Download the guide to keep.</p>
+                  </div>
+                  <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
+                </div>
+              </Link>
+            )}
           </div>
-        </Link>
+        </div>
       )}
 
       <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5 mb-8">
