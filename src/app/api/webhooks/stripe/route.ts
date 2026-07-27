@@ -901,6 +901,7 @@ ${darkEmailSignature()}
         email: email.toLowerCase(),
         first_name: firstName,
         phone: buyerPhone,
+        lead_id: resolved.leadId,
         pattern: pattern ?? 'pending',
         pattern_source: patternSource ?? 'assessment',
         stripe_payment_intent_id: session.payment_intent as string ?? null,
@@ -944,23 +945,20 @@ ${darkEmailSignature()}
     const admin = createAdminClient()
     const stripeSubscriptionId = session.subscription as string ?? null
 
-    // Priority: pattern carried from their Blueprint; else resolve from the
-    // Challenge / high-confidence scorecard read on file (by email). Only then
-    // fall back to the in-portal assessment.
+    // Always resolve the lead (for lead_id linkage). Pattern priority: carried
+    // from their Blueprint; else the resolver's Challenge / high-confidence
+    // scorecard read; else the in-portal assessment.
+    const mResolved = await resolveBuyerPattern(admin, { email, phone: null })
     const bpSlug = toBlueprintSlug(pattern_from_blueprint)
-    let mPattern = bpSlug
-    let mSource: string | null = bpSlug ? 'blueprint' : null
-    if (!mPattern) {
-      const r = await resolveBuyerPattern(admin, { email, phone: null })
-      mPattern = r.slug
-      mSource = r.source
-    }
+    const mPattern = bpSlug ?? mResolved.slug
+    const mSource: string | null = bpSlug ? 'blueprint' : mResolved.source
 
     const { data: membership } = await admin
       .from('membership_enrollments')
       .insert({
         email: email.toLowerCase(),
         first_name,
+        lead_id: mResolved.leadId,
         pattern: mPattern ?? 'pending',
         pattern_source: mSource ?? 'assessment',
         blueprint_token: blueprint_token || null,
@@ -1018,16 +1016,13 @@ ${darkEmailSignature()}
     const buyerPhoneRaw = session.customer_details?.phone
     const buyerPhone = buyerPhoneRaw ? formatPhone(buyerPhoneRaw) : null
 
-    // Priority: pattern carried from their Blueprint; else resolve from the
-    // Challenge / high-confidence scorecard read (by email OR phone); else assess.
-    const bpSlug = toBlueprintSlug(pattern_from_blueprint)
-    let extPattern = bpSlug
-    let extSource: string | null = bpSlug ? 'blueprint' : null
-    if (!extPattern) {
-      const r = await resolveBuyerPattern(admin, { email, phone: buyerPhone })
-      extPattern = r.slug
-      extSource = r.source
-    }
+    // Always resolve the lead (for lead_id linkage). Pattern priority: carried
+    // from their Blueprint; else the resolver's Challenge / high-confidence
+    // scorecard read (by email OR phone); else the in-portal assessment.
+    const extResolved = await resolveBuyerPattern(admin, { email, phone: buyerPhone })
+    const extBpSlug = toBlueprintSlug(pattern_from_blueprint)
+    const extPattern = extBpSlug ?? extResolved.slug
+    const extSource: string | null = extBpSlug ? 'blueprint' : extResolved.source
 
     const { data: enrollment } = await admin
       .from('extension_enrollments')
@@ -1035,6 +1030,7 @@ ${darkEmailSignature()}
         email: email.toLowerCase(),
         first_name,
         phone: buyerPhone,
+        lead_id: extResolved.leadId,
         pattern: extPattern ?? 'pending',
         pattern_source: extSource ?? 'assessment',
         blueprint_token: blueprint_token || null,
