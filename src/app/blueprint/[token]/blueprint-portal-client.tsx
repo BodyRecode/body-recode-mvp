@@ -129,6 +129,7 @@ type Enrollment = {
   token: string
   pattern: string
   pattern_source: string
+  pattern_confirmed_at: string | null
   purchase_date: string
   current_week: number
 }
@@ -320,9 +321,12 @@ const PATTERN_TRAINING: Record<string, {
 type PatternAssessmentProps = {
   onComplete: (pattern: string) => void
   token: string
+  // changeMode = buyer is adjusting a pattern that was already carried in (not
+  // the first-time pending assessment), so post to confirm-pattern, not set-pattern.
+  changeMode?: boolean
 }
 
-function PatternAssessment({ onComplete, token }: PatternAssessmentProps) {
+function PatternAssessment({ onComplete, token, changeMode }: PatternAssessmentProps) {
   const [q1, setQ1] = useState('')
   const [q2, setQ2] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -346,10 +350,10 @@ function PatternAssessment({ onComplete, token }: PatternAssessmentProps) {
     if (!q1 || !q2) return
     setSubmitting(true)
     const pattern = q2
-    await fetch('/api/blueprint/set-pattern', {
+    await fetch(changeMode ? '/api/blueprint/confirm-pattern' : '/api/blueprint/set-pattern', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token, pattern }),
+      body: JSON.stringify(changeMode ? { token, pattern, change: true } : { token, pattern }),
     })
     onComplete(pattern)
   }
@@ -359,7 +363,7 @@ function PatternAssessment({ onComplete, token }: PatternAssessmentProps) {
       <div style={{ maxWidth: 560, width: '100%' }}>
         <img src={logoUrl()} width={110} alt={brand().name} style={{ display: 'block', marginBottom: 40 }} />
         <h1 style={{ fontSize: 24, fontWeight: 700, color: '#1A1A1A', margin: '0 0 12px', fontFamily: 'system-ui, sans-serif' }}>
-          One last step before your portal opens
+          {changeMode ? 'Choose your pattern' : 'One last step before your portal opens'}
         </h1>
         <p style={{ fontSize: 15, color: '#6B6B6B', lineHeight: 1.75, margin: '0 0 36px', fontFamily: 'system-ui, sans-serif' }}>
           Two questions to identify your biological pattern. This determines how your programme is built.
@@ -399,6 +403,71 @@ function PatternAssessment({ onComplete, token }: PatternAssessmentProps) {
             {submitting ? 'Opening your portal...' : 'Open my Blueprint'}
           </button>
         </form>
+      </div>
+    </div>
+  )
+}
+
+function PatternConfirm({ pattern, source, token, firstName, onConfirm, onAdjust }: {
+  pattern: string
+  source: string
+  token: string
+  firstName: string
+  onConfirm: () => void
+  onAdjust: () => void
+}) {
+  const [submitting, setSubmitting] = useState(false)
+  const config = PATTERN_CONFIG[pattern] ?? PATTERN_CONFIG['stress-stored']
+  const fromChallenge = source === 'challenge'
+  const intro = fromChallenge
+    ? 'From your 14-Day Challenge, your biological pattern came back as'
+    : 'Based on your Body State Scorecard, your biological pattern looks like'
+  const note = fromChallenge
+    ? 'This was confirmed across your full 14-day read, and your programme is built around it.'
+    : 'This is a strong preliminary read from your scorecard. Confirm to start, or choose a different pattern if it does not fit what you are experiencing.'
+
+  async function confirm() {
+    setSubmitting(true)
+    await fetch('/api/blueprint/confirm-pattern', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token }),
+    })
+    onConfirm()
+  }
+
+  return (
+    <div style={{ minHeight: '100vh', background: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 24px' }}>
+      <div style={{ maxWidth: 560, width: '100%' }}>
+        <img src={logoUrl()} width={110} alt={brand().name} style={{ display: 'block', marginBottom: 40 }} />
+        <h1 style={{ fontSize: 24, fontWeight: 700, color: '#1A1A1A', margin: '0 0 12px', fontFamily: 'system-ui, sans-serif' }}>
+          {firstName ? `Welcome, ${firstName}.` : 'Welcome.'}
+        </h1>
+        <p style={{ fontSize: 15, color: '#6B6B6B', lineHeight: 1.75, margin: '0 0 24px', fontFamily: 'system-ui, sans-serif' }}>
+          {intro}:
+        </p>
+        <div style={{ border: `1px solid ${config.colour}`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '20px 22px', marginBottom: 20, background: `${config.colour}0A` }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+            <div style={{ width: 10, height: 10, borderRadius: '50%', background: config.colour }} />
+            <p style={{ margin: 0, fontSize: 18, fontWeight: 800, color: '#1A1A1A', fontFamily: 'system-ui, sans-serif' }}>{config.label}</p>
+          </div>
+          <p style={{ margin: 0, fontSize: 14, color: '#4A4A4A', lineHeight: 1.65, fontFamily: 'system-ui, sans-serif' }}>{config.description}</p>
+        </div>
+        <p style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.7, margin: '0 0 28px', fontFamily: 'system-ui, sans-serif' }}>{note}</p>
+        <button
+          onClick={confirm}
+          disabled={submitting}
+          style={{ width: '100%', padding: '15px', background: '#1B6DFC', color: '#FFFFFF', fontWeight: 700, fontSize: 15, borderRadius: 8, border: 'none', cursor: submitting ? 'not-allowed' : 'pointer', opacity: submitting ? 0.5 : 1, fontFamily: 'system-ui, sans-serif' }}
+        >
+          {submitting ? 'Opening your Blueprint...' : 'Confirm & open my Blueprint'}
+        </button>
+        <button
+          onClick={onAdjust}
+          disabled={submitting}
+          style={{ width: '100%', marginTop: 12, padding: '13px', background: 'transparent', color: '#6B6B6B', fontWeight: 600, fontSize: 14, borderRadius: 8, border: '1px solid #D4D4D4', cursor: submitting ? 'not-allowed' : 'pointer', fontFamily: 'system-ui, sans-serif' }}
+        >
+          Choose a different pattern
+        </button>
       </div>
     </div>
   )
@@ -1537,16 +1606,43 @@ export default function BlueprintPortalClient({
   activeMembershipToken: string | null
 }) {
   const [pattern, setPattern] = useState(enrollment.pattern)
+  const [confirmedAt, setConfirmedAt] = useState<string | null>(enrollment.pattern_confirmed_at ?? null)
+  const [adjusting, setAdjusting] = useState(false)
   const [activeTab, setActiveTab] = useState('home')
   // Week 6: Extension is a decline-path downsell, revealed only if they say they're
   // not ready for the recurring Membership (avoids cannibalising Membership LTV).
   const [showExtension, setShowExtension] = useState(false)
 
+  // First-time buyer with no pattern on file: the assessment gate.
   if (pattern === 'pending') {
     return (
       <PatternAssessment
         token={enrollment.token}
-        onComplete={(p) => setPattern(p)}
+        onComplete={(p) => { setPattern(p); setConfirmedAt(new Date().toISOString()) }}
+      />
+    )
+  }
+
+  // Pattern carried in from a prior read (Challenge / scorecard) but not yet
+  // confirmed by the buyer: show confirm-or-adjust before the programme opens.
+  if (!confirmedAt) {
+    if (adjusting) {
+      return (
+        <PatternAssessment
+          token={enrollment.token}
+          changeMode
+          onComplete={(p) => { setPattern(p); setConfirmedAt(new Date().toISOString()); setAdjusting(false) }}
+        />
+      )
+    }
+    return (
+      <PatternConfirm
+        pattern={pattern}
+        source={enrollment.pattern_source}
+        token={enrollment.token}
+        firstName={enrollment.first_name}
+        onConfirm={() => setConfirmedAt(new Date().toISOString())}
+        onAdjust={() => setAdjusting(true)}
       />
     )
   }

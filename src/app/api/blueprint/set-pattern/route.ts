@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 
   const { error } = await admin
     .from('blueprint_enrollments')
-    .update({ pattern, pattern_source: 'assessment' })
+    .update({ pattern, pattern_source: 'assessment', pattern_confirmed_at: new Date().toISOString() })
     .eq('token', token)
     .eq('pattern', 'pending')
 
