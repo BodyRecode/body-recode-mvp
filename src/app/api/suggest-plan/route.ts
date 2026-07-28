@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { withTemporalContext, deadlineConstraint } from '@/lib/temporal-context'
+import { withTemporalContext, deadlineConstraint, parseTimelineToDate, weeksUntil } from '@/lib/temporal-context'
+import { clampMacroArcToDoctrine, type MacroBlock } from '@/lib/macro-arc-doctrine'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 
 export const maxDuration = 300
@@ -198,6 +199,8 @@ OUTPUT FORMAT — return ONLY valid JSON, no markdown:
   // Dated goal, resolved server-side so the model is handed arithmetic rather
   // than being asked to infer a calendar it cannot see.
   const deadline = deadlineConstraint(intake?.desired_timeline)
+  const deadlineDate = parseTimelineToDate(intake?.desired_timeline)
+  const deadlineWeeks = deadlineDate ? weeksUntil(deadlineDate) : null
 
   if (activeProgram) {
     contextLines.push(`\nCURRENT ACTIVE PROGRAM`)
@@ -323,13 +326,37 @@ OUTPUT FORMAT — return ONLY valid JSON, no markdown:
           b.phase_objective = original.charAt(0).toUpperCase() + original.slice(1)
         }
       } else if (!VALID_PHASES.has(phase)) {
-        // Unknown value — fall back to accumulation as the most common safe choice.
-        b.progression_phase = 'accumulation'
+        // Unknown value falls back to RESTORATION, not accumulation. Adding
+        // load is never the safe default: if we cannot tell what the model
+        // meant, the conservative reading is the correct one. The clamp below
+        // will not promote it, which is the intended behaviour.
+        b.progression_phase = 'restoration'
       }
       const goal = String(b.training_goal ?? '').toLowerCase().trim()
       if (!VALID_GOALS.has(goal)) b.training_goal = 'capacity'
     }
   }
 
-  return NextResponse.json({ suggestion })
+  // Deterministic doctrine clamp. Everything above is normalisation of the
+  // model's labels; this is enforcement. generate-program has had
+  // clampProgramToDoctrine from the start and suggest-plan had nothing, so a
+  // macro arc went to the coach exactly as the model wrote it. In a
+  // white-label system there is no one reading every arc before it ships.
+  const clamped = clampMacroArcToDoctrine(suggestion.blocks as MacroBlock[], {
+    bodyState: cffs?.body_state_classification ?? null,
+    weeksAvailable: deadlineWeeks,
+    knownEventFacts: null,
+  })
+  suggestion.blocks = clamped.blocks
+  if (clamped.notes.length || clamped.warnings.length) {
+    console.log(
+      `[suggest-plan] doctrine clamp: ${clamped.notes.length} correction(s), ` +
+      `${clamped.warnings.length} warning(s) for client ${String(client_id).slice(0, 8)}`
+    )
+  }
+
+  return NextResponse.json({
+    suggestion,
+    doctrine: { corrections: clamped.notes, warnings: clamped.warnings },
+  })
 }

@@ -65,6 +65,8 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [suggestion, setSuggestion] = useState<Suggestion | null>(null)
+  // What the doctrine clamp changed, and what it could not fix.
+  const [doctrine, setDoctrine] = useState<{ corrections: string[]; warnings: string[] } | null>(null)
   const [coachGuidance, setCoachGuidance] = useState('')
 
   const [planName, setPlanName] = useState('')
@@ -88,6 +90,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
         if (data.error) { setError(data.error); setLoading(false); return }
         const s: Suggestion = data.suggestion
         setSuggestion(s)
+        setDoctrine(data.doctrine ?? null)
         setPlanName(s.plan_name)
         setMacroObjective(s.macro_objective)
         setBlocks(s.blocks)
@@ -117,6 +120,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
       if (data.error) { setError(data.error); setLoading(false); return }
       const s: Suggestion = data.suggestion
       setSuggestion(s)
+      setDoctrine(data.doctrine ?? null)
       setPlanName(s.plan_name)
       setMacroObjective(s.macro_objective)
       setBlocks(s.blocks)
@@ -263,6 +267,47 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
           </button>
         </div>
       </div>
+
+      {/* Doctrine clamp. Shown ABOVE the rationale: what the engine proposed
+          and what doctrine overrode is the first thing a coach should read,
+          not a footnote under the arc. */}
+      {doctrine && (doctrine.corrections.length > 0 || doctrine.warnings.length > 0) && (
+        <div className="rounded-xl border border-[#1B6DFC]/30 bg-[#F3F7FF] px-5 py-4">
+          <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">
+            Doctrine clamp
+          </p>
+          {doctrine.corrections.length > 0 && (
+            <>
+              <p className="text-[11px] font-semibold text-stone-600 mb-1.5">
+                Corrected automatically ({doctrine.corrections.length})
+              </p>
+              <ul className="space-y-1.5 mb-3">
+                {doctrine.corrections.map((c, i) => (
+                  <li key={i} className="text-[13px] text-stone-700 leading-relaxed flex gap-2">
+                    <span className="text-[#1B6DFC] shrink-0">·</span>
+                    <span>{c}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+          {doctrine.warnings.length > 0 && (
+            <>
+              <p className="text-[11px] font-semibold text-amber-700 mb-1.5">
+                Needs your judgement ({doctrine.warnings.length})
+              </p>
+              <ul className="space-y-1.5">
+                {doctrine.warnings.map((w, i) => (
+                  <li key={i} className="text-[13px] text-amber-800 leading-relaxed flex gap-2">
+                    <span className="shrink-0">·</span>
+                    <span>{w}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
+      )}
 
       {/* Overall rationale */}
       <div id="rationale" className="scroll-mt-8 bg-blue-50 border border-blue-200/40 rounded-xl px-5 py-4">
