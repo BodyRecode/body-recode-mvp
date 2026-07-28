@@ -35,6 +35,10 @@ const CAPABILITIES: { title: string; body: string }[] = [
   { title: 'Draft coach guidance', body: 'A short, paste-ready steer for the plan or nutrition generator.' },
 ]
 
+// The one-tap "morning brief" (Phase 6). Routed through the normal general
+// endpoint, which already carries the live roster snapshot.
+const MORNING_BRIEF = 'Give me my morning brief. Go through my roster and tell me who needs my attention today, grouped by urgency (most urgent first), and for each name the reason (the doctrine call or the missing step) and the single next action. Then note anyone steady or due to progress. Keep it a tight briefing, not a list dump.'
+
 export default function GlobalCopilotBubble() {
   const pathname = usePathname() ?? ''
   const [open, setOpen] = useState(false)
@@ -46,11 +50,24 @@ export default function GlobalCopilotBubble() {
   // First-time nudge: default hidden (so nothing flashes pre-hydration), then
   // reveal after mount only if the coach hasn't seen/dismissed it before.
   const [introSeen, setIntroSeen] = useState(true)
+  // Phase 6 proactive: count of clients awaiting the coach (roster p<=20).
+  const [awaiting, setAwaiting] = useState<number | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
   }, [messages, loading])
+
+  // Fetch the attention count once on mount (the layout keeps this bubble
+  // mounted across soft navigations, so this runs once per full page load).
+  useEffect(() => {
+    let cancelled = false
+    fetch('/api/copilot/roster-summary')
+      .then(r => (r.ok ? r.json() : null))
+      .then(d => { if (!cancelled && d && typeof d.awaiting === 'number') setAwaiting(d.awaiting) })
+      .catch(() => { /* non-blocking — no badge on failure */ })
+    return () => { cancelled = true }
+  }, [])
 
   useEffect(() => {
     try { setIntroSeen(localStorage.getItem('br_copilot_intro_seen') === '1') } catch { setIntroSeen(true) }
@@ -213,7 +230,24 @@ export default function GlobalCopilotBubble() {
               )}
             </div>
 
-            <div className="border-t border-[#E5E5E5] p-3">
+            {/* One-tap morning brief (Phase 6) — narrates the roster on demand. */}
+            <div className="px-3 pt-2 shrink-0">
+              <button
+                onClick={() => send(MORNING_BRIEF)}
+                disabled={loading}
+                className="w-full text-[13px] font-medium px-3 py-2 border border-[#B5CFFC] text-[#1B6DFC] rounded-xl hover:bg-[rgba(27,109,252,0.05)] transition-colors disabled:opacity-40 flex items-center justify-center gap-2"
+              >
+                <span aria-hidden>☀</span>
+                Morning brief
+                {!!awaiting && awaiting > 0 && (
+                  <span className="text-[11px] font-bold text-white bg-[#E4572E] rounded-full px-1.5 py-0.5 leading-none" style={{ fontFamily: MONO }}>
+                    {awaiting} awaiting
+                  </span>
+                )}
+              </button>
+            </div>
+
+            <div className="border-t border-[#E5E5E5] p-3 mt-2">
               <form onSubmit={e => { e.preventDefault(); send(input) }} className="flex items-end gap-2">
                 <textarea
                   value={input}
@@ -252,6 +286,16 @@ export default function GlobalCopilotBubble() {
             <circle cx="12" cy="12" r="5" stroke="white" strokeWidth="1.6" opacity="0.55" />
             <circle cx="12" cy="12" r="1.9" fill="white" />
           </svg>
+        )}
+        {/* Attention badge — clients awaiting the coach (Phase 6). */}
+        {!open && !!awaiting && awaiting > 0 && (
+          <span
+            aria-label={`${awaiting} clients awaiting you`}
+            className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-[#E4572E] text-white text-[11px] font-bold flex items-center justify-center border-2 border-white shadow"
+            style={{ fontFamily: MONO }}
+          >
+            {awaiting > 9 ? '9+' : awaiting}
+          </span>
         )}
       </button>
     </>
