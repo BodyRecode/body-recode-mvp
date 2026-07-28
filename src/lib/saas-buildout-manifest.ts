@@ -33,7 +33,7 @@ export type Doc = {
   mdUrl: string
   /** Absolute /-prefixed URL to the .docx (Word-friendly download) */
   docxUrl: string
-  /** Absolute /-prefixed URL to the SOT-branded .pdf (share-with-someone version).
+  /** Absolute /-prefixed URL to the Body Recode-branded .pdf (share-with-someone version).
    *  Undefined for SQL files or docs where a designed PDF doesn't apply. */
   pdfUrl?: string
 }
@@ -88,7 +88,7 @@ export const CROSS_PHASE_DOCS: Doc[] = [
   },
   {
     title: 'README.md (Founding Ten)',
-    description: 'What SOT is now: the powered-platform proposition, capped at 10 founding partners.',
+    description: 'What the Collective is now: the powered-platform proposition, capped at 10 founding partners.',
     mdUrl: '/docs/saas-buildout/founding-ten/README.md',
     docxUrl: '/docs/saas-buildout/founding-ten/README.docx',
     pdfUrl: '/docs/saas-buildout/founding-ten/README.pdf',
@@ -430,7 +430,7 @@ export const PHASES: Phase[] = [
           'src/app/api/webhooks/twilio/inbound/route.ts',
           'src/app/dashboard/sms/page.tsx',
         ],
-        notes: 'Templates read from coach()/brand() so SOT partners get their own voice with no rewrite. Shared Twilio account for now.',
+        notes: 'Templates read from coach()/brand() so Collective partners get their own voice with no rewrite. Shared Twilio account for now.',
       },
       {
         id: 'per-tenant-twilio-subaccounts',
@@ -470,7 +470,7 @@ export const PHASES: Phase[] = [
     longDescription: [
       'Phase 3 handles TWO separate money flows that were both hand-waved in earlier phases.',
       '(1) Tenant\'s clients pay the tenant. Uses Stripe Connect Standard accounts — each tenant onboards their own Stripe, their customers pay them directly via Direct Charges, Stripe deposits into their bank. The platform takes an application fee on top. This is what makes the offer "run your own coaching business on our engine" rather than "run your business through Kade\'s Stripe."',
-      '(2) Kade\'s billing of partners. Separate integration entirely — Kade\'s Stripe against Kade\'s own SKUs: one-time setup fee + monthly platform subscription + per-active-client metering. This is the SOT licensing revenue.',
+      '(2) Kade\'s billing of partners. Separate integration entirely — Kade\'s Stripe against Kade\'s own SKUs: one-time setup fee + monthly platform subscription + per-active-client metering. This is the Collective licensing revenue.',
       'The heavy lifting inside Phase 3 is the callsite refactor. 15+ existing checkout endpoints currently pass process.env.STRIPE_SECRET_KEY directly. Each has to be updated to consult tenantStripeContext() — but each also needs a per-flow decision: is this charge platform-billed (bolt-on store — BR IP) or tenant-billed (a coach\'s coaching commencement fee — the tenant\'s product)? No universal rule; needs a per-callsite call.',
       'Phase 3 does not block Melisa\'s pilot — she can start on the platform without accepting Stripe payments and Kade can invoice her directly during pilot zero.',
     ],
