@@ -3,7 +3,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { isCoachEmail } from '@/lib/coach-auth'
-import { buildCopilotContext } from '@/lib/copilot-context'
+import { buildCopilotContext, getCoachPreferences } from '@/lib/copilot-context'
 import { buildCopilotSystemPrompt } from '@/lib/copilot-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 
@@ -62,6 +62,9 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   const ctx = await buildCopilotContext(admin, clientId)
   if (!ctx) return NextResponse.json({ error: 'Client not found' }, { status: 404 })
 
+  // Coach-style memory (Phase 8) — soft guidance keyed by coach email.
+  const coachPreferences = await getCoachPreferences(admin, user.email)
+
   // Prior conversation for this client (oldest first), capped.
   const { data: historyRows } = await admin
     .from('copilot_messages')
@@ -88,7 +91,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
         // what goes in every training-program field?") were hitting the cap and
         // returning an empty text block with stop_reason=max_tokens.
         max_tokens: 4096,
-        system: buildCopilotSystemPrompt(ctx.clientName, ctx.context),
+        system: buildCopilotSystemPrompt(ctx.clientName, ctx.context, coachPreferences),
         messages: [...history, { role: 'user', content: message }],
       })
       const block = resp.content.find(b => b.type === 'text')

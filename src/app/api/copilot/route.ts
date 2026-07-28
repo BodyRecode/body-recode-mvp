@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { isCoachEmail } from '@/lib/coach-auth'
 import { buildGeneralCopilotSystemPrompt } from '@/lib/copilot-prompt'
-import { buildRosterContext } from '@/lib/copilot-context'
+import { buildRosterContext, getCoachPreferences } from '@/lib/copilot-context'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 
 // Global co-pilot endpoint — the SAME co-pilot as the client-scoped one, but for
@@ -48,13 +48,18 @@ export async function POST(request: NextRequest) {
 
   const history = sanitiseHistory(body.history)
 
-  // Practice-wide roster snapshot (Phase 4). Best-effort: if it fails, the
-  // co-pilot still answers as the general doctrine tutor without it.
+  // Practice-wide roster snapshot (Phase 4) + coach preferences (Phase 8).
+  // Best-effort: if either fails, the co-pilot still answers without it.
+  const admin = createAdminClient()
   let rosterContext = ''
+  let coachPreferences = ''
   try {
-    rosterContext = await buildRosterContext(createAdminClient())
+    ;[rosterContext, coachPreferences] = await Promise.all([
+      buildRosterContext(admin),
+      getCoachPreferences(admin, user.email),
+    ])
   } catch (err) {
-    console.error('[copilot-general] roster context failed:', err instanceof Error ? err.message : String(err))
+    console.error('[copilot-general] context failed:', err instanceof Error ? err.message : String(err))
   }
 
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 3 })
@@ -71,7 +76,7 @@ export async function POST(request: NextRequest) {
         // returning an empty text block (stop_reason=max_tokens). Kept in sync
         // with the client-scoped copilot route.
         max_tokens: 4096,
-        system: buildGeneralCopilotSystemPrompt(rosterContext),
+        system: buildGeneralCopilotSystemPrompt(rosterContext, coachPreferences),
         messages: [...history, { role: 'user', content: message }],
       })
       const block = resp.content.find(b => b.type === 'text')

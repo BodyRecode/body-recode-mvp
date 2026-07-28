@@ -14,6 +14,18 @@ import { computeRosterNextActions } from '@/lib/roster-next-actions'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+// Coach-style memory (Phase 8) — the coach's saved free-text preferences, read
+// as SOFT guidance by both co-pilot prompts. Best-effort; '' if none/unset.
+export async function getCoachPreferences(admin: SupabaseClient, coachEmail: string | null | undefined): Promise<string> {
+  if (!coachEmail) return ''
+  try {
+    const { data } = await admin.from('coach_preferences').select('preferences').eq('coach_email', coachEmail).maybeSingle()
+    return (data?.preferences as string)?.trim() ?? ''
+  } catch {
+    return ''
+  }
+}
+
 // Practice-wide roster snapshot for the GENERAL (no-client) co-pilot (Phase 4).
 // Runs the same ranked triage as the Today's Focus board and renders it compact
 // so the everywhere-bubble can answer "who needs attention?", "who's due to

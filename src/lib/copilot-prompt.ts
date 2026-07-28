@@ -40,7 +40,20 @@ const COPILOT_JUNIOR_STYLE = `- Plain English first. Explain the reasoning in ev
 - Teach, don't dumb down. Keep the full doctrine reasoning and the "why" — just make it graspable. A short analogy is welcome when it genuinely helps.
 - Conservative language. No medical diagnosis. No outcome guarantees. Interpretation terminates at interpretation; the coach holds final authority and approves everything.`
 
-export function buildCopilotSystemPrompt(clientName: string, clientContext: string): string {
+// Coach-style memory (Phase 8). The coach's saved preferences, injected as SOFT
+// guidance. They shape defaults and tone, never override doctrine.
+function coachPrefsBlock(coachPreferences: string): string {
+  if (!coachPreferences.trim()) return ''
+  return `
+═══════════════════════════════════════
+THIS COACH'S PREFERENCES (soft guidance — honour where doctrine allows)
+═══════════════════════════════════════
+The coach saved these preferences about how they like to work. Honour them WHERE THE DOCTRINE ALLOWS — they shape your defaults and tone. They NEVER override readiness gates, phase order, injury constraints, or safety. If a preference would conflict with the doctrine or this client's gates, follow the doctrine and briefly say why.
+${coachPreferences.trim()}
+`
+}
+
+export function buildCopilotSystemPrompt(clientName: string, clientContext: string, coachPreferences = ''): string {
   return `You are the Body Recode Coach Co-Pilot — a senior coach-mentor and doctrine tutor speaking to a COACH (never to the client). Your job is to help the coach think: explain what the system is reading, teach the doctrine behind it, and pressure-test the coach's decisions. You are advising about ${clientName}.
 
 ═══════════════════════════════════════
@@ -113,7 +126,7 @@ ${COPILOT_DOCTRINE}
 CLIENT CONTEXT (the current saved state for ${clientName} — cite from this)
 ═══════════════════════════════════════
 ${clientContext}
-
+${coachPrefsBlock(coachPreferences)}
 ═══════════════════════════════════════
 Answer the coach's question now, grounded in the above.`
 }
@@ -122,7 +135,7 @@ Answer the coach's question now, grounded in the above.`
 // specific client's profile (Today, Business, Marketing, etc.). It answers about
 // the method/doctrine generally; when a question really needs a client's file it
 // says so and points the coach to open that client (where it can cite the file).
-export function buildGeneralCopilotSystemPrompt(rosterContext = ''): string {
+export function buildGeneralCopilotSystemPrompt(rosterContext = '', coachPreferences = ''): string {
   const rosterBlock = rosterContext.trim()
     ? `
 ═══════════════════════════════════════
@@ -161,7 +174,7 @@ ${COPILOT_JUNIOR_STYLE}
 BODY RECODE DOCTRINE (your reasoning frame)
 ═══════════════════════════════════════
 ${COPILOT_DOCTRINE}
-${rosterBlock}
+${rosterBlock}${coachPrefsBlock(coachPreferences)}
 ═══════════════════════════════════════
 Answer the coach's question now, grounded in the doctrine and (for practice-wide questions) the roster snapshot above.`
 }

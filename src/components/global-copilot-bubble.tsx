@@ -52,7 +52,39 @@ export default function GlobalCopilotBubble() {
   const [introSeen, setIntroSeen] = useState(true)
   // Phase 6 proactive: count of clients awaiting the coach (roster p<=20).
   const [awaiting, setAwaiting] = useState<number | null>(null)
+  // Phase 8 coach memory: the coach's preferences editor.
+  const [showPrefs, setShowPrefs] = useState(false)
+  const [prefsText, setPrefsText] = useState('')
+  const [prefsBusy, setPrefsBusy] = useState(false)
+  const [prefsSaved, setPrefsSaved] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
+
+  async function openPrefs() {
+    setShowPrefs(true)
+    setShowHelp(false)
+    setPrefsBusy(true)
+    try {
+      const res = await fetch('/api/copilot/preferences')
+      const data = await res.json()
+      setPrefsText(typeof data.preferences === 'string' ? data.preferences : '')
+    } catch { /* leave whatever's there */ }
+    finally { setPrefsBusy(false) }
+  }
+
+  async function savePrefs() {
+    setPrefsBusy(true); setPrefsSaved(false)
+    try {
+      const res = await fetch('/api/copilot/preferences', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ preferences: prefsText }),
+      })
+      if (!res.ok) throw new Error()
+      setPrefsSaved(true)
+      setTimeout(() => setPrefsSaved(false), 2500)
+    } catch { setError('Could not save preferences') }
+    finally { setPrefsBusy(false) }
+  }
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
@@ -168,7 +200,33 @@ export default function GlobalCopilotBubble() {
             </button>
 
             <div ref={scrollRef} className="px-5 py-4 space-y-4 flex-1 min-h-0 overflow-y-auto">
-              {showHelp ? (
+              {showPrefs ? (
+                <div className="text-sm text-[#3A3A3A]">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-[13px] font-semibold text-[#1A1A1A]">Your coaching preferences</p>
+                    <button onClick={() => setShowPrefs(false)} className="text-[12px] text-[#1B6DFC] hover:underline">Back</button>
+                  </div>
+                  <p className="text-[12.5px] text-[#6B6B6B] leading-relaxed mb-2.5">Tell me how you like to coach and I&apos;ll keep it in mind everywhere (e.g. &quot;favour 4-day splits when the gates allow&quot;, &quot;keep first blocks to 3 sets&quot;, &quot;prefer dairy-free swaps&quot;). This is soft guidance only — it never overrides a client&apos;s readiness gates, phase, or safety.</p>
+                  <textarea
+                    value={prefsText}
+                    onChange={e => setPrefsText(e.target.value)}
+                    disabled={prefsBusy}
+                    rows={7}
+                    placeholder="e.g. Favour fewer, higher-quality movements. Default to 3-day weeks unless the client has more capacity…"
+                    className="w-full resize-none text-[13px] border border-[#E5E5E5] rounded-xl px-3 py-2 focus:outline-none focus:border-[#1B6DFC] disabled:opacity-60"
+                  />
+                  <div className="flex items-center gap-2 mt-2.5">
+                    <button
+                      onClick={savePrefs}
+                      disabled={prefsBusy}
+                      className="text-[13px] font-semibold px-3.5 py-1.5 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1558d6] transition-colors disabled:opacity-40"
+                    >
+                      {prefsBusy ? 'Saving…' : 'Save'}
+                    </button>
+                    {prefsSaved && <span className="text-[12.5px] text-[#22A054] font-medium">Saved</span>}
+                  </div>
+                </div>
+              ) : showHelp ? (
                 <div className="text-sm text-[#3A3A3A]">
                   <p className="mb-3 text-[#1A1A1A] font-semibold">I&apos;m on every page. Here&apos;s what I can help with:</p>
                   <div className="space-y-2.5 mb-4">
@@ -180,6 +238,9 @@ export default function GlobalCopilotBubble() {
                     ))}
                   </div>
                   <p className="text-[12.5px] text-[#8A8A8E] mb-3 leading-relaxed">I never change a plan myself, and nothing I say reaches your client. For a grounded read on a specific person, open their profile — the co-pilot there reads their file.</p>
+                  <button onClick={openPrefs} className="w-full text-left text-[12.5px] text-[#1B6DFC] border border-[#B5CFFC] bg-[rgba(27,109,252,0.04)] hover:bg-[rgba(27,109,252,0.08)] rounded-xl px-3.5 py-2.5 mb-3 transition-colors">
+                    ⚙ Set your coaching preferences — I&apos;ll remember how you like to work
+                  </button>
                   <p className="mb-1.5 text-[11px] font-bold text-[#999999] uppercase tracking-widest" style={{ fontFamily: MONO }}>Try asking</p>
                   <CopilotStarters categories={generalStarterCategories(pathname)} onPick={send} />
                 </div>
