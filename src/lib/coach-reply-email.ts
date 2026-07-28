@@ -39,7 +39,12 @@ export function buildCoachReplyEmail({
   inReplyTo,
   threadUrl,
 }: CoachReplyEmailParams): { subject: string; html: string } {
-  const subject = `${coachFirstName} replied to your message`
+  // A coach-initiated message has nothing to quote, and calling it a reply
+  // would have the client hunting for a message they never sent.
+  const isReply = !!inReplyTo?.trim()
+  const subject = isReply
+    ? `${coachFirstName} replied to your message`
+    : `A message from ${coachFirstName}`
 
   const quoted = inReplyTo
     ? `<div style="border-left:2px solid ${EMAIL_HAIRLINE};padding:2px 0 2px 14px;margin:0 0 18px 0;">
@@ -55,7 +60,11 @@ export function buildCoachReplyEmail({
   const html = darkEmailShell(`
 ${emailLogo()}
 ${emailEyebrow('Message')}
-${emailHeading(`${escapeHtml(coachFirstName)} replied, ${escapeHtml(firstName)}.`)}
+${emailHeading(
+  isReply
+    ? `${escapeHtml(coachFirstName)} replied, ${escapeHtml(firstName)}.`
+    : `${escapeHtml(coachFirstName)} sent you a message, ${escapeHtml(firstName)}.`
+)}
 ${quoted}
 ${reply}
 ${emailCta({ href: threadUrl, label: 'Open the conversation' })}

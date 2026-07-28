@@ -67,14 +67,18 @@ export async function smsNotifyClientOfCoachReply(opts: {
   phone: string | null
   firstName: string
   threadUrl: string
+  /** False when the coach started the conversation, so it is not a "reply". */
+  isReply?: boolean
 }): Promise<boolean> {
-  const { phone, firstName, threadUrl } = opts
+  const { phone, firstName, threadUrl, isReply = true } = opts
   if (!phone?.trim()) return false
   if (!isWithinClientSmsWindow()) return false
   try {
     await sendSms({
       to: formatPhone(phone.trim()),
-      message: `Hi ${firstName}, ${coach().firstName} has replied to your message. Read it in your portal: ${threadUrl}`,
+      message: isReply
+        ? `Hi ${firstName}, ${coach().firstName} has replied to your message. Read it in your portal: ${threadUrl}`
+        : `Hi ${firstName}, ${coach().firstName} has sent you a message. Read it in your portal: ${threadUrl}`,
     })
     return true
   } catch (err) {

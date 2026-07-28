@@ -156,13 +156,16 @@ export async function POST(
       phone: client.phone ?? null,
       firstName: client.name?.split(' ')[0] ?? 'there',
       threadUrl: `${portalUrl(client.onboarding_token)}/message`,
+      isReply: !!answering,
     })
     if (texted) {
       await admin.from('client_communications').insert({
         client_id: clientId,
         kind: 'coach_message_reply_sms',
         channel: 'sms',
-        subject: `${coach().firstName} replied to your message`,
+        subject: answering
+          ? `${coach().firstName} replied to your message`
+          : `A message from ${coach().firstName}`,
         to_address: client.phone,
         sent_by: user.id,
         meta: { message_id: inserted?.id ?? null },
