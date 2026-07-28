@@ -21,10 +21,26 @@ type DraftSpec = {
   reasons: Record<string, string>
 }
 
-// A proposed surgical edit to the draft (Phase 3). `operations` is an opaque
-// list of validated patch ops the server applies deterministically; `summary`
-// is the plain-English description the coach approves.
+// A proposed nutrition-plan generation spec (Phase 5). Same confirm-first
+// pattern as the program draft, off the read-only suggest-nutrition engine.
+// `raw` carries the full suggestion so generate-nutrition gets every field.
+type NutritionSpec = {
+  plan_name: string
+  entry_state: string
+  protein_anchor_g: number
+  carb_demand_level: string
+  meal_frequency: number
+  reasons: Record<string, string>
+  raw: Record<string, unknown>
+}
+
+// A proposed surgical edit to the draft (Phase 3 program, Phase 5 nutrition).
+// `operations` is an opaque list of validated patch ops the server applies
+// deterministically; `summary` is the plain-English description the coach OKs.
 type EditProposal = { operations: unknown[]; summary: string }
+
+// Which artefact the refine composer is targeting.
+type EditTarget = 'program' | 'nutrition'
 
 type Msg = {
   id: string | null
@@ -34,8 +50,12 @@ type Msg = {
   followups?: string[]
   /** Special assistant cards for the draft + refine flows. Absent = text bubble. */
   kind?: 'draft-proposal' | 'draft-done' | 'edit-proposal' | 'edit-done'
+    | 'nutrition-proposal' | 'nutrition-done'
   draft?: DraftSpec
+  nutrition?: NutritionSpec
   edit?: EditProposal
+  /** For edit cards: which artefact the ops apply to (defaults to program). */
+  editTarget?: EditTarget
 }
 
 const MONO = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
@@ -48,7 +68,8 @@ const CAPABILITIES: { title: string; body: string }[] = [
   { title: 'Explain this client’s read', body: 'Why they landed in this state or phase, and what’s driving it.' },
   { title: 'Review a generated plan', body: 'Check the program or nutrition against doctrine and flag what’s off.' },
   { title: 'Pressure-test your decision', body: '“Talk me out of progressing them.” “Should this be Restoration?”' },
-  { title: 'Draft a training program', body: 'Propose a full generation spec you review and approve before it runs.' },
+  { title: 'Draft a program or nutrition plan', body: 'Propose a full generation spec you review and approve before it runs.' },
+  { title: 'Refine a draft', body: 'Describe one change (swap an exercise or food, adjust sets or a macro) and approve it before it applies.' },
 ]
 
 export default function CopilotPanel({
@@ -72,22 +93,25 @@ export default function CopilotPanel({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [showHelp, setShowHelp] = useState(false)
-  // Draft flow: `proposing` = fetching the spec; `generatingIdx` = which
+  // Program draft flow: `proposing` = fetching the spec; `generatingIdx` = which
   // proposal card is currently running the real generator.
   const [proposing, setProposing] = useState(false)
   const [generatingIdx, setGeneratingIdx] = useState<number | null>(null)
-  // Refine flow (Phase 3): `editMode` routes the composer to draft edits;
-  // `proposingEdit` = working out the patch; `applyingIdx` = card being saved.
-  const [editMode, setEditMode] = useState(false)
+  // Nutrition draft flow (Phase 5) — mirrors the program one.
+  const [proposingNutrition, setProposingNutrition] = useState(false)
+  const [generatingNutritionIdx, setGeneratingNutritionIdx] = useState<number | null>(null)
+  // Refine flow: `editMode` = which artefact the composer edits (null = normal
+  // chat); `proposingEdit` = working out the patch; `applyingIdx` = card saving.
+  const [editMode, setEditMode] = useState<EditTarget | null>(null)
   const [proposingEdit, setProposingEdit] = useState(false)
   const [applyingIdx, setApplyingIdx] = useState<number | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  const busy = loading || proposing || generatingIdx !== null || proposingEdit || applyingIdx !== null
+  const busy = loading || proposing || generatingIdx !== null || proposingNutrition || generatingNutritionIdx !== null || proposingEdit || applyingIdx !== null
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
-  }, [messages, loading, proposing, generatingIdx, proposingEdit, applyingIdx])
+  }, [messages, loading, proposing, generatingIdx, proposingNutrition, generatingNutritionIdx, proposingEdit, applyingIdx])
 
   async function send(text: string) {
     const q = text.trim()
@@ -205,16 +229,84 @@ export default function CopilotPanel({
     setMessages(prev => prev.filter((_, i) => i !== idx))
   }
 
-  // Phase 3 step 1 (read-only): ask the model for a minimal patch for one change.
+  // ── Nutrition draft (Phase 5) — mirrors proposeDraft/generateDraft ─────────
+  // Step 1 (read-only): the vetted suggest-nutrition engine derives the inputs.
+  async function proposeNutritionDraft() {
+    if (busy) return
+    setError('')
+    setMessages(prev => [...prev, { id: null, role: 'user', content: 'Draft a nutrition plan', flagged: false }])
+    setProposingNutrition(true)
+    try {
+      const res = await fetch('/api/suggest-nutrition', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ client_id: clientId }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`)
+      const s = (data.suggestion || {}) as Record<string, any>
+      const spec: NutritionSpec = {
+        plan_name: String(s.plan_name ?? 'Nutrition Plan'),
+        entry_state: String(s.entry_state ?? ''),
+        protein_anchor_g: Number(s.protein_anchor_g) || 0,
+        carb_demand_level: String(s.carb_demand_level ?? ''),
+        meal_frequency: Number(s.meal_frequency) || 0,
+        reasons: {
+          entry_state: s.entry_state_reason ?? '',
+          protein_anchor_g: s.protein_anchor_g_reason ?? '',
+          carb_demand_level: s.carb_demand_level_reason ?? '',
+          meal_frequency: s.meal_frequency_reason ?? '',
+        },
+        raw: s,
+      }
+      setMessages(prev => [...prev, { id: null, role: 'assistant', content: '', flagged: false, kind: 'nutrition-proposal', nutrition: spec }])
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not build a nutrition proposal')
+    } finally {
+      setProposingNutrition(false)
+    }
+  }
+
+  // Step 2 (mutation, explicit coach action): generate-nutrition saves a DRAFT.
+  async function generateNutritionDraft(idx: number) {
+    const spec = messages[idx]?.nutrition
+    if (!spec || busy) return
+    if (!spec.plan_name.trim()) { setError('Give the plan a name first.'); return }
+    setError('')
+    setGeneratingNutritionIdx(idx)
+    try {
+      const res = await fetch('/api/generate-nutrition', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...spec.raw, client_id: clientId, plan_name: spec.plan_name }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Generation failed')
+      setMessages(prev => prev.map((m, i) => (i === idx ? { ...m, kind: 'nutrition-done' } : m)))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Generation failed')
+    } finally {
+      setGeneratingNutritionIdx(null)
+    }
+  }
+
+  // Refine endpoint by artefact: program vs nutrition draft.
+  const editEndpoint = (target: EditTarget) =>
+    target === 'nutrition'
+      ? `/api/clients/${clientId}/copilot/edit-nutrition`
+      : `/api/clients/${clientId}/copilot/edit-draft`
+
+  // Refine step 1 (read-only): ask the model for a minimal patch for one change.
   async function proposeEdit(text: string) {
+    const target = editMode
     const instruction = text.trim()
-    if (!instruction || busy) return
+    if (!target || !instruction || busy) return
     setError('')
     setInput('')
     setMessages(prev => [...prev, { id: null, role: 'user', content: instruction, flagged: false }])
     setProposingEdit(true)
     try {
-      const res = await fetch(`/api/clients/${clientId}/copilot/edit-draft`, {
+      const res = await fetch(editEndpoint(target), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'propose', instruction }),
@@ -225,9 +317,9 @@ export default function CopilotPanel({
       const summary: string = typeof data.summary === 'string' ? data.summary : ''
       if (operations.length === 0) {
         // Ambiguous, unsupported, or refused on doctrine — show the reason, no Apply.
-        setMessages(prev => [...prev, { id: null, role: 'assistant', content: summary || 'I could not make that change. Try naming the exact exercise and what to change.', flagged: false }])
+        setMessages(prev => [...prev, { id: null, role: 'assistant', content: summary || 'I could not make that change. Try naming exactly what to change.', flagged: false }])
       } else {
-        setMessages(prev => [...prev, { id: null, role: 'assistant', content: '', flagged: false, kind: 'edit-proposal', edit: { operations, summary } }])
+        setMessages(prev => [...prev, { id: null, role: 'assistant', content: '', flagged: false, kind: 'edit-proposal', edit: { operations, summary }, editTarget: target }])
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not work out the edit')
@@ -236,14 +328,16 @@ export default function CopilotPanel({
     }
   }
 
-  // Phase 3 step 2 (mutation, explicit coach action): apply the patch to the draft.
+  // Refine step 2 (mutation, explicit coach action): apply the patch to the draft.
   async function applyEdit(idx: number) {
-    const proposal = messages[idx]?.edit
+    const m = messages[idx]
+    const proposal = m?.edit
+    const target: EditTarget = m?.editTarget ?? 'program'
     if (!proposal || busy) return
     setError('')
     setApplyingIdx(idx)
     try {
-      const res = await fetch(`/api/clients/${clientId}/copilot/edit-draft`, {
+      const res = await fetch(editEndpoint(target), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'apply', operations: proposal.operations }),
@@ -251,7 +345,7 @@ export default function CopilotPanel({
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Could not apply the change')
       const applied: string[] = Array.isArray(data.applied) ? data.applied : []
-      setMessages(prev => prev.map((m, i) => (i === idx ? { ...m, kind: 'edit-done', content: applied.join(' ') } : m)))
+      setMessages(prev => prev.map((mm, i) => (i === idx ? { ...mm, kind: 'edit-done', content: applied.join(' ') } : mm)))
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not apply the change')
     } finally {
@@ -404,6 +498,81 @@ export default function CopilotPanel({
             )
           }
 
+          // Nutrition proposal card (Phase 5) — coach reviews + approves.
+          if (m.role === 'assistant' && m.kind === 'nutrition-proposal' && m.nutrition) {
+            const n = m.nutrition
+            const gen = generatingNutritionIdx === i
+            const rows: [string, string, string][] = [
+              ['Entry state', cap(n.entry_state.replace(/_/g, ' ')), n.reasons.entry_state],
+              ['Protein anchor', `${n.protein_anchor_g}g`, n.reasons.protein_anchor_g],
+              ['Carb demand', cap(n.carb_demand_level), n.reasons.carb_demand_level],
+              ['Meals/day', `${n.meal_frequency}`, n.reasons.meal_frequency],
+            ]
+            return (
+              <div key={i} className="border border-[#B5CFFC] bg-[rgba(27,109,252,0.04)] rounded-2xl px-4 py-3.5">
+                <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-2.5" style={{ fontFamily: MONO }}>Proposed nutrition draft</p>
+                <label className="block text-[11px] font-bold text-[#6B6B6B] uppercase tracking-wider mb-1">Plan name</label>
+                <input
+                  value={n.plan_name}
+                  onChange={e => setMessages(prev => prev.map((mm, ii) => (ii === i && mm.nutrition ? { ...mm, nutrition: { ...mm.nutrition, plan_name: e.target.value } } : mm)))}
+                  disabled={gen}
+                  className="w-full text-sm border border-[#CBD9F2] rounded-lg px-2.5 py-1.5 mb-3 bg-white focus:outline-none focus:border-[#1B6DFC] disabled:opacity-60"
+                />
+                <div className="space-y-2 mb-3">
+                  {rows.map(([label, val, reason]) => (
+                    <div key={label}>
+                      <div className="flex items-baseline justify-between gap-3">
+                        <span className="text-[12px] text-[#6B6B6B]">{label}</span>
+                        <span className="text-[13px] font-semibold text-[#1A1A1A] text-right">{val}</span>
+                      </div>
+                      {reason && <p className="text-[11.5px] text-[#8A8A8E] leading-snug mt-0.5">{reason}</p>}
+                    </div>
+                  ))}
+                </div>
+                <p className="text-[11.5px] text-[#8A8A8E] leading-snug mb-3">Generating builds the meals against the protein anchor and calorie floor, and creates a <strong>draft</strong> only. Nothing reaches {clientFirstName} until you publish it.</p>
+                {gen ? (
+                  <div className="flex items-center gap-2 text-[13px] text-[#1B6DFC]">
+                    <span className="w-2 h-2 rounded-full bg-[#1B6DFC] animate-bounce motion-reduce:animate-none" />
+                    Generating the nutrition draft. This takes a minute or two, keep the panel open.
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => generateNutritionDraft(i)}
+                      disabled={busy}
+                      className="text-[13px] font-semibold px-3.5 py-1.5 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1558d6] transition-colors disabled:opacity-40"
+                    >
+                      Generate this draft
+                    </button>
+                    <button
+                      onClick={() => dismissProposal(i)}
+                      disabled={busy}
+                      className="text-[13px] px-3 py-1.5 text-[#6B6B6B] hover:text-[#1A1A1A] transition-colors disabled:opacity-40"
+                    >
+                      Dismiss
+                    </button>
+                  </div>
+                )}
+              </div>
+            )
+          }
+
+          // Nutrition draft created — link to the nutrition page to review + publish.
+          if (m.role === 'assistant' && m.kind === 'nutrition-done' && m.nutrition) {
+            return (
+              <div key={i} className="border border-[#BBE3C8] bg-[rgba(34,160,84,0.06)] rounded-2xl px-4 py-3.5">
+                <p className="text-[13px] font-semibold text-[#1A1A1A] mb-1">Nutrition draft created: {m.nutrition.plan_name}</p>
+                <p className="text-[12.5px] text-[#6B6B6B] leading-relaxed mb-2.5">It’s saved as a draft (not live). Open the nutrition page to review the meals, edit if needed, and publish when you’re happy.</p>
+                <a
+                  href={`/dashboard/clients/${clientId}/nutrition`}
+                  className="inline-block text-[13px] font-semibold px-3.5 py-1.5 bg-[#1A1A1A] text-white rounded-lg hover:bg-black transition-colors"
+                >
+                  Review the draft
+                </a>
+              </div>
+            )
+          }
+
           // Surgical edit proposal — the coach approves one named change.
           if (m.role === 'assistant' && m.kind === 'edit-proposal' && m.edit) {
             const applying = applyingIdx === i
@@ -441,12 +610,13 @@ export default function CopilotPanel({
 
           // Edit applied — confirm + link back to review the updated draft.
           if (m.role === 'assistant' && m.kind === 'edit-done') {
+            const nutritionEdit = m.editTarget === 'nutrition'
             return (
               <div key={i} className="border border-[#BBE3C8] bg-[rgba(34,160,84,0.06)] rounded-2xl px-4 py-3.5">
-                <p className="text-[13px] font-semibold text-[#1A1A1A] mb-1">Change applied to the draft</p>
+                <p className="text-[13px] font-semibold text-[#1A1A1A] mb-1">Change applied to the {nutritionEdit ? 'nutrition draft' : 'draft'}</p>
                 {m.content && <p className="text-[12.5px] text-[#6B6B6B] leading-relaxed mb-2.5">{m.content}</p>}
                 <a
-                  href={`/dashboard/clients/${clientId}/program`}
+                  href={`/dashboard/clients/${clientId}/${nutritionEdit ? 'nutrition' : 'program'}`}
                   className="inline-block text-[13px] font-semibold px-3.5 py-1.5 bg-[#1A1A1A] text-white rounded-lg hover:bg-black transition-colors"
                 >
                   Review the draft
@@ -476,7 +646,7 @@ export default function CopilotPanel({
           )
         })}
 
-        {(loading || proposing || proposingEdit) && (
+        {(loading || proposing || proposingNutrition || proposingEdit) && (
           <div className="bg-[#F5F3EE] rounded-2xl rounded-bl-sm px-4 py-3 inline-flex items-center gap-1.5 w-fit" aria-label="Co-pilot is working">
             <span className="w-2 h-2 rounded-full bg-[#9AA3AF] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '0ms' }} />
             <span className="w-2 h-2 rounded-full bg-[#9AA3AF] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '150ms' }} />
@@ -509,31 +679,54 @@ export default function CopilotPanel({
         )}
       </div>
 
-      {/* Program actions — Phase 2 draft + Phase 3 refine entry points. */}
-      <div className="px-3 pt-2 shrink-0 flex gap-2">
-        <button
-          onClick={() => { setEditMode(false); proposeDraft() }}
-          disabled={busy}
-          className="flex-1 text-[13px] font-medium px-3 py-2 border border-[#B5CFFC] text-[#1B6DFC] rounded-xl hover:bg-[rgba(27,109,252,0.05)] transition-colors disabled:opacity-40"
-        >
-          ＋ Draft a program
-        </button>
-        <button
-          onClick={() => { setError(''); setEditMode(m => !m) }}
-          disabled={busy}
-          aria-pressed={editMode}
-          className={`flex-1 text-[13px] font-medium px-3 py-2 border rounded-xl transition-colors disabled:opacity-40 ${
-            editMode
-              ? 'border-[#E7C9A0] bg-[rgba(180,120,20,0.08)] text-[#B4780E]'
-              : 'border-[#E7C9A0] text-[#B4780E] hover:bg-[rgba(180,120,20,0.05)]'
-          }`}
-        >
-          ✎ Refine the draft
-        </button>
+      {/* Draft + refine actions — program (Phase 2/3) and nutrition (Phase 5). */}
+      <div className="px-3 pt-2 shrink-0 space-y-2">
+        <div className="flex gap-2">
+          <button
+            onClick={() => { setEditMode(null); proposeDraft() }}
+            disabled={busy}
+            className="flex-1 text-[13px] font-medium px-3 py-2 border border-[#B5CFFC] text-[#1B6DFC] rounded-xl hover:bg-[rgba(27,109,252,0.05)] transition-colors disabled:opacity-40"
+          >
+            ＋ Draft a program
+          </button>
+          <button
+            onClick={() => { setError(''); setEditMode(m => (m === 'program' ? null : 'program')) }}
+            disabled={busy}
+            aria-pressed={editMode === 'program'}
+            className={`flex-1 text-[13px] font-medium px-3 py-2 border rounded-xl transition-colors disabled:opacity-40 ${
+              editMode === 'program'
+                ? 'border-[#E7C9A0] bg-[rgba(180,120,20,0.08)] text-[#B4780E]'
+                : 'border-[#E7C9A0] text-[#B4780E] hover:bg-[rgba(180,120,20,0.05)]'
+            }`}
+          >
+            ✎ Refine program
+          </button>
+        </div>
+        <div className="flex gap-2">
+          <button
+            onClick={() => { setEditMode(null); proposeNutritionDraft() }}
+            disabled={busy}
+            className="flex-1 text-[13px] font-medium px-3 py-2 border border-[#B5CFFC] text-[#1B6DFC] rounded-xl hover:bg-[rgba(27,109,252,0.05)] transition-colors disabled:opacity-40"
+          >
+            ＋ Draft nutrition
+          </button>
+          <button
+            onClick={() => { setError(''); setEditMode(m => (m === 'nutrition' ? null : 'nutrition')) }}
+            disabled={busy}
+            aria-pressed={editMode === 'nutrition'}
+            className={`flex-1 text-[13px] font-medium px-3 py-2 border rounded-xl transition-colors disabled:opacity-40 ${
+              editMode === 'nutrition'
+                ? 'border-[#E7C9A0] bg-[rgba(180,120,20,0.08)] text-[#B4780E]'
+                : 'border-[#E7C9A0] text-[#B4780E] hover:bg-[rgba(180,120,20,0.05)]'
+            }`}
+          >
+            ✎ Refine nutrition
+          </button>
+        </div>
       </div>
       {editMode && (
         <p className="px-4 pt-1.5 text-[11.5px] text-[#8A8A8E] leading-snug shrink-0">
-          Refine mode: describe one change to the draft program (e.g. “swap the barbell squat for a hip thrust”, “drop the bench to 3 sets”). I’ll show it before it’s applied.
+          Refine mode ({editMode}): describe one change to the {editMode} draft ({editMode === 'nutrition' ? '“swap the oats for berries”, “drop to 3 meals”' : '“swap the barbell squat for a hip thrust”, “drop the bench to 3 sets”'}). I’ll show it before it’s applied.
         </p>
       )}
 
@@ -546,7 +739,7 @@ export default function CopilotPanel({
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); editMode ? proposeEdit(input) : send(input) } }}
-            placeholder={editMode ? 'Describe one change to the draft…' : `Ask about ${clientFirstName}…`}
+            placeholder={editMode ? `Describe one change to the ${editMode} draft…` : `Ask about ${clientFirstName}…`}
             rows={2}
             className={`flex-1 resize-none text-sm border rounded-xl px-3 py-2 focus:outline-none ${editMode ? 'border-[#E7C9A0] focus:border-[#B4780E]' : 'border-[#E5E5E5] focus:border-[#1B6DFC]'}`}
           />
