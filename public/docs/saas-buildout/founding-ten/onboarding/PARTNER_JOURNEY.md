@@ -14,8 +14,8 @@ This is what *actually* happens when a new founding-partner coach comes on. The 
 
 ## Stage 0 — Attract (how they find us)
 **Goal:** the right practitioners land on the offer.
-- `[K]` Kade's network, gym floor (Melisa), referrals, the SOT site, and later the "Powered by Body Recode" attribution on live partner sites.
-- Entry point: the **Apply** CTA on the SOT site → currently a pre-filled email to kade@bodyrecode.au.
+- `[K]` Kade's network, gym floor (Melisa), referrals, the Collective site, and later the "Powered by Body Recode" attribution on live partner sites.
+- Entry point: the **Apply** CTA on the Collective site → currently a pre-filled email to kade@bodyrecode.au.
 - **NOW:** mailto. **NEXT:** a proper `/apply` form (Tally/Typeform or native) that captures the application fields below and creates a lead record.
 - **Exit when:** an application lands.
 

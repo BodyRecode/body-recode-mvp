@@ -1,9 +1,9 @@
 # Founding Partner Offer Architecture
 **Internal strategy doc. Not for partners. Prepared June 2026.**
 
-The productised offer: turn a movement or health practitioner's own method into a branded, done-with-you coaching business, powered by the Body Recode engine and delivered through Studio of Ten. Capped at ten founding partners.
+The productised offer: turn a movement or health practitioner's own method into a branded, done-with-you coaching business, powered by the Body Recode engine and delivered through The Body Recode Collective. Capped at ten founding partners.
 
-This is the AI Co-Founder Method made concrete for one vertical, with the BR engine as the tech backbone and SOT as the delivery machine.
+This is the AI Co-Founder Method made concrete for one vertical, with the BR engine as the tech backbone and Collective as the delivery machine.
 
 ---
 
@@ -39,7 +39,7 @@ The three roles in Melisa's proposal are also a pricing ladder. Most partners en
 |------|------|---------------|------------|
 | **Powered Partner** | Roles 1 + 2 | Referral + scorecard funnel attribution | Free to join. Rev-share on anyone they send who joins. |
 | **Launch** | Role 3 (lite) | Branded instance of the platform, set up for them | Setup fee + subscription + rev-share |
-| **Studio** | Role 3 (full) | Full SOT build: IP extraction, website, funnel, the lot | Higher setup + subscription + rev-share |
+| **Studio** | Role 3 (full) | Full Collective build: IP extraction, website, funnel, the lot | Higher setup + subscription + rev-share |
 
 Powered Partner is the on-ramp. It costs you almost nothing to offer and it seeds the relationship. Launch and Studio are the real revenue.
 
@@ -57,9 +57,9 @@ For a practitioner who already knows their method and just wants the system.
 - Inherits your platform roadmap
 
 **STUDIO — "Business in a box"**
-The full SOT engagement for a practitioner whose method still needs extracting and whose brand needs building.
+The full Collective engagement for a practitioner whose method still needs extracting and whose brand needs building.
 - Everything in Launch, plus:
-- IP extraction (SOT Stage 00) - their method becomes the engine's doctrine/config
+- IP extraction (Collective Stage 00) - their method becomes the engine's doctrine/config
 - Brand + website build
 - Domain, email deliverability, the full setup
 - Launch kit: post/story templates, first-10-clients playbook
@@ -145,7 +145,7 @@ Cap it at ten and say so. The cap is the scarcity and it keeps your support load
 
 ---
 
-## 6. Delivery flow (SOT is the machine)
+## 6. Delivery flow (the Collective is the machine)
 
 Map every sale onto the stages you already have:
 1. **Stage 00 - IP extraction** -> their method becomes engine config

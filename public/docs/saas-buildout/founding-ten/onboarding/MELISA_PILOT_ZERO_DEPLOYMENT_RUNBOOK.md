@@ -4,7 +4,7 @@
 **Owner:** Kade.
 **Sequencing:** Execute post-launch (Wk 2+ after Mon 13 Jul 2026 BR launch stabilises).
 
-Pilot zero = the first hand-gloved SOT partner deployment. Purpose: prove the deployment shape end-to-end so the runbook can be tightened before onboarding partners #2-#10.
+Pilot zero = the first hand-gloved Collective partner deployment. Purpose: prove the deployment shape end-to-end so the runbook can be tightened before onboarding partners #2-#10.
 
 Per [POWERED_PLATFORM_BUILD_PLAN.md](../POWERED_PLATFORM_BUILD_PLAN.md) §4 Phase 1: Melisa was originally scoped to run on a hand-gloved deployment with targeted branding override, before the full de-hardcode. **As of 2026-07-05 that is no longer necessary.** De-hardcode is done, tenant_config is DB-backed with a full editor UI, custom-domain routing is shipped, per-tenant Stripe Connect + Twilio Subaccounts + Mode A+ doctrine tuning all live. Her deployment is now Shape B (single production deployment, multi-tenant), not Shape A (separate deploy).
 

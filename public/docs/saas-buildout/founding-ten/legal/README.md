@@ -2,7 +2,7 @@
 
 **Status:** DRAFT for legal review. NOT signed, NOT executable in current form.
 
-This folder holds the commercial + IP paperwork for the Studio of Ten Founding Ten programme. All documents are v0.1 drafts prepared for a solicitor to review, tune, and sign off before any partner signs.
+This folder holds the commercial + IP paperwork for the Body Recode Collective Founding Ten programme. All documents are v0.1 drafts prepared for a solicitor to review, tune, and sign off before any partner signs.
 
 ## What is in this package
 
