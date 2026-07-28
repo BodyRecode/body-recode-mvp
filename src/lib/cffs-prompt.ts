@@ -247,6 +247,8 @@ Produce the CFFS as JSON only — no markdown, no commentary:
   "pattern_classification": "Stress-Stored" | "Insulin-Drift" | "Estrogen-Shift" | "Androgen-Decline",
   "pattern_confidence": "low" | "moderate" | "high",
   "pattern_rationale": "2-4 sentences. Name the converging evidence for this pattern. If it departs from the incoming read, say what moved you. If it agrees, say what confirms it rather than repeating the label.",
+  "pattern_competing_read": "Stress-Stored" | "Insulin-Drift" | "Estrogen-Shift" | "Androgen-Decline" | "None",
+  "pattern_watch_for": "1-3 sentences, written to the coach. If a competing pattern is plausible, name the SPECIFIC evidence that would move the read to it, and where that evidence would come from (blood markers, a re-measure, a check-in signal). If nothing credible competes, return \"None\" for pattern_competing_read and say plainly why the read is settled. Never invent a competing read for the sake of balance.",
   "resolution_state": "Fully Resolved" | "Partially Resolved" | "Unresolved",
   "client_context_summary": "3-5 sentences",
   "primary_patterns_and_signals": "3-5 sentences",

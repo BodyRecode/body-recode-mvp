@@ -189,6 +189,22 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
                       {cffs.pattern_rationale}
                     </p>
                   )}
+                  {/* What would overturn this read. A read that no evidence can
+                      change is not a read, it is an assumption. This is what the
+                      coach checks against when new evidence arrives. */}
+                  {cffs.pattern_watch_for && (
+                    <div style={{ marginTop: 16, padding: '14px 16px', background: '#F3F7FF', border: '1px solid rgba(27,109,252,0.25)', borderRadius: 6 }}>
+                      <p style={{ fontSize: 9, fontWeight: 700, color: '#1B6DFC', textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: 8 }}>
+                        Watch for
+                        {cffs.pattern_competing_read && cffs.pattern_competing_read !== 'None'
+                          ? ` — competing read: ${cffs.pattern_competing_read}`
+                          : ''}
+                      </p>
+                      <p style={{ fontSize: 13, lineHeight: 1.7, color: '#4A4A4A', margin: 0 }}>
+                        {cffs.pattern_watch_for}
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
