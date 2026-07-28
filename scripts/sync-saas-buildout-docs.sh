@@ -44,6 +44,12 @@ done
 cp "$SRC/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/sql/2026-07-01_tenant_config_schema.sql" "$DEST/sql/"
 cp "$SRC/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/sql/2026-07-03_tenant_domains_schema.sql" "$DEST/sql/"
 
+# ─── Coach Co-Pilot build doc (Phases 1-9) ──────────────────
+mkdir -p "$DEST/copilot"
+CP="$SRC/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/02_FEATURE_SPECS/2026-07-27_Coach_Copilot_Build_Phases_1-9"
+cp "$CP.md"  "$DEST/copilot/COACH_COPILOT_BUILD.md"
+cp "$CP.pdf" "$DEST/copilot/COACH_COPILOT_BUILD.pdf"   # BR-branded (built via build-br-ops-pdf.sh); .docx regenerated below
+
 # ─── Regenerate .docx via pandoc ─────────────────────────────
 echo ""
 echo "Generating .docx via pandoc..."

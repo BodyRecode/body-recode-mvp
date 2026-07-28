@@ -720,6 +720,15 @@ export const PHASES: Phase[] = [
       'Design doc: 06_SAAS_PLATFORM_BUILD/02_FEATURE_SPECS/2026-07-12_Coach_Copilot_Conversational_Build_Design.md (v0.2). Phase 1 tutor shipped (global on every page); 2026-07-24 added Plan Review (doctrine-critique of the actual generated plan), advisory plan-generation setup, the flagged-exchanges review page, and Phase 2 draft-a-program (confirm-first: co-pilot proposes a spec via read-only suggest-prescription, coach approves, generator saves a draft). 2026-07-24 also added Phase 3 surgical draft edits (confirm-first refine mode: model proposes a minimal patch, server applies it deterministically to a draft, unnamed parts untouched). Remaining: Phase 4 broaden; add/remove/reorder + whole-day edits + nutrition drafting not yet built. Kade to click-test the full draft → refine → publish loop.',
     ],
     order: 5,
+    docs: [
+      {
+        title: 'Coach Co-Pilot — Build Doc (Phases 1-9)',
+        description: 'The whole co-pilot in plain terms: the nine phases (tutor, plan review, draft, refine, roster, nutrition, proactive brief, structural refine, coach memory) plus white-label readiness, how the pieces fit, what is deferred, and status.',
+        mdUrl: '/docs/saas-buildout/copilot/COACH_COPILOT_BUILD.md',
+        docxUrl: '/docs/saas-buildout/copilot/COACH_COPILOT_BUILD.docx',
+        pdfUrl: '/docs/saas-buildout/copilot/COACH_COPILOT_BUILD.pdf',
+      },
+    ],
     steps: [
       {
         id: 'copilot-tutor',
