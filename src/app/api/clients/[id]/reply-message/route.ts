@@ -7,6 +7,7 @@ import { buildCoachReplyEmail } from '@/lib/coach-reply-email'
 import { fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { portalUrl } from '@/lib/app-url'
 import { smsNotifyClientOfCoachReply } from '@/lib/message-notifications'
+import { messageReplyAddress } from '@/lib/message-reply-address'
 import { coach } from '@/config/tenant'
 
 /**
@@ -124,6 +125,9 @@ export async function POST(
         from: fromCoach(),
         to: client.email,
         bcc: COACH_BCC,
+        // Addressed reply-to: a client who answers from their inbox lands in
+        // their portal thread instead of Kade's personal email.
+        replyTo: messageReplyAddress(client.onboarding_token),
         subject,
         html,
       })

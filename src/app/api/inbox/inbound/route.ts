@@ -6,6 +6,8 @@ import { coach } from '@/config/tenant'
 import { sendSms, formatPhone } from '@/lib/twilio'
 import { isWithinCoachSmsWindow } from '@/lib/collective-ready-coach-sms'
 import { appUrlFor } from '@/lib/app-url'
+import { parseMessageReplyToken } from '@/lib/message-reply-address'
+import { smsNotifyCoachOfClientMessage } from '@/lib/message-notifications'
 
 // Handles inbound email webhooks from Postmark (MX for replies.bodyrecode.au
 // points at Postmark inbound). Replies to app-sent client emails land here.
@@ -107,6 +109,60 @@ export async function POST(request: NextRequest) {
   }
 
   const admin = createAdminClient()
+
+  // 0. Is this a reply to a coach message? Those are sent with an addressed
+  //    reply-to (reply+<portal token>@...) so we can file the answer on the
+  //    right thread instead of only forwarding it to Kade's inbox, which used
+  //    to split the conversation across two places.
+  const replyToken = parseMessageReplyToken(
+    body.OriginalRecipient,
+    body.To,
+    body.ToFull?.map?.((t: { Email?: string }) => t.Email).join(','),
+    body.Cc,
+  )
+
+  if (replyToken) {
+    // Postmark's StrippedTextReply is the message minus the quoted chain, which
+    // is what belongs in a thread. Fall back to the raw body if absent.
+    const replyText: string = (body.StrippedTextReply ?? textBody ?? '').trim()
+    const { data: replyClient } = await admin
+      .from('clients')
+      .select('id, name, email')
+      .eq('onboarding_token', replyToken)
+      .maybeSingle()
+
+    // Only file it when the sender actually owns that thread. Anyone can guess
+    // an address; they cannot also control the From on a matching mailbox.
+    const senderOwnsThread =
+      replyClient && (replyClient.email ?? '').toLowerCase() === senderEmail.toLowerCase()
+
+    if (replyClient && senderOwnsThread && replyText) {
+      const { error: fileErr } = await admin.from('client_messages').insert({
+        client_id: replyClient.id,
+        body: replyText.slice(0, 5000).replace(/—/g, ', '),
+        sender: 'client',
+      })
+      if (fileErr) {
+        console.error('[inbox/inbound] could not file email reply as message:', fileErr)
+      } else {
+        console.log(`[inbox/inbound] filed email reply into portal thread for ${replyClient.name}`)
+        // Still tell Kade, same as any other portal message.
+        await smsNotifyCoachOfClientMessage(replyClient.name ?? 'A client')
+        try {
+          await forwardToKade({ senderName, senderEmail, subject, htmlBody, textBody, leadId: null })
+        } catch (err) {
+          console.error('[inbox/inbound] forward failed:', err instanceof Error ? err.message : err)
+        }
+        return NextResponse.json({ ok: true, filed: 'client_message' })
+      }
+    } else if (replyClient && !senderOwnsThread) {
+      console.warn(
+        `[inbox/inbound] reply token for ${replyClient.name} came from ${senderEmail}, not their address. Not filing.`
+      )
+    }
+    // Anything that falls through here drops to the normal path below, so a
+    // reply is never silently lost.
+  }
 
   // Find the lead by email — take most recently created if multiple match
   const { data: leads } = await admin
