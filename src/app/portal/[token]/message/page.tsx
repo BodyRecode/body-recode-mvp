@@ -36,12 +36,13 @@ export default async function MessageCoachPage({
     redirect(`/portal/${token}`)
   }
 
-  // Full conversation, oldest first so it reads top to bottom like a thread.
+  // Newest first. On a long-running conversation the latest exchange is the
+  // only part anyone opens the page for, so it should never need scrolling to.
   const { data: messages } = await admin
     .from('client_messages')
     .select('id, body, sender, created_at, anchor_kind, anchor_label')
     .eq('client_id', client.id)
-    .order('created_at', { ascending: true })
+    .order('created_at', { ascending: false })
 
   const coachFirstName = coach().firstName
 

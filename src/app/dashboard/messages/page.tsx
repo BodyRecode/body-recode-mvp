@@ -126,8 +126,11 @@ export default async function MessagesInboxPage() {
                   )}
                 </div>
 
-                <div className="space-y-3 mb-5">
-                  {thread.slice(0, 6).reverse().map(m => (
+                <ReplyBox clientId={clientId} clientFirstName={firstName} />
+
+                {/* Newest first, matching the client's view of the same thread. */}
+                <div className="space-y-3 mt-5">
+                  {thread.slice(0, 6).map(m => (
                     <div
                       key={m.id}
                       className={
@@ -162,12 +165,10 @@ export default async function MessagesInboxPage() {
                   ))}
                   {thread.length > 6 && (
                     <p className="text-[11px] text-[#999999] text-center">
-                      Showing the last 6 of {thread.length} messages
+                      Showing the 6 most recent of {thread.length} messages
                     </p>
                   )}
                 </div>
-
-                <ReplyBox clientId={clientId} clientFirstName={firstName} />
               </Card>
             )
           })}

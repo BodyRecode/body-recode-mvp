@@ -104,34 +104,6 @@ export default function MessageThread({
 
   return (
     <div>
-      {initialMessages.length > 0 && (
-        <div className="space-y-3 mb-8">
-          {initialMessages.map(m => (
-            <div
-              key={m.id}
-              className={
-                m.sender === 'coach'
-                  ? 'rounded-2xl bg-[#F3F7FF] border border-[rgba(27,109,252,0.25)] px-4 py-3 mr-6'
-                  : 'rounded-2xl bg-[#F7F7F7] border border-[#E5E5E5] px-4 py-3 ml-6'
-              }
-            >
-              <div className="flex items-center justify-between mb-1.5">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-[#999999]">
-                  {m.sender === 'coach' ? coachFirstName : firstName}
-                </p>
-                <p className="text-[10px] text-[#999999]">{when(m.created_at)}</p>
-              </div>
-              {m.anchor_kind && (
-                <p className="inline-block text-[10px] font-medium text-[#1B6DFC] bg-[#FFFFFF] border border-[rgba(27,109,252,0.25)] rounded-full px-2 py-0.5 mb-2">
-                  {anchorChipLabel(m.anchor_kind, m.anchor_label)}
-                </p>
-              )}
-              <p className="text-[14px] text-[#3A3A3A] leading-relaxed whitespace-pre-wrap">{m.body}</p>
-            </div>
-          ))}
-        </div>
-      )}
-
       <form onSubmit={submit} className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5">
         {anchor && (
           <div className="flex items-center gap-2 mb-3">
@@ -177,6 +149,34 @@ export default function MessageThread({
           {sending ? 'Sending...' : 'Send message'}
         </button>
       </form>
+
+      {initialMessages.length > 0 && (
+        <div className="space-y-3 mt-8">
+          {initialMessages.map(m => (
+            <div
+              key={m.id}
+              className={
+                m.sender === 'coach'
+                  ? 'rounded-2xl bg-[#F3F7FF] border border-[rgba(27,109,252,0.25)] px-4 py-3 mr-6'
+                  : 'rounded-2xl bg-[#F7F7F7] border border-[#E5E5E5] px-4 py-3 ml-6'
+              }
+            >
+              <div className="flex items-center justify-between mb-1.5">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-[#999999]">
+                  {m.sender === 'coach' ? coachFirstName : firstName}
+                </p>
+                <p className="text-[10px] text-[#999999]">{when(m.created_at)}</p>
+              </div>
+              {m.anchor_kind && (
+                <p className="inline-block text-[10px] font-medium text-[#1B6DFC] bg-[#FFFFFF] border border-[rgba(27,109,252,0.25)] rounded-full px-2 py-0.5 mb-2">
+                  {anchorChipLabel(m.anchor_kind, m.anchor_label)}
+                </p>
+              )}
+              <p className="text-[14px] text-[#3A3A3A] leading-relaxed whitespace-pre-wrap">{m.body}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
