@@ -1,28 +1,27 @@
 #!/bin/bash
-# Build SOT-branded PDFs for every SaaS buildout doc in public/docs/saas-buildout/.
+# Build Body Recode-branded PDFs for every SaaS buildout doc in public/docs/saas-buildout/.
 #
-# Uses the canonical SOT PDF builder at
-# ~/Dropbox/03_BODY_RECODE_COLLECTIVE/_pdf_build/build-sot-pattern-pdf.sh so every buildout
-# doc shares the same brand DNA as other SOT client-facing patterns (warm off-
-# white background, Inter + JetBrains Mono, electric blue accent, "10" logo
-# lockup, category badge, dot-grid + diagonal cover accent).
+# Uses the Body Recode ops PDF builder at
+# ~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/_pdf_build/build-br-ops-pdf.sh so every
+# buildout doc shares the Body Recode brand DNA (Pure White / Graphite / Signal
+# Blue, Helvetica, "BR" logo lockup, category badge, branded cover).
 #
-# The SOT builder writes the PDF next to the input .md — so this script runs it
+# The builder writes the PDF next to the input .md — so this script runs it
 # against the .md copies inside public/docs/saas-buildout/, landing the PDF
 # there for direct Vercel serving.
 #
-# Requires: pandoc, Google Chrome, the SOT _pdf_build folder in Dropbox.
+# Requires: pandoc, Google Chrome, the BR _pdf_build folder in Dropbox.
 #
 # Run manually after sync-saas-buildout-docs.sh, or during initial setup.
 
 set -e
 
-BUILDER="$HOME/Dropbox/03_BODY_RECODE_COLLECTIVE/_pdf_build/build-sot-pattern-pdf.sh"
+BUILDER="$HOME/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/_pdf_build/build-br-ops-pdf.sh"
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 DOCS="$REPO/public/docs/saas-buildout"
 
 if [ ! -x "$BUILDER" ]; then
-  echo "SOT PDF builder not found or not executable at: $BUILDER"
+  echo "BR PDF builder not found or not executable at: $BUILDER"
   exit 1
 fi
 
@@ -57,7 +56,7 @@ build_one \
 
 build_one \
   "$DOCS/founding-ten/README.md" \
-  "Studio of Ten · Founding Ten" \
+  "Body Recode · Founding Ten" \
   "Overview" \
   "v1.0 · 2026-07" \
   "capped ten founding partners on the powered platform"
