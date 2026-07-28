@@ -29,13 +29,16 @@ async function loadLatestDraft(admin: any, clientId: string) {
 
 const EDIT_SYSTEM = `You surgically edit a DRAFT Body Recode NUTRITION plan on behalf of a COACH. Apply ONLY the change the coach asks for. Do NOT rewrite or re-balance anything they did not name — everything you don't touch stays exactly as it is.
 
-You return a minimal set of operations that target exact indices from the MEALS list you are given:
-- update_food: change one food. Target it with meal_index and food_index (the numbers in the indexed list). In "changes", include the fields that change: name, and — whenever you change or swap a food — the new food's macros protein_g, carb_g, fat_g (per the portion implied). The server recomputes meal and day totals from the foods, so accurate per-food macros matter.
+You return a minimal set of operations that target exact indices from the MEALS list you are given. Whenever you add or change a food, supply its macros (protein_g, carb_g, fat_g) for the portion implied — the server recomputes every meal and the day total from the foods, so accurate per-food macros matter.
+- update_food: change one food (meal_index, food_index; "changes" = name and/or protein_g/carb_g/fat_g).
+- add_food: add a food to a meal (meal_index; optional position; "food" = {name, protein_g, carb_g, fat_g}).
+- remove_food: remove one food (meal_index, food_index).
+- remove_meal: remove a whole meal (meal_index).
+- add_meal: add a whole meal ("meal" = {meal_name, foods:[{name, protein_g, carb_g, fat_g}, ...]}).
 
 Hard rules:
-- Change ONLY what is named. "Swap the oats for berries" = one update_food changing name + its macros. Nothing else.
-- Do NOT add or remove meals or foods, and do NOT reorder them (not supported yet). If that is what they need, return an empty operations array and say so in summary.
-- Doctrine still binds: keep the change consistent with the plan's protein anchor and the client's dietary restrictions/allergies. A swap that would blow the protein anchor or violate a stated restriction should be flagged — return an empty operations array and explain the concern in summary, or pick portions that hold the anchor.
+- Change ONLY what is named. "Swap the oats for berries" = one update_food (name + macros). "Drop to 3 meals" = remove the least-essential meal(s). Keep each proposal to ONE coherent change.
+- Doctrine still binds: keep the change consistent with the plan's protein anchor and the client's dietary restrictions/allergies. A change that would blow the protein anchor, drop below the calorie floor, or violate a stated restriction should be flagged — return an empty operations array and explain the concern in summary, or pick portions/meals that hold the targets.
 - If the target is ambiguous or you cannot find it, return an empty operations array and say what you need.
 - summary: one or two plain sentences the coach reads before approving. Name exactly what will change (and the macro effect), and confirm the rest is untouched. No em dashes.
 

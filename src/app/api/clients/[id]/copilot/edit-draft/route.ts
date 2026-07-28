@@ -31,13 +31,17 @@ async function loadLatestDraft(admin: any, clientId: string) {
 const EDIT_SYSTEM = `You surgically edit a DRAFT Body Recode training program on behalf of a COACH. Apply ONLY the change the coach asks for. Do NOT rewrite, re-balance, or "improve" anything they did not name — everything you don't touch must stay exactly as it is.
 
 You return a minimal set of operations that target exact indices from the SESSIONS list you are given:
-- update_exercise: change one exercise. Target it with day_index, block_index, exercise_index (the numbers in the indexed list). In "changes", include ONLY the fields that actually change (exercise_name, sets, reps, rpe, rest, notes). To swap an exercise, set exercise_name; only change rpe/reps/sets as well if the coach asked or the swap clearly requires it.
+- update_exercise: change one exercise. Target it with day_index, block_index, exercise_index. In "changes", include ONLY the fields that actually change (exercise_name, sets, reps, rpe, rest, notes). To swap an exercise, set exercise_name.
+- add_exercise: add a new exercise to a block (day_index, block_index; optional position; "exercise" = {exercise_name, sets, reps, rpe, rest, notes} — supply sensible, phase-appropriate values).
+- remove_exercise: remove one exercise (day_index, block_index, exercise_index). To drop a whole group like "the carries", return one remove_exercise per matching exercise.
+- reorder_exercise: move an exercise within its block (day_index, block_index, from_index, to_index).
+- remove_day: remove a whole session (day_index).
+- add_day: add a whole new session ("session" = {day_label, skeleton, movement_prep[], blocks:[{block_label, exercises:[...]}]}) — build it phase-appropriately, mirroring the existing days' structure and staying inside the frequency/volume the phase allows.
 - edit_client_note: replace the client-facing note text (note_text).
 
 Hard rules:
-- Change ONLY what is named. "Drop the squat to 3 sets" = one update_exercise with changes {"sets":3}. Nothing else.
-- Do NOT invent or reorder days, blocks, or exercises, and do NOT add or remove exercises (not supported yet). If that is what they need, return an empty operations array and say so in summary.
-- Doctrine still binds: do NOT make an edit that breaks the block's phase (e.g. adding heavy/tempo/max intensity to a Restoration block), a readiness gate, a stated injury constraint, or safety. If the ask would break doctrine, return an empty operations array and explain the concern in summary.
+- Change ONLY what is named. "Drop the squat to 3 sets" = one update_exercise {"sets":3}. Keep each proposal to ONE coherent change; prefer a single op or several ops of the SAME kind (e.g. removing a block's exercises).
+- Doctrine still binds: do NOT make an edit that breaks the block's phase (e.g. adding heavy/tempo/max intensity to a Restoration block), a readiness gate, a stated injury constraint, the frequency ceiling (adding a day must not exceed what the phase/gates allow), or safety. If the ask would break doctrine, return an empty operations array and explain the concern in summary.
 - If the target is ambiguous or you cannot find it, return an empty operations array and say what you need.
 - summary: one or two plain sentences the coach reads before approving. Name exactly what will change, and confirm the rest of the plan is untouched. No em dashes.
 
