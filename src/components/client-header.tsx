@@ -39,15 +39,31 @@ export default function ClientHeader({ homeHref: explicitHomeHref }: { homeHref?
         )}
         <PortalSignOutButton />
       </div>
+      {/* Persistent contact bar — the only always-visible "how do I reach you"
+          affordance in the portal, so inside the portal it points at the portal
+          thread. Client contact stays on the record: attached to their file,
+          answerable from the coach inbox, and legible months later.
+
+          Pre-portal routes (e.g. /baseline/[token]) have no thread to send to,
+          so those keep the WhatsApp fallback. */}
       <div className="fixed bottom-0 left-0 right-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-t border-[#ECEEF2] px-5 py-3 text-center print:hidden">
-        <a
-          href={`https://wa.me/${c.whatsAppNumber}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-xs text-[#999999] hover:text-blue-500 transition-colors"
-        >
-          Questions? Message {c.firstName} on WhatsApp →
-        </a>
+        {isPortalRoute && token ? (
+          <Link
+            href={`/portal/${token}/message`}
+            className="text-xs text-[#999999] hover:text-[#1B6DFC] transition-colors"
+          >
+            Questions? <span className="font-semibold text-[#1B6DFC]">Message {c.firstName} →</span>
+          </Link>
+        ) : (
+          <a
+            href={`https://wa.me/${c.whatsAppNumber}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-[#999999] hover:text-blue-500 transition-colors"
+          >
+            Questions? Message {c.firstName} on WhatsApp →
+          </a>
+        )}
       </div>
     </>
   )

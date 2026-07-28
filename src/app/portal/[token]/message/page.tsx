@@ -60,7 +60,7 @@ export default async function MessageCoachPage({
             Messages
           </h1>
           <p className="text-[#6B6B6B] text-[15px] leading-relaxed">
-            Your conversation with {coachFirstName}, all in one place. Replies land here and you will get an email when one arrives. For anything urgent, use WhatsApp at the bottom of the page.
+            Your conversation with {coachFirstName}, all in one place. Ask anything, any time. Replies land here and you will get an email the moment one arrives.
           </p>
         </div>
 

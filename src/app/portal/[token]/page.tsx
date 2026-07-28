@@ -825,6 +825,25 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
           </div>
         )}
 
+        {/* Talk to your coach - always present, not only when a reply is
+            waiting. Contacting the coach should never require hunting through
+            Resources for it. */}
+        <div className="mb-10">
+          <SectionLabel icon={MessageCircle} text={`Talk to ${coach().firstName}`} />
+          <Link
+            href={`/portal/${token}/message`}
+            className="flex items-center justify-between w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl px-5 py-4 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors"
+          >
+            <div>
+              <p className="text-sm font-semibold text-[#1A1A1A]">Messages</p>
+              <p className="text-xs text-[#999999] mt-0.5">
+                Ask about your plan, your training, or how you are feeling. Replies land here.
+              </p>
+            </div>
+            <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">Open →</span>
+          </Link>
+        </div>
+
         {/* Resources */}
         <div className="mb-10">
           <SectionLabel icon={BookOpen} text="Resources" />
@@ -834,7 +853,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
           >
             <div>
               <p className="text-sm font-semibold text-[#1A1A1A]">All resources</p>
-              <p className="text-xs text-[#999999] mt-0.5">Progress, readings, glossary, practical guides, message your coach, account.</p>
+              <p className="text-xs text-[#999999] mt-0.5">Progress, readings, glossary, practical guides, account.</p>
             </div>
             <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
           </Link>
