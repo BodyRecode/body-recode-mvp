@@ -38,3 +38,18 @@ create unique index if not exists outreach_touches_lead_step_uq
 alter table leads add column if not exists booking_agent_state text;
 
 create index if not exists leads_booking_agent_state_idx on leads (booking_agent_state);
+
+-- Explicit grants for the service role.
+--
+-- Required (found 2026-07-28): the table was created with RLS on and no grants,
+-- so every server-side write from createAdminClient() failed with a permission
+-- error. The Booking Agent enrolled leads, slept its 1-day delay, then died on
+-- "draft insert failed" -- Kim Stevenson's run failed 21 Jul, and no touch was
+-- ever written for anyone. service_role bypasses RLS but still needs the table
+-- privilege. See [[feedback-supabase-explicit-grants]].
+--
+-- anon/authenticated are deliberately NOT granted: the approval queue is read
+-- server-side through the admin client only, and RLS stays on with no policies
+-- so a portal client (who authenticates as `authenticated`) can never read
+-- lead outreach copy.
+grant select, insert, update, delete on table outreach_touches to service_role;
