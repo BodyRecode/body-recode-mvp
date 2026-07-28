@@ -7,6 +7,8 @@ import { MessageSquare, ExternalLink } from 'lucide-react'
 import { PageHeader, Card, StatCard, EmptyState } from '@/components/dashboard/ui'
 import { isAnchorKind, anchorChipLabel, anchorPortalHref } from '@/lib/message-anchors'
 import ReplyBox from './reply-box'
+import MessageSearch from './message-search'
+import StartConversation from './start-conversation'
 
 export const dynamic = 'force-dynamic'
 
@@ -38,7 +40,7 @@ function when(iso: string): string {
 export default async function MessagesInboxPage({
   searchParams,
 }: {
-  searchParams: Promise<{ client?: string }>
+  searchParams: Promise<{ client?: string; q?: string }>
 }) {
   const sp = await searchParams
 
@@ -57,36 +59,62 @@ export default async function MessagesInboxPage({
 
   const messages = (messageRows ?? []) as MessageRow[]
 
-  const clientIds = Array.from(new Set(messages.map(m => m.client_id)))
-  const { data: clientRows } = clientIds.length
-    ? await admin.from('clients').select('id, name, email, onboarding_token').in('id', clientIds)
-    : { data: [] }
-  const clientsById = new Map((clientRows ?? []).map(c => [c.id as string, c as ClientRow]))
+  // Every client, not only those who have written. The coach must be able to
+  // start a conversation with someone who has never messaged - most of the
+  // valuable messages a coach sends are unprompted.
+  const { data: clientRows } = await admin
+    .from('clients')
+    .select('id, name, email, onboarding_token')
+    .order('name', { ascending: true })
+  const allClients = (clientRows ?? []) as ClientRow[]
+  const clientsById = new Map(allClients.map(c => [c.id, c]))
+  const clientIds = allClients.map(c => c.id)
 
   // One conversation per client. Awaiting-reply means they have said something
   // nobody has answered, and those sort to the top regardless of recency.
   const conversations = clientIds
     .map(cid => {
       const thread = messages.filter(m => m.client_id === cid)
-      return {
-        clientId: cid,
-        thread,
-        latest: thread[0],
-        awaitingReply: thread.some(m => m.sender === 'client' && !m.responded_at),
-      }
+      const latest = thread[0] ?? null
+      // A conversation needs a reply when the CLIENT wrote last. Keying off
+      // per-message responded_at meant answering one of three questions closed
+      // all three; this is self-correcting, because a follow-up reopens it.
+      const awaitingReply = latest?.sender === 'client'
+      // How long they have been waiting, which is a different signal from when
+      // they last wrote: 3 days and 20 minutes read identically otherwise.
+      const firstUnanswered = awaitingReply
+        ? [...thread].reverse().find(m => m.sender === 'client' && !m.responded_at) ?? latest
+        : null
+      return { clientId: cid, thread, latest, awaitingReply, waitingSince: firstUnanswered?.created_at ?? null }
     })
     .sort((a, b) => {
       if (a.awaitingReply !== b.awaitingReply) return a.awaitingReply ? -1 : 1
+      if (a.awaitingReply && b.awaitingReply) {
+        // Longest wait first among those waiting.
+        return new Date(a.waitingSince!).getTime() - new Date(b.waitingSince!).getTime()
+      }
+      if (!a.latest) return 1
+      if (!b.latest) return -1
       return new Date(b.latest.created_at).getTime() - new Date(a.latest.created_at).getTime()
     })
 
+  const query = (sp.q ?? '').trim().toLowerCase()
+  const withMessages = conversations.filter(c => c.thread.length > 0)
+  const visible = query
+    ? conversations.filter(c => {
+        const name = (clientsById.get(c.clientId)?.name ?? '').toLowerCase()
+        return name.includes(query) || c.thread.some(m => m.body.toLowerCase().includes(query))
+      })
+    : withMessages
+
   const awaitingCount = conversations.filter(c => c.awaitingReply).length
   const totalClientMessages = messages.filter(m => m.sender === 'client').length
+  const neverMessaged = conversations.filter(c => c.thread.length === 0)
 
   // Default to whoever has been waiting longest for an answer, since that is
   // the reason to open this page at all. Falls back to most recent activity.
   const selected =
-    conversations.find(c => c.clientId === sp.client) ?? conversations[0] ?? null
+    conversations.find(c => c.clientId === sp.client) ?? visible[0] ?? withMessages[0] ?? null
   const selectedClient = selected ? clientsById.get(selected.clientId) : null
   const selectedName = selectedClient?.name ?? 'Unknown client'
   const selectedFirstName = selectedName.split(' ')[0]
@@ -101,11 +129,11 @@ export default async function MessagesInboxPage({
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
         <StatCard label="Awaiting reply" value={String(awaitingCount)} accent={awaitingCount > 0 ? 'blue' : 'neutral'} />
-        <StatCard label="Conversations" value={String(conversations.length)} />
+        <StatCard label="Conversations" value={String(withMessages.length)} />
         <StatCard label="Client messages" value={String(totalClientMessages)} />
       </div>
 
-      {conversations.length === 0 || !selected ? (
+      {!selected ? (
         <EmptyState
           icon={MessageSquare}
           title="No messages yet"
@@ -116,11 +144,19 @@ export default async function MessagesInboxPage({
           {/* Conversation list. On mobile this stacks above the thread and
               scrolls horizontally would be worse than just letting it stack. */}
           <div className="space-y-2 lg:sticky lg:top-6">
-            {conversations.map(c => {
+            <MessageSearch initialQuery={sp.q ?? ''} selectedClientId={selected.clientId} />
+
+            {visible.length === 0 && (
+              <p className="text-[12px] text-[#999999] px-1 py-3">
+                Nothing matches &ldquo;{sp.q}&rdquo;.
+              </p>
+            )}
+
+            {visible.map(c => {
               const cl = clientsById.get(c.clientId)
               const name = cl?.name ?? 'Unknown client'
               const isSelected = c.clientId === selected.clientId
-              const preview = c.latest.body.replace(/\s+/g, ' ').slice(0, 70)
+              const preview = c.latest ? c.latest.body.replace(/\s+/g, ' ').slice(0, 70) : null
               return (
                 <Link
                   key={c.clientId}
@@ -138,17 +174,41 @@ export default async function MessagesInboxPage({
                     </p>
                     <div className="flex items-center gap-1.5 shrink-0">
                       {c.awaitingReply && <span className="w-2 h-2 rounded-full bg-[#1B6DFC]" aria-label="Awaiting reply" />}
-                      <span className="text-[10px] text-[#999999]">{when(c.latest.created_at)}</span>
+                      {c.latest && <span className="text-[10px] text-[#999999]">{when(c.latest.created_at)}</span>}
                     </div>
                   </div>
+                  {/* How long they have been waiting is the actionable number,
+                      not when they last wrote. */}
+                  {c.awaitingReply && c.waitingSince && (
+                    <p className="text-[10px] font-semibold text-[#1B6DFC] mb-1">
+                      Waiting {when(c.waitingSince).replace(' ago', '')}
+                    </p>
+                  )}
                   <p className="text-[11px] text-[#6B6B6B] leading-snug line-clamp-2">
-                    {c.latest.sender === 'coach' ? 'You: ' : ''}
-                    {preview}
-                    {c.latest.body.length > 70 ? '...' : ''}
+                    {preview === null ? (
+                      <span className="italic text-[#999999]">No messages yet</span>
+                    ) : (
+                      <>
+                        {c.latest!.sender === 'coach' ? 'You: ' : ''}
+                        {preview}
+                        {c.latest!.body.length > 70 ? '...' : ''}
+                      </>
+                    )}
                   </p>
                 </Link>
               )
             })}
+
+            {/* Start a conversation with someone who has never written. Without
+                this the inbox could only ever react, never initiate. */}
+            {!query && neverMessaged.length > 0 && (
+              <StartConversation
+                clients={neverMessaged.map(c => ({
+                  id: c.clientId,
+                  name: clientsById.get(c.clientId)?.name ?? 'Unknown client',
+                }))}
+              />
+            )}
           </div>
 
           {/* Selected conversation, in full. No truncation: this pane shows one
@@ -183,8 +243,17 @@ export default async function MessagesInboxPage({
             <ReplyBox
               clientId={selected.clientId}
               clientFirstName={selectedFirstName}
-              canDraft={selected.thread.some(m => m.sender === 'client')}
+              // Only offer a draft when there is actually something unanswered.
+              // It used to show on already-answered threads and would draft
+              // against a question the coach had already replied to.
+              canDraft={selected.awaitingReply}
             />
+
+            {selected.thread.length === 0 && (
+              <p className="text-[12px] text-[#999999] mt-6 text-center py-6 border-t border-[#E5E5E5]">
+                No messages with {selectedFirstName} yet. Whatever you send lands in their portal and their inbox.
+              </p>
+            )}
 
             <div className="space-y-3 mt-6">
               {selected.thread.map(m => (

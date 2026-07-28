@@ -7,6 +7,7 @@ import { appUrl } from '@/lib/app-url'
 import { fromBrand } from '@/lib/email-shell'
 import { coach } from '@/config/tenant'
 import { isAnchorKind, anchorChipLabel } from '@/lib/message-anchors'
+import { smsNotifyCoachOfClientMessage } from '@/lib/message-notifications'
 
 function escapeHtml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -39,6 +40,26 @@ export async function POST(req: NextRequest) {
   if (!client) return NextResponse.json({ error: 'Client not found' }, { status: 404 })
   if ((user.email ?? '').toLowerCase() !== (client.email ?? '').toLowerCase()) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+  }
+
+  // Rate limit. Not about malice: one frustrated client at midnight can flood
+  // the coach's inbox and phone. Generous enough that nobody with something
+  // real to say will ever see it.
+  const { count: recentCount } = await admin
+    .from('client_messages')
+    .select('id', { count: 'exact', head: true })
+    .eq('client_id', clientId)
+    .eq('sender', 'client')
+    .gte('created_at', new Date(Date.now() - 60 * 60 * 1000).toISOString())
+
+  if ((recentCount ?? 0) >= 10) {
+    return NextResponse.json(
+      {
+        error:
+          'You have sent a lot of messages in the last hour. Your coach has them all and will reply. If this is urgent, call rather than message.',
+      },
+      { status: 429 }
+    )
   }
 
   // Strip em dashes per content rule (this lands in Kade's email + Supabase)
@@ -98,6 +119,11 @@ export async function POST(req: NextRequest) {
       // Don't fail the request - the message is logged in Supabase regardless
     }
   }
+
+  // Window-gated SMS nudge so a message sent on a Saturday is not sitting
+  // unseen until Monday. The email above carries the content; this is only a
+  // prompt to go and look. Best-effort, never blocks the response.
+  await smsNotifyCoachOfClientMessage(client.name ?? 'A client')
 
   return NextResponse.json({ success: true })
 }

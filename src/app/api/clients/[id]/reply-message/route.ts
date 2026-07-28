@@ -6,6 +6,7 @@ import { isCoachEmail } from '@/lib/coach-auth'
 import { buildCoachReplyEmail } from '@/lib/coach-reply-email'
 import { fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { portalUrl } from '@/lib/app-url'
+import { smsNotifyClientOfCoachReply } from '@/lib/message-notifications'
 import { coach } from '@/config/tenant'
 
 /**
@@ -43,7 +44,7 @@ export async function POST(
   const admin = createAdminClient()
   const { data: client } = await admin
     .from('clients')
-    .select('id, name, email, onboarding_token')
+    .select('id, name, email, phone, onboarding_token')
     .eq('id', clientId)
     .maybeSingle()
 
@@ -91,6 +92,11 @@ export async function POST(
     return NextResponse.json({ error: 'Could not save reply' }, { status: 500 })
   }
 
+  // Stamp the outstanding client messages as read and responded. This is an
+  // audit trail of what was on screen when the coach answered — it is NOT what
+  // drives the inbox queue. The queue keys off whether the client wrote last,
+  // so a client who follows up reopens the conversation automatically and a
+  // question cannot be silently closed by a reply that did not address it.
   const pendingIds = (pending ?? []).map(m => m.id)
   if (pendingIds.length > 0) {
     const now = new Date().toISOString()
@@ -140,5 +146,29 @@ export async function POST(
     })
   }
 
-  return NextResponse.json({ success: true, emailed, answered: pendingIds.length })
+  // Text the client that a reply is waiting. The email carries the answer;
+  // this is the nudge, because an email is easy to miss and the point of
+  // moving contact into the portal was that replies should feel immediate.
+  // One-way sender, so the copy never invites a reply — the link is the action.
+  let texted = false
+  if (client.onboarding_token) {
+    texted = await smsNotifyClientOfCoachReply({
+      phone: client.phone ?? null,
+      firstName: client.name?.split(' ')[0] ?? 'there',
+      threadUrl: `${portalUrl(client.onboarding_token)}/message`,
+    })
+    if (texted) {
+      await admin.from('client_communications').insert({
+        client_id: clientId,
+        kind: 'coach_message_reply_sms',
+        channel: 'sms',
+        subject: `${coach().firstName} replied to your message`,
+        to_address: client.phone,
+        sent_by: user.id,
+        meta: { message_id: inserted?.id ?? null },
+      })
+    }
+  }
+
+  return NextResponse.json({ success: true, emailed, texted, answered: pendingIds.length })
 }
