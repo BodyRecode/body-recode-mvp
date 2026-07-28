@@ -59,7 +59,7 @@ export default async function DashboardLayout({
         {children}
       </main>
       <CommandPalette />
-      <GlobalCopilotBubble />
+      <GlobalCopilotBubble brandName={tenantBrand.name} />
       <SupportLauncher />
     </div>
   )

@@ -39,7 +39,7 @@ const CAPABILITIES: { title: string; body: string }[] = [
 // endpoint, which already carries the live roster snapshot.
 const MORNING_BRIEF = 'Give me my morning brief. Go through my roster and tell me who needs my attention today, grouped by urgency (most urgent first), and for each name the reason (the doctrine call or the missing step) and the single next action. Then note anyone steady or due to progress. Keep it a tight briefing, not a list dump.'
 
-export default function GlobalCopilotBubble() {
+export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { brandName?: string }) {
   const pathname = usePathname() ?? ''
   const [open, setOpen] = useState(false)
   const [showHelp, setShowHelp] = useState(false)
@@ -159,7 +159,7 @@ export default function GlobalCopilotBubble() {
       {!open && !introSeen && (
         <div className="fixed bottom-24 right-5 z-50 w-[264px] max-w-[calc(100vw-2.5rem)] bg-[#1A1A1A] text-white rounded-2xl shadow-2xl p-4 print:hidden">
           <p className="text-[10px] font-bold text-[#8FB6FF] uppercase tracking-widest mb-1" style={{ fontFamily: MONO }}>New · Co-Pilot</p>
-          <p className="text-[13px] leading-relaxed text-[#E5E5E5] mb-3">Ask me anything about the Body Recode method — I&apos;m on every page. Explain a read, teach the doctrine, or pressure-test a call.</p>
+          <p className="text-[13px] leading-relaxed text-[#E5E5E5] mb-3">Ask me anything about the {brandName} method — I&apos;m on every page. Explain a read, teach the doctrine, or pressure-test a call.</p>
           <div className="flex items-center gap-2">
             <button onClick={openPanel} className="text-[13px] font-semibold bg-[#1B6DFC] hover:bg-[#1558d6] text-white rounded-lg px-3 py-1.5 transition-colors">See what I can do</button>
             <button onClick={dismissIntro} className="text-[13px] text-[#B5B5B5] hover:text-white px-2 py-1.5">Dismiss</button>
@@ -248,7 +248,7 @@ export default function GlobalCopilotBubble() {
                 <>
                   {messages.length === 0 && (
                     <div className="text-sm text-[#6B6B6B]">
-                      <p className="mb-3">Ask me anything about the Body Recode method. Tap <span className="font-semibold text-[#1B6DFC]">What I can help with</span> above, or pick a category:</p>
+                      <p className="mb-3">Ask me anything about the {brandName} method. Tap <span className="font-semibold text-[#1B6DFC]">What I can help with</span> above, or pick a category:</p>
                       <CopilotStarters categories={generalStarterCategories(pathname)} onPick={send} />
                     </div>
                   )}
