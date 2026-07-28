@@ -374,7 +374,7 @@ export default function HelpPage() {
             <p className="font-semibold text-[#1A1A1A] mt-3">Where it works, and how it changes by page</p>
             <StatusList items={[
               { label: 'On a client profile', desc: 'It has read that client\'s file (their synthesis, readiness, active program and nutrition, medications, recent check-ins) and answers grounded in it, citing what it drew on.' },
-              { label: 'On any other page', desc: 'No single client is loaded, but it now has a live read on your whole roster. Ask "what needs my attention today?", "who\'s drifting or hit a gate this week?", "who\'s due to progress?", or "state of my roster?" and it answers from the same ranking as the Today\'s Focus board, with the doctrine reason and where to look first. For a deep single-client question it points you to open that client\'s profile.' },
+              { label: 'On any other page', desc: 'No single client is loaded, but it now has a live read on your whole roster. The bubble shows a red badge with how many clients are awaiting you, and a one-tap "☀ Morning brief" narrates who needs attention today and why, in priority order. You can also just ask "who\'s drifting or hit a gate this week?", "who\'s due to progress?", or "state of my roster?" — it answers from the same ranking as the Today\'s Focus board. For a deep single-client question it points you to open that client\'s profile.' },
             ]} />
 
             <p className="font-semibold text-[#1A1A1A] mt-4">What you can ask it (read-only, it writes nothing)</p>

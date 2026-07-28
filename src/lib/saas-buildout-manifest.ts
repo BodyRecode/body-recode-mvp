@@ -789,11 +789,13 @@ export const PHASES: Phase[] = [
       {
         id: 'copilot-proactive',
         title: 'Phase 6 — Proactive brief',
-        description: 'Stop waiting to be asked. An attention count on the co-pilot bubble when clients need the coach (p10/p20), and a one-tap "morning brief" that narrates who needs attention today and why, in priority order, in the mentor voice. A scheduled email/Slack digest is a later add-on.',
-        status: 'planned',
+        description: 'The everywhere co-pilot bubble stops waiting to be asked: an attention badge (count of clients awaiting the coach) on the launcher, and a one-tap "☀ Morning brief" that narrates who needs attention today and why, grouped by urgency, in the mentor voice.',
+        status: 'shipped',
+        shippedAt: '2026-07-27',
         effort: 'M',
         blockedBy: 'copilot-broaden',
-        notes: 'Builds on the Phase 4 roster engine (roster-next-actions.ts + buildRosterContext). Badge = count of p<=20 actions; brief = a co-pilot pass over the roster snapshot grouped by urgency with doctrine reasons + next steps. Read-only. Good moment to also reconcile the roster-next-actions.ts / today.tsx fetch dedup tech debt.',
+        surfaces: ['src/app/api/copilot/roster-summary/route.ts (lightweight {awaiting,drifting,total} counts)', 'src/components/global-copilot-bubble.tsx (badge on launcher + Morning brief button)'],
+        notes: 'Reuses the Phase 4 roster engine. Badge = count of p<=20 actions, fetched once on mount (layout keeps the bubble mounted across soft nav). Brief = a canned roster prompt through the existing general /api/copilot (already carries the roster snapshot). Read-only. NOT built: scheduled email/Slack digest, per-coach dismissal/snooze. Still-open tech debt: roster-next-actions.ts mirrors today.tsx fetch (dedup deferred).',
       },
       {
         id: 'copilot-refine-full',
