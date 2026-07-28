@@ -3,7 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { isCoachEmail } from '@/lib/coach-auth'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { MessageSquare, ExternalLink } from 'lucide-react'
+import { MessageSquare, ExternalLink, Check, CheckCheck } from 'lucide-react'
 import { PageHeader, Card, StatCard, EmptyState } from '@/components/dashboard/ui'
 import { isAnchorKind, anchorChipLabel, anchorPortalHref } from '@/lib/message-anchors'
 import ReplyBox from './reply-box'
@@ -269,10 +269,28 @@ export default async function MessagesInboxPage({
                     <p className="text-[10px] font-bold uppercase tracking-widest text-[#999999]">
                       {m.sender === 'coach' ? 'You' : selectedFirstName}
                     </p>
-                    <p className="text-[10px] text-[#999999]">
-                      {when(m.created_at)}
-                      {m.sender === 'coach' && (m.client_read_at ? ' · read' : ' · unread')}
-                    </p>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="text-[10px] text-[#999999]">{when(m.created_at)}</span>
+                      {/* Read receipt. Only meaningful on the coach's own
+                          messages: it is stamped when the client opens their
+                          portal thread. */}
+                      {m.sender === 'coach' && (
+                        m.client_read_at ? (
+                          <span
+                            className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#1B6DFC]"
+                            title={`Read ${new Date(m.client_read_at).toLocaleString('en-AU')}`}
+                          >
+                            <CheckCheck size={12} />
+                            Read {when(m.client_read_at).replace(' ago', '')}
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-medium text-[#999999]">
+                            <Check size={12} />
+                            Not read yet
+                          </span>
+                        )
+                      )}
+                    </div>
                   </div>
                   {isAnchorKind(m.anchor_kind) && (
                     <Link
