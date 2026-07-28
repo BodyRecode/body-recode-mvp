@@ -11,6 +11,7 @@ import { buildBloodMarkerCFFSSection, type BloodMarker } from '@/lib/blood-panel
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { signedBaselinePhotoUrl } from '@/lib/baseline-photos'
 import { withTemporalContext } from '@/lib/temporal-context'
+import { isCanonicalPattern, supersedes, type PatternSource } from '@/lib/pattern-doctrine'
 import {
   sniffImageMediaType,
   describeImageFormat,
@@ -103,6 +104,22 @@ export async function POST(request: NextRequest) {
 
   if (intakeError || !intake) {
     return NextResponse.json({ error: 'Intake not found' }, { status: 404 })
+  }
+
+  // The funnel's own read, so the CFFS can agree with it or depart from it
+  // deliberately rather than never knowing it existed. Matched via the lead
+  // that converted into this client.
+  const { data: leadRow } = await admin
+    .from('leads')
+    .select('scorecard_profile, scorecard_profile_confidence')
+    .eq('converted_to_client_id', client_id)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+  const incomingPattern = {
+    pattern: leadRow?.scorecard_profile ?? null,
+    source: leadRow?.scorecard_profile ? 'scorecard' : null,
+    confidence: leadRow?.scorecard_profile_confidence ?? null,
   }
 
   // Download baseline photos in parallel. Each can fail independently without
@@ -207,7 +224,7 @@ export async function POST(request: NextRequest) {
       message = await anthropic.messages.create({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: MAX_TOKENS,
-        system: withTemporalContext(buildCFFSSystemPrompt()),
+        system: withTemporalContext(buildCFFSSystemPrompt(incomingPattern)),
         messages: [{ role: 'user', content: userContent }],
       })
     } catch (err) {
@@ -303,6 +320,39 @@ export async function POST(request: NextRequest) {
   if (cffsError) {
     console.error('[CFFS] failed to save CFFS:', cffsError.message)
     return NextResponse.json({ error: `Failed to save CFFS: ${cffsError.message}` }, { status: 500 })
+  }
+
+  // Resolve the pattern onto the client. The CFFS read supersedes a funnel
+  // read because it draws on an order of magnitude more evidence, not because
+  // it is newer. The per-generation read stays on the cffs row, so history
+  // survives regeneration and "what did we think, when, and why" is always
+  // answerable.
+  const readPattern = (cffsData as Record<string, unknown>).pattern_classification
+  if (isCanonicalPattern(readPattern)) {
+    const { data: current } = await admin
+      .from('clients')
+      .select('pattern, pattern_source')
+      .eq('id', client_id)
+      .maybeSingle()
+
+    if (supersedes('cffs', (current?.pattern_source as PatternSource | null) ?? null)) {
+      await admin
+        .from('clients')
+        .update({
+          pattern: readPattern,
+          pattern_source: 'cffs',
+          pattern_set_at: new Date().toISOString(),
+        })
+        .eq('id', client_id)
+      if (current?.pattern && current.pattern !== readPattern) {
+        console.log(
+          `[CFFS] pattern changed for client ${String(client_id).slice(0, 8)}: ` +
+          `${current.pattern} -> ${readPattern} (was ${current.pattern_source ?? 'unset'}, now cffs)`
+        )
+      }
+    }
+  } else {
+    console.warn(`[CFFS] no usable pattern_classification returned for client ${String(client_id).slice(0, 8)}`)
   }
 
   return NextResponse.json({ cffs })

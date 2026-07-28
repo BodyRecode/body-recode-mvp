@@ -453,6 +453,21 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             {activeCffs && (
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-[11px] font-semibold px-3 py-1 rounded-full bg-[#F5F3EE] border border-[#E5E5E5] text-[#1A1A1A]">{activeCffs.body_state_classification}</span>
+                {/* Pattern sits beside state deliberately. The funnel sells both
+                    labels; a 1:1 client should not silently lose one of them. */}
+                {client.pattern && (
+                  <span
+                    className="text-[11px] font-semibold px-3 py-1 rounded-full bg-[#F3F7FF] border border-[rgba(27,109,252,0.25)] text-[#1B6DFC]"
+                    title={
+                      client.pattern_source === 'cffs'
+                        ? 'Read from the full CFFS'
+                        : `Provisional read from the ${client.pattern_source ?? 'funnel'}. Sharpens at the next CFFS.`
+                    }
+                  >
+                    {client.pattern}
+                    {client.pattern_source !== 'cffs' && ' (provisional)'}
+                  </span>
+                )}
                 {activeCffs.resolution_state && (
                   <span className="text-[11px] font-semibold px-3 py-1 rounded-full bg-[#F5F3EE] border border-[#E5E5E5] text-[#1A1A1A]">{activeCffs.resolution_state}</span>
                 )}

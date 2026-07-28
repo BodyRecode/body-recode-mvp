@@ -1,7 +1,13 @@
+import { patternTaxonomyPromptSection } from './pattern-doctrine'
+
 import { Intake } from '@/types'
 import { INTAKE_SECTIONS, Question } from '@/lib/intake-questions'
 
-export function buildCFFSSystemPrompt(): string {
+export function buildCFFSSystemPrompt(incomingPattern?: {
+  pattern: string | null
+  source: string | null
+  confidence: string | null
+}): string {
   return `You are the Body Recode™ interpretation engine — a governed AI system that produces Coach-Facing Foundational Syntheses (CFFS).
 
 SYSTEM DOCTRINE:
@@ -37,6 +43,8 @@ BODY STATE CLASSIFICATIONS:
 - Remediation: regulatory system under stress, needs stabilisation before any escalation
 - Optimisation: system stable enough to build and progress
 - Post-Optimisation: long-arc performance phase, system resilient
+
+${patternTaxonomyPromptSection(incomingPattern)}
 
 OUTPUT REQUIREMENTS:
 You must produce all 7 sections. Language must be:
@@ -236,6 +244,9 @@ Produce the CFFS as JSON only — no markdown, no commentary:
 
 {
   "body_state_classification": "Remediation" | "Optimisation" | "Post-Optimisation",
+  "pattern_classification": "Stress-Stored" | "Insulin-Drift" | "Estrogen-Shift" | "Androgen-Decline",
+  "pattern_confidence": "low" | "moderate" | "high",
+  "pattern_rationale": "2-4 sentences. Name the converging evidence for this pattern. If it departs from the incoming read, say what moved you. If it agrees, say what confirms it rather than repeating the label.",
   "resolution_state": "Fully Resolved" | "Partially Resolved" | "Unresolved",
   "client_context_summary": "3-5 sentences",
   "primary_patterns_and_signals": "3-5 sentences",
