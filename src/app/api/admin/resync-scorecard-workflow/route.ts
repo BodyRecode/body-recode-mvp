@@ -44,7 +44,7 @@ $37. Delivered in 5 minutes. Yours to keep.
 
 Get your report: ${brand().marketingDomain}/get-report
 
-If you would rather talk it through first, you can book a free 15-minute strategy call: ${brand().marketingDomain}/book
+If you would rather talk it through first, you can book a free 30-minute strategy call: ${brand().marketingDomain}/book
 
 Kade
 Body Recode`,
@@ -86,7 +86,7 @@ The most common thing I hear after someone takes it: "That finally explains why 
 
 Knowing your state is the first piece. Knowing what to do about it is the second. That is what the call is for.
 
-15 minutes. Free. No pitch. We go through your scorecard together, identify the specific bottleneck, and map out what to do first.
+30 minutes. Free. No pitch. We go through your scorecard together, identify the specific bottleneck, and map out what to do first.
 
 Book here: ${brand().marketingDomain}/book
 
@@ -109,7 +109,7 @@ Your scorecard came back as {{scorecard_state}}. That is a specific biological p
 
 A program built for a Ready state will make a Depleted state worse. That is not a motivation problem. It is a prescription problem.
 
-The fastest way to address it is the call. 15 minutes, free, no pitch. We map out what your specific state needs first, and what to stop immediately.
+The fastest way to address it is the call. 30 minutes, free, no pitch. We map out what your specific state needs first, and what to stop immediately.
 
 Book here: ${brand().marketingDomain}/book
 
@@ -130,7 +130,7 @@ Your scorecard result is still there whenever you want to act on it. Two doors b
 
 1. Body Decode Report ($37). Written breakdown of your result, the fat pattern you are locked in, and the order to fix it. Best if you want to act on it yourself.
 
-2. Free 15-minute call. Best if you would rather talk it through first.
+2. Free 30-minute call. Best if you would rather talk it through first.
 
 Get the report: ${brand().marketingDomain}/get-report
 Book the call: ${brand().marketingDomain}/book

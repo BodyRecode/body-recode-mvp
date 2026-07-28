@@ -473,7 +473,7 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Post-Scorecard CTAs (state-based split)</p>
             <p>After completing the scorecard, the CTA shown on the result page <strong>depends on the lead&apos;s body state</strong>. This was changed 2026-04-30 to remove the $37/free-call cannibalisation that had been driving $37 conversion to zero. Each state now sees ONE primary path matched to where their body actually is:</p>
             <ul className="space-y-1.5 list-disc list-inside text-[#3A3A3A] text-sm mt-1">
-              <li><strong>Depleted (5-8):</strong> Free 15-minute call only. A PDF will not unstick a body in protection mode. CTA links to <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">bodyrecode.au/book?from=scorecard_depleted</code>.</li>
+              <li><strong>Depleted (5-8):</strong> Free 30-minute call only. A PDF will not unstick a body in protection mode. CTA links to <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">bodyrecode.au/book?from=scorecard_depleted</code>.</li>
               <li><strong>Transitioning (9-11):</strong> $37 Body Decode Report only. The bullseye buyer. No competing free option drains conversions.</li>
               <li><strong>Ready (12-15):</strong> $37 Body Decode Report with custom framing (&quot;Your biology is ready. The prescription is the gap.&quot;). High-intent lead, $37 acts as a self-screening commit signal.</li>
             </ul>

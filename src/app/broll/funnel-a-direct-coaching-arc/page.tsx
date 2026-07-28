@@ -260,7 +260,7 @@ export default function FunnelADirectCoachingArcPage() {
                   <span style={stageBadge(C.blueDark)}>Lead nurture</span>
                   <p style={cardTitle}>Zoom 1 invite</p>
                   <p style={cardSub}>2-email follow-up sequence</p>
-                  <p style={cardBody}>Discovery call booked via Calendly. Free 15 min. Orientation Guide as pre-call material.</p>
+                  <p style={cardBody}>Discovery call booked via Calendly. Free 30 min. Orientation Guide as pre-call material.</p>
                 </div>
                 <p style={cardPrice}>Free</p>
               </div>
