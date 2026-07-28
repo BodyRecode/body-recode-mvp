@@ -777,12 +777,14 @@ export const PHASES: Phase[] = [
       },
       {
         id: 'copilot-nutrition',
-        title: 'Phase 5 — Nutrition parity (draft · review · refine)',
-        description: 'Bring the co-pilot\'s full training-program toolkit to NUTRITION. Today nutrition is only reviewable; this adds draft ("draft her nutrition plan") via suggest + generate-nutrition, and surgical refine ("swap the oats for a dairy-free option", "drop to 3 meals", "lift the protein anchor") using the same confirm-first, draft-only, deterministic-patch pattern as the program flow.',
-        status: 'planned',
+        title: 'Phase 5 — Nutrition parity (draft · refine)',
+        description: 'Brings the co-pilot\'s full training-program toolkit to NUTRITION (review already worked). "＋ Draft nutrition" via read-only suggest-nutrition → confirm → generate-nutrition draft; "✎ Refine nutrition" for surgical food/macro edits, confirm-first and draft-only, mirroring the program flow.',
+        status: 'shipped',
+        shippedAt: '2026-07-27',
         effort: 'M',
         blockedBy: 'copilot-refine',
-        notes: 'Closes the training/nutrition asymmetry. Reuses: the draft-proposal/edit-proposal card pattern (copilot-panel.tsx), a nutrition analogue of program-patch.ts (patch meals/foods/macros deterministically), and the existing generate-nutrition guardrails (protein anchor, calorie floor, appetite-suppression meal count). Confirm-first; saves a nutrition DRAFT; never auto-published.',
+        surfaces: ['src/app/dashboard/clients/[id]/copilot-panel.tsx (nutrition proposal/done cards; artefact-aware refine composer program|nutrition)', 'src/lib/nutrition-patch.ts (update_food patch + macro recompute via normalizeMealAndDayTotals)', 'src/app/api/clients/[id]/copilot/edit-nutrition/route.ts (propose + apply)', 'reuses /api/suggest-nutrition + /api/generate-nutrition'],
+        notes: 'Draft reuses suggest-nutrition (all generate inputs incl. protein anchor / carb demand / meal freq) → generate-nutrition (status=draft, is_active=false, all guardrails). Refine: update_food op applied deterministically, then meal totals + day calorie band RECOMPUTED from foods via the same normaliser the generator uses (no macro desync). Verified recompute in isolation (oats→berries re-summed correctly). NOT yet built: add/remove/reorder foods, add/remove meals — model refuses those with an explanation. NOT click-tested by Claude (auth-gated).',
       },
       {
         id: 'copilot-proactive',
