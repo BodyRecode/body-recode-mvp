@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
+import { temporalContext } from '@/lib/temporal-context'
 
 export const maxDuration = 300
 
@@ -49,6 +50,7 @@ Style options: "quote", "statement", "question"
   const response = await anthropic.messages.create({
     model: 'claude-haiku-4-5-20251001',
     max_tokens: 800,
+    system: temporalContext(),
     messages: [{ role: 'user', content: prompt }],
   })
 

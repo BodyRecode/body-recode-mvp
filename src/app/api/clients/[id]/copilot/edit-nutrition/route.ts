@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { isCoachEmail } from '@/lib/coach-auth'
 import { renderMealsIndexed, applyNutritionEdits, validateNutritionEditOps } from '@/lib/nutrition-patch'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import { withTemporalContext } from '@/lib/temporal-context'
 
 export const maxDuration = 120
 
@@ -85,7 +86,7 @@ Return ONLY the JSON described in your instructions.`
         const resp = await anthropic.messages.create({
           model: 'claude-sonnet-5',
           max_tokens: 1500,
-          system: EDIT_SYSTEM,
+          system: withTemporalContext(EDIT_SYSTEM),
           messages: [{ role: 'user', content: userContent }],
         })
         const block = resp.content.find(b => b.type === 'text')

@@ -9,6 +9,7 @@ import {
   MIN_MEAL_COUNT_WHEN_SUPPRESSED,
 } from '@/lib/nutrition-validation'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import { withTemporalContext } from '@/lib/temporal-context'
 
 export const maxDuration = 300
 
@@ -279,7 +280,7 @@ Output valid JSON only — no markdown, no commentary:
       message = await anthropic.messages.create({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: MAX_TOKENS,
-        system: systemPrompt,
+        system: withTemporalContext(systemPrompt),
         messages: [{ role: 'user', content: contextParts.join('\n') + '\n\nGenerate the nutrition prescription suggestion. JSON only.' }],
       })
     } catch (err) {

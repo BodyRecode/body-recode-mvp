@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { sendSms, formatPhone } from '@/lib/twilio'
 import { logClientCommunication } from '@/lib/client-communications'
 import { parsePrescribedSessions, todayBrisbaneDayName } from '@/lib/workout-logging'
+import { withTemporalContext } from '@/lib/temporal-context'
 
 /**
  * SMS reminder for Greg's standing in-person sessions with Kade.
@@ -123,7 +124,7 @@ Output ONLY the message text, nothing else.`
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 200,
       temperature: 1,
-      system,
+      system: withTemporalContext(system),
       messages: [{ role: 'user', content: parts.join('\n\n') }],
     })
     const raw = resp.content.find(b => b.type === 'text')?.text ?? ''

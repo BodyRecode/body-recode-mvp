@@ -6,6 +6,7 @@ import { isCoachEmail } from '@/lib/coach-auth'
 import { buildGeneralCopilotSystemPrompt } from '@/lib/copilot-prompt'
 import { buildRosterContext, getCoachPreferences } from '@/lib/copilot-context'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import { withTemporalContext } from '@/lib/temporal-context'
 
 // Global co-pilot endpoint — the SAME co-pilot as the client-scoped one, but for
 // pages where no client is loaded (Today, Business, Marketing, etc.). It answers
@@ -76,7 +77,7 @@ export async function POST(request: NextRequest) {
         // returning an empty text block (stop_reason=max_tokens). Kept in sync
         // with the client-scoped copilot route.
         max_tokens: 4096,
-        system: buildGeneralCopilotSystemPrompt(rosterContext, coachPreferences),
+        system: withTemporalContext(buildGeneralCopilotSystemPrompt(rosterContext, coachPreferences)),
         messages: [...history, { role: 'user', content: message }],
       })
       const block = resp.content.find(b => b.type === 'text')
@@ -99,7 +100,7 @@ export async function POST(request: NextRequest) {
     const fu = await anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 220,
-      system: 'You suggest what a COACH might ask next in a Body Recode doctrine conversation (no specific client loaded). Given the last question and answer, propose exactly 3 short follow-up questions the coach could tap next. Each 9 words or fewer, specific to what was just discussed, no numbering, no quotes. Return ONLY JSON: {"followups":["...","...","..."]}',
+      system: withTemporalContext('You suggest what a COACH might ask next in a Body Recode doctrine conversation (no specific client loaded). Given the last question and answer, propose exactly 3 short follow-up questions the coach could tap next. Each 9 words or fewer, specific to what was just discussed, no numbering, no quotes. Return ONLY JSON: {"followups":["...","...","..."]}'),
       messages: [{ role: 'user', content: `QUESTION:\n${message}\n\nANSWER:\n${answer}\n\nPropose 3 follow-ups.` }],
     })
     const fblock = fu.content.find(b => b.type === 'text')

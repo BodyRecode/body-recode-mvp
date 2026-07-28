@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { withTemporalContext } from '@/lib/temporal-context'
 import Anthropic from '@anthropic-ai/sdk'
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY, maxRetries: 5 })
@@ -70,7 +71,7 @@ Did the consultation stay within doctrine bounds? (No prescriptions, no programm
     model: 'claude-haiku-4-5-20251001',
     max_tokens: 1500,
     messages: [{ role: 'user', content: userPrompt }],
-    system: systemPrompt,
+    system: withTemporalContext(systemPrompt),
   })
 
   const summary = (response.content[0] as { type: string; text: string }).text

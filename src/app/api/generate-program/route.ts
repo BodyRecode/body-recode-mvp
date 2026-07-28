@@ -12,6 +12,7 @@ import {
   ExerciseRow,
 } from '@/lib/program-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import { withTemporalContext } from '@/lib/temporal-context'
 
 export const maxDuration = 300
 
@@ -256,7 +257,7 @@ export async function POST(request: NextRequest) {
       message = await anthropic.messages.create({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: MAX_TOKENS,
-        system: buildProgramSystemPrompt() + recoveryPromptSection,
+        system: withTemporalContext(buildProgramSystemPrompt() + recoveryPromptSection),
         messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, cffs, exercises as ExerciseRow[], macroPlanContext, client.medications, coachGuidance) }],
       })
     } catch (err) {

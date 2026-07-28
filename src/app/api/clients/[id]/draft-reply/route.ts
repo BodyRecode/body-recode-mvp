@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { isCoachEmail } from '@/lib/coach-auth'
 import { buildCopilotContext } from '@/lib/copilot-context'
+import { withTemporalContext } from '@/lib/temporal-context'
 import {
   buildReplyDraftSystemPrompt,
   buildReplyDraftUserPrompt,
@@ -69,7 +70,7 @@ export async function POST(
       max_tokens: 4000,
       thinking: { type: 'adaptive' },
       output_config: { effort: 'medium' },
-      system: buildReplyDraftSystemPrompt(built.clientName),
+      system: withTemporalContext(buildReplyDraftSystemPrompt(built.clientName)),
       messages: [
         {
           role: 'user',

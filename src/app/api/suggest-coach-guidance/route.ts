@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { withTemporalContext } from '@/lib/temporal-context'
 import {
   buildCoachGuidanceSuggestSystemPrompt,
   buildCoachGuidanceSuggestUserPrompt,
@@ -81,7 +82,7 @@ export async function POST(request: NextRequest) {
     message = await anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 1200,
-      system: buildCoachGuidanceSuggestSystemPrompt(),
+      system: withTemporalContext(buildCoachGuidanceSuggestSystemPrompt()),
       messages: [{
         role: 'user',
         content: buildCoachGuidanceSuggestUserPrompt({

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { withTemporalContext } from '@/lib/temporal-context'
 import {
   buildNutritionGuidanceSuggestSystemPrompt,
   buildNutritionGuidanceSuggestUserPrompt,
@@ -92,7 +93,7 @@ export async function POST(request: NextRequest) {
     message = await anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 1200,
-      system: buildNutritionGuidanceSuggestSystemPrompt(),
+      system: withTemporalContext(buildNutritionGuidanceSuggestSystemPrompt()),
       messages: [{
         role: 'user',
         content: buildNutritionGuidanceSuggestUserPrompt({

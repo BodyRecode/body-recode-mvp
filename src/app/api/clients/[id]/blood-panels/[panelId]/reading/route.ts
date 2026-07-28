@@ -12,6 +12,7 @@ import {
   type BloodMarker,
 } from '@/lib/blood-panel-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import { withTemporalContext } from '@/lib/temporal-context'
 
 /**
  * Generate the client-facing Blood Panel Reading for a panel. Requires the
@@ -113,7 +114,7 @@ export async function POST(
       message = await anthropic.messages.create({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 3000,
-        system: buildClientReadingSystemPrompt(),
+        system: withTemporalContext(buildClientReadingSystemPrompt()),
         messages: conversation,
       })
     } catch (err) {

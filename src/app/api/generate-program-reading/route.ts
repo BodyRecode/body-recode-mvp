@@ -9,6 +9,7 @@ import {
   type ProgramReadingProgramContext,
 } from '@/lib/client-program-reading-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import { withTemporalContext } from '@/lib/temporal-context'
 
 // Reading-published client emails scrapped 2026-06-09. The Program Reading
 // generates silently. Client gets one email per training block via the
@@ -135,7 +136,7 @@ export async function POST(request: NextRequest) {
       message = await anthropic.messages.create({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 12000,
-        system: buildProgramReadingSystemPrompt(),
+        system: withTemporalContext(buildProgramReadingSystemPrompt()),
         messages: conversation,
       })
     } catch (err) {

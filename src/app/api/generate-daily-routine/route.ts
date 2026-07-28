@@ -7,6 +7,7 @@ import { extractFirstJsonObject } from '@/lib/extract-json'
 import { buildDailyRoutineSystemPrompt, buildDailyRoutineUserPrompt, DailyRoutineClientData } from '@/lib/daily-routine-prompt'
 import { validateDailyRoutine, summariseIssuesForRetry } from '@/lib/daily-routine-validation'
 import { readHormonalLoad } from '@/lib/training-doctrine'
+import { temporalContext } from '@/lib/temporal-context'
 
 export const maxDuration = 180
 
@@ -97,7 +98,12 @@ export async function generateDailyRoutineInternal(clientId: string): Promise<Ne
     const message = await anthropic.messages.create({
       model: modelId,
       max_tokens: 4000,
-      system: [{ type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } }],
+      system: [
+        // Stable prompt stays cached; the date is volatile so it sits AFTER the
+        // breakpoint, otherwise the cache would be invalidated every day.
+        { type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } },
+        { type: 'text', text: temporalContext() },
+      ],
       messages: [{ role: 'user', content: finalUserPrompt }],
     })
     const content = message.content[0]

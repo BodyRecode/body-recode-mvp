@@ -10,6 +10,7 @@ import {
   type MedicationsCFFSContext,
 } from '@/lib/medications-analysis-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import { withTemporalContext } from '@/lib/temporal-context'
 
 /**
  * Generate the client-facing Medications Reading. Requires the coach
@@ -101,7 +102,7 @@ export async function POST(
       message = await anthropic.messages.create({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 8000,
-        system: buildClientReadingSystemPrompt(),
+        system: withTemporalContext(buildClientReadingSystemPrompt()),
         messages: conversation,
       })
       if (message.stop_reason === 'max_tokens') {
@@ -109,7 +110,7 @@ export async function POST(
         message = await anthropic.messages.create({
           model: 'claude-haiku-4-5-20251001',
           max_tokens: 16000,
-          system: buildClientReadingSystemPrompt(),
+          system: withTemporalContext(buildClientReadingSystemPrompt()),
           messages: conversation,
         })
       }

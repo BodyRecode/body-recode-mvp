@@ -8,6 +8,7 @@ import {
   type CFFSContext,
 } from '@/lib/client-reading-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import { withTemporalContext } from '@/lib/temporal-context'
 
 // Reading-published client emails scrapped 2026-06-09 per product call:
 // only nutrition plan + training plan publishes notify the client now.
@@ -123,7 +124,7 @@ export async function POST(request: NextRequest) {
       message = await anthropic.messages.create({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 12000,
-        system: buildClientReadingSystemPrompt(),
+        system: withTemporalContext(buildClientReadingSystemPrompt()),
         messages: conversation,
       })
     } catch (err) {

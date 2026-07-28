@@ -7,6 +7,7 @@ import { appUrl } from '@/lib/app-url'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { sniffImageMediaType, describeImageFormat } from '@/lib/image-media-type'
 import { fromBrand } from '@/lib/email-shell'
+import { withTemporalContext } from '@/lib/temporal-context'
 import {
   buildExtractionSystemPrompt,
   buildExtractionUserText,
@@ -149,7 +150,7 @@ export async function POST(req: NextRequest) {
       const message = await anthropic.messages.create({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 4000,
-        system: buildExtractionSystemPrompt(),
+        system: withTemporalContext(buildExtractionSystemPrompt()),
         messages: [
           {
             role: 'user',

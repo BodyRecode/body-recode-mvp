@@ -6,6 +6,7 @@ import { isCoachEmail } from '@/lib/coach-auth'
 import { buildCopilotContext, getCoachPreferences } from '@/lib/copilot-context'
 import { buildCopilotSystemPrompt } from '@/lib/copilot-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import { withTemporalContext } from '@/lib/temporal-context'
 
 export const maxDuration = 120
 
@@ -91,7 +92,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
         // what goes in every training-program field?") were hitting the cap and
         // returning an empty text block with stop_reason=max_tokens.
         max_tokens: 4096,
-        system: buildCopilotSystemPrompt(ctx.clientName, ctx.context, coachPreferences),
+        system: withTemporalContext(buildCopilotSystemPrompt(ctx.clientName, ctx.context, coachPreferences)),
         messages: [...history, { role: 'user', content: message }],
       })
       const block = resp.content.find(b => b.type === 'text')
@@ -115,7 +116,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     const fu = await anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 220,
-      system: 'You suggest what a COACH might ask next in a doctrine-coaching conversation about a client. Given the last question and answer, propose exactly 3 short follow-up questions or steers the coach could tap next. Each 9 words or fewer, specific to what was just discussed, no numbering, no quotes. Return ONLY JSON: {"followups":["...","...","..."]}',
+      system: withTemporalContext('You suggest what a COACH might ask next in a doctrine-coaching conversation about a client. Given the last question and answer, propose exactly 3 short follow-up questions or steers the coach could tap next. Each 9 words or fewer, specific to what was just discussed, no numbering, no quotes. Return ONLY JSON: {"followups":["...","...","..."]}'),
       messages: [{ role: 'user', content: `QUESTION:\n${message}\n\nANSWER:\n${answer}\n\nPropose 3 follow-ups.` }],
     })
     const fblock = fu.content.find(b => b.type === 'text')

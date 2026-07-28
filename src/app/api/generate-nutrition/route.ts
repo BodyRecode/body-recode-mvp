@@ -10,6 +10,7 @@ import { DOCTRINE_VERSIONS } from '@/lib/doctrine-versions'
 import { emitValidatorEvent, type ValidatorEventTier, type ValidatorEventFinalOutcome } from '@/lib/nutrition-telemetry'
 import { randomUUID } from 'crypto'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import { temporalContext } from '@/lib/temporal-context'
 
 export const maxDuration = 300
 
@@ -285,7 +286,12 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
     const message = await anthropic.messages.create({
       model: modelId,
       max_tokens: 16000,
-      system: [{ type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } }],
+      system: [
+        // Stable prompt stays cached; the date is volatile so it sits AFTER the
+        // breakpoint, otherwise the cache would be invalidated every day.
+        { type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } },
+        { type: 'text', text: temporalContext() },
+      ],
       messages: [{ role: 'user', content: finalUserPrompt }],
     })
     const content = message.content[0]

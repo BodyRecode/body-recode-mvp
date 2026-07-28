@@ -9,6 +9,7 @@ import {
   type MedicationsCFFSContext,
 } from '@/lib/medications-analysis-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import { withTemporalContext } from '@/lib/temporal-context'
 
 /**
  * Generate the coach-facing Medications Analysis for a client. Writes the
@@ -123,7 +124,7 @@ export async function POST(
     return anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: maxTokens,
-      system: buildCoachAnalysisSystemPrompt(),
+      system: withTemporalContext(buildCoachAnalysisSystemPrompt()),
       messages: [{ role: 'user', content: userPrompt }],
     })
   }

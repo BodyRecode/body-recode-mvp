@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { withTemporalContext, deadlineConstraint } from '@/lib/temporal-context'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 
 export const maxDuration = 300
@@ -194,6 +195,10 @@ OUTPUT FORMAT — return ONLY valid JSON, no markdown:
     contextLines.push(`Bodyweight (from baseline): ${baseline.bodyweight_kg}kg`)
   }
 
+  // Dated goal, resolved server-side so the model is handed arithmetic rather
+  // than being asked to infer a calendar it cannot see.
+  const deadline = deadlineConstraint(intake?.desired_timeline)
+
   if (activeProgram) {
     contextLines.push(`\nCURRENT ACTIVE PROGRAM`)
     contextLines.push(`${activeProgram.block_name} — ${activeProgram.progression_phase}, ${activeProgram.training_goal}, ${activeProgram.training_frequency}x/week, ${activeProgram.week_duration} weeks`)
@@ -228,8 +233,14 @@ OUTPUT FORMAT — return ONLY valid JSON, no markdown:
       message = await anthropic.messages.create({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: MAX_TOKENS,
-        system: systemPrompt,
-        messages: [{ role: 'user', content: contextLines.join('\n') }],
+        system: withTemporalContext(systemPrompt),
+        messages: [{
+          role: 'user',
+          // A dated goal leads, before any other context. Previously it sat as
+          // one soft line among fifteen, formatted identically to "Sex: Female",
+          // and the arc that came back finished seven weeks after the event.
+          content: [deadline, contextLines.join('\n')].filter(Boolean).join('\n\n'),
+        }],
       })
     } catch (err) {
       lastError = `AI error: ${err instanceof Error ? err.message : String(err)}`

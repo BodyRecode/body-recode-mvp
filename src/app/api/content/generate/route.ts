@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { temporalContext } from '@/lib/temporal-context'
 
 export const maxDuration = 300
 
@@ -76,6 +77,7 @@ Return only the final copy. No labels, no explanation.`
         const response = await anthropic.messages.create({
           model: 'claude-haiku-4-5-20251001',
           max_tokens: 400,
+          system: temporalContext(),
           messages: [{ role: 'user', content: prompt }],
         })
 

@@ -10,6 +10,7 @@ import {
 import { buildBloodMarkerCFFSSection, type BloodMarker } from '@/lib/blood-panel-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { signedBaselinePhotoUrl } from '@/lib/baseline-photos'
+import { withTemporalContext } from '@/lib/temporal-context'
 import {
   sniffImageMediaType,
   describeImageFormat,
@@ -206,7 +207,7 @@ export async function POST(request: NextRequest) {
       message = await anthropic.messages.create({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: MAX_TOKENS,
-        system: buildCFFSSystemPrompt(),
+        system: withTemporalContext(buildCFFSSystemPrompt()),
         messages: [{ role: 'user', content: userContent }],
       })
     } catch (err) {

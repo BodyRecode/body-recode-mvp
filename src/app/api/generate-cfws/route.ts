@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCFWSSystemPrompt, buildCFWSUserPrompt, WeeklyCheckInPair } from '@/lib/cfws-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import { withTemporalContext } from '@/lib/temporal-context'
 
 export const maxDuration = 300
 
@@ -100,7 +101,7 @@ export async function POST(request: NextRequest) {
       message = await anthropic.messages.create({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: MAX_TOKENS,
-        system: buildCFWSSystemPrompt(),
+        system: withTemporalContext(buildCFWSSystemPrompt()),
         messages: [{ role: 'user', content: buildCFWSUserPrompt(client.name, currentPair, recentPairs, cffsBaseline) }],
       })
     } catch (err) {
