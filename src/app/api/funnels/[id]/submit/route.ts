@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { normaliseLeadSource } from '@/lib/lead-source'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { fireTrigger } from '@/lib/automation-engine'
 
@@ -51,7 +52,7 @@ export async function POST(
         name: name.trim(),
         email: email.trim().toLowerCase(),
         phone: phone?.trim() || null,
-        source: 'funnel',
+        source: normaliseLeadSource('funnel'),
         status: 'new',
       })
       .select('id')

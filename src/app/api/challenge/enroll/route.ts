@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { normaliseLeadSource } from '@/lib/lead-source'
 import { getDefaultCoachId } from '@/lib/default-coach'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { fireTrigger } from '@/lib/automation-engine'
@@ -69,7 +70,9 @@ export async function POST(request: NextRequest) {
         email: email.toLowerCase().trim(),
         phone: phone.trim(),
         gender: validGender,
-        source: utm_source === 'meta' ? 'meta' : 'other',
+        // Normalised, never a raw utm value: an unrecognised source used to
+        // fail the CHECK constraint and kill the whole signup. See lib/lead-source.ts.
+        source: normaliseLeadSource(utm_source),
         source_detail: '14-day-body-decode-challenge',
         status: 'new_check_in',
         active: true,
