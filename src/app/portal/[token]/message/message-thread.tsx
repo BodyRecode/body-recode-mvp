@@ -152,7 +152,7 @@ export default function MessageThread({
 
       {initialMessages.length > 0 && (
         <div className="space-y-3 mt-8">
-          {initialMessages.map(m => (
+          {initialMessages.map((m, i) => (
             <div
               key={m.id}
               className={
@@ -173,6 +173,16 @@ export default function MessageThread({
                 </p>
               )}
               <p className="text-[14px] text-[#3A3A3A] leading-relaxed whitespace-pre-wrap">{m.body}</p>
+              {/* Delivery confirmation on the client's newest message, shown
+                  only while it is the last thing in the thread. The anxiety it
+                  answers is "did that even send", not "has he read it" — a read
+                  receipt would turn every normal gap before a reply into being
+                  ignored. Once the coach answers, the reply is its own proof. */}
+              {i === 0 && m.sender === 'client' && (
+                <p className="text-[11px] text-[#6B6B6B] mt-2 pt-2 border-t border-[#E5E5E5]">
+                  Sent. {coachFirstName} has been notified and will reply here.
+                </p>
+              )}
             </div>
           ))}
         </div>
