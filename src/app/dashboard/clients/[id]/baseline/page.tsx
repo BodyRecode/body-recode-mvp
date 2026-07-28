@@ -1,4 +1,5 @@
 import { createAdminClient } from '@/lib/supabase/admin'
+import { signedBaselinePhotoSet } from '@/lib/baseline-photos'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import CopyLinkButton from '../copy-link-button'
@@ -15,6 +16,8 @@ export default async function BaselinePage({ params }: { params: Promise<{ id: s
   if (!client) notFound()
 
   const latestBaseline = baselines?.[0] || null
+  // Progress photos live in a private bucket; sign them for this render only.
+  const baselinePhotos = await signedBaselinePhotoSet(admin, latestBaseline)
   const baselineToken = client.baseline_token as string | undefined
 
   return (
@@ -66,14 +69,14 @@ export default async function BaselinePage({ params }: { params: Promise<{ id: s
           </div>
 
           {/* Photos */}
-          {(latestBaseline.photo_front_url || latestBaseline.photo_side_url || latestBaseline.photo_back_url) && (
+          {(baselinePhotos.front || baselinePhotos.side || baselinePhotos.back) && (
             <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
               <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-4">Progress Photos</p>
               <div className="grid grid-cols-3 gap-4">
                 {[
-                  { label: 'Front', url: latestBaseline.photo_front_url },
-                  { label: 'Side', url: latestBaseline.photo_side_url },
-                  { label: 'Back', url: latestBaseline.photo_back_url },
+                  { label: 'Front', url: baselinePhotos.front },
+                  { label: 'Side', url: baselinePhotos.side },
+                  { label: 'Back', url: baselinePhotos.back },
                 ].map(photo => (
                   <div key={photo.label} className="space-y-1.5">
                     <p className="text-xs text-stone-500 text-center">{photo.label}</p>

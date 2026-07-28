@@ -9,6 +9,7 @@ import {
 } from '@/lib/cffs-prompt'
 import { buildBloodMarkerCFFSSection, type BloodMarker } from '@/lib/blood-panel-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import { signedBaselinePhotoUrl } from '@/lib/baseline-photos'
 import {
   sniffImageMediaType,
   describeImageFormat,
@@ -114,7 +115,11 @@ export async function POST(request: NextRequest) {
   const fetchedPhotos = await Promise.all(
     photoEntries.map(async ({ label, url }) => {
       if (!url) return { label, image: null as Awaited<ReturnType<typeof fetchImageAsBase64>> }
-      return { label, image: await fetchImageAsBase64(url) }
+      // The bucket is private, so a stored URL is not directly fetchable.
+      // Sign it for the life of this request.
+      const signed = await signedBaselinePhotoUrl(admin, url, 5 * 60)
+      if (!signed) return { label, image: null as Awaited<ReturnType<typeof fetchImageAsBase64>> }
+      return { label, image: await fetchImageAsBase64(signed) }
     })
   )
   const availablePhotos = fetchedPhotos.filter(p => p.image !== null) as Array<{

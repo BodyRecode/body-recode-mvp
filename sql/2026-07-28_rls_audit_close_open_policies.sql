@@ -78,3 +78,34 @@ drop policy if exists "allow select own blueprint checkins" on public.blueprint_
 create policy "coaches read blueprint checkins"
   on public.blueprint_checkins for select to authenticated
   using (public.is_coach());
+
+-- ---------------------------------------------------------------------------
+-- Follow-up: write policies + storage.
+--
+-- 7. intake_invitations had `public can update invitation status` with
+--    qual = true and no with_check: anyone, unauthenticated, could update any
+--    invitation row. Redundant as well as dangerous — `coaches manage own
+--    invitations` (ALL, scoped by coach_id) already covers the coach, and every
+--    status write happens in a service-role route.
+drop policy if exists "public can update invitation status" on public.intake_invitations;
+
+-- 8. collective_applications had an UPDATE policy open to every authenticated
+--    user, which includes portal clients.
+drop policy if exists "authenticated update collective_applications" on public.collective_applications;
+
+-- 9. STORAGE: the `baseline-photos` bucket was PUBLIC. Client progress photos
+--    were readable by anyone holding the URL, with no auth at all. Listing
+--    required auth so the bucket could not be enumerated, but that is
+--    obscurity, not security: any URL that leaked once (forwarded email,
+--    screenshot, shared browser history) was public permanently and could not
+--    be revoked. Of everything the platform stores, client body photos are
+--    close to the most sensitive.
+--
+--    Now private, served only over short-lived signed URLs via
+--    src/lib/baseline-photos.ts. Rows written before this store a full
+--    public-format URL and rows after store the object path; the helper
+--    accepts either, so no data migration was needed.
+update storage.buckets set public = false where id = 'baseline-photos';
+
+-- NOTE: previously-served photo URLs may sit in the Supabase CDN cache for a
+-- period after this flip. A cache-busting query string returns 404 immediately.

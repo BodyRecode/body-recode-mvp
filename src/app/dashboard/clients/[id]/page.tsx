@@ -1,4 +1,5 @@
 import { createAdminClient } from '@/lib/supabase/admin'
+import { signedBaselinePhotoSet } from '@/lib/baseline-photos'
 import { notFound } from 'next/navigation'
 import { ChevronLeft, Activity, RefreshCw, AlertTriangle as AlertTriangleIcon, Eye, Sparkles } from 'lucide-react'
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
@@ -249,6 +250,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
     .filter(([, forms]) => forms.has('A') && forms.has('B'))
     .sort((a, b) => b[0] - a[0])[0]?.[0] ?? null
   const latestBaseline = baselines?.[0] || null
+  // Progress photos live in a private bucket; sign them for this render only.
+  const baselinePhotos = await signedBaselinePhotoSet(admin, latestBaseline)
   const baselineToken = client.baseline_token as string | undefined
 
   // Doctrine: Signal Monitoring and Reassessment Triggers v1.0
@@ -1361,12 +1364,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             </div>
 
             {/* Photos */}
-            {(latestBaseline.photo_front_url || latestBaseline.photo_side_url || latestBaseline.photo_back_url) && (
+            {(baselinePhotos.front || baselinePhotos.side || baselinePhotos.back) && (
               <div className="grid grid-cols-3 gap-3">
                 {[
-                  { label: 'Front', url: latestBaseline.photo_front_url },
-                  { label: 'Side', url: latestBaseline.photo_side_url },
-                  { label: 'Back', url: latestBaseline.photo_back_url },
+                  { label: 'Front', url: baselinePhotos.front },
+                  { label: 'Side', url: baselinePhotos.side },
+                  { label: 'Back', url: baselinePhotos.back },
                 ].map(photo => (
                   <div key={photo.label} className="space-y-1.5">
                     <p className="text-xs text-[#999999] text-center">{photo.label}</p>

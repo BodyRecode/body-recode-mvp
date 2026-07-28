@@ -35,8 +35,11 @@ export async function POST(req: NextRequest) {
       .from('baseline-photos')
       .upload(path, buffer, { contentType: file.type, upsert: true })
     if (error) { console.error('Photo upload error:', error); return null }
-    const { data } = admin.storage.from('baseline-photos').getPublicUrl(path)
-    return data.publicUrl
+    // Store the object path, not a public URL. The bucket is private as of
+    // 2026-07-28 and these are only ever served over short-lived signed URLs
+    // (see src/lib/baseline-photos.ts). Older rows hold a full public-format
+    // URL; the signing helper accepts either shape.
+    return path
   }
 
   const [frontUrl, sideUrl, backUrl] = await Promise.all([
