@@ -460,6 +460,13 @@ const MANUAL_AUTOMATIONS = [
     steps: 5,
   },
   {
+    id: 'draft-client-reply',
+    name: 'Draft a Reply (AI, coach-approved)',
+    description: 'Manual only, never automatic. "Draft a reply" on a client card in /dashboard/messages calls claude-opus-5 with that client\'s own artefacts (Foundational Reading, program, nutrition plan, recent check-ins, intake, medications) plus the conversation and the anchor on their latest question. Returns text ONLY into the coach\'s reply box - writes nothing to client_messages and sends nothing to the client. The coach edits, sends via the normal reply path, or discards. Hard-bounded by scope of practice: forbidden from interpreting symptoms, commenting on medication, discussing test results, saying anything is "probably fine", or inventing prescription; anything clinical must route to the client\'s GP without a partial answer. Returns "NEEDS_COACH: <reason>" instead of a draft when it cannot answer safely from context. See src/lib/reply-draft-prompt.ts.',
+    trigger: 'Click "Draft a reply" on a client card in /dashboard/messages',
+    steps: 1,
+  },
+  {
     id: 'coach-message-reply',
     name: 'Coach Message Reply (client portal thread)',
     description: 'Reply to a client from /dashboard/messages. Writes the reply into client_messages as sender="coach" so it appears in the client\'s portal thread, then emails them the reply in full (BCC Kade) with a CTA back to /portal/{token}/message. The email quotes their most recent unanswered message for context, so they can read the answer without logging in. Sending also stamps responded_at + read_at on every outstanding message in that thread, clearing it from the "Awaiting reply" queue on the inbox and the Today dashboard. Logs to client_communications as kind "coach_message_reply". The email is best-effort: the reply is saved and visible in the portal even if Resend fails.',

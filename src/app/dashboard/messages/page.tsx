@@ -126,7 +126,11 @@ export default async function MessagesInboxPage() {
                   )}
                 </div>
 
-                <ReplyBox clientId={clientId} clientFirstName={firstName} />
+                <ReplyBox
+                  clientId={clientId}
+                  clientFirstName={firstName}
+                  canDraft={thread.some(m => m.sender === 'client')}
+                />
 
                 {/* Newest first, matching the client's view of the same thread. */}
                 <div className="space-y-3 mt-5">
