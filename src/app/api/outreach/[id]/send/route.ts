@@ -3,14 +3,15 @@
  *
  * Coach-gated. Re-checks the lead is still eligible at send time (they may have
  * booked or been paused since the draft was written), sends the branded email
- * through Resend in Kade's voice with a BCC copy to his inbox, then marks the
+ * as marketing email in Kade's voice (suppression-checked, unsubscribe footer)
+ * with a BCC copy to his inbox, then marks the
  * touch sent and logs it on the lead timeline.
  */
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { Resend } from 'resend'
+import { sendMarketingEmail } from '@/lib/marketing-email'
 import { fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { coach } from '@/config/tenant'
 import { logLeadEvent } from '@/lib/log-lead-event'
@@ -52,35 +53,44 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
 
   if (!process.env.RESEND_API_KEY) return NextResponse.json({ error: 'Email not configured' }, { status: 500 })
 
-  const resend = new Resend(process.env.RESEND_API_KEY)
-  const sent = await resend.emails.send({
+  // Booking Agent touches are marketing, so they route through
+  // sendMarketingEmail — suppression check, unsubscribe footer and
+  // List-Unsubscribe header. If the lead unsubscribed since the draft was
+  // written, the send is skipped and the draft marked so it stops cluttering
+  // the approval queue.
+  const sent = await sendMarketingEmail({
     from: fromCoach(),
     to: lead.email,
     bcc: COACH_BCC,
     replyTo: coach().email,
     subject: touch.subject,
     html: touch.body_html,
+    source: 'booking-agent-touch',
   })
 
-  if (sent.error) {
-    console.error('[outreach/send] Resend error:', sent.error)
+  if (!sent.ok) {
+    if (sent.skipped) {
+      await admin.from('outreach_touches').update({ status: 'skipped', updated_at: new Date().toISOString() }).eq('id', id)
+      return NextResponse.json({ error: 'Lead has unsubscribed — draft skipped', skipped: true }, { status: 409 })
+    }
+    console.error('[outreach/send] send failed:', sent.reason)
     await admin.from('outreach_touches').update({ status: 'failed', updated_at: new Date().toISOString() }).eq('id', id)
     return NextResponse.json({ error: 'Send failed' }, { status: 502 })
   }
 
   await admin
     .from('outreach_touches')
-    .update({ status: 'sent', sent_at: new Date().toISOString(), resend_email_id: sent.data?.id ?? null, updated_at: new Date().toISOString() })
+    .update({ status: 'sent', sent_at: new Date().toISOString(), resend_email_id: sent.id ?? null, updated_at: new Date().toISOString() })
     .eq('id', id)
 
   await logLeadEvent({
     leadId: touch.lead_id,
     type: 'email_sent',
     subject: touch.subject,
-    resendEmailId: sent.data?.id,
+    resendEmailId: sent.id ?? undefined,
     notes: 'Booking agent touch approved and sent.',
     sentAt: new Date(),
   })
 
-  return NextResponse.json({ success: true, resendId: sent.data?.id })
+  return NextResponse.json({ success: true, resendId: sent.id })
 }

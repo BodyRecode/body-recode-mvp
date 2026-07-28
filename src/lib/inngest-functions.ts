@@ -26,6 +26,7 @@ import {
   buildBlueprintWeek7FollowupEmail,
 } from './blueprint-emails'
 import { fromCoach, fromBrand } from '@/lib/email-shell'
+import { sendMarketingEmail } from '@/lib/marketing-email'
 import { coach, logoUrl, brand } from '@/config/tenant'
 import {
   buildMembershipCheckinPromptEmail,
@@ -551,7 +552,6 @@ async function executeAction(
   switch (step.action_type) {
     case 'send_email': {
       if (!contact?.email || !process.env.RESEND_API_KEY) break
-      const resend = new Resend(process.env.RESEND_API_KEY)
       const interpolatedBody = interpolate(config.body ?? '', templateVars)
       const interpolatedSubject = interpolate(config.subject ?? '', templateVars)
       // Branded shell — same darkEmailShell + primitives the rest of the system
@@ -561,14 +561,20 @@ async function executeAction(
         `${emailLogo()}\n${renderAutomationBody(interpolatedBody)}\n${darkEmailSignature()}`,
         { previewText: interpolatedSubject },
       )
-      const { data: sent, error: sendError } = await resend.emails.send({
+      // Drip steps are marketing, so they route through sendMarketingEmail:
+      // suppression check, unsubscribe footer and List-Unsubscribe header in
+      // one place rather than per sequence.
+      const result = await sendMarketingEmail({
         from: fromCoach(),
         to: contact.email,
         subject: interpolatedSubject,
         html,
+        source: `automation-step-${step.position}`,
       })
-      if (sendError) {
-        console.error('[automation send_email] Resend error:', sendError, 'to:', contact.email, 'subject:', interpolatedSubject)
+      if (!result.ok) {
+        if (!result.skipped) {
+          console.error('[automation send_email] send failed:', result.reason, 'to:', contact.email, 'subject:', interpolatedSubject)
+        }
         break
       }
       if (ctx.leadId) {
@@ -576,7 +582,7 @@ async function executeAction(
           leadId: ctx.leadId,
           type: 'email_sent',
           subject: interpolatedSubject,
-          resendEmailId: sent?.id,
+          resendEmailId: result.id ?? undefined,
           notes: `Automation step ${step.position}`,
         })
       }
@@ -1183,14 +1189,14 @@ export const reengagementSequenceFunction = inngest.createFunction(
     if (await hasConverted('convert-check-before-day3')) return
     await step.run('send-day3', async () => {
       if (!process.env.RESEND_API_KEY) return
-      const resend = new Resend(process.env.RESEND_API_KEY)
       const sourceContext = source === 'challenge'
         ? 'You finished the 14-day challenge a few days ago.'
         : source === 'blueprint'
           ? 'You completed the 6-Week Blueprint a few days ago.'
           : 'Your Body Recode membership has ended.'
-      await resend.emails.send({
+      await sendMarketingEmail({
         from: fromCoach(),
+        source: 'reengagement',
         to: email,
         subject: `Checking in, ${firstName}`,
         html: reengagementEmailShell(`
@@ -1222,12 +1228,12 @@ ${emailBody("Reply to this email if you want to talk through where you're at. I 
     if (await hasConverted('convert-check-before-day14')) return
     await step.run('send-day14', async () => {
       if (!process.env.RESEND_API_KEY) return
-      const resend = new Resend(process.env.RESEND_API_KEY)
       const nextStageContext = source === 'challenge'
         ? `The 6-Week Blueprint is where the work you started gets structure and direction. It's built around your biological pattern — not a generic plan.`
         : `The 90-Day Extension is designed for exactly where you are — you've done the foundation work, and you need time to consolidate it before committing to the full membership.`
-      await resend.emails.send({
+      await sendMarketingEmail({
         from: fromCoach(),
+        source: 'reengagement',
         to: email,
         subject: `What the next step looks like for you`,
         html: reengagementEmailShell(`
@@ -1249,9 +1255,9 @@ ${emailBody("Reply if you have questions or want to know which pathway fits wher
     if (await hasConverted('convert-check-before-day30')) return
     await step.run('send-day30', async () => {
       if (!process.env.RESEND_API_KEY) return
-      const resend = new Resend(process.env.RESEND_API_KEY)
-      await resend.emails.send({
+      await sendMarketingEmail({
         from: fromCoach(),
+        source: 'reengagement',
         to: email,
         subject: `A lower-commitment way back in`,
         html: reengagementEmailShell(`
@@ -1278,9 +1284,9 @@ ${emailBody("Not ready yet? That's fine. I'll check back in.", { size: 14 })}
     if (await hasConverted('convert-check-before-day45')) return
     await step.run('send-day45', async () => {
       if (!process.env.RESEND_API_KEY) return
-      const resend = new Resend(process.env.RESEND_API_KEY)
-      await resend.emails.send({
+      await sendMarketingEmail({
         from: fromCoach(),
+        source: 'reengagement',
         to: email,
         subject: `Still here if you want it`,
         html: reengagementEmailShell(`
@@ -1303,9 +1309,9 @@ ${emailBody('Reply any time if you want to talk through it.', { size: 14 })}
     if (await hasConverted('convert-check-before-day60')) return
     await step.run('send-day60', async () => {
       if (!process.env.RESEND_API_KEY) return
-      const resend = new Resend(process.env.RESEND_API_KEY)
-      await resend.emails.send({
+      await sendMarketingEmail({
         from: fromCoach(),
+        source: 'reengagement',
         to: email,
         subject: `The membership is still open`,
         html: reengagementEmailShell(`
@@ -1341,9 +1347,9 @@ ${emailUrlFallback(membershipUrl, 'Or paste this link into your browser')}
     if (await hasConverted('convert-check-before-day90')) return
     await step.run('send-day90', async () => {
       if (!process.env.RESEND_API_KEY) return
-      const resend = new Resend(process.env.RESEND_API_KEY)
-      await resend.emails.send({
+      await sendMarketingEmail({
         from: fromCoach(),
+        source: 'reengagement',
         to: email,
         subject: `Last one from me`,
         html: reengagementEmailShell(`

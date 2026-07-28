@@ -215,3 +215,39 @@ ${inner}
 </body>
 </html>`
 }
+
+/**
+ * Unsubscribe footer for MARKETING email.
+ *
+ * Injected automatically by sendMarketingEmail() — you should not normally
+ * need to call this yourself. Outlook-safe: a bgcolor'd table rather than a
+ * styled div, matching the shell above, and an explicit hairline instead of a
+ * border-top that Word's engine would drop.
+ *
+ * Also carries the sender's postal identity. The Spam Act requires accurate
+ * sender identification alongside the unsubscribe facility, so the two belong
+ * in the same block rather than being someone else's job to remember.
+ */
+export function emailUnsubscribeFooter(unsubUrl: string): string {
+  const t = brand()
+  const c = coach()
+  return `
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;margin:0;padding:0;">
+  <tr>
+    <td bgcolor="#FFFFFF" align="center" style="background-color:#FFFFFF;padding:0 32px 40px;">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;width:100%;max-width:600px;">
+        <tr>
+          <td bgcolor="${EMAIL_HAIRLINE}" style="background-color:${EMAIL_HAIRLINE};font-size:0;line-height:0;height:1px;">&nbsp;</td>
+        </tr>
+        <tr>
+          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:20px 0 0;font-family:${EMAIL_FF};font-size:12px;line-height:1.7;color:${EMAIL_MUTED};">
+            <p style="margin:0 0 6px;">You are receiving this because you took the Body State Scorecard or signed up at ${t.name}.</p>
+            <p style="margin:0 0 6px;"><a href="${unsubUrl}" style="color:${EMAIL_MUTED};text-decoration:underline;">Unsubscribe from these emails</a></p>
+            <p style="margin:0;color:#8A8A8E;">${c.fullName} &middot; ${t.name} &middot; ${c.location}</p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>`
+}
