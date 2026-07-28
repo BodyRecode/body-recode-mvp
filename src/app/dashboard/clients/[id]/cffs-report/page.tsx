@@ -164,6 +164,33 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
                   Resolution: <span style={{ fontWeight: 700, color: INK }}>{cffs.resolution_state}</span>
                 </p>
               </div>
+
+              {/* Pattern sits with the state because the two labels are the
+                  whole read. The CFFS names one of the four canonical patterns
+                  and must justify it against whatever the funnel read first. */}
+              {cffs.pattern_classification && (
+                <div style={{ marginTop: 20, paddingTop: 20, borderTop: `1px solid ${CARD_BORDER}` }}>
+                  <p style={{ fontSize: 9, fontWeight: 700, color: '#999999', textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: 10 }}>
+                    Pattern Classification
+                  </p>
+                  <p style={{ fontSize: 22, fontWeight: 800, color: INK, letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 8 }}>
+                    {cffs.pattern_classification}
+                  </p>
+                  {cffs.pattern_confidence && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+                      <div style={{ width: 3, height: 14, background: TEAL, borderRadius: 2 }} />
+                      <p style={{ fontSize: 12, fontWeight: 500, color: '#666666' }}>
+                        Confidence: <span style={{ fontWeight: 700, color: INK, textTransform: 'capitalize' }}>{cffs.pattern_confidence}</span>
+                      </p>
+                    </div>
+                  )}
+                  {cffs.pattern_rationale && (
+                    <p style={{ fontSize: 13, lineHeight: 1.7, color: '#4A4A4A', margin: 0 }}>
+                      {cffs.pattern_rationale}
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Exposure Readiness */}
