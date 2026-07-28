@@ -12,12 +12,31 @@ export async function POST() {
 
   // Check if already exists. Match by both old (em-dash) and new (hyphen) names so an
   // existing workflow gets updated in place rather than orphaned alongside a duplicate.
-  const { data: existing } = await supabase
+  //
+  // Deliberately NOT maybeSingle(): if two rows already exist it errors and returns
+  // null, which used to make this route create yet another copy. That is exactly how
+  // the em-dash/hyphen pair got live together (found 2026-07-28 — every scorecard lead
+  // was enrolled in both and received near-duplicate emails on all 5 touches). Keep the
+  // oldest row as the canonical one and deactivate any extras so the engine, which
+  // enrols into EVERY active workflow matching the trigger, only ever finds one.
+  const { data: matches } = await supabase
     .from('be_workflows')
-    .select('id, name')
+    .select('id, name, is_active')
     .eq('coach_id', user.id)
     .in('name', ['Scorecard - Follow-up Sequence', 'Scorecard — Follow-up Sequence'])
-    .maybeSingle()
+    .order('created_at', { ascending: true })
+
+  // Prefer whichever row is already live, then fall back to the oldest — never pick a
+  // deactivated duplicate over the workflow that is actually running leads.
+  const ranked = [...(matches ?? [])].sort((a, b) => Number(b.is_active) - Number(a.is_active))
+  const existing = ranked[0] ?? null
+  const duplicates = ranked.slice(1)
+  if (duplicates.length > 0) {
+    await supabase
+      .from('be_workflows')
+      .update({ is_active: false })
+      .in('id', duplicates.map(d => d.id))
+  }
 
   const steps = [
     {
