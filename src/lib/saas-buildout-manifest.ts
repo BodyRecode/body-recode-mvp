@@ -800,11 +800,13 @@ export const PHASES: Phase[] = [
       {
         id: 'copilot-refine-full',
         title: 'Phase 7 — Full surgical refine (structure edits)',
-        description: 'Extend the surgical refine beyond one-exercise/one-note edits to the structural changes coaches actually ask for: add / remove / reorder exercises, whole-day edits, and swapping a day\'s focus ("add a fourth day", "drop Wednesday\'s carries", "move the hinge earlier"). Still confirm-first, still draft-only.',
-        status: 'planned',
+        description: 'Refine now covers structural changes for BOTH program and nutrition: add/remove/reorder exercises, whole-day add/remove ("add a fourth day", "drop Wednesday\'s carries", "move the hinge earlier"), and add/remove foods + meals ("drop to 3 meals"). Still confirm-first, still draft-only.',
+        status: 'shipped',
+        shippedAt: '2026-07-27',
         effort: 'M',
         blockedBy: 'copilot-refine',
-        notes: 'Extends program-patch.ts with add_exercise / remove_exercise / reorder / day-level ops (currently only update_exercise + edit_client_note; add/remove/reorder deliberately deferred at Phase 3). Index-stability matters — apply removes descending, adds last. Doctrine still binds (e.g. a new day cannot push past the frequency ceiling or the phase intent).',
+        surfaces: ['src/lib/program-patch.ts (add/remove/reorder exercise, add/remove day)', 'src/lib/nutrition-patch.ts (add/remove food, add/remove meal + macro recompute)', 'edit-draft + edit-nutrition route prompts describe the new ops'],
+        notes: 'Ops reference ORIGINAL indices, applied in an index-stable order (in-place → reorder → insert → removals DESCENDING → day/meal removals DESC → append). Nutrition recomputes meal totals + day calorie band after. Doctrine still binds (new day cannot exceed frequency ceiling; nutrition change cannot break protein anchor / calorie floor). Verified apply in isolation. Add_day/add_meal take a model-supplied full session/meal. NOT click-tested by Claude.',
       },
       {
         id: 'copilot-memory',
