@@ -810,12 +810,14 @@ export const PHASES: Phase[] = [
       },
       {
         id: 'copilot-memory',
-        title: 'Phase 8 — Memory & coach-style learning',
-        description: 'Two parts: (1) persist the practice-wide (general) co-pilot conversation, which is currently stateless/forgotten between sessions; (2) coach-style memory — the co-pilot learns a coach\'s stated preferences WITHIN doctrine bounds (e.g. "favours 4-day splits when gates allow") and applies them as soft guidance. Also extends the thumbs-down flag/review loop to practice-wide answers.',
-        status: 'planned',
+        title: 'Phase 8 — Coach-style memory',
+        description: 'The co-pilot remembers how a coach likes to work and honours it as SOFT guidance everywhere (e.g. "favour 4-day splits when gates allow", "keep first blocks to 3 sets", "prefer dairy-free swaps"). Coach-owned free text, edited via a "⚙ Set your coaching preferences" panel in the bubble. Never overrides gates / phase / safety.',
+        status: 'shipped',
+        shippedAt: '2026-07-27',
         effort: 'L',
         blockedBy: 'copilot-broaden',
-        notes: 'General route is stateless today (history replayed client-side, no DB). Adds coach-scoped persistence + a small coach_preferences store the prompts read. Preferences NEVER override readiness gates / phase order / safety — soft guidance only. Coach-scoped from day one so it rides into white-label.',
+        surfaces: ['coach_preferences table (sql/2026-07-27_coach_preferences.sql, RLS coach-only via public.is_coach())', 'GET/PUT /api/copilot/preferences', 'getCoachPreferences() + coachPrefsBlock in copilot-context/copilot-prompt (both prompts)', 'src/components/global-copilot-bubble.tsx (preferences editor)'],
+        notes: 'Keyed by coach email (matches isCoachEmail auth); co-pilot routes use service role so RLS just keeps portal clients out. Preferences are EXPLICIT (coach edits them) — no inference. Injected into both the client-scoped and general prompts as soft guidance that yields to doctrine. DEFERRED within this phase: persisting the general (practice-wide) conversation (still stateless, replayed client-side) and extending the flag/review loop to general answers. Verified: build + table round-trip. NOT click-tested by Claude.',
       },
       {
         id: 'copilot-whitelabel',
