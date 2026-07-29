@@ -201,7 +201,7 @@ Classify training_age from the client's DEMONSTRATED TRAINING HISTORY, not from 
 - ADVANCED: multiple years of consistent structured RESISTANCE training, established lifts, demonstrated tolerance to real external load. A client who has trained hard for years is ADVANCED even if they are currently deconditioned, stressed, injured, or dysregulated.
 
 ENDURANCE HISTORY IS NOT RESISTANCE TRAINING AGE. training_age sets the RPE ceiling and volume floor for LOADED resistance work, so it must be read from resistance history specifically. Someone who completes distance events has demonstrated aerobic and connective-tissue tolerance for THAT activity, and that tells you nothing about their tolerance to external load through a barbell or dumbbell. A client who has walked or run distance events for years but has never trained with weights is a BEGINNER for training_age, however impressive the endurance history. Record the endurance history in conditioning tolerance instead, where it belongs and where it is genuinely informative.
-(The error this prevents: a 52-year-old who had completed a 28km event six times, and had never done structured resistance training, was classified ADVANCED and prescribed RPE 8 primaries in a Restoration block against a live sacroiliac injury.)
+(The error this prevents: a 52-year-old with a long distance-walking background and no structured resistance training was classified ADVANCED and prescribed RPE 8 primaries in a Restoration block against a live sacroiliac injury.)
 - INTERMEDIATE: roughly 1–3 years consistent training, competent with the main movement patterns, some load history.
 - BEGINNER: genuinely new to structured training, or a long lay-off with no established lifts.
 
