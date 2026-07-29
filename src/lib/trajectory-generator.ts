@@ -162,7 +162,7 @@ export async function generateTrajectoryReadingForProgram(
     }],
   })
 
-  const content = message.content[0]
+  const content = (message.content.find(b => b.type === 'text') ?? message.content[0])
   if (content.type !== 'text') {
     throw new TrajectoryGenerationError('Unexpected response from AI', 500)
   }

@@ -148,7 +148,7 @@ Output JSON only:
       system: withTemporalContext(systemPrompt),
       messages: [{ role: 'user', content: contextLines.join('\n') + '\n\nDraft the justification. JSON only.' }],
     })
-    const content = message.content[0]
+    const content = (message.content.find(b => b.type === 'text') ?? message.content[0])
     if (content.type === 'text') {
       const m = extractFirstJsonObject(content.text)
       if (m) {

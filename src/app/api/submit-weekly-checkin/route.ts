@@ -234,7 +234,7 @@ async function generateCFWS(
     messages: [{ role: 'user', content: buildCFWSUserPrompt(client.name, currentPair, recentPairs) }],
   })
 
-  const content = message.content[0]
+  const content = (message.content.find(b => b.type === 'text') ?? message.content[0])
   if (content.type !== 'text') return
 
   const jsonText = extractFirstJsonObject(content.text)

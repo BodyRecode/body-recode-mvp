@@ -107,7 +107,7 @@ export async function generateDailyRoutineInternal(clientId: string): Promise<Ne
       ],
       messages: [{ role: 'user', content: finalUserPrompt }],
     })
-    const content = message.content[0]
+    const content = (message.content.find(b => b.type === 'text') ?? message.content[0])
     if (content.type !== 'text') throw new Error('Unexpected AI response')
     const jsonText = extractFirstJsonObject(content.text)
     if (jsonText) return JSON.parse(jsonText)

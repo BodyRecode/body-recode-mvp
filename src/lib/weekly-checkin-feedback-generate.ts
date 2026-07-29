@@ -191,7 +191,7 @@ export async function generateFeedbackDraft(
       return { ok: false, error: `AI error: ${err instanceof Error ? err.message : String(err)}`, leaks: totalLeaksSeen, attempts }
     }
 
-    const content = message.content[0]
+    const content = (message.content.find(b => b.type === 'text') ?? message.content[0])
     if (!content || content.type !== 'text') {
       lastError = 'Unexpected response from AI'
       continue

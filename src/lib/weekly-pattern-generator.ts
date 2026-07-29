@@ -134,7 +134,7 @@ Return the JSON shape specified in your instructions. No markdown, no preamble.`
     messages: [{ role: 'user', content: userPrompt }],
   })
 
-  const content = message.content[0]
+  const content = (message.content.find(b => b.type === 'text') ?? message.content[0])
   if (content.type !== 'text') {
     throw new WeeklyPatternGenerationError('Unexpected response from AI', 500)
   }

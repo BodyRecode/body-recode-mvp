@@ -77,7 +77,7 @@ export async function POST(
       system: withTemporalContext(buildLensProseSystemPrompt()),
       messages: [{ role: 'user', content: buildLensProseUserPrompt(core) }],
     })
-    const content = message.content[0]
+    const content = (message.content.find(b => b.type === 'text') ?? message.content[0])
     if (content && content.type === 'text') {
       const jsonText = extractFirstJsonObject(content.text)
       if (jsonText) {

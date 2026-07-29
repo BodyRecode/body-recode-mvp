@@ -160,7 +160,7 @@ Respond in the JSON shape specified in your instructions. No markdown, no preamb
     messages: [{ role: 'user', content: userPrompt }],
   })
 
-  const content = message.content[0]
+  const content = (message.content.find(b => b.type === 'text') ?? message.content[0])
   if (content.type !== 'text') {
     throw new MemberQuestionGenerationError('Unexpected response from AI', 500)
   }

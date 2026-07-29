@@ -57,7 +57,8 @@ WHAT_THIS_INCLUDES: [bullet 1]|[bullet 2]|[bullet 3]|[bullet 4]|[bullet 5]`
     messages: [{ role: 'user', content: prompt }],
   })
 
-  const text = message.content[0].type === 'text' ? message.content[0].text : ''
+  const textBlock = message.content.find(b => b.type === 'text')
+  const text = textBlock && textBlock.type === 'text' ? textBlock.text : ''
 
   const bandTitleMatch = text.match(/BAND_TITLE:\s*(.+)/)
   const patternSnapshotMatch = text.match(/PATTERN_SNAPSHOT:\s*([\s\S]+?)(?=WHAT_THIS_INCLUDES:)/)

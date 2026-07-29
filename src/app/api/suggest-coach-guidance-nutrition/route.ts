@@ -124,7 +124,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: `AI error: ${msg}` }, { status: 500 })
   }
 
-  const content = message.content[0]
+  const content = (message.content.find(b => b.type === 'text') ?? message.content[0])
   if (content.type !== 'text') {
     return NextResponse.json({ error: 'Unexpected AI response' }, { status: 500 })
   }

@@ -134,9 +134,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: `AI error: ${msg}` }, { status: 500 })
     }
 
-    const content = message.content[0]
+    const content = (message.content.find(b => b.type === 'text') ?? message.content[0])
     if (!content || content.type !== 'text') {
-      lastError = 'Unexpected response from AI'
+      // Name what came back. "Unexpected response from AI" told nobody anything.
+      lastError = `AI returned no text block (stop_reason=${message.stop_reason}, blocks=${message.content.map(b => b.type).join('+') || 'none'})`
       continue
     }
 
@@ -206,7 +207,12 @@ export async function POST(request: NextRequest) {
   if (!cleaned) {
     return NextResponse.json(
       {
-        error: `Reading leaked internal terminology after 3 attempts (${leaksSeen.length ? leaksSeen.join(', ') : lastError ?? 'unknown'}). Click Regenerate to try a fresh start.`,
+        // Two different failures used to share one message. A generation that
+        // never produced parseable text was reported as a terminology leak,
+        // which sent the coach hunting for banned words that were never there.
+        error: leaksSeen.length
+          ? `Reading leaked internal terminology after 3 attempts (${leaksSeen.join(', ')}). Click Regenerate to try a fresh start.`
+          : `Reading generation failed after 3 attempts: ${lastError ?? 'unknown error'}. This is not a terminology problem. Click Regenerate to try again.`,
       },
       { status: 500 }
     )

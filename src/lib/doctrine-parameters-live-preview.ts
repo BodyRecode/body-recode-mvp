@@ -106,7 +106,7 @@ export async function generateLivePreview(params: PreviewInput): Promise<LivePre
   })
   const latencyMs = Date.now() - t0
 
-  const content = message.content[0]
+  const content = (message.content.find(b => b.type === 'text') ?? message.content[0])
   if (!content || content.type !== 'text') {
     throw new Error('Unexpected response shape from Anthropic')
   }

@@ -295,7 +295,7 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
       ],
       messages: [{ role: 'user', content: finalUserPrompt }],
     })
-    const content = message.content[0]
+    const content = (message.content.find(b => b.type === 'text') ?? message.content[0])
     if (content.type !== 'text') throw new Error('Unexpected AI response')
     // 2026-07-06 parse resilience: brace-counter extract → whole-text JSON.parse
     // fallback → diagnostic error with stop_reason + usage + preview.

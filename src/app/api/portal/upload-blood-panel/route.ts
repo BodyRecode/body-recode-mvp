@@ -163,7 +163,7 @@ export async function POST(req: NextRequest) {
         ],
       })
 
-      const content = message.content[0]
+      const content = (message.content.find(b => b.type === 'text') ?? message.content[0])
       if (content && content.type === 'text') {
         const jsonText = extractFirstJsonObject(content.text)
         if (jsonText) {
