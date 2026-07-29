@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { CopilotStarters } from '@/components/copilot-starters'
 import { clientStarterCategories } from '@/lib/copilot-starter-questions'
+import { parseApiResponse } from '@/lib/parse-api-response'
 
 // A proposed training-program generation spec (Phase 2 "draft with me"). The
 // co-pilot derives it from the read-only suggest-prescription engine (the vetted
@@ -126,7 +127,7 @@ export default function CopilotPanel({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: q }),
       })
-      const data = await res.json()
+      const { data, error: apiError } = await parseApiResponse<any>(res)
       if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`)
       setMessages(prev => [...prev, {
         id: data.assistant?.id ?? null,
@@ -155,7 +156,7 @@ export default function CopilotPanel({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ client_id: clientId }),
       })
-      const data = await res.json()
+      const { data, error: apiError } = await parseApiResponse<any>(res)
       if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`)
       const s = data.suggestion || {}
       const spec: DraftSpec = {
@@ -215,7 +216,7 @@ export default function CopilotPanel({
           equipment_access: spec.equipment_access,
         }),
       })
-      const data = await res.json()
+      const { data, error: apiError } = await parseApiResponse<any>(res)
       if (!res.ok) throw new Error(data.error || 'Generation failed')
       // A program built without its macro arc has no phase objective and no
       // coach guidance. Say so rather than letting it look like a clean run.
@@ -245,7 +246,7 @@ export default function CopilotPanel({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ client_id: clientId }),
       })
-      const data = await res.json()
+      const { data, error: apiError } = await parseApiResponse<any>(res)
       if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`)
       const s = (data.suggestion || {}) as Record<string, any>
       const spec: NutritionSpec = {
@@ -283,7 +284,7 @@ export default function CopilotPanel({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...spec.raw, client_id: clientId, plan_name: spec.plan_name }),
       })
-      const data = await res.json()
+      const { data, error: apiError } = await parseApiResponse<any>(res)
       if (!res.ok) throw new Error(data.error || 'Generation failed')
       setMessages(prev => prev.map((m, i) => (i === idx ? { ...m, kind: 'nutrition-done' } : m)))
     } catch (err) {
@@ -314,7 +315,7 @@ export default function CopilotPanel({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'propose', instruction }),
       })
-      const data = await res.json()
+      const { data, error: apiError } = await parseApiResponse<any>(res)
       if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`)
       const operations: unknown[] = Array.isArray(data.operations) ? data.operations : []
       const summary: string = typeof data.summary === 'string' ? data.summary : ''
@@ -345,7 +346,7 @@ export default function CopilotPanel({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'apply', operations: proposal.operations }),
       })
-      const data = await res.json()
+      const { data, error: apiError } = await parseApiResponse<any>(res)
       if (!res.ok) throw new Error(data.error || 'Could not apply the change')
       const applied: string[] = Array.isArray(data.applied) ? data.applied : []
       setMessages(prev => prev.map((mm, i) => (i === idx ? { ...mm, kind: 'edit-done', content: applied.join(' ') } : mm)))

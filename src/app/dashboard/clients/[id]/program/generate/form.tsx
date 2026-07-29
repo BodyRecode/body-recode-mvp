@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import GenerationProgressOverlay from '@/components/generation-progress-overlay'
+import { parseApiResponse } from '@/lib/parse-api-response'
 
 const BLOCK_NAME_OPTIONS = [
   // Accumulation
@@ -134,9 +135,9 @@ export default function GenerateProgramForm({
         }),
       })
 
-      const data = await res.json()
+      const { data, error: apiError } = await parseApiResponse<any>(res)
       if (!res.ok) {
-        setError(data.error || 'Generation failed.')
+        setError(apiError || data?.error || 'Generation failed.')
         setLoading(false)
         return
       }

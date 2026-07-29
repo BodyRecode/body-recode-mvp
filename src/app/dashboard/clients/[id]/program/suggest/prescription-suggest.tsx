@@ -6,6 +6,7 @@ import Link from 'next/link'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
 import GenerationProgressOverlay from '@/components/generation-progress-overlay'
 import { AlertTriangle } from 'lucide-react'
+import { parseApiResponse } from '@/lib/parse-api-response'
 
 const NAV_SECTIONS = [
   { id: 'rationale', title: 'Rationale' },
@@ -211,9 +212,9 @@ export default function PrescriptionSuggest({
           body: JSON.stringify({ client_id: clientId, plan_block_id: planBlockId }),
           signal: ac.signal,
         })
-        const data = await res.json()
+        const { data, error: apiError } = await parseApiResponse<any>(res)
         if (ac.signal.aborted) return
-        if (!res.ok) { setError(data.error || 'Suggestion failed'); return }
+        if (!res.ok) { setError(apiError || data?.error || 'Suggestion failed'); return }
         const s: Suggestion = data.suggestion
         setSuggestion(s)
         setForm(prev => ({
@@ -271,8 +272,8 @@ export default function PrescriptionSuggest({
           ...(recoveryNotice && overrideMode === 'override' ? { recovery_override_reason: overrideReason.trim() } : {}),
         }),
       })
-      const data = await res.json()
-      if (!res.ok) { setError(data.error || 'Generation failed'); return }
+      const { data, error: apiError } = await parseApiResponse<any>(res)
+      if (!res.ok) { setError(apiError || data?.error || 'Generation failed'); return }
       router.push(`/dashboard/clients/${clientId}/program`)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unexpected error')

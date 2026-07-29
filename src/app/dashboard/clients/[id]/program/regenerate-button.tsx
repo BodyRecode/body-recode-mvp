@@ -4,6 +4,7 @@ import { useState, useTransition, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Loader2, RefreshCcw } from 'lucide-react'
 import GenerationProgressOverlay from '@/components/generation-progress-overlay'
+import { parseApiResponse } from '@/lib/parse-api-response'
 
 /**
  * RegenerateButton
@@ -83,8 +84,8 @@ export default function RegenerateButton({ programId }: { programId: string }) {
       })
       stopTimers()
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}))
-        setError(data.error || `Server returned ${res.status}`)
+        const { data, error: apiError } = await parseApiResponse<any>(res)
+        setError(apiError || data?.error || `Server returned ${res.status}`)
         setBusy(false)
         return
       }

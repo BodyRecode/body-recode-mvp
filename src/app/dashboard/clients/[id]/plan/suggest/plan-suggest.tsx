@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
 import GenerationProgressOverlay from '@/components/generation-progress-overlay'
+import { parseApiResponse } from '@/lib/parse-api-response'
 
 const NAV_SECTIONS = [
   { id: 'rationale', title: 'Rationale' },
@@ -116,7 +117,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ client_id: clientId, coach_guidance: coachGuidance }),
       })
-      const data = await res.json()
+      const { data, error: apiError } = await parseApiResponse<any>(res)
       if (data.error) { setError(data.error); setLoading(false); return }
       const s: Suggestion = data.suggestion
       setSuggestion(s)

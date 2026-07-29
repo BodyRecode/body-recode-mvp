@@ -297,7 +297,22 @@ export async function POST(request: NextRequest) {
   let programData = null
   let lastError = 'unknown error'
 
+  // Time budget. maxDuration is 300s and a single Sonnet pass at 12k tokens can
+  // run for two to three minutes, so three blind retries walk straight past the
+  // limit. When that happens Vercel returns its own HTML error page, the client
+  // calls res.json() on it, and the coach sees
+  // `Unexpected token 'A', "An error o"... is not valid JSON`, which says
+  // nothing about what went wrong. Better to stop early and fail honestly in
+  // JSON than to be killed mid-flight.
+  const startedAt = Date.now()
+  const TIME_BUDGET_MS = 240_000
+  const elapsed = () => Date.now() - startedAt
+
   for (let attempt = 1; attempt <= 3; attempt++) {
+    if (attempt > 1 && elapsed() > TIME_BUDGET_MS) {
+      lastError = `${lastError} (stopped after ${Math.round(elapsed() / 1000)}s to return a real error rather than time out)`
+      break
+    }
     let message
     try {
       message = await anthropic.messages.create({

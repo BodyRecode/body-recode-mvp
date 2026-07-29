@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { Loader2, RefreshCcw } from 'lucide-react'
 import GenerationProgressOverlay from '@/components/generation-progress-overlay'
+import { parseApiResponse } from '@/lib/parse-api-response'
 
 /**
  * NutritionRegenerateButton
@@ -40,8 +41,8 @@ export default function NutritionRegenerateButton({ nutritionPlanId }: { nutriti
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nutrition_plan_id: nutritionPlanId }),
       })
-      const data = await res.json().catch(() => ({}))
-      if (!res.ok) throw new Error(data.error || `Server returned ${res.status}`)
+      const { data, error: apiError } = await parseApiResponse<any>(res)
+      if (!res.ok) throw new Error(apiError || data?.error || `Server returned ${res.status}`)
       // Scroll to top BEFORE refresh so the coach lands on the new Draft
       // banner. Without this the page re-renders in place and the coach keeps
       // looking at the (now superseded) active plan they clicked from — read
