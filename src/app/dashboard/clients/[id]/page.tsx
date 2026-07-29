@@ -965,6 +965,21 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       ) : (
         <>
 
+          {/* Pattern watch. Sits ABOVE the state card because it is the thing
+              that needs acting on when new evidence arrives, and a note the
+              coach has to go looking for is a note nobody reads. */}
+          {activeCffs?.pattern_watch_for && (
+            <div className="rounded-xl border border-[rgba(27,109,252,0.25)] bg-[#F3F7FF] px-5 py-4 mb-4">
+              <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">
+                Watch for
+                {activeCffs.pattern_competing_read && activeCffs.pattern_competing_read !== 'None'
+                  ? ` — competing read: ${activeCffs.pattern_competing_read}`
+                  : ''}
+              </p>
+              <p className="text-[13px] text-[#3A3A3A] leading-relaxed">{activeCffs.pattern_watch_for}</p>
+            </div>
+          )}
+
           {/* State + Exposure Readiness */}
           <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl overflow-hidden mb-4">
             <div className="px-5 pt-5 pb-4 grid grid-cols-2 gap-4 border-b border-[#E5E5E5]">
@@ -975,6 +990,22 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   <div className="w-1 h-3.5 bg-[#1B6DFC]" />
                   <p className="text-xs text-[#6B6B6B]">Resolution: <span className="text-[#1A1A1A] font-semibold">{activeCffs.resolution_state}</span></p>
                 </div>
+                {/* Pattern sits with the state on the screen the coach actually
+                    works from, not only on the printable report. */}
+                {activeCffs.pattern_classification && (
+                  <div className="mt-4 pt-4 border-t border-[#E5E5E5]">
+                    <p className="text-[10px] font-bold text-[#999999] uppercase tracking-widest mb-2">Pattern Classification</p>
+                    <p className="text-lg font-bold text-[#1A1A1A] leading-tight mb-2">{activeCffs.pattern_classification}</p>
+                    {activeCffs.pattern_confidence && (
+                      <div className="flex items-center gap-2">
+                        <div className="w-1 h-3.5 bg-[#1B6DFC]" />
+                        <p className="text-xs text-[#6B6B6B]">
+                          Confidence: <span className="text-[#1A1A1A] font-semibold capitalize">{activeCffs.pattern_confidence}</span>
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
               <div>
                 <p className="text-[10px] font-bold text-[#999999] uppercase tracking-widest mb-3">Exposure Readiness</p>
