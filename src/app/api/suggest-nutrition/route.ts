@@ -35,6 +35,7 @@ export async function POST(request: NextRequest) {
     { data: previousPlans },
     { data: activeProgram },
     { data: recentReviews },
+    { data: currentPlanBlock },
   ] = await Promise.all([
     admin.from('clients').select('id, name, medications').eq('id', client_id).maybeSingle(),
     admin.from('cffs').select('*').eq('client_id', client_id).eq('is_archived', false).maybeSingle(),
@@ -66,6 +67,18 @@ export async function POST(request: NextRequest) {
       .eq('client_id', client_id)
       .order('reviewed_at', { ascending: false })
       .limit(5),
+    // The macro arc, which exists BEFORE any program is generated from it.
+    // Without this the engine saw "no training program", estimated the client's
+    // training load from intake, and set carb demand off a number that
+    // contradicted the arc the coach had just approved.
+    admin.from('plan_blocks')
+      .select('position, block_name, progression_phase, training_goal, week_duration, training_frequency, status, training_plans!inner(plan_name, status)')
+      .eq('client_id', client_id)
+      .eq('training_plans.status', 'active')
+      .in('status', ['in_progress', 'planned'])
+      .order('position', { ascending: true })
+      .limit(1)
+      .maybeSingle(),
   ])
 
   // Bodyweight is captured on the baseline submission (not the intake — the
@@ -169,8 +182,22 @@ ACTIVE TRAINING PROGRAM:
 - Goal: ${activeProgram.training_goal}
 - Frequency: ${activeProgram.training_frequency}x/week
 - Duration: ${activeProgram.week_duration} weeks`)
+  } else if (currentPlanBlock) {
+    // An approved arc is a real training prescription even before the sessions
+    // are written. Saying "none" here invites the model to invent a frequency.
+    const tp = currentPlanBlock.training_plans as unknown as { plan_name?: string } | null
+    contextParts.push(`
+NO PROGRAM GENERATED YET, BUT THE CLIENT HAS AN APPROVED MACRO ARC.
+Use the current block below as the training context. Do NOT estimate training
+frequency from intake or availability: the coach has already decided it.
+- Arc: ${tp?.plan_name ?? 'active plan'}
+- Current block: ${currentPlanBlock.position}. ${currentPlanBlock.block_name}
+- Phase: ${currentPlanBlock.progression_phase}
+- Goal: ${currentPlanBlock.training_goal}
+- Frequency: ${currentPlanBlock.training_frequency}x/week (this is the prescribed figure, use it)
+- Duration: ${currentPlanBlock.week_duration} weeks`)
   } else {
-    contextParts.push(`\nACTIVE TRAINING PROGRAM: None. Client is not currently on a training program.`)
+    contextParts.push(`\nACTIVE TRAINING PROGRAM: None, and no approved macro arc. Client is not currently on a training program.`)
   }
 
   if (previousPlans && previousPlans.length > 0) {
@@ -246,7 +273,7 @@ Output valid JSON only — no markdown, no commentary:
   "entry_state_reason": "string",
   "body_state": "remediation|optimisation|post_optimisation",
   "body_state_reason": "string",
-  "pts_phase": "string — current training phase or 'No active program'",
+  "pts_phase": "string — the current block's phase. Only say 'No active program' when there is neither a program NOR an approved macro arc.",
   "pts_phase_reason": "string",
   "constraint_level": "low|moderate|high",
   "constraint_level_reason": "string",
