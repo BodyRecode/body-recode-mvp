@@ -8,6 +8,7 @@ import { buildDailyRoutineSystemPrompt, buildDailyRoutineUserPrompt, DailyRoutin
 import { validateDailyRoutine, summariseIssuesForRetry } from '@/lib/daily-routine-validation'
 import { readHormonalLoad } from '@/lib/training-doctrine'
 import { temporalContext } from '@/lib/temporal-context'
+import { AI_MODELS } from '@/lib/ai-models'
 
 export const maxDuration = 180
 

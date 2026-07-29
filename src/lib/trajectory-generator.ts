@@ -21,6 +21,7 @@ import {
 } from '@/lib/client-trajectory-reading-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
+import { AI_MODELS } from './ai-models'
 
 export type TrajectoryReadingSections = {
   tr_where_this_block_started: string
@@ -146,7 +147,7 @@ export async function generateTrajectoryReadingForProgram(
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 5 })
 
   const message = await anthropic.messages.create({
-    model: 'claude-haiku-4-5-20251001',
+    model: AI_MODELS.structural,
     max_tokens: 6000,
     system: buildTrajectoryReadingSystemPrompt(),
     messages: [{

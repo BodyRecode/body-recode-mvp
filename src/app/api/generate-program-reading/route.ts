@@ -10,6 +10,7 @@ import {
 } from '@/lib/client-program-reading-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { withTemporalContext } from '@/lib/temporal-context'
+import { AI_MODELS } from '@/lib/ai-models'
 
 // Reading-published client emails scrapped 2026-06-09. The Program Reading
 // generates silently. Client gets one email per training block via the
@@ -134,7 +135,7 @@ export async function POST(request: NextRequest) {
     let message
     try {
       message = await anthropic.messages.create({
-        model: 'claude-haiku-4-5-20251001',
+        model: AI_MODELS.structural,
         max_tokens: 12000,
         system: withTemporalContext(buildProgramReadingSystemPrompt()),
         messages: conversation,

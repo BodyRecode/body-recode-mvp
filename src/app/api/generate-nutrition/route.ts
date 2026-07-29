@@ -11,6 +11,7 @@ import { emitValidatorEvent, type ValidatorEventTier, type ValidatorEventFinalOu
 import { randomUUID } from 'crypto'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { temporalContext } from '@/lib/temporal-context'
+import { AI_MODELS } from '@/lib/ai-models'
 
 export const maxDuration = 300
 

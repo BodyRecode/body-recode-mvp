@@ -15,6 +15,7 @@ import {
   type BloodPanelClientFacts,
 } from '@/lib/blood-panel-prompt'
 import { coach } from '@/config/tenant'
+import { AI_MODELS } from '@/lib/ai-models'
 
 /**
  * Client self-serve blood panel upload. Uploads the file to the private
@@ -148,7 +149,7 @@ export async function POST(req: NextRequest) {
         : { type: 'image', source: { type: 'base64', media_type: imageMediaTypeOrNull!, data: base64 } }
 
       const message = await anthropic.messages.create({
-        model: 'claude-haiku-4-5-20251001',
+        model: AI_MODELS.clinical,
         max_tokens: 4000,
         system: withTemporalContext(buildExtractionSystemPrompt()),
         messages: [
@@ -176,7 +177,7 @@ export async function POST(req: NextRequest) {
               markers: extraction.markers,
               gp_flags: extraction.gp_flags,
               extraction_meta: {
-                model: 'claude-haiku-4-5-20251001',
+                model: AI_MODELS.clinical,
                 unreadable: extraction.unreadable,
                 notes: extraction.notes,
               },

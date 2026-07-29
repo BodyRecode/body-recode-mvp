@@ -22,6 +22,7 @@ import {
   type NutritionContext,
 } from './weekly-checkin-feedback-prompt'
 import { extractFirstJsonObject } from './extract-json'
+import { AI_MODELS } from './ai-models'
 
 export interface GenerateFeedbackSuccess {
   ok: true
@@ -181,7 +182,7 @@ export async function generateFeedbackDraft(
     let message
     try {
       message = await anthropic.messages.create({
-        model: 'claude-haiku-4-5-20251001',
+        model: AI_MODELS.clinical,
         max_tokens: 2000,
         system: buildFeedbackSystemPrompt(),
         messages: conversation,

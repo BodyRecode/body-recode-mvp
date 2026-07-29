@@ -17,6 +17,7 @@ import {
   describeImageFormat,
   type ImageMediaType,
 } from '@/lib/image-media-type'
+import { CFFS_MODEL } from '@/lib/ai-models'
 
 export const maxDuration = 300
 
@@ -222,7 +223,7 @@ export async function POST(request: NextRequest) {
     let message
     try {
       message = await anthropic.messages.create({
-        model: 'claude-haiku-4-5-20251001',
+        model: CFFS_MODEL,
         max_tokens: MAX_TOKENS,
         system: withTemporalContext(buildCFFSSystemPrompt(incomingPattern)),
         messages: [{ role: 'user', content: userContent }],

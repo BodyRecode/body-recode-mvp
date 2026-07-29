@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { withTemporalContext } from '@/lib/temporal-context'
+import { AI_MODELS } from '@/lib/ai-models'
 
 export const maxDuration = 300
 
@@ -365,7 +366,7 @@ Output valid JSON only — no markdown, no commentary:
     let message
     try {
       message = await anthropic.messages.create({
-        model: 'claude-haiku-4-5-20251001',
+        model: AI_MODELS.clinical,
         max_tokens: MAX_TOKENS,
         system: withTemporalContext(systemPrompt),
         messages: [{ role: 'user', content: contextParts.join('\n') + '\n\nGenerate the prescription suggestion. JSON only.' }],

@@ -10,6 +10,7 @@ import {
   buildReplyDraftUserPrompt,
   type ReplyDraftMessage,
 } from '@/lib/reply-draft-prompt'
+import { AI_MODELS } from '@/lib/ai-models'
 
 export const maxDuration = 120
 
@@ -66,7 +67,7 @@ export async function POST(
   let text = ''
   try {
     const message = await anthropic.messages.create({
-      model: 'claude-opus-5',
+      model: AI_MODELS.operational,
       max_tokens: 4000,
       thinking: { type: 'adaptive' },
       output_config: { effort: 'medium' },

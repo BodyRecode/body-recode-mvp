@@ -12,6 +12,7 @@ import { appUrl } from '@/lib/app-url'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { withTemporalContext } from '@/lib/temporal-context'
 import { coach, logoUrl } from '@/config/tenant'
+import { AI_MODELS } from '@/lib/ai-models'
 
 export const maxDuration = 300
 
@@ -227,7 +228,7 @@ async function generateCFWS(
   }
 
   const message = await anthropic.messages.create({
-    model: 'claude-haiku-4-5-20251001',
+    model: AI_MODELS.clinical,
     max_tokens: 2000,
     system: withTemporalContext(buildCFWSSystemPrompt()),
     messages: [{ role: 'user', content: buildCFWSUserPrompt(client.name, currentPair, recentPairs) }],

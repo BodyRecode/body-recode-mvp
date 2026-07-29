@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { detectAppetiteSuppression } from '@/lib/nutrition-validation'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { withTemporalContext } from '@/lib/temporal-context'
+import { AI_MODELS } from '@/lib/ai-models'
 
 export const maxDuration = 60
 
@@ -142,7 +143,7 @@ Output JSON only:
 
   try {
     const message = await anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001',
+      model: AI_MODELS.structural,
       max_tokens: 1000,
       system: withTemporalContext(systemPrompt),
       messages: [{ role: 'user', content: contextLines.join('\n') + '\n\nDraft the justification. JSON only.' }],

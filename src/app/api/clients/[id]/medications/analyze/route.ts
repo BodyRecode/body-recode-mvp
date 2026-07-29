@@ -10,6 +10,7 @@ import {
 } from '@/lib/medications-analysis-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { withTemporalContext } from '@/lib/temporal-context'
+import { AI_MODELS } from '@/lib/ai-models'
 
 /**
  * Generate the coach-facing Medications Analysis for a client. Writes the
@@ -122,7 +123,7 @@ export async function POST(
   // stacks need more room.
   async function callModel(maxTokens: number) {
     return anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001',
+      model: AI_MODELS.clinical,
       max_tokens: maxTokens,
       system: withTemporalContext(buildCoachAnalysisSystemPrompt()),
       messages: [{ role: 'user', content: userPrompt }],

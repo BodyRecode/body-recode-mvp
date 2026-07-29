@@ -1,4 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk'
+import { AI_MODELS } from './ai-models'
 
 export type TrainingAge = 'beginner' | 'intermediate' | 'advanced'
 
@@ -24,7 +25,7 @@ Reply with ONLY one word: beginner, intermediate, or advanced.`
   try {
     const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 3 })
     const resp = await anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001',
+      model: AI_MODELS.clinical,
       max_tokens: 12,
       system,
       messages: [{ role: 'user', content: context }],

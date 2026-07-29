@@ -9,6 +9,7 @@ import {
 } from '@/lib/client-reading-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { withTemporalContext } from '@/lib/temporal-context'
+import { AI_MODELS } from '@/lib/ai-models'
 
 // Reading-published client emails scrapped 2026-06-09 per product call:
 // only nutrition plan + training plan publishes notify the client now.
@@ -122,7 +123,7 @@ export async function POST(request: NextRequest) {
     let message
     try {
       message = await anthropic.messages.create({
-        model: 'claude-haiku-4-5-20251001',
+        model: AI_MODELS.structural,
         max_tokens: 12000,
         system: withTemporalContext(buildClientReadingSystemPrompt()),
         messages: conversation,

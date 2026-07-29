@@ -14,6 +14,7 @@ import {
 } from '@/lib/research-lens'
 import type { BloodMarker } from '@/lib/blood-panel-prompt'
 import { withTemporalContext } from '@/lib/temporal-context'
+import { AI_MODELS } from '@/lib/ai-models'
 
 /**
  * Research Lens — coach/admin-ONLY contextual reading over one blood panel.
@@ -71,7 +72,7 @@ export async function POST(
   let framed: FramedPattern[] = []
   try {
     const message = await anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001',
+      model: AI_MODELS.clinical,
       max_tokens: 3000,
       system: withTemporalContext(buildLensProseSystemPrompt()),
       messages: [{ role: 'user', content: buildLensProseUserPrompt(core) }],

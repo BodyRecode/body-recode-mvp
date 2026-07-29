@@ -9,6 +9,7 @@ import {
   type NutritionGuidanceIntent,
   type NutritionGuidanceLever,
 } from '@/lib/coach-guidance-nutrition-suggest-prompt'
+import { AI_MODELS } from '@/lib/ai-models'
 
 export const maxDuration = 60
 
@@ -91,7 +92,7 @@ export async function POST(request: NextRequest) {
   let message
   try {
     message = await anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001',
+      model: AI_MODELS.structural,
       max_tokens: 1200,
       system: withTemporalContext(buildNutritionGuidanceSuggestSystemPrompt()),
       messages: [{

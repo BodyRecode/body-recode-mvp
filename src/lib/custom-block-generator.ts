@@ -17,6 +17,7 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import { AI_MODELS } from './ai-models'
 
 export type CustomBlockSessionLine = {
   title: string
@@ -169,7 +170,7 @@ Return the JSON shape specified in your instructions. No markdown, no preamble.`
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 5 })
 
   const message = await anthropic.messages.create({
-    model: 'claude-haiku-4-5-20251001',
+    model: AI_MODELS.structural,
     max_tokens: 6000,
     system: CUSTOM_BLOCK_SYSTEM_PROMPT,
     messages: [{ role: 'user', content: userPrompt }],

@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { withTemporalContext, deadlineConstraint, parseTimelineToDate, weeksUntil } from '@/lib/temporal-context'
 import { clampMacroArcToDoctrine, allowedPhasesForBodyState, type MacroBlock } from '@/lib/macro-arc-doctrine'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import { AI_MODELS } from '@/lib/ai-models'
 
 export const maxDuration = 300
 
@@ -264,7 +265,7 @@ OUTPUT FORMAT — return ONLY valid JSON, no markdown:
     let message
     try {
       message = await anthropic.messages.create({
-        model: 'claude-haiku-4-5-20251001',
+        model: AI_MODELS.structural,
         max_tokens: MAX_TOKENS,
         system: withTemporalContext(systemPrompt),
         messages: [{

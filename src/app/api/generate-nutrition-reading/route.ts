@@ -10,6 +10,7 @@ import {
 } from '@/lib/client-nutrition-reading-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { withTemporalContext } from '@/lib/temporal-context'
+import { AI_MODELS } from '@/lib/ai-models'
 
 // Pre-2026-06-09 this route also sent the client-facing email when the
 // reading was first generated for a plan. That trigger conflated "interpretive
@@ -140,7 +141,7 @@ export async function POST(request: NextRequest) {
     let message
     try {
       message = await anthropic.messages.create({
-        model: 'claude-haiku-4-5-20251001',
+        model: AI_MODELS.structural,
         max_tokens: 12000,
         system: withTemporalContext(buildNutritionReadingSystemPrompt()),
         messages: conversation,

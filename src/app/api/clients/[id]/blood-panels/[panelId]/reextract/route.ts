@@ -11,6 +11,7 @@ import {
   normaliseExtraction,
   type BloodPanelClientFacts,
 } from '@/lib/blood-panel-prompt'
+import { AI_MODELS } from '@/lib/ai-models'
 
 /**
  * Re-run the multimodal transcription for a panel whose upload-time extraction
@@ -94,7 +95,7 @@ export async function POST(
   let message
   try {
     message = await anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001',
+      model: AI_MODELS.clinical,
       max_tokens: 4000,
       system: withTemporalContext(buildExtractionSystemPrompt()),
       messages: [
@@ -136,7 +137,7 @@ export async function POST(
       panel_summary: extraction.panel_summary,
       markers: extraction.markers,
       gp_flags: extraction.gp_flags,
-      extraction_meta: { model: 'claude-haiku-4-5-20251001', unreadable: extraction.unreadable, notes: extraction.notes, reextracted_at: nowIso },
+      extraction_meta: { model: AI_MODELS.clinical, unreadable: extraction.unreadable, notes: extraction.notes, reextracted_at: nowIso },
       extracted_at: nowIso,
       collected_on: extraction.collected_on ?? panel.collected_on,
       lab_name: extraction.lab_name ?? panel.lab_name,

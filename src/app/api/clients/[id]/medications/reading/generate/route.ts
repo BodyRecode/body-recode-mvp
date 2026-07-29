@@ -11,6 +11,7 @@ import {
 } from '@/lib/medications-analysis-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { withTemporalContext } from '@/lib/temporal-context'
+import { AI_MODELS } from '@/lib/ai-models'
 
 /**
  * Generate the client-facing Medications Reading. Requires the coach
@@ -100,7 +101,7 @@ export async function POST(
       // once at 16000 before falling through to the jargon-leak retry loop.
       // Pre-2026-06-15 default was 3000 which truncated on stacks ≥4 meds.
       message = await anthropic.messages.create({
-        model: 'claude-haiku-4-5-20251001',
+        model: AI_MODELS.clinical,
         max_tokens: 8000,
         system: withTemporalContext(buildClientReadingSystemPrompt()),
         messages: conversation,
@@ -108,7 +109,7 @@ export async function POST(
       if (message.stop_reason === 'max_tokens') {
         console.warn('[medications-reading] hit max_tokens at 8000, retrying at 16000')
         message = await anthropic.messages.create({
-          model: 'claude-haiku-4-5-20251001',
+          model: AI_MODELS.clinical,
           max_tokens: 16000,
           system: withTemporalContext(buildClientReadingSystemPrompt()),
           messages: conversation,
