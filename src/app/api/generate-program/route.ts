@@ -291,7 +291,13 @@ export async function POST(request: NextRequest) {
   // on a lucky re-click. Unacceptable for white-label coaches. Now: 12k cap,
   // explicit stop_reason === 'max_tokens' detection, empty-content guard,
   // sessions-present check, 3 attempts, then a specific honest failure.
-  const MAX_TOKENS = 12000
+  // Raised from 12000 on 2026-07-29. The 12k cap was set against Haiku, which
+  // writes tersely. Sonnet writes fuller sessions and coaching notes, so it hit
+  // the cap, the truncation guard fired a retry, and the retry is what pushed
+  // the request past the function limit. Truncation was the cause; the timeout
+  // was only the symptom. Raising the ceiling removes the retry entirely in the
+  // normal case.
+  const MAX_TOKENS = 20000
   // Evolving-any (bare `= null`), matching the original untyped JSON.parse
   // result, so the downstream doctrine/recovery clamps keep their loose access.
   let programData = null
