@@ -43,6 +43,11 @@ export interface MacroArcClampResult {
   warnings: string[]
 }
 
+/** Blocks have no position until they are saved, so fall back to the index. */
+function label(b: MacroBlock, i: number): string {
+  return String(b.position ?? i + 1)
+}
+
 const PHASE_ORDER: ProgressionPhase[] = ['restoration', 'accumulation', 'intensification', 'realization']
 
 /**
@@ -81,14 +86,26 @@ function allowedGoalsForPhase(phase: ProgressionPhase): string[] {
   }
 }
 
-/** Words that mean a block is a deload, whatever the model labelled the phase. */
-const TAPER_SIGNALS = /\b(taper|deload|de-?emphasis|unload|back-?off|arrival|consolidat)/i
+/**
+ * Words that mean a block is a deload, whatever the model labelled the phase.
+ *
+ * Deliberately narrow. An earlier version matched "consolidat" and "arrival",
+ * which turned an accumulation block called "Aerobic & Lower-Body Capacity
+ * Building" into restoration purely because its objective said "consolidate
+ * sleep stability". A clamp that fires on the wrong block is worse than no
+ * clamp: it corrupts a correct arc while looking authoritative.
+ */
+const TAPER_SIGNALS = /\b(taper|deload|de-?emphasis|unload|back-?off)\b/i
 
-function looksLikeTaper(b: MacroBlock): boolean {
-  const haystack = `${b.block_name} ${b.phase_objective ?? ''} ${b.phase_category ?? ''}`
+function looksLikeTaper(b: MacroBlock, isLast: boolean): boolean {
+  const haystack = `${b.block_name} ${b.phase_category ?? ''}`
+  // Explicit taper language in the NAME or category is decisive anywhere.
   if (TAPER_SIGNALS.test(haystack)) return true
-  // "reduce training load" style objectives without the keyword.
-  return /reduce (the )?(training )?(load|volume|frequency)/i.test(b.phase_objective ?? '')
+  // An objective that says it reduces load only counts on the final block.
+  // Mid-arc blocks legitimately talk about reducing one thing while building
+  // another, and that is not a deload.
+  if (!isLast) return false
+  return /reduce\s+(?:\w+\s+){0,3}(load|volume|frequency)/i.test(b.phase_objective ?? '')
 }
 
 /** Claims about an event the system was never told: durations, terrain, elevation. */
@@ -125,13 +142,13 @@ export function clampMacroArcToDoctrine(
     const phase = (b.progression_phase ?? '').toLowerCase() as ProgressionPhase
     if (!PHASE_ORDER.includes(phase)) {
       b.progression_phase = 'restoration'
-      notes.push(`Block ${b.position}: phase "${b.progression_phase}" was not a recognised phase, set to restoration.`)
+      notes.push(`Block ${label(b, blocks.indexOf(b))}: phase "${b.progression_phase}" was not a recognised phase, set to restoration.`)
       continue
     }
     if (!allowed.includes(phase)) {
       b.progression_phase = highestAllowed
       notes.push(
-        `Block ${b.position} ("${b.block_name}"): ${phase} is not permissioned for a client in ` +
+        `Block ${label(b, blocks.indexOf(b))} ("${b.block_name}"): ${phase} is not permissioned for a client in ` +
         `${opts.bodyState ?? 'an unknown state'}. Clamped to ${highestAllowed}. ` +
         `Progression is permissioned, never assumed.`
       )
@@ -139,17 +156,17 @@ export function clampMacroArcToDoctrine(
   }
 
   // ── 2. A taper block is restoration, whatever it was labelled ──────────────
-  for (const b of blocks) {
-    if (!looksLikeTaper(b)) continue
+  blocks.forEach((b, i) => {
+    if (!looksLikeTaper(b, i === blocks.length - 1)) return
     if ((b.progression_phase ?? '').toLowerCase() !== 'restoration') {
       const was = b.progression_phase
       b.progression_phase = 'restoration'
       notes.push(
-        `Block ${b.position} ("${b.block_name}") reads as a deload but was labelled ${was}. ` +
+        `Block ${label(b, i)} ("${b.block_name}") reads as a deload but was labelled ${was}. ` +
         `Set to restoration. A block that reduces load is restoration by definition.`
       )
     }
-  }
+  })
 
   // ── 3. The last block before a dated event must be a real taper ────────────
   if (hasDatedEvent && blocks.length > 0) {
@@ -159,7 +176,7 @@ export function clampMacroArcToDoctrine(
       last.progression_phase = 'restoration'
       last.training_goal = 'capacity'
       notes.push(
-        `Block ${last.position} is the final block before the event but was ${was}. ` +
+        `Block ${label(last, blocks.length - 1)} is the final block before the event but was ${was}. ` +
         `Set to restoration/capacity. Peaking into a fixed date is a programming error.`
       )
     }
@@ -179,7 +196,7 @@ export function clampMacroArcToDoctrine(
     if (goal && !goals.includes(goal)) {
       b.training_goal = goals[0]
       notes.push(
-        `Block ${b.position}: goal "${goal}" is not appropriate for ${phase}. Set to ${goals[0]}.`
+        `Block ${label(b, blocks.indexOf(b))}: goal "${goal}" is not appropriate for ${phase}. Set to ${goals[0]}.`
       )
     }
   }
@@ -192,7 +209,7 @@ export function clampMacroArcToDoctrine(
     if (isLast && hasDatedEvent) return // the taper is meant to step back
     if (idx < highestSeen) {
       warnings.push(
-        `Block ${b.position} steps back from ${PHASE_ORDER[highestSeen]} to ${PHASE_ORDER[idx]} ` +
+        `Block ${label(b, blocks.indexOf(b))} steps back from ${PHASE_ORDER[highestSeen]} to ${PHASE_ORDER[idx]} ` +
         `mid-arc. Intentional deloads are fine, but check this is deliberate.`
       )
     }
@@ -222,7 +239,7 @@ export function clampMacroArcToDoctrine(
       const text = `${b.phase_objective ?? ''} ${b.notes ?? ''}`
       if (INVENTED_EVENT_CLAIM.test(text)) {
         warnings.push(
-          `Block ${b.position} states specifics about the event (duration, terrain or elevation) ` +
+          `Block ${label(b, blocks.indexOf(b))} states specifics about the event (duration, terrain or elevation) ` +
           `that were never supplied to the system. Verify or remove before this reaches the client.`
         )
       }
