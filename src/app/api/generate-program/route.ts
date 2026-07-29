@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { resolveEffectiveTier, clampProgramToDoctrine } from '@/lib/training-doctrine'
+import { resolveEffectiveTier, clampProgramToDoctrine, requiresFullBodySessions } from '@/lib/training-doctrine'
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
 import { clampProgramToRecoveryManifest, buildRecoveryPromptSection } from '@/lib/recovery-program-clamp'
 import {
@@ -373,10 +373,17 @@ export async function POST(request: NextRequest) {
   )
   const phaseForDoctrine = (['restoration', 'accumulation', 'intensification', 'realization']
     .includes(progression_phase) ? progression_phase : 'accumulation') as 'restoration' | 'accumulation' | 'intensification' | 'realization'
+  // Exercise name -> movement pattern, so the clamp can verify the full-body rule.
+  const patternByName = new Map<string, string>(
+    (exercises ?? [])
+      .filter((e: { name?: string; primary_pattern?: string }) => e.name && e.primary_pattern)
+      .map((e: { name: string; primary_pattern: string }) => [e.name.trim().toLowerCase(), e.primary_pattern])
+  )
   const clamp = clampProgramToDoctrine(
     programData.sessions || [],
     phaseForDoctrine,
-    effectiveTier
+    effectiveTier,
+    patternByName
   )
   programData.sessions = clamp.sessions
   if (clamp.notes.length > 0) {

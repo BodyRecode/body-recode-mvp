@@ -227,6 +227,27 @@ Skeletons are structural blueprints. They define slots (intent-based, not exerci
 
 Select skeleton by session need — NOT by specific exercises.
 
+WEEKLY SPLIT — FULL BODY IS THE DEFAULT
+Skeletons govern structure WITHIN a session. This governs how the week is divided.
+
+- Restoration, any training age: FULL BODY every session. No exceptions.
+- Accumulation, beginner or intermediate: FULL BODY every session.
+- Accumulation, advanced or elite: full body at 3 or fewer sessions/week. Upper/lower permitted at 4+.
+- Intensification and Realization: split programming is permissioned.
+
+Full body means every session contains at least one lower-body driver (squat or
+hinge pattern) AND at least one upper-body driver (push or pull pattern).
+
+Why, so you do not reason your way around it: early training is limited by
+movement-pattern EXPOSURE and tissue tolerance, not by per-session volume. At
+2-3 sessions per week an upper/lower split trains each pattern about once
+weekly, below the frequency that drives motor learning and connective-tissue
+adaptation. Full body at 3x trains every pattern three times. A split solves a
+volume problem a beginner does not have, and costs the frequency they need.
+
+NEVER use body-part splits (chest day, arm day, leg day) below Intensification.
+Do not label a session "Upper" or "Lower" when the full-body rule applies.
+
 Slot types (in order within session):
 1. Primary Load Slot — main compound movement aligned to phase intent (mandatory)
 2. Secondary/Support Slot — reinforces primary without competing load

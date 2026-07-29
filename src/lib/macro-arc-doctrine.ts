@@ -108,9 +108,27 @@ function looksLikeTaper(b: MacroBlock, isLast: boolean): boolean {
   return /reduce\s+(?:\w+\s+){0,3}(load|volume|frequency)/i.test(b.phase_objective ?? '')
 }
 
-/** Claims about an event the system was never told: durations, terrain, elevation. */
+/**
+ * Claims about an event the system was never told: durations, terrain, elevation.
+ *
+ * "elevation" alone was too loose: it fired on "reduce sympathetic elevation",
+ * which is a nervous-system statement, not a terrain one. Terrain elevation is
+ * always qualified (gain, profile, metres), so require the qualifier.
+ */
 const INVENTED_EVENT_CLAIM =
-  /\b(\d+\s*[-–—to]+\s*\d+|\d+)\s*(hour|hr)s?\b|\buneven terrain\b|\bintermittent climb|\belevation\b|\bhilly\b|\btrail\b/i
+  /\b(\d+\s*[-–—to]+\s*\d+|\d+)\s*(hour|hr)s?\b|\buneven terrain\b|\bintermittent climb|\belevation\s+(gain|profile|change)\b|\b\d+\s*m(etre|eter)?s?\s+of\s+elevation\b|\bhilly\b|\btrail\b/i
+
+/**
+ * Language that describes intensification-or-above work.
+ *
+ * A phase clamp rewrites the label, not the prose. When a block is pulled down
+ * from intensification to accumulation, its objective and execution notes still
+ * describe threshold efforts and RPE 7+ work, and the coach reads the prose,
+ * not the enum. Clamping the label alone produces a block that says
+ * "accumulation" at the top and prescribes peak work in the body.
+ */
+const INTENSITY_LANGUAGE =
+  /\b(threshold|tempo|interval|peaking|peak work|maximal|RPE\s*[789]|[789]\s*\/\s*10|performance expression|strength expression|high[- ]intensity)\b/i
 
 /**
  * Clamp a model-produced macro arc to doctrine.
@@ -131,6 +149,7 @@ export function clampMacroArcToDoctrine(
   const notes: string[] = []
   const warnings: string[] = []
 
+  const clampedDown = new Set<MacroBlock>()
   const allowed = allowedPhasesForBodyState(opts.bodyState)
   const highestAllowed = allowed[allowed.length - 1]
   const hasDatedEvent = typeof opts.weeksAvailable === 'number' && opts.weeksAvailable > 0
@@ -146,6 +165,7 @@ export function clampMacroArcToDoctrine(
       continue
     }
     if (!allowed.includes(phase)) {
+      clampedDown.add(b)
       b.progression_phase = highestAllowed
       notes.push(
         `Block ${label(b, blocks.indexOf(b))} ("${b.block_name}"): ${phase} is not permissioned for a client in ` +
@@ -231,7 +251,22 @@ export function clampMacroArcToDoctrine(
     }
   }
 
-  // ── 7. Do not invent facts about the event ─────────────────────────────────
+  // ── 7. Prose must match the clamped phase ──────────────────────────────────
+  // Rewriting a coach-facing paragraph automatically is not safe, so this warns.
+  for (const b of blocks) {
+    if (!clampedDown.has(b)) continue
+    const text = `${b.block_name} ${b.phase_category ?? ''} ${b.phase_objective ?? ''} ${b.execution_arc ?? ''} ${b.notes ?? ''}`
+    if (INTENSITY_LANGUAGE.test(text)) {
+      warnings.push(
+        `Block ${label(b, blocks.indexOf(b))} ("${b.block_name}") was clamped to ` +
+        `${b.progression_phase}, but its wording still describes intensification work ` +
+        `(threshold, RPE 7+, performance expression). Rewrite the block name and notes ` +
+        `to match, or the program generated from it will contradict the arc.`
+      )
+    }
+  }
+
+  // ── 8. Do not invent facts about the event ─────────────────────────────────
   // A clamp cannot rewrite prose safely, so this warns rather than edits. The
   // coach is the right person to correct a claim about their own client's event.
   if (!opts.knownEventFacts) {

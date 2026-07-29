@@ -220,6 +220,74 @@ function blockRole(label: string | undefined): 'primary' | 'secondary' | 'capaci
   return 'capacity'
 }
 
+/**
+ * SESSION STRUCTURE DOCTRINE — full body is the default, splits are earned.
+ *
+ * Added 2026-07-29 on Kade's direction: clients start on mostly full-body
+ * programs. Before this, nothing in the system decided full-body vs split. The
+ * skeleton archetypes govern structure WITHIN a session; the split across the
+ * week was left entirely to the model, so two identical beginners could get an
+ * upper/lower split and a full-body program from the same inputs.
+ *
+ * The reasoning, so it is not re-litigated:
+ *
+ * Early training is limited by movement-pattern EXPOSURE and tissue tolerance,
+ * not by per-session volume. At 2-3 sessions a week an upper/lower split trains
+ * each pattern roughly once weekly, which is below the frequency that drives
+ * motor learning and connective-tissue adaptation. Full body at 3x trains every
+ * pattern three times. A split solves a volume problem that a beginner does not
+ * have yet, and costs the thing they actually need.
+ *
+ * It also follows arithmetically from the state model. Remediation caps
+ * training at 2-3x/week, so a split is simply wrong there: it cannot deliver
+ * adequate frequency per pattern inside the sessions the state permits.
+ */
+export function requiresFullBodySessions(
+  phase: ProgressionPhase,
+  tier: EffectiveTier,
+  frequency: number | null | undefined
+): boolean {
+  if (phase === 'restoration') return true
+  if (phase === 'accumulation') {
+    if (tier === 'beginner' || tier === 'intermediate') return true
+    // Advanced and elite may split once frequency can actually support it.
+    return (frequency ?? 3) <= 3
+  }
+  // Intensification and realization are permissioned for split programming.
+  return false
+}
+
+/** Lower-body drivers. A session without one of these is not full body. */
+const LOWER_PATTERNS = new Set(['squat', 'hinge'])
+/** Upper-body drivers. Carry, rotation and locomotion are trunk/whole-body. */
+const UPPER_PATTERNS = new Set([
+  'horizontal_push', 'vertical_push', 'horizontal_pull', 'vertical_pull',
+])
+
+/**
+ * Does this session train both halves of the body?
+ *
+ * `patternByName` maps exercise name to its `primary_pattern` from the library.
+ * Names the map does not know are ignored rather than counted as absent, so a
+ * library gap produces silence instead of a false accusation.
+ */
+export function sessionIsFullBody(
+  session: Session,
+  patternByName: Map<string, string>
+): { lower: boolean; upper: boolean } {
+  let lower = false
+  let upper = false
+  for (const block of session.blocks ?? []) {
+    for (const ex of block.exercises ?? []) {
+      const pattern = patternByName.get((ex.exercise_name ?? '').trim().toLowerCase())
+      if (!pattern) continue
+      if (LOWER_PATTERNS.has(pattern)) lower = true
+      if (UPPER_PATTERNS.has(pattern)) upper = true
+    }
+  }
+  return { lower, upper }
+}
+
 interface ClampResult {
   sessions: Session[]
   rpeClamps: number
@@ -241,7 +309,12 @@ interface ClampResult {
 export function clampProgramToDoctrine(
   sessions: Session[],
   phase: ProgressionPhase,
-  tier: EffectiveTier
+  tier: EffectiveTier,
+  /**
+   * Exercise name (lowercased) to primary_pattern, for the full-body check.
+   * Omitted = the check is skipped rather than guessed at.
+   */
+  patternByName?: Map<string, string>
 ): ClampResult {
   const ceilings = getRPECeilings(phase, tier)
   const range = getSetsPerSessionRange(phase, tier)
@@ -328,7 +401,30 @@ export function clampProgramToDoctrine(
   }
 
   if (rpeClamps > 0) {
-    notes.unshift(`${rpeClamps} RPE values adjusted to doctrine ceiling (${tier} ${phase}: primary ${ceilings.primary}, secondary ${ceilings.secondary}, capacity ${ceilings.capacity}).`)
+    // ── Full body is the default; splits are earned ────────────────────────────
+  // Swapping an exercise automatically would silently rewrite the coach's
+  // session intent, so this reports rather than edits. The prompt asks; this
+  // is the check that the ask was honoured.
+  if (patternByName && requiresFullBodySessions(phase, tier, cloned.length)) {
+    const partial: string[] = []
+    for (const session of cloned) {
+      const { lower, upper } = sessionIsFullBody(session, patternByName)
+      if (lower && upper) continue
+      const missing = !lower && !upper ? 'no recognised lower or upper driver'
+        : !lower ? 'no lower-body driver (squat or hinge)'
+        : 'no upper-body driver (push or pull)'
+      partial.push(`${session.day_label ?? 'a session'} has ${missing}`)
+    }
+    if (partial.length > 0) {
+      notes.push(
+        `Full-body check: ${partial.join('; ')}. ` +
+        `${phase} at ${tier} should be full body every session, because pattern ` +
+        `frequency matters more than per-session volume at this stage. Review before sending.`
+      )
+    }
+  }
+
+  notes.unshift(`${rpeClamps} RPE values adjusted to doctrine ceiling (${tier} ${phase}: primary ${ceilings.primary}, secondary ${ceilings.secondary}, capacity ${ceilings.capacity}).`)
   }
 
   return { sessions: cloned, rpeClamps, setsAdded, setsTrimmed, notes }
