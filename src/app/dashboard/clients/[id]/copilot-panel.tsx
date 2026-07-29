@@ -217,6 +217,9 @@ export default function CopilotPanel({
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Generation failed')
+      // A program built without its macro arc has no phase objective and no
+      // coach guidance. Say so rather than letting it look like a clean run.
+      if (data.arc_warning) setError(data.arc_warning)
       setMessages(prev => prev.map((m, i) => (i === idx ? { ...m, kind: 'draft-done' } : m)))
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Generation failed')

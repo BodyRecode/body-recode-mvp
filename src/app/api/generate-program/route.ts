@@ -143,14 +143,59 @@ export async function POST(request: NextRequest) {
     : intakeTrainingDays
   const resolvedTrainingDays: string[] = Array.from(new Set([...(baseTrainingDays ?? []), ...anchorDays]))
 
-  // Fetch macro plan context if plan_block_id provided
+  // Resolve the plan block SERVER-SIDE when the caller did not supply one.
+  //
+  // Everything below is gated on plan_block_id: the phase objective, the arc
+  // shape, what came before and after, and critically the coach guidance. A
+  // caller that omits it gets a program detached from the macro arc, with the
+  // coach's standing instructions silently discarded. No error, no warning,
+  // just absent. The co-pilot panel did exactly this and produced an RPE 8
+  // Restoration block for a client whose coach guidance was never read.
+  //
+  // Rather than fix one caller, resolve it here so every caller is covered.
+  let resolvedBlockId: string | null = plan_block_id ?? null
+  let arcWarning: string | null = null
+
+  if (!resolvedBlockId) {
+    const { data: candidateBlocks } = await admin
+      .from('plan_blocks')
+      .select('id, position, block_name, status')
+      .eq('client_id', client_id)
+      .in('status', ['in_progress', 'planned'])
+      .order('position', { ascending: true })
+      .limit(1)
+
+    if (candidateBlocks?.length) {
+      resolvedBlockId = candidateBlocks[0].id
+      console.log(
+        `[generate-program] no plan_block_id supplied; resolved to block ` +
+        `${candidateBlocks[0].position} ("${candidateBlocks[0].block_name}") for client ${String(client_id).slice(0, 8)}`
+      )
+    } else {
+      // Does the client have an arc at all? If they do and we still cannot
+      // resolve a block, that is worth surfacing rather than swallowing.
+      const { count: arcBlocks } = await admin
+        .from('plan_blocks')
+        .select('id', { count: 'exact', head: true })
+        .eq('client_id', client_id)
+      if ((arcBlocks ?? 0) > 0) {
+        arcWarning =
+          'This client has a macro arc but no in-progress or planned block could be resolved, ' +
+          'so this program was generated detached from it. The phase objective, arc context and ' +
+          'any standing coach guidance were NOT applied. Check the block statuses on their plan.'
+        console.warn(`[generate-program] ${arcWarning} client=${String(client_id).slice(0, 8)}`)
+      }
+    }
+  }
+
+  // Fetch macro plan context if a plan block is available
   let macroPlanContext = null
   let coachGuidance: string | null = null
-  if (plan_block_id) {
+  if (resolvedBlockId) {
     const { data: planBlock } = await admin
       .from('plan_blocks')
       .select('*, training_plans(plan_name, macro_objective, coach_guidance)')
-      .eq('id', plan_block_id)
+      .eq('id', resolvedBlockId)
       .maybeSingle()
 
     if (planBlock) {
@@ -187,7 +232,7 @@ export async function POST(request: NextRequest) {
       coachGuidance = trainingPlan?.coach_guidance ?? null
 
       // Mark the plan block as in_progress
-      await admin.from('plan_blocks').update({ status: 'in_progress' }).eq('id', plan_block_id).eq('status', 'planned')
+      await admin.from('plan_blocks').update({ status: 'in_progress' }).eq('id', resolvedBlockId).eq('status', 'planned')
     }
   }
 
@@ -447,5 +492,7 @@ export async function POST(request: NextRequest) {
     await admin.from('plan_blocks').update({ program_id: program.id }).eq('id', plan_block_id)
   }
 
-  return NextResponse.json({ program })
+  // Surface the detached-arc warning to the caller, not only to the server
+  // log. A silent degrade is the failure this whole change exists to stop.
+  return NextResponse.json({ program, arc_warning: arcWarning })
 }
