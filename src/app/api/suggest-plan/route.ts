@@ -3,7 +3,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { withTemporalContext, deadlineConstraint, parseTimelineToDate, weeksUntil } from '@/lib/temporal-context'
-import { clampMacroArcToDoctrine, type MacroBlock } from '@/lib/macro-arc-doctrine'
+import { clampMacroArcToDoctrine, allowedPhasesForBodyState, type MacroBlock } from '@/lib/macro-arc-doctrine'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 
 export const maxDuration = 300
@@ -40,6 +40,30 @@ export async function POST(request: NextRequest) {
   ])
 
   if (!client) return NextResponse.json({ error: 'Client not found' }, { status: 404 })
+
+  // The prompt used to list all four phases as valid and say only that
+  // "Remediation clients start with restoration". The model read that as
+  // permission to end on intensification or realization, and the clamp caught it
+  // every single generation. Name the permitted phases for THIS client instead,
+  // so the arc comes back correct rather than corrected.
+  const permittedPhases = allowedPhasesForBodyState(cffs?.body_state_classification ?? null)
+  const forbiddenPhases = (['restoration', 'accumulation', 'intensification', 'realization'] as const)
+    .filter(ph => !permittedPhases.includes(ph))
+  const phasePermission = `
+PHASES PERMITTED FOR THIS CLIENT (body state: ${cffs?.body_state_classification ?? 'unknown'})
+ALLOWED: ${permittedPhases.join(' | ')}${forbiddenPhases.length ? `
+FORBIDDEN — do not use, do not name in a block title, do not describe in a block's wording: ${forbiddenPhases.join(' | ')}` : ''}
+
+This is a hard gate derived from body state, not a preference. A client in
+Remediation has not earned intensification by virtue of a block elapsing. If the
+arc feels like it needs a phase that is not on the allowed list, the answer is a
+longer accumulation block, not a forbidden phase wearing a different name.
+
+Do not smuggle forbidden work in through wording either. A block labelled
+accumulation whose notes prescribe threshold work, RPE 7+, "performance
+expression" or "walk simulation" is an intensification block with the label
+changed, and it will be rejected.
+`
 
   const systemPrompt = `You are the Body Recode™ Macro Plan Suggestion Engine. You read a client's current state and suggest a sequenced macro training arc — a series of meso blocks that govern training direction over months.
 
@@ -105,6 +129,12 @@ MACRO ARC DESIGN RULES
 - Do not prescribe hypertrophy as goal in restoration blocks
 - CONDITIONING / RUNNING INTENSITY BY PHASE: in Restoration, any running or conditioning is EASY / aerobic / conversational ONLY — no tempo, threshold, interval, repeat, or strides work, regardless of the client's running background. Intensity re-enters no earlier than Accumulation, and only once readiness gates permit. Scaling a client's running means cutting the hard sessions first (intervals, tempo, long runs), keeping easy volume. This holds even when a block also reduces total running volume.
 - Each block must logically follow from the prior block's expected outcome
+
+ARC ARITHMETIC — CHECK THIS BEFORE YOU ANSWER
+- When there is a dated event, the block week_durations MUST sum to EXACTLY the number of weeks available. Add them up. If the total is wrong, change a block length until it is right.
+- The final block before a dated event is a taper and MUST be at least 2 weeks. One week does not clear accumulated fatigue.
+- No block is shorter than 2 weeks.
+${phasePermission}
 
 ═══════════════════════════════════════
 ENUM VALUES — STRICTLY ENFORCED

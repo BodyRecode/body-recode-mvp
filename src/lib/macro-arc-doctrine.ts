@@ -48,6 +48,10 @@ function label(b: MacroBlock, i: number): string {
   return String(b.position ?? i + 1)
 }
 
+/** Doctrine minimums. A taper shorter than this does not clear fatigue. */
+const MIN_TAPER_WEEKS = 2
+const MIN_BLOCK_WEEKS = 2
+
 const PHASE_ORDER: ProgressionPhase[] = ['restoration', 'accumulation', 'intensification', 'realization']
 
 /**
@@ -200,12 +204,7 @@ export function clampMacroArcToDoctrine(
         `Set to restoration/capacity. Peaking into a fixed date is a programming error.`
       )
     }
-    if (last.week_duration < 2) {
-      warnings.push(
-        `The taper is only ${last.week_duration} week(s). For an endurance event, two weeks of ` +
-        `reducing load is usually the minimum. Consider extending it.`
-      )
-    }
+    // Taper length is enforced in the window-fitting step below, not warned about.
   }
 
   // ── 4. Training goal must be phase-appropriate ─────────────────────────────
@@ -237,16 +236,56 @@ export function clampMacroArcToDoctrine(
   })
 
   // ── 6. The arc must fit the window ─────────────────────────────────────────
-  if (hasDatedEvent) {
-    const total = blocks.reduce((sum, b) => sum + (b.week_duration || 0), 0)
+  if (hasDatedEvent && blocks.length > 0) {
     const target = opts.weeksAvailable as number
-    if (total !== target) {
-      const diff = target - total
-      const last = blocks[blocks.length - 1]
-      last.week_duration = Math.max(1, last.week_duration + diff)
+    const before = blocks.reduce((sum, b) => sum + (b.week_duration || 0), 0)
+    const last = blocks[blocks.length - 1]
+
+    // The taper is a doctrine minimum, not a suggestion. Warning about it every
+    // generation and changing nothing just trains the coach to skim the panel.
+    if (last.week_duration < MIN_TAPER_WEEKS) {
+      const was = last.week_duration
+      last.week_duration = MIN_TAPER_WEEKS
       notes.push(
-        `Arc totalled ${total} weeks against a ${target}-week window. ` +
-        `Adjusted block ${last.position} by ${diff > 0 ? '+' : ''}${diff} week(s) so the plan lands on the event.`
+        `Block ${label(last, blocks.length - 1)} ("${last.block_name}") is the taper into a ` +
+        `dated event but was only ${was} week(s). Extended to ${MIN_TAPER_WEEKS}. ` +
+        `One week does not clear accumulated fatigue before an endurance event.`
+      )
+    }
+
+    // Fit the window by moving weeks in and out of the BUILD blocks, largest
+    // first. The old version only ever touched the last block and floored it at
+    // 1, so a 1-week taper silently absorbed nothing while reporting a change.
+    const build = blocks.slice(0, -1)
+    let remaining = target - blocks.reduce((sum, b) => sum + (b.week_duration || 0), 0)
+    const moved = new Map<MacroBlock, number>()
+
+    while (remaining !== 0 && build.length > 0) {
+      const step = remaining > 0 ? 1 : -1
+      // Grow the shortest build block, shrink the longest. Keeps the arc even.
+      const candidates = build.filter(b => step > 0 || b.week_duration > MIN_BLOCK_WEEKS)
+      if (candidates.length === 0) break
+      const pick = candidates.reduce((a, b) =>
+        step > 0 ? (b.week_duration < a.week_duration ? b : a)
+                 : (b.week_duration > a.week_duration ? b : a))
+      pick.week_duration += step
+      moved.set(pick, (moved.get(pick) ?? 0) + step)
+      remaining -= step
+    }
+
+    for (const [b, delta] of moved) {
+      notes.push(
+        `Block ${label(b, blocks.indexOf(b))} ("${b.block_name}") ` +
+        `${delta > 0 ? 'extended' : 'shortened'} by ${Math.abs(delta)} week(s) so the arc ` +
+        `totals ${target} weeks and lands on the event. It came back as ${before}.`
+      )
+    }
+
+    if (remaining !== 0) {
+      warnings.push(
+        `The arc is ${blocks.reduce((sum, b) => sum + (b.week_duration || 0), 0)} weeks against a ` +
+        `${target}-week window and could not be fitted without dropping a block below ` +
+        `${MIN_BLOCK_WEEKS} week(s). Adjust the block lengths by hand.`
       )
     }
   }
