@@ -52,6 +52,7 @@ interface PlanBlock {
   training_goal: string
   week_duration: number
   notes: string | null
+  training_frequency?: number | null
 }
 
 export default function GenerateProgramForm({
@@ -72,8 +73,16 @@ export default function GenerateProgramForm({
     block_name: planBlock?.block_name ?? '',
     progression_phase: planBlock?.progression_phase ?? 'accumulation',
     training_goal: planBlock?.training_goal ?? 'strength',
-    training_frequency: 3,
-    training_age: 'intermediate',
+    // From the arc, not a hardcoded guess. Vicki's Block 1 is 2x/week and this
+    // field defaulted to 3, so the program would have been generated at 50 per
+    // cent more frequency than the approved arc with nothing flagging it.
+    training_frequency: planBlock?.training_frequency ?? 3,
+    // Conservative by default. Progression is permissioned, never assumed, and
+    // that applies to a form default as much as to a clamp. 'intermediate' was
+    // asserting competence nobody had verified: a 52-year-old with a long
+    // endurance background and zero resistance history was generated as
+    // intermediate and prescribed RPE 8 primaries against a live sacroiliac.
+    training_age: 'beginner',
     movement_competency: 'developing',
     week_duration: planBlock?.week_duration ?? 4,
     equipment_access: ['barbell', 'dumbbell', 'bodyweight'] as string[],

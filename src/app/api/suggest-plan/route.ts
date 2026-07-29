@@ -164,8 +164,9 @@ OUTPUT FORMAT — return ONLY valid JSON, no markdown:
       "training_goal": "strength|hypertrophy|capacity",
       "week_duration": number,
       "execution_arc": "short|mid|long",
-      "phase_category": "string",
-      "phase_objective": "string",
+      "phase_category": "Accumulation-Oriented|Intensification-Oriented|Consolidation-Oriented|Recovery-Dominant|Exposure-Management",
+      "phase_objective": "Capacity Restoration|Capacity Building|Performance Expression|Consolidation and Stability",
+      "phase_intent": "string — one sentence in your own words on what this block is actually for. This is the free-text field; phase_category and phase_objective are fixed vocabularies and must be one of the listed values exactly.",
       "implied_frequency": number,
       "nutrition_context": "string — brief note on how nutrition entry state should align with this block's demand",
       "block_rationale": "string — why this block in this position, what readiness gate permits or requires it, and what signal would change it"

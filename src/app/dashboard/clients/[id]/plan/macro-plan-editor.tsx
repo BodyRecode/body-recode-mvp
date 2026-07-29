@@ -68,6 +68,22 @@ const PHASE_OBJECTIVES = [
   'Capacity Restoration', 'Capacity Building', 'Performance Expression', 'Consolidation and Stability',
 ]
 
+/**
+ * Show a stored value even when it is not one of the known options.
+ *
+ * These two selects used to render "- Select -" whenever the saved value was
+ * not in their list, and Save then wrote null over it. The arc generator
+ * declares both fields as bare strings and was never told the allowed values,
+ * so a generated block reliably held something neither list recognised. Opening
+ * the editor to change the block name silently destroyed the phase objective,
+ * which feeds the program prompt. A form must never lose data it cannot parse.
+ */
+function withCurrent(options: string[], current: string): string[] {
+  const v = current?.trim()
+  if (!v || options.includes(v)) return options
+  return [v, ...options]
+}
+
 const inputCls = 'w-full bg-stone-200 border border-stone-300 text-stone-900 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1B6DFC] focus:border-transparent'
 const labelCls = 'block text-xs font-bold text-stone-600 uppercase tracking-wider mb-1.5'
 
@@ -532,14 +548,14 @@ function BlockFormFields({
           <label className={labelCls}>Phase Category (Layer A)</label>
           <select value={form.phase_category} onChange={e => setForm(p => ({ ...p, phase_category: e.target.value }))} className={inputCls}>
             <option value="">- Select -</option>
-            {PHASE_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+            {withCurrent(PHASE_CATEGORIES, form.phase_category).map(c => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
         <div>
           <label className={labelCls}>Phase Objective (Layer D)</label>
           <select value={form.phase_objective} onChange={e => setForm(p => ({ ...p, phase_objective: e.target.value }))} className={inputCls}>
             <option value="">- Select -</option>
-            {PHASE_OBJECTIVES.map(o => <option key={o} value={o}>{o}</option>)}
+            {withCurrent(PHASE_OBJECTIVES, form.phase_objective).map(o => <option key={o} value={o}>{o}</option>)}
           </select>
         </div>
       </div>
