@@ -133,7 +133,9 @@ MACRO ARC DESIGN RULES
 
 ARC ARITHMETIC — CHECK THIS BEFORE YOU ANSWER
 - When there is a dated event, the block week_durations MUST sum to EXACTLY the number of weeks available. Add them up. If the total is wrong, change a block length until it is right.
-- The final block before a dated event is a taper and MUST be at least 2 weeks. One week does not clear accumulated fatigue.
+- The final block before a dated event is a taper. It MUST have progression_phase = "restoration" and training_goal = "capacity". Not "accumulation at maintenance", not "consolidation" wearing an accumulation label. A block that reduces load IS restoration, and restoration is always available whatever the body state. Do not reason that because intensification is forbidden the block must stay accumulation; step DOWN, not sideways.
+- That taper MUST be at least 2 weeks. One week does not clear accumulated fatigue.
+- The taper block absorbs any part-week between the last full block and the event date, so the arc finishes ON the event, never days before it.
 - No block is shorter than 2 weeks.
 ${phasePermission}
 

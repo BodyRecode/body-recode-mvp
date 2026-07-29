@@ -52,7 +52,19 @@ export function withTemporalContext(systemPrompt: string, now: Date = new Date()
 
 /** Whole weeks between now and a target date. Negative when already passed. */
 export function weeksUntil(target: Date, now: Date = new Date()): number {
-  return Math.round((target.getTime() - now.getTime()) / (7 * 24 * 60 * 60 * 1000))
+  // Ceiling, NOT round. This number becomes a training runway, and a runway
+  // that rounds DOWN stops before the thing it was built for.
+  //
+  // Vicki, 2026-07-29: her 7 Bridges walk was 87 days out, which is 12.43
+  // weeks. Rounding gave 12, the arc was built to exactly 12 weeks, and it
+  // finished on Tuesday 20 October against an event on Saturday 24 October.
+  // Four unprogrammed days immediately before the event she had trained a
+  // quarter of a year for, while the rationale claimed it landed "exactly" on
+  // the date. Ceiling gives 13, and the final taper simply absorbs the part
+  // week, which is what a taper is for.
+  const ms = target.getTime() - now.getTime()
+  if (ms <= 0) return 0
+  return Math.ceil(ms / (7 * 24 * 60 * 60 * 1000))
 }
 
 /**
@@ -112,6 +124,6 @@ export function deadlineConstraint(
 The client has a fixed target: "${timelineText}"
 That is approximately ${target.toISOString().slice(0, 10)}, which is ${weeks} week${weeks === 1 ? '' : 's'} from today.
 
-This is a constraint, not background. Everything you plan before that date must fit inside ${weeks} weeks. Do not produce a plan that runs past it, and do not place preparation for the event after the event. State the week each block starts and ends so the arithmetic is checkable.
-The final block before the target must reduce load, not raise it. Peaking into a fixed date is a programming error.`
+This is a constraint, not background. The block durations must sum to EXACTLY ${weeks} weeks. Not "about" ${weeks}, not "within" ${weeks}. Add them up before you answer, and if the total is wrong, change a block length until it is right. Do not place preparation for the event after the event. State the week each block starts and ends so the arithmetic is checkable.
+The final block before the target must reduce load, not raise it, and must be labelled restoration. Peaking into a fixed date is a programming error.`
 }
