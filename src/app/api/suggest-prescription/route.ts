@@ -206,7 +206,29 @@ ENDURANCE HISTORY IS NOT RESISTANCE TRAINING AGE. training_age sets the RPE ceil
 - BEGINNER: genuinely new to structured training, or a long lay-off with no established lifts.
 
 CRITICAL — REGULATION STATE DOES NOT CHANGE TRAINING AGE. A Red regulation gate or a Remediation body state means the client's SYSTEM needs settling. It does NOT make an experienced trainer a beginner. Red / Remediation lower the PHASE (restoration), the INTENSITY (RPE ceiling), and the PROGRESSION — they must NEVER lower the training_age classification or the per-session volume floor. Do NOT downgrade an advanced or intermediate trainer just because they present stressed, deconditioned, or Red. Classify their history; let the phase and RPE ceiling carry all the caution. (Historically the engine has under-classified nearly every Red/Remediation client — that is the exact error to stop.)
-When history is genuinely ambiguous, default UPWARD, never downward.
+AMBIGUITY AND ABSENCE ARE NOT THE SAME THING. This rule used to read only
+"when history is genuinely ambiguous, default UPWARD, never downward", and that
+sentence overrode the endurance rule above it. Split it:
+
+- AMBIGUOUS LEVEL, with resistance history PRESENT: the intake shows structured
+  resistance work but not how long, how heavy, or which lifts. Default UPWARD.
+  This is what the rule was written for and it still holds. Do not demote an
+  experienced trainer for presenting Red, deconditioned or injured.
+
+- ABSENT resistance history: the intake shows no structured resistance training
+  at all, or only endurance/aerobic activity. This is NOT ambiguous. There is
+  nothing to default upward FROM. Classify BEGINNER. "The intake provides no
+  specifics on established compound lifts or structured resistance history" is a
+  statement of absence, not of ambiguity, and it means beginner.
+
+Watch for a CFFS or context summary describing "significant training
+experience". That phrase is frequently written off an endurance background and
+is not evidence of resistance training age. Look for the resistance history
+itself; if it is not there, it does not exist.
+
+(The error this prevents: the same 52-year-old above was then classified
+INTERMEDIATE on the reasoning "ambiguous history defaults upward, so beginner is
+not appropriate" — for a client with no resistance history whatsoever.)
 
 Calibration by training age:
 
