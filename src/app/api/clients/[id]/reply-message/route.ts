@@ -6,7 +6,6 @@ import { isCoachEmail } from '@/lib/coach-auth'
 import { buildCoachReplyEmail } from '@/lib/coach-reply-email'
 import { fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { portalUrl } from '@/lib/app-url'
-import { smsNotifyClientOfCoachReply } from '@/lib/message-notifications'
 import { messageReplyAddress } from '@/lib/message-reply-address'
 import { coach } from '@/config/tenant'
 
@@ -150,32 +149,12 @@ export async function POST(
     })
   }
 
-  // Text the client that a reply is waiting. The email carries the answer;
-  // this is the nudge, because an email is easy to miss and the point of
-  // moving contact into the portal was that replies should feel immediate.
-  // One-way sender, so the copy never invites a reply — the link is the action.
-  let texted = false
-  if (client.onboarding_token) {
-    texted = await smsNotifyClientOfCoachReply({
-      phone: client.phone ?? null,
-      firstName: client.name?.split(' ')[0] ?? 'there',
-      threadUrl: `${portalUrl(client.onboarding_token)}/message`,
-      isReply: !!answering,
-    })
-    if (texted) {
-      await admin.from('client_communications').insert({
-        client_id: clientId,
-        kind: 'coach_message_reply_sms',
-        channel: 'sms',
-        subject: answering
-          ? `${coach().firstName} replied to your message`
-          : `A message from ${coach().firstName}`,
-        to_address: client.phone,
-        sent_by: user.id,
-        meta: { message_id: inserted?.id ?? null },
-      })
-    }
-  }
+  // No SMS to clients. Kade's call, 2026-07-29: portal message notifications
+  // go by email only. The email already carries the preview and the portal
+  // link, so the text was a second interruption saying the same thing, on a
+  // one-way sender the client cannot reply to. `texted` stays in the response
+  // shape so existing callers do not break; it is now always false.
+  const texted = false
 
   return NextResponse.json({ success: true, emailed, texted, answered: pendingIds.length })
 }

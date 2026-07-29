@@ -45,7 +45,7 @@ export const COMMUNICATION_KIND_LABELS: Record<ClientCommunicationKind, string> 
   program_log_nudge: 'Log-your-session nudge',
   in_person_session_reminder: 'In-person session reminder (SMS)',
   coach_message_reply: 'Coach replied to a message',
-  coach_message_reply_sms: 'Coach reply SMS nudge',
+  coach_message_reply_sms: 'Coach reply SMS nudge (retired 2026-07-29)',
 }
 
 export interface LogClientCommunicationInput {

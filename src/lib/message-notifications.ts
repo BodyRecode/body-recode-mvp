@@ -2,22 +2,26 @@ import { sendSms, formatPhone } from '@/lib/twilio'
 import { coach } from '@/config/tenant'
 
 /**
- * SMS heads-up for portal messages, in both directions.
+ * SMS heads-up for portal messages. COACH DIRECTION ONLY.
  *
  * Why this exists: an email reply to an app-sent email already fires an SMS to
  * the coach (see /api/inbox/inbound), but a portal message did not. Once the
  * portal became the only client contact channel, that gap meant a Saturday
- * message could sit unseen until Monday. The client side is the mirror: they
- * get the reply by email, but an email is easy to miss and the whole point of
- * moving off WhatsApp was that replies should feel as immediate.
+ * message could sit unseen until Monday.
  *
- * Both are best-effort and silent-fail. The email carries the actual content in
- * each direction; the SMS is only a nudge to go and look.
+ * ⚠️ CLIENTS ARE NEVER SENT SMS FOR PORTAL MESSAGES. Kade's call, 2026-07-29:
+ * notifications to clients go by email only. The email already carries the
+ * preview and the portal link, so a text was a second interruption saying the
+ * same thing, on a one-way sender they cannot reply to. Do not reintroduce a
+ * client-facing SMS here without asking.
+ *
+ * Best-effort and silent-fail. The email carries the actual content; the SMS is
+ * only a nudge to the coach to go and look.
  *
  * ⚠️ SMS from Body Recode is ONE-WAY. It sends from the alphanumeric sender ID
  * "BodyRecode" (no number in the Twilio pool), so a recipient physically cannot
- * reply — a reply just fails. Client-facing copy must therefore never invite a
- * reply. Point them at the portal instead. See project_sms_one_way_sender.
+ * reply — a reply just fails. Copy must therefore never invite a reply.
+ * See project_sms_one_way_sender.
  */
 
 /** Mon-Sat 08:30-20:00 AEST. Shared shape with the coach window. */
@@ -28,16 +32,6 @@ function withinWindow(now: Date, openMinutes: number, closeMinutes: number, allo
   if (!allowSunday && day === 0) return false
   const mins = aest.getUTCHours() * 60 + aest.getUTCMinutes()
   return mins >= openMinutes && mins < closeMinutes
-}
-
-/**
- * Client-facing window. Tighter and more conservative than the coach's: a
- * paying client should never be woken up by a coaching notification, and
- * Sunday is allowed because a weekend reply is a good experience, not an
- * intrusion, at a civilised hour.
- */
-export function isWithinClientSmsWindow(now: Date = new Date()): boolean {
-  return withinWindow(now, 8 * 60, 20 * 60, true)
 }
 
 /** Texts the coach that a client has written to them. */
@@ -54,35 +48,6 @@ export async function smsNotifyCoachOfClientMessage(clientName: string): Promise
     return true
   } catch (err) {
     console.error('[message-notifications] coach SMS failed:', err instanceof Error ? err.message : err)
-    return false
-  }
-}
-
-/**
- * Texts the client that their coach has replied.
- *
- * No reply CTA: the sender ID cannot receive messages. The link is the action.
- */
-export async function smsNotifyClientOfCoachReply(opts: {
-  phone: string | null
-  firstName: string
-  threadUrl: string
-  /** False when the coach started the conversation, so it is not a "reply". */
-  isReply?: boolean
-}): Promise<boolean> {
-  const { phone, firstName, threadUrl, isReply = true } = opts
-  if (!phone?.trim()) return false
-  if (!isWithinClientSmsWindow()) return false
-  try {
-    await sendSms({
-      to: formatPhone(phone.trim()),
-      message: isReply
-        ? `Hi ${firstName}, ${coach().firstName} has replied to your message. Read it in your portal: ${threadUrl}`
-        : `Hi ${firstName}, ${coach().firstName} has sent you a message. Read it in your portal: ${threadUrl}`,
-    })
-    return true
-  } catch (err) {
-    console.error('[message-notifications] client SMS failed:', err instanceof Error ? err.message : err)
     return false
   }
 }
