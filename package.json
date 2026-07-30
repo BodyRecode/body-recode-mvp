@@ -15,7 +15,8 @@
     "test:macro-arc": "npx tsx scripts/test-macro-arc-doctrine.ts",
     "time:program": "set -a && source .env.local && set +a && npx tsx scripts/time-program-generation.ts",
     "repro:program": "set -a && source .env.local && set +a && npx tsx scripts/repro-vicki-program.ts",
-    "test:energy": "npx tsx scripts/test-energy-requirement.ts"
+    "test:energy": "npx tsx scripts/test-energy-requirement.ts",
+    "test:anthro": "npx tsx scripts/test-anthropometry-plausibility.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.79.0",

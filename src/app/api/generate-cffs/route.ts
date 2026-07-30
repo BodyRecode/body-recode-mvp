@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
     admin.from('clients').select('medications').eq('id', client_id).maybeSingle(),
     admin
       .from('baselines')
-      .select('bodyweight_kg, waist_cm, hips_cm, chest_cm, captured_at, photo_front_url, photo_side_url, photo_back_url')
+      .select('bodyweight_kg, height_cm, waist_cm, hips_cm, chest_cm, captured_at, photo_front_url, photo_side_url, photo_back_url')
       .eq('client_id', client_id)
       .order('captured_at', { ascending: false, nullsFirst: false })
       .limit(1)
@@ -149,6 +149,7 @@ export async function POST(request: NextRequest) {
   const baselineContext: CFFSBaselineContext | null = baselineRow
     ? {
         bodyweight_kg: baselineRow.bodyweight_kg ?? null,
+        height_cm: baselineRow.height_cm ?? null,
         waist_cm: baselineRow.waist_cm ?? null,
         hips_cm: baselineRow.hips_cm ?? null,
         chest_cm: baselineRow.chest_cm ?? null,

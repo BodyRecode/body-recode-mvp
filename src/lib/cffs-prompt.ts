@@ -1,4 +1,5 @@
 import { patternTaxonomyPromptSection } from './pattern-doctrine'
+import { anthropometryPromptSection } from './anthropometry-plausibility'
 
 import { Intake } from '@/types'
 import { INTAKE_SECTIONS, Question } from '@/lib/intake-questions'
@@ -73,7 +74,7 @@ Rules for reading photos:
 5. Use conservative language: "consistent with...", "would be worth confirming...", "appears to favour...". Never definitive.
 6. NEVER make aesthetic judgments. Do not use the words overweight, underweight, lean, soft, hard, athletic, out of shape, or any term that evaluates the body. Describe distribution and patterning only.
 7. NEVER frame the body as broken, deficient, or in need of fixing. The body is currently doing something coherent. Your job is to read what.
-8. A TAPE MEASURE OUTRANKS A PHOTOGRAPH. Where the baseline measurements and your read of the photos disagree about spatial distribution, the measurements win and the divergence must be stated, not resolved in favour of the image. A photograph is affected by posture, camera angle, lens distortion, clothing, lighting and the client's stance; a circumference is a number taken from the body. You cannot see 40cm of waist-to-hip difference reliably and you can measure it exactly.
+8. A TAPE MEASURE OUTRANKS A PHOTOGRAPH, PROVIDED THE TAPE IS PLAUSIBLE. The ANTHROPOMETRY block in the user message states whether it is, and its verdict is binding: where it says the measurement is suspect, the numbers do NOT outrank your photo read and the pattern cannot be typed off them. Where the baseline measurements and your read of the photos disagree about spatial distribution, the measurements win and the divergence must be stated, not resolved in favour of the image. A photograph is affected by posture, camera angle, lens distortion, clothing, lighting and the client's stance; a circumference is a number taken from the body. You cannot see 40cm of waist-to-hip difference reliably and you can measure it exactly.
    Compute waist-to-hip from the measurements before writing anything about distribution. Below roughly 0.80 in a female client is a gynoid (hip and thigh dominant) distribution however the midsection photographs, and above roughly 0.85 is android (central) however slim the hips appear.
    (The error this prevents: a client measuring waist 66cm against hips 106cm, a ratio of 0.62 and markedly gynoid, had her photos read as "midsection-dominant adipose storage... hip and thigh distribution visible but not disproportionate to midsection", and that read was used to CONFIRM Stress-Stored over the competing Estrogen-Shift. A 40cm difference is not "not disproportionate". The image overrode the measurement and carried the pattern to high confidence.)
 
@@ -129,6 +130,7 @@ function summarizeScaleSection(
 
 export interface CFFSBaselineContext {
   bodyweight_kg: number | null
+  height_cm: number | null
   waist_cm: number | null
   hips_cm: number | null
   chest_cm: number | null
@@ -225,18 +227,21 @@ Aggravating movements: ${intake.injury_aggravating_movements || 'None declared'}
     if (baseline.waist_cm)      m.push(`Waist: ${baseline.waist_cm} cm`)
     if (baseline.hips_cm)       m.push(`Hips: ${baseline.hips_cm} cm`)
     if (baseline.chest_cm)      m.push(`Chest: ${baseline.chest_cm} cm`)
-    // Computed here rather than left to the model. It is the single most
-    // load-bearing number for spatial patterning and it was being eyeballed off
-    // photographs instead of derived from the tape.
-    if (baseline.waist_cm && baseline.hips_cm) {
-      const whr = baseline.waist_cm / baseline.hips_cm
-      const shape = whr < 0.80 ? 'GYNOID (hip and thigh dominant)'
-        : whr > 0.85 ? 'ANDROID (central)'
-        : 'intermediate'
-      m.push(`Waist-to-hip ratio: ${whr.toFixed(2)} — ${shape}. This is measured, not inferred. It outranks any photo read of distribution.`)
-    }
+    if (baseline.height_cm) m.push(`Height: ${baseline.height_cm} cm`)
     if (baseline.captured_at)   m.push(`Captured: ${baseline.captured_at.slice(0, 10)}`)
     if (m.length > 0) parts.push(`\nBASELINE MEASUREMENTS:\n${m.join('\n')}`)
+    // Ratios plus a plausibility check. "A tape measure outranks a photograph"
+    // was added this morning and was wrong on its own: the first thing it did
+    // was use an improbable 66cm waist (BMI 28.6, waist-to-height 0.42) to
+    // override a coach looking at his own client. The tape only outranks the
+    // image while the tape is believable, so authority is granted or revoked
+    // here rather than asserted unconditionally.
+    parts.push(anthropometryPromptSection({
+      weightKg: baseline.bodyweight_kg,
+      heightCm: baseline.height_cm,
+      waistCm: baseline.waist_cm,
+      hipsCm: baseline.hips_cm,
+    }))
     if (baseline.has_photos) {
       parts.push(`\nBASELINE PHOTOS:\nThree photos accompany this prompt (front, side, back). Read them per the VISUAL SIGNAL INTEGRATION rules in the system prompt: they are one signal stream feeding Spatial Patterning, not the conclusion. Note convergence or divergence with the scale data above.`)
     } else {
