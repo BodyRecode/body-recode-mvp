@@ -56,6 +56,7 @@ export default async function BaselinePage({ params }: { params: Promise<{ id: s
                 { label: 'Waist', value: latestBaseline.waist_cm, unit: 'cm' },
                 { label: 'Hips', value: latestBaseline.hips_cm, unit: 'cm' },
                 { label: 'Chest', value: latestBaseline.chest_cm, unit: 'cm' },
+                { label: 'Height', value: latestBaseline.height_cm, unit: 'cm' },
               ].map(m => (
                 <div key={m.label} className="bg-stone-200/50 rounded-xl p-3 text-center">
                   <p className="text-xs text-stone-500 mb-1">{m.label}</p>

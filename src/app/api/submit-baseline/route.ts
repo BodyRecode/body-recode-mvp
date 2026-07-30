@@ -17,6 +17,10 @@ export async function POST(req: NextRequest) {
   const waist = parseFloat(formData.get('waist') as string)
   const hips = parseFloat(formData.get('hips') as string)
   const chest = parseFloat(formData.get('chest') as string)
+  // Height is captured once and carried forward on re-captures, so it arrives
+  // on every submission but is only typed by the client the first time.
+  const heightRaw = parseFloat(formData.get('height') as string)
+  const height = Number.isFinite(heightRaw) && heightRaw > 0 ? heightRaw : null
   const photoFront = formData.get('photoFront') as File | null
   const photoSide = formData.get('photoSide') as File | null
   const photoBack = formData.get('photoBack') as File | null
@@ -54,6 +58,7 @@ export async function POST(req: NextRequest) {
     waist_cm: waist,
     hips_cm: hips,
     chest_cm: chest,
+    height_cm: height,
     photo_front_url: frontUrl,
     photo_side_url: sideUrl,
     photo_back_url: backUrl,

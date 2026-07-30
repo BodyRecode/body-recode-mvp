@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
       .limit(1)
       .maybeSingle(),
     admin.from('baselines')
-      .select('bodyweight_kg, waist_cm, hips_cm, chest_cm, captured_at')
+      .select('bodyweight_kg, height_cm, waist_cm, hips_cm, chest_cm, captured_at')
       .eq('client_id', client_id)
       .order('captured_at', { ascending: false })
       .limit(1)
@@ -84,6 +84,11 @@ export async function POST(request: NextRequest) {
   // Bodyweight is captured on the baseline submission (not the intake — the
   // intakes table doesn't carry a flat bodyweight column). Pull from there.
   const bodyweightKg = baseline?.bodyweight_kg ?? null
+  // Height, so an energy estimate is possible at all. Every BMR equation needs
+  // it and it was captured nowhere until 2026-07-30, which is why the engine
+  // could only ever report the calories its own meals happened to contain and
+  // never say whether that total suited the person eating it.
+  const heightCm = baseline?.height_cm ?? null
   const bodyweightSource = baseline?.bodyweight_kg
     ? `baseline (${baseline.captured_at?.slice(0, 10) ?? 'date unknown'})`
     : null
@@ -125,6 +130,7 @@ CFFS — FOUNDATIONAL SYNTHESIS:
 
   const intakeLines: string[] = []
   intakeLines.push(`- Bodyweight: ${bodyweightKg ? `${bodyweightKg}kg${bodyweightSource ? ` (from ${bodyweightSource})` : ''}` : 'Not provided'}`)
+  intakeLines.push(`- Height: ${heightCm ? `${heightCm}cm` : 'NOT RECORDED — an energy estimate is not possible without it, say so rather than guessing'}`)
   intakeLines.push(`- Age: ${ageFromDob ?? 'Not provided'}`)
   intakeLines.push(`- Sex: ${intake?.gender || 'Not provided'}`)
   if (baseline?.waist_cm || baseline?.hips_cm || baseline?.chest_cm) {

@@ -10,6 +10,8 @@ interface Props {
   clientId: string
   clientName: string
   portalHref?: string | null
+  /** Last recorded height. When present the field is hidden and this value is reused. */
+  knownHeightCm?: number | null
 }
 
 type Step = 'intro' | 'measurements' | 'photos' | 'submitting' | 'done'
@@ -21,15 +23,18 @@ type Draft = {
   waist: string
   hips: string
   chest: string
+  height: string
 }
 
-export default function BaselineForm({ clientId, clientName, portalHref }: Props) {
+export default function BaselineForm(props: Props) {
+  const { clientId, clientName, portalHref } = props
   const [draft, setDraft, clearDraft] = useFormDraft<Draft>(`baseline:${clientId}`, {
     step: 'intro',
     bodyweight: '',
     waist: '',
     hips: '',
     chest: '',
+    height: '',
   })
   const [submittingNow, setSubmittingNow] = useState(false)
   const step: Step = submittingNow ? 'submitting' : draft.step
@@ -46,6 +51,12 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
   const setHips = (v: string) => setDraft(prev => ({ ...prev, hips: v }))
   const chest = draft.chest
   const setChest = (v: string) => setDraft(prev => ({ ...prev, chest: v }))
+  // Height is asked ONCE. On a re-capture the last known value is passed in and
+  // this field is not shown, because height does not change between check-ins
+  // and re-asking it every time is friction for no information.
+  const height = draft.height
+  const setHeight = (v: string) => setDraft(prev => ({ ...prev, height: v }))
+  const needHeight = props.knownHeightCm == null
   const [error, setError] = useState('')
 
   // Photos
@@ -102,6 +113,7 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
     if (!waist.trim()) missed.add('waist')
     if (!hips.trim()) missed.add('hips')
     if (!chest.trim()) missed.add('chest')
+    if (needHeight && !height.trim()) missed.add('height')
     if (missed.size > 0) {
       setMissing(missed)
       setValidationMessage(
@@ -147,6 +159,7 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
     formData.append('waist', waist)
     formData.append('hips', hips)
     formData.append('chest', chest)
+    formData.append('height', needHeight ? height : String(props.knownHeightCm))
     if (photoFront) formData.append('photoFront', photoFront)
     if (photoSide) formData.append('photoSide', photoSide)
     if (photoBack) formData.append('photoBack', photoBack)
@@ -277,6 +290,9 @@ export default function BaselineForm({ clientId, clientName, portalHref }: Props
                 { id: 'waist', label: 'Waist circumference', unit: 'cm', value: waist, set: setWaist, helper: 'At narrowest point or just above navel' },
                 { id: 'hips', label: 'Hip circumference', unit: 'cm', value: hips, set: setHips, helper: 'At widest point of hips and glutes' },
                 { id: 'chest', label: 'Chest circumference', unit: 'cm', value: chest, set: setChest, helper: 'At nipple line while relaxed' },
+                ...(needHeight
+                  ? [{ id: 'height', label: 'Height', unit: 'cm', value: height, set: setHeight, helper: 'Without shoes. We only need this once.' }]
+                  : []),
               ].map(({ id, label, unit, value, set, helper }) => {
                 const hasError = missing.has(id)
                 return (

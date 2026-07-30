@@ -54,11 +54,23 @@ export default async function BaselinePage({ params }: { params: Promise<{ token
     )
   }
 
+  // Carry height forward so it is captured once, not at every re-capture.
+  const { data: heightRow } = await admin
+    .from('baselines')
+    .select('height_cm')
+    .eq('client_id', client.id)
+    .not('height_cm', 'is', null)
+    .order('captured_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+  const knownHeightCm: number | null = heightRow?.height_cm ?? null
+
   return (
     <BaselineForm
       clientId={client.id}
       clientName={client.name}
       portalHref={client.onboarding_token ? `/portal/${client.onboarding_token}` : null}
+      knownHeightCm={knownHeightCm}
     />
   )
 }
