@@ -24,11 +24,15 @@ export default async function CoachTrainIndexPage({ params }: { params: Promise<
 
   const { data: client } = await admin
     .from('clients')
-    .select('id, name')
+    .select('id, name, package')
     .eq('id', id)
     .maybeSingle()
 
   if (!client) return notFound()
+  // In-person logging only. An online client is never trained in person, so
+  // reaching this page by URL would let a coach record a session that did not
+  // happen with them.
+  if (client.package === 'online') return notFound()
 
   const { data: program } = await admin
     .from('programs')

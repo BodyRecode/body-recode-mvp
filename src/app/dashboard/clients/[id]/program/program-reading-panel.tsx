@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import ClientViewModal from '@/components/dashboard/client-view-modal'
 import GenerationProgressOverlay from '@/components/generation-progress-overlay'
+import { checkReadingFreshness } from '@/lib/stale-reading'
 import {
   Sparkles, EyeOff, Eye, ExternalLink, Loader2, Mail,
   Pencil, Check, X, Save, MessageSquare, Info,
@@ -29,6 +30,7 @@ interface Reading {
   pr_coach_guidance: string | null
   program_reading_generated_at: string | null
   program_reading_published_at: string | null
+  generated_at?: string | null
   program_reading_email_sent_at: string | null
 }
 
@@ -57,6 +59,15 @@ export default function ProgramReadingPanel({
   const generated = !!program.program_reading_generated_at
   const published = !!program.program_reading_published_at
   const emailSent = !!program.program_reading_email_sent_at
+  // Was this reading published before the program it describes last changed?
+  // Vicki S, 2026-07-30: a reading went live at 03:02 describing three exercises
+  // and a plank, and the sessions were rebuilt an hour later. The client could
+  // read a description of a workout she did not have, and nothing said so.
+  const freshness = checkReadingFreshness(
+    program.program_reading_published_at,
+    program.generated_at,
+    'training program',
+  )
 
   const generate = async () => {
     if (generating) return
@@ -157,6 +168,16 @@ export default function ProgramReadingPanel({
               {published ? 'Live in portal' : 'Unpublished'}
             </span>
           )}
+          {freshness.stale && (
+            <span
+              className="inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border border-amber-300 bg-amber-50 text-amber-800 uppercase"
+              style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
+              title={freshness.message ?? ''}
+            >
+              <span className="w-1 h-1 rounded-full bg-amber-500" />
+              Out of date
+            </span>
+          )}
           {emailSent && (
             <span
               className="inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] uppercase"
@@ -205,6 +226,13 @@ export default function ProgramReadingPanel({
       {generated && (
         <CoachGuidance programId={program.id} initial={program.pr_coach_guidance} />
       )}
+      {freshness.stale && (
+        <div className="mx-5 mb-4 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3">
+          <p className="text-xs font-semibold text-amber-900">This reading is out of date</p>
+          <p className="text-xs text-amber-800 mt-1 leading-relaxed">{freshness.message}</p>
+        </div>
+      )}
+
 
       {!generated ? (
         <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-8 text-center">

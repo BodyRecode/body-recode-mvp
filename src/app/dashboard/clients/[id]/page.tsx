@@ -1242,9 +1242,13 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           {/* Block progress + workout logging (Phase A) */}
           <BlockProgressPanel data={blockProgress} />
 
-          {/* Coach-side logging: log a session for this client (e.g. in-person).
-              Writes to the same tables as the client portal logger. */}
-          {activeProgram && (
+          {/* Coach-side logging: log a session on the client's behalf when you
+              train them in person. Hidden for package = 'online' (2026-07-30):
+              an online client is never trained in person, so the button is noise
+              at best and, if used, records a session that did not happen with
+              you. The numbered packages (1x, 2x, 3x) are in-person session
+              counts; contra and no_charge are ambiguous so the button stays. */}
+          {activeProgram && client.package !== 'online' && (
             <div className="mt-3">
               <Link
                 href={`/dashboard/clients/${id}/train`}

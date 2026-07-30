@@ -73,6 +73,13 @@ Rules for reading photos:
 5. Use conservative language: "consistent with...", "would be worth confirming...", "appears to favour...". Never definitive.
 6. NEVER make aesthetic judgments. Do not use the words overweight, underweight, lean, soft, hard, athletic, out of shape, or any term that evaluates the body. Describe distribution and patterning only.
 7. NEVER frame the body as broken, deficient, or in need of fixing. The body is currently doing something coherent. Your job is to read what.
+8. A TAPE MEASURE OUTRANKS A PHOTOGRAPH. Where the baseline measurements and your read of the photos disagree about spatial distribution, the measurements win and the divergence must be stated, not resolved in favour of the image. A photograph is affected by posture, camera angle, lens distortion, clothing, lighting and the client's stance; a circumference is a number taken from the body. You cannot see 40cm of waist-to-hip difference reliably and you can measure it exactly.
+   Compute waist-to-hip from the measurements before writing anything about distribution. Below roughly 0.80 in a female client is a gynoid (hip and thigh dominant) distribution however the midsection photographs, and above roughly 0.85 is android (central) however slim the hips appear.
+   (The error this prevents: a client measuring waist 66cm against hips 106cm, a ratio of 0.62 and markedly gynoid, had her photos read as "midsection-dominant adipose storage... hip and thigh distribution visible but not disproportionate to midsection", and that read was used to CONFIRM Stress-Stored over the competing Estrogen-Shift. A 40cm difference is not "not disproportionate". The image overrode the measurement and carried the pattern to high confidence.)
+
+9. SELF-REPORT IS ALSO NOT A MEASUREMENT. When the client's reported storage location and the tape disagree, say so plainly and let it lower your confidence. A client answering "midsection 4/4" is reporting where they FEEL their weight sits and where they dislike it, which is not the same as where circumference says it is.
+
+10. CONFIDENCE MUST REFLECT DISAGREEMENT. Do not return pattern_confidence "high" while also naming a competing read AND a self-report-versus-measurement conflict. Two independent sources disagreeing is the definition of moderate at best. High confidence means the signals converge.
 8. Photos are present-state expression, not identity. Read what the body is doing now; the intake tells you how it got there.
 
 If photos are not provided, complete the CFFS from the scale and text intake alone, and explicitly note in your closing_interpretive_notes that visual evidence was not available so Spatial Patterning is inferred from the intake only.
@@ -218,6 +225,16 @@ Aggravating movements: ${intake.injury_aggravating_movements || 'None declared'}
     if (baseline.waist_cm)      m.push(`Waist: ${baseline.waist_cm} cm`)
     if (baseline.hips_cm)       m.push(`Hips: ${baseline.hips_cm} cm`)
     if (baseline.chest_cm)      m.push(`Chest: ${baseline.chest_cm} cm`)
+    // Computed here rather than left to the model. It is the single most
+    // load-bearing number for spatial patterning and it was being eyeballed off
+    // photographs instead of derived from the tape.
+    if (baseline.waist_cm && baseline.hips_cm) {
+      const whr = baseline.waist_cm / baseline.hips_cm
+      const shape = whr < 0.80 ? 'GYNOID (hip and thigh dominant)'
+        : whr > 0.85 ? 'ANDROID (central)'
+        : 'intermediate'
+      m.push(`Waist-to-hip ratio: ${whr.toFixed(2)} — ${shape}. This is measured, not inferred. It outranks any photo read of distribution.`)
+    }
     if (baseline.captured_at)   m.push(`Captured: ${baseline.captured_at.slice(0, 10)}`)
     if (m.length > 0) parts.push(`\nBASELINE MEASUREMENTS:\n${m.join('\n')}`)
     if (baseline.has_photos) {
