@@ -76,3 +76,23 @@ values
   -- what every existing equipment selection means.
   ('Lateral Band Walk',       'abduction', null, 'abductor_dominant', 'hip',   null, 'moderate', 'specialty',  'variable',           2, false, 'low', true,  true)
 on conflict do nothing;
+
+-- ── Addendum, same day: loadable hip extension ───────────────────────────────
+-- Building Vicki's block exposed a second hole. Hip Thrust existed but was
+-- filed equipment = 'barbell', and EVERY other hinge in the library is a
+-- deadlift variant with axial_loading = true. For a client with a symptomatic
+-- sacroiliac and machine/bodyweight/dumbbell access, that left bodyweight Glute
+-- Bridge as the only hip-extension option in the entire system: correct, but
+-- with nowhere to progress across a four-week block.
+--
+-- Hip extension is the propulsive action in walking, running, stair climbing
+-- and standing up. Having exactly one unloadable option for it is a gap, not a
+-- preference. Both variants load the hips with nothing through the spine.
+insert into exercises
+  (name, primary_pattern, secondary_pattern, mechanical_bias, primary_joint_stress,
+   secondary_joint_stress, stability_demand, equipment, load_profile, tier,
+   axial_loading, grip_demand, bilateral, is_active)
+values
+  ('Machine Hip Thrust',   'hinge', null, 'glute_dominant', 'hip', null, 'low', 'machine',  'machine_profile', 1, false, 'low', true, true),
+  ('Dumbbell Hip Thrust',  'hinge', null, 'glute_dominant', 'hip', null, 'low', 'dumbbell', 'constant',        2, false, 'low', true, true)
+on conflict do nothing;
