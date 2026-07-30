@@ -31,12 +31,17 @@ export async function POST(req: NextRequest) {
   const admin = createAdminClient()
   const { data: client } = await admin
     .from('clients')
-    .select('id')
+    .select('id, meal_logging_enabled')
     .eq('id', clientId)
     .eq('onboarding_token', token)
     .ilike('email', user.email!)
     .single()
   if (!client) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+  // Meal logging is off unless the coach enabled it for this client. Hiding the
+  // link is not enough: a bookmarked URL or a stale tab would still post.
+  if (!client.meal_logging_enabled) {
+    return NextResponse.json({ error: 'Meal logging is not enabled for this client.' }, { status: 403 })
+  }
 
   const result = await updateDay(admin, {
     clientId: client.id,

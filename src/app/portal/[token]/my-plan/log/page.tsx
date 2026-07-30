@@ -17,7 +17,7 @@ export default async function PortalMealLogPage({ params }: { params: Promise<{ 
 
   const { data: client } = await admin
     .from('clients')
-    .select('id, name')
+    .select('id, name, meal_logging_enabled')
     .eq('onboarding_token', token)
     .maybeSingle()
   if (!client) return notFound()
@@ -30,6 +30,20 @@ export default async function PortalMealLogPage({ params }: { params: Promise<{ 
     .maybeSingle()
 
   const firstName = client.name?.split(' ')[0] ?? 'there'
+
+  // The page itself refuses when the flag is off, so a bookmarked URL does not
+  // reach the logger even though the link is hidden.
+  if (!client.meal_logging_enabled) {
+    return (
+      <PortalPageShell backHref={`/portal/${token}/my-plan`} eyebrow="Nutrition" title="Log today's meals">
+        <div className="rounded-2xl border border-[#E5E5E5] bg-white p-6 text-center">
+          <p className="text-sm text-[#6B6B6B]">
+            Meal logging is not switched on for you. Your weekly check-in covers your nutrition, so there is nothing to do here.
+          </p>
+        </div>
+      </PortalPageShell>
+    )
+  }
 
   if (!plan) {
     return (

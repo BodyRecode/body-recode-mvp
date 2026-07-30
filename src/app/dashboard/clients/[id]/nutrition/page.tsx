@@ -10,6 +10,7 @@ import NotifyClientButton from './notify-client-button'
 import NutritionCoachGuidanceEditor from './coach-guidance-editor'
 import NutritionRegenerateButton from './regenerate-button'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
+import MealLoggingToggle from './meal-logging-toggle'
 import { GlanceCard } from '@/components/glance-card'
 import {
   computeNutritionTotals,
@@ -605,7 +606,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
 
   const { data: client } = await admin
     .from('clients')
-    .select('id, name, onboarding_token')
+    .select('id, name, onboarding_token, meal_logging_enabled')
     .eq('id', id)
     .maybeSingle()
 
@@ -821,6 +822,12 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
               />
             </div>
           </div>
+
+          <MealLoggingToggle
+            clientId={client.id}
+            enabled={!!client.meal_logging_enabled}
+            clientFirstName={client.name?.split(' ')[0] ?? 'They'}
+          />
 
           {/* Weekly Review */}
           <div className="mt-6">

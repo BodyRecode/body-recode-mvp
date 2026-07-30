@@ -112,7 +112,13 @@ export default async function NutritionWeeklyReview({
       ) : (
         <div className="px-5 py-6 text-center">
           <p className="text-sm text-stone-400">No reviews submitted yet.</p>
-          <p className="text-xs text-stone-700 mt-1">Client submits their weekly nutrition check-in via the portal.</p>
+          {/* There is no standalone nutrition check-in any more. Nutrition is a
+              section of the ONE weekly check-in, and submit-weekly-checkin still
+              writes the nutrition_reviews rows this panel reads, so the panel is
+              live even though the separate flow is gone. */}
+          <p className="text-xs text-stone-700 mt-1">
+            Fills in from the nutrition section of the weekly check-in. There is no separate nutrition check-in.
+          </p>
         </div>
       )}
     </div>

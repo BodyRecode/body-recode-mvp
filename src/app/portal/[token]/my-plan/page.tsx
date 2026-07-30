@@ -50,7 +50,7 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
 
   const { data: client } = await admin
     .from('clients')
-    .select('id, name')
+    .select('id, name, meal_logging_enabled')
     .eq('onboarding_token', token)
     .maybeSingle()
 
@@ -127,14 +127,23 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
           </div>
         ) : (
           <div className="space-y-5">
-            {/* Log today's meals — the daily adherence logger lives inside the
-                plan (mirrors how workout logging lives inside the program). */}
-            <Link
-              href={`/portal/${token}/my-plan/log`}
-              className="block w-full py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] text-white font-bold text-sm rounded-2xl text-center transition-colors"
-            >
-              Log today&apos;s meals →
-            </Link>
+            {/* Log today's meals — OFF unless the coach switches it on for this
+                client (clients.meal_logging_enabled, default false, 2026-07-30).
+                It was on for everyone and across the system's whole history had
+                been used once: one client, one day, three entries. A daily food
+                log is the most surveillance-shaped thing in the portal and it
+                contradicts a stabilisation plan whose own text calls repetition
+                and low decision burden the mechanism. It earns its cost only
+                when a plan is failing and the coach needs to know WHICH meal,
+                which the weekly check-in cannot tell them. */}
+            {client.meal_logging_enabled && (
+              <Link
+                href={`/portal/${token}/my-plan/log`}
+                className="block w-full py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] text-white font-bold text-sm rounded-2xl text-center transition-colors"
+              >
+                Log today&apos;s meals →
+              </Link>
+            )}
 
             {/* Bridge mode framing — friendly version of the coach-side bridge
                 banner. Staged framing: client sees the current stage, the
