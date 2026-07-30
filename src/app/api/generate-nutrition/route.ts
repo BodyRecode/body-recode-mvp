@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { estimateEnergyRequirement, ageFromDob, normaliseSex, type ActivityLevel, type EntryState } from '@/lib/energy-requirement'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
@@ -45,6 +46,7 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
     client_id,
     plan_name,
     entry_state,
+    activity_level,
     body_state,
     pts_phase,
     constraint_level,
@@ -98,7 +100,7 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
       .limit(1)
       .maybeSingle(),
     admin.from('baselines')
-      .select('bodyweight_kg, captured_at')
+      .select('bodyweight_kg, height_cm, captured_at')
       .eq('client_id', client_id)
       .order('captured_at', { ascending: false })
       .limit(1)
@@ -140,14 +142,47 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
   // hasn't been submitted yet. Age derived from date_of_birth; sex from
   // gender. Lifestyle / sleep / nutrition signals come from JSONB response
   // blobs.
-  const ageFromDob = intake?.date_of_birth
-    ? Math.floor((Date.now() - new Date(intake.date_of_birth).getTime()) / (365.25 * 24 * 60 * 60 * 1000))
-    : null
+  // Was a 365.25-day division, which drifts a year either side of a birthday.
+  // ageFromDob() in energy-requirement.ts is calendar-correct and is now also
+  // feeding the BMR calculation, so both use the same figure.
+  const ageYears = ageFromDob(intake?.date_of_birth)
 
   const intakeLines: string[] = []
   intakeLines.push(`Bodyweight: ${bodyweightKg ? `${bodyweightKg}kg${bodyweightSource ? ` (from ${bodyweightSource})` : ''}` : 'Not provided'}`)
-  intakeLines.push(`Age: ${ageFromDob ?? 'Not provided'}`)
+  intakeLines.push(`Age: ${ageYears ?? 'Not provided'}`)
   intakeLines.push(`Sex: ${intake?.gender || 'Not provided'}`)
+
+  // ── Energy requirement ─────────────────────────────────────────────────────
+  // Added 2026-07-30. Before this the plan's calorie band was simply whatever
+  // the meals summed to; nothing ever asked whether that total suited the
+  // person eating it, because height was recorded nowhere and no BMR equation
+  // could run. Height now lives on the baseline, so the requirement can be
+  // estimated and the meals can be built to land in it.
+  const energy = estimateEnergyRequirement({
+    sex: normaliseSex(intake?.gender),
+    ageYears,
+    heightCm: baseline?.height_cm ?? null,
+    weightKg: bodyweightKg,
+    activityLevel: (activity_level ?? 'moderately_active') as ActivityLevel,
+    entryState: entry_state as EntryState,
+  })
+
+  if (energy.targetLow && energy.targetHigh) {
+    intakeLines.push('')
+    intakeLines.push('ENERGY REQUIREMENT (estimated, build the meals to land in this band)')
+    for (const w of energy.workings) intakeLines.push(`  ${w}`)
+    intakeLines.push(`  TARGET: the day's meals must total between ${energy.targetLow} and ${energy.targetHigh} kcal.`)
+    intakeLines.push('  This band is the goal, NOT a hard floor. The bodyweight-derived protein anchor and')
+    intakeLines.push('  the carb and fat g/kg floors still win where they conflict: an estimate built on a')
+    intakeLines.push('  population equation and a judged activity factor is not grounds for under-fuelling a')
+    intakeLines.push('  real person. If the two cannot be reconciled, satisfy the floors, land as close to the')
+    intakeLines.push('  band as you can, and say so plainly in the rationale.')
+  } else {
+    intakeLines.push('')
+    intakeLines.push(`ENERGY REQUIREMENT: cannot be estimated (${energy.missing.join(', ')} not recorded).`)
+    intakeLines.push('  Build from the protein anchor and the g/kg floors as before, and state in the')
+    intakeLines.push('  rationale that no energy estimate was possible. Do NOT invent a figure.')
+  }
   if (intake) {
     if (intake.primary_goal) intakeLines.push(`Primary goal: ${intake.primary_goal}`)
     if (intake.training_days_available) intakeLines.push(`Training days available: ${intake.training_days_available}`)
@@ -525,6 +560,12 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
     client_id,
     plan_name: (plan.plan_name as string) || inputs.plan_name,
     entry_state: plan.entry_state || entry_state,
+    activity_level: activity_level ?? null,
+    energy_bmr_kcal: energy.bmr,
+    energy_tdee_kcal: energy.tdee,
+    energy_target_low_kcal: energy.targetLow,
+    energy_target_high_kcal: energy.targetHigh,
+    energy_workings: energy.workings,
     body_state: inputs.body_state,
     pts_phase: inputs.pts_phase,
     constraint_level: inputs.constraint_level,
