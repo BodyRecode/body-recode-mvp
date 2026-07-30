@@ -167,14 +167,21 @@ export default function GenerateProgramForm({
         active={loading}
         title="Generating Training Program"
         stages={[
+          // Timed 2026-07-30 against the real prompt: 95s to first token, 126s
+          // total, 12.9k output tokens. The old stages claimed to be saving the
+          // draft at 90s and apologising by 130s, when 90s was still the model
+          // thinking and 126s was normal. A progress bar that finishes before
+          // the work does teaches the coach to distrust it and refresh.
           { start: 0,   label: 'Reading CFFS, active recovery state, intake, and macro arc context' },
-          { start: 6,   label: 'Drafting per-session structure (primaries, accessories, sets / reps / RPE)' },
-          { start: 40,  label: 'Applying coach guidance and RRS clamps to the prescription' },
-          { start: 70,  label: 'Validating against doctrine ceilings and eligibility floors' },
-          { start: 90,  label: 'Saving the draft and redirecting to the program view' },
-          { start: 130, label: 'Taking longer than usual, give it another moment' },
+          { start: 10,  label: 'Working through the exercise library against her injury domains' },
+          { start: 35,  label: 'Selecting movement patterns and building each session' },
+          { start: 70,  label: 'Setting sets, reps and RPE within the doctrine ceilings' },
+          { start: 100, label: 'Applying coach guidance and the recovery clamps' },
+          { start: 120, label: 'Validating against doctrine and saving the draft' },
+          { start: 150, label: 'Still going. This one runs about two minutes, please do not refresh' },
+          { start: 240, label: 'Longer than expected. If nothing happens by 5 minutes, try again' },
         ]}
-        disclaimer="Program generation uses Claude Sonnet 4.6 for high-accuracy constraint satisfaction across exercise selection, set / rep design, RPE, and RRS recovery clamps. Typical: 60 to 120 seconds. The page is not frozen, please don't refresh."
+        disclaimer="Program generation uses Claude Sonnet 4.6 for high-accuracy constraint satisfaction across exercise selection, set / rep design, RPE, and RRS recovery clamps. Typical: about two minutes, and roughly the first 90 seconds show no visible movement while the model works. The page is not frozen, please don't refresh."
       />
       <div className="mb-8">
         <button
