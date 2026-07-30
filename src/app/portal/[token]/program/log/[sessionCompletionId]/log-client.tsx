@@ -22,6 +22,28 @@ import RestTimer, { RestTimerHandle } from './rest-timer'
 import { estimate1RM } from '@/lib/workout-logging'
 
 /**
+ * Pull a number out of a free-text load entry.
+ *
+ * weight_kg is numeric and the input used to be type="number", so a bodyweight
+ * exercise had nowhere to record its load: the client left the field blank and
+ * it read back as "not logged". Vicki's Restoration block is nearly all
+ * bodyweight and machine work, so most of her sets would have carried no load
+ * information at all.
+ *
+ * The field now takes text. "BW" gives null, "BW+5" gives 5, "7.5" gives 7.5.
+ * The numeric part still feeds prefill, progression and the RPE creep monitor;
+ * the raw string is kept alongside it so the coach sees what she actually did.
+ */
+export function parseWeightEntry(raw: string): { kg: number | null; text: string | null } {
+  const t = raw.trim()
+  if (!t) return { kg: null, text: null }
+  // A plain number stays a plain number, no text stored.
+  if (/^\d+(\.\d+)?$/.test(t)) return { kg: parseFloat(t), text: null }
+  const m = t.match(/(\d+(?:\.\d+)?)/)
+  return { kg: m ? parseFloat(m[1]) : null, text: t }
+}
+
+/**
  * Turn a prescribed-rest string into seconds for the rest timer.
  * Handles "90s", "90 sec", "2 min", "1:30", "60-90s" (takes the first number).
  * Returns null when nothing parseable is found.
@@ -58,6 +80,7 @@ interface SetLog {
   session_exercise_completion_id: string
   set_number: number
   weight_kg: number | null
+  weight_text?: string | null
   reps_completed: number | null
   rpe: number | null
 }
@@ -73,7 +96,7 @@ interface Props {
   exercises: ExerciseRow[]
   initialSetLogs: SetLog[]
   /** Per-exercise-name: last session's sets + when, for the "last time" line. */
-  lastTime?: Record<string, { sets: Array<{ weight: number | null; reps: number | null }>; when: string | null }>
+  lastTime?: Record<string, { sets: Array<{ weight: number | null; weightText?: string | null; reps: number | null }>; when: string | null }>
   /** Per-exercise-name: best prior estimated 1RM, for personal-record detection. */
   priorBest?: Record<string, number>
   /** API base for the log write routes. Client portal uses the default;
@@ -85,10 +108,10 @@ interface Props {
 }
 
 /** "60 × 8, 60 × 8, 57.5 × 7" from a set list. */
-function formatSets(sets: Array<{ weight: number | null; reps: number | null }>): string {
+function formatSets(sets: Array<{ weight: number | null; weightText?: string | null; reps: number | null }>): string {
   return sets
-    .filter(s => s.weight != null || s.reps != null)
-    .map(s => `${s.weight ?? '–'} × ${s.reps ?? '–'}`)
+    .filter(s => s.weight != null || s.weightText != null || s.reps != null)
+    .map(s => `${s.weightText ?? s.weight ?? '–'} × ${s.reps ?? '–'}`)
     .join(', ')
 }
 
@@ -147,7 +170,13 @@ export default function LogClient(props: Props) {
       const ltSet = existing == null ? lastSets?.[n - 1] : undefined
       const prefilled = !!ltSet && (ltSet.weight != null || ltSet.reps != null)
       initialSets[ROW_KEY(ex.id, n)] = {
-        weight: existing?.weight_kg != null ? String(existing.weight_kg) : (ltSet?.weight != null ? String(ltSet.weight) : ''),
+        // Prefer what was typed. Reopening a session used to turn "BW+5" back
+        // into "5", quietly rewriting the client's own record of the set.
+        weight: existing?.weight_text
+          ?? (existing?.weight_kg != null ? String(existing.weight_kg) : null)
+          ?? ltSet?.weightText
+          ?? (ltSet?.weight != null ? String(ltSet.weight) : '')
+          ?? '',
         reps: existing?.reps_completed != null ? String(existing.reps_completed) : (ltSet?.reps != null ? String(ltSet.reps) : ''),
         rpe: existing?.rpe != null ? String(existing.rpe) : '',
         saved: existing != null,
@@ -212,7 +241,8 @@ export default function LogClient(props: Props) {
             clientId: props.clientId,
             sessionExerciseCompletionId: exerciseId,
             setNumber,
-            weightKg: s.weight === '' ? null : parseFloat(s.weight),
+            weightKg: parseWeightEntry(s.weight).kg,
+            weightText: parseWeightEntry(s.weight).text,
             repsCompleted: s.reps === '' ? null : parseInt(s.reps, 10),
             rpe: s.rpe === '' ? null : parseFloat(s.rpe),
           }),
@@ -234,7 +264,7 @@ export default function LogClient(props: Props) {
         // log) and the set has both weight + reps.
         if (ex) {
           const name = ex.prescribed_exercise_name
-          const w = s.weight === '' ? null : parseFloat(s.weight)
+          const w = parseWeightEntry(s.weight).kg
           const r = s.reps === '' ? null : parseInt(s.reps, 10)
           if (w != null && w > 0 && r != null && r > 0) {
             const e1rm = estimate1RM(w, r)
@@ -481,9 +511,9 @@ export default function LogClient(props: Props) {
                   <div key={n} className="grid grid-cols-[28px_1fr_1fr_1fr_36px] gap-1.5 items-center">
                     <span className="text-xs text-[#999999] tabular-nums text-center">{n}</span>
                     <input
-                      type="number"
-                      inputMode="decimal"
-                      placeholder="kg"
+                      type="text"
+                      inputMode="text"
+                      placeholder="kg / BW"
                       value={s.weight}
                       disabled={isCompleted}
                       onChange={e => setSetStates(prev => ({ ...prev, [key]: { ...prev[key], weight: e.target.value, saved: false, prefilled: false } }))}

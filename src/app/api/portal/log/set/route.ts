@@ -27,6 +27,7 @@ export async function POST(req: NextRequest) {
     sessionExerciseCompletionId,
     setNumber,
     weightKg,
+    weightText,
     repsCompleted,
     rpe,
   } = body as {
@@ -35,6 +36,7 @@ export async function POST(req: NextRequest) {
     sessionExerciseCompletionId?: string
     setNumber?: number
     weightKg?: number | null
+    weightText?: string | null
     repsCompleted?: number | null
     rpe?: number | null
   }
@@ -60,6 +62,7 @@ export async function POST(req: NextRequest) {
     sessionExerciseCompletionId,
     setNumber,
     weightKg,
+    weightText,
     repsCompleted,
     rpe,
   })

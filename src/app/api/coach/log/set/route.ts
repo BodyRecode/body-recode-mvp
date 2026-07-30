@@ -15,11 +15,12 @@ export async function POST(req: NextRequest) {
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
 
   const body = await req.json()
-  const { clientId, sessionExerciseCompletionId, setNumber, weightKg, repsCompleted, rpe } = body as {
+  const { clientId, sessionExerciseCompletionId, setNumber, weightKg, weightText, repsCompleted, rpe } = body as {
     clientId?: string
     sessionExerciseCompletionId?: string
     setNumber?: number
     weightKg?: number | null
+    weightText?: string | null
     repsCompleted?: number | null
     rpe?: number | null
   }
@@ -34,6 +35,7 @@ export async function POST(req: NextRequest) {
     sessionExerciseCompletionId,
     setNumber,
     weightKg,
+    weightText,
     repsCompleted,
     rpe,
   })

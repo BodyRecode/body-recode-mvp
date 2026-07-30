@@ -43,7 +43,7 @@ export default async function PortalLogSessionPage({
   const { data: setLogs } = exerciseIds.length > 0
     ? await admin
         .from('exercise_set_logs')
-        .select('id, session_exercise_completion_id, set_number, weight_kg, reps_completed, rpe, logged_at')
+        .select('id, session_exercise_completion_id, set_number, weight_kg, weight_text, reps_completed, rpe, logged_at')
         .in('session_exercise_completion_id', exerciseIds)
         .order('set_number', { ascending: true })
     : { data: [] }
@@ -58,7 +58,7 @@ export default async function PortalLogSessionPage({
   if (exerciseNames.length > 0) {
     const { data: priorRows } = await admin
       .from('session_exercise_completions')
-      .select('prescribed_exercise_name, session_completion_id, session_completions!inner(client_id, status, completed_at, started_at), exercise_set_logs(set_number, weight_kg, reps_completed)')
+      .select('prescribed_exercise_name, session_completion_id, session_completions!inner(client_id, status, completed_at, started_at), exercise_set_logs(set_number, weight_kg, weight_text, reps_completed)')
       .eq('session_completions.client_id', client.id)
       .neq('session_completion_id', sessionCompletionId)
       .in('prescribed_exercise_name', exerciseNames)
@@ -66,13 +66,13 @@ export default async function PortalLogSessionPage({
     type PriorRow = {
       prescribed_exercise_name: string
       session_completions: { completed_at: string | null; started_at: string | null } | null
-      exercise_set_logs: Array<{ set_number: number; weight_kg: number | null; reps_completed: number | null }> | null
+      exercise_set_logs: Array<{ set_number: number; weight_kg: number | null; weight_text: string | null; reps_completed: number | null }> | null
     }
     const rows = (priorRows ?? []) as unknown as PriorRow[]
     const latestWhen: Record<string, number> = {}
     for (const row of rows) {
       const name = row.prescribed_exercise_name
-      const sets = (row.exercise_set_logs ?? []).filter(s => s.weight_kg != null || s.reps_completed != null)
+      const sets = (row.exercise_set_logs ?? []).filter(s => s.weight_kg != null || s.weight_text != null || s.reps_completed != null)
       for (const s of sets) {
         const e = estimate1RM(s.weight_kg, s.reps_completed)
         if (e > (priorBest[name] ?? 0)) priorBest[name] = e
@@ -85,7 +85,7 @@ export default async function PortalLogSessionPage({
         lastTime[name] = {
           sets: [...sets]
             .sort((a, b) => a.set_number - b.set_number)
-            .map(s => ({ weight: s.weight_kg, reps: s.reps_completed })),
+            .map(s => ({ weight: s.weight_kg, weightText: s.weight_text, reps: s.reps_completed })),
           when: whenIso,
         }
       }
@@ -139,6 +139,7 @@ export default async function PortalLogSessionPage({
           session_exercise_completion_id: s.session_exercise_completion_id,
           set_number: s.set_number,
           weight_kg: s.weight_kg,
+          weight_text: s.weight_text,
           reps_completed: s.reps_completed,
           rpe: s.rpe,
         }))}

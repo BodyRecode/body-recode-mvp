@@ -148,6 +148,8 @@ export async function upsertSet(
     sessionExerciseCompletionId: string
     setNumber: number
     weightKg?: number | null
+    /** Raw load as typed, for non-numeric entries like BW or a band colour. */
+    weightText?: string | null
     repsCompleted?: number | null
     rpe?: number | null
   },
@@ -162,6 +164,7 @@ export async function upsertSet(
         session_exercise_completion_id: input.sessionExerciseCompletionId,
         set_number: input.setNumber,
         weight_kg: input.weightKg ?? null,
+        weight_text: input.weightText?.trim() || null,
         reps_completed: input.repsCompleted ?? null,
         rpe: input.rpe ?? null,
         logged_at: new Date().toISOString(),
