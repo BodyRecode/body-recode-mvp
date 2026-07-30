@@ -92,6 +92,17 @@ export default async function PortalLogSessionPage({
     }
   }
 
+  // Movement prep was captured into prescription_snapshot when the session was
+  // started (workout-log-write.ts) but never rendered, so the client opened the
+  // log screen and saw only working sets. The warm-up is prescribed work: it is
+  // where the ankle, hip and thoracic prep for an injury history actually
+  // happens, and skipping it silently is how a Restoration block stops doing
+  // its job.
+  const snapshot = session.prescription_snapshot as { movement_prep?: unknown } | null
+  const movementPrep: string[] = Array.isArray(snapshot?.movement_prep)
+    ? (snapshot.movement_prep as unknown[]).filter((x): x is string => typeof x === 'string' && x.trim().length > 0)
+    : []
+
   return (
     <PortalPageShell
       backHref={`/portal/${token}/program/log`}
@@ -104,6 +115,7 @@ export default async function PortalLogSessionPage({
     >
       <LogClient
           token={token}
+          movementPrep={movementPrep}
           clientId={client.id}
           sessionCompletionId={session.id}
           sessionStatus={session.status}

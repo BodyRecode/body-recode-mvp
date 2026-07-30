@@ -68,6 +68,8 @@ interface Props {
   sessionCompletionId: string
   sessionStatus: string
   initialSessionNotes: string
+  /** Warm-up from the prescription snapshot. Prescribed work, not a suggestion. */
+  movementPrep?: string[]
   exercises: ExerciseRow[]
   initialSetLogs: SetLog[]
   /** Per-exercise-name: last session's sets + when, for the "last time" line. */
@@ -328,12 +330,68 @@ export default function LogClient(props: Props) {
     }
   }
 
+  // Ticks are local to the session view and deliberately not persisted. Prep is
+  // pass/fail work with no sets, reps or load to record, so writing it to the
+  // database would add a table and a sync path to store "yes she did the ankle
+  // circles". The checkbox exists so she can keep her place, not so we can audit
+  // it. If prep adherence ever needs measuring, that is a schema decision, not a
+  // side effect of showing the list.
+  const [prepDone, setPrepDone] = useState<Set<number>>(new Set())
+
   /* ===========================================================
    * Render
    * =========================================================== */
 
+  const prep = props.movementPrep ?? []
+
   return (
     <div className="space-y-5">
+      {prep.length > 0 && (
+        <section className="rounded-xl border border-stone-200 bg-stone-50 p-4">
+          <div className="flex items-baseline justify-between gap-3 mb-2">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-stone-700">Movement prep</h2>
+            <span className="text-xs text-stone-500">
+              {prepDone.size}/{prep.length} done
+            </span>
+          </div>
+          <p className="text-xs text-stone-500 mb-3">
+            Do these before your first working set. They are part of the session, not a warm-up you can skip.
+          </p>
+          <ul className="space-y-1.5">
+            {prep.map((item, i) => {
+              const done = prepDone.has(i)
+              return (
+                <li key={i}>
+                  <button
+                    type="button"
+                    onClick={() => setPrepDone(prev => {
+                      const next = new Set(prev)
+                      if (next.has(i)) next.delete(i); else next.add(i)
+                      return next
+                    })}
+                    className="flex w-full items-start gap-2.5 text-left group"
+                  >
+                    <span
+                      className={`mt-0.5 flex h-4 w-4 flex-none items-center justify-center rounded border text-[10px] leading-none transition-colors ${
+                        done
+                          ? 'border-[#1B6DFC] bg-[#1B6DFC] text-white'
+                          : 'border-stone-300 bg-white text-transparent group-hover:border-stone-400'
+                      }`}
+                      aria-hidden
+                    >
+                      ✓
+                    </span>
+                    <span className={`text-sm ${done ? 'text-stone-400 line-through' : 'text-stone-700'}`}>
+                      {item}
+                    </span>
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        </section>
+      )}
+
       {props.exercises.map(ex => {
         const exState = exStates[ex.id]
         const setCount = ex.prescribed_sets ?? 0
