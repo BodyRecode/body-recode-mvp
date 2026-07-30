@@ -1,10 +1,20 @@
 {
   "functions": {
-    "src/app/api/generate-program/route.ts": { "maxDuration": 120 },
-    "src/app/api/generate-nutrition/route.ts": { "maxDuration": 120 },
-    "src/app/api/suggest-prescription/route.ts": { "maxDuration": 60 },
-    "src/app/api/suggest-plan/route.ts": { "maxDuration": 60 },
-    "src/app/api/suggest-nutrition/route.ts": { "maxDuration": 60 }
+    "src/app/api/generate-program/route.ts": {
+      "maxDuration": 300
+    },
+    "src/app/api/generate-nutrition/route.ts": {
+      "maxDuration": 300
+    },
+    "src/app/api/suggest-prescription/route.ts": {
+      "maxDuration": 300
+    },
+    "src/app/api/suggest-plan/route.ts": {
+      "maxDuration": 300
+    },
+    "src/app/api/suggest-nutrition/route.ts": {
+      "maxDuration": 300
+    }
   },
   "crons": [
     {
@@ -27,7 +37,6 @@
       "path": "/api/cron/checkin-window-closing",
       "schedule": "30 7 * * 0"
     },
-
     {
       "path": "/api/cron/session-reminders",
       "schedule": "0 22 * * *"

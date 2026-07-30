@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
@@ -186,6 +186,15 @@ export default function PrescriptionSuggest({
   const [suggestion, setSuggestion] = useState<Suggestion | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  // Errors render once, in a banner at the top, not inline in the form. The
+  // inline copy sat between the equipment checkboxes and the generate button,
+  // so a two-sentence message (a timeout, say) reflowed the whole section and
+  // squeezed the controls above it. A failure should never rearrange the form
+  // the coach is still working in.
+  const errorRef = useRef<HTMLDivElement | null>(null)
+  useEffect(() => {
+    if (error) errorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }, [error])
   const [generating, setGenerating] = useState(false)
 
   // Editable prescription fields
@@ -401,8 +410,9 @@ export default function PrescriptionSuggest({
       />
 
       {error && !loading && (
-        <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-4">
-          <p className="text-sm text-red-700">{error}</p>
+        <div ref={errorRef} className="bg-red-50 border border-red-200 rounded-xl p-4 mb-4">
+          <p className="text-sm font-semibold text-red-800 mb-1">Could not complete</p>
+          <p className="text-sm text-red-700 leading-relaxed">{error}</p>
           <Link
             href={`/dashboard/clients/${clientId}/program/generate${planBlockId ? `?plan_block_id=${planBlockId}` : ''}`}
             className="text-xs text-stone-600 hover:text-stone-800 mt-2 block"
@@ -548,10 +558,6 @@ export default function PrescriptionSuggest({
                 ))}
               </div>
             </div>
-
-            {error && (
-              <p className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-md px-3 py-2">{error}</p>
-            )}
 
             <button
               onClick={handleGenerate}
