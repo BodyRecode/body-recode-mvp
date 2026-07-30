@@ -68,3 +68,40 @@ export type AIModelTier = keyof typeof AI_MODELS
  * it. Nothing else needs to change.
  */
 export const CFFS_MODEL: string = AI_MODELS.clinical
+
+/**
+ * Reasoning effort, measured rather than assumed.
+ *
+ * Vicki's program generation, 2026-07-30, identical prompt and data:
+ *
+ *              default effort      effort: 'low'
+ *   time       307.6s              71.0s
+ *   output     31,610 tokens       7,598 tokens
+ *   exercises  3-4 per session     5-6 per session
+ *   slots      3-4 of 5 used       all 5 used
+ *
+ * Extended thinking made it strictly worse. It spent the whole output budget
+ * deliberating and then produced a THINNER program. At 20k tokens it consumed
+ * the entire allowance on thinking and emitted no text at all, which surfaced as
+ * `stop_reason=max_tokens` with no content and then a 504.
+ *
+ * The reason is the task shape. Program generation is structured assembly
+ * against explicit doctrine: fixed slots, a filtered exercise list, hard RPE
+ * ceilings. There is little to reason about and a lot to lay out, so deliberation
+ * costs budget without buying accuracy.
+ *
+ * ASSEMBLY   Large structured output against explicit rules. Slots, schemas,
+ *            enumerated choices. Low effort: the rules do the thinking.
+ *
+ * ANALYSIS   Genuine synthesis where the answer is not implied by the inputs.
+ *            The CFFS reading 221 intake points, a macro arc trading a fixed
+ *            deadline against a Red readiness gate. Leave the default.
+ *
+ * Do not generalise this without measuring. `npm run repro:program` and
+ * `npm run time:program` exist so effort is set from numbers, not from a hunch
+ * about how hard a task looks.
+ */
+export const AI_EFFORT = {
+  assembly: 'low',
+} as const
+

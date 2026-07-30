@@ -13,7 +13,7 @@ import {
 } from '@/lib/program-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { withTemporalContext } from '@/lib/temporal-context'
-import { AI_MODELS } from '@/lib/ai-models'
+import { AI_MODELS, AI_EFFORT } from '@/lib/ai-models'
 
 export const maxDuration = 300
 
@@ -335,6 +335,10 @@ export async function POST(request: NextRequest) {
       message = await anthropic.messages.stream({
         model: AI_MODELS.clinical,
         max_tokens: MAX_TOKENS,
+        // Measured, not guessed. See AI_EFFORT: default effort took 307s and
+        // 31.6k tokens to produce a WORSE program than low effort does in 71s
+        // and 7.6k. This is assembly work, not analysis.
+        output_config: { effort: AI_EFFORT.assembly } as never,
         system: withTemporalContext(buildProgramSystemPrompt() + recoveryPromptSection),
         messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, cffs, exercises as ExerciseRow[], macroPlanContext, client.medications, coachGuidance) }],
       }).finalMessage()
