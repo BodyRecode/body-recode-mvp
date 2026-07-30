@@ -280,6 +280,51 @@ const UPPER_PATTERNS = new Set([
  * Names the map does not know are ignored rather than counted as absent, so a
  * library gap produces silence instead of a false accusation.
  */
+/**
+ * Mechanical biases that train HIP EXTENSION, the propulsive action in walking,
+ * running, climbing and standing up out of a chair. Distinct from knee-dominant
+ * work, which three squat variations in a week will give you plenty of.
+ */
+const HIP_EXTENSION_BIAS = new Set(['glute_dominant', 'posterior_chain', 'hip_dominant'])
+
+/**
+ * Do the week's PRIMARY slots vary, and do they train hip extension?
+ *
+ * The full-body rule checks each session in isolation, so a week of three
+ * quad-dominant squat primaries passed cleanly. Vicki S, 2026-07-30: Leg Press,
+ * Dumbbell Goblet Squat and Hack Squat as the three primaries, with no hip
+ * extension work anywhere in the block, for a client training to walk 28km.
+ * Hip extension is the propulsive action in walking; leaving it out of a
+ * walk-preparation block is a programming error that no per-session rule catches.
+ *
+ * Reports rather than substituting. Swapping a primary rewrites the coach's
+ * session intent, and there are legitimate reasons to repeat a pattern.
+ */
+export function weeklyPrimaryBalance(
+  sessions: Session[],
+  meta: Map<string, { pattern: string; bias: string }>
+): { patterns: string[]; hasHipExtension: boolean; allSamePattern: boolean } {
+  const patterns: string[] = []
+  let hasHipExtension = false
+  for (const session of sessions) {
+    for (const block of session.blocks ?? []) {
+      if (blockRole(block.block_label) !== 'primary') continue
+      for (const ex of block.exercises ?? []) {
+        const m = meta.get((ex.exercise_name ?? '').trim().toLowerCase())
+        if (!m) continue
+        patterns.push(m.pattern)
+        if (m.pattern === 'hinge' || HIP_EXTENSION_BIAS.has(m.bias)) hasHipExtension = true
+      }
+    }
+  }
+  const known = patterns.filter(Boolean)
+  return {
+    patterns: known,
+    hasHipExtension,
+    allSamePattern: known.length > 1 && new Set(known).size === 1,
+  }
+}
+
 export function sessionIsFullBody(
   session: Session,
   patternByName: Map<string, string>
@@ -323,7 +368,9 @@ export function clampProgramToDoctrine(
    * Exercise name (lowercased) to primary_pattern, for the full-body check.
    * Omitted = the check is skipped rather than guessed at.
    */
-  patternByName?: Map<string, string>
+  patternByName?: Map<string, string>,
+  /** Exercise name (lowercased) to pattern AND mechanical bias, for the weekly balance check. */
+  exerciseMeta?: Map<string, { pattern: string; bias: string }>
 ): ClampResult {
   const ceilings = getRPECeilings(phase, tier)
   const range = getSetsPerSessionRange(phase, tier)
@@ -429,6 +476,25 @@ export function clampProgramToDoctrine(
         `Full-body check: ${partial.join('; ')}. ` +
         `${phase} at ${tier} should be full body every session, because pattern ` +
         `frequency matters more than per-session volume at this stage. Review before sending.`
+      )
+    }
+  }
+
+  // ── The week's primaries must vary, and must include hip extension ─────────
+  if (exerciseMeta && cloned.length > 1) {
+    const bal = weeklyPrimaryBalance(cloned, exerciseMeta)
+    if (bal.allSamePattern) {
+      notes.push(
+        `Weekly balance: every primary this week is the same pattern (${bal.patterns[0]}). ` +
+        `Vary the primary across sessions so the week trains more than one movement.`
+      )
+    }
+    if (bal.patterns.length > 1 && !bal.hasHipExtension) {
+      notes.push(
+        `Weekly balance: no primary trains hip extension (no hinge pattern and no ` +
+        `glute or posterior-chain bias). Primaries were ${bal.patterns.join(', ')}. ` +
+        `Hip extension is the propulsive action in walking and standing up; a week ` +
+        `without it is knee-dominant by omission rather than by choice.`
       )
     }
   }

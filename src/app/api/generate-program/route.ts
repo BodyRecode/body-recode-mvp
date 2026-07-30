@@ -421,11 +421,19 @@ export async function POST(request: NextRequest) {
       .filter((e: { name?: string; primary_pattern?: string }) => e.name && e.primary_pattern)
       .map((e: { name: string; primary_pattern: string }) => [e.name.trim().toLowerCase(), e.primary_pattern])
   )
+  // Pattern AND mechanical bias, for the weekly primary-balance check.
+  const exerciseMeta = new Map<string, { pattern: string; bias: string }>(
+    (exercises ?? [])
+      .filter((e: { name?: string; primary_pattern?: string }) => e.name && e.primary_pattern)
+      .map((e: { name: string; primary_pattern: string; mechanical_bias?: string }) =>
+        [e.name.trim().toLowerCase(), { pattern: e.primary_pattern, bias: e.mechanical_bias ?? '' }])
+  )
   const clamp = clampProgramToDoctrine(
     programData.sessions || [],
     phaseForDoctrine,
     effectiveTier,
-    patternByName
+    patternByName,
+    exerciseMeta
   )
   programData.sessions = clamp.sessions
   if (clamp.notes.length > 0) {

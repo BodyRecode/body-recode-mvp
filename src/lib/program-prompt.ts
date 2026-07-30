@@ -246,6 +246,32 @@ adaptation. Full body at 3x trains every pattern three times. A split solves a
 volume problem a beginner does not have, and costs the frequency they need.
 
 NEVER use body-part splits (chest day, arm day, leg day) below Intensification.
+
+WEEKLY PRIMARY BALANCE - THE WEEK MUST TRAIN MORE THAN ONE THING
+The full-body rule above governs each session. This governs the week.
+
+- Do NOT give every session the same primary movement pattern. Three squat
+  variations across a week (leg press, goblet squat, hack squat) is one pattern
+  trained three times, not a balanced week, however different the machines look.
+- At least one lower-body primary each week MUST train HIP EXTENSION: a hinge
+  pattern, or a glute_dominant / posterior_chain / hip_dominant mechanical bias.
+  Glute Bridge and Hip Thrust qualify and are safe where loaded hinging is not.
+- Hip extension is the propulsive action in walking, running, climbing stairs
+  and standing up out of a chair. A week without it is knee-dominant by
+  omission rather than by choice, and it is the wrong emphasis for any client
+  whose goal involves covering distance on foot.
+
+CRITICAL - A CONTRAINDICATION IS NOT A BAN ON THE WHOLE REGION. If coach
+guidance or an injury excludes LOADED hip hinging, that rules out deadlift
+patterns and loaded good mornings. It does NOT rule out hip extension. Glute
+Bridge and Hip Thrust load the glutes without a long lever through the spine.
+Reaching for quad-dominant squat patterns for every lower-body slot because
+"hinging is risky" is an over-reading that removes the exact quality the client
+needs. Find the safe version of the pattern; do not delete the pattern.
+(The error this prevents: a client with a symptomatic sacroiliac, preparing for a
+28km walk, was given Leg Press, Goblet Squat and Hack Squat as her three
+primaries and no hip extension work anywhere in the block, because the guidance
+said to avoid loaded hip hinging.)
 Do not label a session "Upper" or "Lower" when the full-body rule applies.
 
 Slot types (in order within session):
