@@ -257,7 +257,16 @@ export function requiresFullBodySessions(
   return false
 }
 
-/** Lower-body drivers. A session without one of these is not full body. */
+/**
+ * Lower-body DRIVERS. A session without one of these is not full body.
+ *
+ * `lower_leg` and `abduction` are deliberately NOT here, though both are
+ * lower-body patterns. They were added to the library on 2026-07-30 as
+ * resilience work, and a session of calf raises and a bench press is not a full
+ * body session. The driver has to be a hip or knee pattern carrying real load.
+ * Counting resilience work as a driver would let the full-body rule pass on a
+ * session that never trains the legs.
+ */
 const LOWER_PATTERNS = new Set(['squat', 'hinge'])
 /** Upper-body drivers. Carry, rotation and locomotion are trunk/whole-body. */
 const UPPER_PATTERNS = new Set([

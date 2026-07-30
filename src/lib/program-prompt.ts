@@ -258,6 +258,19 @@ Slot types (in order within session):
 Slot rules:
 - Fixed order. Cannot reorder, merge, subdivide, or add slots.
 - Optional slots may be omitted. Primary Load Slot is never omitted.
+- IN RESTORATION, THE CAPACITY/RESILIENCE SLOT IS ALSO MANDATORY. Restoration
+  exists to build tissue tolerance, so omitting the slot that does exactly that
+  makes the block do the one thing it is for, least. Vicki S's first Restoration
+  program (2026-07-29) used Primary, Secondary, Accessory and Trunk and left
+  Capacity/Resilience empty, producing three exercises and a plank per session:
+  doctrinally legal, and roughly 25 minutes of work for a client who walks and
+  cycles everywhere. Fill it with work for the tissues that actually limit this
+  client, in their injury domain, sub-threshold.
+- Use the resilience slot for the lower leg and frontal-plane hip when the
+  client's limiters are there. The library now carries calf, tibialis, hip
+  abduction and clamshell work (added 2026-07-30). Before that date it carried
+  NONE of it, so older programs will show this gap and it is not the coach's
+  omission.
 - Capacity grows WITHIN slots (add exercises to a slot), not by adding slots.
 
 ═══════════════════════════════════════
