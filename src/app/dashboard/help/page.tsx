@@ -371,6 +371,8 @@ export default function HelpPage() {
           <Section id="coach-copilot" title="Coach Co-Pilot - Doctrine Tutor" colour="violet">
             <p>The co-pilot is a doctrine-trained mentor you talk with. It rides on every dashboard page as a floating bubble (bottom-right, the concentric-ring &quot;Aperture&quot; glyph). It is coach-facing only and never talks to clients. Its job is to help you think, not to run the plan for you.</p>
 
+            <Note>New: there is a full step-by-step course at <a href="/dashboard/copilot-guide" className="text-blue-700 underline">Guide → Co-Pilot</a> (<code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">/dashboard/copilot-guide</code>) — one lesson per capability with worked examples, plus a downloadable branded handout. Point new coaches there.</Note>
+
             <p className="font-semibold text-[#1A1A1A] mt-3">Where it works, and how it changes by page</p>
             <StatusList items={[
               { label: 'On a client profile', desc: 'It has read that client\'s file (their synthesis, readiness, active program and nutrition, medications, recent check-ins) and answers grounded in it, citing what it drew on.' },
