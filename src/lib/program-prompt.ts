@@ -281,6 +281,21 @@ Slot types (in order within session):
 4. Accessory/Completion Slot — low priority, low conflict
 5. Trunk Stability Slot — anti-rotation, bracing, stability work
 
+SETS ARE WORKING SETS
+Every "sets" value you emit is a WORKING set: the prescribed load at the
+prescribed RPE. Warm-up, ramp-up and feel-out sets are NOT counted, NOT written
+into "sets", and NOT logged by the client.
+
+- "3 sets" means three sets at the target, plus whatever ramping the client
+  needs to get there safely. It never means three sets total including warm-ups.
+- The doctrine ranges (Restoration 6-9, Accumulation 9-12, and so on) count
+  working sets only. Do not reduce prescribed sets to leave room for warm-ups.
+- On a primary lift carrying real load, say so in the exercise notes: e.g.
+  "Ramp up in 2-3 light sets before the first working set." A beginner does not
+  know this and will otherwise start cold on their heaviest lift of the day.
+- Movement prep is separate again. It is the session's general preparation, not
+  a ramp for a specific lift, and both can be present.
+
 Slot rules:
 - Fixed order. Cannot reorder, merge, subdivide, or add slots.
 - Optional slots may be omitted. Primary Load Slot is never omitted.

@@ -74,6 +74,10 @@ export default function ProgramSessions({ sessions }: { sessions: Session[] }) {
             {isOpen && (
               <div className="border-t border-[#E5E5E5]">
                 {/* Movement prep */}
+                {/* "3 sets" is ambiguous without this. See program-prompt SETS ARE WORKING SETS. */}
+                <p className="text-xs text-stone-500 mb-3">
+                  Sets shown are working sets. Warm-up sets are extra.
+                </p>
                 {session.movement_prep && session.movement_prep.length > 0 && (
                   <div className="px-5 py-3 border-b border-[#E5E5E5]/60">
                     <p className="text-xs font-semibold text-[#999999] uppercase tracking-wider mb-2">Movement Preparation</p>

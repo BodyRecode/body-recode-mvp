@@ -422,6 +422,14 @@ export default function LogClient(props: Props) {
         </section>
       )}
 
+      {/* Sets are working sets. Without this line "3 sets" is ambiguous, and a
+          beginner reads it as three sets total and starts cold on their
+          heaviest lift of the day. */}
+      <p className="text-xs text-stone-500 leading-relaxed">
+        The sets below are <strong className="text-stone-700">working sets</strong> at the
+        prescribed effort. Warm-up and ramp-up sets are extra, and you do not log them.
+      </p>
+
       {props.exercises.map(ex => {
         const exState = exStates[ex.id]
         const setCount = ex.prescribed_sets ?? 0
