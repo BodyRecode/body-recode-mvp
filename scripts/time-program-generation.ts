@@ -15,7 +15,7 @@ const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
 async function main() {
   const system = withTemporalContext(buildProgramSystemPrompt())
   console.log(`system prompt: ${system.length} chars (~${Math.round(system.length / 4)} tokens)`)
-  console.log(`model: ${AI_MODELS.clinical}, max_tokens: 20000\n`)
+  console.log(`model: ${AI_MODELS.clinical}, max_tokens: 32000\n`)
 
   const t0 = Date.now()
   let firstToken = 0
@@ -23,7 +23,7 @@ async function main() {
 
   const stream = anthropic.messages.stream({
     model: AI_MODELS.clinical,
-    max_tokens: 20000,
+    max_tokens: 32000,
     system,
     messages: [{
       role: 'user',

@@ -297,7 +297,15 @@ export async function POST(request: NextRequest) {
   // the request past the function limit. Truncation was the cause; the timeout
   // was only the symptom. Raising the ceiling removes the retry entirely in the
   // normal case.
-  const MAX_TOKENS = 20000
+  // 20000 was still not enough. Production logs, 2026-07-30:
+  //   attempt 1/3: AI returned no text content (stop_reason=max_tokens)
+  //   Vercel Runtime Timeout Error: Task timed out after 300 seconds
+  //
+  // No text block at all, meaning the budget was consumed before any output was
+  // written. The local timing test passed at 20k only because it used a short
+  // instruction; the real prompt carries 76 exercises, the macro arc context and
+  // the coach guidance, so the model works far harder.
+  const MAX_TOKENS = 32000
   // Evolving-any (bare `= null`), matching the original untyped JSON.parse
   // result, so the downstream doctrine/recovery clamps keep their loose access.
   let programData = null
@@ -321,12 +329,15 @@ export async function POST(request: NextRequest) {
     }
     let message
     try {
-      message = await anthropic.messages.create({
+      // Streamed rather than buffered. At this output size a non-streaming call
+      // holds the whole response in memory and gives no signal until it is
+      // finished, so a run that overshoots looks identical to a hung one.
+      message = await anthropic.messages.stream({
         model: AI_MODELS.clinical,
         max_tokens: MAX_TOKENS,
         system: withTemporalContext(buildProgramSystemPrompt() + recoveryPromptSection),
         messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, cffs, exercises as ExerciseRow[], macroPlanContext, client.medications, coachGuidance) }],
-      })
+      }).finalMessage()
     } catch (err) {
       lastError = `AI error: ${err instanceof Error ? err.message : String(err)}`
       console.error(`[generate-program] Anthropic API error (attempt ${attempt}/3):`, lastError)
@@ -342,12 +353,17 @@ export async function POST(request: NextRequest) {
 
     console.log(`[generate-program] attempt ${attempt}/3 response (stop_reason=${message.stop_reason}, first 300):`, textBlock.text.slice(0, 300))
 
+    // Retrying an identical request with an identical cap truncates identically.
+    // The old loop did it twice more and spent the whole function budget proving
+    // it, which is how a truncation turned into a 504 with no usable error.
     if (message.stop_reason === 'max_tokens') {
-      lastError = `AI output was truncated at the ${MAX_TOKENS}-token limit`
-      console.warn(`[generate-program] attempt ${attempt}/3: ${lastError}`)
-      continue
+      lastError =
+        `The program came back longer than the ${MAX_TOKENS}-token limit allows. ` +
+        `Retrying would truncate the same way, so this stopped instead of timing out. ` +
+        `Reduce the block's week duration or session count and try again.`
+      console.error(`[generate-program] hit max_tokens at ${MAX_TOKENS}, not retrying`)
+      break
     }
-
     const jsonText = extractFirstJsonObject(textBlock.text)
     if (!jsonText) {
       lastError = `Could not locate a JSON object in AI output: ${textBlock.text.slice(0, 200)}`
