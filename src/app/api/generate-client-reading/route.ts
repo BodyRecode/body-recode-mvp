@@ -28,6 +28,54 @@ function stripEmDashes<T>(value: T): T {
   return value
 }
 
+/**
+ * What is actually prescribed right now, appended to the reading prompt.
+ *
+ * The reading explains the reasoning behind the plans, so it must not describe a
+ * plan the client does not have. "What we are not doing yet" in particular is
+ * a factual claim about the prescription, not a doctrinal position.
+ */
+function livePrescriptionSection(
+  plan: Record<string, unknown> | null,
+  program: Record<string, unknown> | null,
+): string {
+  if (!plan && !program) {
+    return `
+
+WHAT IS CURRENTLY PRESCRIBED: nothing yet. No active training program and no
+active nutrition plan. Write about direction and intent only, and do not state
+what is or is not being done, because nothing has been decided.`
+  }
+  const lines: string[] = ['', 'WHAT IS CURRENTLY PRESCRIBED (this is live and the client can see it)']
+  if (program) {
+    lines.push(`- Training: ${program.block_name}, ${program.progression_phase} phase, ${program.training_goal} goal, ${program.training_frequency}x/week for ${program.week_duration} weeks.`)
+    if (program.conditioning) lines.push(`- Conditioning: ${String(program.conditioning).split('\n')[0]}`)
+  } else {
+    lines.push('- Training: no active program yet.')
+  }
+  if (plan) {
+    lines.push(`- Nutrition: ${plan.entry_state} entry state, ${plan.meal_frequency} meals, protein anchor ${plan.protein_anchor_g}g, carb demand ${plan.carb_demand_level}, ${plan.estimated_calorie_band}.`)
+    if (plan.energy_tdee_kcal && plan.energy_target_low_kcal) {
+      const tdee = Number(plan.energy_tdee_kcal)
+      const band = String(plan.estimated_calorie_band ?? '')
+      const mid = Number((band.match(/(\d{3,4})/g) ?? []).map(Number).reduce((a, b) => a + b, 0)) / Math.max(1, (band.match(/(\d{3,4})/g) ?? []).length)
+      const deficit = Number.isFinite(mid) ? Math.round(tdee - mid) : null
+      if (deficit && deficit > 75) {
+        lines.push(`- The nutrition plan carries a deliberate deficit of roughly ${deficit} kcal a day against an estimated maintenance of ${tdee}. IT IS A DEFICIT. Do NOT write that calorie restriction is not part of the picture, or that nutrition is not being tightened. Explain instead that the reduction is small and deliberate and why it is set where it is.`)
+      } else {
+        lines.push(`- The nutrition plan sits at or near maintenance (estimated ${tdee} kcal). It is not a fat-loss plan, and you may say so.`)
+      }
+    }
+  } else {
+    lines.push('- Nutrition: no active plan yet.')
+  }
+  lines.push('')
+  lines.push('CRITICAL: the "what we are not doing yet" section is a FACTUAL claim about the')
+  lines.push('list above, not a general statement of doctrine. Check it before you write it.')
+  lines.push('Never say something is not being done when the live prescription does it.')
+  return lines.join('\n')
+}
+
 export async function POST(request: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -72,6 +120,22 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Client not found' }, { status: 404 })
   }
 
+  // What has ACTUALLY been prescribed. The reading has a section titled "what
+  // we are not doing yet", and until 2026-07-30 it was written from the CFFS
+  // alone with no knowledge of the live plans. On Vicki S that produced
+  // "Calorie restriction isn't part of the picture either... tightening it
+  // further isn't what this stage calls for" while her active plan carried a
+  // 193 kcal deficit and 50g less carbohydrate. A client reading the
+  // explanation and then opening the plan sees the coach contradict himself.
+  const [{ data: livePlan }, { data: liveProgram }] = await Promise.all([
+    admin.from('nutrition_plans')
+      .select('entry_state, carb_demand_level, protein_anchor_g, estimated_calorie_band, meal_frequency, energy_tdee_kcal, energy_target_low_kcal, energy_target_high_kcal')
+      .eq('client_id', cffs.client_id).eq('is_active', true).maybeSingle(),
+    admin.from('programs')
+      .select('block_name, progression_phase, training_goal, training_frequency, week_duration, conditioning')
+      .eq('client_id', cffs.client_id).eq('is_active', true).maybeSingle(),
+  ])
+
   const cffsContext: CFFSContext = {
     body_state_classification: cffs.body_state_classification,
     resolution_state: cffs.resolution_state,
@@ -112,7 +176,7 @@ export async function POST(request: NextRequest) {
         cffsContext,
         { name: client.name, package: client.package },
         cffs.cr_coach_guidance ?? null
-      ),
+      ) + livePrescriptionSection(livePlan, liveProgram),
     },
   ]
   let cleaned: Record<string, string> | null = null
