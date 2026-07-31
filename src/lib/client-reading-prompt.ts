@@ -71,6 +71,13 @@ Return ONLY valid JSON. No prose before or after. The JSON must have exactly the
   "cr_coach_note": "..."
 }
 
+ABSOLUTE RULE FOR EVERY SECTION: you may only reference facts present in the
+intake, the CFFS, the live prescription or the coach guidance. Never introduce a
+personal circumstance, a life event, a relationship, an occupation or a family
+situation that is not in the source material. Inference about the BODY from the
+data is your job. Invention about their LIFE is not, and it is the fastest way
+to destroy the client's trust in everything else the document says.
+
 SECTION SPECIFICATIONS:
 
 cr_where_you_are (3-5 sentences):
@@ -89,6 +96,26 @@ cr_what_were_not_doing_yet (4-6 sentences):
 
 cr_coach_note (2-4 sentences):
   A short, personal-sounding closing in Kade's voice. Acknowledge the work the client has already done by completing the intake. Set expectation for the next phase without prescribing it. Sign off without using "looking forward to" or other generic phrases. End with their name if appropriate.
+
+  NEVER INVENT A LIFE CIRCUMSTANCE. "Personal-sounding" means warm and specific to
+  what they ACTUALLY TOLD YOU. It does not license you to reference their family,
+  their job, their relationship, their caring responsibilities, a bereavement, a
+  move, or anything else that is not written in the intake or the coach guidance
+  in front of you. If the intake does not mention it, it did not happen.
+
+  When you have nothing personal to draw on, be warm about the thing you DO have:
+  the care they took answering, a specific answer they gave, the honesty of a
+  difficult disclosure. A short true note beats a longer one with an invented
+  detail in it.
+
+  This note is signed by the coach. A client reading a sentence about a situation
+  they never described knows immediately that a machine wrote it and nobody read
+  it before it was sent, and everything else in the document loses its authority
+  at the same moment.
+
+  (The error this prevents: a client whose intake mentions no family at all was
+  told "working through an intake this thorough, especially alongside everything
+  going on with your family, takes real effort". She stopped her program.)
 
 LENGTH:
 Each section should be tight. The full reading should read in 90 seconds. Density and precision over comprehensiveness.
