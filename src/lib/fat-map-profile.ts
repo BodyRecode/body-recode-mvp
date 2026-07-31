@@ -13,8 +13,14 @@
  *   - Androgen-Decline(testosterone)  — MALE only
  *
  * Sex is the hard gate (it decides which zones are even possible). Fat-storage
- * location is the direct discriminator (it IS the Fat Map). Age + cycle status
- * are tiebreakers / confidence levers layered on top.
+ * location LEADS when supplied, but it only narrows the field — three of the four
+ * drivers push fat centrally, so location alone misclassifies. The accompanying
+ * signal decides: limbs thinning = cortisol, timing = insulin, muscle and drive
+ * falling = androgen. Age + cycle status are tiebreakers / confidence levers, and
+ * for Estrogen-Shift they set the phase.
+ *
+ * See 00_PLAYBOOK/Fat_Map_Definitions_LOCKED.md (v2.0, 2026-07-31) and
+ * Fat_Map_Research_Review_2026-07-31.md for the evidence behind this.
  *
  * Pure, deterministic. Backward compatible: with no signals supplied it falls
  * back to the original score-pattern logic so legacy leads still type.
@@ -53,10 +59,10 @@ export const PROFILE_DRIVERS: Record<Profile, string> = {
 
 /** Coach-facing descriptors (pre-call brief). Terse, clinical, coach voice. */
 export const PROFILE_DESCRIPTORS: Record<Profile, string> = {
-  'Stress-Stored': 'Managing a lot, holding on. Harder you push, tighter the body holds.',
-  'Insulin-Drift': 'Effort going in but insulin signalling has drifted. The body stores readily and the response stays suppressed.',
-  'Estrogen-Shift': 'Long-arc oestrogen-driven conservation. Slow to shift, but moves once restriction stops and the cycle is respected.',
-  'Androgen-Decline': 'Output going up but the testosterone-signalling channel never recovers. Drive and capacity slipping.',
+  'Stress-Stored': 'Central anterior storage. Front of the midsection fills while the limbs stay lean or thin out — that contrast is the tell. Harder you push, tighter the body holds.',
+  'Insulin-Drift': 'Posterior and flank storage — mid-back, lower back, love handles — plus deep abdominal fullness, with the front relatively spared. Afternoon crash and evening cravings are the timing tell.',
+  'Estrogen-Shift': 'Oestrogen-driven, and it runs in two phases. Phase 1 holds gluteofemoral (hips, glutes, outer thighs). Phase 2 redistributes centrally as oestrogen falls, lean mass with it. Read the phase before the location.',
+  'Androgen-Decline': 'A composition shift, not a storage location. Central fat up, lean mass down, chest filling via aromatisation. Drive, recovery and capacity slipping.',
   'Indeterminate': 'Scorecard alone doesn\'t cleanly point at one of the four. The intake will tell us which.',
 }
 
@@ -66,20 +72,29 @@ export const PROFILE_DESCRIPTORS: Record<Profile, string> = {
  * (that is the $37 report's job). Approved 2026-06-24.
  */
 export const PROFILE_DESCRIPTORS_LEAD: Record<Profile, string> = {
-  'Stress-Stored': "You're managing a lot, and your body is holding on because of it. The harder you push, the tighter it holds, so effort alone keeps backfiring.",
-  'Insulin-Drift': "You're putting the work in, but your body is storing easily and not responding to it. The input is there; the signal that turns it into change has drifted.",
+  'Stress-Stored': "You're managing a lot, and your body is holding on because of it. It sits at the front of your middle while your arms and legs stay lean, and the harder you push the tighter it holds.",
+  'Insulin-Drift': "You're putting the work in, but your body is storing easily and not responding to it. It tends to settle around the back and sides rather than the front, and the signal that turns effort into change has drifted.",
   'Estrogen-Shift': "Your body has shifted into a slower, more protective mode. It's not broken and it's not effort; it responds again once the approach respects what's changed.",
   'Androgen-Decline': "You're still putting the output in, but your drive, recovery and capacity have slipped. The system that turns training into results isn't bouncing back.",
   'Indeterminate': "No single pattern stands out from your answers yet. We'll pin down exactly what's driving your result on your call.",
 }
 
 /**
- * Fat-storage location → Fat Map profile. Mirrors the doctrine in the
- * pre-call brief Fat Map section: front belly/stomach = cortisol, hips/thighs =
- * oestrogen, full-body softening = insulin, lost tone/drive = androgen.
- * Posterior/flank storage (lower back, love handles, upper back) is the
- * subcutaneous insulin-handling pattern → Insulin-Drift (the front belly is
- * the cortisol tell; sparing the front rules Stress-Stored OUT).
+ * Fat-storage location → Fat Map profile.
+ *
+ * Front belly/stomach = cortisol. Hips/thighs = oestrogen (phase 1).
+ * Posterior/flank (mid-back, lower back, love handles) = insulin. Lost
+ * tone/drive = androgen.
+ *
+ * Front vs back is the clean split between the two midsection patterns: the
+ * front belly is the cortisol tell, and sparing the front while holding
+ * posterior/flank rules Stress-Stored OUT.
+ *
+ * 'all_over' still routes to Insulin-Drift, but treat it as the weakest signal
+ * in the set. Generalised surface softness is superficial subcutaneous fat,
+ * which carries no meaningful insulin association — it is the DEEP abdominal
+ * and posterior depots that track insulin resistance. Prefer 'posterior' when
+ * the lead can distinguish it.
  */
 const STORAGE_PROFILE: Record<FatStorage, Profile> = {
   midsection: 'Stress-Stored',
