@@ -2,16 +2,13 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import PortalPageShell from '../portal-page-shell'
+import { requirePortalClient } from '@/lib/portal-guard'
 
 export default async function CheckinHistoryPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
   const admin = createAdminClient()
 
-  const { data: client } = await admin
-    .from('clients')
-    .select('id, name')
-    .eq('onboarding_token', token)
-    .maybeSingle()
+  const client = await requirePortalClient(token)
 
   if (!client) return notFound()
 

@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { getWeekNumber, getCheckInWindowStatus, isCheckinTestMode } from '@/lib/weekly-checkin-questions'
 import CheckInForm from '@/app/checkin/[token]/checkin-form'
 import { brand } from "@/config/tenant";
+import { requirePortalClient } from '@/lib/portal-guard'
 
 export default async function PortalCheckinPage({
   params,
@@ -23,11 +24,7 @@ export default async function PortalCheckinPage({
     : null
   const admin = createAdminClient()
 
-  const { data: client } = await admin
-    .from('clients')
-    .select('*')
-    .eq('onboarding_token', token)
-    .maybeSingle()
+  const client = await requirePortalClient(token, '*')
 
   if (!client) return notFound()
 

@@ -9,6 +9,7 @@ import { notFound } from 'next/navigation'
 import PortalPageShell from '../../../portal-page-shell'
 import LogClient from './log-client'
 import { estimate1RM } from '@/lib/workout-logging'
+import { requirePortalClient } from '@/lib/portal-guard'
 
 export default async function PortalLogSessionPage({
   params,
@@ -18,11 +19,7 @@ export default async function PortalLogSessionPage({
   const { token, sessionCompletionId } = await params
   const admin = createAdminClient()
 
-  const { data: client } = await admin
-    .from('clients')
-    .select('id, name')
-    .eq('onboarding_token', token)
-    .maybeSingle()
+  const client = await requirePortalClient(token)
   if (!client) return notFound()
 
   const { data: session } = await admin

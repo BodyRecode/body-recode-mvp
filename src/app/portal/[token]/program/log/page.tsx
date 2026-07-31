@@ -17,16 +17,13 @@ import {
   computeLoggingMomentum,
 } from '@/lib/workout-logging'
 import StartSessionButton from './start-session-button'
+import { requirePortalClient } from '@/lib/portal-guard'
 
 export default async function PortalProgramLogPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
   const admin = createAdminClient()
 
-  const { data: client } = await admin
-    .from('clients')
-    .select('id, name')
-    .eq('onboarding_token', token)
-    .maybeSingle()
+  const client = await requirePortalClient(token)
 
   if (!client) return notFound()
 

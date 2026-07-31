@@ -3,16 +3,13 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import ClearanceUploadForm from './clearance-upload-form'
 import PortalPageShell from '../portal-page-shell'
+import { requirePortalClient } from '@/lib/portal-guard'
 
 export default async function PortalMedicalClearancePage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
   const admin = createAdminClient()
 
-  const { data: client } = await admin
-    .from('clients')
-    .select('id, name, medical_clearance_required, medical_clearance_received_at, medical_clearance_submitted_at, medical_clearance_doc_url')
-    .eq('onboarding_token', token)
-    .single()
+  const client = await requirePortalClient(token, 'medical_clearance_required, medical_clearance_received_at, medical_clearance_submitted_at, medical_clearance_doc_url')
 
   if (!client || !client.medical_clearance_required) return notFound()
 

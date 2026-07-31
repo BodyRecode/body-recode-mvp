@@ -5,6 +5,7 @@ import TrajectoryReadingInline from '@/components/trajectory-reading-inline'
 import Link from 'next/link'
 import PortalPageShell from '../portal-page-shell'
 import AskAboutThis from '@/components/ask-about-this'
+import { requirePortalClient } from '@/lib/portal-guard'
 
 import ProgramSessions from './program-sessions'
 
@@ -47,11 +48,7 @@ export default async function PortalProgramPage({ params }: { params: Promise<{ 
   const { token } = await params
   const admin = createAdminClient()
 
-  const { data: client } = await admin
-    .from('clients')
-    .select('id, name')
-    .eq('onboarding_token', token)
-    .maybeSingle()
+  const client = await requirePortalClient(token)
 
   if (!client) return notFound()
 

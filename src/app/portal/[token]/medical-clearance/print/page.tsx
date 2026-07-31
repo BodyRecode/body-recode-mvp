@@ -1,16 +1,13 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import { brand } from "@/config/tenant";
+import { requirePortalClient } from '@/lib/portal-guard'
 
 export default async function PortalClearancePrintPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
   const admin = createAdminClient()
 
-  const { data: client } = await admin
-    .from('clients')
-    .select('id, name, email, medical_clearance_required')
-    .eq('onboarding_token', token)
-    .single()
+  const client = await requirePortalClient(token, 'medical_clearance_required')
 
   if (!client || !client.medical_clearance_required) return notFound()
 

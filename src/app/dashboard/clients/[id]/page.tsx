@@ -1,4 +1,5 @@
 import { createAdminClient } from '@/lib/supabase/admin'
+import OffboardPanel from './offboard-panel'
 import { signedBaselinePhotoSet } from '@/lib/baseline-photos'
 import { notFound } from 'next/navigation'
 import { ChevronLeft, Activity, RefreshCw, AlertTriangle as AlertTriangleIcon, Eye, Sparkles } from 'lucide-react'
@@ -1806,6 +1807,19 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
       </div>
       <div data-tab="admin">
+
+      {/* Ending the engagement. Lives in Admin next to payments because that is
+          where a coach goes when a client stops, and because doing it by hand
+          took six database statements and recorded nothing. */}
+      <div className="mb-4">
+        <OffboardPanel
+          clientId={id}
+          clientName={client.name ?? 'this client'}
+          endedAt={client.ended_at ?? null}
+          endReason={client.end_reason ?? null}
+          retainUntil={client.retain_until ?? null}
+        />
+      </div>
 
       {/* Payments Section */}
       <MajorSection

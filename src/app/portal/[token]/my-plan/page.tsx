@@ -6,6 +6,7 @@ import PortalPageShell from '../portal-page-shell'
 import { computeNutritionTotals, type FoodInput } from '@/lib/nutrition-validation'
 import PlanMeals from './plan-meals'
 import AskAboutThis from '@/components/ask-about-this'
+import { requirePortalClient } from '@/lib/portal-guard'
 
 interface Meal {
   meal_number: number
@@ -48,11 +49,7 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
   const { token } = await params
   const admin = createAdminClient()
 
-  const { data: client } = await admin
-    .from('clients')
-    .select('id, name, meal_logging_enabled')
-    .eq('onboarding_token', token)
-    .maybeSingle()
+  const client = await requirePortalClient(token, 'meal_logging_enabled')
 
   if (!client) return notFound()
 

@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import PortalPageShell from '../../portal-page-shell'
 import MealLogClient, { type LogMeal } from './meal-log-client'
 import { brisbaneToday } from '@/lib/meal-log-write'
+import { requirePortalClient } from '@/lib/portal-guard'
 
 interface PlanMeal {
   meal_number?: number
@@ -15,11 +16,7 @@ export default async function PortalMealLogPage({ params }: { params: Promise<{ 
   const { token } = await params
   const admin = createAdminClient()
 
-  const { data: client } = await admin
-    .from('clients')
-    .select('id, name, meal_logging_enabled')
-    .eq('onboarding_token', token)
-    .maybeSingle()
+  const client = await requirePortalClient(token, 'meal_logging_enabled')
   if (!client) return notFound()
 
   const { data: plan } = await admin
