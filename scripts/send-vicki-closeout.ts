@@ -18,6 +18,20 @@ async function main() {
   const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
   const { data: client } = await db.from('clients').select('name, email').eq('id', CLIENT_ID).single()
 
+  // The REAL branded PDF: a puppeteer render of ReadingHeroShell, fetched from
+  // production with CRON_SECRET. Not a hand-built imitation. Two earlier
+  // attempts at reproducing the layout were wrong, which is why the route now
+  // accepts an internal token.
+  const secret = process.env.CRON_SECRET
+  if (!secret) throw new Error('CRON_SECRET missing; cannot fetch the reading PDF')
+  const pdfRes = await fetch(
+    `https://app.bodyrecode.au/api/dashboard/clients/${CLIENT_ID}/foundational-reading/pdf`,
+    { headers: { Authorization: `Bearer ${secret}` } },
+  )
+  if (!pdfRes.ok) throw new Error(`PDF fetch failed: ${pdfRes.status} ${await pdfRes.text()}`)
+  const pdf = Buffer.from(await pdfRes.arrayBuffer())
+  console.log(`Reading PDF fetched: ${(pdf.length / 1024).toFixed(1)} KB`)
+
   const message = [
     "That's all sorted. Your portal access has been removed and you won't hear from the system again.",
     "I've attached your Foundational Reading so you have it.",
@@ -51,6 +65,7 @@ async function main() {
     from: 'Kade Dunstone <kade@send.bodyrecode.au>',
     to: APPROVE_TO,
     subject: 'APPROVE BEFORE SENDING — close-out email for Vicki S',
+    attachments: [{ filename: 'Vicki_S_Foundational_Reading.pdf', content: pdf.toString('base64') }],
     html: `<div style="padding:16px;background:#FFF8E1;border-bottom:2px solid #F0C040;font-family:sans-serif;font-size:13px;color:#5A4500;">
       <strong>Not sent to Vicki.</strong> This is the draft for your approval, with her Foundational Reading attached.
       Her address (${client!.email}) is suppressed and her access is revoked.<br><br>
