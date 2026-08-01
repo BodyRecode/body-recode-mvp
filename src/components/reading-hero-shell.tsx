@@ -127,13 +127,45 @@ export default function ReadingHeroShell({
         .rh-who { font-size: 13px; color: ${MUTED}; }
         .rh-who b { color: ${INK}; font-weight: 700; display: block; font-size: 14px; }
         .rh-foot { text-align: center; margin-top: 34px; font-size: 11px; color: #98A2B3; }
+        /* Print is a different medium and was being served the screen layout.
+           Grey ground, drop shadows and 26px card padding read as depth on a
+           display and as wasted space and dirty paper in a PDF. Tightened
+           2026-08-01: white page, no shadows, no glows, denser type. Screen is
+           untouched. */
         @media print {
-          @page { margin: 12mm; size: A4; }
-          html, body { background: ${BG} !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+          @page { margin: 11mm; size: A4; }
+          html, body { background: #FFFFFF !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
           .no-print { display: none !important; }
-          .rh { overflow: visible; min-height: 0; }
-          .rh-col { padding: 0; }
-          .rh-card, .rh-hero, .rh-about { break-inside: avoid; }
+          .rh { overflow: visible; min-height: 0; background: #FFFFFF !important; }
+          .rh-col { padding: 0; max-width: none; }
+
+          /* Radial glows render as grey smudges on paper. */
+          .rh-glow, .rh-hero-glow { display: none !important; }
+
+          .rh-hero { padding: 20px 22px 22px; margin-bottom: 13px; border-radius: 11px; box-shadow: none; }
+          .rh-hero h1 { font-size: 25px; margin-bottom: 7px; }
+          .rh-hero-sub { font-size: 11.5px; line-height: 1.5; margin-bottom: 11px; max-width: 62ch; }
+          .rh-eyebrow { font-size: 9.5px; margin-bottom: 8px; }
+          .rh-pill { font-size: 10px; padding: 3px 9px; }
+          .rh-for { font-size: 10px; }
+
+          .rh-about { padding: 11px 15px; margin-bottom: 11px; border-radius: 9px; box-shadow: none; }
+          .rh-about p { font-size: 10.5px; line-height: 1.5; }
+
+          .rh-cards { gap: 9px; }
+          .rh-card { padding: 13px 16px; border-radius: 9px; box-shadow: none; break-inside: avoid; }
+          .rh-label { margin-bottom: 7px; gap: 8px; }
+          .rh-chip { width: 22px; height: 22px; border-radius: 6px; }
+          .rh-chip svg { width: 13px; height: 13px; }
+          .rh-label-text { font-size: 9.5px; }
+          .rh-body { font-size: 11px; line-height: 1.52; }
+
+          .rh-attn { margin-top: 11px; padding-top: 9px; gap: 9px; }
+          .rh-avatar { width: 32px; height: 32px; }
+          .rh-who { font-size: 10px; }
+          .rh-who b { font-size: 11px; }
+
+          .rh-foot { margin-top: 14px; font-size: 8.5px; }
         }
       `}</style>
 
