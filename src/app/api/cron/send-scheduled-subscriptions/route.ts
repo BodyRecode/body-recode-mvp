@@ -21,6 +21,10 @@ export async function GET(request: NextRequest) {
   const { data: clients } = await admin
     .from('clients')
     .select('id, name, email, package, onboarding_token')
+    // Offboarded clients receive nothing. Gated on clients.ended_at rather than
+    // on an active plan, so a coach can archive a former client's file without
+    // it silently re-enabling contact. See offboard-client.ts.
+    .is('ended_at', null)
     .lte('subscription_link_send_at', new Date().toISOString())
     .is('subscription_link_sent_at', null)
     .not('subscription_link_send_at', 'is', null)

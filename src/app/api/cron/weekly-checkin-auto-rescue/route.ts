@@ -55,6 +55,10 @@ export async function GET(request: NextRequest) {
   const { data: clientRows } = await admin
     .from('clients')
     .select('id, auto_checkin_response_enabled')
+    // Offboarded clients receive nothing. Gated on clients.ended_at rather than
+    // on an active plan, so a coach can archive a former client's file without
+    // it silently re-enabling contact. See offboard-client.ts.
+    .is('ended_at', null)
     .in('id', clientIds)
   const clientFlags = new Map((clientRows ?? []).map(c => [c.id, c.auto_checkin_response_enabled]))
 

@@ -48,7 +48,9 @@ export default function OffboardPanel({
           </p>
         )}
         <p className="text-xs text-stone-500 mt-2">
-          Portal access revoked, login banned, plans deactivated, email suppressed. Reinstating is done in the database, deliberately.
+          Portal access revoked, login banned, automated contact stopped, email suppressed.
+          Their full profile is unchanged and still open to you. Reinstating means clearing
+          ended_at, which is done in the database deliberately rather than as a button.
         </p>
       </div>
     )
@@ -58,9 +60,10 @@ export default function OffboardPanel({
     if (!reason) { setError('Pick a reason. It is the only part of this you will care about later.'); return }
     if (!confirm(
       `End the engagement with ${firstName}?\n\n` +
-      `This revokes their portal access, bans their login, deactivates their plans so the ` +
-      `automated emails stop, and suppresses their email address.\n\n` +
-      `Nothing is deleted. Records are retained for ${RETENTION_YEARS} years.`
+      `This revokes their portal access, bans their login, stops every automated email, ` +
+      `and suppresses their email address.\n\n` +
+      `Their full profile stays intact and visible to you. Nothing is deleted or archived. ` +
+      `Records are retained for ${RETENTION_YEARS} years.`
     )) return
 
     setBusy(true); setError(null)
@@ -84,7 +87,8 @@ export default function OffboardPanel({
           <div>
             <p className="text-sm font-semibold text-stone-800">End engagement</p>
             <p className="text-xs text-stone-600 mt-1">
-              Revokes access and stops all automated contact. Records are kept for {RETENTION_YEARS} years.
+              Revokes their access and stops all automated contact. Their profile stays intact and
+            open to you. Records kept for {RETENTION_YEARS} years.
             </p>
           </div>
           <button onClick={() => setOpen(true)} className="flex-none px-4 py-2 rounded-lg text-xs font-bold bg-stone-200 text-stone-700 hover:bg-stone-300 transition-colors">
@@ -126,12 +130,14 @@ export default function OffboardPanel({
             <ul className="text-xs text-stone-600 space-y-0.5 list-disc pl-4">
               <li>Close their portal and rotate the link so old bookmarks stop working</li>
               <li>Ban their login</li>
-              <li>Deactivate their program, nutrition plan and arc, which is what stops the automated emails</li>
+              <li>Stop every automated email: check-ins, log nudges, block-end, reminders</li>
               <li>Suppress their email address</li>
               <li>Record the date, reason and retention deadline</li>
             </ul>
             <p className="text-xs text-stone-500 mt-2">
-              Nothing is deleted. Every record is kept for {RETENTION_YEARS} years.
+              Their plans, readings, photos, messages and history stay exactly as they are in their
+              profile, and you can still open all of it. Nothing is deleted or archived. Records are
+              kept for {RETENTION_YEARS} years.
             </p>
           </div>
 

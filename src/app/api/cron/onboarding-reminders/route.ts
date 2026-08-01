@@ -99,6 +99,10 @@ export async function GET(request: NextRequest) {
   const { data: clients } = await admin
     .from('clients')
     .select('id, name, email, active, created_at, onboarding_token, agreement_accepted_at, health_declaration_submitted_at, medical_clearance_required, medical_clearance_submitted_at, medical_clearance_received_at, onboarding_reminders_sent, intake_invitations(status, completed_at), baselines(id)')
+    // Offboarded clients receive nothing. Gated on clients.ended_at rather than
+    // on an active plan, so a coach can archive a former client's file without
+    // it silently re-enabling contact. See offboard-client.ts.
+    .is('ended_at', null)
     .eq('active', true)
 
   if (!clients || clients.length === 0) {

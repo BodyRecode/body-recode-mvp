@@ -14,19 +14,27 @@ import type { SupabaseClient } from '@supabase/supabase-js'
  * panels, plans and the whole message thread stay exactly where they are. What
  * ends is access and contact.
  *
- * The six things that actually have to happen, in order of what breaks if you
- * forget them:
+ * WHAT THIS DOES NOT DO: touch their plans. An earlier version deactivated the
+ * program, nutrition plan and arc to stop the automated emails, because every
+ * client-facing cron keyed off `programs.is_active`. That worked and was still
+ * wrong: `is_active` does three jobs at once (marks the current plan for the
+ * COACH, feeds the PORTAL, drives the CRON), so switching it off to silence the
+ * email also emptied the client's file in the dashboard. Retaining records for
+ * five years is pointless if the coach cannot open them.
  *
- *  1. ended_at — the portal guard reads this, so it is what genuinely closes
- *     the door. Everything else is defence in depth.
- *  2. Deactivate the program, nutrition plan and arc — every client-facing cron
- *     keys off `programs.is_active`, so this is what stops the emails. Leaving
- *     it is how a client who has just quit gets a check-in reminder on Friday.
- *  3. Rotate the token — kills bookmarked URLs, and covers the portal pages
- *     that still trust a link.
- *  4. Ban the auth login.
- *  5. Suppress the email address.
- *  6. Record why, when, and by whom, plus the retention date.
+ * The gate moved to the client. Every client-facing cron now filters on
+ * `clients.ended_at is null`, so contact stops without anything being archived,
+ * and a former client's profile still shows their whole history exactly as it
+ * was on the day it ended.
+ *
+ * The five things that have to happen:
+ *
+ *  1. ended_at — the portal guard AND every cron read this. It is the gate.
+ *  2. Rotate the token — kills bookmarked URLs, and covers portal pages that
+ *     still trust a link.
+ *  3. Ban the auth login.
+ *  4. Suppress the email address.
+ *  5. Record why, when, and by whom, plus the retention date.
  */
 
 /**
@@ -106,8 +114,8 @@ export async function offboardClient(
   }
   const email = (input.email ?? client.email ?? '').trim()
 
-  // 1 + 3 + 6. ended_at is the gate; the rotated token covers anything holding
-  // an old link; the rest is the record.
+  // ended_at is the gate: the portal guard and every client-facing cron read
+  // it. The rotated token covers anything still holding an old link.
   const { error: clientErr } = await admin
     .from('clients')
     .update({
@@ -123,17 +131,14 @@ export async function offboardClient(
   steps.push({ step: 'Access revoked and engagement recorded', done: !clientErr, detail: clientErr?.message })
   if (clientErr) return { ok: false, steps, retainUntil: retainUntilIso, error: clientErr.message }
 
-  // 2. The emails. Every client-facing cron keys off an active program.
-  const { error: progErr } = await admin.from('programs').update({ is_active: false }).eq('client_id', clientId).eq('is_active', true)
-  steps.push({ step: 'Training program deactivated (stops check-in and log-nudge emails)', done: !progErr, detail: progErr?.message })
+  // Their plans are deliberately left ACTIVE. Contact is stopped by ended_at
+  // above, which every client-facing cron now filters on, so there is no reason
+  // to archive the file. The coach keeps a complete profile for the retention
+  // period, and reinstating a client is a matter of clearing ended_at rather
+  // than reconstructing what they were on.
+  steps.push({ step: 'Plans left intact and visible in their profile', done: true })
 
-  const { error: nutErr } = await admin.from('nutrition_plans').update({ is_active: false }).eq('client_id', clientId).eq('is_active', true)
-  steps.push({ step: 'Nutrition plan deactivated', done: !nutErr, detail: nutErr?.message })
-
-  const { error: arcErr } = await admin.from('training_plans').update({ status: 'draft' }).eq('client_id', clientId).eq('status', 'active')
-  steps.push({ step: 'Macro arc archived', done: !arcErr, detail: arcErr?.message })
-
-  // 5. Email suppression, belt and braces on top of deactivating the plans.
+  // Email suppression, belt and braces on top of the ended_at gate.
   if (email) {
     const { error: supErr } = await admin
       .from('email_suppressions')
