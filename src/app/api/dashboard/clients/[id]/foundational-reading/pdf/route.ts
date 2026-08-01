@@ -28,10 +28,15 @@ export async function GET(
   // An internal caller has no session cookies to forward, so the headless
   // browser would load the preview page as a stranger and render /login. Hand
   // it a short-lived signed token scoped to this exact path instead.
-  const previewPath = `/dashboard/clients/${id}/foundational-reading-preview`
+  // A coach renders the dashboard preview with their own cookies. An internal
+  // caller renders /render/..., which sits OUTSIDE the dashboard layout: that
+  // layout redirects any sessionless request to /login before a page-level
+  // check can run, which is why a bearer-only render produced the sign-in
+  // screen. Both routes render the same ReadingLayout.
+  const renderPath = `/render/foundational-reading/${id}`
   const path = internal
-    ? `${previewPath}?${PDF_TOKEN_PARAM}=${createPdfAccessToken(previewPath)}`
-    : previewPath
+    ? `${renderPath}?${PDF_TOKEN_PARAM}=${createPdfAccessToken(renderPath)}`
+    : `/dashboard/clients/${id}/foundational-reading-preview`
 
   return await renderDashboardPdf({
     path,
