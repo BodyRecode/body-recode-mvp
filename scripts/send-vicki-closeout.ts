@@ -27,6 +27,9 @@ async function main() {
 
   const { darkEmailShell, emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody } =
     await import('../src/lib/email-shell')
+  // The canonical signature: circular headshot, name, credentials, links.
+  // src/lib/email-signature.ts, used by 20+ senders.
+  const { darkEmailSignature } = await import('../src/lib/email-signature')
 
   const inner = [
     emailLogo(130),
@@ -36,6 +39,7 @@ async function main() {
     emailBody('Vicki,'),
     ...message.map(p => emailBody(p)),
     emailBody('Kade'),
+    darkEmailSignature(),
   ].join('\n')
 
   const html = darkEmailShell(inner, {
