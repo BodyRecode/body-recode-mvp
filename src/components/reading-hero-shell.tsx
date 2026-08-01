@@ -142,15 +142,15 @@ export default function ReadingHeroShell({
           /* Radial glows render as grey smudges on paper. */
           .rh-glow, .rh-hero-glow { display: none !important; }
 
-          .rh-hero { padding: 18px 20px 19px; margin-bottom: 10px; border-radius: 11px; box-shadow: none; }
+          .rh-hero { padding: 15px 18px 16px; margin-bottom: 8px; border-radius: 10px; box-shadow: none; }
           .rh-hero h1 { font-size: 23px; margin-bottom: 6px; }
           .rh-hero-sub { font-size: 11px; line-height: 1.45; margin-bottom: 9px; max-width: 78ch; }
           .rh-eyebrow { font-size: 9.5px; margin-bottom: 8px; }
           .rh-pill { font-size: 10px; padding: 3px 9px; }
           .rh-for { font-size: 10px; }
 
-          .rh-about { padding: 9px 14px; margin-bottom: 7px; border-radius: 9px; box-shadow: none; }
-          .rh-about p { font-size: 10px; line-height: 1.48; }
+          .rh-about { padding: 8px 13px; margin-bottom: 6px; border-radius: 8px; box-shadow: none; }
+          .rh-about p { font-size: 9.5px; line-height: 1.42; }
 
           .rh-cards { gap: 6px; }
           /* Cards FLOW across page breaks. break-inside:avoid pushed any long
@@ -158,15 +158,15 @@ export default function ReadingHeroShell({
              previous one blank, which is the "too much space" problem. A
              heading never orphans (break-after) and no single line is stranded
              (orphans/widows). */
-          .rh-card { padding: 10px 14px; border-radius: 9px; box-shadow: none; break-inside: auto; }
+          .rh-card { padding: 9px 13px; border-radius: 8px; box-shadow: none; break-inside: auto; }
           .rh-card p { orphans: 3; widows: 3; }
-          .rh-label { margin-bottom: 6px; gap: 8px; break-after: avoid; }
+          .rh-label { margin-bottom: 5px; gap: 7px; break-after: avoid; }
           /* The coach note and its signature stay together. */
           .rh-coach { break-inside: avoid; }
           .rh-chip { width: 22px; height: 22px; border-radius: 6px; }
           .rh-chip svg { width: 13px; height: 13px; }
           .rh-label-text { font-size: 9.5px; }
-          .rh-body { font-size: 10.5px; line-height: 1.45; }
+          .rh-body { font-size: 10.5px; line-height: 1.4; }
 
           .rh-attn { margin-top: 9px; padding-top: 8px; gap: 9px; }
           .rh-avatar { width: 32px; height: 32px; }
