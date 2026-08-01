@@ -142,30 +142,38 @@ export default function ReadingHeroShell({
           /* Radial glows render as grey smudges on paper. */
           .rh-glow, .rh-hero-glow { display: none !important; }
 
-          .rh-hero { padding: 20px 22px 22px; margin-bottom: 13px; border-radius: 11px; box-shadow: none; }
-          .rh-hero h1 { font-size: 25px; margin-bottom: 7px; }
+          .rh-hero { padding: 18px 20px 19px; margin-bottom: 10px; border-radius: 11px; box-shadow: none; }
+          .rh-hero h1 { font-size: 23px; margin-bottom: 6px; }
           .rh-hero-sub { font-size: 11.5px; line-height: 1.5; margin-bottom: 11px; max-width: 62ch; }
           .rh-eyebrow { font-size: 9.5px; margin-bottom: 8px; }
           .rh-pill { font-size: 10px; padding: 3px 9px; }
           .rh-for { font-size: 10px; }
 
-          .rh-about { padding: 11px 15px; margin-bottom: 11px; border-radius: 9px; box-shadow: none; }
-          .rh-about p { font-size: 10.5px; line-height: 1.5; }
+          .rh-about { padding: 10px 14px; margin-bottom: 9px; border-radius: 9px; box-shadow: none; }
+          .rh-about p { font-size: 10px; line-height: 1.48; }
 
-          .rh-cards { gap: 9px; }
-          .rh-card { padding: 13px 16px; border-radius: 9px; box-shadow: none; break-inside: avoid; }
-          .rh-label { margin-bottom: 7px; gap: 8px; }
+          .rh-cards { gap: 8px; }
+          /* Cards FLOW across page breaks. break-inside:avoid pushed any long
+             section wholesale onto the next page and left a third of the
+             previous one blank, which is the "too much space" problem. A
+             heading never orphans (break-after) and no single line is stranded
+             (orphans/widows). */
+          .rh-card { padding: 12px 15px; border-radius: 9px; box-shadow: none; break-inside: auto; }
+          .rh-card p { orphans: 3; widows: 3; }
+          .rh-label { margin-bottom: 6px; gap: 8px; break-after: avoid; }
+          /* The coach note and its signature stay together. */
+          .rh-coach { break-inside: avoid; }
           .rh-chip { width: 22px; height: 22px; border-radius: 6px; }
           .rh-chip svg { width: 13px; height: 13px; }
           .rh-label-text { font-size: 9.5px; }
-          .rh-body { font-size: 11px; line-height: 1.52; }
+          .rh-body { font-size: 10.5px; line-height: 1.5; }
 
           .rh-attn { margin-top: 11px; padding-top: 9px; gap: 9px; }
           .rh-avatar { width: 32px; height: 32px; }
           .rh-who { font-size: 10px; }
           .rh-who b { font-size: 11px; }
 
-          .rh-foot { margin-top: 14px; font-size: 8.5px; }
+          .rh-foot { margin-top: 11px; font-size: 8.5px; }
         }
       `}</style>
 
