@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { checkReadingBeforePublish } from '@/lib/reading-publish-guard'
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient()
@@ -35,6 +36,16 @@ export async function POST(request: NextRequest) {
       { status: 400 }
     )
   }
+  if (action === 'publish') {
+    const { data: owner } = await admin.from('nutrition_plans').select('client_id').eq('id', plan_id).maybeSingle()
+    if (owner?.client_id) {
+      const check = await checkReadingBeforePublish(admin, 'nutrition', plan_id, owner.client_id)
+      if (!check.ok) {
+        return NextResponse.json({ error: `${check.label} cannot be published yet.`, findings: check.findings }, { status: 422 })
+      }
+    }
+  }
+
 
   const { data: updated, error: updateErr } = await admin
     .from('nutrition_plans')

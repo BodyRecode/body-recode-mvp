@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { checkReadingBeforePublish } from '@/lib/reading-publish-guard'
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient()
@@ -34,6 +35,19 @@ export async function POST(request: NextRequest) {
       { error: 'Generate the reading before publishing' },
       { status: 400 }
     )
+  }
+
+  // Nothing reaches a client portal without passing the lint. Added 2026-08-01
+  // after this reading published on generation and told a client about a family
+  // she had never mentioned. She ended her engagement over it.
+  if (action === 'publish') {
+    const { data: owner } = await admin.from('cffs').select('client_id').eq('id', cffs_id).maybeSingle()
+    if (owner?.client_id) {
+      const check = await checkReadingBeforePublish(admin, 'cffs', cffs_id, owner.client_id)
+      if (!check.ok) {
+        return NextResponse.json({ error: `${check.label} cannot be published yet.`, findings: check.findings }, { status: 422 })
+      }
+    }
   }
 
   const { data: updated, error: updateErr } = await admin

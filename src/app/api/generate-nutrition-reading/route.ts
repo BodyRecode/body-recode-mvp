@@ -269,7 +269,13 @@ export async function POST(request: NextRequest) {
       nr_coach_note: cleaned.nr_coach_note,
       nutrition_reading_doctrine_version: DOCTRINE_VERSIONS.nutrition_reading,
       nutrition_reading_generated_at: now,
-      nutrition_reading_published_at: now,
+      // NOT published on generation (changed 2026-08-01). A reading used to go
+      // live in the client's portal the instant it was created, so nobody saw it
+      // before the client did. That is how a Foundational Reading reached Vicki S
+      // asserting "everything going on with your family" when she had never
+      // mentioned family, and she ended her engagement over it. Publishing is now
+      // a separate, deliberate act with a lint in front of it.
+      nutrition_reading_published_at: null,
     })
     .eq('id', plan_id)
     .select()

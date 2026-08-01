@@ -317,7 +317,13 @@ export async function POST(request: NextRequest) {
       cr_what_were_not_doing_yet: cleaned.cr_what_were_not_doing_yet,
       cr_coach_note: cleaned.cr_coach_note,
       client_reading_generated_at: now,
-      client_reading_published_at: now,
+      // NOT published on generation (changed 2026-08-01). A reading used to go
+      // live in the client's portal the instant it was created, so nobody saw it
+      // before the client did. That is how a Foundational Reading reached Vicki S
+      // asserting "everything going on with your family" when she had never
+      // mentioned family, and she ended her engagement over it. Publishing is now
+      // a separate, deliberate act with a lint in front of it.
+      client_reading_published_at: null,
       fr_doctrine_version: DOCTRINE_VERSIONS.foundational_reading,
     })
     .eq('id', cffs_id)

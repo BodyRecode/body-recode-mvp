@@ -262,7 +262,13 @@ export async function POST(request: NextRequest) {
       pr_coach_note: cleaned.pr_coach_note,
       pr_doctrine_version: DOCTRINE_VERSIONS.program_reading,
       program_reading_generated_at: now,
-      program_reading_published_at: now,
+      // NOT published on generation (changed 2026-08-01). A reading used to go
+      // live in the client's portal the instant it was created, so nobody saw it
+      // before the client did. That is how a Foundational Reading reached Vicki S
+      // asserting "everything going on with your family" when she had never
+      // mentioned family, and she ended her engagement over it. Publishing is now
+      // a separate, deliberate act with a lint in front of it.
+      program_reading_published_at: null,
     })
     .eq('id', program_id)
     .select()

@@ -52,6 +52,9 @@ export default function NutritionReadingPanel({
   const [generating, setGenerating] = useState(false)
   const [publishing, setPublishing] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  // Blocking lint findings from a refused publish, shown in full so the coach
+  // can see the offending sentence rather than just being told no.
+  const [lintFindings, setLintFindings] = useState<{ severity: string; message: string; excerpt?: string }[]>([])
   const [emailNotice, setEmailNotice] = useState<string | null>(null)
 
   const generated = !!plan.nutrition_reading_generated_at
@@ -103,7 +106,12 @@ export default function NutritionReadingPanel({
         body: JSON.stringify({ plan_id: plan.id, action }),
       })
       const data = await res.json().catch(() => ({}))
-      if (!res.ok) throw new Error(data.error || `Server returned ${res.status}`)
+      if (!res.ok) {
+        // 422 means the pre-publish lint refused. Show the findings, not just a message.
+        setLintFindings(Array.isArray(data.findings) ? data.findings : [])
+        throw new Error(data.error || `Server returned ${res.status}`)
+      }
+      setLintFindings([])
       startTransition(() => router.refresh())
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Could not update')
@@ -190,6 +198,35 @@ export default function NutritionReadingPanel({
           )}
         </div>
       </div>
+
+      {lintFindings.length > 0 && (
+
+        <div className="mb-3 rounded-xl border border-red-300 bg-red-50 p-4">
+
+          <p className="text-xs font-bold text-red-900 uppercase tracking-wider">Not published</p>
+
+          <p className="text-xs text-red-800 mt-1">These have to be fixed before the client can see this. Edit the section or regenerate.</p>
+
+          <ul className="mt-2 space-y-2">
+
+            {lintFindings.map((f, i) => (
+
+              <li key={i} className="text-xs text-red-800">
+
+                <span className="font-semibold">{f.message}</span>
+
+                {f.excerpt && <span className="block mt-0.5 italic text-red-700">&ldquo;{f.excerpt}&rdquo;</span>}
+
+              </li>
+
+            ))}
+
+          </ul>
+
+        </div>
+
+      )}
+
 
       {error && (
         <div className="bg-[#FEF6E7] border border-[#F0DCB4] rounded-lg px-3 py-2 text-[12px] text-[#8A5A14] mb-3">
