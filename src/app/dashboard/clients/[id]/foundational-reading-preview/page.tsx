@@ -3,17 +3,30 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect, notFound } from 'next/navigation'
 import PrintTrigger from '../cffs-report/print-trigger'
 import ReadingLayout from '@/components/foundational-reading-layout'
+import { verifyPdfAccessToken, PDF_TOKEN_PARAM } from '@/lib/pdf-access-token'
 
 export default async function FoundationalReadingPreviewPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>
+  searchParams: Promise<Record<string, string | string[] | undefined>>
 }) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
-
   const { id } = await params
+  const sp = await searchParams
+
+  // Either a signed-in coach, or the PDF renderer's own headless browser
+  // carrying a 60-second token signed for this exact path. Without the second
+  // case a server-side PDF request renders the login screen.
+  const tokenRaw = sp[PDF_TOKEN_PARAM]
+  const token = Array.isArray(tokenRaw) ? tokenRaw[0] : tokenRaw
+  const viaToken = verifyPdfAccessToken(token, `/dashboard/clients/${id}/foundational-reading-preview`)
+
+  if (!viaToken) {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) redirect('/login')
+  }
   const admin = createAdminClient()
 
   const [{ data: client }, { data: cffsRows }] = await Promise.all([

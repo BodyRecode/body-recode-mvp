@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { renderDashboardPdf } from '@/lib/pdf'
+import { createPdfAccessToken, PDF_TOKEN_PARAM } from '@/lib/pdf-access-token'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -24,8 +25,16 @@ export async function GET(
 
   const { id } = await params
 
+  // An internal caller has no session cookies to forward, so the headless
+  // browser would load the preview page as a stranger and render /login. Hand
+  // it a short-lived signed token scoped to this exact path instead.
+  const previewPath = `/dashboard/clients/${id}/foundational-reading-preview`
+  const path = internal
+    ? `${previewPath}?${PDF_TOKEN_PARAM}=${createPdfAccessToken(previewPath)}`
+    : previewPath
+
   return await renderDashboardPdf({
-    path: `/dashboard/clients/${id}/foundational-reading-preview`,
+    path,
     filename: `foundational-reading-${id}`,
   })
 }
