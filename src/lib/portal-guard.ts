@@ -43,6 +43,7 @@ export interface PortalClient {
   onboarding_token: string
   active: boolean
   ended_at: string | null
+  frozen_at: string | null
   /** True when a coach is viewing a client's portal rather than the client. */
   viewedByCoach: boolean
 }
@@ -64,7 +65,7 @@ export async function requirePortalClient(
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/portal/login')
 
-  const base = 'id, name, email, onboarding_token, active, ended_at'
+  const base = 'id, name, email, onboarding_token, active, ended_at, frozen_at'
   const admin = createAdminClient()
   const { data: client } = await admin
     .from('clients')
@@ -87,6 +88,12 @@ export async function requirePortalClient(
   // and they may need to read them; the client does not.
   if (c.ended_at && !viewedByCoach) {
     redirect('/portal/ended')
+  }
+
+  // Engagement frozen. Same lockout, softer copy: the client is coming back.
+  // Coach keeps access to inspect the file while the freeze is on.
+  if (c.frozen_at && !viewedByCoach) {
+    redirect('/portal/frozen')
   }
 
   return {

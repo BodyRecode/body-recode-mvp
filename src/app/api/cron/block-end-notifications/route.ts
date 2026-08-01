@@ -37,11 +37,12 @@ export async function GET(request: NextRequest) {
   // Pull every active program with its client
   const { data: programs, error } = await admin
     .from('programs')
-    .select('id, client_id, block_name, week_duration, generated_at, clients!inner(id, name, ended_at)')
+    .select('id, client_id, block_name, week_duration, generated_at, clients!inner(id, name, ended_at, frozen_at)')
     .eq('is_active', true)
-    // Offboarded clients receive nothing. Inner join so they drop out entirely
-    // rather than being filtered after the fact and missed.
+    // Offboarded or frozen clients receive nothing. Inner join so they drop out
+    // entirely rather than being filtered after the fact and missed.
     .is('clients.ended_at', null)
+    .is('clients.frozen_at', null)
 
   if (error) {
     console.error('[block-end-notifications] programs query failed:', error)

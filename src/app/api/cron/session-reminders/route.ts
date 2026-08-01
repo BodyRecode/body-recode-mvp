@@ -26,9 +26,10 @@ export async function GET(request: NextRequest) {
 
   const { data: sessions } = await admin
     .from('client_sessions')
-    .select('id, client_id, scheduled_at, duration_minutes, clients!inner(id, name, email, ended_at)')
-    // Offboarded clients receive nothing.
+    .select('id, client_id, scheduled_at, duration_minutes, clients!inner(id, name, email, ended_at, frozen_at)')
+    // Offboarded or frozen clients receive nothing.
     .is('clients.ended_at', null)
+    .is('clients.frozen_at', null)
     .eq('status', 'scheduled')
     .is('reminder_sent_at', null)
     .gte('scheduled_at', windowStart.toISOString())

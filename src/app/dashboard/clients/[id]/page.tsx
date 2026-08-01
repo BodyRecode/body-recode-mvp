@@ -1,5 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import OffboardPanel from './offboard-panel'
+import FreezePanel from './freeze-panel'
 import { signedBaselinePhotoSet } from '@/lib/baseline-photos'
 import { notFound } from 'next/navigation'
 import { ChevronLeft, Activity, RefreshCw, AlertTriangle as AlertTriangleIcon, Eye, Sparkles } from 'lucide-react'
@@ -41,7 +42,6 @@ import SendPortalEmailButton from '@/components/send-portal-email-button'
 import SendPortalOrientationButton from '@/components/send-portal-orientation-button'
 import SendSupplementaryIntakeButton from '@/components/send-supplementary-intake-button'
 import SendSupplementaryEmailButton from '@/components/send-supplementary-email-button'
-import ClientDangerActions from './client-danger-actions'
 import ProfileSidebar from './profile-sidebar'
 import EditClientPhone from '@/components/edit-client-phone'
 import OverrideSubscriptionButton from '@/components/override-subscription-button'
@@ -1808,9 +1808,17 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       </div>
       <div data-tab="admin">
 
-      {/* Ending the engagement. Lives in Admin next to payments because that is
-          where a coach goes when a client stops, and because doing it by hand
-          took six database statements and recorded nothing. */}
+      {/* Engagement state controls. Freeze (pause, reversible) sits above
+          Offboard (end, considered) so the softer action is reached first. */}
+      <div className="mb-4">
+        <FreezePanel
+          clientId={id}
+          clientName={client.name ?? 'this client'}
+          endedAt={client.ended_at ?? null}
+          frozenAt={client.frozen_at ?? null}
+          freezeNotes={client.freeze_notes ?? null}
+        />
+      </div>
       <div className="mb-4">
         <OffboardPanel
           clientId={id}
@@ -1830,7 +1838,6 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         <ClientPaymentsSection clientId={id} />
       </MajorSection>
 
-      <ClientDangerActions clientId={id} isActive={client.active !== false} />
       </div>
       </ClientProfileTabs>
 
