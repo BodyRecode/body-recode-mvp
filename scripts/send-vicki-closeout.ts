@@ -12,6 +12,9 @@ import { Resend } from 'resend'
 
 const CLIENT_ID = 'e1f414f2-e68c-4b1d-82c8-c736d73756e7'
 const APPROVE_TO = 'kade@bodyrecode.au'
+// The subject Vicki would actually see. Kept here so the preview Kade receives
+// is byte-identical to her copy apart from the recipient.
+const CLIENT_SUBJECT = 'Your Foundational Reading'
 
 // Body Recode palette, matching email-shell.ts and the design language.
 async function main() {
@@ -64,16 +67,9 @@ async function main() {
   const sent = await resend.emails.send({
     from: 'Kade Dunstone <kade@send.bodyrecode.au>',
     to: APPROVE_TO,
-    subject: 'APPROVE BEFORE SENDING — close-out email for Vicki S',
+    subject: CLIENT_SUBJECT,
     attachments: [{ filename: 'Vicki_S_Foundational_Reading.pdf', content: pdf.toString('base64') }],
-    html: `<div style="padding:16px;background:#FFF8E1;border-bottom:2px solid #F0C040;font-family:sans-serif;font-size:13px;color:#5A4500;">
-      <strong>Not sent to Vicki.</strong> This is the draft for your approval, with her Foundational Reading attached.
-      Her address (${client!.email}) is suppressed and her access is revoked.<br><br>
-      <strong>Attach the Foundational Reading yourself before forwarding.</strong> Download it from her
-      client page, Foundational Reading panel, PDF button. That renders the real branded document
-      (dark hero, section icons, the proper layout). A script cannot produce it because the render
-      runs behind coach auth, and a hand-built imitation is not worth sending.
-    </div>${html}`,
+    html,
   })
 
   if (sent.error) { console.error('SEND FAILED:', sent.error); process.exit(1) }
