@@ -10,6 +10,8 @@
 import { createClient } from '@supabase/supabase-js'
 import { Resend } from 'resend'
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
+import { readFile } from 'node:fs/promises'
+import path from 'node:path'
 
 const CLIENT_ID = 'e1f414f2-e68c-4b1d-82c8-c736d73756e7'
 const APPROVE_TO = 'kade@bodyrecode.au'
@@ -22,26 +24,48 @@ const SECTIONS: [string, string][] = [
   ['cr_coach_note', 'A note from your coach'],
 ]
 
-const INK = rgb(0.10, 0.10, 0.10)
-const MUTED = rgb(0.45, 0.45, 0.45)
-const RULE = rgb(0.85, 0.85, 0.85)
+// Body Recode palette, matching email-shell.ts and the design language.
+const INK = rgb(0.102, 0.102, 0.102)      // Graphite #1A1A1A
+const BLUE = rgb(0.106, 0.427, 0.988)     // Signal Blue #1B6DFC
+const MUTED = rgb(0.42, 0.42, 0.42)
+const RULE = rgb(0.90, 0.90, 0.90)
 
 async function buildPdf(name: string, generatedAt: string, sections: Record<string, string | null>) {
   const pdf = await PDFDocument.create()
   const body = await pdf.embedFont(StandardFonts.Helvetica)
   const bold = await pdf.embedFont(StandardFonts.HelveticaBold)
 
-  const W = 595.28, H = 841.89, M = 64
+  const logoBytes = await readFile(path.join(process.cwd(), 'public', 'logo-black.png'))
+  const logo = await pdf.embedPng(logoBytes)
+
+  const W = 595.28, H = 841.89, M = 62
+  const COL = W - M * 2
   let page = pdf.addPage([W, H])
   let y = H - M
+  let pageNo = 1
 
-  const wrap = (text: string, font: typeof body, size: number, max: number) => {
+  const footer = (pg: typeof page, n: number) => {
+    pg.drawText('Body Recode', { x: M, y: 38, size: 8, font: bold, color: MUTED })
+    pg.drawText(`${name}  ·  Foundational Reading  ·  ${n}`, {
+      x: W - M - body.widthOfTextAtSize(`${name}  ·  Foundational Reading  ·  ${n}`, 8),
+      y: 38, size: 8, font: body, color: MUTED,
+    })
+  }
+
+  const newPage = () => {
+    footer(page, pageNo)
+    page = pdf.addPage([W, H])
+    pageNo += 1
+    y = H - M
+  }
+
+  const wrap = (text: string, font: typeof body, size: number) => {
     const out: string[] = []
     for (const para of text.split(/\n+/)) {
       let line = ''
       for (const word of para.split(/\s+/)) {
         const test = line ? `${line} ${word}` : word
-        if (font.widthOfTextAtSize(test, size) > max) { if (line) out.push(line); line = word }
+        if (font.widthOfTextAtSize(test, size) > COL) { if (line) out.push(line); line = word }
         else line = test
       }
       if (line) out.push(line)
@@ -50,34 +74,51 @@ async function buildPdf(name: string, generatedAt: string, sections: Record<stri
     return out
   }
 
-  const draw = (text: string, font: typeof body, size: number, colour = INK, gap = 4) => {
-    for (const line of wrap(text, font, size, W - M * 2)) {
-      if (y < M + 40) { page = pdf.addPage([W, H]); y = H - M }
+  const draw = (text: string, font: typeof body, size: number, colour = INK, lead = 5) => {
+    for (const line of wrap(text, font, size)) {
+      if (y < 78) newPage()
       if (line) page.drawText(line, { x: M, y, size, font, color: colour })
-      y -= size + gap
+      y -= size + lead
     }
   }
 
-  page.drawText('BODY RECODE', { x: M, y, size: 10, font: bold, color: MUTED })
-  y -= 26
-  page.drawText('Foundational Reading', { x: M, y, size: 22, font: bold, color: INK })
-  y -= 20
-  page.drawText(`${name}  ·  ${new Date(generatedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}`,
-    { x: M, y, size: 10, font: body, color: MUTED })
+  // Masthead
+  const logoW = 120
+  const logoH = (logo.height / logo.width) * logoW
+  y -= logoH
+  page.drawImage(logo, { x: M, y, width: logoW, height: logoH })
+  y -= 34
+
+  page.drawText('FOUNDATIONAL READING', { x: M, y, size: 9, font: bold, color: BLUE })
   y -= 22
-  page.drawLine({ start: { x: M, y }, end: { x: W - M, y }, thickness: 0.7, color: RULE })
-  y -= 30
+  page.drawText(name, { x: M, y, size: 26, font: bold, color: INK })
+  y -= 14
+
+  // 48x3 Signal Blue rule, same as the email divider.
+  page.drawRectangle({ x: M, y: y - 4, width: 48, height: 3, color: BLUE })
+  y -= 22
+
+  page.drawText(
+    new Date(generatedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' }),
+    { x: M, y, size: 9.5, font: body, color: MUTED })
+  y -= 34
 
   for (const [key, heading] of SECTIONS) {
     const text = sections[key]
     if (!text?.trim()) continue
-    if (y < M + 100) { page = pdf.addPage([W, H]); y = H - M }
-    draw(heading, bold, 13, INK, 6)
-    y -= 2
-    draw(text.trim(), body, 10.5, INK, 5)
-    y -= 12
+    if (y < 190) newPage()
+    page.drawRectangle({ x: M, y: y + 2, width: 3, height: 12, color: BLUE })
+    page.drawText(heading, { x: M + 12, y: y + 2, size: 12.5, font: bold, color: INK })
+    y -= 24
+    draw(text.trim(), body, 10.5, INK, 5.5)
+    y -= 10
+    if (y > 90) {
+      page.drawLine({ start: { x: M, y: y + 6 }, end: { x: W - M, y: y + 6 }, thickness: 0.6, color: RULE })
+      y -= 16
+    }
   }
 
+  footer(page, pageNo)
   return Buffer.from(await pdf.save())
 }
 
