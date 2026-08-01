@@ -1457,6 +1457,41 @@ export default function HelpPage() {
             <Note>Program preview pages use a placeholder name. The real program page is token-gated and personalised to the lead. To see a live example, find a lead who has purchased and click their program token on the lead detail page.</Note>
           </Section>
 
+          <Section id="offboarding" title="16c. Ending an Engagement" colour="teal">
+            <p>When a client stops, open them, go to the <strong>Admin</strong> tab and click <strong>Offboard</strong>. Pick a reason, write what actually happened, confirm.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-3">Revoke access, retain records</p>
+            <p>Those are two different things. Offboarding closes their portal, rotates their link so old bookmarks stop working, bans their login, stops every automated email and suppresses their address. <strong>It deletes nothing.</strong> Their plans, readings, photos, messages and full history stay in their profile and you can still open all of it. Records are kept for five years.</p>
+
+            <Note><strong>Do not use the Active toggle for this.</strong> Setting a client inactive does not close their portal and does not stop the automated emails. Eleven of the twelve scheduled jobs ignored it entirely, so a client you had &ldquo;deactivated&rdquo; would keep getting check-in reminders. The Offboard button is the one that works, and it is gated on <code>ended_at</code>.</Note>
+
+            <p className="font-semibold text-[#1A1A1A] mt-3">The notes field matters more than the reason</p>
+            <p>The reason code lets you count. The note lets you learn. Write what they said and what you would do differently, because in six months the code alone will tell you nothing.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-3">Reinstating</p>
+            <p>Deliberately not a button, because offboarding rotates their token and suppresses their email and an undo control would invite treating it as a soft toggle. Bringing someone back means clearing <code>ended_at</code>, unbanning their login and lifting the suppression. Their plans are untouched, so nothing needs rebuilding.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-3">Retention</p>
+            <p>Five years from the end date, set automatically. Nothing is ever deleted by the system: expired records are listed for you to review. Worth confirming five is the right number with whoever does your compliance, since this system holds diagnoses, medications, blood panels and body photographs, and several Australian jurisdictions use seven years for adult health records.</p>
+          </Section>
+
+          <Section id="publishing-readings" title="16d. Publishing Readings to a Client" colour="teal">
+            <p>Generating a reading no longer publishes it. The Foundational, Program and Nutrition readings are <strong>drafts until you publish them</strong>, which is a separate click on each panel.</p>
+
+            <Note><strong>Why this changed (2026-08-01).</strong> All three used to go live in the client portal the instant they were generated, which meant the first person to read a client&apos;s Foundational Reading was the client. One published asserting &ldquo;everything going on with your family&rdquo; about a client who had never mentioned family. She ended her engagement over it.</Note>
+
+            <p className="font-semibold text-[#1A1A1A] mt-3">The publish check</p>
+            <p>Publishing runs an automatic check and <strong>refuses</strong> if it finds either of these:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
+              <li><strong>A life circumstance the client never mentioned.</strong> Family, partner, children, caring for someone, a bereavement, a new job. If it is in the reading and nowhere in their intake, CFFS or your guidance, it will not publish. If they did mention it, it passes.</li>
+              <li><strong>A claim that contradicts their live nutrition plan.</strong> Text saying you are not restricting calories while the plan runs a real deficit.</li>
+            </ul>
+            <p className="mt-2">It also warns, without blocking, when a stated number of weeks does not match the calendar.</p>
+            <p>When it refuses, it quotes the offending sentence so you can find it. Edit that section or regenerate, then publish.</p>
+
+            <Note><strong>This is not a review.</strong> It catches sentences that assert something your data contradicts or never contained. It cannot tell you whether a reading is any good. A clean check means nothing was caught, not that it is right. Read it before you publish.</Note>
+          </Section>
+
           <Section id="admin-actions" title="17. Admin Actions" colour="teal">
             <p>The following actions are available on the <strong>Dashboard Homepage</strong>.</p>
 

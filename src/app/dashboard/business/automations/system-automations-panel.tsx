@@ -187,6 +187,17 @@ const AUTOMATIC_AUTOMATIONS = [
   },
   // Plan published to client (manual, coach-gated). Reading-published auto-emails
   // scrapped 2026-06-09 — only plan publishes notify the client now.
+  //
+  // 2026-08-01: readings no longer PUBLISH on generation either. All three
+  // (Foundational, Program, Nutrition) used to go live in the client portal the
+  // instant they were generated, so nobody saw them before the client did. They
+  // are now drafts until a coach publishes, and publishing runs a lint that
+  // refuses on a blocking finding (unsourced life reference, a claim that
+  // contradicts the live nutrition plan). See src/lib/reading-lint.ts.
+  //
+  // 2026-08-01: every client-facing scheduled job now filters on
+  // clients.ended_at is null, so an offboarded client receives nothing. This is
+  // the gate, NOT clients.active, which does not stop contact.
   {
     id: 'nutrition-plan-published-to-client',
     name: 'Nutrition Plan Published to Client',
