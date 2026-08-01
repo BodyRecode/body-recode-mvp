@@ -144,21 +144,21 @@ export default function ReadingHeroShell({
 
           .rh-hero { padding: 18px 20px 19px; margin-bottom: 10px; border-radius: 11px; box-shadow: none; }
           .rh-hero h1 { font-size: 23px; margin-bottom: 6px; }
-          .rh-hero-sub { font-size: 11.5px; line-height: 1.5; margin-bottom: 11px; max-width: 62ch; }
+          .rh-hero-sub { font-size: 11px; line-height: 1.45; margin-bottom: 9px; max-width: 78ch; }
           .rh-eyebrow { font-size: 9.5px; margin-bottom: 8px; }
           .rh-pill { font-size: 10px; padding: 3px 9px; }
           .rh-for { font-size: 10px; }
 
-          .rh-about { padding: 10px 14px; margin-bottom: 9px; border-radius: 9px; box-shadow: none; }
+          .rh-about { padding: 9px 14px; margin-bottom: 7px; border-radius: 9px; box-shadow: none; }
           .rh-about p { font-size: 10px; line-height: 1.48; }
 
-          .rh-cards { gap: 8px; }
+          .rh-cards { gap: 6px; }
           /* Cards FLOW across page breaks. break-inside:avoid pushed any long
              section wholesale onto the next page and left a third of the
              previous one blank, which is the "too much space" problem. A
              heading never orphans (break-after) and no single line is stranded
              (orphans/widows). */
-          .rh-card { padding: 12px 15px; border-radius: 9px; box-shadow: none; break-inside: auto; }
+          .rh-card { padding: 10px 14px; border-radius: 9px; box-shadow: none; break-inside: auto; }
           .rh-card p { orphans: 3; widows: 3; }
           .rh-label { margin-bottom: 6px; gap: 8px; break-after: avoid; }
           /* The coach note and its signature stay together. */
@@ -166,9 +166,9 @@ export default function ReadingHeroShell({
           .rh-chip { width: 22px; height: 22px; border-radius: 6px; }
           .rh-chip svg { width: 13px; height: 13px; }
           .rh-label-text { font-size: 9.5px; }
-          .rh-body { font-size: 10.5px; line-height: 1.5; }
+          .rh-body { font-size: 10.5px; line-height: 1.45; }
 
-          .rh-attn { margin-top: 11px; padding-top: 9px; gap: 9px; }
+          .rh-attn { margin-top: 9px; padding-top: 8px; gap: 9px; }
           .rh-avatar { width: 32px; height: 32px; }
           .rh-who { font-size: 10px; }
           .rh-who b { font-size: 11px; }
