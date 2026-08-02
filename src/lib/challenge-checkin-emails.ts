@@ -18,7 +18,7 @@
 
 import { darkEmailSignature } from './email-signature'
 import { CHECKIN_PATTERNS } from './checkin-patterns'
-import { DAY_14_ASCENSION_REEL, DAY_14_ASCENSION_POSTER } from './video-urls'
+import { DAY_14_ASCENSION_POSTER } from './video-urls'
 import { PROGRESS_MARKERS, MARKER_RATING_META, type MarkerRating } from './checkin-markers'
 import { logoUrl, brand } from '@/config/tenant'
 import {
@@ -277,15 +277,18 @@ function patternActionsCard(patternSlug: string): string {
 }
 
 // Day 14 ascension reel - 9:16 vertical, sells the Blueprint at Challenge end.
-// Email clients cannot play inline video, so this is a clickable poster that
-// opens the hosted reel. The Blueprint CTA card sits directly beneath it and
-// carries the attribution parameter for the conversion itself.
+// Email clients cannot play inline video, so this is a clickable poster. It
+// opens /watch/ascension, NOT the raw storage file: a Supabase URL in the
+// address bar reads as an untrusted link to a lead and exposes backend infra,
+// and a bare mp4 strands the viewer with no next step. The watch page keeps
+// the offer directly under the video.
 function ascensionReelCard(): string {
+  const href = `${brand().marketingDomain}/watch/ascension?source=challenge_day14_report`
   return `
 <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0 0 24px;">
   <tr>
     <td align="center">
-      <a href="${DAY_14_ASCENSION_REEL}" style="text-decoration:none;display:block;">
+      <a href="${href}" style="text-decoration:none;display:block;">
         <table cellpadding="0" cellspacing="0" border="0" width="260" style="width:260px;">
           <tr>
             <td style="border-radius:16px 16px 0 0;overflow:hidden;line-height:0;font-size:0;">
