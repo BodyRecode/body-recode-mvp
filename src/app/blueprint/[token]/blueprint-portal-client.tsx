@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Dumbbell, BookOpen, ClipboardCheck, ChevronRight, Salad, GraduationCap, Compass, ListChecks, X } from 'lucide-react'
 import { logoUrl, brand, coach } from '@/config/tenant'
+import { BLUEPRINT_LESSON_VIDEOS, BLUEPRINT_WELCOME_VIDEOS, BLUEPRINT_WELCOME_POSTERS } from '@/lib/video-urls'
 
 // Consistent icon-led header for each portal tab.
 function TabHeader({ icon: Icon, title, subtitle, colour }: { icon: React.ElementType; title: string; subtitle: React.ReactNode; colour: string }) {
@@ -19,8 +20,24 @@ function TabHeader({ icon: Icon, title, subtitle, colour }: { icon: React.Elemen
   )
 }
 
+// Hosted video player. Source is a Supabase storage URL from lib/video-urls,
+// not a bundled public/ asset - see that file for why. preload="metadata" so
+// the card renders instantly and the client only pulls the full file on play.
+function VideoPlayer({ src, poster, aspect = '16 / 9' }: { src: string; poster?: string; aspect?: string }) {
+  return (
+    <video
+      src={src}
+      poster={poster}
+      controls
+      playsInline
+      preload="metadata"
+      style={{ width: '100%', aspectRatio: aspect, borderRadius: 12, background: '#0B0B0B', display: 'block' }}
+    />
+  )
+}
+
 // Branded video placeholder shown wherever a Blueprint video will embed but
-// has not been produced yet. Swap for the real <iframe>/<video> when the
+// has not been produced yet. Swap for the real <VideoPlayer> when the
 // asset lands. 16:9 by default.
 function VideoPlaceholder({ label }: { label: string }) {
   return (
@@ -1009,7 +1026,6 @@ const LESSONS = [
   {
     week: 1,
     title: 'Cortisol and the Stress Response',
-    loomUrl: '', // paste Loom embed URL here e.g. https://www.loom.com/embed/abc123
     sections: [
       { heading: 'What it is', body: 'Cortisol is your primary stress hormone, produced by the adrenal glands and regulated by the HPA axis - a communication chain between the hypothalamus, pituitary gland, and adrenals. It follows a natural 24-hour curve: rising sharply within 30-45 minutes of waking to mobilise energy and sharpen focus, then declining gradually through the day so that melatonin can take over and drive sleep onset at night. In short bursts, cortisol is useful. It is anti-inflammatory, mobilises stored fuel, and prepares you for demands. The problem is not cortisol itself - it is cortisol that never switches off.' },
       { heading: 'What goes wrong', body: 'Chronic stress from poor sleep, overtraining, skipped meals, sustained psychological pressure, and excessive caffeine keeps the HPA axis in a constant state of activation. Cortisol stays elevated across the full day rather than following its natural curve. The body interprets prolonged elevation as a survival threat and responds accordingly: it increases fat storage, particularly visceral fat around the abdomen. It breaks down muscle tissue for fuel, which reduces metabolic rate. It disrupts sleep architecture, which compounds every other hormonal problem. Digestion slows, immune function is suppressed, and other hormone systems are actively downregulated to redirect resources toward the perceived threat.' },
@@ -1027,7 +1043,6 @@ const LESSONS = [
   {
     week: 2,
     title: 'Insulin and Blood Sugar Control',
-    loomUrl: '', // paste Loom embed URL here
     sections: [
       { heading: 'What it is', body: 'Insulin is a peptide hormone produced by the beta cells of the pancreas. It is released every time blood glucose rises - primarily after carbohydrate intake, and to a lesser extent after protein. Its primary job is to move glucose out of the bloodstream and into cells, where it is used for immediate energy, stored as glycogen in muscle and liver, or converted to fat when glycogen is full. When this system is working correctly, insulin is released in small, efficient pulses. Blood sugar stabilises quickly after meals, energy is consistent between meals, and fat is accessible as fuel during fasting and training windows.' },
       { heading: 'What goes wrong', body: 'Repeated and excessive blood glucose spikes - from frequent meals, high-carbohydrate intake, snacking, and high-GI foods - gradually reduce how sensitive cells are to insulin. This is insulin resistance. The pancreas compensates by producing more insulin to achieve the same effect. Over time, chronically elevated insulin circulates even between meals. High circulating insulin signals the body to store fat rather than release it. Fat metabolism is effectively switched off for as long as insulin remains elevated. People with significant insulin resistance can be eating a moderate diet and still struggle to shift body composition because the hormonal environment will not allow it.' },
@@ -1045,7 +1060,6 @@ const LESSONS = [
   {
     week: 3,
     title: 'Testosterone and Muscle Signal',
-    loomUrl: '', // paste Loom embed URL here
     sections: [
       { heading: 'What it is', body: 'Testosterone is an androgen hormone produced primarily in the testes in men and in the ovaries and adrenal glands in women. While men carry significantly higher levels, testosterone is equally important for women - driving lean muscle maintenance, fat metabolism, energy, motivation, libido, sleep quality, and mood stability. It works as a body composition signal: when adequate, your body receives a consistent instruction to maintain and build muscle tissue. More functional muscle at rest means a higher basal metabolic rate, greater fat-burning capacity during training, and faster recovery between sessions.' },
       { heading: 'What goes wrong', body: 'Chronically elevated cortisol, excessive training load, calorie restriction, poor sleep, and excess body fat all suppress testosterone through distinct mechanisms. Cortisol and testosterone share an inverse relationship through shared HPA axis regulation. Overtraining creates a recovery deficit that lowers output. Calorie restriction signals scarcity, which downregulates anabolic hormones. Poor sleep reduces the overnight testosterone synthesis that accounts for the majority of daily production. And excess body fat matters because adipose tissue contains aromatase - the enzyme that converts testosterone to oestrogen. Higher body fat means more active conversion, creating an environment where testosterone is consistently depleted.' },
@@ -1063,7 +1077,6 @@ const LESSONS = [
   {
     week: 4,
     title: 'Thyroid and Metabolic Rate',
-    loomUrl: '', // paste Loom embed URL here
     sections: [
       { heading: 'What it is', body: 'The thyroid is a small butterfly-shaped gland at the base of the throat that produces two primary hormones: T4 (thyroxine) and T3 (triiodothyronine). T4 is the inactive storage form - it circulates in the bloodstream until converted to active T3, primarily in the liver and peripheral tissues. T3 is the hormone that actually sets your metabolic rate. It governs how fast every cell in your body processes energy, regulates body temperature, heart rate, digestion speed, mood, and cognitive function. When thyroid function is optimal, your body burns fuel efficiently and body composition responds predictably to training and nutrition.' },
       { heading: 'What goes wrong', body: 'Three factors reliably suppress thyroid function. First, calorie restriction triggers a metabolic adaptation where T4 to T3 conversion is deliberately reduced - the body reads a food shortage as a threat and slows metabolism to match intake. Second, chronically elevated cortisol directly impairs T4 to T3 conversion, reducing active thyroid hormone even when T4 production by the gland appears normal on a blood test. Third, systemic inflammation from poor food quality, seed oil consumption, gut dysfunction, or chronic stress suppresses thyroid activity at the receptor level. The result is a metabolic rate that progressively decreases, making each attempt at fat loss harder than the last.' },
@@ -1081,7 +1094,6 @@ const LESSONS = [
   {
     week: 5,
     title: 'Sleep Hormones and Recovery',
-    loomUrl: '', // paste Loom embed URL here
     sections: [
       { heading: 'What it is', body: 'Sleep is the primary biological recovery window and the reset mechanism for every hormone in this series. It is governed by two overlapping systems. Melatonin, produced by the pineal gland in response to darkness, drives sleep onset and regulates the circadian timing of the sleep cycle. Circadian rhythm is a 24-hour internal clock regulated by light exposure, meal timing, physical activity, and temperature - and it governs not just sleep but the timing of cortisol release, insulin sensitivity, testosterone production, and thyroid hormone activity across the full day. Growth hormone, the primary anabolic and tissue repair hormone, is released in pulses during slow-wave deep sleep and accounts for the majority of overnight recovery.' },
       { heading: 'What goes wrong', body: 'Artificial light at night - particularly blue light from screens - suppresses melatonin production and delays sleep onset. Irregular sleep and wake times destabilise circadian rhythm, reducing sleep quality even when total duration appears adequate. High evening cortisol - common in all four patterns - prevents the nervous system from downregulating enough for deep sleep to occur. Late meals elevate insulin during the sleep window, disrupting growth hormone release. Alcohol, while it may accelerate sleep onset, fragments sleep architecture significantly and reduces the deep sleep that does the actual recovery work.' },
@@ -1142,19 +1154,13 @@ function EducationTab({ pattern, currentWeek }: { pattern: string; currentWeek: 
                   {/* Mechanism figure + Video */}
                   <div style={{ padding: '20px 20px 0' }}>
                     <LessonDiagram week={lesson.week} />
-                    {lesson.loomUrl ? (
-                      <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, borderRadius: 10, overflow: 'hidden', marginBottom: 20 }}>
-                        <iframe
-                          src={lesson.loomUrl}
-                          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
-                          allowFullScreen
-                        />
-                      </div>
-                    ) : (
-                      <div style={{ marginBottom: 20 }}>
+                    <div style={{ marginBottom: 20 }}>
+                      {BLUEPRINT_LESSON_VIDEOS[lesson.week] ? (
+                        <VideoPlayer src={BLUEPRINT_LESSON_VIDEOS[lesson.week]} />
+                      ) : (
                         <VideoPlaceholder label={`${lesson.title} · lesson video`} />
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
 
                   {/* Sections */}
@@ -1744,7 +1750,11 @@ export default function BlueprintPortalClient({
                 <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>
                   Start here · Welcome
                 </div>
-                <VideoPlaceholder label={`Welcome to your ${config.label} Blueprint`} />
+                {BLUEPRINT_WELCOME_VIDEOS[pattern] ? (
+                  <VideoPlayer src={BLUEPRINT_WELCOME_VIDEOS[pattern]} poster={BLUEPRINT_WELCOME_POSTERS[pattern]} />
+                ) : (
+                  <VideoPlaceholder label={`Welcome to your ${config.label} Blueprint`} />
+                )}
               </div>
             )}
 

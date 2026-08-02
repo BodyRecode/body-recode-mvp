@@ -89,7 +89,7 @@ export function ascensionCtaFor(
   target: AscensionTarget,
   source: string,
 ): { label: string; url: string } {
-  const base = '${marketingUrl()}'
+  const base = marketingUrl()
   switch (target) {
     case 'depleted':
       return {

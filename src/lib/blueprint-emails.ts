@@ -17,6 +17,7 @@
 // memory; rename queued for a future cleanup).
 
 import { darkEmailSignature } from './email-signature'
+import { BLUEPRINT_WELCOME_POSTERS } from './video-urls'
 import {
   darkEmailShell, emailUrlFallback,
   emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
@@ -37,9 +38,36 @@ export const BLUEPRINT_PATTERN_COLOURS: Record<string, string> = {
   'system-overload': '#1B6DFC',
 }
 
-// PLACEHOLDER — swap the poster block for a real thumbnail image + hosted-video
-// link once the video lands. Email clients cannot play inline video, so the real
-// version is a clickable poster linking to the hosted video / portal.
+// Real video card. Email clients cannot play inline video, so this is a
+// clickable poster image that opens the portal, where the video plays inline.
+// Poster images live alongside the videos in Supabase storage.
+function blueprintVideoCard(posterUrl: string, label: string, href: string): string {
+  return `
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0 0 24px;">
+  <tr>
+    <td align="center">
+      <a href="${href}" style="text-decoration:none;display:block;">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:520px;">
+          <tr>
+            <td style="border-radius:14px 14px 0 0;overflow:hidden;line-height:0;font-size:0;">
+              <img src="${posterUrl}" width="520" alt="${label}" style="display:block;width:100%;max-width:520px;height:auto;border:0;border-radius:14px 14px 0 0;" />
+            </td>
+          </tr>
+          <tr>
+            <td style="background:#1B6DFC;border-radius:0 0 14px 14px;padding:13px 20px;text-align:center;">
+              <span style="font-size:13px;font-weight:700;color:#FFFFFF;letter-spacing:0.02em;">&#9654;&nbsp;&nbsp;${label}</span>
+            </td>
+          </tr>
+        </table>
+      </a>
+    </td>
+  </tr>
+</table>
+`
+}
+
+// PLACEHOLDER — still used by the Week 6 ascension video, which Amanda has not
+// delivered. Swap the call site for blueprintVideoCard once it lands.
 function blueprintVideoPlaceholderCard(label: string, href: string): string {
   return `
 <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0 0 24px;">
@@ -140,8 +168,12 @@ export function buildBlueprintPurchaseWelcomeEmail({
     ? `Your programme has been built around your <strong style="color:#1A1A1A;">${patternDisplay}</strong> pattern.`
     : 'Your first step is a short pattern assessment so the programme can be built around your biology.'
 
+  const welcomePoster = pattern ? BLUEPRINT_WELCOME_POSTERS[pattern] : null
   const welcomeVideoBlock = patternDisplay
-    ? emailBody(`A short welcome video, made for your ${patternDisplay} pattern, walks you through what the next six weeks is built to do.`) + blueprintVideoPlaceholderCard(`Your ${patternDisplay} welcome video drops here`, portalUrl)
+    ? emailBody(`A short welcome video, made for your ${patternDisplay} pattern, walks you through what the next six weeks is built to do.`) +
+      (welcomePoster
+        ? blueprintVideoCard(welcomePoster, `Watch your ${patternDisplay} welcome`, portalUrl)
+        : blueprintVideoPlaceholderCard(`Your ${patternDisplay} welcome video drops here`, portalUrl))
     : ''
 
   const inner = `
