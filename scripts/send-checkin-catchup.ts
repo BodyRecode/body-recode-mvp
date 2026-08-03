@@ -32,6 +32,16 @@ import { fromCoach } from '../src/lib/email-shell'
 
 const LIVE = process.argv.includes('--send')
 
+// Hard cutoff: challengeCheckinPromptFunction shipped on the morning of
+// 2026-08-03 and covers every enrolment from that point on. Without this,
+// a NEW enrollee sitting on Day 8 without a Check-In matches every other
+// filter here and would be emailed by this script on top of the Day 7 email
+// Inngest already sent them. The cutoff makes the script self-limiting: once
+// the pre-deploy cohort clears the Day 7-13 window it can never send again,
+// so leaving it scheduled is harmless. Nobody enrolled on 2026-08-03 itself
+// (latest was 2026-07-30), so midnight Brisbane is a clean boundary.
+const PRE_DEPLOY_CUTOFF = new Date('2026-08-03T00:00:00+10:00')
+
 function challengeDay(enrolledAt: string): number {
   const days = Math.floor((Date.now() - new Date(enrolledAt).getTime()) / 86_400_000)
   return Math.min(Math.max(days + 1, 1), 14)
@@ -49,6 +59,7 @@ async function main() {
     .select('token, lead_id, enrolled_at, status, quiz_completed_at, leads(name, email)')
     .eq('status', 'active')
     .is('quiz_completed_at', null)
+    .lt('enrolled_at', PRE_DEPLOY_CUTOFF.toISOString())
 
   if (error) throw new Error(error.message)
 
