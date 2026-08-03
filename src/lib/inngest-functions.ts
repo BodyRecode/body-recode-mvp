@@ -9,9 +9,10 @@ import {
   emailCta, emailFeaturedCard, emailNumberedList, emailStatusCard,
 } from './email-shell'
 import type { TriggerContext } from './automation-engine'
-import { appUrl } from '@/lib/app-url'
+import { appUrl, marketingUrl } from '@/lib/app-url'
 import { logLeadEvent } from './log-lead-event'
 import { legacyLetterToSlug } from './pattern-mapping'
+import { CHECKIN_PATTERNS } from './checkin-patterns'
 import {
   buildDay14BodyDecodeReportEmail,
   buildDay5UnlockEmail,
@@ -337,9 +338,22 @@ export const challengeSequenceFunction = inngest.createFunction(
         if (byPhone && byPhone.length > 0) return // bought under a different email
       }
 
+      // Pass the pattern through so the win-back can reference their read.
+      // The sequence has always had a patternNote line ready for this, but the
+      // trigger never sent patternLabel, so it rendered blank for everyone -
+      // including people who had just been given a full Body Decode Report.
+      const { data: read } = await admin
+        .from('challenge_enrollments')
+        .select('quiz_result')
+        .eq('token', token)
+        .maybeSingle()
+      const patternLabel = read?.quiz_result
+        ? CHECKIN_PATTERNS[legacyLetterToSlug(read.quiz_result as string)]?.label ?? null
+        : null
+
       await inngest.send({
         name: 'reengagement/challenge-no-ascension',
-        data: { email, firstName, phone: phone ?? null, source: 'challenge' },
+        data: { email, firstName, phone: phone ?? null, source: 'challenge', patternLabel },
       })
     })
 
@@ -1224,7 +1238,40 @@ export const reengagementSequenceFunction = inngest.createFunction(
 
     const extensionUrl = `${appUrl()}/extension`
     const membershipUrl = `${appUrl()}/membership`
+    const blueprintUrl = `${appUrl()}/blueprint`
     const patternNote = patternLabel ? ` Your ${patternLabel} pattern doesn't reset when you stop - it's still there when you come back.` : ''
+
+    // The next paid step depends on where they came from, and until 2026-08-03
+    // this sequence ignored that from Day 30 onward: every source was pitched
+    // the 90-Day Extension then the Membership. For a Challenge graduate that
+    // skips a whole stage - they have not done the Blueprint - and the Day 30
+    // copy even opened with "if the weekly membership commitment felt like too
+    // much", which they were never offered. It reads as though we have
+    // forgotten who they are.
+    //
+    // Extension and Membership are also not live yet, so those CTAs land on a
+    // waitlist. Blueprint is live, so a Challenge graduate now gets pointed at
+    // the one thing they can actually buy and that is genuinely their next step.
+    const isChallenge = source === 'challenge'
+    const nextOffer = isChallenge
+      ? {
+          url: blueprintUrl,
+          ctaLabel: 'See the Blueprint',
+          eyebrow: '6-Week Body Rewire Blueprint',
+          price: '$97 one-time',
+          card: 'Six weeks of pattern-specific corrective work. Training calibrated to your pattern, nutrition timed to it, weekly coaching written for it. No subscription, no lock-in.',
+          nudge: 'The 6-Week Blueprint is still there at $97 if the timing is better now. Six weeks of corrective work built around your pattern, picked up from the baseline you already built.',
+          openLine: 'If committing to something ongoing felt like too much, this is the smaller step.',
+        }
+      : {
+          url: extensionUrl,
+          ctaLabel: 'See the Extension',
+          eyebrow: '90-Day Body Rewire Extension',
+          price: '$197 one-time',
+          card: "12 weeks of progressive pattern-specific programming. No subscription, no ongoing commitment. Same portal, same pattern-driven training and nutrition you've already experienced.",
+          nudge: 'The 90-Day Extension is still available at $197 if the timing is better now. It gives you 12 weeks of the next stage of programming, picked up exactly where you left off.',
+          openLine: "If the weekly membership commitment felt like too much right now, there's another option.",
+        }
 
     // Conversion guard: has this person taken a paid step SINCE the sequence
     // started? Checked before every email so we stop the instant they convert
@@ -1345,18 +1392,18 @@ ${emailBody("Reply if you have questions or want to know which pathway fits wher
         to: email,
         subject: `A lower-commitment way back in`,
         html: reengagementEmailShell(`
-${emailEyebrow('90-Day Extension')}
+${emailEyebrow(nextOffer.eyebrow)}
 ${emailHeading('A lower-commitment way back in.')}
 ${emailDivider()}
 ${emailBody(`Hi ${firstName},`)}
-${emailBody("If the weekly membership commitment felt like too much right now, there's another option.", { bottom: 24 })}
+${emailBody(nextOffer.openLine, { bottom: 24 })}
 ${emailStatusCard({
-  eyebrow: '90-Day Body Rewire Extension',
-  headline: '$197 one-time',
-  body: "12 weeks of progressive pattern-specific programming. No subscription, no ongoing commitment. Same portal, same pattern-driven training and nutrition you've already experienced.",
+  eyebrow: nextOffer.eyebrow,
+  headline: nextOffer.price,
+  body: nextOffer.card,
 })}
-${emailCta({ href: extensionUrl, label: 'See the Extension' })}
-${emailUrlFallback(extensionUrl, 'Or paste this link into your browser')}
+${emailCta({ href: nextOffer.url, label: nextOffer.ctaLabel })}
+${emailUrlFallback(nextOffer.url, 'Or paste this link into your browser')}
 ${emailBody("Not ready yet? That's fine. I'll check back in.", { size: 14 })}
 `),
       })
@@ -1379,9 +1426,9 @@ ${emailHeading('Still here if you want it.')}
 ${emailDivider()}
 ${emailBody(`Hi ${firstName},`)}
 ${emailBody('Just a short one.')}
-${emailBody('The 90-Day Extension is still available at $197 if the timing is better now. It gives you 12 weeks of the next stage of programming — picked up exactly where you left off.', { bottom: 24 })}
-${emailCta({ href: extensionUrl, label: 'See the 90-Day Extension' })}
-${emailUrlFallback(extensionUrl, 'Or paste this link into your browser')}
+${emailBody(nextOffer.nudge, { bottom: 24 })}
+${emailCta({ href: nextOffer.url, label: nextOffer.ctaLabel })}
+${emailUrlFallback(nextOffer.url, 'Or paste this link into your browser')}
 ${emailBody('Reply any time if you want to talk through it.', { size: 14 })}
 `),
       })
@@ -1403,7 +1450,9 @@ ${emailEyebrow('Body Recode Membership')}
 ${emailHeading('The membership is still open.')}
 ${emailDivider()}
 ${emailBody(`Hi ${firstName},`)}
-${emailBody("If you've been thinking about the full membership, here's the short version of what it is:")}
+${emailBody(isChallenge
+  ? "You have not picked the Blueprint up yet, so here is the whole ladder in one place, plainly."
+  : "If you've been thinking about the full membership, here's the short version of what it is:")}
 ${emailFeaturedCard(
   emailNumberedList([
     'Progressive 6-week training blocks built around your pattern — Block A, B, and C',
@@ -1412,17 +1461,19 @@ ${emailFeaturedCard(
     'Monthly group Q&amp;A call',
     'Cancel anytime. No lock-in.',
   ]),
-  { eyebrow: '$49 per week' },
+  { eyebrow: isChallenge ? 'Where the Blueprint leads · $49 per week' : '$49 per week' },
 )}
-${emailCta({ href: membershipUrl, label: 'See the Membership' })}
-${emailUrlFallback(membershipUrl, 'Or paste this link into your browser')}
+${emailCta({ href: isChallenge ? blueprintUrl : membershipUrl, label: isChallenge ? 'Start with the Blueprint' : 'See the Membership' })}
+${emailUrlFallback(isChallenge ? blueprintUrl : membershipUrl, 'Or paste this link into your browser')}
 `),
       })
     })
 
     // Mirror the Membership offer as an SMS (consent-gated + capped).
     await step.run('sms-day60', async () => {
-      await smsLeadByEmail(email, `${firstName}, the Body Recode Membership is open if you want the full system - progressive blocks built around your pattern, $49/wk, cancel anytime: ${membershipUrl}`)
+      await smsLeadByEmail(email, isChallenge
+        ? `${firstName}, the 6-Week Blueprint is open if you want to correct the pattern your Challenge read named - $97 one-time, no subscription: ${blueprintUrl}`
+        : `${firstName}, the Body Recode Membership is open if you want the full system - progressive blocks built around your pattern, $49/wk, cancel anytime: ${membershipUrl}`)
     })
 
     await step.sleep('wait-day60-to-90', '30d')
@@ -1443,7 +1494,7 @@ ${emailDivider()}
 ${emailBody(`Hi ${firstName},`)}
 ${emailBody("This is the last email in this sequence. I don't want to keep showing up in your inbox if the timing isn't right.")}
 ${emailBody("If you ever want to come back, the door is open. The system works whenever you're ready for it.")}
-${emailBody('One other thing — if you know someone who would benefit from any of the Body Recode programmes, send them to <a href="${appUrl()}" style="color:#1B6DFC;font-weight:600;text-decoration:none;">app.bodyrecode.au</a>. The challenge is free and a good starting point for anyone.')}
+${emailBody(`One other thing. If you know someone who would benefit from any of the Body Recode programmes, send them to <a href="${marketingUrl()}/challenge" style="color:#1B6DFC;font-weight:600;text-decoration:none;">bodyrecode.au/challenge</a>. The challenge is free and a good starting point for anyone.`)}
 ${emailBody('Take care of yourself.', { size: 14 })}
 `),
       })
