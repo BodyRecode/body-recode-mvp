@@ -602,6 +602,51 @@ ${emailBody('If something is genuinely in the way, reply and tell me. I would ra
   return { subject, html }
 }
 
+// ─── Finisher Check-In reopen email ──────────────────────────────────────
+// One-off, 2026-08-03. For people who completed the 14 days but never did the
+// Check-In, so they finished with no pattern read. Their portal is reachable
+// again (see lib/challenge-access) and /api/challenge/quiz sends the full Body
+// Decode Report immediately for anyone past Day 14, so the read is genuinely
+// one form away.
+//
+// Voice note: this does NOT apologise or explain that access had lapsed. From
+// their side nothing visibly broke, and leading with a failure invites doubt
+// about the read itself. It leads with what they earned and what is still
+// waiting. It also does not pitch the Blueprint - the Report does that on its
+// own once they have a pattern, and stacking an offer here would make the
+// whole thing read as a sales email rather than a loose end being closed.
+export function buildFinisherCheckInReopenEmail({
+  firstName,
+  token,
+}: {
+  firstName: string
+  token: string
+}): { subject: string; html: string } {
+  const subject = `${firstName}, your Body Decode read is still waiting`
+  const checkInUrl = `${brand().marketingDomain}/challenge/${token}/check-in`
+  const html = challengeArcShell(`
+${emailEyebrow('14-Day Body Decode Challenge')}
+${emailHeading('You finished. You never got the read.')}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody('You gave your body fourteen consecutive days of structured rhythm. Training, food, sleep, timing. Most people who start do not get that far.')}
+${emailBody('But the Body Decode Check-In never got done, and that is the part that turns fourteen days of work into an answer. Without it you finished with a well done instead of a read, which was never the point of the fortnight.')}
+${emailBody('It is still open. Eight markers rated against how they felt on Day 1, then two questions about how your body holds and responds. Five to ten minutes on your phone.')}
+${emailFeaturedCard(emailNumberedList([
+  'Which of the four patterns your body has been working through',
+  'What that pattern actually means, and where it shows up day to day',
+  'What it is commonly mistaken for, which is usually the reason it stays unsolved',
+  'The three actions specific to it',
+]), { eyebrow: 'What comes back' })}
+${emailBody('Rate the markers against how you felt at the start, not how you feel about the fortnight. Honest beats flattering. The read is only as good as what you put in.', { bottom: 24 })}
+${emailCta({ href: checkInUrl, label: 'Get my Body Decode read' })}
+${emailUrlFallback(checkInUrl, 'Or paste this link into your browser')}
+${emailBody('Your report lands in your inbox as soon as you finish it.', { size: 14, bottom: 12 })}
+${emailBody('If you would rather not, that is genuinely fine. Reply and tell me what got in the way and I will take the read off the table.', { size: 14, color: '#6B6B6B', bottom: 0 })}
+`)
+  return { subject, html }
+}
+
 // Day 21 (= 7 days after Day 14) feedback / NPS email. Lighter ask than the
 // in-portal Day 14 capture - by Day 21 the experience has had time to settle,
 // and we ask "would you recommend" with permission flow attached.
