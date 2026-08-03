@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { PORTAL_ACCESS_STATUSES } from '@/lib/challenge-access'
 
 export async function POST(request: NextRequest) {
   let body: Record<string, unknown>
@@ -29,7 +30,7 @@ export async function POST(request: NextRequest) {
     .from('challenge_enrollments')
     .select('id')
     .eq('token', token)
-    .eq('status', 'active')
+    .in('status', PORTAL_ACCESS_STATUSES)
     .single()
 
   if (fetchError || !enrollment) {

@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
 import ChallengePortalClient from './challenge-portal-client'
+import { PORTAL_ACCESS_STATUSES } from '@/lib/challenge-access'
 
 export default async function ChallengePortalPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
@@ -10,7 +11,7 @@ export default async function ChallengePortalPage({ params }: { params: Promise<
     .from('challenge_enrollments')
     .select('id, current_day, enrolled_at, status, parq_completed_at, health_dec_completed_at, quiz_completed_at, quiz_result, body_decode_intake_completed_at, leads(name, email, scorecard_profile, scorecard_body_state)')
     .eq('token', token)
-    .eq('status', 'active')
+    .in('status', PORTAL_ACCESS_STATUSES)
     .single()
 
   if (!enrollment) notFound()

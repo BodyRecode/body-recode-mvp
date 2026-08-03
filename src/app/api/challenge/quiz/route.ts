@@ -4,6 +4,7 @@ import { Resend } from 'resend'
 import { pickPatternSlug, type Gender, type QuizAnswer } from '@/lib/pattern-mapping'
 import { buildDay7ProgressEmail, buildDay14BodyDecodeReportEmail } from '@/lib/challenge-checkin-emails'
 import { fromCoach } from '@/lib/email-shell'
+import { PORTAL_ACCESS_STATUSES } from '@/lib/challenge-access'
 
 export async function POST(request: NextRequest) {
   let body: Record<string, unknown>
@@ -33,7 +34,7 @@ export async function POST(request: NextRequest) {
     .from('challenge_enrollments')
     .select('id, enrolled_at, leads(name, email, gender)')
     .eq('token', token)
-    .eq('status', 'active')
+    .in('status', PORTAL_ACCESS_STATUSES)
     .single()
 
   if (fetchError || !enrollment) {

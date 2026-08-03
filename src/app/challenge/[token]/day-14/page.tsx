@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { CoachingAscensionCTA } from '@/components/coaching-ascension-cta'
 import { FeedbackDay14Card } from '../feedback-day14-card'
 import { logoUrl, brand } from '@/config/tenant'
+import { hasPortalAccess } from '@/lib/challenge-access'
 
 const card: React.CSSProperties = {
   background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px',
@@ -79,7 +80,7 @@ export default async function Day14Page({ params }: { params: Promise<{ token: s
       .eq('token', token)
       .single()
 
-    if (!enrollment || enrollment.status !== 'active') notFound()
+    if (!enrollment || !hasPortalAccess(enrollment.status)) notFound()
 
     enrollmentId = enrollment.id as string
     leadId = (enrollment.lead_id as string | null) ?? null

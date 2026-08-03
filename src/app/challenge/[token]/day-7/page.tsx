@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { logoUrl, brand } from '@/config/tenant'
+import { hasPortalAccess } from '@/lib/challenge-access'
 
 const FOUR_PATTERNS = [
   {
@@ -73,7 +74,7 @@ export default async function Day7Page({ params }: { params: Promise<{ token: st
       .eq('token', token)
       .single()
 
-    if (!enrollment || enrollment.status !== 'active') notFound()
+    if (!enrollment || !hasPortalAccess(enrollment.status)) notFound()
 
     const enrolledAt = new Date(enrollment.enrolled_at as string)
     const msPerDay = 1000 * 60 * 60 * 24

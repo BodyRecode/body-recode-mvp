@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { logoUrl, brand } from '@/config/tenant'
 import TrainingPlan from './training-plan'
+import { PORTAL_ACCESS_STATUSES } from '@/lib/challenge-access'
 
 export default async function TrainingPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
@@ -11,7 +12,7 @@ export default async function TrainingPage({ params }: { params: Promise<{ token
     .from('challenge_enrollments')
     .select('id')
     .eq('token', token)
-    .eq('status', 'active')
+    .in('status', PORTAL_ACCESS_STATUSES)
     .single()
   if (!enrollment) notFound()
 

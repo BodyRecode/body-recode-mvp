@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { logoUrl, brand } from '@/config/tenant'
+import { hasPortalAccess } from '@/lib/challenge-access'
 
 const SIGNALS = [
   { name: 'Hunger', interpretation: 'If your hunger feels more predictable this week, that is your blood sugar stabilising. Your meals are arriving at consistent intervals and your body is learning to trust the rhythm.' },
@@ -78,7 +79,7 @@ export default async function Day5Page({ params }: { params: Promise<{ token: st
       .eq('token', token)
       .single()
 
-    if (!enrollment || enrollment.status !== 'active') notFound()
+    if (!enrollment || !hasPortalAccess(enrollment.status)) notFound()
 
     const enrolledAt = new Date(enrollment.enrolled_at as string)
     const msPerDay = 1000 * 60 * 60 * 24

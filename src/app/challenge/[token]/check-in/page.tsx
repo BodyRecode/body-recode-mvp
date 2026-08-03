@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import BodyDecodeCheckIn from '../body-decode-check-in'
 import { logoUrl, brand } from '@/config/tenant'
 import { Lock } from 'lucide-react'
+import { hasPortalAccess } from '@/lib/challenge-access'
 
 export default async function CheckInPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
@@ -25,7 +26,7 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
       .eq('token', token)
       .single()
 
-    if (!enrollment || enrollment.status !== 'active') notFound()
+    if (!enrollment || !hasPortalAccess(enrollment.status)) notFound()
 
     const enrolledAt = new Date(enrollment.enrolled_at as string)
     const msPerDay = 1000 * 60 * 60 * 24

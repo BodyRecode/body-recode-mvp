@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { logoUrl, brand } from '@/config/tenant'
 import { Beef, Apple, Zap, Repeat } from 'lucide-react'
+import { PORTAL_ACCESS_STATUSES } from '@/lib/challenge-access'
 
 const card: React.CSSProperties = {
   background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: '14px', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 22px',
@@ -24,7 +25,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
     .from('challenge_enrollments')
     .select('id')
     .eq('token', token)
-    .eq('status', 'active')
+    .in('status', PORTAL_ACCESS_STATUSES)
     .single()
   if (!enrollment) notFound()
 

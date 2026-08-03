@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { logLeadEvent } from '@/lib/log-lead-event'
+import { PORTAL_ACCESS_STATUSES } from '@/lib/challenge-access'
 import {
   typeFatMapProfile,
   PROFILE_DRIVERS,
@@ -113,7 +114,7 @@ export async function POST(request: NextRequest) {
     .from('challenge_enrollments')
     .select('id, lead_id')
     .eq('token', token)
-    .eq('status', 'active')
+    .in('status', PORTAL_ACCESS_STATUSES)
     .single()
 
   if (fetchError || !enrollment) {
