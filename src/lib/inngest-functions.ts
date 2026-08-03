@@ -1241,37 +1241,52 @@ export const reengagementSequenceFunction = inngest.createFunction(
     const blueprintUrl = `${appUrl()}/blueprint`
     const patternNote = patternLabel ? ` Your ${patternLabel} pattern doesn't reset when you stop - it's still there when you come back.` : ''
 
-    // The next paid step depends on where they came from, and until 2026-08-03
-    // this sequence ignored that from Day 30 onward: every source was pitched
-    // the 90-Day Extension then the Membership. For a Challenge graduate that
-    // skips a whole stage - they have not done the Blueprint - and the Day 30
-    // copy even opened with "if the weekly membership commitment felt like too
-    // much", which they were never offered. It reads as though we have
-    // forgotten who they are.
+    // Until 2026-08-03 this sequence pitched every source the same thing from
+    // Day 30 onward: the 90-Day Extension, then the Membership. For a Challenge
+    // graduate that skipped a whole stage, and the Day 30 copy even opened with
+    // "if the weekly membership commitment felt like too much", which they were
+    // never offered.
     //
-    // Extension and Membership are also not live yet, so those CTAs land on a
-    // waitlist. Blueprint is live, so a Challenge graduate now gets pointed at
-    // the one thing they can actually buy and that is genuinely their next step.
+    // Ladder rule (Kade, 2026-08-04): the 90-Day Extension is ONLY for people
+    // who did the Blueprint and did not continue into the Membership. It is not
+    // an entry product, and it is not a win-back for a lapsed member.
+    //   challenge  -> Blueprint. They have not done it, so pitching the
+    //                 Extension or Membership skips a whole stage. Blueprint is
+    //                 also the only one of the three currently live.
+    //   blueprint  -> Extension. Exactly the case the Extension exists for.
+    //   membership -> Membership. A lapsed member is already past the Extension;
+    //                 the ask is to come back, not to step down a tier.
     const isChallenge = source === 'challenge'
-    const nextOffer = isChallenge
-      ? {
-          url: blueprintUrl,
-          ctaLabel: 'See the Blueprint',
-          eyebrow: '6-Week Body Rewire Blueprint',
-          price: '$97 one-time',
-          card: 'Six weeks of pattern-specific corrective work. Training calibrated to your pattern, nutrition timed to it, weekly coaching written for it. No subscription, no lock-in.',
-          nudge: 'The 6-Week Blueprint is still there at $97 if the timing is better now. Six weeks of corrective work built around your pattern, picked up from the baseline you already built.',
-          openLine: 'If committing to something ongoing felt like too much, this is the smaller step.',
-        }
-      : {
-          url: extensionUrl,
-          ctaLabel: 'See the Extension',
-          eyebrow: '90-Day Body Rewire Extension',
-          price: '$197 one-time',
-          card: "12 weeks of progressive pattern-specific programming. No subscription, no ongoing commitment. Same portal, same pattern-driven training and nutrition you've already experienced.",
-          nudge: 'The 90-Day Extension is still available at $197 if the timing is better now. It gives you 12 weeks of the next stage of programming, picked up exactly where you left off.',
-          openLine: "If the weekly membership commitment felt like too much right now, there's another option.",
-        }
+    const OFFERS = {
+      challenge: {
+        url: blueprintUrl,
+        ctaLabel: 'See the Blueprint',
+        eyebrow: '6-Week Body Rewire Blueprint',
+        price: '$97 one-time',
+        card: 'Six weeks of pattern-specific corrective work. Training calibrated to your pattern, nutrition timed to it, weekly coaching written for it. No subscription, no lock-in.',
+        nudge: 'The 6-Week Blueprint is still there at $97 if the timing is better now. Six weeks of corrective work built around your pattern, picked up from the baseline you already built.',
+        openLine: 'If committing to something ongoing felt like too much, this is the smaller step.',
+      },
+      blueprint: {
+        url: extensionUrl,
+        ctaLabel: 'See the Extension',
+        eyebrow: '90-Day Body Rewire Extension',
+        price: '$197 one-time',
+        card: "12 weeks of progressive pattern-specific programming. No subscription, no ongoing commitment. Same portal, same pattern-driven training and nutrition you've already experienced.",
+        nudge: 'The 90-Day Extension is still available at $197 if the timing is better now. It gives you 12 weeks of the next stage of programming, picked up exactly where you left off.',
+        openLine: "If the weekly membership commitment felt like too much right now, there's another option.",
+      },
+      membership: {
+        url: membershipUrl,
+        ctaLabel: 'See the Membership',
+        eyebrow: 'Body Recode Membership',
+        price: '$49 per week',
+        card: 'Progressive six-week blocks built around your pattern, the nutrition precision layer updated each block, a monthly coach review of your check-in data, and the group call. Cancel anytime.',
+        nudge: 'The Membership is still open at $49 a week if the timing is better now. The same system you were in, picked up from wherever your pattern is today.',
+        openLine: 'If you have been thinking about picking the system back up, it is still here.',
+      },
+    } as const
+    const nextOffer = OFFERS[source] ?? OFFERS.blueprint
 
     // Conversion guard: has this person taken a paid step SINCE the sequence
     // started? Checked before every email so we stop the instant they convert
@@ -1359,9 +1374,14 @@ ${emailBody("Reply to this email if you want to talk through where you're at. I 
     if (await hasConverted('convert-check-before-day14')) return
     await step.run('send-day14', async () => {
       if (!process.env.RESEND_API_KEY) return
+      // Three-way for the same reason as OFFERS above: a lapsed member has
+      // already been past the Extension, so the consolidation framing is wrong
+      // for them.
       const nextStageContext = source === 'challenge'
-        ? `The 6-Week Blueprint is where the work you started gets structure and direction. It's built around your biological pattern — not a generic plan.`
-        : `The 90-Day Extension is designed for exactly where you are — you've done the foundation work, and you need time to consolidate it before committing to the full membership.`
+        ? `The 6-Week Blueprint is where the work you started gets structure and direction. It is built around your biological pattern, not a generic plan.`
+        : source === 'blueprint'
+          ? `The 90-Day Extension is designed for exactly where you are. You have done the foundation work, and you need time to consolidate it before committing to the full membership.`
+          : `The Membership is the same system you were already in. Progressive blocks built around your pattern, updated as it shifts, with no lock-in if the timing changes again.`
       await sendMarketingEmail({
         from: fromCoach(),
         source: 'reengagement',
