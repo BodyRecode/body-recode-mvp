@@ -16,6 +16,8 @@ import {
   buildDay14BodyDecodeReportEmail,
   buildDay5UnlockEmail,
   buildDay14FallbackEmail,
+  buildDay7CheckInPromptEmail,
+  buildCheckInReminderEmail,
   buildDay21FeedbackEmail,
   buildDayZeroIntakeReminderEmail,
 } from './challenge-checkin-emails'
@@ -62,7 +64,7 @@ const SMS_MORNING: Record<number, string> = {
 
 const SMS_AFTERNOON_BOOST: Partial<Record<number, string>> = {
   5: `Quick reminder %FIRST%. Your Week One Progress Session is in the portal - watch it before bed if you haven't yet. It breaks down what your body has been doing all week: %URL%`,
-  7: `Quick check %FIRST%. Have you done your Body Decode Check-In yet? Takes 3 minutes and unlocks your Day 7 progress read. Portal: %URL%`,
+  7: `Quick check %FIRST%. Have you done your Body Decode Check-In yet? Five to ten minutes and it unlocks your Day 7 progress read. Portal: %URL%`,
   14: `Your Body Decode Report is in your inbox %FIRST%. The full pattern read, what it means, where it shows up, and what comes next. Open the email.`,
 }
 
@@ -110,6 +112,88 @@ function renderAutomationBody(body: string): string {
   }
   return parts.join('\n')
 }
+
+// ─── Challenge Check-In Prompt Function ──────────────────────────────────────
+//
+// Added 2026-08-03. The Body Decode Check-In gates the entire Day 14 pattern
+// reveal, but nothing in the email arc ever asked for it - only two SMS on
+// Day 7. Completion sat at 2/28 (7%) against 21/28 (75%) for the Day 0 intake,
+// so 17 of the 18 people who finished got the no-result fallback at Day 14
+// instead of the Body Decode Report (and therefore never saw the Blueprint
+// pitch that converts).
+//
+// Deliberately a SEPARATE function rather than extra steps inside
+// challenge-sequence. Inngest has no memoised result for a newly-added step
+// id, so inserting sleeps into a function with runs already in flight would
+// make every mid-challenge run execute the new sleeps on its next replay and
+// push its Day 14 email out by the combined duration. A new function only ever
+// starts on new `challenge/enrolled` events, so in-flight participants are
+// untouched. Anyone mid-challenge right now is handled by a one-off send
+// instead (scripts/send-checkin-catchup.ts).
+export const challengeCheckinPromptFunction = inngest.createFunction(
+  {
+    id: 'challenge-checkin-prompt',
+    retries: 2,
+    triggers: [{ event: 'challenge/enrolled' }],
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async ({ event, step }: { event: any; step: any }) => {
+    const { token, email, firstName } = event.data as {
+      token: string
+      email: string
+      firstName: string
+    }
+
+    const resend = new Resend(process.env.RESEND_API_KEY)
+
+    // Returns null when the prompt should be skipped: enrollment gone,
+    // no longer active, or the Check-In is already done.
+    async function shouldSend(stepId: string): Promise<boolean> {
+      return await step.run(stepId, async () => {
+        const admin = createAdminClient()
+        const { data } = await admin
+          .from('challenge_enrollments')
+          .select('status, quiz_completed_at')
+          .eq('token', token)
+          .single()
+        if (!data || data.status !== 'active') return false
+        return !data.quiz_completed_at
+      })
+    }
+
+    // ── Day 7: the Check-In unlocks ───────────────────────────────────────
+    await step.sleep('checkin-wait-to-day-7', '6d')
+    await alignToNextMorningAEST(step, 'checkin-day-7-morning')
+
+    if (await shouldSend('checkin-day-7-should-send')) {
+      await step.run('send-day7-checkin-prompt', async () => {
+        const built = buildDay7CheckInPromptEmail({ firstName, token })
+        await resend.emails.send({
+          from: fromCoach(),
+          to: email,
+          subject: built.subject,
+          html: built.html,
+        })
+      })
+    }
+
+    // ── Day 11: reminder, non-completers only ─────────────────────────────
+    await step.sleep('checkin-wait-to-day-11', '4d')
+    await alignToNextMorningAEST(step, 'checkin-day-11-morning')
+
+    if (await shouldSend('checkin-day-11-should-send')) {
+      await step.run('send-day11-checkin-reminder', async () => {
+        const built = buildCheckInReminderEmail({ firstName, token, daysLeft: 3 })
+        await resend.emails.send({
+          from: fromCoach(),
+          to: email,
+          subject: built.subject,
+          html: built.html,
+        })
+      })
+    }
+  }
+)
 
 // ─── Challenge Sequence Function ─────────────────────────────────────────────
 

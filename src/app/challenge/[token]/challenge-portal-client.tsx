@@ -818,8 +818,13 @@ export default function ChallengePortalClient({
                   ? `Your 7-day progress, marker breakdown, and Week 2 focus are on the Day 7 page.${currentDay < 14 ? ` Your full Body Decode Report arrives on Day 14. ${14 - currentDay} day${14 - currentDay === 1 ? '' : 's'} to go.` : ''}`
                   : 'It reads how your body has shifted this week to identify your specific pattern. Rate 8 biological markers, answer 2 signal questions. Your 7-day progress is shown immediately; your full Body Decode Report arrives on Day 14.'}
               </p>
+              {/* Before completion this goes STRAIGHT to the form. It used to
+                  point at /day-7, so a button labelled "Open Body Decode
+                  Check-In" landed on a content page and asked for a second
+                  click. Once completed it goes to /day-7, which is where the
+                  progress read lives. */}
               <a
-                href={`/challenge/${token}/day-7`}
+                href={savedQuizResult ? `/challenge/${token}/day-7` : `/challenge/${token}/check-in`}
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: '8px',
                   padding: '14px 26px', borderRadius: '10px',

@@ -530,6 +530,78 @@ ${churnFeedbackLine}
   return { subject, html }
 }
 
+// ─── Day 7 Check-In prompt + Day 11 reminder ────────────────────────────
+// Added 2026-08-03. Before these existed, the Check-In was asked for ONLY by
+// two SMS on Day 7. Neither email in the 14-day arc mentioned it. Completion
+// sat at 2/28 (7%) against 21/28 (75%) for the Day 0 intake, and because the
+// Check-In gates the pattern reveal, 17 of 18 finishers got the no-result
+// fallback at Day 14 instead of the Body Decode Report.
+//
+// Both link STRAIGHT to /check-in, not the Day 7 content page. Both quote
+// "five to ten minutes" to match the form itself; the old SMS claim of three
+// minutes undersold it and broke the promise on arrival.
+
+export function buildDay7CheckInPromptEmail({
+  firstName,
+  token,
+}: {
+  firstName: string
+  token: string
+}): { subject: string; html: string } {
+  const subject = `${firstName}, your Body Decode Check-In is open`
+  const checkInUrl = `${brand().marketingDomain}/challenge/${token}/check-in`
+  const html = challengeArcShell(`
+${emailEyebrow('Day 7 · Body Decode Check-In')}
+${emailHeading('One week in. Time to read what changed.')}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody('You have given your body seven consecutive days of structured rhythm. Training, food, sleep, timing. That is long enough for real signals to show up.')}
+${emailBody('The Body Decode Check-In reads those signals. You rate eight biological markers against how they felt on Day 1, then answer two questions about where your body holds and how it responds. Five to ten minutes.')}
+${emailFeaturedCard(emailNumberedList([
+  'Your 7-day progress read, straight away, showing which markers have moved',
+  'Your Week 2 focus, so the second half is not a repeat of the first',
+  'Your full Body Decode Report on Day 14, naming which of the four patterns your body is working through',
+]), { eyebrow: 'What it gives you' })}
+${emailBody('This is the part that makes the rest of the Challenge mean something. Without it, Day 14 is just a date. With it, Day 14 is a read on why your body has been behaving the way it has.', { bottom: 24 })}
+${emailCta({ href: checkInUrl, label: 'Take the Check-In' })}
+${emailUrlFallback(checkInUrl, 'Or paste this link into your browser')}
+${emailBody('Rate the markers honestly. There is no right answer and it is not a test. It only works if it reflects what is actually happening.', { size: 14, color: '#6B6B6B', bottom: 0 })}
+`)
+  return { subject, html }
+}
+
+export function buildCheckInReminderEmail({
+  firstName,
+  token,
+  daysLeft,
+}: {
+  firstName: string
+  token: string
+  daysLeft: number
+}): { subject: string; html: string } {
+  const subject = `${firstName}, your Day 14 read needs this first`
+  const checkInUrl = `${brand().marketingDomain}/challenge/${token}/check-in`
+  const dayWord = daysLeft === 1 ? 'day' : 'days'
+  const html = challengeArcShell(`
+${emailEyebrow('Body Decode Check-In · still open')}
+${emailHeading('Your Report is built from this.')}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody(`You have not done the Body Decode Check-In yet, and there ${daysLeft === 1 ? 'is' : 'are'} ${daysLeft} ${dayWord} left before Day 14.`)}
+${emailBody('Worth being straight with you about what that means. The Body Decode Report on Day 14 is generated from your Check-In answers. No Check-In, no pattern, no Report. You would finish the fourteen days and get a well done, which is not why you started.')}
+${emailStatusCard({
+  eyebrow: 'What you are missing',
+  headline: 'The pattern your body is working through',
+  body: 'Which of the four patterns is driving what you have been fighting, where it shows up, what it is commonly mistaken for, and the three actions specific to it.',
+})}
+${emailBody('It takes five to ten minutes and you can do it on your phone. Eight markers rated against Day 1, then two questions.', { bottom: 24 })}
+${emailCta({ href: checkInUrl, label: 'Take the Check-In' })}
+${emailUrlFallback(checkInUrl, 'Or paste this link into your browser')}
+${emailBody('If something is genuinely in the way, reply and tell me. I would rather know than have you finish with nothing to show for the fortnight.', { size: 14, bottom: 0 })}
+`)
+  return { subject, html }
+}
+
 // Day 21 (= 7 days after Day 14) feedback / NPS email. Lighter ask than the
 // in-portal Day 14 capture - by Day 21 the experience has had time to settle,
 // and we ask "would you recommend" with permission flow attached.

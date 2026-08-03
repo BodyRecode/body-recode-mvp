@@ -31,9 +31,16 @@ const AUTOMATIC_AUTOMATIONS = [
   {
     id: 'challenge-email-sequence',
     name: 'Challenge Email Sequence',
-    description: 'Milestone emails across the free 14-Day Body Decode Challenge (welcome, Day 5 session, Day 7 pre-check-in, Day 14 reveal). Branded shell. Dormant until the Challenge goes live.',
+    description: 'Milestone emails across the free 14-Day Body Decode Challenge: welcome (sent synchronously on enrol), Day 5 Week One Progress Session unlock, and the Day 14 reveal. The Day 14 send branches - Body Decode Report if the Check-In was completed, plain ascension if not. Note there is no Day 7 email in this function; the Check-In is prompted by the separate Check-In Prompt sequence below.',
     trigger: 'challenge/enrolled Inngest event',
-    steps: 4,
+    steps: 3,
+  },
+  {
+    id: 'challenge-checkin-prompt',
+    name: 'Challenge Body Decode Check-In Prompt',
+    description: 'Two emails that chase the Body Decode Check-In: one on Day 7 when it unlocks, one on Day 11 for anyone who still has not done it. Both link straight to the form. Auto-stops as soon as the Check-In is submitted or the enrolment goes inactive. Added 2026-08-03 because the Check-In gates the entire Day 14 pattern reveal but was previously asked for only by two SMS on Day 7 - completion sat at 7% against 75% for the Day 0 intake, so 17 of 18 finishers got the no-result fallback instead of the Body Decode Report.',
+    trigger: 'challenge/enrolled Inngest event',
+    steps: 2,
   },
   {
     id: 'challenge-intake-reminder',
