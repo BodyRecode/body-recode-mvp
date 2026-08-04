@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Dumbbell, BookOpen, ClipboardCheck, ChevronRight, Salad, GraduationCap, Compass, ListChecks, X } from 'lucide-react'
 import { logoUrl, brand, coach } from '@/config/tenant'
 import { BLUEPRINT_LESSON_VIDEOS, BLUEPRINT_WELCOME_VIDEOS, BLUEPRINT_WELCOME_POSTERS } from '@/lib/video-urls'
+import { resolveAssessmentPattern, type AssessmentSex } from '@/lib/pattern-taxonomy'
 
 // Consistent icon-led header for each portal tab.
 function TabHeader({ icon: Icon, title, subtitle, colour }: { icon: React.ElementType; title: string; subtitle: React.ReactNode; colour: string }) {
@@ -160,7 +161,7 @@ const PATTERN_CONFIG: Record<string, { label: string; colour: string; descriptio
   'metabolic-drift': {
     label: 'Insulin-Drift',
     colour: '#B7791F',
-    description: 'Your programme is built around restoring insulin sensitivity, stabilising blood sugar across the day, and timing your nutrition to work with your metabolic rhythm. The full-body softening reverses as insulin signalling rebuilds.',
+    description: 'Your programme is built around restoring insulin sensitivity, stabilising blood sugar across the day, and timing your nutrition to work with your metabolic rhythm. The storage across your back and sides comes down as insulin signalling rebuilds.',
   },
   'hormonal-shift': {
     label: 'Estrogen-Shift',
@@ -346,33 +347,56 @@ type PatternAssessmentProps = {
 function PatternAssessment({ onComplete, token, changeMode }: PatternAssessmentProps) {
   const [q1, setQ1] = useState('')
   const [q2, setQ2] = useState('')
+  const [sex, setSex] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
+  // Storage location leads the read. Wording follows Fat_Map_Definitions_LOCKED v2.0:
+  // front vs back is what separates the two midsection patterns, and androgen is a
+  // composition shift rather than a place.
   const q1Options = [
-    { value: 'stress-stored', label: 'Stomach and waist - above and below the navel' },
-    { value: 'metabolic-drift', label: 'Lower gut and abdomen - even when you have not eaten much' },
-    { value: 'hormonal-shift', label: 'Hips, thighs, and lower body' },
-    { value: 'system-overload', label: 'Upper back, chest, or arms' },
+    { value: 'stress-stored', label: 'Front of the stomach and waist - while arms and legs stay lean' },
+    { value: 'metabolic-drift', label: 'Mid-back, lower back and love handles - more the back and sides than the front' },
+    { value: 'hormonal-shift', label: 'Hips, glutes and outer thighs' },
+    { value: 'system-overload', label: 'Not one place - the middle is filling while muscle and tone are dropping' },
   ]
 
   const q2Options = [
     { value: 'stress-stored', label: 'Exhausted but wired - tired but cannot switch off at night' },
-    { value: 'metabolic-drift', label: 'Heavy and sluggish - especially after meals or in the afternoon' },
+    { value: 'metabolic-drift', label: 'Heavy and sluggish - especially after meals or mid-afternoon' },
     { value: 'hormonal-shift', label: 'Hormonally inconsistent - mood shifts, water retention, or cycle disruption' },
-    { value: 'system-overload', label: 'Flat and stalled - not depleted, just not changing or responding' },
+    { value: 'system-overload', label: 'Strength and drive falling - not depleted, just less capable than I was' },
+  ]
+
+  // Sex is a hard gate: Estrogen-Shift is female only, Androgen-Decline male only.
+  const sexOptions = [
+    { value: 'F', label: 'Female' },
+    { value: 'M', label: 'Male' },
   ]
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!q1 || !q2) return
+    if (!q1 || !q2 || !sex) return
     setSubmitting(true)
-    const pattern = q2
+
+    // Storage leads, signal confirms, sex hard-gates. Resolved server-side so the
+    // doctrine lives in one place. Ref: Fat_Map_Definitions_LOCKED.md v2.0.
+    const resolved = resolveAssessmentPattern({
+      storage: q1,
+      signal: q2,
+      sex: sex as AssessmentSex,
+    })
+    if (!resolved) { setSubmitting(false); return }
+
     await fetch(changeMode ? '/api/blueprint/confirm-pattern' : '/api/blueprint/set-pattern', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(changeMode ? { token, pattern, change: true } : { token, pattern }),
+      body: JSON.stringify(
+        changeMode
+          ? { token, pattern: resolved, change: true }
+          : { token, storage: q1, signal: q2, sex },
+      ),
     })
-    onComplete(pattern)
+    onComplete(resolved)
   }
 
   return (
@@ -383,9 +407,25 @@ function PatternAssessment({ onComplete, token, changeMode }: PatternAssessmentP
           {changeMode ? 'Choose your pattern' : 'One last step before your portal opens'}
         </h1>
         <p style={{ fontSize: 15, color: '#6B6B6B', lineHeight: 1.75, margin: '0 0 36px', fontFamily: 'system-ui, sans-serif' }}>
-          Two questions to identify your biological pattern. This determines how your programme is built.
+          Three questions to identify your biological pattern. This determines how your programme is built.
         </p>
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+          <div>
+            <p style={{ fontSize: 14, fontWeight: 600, color: '#4A4A4A', margin: '0 0 16px', fontFamily: 'system-ui, sans-serif' }}>
+              Biological sex
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {sexOptions.map(opt => (
+                <label key={opt.value} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', cursor: 'pointer', padding: '14px 16px', background: sex === opt.value ? '#E5E5E5' : '#FFFFFF', border: `1px solid ${sex === opt.value ? '#1B6DFC' : '#D4D4D4'}`, borderRadius: 8 }}>
+                  <input type="radio" name="sex" value={opt.value} checked={sex === opt.value} onChange={() => setSex(opt.value)} style={{ marginTop: 2, accentColor: '#1B6DFC' }} />
+                  <span style={{ fontSize: 14, color: '#1A1A1A', lineHeight: 1.6, fontFamily: 'system-ui, sans-serif' }}>{opt.label}</span>
+                </label>
+              ))}
+            </div>
+            <p style={{ fontSize: 13, color: '#8A8A8A', lineHeight: 1.6, margin: '10px 0 0', fontFamily: 'system-ui, sans-serif' }}>
+              Two of the four patterns are sex-specific, so this changes which reads are possible.
+            </p>
+          </div>
           <div>
             <p style={{ fontSize: 14, fontWeight: 600, color: '#4A4A4A', margin: '0 0 16px', fontFamily: 'system-ui, sans-serif' }}>
               Where do you most notice excess puffiness or softness in your body?
@@ -414,7 +454,7 @@ function PatternAssessment({ onComplete, token, changeMode }: PatternAssessmentP
           </div>
           <button
             type="submit"
-            disabled={!q1 || !q2 || submitting}
+            disabled={!q1 || !q2 || !sex || submitting}
             style={{ padding: '15px', background: '#1B6DFC', color: '#FFFFFF', fontWeight: 700, fontSize: 15, borderRadius: 8, border: 'none', cursor: (!q1 || !q2 || submitting) ? 'not-allowed' : 'pointer', opacity: (!q1 || !q2 || submitting) ? 0.5 : 1, fontFamily: 'system-ui, sans-serif' }}
           >
             {submitting ? 'Opening your portal...' : 'Open my Blueprint'}

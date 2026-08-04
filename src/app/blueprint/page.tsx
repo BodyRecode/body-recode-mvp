@@ -75,10 +75,10 @@ const WHAT_YOU_GET: Feature[] = [
 ]
 
 const PATTERNS: ColorCard[] = [
-  { name: 'Stress-Stored', colour: '#DC2626', tag: 'Cortisol driver', signal: 'Abdominal fat, morning puffiness, afternoon crashes. Wired and tired.', body: 'The Blueprint takes stress off first. Sleep matters more than training here. Your body lets go of the holding pattern, and fat starts to move.' },
-  { name: 'Insulin-Drift', colour: '#B7791F', tag: 'Insulin driver', signal: 'Full-body softening, carb cravings, post-meal fatigue, energy variability through the day.', body: 'The Blueprint times your carbs to a tight window after training. Blood sugar steadies, insulin starts working properly again, and the softness reverses.' },
-  { name: 'Estrogen-Shift', colour: '#8b5cf6', tag: 'Oestrogen driver', signal: 'Hip and thigh storage, water retention, cycle irregularity, mood variability.', body: 'The Blueprint breaks the under-eating cycle that makes this pattern worse. It adjusts around your cycle the whole way through. Recovery is the lever that moves it.' },
-  { name: 'Androgen-Decline', colour: BLUE, tag: 'Testosterone driver', signal: 'Reduced muscle tone, reduced drive, capacity slipping despite consistent effort.', body: 'The Blueprint protects your muscle by managing load and putting recovery first. Testosterone starts working properly again. Drive and capacity come back.' },
+  { name: 'Stress-Stored', colour: '#DC2626', tag: 'Cortisol driver', signal: 'Front of the midsection while arms and legs stay lean. Morning puffiness. Wired and tired.', body: 'The Blueprint takes stress off first. Sleep matters more than training here. Your body lets go of the holding pattern, and fat starts to move.' },
+  { name: 'Insulin-Drift', colour: '#B7791F', tag: 'Insulin driver', signal: 'Mid-back, lower back and love handles rather than the front. Afternoon crash, evening cravings, foggy after meals.', body: 'The Blueprint times your carbs to a tight window after training. Blood sugar steadies, insulin starts working properly again, and the back and sides start to come down.' },
+  { name: 'Estrogen-Shift', colour: '#8b5cf6', tag: 'Oestrogen driver', signal: 'Hips, glutes and outer thighs, then moving toward the middle as oestrogen falls. Water retention, cycle irregularity, mood variability.', body: 'The Blueprint breaks the under-eating cycle that makes this pattern worse. It adjusts around your cycle the whole way through. Recovery is the lever that moves it.' },
+  { name: 'Androgen-Decline', colour: BLUE, tag: 'Testosterone driver', signal: 'Middle filling while muscle and tone drop. Drive and capacity slipping despite consistent effort.', body: 'The Blueprint protects your muscle by managing load and putting recovery first. Testosterone starts working properly again. Drive and capacity come back.' },
 ]
 
 const PHASES: Step[] = [

@@ -127,3 +127,53 @@ export async function resolveBuyerPattern(
 
   return { slug: null, source: null, leadId: lead.id }
 }
+
+// ---------------------------------------------------------------------------
+// Blueprint fallback assessment
+// ---------------------------------------------------------------------------
+
+export type AssessmentSex = 'F' | 'M'
+
+/**
+ * Resolve a Blueprint pattern from the in-portal fallback assessment.
+ *
+ * Only used when resolveBuyerPattern finds nothing to carry over (no Challenge
+ * result, no high-confidence scorecard). Mirrors the doctrine in
+ * `fat-map-profile.ts` so a buyer who takes this route lands on the same pattern
+ * the scorecard would have given them:
+ *
+ *   - Fat-storage location is the direct discriminator and LEADS when supplied.
+ *     The symptom signal is the confirmer, not the decider.
+ *   - Sex is a HARD GATE. Estrogen-Shift is female only, Androgen-Decline male
+ *     only. A cross-sex answer is remapped rather than assigned impossibly.
+ *
+ * Ref: 00_PLAYBOOK/Fat_Map_Definitions_LOCKED.md v2.0.
+ */
+export function resolveAssessmentPattern(input: {
+  storage?: string | null
+  signal?: string | null
+  sex?: AssessmentSex | null
+}): string | null {
+  const valid = (v?: string | null): string | null =>
+    v && (BLUEPRINT_PATTERN_SLUGS as readonly string[]).includes(v) ? v : null
+  const storage = valid(input.storage)
+  const signal = valid(input.signal)
+  if (!storage && !signal) return null
+
+  // Storage leads. Falls back to the symptom signal when storage is absent.
+  let resolved = storage ?? signal!
+
+  // Sex gate, mirroring typeFatMapProfile's resolveSex.
+  if (input.sex === 'F' && resolved === 'system-overload') {
+    // Female low-tone read: oestrogen if anything points lower-body, else cortisol.
+    resolved = storage === 'hormonal-shift' || signal === 'hormonal-shift'
+      ? 'hormonal-shift'
+      : 'stress-stored'
+  }
+  if (input.sex === 'M' && resolved === 'hormonal-shift') {
+    // Male long-arc read: androgen if drive/capacity is also down, else insulin.
+    resolved = signal === 'system-overload' ? 'system-overload' : 'metabolic-drift'
+  }
+
+  return resolved
+}
