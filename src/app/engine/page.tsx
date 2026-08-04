@@ -54,7 +54,7 @@ const INPUTS = [
     name: 'Baseline',
     meta: 'measurements + photos',
     model: null,
-    desc: 'Bodyweight, waist, hips, chest, and three photos (front / side / back). The photos feed the engine’s vision read; bodyweight floors the nutrition protein anchor.',
+    desc: 'Height, bodyweight, waist, hips, chest, and three photos (front / side / back). The photos feed the engine’s vision read; bodyweight floors the nutrition protein anchor, and height is what makes an energy estimate possible at all.',
     store: 'baselines.*',
   },
   {
