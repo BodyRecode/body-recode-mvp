@@ -1,6 +1,6 @@
 # Body Recode - Consumer Marketing Strategy
 
-**Status:** v2.0 - 2026-07-19. One document: the strategy (what and why) and the content engine (how) in one place.
+**Status:** v2.1 - 2026-08-05 (§11 cold-paid: broad targeting, optimisation event corrected). One document: the strategy (what and why) and the content engine (how) in one place.
 **Scope:** the **consumer demand brand** - `@body_recode_`, bodyrecode.au marketing, and the Challenge -> Blueprint -> membership funnel (with the scorecard as the Day-0 in-portal routing gate). Not the licensing engine (see the Collective strategy) or the internal coaching delivery (Performance Coaching).
 
 ---
@@ -174,7 +174,7 @@ The giveaway is **a personalised micro-read, not a PDF.** Comment the keyword ->
 
 ## 11. Channels, cadence & weekly rhythm
 
-- **Instagram `@body_recode_` - primary.** 5x/week. **Cold-paid (Meta):** statics only (no reels/video), optimised for the `Lead` event, budget ramps deliberately. **Bio/links -> Scorecard.** **Email:** post-scorecard nurture, Challenge sequence, Blueprint CTA, weekly check-ins.
+- **Instagram `@body_recode_` - primary.** 5x/week. **Cold-paid (Meta):** statics only (no reels/video), **broad targeting** (AU 30-60, no interest stacking - interest sets exhausted the audience at 3,613 reach in Jul 2026), budget ramps deliberately. Optimisation event: currently `CompleteRegistration`, which is what the campaign actually runs on. Note it fires from both `challenge/enroll` and `scorecard/submit`, so the count is blended - an open task exists to switch to `Lead`. **Bio/links -> Scorecard.** **Email:** post-scorecard nurture, Challenge sequence, Blueprint CTA, weekly check-ins.
 
 Weekly structure = your canonical 5-post-type week (the Content System tab), with the signature formats slotted in and archetypes rotating 1 -> 4 across the week (Sunday always archetype 01, the Stressed Exec Woman):
 
