@@ -23,13 +23,14 @@ const TXT_DIM = '#8A8E9B'
 const TXT_MUTE = '#565A66'
 const MONO = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
 
-const HAIKU = 'Claude Haiku 4.5'
+const CLINICAL = 'Claude Sonnet 5'   // AI_MODELS.clinical
+const OPERATIONAL = 'Claude Haiku 4.5' // AI_MODELS.operational
 
 /* ---------- Data ---------- */
 const FOOTPRINT = [
   { n: '221', l: 'intake signals', d: 'the read instrument · 8 domains' },
   { n: '5', l: 'interpretive pillars', d: 'FMM primary + PTS/HABNS/RRS/BIRS' },
-  { n: '4 + 11', l: 'Fat Map zones', d: 'macro + extended' },
+  { n: '4 + 14', l: 'Fat Map', d: 'patterns + extended sub-zones' },
   { n: '3', l: 'body states', d: 'the classification' },
   { n: 'CFFS', l: 'one read', d: 'refreshed weekly as the CFWS' },
   { n: '39k', l: 'lines of canon', d: 'the doctrine behind it' },
@@ -45,7 +46,7 @@ const STAGES = [
 const INPUTS = [
   {
     name: 'Foundational Intake',
-    meta: '8 domains · ~200 scale signals',
+    meta: '8 domains · 221 scale signals',
     model: null,
     desc: 'The deep input. Eight scored signal domains map one-to-one onto eight JSONB buckets the engine reads: Fat Map, Injury, Training, Nutrition, Schedule, Sleep, Stress, Medications/Supplements.',
     store: 'intakes.*',
@@ -67,7 +68,7 @@ const INPUTS = [
   {
     name: 'Blood Panel',
     meta: 'optional · multimodal',
-    model: HAIKU,
+    model: CLINICAL,
     desc: 'Client uploads a lab PDF/photo. The engine transcribes every marker against the lab’s own printed range — transcription, not diagnosis. Only a coach-approved panel reaches the interpretation.',
     store: 'blood_panels.*',
   },
@@ -75,8 +76,9 @@ const INPUTS = [
 
 const CFFS_INPUTS = [
   'Eight intake domains (pre-summarised: average, elevated ≥3/4, low ≤1/4)',
-  'Baseline measurements',
+  'Baseline measurements → derived ratios (BMI, waist-to-height) with a plausibility check',
   'Baseline photos → vision read (Spatial Patterning)',
+  'Any prior pattern read carried in from the funnel (not binding)',
   'clients.medications (free text)',
   'Dietary context (hard constraints)',
   'Approved blood markers (the coach gate)',
@@ -84,6 +86,8 @@ const CFFS_INPUTS = [
 
 const CFFS_OUTPUTS = [
   'body_state_classification',
+  'pattern_classification (one of four) + confidence',
+  'pattern_rationale + competing read',
   'resolution_state',
   'client_context_summary',
   'primary_patterns_and_signals',
@@ -125,7 +129,7 @@ const ZONES = [
 ]
 
 const INFRA = [
-  { k: 'Model', v: `${HAIKU} for the read — one model, multimodal. Photos and lab files run in the same call as the text.` },
+  { k: 'Model', v: `Tiered by consequence, never chosen at the call site. ${CLINICAL} for anything whose output reaches a client's body — the read and the lab extraction both sit here. ${OPERATIONAL} for drafting, routing and extraction that is cheap to retry. One multimodal call: photos and lab files run alongside the text.` },
   { k: 'JSON', v: 'A brace-counting extractor, never a greedy regex. Every parse survives prose, code fences and stray commentary.' },
   { k: 'Em dashes', v: 'Recursively stripped from every generated string. A banned AI-writing signal across the whole platform.' },
   { k: 'One live read', v: 'Generating a CFFS or CFWS archives the prior one. reassessment_flagged is always server-set, never by the model.' },
@@ -254,7 +258,7 @@ export default function EnginePage() {
           <div style={{ border: '1px solid rgba(27,109,252,0.45)', borderRadius: 18, padding: 'clamp(22px, 4vw, 34px)', background: 'linear-gradient(180deg, rgba(27,109,252,0.10), rgba(27,109,252,0.02))', boxShadow: `0 0 60px -20px ${BLUE}` }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10, marginBottom: 24 }}>
               <p style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: '0.14em', color: BLUE_LIGHT, textTransform: 'uppercase' }}>{brand().name}™ Interpretation Engine</p>
-              <ModelBadge>{HAIKU} · multimodal</ModelBadge>
+              <ModelBadge>{CLINICAL} · multimodal</ModelBadge>
             </div>
             <Grid min={260} gap={20}>
               <div>
@@ -310,7 +314,7 @@ export default function EnginePage() {
             </p>
           </div>
         </Grid>
-        <div style={{ marginTop: 16 }}><ModelBadge>{HAIKU}</ModelBadge></div>
+        <div style={{ marginTop: 16 }}><ModelBadge>{CLINICAL}</ModelBadge></div>
       </Section>
 
       {/* STAGE 03 — SIGNAL MONITORING */}
