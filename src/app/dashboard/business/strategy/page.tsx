@@ -2520,24 +2520,25 @@ export default function StrategyPage() {
 
           {/* Budget Strategy - Option D Stage Gate (locked 2026-06-29) */}
           <Card className="border-blue-500/30 bg-blue-500/5">
-            <SectionLabel>Budget Strategy · Option D · Stage Gate (locked 2026-06-29)</SectionLabel>
-            <Body>Don&apos;t run all 3 archetype ad sets concurrently at the locked $20-30/day budget - at $7-10/day each, Meta&apos;s algorithm can&apos;t converge (it needs ~50 conversions/week per ad set to optimise reliably). Same dollars, divided too thinly. Instead: <strong>stage gate</strong> - prove the dominant archetype first at full optimisation, then expand only on real data.</Body>
+            <SectionLabel>Budget Strategy · BROAD (decided 2026-08-05) · supersedes Option D targeting</SectionLabel>
+            <Body><strong>The July run exhausted its audience.</strong> 13-30 Jul reached only 3,613 people: the first 10 days returned 21 results at $11.15 each, the last 8 returned 2 at $103.56. CPM held flat at ~$48 across both halves, so it did not get more expensive to reach people - it ran out of people to reach. The unit economics work; capacity was the constraint. <strong>Round 1 therefore runs BROAD</strong>: one ad set, no interest stacking, no lookalikes. The stage-gate budget logic still holds; the archetype ad-set structure does not.</Body>
 
             <div className="mt-3 space-y-2 text-xs">
               <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3">
-                <p className="text-[10px] font-bold text-blue-700 uppercase tracking-widest mb-1">Phase 1 · Weeks 1-2 · Single archetype proof</p>
-                <p className="text-stone-700 leading-relaxed">One ad set: <strong>Stressed Executive Woman</strong> (dominant audience). ABO budget at <strong>$25/day on the one ad set</strong>. Other two ad sets (Perimenopausal, Slipping HP) created but PAUSED. 3 ad variants (001, 002, 003) running in that ad set so creative is tested in parallel within the archetype. Target: CPL low enough that Blueprint take-rate × $97 + Coaching conversion ≥ CPS. Approximate Phase 1 spend: $350.</p>
+                <p className="text-[10px] font-bold text-blue-700 uppercase tracking-widest mb-1">Round 1 · Broad · four ads, one ad set</p>
+                <p className="text-stone-700 leading-relaxed">One ad set, <strong>broad</strong>: Australia, 30-60, all genders. No interests, no lookalikes. <strong>$25/day at campaign level.</strong> Four ads run inside it - Ad 6 (insulin drift), Ad 3 (perimenopause), Ad 2 (Fat Map), plus Ad 6 with the offer banner removed as a structural test. At $25/day, separate ad sets would get ~$6 each and learn nothing, so creative is tested inside one set. Target: cost per Challenge signup low enough that Blueprint take-rate × $97 + coaching conversion clears it.</p>
               </div>
 
               <div className="bg-stone-50 border border-stone-200 rounded-lg p-3">
                 <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest mb-1">Stage gate decision · End of week 2</p>
-                <p className="text-stone-700 leading-relaxed mb-2"><strong>If CPL hits target:</strong> proceed to Phase 2 - unpause the other two ad sets at $25/day each (total run-rate $75/day). All 3 archetypes test in parallel for weeks 3-4. Additional spend ~$1050 over 2 weeks. By end of week 4 you have clean data across all 3 archetypes.</p>
-                <p className="text-stone-700 leading-relaxed"><strong>If CPL misses target:</strong> DO NOT expand budget. Debug Stressed Exec first - likely culprits in priority order: (1) creative variant mismatch, (2) Day 0 intake friction, (3) Challenge LP conversion, (4) audience interest set too narrow/broad. Fix the root cause, then re-test before spending Phase 2 dollars on the other two archetypes.</p>
+                <p className="text-stone-700 leading-relaxed mb-2"><strong>If cost per signup hits target:</strong> raise to $75/day on the same broad set and add fresh creative, rather than adding audiences. Broad plus more creative is the scale path now.</p>
+                <p className="text-stone-700 leading-relaxed mb-2"><strong>If it misses:</strong> DO NOT narrow the targeting. Narrowing is what caused the July exhaustion. Debug in order: (1) creative, (2) Day 0 intake friction, (3) Challenge LP conversion, (4) the offer itself.</p>
+                <p className="text-stone-700 leading-relaxed"><strong>Expect broad to look worse before better.</strong> It takes longer to stabilise - do not judge it on the first 48h. CPM should fall relative to July&apos;s ~$48. If CPM does not fall, the audience was never the constraint and the creative is.</p>
               </div>
 
               <div className="bg-stone-50 border border-stone-200 rounded-lg p-3">
-                <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest mb-1">Why not concurrent at locked budget</p>
-                <p className="text-stone-700 leading-relaxed">$25/day split across 3 ad sets = $8.30/day each. Meta needs ~$50/day per ad set for reliable optimisation. At $8/day, conversion volume is too low for Meta&apos;s algorithm to learn - it shows ads to suboptimal slices of the defined audience, CPL stays high, you spend $350 over 2 weeks and end up with directional noise, not actionable data. Worst-of-all-worlds outcome.</p>
+                <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest mb-1">Why one ad set, not several</p>
+                <p className="text-stone-700 leading-relaxed">$25/day split across 3 ad sets = $8.30/day each, and Meta needs far more than that per set to learn. It shows ads to suboptimal slices, cost stays high, and you end up with directional noise rather than data. July proved the second half of this too: within the one ad set that did run, a single ad took $220 of $225. Watch spend distribution across the four ads - if it is not roughly even by day 3, you are testing one ad again.</p>
               </div>
             </div>
           </Card>
@@ -2551,13 +2552,13 @@ export default function StrategyPage() {
                 { k: 'Objective', v: 'Sales (Lead Generation)' },
                 { k: 'Pixel ID', v: '972772552072010' },
                 { k: 'Budget level', v: 'ABO - Ad Set Budget Optimisation (NOT CBO)' },
-                { k: 'Phase 1 daily budget', v: '$25 AUD on Stressed Exec ad set only' },
-                { k: 'Phase 1 other ad sets', v: 'Perimenopausal + Slipping HP CREATED but PAUSED' },
-                { k: 'Phase 2 daily budget (post stage gate)', v: '$25 AUD per ad set × 3 = $75/day total' },
-                { k: 'Optimization event', v: 'Lead — the ONLY event the site actually fires. Optimise every ad set on Lead. (CompleteRegistration was never wired; do not select it.)' },
+                { k: 'Round 1 daily budget', v: '$25 AUD at campaign level, one broad ad set' },
+                { k: 'Targeting', v: 'BROAD - Australia, 30-60, all genders. No interests, no lookalikes' },
+                { k: 'Scale path', v: 'Raise to $75/day on the SAME broad set + fresh creative. Never add audiences' },
+                { k: 'Optimization event', v: 'CompleteRegistration is what the July run actually optimised on and it IS wired - it fires from challenge/enroll AND scorecard/submit, so the count is blended. Open runbook task to switch to Lead; until then read results knowing they mix both.' },
                 { k: 'Action source', v: 'Website' },
                 { k: 'CTA button', v: 'Learn More' },
-                { k: 'Schedule start', v: 'Monday 13 July 2026 (locked 2026-06-29) - same day NEXT_PUBLIC_CHALLENGE_LIVE flips' },
+                { k: 'Schedule start', v: 'Round 1 relaunch, Aug 2026. Original launch ran 13-30 Jul and was paused 31 Jul on audience exhaustion.' },
                 { k: 'Placements', v: 'IG feed + Reels + FB feed (start broad, let Meta optimise)' },
                 { k: 'Traffic type', v: 'Cold only (retargeting layer added Day 30+)' },
                 { k: 'CAPI test event code', v: 'See META_TEST_EVENT_CODE env (unset in prod)' },
@@ -2578,8 +2579,8 @@ export default function StrategyPage() {
             <div className="space-y-3">
               <div><Heading>Objective</Heading><Body>Cold traffic → Challenge LP direct. Cold paid Meta + gym-floor are the only surfaces that bypass the scorecard (locked rule, see feedback_scorecard_first_routing). Never ad direct to a paid checkout.</Body></div>
               <div>
-                <Heading>Audience - Archetype-Targeted</Heading>
-                <Body>Run 3 separate ad sets, one per archetype, instead of one broad set. Each set narrows on the interests + behaviours that index Depleted-state for that archetype. The scorecard catches and routes them regardless.</Body>
+                <Heading>Audience - BROAD (superseded 2026-08-05)</Heading>
+                <Body><strong>Round 1 runs one broad ad set, not three archetype sets.</strong> Australia, 30-60, all genders, no interests. Interest stacking is what exhausted the July audience at 3,613 reach. The archetypes below are retained as <strong>creative angles</strong> - they tell you who each ad speaks to and which pattern it names - but they are no longer ad-set definitions, and the interest lists are kept for reference only. The creative carries the targeting now, and the scorecard routes whoever arrives.</Body>
                 <div className="mt-3 space-y-2">
                   {[
                     {
