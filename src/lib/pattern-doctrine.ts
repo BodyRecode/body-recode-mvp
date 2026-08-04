@@ -49,13 +49,13 @@ export function isCanonicalPattern(v: unknown): v is CanonicalPattern {
 /** What each pattern means, for the prompt. Kept short: the CFFS reasons, this only names. */
 export const PATTERN_DEFINITIONS: Record<CanonicalPattern, string> = {
   'Stress-Stored':
-    'Sympathetic load is the organising force. Central and midsection storage, waist changes tracking stress rather than intake, disrupted sleep, appetite and energy swinging with load. Effort goes in, the body holds because it is defending.',
+    'Sympathetic load is the organising force. Storage sits central and ANTERIOR — the front of the midsection and waist — while the limbs stay lean or thin out. That contrast is the discriminator. Waist changes track stress rather than intake, sleep is disrupted, appetite and energy swing with load. Effort goes in, the body holds because it is defending.',
   'Insulin-Drift':
-    'Metabolic handling has drifted. Storage follows carbohydrate and meal timing, energy dips post-meal, waist creeps without a matching change in intake, hunger poorly correlated with need.',
+    'Metabolic handling has drifted. Storage sits POSTERIOR AND FLANK — mid-back, lower back, love handles — plus deep abdominal fullness, with the front relatively spared. The discriminator is timing: afternoon crash, evening cravings, heavy for an hour after eating. Generalised surface softness is not the signal.',
   'Estrogen-Shift':
-    'A hormonal transition is reorganising distribution. Storage moves toward the midsection from a previously peripheral pattern, thermoregulation and sleep change, and the training response alters despite unchanged behaviour. Peri- and post-menopausal, or a surgical or pharmacological equivalent.',
+    'Oestrogen is reorganising distribution, in two phases. Phase 1, oestrogen sufficient: gluteofemoral storage at hips, glutes and outer thighs, with cyclical fluid variation. Phase 2, oestrogen falling: redistribution toward the midsection with lean mass falling alongside, thermoregulation and sleep changing, training response altering despite unchanged behaviour. Read the phase, not just the location. Peri- and post-menopausal, or a surgical or pharmacological equivalent.',
   'Androgen-Decline':
-    'Output and recovery capacity have fallen together. Reduced training tolerance, slower recovery, flattened drive and mood, strength expression declining despite consistent exposure.',
+    'A composition shift rather than a storage location. Central fat rises while lean mass falls, the chest fills via aromatisation, and output and recovery capacity fall together. Reduced training tolerance, slower recovery, flattened drive and mood, strength expression declining despite consistent exposure. The discriminator is muscle and drive falling, not fat rising alone.',
 }
 
 /** How certain a read is. Low means the coach should treat it as provisional. */
