@@ -337,7 +337,7 @@ This is the coach's at-a-glance card on the client profile. It must pass the "co
 
 VISUAL SIGNAL SUMMARY (the new field):
 When baseline photos were provided alongside this intake, you must produce a dedicated visual_signal_summary of 2-4 sentences that names plainly:
-1. What the photos actually showed across the four Fat Map zones (Stress Belt, Gut and Bloat, Hip and Thigh, Upper Body Stress Response).
+1. What the photos actually showed against the four Fat Map patterns — anterior midsection and whether the limbs are lean (Stress-Stored), posterior and flank with the front spared (Insulin-Drift), gluteofemoral or migrating central (Estrogen-Shift), and central fat alongside lost muscle and chest fullness (Androgen-Decline). Note any bracing or holding signals separately as accompanying sympathetic load, not as a pattern.
 2. Where the visual evidence converged with the intake signals.
 3. Where it diverged - i.e. anything the photos failed to corroborate that the intake suggested, or anything the photos hinted at that the intake did not.
 This is a standalone coach-facing summary, NOT a substitute for the photo references already woven through primary_patterns_and_signals and closing_interpretive_notes. Write it so a coach scanning the CFFS can see in one glance what the visual layer contributed. Same prohibitions apply: no aesthetic judgments, no broken-body framing, conservative language, no causal claims, no em dashes. When NO photos were provided, OMIT this field from the JSON entirely (do not return an empty string).

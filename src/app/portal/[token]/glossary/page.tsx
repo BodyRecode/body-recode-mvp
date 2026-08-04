@@ -72,7 +72,7 @@ const TERMS: Array<{ term: string; def: string }> = [
   },
   {
     term: 'Fat Map Method',
-    def: 'The interpretive framework Body Recode uses to read where your body is storing energy and what that storage pattern is signalling about your current state. Four macro zones, each with four internal pillars.',
+    def: 'The interpretive framework Body Recode uses to read where your body is storing energy and what that storage pattern is signalling about your current state. Four patterns, each read from a location plus the signal that comes with it — because where it sits narrows the read, and what accompanies it decides.',
   },
   {
     term: 'Stability',

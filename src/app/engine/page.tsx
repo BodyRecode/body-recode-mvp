@@ -118,10 +118,10 @@ const STATES = [
 ]
 
 const ZONES = [
-  { zone: 'MZ1', name: 'Stress Belt', loc: 'Stomach / Waist', signal: 'Cortisol and adrenaline dominance', ext: ['Lower Abdominal Compression', 'Lower Back Shelf', 'Solar Plexus Compression'] },
-  { zone: 'MZ2', name: 'Gut & Bloat', loc: 'Digestive region', signal: 'Insulin timing disruption', ext: ['Lower Abdominal Distension', 'Ribcage Bloat'] },
-  { zone: 'MZ3', name: 'Hip & Thigh', loc: 'Hips / Thighs', signal: 'Reproductive hormone and metabolic conservation', ext: ['Glute Shelf Retention', 'Lower Quad Crest Retention', 'Hamstring Tie-In Retention'] },
-  { zone: 'MZ4', name: 'Upper Body Stress', loc: 'Upper body', signal: 'Nervous system load, adrenaline, sleep retention', ext: ['Upper Back Puffiness', 'Shoulder Bracing', 'Neck Holding'] },
+  { zone: 'Cortisol', name: 'Stress-Stored', loc: 'Front of the midsection', signal: 'The middle fills while the limbs stay lean', ext: ['Lower Abdominal Compression', 'Peripheral Sparing'] },
+  { zone: 'Insulin', name: 'Insulin-Drift', loc: 'Mid-back, lower back, flanks', signal: 'Afternoon crash, evening cravings. Front spared', ext: ['Subscapular Fullness', 'Flank Carriage', 'Deep Abdominal Fullness'] },
+  { zone: 'Oestrogen', name: 'Estrogen-Shift', loc: 'Hips and thighs, then central', signal: 'Two phases. Direction of travel is the read', ext: ['Glute Shelf Retention', 'Lower Quad Crest Retention', 'Hamstring Tie-In Retention', 'Central Migration'] },
+  { zone: 'Testosterone', name: 'Androgen-Decline', loc: 'Not one location', signal: 'Central fat rising while muscle and drive fall', ext: ['Central Accumulation', 'Peripheral Softening', 'Chest Fullness'] },
 ]
 
 const INFRA = [
@@ -265,7 +265,7 @@ export default function EnginePage() {
                 <ColLabel>Does</ColLabel>
                 <p style={{ fontSize: 13, color: TXT_DIM, lineHeight: 1.8 }}>
                   Pre-summarises the scale domains, reads the photos as one signal stream feeding Spatial Patterning,
-                  and resolves the whole picture through the Fat Map’s four macro zones. Conservative resolution
+                  and resolves the whole picture through the Fat Map’s four location-plus-signal patterns. Conservative resolution
                   always overrides the optimistic read. It classifies the body state and rates four exposure-readiness
                   signals — and prescribes <strong style={{ color: TXT_BODY }}>nothing</strong>.
                 </p>
@@ -380,11 +380,12 @@ export default function EnginePage() {
       {/* STATES + ZONES */}
       <Section wide>
         <SectionLabel>The Classification</SectionLabel>
-        <SectionHeading>Three body states. Four zones, eleven sub-zones.</SectionHeading>
+        <SectionHeading>Three body states. Four patterns, fourteen sub-zones.</SectionHeading>
         <Prose style={{ marginBottom: 40 }}>
           The deep state (named below) is the engine’s own classification, with a public-facing label for
-          client language. The Fat Map reads at two resolutions: the macro zone says <em>where</em> load is
-          expressed, the extended sub-zone says <em>how</em>. Fat-storage conclusions are valid only on the
+          client language. The Fat Map reads at two resolutions, and location alone does not separate the four — three of
+          the four drivers push storage centrally, so the pattern says <em>where</em> to look and the
+          accompanying signal decides. The extended sub-zone then says <em>how</em>. Fat-storage conclusions are valid only on the
           long arc — months, not weeks.
         </Prose>
         <Grid min={240} gap={12} style={{ marginBottom: 28 }}>
