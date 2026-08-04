@@ -3261,7 +3261,7 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">The four biological patterns</p>
             <StatusList items={[
               { label: 'Stress-Stored (a)', desc: 'Cortisol and adrenaline driving storage around the midsection. Maps to Fat Map MZ1. Colour: red #DC2626.' },
-              { label: 'Insulin-Drift (b)', desc: 'DB slug: metabolic-drift. Insulin staying elevated too long, blood sugar instability, full-body softening, carb cravings, post-meal fatigue. Male-dominant per doctrine. Maps to Fat Map MZ2. Colour: amber #B7791F.' },
+              { label: 'Insulin-Drift (b)', desc: 'DB slug: metabolic-drift. Insulin staying elevated too long, blood sugar instability, storage across mid-back, lower back and love handles plus deep abdominal (front spared), carb cravings, post-meal fatigue. Male-leaning per doctrine. Colour: amber #B7791F.' },
               { label: 'Estrogen-Shift (c)', desc: 'DB slug: hormonal-shift. Oestrogen-driven conservation state, hip and thigh storage, water retention, cycle irregularity, mood variability. Female-only per doctrine. Maps to Fat Map MZ3. Colour: purple #8b5cf6.' },
               { label: 'Androgen-Decline (d)', desc: 'DB slug: system-overload. Testosterone signalling decline, reduced muscle tone, reduced drive, capacity slipping despite consistent effort. Male-only per doctrine. Maps to Fat Map MZ4. Colour: teal #1B6DFC.' },
             ]} />
@@ -3441,7 +3441,7 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">The four biological patterns</p>
             <StatusList items={[
               { label: 'Stress-Stored', desc: 'Cortisol driver. Fat stored at waist and stomach. Wired but tired at night.' },
-              { label: 'Insulin-Drift', desc: 'Insulin driver. Full-body softening, carb cravings, post-meal fatigue, energy variability through the day. Male-dominant per doctrine.' },
+              { label: 'Insulin-Drift', desc: 'Insulin driver. Mid-back, lower back and love handles rather than the front. Afternoon crash, evening cravings, post-meal fatigue. Male-leaning per doctrine.' },
               { label: 'Estrogen-Shift', desc: 'Oestrogen driver. Hip and thigh storage, water retention, cycle irregularity, mood variability. Female-only per doctrine.' },
               { label: 'Androgen-Decline', desc: 'Testosterone driver. Reduced muscle tone, reduced drive, capacity slipping despite consistent effort. Male-only per doctrine.' },
             ]} />

@@ -506,8 +506,8 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
 
   // Fat Map zone marker
   const fatMapZones = [
-    `  - Stomach/waist = stress + cortisol${profile === 'Stress-Stored' ? '         ← YOURS, before I open the intake' : ''}`,
-    `  - Full-body softening = insulin drift${profile === 'Insulin-Drift' ? '         ← YOURS, before I open the intake' : ''}`,
+    `  - Front of stomach/waist, limbs staying lean = stress + cortisol${profile === 'Stress-Stored' ? '   ← YOURS, before I open the intake' : ''}`,
+    `  - Back/sides: mid-back, lower back, love handles = insulin drift${profile === 'Insulin-Drift' ? '   ← YOURS, before I open the intake' : ''}`,
     `  - Hips/thighs = oestrogen-driven${profile === 'Estrogen-Shift' ? '            ← YOURS, before I open the intake' : ''}`,
     `  - Reduced tone + drive = androgen decline${profile === 'Androgen-Decline' ? '   ← YOURS, before I open the intake' : ''}`,
   ]

@@ -68,7 +68,7 @@ export const CHECKIN_PATTERNS: Record<string, CheckinPattern> = {
       'Energy crashes in the mid-afternoon, around 2-4pm.',
       'Cravings hit hardest in the evening, after dinner.',
       'You feel heavy and foggy for an hour after eating.',
-      'Weight settles low on the torso. Around the lower abdomen and love handles.',
+      'Storage sits around the back and sides. Mid-back, lower back and love handles more than the front.',
     ],
     whatItIsNot: [
       'Not pre-diabetes. Insulin drift is a state. Pre-diabetes is a diagnosis. The two share signals; they are not the same thing.',
@@ -92,7 +92,7 @@ export const CHECKIN_PATTERNS: Record<string, CheckinPattern> = {
       'The fix is not less food or more training. The fix is rebuilding the hormonal environment the body wants to release from. That requires consistent fuelling, recovery, and rhythm rather than effort piled on top of an already stressed system.',
     ],
     whereItShows: [
-      'Storage settles in the hips, glutes, and outer thighs.',
+      'Storage settles in the hips, glutes, and outer thighs, and later begins moving toward the middle.',
       'Bloating and water retention shift unpredictably across the month.',
       'Sleep becomes lighter and more disrupted.',
       'Mood, motivation, and capacity vary more than they used to.',

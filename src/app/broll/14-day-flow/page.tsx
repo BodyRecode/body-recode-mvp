@@ -55,7 +55,7 @@ const ACTIONS = [
 ]
 
 const OTHER_PATTERNS = [
-  { name: 'Insulin-Drift',    desc: 'Insulin driver. Full-body softening, carb cravings, post-meal fatigue.' },
+  { name: 'Insulin-Drift',    desc: 'Insulin driver. Back and sides, carb cravings, post-meal fatigue.' },
   { name: 'Estrogen-Shift',   desc: 'Oestrogen driver. Hip and thigh storage, water retention, cycle irregularity.' },
   { name: 'Androgen-Decline', desc: 'Testosterone driver. Reduced muscle tone, reduced drive, capacity slipping.' },
 ]
