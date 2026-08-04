@@ -1188,12 +1188,16 @@ export const extensionWeekAdvanceFunction = inngest.createFunction(
         'system-overload': 'Androgen-Decline',
       }
 
+      // Extension completers are NOT Blueprint completers. This used to fire
+      // 'reengagement/blueprint-no-ascension' with source:'blueprint', so
+      // someone who had just finished the 90-Day Extension was pitched the
+      // 90-Day Extension. Their next rung is the Membership.
       await inngest.send({
-        name: 'reengagement/blueprint-no-ascension',
+        name: 'reengagement/extension-no-ascension',
         data: {
           email,
           firstName,
-          source: 'blueprint',
+          source: 'extension',
           patternLabel: patternLabels[enrollment?.pattern ?? ''] ?? undefined,
         },
       })
@@ -1224,6 +1228,7 @@ export const reengagementSequenceFunction = inngest.createFunction(
     triggers: [
       { event: 'reengagement/challenge-no-ascension' },
       { event: 'reengagement/blueprint-no-ascension' },
+      { event: 'reengagement/extension-no-ascension' },
       { event: 'reengagement/membership-cancelled' },
     ],
   },
@@ -1231,7 +1236,7 @@ export const reengagementSequenceFunction = inngest.createFunction(
     const { email, firstName, source, patternLabel, phone } = event.data as {
       email: string
       firstName: string
-      source: 'challenge' | 'blueprint' | 'membership'
+      source: 'challenge' | 'blueprint' | 'extension' | 'membership'
       patternLabel?: string
       phone?: string | null
     }
@@ -1275,6 +1280,19 @@ export const reengagementSequenceFunction = inngest.createFunction(
         card: "12 weeks of progressive pattern-specific programming. No subscription, no ongoing commitment. Same portal, same pattern-driven training and nutrition you've already experienced.",
         nudge: 'The 90-Day Extension is still available at $197 if the timing is better now. It gives you 12 weeks of the next stage of programming, picked up exactly where you left off.',
         openLine: "If the weekly membership commitment felt like too much right now, there's another option.",
+      },
+      // An Extension completer has just done 12 weeks of the thing. Their next
+      // rung is the Membership, NOT the Extension they only just finished -
+      // which is what they got before 2026-08-04, because extension-week-advance
+      // fired the win-back labelled source:'blueprint'.
+      extension: {
+        url: membershipUrl,
+        ctaLabel: 'See the Membership',
+        eyebrow: 'Body Recode Membership',
+        price: '$49 per week',
+        card: 'Progressive six-week blocks built around your pattern, the nutrition precision layer updated each block, a monthly coach review of your check-in data, and the group call. Cancel anytime.',
+        nudge: 'The Membership is still open at $49 a week if the timing is better now. It picks up from the base you built across the Extension rather than starting again.',
+        openLine: 'You have done twelve weeks of the work. The Membership is what keeps it moving.',
       },
       membership: {
         url: membershipUrl,
@@ -1339,7 +1357,9 @@ export const reengagementSequenceFunction = inngest.createFunction(
         ? 'You finished the 14-day challenge a few days ago.'
         : source === 'blueprint'
           ? 'You completed the 6-Week Blueprint a few days ago.'
-          : 'Your Body Recode membership has ended.'
+          : source === 'extension'
+            ? 'You finished the 90-Day Extension a few days ago.'
+            : 'Your Body Recode membership has ended.'
       await sendMarketingEmail({
         from: fromCoach(),
         source: 'reengagement',
@@ -1360,7 +1380,7 @@ ${emailBody("Reply to this email if you want to talk through where you're at. I 
 
     // Mirror the soft check-in as an SMS (consent-gated + capped).
     await step.run('sms-day3', async () => {
-      const ctx = source === 'challenge' ? 'challenge' : source === 'blueprint' ? 'Blueprint' : 'membership'
+      const ctx = source === 'challenge' ? 'challenge' : source === 'blueprint' ? 'Blueprint' : source === 'extension' ? 'Extension' : 'membership'
       // NOTE: BR SMS sends from the one-way alphanumeric sender ID "BodyRecode"
       // (Twilio Messaging Service MG3cab…, 0 numbers / 1 alpha sender) — recipients
       // CANNOT reply to a text. Never promise an SMS reply here; point to the paired
@@ -1381,7 +1401,9 @@ ${emailBody("Reply to this email if you want to talk through where you're at. I 
         ? `The 6-Week Blueprint is where the work you started gets structure and direction. It is built around your biological pattern, not a generic plan.`
         : source === 'blueprint'
           ? `The 90-Day Extension is designed for exactly where you are. You have done the foundation work, and you need time to consolidate it before committing to the full membership.`
-          : `The Membership is the same system you were already in. Progressive blocks built around your pattern, updated as it shifts, with no lock-in if the timing changes again.`
+          : source === 'extension'
+            ? `The Membership is the step after the Extension. Same pattern-driven blocks, but ongoing, with a monthly review of your check-in data rather than a fixed end date.`
+            : `The Membership is the same system you were already in. Progressive blocks built around your pattern, updated as it shifts, with no lock-in if the timing changes again.`
       await sendMarketingEmail({
         from: fromCoach(),
         source: 'reengagement',
