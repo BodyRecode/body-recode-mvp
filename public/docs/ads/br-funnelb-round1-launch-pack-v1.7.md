@@ -1,6 +1,6 @@
 # BR-FunnelB Round 1: launch pack
 
-**v1.6 · 5 Aug 2026.** Four ads, ready to upload. Supersedes `BR_FUNNELB_CAMPAIGN_SETUP.md`, which
+**v1.7 · 5 Aug 2026.** Four ads, ready to upload. Supersedes `BR_FUNNELB_CAMPAIGN_SETUP.md`, which
 was written before I had read the locked strategy and got three things wrong: it sent traffic
 to the scorecard, measured scorecard completions, and ignored Option D.
 
@@ -87,6 +87,9 @@ below on 5 Aug 2026.
 | Ad | Chars | Grade | Verdict |
 |---|---|---|---|
 | Ad 5 Four patterns | 1,293 | 4.9 | Pass |
+| Ad 12 Anatomical plate | 726 | 4.3 | Pass |
+| Ad 13 Notes app | 797 | 4.8 | Pass |
+| Ad 14 Plain type | 861 | 4.2 | Pass |
 | Ad 6 Insulin drift | 779 | 4.4 | Pass |
 | Ad 3 Perimenopause | 953 | **7.3** | **Fails the grade rule** |
 | Ad 2 Fat Map reveal | 896 | 4.2 | Pass |
@@ -384,6 +387,139 @@ at an acceptable cost, stop and look at the Challenge landing page rather than b
    face.
 4. ~~**Ads 4, 8 and 10** still carry pre-v2.0 wording.~~ **Done 5 Aug 2026.** Rewritten
    below. Outstanding on those: the Ad 4 creative has a ring/pill collision to rebuild.
+
+---
+
+## Format-breakers
+
+**Built 5 Aug 2026** to fix two things wrong with Round 1 as a set rather than as
+individual ads.
+
+**Everything looked like the same advertiser.** Greyscale photo, Signal Blue, the same
+type treatment and the same 104px banner on all four. Each one interrupts on its own, but
+four ads from one account that read as a matched set read as a campaign, and a campaign
+reads as an ad. The playbook's whole point is variety in the rotation.
+
+**Only Ads 2 and 5 sold body composition in the image.** Ad 6's image sells a symptom, a
+clock at 3pm. Ad 3's sells effort, a squat. The copy rewrite fixed composition; the
+creative mostly did not.
+
+These three break the visual language in three different directions and put composition
+back in the picture. No new photography was needed: Ad 12 reuses the existing figures,
+Ads 13 and 14 are pure type.
+
+**Banner note.** None of them carries the blue offer banner, because it would defeat the
+point of all three. Each keeps the free offer as a native-looking line instead, so the
+qualifier survives. This does entangle them with the deferred no-banner test, so run that
+test on a Round 1 ad rather than on one of these.
+
+### Ad 12 · Anatomical plate
+
+`ad12-creative-anatomical-plate.png`
+
+![](/Users/kadedunstone/Library/CloudStorage/Dropbox/01_BODY_RECODE/07_ADS/_pdf_assets/ad12-creative-anatomical-plate.jpg)
+
+Cream paper, ink type, oxide-red accent, serif. Reads as a textbook plate rather than a
+fitness ad. Three panels carry a location, the fourth is withheld, because
+Androgen-Decline is a composition shift and not a place. That asymmetry is the gap.
+
+**Headline**
+
+> Three of the four show up as a place on the body. The fourth does not.
+
+**Primary text**
+
+> Fat does not settle at random. Where it sits narrows which driver is holding it.
+>
+> Front of the midsection while the arms and legs stay lean. Cortisol.
+>
+> Mid-back, lower back and the flanks, with the front spared. Insulin.
+>
+> Hips, glutes and outer thighs, later moving central. Oestrogen.
+>
+> And the fourth, which cannot be read from where it sits at all. It shows up as the middle
+> filling while muscle, tone and drive fall together. That one is testosterone, and the
+> giveaway is the muscle going rather than the fat arriving.
+>
+> This is why two people carrying the same amount of fat need opposite corrections. Same
+> effort, different target, completely different result.
+>
+> Where it sits narrows it to one. What comes with it decides.
+
+**Link description** Free 14 days. Which plate is yours.
+
+### Ad 13 · Notes app
+
+`ad13-creative-notes-app.png`
+
+![](/Users/kadedunstone/Library/CloudStorage/Dropbox/01_BODY_RECODE/07_ADS/_pdf_assets/ad13-creative-notes-app.jpg)
+
+Deliberately un-designed. System font, white ground, iOS Notes furniture. It interrupts by
+not looking like a designed thing at all, which is the format the playbook rates highest
+for native feel.
+
+**Headline**
+
+> The four patterns, written out in plain english
+
+**Primary text**
+
+> Front of the middle, arms and legs still lean. That is cortisol. The body is holding a
+> reserve close to the organs because the stress never resolved.
+>
+> Mid-back, lower back, the flanks, front relatively spared. That is insulin. Fat burning
+> stays switched off longer after meals than it should.
+>
+> Hips, glutes, outer thighs, then it starts moving central. That is oestrogen. A
+> conservation state, not a willpower failure.
+>
+> No single place, the middle fills while muscle and drive drop together. That is
+> testosterone. The giveaway is the muscle going, not the fat arriving.
+>
+> The reason it matters: run the cortisol correction on an insulin pattern and almost
+> nothing moves. Same effort, wrong target. That is most of why plans half work.
+>
+> Fourteen days is enough to find out which one you are running.
+
+**Link description** Free 14 days. Which one are you running.
+
+### Ad 14 · Plain type
+
+`ad14-creative-plain-type.png`
+
+![](/Users/kadedunstone/Library/CloudStorage/Dropbox/01_BODY_RECODE/07_ADS/_pdf_assets/ad14-creative-plain-type.jpg)
+
+White ground, black type, no photograph and no Signal Blue anywhere. The exact inverse of
+the house style, so in a feed it should not read as coming from the same advertiser as
+Ads 2, 3, 5 and 6.
+
+**Headline**
+
+> It was never discipline. It was the target.
+
+**Primary text**
+
+> Five days a week, food handled, alcohol gone, and the body has not changed shape in a
+> year. That is not a discipline problem. The discipline is already proven.
+>
+> Four different drivers hold fat in four different ways, and each answers to a different
+> correction.
+>
+> Correct the wrong one and the effort still goes in. It just does not come back out as a
+> change in composition. That is most of why plans half work, and why it feels so unfair
+> when they do.
+>
+> Cortisol holds it on the front of the middle while the limbs stay lean.
+>
+> Insulin holds it across the mid-back, lower back and flanks, sparing the front.
+>
+> Oestrogen holds it at the hips and thighs, then starts moving it central.
+>
+> Testosterone is not a place at all. The middle fills while muscle and drive fall together.
+>
+> Fourteen days is enough to find out which one is yours. Nothing to buy at the end of it.
+
+**Link description** Free 14 days. Same effort, right target.
 
 ---
 

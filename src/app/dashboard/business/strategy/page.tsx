@@ -917,13 +917,13 @@ function CopyButton({ value, label }: { value: string; label?: string }) {
 // The no-banner test carries Ad 6's exact fields on purpose: that test is void
 // if any field other than the creative differs.
 type Round1Ad = {
-  slug: string; short: string; layer: 'round1' | 'layer2' | 'deferred'; audience: string
+  slug: string; short: string; layer: 'round1' | 'layer2' | 'deferred' | 'variety'; audience: string
   img: string; headline: string; primaryText: string; description: string
 }
 // Bump this ONE constant when the launch pack is republished. It drives the card
 // title, both download links and the 'verbatim from' line, which had already
 // drifted apart once (card said v1.6 while the body text still said v1.4).
-const LAUNCH_PACK_VERSION = 'v1.6'
+const LAUNCH_PACK_VERSION = 'v1.7'
 
 const ROUND1_ADS: Round1Ad[] = [
   { slug: 'ad-5-four-patterns', short: 'Four patterns', layer: 'round1', audience: 'Either sex',
@@ -1082,6 +1082,57 @@ Prescribing before reading is guessing, which is why so many plans half work.
 
 The free fourteen days is step one and most of step two.`,
     description: `Free 14 days. The step almost everyone skips.` },
+  { slug: 'ad-12-plate', short: 'Anatomical plate', layer: 'variety', audience: 'Composition in image',
+    img: '/creative/formats/ad12-creative-anatomical-plate.png',
+    headline: `Three of the four show up as a place on the body. The fourth does not.`,
+    primaryText: `Fat does not settle at random. Where it sits narrows which driver is holding it.
+
+Front of the midsection while the arms and legs stay lean. Cortisol.
+
+Mid-back, lower back and the flanks, with the front spared. Insulin.
+
+Hips, glutes and outer thighs, later moving central. Oestrogen.
+
+And the fourth, which cannot be read from where it sits at all. It shows up as the middle filling while muscle, tone and drive fall together. That one is testosterone, and the giveaway is the muscle going rather than the fat arriving.
+
+This is why two people carrying the same amount of fat need opposite corrections. Same effort, different target, completely different result.
+
+Where it sits narrows it to one. What comes with it decides.`,
+    description: `Free 14 days. Which plate is yours.` },
+  { slug: 'ad-13-notes', short: 'Notes app', layer: 'variety', audience: 'Un-designed',
+    img: '/creative/formats/ad13-creative-notes-app.png',
+    headline: `The four patterns, written out in plain english`,
+    primaryText: `Front of the middle, arms and legs still lean. That is cortisol. The body is holding a reserve close to the organs because the stress never resolved.
+
+Mid-back, lower back, the flanks, front relatively spared. That is insulin. Fat burning stays switched off longer after meals than it should.
+
+Hips, glutes, outer thighs, then it starts moving central. That is oestrogen. A conservation state, not a willpower failure.
+
+No single place, the middle fills while muscle and drive drop together. That is testosterone. The giveaway is the muscle going, not the fat arriving.
+
+The reason it matters: run the cortisol correction on an insulin pattern and almost nothing moves. Same effort, wrong target. That is most of why plans half work.
+
+Fourteen days is enough to find out which one you are running.`,
+    description: `Free 14 days. Which one are you running.` },
+  { slug: 'ad-14-plain', short: 'Plain type', layer: 'variety', audience: 'No photo, no blue',
+    img: '/creative/formats/ad14-creative-plain-type.png',
+    headline: `It was never discipline. It was the target.`,
+    primaryText: `Five days a week, food handled, alcohol gone, and the body has not changed shape in a year. That is not a discipline problem. The discipline is already proven.
+
+Four different drivers hold fat in four different ways, and each answers to a different correction.
+
+Correct the wrong one and the effort still goes in. It just does not come back out as a change in composition. That is most of why plans half work, and why it feels so unfair when they do.
+
+Cortisol holds it on the front of the middle while the limbs stay lean.
+
+Insulin holds it across the mid-back, lower back and flanks, sparing the front.
+
+Oestrogen holds it at the hips and thighs, then starts moving it central.
+
+Testosterone is not a place at all. The middle fills while muscle and drive fall together.
+
+Fourteen days is enough to find out which one is yours. Nothing to buy at the end of it.`,
+    description: `Free 14 days. Same effort, right target.` },
 ]
 
 // ARCHIVED 2026-08-05. COLD_ADS - the 9-variant cold paid Meta ad library. Source of truth for
@@ -1351,7 +1402,7 @@ function Round1AdCard({ ad }: { ad: Round1Ad }) {
       <div className="p-3 space-y-2.5 text-xs">
         <div className="flex items-center gap-1.5 flex-wrap">
           <span className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">{ad.short}</span>
-          <span className={`text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${ad.layer === 'round1' ? 'bg-blue-500/10 text-blue-700' : 'bg-stone-200 text-stone-700'}`}>{ad.layer === 'round1' ? 'Round 1' : ad.layer === 'deferred' ? 'Round 2' : 'Layer 2'}</span>
+          <span className={`text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${ad.layer === 'round1' ? 'bg-blue-500/10 text-blue-700' : 'bg-stone-200 text-stone-700'}`}>{ad.layer === 'round1' ? 'Round 1' : ad.layer === 'deferred' ? 'Round 2' : ad.layer === 'variety' ? 'Format test' : 'Layer 2'}</span>
           <span className="text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-800">{ad.audience}</span>
         </div>
 
@@ -2907,6 +2958,15 @@ export default function StrategyPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
               {ROUND1_ADS.filter(a => a.layer === 'deferred').map(ad => <Round1AdCard key={ad.slug} ad={ad} />)}
+            </div>
+
+            <SectionLabel>Format-breakers · built 5 Aug</SectionLabel>
+            <p className="text-xs text-stone-700 leading-relaxed">Round 1&apos;s four are individually strong but share one visual language: greyscale photo, Signal Blue, same type, same banner. Four ads from one account that look like a matched set read as a campaign, and a campaign reads as an ad. These three break that in three directions, and put <strong>body composition back in the image</strong> — Ad 6&apos;s picture sells a clock, Ad 3&apos;s sells a squat. No new photography: Ad 12 reuses the existing figures, Ads 13 and 14 are pure type.</p>
+            <div className="bg-amber-500/5 border border-amber-500/25 rounded-lg p-3">
+              <p className="text-xs text-stone-700 leading-relaxed"><strong>Banner caveat.</strong> None carries the blue offer banner, because it would defeat the point of all three. Each keeps the free offer as a native line instead. That entangles them with the deferred no-banner test, so <strong>run that test on a Round 1 ad, not on one of these.</strong></p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {ROUND1_ADS.filter(a => a.layer === 'variety').map(ad => <Round1AdCard key={ad.slug} ad={ad} />)}
             </div>
 
             <SectionLabel>Layer 2 · held until Round 1 reads out</SectionLabel>
