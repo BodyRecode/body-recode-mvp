@@ -949,7 +949,7 @@ One of those four is running yours. Correct the wrong one and almost nothing mov
 Fourteen days is enough to find out which one it is.`,
     description: `Free 14 days. One of the four is running yours.` },
   { slug: 'ad-6-insulin-drift', short: 'Insulin drift', layer: 'round1', audience: 'Either sex, male-leaning',
-    img: '/ads/round1/None',
+    img: '/ads/round1/ad6-creative-B-headline-overlay.png',
     headline: `The afternoon crash, the evening cravings, and the fat that will not shift are one signal`,
     primaryText: `Not three problems. One.
 
@@ -970,7 +970,7 @@ It is not age. Insulin sensitivity is one of the most responsive systems in the 
 Sensitivity is a state, and states respond to inputs.`,
     description: `Free 14 days. The crash names the driver.` },
   { slug: 'ad-2-fat-map', short: 'Fat Map reveal', layer: 'round1', audience: 'Either sex',
-    img: '/ads/round1/None',
+    img: '/ads/round1/ad2-fatmap-F-MZ1-revealed.png',
     headline: `Where the fat sits tells you which hormone is holding it there`,
     primaryText: `Front of the middle. Back and sides. Hips and thighs.
 
@@ -989,7 +989,7 @@ Four drivers. Four different corrections. Run the cortisol fix on an insulin pat
 Where it sits narrows it. What comes with it decides.`,
     description: `Free 14 days. Which of the four is running it.` },
   { slug: 'ad-3-perimenopause', short: 'Perimenopause', layer: 'round1', audience: 'Female only',
-    img: '/ads/round1/None',
+    img: '/ads/round1/ad3-v2-squat-creative-B-headline-overlay.png',
     headline: `Hips and thighs will not shift, and eating less is making it worse`,
     primaryText: `When storage settles in the hips, glutes and outer thighs, restriction makes it worse.
 
@@ -1008,7 +1008,7 @@ The tells. Storage settles low and outer, and later begins moving toward the mid
 Menopause is a transition. This is a pattern inside it, and patterns respond to inputs.`,
     description: `Free 14 days. Why less food tightened the hold.` },
   { slug: 'ad-6-nobanner', short: 'Ad 6, no offer banner', layer: 'deferred', audience: 'Banner test',
-    img: '/ads/round1/None',
+    img: '/ads/round1/ad6-TEST-nobanner.png',
     headline: `The afternoon crash, the evening cravings, and the fat that will not shift are one signal`,
     primaryText: `Not three problems. One.
 
@@ -1029,7 +1029,7 @@ It is not age. Insulin sensitivity is one of the most responsive systems in the 
 Sensitivity is a state, and states respond to inputs.`,
     description: `Free 14 days. The crash names the driver.` },
   { slug: 'ad-4-day-7', short: 'The day 7 check-in', layer: 'layer2', audience: 'Either sex',
-    img: '/ads/round1/None',
+    img: '/ads/round1/ad4-creative-B-headline-overlay.png',
     headline: `Six of the eight markers moved in a week, and the two that did not are the read`,
     primaryText: `Fourteen days is not long enough to change how a body looks. It is long enough to find out why it is not changing.
 
@@ -1044,7 +1044,7 @@ Which is why the ones that improve are not the interesting part. The ones sittin
 That is the point of the fortnight. Not a transformation. A read you can act on.`,
     description: `Free 14 days. The markers that refuse to move.` },
   { slug: 'ad-8-plan-down', short: 'The plan went down', layer: 'layer2', audience: 'Either sex',
-    img: '/ads/round1/None',
+    img: '/ads/round1/ad8-creative-B-headline-overlay.png',
     headline: `The check-in came back better, so the training went down, not up`,
     primaryText: `Most people read a good check-in as permission to push harder. It is usually the opposite.
 
@@ -1059,7 +1059,7 @@ The Challenge runs this over fourteen days. Intake on day 0, eight markers score
 Nothing to buy at the end of it. The read is the product.`,
     description: `Free 14 days. When less training moves more fat.` },
   { slug: 'ad-10-order', short: 'The order of operations', layer: 'layer2', audience: 'Either sex',
-    img: '/ads/round1/None',
+    img: '/ads/round1/ad10-creative-B-headline-overlay.png',
     headline: `Right actions, wrong order, and the body composition never moves`,
     primaryText: `Five days a week in the gym, food tracked, alcohol gone, and the shape of the body has not changed in a year.
 
