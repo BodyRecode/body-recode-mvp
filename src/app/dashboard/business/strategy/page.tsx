@@ -902,7 +902,156 @@ function CopyButton({ value, label }: { value: string; label?: string }) {
   )
 }
 
-// COLD_ADS - the 9-variant cold paid Meta ad library. Source of truth for
+// ROUND1_ADS - the current cold paid creative, generated from
+// ~/Dropbox/01_BODY_RECODE/07_ADS/BR_FUNNELB_ROUND1_LAUNCH.md (v1.4) so the
+// dashboard cannot drift from the launch pack. Copy is verbatim from that doc,
+// unwrapped from its markdown line breaks so the copy buttons paste clean.
+// Images are the challenge-CTA creatives, committed to /public/ads/round1/.
+//
+// layer 'round1' - the four ads that go up first, inside one broad ad set
+// layer 'layer2' - Ads 4, 8, 10, rewritten 5 Aug, held until Round 1 reads out
+//
+// The no-banner test carries Ad 6's exact fields on purpose: that test is void
+// if any field other than the creative differs.
+type Round1Ad = {
+  slug: string; short: string; layer: 'round1' | 'layer2'; audience: string
+  img: string; headline: string; primaryText: string; description: string
+}
+const ROUND1_ADS: Round1Ad[] = [
+  { slug: 'ad-6-insulin-drift', short: 'Insulin drift', layer: 'round1', audience: 'Either sex, male-leaning',
+    img: '/ads/round1/ad6-creative-B-headline-overlay.png',
+    headline: `The afternoon crash, the evening cravings, and the fat that will not shift are one signal`,
+    primaryText: `Not three problems. One.
+
+And it is not about how many carbs are in the diet.
+
+When insulin stays elevated longer after meals than it should, fat burning stays switched off and cravings get louder.
+
+The tells line up in a specific order. Energy dips hard between 2 and 4pm. Heavy and foggy for about an hour after eating. Cravings hit hardest after dinner. Storage sits around the back and sides rather than the front.
+
+Most common in people whose output has changed but whose fuelling has not.
+
+It is not pre-diabetes. That is a diagnosis, this is a state.
+
+It is not too many carbs. It is when they are eaten and what they sit next to.
+
+It is not age. Insulin sensitivity is one of the most responsive systems in the body.
+
+Sensitivity is a state, and states respond to inputs.`,
+    description: `Free 14 days. The crash names the driver.` },
+  { slug: 'ad-3-perimenopause', short: 'Perimenopause', layer: 'round1', audience: 'Female only',
+    img: '/ads/round1/ad3-v2-squat-creative-B-headline-overlay.png',
+    headline: `Hips and thighs will not shift, and eating less is making it worse`,
+    primaryText: `When storage settles in the hips, glutes and outer thighs, restriction makes it worse.
+
+Not slower. Worse.
+
+This is an oestrogen-driven conservation state. The body holds on as a protective response to hormone signalling that is recalibrating.
+
+It shows up most in women moving toward or through perimenopause, after coming off hormonal contraception, or after a long run of undereating.
+
+Standard advice is eat less, train more. This pattern reads scarcity and conserves harder. So the harder the restriction, the tighter the hold, and the more it feels like a personal failure when it is a predictable response.
+
+What it answers to instead: consistent fuelling, protected sleep, regular meal timing.
+
+The tells. Storage settles low and outer, and later begins moving toward the middle. Bloating and water shift unpredictably across the month. Sleep gets lighter.
+
+Menopause is a transition. This is a pattern inside it, and patterns respond to inputs.`,
+    description: `Free 14 days. Why less food tightened the hold.` },
+  { slug: 'ad-2-fat-map', short: 'Fat Map reveal', layer: 'round1', audience: 'Either sex',
+    img: '/ads/round1/ad2-fatmap-F-MZ1-revealed.png',
+    headline: `Where the fat sits tells you which hormone is holding it there`,
+    primaryText: `Front of the middle. Back and sides. Hips and thighs.
+
+Three places the fat sits, three completely different drivers.
+
+Front of the midsection, while the arms and legs stay lean. That is cortisol. A stress load the system has not resolved, so it keeps a reserve close to the organs.
+
+Mid-back, lower back and the flanks, with the front spared. That is insulin. Blood sugar handling has drifted, so fat burning stays switched off longer after meals than it should.
+
+Hips, glutes and outer thighs, later moving toward the middle. That is oestrogen. A conservation state, common through perimenopause.
+
+And one that is not a place at all: central fat rising while muscle, tone and drive fall.
+
+Four drivers. Four different corrections. Run the cortisol fix on an insulin pattern and almost nothing happens, which is why so many plans half-work.
+
+Where it sits narrows it. What comes with it decides.`,
+    description: `Free 14 days. Which of the four is running it.` },
+  { slug: 'ad-6-nobanner', short: 'Ad 6, no offer banner', layer: 'round1', audience: 'Structural test',
+    img: '/ads/round1/ad6-TEST-nobanner.png',
+    headline: `The afternoon crash, the evening cravings, and the fat that will not shift are one signal`,
+    primaryText: `Not three problems. One.
+
+And it is not about how many carbs are in the diet.
+
+When insulin stays elevated longer after meals than it should, fat burning stays switched off and cravings get louder.
+
+The tells line up in a specific order. Energy dips hard between 2 and 4pm. Heavy and foggy for about an hour after eating. Cravings hit hardest after dinner. Storage sits around the back and sides rather than the front.
+
+Most common in people whose output has changed but whose fuelling has not.
+
+It is not pre-diabetes. That is a diagnosis, this is a state.
+
+It is not too many carbs. It is when they are eaten and what they sit next to.
+
+It is not age. Insulin sensitivity is one of the most responsive systems in the body.
+
+Sensitivity is a state, and states respond to inputs.`,
+    description: `Free 14 days. The crash names the driver.` },
+  { slug: 'ad-4-day-7', short: 'The day 7 check-in', layer: 'layer2', audience: 'Either sex',
+    img: '/ads/round1/ad4-creative-B-headline-overlay.png',
+    headline: `Six of the eight markers moved in a week, and the two that did not are the read`,
+    primaryText: `Fourteen days is not long enough to change how a body looks. It is long enough to find out why it is not changing.
+
+Day 7 of the Challenge scores eight markers against where they sat on day one. Morning energy. Afternoon energy. Puffiness and bloating. Sleep. Cravings. Mental clarity. Mood. Digestion.
+
+None of those are body composition. All of them decide it.
+
+A body that is not sleeping, not clearing fluid and crashing at 3pm does not give up fat, whatever the training looks like. The markers move first. The shape follows.
+
+Which is why the ones that improve are not the interesting part. The ones sitting flat are. Two markers refusing to move in a week is a pattern showing itself, and it points at which of the four drivers is holding the fat where it sits.
+
+That is the point of the fortnight. Not a transformation. A read you can act on.`,
+    description: `Free 14 days. The markers that refuse to move.` },
+  { slug: 'ad-8-plan-down', short: 'The plan went down', layer: 'layer2', audience: 'Either sex',
+    img: '/ads/round1/ad8-creative-B-headline-overlay.png',
+    headline: `The check-in came back better, so the training went down, not up`,
+    primaryText: `Most people read a good check-in as permission to push harder. It is usually the opposite.
+
+If a body is holding fat while sleep is broken and energy is crashing, it is protecting. Adding a third or a fourth hard session to a protecting body does not change composition. It confirms the threat, and the body holds tighter.
+
+The load has to drop far enough that adaptation switches back on. Then the training builds something. Then the composition moves.
+
+This is the part that feels backwards. Fewer sessions, better result. It only makes sense once you accept the body is not being stubborn. It is responding exactly as it should to the signals it is being given.
+
+The Challenge runs this over fourteen days. Intake on day 0, eight markers scored on day 7, the full pattern read on day 14.
+
+Nothing to buy at the end of it. The read is the product.`,
+    description: `Free 14 days. When less training moves more fat.` },
+  { slug: 'ad-10-order', short: 'The order of operations', layer: 'layer2', audience: 'Either sex',
+    img: '/ads/round1/ad10-creative-B-headline-overlay.png',
+    headline: `Right actions, wrong order, and the body composition never moves`,
+    primaryText: `Five days a week in the gym, food tracked, alcohol gone, and the shape of the body has not changed in a year.
+
+That is not a discipline problem. The discipline is already proven. It is a sequencing problem.
+
+Composition only changes when a body can afford to spend. A body in protection mode cannot. So the harder someone pushes against it the more it protects, and the exact effort that should be producing the result is what holds it in place.
+
+The order that works is three steps.
+
+One. Read the state, which is whether the body is currently able to change at all.
+
+Two. Bring the foundation up. Sleep, energy and stress load, far enough that the body can act on what it is given.
+
+Three. Correct the pattern. Where the fat sits and what comes with it names which of the four drivers is running it, and each one answers to a different correction.
+
+Prescribing before reading is guessing, which is why so many plans half work.
+
+The free fourteen days is step one and most of step two.`,
+    description: `Free 14 days. The step almost everyone skips.` },
+]
+
+// ARCHIVED 2026-08-05. COLD_ADS - the 9-variant cold paid Meta ad library. Source of truth for
 // the dashboard reference + the per-ad metadata Kade pastes into Meta Ads
 // Manager. Captions follow the Amanda-audited Cold Ad Copy Doctrine:
 // "Decode" terminology, audience-named hooks (no personal-attribute claims),
@@ -1151,6 +1300,52 @@ const CHALLENGE_WAVES_CLIENT = [
   { number: 3, cap: 25 },
   { number: 4, cap: null },
 ]
+
+// Round1AdCard - the current creative. Differs from the archived ColdAdCard in
+// two ways that matter: the image is click-to-open at full size (Kade uploads
+// these to Meta, so he needs the real file, not a cropped preview) and the
+// primary text keeps its paragraph breaks, because the line breaks are part of
+// the format rather than incidental.
+function Round1AdCard({ ad }: { ad: Round1Ad }) {
+  const url = `${brand().marketingDomain}/challenge?utm_source=meta&utm_campaign=funnelb_broad_r1&utm_content=${ad.slug}`
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="border border-stone-200 rounded-xl overflow-hidden bg-white">
+      <a href={ad.img} target="_blank" rel="noopener noreferrer" className="block bg-stone-100 border-b border-stone-200 hover:opacity-90 transition-opacity" style={{ aspectRatio: '4 / 5' }} title="Open full size">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={ad.img} alt={ad.short} style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
+      </a>
+      <div className="p-3 space-y-2.5 text-xs">
+        <div className="flex items-center gap-1.5 flex-wrap">
+          <span className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">{ad.short}</span>
+          <span className={`text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${ad.layer === 'round1' ? 'bg-blue-500/10 text-blue-700' : 'bg-stone-200 text-stone-700'}`}>{ad.layer === 'round1' ? 'Round 1' : 'Layer 2'}</span>
+          <span className="text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-800">{ad.audience}</span>
+        </div>
+
+        <div className="pt-1.5 border-t border-stone-200 space-y-2">
+          <div>
+            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">Headline</p><CopyButton value={ad.headline} /></div>
+            <p className="text-stone-900 font-semibold leading-snug">{ad.headline}</p>
+          </div>
+          <div>
+            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">Primary text</p><CopyButton value={ad.primaryText} /></div>
+            <div className={`text-stone-700 leading-relaxed whitespace-pre-line ${open ? '' : 'line-clamp-4'}`}>{ad.primaryText}</div>
+            <button onClick={() => setOpen(o => !o)} className="mt-1 text-[10px] font-bold uppercase tracking-widest text-blue-700 hover:text-blue-900">{open ? 'Show less' : 'Show all'}</button>
+          </div>
+          <div>
+            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">Link description</p><CopyButton value={ad.description} /></div>
+            <p className="text-stone-700">{ad.description}</p>
+          </div>
+          <div>
+            <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">Destination URL</p><CopyButton value={url} /></div>
+            <p className="text-stone-700 break-all text-[11px] leading-relaxed">{url}</p>
+          </div>
+          <div className="flex items-center justify-between"><p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">CTA button</p><span className="text-stone-700 font-semibold">Learn More</span></div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 function ColdAdCard({ ad }: { ad: ColdAd }) {
   const url = destinationUrl(ad.slug)
@@ -2633,32 +2828,26 @@ export default function StrategyPage() {
                     )
                   })}
                 </div>
-                <p className="text-xs text-stone-700 mt-3">3 archetype ad sets running 3 ad variants each = 9 cold ads total (see Cold Ad Library below). Start with the Stressed Executive Woman set (dominant audience). Postnatal Athlete intentionally NOT in the cold pipeline - that archetype is reached organically via the IG calendar and Funnel A, not via cold paid Meta. Add a 4th archetype only if cold-paid economics justify expanding past the current 9 variants.</p>
+                <p className="text-xs text-stone-700 mt-3"><strong>These are creative angles now, not ad sets.</strong> The interests listed above are no longer used for targeting: Round 1 runs one broad set, because interest stacking is what exhausted the audience at 3,613 reach in July. What survives is the archetype as a <em>writing</em> input - each current ad still speaks to one of these people, and Meta finds them from the creative rather than from an interest list. Postnatal Athlete stays out of cold paid either way, reached organically via the IG calendar and Funnel A.</p>
               </div>
-              <div><Heading>Placement</Heading><Body>Instagram feed + Reels + Facebook feed. Start broad within each ad set, let Meta optimise within the constraints.</Body></div>
+              <div><Heading>Placement</Heading><Body>Automatic placements across Instagram feed and Facebook feed. <strong>Statics only, no Reels.</strong> Broad targeting means the creative does the targeting, so Meta gets room to place it.</Body></div>
               <div><Heading>Traffic type</Heading><Body>Cold only for now. Retargeting layer added at Day 30+ once pixel has enough data.</Body></div>
             </div>
           </Card>
 
           <Card className="border-blue-500/30 bg-blue-500/5">
-            <SectionLabel>Cold Ad Copy Doctrine - Amanda-audited, locked 2026-06-27</SectionLabel>
-            <Body>Six locked rules for every cold paid Meta ad creative. Paid Meta only - these do NOT cascade to organic (organic keeps state language + scorecard CTAs; see Creative Principle #1 in the Marketing Strategy doc for the deliberate divergence). The current cold pipeline of 9 ad variants lives at <code className="text-xs bg-stone-200 px-1 py-0.5 rounded">/public/ads/ad-001-...png</code> through <code className="text-xs bg-stone-200 px-1 py-0.5 rounded">ad-009</code>, rendered via <code className="text-xs bg-stone-200 px-1 py-0.5 rounded">scripts/ig-generator/render-post.sh</code> (template type <code className="text-xs bg-stone-200 px-1 py-0.5 rounded">ad</code>).</Body>
-            <div className="mt-3 space-y-2 text-[12px] text-stone-700">
-              <p><span className="font-bold text-[#1A1A1A]">1. Meta personal-attributes policy.</span> Hooks name the audience or life stage, NEVER the viewer&apos;s body. &quot;Belly fat at 45?&quot; triggers Meta&apos;s policy - reframe to &quot;Over 40 and training harder for less?&quot;</p>
-              <p><span className="font-bold text-[#1A1A1A]">2. &quot;Decode&quot; terminology locked.</span> Use Body Decode / Decode / Find your pattern. NOT &quot;state&quot; / &quot;signalling&quot; / &quot;Fat Map&quot; - that vocabulary belongs to organic.</p>
-              <p><span className="font-bold text-[#1A1A1A]">3. Two-sentence subs.</span> Reframe + Challenge call. Not a tagline. Example: &quot;Ongoing stress can change how your body stores fat and recovers. Find your pattern in the free 14-day Body Decode Challenge.&quot;</p>
-              <p><span className="font-bold text-[#1A1A1A]">4. CTA locked.</span> &quot;Start the free 14-day Challenge.&quot; Outcome-specific, includes the 14-day timebox, names &quot;free&quot;.</p>
-              <p><span className="font-bold text-[#1A1A1A]">5. Banner sub locked.</span> &quot;FREE · 14-DAY BODY DECODE CHALLENGE&quot; label + &quot;Find your pattern in 14 days. No payment.&quot; sub. &quot;No payment&quot; removes freebie suspicion.</p>
-              <p><span className="font-bold text-[#1A1A1A]">6. Photo variant rule.</span> Don&apos;t reuse the same Kade photo across photo ads (face fatigue). kade-10 for question hooks, kade-11 for warm coach-mode, kade-12 for declarative.</p>
-            </div>
+            <SectionLabel>Copy standard · hyper-dopamine (current)</SectionLabel>
+            <Body>Every cold paid creative is built to one formula: <strong>pattern interrupt</strong> (the image) + <strong>burning intrigue</strong> (the headline) + <strong>a specific benefit</strong> (so the algorithm finds the right buyer). Miss any of the three and the ad either gets scrolled past or gets clicked by the wrong people. An ad only has to stop the scroll and earn the click - it does not have to sell, explain the method, or establish credibility. That happens after the click.</Body>
+            <p className="text-xs text-stone-700 mt-2 leading-relaxed">The full 13-point pre-flight checklist, plus a measured audit of all seven current ads (character counts and readability grade, computed not estimated), is in the <strong>Round 1 Launch Pack</strong> at the top of this tab. Two things it flags: Ad 3 reads at grade 7.3 against a grade-5 rule, kept deliberately because the words causing it are the ones that audience uses; and the link descriptions were rewritten on 5 Aug because five of six stated the offer instead of opening a curiosity gap.</p>
+            <p className="text-xs text-stone-700 mt-2 leading-relaxed">Paid Meta only. These do NOT cascade to organic, which keeps state language and scorecard CTAs - see Creative Principle #1 in the Marketing Strategy doc for the deliberate divergence. The retired Amanda-audited doctrine is preserved in the Archive below, with each of its six rules marked as still-applies or superseded.</p>
           </Card>
 
           <Card>
             <SectionLabel>Creative Format</SectionLabel>
-            <Body><strong>Live (Phase 1):</strong> 9 static 4:5 portrait creatives at 1080×1350 (the Cold Ad Library below). Statement + Photo variants. No reels.</Body>
+            <Body><strong>Live:</strong> 7 static 4:5 creatives at 1080×1350 - four in Round 1, three held as Layer 2. Photo-led with a headline overlay and the locked offer banner, except the one no-banner test. No reels.</Body>
             <p className="text-xs text-stone-700 mt-2 leading-relaxed"><strong>Future (Phase 2):</strong> when reel production capacity is in place (Amanda + HeyGen, see Filming Guide below), add 15-30 sec talking-head reels alongside the static variants. Reels run in parallel, not as replacements - each ad set splits creative budget across formats so Meta can optimise. The doctrine + audiences + Campaign Configuration stay the same; only the asset type expands.</p>
             <BulletList items={[
-              'Phase 1 (NOW): 9 static 4:5 images, no reels',
+              'Phase 1 (NOW): 7 static 4:5 images, no reels',
               'Phase 2 (future): 15-30 sec talking-head reels in parallel with static',
               'No music on reels - calm and direct tone IS the differentiator',
               'No jump cuts every 2 seconds - this audience responds to calm authority',
@@ -2666,27 +2855,70 @@ export default function StrategyPage() {
             ]} />
           </Card>
 
-          {/* Cold Ad Library - the 9-variant pipeline shipped 2026-06-27 per
-              the Amanda-audited Cold Ad Copy Doctrine. Each card carries the
-              image preview + every piece of metadata Kade pastes into Meta
-              Ads Manager. Grouped 3 rows × 3 ads by archetype. */}
+          {/* CURRENT creative, swapped in 2026-08-05. Copy is generated from the
+              Round 1 launch pack so the two cannot drift. The previous 9-variant
+              archetype library is archived below, not deleted: it is the only
+              record of what actually ran in July, and July's numbers are the
+              baseline every future round gets judged against. */}
           <div className="space-y-4">
-            <SectionLabel>Cold Ad Library - 9 variants (live)</SectionLabel>
-            <p className="text-xs text-stone-700 leading-relaxed">The current cold paid Meta ad pipeline. 3 archetypes × 3 hooks = 9 variants. Two formats: <strong>Statement</strong> (white card, no photo) and <strong>Photo</strong> (Kade portrait + dark slab). Captions follow the Cold Ad Copy Doctrine above (Decode terminology, no personal-attribute hooks, 2-sentence subs, locked CTA). Click any field to copy and paste into Meta Ads Manager.</p>
+            <SectionLabel>Current creative · Round 1 (broad)</SectionLabel>
+            <p className="text-xs text-stone-700 leading-relaxed">The four that go up first, inside <strong>one broad ad set</strong>. Built to the hyper-dopamine standard: pattern interrupt, burning intrigue, specific benefit. Every field is verbatim from the <strong>Round 1 Launch Pack v1.4</strong> linked at the top of this tab. Click any field to copy, click an image to open it full size for upload.</p>
 
-            {[
-              { name: 'Archetype 01 · Stressed Executive Woman', ads: COLD_ADS.filter(a => a.archetype === 'Stressed Executive Woman') },
-              { name: 'Archetype 02 · Perimenopausal Performer', ads: COLD_ADS.filter(a => a.archetype === 'Perimenopausal Performer') },
-              { name: 'Archetype 04 · Slipping High Performer',  ads: COLD_ADS.filter(a => a.archetype === 'Slipping High Performer') },
-            ].map(group => (
-              <div key={group.name}>
-                <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-2">{group.name}</p>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  {group.ads.map(ad => <ColdAdCard key={ad.slug} ad={ad} />)}
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
+              {ROUND1_ADS.filter(a => a.layer === 'round1').map(ad => <Round1AdCard key={ad.slug} ad={ad} />)}
+            </div>
+
+            <div className="bg-amber-500/5 border border-amber-500/25 rounded-lg p-3">
+              <p className="text-[10px] font-bold text-amber-800 uppercase tracking-widest mb-1">The no-banner test</p>
+              <p className="text-xs text-stone-700 leading-relaxed">Ad 6 runs twice, once with the offer banner and once without, with <strong>every other field identical</strong>. The test is void if headline, primary text or link description differ by a single character. It settles a real disagreement: the playbook says an ad that looks like an ad loses, Amanda&apos;s audit locked the banner, and neither has evidence. It also decides the banner for all 35 creatives, not just this one.</p>
+            </div>
+
+            <SectionLabel>Layer 2 · held until Round 1 reads out</SectionLabel>
+            <p className="text-xs text-stone-700 leading-relaxed">Ads 4, 8 and 10, rewritten 5 Aug. Not in Round 1 because four ads on $25/day is already the practical ceiling for learning anything. These go up when Round 1 gives a cost per signup to beat, or when a Round 1 ad is killed and needs replacing.</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {ROUND1_ADS.filter(a => a.layer === 'layer2').map(ad => <Round1AdCard key={ad.slug} ad={ad} />)}
+            </div>
+          </div>
+
+          {/* ARCHIVE. Collapsed by default via native <details> so it stays out
+              of the way without needing state. Kept because these ran the July
+              campaign that produced the $11.15 baseline. */}
+          <details className="border border-stone-300 rounded-xl bg-stone-50 overflow-hidden">
+            <summary className="cursor-pointer select-none px-4 py-3 hover:bg-stone-100">
+              <span className="text-[11px] font-bold text-stone-600 uppercase tracking-widest">Archive · the 9-variant archetype library (retired 5 Aug 2026)</span>
+            </summary>
+            <div className="px-4 pb-4 space-y-4 border-t border-stone-200 pt-4">
+              <div className="bg-stone-200/60 border border-stone-300 rounded-lg p-3">
+                <p className="text-xs text-stone-700 leading-relaxed"><strong>Retired, not deleted.</strong> These nine ran the July campaign. They are superseded on three counts: they are built around <strong>three interest-based archetype ad sets</strong>, which broad targeting replaced after interest exhausted at 3,613 reach; they route on the archetype rather than the Fat Map pattern, which locked at v2.0 on 31 Jul; and their copy predates the body-composition rewrite.</p>
+                <p className="text-xs text-stone-700 leading-relaxed mt-2"><strong>Do not upload these.</strong> They are kept because July&apos;s numbers came from them, and $11.15 per result across the first ten days is the baseline Round 1 has to beat. Reading the new creative against the old is only possible if the old is still here.</p>
+              </div>
+
+              <div>
+                <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-2">Retired copy doctrine · Amanda-audited, locked 2026-06-27</p>
+                <div className="space-y-2 text-[12px] text-stone-600">
+                  <p><span className="font-bold text-stone-800">1. Meta personal-attributes policy.</span> Hooks name the audience or life stage, NEVER the viewer&apos;s body. <strong className="text-stone-800">This one still applies</strong> and carries over to the current creative: it is Meta policy, not a style choice.</p>
+                  <p><span className="font-bold text-stone-800">2. &quot;Decode&quot; terminology locked.</span> Use Body Decode / Find your pattern, NOT &quot;Fat Map&quot;. <em>Superseded.</em> The current ads name the Fat Map and the four drivers directly, because the pattern is the product.</p>
+                  <p><span className="font-bold text-stone-800">3. Two-sentence subs.</span> <em>Superseded</em> by the hyper-dopamine structure: pattern interrupt, burning intrigue, specific benefit.</p>
+                  <p><span className="font-bold text-stone-800">4. CTA locked.</span> &quot;Start the free 14-day Challenge.&quot; <em>Superseded.</em> CTA button is now Learn More on every ad.</p>
+                  <p><span className="font-bold text-stone-800">5. Banner sub locked.</span> <em>Under test.</em> This is exactly what the no-banner test resolves.</p>
+                  <p><span className="font-bold text-stone-800">6. Photo variant rule.</span> Don&apos;t reuse the same Kade photo across ads. <strong className="text-stone-800">Still applies.</strong> Face fatigue is real.</p>
                 </div>
               </div>
-            ))}
-          </div>
+
+              {[
+                { name: 'Archetype 01 · Stressed Executive Woman', ads: COLD_ADS.filter(a => a.archetype === 'Stressed Executive Woman') },
+                { name: 'Archetype 02 · Perimenopausal Performer', ads: COLD_ADS.filter(a => a.archetype === 'Perimenopausal Performer') },
+                { name: 'Archetype 04 · Slipping High Performer',  ads: COLD_ADS.filter(a => a.archetype === 'Slipping High Performer') },
+              ].map(group => (
+                <div key={group.name}>
+                  <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-2">{group.name}</p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    {group.ads.map(ad => <ColdAdCard key={ad.slug} ad={ad} />)}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </details>
 
           <Card className="border-stone-300 bg-stone-50">
             <SectionLabel>Phase 2 reel production reference (NOT active)</SectionLabel>
