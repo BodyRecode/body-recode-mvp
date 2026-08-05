@@ -1,6 +1,6 @@
 # BR-FunnelB Round 1: launch pack
 
-**v1.2 · 5 Aug 2026.** Four ads, ready to upload. Supersedes `BR_FUNNELB_CAMPAIGN_SETUP.md`, which
+**v1.3 · 5 Aug 2026.** Four ads, ready to upload. Supersedes `BR_FUNNELB_CAMPAIGN_SETUP.md`, which
 was written before I had read the locked strategy and got three things wrong: it sent traffic
 to the scorecard, measured scorecard completions, and ignored Option D.
 
@@ -39,6 +39,78 @@ means the unit economics work, so this is a capacity problem rather than a conce
 
 Also worth knowing: within the one ad set that ran, a single ad took $220 of $225. You have
 been testing one creative, not three.
+
+---
+
+## The structure these ads are built on
+
+Added 5 Aug 2026, because this pack was a pure upload sheet with the standard living in a
+different document. The framework is from `AD_PLAYBOOK_EXTRACT_KINGKONG.md`. It is repeated
+here so an ad can be checked at the moment it is uploaded rather than after it has spent
+money.
+
+**The formula.** Pattern interrupt (the image) plus burning intrigue (the headline) plus a
+big specific benefit (targeted) equals a hyper dopamine ad. Miss any one of the three and the
+ad does one of two failure modes: it gets scrolled past, or it gets clicked by the wrong
+people.
+
+**The two jobs.** An ad only has to stop the scroll and earn the click. It does not have to
+sell, explain the method, or establish credibility. Those happen after the click.
+
+**Intrigue with a benefit, not blind clickbait.** A curiosity gap that only clicking can
+close, attached to something specific the reader wants. Blind clickbait gets the click and
+wastes it, because the algorithm learns the wrong buyer.
+
+### Pre-flight checklist
+
+Run before any ad goes live.
+
+- [ ] Image interrupts the pattern
+- [ ] Headline creates a curiosity gap that only clicking closes
+- [ ] A specific benefit is present so the algorithm can find the right people
+- [ ] Lead-in copy earns the "see more" tap
+- [ ] Readability grade 5 or below
+- [ ] Under 2,200 characters
+- [ ] Heavy line breaks, one idea per line
+- [ ] Specific numbers, not vague claims
+- [ ] Positive framing leads
+- [ ] Link description is intriguing, not descriptive
+- [ ] CTA button set to Learn More
+- [ ] Creative, headline and copy all on one theme
+- [ ] Does not look like an ad
+
+### Where these seven actually sit
+
+Measured, not estimated. Character counts and Flesch-Kincaid grade computed from the copy
+below on 5 Aug 2026.
+
+| Ad | Chars | Grade | Verdict |
+|---|---|---|---|
+| Ad 6 Insulin drift | 779 | 4.4 | Pass |
+| Ad 3 Perimenopause | 953 | **7.3** | **Fails the grade rule** |
+| Ad 2 Fat Map reveal | 896 | 4.2 | Pass |
+| Ad 4 Day 7 check-in | 850 | 3.4 | Pass |
+| Ad 8 The plan went down | 849 | 4.8 | Pass |
+| Ad 10 Order of operations | 986 | 4.5 | Pass |
+
+All seven are far under the 2,200 character ceiling and all use one idea per line.
+
+**Two honest failures against the checklist.**
+
+**Ad 3 reads at grade 7.3.** The words causing it are the unavoidable ones: perimenopause,
+gluteofemoral, contraception, recalibrating. It is the most technical subject of the seven
+and the audience for it is the most likely to know the terms, so this is a deliberate
+exception rather than an oversight. Worth a plain-language variant as a test.
+
+**Several link descriptions are descriptive, not intriguing.** "Free 14 days. Day 0, day 7,
+day 14" states the schedule and closes no gap. The rule wants a line that makes the click
+feel necessary. Ad 2's "Which of the four is running it" is the one that does this correctly
+and is the model for the rest. Low-cost fix, worth doing before upload.
+
+**Positive framing leads** is the softest of the three. Ads 8 and 10 both open on the
+failure state rather than the outcome. That is defensible because the failure state is the
+recognition trigger, and recognition is what stops the scroll for this buyer. Flagged rather
+than changed.
 
 ---
 
