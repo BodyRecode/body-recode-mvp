@@ -3092,6 +3092,14 @@ export default function StrategyPage() {
                 <p className="text-stone-700 leading-relaxed"><strong>Cold paid stays statics only.</strong> Nothing here touches the ad account. The no-Reels rule on the Campaign Configuration above is unchanged.</p>
               </div>
               <div className="bg-white/70 border border-emerald-500/20 rounded-lg p-3">
+                <p className="text-[10px] font-bold text-emerald-800 uppercase tracking-widest mb-1">Week 1 scripts · ready to film</p>
+                <p className="text-stone-700 leading-relaxed mb-2">Five talking-head scripts, one per day of the spine, each built on a message Round 1 is already spending money on. All land 42&ndash;46 seconds. Includes which Captions AI tools to use and which to avoid.</p>
+                <div className="flex gap-2">
+                  <a href="/docs/organic/br-reel-scripts-week1-v1.0.pdf" target="_blank" rel="noopener noreferrer" className="text-[11px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-emerald-700 text-white hover:bg-emerald-800">View .pdf</a>
+                  <a href="/docs/organic/br-reel-scripts-week1-v1.0.md" target="_blank" rel="noopener noreferrer" className="text-[11px] font-bold uppercase tracking-widest px-2 py-1 rounded border border-stone-300 text-stone-700 hover:bg-stone-100">View .md</a>
+                </div>
+              </div>
+              <div className="bg-white/70 border border-emerald-500/20 rounded-lg p-3">
                 <p className="text-[10px] font-bold text-emerald-800 uppercase tracking-widest mb-1">Workflow</p>
                 <p className="text-stone-700 leading-relaxed"><strong>Batch once a week</strong> — five scripts in one ~30 minute sitting. Do not film daily; that is the bottleneck that stopped this before. <strong>Scripts come from the week&apos;s spine:</strong> Monday&apos;s Authority post is the strongest candidate, because it is the message paid is already spending on. 30–45 seconds, one idea, vertical 9:16.</p>
               </div>
