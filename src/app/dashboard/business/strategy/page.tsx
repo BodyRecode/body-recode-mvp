@@ -917,6 +917,11 @@ type Round1Ad = {
   slug: string; short: string; layer: 'round1' | 'layer2' | 'deferred'; audience: string
   img: string; headline: string; primaryText: string; description: string
 }
+// Bump this ONE constant when the launch pack is republished. It drives the card
+// title, both download links and the 'verbatim from' line, which had already
+// drifted apart once (card said v1.6 while the body text still said v1.4).
+const LAUNCH_PACK_VERSION = 'v1.6'
+
 const ROUND1_ADS: Round1Ad[] = [
   { slug: 'ad-5-four-patterns', short: 'Four patterns', layer: 'round1', audience: 'Either sex',
     img: '/ads/round1/ad5-creative-breaking-news.png',
@@ -2714,12 +2719,12 @@ export default function StrategyPage() {
               Ads Manager. Deliberately NOT on the Strategy Docs tab: that tab is one
               durable positioning doc per brand, this is an operational pack per round. */}
           <Card className="border-blue-500/30 bg-blue-500/5">
-            <SectionLabel>Round 1 Launch Pack · v1.6 · the copy to upload</SectionLabel>
+            <SectionLabel>Round 1 Launch Pack · {LAUNCH_PACK_VERSION} · the copy to upload</SectionLabel>
             <Body>Every field for all seven ads, ready to paste into Ads Manager: headline, primary text, link description, creative filename. Ads 6, 3, 2 and the no-banner test are Round 1. Ads 4, 8 and 10 are the second layer, rewritten 5 Aug. Each ad now carries its creative inline, so copy cannot be paired with the wrong image. Opens with the <strong>hyper-dopamine structure</strong> (pattern interrupt + burning intrigue + specific benefit), the pre-flight checklist, and a measured audit of all seven against it.</Body>
             <div className="flex gap-2 mt-3">
-              <a href="/docs/ads/br-funnelb-round1-launch-pack-v1.6.pdf" target="_blank" rel="noopener noreferrer"
+              <a href={`/docs/ads/br-funnelb-round1-launch-pack-${LAUNCH_PACK_VERSION}.pdf`} target="_blank" rel="noopener noreferrer"
                 className="text-[11px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-blue-600 text-white hover:bg-blue-700">View .pdf</a>
-              <a href="/docs/ads/br-funnelb-round1-launch-pack-v1.6.md" target="_blank" rel="noopener noreferrer"
+              <a href={`/docs/ads/br-funnelb-round1-launch-pack-${LAUNCH_PACK_VERSION}.md`} target="_blank" rel="noopener noreferrer"
                 className="text-[11px] font-bold uppercase tracking-widest px-2 py-1 rounded border border-stone-300 text-stone-700 hover:bg-stone-100">View .md</a>
             </div>
             <p className="text-xs text-stone-500 mt-2">Source of truth: <code className="text-[11px]">~/Dropbox/01_BODY_RECODE/07_ADS/BR_FUNNELB_ROUND1_LAUNCH.md</code>. Re-copy into <code className="text-[11px]">public/docs/ads/</code> after editing.</p>
@@ -2887,7 +2892,7 @@ export default function StrategyPage() {
               baseline every future round gets judged against. */}
           <div className="space-y-4">
             <SectionLabel>Current creative · Round 1 (broad)</SectionLabel>
-            <p className="text-xs text-stone-700 leading-relaxed">The four that go up first, inside <strong>one broad ad set</strong>: Ad 5, Ad 6, Ad 2 and Ad 3. Four concepts, four different images, no repeats. Built to the hyper-dopamine standard: pattern interrupt, burning intrigue, specific benefit. Every field is verbatim from the <strong>Round 1 Launch Pack v1.4</strong> linked at the top of this tab. Click any field to copy, click an image to open it full size for upload.</p>
+            <p className="text-xs text-stone-700 leading-relaxed">The four that go up first, inside <strong>one broad ad set</strong>: Ad 5, Ad 6, Ad 2 and Ad 3. Four concepts, four different images, no repeats. Built to the hyper-dopamine standard: pattern interrupt, burning intrigue, specific benefit. Every field is verbatim from the <strong>Round 1 Launch Pack {LAUNCH_PACK_VERSION}</strong> linked at the top of this tab. Click any field to copy, click an image to open it full size for upload.</p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
               {ROUND1_ADS.filter(a => a.layer === 'round1').map(ad => <Round1AdCard key={ad.slug} ad={ad} />)}
