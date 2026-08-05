@@ -2838,6 +2838,37 @@ export default function StrategyPage() {
             </div>
           </Card>
 
+          {/* Campaign alignment, decided 5 Aug. Organic and paid ran separate
+              calendars and never touched. The vocabulary divergence that justified
+              keeping them apart died when the ads started naming the four patterns
+              outright, so nothing stands in the way of organic pre-selling the ad. */}
+          <Card className="border-violet-500/30 bg-violet-500/5">
+            <SectionLabel>Campaign alignment · organic × paid (decided 2026-08-05)</SectionLabel>
+            <Body><strong>The live ad sets the week&apos;s organic theme.</strong> One idea, four angles, matching whatever concept is in market. Someone who has seen three posts on the four patterns converts on the four-patterns ad at a different rate than someone cold, and it costs nothing to do.</Body>
+            <div className="mt-3 space-y-2 text-xs">
+              <div className="bg-white/70 border border-violet-500/20 rounded-lg p-3">
+                <p className="text-[10px] font-bold text-violet-700 uppercase tracking-widest mb-1">The week, against the campaign</p>
+                <p className="text-stone-700 leading-relaxed"><strong>Mon</strong> Authority — the live ad&apos;s claim, expanded. <strong>Tue</strong> Contrarian — the obvious objection, killed. <strong>Wed</strong> Pattern Recognition — self-diagnosis + comment-to-DM. <strong>Fri</strong> Coach Perspective — proof it holds. <strong>Sun</strong> Promo — Challenge invite.</p>
+              </div>
+              <div className="bg-white/70 border border-violet-500/20 rounded-lg p-3">
+                <p className="text-[10px] font-bold text-violet-700 uppercase tracking-widest mb-1">Vocabulary divergence · RETIRED</p>
+                <p className="text-stone-700 leading-relaxed">The old rule gave paid &quot;Decode&quot; language and reserved the Fat Map, states and patterns for organic. Every current ad names Stress-Stored, Insulin-Drift, Estrogen-Shift and Androgen-Decline outright, so the two already speak the same language. <strong>What still diverges is format:</strong> paid is statics only, organic keeps reels and carousels.</p>
+              </div>
+              <div className="bg-white/70 border border-violet-500/20 rounded-lg p-3">
+                <p className="text-[10px] font-bold text-violet-700 uppercase tracking-widest mb-1">Routing while paid is live · scoped exception</p>
+                <p className="text-stone-700 leading-relaxed">Organic doctrine posts point at <strong>/challenge</strong>, not the scorecard, so the two do not compete for the same reader. The read is not skipped: <strong>the scorecard IS Day 0 of the Challenge.</strong> When paid goes dark, routing <strong>reverts to scorecard-first</strong>. A scoped exception to the locked rule, not a repeal.</p>
+              </div>
+              <div className="bg-white/70 border border-violet-500/20 rounded-lg p-3">
+                <p className="text-[10px] font-bold text-violet-700 uppercase tracking-widest mb-1">Warm audiences · build now, spend later</p>
+                <p className="text-stone-700 leading-relaxed">Engagers, video viewers and site visitors accumulate into custom audiences <strong>from today</strong>, because they take time to populate. <strong>Do not put budget behind them at $25/day</strong> — splitting the budget is what exhausted July. They come in at the $75/day step. A warm pool fed by 5 posts a week is <strong>the only narrow audience that cannot exhaust</strong>, because it refills faster than it burns.</p>
+              </div>
+              <div className="bg-white/70 border border-violet-500/20 rounded-lg p-3">
+                <p className="text-[10px] font-bold text-violet-700 uppercase tracking-widest mb-1">Creative moves both ways · one endpoint</p>
+                <p className="text-stone-700 leading-relaxed">Ad 12&apos;s plate works as a carousel unchanged, Ad 14&apos;s plain type as a quote post. An organic post that outperforms is a pre-validated ad. Seven creatives used once each is waste. And both channels now measure to <strong>Challenge enrolment</strong>, so they can finally be compared.</p>
+              </div>
+            </div>
+          </Card>
+
           {/* What to watch. These are the numbers that trigger an action, and they
               lived only in the launch pack PDF until 5 Aug. Frequency in particular
               is the trigger for deploying a format-breaker, so it has to be visible

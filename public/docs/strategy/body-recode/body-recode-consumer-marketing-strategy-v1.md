@@ -1,6 +1,6 @@
 # Body Recode - Consumer Marketing Strategy
 
-**Status:** v2.1 - 2026-08-05 (§11 cold-paid: broad targeting, optimisation event corrected). One document: the strategy (what and why) and the content engine (how) in one place.
+**Status:** v2.2 - 2026-08-05 (§11b campaign alignment: live ad sets the organic theme, vocabulary divergence retired, scoped routing exception). One document: the strategy (what and why) and the content engine (how) in one place.
 **Scope:** the **consumer demand brand** - `@body_recode_`, bodyrecode.au marketing, and the Challenge -> Blueprint -> membership funnel (with the scorecard as the Day-0 in-portal routing gate). Not the licensing engine (see the Collective strategy) or the internal coaching delivery (Performance Coaching).
 
 ---
@@ -185,6 +185,50 @@ Weekly structure = your canonical 5-post-type week (the Content System tab), wit
 | Wed | **Pattern Recognition** | What Your ___ Says · The Scenario |
 | Fri | **Coach Perspective** | Receipts · React to DMs |
 | Sun | **Promo slot (Door 2, rotating)** | the weekly promo — Challenge invite by default; rotates to Blueprint (from 27 Jul, ~1-in-3, warm audience) and soft Membership teases (mid-Aug -> ~7 Sep). See 4b. |
+
+### 11b. Campaign alignment (decided 5 Aug 2026)
+
+**The live ad sets the week's organic theme.** Organic and paid ran separate calendars and
+never touched. From Round 1, whatever concept is in market becomes that week's spine: one
+idea, four angles. Someone who has seen three posts on the four patterns converts on the
+four-patterns ad at a different rate than someone cold. That is the whole point, and it
+costs nothing to do.
+
+| Day | Type | Role against the campaign |
+|---|---|---|
+| Mon | Authority | The live ad's claim, expanded |
+| Tue | Contrarian | The obvious objection to it, killed |
+| Wed | Pattern Recognition | Self-diagnosis + comment-to-DM |
+| Fri | Coach Perspective | Proof it holds |
+| Sun | Promo | Challenge invite |
+
+**The vocabulary divergence is dead, and this records it.** The old rule said paid used
+"Decode" language while the Fat Map, states and patterns belonged to organic. Every current
+ad names Stress-Stored, Insulin-Drift, Estrogen-Shift and Androgen-Decline outright, so the
+two now speak the same language. That is what makes pre-selling possible. **Creative
+Principle #1's divergence clause no longer applies to vocabulary.** What still diverges is
+format: paid is statics only, organic keeps reels and carousels.
+
+**Routing while paid is live: organic doctrine posts point at `/challenge`, not the
+scorecard.** Two front doors compete during a push. The read is not skipped, because the
+scorecard IS Day 0 of the Challenge. **When paid goes dark, routing reverts to
+scorecard-first.** This is a deliberate, scoped exception to the locked scorecard-first
+rule, not a repeal of it.
+
+**Warm audiences: build now, spend later.** Every engager, video viewer and site visitor
+should be accumulating into custom audiences from today, because they take time to populate.
+Do **not** put budget behind them at $25/day - splitting the budget is what exhausted July.
+They come into play at the $75/day step. The structural point: a warm pool fed by 5 posts a
+week is **the only narrow audience that cannot exhaust**, because it refills faster than it
+burns. That is the July failure solved for free.
+
+**Creative moves both ways.** The paid creatives are ready-made organic posts - Ad 12's
+anatomical plate works as a carousel unchanged, Ad 14's plain type as a quote post. Going the
+other way, an organic post that outperforms is a pre-validated ad. Seven creatives used once
+each is waste.
+
+**One endpoint.** Organic counted scorecard submissions and paid counted Challenge signups,
+so the two could never be compared. Both now measure to **Challenge enrolment**.
 
 One CTA per post, and which one depends on the post **type**: doctrine/engagement posts -> **the scorecard** ("find your state"); Challenge promo posts -> **join the Challenge**. Engagement-first posts earn the comment first. Stories run alongside daily: the "which state are you" mini-quiz, polls, behind-the-scenes reads.
 
