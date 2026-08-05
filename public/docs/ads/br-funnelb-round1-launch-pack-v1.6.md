@@ -1,6 +1,6 @@
 # BR-FunnelB Round 1: launch pack
 
-**v1.5 · 5 Aug 2026.** Four ads, ready to upload. Supersedes `BR_FUNNELB_CAMPAIGN_SETUP.md`, which
+**v1.6 · 5 Aug 2026.** Four ads, ready to upload. Supersedes `BR_FUNNELB_CAMPAIGN_SETUP.md`, which
 was written before I had read the locked strategy and got three things wrong: it sent traffic
 to the scorecard, measured scorecard completions, and ignored Option D.
 
@@ -151,10 +151,14 @@ The no-banner test moved to Round 2 on 5 Aug, see below for why.
 ### Ad 5 · Four patterns
 `ad5-creative-breaking-news.png`
 
+![](/Users/kadedunstone/Library/CloudStorage/Dropbox/01_BODY_RECODE/07_ADS/_pdf_assets/ad5-creative-breaking-news.jpg)
+
 **Headline**
+
 > Twenty years of coaching, and effort was almost never the thing separating them
 
 **Primary text**
+
 > Twenty years of coaching people, and the same thing kept showing up.
 >
 > The ones whose body composition changed and the ones whose did not were not separated by
@@ -192,10 +196,14 @@ The no-banner test moved to Round 2 on 5 Aug, see below for why.
 ### Ad 6 · Insulin drift
 `ad6-creative-B-headline-overlay.png`
 
+![](/Users/kadedunstone/Library/CloudStorage/Dropbox/01_BODY_RECODE/07_ADS/_pdf_assets/ad6-creative-B-headline-overlay.jpg)
+
 **Headline**
+
 > The afternoon crash, the evening cravings, and the fat that will not shift are one signal
 
 **Primary text**
+
 > Not three problems. One.
 >
 > And it is not about how many carbs are in the diet.
@@ -224,10 +232,14 @@ The no-banner test moved to Round 2 on 5 Aug, see below for why.
 ### Ad 3 · Perimenopause
 `ad3-v2-squat-creative-B-headline-overlay.png`
 
+![](/Users/kadedunstone/Library/CloudStorage/Dropbox/01_BODY_RECODE/07_ADS/_pdf_assets/ad3-v2-squat-creative-B-headline-overlay.jpg)
+
 **Headline**
+
 > Hips and thighs will not shift, and eating less is making it worse
 
 **Primary text**
+
 > When storage settles in the hips, glutes and outer thighs, restriction makes it worse.
 >
 > Not slower. Worse.
@@ -256,10 +268,14 @@ The no-banner test moved to Round 2 on 5 Aug, see below for why.
 ### Ad 2 · Fat Map reveal
 `ad2-fatmap-F-MZ1-revealed.png`
 
+![](/Users/kadedunstone/Library/CloudStorage/Dropbox/01_BODY_RECODE/07_ADS/_pdf_assets/ad2-fatmap-F-MZ1-revealed.jpg)
+
 **Headline**
+
 > Where the fat sits tells you which hormone is holding it there
 
 **Primary text**
+
 > Front of the middle. Back and sides. Hips and thighs.
 >
 > Three places the fat sits, three completely different drivers.
@@ -286,6 +302,8 @@ The no-banner test moved to Round 2 on 5 Aug, see below for why.
 
 ### Ad 6 no-banner · DEFERRED to Round 2
 `ad6-TEST-nobanner.png`
+
+![](/Users/kadedunstone/Library/CloudStorage/Dropbox/01_BODY_RECODE/07_ADS/_pdf_assets/ad6-TEST-nobanner.jpg)
 
 **Not in Round 1, changed 5 Aug 2026.** Built and ready, held deliberately.
 
@@ -394,10 +412,14 @@ Destination `bodyrecode.au/challenge`, CTA **Learn More**, same as the other fou
 ### Ad 4 · The day 7 check-in
 `ad4-creative-B-headline-overlay.png`
 
+![](/Users/kadedunstone/Library/CloudStorage/Dropbox/01_BODY_RECODE/07_ADS/_pdf_assets/ad4-creative-B-headline-overlay.jpg)
+
 **Headline**
+
 > Six of the eight markers moved in a week, and the two that did not are the read
 
 **Primary text**
+
 > Fourteen days is not long enough to change how a body looks. It is long enough to find
 > out why it is not changing.
 >
@@ -421,10 +443,14 @@ Destination `bodyrecode.au/challenge`, CTA **Learn More**, same as the other fou
 ### Ad 8 · The plan went down
 `ad8-creative-B-headline-overlay.png`
 
+![](/Users/kadedunstone/Library/CloudStorage/Dropbox/01_BODY_RECODE/07_ADS/_pdf_assets/ad8-creative-B-headline-overlay.jpg)
+
 **Headline**
+
 > The check-in came back better, so the training went down, not up
 
 **Primary text**
+
 > Most people read a good check-in as permission to push harder. It is usually the opposite.
 >
 > If a body is holding fat while sleep is broken and energy is crashing, it is protecting.
@@ -448,10 +474,14 @@ Destination `bodyrecode.au/challenge`, CTA **Learn More**, same as the other fou
 ### Ad 10 · The order of operations
 `ad10-creative-B-headline-overlay.png`
 
+![](/Users/kadedunstone/Library/CloudStorage/Dropbox/01_BODY_RECODE/07_ADS/_pdf_assets/ad10-creative-B-headline-overlay.jpg)
+
 **Headline**
+
 > Right actions, wrong order, and the body composition never moves
 
 **Primary text**
+
 > Five days a week in the gym, food tracked, alcohol gone, and the shape of the body has not
 > changed in a year.
 >
