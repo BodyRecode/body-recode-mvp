@@ -2494,12 +2494,12 @@ export default function StrategyPage() {
               Ads Manager. Deliberately NOT on the Strategy Docs tab: that tab is one
               durable positioning doc per brand, this is an operational pack per round. */}
           <Card className="border-blue-500/30 bg-blue-500/5">
-            <SectionLabel>Round 1 Launch Pack · v1.3 · the copy to upload</SectionLabel>
+            <SectionLabel>Round 1 Launch Pack · v1.4 · the copy to upload</SectionLabel>
             <Body>Every field for all seven ads, ready to paste into Ads Manager: headline, primary text, link description, creative filename. Ads 6, 3, 2 and the no-banner test are Round 1. Ads 4, 8 and 10 are the second layer, rewritten 5 Aug. Opens with the <strong>hyper-dopamine structure</strong> (pattern interrupt + burning intrigue + specific benefit), the pre-flight checklist, and a measured audit of all seven against it.</Body>
             <div className="flex gap-2 mt-3">
-              <a href="/docs/ads/br-funnelb-round1-launch-pack-v1.3.pdf" target="_blank" rel="noopener noreferrer"
+              <a href="/docs/ads/br-funnelb-round1-launch-pack-v1.4.pdf" target="_blank" rel="noopener noreferrer"
                 className="text-[11px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-blue-600 text-white hover:bg-blue-700">View .pdf</a>
-              <a href="/docs/ads/br-funnelb-round1-launch-pack-v1.3.md" target="_blank" rel="noopener noreferrer"
+              <a href="/docs/ads/br-funnelb-round1-launch-pack-v1.4.md" target="_blank" rel="noopener noreferrer"
                 className="text-[11px] font-bold uppercase tracking-widest px-2 py-1 rounded border border-stone-300 text-stone-700 hover:bg-stone-100">View .md</a>
             </div>
             <p className="text-xs text-stone-500 mt-2">Source of truth: <code className="text-[11px]">~/Dropbox/01_BODY_RECODE/07_ADS/BR_FUNNELB_ROUND1_LAUNCH.md</code>. Re-copy into <code className="text-[11px]">public/docs/ads/</code> after editing.</p>

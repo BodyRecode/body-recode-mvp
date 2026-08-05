@@ -1,6 +1,6 @@
 # BR-FunnelB Round 1: launch pack
 
-**v1.3 · 5 Aug 2026.** Four ads, ready to upload. Supersedes `BR_FUNNELB_CAMPAIGN_SETUP.md`, which
+**v1.4 · 5 Aug 2026.** Four ads, ready to upload. Supersedes `BR_FUNNELB_CAMPAIGN_SETUP.md`, which
 was written before I had read the locked strategy and got three things wrong: it sent traffic
 to the scorecard, measured scorecard completions, and ignored Option D.
 
@@ -95,17 +95,31 @@ below on 5 Aug 2026.
 
 All seven are far under the 2,200 character ceiling and all use one idea per line.
 
-**Two honest failures against the checklist.**
+**One outstanding failure against the checklist, one fixed.**
 
 **Ad 3 reads at grade 7.3.** The words causing it are the unavoidable ones: perimenopause,
 gluteofemoral, contraception, recalibrating. It is the most technical subject of the seven
 and the audience for it is the most likely to know the terms, so this is a deliberate
 exception rather than an oversight. Worth a plain-language variant as a test.
 
-**Several link descriptions are descriptive, not intriguing.** "Free 14 days. Day 0, day 7,
-day 14" states the schedule and closes no gap. The rule wants a line that makes the click
-feel necessary. Ad 2's "Which of the four is running it" is the one that does this correctly
-and is the model for the rest. Low-cost fix, worth doing before upload.
+**Link descriptions: fixed 5 Aug 2026.** Five of the six stated the offer and closed no gap.
+"Free 14 days. Day 0, day 7, day 14" described a schedule. "Find your pattern" was generic
+enough to sit under any of the seven. Each now carries the offer plus a gap specific to that
+ad, modelled on Ad 2's "Which of the four is running it", which was already correct and is
+unchanged.
+
+| Ad | Was | Now |
+|---|---|---|
+| Ad 6 | Find your pattern | The crash names the driver |
+| Ad 3 | Find your pattern | Why less food tightened the hold |
+| Ad 2 | Which of the four is running it | unchanged, the model |
+| Ad 4 | Day 7 tells you what is holding | The markers that refuse to move |
+| Ad 8 | Day 0, day 7, day 14 | When less training moves more fat |
+| Ad 10 | The read is free. 14 days | The step almost everyone skips |
+
+Every one keeps "Free 14 days" in front, because the free offer is the qualifier that stops
+the wrong buyer clicking. The no-banner test inherits Ad 6's line, since that test is void if
+any field differs.
 
 **Positive framing leads** is the softest of the three. Ads 8 and 10 both open on the
 failure state rather than the outcome. That is defensible because the failure state is the
@@ -146,7 +160,7 @@ Destination `bodyrecode.au/challenge` for all four. CTA button **Learn More** on
 >
 > Sensitivity is a state, and states respond to inputs.
 
-**Link description** Free 14 days. Find your pattern.
+**Link description** Free 14 days. The crash names the driver.
 
 ---
 
@@ -178,7 +192,7 @@ Destination `bodyrecode.au/challenge` for all four. CTA button **Learn More** on
 >
 > Menopause is a transition. This is a pattern inside it, and patterns respond to inputs.
 
-**Link description** Free 14 days. Find your pattern.
+**Link description** Free 14 days. Why less food tightened the hold.
 
 ---
 
@@ -336,7 +350,7 @@ Destination `bodyrecode.au/challenge`, CTA **Learn More**, same as the other fou
 >
 > That is the point of the fortnight. Not a transformation. A read you can act on.
 
-**Link description** Free 14 days. Day 7 tells you what is holding.
+**Link description** Free 14 days. The markers that refuse to move.
 
 ### Ad 8 · The plan went down
 `ad8-creative-B-headline-overlay.png`
@@ -363,7 +377,7 @@ Destination `bodyrecode.au/challenge`, CTA **Learn More**, same as the other fou
 >
 > Nothing to buy at the end of it. The read is the product.
 
-**Link description** Free 14 days. Day 0, day 7, day 14.
+**Link description** Free 14 days. When less training moves more fat.
 
 ### Ad 10 · The order of operations
 `ad10-creative-B-headline-overlay.png`
@@ -396,7 +410,7 @@ Destination `bodyrecode.au/challenge`, CTA **Learn More**, same as the other fou
 >
 > The free fourteen days is step one and most of step two.
 
-**Link description** The read is free. 14 days.
+**Link description** Free 14 days. The step almost everyone skips.
 
 ### Known creative defect
 
