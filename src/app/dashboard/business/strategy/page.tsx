@@ -906,7 +906,10 @@ function CopyButton({ value, label }: { value: string; label?: string }) {
 // ~/Dropbox/01_BODY_RECODE/07_ADS/BR_FUNNELB_ROUND1_LAUNCH.md (v1.4) so the
 // dashboard cannot drift from the launch pack. Copy is verbatim from that doc,
 // unwrapped from its markdown line breaks so the copy buttons paste clean.
-// Images are the challenge-CTA creatives, committed to /public/ads/round1/.
+// Images are the challenge-CTA creatives, committed to /public/creative/round1/.
+// NOT /public/ads/ - a '/ads/' path segment is a standard ad-blocker filter
+// rule (EasyList), so creatives served from there vanish for anyone running
+// uBlock or similar. Renamed 2026-08-05.
 //
 // layer 'round1' - the four ads that go up first, inside one broad ad set
 // layer 'layer2' - Ads 4, 8, 10, rewritten 5 Aug, held until Round 1 reads out
@@ -924,7 +927,7 @@ const LAUNCH_PACK_VERSION = 'v1.6'
 
 const ROUND1_ADS: Round1Ad[] = [
   { slug: 'ad-5-four-patterns', short: 'Four patterns', layer: 'round1', audience: 'Either sex',
-    img: '/ads/round1/ad5-creative-breaking-news.png',
+    img: '/creative/round1/ad5-creative-breaking-news.png',
     headline: `Twenty years of coaching, and effort was almost never the thing separating them`,
     primaryText: `Twenty years of coaching people, and the same thing kept showing up.
 
@@ -949,7 +952,7 @@ One of those four is running yours. Correct the wrong one and almost nothing mov
 Fourteen days is enough to find out which one it is.`,
     description: `Free 14 days. One of the four is running yours.` },
   { slug: 'ad-6-insulin-drift', short: 'Insulin drift', layer: 'round1', audience: 'Either sex, male-leaning',
-    img: '/ads/round1/ad6-creative-B-headline-overlay.png',
+    img: '/creative/round1/ad6-creative-B-headline-overlay.png',
     headline: `The afternoon crash, the evening cravings, and the fat that will not shift are one signal`,
     primaryText: `Not three problems. One.
 
@@ -970,7 +973,7 @@ It is not age. Insulin sensitivity is one of the most responsive systems in the 
 Sensitivity is a state, and states respond to inputs.`,
     description: `Free 14 days. The crash names the driver.` },
   { slug: 'ad-2-fat-map', short: 'Fat Map reveal', layer: 'round1', audience: 'Either sex',
-    img: '/ads/round1/ad2-fatmap-F-MZ1-revealed.png',
+    img: '/creative/round1/ad2-fatmap-F-MZ1-revealed.png',
     headline: `Where the fat sits tells you which hormone is holding it there`,
     primaryText: `Front of the middle. Back and sides. Hips and thighs.
 
@@ -989,7 +992,7 @@ Four drivers. Four different corrections. Run the cortisol fix on an insulin pat
 Where it sits narrows it. What comes with it decides.`,
     description: `Free 14 days. Which of the four is running it.` },
   { slug: 'ad-3-perimenopause', short: 'Perimenopause', layer: 'round1', audience: 'Female only',
-    img: '/ads/round1/ad3-v2-squat-creative-B-headline-overlay.png',
+    img: '/creative/round1/ad3-v2-squat-creative-B-headline-overlay.png',
     headline: `Hips and thighs will not shift, and eating less is making it worse`,
     primaryText: `When storage settles in the hips, glutes and outer thighs, restriction makes it worse.
 
@@ -1008,7 +1011,7 @@ The tells. Storage settles low and outer, and later begins moving toward the mid
 Menopause is a transition. This is a pattern inside it, and patterns respond to inputs.`,
     description: `Free 14 days. Why less food tightened the hold.` },
   { slug: 'ad-6-nobanner', short: 'Ad 6, no offer banner', layer: 'deferred', audience: 'Banner test',
-    img: '/ads/round1/ad6-TEST-nobanner.png',
+    img: '/creative/round1/ad6-TEST-nobanner.png',
     headline: `The afternoon crash, the evening cravings, and the fat that will not shift are one signal`,
     primaryText: `Not three problems. One.
 
@@ -1029,7 +1032,7 @@ It is not age. Insulin sensitivity is one of the most responsive systems in the 
 Sensitivity is a state, and states respond to inputs.`,
     description: `Free 14 days. The crash names the driver.` },
   { slug: 'ad-4-day-7', short: 'The day 7 check-in', layer: 'layer2', audience: 'Either sex',
-    img: '/ads/round1/ad4-creative-B-headline-overlay.png',
+    img: '/creative/round1/ad4-creative-B-headline-overlay.png',
     headline: `Six of the eight markers moved in a week, and the two that did not are the read`,
     primaryText: `Fourteen days is not long enough to change how a body looks. It is long enough to find out why it is not changing.
 
@@ -1044,7 +1047,7 @@ Which is why the ones that improve are not the interesting part. The ones sittin
 That is the point of the fortnight. Not a transformation. A read you can act on.`,
     description: `Free 14 days. The markers that refuse to move.` },
   { slug: 'ad-8-plan-down', short: 'The plan went down', layer: 'layer2', audience: 'Either sex',
-    img: '/ads/round1/ad8-creative-B-headline-overlay.png',
+    img: '/creative/round1/ad8-creative-B-headline-overlay.png',
     headline: `The check-in came back better, so the training went down, not up`,
     primaryText: `Most people read a good check-in as permission to push harder. It is usually the opposite.
 
@@ -1059,7 +1062,7 @@ The Challenge runs this over fourteen days. Intake on day 0, eight markers score
 Nothing to buy at the end of it. The read is the product.`,
     description: `Free 14 days. When less training moves more fat.` },
   { slug: 'ad-10-order', short: 'The order of operations', layer: 'layer2', audience: 'Either sex',
-    img: '/ads/round1/ad10-creative-B-headline-overlay.png',
+    img: '/creative/round1/ad10-creative-B-headline-overlay.png',
     headline: `Right actions, wrong order, and the body composition never moves`,
     primaryText: `Five days a week in the gym, food tracked, alcohol gone, and the shape of the body has not changed in a year.
 
@@ -1085,7 +1088,7 @@ The free fourteen days is step one and most of step two.`,
 // the dashboard reference + the per-ad metadata Kade pastes into Meta Ads
 // Manager. Captions follow the Amanda-audited Cold Ad Copy Doctrine:
 // "Decode" terminology, audience-named hooks (no personal-attribute claims),
-// 2-sentence rhythm, locked CTA. Images are rendered from /public/ads/
+// 2-sentence rhythm, locked CTA. Images are rendered from /public/creative/
 // (committed). Hooks here mirror the on-image hook copy.
 type ColdAd = {
   slug: string; archetype: string; format: 'Statement' | 'Photo'; photo: string | null
@@ -1384,7 +1387,7 @@ function ColdAdCard({ ad }: { ad: ColdAd }) {
       {/* Image preview */}
       <div className="bg-stone-100 border-b border-stone-200" style={{ aspectRatio: '4 / 5' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={`/ads/${ad.slug}.png`} alt={ad.hook} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+        <img src={`/creative/${ad.slug}.png`} alt={ad.hook} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
       </div>
       {/* Metadata */}
       <div className="p-3 space-y-2.5 text-xs">

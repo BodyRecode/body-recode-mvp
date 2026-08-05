@@ -152,8 +152,8 @@ async function main() {
   const fs = await import('node:fs')
   const path = await import('node:path')
 
-  await check('9 cold ad creatives at /public/ads/', async () => {
-    const files = fs.readdirSync(path.resolve('public/ads')).filter(f => f.startsWith('ad-') && f.endsWith('.png'))
+  await check('9 cold ad creatives at /public/creative/', async () => {
+    const files = fs.readdirSync(path.resolve('public/creative')).filter(f => f.startsWith('ad-') && f.endsWith('.png'))
     return files.length >= 9 ? { verdict: PASS, detail: `${files.length} cold ads ready` } : { verdict: FAIL, detail: `only ${files.length}/9 found — re-run scripts/ig-generator/` }
   })
 
