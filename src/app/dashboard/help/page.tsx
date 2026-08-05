@@ -1310,6 +1310,15 @@ export default function HelpPage() {
               <SeqRow day="Immediate (to you)" label="Coach notification with lead name, email, date/time, and Zoom link" />
             </div>
 
+            <p className="font-semibold text-[#1A1A1A] mt-4">Custom Time Request + Pre-Call Form Chase (automatic)</p>
+            <p>Fires when a lead asks for a specific time at bodyrecode.au/book rather than taking an offered slot. The confirmation they receive carries the <strong>only</strong> link to the pre-call form anywhere in the product, so whether it landed matters. Both immediate emails now write to the lead timeline with their Resend IDs — before 6 Aug 2026 neither was logged and there was no way to tell. Each nudge re-reads the timeline and stops the moment the form is completed.</p>
+            <div className="space-y-1">
+              <SeqRow day="Immediate (to you)" label="Custom time request - their preferred times, Reply-To set to the lead so you answer from your inbox" />
+              <SeqRow day="Immediate" label="Got your time request - confirmation, plus the pre-call form link" />
+              <SeqRow day="+24h, 7am" label="One thing before our call - nudge 1, only if the form is still outstanding" />
+              <SeqRow day="+72h, 7am" label="Still need this before we talk - nudge 2, firmer" />
+            </div>
+
             <p className="font-semibold text-[#1A1A1A] mt-4">No-Show Re-engagement Sequence (manual trigger)</p>
             <p>Does not fire automatically. To trigger it: set the lead status to <strong>Closed - No Show</strong>, save, then click <strong>Start Re-engagement Sequence</strong> on the lead detail page. The button only appears when the status is Closed - No Show.</p>
             <div className="space-y-1">

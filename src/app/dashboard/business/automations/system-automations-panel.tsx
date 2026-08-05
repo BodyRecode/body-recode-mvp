@@ -14,6 +14,13 @@ const AUTOMATIC_AUTOMATIONS = [
     steps: 5,
   },
   {
+    id: 'prep-form-chase',
+    name: 'Pre-Call Form Chase',
+    description: `When a lead requests a call time at bodyrecode.au/book, two emails fire immediately: the custom-time notification to ${coach().email} (Reply-To set to the lead, so you answer straight from your inbox) and the confirmation to them, which carries the ONLY link to the pre-call form. Both are now written to the lead timeline with their Resend IDs - before 2026-08-06 neither was logged, so there was no way to tell whether a lead had ever received the form link. If the form is still outstanding, a nudge goes out at ~24h and a firmer one at ~72h, both realigned to 7am AEST. Each nudge re-reads the timeline and bails the moment the form is completed, so nobody who has already done it gets chased. Transactional, not marketing: they asked for the call.`,
+    trigger: 'POST /api/book-request (booking/time-requested)',
+    steps: 4,
+  },
+  {
     id: 'inbound-reply-forward',
     name: 'Inbound Reply Forward + Alert',
     description: `When anyone replies to an app-sent email (reply-to routes to replies.bodyrecode.au → Postmark inbound webhook), the full reply is forwarded to ${coach().email} with Reply-To set to the original sender, so Kade reads and answers it straight from his normal inbox - no dashboard trip needed. Known leads/clients also thread into Business → Inbox as a "Reply received" event; replies from unknown senders (which were previously logged-and-discarded) are now rescued to the inbox too, flagged as not-a-saved-contact. A window-gated SMS heads-up (Mon-Sat 08:30-20:00 AEST, to Kade's number) fires alongside so a reply is never missed. Forward + SMS are best-effort and never block the webhook.`,

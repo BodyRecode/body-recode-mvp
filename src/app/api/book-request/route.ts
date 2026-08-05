@@ -7,6 +7,7 @@ import { appUrl } from '@/lib/app-url'
 import { fromCoach, fromBrand } from '@/lib/email-shell'
 import { buildCustomTimeRequestEmail, buildBookingConfirmationEmail } from '@/lib/booking-emails'
 import { coach, brand } from '@/config/tenant'
+import { inngest } from '@/lib/inngest'
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
@@ -66,6 +67,8 @@ export async function POST(request: NextRequest) {
     sentAt: new Date(),
   })
 
+  const prepUrl = `${brand().marketingDomain}/book/prep/${lead.id}`
+
   // Notify coach
   if (process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY)
@@ -78,26 +81,61 @@ export async function POST(request: NextRequest) {
       note: cleanNote,
       leadUrl,
     })
-    await resend.emails.send({
+    const coachSend = await resend.emails.send({
       from: fromBrand(),
       to: coach().email,
       replyTo: cleanEmail,
       subject: coachEmail.subject,
       html: coachEmail.html,
     })
+    await logLeadEvent({
+      leadId: lead.id,
+      type: 'custom_time_coach_notified',
+      subject: coachEmail.subject,
+      resendEmailId: coachSend.data?.id ?? undefined,
+      notes: coachSend.error
+        ? `SEND FAILED: ${coachSend.error.message}`
+        : `Sent to ${coach().email}, reply-to ${cleanEmail}.`,
+    })
 
-    // Confirmation to lead
+    // Confirmation to lead. This is the ONLY place the pre-call form link is
+    // ever surfaced, so whether it sent matters — hence the event.
     const leadEmail = buildBookingConfirmationEmail({
       firstName: cleanName.split(' ')[0],
       preferredTime: cleanPreferredTime,
-      prepUrl: `${brand().marketingDomain}/book/prep/${lead.id}`,
+      prepUrl,
     })
-    await resend.emails.send({
+    const leadSend = await resend.emails.send({
       from: fromCoach(),
       to: cleanEmail,
       subject: leadEmail.subject,
       html: leadEmail.html,
     })
+    await logLeadEvent({
+      leadId: lead.id,
+      type: 'booking_confirmation_sent',
+      subject: leadEmail.subject,
+      resendEmailId: leadSend.data?.id ?? undefined,
+      notes: leadSend.error
+        ? `SEND FAILED: ${leadSend.error.message}`
+        : `Sent to ${cleanEmail}. Carries the pre-call form link: ${prepUrl}`,
+    })
+  }
+
+  // Kick off the pre-call form chase. Best-effort: a failed enqueue must not
+  // fail the booking request itself.
+  try {
+    await inngest.send({
+      name: 'booking/time-requested',
+      data: {
+        leadId: lead.id,
+        email: cleanEmail,
+        firstName: cleanName.split(' ')[0],
+        prepUrl,
+      },
+    })
+  } catch (e) {
+    console.error('[book-request] inngest.send failed:', e)
   }
 
   return NextResponse.json({ success: true })

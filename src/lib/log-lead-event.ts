@@ -17,6 +17,12 @@ export type LeadEventType =
   | 'day_zero_intake_completed'
   | 'custom_time_requested'
   | 'prep_form_completed'
+  // Added 2026-08-06. /api/book-request fired two emails and logged neither, so
+  // there was no way to tell whether a lead's booking confirmation (which
+  // carries the pre-call form link) had actually gone out.
+  | 'custom_time_coach_notified'
+  | 'booking_confirmation_sent'
+  | 'prep_form_reminder_sent'
 
 export async function logLeadEvent(params: {
   leadId: string

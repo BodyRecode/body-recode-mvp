@@ -1,6 +1,6 @@
 import { serve } from 'inngest/next'
 import { inngest } from '@/lib/inngest'
-import { executeWorkflowFunction, challengeSequenceFunction, challengeCheckinPromptFunction, challengeIntakeReminderFunction, challengeSmsFunction, blueprintWeekAdvanceFunction, blueprintEmailSequenceFunction, membershipWeekAdvanceFunction, extensionWeekAdvanceFunction, reengagementSequenceFunction, digitalAssetEngineFulfilmentFunction, weeklyCheckinAutoResponseFunction, weeklyPatternReportSequenceFunction, igPublisherCron, speedToLeadScorecardFunction, speedToLeadChallengeFunction, speedToLeadWaitlistFunction, speedToLeadPurchaseFunction, speedToLeadNoShowFunction, partnerActiveClientCounterCron, bookingAgentSequenceFunction } from '@/lib/inngest-functions'
+import { executeWorkflowFunction, challengeSequenceFunction, challengeCheckinPromptFunction, challengeIntakeReminderFunction, challengeSmsFunction, blueprintWeekAdvanceFunction, blueprintEmailSequenceFunction, membershipWeekAdvanceFunction, extensionWeekAdvanceFunction, reengagementSequenceFunction, digitalAssetEngineFulfilmentFunction, weeklyCheckinAutoResponseFunction, weeklyPatternReportSequenceFunction, igPublisherCron, speedToLeadScorecardFunction, speedToLeadChallengeFunction, speedToLeadWaitlistFunction, speedToLeadPurchaseFunction, speedToLeadNoShowFunction, partnerActiveClientCounterCron, bookingAgentSequenceFunction, prepFormReminderFunction } from '@/lib/inngest-functions'
 import { appUrl } from "@/lib/app-url";
 
 // Pin the serve host to the canonical production URL so Inngest registers
@@ -23,6 +23,6 @@ import { appUrl } from "@/lib/app-url";
 // to the SDK default (host from request headers), which is correct.
 export const { GET, POST, PUT } = serve({
   client: inngest,
-  functions: [executeWorkflowFunction, challengeSequenceFunction, challengeCheckinPromptFunction, challengeIntakeReminderFunction, challengeSmsFunction, blueprintWeekAdvanceFunction, blueprintEmailSequenceFunction, membershipWeekAdvanceFunction, extensionWeekAdvanceFunction, reengagementSequenceFunction, digitalAssetEngineFulfilmentFunction, weeklyCheckinAutoResponseFunction, weeklyPatternReportSequenceFunction, igPublisherCron, speedToLeadScorecardFunction, speedToLeadChallengeFunction, speedToLeadWaitlistFunction, speedToLeadPurchaseFunction, speedToLeadNoShowFunction, partnerActiveClientCounterCron, bookingAgentSequenceFunction],
+  functions: [executeWorkflowFunction, challengeSequenceFunction, challengeCheckinPromptFunction, challengeIntakeReminderFunction, challengeSmsFunction, blueprintWeekAdvanceFunction, blueprintEmailSequenceFunction, membershipWeekAdvanceFunction, extensionWeekAdvanceFunction, reengagementSequenceFunction, digitalAssetEngineFulfilmentFunction, weeklyCheckinAutoResponseFunction, weeklyPatternReportSequenceFunction, igPublisherCron, speedToLeadScorecardFunction, speedToLeadChallengeFunction, speedToLeadWaitlistFunction, speedToLeadPurchaseFunction, speedToLeadNoShowFunction, partnerActiveClientCounterCron, bookingAgentSequenceFunction, prepFormReminderFunction],
   serveOrigin: process.env.VERCEL_ENV === 'production' ? appUrl() : undefined,
 })

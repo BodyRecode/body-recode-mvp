@@ -150,3 +150,41 @@ ${darkEmailSignature()}`,
   )
   return { subject, html }
 }
+
+/**
+ * 5. Lead requested a call but has not completed the pre-call form -> nudge.
+ *
+ * Added 2026-08-06. Before this, the form link went out exactly once, buried
+ * beneath the time-confirmation copy in builder 2, and nothing ever chased it.
+ * Leads were arriving at calls with no brief and no way to tell whether they
+ * had even seen the ask.
+ *
+ * Transactional, not marketing: they asked for the call, this is a step in
+ * delivering it. Same reasoning as the Day 0 intake reminder, and consistent
+ * with the carve-out documented at the top of `marketing-email.ts`.
+ */
+export function buildPrepFormReminderEmail(opts: {
+  firstName: string
+  prepUrl: string
+  second: boolean
+}): { subject: string; html: string } {
+  const subject = opts.second
+    ? `${opts.firstName}, still need this before we talk`
+    : `One thing before our call, ${opts.firstName}`
+  const body = opts.second
+    ? "I'd rather not spend the first ten minutes of our call on background you could give me in three. It is six short questions and only the first one is required."
+    : "You asked for a time, so this is the only other thing I need. Three minutes, six short questions, and only the first one is required."
+  const html = darkEmailShell(
+    `${emailLogo(150)}
+${emailEyebrow('Before your call')}
+${emailHeading(opts.second ? 'Still outstanding' : 'Three minutes, that is it')}
+${emailBody(esc(body))}
+${emailBody('It means I walk in already understanding where you are at, so we can go straight to what actually matters for you rather than starting from zero.')}
+${emailCta({ href: opts.prepUrl, label: 'Complete it now →' })}
+${emailUrlFallback(opts.prepUrl)}
+${emailBody('If you have already done it, ignore this and I will see you on the call.', { color: EMAIL_MUTED, size: 14 })}
+${darkEmailSignature()}`,
+    { previewText: esc(subject) },
+  )
+  return { subject, html }
+}

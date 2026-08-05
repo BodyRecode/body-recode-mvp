@@ -37,6 +37,7 @@ import {
 } from './membership-emails'
 import { buildExtensionWeekEmail } from './extension-emails'
 import { EMAIL_SEQUENCE, STOP_STATUSES as BOOKING_AGENT_STOP_STATUSES } from './booking-agent/sequence'
+import { buildPrepFormReminderEmail } from './booking-emails'
 
 // ─── Challenge SMS Messages ───────────────────────────────────────────────────
 // Rebuilt 2026-05-30 as Minimal Pulse: 1 morning nudge per day (14 messages)
@@ -2346,5 +2347,95 @@ export const bookingAgentSequenceFunction = inngest.createFunction(
     })
 
     return { ok: true, completed: true }
+  },
+)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Pre-call form chase
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// Fires when a lead requests a call time via /book. Before 2026-08-06 the
+// pre-call form link went out exactly once, inside the booking-confirmation
+// email, sitting underneath copy whose headline was about their requested time.
+// Nothing chased it, the form appeared nowhere else in the product, and nothing
+// recorded whether the email had even sent. Leads were turning up to calls with
+// no brief.
+//
+// Two nudges, 24h and 72h, each re-reading the lead's events so anyone who has
+// completed the form is never chased. Transactional rather than marketing: they
+// asked for the call and this is a step in delivering it. Same carve-out the
+// Day 0 intake reminder uses, documented at the top of marketing-email.ts.
+export const prepFormReminderFunction = inngest.createFunction(
+  {
+    id: 'prep-form-reminder',
+    retries: 2,
+    triggers: [{ event: 'booking/time-requested' }],
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async ({ event, step }: { event: any; step: any }) => {
+    const { leadId, email, firstName, prepUrl } = event.data as {
+      leadId: string
+      email: string
+      firstName: string
+      prepUrl: string
+    }
+
+    if (!leadId || !email || !prepUrl) return { skipped: 'missing data' }
+
+    const resend = new Resend(process.env.RESEND_API_KEY)
+
+    // True while the form is still outstanding. Read fresh each time so the
+    // guard is the single source of truth for "do they still need chasing".
+    const stillNeedsPrepForm = async (stepId: string): Promise<boolean> =>
+      step.run(stepId, async () => {
+        const admin = createAdminClient()
+        const { data } = await admin
+          .from('lead_events')
+          .select('id')
+          .eq('lead_id', leadId)
+          .eq('type', 'prep_form_completed')
+          .limit(1)
+        return !data || data.length === 0
+      })
+
+    const sendNudge = async (stepId: string, second: boolean): Promise<void> => {
+      const built = buildPrepFormReminderEmail({ firstName, prepUrl, second })
+      const sent = await step.run(stepId, async () => {
+        const res = await resend.emails.send({
+          from: fromCoach(),
+          to: email,
+          subject: built.subject,
+          html: built.html,
+        })
+        return { id: res.data?.id ?? null, error: res.error?.message ?? null }
+      })
+      await step.run(`${stepId}-log`, async () => {
+        await logLeadEvent({
+          leadId,
+          type: 'prep_form_reminder_sent',
+          subject: built.subject,
+          resendEmailId: sent.id ?? undefined,
+          notes: sent.error
+            ? `SEND FAILED: ${sent.error}`
+            : `Nudge ${second ? 2 : 1} of 2. Pre-call form still outstanding at send time.`,
+        })
+      })
+    }
+
+    // ── Nudge 1: ~24h after the request, realigned to next 7am AEST ──────
+    await step.sleep('prep-form-reminder-1-wait', '1d')
+    await alignToNextMorningAEST(step, 'prep-form-reminder-1-morning')
+    if (await stillNeedsPrepForm('prep-form-reminder-1-check')) {
+      await sendNudge('send-prep-form-reminder-1', false)
+    }
+
+    // ── Nudge 2: ~72h after the request, firmer copy ─────────────────────
+    await step.sleep('prep-form-reminder-2-wait', '2d')
+    await alignToNextMorningAEST(step, 'prep-form-reminder-2-morning')
+    if (await stillNeedsPrepForm('prep-form-reminder-2-check')) {
+      await sendNudge('send-prep-form-reminder-2', true)
+    }
+
+    return { leadId }
   },
 )
