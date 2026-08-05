@@ -2826,14 +2826,45 @@ export default function StrategyPage() {
 
               <div className="bg-stone-50 border border-stone-200 rounded-lg p-3">
                 <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest mb-1">Stage gate decision · End of week 2</p>
-                <p className="text-stone-700 leading-relaxed mb-2"><strong>If cost per signup hits target:</strong> raise to $75/day on the same broad set and add fresh creative, rather than adding audiences. Broad plus more creative is the scale path now.</p>
-                <p className="text-stone-700 leading-relaxed mb-2"><strong>If it misses:</strong> DO NOT narrow the targeting. Narrowing is what caused the July exhaustion. Debug in order: (1) creative, (2) Day 0 intake friction, (3) Challenge LP conversion, (4) the offer itself.</p>
+                <p className="text-stone-700 leading-relaxed mb-2"><strong>If cost per signup hits target:</strong> raise to $75/day on the same broad set and add fresh creative, rather than adding audiences. Broad plus more creative is the scale path now. <strong>The fresh creative is the three format-breakers below</strong> - tripling spend on four ads that have already run their course just buys the same fatigue faster.</p>
+                <p className="text-stone-700 leading-relaxed mb-2"><strong>If it misses:</strong> DO NOT narrow the targeting. Narrowing is what caused the July exhaustion. Debug in order: (1) creative - swap in a format-breaker, one at a time, same ad set, (2) Day 0 intake friction, (3) Challenge LP conversion, (4) the offer itself.</p>
                 <p className="text-stone-700 leading-relaxed"><strong>Expect broad to look worse before better.</strong> It takes longer to stabilise - do not judge it on the first 48h. CPM should fall relative to July&apos;s ~$48. If CPM does not fall, the audience was never the constraint and the creative is.</p>
               </div>
 
               <div className="bg-stone-50 border border-stone-200 rounded-lg p-3">
                 <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest mb-1">Why one ad set, not several</p>
                 <p className="text-stone-700 leading-relaxed">$25/day split across 3 ad sets = $8.30/day each, and Meta needs far more than that per set to learn. It shows ads to suboptimal slices, cost stays high, and you end up with directional noise rather than data. July proved the second half of this too: within the one ad set that did run, a single ad took $220 of $225. Watch spend distribution across the four ads - if it is not roughly even by day 3, you are testing one ad again.</p>
+              </div>
+            </div>
+          </Card>
+
+          {/* What to watch. These are the numbers that trigger an action, and they
+              lived only in the launch pack PDF until 5 Aug. Frequency in particular
+              is the trigger for deploying a format-breaker, so it has to be visible
+              on the tab rather than inside a document. */}
+          <Card className="border-amber-500/30 bg-amber-500/5">
+            <SectionLabel>What to watch · Round 1</SectionLabel>
+            <Body>Four numbers, each with an action attached. Everything else is noise while the budget is this small.</Body>
+            <div className="mt-3 space-y-2 text-xs">
+              <div className="bg-white/70 border border-amber-500/20 rounded-lg p-3">
+                <p className="text-[10px] font-bold text-amber-800 uppercase tracking-widest mb-1">1 · Click → Challenge signup</p>
+                <p className="text-stone-700 leading-relaxed">The only number that matters. <strong>Not CTR, not cost per click.</strong> A cheap click that does not enrol is worse than no click, because it teaches the algorithm the wrong buyer.</p>
+              </div>
+              <div className="bg-white/70 border border-amber-500/20 rounded-lg p-3">
+                <p className="text-[10px] font-bold text-amber-800 uppercase tracking-widest mb-1">2 · Frequency · the format-breaker trigger</p>
+                <p className="text-stone-700 leading-relaxed"><strong>July died past roughly 2.4.</strong> If frequency passes 2 in the first ten days, the same people are seeing the same look and a look they recognise is a look they scroll. <strong>Rotate in one format-breaker and pause the most-served ad.</strong> Do not touch the targeting.</p>
+              </div>
+              <div className="bg-white/70 border border-amber-500/20 rounded-lg p-3">
+                <p className="text-[10px] font-bold text-amber-800 uppercase tracking-widest mb-1">3 · Spend distribution · by day 3</p>
+                <p className="text-stone-700 leading-relaxed">If spend is not roughly even across the four ads by day 3, you are testing one ad again. July proved this: one ad took <strong>$220 of $225</strong> inside a single set. Either accept its verdict or pause the leader to force delivery into the rest.</p>
+              </div>
+              <div className="bg-white/70 border border-amber-500/20 rounded-lg p-3">
+                <p className="text-[10px] font-bold text-amber-800 uppercase tracking-widest mb-1">4 · Decision point · day 5 to 7</p>
+                <p className="text-stone-700 leading-relaxed">Kill the bottom two on cost per signup. If <em>nothing</em> is converting at an acceptable cost, stop and look at the Challenge landing page rather than buying more traffic.</p>
+              </div>
+              <div className="bg-white/70 border border-amber-500/20 rounded-lg p-3">
+                <p className="text-[10px] font-bold text-amber-800 uppercase tracking-widest mb-1">The diagnostic that decides everything</p>
+                <p className="text-stone-700 leading-relaxed"><strong>Cost per signup rising while CPM stays flat is creative fatigue, not an audience problem.</strong> Rising CPM would mean a reach problem. Flat CPM with worsening cost means the creative stopped working, and the fix is a format-breaker, never narrower targeting.</p>
               </div>
             </div>
           </Card>
