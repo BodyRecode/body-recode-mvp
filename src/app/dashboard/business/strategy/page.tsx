@@ -914,12 +914,37 @@ function CopyButton({ value, label }: { value: string; label?: string }) {
 // The no-banner test carries Ad 6's exact fields on purpose: that test is void
 // if any field other than the creative differs.
 type Round1Ad = {
-  slug: string; short: string; layer: 'round1' | 'layer2'; audience: string
+  slug: string; short: string; layer: 'round1' | 'layer2' | 'deferred'; audience: string
   img: string; headline: string; primaryText: string; description: string
 }
 const ROUND1_ADS: Round1Ad[] = [
+  { slug: 'ad-5-four-patterns', short: 'Four patterns', layer: 'round1', audience: 'Either sex',
+    img: '/ads/round1/ad5-creative-breaking-news.png',
+    headline: `Twenty years of coaching, and effort was almost never the thing separating them`,
+    primaryText: `Twenty years of coaching people, and the same thing kept showing up.
+
+The ones whose body composition changed and the ones whose did not were not separated by effort. Both worked hard. Both were consistent. Plenty of the people who got nowhere were working harder than the people who got somewhere.
+
+What separated them was whether the body was in a state that could use the effort going in.
+
+Put a hard block of training into a body that is protecting itself and it does not come back as muscle and it does not come off as fat. It comes back as fatigue.
+
+There are four patterns that do this, and each one holds fat in a different place.
+
+Stress-Stored holds it on the front of the midsection while the arms and legs stay lean. Cortisol.
+
+Insulin-Drift holds it across the mid-back, lower back and flanks, and deep in the abdomen, while the front stays relatively spared. Insulin.
+
+Estrogen-Shift holds it at the hips, glutes and outer thighs, then starts moving it toward the middle. Oestrogen.
+
+Androgen-Decline is not a location at all. Central fat rises while muscle, tone and drive fall together. Testosterone.
+
+One of those four is running yours. Correct the wrong one and almost nothing moves, which is why so many plans half work.
+
+Fourteen days is enough to find out which one it is.`,
+    description: `Free 14 days. One of the four is running yours.` },
   { slug: 'ad-6-insulin-drift', short: 'Insulin drift', layer: 'round1', audience: 'Either sex, male-leaning',
-    img: '/ads/round1/ad6-creative-B-headline-overlay.png',
+    img: '/ads/round1/None',
     headline: `The afternoon crash, the evening cravings, and the fat that will not shift are one signal`,
     primaryText: `Not three problems. One.
 
@@ -939,27 +964,8 @@ It is not age. Insulin sensitivity is one of the most responsive systems in the 
 
 Sensitivity is a state, and states respond to inputs.`,
     description: `Free 14 days. The crash names the driver.` },
-  { slug: 'ad-3-perimenopause', short: 'Perimenopause', layer: 'round1', audience: 'Female only',
-    img: '/ads/round1/ad3-v2-squat-creative-B-headline-overlay.png',
-    headline: `Hips and thighs will not shift, and eating less is making it worse`,
-    primaryText: `When storage settles in the hips, glutes and outer thighs, restriction makes it worse.
-
-Not slower. Worse.
-
-This is an oestrogen-driven conservation state. The body holds on as a protective response to hormone signalling that is recalibrating.
-
-It shows up most in women moving toward or through perimenopause, after coming off hormonal contraception, or after a long run of undereating.
-
-Standard advice is eat less, train more. This pattern reads scarcity and conserves harder. So the harder the restriction, the tighter the hold, and the more it feels like a personal failure when it is a predictable response.
-
-What it answers to instead: consistent fuelling, protected sleep, regular meal timing.
-
-The tells. Storage settles low and outer, and later begins moving toward the middle. Bloating and water shift unpredictably across the month. Sleep gets lighter.
-
-Menopause is a transition. This is a pattern inside it, and patterns respond to inputs.`,
-    description: `Free 14 days. Why less food tightened the hold.` },
   { slug: 'ad-2-fat-map', short: 'Fat Map reveal', layer: 'round1', audience: 'Either sex',
-    img: '/ads/round1/ad2-fatmap-F-MZ1-revealed.png',
+    img: '/ads/round1/None',
     headline: `Where the fat sits tells you which hormone is holding it there`,
     primaryText: `Front of the middle. Back and sides. Hips and thighs.
 
@@ -977,8 +983,27 @@ Four drivers. Four different corrections. Run the cortisol fix on an insulin pat
 
 Where it sits narrows it. What comes with it decides.`,
     description: `Free 14 days. Which of the four is running it.` },
-  { slug: 'ad-6-nobanner', short: 'Ad 6, no offer banner', layer: 'round1', audience: 'Structural test',
-    img: '/ads/round1/ad6-TEST-nobanner.png',
+  { slug: 'ad-3-perimenopause', short: 'Perimenopause', layer: 'round1', audience: 'Female only',
+    img: '/ads/round1/None',
+    headline: `Hips and thighs will not shift, and eating less is making it worse`,
+    primaryText: `When storage settles in the hips, glutes and outer thighs, restriction makes it worse.
+
+Not slower. Worse.
+
+This is an oestrogen-driven conservation state. The body holds on as a protective response to hormone signalling that is recalibrating.
+
+It shows up most in women moving toward or through perimenopause, after coming off hormonal contraception, or after a long run of undereating.
+
+Standard advice is eat less, train more. This pattern reads scarcity and conserves harder. So the harder the restriction, the tighter the hold, and the more it feels like a personal failure when it is a predictable response.
+
+What it answers to instead: consistent fuelling, protected sleep, regular meal timing.
+
+The tells. Storage settles low and outer, and later begins moving toward the middle. Bloating and water shift unpredictably across the month. Sleep gets lighter.
+
+Menopause is a transition. This is a pattern inside it, and patterns respond to inputs.`,
+    description: `Free 14 days. Why less food tightened the hold.` },
+  { slug: 'ad-6-nobanner', short: 'Ad 6, no offer banner', layer: 'deferred', audience: 'Banner test',
+    img: '/ads/round1/None',
     headline: `The afternoon crash, the evening cravings, and the fat that will not shift are one signal`,
     primaryText: `Not three problems. One.
 
@@ -999,7 +1024,7 @@ It is not age. Insulin sensitivity is one of the most responsive systems in the 
 Sensitivity is a state, and states respond to inputs.`,
     description: `Free 14 days. The crash names the driver.` },
   { slug: 'ad-4-day-7', short: 'The day 7 check-in', layer: 'layer2', audience: 'Either sex',
-    img: '/ads/round1/ad4-creative-B-headline-overlay.png',
+    img: '/ads/round1/None',
     headline: `Six of the eight markers moved in a week, and the two that did not are the read`,
     primaryText: `Fourteen days is not long enough to change how a body looks. It is long enough to find out why it is not changing.
 
@@ -1014,7 +1039,7 @@ Which is why the ones that improve are not the interesting part. The ones sittin
 That is the point of the fortnight. Not a transformation. A read you can act on.`,
     description: `Free 14 days. The markers that refuse to move.` },
   { slug: 'ad-8-plan-down', short: 'The plan went down', layer: 'layer2', audience: 'Either sex',
-    img: '/ads/round1/ad8-creative-B-headline-overlay.png',
+    img: '/ads/round1/None',
     headline: `The check-in came back better, so the training went down, not up`,
     primaryText: `Most people read a good check-in as permission to push harder. It is usually the opposite.
 
@@ -1029,7 +1054,7 @@ The Challenge runs this over fourteen days. Intake on day 0, eight markers score
 Nothing to buy at the end of it. The read is the product.`,
     description: `Free 14 days. When less training moves more fat.` },
   { slug: 'ad-10-order', short: 'The order of operations', layer: 'layer2', audience: 'Either sex',
-    img: '/ads/round1/ad10-creative-B-headline-overlay.png',
+    img: '/ads/round1/None',
     headline: `Right actions, wrong order, and the body composition never moves`,
     primaryText: `Five days a week in the gym, food tracked, alcohol gone, and the shape of the body has not changed in a year.
 
@@ -1318,7 +1343,7 @@ function Round1AdCard({ ad }: { ad: Round1Ad }) {
       <div className="p-3 space-y-2.5 text-xs">
         <div className="flex items-center gap-1.5 flex-wrap">
           <span className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">{ad.short}</span>
-          <span className={`text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${ad.layer === 'round1' ? 'bg-blue-500/10 text-blue-700' : 'bg-stone-200 text-stone-700'}`}>{ad.layer === 'round1' ? 'Round 1' : 'Layer 2'}</span>
+          <span className={`text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${ad.layer === 'round1' ? 'bg-blue-500/10 text-blue-700' : 'bg-stone-200 text-stone-700'}`}>{ad.layer === 'round1' ? 'Round 1' : ad.layer === 'deferred' ? 'Round 2' : 'Layer 2'}</span>
           <span className="text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-800">{ad.audience}</span>
         </div>
 
@@ -2689,12 +2714,12 @@ export default function StrategyPage() {
               Ads Manager. Deliberately NOT on the Strategy Docs tab: that tab is one
               durable positioning doc per brand, this is an operational pack per round. */}
           <Card className="border-blue-500/30 bg-blue-500/5">
-            <SectionLabel>Round 1 Launch Pack · v1.4 · the copy to upload</SectionLabel>
+            <SectionLabel>Round 1 Launch Pack · v1.5 · the copy to upload</SectionLabel>
             <Body>Every field for all seven ads, ready to paste into Ads Manager: headline, primary text, link description, creative filename. Ads 6, 3, 2 and the no-banner test are Round 1. Ads 4, 8 and 10 are the second layer, rewritten 5 Aug. Opens with the <strong>hyper-dopamine structure</strong> (pattern interrupt + burning intrigue + specific benefit), the pre-flight checklist, and a measured audit of all seven against it.</Body>
             <div className="flex gap-2 mt-3">
-              <a href="/docs/ads/br-funnelb-round1-launch-pack-v1.4.pdf" target="_blank" rel="noopener noreferrer"
+              <a href="/docs/ads/br-funnelb-round1-launch-pack-v1.5.pdf" target="_blank" rel="noopener noreferrer"
                 className="text-[11px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-blue-600 text-white hover:bg-blue-700">View .pdf</a>
-              <a href="/docs/ads/br-funnelb-round1-launch-pack-v1.4.md" target="_blank" rel="noopener noreferrer"
+              <a href="/docs/ads/br-funnelb-round1-launch-pack-v1.5.md" target="_blank" rel="noopener noreferrer"
                 className="text-[11px] font-bold uppercase tracking-widest px-2 py-1 rounded border border-stone-300 text-stone-700 hover:bg-stone-100">View .md</a>
             </div>
             <p className="text-xs text-stone-500 mt-2">Source of truth: <code className="text-[11px]">~/Dropbox/01_BODY_RECODE/07_ADS/BR_FUNNELB_ROUND1_LAUNCH.md</code>. Re-copy into <code className="text-[11px]">public/docs/ads/</code> after editing.</p>
@@ -2737,7 +2762,7 @@ export default function StrategyPage() {
             <div className="mt-3 space-y-2 text-xs">
               <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3">
                 <p className="text-[10px] font-bold text-blue-700 uppercase tracking-widest mb-1">Round 1 · Broad · four ads, one ad set</p>
-                <p className="text-stone-700 leading-relaxed">One ad set, <strong>broad</strong>: Australia, 30-60, all genders. No interests, no lookalikes. <strong>$25/day at campaign level.</strong> Four ads run inside it - Ad 6 (insulin drift), Ad 3 (perimenopause), Ad 2 (Fat Map), plus Ad 6 with the offer banner removed as a structural test. At $25/day, separate ad sets would get ~$6 each and learn nothing, so creative is tested inside one set. Target: cost per Challenge signup low enough that Blueprint take-rate × $97 + coaching conversion clears it.</p>
+                <p className="text-stone-700 leading-relaxed">One ad set, <strong>broad</strong>: Australia, 30-60, all genders. No interests, no lookalikes. <strong>$25/day at campaign level.</strong> Four ads run inside it - Ad 5 (four patterns), Ad 6 (insulin drift), Ad 2 (Fat Map), Ad 3 (perimenopause). Four distinct concepts on four different images. The no-banner test moved to Round 2 on 5 Aug so a discovery slot was not spent on a duplicate of Ad 6. At $25/day, separate ad sets would get ~$6 each and learn nothing, so creative is tested inside one set. Target: cost per Challenge signup low enough that Blueprint take-rate × $97 + coaching conversion clears it.</p>
               </div>
 
               <div className="bg-stone-50 border border-stone-200 rounded-lg p-3">
@@ -2862,15 +2887,18 @@ export default function StrategyPage() {
               baseline every future round gets judged against. */}
           <div className="space-y-4">
             <SectionLabel>Current creative · Round 1 (broad)</SectionLabel>
-            <p className="text-xs text-stone-700 leading-relaxed">The four that go up first, inside <strong>one broad ad set</strong>. Built to the hyper-dopamine standard: pattern interrupt, burning intrigue, specific benefit. Every field is verbatim from the <strong>Round 1 Launch Pack v1.4</strong> linked at the top of this tab. Click any field to copy, click an image to open it full size for upload.</p>
+            <p className="text-xs text-stone-700 leading-relaxed">The four that go up first, inside <strong>one broad ad set</strong>: Ad 5, Ad 6, Ad 2 and Ad 3. Four concepts, four different images, no repeats. Built to the hyper-dopamine standard: pattern interrupt, burning intrigue, specific benefit. Every field is verbatim from the <strong>Round 1 Launch Pack v1.4</strong> linked at the top of this tab. Click any field to copy, click an image to open it full size for upload.</p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
               {ROUND1_ADS.filter(a => a.layer === 'round1').map(ad => <Round1AdCard key={ad.slug} ad={ad} />)}
             </div>
 
             <div className="bg-amber-500/5 border border-amber-500/25 rounded-lg p-3">
-              <p className="text-[10px] font-bold text-amber-800 uppercase tracking-widest mb-1">The no-banner test</p>
-              <p className="text-xs text-stone-700 leading-relaxed">Ad 6 runs twice, once with the offer banner and once without, with <strong>every other field identical</strong>. The test is void if headline, primary text or link description differ by a single character. It settles a real disagreement: the playbook says an ad that looks like an ad loses, Amanda&apos;s audit locked the banner, and neither has evidence. It also decides the banner for all 35 creatives, not just this one.</p>
+              <p className="text-[10px] font-bold text-amber-800 uppercase tracking-widest mb-1">The no-banner test · moved to Round 2 on 5 Aug</p>
+              <p className="text-xs text-stone-700 leading-relaxed">Built and ready, held deliberately. Running it in Round 1 spent one of four slots on a second copy of Ad 6, so Round 1 tested three concepts instead of four on a budget where four is already the ceiling. It also answered a narrower question than it appeared to: whether the banner helps <em>Ad 6</em>, not whether the banner helps. <strong>Better sequencing is to find the winner in Round 1, then run that winner with and without the banner.</strong> Same test, better subject, no discovery slot spent. When it runs, every field except the creative must match the winner exactly or it is void.</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+              {ROUND1_ADS.filter(a => a.layer === 'deferred').map(ad => <Round1AdCard key={ad.slug} ad={ad} />)}
             </div>
 
             <SectionLabel>Layer 2 · held until Round 1 reads out</SectionLabel>

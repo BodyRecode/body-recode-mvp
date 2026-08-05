@@ -1,6 +1,6 @@
 # BR-FunnelB Round 1: launch pack
 
-**v1.4 · 5 Aug 2026.** Four ads, ready to upload. Supersedes `BR_FUNNELB_CAMPAIGN_SETUP.md`, which
+**v1.5 · 5 Aug 2026.** Four ads, ready to upload. Supersedes `BR_FUNNELB_CAMPAIGN_SETUP.md`, which
 was written before I had read the locked strategy and got three things wrong: it sent traffic
 to the scorecard, measured scorecard completions, and ignored Option D.
 
@@ -86,6 +86,7 @@ below on 5 Aug 2026.
 
 | Ad | Chars | Grade | Verdict |
 |---|---|---|---|
+| Ad 5 Four patterns | 1,293 | 4.9 | Pass |
 | Ad 6 Insulin drift | 779 | 4.4 | Pass |
 | Ad 3 Perimenopause | 953 | **7.3** | **Fails the grade rule** |
 | Ad 2 Fat Map reveal | 896 | 4.2 | Pass |
@@ -93,7 +94,19 @@ below on 5 Aug 2026.
 | Ad 8 The plan went down | 849 | 4.8 | Pass |
 | Ad 10 Order of operations | 986 | 4.5 | Pass |
 
-All seven are far under the 2,200 character ceiling and all use one idea per line.
+All are far under the 2,200 character ceiling and all use one idea per line. Ad 5 is the
+longest at 1,293 and still clears the grade rule, because the length is extra short
+sentences rather than denser ones.
+
+**Ad 5 replaced the no-banner test in Round 1 on 5 Aug 2026.** It is the strongest pattern
+interrupt in the set: the four-pattern panel names every driver and tells the reader one of
+them is theirs while withholding which, which is the cleanest curiosity gap available. Its
+old copy was scorecard-framed and could not ship, since it described five questions and a
+score out of fifteen while the creative shows the four patterns. Rewritten to match.
+
+Ad 11 stays out for a specific reason: it uses the same photograph as Ad 5. Running both is
+face fatigue and they read as one ad. Ad 5 wins the pair because Ad 11 is a statement and
+Ad 5 opens a gap.
 
 **One outstanding failure against the checklist, one fixed.**
 
@@ -130,7 +143,51 @@ than changed.
 
 ## The four ads
 
-Destination `bodyrecode.au/challenge` for all four. CTA button **Learn More** on all four.
+Destination `bodyrecode.au/challenge` on every ad. CTA button **Learn More** on every ad.
+
+**Round 1 is Ad 5, Ad 6, Ad 2 and Ad 3.** Four concepts, four different images, no repeats.
+The no-banner test moved to Round 2 on 5 Aug, see below for why.
+
+### Ad 5 · Four patterns
+`ad5-creative-breaking-news.png`
+
+**Headline**
+> Twenty years of coaching, and effort was almost never the thing separating them
+
+**Primary text**
+> Twenty years of coaching people, and the same thing kept showing up.
+>
+> The ones whose body composition changed and the ones whose did not were not separated by
+> effort. Both worked hard. Both were consistent. Plenty of the people who got nowhere were
+> working harder than the people who got somewhere.
+>
+> What separated them was whether the body was in a state that could use the effort going in.
+>
+> Put a hard block of training into a body that is protecting itself and it does not come
+> back as muscle and it does not come off as fat. It comes back as fatigue.
+>
+> There are four patterns that do this, and each one holds fat in a different place.
+>
+> Stress-Stored holds it on the front of the midsection while the arms and legs stay lean.
+> Cortisol.
+>
+> Insulin-Drift holds it across the mid-back, lower back and flanks, and deep in the
+> abdomen, while the front stays relatively spared. Insulin.
+>
+> Estrogen-Shift holds it at the hips, glutes and outer thighs, then starts moving it toward
+> the middle. Oestrogen.
+>
+> Androgen-Decline is not a location at all. Central fat rises while muscle, tone and drive
+> fall together. Testosterone.
+>
+> One of those four is running yours. Correct the wrong one and almost nothing moves, which
+> is why so many plans half work.
+>
+> Fourteen days is enough to find out which one it is.
+
+**Link description** Free 14 days. One of the four is running yours.
+
+---
 
 ### Ad 6 · Insulin drift
 `ad6-creative-B-headline-overlay.png`
@@ -227,15 +284,24 @@ Destination `bodyrecode.au/challenge` for all four. CTA button **Learn More** on
 
 ---
 
-### Ad 6 no-banner · the structural test
+### Ad 6 no-banner · DEFERRED to Round 2
 `ad6-TEST-nobanner.png`
 
-Identical to Ad 6 in every respect except the offer banner is removed. **Use exactly the same
-headline, primary text and link description.** If any other field differs the test is void.
+**Not in Round 1, changed 5 Aug 2026.** Built and ready, held deliberately.
 
-This answers a question that affects all 35 creatives: does the locked offer banner help or
-hurt? The playbook says an ad that looks like an ad loses. Amanda's audit locked the banner.
-Neither has evidence. One test settles it.
+The banner question is real and still worth settling: does the locked offer banner help or
+hurt? The playbook says an ad that looks like an ad loses, Amanda's audit locked the banner,
+and neither has evidence.
+
+But running it in Round 1 spent one of four slots on a second copy of Ad 6, which meant
+Round 1 tested three concepts rather than four, on a budget where four is already the
+practical ceiling. It also answered a narrower question than it looked like: whether the
+banner helps *Ad 6*, not whether the banner helps.
+
+**Better sequencing.** Find the winning concept in Round 1, then run that winner with and
+without the banner in Round 2. Same test, better subject, and it no longer costs a discovery
+slot. When it runs, every field except the creative must match the winner exactly or the
+test is void.
 
 ---
 
