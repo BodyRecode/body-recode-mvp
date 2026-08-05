@@ -2489,9 +2489,25 @@ export default function StrategyPage() {
         <div className="space-y-4">
           <WaveStatusCard />
 
+          {/* The upload runbook. Lives in Dropbox as the source of truth and is mirrored
+              into public/docs/ads/ so the actual copy is reachable while setting up in
+              Ads Manager. Deliberately NOT on the Strategy Docs tab: that tab is one
+              durable positioning doc per brand, this is an operational pack per round. */}
+          <Card className="border-blue-500/30 bg-blue-500/5">
+            <SectionLabel>Round 1 Launch Pack · v1.2 · the copy to upload</SectionLabel>
+            <Body>Every field for all seven ads, ready to paste into Ads Manager: headline, primary text, link description, creative filename. Ads 6, 3, 2 and the no-banner test are Round 1. Ads 4, 8 and 10 are the second layer, rewritten 5 Aug.</Body>
+            <div className="flex gap-2 mt-3">
+              <a href="/docs/ads/br-funnelb-round1-launch-pack-v1.2.pdf" target="_blank" rel="noopener noreferrer"
+                className="text-[11px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-blue-600 text-white hover:bg-blue-700">View .pdf</a>
+              <a href="/docs/ads/br-funnelb-round1-launch-pack-v1.2.md" target="_blank" rel="noopener noreferrer"
+                className="text-[11px] font-bold uppercase tracking-widest px-2 py-1 rounded border border-stone-300 text-stone-700 hover:bg-stone-100">View .md</a>
+            </div>
+            <p className="text-xs text-stone-500 mt-2">Source of truth: <code className="text-[11px]">~/Dropbox/01_BODY_RECODE/07_ADS/BR_FUNNELB_ROUND1_LAUNCH.md</code>. Re-copy into <code className="text-[11px]">public/docs/ads/</code> after editing.</p>
+          </Card>
+
           <Card className="border-pink-500/30 bg-pink-500/5">
             <SectionLabel>Meta Ads Only</SectionLabel>
-            <p className="text-sm text-stone-700 leading-relaxed">All paid spend goes to Meta (Instagram feed + Reels + Facebook). LinkedIn stays organic-only - the executive-reframe channel is a slow-burn brand-build, not a paid acquisition channel. No LinkedIn ads, no LinkedIn boost budget.</p>
+            <p className="text-sm text-stone-700 leading-relaxed">All paid spend goes to Meta (Instagram feed + Facebook, automatic placements). <strong>Statics only - no Reels, no video.</strong> LinkedIn stays organic-only - the executive-reframe channel is a slow-burn brand-build, not a paid acquisition channel. No LinkedIn ads, no LinkedIn boost budget.</p>
           </Card>
 
           <Card className="border-amber-500/20 bg-amber-500/5">
@@ -2504,7 +2520,7 @@ export default function StrategyPage() {
             <Card>
               <SectionLabel>Daily Budget · Phase 1</SectionLabel>
               <p className="text-xl font-semibold text-[#1A1A1A]">$25/day</p>
-              <p className="text-xs text-stone-500 mt-1">One ad set only (Stressed Exec). ABO not CBO.</p>
+              <p className="text-xs text-stone-500 mt-1">One broad ad set. Budget at campaign level.</p>
             </Card>
             <Card>
               <SectionLabel>Minimum Test Period</SectionLabel>
