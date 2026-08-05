@@ -923,7 +923,7 @@ type Round1Ad = {
 // Bump this ONE constant when the launch pack is republished. It drives the card
 // title, both download links and the 'verbatim from' line, which had already
 // drifted apart once (card said v1.6 while the body text still said v1.4).
-const LAUNCH_PACK_VERSION = 'v1.7'
+const LAUNCH_PACK_VERSION = 'v1.8'
 
 const ROUND1_ADS: Round1Ad[] = [
   { slug: 'ad-5-four-patterns', short: 'Four patterns', layer: 'round1', audience: 'Either sex',
@@ -2962,6 +2962,10 @@ export default function StrategyPage() {
 
             <SectionLabel>Format-breakers · built 5 Aug</SectionLabel>
             <p className="text-xs text-stone-700 leading-relaxed">Round 1&apos;s four are individually strong but share one visual language: greyscale photo, Signal Blue, same type, same banner. Four ads from one account that look like a matched set read as a campaign, and a campaign reads as an ad. These three break that in three directions, and put <strong>body composition back in the image</strong> — Ad 6&apos;s picture sells a clock, Ad 3&apos;s sells a squat. No new photography: Ad 12 reuses the existing figures, Ads 13 and 14 are pure type.</p>
+            <div className="bg-blue-500/5 border border-blue-500/25 rounded-lg p-3">
+              <p className="text-[10px] font-bold text-blue-700 uppercase tracking-widest mb-1">When to use them · hold all three for now</p>
+              <p className="text-xs text-stone-700 leading-relaxed">Not in Round 1. Round 1&apos;s job is to find which <em>concept</em> wins with the banner on, and a format-breaker beside them makes a win unreadable. These are the answer to <strong>creative fatigue</strong>, which is what actually killed July: CPM held flat at ~$48, so the audience never got more expensive to reach, it stopped converting. Rotate one in when <strong>frequency passes 2</strong>, when <strong>cost per signup rises on a flat CPM</strong>, when you <strong>scale to $75/day</strong> (fresh creative, never new audiences), or to <strong>replace a Round 1 ad killed at day 5-7</strong>. Same campaign, same broad ad set, one at a time. Never a new ad set. Full rules in the launch pack.</p>
+            </div>
             <div className="bg-amber-500/5 border border-amber-500/25 rounded-lg p-3">
               <p className="text-xs text-stone-700 leading-relaxed"><strong>Banner caveat.</strong> None carries the blue offer banner, because it would defeat the point of all three. Each keeps the free offer as a native line instead. That entangles them with the deferred no-banner test, so <strong>run that test on a Round 1 ad, not on one of these.</strong></p>
             </div>

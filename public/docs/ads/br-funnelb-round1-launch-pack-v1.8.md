@@ -1,6 +1,6 @@
 # BR-FunnelB Round 1: launch pack
 
-**v1.7 · 5 Aug 2026.** Four ads, ready to upload. Supersedes `BR_FUNNELB_CAMPAIGN_SETUP.md`, which
+**v1.8 · 5 Aug 2026.** Four ads, ready to upload. Supersedes `BR_FUNNELB_CAMPAIGN_SETUP.md`, which
 was written before I had read the locked strategy and got three things wrong: it sent traffic
 to the scorecard, measured scorecard completions, and ignored Option D.
 
@@ -520,6 +520,75 @@ Ads 2, 3, 5 and 6.
 > Fourteen days is enough to find out which one is yours. Nothing to buy at the end of it.
 
 **Link description** Free 14 days. Same effort, right target.
+
+### When and where to use these
+
+**Not in Round 1.** Round 1 has one job: find out which *concept* wins on a broad audience
+with the banner on. Put a format-breaker in beside them and a win becomes unreadable, because
+concept and format moved at the same time. Hold all three.
+
+They are the answer to **creative fatigue**, which is the thing that actually killed July.
+The audience did not get more expensive to reach, CPM held flat at about $48. It stopped
+converting the people it reached. New targeting was never the fix; new creative is.
+
+#### The four triggers
+
+**1. Frequency climbs past 2.** The single most important one. July died past roughly 2.4.
+When frequency rises, the same people are seeing the same look repeatedly, and a look they
+recognise is a look they scroll. Rotate one format-breaker in and pause the most-served ad.
+Targeting does not change.
+
+**2. Cost per signup rises while CPM stays flat.** That combination is fatigue, not audience.
+If CPM were climbing you would have a reach problem. Flat CPM with worsening cost means the
+creative stopped working. Swap the format, keep the message.
+
+**3. The stage gate passes and you scale to $75/day.** The locked rule is add fresh creative,
+never add audiences. These are the fresh creative. Going from $25 to $75 on four ads that
+have already run their course just buys the same fatigue faster.
+
+**4. A Round 1 ad gets killed at day 5 to 7.** Replace it with a format-breaker rather than
+another ad in the house style. You already know that look works or does not.
+
+#### Where they go
+
+**The same campaign and the same broad ad set.** Never a new ad set. Splitting $25/day across
+two sets recreates the exact mistake that produced the July exhaustion, and neither set gets
+enough to learn.
+
+Same destination, `bodyrecode.au/challenge`. Same CTA, Learn More. Automatic placements,
+statics only, unchanged.
+
+**One at a time.** Three new formats at once on $25/day teaches nothing about any of them.
+
+#### Which one for which job
+
+**Ad 12, the plate,** is the general-purpose replacement. It is closest to the core IP and it
+is the most composition-forward creative you have. Use it when the ad it replaces was
+carrying the Fat Map message.
+
+**Ad 13, the notes app,** is the anti-fatigue specialist. It looks least like an ad, so it is
+the strongest play precisely when frequency is high and the audience has already learned to
+recognise the branded look.
+
+**Ad 14, plain type,** is the scroll-stopper. White ground in a feed that is mostly dark
+imagery is contrast alone. Best when you need attention rather than explanation.
+
+#### How to read what happens
+
+If a format-breaker beats the Round 1 winner, the lesson is **format, not message**. Keep the
+message and build more formats. If all three underperform, the offer banner may be doing more
+work than assumed, which partly answers the banner question, though not cleanly enough to
+close it.
+
+#### Two things to watch
+
+**Text density.** Ads 13 and 14 are text-heavy. Meta dropped the formal 20% text rule in 2021
+so there is no hard block, but heavy-text creatives can still draw weaker delivery in some
+auctions. If either shows an unusually high CPM against the others, that is the likely cause
+rather than the message.
+
+**Do not run the no-banner test on these.** None of them carries the banner, so the test would
+confound banner with format. It runs on a Round 1 ad.
 
 ---
 
