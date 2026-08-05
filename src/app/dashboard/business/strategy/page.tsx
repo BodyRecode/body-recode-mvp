@@ -2762,7 +2762,7 @@ export default function StrategyPage() {
                 { k: 'Campaign name', v: 'BR-FunnelB-Leads-2026Q3' },
                 { k: 'Objective', v: 'Sales (Lead Generation)' },
                 { k: 'Pixel ID', v: '972772552072010' },
-                { k: 'Budget level', v: 'ABO - Ad Set Budget Optimisation (NOT CBO)' },
+                { k: 'Budget level', v: 'Campaign level (Advantage campaign budget). With one ad set this is equivalent to ABO - the old NOT-CBO rule only mattered when three archetype sets were competing' },
                 { k: 'Round 1 daily budget', v: '$25 AUD at campaign level, one broad ad set' },
                 { k: 'Targeting', v: 'BROAD - Australia, 30-60, all genders. No interests, no lookalikes' },
                 { k: 'Scale path', v: 'Raise to $75/day on the SAME broad set + fresh creative. Never add audiences' },
@@ -2770,7 +2770,7 @@ export default function StrategyPage() {
                 { k: 'Action source', v: 'Website' },
                 { k: 'CTA button', v: 'Learn More' },
                 { k: 'Schedule start', v: 'Round 1 relaunch, Aug 2026. Original launch ran 13-30 Jul and was paused 31 Jul on audience exhaustion.' },
-                { k: 'Placements', v: 'IG feed + Reels + FB feed (start broad, let Meta optimise)' },
+                { k: 'Placements', v: 'Automatic placements. STATICS ONLY - turn Reels and video placements off, there is no video creative' },
                 { k: 'Traffic type', v: 'Cold only (retargeting layer added Day 30+)' },
                 { k: 'CAPI test event code', v: 'See META_TEST_EVENT_CODE env (unset in prod)' },
               ].map(row => (
