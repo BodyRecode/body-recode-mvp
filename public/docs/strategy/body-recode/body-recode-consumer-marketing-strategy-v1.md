@@ -1,6 +1,6 @@
 # Body Recode - Consumer Marketing Strategy
 
-**Status:** v2.2 - 2026-08-05 (§11b campaign alignment: live ad sets the organic theme, vocabulary divergence retired, scoped routing exception). One document: the strategy (what and why) and the content engine (how) in one place.
+**Status:** v2.3 - 2026-08-05 (§13b reels via Captions: organic only, batch weekly, feeds the warm-audience pool). One document: the strategy (what and why) and the content engine (how) in one place.
 **Scope:** the **consumer demand brand** - `@body_recode_`, bodyrecode.au marketing, and the Challenge -> Blueprint -> membership funnel (with the scorecard as the Day-0 in-portal routing gate). Not the licensing engine (see the Collective strategy) or the internal coaching delivery (Performance Coaching).
 
 ---
@@ -238,7 +238,48 @@ One idea -> a **reel** (face to camera) + a **carousel** (saveable framework) + 
 
 ## 13. Face, format, reach
 
-Get Kade **on camera** - talking-head reels of you reading a situation build you as the authority, which is the real asset. Scale with **HeyGen** so filming isn't a daily bottleneck. Lean **carousels (saves) + reels (reach)**; static is for proof and quotes, not the whole feed.
+Get Kade **on camera** - talking-head reels of you reading a situation build you as the
+authority, which is the real asset. Lean **carousels (saves) + reels (reach)**; static is for
+proof and quotes, not the whole feed.
+
+### 13b. Reels via Captions (added 5 Aug 2026)
+
+Reels were always in the plan and were never blocked by strategy. They were blocked by
+**production capacity**, which sat behind Amanda's availability and a HeyGen workflow that
+was never stood up. **Captions removes that blocker for talking-head content**, which is the
+only reel format this brand actually needs.
+
+**Why this matters more than "more content".** Reach is not the point. **Video viewers are a
+custom audience source**, so reels are the cheapest way to fill the warm retargeting pool
+that §11b says to start building now. That pool is the only narrow audience that cannot
+exhaust, and it is the structural fix for what killed the July campaign. Reels are the pump.
+
+**Scope. Organic only.** [[feedback_meta_ads_no_reels]] is unchanged: **cold paid stays
+statics only.** Nothing here touches the ad account.
+
+**The workflow.**
+- **Batch once a week.** Five scripts in one sitting, roughly 30 minutes of filming. Do not
+  film daily; that is the bottleneck that stopped this before.
+- **Scripts come from the week's spine** (§11b). The Monday Authority post - the live ad's
+  claim, expanded - is the strongest reel candidate, because it is the message paid is
+  already spending money on.
+- **30 to 45 seconds, one idea.** Vertical 9:16.
+- **Existing filming rules still apply:** speak at 80% of normal pace, pause after the first
+  sentence, look into the lens not the screen, no music, no jump cuts every two seconds. The
+  calm-authority tone IS the differentiator for a 40+ professional audience.
+
+**What not to use it for.**
+- **Do not post watermarked.** The free tier brands your reel with someone else's logo. Either
+  upgrade or do not post it.
+- **Do not use the AI avatar for doctrine or clinical content.** Your face doing the read is
+  the asset; a synthetic stand-in undermines the exact authority the reel exists to build,
+  and this audience will clock it. AI caption and framing tools are fine - they are still you.
+- **Do not let reels replace carousels.** Reels buy reach, carousels buy saves and are what
+  people return to. §13's split stands.
+
+**Open question, not decided here:** whether Captions supersedes the HeyGen plan and what it
+means for Amanda's video scope under the contra deal. Both were the scaling answer when
+filming was the constraint. Confirm with Amanda before reallocating her time.
 
 ## 14. Turn engagement into an ad engine
 
