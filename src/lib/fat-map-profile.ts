@@ -51,7 +51,7 @@ export interface ProfileResult {
 
 export const PROFILE_DRIVERS: Record<Profile, string> = {
   'Stress-Stored': 'cortisol-driven',
-  'Insulin-Drift': 'insulin-driven (male-dominant)',
+  'Insulin-Drift': 'insulin-driven (male-leaning)',
   'Estrogen-Shift': 'oestrogen-driven (female)',
   'Androgen-Decline': 'testosterone-driven (male)',
   'Indeterminate': 'TBD on intake',
@@ -90,17 +90,22 @@ export const PROFILE_DESCRIPTORS_LEAD: Record<Profile, string> = {
  * front belly is the cortisol tell, and sparing the front while holding
  * posterior/flank rules Stress-Stored OUT.
  *
- * 'all_over' still routes to Insulin-Drift, but treat it as the weakest signal
- * in the set. Generalised surface softness is superficial subcutaneous fat,
- * which carries no meaningful insulin association — it is the DEEP abdominal
- * and posterior depots that track insulin resistance. Prefer 'posterior' when
- * the lead can distinguish it.
+ * 'all_over' is deliberately ABSENT from this map. Fat_Map_Definitions_LOCKED
+ * v2.0 retires "softening all over" as an insulin signal: generalised surface
+ * softness IS superficial subcutaneous fat, the one compartment with no
+ * meaningful insulin association (the DEEP abdominal and posterior depots are
+ * what track insulin resistance). It is a failure to localise, not a positive
+ * finding, so it must never lead the read. Handled separately in
+ * typeFatMapProfile below.
+ *
+ * Until 2026-08-06 it routed here to Insulin-Drift. Every lead who picked it was
+ * female and every one was typed into a male-leaning pattern on the weakest
+ * signal in the set. See Fat_Map_v2_Alignment_Change_Plan.md.
  */
-const STORAGE_PROFILE: Record<FatStorage, Profile> = {
+const STORAGE_PROFILE: Record<Exclude<FatStorage, 'all_over'>, Profile> = {
   midsection: 'Stress-Stored',
   posterior: 'Insulin-Drift',
   hips_thighs: 'Estrogen-Shift',
-  all_over: 'Insulin-Drift',
   low_tone: 'Androgen-Decline',
 }
 
@@ -241,6 +246,31 @@ export function typeFatMapProfile(
       return recoveryDown ? 'Androgen-Decline' : 'Insulin-Drift'
     }
     return p
+  }
+
+  // 'all_over' is an admitted failure to localise, not a storage signal, and v2.0
+  // explicitly retires it as an insulin tell. It must not lead the read.
+  //
+  //   - A woman in the menopausal band reporting generalised/even distribution is
+  //     reading as phase-2 Estrogen-Shift: redistribution away from hips and
+  //     thighs toward the middle. Low confidence, because "all over" is not a
+  //     positive statement of central movement — confirm direction of travel.
+  //   - Everyone else falls through to the score pattern as if no storage answer
+  //     had been given, with confidence CAPPED at low. The cap matters: any
+  //     Depleted lead with every section at the floor has stress at 1 by
+  //     definition and would otherwise return Stress-Stored at high confidence,
+  //     swapping one confident wrong answer for another.
+  if (fatStorage === 'all_over') {
+    if (femaleMenopausal) {
+      return { profile: 'Estrogen-Shift', confidence: 'low' }
+    }
+    const resolvedNoStorage = resolveSex(pattern.profile)
+    // Indeterminate keeps high confidence — it is a definite "nothing points
+    // cleanly", not a weak guess.
+    if (resolvedNoStorage === 'Indeterminate') {
+      return { profile: resolvedNoStorage, confidence: 'high' }
+    }
+    return { profile: resolvedNoStorage, confidence: 'low' }
   }
 
   // Storage is the direct Fat Map signal — it leads when supplied.

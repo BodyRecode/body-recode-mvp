@@ -17,25 +17,55 @@ const SIGNAL_QUESTIONS = [
     // the scorecard storage taxonomy added 2026-06-24); option 'a' reworded
     // from "Stomach and waist" → "Belly and front of the stomach" to
     // disambiguate from posterior — same anterior semantic, clearer wording.
+    // Option 'd' reworded 2026-08-06: it previously read "Upper back, chest, or
+    // arms", which duplicated the upper back already in option 'e' and, under
+    // Fat Map v2.0, straddled three profiles. The upper back types as
+    // Insulin-Drift (option 'e'), chest in men is androgen expressed through
+    // aromatisation, and softer arms are muscle loss rather than fat.
     options: [
       { value: 'a', label: 'Belly and front of the stomach' },
       { value: 'b', label: 'Lower gut and abdomen, even when you have not eaten much' },
       { value: 'c', label: 'Hips, thighs, and lower body' },
-      { value: 'd', label: 'Upper back, chest, or arms' },
+      { value: 'd', label: 'Chest or arms' },
       { value: 'e', label: 'Lower back, love handles and upper back' },
     ],
   },
   {
     id: 'sq2',
     question: 'Which of these fits most closely right now?',
+    // Option 'c' reworded 2026-08-06 to cover BOTH phases of Estrogen-Shift. It
+    // previously ended "Storage on hips and thighs", which is phase 1 only, so a
+    // phase-2 woman whose fat is migrating centrally did not recognise herself
+    // and picked 'b' instead. See Fat_Map_v2_Alignment_Change_Plan.md.
     options: [
       { value: 'a', label: 'Exhausted but wired. Tired but cannot switch off at night.' },
       { value: 'b', label: 'Heavy and sluggish, especially after meals or in the afternoon. Carbohydrate cravings persist.' },
-      { value: 'c', label: 'Hormonally inconsistent. Mood shifts, water retention, or cycle disruption. Storage on hips and thighs.' },
+      { value: 'c', label: 'Hormonally inconsistent. Mood shifts, water retention, or cycle disruption. Storage on hips and thighs, or moving toward the middle.' },
       { value: 'd', label: 'Slipping despite the effort. Reduced drive, capacity declining, muscle no longer responding the way it used to.' },
     ],
   },
 ]
+
+/**
+ * sq3, the phase-2 discriminator. Shown ONLY to women in the menopausal band.
+ *
+ * `03_ESTROGEN_SHIFT.md` §4 names this as the single best question for
+ * separating phase-2 Estrogen-Shift from Insulin-Drift: "has where it sits
+ * changed in the last few years, and which way did it move?" The Check-In never
+ * asked it, which is why perimenopausal women were landing on Insulin-Drift.
+ * Only `to_middle` triggers the phase-2 read; everything else leaves the sq2
+ * answer standing.
+ */
+const PHASE_QUESTION = {
+  id: 'sq3',
+  question: 'Has where it sits changed over the last few years, and which way did it move?',
+  options: [
+    { value: 'to_middle', label: 'It has moved away from my hips and thighs toward my middle' },
+    { value: 'same_place', label: 'It has stayed in much the same place' },
+    { value: 'other', label: 'It has changed, but not in that direction' },
+    { value: 'unsure', label: 'I am not sure' },
+  ],
+}
 
 // In-portal Day 14 view (shown when result exists AND currentDay >= 14).
 // Mirrors the Day 14 Body Decode Report email structure exactly: pattern
@@ -313,11 +343,14 @@ export default function BodyDecodeCheckIn({
   savedResult,
   savedAnswers,
   currentDay,
+  showPhaseQuestion = false,
 }: {
   token: string
   savedResult: string | null
   savedAnswers: Record<string, string> | null
   currentDay: number
+  /** True for women in the menopausal band — unlocks the sq3 phase-2 discriminator. */
+  showPhaseQuestion?: boolean
 }) {
   // Day 14 reveal gate (locked 2026-05-30): the Check-In submits on Day 7+
   // but the PATTERN reveal is held until Day 14. Between Day 7 and Day 14
@@ -349,8 +382,14 @@ export default function BodyDecodeCheckIn({
   const [resultKey, setResultKey] = useState<string | null>(initialResultKey)
   const [submitting, setSubmitting] = useState(false)
 
+  // sq3 is appended only for women in the menopausal band. Everyone else sees
+  // the original two signal questions and nothing changes for them.
+  const activeSignalQuestions = showPhaseQuestion
+    ? [...SIGNAL_QUESTIONS, PHASE_QUESTION]
+    : SIGNAL_QUESTIONS
+
   const allProgressDone = PROGRESS_MARKERS.every(m => progress[m.id])
-  const allSignalsDone = SIGNAL_QUESTIONS.every(q => signals[q.id])
+  const allSignalsDone = activeSignalQuestions.every(q => signals[q.id])
   const progressScore = Object.entries(progress)
     .filter(([k]) => !k.startsWith('sq'))
     .filter(([, v]) => v === 'better')
@@ -456,11 +495,11 @@ export default function BodyDecodeCheckIn({
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
       <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '18px 20px', marginBottom: '20px' }}>
         <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.7, margin: 0 }}>
-          Two more questions. These help identify the biological pattern most active in your body right now.
+          {showPhaseQuestion ? 'Three more questions.' : 'Two more questions.'} These help identify the biological pattern most active in your body right now.
         </p>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '24px' }}>
-        {SIGNAL_QUESTIONS.map((q, qi) => (
+        {activeSignalQuestions.map((q, qi) => (
           <div key={q.id}>
             <p style={{ fontSize: '15px', fontWeight: 700, color: '#1A1A1A', marginBottom: '12px', lineHeight: 1.5 }}>
               <span style={{ color: '#1B6DFC', marginRight: '8px' }}>{qi + 1}.</span>

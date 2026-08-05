@@ -15,7 +15,7 @@ const FOUR_PATTERNS = [
   },
   {
     name: 'Insulin-Drift',
-    gender: 'Male-dominant (also female)',
+    gender: 'Male-leaning (also female)',
     driver: 'Insulin and blood sugar timing',
     where: 'Mid-back, lower back and love handles, with the front relatively spared',
     signal: 'Energy crashes mid-morning or afternoon. Cravings hit hardest in the evening. Training feels heavier than it should.',

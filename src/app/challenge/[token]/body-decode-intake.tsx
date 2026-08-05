@@ -96,7 +96,7 @@ const STORAGE_OPTIONS: { value: FatStorage; label: string }[] = [
   { value: 'midsection', label: 'Belly and front of the stomach' },
   { value: 'posterior', label: 'Lower back, love handles and upper back' },
   { value: 'hips_thighs', label: 'Hips, thighs and lower body' },
-  { value: 'all_over', label: 'Softening all over, fairly evenly' },
+  { value: 'all_over', label: "It's fairly even, I couldn't pick one spot" },
   { value: 'low_tone', label: 'Losing muscle tone and definition' },
 ]
 const CYCLE_OPTIONS: { value: CycleStatus; label: string }[] = [

@@ -3200,6 +3200,15 @@ export default function HelpPage() {
             <p>Whether a lead&apos;s Fat Map zone was classified via the scorecard or via Day 0 intake is derivable from <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">challenge_enrollments.body_decode_intake_completed_at</code> — non-null means the data came from inside the portal. No separate scorecard_source column needed.</p>
 
             <Note>Required Supabase columns: body_decode_intake_completed_at (timestamptz, nullable) on challenge_enrollments. Applied via sql/2026-06-27_challenge_day_zero_intake.sql.</Note>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Fat Map v2.0 alignment (6 Aug 2026)</p>
+            <p>Three fixes landed together, all enforcing <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">Fat_Map_Definitions_LOCKED.md</code> v2.0.</p>
+            <ul className="list-disc ml-5 space-y-1 mt-2">
+              <li><strong>&quot;All over&quot; no longer types as Insulin-Drift.</strong> v2.0 retires &quot;softening all over&quot; as an insulin signal — generalised surface softness is superficial subcutaneous fat, the one compartment with no insulin association. It is now treated as a failure to localise: a woman in the menopausal band reads as phase-2 Estrogen-Shift at low confidence, everyone else falls through to the score pattern with confidence <em>capped</em> at low. The option label changed from &quot;Softening all over, fairly evenly&quot; to &quot;It&apos;s fairly even, I couldn&apos;t pick one spot&quot; on both the public scorecard and the Day 0 intake. Six existing leads were re-typed.</li>
+              <li><strong>The Day 7 Check-In gained a phase-2 route.</strong> The oestrogen option previously ended &quot;Storage on hips and thighs&quot;, which is phase 1 only, so phase-2 women picked the post-meal sluggishness option and typed as Insulin-Drift. That option now covers both phases, and a third signal question (<code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">sq3</code>) asks the direction-of-travel discriminator. It is shown <em>only</em> to women in the menopausal band, via <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">isMenopausalBand()</code> in <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">src/lib/pattern-mapping.ts</code>. Only the &quot;moved toward my middle&quot; answer overrides the sq2 result.</li>
+              <li><strong>Brief regeneration was silently mistyping leads.</strong> <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">/api/admin/regenerate-pre-call-briefs</code> never passed biological_sex, age_band, fat_storage or cycle_status, so every regenerated brief was typed as if the lead had answered nothing. Fixed.</li>
+            </ul>
+            <Note>Full rationale, the re-typing table and the evidence trail: 00_PLAYBOOK/Fat_Map_v2_Alignment_Change_Plan.md (+PDF).</Note>
           </Section>
 
           <Section id="ch-forms" title="PAR-Q and Health Declaration" colour="teal">

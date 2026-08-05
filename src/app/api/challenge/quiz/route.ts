@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
 
   const { data: enrollment, error: fetchError } = await admin
     .from('challenge_enrollments')
-    .select('id, enrolled_at, leads(name, email, gender)')
+    .select('id, enrolled_at, leads(name, email, gender, cycle_status, age_band)')
     .eq('token', token)
     .in('status', PORTAL_ACCESS_STATUSES)
     .single()
@@ -43,7 +43,14 @@ export async function POST(request: NextRequest) {
 
   const leadRecord = Array.isArray(enrollment.leads) ? enrollment.leads[0] : enrollment.leads
   const gender = (leadRecord?.gender ?? null) as Gender
-  const patternSlug = pickPatternSlug(answerLetter, gender)
+  // sq3 is the phase-2 Estrogen-Shift discriminator, asked only of women in the
+  // menopausal band. `to_middle` overrides the sq2-derived pattern; anything else
+  // (or its absence, for everyone who was never asked) leaves sq2 standing.
+  const patternSlug = pickPatternSlug(answerLetter, gender, {
+    cycleStatus: leadRecord?.cycle_status as string | null,
+    ageBand: leadRecord?.age_band as string | null,
+    directionOfTravel: answers?.sq3 ?? null,
+  })
 
   const { error: updateError } = await admin
     .from('challenge_enrollments')

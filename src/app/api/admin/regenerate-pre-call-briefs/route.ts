@@ -13,7 +13,11 @@ export async function POST(req: Request) {
 
   const query = admin
     .from('leads')
-    .select('id, name, scorecard_score, scorecard_body_state, scorecard_section_scores, approach_response, investment_readiness, lead_quality, pre_call_brief')
+    // biological_sex/age_band/fat_storage/cycle_status are the Fat Map typing
+    // signals. They were missing here until 2026-08-06, so every regenerated
+    // brief was typed as if the lead had given no storage answer and no sex —
+    // silently overwriting a correct profile with a score-pattern guess.
+    .select('id, name, scorecard_score, scorecard_body_state, scorecard_section_scores, approach_response, investment_readiness, lead_quality, pre_call_brief, biological_sex, age_band, fat_storage, cycle_status')
     .not('scorecard_score', 'is', null)
     .not('scorecard_body_state', 'is', null)
 
@@ -50,6 +54,10 @@ export async function POST(req: Request) {
         approach_response: lead.approach_response,
         investment_readiness: lead.investment_readiness,
         lead_quality: lead.lead_quality,
+        biological_sex: lead.biological_sex,
+        age_band: lead.age_band,
+        fat_storage: lead.fat_storage,
+        cycle_status: lead.cycle_status,
       })
       const { error: updateErr } = await admin
         .from('leads')

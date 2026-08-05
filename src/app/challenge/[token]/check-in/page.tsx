@@ -5,6 +5,7 @@ import BodyDecodeCheckIn from '../body-decode-check-in'
 import { logoUrl, brand } from '@/config/tenant'
 import { Lock } from 'lucide-react'
 import { hasPortalAccess } from '@/lib/challenge-access'
+import { isMenopausalBand, type Gender } from '@/lib/pattern-mapping'
 
 export default async function CheckInPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
@@ -14,19 +15,29 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
   let currentDay: number
   let savedResult: string | null = null
   let savedAnswers: Record<string, string> | null = null
+  // Unlocks the sq3 phase-2 discriminator for women in the menopausal band.
+  let showPhaseQuestion = false
   if (token === 'preview') {
     currentDay = 14
     savedResult = null
     savedAnswers = null
+    showPhaseQuestion = true
   } else {
     const admin = createAdminClient()
     const { data: enrollment } = await admin
       .from('challenge_enrollments')
-      .select('id, enrolled_at, status, quiz_result, quiz_answers')
+      .select('id, enrolled_at, status, quiz_result, quiz_answers, leads(gender, cycle_status, age_band)')
       .eq('token', token)
       .single()
 
     if (!enrollment || !hasPortalAccess(enrollment.status)) notFound()
+
+    const leadRecord = Array.isArray(enrollment.leads) ? enrollment.leads[0] : enrollment.leads
+    showPhaseQuestion = isMenopausalBand(
+      (leadRecord?.gender ?? null) as Gender,
+      leadRecord?.cycle_status as string | null,
+      leadRecord?.age_band as string | null,
+    )
 
     const enrolledAt = new Date(enrollment.enrolled_at as string)
     const msPerDay = 1000 * 60 * 60 * 24
@@ -128,6 +139,7 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
             savedResult={savedResult}
             savedAnswers={savedAnswers}
             currentDay={currentDay}
+            showPhaseQuestion={showPhaseQuestion}
           />
         </div>
       )}

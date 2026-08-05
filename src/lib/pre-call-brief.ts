@@ -508,8 +508,10 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   const fatMapZones = [
     `  - Front of stomach/waist, limbs staying lean = stress + cortisol${profile === 'Stress-Stored' ? '   ← YOURS, before I open the intake' : ''}`,
     `  - Back/sides: mid-back, lower back, love handles = insulin drift${profile === 'Insulin-Drift' ? '   ← YOURS, before I open the intake' : ''}`,
-    `  - Hips/thighs = oestrogen-driven${profile === 'Estrogen-Shift' ? '            ← YOURS, before I open the intake' : ''}`,
-    `  - Reduced tone + drive = androgen decline${profile === 'Androgen-Decline' ? '   ← YOURS, before I open the intake' : ''}`,
+    // v2.0 wording. Estrogen-Shift is two phases, not a fixed location, and
+    // Androgen-Decline is a composition shift rather than a storage site.
+    `  - Hips/thighs, then moving central as oestrogen falls = oestrogen-driven${profile === 'Estrogen-Shift' ? '   ← YOURS, before I open the intake' : ''}`,
+    `  - Central fat up while lean mass + drive fall = androgen decline${profile === 'Androgen-Decline' ? '   ← YOURS, before I open the intake' : ''}`,
   ]
 
   const lines: string[] = []
