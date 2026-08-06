@@ -11,7 +11,8 @@ async function main() {
   const files = readdirSync('public/calendar').filter(f => f.startsWith('br-2026-08-') && f.endsWith('.png'))
   const map: Record<string, string[]> = {}
   for (const f of files) {
-    const m = f.match(/^(br-2026-08-\d{2})_[a-z]+(?:-s(\d+))?\.png$/)
+    // [a-zA-Z-]+ so reel-PLACEHOLDER matches alongside coach / pattern / promo
+    const m = f.match(/^(br-2026-08-\d{2})_[a-zA-Z-]+?(?:-s(\d+))?\.png$/)
     if (!m) continue
     ;(map[m[1].replace('br-', '')] ??= []).push(f)
   }
