@@ -16,11 +16,13 @@ import { fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { coach } from '@/config/tenant'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { STOP_STATUSES } from '@/lib/booking-agent/sequence'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 export async function POST(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const { id } = await params
   const admin = createAdminClient()

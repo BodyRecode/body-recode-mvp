@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 export const maxDuration = 300
 
@@ -15,6 +16,7 @@ export async function POST(request: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const elevenLabsKey = process.env.ELEVENLABS_API_KEY
   const elevenLabsVoiceId = process.env.ELEVENLABS_VOICE_ID

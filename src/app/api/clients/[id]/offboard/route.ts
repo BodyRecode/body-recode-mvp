@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { offboardClient, type EndReason } from '@/lib/offboard-client'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 /**
  * End a coaching engagement. Coach-only, and deliberately not reversible from
@@ -13,6 +14,7 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const { id } = await ctx.params
   const body = await req.json().catch(() => ({}))

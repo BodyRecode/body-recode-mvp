@@ -6,6 +6,7 @@ import { buildPortalOrientationEmail } from '@/lib/portal-orientation-email'
 import { appUrl } from '@/lib/app-url'
 import { fromCoach } from '@/lib/email-shell'
 import { coach, logoUrl } from '@/config/tenant'
+import { requireCoach } from '@/lib/api-auth'
 
 const SAMPLE_ANSWERS: Record<string, number> = {
   effort_vs_result: 2,
@@ -21,6 +22,9 @@ const SAMPLE_ANSWERS: Record<string, number> = {
 }
 
 export async function POST(request: NextRequest) {
+  const gate = await requireCoach()
+  if (!gate.ok) return gate.response
+
   const { type } = await request.json()
   const resend = new Resend(process.env.RESEND_API_KEY!)
   const bookingLink = process.env.BOOKING_LINK ?? ''

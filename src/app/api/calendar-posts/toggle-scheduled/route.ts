@@ -11,6 +11,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient as createServerSupabaseClient } from '@/lib/supabase/server'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 export async function POST(request: NextRequest) {
   const sessionClient = await createServerSupabaseClient()
@@ -18,6 +19,7 @@ export async function POST(request: NextRequest) {
   if (!user) {
     return NextResponse.json({ error: 'auth_required' }, { status: 401 })
   }
+  if (!(await isCoachUser(user))) return forbidden()
 
   let body: { id?: string; scheduled?: boolean }
   try {

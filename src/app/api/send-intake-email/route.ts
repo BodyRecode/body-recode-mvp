@@ -6,6 +6,7 @@ import { fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { buildIntakeInviteEmail, type IntakeInviteMode } from '@/lib/intake-invite-email'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 // Picks the email copy variant by looking up the invitation's kind:
 //   kind='foundational' → first-time onboarding copy ("Before we begin…")
@@ -21,6 +22,7 @@ export async function POST(request: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   if (!clientEmail) return NextResponse.json({ error: 'No email address' }, { status: 400 })
   if (!intakeToken) return NextResponse.json({ error: 'No intake token' }, { status: 400 })

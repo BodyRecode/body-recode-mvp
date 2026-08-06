@@ -10,6 +10,7 @@ import {
   type NutritionGuidanceLever,
 } from '@/lib/coach-guidance-nutrition-suggest-prompt'
 import { AI_MODELS } from '@/lib/ai-models'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 export const maxDuration = 60
 
@@ -26,6 +27,7 @@ export async function POST(request: NextRequest) {
   if (!user) {
     return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
   }
+  if (!(await isCoachUser(user))) return forbidden()
 
   const body = await request.json().catch(() => ({}))
   const nutrition_plan_id = body?.nutrition_plan_id as string | undefined

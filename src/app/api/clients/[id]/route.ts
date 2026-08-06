@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { requireCoach } from '@/lib/api-auth'
 
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const gate = await requireCoach()
+  if (!gate.ok) return gate.response
+
   const { id } = await params
   const body = await request.json()
 
@@ -39,6 +43,9 @@ export async function DELETE(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const gate = await requireCoach()
+  if (!gate.ok) return gate.response
+
   const { id } = await params
   const admin = createAdminClient()
 

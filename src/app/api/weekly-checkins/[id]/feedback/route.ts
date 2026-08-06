@@ -6,6 +6,7 @@ import { buildWeeklyCheckinFeedbackEmail } from '@/lib/weekly-checkin-feedback-e
 import { logClientCommunication } from '@/lib/client-communications'
 import { fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { appUrlFor } from '@/lib/app-url'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 interface FeedbackPayload {
   interpretation?: string
@@ -22,6 +23,7 @@ export async function POST(
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const body = (await request.json()) as FeedbackPayload
   const interpretation = (body.interpretation ?? '').trim()

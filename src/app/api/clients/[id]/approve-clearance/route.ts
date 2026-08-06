@@ -5,6 +5,7 @@ import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { fromCoach, darkEmailShell } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 import { logoUrl } from '@/config/tenant'
 import { appUrl } from "@/lib/app-url";
 
@@ -13,6 +14,7 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const admin = createAdminClient()
 

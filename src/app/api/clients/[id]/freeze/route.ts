@@ -3,6 +3,7 @@ import Stripe from 'stripe'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { freezeClient } from '@/lib/freeze-client'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 /**
  * Pause a coaching engagement. Coach-only, and REVERSIBLE via /unfreeze. Use
@@ -24,6 +25,7 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const { id } = await ctx.params
   const body = await req.json().catch(() => ({}))

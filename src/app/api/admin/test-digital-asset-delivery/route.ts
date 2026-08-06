@@ -18,6 +18,7 @@ import { createClient } from '@/lib/supabase/server'
 import { appUrl } from '@/lib/app-url'
 import { buildDigitalAssetDeliveryEmail, ascensionCtaFor, type AscensionTarget } from '@/lib/digital-asset-emails'
 import { fromCoach } from '@/lib/email-shell'
+import { isCoachUser } from '@/lib/api-auth'
 
 const LIBRARY_BUCKET = 'library-assets'
 
@@ -53,7 +54,8 @@ async function handle(request: NextRequest) {
     try {
       const supabase = await createClient()
       const { data: { user } } = await supabase.auth.getUser()
-      if (user) authed = true
+      // Signed in is not enough: portal clients hold a valid session too.
+      if (await isCoachUser(user)) authed = true
     } catch {
       // ignore
     }

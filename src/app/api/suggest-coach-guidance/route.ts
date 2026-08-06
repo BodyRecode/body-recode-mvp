@@ -10,6 +10,7 @@ import {
   type CoachGuidanceLever,
 } from '@/lib/coach-guidance-suggest-prompt'
 import { AI_MODELS } from '@/lib/ai-models'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 export const maxDuration = 60
 
@@ -26,6 +27,7 @@ export async function POST(request: NextRequest) {
   if (!user) {
     return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
   }
+  if (!(await isCoachUser(user))) return forbidden()
 
   const body = await request.json().catch(() => ({}))
   const training_plan_id = body?.training_plan_id as string | undefined

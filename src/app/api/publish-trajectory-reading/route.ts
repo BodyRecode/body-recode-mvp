@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 // Reading-published client emails scrapped 2026-06-09. The Block-End Trajectory
 // Reading still gets generated + published; this route just flips
@@ -13,6 +14,7 @@ export async function POST(request: NextRequest) {
   if (!user) {
     return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
   }
+  if (!(await isCoachUser(user))) return forbidden()
 
   const { program_id, action } = await request.json()
   if (!program_id) {

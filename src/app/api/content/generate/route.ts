@@ -3,6 +3,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { temporalContext } from '@/lib/temporal-context'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 export const maxDuration = 300
 
@@ -13,6 +14,7 @@ export async function POST(request: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const { hook_ids, message_ids, cta_ids, platform, campaign_id } = await request.json()
 

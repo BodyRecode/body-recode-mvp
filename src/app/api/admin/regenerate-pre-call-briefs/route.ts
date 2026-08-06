@@ -1,12 +1,16 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { generatePreCallBrief } from '@/lib/pre-call-brief'
+import { requireCoach } from '@/lib/api-auth'
 
 // POST /api/admin/regenerate-pre-call-briefs
 // Generates pre_call_brief for any lead that has scorecard data but no brief.
 // Pass ?force=1 to overwrite existing briefs too.
 
 export async function POST(req: Request) {
+  const gate = await requireCoach()
+  if (!gate.ok) return gate.response
+
   const url = new URL(req.url)
   const force = url.searchParams.get('force') === '1'
   const admin = createAdminClient()

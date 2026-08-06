@@ -11,6 +11,7 @@ import {
 } from '@/lib/email-shell'
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { inngest } from '@/lib/inngest'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 function generateIcs({ title, startTime, durationMinutes, location, description, uid }: {
   title: string; startTime: string; durationMinutes: number
@@ -40,6 +41,7 @@ export async function POST(_request: NextRequest, { params }: { params: Promise<
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const { id } = await params
   const admin = createAdminClient()

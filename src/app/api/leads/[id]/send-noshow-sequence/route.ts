@@ -6,6 +6,7 @@ import { buildNoShowEmails, nextMorning9amBrisbane, daysAfter9amBrisbane } from 
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { appUrl } from '@/lib/app-url'
 import { fromCoach } from '@/lib/email-shell'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 const BOOKING_LINK = process.env.BOOKING_LINK ?? `${appUrl()}/book`
 
@@ -18,6 +19,7 @@ export async function POST(
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const { data: lead } = await supabase
     .from('leads')

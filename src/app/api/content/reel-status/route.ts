@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 // GET /api/content/reel-status?output_id=xxx
 // Checks HeyGen for render status, updates output row when ready
@@ -8,6 +9,7 @@ export async function GET(request: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const output_id = request.nextUrl.searchParams.get('output_id')
   if (!output_id) return NextResponse.json({ error: 'output_id required' }, { status: 400 })

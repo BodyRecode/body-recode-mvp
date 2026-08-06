@@ -1,12 +1,16 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { fireTrigger } from '@/lib/automation-engine'
+import { requireCoach } from '@/lib/api-auth'
 
 // POST /api/admin/retrigger-scorecard
 // Re-fires the scorecard follow-up automation for any lead who has a
 // scorecard_completed event but no workflow execution for the scorecard workflow.
 
 export async function POST() {
+  const gate = await requireCoach()
+  if (!gate.ok) return gate.response
+
   const admin = createAdminClient()
 
   // Get the scorecard workflow

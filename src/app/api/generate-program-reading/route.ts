@@ -11,6 +11,7 @@ import {
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { withTemporalContext } from '@/lib/temporal-context'
 import { AI_MODELS } from '@/lib/ai-models'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 // Reading-published client emails scrapped 2026-06-09. The Program Reading
 // generates silently. Client gets one email per training block via the
@@ -35,6 +36,7 @@ export async function POST(request: NextRequest) {
   if (!user) {
     return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
   }
+  if (!(await isCoachUser(user))) return forbidden()
 
   const { program_id } = await request.json()
   if (!program_id) {

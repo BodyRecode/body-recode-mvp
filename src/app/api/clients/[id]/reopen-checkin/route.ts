@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getCheckInWindowStatus } from '@/lib/weekly-checkin-questions'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 /**
  * Reopen (or close) the weekly check-in window for a single client outside
@@ -36,6 +37,7 @@ export async function POST(
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const { action, hours } = await request.json()
   if (action !== 'open' && action !== 'close') {

@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import { isCoachUser, forbidden, requireCoachOrAdminSecret } from '@/lib/api-auth'
 import { brand } from "@/config/tenant";
 
 // GET /api/admin/resync-scorecard-workflow
@@ -10,6 +11,7 @@ import { brand } from "@/config/tenant";
 export async function GET() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+  if (!(await isCoachUser(user))) return forbidden()
   const coachId = user?.id ?? null
 
   await runResync(coachId)
@@ -208,6 +210,9 @@ async function runResync(coachId: string | null): Promise<{ ok: boolean; error?:
 }
 
 export async function POST(request: NextRequest) {
+  const gate = await requireCoachOrAdminSecret(request)
+  if (!gate.ok) return gate.response
+
   const body = await request.json().catch(() => ({}))
   const coachId: string | null = body.coachId ?? null
   const result = await runResync(coachId)

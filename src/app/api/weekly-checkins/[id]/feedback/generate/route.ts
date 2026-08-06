@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { generateFeedbackDraft } from '@/lib/weekly-checkin-feedback-generate'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 /**
  * Generate a draft coach response for a weekly check-in.
@@ -25,6 +26,7 @@ export async function POST(
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const admin = createAdminClient()
   const result = await generateFeedbackDraft(admin, checkinId)

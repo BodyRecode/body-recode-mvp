@@ -3,12 +3,14 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { sendPortalAccessEmail } from '@/lib/portal-access-email'
 import { sendCoachAlert } from '@/lib/coach-alert'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 import { appUrl } from "@/lib/app-url";
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const { id } = await params
 

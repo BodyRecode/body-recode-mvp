@@ -7,6 +7,7 @@ import { fromCoach, darkEmailShell } from '@/lib/email-shell'
 import { getCoachingPackage } from '@/lib/coaching-packages'
 import { logClientCommunication } from '@/lib/client-communications'
 import { createSubscriptionCheckoutForClient } from '@/lib/subscription-checkout'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 import { logoUrl } from '@/config/tenant'
 
 export async function POST(
@@ -18,6 +19,7 @@ export async function POST(
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const admin = createAdminClient()
   const { data: client, error: clientError } = await admin

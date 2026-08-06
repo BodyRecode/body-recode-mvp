@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { fromCoach, darkEmailShell } from '@/lib/email-shell'
 import { sendSms, formatPhone } from '@/lib/twilio'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 import { logoUrl } from '@/config/tenant'
 
 export async function POST(
@@ -13,6 +14,7 @@ export async function POST(
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const { id } = await params
   const body = await request.json()

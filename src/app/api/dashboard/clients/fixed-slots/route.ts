@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { requireCoach } from '@/lib/api-auth'
 
 export async function POST(request: NextRequest) {
+  const gate = await requireCoach()
+  if (!gate.ok) return gate.response
+
   const { clientId, dayOfWeek, sessionTime, durationMinutes } = await request.json()
 
   if (!clientId || dayOfWeek === undefined || !sessionTime || !durationMinutes) {
@@ -26,6 +30,9 @@ export async function POST(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
+  const gate = await requireCoach()
+  if (!gate.ok) return gate.response
+
   const id = request.nextUrl.searchParams.get('id')
 
   if (!id) {

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import type { DailyRoutine } from '@/lib/daily-routine-defaults'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 /**
  * Save an updated Morning Reset + Evening Rhythm sequence for a client.
@@ -20,6 +21,7 @@ export async function PATCH(
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const { id } = await params
   const body = await request.json().catch(() => ({}))

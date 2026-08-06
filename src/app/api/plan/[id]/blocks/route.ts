@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 // POST /api/plan/[id]/blocks — add a block to a plan
 export async function POST(
@@ -11,6 +12,7 @@ export async function POST(
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const body = await request.json()
   const { client_id, block_name, progression_phase, phase_category, execution_arc, phase_objective, training_goal, week_duration, training_frequency, notes } = body

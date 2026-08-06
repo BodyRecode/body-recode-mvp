@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { sendDownsellOffer } from '@/lib/send-downsell-offer'
+import { requireCoach } from '@/lib/api-auth'
 
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const gate = await requireCoach()
+  if (!gate.ok) return gate.response
+
   const { id } = await params
   const admin = createAdminClient()
 

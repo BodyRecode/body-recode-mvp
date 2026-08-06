@@ -6,6 +6,7 @@ import { withTemporalContext, deadlineConstraint, parseTimelineToDate, weeksUnti
 import { clampMacroArcToDoctrine, allowedPhasesForBodyState, type MacroBlock } from '@/lib/macro-arc-doctrine'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { AI_MODELS } from '@/lib/ai-models'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 export const maxDuration = 300
 
@@ -15,6 +16,7 @@ export async function POST(request: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const { client_id, coach_guidance } = await request.json()
   if (!client_id) return NextResponse.json({ error: 'client_id required' }, { status: 400 })

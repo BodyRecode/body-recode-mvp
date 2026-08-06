@@ -8,6 +8,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 const ALLOWED = new Set(['performance_coaching', 'body_recode', 'studio_of_ten', 'overhead', 'other'])
 
@@ -15,6 +16,7 @@ export async function POST(request: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const body = await request.json().catch(() => null)
   const productId = body?.product_id

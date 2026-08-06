@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { fromCoach, darkEmailShell, emailUrlFallback, COACH_BCC } from '@/lib/email-shell'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { logClientCommunication } from '@/lib/client-communications'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 import { logoUrl } from '@/config/tenant'
 import { appUrl } from "@/lib/app-url";
 
@@ -39,6 +40,7 @@ export async function POST(request: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   if (!process.env.RESEND_API_KEY) {
     return NextResponse.json({ error: 'Email service not configured' }, { status: 500 })

@@ -18,6 +18,7 @@ import {
   type ImageMediaType,
 } from '@/lib/image-media-type'
 import { CFFS_MODEL } from '@/lib/ai-models'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 export const maxDuration = 300
 
@@ -61,6 +62,7 @@ export async function POST(request: NextRequest) {
   if (!user) {
     return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
   }
+  if (!(await isCoachUser(user))) return forbidden()
 
   // All data fetches + writes go through the admin client to bypass RLS,
   // which would otherwise hide intakes / baselines from the coach. Mirrors

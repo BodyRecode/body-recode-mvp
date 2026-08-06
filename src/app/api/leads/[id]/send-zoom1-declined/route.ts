@@ -5,6 +5,7 @@ import { buildZoom1DeclinedEmails, nextMorning9amBrisbane, daysAfter9amBrisbane 
 import { logLeadEvent } from '@/lib/log-lead-event'
 import { sendDownsellOffer } from '@/lib/send-downsell-offer'
 import { fromCoach } from '@/lib/email-shell'
+import { requireCoach } from '@/lib/api-auth'
 import { brand } from "@/config/tenant";
 
 const BOOKING_LINK = `${brand().marketingDomain}/book`
@@ -13,6 +14,9 @@ export async function POST(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const gate = await requireCoach()
+  if (!gate.ok) return gate.response
+
   const { id } = await params
 
   const admin = createAdminClient()

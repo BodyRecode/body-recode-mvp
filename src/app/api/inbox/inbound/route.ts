@@ -80,7 +80,54 @@ async function smsNotifyKade(senderLabel: string) {
   }
 }
 
+/**
+ * Postmark authenticates its inbound webhook with HTTP Basic credentials
+ * embedded in the webhook URL you configure in its dashboard:
+ *
+ *   https://user:pass@app.bodyrecode.au/api/inbox/inbound
+ *
+ * Added 2026-08-06 (Security Sweep Phase 1). Before this the endpoint accepted
+ * any POST from anyone, and every accepted payload is forwarded verbatim to
+ * Kade's real inbox with Reply-To set by the caller, plus an SMS. So it was a
+ * free relay for sending Kade convincing spoofed mail from anyone he coaches,
+ * and a way to run up Twilio spend.
+ *
+ * Fails OPEN when INBOUND_WEBHOOK_USER/PASSWORD are unset, so setting the env
+ * vars and updating the Postmark URL can happen in either order without
+ * dropping client replies on the floor. Set them and this closes.
+ */
+function inboundWebhookAuthorised(request: NextRequest): boolean {
+  const user = process.env.INBOUND_WEBHOOK_USER
+  const password = process.env.INBOUND_WEBHOOK_PASSWORD
+  if (!user || !password) {
+    console.warn('[inbox/inbound] INBOUND_WEBHOOK_USER/PASSWORD unset — accepting unverified webhook')
+    return true
+  }
+
+  const header = request.headers.get('authorization') ?? ''
+  if (!header.startsWith('Basic ')) return false
+
+  let decoded: string
+  try {
+    decoded = Buffer.from(header.slice(6), 'base64').toString('utf8')
+  } catch {
+    return false
+  }
+
+  const expected = `${user}:${password}`
+  if (decoded.length !== expected.length) return false
+  let diff = 0
+  for (let i = 0; i < decoded.length; i++) {
+    diff |= decoded.charCodeAt(i) ^ expected.charCodeAt(i)
+  }
+  return diff === 0
+}
+
 export async function POST(request: NextRequest) {
+  if (!inboundWebhookAuthorised(request)) {
+    return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  }
+
   const body = await request.json()
 
   // Postmark format: From, Subject, TextBody, HtmlBody, FromFull.Email/.Name

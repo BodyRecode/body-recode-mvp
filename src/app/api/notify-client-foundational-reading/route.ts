@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildFoundationalReadingEmail } from '@/lib/foundational-reading-email'
 import { fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { appUrl } from '@/lib/app-url'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 // Coach-gated "Notify client" send for a published Foundational Reading.
 //
@@ -23,6 +24,7 @@ export async function POST(request: NextRequest) {
   if (!user) {
     return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
   }
+  if (!(await isCoachUser(user))) return forbidden()
 
   const { cffs_id } = await request.json()
   if (!cffs_id) {

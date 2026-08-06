@@ -1,10 +1,14 @@
 import { NextResponse } from 'next/server'
+import { requireCoach } from '@/lib/api-auth'
 
 const TOKEN = process.env.VERCEL_API_TOKEN
 const PROJECT_ID = process.env.VERCEL_PERFORMANCE_PROJECT_ID
 const TEAM_ID = process.env.VERCEL_TEAM_ID
 
 export async function GET(request: Request) {
+  const gate = await requireCoach()
+  if (!gate.ok) return gate.response
+
   if (!TOKEN || !PROJECT_ID || !TEAM_ID) {
     return NextResponse.json({ error: 'Missing Vercel credentials' }, { status: 500 })
   }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { requireCoach } from '@/lib/api-auth'
 
 /**
  * Coach-side edit of the eight Section D dietary/consumption free-text fields.
@@ -32,6 +33,9 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const gate = await requireCoach()
+  if (!gate.ok) return gate.response
+
   const { id } = await params
   const body = await request.json()
 

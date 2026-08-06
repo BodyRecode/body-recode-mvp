@@ -18,6 +18,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { markCommencementPaid } from '@/lib/stripe-sync'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 const DEFAULT_COMMENCEMENT_AMOUNT = 240
 
@@ -25,6 +26,7 @@ export async function POST(_request: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const admin = createAdminClient()
 

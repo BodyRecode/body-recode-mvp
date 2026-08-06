@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 // Mirror of /api/new-intake-invitation, but stamps kind='reintake' so the
 // downstream email + coach-notification + portal surfacing branch on the
@@ -18,6 +19,7 @@ export async function POST(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const { clientId } = await request.json()
   if (!clientId) return NextResponse.json({ error: 'Missing clientId' }, { status: 400 })

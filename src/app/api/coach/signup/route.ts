@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { requireCoachOrAdminSecret } from '@/lib/api-auth'
 
 /**
  * POST /api/coach/signup
- * Public endpoint. Provisions a new coach:
+ * Provisions a new coach:
  *   1. Creates auth.users row (email_confirm=true for now — no email verification flow yet)
  *   2. Inserts tenant_config row with sensible defaults from the signup payload
  *   3. Returns { tenantId, coachId, email }
@@ -19,6 +20,12 @@ import { createAdminClient } from '@/lib/supabase/admin'
  *   }
  *
  * Safety:
+ *   - Requires a signed-in coach or ADMIN_SECRET (added 2026-08-06, Security
+ *     Sweep Phase 1). This was an open endpoint, which meant anyone could mint
+ *     an auth.users row and a tenant_config row on demand — free account
+ *     creation against the same database that holds client health records.
+ *     Founding Partners are onboarded by hand today, so nothing legitimate
+ *     called this without Kade present.
  *   - Rejects if tenantId already exists in tenant_config
  *   - Rejects if email already registered (auth.admin.createUser will fail)
  *   - Uses service role admin client — signup is a controlled provisioning
@@ -34,6 +41,9 @@ function slugify(s: string): string {
 }
 
 export async function POST(req: NextRequest) {
+  const gate = await requireCoachOrAdminSecret(req)
+  if (!gate.ok) return gate.response
+
   let body: Record<string, unknown>
   try {
     body = (await req.json()) as Record<string, unknown>

@@ -9,11 +9,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { markCommencementPaid } from '@/lib/stripe-sync'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const body = await request.json().catch(() => null)
   const clientId = body?.client_id

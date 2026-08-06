@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildTrajectoryReadingEmail } from '@/lib/trajectory-reading-email'
 import { fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { appUrl } from '@/lib/app-url'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 // Coach-gated "Notify Client" send for a published trajectory reading.
 // Mirror of /api/notify-client-training-plan and /api/notify-client-nutrition-plan
@@ -26,6 +27,7 @@ export async function POST(request: NextRequest) {
   if (!user) {
     return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
   }
+  if (!(await isCoachUser(user))) return forbidden()
 
   const { program_id } = await request.json()
   if (!program_id) {

@@ -20,6 +20,7 @@ import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
 import { logoUrl, brand } from '@/config/tenant'
 import { createTenantAwareCheckoutSession } from '@/lib/tenant-stripe'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 export async function POST(
   _request: NextRequest,
@@ -30,6 +31,7 @@ export async function POST(
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const admin = createAdminClient()
   const { data: client } = await admin
@@ -140,6 +142,7 @@ export async function GET(
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const admin = createAdminClient()
   const { data } = await admin
@@ -167,6 +170,7 @@ export async function PUT(
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  if (!(await isCoachUser(user))) return forbidden()
 
   const admin = createAdminClient()
   const { data: client } = await admin

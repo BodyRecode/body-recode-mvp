@@ -11,6 +11,7 @@ import {
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { withTemporalContext } from '@/lib/temporal-context'
 import { AI_MODELS } from '@/lib/ai-models'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 // Pre-2026-06-09 this route also sent the client-facing email when the
 // reading was first generated for a plan. That trigger conflated "interpretive
@@ -37,6 +38,7 @@ export async function POST(request: NextRequest) {
   if (!user) {
     return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
   }
+  if (!(await isCoachUser(user))) return forbidden()
 
   const { plan_id } = await request.json()
   if (!plan_id) {

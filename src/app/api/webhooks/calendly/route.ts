@@ -1,19 +1,68 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { createHmac, timingSafeEqual } from 'crypto'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { logLeadEvent } from '@/lib/log-lead-event'
 
-export async function POST(request: NextRequest) {
-  const body = await request.json()
+/**
+ * Calendly signs each webhook with an HMAC over `<timestamp>.<raw body>`, sent
+ * as `Calendly-Webhook-Signature: t=<timestamp>,v1=<hex digest>`.
+ *
+ * Completed 2026-08-06 (Security Sweep Phase 1). The previous version checked
+ * only that the header was PRESENT — any string passed. An unverified booking
+ * webhook is an unauthenticated write: it moves a lead's status, stores a Zoom
+ * URL against them, and triggers confirmation email.
+ *
+ * The timestamp is checked as well as the digest. Without it a valid signature
+ * captured once can be replayed forever.
+ */
+const SIGNATURE_TOLERANCE_SECONDS = 5 * 60
 
-  // Verify webhook signing key if set
+function calendlySignatureValid(rawBody: string, header: string | null, key: string): boolean {
+  if (!header) return false
+
+  const parts = Object.fromEntries(
+    header.split(',').map(p => {
+      const [k, ...rest] = p.trim().split('=')
+      return [k, rest.join('=')]
+    })
+  )
+  const timestamp = parts.t
+  const supplied = parts.v1
+  if (!timestamp || !supplied) return false
+
+  const age = Math.abs(Date.now() / 1000 - Number(timestamp))
+  if (!Number.isFinite(age) || age > SIGNATURE_TOLERANCE_SECONDS) return false
+
+  const expected = createHmac('sha256', key).update(`${timestamp}.${rawBody}`).digest('hex')
+  const a = Buffer.from(expected, 'utf8')
+  const b = Buffer.from(supplied, 'utf8')
+  return a.length === b.length && timingSafeEqual(a, b)
+}
+
+export async function POST(request: NextRequest) {
+  // Read the body as text first: the signature covers the exact bytes sent, so
+  // it cannot be recomputed from a re-serialised object.
+  const rawBody = await request.text()
+
   const signingKey = process.env.CALENDLY_WEBHOOK_SIGNING_KEY
   if (signingKey) {
-    const signature = request.headers.get('calendly-webhook-signature')
-    if (!signature) {
-      return NextResponse.json({ error: 'Missing signature' }, { status: 401 })
+    if (!calendlySignatureValid(rawBody, request.headers.get('calendly-webhook-signature'), signingKey)) {
+      return NextResponse.json({ error: 'Invalid signature' }, { status: 401 })
     }
-    // Basic presence check — full HMAC verification can be added later
+  } else {
+    // Bookings also arrive via a Zapier hop that cannot sign. Left accepting
+    // unsigned payloads so that path keeps working; set the key once Zapier is
+    // retired and this closes.
+    console.warn('[webhooks/calendly] CALENDLY_WEBHOOK_SIGNING_KEY unset — accepting unverified webhook')
+  }
+
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+  let body: any
+  try {
+    body = JSON.parse(rawBody)
+  } catch {
+    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
   }
 
   // Support both Zapier format (flat) and native Calendly webhook format

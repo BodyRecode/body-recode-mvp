@@ -16,6 +16,7 @@ import { publishToInstagram } from '@/lib/instagram-publish'
 import { appendBrFooter } from '@/lib/br-post-footer'
 import { createClient as createServerSupabaseClient } from '@/lib/supabase/server'
 import { appUrl } from '@/lib/app-url'
+import { isCoachUser, forbidden } from '@/lib/api-auth'
 
 export async function POST(request: NextRequest) {
   // Coach auth required
@@ -24,6 +25,7 @@ export async function POST(request: NextRequest) {
   if (!user) {
     return NextResponse.json({ error: 'auth_required' }, { status: 401 })
   }
+  if (!(await isCoachUser(user))) return forbidden()
 
   let body: { calendar_post_id?: string; schedule?: boolean }
   try {
