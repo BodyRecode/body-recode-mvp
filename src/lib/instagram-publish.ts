@@ -19,6 +19,9 @@
 //   Carousel: N x POST /{ig-account-id}/media (with is_carousel_item=true)
 //             -> POST /{ig-account-id}/media (media_type=CAROUSEL, children=[ids])
 //             -> POST /{ig-account-id}/media_publish
+//   Reel:     POST /{ig-account-id}/media (media_type=REELS, video_url, cover_url)
+//             -> poll until FINISHED (video transcoding is slow, unlike images)
+//             -> POST /{ig-account-id}/media_publish
 //   Scheduled: include scheduled_publish_time on first POST; Meta publishes
 //              automatically at that time. Min 10min in future, max 75 days.
 
@@ -26,9 +29,13 @@ const GRAPH_API_VERSION = 'v21.0'
 const GRAPH_BASE = `https://graph.facebook.com/${GRAPH_API_VERSION}`
 
 export interface PublishInput {
-  imageUrls: string[]      // 1 = single image, 2-10 = carousel
+  imageUrls: string[]      // 1 = single image, 2-10 = carousel. Ignored when videoUrl is set.
   caption: string          // IG caption (incl hashtags)
   scheduledPublishTime?: number  // Unix timestamp (seconds). Omit to publish immediately.
+  // Reels. When set, this publishes as a REEL and imageUrls[0] (if present) is
+  // used as the cover frame. Meta must be able to fetch the URL itself, so it
+  // has to be publicly reachable - Supabase `videos` bucket, not a signed URL.
+  videoUrl?: string
 }
 
 export interface PublishResult {
@@ -89,6 +96,9 @@ const sleep = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, m
 // "Media API 400: Media ID is not available". So we poll the container's
 // status_code until it's FINISHED (or fails) before publishing. Small images
 // usually finish in 1-3 polls; the cap keeps us inside the function timeout.
+// Images finish in seconds. Video transcoding routinely takes 1-3 minutes, so
+// callers publishing a reel must pass a longer budget or media_publish fails
+// with "Media ID is not available".
 async function waitForContainerReady(containerId: string, tries = 15, delayMs = 2000): Promise<void> {
   for (let i = 0; i < tries; i++) {
     const data = await graphGet(`/${containerId}`, 'status_code')
@@ -110,12 +120,26 @@ export async function publishToInstagram(input: PublishInput): Promise<PublishRe
     return { ok: false, error: e instanceof Error ? e.message : String(e), stage: 'env' }
   }
 
-  const isCarousel = input.imageUrls.length > 1
+  const isReel = !!input.videoUrl
+  const isCarousel = !isReel && input.imageUrls.length > 1
   const isScheduled = !!input.scheduledPublishTime
   let containerId: string
 
   try {
-    if (isCarousel) {
+    if (isReel) {
+      // Video containers transcode asynchronously and take far longer than
+      // images, so the FINISHED poll below is mandatory rather than an
+      // optimisation. Publishing early returns a "media not ready" error.
+      const reel = await graphPost(`/${igId}/media`, {
+        media_type: 'REELS',
+        video_url: input.videoUrl as string,
+        caption: input.caption,
+        share_to_feed: 'true',
+        ...(input.imageUrls[0] ? { cover_url: input.imageUrls[0] } : {}),
+        ...(isScheduled ? { scheduled_publish_time: input.scheduledPublishTime as number } : {}),
+      })
+      containerId = reel.id
+    } else if (isCarousel) {
       // Step 1: create each child item container
       const childIds: string[] = []
       for (const url of input.imageUrls) {
@@ -159,7 +183,9 @@ export async function publishToInstagram(input: PublishInput): Promise<PublishRe
   // otherwise media_publish throws "Media ID is not available".
   let postId: string
   try {
-    await waitForContainerReady(containerId)
+    // 5 minutes for a reel, 30s for images.
+    if (isReel) await waitForContainerReady(containerId, 60, 5000)
+    else await waitForContainerReady(containerId)
     const published = await graphPost(`/${igId}/media_publish`, { creation_id: containerId })
     postId = published.id
   } catch (e) {

@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
   const { data: post, error: fetchErr } = await admin
     .from('calendar_posts')
-    .select('id, date, time, type, brand, platform, title, caption, graphic, posted_at, scheduled_publish_at, publish_attempts')
+    .select('id, date, time, type, brand, platform, title, caption, graphic, video_url, posted_at, scheduled_publish_at, publish_attempts')
     .eq('id', body.calendar_post_id)
     .single()
   if (fetchErr || !post) {
@@ -68,11 +68,27 @@ export async function POST(request: NextRequest) {
     }, { status: 400 })
   }
 
+  // Reels. video_url is set by scripts/ingest-reels.ts and points at the public
+  // Supabase videos bucket, which Meta can fetch. The graphic becomes the cover
+  // frame rather than the post body.
+  const videoUrl = (post.video_url ?? '').trim() || undefined
+  if (videoUrl && !/^https?:\/\//.test(videoUrl)) {
+    return NextResponse.json({ error: 'video_url_not_public', message: 'video_url must be an absolute public URL Meta can fetch. Re-run scripts/ingest-reels.ts.' }, { status: 400 })
+  }
+
   // Resolve graphic URLs (comma-separated for carousels). Convert relative
   // paths like /calendar/xxx.png to absolute public URLs Meta can fetch.
   const rawGraphic = (post.graphic ?? '').trim()
-  if (!rawGraphic) {
+  if (!rawGraphic && !videoUrl) {
     return NextResponse.json({ error: 'graphic_missing', message: 'No graphic URL on this post.' }, { status: 400 })
+  }
+  // A reel still carrying its TO FILM placeholder means the video was never
+  // ingested. Publishing that would put a placeholder card on the feed.
+  if (videoUrl && rawGraphic.includes('PLACEHOLDER')) {
+    return NextResponse.json({ error: 'placeholder_cover', message: 'This reel still has the TO FILM placeholder as its cover. Run scripts/ingest-reels.ts to attach the real cover frame.' }, { status: 400 })
+  }
+  if (!videoUrl && rawGraphic.includes('PLACEHOLDER')) {
+    return NextResponse.json({ error: 'not_filmed_yet', message: 'This slot is a reel placeholder - the video has not been filmed and ingested yet.' }, { status: 400 })
   }
   const imageUrls: string[] = rawGraphic.split(',').map((s: string) => s.trim()).filter(Boolean).map((u: string) => {
     if (u.startsWith('http://') || u.startsWith('https://')) return u
@@ -137,7 +153,7 @@ export async function POST(request: NextRequest) {
     .eq('id', post.id)
 
   // Stamp the founder follow line on the end just before publishing.
-  const result = await publishToInstagram({ imageUrls, caption: appendBrFooter(caption) })
+  const result = await publishToInstagram({ imageUrls, videoUrl, caption: appendBrFooter(caption) })
 
   if (!result.ok) {
     await admin
