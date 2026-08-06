@@ -10,7 +10,7 @@ import {
   emailCta, emailStatusCard,
   fromCoach, fromBrand,
 } from '@/lib/email-shell'
-import { coach } from '@/config/tenant'
+import { coach, brand } from '@/config/tenant'
 
 const typeLabel: Record<string, string> = {
   zoom: 'Zoom',
@@ -80,6 +80,7 @@ export async function POST(request: NextRequest) {
   // Get contact name + email
   let contactName = 'Client'
   let contactEmail: string | null = null
+  let prepUrl: string | null = null
   if (body.lead_id) {
     const { data: lead } = await supabase
       .from('leads')
@@ -87,6 +88,24 @@ export async function POST(request: NextRequest) {
       .eq('id', body.lead_id)
       .single()
     if (lead) { contactName = lead.name; contactEmail = lead.email }
+
+    // Pre-call form link, but ONLY if this lead has not already completed it.
+    //
+    // Added 2026-08-06. Until now the form link was surfaced in exactly one
+    // place: the confirmation sent by /api/book-request when a lead requested a
+    // time through the booking page. Anyone booked straight from the dashboard —
+    // every lead whose time was agreed by email, text or DM — never saw it at
+    // all, so Kade walked into those calls with no brief. Renders nothing for
+    // leads who have already filled it in.
+    const { data: prepDone } = await supabase
+      .from('lead_events')
+      .select('id')
+      .eq('lead_id', body.lead_id)
+      .eq('type', 'prep_form_completed')
+      .limit(1)
+    if (!prepDone || prepDone.length === 0) {
+      prepUrl = `${brand().marketingDomain}/book/prep/${body.lead_id}`
+    }
   } else if (body.client_id) {
     const { data: client } = await supabase
       .from('clients')
@@ -226,7 +245,11 @@ ${emailStatusCard({
 })}
 ${meetingLink ? emailCta({ href: meetingLink, label: 'Join Zoom' }) : ''}
 ${meetingLink ? emailUrlFallback(meetingLink, 'Or paste the Zoom link into your browser') : ''}
-${emailBody('Open the attached calendar file (.ics) to add this to your calendar.', { size: 13, bottom: 0 })}
+${emailBody('Open the attached calendar file (.ics) to add this to your calendar.', { size: 13, bottom: prepUrl ? 24 : 0 })}
+${prepUrl ? emailDivider() : ''}
+${prepUrl ? emailBody('One thing before we talk. Three minutes, six short questions, and only the first one is required. It means I walk in already understanding where you are at, so we go straight to what matters for you instead of starting from zero.') : ''}
+${prepUrl ? emailCta({ href: prepUrl, label: 'Complete this before our call →' }) : ''}
+${prepUrl ? emailUrlFallback(prepUrl) : ''}
 ${darkEmailSignature()}
 `, { previewText: `${firstName}, your Zoom call is confirmed for ${dateStr}.` }),
         })

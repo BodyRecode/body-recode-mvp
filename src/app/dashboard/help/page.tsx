@@ -1310,6 +1310,15 @@ export default function HelpPage() {
               <SeqRow day="Immediate (to you)" label="Coach notification with lead name, email, date/time, and Zoom link" />
             </div>
 
+            <p className="font-semibold text-[#1A1A1A] mt-4">Zoom Booking Confirmation (you book it from the dashboard)</p>
+            <p>Fires when you create a booking at Business → Bookings. The Zoom meeting is created for you, so you never write a link by hand. Since 6 Aug 2026 the confirmation also carries the pre-call form link, but <strong>only</strong> when the booking is for a lead who has not already completed it. Nothing renders for clients, or for anyone who has already filled it in. The 2 hour and 30 minute reminders deliberately leave it out, because they are scheduled the moment you book and their wording is frozen then, so they would nag someone who has since done it.</p>
+            <div className="space-y-1">
+              <SeqRow day="Immediate (to you)" label="Booking confirmed - name, type, date/time, calendar file" />
+              <SeqRow day="Immediate" label="Your Zoom call is confirmed - date, time, join link, calendar file, plus the pre-call form if outstanding" />
+              <SeqRow day="2 hours before" label="Reminder - Zoom call is in 2 hours" />
+              <SeqRow day="30 min before" label="Reminder - Zoom call is in 30 minutes" />
+            </div>
+
             <p className="font-semibold text-[#1A1A1A] mt-4">Custom Time Request + Pre-Call Form Chase (automatic)</p>
             <p>Fires when a lead asks for a specific time at bodyrecode.au/book rather than taking an offered slot. The confirmation they receive carries the <strong>only</strong> link to the pre-call form anywhere in the product, so whether it landed matters. Both immediate emails now write to the lead timeline with their Resend IDs — before 6 Aug 2026 neither was logged and there was no way to tell. Each nudge re-reads the timeline and stops the moment the form is completed.</p>
             <div className="space-y-1">
