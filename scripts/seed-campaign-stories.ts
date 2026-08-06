@@ -26,7 +26,7 @@
 import { createClient } from '@supabase/supabase-js'
 import { writeFileSync } from 'node:fs'
 
-const FROM = '2026-08-07'
+const FROM = '2026-08-06'
 const TO = '2026-08-31'
 const OUT_DIR = '/Users/kadedunstone/body-recode-mvp/public/stories/filled'
 const MANIFEST = '/Users/kadedunstone/body-recode-mvp/scripts/ig-generator/campaign-stories.json'
@@ -45,6 +45,11 @@ interface Story {
 
 // ── RAMP · 7-9 Aug · read before prescribe ──────────────────────────────────
 const RAMP: Story[][] = [
+  [ // Thu 6 - today. Ads are going up, so the ground starts warming now.
+    { category: 'hook', label: 'BEFORE THE PLAN', hook_1: 'The plan is the easy part. Knowing which plan is the whole job.', sub_1: 'Four patterns, four different corrections.' },
+    { category: 'pattern', label: 'THE READ', pattern_name: 'State first', hook_1: 'Whether the body can currently use the effort going in.', sub_1: 'Answer that before anything gets prescribed.' },
+    { category: 'quote', hook_1: 'Effort was almost never the thing that separated them.' },
+  ],
   [ // Fri 7
     { category: 'hook', label: 'THE SEQUENCE', hook_1: 'Prescribing before reading is guessing.', sub_1: 'It just happens to be the industry default.' },
     { category: 'photo_overlay', photo: '1', hook_1: 'Read the state. Then prescribe.', sub_1: 'In that order, or the plan is a coin toss.' },
@@ -202,7 +207,7 @@ function datesFrom(start: string, n: number): string[] {
 
 const schedule: { date: string; story: Story; time: string; theme: string }[] = []
 const blocks: [Story[][], string, string][] = [
-  [RAMP, '2026-08-07', 'Ramp · read before prescribe'],
+  [RAMP, '2026-08-06', 'Ramp · read before prescribe'],
   [WEEK_A, '2026-08-10', 'Week A · four patterns'],
   [WEEK_B, '2026-08-17', 'Week B · insulin timing'],
   [WEEK_C, '2026-08-24', 'Week C · targeting'],

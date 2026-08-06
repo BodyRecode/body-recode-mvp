@@ -4,6 +4,29 @@
  },
  "posts": [
   {
+   "slug": "story_camp_0806_1",
+   "type": "story",
+   "category": "hook",
+   "label": "BEFORE THE PLAN",
+   "hook_1": "The plan is the easy part. Knowing which plan is the whole job.",
+   "sub_1": "Four patterns, four different corrections."
+  },
+  {
+   "slug": "story_camp_0806_2",
+   "type": "story",
+   "category": "pattern",
+   "label": "THE READ",
+   "pattern_name": "State first",
+   "hook_1": "Whether the body can currently use the effort going in.",
+   "sub_1": "Answer that before anything gets prescribed."
+  },
+  {
+   "slug": "story_camp_0806_3",
+   "type": "story",
+   "category": "quote",
+   "hook_1": "Effort was almost never the thing that separated them."
+  },
+  {
    "slug": "story_camp_0807_1",
    "type": "story",
    "category": "hook",
