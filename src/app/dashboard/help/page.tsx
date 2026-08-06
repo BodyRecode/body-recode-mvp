@@ -63,6 +63,7 @@ const SECTIONS = [
   { id: 'be-analytics',     title: '30. Analytics',          colour: 'amber' as const, category: 'business' as Category },
   { id: 'be-sources',       title: '31. Lead Sources',       colour: 'amber' as const, category: 'business' as Category },
   { id: 'be-ads',           title: '32. Ads',                colour: 'amber' as const, category: 'business' as Category },
+  { id: 'be-reels',         title: '32b. Reels',             colour: 'amber' as const, category: 'content' as Category },
   { id: 'be-content-engine',title: '33. Content Engine',     colour: 'amber' as const, category: 'content' as Category },
   { id: 'be-strategy',      title: '34. Strategy Hub',       colour: 'amber' as const, category: 'content' as Category },
   { id: 'be-social-profiles',title: '35. Social Profiles',   colour: 'amber' as const, category: 'content' as Category },
@@ -2700,6 +2701,25 @@ export default function HelpPage() {
             </ul>
 
             <Note>The automated Friday report reads from RAW_DATA, generates the analysis, and emails it. If no file is dropped before 9am the script will use the most recent file it finds - always drop a fresh export each week.</Note>
+          </Section>
+
+          <Section id="be-reels" title="32b. Reels (film, ingest, publish)" colour="amber">
+            <p>Talking-head reels are filmed by Kade in the <strong>Captions</strong> app and published natively through the Content Calendar, the same as a feed post. Cold paid ads remain statics only - this is organic Instagram only.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">1. Film</p>
+            <p>Batch five scripts in one sitting, roughly 30 minutes. Scripts live in <code>07_MARKETING/03_ORGANIC_INSTAGRAM/BR_REEL_SCRIPTS_WEEK1.md</code>. Vertical 9:16, 30 to 45 seconds, one idea each, 80% of normal speaking pace, no music.</p>
+            <p className="mt-2"><strong>Captions AI:</strong> auto-captions, teleprompter, filler trimming, reframing and eye-contact correction are all fine - that is still you, edited faster. <strong>Do not use the AI avatar for doctrine content</strong> and do not export watermarked.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">2. Drop</p>
+            <p>Move the finished file to <code>07_MARKETING/03_ORGANIC_INSTAGRAM/REELS/03_READY_TO_POST</code>. Moving a file between the four folders is the status signal - there is nothing separate to update.</p>
+            <p className="mt-2">Name it <code>YYYY-MM-DD_REEL_ShortTitle_v1.mp4</code> using the <strong>publish</strong> date, not the filming date. The date is how the ingest finds which calendar slot the video belongs to; no date means no match, deliberately, because guessing the slot is worse than an error.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">3. Ingest</p>
+            <p>Run <code>npx tsx scripts/ingest-reels.ts</code> (add <code>--dry</code> to validate without uploading). It checks the video is portrait, 3 to 90 seconds and within the bucket limit, uploads it to the public Supabase <code>videos</code> bucket, pulls a cover frame with ffmpeg, and attaches both to the calendar row - replacing the TO FILM placeholder.</p>
+
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">4. Publish or schedule</p>
+            <p>Once ingested the reel behaves like any other calendar post: publish now, or set a scheduled time and Meta publishes it. The post publishes as a REEL (<code>media_type=REELS</code>) with the cover frame as its thumbnail, and is shared to the feed.</p>
+            <p className="mt-2 text-xs text-[#6B6B6B]"><strong>Why it can take a few minutes.</strong> Meta transcodes video asynchronously, unlike images which are ready in seconds. The publisher waits up to five minutes for the container to report FINISHED before publishing. A reel that still has its TO FILM placeholder is refused outright, so a placeholder card can never reach the feed.</p>
           </Section>
 
           <Section id="be-content-engine" title="33. Content Engine" colour="amber">
