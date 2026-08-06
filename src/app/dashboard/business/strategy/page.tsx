@@ -3084,7 +3084,7 @@ export default function StrategyPage() {
 
           <Card className="border-emerald-500/30 bg-emerald-500/5">
             <SectionLabel>Reels via Captions · ORGANIC ONLY (added 2026-08-05)</SectionLabel>
-            <Body>Reels were never blocked by strategy, they were blocked by <strong>production capacity</strong> sitting behind Amanda&apos;s availability and a HeyGen workflow that was never stood up. Captions removes that blocker for talking-head content, which is the only reel format this brand needs.</Body>
+            <Body>Reels were never blocked by strategy, they were blocked by <strong>Kade not having a production workflow for them</strong>. Captions removes that for talking-head content, which is the only reel format this brand needs.</Body>
             <p className="text-xs text-stone-700 mt-2 leading-relaxed"><strong>Why it matters more than &quot;more content&quot;.</strong> Reach is not the point. <strong>Video viewers are a custom audience source</strong>, so reels are the cheapest way to fill the warm retargeting pool. That pool is the only narrow audience that cannot exhaust, and it is the structural fix for what killed July. Reels are the pump.</p>
             <div className="mt-3 space-y-2 text-xs">
               <div className="bg-white/70 border border-emerald-500/20 rounded-lg p-3">
@@ -3107,9 +3107,9 @@ export default function StrategyPage() {
                 <p className="text-[10px] font-bold text-emerald-800 uppercase tracking-widest mb-1">Three things not to do</p>
                 <p className="text-stone-700 leading-relaxed"><strong>Do not post watermarked</strong> — the free tier brands your reel with someone else&apos;s logo. <strong>Do not use the AI avatar for doctrine content</strong> — your face doing the read is the asset, a synthetic stand-in undermines the authority the reel exists to build, and a 40+ professional audience will clock it. Caption and framing tools are fine, they are still you. <strong>Do not let reels replace carousels</strong> — reels buy reach, carousels buy saves.</p>
               </div>
-              <div className="bg-white/70 border border-amber-500/25 rounded-lg p-3">
-                <p className="text-[10px] font-bold text-amber-800 uppercase tracking-widest mb-1">Open · confirm with Amanda</p>
-                <p className="text-stone-700 leading-relaxed">Whether Captions supersedes the HeyGen plan, and what it means for Amanda&apos;s video scope under the contra deal. Both were the scaling answer when filming was the constraint. <strong>Confirm before reallocating her time.</strong></p>
+              <div className="bg-white/70 border border-emerald-500/20 rounded-lg p-3">
+                <p className="text-[10px] font-bold text-emerald-800 uppercase tracking-widest mb-1">Division of labour · Amanda is untouched</p>
+                <p className="text-stone-700 leading-relaxed">Amanda&apos;s contra deal covers <strong>funnel-stage video</strong> — the Challenge Day 5 session, the Blueprint education lessons, landing-page assets — produced in HeyGen and ElevenLabs. <strong>It does not cover social media.</strong> Social reels are Kade on camera in Captions. The tools are not competing: HeyGen produces funnel assets at Amanda&apos;s hand, Captions produces social at Kade&apos;s. Nothing here touches her scope or her backlog.</p>
               </div>
             </div>
           </Card>

@@ -1,6 +1,6 @@
 # Body Recode - Consumer Marketing Strategy
 
-**Status:** v2.3 - 2026-08-05 (§13b reels via Captions: organic only, batch weekly, feeds the warm-audience pool). One document: the strategy (what and why) and the content engine (how) in one place.
+**Status:** v2.4 - 2026-08-06 (§13b: Captions is social only; Amanda's contra deal is funnel-stage video and is untouched). One document: the strategy (what and why) and the content engine (how) in one place.
 **Scope:** the **consumer demand brand** - `@body_recode_`, bodyrecode.au marketing, and the Challenge -> Blueprint -> membership funnel (with the scorecard as the Day-0 in-portal routing gate). Not the licensing engine (see the Collective strategy) or the internal coaching delivery (Performance Coaching).
 
 ---
@@ -245,9 +245,15 @@ proof and quotes, not the whole feed.
 ### 13b. Reels via Captions (added 5 Aug 2026)
 
 Reels were always in the plan and were never blocked by strategy. They were blocked by
-**production capacity**, which sat behind Amanda's availability and a HeyGen workflow that
-was never stood up. **Captions removes that blocker for talking-head content**, which is the
-only reel format this brand actually needs.
+**Kade not having a production workflow for them**. **Captions removes that**, for
+talking-head content, which is the only reel format this brand actually needs.
+
+**Division of labour, so this does not get confused again.** Amanda's contra deal covers
+**funnel-stage video** - the Challenge Day 5 session, the Blueprint education lessons,
+landing-page assets - produced in HeyGen and ElevenLabs. **It does not cover social media.**
+Social reels are Kade on camera in Captions. The two tools are not competing: HeyGen produces
+funnel assets at Amanda's hand, Captions produces social at Kade's. Nothing here touches
+Amanda's scope or her backlog.
 
 **Why this matters more than "more content".** Reach is not the point. **Video viewers are a
 custom audience source**, so reels are the cheapest way to fill the warm retargeting pool
@@ -276,10 +282,6 @@ statics only.** Nothing here touches the ad account.
   and this audience will clock it. AI caption and framing tools are fine - they are still you.
 - **Do not let reels replace carousels.** Reels buy reach, carousels buy saves and are what
   people return to. §13's split stands.
-
-**Open question, not decided here:** whether Captions supersedes the HeyGen plan and what it
-means for Amanda's video scope under the contra deal. Both were the scaling answer when
-filming was the constraint. Confirm with Amanda before reallocating her time.
 
 ## 14. Turn engagement into an ad engine
 
