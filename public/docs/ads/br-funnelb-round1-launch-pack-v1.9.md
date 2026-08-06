@@ -1,6 +1,6 @@
 # BR-FunnelB Round 1: launch pack
 
-**v1.8 · 5 Aug 2026.** Four ads, ready to upload. Supersedes `BR_FUNNELB_CAMPAIGN_SETUP.md`, which
+**v1.9 · 6 Aug 2026.** Four ads, ready to upload. Supersedes `BR_FUNNELB_CAMPAIGN_SETUP.md`, which
 was written before I had read the locked strategy and got three things wrong: it sent traffic
 to the scorecard, measured scorecard completions, and ignored Option D.
 
@@ -386,7 +386,8 @@ at an acceptable cost, stop and look at the Challenge landing page rather than b
 3. **Every photo is AI-generated.** One real phone photo would de-risk the ads carrying your
    face.
 4. ~~**Ads 4, 8 and 10** still carry pre-v2.0 wording.~~ **Done 5 Aug 2026.** Rewritten
-   below. Outstanding on those: the Ad 4 creative has a ring/pill collision to rebuild.
+   below. ~~Ad 4 creative ring/pill collision.~~ **Fixed 6 Aug 2026**, `build_ad4.py`
+   re-authored.
 
 ---
 
@@ -713,10 +714,15 @@ Destination `bodyrecode.au/challenge`, CTA **Learn More**, same as the other fou
 
 **Link description** Free 14 days. The step almost everyone skips.
 
-### Known creative defect
+### Ad 4 creative: fixed 6 Aug 2026
 
-`ad4-creative-B-headline-overlay.png` has a rendering collision. The blue ring around the
-6/8 overlaps the MARKERS IMPROVING pill and covers the "Rated against day one" caption
-underneath it. It does not stop the ad running, but it should be rebuilt before this layer
-goes live. There is no `build_ad4.py` in `_creative_build`, so the script needs
-re-authoring first.
+The ring/pill collision is resolved and `build_ad4.py` has been re-authored, so this is
+reproducible rather than a one-off render.
+
+The fix is structural rather than nudged coordinates. The blue ring used to be an absolutely
+positioned circle sitting on top of the card, which is why it overlapped the MARKERS
+IMPROVING pill and covered the caption beneath it. The score now sits in a bordered disc that
+owns its own space in the layout flow, so nothing can collide with it however the type wraps.
+
+Also rebalanced: both columns are content-height and vertically centred, instead of the card
+stretching full height and leaving a dead white third at the bottom.

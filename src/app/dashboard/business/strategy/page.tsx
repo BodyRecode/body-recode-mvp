@@ -923,7 +923,7 @@ type Round1Ad = {
 // Bump this ONE constant when the launch pack is republished. It drives the card
 // title, both download links and the 'verbatim from' line, which had already
 // drifted apart once (card said v1.6 while the body text still said v1.4).
-const LAUNCH_PACK_VERSION = 'v1.8'
+const LAUNCH_PACK_VERSION = 'v1.9'
 
 const ROUND1_ADS: Round1Ad[] = [
   { slug: 'ad-5-four-patterns', short: 'Four patterns', layer: 'round1', audience: 'Either sex',
