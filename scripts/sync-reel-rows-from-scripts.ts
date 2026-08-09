@@ -100,11 +100,19 @@ async function main() {
     // viewer hears, so a muted viewer reading the caption gets the identical read.
     const caption = `${parsed.beats.join('\n\n')}\n\n${parsed.cta ?? ''}`.trim()
 
-    const { data: row } = await db.from('calendar_posts')
-      .select('id, caption, title, scheduled')
-      .eq('brand', 'body_recode').eq('date', d.date).limit(1).maybeSingle()
+    // MUST filter on phase AND platform. Retired content plans (phase='scale')
+    // left stale rows on some of these dates, and without the filter this picked
+    // whichever row came back first - on 14 Aug that was the dead scale row, so
+    // the live campaign row kept its superseded copy and a retired row got
+    // overwritten. Never address a calendar row by date alone.
+    const { data: rows } = await db.from('calendar_posts')
+      .select('id, caption, title, scheduled, phase')
+      .eq('brand', 'body_recode').eq('platform', 'instagram')
+      .eq('phase', 'ads').neq('type', 'story').eq('date', d.date)
 
-    if (!row) { console.log(`SKIP ${d.key} ${d.date}: no calendar row`); continue }
+    if (!rows?.length) { console.log(`SKIP ${d.key} ${d.date}: no phase=ads calendar row`); continue }
+    if (rows.length > 1) { console.log(`SKIP ${d.key} ${d.date}: ${rows.length} ads rows, ambiguous - resolve by hand`); continue }
+    const row = rows[0]
     if (row.scheduled) { console.log(`SKIP ${d.key} ${d.date}: already SCHEDULED, refusing to overwrite`); continue }
 
     const same = row.caption?.trim() === caption && row.title === d.title
