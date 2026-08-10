@@ -1320,6 +1320,10 @@ export default function HelpPage() {
               <SeqRow day="30 min before" label="Reminder - Zoom call is in 30 minutes" />
             </div>
 
+            <p className="font-semibold text-[#1A1A1A] mt-4">Rescheduling or cancelling a booking</p>
+            <p>On the bookings list, <strong>Update → Reschedule</strong> moves a booking. It shifts the Zoom meeting itself without changing the join link, so any invite already sent keeps working, cancels the reminders that were queued for the old time, queues new ones, and emails them a corrected confirmation. The calendar file uses the same event ID at a higher version number, so their diary updates the existing entry rather than adding a second one. <strong>Cancel</strong> pulls the reminders out of the queue and deletes the Zoom meeting, but deliberately sends them nothing. Telling someone their call is off is a message you write yourself.</p>
+            <Note><strong>One limitation you need to know about.</strong> Pulling a queued reminder back requires a Resend Full Access API key. The key currently in use can only send, so a cancellation is rejected and the old reminders will still fire at the original time. When that happens the dashboard shows an amber warning saying so, rather than letting it pass silently. Swapping <code>RESEND_API_KEY</code> for a Full Access key removes the limitation.</Note>
+
             <p className="font-semibold text-[#1A1A1A] mt-4">Custom Time Request + Pre-Call Form Chase (automatic)</p>
             <p>Fires when a lead asks for a specific time at bodyrecode.au/book rather than taking an offered slot. The confirmation they receive carries the <strong>only</strong> link to the pre-call form anywhere in the product, so whether it landed matters. Both immediate emails now write to the lead timeline with their Resend IDs — before 6 Aug 2026 neither was logged and there was no way to tell. Each nudge re-reads the timeline and stops the moment the form is completed.</p>
             <div className="space-y-1">

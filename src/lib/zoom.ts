@@ -105,3 +105,36 @@ export async function deleteZoomMeeting(meetingId: number): Promise<void> {
     headers: { Authorization: `Bearer ${token}` },
   })
 }
+
+/**
+ * Move an existing meeting to a new time.
+ *
+ * Deliberately an UPDATE rather than delete-and-recreate: PATCH preserves the
+ * meeting ID and therefore the join URL, so a link already sent to a lead keeps
+ * working after a reschedule. Recreating would silently invalidate it and leave
+ * them holding a dead link.
+ */
+export async function updateZoomMeeting(
+  meetingId: number,
+  options: { startTime: string; durationMinutes: number; timezone?: string },
+): Promise<void> {
+  const token = await getZoomAccessToken()
+
+  const res = await fetch(`https://api.zoom.us/v2/meetings/${meetingId}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      start_time: options.startTime,
+      duration: options.durationMinutes,
+      timezone: options.timezone ?? 'Australia/Brisbane',
+    }),
+  })
+
+  if (!res.ok && res.status !== 204) {
+    const err = await res.text()
+    throw new Error(`Failed to update Zoom meeting ${meetingId}: ${err}`)
+  }
+}

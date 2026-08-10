@@ -11,6 +11,7 @@ import {
   fromCoach, fromBrand,
 } from '@/lib/email-shell'
 import { coach, brand } from '@/config/tenant'
+import { buildBookingConfirmationEmail, scheduleBookingReminders } from '@/lib/booking-reminders'
 
 const typeLabel: Record<string, string> = {
   zoom: 'Zoom',
@@ -146,6 +147,10 @@ export async function POST(request: NextRequest) {
       meeting_link: meetingLink,
       notes: body.notes || null,
       status: 'scheduled',
+      // Stored so the booking can be MOVED rather than deleted and recreated.
+      // Without it there is nothing to update on Zoom's side. See
+      // sql/2026-08-10_booking_reschedule.sql.
+      zoom_meeting_id: zoomMeetingId,
     })
     .select()
     .single()
@@ -218,85 +223,44 @@ ${darkEmailSignature()}
 
       // Send confirmation + reminders to the lead/client
       if (contactEmail) {
-        const firstName = contactName.split(' ')[0]
-        const durationMinutes = body.duration_minutes ?? 60
+        const emailCtx = {
+          firstName: contactName.split(' ')[0],
+          dateStr,
+          timeStr,
+          durationMinutes: body.duration_minutes ?? 60,
+          meetingLink,
+          prepUrl,
+        }
 
+        const confirmation = buildBookingConfirmationEmail(emailCtx)
         await resend.emails.send({
           from: fromCoach(),
           to: contactEmail,
-          subject: `Your Zoom call is confirmed. ${dateStr}`,
+          subject: confirmation.subject,
           attachments: [
             {
               filename: 'booking.ics',
               content: Buffer.from(icsContent).toString('base64'),
             },
           ],
-          html: darkEmailShell(`
-${emailLogo()}
-${emailEyebrow('Zoom Call · Confirmed')}
-${emailHeading(`See you ${dateStr.split(',')[0]}, ${firstName}.`)}
-${emailDivider()}
-${emailBody(`Hi ${firstName},`)}
-${emailBody('Your Zoom call with Kade is confirmed.', { bottom: 24 })}
-${emailStatusCard({
-  eyebrow: 'When',
-  headline: `${dateStr} · ${timeStr} Brisbane`,
-  body: `${durationMinutes} minutes on Zoom. Tap the button below at the time to join.`,
-})}
-${meetingLink ? emailCta({ href: meetingLink, label: 'Join Zoom' }) : ''}
-${meetingLink ? emailUrlFallback(meetingLink, 'Or paste the Zoom link into your browser') : ''}
-${emailBody('Open the attached calendar file (.ics) to add this to your calendar.', { size: 13, bottom: prepUrl ? 24 : 0 })}
-${prepUrl ? emailDivider() : ''}
-${prepUrl ? emailBody('One thing before we talk. Three minutes, six short questions, and only the first one is required. It means I walk in already understanding where you are at, so we go straight to what matters for you instead of starting from zero.') : ''}
-${prepUrl ? emailCta({ href: prepUrl, label: 'Complete this before our call →' }) : ''}
-${prepUrl ? emailUrlFallback(prepUrl) : ''}
-${darkEmailSignature()}
-`, { previewText: `${firstName}, your Zoom call is confirmed for ${dateStr}.` }),
+          html: confirmation.html,
         })
 
-        // Scheduled reminders: 2 hours and 30 minutes before
-        const reminder2hTime = new Date(scheduledAt.getTime() - 2 * 60 * 60 * 1000)
-        const reminder30mTime = new Date(scheduledAt.getTime() - 30 * 60 * 1000)
-        const now = Date.now()
-
-        const reminderHtml = (minutesBefore: number) => {
-          const label = minutesBefore === 120 ? '2 hours' : '30 minutes'
-          return darkEmailShell(`
-${emailLogo()}
-${emailEyebrow('Zoom Call Reminder')}
-${emailHeading(`Starting in ${label}, ${firstName}.`)}
-${emailDivider()}
-${emailBody(`Hi ${firstName},`)}
-${emailBody(`Your Zoom call with Kade is in ${label}.`, { bottom: 24 })}
-${emailStatusCard({
-  eyebrow: 'When',
-  headline: `${dateStr} · ${timeStr} Brisbane`,
-  body: `${durationMinutes} minutes on Zoom. Tap below at the time to join.`,
-})}
-${meetingLink ? emailCta({ href: meetingLink, label: 'Join Zoom' }) : ''}
-${meetingLink ? emailUrlFallback(meetingLink, 'Or paste the Zoom link into your browser') : ''}
-${darkEmailSignature()}
-`, { previewText: `${firstName}, your Zoom call starts in ${label}.` })
-        }
-
-        if (reminder2hTime.getTime() > now + 60_000) {
-          await resend.emails.send({
-            from: fromCoach(),
-            to: contactEmail,
-            subject: `Your Zoom call is in 2 hours. ${timeStr} Brisbane`,
-            scheduledAt: reminder2hTime.toISOString(),
-            html: reminderHtml(120),
-          })
-        }
-
-        if (reminder30mTime.getTime() > now + 60_000) {
-          await resend.emails.send({
-            from: fromCoach(),
-            to: contactEmail,
-            subject: `Your Zoom call is in 30 minutes. ${timeStr} Brisbane`,
-            scheduledAt: reminder30mTime.toISOString(),
-            html: reminderHtml(30),
-          })
+        // Reminder IDs are persisted so a later reschedule or cancel can pull
+        // them back out of Resend's queue. Before 2026-08-10 they were
+        // discarded, so a booking made at the wrong time left two stale
+        // reminders that fired at the old time no matter what the dashboard
+        // said.
+        const reminderIds = await scheduleBookingReminders({
+          to: contactEmail,
+          scheduledAt,
+          ctx: emailCtx,
+        })
+        if (reminderIds.length) {
+          await supabase
+            .from('be_bookings')
+            .update({ reminder_email_ids: reminderIds })
+            .eq('id', booking.id)
         }
       }
     } catch (err) {

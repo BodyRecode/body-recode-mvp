@@ -116,7 +116,12 @@ export default async function BookingsPage() {
                     )}
                   </div>
 
-                  <BookingStatusButton bookingId={booking.id} currentStatus={booking.status} />
+                  <BookingStatusButton
+                    bookingId={booking.id}
+                    currentStatus={booking.status}
+                    scheduledAt={booking.scheduled_at}
+                    durationMinutes={booking.duration_minutes ?? 60}
+                  />
                 </div>
               )
             })}

@@ -2,11 +2,14 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import { CheckCircle2, XCircle, AlertCircle, ChevronDown } from 'lucide-react'
+import { CheckCircle2, XCircle, AlertCircle, ChevronDown, CalendarClock } from 'lucide-react'
 
 interface Props {
   bookingId: string
   currentStatus: string
+  /** ISO timestamp, used to prefill the reschedule fields with the current slot. */
+  scheduledAt: string
+  durationMinutes: number
 }
 
 const options = [
@@ -15,19 +18,65 @@ const options = [
   { value: 'cancelled', label: 'Cancel', icon: XCircle, colour: 'text-stone-600' },
 ]
 
-export default function BookingStatusButton({ bookingId, currentStatus }: Props) {
+/** Brisbane wall-clock parts of an instant, for prefilling the date/time inputs. */
+function brisbaneParts(iso: string): { date: string; time: string } {
+  const d = new Date(iso)
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Australia/Brisbane',
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', hour12: false,
+  }).formatToParts(d)
+  const get = (t: string) => parts.find(p => p.type === t)?.value ?? ''
+  return {
+    date: `${get('year')}-${get('month')}-${get('day')}`,
+    // Intl renders midnight as "24" in some runtimes; normalise it.
+    time: `${get('hour') === '24' ? '00' : get('hour')}:${get('minute')}`,
+  }
+}
+
+export default function BookingStatusButton({ bookingId, currentStatus, scheduledAt, durationMinutes }: Props) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
+  const [rescheduling, setRescheduling] = useState(false)
+  const [warning, setWarning] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
+
+  const current = brisbaneParts(scheduledAt)
+  const [date, setDate] = useState(current.date)
+  const [time, setTime] = useState(current.time)
+  const [duration, setDuration] = useState(String(durationMinutes))
 
   function updateStatus(status: string) {
     setOpen(false)
     startTransition(async () => {
-      await fetch(`/api/bookings/${bookingId}`, {
+      const res = await fetch(`/api/bookings/${bookingId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status }),
       })
+      const json = await res.json().catch(() => null)
+      // A reminder that could not be pulled out of Resend's queue is the one
+      // failure the coach MUST see: the contact still gets emailed at the old
+      // time and nothing on screen would otherwise say so.
+      if (json?.warning) setWarning(json.warning)
+      router.refresh()
+    })
+  }
+
+  function submitReschedule() {
+    if (!date || !time) return
+    // +10:00 is Brisbane year-round. Queensland has no daylight saving, so this
+    // is a constant and not a bug waiting to happen in October.
+    const scheduled_at = new Date(`${date}T${time}:00+10:00`).toISOString()
+    setRescheduling(false)
+    startTransition(async () => {
+      const res = await fetch(`/api/bookings/${bookingId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ scheduled_at, duration_minutes: parseInt(duration) }),
+      })
+      const json = await res.json().catch(() => null)
+      if (json?.warning) setWarning(json.warning)
       router.refresh()
     })
   }
@@ -39,13 +88,23 @@ export default function BookingStatusButton({ bookingId, currentStatus }: Props)
         disabled={isPending}
         className="flex items-center gap-1 text-xs text-stone-600 hover:text-[#1A1A1A] border border-stone-300 hover:border-stone-500 px-2.5 py-1.5 rounded-lg transition-colors disabled:opacity-50"
       >
-        Update
+        {isPending ? 'Saving...' : 'Update'}
         <ChevronDown size={11} />
       </button>
-      {open && (
+
+      {open && !rescheduling && (
         <>
           <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 top-8 z-20 bg-stone-100 border border-stone-300 rounded-lg shadow-xl overflow-hidden min-w-32">
+          <div className="absolute right-0 top-8 z-20 bg-stone-100 border border-stone-300 rounded-lg shadow-xl overflow-hidden min-w-36">
+            {currentStatus === 'scheduled' && (
+              <button
+                onClick={() => { setRescheduling(true); setOpen(false) }}
+                className="w-full flex items-center gap-2 px-3 py-2 text-xs hover:bg-stone-200 transition-colors text-[#1A1A1A] border-b border-stone-300"
+              >
+                <CalendarClock size={12} />
+                Reschedule
+              </button>
+            )}
             {options.map((opt) => {
               const Icon = opt.icon
               return (
@@ -59,6 +118,82 @@ export default function BookingStatusButton({ bookingId, currentStatus }: Props)
                 </button>
               )
             })}
+          </div>
+        </>
+      )}
+
+      {warning && (
+        <>
+          <div className="fixed inset-0 z-30 bg-black/20" onClick={() => setWarning(null)} />
+          <div className="absolute right-0 top-8 z-40 bg-amber-50 border border-amber-300 rounded-lg shadow-xl p-3 w-72">
+            <p className="text-xs font-semibold text-amber-900 mb-1.5">Heads up</p>
+            <p className="text-[11px] text-amber-900 leading-relaxed">{warning}</p>
+            <button
+              onClick={() => setWarning(null)}
+              className="mt-2.5 w-full text-xs font-semibold text-amber-900 border border-amber-400 rounded-lg px-2 py-1.5 hover:bg-amber-100 transition-colors"
+            >
+              Got it
+            </button>
+          </div>
+        </>
+      )}
+
+      {rescheduling && (
+        <>
+          <div className="fixed inset-0 z-10 bg-black/20" onClick={() => setRescheduling(false)} />
+          <div className="absolute right-0 top-8 z-20 bg-stone-100 border border-stone-300 rounded-lg shadow-xl p-3 w-64">
+            <p className="text-xs font-semibold text-[#1A1A1A] mb-2">Move this booking</p>
+            <div className="space-y-2">
+              <div>
+                <label className="block text-[11px] font-medium text-stone-600 mb-1">Date</label>
+                <input
+                  type="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  className="w-full bg-stone-200 border border-stone-300 rounded-lg px-2.5 py-1.5 text-xs text-[#1A1A1A] focus:outline-none focus:border-stone-500"
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] font-medium text-stone-600 mb-1">Time (Brisbane)</label>
+                <input
+                  type="time"
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                  className="w-full bg-stone-200 border border-stone-300 rounded-lg px-2.5 py-1.5 text-xs text-[#1A1A1A] focus:outline-none focus:border-stone-500"
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] font-medium text-stone-600 mb-1">Duration</label>
+                <select
+                  value={duration}
+                  onChange={(e) => setDuration(e.target.value)}
+                  className="w-full bg-stone-200 border border-stone-300 rounded-lg px-2.5 py-1.5 text-xs text-[#1A1A1A] focus:outline-none focus:border-stone-500"
+                >
+                  <option value="30">30 min</option>
+                  <option value="45">45 min</option>
+                  <option value="60">60 min</option>
+                  <option value="90">90 min</option>
+                </select>
+              </div>
+            </div>
+            <p className="text-[11px] text-stone-500 leading-relaxed mt-2.5">
+              Moves the Zoom meeting without changing the join link, cancels the old reminders, and emails them the corrected time.
+            </p>
+            <div className="flex gap-2 mt-2.5">
+              <button
+                onClick={() => setRescheduling(false)}
+                className="flex-1 text-xs text-stone-600 border border-stone-300 rounded-lg px-2 py-1.5 hover:bg-stone-200 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={submitReschedule}
+                disabled={!date || !time}
+                className="flex-1 text-xs font-semibold text-white bg-blue-500 rounded-lg px-2 py-1.5 hover:bg-blue-600 transition-colors disabled:opacity-40"
+              >
+                Save
+              </button>
+            </div>
           </div>
         </>
       )}
