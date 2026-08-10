@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { brand } from "@/config/tenant";
+import { ADVISORY } from "@/config/advisors";
 
 export const metadata: Metadata = {
   title: 'The Engine — Inside Body Recode™ Biological Interpretation (Layer 1)',
@@ -454,6 +455,37 @@ export default function EnginePage() {
           <MiniCard title="The machinery stays hidden" body="No CFFS, RPE or cortisol language ever reaches the client. The reading family translates everything into one voice." />
           <MiniCard title="Brand boundary held" body="Structured compound tracking is Arete’s lane. Body Recode captures it only as free text and never propagates compound names to client prose." />
         </Grid>
+      </Section>
+
+      {/* INDEPENDENT REVIEW */}
+      <Section wide>
+        <SectionLabel>{ADVISORY.eyebrow}</SectionLabel>
+        <SectionHeading>{ADVISORY.heading}</SectionHeading>
+        <Prose style={{ marginBottom: 40 }}>{ADVISORY.intro}</Prose>
+        <Grid min={260} gap={12}>
+          {ADVISORY.advisors.map((a) => (
+            <div key={a.id} style={cardStyle}>
+              {a.photo && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={a.photo} alt={a.name ?? a.role} style={{ width: 56, height: 56, borderRadius: 999, objectFit: 'cover', filter: 'grayscale(1)', marginBottom: 16 }} />
+              )}
+              <p style={{ fontSize: 15, fontWeight: 700, color: TXT, lineHeight: 1.3, marginBottom: 4 }}>
+                {a.name ?? a.role}
+              </p>
+              <p style={{ fontFamily: MONO, fontSize: 10.5, color: BLUE_LIGHT, letterSpacing: '0.06em', marginBottom: 16 }}>
+                {a.name ? (a.credentials ?? a.role) : a.detail}
+              </p>
+              <ColLabel>Reviewing</ColLabel>
+              <p style={{ fontSize: 13, color: TXT_DIM, lineHeight: 1.7 }}>{a.reviewing}</p>
+              {a.href && (
+                <a href={a.href} style={{ ...navLink, color: BLUE_LIGHT, display: 'inline-block', marginTop: 14 }}>Profile →</a>
+              )}
+            </div>
+          ))}
+        </Grid>
+        <p style={{ fontFamily: MONO, fontSize: 11, color: TXT_MUTE, lineHeight: 1.7, marginTop: 22, letterSpacing: '0.02em' }}>
+          {ADVISORY.note}
+        </p>
       </Section>
 
       {/* FOOTER */}
