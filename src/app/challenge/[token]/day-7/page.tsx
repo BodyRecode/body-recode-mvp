@@ -219,6 +219,9 @@ export default async function Day7Page({ params }: { params: Promise<{ token: st
               </div>
             ))}
           </div>
+          <p style={{ fontSize: '12px', color: '#6B6B6B', lineHeight: 1.6, margin: '16px 0 0' }}>
+            These name an observed pattern of where the body stores and how it signals. They describe how your body is behaving, not a measurement of your hormone levels.
+          </p>
         </div>
       </div>
 

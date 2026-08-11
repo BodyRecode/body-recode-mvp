@@ -44,7 +44,7 @@ export default function ReadingLayout({
       clientName={client.name}
       aboutText={
         <p>
-          <b>About this reading.</b> The intake you completed gave us a picture of how your system is currently working, across energy, recovery, sleep, stress, and training response. What follows is what stood out: where you are, what your body is signalling, and what we are deliberately doing and not doing in response. Nothing here diagnoses or prescribes. It is the foundation we build from together.
+          <b>About this reading.</b> The intake you completed gave us a picture of how your system is currently working, across energy, recovery, sleep, stress, and training response. What follows is what stood out: where you are, what your body is signalling, and what we are deliberately doing and not doing in response. Nothing here diagnoses or prescribes. Any pattern named here describes how your body is behaving, not a measurement of your hormone levels. It is the foundation we build from together.
         </p>
       }
       sections={[
