@@ -358,20 +358,20 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
 
   'send-commencement-fee': {
     id: 'send-commencement-fee',
-    name: 'Send Commencement Fee Link',
-    description: 'Manually email a lead the $240 Stripe checkout link to commence coaching.',
+    name: 'Send Foundational Read Link',
+    description: 'Manually email a lead the $297 Stripe checkout link to commence coaching.',
     trigger: 'Click "Send to Client" under Coaching Entry on the lead detail page, OR Path C in the Zoom companion',
     triggerDetail: 'Auto-triggered when Path C - Proceeding is selected in the Zoom companion. Can also be sent manually from the lead profile if needed.',
     steps: [
       {
         day: 'Immediately on click',
-        subject: '{firstName}, your $240 commencement link',
+        subject: '{firstName}, your $297 Foundational Read link',
         paragraphs: [
           'Hi {firstName},',
-          'Here is the $240 commencement link to get started. This covers the foundational read I do on your body before coaching begins, so the program you start on is built around your actual state, not a template.',
+          'Here is the $297 Foundational Read link to get started. This covers the full read I do on your body before coaching begins, so the program you start on is built around your actual state, not a template.',
           'Once payment is in, your portal access, intake, and the first foundational steps unlock automatically.',
         ],
-        cta: 'Pay commencement fee →',
+        cta: 'Pay for your Foundational Read →',
       },
     ],
   },
@@ -382,7 +382,7 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
     id: 'send-portal-email',
     name: 'Send Portal Email',
     description: 'Manually email a client their onboarding portal link.',
-    trigger: 'Click "Send to Client" on the client profile after the commencement fee is paid',
+    trigger: 'Click "Send to Client" on the client profile after the Foundational Read is paid',
     triggerDetail: 'Magic-link sign-in (no password). Email previews the four onboarding steps the client will work through in their portal.',
     steps: [
       {

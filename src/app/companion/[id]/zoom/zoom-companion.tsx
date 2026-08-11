@@ -176,7 +176,7 @@ const PACKAGES = [
   { tier: 'Online', price: '$149/week', founding: '$74.50/week', desc: 'Same system, same interpretation, weekly check-ins and direct access — no in-person sessions.', coachAssessed: false, stripe: 'https://buy.stripe.com/aFacN72Ey2GW7MH2915ZC02', stripeFounding: 'https://buy.stripe.com/14A28t0wq5T8aYT8xp5ZC04' },
 ] as const
 
-const COMMENCEMENT_FEE = '$240'
+const COMMENCEMENT_FEE = '$297'
 
 const FOUNDING_OFFER = {
   headline: 'Founding Client Offer · First 20 clients · 50% off',
@@ -207,7 +207,7 @@ The real question isn't whether it's expensive. It's whether what you've been do
       label: 'Step 2 — Introduce Online',
       content: `"There's an online option. Same system, same weekly read, same direct access — just remote instead of face to face.
 
-That's $149 a week. Same $240 to get started."
+That's $149 a week. Same $297 to get started."
 
 ↳ If online works — Stage 4 decision panel, Path C (Online).
 ↳ If price still holds — non-enrolment is fine. Close cleanly.`,
@@ -371,7 +371,7 @@ $299 a week. That\'s where most people start.
 
 Three sessions is available where the schedule and your capacity allow — $409. I\'ll guide that based on what your body can actually handle.
 
-There\'s also a one-off $240 to get started — covers the setup before coaching begins.
+There\'s also a one-off $297 to get started — covers the setup before coaching begins.
 
 [IF SUITABLE — see tips below]
 
@@ -939,7 +939,7 @@ export default function ZoomCompanion({
                   </div>
 
                   <div className="bg-stone-100 border border-stone-200 rounded-xl p-4 flex items-center justify-between">
-                    <p className="text-sm text-stone-700">One-time commencement fee</p>
+                    <p className="text-sm text-stone-700">One-time Foundational Read</p>
                     <p className="text-base font-bold text-[#1A1A1A] tabular-nums">{COMMENCEMENT_FEE}</p>
                   </div>
 
@@ -1046,7 +1046,7 @@ export default function ZoomCompanion({
                   ) : (
                     <div className="space-y-2">
                       <div className="text-xs font-bold px-3 py-2 rounded-lg bg-blue-50 border border-blue-200 text-[#1B6DFC] text-center">
-                        {pathwayType === 'full_rate' ? 'Full Rate' : 'Online'} — send commencement fee
+                        {pathwayType === 'full_rate' ? 'Full Rate' : 'Online'} — send Foundational Read
                       </div>
                       <CommencementFeeButton leadId={leadId} />
                       {lastCommencementFeeSentAt && (() => {

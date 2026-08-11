@@ -68,7 +68,7 @@ const STAGES: StageGroup[] = [
   },
   {
     stage: 'Funnel A · Direct 1:1 coaching path',
-    blurb: 'Scorecard → $37 Report → Zoom 1 → Commencement → Weekly subscription. Path A decline drops into the 3-email re-engagement + $97 12-Week State Program.',
+    blurb: 'Scorecard → $37 Report → Zoom 1 → Foundational Read → Weekly subscription. Path A decline drops into the 3-email re-engagement + $97 12-Week State Program.',
     accent: '#1B6DFC',
     funnel: 'A',
     pages: [
@@ -131,7 +131,7 @@ const STAGES: StageGroup[] = [
   },
   {
     stage: 'Stage 4 · 1:1 Performance Coaching · Funnel A + B both ascend into here (LIVE)',
-    blurb: '$240 commencement + weekly subscription. Online + Brisbane in-person (2x / 3x). The only fully-live product stage. Token-linked pages render using the Test Client seed.',
+    blurb: '$297 Foundational Read + weekly subscription. Online + Brisbane in-person (2x / 3x). The only fully-live product stage. Token-linked pages render using the Test Client seed.',
     accent: '#0A337A',
     funnel: 'A+B',
     pages: [
@@ -226,7 +226,7 @@ const STAGES: StageGroup[] = [
     funnel: 'meta',
     pages: [
       { name: 'Full Funnel Arc', url: '/broll/full-funnel-arc', description: '4-stage horizontal funnel: Free → $97 → $49/wk → $149/wk.' },
-      { name: 'Funnel A · Direct Coaching Arc', url: '/broll/funnel-a-direct-coaching-arc', description: 'High-intent path: Scorecard → Zoom 1 → Commencement → Subscription.' },
+      { name: 'Funnel A · Direct Coaching Arc', url: '/broll/funnel-a-direct-coaching-arc', description: 'High-intent path: Scorecard → Zoom 1 → Foundational Read → Subscription.' },
       { name: 'Funnel B · Product Arc', url: '/broll/funnel-b-product-arc', description: 'Product ladder: Scorecard → Stage 1 → 2 → 3 → 4 ascension + side branches.' },
       { name: 'July 2026 Funnel Map', url: '/broll/july-funnel-map', description: 'Two doors → one room: paid Challenge ladder (Stage 1–4) + organic Scorecard arc converging at coaching. Cash reality + the 6 metrics to track.' },
     ],

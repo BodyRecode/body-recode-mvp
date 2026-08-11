@@ -5,7 +5,7 @@
  * exists for the standard funnel: lead → fee → client created on webhook.
  * This endpoint covers the inverse case where the client already exists
  * (typically a non-billing package — contra, comp — that the coach has
- * decided to charge the $240 commencement on after all). Same Stripe
+ * decided to charge the $297 Foundational Read on after all). Same Stripe
  * checkout shape; metadata.client_id distinguishes the path from the
  * lead one inside the webhook handler.
  */
@@ -54,7 +54,7 @@ export async function POST(
     .maybeSingle()
   if (existingPlan?.commencement_fee_paid_at) {
     return NextResponse.json(
-      { error: 'Commencement fee is already marked paid for this client.' },
+      { error: 'Foundational Read is already marked paid for this client.' },
       { status: 400 },
     )
   }
@@ -67,10 +67,10 @@ export async function POST(
       {
         price_data: {
           currency: 'aud',
-          unit_amount: 24000,
+          unit_amount: 29700,
           product_data: {
-            name: `${brand().name} - Commencement Fee`,
-            description: `One-time commencement fee for ${brand().name} Performance Coaching.`,
+            name: `${brand().name} - Foundational Read`,
+            description: `One-time Foundational Read for ${brand().name} Performance Coaching.`,
           },
         },
         quantity: 1,
@@ -88,7 +88,7 @@ export async function POST(
   const firstName = client.name.split(' ')[0]
   const resend = new Resend(process.env.RESEND_API_KEY)
 
-  const subject = `${firstName}, your $240 commencement link`
+  const subject = `${firstName}, your $297 Foundational Read link`
   const sendResult = await resend.emails.send({
     from: fromCoach(),
     to: client.email,
@@ -98,18 +98,18 @@ export async function POST(
         <img src="${logoUrl()}" width="130" alt="Body Recode" style="display:block;border:0;" />
       </div>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Here is the $240 commencement link. This covers the foundational read I do on your body before coaching begins, so the program you start on is built around your actual state, not a template.</p>
+      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Here is the $297 Foundational Read link. This covers the full read I do on your body before coaching begins, so the program you start on is built around your actual state, not a template.</p>
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;">
         <tr>
           <td bgcolor="#1B6DFC" style="background-color:#1B6DFC;border-radius:8px;">
-            <a href="${session.url}" style="display:inline-block;padding:14px 28px;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.02em;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Pay commencement fee</a>
+            <a href="${session.url}" style="display:inline-block;padding:14px 28px;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.02em;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Pay for your Foundational Read</a>
           </td>
         </tr>
       </table>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Any questions, reply to this email.</p>
       ${darkEmailSignature()}
       <p style="margin:20px 0 0;font-size:13px;color:#6B6B6B;line-height:1.5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Or copy this link: ${session.url}</p>
-`, { previewText: `${firstName}, your $240 commencement link inside.` }),
+`, { previewText: `${firstName}, your $297 Foundational Read link inside.` }),
   })
 
   await logClientCommunication(admin, {
@@ -188,10 +188,10 @@ export async function PUT(
       {
         price_data: {
           currency: 'aud',
-          unit_amount: 24000,
+          unit_amount: 29700,
           product_data: {
-            name: `${brand().name} - Commencement Fee`,
-            description: `One-time commencement fee for ${brand().name} Performance Coaching.`,
+            name: `${brand().name} - Foundational Read`,
+            description: `One-time Foundational Read for ${brand().name} Performance Coaching.`,
           },
         },
         quantity: 1,

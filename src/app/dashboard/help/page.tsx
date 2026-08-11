@@ -258,7 +258,7 @@ export default function HelpPage() {
               <div>
                 <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-widest mb-3">Phase 3 - Coaching Entry</p>
                 <div className="space-y-2">
-                  <ChecklistItem text="From the lead detail page, click Send to Client under Coaching Entry - this emails the $240 commencement fee link directly" />
+                  <ChecklistItem text="From the lead detail page, click Send to Client under Coaching Entry - this emails the $297 Foundational Read link directly" />
                   <ChecklistItem text="Wait for the payment notification email to confirm payment received" />
                   <ChecklistItem text="Client profile, welcome email, and intake link are all created automatically - no action needed" />
                 </div>
@@ -356,7 +356,7 @@ export default function HelpPage() {
               <li><strong>Single Zoom funnel.</strong> No "Zoom 2", no "second conversation". The call covers diagnosis through pricing through decision in one block. Anything that contradicts this is stale and should be flagged.</li>
               <li><strong>No fitness clichés:</strong> grind, crush it, hustle, push through, no-pain-no-gain. The brand is intelligent, not punitive.</li>
               <li><strong>No shame or guilt framing.</strong> &quot;You&apos;re lazy / inconsistent / not trying hard enough&quot; is the opposite of the read.</li>
-              <li><strong>Founding Client Program framing is retired</strong> (closed 2026-05-01). Do not reference &quot;Founding Client&quot;, &quot;first 20 clients&quot;, &quot;the Program&quot;, or trade/case-study language in any new copy. The half-rate offer itself is still available as the <strong>launch rate</strong>, used as a closing tool on Zoom calls only (not promoted publicly). Standard rates: $149/wk online, $299/wk 2x in-person, $409/wk 3x in-person, plus $240 commencement fee. Launch rate (call-only): $74.50/wk online, $149.50/wk 2x, $204.50/wk 3x.</li>
+              <li><strong>Founding Client Program framing is retired</strong> (closed 2026-05-01). Do not reference &quot;Founding Client&quot;, &quot;first 20 clients&quot;, &quot;the Program&quot;, or trade/case-study language in any new copy. The half-rate offer itself is still available as the <strong>launch rate</strong>, used as a closing tool on Zoom calls only (not promoted publicly). Standard rates: $149/wk online, $299/wk 2x in-person, $409/wk 3x in-person, plus $297 Foundational Read. Launch rate (call-only): $74.50/wk online, $149.50/wk 2x, $204.50/wk 3x.</li>
             </ul>
 
             <p className="font-semibold text-[#1A1A1A] mt-4">Reference docs</p>
@@ -444,8 +444,8 @@ export default function HelpPage() {
               { label: 'Zoom Completed', desc: 'Consultation done - decision made.' },
               { label: 'Closed - No Show', desc: 'Lead did not attend. Re-engagement sequence available.' },
               { label: 'Closed - Declined', desc: 'Lead decided not to proceed.' },
-              { label: 'Commencement Fee Paid', desc: 'Payment received. Client profile created automatically.' },
-              { label: 'Active - Pre-Start', desc: 'In the 3-7 day window between commencement fee paid and the coaching start date. Distinct from the Deliberate Start (IEEP) which is the locked 2-week phase after coaching has begun.' },
+              { label: 'Foundational Read Paid', desc: 'Payment received. Client profile created automatically.' },
+              { label: 'Active - Pre-Start', desc: 'In the 3-7 day window between Foundational Read paid and the coaching start date. Distinct from the Deliberate Start (IEEP) which is the locked 2-week phase after coaching has begun.' },
               { label: 'Active Coaching', desc: 'Coaching underway.' },
             ]} />
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Body State Scorecard on Lead Detail</p>
@@ -520,7 +520,7 @@ export default function HelpPage() {
             <p className="text-xs font-bold tracking-widest text-[#999999] uppercase mt-3 mb-1">Pitch - solution and offer</p>
             <ol className="space-y-1.5 list-decimal list-inside text-[#3A3A3A] text-sm" start={3}>
               <li><strong>Tie hot spot to training</strong> - Walk through the four stages of the Body Recode™ system (Intake → CFFS → Execution → Continuous Loop), each one explicitly tied back to their hot spot from Stage 2. Mirrors performance.bodyrecode.au/how-it-works.</li>
-              <li><strong>Offer &amp; Packages</strong> - Present what&apos;s included, the three packages at standard rates ($149/wk online, $299/wk 2x in-person, $409/wk 3x in-person), and close. Decision panel (Path A/B/C, commencement fee link) lives in the right side panel.</li>
+              <li><strong>Offer &amp; Packages</strong> - Present what&apos;s included, the three packages at standard rates ($149/wk online, $299/wk 2x in-person, $409/wk 3x in-person), and close. Decision panel (Path A/B/C, Foundational Read link) lives in the right side panel.</li>
             </ol>
             <p>The companion nav shows &quot;Listen&quot; and &quot;Pitch&quot; labels in the left sidebar to keep you oriented.</p>
 
@@ -570,7 +570,7 @@ export default function HelpPage() {
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
               <li><strong>Path A - Declined</strong> - Updates status to Closed Declined.</li>
               <li><strong>Path B - Needs Time</strong> - Updates status to Zoom Completed.</li>
-              <li><strong>Path C - Proceeding</strong> - Pathway selector (Full Rate or Online), then the commencement fee link can be sent immediately.</li>
+              <li><strong>Path C - Proceeding</strong> - Pathway selector (Full Rate or Online), then the Foundational Read link can be sent immediately.</li>
             </ul>
 
             <Training title="What the Listen half is for">
@@ -603,28 +603,28 @@ export default function HelpPage() {
               <li>You receive an email notification immediately confirming the payment.</li>
               <li>Their client profile is created automatically.</li>
               <li>Their welcome email and intake link are sent to them immediately.</li>
-              <li>The lead status updates to <strong>Commencement Fee Paid</strong>.</li>
+              <li>The lead status updates to <strong>Foundational Read Paid</strong>.</li>
             </ol>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Path B — convert first, bill later</p>
             <p>Click <strong>Convert to Client</strong>. A prompt asks <code>paid</code> or <code>later</code>:</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
-              <li><code>paid</code> - mark the fee as already paid (cash, transfer, etc). Status flips to Commencement Fee Paid.</li>
-              <li><code>later</code> - convert now and send the fee link any time. Status stays where it is. The lead page shows an amber <strong>Converted, fee outstanding</strong> callout, and the Send to Client / Copy Link buttons remain available so you can bill when ready. Once the client pays, the Stripe webhook flips status to Commencement Fee Paid and sends the welcome email.</li>
+              <li><code>paid</code> - mark the fee as already paid (cash, transfer, etc). Status flips to Foundational Read Paid.</li>
+              <li><code>later</code> - convert now and send the fee link any time. Status stays where it is. The lead page shows an amber <strong>Converted, fee outstanding</strong> callout, and the Send to Client / Copy Link buttons remain available so you can bill when ready. Once the client pays, the Stripe webhook flips status to Foundational Read Paid and sends the welcome email.</li>
             </ul>
             <p><strong>Either path automatically emails the client their portal access</strong> (subject: &quot;[Name], your portal is ready&quot;) so they can begin onboarding immediately - coaching agreement, health declaration, foundational intake, baseline documentation. Sent through <code>sendPortalAccessEmail</code> and logged to <code>client_communications</code>.</p>
             <p><strong>If that email fails to send, the conversion never fails silently:</strong> the convert screen shows a red &quot;Portal access email did NOT send&quot; warning with the reason, always surfaces the portal link so you can send it manually, and emails you an <code>[ALERT]</code> backup. This catches send-time failures (no email on file, provider rejection). A recipient-side junk/bounce after the provider accepts the message - the classic Outlook case - is a deliverability issue addressed by SPF/DKIM/DMARC, not by this alert.</p>
             <p>The lead detail page will then show a <strong>View client profile</strong> link.</p>
             <Note>Use Path B (convert + later) when you want a client onboarding immediately but the fee is being settled separately. The portal opens straight away so they can start the intake while you sort billing.</Note>
-            <Training title="Why the commencement fee exists">
-              <p>The $240 commencement fee is not a deposit. It is a commitment signal. It separates people who are interested from people who are ready. Someone who pays the commencement fee has moved from considering the program to entering it. That psychological shift matters - it changes how they engage with everything that follows.</p>
+            <Training title="Why the Foundational Read exists">
+              <p>The $297 Foundational Read is not a deposit. It is a commitment signal. It separates people who are interested from people who are ready. Someone who pays the Foundational Read has moved from considering the program to entering it. That psychological shift matters - it changes how they engage with everything that follows.</p>
               <p className="mt-2">The automation triggered by this payment (profile creation, welcome email, intake link) removes the most failure-prone handover in the entire process. Manual client creation is where admin errors happen. Tying it to the payment makes it impossible to miss.</p>
             </Training>
           </Section>
 
           {/* Section 6 */}
           <Section id="post-conversion" title="6. Post-Conversion Sequence" colour="teal">
-            <p>Once the commencement fee is paid, the following happens automatically and in order:</p>
+            <p>Once the Foundational Read is paid, the following happens automatically and in order:</p>
             <ol className="space-y-1.5 list-decimal list-inside text-[#3A3A3A] text-sm">
               <li>Client profile created in the Clients dashboard.</li>
               <li>Welcome email sent to the client with their intake link.</li>
@@ -638,15 +638,15 @@ export default function HelpPage() {
               <li>Once both payments are confirmed, set the <strong>Coaching Start Date</strong> (3-7 days out).</li>
               <li>Client receives a reminder email the day before coaching begins.</li>
             </ol>
-            <Note>Coaching does not start until both the commencement fee and the weekly subscription payment are received. Wait for the Subscription Active badge before setting the start date.</Note>
+            <Note>Coaching does not start until both the Foundational Read and the weekly subscription payment are received. Wait for the Subscription Active badge before setting the start date.</Note>
             <Training title="Why this sequence is ordered this way">
-              <p>The commencement fee comes first, then the subscription. The commencement fee creates the client. The subscription funds ongoing coaching. Starting coaching before the subscription is active means you are working without confirmation that payment is in place. The Subscription Active badge is your signal that it is safe to set the start date.</p>
+              <p>The Foundational Read comes first, then the subscription. The Foundational Read creates the client. The subscription funds ongoing coaching. Starting coaching before the subscription is active means you are working without confirmation that payment is in place. The Subscription Active badge is your signal that it is safe to set the start date.</p>
               <p className="mt-2">The intake link goes out immediately after payment - not 24 hours later. Momentum is highest right after the payment decision. If you delay the intake, you delay the CFFS, which delays the start date, which delays coaching. The automation handles the immediate send so no action is required on your end.</p>
             </Training>
           </Section>
 
           <Section id="pre-start" title="7. Pre-Start Window" colour="teal">
-            <p>After conversion, set the <strong>Coaching Start Date</strong> on the client profile. This is the date coaching officially begins - typically 3-7 days after the commencement fee is paid.</p>
+            <p>After conversion, set the <strong>Coaching Start Date</strong> on the client profile. This is the date coaching officially begins - typically 3-7 days after the Foundational Read is paid.</p>
             <p>This 3-7 day gap is the Pre-Start Window. It is distinct from the doctrinal <strong>Deliberate Start (IEEP)</strong> which is the locked 2-week phase that begins once the program is generated. See section 7b.</p>
             <p>Until the start date:</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
@@ -1197,7 +1197,7 @@ export default function HelpPage() {
             <p>Launch Rate (50% off) variants of all four are also available as the second row of buttons - use only when the launch rate has been verbally offered on the Zoom.</p>
             <p className="font-semibold text-[#1A1A1A] mt-4">Non-billing (Contra / Comp)</p>
             <p>A third row holds <strong>Contra (trade)</strong> and <strong>No-charge / comp</strong>. Use these when the client is not on a paid weekly subscription — e.g. a contra deal where they provide work in exchange for the coaching seat, or a founding-friend comp. Clients on a non-billing package are skipped by the Payments tracker: no Stripe-customer flag, no subscription-overdue indicator, no entry on the dashboard overview Payments counter. The weekly Send / Copy / Schedule controls don&apos;t appear because there is no recurring Stripe link to send. Switch them back to a paid package if the arrangement changes.</p>
-            <p className="mt-2"><strong>Commencement fee on non-billing clients:</strong> Even on a non-billing package, the $240 commencement fee is optional per client. Open the client&apos;s Payments section — for clients on Contra / No-charge, you&apos;ll see a <em>Commencement fee (optional)</em> block with <strong>Send commencement fee link</strong> and <strong>Copy link</strong>. Use this when you want the contra client to still pay the foundational read. Once paid, the section flips to &quot;Paid {`{date}`}&quot; and the Stripe payment is recorded against the client like any other commencement.</p>
+            <p className="mt-2"><strong>Foundational Read on non-billing clients:</strong> Even on a non-billing package, the $297 Foundational Read is optional per client. Open the client&apos;s Payments section — for clients on Contra / No-charge, you&apos;ll see a <em>Foundational Read (optional)</em> block with <strong>Send Foundational Read link</strong> and <strong>Copy link</strong>. Use this when you want the contra client to still pay the foundational read. Once paid, the section flips to &quot;Paid {`{date}`}&quot; and the Stripe payment is recorded against the client like any other Foundational Read.</p>
             <p>Once a paid package is selected, three options appear: <strong>Send to Client</strong> (sends immediately), <strong>Copy Link</strong> (copies to clipboard), and <strong>Schedule Send</strong>. The link includes the client&apos;s ID so the system can identify them when they pay. When the client completes payment, the <strong>Subscription Active</strong> badge appears automatically on the client profile.</p>
             <p className="font-semibold text-[#1A1A1A] mt-4">Scheduling a delayed send</p>
             <p>If you want to queue the subscription link now but have it land in the client&apos;s inbox on a specific date, click <strong>Schedule Send</strong>, pick a date, and confirm. The system will send it automatically at 8am Brisbane time on that day. A yellow <em>Scheduled for [date]</em> badge appears on the profile - click Cancel next to it to remove the scheduled send before it fires. Once sent, the badge is replaced with the sent date.</p>
@@ -1220,7 +1220,7 @@ export default function HelpPage() {
 
           <Section id="clients-dashboard" title="13. Clients Dashboard" colour="teal">
             <p>The clients dashboard shows a live overview of all active clients. For each client in active coaching, the row displays:</p>
-            <p className="mt-3"><strong>Today&apos;s Focus</strong> (on the dashboard home) folds onboarding stage, readiness signals, overdue check-ins, and payment state into one priority-coded action per client. Money signals (Stripe subscription past_due / unpaid / canceled, or commencement fee outstanding 7+ days into coaching) sit at the top in red - they preempt readiness flags because billing failures matter before coaching nuance does. Clicking the row deep-links to the payments section on the client profile.</p>
+            <p className="mt-3"><strong>Today&apos;s Focus</strong> (on the dashboard home) folds onboarding stage, readiness signals, overdue check-ins, and payment state into one priority-coded action per client. Money signals (Stripe subscription past_due / unpaid / canceled, or Foundational Read outstanding 7+ days into coaching) sit at the top in red - they preempt readiness flags because billing failures matter before coaching nuance does. Clicking the row deep-links to the payments section on the client profile.</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
               <li><strong>Week number</strong> - Current coaching week based on their start date.</li>
               <li><strong>A / B check-in status</strong> - Teal if submitted this week, grey if not yet submitted.</li>
@@ -1242,7 +1242,7 @@ export default function HelpPage() {
               <FlowRow trigger="Scorecard completed" from="-" to="New Check-In" auto />
               <FlowRow trigger="Body Decode Report purchased via Stripe" from="Any" to="Report Sent" auto />
               <FlowRow trigger="Lead books via bodyrecode.au/book" from="Any" to="Zoom Booked" auto />
-              <FlowRow trigger="Commencement fee paid via Stripe" from="Any" to="Commencement Fee Paid" auto />
+              <FlowRow trigger="Foundational Read paid via Stripe" from="Any" to="Foundational Read Paid" auto />
             </div>
             <p className="mt-2">These transitions are manual - they require your input after the call or conversation:</p>
             <div className="space-y-2">
@@ -1268,7 +1268,7 @@ export default function HelpPage() {
             <Note><strong>Outlook-safe shell (2026-05-13, palette flipped 2026-05-21).</strong> Every email goes through <code>darkEmailShell()</code> in <code>src/lib/email-shell.ts</code> - a nested-table layout with <code>bgcolor</code> attributes (not just CSS) so Outlook for Windows, M365, and outlook.com all render the canvas reliably. Function name is historical; the canvas is now Pure White / Graphite Black / Signal Blue. Without the shell, Outlook strips body background and text becomes invisible. Reported by Ruby-Cate (outlook.com) and Samantha (Mater M365) - both said the emails arrived blank.</Note>
             <Note><strong>Mobile dark-mode meta fix (2026-05-31).</strong> 17 hand-rolled email templates (the reading emails, weekly check-in feedback, portal orientation, downsell, the $37 report, several API-route inline emails) declared <code>{'<meta name="color-scheme" content="dark">'}</code> as a legacy holdover from the pre-2026-05-21 dark palette. On Gmail iOS/Android and Apple Mail this forced auto-inversion of the now-light email bodies, so they rendered dark on phone but correct on desktop. All 17 swept to <code>content="light only"</code> to match <code>darkEmailShell</code>. New emails composing through the shell are already safe; any new hand-rolled HTML must declare <code>content="light only"</code> + <code>supported-color-schemes" content="light"</code> from day one.</Note>
             <Note><strong>Plain-text URL fallback.</strong> Every email with a CTA button also renders the destination URL as plain text in a bordered monospace block via <code>emailUrlFallback()</code>. Microsoft 365 Defender Safe Links / ATP rewrites clickable <code>{'<a>'}</code> URLs in corporate inboxes, so the plain-text version gives the client something to copy-paste into a personal browser. Anywhere you add a new branded email, import both helpers from <code>@/lib/email-shell</code>.</Note>
-            <Note><strong>Coach BCC on one-off extras only (2026-05-14).</strong> The <code>COACH_BCC</code> export from <code>@/lib/email-shell</code> is applied ONLY to ad-hoc / one-off "extra nudge" sends that aren't part of any standard automated flow. Right now that is exactly two paths: <code>/api/send-supplementary-intake-email</code> (the &ldquo;Email link&rdquo; button on the supplementary intake row) and <code>scripts/send-supplementary-intake-email.mjs</code>. Standard sends &mdash; welcome, intake invite, commencement fee link, subscription link, sign-in code, weekly check-in window, session reminders, drip steps, etc. &mdash; do NOT BCC the coach. Rule of thumb: if the system would have sent it anyway as part of normal flow, no BCC. If you/script chose to send something extra on top, BCC.</Note>
+            <Note><strong>Coach BCC on one-off extras only (2026-05-14).</strong> The <code>COACH_BCC</code> export from <code>@/lib/email-shell</code> is applied ONLY to ad-hoc / one-off "extra nudge" sends that aren't part of any standard automated flow. Right now that is exactly two paths: <code>/api/send-supplementary-intake-email</code> (the &ldquo;Email link&rdquo; button on the supplementary intake row) and <code>scripts/send-supplementary-intake-email.mjs</code>. Standard sends &mdash; welcome, intake invite, Foundational Read link, subscription link, sign-in code, weekly check-in window, session reminders, drip steps, etc. &mdash; do NOT BCC the coach. Rule of thumb: if the system would have sent it anyway as part of normal flow, no BCC. If you/script chose to send something extra on top, BCC.</Note>
             <Note><strong>Duplicate Subscription Guard (2026-05-22, hardened 2026-07-07).</strong> The Stripe webhook blocks a 2nd subscription per client. If a client completes a subscription checkout while their <code>subscription_active</code> flag is already true, the webhook now <strong>verifies against Stripe</strong> before treating it as a duplicate: it lists their live subs (active + trialing + past_due) across both the incoming checkout&apos;s customer_id and the client row&apos;s tracked <code>stripe_customer_id</code>, and only auto-cancels the new sub if at least one OTHER live sub actually exists. If Stripe shows zero live subs (i.e. the flag was stale), it logs a <code>[stale-flag-recovery]</code> warning, flips the flag to false, and lets the checkout proceed as a fresh subscription. Original bug (Samantha, 2026-05-22): three subscriptions in 14 days from the reusable Payment Link. Regression that triggered the 2026-07-07 hardening (Samantha again): her cancel_at_period_end sub naturally expired on 10 Jun but her flag never flipped to false — the natural-expiry deletion webhook was missed or didn&apos;t update the flag. 27 days later she completed a new $149.50 checkout, the guard read the stale flag and auto-cancelled her 7 seconds after charge. Post-hardening, that path resolves cleanly. See <code>src/app/api/webhooks/stripe/route.ts</code>.</Note>
             <Note><strong>Subscription Started + Payment Failed notifies (2026-06-23).</strong> Two webhook events now email you on coach-actionable payment moments. <strong>Subscription started</strong> fires once per client on first checkout completion (right after <code>subscription_active</code> flips to true) and tells you the package, weekly price, first invoice amount, and links to their <code>#payments</code> section &mdash; closes the silent-success gap where Send Subscription emails would land and you&apos;d have no signal the client actioned the link. <strong>Payment failed</strong> existed already but only resolved client_id from invoice line metadata, which Stripe doesn&apos;t propagate to renewal invoices &mdash; rebuilt to use the same fallback chain as the success handler (line metadata &rarr; <code>client_subscriptions</code> &rarr; <code>clients.stripe_customer_id</code>) so renewal-card-decline failures now surface. Email includes amount, attempt count, next retry date or &ldquo;stopped retrying&rdquo;, and a direct client link. Recurring weekly renewals stay silent by design &mdash; only first-start and any-failure emails. See <code>src/app/api/webhooks/stripe/route.ts</code>.</Note>
             <Note><strong>Per-Client Subscription Checkout Sessions (2026-05-22, defense-in-depth follow-up to the guard above).</strong> The Send Subscription Link sender (both the manual coach button and the daily cron) no longer emails the static <code>buy.stripe.com/&hellip;</code> Payment Link. Instead, each send calls <code>createSubscriptionCheckoutForClient()</code> in <code>src/lib/subscription-checkout.ts</code>, which creates a fresh single-use <code>{`stripe.checkout.sessions.create({ mode: 'subscription' })`}</code> tagged to the client. The URL is consumed on first completion and expires within 24 hours &mdash; so a client physically cannot accidentally re-trigger the subscription by re-clicking the email or refreshing the Stripe-hosted page. The webhook guard above stays in place as a safety net for any other route into the duplicate scenario.</Note>
@@ -1364,7 +1364,7 @@ export default function HelpPage() {
             </div>
 
             <p className="font-semibold text-[#1A1A1A] mt-4">Welcome Email (Post-Conversion)</p>
-            <p>Sent automatically when the commencement fee is paid. Contains the client&apos;s intake link and coaching guide link. Triggered by the Stripe webhook.</p>
+            <p>Sent automatically when the Foundational Read is paid. Contains the client&apos;s intake link and coaching guide link. Triggered by the Stripe webhook.</p>
 
             <p className="font-semibold text-[#1A1A1A] mt-4">Client Onboarding Notifications (to you)</p>
             <p>You receive a notification email each time a client completes a step in their portal:</p>
@@ -1663,7 +1663,7 @@ export default function HelpPage() {
           <Section id="partner-billing" title="17g. Partner Billing (Kade's billing of Founding Ten)" colour="teal">
             <p>Kade&apos;s billing of Founding Ten partners (as distinct from tenants billing their own clients via Stripe Connect). Three-line commercial model per Founding Partner Agreement §6:</p>
             <ol className="space-y-1 list-decimal list-inside text-[#3A3A3A] text-sm">
-              <li><strong>Setup fee</strong> - one-time at commencement. Launch $2,500 / Studio $6,000 for Founding Ten (locked half-price).</li>
+              <li><strong>Setup fee</strong> - one-time at Foundational Read. Launch $2,500 / Studio $6,000 for Founding Ten (locked half-price).</li>
               <li><strong>Platform subscription</strong> - locked at founding rate for life. Launch $400/mo / Studio $600/mo.</li>
               <li><strong>Per Active Client</strong> - $20 per active client per month, billed in arrears.</li>
             </ol>
@@ -1796,14 +1796,14 @@ export default function HelpPage() {
           <Section id="stripe-payments" title="19. Stripe Payments" colour="teal">
             <p>Three payment links are used in the coaching entry process:</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
-              <li><strong>Commencement Fee - $240</strong> - Generated uniquely per lead. Triggers automatic client creation when paid.</li>
-              <li><strong>In-Person 2x - $299/week</strong> - Static link. Standard entry package. Send after commencement fee is confirmed.</li>
+              <li><strong>Foundational Read - $297</strong> - Generated uniquely per lead. Triggers automatic client creation when paid.</li>
+              <li><strong>In-Person 2x - $299/week</strong> - Static link. Standard entry package. Send after Foundational Read is confirmed.</li>
               <li><strong>In-Person 3x - $409/week</strong> - Static link. Coach-assessed upgrade, offered during weekly check-ins not on the Zoom.</li>
               <li><strong>In-Person 1x + self-led - $199/week</strong> - Static link. Coach-assessed, only for self-disciplined trainers with a consistent training history. Not a default option on the Zoom.</li>
               <li><strong>Online - $149/week</strong> - Static link. Fallback if lead objects to in-person pricing.</li>
             </ul>
             <p>Payment links for the weekly subscription are available in the Zoom companion Stage 8 Decision panel.</p>
-            <Note>Always send the commencement fee first. Coaching does not start until both the commencement fee and the first weekly subscription payment are received.</Note>
+            <Note>Always send the Foundational Read first. Coaching does not start until both the Foundational Read and the first weekly subscription payment are received.</Note>
           </Section>
 
           {/* Training Program - PTS */}
@@ -2329,7 +2329,7 @@ export default function HelpPage() {
               { label: 'Report Sent', desc: 'Performance report has been sent' },
               { label: 'Zoom Booked', desc: 'Zoom call scheduled' },
               { label: 'Zoom Completed', desc: 'Zoom done - decision made' },
-              { label: 'Commencement Fee Paid', desc: 'Payment received - awaiting subscription' },
+              { label: 'Foundational Read Paid', desc: 'Payment received - awaiting subscription' },
               { label: 'Active Client', desc: 'Converted - now in coaching dashboard' },
             ]} />
 
@@ -2521,7 +2521,7 @@ export default function HelpPage() {
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Products</p>
             <StatusList items={[
-              { label: 'Coaching Commencement Fee', desc: '$240 - one-time. Send to every lead who agrees to proceed at the Zoom call.' },
+              { label: 'Coaching Foundational Read', desc: '$297 - one-time. Send to every lead who agrees to proceed at the Zoom call.' },
               { label: 'Online Coaching', desc: '$149/week recurring' },
               { label: 'In-Person 1x + self-led', desc: '$199/week recurring - coach-assessed, only for self-disciplined trainers' },
               { label: 'In-Person 2x', desc: '$299/week recurring - lead with this on the Zoom' },
@@ -2529,7 +2529,7 @@ export default function HelpPage() {
             ]} />
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Automatic Recording</p>
-            <p>Stripe payments are recorded automatically via webhooks - commencement fee, weekly subscription payments, failures, and cancellations. You do not need to log them manually.</p>
+            <p>Stripe payments are recorded automatically via webhooks - Foundational Read, weekly subscription payments, failures, and cancellations. You do not need to log them manually.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Manual Payments</p>
             <p>Use <strong>Record Payment</strong> to log cash, bank transfer, or any payment that didn&apos;t come through Stripe.</p>
@@ -2541,7 +2541,7 @@ export default function HelpPage() {
             <p>Payments now has three tabs (sub-nav across the top):</p>
             <StatusList items={[
               { label: 'Overview', desc: 'The page above. Products, payment history, manual record, generate payment links.' },
-              { label: 'Clients', desc: 'Every client one row — plan, commencement status, live subscription status, next charge, last paid, lifetime PC value. Sorted with attention-needed rows on top.' },
+              { label: 'Clients', desc: 'Every client one row — plan, Foundational Read status, live subscription status, next charge, last paid, lifetime PC value. Sorted with attention-needed rows on top.' },
               { label: 'Reconcile', desc: 'Run the Stripe backfill (matches Stripe customers to client records by email and hydrates the subscription cache), see clients with no Stripe link, and tag every product by stream (Performance Coaching / Body Recode / The Collective / Overhead).' },
             ]} />
           </Section>
@@ -2559,17 +2559,17 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Per-client view</p>
             <p>On any client profile, scroll to the <strong>Payments</strong> section (also reachable via the sidebar). It shows:</p>
             <StatusList items={[
-              { label: 'Plan', desc: 'Which payment plan they\'re assigned to (default: "Hormozi default" — $240 commencement + weekly recurring). Commencement fee status: paid + date, or "not paid" with a manual mark button.' },
+              { label: 'Plan', desc: 'Which payment plan they\'re assigned to (default: "Hormozi default" — $297 Foundational Read + weekly recurring). Foundational Read status: paid + date, or "not paid" with a manual mark button.' },
               { label: 'Subscription', desc: 'Live status from Stripe — Active / Past due / Canceled / etc. Amount, billing interval, next charge date. "Cancels at period end" badge if applicable.' },
               { label: 'Lifetime (PC)', desc: 'Sum of paid Performance Coaching payments for this client. Filtered by product category — Body Recode / The Collective / Overhead payments do not count.' },
               { label: 'Last 5 payments', desc: 'Recent history with product, amount, status, date.' },
-              { label: 'Health flags', desc: 'Red callout box at the top if anything\'s wrong: commencement not paid, no active subscription, subscription past due, no Stripe customer linked.' },
+              { label: 'Health flags', desc: 'Red callout box at the top if anything\'s wrong: Foundational Read not paid, no active subscription, subscription past due, no Stripe customer linked.' },
               { label: 'Refresh from Stripe', desc: 'On-demand button. Pulls live subscription state from Stripe and rewrites the cache. Use when you\'ve just changed something in Stripe and want the dashboard to reflect it immediately rather than waiting for a webhook.' },
               { label: 'Open in Stripe', desc: 'Direct link to the Stripe dashboard customer page if you need to manage the subscription itself.' },
             ]} />
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Cross-cut Client Status table</p>
-            <p><strong>Business → Payments → Clients</strong>. One row per client, sorted with attention-needed rows on top: past_due first, then commencement-paid-but-no-sub, then commencement-not-paid, then healthy actives, then canceled. Four count cards at the top (Active / Past due / No active sub / No commencement). Click any row to jump to that client’s Payments section.</p>
+            <p><strong>Business → Payments → Clients</strong>. One row per client, sorted with attention-needed rows on top: past_due first, then Foundational Read-paid-but-no-sub, then Foundational Read-not-paid, then healthy actives, then canceled. Four count cards at the top (Active / Past due / No active sub / No Foundational Read). Click any row to jump to that client’s Payments section.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">How the cache stays fresh</p>
             <p>Stripe is the source of truth. The cache (<code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">client_subscriptions</code> table) is maintained three ways:</p>
@@ -2579,8 +2579,8 @@ export default function HelpPage() {
               { label: 'Periodic backfill', desc: 'Re-run the Stripe backfill from the Reconcile page whenever you suspect drift, after bulk changes in Stripe, or after onboarding new clients via methods the webhook doesn\'t cover.' },
             ]} />
 
-            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">When commencement fee won’t auto-detect</p>
-            <p>The tracker doesn’t yet auto-detect commencement fees (you can use the manual <strong>Mark commencement paid</strong> button on any client without one). Auto-detection is queued for Phase 2 once we’ve seen enough real charges to write a reliable rule.</p>
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">When Foundational Read won’t auto-detect</p>
+            <p>The tracker doesn’t yet auto-detect Foundational Reads (you can use the manual <strong>Mark Foundational Read paid</strong> button on any client without one). Auto-detection is queued for Phase 2 once we’ve seen enough real charges to write a reliable rule.</p>
 
             <p className="text-xs text-[#999999] mt-4">Doctrine / spec: <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-05-13_PAYMENTS_FOUNDATION.md</code>. Feature registry entry 26.</p>
           </Section>

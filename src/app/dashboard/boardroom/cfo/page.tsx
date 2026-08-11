@@ -109,7 +109,7 @@ export default async function CfoPage() {
           <div>Report price: <span className="text-stone-900 font-bold">${p.reportPrice}</span></div>
           <div>Blueprint price: <span className="text-stone-900 font-bold">${p.blueprintPrice}</span></div>
           <div>Membership: <span className="text-stone-900 font-bold">${p.membershipPrice}/wk</span></div>
-          <div>Coaching commencement: <span className="text-stone-900 font-bold">${p.coachingPackage2xPrice}</span></div>
+          <div>Foundational Read: <span className="text-stone-900 font-bold">${p.coachingPackage2xPrice}</span></div>
         </div>
         <p className="text-[12px] text-stone-500 mt-3 leading-relaxed">
           These are the current tenant pricing values. Change via <Link href="/dashboard/settings/tenant" className="text-blue-600 hover:text-blue-700 underline">/dashboard/settings/tenant → Product wrapping</Link>.

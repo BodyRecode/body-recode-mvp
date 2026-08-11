@@ -59,7 +59,7 @@ Brief explanation of your assessment.
 Any practical or psychological barriers mentioned (cost, time, past experiences, scepticism, partner/family considerations).
 
 ## Next Step Outcome
-What was agreed or discussed at the close? (Commencement fee paid / follow-up scheduled / left open / not proceeding)
+What was agreed or discussed at the close? (Foundational Read paid / follow-up scheduled / left open / not proceeding)
 
 ## Follow-Up Actions
 Any specific actions required after the call. Include anything you said you'd send or look into.

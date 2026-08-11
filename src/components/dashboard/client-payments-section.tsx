@@ -97,7 +97,7 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
 
   // Identify a commencement payment from be_payments as a fallback. A payment
   // is the commencement if it has no subscription link AND matches the plan's
-  // expected commencement amount (default $240). Used when the plan row hasn't
+  // expected commencement amount (default $297). Used when the plan row hasn't
   // been written yet — Luke's case — so the section still reads truthfully
   // ("commencement paid" rather than "not tracked"). Backfilling client_payment_plan
   // (Reconcile → Backfill commencement fees) makes this fallback redundant.
@@ -140,15 +140,15 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
   // Implicit exemption: no plan row + no subscriptions + no commencement
   // payment = no expectation of billing either. Same rule the dashboard
   // overview Payments indicator and Today's Focus use, so the three surfaces
-  // agree. The commencementPaymentRow fallback catches Luke's case: $240 paid
+  // agree. The commencementPaymentRow fallback catches Luke's case: $297 paid
   // and recorded in be_payments but client_payment_plan was never written.
   const isTracked = !nonBillingPackage && (!!planRow || (subs?.length ?? 0) > 0 || !!commencementPaymentRow)
 
   // Health flags — only computed for tracked clients.
   const flags: string[] = []
   if (isTracked) {
-    if (!commencementPaid) flags.push(`Commencement fee${expectedCommencement ? ` ($${expectedCommencement})` : ''} not marked paid`)
-    if (commencementPaid && !primarySub) flags.push('Commencement paid but no active subscription found')
+    if (!commencementPaid) flags.push(`Foundational Read${expectedCommencement ? ` ($${expectedCommencement})` : ''} not marked paid`)
+    if (commencementPaid && !primarySub) flags.push('Foundational Read paid but no active subscription found')
     if (primarySub && ['past_due', 'unpaid'].includes(primarySub.status)) flags.push(`Subscription is ${primarySub.status.replace('_', ' ')}`)
     if (!client?.stripe_customer_id) flags.push('No Stripe customer linked yet — run backfill or refresh to match')
   }
@@ -201,14 +201,14 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
               <p className="text-xs text-stone-600 leading-relaxed">
                 This client is on a non-billing package. The Payments tracker
                 skips them by default — no commencement-fee flag, no Stripe-customer
-                flag, no overdue indicator. You can still choose to send the $240
-                commencement link below; it's optional per client.
+                flag, no overdue indicator. You can still choose to send the $297
+                Foundational Read link below; it's optional per client.
               </p>
             </div>
           </div>
           <div className="mt-3 pt-3 border-t border-stone-200">
             <p className="text-[10px] font-semibold text-stone-500 uppercase tracking-wider mb-2">
-              Commencement fee (optional)
+              Foundational Read (optional)
             </p>
             {commencementPaid ? (
               <p className="text-xs text-blue-500">
@@ -238,7 +238,7 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
             <p className="text-[10px] font-semibold text-stone-500 uppercase tracking-wider mb-2">Plan</p>
             <p className="text-sm font-medium text-[#1A1A1A] mb-1">{planLabel}</p>
             <p className="text-xs text-stone-500">
-              Commencement fee (${expectedCommencement}):{' '}
+              Foundational Read (${expectedCommencement}):{' '}
               {commencementPaid ? (
                 <span className="text-blue-500">paid {formatDate(commencementPaidAt)}</span>
               ) : (
@@ -294,7 +294,7 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
           <p className="text-lg font-bold text-[#1A1A1A]">{formatAud(lifetimeSubscription)}</p>
         </div>
         <p className="text-[10px] text-stone-400 -mt-2 mb-3">
-          Recurring weekly subscription payments only. Commencement fee tracked above.
+          Recurring weekly subscription payments only. Foundational Read tracked above.
         </p>
 
         {payments && payments.length > 0 ? (
@@ -309,7 +309,7 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
               // commencement fee, regardless of whether it was logged manually.
               const isCommencement = !p.stripe_subscription_id && Number(p.amount ?? 0) === Number(expectedCommencement)
               const productName = isCommencement
-                ? 'Commencement Fee'
+                ? 'Foundational Read'
                 : rawName ?? 'Manual'
               const cfg = STATUS_META[p.status === 'paid' ? 'active' : p.status === 'failed' ? 'past_due' : 'incomplete']
               return (

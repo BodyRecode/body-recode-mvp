@@ -145,8 +145,8 @@ export async function POST(req: NextRequest) {
       blueprintPrice: 97,
       membershipName: `${businessName} Membership`,
       membershipPrice: 49,
-      coachingPackage2xPrice: 240,
-      coachingPackagePriceLabel: '$240 commencement fee',
+      coachingPackage2xPrice: 297,
+      coachingPackagePriceLabel: '$297 Foundational Read',
     },
     licence: {
       tenantId,

@@ -126,7 +126,7 @@ const AUTOMATIC_AUTOMATIONS = [
     trigger: 'Self-guided program purchased',
     steps: 3,
   },
-  // Client onboarding (post $240 commencement)
+  // Client onboarding (post $297 Foundational Read)
   {
     id: 'intake-submitted',
     name: 'Foundational Intake Submitted',
@@ -422,8 +422,8 @@ const MANUAL_AUTOMATIONS = [
   },
   {
     id: 'send-commencement-fee',
-    name: 'Send Commencement Fee Link',
-    description: 'Manually email a lead the $240 Stripe checkout link to start coaching. Auto-triggered on Path C in the Zoom companion, but can also be sent manually.',
+    name: 'Send Foundational Read Link',
+    description: 'Manually email a lead the $297 Stripe checkout link to start coaching. Auto-triggered on Path C in the Zoom companion, but can also be sent manually.',
     trigger: 'Click "Send to Client" under Coaching Entry, or Path C in Zoom companion',
     steps: 1,
   },

@@ -68,7 +68,7 @@ export default function CreateProductButton() {
                   type="text"
                   value={form.name}
                   onChange={(e) => setForm(f => ({ ...f, name: e.target.value }))}
-                  placeholder="e.g. Coaching Commencement Fee"
+                  placeholder="e.g. Coaching Foundational Read"
                   className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-stone-500"
                 />
               </div>

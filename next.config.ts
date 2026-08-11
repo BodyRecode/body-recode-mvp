@@ -58,7 +58,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/performance-coaching/brisbane',
-        destination: 'https://performance.bodyrecode.au/brisbane',
+        destination: 'https://performance.bodyrecode.au/online',
         permanent: true,
       },
       // Long-tail SEO subpaths (strength / fat-loss / personal-training) all collapse
@@ -70,19 +70,19 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/performance-coaching/:slug(strength|fat-loss|personal-training)/brisbane',
-        destination: 'https://performance.bodyrecode.au/brisbane',
+        destination: 'https://performance.bodyrecode.au/online',
         permanent: true,
       },
 
       // Pre-existing keyword aliases. Same destination logic as above.
       { source: '/online-performance-coaching',  destination: 'https://performance.bodyrecode.au/online',    permanent: true },
-      { source: '/performance-coach-brisbane',   destination: 'https://performance.bodyrecode.au/brisbane',  permanent: true },
+      { source: '/performance-coach-brisbane',   destination: 'https://performance.bodyrecode.au/online',  permanent: true },
       { source: '/online-strength-coaching',     destination: 'https://performance.bodyrecode.au/online',    permanent: true },
-      { source: '/strength-coach-brisbane',      destination: 'https://performance.bodyrecode.au/brisbane', permanent: true },
+      { source: '/strength-coach-brisbane',      destination: 'https://performance.bodyrecode.au/online', permanent: true },
       { source: '/online-fat-loss-coaching',     destination: 'https://performance.bodyrecode.au/online',    permanent: true },
-      { source: '/fat-loss-coach-brisbane',      destination: 'https://performance.bodyrecode.au/brisbane', permanent: true },
+      { source: '/fat-loss-coach-brisbane',      destination: 'https://performance.bodyrecode.au/online', permanent: true },
       { source: '/online-personal-trainer',      destination: 'https://performance.bodyrecode.au/online',    permanent: true },
-      { source: '/personal-trainer-brisbane',    destination: 'https://performance.bodyrecode.au/brisbane', permanent: true },
+      { source: '/personal-trainer-brisbane',    destination: 'https://performance.bodyrecode.au/online', permanent: true },
     ]
   },
 };

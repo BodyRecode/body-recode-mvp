@@ -186,7 +186,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   const bookingLinkSentEvent = events?.find(e => e.type === 'email_sent' && e.subject === 'Booking link sent') ?? null
 
   // Commencement fee link sent events (most recent first; events query is already desc by sent_at)
-  const commencementFeeSentEvents = events?.filter(e => e.type === 'email_sent' && e.subject === 'Commencement fee link sent') ?? []
+  const commencementFeeSentEvents = events?.filter(e => e.type === 'email_sent' && (e.subject === 'Foundational Read link sent' || e.subject === 'Commencement fee link sent')) ?? []
   const lastCommencementFeeSent = commencementFeeSentEvents[0] ?? null
 
   // Extract scorecard result from events
@@ -483,7 +483,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-2xl p-6 mb-4">
         <div className="flex items-center gap-2.5 mb-4"><span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" /><h2 className="text-[11px] font-bold text-white uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>Coaching Entry</h2></div>
         <p className="text-[#999999] text-sm mb-4">
-          Generate a unique commencement fee link to send to the client. Once paid, their client profile and intake link are created automatically.
+          Generate a unique Foundational Read link to send to the client. Once paid, their client profile and intake link are created automatically.
         </p>
         {(() => {
           const PAID_STATUSES = ['commencement_fee_paid', 'active_deliberate_start', 'active_coaching']
@@ -507,7 +507,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               {isConverted && (
                 <div className="bg-amber-500/5 border border-amber-500/20 rounded-lg px-4 py-3">
                   <p className="text-amber-700 text-xs font-bold uppercase tracking-wider mb-1">Converted, fee outstanding</p>
-                  <p className="text-[#6B6B6B] text-xs leading-relaxed">{lead.name}&apos;s portal is open. Send the commencement fee link below when you&apos;re ready to bill.</p>
+                  <p className="text-[#6B6B6B] text-xs leading-relaxed">{lead.name}&apos;s portal is open. Send the Foundational Read link below when you&apos;re ready to bill.</p>
                 </div>
               )}
               <CommencementFeeButton leadId={lead.id} />

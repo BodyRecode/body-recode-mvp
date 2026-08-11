@@ -113,7 +113,7 @@ export function derivePaymentSignal(args: PaymentSignalInput): PaymentSignalResu
     if (daysSinceStart >= 7) {
       return {
         paymentSignal: 'commencement_missing',
-        paymentDetail: `${daysSinceStart} days in, $240 commencement fee not received`,
+        paymentDetail: `${daysSinceStart} days in, $297 Foundational Read not received`,
       }
     }
   }

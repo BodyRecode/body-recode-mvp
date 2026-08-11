@@ -5,7 +5,7 @@ export const AGREEMENT_SECTIONS = [
       { title: '1. Parties', content: 'This Agreement is entered into between Kade Dunstone, trading as Body Recode™, ABN 90 535 525 708 ("Coach") and the individual accepting this Agreement ("Client"). By signing this Agreement the Client agrees to be legally bound by its terms.' },
       { title: '2. Definitions', content: '"Agreement" means this Coaching Agreement. "Services" means performance coaching services provided by the Coach. "Program Materials" includes all training programs, documents, frameworks and digital content created by the Coach. "ACL" means the Australian Consumer Law. "Recreational Services" has the meaning given under the Civil Liability Act 2003 (Qld).' },
       { title: '3. Interpretation', content: 'Headings are for convenience only. A reference to legislation includes amendments and replacements.' },
-      { title: '4. Commencement and Term', content: 'This Agreement becomes effective when the Client signs this Agreement and the Coaching Commencement Fee has been paid. Coaching services commence once onboarding steps are completed. This Agreement continues until terminated.' },
+      { title: '4. Commencement and Term', content: 'This Agreement becomes effective when the Client signs this Agreement and the Foundational Read has been paid. Coaching services commence once onboarding steps are completed. This Agreement continues until terminated.' },
     ],
   },
   {
@@ -32,9 +32,9 @@ export const AGREEMENT_SECTIONS = [
   {
     title: 'PART 4 — FEES AND PAYMENT',
     subsections: [
-      { title: '14. Coaching Commencement Fee', content: 'A one-time Coaching Commencement Fee is payable before coaching begins. Coaching services will not commence until this fee is paid.' },
+      { title: '14. Foundational Read', content: 'A one-time Foundational Read fee is payable before coaching begins. Coaching services will not commence until this fee is paid.' },
       { title: '15. Weekly Coaching Subscription', content: 'Ongoing coaching is billed via a recurring weekly subscription processed through Stripe or another nominated payment processor. Payments are charged weekly in advance. The Client authorises recurring billing.' },
-      { title: '16. Payment Confirmation Prior to Service Commencement', content: 'Coaching will not commence until: (a) the agreement is signed, (b) the commencement fee is paid, and (c) the weekly subscription is established.' },
+      { title: '16. Payment Confirmation Prior to Service Commencement', content: 'Coaching will not commence until: (a) the agreement is signed, (b) the Foundational Read is paid, and (c) the weekly subscription is established.' },
       { title: '17. Suspension for Non-Payment', content: 'Services may be suspended if payments are not made.' },
       { title: '17A. Failed Payments', content: 'Clients must update payment details within 48 hours if payment fails.' },
     ],

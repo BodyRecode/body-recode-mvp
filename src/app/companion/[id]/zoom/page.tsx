@@ -24,7 +24,7 @@ export default async function ZoomCompanionPage({ params }: { params: Promise<{ 
   const scorecardScore = scorecardEvent?.notes?.match(/Score: (\d+)\/15/)?.[1]
   const scorecardState = scorecardEvent?.notes?.match(/Body state: (.+?)\./)?.[1]
 
-  const commencementFeeSentEvents = events?.filter(e => e.type === 'email_sent' && e.subject === 'Commencement fee link sent') ?? []
+  const commencementFeeSentEvents = events?.filter(e => e.type === 'email_sent' && (e.subject === 'Foundational Read link sent' || e.subject === 'Commencement fee link sent')) ?? []
   const lastCommencementFeeSentAt = commencementFeeSentEvents[0]?.sent_at ?? null
   const commencementFeeSendCount = commencementFeeSentEvents.length
 

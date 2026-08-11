@@ -52,7 +52,7 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
 
   function convert() {
     const choice = window.prompt(
-      `Convert ${leadName} to an active client?\n\nHas the commencement fee been paid?\n\n` +
+      `Convert ${leadName} to an active client?\n\nHas the Foundational Read been paid?\n\n` +
       `Type "paid"   - mark fee as paid (status → commencement_fee_paid)\n` +
       `Type "later"  - convert now, send the fee link later\n` +
       `(blank or anything else cancels)`,

@@ -233,7 +233,7 @@ ${founderFirstName} is running ${tenantName}, a body-state interpretation platfo
 - ${p.challengeName} ($${p.challengePrice} free, 14-day)
 - ${p.blueprintName} ($${p.blueprintPrice} one-time)
 - ${p.membershipName} ($${p.membershipPrice}/week recurring)
-- Coaching: $${p.coachingPackage2xPrice} commencement fee
+- Coaching: $${p.coachingPackage2xPrice} Foundational Read
 
 Mon 13 Jul 2026 Funnel B launch is 10 days away — Meta ads activate that morning.
 

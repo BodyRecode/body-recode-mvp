@@ -172,7 +172,7 @@ export async function syncSubscriptionFromStripe(
 
 /**
  * Mark the commencement fee paid on client_payment_plan, if not already set.
- * Triggered by checkout.session.completed for the one-off $240 charge.
+ * Triggered by checkout.session.completed for the one-off $297 charge.
  * Idempotent: won't overwrite an existing paid_at.
  */
 export async function markCommencementPaid(

@@ -1,6 +1,6 @@
 /**
  * Manually mark a client's commencement fee as paid. Used when the automatic
- * detection (one-off ~$240 Stripe charge) didn't catch it.
+ * detection (one-off ~$297 Stripe charge) didn't catch it.
  *
  * POST body: { client_id: string, paid_at?: ISO date string }
  */

@@ -1321,12 +1321,12 @@ ${darkEmailSignature()}
       await resend.emails.send({
         from: fromBrand(),
         to: coach().email,
-        subject: `Commencement fee received — ${client.name}`,
+        subject: `Foundational Read received — ${client.name}`,
         html: `
 <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;padding:40px 24px;background:#FFFFFF;color:#aaa;">
   <img src="${logoUrl()}" width="110" alt="Body Recode" style="display:block;margin-bottom:32px;" />
-  <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${client.name} paid the commencement fee.</p>
-  <p style="font-size:15px;color:#aaa;margin:0 0 24px;">$240 confirmed. The Payments tracker now shows commencement as paid on their profile.</p>
+  <p style="font-size:20px;font-weight:700;color:#fff;margin:0 0 8px;">${client.name} paid the Foundational Read.</p>
+  <p style="font-size:15px;color:#aaa;margin:0 0 24px;">$297 confirmed. The Payments tracker now shows the Foundational Read as paid on their profile.</p>
   <a href="${appUrl()}/dashboard/clients/${client.id}#payments" style="display:inline-block;padding:12px 24px;background:#1B6DFC;color:#000;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">View client</a>
 </div>`,
       })
@@ -1411,7 +1411,7 @@ ${darkEmailSignature()}
   // Record commencement fee payment. In subscription mode (split installments)
   // session.payment_intent is null, so we fall back to the subscription id for
   // traceability. session.amount_total is the first-invoice amount ($120 in
-  // split mode, $240 in one-off mode), so it reflects what actually landed.
+  // split mode, $297 in one-off mode), so it reflects what actually landed.
   const subscriptionIdForPayment = session.subscription as string | null
   if (session.amount_total && session.amount_total > 0) {
     await admin.from('be_payments').insert({
@@ -1451,7 +1451,7 @@ ${emailLogo()}
 ${emailEyebrow('Payment Received')}
 ${emailHeading(`${lead.name} just paid.`)}
 ${emailDivider()}
-${emailBody(`Commencement fee confirmed. The welcome email and intake link have been sent to ${lead.email}.`)}
+${emailBody(`Foundational Read confirmed. The welcome email and intake link have been sent to ${lead.email}.`)}
 ${emailStatusCard({
   eyebrow: 'Next step',
   headline: 'Wait for intake completion',
@@ -1464,7 +1464,7 @@ ${darkEmailSignature()}
       from: fromBrand(),
       to: coach().email,
       subject: `Payment received - ${lead.name}`,
-      html: darkEmailShell(coachInner, { previewText: `${lead.name} paid the commencement fee.` }),
+      html: darkEmailShell(coachInner, { previewText: `${lead.name} paid the Foundational Read.` }),
     })
   }
 
@@ -1481,7 +1481,7 @@ ${emailEyebrow('Welcome to Body Recode')}
 ${emailHeading(`You're officially in, ${firstName}.`)}
 ${emailDivider()}
 ${emailBody(`Hi ${firstName},`)}
-${emailBody('Your commencement fee has been received. Your client portal is ready.')}
+${emailBody('Your Foundational Read has been received. Your client portal is ready.')}
 ${emailBody(`Open the link below and sign in with this email address (${lead.email}). You'll get a 6-digit code by email — no password to set or remember.`, { bottom: 28 })}
 ${emailCta({ href: portalUrl, label: 'Open my portal' })}
 ${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}

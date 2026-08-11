@@ -192,7 +192,7 @@ export default async function ClientStatusPage() {
         <CountCard label="Active" value={counts.active} icon={CheckCircle2} tone="good" />
         <CountCard label="Past due" value={counts.pastDue} icon={AlertTriangle} tone="bad" />
         <CountCard label="No active sub" value={counts.noSub} icon={Clock} tone="warn" />
-        <CountCard label="No commencement" value={counts.noCommencement} icon={XCircle} tone="muted" />
+        <CountCard label="No Foundational Read" value={counts.noCommencement} icon={XCircle} tone="muted" />
       </div>
 
       {/* Table */}
@@ -200,7 +200,7 @@ export default async function ClientStatusPage() {
         <div className="grid grid-cols-[2fr_1.2fr_1fr_1.3fr_0.9fr_0.9fr] gap-3 px-4 py-3 bg-stone-100 border-b border-stone-200 text-[10px] font-semibold text-stone-500 uppercase tracking-wider">
           <div>Client</div>
           <div>Plan</div>
-          <div>Commencement</div>
+          <div>Foundational Read</div>
           <div>Subscription</div>
           <div className="text-right">Last paid</div>
           <div className="text-right">Lifetime PC</div>

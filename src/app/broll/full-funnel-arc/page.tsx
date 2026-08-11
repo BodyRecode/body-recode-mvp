@@ -71,11 +71,11 @@ const STAGES = [
     n: 4,
     timing: 'Stage 4 · Ascension',
     badgeColor: '#021A4D',
-    duration: '$240 + ongoing',
+    duration: '$297 + ongoing',
     price: '$149/wk',
     name: 'The bespoke',
     product: 'Online 1:1 Performance Coaching',
-    body: 'Fully custom plans, weekly check-ins, ongoing biofeedback review and adjustments. Fat Map updated continuously. $240 commencement covers the foundational read. In-person 2x ($299/wk) and 3x ($409/wk) available for local clients.',
+    body: 'Fully custom plans, weekly check-ins, ongoing biofeedback review and adjustments. Fat Map updated continuously. $297 Foundational Read covers the foundational read. In-person 2x ($299/wk) and 3x ($409/wk) available for local clients.',
     state: 'Ready',
   },
 ]

@@ -5,7 +5,7 @@
  *
  * Rendered inside the per-client Payments section when the client is on a
  * non-billing package (contra / no_charge). Lets the coach optionally send
- * the $240 commencement link to clients who'd normally be skipped by the
+ * the $297 commencement link to clients who'd normally be skipped by the
  * Payments tracker. Mirrors the lead-stage CommencementFeeButton's send +
  * copy + last-sent affordances; persists communications in
  * client_communications.
@@ -61,7 +61,7 @@ export default function ClientCommencementFeeButton({
       router.refresh()
       setTimeout(() => setSent(false), 3000)
     } else {
-      setError(data.error ?? 'Failed to send commencement fee link')
+      setError(data.error ?? 'Failed to send Foundational Read link')
     }
   }
 
@@ -86,7 +86,7 @@ export default function ClientCommencementFeeButton({
 
   if (initialPaid) {
     return (
-      <p className="text-xs text-blue-500">Commencement fee paid — no further action.</p>
+      <p className="text-xs text-blue-500">Foundational Read paid — no further action.</p>
     )
   }
 
@@ -116,7 +116,7 @@ export default function ClientCommencementFeeButton({
           disabled={sending || sent}
           className="inline-flex items-center gap-2 text-xs font-bold px-3 py-1.5 bg-blue-50 border border-blue-200 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors disabled:opacity-50"
         >
-          {sending ? 'Sending...' : sent ? 'Email sent' : 'Send commencement fee link'}
+          {sending ? 'Sending...' : sent ? 'Email sent' : 'Send Foundational Read link'}
         </button>
         <button
           onClick={copyLink}

@@ -72,7 +72,7 @@ export const FLOW_METRICS: MetricDef[] = [
   { key: 'challenge_enrolls',label: 'Challenge Enrollments', engine: 'growth', direction: 'higher', unit: 'count',   hint: 'Free 14-day Challenge starts' },
   { key: 'zoom_calls',       label: 'Zoom Calls',           engine: 'growth', direction: 'higher', unit: 'count',    hint: 'Sales calls (by call date)' },
   { key: 'blueprint_sales',  label: 'Blueprint Sales',      engine: 'growth', direction: 'higher', unit: 'count',    hint: '$97 Blueprint purchases' },
-  { key: 'new_clients',      label: 'New Coaching Clients', engine: 'growth', direction: 'higher', unit: 'count',    hint: 'Commencement fee paid' },
+  { key: 'new_clients',      label: 'New Coaching Clients', engine: 'growth', direction: 'higher', unit: 'count',    hint: 'Foundational Read paid' },
   { key: 'cash_collected',   label: 'Cash Collected',       engine: 'cash',   direction: 'higher', unit: 'currency', hint: 'One-time + digital + manually recorded payments' },
 ]
 

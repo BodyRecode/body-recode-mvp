@@ -57,8 +57,8 @@ export type TenantConfig = {
     blueprintPrice: number          // 97
     membershipName: string          // "Body Recode Membership"
     membershipPrice: number         // 49
-    coachingPackage2xPrice: number  // 240 (commencement fee)
-    coachingPackagePriceLabel: string // "$240 commencement fee"
+    coachingPackage2xPrice: number  // 297 (Foundational Read)
+    coachingPackagePriceLabel: string // "$297 Foundational Read"
   }
 
   /** Licensing context — attributes about this specific tenant */
@@ -192,8 +192,8 @@ const BODY_RECODE_TENANT: TenantConfig = {
     blueprintPrice: 97,
     membershipName: 'Body Recode Membership',
     membershipPrice: 49,
-    coachingPackage2xPrice: 240,
-    coachingPackagePriceLabel: '$240 commencement fee',
+    coachingPackage2xPrice: 297,
+    coachingPackagePriceLabel: '$297 Foundational Read',
   },
   licence: {
     tenantId: 'body-recode',

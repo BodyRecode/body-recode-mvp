@@ -177,7 +177,7 @@ export default function PackageManager({
             ))}
           </div>
           <p className="text-[10px] text-[#999999] mt-1.5">
-            Skips the Payments tracker. No Stripe link sent, no commencement-fee flag, no overdue indicator.
+            Skips the Payments tracker. No Stripe link sent, no Foundational Read flag, no overdue indicator.
           </p>
         </div>
       </div>

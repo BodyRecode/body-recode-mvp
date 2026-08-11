@@ -5,7 +5,7 @@
  *
  * The high-intent Body Recode funnel where a lead enters via the
  * Scorecard, optionally buys the $37 Body Decode Report, takes a
- * Zoom 1 sales call, and either commences ($240 + weekly subscription)
+ * Zoom 1 sales call, and either commences ($297 + weekly subscription)
  * or declines (3-email re-engagement + $97 12-Week State Program
  * downsell).
  *
@@ -18,13 +18,13 @@
  *
  *   Zone 1: The full Funnel A diagram. Scorecard at left, horizontal
  *           flow Scorecard -> $37 Report -> Zoom invite -> Zoom call ->
- *           Commencement, with Stage 4 subscription tiers UP from
- *           Commencement and the Decline branch DOWN from Zoom call
+ *           Foundational Read, with Stage 4 subscription tiers UP from
+ *           Foundational Read and the Decline branch DOWN from Zoom call
  *           (3-email re-engagement -> $97 12-Week State Program).
  *   Zone 2: Zoom 1 Call Companion 4-stage breakdown (Listen + Pitch)
  *           and the Path A/B/C decision matrix.
  *   Zone 3: The three coaching subscription tiers + the LTV path
- *           (commencement fee + weekly + 3x upgrade).
+ *           (Foundational Read + weekly + 3x upgrade).
  *
  * Source of truth:
  *   src/app/dashboard/help/page.tsx (Sections 1, 2)
@@ -156,9 +156,9 @@ export default function FunnelADirectCoachingArcPage() {
           {/*
             Funnel A layout (9-col x 7-row grid):
 
-              Row 1: . . . . . . . . [Stage 4 subscription tiers]   ← UP from Commencement
+              Row 1: . . . . . . . . [Stage 4 subscription tiers]   ← UP from Foundational Read
               Row 2: . . . . . . . .         ↑
-              Row 3: [Scorecard] → [$37 Report] → [Zoom invite] → [Zoom call] → [Commencement]
+              Row 3: [Scorecard] → [$37 Report] → [Zoom invite] → [Zoom call] → [Foundational Read]
               Row 4: . . . . . . .           ↓ . .                 ← DECLINED (Path A)
               Row 5: . . . . . . . [3-email re-engagement] . .
               Row 6: . . . . . . .           ↓ . .
@@ -173,7 +173,7 @@ export default function FunnelADirectCoachingArcPage() {
             gap: '10px',
             alignItems: 'stretch',
           }}>
-            {/* Row 1 — Stage 4 subscription tiers ceiling card, col 9 (above Commencement) */}
+            {/* Row 1 — Stage 4 subscription tiers ceiling card, col 9 (above Foundational Read) */}
             <div style={{ gridColumn: '9 / 10', gridRow: '1 / 2' }}>
               <div style={{
                 background: C.blueDeepest,
@@ -201,12 +201,12 @@ export default function FunnelADirectCoachingArcPage() {
               </div>
             </div>
 
-            {/* Row 2 — UP arrow from Commencement to Coaching tiers, col 9 */}
+            {/* Row 2 — UP arrow from Foundational Read to Coaching tiers, col 9 */}
             <div style={{ gridColumn: '9 / 10', gridRow: '2 / 3', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <span style={{ fontSize: '22px', color: C.blue, fontWeight: 800 }}>↑</span>
             </div>
 
-            {/* Row 3 — Main horizontal funnel: Scorecard → $37 Report → Zoom invite → Zoom call → Commencement */}
+            {/* Row 3 — Main horizontal funnel: Scorecard → $37 Report → Zoom invite → Zoom call → Foundational Read */}
             {/* Scorecard (col 1) */}
             <div style={{ gridColumn: '1 / 2', gridRow: '3 / 4' }}>
               <div style={{
@@ -286,16 +286,16 @@ export default function FunnelADirectCoachingArcPage() {
               <span style={{ fontSize: '22px', color: C.blue, fontWeight: 800 }}>→</span>
               <span style={{ fontSize: '8px', color: C.blue, fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase', marginTop: '2px' }}>Path C</span>
             </div>
-            {/* Commencement Fee $240 (col 9) */}
+            {/* Foundational Read $297 (col 9) */}
             <div style={{ gridColumn: '9 / 10', gridRow: '3 / 4' }}>
               <div style={zone1Card(C.blueDeepest)}>
                 <div>
                   <span style={{ ...stageBadge(C.blueDeepest), background: C.blueDeepest }}>Front-end $</span>
-                  <p style={cardTitle}>Commencement Fee</p>
-                  <p style={cardSub}>$240 one-time · Foundational read</p>
+                  <p style={cardTitle}>Foundational Read</p>
+                  <p style={cardSub}>$297 one-time · Foundational read</p>
                   <p style={cardBody}>Covers CFFS intake, Fat Map baseline, system setup. Stripe checkout link.</p>
                 </div>
-                <p style={cardPrice}>$240</p>
+                <p style={cardPrice}>$297</p>
               </div>
             </div>
 
@@ -345,7 +345,7 @@ export default function FunnelADirectCoachingArcPage() {
           }}>
             <strong style={{ color: C.amber }}>Path A (Declined)</strong> drops the decline branch ·
             <strong style={{ color: C.grey }}> Path B (Needs Time)</strong> = manual follow-up, not drawn ·
-            <strong style={{ color: C.blue }}> Path C (Proceeding)</strong> = forward arrow into Commencement.
+            <strong style={{ color: C.blue }}> Path C (Proceeding)</strong> = forward arrow into Foundational Read.
             Full path detail in Zone 2.
           </p>
         </div>
@@ -500,7 +500,7 @@ export default function FunnelADirectCoachingArcPage() {
                 Proceeding
               </p>
               <p style={{ fontSize: '12px', color: C.body, lineHeight: 1.55, margin: 0 }}>
-                Pathway selector (Full Rate / Online), then commencement fee link can be sent immediately. Moves into onboarding.
+                Pathway selector (Full Rate / Online), then Foundational Read link can be sent immediately. Moves into onboarding.
               </p>
             </div>
           </div>
@@ -549,24 +549,24 @@ export default function FunnelADirectCoachingArcPage() {
             letterSpacing: '-0.035em', lineHeight: 1.1,
             color: C.text, marginBottom: '20px', textAlign: 'center',
           }}>
-            Commencement opens it. <span style={{ color: C.blue }}>Subscription compounds it.</span>
+            Foundational Read opens it. <span style={{ color: C.blue }}>Subscription compounds it.</span>
           </h2>
           <p style={{
             fontSize: '17px', color: C.body,
             textAlign: 'center', marginBottom: '48px',
             maxWidth: '820px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.65,
           }}>
-            $240 one-time covers the foundational read. Weekly subscription begins after. LTV grows on the 3x upgrade.
+            $297 one-time covers the foundational read. Weekly subscription begins after. LTV grows on the 3x upgrade.
           </p>
 
-          {/* 4 cards: Commencement + 3 tiers */}
+          {/* 4 cards: Foundational Read + 3 tiers */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(4, 1fr)',
             gap: '14px',
             marginBottom: '32px',
           }}>
-            {/* Commencement */}
+            {/* Foundational Read */}
             <div style={{
               background: C.bg, border: `2px solid ${C.blueDeepest}`,
               borderRadius: '14px', padding: '24px 22px',
@@ -575,10 +575,10 @@ export default function FunnelADirectCoachingArcPage() {
                 Front-end
               </p>
               <p style={{ fontSize: '22px', fontWeight: 900, color: C.text, margin: '0 0 8px', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
-                Commencement
+                Foundational Read
               </p>
               <p style={{ fontSize: '14px', fontWeight: 800, color: C.blueDeepest, margin: '0 0 10px' }}>
-                $240 one-time
+                $297 one-time
               </p>
               <p style={{ fontSize: '12px', color: C.body, lineHeight: 1.55, margin: 0 }}>
                 Foundational read (CFFS intake, Fat Map baseline). Stripe checkout. Sent in Path C of the Zoom call.

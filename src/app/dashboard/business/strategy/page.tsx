@@ -1659,7 +1659,7 @@ export default function StrategyPage() {
                 {[
                   { label: 'Front door', value: 'Scorecard', note: 'Free (both funnels)', color: 'text-stone-700' },
                   { label: 'Funnel B (primary)', value: 'Challenge → Blueprint', note: 'Free → $97 → Membership', color: 'text-blue-500' },
-                  { label: 'Funnel A (coaching)', value: '$240 → $299–409/wk', note: 'Zoom → 1:1', color: 'text-blue-500' },
+                  { label: 'Funnel A (coaching)', value: '$297 → $299–409/wk', note: 'Zoom → 1:1', color: 'text-blue-500' },
                   { label: 'A upsell', value: '$37 Report', note: 'On the coaching path', color: 'text-amber-700' },
                   { label: 'A downsell', value: '$97 Self-guided', note: 'Zoom decline (≠ Blueprint)', color: 'text-violet-700' },
                 ].map(item => (

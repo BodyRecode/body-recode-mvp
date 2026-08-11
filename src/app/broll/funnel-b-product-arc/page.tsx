@@ -210,7 +210,7 @@ export default function FunnelBProductArcPage() {
                   Online 1:1 Performance Coaching
                 </p>
                 <p style={{ fontSize: '11px', color: '#B5CFFC', margin: 0, lineHeight: 1.45 }}>
-                  $240 commencement + $149/wk · In-person 2x $299/wk · 3x $409/wk
+                  $297 Foundational Read + $149/wk · In-person 2x $299/wk · 3x $409/wk
                 </p>
               </div>
             </div>
@@ -483,7 +483,7 @@ export default function FunnelBProductArcPage() {
                 Online 1:1
               </p>
               <p style={{ fontSize: '14px', fontWeight: 800, color: C.blueDark, margin: '0 0 14px' }}>
-                $240 commencement + $149/wk
+                $297 Foundational Read + $149/wk
               </p>
               <p style={{ fontSize: '13px', color: C.body, lineHeight: 1.65, margin: 0 }}>
                 Fully bespoke. Weekly 1:1 check-ins. Fat Map updated continuously. The default ascension path from the product ladder (Stages 1-3).
@@ -503,7 +503,7 @@ export default function FunnelBProductArcPage() {
                 In-person 2x
               </p>
               <p style={{ fontSize: '14px', fontWeight: 800, color: C.blueDark, margin: '0 0 14px' }}>
-                $240 commencement + $299/wk
+                $297 Foundational Read + $299/wk
               </p>
               <p style={{ fontSize: '13px', color: C.body, lineHeight: 1.65, margin: 0 }}>
                 Two in-person sessions per week at AF Newstead. Same interpretation system, in-room contact, hands-on calibration.
@@ -523,7 +523,7 @@ export default function FunnelBProductArcPage() {
                 In-person 3x
               </p>
               <p style={{ fontSize: '14px', fontWeight: 800, color: C.blueDark, margin: '0 0 14px' }}>
-                $240 commencement + $409/wk
+                $297 Foundational Read + $409/wk
               </p>
               <p style={{ fontSize: '13px', color: C.body, lineHeight: 1.65, margin: 0 }}>
                 Three in-person sessions per week. Highest contact tier. Recommended for clients in active progression with capacity for higher density.
@@ -536,7 +536,7 @@ export default function FunnelBProductArcPage() {
             textAlign: 'center', marginTop: '48px',
             maxWidth: '820px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.65,
           }}>
-            $240 one-time commencement covers the foundational read (CFFS, intake, Fat Map baseline). The weekly subscription begins after.
+            $297 one-time Foundational Read covers the foundational read (CFFS, intake, Fat Map baseline). The weekly subscription begins after.
           </p>
         </div>
       </section>

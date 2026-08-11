@@ -117,7 +117,7 @@ export interface ClientNextActionInput {
    *
    *   past_due / unpaid     → Stripe subscription is currently broken (red, p10)
    *   canceled              → primary subscription canceled while client still active (red, p10)
-   *   commencement_missing  → on a plan, coaching has started, $240 commencement not received (amber, p20)
+   *   commencement_missing  → on a plan, coaching has started, $297 commencement not received (amber, p20)
    *
    * Null means either no flagged signal or the client is exempt (no
    * client_payment_plan + no client_subscriptions row — e.g. contra deals).
@@ -421,8 +421,8 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       clientId: input.clientId,
       clientName: input.clientName,
       stage: 'payment_commencement_missing',
-      headline: 'Commencement fee outstanding',
-      sublabel: input.paymentDetail ?? 'On a plan, coaching has started, $240 fee not received',
+      headline: 'Foundational Read outstanding',
+      sublabel: input.paymentDetail ?? 'On a plan, coaching has started, $297 fee not received',
       href: `${profileHref}#payments`,
       accent: 'amber',
       priority: 20,

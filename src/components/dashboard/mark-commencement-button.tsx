@@ -6,7 +6,7 @@ import { Check } from 'lucide-react'
 
 /**
  * Manually mark the commencement fee as paid for a client. Used when the
- * automatic detection (one-off ~$240 Stripe charge against a known customer)
+ * automatic detection (one-off ~$297 Stripe charge against a known customer)
  * doesn't catch it — e.g. paid via bank transfer, paid before this feature
  * shipped, paid through a different account, etc.
  */

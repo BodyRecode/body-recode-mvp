@@ -149,8 +149,8 @@ export default function CoachingGuidePage() {
             </GuideSection>
 
             <GuideSection id="activation" title="Commitment and Activation">
-              <p>Active Coaching is formally activated once your Commencement Fee has been processed and your Coaching Agreement becomes available in your portal. From that point, your onboarding sequence begins.</p>
-              <Emphasis>The Commencement Fee does not begin training exposure. It activates configuration.</Emphasis>
+              <p>Active Coaching is formally activated once your Foundational Read has been processed and your Coaching Agreement becomes available in your portal. From that point, your onboarding sequence begins.</p>
+              <Emphasis>The Foundational Read does not begin training exposure. It activates configuration.</Emphasis>
               <p>{brand().name} operates on governed sequencing. Load is not introduced until contractual alignment, health status, and readiness have been confirmed. Your coaching phase is now active. Structured exposure has not yet begun.</p>
               <Emphasis>Once foundational documentation is returned, the next stage opens.</Emphasis>
             </GuideSection>

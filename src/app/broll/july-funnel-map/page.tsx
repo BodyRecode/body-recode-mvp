@@ -135,7 +135,7 @@ export default function JulyFunnelMapPage() {
           <div style={{ background: C.blueDeepest, border: `2px solid ${C.blue}`, color: '#fff', borderRadius: '13px', padding: '18px', textAlign: 'center', maxWidth: '640px', margin: '0 auto' }}>
             <p style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#B5CFFC', margin: '0 0 5px' }}>Stage 4 · the ceiling</p>
             <p style={{ fontSize: '19px', fontWeight: 900, margin: '0 0 5px' }}>1:1 Performance Coaching</p>
-            <p style={{ fontSize: '11px', color: '#B5CFFC', margin: 0 }}>$240 commencement + $149/wk online · $299/wk 2x · $409/wk 3x</p>
+            <p style={{ fontSize: '11px', color: '#B5CFFC', margin: 0 }}>$297 Foundational Read + $149/wk online · $299/wk 2x · $409/wk 3x</p>
           </div>
 
           <p style={{ fontSize: '13px', color: C.grey, textAlign: 'center', margin: '28px auto 0', maxWidth: '900px', lineHeight: 1.6 }}>
@@ -174,7 +174,7 @@ export default function JulyFunnelMapPage() {
             <div style={mCard()}>
               <p style={{ fontSize: '12px', fontWeight: 800, color: C.blueDark, letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 8px' }}>Stage 4 · Coaching</p>
               <p style={{ fontSize: '26px', fontWeight: 900, margin: '0 0 10px' }}>Real revenue</p>
-              <p style={{ fontSize: '13px', color: C.body, lineHeight: 1.55, margin: 0 }}>$240 + $149–409/wk. The ceiling both funnels reach. Makes the ad maths work.</p>
+              <p style={{ fontSize: '13px', color: C.body, lineHeight: 1.55, margin: 0 }}>$297 + $149–409/wk. The ceiling both funnels reach. Makes the ad maths work.</p>
             </div>
           </div>
 

@@ -418,22 +418,22 @@ const FLOOR_RECOMMENDATIONS: Record<SectionKey, string> = {
 }
 
 function pathOrder(inv?: AnswerLetter | null): string[] {
-  if (inv === 'A') return ['• PATH C (most likely) - yes. Companion → Path C → Send commencement fee → Mark Complete.',
+  if (inv === 'A') return ['• PATH C (most likely) - yes. Companion → Path C → Send Foundational Read → Mark Complete.',
                             '• PATH B (possible) - needs time. Dashboard "Path B" handoff.',
                             '• PATH A (less likely) - out. Dashboard "Path A" handoff + trigger declined follow-up.']
   if (inv === 'B') return ['• PATH C / PATH B (mixed) - read the room.',
-                            '• PATH C - yes. Companion → Path C → Send commencement fee → Mark Complete.',
+                            '• PATH C - yes. Companion → Path C → Send Foundational Read → Mark Complete.',
                             '• PATH B - needs time. Dashboard "Path B" handoff.',
                             '• PATH A (less likely) - out. Trigger declined follow-up.']
   if (inv === 'C') return ['• PATH B (most likely) - needs time. Dashboard "Path B" handoff.',
                             '• PATH A (possible) - out. Dashboard "Path A" handoff + trigger declined follow-up.',
-                            '• PATH C (less likely) - yes. Companion → Path C → Send commencement fee → Mark Complete.']
+                            '• PATH C (less likely) - yes. Companion → Path C → Send Foundational Read → Mark Complete.']
   if (inv === 'D') return ['• PATH A (most likely) - out. Dashboard "Path A" handoff + trigger declined follow-up.',
                             '• PATH B (less likely) - needs time. Send post-session recap email.',
-                            '• PATH C (unlikely) - yes. Companion → Path C → Send commencement fee.']
+                            '• PATH C (unlikely) - yes. Companion → Path C → Send Foundational Read.']
   return ['• PATH B - needs time. Dashboard "Path B" handoff.',
           '• PATH A - out. Dashboard "Path A" handoff + trigger declined follow-up.',
-          '• PATH C - yes. Companion → Path C → Send commencement fee → Mark Complete.']
+          '• PATH C - yes. Companion → Path C → Send Foundational Read → Mark Complete.']
 }
 
 // =============================================================
@@ -722,7 +722,7 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   lines.push('PRICE')
   lines.push('• $299/wk standard (2x in-person)')
   lines.push(`• $409/wk for 3x - ${bank.threeXNote}`)
-  lines.push('• $240 commencement, one-off')
+  lines.push('• $297 Foundational Read, one-off')
   lines.push('• Founding Client offer (closing line, not lead): half off, locked for engagement → $149.50/wk')
   lines.push('')
   lines.push(`Commitment ask: minimum ${bank.commitmentWeeks}-week interpretive window.`)
@@ -737,7 +737,7 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   lines.push('"You\'re not paying for two sessions a week. You\'re paying for me reading your body the whole time. Loading it, recovering it, adjusting. The question isn\'t whether it\'s expensive. It\'s whether what you\'ve been doing has been working."')
   lines.push('')
   lines.push('Fallback (only if price genuinely holds):')
-  lines.push('• Online - $149/wk → $74.50 launch rate. Same $240 commencement. Same system.')
+  lines.push('• Online - $149/wk → $74.50 launch rate. Same $297 Foundational Read. Same system.')
   lines.push('')
   lines.push('')
 

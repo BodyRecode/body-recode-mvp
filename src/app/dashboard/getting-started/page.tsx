@@ -109,7 +109,7 @@ export default async function GettingStartedPage() {
       done: isBR || stripeConnected,
       icon: CreditCard,
       href: '/dashboard/settings/tenant',
-      description: 'Connect your Stripe account so client payments (report, blueprint, commencement fees, memberships) flow direct to you. Takes 5-10 minutes. Reversible.',
+      description: 'Connect your Stripe account so client payments (report, blueprint, Foundational Reads, memberships) flow direct to you. Takes 5-10 minutes. Reversible.',
     },
     {
       key: 'twilio',
