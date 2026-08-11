@@ -64,6 +64,20 @@ export async function POST(request: NextRequest) {
     )
   }
 
+  // The state re-score text is client-facing too; audit it (nullable fields).
+  if (result.reScore.rationale || result.reScore.patternConfidenceNote) {
+    const rescoreText: Record<string, unknown> = {}
+    if (result.reScore.rationale) rescoreText.tr_state_rationale = result.reScore.rationale
+    if (result.reScore.patternConfidenceNote) rescoreText.tr_pattern_confidence_note = result.reScore.patternConfidenceNote
+    const rsAudit = auditClientReadingFields(rescoreText, Object.keys(rescoreText))
+    if (!rsAudit.ok) {
+      return NextResponse.json(
+        { error: `Re-score leaked internal terminology (${rsAudit.leaks.join(', ')}). Click Regenerate to redraft.` },
+        { status: 500 },
+      )
+    }
+  }
+
   // Apply partner terminology substitutions post-audit. No-op for BR.
   const auditCleaned = audit.cleaned as Record<string, string>
   const rewritten: Record<string, string> = {}
@@ -85,6 +99,13 @@ export async function POST(request: NextRequest) {
       tr_what_held_steady: cleanedSections.tr_what_held_steady,
       tr_what_this_sets_up_next: cleanedSections.tr_what_this_sets_up_next,
       tr_coach_note: cleanedSections.tr_coach_note,
+      // Progress Read state re-score (null when no Progress Check drove the read).
+      tr_new_body_state: result.reScore.newState,
+      tr_previous_body_state: result.reScore.previousState,
+      tr_state_direction: result.reScore.direction,
+      tr_state_rationale: result.reScore.rationale,
+      tr_pattern_confidence_note: result.reScore.patternConfidenceNote,
+      tr_progress_check_id: result.reScore.progressCheckId,
       tr_doctrine_version: DOCTRINE_VERSIONS.trajectory_reading,
       trajectory_reading_generated_at: new Date().toISOString(),
     })

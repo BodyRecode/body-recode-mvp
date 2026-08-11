@@ -84,15 +84,28 @@ PROHIBITED:
 - Em dashes. Use commas, periods, or rewrite. Em dashes are a non-negotiable style rule.
 - Exclamation marks.
 
+STATE RE-SCORE (only when a PROGRESS CHECK is present in the user message):
+When the client has completed a Progress Check (a short re-assessment) at the end of this block, this reading ALSO re-scores their body state, read together with the weekly arc. Rules:
+- The three states are Depleted, Transitioning, and Ready. Use these exact public labels and no others.
+- Move conservatively. The state moves at most ONE step from the prior state, and only on converging evidence across BOTH the Progress Check and the weekly arc. Depleted is the floor: do not lift someone off Depleted on a single good block without clear, sustained signal.
+- If the evidence is mixed, thin, or conflicting, HOLD the prior state and say why. A confident hold is a valid, honest result, not a failure.
+- PATTERN IS HELD. You never change or re-score the client's pattern here. You may note only whether confidence in the existing pattern is steady, and never in terms of hormone levels.
+- Base the re-score on the Progress Check answers (the direction fields and current-state scales) and the weekly arc, never on weight or body composition.
+When a PROGRESS CHECK is present, produce pr_new_body_state, pr_state_direction, pr_state_rationale, and pr_pattern_confidence_note. When NO Progress Check is present, set all four to null.
+
 ${renderPartnerTuningSection()}OUTPUT FORMAT:
-Return ONLY valid JSON. No prose before or after. The JSON must have exactly these five string fields:
+Return ONLY valid JSON. No prose before or after. The JSON must have exactly these nine fields (the five tr_ sections are always strings; the four pr_ fields are strings when a Progress Check is present, otherwise null):
 
 {
   "tr_where_this_block_started": "...",
   "tr_how_your_signal_moved": "...",
   "tr_what_held_steady": "...",
   "tr_what_this_sets_up_next": "...",
-  "tr_coach_note": "..."
+  "tr_coach_note": "...",
+  "pr_new_body_state": "Depleted | Transitioning | Ready (or null if no Progress Check)",
+  "pr_state_direction": "improved | held | regressed (or null)",
+  "pr_state_rationale": "2 to 4 sentences on why the state moved or held (or null)",
+  "pr_pattern_confidence_note": "1 to 2 sentences: pattern held, confidence steady or with context, never a hormone level (or null)"
 }
 
 SECTION SPECIFICATIONS:
@@ -145,7 +158,9 @@ export function buildTrajectoryReadingUserPrompt(
   block: TrajectoryReadingBlockContext,
   weeks: TrajectoryReadingWeek[],
   client: { name: string },
-  coachGuidance?: string | null
+  coachGuidance?: string | null,
+  progressCheckText?: string | null,
+  priorStatePublic?: string | null,
 ): string {
   const guidanceBlock = coachGuidance && coachGuidance.trim()
     ? `\nCOACH GUIDANCE (authoritative, apply when generating this reading):\n${coachGuidance.trim()}\n`
@@ -172,6 +187,10 @@ ${fr.cr_what_your_body_is_telling_us ?? '(not available)'}
 
 What we focused on first (foundational):
 ${fr.cr_what_were_focusing_on_first ?? '(not available)'}
+
+${progressCheckText && progressCheckText.trim()
+  ? `PROGRESS CHECK (the client's end-of-block re-assessment. Use this together with the weekly arc to re-score state. Prior state to move from: ${priorStatePublic ?? fr.body_state_classification ?? 'Not classified'}):\n\n${progressCheckText.trim()}\n`
+  : 'PROGRESS CHECK: none provided. Set all pr_ fields to null and do not re-score state.'}
 
 THE BLOCK THAT JUST FINISHED:
 

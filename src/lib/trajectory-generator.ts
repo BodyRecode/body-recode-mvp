@@ -22,6 +22,39 @@ import {
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 import { AI_MODELS } from './ai-models'
+import { PROGRESS_CHECK_SECTIONS } from './progress-check-questions'
+
+/** Deep body-state name -> public label the client sees. */
+function toPublicState(s: string | null): string | null {
+  if (!s) return null
+  const t = s.toLowerCase()
+  if (t.includes('remediation') || t.includes('depleted')) return 'Depleted'
+  if (t.includes('post-optim') || t.includes('post optim') || t.includes('ready')) return 'Ready'
+  if (t.includes('optim') || t.includes('transition')) return 'Transitioning'
+  return s
+}
+
+/** Format a completed Progress Check into readable Q&A for the prompt. */
+function formatProgressCheck(responses: Record<string, string>): string {
+  const out: string[] = []
+  for (const section of PROGRESS_CHECK_SECTIONS) {
+    const answered = section.questions.filter(q => (responses[q.id] ?? '').toString().trim())
+    if (!answered.length) continue
+    out.push(`[${section.title}]`)
+    for (const q of answered) out.push(`Q: ${q.text}\nA: ${responses[q.id]}`)
+  }
+  return out.join('\n')
+}
+
+/** State re-score produced from a Progress Check (null throughout when none). */
+export type ProgressReScore = {
+  newState: string | null
+  direction: string | null
+  rationale: string | null
+  patternConfidenceNote: string | null
+  previousState: string | null
+  progressCheckId: string | null
+}
 
 export type TrajectoryReadingSections = {
   tr_where_this_block_started: string
@@ -33,6 +66,7 @@ export type TrajectoryReadingSections = {
 
 export type TrajectoryGenerationResult = {
   sections: TrajectoryReadingSections
+  reScore: ProgressReScore
   blockStartWeek: number
   blockEndWeek: number
   weeksRead: number
@@ -118,6 +152,19 @@ export async function generateTrajectoryReadingForProgram(
     body_state_classification: null,
   }
 
+  // Most recent completed Progress Check (prefer one linked to this block). Its
+  // answers drive the state re-score; absent = no re-score (all pr_ fields null).
+  const { data: pcRows } = await admin
+    .from('progress_checks')
+    .select('id, responses, program_id, submitted_at')
+    .eq('client_id', client.id)
+    .eq('status', 'complete')
+    .order('submitted_at', { ascending: false })
+    .limit(5)
+  const pc = pcRows?.find(r => r.program_id === programId) ?? pcRows?.[0] ?? null
+  const progressCheckText = pc ? formatProgressCheck((pc.responses ?? {}) as Record<string, string>) : null
+  const priorStatePublic = toPublicState(frContext.body_state_classification)
+
   const { data: cfwsRows, error: cfwsErr } = await admin
     .from('cfws')
     .select('week_number, client_context_snapshot, dominant_weekly_patterns, weekly_capacity_constraints, weekly_risk_flags, weekly_tensions_tradeoffs, closing_weekly_notes, exposure_readiness_capacity, exposure_readiness_schedule, exposure_readiness_regulation, exposure_readiness_behaviour')
@@ -158,6 +205,8 @@ export async function generateTrajectoryReadingForProgram(
         weeks,
         { name: client.name },
         program.tr_coach_guidance ?? null,
+        progressCheckText,
+        priorStatePublic,
       ),
     }],
   })
@@ -172,30 +221,48 @@ export async function generateTrajectoryReadingForProgram(
     throw new TrajectoryGenerationError(`Could not parse reading: ${content.text.slice(0, 120)}`, 500)
   }
 
-  let parsed: Partial<TrajectoryReadingSections>
+  let parsed: Record<string, unknown>
   try {
-    parsed = JSON.parse(jsonText)
+    parsed = JSON.parse(jsonText) as Record<string, unknown>
   } catch {
     throw new TrajectoryGenerationError(`JSON parse failed: ${jsonText.slice(0, 120)}`, 500)
   }
 
-  const required: (keyof TrajectoryReadingSections)[] = [
+  const required = [
     'tr_where_this_block_started',
     'tr_how_your_signal_moved',
     'tr_what_held_steady',
     'tr_what_this_sets_up_next',
     'tr_coach_note',
-  ]
+  ] as const
   for (const key of required) {
     if (!parsed[key] || typeof parsed[key] !== 'string') {
       throw new TrajectoryGenerationError(`Missing or invalid section: ${key}`, 500)
     }
   }
 
-  const cleaned = stripEmDashes(parsed as TrajectoryReadingSections)
+  const sections = stripEmDashes({
+    tr_where_this_block_started: parsed.tr_where_this_block_started,
+    tr_how_your_signal_moved: parsed.tr_how_your_signal_moved,
+    tr_what_held_steady: parsed.tr_what_held_steady,
+    tr_what_this_sets_up_next: parsed.tr_what_this_sets_up_next,
+    tr_coach_note: parsed.tr_coach_note,
+  } as TrajectoryReadingSections)
+
+  // Re-score fields are only trusted when a Progress Check drove the read.
+  const str = (v: unknown): string | null => (typeof v === 'string' && v.trim() ? stripEmDashes(v) : null)
+  const reScore: ProgressReScore = {
+    newState: pc ? str(parsed.pr_new_body_state) : null,
+    direction: pc ? str(parsed.pr_state_direction) : null,
+    rationale: pc ? str(parsed.pr_state_rationale) : null,
+    patternConfidenceNote: pc ? str(parsed.pr_pattern_confidence_note) : null,
+    previousState: pc ? priorStatePublic : null,
+    progressCheckId: pc?.id ?? null,
+  }
 
   return {
-    sections: cleaned,
+    sections,
+    reScore,
     blockStartWeek,
     blockEndWeek,
     weeksRead: weeks.length,
