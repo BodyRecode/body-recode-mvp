@@ -39,15 +39,16 @@ ${emailBody(paragraphsToHtml(reframe))}`
   const html = darkEmailShell(`
 ${emailLogo()}
 ${emailEyebrow(`Week ${weekNumber} · Form ${formType} response`)}
-${emailHeading(`${escapeHtml(firstName)}, here is my read on your check-in.`)}
-${emailBody(`Thanks for completing your check-in. Here is what I am seeing in your signal and what to hold this week.`)}
+${emailHeading(`${escapeHtml(firstName)}, here is the Body Recode read on your check-in.`)}
+${emailBody(`Thanks for completing your check-in. Here is what the system is seeing in your signal this week, and the one thing to hold.`)}
 ${emailEyebrow('Interpretation')}
 ${emailBody(paragraphsToHtml(interpretation))}
 ${reframeBlock}
 ${emailEyebrow('This week, hold this')}
 ${emailBody(paragraphsToHtml(nextFocus))}
+${emailBody('Kade will personally review your check-in and this response, and decide what, if anything, changes in your plan.', { size: 14, color: '#4A4A4A' })}
 ${emailCta({ href: checkinUrl, label: 'View in your portal' })}
-${emailBody('Your check-in and my response both live in your portal so you can return to them any time.', { size: 13, color: '#6B6B6B' })}
+${emailBody('Your check-in and this response both live in your portal so you can return to them any time.', { size: 13, color: '#6B6B6B' })}
 ${emailUrlFallback(checkinUrl, 'Or paste this link into your browser')}
 ${darkEmailSignature()}
 `, { previewText: subject })

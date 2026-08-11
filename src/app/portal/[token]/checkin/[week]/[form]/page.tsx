@@ -81,7 +81,7 @@ export default async function PortalCheckinDetail({
       {feedback ? (
           <div className="mb-10 rounded-2xl border border-blue-200 bg-[#FFFFFF] overflow-hidden">
             <div className="px-5 py-3 border-b border-[#E5E5E5] flex items-center justify-between">
-              <p className="text-[11px] font-bold uppercase tracking-widest text-[#1B6DFC]">Coach response</p>
+              <p className="text-[11px] font-bold uppercase tracking-widest text-[#1B6DFC]">Body Recode read</p>
               {feedback.email_sent_at && (
                 <p className="text-[10px] uppercase tracking-widest text-[#999999]">
                   Sent {new Date(feedback.email_sent_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
@@ -92,12 +92,15 @@ export default async function PortalCheckinDetail({
               <Section title="Interpretation" body={feedback.interpretation} />
               {feedback.reframe && <Section title="Reframe" body={feedback.reframe} />}
               <Section title="This week, hold this" body={feedback.next_focus} accent />
+              <p className="text-sm text-[#4A4A4A] leading-relaxed border-t border-[#E5E5E5] pt-4">
+                Kade will personally review your check-in and this response, and decide what, if anything, changes in your plan.
+              </p>
             </div>
           </div>
         ) : (
           <div className="mb-10 rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] px-5 py-4">
-            <p className="text-[11px] font-bold uppercase tracking-widest text-[#999999]">Coach response</p>
-            <p className="mt-2 text-sm text-[#6B6B6B]">Your coach has not responded to this check-in yet. You will receive an email when they do.</p>
+            <p className="text-[11px] font-bold uppercase tracking-widest text-[#999999]">Body Recode read</p>
+            <p className="mt-2 text-sm text-[#6B6B6B]">Your read for this check-in is not ready yet. You will receive an email when it is.</p>
           </div>
         )}
 
