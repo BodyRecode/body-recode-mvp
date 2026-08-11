@@ -4,7 +4,6 @@ import MarketingNav from '@/components/marketing/nav'
 import MarketingFooter from '@/components/marketing/footer'
 import DnaHelix from '@/components/dna-helix'
 import { brand } from "@/config/tenant";
-import { ADVISORY } from "@/config/advisors";
 
 export const metadata: Metadata = {
   title: 'Performance Coaching | Body Recode™',
@@ -106,45 +105,6 @@ export default function PerformanceCoachingPage() {
               <a href={`${brand().performanceDomain}/brisbane`} className="text-sm font-semibold text-stone-500 hover:text-stone-600 transition-colors">Brisbane Coaching →</a>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Independent review */}
-      <section className="bg-[#FFFFFF] py-32 px-5 border-t border-stone-200">
-        <div className="max-w-4xl mx-auto">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-6">{ADVISORY.eyebrow}</p>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A1A1A] tracking-tight mb-8">
-            {ADVISORY.heading}
-          </h2>
-          <p className="max-w-2xl text-stone-600 text-lg leading-relaxed mb-16">
-            {ADVISORY.intro}
-          </p>
-          <div className="grid md:grid-cols-3 gap-8">
-            {ADVISORY.advisors.map((a) => (
-              <div key={a.id} className="border border-stone-200 rounded-2xl p-8">
-                {a.photo && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={a.photo} alt={a.name ?? a.role} className="w-16 h-16 rounded-full object-cover grayscale mb-6" />
-                )}
-                <p className="text-lg font-bold text-[#1A1A1A] leading-snug mb-1">
-                  {a.name ?? a.role}
-                </p>
-                <p className="text-sm text-stone-500 mb-6">
-                  {a.name ? (a.credentials ?? a.role) : a.detail}
-                </p>
-                <p className="text-[10px] font-bold text-stone-400 uppercase tracking-[0.14em] mb-2">Reviewing</p>
-                <p className="text-stone-600 text-[15px] leading-relaxed">{a.reviewing}</p>
-                {a.href && (
-                  <a href={a.href} className="inline-block mt-5 text-sm font-semibold text-[#1B6DFC] hover:underline">
-                    Profile →
-                  </a>
-                )}
-              </div>
-            ))}
-          </div>
-          <p className="text-stone-400 text-sm leading-relaxed mt-10 max-w-2xl">
-            {ADVISORY.note}
-          </p>
         </div>
       </section>
 
