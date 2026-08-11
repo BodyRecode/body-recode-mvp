@@ -5,6 +5,14 @@ import Link from 'next/link'
 import { brand, coach } from "@/config/tenant";
 
 const AUTOMATIC_AUTOMATIONS = [
+  // Client-stage automations
+  {
+    id: 'progress-check-submitted',
+    name: 'Progress Check Submitted - Coach Notification',
+    description: `When a client submits their Progress Check (the short block-end re-assessment), a notification email fires to ${coach().email} with a link to their program page. Nothing publishes automatically: you open the program, click Generate on the Block-End / Progress Read panel to re-score their body state from the answers, review, then Publish and Notify. Best-effort - a failed notification never blocks the client's submission.`,
+    trigger: 'POST /api/submit-progress-check (client submits)',
+    steps: 1,
+  },
   // Lead-stage automations
   {
     id: 'scorecard-followup',
