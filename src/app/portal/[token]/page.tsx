@@ -139,6 +139,14 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   // Personal GP request list, if the coach has prepared one for this client.
   const gpRequestUrl = await getGpRequestUrl(admin, client.id)
 
+  // Blood work is an onboarding step with two completion paths: the client has
+  // uploaded a panel, OR has recorded they will arrange one. Either addresses it.
+  const { count: bloodPanelCount } = await admin
+    .from('blood_panels')
+    .select('id', { count: 'exact', head: true })
+    .eq('client_id', client.id)
+  const bloodworkAddressed = (bloodPanelCount ?? 0) > 0 || !!client.bloodwork_arranged_at
+
   // Unread coach replies drive the message card near the top of the portal.
   const { count: unreadCoachRepliesCount } = await admin
     .from('client_messages')
@@ -225,9 +233,17 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
       href: client.baseline_token ? `/baseline/${client.baseline_token}` : null,
       available: intakeDone,
     },
+    {
+      id: 'bloodwork',
+      title: 'Blood Work',
+      description: 'A blood panel is part of your Foundational Read. Upload recent results, or let me know you will get a panel done.',
+      done: bloodworkAddressed,
+      href: `/portal/${token}/bloods`,
+      available: baselineDone,
+    },
   ]
 
-  const allOnboardingDone = agreementDone && healthDone && intakeDone && baselineDone && !clearanceBlocking
+  const allOnboardingDone = agreementDone && healthDone && intakeDone && baselineDone && bloodworkAddressed && !clearanceBlocking
 
   const recentCheckins = Array.isArray(client.weekly_checkins)
     ? [...client.weekly_checkins].sort((a: { submitted_at: string }, b: { submitted_at: string }) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime()).slice(0, 3)

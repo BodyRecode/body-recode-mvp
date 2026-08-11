@@ -6,6 +6,7 @@ import PortalPageShell from '../portal-page-shell'
 import { isCoachEmail } from '@/lib/coach-auth'
 import { getGpRequestUrl } from '@/lib/gp-request'
 import BloodUploadForm from './blood-upload-form'
+import BloodworkChoice from './bloodwork-choice'
 
 /**
  * Client-facing Health Markers page. Always available: the client can upload a
@@ -24,7 +25,7 @@ export default async function BloodsPage({ params }: { params: Promise<{ token: 
   const admin = createAdminClient()
   const { data: client } = await admin
     .from('clients')
-    .select('id, name, email')
+    .select('id, name, email, bloodwork_arranged_at')
     .eq('onboarding_token', token)
     .maybeSingle()
   if (!client) return notFound()
@@ -100,6 +101,8 @@ export default async function BloodsPage({ params }: { params: Promise<{ token: 
           </div>
         </div>
       )}
+
+      <BloodworkChoice token={token} arranged={!!client.bloodwork_arranged_at} hasUpload={list.length > 0} />
 
       <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5 mb-8">
           <p className="text-xs font-bold tracking-widest text-[#999999] uppercase mb-3">Upload results</p>

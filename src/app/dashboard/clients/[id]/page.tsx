@@ -662,6 +662,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             { label: 'Health Declaration', done: !!client.health_declaration_submitted_at, href: client.health_declaration_submitted_at ? `/dashboard/clients/${id}/health-declaration` : null },
             { label: 'Intake', done: intakeDone, href: intakeDone ? `/dashboard/clients/${id}/intake` : null },
             { label: 'Baseline', done: !!baselines?.[0], href: baselines?.[0] ? `/dashboard/clients/${id}/baseline` : null },
+            // Addressed = a panel uploaded OR the client recorded they'll arrange one.
+            { label: (bloodPanels?.length ?? 0) > 0 ? 'Blood Work' : (client.bloodwork_arranged_at ? 'Blood Work (arranging)' : 'Blood Work'), done: (bloodPanels?.length ?? 0) > 0 || !!client.bloodwork_arranged_at, href: null },
           ].map(item => (
             <div key={item.label} className="flex items-center gap-2">
               <div className={`w-2 h-2 rounded-full flex-shrink-0 ${item.done ? 'bg-blue-500' : 'bg-[#E5E5E5]'}`} />
