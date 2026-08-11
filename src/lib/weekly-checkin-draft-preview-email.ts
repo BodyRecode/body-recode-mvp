@@ -115,6 +115,7 @@ ${emailBody(paragraphsToHtml(interpretation))}
 ${reframeBlock}
 ${emailEyebrow('This week, hold this')}
 ${emailBody(paragraphsToHtml(nextFocus))}
+${emailBody(`Kade will personally review your check-in and this response, and decide what, if anything, changes in your plan.`, { size: 14, color: '#4A4A4A' })}
 ${emailCta({ href: approveUrl, label: 'Approve &amp; send' })}
 ${emailBody(`Approve sends the response above to ${escapeHtml(clientFirstName)} and BCCs you. Edit or skip opens the dashboard.`, { size: 13, color: '#6B6B6B' })}
 ${darkEmailSignature()}
