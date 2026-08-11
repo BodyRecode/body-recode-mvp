@@ -268,8 +268,9 @@ export default function HelpPage() {
                 <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-widest mb-3">Phase 5 - Client Setup</p>
                 <div className="space-y-2">
                   <ChecklistItem text="Send the client their portal link - use the Send to Client button on the client profile, or copy it manually. The client signs in with their email address (magic link - no password)." />
-                  <ChecklistItem text="Client completes all 4 onboarding steps via the portal: Coaching Agreement → Health Declaration → Foundational Intake → Baseline Documentation" />
+                  <ChecklistItem text="Client completes all 5 onboarding steps via the portal: Coaching Agreement → Health Declaration → Foundational Intake → Baseline Documentation → Blood Work" />
                   <ChecklistItem text="You receive a notification email at each step as the client completes it" />
+                  <ChecklistItem text="Blood Work is the final step: the client either uploads recent results (Health Markers) or taps 'I'll get a panel done' (which surfaces their GP request list + the education guide). The 'arrange' path counts as done so it never blocks a client waiting on a GP appointment. Their onboarding dot shows 'Blood Work (arranging)' until results are uploaded. Scope of practice: their GP orders and interprets; you read results as one signal." />
                   <ChecklistItem text="If medical clearance is required (flagged on health declaration), the portal shows an additional Medical Clearance step before intake unlocks" />
                   <ChecklistItem text="CFFS generates automatically once intake is submitted - review it on the client profile" />
                   <ChecklistItem text="Set the Coaching Package on the client profile (online, 2x, or 3x) and copy the subscription link" />
