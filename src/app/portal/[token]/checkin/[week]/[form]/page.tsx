@@ -92,7 +92,7 @@ export default async function PortalCheckinDetail({
               <Section title="Interpretation" body={feedback.interpretation} />
               {feedback.reframe && <Section title="Reframe" body={feedback.reframe} />}
               <Section title="This week, hold this" body={feedback.next_focus} accent />
-              <p className="text-sm text-[#4A4A4A] leading-relaxed border-t border-[#E5E5E5] pt-4">
+              <p className="text-sm text-[#3A3A3A] leading-relaxed border-t border-[#E5E5E5] pt-4">
                 Kade will personally review your check-in and this response, and decide what, if anything, changes in your plan.
               </p>
             </div>

@@ -46,7 +46,7 @@ ${emailBody(paragraphsToHtml(interpretation))}
 ${reframeBlock}
 ${emailEyebrow('This week, hold this')}
 ${emailBody(paragraphsToHtml(nextFocus))}
-${emailBody('Kade will personally review your check-in and this response, and decide what, if anything, changes in your plan.', { size: 14, color: '#4A4A4A' })}
+${emailBody('Kade will personally review your check-in and this response, and decide what, if anything, changes in your plan.')}
 ${emailCta({ href: checkinUrl, label: 'View in your portal' })}
 ${emailBody('Your check-in and this response both live in your portal so you can return to them any time.', { size: 13, color: '#6B6B6B' })}
 ${emailUrlFallback(checkinUrl, 'Or paste this link into your browser')}
