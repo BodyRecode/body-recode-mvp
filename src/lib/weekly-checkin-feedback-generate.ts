@@ -181,8 +181,13 @@ export async function generateFeedbackDraft(
     attempts++
     let message
     try {
+      // Operational tier: this is a coach-reviewed content draft (approval-gated
+      // before it reaches a client), so per ai-models.ts it belongs on operational.
+      // The 2026-07-29 promotion to clinical (claude-sonnet-5) broke JSON parsing
+      // here — Sonnet wrapped the reply so extractFirstJsonObject failed 3x and no
+      // draft was produced (silent since ~2 Aug). Haiku parsed cleanly before that.
       message = await anthropic.messages.create({
-        model: AI_MODELS.clinical,
+        model: AI_MODELS.operational,
         max_tokens: 2000,
         system: buildFeedbackSystemPrompt(),
         messages: conversation,
