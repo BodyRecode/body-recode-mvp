@@ -73,7 +73,6 @@ GOVERNING PRINCIPLES (inherited from Body Recode doctrine):
 
 PROHIBITED:
 - PATTERN NAMES ARE NOT HORMONE MEASUREMENTS. Stress-Stored, Insulin-Drift, Estrogen-Shift and Androgen-Decline name an observed storage-and-signal pattern, never a measured hormone level. Never state, imply, estimate, or predict the client's actual hormone levels (never say oestrogen, testosterone, cortisol, or insulin is low, high, or declining, or give any value or direction). Describe the pattern and its observable signals, not the hormone quantity.
-\-\ PATTERN\ NAMES\ ARE\ NOT\ HORMONE\ MEASUREMENTS\.\ Stress\-Stored\,\ Insulin\-Drift\,\ Estrogen\-Shift\ and\ Androgen\-Decline\ name\ an\ observed\ storage\-and\-signal\ pattern\,\ never\ a\ measured\ hormone\ level\.\ Never\ state\,\ imply\,\ estimate\,\ or\ predict\ the\ client\'s\ actual\ hormone\ levels\ \(never\ say\ oestrogen\,\ testosterone\,\ cortisol\,\ or\ insulin\ is\ low\,\ high\,\ or\ declining\,\ or\ give\ any\ value\ or\ direction\)\.\ Describe\ the\ pattern\ and\ its\ observable\ signals\,\ not\ the\ hormone\ quantity\.
 - Sets, reps, loads, intensities, RPE, percentages, weights, tempo values.
 - Specific exercise names. (Movement categories like "pressing" or "lower-body work" are acceptable if useful.)
 - Calorie or macro targets.
