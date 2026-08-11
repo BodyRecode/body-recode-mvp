@@ -22,9 +22,9 @@ const STATE_CONTENT: Record<string, {
     bg: 'rgba(239,68,68,0.06)',
     border: 'rgba(239,68,68,0.2)',
     headline: 'Your body is in protection mode.',
-    biology: 'When cortisol stays chronically elevated from stress, poor sleep, high training load, or low food intake, your body shifts into a conservation state. Metabolism slows. Fat storage increases, particularly around the midsection. Testosterone and thyroid output drop. Recovery between sessions becomes incomplete. Your body is not broken. It is doing exactly what it is designed to do when it perceives threat. The problem is that most of the interventions people apply in this state (more training, less food, stricter protocols) accelerate the problem rather than solving it.',
+    biology: 'When cortisol stays chronically elevated from stress, poor sleep, high training load, or low food intake, your body shifts into a conservation state. Metabolism slows. Fat storage increases, particularly around the midsection. Output down-regulates and recovery between sessions becomes incomplete. Your body is not broken. It is doing exactly what it is designed to do when it perceives threat. The problem is that most of the interventions people apply in this state (more training, less food, stricter protocols) accelerate the problem rather than solving it.',
     whatIsHappening: 'In a depleted state, fat loss and performance adaptation are biologically downregulated. Your body is prioritising survival functions over body composition change. This is not a willpower issue. No amount of discipline overrides physiology when the system is in threat mode. The path out is not harder, it is smarter.',
-    primaryFocus: 'Restore before you push. The first priority is reducing the biological stress load: sleep quality, recovery between sessions, and removing the inputs that are keeping cortisol elevated. Fat loss and performance follow. They do not lead.',
+    primaryFocus: 'Restore before you push. The first priority is reducing the biological stress load: sleep quality, recovery between sessions, and removing the inputs that are keeping the body under stress. Fat loss and performance follow. They do not lead.',
     stopDoing: [
       'Training at high intensity when recovery is incomplete',
       'Cutting calories below maintenance. This deepens the depletion.',
@@ -62,7 +62,7 @@ const STATE_CONTENT: Record<string, {
     bg: 'rgba(27, 109, 252,0.06)',
     border: 'rgba(27, 109, 252,0.2)',
     headline: 'Your biology is in a position to respond.',
-    biology: 'A ready state means your core biological systems (energy, sleep, stress, and recovery) are functioning well enough that your body can actually respond to the inputs you give it. Cortisol is not chronically elevated. Recovery between sessions is happening. Your metabolism is not suppressed. This is the state where training and nutrition changes produce visible, consistent results.',
+    biology: 'A ready state means your core biological systems (energy, sleep, stress, and recovery) are functioning well enough that your body can actually respond to the inputs you give it. The system is not stuck in a stress response. Recovery between sessions is happening. Your metabolism is not suppressed. This is the state where training and nutrition changes produce visible, consistent results.',
     whatIsHappening: 'If you are in a ready state but fat loss or performance is still not moving, the issue is in the prescription, not the biology. Your training, nutrition, or both need to be adjusted to actually drive adaptation. You have the foundation. The question now is whether the programme is precise enough to produce the outcome you are after.',
     primaryFocus: 'Optimise the prescription. Your body is ready to respond, make sure what you are giving it is accurate enough to produce results. Vague protocols do not produce precise outcomes. At this state, specificity is everything.',
     stopDoing: [
@@ -80,17 +80,17 @@ const STATE_CONTENT: Record<string, {
 
 const SECTION_INTERPRETATIONS: Record<string, Record<number, string>> = {
   Energy: {
-    1: 'Your energy is unreliable. Caffeine dependency and afternoon crashes are signs your body is running on stress hormones rather than metabolic efficiency. This pattern indicates HPA axis dysregulation. Your cortisol rhythm is off, which directly suppresses fat loss and blunts training adaptation.',
+    1: 'Your energy is unreliable. Caffeine dependency and afternoon crashes are signs your body is running on stress rather than steady energy. That is the pattern of a system stuck in a stress response, and it resists fat loss and blunts training adaptation.',
     2: 'Your energy is inconsistent. Some days feel fine, others do not. This variability usually points to fluctuating blood sugar, incomplete recovery, or a stress load that spikes and dips. Consistent energy is a sign of a regulated system. Inconsistency is a signal that something is interfering.',
-    3: 'Your energy is stable and reliable. This is a strong indicator that your cortisol rhythm is functioning well and your metabolism is not suppressed. Stable energy without caffeine dependency is one of the clearest signs your body is in a position to respond to training and nutrition inputs.',
+    3: 'Your energy is stable and reliable. This is a strong sign your body is running on steady energy rather than stress, and your metabolism is not suppressed. Stable energy without caffeine dependency is one of the clearest signs your body is in a position to respond to training and nutrition inputs.',
   },
   Sleep: {
-    1: 'Your sleep is not restoring you. Poor sleep quality and broken sleep are among the most powerful suppressors of fat loss and performance. Growth hormone release, testosterone production, and cortisol clearance all occur during deep sleep. Without it, recovery is incomplete, hunger signals are disrupted, and the system stays under stress.',
+    1: 'Your sleep is not restoring you. Poor sleep quality and broken sleep are among the most powerful suppressors of fat loss and performance. Deep sleep is when the body does most of its repair and clears the day\'s stress load. Without it, recovery is incomplete, hunger signals are disrupted, and the system stays under stress.',
     2: 'Your sleep is inconsistent. Most nights are okay but not reliably restorative. This creates an unpredictable recovery baseline, your body cannot consistently clear the stress load from training and daily life, which creates inconsistent results even when your other inputs are on point.',
-    3: 'You are sleeping well and waking rested. This is the foundation everything else is built on. Consistent quality sleep means your recovery system is functioning, hormonal rhythm is maintained, and your body has the capacity to adapt to training stimuli.',
+    3: 'You are sleeping well and waking rested. This is the foundation everything else is built on. Consistent quality sleep means your recovery system is functioning, your rhythm is maintained, and your body has the capacity to adapt to training stimuli.',
   },
   'Stress Load': {
-    1: 'Your stress load is high. Chronic psychological and physiological stress keeps cortisol elevated continuously, which directly competes with fat loss, muscle retention, and recovery. High stress is often the hidden driver behind plateaus that do not respond to changes in training or nutrition. The real problem is systemic, not programmatic.',
+    1: 'Your stress load is high. Chronic psychological and physiological stress keeps the body in a continuous stress response, which directly competes with fat loss, muscle retention, and recovery. High stress is often the hidden driver behind plateaus that do not respond to changes in training or nutrition. The real problem is systemic, not programmatic.',
     2: 'Your stress load is moderate. It is manageable most of the time but it is not low. This level of background stress is enough to create inconsistency in results, particularly in fat loss response and recovery. It may not feel like a significant issue day-to-day, but it is affecting your body\'s ability to respond.',
     3: 'Your stress load is low to moderate. This is a meaningful advantage. When the system is not under chronic stress pressure, it can allocate resources toward adaptation, fat loss, muscle development, and performance improvement. This is the foundation of a responsive state.',
   },
@@ -101,7 +101,7 @@ const SECTION_INTERPRETATIONS: Record<string, Record<number, string>> = {
   },
   'Fat Loss Response': {
     1: 'Your body is actively resisting fat loss. When someone is doing everything right on paper (clean eating, consistent training) and the body is not responding, it is almost always a biological state issue, not a discipline issue. The body in a depleted or high-stress state suppresses fat oxidation as a survival mechanism. Eating less and training more in this state makes it worse.',
-    2: 'Your fat loss is slow or stalled. Movement is inconsistent relative to the effort going in. This gap between input and output usually points to a metabolic adaptation from dieting history, training load exceeding recovery, or a hormonal imbalance that is blunting response. The fix is rarely more effort. It is usually a recalibration.',
+    2: 'Your fat loss is slow or stalled. Movement is inconsistent relative to the effort going in. This gap between input and output usually points to a metabolic adaptation from dieting history, training load exceeding recovery, or a stress and recovery imbalance that is blunting response. The fix is rarely more effort. It is usually a recalibration.',
     3: 'Your body is responding and composition is shifting. This is the clearest signal that your biological state is aligned with your goals. The system is not in resistance mode. If you are in this position, the focus should be on precision, making sure the programme is specific enough to drive the outcome you are after at the rate you want.',
   },
 }
@@ -369,6 +369,10 @@ export default function ReportClient({ report }: { report: {
             Book a free call
           </a>
         </div>
+
+        <p style={{ fontSize: '12px', color: '#9B9B9B', lineHeight: 1.6, margin: '4px 0 0' }}>
+          This report describes patterns and general mechanisms, not a measurement of your hormones or a medical diagnosis. Where something is worth checking clinically, we will flag it and point you to your doctor.
+        </p>
 
       </div>
     </div>
