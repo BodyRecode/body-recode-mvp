@@ -27,6 +27,9 @@ function check(name: string, ok: boolean, detail = '') {
 }
 const m = (name: string, value: string, unit: string | null = null, reference_range: string | null = null): BloodMarker =>
   ({ name, value, unit, reference_range, flag: 'unknown' })
+// Flag-aware marker: the hormonal-shift pattern keys off the lab's own flag.
+const mf = (name: string, value: string, flag: BloodMarker['flag'], unit: string | null = 'IU/L'): BloodMarker =>
+  ({ name, value, unit, reference_range: null, flag })
 
 console.log('\n=== parseMarkerValue ===')
 check('plain integer', parseMarkerValue('145').n === 145)
@@ -110,6 +113,22 @@ console.log('\n=== pattern detection ===')
   // inflammation
   const core = buildResearchLensCore([m('hs-CRP','5.5','mg/L')])
   check('inflammation fires', core.patterns.some(p => p.id === 'inflammation'))
+}
+{
+  // hormonal shift: lab-flagged high FSH is the anchor
+  const core = buildResearchLensCore([mf('FSH','42','high')])
+  check('hormonal shift fires on lab-flagged high FSH', core.patterns.some(p => p.id === 'hormonal_shift'))
+}
+{
+  // FSH high + estradiol low + LH high -> moderate confidence
+  const core = buildResearchLensCore([mf('FSH','42','high'), mf('Oestradiol','40','low'), mf('LH','30','high')])
+  const p = core.patterns.find(x => x.id === 'hormonal_shift')
+  check('hormonal shift moderate with corroborators', p?.confidence === 'moderate', `got ${p?.confidence}`)
+}
+{
+  // normal-flagged hormones -> no hormonal pattern (uses the lab's ranges, not ours)
+  const core = buildResearchLensCore([mf('FSH','6','normal'), mf('Oestradiol','300','normal')])
+  check('normal-flagged hormones -> no hormonal pattern', !core.patterns.some(p => p.id === 'hormonal_shift'))
 }
 {
   // sparse iron-only panel -> no contextual patterns
