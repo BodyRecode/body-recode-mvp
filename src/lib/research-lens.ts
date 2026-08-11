@@ -74,6 +74,9 @@ export type MarkerId =
   | 'apob' | 'apoa1' | 'lpa'
   | 'glucose_fasting' | 'insulin_fasting' | 'hba1c'
   | 'hscrp'
+  // Reproductive-axis markers — for the hormonal-shift pattern (perimenopausal
+  // direction). Read against the lab's own sex/age reference ranges via the flag.
+  | 'fsh' | 'lh' | 'estradiol' | 'amh' | 'shbg'
 
 const ALIASES: Record<MarkerId, string[]> = {
   total_cholesterol: ['total cholesterol', 'cholesterol total', 'chol', 'cholesterol', 'tc', 'serum cholesterol'],
@@ -88,6 +91,11 @@ const ALIASES: Record<MarkerId, string[]> = {
   insulin_fasting: ['fasting insulin', 'insulin fasting', 'insulin'],
   hba1c: ['hba1c', 'hba1c (ifcc)', 'haemoglobin a1c', 'glycated haemoglobin', 'a1c'],
   hscrp: ['hscrp', 'hs-crp', 'high sensitivity crp', 'high-sensitivity crp', 'crp high sensitivity'],
+  fsh: ['fsh', 'follicle stimulating hormone', 'follicle-stimulating hormone', 'follicle stimulating hormone (fsh)'],
+  lh: ['lh', 'luteinising hormone', 'luteinizing hormone', 'luteinising hormone (lh)', 'luteinizing hormone (lh)'],
+  estradiol: ['estradiol', 'oestradiol', 'e2', 'estradiol (e2)', 'oestradiol (e2)', 'serum estradiol', 'serum oestradiol'],
+  amh: ['amh', 'anti mullerian hormone', 'anti-mullerian hormone', 'anti mullerian hormone (amh)', 'anti-mullerian hormone (amh)'],
+  shbg: ['shbg', 'sex hormone binding globulin', 'sex hormone-binding globulin', 'sex hormone binding globulin (shbg)'],
 }
 
 function normaliseName(name: string): string {
@@ -225,6 +233,7 @@ export type PatternId =
   | 'lean_mass_hyper_responder'
   | 'particle_discordance'
   | 'high_lpa'
+  | 'hormonal_shift'
   | 'inflammation'
   | 'elevated_ldl_apob_unexplained'
 
@@ -321,6 +330,37 @@ export function detectPatterns(
     if (!isTriad) {
       const ev = [ldl != null && ldl >= THRESHOLDS.ldl_high_mmol ? `LDL ${ldl}` : null, nonhdl && nonhdl.value >= THRESHOLDS.non_hdl_high_mmol ? `non-HDL ${nonhdl.value}` : null].filter(Boolean).join(', ')
       out.push({ id: 'elevated_ldl_apob_unexplained', label: 'Elevated LDL / ApoB worth a clinician conversation', evidence: ev, confidence: 'low' })
+    }
+  }
+
+  // 7. Reproductive-hormone shift (perimenopausal direction). Keyed OFF THE LAB'S
+  // OWN FLAG, never our own hormone thresholds, so the lab's sex/age reference
+  // range does the demographic work. Raised FSH is the anchor; low estradiol,
+  // raised LH, or low AMH corroborate. Pattern + question, never a verdict: this
+  // is the marker-side corroborator for a hormonal-shift Fat Map read and always
+  // routes to a clinician for the actual medical call.
+  {
+    const flagged = (id: MarkerId, dir: 'high' | 'low') =>
+      dir === 'high'
+        ? (resolved[id]?.raw.flag === 'high' || resolved[id]?.raw.flag === 'very_high')
+        : (resolved[id]?.raw.flag === 'low' || resolved[id]?.raw.flag === 'very_low')
+    const fshHigh = flagged('fsh', 'high')
+    const e2Low = flagged('estradiol', 'low')
+    const lhHigh = flagged('lh', 'high')
+    const amhLow = flagged('amh', 'low')
+    const ev: string[] = []
+    if (fshHigh) ev.push(`FSH ${resolved.fsh!.raw.value} (lab-flagged high)`)
+    if (e2Low) ev.push(`estradiol ${resolved.estradiol!.raw.value} (lab-flagged low)`)
+    if (lhHigh) ev.push(`LH ${resolved.lh!.raw.value} (lab-flagged high)`)
+    if (amhLow) ev.push(`AMH ${resolved.amh!.raw.value} (lab-flagged low)`)
+    const corroborators = [e2Low, lhHigh, amhLow].filter(Boolean).length
+    if (fshHigh || (e2Low && lhHigh)) {
+      out.push({
+        id: 'hormonal_shift',
+        label: 'Reproductive-hormone shift pattern',
+        evidence: ev.join(', '),
+        confidence: fshHigh && corroborators >= 1 ? 'moderate' : 'low',
+      })
     }
   }
 

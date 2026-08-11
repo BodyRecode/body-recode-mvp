@@ -41,6 +41,7 @@ import PortalInviteButton from '@/components/portal-invite-button'
 import SendPortalEmailButton from '@/components/send-portal-email-button'
 import SendPortalOrientationButton from '@/components/send-portal-orientation-button'
 import SendSupplementaryIntakeButton from '@/components/send-supplementary-intake-button'
+import { computeFatDistributionDivergence } from '@/lib/fat-map-divergence'
 import SendSupplementaryEmailButton from '@/components/send-supplementary-email-button'
 import ProfileSidebar from './profile-sidebar'
 import EditClientPhone from '@/components/edit-client-phone'
@@ -251,6 +252,24 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
     .filter(([, forms]) => forms.has('A') && forms.has('B'))
     .sort((a, b) => b[0] - a[0])[0]?.[0] ?? null
   const latestBaseline = baselines?.[0] || null
+
+  // Reported-vs-measured fat distribution divergence: self-report (intake fm_01/
+  // fm_06) vs the baseline waist-to-hip ratio. When they clash, surface a coach
+  // flag pointing toward a hormonal-shift pattern + a panel/GP. Non-diagnostic.
+  const { data: fatMapIntake } = await admin
+    .from('intakes')
+    .select('fat_map_responses, gender')
+    .eq('client_id', id)
+    .order('submitted_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+  const fatDivergence = computeFatDistributionDivergence({
+    fatMapResponses: (fatMapIntake?.fat_map_responses ?? null) as Record<string, unknown> | null,
+    gender: fatMapIntake?.gender as string | null,
+    waistCm: latestBaseline?.waist_cm as number | null,
+    hipsCm: latestBaseline?.hips_cm as number | null,
+  })
+
   // Progress photos live in a private bucket; sign them for this render only.
   const baselinePhotos = await signedBaselinePhotoSet(admin, latestBaseline)
   const baselineToken = client.baseline_token as string | undefined
@@ -713,6 +732,23 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           )
         })()}
       </div>
+
+      {/* Signals to reconcile: reported-vs-measured fat distribution divergence.
+          Non-diagnostic coach prompt. Only renders when both signals exist and clash. */}
+      {fatDivergence && (
+        <div className="bg-[#FEF6E7] border border-[#F0DCB4] border-l-[3px] border-l-[#C08A2D] rounded-2xl p-5 mb-4">
+          <div className="flex items-start gap-3">
+            <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#C08A2D]/15 flex items-center justify-center">
+              <span className="text-[#8A5A14] text-[13px] font-bold leading-none">!</span>
+            </div>
+            <div className="min-w-0">
+              <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#8A5A14] mb-1">Signals to reconcile</p>
+              <p className="text-sm font-semibold text-[#1A1A1A] mb-1.5">{fatDivergence.headline}</p>
+              <p className="text-[13px] text-[#3A3A3A] leading-relaxed">{fatDivergence.detail}</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Foundational intake status */}
       {latestFoundationalInvitation && (
