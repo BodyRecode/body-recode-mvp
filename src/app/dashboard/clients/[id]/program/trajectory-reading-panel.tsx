@@ -29,6 +29,13 @@ interface Reading {
   trajectory_reading_generated_at: string | null
   trajectory_reading_published_at: string | null
   trajectory_reading_email_sent_at: string | null
+  // Progress Read state re-score (null unless a Progress Check drove this read).
+  tr_new_body_state: string | null
+  tr_previous_body_state: string | null
+  tr_state_direction: string | null
+  tr_state_rationale: string | null
+  tr_pattern_confidence_note: string | null
+  tr_progress_check_id: string | null
 }
 
 export interface TrajectoryBlockStatus {
@@ -291,6 +298,10 @@ export default function TrajectoryReadingPanel({
           )}
         </div>
       ) : (
+        <>
+        {program.tr_new_body_state && (
+          <ReScoreCard program={program} />
+        )}
         <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl overflow-hidden mb-3">
           <div className="flex items-center justify-between px-5 py-3 border-b border-[#E5E5E5] flex-wrap gap-2">
             <p
@@ -323,7 +334,67 @@ export default function TrajectoryReadingPanel({
             ))}
           </div>
         </div>
+        </>
       )}
+    </div>
+  )
+}
+
+/* ===========================================================
+ * Progress Read re-score card - shows the then-vs-now body-state
+ * shift the Progress Check produced. Coach-facing preview of what
+ * the client sees at the top of the published Progress Read.
+ * Pattern is HELD across a re-read; only the state moves.
+ * =========================================================== */
+function ReScoreCard({ program }: { program: Reading }) {
+  const prev = program.tr_previous_body_state
+  const next = program.tr_new_body_state!
+  const moved = !!prev && prev.toLowerCase() !== next.toLowerCase()
+  return (
+    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl overflow-hidden mb-3">
+      <div className="flex items-center gap-2.5 px-5 py-3 border-b border-[#E5E5E5]">
+        <span className="w-1 h-1 rounded-full bg-[#1B6DFC]" />
+        <p
+          className="text-[10px] font-bold text-[#6B6B6B] uppercase"
+          style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+        >
+          Progress Read - State Re-Score
+        </p>
+      </div>
+      <div className="px-5 py-4">
+        <div className="flex items-center gap-3 flex-wrap mb-3">
+          {prev && (
+            <>
+              <span className="inline-flex items-center px-2.5 py-1 rounded-full border border-[#E5E5E5] bg-[#FAFAFA] text-[13px] font-semibold text-[#6B6B6B]">
+                {prev}
+              </span>
+              <span className="text-[#999999] text-[13px]">{moved ? 'moved to' : 'held at'}</span>
+            </>
+          )}
+          <span className="inline-flex items-center px-2.5 py-1 rounded-full border border-[#B5CFFC] bg-[rgba(27,109,252,0.10)] text-[13px] font-semibold text-[#1B6DFC]">
+            {next}
+          </span>
+          {program.tr_state_direction && (
+            <span className="text-[11px] text-[#999999]" style={{ fontFamily: MONO_FONT, letterSpacing: '0.04em' }}>
+              {program.tr_state_direction}
+            </span>
+          )}
+        </div>
+        {program.tr_state_rationale && (
+          <p className="text-[14px] text-[#1A1A1A] leading-relaxed whitespace-pre-line mb-3">
+            {program.tr_state_rationale}
+          </p>
+        )}
+        {program.tr_pattern_confidence_note && (
+          <div className="flex items-start gap-2 pt-3 border-t border-[#F0F0F0]">
+            <Info size={12} className="text-[#999999] mt-0.5 shrink-0" />
+            <p className="text-[12px] text-[#6B6B6B] leading-relaxed">
+              <span className="font-semibold text-[#4A4A4A]">Pattern held. </span>
+              {program.tr_pattern_confidence_note}
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

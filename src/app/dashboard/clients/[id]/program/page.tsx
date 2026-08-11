@@ -8,6 +8,7 @@ import ProgramWeeklyReview from './weekly-review'
 import ProgramReadingPanel from './program-reading-panel'
 import ConditioningEditor from './conditioning-editor'
 import TrajectoryReadingPanel from './trajectory-reading-panel'
+import ProgressCheckButton from '@/components/progress-check-button'
 import CoachGuidanceEditor from './coach-guidance-editor'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 import RegenerateButton from './regenerate-button'
@@ -405,7 +406,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
   // page for long-tenured clients. All three loads run in parallel.
   const ARCHIVED_COLS = 'id, block_name, generated_at, progression_phase, training_goal, week_duration, trajectory_reading_published_at, is_active, status'
   const [{ data: client }, { data: livePrograms }, { data: archivedRaw }] = await Promise.all([
-    admin.from('clients').select('id, name, onboarding_token, coaching_started_at').eq('id', id).maybeSingle(),
+    admin.from('clients').select('id, name, email, onboarding_token, coaching_started_at').eq('id', id).maybeSingle(),
     admin.from('programs').select('*').eq('client_id', id).or('is_active.eq.true,status.eq.draft').order('generated_at', { ascending: false }),
     admin.from('programs').select(ARCHIVED_COLS).eq('client_id', id).eq('is_active', false).neq('status', 'draft').order('generated_at', { ascending: false }),
   ])
@@ -654,11 +655,23 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
               weeksRemaining: 0,
             }
             return (
-              <TrajectoryReadingPanel
-                program={activeProgram as unknown as Parameters<typeof TrajectoryReadingPanel>[0]['program']}
-                clientToken={client.onboarding_token ?? null}
-                blockStatus={blockStatus}
-              />
+              <>
+                <div className="mb-3 flex items-center justify-between gap-3 flex-wrap">
+                  <p className="text-[11px] text-[#999999] leading-relaxed max-w-[440px]">
+                    Send a Progress Check so the block-end reading can re-score her body state from a fresh self-report. Once she submits it, generate the reading below.
+                  </p>
+                  <ProgressCheckButton
+                    clientId={client.id}
+                    programId={activeProgram.id}
+                    clientEmail={client.email ?? null}
+                  />
+                </div>
+                <TrajectoryReadingPanel
+                  program={activeProgram as unknown as Parameters<typeof TrajectoryReadingPanel>[0]['program']}
+                  clientToken={client.onboarding_token ?? null}
+                  blockStatus={blockStatus}
+                />
+              </>
             )
           })()}
 

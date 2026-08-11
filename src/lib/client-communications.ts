@@ -25,6 +25,7 @@ export type ClientCommunicationKind =
   | 'in_person_session_reminder'
   | 'coach_message_reply'
   | 'coach_message_reply_sms'
+  | 'progress_check_invite'
 
 export const COMMUNICATION_KIND_LABELS: Record<ClientCommunicationKind, string> = {
   subscription_link: 'Subscription link',
@@ -46,6 +47,7 @@ export const COMMUNICATION_KIND_LABELS: Record<ClientCommunicationKind, string> 
   in_person_session_reminder: 'In-person session reminder (SMS)',
   coach_message_reply: 'Coach replied to a message',
   coach_message_reply_sms: 'Coach reply SMS nudge (retired 2026-07-29)',
+  progress_check_invite: 'Progress Check invite',
 }
 
 export interface LogClientCommunicationInput {

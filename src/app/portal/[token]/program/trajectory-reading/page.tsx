@@ -41,7 +41,7 @@ export default async function PortalTrajectoryReadingPage({
 
   const { data: program } = await admin
     .from('programs')
-    .select('id, block_name, progression_phase, training_goal, tr_where_this_block_started, tr_how_your_signal_moved, tr_what_held_steady, tr_what_this_sets_up_next, tr_coach_note, trajectory_reading_generated_at, trajectory_reading_published_at')
+    .select('id, block_name, progression_phase, training_goal, tr_where_this_block_started, tr_how_your_signal_moved, tr_what_held_steady, tr_what_this_sets_up_next, tr_coach_note, trajectory_reading_generated_at, trajectory_reading_published_at, tr_new_body_state, tr_previous_body_state, tr_state_direction, tr_state_rationale, tr_pattern_confidence_note')
     .eq('client_id', client.id)
     .eq('is_active', true)
     .not('trajectory_reading_published_at', 'is', null)
@@ -90,6 +90,11 @@ export default async function PortalTrajectoryReadingPage({
           training_goal: program.training_goal,
           generated_at: program.trajectory_reading_generated_at!,
           trajectory_reading_published_at: program.trajectory_reading_published_at,
+          tr_new_body_state: program.tr_new_body_state,
+          tr_previous_body_state: program.tr_previous_body_state,
+          tr_state_direction: program.tr_state_direction,
+          tr_state_rationale: program.tr_state_rationale,
+          tr_pattern_confidence_note: program.tr_pattern_confidence_note,
         }}
         client={{ name: client.name }}
       />
