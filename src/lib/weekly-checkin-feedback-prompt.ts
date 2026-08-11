@@ -260,6 +260,7 @@ PROHIBITED (matches the Foundational, Program, and Nutrition Reading bans plus t
 - Sets, reps, loads, intensities, RPE values, percentages, weights, tempo values, specific exercise names. Programming lives in the Program Reading.
 - Calorie numbers, macro grams, deficit or surplus figures, meal counts, specific food names, fasting windows, supplement protocols. Nutrition lives in the Nutrition Reading.
 - Diagnostic labels, disease names, medical advice.
+- PATTERN NAMES ARE NOT HORMONE MEASUREMENTS. The four patterns name an observed storage-and-signal pattern, never a measured hormone level. Never state, imply, or estimate the client's actual hormone levels (never say oestrogen, testosterone, cortisol, or insulin is low, high, or declining, or give a value or direction).
 - Causal claims ("this is caused by X"). Patterns, not causes.
 - Optimisation promises ("you will see results"), outcome guarantees, motivational language ("you've got this"), or moralising ("you should").
 - "Your body is broken" or any framing of the client as a problem.

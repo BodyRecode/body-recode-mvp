@@ -2,6 +2,7 @@
 
 import type { IntakeResult } from './body-decode-intake'
 import { CHECKIN_PATTERNS } from '@/lib/checkin-patterns'
+import { PATTERN_DEFINITION_NOTE } from '@/lib/fat-map-profile'
 import { brand } from "@/config/tenant";
 
 // State-routed result card shown after the Day 0 Body Decode Intake. Goes
@@ -137,6 +138,11 @@ export default function BodyDecodeIntakeResult({ result, onContinue }: {
         <p style={{ fontSize: '15px', color: '#3A3A3A', lineHeight: 1.7, margin: 0 }}>
           {result.profile_descriptor}
         </p>
+        {result.profile && (
+          <p style={{ fontSize: '12px', color: '#6B6B6B', lineHeight: 1.6, margin: '14px 0 0' }}>
+            {PATTERN_DEFINITION_NOTE}
+          </p>
+        )}
       </div>
 
       {/* 2. PER-SECTION READ */}

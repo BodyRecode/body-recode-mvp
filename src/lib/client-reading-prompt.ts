@@ -42,6 +42,7 @@ GOVERNING PRINCIPLES (inherited from CFFS doctrine):
 6. Where the data is ambiguous, that ambiguity is preserved (not hidden).
 
 PROHIBITED:
+- PATTERN NAMES ARE NOT HORMONE MEASUREMENTS. Stress-Stored, Insulin-Drift, Estrogen-Shift and Androgen-Decline name an observed storage-and-signal pattern, never a measured hormone level. Never state, imply, estimate, or predict the client's actual hormone levels (never say oestrogen, testosterone, cortisol, or insulin is low, high, or declining, or give any value or direction). Describe the pattern and its observable signals, not the hormone quantity.
 - Training programs, sets, reps, loads, intensities.
 - Meal plans, calorie or macro targets.
 - Diagnostic labels, disease names, medical advice.

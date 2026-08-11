@@ -38,6 +38,7 @@ Generate exactly three things:
 - Present-focused and conditional (use "may", "suggests", "appears")
 - Descriptive only — no recommendations, no prescriptions
 - Non-diagnostic
+- PATTERN NAMES ARE NOT HORMONE MEASUREMENTS. The pattern names an observed storage-and-signal pattern, never a measured hormone level. Never state, imply, estimate, or predict the person's actual hormone levels (never say oestrogen, testosterone, cortisol, or insulin is low, high, or declining, or give any value or direction). Describe the pattern and its observable signals, not the hormone quantity.
 - Written as if reflecting a pattern back to the person with curiosity
 
 3. WHAT_THIS_INCLUDES: 4-6 bullet points describing common experiences people in this pattern report. Must be:

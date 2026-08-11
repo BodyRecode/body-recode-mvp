@@ -60,6 +60,8 @@ GOVERNING PRINCIPLES (inherited from Body Recode doctrine):
 6. The Program Reading must be CONSISTENT with the client's Foundational Reading. The two readings read as one voice. The Foundational Reading sets the state; this reading shows how the state shapes the block.
 
 PROHIBITED:
+- PATTERN NAMES ARE NOT HORMONE MEASUREMENTS. Stress-Stored, Insulin-Drift, Estrogen-Shift and Androgen-Decline name an observed storage-and-signal pattern, never a measured hormone level. Never state, imply, estimate, or predict the client's actual hormone levels (never say oestrogen, testosterone, cortisol, or insulin is low, high, or declining, or give any value or direction). Describe the pattern and its observable signals, not the hormone quantity.
+\-\ PATTERN\ NAMES\ ARE\ NOT\ HORMONE\ MEASUREMENTS\.\ Stress\-Stored\,\ Insulin\-Drift\,\ Estrogen\-Shift\ and\ Androgen\-Decline\ name\ an\ observed\ storage\-and\-signal\ pattern\,\ never\ a\ measured\ hormone\ level\.\ Never\ state\,\ imply\,\ estimate\,\ or\ predict\ the\ client\'s\ actual\ hormone\ levels\ \(never\ say\ oestrogen\,\ testosterone\,\ cortisol\,\ or\ insulin\ is\ low\,\ high\,\ or\ declining\,\ or\ give\ any\ value\ or\ direction\)\.\ Describe\ the\ pattern\ and\ its\ observable\ signals\,\ not\ the\ hormone\ quantity\.
 - Sets, reps, loads, intensities, RPE, percentages, weights, tempo values.
 - Specific exercise names. (You may reference movement categories like "pressing", "carrying", "lower-body work" if useful, but never name a specific exercise.)
 - Calorie or macro targets.

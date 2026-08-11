@@ -301,3 +301,22 @@ export function typeFatMapProfile(
   const confidence = resolved === pattern.profile ? pattern.confidence : 'low'
   return { profile: resolved, confidence }
 }
+
+/**
+ * Pattern-definition safety text (added 2026-08-11).
+ *
+ * The four pattern names (Stress-Stored, Insulin-Drift, Estrogen-Shift,
+ * Androgen-Decline) can be read as claims about a person's actual hormone
+ * levels, which would be a physiological/diagnostic claim. We keep the locked
+ * names but neutralise the risk two ways:
+ *   - PATTERN_DEFINITION_NOTE: a client-facing footer rendered wherever a
+ *     pattern name is shown to a client/lead.
+ *   - PATTERN_HORMONE_GUARDRAIL: a prompt rule injected into every
+ *     client-facing generator that writes pattern content, so the model never
+ *     states or implies a measured hormone level.
+ */
+export const PATTERN_DEFINITION_NOTE =
+  'These name an observed pattern of where the body stores and how it signals. They describe how the body is behaving, not a measurement of hormone levels.'
+
+export const PATTERN_HORMONE_GUARDRAIL =
+  'PATTERN NAMES ARE NOT HORMONE MEASUREMENTS. Stress-Stored, Insulin-Drift, Estrogen-Shift and Androgen-Decline name an OBSERVED storage-and-signal pattern, never a measured hormone level. Never state, imply, estimate, or predict the client\'s actual hormone levels. Do NOT say a hormone (oestrogen, testosterone, cortisol, insulin, or any other) is low, high, declining, elevated, deficient, or give any value or direction for it. Describe the pattern and the observable signals that point to it, not the hormone quantity. This is a non-diagnostic read.'
