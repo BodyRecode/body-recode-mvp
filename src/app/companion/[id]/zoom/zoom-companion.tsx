@@ -320,12 +320,27 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
 
                     {'pieces' in card && card.pieces && (
                       <div className="mt-4 grid sm:grid-cols-2 gap-3">
-                        {card.pieces.map(p => (
-                          <div key={p.name} className="rounded-xl bg-[#F7F7F7] border border-[#E5E5E5] p-3.5">
-                            <p className="text-[13px] font-bold text-[#1A1A1A] mb-0.5">{p.name}</p>
-                            <p className="text-[13px] text-[#6B6B6B] leading-snug">{p.desc}</p>
-                          </div>
-                        ))}
+                        {card.pieces.map(p => {
+                          // The scorecard has already pointed at one of these.
+                          // Marking it here means it never has to be recalled
+                          // mid-call, and the provisional flag rides with it.
+                          const theirs = summary?.profileLabel === p.name
+                          return (
+                            <div key={p.name} className={`rounded-xl p-3.5 border ${
+                              theirs ? 'bg-blue-50 border-[#1B6DFC]' : 'bg-[#F7F7F7] border-[#E5E5E5]'
+                            }`}>
+                              <div className="flex items-baseline justify-between gap-2 mb-0.5">
+                                <p className={`text-[13px] font-bold ${theirs ? 'text-[#1B6DFC]' : 'text-[#1A1A1A]'}`}>{p.name}</p>
+                                {theirs && (
+                                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#1B6DFC] shrink-0">
+                                    {summary?.provisional ? 'Theirs · provisional' : 'Theirs'}
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-[13px] text-[#6B6B6B] leading-snug">{p.desc}</p>
+                            </div>
+                          )
+                        })}
                       </div>
                     )}
 
@@ -339,6 +354,13 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
                   <div className="bg-blue-50 border-t border-[#B5CFFC] px-5 py-4">
                     <p className="text-[11px] font-bold text-[#1B6DFC] uppercase tracking-[0.14em] mb-1.5">Say</p>
                     <p className="text-[15px] leading-relaxed text-[#1A1A1A]">{card.coachScript}</p>
+                    {card.number === '03' && summary?.profileLabel && (
+                      <p className="text-[14px] leading-relaxed text-[#1A1A1A] mt-2.5 pt-2.5 border-t border-[#B5CFFC]">
+                        {summary.provisional
+                          ? `Then: "Yours points toward ${summary.profileLabel}. I want the intake before I commit to that."`
+                          : `Then: "Yours is ${summary.profileLabel}."`}
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}

@@ -136,15 +136,15 @@ export const HOW_IT_WORKS_STAGES = [
     number: '03',
     title: 'What type of body',
     subtitle: 'Four biological profiles',
-    body: 'From your intake I read which of four profiles your body is sitting in overall. Each one needs a materially different approach.',
+    body: 'Your scorecard already pointed at one of these. It is a provisional read from a handful of answers. The intake is what confirms it or moves it, because each one needs a materially different approach.',
     pieces: [
       { name: 'Stress-Stored', desc: 'Managing a lot, holding on. The harder you push, the tighter the body holds.' },
       { name: 'Estrogen-Shift', desc: 'Body has changed. What used to work doesn\'t anymore. Distribution and recovery feel different.' },
       { name: 'Insulin-Drift', desc: 'Energy is inconsistent. Eating well but feeling flat. Body partitioning energy differently than it used to.' },
       { name: 'Androgen-Decline', desc: 'Response has dropped off. Muscle harder to hold, recovery slower than it used to be.' },
     ],
-    coachScript: '"From your intake I sort you into one of four profiles. Based on what you\'ve told me, you\'re sitting in [name the profile]. From there it sets the rules for everything I do with you."',
-    bridge: 'Two reads of the same body. The zone tells me where the load is showing on your body. The profile tells me what type of body it\'s coming from. Both feed into how I write your training and nutrition — neither alone gives the full picture.',
+    coachScript: '"Your scorecard already put you in one of these four \u2014 that\'s what it pointed at, off a handful of answers. Your intake is what confirms it or moves it, because 221 questions tells me a lot more than five does. Once it\'s confirmed it sets the rules for everything I do with you."',
+    bridge: 'Two reads of the same body. Where the load is showing narrows it down. The signal that comes with it decides which driver it is. Both feed into how I write your training and nutrition — neither alone gives the full picture, which is exactly why the scorecard read stays provisional until the intake.',
   },
   {
     number: '04',
