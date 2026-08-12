@@ -912,3 +912,85 @@ export function generateInPersonSessionSupplement(input: LeadBriefInput): string
 
   return lines.join('\n')
 }
+
+// =============================================================
+// Structured summary
+// =============================================================
+
+export interface BriefSummary {
+  headline: string
+  stateLabel: string
+  profileLabel: string | null
+  provisional: boolean
+  quality: string
+  redCount: number
+  approachLine: string | null
+  investmentLine: string | null
+  approachFlagged: boolean
+  investmentFlagged: boolean
+  criticalHold: string[]
+  offerLine: string
+  doNotPitch: boolean
+  pathLine: string
+  keyLines: string[]
+}
+
+/**
+ * The six things worth glancing at in the 30 seconds before dialling.
+ *
+ * Exists so the lead page can render a scannable card without parsing the
+ * plain-text brief back apart. Added 2026-08-12: the brief is thorough, but
+ * thorough is the wrong shape for the moment just before a call.
+ */
+export function buildBriefSummary(input: LeadBriefInput): BriefSummary | null {
+  const state = input.scorecard_body_state
+  const bank = STATE_BANKS[state]
+  if (!bank) return null
+
+  const scores = input.scorecard_section_scores ?? {}
+  const { profile, confidence } = typeFatMapProfile(scores, state, {
+    sex: input.biological_sex,
+    ageBand: input.age_band,
+    fatStorage: input.fat_storage,
+    cycleStatus: input.cycle_status,
+  })
+
+  const approach = input.approach_response
+  const investment = input.investment_readiness
+  const approachFlagged = approach === 'C' || approach === 'D'
+  const investmentFlagged = investment === 'C' || investment === 'D'
+  const redCount = (approachFlagged ? 1 : 0) + (investmentFlagged ? 1 : 0)
+  const quality = input.lead_quality
+    ? input.lead_quality.toUpperCase()
+    : (approach && investment ? (redCount === 0 ? 'GREEN' : redCount === 1 ? 'YELLOW' : 'RED') : 'UNKNOWN')
+
+  const offerLine = state === 'Depleted State'
+    ? '14-Day Challenge (free), then Blueprint at $97. A Depleted body has no capacity for a heavier prescription yet.'
+    : state === 'Transitioning State'
+      ? 'Blueprint at $97. Membership if they are already moving.'
+      : 'Membership at $49/wk, or 1:1 if they want the read built in.'
+
+  const pathLine = redCount >= 2
+    ? 'Path B most likely, needs time. Two red flags.'
+    : redCount === 1
+      ? 'Path B most likely, needs time. Path C possible.'
+      : 'Path C most likely, yes. Send the commencement fee.'
+
+  return {
+    headline: patternRead(input, pickFloor(scores)),
+    stateLabel: `${input.scorecard_score}/15 ${STATE_SHORT[state]}`,
+    profileLabel: profile === 'Indeterminate' ? null : profile,
+    provisional: confidence === 'low',
+    quality,
+    redCount,
+    approachLine: approach ? APPROACH_LABELS[approach] : null,
+    investmentLine: investment ? INVESTMENT_LABELS[investment] : null,
+    approachFlagged,
+    investmentFlagged,
+    criticalHold: buildCriticalHold(input, profile),
+    offerLine,
+    doNotPitch: investmentFlagged,
+    pathLine,
+    keyLines: bank.keyLines,
+  }
+}

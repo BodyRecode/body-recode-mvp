@@ -18,6 +18,7 @@ import BookingActionButtons from '@/components/booking-action-buttons'
 import Link from 'next/link'
 import { MONO_FONT } from '@/components/dashboard/ui'
 import { buildLeadBrief } from '@/lib/lead-brief'
+import BriefCard from './brief-card'
 
 const EVENT_LABELS: Record<string, string> = {
   check_in_submitted: 'Check-in submitted',
@@ -111,7 +112,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   const nextBooking = (bookings ?? []).find(b => b.status === 'scheduled' && new Date(b.scheduled_at).getTime() > Date.now())
     ?? (bookings ?? []).find(b => b.status === 'scheduled')
 
-  const { brief, supplement, prepNotes, scopeFlags, isStoredFallback } = buildLeadBrief(
+  const { brief, supplement, prepNotes, scopeFlags, summary, isStoredFallback } = buildLeadBrief(
     lead,
     events,
     nextBooking ? `${bne(nextBooking.scheduled_at)} Brisbane` : null,
@@ -208,8 +209,8 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           </p>
           <p className="text-[13px] text-amber-900 leading-relaxed">
             {scopeFlags.map(f => f.flag).join(' · ')}
+            <span className="text-amber-800"> — what to do about each is in the Brief tab.</span>
           </p>
-          <p className="text-[11px] text-amber-800 mt-1.5">Full guidance in the Brief tab. Ask, note, do not interpret.</p>
         </div>
       )}
     </div>
@@ -229,19 +230,20 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             Showing the stored brief. Not enough scorecard data on file to rebuild it live.
           </p>
         )}
+        {summary && <BriefCard summary={summary} scopeFlags={scopeFlags} />}
         {brief
           ? <PreCallRead leadId={lead.id} initialBrief={brief} />
           : <Card><p className="text-sm text-[#6B6B6B]">No brief yet. It builds automatically once a scorecard is on file.</p></Card>}
         {supplement && (
-          <Card>
-            <CardTitle>In-person session supplement</CardTitle>
-            <p className="text-[13px] text-[#6B6B6B] mb-3">
-              Only needed if you are running this at AF Newstead rather than on Zoom. Read the brief above first.
-            </p>
-            <pre className="text-[12px] leading-relaxed text-[#3A3A3A] whitespace-pre-wrap font-sans bg-[#FAFAFA] border border-[#E5E5E5] rounded-lg p-4 max-h-[420px] overflow-y-auto">
+          <details className="bg-white border border-[#E5E5E5] rounded-2xl group">
+            <summary className="px-5 py-3.5 cursor-pointer select-none text-[13px] font-semibold text-[#6B6B6B] hover:text-[#1A1A1A]">
+              In-person session supplement
+              <span className="font-normal text-[#999999]"> — only if you are running this at AF Newstead</span>
+            </summary>
+            <pre className="mx-5 mb-5 text-[12px] leading-relaxed text-[#3A3A3A] whitespace-pre-wrap font-sans bg-[#FAFAFA] border border-[#E5E5E5] rounded-lg p-4 max-h-[420px] overflow-y-auto">
               {supplement}
             </pre>
-          </Card>
+          </details>
         )}
       </div>
     ),

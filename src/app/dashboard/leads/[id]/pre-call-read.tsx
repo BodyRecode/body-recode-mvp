@@ -9,6 +9,7 @@ interface PreCallReadProps {
 
 type Block =
   | { kind: 'section'; title: string; id: string }
+  | { kind: 'label'; text: string }
   | { kind: 'script'; text: string }
   | { kind: 'note'; text: string }
   | { kind: 'conditional'; text: string }
@@ -19,11 +20,16 @@ function slugify(s: string) {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 }
 
+const DIVIDER = /^[=\u2550\u2500-]{3,}$/
+
 function isSectionHeader(line: string) {
   const t = line.trim()
   if (t.length < 3 || t.length > 80) return false
-  if (/^=+$/.test(t)) return false
-  const letters = t.replace(/[^A-Za-z]/g, '')
+  if (DIVIDER.test(t)) return false
+  // Ignore any parenthetical when testing for caps, so "KEY LINES (in your
+  // pocket)" and "IF THEY DON'T PROCEED (Path A or B)" still read as headers
+  // rather than falling through to body copy.
+  const letters = t.replace(/\([^)]*\)/g, '').replace(/[^A-Za-z]/g, '')
   if (letters.length < 3) return false
   return letters === letters.toUpperCase()
 }
@@ -33,6 +39,7 @@ function parseBrief(brief: string): Block[] {
   const lines = brief.split('\n')
 
   let i = 0
+  let afterDivider = false
   while (i < lines.length) {
     const raw = lines[i]
     const trimmed = raw.trim()
@@ -42,19 +49,26 @@ function parseBrief(brief: string): Block[] {
       continue
     }
 
-    if (/^=+$/.test(trimmed)) {
+    if (DIVIDER.test(trimmed)) {
+      afterDivider = true
       i++
       continue
     }
 
     if (isSectionHeader(trimmed)) {
-      blocks.push({ kind: 'section', title: trimmed, id: slugify(trimmed) })
+      if (afterDivider || blocks.length === 0) {
+        blocks.push({ kind: 'section', title: trimmed, id: slugify(trimmed) })
+      } else {
+        blocks.push({ kind: 'label', text: trimmed })
+      }
+      afterDivider = false
       i++
       continue
     }
+    afterDivider = false
 
     const para: string[] = []
-    while (i < lines.length && lines[i].trim() !== '' && !/^=+$/.test(lines[i].trim()) && !isSectionHeader(lines[i].trim())) {
+    while (i < lines.length && lines[i].trim() !== '' && !DIVIDER.test(lines[i].trim()) && !isSectionHeader(lines[i].trim())) {
       para.push(lines[i])
       i++
     }
@@ -93,10 +107,28 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
   const [editing, setEditing] = useState(false)
   const [saving, setSaving] = useState(false)
   const [draft, setDraft] = useState(initialBrief ?? '')
-  const [collapsed, setCollapsed] = useState<Record<string, boolean>>({})
+  const [collapsed, setCollapsed] = useState<Record<string, boolean> | null>(null)
 
   const blocks = useMemo(() => parseBrief(brief), [brief])
   const sections = useMemo(() => blocks.filter(b => b.kind === 'section') as Extract<Block, { kind: 'section' }>[], [blocks])
+
+  // Default: everything shut. The card above already carries what you need at a
+  // glance, so this layer is for when you go looking for a specific thing.
+  const collapsedState = useMemo(() => {
+    if (collapsed) return collapsed
+    return Object.fromEntries(sections.map(s => [s.id, true]))
+  }, [collapsed, sections])
+
+  const allOpen = sections.length > 0 && sections.every(s => !collapsedState[s.id])
+
+  function setAll(open: boolean) {
+    setCollapsed(Object.fromEntries(sections.map(s => [s.id, !open])))
+  }
+
+  function openSection(id: string) {
+    setCollapsed({ ...collapsedState, [id]: false })
+    requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+  }
 
   async function save() {
     setSaving(true)
@@ -123,7 +155,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
   }
 
   function toggleSection(id: string) {
-    setCollapsed(c => ({ ...c, [id]: !c[id] }))
+    setCollapsed({ ...collapsedState, [id]: !collapsedState[id] })
   }
 
   function renderBlocks() {
@@ -132,7 +164,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
 
     blocks.forEach((b, i) => {
       if (b.kind === 'section') {
-        suppressed = !!collapsed[b.id]
+        suppressed = !!collapsedState[b.id]
         out.push(
           <div key={i} id={b.id} className="flex items-center gap-3 pt-6 first:pt-0 scroll-mt-20">
             <button
@@ -151,6 +183,15 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
       }
 
       if (suppressed) return
+
+      if (b.kind === 'label') {
+        out.push(
+          <p key={i} className="text-[11px] font-bold text-[#1A1A1A] uppercase tracking-[0.1em] pt-3 ml-1">
+            {b.text}
+          </p>
+        )
+        return
+      }
 
       if (b.kind === 'script') {
         out.push(
@@ -255,16 +296,26 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
       ) : brief ? (
         <div className="space-y-4">
           {sections.length > 1 && (
-            <div className="flex flex-wrap gap-1.5 mb-2 pb-4 border-b border-[#E5E5E5]">
+            <div className="flex flex-wrap items-center gap-1.5 mb-2 pb-4 border-b border-[#E5E5E5]">
               {sections.map(s => (
-                <a
+                <button
                   key={s.id}
-                  href={`#${s.id}`}
-                  className="text-[11px] font-semibold px-2.5 py-1 rounded-md bg-[#E5E5E5] border border-[#E5E5E5] text-[#3A3A3A] hover:border-[#1B6DFC]/40 hover:text-[#1B6DFC] transition-colors"
+                  onClick={() => openSection(s.id)}
+                  className={`text-[11px] font-semibold px-2.5 py-1 rounded-md border transition-colors ${
+                    collapsedState[s.id]
+                      ? 'bg-[#F4F4F4] border-[#E5E5E5] text-[#6B6B6B] hover:border-[#1B6DFC] hover:text-[#1B6DFC]'
+                      : 'bg-blue-50 border-[#B5CFFC] text-[#1B6DFC]'
+                  }`}
                 >
                   {s.title}
-                </a>
+                </button>
               ))}
+              <button
+                onClick={() => setAll(!allOpen)}
+                className="ml-auto text-[11px] font-semibold px-2.5 py-1 rounded-md border border-[#E5E5E5] text-[#6B6B6B] hover:text-[#1A1A1A] transition-colors"
+              >
+                {allOpen ? 'Collapse all' : 'Expand all'}
+              </button>
             </div>
           )}
           <div className="space-y-3">

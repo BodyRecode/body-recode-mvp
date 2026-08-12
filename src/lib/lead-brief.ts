@@ -14,8 +14,10 @@ import {
   generatePreCallBrief,
   generateInPersonSessionSupplement,
   detectScopeFlags,
+  buildBriefSummary,
   type LeadBriefInput,
   type ScopeFlag,
+  type BriefSummary,
 } from '@/lib/pre-call-brief'
 import type {
   StateName, SectionScores, BiologicalSex, AgeBand, FatStorage, CycleStatus,
@@ -52,6 +54,8 @@ export interface LeadBriefBundle {
   /** Their verbatim pre-call form answers, if completed. */
   prepNotes: string | null
   scopeFlags: ScopeFlag[]
+  /** Glanceable card data. Null when there is no scorecard to build from. */
+  summary: BriefSummary | null
   /** True when the brief came from the stored column rather than being built now. */
   isStoredFallback: boolean
 }
@@ -84,6 +88,7 @@ export function buildLeadBrief(
       supplement: null,
       prepNotes,
       scopeFlags: detectScopeFlags(prepNotes),
+      summary: null,
       isStoredFallback: !!lead.pre_call_brief,
     }
   }
@@ -109,6 +114,7 @@ export function buildLeadBrief(
     supplement: generateInPersonSessionSupplement(input),
     prepNotes,
     scopeFlags: detectScopeFlags(prepNotes),
+    summary: buildBriefSummary(input),
     isStoredFallback: false,
   }
 }
