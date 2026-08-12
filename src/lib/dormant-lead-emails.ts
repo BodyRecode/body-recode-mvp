@@ -13,7 +13,7 @@
  *
  * The copy uses the APPROVED lead-facing language from the doctrine, not new
  * wording invented for this sequence: `BODY_STATE_LANGUAGE[state].interpretation`
- * and `PROFILE_DESCRIPTORS_LEAD[profile]`. If those change, this changes with
+ * and `leadDescriptor(profile, signals)`. If those change, this changes with
  * them, which is the point.
  */
 import {
@@ -21,7 +21,7 @@ import {
   emailBody, emailStatusCard, emailCta, emailUrlFallback,
 } from '@/lib/email-shell'
 import { darkEmailSignature } from '@/lib/email-signature'
-import { PROFILE_DESCRIPTORS_LEAD, type Profile } from '@/lib/fat-map-profile'
+import { leadDescriptor, type Profile, type CycleStatus, type AgeBand } from '@/lib/fat-map-profile'
 import { BODY_STATE_LANGUAGE } from '@/lib/companion-content'
 import { brand } from '@/config/tenant'
 
@@ -35,6 +35,9 @@ export interface DormantLeadContext {
   provisional: boolean
   /** True if they have already been through the 14-Day Challenge. */
   didChallenge: boolean
+  /** Sets the Estrogen-Shift phase. Without these the descriptor stays generic. */
+  cycleStatus?: CycleStatus | null
+  ageBand?: AgeBand | null
 }
 
 function namedProfile(p: string | null): Profile | null {
@@ -56,7 +59,7 @@ export function buildDormantReadEmail(ctx: DormantLeadContext): { subject: strin
   const shortState = ctx.bodyState.replace(' State', '')
 
   const patternPara = profile
-    ? `${ctx.provisional ? 'It also points toward' : 'It also puts you in'} what we call ${profile}. ${PROFILE_DESCRIPTORS_LEAD[profile]}${ctx.provisional ? ' I want to be straight that this part is provisional. A scorecard narrows it down, the full intake is what confirms it.' : ''}`
+    ? `${ctx.provisional ? 'It also points toward' : 'It also puts you in'} what we call ${profile}. ${leadDescriptor(profile, { cycleStatus: ctx.cycleStatus ?? null, ageBand: ctx.ageBand ?? null })}${ctx.provisional ? ' I want to be straight that this part is provisional. A scorecard narrows it down, the full intake is what confirms it.' : ''}`
     : `Your answers did not point cleanly at one pattern, which happens and is useful information on its own. It usually means more than one thing is going on at once.`
 
   const html = darkEmailShell(`

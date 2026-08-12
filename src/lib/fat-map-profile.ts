@@ -74,9 +74,52 @@ export const PROFILE_DESCRIPTORS: Record<Profile, string> = {
 export const PROFILE_DESCRIPTORS_LEAD: Record<Profile, string> = {
   'Stress-Stored': "You're managing a lot, and your body is holding on because of it. It sits at the front of your middle while your arms and legs stay lean, and the harder you push the tighter it holds.",
   'Insulin-Drift': "You're putting the work in, but your body is storing easily and not responding to it. It tends to settle around the back and sides rather than the front, and the signal that turns effort into change has drifted.",
-  'Estrogen-Shift': "Your body has shifted into a slower, more protective mode. It's not broken and it's not effort; it responds again once the approach respects what's changed.",
+  // Generic fallback only, used when phase cannot be determined. Prefer
+  // leadDescriptor() below, which splits this by phase. See the note there.
+  'Estrogen-Shift': "Your body has shifted into a slower, more conservative mode. It's not broken and it's not effort; it responds again once the approach respects what's changed.",
   'Androgen-Decline': "You're still putting the output in, but your drive, recovery and capacity have slipped. The system that turns training into results isn't bouncing back.",
   'Indeterminate': "No single pattern stands out from your answers yet. We'll pin down exactly what's driving your result on your call.",
+}
+
+
+/**
+ * Lead-facing descriptor, phase-aware for Estrogen-Shift.
+ *
+ * Added 2026-08-12. Estrogen-Shift had a single description covering both
+ * phases, so it had to be vague enough to fit both and ended up the only one of
+ * the four with no physical tell at all. That is backwards: per
+ * `03_ESTROGEN_SHIFT.md` §4, phase 1 has the single most distinctive location
+ * in the whole map ("if it is hips, glutes and outer thighs, in a woman, it is
+ * this"), while phase 2 is where location stops working and direction of travel
+ * takes over.
+ *
+ * The doctrine also says age and cycle status are not tiebreakers here, they are
+ * INPUTS that set the phase, and the system already collects both. So there is
+ * no reason to speak to a phase-2 woman about hips and thighs when her fat is
+ * moving centrally, which is the exact misread the lock warns about:
+ *
+ *   "a woman in phase 2 who is told she has a hips-and-thighs pattern will not
+ *    recognise herself, because her fat is moving to the middle."
+ *
+ * Every other profile ignores the signals and returns its constant.
+ */
+export function leadDescriptor(profile: Profile, signals: ProfileSignals = {}): string {
+  if (profile !== 'Estrogen-Shift') return PROFILE_DESCRIPTORS_LEAD[profile]
+
+  const { cycleStatus, ageBand } = signals
+  const phaseTwo =
+    cycleStatus === 'perimenopausal' ||
+    cycleStatus === 'postmenopausal' ||
+    ageBand === '45_54' ||
+    ageBand === '55_plus'
+
+  // Unknown phase: fall back to the movement framing rather than naming a
+  // location, because naming the wrong location is the costlier error.
+  if (!cycleStatus && !ageBand) return PROFILE_DESCRIPTORS_LEAD['Estrogen-Shift']
+
+  return phaseTwo
+    ? "What's changed is where it's going. It used to sit on your hips and thighs and it's started moving to your middle, and muscle tends to go with it. That movement is the signal, more than the place it ends up. It's not broken and it's not effort; it responds again once the approach respects what's changed."
+    : "It sits on your hips, glutes and outer thighs. That's the most distinctive place fat sits out of all four patterns, and it's oestrogen doing what it's meant to do. It's not broken and it's not effort; it responds again once the approach respects what's changed."
 }
 
 /**

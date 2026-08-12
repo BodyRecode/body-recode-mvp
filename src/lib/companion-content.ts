@@ -89,7 +89,7 @@ export const BODY_STATE_LANGUAGE: Record<string, { colour: string; badge: string
     // Coach-facing — what's going on under the hood. Not spoken aloud.
     opening: 'Their scorecard came back as Depleted State. Body is in protection mode, cortisol elevated, metabolism suppressed, fat loss and performance shut down. The scorecard surfaced the signal. The call is about understanding what\'s driving it.',
     // Spoken to the lead. Plain, direct.
-    interpretation: 'What you\'re seeing isn\'t an effort or willpower thing, your body\'s protecting itself. When you\'re running on poor sleep, high stress, and training that isn\'t paying off, your body shifts into preservation mode. The fact that fat loss has stalled and training feels harder than it should, those are two sides of the same thing.',
+    interpretation: 'What you\'re seeing isn\'t an effort or willpower thing, your body\'s protecting itself. When more is going in than your body can recover from, it shifts into preservation mode. The fact that fat loss has stalled and training feels harder than it should, those are two sides of the same thing.',
     pattern: 'Depleted State: body in protection mode. Cortisol up, metabolism down. Adding more training stimulus makes it worse. The fix is smarter management, not harder work.',
   },
   'Transitioning State': {

@@ -5,7 +5,7 @@ import { PORTAL_ACCESS_STATUSES } from '@/lib/challenge-access'
 import {
   typeFatMapProfile,
   PROFILE_DRIVERS,
-  PROFILE_DESCRIPTORS_LEAD,
+  leadDescriptor,
   type BiologicalSex,
   type AgeBand,
   type FatStorage,
@@ -182,6 +182,6 @@ export async function POST(request: NextRequest) {
     profile: namedZone ? fatMapProfile : null,
     profile_confidence: namedZone ? profileConfidence : null,
     profile_driver: namedZone ? PROFILE_DRIVERS[fatMapProfile].replace(/\s*\([^)]*\)\s*$/, '') : null,
-    profile_descriptor: PROFILE_DESCRIPTORS_LEAD[fatMapProfile],
+    profile_descriptor: leadDescriptor(fatMapProfile, { cycleStatus: cycle_status ?? null, ageBand: age_band ?? null }),
   })
 }
