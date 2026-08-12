@@ -2,6 +2,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import ZoomCompanion from './zoom-companion'
 import { buildLeadBrief } from '@/lib/lead-brief'
+import type { Arrival } from '@/lib/companion-content'
 
 export default async function ZoomCompanionPage({ params }: { params: Promise<{ id: string }> }) {
   const admin = createAdminClient()
@@ -10,10 +11,15 @@ export default async function ZoomCompanionPage({ params }: { params: Promise<{ 
   const { data: lead } = await admin.from('leads').select('*').eq('id', id).single()
   if (!lead) notFound()
 
-  const [{ data: events }, { data: bookings }] = await Promise.all([
+  const [{ data: events }, { data: bookings }, { data: enrollment }] = await Promise.all([
     admin.from('lead_events').select('type, subject, notes, sent_at').eq('lead_id', id).order('sent_at', { ascending: false }),
     admin.from('be_bookings').select('scheduled_at, status').eq('lead_id', id).eq('status', 'scheduled').order('scheduled_at', { ascending: true }).limit(1),
+    admin.from('challenge_enrollments').select('id').eq('lead_id', id).maybeSingle(),
   ])
+
+  // Decides which thank-you line opens the call. Someone who ran the Challenge
+  // did not "reach out" and should not be greeted as though they did.
+  const arrival: Arrival = enrollment ? 'challenge' : lead.scorecard_score != null ? 'scorecard' : 'direct'
 
   const callDate = bookings?.[0]
     ? new Date(bookings[0].scheduled_at).toLocaleString('en-AU', {
@@ -35,6 +41,7 @@ export default async function ZoomCompanionPage({ params }: { params: Promise<{ 
       summary={summary}
       scopeFlags={scopeFlags}
       prepNotes={prepNotes}
+      arrival={arrival}
       initialNotes={lead.notes ?? ''}
     />
   )

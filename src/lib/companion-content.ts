@@ -231,3 +231,29 @@ export const ONLINE_SCRIPT = `"There's an online option — and it's not a lesse
 For some people that's actually the right fit — schedule, location, or just preference.
 
 $149 a week. Same 12-week minimum. Same standards."`
+
+// ─── Opening ───────────────────────────────────────────────────────────────
+
+/**
+ * Thank-you line, matched to how they actually arrived.
+ *
+ * "Thanks for reaching out" is wrong for most of the funnel. Someone who
+ * clicked a cold ad, ran the free 14-day Challenge and then asked for a time
+ * did not reach out, and greeting them as though they did skips two weeks of
+ * their own effort. Added 2026-08-12.
+ */
+export type Arrival = 'challenge' | 'scorecard' | 'direct'
+
+export const OPENING_THANKS: Record<Arrival, (firstName: string) => string> = {
+  challenge: (n) => `Thanks for making the time, ${n}. You've just come off the 14 days, so you've already put work in before we've even spoken.`,
+  scorecard: (n) => `Thanks for making the time, ${n}. You've done the scorecard, so you already know roughly where you're sitting.`,
+  direct: (n) => `Thanks for reaching out, ${n}, and for making the time today.`,
+}
+
+export const OPENING_QUESTIONS = [
+  'How did you come across Body Recode, and me?',
+  'What was it about it that made you actually fill it in?',
+] as const
+
+export const OPENING_NOTE =
+  'You already know the channel, it is on their lead page. Ask anyway. What they remember is not always what the tracking says, and the second question usually hands you the real reason they are here.'

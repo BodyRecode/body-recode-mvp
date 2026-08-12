@@ -12,6 +12,10 @@ import {
   FOUNDING_OFFER,
   OBJECTION_HANDLING,
   ONLINE_SCRIPT,
+  OPENING_THANKS,
+  OPENING_QUESTIONS,
+  OPENING_NOTE,
+  type Arrival,
 } from '@/lib/companion-content'
 import PrepAnswers from '@/components/prep-answers'
 
@@ -42,6 +46,7 @@ export default function ZoomCompanion({
   scopeFlags,
   prepNotes,
   initialNotes,
+  arrival,
 }: {
   leadId: string
   leadName: string
@@ -51,6 +56,7 @@ export default function ZoomCompanion({
   scopeFlags: ScopeFlag[]
   prepNotes: string | null
   initialNotes: string
+  arrival: Arrival
 }) {
   const firstName = leadName.split(' ')[0]
   const state = BODY_STATE_LANGUAGE[bodyState] ?? BODY_STATE_LANGUAGE['Transitioning State']
@@ -177,24 +183,24 @@ ${tail}`
         {/* 01 OPEN */}
         {step === 0 && (
           <div className="space-y-4">
-            <div className="rounded-xl bg-blue-50 border-l-[3px] border-[#1B6DFC] px-4 py-3.5">
-              <p className="text-[16px] leading-relaxed text-[#1A1A1A]">
-                Say hello. Small talk. Get {firstName} comfortable before anything else starts.
-              </p>
-            </div>
             <p className="text-[14px] leading-relaxed text-[#6B6B6B]">
-              Not scripted, and it should not be. Two or three minutes of ordinary conversation so they arrive as a
-              person rather than a prospect. They are more honest in stage 3 if this part lands.
+              Hello and small talk first. Deliberately unscripted, two or three minutes, so they arrive as a person.
+              They are more honest later if this part lands.
             </p>
-            <Fold title="If you need a way in">
+            <Say text={OPENING_THANKS[arrival](firstName)} />
+            <div className="rounded-xl border border-[#B5CFFC] bg-blue-50/40 p-3.5">
+              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#1B6DFC] mb-2">Then ask</p>
+              <Asks items={[...OPENING_QUESTIONS]} />
+              <p className="text-[12px] leading-relaxed text-[#6B6B6B] mt-2.5 pt-2.5 border-t border-[#B5CFFC]">{OPENING_NOTE}</p>
+            </div>
+            <Fold title="Small talk, if you need a way in">
               <Asks items={[
                 'How has your day been?',
                 'Whereabouts are you based?',
                 'Have you got much on this week?',
-                'Anything from what you have already filled in that you want to flag before we start?',
               ]} />
             </Fold>
-            <Boundary text="No coaching, no scorecard, no questions about their body yet. When they sound settled, move on." />
+            <Boundary text="No coaching, no scorecard, nothing about their body yet. Keep it short, the hot spot is what the call turns on." />
           </div>
         )}
 
