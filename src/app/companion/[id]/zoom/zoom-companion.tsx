@@ -13,6 +13,7 @@ import {
   OBJECTION_HANDLING,
   ONLINE_SCRIPT,
 } from '@/lib/companion-content'
+import PrepAnswers from '@/components/prep-answers'
 
 type TrainingStatus = 'active' | 'returning' | 'new' | null
 
@@ -232,9 +233,10 @@ ${stage2Tail}`
 I'll ask a few questions about how things are going day to day. Then we'll talk about what you actually want to change. Just answer honestly — there's no right answer.`} />
 
             {prepNotes && (
-              <div>
-                <p className="text-[11px] font-bold text-[#1B6DFC] uppercase tracking-[0.14em] mb-2">They already told you this</p>
-                <pre className="text-[14px] leading-relaxed text-[#3A3A3A] whitespace-pre-wrap font-sans bg-[#F7F7F7] border border-[#E5E5E5] rounded-xl p-4">{prepNotes}</pre>
+              <div className="rounded-xl bg-[#F7F7F7] border border-[#E5E5E5] p-5">
+                <p className="text-[11px] font-bold text-[#1A1A1A] uppercase tracking-[0.14em] mb-1">They already told you this</p>
+                <p className="text-[13px] text-[#6B6B6B] mb-4">From the pre-call form. Don&apos;t ask it again, and use their words back.</p>
+                <PrepAnswers notes={prepNotes} />
               </div>
             )}
 

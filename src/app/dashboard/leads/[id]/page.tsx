@@ -19,6 +19,7 @@ import Link from 'next/link'
 import { MONO_FONT } from '@/components/dashboard/ui'
 import { buildLeadBrief } from '@/lib/lead-brief'
 import BriefCard from './brief-card'
+import PrepAnswers from '@/components/prep-answers'
 
 const EVENT_LABELS: Record<string, string> = {
   check_in_submitted: 'Check-in submitted',
@@ -258,7 +259,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         {prepNotes ? (
           <Card>
             <CardTitle>Pre-call form</CardTitle>
-            <pre className="text-[13px] leading-relaxed text-[#3A3A3A] whitespace-pre-wrap font-sans">{prepNotes}</pre>
+            <PrepAnswers notes={prepNotes} />
           </Card>
         ) : (
           <Card>
