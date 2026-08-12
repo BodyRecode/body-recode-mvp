@@ -369,10 +369,10 @@ const AUTOMATIC_AUTOMATIONS = [
     steps: 1,
   },
   {
-    id: 'july27-gate-reminder',
-    name: 'July 27 Gate Decision Reminder (one-shot)',
-    description: 'macOS launchd plist au.bodyrecode.july27-gate.plist fires once at 8am on 27 July 2026. Runs ~/Dropbox/01_BODY_RECODE/07_ADS/july27_gate_reminder.py — sends a branded HTML email to kade@bodyrecode.au with the 7-step Option D Phase 2 action checklist: scale to $75/day ABO, unpause Perimenopausal + Slipping HP ad sets, stand up Blueprint retargeting, confirm Blueprint page live, shift Sunday promo rotation, lock Hook01 structure for Peri/HP briefing. One-shot — remove plist after it fires.',
-    trigger: 'macOS launchd — 8am 27 July 2026 (one-shot)',
+    id: 'day0-completion-check',
+    name: 'Day 0 Scorecard Completion Check',
+    description: `Runs every morning at 9am and reports which Challenge enrollees have signed up but not completed the Day 0 Body Decode Intake. That intake gates the ENTIRE portal - no training, no nutrition, no Day 5, no Check-In, no Day 14 reveal - so anyone sitting behind it has joined a 14-day programme and can see none of it. Added to this panel 2026-08-12 during the automation audit; it had been running daily since it was built and appeared nowhere in the dashboard. Moved off Kade's Mac onto a Vercel cron on 2026-08-12 so it no longer depends on the laptop being awake. Sends nothing when there have been no enrolments in 21 days, rather than a daily "0 of 0".`,
+    trigger: 'Vercel cron, daily 09:00 AEST',
     steps: 1,
   },
   {

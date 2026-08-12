@@ -76,6 +76,10 @@
     {
       "path": "/api/cron/checkin-catchup",
       "schedule": "0 21 * * *"
+    },
+    {
+      "schedule": "0 23 * * *",
+      "path": "/api/cron/day0-completion-check"
     }
   ]
 }
