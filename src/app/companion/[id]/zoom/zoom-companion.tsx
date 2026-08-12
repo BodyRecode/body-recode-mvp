@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { AlertTriangle, Check, StickyNote, X, MessageSquareWarning, ChevronRight, ChevronLeft } from 'lucide-react'
+import { AlertTriangle, Check, StickyNote, X, MessageSquareWarning, ChevronRight, ChevronLeft, FileText } from 'lucide-react'
 import type { BriefSummary, ScopeFlag } from '@/lib/pre-call-brief'
 import {
   BODY_STATE_LANGUAGE,
@@ -64,7 +64,7 @@ export default function ZoomCompanion({
   const [step, setStep] = useState(0)
   const [training, setTraining] = useState<TrainingStatus>(null)
   const [notes, setNotes] = useState(initialNotes)
-  const [drawer, setDrawer] = useState<'notes' | 'objection' | null>(null)
+  const [drawer, setDrawer] = useState<'notes' | 'objection' | 'form' | null>(null)
   const [saved, setSaved] = useState(false)
   const [elapsed, setElapsed] = useState(0)
   const [outcome, setOutcome] = useState<'A' | 'B' | 'C' | null>(null)
@@ -148,6 +148,9 @@ ${tail}`
           </div>
           <div className="flex items-center gap-1.5 shrink-0">
             <span className="font-mono text-[12px] tabular-nums text-[#6B6B6B] px-2 py-1 rounded-md bg-[#F4F4F4]">{mmss}</span>
+            {prepNotes && (
+              <IconBtn onClick={() => setDrawer(d => d === 'form' ? null : 'form')} label="Their form"><FileText size={13} /></IconBtn>
+            )}
             <IconBtn onClick={() => setDrawer(d => d === 'objection' ? null : 'objection')} label="Objection"><MessageSquareWarning size={13} /></IconBtn>
             <IconBtn onClick={() => setDrawer(d => d === 'notes' ? null : 'notes')} label="Notes"><StickyNote size={13} /></IconBtn>
           </div>
@@ -311,12 +314,6 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
                 <Block title="More hot spot prompts" items={['Is it how clothes fit? Catching yourself in the mirror?', 'A specific situation where you really feel it?', 'Has anyone ever made a comment that stuck with you?']} />
               </div>
             </Fold>
-
-            {prepNotes && (
-              <Fold title="What they already told you on the form">
-                <PrepAnswers notes={prepNotes} compact />
-              </Fold>
-            )}
 
             <Boundary text="No prescriptions, no advice, no solutions yet. Repeat the hot spot back word for word when they say it, and put it in your notes." />
           </div>
@@ -498,10 +495,20 @@ Here's what's included: the foundational intake and CFFS, your training program,
       {drawer && (
         <div className="fixed inset-y-0 right-0 z-40 w-full sm:w-[440px] bg-white border-l border-[#E5E5E5] shadow-2xl flex flex-col">
           <div className="flex items-center justify-between px-5 py-3 border-b border-[#E5E5E5]">
-            <p className="text-[13px] font-bold">{drawer === 'notes' ? 'Call notes' : 'Objection handling'}</p>
+            <p className="text-[13px] font-bold">
+              {drawer === 'notes' ? 'Call notes' : drawer === 'form' ? 'What they told you on the form' : 'Objection handling'}
+            </p>
             <button onClick={() => setDrawer(null)} className="text-[#999999] hover:text-[#1A1A1A]"><X size={16} /></button>
           </div>
-          {drawer === 'notes' ? (
+          {drawer === 'form' ? (
+            <div className="flex-1 overflow-y-auto p-5">
+              <p className="text-[12px] text-[#6B6B6B] leading-relaxed mb-4">
+                Their words, not yours. Check what they say on the call against what they wrote, and do not ask
+                anything that is already answered here.
+              </p>
+              {prepNotes && <PrepAnswers notes={prepNotes} />}
+            </div>
+          ) : drawer === 'notes' ? (
             <>
               <textarea value={notes} onChange={e => setNotes(e.target.value)}
                 placeholder="Their hot spot, word for word."
