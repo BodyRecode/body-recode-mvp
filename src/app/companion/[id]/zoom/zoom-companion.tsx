@@ -113,11 +113,12 @@ ${tail}`
   }
 
   const STEPS = [
-    { n: '01', label: 'Recap', mins: '5-7 min' },
-    { n: '02', label: 'Conversation', mins: '10-15 min' },
-    { n: '03', label: 'How it works', mins: '5-7 min' },
-    { n: '04', label: 'Offer', mins: '5-10 min' },
-    { n: '05', label: 'Outcome', mins: '' },
+    { n: '01', label: 'Open', mins: '2-3 min' },
+    { n: '02', label: 'Recap', mins: '5-7 min' },
+    { n: '03', label: 'Conversation', mins: '10-15 min' },
+    { n: '04', label: 'How it works', mins: '5-7 min' },
+    { n: '05', label: 'Offer', mins: '5-10 min' },
+    { n: '06', label: 'Outcome', mins: '' },
   ]
   const current = STEPS[step]
 
@@ -149,7 +150,7 @@ ${tail}`
       </div>
 
       {/* Scope flags — stage 1 only, they are a pre-call item */}
-      {scopeFlags.length > 0 && step === 0 && (
+      {scopeFlags.length > 0 && step === 1 && (
         <div className="max-w-3xl mx-auto px-5 pt-5">
           <details className="rounded-xl bg-amber-50 border border-amber-300">
             <summary className="px-4 py-3 cursor-pointer select-none text-[13px] font-bold text-amber-900 flex items-center gap-1.5">
@@ -173,8 +174,32 @@ ${tail}`
           {current.mins && <span className="text-[12px] text-[#999999] ml-auto shrink-0">{current.mins}</span>}
         </div>
 
-        {/* 01 RECAP */}
+        {/* 01 OPEN */}
         {step === 0 && (
+          <div className="space-y-4">
+            <div className="rounded-xl bg-blue-50 border-l-[3px] border-[#1B6DFC] px-4 py-3.5">
+              <p className="text-[16px] leading-relaxed text-[#1A1A1A]">
+                Say hello. Small talk. Get {firstName} comfortable before anything else starts.
+              </p>
+            </div>
+            <p className="text-[14px] leading-relaxed text-[#6B6B6B]">
+              Not scripted, and it should not be. Two or three minutes of ordinary conversation so they arrive as a
+              person rather than a prospect. They are more honest in stage 3 if this part lands.
+            </p>
+            <Fold title="If you need a way in">
+              <Asks items={[
+                'How has your day been?',
+                'Whereabouts are you based?',
+                'Have you got much on this week?',
+                'Anything from what you have already filled in that you want to flag before we start?',
+              ]} />
+            </Fold>
+            <Boundary text="No coaching, no scorecard, no questions about their body yet. When they sound settled, move on." />
+          </div>
+        )}
+
+        {/* 02 RECAP */}
+        {step === 1 && (
           <div className="space-y-4">
             <Say text={recapScript} />
             <div className="flex flex-wrap items-center gap-2">
@@ -200,7 +225,7 @@ ${tail}`
         )}
 
         {/* 02 CONVERSATION */}
-        {step === 1 && (
+        {step === 2 && (
           <div className="space-y-4">
             <Say text={`Now I want to get a clearer picture of what's actually been going on for you. The scorecard shows the pattern but doesn't know the why behind it.
 
@@ -240,7 +265,7 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
         )}
 
         {/* 03 HOW IT WORKS */}
-        {step === 2 && (
+        {step === 3 && (
           <div className="space-y-2.5">
             <p className="text-[14px] text-[#6B6B6B] leading-relaxed">Read the script on each. Anchor every one back to their words from stage 2. Tap Detail if you need it.</p>
             {HOW_IT_WORKS_STAGES.map(card => (
@@ -307,7 +332,7 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
         )}
 
         {/* 04 OFFER */}
-        {step === 3 && (
+        {step === 4 && (
           <div className="space-y-4">
             {summary?.doNotPitch && (
               <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3">
@@ -344,7 +369,7 @@ Here's what's included: the foundational intake and CFFS, your training program,
         )}
 
         {/* 05 OUTCOME */}
-        {step === 4 && (
+        {step === 5 && (
           <div className="space-y-4">
             {summary && <p className="text-[15px] text-[#6B6B6B]">Expected: {summary.pathLine}</p>}
             {outcome ? (
