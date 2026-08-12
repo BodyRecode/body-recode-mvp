@@ -435,14 +435,14 @@ ${emailBody('Your Week One Progress Session is now available to watch. I recorde
 ${emailFeaturedCard(
   emailNumberedList([
     'What your body has actually been doing this week',
-    'How to decode the signals you have been feeling — energy, digestion, puffiness, mood',
+    'How to decode the signals you have been feeling, energy, digestion, puffiness, mood',
     'Why rhythm matters more than restriction',
     'What Week 2 is building toward',
     'The next step after the challenge for those who want to go deeper',
   ]),
   { eyebrow: 'In this session' },
 )}
-${emailBody('I also share the personal story behind how I built this system. Watch it today while you are in the middle of the reset — it will make Week 2 feel much clearer.', { bottom: 28 })}
+${emailBody('I also share the personal story behind how I built this system. Watch it today while you are in the middle of the reset, it will make Week 2 feel much clearer.', { bottom: 28 })}
 ${emailCta({ href: sessionVideoUrl, label: 'Watch the session' })}
 ${emailUrlFallback(sessionVideoUrl, 'Or find this in your portal under the Live Session section')}
 `)

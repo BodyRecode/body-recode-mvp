@@ -63,13 +63,13 @@ export function buildCustomTimeRequestEmail(opts: {
   note?: string | null
   leadUrl: string
 }): { subject: string; html: string } {
-  const subject = `Custom time request — ${opts.name}`
+  const subject = `Custom time request, ${opts.name}`
   const html = darkEmailShell(
     `${emailLogo(130)}
 ${emailEyebrow('New booking request')}
 ${emailHeading(esc(subject), { size: 26 })}
 ${emailBody(esc(`${opts.email}${opts.phone ? ' · ' + opts.phone : ''}`), { color: EMAIL_MUTED, size: 14, bottom: 10 })}
-${emailBody('They want to book a call and suggested the times below — reply to this email to confirm and book them in.', { size: 15, bottom: 22 })}
+${emailBody('They want to book a call and suggested the times below, reply to this email to confirm and book them in.', { size: 15, bottom: 22 })}
 ${emailFeaturedCard(valueLine(opts.preferredTime), { eyebrow: 'Preferred time' })}
 ${opts.note ? emailFeaturedCard(valueLine(opts.note), { eyebrow: 'Note' }) : ''}
 ${emailCta({ href: opts.leadUrl, label: 'View lead →' })}
@@ -96,7 +96,7 @@ ${emailBody("One thing before we talk: please take 3-4 minutes to fill this in. 
 ${emailCta({ href: opts.prepUrl, label: 'Complete this before our call →' })}
 ${emailUrlFallback(opts.prepUrl)}
 ${darkEmailSignature()}`,
-    { previewText: "Got your request — I'll confirm within 24 hours." },
+    { previewText: "Got your request, I'll confirm within 24 hours." },
   )
   return { subject, html }
 }
@@ -109,7 +109,7 @@ export function buildCallPrepEmail(opts: {
   rawAnswers: string
   leadUrl: string
 }): { subject: string; html: string } {
-  const subject = `Call prep — ${opts.name}`
+  const subject = `Call prep, ${opts.name}`
   const html = darkEmailShell(
     `${emailLogo(130)}
 ${emailEyebrow('Pre-call brief')}

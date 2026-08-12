@@ -59,8 +59,8 @@ export const PROFILE_DRIVERS: Record<Profile, string> = {
 
 /** Coach-facing descriptors (pre-call brief). Terse, clinical, coach voice. */
 export const PROFILE_DESCRIPTORS: Record<Profile, string> = {
-  'Stress-Stored': 'Central anterior storage. Front of the midsection fills while the limbs stay lean or thin out — that contrast is the tell. Harder you push, tighter the body holds.',
-  'Insulin-Drift': 'Posterior and flank storage — mid-back, lower back, love handles — plus deep abdominal fullness, with the front relatively spared. Afternoon crash and evening cravings are the timing tell.',
+  'Stress-Stored': 'Central anterior storage. Front of the midsection fills while the limbs stay lean or thin out, that contrast is the tell. Harder you push, tighter the body holds.',
+  'Insulin-Drift': 'Posterior and flank storage, mid-back, lower back, love handles, plus deep abdominal fullness, with the front relatively spared. Afternoon crash and evening cravings are the timing tell.',
   'Estrogen-Shift': 'Oestrogen-driven, and it runs in two phases. Phase 1 holds gluteofemoral (hips, glutes, outer thighs). Phase 2 redistributes centrally as oestrogen falls, lean mass with it. Read the phase before the location.',
   'Androgen-Decline': 'A composition shift, not a storage location. Central fat up, lean mass down, chest filling via aromatisation. Drive, recovery and capacity slipping.',
   'Indeterminate': 'Scorecard alone doesn\'t cleanly point at one of the four. The intake will tell us which.',
