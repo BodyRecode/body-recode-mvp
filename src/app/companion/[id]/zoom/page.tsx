@@ -2,10 +2,6 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import ZoomCompanion from './zoom-companion'
 import { buildLeadBrief } from '@/lib/lead-brief'
-import { buildCallFlow, type CallStage } from '@/lib/pre-call-brief'
-import type { StateName, SectionScores, BiologicalSex, AgeBand, FatStorage, CycleStatus } from '@/lib/fat-map-profile'
-
-const VALID_STATES: StateName[] = ['Depleted State', 'Transitioning State', 'Ready State']
 
 export default async function ZoomCompanionPage({ params }: { params: Promise<{ id: string }> }) {
   const admin = createAdminClient()
@@ -30,34 +26,16 @@ export default async function ZoomCompanionPage({ params }: { params: Promise<{ 
   // generated from one source and cannot disagree mid-call.
   const { summary, scopeFlags, prepNotes } = buildLeadBrief(lead, events, callDate)
 
-  const state = lead.scorecard_body_state as StateName | null
-  const stages: CallStage[] = (lead.scorecard_score != null && state && VALID_STATES.includes(state))
-    ? buildCallFlow({
-        name: lead.name,
-        scorecard_score: lead.scorecard_score,
-        scorecard_body_state: state,
-        scorecard_section_scores: (lead.scorecard_section_scores ?? {}) as SectionScores,
-        approach_response: lead.approach_response,
-        investment_readiness: lead.investment_readiness,
-        lead_quality: lead.lead_quality,
-        biological_sex: lead.biological_sex as BiologicalSex | null,
-        age_band: lead.age_band as AgeBand | null,
-        fat_storage: lead.fat_storage as FatStorage | null,
-        cycle_status: lead.cycle_status as CycleStatus | null,
-        prep_notes: prepNotes,
-        call_date: callDate,
-      })
-    : []
-
   return (
     <ZoomCompanion
       leadId={id}
       leadName={lead.name}
-      stages={stages}
+      bodyState={(lead.scorecard_body_state as string) ?? 'Transitioning State'}
+      totalScore={lead.scorecard_score as number | null}
       summary={summary}
       scopeFlags={scopeFlags}
+      prepNotes={prepNotes}
       initialNotes={lead.notes ?? ''}
-      initialStatus={lead.status ?? ''}
     />
   )
 }
