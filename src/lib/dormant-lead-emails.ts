@@ -97,8 +97,16 @@ ${darkEmailSignature()}
  */
 export function buildDormantSms(ctx: DormantLeadContext): string {
   const profile = namedProfile(ctx.profile)
-  const thing = profile ? `the ${profile} bit` : `the ${ctx.bodyState.replace(' State', '')} bit`
-  return `Hey ${ctx.firstName}, Kade from Body Recode. Sent your read through the other day. Did ${thing} sound right to you or not really? Genuinely curious either way.`
+  const opener = `Hey ${ctx.firstName}, Kade from Body Recode.`
+
+  // Only name the pattern if they were actually given one. Roughly half of them
+  // were not, and "did the Transitioning bit sound right" asks about a word they
+  // have never used about themselves. Ask about the read as a whole instead.
+  const question = profile
+    ? `Sent your read through the other day. Did the ${profile} bit sound right to you or not really?`
+    : `Sent your scorecard read through the other day. Did it sound like you, or was it off?`
+
+  return `${opener} ${question} Genuinely curious either way.`
 }
 
 /**
