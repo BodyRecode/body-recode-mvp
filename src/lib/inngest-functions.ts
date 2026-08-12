@@ -38,6 +38,7 @@ import {
 import { buildExtensionWeekEmail } from './extension-emails'
 import { EMAIL_SEQUENCE, STOP_STATUSES as BOOKING_AGENT_STOP_STATUSES } from './booking-agent/sequence'
 import { buildPrepFormReminderEmail } from './booking-emails'
+import { buildDormantReadEmail, buildDormantSms, buildDormantOfferEmail } from './dormant-lead-emails'
 
 // ─── Challenge SMS Messages ───────────────────────────────────────────────────
 // Rebuilt 2026-05-30 as Minimal Pulse: 1 morning nudge per day (14 messages)
@@ -2441,5 +2442,138 @@ export const prepFormReminderFunction = inngest.createFunction(
     }
 
     return { leadId }
+  },
+)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Dormant lead reactivation
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// 84 of 136 leads were sitting at "new check-in" having never moved. They
+// completed a scorecard, gave their details, and nothing was ever sent. That is
+// the largest pool in the business by a factor of ten and it needs no ad spend,
+// which matters more than usual right now because the Meta ads are paused.
+//
+// Three touches over ten days, then it stops. Every step re-reads the lead and
+// bails if they have replied, booked, converted or opted out, so nobody who has
+// already re-engaged keeps getting chased.
+//
+// Marketing, not transactional. These people are cold and did not ask for this,
+// so it goes through sendMarketingEmail() with the unsubscribe footer, unlike
+// the pre-call form chase which is transactional.
+export const dormantLeadReactivationFunction = inngest.createFunction(
+  {
+    id: 'dormant-lead-reactivation',
+    retries: 2,
+    triggers: [{ event: 'lead/dormant-reactivation' }],
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async ({ event, step }: { event: any; step: any }) => {
+    const { leadId } = event.data as { leadId: string }
+    if (!leadId) return { skipped: 'no leadId' }
+
+    // Re-read every time. Returns null once they are no longer a dormant lead,
+    // which is the signal to stop the whole sequence.
+    const stillDormant = async (stepId: string) =>
+      step.run(stepId, async () => {
+        const admin = createAdminClient()
+        const { data } = await admin
+          .from('leads')
+          .select('id, name, email, status, active, converted_to_client_id, scorecard_body_state, scorecard_score, scorecard_profile, scorecard_profile_confidence, storage_direction')
+          .eq('id', leadId)
+          .maybeSingle()
+        if (!data) return null
+        if (data.status !== 'new_check_in') return null      // they moved, someone picked them up
+        if (data.converted_to_client_id) return null
+        if (data.active === false) return null
+        return data
+      })
+
+    const ctxFor = async (lead: Record<string, unknown>) => {
+      const admin = createAdminClient()
+      const { data: enrolment } = await admin
+        .from('challenge_enrollments')
+        .select('id')
+        .eq('lead_id', leadId)
+        .maybeSingle()
+      return {
+        firstName: String(lead.name ?? '').split(' ')[0] || 'there',
+        bodyState: String(lead.scorecard_body_state),
+        score: (lead.scorecard_score as number | null) ?? null,
+        profile: (lead.scorecard_profile as string | null) ?? null,
+        provisional: lead.scorecard_profile_confidence === 'low',
+        didChallenge: !!enrolment,
+        storageDirection: (lead.storage_direction as never) ?? null,
+      }
+    }
+
+    // ── Touch 1: the read ────────────────────────────────────────────────
+    const lead1 = await stillDormant('dormant-check-1')
+    if (!lead1) return { stopped: 'no longer dormant at touch 1' }
+
+    await step.run('dormant-send-read', async () => {
+      const ctx = await ctxFor(lead1)
+      const built = buildDormantReadEmail(ctx)
+      const res = await sendMarketingEmail({
+        to: lead1.email as string,
+        subject: built.subject,
+        html: built.html,
+        from: fromCoach(),
+        source: 'dormant-reactivation-1-read',
+      })
+      await logLeadEvent({
+        leadId,
+        type: 'dormant_reactivation_sent',
+        subject: built.subject,
+        resendEmailId: res.ok ? res.id ?? undefined : undefined,
+        notes: res.ok ? 'Touch 1 of 3: their read.' : `Touch 1 NOT sent: ${res.reason}`,
+      })
+    })
+
+    // ── Touch 2: SMS, four days later ────────────────────────────────────
+    await step.sleep('dormant-wait-to-sms', '4d')
+    await alignToNextMorningAEST(step, 'dormant-sms-morning')
+
+    const lead2 = await stillDormant('dormant-check-2')
+    if (!lead2) return { stopped: 'no longer dormant at touch 2' }
+
+    await step.run('dormant-send-sms', async () => {
+      const { sendLeadSms } = await import('@/lib/speed-to-lead-sms')
+      const ctx = await ctxFor(lead2)
+      const res = await sendLeadSms({
+        leadId,
+        trigger: 'dormant_reactivation',
+        body: buildDormantSms(ctx),
+      })
+      if (!res.ok) console.log(`[dormant] SMS skipped for ${leadId}: ${res.reason}`)
+    })
+
+    // ── Touch 3: the state-matched next step, six days later ─────────────
+    await step.sleep('dormant-wait-to-offer', '6d')
+    await alignToNextMorningAEST(step, 'dormant-offer-morning')
+
+    const lead3 = await stillDormant('dormant-check-3')
+    if (!lead3) return { stopped: 'no longer dormant at touch 3' }
+
+    await step.run('dormant-send-offer', async () => {
+      const ctx = await ctxFor(lead3)
+      const built = buildDormantOfferEmail(ctx)
+      const res = await sendMarketingEmail({
+        to: lead3.email as string,
+        subject: built.subject,
+        html: built.html,
+        from: fromCoach(),
+        source: 'dormant-reactivation-3-offer',
+      })
+      await logLeadEvent({
+        leadId,
+        type: 'dormant_reactivation_sent',
+        subject: built.subject,
+        resendEmailId: res.ok ? res.id ?? undefined : undefined,
+        notes: res.ok ? 'Touch 3 of 3: state-matched offer. Sequence complete.' : `Touch 3 NOT sent: ${res.reason}`,
+      })
+    })
+
+    return { leadId, completed: true }
   },
 )

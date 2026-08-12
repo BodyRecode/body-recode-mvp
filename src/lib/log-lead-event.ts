@@ -23,6 +23,7 @@ export type LeadEventType =
   | 'custom_time_coach_notified'
   | 'booking_confirmation_sent'
   | 'prep_form_reminder_sent'
+  | 'dormant_reactivation_sent'
 
 export async function logLeadEvent(params: {
   leadId: string

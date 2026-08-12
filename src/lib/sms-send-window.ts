@@ -24,6 +24,7 @@ export type SmsTrigger =
   | 'waitlist_joined'
   | 'purchase_report'
   | 'noshow_reminder'
+  | 'dormant_reactivation'
   | 'manual'
 
 /**
@@ -136,6 +137,8 @@ export function describeWindow(trigger: SmsTrigger): string {
       return 'Anytime except 22:00-06:00 AEST (queued to 08:30 next day).'
     case 'noshow_reminder':
       return 'Mon-Sat 08:30-20:00 AEST. Queued outside window.'
+    case 'dormant_reactivation':
+      return 'Mon-Sat 08:30-20:00 AEST. Cold re-engagement, so it uses the default window rather than firing on an event.'
     case 'manual':
       return 'Mon-Sat 08:30-20:00 AEST default.'
   }

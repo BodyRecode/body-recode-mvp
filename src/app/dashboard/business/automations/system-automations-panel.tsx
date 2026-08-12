@@ -22,6 +22,13 @@ const AUTOMATIC_AUTOMATIONS = [
     steps: 5,
   },
   {
+    id: 'dormant-lead-reactivation',
+    name: 'Dormant Lead Reactivation',
+    description: `For leads sitting at "new check-in" who did a scorecard and were never followed up. 84 of 136 leads when it was built, the biggest pool in the business and it needs no ad spend. Three touches over ten days then it stops: their read written out in full with no button and a reply as the only ask, an SMS four days later asking whether the pattern sounded right, and the state-matched next step as a self-serve link six days after that. Every step re-reads the lead and stops if they have moved off "new check-in", converted, or gone inactive, so anyone who replies and gets picked up drops out of the rest. Marketing-class, so it carries the unsubscribe footer. NOT automatic: run the dry run at /api/admin/dormant-reactivation first, which shows exactly who would get what and who is excluded and why, then POST with ?confirm=1. Eligibility excludes internal and test records, anyone with no body state, and inactive leads.`,
+    trigger: 'Admin trigger, one-off per lead (lead/dormant-reactivation)',
+    steps: 3,
+  },
+  {
     id: 'prep-form-chase',
     name: 'Pre-Call Form Chase',
     description: `When a lead requests a call time at bodyrecode.au/book, two emails fire immediately: the custom-time notification to ${coach().email} (Reply-To set to the lead, so you answer straight from your inbox) and the confirmation to them, which carries the ONLY link to the pre-call form. Both are now written to the lead timeline with their Resend IDs - before 2026-08-06 neither was logged, so there was no way to tell whether a lead had ever received the form link. If the form is still outstanding, a nudge goes out at ~24h and a firmer one at ~72h, both realigned to 7am AEST. Each nudge re-reads the timeline and bails the moment the form is completed, so nobody who has already done it gets chased. Transactional, not marketing: they asked for the call.`,
