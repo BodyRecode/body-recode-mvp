@@ -933,6 +933,26 @@ export interface BriefSummary {
   doNotPitch: boolean
   pathLine: string
   keyLines: string[]
+  // ── Everything below added 2026-08-12. The companion was carrying only the
+  // generic per-state scripts while the written brief held all the
+  // lead-specific intelligence, so the screen used DURING the call knew less
+  // about the person than the one read before it.
+  /** Sections scoring 1. Where the body is actually struggling. */
+  floors: Array<{ name: string; descriptor: string }>
+  /** Sections scoring 3. What is already in place, lean on these. */
+  holds: Array<{ name: string; descriptor: string }>
+  /** Opening line of the read, built from their actual section scores. */
+  readLeadWith: string
+  mechanism: string[]
+  readThen: string
+  /** The line naming the pattern, hedged when confidence is low. */
+  readPattern: string | null
+  profileDescriptor: string | null
+  tail: string
+  objections: Array<{ trigger: string; response: string }>
+  /** Give these regardless of outcome. */
+  recommendations: string[]
+  floorName: string
 }
 
 /**
@@ -976,8 +996,28 @@ export function buildBriefSummary(input: LeadBriefInput): BriefSummary | null {
       ? 'Path B most likely, needs time. Path C possible.'
       : 'Path C most likely, yes. Send the commencement fee.'
 
+  const floor = pickFloor(scores)
+  const floorName = floor ? SECTIONS[floor].name : 'unclear'
+  const keys: SectionKey[] = ['01', '02', '03', '04', '05']
+  const named = profile !== 'Indeterminate'
+
   return {
-    headline: patternRead(input, pickFloor(scores)),
+    floors: keys.filter(k => scores[k] === 1).map(k => ({ name: SECTIONS[k].name, descriptor: SECTIONS[k].descriptors[0] })),
+    holds: keys.filter(k => scores[k] === 3).map(k => ({ name: SECTIONS[k].name, descriptor: SECTIONS[k].descriptors[2] })),
+    readLeadWith: bank.readbackLeadWith(floorName, input.scorecard_score, scores),
+    mechanism: bank.mechanismBullets(floorName),
+    readThen: bank.readbackThen(input.scorecard_score),
+    readPattern: named
+      ? (confidence === 'low'
+          ? `Where it sits on you points toward ${profile}, but I want the intake before I commit to that.`
+          : `Yours is ${profile.toLowerCase()} specifically.`)
+      : null,
+    profileDescriptor: named ? PROFILE_DESCRIPTORS[profile] : null,
+    tail: bank.tail(floorName),
+    objections: [...bank.objections],
+    recommendations: [...bank.recommendations],
+    floorName,
+    headline: patternRead(input, floor),
     stateLabel: `${input.scorecard_score}/15 ${STATE_SHORT[state]}`,
     profileLabel: profile === 'Indeterminate' ? null : profile,
     provisional: confidence === 'low',

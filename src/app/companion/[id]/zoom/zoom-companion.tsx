@@ -89,11 +89,16 @@ export default function ZoomCompanion({
       ? `That's your starting point — where we work from before adding any training in.\n\nWhat was your reaction when you saw it?`
       : 'What was your reaction when you saw the result?'
 
+  // The read line comes from the brief when we have their section scores, so it
+  // is built from their actual floors rather than the generic per-state
+  // paragraph. Falls back to the state language for leads with no scorecard.
+  const readBody = summary?.readLeadWith ?? state.interpretation
+
   const recapScript = `OK ${firstName}, before we go any further I want to recap where we're at.
 
 Your scorecard came back as ${bodyState}${scoreDisplay}.
 
-${preface}${state.interpretation}
+${preface}${readBody}
 
 ${tail}`
 
@@ -217,6 +222,18 @@ ${tail}`
               ))}
               {!training && <span className="text-[12px] text-[#999999]">Set this, stage 2 adapts</span>}
             </div>
+            {summary && summary.criticalHold.length > 0 && (
+              <div className="rounded-xl border border-amber-300 bg-amber-50 p-3.5">
+                <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-amber-900 mb-2">Hold these, whatever they say</p>
+                <ol className="space-y-1.5">
+                  {summary.criticalHold.map((h, i) => (
+                    <li key={i} className="flex gap-2.5 text-[13px] leading-snug text-amber-900">
+                      <span className="font-bold tabular-nums">{i + 1}</span><span>{h}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            )}
             <Fold title="Follow-up questions">
               <Asks items={[
                 'What stood out to you most when you saw your result?',
@@ -224,6 +241,41 @@ ${tail}`
                 'Anything that surprised you, or didn\'t land?',
               ]} />
             </Fold>
+            {summary && (summary.floors.length > 0 || summary.holds.length > 0) && (
+              <Fold title={`Their sections — ${summary.floors.length} at the floor`}>
+                <div className="space-y-2.5">
+                  {summary.floors.length > 0 && (
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-red-700 mb-1.5">Floors, where the body is struggling</p>
+                      {summary.floors.map(f => (
+                        <p key={f.name} className="text-[13px] leading-snug text-[#3A3A3A]"><span className="font-semibold">{f.name}</span> — {f.descriptor}</p>
+                      ))}
+                    </div>
+                  )}
+                  {summary.holds.length > 0 && (
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#1B6DFC] mb-1.5">Holds, lean on these</p>
+                      {summary.holds.map(f => (
+                        <p key={f.name} className="text-[13px] leading-snug text-[#3A3A3A]"><span className="font-semibold">{f.name}</span> — {f.descriptor}</p>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </Fold>
+            )}
+            {summary && (
+              <Fold title="The mechanism, if they ask why">
+                <div className="space-y-2.5">
+                  <Asks items={summary.mechanism} />
+                  <div className="rounded-lg bg-blue-50 border-l-[3px] border-[#1B6DFC] px-3.5 py-2.5">
+                    <p className="text-[14px] leading-relaxed text-[#1A1A1A]">&ldquo;{summary.readThen}{summary.readPattern ? ` ${summary.readPattern}` : ''}&rdquo;</p>
+                  </div>
+                  {summary.profileDescriptor && (
+                    <p className="text-[13px] leading-relaxed text-[#6B6B6B]">{summary.profileDescriptor}</p>
+                  )}
+                </div>
+              </Fold>
+            )}
             <Fold title="Coach read, not spoken">
               <p className="text-[14px] leading-relaxed text-[#6B6B6B]">{state.opening}</p>
             </Fold>
@@ -370,6 +422,23 @@ Here's what's included: the foundational intake and CFFS, your training program,
               <p className="text-[13px] font-bold text-[#1B6DFC] mb-1">{FOUNDING_OFFER.headline}</p>
               <p className="text-[13px] text-[#3A3A3A] leading-relaxed">{FOUNDING_OFFER.blurb}</p>
             </Fold>
+            {summary && summary.objections.length > 0 && (
+              <Fold title={`Objections most likely for ${summary.stateLabel.split(' ').slice(1).join(' ')}`}>
+                <div className="space-y-2.5">
+                  {summary.objections.map(o => (
+                    <div key={o.trigger}>
+                      <p className="text-[13px] font-semibold text-[#1A1A1A]">&ldquo;{o.trigger}&rdquo;</p>
+                      <p className="text-[13px] leading-relaxed text-[#3A3A3A]">→ &ldquo;{o.response}&rdquo;</p>
+                    </div>
+                  ))}
+                </div>
+              </Fold>
+            )}
+            {summary && (
+              <Fold title="Lines to have ready">
+                <Asks items={summary.keyLines.map(k => k.replace(/^"|"$/g, ''))} />
+              </Fold>
+            )}
             <Boundary text="Lead with 2x. Mention 1x only if their history shows self-discipline. After the number, pause. Don't fill the silence." />
           </div>
         )}
@@ -392,6 +461,17 @@ Here's what's included: the foundational intake and CFFS, your training program,
                   <button key={p} disabled={busy} onClick={() => markOutcome(p)}
                     className={`text-[14px] font-bold px-5 py-2.5 rounded-xl border transition-colors disabled:opacity-50 ${cls}`}>{label}</button>
                 ))}
+              </div>
+            )}
+            {summary && summary.recommendations.length > 0 && (
+              <div className="rounded-xl border border-[#E5E5E5] p-3.5">
+                <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#1B6DFC] mb-1">Give them these regardless</p>
+                <p className="text-[12px] text-[#999999] mb-2.5">Tuned to {summary.stateLabel}, floor on {summary.floorName}.</p>
+                <Asks items={summary.recommendations} />
+                <p className="text-[13px] leading-relaxed text-[#1A1A1A] mt-3 pt-3 border-t border-[#E5E5E5]">
+                  &ldquo;That&apos;s a real starting point. What it can&apos;t tell you is which one to pull first, or when to change what.
+                  If you want the read built in, the door&apos;s open.&rdquo;
+                </p>
               </div>
             )}
             <p className="text-[12px] text-[#999999]">Path B is not a fail. Out also sends the declined follow-up.</p>
