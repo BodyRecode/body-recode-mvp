@@ -20,6 +20,43 @@ type SystemAutomation = {
 }
 
 const AUTOMATIONS: Record<string, SystemAutomation> = {
+  'dormant-lead-reactivation': {
+    id: 'dormant-lead-reactivation',
+    name: 'Dormant Lead Reactivation',
+    description: 'Three touches over ten days for leads who did a scorecard, gave you their details, and were never sent anything. Then it stops. You trigger it from the button at the top of the Automations page, not automatically.',
+    trigger: 'You trigger it (Automations page)',
+    triggerDetail: 'Not automatic. On the Automations page there is a card at the top: click "See who gets it" to preview every recipient and every exclusion with its reason, then send from inside that dialog. Anyone who replies and gets moved off "new check-in", converts, or is marked inactive drops out of the remaining touches automatically. Existing clients, internal and test records, and anyone with no body state are excluded before it starts.',
+    steps: [
+      {
+        day: 'Immediately',
+        subject: 'Your Body Recode read, {firstName}',
+        paragraphs: [
+          'Their scorecard read written out in full: body state, score, and their pattern if one was named, each in the approved lead-facing language.',
+          'Deliberately has NO button. The only call to action is a line asking them to reply, because a reply is a lower bar than a booking and it starts a conversation instead of a funnel step.',
+          'Opens by owning it: "You did the Body State Scorecard a while back and I never walked you through what it meant. That is on me, so here it is properly."',
+        ],
+        cta: 'Reply to this email (no button)',
+      },
+      {
+        day: 'Day 4',
+        subject: 'SMS: did that sound right?',
+        paragraphs: [
+          '"Hey {firstName}, Kade from Body Recode. Sent your read through the other day. Did the {pattern} bit sound right to you or not really? Genuinely curious either way."',
+          'One question, answerable in three words, asking for nothing. Only goes to leads with SMS consent, so roughly a third of the list. Sends at 7am Brisbane.',
+        ],
+        cta: 'A reply, not a click',
+      },
+      {
+        day: 'Day 10',
+        subject: '{firstName}, the next step for your read',
+        paragraphs: [
+          'The step that matches their state, as a self-serve link. Depleted who have not done the Challenge get it free. Depleted who have, plus everyone Transitioning, get the $97 Blueprint. Ready leads get the $49 Membership.',
+          'Ends by saying that if it is not the right time that is genuinely fine, and it will leave them be. Then the sequence stops.',
+        ],
+        cta: 'Take a look →',
+      },
+    ],
+  },
   'scorecard-followup': {
     id: 'scorecard-followup',
     name: 'Scorecard Follow-up Sequence',
