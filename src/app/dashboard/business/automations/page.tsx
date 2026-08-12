@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { Zap, Plus, Play, Pause, ChevronRight, AlertTriangle } from 'lucide-react'
 import SystemAutomationsPanel from './system-automations-panel'
+import DormantReactivationButton from './dormant-reactivation-button'
 import ReseedScorecardButton from './reseed-scorecard-button'
 
 const triggerLabel: Record<string, string> = {
@@ -80,6 +81,8 @@ export default async function AutomationsPage() {
           ))}
         </div>
       )}
+
+      <DormantReactivationButton />
 
       <SystemAutomationsPanel />
 
