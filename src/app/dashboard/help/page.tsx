@@ -1438,8 +1438,21 @@ export default function HelpPage() {
           </Section>
 
           <Section id="communications" title="16. Communications Timeline" colour="teal">
-            <p className="font-semibold text-[#1A1A1A]">Lead detail page</p>
-            <p>Every lead detail page has a <strong>Communications</strong> panel. It shows a reverse-chronological timeline of all outbound emails logged for that lead.</p>
+            <p className="font-semibold text-[#1A1A1A]">Lead detail page, rebuilt 12 Aug 2026</p>
+            <p>The lead page used to be one long scroll of fifteen panels, most of which were relevant a handful of times a year, with the two things you actually use before a call sitting near the bottom. It is now a <strong>command bar plus tabs</strong>.</p>
+            <p className="mt-2">The command bar is always visible: name, status, lead quality, their score, state and pattern, click-to-copy email and phone, where they came from, the next booked call, and a Join Zoom button. If their pre-call form mentions anything outside your scope, an amber panel names it right there.</p>
+            <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm mt-2">
+              <li><strong>Brief</strong> - the Zoom pre-call read, plus the in-person supplement if you are running it at the gym instead. Built <em>live</em> from what is on file right now, not the snapshot stored at scorecard submit. That snapshot was written before their pre-call form arrived, so it could miss the most important thing they told you.</li>
+              <li><strong>Their words</strong> - the pre-call form verbatim, anything they typed into the scorecard, and their Day 7 Check-In answers. Nothing paraphrased.</li>
+              <li><strong>Timeline</strong> - every logged event, newest first.</li>
+              <li><strong>Scorecard</strong> - score, sections, pattern and confidence, plus their Challenge progress.</li>
+              <li><strong>Actions</strong> - booking, coaching entry, sequences.</li>
+              <li><strong>Admin</strong> - contact, lead management, notes, danger zone.</li>
+            </ul>
+            <Note><strong>Scope flags.</strong> The brief scans their own words for things that sit outside S&amp;ES scope: GLP-1 agonists, thyroid conditions and medication, PCOS, HRT, corticosteroids, sleep apnoea, glucose diagnoses, mood medication, pregnancy, disordered eating signals, and shift work. Each one comes with what to do about it. It is deliberately crude and it is a prompt to ask and refer, never a conclusion. A false positive costs you one question. A miss costs a scope breach.</Note>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">Communications</p>
+            <p>The <strong>Timeline</strong> tab shows a reverse-chronological view of all outbound emails and events logged for that lead.</p>
             <p>Events logged automatically:</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
               <li>Performance report scheduled</li>

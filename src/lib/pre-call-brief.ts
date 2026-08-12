@@ -38,6 +38,14 @@ export interface LeadBriefInput {
   age_band?: AgeBand | null
   fat_storage?: FatStorage | null
   cycle_status?: CycleStatus | null
+  /**
+   * Verbatim pre-call form answers (the `prep_form_completed` lead event notes).
+   * Drives the "What they told you" block and the scope-flag scan. Optional —
+   * most leads have not completed the form when the brief is first generated.
+   */
+  prep_notes?: string | null
+  /** Human-readable call time, e.g. "Thu 13 Aug, 4:30pm Brisbane". */
+  call_date?: string | null
 }
 
 const SECTIONS: Record<SectionKey, { name: string; descriptors: [string, string, string] }> = {
@@ -456,6 +464,68 @@ function patternRead(input: LeadBriefInput, floor: SectionKey | null): string {
 // Main generator
 // =============================================================
 
+// =============================================================
+// Scope-of-practice flags
+// =============================================================
+
+/**
+ * Scan the lead's own words for things that sit outside S&ES scope.
+ *
+ * Added 2026-08-12 after a lead arrived at a Zoom with diagnosed Hashimoto's,
+ * on T3/T4 replacement, and four months into a GLP-1 — none of which appeared
+ * anywhere on her lead page or in her brief. The coach would have walked in
+ * blind to the two things most likely driving what she was describing.
+ *
+ * Deliberately crude. It is a prompt to ASK and to refer, never a conclusion.
+ * A false positive costs one question. A miss costs a scope breach.
+ */
+const SCOPE_PATTERNS: Array<{ test: RegExp; flag: string; route: string }> = [
+  {
+    test: /\b(mounjaro|ozempic|wegovy|saxenda|trulicity|tirzepatide|semaglutide|liraglutide|glp-?1)\b/i,
+    flag: 'GLP-1 agonist',
+    route: 'Outside S&ES scope entirely. Ask what they were told and by whom. Note it, do not interpret it, do not advise on dose or duration.',
+  },
+  {
+    test: /\b(hashimoto'?s?|thyroid|levothyroxine|thyroxine|eltroxin|euthyrox|t3\/t4|t3 and t4|hypothyroid|graves)\b/i,
+    flag: 'Thyroid condition or medication',
+    route: 'Refer to Arete or GP. Named in every profile document as a confounder that overlaps the whole symptom set. Do not interpret bloods or antibodies.',
+  },
+  { test: /\bpcos\b/i, flag: 'PCOS', route: 'Refer if suspected. Insulin resistance is central to it and it will mimic Insulin-Drift while needing different management.' },
+  { test: /\b(hrt|hormone replacement|oestrogen patch|estrogen patch|progesterone)\b/i, flag: 'Hormone therapy', route: 'Ask, note, never advise for or against. Medical matter.' },
+  { test: /\b(prednisone|prednisolone|corticosteroid|cortisone injection)\b/i, flag: 'Corticosteroid', route: 'Produces the Stress-Stored picture directly. Refer before committing to a cortisol read.' },
+  { test: /\b(sleep apnoea|sleep apnea|cpap)\b/i, flag: 'Sleep apnoea', route: 'Refer for assessment. Independently produces the whole fatigue and composition picture.' },
+  { test: /\b(metformin|pre-?diabet|type 2 diabet|hba1c|insulin resistance diagnosed)\b/i, flag: 'Glucose diagnosis or medication', route: 'Medical picture, not a coaching one. Refer. Never tell a client they are pre-diabetic.' },
+  { test: /\b(antidepressant|ssri|sertraline|escitalopram|venlafaxine|depression|anxiety disorder)\b/i, flag: 'Mood condition or medication', route: 'Refer. Alters HPA function and sleep, and coaching around a clinical mood disorder is not appropriate.' },
+  { test: /\b(pregnan|postpartum|post-partum|breastfeeding)\b/i, flag: 'Pregnancy or postpartum', route: 'Different physiology altogether. Confirm stage before any prescription.' },
+  { test: /\b(anorexi|bulimi|disordered eating|red-?s\b|binge)\b/i, flag: 'Disordered eating signal', route: 'Refer. The correction is the opposite of what they will expect and this must not be coached around.' },
+  { test: /\b(shift work|night shift|nightshift|rotating roster|on call overnight|sleep on site)\b/i, flag: 'Shift work', route: 'INSIDE scope, and probably your biggest lever. But it makes the insulin timing tell unreadable — establish the actual daily structure before reading timing.' },
+]
+
+export interface ScopeFlag { flag: string; route: string }
+
+export function detectScopeFlags(text: string | null | undefined): ScopeFlag[] {
+  if (!text) return []
+  const out: ScopeFlag[] = []
+  for (const p of SCOPE_PATTERNS) {
+    if (p.test.test(text)) out.push({ flag: p.flag, route: p.route })
+  }
+  return out
+}
+
+// =============================================================
+// Main generator — ZOOM 1
+// =============================================================
+
+/**
+ * Zoom 1 pre-call brief.
+ *
+ * Reshaped 2026-08-12. This used to emit an in-person AF Newstead session
+ * brief: a runsheet with a pre-session block, a during-the-working-block watch
+ * list, and a post-session scorecard read-back. That was most of its length and
+ * none of it applies to a Zoom call, which is now the default path out of the
+ * Challenge. The gym runsheet moved to `generateInPersonSessionSupplement`
+ * below and is produced on demand rather than stored on every lead.
+ */
 export function generatePreCallBrief(input: LeadBriefInput): string {
   const state = input.scorecard_body_state
   const stateShort = STATE_SHORT[state]
@@ -476,10 +546,8 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   const isIndeterminate = profile === 'Indeterminate'
   const driver = PROFILE_DRIVERS[profile]
   const profileDescriptor = PROFILE_DESCRIPTORS[profile]
-
   const generatedDate = new Date().toISOString().slice(0, 10)
 
-  // Lead quality block
   const approach = input.approach_response
   const investment = input.investment_readiness
   const redCount = (approach === 'C' || approach === 'D' ? 1 : 0)
@@ -487,79 +555,87 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   const quality = input.lead_quality
     ? input.lead_quality.toUpperCase()
     : (approach && investment ? (redCount === 0 ? 'GREEN' : redCount === 1 ? 'YELLOW' : 'RED') : 'UNKNOWN')
-
   const approachFlag = (approach === 'C' || approach === 'D') ? '   ← red flag' : ''
   const investmentFlag = (investment === 'C' || investment === 'D') ? '   ← red flag' : ''
 
-  // Section breakdown
-  const sectionLines: string[] = []
-  for (const k of ['01','02','03','04','05'] as SectionKey[]) {
-    const v = scores[k]
-    const def = SECTIONS[k]
-    if (v != null) {
-      sectionLines.push(`${def.name}: ${v}/3. ${def.descriptors[v - 1]}`)
-    }
-  }
-
   const criticalHold = buildCriticalHold(input, profile)
-  const frustrationTells = buildFrustrationTell(approach)
-
-  // Fat Map zone marker
-  const fatMapZones = [
-    `  - Front of stomach/waist, limbs staying lean = stress + cortisol${profile === 'Stress-Stored' ? '   ← YOURS, before I open the intake' : ''}`,
-    `  - Back/sides: mid-back, lower back, love handles = insulin drift${profile === 'Insulin-Drift' ? '   ← YOURS, before I open the intake' : ''}`,
-    // v2.0 wording. Estrogen-Shift is two phases, not a fixed location, and
-    // Androgen-Decline is a composition shift rather than a storage site.
-    `  - Hips/thighs, then moving central as oestrogen falls = oestrogen-driven${profile === 'Estrogen-Shift' ? '   ← YOURS, before I open the intake' : ''}`,
-    `  - Central fat up while lean mass + drive fall = androgen decline${profile === 'Androgen-Decline' ? '   ← YOURS, before I open the intake' : ''}`,
-  ]
+  const scopeFlags = detectScopeFlags(input.prep_notes)
 
   const lines: string[] = []
 
-  lines.push(`${input.name.toUpperCase()} - IN-PERSON SESSION BRIEF`)
-  lines.push(`Generated ${generatedDate}. Session date TBC. AF Newstead.`)
-  lines.push(`${input.name}-specific overlay. For the session itself, run /dashboard/gym-sessions → ${stateShort}.`)
+  lines.push(`${input.name.toUpperCase()} - ZOOM 1 PRE-CALL BRIEF`)
+  lines.push(input.call_date
+    ? `Generated ${generatedDate}. Call: ${input.call_date}. 30-45 min on Zoom.`
+    : `Generated ${generatedDate}. Call date TBC. 30-45 min on Zoom.`)
   lines.push('')
   lines.push('')
+
+  // ── Scope flags come FIRST when present. Nothing else on this page matters
+  //    if the coach is about to talk past a medical picture.
+  if (scopeFlags.length) {
+    lines.push('═══════════════════════════════════════════')
+    lines.push('READ THIS FIRST - SCOPE FLAGS')
+    lines.push('═══════════════════════════════════════════')
+    lines.push('')
+    lines.push('Picked up from their own words on the pre-call form. Ask about each,')
+    lines.push('note the answer, and do not interpret it.')
+    lines.push('')
+    scopeFlags.forEach(f => {
+      lines.push(`• ${f.flag}`)
+      lines.push(`  → ${f.route}`)
+      lines.push('')
+    })
+    lines.push('Safe framing: "That sits with your doctor, not me. What I can do is make')
+    lines.push('sure everything on my side is working with it rather than against it."')
+    lines.push('')
+    lines.push('NEVER: name or rule out a condition, interpret bloods, or say anything that')
+    lines.push('reads as advice to change a prescribed medication.')
+    lines.push('')
+    lines.push('')
+  }
+
+  // ── At a glance ────────────────────────────────────────────
   lines.push('═══════════════════════════════════════════')
   lines.push('AT A GLANCE')
   lines.push('═══════════════════════════════════════════')
   lines.push('')
   if (isIndeterminate) {
     const reason = state === 'Ready State'
-      ? 'Ready foundations — Fat Map profile typically doesn\'t apply'
-      : 'No single signal at the floor — no clear Fat Map profile yet'
+      ? 'Ready body, no compensation pattern to name'
+      : 'scorecard does not point cleanly at one of the four'
     lines.push(`${input.scorecard_score}/15 ${stateShort}. Profile: TBD on intake (${reason}).`)
   } else {
-    const profileSuffix = profileConfidence === 'low'
-      ? ' [provisional — confirm on intake]'
-      : ''
-    lines.push(`${input.scorecard_score}/15 ${stateShort}. Profile: ${profile} (${driver})${profileSuffix}.`)
+    const suffix = profileConfidence === 'low' ? ' [PROVISIONAL - do not name it with confidence]' : ''
+    lines.push(`${input.scorecard_score}/15 ${stateShort}. Profile: ${profile} (${driver})${suffix}.`)
   }
-  const SECTION_INLINE_LABELS: Record<SectionKey, string> = {
-    '01': 'Energy', '02': 'Sleep', '03': 'Stress', '04': 'Training', '05': 'Fat Loss',
-  }
-  const scoreInline = (['01','02','03','04','05'] as SectionKey[])
+  const sectionLine = (['01','02','03','04','05'] as SectionKey[])
     .filter(k => scores[k] != null)
-    .map(k => `${SECTION_INLINE_LABELS[k]} ${scores[k]}`)
+    .map(k => `${SECTIONS[k].name} ${scores[k]}`)
     .join(' · ')
-  lines.push(scoreInline + '.')
+  if (sectionLine) lines.push(sectionLine)
   lines.push(patternRead(input, floor))
   lines.push('')
 
-  // KEY SIGNALS — explicit map of every score to its read.
-  // Highlights the floors (1s) and the holds (3s) so the brief is always
-  // visibly tied to this lead's actual answers, not just the body state.
+  if (scopeFlags.length) {
+    lines.push('⚠ Scope flags present (above). Treat the profile as weaker than the label')
+    lines.push('  suggests — a medical picture overlaps most of what the scorecard scores.')
+    lines.push('')
+  }
+  if (profileConfidence === 'low' && !isIndeterminate) {
+    lines.push('Confidence is LOW. Use "points toward", never "you are".')
+    lines.push('')
+  }
+
   const ones = (['01','02','03','04','05'] as SectionKey[]).filter(k => scores[k] === 1)
   const threes = (['01','02','03','04','05'] as SectionKey[]).filter(k => scores[k] === 3)
-  if (ones.length > 0 || threes.length > 0) {
+  if (ones.length || threes.length) {
     lines.push('KEY SIGNALS')
-    if (ones.length > 0) {
-      lines.push(`  Floors (1/3) — where the body is actually struggling:`)
+    if (ones.length) {
+      lines.push('  Floors (1/3) — where the body is actually struggling:')
       ones.forEach(k => lines.push(`  • ${SECTIONS[k].name} - ${SECTIONS[k].descriptors[0]}`))
     }
-    if (threes.length > 0) {
-      lines.push(`  Holds (3/3) — what's already in place, lean on these:`)
+    if (threes.length) {
+      lines.push('  Holds (3/3) — what is already in place, lean on these:')
       threes.forEach(k => lines.push(`  • ${SECTIONS[k].name} - ${SECTIONS[k].descriptors[2]}`))
     }
     lines.push('')
@@ -567,181 +643,142 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
 
   lines.push(`LEAD QUALITY: ${quality}  (${redCount} red flag${redCount === 1 ? '' : 's'})`)
   lines.push('')
-
   if (approach) {
-    lines.push(`Q "When your training or nutrition stops producing results, what is your honest first response?"`)
+    lines.push('Q "When your training or nutrition stops producing results, what is your honest first response?"')
     lines.push(`  → ${approach}: "${APPROACH_LABELS[approach]}"${approachFlag}`)
     lines.push('')
   }
   if (investment) {
-    lines.push(`Q "If the scorecard identifies what is blocking your progress, are you in a position to invest in addressing it?"`)
+    lines.push('Q "If the scorecard identifies what is blocking your progress, are you in a position to invest in addressing it?"')
     lines.push(`  → ${investment}: "${INVESTMENT_LABELS[investment]}"${investmentFlag}`)
     lines.push('')
   }
-
-  lines.push('(Scoring: C or D on either question = red flag. 2 = RED. 1 = YELLOW. 0 = GREEN.)')
-  lines.push('')
   lines.push('CRITICAL HOLD')
   criticalHold.forEach((h, i) => lines.push(`${i + 1}. ${h}`))
   lines.push('')
   lines.push('')
 
-  // Session → dashboard
-  lines.push('═══════════════════════════════════════════')
-  lines.push('SESSION → DASHBOARD')
-  lines.push('═══════════════════════════════════════════')
-  lines.push('')
-  lines.push(`Open /dashboard/gym-sessions → ${stateShort} before they arrive.`)
-  lines.push('')
-  lines.push('Program type:')
-  lines.push('• Machines (default) - lower neurological cost, easier to read recovery rate')
-  lines.push('• Functional / Mixed - only if they\'re training-fluent')
-  lines.push('')
-  lines.push('Run consult, warmup, primer + working block, close, handoff as written in the dashboard.')
-  lines.push('')
-  lines.push('')
-
-  // Block 1
-  lines.push('═══════════════════════════════════════════')
-  lines.push('BLOCK 1 - PRE-SESSION')
-  lines.push('═══════════════════════════════════════════')
-  lines.push('')
-  lines.push('Use dashboard Opening + Goals scripts. Then ask:')
-  lines.push('')
-  lines.push('• "What was on your mind when you booked this? What\'s been bugging you?"')
-  lines.push('  → Capture verbatim. Hot-spot anchor for Block 3.')
-  lines.push('')
-  lines.push('THEN SET THE AGENDA (verbatim):')
-  lines.push('')
-  lines.push('  "Here\'s how this\'ll go. We\'ll train first so I can see what your body\'s')
-  lines.push('  actually doing under load. Then we sit back down, I\'ll walk you through')
-  lines.push('  your scorecard, what I saw in your session, and what my coaching would')
-  lines.push('  look like for what you told me you want. Pricing\'s part of that too.')
-  lines.push('  No need to decide anything today."')
-  lines.push('')
-  lines.push('DASHBOARD OVERRIDE')
-  lines.push('• SKIP "Explain Their Results" pre-session - moved to Block 3 read-back.')
-  lines.push('• SKIP "Why We Train Like This" pre-session - covered post-session in callback.')
-  lines.push('• Hold the scorecard until after the session. The training is the proof.')
-  lines.push('')
-  lines.push('')
-
-  // Block 2
-  lines.push('═══════════════════════════════════════════')
-  lines.push('BLOCK 2 - DURING THE WORKING BLOCK')
-  lines.push('═══════════════════════════════════════════')
-  lines.push('')
-  lines.push(bank.watchListIntro)
-  lines.push('')
-  bank.watchList.forEach(b => lines.push(`• ${b}`))
-  lines.push('')
-  if (frustrationTells) {
-    const tellLabel = approach === 'D' ? 'FRUSTRATION TELL (approach D in the room)' : 'PUSH-HARDER TELL (approach C in the room)'
-    lines.push(`${tellLabel}:`)
-    frustrationTells.forEach(t => lines.push(`• ${t}`))
+  // ── Their own words ────────────────────────────────────────
+  if (input.prep_notes) {
+    lines.push('═══════════════════════════════════════════')
+    lines.push('WHAT THEY TOLD YOU')
+    lines.push('═══════════════════════════════════════════')
     lines.push('')
-    lines.push('→ Hold the line: "Not today. We\'re not loading into that pattern." That moment IS part of the demonstration.')
+    lines.push('Verbatim from the pre-call form. Use their words back, do not paraphrase.')
+    lines.push('')
+    input.prep_notes.split('\n').forEach(l => lines.push(l))
+    lines.push('')
     lines.push('')
   }
+
+  // ── Running the call ───────────────────────────────────────
+  lines.push('═══════════════════════════════════════════')
+  lines.push('OPENING')
+  lines.push('═══════════════════════════════════════════')
+  lines.push('')
+  lines.push('SET THE AGENDA (verbatim):')
+  lines.push('')
+  lines.push('  "Here\'s how this\'ll go. I\'ll ask you a few things so I understand where')
+  lines.push('  you\'re actually at, then I\'ll walk you through what your scorecard is')
+  lines.push('  telling me and what I\'d do about it. If it\'s a fit I\'ll tell you what')
+  lines.push('  working together looks like. No need to decide anything today."')
+  lines.push('')
+  lines.push('THEN ASK, and capture verbatim:')
+  lines.push('')
+  lines.push('• "What was going on that made you fill this in?"')
+  lines.push('• "What have you already tried, and what happened?"')
+  lines.push('• "When did you last feel really good? What was different then?"')
+  lines.push('• "If we sorted this, what actually changes day to day?"')
+  if (scopeFlags.length) {
+    lines.push('• Then work through the scope flags above. Ask, note, move on.')
+  }
+  lines.push('')
   lines.push('')
 
-  // Block 3 - read-back
+  // ── The read ───────────────────────────────────────────────
   lines.push('═══════════════════════════════════════════')
-  lines.push('BLOCK 3 - SCORECARD READ-BACK')
+  lines.push('THE READ - WALKING THEM THROUGH IT')
   lines.push('═══════════════════════════════════════════')
   lines.push('')
   lines.push('LEAD WITH')
   lines.push(`"${bank.readbackLeadWith(floorName, input.scorecard_score, scores)}"`)
   lines.push('')
-  lines.push(`MECHANISM - at this level of ${floorName.toLowerCase()}:`)
+  lines.push('MECHANISM')
   bank.mechanismBullets(floorName).forEach(b => lines.push(`• ${b}`))
   lines.push('')
-  lines.push('CALLBACK to the session (pick ONE):')
-  bank.callbacks.forEach(c => lines.push(`• ${c}`))
-  lines.push('')
   lines.push('THEN')
-  if (isIndeterminate) {
-    lines.push(`"${bank.readbackThen(input.scorecard_score)}"`)
-  } else {
-    lines.push(`"${bank.readbackThen(input.scorecard_score)} Yours is ${profile.toLowerCase().replace('-', ' ')}-driven specifically."`)
+  lines.push(`"${bank.readbackThen(input.scorecard_score)}"`)
+  if (!isIndeterminate) {
+    if (profileConfidence === 'low') {
+      lines.push(`"Where it sits on you points toward ${profile}, but I want the intake before I commit to that."`)
+    } else {
+      lines.push(`"Yours is ${profile.toLowerCase()} specifically."`)
+    }
+    lines.push('')
+    lines.push(`(${profile}: ${profileDescriptor})`)
   }
   lines.push('')
   lines.push('ASK: "What was your reaction when you saw the result?"')
   lines.push('')
   lines.push('')
 
-  // Block 3 - hot spot
-  lines.push('═══════════════════════════════════════════')
-  lines.push('BLOCK 3 - HOT SPOT')
-  lines.push('═══════════════════════════════════════════')
-  lines.push('')
-  lines.push('• "What about how you look or feel right now do you most want to change?"')
-  lines.push('• "What\'s underneath that?"')
-  lines.push('• "When did you last feel really good - what was different?"')
-  lines.push('• "If we sorted it, what changes day to day?"')
-  lines.push('')
-  lines.push('→ Use their words from Block 1 + here in the offer. Don\'t paraphrase.')
-  lines.push('')
-  lines.push('')
-
-  // What coaching is
+  // ── What coaching is ───────────────────────────────────────
   lines.push('═══════════════════════════════════════════')
   lines.push('WHAT COACHING IS')
   lines.push('═══════════════════════════════════════════')
   lines.push('')
-  lines.push('Bridge: "Based on what you told me about [hot spot], here\'s exactly how my coaching gets to that."')
+  lines.push('Bridge: "Based on what you told me about [their words], here\'s exactly how')
+  lines.push('my coaching gets to that."')
   lines.push('')
-  lines.push('• 221-question intake → CFFS (Foundational Synthesis). From you, not a template.')
-  lines.push('• Fat Map - 4 zones where load shows up:')
-  fatMapZones.forEach(z => lines.push(z))
-  if (isIndeterminate) {
-    lines.push('• 4 profiles - yours is sorted on the intake. The scorecard alone doesn\'t lock it.')
-  } else {
-    lines.push(`• 4 profiles - yours is ${profile}. ${profileDescriptor}`)
+  lines.push('• 221-question intake → Foundational Read. From you, not a template.')
+  lines.push('• Fat Map - four location-plus-signal pairs. Location narrows, the signal decides.')
+  if (!isIndeterminate) {
+    lines.push(`  Yours points at ${profile}${profileConfidence === 'low' ? ', provisionally' : ''}.`)
   }
   lines.push('• Portal - training, nutrition, weekly check-ins, all driven by your read.')
-  lines.push('• Weekly CFWS - I read your response, adjust next week. Continuous loop, not static.')
+  lines.push('• Weekly check-in - I read your response, adjust next week. A loop, not a static plan.')
   lines.push('')
   lines.push(`TAIL: "${bank.tail(floorName)}"`)
   lines.push('')
   lines.push('')
 
-  // Offer
+  // ── The offer ──────────────────────────────────────────────
   lines.push('═══════════════════════════════════════════')
   lines.push('THE OFFER')
   lines.push('═══════════════════════════════════════════')
   lines.push('')
-  lines.push('INCLUDED')
-  lines.push('• Intake + CFFS')
-  lines.push('• Training program')
-  lines.push('• Nutrition')
-  lines.push('• Weekly CFWS')
-  lines.push('• Direct access between sessions')
-  lines.push('• 2x in-person at AF Newstead')
+  const exploring = investment === 'C' || investment === 'D'
+  if (exploring) {
+    lines.push('THEY ANSWERED "EXPLORING" OR "FREE ONLY". DO NOT PITCH 1:1.')
+    lines.push('Read them, give them the picture, let the offer land flat. If they push,')
+    lines.push('the next rung is the one below, not the top one.')
+    lines.push('')
+  }
+  if (state === 'Depleted State') {
+    lines.push('State maps to: 14-Day Challenge (free), then Blueprint at $97.')
+    lines.push('A Depleted body has no capacity for a heavier prescription yet. Say so.')
+  } else if (state === 'Transitioning State') {
+    lines.push('State maps to: Blueprint at $97. Membership if they are already moving.')
+  } else {
+    lines.push('State maps to: Membership at $49/wk, or 1:1 if they want the read built in.')
+  }
   lines.push('')
-  lines.push('PRICE')
-  lines.push('• $299/wk standard (2x in-person)')
-  lines.push(`• $409/wk for 3x - ${bank.threeXNote}`)
-  lines.push('• $297 Foundational Read, one-off')
-  lines.push('• Founding Client offer (closing line, not lead): half off, locked for engagement → $149.50/wk')
-  lines.push('')
-  lines.push(`Commitment ask: minimum ${bank.commitmentWeeks}-week interpretive window.`)
-  lines.push('')
+  if (!exploring) {
+    lines.push('IF 1:1 IS GENUINELY ON THE TABLE')
+    lines.push('• Online coaching - $149/wk. Intake + Foundational Read, training, nutrition,')
+    lines.push('  weekly check-in, direct access between sessions.')
+    lines.push('• $240 commencement, one-off.')
+    lines.push(`• Minimum ${bank.commitmentWeeks}-week interpretive window.`)
+    lines.push('')
+    lines.push('IF "THAT\'S A LOT"')
+    lines.push('"You\'re not paying for a program. You\'re paying for me reading your body the')
+    lines.push('whole time, adjusting as it changes. The question isn\'t whether it\'s')
+    lines.push('expensive. It\'s whether what you\'ve been doing has been working."')
+    lines.push('')
+  }
   lines.push('')
 
-  // If "that's a lot"
-  lines.push('═══════════════════════════════════════════')
-  lines.push('IF "THAT\'S A LOT"')
-  lines.push('═══════════════════════════════════════════')
-  lines.push('')
-  lines.push('"You\'re not paying for two sessions a week. You\'re paying for me reading your body the whole time. Loading it, recovering it, adjusting. The question isn\'t whether it\'s expensive. It\'s whether what you\'ve been doing has been working."')
-  lines.push('')
-  lines.push('Fallback (only if price genuinely holds):')
-  lines.push('• Online - $149/wk → $74.50 launch rate. Same $297 Foundational Read. Same system.')
-  lines.push('')
-  lines.push('')
-
-  // Objection tuning
+  // ── Objections ─────────────────────────────────────────────
   lines.push('═══════════════════════════════════════════')
   lines.push('OBJECTION TUNING')
   lines.push('═══════════════════════════════════════════')
@@ -753,16 +790,30 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   })
   lines.push('')
 
-  // Path probability
+  // ── Path probability ───────────────────────────────────────
   lines.push('═══════════════════════════════════════════')
   lines.push('PATH PROBABILITY')
   lines.push('═══════════════════════════════════════════')
   lines.push('')
-  pathOrder(investment).forEach(p => lines.push(p))
+  if (redCount >= 2) {
+    lines.push('• PATH B (most likely) - needs time. Two red flags.')
+    lines.push('• PATH A (possible) - out. Trigger the declined follow-up.')
+    lines.push('• PATH C (unlikely) - yes.')
+  } else if (redCount === 1) {
+    lines.push('• PATH B (most likely) - needs time.')
+    lines.push('• PATH C (possible) - yes.')
+    lines.push('• PATH A - out. Trigger the declined follow-up.')
+  } else {
+    lines.push('• PATH C (most likely) - yes. Send the commencement fee, mark complete.')
+    lines.push('• PATH B (possible) - needs time.')
+    lines.push('• PATH A (less likely) - out.')
+  }
+  lines.push('')
+  lines.push('Path B is not a fail. Say the door stays open and mean it.')
   lines.push('')
   lines.push('')
 
-  // Key lines
+  // ── Key lines ──────────────────────────────────────────────
   lines.push('═══════════════════════════════════════════')
   lines.push('KEY LINES (in your pocket)')
   lines.push('═══════════════════════════════════════════')
@@ -771,23 +822,92 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   lines.push('')
   lines.push('')
 
-  // If they don't proceed — recommendations
+  // ── If they don't proceed ──────────────────────────────────
   lines.push('═══════════════════════════════════════════')
   lines.push('IF THEY DON\'T PROCEED (Path A or B)')
   lines.push('═══════════════════════════════════════════')
   lines.push('')
-  lines.push(`If they walk out without signing, give them this. Practical takeaways tuned to their state and floor. They'll move them forward. The piece these can't replace is the weekly read - which to pull first, when to change what.`)
+  lines.push('Give them this regardless. Practical, tuned to their state and floor.')
   lines.push('')
   lines.push(`For ${input.name}, ${stateShort} state, floor on ${floorName}:`)
   lines.push('')
-  // For Transitioning, prepend a floor-specific top recommendation.
-  const recommendations = state === 'Transitioning State' && floor
-    ? [FLOOR_RECOMMENDATIONS[floor], ...bank.recommendations]
-    : bank.recommendations
+  const recommendations = bank.recommendations
   recommendations.forEach((r, i) => lines.push(`${i + 1}. ${r}`))
   lines.push('')
   lines.push('CLOSING LINE')
-  lines.push('"That\'s a real starting point. What it can\'t tell you is which one to pull first, or when to change what. Most people on their own end up doing the right things in the wrong order. If you want the read built in, the door\'s open."')
+  lines.push('"That\'s a real starting point. What it can\'t tell you is which one to pull')
+  lines.push('first, or when to change what. Most people on their own end up doing the right')
+  lines.push('things in the wrong order. If you want the read built in, the door\'s open."')
+  lines.push('')
+
+  return lines.join('\n')
+}
+
+// =============================================================
+// In-person session supplement
+// =============================================================
+
+/**
+ * Compact runsheet for an in-person session at AF Newstead.
+ *
+ * Split out of the main brief on 2026-08-12. Zoom is the default path, so the
+ * gym runsheet was dead weight on every lead. This is generated on demand and
+ * is a SUPPLEMENT: it assumes the Zoom brief has been read and does not repeat
+ * the read, the offer or the objections.
+ */
+export function generateInPersonSessionSupplement(input: LeadBriefInput): string {
+  const state = input.scorecard_body_state
+  const stateShort = STATE_SHORT[state]
+  const bank = STATE_BANKS[state]
+  if (!bank) return `Unable to generate supplement - unknown body state "${state}".`
+
+  const scores = input.scorecard_section_scores ?? {}
+  const floor = pickFloor(scores)
+  const floorName = floor ? SECTIONS[floor].name : 'unclear'
+  const generatedDate = new Date().toISOString().slice(0, 10)
+
+  const lines: string[] = []
+
+  lines.push(`${input.name.toUpperCase()} - IN-PERSON SESSION SUPPLEMENT`)
+  lines.push(`Generated ${generatedDate}. AF Newstead. Read the Zoom brief first.`)
+  lines.push('')
+  lines.push(`${input.scorecard_score}/15 ${stateShort}. Floor: ${floorName}.`)
+  lines.push('')
+  lines.push('───────────────────────────────────────────')
+  lines.push('BEFORE THEY ARRIVE')
+  lines.push('───────────────────────────────────────────')
+  lines.push('')
+  lines.push(`Open /dashboard/gym-sessions → ${stateShort}.`)
+  lines.push('')
+  lines.push('Program type:')
+  lines.push('• Machines (default) - lower neurological cost, easier to read recovery rate')
+  lines.push('• Functional / Mixed - only if they are training-fluent')
+  lines.push('')
+  lines.push('Hold the scorecard until AFTER the session. The training is the proof.')
+  lines.push('')
+  lines.push('AGENDA (verbatim):')
+  lines.push('  "We\'ll train first so I can see what your body\'s actually doing under load.')
+  lines.push('  Then we sit down and I\'ll walk you through what I saw and what your')
+  lines.push('  scorecard says. No need to decide anything today."')
+  lines.push('')
+  lines.push('───────────────────────────────────────────')
+  lines.push('DURING THE WORKING BLOCK - WHAT TO WATCH')
+  lines.push('───────────────────────────────────────────')
+  lines.push('')
+  lines.push(bank.watchListIntro)
+  bank.watchList.forEach(w => lines.push(`• ${w}`))
+  lines.push('')
+  lines.push('The light load is deliberate. Expect resistance to that framing.')
+  lines.push('')
+  lines.push('───────────────────────────────────────────')
+  lines.push('AFTER - CALLBACK TO THE SESSION')
+  lines.push('───────────────────────────────────────────')
+  lines.push('')
+  lines.push('Pick ONE, then move into the read from the Zoom brief:')
+  lines.push('')
+  bank.callbacks.forEach(c => lines.push(`• ${c}`))
+  lines.push('')
+  lines.push(`Three-times-a-week note: ${bank.threeXNote}`)
   lines.push('')
 
   return lines.join('\n')

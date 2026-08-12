@@ -89,6 +89,9 @@ export async function POST(request: NextRequest) {
       age_band: lead.age_band as string | null,
       fat_storage: lead.fat_storage as string | null,
       cycle_status: lead.cycle_status as string | null,
+      // Same text that goes onto the timeline, so the deterministic brief can
+      // run its scope-flag scan over what they actually wrote.
+      prep_notes: notesLines.join('\n'),
     })
   } catch (e) {
     console.error('[book-prep] report generation failed:', e)
