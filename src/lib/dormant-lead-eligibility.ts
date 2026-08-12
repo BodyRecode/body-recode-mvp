@@ -11,6 +11,9 @@
  *     which would break the state lookup and send a broken read.
  *   - Eighteen have no body state at all, so there is no read to send them.
  *     A hollow version is worse than nothing.
+ *   - And one was a former CLIENT sitting on an old lead status. The sequence
+ *     would have caught her at send time, but she should never have been on the
+ *     list. Converted leads are now the first thing excluded.
  *
  * Everything here is a hard exclusion. Nothing is a warning.
  */
@@ -40,9 +43,12 @@ export interface DormantCandidate {
   storage_direction: string | null
   active: boolean | null
   sms_opted_out_at: string | null
+  /** Set once they became a client. They must never see a cold re-engagement. */
+  converted_to_client_id: string | null
 }
 
 export type Ineligible =
+  | 'already_a_client'
   | 'no_email'
   | 'internal_or_test'
   | 'inactive'
@@ -50,6 +56,11 @@ export type Ineligible =
   | 'invalid_body_state'
 
 export function ineligibleReason(lead: DormantCandidate): Ineligible | null {
+  // First, because it is the most embarrassing one to get wrong. A lead can be
+  // converted and still be sitting on an old status, which is how a former
+  // client turned up in the first dry run of a cold reactivation sequence.
+  if (lead.converted_to_client_id) return 'already_a_client'
+
   const email = lead.email?.trim()
   if (!email) return 'no_email'
 
@@ -65,6 +76,7 @@ export function ineligibleReason(lead: DormantCandidate): Ineligible | null {
 }
 
 export const INELIGIBLE_LABELS: Record<Ineligible, string> = {
+  already_a_client: 'Already converted to a client',
   no_email: 'No email address',
   internal_or_test: 'Internal or test record',
   inactive: 'Marked inactive',

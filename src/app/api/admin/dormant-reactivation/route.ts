@@ -24,7 +24,7 @@ async function loadCandidates() {
   const admin = createAdminClient()
   const { data } = await admin
     .from('leads')
-    .select('id, name, email, scorecard_body_state, scorecard_score, scorecard_profile, scorecard_profile_confidence, storage_direction, active, sms_opted_out_at')
+    .select('id, name, email, scorecard_body_state, scorecard_score, scorecard_profile, scorecard_profile_confidence, storage_direction, active, sms_opted_out_at, converted_to_client_id')
     .eq('status', 'new_check_in')
     .order('created_at', { ascending: true })
   return (data ?? []) as DormantCandidate[]
