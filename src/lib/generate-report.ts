@@ -1,4 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk'
+import { STATE_DEFINITIONS } from './pattern-doctrine'
 import { SLS_BLOCKS, RPS_BLOCKS, RILS_BLOCKS, FIXED_SECTIONS, selectBlocks } from './report-blocks'
 import { darkEmailSignature } from './email-signature'
 import { logoUrl, coach, brand } from '@/config/tenant'
@@ -22,6 +23,11 @@ async function generateNarrative(
   rpsLevel: number,
   rilsLevel: number
 ): Promise<ReportNarrative> {
+  // Ground the description in the canonical Body Recode definition of this state
+  // rather than the model's own general knowledge. Falls back to no anchor if
+  // the label is not a recognised state (the guardrails below still apply).
+  const canonicalDefinition = STATE_DEFINITIONS[signalPattern] ?? null
+
   const prompt = `You are assembling a member-facing Body Recode™ Performance Check-In Report.
 
 The member's result profile:
@@ -29,7 +35,12 @@ The member's result profile:
 - Stress and Load State: Level ${slsLevel} (1=balanced, 2=moderate cumulative, 3=elevated cumulative)
 - Recovery Predictability: Level ${rpsLevel} (1=stable, 2=variable, 3=reduced)
 - Regulation and Identity Load: Level ${rilsLevel} (1=low, 2=moderate, 3=elevated)
-
+${canonicalDefinition ? `
+CANONICAL DEFINITION OF THIS PATTERN (Body Recode doctrine — the authoritative meaning). Ground the PATTERN_SNAPSHOT in THIS. Do not describe the pattern from any other source of knowledge. Translate it into plain, member-facing language: do not quote it verbatim, do not use its internal terms, and do not name the state.
+"""
+${canonicalDefinition}
+"""
+` : ''}
 Generate exactly three things:
 
 1. BAND_TITLE: A neutral, descriptive 4-7 word title that reflects the dominant pattern across load, recovery, and consistency. Must be non-hierarchical, non-judgmental, and not imply urgency or rank. Do not use words like "poor", "good", "optimal", "remediation", "high-performance".

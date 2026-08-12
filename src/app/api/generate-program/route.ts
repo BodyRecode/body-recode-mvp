@@ -394,6 +394,34 @@ export async function POST(request: NextRequest) {
       continue
     }
 
+    // Every working exercise name MUST exist in the approved library. The
+    // downstream clamp silently skips names it does not recognise, so without
+    // this a hallucinated or renamed exercise would ship — the "approved
+    // library only" rule was prompt-only until here. Movement prep is free-text
+    // by design (a separate string array) and is not checked. Skipped if the
+    // library failed to load, so an empty library never blocks generation.
+    const libraryNames = new Set<string>(
+      (exercises ?? [])
+        .filter((e: { name?: string }) => e?.name)
+        .map((e: { name: string }) => e.name.trim().toLowerCase())
+    )
+    if (libraryNames.size > 0) {
+      const unknownExercises: string[] = []
+      for (const session of candidate.sessions as Array<{ blocks?: Array<{ exercises?: Array<{ name?: string }> }> }>) {
+        for (const block of session.blocks ?? []) {
+          for (const ex of block.exercises ?? []) {
+            const nm = (ex?.name ?? '').trim()
+            if (nm && !libraryNames.has(nm.toLowerCase())) unknownExercises.push(nm)
+          }
+        }
+      }
+      if (unknownExercises.length > 0) {
+        lastError = `AI produced exercises not in the approved library: ${[...new Set(unknownExercises)].slice(0, 8).join(', ')}`
+        console.warn(`[generate-program] attempt ${attempt}/3: ${lastError}`)
+        continue
+      }
+    }
+
     programData = candidate
     break
   }

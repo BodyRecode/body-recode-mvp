@@ -104,6 +104,23 @@ export function cffsStateForScorecardState(scorecardState: string | null | undef
   return SCORECARD_STATE_TO_CFFS_STATE[scorecardState.trim()] ?? null
 }
 
+/**
+ * What each body STATE means, for grounding a generator that would otherwise
+ * describe the state from the model's own general knowledge. Keyed by the
+ * internal classification names (the values `signalPattern` takes in the $37
+ * report). Kept short and non-diagnostic; a generator should translate these
+ * into plain language, not quote them. Public labels: Remediation = Depleted,
+ * Optimisation = Transitioning, Post-Optimisation = Ready.
+ */
+export const STATE_DEFINITIONS: Record<string, string> = {
+  'Remediation':
+    'The system is under a load it cannot currently resolve. Recovery capacity is low and the body is protecting rather than adapting, so effort goes in but does not convert into change. The work is to lower the load and rebuild the base before pushing. Effort here is not the missing ingredient.',
+  'Optimisation':
+    'The system has stabilised and can take real work, but one foundation is the bottleneck holding the rest down. The capacity exists, it is just not fully expressed yet. The work is to lift the single limiting input, and the rest tends to follow it up rather than needing to be forced.',
+  'Post-Optimisation':
+    'Foundations are intact and the body responds to inputs the way it should. What is in the way is the prescription rather than the biology, the right stimulus or timing or a missing quality. The work is to sharpen and periodise, not to repair.',
+}
+
 /** The prompt block that teaches the CFFS the taxonomy it was never given. */
 export function patternTaxonomyPromptSection(incoming?: {
   pattern: string | null

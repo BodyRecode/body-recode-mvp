@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
+import { checkReadingBeforePublish } from '@/lib/reading-publish-guard'
 
 // Reading-published client emails scrapped 2026-06-09. The Block-End Trajectory
 // Reading still gets generated + published; this route just flips
@@ -41,6 +42,15 @@ export async function POST(request: NextRequest) {
       { error: 'Generate the reading before publishing' },
       { status: 400 }
     )
+  }
+
+  // Same no-invented-facts lint gate the other client-facing readings pass. The
+  // trajectory / Progress Read reaches the portal, so it must clear it too.
+  if (action === 'publish') {
+    const check = await checkReadingBeforePublish(admin, 'trajectory', program_id, program.client_id)
+    if (!check.ok) {
+      return NextResponse.json({ error: `${check.label} cannot be published yet.`, findings: check.findings }, { status: 422 })
+    }
   }
 
   const { data: updated, error: updateErr } = await admin

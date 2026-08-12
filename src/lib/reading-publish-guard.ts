@@ -39,6 +39,12 @@ const READING_SOURCES = {
     guidance: 'nr_coach_guidance',
     label: 'Nutrition Reading',
   },
+  trajectory: {
+    table: 'programs',
+    sections: ['tr_where_this_block_started', 'tr_how_your_signal_moved', 'tr_what_held_steady', 'tr_what_this_sets_up_next', 'tr_coach_note', 'tr_state_rationale', 'tr_pattern_confidence_note'],
+    guidance: 'tr_coach_guidance',
+    label: 'Block-End / Progress Read',
+  },
 } as const
 
 export type ReadingKind = keyof typeof READING_SOURCES

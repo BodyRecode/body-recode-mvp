@@ -24,6 +24,25 @@ import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 import { AI_MODELS } from './ai-models'
 import { PROGRESS_CHECK_SECTIONS } from './progress-check-questions'
 
+/** Public body states in progression order, for the one-step clamp. */
+const STATE_ORDER = ['Depleted', 'Transitioning', 'Ready'] as const
+
+/**
+ * Clamp a re-scored state to at most one step from the previous state, with
+ * Depleted as the floor. Backstops the doctrine's "state moves at most one step"
+ * rule in code, not just in the prompt. Unknown labels or a missing baseline are
+ * left untouched (nothing to clamp against).
+ */
+function clampStateStep(prev: string | null, next: string | null): string | null {
+  if (!next) return next
+  const ni = (STATE_ORDER as readonly string[]).indexOf(next)
+  if (ni < 0 || !prev) return next
+  const pi = (STATE_ORDER as readonly string[]).indexOf(prev)
+  if (pi < 0) return next
+  const capped = Math.max(pi - 1, Math.min(pi + 1, ni)) // within one step
+  return STATE_ORDER[Math.max(0, capped)] // Depleted floor
+}
+
 /** Deep body-state name -> public label the client sees. */
 function toPublicState(s: string | null): string | null {
   if (!s) return null
@@ -251,8 +270,17 @@ export async function generateTrajectoryReadingForProgram(
 
   // Re-score fields are only trusted when a Progress Check drove the read.
   const str = (v: unknown): string | null => (typeof v === 'string' && v.trim() ? stripEmDashes(v) : null)
+  const rawNewState = pc ? str(parsed.pr_new_body_state) : null
+  // Deterministic clamp: the doctrine says state moves at most ONE step and
+  // Depleted is the floor. The prompt states this, but it was model-enforced
+  // only. Cap any bigger jump here so a suspect re-score cannot claim, say,
+  // Depleted -> Ready in one block. previousState is the prior public label.
+  const clampedNewState = clampStateStep(pc ? priorStatePublic : null, rawNewState)
+  if (rawNewState && clampedNewState !== rawNewState) {
+    console.warn(`[trajectory] re-score clamped: ${priorStatePublic} -> ${rawNewState} capped to ${clampedNewState} (one-step rule)`)
+  }
   const reScore: ProgressReScore = {
-    newState: pc ? str(parsed.pr_new_body_state) : null,
+    newState: clampedNewState,
     direction: pc ? str(parsed.pr_state_direction) : null,
     rationale: pc ? str(parsed.pr_state_rationale) : null,
     patternConfidenceNote: pc ? str(parsed.pr_pattern_confidence_note) : null,
