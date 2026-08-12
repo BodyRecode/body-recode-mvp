@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
 import Script from "next/script";
 import { headers } from "next/headers";
 import "./globals.css";
 import { brand, prefetchTenant } from "@/config/tenant";
-
-const geist = Geist({ subsets: ["latin"] });
+import { geist } from "./fonts";
 
 const t = brand();
 export const metadata: Metadata = {

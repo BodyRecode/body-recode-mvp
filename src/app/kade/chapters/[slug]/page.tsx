@@ -2,14 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { CHAPTERS, getChapter } from '@/lib/kade-chapters'
-import { Source_Serif_4 } from 'next/font/google'
-
-const serif = Source_Serif_4({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  style: ['normal', 'italic'],
-  display: 'swap',
-})
+import { serif } from '@/app/fonts'
 
 interface Props {
   params: Promise<{ slug: string }>

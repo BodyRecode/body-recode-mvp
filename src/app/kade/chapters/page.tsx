@@ -1,14 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { CHAPTERS } from '@/lib/kade-chapters'
-import { Source_Serif_4 } from 'next/font/google'
-
-const serif = Source_Serif_4({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  style: ['normal', 'italic'],
-  display: 'swap',
-})
+import { serif } from '@/app/fonts'
 
 export const metadata: Metadata = {
   title: 'Tracing Myself - Kade Dunstone',

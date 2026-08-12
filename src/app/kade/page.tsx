@@ -1,14 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Source_Serif_4 } from 'next/font/google'
 import { brand, coach } from "@/config/tenant";
-
-const serif = Source_Serif_4({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  style: ['normal', 'italic'],
-  display: 'swap',
-})
+import { serif } from '@/app/fonts'
 
 export const metadata: Metadata = {
   title: 'Kade Dunstone',
