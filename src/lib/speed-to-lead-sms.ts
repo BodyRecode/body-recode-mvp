@@ -16,7 +16,7 @@ import type { SmsTrigger } from '@/lib/sms-send-window'
 
 export type SpeedToLeadResult =
   | { ok: true; sid: string; logId: string }
-  | { ok: false; reason: 'no_phone' | 'not_opted_in' | 'opted_out' | 'frequency_capped' | 'send_failed'; error?: string; logId?: string }
+  | { ok: false; reason: 'no_phone' | 'not_opted_in' | 'opted_out' | 'frequency_capped' | 'outside_window' | 'send_failed'; error?: string; logId?: string }
 
 type LeadRow = {
   id: string
@@ -36,6 +36,30 @@ type LeadRow = {
  *   - max 3 outbound SMS per lead per rolling 7 days
  *   - HARD STOP if sms_opted_out_at is set (regardless of trigger)
  */
+
+/**
+ * Lead-facing SMS send window, Brisbane time.
+ *
+ * Added 2026-08-12 after a Challenge participant was getting nudges in the
+ * afternoon and one lead was texted at 7pm. Coach-facing SMS has had a window
+ * since July (isWithinCoachSmsWindow, Mon-Sat 08:30-20:00) but lead-facing SMS
+ * had none at all: sendLeadSms checked opt-in, opt-out and frequency, then sent
+ * whenever the trigger happened to fire. A scorecard completed at 7pm produced
+ * a 7pm text.
+ *
+ * 7am to 6pm. Brisbane is UTC+10 year round, no daylight saving, so this is a
+ * fixed offset and not a DST bug waiting for October.
+ */
+const LEAD_SMS_OPEN_HOUR = 7
+const LEAD_SMS_CLOSE_HOUR = 18
+
+export function isWithinLeadSmsWindow(now: Date = new Date()): boolean {
+  const bneHour = Number(
+    new Intl.DateTimeFormat('en-AU', { timeZone: 'Australia/Brisbane', hour: '2-digit', hour12: false }).format(now),
+  )
+  return bneHour >= LEAD_SMS_OPEN_HOUR && bneHour < LEAD_SMS_CLOSE_HOUR
+}
+
 export async function sendLeadSms({
   leadId,
   trigger,
@@ -64,6 +88,14 @@ export async function sendLeadSms({
 
   if (lead.sms_opted_out_at) return { ok: false, reason: 'opted_out' }
   if (!lead.sms_opt_in_at) return { ok: false, reason: 'not_opted_in' }
+
+  // Outside 7am-6pm Brisbane, do not send. A nudge that lands at 7pm is worse
+  // than no nudge: it reads as spam and it is the kind of thing that earns a
+  // STOP. Callers that care can re-run in the morning; the sequences already
+  // realign to 7am AEST on their next step.
+  if (!overrideCap && !isWithinLeadSmsWindow()) {
+    return { ok: false, reason: 'outside_window', error: 'outside the 7am-6pm Brisbane lead SMS window' }
+  }
 
   if (!overrideCap) {
     const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()

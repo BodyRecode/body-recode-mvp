@@ -590,21 +590,25 @@ export const challengeSmsFunction = inngest.createFunction(
 
       const afternoonBoost = SMS_AFTERNOON_BOOST[day]
       if (afternoonBoost) {
-        // ~8h after morning for the boost
+        // ~8h after morning for the boost, so early afternoon.
         await step.sleep(`sms-day${day}-afternoon-wait`, '8h')
         await step.run(`sms-day${day}-afternoon`, async () => {
           const msg = renderSms(afternoonBoost, firstName, portalUrl)
           await sendSms({ to: formattedPhone, message: msg })
         })
-        // Remaining ~16h to next day's morning
-        if (day < 14) {
-          await step.sleep(`sms-day${day}-next-day-wait`, '16h')
-        }
-      } else {
-        // No boost today, full 24h sleep to next morning
-        if (day < 14) {
-          await step.sleep(`sms-day${day}-next-day-wait`, '24h')
-        }
+      }
+
+      // Re-anchor to 7am Brisbane for the next day rather than adding 16h or
+      // 24h to wherever this day happened to finish.
+      //
+      // Fixed 2026-08-12. The old cascade anchored once on Day 1 and then added
+      // fixed sleeps for thirteen days. Every retry, every queue delay and every
+      // few seconds of step execution pushed the whole sequence later, and it
+      // never corrected. Participants were getting "morning" nudges through the
+      // afternoon by the back half of the Challenge. Re-anchoring each day means
+      // drift cannot accumulate: worst case one day is late, the next is right.
+      if (day < 14) {
+        await alignToNextMorningAEST(step, `sms-day${day}-next-morning`)
       }
     }
   }
