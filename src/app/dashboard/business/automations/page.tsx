@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
-import { Zap, Plus, Play, Pause, ChevronRight } from 'lucide-react'
+import { Zap, Plus, Play, Pause, ChevronRight, AlertTriangle } from 'lucide-react'
 import SystemAutomationsPanel from './system-automations-panel'
 import ReseedScorecardButton from './reseed-scorecard-button'
 
@@ -26,6 +26,18 @@ export default async function AutomationsPage() {
 
   const hasScorecardAutomation = workflows?.some(w => w.name === 'Scorecard - Follow-up Sequence') ?? false
 
+  // Duplicate detection, added 2026-08-12 after a second scorecard sequence
+  // appeared on launch day and double-sent to eight leads for a month without
+  // anything on screen saying so. The engine now skips the newer one, but a
+  // silent skip is still a thing you should be able to SEE.
+  const activeWorkflows = workflows?.filter(w => w.is_active) ?? []
+  const byTrigger = new Map<string, typeof activeWorkflows>()
+  for (const w of activeWorkflows) {
+    const key = `${w.trigger_type}|${JSON.stringify(w.trigger_config ?? {})}`
+    byTrigger.set(key, [...(byTrigger.get(key) ?? []), w])
+  }
+  const duplicateGroups = [...byTrigger.values()].filter(g => g.length > 1)
+
   return (
     <div className="max-w-3xl">
       <div className="flex items-center justify-between mb-8">
@@ -41,6 +53,33 @@ export default async function AutomationsPage() {
           New Workflow
         </Link>
       </div>
+
+      {duplicateGroups.length > 0 && (
+        <div className="mb-6 rounded-xl bg-amber-50 border border-amber-300 p-4">
+          <p className="text-[13px] font-bold text-amber-900 mb-1.5 flex items-center gap-1.5">
+            <AlertTriangle size={14} /> Duplicate workflows on the same trigger
+          </p>
+          <p className="text-[13px] text-amber-900 leading-relaxed mb-3">
+            More than one active workflow fires on the same trigger with the same conditions. Only the
+            oldest one runs, the rest are skipped, so nobody is being double-sent right now. But one of
+            these is not doing anything and should be turned off.
+          </p>
+          {duplicateGroups.map((group, i) => (
+            <div key={i} className="mb-2 last:mb-0">
+              <p className="text-[11px] font-bold uppercase tracking-wider text-amber-800 mb-1">
+                Trigger: {group[0].trigger_type}
+              </p>
+              {group.map((w, j) => (
+                <Link key={w.id} href={`/dashboard/business/automations/${w.id}`}
+                  className="block text-[13px] text-amber-900 hover:underline">
+                  {j === 0 ? '✓ running' : '✗ skipped'} · {w.name}
+                  <span className="text-amber-700"> · created {new Date(w.created_at).toLocaleDateString('en-AU')}</span>
+                </Link>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
 
       <SystemAutomationsPanel />
 

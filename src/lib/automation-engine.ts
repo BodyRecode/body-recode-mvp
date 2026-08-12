@@ -60,13 +60,42 @@ export async function fireTrigger(
   const admin = createAdminClient()
 
   // Find all active workflows for this trigger
-  const { data: workflows } = await admin
+  const { data: allWorkflows } = await admin
     .from('be_workflows')
-    .select('id, trigger_config, be_workflow_steps(*)')
+    .select('id, name, created_at, trigger_config, be_workflow_steps(*)')
     .eq('trigger_type', triggerType)
     .eq('is_active', true)
+    .order('created_at', { ascending: true })
 
-  if (!workflows || workflows.length === 0) return
+  if (!allWorkflows || allWorkflows.length === 0) return
+
+  // Duplicate guard, added 2026-08-12.
+  //
+  // Two active workflows on the same trigger with the same trigger_config means
+  // every matching contact gets both sequences. It has happened twice: a legacy
+  // "Scorecard — Follow-up Sequence" duplicate was deleted on 2026-06-24, and a
+  // fresh one appeared on 2026-07-13 (launch day) and quietly double-sent to
+  // eight leads until it was caught on 2026-08-12.
+  //
+  // Deleting the duplicate fixes the day. This stops it recurring: for any given
+  // trigger + config, only the OLDEST active workflow runs. The newer one is
+  // skipped and logged loudly rather than silently double-sending.
+  const seen = new Map<string, { id: string; name: string }>()
+  const workflows: typeof allWorkflows = []
+  for (const w of allWorkflows) {
+    const key = JSON.stringify(w.trigger_config ?? {})
+    const first = seen.get(key)
+    if (first) {
+      console.error(
+        `[automation] DUPLICATE WORKFLOW SKIPPED. Trigger "${triggerType}" has more than one ` +
+        `active workflow with the same config. Running "${first.name}" (${first.id}), skipping ` +
+        `"${w.name}" (${w.id}). Deactivate one of them in Business → Automations.`
+      )
+      continue
+    }
+    seen.set(key, { id: w.id, name: w.name as string })
+    workflows.push(w)
+  }
 
   const contact = await resolveContact(admin, ctx)
 
