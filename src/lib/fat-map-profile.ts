@@ -83,9 +83,9 @@ export const PROFILE_DESCRIPTORS: Record<Profile, string> = {
 export const PROFILE_DESCRIPTORS_LEAD: Record<Profile, string> = {
   'Stress-Stored': "You're managing a lot, and your body is holding on because of it. It sits at the front of your middle while your arms and legs stay lean, and the harder you push the tighter it holds.",
   'Insulin-Drift': "You're putting the work in, but your body is storing easily and not responding to it. It tends to settle around the back and sides rather than the front, and the signal that turns effort into change has drifted.",
-  // Generic fallback only, used when phase cannot be determined. Prefer
-  // leadDescriptor() below, which splits this by phase. See the note there.
-  'Estrogen-Shift': "Your body has shifted into a slower, more conservative mode. It's not broken and it's not effort; it responds again once the approach respects what's changed.",
+  // NOT USED for Estrogen-Shift. leadDescriptor() owns this one because it
+  // varies by phase. Kept only so the Record stays complete.
+  'Estrogen-Shift': "This is the one that sits on the hips, glutes and thighs, and for a lot of women it starts moving toward the middle over time. What used to work stops working, and that isn't discipline slipping.",
   'Androgen-Decline': "You're still putting the output in, but your drive, recovery and capacity have slipped. The system that turns training into results isn't bouncing back.",
   'Indeterminate': "No single pattern stands out from your answers yet. We'll pin down exactly what's driving your result on your call.",
 }
@@ -118,8 +118,16 @@ export function leadDescriptor(profile: Profile, signals: ProfileSignals = {}): 
     case 'to_middle':
       return `You have told me it used to sit on your hips and thighs and it is moving to your middle. That movement is the signal, more than where it ends up, and muscle usually goes the same way even when the scale does not move. Eating less makes this one worse rather than slower. ${closer}`
     default:
-      // Includes 'always_central', 'unsure' and never-asked. Claim no location.
-      return `Your body has changed what it will let go of, and the usual answer makes it worse. Eating less does not slow this pattern down, it tightens it, because what you are carrying is a slow-release store and restriction tells it to hold. ${closer}`
+      // Includes 'always_central', 'unsure' and never-asked, so no phase can be
+      // claimed. It CAN still name hips and thighs, because that is true in
+      // both phases: phase 1 it sits there, phase 2 it came from there. The
+      // only woman it would be wrong for is one whose fat was always central,
+      // and she no longer types Estrogen-Shift at all (see the
+      // centralFromTheStart guard in typeFatMapProfile).
+      //
+      // Structured like Stress-Stored, which is the one that lands: somewhere
+      // she can check, her lived experience, then the loop she is stuck in.
+      return `This is the one that sits on the hips, glutes and thighs, and for a lot of women it starts moving toward the middle over time. What used to work stops working, and that isn't discipline slipping. It's also the one pattern where eating less makes things worse rather than just slower, which is usually why the harder you've dieted the more stuck it has felt. ${closer}`
   }
 }
 
