@@ -3280,6 +3280,11 @@ export default function HelpPage() {
 
             <Note>Required Supabase columns: body_decode_intake_completed_at (timestamptz, nullable) on challenge_enrollments. Applied via sql/2026-06-27_challenge_day_zero_intake.sql.</Note>
 
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">The Estrogen-Shift question (12 Aug 2026)</p>
+            <p>Women are now asked one extra question on both the public scorecard and the Day 0 intake: <strong>&quot;Has where it sits changed over the last few years?&quot;</strong> Four answers: stayed on hips and thighs, moved from hips to the middle, always been the middle, or not sure. Stored on <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">leads.storage_direction</code>.</p>
+            <p className="mt-2">This is the discriminator the doctrine names for Estrogen-Shift, and until now nothing asked it. The phase was inferred from cycle status and age, which meant a perimenopausal woman could be told her fat had moved to her middle when she had never said anything of the kind. Her result now reads off her own answer: a woman who says it stayed on her hips gets the hips and thighs description, one who says it moved gets the movement description, and anyone who says always central, not sure, or was never asked gets a version that names no location at all.</p>
+            <Note><strong>It changes the typing too, not just the wording.</strong> Answering &quot;moved to my middle&quot; or &quot;stayed on my hips&quot; types her Estrogen-Shift at high confidence, because she said it rather than us guessing. And &quot;always been my middle&quot; now blocks the Estrogen-Shift route entirely and types her Stress-Stored, because Estrogen-Shift arrives at the middle from the hips while Stress-Stored was central from the start.</Note>
+
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Fat Map v2.0 alignment (6 Aug 2026)</p>
             <p>Three fixes landed together, all enforcing <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">Fat_Map_Definitions_LOCKED.md</code> v2.0.</p>
             <ul className="list-disc ml-5 space-y-1 mt-2">

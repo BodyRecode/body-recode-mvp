@@ -99,6 +99,16 @@ const STORAGE_OPTIONS: { value: FatStorage; label: string }[] = [
   { value: 'all_over', label: "It's fairly even, I couldn't pick one spot" },
   { value: 'low_tone', label: 'Losing muscle tone and definition' },
 ]
+// Direction of travel. The Estrogen-Shift discriminator per 03_ESTROGEN_SHIFT.md
+// section 4. Asked directly rather than inferred from age and cycle status.
+type StorageDirection = 'gluteofemoral' | 'to_middle' | 'always_central' | 'unsure'
+const DIRECTION_OPTIONS: { value: StorageDirection; label: string }[] = [
+  { value: 'gluteofemoral', label: 'It has stayed on my hips, thighs and glutes' },
+  { value: 'to_middle', label: 'It used to be hips and thighs, now it is moving to my middle' },
+  { value: 'always_central', label: 'It has always been my middle' },
+  { value: 'unsure', label: 'I am not sure' },
+]
+
 const CYCLE_OPTIONS: { value: CycleStatus; label: string }[] = [
   { value: 'regular', label: 'Regular cycle' },
   { value: 'irregular', label: 'Irregular cycle' },
@@ -227,12 +237,13 @@ export default function BodyDecodeIntakeForm({ token, onComplete }: {
   const [age, setAge] = useState<AgeBand | null>(null)
   const [storage, setStorage] = useState<FatStorage | null>(null)
   const [cycle, setCycle] = useState<CycleStatus | null>(null)
+  const [direction, setDirection] = useState<StorageDirection | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
 
   const sectionsAnswered = SECTIONS.filter(s => scores[s.key] != null).length
   const allScores = sectionsAnswered === SECTIONS.length
-  const allDemo = !!sex && !!age && !!storage && (sex !== 'F' || !!cycle)
+  const allDemo = !!sex && !!age && !!storage && (sex !== 'F' || (!!cycle && !!direction))
   const allQualifiers = !!approach && !!ascensionIntent
   const complete = allScores && allDemo && allQualifiers
 
@@ -266,6 +277,7 @@ export default function BodyDecodeIntakeForm({ token, onComplete }: {
           age_band: age,
           fat_storage: storage,
           cycle_status: sex === 'F' ? cycle : null,
+          storage_direction: sex === 'F' ? direction : null,
         }),
       })
       if (!res.ok) {
@@ -419,6 +431,12 @@ export default function BodyDecodeIntakeForm({ token, onComplete }: {
 
           {sex === 'F' && (
             <div>
+              <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', marginBottom: '10px' }}>Has where it sits changed over the last few years?</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '18px' }}>
+                {DIRECTION_OPTIONS.map(o => (
+                  <PillOption key={o.value} selected={direction === o.value} label={o.label} onClick={() => setDirection(o.value)} compact />
+                ))}
+              </div>
               <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', marginBottom: '10px' }}>Cycle status</p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
                 {CYCLE_OPTIONS.map(o => (

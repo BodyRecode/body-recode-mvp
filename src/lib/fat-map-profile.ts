@@ -36,11 +36,20 @@ export type AgeBand = 'under_35' | '35_44' | '45_54' | '55_plus'
 export type FatStorage = 'midsection' | 'posterior' | 'hips_thighs' | 'all_over' | 'low_tone'
 export type CycleStatus = 'regular' | 'irregular' | 'perimenopausal' | 'postmenopausal'
 
+/**
+ * Direction of travel. The discriminator `03_ESTROGEN_SHIFT.md` §4 names for
+ * this profile: "has where it sits changed in the last few years, and which way
+ * did it move?" Asked of women on the scorecard and the Day 0 intake. Null means
+ * never asked, in which case no phase is claimed.
+ */
+export type StorageDirection = 'gluteofemoral' | 'to_middle' | 'always_central' | 'unsure'
+
 export interface ProfileSignals {
   sex?: BiologicalSex | null
   ageBand?: AgeBand | null
   fatStorage?: FatStorage | null
   cycleStatus?: CycleStatus | null
+  storageDirection?: StorageDirection | null
 }
 
 export interface ProfileResult {
@@ -83,43 +92,35 @@ export const PROFILE_DESCRIPTORS_LEAD: Record<Profile, string> = {
 
 
 /**
- * Lead-facing descriptor, phase-aware for Estrogen-Shift.
+ * Lead-facing descriptor.
  *
- * Added 2026-08-12. Estrogen-Shift had a single description covering both
- * phases, so it had to be vague enough to fit both and ended up the only one of
- * the four with no physical tell at all. That is backwards: per
- * `03_ESTROGEN_SHIFT.md` §4, phase 1 has the single most distinctive location
- * in the whole map ("if it is hips, glutes and outer thighs, in a woman, it is
- * this"), while phase 2 is where location stops working and direction of travel
- * takes over.
+ * Estrogen-Shift is phase-split, and the phase comes from what she TOLD US, not
+ * from her age. `03_ESTROGEN_SHIFT.md` §4 names direction of travel as the
+ * discriminator, and `storage_direction` is now asked directly on the scorecard
+ * and the Day 0 intake.
  *
- * The doctrine also says age and cycle status are not tiebreakers here, they are
- * INPUTS that set the phase, and the system already collects both. So there is
- * no reason to speak to a phase-2 woman about hips and thighs when her fat is
- * moving centrally, which is the exact misread the lock warns about:
+ * Cycle status and age band deliberately do NOT set the phase here. They were
+ * used for that until 2026-08-12, which meant a perimenopausal woman could be
+ * told her fat had moved from her hips to her middle when she had never said
+ * so. That is the misread the lock warns about, and it is worse than saying
+ * nothing because she knows instantly it is wrong about her.
  *
- *   "a woman in phase 2 who is told she has a hips-and-thighs pattern will not
- *    recognise herself, because her fat is moving to the middle."
- *
- * Every other profile ignores the signals and returns its constant.
+ * No answer means no phase claim. The fallback names no location at all.
  */
 export function leadDescriptor(profile: Profile, signals: ProfileSignals = {}): string {
   if (profile !== 'Estrogen-Shift') return PROFILE_DESCRIPTORS_LEAD[profile]
 
-  const { cycleStatus, ageBand } = signals
-  const phaseTwo =
-    cycleStatus === 'perimenopausal' ||
-    cycleStatus === 'postmenopausal' ||
-    ageBand === '45_54' ||
-    ageBand === '55_plus'
+  const closer = "It's not broken and it's not effort; it responds again once the approach respects what's changed."
 
-  // Unknown phase: fall back to the movement framing rather than naming a
-  // location, because naming the wrong location is the costlier error.
-  if (!cycleStatus && !ageBand) return PROFILE_DESCRIPTORS_LEAD['Estrogen-Shift']
-
-  return phaseTwo
-    ? "What's changed is where it's going. It used to sit on your hips and thighs and it's started moving to your middle, and muscle tends to go with it. That movement is the signal, more than the place it ends up. It's not broken and it's not effort; it responds again once the approach respects what's changed."
-    : "It sits on your hips, glutes and outer thighs. That's the most distinctive place fat sits out of all four patterns, and it's oestrogen doing what it's meant to do. It's not broken and it's not effort; it responds again once the approach respects what's changed."
+  switch (signals.storageDirection) {
+    case 'gluteofemoral':
+      return `It sits on your hips, glutes and outer thighs, and it has stayed there. That is the most distinctive place fat sits out of all four patterns, and it is oestrogen doing what it is meant to do. It also means eating less will not shift it, because what you are carrying is a slow-release store and restriction tells it to hold. ${closer}`
+    case 'to_middle':
+      return `You have told me it used to sit on your hips and thighs and it is moving to your middle. That movement is the signal, more than where it ends up, and muscle usually goes the same way even when the scale does not move. Eating less makes this one worse rather than slower. ${closer}`
+    default:
+      // Includes 'always_central', 'unsure' and never-asked. Claim no location.
+      return `Your body has changed what it will let go of, and the usual answer makes it worse. Eating less does not slow this pattern down, it tightens it, because what you are carrying is a slow-release store and restriction tells it to hold. ${closer}`
+  }
 }
 
 /**
@@ -291,6 +292,22 @@ export function typeFatMapProfile(
     return p
   }
 
+  // Direction of travel beats everything else for a woman, because it is the
+  // discriminator the doctrine names and it is the only one she has stated
+  // outright rather than us inferring. Added 2026-08-12.
+  if (sex === 'F' && signals.storageDirection === 'to_middle') {
+    return { profile: 'Estrogen-Shift', confidence: 'high' }
+  }
+  if (sex === 'F' && signals.storageDirection === 'gluteofemoral') {
+    return { profile: 'Estrogen-Shift', confidence: 'high' }
+  }
+  // "It has always been my middle" argues AGAINST Estrogen-Shift, it does not
+  // support it. §4: "Estrogen-Shift arrives at the middle FROM the hips and
+  // thighs. Stress-Stored was central from the start." So a woman who says it
+  // has always been central must not be routed to Estrogen-Shift by the
+  // menopausal-band fallback below.
+  const centralFromTheStart = sex === 'F' && signals.storageDirection === 'always_central'
+
   // 'all_over' is an admitted failure to localise, not a storage signal, and v2.0
   // explicitly retires it as an insulin tell. It must not lead the read.
   //
@@ -304,7 +321,7 @@ export function typeFatMapProfile(
   //     definition and would otherwise return Stress-Stored at high confidence,
   //     swapping one confident wrong answer for another.
   if (fatStorage === 'all_over') {
-    if (femaleMenopausal) {
+    if (femaleMenopausal && !centralFromTheStart) {
       return { profile: 'Estrogen-Shift', confidence: 'low' }
     }
     const resolvedNoStorage = resolveSex(pattern.profile)
@@ -327,7 +344,7 @@ export function typeFatMapProfile(
     }
     // Menopausal-band woman whose storage reads oestrogen → high even if the
     // coarse score pattern points elsewhere.
-    if (storageProfile === 'Estrogen-Shift' && femaleMenopausal) {
+    if (storageProfile === 'Estrogen-Shift' && femaleMenopausal && !centralFromTheStart) {
       return { profile: storageProfile, confidence: 'high' }
     }
     // Storage and pattern diverge → trust the direct read but mark it

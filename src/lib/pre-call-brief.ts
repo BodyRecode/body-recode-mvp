@@ -16,6 +16,7 @@ import {
   type AgeBand,
   type FatStorage,
   type CycleStatus,
+  type StorageDirection,
   PROFILE_DRIVERS,
   PROFILE_DESCRIPTORS,
   pickFloor,
@@ -38,6 +39,8 @@ export interface LeadBriefInput {
   age_band?: AgeBand | null
   fat_storage?: FatStorage | null
   cycle_status?: CycleStatus | null
+  /** Estrogen-Shift phase discriminator. Women only. */
+  storage_direction?: StorageDirection | null
   /**
    * Verbatim pre-call form answers (the `prep_form_completed` lead event notes).
    * Drives the "What they told you" block and the scope-flag scan. Optional —
@@ -542,6 +545,7 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
     ageBand: input.age_band,
     fatStorage: input.fat_storage,
     cycleStatus: input.cycle_status,
+    storageDirection: input.storage_direction,
   })
   const isIndeterminate = profile === 'Indeterminate'
   const driver = PROFILE_DRIVERS[profile]
@@ -973,6 +977,7 @@ export function buildBriefSummary(input: LeadBriefInput): BriefSummary | null {
     ageBand: input.age_band,
     fatStorage: input.fat_storage,
     cycleStatus: input.cycle_status,
+    storageDirection: input.storage_direction,
   })
 
   const approach = input.approach_response

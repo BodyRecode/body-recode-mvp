@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
     console.error('[scorecard/submit] Failed to parse JSON body:', e)
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400, headers: CORS })
   }
-  const { first_name, last_name, email, phone, sms_opt_in, score, body_state, source, section_scores, approach_response, investment_readiness, biological_sex, age_band, fat_storage, cycle_status, situation_text } = body as {
+  const { first_name, last_name, email, phone, sms_opt_in, score, body_state, source, section_scores, approach_response, investment_readiness, biological_sex, age_band, fat_storage, cycle_status, storage_direction, situation_text } = body as {
     first_name: string
     last_name?: string
     email: string
@@ -82,6 +82,7 @@ export async function POST(request: NextRequest) {
     section_scores?: Record<string, number>
     approach_response?: 'A' | 'B' | 'C' | 'D'
     investment_readiness?: 'A' | 'B' | 'C' | 'D'
+    storage_direction?: 'gluteofemoral' | 'to_middle' | 'always_central' | 'unsure' | null
     biological_sex?: BiologicalSex
     age_band?: AgeBand
     fat_storage?: FatStorage
@@ -101,11 +102,17 @@ export async function POST(request: NextRequest) {
   // Cycle status only applies to females.
   const cycleVal: CycleStatus | null = sexVal === 'F' && ['regular', 'irregular', 'perimenopausal', 'postmenopausal'].includes(cycle_status as string) ? (cycle_status as CycleStatus) : null
 
+  // Direction of travel. Women only, and the discriminator the doctrine names
+  // for Estrogen-Shift. Null for men and for anyone who answered before it
+  // existed, in which case no phase is claimed downstream.
+  const directionVal = (sexVal === 'F' ? (storage_direction ?? null) : null) as
+    'gluteofemoral' | 'to_middle' | 'always_central' | 'unsure' | null
+
   // Type the lead into one of the four Fat Map zones (sex-gated, storage-led).
   const { profile: fatMapProfile, confidence: profileConfidence } = typeFatMapProfile(
     (section_scores ?? {}) as Record<'01' | '02' | '03' | '04' | '05', number>,
     body_state as 'Depleted State' | 'Transitioning State' | 'Ready State',
-    { sex: sexVal, ageBand: ageVal, fatStorage: storageVal, cycleStatus: cycleVal },
+    { sex: sexVal, ageBand: ageVal, fatStorage: storageVal, cycleStatus: cycleVal, storageDirection: directionVal },
   )
   console.log('[scorecard/submit] Received:', { first_name, last_name, email, score, body_state, source, approach_response, investment_readiness })
 
@@ -212,6 +219,7 @@ export async function POST(request: NextRequest) {
       age_band: ageVal,
       fat_storage: storageVal,
       cycle_status: cycleVal,
+      storage_direction: directionVal,
       scorecard_profile: fatMapProfile,
       scorecard_profile_confidence: profileConfidence,
       situation_text: situationText,
@@ -261,6 +269,7 @@ export async function POST(request: NextRequest) {
       age_band: ageVal,
       fat_storage: storageVal,
       cycle_status: cycleVal,
+      storage_direction: directionVal,
     })
     await supabase.from('leads').update({ pre_call_brief: brief }).eq('id', leadId)
     console.log('[scorecard/submit] Pre-call brief generated for lead:', leadId)
@@ -466,6 +475,6 @@ ${darkEmailSignature()}
     profile_confidence: namedZone ? profileConfidence : null,
     // Strip the coach-facing "(male-dominant)" / "(female)" parenthetical for the lead view.
     profile_driver: namedZone ? PROFILE_DRIVERS[fatMapProfile].replace(/\s*\([^)]*\)\s*$/, '') : null,
-    profile_descriptor: leadDescriptor(fatMapProfile, { cycleStatus: cycle_status ?? null, ageBand: age_band ?? null }),
+    profile_descriptor: leadDescriptor(fatMapProfile, { storageDirection: directionVal }),
   }, { headers: CORS })
 }

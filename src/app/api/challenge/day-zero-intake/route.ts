@@ -39,6 +39,7 @@ export async function POST(request: NextRequest) {
     age_band,
     fat_storage,
     cycle_status,
+    storage_direction,
   } = body as {
     token: string
     section_scores: Record<'01' | '02' | '03' | '04' | '05', number>
@@ -48,6 +49,7 @@ export async function POST(request: NextRequest) {
     age_band?: AgeBand
     fat_storage?: FatStorage
     cycle_status?: CycleStatus
+    storage_direction?: 'gluteofemoral' | 'to_middle' | 'always_central' | 'unsure' | null
   }
 
   // ascension_intent replaces the scorecard's investment_readiness for the
@@ -76,6 +78,9 @@ export async function POST(request: NextRequest) {
   const ageVal: AgeBand | null = ['under_35', '35_44', '45_54', '55_plus'].includes(age_band as string) ? (age_band as AgeBand) : null
   const storageVal: FatStorage | null = ['midsection', 'posterior', 'hips_thighs', 'all_over', 'low_tone'].includes(fat_storage as string) ? (fat_storage as FatStorage) : null
   const cycleVal: CycleStatus | null = sexVal === 'F' && ['regular', 'irregular', 'perimenopausal', 'postmenopausal'].includes(cycle_status as string) ? (cycle_status as CycleStatus) : null
+  // Women only. Sets the Estrogen-Shift phase from what she actually said.
+  const directionVal = (sexVal === 'F' && ['gluteofemoral', 'to_middle', 'always_central', 'unsure'].includes(storage_direction as string)
+    ? storage_direction : null) as 'gluteofemoral' | 'to_middle' | 'always_central' | 'unsure' | null
 
   // Compute total score + body state from the section scores. Mirrors the
   // scorecard frontend: total /15, ≤8 Depleted, ≤11 Transitioning, else Ready.
@@ -89,7 +94,7 @@ export async function POST(request: NextRequest) {
   const { profile: fatMapProfile, confidence: profileConfidence } = typeFatMapProfile(
     section_scores,
     bodyState,
-    { sex: sexVal, ageBand: ageVal, fatStorage: storageVal, cycleStatus: cycleVal },
+    { sex: sexVal, ageBand: ageVal, fatStorage: storageVal, cycleStatus: cycleVal, storageDirection: directionVal },
   )
 
   // Lead quality at Day 0 is approach-only (single axis). The scorecard's
@@ -137,6 +142,7 @@ export async function POST(request: NextRequest) {
       age_band: ageVal,
       fat_storage: storageVal,
       cycle_status: cycleVal,
+      storage_direction: directionVal,
       scorecard_profile: fatMapProfile,
       scorecard_profile_confidence: profileConfidence,
       updated_at: new Date().toISOString(),
@@ -182,6 +188,6 @@ export async function POST(request: NextRequest) {
     profile: namedZone ? fatMapProfile : null,
     profile_confidence: namedZone ? profileConfidence : null,
     profile_driver: namedZone ? PROFILE_DRIVERS[fatMapProfile].replace(/\s*\([^)]*\)\s*$/, '') : null,
-    profile_descriptor: leadDescriptor(fatMapProfile, { cycleStatus: cycle_status ?? null, ageBand: age_band ?? null }),
+    profile_descriptor: leadDescriptor(fatMapProfile, { storageDirection: directionVal }),
   })
 }
