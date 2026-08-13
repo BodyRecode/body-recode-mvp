@@ -24,6 +24,13 @@ export type LeadEventType =
   | 'booking_confirmation_sent'
   | 'prep_form_reminder_sent'
   | 'dormant_reactivation_sent'
+  // Added 2026-08-13. The Day 7 / Day 11 Check-In prompts sent straight through
+  // Resend and logged nothing, so when someone did not complete the Check-In
+  // there was no way to tell whether they ignored the email or never got one.
+  // The Check-In gates the whole Day 14 reveal, so that is the one funnel step
+  // least affordable to be blind on.
+  | 'challenge_checkin_prompt_sent'
+  | 'challenge_checkin_reminder_sent'
 
 export async function logLeadEvent(params: {
   leadId: string

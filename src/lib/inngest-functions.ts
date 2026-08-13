@@ -150,17 +150,18 @@ export const challengeCheckinPromptFunction = inngest.createFunction(
     const resend = new Resend(process.env.RESEND_API_KEY)
 
     // Returns null when the prompt should be skipped: enrollment gone,
-    // no longer active, or the Check-In is already done.
-    async function shouldSend(stepId: string): Promise<boolean> {
+    // no longer active, or the Check-In is already done. Also returns the
+    // lead id so the send can be logged against the lead's timeline.
+    async function shouldSend(stepId: string): Promise<{ send: boolean; leadId: string | null }> {
       return await step.run(stepId, async () => {
         const admin = createAdminClient()
         const { data } = await admin
           .from('challenge_enrollments')
-          .select('status, quiz_completed_at')
+          .select('status, quiz_completed_at, lead_id')
           .eq('token', token)
           .single()
-        if (!data || data.status !== 'active') return false
-        return !data.quiz_completed_at
+        if (!data || data.status !== 'active') return { send: false, leadId: null }
+        return { send: !data.quiz_completed_at, leadId: data.lead_id ?? null }
       })
     }
 
@@ -168,15 +169,28 @@ export const challengeCheckinPromptFunction = inngest.createFunction(
     await step.sleep('checkin-wait-to-day-7', '6d')
     await alignToNextMorningAEST(step, 'checkin-day-7-morning')
 
-    if (await shouldSend('checkin-day-7-should-send')) {
+    const day7 = await shouldSend('checkin-day-7-should-send')
+    if (day7.send) {
       await step.run('send-day7-checkin-prompt', async () => {
         const built = buildDay7CheckInPromptEmail({ firstName, token })
-        await resend.emails.send({
+        const sent = await resend.emails.send({
           from: fromCoach(),
           to: email,
           subject: built.subject,
           html: built.html,
         })
+        // Log it. Without this there is no way to distinguish "ignored the
+        // prompt" from "never received one", which is exactly the ambiguity
+        // that made the 3-of-29 Check-In figure unreadable.
+        if (day7.leadId) {
+          await logLeadEvent({
+            leadId: day7.leadId,
+            type: 'challenge_checkin_prompt_sent',
+            subject: built.subject,
+            resendEmailId: sent.data?.id ?? undefined,
+            notes: 'Day 7 Body Decode Check-In prompt',
+          })
+        }
       })
     }
 
@@ -184,15 +198,25 @@ export const challengeCheckinPromptFunction = inngest.createFunction(
     await step.sleep('checkin-wait-to-day-11', '4d')
     await alignToNextMorningAEST(step, 'checkin-day-11-morning')
 
-    if (await shouldSend('checkin-day-11-should-send')) {
+    const day11 = await shouldSend('checkin-day-11-should-send')
+    if (day11.send) {
       await step.run('send-day11-checkin-reminder', async () => {
         const built = buildCheckInReminderEmail({ firstName, token, daysLeft: 3 })
-        await resend.emails.send({
+        const sent = await resend.emails.send({
           from: fromCoach(),
           to: email,
           subject: built.subject,
           html: built.html,
         })
+        if (day11.leadId) {
+          await logLeadEvent({
+            leadId: day11.leadId,
+            type: 'challenge_checkin_reminder_sent',
+            subject: built.subject,
+            resendEmailId: sent.data?.id ?? undefined,
+            notes: 'Day 11 Check-In reminder, non-completers only',
+          })
+        }
       })
     }
   }
