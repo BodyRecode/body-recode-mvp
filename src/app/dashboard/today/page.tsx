@@ -4,7 +4,16 @@ import { useEffect, useMemo, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { getRunbookForDate, getUpcomingDecisions, RUNBOOK } from '@/lib/today-runbook'
 import { nextUpStep, phaseGateReview } from '@/lib/saas-buildout-manifest'
-import { Zap, Calendar, Camera, Target, BarChart3, Gavel, Inbox, BookOpen, Palmtree, Construction, Clock } from 'lucide-react'
+import { getLeadStatusLabel } from '@/lib/utils'
+import { Zap, Calendar, Camera, Target, BarChart3, Gavel, Inbox, BookOpen, Palmtree, Construction, Clock, UserCheck } from 'lucide-react'
+
+interface FollowUpLead {
+  id: string
+  name: string | null
+  status: string
+  next_follow_up_at: string
+  follow_up_note: string | null
+}
 
 interface CalendarPost {
   id: string
@@ -64,6 +73,7 @@ export default function TodayDashboardPage() {
   const [posts, setPosts] = useState<CalendarPost[]>([])
   const [feedback, setFeedback] = useState<FeedbackRow[]>([])
   const [clientsAwaitingReply, setClientsAwaitingReply] = useState(0)
+  const [followUps, setFollowUps] = useState<FollowUpLead[]>([])
   const [wave, setWave] = useState<WaveStatus | null>(null)
   const [enrolmentsLast24h, setEnrolmentsLast24h] = useState<number>(0)
   const [loading, setLoading] = useState(true)
@@ -85,12 +95,20 @@ export default function TodayDashboardPage() {
 
   async function load() {
     setLoading(true)
-    const [postsRes, feedbackRes, waveRes, enrolRes, unansweredRes] = await Promise.all([
+    const [postsRes, feedbackRes, waveRes, enrolRes, unansweredRes, followUpRes] = await Promise.all([
       supabase.from('calendar_posts').select('id, date, time, brand, platform, type, title, caption, graphic, scheduled, posted_at, scheduled_publish_at, ig_post_url').eq('date', date).order('time', { ascending: true, nullsFirst: false }),
       supabase.from('feedback_responses').select('id, created_at, stage, moment, response_text, coach_seen_at, permission_status').is('coach_seen_at', null).order('created_at', { ascending: false }).limit(10),
       fetch('/api/challenge/wave-status').then(r => r.json()).catch(() => null),
       supabase.from('challenge_enrollments').select('*', { count: 'exact', head: true }).gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()),
       supabase.from('client_messages').select('client_id').eq('sender', 'client').is('responded_at', null),
+      // Warm leads whose follow-up date has arrived. Overdue ones stay in the
+      // list rather than expiring, because a missed follow-up is still owed.
+      supabase.from('leads')
+        .select('id, name, status, next_follow_up_at, follow_up_note')
+        .not('next_follow_up_at', 'is', null)
+        .lte('next_follow_up_at', new Date(new Date(date + 'T23:59:59+10:00')).toISOString())
+        .eq('active', true)
+        .order('next_follow_up_at', { ascending: true }),
     ])
     setPosts((postsRes.data ?? []) as CalendarPost[])
     setFeedback((feedbackRes.data ?? []) as FeedbackRow[])
@@ -101,6 +119,7 @@ export default function TodayDashboardPage() {
     setClientsAwaitingReply(
       new Set(((unansweredRes.data ?? []) as { client_id: string }[]).map(r => r.client_id)).size
     )
+    setFollowUps((followUpRes.data ?? []) as FollowUpLead[])
     setLoading(false)
   }
 
@@ -269,6 +288,36 @@ export default function TodayDashboardPage() {
                 <Metric label="Posts today" value={String(posts.length)} sub={`${feedPosts.length} feed + ${stories.length} stories`} tone="default" />
               </div>
             </Section>
+
+            {/* 🤝 FOLLOW-UPS DUE */}
+            {followUps.length > 0 && (
+              <Section icon={UserCheck} title={`Follow up (${followUps.length})`} tone="urgent">
+                {followUps.map(l => {
+                  const due = new Date(l.next_follow_up_at)
+                  const overdueDays = Math.floor((Date.now() - due.getTime()) / 86400000)
+                  return (
+                    <Row key={l.id}>
+                      <div className="flex items-start gap-2">
+                        {overdueDays > 0 && (
+                          <span className="text-xs font-bold text-red-700 bg-red-100 border border-red-300 px-2 py-0.5 rounded shrink-0">
+                            {overdueDays}d late
+                          </span>
+                        )}
+                        <div className="min-w-0">
+                          <a href={`/dashboard/leads/${l.id}`} className="text-sm font-semibold text-stone-900 hover:text-[#1B6DFC]">
+                            {l.name ?? 'Unnamed lead'}
+                          </a>
+                          <span className="text-xs text-stone-500"> · {getLeadStatusLabel(l.status)}</span>
+                          {l.follow_up_note && (
+                            <p className="text-xs text-stone-600 leading-relaxed mt-0.5">{l.follow_up_note}</p>
+                          )}
+                        </div>
+                      </div>
+                    </Row>
+                  )
+                })}
+              </Section>
+            )}
 
             {/* 🚦 DECISIONS DUE */}
             {(decisionsToday.length > 0 || upcomingDecisions.length > 1) && (

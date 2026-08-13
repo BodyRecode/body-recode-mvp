@@ -29,7 +29,12 @@ export function getLeadStatusLabel(status: string) {
     cold_no_booking: 'Cold — No Booking',
     zoom_booked: 'Zoom Booked',
     zoom_1_booked: 'Zoom Booked',
+    // The DB constraint allows zoom_1_completed, not zoom_completed. The old
+    // key stays mapped so historic records still render a label.
     zoom_completed: 'Zoom Done',
+    zoom_1_completed: 'Zoom 1 Done',
+    zoom_2_booked: 'Zoom 2 Booked',
+    zoom_2_completed: 'Zoom 2 Done',
     closed_no_show: 'Closed — No Show',
     closed_declined: 'Closed — Declined',
     commencement_fee_paid: 'Commencement Fee Paid',
@@ -47,6 +52,9 @@ export function getLeadStatusColour(status: string) {
     case 'zoom_booked': return 'bg-amber-50 text-amber-700 border-amber-200'
     case 'zoom_1_booked': return 'bg-amber-50 text-amber-700 border-amber-200'
     case 'zoom_completed': return 'bg-amber-50 text-amber-800 border-amber-300'
+    case 'zoom_1_completed': return 'bg-amber-50 text-amber-800 border-amber-300'
+    case 'zoom_2_booked': return 'bg-amber-50 text-amber-700 border-amber-200'
+    case 'zoom_2_completed': return 'bg-amber-50 text-amber-800 border-amber-300'
     case 'closed_no_show': return 'bg-stone-50 text-stone-500 border-stone-200'
     case 'closed_declined': return 'bg-stone-50 text-stone-500 border-stone-200'
     case 'commencement_fee_paid': return 'bg-emerald-50 text-emerald-700 border-emerald-200'

@@ -14,7 +14,11 @@ export type LeadStatus =
   | 'cold_no_booking'
   | 'zoom_booked'
   | 'zoom_1_booked'
+  /** Legacy. Not accepted by the DB constraint, kept so old records still type. */
   | 'zoom_completed'
+  | 'zoom_1_completed'
+  | 'zoom_2_booked'
+  | 'zoom_2_completed'
   | 'closed_no_show'
   | 'closed_declined'
   | 'commencement_fee_paid'
@@ -33,6 +37,10 @@ export interface Lead {
   check_in_answers?: Record<string, number>
   zoom_1_date?: string
   zoom_meeting_url?: string
+  /** When this lead should surface again. Drives the follow-up list on Today. */
+  next_follow_up_at?: string
+  /** What to open with when they do. */
+  follow_up_note?: string
   notes?: string
   converted_to_client_id?: string
   converted_at?: string
