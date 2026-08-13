@@ -25,7 +25,7 @@ type MessageRow = {
   anchor_label: string | null
 }
 
-type ClientRow = { id: string; name: string; email: string; onboarding_token: string }
+type ClientRow = { id: string; name: string; email: string; onboarding_token: string; ended_at: string | null }
 
 function when(iso: string): string {
   const d = new Date(iso)
@@ -64,7 +64,7 @@ export default async function MessagesInboxPage({
   // valuable messages a coach sends are unprompted.
   const { data: clientRows } = await admin
     .from('clients')
-    .select('id, name, email, onboarding_token')
+    .select('id, name, email, onboarding_token, ended_at')
     .order('name', { ascending: true })
   const allClients = (clientRows ?? []) as ClientRow[]
   const clientsById = new Map(allClients.map(c => [c.id, c]))
@@ -79,13 +79,19 @@ export default async function MessagesInboxPage({
       // A conversation needs a reply when the CLIENT wrote last. Keying off
       // per-message responded_at meant answering one of three questions closed
       // all three; this is self-correcting, because a follow-up reopens it.
-      const awaitingReply = latest?.sender === 'client'
+      //
+      // Offboarded clients are never awaiting a reply. Vicki S ended on 31 Jul
+      // and her last message was her saying she was not going ahead, so the
+      // inbox listed her as owed an answer for a fortnight. A finished client
+      // keeps her history and stays searchable, she just leaves the queue.
+      const ended = clientsById.get(cid)?.ended_at != null
+      const awaitingReply = latest?.sender === 'client' && !ended
       // How long they have been waiting, which is a different signal from when
       // they last wrote: 3 days and 20 minutes read identically otherwise.
       const firstUnanswered = awaitingReply
         ? [...thread].reverse().find(m => m.sender === 'client' && !m.responded_at) ?? latest
         : null
-      return { clientId: cid, thread, latest, awaitingReply, waitingSince: firstUnanswered?.created_at ?? null }
+      return { clientId: cid, thread, latest, awaitingReply, ended, waitingSince: firstUnanswered?.created_at ?? null }
     })
     .sort((a, b) => {
       if (a.awaitingReply !== b.awaitingReply) return a.awaitingReply ? -1 : 1
@@ -173,6 +179,11 @@ export default async function MessagesInboxPage({
                       {name}
                     </p>
                     <div className="flex items-center gap-1.5 shrink-0">
+                      {c.ended && (
+                        <span className="text-[9px] font-bold uppercase tracking-wider text-[#999999] border border-[#E5E5E5] rounded px-1 py-px">
+                          Ended
+                        </span>
+                      )}
                       {c.awaitingReply && <span className="w-2 h-2 rounded-full bg-[#1B6DFC]" aria-label="Awaiting reply" />}
                       {c.latest && <span className="text-[10px] text-[#999999]">{when(c.latest.created_at)}</span>}
                     </div>
@@ -226,6 +237,7 @@ export default async function MessagesInboxPage({
                 <p className="text-[12px] text-[#999999] mt-0.5">
                   {selected.thread.length} message{selected.thread.length === 1 ? '' : 's'}
                   {selected.awaitingReply && ' · awaiting your reply'}
+                  {selected.ended && ' · coaching ended'}
                 </p>
               </div>
               {selectedClient?.onboarding_token && (

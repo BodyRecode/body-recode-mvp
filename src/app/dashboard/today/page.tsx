@@ -100,7 +100,14 @@ export default function TodayDashboardPage() {
       supabase.from('feedback_responses').select('id, created_at, stage, moment, response_text, coach_seen_at, permission_status').is('coach_seen_at', null).order('created_at', { ascending: false }).limit(10),
       fetch('/api/challenge/wave-status').then(r => r.json()).catch(() => null),
       supabase.from('challenge_enrollments').select('*', { count: 'exact', head: true }).gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()),
-      supabase.from('client_messages').select('client_id').eq('sender', 'client').is('responded_at', null),
+      // Offboarded clients are not owed a reply. Vicki S ended on 31 Jul and
+      // her last message was her saying she was not going ahead, which kept
+      // this metric sitting on 1 for a fortnight.
+      supabase.from('client_messages')
+        .select('client_id, clients!inner(ended_at)')
+        .eq('sender', 'client')
+        .is('responded_at', null)
+        .is('clients.ended_at', null),
       // Warm leads whose follow-up date has arrived. Overdue ones stay in the
       // list rather than expiring, because a missed follow-up is still owed.
       supabase.from('leads')
