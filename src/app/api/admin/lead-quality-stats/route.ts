@@ -20,7 +20,7 @@ interface TierStats {
 }
 
 const ZOOM_BOOKED_STATUSES = new Set(['zoom_booked', 'zoom_1_booked'])
-const ZOOM_COMPLETED_STATUSES = new Set(['zoom_completed', 'closed_declined', 'commencement_fee_paid', 'active_deliberate_start', 'active_coaching'])
+const ZOOM_COMPLETED_STATUSES = new Set(['zoom_completed', 'zoom_1_completed', 'zoom_2_completed', 'closed_declined', 'commencement_fee_paid', 'active_deliberate_start', 'active_coaching'])
 const CLOSED_STATUSES = new Set(['commencement_fee_paid', 'active_deliberate_start', 'active_coaching'])
 
 function emptyStats(): TierStats {

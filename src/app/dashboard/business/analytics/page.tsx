@@ -52,7 +52,7 @@ export default async function AnalyticsPage() {
     { key: 'new_check_in', label: 'New Lead' },
     { key: 'report_sent', label: 'Report Sent' },
     { key: 'zoom_1_booked', label: 'Zoom Booked' },
-    { key: 'zoom_completed', label: 'Zoom Done' },
+    { key: 'zoom_1_completed', label: 'Zoom Done' },
     { key: 'commencement_fee_paid', label: 'Fee Paid' },
     { key: 'active_coaching', label: 'Active Client' },
   ]

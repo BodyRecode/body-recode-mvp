@@ -8,7 +8,7 @@ import { PageHeader, Btn, EmptyState, MONO_FONT } from '@/components/dashboard/u
 
 const STATUS_GROUPS = [
   { label: 'Pipeline', statuses: ['new_check_in', 'report_sent', 'cold_no_booking'] },
-  { label: 'Zoom', statuses: ['zoom_booked', 'zoom_1_booked', 'zoom_completed', 'closed_no_show', 'closed_declined'] },
+  { label: 'Zoom', statuses: ['zoom_booked', 'zoom_1_booked', 'zoom_completed', 'zoom_1_completed', 'zoom_2_booked', 'zoom_2_completed', 'closed_no_show', 'closed_declined'] },
   { label: 'Entry', statuses: ['commencement_fee_paid', 'active_deliberate_start', 'active_coaching'] },
 ]
 

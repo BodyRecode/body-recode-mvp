@@ -69,6 +69,7 @@ export default function ZoomCompanion({
   const [elapsed, setElapsed] = useState(0)
   const [outcome, setOutcome] = useState<'A' | 'B' | 'C' | null>(null)
   const [busy, setBusy] = useState(false)
+  const [saveError, setSaveError] = useState<string | null>(null)
 
   useEffect(() => {
     const t = setInterval(() => setElapsed(e => e + 1), 1000)
@@ -102,6 +103,13 @@ ${preface}${readBody}
 
 ${tail}`
 
+  /** Path B leads are undecided, not lost. Three weeks is long enough for a
+   *  circumstance to change and short enough that the call is still recent. */
+  function threeWeeksFromNow(): string {
+    const d = new Date(Date.now() + 21 * 86400000)
+    return new Date(`${new Date(d.getTime() + 10 * 3600000).toISOString().slice(0, 10)}T09:00:00+10:00`).toISOString()
+  }
+
   async function saveNotes() {
     await fetch(`/api/leads/${leadId}`, {
       method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ notes }),
@@ -111,14 +119,29 @@ ${tail}`
 
   async function markOutcome(path: 'A' | 'B' | 'C') {
     setBusy(true)
-    await fetch(`/api/leads/${leadId}`, {
+    setSaveError(null)
+    // 'zoom_1_completed', NOT 'zoom_completed'. The latter is not in the
+    // leads_status_check constraint, so this call used to fail server-side and
+    // the page still showed the outcome as recorded. Nothing was ever saved.
+    const res = await fetch(`/api/leads/${leadId}`, {
       method: 'PATCH', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        status: path === 'A' ? 'closed_declined' : 'zoom_completed',
+        status: path === 'A' ? 'closed_declined' : 'zoom_1_completed',
         zoom2_outcome: path === 'A' ? 'not_proceeding' : path === 'B' ? 'needs_time' : 'proceeding',
+        // Path B is undecided, so bring them back in three weeks rather than
+        // letting them go quiet.
+        ...(path === 'B' ? { next_follow_up_at: threeWeeksFromNow() } : {}),
         notes,
       }),
     })
+
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}))
+      setSaveError(body.error ?? `Could not save (${res.status}). Nothing was recorded.`)
+      setBusy(false)
+      return
+    }
+
     if (path === 'A') await fetch(`/api/leads/${leadId}/send-zoom1-declined`, { method: 'POST' })
     setOutcome(path); setBusy(false)
   }
@@ -444,9 +467,20 @@ Here's what's included: the foundational intake and CFFS, your training program,
         {step === 5 && (
           <div className="space-y-4">
             {summary && <p className="text-[15px] text-[#6B6B6B]">Expected: {summary.pathLine}</p>}
+            {saveError && (
+              <div className="rounded-xl border border-red-300 bg-red-50 p-3.5">
+                <p className="text-[13px] font-bold text-red-800">Not saved</p>
+                <p className="text-[13px] text-red-700 leading-relaxed mt-0.5">{saveError}</p>
+              </div>
+            )}
             {outcome ? (
               <p className="text-[15px] font-semibold text-[#1B6DFC]">
-                Recorded as Path {outcome}. {outcome === 'A' ? 'Declined follow-up sent.' : 'Status set to Zoom completed.'}
+                Recorded as Path {outcome}.{' '}
+                {outcome === 'A'
+                  ? 'Declined follow-up sent.'
+                  : outcome === 'B'
+                    ? 'Marked Zoom 1 done, back on your Today list in three weeks.'
+                    : 'Marked Zoom 1 done.'}
               </p>
             ) : (
               <div className="flex flex-wrap gap-2.5">

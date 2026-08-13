@@ -12,7 +12,7 @@ const stageOrder = [
   'report_sent',
   'zoom_booked',
   'zoom_1_booked',
-  'zoom_completed',
+  'zoom_1_completed',
   'commencement_fee_paid',
   'active_client',
 ]
@@ -22,7 +22,7 @@ const stageLabel: Record<string, string> = {
   report_sent: 'Report Sent',
   zoom_booked: 'Zoom Booked',
   zoom_1_booked: 'Zoom Booked',
-  zoom_completed: 'Zoom Completed',
+  zoom_1_completed: 'Zoom Completed',
   commencement_fee_paid: 'Commencement Fee Paid',
   active_client: 'Active Client',
 }

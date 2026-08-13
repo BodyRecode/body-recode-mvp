@@ -7,7 +7,7 @@ const stageOrder = [
   'report_sent',
   'zoom_booked',
   'zoom_1_booked',
-  'zoom_completed',
+  'zoom_1_completed',
   'commencement_fee_paid',
   'active_coaching',
 ]
