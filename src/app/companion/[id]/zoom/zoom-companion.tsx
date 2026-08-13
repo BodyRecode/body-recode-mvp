@@ -466,6 +466,14 @@ Here's what's included: the foundational intake and CFFS, your training program,
         {/* 05 OUTCOME */}
         {step === 5 && (
           <div className="space-y-4">
+            <div className="rounded-xl border-2 border-[#1B6DFC] bg-[#F5F8FF] p-4">
+              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#1B6DFC] mb-1">
+                How did it land
+              </p>
+              <p className="text-[13px] text-[#3A3A3A] leading-relaxed">
+                Pick one to record the call. This is what saves it.
+              </p>
+            </div>
             {summary && <p className="text-[15px] text-[#6B6B6B]">Expected: {summary.pathLine}</p>}
             {saveError && (
               <div className="rounded-xl border border-red-300 bg-red-50 p-3.5">
@@ -518,10 +526,20 @@ Here's what's included: the foundational intake and CFFS, your training program,
             <ChevronLeft size={15} /> Back
           </button>
           <span className="text-[12px] text-[#999999]">{step + 1} of {STEPS.length}</span>
-          <button onClick={() => setStep(s => Math.min(STEPS.length - 1, s + 1))} disabled={step === STEPS.length - 1}
-            className="inline-flex items-center gap-1 text-[14px] font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg disabled:opacity-30 hover:bg-[#5390FF] transition-colors">
-            {STEPS[step + 1]?.label ?? 'Done'} <ChevronRight size={15} />
-          </button>
+          {/* On the last step there is nowhere to go, and this used to render a
+              greyed-out button reading 'Done'. It looked like the control that
+              ends the call, so it got clicked instead of the outcome buttons
+              and appeared broken. The call is ended by choosing an outcome. */}
+          {step === STEPS.length - 1 ? (
+            <span className={`text-[13px] font-bold ${outcome ? 'text-[#1B6DFC]' : 'text-[#6B6B6B]'}`}>
+              {outcome ? 'Outcome recorded' : 'Choose an outcome above'}
+            </span>
+          ) : (
+            <button onClick={() => setStep(s => Math.min(STEPS.length - 1, s + 1))}
+              className="inline-flex items-center gap-1 text-[14px] font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors">
+              {STEPS[step + 1].label} <ChevronRight size={15} />
+            </button>
+          )}
         </div>
       </div>
 
