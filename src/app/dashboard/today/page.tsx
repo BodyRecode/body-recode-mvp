@@ -107,6 +107,7 @@ export default function TodayDashboardPage() {
         .select('client_id, clients!inner(ended_at)')
         .eq('sender', 'client')
         .is('responded_at', null)
+        .is('handled_at', null)
         .is('clients.ended_at', null),
       // Warm leads whose follow-up date has arrived. Overdue ones stay in the
       // list rather than expiring, because a missed follow-up is still owed.

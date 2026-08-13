@@ -9,6 +9,7 @@ import { isAnchorKind, anchorChipLabel, anchorPortalHref } from '@/lib/message-a
 import ReplyBox from './reply-box'
 import MessageSearch from './message-search'
 import StartConversation from './start-conversation'
+import MarkHandled from './mark-handled'
 
 export const dynamic = 'force-dynamic'
 
@@ -20,6 +21,7 @@ type MessageRow = {
   created_at: string
   read_at: string | null
   responded_at: string | null
+  handled_at: string | null
   client_read_at: string | null
   anchor_kind: string | null
   anchor_label: string | null
@@ -53,7 +55,7 @@ export default async function MessagesInboxPage({
 
   const { data: messageRows } = await admin
     .from('client_messages')
-    .select('id, client_id, body, sender, created_at, read_at, responded_at, client_read_at, anchor_kind, anchor_label')
+    .select('id, client_id, body, sender, created_at, read_at, responded_at, handled_at, client_read_at, anchor_kind, anchor_label')
     .order('created_at', { ascending: false })
     .limit(2000)
 
@@ -85,13 +87,16 @@ export default async function MessagesInboxPage({
       // inbox listed her as owed an answer for a fortnight. A finished client
       // keeps her history and stays searchable, she just leaves the queue.
       const ended = clientsById.get(cid)?.ended_at != null
-      const awaitingReply = latest?.sender === 'client' && !ended
+      // handled_at closes a message that was answered off-platform. A newer
+      // client message has handled_at null, so writing again reopens it.
+      const handled = latest?.sender === 'client' && latest.handled_at != null
+      const awaitingReply = latest?.sender === 'client' && !ended && !handled
       // How long they have been waiting, which is a different signal from when
       // they last wrote: 3 days and 20 minutes read identically otherwise.
       const firstUnanswered = awaitingReply
         ? [...thread].reverse().find(m => m.sender === 'client' && !m.responded_at) ?? latest
         : null
-      return { clientId: cid, thread, latest, awaitingReply, ended, waitingSince: firstUnanswered?.created_at ?? null }
+      return { clientId: cid, thread, latest, awaitingReply, ended, handled, waitingSince: firstUnanswered?.created_at ?? null }
     })
     .sort((a, b) => {
       if (a.awaitingReply !== b.awaitingReply) return a.awaitingReply ? -1 : 1
@@ -237,6 +242,7 @@ export default async function MessagesInboxPage({
                 <p className="text-[12px] text-[#999999] mt-0.5">
                   {selected.thread.length} message{selected.thread.length === 1 ? '' : 's'}
                   {selected.awaitingReply && ' · awaiting your reply'}
+                  {selected.handled && ' · handled elsewhere'}
                   {selected.ended && ' · coaching ended'}
                 </p>
               </div>
@@ -251,6 +257,14 @@ export default async function MessagesInboxPage({
                 </Link>
               )}
             </div>
+
+            {/* Only offered when the client actually wrote last, because there
+                is nothing to close off otherwise. */}
+            {selected.latest?.sender === 'client' && !selected.ended && (
+              <div className="flex justify-end mb-3">
+                <MarkHandled clientId={selected.clientId} handled={selected.handled} />
+              </div>
+            )}
 
             <ReplyBox
               clientId={selected.clientId}
