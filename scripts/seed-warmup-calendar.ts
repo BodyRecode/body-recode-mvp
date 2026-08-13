@@ -2,12 +2,15 @@
 //
 // Three decisions shape every post here.
 //
-// 1. ROUTES TO THE SCORECARD, NOT THE CHALLENGE. Sending organic to /challenge
-//    was a scoped exception that applied only while paid was live. Paid is dark.
-//    It is also the better play: scorecard completers arrive at the Challenge
-//    with a state already on file, which makes them skip the Day 0 intake gate
-//    entirely. Every scorecard taken now pre-loads the funnel for when ads
-//    resume.
+// 1. ROUTES TO THE CHALLENGE, NOT THE SCORECARD. The Day 0 intake is the same
+//    instrument as the public scorecard - same five sections, same qualifiers,
+//    same Fat Map typing - so an enroller gets state-typed either way. Routing
+//    to /challenge therefore gets the state capture AND an enrolment AND, most
+//    importantly, a person who actually tests whether the Day 7 Check-In prompt
+//    works. Scorecard completions test nothing, and proving that fix before ads
+//    resume is the whole reason this warm-up exists.
+//    Scorecard-first stays correct for COLD paid traffic, where 14 days is too
+//    big an ask from a stranger. This audience already follows us.
 //
 // 2. NO COMMENT-TO-DM KEYWORDS. None of the four ManyChat layers are built. The
 //    playbook's own rule is that a dead keyword is worse than no CTA, and the
@@ -29,7 +32,14 @@ import { createClient } from '@supabase/supabase-js'
 const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
 const DRY = process.argv.includes('--dry')
 
-const SCORECARD = 'The free 2-minute Body State Scorecard reads which state you are actually in.'
+// Routes to the CHALLENGE, not the scorecard. The Day 0 intake is the same
+// instrument as the public scorecard, so a Challenge enroller gets state-typed
+// either way - routing there gets the state capture AND an enrolment AND a
+// person who actually tests the Day 7 check-in fix before ads resume. Scorecard
+// completions test nothing, which is the one thing this warm-up exists to do.
+// Scorecard-first remains correct for COLD paid traffic; organic already
+// follows us, so the 14-day ask is not too big.
+const CHALLENGE = 'The free 14-day Body Decode Challenge reads which state you are actually in.'
 
 type Post = {
   date: string; type: 'authority' | 'contrarian' | 'pattern' | 'coach' | 'diagnostic'
@@ -70,7 +80,7 @@ Only eighteen per cent come out Ready.
 
 If you're in that middle group, the thing that changes it isn't more effort. It's knowing which of the four drivers is holding the result, because they don't answer to the same correction.
 
-${SCORECARD} Two minutes, five questions, and it's free.`,
+The free 14-day Body Decode Challenge reads it properly. Day zero types your state, day seven scores eight markers against your own baseline, day fourteen gives you the pattern.`,
   },
   {
     date: '2026-08-17', type: 'authority', time: '07:00',
@@ -113,7 +123,7 @@ You did stick to it. It was pointed at the wrong body.`,
     date: '2026-08-19', type: 'pattern', time: '12:00',
     title: 'Wed Pattern · 44% store it around the middle, and that tells you nothing',
     reel: 'What Your Fat Storage Says',
-    notes: 'On screen: body diagram with the SIGNAL as text beside each zone, not just the zone. NO COMMENT KEYWORD - ManyChat is not built, and a dead keyword is worse than no CTA. Routes to the scorecard instead. REEL OPTIONAL.',
+    notes: 'On screen: body diagram with the SIGNAL as text beside each zone, not just the zone. NO COMMENT KEYWORD - ManyChat is not built, and a dead keyword is worse than no CTA. Routes to /challenge instead. REEL OPTIONAL.',
     caption: `Forty-four per cent of the people who've done our intake say they store it around the middle.
 
 And on its own, that tells me nothing. Which is exactly the problem.
@@ -126,7 +136,7 @@ Mid-back, lower back and the flanks, and you're crashing in the afternoon and cr
 
 Same place. Opposite corrections.
 
-Where it sits narrows it down. What comes with it is what decides. ${SCORECARD}`,
+Where it sits narrows it down. What comes with it is what decides. ${CHALLENGE}`,
   },
   {
     date: '2026-08-21', type: 'coach', time: '18:00',
@@ -162,7 +172,7 @@ That is the trap. The half-result convinces people the plan was right and they w
 
 Which is why the read comes before the prescription. Guessing is expensive when the cost is a year of your life.
 
-${SCORECARD} It takes two minutes and it costs nothing.`,
+${CHALLENGE} It takes two minutes and it costs nothing.`,
   },
   {
     date: '2026-08-24', type: 'authority', time: '07:00',
@@ -212,7 +222,7 @@ Here's the trap. In phase two it looks exactly like a stress pattern. Same place
 
 What separates them is the movement. Stress was central from the start. Oestrogen arrives at the middle from somewhere else.
 
-So the question that decides it isn't where it sits. It's whether where it sits has changed. ${SCORECARD}`,
+So the question that decides it isn't where it sits. It's whether where it sits has changed. ${CHALLENGE}`,
   },
   {
     date: '2026-08-28', type: 'coach', time: '18:00',
@@ -234,8 +244,8 @@ That is the whole argument for reading before prescribing.`,
   },
   {
     date: '2026-08-30', type: 'diagnostic', time: '09:00',
-    title: 'Sun Promo · the strongest scorecard push of the warm-up',
-    notes: 'Click-first. Last promo before the ads restart on 1 Sep. Hardest push of the fortnight.',
+    title: 'Sun Promo · the strongest Challenge push of the warm-up',
+    notes: 'Click-first. Last promo before the ads restart on 1 Sep. Hardest push of the fortnight. Routes to /challenge - wave 1 was at 29 of 50 on 13 Aug, so watch the cap.',
     caption: `If the effort has been there and the result hasn't, the problem is almost never the effort. It's the target.
 
 Four drivers. Four different corrections. Aim at the wrong one and you get a bit of movement, then a stall, then a year of your life.
@@ -244,7 +254,7 @@ The scorecard reads which state your body is in right now, in about two minutes.
 
 It won't give you a plan. It'll tell you what a plan would need to account for, which is the part almost everyone skips.
 
-${SCORECARD}`,
+${CHALLENGE}`,
   },
   {
     date: '2026-08-31', type: 'authority', time: '07:00',
