@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { getCheckinSections, CheckInSection } from '@/lib/weekly-checkin-questions'
+import { getCheckinSections, CheckInSection, MULTI_SELECT_DELIM } from '@/lib/weekly-checkin-questions'
 import { useFormDraft } from '@/lib/use-form-draft'
 import { logoUrl, brand } from '@/config/tenant'
 
@@ -45,12 +45,12 @@ function QuestionInput({
   }
 
   if (question.type === 'choice') {
-    const selected = question.multi ? (value ? value.split(', ') : []) : []
+    const selected = question.multi ? (value ? value.split(MULTI_SELECT_DELIM) : []) : []
     const isSelected = (opt: string) => (question.multi ? selected.includes(opt) : value === opt)
     const handleClick = (opt: string) => {
       if (!question.multi) return onChange(opt)
       const next = selected.includes(opt) ? selected.filter(o => o !== opt) : [...selected, opt]
-      onChange(next.join(', '))
+      onChange(next.join(MULTI_SELECT_DELIM))
     }
     return (
       <div>

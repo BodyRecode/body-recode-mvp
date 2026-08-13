@@ -485,10 +485,18 @@ interface ReviewPayload {
   direction: 'progress' | 'hold' | 'rebuild'
 }
 
+/**
+ * Delimiter joining/splitting multi-select choice values. MUST NOT be a comma:
+ * several option labels contain commas (e.g. "Under-fuelled (hungry, low
+ * energy)"), so a ", " delimiter fragmented the label and broke selection.
+ * A newline never appears in a label.
+ */
+export const MULTI_SELECT_DELIM = '\n'
+
 function mapSignals(joined: string | undefined, map: Record<string, string>): string | null {
   if (!joined) return null
   const values = joined
-    .split(', ')
+    .split(MULTI_SELECT_DELIM)
     .map(label => map[label.trim()])
     .filter(Boolean)
   return values.length > 0 ? values.join(',') : null
