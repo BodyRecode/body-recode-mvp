@@ -106,6 +106,7 @@ export async function sendLeadSms({
       .select('id', { head: true, count: 'exact' })
       .eq('lead_id', leadId)
       .eq('direction', 'outbound')
+      .not('trigger', 'like', 'challenge_day%')
       .gte('sent_at', dayAgo)
     if ((last24h ?? 0) >= 1) return { ok: false, reason: 'frequency_capped', error: 'already sent within 24h' }
 
@@ -114,6 +115,7 @@ export async function sendLeadSms({
       .select('id', { head: true, count: 'exact' })
       .eq('lead_id', leadId)
       .eq('direction', 'outbound')
+      .not('trigger', 'like', 'challenge_day%')
       .gte('sent_at', weekAgo)
     if ((last7d ?? 0) >= 3) return { ok: false, reason: 'frequency_capped', error: '3 sends already this week' }
   }
@@ -135,7 +137,7 @@ export async function sendLeadSms({
   const logId = logRow.id as string
 
   try {
-    await twilioSendSms({ to, message: body })
+    await twilioSendSms({ to, message: body, skipLog: true })
     await admin
       .from('sms_logs')
       .update({ status: 'sent', sent_at: new Date().toISOString() })

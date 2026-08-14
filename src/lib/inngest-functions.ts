@@ -595,22 +595,24 @@ export const challengeSmsFunction = inngest.createFunction(
     //     has fired from challengeSequenceFunction)
     // 14 morning + 3 afternoon boosts = 17 SMS across the 14 days.
     for (let day = 1; day <= 14; day++) {
-      // Check enrollment still active before each day's messages
-      const isActive = await step.run(`sms-check-active-day${day}`, async () => {
+      // Check enrollment still active before each day's messages. Returns the
+      // lead id too so every send below is attributable in sms_logs - day 7 in
+      // particular, which is the only nudge asking for the Check-In.
+      const gate = await step.run(`sms-check-active-day${day}`, async () => {
         const admin = createAdminClient()
         const { data } = await admin
           .from('challenge_enrollments')
-          .select('status')
+          .select('status, lead_id')
           .eq('token', token)
           .single()
-        return data?.status === 'active'
+        return { active: data?.status === 'active', leadId: (data?.lead_id as string | null) ?? null }
       })
-      if (!isActive) return
+      if (!gate.active) return
 
       // Morning portal nudge
       await step.run(`sms-day${day}-morning`, async () => {
         const msg = renderSms(SMS_MORNING[day], firstName, portalUrl)
-        await sendSms({ to: formattedPhone, message: msg })
+        await sendSms({ to: formattedPhone, message: msg, leadId: gate.leadId, trigger: `challenge_day${day}_morning` })
       })
 
       const afternoonBoost = SMS_AFTERNOON_BOOST[day]
@@ -619,7 +621,7 @@ export const challengeSmsFunction = inngest.createFunction(
         await step.sleep(`sms-day${day}-afternoon-wait`, '8h')
         await step.run(`sms-day${day}-afternoon`, async () => {
           const msg = renderSms(afternoonBoost, firstName, portalUrl)
-          await sendSms({ to: formattedPhone, message: msg })
+          await sendSms({ to: formattedPhone, message: msg, leadId: gate.leadId, trigger: `challenge_day${day}_afternoon` })
         })
       }
 
