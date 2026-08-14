@@ -917,15 +917,129 @@ function CopyButton({ value, label }: { value: string; label?: string }) {
 // The no-banner test carries Ad 6's exact fields on purpose: that test is void
 // if any field other than the creative differs.
 type Round1Ad = {
-  slug: string; short: string; layer: 'round1' | 'layer2' | 'deferred' | 'variety'; audience: string
+  slug: string; short: string
+  layer: 'round1' | 'layer2' | 'deferred' | 'variety' | 'streamA' | 'streamB' | 'metabolic'
+  audience: string
   img: string; headline: string; primaryText: string; description: string
 }
 // Bump this ONE constant when the launch pack is republished. It drives the card
 // title, both download links and the 'verbatim from' line, which had already
 // drifted apart once (card said v1.6 while the body text still said v1.4).
 const LAUNCH_PACK_VERSION = 'v1.9'
+// Round 2 pack, the one to upload from for the 1 Sep restart. Bump on republish;
+// it drives the card title and both download links.
+const ROUND2_PACK_VERSION = 'v1.4'
 // Strategy doc is v2.5 (14 Aug): two pillars, readiness vocabulary, sample-size
 // rule, story cadence. Mirrored to public/docs/strategy/body-recode/.
+
+// ROUND2_ADS - the cold creative for the 1 Sep restart, generated from
+// ~/Dropbox/01_BODY_RECODE/07_ADS/BR_ROUND2_TWO_STREAMS.md by
+// scripts/gen-round2-ads.ts, so the dashboard cannot drift from the pack.
+// Regenerate and paste after any edit to that doc. Images live in
+// /public/creative/round2/ - never /public/ads/, which ad blockers strip.
+//
+// layer 'streamA'   neurowellness, the biggest lane. Phase 1 runs these three.
+// layer 'streamB'   readiness. Built, PAUSED until the week-2 gate.
+// layer 'metabolic' one disqualifier, per the 6/3/1 airtime rule. PAUSED.
+const ROUND2_ADS: Round1Ad[] = [
+  { slug: 'a1-wrong-one', short: 'The wrong one', layer: 'streamA', audience: 'Women 40+, neurowellness',
+    img: '/creative/round2/a1-wrong-one.png',
+    headline: `We have been fixing the wrong one for thirty years`,
+    primaryText: `Eighty-six women have now finished our scorecard.
+
+It scores five things out of three. Energy, sleep, stress load, how you respond to training, and how you respond to fat loss.
+
+The best-scoring one was training.
+
+The worst was sleep.
+
+So the thing this group works hardest at is the least broken thing about them. And the two things nobody has ever assessed are the ones on the floor.
+
+Every plan they have been sold starts by adding more training.
+
+The free 14-day Challenge starts by reading all five, and tells you which of yours is lowest.`,
+    description: `Five questions. The lowest one is the answer.` },
+  { slug: 'a2-four-in-ten', short: 'Four in ten', layer: 'streamA', audience: 'Women 40+, neurowellness',
+    img: '/creative/round2/a2-four-in-ten.png',
+    headline: `Nearly four in ten score the floor on sleep. Not one came to us about sleep`,
+    primaryText: `They came about fat that would not move.
+
+About a plateau. About training that stopped working. About a body that used to respond and now does not.
+
+Then they score the floor on sleep, and the floor reads: waking through the night, not rested in the morning.
+
+Almost everything you want from training happens while you are asleep. The session is the request. Sleep is where the body answers it.
+
+A body that trains hard and sleeps badly is not building. It is accumulating.
+
+The free 14-day Challenge starts by scoring all five. Yours included.`,
+    description: `The one nobody assessed.` },
+  { slug: 'a3-under-recovering', short: 'Under-recovering', layer: 'streamA', audience: 'Women 40+, neurowellness',
+    img: '/creative/round2/a3-under-recovering.png',
+    headline: `You are not under-training. You are under-recovering, and they look identical`,
+    primaryText: `Same tiredness. Same flat sessions. Same body that will not change.
+
+One of them is fixed by doing more. The other is made worse by it, and there is no way to tell which you are from the outside.
+
+That is why the harder-working half of any group is so often the stuck half.
+
+The Challenge scores the five foundations separately on day one, so you can see whether the problem is the work you are doing or the state you are doing it in.
+
+Fourteen days. Free. No payment.`,
+    description: `Two things that look the same.` },
+  { slug: 'b1-eighteen', short: 'Eighteen per cent', layer: 'streamB', audience: 'Women 40+, readiness',
+    img: '/creative/round2/b1-eighteen.png',
+    headline: `Eighty-eight women took it. Eighteen per cent were ready to be pushed`,
+    primaryText: `The rest get pushed anyway.
+
+That is the whole problem with how plans are written. They assume a body that can absorb the work. Then the same programme goes to the woman who can and the woman who cannot, and only one of them gets a result.
+
+Half of the people we assess come out in the middle. Not depleted, not ready. Doing the work and waiting for it to show up.
+
+A plan for a ready body, given to a body that is not, does not half work. It goes backwards.
+
+Day one of the free Challenge tells you which one you currently are.`,
+    description: `Most people are not in the group they think.` },
+  { slug: 'b2-wrong-question', short: 'The wrong question', layer: 'streamB', audience: 'Women 40+, readiness',
+    img: '/creative/round2/b2-wrong-question.png',
+    headline: `Fitness asks how hard you can go. Nobody asks whether you can take it`,
+    primaryText: `Those are not the same question, and only one of them gets asked.
+
+How hard can you go is about willingness. You already have that or you would not be reading this.
+
+Whether your body can take it today is about capacity, and it changes. With sleep, with stress, with what the last six months have been like.
+
+Push a body that cannot currently absorb the load and it does not adapt. It defends.
+
+The free 14-day Challenge reads five foundations on day one and tells you what your body can currently take.`,
+    description: `The question nobody asks first.` },
+  { slug: 'b3-eight-weeks', short: 'Eight weeks away', layer: 'streamB', audience: 'Women 40+, readiness',
+    img: '/creative/round2/b3-eight-weeks.png',
+    headline: `There is a version of you this plan would work brilliantly for`,
+    primaryText: `She is about eight weeks away.
+
+That is the part almost nobody says out loud. Most plans are not wrong. They are early.
+
+Given to the same woman two months later, after the thing underneath has been corrected, the identical programme produces the result it was supposed to.
+
+Which is why the first question is never what to do. It is what your body can currently take.
+
+Fourteen days, free. Day one tells you whether you are ready to be pushed, or whether something needs to come first.`,
+    description: `Not wrong. Early.` },
+  { slug: 'm1-one-in-25', short: 'One in twenty-five', layer: 'metabolic', audience: 'Either sex, disqualifier',
+    img: '/creative/round2/m1-one-in-25.png',
+    headline: `The internet says your problem is insulin. In the women we assess, it is one in twenty-five`,
+    primaryText: `The other twenty-four are given advice built for someone else's body.
+
+Insulin is real. When it is the driver, cutting the load works.
+
+It is just not what is going on in most of the women we see.
+
+Worth knowing before you spend another year cutting.
+
+The free 14-day Challenge names which of the four is running yours.`,
+    description: `Probably not the one you were told.` },
+]
 
 const ROUND1_ADS: Round1Ad[] = [
   { slug: 'ad-5-four-patterns', short: 'Four patterns', layer: 'round1', audience: 'Either sex',
@@ -2838,15 +2952,17 @@ export default function StrategyPage() {
               Ads Manager. Deliberately NOT on the Strategy Docs tab: that tab is one
               durable positioning doc per brand, this is an operational pack per round. */}
           <Card className="border-blue-500/30 bg-blue-500/5">
-            <SectionLabel>Round 1 Launch Pack · {LAUNCH_PACK_VERSION} · the copy to upload</SectionLabel>
-            <Body>Every field for all seven ads, ready to paste into Ads Manager: headline, primary text, link description, creative filename. Ads 6, 3, 2 and the no-banner test are Round 1. Ads 4, 8 and 10 are the second layer, rewritten 5 Aug. Each ad now carries its creative inline, so copy cannot be paired with the wrong image. Opens with the <strong>hyper-dopamine structure</strong> (pattern interrupt + burning intrigue + specific benefit), the pre-flight checklist, and a measured audit of all seven against it.</Body>
+            <SectionLabel>Round 2 Pack · {ROUND2_PACK_VERSION} · the copy to upload</SectionLabel>
+            <Body>Every field for all seven ads, ready to paste into Ads Manager: headline, primary text, link description, creative filename. <strong>Stream A</strong> (neurowellness) goes up first at $25/day; <strong>Stream B</strong> (readiness) and the metabolic disqualifier are created but paused until the week-2 gate. Carries the <strong>hyper-dopamine structure</strong> unchanged, the 13-point pre-flight checklist, the seven-part visual system, and the numbers rule for which sample sizes can be quoted exactly.</Body>
             <div className="flex gap-2 mt-3">
-              <a href={`/docs/ads/br-funnelb-round1-launch-pack-${LAUNCH_PACK_VERSION}.pdf`} target="_blank" rel="noopener noreferrer"
+              <a href={`/docs/ads/br-round2-two-streams-${ROUND2_PACK_VERSION}.pdf`} target="_blank" rel="noopener noreferrer"
                 className="text-[11px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-blue-600 text-white hover:bg-blue-700">View .pdf</a>
-              <a href={`/docs/ads/br-funnelb-round1-launch-pack-${LAUNCH_PACK_VERSION}.md`} target="_blank" rel="noopener noreferrer"
+              <a href={`/docs/ads/br-round2-two-streams-${ROUND2_PACK_VERSION}.md`} target="_blank" rel="noopener noreferrer"
                 className="text-[11px] font-bold uppercase tracking-widest px-2 py-1 rounded border border-stone-300 text-stone-700 hover:bg-stone-100">View .md</a>
+              <a href={`/docs/ads/br-funnelb-round1-launch-pack-${LAUNCH_PACK_VERSION}.pdf`} target="_blank" rel="noopener noreferrer"
+                className="text-[11px] font-bold uppercase tracking-widest px-2 py-1 rounded border border-stone-300 text-stone-500 hover:bg-stone-100">Round 1 (archived)</a>
             </div>
-            <p className="text-xs text-stone-500 mt-2">Source of truth: <code className="text-[11px]">~/Dropbox/01_BODY_RECODE/07_ADS/BR_FUNNELB_ROUND1_LAUNCH.md</code>. Re-copy into <code className="text-[11px]">public/docs/ads/</code> after editing.</p>
+            <p className="text-xs text-stone-500 mt-2">Source of truth: <code className="text-[11px]">~/Dropbox/01_BODY_RECODE/07_ADS/BR_ROUND2_TWO_STREAMS.md</code>. After editing, re-run <code className="text-[11px]">scripts/gen-round2-ads.ts</code> and re-copy the pack into <code className="text-[11px]">public/docs/ads/</code> so the cards, the download and the doc cannot drift apart.</p>
           </Card>
 
           <Card className="border-pink-500/30 bg-pink-500/5">
@@ -3049,13 +3165,13 @@ export default function StrategyPage() {
           <Card className="border-blue-500/30 bg-blue-500/5">
             <SectionLabel>Copy standard · hyper-dopamine (current)</SectionLabel>
             <Body>Every cold paid creative is built to one formula: <strong>pattern interrupt</strong> (the image) + <strong>burning intrigue</strong> (the headline) + <strong>a specific benefit</strong> (so the algorithm finds the right buyer). Miss any of the three and the ad either gets scrolled past or gets clicked by the wrong people. An ad only has to stop the scroll and earn the click - it does not have to sell, explain the method, or establish credibility. That happens after the click.</Body>
-            <p className="text-xs text-stone-700 mt-2 leading-relaxed">The full 13-point pre-flight checklist, plus a measured audit of all seven current ads (character counts and readability grade, computed not estimated), is in the <strong>Round 1 Launch Pack</strong> at the top of this tab. Two things it flags: Ad 3 reads at grade 7.3 against a grade-5 rule, kept deliberately because the words causing it are the ones that audience uses; and the link descriptions were rewritten on 5 Aug because five of six stated the offer instead of opening a curiosity gap.</p>
+            <p className="text-xs text-stone-700 mt-2 leading-relaxed">The full 13-point pre-flight checklist, plus a measured audit of all seven current ads (character counts and readability grade, computed not estimated), is in the <strong>Round 2 Pack</strong> at the top of this tab. All seven Round 2 ads were measured rather than assumed, and all pass: 305-538 characters against a 2,200 limit, reading grade 3.4-4.7 against a grade-5 rule. M1 came out at 5.6 on the first pass and was rewritten to 4.0 before it went in the pack.</p>
             <p className="text-xs text-stone-700 mt-2 leading-relaxed">Paid Meta only. These do NOT cascade to organic, which keeps state language and scorecard CTAs - see Creative Principle #1 in the Marketing Strategy doc for the deliberate divergence. The retired Amanda-audited doctrine is preserved in the Archive below, with each of its six rules marked as still-applies or superseded.</p>
           </Card>
 
           <Card>
             <SectionLabel>Creative Format</SectionLabel>
-            <Body><strong>Live:</strong> 7 static 4:5 creatives at 1080×1350 - four in Round 1, three held as Layer 2. Photo-led with a headline overlay and the locked offer banner, except the one no-banner test. No reels.</Body>
+            <Body><strong>Live:</strong> 7 static 4:5 creatives at 1080×1350 - three in Stream A, three in Stream B, one metabolic. Photo-led with a floating product screen, headline overlay and the locked offer banner, in two arrangements (NEWS and SPLIT). No reels.</Body>
             <p className="text-xs text-stone-700 mt-2 leading-relaxed"><strong>Future (Phase 2):</strong> when reel production capacity is in place (Amanda + HeyGen, see Filming Guide below), add 15-30 sec talking-head reels alongside the static variants. Reels run in parallel, not as replacements - each ad set splits creative budget across formats so Meta can optimise. The doctrine + audiences + Campaign Configuration stay the same; only the asset type expands.</p>
             <BulletList items={[
               'Phase 1 (NOW): 7 static 4:5 images, no reels',
@@ -3066,13 +3182,61 @@ export default function StrategyPage() {
             ]} />
           </Card>
 
-          {/* CURRENT creative, swapped in 2026-08-05. Copy is generated from the
-              Round 1 launch pack so the two cannot drift. The previous 9-variant
-              archetype library is archived below, not deleted: it is the only
-              record of what actually ran in July, and July's numbers are the
-              baseline every future round gets judged against. */}
+          {/* CURRENT creative, swapped to Round 2 on 2026-08-14 for the 1 Sep
+              restart. Copy is generated from the Round 2 pack by
+              scripts/gen-round2-ads.ts so the two cannot drift. Round 1 is
+              archived below rather than deleted - it never spent a full budget,
+              so it is a record of what was built, not of what performed. */}
           <div className="space-y-4">
-            <SectionLabel>Current creative · Round 1 (broad)</SectionLabel>
+            <SectionLabel>Current creative · Round 2 (two streams)</SectionLabel>
+            <p className="text-xs text-stone-700 leading-relaxed">For the <strong>1 September restart</strong>. Round 1 was built four-patterns-equal, before we had looked properly at who is actually in the database. Two problems, neither about the craft: <strong>insulin drift was one of the four live ads</strong> while being one in twenty-five of the profiles we have run, and <strong>nothing in the pack was about sleep or stress load</strong> — the two worst-scoring sections we measure. The hyper-dopamine formula is unchanged and still correct. Only the aim moved.</p>
+
+            <div className="bg-blue-500/5 border border-blue-500/25 rounded-lg p-3">
+              <p className="text-[10px] font-bold text-blue-700 uppercase tracking-widest mb-1">Same visual system as Round 1 · not optional</p>
+              <p className="text-xs text-stone-700 leading-relaxed">Seven parts in every ad: greyscale photo of a real person in a real gym → <strong>a product screen floating over it</strong> → blue/white tag pair → 4px blue rule → headline with exactly one blue emphasis phrase → blue ticker → offer bar. <strong>The floating product screen is the element that does the work</strong> — it is proof, it is unfamiliar, and it is what the eye stops on before deciding this is an ad. Both Round 1 arrangements are kept: <em>NEWS</em> (full-bleed photo, artifact upper right) and <em>SPLIT</em> (offer banner on top, white product card left). Variety comes from <strong>a different artifact in each ad</strong>, never a different look. Five of seven show a woman, matching a 93% female audience.</p>
+            </div>
+
+            <div className="bg-stone-100 border border-stone-300 rounded-lg p-3">
+              <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest mb-1">Destination · unchanged</p>
+              <p className="text-xs text-stone-700 leading-relaxed">All seven land on <strong>/challenge</strong>. Ad click → Challenge landing page → sign up → welcome email with portal access → <strong>the scorecard is the first thing inside the portal</strong>. The scorecard is still the first gate; it sits after the signup rather than in front of it, and that order is deliberate — name, email and phone are captured before any gate, so someone who stalls is still a lead we can chase. Cold paid does <em>not</em> route via the public scorecard, which only asks for contact details after all five sections are answered.</p>
+            </div>
+
+            <SectionLabel>Stream A · neurowellness (Phase 1, live first)</SectionLabel>
+            <p className="text-xs text-stone-700 leading-relaxed">The biggest lane, carrying the strongest proof we own. Across <strong>86 completed scorecards</strong>, Sleep (1.80) and Stress Load (1.86) are the two worst-scoring sections and Training Response (2.06) is the best. The argument in one line: <strong>capacity is fine, regulation is gone</strong>. These three run inside one broad ad set at $25/day so the creative tests in parallel.</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {ROUND2_ADS.filter(a => a.layer === 'streamA').map(ad => <Round1AdCard key={ad.slug} ad={ad} />)}
+            </div>
+
+            <SectionLabel>Stream B · readiness (built, PAUSED until the week-2 gate)</SectionLabel>
+            <p className="text-xs text-stone-700 leading-relaxed">Of <strong>88 people assessed, only 18% came out Ready</strong> and half came out Transitioning. Everyone measures what you did; almost nobody measures what you could survive. <strong>Create these but leave them paused.</strong> Unpause at Phase 2 ($75/day, weeks 3-4) only if Stream A hits its CPL target — Meta cannot optimise at $7-10/day per ad set, so running six ads on $25 buys noise.</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {ROUND2_ADS.filter(a => a.layer === 'streamB').map(ad => <Round1AdCard key={ad.slug} ad={ad} />)}
+            </div>
+
+            <SectionLabel>Metabolic · one ad, and it disqualifies (PAUSED)</SectionLabel>
+            <p className="text-xs text-stone-700 leading-relaxed">Per the <strong>6 neurowellness / 3 readiness / 1 metabolic</strong> airtime rule this gets one slot in ten, and it works as a <strong>disqualifier rather than a claim</strong>: insulin is one in twenty-five of the women we assess, so the other twenty-four are being given advice built for someone else. This is the correction to Round 1, where the same topic held a quarter of the spend.</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {ROUND2_ADS.filter(a => a.layer === 'metabolic').map(ad => <Round1AdCard key={ad.slug} ad={ad} />)}
+            </div>
+
+            <div className="bg-amber-500/5 border border-amber-500/25 rounded-lg p-3">
+              <p className="text-[10px] font-bold text-amber-800 uppercase tracking-widest mb-1">Numbers rule · check before every upload</p>
+              <p className="text-xs text-stone-700 leading-relaxed"><strong>n=86 and n=88 are quotable exactly.</strong> They are the strongest thing we own and the whole position is &quot;they cite, we measure&quot;. <strong>n=27 numbers are ratios only</strong> — roughly half, about a third, one in twenty-five. The pattern split is 13/10/3/1 out of 27 people and a decimal will move. Re-run <code className="text-blue-500 bg-stone-200 px-1 rounded">scripts/state-of-the-data.ts</code> before upload and correct anything that has drifted.</p>
+            </div>
+          </div>
+
+          {/* ROUND 1 ARCHIVE. Collapsed by default via native <details>, same
+              pattern as the archetype library below it. */}
+          <details className="border border-stone-300 rounded-xl bg-stone-50 overflow-hidden">
+            <summary className="cursor-pointer select-none px-4 py-3 hover:bg-stone-100">
+              <span className="text-[11px] font-bold text-stone-600 uppercase tracking-widest">Archive · Round 1, the four-patterns-equal pack (retired 14 Aug 2026)</span>
+            </summary>
+            <div className="px-4 pb-4 space-y-4 border-t border-stone-200 pt-4">
+              <div className="bg-stone-200/60 border border-stone-300 rounded-lg p-3">
+                <p className="text-xs text-stone-700 leading-relaxed"><strong>Retired, not deleted — and note what it is NOT.</strong> Round 1 never spent a full budget: ads paused around 7 Aug for the hyper-dopamine revision, so this is a record of what was <em>built</em>, not of what <em>performed</em>. It sets no baseline. July&apos;s $11.15 per result came from the archetype library below, not from these.</p>
+                <p className="text-xs text-stone-700 leading-relaxed mt-2"><strong>Why it was replaced:</strong> built four-patterns-equal, so a quarter of the spend pointed at insulin drift, which is one in twenty-five of the profiles we have run — and nothing in the pack touched sleep or stress load, the two worst-scoring sections we measure. The copy standard, the broad targeting, the stage gate and the visual system all carried forward to Round 2 unchanged.</p>
+              </div>
+              <div className="space-y-4">
             <p className="text-xs text-stone-700 leading-relaxed">The four that go up first, inside <strong>one broad ad set</strong>: Ad 5, Ad 6, Ad 2 and Ad 3. Four concepts, four different images, no repeats. Built to the hyper-dopamine standard: pattern interrupt, burning intrigue, specific benefit. Every field is verbatim from the <strong>Round 1 Launch Pack {LAUNCH_PACK_VERSION}</strong> linked at the top of this tab. Click any field to copy, click an image to open it full size for upload.</p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
@@ -3105,7 +3269,9 @@ export default function StrategyPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {ROUND1_ADS.filter(a => a.layer === 'layer2').map(ad => <Round1AdCard key={ad.slug} ad={ad} />)}
             </div>
-          </div>
+              </div>
+            </div>
+          </details>
 
           {/* ARCHIVE. Collapsed by default via native <details> so it stays out
               of the way without needing state. Kept because these ran the July
