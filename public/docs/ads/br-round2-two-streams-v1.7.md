@@ -1,6 +1,6 @@
 # Round 2 · Two cold streams
 
-**v1.6 · 14 August 2026.** For the ad restart on **Monday 1 September**. Round 1 is archived.
+**v1.7 · 14 August 2026.** For the ad restart on **Monday 1 September**. Round 1 is archived.
 
 ---
 
@@ -274,6 +274,22 @@ right). A1 and B1 are SPLIT; the rest are NEWS.
 
 **The offer bar is unchanged** because the destination is: *Free · 14-Day Body Decode Challenge*, unchanged. "Decode" is the locked product term for paid
 cold ads; "readiness" is the category the tag pair carries.
+
+**The offer zone carries the benefit, not just the product name.** It used to read *Free ·
+14-Day Body Decode Challenge* over *Find your pattern in 14 days*. To a stranger that is two
+phrases they have never heard and a price. Pattern interrupt and burning intrigue were both
+strong; **the third leg of the formula — a specific benefit — was carried by nothing**, and that
+is also the leg that lets the algorithm find the right people.
+
+It now reads: *Day 1 scores where you actually are. Training plan, nutrition guide, daily
+coaching.* Set in sentence case, not tracked-out caps, because it is the one part of the image
+meant to be **read** rather than scanned.
+
+**This costs no dopamine, because intrigue and clarity live in different zones.** The strap
+carries the curiosity gap, the offer bar carries what you get. Making the bar plainer never
+touches the hook. The ticker stays pure brand on purpose: a news ticker repeating a name is what
+makes the frame read as a broadcast rather than an ad, and filling it with offer language would
+undo the interrupt the whole system exists to create.
 
 **Photos:** five of seven show a woman, matching a 93% female audience. Kade carries the two
 authority ads (B3 and M1) where the claim is "in the women we assess".
