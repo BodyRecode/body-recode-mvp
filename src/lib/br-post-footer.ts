@@ -32,12 +32,24 @@ export const BR_IG_FOOTER = `${BR_IG_LINK_LINE}\n\n${BR_IG_FOUNDER_LINE}`
 const HAS_LINK = /link'?s?\s+(is\s+)?in\s+(the\s+)?bio/i
 const HAS_FOUNDER = /@kade_dunstone_/
 
+// A trailing block of hashtags, if the caption ends with one.
+const TRAILING_TAGS = /(?:\n\s*)((?:#[\w]+[ \t]*)+)$/
+
 export function appendBrFooter(caption: string): string {
   const trimmed = caption.trimEnd()
   const missing: string[] = []
   if (!HAS_LINK.test(trimmed)) missing.push(BR_IG_LINK_LINE)
   if (!HAS_FOUNDER.test(trimmed)) missing.push(BR_IG_FOUNDER_LINE)
   if (!missing.length) return trimmed
+
+  // Hashtags belong at the very bottom, below the sign-off. Appending blindly
+  // would bury "Link in bio" and the founder tag underneath them, which is
+  // exactly where nobody reads.
+  const tags = trimmed.match(TRAILING_TAGS)
+  if (tags) {
+    const body = trimmed.slice(0, tags.index).trimEnd()
+    return `${body}\n\n${missing.join('\n\n')}\n\n${tags[1].trim()}`
+  }
   return `${trimmed}\n\n${missing.join('\n\n')}`
 }
 
