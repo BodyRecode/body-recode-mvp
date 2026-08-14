@@ -75,6 +75,7 @@ const SECTIONS = [
   { id: 'ch-portal',        title: 'Participant Portal',     colour: 'teal' as const, category: 'challenge' as Category },
   { id: 'ch-day-zero',      title: 'Day 0 Body Decode Intake', colour: 'teal' as const, category: 'challenge' as Category },
   { id: 'ch-forms',         title: 'PAR-Q and Health Dec',   colour: 'teal' as const, category: 'challenge' as Category },
+  { id: 'ch-leaks',         title: 'Where the Challenge leaks', colour: 'teal' as const, category: 'challenge' as Category },
   { id: 'ch-resources',     title: 'Training and Nutrition', colour: 'teal' as const, category: 'challenge' as Category },
   { id: 'ch-quiz',          title: 'Body Decode Check-In',   colour: 'teal' as const, category: 'challenge' as Category },
   { id: 'ch-automation',    title: 'Automation Sequence',    colour: 'teal' as const, category: 'challenge' as Category },
@@ -3322,10 +3323,28 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">How completions are saved</p>
             <p>Both forms call <strong>POST /api/challenge/forms</strong> with the token and form type. The API saves a timestamp to <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">parq_completed_at</code> or <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">health_dec_completed_at</code> on the enrollment. PAR-Q answers are also saved as JSON to <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">parq_responses</code>.</p>
 
-            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">UX flow</p>
-            <p>PAR-Q loads first. On completion it auto-advances to the Health Declaration tab. On Health Dec completion the forms section is replaced by a green cleared confirmation banner. Training and Nutrition resource cards unlock immediately without a page reload.</p>
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">UX flow — merged into ONE form (2026-08-14)</p>
+            <p><strong>They used to be two tabbed forms. They are now one screen with one button.</strong> The sequential funnel said the split was costing people for nothing: of everyone who reached this gate, <strong>75% finished the PAR-Q and then 100% of those finished the declaration</strong>. Nobody was ever stopped by the declaration itself — they were stopped by there being a second thing at all, after they thought they were done.</p>
+            <p>Nothing is dropped or bundled: all 7 PAR-Q questions still answer yes/no, a YES still blocks training, and all 5 declarations are still ticked individually. One submit posts both form types in sequence, so each keeps its own timestamp and audit trail. The button counts down what is left (&quot;4 to go&quot;) and finishes as <strong>&quot;Unlock my training and nutrition&quot;</strong>, so the payoff is named on the button rather than left implied.</p>
+            <p>Anyone part-way through the old two-step flow still sees only the piece they owe — <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">ParqForm</code> and <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">HealthDecForm</code> are both retained for that case. On completion the section is replaced by a cleared confirmation banner and the Training and Nutrition cards unlock without a page reload.</p>
 
             <Note>Required Supabase columns: parq_completed_at (timestamptz), parq_responses (jsonb), health_dec_completed_at (timestamptz) on challenge_enrollments.</Note>
+          </Section>
+
+          <Section id="ch-leaks" title="Where the Challenge actually leaks" colour="teal">
+            <p>Measured 14 Aug 2026 against all 29 enrolments. <strong>Read it sequentially or it misleads</strong> — each rate is of the people who actually reached that gate, not of all enrolments. Flat percentages across 29 make the PAR-Q look as leaky as the scorecard, and it is not.</p>
+            <StatusList items={[
+              { label: 'enrolled — 29', desc: 'name, email and phone are captured HERE, before any gate. That order is deliberate: someone who stalls later is still a lead we can chase.' },
+              { label: 'in-portal scorecard — 20 (69%), lost 9', desc: 'The biggest form leak. Gates the entire portal.' },
+              { label: 'PAR-Q — 15 (75%), lost 5', desc: 'Second. Now merged with the declaration.' },
+              { label: 'health declaration — 15 (100%), lost 0', desc: 'Loses nobody. Everyone who does the PAR-Q does this too.' },
+              { label: 'Day 14 quiz — 1 (7%), lost 14', desc: 'Bigger than every form gate combined, and not a form problem at all.' },
+            ]} />
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Three fixes shipped 14 Aug</p>
+            <p><strong>1. Straight into the portal on signup.</strong> The enrol API always returned the portal token and the page threw it away, showing &quot;check your email for your portal link&quot;. That put an inbox hop, a spam folder and a delay between the keenest moment a member will ever have and the first thing we ask of them. Signup now redirects into the portal and offers a direct button; the welcome email still goes out as the way back in later.</p>
+            <p><strong>2. PAR-Q and health declaration merged</strong> into one form — see the section above.</p>
+            <p><strong>3. Portal visits are now logged.</strong> They were logged nowhere at all. There is a <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">current_day</code> column but the portal recalculates the day from <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">enrolled_at</code> and never writes to it, so it said nothing about whether anyone turned up. That made the largest leak in the funnel invisible: we could not tell whether people went quiet on day 2 or day 9, and those need completely different fixes. <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">logPortalVisit()</code> writes one <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">challenge_portal_opened</code> lead event per enrollment per day. Read it with <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">npx tsx --env-file=.env.local scripts/challenge-attendance.ts</code>, which charts attendance across the 14 days and names the biggest single day-to-day drop.</p>
+            <Note>Caveat on all of the above: n=29, so treat it as directional. 28 of the 29 also enrolled before the Day 7 Check-In prompts shipped on 3 Aug and before the copy overstating the form&apos;s length was fixed, so the Day 14 figure may already be better than it reads.</Note>
           </Section>
 
           <Section id="ch-resources" title="Training and Nutrition Pages" colour="teal">

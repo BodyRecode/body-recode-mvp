@@ -35,6 +35,11 @@ export type LeadEventType =
   // before challengeFormsReminderFunction existed and so can never be reached
   // by it. Doubles as the do-not-resend guard.
   | 'forms_catchup_sent'
+  // Added 2026-08-14. Portal visits were logged nowhere at all, which made the
+  // biggest leak in the funnel invisible: 15 people cleared every form and 1
+  // reached the Day 14 quiz, with no way to see WHERE across the 14 days they
+  // went quiet. Deduped to one row per enrollment per day.
+  | 'challenge_portal_opened'
 
 export async function logLeadEvent(params: {
   leadId: string

@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
 import ChallengePortalClient from './challenge-portal-client'
 import { PORTAL_ACCESS_STATUSES } from '@/lib/challenge-access'
+import { logPortalVisit } from '@/lib/challenge-portal-visit'
 
 export default async function ChallengePortalPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
@@ -9,7 +10,7 @@ export default async function ChallengePortalPage({ params }: { params: Promise<
 
   const { data: enrollment } = await admin
     .from('challenge_enrollments')
-    .select('id, current_day, enrolled_at, status, parq_completed_at, health_dec_completed_at, quiz_completed_at, quiz_result, body_decode_intake_completed_at, ascension_intent, leads(name, email, scorecard_profile, scorecard_body_state, scorecard_section_scores, approach_response, biological_sex, age_band, fat_storage, cycle_status, storage_direction)')
+    .select('id, lead_id, current_day, enrolled_at, status, parq_completed_at, health_dec_completed_at, quiz_completed_at, quiz_result, body_decode_intake_completed_at, ascension_intent, leads(name, email, scorecard_profile, scorecard_body_state, scorecard_section_scores, approach_response, biological_sex, age_band, fat_storage, cycle_status, storage_direction)')
     .eq('token', token)
     .in('status', PORTAL_ACCESS_STATUSES)
     .single()
@@ -58,6 +59,8 @@ export default async function ChallengePortalPage({ params }: { params: Promise<
   const now = new Date()
   const daysSince = Math.floor((now.getTime() - enrolledAt.getTime()) / (1000 * 60 * 60 * 24))
   const currentDay = Math.min(Math.max(daysSince + 1, 1), 14)
+
+  await logPortalVisit(enrollment.lead_id, enrollment.id, currentDay)
 
   return (
     <ChallengePortalClient

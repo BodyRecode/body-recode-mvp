@@ -49,6 +49,7 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
   const [smsOptIn, setSmsOptIn] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(false)
+  const [portalToken, setPortalToken] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [utms, setUtms] = useState<Record<string, string>>({})
 
@@ -101,7 +102,16 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
         setSubmitting(false)
         return
       }
+      // Straight in. The enrol API hands back the portal token, and we used to
+      // throw it away and tell people to go and find an email - an inbox hop, a
+      // spam folder and a delay sitting between the keenest moment they will
+      // ever have and the first thing we ask of them. The welcome email still
+      // goes out as the way back in later.
+      setPortalToken(data.token ?? null)
       setDone(true)
+      if (data.token) {
+        setTimeout(() => { window.location.href = `/challenge/${data.token}` }, 1200)
+      }
     } catch {
       setError('Something went wrong. Please try again.')
       setSubmitting(false)
@@ -129,12 +139,32 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
         <p style={{ fontSize: '20px', fontWeight: 800, color: '#1A1A1A', marginBottom: '8px', letterSpacing: '-0.02em' }}>
           You are in.
         </p>
-        <p style={{ fontSize: '15px', color: '#1056D6', lineHeight: 1.6, margin: '0 0 12px' }}>
-          Check your email for your portal link. The first thing inside is a quick scorecard that reads your starting point - then your 14 days begin.
-        </p>
-        <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.6, margin: 0 }}>
-          Don&apos;t see it? Check your junk or spam folder and move the email to your inbox so your daily coaching lands every morning.
-        </p>
+        {portalToken ? (
+          <>
+            <p style={{ fontSize: '15px', color: '#1056D6', lineHeight: 1.6, margin: '0 0 16px' }}>
+              Opening your portal now. First up is a short scorecard that reads your starting point, then your 14 days begin.
+            </p>
+            <a href={`/challenge/${portalToken}`} style={{
+              display: 'block', padding: '14px', borderRadius: '10px', background: '#1B6DFC',
+              color: '#FFFFFF', fontSize: '15px', fontWeight: 800, textDecoration: 'none',
+              marginBottom: '12px',
+            }}>
+              Take me in now →
+            </a>
+            <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.6, margin: 0 }}>
+              We have emailed you the same link, so you can get back in any time.
+            </p>
+          </>
+        ) : (
+          <>
+            <p style={{ fontSize: '15px', color: '#1056D6', lineHeight: 1.6, margin: '0 0 12px' }}>
+              Check your email for your portal link. The first thing inside is a quick scorecard that reads your starting point - then your 14 days begin.
+            </p>
+            <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.6, margin: 0 }}>
+              Don&apos;t see it? Check your junk or spam folder and move the email to your inbox so your daily coaching lands every morning.
+            </p>
+          </>
+        )}
       </div>
     )
   }

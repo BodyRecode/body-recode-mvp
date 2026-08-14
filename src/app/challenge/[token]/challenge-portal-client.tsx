@@ -257,6 +257,181 @@ const PARQ_QUESTIONS = [
   },
 ]
 
+const HEALTH_DECLARATIONS = [
+  { id: 'age', text: 'I am 18 years of age or older.' },
+  { id: 'notPregnant', text: 'I am not currently pregnant or in the first 6 weeks post-partum.' },
+  { id: 'notMedical', text: 'I understand that the Body Recode challenge is not a medical program and does not constitute medical advice, diagnosis, or treatment.' },
+  { id: 'responsibility', text: 'I accept personal responsibility for my participation in this challenge and any physical activity I undertake as part of it.' },
+  { id: 'doctorConsult', text: 'I agree to consult a qualified medical professional if I experience any pain, discomfort, or symptoms during the challenge.' },
+]
+
+// PAR-Q and the health declaration on ONE screen, one submit.
+//
+// They were two tabbed forms, and the numbers say that split cost us people for
+// nothing: of everyone who reached this point, 75% finished the PAR-Q and then
+// 100% of those finished the declaration. Nobody was ever stopped by the
+// declaration itself - they were stopped by there being a second thing at all,
+// after they thought they were done.
+//
+// Both are legally meaningful, so nothing is dropped or bundled: all seven PAR-Q
+// questions still answer yes/no, a YES still blocks training, and all five
+// declarations are still ticked individually. Only the seam between them goes.
+function SafetyForm({ token, onComplete }: { token: string; onComplete: () => void }) {
+  const [answers, setAnswers] = useState<Record<string, 'yes' | 'no'>>({})
+  const [checks, setChecks] = useState<Record<string, boolean>>({})
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
+
+  const allAnswered = PARQ_QUESTIONS.every(q => answers[q.id])
+  const anyYes = Object.values(answers).some(v => v === 'yes')
+  const allChecked = HEALTH_DECLARATIONS.every(d => checks[d.id])
+  const ready = allAnswered && !anyYes && allChecked
+  const remaining = PARQ_QUESTIONS.filter(q => !answers[q.id]).length
+    + HEALTH_DECLARATIONS.filter(d => !checks[d.id]).length
+
+  async function handleSubmit() {
+    if (!ready) return
+    setSubmitting(true)
+    setError('')
+    try {
+      // Two calls, unchanged API contract - each form keeps its own timestamp
+      // and its own audit trail on the enrollment row.
+      for (const body of [
+        { token, formType: 'parq', responses: answers },
+        { token, formType: 'health_dec' },
+      ]) {
+        const res = await fetch('/api/challenge/forms', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        })
+        if (!res.ok) throw new Error('Failed to submit')
+      }
+      onComplete()
+    } catch {
+      setError('Something went wrong. Please try again.')
+      setSubmitting(false)
+    }
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', borderRadius: '12px', padding: '20px' }}>
+        <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.7, margin: 0 }}>
+          This is the standard physical activity readiness questionnaire plus the declarations we
+          are required to hold before prescribing any training. Please answer honestly. If you
+          answer YES to anything, you must speak to a doctor before starting the training part of
+          the challenge. Everything else stays open to you either way.
+        </p>
+      </div>
+
+      {PARQ_QUESTIONS.map((q, i) => (
+        <div key={q.id}>
+          <p style={{ fontSize: '14px', fontWeight: 600, color: '#3A3A3A', lineHeight: 1.6, marginBottom: '12px' }}>
+            <span style={{ color: '#1B6DFC', marginRight: '8px', fontWeight: 800 }}>{i + 1}.</span>
+            {q.text}
+          </p>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            {(['no', 'yes'] as const).map(val => (
+              <button
+                key={val}
+                onClick={() => setAnswers(a => ({ ...a, [q.id]: val }))}
+                style={{
+                  flex: 1, padding: '10px', borderRadius: '8px', border: 'none',
+                  background: answers[q.id] === val
+                    ? val === 'no' ? 'rgba(27, 109, 252,0.12)' : 'rgba(239,68,68,0.12)'
+                    : '#E5E5E5',
+                  color: answers[q.id] === val
+                    ? val === 'no' ? '#1B6DFC' : '#DC2626'
+                    : '#4A4A4A',
+                  fontSize: '14px', fontWeight: 700, cursor: 'pointer',
+                  outline: answers[q.id] === val
+                    ? val === 'no' ? '1px solid rgba(27, 109, 252,0.3)' : '1px solid rgba(239,68,68,0.3)'
+                    : '1px solid transparent',
+                  textTransform: 'uppercase', letterSpacing: '0.05em',
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                {val === 'yes' ? 'Yes' : 'No'}
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      {anyYes && allAnswered && (
+        <div style={{
+          background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)',
+          borderRadius: '12px', padding: '20px',
+        }}>
+          <p style={{ fontSize: '14px', color: '#DC2626', fontWeight: 700, marginBottom: '8px' }}>
+            Medical clearance required
+          </p>
+          <p style={{ fontSize: '13px', color: '#999999', lineHeight: 1.7, margin: 0 }}>
+            You have answered YES to one or more questions. Please consult your doctor before beginning the physical training component of this challenge. You can still access all other challenge resources. If your doctor clears you, please contact us at {coach().email}.
+          </p>
+        </div>
+      )}
+
+      <div style={{ height: '1px', background: '#ECEEF2', margin: '4px 0' }} />
+      <p style={{ fontSize: '13px', fontWeight: 700, color: '#6B6B6B', letterSpacing: '0.08em', textTransform: 'uppercase', margin: 0 }}>
+        And tick to confirm
+      </p>
+
+      {HEALTH_DECLARATIONS.map(d => (
+        <div
+          key={d.id}
+          onClick={() => setChecks(c => ({ ...c, [d.id]: !c[d.id] }))}
+          style={{
+            display: 'flex', gap: '14px', alignItems: 'flex-start',
+            background: checks[d.id] ? 'rgba(27, 109, 252,0.06)' : '#FFFFFF',
+            border: checks[d.id] ? '1px solid rgba(27, 109, 252,0.25)' : '1px solid #E5E5E5',
+            borderRadius: '10px', padding: '16px', cursor: 'pointer',
+            transition: 'all 0.15s ease',
+          }}
+        >
+          <div style={{
+            width: '20px', height: '20px', borderRadius: '5px', flexShrink: 0, marginTop: '1px',
+            background: checks[d.id] ? '#1B6DFC' : '#E5E5E5',
+            border: checks[d.id] ? 'none' : '1px solid #D4D4D4',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            transition: 'all 0.15s ease',
+          }}>
+            {checks[d.id] && (
+              <svg width="12" height="9" viewBox="0 0 12 9" fill="none">
+                <path d="M1 4L4.5 7.5L11 1" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            )}
+          </div>
+          <p style={{ fontSize: '14px', color: checks[d.id] ? '#3A3A3A' : '#6B6B6B', lineHeight: 1.6, margin: 0, transition: 'color 0.15s ease' }}>
+            {d.text}
+          </p>
+        </div>
+      ))}
+
+      {error && <p style={{ fontSize: '13px', color: '#DC2626', margin: 0 }}>{error}</p>}
+
+      <button
+        onClick={handleSubmit}
+        disabled={!ready || submitting}
+        style={{
+          width: '100%', padding: '14px', borderRadius: '10px', border: 'none',
+          background: ready ? '#1B6DFC' : '#E5E5E5',
+          color: ready ? '#FFFFFF' : '#4A4A4A',
+          fontSize: '15px', fontWeight: 700,
+          cursor: ready && !submitting ? 'pointer' : 'not-allowed',
+          transition: 'all 0.2s ease',
+        }}
+      >
+        {submitting ? 'Saving...'
+          : anyYes ? 'Speak to your doctor first'
+          : remaining > 0 ? `${remaining} to go`
+          : 'Unlock my training and nutrition'}
+      </button>
+    </div>
+  )
+}
+
 function ParqForm({ token, onComplete }: { token: string; onComplete: () => void }) {
   const [answers, setAnswers] = useState<Record<string, 'yes' | 'no'>>({})
   const [submitting, setSubmitting] = useState(false)
@@ -486,9 +661,6 @@ export default function ChallengePortalClient({
   const [healthDecDone, setHealthDecDone] = useState(healthDecCompleted)
   const formsRef = useRef<HTMLDivElement | null>(null)
   const intakeRef = useRef<HTMLDivElement | null>(null)
-  const [activeForm, setActiveForm] = useState<'parq' | 'health_dec' | null>(
-    !parqCompleted ? 'parq' : !healthDecCompleted ? 'health_dec' : null
-  )
 
   const formsComplete = parqDone && healthDecDone
   const todayNote = DAILY_NOTES[currentDay]
@@ -614,52 +786,16 @@ export default function ChallengePortalClient({
               </div>
             </div>
 
-            {/* Form tabs */}
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
-              {[
-                { key: 'parq' as const, label: 'PAR-Q', done: parqDone },
-                { key: 'health_dec' as const, label: 'Health Declaration', done: healthDecDone },
-              ].map(tab => (
-                <button
-                  key={tab.key}
-                  onClick={() => !tab.done && setActiveForm(tab.key)}
-                  style={{
-                    flex: 1, padding: '10px 14px', borderRadius: '8px',
-                    background: tab.done
-                      ? 'rgba(27, 109, 252,0.1)'
-                      : activeForm === tab.key ? '#1B6DFC' : '#FFFFFF',
-                    color: tab.done ? '#1B6DFC' : activeForm === tab.key ? '#FFFFFF' : '#4A4A4A',
-                    border: tab.done ? '1px solid rgba(27, 109, 252, 0.2)' : activeForm === tab.key ? '1px solid #1B6DFC' : '1px solid #E5E5E5',
-                    fontSize: '13px', fontWeight: 700,
-                    cursor: tab.done ? 'default' : 'pointer',
-                    transition: 'all 0.15s ease',
-                  }}
-                >
-                  {tab.done ? '✓ ' : ''}{tab.label}
-                </button>
-              ))}
-            </div>
-
-            {activeForm === 'parq' && !parqDone && (
-              <ParqForm
-                token={token}
-                onComplete={() => {
-                  setParqDone(true)
-                  setActiveForm('health_dec')
-                  requestAnimationFrame(() => {
-                    formsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                  })
-                }}
-              />
+            {/* One form, not two tabs. Anyone part-way through the old two-step
+                flow (PAR-Q saved, declaration not) still sees only what they owe. */}
+            {!parqDone && !healthDecDone && (
+              <SafetyForm token={token} onComplete={() => { setParqDone(true); setHealthDecDone(true) }} />
             )}
-            {(activeForm === 'health_dec' || (parqDone && !healthDecDone && activeForm !== 'parq')) && !healthDecDone && (
-              <HealthDecForm
-                token={token}
-                onComplete={() => {
-                  setHealthDecDone(true)
-                  setActiveForm(null)
-                }}
-              />
+            {!parqDone && healthDecDone && (
+              <ParqForm token={token} onComplete={() => setParqDone(true)} />
+            )}
+            {parqDone && !healthDecDone && (
+              <HealthDecForm token={token} onComplete={() => setHealthDecDone(true)} />
             )}
           </div>
         )}
