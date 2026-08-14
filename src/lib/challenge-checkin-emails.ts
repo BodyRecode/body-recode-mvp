@@ -537,9 +537,16 @@ ${churnFeedbackLine}
 // Check-In gates the pattern reveal, 17 of 18 finishers got the no-result
 // fallback at Day 14 instead of the Body Decode Report.
 //
-// Both link STRAIGHT to /check-in, not the Day 7 content page. Both quote
-// "five to ten minutes" to match the form itself; the old SMS claim of three
-// minutes undersold it and broke the promise on arrival.
+// Both link STRAIGHT to /check-in, not the Day 7 content page.
+//
+// Corrected 2026-08-14: these used to quote "five to ten minutes", on the
+// belief that the older three-minute claim undersold the form and broke the
+// promise on arrival. Both were wrong. The form is 8 markers plus 2 signal
+// questions - ten taps, nothing to type, under a minute. Twilio's export
+// showed the Day 7 nudge DELIVERED to 28 people twice with 3 completions, so
+// the ten-minute quote was deterring the very people it was chasing. State the
+// real cost, and name the Day 14 pattern read as the reward rather than a
+// "progress read" nobody has seen yet.
 
 export function buildDay7CheckInPromptEmail({
   firstName,
@@ -631,7 +638,7 @@ ${emailDivider()}
 ${emailBody(`Hi ${firstName},`)}
 ${emailBody('You gave your body fourteen consecutive days of structured rhythm. Training, food, sleep, timing. Most people who start do not get that far.')}
 ${emailBody('But the Body Decode Check-In never got done, and that is the part that turns fourteen days of work into an answer. Without it you finished with a well done instead of a read, which was never the point of the fortnight.')}
-${emailBody('It is still open. Eight markers rated against how they felt on Day 1, then two questions about how your body holds and responds. Five to ten minutes on your phone.')}
+${emailBody('It is still open. Eight markers rated against how they felt on Day 1, then two questions about how your body holds and responds. Ten taps on your phone, about a minute, nothing to type.')}
 ${emailFeaturedCard(emailNumberedList([
   'Which of the four patterns your body has been working through',
   'What that pattern actually means, and where it shows up day to day',
