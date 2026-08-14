@@ -1,0 +1,106 @@
+{
+  "stories": [
+    {
+      "date": "2026-08-15",
+      "slug": "back",
+      "file": "/stories/warmup/br-story-2026-08-15_back.png",
+      "sticker": "POLL: 'Guess the worst-scoring one' / Sleep vs Training"
+    },
+    {
+      "date": "2026-08-16",
+      "slug": "ready",
+      "file": "/stories/warmup/br-story-2026-08-16_ready.png",
+      "sticker": "LINK STICKER to /challenge"
+    },
+    {
+      "date": "2026-08-17",
+      "slug": "effort",
+      "file": "/stories/warmup/br-story-2026-08-17_effort.png",
+      "sticker": "QUESTION: 'How long have you been at it?'"
+    },
+    {
+      "date": "2026-08-18",
+      "slug": "stuck",
+      "file": "/stories/warmup/br-story-2026-08-18_stuck.png",
+      "sticker": "POLL: 'Been told to just stick to it?' Yes / Constantly"
+    },
+    {
+      "date": "2026-08-19",
+      "slug": "map",
+      "file": "/stories/warmup/br-story-2026-08-19_map.png",
+      "sticker": "No sticker. Point at the post."
+    },
+    {
+      "date": "2026-08-20",
+      "slug": "regulation",
+      "file": "/stories/warmup/br-story-2026-08-20_regulation.png",
+      "sticker": "POLL: 'Which is worse for you?' Sleep / Stress"
+    },
+    {
+      "date": "2026-08-21",
+      "slug": "words",
+      "file": "/stories/warmup/br-story-2026-08-21_words.png",
+      "sticker": "QUESTION: 'Sound familiar?'"
+    },
+    {
+      "date": "2026-08-22",
+      "slug": "half",
+      "file": "/stories/warmup/br-story-2026-08-22_half.png",
+      "sticker": "POLL: 'Had a plan half work?' Yes / Every time"
+    },
+    {
+      "date": "2026-08-23",
+      "slug": "read",
+      "file": "/stories/warmup/br-story-2026-08-23_read.png",
+      "sticker": "LINK STICKER to /challenge"
+    },
+    {
+      "date": "2026-08-24",
+      "slug": "sleep",
+      "file": "/stories/warmup/br-story-2026-08-24_sleep.png",
+      "sticker": "QUESTION: 'When did you last wake up rested?'"
+    },
+    {
+      "date": "2026-08-25",
+      "slug": "discipline",
+      "file": "/stories/warmup/br-story-2026-08-25_discipline.png",
+      "sticker": "POLL: 'Been told you need more discipline?' Yes / So many times"
+    },
+    {
+      "date": "2026-08-26",
+      "slug": "moved",
+      "file": "/stories/warmup/br-story-2026-08-26_moved.png",
+      "sticker": "POLL: 'Has yours moved?' Yes / Always been central"
+    },
+    {
+      "date": "2026-08-27",
+      "slug": "identical",
+      "file": "/stories/warmup/br-story-2026-08-27_identical.png",
+      "sticker": "QUESTION: 'Which do you think yours is?'"
+    },
+    {
+      "date": "2026-08-28",
+      "slug": "two",
+      "file": "/stories/warmup/br-story-2026-08-28_two.png",
+      "sticker": "POLL: 'Which sounds like you?' Less load / Stop cutting"
+    },
+    {
+      "date": "2026-08-29",
+      "slug": "years",
+      "file": "/stories/warmup/br-story-2026-08-29_years.png",
+      "sticker": "No sticker. Let it land."
+    },
+    {
+      "date": "2026-08-30",
+      "slug": "four",
+      "file": "/stories/warmup/br-story-2026-08-30_four.png",
+      "sticker": "LINK STICKER to /challenge"
+    },
+    {
+      "date": "2026-08-31",
+      "slug": "close",
+      "file": "/stories/warmup/br-story-2026-08-31_close.png",
+      "sticker": "QUESTION: 'What would you want read first?'"
+    }
+  ]
+}
