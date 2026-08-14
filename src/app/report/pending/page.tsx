@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { CheckCircle2, Mail, Clock, ShieldAlert, ArrowRight } from 'lucide-react'
+import { InboxNote } from '@/components/inbox-note'
+import { CheckCircle2, Mail, Clock, ArrowRight } from 'lucide-react'
 import PurchaseTracker from './purchase-tracker'
 import { coach, logoUrl, brand } from '@/config/tenant'
 
@@ -131,22 +132,7 @@ export default function ReportPendingPage() {
 
       {/* Spam folder note */}
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '20px 24px 0' }}>
-        <div style={{
-          background: 'rgba(245, 158, 11, 0.05)',
-          border: '1px solid rgba(245, 158, 11, 0.2)',
-          borderRadius: '12px', padding: '16px 18px',
-          display: 'flex', gap: '12px', alignItems: 'flex-start',
-        }}>
-          <ShieldAlert size={18} style={{ color: '#B7791F', flexShrink: 0, marginTop: '2px' }} />
-          <div>
-            <p style={{ fontSize: '13px', fontWeight: 800, color: '#1A1A1A', margin: '0 0 4px', letterSpacing: '-0.01em' }}>
-              If it does not arrive within 5 minutes
-            </p>
-            <p style={{ fontSize: '13px', color: '#4A4A4A', lineHeight: 1.65, margin: 0 }}>
-              Check your spam or promotions folder for an email from <strong style={{ color: '#1A1A1A' }}>{coach().email}</strong>. Some mail providers route first-time senders away from the inbox.
-            </p>
-          </div>
-        </div>
+        <InboxNote />
       </div>
 
       {/* What to do while you wait */}

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { InboxNote } from '@/components/inbox-note'
 import { brand } from "@/config/tenant";
 
 type Answer = 0 | 1 | 2 | 3
@@ -152,6 +153,7 @@ export default function CheckInQuiz() {
           <p className="text-stone-500 text-base leading-relaxed mb-8">
             Your submission is being reviewed. Your report will be sent to your email within one business day. There is nothing further required.
           </p>
+          <div className="mb-8"><InboxNote wait="one business day" /></div>
           <a
             href={brand().marketingDomain}
             className="inline-block px-6 py-3 bg-[#1B6DFC] text-white text-sm font-bold rounded-lg hover:bg-[#1056D6] transition-colors"

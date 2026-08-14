@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { InboxNote } from '@/components/inbox-note'
 import { Clock, Calendar, CheckCircle2, Loader2 } from 'lucide-react'
 import { logoUrl, brand, coach } from '@/config/tenant'
 
@@ -169,9 +170,10 @@ export default function BookPage() {
             <p className="text-stone-600 text-base mb-2">
               {coach().firstName} will get back to you within 24 hours to lock in a time.
             </p>
-            <p className="text-stone-500 text-sm mb-8">
-              Check your email for confirmation.
+            <p className="text-stone-500 text-sm mb-5">
+              Check your email for confirmation. It carries your pre-call form.
             </p>
+            <div className="mb-8"><InboxNote /></div>
             <a
               href={brand().performanceDomain}
               className="text-sm text-blue-500 hover:text-blue-300 transition-colors"

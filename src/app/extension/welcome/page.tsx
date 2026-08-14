@@ -1,4 +1,5 @@
 import { logoUrl, brand } from '@/config/tenant'
+import { InboxNote } from '@/components/inbox-note'
 
 export default function ExtensionWelcomePage() {
   return (
@@ -12,6 +13,7 @@ export default function ExtensionWelcomePage() {
         <p style={{ fontSize: 16, color: '#6B6B6B', lineHeight: 1.7, margin: '0 0 32px' }}>
           Your 90-Day Extension portal is loading. Check your email for your personal portal link. Weeks 1-6 run Block A (Consolidate), Weeks 7-12 run Block B (Advance).
         </p>
+        <div style={{ marginBottom: 28 }}><InboxNote /></div>
         <p style={{ fontSize: 13, color: '#4A4A4A', lineHeight: 1.6 }}>
           Questions? <a href={`mailto:${brand().supportEmail}`} style={{ color: '#1B6DFC', textDecoration: 'none' }}>{brand().supportEmail}</a>
         </p>

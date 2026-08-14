@@ -6,6 +6,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { normalisePhone } from '@/lib/phone'
+import { InboxNote } from '@/components/inbox-note'
 import { Dumbbell, Salad, Sunrise, Moon, FileText, Video, Activity, LineChart, Zap, Award, Gauge, ShieldCheck, Check, X, Lock, ChevronDown } from 'lucide-react'
 import { isProductLive } from '@/lib/product-launch'
 import { WaitlistCTA } from '@/components/product-waitlist-cta'
@@ -151,18 +152,17 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
             }}>
               Take me in now →
             </a>
-            <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.6, margin: 0 }}>
+            <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.6, margin: '0 0 14px' }}>
               We have emailed you the same link, so you can get back in any time.
             </p>
+            <InboxNote />
           </>
         ) : (
           <>
             <p style={{ fontSize: '15px', color: '#1056D6', lineHeight: 1.6, margin: '0 0 12px' }}>
               Check your email for your portal link. The first thing inside is a quick scorecard that reads your starting point - then your 14 days begin.
             </p>
-            <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.6, margin: 0 }}>
-              Don&apos;t see it? Check your junk or spam folder and move the email to your inbox so your daily coaching lands every morning.
-            </p>
+            <InboxNote />
           </>
         )}
       </div>
