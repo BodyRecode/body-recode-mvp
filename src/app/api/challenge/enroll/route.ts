@@ -9,6 +9,7 @@ import { sendChallengeWelcomeEmail, sendCoachEnrollmentNotification } from '@/li
 import { fireMetaCapiEvent, extractClientContext } from '@/lib/meta-capi'
 import { reserveWaveSlot } from '@/lib/challenge-waves'
 import { persistSmsOptIn } from '@/lib/speed-to-lead-sms'
+import { normalisePhone } from '@/lib/phone'
 import { brand } from "@/config/tenant";
 
 export async function POST(request: NextRequest) {
@@ -36,6 +37,17 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'First name, last name, email and mobile number are required.' }, { status: 400 })
   }
 
+  // The whole Challenge runs on SMS - 17 messages across the 14 days, including
+  // both Day 7 Check-In nudges. A number that cannot receive them means the
+  // participant silently gets none of it, which is exactly what happened to a
+  // July enroller whose leading zero was dropped and stored as +438672578.
+  // Validate here rather than discover it in a Twilio delivery log.
+  const phoneCheck = normalisePhone(phone)
+  if (!phoneCheck.ok) {
+    return NextResponse.json({ error: phoneCheck.error }, { status: 400 })
+  }
+  const e164Phone = phoneCheck.e164
+
   const fullName = `${first_name.trim()} ${last_name.trim()}`.replace(/\s+/g, ' ').trim()
 
   const validGender = gender && ['male', 'female', 'prefer_not_to_say'].includes(gender)
@@ -59,7 +71,7 @@ export async function POST(request: NextRequest) {
   if (existingRows && existingRows.length > 0) {
     leadId = existingRows[0].id
     // Update name + phone + gender (overwrite if previously unset or different)
-    await admin.from('leads').update({ name: fullName, phone: phone.trim(), gender: validGender }).eq('id', leadId)
+    await admin.from('leads').update({ name: fullName, phone: e164Phone, gender: validGender }).eq('id', leadId)
   } else {
     const coachId = await getDefaultCoachId(admin)
     const { data: newLead, error: leadError } = await admin
@@ -68,7 +80,7 @@ export async function POST(request: NextRequest) {
         coach_id: coachId,
         name: fullName,
         email: email.toLowerCase().trim(),
-        phone: phone.trim(),
+        phone: e164Phone,
         gender: validGender,
         // Normalised, never a raw utm value: an unrecognised source used to
         // fail the CHECK constraint and kill the whole signup. See lib/lead-source.ts.
@@ -162,7 +174,7 @@ export async function POST(request: NextRequest) {
           token,
           email: email.toLowerCase().trim(),
           firstName: first_name.trim(),
-          phone: phone.trim(),
+          phone: e164Phone,
         },
       })
     } catch (e) {
@@ -173,7 +185,7 @@ export async function POST(request: NextRequest) {
     // never depends on the SMS pipeline succeeding.
     if (sms_opt_in && phone?.trim()) {
       try {
-        await persistSmsOptIn(leadId, phone.trim())
+        await persistSmsOptIn(leadId, e164Phone)
       } catch (smsErr) {
         console.error('[challenge/enroll] SMS opt-in persist failed:', smsErr)
       }
@@ -182,7 +194,7 @@ export async function POST(request: NextRequest) {
 
   const firstName = first_name.trim()
   const trimmedEmail = email.toLowerCase().trim()
-  const trimmedPhone = phone.trim()
+  const trimmedPhone = e164Phone
   const portalUrl = `${brand().marketingDomain}/challenge/${token}`
 
   const [welcome, coachNotify] = await Promise.all([

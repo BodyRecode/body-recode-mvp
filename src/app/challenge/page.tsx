@@ -5,6 +5,7 @@
 // detail excluded. Training is offered gym + at-home (see training-plan.tsx).
 
 import { useState, useRef, useEffect } from 'react'
+import { normalisePhone } from '@/lib/phone'
 import { Dumbbell, Salad, Sunrise, Moon, FileText, Video, Activity, LineChart, Zap, Award, Gauge, ShieldCheck, Check, X, Lock, ChevronDown } from 'lucide-react'
 import { isProductLive } from '@/lib/product-launch'
 import { WaitlistCTA } from '@/components/product-waitlist-cta'
@@ -41,6 +42,10 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
     />
   }
   const [form, setForm] = useState({ first_name: '', last_name: '', email: '', phone: '', gender: '' })
+  // Only judge once there is enough typed to judge, so the field does not go
+  // red on the first keystroke.
+  const phoneProbe = form.phone.replace(/\D/g, '').length >= 6 ? normalisePhone(form.phone) : null
+  const phoneError = phoneProbe && !phoneProbe.ok ? phoneProbe.error : null
   const [smsOptIn, setSmsOptIn] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(false)
@@ -59,7 +64,7 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
-    if (!form.first_name.trim() || !form.last_name.trim() || !form.email.trim() || !form.phone.trim() || !form.gender) return
+    if (!form.first_name.trim() || !form.last_name.trim() || !form.email.trim() || !normalisePhone(form.phone).ok || !form.gender) return
     setSubmitting(true)
     setError(null)
     try {
@@ -136,8 +141,16 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
       </div>
       <input type="email" placeholder="Email address" value={form.email}
         onChange={e => setForm(f => ({ ...f, email: e.target.value }))} required style={inputStyle} />
-      <input type="tel" placeholder="Mobile number (daily portal nudge + Day 5, Day 7, and Day 14 reminders)" value={form.phone}
-        onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} required style={inputStyle} />
+      {/* The whole Challenge runs on SMS, so a number that cannot receive one
+          means the participant silently gets none of it. Validated here for a
+          fast answer and again on the server, which is authoritative. */}
+      <input type="tel" inputMode="tel" autoComplete="tel"
+        placeholder="Mobile number (daily portal nudge + Day 5, Day 7, and Day 14 reminders)" value={form.phone}
+        onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} required
+        style={{ ...inputStyle, ...(phoneError ? { borderColor: '#dc2626' } : {}) }} />
+      {phoneError && (
+        <p style={{ fontSize: '12.5px', color: '#dc2626', margin: '-6px 0 0', lineHeight: 1.5 }}>{phoneError}</p>
+      )}
       <select value={form.gender} onChange={e => setForm(f => ({ ...f, gender: e.target.value }))} required
         style={{
           ...inputStyle,
@@ -157,7 +170,7 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
       </label>
       {error && <p style={{ fontSize: '13px', color: '#dc2626', margin: 0 }}>{error}</p>}
       <button type="submit"
-        disabled={submitting || !form.first_name.trim() || !form.last_name.trim() || !form.email.trim() || !form.phone.trim() || !form.gender}
+        disabled={submitting || !form.first_name.trim() || !form.last_name.trim() || !form.email.trim() || !normalisePhone(form.phone).ok || !form.gender}
         style={{
           width: '100%', padding: '17px', borderRadius: '10px', border: 'none',
           background: submitting ? 'rgba(27, 109, 252,0.6)' : '#1B6DFC',

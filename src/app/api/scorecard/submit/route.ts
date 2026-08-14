@@ -6,6 +6,7 @@ import { logLeadEvent } from '@/lib/log-lead-event'
 import { fireTrigger } from '@/lib/automation-engine'
 import { inngest } from '@/lib/inngest'
 import { persistSmsOptIn } from '@/lib/speed-to-lead-sms'
+import { normalisePhone } from '@/lib/phone'
 import { generatePreCallBrief } from '@/lib/pre-call-brief'
 import {
   typeFatMapProfile,
@@ -71,6 +72,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400, headers: CORS })
   }
   const { first_name, last_name, email, phone, sms_opt_in, score, body_state, source, section_scores, approach_response, investment_readiness, biological_sex, age_band, fat_storage, cycle_status, storage_direction, situation_text } = body as {
+
     first_name: string
     last_name?: string
     email: string
@@ -89,6 +91,11 @@ export async function POST(request: NextRequest) {
     cycle_status?: CycleStatus
     situation_text?: string
   }
+  // Phone is optional here, so an unusable number must never cost us the lead
+  // capture. Normalise when we can, store null when we cannot, and never
+  // persist something that will silently fail every SMS (see +438672578).
+  const phoneCheck = phone?.trim() ? normalisePhone(phone) : null
+  const normalisedPhone = phoneCheck?.ok ? phoneCheck.e164 : null
   // Voice-of-customer: the taker's own words. Trim + cap length defensively.
   const situationText: string | null = typeof situation_text === 'string' && situation_text.trim()
     ? situation_text.trim().slice(0, 600)
@@ -214,7 +221,7 @@ export async function POST(request: NextRequest) {
       investment_readiness: investment_readiness ?? null,
       red_flag: redFlag,
       lead_quality: leadQuality,
-      phone: phone?.trim() || null,
+      phone: normalisedPhone,
       biological_sex: sexVal,
       age_band: ageVal,
       fat_storage: storageVal,
@@ -296,9 +303,9 @@ export async function POST(request: NextRequest) {
 
   // Persist SMS opt-in + fire speed-to-lead pipeline. Both silent-fail —
   // scorecard submission never depends on the SMS pipeline succeeding.
-  if (sms_opt_in && phone?.trim()) {
+  if (sms_opt_in && normalisedPhone) {
     try {
-      await persistSmsOptIn(leadId, phone.trim())
+      await persistSmsOptIn(leadId, normalisedPhone)
       await inngest.send({
         name: 'scorecard/completed',
         data: { leadId, bookingUrl: `${brand().marketingDomain}/book` },
