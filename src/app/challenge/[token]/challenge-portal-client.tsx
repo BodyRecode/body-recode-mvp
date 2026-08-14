@@ -566,11 +566,21 @@ export default function ChallengePortalClient({
               result={intakeResult}
               onContinue={() => {
                 setIntakeDone(true)
-                // Scroll all the way to the top so PAR-Q lands at the top of
-                // the viewport, not mid-page where the user left off scrolling
-                // through the result card. instant — no smooth transition mid-
-                // gate-flip to avoid disorientation.
-                window.scrollTo({ top: 0, behavior: 'instant' })
+                // Land ON the PAR-Q, not at the top of the page.
+                //
+                // This used to scroll to top:0, which is the hero and day
+                // counter - so someone who had just finished their read was
+                // dropped somewhere that looks like arrival, with the one thing
+                // still standing between them and their training sitting below
+                // the fold as an amber banner. Five of twenty-four never
+                // cleared that gate.
+                //
+                // The forms block only mounts once intakeDone flips, so the ref
+                // is not attached until after this render. rAF waits for it.
+                requestAnimationFrame(() => {
+                  if (formsRef.current) formsRef.current.scrollIntoView({ block: 'start', behavior: 'instant' })
+                  else window.scrollTo({ top: 0, behavior: 'instant' })
+                })
               }}
             />
           </div>
@@ -590,7 +600,7 @@ export default function ChallengePortalClient({
                   Required before training
                 </p>
                 <p style={{ fontSize: '13px', color: '#999999', lineHeight: 1.6, margin: 0 }}>
-                  Complete your PAR-Q and Health Declaration to unlock the training and nutrition resources. This takes 2 minutes.
+                  Seven yes-or-no questions and five things to tick. Nothing to type. Twelve taps and your training plan and nutrition guide unlock.
                 </p>
               </div>
             </div>

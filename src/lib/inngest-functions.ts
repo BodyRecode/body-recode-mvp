@@ -21,6 +21,7 @@ import {
   buildCheckInReminderEmail,
   buildDay21FeedbackEmail,
   buildDayZeroIntakeReminderEmail,
+  buildFormsReminderEmail,
 } from './challenge-checkin-emails'
 import {
   buildBlueprintCheckinPromptEmail,
@@ -498,6 +499,94 @@ export const challengeIntakeReminderFunction = inngest.createFunction(
       await sendIntakeSms(
         'send-intake-reminder-2-sms',
         `${firstName}, your Challenge is still on hold. Your 2-minute starting read is all that is between you and Day 1: ${portalUrl}. Reply if something got in the way.`,
+      )
+    }
+  }
+)
+
+// ─── PAR-Q + Health Declaration Reminder ─────────────────────────────────────
+//
+// Added 2026-08-14. The Challenge has TWO gates and only the first was chased.
+// The Day 0 intake opens the portal; the PAR-Q and Health Declaration then gate
+// training and nutrition. Five of the twenty-four participants with portal
+// access were stuck behind that second gate with no follow-up of any kind -
+// inside a fitness programme, unable to see the fitness. None of them reached
+// the Day 7 Check-In.
+//
+// Deliberately a separate function rather than extra steps in the intake
+// reminder: the two gates are cleared independently and at different times, so
+// one sequence cannot express both without the guards fighting each other.
+//
+// Timed at 2 and 4 days so both land BEFORE Day 5, when the Week One Progress
+// Session unlocks and a locked training plan starts costing real content.
+export const challengeFormsReminderFunction = inngest.createFunction(
+  {
+    id: 'challenge-forms-reminder',
+    retries: 2,
+    triggers: [{ event: 'challenge/enrolled' }],
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async ({ event, step }: { event: any; step: any }) => {
+    const { leadId, token, email, firstName } = event.data as {
+      leadId: string
+      token: string
+      email: string
+      firstName: string
+    }
+
+    const portalUrl = `${brand().marketingDomain}/challenge/${token}`
+    const resend = new Resend(process.env.RESEND_API_KEY)
+
+    // Only chase people who cleared gate one. Someone still stuck on the Day 0
+    // intake is already being chased by challenge-intake-reminder, and two
+    // sequences nagging about different forms on the same days reads as spam.
+    const stillNeedsForms = async (stepId: string): Promise<boolean> =>
+      step.run(stepId, async () => {
+        const admin = createAdminClient()
+        const { data } = await admin
+          .from('challenge_enrollments')
+          .select('status, body_decode_intake_completed_at, parq_completed_at, health_dec_completed_at')
+          .eq('token', token)
+          .single()
+        if (!data || data.status !== 'active') return false
+        if (!data.body_decode_intake_completed_at) return false
+        return !(data.parq_completed_at && data.health_dec_completed_at)
+      })
+
+    const sendFormsSms = async (stepId: string, body: string): Promise<void> => {
+      await step.run(stepId, async () => {
+        const { sendLeadSms } = await import('@/lib/speed-to-lead-sms')
+        await sendLeadSms({ leadId, trigger: 'challenge_enrolled', body })
+      })
+    }
+
+    // ── Nudge 1: ~2 days in ────────────────────────────────────────────
+    await step.sleep('forms-reminder-1-wait', '2d')
+    await alignToNextMorningAEST(step, 'forms-reminder-1-morning')
+
+    if (await stillNeedsForms('forms-reminder-1-check')) {
+      await step.run('send-forms-reminder-1', async () => {
+        const built = buildFormsReminderEmail({ firstName, portalUrl, second: false })
+        await resend.emails.send({ from: fromCoach(), to: email, subject: built.subject, html: built.html })
+      })
+      await sendFormsSms(
+        'send-forms-reminder-1-sms',
+        `${firstName}, your read is done but your training plan is still locked. It is a 12-tap health screen, nothing to type: ${portalUrl}`,
+      )
+    }
+
+    // ── Nudge 2: ~4 days in, still before Day 5 ────────────────────────
+    await step.sleep('forms-reminder-2-wait', '2d')
+    await alignToNextMorningAEST(step, 'forms-reminder-2-morning')
+
+    if (await stillNeedsForms('forms-reminder-2-check')) {
+      await step.run('send-forms-reminder-2', async () => {
+        const built = buildFormsReminderEmail({ firstName, portalUrl, second: true })
+        await resend.emails.send({ from: fromCoach(), to: email, subject: built.subject, html: built.html })
+      })
+      await sendFormsSms(
+        'send-forms-reminder-2-sms',
+        `${firstName}, your Week One session lands tomorrow and your training is still locked. 12 taps clears it: ${portalUrl}`,
       )
     }
   }

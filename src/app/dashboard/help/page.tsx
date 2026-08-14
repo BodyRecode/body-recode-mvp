@@ -3314,6 +3314,11 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Health Declaration</p>
             <p>5 tick-box declarations: over 18, not pregnant or post-partum, not medical advice, personal responsibility, consult a doctor if symptoms arise. All 5 must be checked to submit.</p>
 
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Reminders (added 2026-08-14)</p>
+            <p><strong>This is the second gate, and nothing chased it until now.</strong> The Day 0 intake opens the portal; these two forms then gate training and nutrition specifically. On 14 Aug, <strong>5 of the 24 participants with portal access were sitting behind this gate</strong> — inside a fitness programme unable to see the fitness — and <strong>none of them reached the Day 7 Check-In</strong>. The portal shows an amber banner, but there was no email or SMS for anyone who closed the tab after their Day 0 result and never came back.</p>
+            <p><strong>challengeFormsReminderFunction</strong> now sends two nudges, email plus a matching consent-gated SMS, at ~2 and ~4 days. Both land <em>before Day 5</em>, when the Week One Progress Session unlocks and a locked training plan starts costing real content. It only fires for people who already cleared the Day 0 intake, so it never overlaps the intake reminder, and auto-stops the moment both forms are done.</p>
+            <p>Copy states the true cost — <strong>12 taps, nothing to type</strong>. The portal banner used to say &quot;this takes 2 minutes&quot;; the Check-In taught us that overstating a form&apos;s cost is a deterrent we build ourselves.</p>
+
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">How completions are saved</p>
             <p>Both forms call <strong>POST /api/challenge/forms</strong> with the token and form type. The API saves a timestamp to <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">parq_completed_at</code> or <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">health_dec_completed_at</code> on the enrollment. PAR-Q answers are also saved as JSON to <code className="text-blue-500 text-xs bg-[#E5E5E5] px-1 py-0.5 rounded">parq_responses</code>.</p>
 

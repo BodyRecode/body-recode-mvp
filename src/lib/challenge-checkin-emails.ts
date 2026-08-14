@@ -490,6 +490,51 @@ ${second ? emailBody('If something got in the way, just reply and tell me - I re
   return { subject, html }
 }
 
+// ─── PAR-Q + Health Declaration Reminder ─────────────────────────────────
+//
+// Added 2026-08-14. The Challenge has TWO gates, and only the first was ever
+// chased. The Day 0 intake opens the portal; the PAR-Q and Health Declaration
+// then gate training and nutrition specifically. Five of the twenty-four
+// participants with portal access were sitting behind that second gate - inside
+// a fitness programme unable to see the fitness - and nothing followed up.
+//
+// A banner on the portal home already tells anyone who is looking. These two
+// emails exist for the ones who closed the tab after their Day 0 result and
+// never came back, which is almost certainly all five.
+//
+// Cost is stated honestly: 7 yes/no questions plus 5 tickboxes, nothing to
+// type. The Check-In taught us that overstating a form's cost is a deterrent
+// we build ourselves.
+
+export function buildFormsReminderEmail({
+  firstName,
+  portalUrl,
+  second = false,
+}: {
+  firstName: string
+  portalUrl: string
+  second?: boolean
+}): { subject: string; html: string } {
+  const subject = second
+    ? `${firstName}, your training is still locked`
+    : `${firstName}, 12 taps and your training unlocks`
+  const html = challengeArcShell(`
+${emailEyebrow('One step from your training')}
+${emailHeading(second ? 'Your training plan is still waiting.' : 'Your read is done. Your training is not open yet.')}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${second
+  ? emailBody('Your starting read is done, but the training plan and nutrition guide are still locked - and they are the part that actually does the work over the fourteen days.')
+  : emailBody('Good - your starting read is in, and your Challenge is calibrated to it. There is one short safety step between you and the training plan and nutrition guide.')}
+${emailBody('It is a standard pre-exercise health screen: seven yes or no questions, then five things to tick. Nothing to type. Twelve taps.', { bottom: 28 })}
+${emailCta({ href: portalUrl, label: 'Unlock my training' })}
+${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
+${emailBody('I ask because I am putting training in front of you and I would rather know first. It is the same screen any decent coach would run before a first session.', { size: 14, bottom: 12 })}
+${second ? emailBody('If something in it gave you pause, reply and tell me - that is exactly what it is for.', { size: 13, color: '#6B6B6B', bottom: 0 }) : ''}
+`)
+  return { subject, html }
+}
+
 // ─── Day 14 Plain Ascension Fallback Email ───────────────────────────────
 // Sent at Day 14 by Inngest when the participant did NOT complete the
 // Body Decode Check-In. No result to reveal — acknowledgement of the 14

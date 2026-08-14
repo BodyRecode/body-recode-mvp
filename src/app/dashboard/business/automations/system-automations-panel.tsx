@@ -72,6 +72,13 @@ const AUTOMATIC_AUTOMATIONS = [
     steps: 2,
   },
   {
+    id: 'challenge-forms-reminder',
+    name: 'Challenge PAR-Q + Health Declaration Reminder',
+    description: 'Chases the SECOND Challenge gate. The Day 0 intake opens the portal; the PAR-Q and Health Declaration then gate training and nutrition specifically, and until 2026-08-14 nothing chased them at all - 5 of the 24 participants with portal access were sitting behind it, inside a fitness programme unable to see the fitness, and none of them reached the Day 7 Check-In. Two nudges, email + matching consent-gated SMS, at ~2 and ~4 days so both land before Day 5 when the Week One Progress Session unlocks. Only fires for people who already cleared the Day 0 intake, so it never overlaps the intake reminder. Auto-stops once both forms are done or the enrolment goes inactive.',
+    trigger: 'challenge/enrolled Inngest event',
+    steps: 2,
+  },
+  {
     id: 'challenge-sms-sequence',
     name: 'Challenge SMS Sequence',
     description: 'SMS nudges alongside the Challenge portal (daily nudge + milestone reminders). Consent + frequency capped. Dormant until the Challenge goes live.',
