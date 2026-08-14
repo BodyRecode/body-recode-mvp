@@ -31,6 +31,10 @@ export type LeadEventType =
   // least affordable to be blind on.
   | 'challenge_checkin_prompt_sent'
   | 'challenge_checkin_reminder_sent'
+  // Added 2026-08-14. One-off PAR-Q catch-up for the July cohort, who enrolled
+  // before challengeFormsReminderFunction existed and so can never be reached
+  // by it. Doubles as the do-not-resend guard.
+  | 'forms_catchup_sent'
 
 export async function logLeadEvent(params: {
   leadId: string

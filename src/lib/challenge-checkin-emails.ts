@@ -510,11 +510,38 @@ export function buildFormsReminderEmail({
   firstName,
   portalUrl,
   second = false,
+  finished = false,
 }: {
   firstName: string
   portalUrl: string
   second?: boolean
+  /**
+   * For the July catch-up cohort, whose 14 days are already over. The in-flight
+   * copy says the training "does the work over the fourteen days", which reads
+   * as nonsense to someone who finished weeks ago - and worse, it hides the
+   * actual situation: they completed a Challenge without ever being shown the
+   * training or nutrition, because a form they did not know about was in the
+   * way. Say that plainly rather than dress it as a nudge.
+   */
+  finished?: boolean
 }): { subject: string; html: string } {
+  if (finished) {
+    return {
+      subject: `${firstName}, you never got your training plan`,
+      html: challengeArcShell(`
+${emailEyebrow('Something you did not get')}
+${emailHeading('You finished without the training plan.')}
+${emailDivider()}
+${emailBody(`Hi ${firstName},`)}
+${emailBody('I have been going back through the Challenge and found something I should have caught at the time. Your training plan and nutrition guide were never unlocked for you, because a short health screen was sitting in front of them and nothing ever told you it was there. That is on me, not you.')}
+${emailBody('Your portal is still open and both are still waiting. The screen is seven yes or no questions and five things to tick. Nothing to type. Twelve taps.', { bottom: 28 })}
+${emailCta({ href: portalUrl, label: 'Open my training plan' })}
+${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
+${emailBody('It is a standard pre-exercise health screen - the same one any coach should run before putting training in front of you. That is the only reason it gates anything.', { size: 14, bottom: 12 })}
+${emailBody('And if you would rather tell me the Challenge was not what you wanted, reply and say so. That is useful to me too.', { size: 13, color: '#6B6B6B', bottom: 0 })}
+`),
+    }
+  }
   const subject = second
     ? `${firstName}, your training is still locked`
     : `${firstName}, 12 taps and your training unlocks`
