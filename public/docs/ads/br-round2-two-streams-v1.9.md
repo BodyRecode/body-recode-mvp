@@ -1,6 +1,6 @@
 # Round 2 · Two cold streams
 
-**v1.8 · 14 August 2026.** For the ad restart on **Monday 1 September**. Round 1 is archived.
+**v1.9 · 14 August 2026.** For the ad restart on **Monday 1 September**. Round 1 is archived.
 
 ---
 
@@ -298,6 +298,27 @@ interrupt anyway), the card rows breathe, and the card gained a footer explainin
 numbers mean — a stranger previously saw *1.80 /3* with no idea what good looks like. The score
 disc was also using `align-items:baseline`, which does no vertical centring at all, so the number
 sat high in its ring.
+
+**Type rebuilt to the mobile floor (v1.9).** A 4:5 post renders about 430px wide on a phone
+against our 1080px canvas, so everything scales by roughly **0.4**. The artifact panel was
+running **11 to 16px** — four to six pixels on a phone. The proof element of the entire system,
+and nobody could read a word of it. **29 of 37 type declarations were under the floor.**
+
+Everything is now at or above **30px**, per the locked scale: body 39, list rows 34-36, captions
+and notes 30-32, kickers 32, footer benefit 34. The panel had to grow from 344px to 660px to
+hold it, so it covers more of the photo. That is the right trade — the artifact is the thing the
+eye stops on.
+
+**The SPLIT arrangement changed as a consequence.** Its headline lived in a ~400px side column,
+which capped it at a size nobody could read and forced every SPLIT headline to be four words
+long. The card and photo now sit side by side above the **same full-width lower third the NEWS
+arrangement uses**, so the two arrangements differ only in their top zone and every headline
+gets the full width. SPLIT's blue top banner went with it: once it inherited the shared footer,
+it was carrying the offer twice.
+
+**This defect is inherited, not new.** `build_ad4.py` and `build_ad5.py` — the Round 1 builders
+this system came from — carry the same 11-25px type. Anything rebuilt from them needs the same
+pass.
 
 **Photos:** five of seven show a woman, matching a 93% female audience. Kade carries the two
 authority ads (B3 and M1) where the claim is "in the women we assess".

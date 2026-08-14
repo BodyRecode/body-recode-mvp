@@ -928,7 +928,7 @@ type Round1Ad = {
 const LAUNCH_PACK_VERSION = 'v1.9'
 // Round 2 pack, the one to upload from for the 1 Sep restart. Bump on republish;
 // it drives the card title and both download links.
-const ROUND2_PACK_VERSION = 'v1.8'
+const ROUND2_PACK_VERSION = 'v1.9'
 // Strategy doc is v2.5 (14 Aug): two pillars, readiness vocabulary, sample-size
 // rule, story cadence. Mirrored to public/docs/strategy/body-recode/.
 
