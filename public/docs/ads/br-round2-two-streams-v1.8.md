@@ -1,6 +1,6 @@
 # Round 2 · Two cold streams
 
-**v1.7 · 14 August 2026.** For the ad restart on **Monday 1 September**. Round 1 is archived.
+**v1.8 · 14 August 2026.** For the ad restart on **Monday 1 September**. Round 1 is archived.
 
 ---
 
@@ -290,6 +290,14 @@ carries the curiosity gap, the offer bar carries what you get. Making the bar pl
 touches the hook. The ticker stays pure brand on purpose: a news ticker repeating a name is what
 makes the frame read as a broadcast rather than an ad, and filling it with offer language would
 undo the interrupt the whole system exists to create.
+
+**SPLIT layout rebalanced (A1, B1).** It centred a ~730px content block in a ~1250px frame, so
+roughly 190px of dead black sat above *and* below and the composition had nothing anchoring it.
+Fixed without inventing content: the photo is much taller (a bigger photo is a better pattern
+interrupt anyway), the card rows breathe, and the card gained a footer explaining what the
+numbers mean — a stranger previously saw *1.80 /3* with no idea what good looks like. The score
+disc was also using `align-items:baseline`, which does no vertical centring at all, so the number
+sat high in its ring.
 
 **Photos:** five of seven show a woman, matching a 93% female audience. Kade carries the two
 authority ads (B3 and M1) where the claim is "in the women we assess".
