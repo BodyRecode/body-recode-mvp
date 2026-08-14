@@ -6,8 +6,8 @@
 // discovery now is the CAPTION text being indexed, which is handled separately.
 //
 // Rules applied here:
-//   - 7 per post, not 30. A wall of tags reads as someone who needs the reach,
-//     which is the opposite of the positioning.
+//   - 5 per post. That is the cap Kade works to, and it forces the right
+//     discipline anyway: no room for the huge generic tags.
 //   - Matched to the post, not one block pasted everywhere. Identical tags on
 //     every post is the pattern Instagram treats as spammy.
 //   - Weighted to the real audience: 93% female, 59% aged 45+, 60% peri or
@@ -23,27 +23,30 @@ import { createClient } from '@supabase/supabase-js'
 const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
 const DRY = process.argv.includes('--dry')
 
-// Always on: the brand tag plus the two that define the audience.
-const CORE = ['#bodyrecode', '#perimenopause', '#menopause']
+// Always on: the brand tag, plus the one term that defines 60% of the
+// audience. #menopause was dropped when the cap went to 5 - it is an enormous
+// tag where a post disappears instantly, and the specific variants below do
+// more work per slot.
+const CORE = ['#bodyrecode', '#perimenopause']
 
 const TAGS: Record<string, string[]> = {
   // the data / recovery posts
-  '2026-08-15': ['#recovery', '#overtraining', '#womenshealth', '#sleepandhormones'],
-  '2026-08-24': ['#sleep', '#recovery', '#cortisol', '#womenover40'],
-  '2026-08-31': ['#womenshealth', '#hormonehealth', '#fatlossover40', '#recovery'],
+  '2026-08-15': ['#recovery', '#overtraining', '#womenshealth'],
+  '2026-08-24': ['#sleep', '#recovery', '#cortisol'],
+  '2026-08-31': ['#womenshealth', '#hormonehealth', '#fatlossover40'],
   // state / promo
-  '2026-08-16': ['#hormonehealth', '#womenover40', '#weightlossjourney', '#midlifehealth'],
-  '2026-08-23': ['#hormonehealth', '#womenover40', '#fatlossover40', '#midlifehealth'],
-  '2026-08-30': ['#hormonalweightgain', '#fatlossover40', '#womenover50', '#midlifehealth'],
+  '2026-08-16': ['#hormonehealth', '#womenover40', '#weightlossjourney'],
+  '2026-08-23': ['#hormonehealth', '#womenover40', '#fatlossover40'],
+  '2026-08-30': ['#hormonalweightgain', '#fatlossover40', '#womenover50'],
   // effort / discipline
-  '2026-08-17': ['#womenover40', '#hormonehealth', '#fatlossover40', '#strengthtraining'],
-  '2026-08-25': ['#womenover40', '#hormonalweightgain', '#midlifehealth', '#womenshealth'],
-  '2026-08-21': ['#womenover40', '#hormonalweightgain', '#fatlossover40', '#womenshealth'],
+  '2026-08-17': ['#womenover40', '#hormonehealth', '#fatlossover40'],
+  '2026-08-25': ['#womenover40', '#hormonalweightgain', '#midlifehealth'],
+  '2026-08-21': ['#womenover40', '#hormonalweightgain', '#fatlossover40'],
   // the pattern posts - most specific, most findable
-  '2026-08-18': ['#hormonalweightgain', '#cortisol', '#womenover40', '#dietculture'],
-  '2026-08-19': ['#bellyfat', '#cortisolbelly', '#hormonalbellyfat', '#menopausebelly'],
-  '2026-08-26': ['#perimenopauseweightloss', '#menopauseweightgain', '#hormonalbellyfat', '#womenover50'],
-  '2026-08-28': ['#perimenopauseweightloss', '#hormonalweightgain', '#womenover40', '#cortisol'],
+  '2026-08-18': ['#hormonalweightgain', '#cortisol', '#womenover40'],
+  '2026-08-19': ['#bellyfat', '#cortisolbelly', '#hormonalbellyfat'],
+  '2026-08-26': ['#perimenopauseweightloss', '#menopauseweightgain', '#hormonalbellyfat'],
+  '2026-08-28': ['#perimenopauseweightloss', '#hormonalweightgain', '#womenover40'],
 }
 
 async function main() {
@@ -68,7 +71,7 @@ async function main() {
     }
     n++
   }
-  console.log(`\n${DRY ? '[dry run] ' : ''}${n} posts tagged. 7 each.`)
+  console.log(`\n${DRY ? '[dry run] ' : ''}${n} posts tagged, 5 each.`)
   console.log('The sign-off is placed ABOVE the tags at publish by appendBrFooter.')
 }
 main()
