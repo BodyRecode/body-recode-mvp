@@ -60,6 +60,22 @@ function SignupForm({ position, teal, darkBg }: { position: string; teal?: boole
       if (v) captured[key] = v
     }
     setUtms(captured)
+
+    // Arrivals from the scorecard carry their details across. The scorecard is
+    // the first gate, so by this point they have already given us all of this -
+    // asking twice is the friction that makes a two-step funnel feel like two
+    // front doors. The email in particular has to match, because the enrol API
+    // links to the existing lead on email and that link is what lets them skip
+    // the Day 0 intake and start on day one.
+    if (p.get('from') === 'scorecard') {
+      setForm(f => ({
+        ...f,
+        first_name: p.get('first') || f.first_name,
+        last_name: p.get('last') || f.last_name,
+        email: p.get('email') || f.email,
+        phone: p.get('phone') || f.phone,
+      }))
+    }
   }, [])
 
   async function submit(e: React.FormEvent) {
