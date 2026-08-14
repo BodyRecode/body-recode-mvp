@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { CoachingAscensionCTA } from '@/components/coaching-ascension-cta'
 import { FeedbackDay14Card } from '../feedback-day14-card'
 import { logoUrl, brand } from '@/config/tenant'
 import { hasPortalAccess } from '@/lib/challenge-access'
@@ -308,12 +307,14 @@ export default async function Day14Page({ params }: { params: Promise<{ token: s
         </div>
       )}
 
-      {/* Stage 4 ascension: skip ahead to 1:1 coaching from the Challenge */}
-      {!locked && (
-        <div style={{ maxWidth: '720px', margin: '0 auto', padding: '8px 24px 0' }}>
-          <CoachingAscensionCTA source="challenge_day14" variant="secondary" />
-        </div>
-      )}
+      {/* REMOVED 2026-08-14: a secondary "Ready for 1:1 coaching? Book a free
+          call" CTA used to sit here, under the Blueprint CTA.
+          Day 14 offers the Blueprint and nothing else. The ascension ladder is
+          challenge -> Blueprint, blueprint -> Extension, membership -> Membership,
+          and putting a second door on the page splits the one decision the
+          whole 14 days was built to produce. The Day 14 email has always
+          offered Blueprint alone; the page was the odd one out.
+          Do not reintroduce. */}
 
       {/* Day 14 feedback capture (PEAK testimonial moment) - only on real enrolments, only when unlocked */}
       {!locked && enrollmentId && (
