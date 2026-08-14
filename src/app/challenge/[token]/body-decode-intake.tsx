@@ -226,14 +226,28 @@ function ScoreSection({ section, selected, onSelect }: {
   )
 }
 
-export default function BodyDecodeIntakeForm({ token, onComplete }: {
+export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSex }: {
   token: string
   onComplete: (result: IntakeResult) => void
+  /**
+   * What the lead has already answered elsewhere - almost always because they
+   * did the public scorecard, which asks the same five sections and the same
+   * Fat Map questions. Anything already known is not asked again.
+   *
+   * `ascensionIntent` is the exception that made this necessary: it is asked
+   * ONLY here, so the old skip-the-whole-form bypass silently lost it for
+   * everyone who arrived via the scorecard.
+   */
+  known: {
+    scores: boolean; sex: boolean; age: boolean; storage: boolean
+    cycle: boolean; direction: boolean; approach: boolean; ascensionIntent: boolean
+  }
+  knownSex: 'M' | 'F' | null
 }) {
   const [scores, setScores] = useState<Partial<Record<'01' | '02' | '03' | '04' | '05', number>>>({})
   const [approach, setApproach] = useState<QualifierAnswer | null>(null)
   const [ascensionIntent, setAscensionIntent] = useState<QualifierAnswer | null>(null)
-  const [sex, setSex] = useState<BiologicalSex | null>(null)
+  const [sex, setSex] = useState<BiologicalSex | null>(knownSex)
   const [age, setAge] = useState<AgeBand | null>(null)
   const [storage, setStorage] = useState<FatStorage | null>(null)
   const [cycle, setCycle] = useState<CycleStatus | null>(null)
@@ -242,23 +256,35 @@ export default function BodyDecodeIntakeForm({ token, onComplete }: {
   const [error, setError] = useState('')
 
   const sectionsAnswered = SECTIONS.filter(s => scores[s.key] != null).length
-  const allScores = sectionsAnswered === SECTIONS.length
-  const allDemo = !!sex && !!age && !!storage && (sex !== 'F' || (!!cycle && !!direction))
-  const allQualifiers = !!approach && !!ascensionIntent
+  const allScores = known.scores || sectionsAnswered === SECTIONS.length
+  const allDemo =
+    (known.sex || !!sex) && (known.age || !!age) && (known.storage || !!storage)
+    && (sex !== 'F' || ((known.cycle || !!cycle) && (known.direction || !!direction)))
+  const allQualifiers = (known.approach || !!approach) && (known.ascensionIntent || !!ascensionIntent)
   const complete = allScores && allDemo && allQualifiers
 
   // Live progress out of 9 question groups (5 sections + sex + age + storage + 2 qualifiers
   // — cycle only counts for females, so unweighted denominator is 9 male / 10 female).
-  const totalQuestions = (sex === 'F' ? 10 : 9)
+  const totalQuestions =
+    (known.scores ? 0 : SECTIONS.length) +
+    (known.sex ? 0 : 1) + (known.age ? 0 : 1) + (known.storage ? 0 : 1) +
+    (sex === 'F' && !known.cycle ? 1 : 0) +
+    (known.approach ? 0 : 1) + (known.ascensionIntent ? 0 : 1)
   const answeredQuestions =
-    sectionsAnswered +
-    (sex ? 1 : 0) +
-    (age ? 1 : 0) +
-    (storage ? 1 : 0) +
-    (sex === 'F' && cycle ? 1 : 0) +
-    (approach ? 1 : 0) +
-    (ascensionIntent ? 1 : 0)
-  const progressPct = Math.round((answeredQuestions / totalQuestions) * 100)
+    (known.scores ? 0 : sectionsAnswered) +
+    (known.sex ? 0 : (sex ? 1 : 0)) +
+    (known.age ? 0 : (age ? 1 : 0)) +
+    (known.storage ? 0 : (storage ? 1 : 0)) +
+    (sex === 'F' && !known.cycle && cycle ? 1 : 0) +
+    (known.approach ? 0 : (approach ? 1 : 0)) +
+    (known.ascensionIntent ? 0 : (ascensionIntent ? 1 : 0))
+  const progressPct = totalQuestions === 0 ? 100 : Math.round((answeredQuestions / totalQuestions) * 100)
+
+  // State the real cost. Someone who already did the public scorecard may be
+  // looking at a single question here, and telling them it takes two minutes is
+  // the same deterrent that sat on the Day 7 Check-In.
+  const returning = known.scores
+  const timeLabel = totalQuestions <= 2 ? '20 sec' : totalQuestions <= 5 ? '1 min' : '2 min'
 
   async function handleSubmit() {
     if (!complete || submitting) return
@@ -270,14 +296,17 @@ export default function BodyDecodeIntakeForm({ token, onComplete }: {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           token,
-          section_scores: scores,
-          approach_response: approach,
-          ascension_intent: ascensionIntent,
-          biological_sex: sex,
-          age_band: age,
-          fat_storage: storage,
-          cycle_status: sex === 'F' ? cycle : null,
-          storage_direction: sex === 'F' ? direction : null,
+          // Only what this form actually asked. Anything omitted is merged
+          // from the lead row server-side, so a partial submit never blanks
+          // an answer we already had.
+          section_scores: known.scores ? undefined : scores,
+          approach_response: known.approach ? undefined : approach,
+          ascension_intent: known.ascensionIntent ? undefined : ascensionIntent,
+          biological_sex: known.sex ? undefined : sex,
+          age_band: known.age ? undefined : age,
+          fat_storage: known.storage ? undefined : storage,
+          cycle_status: known.cycle || sex !== 'F' ? undefined : cycle,
+          storage_direction: known.direction || sex !== 'F' ? undefined : direction,
         }),
       })
       if (!res.ok) {
@@ -339,13 +368,15 @@ export default function BodyDecodeIntakeForm({ token, onComplete }: {
 
           {/* Lead paragraph */}
           <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 28px' }}>
-            Two minutes. The same questions every {brand().name} client answers at the start. This tells us what your body is actually doing right now and shapes what you see across the next 14 days.
+            {returning
+              ? `We already have your read from the scorecard, so we are not asking any of it again. Just the ${totalQuestions === 1 ? 'one thing' : `${totalQuestions} things`} we still need before your 14 days begin.`
+              : `Two minutes. The same questions every ${brand().name} client answers at the start. This tells us what your body is actually doing right now and shapes what you see across the next 14 days.`}
                                 </p>
 
           {/* Stats grid */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
             {[
-              { value: '2 min', label: 'To complete' },
+              { value: timeLabel, label: 'To complete' },
               { value: `${totalQuestions}`, label: 'Questions' },
               { value: 'Now', label: 'Get your read' },
             ].map(stat => (
@@ -376,7 +407,9 @@ export default function BodyDecodeIntakeForm({ token, onComplete }: {
         </div>
       </div>
 
-      {/* SECTIONS */}
+      {/* SECTIONS — hidden entirely when the lead already scored on the public
+          scorecard. Same five questions; asking twice is what made people quit. */}
+      {!known.scores && (
       <div style={{ marginBottom: '40px' }}>
         <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 18px' }}>
           Part 1 · Where you are right now
@@ -393,13 +426,17 @@ export default function BodyDecodeIntakeForm({ token, onComplete }: {
         </div>
       </div>
 
-      {/* DEMOGRAPHICS */}
+      )}
+
+      {/* DEMOGRAPHICS — the whole part disappears when we know all of it. */}
+      {!(known.sex && known.age && known.storage && known.cycle && known.direction) && (
       <div style={{ marginBottom: '40px' }}>
         <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 18px' }}>
           Part 2 · A few things about your body
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
 
+          {!known.sex && (
           <div>
             <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', marginBottom: '10px' }}>Biological sex</p>
             <div style={{ display: 'flex', gap: '8px' }}>
@@ -410,7 +447,9 @@ export default function BodyDecodeIntakeForm({ token, onComplete }: {
               ))}
             </div>
           </div>
+          )}
 
+          {!known.age && (
           <div>
             <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', marginBottom: '10px' }}>Age</p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
@@ -419,7 +458,9 @@ export default function BodyDecodeIntakeForm({ token, onComplete }: {
               ))}
             </div>
           </div>
+          )}
 
+          {!known.storage && (
           <div>
             <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', marginBottom: '10px' }}>Where do you tend to store fat?</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -428,33 +469,46 @@ export default function BodyDecodeIntakeForm({ token, onComplete }: {
               ))}
             </div>
           </div>
+          )}
 
-          {sex === 'F' && (
+          {sex === 'F' && !(known.cycle && known.direction) && (
             <div>
-              <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', marginBottom: '10px' }}>Has where it sits changed over the last few years?</p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '18px' }}>
-                {DIRECTION_OPTIONS.map(o => (
-                  <PillOption key={o.value} selected={direction === o.value} label={o.label} onClick={() => setDirection(o.value)} compact />
-                ))}
-              </div>
-              <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', marginBottom: '10px' }}>Cycle status</p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
-                {CYCLE_OPTIONS.map(o => (
-                  <PillOption key={o.value} selected={cycle === o.value} label={o.label} onClick={() => setCycle(o.value)} compact />
-                ))}
-              </div>
+              {!known.direction && (
+                <>
+                  <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', marginBottom: '10px' }}>Has where it sits changed over the last few years?</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '18px' }}>
+                    {DIRECTION_OPTIONS.map(o => (
+                      <PillOption key={o.value} selected={direction === o.value} label={o.label} onClick={() => setDirection(o.value)} compact />
+                    ))}
+                  </div>
+                </>
+              )}
+              {!known.cycle && (
+                <>
+                  <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', marginBottom: '10px' }}>Cycle status</p>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+                    {CYCLE_OPTIONS.map(o => (
+                      <PillOption key={o.value} selected={cycle === o.value} label={o.label} onClick={() => setCycle(o.value)} compact />
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
           )}
         </div>
       </div>
 
+      )}
+
       {/* QUALIFIERS */}
+      {!(known.approach && known.ascensionIntent) && (
       <div style={{ marginBottom: '40px' }}>
         <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 18px' }}>
           Part 3 · How you approach this
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
 
+          {!known.approach && (
           <div>
             <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', marginBottom: '10px' }}>
               When something stops working, what do you usually do?
@@ -465,7 +519,11 @@ export default function BodyDecodeIntakeForm({ token, onComplete }: {
               ))}
             </div>
           </div>
+          )}
 
+          {/* Asked ONLY here. Never assume it - losing this is what the old
+              all-or-nothing bypass did to 9 of 29 enrolments. */}
+          {!known.ascensionIntent && (
           <div>
             <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', marginBottom: '10px' }}>
               If the Challenge points at something deeper, where would you want to go next?
@@ -476,8 +534,10 @@ export default function BodyDecodeIntakeForm({ token, onComplete }: {
               ))}
             </div>
           </div>
+          )}
         </div>
       </div>
+      )}
 
       {error && (
         <p style={{ fontSize: '13px', color: '#DC2626', marginBottom: '16px' }}>{error}</p>

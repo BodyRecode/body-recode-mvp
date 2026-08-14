@@ -64,12 +64,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Missing token.' }, { status: 400 })
   }
 
-  // Validate the five section scores arrived intact.
+  // Section scores may be absent: someone who already did the public scorecard
+  // is not asked them again, so the form submits only what is missing. They are
+  // validated after the merge below, against whatever the lead already has.
   const requiredKeys: ('01' | '02' | '03' | '04' | '05')[] = ['01', '02', '03', '04', '05']
-  const missing = requiredKeys.filter(k => typeof section_scores?.[k] !== 'number')
-  if (missing.length > 0) {
-    return NextResponse.json({ error: `Missing section scores: ${missing.join(', ')}.` }, { status: 400 })
-  }
 
   // Whitelist the Fat Map typing signals so a malformed payload can never
   // write a junk value or violate the leads CHECK constraints. Same pattern
@@ -82,39 +80,13 @@ export async function POST(request: NextRequest) {
   const directionVal = (sexVal === 'F' && ['gluteofemoral', 'to_middle', 'always_central', 'unsure'].includes(storage_direction as string)
     ? storage_direction : null) as 'gluteofemoral' | 'to_middle' | 'always_central' | 'unsure' | null
 
-  // Compute total score + body state from the section scores. Mirrors the
-  // scorecard frontend: total /15, ≤8 Depleted, ≤11 Transitioning, else Ready.
-  const total = requiredKeys.reduce((sum, k) => sum + (section_scores[k] ?? 0), 0)
-  const bodyState: 'Depleted State' | 'Transitioning State' | 'Ready State' =
-    total <= 8 ? 'Depleted State' :
-    total <= 11 ? 'Transitioning State' :
-    'Ready State'
-
-  // Type the lead into one of the four Fat Map zones (sex-gated, storage-led).
-  const { profile: fatMapProfile, confidence: profileConfidence } = typeFatMapProfile(
-    section_scores,
-    bodyState,
-    { sex: sexVal, ageBand: ageVal, fatStorage: storageVal, cycleStatus: cycleVal, storageDirection: directionVal },
-  )
-
-  // Lead quality at Day 0 is approach-only (single axis). The scorecard's
-  // 2-axis approach+investment scoring doesn't apply here — investment
-  // readiness is asked about THE Challenge they just took for free, so
-  // it's a meaningless red-flag signal in this context. ascension_intent
-  // replaces it but is forward-looking + not red-flagged (all 4 answers
-  // including "Not sure yet" are valid intentions). Day 0 enrollers
-  // therefore max out at 'yellow' lead quality; only scorecard signups
-  // can hit 'red' (both axes flagged).
-  const approachIsRed = approach_response === 'C' || approach_response === 'D'
-  const leadQuality: 'green' | 'yellow' | 'red' | null =
-    !approach_response ? null
-    : approachIsRed ? 'yellow'
-    : 'green'
-  const redFlag = approachIsRed
-
   const admin = createAdminClient()
 
-  // Resolve enrolment + linked lead from the portal token.
+  // Resolve enrolment + linked lead from the portal token, and read what the
+  // lead ALREADY knows. A scorecard-taker arrives with their state, their Fat
+  // Map answers and their approach already on file; re-asking all of it is what
+  // the old all-or-nothing bypass was avoiding, but skipping the whole form
+  // also threw away ascension_intent, which nothing else captures. So: merge.
   const { data: enrollment, error: fetchError } = await admin
     .from('challenge_enrollments')
     .select('id, lead_id')
@@ -126,23 +98,80 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Enrollment not found.' }, { status: 404 })
   }
 
+  const { data: existing } = await admin
+    .from('leads')
+    .select('scorecard_section_scores, approach_response, biological_sex, age_band, fat_storage, cycle_status, storage_direction')
+    .eq('id', enrollment.lead_id)
+    .single()
+
+  // Supplied answers win; anything not asked falls back to what is on file.
+  const mergedScores = (section_scores && requiredKeys.every(k => typeof section_scores[k] === 'number'))
+    ? section_scores
+    : (existing?.scorecard_section_scores as typeof section_scores | null) ?? null
+  const mergedSex = sexVal ?? (existing?.biological_sex as BiologicalSex | null) ?? null
+  const mergedAge = ageVal ?? (existing?.age_band as AgeBand | null) ?? null
+  const mergedStorage = storageVal ?? (existing?.fat_storage as FatStorage | null) ?? null
+  const mergedCycle = cycleVal ?? (mergedSex === 'F' ? (existing?.cycle_status as CycleStatus | null) ?? null : null)
+  const mergedDirection = directionVal ?? (mergedSex === 'F'
+    ? (existing?.storage_direction as 'gluteofemoral' | 'to_middle' | 'always_central' | 'unsure' | null) ?? null
+    : null)
+  const mergedApproach = approach_response ?? (existing?.approach_response as 'A' | 'B' | 'C' | 'D' | null) ?? null
+
+  // After the merge there must still be a full set of scores, or there is
+  // nothing to type the lead on.
+  const stillMissing = requiredKeys.filter(k => typeof mergedScores?.[k] !== 'number')
+  if (stillMissing.length > 0) {
+    return NextResponse.json({ error: `Missing section scores: ${stillMissing.join(', ')}.` }, { status: 400 })
+  }
+
+  // Compute total score + body state from the section scores. Mirrors the
+  // scorecard frontend: total /15, ≤8 Depleted, ≤11 Transitioning, else Ready.
+  const total = requiredKeys.reduce((sum, k) => sum + (mergedScores![k] ?? 0), 0)
+  const bodyState: 'Depleted State' | 'Transitioning State' | 'Ready State' =
+    total <= 8 ? 'Depleted State' :
+    total <= 11 ? 'Transitioning State' :
+    'Ready State'
+
+  // Type the lead into one of the four Fat Map zones (sex-gated, storage-led).
+  const { profile: fatMapProfile, confidence: profileConfidence } = typeFatMapProfile(
+    mergedScores!,
+    bodyState,
+    { sex: mergedSex, ageBand: mergedAge, fatStorage: mergedStorage, cycleStatus: mergedCycle, storageDirection: mergedDirection },
+  )
+
+  // Lead quality at Day 0 is approach-only (single axis). The scorecard's
+  // 2-axis approach+investment scoring doesn't apply here — investment
+  // readiness is asked about THE Challenge they just took for free, so
+  // it's a meaningless red-flag signal in this context. ascension_intent
+  // replaces it but is forward-looking + not red-flagged (all 4 answers
+  // including "Not sure yet" are valid intentions). Day 0 enrollers
+  // therefore max out at 'yellow' lead quality; only scorecard signups
+  // can hit 'red' (both axes flagged).
+  const approachIsRed = mergedApproach === 'C' || mergedApproach === 'D'
+  const leadQuality: 'green' | 'yellow' | 'red' | null =
+    !mergedApproach ? null
+    : approachIsRed ? 'yellow'
+    : 'green'
+  const redFlag = approachIsRed
+
+
   // Persist scorecard-equivalent data to the lead row.
   const { error: leadUpdateErr } = await admin
     .from('leads')
     .update({
       scorecard_score: total,
       scorecard_body_state: bodyState,
-      scorecard_section_scores: section_scores,
-      approach_response: approach_response ?? null,
+      scorecard_section_scores: mergedScores,
+      approach_response: mergedApproach,
       // investment_readiness deliberately left null at Day 0 — see
       // ascension_intent written to challenge_enrollments below.
       red_flag: redFlag,
       lead_quality: leadQuality,
-      biological_sex: sexVal,
-      age_band: ageVal,
-      fat_storage: storageVal,
-      cycle_status: cycleVal,
-      storage_direction: directionVal,
+      biological_sex: mergedSex,
+      age_band: mergedAge,
+      fat_storage: mergedStorage,
+      cycle_status: mergedCycle,
+      storage_direction: mergedDirection,
       scorecard_profile: fatMapProfile,
       scorecard_profile_confidence: profileConfidence,
       updated_at: new Date().toISOString(),

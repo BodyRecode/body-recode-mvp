@@ -463,6 +463,7 @@ function HealthDecForm({ token, onComplete }: { token: string; onComplete: () =>
 
 export default function ChallengePortalClient({
   token, firstName, currentDay, enrolledAt, parqCompleted, healthDecCompleted, savedQuizResult, bodyDecodeIntakeCompleted,
+  knownAnswers, knownSex,
 }: {
   token: string
   firstName: string
@@ -472,6 +473,12 @@ export default function ChallengePortalClient({
   healthDecCompleted: boolean
   savedQuizResult: string | null
   bodyDecodeIntakeCompleted: boolean
+  /** Which Day 0 answers the lead already has, so we ask only what is missing. */
+  knownAnswers: {
+    scores: boolean; sex: boolean; age: boolean; storage: boolean
+    cycle: boolean; direction: boolean; approach: boolean; ascensionIntent: boolean
+  }
+  knownSex: 'M' | 'F' | null
 }) {
   const [intakeDone, setIntakeDone] = useState(bodyDecodeIntakeCompleted)
   const [intakeResult, setIntakeResult] = useState<IntakeResult | null>(null)
@@ -550,6 +557,8 @@ export default function ChallengePortalClient({
           <div ref={intakeRef} style={{ marginBottom: '48px', scrollMarginTop: '24px' }}>
             <BodyDecodeIntakeForm
               token={token}
+              known={knownAnswers}
+              knownSex={knownSex}
               onComplete={result => {
                 setIntakeResult(result)
                 // Scroll to top so the result hero lands at the top of the
