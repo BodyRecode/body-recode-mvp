@@ -28,6 +28,7 @@
 // Run: npx tsx --env-file=.env.local scripts/seed-warmup-calendar.ts [--dry]
 
 import { createClient } from '@supabase/supabase-js'
+import { appendBrFooter } from '../src/lib/br-post-footer'
 
 const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
 const DRY = process.argv.includes('--dry')
@@ -291,7 +292,9 @@ async function main() {
     const { error } = await db.from('calendar_posts').insert({
       brand: 'body_recode', platform: 'instagram', phase: 'warmup',
       date: p.date, time: p.time, type: p.type, title: p.title,
-      caption: p.caption, notes: p.reel ? `REEL OPTIONAL (${p.reel}) · ${p.notes}` : p.notes,
+      // Store the sign-off, matching what the dashboard does on save. Otherwise
+      // the calendar shows a caption that differs from what publishes.
+      caption: appendBrFooter(p.caption), notes: p.reel ? `REEL OPTIONAL (${p.reel}) · ${p.notes}` : p.notes,
     })
     if (error) console.log(`      ERROR ${error.message}`)
   }
