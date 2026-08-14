@@ -3,7 +3,6 @@
 import type { IntakeResult } from './body-decode-intake'
 import { CHECKIN_PATTERNS } from '@/lib/checkin-patterns'
 import { PATTERN_DEFINITION_NOTE } from '@/lib/fat-map-profile'
-import { brand } from "@/config/tenant";
 
 // State-routed result card shown after the Day 0 Body Decode Intake. Goes
 // meaningfully deeper than just the state name + zone descriptor:
@@ -317,66 +316,25 @@ export default function BodyDecodeIntakeResult({ result, onContinue }: {
         </button>
       </div>
 
-      {/* 5. ASCENSION OPTION — Transitioning shows Blueprint, Ready shows Membership */}
-      {state === 'Transitioning State' && (
-        <div style={{
-          background: '#FAFAFA', border: '1px solid #E5E5E5',
-          borderRadius: '12px', padding: '22px 24px',
-        }}>
-          <p style={{ fontSize: '11px', fontWeight: 700, color: '#6B6B6B', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>
-            Or skip ahead · recommendation
-          </p>
-          <h3 style={{ fontSize: '17px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.01em', marginBottom: '8px' }}>
-            Your state suggests Blueprint
-          </h3>
-          <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.7, marginBottom: '18px' }}>
-            Transitioning bodies have capacity — what they need is the specific bottleneck identified and the right prescription. The 6-week Body Decode Blueprint ($97) does exactly that. The Challenge will still work; Blueprint is the higher-fit move.
-          </p>
-          <a
-            href={`${brand().marketingDomain}/blueprint?from=challenge_day_zero&state=transitioning`}
-            style={{
-              display: 'block', width: '100%', boxSizing: 'border-box',
-              padding: '14px 18px', borderRadius: '10px',
-              background: '#FFFFFF', color: '#1B6DFC',
-              border: '1.5px solid #1B6DFC',
-              fontSize: '14px', fontWeight: 700, textAlign: 'center',
-              textDecoration: 'none', transition: 'all 0.15s ease',
-            }}
-          >
-            See the Blueprint instead
-          </a>
-        </div>
-      )}
+      {/* ASCENSION OPTION REMOVED 2026-08-14.
+          A "skip ahead" card used to sit here: Transitioning was pointed at
+          Blueprint ($97), Ready at Membership ($49/wk), both wrapped in "the
+          Challenge will still work; X is the higher-fit move".
 
-      {state === 'Ready State' && (
-        <div style={{
-          background: '#FAFAFA', border: '1px solid #E5E5E5',
-          borderRadius: '12px', padding: '22px 24px',
-        }}>
-          <p style={{ fontSize: '11px', fontWeight: 700, color: '#6B6B6B', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>
-            Or skip ahead · recommendation
-          </p>
-          <h3 style={{ fontSize: '17px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.01em', marginBottom: '8px' }}>
-            Your state suggests Membership
-          </h3>
-          <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.7, marginBottom: '18px' }}>
-            Ready bodies don&apos;t need a reset — they need a continuous optimisation rhythm. Membership ($49/wk) gives you the ongoing programming + check-in cycle that turns foundations into compounding results. The Challenge will still work; Membership is the higher-fit move.
-          </p>
-          <a
-            href={`${brand().marketingDomain}/membership?from=challenge_day_zero&state=ready`}
-            style={{
-              display: 'block', width: '100%', boxSizing: 'border-box',
-              padding: '14px 18px', borderRadius: '10px',
-              background: '#FFFFFF', color: '#1B6DFC',
-              border: '1.5px solid #1B6DFC',
-              fontSize: '14px', fontWeight: 700, textAlign: 'center',
-              textDecoration: 'none', transition: 'all 0.15s ease',
-            }}
-          >
-            See Membership instead
-          </a>
-        </div>
-      )}
+          It was shown to 13 of the 20 people who completed Day 0 - 65% - and
+          produced ZERO attributed leads.
+
+          Day 0 is the point of least earned credibility in the whole funnel.
+          They have completed one form, seen no pattern, and have no reason yet
+          to trust us with $97. It also fought the ladder: challenge -> Blueprint
+          belongs at DAY 14, off the back of the pattern read that makes the
+          Blueprint make sense. Offering it here means the Day 14 pitch lands on
+          someone who has already declined it once.
+
+          Same call as removing the 1:1 CTA from the Day 14 page: one door.
+          The state-to-stage mapping still governs routing from the SCORECARD,
+          before someone enrols. Once they are in the Challenge, the Challenge
+          is the path. Do not reintroduce. */}
 
       {/* Honest source note */}
       <p style={{ fontSize: '11px', color: '#999999', textAlign: 'center', margin: 0, lineHeight: 1.6 }}>
