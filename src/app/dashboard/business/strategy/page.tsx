@@ -924,6 +924,8 @@ type Round1Ad = {
 // title, both download links and the 'verbatim from' line, which had already
 // drifted apart once (card said v1.6 while the body text still said v1.4).
 const LAUNCH_PACK_VERSION = 'v1.9'
+// Strategy doc is v2.5 (14 Aug): two pillars, readiness vocabulary, sample-size
+// rule, story cadence. Mirrored to public/docs/strategy/body-recode/.
 
 const ROUND1_ADS: Round1Ad[] = [
   { slug: 'ad-5-four-patterns', short: 'Four patterns', layer: 'round1', audience: 'Either sex',
@@ -1935,6 +1937,58 @@ export default function StrategyPage() {
             <p className="text-sm text-stone-700 leading-relaxed">Everything in this tab is the <strong className="text-[#1A1A1A]">Instagram</strong> content system - temperature ladder, weekly cadence, post types, production tools. LinkedIn runs a different cadence (1-2/wk vs 5/wk), different format (short essays, no carousels), and different tone (executive reframe, no fat-loss language). See the <strong className="text-blue-700">LinkedIn tab</strong> for that system.</p>
           </Card>
 
+          {/* Added 2026-08-14. The dashboard had zero mention of the pillars or
+              the readiness vocabulary while the strategy doc had moved to v2.5. */}
+          <Card className="border-emerald-500/40 bg-emerald-500/5">
+            <SectionLabel>Two Pillars · Neurowellness &amp; Readiness <span className="text-emerald-700">(v2.5, 14 Aug)</span></SectionLabel>
+            <p className="text-sm text-stone-700 leading-relaxed mb-3">
+              Across <strong>86 scorecards</strong>, <strong className="text-[#1A1A1A]">Sleep (1.80) and Stress Load (1.86) are the two worst-scoring sections. Training Response (2.06) is the best.</strong> The thing these women work hardest at is the least broken thing about them.
+            </p>
+            <div className="p-3 bg-white border border-emerald-500/30 rounded-lg mb-3">
+              <p className="text-[10px] font-bold tracking-[0.18em] text-emerald-700 uppercase mb-1.5">The spine line</p>
+              <p className="text-base font-semibold text-[#1A1A1A] leading-snug italic">&ldquo;Capacity is fine. Regulation is gone.&rdquo;</p>
+              <p className="text-xs text-stone-600 mt-2">Training response is <em>capacity</em>. Sleep + stress load are <em>regulation</em>. Proven on our own data, nothing borrowed.</p>
+            </div>
+            <p className="text-sm text-stone-700 leading-relaxed mb-2"><strong className="text-[#1A1A1A]">Airtime, per batch of ten: six neurowellness, three readiness, one metabolic.</strong> The metabolic one is a disqualifier, not a claim &mdash; insulin is one in twenty-five of the profiles we have run.</p>
+            <ul className="text-sm text-stone-700 space-y-1.5 mb-3">
+              <li><strong>Neurowellness</strong> &mdash; sleep, stress load, regulation. The biggest lane.</li>
+              <li><strong>Readiness</strong> &mdash; the frame, not a third topic. Already computed in <code className="text-xs bg-stone-100 px-1 rounded">readiness-monitor.ts</code>.</li>
+              <li><strong>Menopause is the population, not a pillar.</strong> It runs through both lanes.</li>
+            </ul>
+            <div className="p-3 bg-white border border-emerald-500/30 rounded-lg">
+              <p className="text-[10px] font-bold tracking-[0.18em] text-emerald-700 uppercase mb-1.5">Say readiness outward</p>
+              <p className="text-sm text-stone-700">readiness (not &ldquo;body state&rdquo;) &middot; capacity (training response) &middot; regulation (sleep + stress load). Body state has to be taught; readiness is a category the market already prices. <strong>Vocabulary only &mdash; Fat Map v2.0 and the governance rule are untouched.</strong> The product is still named the Body State Scorecard; rename it with the ad restart, and leave the DB columns alone.</p>
+            </div>
+          </Card>
+
+          <Card className="border-amber-500/40 bg-amber-500/5">
+            <SectionLabel>Numbers · how we are allowed to quote them</SectionLabel>
+            <p className="text-sm text-stone-700 leading-relaxed mb-3">
+              The positioning is <strong>they cite, we measure</strong>. That only holds if our numbers survive being checked. <strong className="text-[#1A1A1A]">There are two sample sizes and they are not interchangeable.</strong>
+            </p>
+            <ul className="text-sm text-stone-700 space-y-1.5 mb-3">
+              <li><strong>n=88</strong> body state split (Transitioning 51 / Depleted 31 / Ready 18) &mdash; publish exactly. Strongest number we own.</li>
+              <li><strong>n=86</strong> section scores &mdash; publish exactly. Second strongest.</li>
+              <li><strong>n=27</strong> pattern split, sex, age, fat storage &mdash; <strong className="text-amber-800">ratios only</strong>.</li>
+            </ul>
+            <p className="text-sm text-stone-700 leading-relaxed mb-2">The pattern split is 13/10/3/1 out of 27 people. Quoting &ldquo;48%&rdquo; off that is over-precise and will move. Say <em>roughly half</em>, <em>about a third</em>, <em>one in twenty-five</em>. <strong>Ratios survive a growing sample. Decimals don&rsquo;t.</strong></p>
+            <p className="text-sm text-stone-700 leading-relaxed">Re-run <code className="text-xs bg-stone-100 px-1 rounded">scripts/state-of-the-data.ts</code> before every batch, and never label a card with an n belonging to a different question.</p>
+          </Card>
+
+          <Card className="border-purple-500/40 bg-purple-500/5">
+            <SectionLabel>Stories · one a day, not three <span className="text-purple-700">(revised 14 Aug)</span></SectionLabel>
+            <p className="text-sm text-stone-700 leading-relaxed mb-3">
+              The slate ran <strong>3/day for six weeks &mdash; 170 stories &mdash; and views fell.</strong> Instagram ranks stories on completion, so every story is a chance to be tapped past. Three a day of feed restatements teaches both the algorithm and the reader to skip.
+            </p>
+            <ul className="text-sm text-stone-700 space-y-1.5 mb-3">
+              <li><strong>One a day</strong>, and nothing in a story repeats that day&rsquo;s feed post.</li>
+              <li><strong>Bottom third of every card left empty for a sticker.</strong> A poll or question gives a reason to stop and tap &mdash; taps are the completion signal that recovers ranking.</li>
+              <li>Stickers do <strong>not</strong> reach ManyChat (story-reply automation unbuilt). The tap is the value, not the reply.</li>
+              <li>Phone-manual &mdash; the Graph API strips link stickers, polls and countdowns. 1/day cuts uploads from 21 a week to 7.</li>
+            </ul>
+            <p className="text-sm text-stone-700">Diary reminders come off the live webcal feed with a 5-minute alarm; the alert carries the line and the sticker to add.</p>
+          </Card>
+
           <Card className="border-[#1B6DFC]/40 bg-[#1B6DFC]/5">
             <SectionLabel>Doctrine · One Message, Obsessively Repeated</SectionLabel>
             <p className="text-sm text-stone-700 leading-relaxed mb-3">
@@ -2467,6 +2521,17 @@ export default function StrategyPage() {
       {/* ── ORGANIC → ADS ── */}
       {tab === 'organic' && (
         <div className="space-y-4">
+
+          <Card className="border-teal-500/40 bg-teal-500/5">
+            <SectionLabel>Hashtags &amp; caption search <span className="text-teal-700">(14 Aug)</span></SectionLabel>
+            <p className="text-sm text-stone-700 leading-relaxed mb-2"><strong className="text-[#1A1A1A]">Five per post, maximum.</strong> They do little for reach now &mdash; Instagram removed hashtag following and has said they are not a meaningful ranking factor &mdash; so the slots are for topic classification, not discovery.</p>
+            <ul className="text-sm text-stone-700 space-y-1.5 mb-3">
+              <li>Mid-size and specific beats huge and generic. <code className="text-xs bg-stone-100 px-1 rounded">#perimenopauseweightloss</code> is findable; <code className="text-xs bg-stone-100 px-1 rounded">#fitness</code> at 500m posts is not.</li>
+              <li>Matched to the post, never one block pasted everywhere &mdash; identical tags on every post is the pattern Instagram treats as spammy.</li>
+              <li>The sign-off sits <strong>above</strong> them: body &rarr; Link in bio &rarr; founder tag &rarr; tags.</li>
+            </ul>
+            <p className="text-sm text-stone-700 leading-relaxed"><strong className="text-[#1A1A1A]">What replaced them is caption search.</strong> Instagram indexes caption text, so the words she actually types &mdash; perimenopause, menopause, belly fat &mdash; need to be <em>in the caption</em>, not in the tags.</p>
+          </Card>
 
           <Card className="border-pink-500/30 bg-pink-500/5">
             <SectionLabel>Instagram Organic System</SectionLabel>

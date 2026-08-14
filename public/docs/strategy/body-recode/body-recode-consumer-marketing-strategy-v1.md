@@ -1,6 +1,6 @@
 # Body Recode - Consumer Marketing Strategy
 
-**Status:** v2.4 - 2026-08-06 (§13b: Captions is social only; Amanda's contra deal is funnel-stage video and is untouched). One document: the strategy (what and why) and the content engine (how) in one place.
+**Status:** v2.5 - 2026-08-14 (new §3b two pillars + readiness vocabulary, §8c airtime weighting, §11b story cadence cut to 1/day, §16b sample-size rule and hashtag cap). One document: the strategy (what and why) and the content engine (how) in one place.
 **Scope:** the **consumer demand brand** - `@body_recode_`, bodyrecode.au marketing, and the Challenge -> Blueprint -> membership funnel (with the scorecard as the Day-0 in-portal routing gate). Not the licensing engine (see the Collective strategy) or the internal coaching delivery (Performance Coaching).
 
 ---
@@ -37,6 +37,66 @@ The body operates in one of three states, and each needs a different approach - 
 - **Ready / Post-Optimisation** - can push.
 
 Supporting assets: the **Body State Scorecard** (names state + pattern with a confidence tier), the **Fat Map**, the **Six Pillars**, the canonical patterns (Stress-Stored / Insulin-Drift / Estrogen-Shift / Androgen-Decline). Arc verbs: **Decode -> Rewire -> Rebuild** (baked into product names; never invent alternates).
+
+## 3b. The two pillars, and what we say out loud (added 14 Aug 2026)
+
+The doctrine above is unchanged and stays locked. This section governs **what gets airtime and
+what words we use**, which is a different thing.
+
+### The finding that drives it
+
+Across **86 completed scorecards**, average section scores out of 3:
+
+| # | Section | Avg | Floored |
+|---|---|---|---|
+| 02 | **Sleep** | 1.80 | **38%** |
+| 03 | **Stress Load** | 1.86 | 35% |
+| 01 | Energy | 1.93 | 28% |
+| 05 | Fat Loss Response | 2.00 | 23% |
+| 04 | **Training Response** | **2.06** | **16%** |
+
+Sleep and Stress Load are the two worst things we measure. Training Response is the best. **The
+thing these women work hardest at is the least broken thing about them.**
+
+In our own model training response is *capacity* and sleep plus stress load are *regulation*.
+Hence the spine line, proven on our own data with nothing borrowed:
+
+> **Capacity is fine. Regulation is gone.**
+
+### Two pillars, not three
+
+The market is hiring nervous-system coaches, menopause specialists and metabolic coaches. All
+three sit inside what we already do, but they do not deserve equal airtime.
+
+- **Neurowellness** (sleep, stress load, regulation) is the biggest lane.
+- **Readiness** is the frame that holds everything, not a third topic. The platform already
+  computes it (`readiness-monitor.ts`, four axes: capacity, schedule, regulation, behaviour).
+- **Menopause is the population, not a pillar.** It runs through both lanes. Talk to her; do not
+  make her a topic.
+- **Metabolic stays in the doctrine and gets almost no airtime.** Insulin is one in twenty-five
+  of the profiles we have run.
+
+Spine: *"The market is hiring three specialists. Your body isn't three systems."*
+Category: *"Fitness sold performance. Wellness sold products. We assess readiness."*
+
+### Vocabulary: say readiness outward
+
+| Outward (all new copy) | Internal / clinical (unchanged) |
+|---|---|
+| readiness | body state |
+| capacity | training response |
+| regulation | sleep + stress load |
+
+"Body state" has to be taught. "Readiness" is a category the market already understands and
+prices. **This is a marketing-vocabulary change, not a doctrine change** - Fat Map v2.0 and the
+governance rule are untouched, and the two words mean the same thing.
+
+Note the three states are already **Depleted -> Transitioning -> Ready**. The framework was
+readiness-shaped all along; only the wrapper was mislabelled.
+
+**Outstanding:** the product is still named the *Body State Scorecard* (52 refs in the app, 11
+on the marketing site). Rename it with the ad restart, not before, and leave the database
+columns alone - same precedent as the Foundational Read rename.
 
 ## 4. The funnel (two doors, both routed by the scorecard)
 
@@ -148,6 +208,19 @@ The **pillars** are the themes; the **signature formats** are the repeatable sho
 
 Same 5 types, same archetype rotation and hook banks - the formats just give each type a sharper, more repeatable, more scroll-stopping shape.
 
+## 8c. Airtime weighting (added 14 Aug 2026)
+
+Pillars decide what is true. **Weighting decides what gets said**, and the two had drifted apart:
+the August calendar was written four-patterns-equal, which aimed most of every post at almost
+nobody.
+
+**For any batch of ten posts: six neurowellness, three readiness, one metabolic.**
+
+The metabolic one is a **disqualifier, not a claim** - *"the internet is convinced your problem
+is insulin; in the people we have assessed it is about one in twenty-five"*. Naming the real
+proportion is a better argument than hiding it, because the advice everyone is handed is built
+for the pattern almost none of them have.
+
 ## 8b. The Challenge promo layer (Door 2)
 
 Alongside the doctrine content, run a **direct Challenge-invite layer** - the posts whose whole job is to fill the Challenge. Not every post (over-promoting trains the scroll-past); **~1 explicit promo/week**, plus a **heavier burst when a new wave opens** (tie to the wave-cap plan: W1=50, W2=+25...).
@@ -232,6 +305,31 @@ so the two could never be compared. Both now measure to **Challenge enrolment**.
 
 One CTA per post, and which one depends on the post **type**: doctrine/engagement posts -> **the scorecard** ("find your state"); Challenge promo posts -> **join the Challenge**. Engagement-first posts earn the comment first. Stories run alongside daily: the "which state are you" mini-quiz, polls, behind-the-scenes reads.
 
+## 11c. Story cadence: one a day, not three (revised 14 Aug 2026)
+
+The slate ran **3 stories/day for six weeks - 170 stories - and views fell.** Two causes that
+compound:
+
+1. **Volume without a reason to stop.** Instagram ranks stories on completion, so every story is
+   a chance to be tapped past. Three a day teaches both the algorithm and the reader to skip.
+2. **They restated the feed.** If she has seen the post, the story is a repeat, and a repeat is a
+   guaranteed tap-forward.
+
+**Now one a day, and nothing in a story repeats that day's feed post.** Stories carry material
+the feed does not have.
+
+**Every card leaves its bottom third empty for a sticker.** That is the actual fix for
+tap-forward: a poll or question gives a reason to stop and tap, and taps are the completion
+signal that recovers ranking. Stickers do **not** reach ManyChat (story-reply automation is
+unbuilt), so nothing automated depends on the answer - **the tap is the value, not the reply.**
+
+Stories are phone-manual, because the Graph API strips link stickers, polls and countdowns. One
+a day also cuts the upload load from 21 a week to 7, which is the difference between a plan that
+happens and one that quietly stops.
+
+Diary reminders come off the live webcal feed (`/api/calendar/feed/stories`), 5-minute alarm,
+alert text carries the line and the sticker to add.
+
 ## 12. Atomisation (volume without more thinking)
 
 One idea -> a **reel** (face to camera) + a **carousel** (saveable framework) + a **Stories quiz** + a **comment-to-DM** post + the **tailored PDF** in the DM. Think in ideas, not posts. One strong read should feed most of a week.
@@ -307,6 +405,39 @@ Run against the current style for 2-3 weeks; let the numbers pick winners, then 
 - **No em dashes** (house style) - hyphens or rewrites.
 - **Design:** Pure White / Graphite / Signal Blue (#1B6DFC). Social assets 1080x1350 (4:5); reels 9:16; 96px safe margins. All photos of Kade in BR graphics render **greyscale**, never colour.
 - Kade's public byline title: **"Sports Scientist"** (not "Exercise Scientist").
+
+## 16b. Numbers, and how we are allowed to quote them (added 14 Aug 2026)
+
+The whole positioning is **they cite, we measure**. That only holds if our numbers survive
+someone checking them.
+
+**There are two sample sizes and they are not interchangeable.**
+
+| Stat | n | Publishable |
+|---|---|---|
+| Body state split (Transitioning 51 / Depleted 31 / Ready 18) | **88** | Yes - strongest number we own |
+| Section scores (sleep, stress load, etc.) | **86** | Yes - second strongest |
+| Pattern split, sex, age, fat storage | **27** | **Ratios only, or state the n** |
+| Cycle status | **25** | **Ratios only** |
+
+The pattern split is 13 / 10 / 3 / 1 out of 27 people. **Quoting "48%" off 27 responses is
+over-precise and it will move.** Say *roughly half*, *about a third*, *one in twenty-five*.
+**Ratios survive a growing sample. Decimals don't.**
+
+Re-run `scripts/state-of-the-data.ts` before every content batch, and never label a card with an
+n that belongs to a different question.
+
+### Hashtags
+
+**Five per post, maximum.** They do little for reach now - Instagram removed hashtag following
+and has said they are not a meaningful ranking factor - so the slots are for topic
+classification, not discovery. Mid-size and specific beats huge and generic:
+`#perimenopauseweightloss` is findable, `#fitness` at 500m posts is not. Matched to the post,
+never one block pasted everywhere.
+
+**What replaced them is caption search.** Instagram indexes caption text, so the words she
+actually types - perimenopause, menopause, belly fat - need to be *in the caption*, not in the
+tags.
 
 ## 17. Messaging rules (do / don't)
 
