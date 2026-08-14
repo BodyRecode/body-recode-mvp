@@ -3435,7 +3435,7 @@ export default function HelpPage() {
             <StatusList items={[
               { label: 'Day 1 morning', desc: '"Welcome [name]. Day 1 is live in your portal. Today is for setup - read the training plan and nutrition guide, do the morning reset. The work begins gently. Portal: [link]"' },
               { label: 'Day 5 afternoon boost', desc: '"Quick reminder [name]. Your Week One Progress Session is in the portal - watch it before bed if you haven\'t yet. It breaks down what your body has been doing all week: [link]"' },
-              { label: 'Day 7 afternoon boost', desc: '"Quick check [name]. Have you done your Body Decode Check-In yet? Takes 3 minutes and unlocks your Day 7 progress read. Portal: [link]"' },
+              { label: 'Day 7 afternoon boost', desc: '"Quick check [name]. Have you done your Body Decode Check-In yet? It&apos;s 10 taps, about a minute, nothing to type - and it&apos;s what unlocks your Day 14 pattern read. Portal: [link]"' },
               { label: 'Day 14 morning', desc: '"Day 14 [name]. Final day. Your Body Decode Report drops in your inbox today. Today\'s note is in the portal: [link]"' },
               { label: 'Day 14 afternoon boost', desc: '"Your Body Decode Report is in your inbox [name]. The full pattern read, what it means, where it shows up, and what comes next. Open the email." Times ~8h after morning so the Day 14 email (which fires through challengeSequenceFunction) has already landed.' },
             ]} />

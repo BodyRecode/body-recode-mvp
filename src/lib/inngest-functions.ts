@@ -55,7 +55,7 @@ const SMS_MORNING: Record<number, string> = {
   4: `Day 4 %FIRST%. Rest day. Today's coaching note is in the portal: %URL%. Sleep is the highest leverage variable - protect it.`,
   5: `Day 5 %FIRST%. Halfway through Week 1. Today the Week One Progress Session lands. Open the portal for today's note + the session: %URL%`,
   6: `Day 6 %FIRST%. Training day. Open today's coaching note before you train: %URL%`,
-  7: `Day 7 %FIRST%. End of Week 1. The Body Decode Check-In unlocks today - bottom of the portal home: %URL%`,
+  7: `Day 7 %FIRST%. End of Week 1. Your Body Decode Check-In is open - 10 taps, about a minute. It's the one thing your Day 14 pattern read is built from: %URL%`,
   8: `Day 8 %FIRST%. Week 2 begins. The shifts compound from here. Today's coaching note is open: %URL%`,
   9: `Day 9 %FIRST%. Today's coaching note is in the portal: %URL%. Stay steady.`,
   10: `Day 10 %FIRST%. Training day. Open today's coaching note before you train: %URL%`,
@@ -67,7 +67,7 @@ const SMS_MORNING: Record<number, string> = {
 
 const SMS_AFTERNOON_BOOST: Partial<Record<number, string>> = {
   5: `Quick reminder %FIRST%. Your Week One Progress Session is in the portal - watch it before bed if you haven't yet. It breaks down what your body has been doing all week: %URL%`,
-  7: `Quick check %FIRST%. Have you done your Body Decode Check-In yet? Five to ten minutes and it unlocks your Day 7 progress read. Portal: %URL%`,
+  7: `Quick check %FIRST%. Have you done your Body Decode Check-In yet? It's 10 taps, about a minute, nothing to type - and it's what unlocks your Day 14 pattern read. Portal: %URL%`,
   14: `Your Body Decode Report is in your inbox %FIRST%. The full pattern read, what it means, where it shows up, and what comes next. Open the email.`,
 }
 

@@ -556,7 +556,7 @@ ${emailHeading('One week in. Time to read what changed.')}
 ${emailDivider()}
 ${emailBody(`Hi ${firstName},`)}
 ${emailBody('You have given your body seven consecutive days of structured rhythm. Training, food, sleep, timing. That is long enough for real signals to show up.')}
-${emailBody('The Body Decode Check-In reads those signals. You rate eight biological markers against how they felt on Day 1, then answer two questions about where your body holds and how it responds. Five to ten minutes.')}
+${emailBody('The Body Decode Check-In reads those signals. You rate eight biological markers against how they felt on Day 1, then answer two questions about where your body holds and how it responds. Ten taps, about a minute, nothing to type.')}
 ${emailFeaturedCard(emailNumberedList([
   'Your 7-day progress read, straight away, showing which markers have moved',
   'Your Week 2 focus, so the second half is not a repeat of the first',
@@ -594,7 +594,7 @@ ${emailStatusCard({
   headline: 'The pattern your body is working through',
   body: 'Which of the four patterns is driving what you have been fighting, where it shows up, what it is commonly mistaken for, and the three actions specific to it.',
 })}
-${emailBody('It takes five to ten minutes and you can do it on your phone. Eight markers rated against Day 1, then two questions.', { bottom: 24 })}
+${emailBody('Ten taps and about a minute, on your phone. Eight markers rated against Day 1, then two questions. There is nothing to type.', { bottom: 24 })}
 ${emailCta({ href: checkInUrl, label: 'Take the Check-In' })}
 ${emailUrlFallback(checkInUrl, 'Or paste this link into your browser')}
 ${emailBody('If something is genuinely in the way, reply and tell me. I would rather know than have you finish with nothing to show for the fortnight.', { size: 14, bottom: 0 })}

@@ -96,7 +96,7 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
           <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '20px' }} />
           {!savedResult && (
             <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: 0 }}>
-              Two short parts. Five to ten minutes total. Rate eight biological markers, then answer two signal questions. Your full Body Decode Report is delivered on Day 14, identifying which of four patterns your body is currently working through.
+              Ten taps, about a minute. Rate eight biological markers against how they felt on Day 1, then answer two signal questions. Nothing to type. Your full Body Decode Report is delivered on Day 14, identifying which of four patterns your body is currently working through.
             </p>
           )}
           {showingDay7View && (
