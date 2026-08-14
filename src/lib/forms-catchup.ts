@@ -80,8 +80,11 @@ export async function runFormsCatchup({ live }: { live: boolean }): Promise<Form
     // happened: they completed a Challenge without ever seeing the training.
     const built = buildFormsReminderEmail({ firstName, portalUrl, finished: true })
 
+    // BCC Kade on every one-off send to a client or prospect, so he can
+    // confirm what actually landed without asking for a separate copy.
     const { data: sent, error: sendErr } = await resend.emails.send({
-      from: fromCoach(), to: lead.email, subject: built.subject, html: built.html,
+      from: fromCoach(), to: lead.email, bcc: ['kade@bodyrecode.au'],
+      subject: built.subject, html: built.html,
     })
     if (sendErr) { result.failed.push({ email: lead.email, error: sendErr.message ?? 'unknown' }); continue }
 
