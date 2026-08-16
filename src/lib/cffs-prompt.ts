@@ -126,7 +126,13 @@ Rules for reading blood markers:
 7. If no blood panel is provided, complete the CFFS without it. Do not speculate about markers you were not given.`
 }
 
-function summarizeScaleSection(
+/**
+ * Exported 2026-08-17 so the supplement suggestion engine reads the intake
+ * domain scores exactly the way the CFFS did when it classified the client.
+ * Two different renderings of the same numbers would be a quiet source of
+ * disagreement between the two surfaces.
+ */
+export function summarizeScaleSection(
   sectionTitle: string,
   responses: Record<string, number>,
   questions: Question[]

@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { SUPPLEMENT_SUBSTANCES } from '@/lib/supplement-substances-seed'
 import SupplementsManager from './supplements-manager'
+import SuggestionPanel, { type SuggestionSet } from './suggestion-panel'
 
 /**
  * Coach editor for Supplement assignments per client.
@@ -20,19 +21,40 @@ export default async function CoachSupplementsPage({
 
   const { data: client } = await admin
     .from('clients')
-    .select('id, name')
+    .select('id, name, medications')
     .eq('id', id)
     .maybeSingle()
 
   if (!client) notFound()
 
-  const { data: assignmentsRaw } = await admin
-    .from('supplement_assignments')
-    .select('*')
-    .eq('client_id', id)
-    .order('assigned_at', { ascending: false })
+  const [{ data: assignmentsRaw }, { data: latestSuggestion }] = await Promise.all([
+    admin
+      .from('supplement_assignments')
+      .select('*')
+      .eq('client_id', id)
+      .order('assigned_at', { ascending: false }),
+    // Last generated set, so opening the page doesn't cost a clinical-tier call.
+    admin
+      .from('supplement_suggestions')
+      .select('generated_at, overview, suggestions, not_now, gated')
+      .eq('client_id', id)
+      .order('generated_at', { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+  ])
 
   const assignments = assignmentsRaw ?? []
+  const activeSlugs = assignments.filter(a => a.status === 'active').map(a => a.substance_slug)
+
+  const initialSet: SuggestionSet | null = latestSuggestion
+    ? {
+        generated_at: latestSuggestion.generated_at,
+        overview: latestSuggestion.overview ?? '',
+        suggestions: (latestSuggestion.suggestions ?? []) as SuggestionSet['suggestions'],
+        not_now: (latestSuggestion.not_now ?? []) as SuggestionSet['not_now'],
+        gated: (latestSuggestion.gated ?? []) as SuggestionSet['gated'],
+      }
+    : null
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -50,6 +72,14 @@ export default async function CoachSupplementsPage({
           Note: substance library lives in code. Deep research reports and doctrine rationale for each substance live at <code className="bg-stone-100 px-1 rounded">~/Dropbox/01_BODY_RECODE/00_PLAYBOOK/supplement_research/</code>. Add new substances by editing <code className="bg-stone-100 px-1 rounded">src/lib/supplement-substances-seed.ts</code>.
         </p>
       </div>
+
+      <SuggestionPanel
+        clientId={id}
+        clientName={client.name}
+        initialSet={initialSet}
+        clientMedications={client.medications ?? null}
+        activeSlugs={activeSlugs}
+      />
 
       <SupplementsManager
         clientId={id}

@@ -84,6 +84,36 @@ export interface PriorFeedbackSummary {
 }
 
 /**
+ * What the client is currently operating under (added 2026-08-17).
+ *
+ * Three separate systems the response used to be blind to:
+ *  - The RRS constraint governor (Layer 2). If a playbook state is active,
+ *    the program and nutrition engines are already being clamped. A response
+ *    that says "hold all three sessions" while RRS has removed training days
+ *    contradicts the client's own plan.
+ *  - Coach-assigned recovery protocols (Layer 3). Already in their portal.
+ *  - Coach-assigned supplements (Layer 3). Already in their portal.
+ *
+ * The response NEVER prescribes into these. It may reference what is already
+ * assigned; adding or changing anything is Kade's call on the dedicated
+ * surfaces.
+ */
+export interface ActiveCareContext {
+  rrs: {
+    playbookName: string
+    purpose: string
+    daysActive: number
+    /** Plain-language summary of what the envelope is doing to training. */
+    trainingSummary: string[]
+    /** Plain-language summary of what the envelope is doing to nutrition. */
+    nutritionSummary: string[]
+    prohibitions: readonly string[]
+  } | null
+  assignedProtocols: Array<{ name: string; category: string; coachNote: string | null }>
+  assignedSupplements: Array<{ name: string; coachNote: string | null }>
+}
+
+/**
  * Active nutrition plan context (added 2026-06-21).
  *
  * Pre-2026-06-21 the feedback generator had zero awareness of the
@@ -294,6 +324,10 @@ THREE FIELDS YOU PRODUCE:
        Session counts, rest-day placement, and "protect the session you usually drop" are all allowed and are NOT programming directives. What stays banned is the prescription itself: sets, reps, loads, percentages, tempo, RPE numbers, and named exercises. You may say "hold all three sessions". You may not say "drop the squat to 3 sets of 8".
        If ACTIVE PROGRAM is absent, do NOT write a session-count anchor in any field.
 
+   - NO CLOCK TIMES (added 2026-08-17). Never state a specific time of day in any field. Not "8am", not "12:30pm", not "eat at 7". You are NOT given the client's prescribed meal or session times, so any clock time you write is invented, and it will read to the client as their prescription.
+       Caught on Amanda W12: the draft prescribed "8am, 12:30pm, 3:30pm, 7pm" against a plan that contains no times at all.
+       Say "at your set times", "the same times each day", "the times in your plan", "morning", "before bed". Those are all fine. Digits on a clock are not.
+
    - 40-100 words. Direct, second person. Count your words. If over 100, cut.
    - PARAGRAPHING: 1 short paragraph is usually right. If you genuinely need to separate "the anchor" from "why it matters", use 2 paragraphs separated by blank line (\\n\\n). Never one big block.
 
@@ -354,6 +388,8 @@ Before returning your JSON, walk through these questions in order. If any fails,
 
 10. NEXT_FOCUS — not a repeat. Compare against the prior anchors in the context. Same domain two weeks running? Only acceptable if that domain is still plainly the weakest signal AND the anchor itself has changed. Otherwise pick a different domain.
 
+11. NEXT_FOCUS — inside the envelope. If a RECOVERY STATE is listed under "WHAT THIS CLIENT IS ALREADY UNDER", does the anchor sit inside what that envelope permits? An anchor that asks for load the envelope has removed contradicts the client's own plan and FAILS. Separately: does the draft mention any supplement or recovery protocol that is not on the assigned lists, or name any dose? If so, cut it.
+
 A draft that fails any of these audits is NOT a finished draft. Iterate inside this response until all pass, then return the JSON.
 
 ${renderPartnerTuningSection()}OUTPUT FORMAT:
@@ -406,6 +442,7 @@ export function buildFeedbackUserPrompt(input: {
   program: ProgramContext | null
   nutrition: NutritionContext | null
   priorFeedback?: PriorFeedbackSummary[]
+  activeCare?: ActiveCareContext | null
   /**
    * Free-text steer typed by the coach in the Draft with AI box before
    * clicking Generate. Highest-priority instruction in the whole user
@@ -416,6 +453,7 @@ export function buildFeedbackUserPrompt(input: {
   const { client, cffs, thisCheckin, priorCheckins, program, nutrition } = input
   const priorFeedback = input.priorFeedback ?? []
   const coachNotes = input.coachNotes?.trim() || null
+  const activeCare = input.activeCare ?? null
 
   const lines: string[] = []
 
@@ -519,6 +557,45 @@ export function buildFeedbackUserPrompt(input: {
     lines.push('')
   } else {
     lines.push('ACTIVE NUTRITION PLAN: none on file. Do NOT prescribe meal-count anchors in next_focus. Choose a different lever.')
+    lines.push('')
+  }
+
+  if (activeCare && (activeCare.rrs || activeCare.assignedProtocols.length > 0 || activeCare.assignedSupplements.length > 0)) {
+    lines.push('WHAT THIS CLIENT IS ALREADY UNDER')
+    lines.push('Read this before writing next_focus. The anchor must not contradict anything here.')
+
+    if (activeCare.rrs) {
+      const r = activeCare.rrs
+      lines.push('')
+      lines.push(`RECOVERY STATE (active ${r.daysActive} day${r.daysActive === 1 ? '' : 's'}): ${r.playbookName}`)
+      lines.push(`Purpose: ${r.purpose}`)
+      lines.push('This is a constraint the system is ALREADY applying to their program and nutrition. It is coach-facing language, never quote it. What it means in practice:')
+      for (const t of r.trainingSummary) lines.push(`  - Training: ${t}`)
+      for (const n of r.nutritionSummary) lines.push(`  - Nutrition: ${n}`)
+      if (r.prohibitions.length > 0) {
+        lines.push(`  - Explicitly prohibited while this is active: ${r.prohibitions.join('; ')}`)
+      }
+      lines.push('HARD RULE: next_focus must not ask for anything this envelope removes or reduces. If training sessions are capped or removed, do NOT write a "hold all your sessions" anchor. If a deficit is blocked, do NOT write an eating-less anchor. Prescribe inside the envelope, not against it.')
+    }
+
+    if (activeCare.assignedProtocols.length > 0) {
+      lines.push('')
+      lines.push('RECOVERY PROTOCOLS ALREADY ASSIGNED (visible in their portal):')
+      for (const p of activeCare.assignedProtocols) {
+        lines.push(`  - ${p.name}${p.coachNote ? ` (coach note: ${p.coachNote})` : ''}`)
+      }
+    }
+
+    if (activeCare.assignedSupplements.length > 0) {
+      lines.push('')
+      lines.push('SUPPLEMENTS ALREADY ASSIGNED (visible in their portal):')
+      for (const s of activeCare.assignedSupplements) {
+        lines.push(`  - ${s.name}${s.coachNote ? ` (coach note: ${s.coachNote})` : ''}`)
+      }
+    }
+
+    lines.push('')
+    lines.push('HARD RULE on protocols and supplements: you may reference something ALREADY on the lists above by name, because the client can see it in their portal. You may NOT introduce a protocol or supplement that is not listed, name a dose, change a dose, or suggest they add anything. Adding to those lists is Kade\'s decision on a separate surface. If nothing is listed, say nothing about supplements or recovery tools at all.')
     lines.push('')
   }
 

@@ -541,6 +541,13 @@ const MANUAL_AUTOMATIONS = [
     trigger: 'POST /api/product-waitlist (new row only, silent-fail non-blocking)',
     steps: 2,
   },
+  {
+    id: 'supplement-stack-suggestions',
+    name: 'Supplement Stack Suggestions (coach-triggered, suggests only)',
+    description: 'Reads the client\'s whole file in one clinical-tier pass (foundational synthesis, medications plus the medication analysis, approved bloods, intake domain scores, active RRS recovery state, active nutrition plan, last three check-ins, current and past assignments) and returns a ranked shortlist from the 28-substance Supplement Library, each with a starting tier, a rationale grounded in that client\'s own signals, and a Watch line naming contraindications and medication interactions. Also returns what it considered and ruled out. Sex-specific substances and already-assigned substances are filtered out in code before the model sees them, and any slug it returns outside that candidate set is discarded. The model never states a dose: doses render from the library. Nothing is assigned automatically. Each generation is saved to supplement_suggestions and re-shown on page load, so opening the page costs nothing. Added 2026-08-17.',
+    trigger: 'Manual: click "Suggest a stack" on /dashboard/clients/[id]/supplements',
+    steps: 1,
+  },
   // Terminal-triggered broadcast scripts (single-event launch comms)
   {
     id: 'launch-day-waitlist-email',

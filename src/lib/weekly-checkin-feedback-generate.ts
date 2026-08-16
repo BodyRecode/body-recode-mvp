@@ -16,6 +16,7 @@ import {
   buildFeedbackUserPrompt,
   stripEmDashes,
   findLeakedTerms,
+  type ActiveCareContext,
   type FeedbackCFFSContext,
   type PriorCheckinSummary,
   type PriorFeedbackSummary,
@@ -26,6 +27,10 @@ import { extractFirstJsonObject } from './extract-json'
 import { AI_MODELS } from './ai-models'
 import { currentBlockWeek, parsePrescribedSessions } from './workout-logging'
 import { evaluateRpeCreep } from './rpe-creep-monitor'
+import { getActiveConstraintManifest } from './recovery-state-machine'
+import { RECOVERY_PROTOCOLS } from './recovery-protocols-seed'
+import { SUPPLEMENT_SUBSTANCES } from './supplement-substances-seed'
+import type { NutritionConstraintManifest, TrainingConstraintManifest } from './recovery-doctrine'
 
 export interface GenerateFeedbackSuccess {
   ok: true
@@ -203,6 +208,47 @@ export async function generateFeedbackDraft(
       }
     : null
 
+  // ── What the client is already operating under ──────────────────────────
+  // The RRS constraint governor (Layer 2) plus the two Layer 3 prescription
+  // surfaces. Added 2026-08-17: the response was previously blind to all
+  // three, so it could write "hold all three sessions" while RRS had the
+  // client's training capped, or stay silent about protocols the client can
+  // see in their own portal.
+  const [rrsState, { data: protocolRows }, { data: supplementRows }] = await Promise.all([
+    getActiveConstraintManifest(checkin.client_id),
+    admin
+      .from('recovery_protocol_assignments')
+      .select('protocol_slug, coach_note')
+      .eq('client_id', checkin.client_id)
+      .eq('status', 'active'),
+    admin
+      .from('supplement_assignments')
+      .select('substance_slug, coach_note')
+      .eq('client_id', checkin.client_id)
+      .eq('status', 'active'),
+  ])
+
+  const activeCare: ActiveCareContext = {
+    rrs: rrsState
+      ? {
+          playbookName: rrsState.playbook.name,
+          purpose: rrsState.playbook.purpose,
+          daysActive: rrsState.state.days_active,
+          trainingSummary: describeTrainingConstraints(rrsState.playbook.trainingConstraints),
+          nutritionSummary: describeNutritionConstraints(rrsState.playbook.nutritionConstraints),
+          prohibitions: rrsState.playbook.prohibitions,
+        }
+      : null,
+    assignedProtocols: (protocolRows ?? []).flatMap(r => {
+      const p = RECOVERY_PROTOCOLS.find(x => x.slug === r.protocol_slug)
+      return p ? [{ name: p.name, category: p.category, coachNote: r.coach_note ?? null }] : []
+    }),
+    assignedSupplements: (supplementRows ?? []).flatMap(r => {
+      const s = SUPPLEMENT_SUBSTANCES.find(x => x.slug === r.substance_slug)
+      return s ? [{ name: s.name, coachNote: r.coach_note ?? null }] : []
+    }),
+  }
+
   const priorFeedback: PriorFeedbackSummary[] = (priorFeedbackRows ?? []).map(r => {
     // Supabase types the !inner join as an array or an object depending on
     // inference; normalise both shapes.
@@ -251,6 +297,7 @@ export async function generateFeedbackDraft(
     program: programCtx,
     nutrition: nutritionCtx,
     priorFeedback,
+    activeCare,
     coachNotes: options.coachNotes ?? null,
   })
 
@@ -381,7 +428,12 @@ export async function generateFeedbackDraft(
         )
       : []
 
-    if (leakedTerms.length === 0 && mealMismatches.length === 0 && sessionMismatches.length === 0) {
+    // Invented clock times (2026-08-17). The prompt is never given the
+    // client's prescribed meal or session times, so any time-of-day in the
+    // output was made up and lands as if it were their prescription.
+    const clockTimes = findClockTimes([candidate.interpretation, candidate.reframe ?? '', candidate.next_focus])
+
+    if (leakedTerms.length === 0 && mealMismatches.length === 0 && sessionMismatches.length === 0 && clockTimes.length === 0) {
       return { ok: true, draft: candidate, attempts }
     }
 
@@ -390,6 +442,7 @@ export async function generateFeedbackDraft(
       ...leakedTerms,
       ...mealMismatches.map(m => `meal-count:${m}`),
       ...sessionMismatches.map(m => `session-count:${m}`),
+      ...clockTimes.map(t => `clock-time:${t}`),
     ].map(t => t.toLowerCase())))
 
     if (attempts < MAX_ATTEMPTS) {
@@ -408,11 +461,16 @@ export async function generateFeedbackDraft(
           `Session-count mismatch. Their ACTIVE PROGRAM prescribes ${programCtx.sessionsPerWeek} sessions per week${programCtx.sessionsLoggedThisWeek != null ? ` and they logged ${programCtx.sessionsLoggedThisWeek} this block week` : ''}. The draft used: ${sessionMismatches.map(m => `"${m}"`).join(', ')}. Every session count must be one of those two numbers. If you mean "they missed some", write it without a number.`
         )
       }
+      if (clockTimes.length > 0) {
+        correctionParts.push(
+          `Invented clock times. The draft states these times of day: ${clockTimes.map(t => `"${t}"`).join(', ')}. You were never given this client's prescribed times, so those are made up and would reach the client as their schedule. Remove every one. Say "at your set times" or "the same times each day" instead.`
+        )
+      }
       conversation.push({
         role: 'user',
         content: `${correctionParts.join(' ')} Rewrite the entire JSON object correcting these. Return only the corrected JSON, no commentary.`,
       })
-      lastError = `Leaked: ${leakedTerms.join(', ')}${mealMismatches.length ? `; meal-count: ${mealMismatches.join(', ')}` : ''}${sessionMismatches.length ? `; session-count: ${sessionMismatches.join(', ')}` : ''}`
+      lastError = `Leaked: ${leakedTerms.join(', ')}${mealMismatches.length ? `; meal-count: ${mealMismatches.join(', ')}` : ''}${sessionMismatches.length ? `; session-count: ${sessionMismatches.join(', ')}` : ''}${clockTimes.length ? `; clock-time: ${clockTimes.join(', ')}` : ''}`
     }
   }
 
@@ -422,6 +480,51 @@ export async function generateFeedbackDraft(
     leaks: totalLeaksSeen,
     attempts,
   }
+}
+
+/**
+ * Turn an RRS training constraint manifest into plain statements the prompt
+ * can reason against (2026-08-17).
+ *
+ * The manifest is numeric and coach-facing. The feedback model does not need
+ * the numbers (they are banned from client-facing output anyway) — it needs to
+ * know what the envelope will and will not permit, so next_focus does not ask
+ * for load the system has already taken away.
+ */
+function describeTrainingConstraints(c: TrainingConstraintManifest): string[] {
+  const out: string[] = []
+  if (c.trainingRemovalDays) {
+    out.push(`training is fully paused for ${c.trainingRemovalDays[0]} to ${c.trainingRemovalDays[1]} days. Do NOT write any session-based anchor.`)
+  }
+  if (c.sessionsRemovedPerWeek) {
+    out.push(`${c.sessionsRemovedPerWeek[0]} to ${c.sessionsRemovedPerWeek[1]} sessions are being removed from the week. Do NOT write a "hold all your sessions" anchor.`)
+  }
+  if (c.sessionsPerWeekCap != null) {
+    out.push(`sessions are capped at ${c.sessionsPerWeekCap} per week, below the normal prescription.`)
+  }
+  if (c.loadReductionPct) {
+    out.push(`load is being reduced by ${c.loadReductionPct[0]} to ${c.loadReductionPct[1]} percent. The week is deliberately easier than usual.`)
+  }
+  if (c.sessionDurationPctCap != null) {
+    out.push(`sessions are capped at ${c.sessionDurationPctCap} percent of normal duration.`)
+  }
+  if (c.progressionLocked) out.push('progression is locked. Do not frame the week as building or pushing.')
+  if (c.conditioningBlocked) out.push('conditioning and cardio add-ons are blocked. Do NOT write a walking, running or extra-cardio anchor.')
+  if (c.novelStimulusBlocked) out.push('no new training stimulus. Do not suggest trying anything new.')
+  if (c.testingBlocked) out.push('no testing or output validation.')
+  if (out.length === 0) out.push('no training restriction beyond the standard prescription.')
+  return out
+}
+
+function describeNutritionConstraints(c: NutritionConstraintManifest): string[] {
+  const out: string[] = []
+  if (c.aggressiveDeficitBlocked) out.push('aggressive deficits are blocked. Do NOT write an eating-less or tightening anchor.')
+  if (c.reactiveRestrictionBlocked) out.push('cutting food back because training dropped is blocked. If they mention doing that, it is a misread worth naming.')
+  if (c.fuelRestrictionBlocked) out.push('fasting and fuel restriction are blocked. Do NOT write a fasting-window anchor.')
+  if (c.proteinFloorRequired) out.push('protein must hold at baseline; it cannot drop.')
+  if (c.carbohydrateSupportRequired) out.push('carbohydrate support must stay proportional to training.')
+  if (out.length === 0) out.push('no nutrition restriction beyond the active plan.')
+  return out
 }
 
 const WORD_TO_NUMBER: Record<string, number> = {
@@ -445,6 +548,32 @@ function numberWord(n: number): string {
  * Returns the offending fragments (max 80 chars) for the retry prompt to
  * quote back at the model.
  */
+/**
+ * Find times-of-day in the draft (2026-08-17).
+ *
+ * The prompt is never given the client's prescribed meal or session times, so
+ * every clock time in the output is invented. Amanda W12 shipped "8am,
+ * 12:30pm, 3:30pm, 7pm" against a plan that holds no times at all, which the
+ * client would reasonably read as their schedule.
+ *
+ * Matches "8am", "8 am", "12:30pm", "07:00", "7.30pm". Requires either an
+ * am/pm marker or a colon, so bare counts ("8 to 14 drinks", "4 meals") never
+ * fire.
+ */
+function findClockTimes(texts: string[]): string[] {
+  const hits: string[] = []
+  const pattern = /\b(\d{1,2}[:.]\d{2}\s*(?:am|pm)?|\d{1,2}\s*(?:am|pm))\b/gi
+  for (const text of texts) {
+    if (!text) continue
+    let match: RegExpExecArray | null
+    pattern.lastIndex = 0
+    while ((match = pattern.exec(text)) !== null) {
+      hits.push(match[0].trim())
+    }
+  }
+  return Array.from(new Set(hits))
+}
+
 /**
  * Training twin of findMealCountMismatches (2026-08-17).
  *
