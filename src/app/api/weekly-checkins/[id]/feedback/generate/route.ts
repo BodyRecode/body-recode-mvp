@@ -18,7 +18,7 @@ import { isCoachUser, forbidden } from '@/lib/api-auth'
 export const maxDuration = 300
 
 export async function POST(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id: checkinId } = await params
@@ -28,8 +28,27 @@ export async function POST(
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
   if (!(await isCoachUser(user))) return forbidden()
 
+  // Optional coach steer typed in the Draft with AI box (2026-08-17). Body may
+  // be absent entirely on older clients, so parse defensively.
+  let coachNotes: string | null = null
+  try {
+    const body = (await request.json()) as { coach_notes?: unknown }
+    if (typeof body?.coach_notes === 'string') coachNotes = body.coach_notes.trim() || null
+  } catch {
+    // no body sent, generate with no steer
+  }
+
   const admin = createAdminClient()
-  const result = await generateFeedbackDraft(admin, checkinId)
+
+  // Persist the steer on the check-in so it survives a page reload and is
+  // still there when the coach regenerates. Fire and forget: a failed write
+  // must not block generation.
+  await admin
+    .from('weekly_checkins')
+    .update({ coach_draft_notes: coachNotes })
+    .eq('id', checkinId)
+
+  const result = await generateFeedbackDraft(admin, checkinId, { coachNotes })
 
   if (!result.ok) {
     const status = result.error === 'Check-in not found' || result.error === 'Client not found' ? 404 : 500

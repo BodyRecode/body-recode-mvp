@@ -18,11 +18,14 @@ import {
   findLeakedTerms,
   type FeedbackCFFSContext,
   type PriorCheckinSummary,
+  type PriorFeedbackSummary,
   type ProgramContext,
   type NutritionContext,
 } from './weekly-checkin-feedback-prompt'
 import { extractFirstJsonObject } from './extract-json'
 import { AI_MODELS } from './ai-models'
+import { currentBlockWeek, parsePrescribedSessions } from './workout-logging'
+import { evaluateRpeCreep } from './rpe-creep-monitor'
 
 export interface GenerateFeedbackSuccess {
   ok: true
@@ -41,9 +44,21 @@ export type GenerateFeedbackResult = GenerateFeedbackSuccess | GenerateFeedbackF
 
 const MAX_ATTEMPTS = 3
 
+export interface GenerateFeedbackOptions {
+  /**
+   * Free-text steer the coach typed in the Draft with AI box before clicking
+   * Generate (added 2026-08-17). Rendered as a highest-priority COACH
+   * DIRECTION block at the end of the user prompt. The Inngest auto-response
+   * worker never passes this: it fires on submission, before Kade has looked
+   * at the check-in.
+   */
+  coachNotes?: string | null
+}
+
 export async function generateFeedbackDraft(
   admin: SupabaseClient,
-  checkinId: string
+  checkinId: string,
+  options: GenerateFeedbackOptions = {}
 ): Promise<GenerateFeedbackResult> {
   // ── Pull check-in ──────────────────────────────────────────────────────
   const { data: checkin } = await admin
@@ -56,7 +71,15 @@ export async function generateFeedbackDraft(
   }
 
   // ── Client + intake + CFFS + prior + program in parallel ───────────────
-  const [{ data: client }, { data: intake }, { data: cffsRows }, { data: priorRows }, { data: program }, { data: nutritionPlan }] = await Promise.all([
+  const [
+    { data: client },
+    { data: intake },
+    { data: cffsRows },
+    { data: priorRows },
+    { data: program },
+    { data: nutritionPlan },
+    { data: priorFeedbackRows },
+  ] = await Promise.all([
     admin.from('clients').select('id, name, medications').eq('id', checkin.client_id).maybeSingle(),
     admin
       .from('intakes')
@@ -84,7 +107,7 @@ export async function generateFeedbackDraft(
       .limit(4),
     admin
       .from('programs')
-      .select('block_name, week_duration, generated_at')
+      .select('id, block_name, week_duration, generated_at, training_goal, training_frequency, conditioning, sessions')
       .eq('client_id', checkin.client_id)
       .eq('is_active', true)
       .maybeSingle(),
@@ -94,6 +117,19 @@ export async function generateFeedbackDraft(
       .eq('client_id', checkin.client_id)
       .eq('is_active', true)
       .maybeSingle(),
+    // Prior coach responses, so next_focus can avoid re-prescribing the same
+    // domain week after week (2026-08-17).
+    admin
+      .from('weekly_checkin_feedback')
+      .select('next_focus, created_at, weekly_checkin_id, weekly_checkins!inner(week_number, form_type)')
+      .eq('client_id', checkin.client_id)
+      .neq('weekly_checkin_id', checkinId)
+      // Only responses that already existed when this check-in landed, so a
+      // regenerate on an older week doesn't get told about anchors from weeks
+      // that came after it.
+      .lte('created_at', checkin.submitted_at)
+      .order('created_at', { ascending: false })
+      .limit(3),
   ])
 
   if (!client) {
@@ -122,14 +158,65 @@ export async function generateFeedbackDraft(
     responses: (r.responses ?? {}) as Record<string, string>,
   }))
 
+  // ── Training context ────────────────────────────────────────────────────
+  // Pre-2026-08-17 this was block name only, while the nutrition block carried
+  // meal frequency, protein, calories and priorities. The imbalance pushed
+  // next_focus to nutrition nearly every week because it was the only domain
+  // with a concrete prescription to prescribe against. Fill in the training
+  // side: prescribed sessions, week-in-block, what was actually logged, and
+  // the effort-drift read.
+  const blockWeek = program?.generated_at ? currentBlockWeek(program.generated_at) : null
+
+  let sessionsLoggedThisWeek: number | null = null
+  let rpeCreepSummary: string | null = null
+  if (program?.id && blockWeek) {
+    const [{ count }, creep] = await Promise.all([
+      admin
+        .from('session_completions')
+        .select('id', { count: 'exact', head: true })
+        .eq('client_id', checkin.client_id)
+        .eq('program_id', program.id)
+        .eq('week_number_in_block', blockWeek),
+      evaluateRpeCreep(admin as never, checkin.client_id, program.id, blockWeek),
+    ])
+    sessionsLoggedThisWeek = count ?? null
+    if (creep.severity !== 'none' && creep.findings.length > 0) {
+      const worst = creep.findings.slice(0, 3).map(f => `${f.exerciseName} running ${f.delta > 0 ? '+' : ''}${f.delta} above prescribed effort`)
+      rpeCreepSummary = `${creep.severity} (${creep.creepingCount} exercise${creep.creepingCount === 1 ? '' : 's'} drifting): ${worst.join('; ')}`
+    }
+  }
+
   const programCtx: ProgramContext | null = program
     ? {
         blockName: program.block_name ?? null,
-        weekInBlock: null,
+        weekInBlock: blockWeek,
         weekDuration: program.week_duration ?? null,
-        rpeCreepSummary: null,
+        rpeCreepSummary,
+        trainingGoal: program.training_goal ?? null,
+        sessionsPerWeek: program.training_frequency ?? null,
+        conditioning: program.conditioning ?? null,
+        // day_label already reads "Monday — Lower Stability Foundation".
+        sessionDays: parsePrescribedSessions(program.sessions)
+          .map(s => s.day_label)
+          .filter(Boolean),
+        sessionsLoggedThisWeek,
       }
     : null
+
+  const priorFeedback: PriorFeedbackSummary[] = (priorFeedbackRows ?? []).map(r => {
+    // Supabase types the !inner join as an array or an object depending on
+    // inference; normalise both shapes.
+    const joined = r.weekly_checkins as unknown
+    const row = (Array.isArray(joined) ? joined[0] : joined) as
+      | { week_number?: number; form_type?: string }
+      | null
+      | undefined
+    return {
+      weekNumber: row?.week_number ?? null,
+      formType: (row?.form_type as 'A' | 'B' | undefined) ?? null,
+      nextFocus: r.next_focus,
+    }
+  })
 
   const nutritionCtx: NutritionContext | null = nutritionPlan
     ? {
@@ -163,6 +250,8 @@ export async function generateFeedbackDraft(
     priorCheckins,
     program: programCtx,
     nutrition: nutritionCtx,
+    priorFeedback,
+    coachNotes: options.coachNotes ?? null,
   })
 
   if (!process.env.ANTHROPIC_API_KEY) {
@@ -276,7 +365,23 @@ export async function generateFeedbackDraft(
         )
       : []
 
-    if (leakedTerms.length === 0 && mealMismatches.length === 0) {
+    // Session-count grounding, the training-side twin of the meal-count check
+    // above (2026-08-17). Once training became a first-class domain in the
+    // prompt, drafts started quoting session counts, and the first test draft
+    // said "four programmed sessions" against a 3-session program while
+    // next_focus in the same draft correctly said three.
+    //
+    // A count is legitimate if it matches the prescription OR what the client
+    // actually logged this block week. Anything else is invented.
+    const sessionMismatches = programCtx?.sessionsPerWeek != null
+      ? findSessionCountMismatches(
+          [candidate.interpretation, candidate.reframe ?? '', candidate.next_focus],
+          programCtx.sessionsPerWeek,
+          programCtx.sessionsLoggedThisWeek
+        )
+      : []
+
+    if (leakedTerms.length === 0 && mealMismatches.length === 0 && sessionMismatches.length === 0) {
       return { ok: true, draft: candidate, attempts }
     }
 
@@ -284,6 +389,7 @@ export async function generateFeedbackDraft(
       ...totalLeaksSeen,
       ...leakedTerms,
       ...mealMismatches.map(m => `meal-count:${m}`),
+      ...sessionMismatches.map(m => `session-count:${m}`),
     ].map(t => t.toLowerCase())))
 
     if (attempts < MAX_ATTEMPTS) {
@@ -297,11 +403,16 @@ export async function generateFeedbackDraft(
           `Meal-count mismatch. Their ACTIVE NUTRITION PLAN prescribes ${nutritionCtx.mealFrequency} meals per day. The draft used: ${mealMismatches.map(m => `"${m}"`).join(', ')}. Every reference must say "${numberWord(nutritionCtx.mealFrequency)} meals" (or "${nutritionCtx.mealFrequency} meals") with NO snack split. Do NOT write "three meals plus one snack" — the plan calls all four eating windows meals.`
         )
       }
+      if (sessionMismatches.length > 0 && programCtx?.sessionsPerWeek != null) {
+        correctionParts.push(
+          `Session-count mismatch. Their ACTIVE PROGRAM prescribes ${programCtx.sessionsPerWeek} sessions per week${programCtx.sessionsLoggedThisWeek != null ? ` and they logged ${programCtx.sessionsLoggedThisWeek} this block week` : ''}. The draft used: ${sessionMismatches.map(m => `"${m}"`).join(', ')}. Every session count must be one of those two numbers. If you mean "they missed some", write it without a number.`
+        )
+      }
       conversation.push({
         role: 'user',
         content: `${correctionParts.join(' ')} Rewrite the entire JSON object correcting these. Return only the corrected JSON, no commentary.`,
       })
-      lastError = `Leaked: ${leakedTerms.join(', ')}${mealMismatches.length ? `; meal-count: ${mealMismatches.join(', ')}` : ''}`
+      lastError = `Leaked: ${leakedTerms.join(', ')}${mealMismatches.length ? `; meal-count: ${mealMismatches.join(', ')}` : ''}${sessionMismatches.length ? `; session-count: ${sessionMismatches.join(', ')}` : ''}`
     }
   }
 
@@ -334,6 +445,45 @@ function numberWord(n: number): string {
  * Returns the offending fragments (max 80 chars) for the retry prompt to
  * quote back at the model.
  */
+/**
+ * Training twin of findMealCountMismatches (2026-08-17).
+ *
+ * Scans for "(N) sessions" / "(N) workouts" / "(N) gym sessions" and flags any
+ * count that is neither the prescribed weekly frequency nor the number the
+ * client actually logged this block week. Those are the only two numbers the
+ * draft has evidence for; anything else is the model filling a gap.
+ *
+ * Deliberately does NOT match "runs", "walks" or other client-reported
+ * activity: those counts come from the client's own free text and the program
+ * has no prescription to check them against.
+ */
+function findSessionCountMismatches(
+  texts: string[],
+  prescribedPerWeek: number,
+  loggedThisWeek: number | null
+): string[] {
+  const allowed = new Set<number>([prescribedPerWeek])
+  if (loggedThisWeek != null) allowed.add(loggedThisWeek)
+
+  const mismatches: string[] = []
+  const pattern = /\b(\d{1,2}|one|two|three|four|five|six|seven|eight|nine|ten)\s+(?:\w+\s+){0,2}?(sessions?|workouts?)\b/gi
+  for (const text of texts) {
+    if (!text) continue
+    let match: RegExpExecArray | null
+    pattern.lastIndex = 0
+    while ((match = pattern.exec(text)) !== null) {
+      const numToken = match[1].toLowerCase()
+      const n = WORD_TO_NUMBER[numToken] ?? Number(numToken)
+      if (!Number.isFinite(n)) continue
+      if (allowed.has(n)) continue
+      const start = Math.max(0, match.index - 20)
+      const end = Math.min(text.length, match.index + match[0].length + 20)
+      mismatches.push(text.slice(start, end).trim())
+    }
+  }
+  return Array.from(new Set(mismatches))
+}
+
 function findMealCountMismatches(texts: string[], expectedMeals: number): string[] {
   const mismatches: string[] = []
   // Matches: "3 meals", "three meals", "3 snacks", "two snacks" (case-insensitive)

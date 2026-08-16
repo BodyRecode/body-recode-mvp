@@ -35,6 +35,7 @@ export default function CheckinFeedbackForm({
   autoSendScheduledAt,
   autoResponseFailedReason,
   autoResponseAttemptedAt,
+  coachDraftNotes,
 }: {
   checkinId: string
   existing: ExistingFeedback | null
@@ -45,6 +46,8 @@ export default function CheckinFeedbackForm({
   autoSendScheduledAt: string | null
   autoResponseFailedReason: string | null
   autoResponseAttemptedAt: string | null
+  /** Steer the coach typed last time they generated. Persisted on the check-in. */
+  coachDraftNotes: string | null
 }) {
   const router = useRouter()
   // Local copy of the saved feedback so we can flip back to view mode without
@@ -57,6 +60,7 @@ export default function CheckinFeedbackForm({
   const [interpretation, setInterpretation] = useState(existingFromServer?.interpretation ?? '')
   const [reframe, setReframe] = useState(existingFromServer?.reframe ?? '')
   const [nextFocus, setNextFocus] = useState(existingFromServer?.next_focus ?? '')
+  const [coachNotes, setCoachNotes] = useState(coachDraftNotes ?? '')
   const [pending, startTransition] = useTransition()
   const [generating, setGenerating] = useState(false)
   const [skipping, setSkipping] = useState(false)
@@ -130,6 +134,8 @@ export default function CheckinFeedbackForm({
     try {
       const res = await fetch(`/api/weekly-checkins/${checkinId}/feedback/generate`, {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ coach_notes: coachNotes.trim() || null }),
       })
       const json = await res.json()
       if (!res.ok) {
@@ -140,7 +146,11 @@ export default function CheckinFeedbackForm({
       setInterpretation(draft.interpretation ?? '')
       setReframe(draft.reframe ?? '')
       setNextFocus(draft.next_focus ?? '')
-      setStatus('Draft generated. Review, edit if needed, then click Save and email to approve.')
+      setStatus(
+        coachNotes.trim()
+          ? 'Draft generated using your notes. Review, edit if needed, then click Save and email to approve.'
+          : 'Draft generated. Review, edit if needed, then click Save and email to approve.'
+      )
     } catch (err) {
       setError((err as Error).message ?? 'Generation failed')
     } finally {
@@ -378,19 +388,39 @@ export default function CheckinFeedbackForm({
         Three fields go to {clientFirstName} as a dark-template email and appear under this check-in in their portal. Reframe is optional, use it when {clientFirstName} is misreading their own signal.
       </p>
 
-      <div className="mb-5 flex items-center justify-between gap-3 rounded-lg border border-stone-200 bg-[#FFFFFF] px-4 py-3">
-        <div className="min-w-0">
-          <p className="text-xs font-bold uppercase tracking-widest text-blue-500">Draft with AI</p>
-          <p className="text-xs text-stone-500 mt-1 leading-relaxed">Pulls this check-in, the synthesis, prior check-ins, and active program. You review and approve before anything sends.</p>
+      <div className="mb-5 rounded-lg border border-stone-200 bg-[#FFFFFF] px-4 py-3">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-xs font-bold uppercase tracking-widest text-blue-500">Draft with AI</p>
+            <p className="text-xs text-stone-500 mt-1 leading-relaxed">
+              Pulls this check-in (including the training and nutrition answers), the synthesis, the last 4 check-ins, the active program and nutrition plan, and the last 3 responses {clientFirstName} was sent. You review and approve before anything sends.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={generateDraft}
+            disabled={generating || pending}
+            className="shrink-0 px-3 py-2 bg-blue-50 border border-blue-300 hover:bg-blue-100 text-blue-700 text-xs font-bold rounded-lg transition-colors disabled:opacity-50"
+          >
+            {generating ? 'Generating…' : 'Generate response'}
+          </button>
         </div>
-        <button
-          type="button"
-          onClick={generateDraft}
-          disabled={generating || pending}
-          className="shrink-0 px-3 py-2 bg-blue-50 border border-blue-300 hover:bg-blue-100 text-blue-700 text-xs font-bold rounded-lg transition-colors disabled:opacity-50"
-        >
-          {generating ? 'Generating…' : 'Generate response'}
-        </button>
+
+        <div className="mt-3 pt-3 border-t border-stone-200">
+          <label className="block text-[11px] font-bold uppercase tracking-widest text-stone-600 mb-1">
+            Add details for the AI (optional)
+          </label>
+          <p className="text-xs text-stone-500 mb-2 leading-relaxed">
+            Anything you know that the check-in does not show, or what you want this response to land on. Whatever you name here gets addressed, and if you name a focus it becomes the &ldquo;this week, hold this&rdquo; anchor. Saved with the check-in, so it is still here next time you generate.
+          </p>
+          <textarea
+            value={coachNotes}
+            onChange={e => setCoachNotes(e.target.value)}
+            rows={3}
+            placeholder={`e.g. He's added 3 runs a week for a half marathon in October. Don't make this about food again, the anchor should be protecting his three gym sessions around the running load. Mention he's said "feeling stronger" two weeks running.`}
+            className="w-full bg-stone-50 border border-stone-200 rounded-lg p-3 text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-blue-500/60 resize-y"
+          />
+        </div>
       </div>
 
       <div className="space-y-5">

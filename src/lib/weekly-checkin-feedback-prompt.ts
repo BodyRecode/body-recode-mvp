@@ -1,4 +1,4 @@
-import { FORM_A_SECTIONS, FORM_B_SECTIONS } from './weekly-checkin-questions'
+import { getCheckinSections } from './weekly-checkin-questions'
 import { partnerVoiceTone, partnerBannedPhrases, partnerCheckinCoachingGuidance } from './doctrine-parameters'
 
 /**
@@ -45,6 +45,42 @@ export interface ProgramContext {
   weekInBlock: number | null
   weekDuration: number | null
   rpeCreepSummary: string | null
+  /**
+   * Training-side prescription + logged reality (added 2026-08-17). Before
+   * this, ACTIVE PROGRAM carried a block name and nothing else, while ACTIVE
+   * NUTRITION PLAN carried meal frequency, protein, calorie band and key
+   * priorities. The imbalance was structural: the model had something
+   * concrete to prescribe against on nutrition and nothing on training, so
+   * next_focus defaulted to eating almost every week. These fields give
+   * training equal standing.
+   */
+  trainingGoal: string | null
+  sessionsPerWeek: number | null
+  conditioning: string | null
+  /**
+   * Day label + session name for each prescribed session, e.g.
+   * "Monday: Lower Stability Foundation". Derived from programs.sessions.
+   *
+   * Deliberately NOT programs.weekly_pattern_summary: that column holds the
+   * coach-facing doctrine-clamp log (RPE ceilings, working-set floors, tier
+   * names) and putting it in the prompt invites exactly the internal
+   * terminology the banned-terms scan exists to keep out.
+   */
+  sessionDays: string[]
+  /** Sessions logged in the current block week vs prescribed. */
+  sessionsLoggedThisWeek: number | null
+}
+
+/**
+ * The last few coach responses this client received, most recent first.
+ * Passed in so next_focus can avoid re-prescribing the same anchor (and the
+ * same domain) week after week, and so interpretation can close the loop on
+ * what the client was asked to hold last week.
+ */
+export interface PriorFeedbackSummary {
+  weekNumber: number | null
+  formType: 'A' | 'B' | null
+  nextFocus: string
 }
 
 /**
@@ -172,6 +208,13 @@ THREE FIELDS YOU PRODUCE:
        - Hold this discipline even when the foundational synthesis says something strongly. The synthesis is reference, not licence to declare a pattern from one check-in.
        - From [[feedback_weekly_checkin_voice]] rule 3: a single-week language SHIFT (e.g. eating moves from "mostly manageable" to "easy and predictable") is interesting but it is one data point. Do not elevate it to the headline. Wait for trajectory.
 
+   - WHOLE-PICTURE RULE (added 2026-08-17). The check-in captures five domains: recovery and sleep, capacity and load, training, nutrition, and alcohol. Interpretation must read the WEEK, not one domain of it.
+       Before writing, list to yourself what each domain did this week. Then write the read across the domains that actually moved or are actually holding. Naming what is holding is as much a part of the read as naming what is drifting.
+       TRAINING IS NOT OPTIONAL. When the check-in contains training answers (training adherence, how training felt, training direction, training notes), training MUST appear in the interpretation. It is the domain most often skipped and skipping it is the single most common failure of this generator. A week where the client completed every session and is getting stronger is a finding, not filler: say it.
+       Free-text the client wrote in the training or nutrition notes box carries the same weight as free-text in the reflective sections. If they used it to tell you something about their week (an event they are training for, a plan they are struggling with, a sore joint, an added activity), that is signal and it belongs in the read.
+       ADDED LOAD OUTSIDE THE PROGRAM. If the client reports training the program is not prescribing (extra runs, a race they are preparing for, sport, a second training system), name it as load. It changes what recovery, appetite and capacity mean this week. Do not silently ignore it because it is not in the program.
+       Do not write a response that reads as a nutrition response when nutrition was one of five things that happened.
+
    - Stay strictly inside THIS field. Do not give programming directives, nutrition directives, or "keep doing X" instructions about other domains. Those belong in their own systems, not in the interpretation.
    - 130-210 words. Count your words before finalising. If over 210, cut. (The response should feel considered and complete, not clipped.)
    - PARAGRAPHING: 2 to 3 short paragraphs, separated by a blank line (two consecutive newline characters: \\n\\n inside the JSON string). Each paragraph 2 to 4 sentences. One huge wall-of-text paragraph is not acceptable. Break wherever the focus shifts, e.g. "what's drifting" / "what's holding" / "what to make of it" each get their own paragraph.
@@ -214,10 +257,23 @@ THREE FIELDS YOU PRODUCE:
    - ONE behavioral anchor for the coming week. Not a list. Not "try harder."
    - Must be specific enough to do, generic enough to fit a real week the client doesn't control.
 
+   - DOMAIN-SELECTION RULE (added 2026-08-17). Pick the domain BEFORE you write the anchor, and pick it on evidence.
+       The candidate domains, all equally eligible:
+         a. Training execution — sessions completed vs prescribed, session quality, effort drift, load added outside the program.
+         b. Recovery and sleep — sleep consistency, recovery rating, wind-down, rest days.
+         c. Capacity and load management — what is competing for the client's week, decompression, work and life load.
+         d. Nutrition rhythm — meal timing, meal count, protein anchor, plan adherence.
+         e. Alcohol — only when it has meaningfully diverged from baseline this week.
+       Choose the domain where the signal is weakest OR where the named risk is most exposed this week. Then write the anchor inside that domain.
+       NUTRITION IS NOT THE DEFAULT. It is the domain with the most numbers attached, which makes it the easiest to prescribe against. That is not a reason to pick it. If you land on nutrition, you must be able to point at the specific answer in THIS check-in that makes eating the weakest link. If you cannot, pick a different domain.
+       NO-REPEAT RULE. Check "WHAT THIS CLIENT WAS ALREADY ASKED TO HOLD" in the context. If the last two anchors were in the same domain, and that domain is not still plainly the weakest signal, prescribe in a different domain this week. A client who receives an eating anchor five weeks running stops reading them.
+       TRAINING ANCHORS ARE LEGITIMATE. Session count held at the prescribed number, one session protected in the week it usually gets dropped, a rest day placed after the hardest session, capping added outside-the-program work at a stated amount. These are concrete, they are behavioural, and they satisfy this field. Use the ACTIVE PROGRAM numbers verbatim exactly as you would use the meal count.
+
    - PRESCRIBE-AGAINST-CFFS-RISK RULE (strengthened 2026-06-08, from [[feedback_weekly_checkin_voice]] rule 4).
        next_focus MUST target a "risk_flags_and_watch_items" or "capacity_constraints_and_guardrails" item from the CFFS that current signals are touching. The anchor is the COACHING MOVE against the named structural risk, not an observation of any signal.
        Whichever CFFS risk the reframe (if present) named — next_focus prescribes against it.
        If reframe is null, next_focus prescribes against the CFFS risk that the current check-in's WEAKEST signal is touching.
+       HOW THIS RECONCILES WITH THE DOMAIN-SELECTION RULE: the domain rule chooses WHERE the anchor lands, the CFFS chooses WHAT it is defending against. Run them together. If the weakest signal this week sits in a domain the CFFS does not name, still prescribe there, and frame the anchor as protecting the nearest structural risk the CFFS does name. Never let "the CFFS only talks about eating" force a fifth consecutive eating anchor.
 
    - STRENGTH-PROHIBITION (strict).
        It is FORBIDDEN to prescribe against a signal that has been CONSISTENT across 3+ check-ins (i.e. a structural strength). Sleep that has been "consistent within ~1 hour" for 5 weeks straight is a strength; prescribing "hold your sleep schedule" wastes the field. The client is already doing it.
@@ -232,6 +288,11 @@ THREE FIELDS YOU PRODUCE:
        Worked failures: Ruby-Cate W6 and W7 next_focus prescribed "three anchor times" / "the same three meals you've been hitting" when her active plan was 4 meals. Amanda W7 next_focus said "three meals plus one snack" when her active plan is also 4 meals. Both times the coach had to correct before send.
        If ACTIVE NUTRITION PLAN is absent (no plan on file), do NOT write a meal-count anchor in any field. Pick a different lever (sleep timing, training session count, walk frequency, alcohol cap, etc.).
        Same logic applies to protein anchor, calorie band, and any other prescribed metric: if it appears anywhere in your output, match the plan number exactly.
+
+   - TRAINING-PRESCRIPTION GROUNDING (added 2026-08-17). The same discipline, applied to training. Rule covers ALL THREE FIELDS.
+       Any reference to how often the client trains MUST use ACTIVE PROGRAM.sessions-per-week verbatim. Never invent a session count, never infer one from what they logged.
+       Session counts, rest-day placement, and "protect the session you usually drop" are all allowed and are NOT programming directives. What stays banned is the prescription itself: sets, reps, loads, percentages, tempo, RPE numbers, and named exercises. You may say "hold all three sessions". You may not say "drop the squat to 3 sets of 8".
+       If ACTIVE PROGRAM is absent, do NOT write a session-count anchor in any field.
 
    - 40-100 words. Direct, second person. Count your words. If over 100, cut.
    - PARAGRAPHING: 1 short paragraph is usually right. If you genuinely need to separate "the anchor" from "why it matters", use 2 paragraphs separated by blank line (\\n\\n). Never one big block.
@@ -269,7 +330,9 @@ PROHIBITED (matches the Foundational, Program, and Nutrition Reading bans plus t
 
 SELF-AUDIT BEFORE RETURNING JSON (mandatory final step):
 
-Before returning your JSON, walk through these six questions in order. If any fails, redraft that field before returning.
+Before returning your JSON, walk through these questions in order. If any fails, redraft that field before returning.
+
+0. COACH DIRECTION. If a "COACH DIRECTION FOR THIS DRAFT" block is present in the context, is every point in it visibly addressed in the output? If Kade named a domain or a focus, did next_focus land there? If any point is unaddressed, redraft.
 
 1. INTERPRETATION — trajectory arc. If 3+ prior check-ins of the same form type exist, does interpretation OPEN with the numeric trajectory of the most-moved signal? If not, rewrite the opening.
 
@@ -283,7 +346,15 @@ Before returning your JSON, walk through these six questions in order. If any fa
 
 6. NEXT_FOCUS — concrete behavioral anchor. Is next_focus a thing the client DOES at a specific cadence ("hold X at Y times per day"), or is it a passive watch ("notice when Z shows up")? If passive, rewrite to active.
 
-A draft that fails any of these six audits is NOT a finished draft. Iterate inside this response until all six pass, then return the JSON.
+7. INTERPRETATION — whole picture. Name every domain the check-in answered: recovery and sleep, capacity and load, training, nutrition, alcohol. Does the interpretation account for the ones that moved and the ones that held? If training answers exist and training is not mentioned anywhere in the interpretation, the draft FAILS. Rewrite it in.
+
+8. INTERPRETATION — outside load. Did the client report any training, sport, event prep, or activity the program does not prescribe? If yes, is it named as load in the read? If not, add it.
+
+9. NEXT_FOCUS — domain justified. Say which of the five domains the anchor sits in and the single answer from THIS check-in that makes it the weakest link. If you cannot name that answer, you picked the domain out of habit. Pick again.
+
+10. NEXT_FOCUS — not a repeat. Compare against the prior anchors in the context. Same domain two weeks running? Only acceptable if that domain is still plainly the weakest signal AND the anchor itself has changed. Otherwise pick a different domain.
+
+A draft that fails any of these audits is NOT a finished draft. Iterate inside this response until all pass, then return the JSON.
 
 ${renderPartnerTuningSection()}OUTPUT FORMAT:
 Return ONLY a single JSON object, no preamble, no markdown fences. Schema:
@@ -334,8 +405,17 @@ export function buildFeedbackUserPrompt(input: {
   priorCheckins: PriorCheckinSummary[]
   program: ProgramContext | null
   nutrition: NutritionContext | null
+  priorFeedback?: PriorFeedbackSummary[]
+  /**
+   * Free-text steer typed by the coach in the Draft with AI box before
+   * clicking Generate. Highest-priority instruction in the whole user
+   * message short of the safety/voice rules. Null when the coach gave none.
+   */
+  coachNotes?: string | null
 }): string {
   const { client, cffs, thisCheckin, priorCheckins, program, nutrition } = input
+  const priorFeedback = input.priorFeedback ?? []
+  const coachNotes = input.coachNotes?.trim() || null
 
   const lines: string[] = []
 
@@ -395,13 +475,29 @@ export function buildFeedbackUserPrompt(input: {
 
   if (program) {
     lines.push('ACTIVE PROGRAM')
+    lines.push('Authoritative training prescription. This carries the same weight as the nutrition plan below. Any training anchor you write MUST match these numbers. Never invent a session count.')
     if (program.blockName) lines.push(`Block: ${program.blockName}`)
+    if (program.trainingGoal) lines.push(`Training goal: ${program.trainingGoal}`)
+    if (program.sessionsPerWeek != null) lines.push(`Sessions per week (PRESCRIBED): ${program.sessionsPerWeek}`)
     if (program.weekInBlock && program.weekDuration) {
       lines.push(`Week-in-block: ${program.weekInBlock} of ${program.weekDuration}`)
     }
-    if (program.rpeCreepSummary) {
-      lines.push(`RPE creep monitor: ${program.rpeCreepSummary}`)
+    if (program.sessionsLoggedThisWeek != null) {
+      lines.push(`Sessions logged in the current block week: ${program.sessionsLoggedThisWeek}`)
     }
+    if (program.sessionDays.length > 0) {
+      lines.push(`Prescribed session days: ${program.sessionDays.join(' | ')}`)
+    }
+    if (program.conditioning) {
+      lines.push('Conditioning prescription (this is what the program says about running, walking and other cardio. If the client reports doing more than this, that is added load and the read must account for it):')
+      lines.push(program.conditioning)
+    }
+    if (program.rpeCreepSummary) {
+      lines.push(`Effort-drift monitor (coach-facing, translate before use): ${program.rpeCreepSummary}`)
+    }
+    lines.push('')
+  } else {
+    lines.push('ACTIVE PROGRAM: none on file. Do NOT write a session-count anchor. Choose a lever the client can act on without a program.')
     lines.push('')
   }
 
@@ -443,17 +539,59 @@ export function buildFeedbackUserPrompt(input: {
     lines.push('')
   }
 
+  if (priorFeedback.length > 0) {
+    lines.push('WHAT THIS CLIENT WAS ALREADY ASKED TO HOLD (most recent first)')
+    lines.push('These are the previous "This week, hold this" anchors. Do NOT hand back the same anchor or the same domain again unless that domain is still clearly the weakest signal this week. If you do repeat a domain, you must say why it is being held for another week and change what the anchor asks for.')
+    for (const f of priorFeedback) {
+      const label = f.weekNumber != null ? `Week ${f.weekNumber}${f.formType ? ` Form ${f.formType}` : ''}` : 'Previous'
+      lines.push(`--- ${label}: ${f.nextFocus}`)
+    }
+    lines.push('')
+  }
+
   lines.push('TASK')
   lines.push(`Draft the three-field coach response for ${client.firstName} based on the check-in and context above. Return JSON only.`)
+
+  if (coachNotes) {
+    lines.push('')
+    lines.push('COACH DIRECTION FOR THIS DRAFT (highest priority)')
+    lines.push('Kade typed the following before asking for this draft. It reflects context he holds that is not in the data above (what he saw in a session, what he has already decided, what he wants this response to land). Treat it as an instruction, not as a suggestion.')
+    lines.push('Rules for applying it:')
+    lines.push('  - Every point he raises must be visibly addressed somewhere in the three fields.')
+    lines.push('  - If he names a domain or a focus, that is the domain next_focus prescribes against, overriding the weakest-signal default below.')
+    lines.push('  - If he states a fact about the client, treat it as true even where the check-in data does not show it.')
+    lines.push('  - It does NOT override voice discipline, banned client-facing terminology, the em-dash ban, or the prescription-grounding rules. If his direction conflicts with a prescribed number in the active plan, follow the plan number and carry his intent in the wording.')
+    lines.push('Direction:')
+    lines.push(coachNotes)
+  }
 
   return lines.join('\n')
 }
 
+/**
+ * Render a check-in's answers for the prompt.
+ *
+ * 2026-08-17 BUGFIX: this used to walk FORM_A_SECTIONS / FORM_B_SECTIONS only,
+ * which are the reflective sections. The Training and Nutrition review
+ * sections (`training_adherence`, `training_signal`, `training_direction`,
+ * `training_notes`, `nutrition_*`) are appended by `getCheckinSections` and
+ * were therefore NEVER shown to the model. Every draft was written blind to
+ * whether the client trained, how training felt, and what they wrote in the
+ * training free-text box. That is why drafts skewed nutrition: the active
+ * nutrition plan was in context but the training answers were not.
+ *
+ * Caught on Cristobal W5 Form B (2026-08-09), where he wrote that he was
+ * adding three runs a week for a half marathon and the draft never mentioned
+ * training at all.
+ *
+ * `includeNutrition: true` is always safe here because unanswered questions
+ * are filtered out below.
+ */
 function renderCheckinResponses(
   formType: 'A' | 'B',
   responses: Record<string, string>
 ): string {
-  const sections = formType === 'A' ? FORM_A_SECTIONS : FORM_B_SECTIONS
+  const sections = getCheckinSections(formType, { includeNutrition: true })
   const out: string[] = []
   for (const section of sections) {
     const answered = section.questions.filter(q => (responses[q.id] ?? '').toString().trim())

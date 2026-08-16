@@ -87,9 +87,14 @@ export function findLeakedTerms(text: string): string[] {
  * every client-facing surface (see [[feedback_no_em_dashes]]). Lives here
  * alongside findLeakedTerms because every generator that uses one also
  * uses the other.
+ *
+ * 2026-08-17: absorb the whitespace either side of the dash. The old
+ * `/—/g` left `"recovery is 4 — recovering well"` as `"4 ,  recovering well"`
+ * (space before the comma, two spaces after), which shipped to clients in
+ * check-in responses.
  */
 export function stripEmDashes<T>(value: T): T {
-  if (typeof value === 'string') return value.replace(/—/g, ', ') as T
+  if (typeof value === 'string') return value.replace(/[ \t]*—[ \t]*/g, ', ') as T
   if (Array.isArray(value)) return value.map(stripEmDashes) as T
   if (value && typeof value === 'object') {
     return Object.fromEntries(

@@ -1,7 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { FORM_A_SECTIONS, FORM_B_SECTIONS } from '@/lib/weekly-checkin-questions'
+import { getCheckinSections } from '@/lib/weekly-checkin-questions'
 import CheckinFeedbackForm from './feedback-form'
 
 export default async function CheckInDetailPage({
@@ -27,7 +27,7 @@ export default async function CheckInDetailPage({
 
   const { data: checkin } = await admin
     .from('weekly_checkins')
-    .select('id, responses, submitted_at, coach_skipped_at, coach_skip_reason, auto_response_attempted_at, auto_response_failure_reason')
+    .select('id, responses, submitted_at, coach_skipped_at, coach_skip_reason, auto_response_attempted_at, auto_response_failure_reason, coach_draft_notes')
     .eq('client_id', id)
     .eq('week_number', weekNumber)
     .eq('form_type', formType)
@@ -41,7 +41,10 @@ export default async function CheckInDetailPage({
     .eq('weekly_checkin_id', checkin.id)
     .maybeSingle()
 
-  const sections = formType === 'A' ? FORM_A_SECTIONS : FORM_B_SECTIONS
+  // Include the Training + Nutrition review sections. This page used to render
+  // the reflective sections only, so the coach never saw the training or
+  // nutrition adherence answers the client submitted (2026-08-17).
+  const sections = getCheckinSections(formType, { includeNutrition: true })
   const responses = checkin.responses as Record<string, string>
 
   const submittedAt = new Date(checkin.submitted_at).toLocaleString('en-AU', {
@@ -87,6 +90,7 @@ export default async function CheckInDetailPage({
             autoSendScheduledAt={feedback?.auto_send_scheduled_at ?? null}
             autoResponseFailedReason={checkin.auto_response_failure_reason ?? null}
             autoResponseAttemptedAt={checkin.auto_response_attempted_at ?? null}
+            coachDraftNotes={checkin.coach_draft_notes ?? null}
           />
 
           {sections.map(section => {
