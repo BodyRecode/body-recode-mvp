@@ -23,6 +23,38 @@
  * The `sbst_action` field on each state below carries the SBST-specific
  * instruction. UI renders it as a distinct alert alongside the general
  * protocol suggestions.
+ *
+ * ── DOCTRINE CORRECTION 2026-08-17: face-only cold is not whole-body cold ──
+ *
+ * This table originally banned `face-ice-immersion` in ns_overload,
+ * sleep_disruption, post_diet and burnout_return, alongside cold plunge,
+ * cryo, cold shower and contrast. That grouped it by CATEGORY (it is filed
+ * under `cold`) rather than by MECHANISM, and the mechanisms are opposite.
+ *
+ * Whole-body cold is a sympathetic stressor: noradrenaline, alertness,
+ * voluntary discomfort. Face-only cold triggers the mammalian dive reflex via
+ * the trigeminal nerve, which slows heart rate and RAISES vagal tone. The
+ * library's own entry says so verbatim: "shifts autonomic balance toward
+ * parasympathetic... without whole-body cold stress", and its coach doctrine
+ * calls it "the fastest parasympathetic lever available".
+ *
+ * So the four states that demand parasympathetic-only were the four banning
+ * the single best parasympathetic tool in the library. ns_overload's own
+ * rationale read "Parasympathetic-only, no additional stimulation" while
+ * excluding it.
+ *
+ * Corrected: removed from all four bans, and added to the suggested set for
+ * ns_overload, burnout_return and sleep_disruption. sleep_disruption carries a
+ * MORNING ONLY qualifier, because the dive reflex is fine but an evening ice
+ * bowl is the wrong light and arousal context for a disrupted sleep phase.
+ * post_diet permits it without preferring it.
+ *
+ * Whole-body cold remains banned in all four. Nothing else changed.
+ *
+ * Raised by Kade, who uses it as his own morning reset and asked why the
+ * engine was treating it as a stressor. Logged as a correction to bring the
+ * table in line with already-locked library doctrine, not as a new claim, so
+ * it did not need the [[project_doctrine_governance_rule]] promotion gate.
  */
 
 import type { RecoveryPlaybookId } from './recovery-doctrine'
@@ -59,16 +91,16 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
     suggested_protocol_slugs: [
       'deload-week',
       'breathwork-physiological-sigh',
+      'face-ice-immersion',
       'magnesium-bath',
       'breathwork-coherent',
     ],
     sbst_action: 'remove',
-    rationale: 'Nervous system is overloaded. Parasympathetic-only, no additional stimulation. SBST must be removed per 13D_16 sec 15.',
+    rationale: 'Nervous system is overloaded. Parasympathetic-only, no additional stimulation. Face-only cold IS permitted and preferred here: the trigeminal dive reflex raises vagal tone rather than adding sympathetic load. Whole-body cold stays out. SBST must be removed per 13D_16 sec 15.',
     do_not_suggest: [
       'cold-plunge-extended',
       'cold-shower',
       'cryo-chamber',
-      'face-ice-immersion',
       'contrast-shower',
       'contrast-pool',
       'breathwork-wim-hof',
@@ -117,13 +149,13 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
       'sleep-debt-recovery',
       'breathwork-478',
       'magnesium-bath',
+      'face-ice-immersion',
       'sbst-nose-tape',
     ],
     sbst_action: 'secondary_only',
-    rationale: 'Sleep disruption active. Fix sleep architecture and evening parasympathetic tone. SBST allowed as secondary support - Level 1 (nose tape) first, never skip levels. No evening cold exposure.',
+    rationale: 'Sleep disruption active. Fix sleep architecture and evening parasympathetic tone. SBST allowed as secondary support - Level 1 (nose tape) first, never skip levels. No evening whole-body cold. Face-only cold is permitted and useful here, but MORNING ONLY: the dive reflex is parasympathetic, while the light and alerting context of an evening ice bowl is not what a disrupted sleep phase needs.',
     do_not_suggest: [
       'cold-shower',
-      'face-ice-immersion',
       'cold-plunge-extended',
       'cryo-chamber',
       'contrast-shower',
@@ -174,12 +206,11 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
       'breathwork-coherent',
     ],
     sbst_action: null,
-    rationale: 'Metabolic and behavioural stabilisation after sustained deficit. Gentle parasympathetic support, no acute cold, prioritise sleep and recovery infrastructure.',
+    rationale: 'Metabolic and behavioural stabilisation after sustained deficit. Gentle parasympathetic support, no acute whole-body cold (it adds thermogenic and sympathetic load to an already-depleted system), prioritise sleep and recovery infrastructure. Face-only cold is permitted: the dive reflex carries no meaningful metabolic cost.',
     do_not_suggest: [
       'cold-plunge-extended',
       'cryo-chamber',
       'cold-shower',
-      'face-ice-immersion',
       'breathwork-wim-hof',
     ],
   },
@@ -206,15 +237,15 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
     suggested_protocol_slugs: [
       'breathwork-coherent',
       'breathwork-physiological-sigh',
+      'face-ice-immersion',
       'magnesium-bath',
       'sleep-debt-recovery',
       'sauna-infrared',
     ],
     sbst_action: 'deprioritise',
-    rationale: 'Phased re-entry after confirmed burnout. Absolute parasympathetic priority. No stimulation from cold, extreme breathwork, or high-intensity anything. SBST deprioritised until Phase 2 or 3.',
+    rationale: 'Phased re-entry after confirmed burnout. Absolute parasympathetic priority. No stimulation from whole-body cold, extreme breathwork, or high-intensity anything. Face-only cold is permitted and preferred: it is the fastest vagal lever available and costs a burnt-out client almost nothing to execute. SBST deprioritised until Phase 2 or 3.',
     do_not_suggest: [
       'cold-shower',
-      'face-ice-immersion',
       'cold-plunge-extended',
       'cryo-chamber',
       'contrast-shower',
