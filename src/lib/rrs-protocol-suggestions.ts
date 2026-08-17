@@ -169,6 +169,34 @@
  * contraindications instead.
  *
  * Source: 00_PLAYBOOK/recovery_research/2026-08-17_Passive_Body_Heating.md
+ *
+ * ── 2026-08-17: light, split in two, and a classification the table lacks ──
+ *
+ * TWO entries because the mechanisms are opposite, which is the cold bug for
+ * the third time and the third time we have avoided it.
+ *
+ * MORNING LIGHT IS A STRESSOR. An ipRGC-driven alerting and phase-advancing
+ * input, strong enough to precipitate hypomania in bipolar clients. But it is
+ * a very cheap stressor: no metabolic, mechanical or glycogen cost, and its
+ * arousal lands exactly when arousal is wanted. Its report is explicit that it
+ * must NOT be clamped by acute_fatigue, chronic_recovery_debt, post_diet or
+ * overreaching, because under those states it is arguably MORE indicated, and
+ * that even under ns_overload it should be left largely intact. So it is
+ * suggested in the five states where circadian timing is the live problem and
+ * banned nowhere.
+ *
+ * EVENING LIGHT REDUCTION IS NEITHER STRESSOR NOR DOWNREGULATOR. It adds
+ * nothing. It REMOVES a stressor that should not have been there. The report
+ * names this a "permissive constraint": never contraindicated, never needing
+ * a clamp, and its ceiling does not move with recovery state. This table has
+ * no field for that concept, so it is expressed the only way available, as a
+ * suggestion in the states where it matters most and an absence from every
+ * do_not_suggest list. If the constraint model is ever extended, this is the
+ * protocol that should drive the new field: under ns_overload the correct
+ * behaviour is to TIGHTEN evening light reduction while leaving morning light
+ * alone, and the table currently cannot say that.
+ *
+ * Source: 00_PLAYBOOK/recovery_research/2026-08-17_Light_Exposure_Timing.md
  */
 
 import type { RecoveryPlaybookId } from './recovery-doctrine'
@@ -205,6 +233,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
     suggested_protocol_slugs: [
       'deload-week',
       'breathwork-physiological-sigh',
+      'evening-light-reduction',
       'face-ice-immersion',
       'nsdr-yoga-nidra',
       'restorative-yoga',
@@ -249,6 +278,8 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
     playbook_id: 'chronic_recovery_debt',
     suggested_protocol_slugs: [
       'sleep-debt-recovery',
+      'morning-light-exposure',
+      'evening-light-reduction',
       'red-light-therapy',
       'restorative-yoga',
       'magnesium-bath',
@@ -269,6 +300,8 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
     playbook_id: 'sleep_disruption',
     suggested_protocol_slugs: [
       'sleep-debt-recovery',
+      'morning-light-exposure',
+      'evening-light-reduction',
       'breathwork-478',
       'nsdr-yoga-nidra',
       'passive-body-heating',
@@ -294,6 +327,8 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
     playbook_id: 'lifestyle_stress_dominant',
     suggested_protocol_slugs: [
       'breathwork-box',
+      'morning-light-exposure',
+      'evening-light-reduction',
       'breathwork-physiological-sigh',
       'nsdr-yoga-nidra',
       'restorative-yoga',
@@ -368,6 +403,8 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
     playbook_id: 'burnout_return',
     suggested_protocol_slugs: [
       'breathwork-coherent',
+      'morning-light-exposure',
+      'evening-light-reduction',
       'breathwork-physiological-sigh',
       'face-ice-immersion',
       'nsdr-yoga-nidra',

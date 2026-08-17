@@ -459,6 +459,75 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     coach_doctrine: 'Modest evidence for bone-density support in older clients. Adjunct tool, not a driver. Use for adherence-friendly warm-up.',
   },
   {
+    // Added 2026-08-17 from the Deep Research report at
+    // 00_PLAYBOOK/recovery_research/2026-08-17_Light_Exposure_Timing.md
+    //
+    // TWO ENTRIES, and the split IS the finding. Morning light is a STRESSOR:
+    // an ipRGC-driven alerting and phase-advancing input, strong enough that
+    // it can precipitate hypomania in bipolar clients. Evening light reduction
+    // is NOT a downregulator, it is the REMOVAL of a stressor, which is a
+    // different thing again and needed a new classification (see the evening
+    // entry below). Filing "light" as one protocol would have repeated the
+    // cold bug for the third time.
+    slug: 'morning-light-exposure',
+    name: 'Morning Light Exposure',
+    category: 'light',
+    short_description: 'Twenty minutes outdoors within an hour of waking. The highest-leverage circadian lever, and free.',
+    what_it_does: 'Light after waking falls on the advance limb of the phase response curve and pulls the body clock earlier, via melanopsin-containing retinal cells signalling the suprachiasmatic nucleus. That pathway is demonstrated, not inferred. Outdoor light delivers an order of magnitude more of the relevant stimulus than any indoor room. Its most consistent real-world associations are with waking more easily and being less tired during the day, rather than with falling asleep faster.',
+    steps: [
+      'Outside within 60 minutes of waking. Verandah, footpath, backyard, or pair it with a walk',
+      'Twenty to thirty minutes. Do not extend it chasing a bigger effect, the dose saturates',
+      'Eyes open, NO sunglasses and no prescription tint during the window. The pathway is ocular',
+      'Hat, sleeves and sunscreen for the skin. The eyes need the exposure, the skin does not, and this is Queensland',
+      'Never look directly at the sun',
+      'Not through a window. Standard glazing plus indoor geometry drops the dose by roughly ten times',
+      'Through the day, take breaks outdoors and sit near windows where you can',
+    ],
+    dosing: {
+      frequency: 'Daily, or at minimum five to six days a week.',
+      duration: '20 to 30 minutes.',
+      intensity_notes: 'THERE IS NO PROGRESSION AND THIS IS THE PART COACHES GET WRONG. Light does not progressively overload, the dose-response saturates. The only thing that progresses is consistency of timing. Progress the regularity, never the duration or intensity.',
+      timing: 'Within 60 minutes of waking. Consistency of timing outranks everything else in this protocol, including duration.',
+    },
+    required_equipment: ['none_needed'],
+    contraindications: [
+      'Bipolar diagnosis or family history, IF a light box is involved. Bright morning light has precipitated hypomania, mania and mixed states; one trial moved to midday dosing after three of its first four pilot patients on morning light developed mixed states. Going outside is a lifestyle behaviour and is between them and their psychiatrist. Prescribing a box is treatment of a psychiatric condition and is out of scope',
+      'Photosensitising medication (lithium, phenothiazines, some tricyclics, tetracyclines, some retinoids). Ask what they take BEFORE recommending any device. Prescriber sign-off first',
+      'Any pre-existing eye condition: outdoor light only, and an eye-care referral before any device',
+      'Active migraine or prodrome. Photophobia is common; use shaded outdoor light or defer',
+      'A client who is already turning sleep into a compliance metric to fail at. Withdraw it',
+    ],
+    safety_notes: 'A systematic review of 43 articles found ocular complaints in 0 to 45% of light-therapy participants with no consistent dose relationship, and no evidence of ocular damage except one maculopathy case in someone taking a photosensitising antidepressant. It appears safe for the eyes in physically healthy unmedicated people, and understudied in those with existing ocular abnormality. Never instruct anyone to look at the sun or a light box directly. Stop and record if it triggers headache, migraine, persistent eye discomfort or agitation.',
+    coach_doctrine: 'Rank it first among everything in the light category, by a wide margin, then be honest about why. It is first on mechanism, cost, and the fact that it drags three other behaviours with it: wake-time regularity, movement, and being outside. It is NOT first on trial evidence in our clients, because there is no adequate trial of morning light for sleep in normally entrained midlife adults who simply sleep badly. The light-therapy trials are in older, post-stroke, cancer and dementia populations, and the big outdoor-time associations come from 400,000 people in an observational cohort where reverse causation is entirely live. Prescribe it on mechanism, coherence and near-zero cost, and say that to the client. Two Brisbane-specific points. The light box is mostly redundant here: its role in the literature is as a substitute for daylight that is unavailable, and at 27 degrees south daylight clears the target every day of the year. The binding constraint is behavioural, not photonic. And the UV conflict is real: the exposure that matters is ocular, so protect the skin and leave the eyes uncovered, which is the opposite of what most people do outside in summer. Finally, it is a STRESSOR, an alerting input, but a very cheap one with no metabolic or mechanical cost, timed to when arousal is wanted. Do NOT clamp it under acute fatigue, chronic recovery debt, post-diet or overreaching. Under those states it is arguably more indicated, not less.',
+  },
+  {
+    slug: 'evening-light-reduction',
+    name: 'Evening Light Reduction',
+    category: 'light',
+    short_description: 'Dim the house for three hours before bed. Make it dim, not orange.',
+    what_it_does: 'Removes the melatonin-suppressing and phase-delaying input that ordinary household lighting supplies. Evening melatonin suppression is half-maximal at around 25 lux, which is dim room light, so the relevant variable is total brightness rather than colour. Reducing it demonstrably protects melatonin timing and circadian phase.',
+    steps: [
+      'From three hours before intended sleep: overhead lights off, lamps only',
+      'Screens to the lowest comfortable brightness. Dragging the brightness slider down is the part that works',
+      'Aim for a room where you would struggle to read fine print comfortably',
+      'Bedroom as close to fully dark as practical for the sleep period itself',
+      'Make it dim, not orange. Changing a screen spectrum without changing brightness does not meaningfully help',
+    ],
+    dosing: {
+      frequency: 'Nightly.',
+      duration: 'The full three hours before intended sleep.',
+      intensity_notes: 'Less is better on a curve that flattens below about 1 lux. There is no defensible minimum effective dose in free-living adults because nobody has measured one. Sensitivity varies more than fiftyfold between individuals (half-maximal suppression anywhere from 6 to 350 lux), so the same room is a strong stimulus for one client and negligible for another, and there is currently no way to predict which. Treat non-response as informative rather than as non-compliance.',
+      timing: 'Window opens three hours before habitual bedtime.',
+    },
+    required_equipment: ['none_needed'],
+    contraindications: [
+      'Falls risk, poor night vision, or an unfamiliar or cluttered home. Dimming a house has a trip hazard attached and it is the only real downside this protocol has',
+      'A client already turning sleep into a compliance metric to fail at',
+    ],
+    safety_notes: 'Essentially no physiological risk, because the intervention is subtraction. The practical risks are domestic: tripping in a dim house, and friction with the rest of the household, who did not agree to this.',
+    coach_doctrine: 'Rank it second, behind morning light and ahead of anything worn on the face, and be blunt about the two things clients will ask for. FIRST, blue-blocking glasses. The Cochrane review of blue-light-filtering lenses (17 RCTs) found they probably make no difference to eye strain, could draw no conclusion on sleep, and no included trial even measured melatonin. For evening amber glasses specifically, the only meta-analysis restricted to double-blind crossover actigraphy found nothing significant on any objective endpoint, while subjective effects were large. That gap is the unblinding signature. Worse, the lenses that produce the biggest effects are the ones that also dim everything (30 to 45% light transmission), so the wavelength intervention is partly an intensity intervention in a costume. They are a legitimate behavioural bookend for ending the evening. They are not a photobiological tool and should not be sold as one. SECOND, screen night-mode. A 167-person randomised trial found no difference between Night Shift on, Night Shift off, and no phone at all, and a separate study found spectral warming without a brightness change did not reduce melatonin suppression. It is effectively zero as a standalone. Enable it because it is free, not because it works. The instruction that actually carries the effect is "make the house dim", not "make the light orange". One classification note for the platform: this is NOT a downregulator, it adds nothing. It removes a stressor that should not have been there. It never needs clamping and its ceiling does not move with recovery state.',
+  },
+  {
     slug: 'red-light-therapy',
     name: 'Red / Near-Infrared Light Therapy',
     category: 'light',
