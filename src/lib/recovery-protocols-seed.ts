@@ -597,6 +597,45 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     coach_doctrine: 'Sleep debt cannot be paid off in one long night. Requires a full week of consistent extension. Pair with reduced training intensity for that week.',
   },
   {
+    // Added 2026-08-17 from the Deep Research report at
+    // 00_PLAYBOOK/recovery_research/2026-08-17_NSDR_Yoga_Nidra_Downregulation_and_Sleep.md
+    //
+    // Every claim below is bounded by that report. Three things it explicitly
+    // forbids and which must NOT creep back in: this does not raise HRV (the
+    // only study that tested it was null on every measure), it does not raise
+    // dopamine by 65% (that number is an inference chained onto an inference
+    // from 8 lifetime meditators), and it does not replace sleep or a nap.
+    slug: 'nsdr-yoga-nidra',
+    name: 'NSDR / Yoga Nidra',
+    category: 'systemic',
+    short_description: 'Guided audio downregulation, run daily for weeks. A habit, not a dose.',
+    what_it_does: 'Holds the client awake but unaroused while a fixed audio script moves attention through the body. The measured acute change is a drop in respiratory rate. EEG shows an awake state with regional slow-wave intrusion and DECREASED occipital alpha, which is consistent with sustained attention rather than sedation. In poor sleepers, daily practice over four weeks is associated with modest subjective sleep improvement.',
+    steps: [
+      'Lie supine on a mat or bed, blanket if wanted, room quiet and dimly lit',
+      'Headphones or speaker, phone on do-not-disturb, no screens in view',
+      'Play the SAME recording every session, the trials used one fixed script',
+      'Follow the audio, stay awake if you can, and do not improvise the sequence',
+      'Allow 20 minutes of buffer afterwards in case you sleep through',
+      'Same time each day, morning or early afternoon',
+    ],
+    dosing: {
+      frequency: 'Daily. Intermittent use is not supported by any of the evidence.',
+      duration: '20 minutes per session. Minimum four weeks before judging it.',
+      intensity_notes: 'No progression. The dose does not escalate. If they want more, the answer is consistency, not a longer session. Never past 30 minutes.',
+      timing: 'Morning or early afternoon, while alert enough to follow instructions. The daytime convention comes from protocol integrity in the trials, not from physiology, and bedtime use is untested.',
+    },
+    required_equipment: ['none_needed'],
+    contraindications: [
+      'PTSD diagnosis, known trauma history, or a dissociative disorder. Refer, do not prescribe',
+      'Active psychiatric instability including current psychosis, mania or acute suicidal ideation. Refer',
+      'Any history of relaxation-induced anxiety. Screen first: has lying still with eyes closed, or any meditation or relaxation practice, ever made you feel panicky, agitated, unreal or out of your body',
+      'Genuinely sleep-deprived clients who have time to sleep. Prescribe the nap instead, the head-to-head favours it',
+      'Immediately before driving or anything needing alertness, sleep during the practice is common',
+    ],
+    safety_notes: 'Physically near-zero risk, nothing to be injured by, zero adverse events across the trials. The real risk is psychological. Pooled meditation adverse-event prevalence is 8.3%, rising to 31 to 58% when actively screened for rather than spontaneously reported, and yoga nidra specifically has documented flashbacks, distress and extended dissociation. The mechanism is the problem: it removes external stimulation, moves attention inward through the body, and includes deliberate emotional evocation and visualisation, all known triggers in trauma-exposed people. Review after three sessions and ask about distress explicitly, not just about sleep. Stop on the first report of flashback, panic, derealisation or intrusive imagery, and refer. Do not adjust the dose and continue. Note also that 78% of participants in one trial fell asleep during a 30-minute afternoon session and 43% of those did not wake at the end.',
+    coach_doctrine: 'Large following, small trial base: six RCTs with sleep endpoints, about 244 participants total, most run in India by overlapping author groups. The 2026 meta-analysis pooled them and found nothing significant (PSQI p=0.50, ISI p=0.06, GRADE very low), and the best-designed acute trial failed its primary endpoint. So prescribe it for what it actually is: a near-free, zero-load daily habit for a depleted client who sleeps badly and cannot afford anything more demanding. It is a behaviour-axis intervention. Three things never to say to a client: that it raises HRV (the only direct test was null on RMSSD and HF in both windows), that it boosts dopamine by 65% (a conversion inferred from 8 lifetime meditators, whose self-reported relaxation did not even differ from the control condition), or that it replaces sleep. It is also not a treatment for insomnia; that is a clinical diagnosis and CBT-I is first line. The marketing pushes short single sessions, and every study of a single 10-minute session either found nothing or found effects small enough to be expectancy. The objective evidence used 20 minutes daily for weeks. Run the first three to five sessions supervised, mostly so the psychological screen actually happens. No evidence at all in perimenopausal or midlife women, so for our core client group this is extrapolated, not evidenced. Say so.',
+  },
+  {
     slug: 'jet-lag-protocol',
     name: 'Jet Lag Recovery Protocol',
     category: 'systemic',

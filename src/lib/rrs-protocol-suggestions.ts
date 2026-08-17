@@ -55,6 +55,23 @@
  * engine was treating it as a stressor. Logged as a correction to bring the
  * table in line with already-locked library doctrine, not as a new claim, so
  * it did not need the [[project_doctrine_governance_rule]] promotion gate.
+ *
+ * ── 2026-08-17: NSDR / yoga nidra added to four states ──
+ *
+ * Added to ns_overload, sleep_disruption and lifestyle_stress_dominant, all
+ * three of which the Deep Research report names explicitly as the states this
+ * protocol suits, and to burnout_return as an extension of the same logic
+ * (absolute parasympathetic priority, zero adaptive load, behaviour-axis
+ * anchor). The burnout_return placement is OUR inference, not something the
+ * report states, and should be the first thing revisited if that state's
+ * suggestions are ever audited.
+ *
+ * Deliberately NOT added to acute_fatigue or chronic_recovery_debt. The report
+ * puts both in its "least likely to benefit" list on the grounds that a client
+ * in either state who has time available should be sleeping instead. It is not
+ * harmful there, so it is not in do_not_suggest, it is simply the wrong tool.
+ *
+ * Source: 00_PLAYBOOK/recovery_research/2026-08-17_NSDR_Yoga_Nidra_Downregulation_and_Sleep.md
  */
 
 import type { RecoveryPlaybookId } from './recovery-doctrine'
@@ -92,6 +109,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
       'deload-week',
       'breathwork-physiological-sigh',
       'face-ice-immersion',
+      'nsdr-yoga-nidra',
       'magnesium-bath',
       'breathwork-coherent',
     ],
@@ -148,6 +166,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
     suggested_protocol_slugs: [
       'sleep-debt-recovery',
       'breathwork-478',
+      'nsdr-yoga-nidra',
       'magnesium-bath',
       'face-ice-immersion',
       'sbst-nose-tape',
@@ -169,6 +188,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
     suggested_protocol_slugs: [
       'breathwork-box',
       'breathwork-physiological-sigh',
+      'nsdr-yoga-nidra',
       'breathwork-coherent',
       'sauna-infrared',
       'sauna-traditional',
@@ -238,6 +258,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
       'breathwork-coherent',
       'breathwork-physiological-sigh',
       'face-ice-immersion',
+      'nsdr-yoga-nidra',
       'magnesium-bath',
       'sleep-debt-recovery',
       'sauna-infrared',
