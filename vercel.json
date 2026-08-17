@@ -80,6 +80,10 @@
     {
       "schedule": "0 23 * * *",
       "path": "/api/cron/day0-completion-check"
+    },
+    {
+      "path": "/api/cron/recovery-state-sweep",
+      "schedule": "0 20 * * *"
     }
   ]
 }

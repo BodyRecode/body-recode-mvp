@@ -6,6 +6,7 @@ import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
 import { getSuggestionsForState } from '@/lib/rrs-protocol-suggestions'
 import type { RecoveryPlaybookId } from '@/lib/recovery-doctrine'
 import RecoveryManager from './recovery-manager'
+import RecoveryPlanSuggestionPanel, { type RecoveryPlanSet } from './plan-suggestion-panel'
 
 /**
  * Coach editor for Recovery Protocols per client.
@@ -27,19 +28,41 @@ export default async function CoachRecoveryPage({
 
   const { data: client } = await admin
     .from('clients')
-    .select('id, name, recovery_equipment_access')
+    .select('id, name, recovery_equipment_access, medications')
     .eq('id', id)
     .maybeSingle()
 
   if (!client) notFound()
 
-  const { data: assignmentsRaw } = await admin
-    .from('recovery_protocol_assignments')
-    .select('*')
-    .eq('client_id', id)
-    .order('assigned_at', { ascending: false })
+  const [{ data: assignmentsRaw }, { data: latestPlan }] = await Promise.all([
+    admin
+      .from('recovery_protocol_assignments')
+      .select('*')
+      .eq('client_id', id)
+      .order('assigned_at', { ascending: false }),
+    // Last generated plan, so opening the page costs nothing.
+    admin
+      .from('recovery_plan_suggestions')
+      .select('generated_at, overview, suggestions, not_now, gated, rrs_note')
+      .eq('client_id', id)
+      .order('generated_at', { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+  ])
 
   const assignments = assignmentsRaw ?? []
+  const activeSlugs = assignments.filter(a => a.status === 'active').map(a => a.protocol_slug)
+
+  const initialPlanSet: RecoveryPlanSet | null = latestPlan
+    ? {
+        generated_at: latestPlan.generated_at,
+        overview: latestPlan.overview ?? '',
+        suggestions: (latestPlan.suggestions ?? []) as RecoveryPlanSet['suggestions'],
+        not_now: (latestPlan.not_now ?? []) as RecoveryPlanSet['not_now'],
+        gated: (latestPlan.gated ?? []) as RecoveryPlanSet['gated'],
+        rrs_note: latestPlan.rrs_note ?? null,
+      }
+    : null
 
   const access = (Array.isArray(client.recovery_equipment_access) ? client.recovery_equipment_access : []) as EquipmentTag[]
 
@@ -87,6 +110,15 @@ export default async function CoachRecoveryPage({
           Note: this is separate from the RRS constraint governor (which reads signals and clamps programs). This surface is the prescription tool. RRS state can inform which protocols to assign, but does not auto-assign anything.
         </p>
       </div>
+
+      <RecoveryPlanSuggestionPanel
+        clientId={id}
+        clientName={client.name}
+        initialSet={initialPlanSet}
+        clientMedications={client.medications ?? null}
+        activeSlugs={activeSlugs}
+        hasEquipmentTagged={access.length > 0}
+      />
 
       <RecoveryManager
         clientId={id}

@@ -125,6 +125,23 @@ export interface ClientNextActionInput {
   paymentSignal: PaymentSignal | null
   /** Short context line for the payment signal. e.g. "Past due since 8 May". */
   paymentDetail: string | null
+
+  /**
+   * Layer 3 prescription surfaces (added 2026-08-17).
+   *
+   * Both libraries went live 21 July and sat at zero assignments across every
+   * client for four weeks, because nothing ever told the coach to open them.
+   * These two counts plus the active recovery state let Today's Focus say so.
+   *
+   * Callers that don't fetch them can leave the counts at 0 and the state
+   * null: the "no plan yet" nudge only fires for clients who are otherwise
+   * steady and well past onboarding, so a missing count degrades to silence
+   * rather than a false prompt.
+   */
+  activeRecoveryProtocolCount: number
+  activeSupplementCount: number
+  /** Display name of the active RRS playbook, if the client is in one. */
+  activeRecoveryStateName: string | null
 }
 
 export type PaymentSignal =
@@ -157,6 +174,8 @@ export type NextActionStage =
   | 'active_checkin_feedback_pending'
   | 'active_trajectory_reading_pending'
   | 'active_drift'
+  | 'active_recovery_no_protocols'    // in an RRS state with nothing assigned to help
+  | 'active_layer3_unset'             // steady, but no recovery or supplement plan ever built
   | 'active_bridge_expiring'         // bridge mode plan within 7 days of expiry
   | 'active_bridge_expired'          // bridge mode plan past its expiry date
   | 'active_bridge_ready_step_up'    // bridge mode + check-in signals suggest readiness to ramp
@@ -633,6 +652,25 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
     }
   }
 
+  // ── In a recovery state with nothing prescribed to help ────────────────
+  // RRS constrains the program and nutrition, but it deliberately never
+  // prescribes protocols (that is the Layer 2 / Layer 3 boundary). So a
+  // client can sit in a recovery state for weeks with the system holding
+  // their training back and nothing actually given to them to recover with.
+  if (input.activeRecoveryStateName && input.activeRecoveryProtocolCount === 0) {
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'active_recovery_no_protocols',
+      headline: 'In a recovery state with no protocols assigned',
+      sublabel: `${input.activeRecoveryStateName}. Build a recovery plan so there is something to recover with.`,
+      href: `${profileHref}/recovery`,
+      accent: 'amber',
+      priority: 30,
+      badge: composedBadge,
+    }
+  }
+
   // Pre-start fallback (everything's ready but coaching hasn't begun)
   if (isPreStart && startDate) {
     const days = Math.max(0, Math.round((startDate.getTime() - today.getTime()) / 86400000))
@@ -660,6 +698,32 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
     const weekInBlock = block.currentWeek - block.blockStartWeek + 1
     if (weekInBlock >= 1 && weekInBlock <= block.weekDuration) {
       weekLabel = `${ap.blockName} · Week ${weekInBlock} of ${block.weekDuration}`
+    }
+  }
+
+  // ── Steady, but neither Layer 3 library has ever been used ─────────────
+  // Deliberately gated on 4+ weeks of coaching. A client still bedding in
+  // their program and nutrition does not need a third plan, and firing this
+  // at week 1 would make it noise the coach learns to skip.
+  const weeksCoaching = startDate
+    ? Math.floor((today.getTime() - startDate.getTime()) / (86400000 * 7))
+    : 0
+  if (
+    !isPreStart &&
+    weeksCoaching >= 4 &&
+    input.activeRecoveryProtocolCount === 0 &&
+    input.activeSupplementCount === 0
+  ) {
+    return {
+      clientId: input.clientId,
+      clientName: input.clientName,
+      stage: 'active_layer3_unset',
+      headline: 'Steady - no recovery or supplement plan yet',
+      sublabel: `${weekLabel}. ${weeksCoaching} weeks in with neither built.`,
+      href: `${profileHref}/recovery`,
+      accent: 'neutral',
+      priority: 40,
+      badge: feedbackBadge,
     }
   }
 

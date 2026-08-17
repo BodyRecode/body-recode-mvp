@@ -263,6 +263,13 @@ const AUTOMATIC_AUTOMATIONS = [
     steps: 1,
   },
   {
+    id: 'recovery-state-stale-sweep',
+    name: 'Recovery State Stale Sweep',
+    description: 'Daily 6am Brisbane: closes RRS recovery states that can no longer close themselves. exitState was only reachable from the router, and the router only runs on check-in submission, so a client who stopped checking in stayed in a state indefinitely (Amanda: 56 days in Sleep Disruption against a 14-day doctrine maximum; Ruby-Cate: still active weeks after offboarding). Offboarded clients close as "cancelled". Anything past its playbook maxDurationDays closes as "system_review_required", never "resolved" — per 12D_03 relief is not validation and the system has no evidence the exit criteria were met — and Kade gets an email listing each one for review. Frozen clients are skipped: a freeze is a pause, the state should still be there when they return. Added 2026-08-17.',
+    trigger: 'Vercel cron: /api/cron/recovery-state-sweep at 0 20 * * * UTC (6am Brisbane)',
+    steps: 1,
+  },
+  {
     id: 'weekly-checkin-auto-rescue',
     name: 'Weekly Check-In Auto-Response Rescue',
     description: 'Every 4h: re-fires the weekly-checkin/submitted Inngest event for any check-in that the auto-response pipeline never touched (auto_response_attempted_at IS NULL AND no feedback row AND submitted >6h ago AND client opted in). Safety net for transient Inngest delivery failures. Built 2026-06-14 after Ruby-Cate Week 6 silently dropped.',
@@ -540,6 +547,13 @@ const MANUAL_AUTOMATIONS = [
     description: 'Fires immediately on any NEW join to product_waitlist for challenge / blueprint / membership. Two emails: (1) branded welcome to the joiner (BCC Kade), state-matched copy per project_bodystate_stage_recommendation_mapping — Challenge (Depleted → doors open Mon 13 Jul), Blueprint (Transitioning → 6-week pattern-corrective work, opens Mon 20 Jul, $97 one-time), Membership (Ready → long-arc infrastructure, opens Mon 10 Aug, $49/week). Blueprint + Membership emails include a soft optional-Challenge card ("recommendation, not a gate") mirroring the scorecard result page. (2) Coach-notification to Kade only with lead details (email, phone, gender, body state, source, SMS opt-in). Skips re-clicks of the same (email, product) pair.',
     trigger: 'POST /api/product-waitlist (new row only, silent-fail non-blocking)',
     steps: 2,
+  },
+  {
+    id: 'recovery-plan-suggestions',
+    name: 'Recovery Plan Suggestions (coach-triggered, suggests only)',
+    description: 'Whole-file counterpart to the RRS-state banner, which only appears when a client is in a recovery state. This works for every client and folds the state in as an input when there is one. Reads the foundational synthesis, intake domain scores, recent syntheses and check-ins, active program, medications and equipment access, then builds a plan from the 25-protocol library. Gated in code before the model sees it: protocols needing equipment the client lacks, already-assigned protocols, anything the active recovery state contraindicates, and any sleep-breathing tool whose lower levels have not been tried (13D_16, never skip levels). The model never writes dosing. Approve plan assigns the whole set in one action; per-protocol Assign remains for partial approval. Saved to recovery_plan_suggestions and re-shown on page load. Added 2026-08-17.',
+    trigger: 'Manual: click "Build a plan" on /dashboard/clients/[id]/recovery',
+    steps: 1,
   },
   {
     id: 'supplement-stack-suggestions',

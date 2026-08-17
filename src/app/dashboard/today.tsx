@@ -32,6 +32,7 @@ import {
   type ClientNextActionInput,
 } from '@/lib/client-next-action'
 import { derivePaymentSignal } from '@/lib/payment-signal'
+import { getPlaybook, type RecoveryPlaybookId } from '@/lib/recovery-doctrine'
 
 export default async function TodayWidget() {
   const admin = createAdminClient()
@@ -57,6 +58,9 @@ export default async function TodayWidget() {
     { data: subscriptions },
     { data: paymentPlans },
     { data: checkinFeedbackRows },
+    { data: recoveryAssignmentRows },
+    { data: supplementAssignmentRows },
+    { data: recoveryStateRows },
   ] = await Promise.all([
     admin
       .from('clients')
@@ -106,6 +110,21 @@ export default async function TodayWidget() {
     admin
       .from('weekly_checkin_feedback')
       .select('weekly_checkin_id'),
+    // Layer 3 prescription surfaces, so Today's Focus can flag a client in a
+    // recovery state with nothing assigned to recover with, and a long-steady
+    // client who has never had either plan built (2026-08-17).
+    admin
+      .from('recovery_protocol_assignments')
+      .select('client_id')
+      .eq('status', 'active'),
+    admin
+      .from('supplement_assignments')
+      .select('client_id')
+      .eq('status', 'active'),
+    admin
+      .from('recovery_states')
+      .select('client_id, playbook_id')
+      .eq('status', 'active'),
   ])
 
   if (!clients) {
@@ -163,6 +182,20 @@ export default async function TodayWidget() {
   // Check-ins that already have a coach response. Used to compute the
   // "respond to check-in" Today's Focus action.
   const checkinIdsAnswered = new Set((checkinFeedbackRows ?? []).map(r => r.weekly_checkin_id))
+
+  // ── Layer 3 prescription lookups (2026-08-17) ───────────────────────────
+  const recoveryCountByClient = new Map<string, number>()
+  for (const r of recoveryAssignmentRows ?? []) {
+    recoveryCountByClient.set(r.client_id, (recoveryCountByClient.get(r.client_id) ?? 0) + 1)
+  }
+  const supplementCountByClient = new Map<string, number>()
+  for (const r of supplementAssignmentRows ?? []) {
+    supplementCountByClient.set(r.client_id, (supplementCountByClient.get(r.client_id) ?? 0) + 1)
+  }
+  const recoveryStateByClient = new Map<string, string>()
+  for (const r of recoveryStateRows ?? []) {
+    recoveryStateByClient.set(r.client_id, getPlaybook(r.playbook_id as RecoveryPlaybookId).name)
+  }
 
   // ── Payments lookup ─────────────────────────────────────────────────────
   // Subscriptions arrive ordered created_at desc. Per client we want the
@@ -254,7 +287,12 @@ export default async function TodayWidget() {
       today,
     })
 
+    const recoveryStateName = recoveryStateByClient.get(client.id) ?? null
+
     const input: ClientNextActionInput = {
+      activeRecoveryProtocolCount: recoveryCountByClient.get(client.id) ?? 0,
+      activeSupplementCount: supplementCountByClient.get(client.id) ?? 0,
+      activeRecoveryStateName: recoveryStateName,
       clientId: client.id,
       clientName: client.name,
       coachingStartedAt: client.coaching_started_at ?? null,

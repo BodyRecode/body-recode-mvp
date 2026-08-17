@@ -285,6 +285,128 @@ async function exitState(
 }
 
 /* ===========================================================
+ * Stale-state sweep (added 2026-08-17)
+ * =========================================================== */
+
+export interface StaleStateClosure {
+  clientId: string
+  clientName: string
+  playbookId: RecoveryPlaybookId
+  playbookName: string
+  daysActive: number
+  maxDurationDays: number
+  reason: 'offboarded' | 'past_max_duration'
+  lastCheckinAt: string | null
+}
+
+/**
+ * Close recovery states that can no longer close themselves.
+ *
+ * The defect this fixes: `exitState` is only ever reached from
+ * `evaluateRouterAfterCheckin`, which only runs when the client submits a
+ * check-in. A client who stops checking in leaves their state open forever.
+ * Found 2026-08-17 with Amanda at 56 days in Sleep Disruption against a
+ * 14-day doctrine maximum, and Ruby-Cate's state still active after she
+ * offboarded on 12 August.
+ *
+ * Two closures, and neither pretends the client got better:
+ *
+ *  - Offboarded client: `cancelled`. The coaching relationship ended, so the
+ *    state is moot. No review needed.
+ *  - Past `maxDurationDays`: `system_review_required`, NOT `resolved`.
+ *    Per 12D_03 relief is not validation and per the playbook's own field
+ *    definition maxDurationDays is "maximum acceptable days before mandatory
+ *    escalation review". Closing one of these as resolved would be the system
+ *    asserting an outcome it has no evidence for. It asks the coach instead.
+ *
+ * Frozen clients are deliberately left alone: a freeze is a pause, and their
+ * state should still be there when they come back.
+ */
+export async function sweepStaleRecoveryStates(
+  admin: ReturnType<typeof createAdminClient>
+): Promise<StaleStateClosure[]> {
+  const { data: activeStates } = await admin
+    .from('recovery_states')
+    .select('id, client_id, playbook_id, entered_at, clients!inner(id, name, ended_at, frozen_at)')
+    .eq('status', 'active')
+
+  if (!activeStates || activeStates.length === 0) return []
+
+  const closures: StaleStateClosure[] = []
+
+  for (const row of activeStates) {
+    const joined = row.clients as unknown
+    const client = (Array.isArray(joined) ? joined[0] : joined) as
+      | { id: string; name: string; ended_at: string | null; frozen_at: string | null }
+      | undefined
+    if (!client) continue
+    if (client.frozen_at) continue // a freeze is a pause, hold the state
+
+    const playbook = getPlaybook(row.playbook_id as RecoveryPlaybookId)
+    const daysActive = Math.floor(
+      (Date.now() - new Date(row.entered_at).getTime()) / (1000 * 60 * 60 * 24),
+    )
+
+    let reason: StaleStateClosure['reason'] | null = null
+    if (client.ended_at) reason = 'offboarded'
+    else if (daysActive > playbook.maxDurationDays) reason = 'past_max_duration'
+    if (!reason) continue
+
+    const { data: lastCheckin } = await admin
+      .from('weekly_checkins')
+      .select('submitted_at')
+      .eq('client_id', client.id)
+      .order('submitted_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+
+    const outcome = reason === 'offboarded' ? 'cancelled' : 'system_review_required'
+    const rationale = reason === 'offboarded'
+      ? `Client offboarded ${client.ended_at?.slice(0, 10)}. State closed by the stale-state sweep; no clinical conclusion drawn.`
+      : `Active ${daysActive} days against a ${playbook.maxDurationDays} day maximum for ${playbook.source}. The router only re-evaluates on check-in submission and the last check-in was ${lastCheckin?.submitted_at?.slice(0, 10) ?? 'never'}. Closed for mandatory escalation review per 13D_15. NOT marked resolved: the system has no evidence the exit criteria were met.`
+
+    await admin
+      .from('recovery_states')
+      .update({
+        status: 'exited',
+        exited_at: new Date().toISOString(),
+        exit_outcome: outcome,
+        exit_rationale: rationale,
+      })
+      .eq('id', row.id)
+
+    await admin.from('recovery_adjustments').insert({
+      client_id: client.id,
+      recovery_state_id: row.id,
+      event_type: 'state_exited',
+      trigger_type: 'stale_state_sweep',
+      signals_acknowledged: {},
+      constraints_recognised: {},
+      uncertainties_held: rationale,
+      // 'deferred' is the closest permitted value for the past-max case: the
+      // system is handing the decision to the coach, not making one. The
+      // column's CHECK allows authorised / observed_only / deferred /
+      // overridden_with_reason only.
+      authorisation_decision: reason === 'offboarded' ? 'authorised' : 'deferred',
+      observe_only: false,
+    })
+
+    closures.push({
+      clientId: client.id,
+      clientName: client.name,
+      playbookId: row.playbook_id as RecoveryPlaybookId,
+      playbookName: playbook.name,
+      daysActive,
+      maxDurationDays: playbook.maxDurationDays,
+      reason,
+      lastCheckinAt: lastCheckin?.submitted_at ?? null,
+    })
+  }
+
+  return closures
+}
+
+/* ===========================================================
  * Internal — audit row writers
  * =========================================================== */
 

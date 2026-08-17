@@ -22,6 +22,7 @@ import {
   type ClientNextActionInput,
 } from '@/lib/client-next-action'
 import { derivePaymentSignal } from '@/lib/payment-signal'
+import { getPlaybook, type RecoveryPlaybookId } from '@/lib/recovery-doctrine'
 
 export interface RosterNextActions {
   actions: ClientNextAction[]
@@ -47,6 +48,9 @@ export async function computeRosterNextActions(admin: SupabaseClient): Promise<R
     { data: subscriptions },
     { data: paymentPlans },
     { data: checkinFeedbackRows },
+    { data: recoveryAssignmentRows },
+    { data: supplementAssignmentRows },
+    { data: recoveryStateRows },
   ] = await Promise.all([
     admin
       .from('clients')
@@ -92,6 +96,10 @@ export async function computeRosterNextActions(admin: SupabaseClient): Promise<R
     admin
       .from('weekly_checkin_feedback')
       .select('weekly_checkin_id'),
+    // Layer 3 prescription surfaces (2026-08-17). Mirrors today.tsx.
+    admin.from('recovery_protocol_assignments').select('client_id').eq('status', 'active'),
+    admin.from('supplement_assignments').select('client_id').eq('status', 'active'),
+    admin.from('recovery_states').select('client_id, playbook_id').eq('status', 'active'),
   ])
 
   if (!clients) return { actions: [], totalFeedback: 0 }
@@ -140,6 +148,20 @@ export async function computeRosterNextActions(admin: SupabaseClient): Promise<R
   }
 
   const checkinIdsAnswered = new Set((checkinFeedbackRows ?? []).map(r => r.weekly_checkin_id))
+
+  // ── Layer 3 prescription lookups (2026-08-17). Mirrors today.tsx. ───────
+  const recoveryCountByClient = new Map<string, number>()
+  for (const r of recoveryAssignmentRows ?? []) {
+    recoveryCountByClient.set(r.client_id, (recoveryCountByClient.get(r.client_id) ?? 0) + 1)
+  }
+  const supplementCountByClient = new Map<string, number>()
+  for (const r of supplementAssignmentRows ?? []) {
+    supplementCountByClient.set(r.client_id, (supplementCountByClient.get(r.client_id) ?? 0) + 1)
+  }
+  const recoveryStateByClient = new Map<string, string>()
+  for (const r of recoveryStateRows ?? []) {
+    recoveryStateByClient.set(r.client_id, getPlaybook(r.playbook_id as RecoveryPlaybookId).name)
+  }
 
   type SubRow = NonNullable<typeof subscriptions>[number]
   const allSubsByClient = new Map<string, SubRow[]>()
@@ -219,6 +241,9 @@ export async function computeRosterNextActions(admin: SupabaseClient): Promise<R
     })
 
     const input: ClientNextActionInput = {
+      activeRecoveryProtocolCount: recoveryCountByClient.get(client.id) ?? 0,
+      activeSupplementCount: supplementCountByClient.get(client.id) ?? 0,
+      activeRecoveryStateName: recoveryStateByClient.get(client.id) ?? null,
       clientId: client.id,
       clientName: client.name,
       coachingStartedAt: client.coaching_started_at ?? null,
