@@ -1,5 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { signedBaselinePhotoSet } from '@/lib/baseline-photos'
+import { resolveHeightCm } from '@/lib/client-height'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import CopyLinkButton from '../copy-link-button'
@@ -9,13 +10,20 @@ export default async function BaselinePage({ params }: { params: Promise<{ id: s
   const admin = createAdminClient()
 
   const [{ data: client }, { data: baselines }] = await Promise.all([
-    admin.from('clients').select('id, name, baseline_token').eq('id', id).maybeSingle(),
+    admin.from('clients').select('id, name, baseline_token, height_cm, height_recorded_at, height_source').eq('id', id).maybeSingle(),
     admin.from('baselines').select('*').eq('client_id', id).order('created_at', { ascending: false }),
   ])
 
   if (!client) notFound()
 
   const latestBaseline = baselines?.[0] || null
+  const resolvedHeight = resolveHeightCm({
+    clientHeightCm: client.height_cm,
+    clientHeightRecordedAt: client.height_recorded_at ?? null,
+    clientHeightSource: client.height_source ?? null,
+    baselineHeightCm: latestBaseline?.height_cm,
+    baselineCapturedAt: latestBaseline?.captured_at ?? null,
+  })
   // Progress photos live in a private bucket; sign them for this render only.
   const baselinePhotos = await signedBaselinePhotoSet(admin, latestBaseline)
   const baselineToken = client.baseline_token as string | undefined
@@ -56,7 +64,10 @@ export default async function BaselinePage({ params }: { params: Promise<{ id: s
                 { label: 'Waist', value: latestBaseline.waist_cm, unit: 'cm' },
                 { label: 'Hips', value: latestBaseline.hips_cm, unit: 'cm' },
                 { label: 'Chest', value: latestBaseline.chest_cm, unit: 'cm' },
-                { label: 'Height', value: latestBaseline.height_cm, unit: 'cm' },
+                // Resolved, not raw: older captures predate the height field
+                // entirely, and the standing client record is the only place a
+                // height exists for them. Editable on the client file.
+                { label: 'Height', value: resolvedHeight.heightCm, unit: 'cm' },
               ].map(m => (
                 <div key={m.label} className="bg-stone-200/50 rounded-xl p-3 text-center">
                   <p className="text-xs text-stone-500 mb-1">{m.label}</p>

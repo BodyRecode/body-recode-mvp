@@ -82,6 +82,21 @@ export interface OffboardInput {
   offboardedBy?: string | null
   /** Their email, so it can be suppressed. Resolved from the client when absent. */
   email?: string | null
+  /**
+   * Whether to suppress the email address. Defaults to true.
+   *
+   * Set false for someone who never actually started — signed up, never
+   * submitted an intake, never began. Ending the engagement is right (they are
+   * not a client and should stop appearing as one), but suppression is
+   * system-wide and permanent, and it would also remove them from lead
+   * reactivation. A person who never started is closer to a dormant lead than
+   * a former client, and the two should not be silenced the same way.
+   *
+   * `ended_at` is still the gate either way: no client-facing cron will contact
+   * them, and the portal guard still refuses them. This only governs whether
+   * the address is blacklisted for marketing too.
+   */
+  suppressEmail?: boolean
 }
 
 export interface OffboardResult {
@@ -138,8 +153,17 @@ export async function offboardClient(
   // than reconstructing what they were on.
   steps.push({ step: 'Plans left intact and visible in their profile', done: true })
 
-  // Email suppression, belt and braces on top of the ended_at gate.
-  if (email) {
+  // Email suppression, belt and braces on top of the ended_at gate. Skipped for
+  // someone who never started, who should stop being counted as a client
+  // without also being blacklisted as a lead.
+  const suppressEmail = input.suppressEmail !== false
+  if (!suppressEmail) {
+    steps.push({
+      step: 'Email address suppressed',
+      done: false,
+      detail: 'deliberately skipped — engagement ended, address left reachable for lead contact',
+    })
+  } else if (email) {
     const { error: supErr } = await admin
       .from('email_suppressions')
       .insert({ email, reason: 'offboarded', source: `offboard: ${reason} on ${now.toISOString().slice(0, 10)}` })

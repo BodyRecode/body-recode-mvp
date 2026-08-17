@@ -11,6 +11,7 @@ import { DOCTRINE_VERSIONS } from '@/lib/doctrine-versions'
 import { emitValidatorEvent, type ValidatorEventTier, type ValidatorEventFinalOutcome } from '@/lib/nutrition-telemetry'
 import { randomUUID } from 'crypto'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import { resolveHeightCm, heightPromptLine } from '@/lib/client-height'
 import { temporalContext } from '@/lib/temporal-context'
 import { AI_MODELS } from '@/lib/ai-models'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
@@ -93,7 +94,7 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
     { data: baseline },
     { data: previousPlans },
   ] = await Promise.all([
-    admin.from('clients').select('id, name, medications').eq('id', client_id).maybeSingle(),
+    admin.from('clients').select('id, name, medications, height_cm, height_recorded_at, height_source').eq('id', client_id).maybeSingle(),
     admin.from('cffs').select('*').eq('client_id', client_id).eq('is_archived', false).maybeSingle(),
     admin.from('intakes')
       .select('id, date_of_birth, gender, primary_goal, training_days_available, injury_location_current, injury_primary_concern, nutrition_responses, sleep_responses, stress_responses, training_responses, dietary_restrictions, dietary_preferences, typical_day_eating, meals_per_day, fluid_intake, caffeine_intake, alcohol_intake, eating_context')
@@ -149,8 +150,20 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
   // feeding the BMR calculation, so both use the same figure.
   const ageYears = ageFromDob(intake?.date_of_birth)
 
+  // Height comes through the resolver rather than straight off the baseline:
+  // as of 2026-08-17 the coach can enter it on the client record, which is the
+  // only source that exists for a client who has never submitted a baseline.
+  const resolvedHeight = resolveHeightCm({
+    clientHeightCm: client?.height_cm,
+    clientHeightRecordedAt: client?.height_recorded_at ?? null,
+    clientHeightSource: client?.height_source ?? null,
+    baselineHeightCm: baseline?.height_cm,
+    baselineCapturedAt: baseline?.captured_at ?? null,
+  })
+
   const intakeLines: string[] = []
   intakeLines.push(`Bodyweight: ${bodyweightKg ? `${bodyweightKg}kg${bodyweightSource ? ` (from ${bodyweightSource})` : ''}` : 'Not provided'}`)
+  intakeLines.push(heightPromptLine(resolvedHeight))
   intakeLines.push(`Age: ${ageYears ?? 'Not provided'}`)
   intakeLines.push(`Sex: ${intake?.gender || 'Not provided'}`)
 
@@ -163,7 +176,7 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
   const energy = estimateEnergyRequirement({
     sex: normaliseSex(intake?.gender),
     ageYears,
-    heightCm: baseline?.height_cm ?? null,
+    heightCm: resolvedHeight.heightCm,
     weightKg: bodyweightKg,
     activityLevel: (activity_level ?? 'moderately_active') as ActivityLevel,
     entryState: entry_state as EntryState,

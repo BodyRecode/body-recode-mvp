@@ -41,7 +41,11 @@ export default async function DashboardHomePage() {
     { data: paymentPlans },
   ] = await Promise.all([
     supabase.from('leads').select('id, status, created_at'),
-    supabase.from('clients').select('id, name, coaching_started_at, active, package'),
+    // ended_at is the gate, not `active` (see src/lib/offboard-client.ts).
+    // Without this the headline client count, the check-in tally and the
+    // payment-status roll-up all keep counting people whose engagement ended
+    // or who never started.
+    supabase.from('clients').select('id, name, coaching_started_at, active, package').is('ended_at', null),
     supabase.from('leads').select('id, name, email, status, created_at').order('created_at', { ascending: false }).limit(5),
     supabase.from('weekly_checkins').select('id, client_id, form_type, week_number, submitted_at, clients(name)').order('submitted_at', { ascending: false }).limit(5),
     admin

@@ -6,6 +6,7 @@ import { notifyOnboardingCompleteIfReady } from '@/lib/onboarding-complete-notif
 import { appUrl } from '@/lib/app-url'
 import { fromBrand } from '@/lib/email-shell'
 import { coach } from '@/config/tenant'
+import { MIN_HEIGHT_CM, MAX_HEIGHT_CM } from '@/lib/client-height'
 
 export const maxDuration = 300
 
@@ -19,8 +20,15 @@ export async function POST(req: NextRequest) {
   const chest = parseFloat(formData.get('chest') as string)
   // Height is captured once and carried forward on re-captures, so it arrives
   // on every submission but is only typed by the client the first time.
+  // An implausible value (feet typed into a cm field) is dropped to null rather
+  // than passed through. The database now range-checks this column, and a
+  // rejected insert would cost the client their whole submission — photos,
+  // weight and all — over one mistyped field. Better to save the capture and
+  // leave the height for the coach to enter on the client file.
   const heightRaw = parseFloat(formData.get('height') as string)
-  const height = Number.isFinite(heightRaw) && heightRaw > 0 ? heightRaw : null
+  const height = Number.isFinite(heightRaw) && heightRaw >= MIN_HEIGHT_CM && heightRaw <= MAX_HEIGHT_CM
+    ? heightRaw
+    : null
   const photoFront = formData.get('photoFront') as File | null
   const photoSide = formData.get('photoSide') as File | null
   const photoBack = formData.get('photoBack') as File | null
@@ -68,6 +76,23 @@ export async function POST(req: NextRequest) {
   if (error) {
     console.error('Baseline insert error:', error)
     return NextResponse.json({ error: 'Failed to save baseline' }, { status: 500 })
+  }
+
+  // Mirror the height onto the client record, which is the standing system
+  // record readers fall back to when there is no baseline. Failing this must
+  // not fail the submission — the baseline row is already saved and holds the
+  // height either way, so a mirror failure costs nothing the resolver can't
+  // recover from.
+  if (height !== null && height !== undefined && !Number.isNaN(Number(height))) {
+    const { error: mirrorErr } = await admin
+      .from('clients')
+      .update({
+        height_cm: height,
+        height_recorded_at: new Date().toISOString(),
+        height_source: 'client',
+      })
+      .eq('id', clientId)
+    if (mirrorErr) console.error('Client height mirror error:', mirrorErr)
   }
 
   // Try the onboarding-complete notification first. If intake is also in,

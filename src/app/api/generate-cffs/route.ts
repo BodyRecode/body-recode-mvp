@@ -9,6 +9,7 @@ import {
 } from '@/lib/cffs-prompt'
 import { buildBloodMarkerCFFSSection, type BloodMarker } from '@/lib/blood-panel-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import { resolveHeightCm } from '@/lib/client-height'
 import { signedBaselinePhotoUrl } from '@/lib/baseline-photos'
 import { withTemporalContext } from '@/lib/temporal-context'
 import { isCanonicalPattern, supersedes, type PatternSource } from '@/lib/pattern-doctrine'
@@ -85,7 +86,7 @@ export async function POST(request: NextRequest) {
     { data: bloodPanel },
   ] = await Promise.all([
     admin.from('intakes').select('*').eq('id', intake_id).single(),
-    admin.from('clients').select('medications').eq('id', client_id).maybeSingle(),
+    admin.from('clients').select('medications, height_cm, height_recorded_at, height_source').eq('id', client_id).maybeSingle(),
     admin
       .from('baselines')
       .select('bodyweight_kg, height_cm, waist_cm, hips_cm, chest_cm, captured_at, photo_front_url, photo_side_url, photo_back_url')
@@ -148,10 +149,21 @@ export async function POST(request: NextRequest) {
     image: NonNullable<Awaited<ReturnType<typeof fetchImageAsBase64>>>
   }>
 
+  // Height through the resolver so a coach-entered height on the client record
+  // reaches the anthropometry section (waist-to-height, BMI plausibility) for
+  // the clients who captured a baseline before height was ever asked for.
+  const resolvedHeight = resolveHeightCm({
+    clientHeightCm: clientRow?.height_cm,
+    clientHeightRecordedAt: clientRow?.height_recorded_at ?? null,
+    clientHeightSource: clientRow?.height_source ?? null,
+    baselineHeightCm: baselineRow?.height_cm,
+    baselineCapturedAt: baselineRow?.captured_at ?? null,
+  })
+
   const baselineContext: CFFSBaselineContext | null = baselineRow
     ? {
         bodyweight_kg: baselineRow.bodyweight_kg ?? null,
-        height_cm: baselineRow.height_cm ?? null,
+        height_cm: resolvedHeight.heightCm,
         waist_cm: baselineRow.waist_cm ?? null,
         hips_cm: baselineRow.hips_cm ?? null,
         chest_cm: baselineRow.chest_cm ?? null,

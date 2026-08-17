@@ -53,6 +53,7 @@ import { resolveRouterMode } from '@/lib/recovery-state-machine'
 import { BlockProgressPanel } from './block-progress-panel'
 import { loadBlockProgress } from '@/lib/block-progress'
 import ClientPaymentsSection from '@/components/dashboard/client-payments-section'
+import HeightEditor from './height-editor'
 
 export default async function ClientPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -82,7 +83,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       .order('created_at', { ascending: false }),
     admin
       .from('intakes')
-      .select('id, dietary_restrictions, dietary_preferences, typical_day_eating, meals_per_day, fluid_intake, caffeine_intake, alcohol_intake, eating_context, dietary_updated_at')
+      // date_of_birth + gender are here for the Height panel, which reports
+      // what else is still blocking an energy estimate. A height with no age or
+      // sex on file still produces no BMR.
+      .select('id, date_of_birth, gender, dietary_restrictions, dietary_preferences, typical_day_eating, meals_per_day, fluid_intake, caffeine_intake, alcohol_intake, eating_context, dietary_updated_at')
       .eq('client_id', id)
       .order('submitted_at', { ascending: false, nullsFirst: false })
       .limit(1),
@@ -1428,6 +1432,22 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             : undefined
         }
       >
+        {/* Height sits above the capture card because it is not a per-capture
+            measurement and, unlike the rest of them, it can be entered here.
+            Clients with no baseline still need one on file or their nutrition
+            plan carries no energy requirement. */}
+        <HeightEditor
+          clientId={client.id}
+          clientHeightCm={client.height_cm ?? null}
+          clientHeightRecordedAt={client.height_recorded_at ?? null}
+          clientHeightSource={client.height_source ?? null}
+          baselineHeightCm={latestBaseline?.height_cm ?? null}
+          baselineCapturedAt={latestBaseline?.captured_at ?? null}
+          hasBodyweight={!!latestBaseline?.bodyweight_kg}
+          hasAge={!!latestIntake?.date_of_birth}
+          hasSex={!!latestIntake?.gender}
+        />
+
         {latestBaseline ? (
           <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl p-5 space-y-4">
             <div className="flex items-center justify-between">

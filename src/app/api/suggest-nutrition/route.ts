@@ -9,6 +9,7 @@ import {
   MIN_MEAL_COUNT_WHEN_SUPPRESSED,
 } from '@/lib/nutrition-validation'
 import { extractFirstJsonObject } from '@/lib/extract-json'
+import { resolveHeightCm, heightPromptLine } from '@/lib/client-height'
 import { withTemporalContext } from '@/lib/temporal-context'
 import { AI_MODELS } from '@/lib/ai-models'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
@@ -39,7 +40,7 @@ export async function POST(request: NextRequest) {
     { data: recentReviews },
     { data: currentPlanBlock },
   ] = await Promise.all([
-    admin.from('clients').select('id, name, medications').eq('id', client_id).maybeSingle(),
+    admin.from('clients').select('id, name, medications, height_cm, height_recorded_at, height_source').eq('id', client_id).maybeSingle(),
     admin.from('cffs').select('*').eq('client_id', client_id).eq('is_archived', false).maybeSingle(),
     admin.from('intakes')
       .select('id, date_of_birth, gender, primary_goal, secondary_goals, desired_timeline, subjective_motivator, training_days_available, injury_location_current, injury_location_history, injury_primary_concern, injury_aggravating_movements, fat_map_responses, training_responses, nutrition_responses, schedule_responses, sleep_responses, stress_responses, supplement_responses, dietary_restrictions, dietary_preferences, typical_day_eating, meals_per_day, fluid_intake, caffeine_intake, alcohol_intake, eating_context, submitted_at')
@@ -90,7 +91,17 @@ export async function POST(request: NextRequest) {
   // it and it was captured nowhere until 2026-07-30, which is why the engine
   // could only ever report the calories its own meals happened to contain and
   // never say whether that total suited the person eating it.
-  const heightCm = baseline?.height_cm ?? null
+  //
+  // Read through the resolver, not off the baseline: from 2026-08-17 the coach
+  // can enter a height directly on the client record, which is the only source
+  // for the clients who have never submitted a baseline.
+  const resolvedHeight = resolveHeightCm({
+    clientHeightCm: client?.height_cm,
+    clientHeightRecordedAt: client?.height_recorded_at ?? null,
+    clientHeightSource: client?.height_source ?? null,
+    baselineHeightCm: baseline?.height_cm,
+    baselineCapturedAt: baseline?.captured_at ?? null,
+  })
   const bodyweightSource = baseline?.bodyweight_kg
     ? `baseline (${baseline.captured_at?.slice(0, 10) ?? 'date unknown'})`
     : null
@@ -132,7 +143,7 @@ CFFS — FOUNDATIONAL SYNTHESIS:
 
   const intakeLines: string[] = []
   intakeLines.push(`- Bodyweight: ${bodyweightKg ? `${bodyweightKg}kg${bodyweightSource ? ` (from ${bodyweightSource})` : ''}` : 'Not provided'}`)
-  intakeLines.push(`- Height: ${heightCm ? `${heightCm}cm` : 'NOT RECORDED — an energy estimate is not possible without it, say so rather than guessing'}`)
+  intakeLines.push(`- ${heightPromptLine(resolvedHeight)}`)
   intakeLines.push(`- Age: ${ageFromDob ?? 'Not provided'}`)
   intakeLines.push(`- Sex: ${intake?.gender || 'Not provided'}`)
   if (baseline?.waist_cm || baseline?.hips_cm || baseline?.chest_cm) {

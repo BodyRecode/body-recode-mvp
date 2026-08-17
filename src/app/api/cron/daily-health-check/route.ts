@@ -343,6 +343,17 @@ async function checkWeeklyCheckinWrite(admin: ReturnType<typeof createAdminClien
 }
 
 // ─── Data integrity checks ────────────────────────────────────────────────
+//
+// Every client query below filters `ended_at is null`. When offboarding was
+// built on 2026-08-01 the twelve CLIENT-FACING crons were fixed to read that
+// gate; this job was missed because it emails the coach, not the client. The
+// effect was that people who had ended, or who never started, went on being
+// counted as active clients and named in the daily email every morning
+// (2026-08-17). A report that keeps raising former clients trains you to
+// ignore it, which is worse than not sending it.
+//
+// `clients.active` is NOT the gate and must not be used here — see
+// src/lib/offboard-client.ts for why.
 
 async function checkClientsWithoutIntakeInvitation(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
   try {
@@ -350,6 +361,7 @@ async function checkClientsWithoutIntakeInvitation(admin: ReturnType<typeof crea
       .from('clients')
       .select('id, name, onboarding_token')
       .not('onboarding_token', 'is', null)
+      .is('ended_at', null)
 
     if (error) {
       return { name: 'Clients — Intake Invitation', status: 'info', detail: 'Could not query clients table' }
@@ -387,6 +399,7 @@ async function checkActiveClientsWithoutProgram(admin: ReturnType<typeof createA
       .from('clients')
       .select('id, name')
       .not('coaching_started_at', 'is', null)
+      .is('ended_at', null)
 
     if (error || !activeClients || activeClients.length === 0) {
       return { name: 'Active Clients — Programs', status: 'ok', detail: 'No active clients in the system yet' }
@@ -421,6 +434,7 @@ async function checkActiveClientsWithoutNutrition(admin: ReturnType<typeof creat
       .from('clients')
       .select('id, name')
       .not('coaching_started_at', 'is', null)
+      .is('ended_at', null)
 
     if (error || !activeClients || activeClients.length === 0) {
       return { name: 'Active Clients — Nutrition', status: 'ok', detail: 'No active clients in the system yet' }
@@ -522,6 +536,7 @@ async function checkClientsWithMissedCheckins(admin: ReturnType<typeof createAdm
       .select('id, name, coaching_started_at')
       .not('coaching_started_at', 'is', null)
       .lt('coaching_started_at', fourteenDaysAgo)
+      .is('ended_at', null)
 
     if (error || !activeClients || activeClients.length === 0) {
       return { name: 'Active Clients — Check-Ins', status: 'ok', detail: 'No clients have been active for 14+ days yet' }
