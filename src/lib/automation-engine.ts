@@ -134,6 +134,35 @@ export async function fireTrigger(
       if (!matches) continue
     }
 
+    // Already in this sequence? Don't start a second copy.
+    //
+    // Added 2026-08-17. Dee Berry submitted the scorecard three times and was
+    // enrolled three times, so every touch arrived in triplicate on top of the
+    // duplicate-workflow problem. Re-submitting a form is a completely normal
+    // thing for a person to do — they lose the tab, they want to change an
+    // answer, they forget they already did it — and it should never multiply
+    // what lands in their inbox.
+    //
+    // Scoped to this workflow, so a lead can still be in two DIFFERENT
+    // sequences at once. Only a second copy of the same one is refused.
+    if (ctx.leadId) {
+      const { data: running } = await admin
+        .from('be_workflow_executions')
+        .select('id')
+        .eq('workflow_id', workflow.id)
+        .eq('lead_id', ctx.leadId)
+        .eq('status', 'running')
+        .limit(1)
+
+      if (running && running.length > 0) {
+        console.warn(
+          `[automation] Lead ${ctx.leadId} is already running "${workflow.name}" ` +
+          `(execution ${running[0].id}). Skipping re-enrolment rather than double-sending.`,
+        )
+        continue
+      }
+    }
+
     // Create execution record
     const { data: execution } = await admin
       .from('be_workflow_executions')

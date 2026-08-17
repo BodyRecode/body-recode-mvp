@@ -786,6 +786,15 @@ async function executeAction(
       const result = await sendMarketingEmail({
         from: fromCoach(),
         to: contact.email,
+        // BCC the coach, per feedback_bcc_kade_on_client_sends.
+        //
+        // Added 2026-08-17. These drip emails were the one prospect-facing send
+        // path with no coach copy, which is how a duplicate sequence emailed
+        // six leads twice a touch for three weeks without Kade seeing a single
+        // one of them. A silent copy is the cheapest possible detector: the
+        // same message arriving twice in your own inbox is unmissable, and no
+        // dashboard or log has to be checked for it to be noticed.
+        bcc: [coach().email],
         subject: interpolatedSubject,
         html,
         source: `automation-step-${step.position}`,
@@ -1714,13 +1723,39 @@ export const executeWorkflowFunction = inngest.createFunction(
         if (!ctx.leadId) return null
         const { data } = await admin
           .from('leads')
-          .select('converted_to_client_id, status, active')
+          .select('converted_to_client_id, status, active, zoom_1_date')
           .eq('id', ctx.leadId)
           .maybeSingle()
         if (!data) return 'lead_deleted'
         if (data.active === false) return 'lead_inactive'
         if (data.converted_to_client_id) return 'converted_to_client'
         if (data.status === 'closed_declined') return 'closed_declined'
+        // Stop the moment they engage, not only when they convert.
+        //
+        // Added 2026-08-17. Dee Berry held her discovery call on 13 Aug and then
+        // received two more cold-sequence emails — including "Last one from me",
+        // which asks her to book a call she had already had. She was neither
+        // converted nor declined, so every guard above passed and the drip
+        // carried on underneath the conversation.
+        //
+        // A booked or completed call means the sequence has done its job. Its
+        // entire purpose is to get them onto a call; continuing past that point
+        // can only make the practice look like it is not paying attention.
+        if (data.zoom_1_date) return 'call_booked_or_held'
+        // Status, not just the date: Dee's row said zoom_1_completed while
+        // zoom_1_date was still null, so a date-only check would have missed
+        // exactly the person who prompted this fix.
+        const ENGAGED_STATUSES = [
+          'zoom_1_booked',
+          'zoom_1_completed',
+          'zoom_2_booked',
+          'commencement_fee_paid',
+          'active_coaching',
+          'active_deliberate_start',
+        ]
+        if (typeof data.status === 'string' && ENGAGED_STATUSES.includes(data.status)) {
+          return `engaged_${data.status}`
+        }
         return null
       })
 

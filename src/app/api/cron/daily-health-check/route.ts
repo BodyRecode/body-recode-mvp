@@ -569,12 +569,50 @@ async function checkClientsWithMissedCheckins(admin: ReturnType<typeof createAdm
 
 async function checkScorecardAutomation(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
   try {
-    const { data: workflow, error } = await admin
+    // Match BOTH spellings — the canonical hyphen name and the legacy em-dash
+    // one — oldest first, because the oldest is the canonical workflow and the
+    // one fireTrigger() actually runs.
+    //
+    // This used to query the LEGACY name alone with .maybeSingle(), and that is
+    // what made the duplicate immortal (found 2026-08-17). A duplicate em-dash
+    // workflow appeared on 13 Jul; it was deactivated by hand on 28 Jul; this
+    // check then found it (it matched the name it was looking for), saw
+    // is_active === false, and helpfully turned it back on. Every night. So the
+    // duplicate kept double-sending to scorecard leads for three weeks, and the
+    // health check reported "ok" the whole time because the row it was
+    // monitoring was the wrong one.
+    //
+    // Two rules now: only ever reactivate the OLDEST, and treat the existence
+    // of a second one as a failure to surface rather than a row to nurse.
+    const { data: matches, error } = await admin
       .from('be_workflows')
-      .select('id, is_active')
-      .eq('name', 'Scorecard — Follow-up Sequence')
+      .select('id, name, is_active, created_at')
+      .in('name', ['Scorecard - Follow-up Sequence', 'Scorecard — Follow-up Sequence'])
       .eq('trigger_type', 'form_submitted')
-      .maybeSingle()
+      .order('created_at', { ascending: true })
+
+    const workflow = matches?.[0] ?? null
+    const duplicates = (matches ?? []).slice(1)
+
+    // A live duplicate is an active incident: every scorecard lead gets the
+    // whole sequence twice. Deactivate it here rather than only reporting it,
+    // because a report that waits for someone to read it is a report that
+    // sends another few hundred emails first.
+    if (duplicates.length > 0) {
+      const stillActive = duplicates.filter(d => d.is_active)
+      if (stillActive.length > 0) {
+        await admin
+          .from('be_workflows')
+          .update({ is_active: false })
+          .in('id', stillActive.map(d => d.id))
+        return {
+          name: 'Scorecard Automation',
+          status: 'fixed',
+          detail: `${stillActive.length} DUPLICATE workflow(s) were active on the same trigger — every scorecard lead was being enrolled twice and receiving each email twice.`,
+          action: `Deactivated ${stillActive.map(d => d.id).join(', ')}. Kept the canonical ${workflow?.id}. In-flight runs cancel at their next step.`,
+        }
+      }
+    }
 
     if (error) {
       return {
@@ -603,12 +641,14 @@ async function checkScorecardAutomation(admin: ReturnType<typeof createAdminClie
       }
     }
 
+    // Only ever reactivate the OLDEST match. Reactivating whatever happened to
+    // match a name is what kept the duplicate alive for three weeks.
     if (!workflow.is_active) {
       await admin.from('be_workflows').update({ is_active: true }).eq('id', workflow.id)
       return {
         name: 'Scorecard Automation',
         status: 'fixed',
-        detail: 'Workflow existed but was deactivated.',
+        detail: 'The canonical workflow existed but was deactivated.',
         action: 'Reactivated automatically.',
       }
     }
