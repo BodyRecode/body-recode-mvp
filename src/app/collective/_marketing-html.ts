@@ -268,8 +268,7 @@ export const MARKETING_HTML = String.raw`
         <a class="ghost" href="#inside">See what you get</a>
       </div>
       <div class="trust">
-        <div class="dots"><i></i><i></i><i></i><i class="open"></i><i class="open"></i><i class="open"></i><i class="open"></i><i class="open"></i><i class="open"></i><i class="open"></i></div>
-        <div class="seats"><b>3 founding members</b> admitted &middot; applications open</div>
+        <div class="seats"><b>Applications open</b> &middot; admitted, not signed up</div>
       </div>
     </div>
     <div class="frame">
@@ -518,21 +517,17 @@ export const MARKETING_HTML = String.raw`
   </div>
 </section>
 
-<!-- FOUNDING TEN -->
+<!-- THE COLLECTIVE -->
 <section class="sec alt">
   <div class="wrap">
     <div class="eyebrow">// The Collective</div>
     <h2>A collective of coaches practising to one standard.</h2>
-    <p class="lead">This is not open enrolment. Coaches are <b>admitted, not signed up</b> — every member runs the same engine and the same standard, which is what keeps the standard high. The founding cohort gets the best terms I will ever offer, in exchange for helping shape the platform.</p>
+    <p class="lead">This is not open enrolment. Coaches are <b>admitted, not signed up</b> — every member runs the same engine and the same standard, which is what keeps the standard high. Early members get the best terms I will ever offer, in exchange for helping shape the platform.</p>
     <div class="terms">
       <div class="term"><div class="ic">01</div><h4>Founding pricing, locked</h4><p>Your founding rate is locked for as long as you stay.</p></div>
       <div class="term"><div class="ic">02</div><h4>Input into the roadmap</h4><p>What you need shapes what gets built next.</p></div>
       <div class="term"><div class="ic">03</div><h4>First access</h4><p>Every new feature reaches you before anyone else.</p></div>
       <div class="term"><div class="ic">04</div><h4>Founding status</h4><p>Recognition as a founding member, and co-marketing.</p></div>
-    </div>
-    <div class="capwide">
-      <div class="dots"><i></i><i></i><i></i><i class="open"></i><i class="open"></i><i class="open"></i><i class="open"></i><i class="open"></i><i class="open"></i><i class="open"></i></div>
-      <div class="txt">The <b>founding cohort</b> is limited. When it fills, founding terms close and later members join at standard rates.</div>
     </div>
   </div>
 </section>
@@ -604,7 +599,7 @@ export const MARKETING_HTML = String.raw`
       <h2>A place in the Collective.</h2>
       <p>If you have a method that works and people who trust you, this is the missing piece. Apply and let us see if you are a fit.</p>
       <a class="primary" href="/collective/apply">Apply to join the Collective &rarr;</a>
-      <div class="seats mono">Founding cohort &middot; applications open</div>
+      <div class="seats mono">Applications open</div>
     </div>
   </div>
 </section>

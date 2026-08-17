@@ -21,7 +21,7 @@ import { resolve } from 'path'
 
 const WHITELIST_PREFIXES = [
   '/Users/kadedunstone/Dropbox/01_BODY_RECODE/',
-  '/Users/kadedunstone/Dropbox/03_STUDIO_OF_TEN/',
+  '/Users/kadedunstone/Dropbox/03_BODY_RECODE_COLLECTIVE/',
 ]
 
 export async function POST(req: Request) {

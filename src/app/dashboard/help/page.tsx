@@ -1673,7 +1673,7 @@ export default function HelpPage() {
               <li><strong>Phase 1 · Pilot-ready (hand-gloved)</strong> — Melisa onboarding as pilot zero with targeted branding override before the full de-hardcode.</li>
               <li><strong>Phase 2 · Product-ready</strong> — tenant_config + resolver + settings UI + de-hardcode + custom domains + per-tenant Resend wiring.</li>
               <li><strong>Phase 3 · Billing</strong> — Stripe Connect for tenant-side (their clients pay them) + Kade&apos;s separate billing of partners.</li>
-              <li><strong>Phase 4 · Scale &amp; doctrine mode B</strong> — yoga modality, per-tenant doctrine parameters, method injection for the post-Founding-Ten wave.</li>
+              <li><strong>Phase 4 · Scale &amp; doctrine mode B</strong> — yoga modality, per-tenant doctrine parameters, method injection for the later-stage wave.</li>
             </ul>
 
             <p className="font-semibold text-[#1A1A1A] mt-4">How to read it</p>
@@ -1690,7 +1690,7 @@ export default function HelpPage() {
 
             <p className="font-semibold text-[#1A1A1A] mt-4">Source of truth &amp; discipline</p>
             <p>The buildout lives in <code>src/lib/saas-buildout-manifest.ts</code>. Every commit that ships or changes state on a SaaS/white-label step MUST update the corresponding manifest entry in the same commit — bump <code>status</code>, add the commit SHA to <code>commits</code>, stamp <code>shippedAt</code> if now shipped. See <code>feedback_ship_checklist</code> auto-memory (updated 2026-07-03) for the enforcement rule.</p>
-            <p>Strategic scope doc: <code>~/Dropbox/03_STUDIO_OF_TEN/00_FOUNDING_TEN/POWERED_PLATFORM_BUILD_PLAN.md</code>. Deployment runbook: <code>PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.md</code>.</p>
+            <p>Strategic scope doc: <code>~/Dropbox/03_BODY_RECODE_COLLECTIVE/00_PARTNER_PROGRAMME/POWERED_PLATFORM_BUILD_PLAN.md</code>. Deployment runbook: <code>PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.md</code>.</p>
           </Section>
 
           <Section id="speed-to-lead-sms" title="17f. Speed-to-Lead SMS" colour="teal">
@@ -1742,10 +1742,10 @@ export default function HelpPage() {
             <p>Templates and copy already read from <code>coach()</code> / <code>brand()</code> so SOT partners get their own voice without rewriting anything. Per-tenant Twilio Subaccount routing shipped 2026-07-05: <code>licence.twilioSubaccountSid</code> + <code>licence.twilioMessagingServiceSid</code> if set send through the tenant&apos;s subaccount + AU number; otherwise falls back to Kade&apos;s platform Twilio.</p>
           </Section>
 
-          <Section id="partner-billing" title="17g. Partner Billing (Kade's billing of Founding Ten)" colour="teal">
-            <p>Kade&apos;s billing of Founding Ten partners (as distinct from tenants billing their own clients via Stripe Connect). Three-line commercial model per Founding Partner Agreement §6:</p>
+          <Section id="partner-billing" title="17g. Partner Billing (Kade's billing of the Collective)" colour="teal">
+            <p>Kade&apos;s billing of Collective Partners (as distinct from tenants billing their own clients via Stripe Connect). Three-line commercial model per Collective Partner Agreement §6:</p>
             <ol className="space-y-1 list-decimal list-inside text-[#3A3A3A] text-sm">
-              <li><strong>Setup fee</strong> - one-time at Foundational Read. Launch $2,500 / Studio $6,000 for Founding Ten (locked half-price).</li>
+              <li><strong>Setup fee</strong> - one-time at Foundational Read. Launch $2,500 / Studio $6,000 at the founding rate (locked half-price).</li>
               <li><strong>Platform subscription</strong> - locked at founding rate for life. Launch $400/mo / Studio $600/mo.</li>
               <li><strong>Per Active Client</strong> - $20 per active client per month, billed in arrears.</li>
             </ol>
@@ -1769,7 +1769,7 @@ export default function HelpPage() {
           </Section>
 
           <Section id="doctrine-parameters" title="17h. Doctrine Parameters (Mode A+)" colour="teal">
-            <p>Middle ground between running BR&apos;s doctrine unchanged (Mode A) and injecting a partner&apos;s own method (Mode B, reserved for post-Founding-Ten). Partners can tune tone, add partner-specific banned phrases, substitute terminology, and append coaching-style guidance to platform generators.</p>
+            <p>Middle ground between running BR&apos;s doctrine unchanged (Mode A) and injecting a partner&apos;s own method (Mode B, reserved for later-stage). Partners can tune tone, add partner-specific banned phrases, substitute terminology, and append coaching-style guidance to platform generators.</p>
 
             <p className="font-semibold text-[#1A1A1A] mt-4">What can be tuned (six parameters, all optional)</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
@@ -1782,7 +1782,7 @@ export default function HelpPage() {
             </ul>
 
             <p className="font-semibold text-[#1A1A1A] mt-4">What can NOT be tuned</p>
-            <p>Hard Safety Floors remain immutable per Founding Partner Agreement §7 and IP Licence Deed clause 4.1(h): RRS clamps, Fat Map training limits, injury contraindications, eligibility floors, minimum-calorie floors, platform-wide banned client-terms. The Mode A+ surface can only ADD guidance, never bypass safety.</p>
+            <p>Hard Safety Floors remain immutable per Collective Partner Agreement §7 and IP Licence Deed clause 4.1(h): RRS clamps, Fat Map training limits, injury contraindications, eligibility floors, minimum-calorie floors, platform-wide banned client-terms. The Mode A+ surface can only ADD guidance, never bypass safety.</p>
 
             <p className="font-semibold text-[#1A1A1A] mt-4">Editing</p>
             <p>Live at <strong>Dashboard → Settings → Tenant configuration → Doctrine parameters (Mode A+)</strong>. Each coach edits their own via the tenant-scoped form. Save posts to <code>/api/tenant/update</code> with <code>section: &apos;licence&apos;</code> and a <code>doctrineParameters</code> patch. Cache invalidates on save; generators read new values on their next call.</p>

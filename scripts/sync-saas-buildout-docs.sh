@@ -18,26 +18,28 @@ if ! command -v pandoc >/dev/null 2>&1; then
   exit 1
 fi
 
-mkdir -p "$DEST/founding-ten" "$DEST/founding-ten/onboarding" "$DEST/founding-ten/modalities" "$DEST/founding-ten/legal" "$DEST/sql"
+mkdir -p "$DEST/collective" "$DEST/collective/onboarding" "$DEST/collective/modalities" "$DEST/collective/legal" "$DEST/sql"
 
-# ─── Founding Ten root docs ──────────────────────────────────
+# ─── Collective root docs ──────────────────────────────────
 for f in POWERED_PLATFORM_BUILD_PLAN OFFER_ARCHITECTURE README; do
-  cp "$SRC/03_STUDIO_OF_TEN/00_FOUNDING_TEN/$f.md" "$DEST/founding-ten/$f.md"
+  cp "$SRC/03_BODY_RECODE_COLLECTIVE/00_PARTNER_PROGRAMME/$f.md" "$DEST/collective/$f.md"
 done
 
 # ─── Onboarding docs ─────────────────────────────────────────
 for f in PHASE_2_TENANT_DEPLOYMENT_CHECKLIST MELISA_PILOT_ZERO_DEPLOYMENT_RUNBOOK PARTNER_JOURNEY README; do
-  cp "$SRC/03_STUDIO_OF_TEN/00_FOUNDING_TEN/onboarding/$f.md" "$DEST/founding-ten/onboarding/$f.md"
+  cp "$SRC/03_BODY_RECODE_COLLECTIVE/00_PARTNER_PROGRAMME/onboarding/$f.md" "$DEST/collective/onboarding/$f.md"
 done
 
 # ─── Modality docs ───────────────────────────────────────────
 for f in YOGA_DOCTRINE_v1 YOGA_MODALITY_SCOPE; do
-  cp "$SRC/03_STUDIO_OF_TEN/00_FOUNDING_TEN/modalities/$f.md" "$DEST/founding-ten/modalities/$f.md"
+  cp "$SRC/03_BODY_RECODE_COLLECTIVE/00_PARTNER_PROGRAMME/modalities/$f.md" "$DEST/collective/modalities/$f.md"
 done
 
-# ─── Legal docs (Founding Ten agreement + IP licence) ────────
-for f in README COVER_NOTE_TO_LEGAL FOUNDING_PARTNER_AGREEMENT_v0.1 IP_LICENCE_DEED_v0.1; do
-  cp "$SRC/03_STUDIO_OF_TEN/00_FOUNDING_TEN/legal/$f.md" "$DEST/founding-ten/legal/$f.md"
+# ─── Legal docs (Collective agreement + IP licence) ────────
+for f in README COVER_NOTE_TO_LEGAL DECISIONS_NEEDED IP_PROTECTION_MAP MUTUAL_NDA_v0.1 \
+         COLLECTIVE_PARTNER_AGREEMENT_v0.1 PARTNER_IP_SUBLICENCE_DEED_v0.1 \
+         HEAD_LICENCE_DEED_v0.1 CONTRACTOR_IP_ASSIGNMENT_v0.1; do
+  cp "$SRC/03_BODY_RECODE_COLLECTIVE/00_PARTNER_PROGRAMME/legal/$f.md" "$DEST/collective/legal/$f.md"
 done
 
 # ─── SQL schemas ─────────────────────────────────────────────

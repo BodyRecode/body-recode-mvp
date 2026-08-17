@@ -111,7 +111,7 @@ function OverviewTab() {
         <SectionLabel>Posture right now</SectionLabel>
         <div className="flex items-center gap-2 mb-3"><Tag color="amber">Demand-gen + curated waitlist</Tag><Tag color="stone">Not hard-sell yet</Tag></div>
         <p className="text-sm text-stone-600 leading-relaxed">
-          We cannot sign or bill partners at full price yet (no lawyer, contracts stale at $20 not 15%, partner billing unbuilt, API-vs-15% economics unconfirmed). So we drive the right coaches into the Fit Scorecard and a curated waitlist now, and flip to "founding seats open" the moment legal + billing land. The 10-seat founding cohort is real - scarcity is honest, not manufactured.
+          Updated 18 Aug. Billing is now BUILT (Connect routing + charge capture, so the 15% is verifiable) and the economics are CONFIRMED (a client costs ~$1.18 in tokens against $97-194/mo revenue - COGS is 0.2%). What is still missing is a legal entity, a lawyer, and a partner: Melisa is out, and one application has arrived in six weeks. So the constraint moved from build to demand. The ten-seat cap was dropped - it was scarcity framing with nothing behind it, and claiming a countdown while nobody has signed is the fastest way to lose a coach who checks.
         </p>
       </Card>
     </div>
@@ -245,7 +245,7 @@ function PipelineTab() {
         <SectionLabel>Founding Members</SectionLabel>
         <div className="p-3 rounded-lg border border-stone-200 bg-stone-50/60">
           <div className="flex items-center gap-2 mb-1"><span className="text-sm font-semibold text-stone-800">Melisa - Harmony Yoga</span><Tag color="amber">Verbal yes, not signed</Tag></div>
-          <p className="text-xs text-stone-600 leading-relaxed">Founding Partner #1. Yoga modality, Brisbane. Terms locked with her 2026-07-15. Preview mocks built (/dashboard/preview/melisa + /harmony). Blocked on: signed agreement (lawyer), her brand pack + domain, $2,500 setup cleared, yoga branch merge.</p>
+          <p className="text-xs text-stone-600 leading-relaxed">Collective Partner #1. Yoga modality, Brisbane. Terms locked with her 2026-07-15. Preview mocks built (/dashboard/preview/melisa + /harmony). Blocked on: signed agreement (lawyer), her brand pack + domain, $2,500 setup cleared, yoga branch merge.</p>
         </div>
         <p className="text-xs text-stone-400 mt-3">9 remaining founding seats fed by the Fit Scorecard waitlist.</p>
       </Card>

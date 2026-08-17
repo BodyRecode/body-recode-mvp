@@ -195,7 +195,7 @@ export default async function TenantsHealthPage() {
       </Card>
 
       <div className="mt-6 text-[11px] text-stone-500 italic">
-        Signal legend: ● configured · ○ not configured. Active-clients cap: Launch tier = 10, Studio tier = 30 (from Founding Ten Agreement). Last-login yellows after 14 days idle.
+        Signal legend: ● configured · ○ not configured. Active-clients cap: Launch tier = 10, Studio tier = 30 (from Collective Partner Agreement). Last-login yellows after 14 days idle.
       </div>
     </div>
   )

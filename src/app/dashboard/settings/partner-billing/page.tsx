@@ -52,7 +52,7 @@ export default async function PartnerBillingAdminPage() {
   if (error) {
     return (
       <div className="max-w-[1100px]">
-        <PageHeader eyebrow="Admin" title="Partner billing" subtitle="Founding Ten partner billing state." />
+        <PageHeader eyebrow="Admin" title="Partner billing" subtitle="Collective Partner billing state." />
         <div className="p-4 rounded-xl border border-red-200 bg-red-50 text-red-900 text-[13px]">
           Error: {error.message}
         </div>
@@ -91,12 +91,12 @@ export default async function PartnerBillingAdminPage() {
     <div className="max-w-[1200px]">
       <PageHeader
         eyebrow="Admin · Partner billing"
-        title="Founding Ten partner billing"
-        subtitle="Kade's billing of Founding Ten partners. Per Agreement §6: one-time setup + locked monthly subscription + per-active-client fee. This page shows what to invoice each month. Auto-invoicing via Stripe API is v2 - for now invoice manually via Stripe dashboard using the numbers here."
+        title="Collective Partner billing"
+        subtitle="Kade's billing of Collective Partners. Per Agreement §6: one-time setup + locked monthly subscription + per-active-client fee. This page shows what to invoice each month. Auto-invoicing via Stripe API is v2 - for now invoice manually via Stripe dashboard using the numbers here."
       />
 
       <div className="mb-6 grid grid-cols-2 md:grid-cols-4 gap-3">
-        <MetricTile label="Founding partners" value={totalPartners.toString()} />
+        <MetricTile label="Collective Partners" value={totalPartners.toString()} />
         <MetricTile label="Locked MRR (subs)" value={fmtAud(totalMRRLocked)} hint="Sum of locked subscriptions" />
         <MetricTile label="Active clients last month" value={totalActiveClientsLastMonth.toString()} hint={fmtMonth(billableMonth)} />
         <MetricTile label="Per-client revenue last month" value={fmtAud(totalPerClientRevenueLastMonth)} hint="Sum of activeCount × per-client rate" />
@@ -108,7 +108,7 @@ export default async function PartnerBillingAdminPage() {
 
       {rows.length === 0 ? (
         <div className="p-8 rounded-2xl border border-stone-200 bg-stone-50 text-center text-[13px] text-stone-500">
-          No Founding Ten partners on file yet. When a partner signs the Founding Partner Agreement, set <code className="bg-white border border-stone-200 px-1 py-0.5 rounded">licence.partnerBilling</code> on their <code className="bg-white border border-stone-200 px-1 py-0.5 rounded">tenant_config</code> row with tier + locked prices + Stripe customer id.
+          No Collective Partners on file yet. When a partner signs the Collective Partner Agreement, set <code className="bg-white border border-stone-200 px-1 py-0.5 rounded">licence.partnerBilling</code> on their <code className="bg-white border border-stone-200 px-1 py-0.5 rounded">tenant_config</code> row with tier + locked prices + Stripe customer id.
         </div>
       ) : (
         <div className="space-y-6">
@@ -223,7 +223,7 @@ export default async function PartnerBillingAdminPage() {
       )}
 
       <div className="mt-8 p-4 rounded-xl border border-stone-200 bg-stone-50 text-[12px] text-stone-600 leading-relaxed">
-        <p><strong className="text-stone-900">How this page works.</strong> Each Founding Ten partner has <code className="bg-white border border-stone-200 px-1 py-0.5 rounded">licence.partnerBilling</code> set on their <code className="bg-white border border-stone-200 px-1 py-0.5 rounded">tenant_config</code> row (tier + locked prices + Stripe customer). A monthly Inngest cron computes Active Client counts and writes rows to <code className="bg-white border border-stone-200 px-1 py-0.5 rounded">partner_active_client_counts</code>. This page reads both.</p>
+        <p><strong className="text-stone-900">How this page works.</strong> Each Collective Partner has <code className="bg-white border border-stone-200 px-1 py-0.5 rounded">licence.partnerBilling</code> set on their <code className="bg-white border border-stone-200 px-1 py-0.5 rounded">tenant_config</code> row (tier + locked prices + Stripe customer). A monthly Inngest cron computes Active Client counts and writes rows to <code className="bg-white border border-stone-200 px-1 py-0.5 rounded">partner_active_client_counts</code>. This page reads both.</p>
         <p className="mt-2"><strong className="text-stone-900">Invoicing.</strong> v1 is manual. Use the numbers above to create an invoice in Stripe. Mark the month as billed when done (v2 will do this automatically). Setup fee is a one-time invoice at partnership commencement; the locked monthly subscription is a Stripe subscription; the per-active-client fee is a monthly usage invoice for the previous month.</p>
         <p className="mt-2">Related: <Link href="/dashboard/settings/tenants" className="text-blue-600 hover:text-blue-700 underline">Tenant registry</Link>, <Link href="/dashboard/settings/platform-buildout" className="text-blue-600 hover:text-blue-700 underline">Platform Buildout</Link>.</p>
       </div>

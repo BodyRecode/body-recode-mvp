@@ -195,7 +195,7 @@ Now produce the Foundational Reading JSON.`
  * byte-identical. See project_doctrine_parameters_mode_a_plus memory.
  *
  * Additive only. Hard Safety Floors + CFFS interpretation rules remain
- * immutable per Founding Partner Agreement §7 + IP Licence Deed clause
+ * immutable per Collective Partner Agreement §7 + IP Licence Deed clause
  * 4.1(h).
  */
 function renderPartnerTuningSection(): string {

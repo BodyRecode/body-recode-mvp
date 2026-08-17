@@ -82,10 +82,10 @@ export type TenantConfig = {
      *  twilioSubaccountSid is set. */
     twilioMessagingServiceSid?: string | null
     /** Kade's billing of THIS partner (as distinct from tenant billing their
-     *  own clients). See the Founding Partner Agreement §6. Null for BR (no
+     *  own clients). See the Collective Partner Agreement §6. Null for BR (no
      *  self-billing) and for non-partner tenants. */
     partnerBilling?: {
-      /** Tier of the Founding Ten partnership */
+      /** Tier of the Collective partnership */
       tier: 'launch' | 'studio'
       /** Stripe Customer id in Kade's Stripe account (cus_...) */
       customerId?: string | null
@@ -93,7 +93,7 @@ export type TenantConfig = {
       subscriptionId?: string | null
       /** ISO date when partnership began. Used to compute the first billable month. */
       activeFrom?: string | null
-      /** Founding Ten locked prices (cents, AUD) - override standard rates for life */
+      /** Founding-rate locked prices (cents, AUD) - override standard rates for life */
       lockedSetupFeeCents?: number | null       // 250000 (Launch) or 600000 (Studio)
       lockedSubscriptionCents?: number | null   // 40000 (Launch) or 60000 (Studio)
       /** Per Active Client fee cents (AUD). Default 2000 = $20. */
@@ -105,7 +105,7 @@ export type TenantConfig = {
     /** Doctrine parameters (Mode A+ tuning).
      *
      *  Middle ground between Mode A (partner runs BR doctrine unchanged) and
-     *  Mode B (partner injects their own method - reserved for post-Founding-Ten).
+     *  Mode B (partner injects their own method - reserved for later-stage).
      *
      *  Partners can tune tone, add partner-specific banned phrases, substitute
      *  terminology, and append coaching-style guidance to generators.
@@ -145,7 +145,7 @@ export type TenantConfig = {
   modality: {
     id: 'strength' | 'yoga'         // extend as new modality packs land
     label: string                   // display label
-    /** doctrine mode: 'A' = tenant runs BR doctrine branded; 'B' = injected method (post-Founding-Ten) */
+    /** doctrine mode: 'A' = tenant runs BR doctrine branded; 'B' = injected method (later-stage) */
     doctrineMode: 'A' | 'B'
   }
 }

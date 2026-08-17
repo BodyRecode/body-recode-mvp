@@ -4,7 +4,7 @@
  *
  * The union-set counter (countDistinctActiveClients) is the money-critical
  * path. It runs monthly per tenant via the partner-active-client-counter
- * Inngest cron; a bug here mis-invoices Founding Ten partners. Same holds
+ * Inngest cron; a bug here mis-invoices Collective Partners. Same holds
  * for the month boundary helpers - a wrong month cap under- or over-counts.
  *
  * Pattern follows test-doctrine-parameters-*.ts. Pure functions only,

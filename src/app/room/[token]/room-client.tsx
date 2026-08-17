@@ -193,7 +193,7 @@ export default function RoomClient({
               <div className="surface fade">
                 <div className="top"><h3>The Collective</h3></div>
                 <span className="role">White-label &middot; the scale play</span>
-                <p>Other coaches license the engine and run their own brand on it, to one standard. Capped, invite-only founding partners first.</p>
+                <p>Other coaches license the engine and run their own brand on it, to one standard. Capped, invite-only Collective Partners first.</p>
                 <span className="chip building">Building &middot; first partner onboarding</span>
               </div>
               <div className="surface fade">

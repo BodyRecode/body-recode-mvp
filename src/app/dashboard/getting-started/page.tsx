@@ -22,7 +22,7 @@ export const dynamic = 'force-dynamic'
 
 /**
  * Tenant-scoped "Getting Started" checklist. The first thing Melisa (or
- * any Founding Ten partner) should see when they log into their tenant.
+ * any Collective Partner) should see when they log into their tenant.
  * Reads their current tenant_config + a couple of ambient signals
  * (has a student been invited yet? has a check-in been read?), shows
  * which of the setup steps are done vs still open, and deep-links to
@@ -158,7 +158,7 @@ export default async function GettingStartedPage() {
   return (
     <div className="max-w-[900px]">
       <PageHeader
-        eyebrow={`${t.brand.name} · Founding Ten`}
+        eyebrow={`${t.brand.name} · the Collective`}
         title={completed === total ? 'You are all set.' : `Getting started at ${t.brand.name}`}
         subtitle={
           completed === total
@@ -247,7 +247,7 @@ export default async function GettingStartedPage() {
               Some things cannot be tuned by you or by us: RRS clamps, Fat Map training limits, injury contraindications, eligibility floors, minimum protein and calorie floors, platform-wide banned client terms. Your Mode A+ tuning layers ON TOP of these. This is what makes it legally defensible for you to run other people&apos;s practice on the platform.
             </p>
             <p className="text-[11px] text-stone-500 italic mt-2">
-              Per Founding Partner Agreement §7 + IP Licence Deed clause 4.1(h).
+              Per Collective Partner Agreement §7 + IP Licence Deed clause 4.1(h).
             </p>
           </div>
         </div>

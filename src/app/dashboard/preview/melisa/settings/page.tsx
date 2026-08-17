@@ -115,7 +115,7 @@ export default function HermonySettings() {
           <li>Platform banned client-terms (Body Recode brand-internal vocabulary)</li>
         </ul>
         <p className="text-[11px] text-[#999999] italic mt-4">
-          Per Founding Partner Agreement §7 + IP Licence Deed clause 4.1(h).
+          Per Collective Partner Agreement §7 + IP Licence Deed clause 4.1(h).
         </p>
       </Card>
 
@@ -125,7 +125,7 @@ export default function HermonySettings() {
         <div className="grid md:grid-cols-3 gap-4">
           <div className="p-4 rounded-xl border border-[#E5E5E5] bg-[#FAFBFD]">
             <div className="text-[10px] text-[#6B6B6B] uppercase mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>Tier</div>
-            <div className="text-[15px] font-semibold text-[#1A1A1A]">Launch (Founding Ten)</div>
+            <div className="text-[15px] font-semibold text-[#1A1A1A]">Launch (founding rate)</div>
           </div>
           <div className="p-4 rounded-xl border border-[#E5E5E5] bg-[#FAFBFD]">
             <div className="text-[10px] text-[#6B6B6B] uppercase mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>Platform subscription</div>
@@ -137,7 +137,7 @@ export default function HermonySettings() {
           </div>
         </div>
         <p className="text-[11px] text-[#999999] italic mt-4">
-          Locked at signing under the Founding Ten discount. Body Recode cannot raise your rate for as long as your subscription is continuous - even under change of control.
+          Locked at signing under the founding rate. Body Recode cannot raise your rate for as long as your subscription is continuous - even under change of control.
         </p>
       </Card>
 

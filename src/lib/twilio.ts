@@ -9,7 +9,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
  *
  * Subaccounts share the parent account's Auth Token by default. If a tenant
  * has a separate auth token, add TWILIO_AUTH_TOKEN_{TENANT_SLUG} env vars +
- * extend this function to look them up. For Founding Ten scale, the shared
+ * extend this function to look them up. At Collective scale (~10 partners), the shared
  * parent auth token is fine.
  *
  * EVERY SEND IS LOGGED (added 2026-08-14). Until now only speed-to-lead wrote
@@ -62,7 +62,7 @@ export async function sendSms({
   const messagingServiceSid = tenantMessagingServiceSid ?? platformMessagingServiceSid
 
   // Auth token: for now use the parent auth token. Subaccounts inherit parent
-  // access by default. This is fine for Founding Ten scale.
+  // access by default. This is fine at Collective scale (~10 partners).
   const client = twilio(accountSid, platformAuthToken)
 
   let twilioSid: string | null = null

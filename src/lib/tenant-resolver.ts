@@ -33,7 +33,7 @@ const CACHE_TTL_MS = 5 * 60 * 1000  // 5 minutes
  * Middleware runs on the edge — no async DB call possible in the resolver.
  * The `tenant_domains` DB table is source of truth for the admin UI; when
  * Kade adds/edits a row, he gets a copy-paste env var line to update in
- * Vercel + redeploy. Manageable at founding-ten scale (max ~30 mappings).
+ * Vercel + redeploy. Manageable at Collective scale (max ~30 mappings).
  */
 const CUSTOM_DOMAIN_MAP: Map<string, string> = (() => {
   const raw = process.env.NEXT_PUBLIC_TENANT_DOMAIN_MAP ?? ''

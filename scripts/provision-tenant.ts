@@ -1,5 +1,5 @@
 /**
- * Provision a new Founding Ten partner tenant from a JSON config file.
+ * Provision a new Collective Partner tenant from a JSON config file.
  *
  * Replaces the manual seed-SQL fill-in-placeholders flow. Reads a config
  * at `partners/<slug>.json`, validates it, emits a fully-populated SQL

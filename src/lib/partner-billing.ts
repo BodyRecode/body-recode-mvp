@@ -1,7 +1,7 @@
 /**
  * Partner billing helpers.
  *
- * Founding Partner Agreement §1 definition of Active Client:
+ * Collective Partner Agreement §1 definition of Active Client:
  *   "a coaching client on Partner's Instance who, within any calendar month,
  *    has (i) an active subscription, program, or engagement with Partner, or
  *    (ii) submitted a Weekly Check-In, intake, or other tenant-scoped record."

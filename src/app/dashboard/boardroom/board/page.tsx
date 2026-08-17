@@ -53,7 +53,7 @@ export default async function BoardPage() {
       'Launch Funnel B on Mon 13 Jul 2026 with Meta ads activation 7:05am AEST',
       'Prove Option D stage gate strategy (Stressed Exec first at $25/day, Phase 2 if CPL hits target)',
       'Onboard Melisa as SOT pilot zero post-launch (Shape A separate deploy or Shape B shared)',
-      'Build Founding Ten (10 SOT partners on the licensed BR platform)',
+      'Build the Collective (partners on the licensed BR platform)',
     ],
     stateOfPreLaunchBlockers: [
       'Meta phone verification pending (SMS gateway failing)',

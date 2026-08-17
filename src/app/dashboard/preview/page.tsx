@@ -64,7 +64,7 @@ const ASSET_GROUPS: AssetGroup[] = [
     ],
   },
   {
-    title: 'SaaS / Founding Ten',
+    title: 'SaaS / Collective',
     icon: Sparkles,
     assets: [
       { label: 'Harmony (Melisa) tenant preview',    description: 'White-label mockup: the actual BR dashboard shell wearing Melisa\'s Harmony brand (Yoga & Meditation, terracotta accent, H initial mark). Same header, same nav clusters, same StatCard grid - only the brand mark, name, and accent change. Home + Students + Settings pages walkable. Sales-ready to show her what her tenant will look like.',    href: '/dashboard/preview/melisa',    tag: 'Dashboard',    tagAccent: 'neutral' },

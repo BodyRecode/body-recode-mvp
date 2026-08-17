@@ -24,7 +24,7 @@ import { requireCoachOrAdminSecret } from '@/lib/api-auth'
  *     Sweep Phase 1). This was an open endpoint, which meant anyone could mint
  *     an auth.users row and a tenant_config row on demand — free account
  *     creation against the same database that holds client health records.
- *     Founding Partners are onboarded by hand today, so nothing legitimate
+ *     Collective Partners are onboarded by hand today, so nothing legitimate
  *     called this without Kade present.
  *   - Rejects if tenantId already exists in tenant_config
  *   - Rejects if email already registered (auth.admin.createUser will fail)

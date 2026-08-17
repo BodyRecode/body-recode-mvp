@@ -1,5 +1,5 @@
 /**
- * Starter presets for Mode A+ doctrine parameters. New Founding Ten
+ * Starter presets for Mode A+ doctrine parameters. New Collective
  * partners open the tenant settings editor and see a "Load preset"
  * dropdown; picking one populates all six fields with a sensible
  * starting shape they can then tune. Alternative to starting from an

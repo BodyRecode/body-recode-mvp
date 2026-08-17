@@ -222,7 +222,7 @@ async function main() {
     console.log(`  ${mult}x the modelled regenerations: $${(costFull * mult).toFixed(2)} per client`)
   }
 
-  // ── At Founding Ten scale ─────────────────────────────────────────────────
+  // ── At Collective scale ─────────────────────────────────────────────────
   const PARTNERS = 10
   const CLIENTS_EACH = 20
   const CONSOLE_TURNS = 100
@@ -233,7 +233,7 @@ async function main() {
   const platformRevenue = 400 * PARTNERS
   const perClientRevenue = (149 * 52 / 12) * 0.15 * PARTNERS * CLIENTS_EACH
 
-  console.log(`\nAT FOUNDING TEN SCALE (${PARTNERS} partners x ${CLIENTS_EACH} clients)`)
+  console.log(`\nAT COLLECTIVE SCALE (${PARTNERS} partners x ${CLIENTS_EACH} clients)`)
   console.log(`  one-off to onboard all ${PARTNERS * CLIENTS_EACH} clients   $${onboardingBurst.toFixed(0)}`)
   console.log(`  console, ${CONSOLE_TURNS} turns/coach/month           $${consoleBurn.toFixed(0)}/mo`)
   console.log(`  platform fees                          $${platformRevenue.toLocaleString()}/mo`)

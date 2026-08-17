@@ -39,52 +39,52 @@ build_one() {
   "$BUILDER" "$md" "$title" "$category" "$version" "$subtitle"
 }
 
-# ─── Founding Ten root docs ──────────────────────────────────
+# ─── Collective root docs ──────────────────────────────────
 build_one \
-  "$DOCS/founding-ten/POWERED_PLATFORM_BUILD_PLAN.md" \
+  "$DOCS/collective/POWERED_PLATFORM_BUILD_PLAN.md" \
   "Powered Platform Build Plan" \
   "Build Plan" \
   "v1.0 · 2026-07" \
   "phase 0 through 4 · the white-label product build"
 
 build_one \
-  "$DOCS/founding-ten/OFFER_ARCHITECTURE.md" \
+  "$DOCS/collective/OFFER_ARCHITECTURE.md" \
   "Offer Architecture" \
   "Offer" \
   "v1.0 · 2026-07" \
-  "founding partner commercial + doctrine shape"
+  "Collective Partner commercial + doctrine shape"
 
 build_one \
-  "$DOCS/founding-ten/README.md" \
-  "Body Recode · Founding Ten" \
+  "$DOCS/collective/README.md" \
+  "Body Recode · Collective" \
   "Overview" \
   "v1.0 · 2026-07" \
-  "capped ten founding partners on the powered platform"
+  "capped ten Collective Partners on the powered platform"
 
 # ─── Onboarding docs ─────────────────────────────────────────
 build_one \
-  "$DOCS/founding-ten/onboarding/PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.md" \
+  "$DOCS/collective/onboarding/PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.md" \
   "Phase 2 Tenant Deployment Checklist" \
   "Onboarding Runbook" \
   "v1.0 · 2026-07" \
   "shape B shared-deploy for partners #2 through #10"
 
 build_one \
-  "$DOCS/founding-ten/onboarding/MELISA_PILOT_ZERO_DEPLOYMENT_RUNBOOK.md" \
+  "$DOCS/collective/onboarding/MELISA_PILOT_ZERO_DEPLOYMENT_RUNBOOK.md" \
   "Melisa Pilot Zero Deployment Runbook" \
   "Onboarding Runbook" \
   "v1.0 · 2026-07" \
   "shape A separate-deploy · pilot zero"
 
 build_one \
-  "$DOCS/founding-ten/onboarding/PARTNER_JOURNEY.md" \
+  "$DOCS/collective/onboarding/PARTNER_JOURNEY.md" \
   "Partner Journey" \
   "Business Process" \
   "v1.0 · 2026-07" \
   "eight stages · attract to run"
 
 build_one \
-  "$DOCS/founding-ten/onboarding/README.md" \
+  "$DOCS/collective/onboarding/README.md" \
   "Onboarding · Index" \
   "Overview" \
   "v1.0 · 2026-07" \
@@ -92,14 +92,14 @@ build_one \
 
 # ─── Modality docs ───────────────────────────────────────────
 build_one \
-  "$DOCS/founding-ten/modalities/YOGA_DOCTRINE_v1.md" \
+  "$DOCS/collective/modalities/YOGA_DOCTRINE_v1.md" \
   "Yoga Modality · Doctrine v1" \
   "Doctrine Pack" \
   "v1.0 · 2026-07" \
   "modality 2 · safety constraints + prescription schema"
 
 build_one \
-  "$DOCS/founding-ten/modalities/YOGA_MODALITY_SCOPE.md" \
+  "$DOCS/collective/modalities/YOGA_MODALITY_SCOPE.md" \
   "Yoga Modality · Build Scope" \
   "Scope Doc" \
   "v1.0 · 2026-07" \
@@ -107,32 +107,32 @@ build_one \
 
 # ─── Legal docs ──────────────────────────────────────────────
 build_one \
-  "$DOCS/founding-ten/legal/README.md" \
-  "Founding Ten · Legal Package" \
+  "$DOCS/collective/legal/README.md" \
+  "Collective · Legal Package" \
   "Legal Package" \
   "v0.1 · 2026-07" \
   "package overview + how to use these drafts"
 
 build_one \
-  "$DOCS/founding-ten/legal/COVER_NOTE_TO_LEGAL.md" \
+  "$DOCS/collective/legal/COVER_NOTE_TO_LEGAL.md" \
   "Cover Note to Legal Reviewer" \
   "Legal Package" \
   "v0.1 · 2026-07" \
   "specific review priorities + areas of concern"
 
 build_one \
-  "$DOCS/founding-ten/legal/FOUNDING_PARTNER_AGREEMENT_v0.1.md" \
+  "$DOCS/collective/legal/COLLECTIVE_PARTNER_AGREEMENT_v0.1.md" \
   "Founding Partner Agreement" \
   "Legal Package" \
   "v0.1 · 2026-07" \
-  "commercial contract · Founding Ten programme"
+  "commercial contract · Collective programme"
 
 build_one \
-  "$DOCS/founding-ten/legal/IP_LICENCE_DEED_v0.1.md" \
+  "$DOCS/collective/legal/IP_LICENCE_DEED_v0.1.md" \
   "IP Licence Deed" \
   "Legal Package" \
   "v0.1 · 2026-07" \
-  "companion licence · Founding Ten programme"
+  "companion licence · Collective programme"
 
 echo ""
 echo "Done. Commit the PDFs:"

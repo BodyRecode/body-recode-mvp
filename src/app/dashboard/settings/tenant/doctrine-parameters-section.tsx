@@ -168,7 +168,7 @@ export function DoctrineParametersSection({
       </div>
       <div className="p-5">
         <p className="text-[13px] text-stone-600 leading-relaxed mb-4">
-          Middle ground between running BR&apos;s doctrine unchanged (Mode A) and injecting your own method (Mode B, reserved for post-Founding-Ten). Tune tone, add banned phrases, substitute terminology, add coaching-style guidance. <strong>Hard Safety Floors cannot be tuned here</strong> — RRS clamps, Fat Map limits, injury contraindications, eligibility floors remain immutable per the Founding Partner Agreement.
+          Middle ground between running BR&apos;s doctrine unchanged (Mode A) and injecting your own method (Mode B, reserved for later-stage). Tune tone, add banned phrases, substitute terminology, add coaching-style guidance. <strong>Hard Safety Floors cannot be tuned here</strong> — RRS clamps, Fat Map limits, injury contraindications, eligibility floors remain immutable per the Collective Partner Agreement.
         </p>
 
         {error && (
