@@ -38,7 +38,26 @@ const MAX_TURNS = 8
 const HISTORY_LIMIT = 20
 const MAX_TOKENS = 4096
 
-const ALL_TOOLS: Anthropic.Tool[] = [...READ_TOOLS, ...ACTION_TOOLS]
+/**
+ * Anthropic-hosted web search. Runs on Anthropic's side — we never execute it,
+ * and results arrive as content blocks in the same response.
+ *
+ * Added 2026-08-17 on Kade's "I want the feature to be able to do everything a
+ * ChatGPT or Claude AI could do". Without it the console cannot answer anything
+ * past its training data — competitors, current pricing, what a supplier
+ * actually offers today — which is a large part of what he uses Claude for.
+ *
+ * Deliberately capped. Each search costs tokens and latency, and an
+ * unconstrained research loop inside a chat is the cost driver flagged in
+ * project_collective_pricing_vs_api_cost.
+ */
+const WEB_SEARCH_TOOL = {
+  type: 'web_search_20260209',
+  name: 'web_search',
+  max_uses: 5,
+} as unknown as Anthropic.Tool
+
+const ALL_TOOLS: Anthropic.Tool[] = [...READ_TOOLS, ...ACTION_TOOLS, WEB_SEARCH_TOOL]
 const ACTION_TOOL_NAMES = new Set(ACTION_TOOLS.map(t => t.name))
 
 type TraceEntry = { tool: string; ok: boolean; count: number | null; error?: string }
@@ -109,6 +128,24 @@ export async function POST(request: NextRequest) {
       const toolUses = response.content.filter(
         (b): b is Anthropic.ToolUseBlock => b.type === 'tool_use',
       )
+
+      // Web search runs server-side, so it never appears as a tool_use for us
+      // to execute — but it should still show in the trace, because the chips
+      // are how the coach tells a checked answer from an asserted one.
+      for (const block of response.content) {
+        if ((block as { type: string }).type === 'server_tool_use') {
+          const name = (block as unknown as { name?: string }).name ?? 'web_search'
+          if (!trace.some(t => t.tool === name)) trace.push({ tool: name, ok: true, count: null })
+        }
+      }
+
+      // The server-side tool loop hit its own iteration cap. Re-send with the
+      // assistant turn appended and it resumes where it left off; do NOT add a
+      // "continue" message, the API detects the trailing server_tool_use itself.
+      if (response.stop_reason === 'pause_turn') {
+        messages.push({ role: 'assistant', content: response.content })
+        continue
+      }
 
       if (!toolUses.length) {
         answer = textBlocks.map(b => b.text).join('\n').trim()

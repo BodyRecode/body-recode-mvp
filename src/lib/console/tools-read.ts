@@ -153,6 +153,23 @@ export const READ_TOOLS: Anthropic.Tool[] = [
     },
   },
   {
+    name: 'content_context',
+    description:
+      'What content is already planned or published — the post calendar and the campaigns. Call this BEFORE drafting anything content-related, so a new pack, sequence or strategy builds on what is already scheduled instead of duplicating or contradicting it.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        window: {
+          type: 'string',
+          enum: ['upcoming', 'recent', 'both'],
+          description: 'Upcoming scheduled posts, recently published ones, or both. Defaults to both.',
+        },
+        limit: { type: 'number', description: `Max posts per window (default 15, hard cap ${MAX_ROWS}).` },
+      },
+      required: [],
+    },
+  },
+  {
     name: 'list_workflows',
     description:
       'The automations configured in the practice, whether each is active, and how many times each has run recently. Use this to answer "what is actually firing?" and to spot a workflow that is on but never running, or running far more than expected.',
@@ -195,6 +212,8 @@ export async function runReadTool(
       return rosterAttention(args, scope)
     case 'recent_sends':
       return recentSends(args, scope)
+    case 'content_context':
+      return contentContext(args, scope)
     case 'list_workflows':
       return listWorkflows(args, scope)
     default:
@@ -476,6 +495,64 @@ async function recentSends(args: Record<string, unknown>, scope: ConsoleScope): 
   return {
     result: { days, email_count: emails.length, sms_count: sms.length, emails, sms },
     count: emails.length + sms.length,
+  }
+}
+
+async function contentContext(args: Record<string, unknown>, scope: ConsoleScope): Promise<ToolOutcome> {
+  const limit = cap(args.limit, 15)
+  const window = typeof args.window === 'string' ? args.window : 'both'
+  const today = new Date().toISOString().slice(0, 10)
+
+  // ⚠️ TENANCY GAP: `calendar_posts` has no coach_id, so it cannot be scoped
+  // the way every other read in this file is. Under one coach that is the same
+  // result; it stops being the same result the day a second practice's posts
+  // land in this table. This is tracked as an open item on the console-tenant
+  // -scoping step in saas-buildout-manifest and MUST be closed (add coach_id,
+  // backfill, then wrap this in scoped()) before a second tenant goes live.
+  // Called out here rather than quietly omitted, because a content tool that
+  // cannot see the content calendar is close to useless.
+  const [upcoming, recent, campaigns] = await Promise.all([
+    window === 'upcoming' || window === 'both'
+      ? scope.admin
+          .from('calendar_posts')
+          .select('date, title, type, platform, phase, posted_at')
+          .gte('date', today)
+          .order('date', { ascending: true })
+          .limit(limit)
+      : Promise.resolve({ data: [] as Record<string, unknown>[] }),
+    window === 'recent' || window === 'both'
+      ? scope.admin
+          .from('calendar_posts')
+          .select('date, title, type, platform, phase, posted_at')
+          .lt('date', today)
+          .order('date', { ascending: false })
+          .limit(limit)
+      : Promise.resolve({ data: [] as Record<string, unknown>[] }),
+    scoped(scope.admin.from('be_campaigns').select('name, status, created_at'), scope)
+      .order('created_at', { ascending: false })
+      .limit(10),
+  ])
+
+  const shape = (rows: Record<string, unknown>[] | null) =>
+    (rows ?? []).map(p => ({
+      date: (p.date as string)?.slice(0, 10) ?? null,
+      title: p.title,
+      type: p.type,
+      platform: p.platform,
+      phase: p.phase,
+      published: Boolean(p.posted_at),
+    }))
+
+  const up = shape(upcoming.data)
+  const rec = shape(recent.data)
+
+  return {
+    result: {
+      upcoming_posts: up,
+      recent_posts: rec,
+      campaigns: (campaigns.data ?? []).map(c => ({ name: c.name, status: c.status })),
+    },
+    count: up.length + rec.length,
   }
 }
 

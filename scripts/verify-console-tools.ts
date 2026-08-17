@@ -44,6 +44,7 @@ async function main() {
     ['recent_sends', { days: 14, limit: 5 }],
     ['list_workflows', {}],
     ['roster_attention', { limit: 5 }],
+    ['content_context', { window: 'both', limit: 4 }],
   ]
 
   let failures = 0
