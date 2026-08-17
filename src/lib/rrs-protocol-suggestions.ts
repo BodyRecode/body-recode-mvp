@@ -146,6 +146,29 @@
  * there.
  *
  * Source: 00_PLAYBOOK/recovery_research/2026-08-17_Evening_Mobility_Wind_Down.md
+ *
+ * ── 2026-08-17: passive body heating, suggested in ONE state only ──
+ *
+ * sleep_disruption and nowhere else. Its report is unambiguous that the only
+ * indication is sleep ONSET latency: wake after sleep onset, total sleep time,
+ * awakenings and sleep efficiency all came back null or negative.
+ *
+ * Deliberately NOT credited anywhere else, and the reason is a doctrine point
+ * worth keeping. The protocol is BIPHASIC: a genuine sympathetic and
+ * cardiovascular stressor during immersion (systolic +2.41mmHg and pulse
+ * +2.99bpm per degree of skin warming, measured in 1,479 older adults), then a
+ * downregulating heat-loss rebound 30 to 120 minutes later. The report's
+ * instruction is that RRS must count it against thermal and cardiovascular
+ * load rather than for it. So in ns_overload, acute_fatigue or burnout_return
+ * it is another heat exposure, not a recovery credit.
+ *
+ * Not added to do_not_suggest either, because the report does not contraindicate
+ * it by state, it caps the variant and the stacking (one heat exposure per
+ * evening, never alongside sauna or hot yoga). That is a prescription-level
+ * rule the table cannot express, and it lives in the protocol's own
+ * contraindications instead.
+ *
+ * Source: 00_PLAYBOOK/recovery_research/2026-08-17_Passive_Body_Heating.md
  */
 
 import type { RecoveryPlaybookId } from './recovery-doctrine'
@@ -248,6 +271,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
       'sleep-debt-recovery',
       'breathwork-478',
       'nsdr-yoga-nidra',
+      'passive-body-heating',
       'restorative-yoga',
       'evening-winddown-mobility',
       'magnesium-bath',

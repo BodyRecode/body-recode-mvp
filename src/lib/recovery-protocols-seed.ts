@@ -211,6 +211,55 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     coach_doctrine: 'Trigeminal-driven dive reflex is the fastest parasympathetic lever available. Kade\'s personal morning protocol. Underused because clients think they need a full plunge to get the effect. They do not.',
   },
   {
+    // Added 2026-08-17 from the Deep Research report at
+    // 00_PLAYBOOK/recovery_research/2026-08-17_Passive_Body_Heating.md
+    //
+    // FIRST BIPHASIC PROTOCOL IN THE LIBRARY. Stressor during immersion,
+    // downregulator in the rebound 30 to 120 minutes afterwards. The entire
+    // prescription exists to land the client in phase two and keep them out of
+    // phase one at lights out. Filing it as "a downregulator" and stopping
+    // there would be the same bug as filing all cold together: the category is
+    // not the mechanism, the TIMING is.
+    //
+    // Deliberately NOT credited as recovery in the RRS table. Per the report,
+    // it must count against thermal and cardiovascular load, not for it.
+    slug: 'passive-body-heating',
+    name: 'Passive Body Heating (Warm Bath or Shower)',
+    category: 'heat',
+    short_description: 'Warm water before bed to shorten time-to-sleep. Onset only, and the bedroom has to be cool.',
+    what_it_does: 'Raises distal skin temperature and widens the distal-to-proximal gradient, which is the best single predictor of how fast someone falls asleep. Core temperature rises during immersion then falls further than it otherwise would, and that fall is what the protocol is buying. Shortens sleep onset latency by somewhere around 5 to 10 minutes. It does NOT improve wake after sleep onset, total sleep time, awakenings or sleep efficiency, all of which came back null or negative.',
+    steps: [
+      'Cool and darken the bedroom BEFORE the bath, not after. The heat has to have somewhere to go',
+      'Bath: 40 to 41 degrees, to mid-thorax not the neck, 10 to 20 minutes, finishing 60 to 120 minutes before lights out',
+      'Shower alternative: around 40 degrees, 10 minutes, finishing 20 to 60 minutes before lights out',
+      'Endpoint is warmed through and comfortably flushed, NOT sweating. Still sweating at bedtime means the dose was too high or the gap too short',
+      'Get out slowly. Sit for 30 seconds before standing',
+      'Dry off and stay lightly dressed. No bundling, no electric blanket, no heat source in the bed',
+      'Bathroom door unlocked and someone else in the house',
+    ],
+    dosing: {
+      frequency: 'Nightly. No accumulation, no tolerance, no need to cycle. The effect is acute and same-night.',
+      duration: 'Bath 10 to 20 minutes at 40 to 41 degrees. Shower 10 minutes at around 40 degrees.',
+      intensity_notes: 'NO PROGRESSION. Do not chase a bigger effect with hotter water or longer immersion: the dose-response INVERTS above roughly +1 degree core. At +1.8 degrees rectal the trials found delayed sleep onset, disturbed sleep and frequent awakenings. Hotter is worse, not better.',
+      timing: 'Bath finishes 60 to 120 minutes before lights out, up to 180 if it was long or hot. Shower finishes 20 to 60 minutes before. Bigger heat load means a longer gap. Never within 30 minutes of lights out for a bath, or the client goes to bed still in the stressor phase.',
+    },
+    required_equipment: ['shower'],
+    contraindications: [
+      'Bedroom above 24 degrees. The mechanism is heat TRANSFER and it needs a gradient. Every positive whole-body result in this literature comes from bedrooms at 17 to 18 degrees. In a hot humid Brisbane summer room you get the stressor phase and none of the rebound. Fix the room first or do not prescribe it at all',
+      'Pregnancy. The protocol deliberately raises core temperature 0.5 to 0.9 degrees, which is the exposure obstetric guidance advises against. A warm shower is fine, hot immersion is not',
+      'Client on antihypertensives: shower only, and warn specifically about standing up. Hot immersion dropped 24-hour systolic by 7mmHg in treated hypertensives, and that stacks with medication',
+      'Client home alone and unobserved: shower only, never immersion',
+      'Any dizziness or light-headedness on standing. Immersion stops permanently, move to a shower',
+      'Complaint is night waking, unrefreshing sleep or short sleep duration. Wrong tool entirely, the effect is onset-only',
+      'Client already falls asleep in under 15 minutes. No headroom, you cannot subtract 7 minutes from 10',
+      'Frequent night sweats or vasomotor symptoms. See coach doctrine, the mechanism predicts harm and nobody has measured it',
+      'Same evening as sauna, hot yoga or hot-weather training. One heat exposure per evening',
+      'With alcohol',
+    ],
+    safety_notes: 'The stressor phase is real and measurable. In 1,479 older adults measured in their own bathrooms, a 1 degree rise in skin temperature during bathing came with systolic pressure up 2.41mmHg and pulse up 2.99bpm. Bath-related deaths in Japan exceeded 13,000 in a single winter, which is neck-deep immersion in older adults in cold houses and does not transfer directly, but it establishes that hot immersion has a real mortality tail in the elderly. The specific moment of risk is standing up out of hot water with the peripheral vasculature maximally dilated and plasma volume down, and it compounds with antihypertensives, alcohol, dehydration, evening training and age. Mid-thorax rather than neck-deep is a safety instruction: neck-deep is the configuration associated with the tail.',
+    coach_doctrine: 'Prescribe it for ONE thing: a client whose specific complaint is taking too long to fall asleep. Everything else came back null. Then hold three caveats honestly. FIRST, the version your client will actually do is the version with the weakest evidence. The whole effect base is baths, in Japan, in winter, in unheated houses at 17 to 18 degrees. The one direct head-to-head ranked SHOWERING WORST of three arms (20.3 min versus 12.3 for a long bath), and the entire shower case otherwise rests on 11 teenage male footballers measured with a consumer EEG headband. SECOND, do not present a foot bath as an evidence-backed equivalent: both polysomnography trials of foot baths were completely null despite confirming the skin-temperature gradient rose, which is where the causal chain actually breaks. THIRD, and this is the one for our client base, in a woman with night sweats the mechanism runs directly against the intervention. Hot flushes are triggered by small core temperature elevations within a narrowed thermoneutral zone; this protocol raises core temperature by five to nine times that magnitude, and vasomotor arousals cluster in the first half of the night, the exact window the onset benefit lands in. Cooling the bedroom to 18 degrees has been directly shown to REDUCE measured flushes in that population. So for a peri or postmenopausal client with night sweats: cool the bedroom before you warm the body, and if you still want the thermal onset protocol, run it n-of-1 for two weeks with a nightly wake count and take it off if the count rises. Nobody has ever studied it in that population, so this is untested with a mechanistically predicted risk, not a hedge.',
+  },
+  {
     slug: 'cold-shower',
     name: 'Cold Shower Finish',
     category: 'cold',
