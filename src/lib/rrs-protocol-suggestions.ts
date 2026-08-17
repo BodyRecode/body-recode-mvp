@@ -72,6 +72,35 @@
  * harmful there, so it is not in do_not_suggest, it is simply the wrong tool.
  *
  * Source: 00_PLAYBOOK/recovery_research/2026-08-17_NSDR_Yoga_Nidra_Downregulation_and_Sleep.md
+ *
+ * ── 2026-08-17: restorative and Yin yoga, gated in OPPOSITE directions ──
+ *
+ * The second Deep Research report's central verdict is that these are two
+ * protocols, not one, and this table is where that matters most.
+ *
+ * RESTORATIVE downregulates by SUBTRACTION: no load, no discomfort, no
+ * metabolic cost, no cognitive demand. A subtractive downregulator has no
+ * ceiling, so it is permitted under every state and SUGGESTED in the five
+ * where training is clamped and the coach needs something to give a driven
+ * client (ns_overload, acute_fatigue, chronic_recovery_debt, burnout_return,
+ * lifestyle_stress_dominant) plus sleep_disruption, where subjective sleep in
+ * midlife women is its best-evidenced indication.
+ *
+ * YIN adds end-range passive load and deliberately courts mild discomfort.
+ * Sustained end-range load with a discomfort component is nociceptive input,
+ * and nociceptive input is sympathetic input. Small, but not zero, and the
+ * opposite direction from restorative. It only converts into a recovery
+ * stimulus if the client's downregulation response is working, which in a
+ * dysregulated client it is not. So Yin is BANNED in ns_overload,
+ * acute_fatigue, chronic_recovery_debt and burnout_return, per the report's
+ * coach rule 3.
+ *
+ * This is the same shape as the face-ice correction above. Both protocols sit
+ * under "yoga, slow, on the floor" and go opposite ways because one adds no
+ * load and the other adds end-range load. Filing them together would have
+ * repeated the exact error we had just fixed.
+ *
+ * Source: 00_PLAYBOOK/recovery_research/2026-08-17_Restorative_and_Yin_Yoga.md
  */
 
 import type { RecoveryPlaybookId } from './recovery-doctrine'
@@ -110,6 +139,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
       'breathwork-physiological-sigh',
       'face-ice-immersion',
       'nsdr-yoga-nidra',
+      'restorative-yoga',
       'magnesium-bath',
       'breathwork-coherent',
     ],
@@ -122,6 +152,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
       'contrast-shower',
       'contrast-pool',
       'breathwork-wim-hof',
+      'yin-yoga',
     ],
   },
 
@@ -131,6 +162,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
       'deload-week',
       'compression-boots',
       'massage-gun',
+      'restorative-yoga',
       'breathwork-coherent',
       'magnesium-bath',
     ],
@@ -140,6 +172,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
       'breathwork-wim-hof',
       'cryo-chamber',
       'cold-plunge-extended',
+      'yin-yoga',
     ],
   },
 
@@ -148,6 +181,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
     suggested_protocol_slugs: [
       'sleep-debt-recovery',
       'red-light-therapy',
+      'restorative-yoga',
       'magnesium-bath',
       'breathwork-box',
       'breathwork-coherent',
@@ -158,6 +192,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
       'cold-plunge-extended',
       'cryo-chamber',
       'breathwork-wim-hof',
+      'yin-yoga',
     ],
   },
 
@@ -167,6 +202,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
       'sleep-debt-recovery',
       'breathwork-478',
       'nsdr-yoga-nidra',
+      'restorative-yoga',
       'magnesium-bath',
       'face-ice-immersion',
       'sbst-nose-tape',
@@ -189,6 +225,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
       'breathwork-box',
       'breathwork-physiological-sigh',
       'nsdr-yoga-nidra',
+      'restorative-yoga',
       'breathwork-coherent',
       'sauna-infrared',
       'sauna-traditional',
@@ -259,6 +296,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
       'breathwork-physiological-sigh',
       'face-ice-immersion',
       'nsdr-yoga-nidra',
+      'restorative-yoga',
       'magnesium-bath',
       'sleep-debt-recovery',
       'sauna-infrared',
@@ -273,6 +311,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
       'contrast-pool',
       'breathwork-wim-hof',
       'sauna-traditional',
+      'yin-yoga',
     ],
   },
 

@@ -23,6 +23,10 @@ export type RecoveryCategory =
   | 'light'
   | 'breathwork'
   | 'systemic'
+  // Added 2026-08-17 with the restorative and Yin yoga entries. Movement-based
+  // recovery was a whole missing shelf: the library had heat, cold, compression,
+  // light, breathwork and systemic cycles, and nothing you do with your body.
+  | 'movement'
 
 export type EquipmentTag =
   | 'sauna_traditional'
@@ -598,6 +602,77 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
   },
   {
     // Added 2026-08-17 from the Deep Research report at
+    // 00_PLAYBOOK/recovery_research/2026-08-17_Restorative_and_Yin_Yoga.md
+    //
+    // TWO ENTRIES, NOT ONE. The report's central verdict: restorative and Yin
+    // are different stimuli with different risk profiles and different RRS
+    // gating, and merging them repeats the whole-body-versus-face-only cold
+    // error exactly. Restorative downregulates by SUBTRACTION (no load, no
+    // discomfort, no metabolic cost). Yin ADDS end-range passive load and
+    // deliberately courts mild discomfort. Do not merge them.
+    slug: 'restorative-yoga',
+    name: 'Restorative Yoga',
+    category: 'movement',
+    short_description: 'Fully propped, fully supported shapes held long. Structured rest, not a workout.',
+    what_it_does: 'Downregulates by subtraction rather than by adding a relaxing stimulus. The client is horizontal, fully supported, not producing force, not making decisions and not on a device. Metabolic demand is near resting. The demonstrated benefits are subjective: perceived stress, quality of life and self-reported sleep. Measured autonomic and endocrine change has not been shown.',
+    steps: [
+      'Dim the room, floor or bed, blanket for warmth, eye cover if wanted',
+      'Prop every shape so no muscle is holding position. Folded blankets and cushions substitute for bolsters, books for blocks',
+      'If the client can feel a muscle working, add another prop',
+      'Four to six shapes: supported reclined chest opener, supported side-lying, legs elevated, supported neutral-spine rest, final supine rest',
+      'Five to ten minutes per shape',
+      'Nasal breathing, unforced, exhale longer than inhale. No counting drills',
+    ],
+    dosing: {
+      frequency: '2 to 3 sessions per week. Permitted daily.',
+      duration: '20 to 45 minutes.',
+      intensity_notes: 'There is no depth in restorative yoga. Progress by consistency and session length only. A client progressing depth has drifted into Yin.',
+      timing: 'Evening, 60 to 90 minutes before intended sleep. Any day including hard training days, since it adds no load.',
+    },
+    required_equipment: ['none_needed'],
+    contraindications: [
+      'Known or suspected low bone density: remove all loaded end-range spinal flexion. Supported forward folds out, supported extension and neutral-spine shapes stay',
+      'Pregnancy: refer to their maternity care provider before prescribing',
+      'Client who reports increased rumination, distress or intrusive thought during stillness. Stop and substitute something with an external focus. Do not tell them to sit with it',
+    ],
+    safety_notes: 'Physical risk is low. Across 94 RCTs and 8430 participants there was no excess of adverse events versus usual care or exercise, though reporting is poor and only 3 of 13 trials in the 2024 stress meta-analysis reported safety data at all. The one real physical concern is bone: two case series document vertebral compression fracture in people with osteopenia or osteoporosis after taking up yoga spinal flexion. Case series cannot size the risk, but loaded end-range spinal flexion in a low-density spine is a known fracture mechanism and a long supported forward fold is exactly that shape held for minutes. Screen before prescribing.',
+    coach_doctrine: 'Prescribe for adherence, subjective recovery and behavioural downshift. Do NOT prescribe on a promise of HRV, cortisol or hormonal change. The best-designed trial (PRYSMS, n=180, 48 weeks, NIH-funded, active stretching control) went the wrong way: waking and bedtime cortisol improved MORE in the stretching control, and perceived stress fell 2.0 points further in stretching at 12 months. The 2024 meta-analysis found yoga beat passive controls on stress (SMD -0.69) but showed no advantage over active controls short term and a long-term result FAVOURING the control. The effect is roughly the size of the control group sitting still. Post hoc, the cortisol improvement tracked feelings of belonging rather than stress scores, which points at the room rather than the practice. So: if the client already does an equivalent volume of any other low-intensity movement in a social setting, adding this buys nothing measurable. Where it genuinely earns its place is as a permitted activity while training load is clamped, because it gives a driven client something to do and that is often the only way a deload sticks.',
+  },
+  {
+    // Second half of the same report. See the restorative entry above for why
+    // these are separate.
+    slug: 'yin-yoga',
+    name: 'Yin Yoga',
+    category: 'movement',
+    short_description: 'Long passive holds at end range. A mild stressor with a downregulating layer, and it flips if the client chases depth.',
+    what_it_does: 'Applies sustained passive tensile load to muscle-tendon units and joint capsules for minutes at a time, with a slow-breathing and sustained-attention layer over the top. Improves range of motion, as any sustained stretching does. The ROM gain is best explained by increased stretch tolerance rather than tissue lengthening.',
+    steps: [
+      'Warm room, props available and used: blocks or books under the seat or knees, blanket under the hips',
+      'Six to ten shapes targeting hips, hamstrings, adductors, thoracic spine and shoulders',
+      'Enter at roughly 60 to 70 percent of available range, NOT end range',
+      'Hold 2 to 4 minutes. Continuous slow nasal breathing throughout, exhale-biased',
+      'Stop at sensation, never at pain. Numbness, tingling or anything radiating means come out immediately and do not return to that shape today',
+      'Exit slowly and rest 30 to 60 seconds between shapes',
+    ],
+    dosing: {
+      frequency: '1 to 2 sessions per week. Not on consecutive days.',
+      duration: '30 to 45 minutes. Cap holds at 4 minutes, never past 5. Cap the session at 45 minutes for any client in Remediation.',
+      intensity_notes: 'Progress hold duration first (2 to 3 to 4 minutes), then frequency. NEVER progress depth as the primary variable. Note honestly that the stretching literature finds no added ROM benefit past about 4 minutes per session or 10 minutes per week per muscle group, so a long class is justified by the attention and breathing practice, not by tissue adaptation.',
+      timing: 'Rest days, or 4 or more hours after training that required force production. Evening preferred. Long passive holds have documented acute effects on peak torque, so keep them away from the hours before heavy or explosive work.',
+    },
+    required_equipment: ['none_needed'],
+    contraindications: [
+      'Hypermobility. Contraindicated by default, prescribe restorative instead. Deliberate end-range passive loading with muscles relaxed is the worst possible match for a joint already over-relying on its passive restraints',
+      'RRS nervous-system overload, acute fatigue, chronic recovery debt or burnout return. The discomfort component needs a working downregulation response to convert into a recovery stimulus, and in a dysregulated client it does not convert',
+      'Known or suspected low bone density: no loaded end-range spinal flexion',
+      'Pregnancy. Deep passive hip and pelvic loading is a poor match for a relaxin-affected pelvis. Refer to their maternity care provider and do not prescribe pending clearance',
+      'Any client with a dieting or over-control history who treats the hold as an endurance test. Watch for the client who reports it being hard or tracks how deep they got',
+    ],
+    safety_notes: 'The instruction to tolerate sensation is where the risk lives. A review of 76 published yoga adverse-event case reports found 35.5% musculoskeletal and 18.4% nervous system, with full recovery in only 19.7%. Case reports are biased toward the severe and cannot give incidence, but the mechanism to respect is plain: sustained end-range positions with prolonged nerve compression or tension, held while the client is deliberately ignoring sensation, is a plausible route to a traction or compression neuropathy. Bone risk as per restorative, and worse, because Yin adds load. Psychologically, prolonged stillness can increase rumination rather than reduce it, and the sit-with-discomfort framing converts a recovery protocol into a punishment protocol for the wrong client.',
+    coach_doctrine: 'Classification is conditional and depends on execution. With the slow breathing and attention layer intact, Yin is a mild downregulator with a stretch stimulus attached. Without it, when the client is chasing depth, gritting or breath-holding, it is a stressor delivered to someone who was prescribed rest. Two claims to never make. First, Yin does not reduce perceived stress on its own: in its flagship trial the Yin-alone arm was NULL on stress and depression versus no treatment, and only the arm with psychoeducation attached worked. Second, and this is the loudest commercial claim in the category, there is not one human trial measuring fascial or ligamentous property change after a Yin intervention. Not a weak one. None. Viscoelastic creep during a hold is real and transient; durable fascial remodelling is unevidenced in humans. A coach may say Yin loads connective tissue during the hold. A coach may not say it remodels, hydrates, releases or restructures fascia. Saying the latter is reciting marketing.',
+  },
+  {
+    // Added 2026-08-17 from the Deep Research report at
     // 00_PLAYBOOK/recovery_research/2026-08-17_NSDR_Yoga_Nidra_Downregulation_and_Sleep.md
     //
     // Every claim below is bounded by that report. Three things it explicitly
@@ -797,6 +872,7 @@ export const CATEGORY_LABELS: Record<RecoveryCategory, string> = {
   light: 'Light',
   breathwork: 'Breathwork',
   systemic: 'Systemic recovery cycles',
+  movement: 'Movement-based recovery',
 }
 
 /**

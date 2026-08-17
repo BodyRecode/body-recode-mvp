@@ -59,13 +59,19 @@ export default async function ClientRecoveryPage({
     })
     .filter((a): a is PortalAssignment => a !== null)
 
-  const byCategory: Record<RecoveryCategory, PortalAssignment[]> = {
-    heat: [], cold: [], contrast: [], compression: [], light: [], breathwork: [], systemic: [],
-  }
+  // Derived from CATEGORY_LABELS rather than hardcoded (2026-08-17). Adding
+  // the 'movement' category broke this: the Record above was a type error the
+  // compiler caught, but the display list below it was an `as` cast, so a new
+  // category would have been silently dropped from the client's portal with
+  // no error anywhere. Deriving both from one source removes that trap.
+  const ALL_CATEGORIES = Object.keys(CATEGORY_LABELS) as RecoveryCategory[]
+  const byCategory = Object.fromEntries(
+    ALL_CATEGORIES.map(c => [c, [] as PortalAssignment[]])
+  ) as Record<RecoveryCategory, PortalAssignment[]>
   for (const a of assignments) {
     byCategory[a.protocol.category].push(a)
   }
-  const categoriesWithData = (['heat', 'cold', 'contrast', 'compression', 'light', 'breathwork', 'systemic'] as RecoveryCategory[]).filter(c => byCategory[c].length > 0)
+  const categoriesWithData = ALL_CATEGORIES.filter(c => byCategory[c].length > 0)
 
   return (
     <PortalPageShell

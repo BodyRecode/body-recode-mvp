@@ -232,7 +232,11 @@ export default function RecoveryManager({
           </p>
         </div>
 
-        {(['heat', 'cold', 'contrast', 'compression', 'light', 'breathwork', 'systemic'] as RecoveryCategory[]).map(cat => {
+        {/* Derived from CATEGORY_LABELS, not hardcoded (2026-08-17). This was
+            an `as` cast, so adding the 'movement' category would have silently
+            hidden every movement protocol from the coach library with no
+            compiler error. */}
+        {(Object.keys(CATEGORY_LABELS) as RecoveryCategory[]).map(cat => {
           const catProtocols = availableProtocols.filter(p => p.category === cat)
           if (catProtocols.length === 0) return null
           // Sort so progression-grouped protocols cluster together, ordered by level;
