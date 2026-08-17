@@ -89,8 +89,19 @@ export async function resolveConsoleScope(): Promise<ScopeResult> {
  *
  * Every console read goes through this. It exists as a named function rather
  * than an inline `.eq()` so that a tool missing its scope is visible when
- * reading the code, and greppable when auditing it: a query in this directory
- * that does not call `scoped()` is a bug, not a style choice.
+ * reading the code, and greppable when auditing it.
+ *
+ * The audit rule, stated precisely (tightened 2026-08-17 after a pre-commit
+ * review found the original wording did not match the code): a query on an
+ * OWNED table that does not call `scoped()` is a bug. A query on a CHILD table
+ * filtered by ids that came out of a scoped query is correct and does not call
+ * this. At time of writing there are five of those, all in tools-read.ts:
+ * `lead_events` and `sms_logs` in getLead and recentSends, and
+ * `be_workflow_executions` in listWorkflows. Each filters on ids resolved from
+ * a scoped parent query, and each says so inline.
+ *
+ * So the grep is `\.from\(` minus `scoped(`, and every hit must be justifiable
+ * as a derived query. Five is the expected count. A sixth is a review item.
  *
  * `column` is a parameter because ownership is not spelled the same everywhere
  * — most tables use coach_id; a few reach it through a join.

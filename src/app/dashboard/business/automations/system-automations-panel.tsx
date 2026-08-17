@@ -25,7 +25,7 @@ const AUTOMATIC_AUTOMATIONS = [
     id: 'dormant-lead-reactivation',
     name: 'Dormant Lead Reactivation',
     description: `For leads sitting at "new check-in" who did a scorecard and were never followed up. 84 of 136 leads when it was built, the biggest pool in the business and it needs no ad spend. Three touches over ten days then it stops: their read written out in full with no button and a reply as the only ask, an SMS four days later asking whether the pattern sounded right, and the state-matched next step as a self-serve link six days after that. Every step re-reads the lead and stops if they have moved off "new check-in", converted, or gone inactive, so anyone who replies and gets picked up drops out of the rest. Marketing-class, so it carries the unsubscribe footer. NOT automatic: run the dry run at /api/admin/dormant-reactivation first, which shows exactly who would get what and who is excluded and why, then POST with ?confirm=1. Eligibility excludes internal and test records, anyone with no body state, and inactive leads.`,
-    trigger: 'Admin trigger, one-off per lead (lead/dormant-reactivation)',
+    trigger: 'Admin trigger, one-off per lead (lead/dormant-reactivation). Second path added 2026-08-17: the Operator Console can STAGE this sequence for a lead via its stage_dormant_reactivation tool, which writes to console_pending_actions and waits for a human to click confirm. The console never sends directly.',
     steps: 3,
   },
   {
