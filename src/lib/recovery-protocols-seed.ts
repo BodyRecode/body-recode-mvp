@@ -639,6 +639,45 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     coach_doctrine: 'Prescribe for adherence, subjective recovery and behavioural downshift. Do NOT prescribe on a promise of HRV, cortisol or hormonal change. The best-designed trial (PRYSMS, n=180, 48 weeks, NIH-funded, active stretching control) went the wrong way: waking and bedtime cortisol improved MORE in the stretching control, and perceived stress fell 2.0 points further in stretching at 12 months. The 2024 meta-analysis found yoga beat passive controls on stress (SMD -0.69) but showed no advantage over active controls short term and a long-term result FAVOURING the control. The effect is roughly the size of the control group sitting still. Post hoc, the cortisol improvement tracked feelings of belonging rather than stress scores, which points at the room rather than the practice. So: if the client already does an equivalent volume of any other low-intensity movement in a social setting, adding this buys nothing measurable. Where it genuinely earns its place is as a permitted activity while training load is clamped, because it gives a driven client something to do and that is often the only way a deload sticks.',
   },
   {
+    // Added 2026-08-17 from the Deep Research report at
+    // 00_PLAYBOOK/recovery_research/2026-08-17_Low_Intensity_Recovery_Walk.md
+    //
+    // The report's framing, which the whole entry hangs off: this is a
+    // psychological and behavioural intervention wearing physiological
+    // clothes. It does NOT speed recovery. Prescribe it for regulation.
+    slug: 'recovery-walk',
+    name: 'Low-Intensity Recovery Walk',
+    category: 'movement',
+    short_description: 'Easy, untracked, phone-free walk. Prescribed for regulation, never for recovery.',
+    what_it_does: 'Reliably improves mood against the alternative of sitting still, which is the only comparison the evidence actually supports. In a randomised trial a phone-free walk improved every mood measure while a phone walk worsened all of them. Below the first ventilatory threshold it costs roughly 2 to 3 METs, generates no meaningful hormonal excursion and imposes essentially no recovery debt, so it regulates at the level of the day stress budget rather than at the level of the heart.',
+    steps: [
+      'Flat ground. Outdoors if she prefers it, indoors if she does not, and do not oversell the outdoor difference',
+      'Phone away or in the pocket. Audio is allowed if she needs it',
+      'Pace test: the speed you would walk showing a friend around while talking the whole way',
+      'If she stops talking because she needs the breath, she is too fast. Slow down or end the walk',
+      'No warm-up, no intervals, no build. It starts easy and stays easy',
+      'No watch, no step count, no distance, no pace. The number turns it into a task',
+    ],
+    dosing: {
+      frequency: '3 to 6 days per week. Deliberately not daily, because dailiness invites compulsion.',
+      duration: '10 to 20 minutes. Cap at 30. The post-meal variant is 2 to 10 minutes.',
+      intensity_notes: 'Below the first ventilatory threshold. Roughly RPE 9 to 11 on Borg 6-20, around 2 to 3 METs for a deconditioned client. The talk test is more reliable here than a heart rate zone, because a perimenopausal client has a variable heart rate response and an age-predicted maximum that is close to meaningless. Do NOT progress intensity: that is not progression, it is reclassification into conditioning, and conditioning belongs to the program engine.',
+      timing: 'Not within an hour of a hard session unless there is a specific reason, and then under 30 minutes to avoid interfering with glycogen resynthesis. Post-meal variant within 15 to 30 minutes of finishing a main meal.',
+    },
+    required_equipment: ['none_needed'],
+    contraindications: [
+      'Compulsive exercise features. Walking is the easiest modality to do compulsively because it is available, socially invisible and reads as healthy. If she already walks daily and reports distress when she cannot, this is contraindicated until addressed by an appropriate practitioner',
+      'Under-fuelled, low energy availability, restricted intake, or a post-diet state. Do NOT add walking volume, reduce it',
+      'Step-count or tracker fixation. Every study in a recent systematic review of tracking technology found at least one positive association with excessive or compulsive exercise',
+      'Chronic recovery debt or burnout return WHERE the walk would come out of sleep or rest time. Twenty minutes walking is twenty minutes not spent horizontal',
+      'Balance impairment, peripheral neuropathy or vestibular symptoms. Falls risk',
+      'Exertional chest discomfort, unusual breathlessness, syncope or presyncope. This is a referral, not a programming adjustment',
+      'Clients on insulin or sulfonylureas doing the post-meal variant, without their prescriber guiding hypoglycaemia management. Outside coach scope',
+    ],
+    safety_notes: 'Heat is the local one. In a Brisbane summer a midday walk is a thermoregulatory stressor, not a downregulator, and that alone flips the classification. Hydration and timing are part of the prescription, not an afterthought. Watch volume creep: step count rises quietly with walking precisely because it does not feel like training, which loads feet, ankles, knees and plantar fascia without anyone noticing. In a high-ruminating client an unstructured silent walk in a stressful environment can amplify rumination rather than settle it, so if she comes back worse, stop.',
+    coach_doctrine: 'Prescribe this for regulation and say so out loud. The active-recovery case does not survive scrutiny: the most thorough synthesis found 14 studies showing no next-day performance benefit and none showing benefit, 14 showing no soreness difference against 2 positive, and impaired glycogen resynthesis past 30 minutes. Perceived fatigue actually pointed the wrong way (g=+0.64, favouring doing nothing). Faster lactate clearance is the one robust finding and it is practically irrelevant, since lactate clears on its own within 20 to 120 minutes. The autonomic claim is worse than unsupported, it is backwards: HRV falls during ambulation, so a walk cannot acutely raise it, and the pooled post-exercise evidence found the effect for cold water immersion and not for active recovery. What IS real is affect: a walk beats sitting still on how someone feels, in a pre-registered randomised trial, and the phone-free version beat the phone version on every single mood measure. Also note the soreness benefit that does exist was significantly smaller in women than men, and our clients are mostly women. Two more things to hold: there is no trial of a deliberately easy sub-threshold walk in a depleted or perimenopausal population, so all of this is extrapolated from young rested men and from moderate-intensity training programs; and exercise does NOT relieve vasomotor symptoms, which a 261-woman trial settled clearly enough that its authors said women should not be told otherwise.',
+  },
+  {
     // Second half of the same report. See the restorative entry above for why
     // these are separate.
     slug: 'yin-yoga',

@@ -101,6 +101,31 @@
  * repeated the exact error we had just fixed.
  *
  * Source: 00_PLAYBOOK/recovery_research/2026-08-17_Restorative_and_Yin_Yoga.md
+ *
+ * ── 2026-08-17: low-intensity recovery walk ──
+ *
+ * SUGGESTED in ns_overload, lifestyle_stress_dominant and post_competition,
+ * the three states its report names in "populations most likely to benefit".
+ *
+ * BANNED in post_diet, and this one required adjudicating a contradiction
+ * inside the report itself. Its section 8 lists post-diet clients as likely to
+ * benefit ("a low-cost bridge back into structure"), while its coach rule 7
+ * says plainly: "If the client is under-fuelled, in a post-diet state, or has
+ * restricted intake, do not add walking volume. Reduce it."
+ *
+ * We took the rule over the list. A hard safety instruction outranks a
+ * likely-to-benefit mention, the RRS post_diet state IS the after-sustained-
+ * deficit population rule 7 is describing, and the failure mode (adding
+ * movement volume to someone with low energy availability) is the more costly
+ * error. Flagged here so it can be overturned deliberately rather than by
+ * accident.
+ *
+ * NOT suggested and NOT banned in chronic_recovery_debt or burnout_return.
+ * Its coach rule 5 makes it conditional there: do not prescribe if the walk
+ * would come out of sleep or rest time. That is a condition this table cannot
+ * express, so the honest position is silence rather than a false yes or no.
+ *
+ * Source: 00_PLAYBOOK/recovery_research/2026-08-17_Low_Intensity_Recovery_Walk.md
  */
 
 import type { RecoveryPlaybookId } from './recovery-doctrine'
@@ -140,6 +165,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
       'face-ice-immersion',
       'nsdr-yoga-nidra',
       'restorative-yoga',
+      'recovery-walk',
       'magnesium-bath',
       'breathwork-coherent',
     ],
@@ -226,6 +252,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
       'breathwork-physiological-sigh',
       'nsdr-yoga-nidra',
       'restorative-yoga',
+      'recovery-walk',
       'breathwork-coherent',
       'sauna-infrared',
       'sauna-traditional',
@@ -269,6 +296,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
       'cryo-chamber',
       'cold-shower',
       'breathwork-wim-hof',
+      'recovery-walk',
     ],
   },
 
@@ -276,6 +304,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
     playbook_id: 'post_competition',
     suggested_protocol_slugs: [
       'deload-week',
+      'recovery-walk',
       'sauna-infrared',
       'red-light-therapy',
       'breathwork-coherent',
