@@ -640,6 +640,54 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
   },
   {
     // Added 2026-08-17 from the Deep Research report at
+    // 00_PLAYBOOK/recovery_research/2026-08-17_Evening_Mobility_Wind_Down.md
+    //
+    // The report's recommendation was NOT to give this standalone status: it
+    // does not earn it on physiology, and filing it as a sleep protocol risks
+    // coaches prescribing it INSTEAD of the things that work. It is here
+    // anyway, as a single entry, because the alternative was inventing a
+    // sleep-hygiene protocol nobody has researched. The protection lives in
+    // the doctrine field instead: it names the better options explicitly and
+    // forbids the sleep-treatment framing.
+    //
+    // Deliberately NOT credited as downregulation in the RRS table. The report
+    // is explicit that it should not consume downregulation budget, because it
+    // is not reliably delivering any.
+    slug: 'evening-winddown-mobility',
+    name: 'Evening Wind-Down Mobility',
+    category: 'movement',
+    short_description: 'A fixed 10-minute nightly sequence. A boundary marker for the end of the day, not a sleep treatment.',
+    what_it_does: 'Gives a disorganised evening a fixed edge. Its demonstrated effect is behavioural, not physiological: the same short sequence at the same time each night marks that the day is finished. It has one specific evidenced medical indication, nocturnal leg cramps in adults over 55, where nightly calf and hamstring stretching immediately before bed reduced cramps by 1.2 per night and pain by 1.3cm on a 10cm scale in a properly randomised concealed-allocation trial.',
+    steps: [
+      'Same time every night, 30 to 60 minutes before target lights-out',
+      'Floor or bed, lights dimmed, phone out of the room or face down and silent, room already at sleeping temperature',
+      'Four to six positions, holds of 30 to 60 seconds, SAME ORDER every night',
+      'Intensity at 3 to 4 out of 10 stretch sensation. Never at the point of discomfort. If their face changes, it is too hard',
+      'Slow nasal breathing throughout, exhale longer than inhale. Never hold the breath',
+      'Default sequence: supine or seated calf, supine hamstring with a strap, half-kneeling or supine hip flexor, supine spinal rotation, child\'s pose or seated fold, then two minutes supine with no stretch and slow breathing only',
+      'If nocturnal cramps are the reason for prescribing, calf and hamstring are mandatory and the whole sequence moves to immediately before getting into bed',
+    ],
+    dosing: {
+      frequency: 'Nightly. Consistency is the entire point.',
+      duration: '8 to 12 minutes.',
+      intensity_notes: 'THERE IS NO PROGRESSION AND THAT IS DELIBERATE. Do not add volume, intensity or positions. The value is that it is identical every night. A client who wants progression wants a mobility programme, which is a different prescription in a different slot in the day.',
+      timing: '30 to 60 minutes before target lights-out. For the cramp indication, immediately before getting into bed, since that is what the positive trials did and the negative trial did not. If pairing with a warm shower, the shower goes 1 to 2 hours out and this sits after it, closer to bed.',
+    },
+    required_equipment: ['none_needed'],
+    contraindications: [
+      'Diagnosed insomnia. Do not position this as therapy. CBT-i is first line and that is a referral, not a prescription',
+      'Restless legs symptoms. Refer, do not treat. Iron studies and diagnosis are outside scope',
+      'Diagnosed bruxism or evening jaw clenching: do NOT add masticatory stretching. The only trial found MORE bruxism bursts, not fewer',
+      'Hypermobility or post-partum laxity: skip end-range passive holds, use active mobility and isometrics instead',
+      'High cardiovascular risk, IF holds are taken to the point of discomfort. Static stretching to maximum discomfort raises systolic and diastolic pressure and rate-pressure product. At the prescribed sub-discomfort intensity this is a non-issue, which is why the intensity is specified',
+      'Any client where this pushes actual lights-out later. A protocol that costs sleep duration to chase sleep quality is a net loss. Cut it or move it earlier',
+      'Clients whose sleep problem is a racing mind rather than physical discomfort. The polysomnography evidence says this has nothing for them',
+    ],
+    safety_notes: 'Physically close to nil at the prescribed intensity, with no adverse events across the trial base. The breathing instruction is a safety instruction, not a relaxation flourish: breath-holding against a closed glottis during a hard stretch amplifies the pressor response. The real risk here is psychological. A client with sleep-onset anxiety who is told stretching will help them fall asleep, and then does not fall asleep, has been handed one more thing to have failed at, and conditioned arousal is the core maintaining mechanism in chronic insomnia. Framing matters more than the movements. Also watch for the quiet ten minutes becoming a rumination window; if that happens, pair it with audio or move it earlier in the evening.',
+    coach_doctrine: 'Frame this to the client as the marker that the day is finished. NEVER as something that will make them fall asleep faster. Both trials that measured objective sleep with polysomnography found nothing: no change in sleep onset latency, sleep efficiency, deep sleep or REM. The best scoping review found only 5 of 16 studies significant on any parameter and 3 of 13 on sleep quality, and concluded there is little evidence stretching improves sleep quality in people with sleep disorders. In postmenopausal women it has been directly tested and lost: yoga beat both control and stretching, while stretching did not beat control. Even the most plausible mediator failed, since the one trial that measured it found the anxiety reduction did not correlate with the sleep improvement. The autonomic story is also intensity-dependent and often backwards: held near the point of discomfort, static stretching produces sympathetic activation with vagal WITHDRAWAL via the exercise pressor reflex, returning to baseline within five minutes, and nobody has shown any shift persists to sleep onset. So do not let it consume downregulation budget. If a client needs vagal load, prescribe breathwork or face-only cold directly and let this be the container they sit inside. AND KNOW THE BETTER OPTION: if the complaint is specifically sleep onset latency, a warm shower or bath at 40 to 42.5 degrees, 1 to 2 hours before bed, shortened onset by around 10 minutes across 13 pooled studies. That is a real effect against a stretching literature that cannot produce one. The one thing this protocol genuinely owns is nocturnal leg cramps in the over-55s, and that is worth having.',
+  },
+  {
+    // Added 2026-08-17 from the Deep Research report at
     // 00_PLAYBOOK/recovery_research/2026-08-17_Low_Intensity_Recovery_Walk.md
     //
     // The report's framing, which the whole entry hangs off: this is a

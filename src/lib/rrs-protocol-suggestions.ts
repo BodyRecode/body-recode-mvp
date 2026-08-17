@@ -126,6 +126,26 @@
  * express, so the honest position is silence rather than a false yes or no.
  *
  * Source: 00_PLAYBOOK/recovery_research/2026-08-17_Low_Intensity_Recovery_Walk.md
+ *
+ * ── 2026-08-17: evening wind-down mobility, deliberately NOT credited ──
+ *
+ * Suggested in sleep_disruption and lifestyle_stress_dominant only, and the
+ * reason is not that it downregulates. Its report is explicit that it does
+ * not: both polysomnography trials were null, and near the point of
+ * discomfort static stretching produces sympathetic activation with vagal
+ * WITHDRAWAL, resolving inside five minutes with nothing shown to persist to
+ * sleep onset. It is offered in those two states because it is the
+ * lowest-cost thing you can hand a client whose exposure budget is near zero.
+ *
+ * DELIBERATELY NOT in ns_overload, even though it is harmless there. The
+ * report's instruction is that it must not consume downregulation budget in a
+ * dysregulated client, because it is not reliably delivering downregulation.
+ * A client in nervous-system overload needs the tools that actually work, and
+ * putting a placebo-adjacent habit on that list crowds them out. If they need
+ * vagal load, that is breathwork or face-only cold, both already suggested
+ * there.
+ *
+ * Source: 00_PLAYBOOK/recovery_research/2026-08-17_Evening_Mobility_Wind_Down.md
  */
 
 import type { RecoveryPlaybookId } from './recovery-doctrine'
@@ -229,6 +249,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
       'breathwork-478',
       'nsdr-yoga-nidra',
       'restorative-yoga',
+      'evening-winddown-mobility',
       'magnesium-bath',
       'face-ice-immersion',
       'sbst-nose-tape',
@@ -253,6 +274,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
       'nsdr-yoga-nidra',
       'restorative-yoga',
       'recovery-walk',
+      'evening-winddown-mobility',
       'breathwork-coherent',
       'sauna-infrared',
       'sauna-traditional',
