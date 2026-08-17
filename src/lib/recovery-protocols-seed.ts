@@ -916,6 +916,51 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     coach_doctrine: 'Large following, small trial base: six RCTs with sleep endpoints, about 244 participants total, most run in India by overlapping author groups. The 2026 meta-analysis pooled them and found nothing significant (PSQI p=0.50, ISI p=0.06, GRADE very low), and the best-designed acute trial failed its primary endpoint. So prescribe it for what it actually is: a near-free, zero-load daily habit for a depleted client who sleeps badly and cannot afford anything more demanding. It is a behaviour-axis intervention. Three things never to say to a client: that it raises HRV (the only direct test was null on RMSSD and HF in both windows), that it boosts dopamine by 65% (a conversion inferred from 8 lifetime meditators, whose self-reported relaxation did not even differ from the control condition), or that it replaces sleep. It is also not a treatment for insomnia; that is a clinical diagnosis and CBT-I is first line. The marketing pushes short single sessions, and every study of a single 10-minute session either found nothing or found effects small enough to be expectancy. The objective evidence used 20 minutes daily for weeks. Run the first three to five sessions supervised, mostly so the psychological screen actually happens. No evidence at all in perimenopausal or midlife women, so for our core client group this is extrapolated, not evidenced. Say so.',
   },
   {
+    // Added 2026-08-17 from the Deep Research report at
+    // 00_PLAYBOOK/recovery_research/2026-08-17_Caffeine_Timing_and_Load.md
+    //
+    // THIRD DISTINCT CLASSIFICATION IN THE LIBRARY. Caffeine is a stressor;
+    // this protocol is stressor REMOVAL, which is not downregulation (it adds
+    // no parasympathetic tone, it restores the accuracy of a signal). And the
+    // taper window is ITSELF an acute stressor for 2 to 9 days. So it draws
+    // against the behaviour-axis budget like a new training variable for the
+    // first fortnight, then stops drawing. Filing it as a downregulator would
+    // have got it scheduled into exactly the week it does most damage.
+    slug: 'caffeine-load-management',
+    name: 'Caffeine Timing and Load',
+    category: 'systemic',
+    short_description: 'Manage the dose first and the cut-off second. Most clients do not need this at all.',
+    what_it_does: 'Caffeine blocks the adenosine receptors through which the body reads its own accumulated sleep pressure. It does not remove the debt, it removes the client\'s ability to feel it, which is why the damage shows up first in deep sleep and why she cannot perceive it happening. Reducing total load restores the accuracy of that signal. At 400mg within four hours of bed the measured cost is around 50 minutes of total sleep, 30 minutes of deep sleep and a 9 percent hit to sleep efficiency.',
+    steps: [
+      'TWO WEEKS OF LOGGING FIRST, before changing anything: every source in actual milligrams, the time taken, time in bed, time asleep, night wakings. Include pre-workout, energy drinks, tea, cola, chocolate',
+      'Most clients underestimate by 30 to 50 percent because they count coffees, not milligrams. Rough guides: coffee ~107mg per 250ml, energy drink ~160mg per 500ml, pre-workout ~217mg per serve',
+      'If the total is under 200mg and all before mid-afternoon: STOP HERE. No prescription. Tell her that',
+      'If over 200mg: target 200mg/day maximum, last serving 8 hours before habitual bedtime',
+      'Reduce by 10 to 25 percent every three to four days. Nothing in the withdrawal literature rewards speed',
+      'Remove in this order: evening intake, then pre-workout, then afternoon top-ups, then shrink the morning serving. NEVER remove the morning serving first',
+      'Hold each step until symptoms settle before the next one',
+      'Review at four weeks against the logged night-waking count, not against how she says she slept',
+    ],
+    dosing: {
+      frequency: 'One taper, run once, over three to four weeks, then hold indefinitely. This is not a repeating protocol.',
+      duration: 'Three to four weeks of taper.',
+      intensity_notes: 'Anchor the cut-off to BEDTIME, not the clock. A client with a 9pm bedtime and one with a midnight bedtime need different rules from the same principle. Never take anyone to zero: nothing in the evidence supports abstinence over moderate intake, and it costs her a functional tool for no demonstrated gain.',
+      timing: 'Last dose 8 hours before habitual bedtime once total load is at or under 200mg. If any single serving still exceeds 200mg, that one moves to 12 hours out until the dose comes down.',
+    },
+    required_equipment: ['none_needed'],
+    contraindications: [
+      'Low energy availability, disordered eating signals, or caffeine being used as an appetite suppressant. That is a disordered-eating signal, not a caffeine problem. Do not touch caffeine until fuelling has been stable for two to three weeks, and refer',
+      'Time in bed under seven hours. Fix sleep opportunity first. The largest caffeine effect on total sleep time is about 50 minutes and the gap in a depleted client is usually bigger than that',
+      'Competition week, assessment week, or the first week of a new training block. The taper is a real stressor for 2 to 9 days',
+      'Running concurrently with any other new protocol: a training-load increase, a nutrition change, or a new cold or heat exposure',
+      'Clients on prescribed stimulants: cap at 200mg/day, all before the medication\'s afternoon window, confirm the prescriber knows the intake. Any question touching the medication itself is a referral',
+      'Untreated or borderline hypertension: do not add caffeine, and be conservative removing it, since withdrawal fatigue drives compensatory behaviour',
+      'Headache lasting beyond nine days, or headache with any neurological symptom. Stop attributing it to caffeine and refer',
+    ],
+    safety_notes: 'Withdrawal is real, dose-proportional and validated: headache in roughly half of abrupt quitters, clinically significant distress or functional impairment in 13 percent, onset 12 to 24 hours, peak 20 to 51 hours, duration 2 to 9 days. It occurs after abstinence from doses as low as 100mg/day, so the light user is not immune. Warn every client BEFORE day one that days two and three will be worse than day one and that this is expected and self-limiting; a coach who does not will lose them on day three. Mood effects (decreased contentedness, depressed mood, irritability) are validated symptoms, not imagination. Half-life is not fixed: oral contraceptives roughly double it, smoking roughly halves it (so a client who quits smoking will find her usual coffee suddenly feels like too much), pregnancy extends it substantially.',
+    coach_doctrine: 'The headline is a null and it should change who you prescribe this to. In the best-designed timing trial, 100mg produced NO significant effect on any objective or subjective sleep outcome at 12, 8 or 4 hours before bed. 400mg did damage at every one of those points. So dose is the variable and timing only matters once the dose is high. A client on one long black is at 80 to 120mg: leave her alone and say so, because spending her limited change budget there costs credibility you need for the change that matters. Second, the perception gap. Participants correctly identified their dose only 44 percent of the time and dose-plus-timing only 22 percent. Objective wake-after-sleep-onset rose significantly while PERCEIVED wake after sleep onset did not move at all. When a client says coffee does not affect her she is reporting her perception accurately and her perception is not tracking her physiology. Third, be honest about the limits: there is NO trial showing that cutting caffeine improves sleep in poor sleepers, the direction has only ever been tested the other way, and a 785-person actigraphy study in adults averaging 63 years found no association at all between caffeine within four hours of bed and any sleep outcome, while alcohol and nicotine both showed effects. Present this as removing an interference, never as a sleep treatment. Two more things. The "no caffeine after 2pm" rule has no traceable primary source; it happens to approximate 8 hours before a 10pm bed, which is roughly right for one coffee and badly wrong in both directions. And do not buy genotype testing: the one trial that genotyped and measured sleep found nothing. The practical substitute is a two-week n-of-1 at 100mg before midday with a night-waking log, then two weeks back at habit. Her own data beats a SNP and costs nothing.',
+  },
+  {
     slug: 'jet-lag-protocol',
     name: 'Jet Lag Recovery Protocol',
     category: 'systemic',

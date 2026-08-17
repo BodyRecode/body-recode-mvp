@@ -197,6 +197,33 @@
  * alone, and the table currently cannot say that.
  *
  * Source: 00_PLAYBOOK/recovery_research/2026-08-17_Light_Exposure_Timing.md
+ *
+ * ── 2026-08-17: caffeine load, a THIRD classification again ──
+ *
+ * Caffeine is a stressor. Reducing it is stressor REMOVAL, which adds no
+ * parasympathetic tone and is therefore not downregulation; it restores the
+ * accuracy of a signal. And the taper is ITSELF an acute stressor for 2 to 9
+ * days, with validated withdrawal symptoms. So the protocol draws against the
+ * behaviour-axis budget like a new training variable for the first fortnight,
+ * then stops drawing.
+ *
+ * Suggested in sleep_disruption and chronic_recovery_debt: those are the two
+ * states where caffeine masking the client's own recovery signal does the most
+ * harm, since the RRS depends on that signal being legible, and where there is
+ * enough runway for a three to four week taper.
+ *
+ * BANNED in post_diet. Coach rule 3 is explicit: do not touch caffeine in a
+ * client with low energy availability or disordered-eating signals until
+ * fuelling has been stable for two to three weeks. post_diet IS the
+ * after-sustained-deficit population, and caffeine is frequently doing
+ * appetite-suppression work there. Same adjudication as the recovery walk.
+ *
+ * NOT suggested in ns_overload or acute_fatigue despite the signal-masking
+ * argument applying, because the taper adds load in exactly the states where
+ * the client has none to give, and acute_fatigue resolves faster than the
+ * taper takes. Timescale mismatch, not a contraindication.
+ *
+ * Source: 00_PLAYBOOK/recovery_research/2026-08-17_Caffeine_Timing_and_Load.md
  */
 
 import type { RecoveryPlaybookId } from './recovery-doctrine'
@@ -278,6 +305,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
     playbook_id: 'chronic_recovery_debt',
     suggested_protocol_slugs: [
       'sleep-debt-recovery',
+      'caffeine-load-management',
       'morning-light-exposure',
       'evening-light-reduction',
       'red-light-therapy',
@@ -300,6 +328,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
     playbook_id: 'sleep_disruption',
     suggested_protocol_slugs: [
       'sleep-debt-recovery',
+      'caffeine-load-management',
       'morning-light-exposure',
       'evening-light-reduction',
       'breathwork-478',
@@ -378,6 +407,7 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
       'cold-shower',
       'breathwork-wim-hof',
       'recovery-walk',
+      'caffeine-load-management',
     ],
   },
 
