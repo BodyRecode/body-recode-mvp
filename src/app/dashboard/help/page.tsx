@@ -376,6 +376,8 @@ export default function HelpPage() {
 
             <Note>New: there is a full step-by-step course at <a href="/dashboard/copilot-guide" className="text-blue-700 underline">Guide → Co-Pilot</a> (<code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">/dashboard/copilot-guide</code>) — one lesson per capability with worked examples, plus a downloadable branded handout. Point new coaches there.</Note>
 
+            <Note><strong>Every time you open it, you start a fresh conversation (2026-08-17).</strong> It used to reload the whole history of everything you had ever asked about that client, which meant reopening dropped you into weeks of old chat — and that old chat was fed back to the co-pilot as context, so a question you asked last month could colour an answer today. Closing the panel now ends the conversation. Nothing is deleted (flagged exchanges still reach Co-Pilot Review), it just is not reloaded. The practical consequence: <em>if you have a draft proposal open and you close the panel, that proposal is gone</em> — finish what you are doing before you close it.</Note>
+
             <p className="font-semibold text-[#1A1A1A] mt-3">Where it works, and how it changes by page</p>
             <StatusList items={[
               { label: 'On a client profile', desc: 'It has read that client\'s file (their synthesis, readiness, active program and nutrition, medications, recent check-ins) and answers grounded in it, citing what it drew on.' },
