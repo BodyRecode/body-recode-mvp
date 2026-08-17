@@ -11,6 +11,7 @@ const SECTIONS = [
   { id: 'operator-flow',         title: 'Operator Flow',         colour: 'violet' as const, category: 'flows' as Category },
   { id: 'brand-voice',           title: 'Brand Voice',           colour: 'violet' as const, category: 'flows' as Category },
   { id: 'coach-copilot',         title: 'Coach Co-Pilot',        colour: 'violet' as const, category: 'flows' as Category },
+  { id: 'operator-console',      title: 'Operator Console',      colour: 'violet' as const, category: 'flows' as Category },
   { id: 'support',               title: 'Support Tickets',       colour: 'violet' as const, category: 'flows' as Category },
   { id: 'lead-pipeline',    title: '1. Lead Pipeline',       colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'zoom-1',           title: '2. Zoom Companion',      colour: 'teal' as const, category: 'coaching' as Category },
@@ -407,6 +408,38 @@ export default function HelpPage() {
             </ul>
 
             <Note>Treat it like a senior coach looking over your shoulder. The highest-value habit: after you generate any program or nutrition plan, open the co-pilot on that client and ask it to review the result against doctrine before you publish.</Note>
+          </Section>
+
+          <Section id="operator-console" title="Operator Console - Run the Business by Talking to It" colour="violet">
+            <p>The console is a full page at <strong>Console</strong> in the top nav (<code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">/dashboard/console</code>). It is a conversation with your own business: ask it about your leads, your clients, what has actually been sent, and what is firing, and it goes and reads the live data before answering.</p>
+
+            <Note><strong>This is not the co-pilot bubble, and the difference is deliberate.</strong> The bubble helps with the page you are already on and forgets when you close it. The console is where the work <em>is</em> the conversation — auditing a send, chasing down why leads stalled, staging a re-engagement — so its conversations are saved down the left-hand side and you can pick one back up days later.</Note>
+
+            <p className="font-semibold text-[#1A1A1A] mt-3">What it can do</p>
+            <StatusList items={[
+              { label: 'Go and look', desc: 'Count and list leads, filter to the ones who never moved, read one lead\'s whole file, list clients by active / frozen / ended, and rank who needs you today using the same engine as the Today\'s Focus board.' },
+              { label: 'Audit what happened', desc: '"What has actually been sent this week?" pulls every email and SMS with who got it and when. This is how you catch a workflow double-sending, or confirm something fired at all.' },
+              { label: 'Check the automations', desc: 'Which workflows exist, which are switched on, how many times each ran in the last 30 days and how many failed. A workflow that is active but has run zero times is the thing you want to see.' },
+              { label: 'Stage a send', desc: 'Ask it to re-engage the leads who never moved and it works out exactly who is eligible, who is excluded and why — then stops and shows you a card.' },
+              { label: 'Set a follow-up', desc: 'Put a lead on your own follow-up list for a date, with a note. Also staged, also needs your click.' },
+            ]} />
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">Nothing sends without you</p>
+            <p>Every action stops at an <strong>approval card</strong>. The card leads with the numbers — how many would receive it, how many are excluded and for what reason — and there is a <strong>Show me exactly who</strong> link that lists them by name before you decide. Confirm sends it. Cancel does nothing at all.</p>
+            <p>This is enforced in the software, not by asking the AI nicely: the part of the console the AI can reach contains no code that sends. The worst it can do is prepare something you then read and decline. An approval expires after <strong>30 minutes</strong>, because a list you read an hour ago may not describe who would get it now.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">Seeing its working</p>
+            <p>Under each answer you get small grey chips — <em>Counted leads · 84</em>, <em>Audited recent sends · 12</em> — showing which lookups it ran and how many rows came back. If a lookup failed, the chip turns red. This is how you tell a real answer from a confident-sounding one: if the chips are missing, it did not check.</p>
+
+            <p className="font-semibold text-[#1A1A1A] mt-4">What it will NOT do</p>
+            <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm mt-1">
+              <li>It cannot change the software. No code, no new pages, no settings it was not given a specific tool for. That line is what makes it safe to hand to a licensed coach.</li>
+              <li>It cannot see another practice&apos;s data. Every lookup is filtered to your own clients and leads in the code, before the AI is involved.</li>
+              <li>It cannot run raw database queries. Every lookup is a fixed, named question with fixed filters — deliberately less flexible, so that text arriving from outside can never be turned into a database read.</li>
+              <li>It does not guess. If a lookup returns nothing it tells you nothing matched, rather than inventing a plausible number.</li>
+            </ul>
+
+            <Note>Every single lookup it runs is recorded — which tool, what arguments, how many rows, whether it worked. So &ldquo;why did this client get that email?&rdquo; has an answer months later. That record is also what a partner will need when one of their clients asks them the same question.</Note>
           </Section>
 
           <Section id="support" title="Support Tickets - Report an Issue" colour="violet">

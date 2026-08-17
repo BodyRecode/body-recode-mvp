@@ -12,6 +12,9 @@ type NavCluster = { key: string; label: string; items: NavLink[] }
 const OVERVIEW: NavLink[] = [
   { href: '/dashboard/today', label: 'Today' },
   { href: '/dashboard', label: 'Live', exact: true },
+  // Top level rather than under Meta: the console is a place you go to work,
+  // not a settings page you visit once.
+  { href: '/dashboard/console', label: 'Console' },
 ]
 
 const CRM_CLUSTER: NavCluster = {
