@@ -1,11 +1,11 @@
 import Stripe from 'stripe'
+import { tenantStripe } from '@/lib/tenant-stripe'
 import { Resend } from 'resend'
 import { SupabaseClient } from '@supabase/supabase-js'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { appUrl } from '@/lib/app-url'
 import { fromCoach, darkEmailShell, emailBody, emailCta } from '@/lib/email-shell'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 const STATE_MAP: Record<string, string> = {
   'Depleted State': 'depleted',
@@ -51,6 +51,10 @@ export async function sendDownsellOffer(
   const stateLabel = STATE_LABELS[stateKey]
   const firstName = lead.name.split(' ')[0]
 
+  // Resolved here rather than at module scope: getTenant() reads a per-request
+  // cache, so a module-level client would route every tenant to Body Recode.
+  const { stripe, opts } = tenantStripe()
+
   const session = await stripe.checkout.sessions.create({
     mode: 'payment',
     customer_email: lead.email,
@@ -76,7 +80,7 @@ export async function sendDownsellOffer(
     },
     success_url: `${appUrl()}/program/success`,
     cancel_url: `${appUrl()}/program/cancelled`,
-  })
+  }, opts)
 
   const checkoutUrl = session.url!
   const resend = new Resend(process.env.RESEND_API_KEY)

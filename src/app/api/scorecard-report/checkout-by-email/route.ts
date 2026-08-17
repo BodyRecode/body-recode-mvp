@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
+import { tenantStripe } from '@/lib/tenant-stripe'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { appUrl } from '@/lib/app-url'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 export async function POST(request: NextRequest) {
+  const { stripe, opts } = tenantStripe()
   const { email } = await request.json()
 
   if (!email?.trim()) {
@@ -77,7 +78,7 @@ export async function POST(request: NextRequest) {
     },
     success_url: `${appUrl()}/report/pending?email=${encodeURIComponent(lead.email)}`,
     cancel_url: `${appUrl()}/get-report`,
-  })
+  }, opts)
 
   return NextResponse.json({ url: session.url })
 }

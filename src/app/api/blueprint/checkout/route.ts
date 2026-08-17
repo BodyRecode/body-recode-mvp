@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
+import { tenantStripe } from '@/lib/tenant-stripe'
 import { appUrl } from '@/lib/app-url'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 export async function POST(request: NextRequest) {
+  const { stripe, opts } = tenantStripe()
   const { name, email } = await request.json()
 
   if (!name?.trim() || !email?.trim()) {
@@ -46,7 +47,7 @@ export async function POST(request: NextRequest) {
     },
       success_url: `${appUrl()}/blueprint/pending?email=${encodeURIComponent(email.toLowerCase().trim())}`,
       cancel_url: `${appUrl()}/blueprint`,
-    })
+    }, opts)
   } catch (err) {
     console.error('Stripe checkout error:', err)
     return NextResponse.json({ error: 'Failed to create checkout session.' }, { status: 500 })

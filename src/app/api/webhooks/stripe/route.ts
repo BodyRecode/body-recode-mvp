@@ -32,6 +32,8 @@ import {
   type AscensionTarget,
 } from '@/lib/digital-asset-emails'
 
+// PLATFORM ACCOUNT ONLY. Connected-account events arrive at the separate
+// /api/webhooks/stripe/connect endpoint with a different signing secret.
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 const LIBRARY_BUCKET = 'library-assets'

@@ -11,9 +11,9 @@
  */
 
 import Stripe from 'stripe'
+import { tenantStripe } from '@/lib/tenant-stripe'
 import type { SupabaseClient } from '@supabase/supabase-js'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 /**
  * Stripe interval → our billing_interval enum.
@@ -81,13 +81,18 @@ export async function syncSubscriptionFromStripe(
   supabase: SupabaseClient,
   subscription: Stripe.Subscription
 ): Promise<{ matched: boolean; clientId?: string; subscriptionRow?: string }> {
+  // Resolved per call, not at module scope: getTenant() reads a per-request
+  // cache, and a subscription created on a connected account can only be read
+  // back with that account's options.
+  const { stripe, opts } = tenantStripe()
+
   // Stripe customer is always a string id at this point (sub.customer)
   const customerId = typeof subscription.customer === 'string'
     ? subscription.customer
     : subscription.customer.id
 
   // Fetch the customer to get email for matching
-  const customer = await stripe.customers.retrieve(customerId)
+  const customer = await stripe.customers.retrieve(customerId, opts)
   if (customer.deleted) return { matched: false }
 
   const match = await findClientForStripeCustomer(supabase, customer)
@@ -127,7 +132,7 @@ export async function syncSubscriptionFromStripe(
     productName = (price.product as Stripe.Product).name
   } else if (typeof price?.product === 'string') {
     try {
-      const prod = await stripe.products.retrieve(price.product)
+      const prod = await stripe.products.retrieve(price.product, opts)
       if (!prod.deleted) productName = prod.name
     } catch {
       productName = null
@@ -181,6 +186,7 @@ export async function markCommencementPaid(
   stripePaymentId: string,
   paidAt: Date
 ): Promise<void> {
+  const { stripe, opts } = tenantStripe()
   // Ensure a client_payment_plan row exists. Assign default plan if none.
   const { data: existing } = await supabase
     .from('client_payment_plan')
@@ -233,6 +239,8 @@ export async function refreshClientFromStripe(
   supabase: SupabaseClient,
   clientId: string
 ): Promise<{ synced: number; subscriptions: Array<{ id: string; status: string }> }> {
+  const { stripe, opts } = tenantStripe()
+
   const { data: client, error } = await supabase
     .from('clients')
     .select('id, email, stripe_customer_id')
@@ -244,7 +252,7 @@ export async function refreshClientFromStripe(
 
   // No customer yet? Try email lookup
   if (!customerId && client.email) {
-    const customers = await stripe.customers.list({ email: client.email, limit: 10 })
+    const customers = await stripe.customers.list({ email: client.email, limit: 10 }, opts)
     if (customers.data.length === 0) return { synced: 0, subscriptions: [] }
     customerId = customers.data[0].id
     await supabase.from('clients').update({ stripe_customer_id: customerId }).eq('id', clientId)
@@ -259,7 +267,7 @@ export async function refreshClientFromStripe(
     customer: customerId,
     status: 'all',
     limit: 100,
-  })
+  }, opts)
 
   const out: Array<{ id: string; status: string }> = []
   for (const sub of subs.data) {

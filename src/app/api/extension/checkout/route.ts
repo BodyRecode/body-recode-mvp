@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
+import { tenantStripe } from '@/lib/tenant-stripe'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { appUrl } from '@/lib/app-url'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 export async function POST(request: NextRequest) {
+  const { stripe, opts } = tenantStripe()
   const { name, email } = await request.json()
 
   if (!name?.trim() || !email?.trim()) {
@@ -57,7 +58,7 @@ export async function POST(request: NextRequest) {
       },
       success_url: `${appUrl()}/extension/welcome?email=${encodeURIComponent(email.toLowerCase().trim())}`,
       cancel_url: `${appUrl()}/extension`,
-    })
+    }, opts)
   } catch (err) {
     console.error('Extension checkout error:', err)
     return NextResponse.json({ error: 'Failed to create checkout session.' }, { status: 500 })

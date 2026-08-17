@@ -27,6 +27,8 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { syncSubscriptionFromStripe } from '@/lib/stripe-sync'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
 
+// PLATFORM-BILLED ON PURPOSE. Admin backfill runs against Kade's own account
+// with no tenant in scope. Do NOT route through tenantStripe().
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 export async function POST(_request: NextRequest) {

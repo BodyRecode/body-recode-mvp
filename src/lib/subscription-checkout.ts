@@ -1,4 +1,5 @@
 import Stripe from 'stripe'
+import { tenantStripe } from '@/lib/tenant-stripe'
 import type { CoachingPackage } from '@/lib/coaching-packages'
 import { appUrl } from '@/lib/app-url'
 
@@ -20,7 +21,6 @@ import { appUrl } from '@/lib/app-url'
  * the duplicate can't be generated in the first place.
  */
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 // In-memory cache mapping Payment Link URL → recurring Price ID. Populated
 // lazily on first miss by listing all active Payment Links once. Vercel
@@ -29,14 +29,17 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 const PRICE_ID_CACHE = new Map<string, string>()
 
 async function loadPaymentLinkCache(): Promise<void> {
+  // Same account as the checkout that will use these Price IDs. A Price
+  // resolved on the platform account cannot be charged on a connected one.
+  const { stripe, opts: acct } = tenantStripe()
   // Stripe Payment Links don't paginate beyond 100 in a single call; we
   // page through with starting_after until exhausted.
   let startingAfter: string | undefined
   for (let i = 0; i < 10; i++) {
-    const page = await stripe.paymentLinks.list({ active: true, limit: 100, starting_after: startingAfter })
+    const page = await stripe.paymentLinks.list({ active: true, limit: 100, starting_after: startingAfter }, acct)
     for (const link of page.data) {
       const url = link.url
-      const items = await stripe.paymentLinks.listLineItems(link.id, { limit: 1 })
+      const items = await stripe.paymentLinks.listLineItems(link.id, { limit: 1 }, acct)
       const priceId = items.data[0]?.price?.id
       if (url && priceId) PRICE_ID_CACHE.set(url, priceId)
     }
@@ -92,6 +95,9 @@ export async function createSubscriptionCheckoutForClient(opts: {
     : `${appUrl()}/payment-success`
   const cancelUrl = `${appUrl()}`
 
+  // `acct`, not `opts`: this function's own parameter is already named opts.
+  const { stripe, opts: acct } = tenantStripe()
+
   const session = await stripe.checkout.sessions.create({
     mode: 'subscription',
     payment_method_types: ['card'],
@@ -105,7 +111,7 @@ export async function createSubscriptionCheckoutForClient(opts: {
     },
     success_url: successUrl,
     cancel_url: cancelUrl,
-  })
+  }, acct)
 
   if (!session.url) {
     throw new Error(`Stripe returned no URL for the subscription checkout session (${session.id}).`)

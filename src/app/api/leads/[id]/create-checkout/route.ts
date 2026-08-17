@@ -1,14 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
+import { tenantStripe } from '@/lib/tenant-stripe'
 import { createClient } from '@/lib/supabase/server'
 import { appUrl } from '@/lib/app-url'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 export async function POST(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const { stripe, opts } = tenantStripe()
   const { id } = await params
 
   const supabase = await createClient()
@@ -51,7 +52,7 @@ export async function POST(
     },
     success_url: `${appUrl()}/payment-success`,
     cancel_url: `${appUrl()}/dashboard/leads/${id}`,
-  })
+  }, opts)
 
   return NextResponse.json({ url: session.url })
 }

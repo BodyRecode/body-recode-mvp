@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import Stripe from 'stripe'
+import { tenantStripe } from '@/lib/tenant-stripe'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 // Stripe only supports 'week' | 'month' — map our intervals
 function stripeInterval(interval: string): { interval: Stripe.PriceCreateParams.Recurring.Interval; interval_count: number } {
@@ -15,6 +15,7 @@ function stripeInterval(interval: string): { interval: Stripe.PriceCreateParams.
 }
 
 export async function POST(request: NextRequest) {
+  const { stripe, opts } = tenantStripe()
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
@@ -43,7 +44,7 @@ export async function POST(request: NextRequest) {
     const stripeProduct = await stripe.products.create({
       name: product.name,
       ...(product.description ? { description: product.description } : {}),
-    })
+    }, opts)
     stripeProductId = stripeProduct.id
   }
 
@@ -58,13 +59,13 @@ export async function POST(request: NextRequest) {
       unit_amount: amountCents,
       currency: 'aud',
       recurring: { interval: rec.interval, interval_count: rec.interval_count },
-    })
+    }, opts)
   } else {
     stripePrice = await stripe.prices.create({
       product: stripeProductId,
       unit_amount: amountCents,
       currency: 'aud',
-    })
+    }, opts)
   }
 
   // Create Stripe Payment Link
@@ -73,7 +74,7 @@ export async function POST(request: NextRequest) {
     ...(product.type === 'subscription'
       ? {}
       : { after_completion: { type: 'hosted_confirmation', hosted_confirmation: { custom_message: 'Thank you — your payment has been received. The Body Recode team will be in touch shortly.' } } }),
-  })
+  }, opts)
 
   // Save back to DB
   await supabase

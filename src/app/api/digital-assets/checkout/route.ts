@@ -13,6 +13,9 @@ import Stripe from 'stripe'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { appUrl } from '@/lib/app-url'
 
+// PLATFORM-BILLED ON PURPOSE. Digital assets are Body Recode's own IP sold
+// direct by Kade, not a partner's product, so this must NOT be routed through
+// tenantStripe(). See the decision matrix in src/lib/tenant-stripe.ts.
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 export async function POST(request: NextRequest) {

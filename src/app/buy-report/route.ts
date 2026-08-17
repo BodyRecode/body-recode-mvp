@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
+import { tenantStripe } from '@/lib/tenant-stripe'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { appUrl } from '@/lib/app-url'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 function errorRedirect(reason: string) {
   const url = new URL(`${appUrl()}/get-report`)
@@ -12,6 +12,7 @@ function errorRedirect(reason: string) {
 }
 
 export async function GET(request: NextRequest) {
+  const { stripe, opts } = tenantStripe()
   const email = request.nextUrl.searchParams.get('email')?.toLowerCase().trim()
 
   if (!email) return errorRedirect('missing-email')
@@ -79,7 +80,7 @@ export async function GET(request: NextRequest) {
     },
     success_url: `${appUrl()}/report/pending?email=${encodeURIComponent(lead.email)}`,
     cancel_url: `${appUrl()}/get-report`,
-  })
+  }, opts)
 
   if (!session.url) return errorRedirect('stripe-failed')
 

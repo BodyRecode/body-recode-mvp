@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
+import { tenantStripe } from '@/lib/tenant-stripe'
 import { appUrl } from '@/lib/app-url'
 import { brand } from "@/config/tenant";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 const CORS = {
   'Access-Control-Allow-Origin': brand().performanceDomain,
@@ -16,6 +16,7 @@ export async function OPTIONS() {
 }
 
 export async function POST(request: NextRequest) {
+  const { stripe, opts } = tenantStripe()
   const { name, email, score, body_state, section_scores } = await request.json()
 
   if (!name?.trim() || !email?.trim() || !score || !body_state) {
@@ -49,7 +50,7 @@ export async function POST(request: NextRequest) {
     },
     success_url: `${appUrl()}/report/pending?email=${encodeURIComponent(email)}`,
     cancel_url: `${brand().performanceDomain}/scorecard`,
-  })
+  }, opts)
 
   return NextResponse.json({ url: session.url }, { headers: CORS })
 }

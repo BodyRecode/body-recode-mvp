@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
+import { tenantStripe } from '@/lib/tenant-stripe'
 import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { darkEmailSignature } from '@/lib/email-signature'
@@ -8,12 +9,12 @@ import { logLeadEvent } from '@/lib/log-lead-event'
 import { appUrl } from '@/lib/app-url'
 import { logoUrl } from '@/config/tenant'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 export async function POST(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const { stripe, opts } = tenantStripe()
   const { id } = await params
 
   const supabase = await createClient()
@@ -59,7 +60,7 @@ export async function POST(
     },
     success_url: `${appUrl()}/payment-success`,
     cancel_url: `${appUrl()}/dashboard/leads/${id}`,
-  })
+  }, opts)
 
   const firstName = lead.name.split(' ')[0]
   const resend = new Resend(process.env.RESEND_API_KEY)

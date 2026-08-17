@@ -114,6 +114,52 @@ export async function createTenantAwareCheckoutSession(
 }
 
 /**
+ * The one call every money-touching endpoint should make.
+ *
+ * Returns a Stripe instance plus the request options that route the call to
+ * the right account, so a callsite reads:
+ *
+ *   const { stripe, opts } = tenantStripe()
+ *   await stripe.checkout.sessions.create(params, opts)
+ *   await stripe.subscriptions.cancel(id, opts)
+ *
+ * WHY OPTIONS RATHER THAN A PRE-BOUND CLIENT: Stripe's Connect account is set
+ * per REQUEST, not per client instance. Baking it into the instance would work
+ * until the first call that must stay on the platform account, and then fail
+ * in the direction that loses money quietly.
+ *
+ * FOR BODY RECODE THIS IS A NO-OP. BR has no Connect account, so `opts` is
+ * `undefined` and every call is byte-identical to what it does today. The
+ * routing only becomes live for a tenant that has completed Connect
+ * onboarding, which means this refactor can land safely long before the first
+ * partner exists.
+ *
+ * ⚠️ CALL IT INSIDE THE HANDLER, NEVER AT MODULE SCOPE. `getTenant()` reads a
+ * per-request cache populated by `prefetchTenant()` in the root layout. A
+ * module-level call runs at import time, before that cache is warm, and would
+ * silently resolve every tenant to Body Recode — i.e. route a partner's
+ * revenue into Kade's account. Every callsite this replaced had exactly that
+ * module-level shape, which is why they all moved inside their handlers.
+ *
+ * FOLLOW THE MONEY: this is not only for creating charges. Anything that later
+ * reads or mutates an object created on a connected account — customers,
+ * subscriptions, products, prices, payment links — has to be made with the
+ * same options, or it will look on the platform account and find nothing.
+ * That is why freeze, payment-link generation and the Stripe sync were
+ * refactored alongside the checkout endpoints.
+ */
+export function tenantStripe(): {
+  stripe: Stripe
+  opts: Stripe.RequestOptions | undefined
+  routedTo: 'platform' | 'connect'
+} {
+  const ctx = tenantStripeContext()
+  const s = stripe()
+  if (ctx.platform) return { stripe: s, opts: undefined, routedTo: 'platform' }
+  return { stripe: s, opts: { stripeAccount: ctx.stripeAccount }, routedTo: 'connect' }
+}
+
+/**
  * Guidance for refactoring existing checkout callsites:
  *
  * BEFORE:

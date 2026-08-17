@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
+import { tenantStripe } from '@/lib/tenant-stripe'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { appUrl } from '@/lib/app-url'
 import { requireCoach } from '@/lib/api-auth'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const { stripe, opts } = tenantStripe()
   const gate = await requireCoach()
   if (!gate.ok) return gate.response
 
@@ -80,7 +81,7 @@ export async function POST(
     },
     success_url: `${appUrl()}/program/success`,
     cancel_url: `${appUrl()}/program/cancelled`,
-  })
+  }, opts)
 
   return NextResponse.json({ url: session.url })
 }
