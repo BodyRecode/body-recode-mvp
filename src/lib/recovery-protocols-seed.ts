@@ -245,6 +245,7 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     },
     required_equipment: ['shower'],
     contraindications: [
+      'SCREEN BEFORE PRESCRIBING. Snoring plus witnessed pauses plus daytime sleepiness, or an Epworth of 16 or more, means suspected obstructive sleep apnoea: refer, do not prescribe. Treating apnoea as insomnia is the specific harm this screen exists to prevent. Note the STOP-Bang under-detects in women (77% sensitivity, 45% specificity, AUC 0.67 in midlife women) and the most sensitive single item for them is observed apnoeas, while OSA prevalence reaches 27% in perimenopause and 29% after it. A low score in a midlife woman does not clear her. Also refer rather than prescribe if the complaint has run three months or more and looks like chronic insomnia disorder, if she is on a hypnotic, or if restless legs or a parasomnia is suspected',
       'Bedroom above 24 degrees. The mechanism is heat TRANSFER and it needs a gradient. Every positive whole-body result in this literature comes from bedrooms at 17 to 18 degrees. In a hot humid Brisbane summer room you get the stressor phase and none of the rebound. Fix the room first or do not prescribe it at all',
       'Pregnancy. The protocol deliberately raises core temperature 0.5 to 0.9 degrees, which is the exposure obstetric guidance advises against. A warm shower is fine, hot immersion is not',
       'Client on antihypertensives: shower only, and warn specifically about standing up. Hot immersion dropped 24-hour systolic by 7mmHg in treated hypertensives, and that stacks with medication',
@@ -491,6 +492,7 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     },
     required_equipment: ['none_needed'],
     contraindications: [
+      'SCREEN BEFORE PRESCRIBING. Snoring plus witnessed pauses plus daytime sleepiness, or an Epworth of 16 or more, means suspected obstructive sleep apnoea: refer, do not prescribe. Treating apnoea as insomnia is the specific harm this screen exists to prevent. Note the STOP-Bang under-detects in women (77% sensitivity, 45% specificity, AUC 0.67 in midlife women) and the most sensitive single item for them is observed apnoeas, while OSA prevalence reaches 27% in perimenopause and 29% after it. A low score in a midlife woman does not clear her. Also refer rather than prescribe if the complaint has run three months or more and looks like chronic insomnia disorder, if she is on a hypnotic, or if restless legs or a parasomnia is suspected',
       'Bipolar diagnosis or family history, IF a light box is involved. Bright morning light has precipitated hypomania, mania and mixed states; one trial moved to midday dosing after three of its first four pilot patients on morning light developed mixed states. Going outside is a lifestyle behaviour and is between them and their psychiatrist. Prescribing a box is treatment of a psychiatric condition and is out of scope',
       'Photosensitising medication (lithium, phenothiazines, some tricyclics, tetracyclines, some retinoids). Ask what they take BEFORE recommending any device. Prescriber sign-off first',
       'Any pre-existing eye condition: outdoor light only, and an eye-care referral before any device',
@@ -521,6 +523,7 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     },
     required_equipment: ['none_needed'],
     contraindications: [
+      'SCREEN BEFORE PRESCRIBING. Snoring plus witnessed pauses plus daytime sleepiness, or an Epworth of 16 or more, means suspected obstructive sleep apnoea: refer, do not prescribe. Treating apnoea as insomnia is the specific harm this screen exists to prevent. Note the STOP-Bang under-detects in women (77% sensitivity, 45% specificity, AUC 0.67 in midlife women) and the most sensitive single item for them is observed apnoeas, while OSA prevalence reaches 27% in perimenopause and 29% after it. A low score in a midlife woman does not clear her. Also refer rather than prescribe if the complaint has run three months or more and looks like chronic insomnia disorder, if she is on a hypnotic, or if restless legs or a parasomnia is suspected',
       'Falls risk, poor night vision, or an unfamiliar or cluttered home. Dimming a house has a trip hazard attached and it is the only real downside this protocol has',
       'A client already turning sleep into a compliance metric to fail at',
     ],
@@ -714,7 +717,8 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
       timing: 'Start on the first evening after realising the debt.',
     },
     required_equipment: ['none_needed'],
-    contraindications: ['Do not oversleep by more than 90 minutes in one night (rebound insomnia risk)'],
+    contraindications: [
+      'SCREEN BEFORE PRESCRIBING. Snoring plus witnessed pauses plus daytime sleepiness, or an Epworth of 16 or more, means suspected obstructive sleep apnoea: refer, do not prescribe. Treating apnoea as insomnia is the specific harm this screen exists to prevent. Note the STOP-Bang under-detects in women (77% sensitivity, 45% specificity, AUC 0.67 in midlife women) and the most sensitive single item for them is observed apnoeas, while OSA prevalence reaches 27% in perimenopause and 29% after it. A low score in a midlife woman does not clear her. Also refer rather than prescribe if the complaint has run three months or more and looks like chronic insomnia disorder, if she is on a hypnotic, or if restless legs or a parasomnia is suspected','Do not oversleep by more than 90 minutes in one night (rebound insomnia risk)'],
     safety_notes: 'Naps longer than 30 minutes risk sleep inertia and evening sleep-onset problems.',
     coach_doctrine: 'Sleep debt cannot be paid off in one long night. Requires a full week of consistent extension. Pair with reduced training intensity for that week.',
   },
@@ -793,6 +797,7 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     },
     required_equipment: ['none_needed'],
     contraindications: [
+      'SCREEN BEFORE PRESCRIBING. Snoring plus witnessed pauses plus daytime sleepiness, or an Epworth of 16 or more, means suspected obstructive sleep apnoea: refer, do not prescribe. Treating apnoea as insomnia is the specific harm this screen exists to prevent. Note the STOP-Bang under-detects in women (77% sensitivity, 45% specificity, AUC 0.67 in midlife women) and the most sensitive single item for them is observed apnoeas, while OSA prevalence reaches 27% in perimenopause and 29% after it. A low score in a midlife woman does not clear her. Also refer rather than prescribe if the complaint has run three months or more and looks like chronic insomnia disorder, if she is on a hypnotic, or if restless legs or a parasomnia is suspected',
       'Diagnosed insomnia. Do not position this as therapy. CBT-i is first line and that is a referral, not a prescription',
       'Restless legs symptoms. Refer, do not treat. Iron studies and diagnosis are outside scope',
       'Diagnosed bruxism or evening jaw clenching: do NOT add masticatory stretching. The only trial found MORE bruxism bursts, not fewer',
@@ -906,6 +911,7 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     },
     required_equipment: ['none_needed'],
     contraindications: [
+      'SCREEN BEFORE PRESCRIBING. Snoring plus witnessed pauses plus daytime sleepiness, or an Epworth of 16 or more, means suspected obstructive sleep apnoea: refer, do not prescribe. Treating apnoea as insomnia is the specific harm this screen exists to prevent. Note the STOP-Bang under-detects in women (77% sensitivity, 45% specificity, AUC 0.67 in midlife women) and the most sensitive single item for them is observed apnoeas, while OSA prevalence reaches 27% in perimenopause and 29% after it. A low score in a midlife woman does not clear her. Also refer rather than prescribe if the complaint has run three months or more and looks like chronic insomnia disorder, if she is on a hypnotic, or if restless legs or a parasomnia is suspected',
       'PTSD diagnosis, known trauma history, or a dissociative disorder. Refer, do not prescribe',
       'Active psychiatric instability including current psychosis, mania or acute suicidal ideation. Refer',
       'Any history of relaxation-induced anxiety. Screen first: has lying still with eyes closed, or any meditation or relaxation practice, ever made you feel panicky, agitated, unreal or out of your body',
@@ -949,6 +955,7 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     },
     required_equipment: ['none_needed'],
     contraindications: [
+      'SCREEN BEFORE PRESCRIBING. Snoring plus witnessed pauses plus daytime sleepiness, or an Epworth of 16 or more, means suspected obstructive sleep apnoea: refer, do not prescribe. Treating apnoea as insomnia is the specific harm this screen exists to prevent. Note the STOP-Bang under-detects in women (77% sensitivity, 45% specificity, AUC 0.67 in midlife women) and the most sensitive single item for them is observed apnoeas, while OSA prevalence reaches 27% in perimenopause and 29% after it. A low score in a midlife woman does not clear her. Also refer rather than prescribe if the complaint has run three months or more and looks like chronic insomnia disorder, if she is on a hypnotic, or if restless legs or a parasomnia is suspected',
       'Low energy availability, disordered eating signals, or caffeine being used as an appetite suppressant. That is a disordered-eating signal, not a caffeine problem. Do not touch caffeine until fuelling has been stable for two to three weeks, and refer',
       'Time in bed under seven hours. Fix sleep opportunity first. The largest caffeine effect on total sleep time is about 50 minutes and the gap in a depleted client is usually bigger than that',
       'Competition week, assessment week, or the first week of a new training block. The taper is a real stressor for 2 to 9 days',
