@@ -69,6 +69,8 @@ export default function ZoomCompanion({
   const [elapsed, setElapsed] = useState(0)
   const [outcome, setOutcome] = useState<'A' | 'B' | 'C' | null>(null)
   const [busy, setBusy] = useState(false)
+  /** Path B only: send the $97 self-guided program alongside the hold email. */
+  const [offerSelfGuided, setOfferSelfGuided] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
 
   useEffect(() => {
@@ -143,6 +145,26 @@ ${tail}`
     }
 
     if (path === 'A') await fetch(`/api/leads/${leadId}/send-zoom1-declined`, { method: 'POST' })
+
+    // Path B now sends too. Until 2026-08-17 it sent nothing, so the person who
+    // said "no" got a courteous email and the person who said "maybe" got three
+    // weeks of silence. `selfGuided` is the coach's call, made on the call:
+    // offering the cheaper door to someone who was close to a yes talks them
+    // down a tier, so it is a checkbox rather than automatic.
+    if (path === 'B') {
+      const res = await fetch(`/api/leads/${leadId}/send-zoom1-needs-time`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ include_self_guided: offerSelfGuided }),
+      })
+      if (!res.ok) {
+        const b = await res.json().catch(() => ({}))
+        setSaveError(
+          `Outcome saved, but the follow-up email did not send (${b.error ?? res.status}). Send it by hand.`,
+        )
+      }
+    }
+
     setOutcome(path); setBusy(false)
   }
 
@@ -487,19 +509,33 @@ Here's what's included: the foundational intake and CFFS, your training program,
                 {outcome === 'A'
                   ? 'Declined follow-up sent.'
                   : outcome === 'B'
-                    ? 'Marked Zoom 1 done, back on your Today list in three weeks.'
+                    ? `Hold email sent${offerSelfGuided ? ' with the self-guided option' : ''}. Back on your Today list in three weeks.`
                     : 'Marked Zoom 1 done.'}
               </p>
             ) : (
-              <div className="flex flex-wrap gap-2.5">
-                {([
-                  ['C', 'Proceeding', 'bg-[#1B6DFC] text-white border-[#1B6DFC]'],
-                  ['B', 'Needs time', 'bg-white text-[#3A3A3A] border-[#E5E5E5] hover:border-[#1B6DFC]'],
-                  ['A', 'Out', 'bg-white text-[#3A3A3A] border-[#E5E5E5] hover:border-red-400'],
-                ] as const).map(([p, label, cls]) => (
-                  <button key={p} disabled={busy} onClick={() => markOutcome(p)}
-                    className={`text-[14px] font-bold px-5 py-2.5 rounded-xl border transition-colors disabled:opacity-50 ${cls}`}>{label}</button>
-                ))}
+              <div className="space-y-2.5">
+                <div className="flex flex-wrap gap-2.5">
+                  {([
+                    ['C', 'Proceeding', 'bg-[#1B6DFC] text-white border-[#1B6DFC]'],
+                    ['B', 'Needs time', 'bg-white text-[#3A3A3A] border-[#E5E5E5] hover:border-[#1B6DFC]'],
+                    ['A', 'Out', 'bg-white text-[#3A3A3A] border-[#E5E5E5] hover:border-red-400'],
+                  ] as const).map(([p, label, cls]) => (
+                    <button key={p} disabled={busy} onClick={() => markOutcome(p)}
+                      className={`text-[14px] font-bold px-5 py-2.5 rounded-xl border transition-colors disabled:opacity-50 ${cls}`}>{label}</button>
+                  ))}
+                </div>
+                <label className="flex items-start gap-2 text-[12.5px] text-[#3A3A3A] cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={offerSelfGuided}
+                    onChange={e => setOfferSelfGuided(e.target.checked)}
+                    className="mt-0.5 accent-[#1B6DFC]"
+                  />
+                  <span>
+                    With <strong>Needs time</strong>, also send the $97 self-guided program.
+                    <span className="text-[#999999]"> Tick only if money or commitment was the barrier. Don&apos;t offer it to someone who was close to a yes.</span>
+                  </span>
+                </label>
               </div>
             )}
             {summary && summary.recommendations.length > 0 && (

@@ -153,6 +153,21 @@ export const READ_TOOLS: Anthropic.Tool[] = [
     },
   },
   {
+    name: 'awaiting_decision',
+    description:
+      'Warm leads who had a call and asked for time, with the barrier the coach recorded and when the follow-up is due. Use this when asked who is still deciding, or when drafting a follow-up — the recorded barrier is what makes the message land, and no template can produce it.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        due_only: {
+          type: 'boolean',
+          description: 'Only those whose follow-up date has arrived or passed. Defaults to false (everyone still deciding).',
+        },
+      },
+      required: [],
+    },
+  },
+  {
     name: 'content_context',
     description:
       'What content is already planned or published — the post calendar and the campaigns. Call this BEFORE drafting anything content-related, so a new pack, sequence or strategy builds on what is already scheduled instead of duplicating or contradicting it.',
@@ -212,6 +227,8 @@ export async function runReadTool(
       return rosterAttention(args, scope)
     case 'recent_sends':
       return recentSends(args, scope)
+    case 'awaiting_decision':
+      return awaitingDecision(args, scope)
     case 'content_context':
       return contentContext(args, scope)
     case 'list_workflows':
@@ -496,6 +513,51 @@ async function recentSends(args: Record<string, unknown>, scope: ConsoleScope): 
     result: { days, email_count: emails.length, sms_count: sms.length, emails, sms },
     count: emails.length + sms.length,
   }
+}
+
+async function awaitingDecision(args: Record<string, unknown>, scope: ConsoleScope): Promise<ToolOutcome> {
+  let q = scoped(
+    scope.admin
+      .from('leads')
+      .select(
+        'name, email, status, zoom2_outcome, zoom_1_date, next_follow_up_at, follow_up_note, scorecard_body_state, scorecard_profile',
+      ),
+    scope,
+  )
+    .is('converted_to_client_id', null)
+    .eq('active', true)
+    .not('next_follow_up_at', 'is', null)
+    .order('next_follow_up_at', { ascending: true })
+
+  if (args.due_only === true) q = q.lte('next_follow_up_at', new Date().toISOString())
+
+  const { data, error } = await q.limit(MAX_ROWS)
+  if (error) throw new Error(error.message)
+
+  const now = Date.now()
+  const leads = (data ?? []).map(l => {
+    const due = new Date(l.next_follow_up_at as string).getTime()
+    return {
+      name: l.name,
+      email: l.email,
+      status: l.status,
+      outcome: l.zoom2_outcome,
+      body_state: l.scorecard_body_state,
+      pattern: l.scorecard_profile,
+      follow_up_due: (l.next_follow_up_at as string).slice(0, 10),
+      days_until_follow_up: Math.ceil((due - now) / 86400000),
+      days_since_call: l.zoom_1_date
+        ? Math.floor((now - new Date(l.zoom_1_date as string).getTime()) / 86400000)
+        : null,
+      // The single most useful field here. It is the coach's own note on what
+      // is actually holding them back, and it is what a follow-up has to speak
+      // to. Treat it as private context for drafting — it is shorthand written
+      // for the coach, never wording to quote back to the lead.
+      barrier: l.follow_up_note,
+    }
+  })
+
+  return { result: { returned: leads.length, leads }, count: leads.length }
 }
 
 async function contentContext(args: Record<string, unknown>, scope: ConsoleScope): Promise<ToolOutcome> {

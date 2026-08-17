@@ -550,6 +550,66 @@ export function buildZoom1DeclinedEmails(firstName: string, bookingLink: string)
   return { email1, email2, email3 }
 }
 
+/**
+ * The email for someone who said "I need to think about it".
+ *
+ * Written 2026-08-17 to close a gap that was faintly absurd once you lined it
+ * up: on the Zoom companion, "not proceeding" sent a courteous three-email
+ * sequence, "proceeding" handed over to onboarding, and "needs time" — the
+ * warmest undecided person in the funnel, who had just given up thirty minutes
+ * — sent nothing at all. Dee Berry held her call on 13 Aug and heard nothing
+ * for three weeks, except a cold drip telling her to book the call she had
+ * already had.
+ *
+ * ONE email, not a sequence. Somebody weighing a real financial decision does
+ * not need to be chased; they need to know where things stand and when they
+ * will hear from you. The personal follow-up comes later, written by hand
+ * against what they actually said.
+ *
+ * It deliberately does NOT reference the recorded barrier. The follow-up note
+ * on the lead is Kade's private shorthand — "husband work unstable", "money
+ * timing" — and quoting any of that back would be a serious breach of the
+ * conversation, however well meant. The note shapes the human follow-up. It
+ * never goes in an automated send.
+ */
+export function buildZoom1NeedsTimeEmail(opts: {
+  firstName: string
+  bookingLink: string
+  /** When the coach will make contact, already formatted e.g. "3 September". */
+  followUpOn: string | null
+  /** Mention the self-guided program as a lower-commitment option. */
+  includeSelfGuided: boolean
+}): { subject: string; html: string } {
+  const { firstName, bookingLink, followUpOn, includeSelfGuided } = opts
+
+  const body = [
+    p(`Hi ${firstName},`),
+    p(`Good speaking with you. Thanks for the time and for being straight with me about where you are at.`),
+    p(`Nothing needs deciding today. What we talked through does not expire, and the read on what your body is doing stays true whether you start now or in three months.`),
+    followUpOn
+      ? p(`I will check in around ${followUpOn} to see where things have landed. If anything changes before then, just reply to this email and we will pick it up.`)
+      : p(`I will check in in a few weeks to see where things have landed. If anything changes before then, just reply to this email and we will pick it up.`),
+    includeSelfGuided
+      ? p(`If you would rather make a start without the full commitment, I have sent through the self-guided version separately. It is the same read and the same structure, at your own pace, and it comes off the price if you move to working together later.`)
+      : '',
+    p(`No pressure either way. Take the time you need.`),
+  ]
+    .filter(Boolean)
+    .join('')
+
+  return {
+    subject: `Good speaking today, ${firstName}`,
+    html: followUpEmail({
+      eyebrow: 'Post-Call',
+      heading: `Good speaking today, ${firstName}.`,
+      body,
+      ctaText: 'Book a time whenever you are ready',
+      bookingLink,
+      previewText: 'Nothing needs deciding today.',
+    }),
+  }
+}
+
 export function buildProgramBuyerEmails(firstName: string, bookingLink: string): {
   email1: { subject: string; html: string }
   email2: { subject: string; html: string }

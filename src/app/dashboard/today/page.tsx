@@ -15,6 +15,16 @@ interface FollowUpLead {
   follow_up_note: string | null
 }
 
+/** A warm lead who asked for time. Their follow-up date has not arrived yet. */
+interface DecidingLead {
+  id: string
+  name: string | null
+  status: string
+  next_follow_up_at: string
+  follow_up_note: string | null
+  zoom_1_date: string | null
+}
+
 interface CalendarPost {
   id: string
   date: string
@@ -74,6 +84,7 @@ export default function TodayDashboardPage() {
   const [feedback, setFeedback] = useState<FeedbackRow[]>([])
   const [clientsAwaitingReply, setClientsAwaitingReply] = useState(0)
   const [followUps, setFollowUps] = useState<FollowUpLead[]>([])
+  const [deciding, setDeciding] = useState<DecidingLead[]>([])
   const [wave, setWave] = useState<WaveStatus | null>(null)
   const [enrolmentsLast24h, setEnrolmentsLast24h] = useState<number>(0)
   const [loading, setLoading] = useState(true)
@@ -95,7 +106,7 @@ export default function TodayDashboardPage() {
 
   async function load() {
     setLoading(true)
-    const [postsRes, feedbackRes, waveRes, enrolRes, unansweredRes, followUpRes] = await Promise.all([
+    const [postsRes, feedbackRes, waveRes, enrolRes, unansweredRes, followUpRes, decidingRes] = await Promise.all([
       supabase.from('calendar_posts').select('id, date, time, brand, platform, type, title, caption, graphic, scheduled, posted_at, scheduled_publish_at, ig_post_url').eq('date', date).order('time', { ascending: true, nullsFirst: false }),
       supabase.from('feedback_responses').select('id, created_at, stage, moment, response_text, coach_seen_at, permission_status').is('coach_seen_at', null).order('created_at', { ascending: false }).limit(10),
       fetch('/api/challenge/wave-status').then(r => r.json()).catch(() => null),
@@ -117,6 +128,21 @@ export default function TodayDashboardPage() {
         .lte('next_follow_up_at', new Date(new Date(date + 'T23:59:59+10:00')).toISOString())
         .eq('active', true)
         .order('next_follow_up_at', { ascending: true }),
+      // Warm leads still deciding, whose follow-up date has NOT arrived yet.
+      //
+      // Added 2026-08-17. The list above only surfaces someone once their date
+      // lands, which meant a lead who asked for time disappeared for three
+      // weeks. Dee Berry held her call on 13 Aug with a follow-up set for
+      // 3 Sept and was invisible in between — long enough for the only emails
+      // she received to be a cold sequence nobody had noticed was still running.
+      // Silence you can see is a decision. Silence you cannot see is a leak.
+      supabase.from('leads')
+        .select('id, name, status, next_follow_up_at, follow_up_note, zoom_1_date')
+        .not('next_follow_up_at', 'is', null)
+        .gt('next_follow_up_at', new Date(new Date(date + 'T23:59:59+10:00')).toISOString())
+        .is('converted_to_client_id', null)
+        .eq('active', true)
+        .order('next_follow_up_at', { ascending: true }),
     ])
     setPosts((postsRes.data ?? []) as CalendarPost[])
     setFeedback((feedbackRes.data ?? []) as FeedbackRow[])
@@ -128,6 +154,7 @@ export default function TodayDashboardPage() {
       new Set(((unansweredRes.data ?? []) as { client_id: string }[]).map(r => r.client_id)).size
     )
     setFollowUps((followUpRes.data ?? []) as FollowUpLead[])
+    setDeciding((decidingRes.data ?? []) as DecidingLead[])
     setLoading(false)
   }
 
@@ -320,6 +347,42 @@ export default function TodayDashboardPage() {
                             <p className="text-xs text-stone-600 leading-relaxed mt-0.5">{l.follow_up_note}</p>
                           )}
                         </div>
+                      </div>
+                    </Row>
+                  )
+                })}
+              </Section>
+            )}
+
+            {/* ⏳ STILL DECIDING — warm, waiting, not yet due */}
+            {deciding.length > 0 && (
+              <Section icon={Clock} title={`Still deciding (${deciding.length})`} tone="default">
+                <p className="text-xs text-stone-500 mb-2 leading-relaxed">
+                  Had a call, asked for time. Nothing is owed today, but they are warm and they are
+                  waiting. Open one if something has changed.
+                </p>
+                {deciding.map(l => {
+                  const due = new Date(l.next_follow_up_at)
+                  const daysUntil = Math.ceil((due.getTime() - Date.now()) / 86400000)
+                  const daysSinceCall = l.zoom_1_date
+                    ? Math.floor((Date.now() - new Date(l.zoom_1_date).getTime()) / 86400000)
+                    : null
+                  return (
+                    <Row key={l.id}>
+                      <div className="min-w-0">
+                        <a
+                          href={`/dashboard/leads/${l.id}`}
+                          className="text-sm font-semibold text-stone-900 hover:text-[#1B6DFC]"
+                        >
+                          {l.name ?? 'Unnamed lead'}
+                        </a>
+                        <span className="text-xs text-stone-500">
+                          {' '}· {getLeadStatusLabel(l.status)} · you follow up in {daysUntil}d
+                          {daysSinceCall !== null ? ` · call was ${daysSinceCall}d ago` : ''}
+                        </span>
+                        {l.follow_up_note && (
+                          <p className="text-xs text-stone-600 leading-relaxed mt-0.5">{l.follow_up_note}</p>
+                        )}
                       </div>
                     </Row>
                   )

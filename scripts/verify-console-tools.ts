@@ -45,6 +45,8 @@ async function main() {
     ['list_workflows', {}],
     ['roster_attention', { limit: 5 }],
     ['content_context', { window: 'both', limit: 4 }],
+    ['awaiting_decision', {}],
+    ['awaiting_decision', { due_only: true }],
   ]
 
   let failures = 0
