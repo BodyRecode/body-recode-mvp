@@ -17,8 +17,13 @@ import { generalStarterCategories } from '@/lib/copilot-starter-questions'
  * persistent "What I can help with" bar inside the panel explains the
  * capability at any time (not just the empty state).
  *
- * Stateless: conversation lives in local state for the session and is replayed
- * to the API each turn (no persistence yet). Same look/voice as CopilotPanel.
+ * Stateless: conversation lives in local state and is replayed to the API each
+ * turn (nothing is persisted). Same look/voice as CopilotPanel.
+ *
+ * EVERY OPEN STARTS A FRESH CONVERSATION (2026-08-17). The bubble is mounted in
+ * the dashboard layout, so it survives soft navigation — without this reset,
+ * closing it and opening it again on another page dropped the coach back into the
+ * previous conversation, which then got replayed to the model as context.
  */
 
 type Msg = { role: 'user' | 'assistant'; content: string; followups?: string[] }
@@ -111,10 +116,13 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
   }
 
   function openPanel() {
+    // Fresh conversation every open — clear the last one rather than resuming it.
+    setMessages([])
+    setInput('')
+    setError('')
     setOpen(true)
     dismissIntro()
-    // Lead with the capability explainer only when there's no conversation yet.
-    setShowHelp(messages.length === 0)
+    setShowHelp(true)
   }
 
   // On a specific client's pages the client-scoped co-pilot already renders.

@@ -76,20 +76,24 @@ const CAPABILITIES: { title: string; body: string }[] = [
 export default function CopilotPanel({
   clientId,
   clientFirstName,
-  initialMessages,
+  sessionId,
   onClose,
   className,
 }: {
   clientId: string
   clientFirstName: string
-  initialMessages: Msg[]
+  /**
+   * Identifies this conversation. Minted fresh each time the bubble is opened, so
+   * the panel always starts empty and the route only replays this session's turns.
+   */
+  sessionId: string
   /** When provided (bubble mode), a ✕ shows in the header. */
   onClose?: () => void
   /** Extra classes for the outer card (bubble mode makes it fill its popover). */
   className?: string
 }) {
   const pathname = usePathname() ?? ''
-  const [messages, setMessages] = useState<Msg[]>(initialMessages)
+  const [messages, setMessages] = useState<Msg[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -125,7 +129,7 @@ export default function CopilotPanel({
       const res = await fetch(`/api/clients/${clientId}/copilot`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: q }),
+        body: JSON.stringify({ message: q, session_id: sessionId }),
       })
       const { data, error: apiError } = await parseApiResponse<any>(res)
       if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`)

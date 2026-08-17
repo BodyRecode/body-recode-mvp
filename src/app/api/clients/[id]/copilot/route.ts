@@ -13,36 +13,10 @@ export const maxDuration = 120
 // Cap how much prior conversation we replay, to bound tokens + latency.
 const HISTORY_LIMIT = 24
 
-/**
- * GET — the client's co-pilot history, loaded lazily when the coach first
- * opens the bubble (rather than eagerly in the client layout on every page).
- * Coach-only, same as POST.
- */
-export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const { id: clientId } = await params
-
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
-  if (!isCoachEmail(user.email)) return NextResponse.json({ error: 'Coach access only' }, { status: 403 })
-
-  const admin = createAdminClient()
-  const { data: rows } = await admin
-    .from('copilot_messages')
-    .select('id, role, content, flagged, followups, created_at')
-    .eq('client_id', clientId)
-    .order('created_at', { ascending: true })
-    .limit(200)
-
-  const messages = (rows ?? []).map(m => ({
-    id: m.id as string,
-    role: m.role as 'user' | 'assistant',
-    content: m.content as string,
-    flagged: !!m.flagged,
-    followups: Array.isArray(m.followups) ? (m.followups as string[]) : [],
-  }))
-  return NextResponse.json({ messages })
-}
+// The GET that returned this client's whole message history was removed on
+// 2026-08-17: opening the bubble now starts a fresh conversation, so there is no
+// history to load. Past rows remain in copilot_messages for the flagged-exchanges
+// review page (/dashboard/copilot-review), which reads them directly.
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id: clientId } = await params
@@ -53,9 +27,12 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
   if (!isCoachEmail(user.email)) return NextResponse.json({ error: 'Coach access only' }, { status: 403 })
 
-  const { message } = await request.json().catch(() => ({ message: null }))
+  const { message, session_id: sessionId } = await request.json().catch(() => ({ message: null, session_id: null }))
   if (!message || typeof message !== 'string' || !message.trim()) {
     return NextResponse.json({ error: 'Empty message' }, { status: 400 })
+  }
+  if (!sessionId || typeof sessionId !== 'string') {
+    return NextResponse.json({ error: 'Missing session' }, { status: 400 })
   }
 
   const admin = createAdminClient()
@@ -66,11 +43,14 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   // Coach-style memory (Phase 8) — soft guidance keyed by coach email.
   const coachPreferences = await getCoachPreferences(admin, user.email)
 
-  // Prior conversation for this client (oldest first), capped.
+  // Prior turns of THIS conversation only (oldest first), capped. Scoping to the
+  // session is what stops a chat from weeks ago steering today's answer — the
+  // coach starts fresh every time they open the bubble, and so does the model.
   const { data: historyRows } = await admin
     .from('copilot_messages')
     .select('role, content, created_at')
     .eq('client_id', clientId)
+    .eq('session_id', sessionId)
     .order('created_at', { ascending: false })
     .limit(HISTORY_LIMIT)
   const history = (historyRows ?? [])
@@ -137,8 +117,8 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   const { data: inserted, error: insErr } = await admin
     .from('copilot_messages')
     .insert([
-      { client_id: clientId, coach_id: ctx.coachId, role: 'user', content: message, created_at: nowUser },
-      { client_id: clientId, coach_id: ctx.coachId, role: 'assistant', content: answer, followups, created_at: new Date(Date.parse(nowUser) + 1).toISOString() },
+      { client_id: clientId, coach_id: ctx.coachId, session_id: sessionId, role: 'user', content: message, created_at: nowUser },
+      { client_id: clientId, coach_id: ctx.coachId, session_id: sessionId, role: 'assistant', content: answer, followups, created_at: new Date(Date.parse(nowUser) + 1).toISOString() },
     ])
     .select('id, role, content, flagged, followups, created_at')
 

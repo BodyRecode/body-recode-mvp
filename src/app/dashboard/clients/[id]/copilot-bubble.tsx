@@ -3,7 +3,12 @@
 import { useState } from 'react'
 import CopilotPanel from './copilot-panel'
 
-type Msg = { id: string | null; role: 'user' | 'assistant'; content: string; flagged: boolean; followups?: string[] }
+// randomUUID needs a secure context; fall back so a plain-http preview still works.
+function newSessionId() {
+  return typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+    ? crypto.randomUUID()
+    : `s-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
+}
 
 /**
  * Floating co-pilot launcher (2026-07-12). A fixed brand-glyph bubble bottom-right
@@ -11,8 +16,16 @@ type Msg = { id: string | null; role: 'user' | 'assistant'; content: string; fla
  * Scoped to the client whose page it's on. Avatar is a neutral brand mark (not a
  * coach photo) so it white-labels; a tenant can swap the glyph later.
  *
- * History is fetched lazily on first open (GET /api/clients/[id]/copilot) so it
- * never taxes page loads where the chat is never opened.
+ * EVERY OPEN STARTS A FRESH CONVERSATION (2026-08-17). It used to load the whole
+ * message history for the client, so reopening dropped the coach into weeks of old
+ * chat — and the route replayed that history to the model, letting stale
+ * conversation shape unrelated answers. Now each open mints a new session id;
+ * only that session is persisted, replayed and shown. Earlier rows stay in the
+ * database for the flagged-exchanges review page, they're just not reloaded.
+ *
+ * The session id is also the panel's React key, so closing the panel discards its
+ * internal state too (draft proposals, refine mode) rather than leaving a stale
+ * Apply button pointing at a conversation that no longer exists.
  */
 export default function CopilotBubble({
   clientId,
@@ -22,46 +35,29 @@ export default function CopilotBubble({
   clientFirstName: string
 }) {
   const [open, setOpen] = useState(false)
-  const [messages, setMessages] = useState<Msg[] | null>(null)
-  const [loading, setLoading] = useState(false)
+  const [sessionId, setSessionId] = useState<string | null>(null)
 
-  async function openPanel() {
+  function openPanel() {
+    setSessionId(newSessionId())
     setOpen(true)
-    if (messages === null && !loading) {
-      setLoading(true)
-      try {
-        const res = await fetch(`/api/clients/${clientId}/copilot`)
-        const data = await res.json()
-        setMessages(Array.isArray(data.messages) ? data.messages : [])
-      } catch {
-        setMessages([])
-      } finally {
-        setLoading(false)
-      }
-    }
   }
 
   return (
     <>
-      {open && (
+      {open && sessionId && (
         <div
           className="fixed bottom-24 right-5 z-50 w-[380px] max-w-[calc(100vw-2.5rem)] h-[560px] max-h-[calc(100vh-8rem)] shadow-2xl rounded-2xl"
           role="dialog"
           aria-label="Coach Co-Pilot"
         >
-          {messages === null ? (
-            <div className="h-full rounded-2xl bg-white border border-[#E5E5E5] flex items-center justify-center text-sm text-[#999999]">
-              Loading…
-            </div>
-          ) : (
-            <CopilotPanel
-              clientId={clientId}
-              clientFirstName={clientFirstName}
-              initialMessages={messages}
-              onClose={() => setOpen(false)}
-              className="h-full shadow-none"
-            />
-          )}
+          <CopilotPanel
+            key={sessionId}
+            clientId={clientId}
+            clientFirstName={clientFirstName}
+            sessionId={sessionId}
+            onClose={() => setOpen(false)}
+            className="h-full shadow-none"
+          />
         </div>
       )}
 
