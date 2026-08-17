@@ -103,6 +103,11 @@ export async function resolveConsoleScope(): Promise<ScopeResult> {
  * So the grep is `\.from\(` minus `scoped(`, and every hit must be justifiable
  * as a derived query. Five is the expected count. A sixth is a review item.
  *
+ * `calendar_posts` was the one exception to all of this until 2026-08-17: it
+ * had no owner column, so `content_context` read it unscoped and said so. The
+ * column was added and backfilled (sql/2026-08-17_calendar_posts_coach_id.sql)
+ * and that read is now scoped like the rest. There are no unscoped reads left.
+ *
  * `column` is a parameter because ownership is not spelled the same everywhere
  * — most tables use coach_id; a few reach it through a join.
  *

@@ -565,27 +565,29 @@ async function contentContext(args: Record<string, unknown>, scope: ConsoleScope
   const window = typeof args.window === 'string' ? args.window : 'both'
   const today = new Date().toISOString().slice(0, 10)
 
-  // ⚠️ TENANCY GAP: `calendar_posts` has no coach_id, so it cannot be scoped
-  // the way every other read in this file is. Under one coach that is the same
-  // result; it stops being the same result the day a second practice's posts
-  // land in this table. This is tracked as an open item on the console-tenant
-  // -scoping step in saas-buildout-manifest and MUST be closed (add coach_id,
-  // backfill, then wrap this in scoped()) before a second tenant goes live.
-  // Called out here rather than quietly omitted, because a content tool that
-  // cannot see the content calendar is close to useless.
+  // Tenancy gap closed 2026-08-17 (sql/2026-08-17_calendar_posts_coach_id.sql).
+  // This was the one console read that could not be scoped, because the table
+  // had no owner column. It now has one, all 435 rows are backfilled, and both
+  // queries below go through scoped() like every other read in this file.
   const [upcoming, recent, campaigns] = await Promise.all([
     window === 'upcoming' || window === 'both'
-      ? scope.admin
-          .from('calendar_posts')
-          .select('date, title, type, platform, phase, posted_at')
+      ? scoped(
+          scope.admin
+            .from('calendar_posts')
+            .select('date, title, type, platform, phase, posted_at'),
+          scope,
+        )
           .gte('date', today)
           .order('date', { ascending: true })
           .limit(limit)
       : Promise.resolve({ data: [] as Record<string, unknown>[] }),
     window === 'recent' || window === 'both'
-      ? scope.admin
-          .from('calendar_posts')
-          .select('date, title, type, platform, phase, posted_at')
+      ? scoped(
+          scope.admin
+            .from('calendar_posts')
+            .select('date, title, type, platform, phase, posted_at'),
+          scope,
+        )
           .lt('date', today)
           .order('date', { ascending: false })
           .limit(limit)

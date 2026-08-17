@@ -93,9 +93,29 @@ async function main() {
   }
   const leaked = await runReadTool('count_leads', {}, empty)
   const clientsLeaked = await runReadTool('find_clients', { state: 'all' }, empty)
-  const ok = leaked.count === 0 && clientsLeaked.count === 0
-  console.log(`${ok ? '✓' : '✗ LEAK'} scope isolation: unknown coach sees ${leaked.count} leads, ${clientsLeaked.count} clients`)
+  // calendar_posts is checked by name because it was the last table to gain an
+  // owner column (2026-08-17). If this ever returns rows again, the scoping
+  // regressed or a seed inserted without coach_id.
+  const contentLeaked = await runReadTool('content_context', { window: 'both' }, empty)
+  const ok = leaked.count === 0 && clientsLeaked.count === 0 && contentLeaked.count === 0
+  console.log(
+    `${ok ? '✓' : '✗ LEAK'} scope isolation: unknown coach sees ${leaked.count} leads, ` +
+    `${clientsLeaked.count} clients, ${contentLeaked.count} posts`,
+  )
   if (!ok) failures++
+
+  // Unowned rows would be invisible to the scoped read rather than error, so
+  // check for them explicitly instead of trusting silence.
+  const { count: orphanPosts } = await admin
+    .from('calendar_posts')
+    .select('id', { count: 'exact', head: true })
+    .is('coach_id', null)
+  if (orphanPosts && orphanPosts > 0) {
+    failures++
+    console.log(`✗ ${orphanPosts} calendar_posts rows have no coach_id — invisible to the console.`)
+  } else {
+    console.log('✓ every calendar_posts row has an owner')
+  }
 
   console.log(`\n${failures === 0 ? 'ALL PASS' : `${failures} FAILURE(S)`}`)
   process.exit(failures === 0 ? 0 : 1)
