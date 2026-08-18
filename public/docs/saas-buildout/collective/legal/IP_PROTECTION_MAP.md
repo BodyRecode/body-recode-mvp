@@ -30,7 +30,7 @@ Copyright already protects the code and content for free, but it does **not** pr
 - **How:** let the IP lawyer run a **clearance search** before filing (cheaper than a rejected application). Rough cost ~$250–330 per class per mark.
 
 **2. Engine + Doctrine = trade secret, not patent.**
-This is the secret sauce and its protection is already built: the **Mutual NDA** (discovery stage) + the **IP Licence Deed** (perpetual confidentiality on trade secrets, no-reverse-engineer, no-training-corpus). Do **not** patent — it would publish the doctrine and is unlikely to be granted in AU anyway.
+This is the secret sauce and its protection is already built: the **Mutual NDA** (discovery stage) + the **Partner IP Sublicence Deed** (perpetual confidentiality on trade secrets, no-reverse-engineer, no-training-corpus). Do **not** patent — it would publish the doctrine and is unlikely to be granted in AU anyway.
 
 ---
 

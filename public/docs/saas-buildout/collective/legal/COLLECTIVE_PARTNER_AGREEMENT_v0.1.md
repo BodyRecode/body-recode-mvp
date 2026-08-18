@@ -29,7 +29,7 @@ B. Body Recode has decided to license the platform to allied coaches under **The
 
 C. Partner is joining the Collective. Partner and Body Recode wish to record the terms on which Partner uses the platform and pays Body Recode.
 
-D. This Agreement is accompanied by an IP Licence Deed dated the same date (**Licence Deed**). Both documents form one commercial package and must be signed together.
+D. This Agreement is accompanied by a Partner IP Sublicence Deed dated the same date (**Licence Deed**). Both documents form one commercial package and must be signed together.
 
 ---
 

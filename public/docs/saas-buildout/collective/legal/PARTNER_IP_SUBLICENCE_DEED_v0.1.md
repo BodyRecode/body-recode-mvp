@@ -5,7 +5,7 @@
 
 **Companion to:** `COLLECTIVE_PARTNER_AGREEMENT_v0.1.md` dated the same date.
 
-**Role:** the **partner-facing licence** — the "Licence Deed" referred to in the Collective Partner Agreement. In the incorporated structure it operates as a **sublicence** beneath the Head Licence (`HEAD_LICENCE_DEED_v0.1.md`); as a sole trader, Kade licenses directly. The formal legal title stays "IP Licence Deed" to match the Agreement's defined term.
+**Role:** the **partner-facing licence** — the "Licence Deed" referred to in the Collective Partner Agreement. In the incorporated structure it operates as a **sublicence** beneath the Head Licence (`HEAD_LICENCE_DEED_v0.1.md`); as a sole trader, Kade licenses directly. The formal legal title stays "Partner IP Sublicence Deed" to match the Agreement's defined term.
 
 ---
 
@@ -388,6 +388,6 @@ The following marks are owned by Body Recode. Licensee is not licensed to use an
 
 ---
 
-**END OF IP LICENCE DEED — v0.1 DRAFT**
+**END OF PARTNER IP SUBLICENCE DEED — v0.1 DRAFT**
 
 Companion document: `COLLECTIVE_PARTNER_AGREEMENT_v0.1.md`

@@ -3,7 +3,7 @@
 **Body Recode the Collective — discovery stage**
 **Draft v0.1 — For legal review only. Not for execution.**
 
-This NDA is signed **before deep disclosure** (platform demo, doctrine/config walkthrough, detailed pricing, or exchange of the offer documents). It is not required for a first, high-level conversation. It sits *before* the Collective Partner Agreement + IP Licence Deed in the partner journey.
+This NDA is signed **before deep disclosure** (platform demo, doctrine/config walkthrough, detailed pricing, or exchange of the offer documents). It is not required for a first, high-level conversation. It sits *before* the Collective Partner Agreement + Partner IP Sublicence Deed in the partner journey.
 
 ---
 
@@ -89,7 +89,7 @@ B. For that Purpose, each Party may disclose confidential and proprietary inform
 
 10.1 **Governing law.** Queensland, Australia. Each Party submits to the exclusive jurisdiction of the Queensland courts.
 
-10.2 **Entire agreement.** This agreement is the entire agreement between the Parties on its subject matter and supersedes all prior understandings on that subject matter. If the Parties later sign a Collective Partner Agreement and IP Licence Deed, the confidentiality provisions of those documents govern information disclosed under them.
+10.2 **Entire agreement.** This agreement is the entire agreement between the Parties on its subject matter and supersedes all prior understandings on that subject matter. If the Parties later sign a Collective Partner Agreement and Partner IP Sublicence Deed, the confidentiality provisions of those documents govern information disclosed under them.
 
 10.3 **No assignment.** Neither Party may assign this agreement without the other's prior written consent.
 

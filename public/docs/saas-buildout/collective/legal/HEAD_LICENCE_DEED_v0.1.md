@@ -23,7 +23,7 @@ This deed sits **above** the partner-facing documents. It is what gives the oper
 
 ## BACKGROUND
 
-A. The Owner owns the Body Recode intellectual property — the Layer 1 Engine and Doctrine, the Layer 2 Platform, and the Body Recode Marks (the **Body Recode IP**, as described in Schedule 1 and in the IP Licence Deed).
+A. The Owner owns the Body Recode intellectual property — the Layer 1 Engine and Doctrine, the Layer 2 Platform, and the Body Recode Marks (the **Body Recode IP**, as described in Schedule 1 and in the Partner IP Sublicence Deed).
 
 B. The Company operates, or will operate, the Body Recode business and the Collective.
 
@@ -35,7 +35,7 @@ C. The Owner wishes to license the Body Recode IP to the Company, including the 
 
 ## 1. DEFINITIONS
 
-**Body Recode IP** means all Layer 1 IP, Layer 2 IP, and Body Recode Marks, as those terms are defined in the IP Licence Deed, together with all Improvements.
+**Body Recode IP** means all Layer 1 IP, Layer 2 IP, and Body Recode Marks, as those terms are defined in the Partner IP Sublicence Deed, together with all Improvements.
 
 **the Collective** means the programme under which the Company sublicenses a branded instance of the Platform to allied coaches. There is no limit on the number of partners. Early partners may be offered a locked-for-life founding rate, which is a pricing term only and confers no exclusivity.
 
@@ -124,7 +124,7 @@ Date: __________________________
 
 ## SCHEDULE 1 — BODY RECODE IP
 
-As defined in the IP Licence Deed (`PARTNER_IP_SUBLICENCE_DEED_v0.1.md`) Schedule 1: Layer 1 IP (Engine + Doctrine), Layer 2 IP (Platform + infrastructure + modality packs), and the Body Recode Marks (Schedule 2 of that deed). This deed licenses the whole of it to the Company.
+As defined in the Partner IP Sublicence Deed (`PARTNER_IP_SUBLICENCE_DEED_v0.1.md`) Schedule 1: Layer 1 IP (Engine + Doctrine), Layer 2 IP (Platform + infrastructure + modality packs), and the Body Recode Marks (Schedule 2 of that deed). This deed licenses the whole of it to the Company.
 
 ---
 
