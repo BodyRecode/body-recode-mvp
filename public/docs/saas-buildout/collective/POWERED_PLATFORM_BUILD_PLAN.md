@@ -1,7 +1,7 @@
 # Powered Platform - Build Plan
 **The white-label product sold to founding partners. Internal. June 2026.**
 
-The product: a branded instance of the Body Recode platform for another practitioner, powered by the BR interpretation engine, delivered through Body Recode Collective. Capped at ten founding partners.
+The product: a branded instance of the Body Recode platform for another practitioner, powered by the BR interpretation engine, delivered through Body Recode Collective. Open to allied coaches.
 
 ---
 

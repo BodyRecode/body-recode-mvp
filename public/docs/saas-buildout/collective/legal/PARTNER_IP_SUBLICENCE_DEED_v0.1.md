@@ -27,7 +27,7 @@ Each a **Party** and together the **Parties**.
 
 A. Body Recode has developed a proprietary interpretation engine (Layer 1) and coaching platform (Layer 2). Together they constitute a specialised system for reading biological, physiological, and behavioural state and delivering coaching direction.
 
-B. Body Recode has decided to licence Layer 2 (and controlled API access to Layer 1) to a **early partners allied coaches** under the "the Collective" programme — a first, proof-of-concept group. Licensee is one of the ten. The founding programme is limited to ten partners and this licence is **non-exclusive**; Body Recode may licence the Platform to further partners after the founding programme, and Licensee's participation confers no exclusivity of any kind.
+B. Body Recode has decided to licence Layer 2 (and controlled API access to Layer 1) to allied coaches under **The Body Recode Collective**. This licence is **non-exclusive**; Body Recode may licence the Platform to any number of further partners, and Licensee's participation confers no exclusivity of any kind.
 
 C. This deed records the intellectual property terms on which Licensee accesses and uses Body Recode's IP.
 

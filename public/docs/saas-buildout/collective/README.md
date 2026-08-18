@@ -10,7 +10,7 @@ Last updated: 2026-06-30
 
 Body Recode Collective has pulled back from leading with bespoke "we'll build you anything" studio work (call that **Lane A**). The front door is now the **powered platform** (**Lane B**):
 
-> A practitioner gets the **Body Recode coaching engine + website + onboarding**, white-labelled to their brand and their modality, delivered as a productised package. Capped at **ten founding partners**.
+> A practitioner gets the **Body Recode coaching engine + website + onboarding**, white-labelled to their brand and their modality, delivered as a productised package. Open to allied coaches.
 
 Lane A still exists as bespoke overflow, but it is no longer the pitch. Early partners prove the powered model; evergreen comes after.
 

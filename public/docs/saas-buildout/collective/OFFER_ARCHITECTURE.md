@@ -1,7 +1,7 @@
 # Collective Partner Offer Architecture
 **Internal strategy doc. Not for partners. Prepared June 2026.**
 
-The productised offer: turn a movement or health practitioner's own method into a branded, done-with-you coaching business, powered by the Body Recode engine and delivered through Body Recode Collective. Capped at ten founding partners.
+The productised offer: turn a movement or health practitioner's own method into a branded, done-with-you coaching business, powered by the Body Recode engine and delivered through Body Recode Collective. Open to allied coaches.
 
 This is the AI Co-Founder Method made concrete for one vertical, with the BR engine as the tech backbone and Collective as the delivery machine.
 

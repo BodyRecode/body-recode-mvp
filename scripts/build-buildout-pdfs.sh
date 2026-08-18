@@ -59,7 +59,7 @@ build_one \
   "Body Recode · Collective" \
   "Overview" \
   "v1.0 · 2026-07" \
-  "capped ten Collective Partners on the powered platform"
+  "the partner programme on the powered platform"
 
 # ─── Onboarding docs ─────────────────────────────────────────
 build_one \
@@ -67,11 +67,11 @@ build_one \
   "Phase 2 Tenant Deployment Checklist" \
   "Onboarding Runbook" \
   "v1.0 · 2026-07" \
-  "shape B shared-deploy for partners #2 through #10"
+  "shape B shared-deploy for partners after pilot zero"
 
 build_one \
   "$DOCS/collective/onboarding/MELISA_PILOT_ZERO_DEPLOYMENT_RUNBOOK.md" \
-  "Melisa Pilot Zero Deployment Runbook" \
+  "Pilot Zero Deployment Runbook" \
   "Onboarding Runbook" \
   "v1.0 · 2026-07" \
   "shape A separate-deploy · pilot zero"
@@ -122,17 +122,52 @@ build_one \
 
 build_one \
   "$DOCS/collective/legal/COLLECTIVE_PARTNER_AGREEMENT_v0.1.md" \
-  "Founding Partner Agreement" \
+  "Collective Partner Agreement" \
   "Legal Package" \
   "v0.1 · 2026-07" \
   "commercial contract · Collective programme"
 
 build_one \
-  "$DOCS/collective/legal/IP_LICENCE_DEED_v0.1.md" \
-  "IP Licence Deed" \
+  "$DOCS/collective/legal/PARTNER_IP_SUBLICENCE_DEED_v0.1.md" \
+  "Partner IP Sublicence Deed" \
   "Legal Package" \
-  "v0.1 · 2026-07" \
-  "companion licence · Collective programme"
+  "v0.1 · 2026-08" \
+  "companion licence · signed with the agreement"
+
+build_one \
+  "$DOCS/collective/legal/MUTUAL_NDA_v0.1.md" \
+  "Mutual NDA" \
+  "Legal Package" \
+  "v0.1 · 2026-08" \
+  "discovery stage · before anything is shared"
+
+build_one \
+  "$DOCS/collective/legal/HEAD_LICENCE_DEED_v0.1.md" \
+  "Head Licence Deed" \
+  "Legal Package" \
+  "v0.1 · 2026-08" \
+  "Kade to operating co · upstream of every sublicence"
+
+build_one \
+  "$DOCS/collective/legal/CONTRACTOR_IP_ASSIGNMENT_v0.1.md" \
+  "Contractor IP Assignment" \
+  "Legal Package" \
+  "v0.1 · 2026-08" \
+  "inbound copyright · anything built for the platform"
+
+build_one \
+  "$DOCS/collective/legal/IP_PROTECTION_MAP.md" \
+  "IP Protection Map" \
+  "Legal Package" \
+  "v0.1 · 2026-08" \
+  "what is protected, by what, and where the gaps are"
+
+build_one \
+  "$DOCS/collective/legal/DECISIONS_NEEDED.md" \
+  "Decisions Needed" \
+  "Legal Package" \
+  "v0.1 · 2026-08" \
+  "the blanks a lawyer cannot fill for you"
 
 echo ""
 echo "Done. Commit the PDFs:"

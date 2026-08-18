@@ -7,9 +7,9 @@
 
 ## What Body Recode is doing
 
-Body Recode is licensing a proprietary interpretation engine + platform ("the Platform") to a **early partners allied coaches** ("the Collective") under a subscription + per-active-client model. Each partner runs their own coaching business on the Platform, branded as theirs, powered by Body Recode's engine and doctrine.
+Body Recode is licensing a proprietary interpretation engine + platform ("the Platform") to allied coaches under **The Body Recode Collective** under a subscription + per-active-client model. Each partner runs their own coaching business on the Platform, branded as theirs, powered by Body Recode's engine and doctrine.
 
-**Important — the ten is a early partners, not a cap on the business.** The the Collective is a first, proof-of-concept group. Body Recode will use their real-world usage and de-identified operational data to develop the Platform toward a wider release, and after the founding programme intends to open the Platform to further partners at standard (non-founding) rates. Only the **founding programme and its locked-for-life founding pricing** are limited to ten — the Platform itself is not. **Please make sure nothing in the drafting grants a partner permanent exclusivity, market/territorial exclusivity, or "one-of-only-ten-ever" status that would prevent Body Recode scaling beyond the early partners.** The founding partners' locked-for-life pricing must survive; their scarcity/exclusivity must not.
+**Important — there is no cap on partner numbers.** The Collective is open to allied coaches, and Body Recode intends to keep licensing the Platform to further partners. Early partners receive a locked-for-life founding rate, which is a pricing term and nothing more. **Please make sure nothing in the drafting grants a partner permanent exclusivity, market or territorial exclusivity, or any status that would prevent Body Recode licensing to any number of further partners.** An early partner's locked-for-life pricing must survive; any implied scarcity or exclusivity must not.
 
 The commercial relationship has three moving parts:
 

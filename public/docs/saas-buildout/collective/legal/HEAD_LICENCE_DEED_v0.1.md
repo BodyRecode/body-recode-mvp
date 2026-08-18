@@ -37,7 +37,7 @@ C. The Owner wishes to license the Body Recode IP to the Company, including the 
 
 **Body Recode IP** means all Layer 1 IP, Layer 2 IP, and Body Recode Marks, as those terms are defined in the IP Licence Deed, together with all Improvements.
 
-**the Collective** means the initial, proof-of-concept programme (limited to ten founding partners with locked-for-life founding pricing) under which the Company sublicenses a branded instance of the Platform to allied coaches. The Company may licence the Platform to further partners at standard rates after the founding programme.
+**the Collective** means the programme under which the Company sublicenses a branded instance of the Platform to allied coaches. There is no limit on the number of partners. Early partners may be offered a locked-for-life founding rate, which is a pricing term only and confers no exclusivity.
 
 **Improvements** means all improvements, modifications, extensions, and derivative works of the Body Recode IP, however arising.
 
