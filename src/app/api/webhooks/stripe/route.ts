@@ -906,10 +906,13 @@ ${darkEmailSignature()}
         lead_id: resolved.leadId,
         pattern: pattern ?? 'pending',
         pattern_source: patternSource ?? 'assessment',
-        // A Challenge pattern is confirmed by the 14-day read → auto-confirm.
+        // A Challenge pattern is confirmed by the 14-day read, and a 'confirmed'
+        // pattern was already signed off by the buyer → auto-confirm both.
         // A scorecard pattern is preliminary → leave unconfirmed so the portal
         // shows a "confirm or adjust" step before the programme opens.
-        pattern_confirmed_at: patternSource === 'challenge' ? new Date().toISOString() : null,
+        pattern_confirmed_at: patternSource === 'challenge' || patternSource === 'confirmed'
+          ? new Date().toISOString()
+          : null,
         stripe_payment_intent_id: session.payment_intent as string ?? null,
       })
       .select('token')

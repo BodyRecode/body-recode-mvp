@@ -15,6 +15,8 @@ import type { SupabaseClient } from '@supabase/supabase-js'
  * challenge/[token]/body-decode-intake-result.tsx.
  *
  * Pattern READS, best-first:
+ *   0. A pattern the buyer CONFIRMED in a product portal — the latest read and
+ *      a deliberate decision, so it outranks any funnel read behind it.
  *   1. Challenge Day 7-14 quiz_result  — CONFIRMED by 14 days of data.
  *   2. Scorecard scorecard_profile      — PRELIMINARY; only carried when
  *      scorecard_profile_confidence = 'high' (≈a third come back 'low' and
@@ -62,7 +64,7 @@ export function toBlueprintSlug(value: string | null | undefined): BlueprintPatt
   return CANONICAL_TO_SLUG[trimmed] ?? null
 }
 
-export type PatternSource = 'challenge' | 'scorecard'
+export type PatternSource = 'confirmed' | 'challenge' | 'scorecard'
 export interface ResolvedPattern {
   slug: BlueprintPatternSlug | null
   source: PatternSource | null
@@ -107,6 +109,23 @@ export async function resolveBuyerPattern(
     lead = (data?.[0] as LeadRow) ?? null
   }
   if (!lead) return { slug: null, source: null, leadId: null }
+
+  // 0. A pattern the buyer already confirmed inside a product portal. This
+  //    outranks everything below it: it is the latest read AND a deliberate
+  //    human decision made with more on the table than the funnel had (Dee,
+  //    2026-08-20 — her bloods and history said cortisol, the Day-14 quiz had
+  //    said insulin). The Membership / Extension checkouts already prefer the
+  //    Blueprint pattern, but they match on email alone; this catches the buyer
+  //    who pays under a different address, because it anchors on lead_id.
+  const { data: bp } = await admin
+    .from('blueprint_enrollments')
+    .select('pattern')
+    .eq('lead_id', lead.id)
+    .not('pattern_confirmed_at', 'is', null)
+    .order('created_at', { ascending: false })
+    .limit(1)
+  const confirmedSlug = toBlueprintSlug((bp?.[0] as { pattern: string | null })?.pattern)
+  if (confirmedSlug) return { slug: confirmedSlug, source: 'confirmed', leadId: lead.id }
 
   // 1. Challenge-confirmed pattern (join via lead_id, NOT email).
   const { data: ce } = await admin
