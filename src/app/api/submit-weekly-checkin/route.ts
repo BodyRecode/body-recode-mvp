@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import Anthropic from '@anthropic-ai/sdk'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { buildCFWSSystemPrompt, buildCFWSUserPrompt, WeeklyCheckInPair } from '@/lib/cfws-prompt'
+import { generateCFWS } from '@/lib/cfws-generate'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { fromCoach, fromBrand, darkEmailShell, emailUrlFallback } from '@/lib/email-shell'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
@@ -10,14 +9,9 @@ import { writeRecoverySignalBlock, evaluateRouterAfterCheckin } from '@/lib/reco
 import { syncReassessmentTriggers } from '@/lib/reassessment-triggers'
 import { extractTrainingReview, extractNutritionReview, stripReviewKeys } from '@/lib/weekly-checkin-questions'
 import { appUrl } from '@/lib/app-url'
-import { extractFirstJsonObject } from '@/lib/extract-json'
-import { withTemporalContext } from '@/lib/temporal-context'
 import { coach, logoUrl } from '@/config/tenant'
-import { AI_MODELS } from '@/lib/ai-models'
 
 export const maxDuration = 300
-
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 5 })
 
 export async function POST(request: NextRequest) {
   const { clientId, weekNumber, formType, responses } = await request.json()
@@ -196,77 +190,6 @@ async function sendNotifications(
   }
 }
 
-async function generateCFWS(
-  admin: ReturnType<typeof createAdminClient>,
-  client: { id: string; name: string },
-  weekNumber: number,
-  formAResponses: Record<string, string>,
-  formBResponses: Record<string, string>
-) {
-  // Get last 2 resolved weeks for rolling window (excluding current)
-  const { data: recentCheckins } = await admin
-    .from('weekly_checkins')
-    .select('week_number, form_type, responses')
-    .eq('client_id', client.id)
-    .lt('week_number', weekNumber)
-    .order('week_number', { ascending: false })
-    .limit(6)
-
-  // Build rolling window from recent complete pairs
-  const recentPairs: WeeklyCheckInPair[] = []
-  if (recentCheckins) {
-    const byWeek = new Map<number, { A?: Record<string, string>; B?: Record<string, string> }>()
-    for (const ci of recentCheckins) {
-      const wk = ci.week_number
-      if (!byWeek.has(wk)) byWeek.set(wk, {})
-      const entry = byWeek.get(wk)!
-      if (ci.form_type === 'A') entry.A = ci.responses as Record<string, string>
-      if (ci.form_type === 'B') entry.B = ci.responses as Record<string, string>
-    }
-    for (const [wk, pair] of byWeek) {
-      if (pair.A && pair.B && recentPairs.length < 2) {
-        recentPairs.push({ weekNumber: wk, formA: pair.A, formB: pair.B })
-      }
-    }
-  }
-
-  const currentPair: WeeklyCheckInPair = {
-    weekNumber,
-    formA: formAResponses,
-    formB: formBResponses,
-  }
-
-  const message = await anthropic.messages.create({
-    model: AI_MODELS.clinical,
-    max_tokens: 2000,
-    system: withTemporalContext(buildCFWSSystemPrompt()),
-    messages: [{ role: 'user', content: buildCFWSUserPrompt(client.name, currentPair, recentPairs) }],
-  })
-
-  const content = (message.content.find(b => b.type === 'text') ?? message.content[0])
-  if (content.type !== 'text') return
-
-  const jsonText = extractFirstJsonObject(content.text)
-  if (!jsonText) return
-
-  const cfwsRaw = JSON.parse(jsonText)
-  const cfwsData = stripEmDashes(cfwsRaw)
-
-  // Archive any existing CFWS for this week (in case of regeneration)
-  await admin
-    .from('cfws')
-    .update({ is_archived: true })
-    .eq('client_id', client.id)
-    .eq('week_number', weekNumber)
-
-  await admin.from('cfws').insert({
-    client_id: client.id,
-    week_number: weekNumber,
-    rolling_window_weeks: [weekNumber, ...recentPairs.map(p => p.weekNumber)],
-    ...(cfwsData as Record<string, unknown>),
-  })
-}
-
 async function writeMergedReviews(
   admin: ReturnType<typeof createAdminClient>,
   clientId: string,
@@ -335,11 +258,3 @@ async function writeMergedReviews(
   }
 }
 
-function stripEmDashes(obj: unknown): unknown {
-  if (typeof obj === 'string') return obj.replace(/\s*—\s*/g, ', ')
-  if (Array.isArray(obj)) return obj.map(stripEmDashes)
-  if (obj && typeof obj === 'object') {
-    return Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, stripEmDashes(v)]))
-  }
-  return obj
-}
