@@ -6,6 +6,9 @@ import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 import { ONLINE_PACKAGE_VALUES, IN_PERSON_PACKAGE_VALUES, TWO_SESSION_PACKAGE_VALUES } from '@/lib/coaching-packages'
 import { PageHeader, Btn, EmptyState, MONO_FONT, accentColour } from '@/components/dashboard/ui'
 import { evaluateReadiness, type ReadinessReport } from '@/lib/readiness-monitor'
+import ReassessmentQueue from '@/components/reassessment-queue'
+import { loadOpenTriggersWithClients } from '@/lib/reassessment-digest'
+import { REASON_LABEL, OVERDUE_AFTER_DAYS } from '@/lib/reassessment-triggers'
 import { evaluateRpeCreep } from '@/lib/rpe-creep-monitor'
 import { currentBlockWeek } from '@/lib/workout-logging'
 
@@ -132,6 +135,10 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     return { ...client, daysUntilStart, weekNumber, latestCffs, latestCfws, hasFormA, hasFormB, rebuildTraining: rebuildTrainingIds.has(client.id), rebuildNutrition: rebuildNutritionIds.has(client.id), upgradeCandidate, readiness }
   }))
 
+  // Roster-level reassessment queue. This is what the Monday digest links to:
+  // the per-client panel only helps once you have already opened that client.
+  const openTriggers = await loadOpenTriggersWithClients(supabase)
+
   const flaggedCount = clientsProcessed.filter(c => c.latestCffs?.reassessment_flagged).length
   const upgradeCandidateCount = clientsProcessed.filter(c => c.upgradeCandidate).length
   const regressionCount = clientsProcessed.filter(c => c.readiness?.status === 'regression').length
@@ -162,6 +169,12 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
             New Client
           </Btn>
         }
+      />
+
+      <ReassessmentQueue
+        rows={openTriggers}
+        reasonLabels={REASON_LABEL}
+        overdueAfterDays={OVERDUE_AFTER_DAYS}
       />
 
       {/* Filters */}

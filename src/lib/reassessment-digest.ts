@@ -26,6 +26,8 @@ import type { ReassessmentReason } from '@/lib/readiness-monitor'
 
 export interface DigestRow extends ReassessmentTriggerRow {
   client_name: string
+  /** Present so the queue can send without a second lookup. */
+  client_email?: string | null
 }
 
 export interface DigestResult {
@@ -116,7 +118,7 @@ export function buildReassessmentDigest(rows: DigestRow[], now = new Date()): Di
 export async function loadOpenTriggersWithClients(admin: SupabaseClient): Promise<DigestRow[]> {
   const { data, error } = await admin
     .from('reassessment_triggers')
-    .select('*, clients!inner(name, ended_at, frozen_at)')
+    .select('*, clients!inner(name, email, ended_at, frozen_at)')
     .eq('status', 'open')
     .order('fired_at', { ascending: false })
 
@@ -133,8 +135,12 @@ export async function loadOpenTriggersWithClients(admin: SupabaseClient): Promis
       return !c?.ended_at && !c?.frozen_at
     })
     .map((r: Record<string, unknown>) => {
-      const c = r.clients as { name?: string } | null
+      const c = r.clients as { name?: string; email?: string | null } | null
       const { clients: _clients, ...rest } = r as Record<string, unknown> & { clients?: unknown }
-      return { ...(rest as unknown as ReassessmentTriggerRow), client_name: c?.name ?? 'Unknown client' }
+      return {
+        ...(rest as unknown as ReassessmentTriggerRow),
+        client_name: c?.name ?? 'Unknown client',
+        client_email: c?.email ?? null,
+      }
     })
 }
