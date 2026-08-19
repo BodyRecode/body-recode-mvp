@@ -7,6 +7,7 @@ import { darkEmailSignature } from '@/lib/email-signature'
 import { fromCoach, fromBrand, darkEmailShell, emailUrlFallback } from '@/lib/email-shell'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { writeRecoverySignalBlock, evaluateRouterAfterCheckin } from '@/lib/recovery-ingest'
+import { syncReassessmentTriggers } from '@/lib/reassessment-triggers'
 import { extractTrainingReview, extractNutritionReview, stripReviewKeys } from '@/lib/weekly-checkin-questions'
 import { appUrl } from '@/lib/app-url'
 import { extractFirstJsonObject } from '@/lib/extract-json'
@@ -137,6 +138,14 @@ export async function POST(request: NextRequest) {
     // only writes a shadow audit row to recovery_adjustments.
     evaluateRouterAfterCheckin(admin, clientId).catch(err =>
       console.error('[recovery] router evaluation error:', err),
+    )
+
+    // Persist any reassessment triggers the new CFWS fires. Until this existed the
+    // thresholds were computed and rendered but nothing recorded them, so acting on
+    // a regression depended on a coach happening to look at the dashboard.
+    // Idempotent: deduped on (client, reason, CFWS).
+    syncReassessmentTriggers(admin, clientId).catch(err =>
+      console.error('[reassessment-triggers] sync error:', err),
     )
   }
 

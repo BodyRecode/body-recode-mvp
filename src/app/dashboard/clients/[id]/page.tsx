@@ -22,6 +22,8 @@ import CopyLinkButton from './copy-link-button'
 import IssueLoginCodeButton from './issue-login-code-button'
 import SendEmailButton from '@/components/send-email-button'
 import RegenerateCFFSButton from '@/components/regenerate-cffs-button'
+import ReassessmentTriggersPanel from '@/components/reassessment-triggers-panel'
+import { getOpenTriggers, REASON_LABEL, OVERDUE_AFTER_DAYS } from '@/lib/reassessment-triggers'
 import ClientReadingPanel from './client-reading-panel'
 import MedicationsEditor from './medications-editor'
 import DietaryConsumptionEditor from './dietary-consumption-editor'
@@ -291,6 +293,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         rpeCreep,
       })
     : null
+
+  // Open reassessment triggers. Persisted by syncReassessmentTriggers on check-in
+  // submit and by the Monday digest cron, so this is a read, not a recompute.
+  const openTriggers = await getOpenTriggers(admin, id)
 
   // Recovery mode + recoverySnapshot/blockProgress are resolved in the batch above.
   const recoveryMode = resolveRouterMode()
@@ -1302,6 +1308,16 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               <p className="mt-1.5 text-xs text-[#999999]">Log a workout on {(client.name ?? 'the client').split(' ')[0]}&apos;s behalf when you train them in person. It appears in their portal too.</p>
             </div>
           )}
+
+          {/* Open reassessment triggers. Sits above the interpretive panels
+              because it is the only block on this page that represents unfinished
+              work: each item needs a decision before it leaves the screen. */}
+          <ReassessmentTriggersPanel
+            triggers={openTriggers}
+            clientEmail={client.email}
+            reasonLabels={REASON_LABEL}
+            overdueAfterDays={OVERDUE_AFTER_DAYS}
+          />
 
           {/* Recovery Router (Phase 2 / observe-only) */}
           <RecoveryRouterPanel snapshot={recoverySnapshot} mode={recoveryMode} />

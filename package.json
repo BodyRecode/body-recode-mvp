@@ -20,7 +20,8 @@
     "test:anthro": "npx tsx scripts/test-anthropometry-plausibility.ts",
     "test:reading-lint": "npx tsx scripts/test-reading-lint.ts",
     "send:vicki-closeout": "set -a && source .env.local && set +a && npx tsx scripts/send-vicki-closeout.ts",
-    "test:pdf-token": "npx tsx scripts/test-pdf-access-token.ts"
+    "test:pdf-token": "npx tsx scripts/test-pdf-access-token.ts",
+    "test:reassessment": "npx tsx scripts/test-reassessment-triggers.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.79.0",

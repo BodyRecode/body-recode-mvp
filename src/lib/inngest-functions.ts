@@ -2727,3 +2727,79 @@ export const dormantLeadReactivationFunction = inngest.createFunction(
     return { leadId, completed: true }
   },
 )
+
+// ── Reassessment digest (weekly cron) ───────────────────────────────
+// Monday 07:00 Brisbane = 21:00 UTC Sunday. The check-in window closes Sunday
+// 6:30pm Brisbane and the CFWS generates on submit, so every trigger for the
+// week exists by then.
+//
+// Also re-syncs triggers for every active client first, which is what catches
+// the time-based reasons (block_end, twelve_week_cap). Those do not depend on a
+// check-in, so nothing else would ever fire them.
+export const reassessmentDigestCron = inngest.createFunction(
+  {
+    id: 'reassessment-digest',
+    name: 'Reassessment digest · Monday morning',
+    retries: 2,
+    triggers: [{ cron: '0 21 * * 0' }], // 21:00 UTC Sunday = 07:00 Monday Brisbane
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async ({ step }: { step: any }) => {
+    const { syncReassessmentTriggers } = await import('@/lib/reassessment-triggers')
+    const { buildReassessmentDigest, loadOpenTriggersWithClients } = await import('@/lib/reassessment-digest')
+    const { fromBrand, COACH_BCC } = await import('@/lib/email-shell')
+
+    const admin = createAdminClient()
+
+    // Re-sync every live client so time-based triggers land.
+    const synced = await step.run('sync-triggers', async () => {
+      const { data: clients } = await admin
+        .from('clients')
+        .select('id')
+        .not('coaching_started_at', 'is', null)
+        .is('ended_at', null)
+        .is('frozen_at', null)
+      let created = 0
+      for (const c of clients ?? []) {
+        const r = await syncReassessmentTriggers(admin, c.id).catch(() => ({ created: 0 }))
+        created += r.created
+      }
+      return { clients: clients?.length ?? 0, created }
+    })
+
+    const digest = await step.run('build-digest', async () => {
+      const rows = await loadOpenTriggersWithClients(admin)
+      return buildReassessmentDigest(rows)
+    })
+
+    // Silent on a clean week. An empty digest every Monday teaches you to ignore it.
+    if (!digest) return { synced, sent: false, reason: 'no open triggers' }
+
+    await step.run('send-digest', async () => {
+      const to = COACH_BCC
+      if (!to.length) return { skipped: 'no coach address' }
+      const resend = new Resend(process.env.RESEND_API_KEY)
+      const { error } = await resend.emails.send({
+        from: fromBrand(),
+        to,
+        subject: digest.subject,
+        html: digest.html,
+      })
+      if (error) throw new Error(`digest send failed: ${error.message}`)
+      return { sent: true }
+    })
+
+    // Stamp so a still-open trigger does not reappear as "new" next week. It
+    // comes back only once it crosses the overdue threshold.
+    await step.run('stamp-notified', async () => {
+      await admin
+        .from('reassessment_triggers')
+        .update({ notified_at: new Date().toISOString() })
+        .in('id', digest.triggerIds)
+        .is('notified_at', null)
+      return { stamped: digest.triggerIds.length }
+    })
+
+    return { synced, sent: true, newCount: digest.newCount, overdueCount: digest.overdueCount }
+  }
+)
