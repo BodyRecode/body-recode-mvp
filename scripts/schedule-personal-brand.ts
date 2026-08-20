@@ -10,6 +10,12 @@
 //   - anything referencing the AI Co-Founder Method, retired 20 Aug.
 //   - prelaunch-type posts, same reason.
 //   - anything still pointing at a live-render graphic Meta cannot fetch.
+//   - photo cards. Kade, 20 Aug: "dont use colour images of me either".
+//   - the BARE card variant: a rule and a headline, no eyebrow label, no
+//     subline. Kade flagged it on sight. It reads unfinished beside the
+//     labelled cards, and it is also where the weakest copy hides, because a
+//     line with no label has to carry the whole post on its own.
+//   - repeats. "The body is not broken" was scheduled THREE times in six weeks.
 //   - video-type posts with no video_url. All six of these are scripts with a
 //     cover image and no footage, two of them written in May and never filmed.
 //     Left unguarded, the publisher would push the cover out as a static card,
@@ -27,6 +33,7 @@
 //   npx tsx --env-file=.env.local scripts/schedule-personal-brand.ts
 //   npx tsx --env-file=.env.local scripts/schedule-personal-brand.ts --commit
 import { createClient } from '@supabase/supabase-js'
+import { readFileSync } from 'node:fs'
 
 const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
 const commit = process.argv.includes('--commit')
@@ -40,6 +47,14 @@ const DAYS = [1, 3, 5, 0]          // Mon, Wed, Fri, Sun
 
 // Coaching-flavoured types lead, per the 4/2/2/2 pillar split.
 const COACHING = new Set(['coach', 'pattern'])
+
+// Written by scripts/audit-personal-cards.py, which measures each graphic
+// rather than trusting its filename.
+const CARD_AUDIT: Record<string, { photo: boolean; labelled: boolean }> =
+  JSON.parse(readFileSync('scripts/personal-card-audit.json', 'utf8'))
+
+/** Strip punctuation and case so near-identical headlines collapse together. */
+const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, ' ').trim()
 
 function nextDates(count: number): string[] {
   const out: string[] = []
@@ -69,6 +84,20 @@ async function main() {
     // A reel with no footage is a cover image. Publishing it would put a video
     // thumbnail on the feed as though it were a card.
     if (p.type === 'video' && !p.video_url?.trim()) return false
+    // Judge the card by what is actually in the image, not its filename.
+    const first = p.graphic.split(',')[0].trim()
+    const card = CARD_AUDIT[first]
+    if (card?.photo) return false
+    if (card && !card.labelled) return false
+    return true
+  })
+
+  // One headline, once. Keep the earliest-written version of any repeat.
+  const seen = new Set<string>()
+  const deduped = usable.filter(p => {
+    const key = norm((p.caption ?? '').split('\n')[0] || p.title || '')
+    if (!key || seen.has(key)) return false
+    seen.add(key)
     return true
   })
 
@@ -78,8 +107,8 @@ async function main() {
 
   // Carousels first. There are only two and they are the best dwell-time format
   // we own, so they must not sink to the bottom of a date-ordered list again.
-  const carousels = usable.filter(p => slideCount(p.graphic) > 1)
-  const singles = usable.filter(p => slideCount(p.graphic) <= 1)
+  const carousels = deduped.filter(p => slideCount(p.graphic) > 1)
+  const singles = deduped.filter(p => slideCount(p.graphic) <= 1)
   const coaching = singles.filter(p => COACHING.has(p.type ?? ''))
   const other = singles.filter(p => !COACHING.has(p.type ?? ''))
 
@@ -95,7 +124,7 @@ async function main() {
     picked.push(pool.shift()!)
   }
 
-  console.log(`\n${all.length} unposted  ->  ${usable.length} usable  ->  scheduling ${picked.length} over ${WEEKS} weeks\n`)
+  console.log(`\n${all.length} unposted  ->  ${usable.length} pass the card rules  ->  ${deduped.length} after dedupe  ->  scheduling ${picked.length} over ${WEEKS} weeks\n`)
   console.log('date        day  time   format       type        title')
   console.log('-'.repeat(86))
 
@@ -112,7 +141,8 @@ async function main() {
 
   if (!commit) {
     console.log(`\nDRY RUN. Nothing written. Re-run with --commit to schedule.`)
-    console.log(`Leftover in the bank after this: ${usable.length - picked.length} posts.\n`)
+    console.log(`Leftover in the bank after this: ${deduped.length - picked.length} posts.`)
+    console.log(`\nNOTHING WRITTEN. Review the sheet first, then re-run with --commit.\n`)
     return
   }
 
@@ -123,7 +153,7 @@ async function main() {
     if (error) console.log(`  FAILED ${u.date}: ${error.message}`)
   }
   console.log(`\nScheduled ${updates.length} posts. First goes out ${updates[0].date} at ${POST_TIME} Brisbane.`)
-  console.log(`${usable.length - picked.length} posts left in the bank.`)
+  console.log(`${deduped.length - picked.length} posts left in the bank.`)
   console.log(`\nTo stop any of them: clear scheduled_publish_at on the row in the Content Calendar.`)
 }
 
