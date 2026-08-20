@@ -68,8 +68,14 @@ const RETIRED = /co-?founder|aicm/i
 const POST_TIME = '07:00'          // Brisbane
 const DAYS = [1, 3, 5, 0]          // Mon, Wed, Fri, Sun
 
-// Coaching-flavoured types lead, per the 4/2/2/2 pillar split.
-const COACHING = new Set(['coach', 'pattern'])
+// Pillar weighting, v3.0 (20 Aug): 4 body read / 3 thinking / 2 build / 1 origin.
+// The body read leads because it is closest to what Kade sells. ORIGIN - the
+// three rebuilds - drops to one in ten and changes job: it is why he thinks this
+// way, not a recurring theme. It used to be a quarter of the feed and it pointed
+// backwards at him rather than at the reader.
+const BODY_READ = new Set(['coach', 'pattern'])
+const ORIGIN = /rebuil|identity|discharg|walked away|20[- ]year relationship|became someone new|from scratch|\bat 21\b|would he be proud|my father|the army|soldier/i
+const ORIGIN_MAX_SHARE = 0.1
 
 // Written by scripts/audit-personal-cards.py, which measures each graphic
 // rather than trusting its filename.
@@ -130,17 +136,31 @@ async function main() {
 
   const slots = nextDates(WEEKS * DAYS.length)
 
+  const isOrigin = (p: typeof deduped[0]) => ORIGIN.test(`${p.title ?? ''} ${p.caption ?? ''}`)
+
+  // Origin is capped BEFORE picking. Capping inside the loop leaked: when a
+  // treatment pool had no non-origin alternative left it fell through and
+  // scheduled the origin post anyway, which put four rebuild posts in sixteen
+  // against a one-in-ten target.
+  const originCap = Math.max(1, Math.round(slots.length * ORIGIN_MAX_SHARE))
+  const originKeep = deduped.filter(isOrigin).slice(0, originCap)
+  const trimmed = deduped.filter(p => !isOrigin(p) || originKeep.includes(p))
+  console.log(`origin posts: ${deduped.filter(isOrigin).length} available, capped to ${originKeep.length} (1 in 10)`)
+
   const layoutOf = (p: typeof deduped[0]) =>
     slideCount(p.graphic) > 1 ? 'carousel' : (CARD_AUDIT[(p.graphic ?? '').split(',')[0].trim()]?.layout ?? 'card')
 
   const pool: Record<string, typeof deduped> = {
-    carousel: deduped.filter(p => layoutOf(p) === 'carousel'),
-    'full-bleed': deduped.filter(p => layoutOf(p) === 'full-bleed'),
-    solid: deduped.filter(p => layoutOf(p) === 'solid'),
-    card: deduped.filter(p => layoutOf(p) === 'card'),
+    carousel: trimmed.filter(p => layoutOf(p) === 'carousel'),
+    'full-bleed': trimmed.filter(p => layoutOf(p) === 'full-bleed'),
+    solid: trimmed.filter(p => layoutOf(p) === 'solid'),
+    card: trimmed.filter(p => layoutOf(p) === 'card'),
   }
-  // Within the clay cards, keep coaching leading per the pillar split.
-  pool.card.sort((a, b) => Number(COACHING.has(b.type ?? '')) - Number(COACHING.has(a.type ?? '')))
+  for (const k of Object.keys(pool)) {
+    pool[k].sort((a, b) =>
+      Number(isOrigin(a)) - Number(isOrigin(b)) ||
+      Number(BODY_READ.has(b.type ?? '')) - Number(BODY_READ.has(a.type ?? '')))
+  }
 
   // Mon / Wed / Fri / Sun, in the order nextDates() returns them.
   // Two photo slots a week, not one. Kade, 20 Aug: "can we use more images".
