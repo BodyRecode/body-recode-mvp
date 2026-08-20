@@ -906,13 +906,17 @@ ${darkEmailSignature()}
         lead_id: resolved.leadId,
         pattern: pattern ?? 'pending',
         pattern_source: patternSource ?? 'assessment',
-        // A Challenge pattern is confirmed by the 14-day read, and a 'confirmed'
-        // pattern was already signed off by the buyer → auto-confirm both.
-        // A scorecard pattern is preliminary → leave unconfirmed so the portal
-        // shows a "confirm or adjust" step before the programme opens.
-        pattern_confirmed_at: patternSource === 'challenge' || patternSource === 'confirmed'
-          ? new Date().toISOString()
-          : null,
+        // Only a pattern the buyer has ALREADY signed off in a portal arrives
+        // confirmed. Everything else — scorecard and Challenge alike — shows the
+        // "confirm or adjust" step before the programme opens.
+        //
+        // The Challenge read used to auto-confirm on the grounds that 14 days of
+        // data settles it. Dee (2026-08-20) is why it no longer does: her Day-14
+        // quiz said Insulin-Drift, her bloods and history said cortisol, and she
+        // had to email to get it changed. She was assertive enough to ask. The
+        // cost of one extra click is far below the cost of a buyer who isn't
+        // running six weeks of the wrong programme in silence.
+        pattern_confirmed_at: patternSource === 'confirmed' ? new Date().toISOString() : null,
         stripe_payment_intent_id: session.payment_intent as string ?? null,
       })
       .select('token')

@@ -479,9 +479,12 @@ function PatternConfirm({ pattern, source, token, firstName, onConfirm, onAdjust
   const intro = fromChallenge
     ? 'From your 14-Day Challenge, your biological pattern came back as'
     : 'Based on your Body State Scorecard, your biological pattern looks like'
+  // Both branches have to leave the door genuinely open. The Challenge read is
+  // the strongest signal in the funnel, but it is still a read, and stating it
+  // as settled is what stopped buyers correcting it before Week 1.
   const note = fromChallenge
-    ? 'This was confirmed across your full 14-day read, and your programme is built around it.'
-    : 'This is a strong preliminary read from your scorecard. Confirm to start, or choose a different pattern if it does not fit what you are experiencing.'
+    ? 'That came from your full 14-day read, which is the strongest signal we have on you. If your bloods, your history, or your own sense of it point somewhere else, change it now rather than six weeks in.'
+    : 'This is a preliminary read from your scorecard. Confirm to start, or choose a different pattern if it does not fit what you are experiencing.'
 
   async function confirm() {
     setSubmitting(true)
