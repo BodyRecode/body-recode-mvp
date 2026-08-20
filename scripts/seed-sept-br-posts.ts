@@ -27,7 +27,12 @@ async function main(){
   const commit = process.argv.includes('--commit')
   for (const [date, pillar, type, title, caption] of POSTS) {
     const slug = date.replace(/-/g,'-')
-    const graphic = `/calendar/br-${date}_${pillar === 'neurowellness' ? 'neuro' : pillar}.png`
+    // Two of the ten are carousels; their graphic is the comma-separated slides.
+    const base = `br-${date}_${pillar === 'neurowellness' ? 'neuro' : pillar}`
+    const CAROUSELS: Record<string, number> = { '2026-09-08': 5, '2026-09-12': 4 }
+    const graphic = CAROUSELS[date]
+      ? Array.from({ length: CAROUSELS[date] }, (_, n) => `/calendar/${base}-s${n + 1}.png`).join(',')
+      : `/calendar/${base}.png`
     if (!commit) { console.log(`${date}  ${String(pillar).padEnd(14)} ${title}`); continue }
     const { data: existing } = await db.from('calendar_posts').select('id')
       .eq('brand','body_recode').eq('platform','instagram').eq('date',date).eq('type',type).limit(1)
