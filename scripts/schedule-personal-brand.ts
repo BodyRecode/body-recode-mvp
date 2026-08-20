@@ -182,6 +182,37 @@ async function main() {
     usedFormat.push(take)
   }
 
+  // ── coverage, on the PROPOSED set ───────────────────────────────────────
+  // Same discipline as @body_recode_: test the words in the post, not the
+  // intent. The personal pillars are Body Read 4 / Thinking 3 / Build 2 /
+  // Origin 1 per ten, and the body-read slots are where neurowellness and
+  // readiness have to actually land. A post can read exactly like this brand
+  // and name neither.
+  const NEURO = /\bsleep|\bstress|regulat|nervous system|recover|wired|3am|waking|rested|protection mode/i
+  const READY = /readiness|capacity|absorb|take the load|\bready\b|transitioning|depleted|what your body can/i
+  const BUILD = /software|platform|built my own|coding|the system i/i
+  const FEM   = /\bwomen\b|\bwoman\b|\bshe\b|\bher\b/i
+  const JARGON = /floor sleep|score the floor|body state|capacity is fine|regulation is gone|n=\d+/i
+  const txt = (p: typeof picked[0]) => `${p.title ?? ''} ${p.caption ?? ''}`
+  const count = (re: RegExp) => picked.filter(p => re.test(txt(p))).length
+  const per10 = (n: number) => (10 * n / Math.max(picked.length, 1)).toFixed(1)
+
+  const cov: Array<[string, number, string, string]> = [
+    ['neurowellness', count(NEURO), '3+', 'the biggest lane, and the spine of the ad round'],
+    ['readiness',     count(READY), '1+', 'never reached the BR feed either until yesterday'],
+    ['the build',     count(BUILD), '2+', 'the platform story, his and nobody else\'s'],
+    ['origin',        picked.filter(isOrigin).length, '<=2', 'context, not a theme'],
+    ['names women',   count(FEM),   `${picked.length}`, '93% female - every post'],
+  ]
+  console.log('\nCOVERAGE of the proposed set')
+  for (const [k, n, target, why] of cov) {
+    const want = target.startsWith('<=') ? n <= Number(target.slice(2)) : n >= Number(target.replace('+', ''))
+    console.log(`  ${want ? 'PASS' : 'FAIL'}  ${k.padEnd(15)} ${String(n).padStart(2)}/${target.padEnd(4)} (${per10(n)} per ten)  ${why}`)
+  }
+  const jg = picked.filter(p => JARGON.test(txt(p)))
+  console.log(`  ${jg.length ? 'FAIL' : 'PASS'}  ${'no jargon'.padEnd(15)} ${jg.length} found`)
+  for (const p of jg) console.log(`        "${txt(p).match(JARGON)?.[0]}"  ${String(p.title).slice(0, 40)}`)
+
   console.log(`\n${all.length} unposted  ->  ${usable.length} pass the card rules  ->  ${deduped.length} after dedupe  ->  scheduling ${picked.length} over ${WEEKS} weeks\n`)
   console.log('date        day  time   format       type        title')
   console.log('-'.repeat(86))
