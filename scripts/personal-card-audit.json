@@ -1,318 +1,397 @@
 {
 "/calendar/kade-2026-07-18_body-misread.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/kade-2026-07-19_thinking-build-broadcast.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/kade-2026-07-21_rebuild-structure.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/kade-2026-07-23_ai-louder.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/kade-2026-07-25_body-train-state.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-04-25_post-1-arrival.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-04-26_post-2-the-problem.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-04-27_post-3-rebuild-framing.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-04-28_post-4-the-system.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-04-29_post-5-body-recode-connection.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-04-30_arrival-20-years-helping-people-understa.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-05-01_body-not-broken-misread.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-05-02_aicm-story-ai-doesn-t-make-you-smarter-i.png": {
 "photo": true,
-"labelled": false
+"labelled": false,
+"layout": "full-bleed"
 },
 "/calendar/pb-2026-05-02_contrarian-the-problem-is-not-effort.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-05-03_thinking-clarity-problem.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-05-04_rebuild-ive-rebuilt-my-identity-three-ti.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-05-05_ai-thinking-louder.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-05-05_aicm-story-the-difference-between-using-.png": {
 "photo": true,
-"labelled": false
+"labelled": false,
+"layout": "full-bleed"
 },
 "/calendar/pb-2026-05-06_system-i-stopped-writing-programs.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-05-07_identity-rebuilding.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-05-08_aicm-story-pause-reflect-document.png": {
 "photo": true,
-"labelled": false
+"labelled": false,
+"layout": "full-bleed"
 },
 "/calendar/pb-2026-05-08_body-can-t-out-train-nervous-system.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-05-09_connection-body-recode-is-the-result-of-.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-05-10_thinking-interpretation-vs-prescription.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-05-11_aicm-story-i-built-a-full-coaching-platf.png": {
 "photo": true,
-"labelled": false
+"labelled": false,
+"layout": "full-bleed"
 },
 "/calendar/pb-2026-05-12_ai-built-my-own-software.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-05-13_aicm-story-most-coaches-rent-software-i-.png": {
 "photo": true,
-"labelled": false
+"labelled": false,
+"layout": "full-bleed"
 },
 "/calendar/pb-2026-05-14_identity-identity-determines-direction.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-05-15_body-three-states-framework.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-05-16_aicm-story-give-ai-a-role-not-a-question.png": {
 "photo": true,
-"labelled": false
+"labelled": false,
+"layout": "full-bleed"
 },
 "/calendar/pb-2026-05-17_thinking-pause-reflect-document.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-05-19_ai-co-founder-vs-tool.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-05-20_aicm-story-build-workflows-not-prompts.png": {
 "photo": true,
-"labelled": false
+"labelled": false,
+"layout": "full-bleed"
 },
 "/calendar/pb-2026-05-21_identity-20-year-relationship.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-05-22_reel-why-your-body-stopped-responding.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-05-24_thinking-pattern-recognition.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-05-26_ai-don-t-need-to-code.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-05-28_reel-three-rebuilds.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-06-08_i-ve-spent-20-years-helping-people-under.png": {
 "photo": true,
-"labelled": false
+"labelled": false,
+"layout": "full-bleed"
 },
 "/calendar/pb-2026-06-10_at-21-a-doctor-ended-the-only-future-i-d.png": {
 "photo": true,
-"labelled": false
+"labelled": false,
+"layout": "full-bleed"
 },
 "/calendar/pb-2026-06-12_you-can-t-out-train-a-nervous-system-in-.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-06-14_three-times-i-ve-had-to-become-someone-n.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-06-15_the-reason-most-people-stay-stuck-isn-t-.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-06-17_three-states-one-body-completely-differe-s1.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-06-17_three-states-one-body-completely-differe-s2.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-06-17_three-states-one-body-completely-differe-s3.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-06-17_three-states-one-body-completely-differe-s4.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-06-17_three-states-one-body-completely-differe-s5.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-06-19_most-people-don-t-have-a-discipline-prob.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-06-21_i-helped-build-gyms-across-the-country-t.png": {
 "photo": true,
-"labelled": false
+"labelled": false,
+"layout": "split"
 },
 "/calendar/pb-2026-06-22_i-built-my-own-coaching-software-i-m-not.png": {
 "photo": true,
-"labelled": false
+"labelled": false,
+"layout": "full-bleed"
 },
 "/calendar/pb-2026-06-24_the-body-is-not-broken-it-is-being-misre.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-06-26_ai-doesn-t-make-you-smarter-it-makes-you.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-06-28_i-walked-away-from-a-20-year-relationshi.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-06-29_most-coaches-rent-their-software-i-built.png": {
 "photo": true,
-"labelled": false
+"labelled": false,
+"layout": "split"
 },
 "/calendar/pb-2026-07-01_rebuilding-is-not-failure-it-s-how-you-b.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-07-03_for-years-i-measured-everything-against-.png": {
 "photo": true,
-"labelled": false
+"labelled": false,
+"layout": "split"
 },
 "/calendar/pb-2026-07-04_after-20-years-of-coaching-this-is-what-.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-07-05_interpretation-vs-prescription-the-diffe-s1.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-07-05_interpretation-vs-prescription-the-diffe-s2.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-07-05_interpretation-vs-prescription-the-diffe-s3.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-07-05_interpretation-vs-prescription-the-diffe-s4.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-07-05_interpretation-vs-prescription-the-diffe-s5.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-07-06_why-your-body-stopped-responding-and-it-.png": {
 "photo": true,
-"labelled": false
+"labelled": false,
+"layout": "full-bleed"
 },
 "/calendar/pb-2026-07-08_the-read-comes-before-the-prescription-e.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-07-11_most-plans-were-written-for-the-body-you.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-07-12_tomorrow-the-14-day-body-decode-opens.png": {
 "photo": false,
-"labelled": false
+"labelled": false,
+"layout": "card"
 },
 "/calendar/pb-2026-07-13_the-reason-most-people-stay-stuck-isn-t-.png": {
 "photo": true,
-"labelled": false
+"labelled": false,
+"layout": "split"
 },
 "/calendar/pb-2026-07-20_i-built-my-own-coaching-platform-no-codi.png": {
 "photo": true,
-"labelled": false
+"labelled": false,
+"layout": "full-bleed"
 },
 "/calendar/pb-2026-07-22_personal-ai-leverage-engine-to-infrastru.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-07-27_i-ve-rebuilt-my-identity-three-times-eac.png": {
 "photo": true,
-"labelled": false
+"labelled": false,
+"layout": "split"
 },
 "/calendar/pb-2026-07-28_personal-why-the-blueprint-is-not-a-gene.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-07-29_personal-ai-leverage-live-case-study.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-07-30_personal-stories-from-the-first-people-t.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-08-01_personal-the-leverage-of-reading-before-.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-08-04_personal-what-the-first-people-through-t.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-08-05_personal-ai-leverage-one-standard.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-08-06_personal-mid-blueprint-case-study-grante.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 },
 "/calendar/pb-2026-08-08_personal-read-then-correct-in-my-own-tra.png": {
 "photo": false,
-"labelled": true
+"labelled": true,
+"layout": "card"
 }
 }

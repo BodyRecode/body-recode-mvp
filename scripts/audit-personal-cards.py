@@ -5,6 +5,7 @@ Two rules from Kade, 20 Aug 2026, both spotted by eye the moment he saw a sheet:
 
   "dont use colour images of me either"   -> photo cards are out
   "i dont like the card used on the 15th" -> the bare variant is out
+  "i like the whole images card"          -> full-bleed photos, not the split
 
 The bare variant is a rule and a headline with no eyebrow label and no subline.
 It reads unfinished next to the labelled cards, and it is also where the weakest
@@ -34,7 +35,12 @@ def classify(path):
     terra = sum(1 for (r, g, b) in px
                 if abs(r - TERRA[0]) < 40 and abs(g - TERRA[1]) < 40 and abs(b - TERRA[2]) < 40)
     dark = sum(1 for (r, g, b) in px if r < 90 and g < 90 and b < 90) / n
-    return {'photo': dark > 0.25, 'labelled': terra >= 300}
+    # Two photo layouts exist. Full-bleed puts the image across the whole frame
+    # with the type over it; split gives half the card to a clay panel. Kade
+    # wants full-bleed. Measured separation is clean: full-bleed sits at 92-98%
+    # dark, split at 36-53%.
+    layout = 'full-bleed' if dark > 0.80 else ('split' if dark > 0.25 else 'card')
+    return {'photo': dark > 0.25, 'labelled': terra >= 300, 'layout': layout}
 
 result = {}
 for p in sorted(glob.glob('public/calendar/pb-*.png') + glob.glob('public/calendar/kade-*.png')):
@@ -44,9 +50,11 @@ for p in sorted(glob.glob('public/calendar/pb-*.png') + glob.glob('public/calend
         print(f'  skip {p}: {e}')
 
 json.dump(result, open(OUT, 'w'), indent=0)
-photo = sum(1 for v in result.values() if v['photo'])
+full = sum(1 for v in result.values() if v['layout'] == 'full-bleed')
+split = sum(1 for v in result.values() if v['layout'] == 'split')
 bare = sum(1 for v in result.values() if not v['labelled'] and not v['photo'])
 print(f'{len(result)} cards audited -> {OUT}')
-print(f'  photo cards (excluded):  {photo}')
-print(f'  bare, no label (excluded): {bare}')
-print(f'  usable labelled cards:   {len(result) - photo - bare}')
+print(f'  full-bleed photos (wanted): {full}')
+print(f'  split photos (excluded):    {split}')
+print(f'  bare, no label (excluded):  {bare}')
+print(f'  labelled clay cards:        {len(result) - full - split - bare}')

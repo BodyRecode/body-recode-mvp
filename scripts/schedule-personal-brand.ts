@@ -15,6 +15,9 @@
 //     outright, which was the wrong fix and left the feed as a flat wall of
 //     cream. They are greyscale now (scripts/greyscale-photo-cards.py) and back
 //     in the mix, where they are the only tonal break the feed has.
+//   - SPLIT photo cards. Kade, same day: "i like the whole images card". Two
+//     layouts exist; the split gives half the frame to a clay panel and he wants
+//     the full-bleed one, image across the whole card with the type over it.
 //   - the BARE card variant: a rule and a headline, no eyebrow label, no
 //     subline. Kade flagged it on sight. It reads unfinished beside the
 //     labelled cards, and it is also where the weakest copy hides, because a
@@ -61,7 +64,7 @@ const COACHING = new Set(['coach', 'pattern'])
 
 // Written by scripts/audit-personal-cards.py, which measures each graphic
 // rather than trusting its filename.
-const CARD_AUDIT: Record<string, { photo: boolean; labelled: boolean }> =
+const CARD_AUDIT: Record<string, { photo: boolean; labelled: boolean; layout: string }> =
   JSON.parse(readFileSync('scripts/personal-card-audit.json', 'utf8'))
 
 /** Strip punctuation and case so near-identical headlines collapse together. */
@@ -98,7 +101,9 @@ async function main() {
     // Judge the card by what is actually in the image, not its filename.
     const first = p.graphic.split(',')[0].trim()
     const card = CARD_AUDIT[first]
-    // Photo cards are allowed again now they are greyscale. Bare cards are not.
+    // Greyscale full-bleed photos are wanted. Split-layout photos and bare
+    // clay cards are not.
+    if (card?.layout === 'split') return false
     if (card && !card.photo && !card.labelled) return false
     return true
   })
