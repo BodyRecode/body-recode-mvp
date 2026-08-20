@@ -237,7 +237,7 @@
 "/calendar/pb-2026-06-17_three-states-one-body-completely-differe-s5.png": {
 "photo": false,
 "labelled": true,
-"layout": "card"
+"layout": "solid"
 },
 "/calendar/pb-2026-06-19_most-people-don-t-have-a-discipline-prob.png": {
 "photo": false,
@@ -312,7 +312,7 @@
 "/calendar/pb-2026-07-05_interpretation-vs-prescription-the-diffe-s5.png": {
 "photo": false,
 "labelled": true,
-"layout": "card"
+"layout": "solid"
 },
 "/calendar/pb-2026-07-06_why-your-body-stopped-responding-and-it-.png": {
 "photo": true,
@@ -393,5 +393,50 @@
 "photo": false,
 "labelled": true,
 "layout": "card"
+},
+"/calendar/pbx-photo-for-years-i-measured-everything-against-one-.png": {
+"photo": true,
+"labelled": false,
+"layout": "full-bleed"
+},
+"/calendar/pbx-photo-i-ve-spent-20-years-helping-people-understan.png": {
+"photo": true,
+"labelled": false,
+"layout": "full-bleed"
+},
+"/calendar/pbx-photo-i-walked-away-from-a-20-year-relationship-an.png": {
+"photo": true,
+"labelled": false,
+"layout": "full-bleed"
+},
+"/calendar/pbx-photo-the-reason-most-people-stay-stuck-isn-t-disc.png": {
+"photo": true,
+"labelled": false,
+"layout": "full-bleed"
+},
+"/calendar/pbx-photo-why-your-body-stopped-responding-and-it-s-no.png": {
+"photo": true,
+"labelled": false,
+"layout": "full-bleed"
+},
+"/calendar/pbx-solid-at-21-a-doctor-ended-the-only-future-i-d-pla.png": {
+"photo": false,
+"labelled": true,
+"layout": "solid"
+},
+"/calendar/pbx-solid-most-people-don-t-have-a-discipline-problem-.png": {
+"photo": false,
+"labelled": true,
+"layout": "solid"
+},
+"/calendar/pbx-solid-rebuilding-is-not-failure-it-s-how-you-build.png": {
+"photo": false,
+"labelled": true,
+"layout": "solid"
+},
+"/calendar/pbx-solid-you-can-t-out-train-a-nervous-system-in-prot.png": {
+"photo": false,
+"labelled": true,
+"layout": "solid"
 }
 }

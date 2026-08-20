@@ -28,9 +28,18 @@
 //     Left unguarded, the publisher would push the cover out as a static card,
 //     which is a reel cover masquerading as a post.
 //
-// Carousels are FRONT-LOADED. There are only two in the whole back catalogue and
-// the first pass buried both, producing four weeks of nothing but single cards -
-// exactly the format mix the strategy had just moved away from.
+// COMPOSED TO A FORMAT QUOTA, not picked by pillar and hoped over. Earlier
+// passes selected on pillar weighting and the format mix fell out of whatever
+// happened to be left, which produced four straight weeks of single clay cards
+// against a strategy calling for photos and carousels. The week now has a
+// SHAPE and each slot is filled with the treatment it asks for:
+//
+//   Mon  clay card
+//   Wed  full-bleed greyscale photo
+//   Fri  solid terracotta
+//   Sun  carousel, falling back to a clay card when the two run out
+//
+// Reels replace Wed and Sun from the week of 1 Sep, once filming has happened.
 //
 // Weighting follows the pillar split set in the brand strategy: coaching leads
 // at four in ten. `coach` and `pattern` types carry the coaching angle, so the
@@ -121,23 +130,35 @@ async function main() {
 
   const slots = nextDates(WEEKS * DAYS.length)
 
-  // Carousels first. There are only two and they are the best dwell-time format
-  // we own, so they must not sink to the bottom of a date-ordered list again.
-  const carousels = deduped.filter(p => slideCount(p.graphic) > 1)
-  const singles = deduped.filter(p => slideCount(p.graphic) <= 1)
-  const coaching = singles.filter(p => COACHING.has(p.type ?? ''))
-  const other = singles.filter(p => !COACHING.has(p.type ?? ''))
+  const layoutOf = (p: typeof deduped[0]) =>
+    slideCount(p.graphic) > 1 ? 'carousel' : (CARD_AUDIT[(p.graphic ?? '').split(',')[0].trim()]?.layout ?? 'card')
+
+  const pool: Record<string, typeof deduped> = {
+    carousel: deduped.filter(p => layoutOf(p) === 'carousel'),
+    'full-bleed': deduped.filter(p => layoutOf(p) === 'full-bleed'),
+    solid: deduped.filter(p => layoutOf(p) === 'solid'),
+    card: deduped.filter(p => layoutOf(p) === 'card'),
+  }
+  // Within the clay cards, keep coaching leading per the pillar split.
+  pool.card.sort((a, b) => Number(COACHING.has(b.type ?? '')) - Number(COACHING.has(a.type ?? '')))
+
+  // Mon / Wed / Fri / Sun, in the order nextDates() returns them.
+  const WEEK_SHAPE = ['card', 'full-bleed', 'solid', 'carousel']
+  const FALLBACK: Record<string, string[]> = {
+    carousel: ['full-bleed', 'solid', 'card'],
+    'full-bleed': ['solid', 'card'],
+    solid: ['card', 'full-bleed'],
+    card: ['solid', 'full-bleed'],
+  }
 
   const picked: typeof usable = []
-  // Space the carousels out rather than stacking them: one early, one mid-run.
-  const carouselSlots = new Set([1, Math.floor(slots.length / 2)])
+  const usedFormat: string[] = []
   for (let i = 0; i < slots.length; i++) {
-    if (carouselSlots.has(i) && carousels.length) { picked.push(carousels.shift()!); continue }
-    // 4 coaching : 6 other, per ten
-    const wantCoaching = picked.filter(p => COACHING.has(p.type ?? '')).length / Math.max(picked.length, 1) < 0.4
-    const pool = wantCoaching && coaching.length ? coaching : (other.length ? other : coaching)
-    if (!pool.length) break
-    picked.push(pool.shift()!)
+    const want = WEEK_SHAPE[i % WEEK_SHAPE.length]
+    let take = pool[want]?.length ? want : FALLBACK[want].find(f => pool[f]?.length)
+    if (!take) break
+    picked.push(pool[take].shift()!)
+    usedFormat.push(take)
   }
 
   console.log(`\n${all.length} unposted  ->  ${usable.length} pass the card rules  ->  ${deduped.length} after dedupe  ->  scheduling ${picked.length} over ${WEEKS} weeks\n`)
@@ -150,7 +171,7 @@ async function main() {
     const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][new Date(`${date}T00:00:00`).getDay()]
     const iso = new Date(`${date}T${POST_TIME}:00+10:00`).toISOString()
     const n = slideCount(p.graphic)
-    const fmt = n > 1 ? `CAROUSEL x${n}` : 'card'
+    const fmt = n > 1 ? `CAROUSEL x${n}` : usedFormat[i]
     console.log(`${date}  ${day}  ${POST_TIME}  ${fmt.padEnd(12)} ${String(p.type ?? '').padEnd(10)}  ${String(p.title ?? '').slice(0, 38)}`)
     updates.push({ id: p.id, date, iso })
   })

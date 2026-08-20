@@ -39,11 +39,23 @@ def classify(path):
     # with the type over it; split gives half the card to a clay panel. Kade
     # wants full-bleed. Measured separation is clean: full-bleed sits at 92-98%
     # dark, split at 36-53%.
-    layout = 'full-bleed' if dark > 0.80 else ('split' if dark > 0.25 else 'card')
-    return {'photo': dark > 0.25, 'labelled': terra >= 300, 'layout': layout}
+    # A solid terracotta card is ~98% accent. It is not a photo and not a clay
+    # card; it is the third treatment, and there were none standalone until
+    # 20 Aug 2026.
+    solid = terra / n > 0.5
+    if solid:
+        layout = 'solid'
+    elif dark > 0.80:
+        layout = 'full-bleed'
+    elif dark > 0.25:
+        layout = 'split'
+    else:
+        layout = 'card'
+    return {'photo': dark > 0.25 and not solid, 'labelled': solid or terra >= 300, 'layout': layout}
 
 result = {}
-for p in sorted(glob.glob('public/calendar/pb-*.png') + glob.glob('public/calendar/kade-*.png')):
+for p in sorted(glob.glob('public/calendar/pb-*.png') + glob.glob('public/calendar/kade-*.png')
+                + glob.glob('public/calendar/pbx-*.png')):
     try:
         result['/' + os.path.relpath(p, 'public')] = classify(p)
     except Exception as e:
@@ -51,10 +63,12 @@ for p in sorted(glob.glob('public/calendar/pb-*.png') + glob.glob('public/calend
 
 json.dump(result, open(OUT, 'w'), indent=0)
 full = sum(1 for v in result.values() if v['layout'] == 'full-bleed')
+solid = sum(1 for v in result.values() if v['layout'] == 'solid')
 split = sum(1 for v in result.values() if v['layout'] == 'split')
 bare = sum(1 for v in result.values() if not v['labelled'] and not v['photo'])
 print(f'{len(result)} cards audited -> {OUT}')
 print(f'  full-bleed photos (wanted): {full}')
+print(f'  solid terracotta (wanted):  {solid}')
 print(f'  split photos (excluded):    {split}')
 print(f'  bare, no label (excluded):  {bare}')
-print(f'  labelled clay cards:        {len(result) - full - split - bare}')
+print(f'  labelled clay cards:        {len(result) - full - split - solid - bare}')
