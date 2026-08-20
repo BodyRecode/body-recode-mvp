@@ -25,7 +25,9 @@ const brands = brandArg ? [brandArg.split('=')[1]] : ['body_recode', 'personal_b
 
 type Row = { id: string; brand: string; date: string; type: string | null; title: string | null; ig_post_id: string }
 
-async function insightsFor(postId: string, token: string) {
+type Insights = { isReel: boolean; reach: number; saved: number; shares: number; likes: number; comments: number }
+
+async function insightsFor(postId: string, token: string): Promise<Insights> {
   // media_product_type tells us whether to ask for reel metrics or feed metrics;
   // asking for the wrong ones makes the whole call fail rather than skip a field.
   const meta = await fetch(`${GRAPH}/${postId}?fields=media_product_type,like_count,comments_count&access_token=${token}`)
@@ -40,7 +42,14 @@ async function insightsFor(postId: string, token: string) {
     comments: meta.comments_count ?? 0,
   }
   for (const m of ins.data ?? []) out[m.name] = m.values?.[0]?.value ?? 0
-  return { isReel, ...out }
+  return {
+    isReel,
+    reach: out.reach ?? 0,
+    saved: out.saved ?? 0,
+    shares: out.shares ?? 0,
+    likes: out.likes ?? 0,
+    comments: out.comments ?? 0,
+  }
 }
 
 async function main() {
@@ -61,7 +70,7 @@ async function main() {
     if (!token) { failed++; continue }
     try {
       const i = await insightsFor(row.ig_post_id, token)
-      results.push({ ...row, reach: i.reach ?? 0, saved: i.saved ?? 0, shares: i.shares ?? 0, likes: i.likes, comments: i.comments, isReel: i.isReel })
+      results.push({ ...row, ...i })
     } catch (e) {
       failed++
       if (failed <= 3) console.log(`  skip ${row.date}: ${e instanceof Error ? e.message.slice(0, 90) : e}`)
