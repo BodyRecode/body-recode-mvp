@@ -10,7 +10,11 @@
 //   - anything referencing the AI Co-Founder Method, retired 20 Aug.
 //   - prelaunch-type posts, same reason.
 //   - anything still pointing at a live-render graphic Meta cannot fetch.
-//   - photo cards. Kade, 20 Aug: "dont use colour images of me either".
+//   - COLOUR photo cards. Kade, 20 Aug: "dont use colour images of me either".
+//     Note he said colour, not photos. The first pass excluded photo cards
+//     outright, which was the wrong fix and left the feed as a flat wall of
+//     cream. They are greyscale now (scripts/greyscale-photo-cards.py) and back
+//     in the mix, where they are the only tonal break the feed has.
 //   - the BARE card variant: a rule and a headline, no eyebrow label, no
 //     subline. Kade flagged it on sight. It reads unfinished beside the
 //     labelled cards, and it is also where the weakest copy hides, because a
@@ -94,8 +98,8 @@ async function main() {
     // Judge the card by what is actually in the image, not its filename.
     const first = p.graphic.split(',')[0].trim()
     const card = CARD_AUDIT[first]
-    if (card?.photo) return false
-    if (card && !card.labelled) return false
+    // Photo cards are allowed again now they are greyscale. Bare cards are not.
+    if (card && !card.photo && !card.labelled) return false
     return true
   })
 
