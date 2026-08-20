@@ -2147,8 +2147,8 @@ export const igPublisherCron = inngest.createFunction(
       const nowIso = new Date().toISOString()
       const { data, error } = await admin
         .from('calendar_posts')
-        .select('id, title, caption, graphic, publish_attempts')
-        .eq('brand', 'body_recode')
+        .select('id, title, caption, graphic, publish_attempts, brand')
+        .in('brand', ['body_recode', 'personal_brand'])
         .eq('platform', 'instagram')
         .neq('type', 'story')
         .is('posted_at', null)
@@ -2157,14 +2157,14 @@ export const igPublisherCron = inngest.createFunction(
         .or('publish_attempts.is.null,publish_attempts.lt.3')
         .limit(20) // safety cap per tick; large backlogs catch up on subsequent ticks
       if (error) throw new Error(`Find due posts failed: ${error.message}`)
-      return (data ?? []) as Array<{ id: string; title: string; caption: string | null; graphic: string | null; publish_attempts: number | null }>
+      return (data ?? []) as Array<{ id: string; title: string; caption: string | null; graphic: string | null; publish_attempts: number | null; brand: string | null }>
     })
 
     if (!dueRows.length) {
       return { processed: 0, message: 'No due posts.' }
     }
 
-    const { publishToInstagram } = await import('@/lib/instagram-publish')
+    const { publishToInstagram, igAccountConfigured, igAccountHandle } = await import('@/lib/instagram-publish')
     const { appendBrFooter } = await import('@/lib/br-post-footer')
     const { appUrl } = await import('@/lib/app-url')
 
@@ -2205,13 +2205,29 @@ export const igPublisherCron = inngest.createFunction(
             return { id: row.id, title: row.title, ok: false, error: 'caption_missing' }
           }
 
+          // Each brand publishes to its own account. No fallback: if the
+          // personal account is not connected the row is left alone with a
+          // clear error, because the alternative is Kade's personal posts
+          // landing on @body_recode_ in front of the client audience.
+          const account = row.brand === 'personal_brand' ? 'personal_brand' as const : 'body_recode' as const
+          if (!igAccountConfigured(account)) {
+            await admin.from('calendar_posts').update({
+              publish_error: `[env] ${igAccountHandle(account)} is not connected - add its token and IG account id to the environment`,
+              publish_attempts: (row.publish_attempts ?? 0) + 1,
+            }).eq('id', row.id)
+            return { id: row.id, title: row.title, ok: false, error: `${igAccountHandle(account)} not connected` }
+          }
+
           await admin.from('calendar_posts').update({
             publish_attempts: (row.publish_attempts ?? 0) + 1,
             publish_error: null,
           }).eq('id', row.id)
 
+          // The BR footer points at @kade_dunstone_, which is right on the brand
+          // account and nonsense on the personal one.
+          const finalCaption = account === 'body_recode' ? appendBrFooter(caption) : caption
           // Fire (immediate path - no scheduled_publish_time -> no Meta whitelist gate)
-          const r = await publishToInstagram({ imageUrls, caption: appendBrFooter(caption) })
+          const r = await publishToInstagram({ imageUrls, caption: finalCaption, account })
 
           if (!r.ok) {
             await admin.from('calendar_posts').update({

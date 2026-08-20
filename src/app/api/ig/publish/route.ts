@@ -12,7 +12,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { publishToInstagram } from '@/lib/instagram-publish'
+import { publishToInstagram, igAccountConfigured, igAccountHandle, type IgAccount } from '@/lib/instagram-publish'
 import { appendBrFooter } from '@/lib/br-post-footer'
 import { createClient as createServerSupabaseClient } from '@/lib/supabase/server'
 import { appUrl } from '@/lib/app-url'
@@ -59,14 +59,30 @@ export async function POST(request: NextRequest) {
   if (post.type === 'story') {
     return NextResponse.json({ error: 'stories_not_supported', message: 'Instagram Stories must be posted manually - the API strips link stickers, countdown stickers, and polls, which kills the story value.' }, { status: 400 })
   }
-  // Brand routing: the configured token + IG Business Account ID belong to
-  // @body_recode_. Posts on other brands (e.g. personal_brand = @kade_dunstone_)
-  // must NOT publish through this route or they'd land on the wrong account.
-  if (post.brand && post.brand !== 'body_recode') {
+  // Brand routing. Each brand has its OWN Instagram account and its own
+  // credential pair; nothing is shared and nothing falls back. A brand we have
+  // no account for stays manual rather than publishing somewhere wrong.
+  const PUBLISHABLE: Record<string, IgAccount> = {
+    body_recode: 'body_recode',
+    personal_brand: 'personal_brand',
+  }
+  const account: IgAccount = PUBLISHABLE[post.brand ?? 'body_recode']
+  if (!account) {
     return NextResponse.json({
       error: 'wrong_brand',
       brand: post.brand,
-      message: `This poster only publishes to @body_recode_. ${post.brand === 'personal_brand' ? 'Personal brand posts go to @kade_dunstone_ which is a different Instagram account - post manually from phone.' : 'Other brand posts stay manual.'}`,
+      message: `No Instagram account is wired for brand "${post.brand}". This poster publishes to @body_recode_ and @kade_dunstone_ only; other brands stay manual.`,
+    }, { status: 400 })
+  }
+  // Fail here with instructions rather than at the Graph call, and never with a
+  // fallback: publishing Kade's personal posts onto @body_recode_ in front of
+  // the client audience is not something you can undo.
+  if (!igAccountConfigured(account)) {
+    return NextResponse.json({
+      error: 'account_not_connected',
+      brand: post.brand,
+      handle: igAccountHandle(account),
+      message: `${igAccountHandle(account)} is not connected yet. Add its Page access token and IG Business Account ID to the environment, then redeploy. Until then this post stays manual.`,
     }, { status: 400 })
   }
 
@@ -154,8 +170,11 @@ export async function POST(request: NextRequest) {
     .update({ publish_attempts: (post.publish_attempts ?? 0) + 1, publish_error: null })
     .eq('id', post.id)
 
-  // Stamp the founder follow line on the end just before publishing.
-  const result = await publishToInstagram({ imageUrls, videoUrl, caption: appendBrFooter(caption) })
+  // The BR footer carries "More from our founder -> @kade_dunstone_", which is
+  // right on the brand account and nonsense on the personal one, where it would
+  // point the reader at the account they are already looking at.
+  const finalCaption = account === 'body_recode' ? appendBrFooter(caption) : caption
+  const result = await publishToInstagram({ imageUrls, videoUrl, caption: finalCaption, account })
 
   if (!result.ok) {
     await admin

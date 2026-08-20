@@ -1,15 +1,23 @@
 // Instagram Graph API native publishing client.
 //
 // Publishes feed posts + carousels (image-based) from the Content Calendar
-// directly to @body_recode_ without third-party schedulers. Stories are NOT
+// directly to Instagram without third-party schedulers. Stories are NOT
 // supported (Meta API strips link stickers / countdown / polls, so stories
 // stay phone-manual).
 //
-// Setup requirements (one-time):
-//   1. @body_recode_ is an Instagram Professional account
+// TWO ACCOUNTS, from 2026-08-20. @kade_dunstone_ was the only channel with no
+// automation, so it died whenever Kade got busy - twice, most recently going
+// quiet for twelve days with a full calendar of finished posts sitting behind
+// it. Each account has its OWN credential pair and they are never mixed.
+//
+// Setup requirements, PER ACCOUNT (one-time):
+//   1. The account is an Instagram Professional (Business or Creator) account
 //   2. Linked to a Facebook Page Kade manages
-//   3. Long-lived Page Access Token in META_GRAPH_ACCESS_TOKEN env
-//   4. Instagram Business Account ID in META_IG_BUSINESS_ACCOUNT_ID env
+//   3. Long-lived Page Access Token in that account's token env var
+//   4. Instagram Business Account ID in that account's id env var
+//
+//   @body_recode_    META_GRAPH_ACCESS_TOKEN     / META_IG_BUSINESS_ACCOUNT_ID
+//   @kade_dunstone_  META_GRAPH_ACCESS_TOKEN_PB  / META_IG_BUSINESS_ACCOUNT_ID_PB
 //
 // See `06_SAAS_PLATFORM_BUILD/2026-06-30_Instagram_Native_Publishing.md` for
 // the exact token-generation walkthrough Kade follows.
@@ -36,6 +44,9 @@ export interface PublishInput {
   // used as the cover frame. Meta must be able to fetch the URL itself, so it
   // has to be publicly reachable - Supabase `videos` bucket, not a signed URL.
   videoUrl?: string
+  /** Which IG account to publish to. Defaults to body_recode so existing
+   *  callers are unchanged. */
+  account?: IgAccount
 }
 
 export interface PublishResult {
@@ -53,16 +64,50 @@ export interface PublishError {
   detail?: unknown
 }
 
-function env() {
-  const token = process.env.META_GRAPH_ACCESS_TOKEN?.trim()
-  const igId = process.env.META_IG_BUSINESS_ACCOUNT_ID?.trim()
-  if (!token) throw new Error('META_GRAPH_ACCESS_TOKEN env missing')
-  if (!igId) throw new Error('META_IG_BUSINESS_ACCOUNT_ID env missing')
-  return { token, igId }
+// Which Instagram account a post publishes to. Maps 1:1 to calendar_posts.brand.
+export type IgAccount = 'body_recode' | 'personal_brand'
+
+const ACCOUNTS: Record<IgAccount, { handle: string; tokenVar: string; idVar: string }> = {
+  body_recode: {
+    handle: '@body_recode_',
+    tokenVar: 'META_GRAPH_ACCESS_TOKEN',
+    idVar: 'META_IG_BUSINESS_ACCOUNT_ID',
+  },
+  personal_brand: {
+    handle: '@kade_dunstone_',
+    tokenVar: 'META_GRAPH_ACCESS_TOKEN_PB',
+    idVar: 'META_IG_BUSINESS_ACCOUNT_ID_PB',
+  },
 }
 
-async function graphPost(path: string, params: Record<string, string | number>): Promise<{ id: string } & Record<string, unknown>> {
-  const { token } = env()
+// Resolve one account's credentials.
+//
+// THE IMPORTANT PROPERTY: there is no fallback. If the personal-brand vars are
+// missing this THROWS. It must never quietly drop back to the Body Recode pair,
+// because that would publish Kade's personal posts onto @body_recode_ in front
+// of the client audience, and there is no way to un-post that.
+function env(account: IgAccount = 'body_recode') {
+  const cfg = ACCOUNTS[account]
+  if (!cfg) throw new Error(`Unknown Instagram account "${account}"`)
+  const token = process.env[cfg.tokenVar]?.trim()
+  const igId = process.env[cfg.idVar]?.trim()
+  if (!token) throw new Error(`${cfg.tokenVar} env missing - cannot publish to ${cfg.handle}`)
+  if (!igId) throw new Error(`${cfg.idVar} env missing - cannot publish to ${cfg.handle}`)
+  return { token, igId, handle: cfg.handle }
+}
+
+export function igAccountHandle(account: IgAccount): string {
+  return ACCOUNTS[account]?.handle ?? account
+}
+
+/** True when this account has both credentials configured. Used to show a clear
+ *  "not connected yet" state instead of failing at publish time. */
+export function igAccountConfigured(account: IgAccount): boolean {
+  try { env(account); return true } catch { return false }
+}
+
+async function graphPost(account: IgAccount, path: string, params: Record<string, string | number>): Promise<{ id: string } & Record<string, unknown>> {
+  const { token } = env(account)
   const body = new URLSearchParams({ ...Object.fromEntries(Object.entries(params).map(([k, v]) => [k, String(v)])), access_token: token })
   const res = await fetch(`${GRAPH_BASE}${path}`, {
     method: 'POST',
@@ -76,8 +121,8 @@ async function graphPost(path: string, params: Record<string, string | number>):
   return data
 }
 
-async function graphGet(path: string, fields?: string): Promise<Record<string, unknown>> {
-  const { token } = env()
+async function graphGet(account: IgAccount, path: string, fields?: string): Promise<Record<string, unknown>> {
+  const { token } = env(account)
   const url = new URL(`${GRAPH_BASE}${path}`)
   url.searchParams.set('access_token', token)
   if (fields) url.searchParams.set('fields', fields)
@@ -99,9 +144,9 @@ const sleep = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, m
 // Images finish in seconds. Video transcoding routinely takes 1-3 minutes, so
 // callers publishing a reel must pass a longer budget or media_publish fails
 // with "Media ID is not available".
-async function waitForContainerReady(containerId: string, tries = 15, delayMs = 2000): Promise<void> {
+async function waitForContainerReady(account: IgAccount, containerId: string, tries = 15, delayMs = 2000): Promise<void> {
   for (let i = 0; i < tries; i++) {
-    const data = await graphGet(`/${containerId}`, 'status_code')
+    const data = await graphGet(account, `/${containerId}`, 'status_code')
     const status = data.status_code as string | undefined
     if (status === 'FINISHED') return
     if (status === 'ERROR' || status === 'EXPIRED') {
@@ -113,9 +158,10 @@ async function waitForContainerReady(containerId: string, tries = 15, delayMs = 
 }
 
 export async function publishToInstagram(input: PublishInput): Promise<PublishResult | PublishError> {
+  const account: IgAccount = input.account ?? 'body_recode'
   let igId: string
   try {
-    igId = env().igId
+    igId = env(account).igId
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : String(e), stage: 'env' }
   }
@@ -130,7 +176,7 @@ export async function publishToInstagram(input: PublishInput): Promise<PublishRe
       // Video containers transcode asynchronously and take far longer than
       // images, so the FINISHED poll below is mandatory rather than an
       // optimisation. Publishing early returns a "media not ready" error.
-      const reel = await graphPost(`/${igId}/media`, {
+      const reel = await graphPost(account, `/${igId}/media`, {
         media_type: 'REELS',
         video_url: input.videoUrl as string,
         caption: input.caption,
@@ -143,16 +189,16 @@ export async function publishToInstagram(input: PublishInput): Promise<PublishRe
       // Step 1: create each child item container
       const childIds: string[] = []
       for (const url of input.imageUrls) {
-        const child = await graphPost(`/${igId}/media`, {
+        const child = await graphPost(account, `/${igId}/media`, {
           image_url: url,
           is_carousel_item: 'true',
         })
         childIds.push(child.id)
       }
       // Each child must finish processing before it can go in a carousel
-      for (const id of childIds) await waitForContainerReady(id)
+      for (const id of childIds) await waitForContainerReady(account, id)
       // Step 2: create carousel container referencing the children
-      const carousel = await graphPost(`/${igId}/media`, {
+      const carousel = await graphPost(account, `/${igId}/media`, {
         media_type: 'CAROUSEL',
         children: childIds.join(','),
         caption: input.caption,
@@ -161,7 +207,7 @@ export async function publishToInstagram(input: PublishInput): Promise<PublishRe
       containerId = carousel.id
     } else {
       // Single image
-      const single = await graphPost(`/${igId}/media`, {
+      const single = await graphPost(account, `/${igId}/media`, {
         image_url: input.imageUrls[0],
         caption: input.caption,
         ...(isScheduled ? { scheduled_publish_time: input.scheduledPublishTime as number } : {}),
@@ -184,9 +230,9 @@ export async function publishToInstagram(input: PublishInput): Promise<PublishRe
   let postId: string
   try {
     // 5 minutes for a reel, 30s for images.
-    if (isReel) await waitForContainerReady(containerId, 60, 5000)
-    else await waitForContainerReady(containerId)
-    const published = await graphPost(`/${igId}/media_publish`, { creation_id: containerId })
+    if (isReel) await waitForContainerReady(account, containerId, 60, 5000)
+    else await waitForContainerReady(account, containerId)
+    const published = await graphPost(account, `/${igId}/media_publish`, { creation_id: containerId })
     postId = published.id
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : String(e), stage: 'publish', detail: { containerId } }
@@ -195,7 +241,7 @@ export async function publishToInstagram(input: PublishInput): Promise<PublishRe
   // Fetch the permalink (public IG URL) for the new post
   let postUrl: string | null = null
   try {
-    const meta = await graphGet(`/${postId}`, 'permalink')
+    const meta = await graphGet(account, `/${postId}`, 'permalink')
     postUrl = (meta.permalink as string | undefined) ?? null
   } catch {
     // Non-fatal: post is up, we just couldn't fetch the URL

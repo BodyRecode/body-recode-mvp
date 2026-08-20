@@ -940,7 +940,7 @@ async function checkPersonalBrandCadence(admin: ReturnType<typeof createAdminCli
         name: 'Personal Brand Cadence',
         status: 'failed',
         detail,
-        manualFix: 'Open Content Calendar, add/write a personal-brand post. @kade_dunstone_ is posted by hand from your phone — nothing auto-publishes it.',
+        manualFix: 'Open Content Calendar and add personal-brand posts. @kade_dunstone_ now auto-publishes like @body_recode_, but only for rows that exist with a caption and a graphic — an empty calendar still means a silent account.',
       }
     }
 

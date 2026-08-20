@@ -1389,7 +1389,11 @@ function PostToIgButton({ post, onPublished }: { post: ScheduledPost; onPublishe
 
   const platform = post.platform ?? 'instagram'
   const brand = post.brand ?? 'body_recode'
-  const canAutoPublish = platform === 'instagram' && post.type !== 'story' && brand === 'body_recode'
+  // Both @body_recode_ and @kade_dunstone_ publish natively from 2026-08-20.
+  // Each has its own credential pair; the API refuses rather than falls back if
+  // an account is not connected yet.
+  const AUTO_PUBLISH_BRANDS = ['body_recode', 'personal_brand']
+  const canAutoPublish = platform === 'instagram' && post.type !== 'story' && AUTO_PUBLISH_BRANDS.includes(brand)
 
   // ── Manual-schedule mode (for posts we can't auto-publish) ──
   if (!canAutoPublish) {
