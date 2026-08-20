@@ -117,17 +117,22 @@ async function main() {
     // read as full-body-in-a-room. Ceiling is 1.95: at 2.1 the top of the head
     // starts clipping, because the crop is top-anchored (Satori ignores
     // objectPosition, so anchoring centre would take the head off entirely).
+    // vshift 0.2 on all of them. At vshift 0 the crop starts at the very top of
+    // the source, which on these headshots cuts into the crown - Kade flagged it
+    // on two cards and it is true of every one of them, just less obviously.
+    // Shifting down a fifth puts the whole head in frame without loosening the
+    // crop.
     const CROPS = [
-      { zoom: 1.75, offset: -0.45 }, { zoom: 1.60, offset: 0.40 },
-      { zoom: 1.90, offset: 0.30 },  { zoom: 1.70, offset: -0.55 },
-      { zoom: 1.55, offset: 0.50 },  { zoom: 1.85, offset: -0.35 },
-      { zoom: 1.65, offset: 0.45 },  { zoom: 1.80, offset: -0.50 },
-      { zoom: 1.95, offset: 0.25 },  { zoom: 1.58, offset: -0.40 },
+      { zoom: 1.75, offset: -0.45, vshift: 0.20 }, { zoom: 1.60, offset: 0.40, vshift: 0.20 },
+      { zoom: 1.90, offset: 0.30, vshift: 0.22 },  { zoom: 1.70, offset: -0.55, vshift: 0.20 },
+      { zoom: 1.55, offset: 0.50, vshift: 0.18 },  { zoom: 1.85, offset: -0.35, vshift: 0.22 },
+      { zoom: 1.65, offset: 0.45, vshift: 0.20 },  { zoom: 1.80, offset: -0.50, vshift: 0.20 },
+      { zoom: 1.95, offset: 0.25, vshift: 0.24 },  { zoom: 1.58, offset: -0.40, vshift: 0.18 },
     ]
     const crop = CROPS[i % CROPS.length]
     const url = isPhoto
       ? `${ORIGIN}/api/content/graphic?style=personal-photo&layout=overlay&photo=${(i % 7) + 1}` +
-        `&zoom=${crop.zoom}&offset=${crop.offset}` +
+        `&zoom=${crop.zoom}&offset=${crop.offset}&vshift=${crop.vshift}` +
         `&label=${encodeURIComponent(label)}&text=${encodeURIComponent(p.title)}` +
         (sub ? `&sub=${encodeURIComponent(sub)}` : '')
       : `${ORIGIN}/api/content/graphic?style=personal&theme=clay-solid` +
