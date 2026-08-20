@@ -90,7 +90,6 @@ const META: NavLink[] = [
 ]
 
 const DEV_ONLY_ROUTES = new Set([
-  '/dashboard/business/ai-cofounder',
   '/dashboard/business/peer-review',
 ])
 
@@ -247,9 +246,7 @@ export default function DashboardNav() {
   const brandsCluster: NavCluster = {
     key: 'brands',
     label: 'Brands',
-    items: devMode
-      ? [...BRANDS_CLUSTER_BASE, { href: '/dashboard/business/ai-cofounder', label: 'AI Co-Founder' }]
-      : BRANDS_CLUSTER_BASE,
+    items: BRANDS_CLUSTER_BASE,
   }
 
   const metaLinks: NavLink[] = devMode

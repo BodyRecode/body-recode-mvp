@@ -167,18 +167,6 @@ export default function KadePage() {
             <span className="text-[#2A1E16] group-hover:text-[#B5552F] text-lg transition-colors" aria-hidden>→</span>
           </a>
 
-          {/* AI Co-Founder Method */}
-          <a
-            href="https://aicofoundermethod.com"
-            className="group flex items-center justify-between w-full bg-[#FAF3EB] border border-[#E0D1C0] hover:border-[#B5552F] hover:bg-[#EFE4D8] rounded-xl px-5 py-4 transition-colors"
-          >
-            <div>
-              <p className="text-base font-semibold text-[#2A1E16] group-hover:text-[#B5552F] transition-colors">AI Co-Founder Method</p>
-              <p className="text-xs text-[#6E5B4D] mt-0.5 italic">Build with AI as your co-founder</p>
-            </div>
-            <span className="text-[#2A1E16] group-hover:text-[#B5552F] text-lg transition-colors" aria-hidden>→</span>
-          </a>
-
           {/* Tracing Myself — memoir */}
           <Link
             href="/kade/chapters"
