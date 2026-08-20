@@ -32,8 +32,8 @@ const commit = process.argv.includes('--commit')
 const ORIGIN = 'https://bodyrecode.au'
 const OUT = 'public/calendar'
 
-const N_PHOTO = 5
-const N_SOLID = 5
+const N_PHOTO = 10
+const N_SOLID = 6
 
 /** Infer the eyebrow label from the copy. Printed for review, never silent. */
 function labelFor(text: string): string {
@@ -109,8 +109,21 @@ async function main() {
     // system" came out THINKING because the caption happened to say "think".
     const label = labelFor(p.title)
     const sub = (p.caption ?? '').split('\n').filter(l => l.trim())[1]?.slice(0, 90) ?? ''
+    // Vary the crop on every card. Identical centred cover-fits of the same
+    // handful of headshots read as one repeated image down a feed, however good
+    // the photo is. Zoom pulls in, offset moves the subject off dead centre, and
+    // the pairs alternate direction so consecutive posts do not lean the same way.
+    const CROPS = [
+      { zoom: 1.30, offset: -0.45 }, { zoom: 1.15, offset: 0.40 },
+      { zoom: 1.45, offset: 0.30 },  { zoom: 1.25, offset: -0.55 },
+      { zoom: 1.10, offset: 0.50 },  { zoom: 1.40, offset: -0.35 },
+      { zoom: 1.20, offset: 0.45 },  { zoom: 1.35, offset: -0.50 },
+      { zoom: 1.50, offset: 0.25 },  { zoom: 1.05, offset: -0.40 },
+    ]
+    const crop = CROPS[i % CROPS.length]
     const url = isPhoto
       ? `${ORIGIN}/api/content/graphic?style=personal-photo&layout=overlay&photo=${(i % 7) + 1}` +
+        `&zoom=${crop.zoom}&offset=${crop.offset}` +
         `&label=${encodeURIComponent(label)}&text=${encodeURIComponent(p.title)}` +
         (sub ? `&sub=${encodeURIComponent(sub)}` : '')
       : `${ORIGIN}/api/content/graphic?style=personal&theme=clay-solid` +

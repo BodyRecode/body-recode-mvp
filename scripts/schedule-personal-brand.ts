@@ -34,10 +34,10 @@
 // against a strategy calling for photos and carousels. The week now has a
 // SHAPE and each slot is filled with the treatment it asks for:
 //
-//   Mon  clay card
-//   Wed  full-bleed greyscale photo
+//   Mon  full-bleed greyscale photo
+//   Wed  clay card
 //   Fri  solid terracotta
-//   Sun  carousel, falling back to a clay card when the two run out
+//   Sun  carousel, falling back to another photo when the two run out
 //
 // Reels replace Wed and Sun from the week of 1 Sep, once filming has happened.
 //
@@ -143,9 +143,10 @@ async function main() {
   pool.card.sort((a, b) => Number(COACHING.has(b.type ?? '')) - Number(COACHING.has(a.type ?? '')))
 
   // Mon / Wed / Fri / Sun, in the order nextDates() returns them.
-  const WEEK_SHAPE = ['card', 'full-bleed', 'solid', 'carousel']
+  // Two photo slots a week, not one. Kade, 20 Aug: "can we use more images".
+  const WEEK_SHAPE = ['full-bleed', 'card', 'solid', 'carousel']
   const FALLBACK: Record<string, string[]> = {
-    carousel: ['full-bleed', 'solid', 'card'],
+    carousel: ['full-bleed', 'solid', 'card'],   // a second photo before a card
     'full-bleed': ['solid', 'card'],
     solid: ['card', 'full-bleed'],
     card: ['solid', 'full-bleed'],

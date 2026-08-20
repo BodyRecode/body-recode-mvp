@@ -394,6 +394,11 @@
 "labelled": true,
 "layout": "card"
 },
+"/calendar/pbx-photo-at-21-a-doctor-ended-the-only-future-i-d-pla.png": {
+"photo": true,
+"labelled": false,
+"layout": "full-bleed"
+},
 "/calendar/pbx-photo-for-years-i-measured-everything-against-one-.png": {
 "photo": true,
 "labelled": false,
@@ -409,6 +414,21 @@
 "labelled": false,
 "layout": "full-bleed"
 },
+"/calendar/pbx-photo-most-people-don-t-have-a-discipline-problem-.png": {
+"photo": true,
+"labelled": false,
+"layout": "full-bleed"
+},
+"/calendar/pbx-photo-rebuilding-is-not-failure-it-s-how-you-build.png": {
+"photo": true,
+"labelled": false,
+"layout": "full-bleed"
+},
+"/calendar/pbx-photo-the-body-is-not-broken-it-is-being-misread.png": {
+"photo": true,
+"labelled": false,
+"layout": "full-bleed"
+},
 "/calendar/pbx-photo-the-reason-most-people-stay-stuck-isn-t-disc.png": {
 "photo": true,
 "labelled": false,
@@ -419,7 +439,17 @@
 "labelled": false,
 "layout": "full-bleed"
 },
+"/calendar/pbx-photo-you-can-t-out-train-a-nervous-system-in-prot.png": {
+"photo": true,
+"labelled": false,
+"layout": "full-bleed"
+},
 "/calendar/pbx-solid-at-21-a-doctor-ended-the-only-future-i-d-pla.png": {
+"photo": false,
+"labelled": true,
+"layout": "solid"
+},
+"/calendar/pbx-solid-i-helped-build-gyms-across-the-country-then-.png": {
 "photo": false,
 "labelled": true,
 "layout": "solid"
@@ -430,6 +460,11 @@
 "layout": "solid"
 },
 "/calendar/pbx-solid-rebuilding-is-not-failure-it-s-how-you-build.png": {
+"photo": false,
+"labelled": true,
+"layout": "solid"
+},
+"/calendar/pbx-solid-three-times-i-ve-had-to-become-someone-new-f.png": {
 "photo": false,
 "labelled": true,
 "layout": "solid"
