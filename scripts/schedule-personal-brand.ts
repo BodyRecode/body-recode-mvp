@@ -10,6 +10,14 @@
 //   - anything referencing the AI Co-Founder Method, retired 20 Aug.
 //   - prelaunch-type posts, same reason.
 //   - anything still pointing at a live-render graphic Meta cannot fetch.
+//   - video-type posts with no video_url. All six of these are scripts with a
+//     cover image and no footage, two of them written in May and never filmed.
+//     Left unguarded, the publisher would push the cover out as a static card,
+//     which is a reel cover masquerading as a post.
+//
+// Carousels are FRONT-LOADED. There are only two in the whole back catalogue and
+// the first pass buried both, producing four weeks of nothing but single cards -
+// exactly the format mix the strategy had just moved away from.
 //
 // Weighting follows the pillar split set in the brand strategy: coaching leads
 // at four in ten. `coach` and `pattern` types carry the coaching angle, so the
@@ -46,11 +54,11 @@ function nextDates(count: number): string[] {
 
 async function main() {
   const { data } = await db.from('calendar_posts')
-    .select('id, date, type, title, caption, graphic')
+    .select('id, date, type, title, caption, graphic, video_url')
     .eq('brand', 'personal_brand').eq('platform', 'instagram')
     .is('posted_at', null).order('date', { ascending: true })
 
-  const all = (data ?? []) as Array<{ id: string; date: string; type: string | null; title: string | null; caption: string | null; graphic: string | null }>
+  const all = (data ?? []) as Array<{ id: string; date: string; type: string | null; title: string | null; caption: string | null; graphic: string | null; video_url: string | null }>
 
   const usable = all.filter(p => {
     const text = `${p.title ?? ''} ${p.caption ?? ''}`
@@ -58,31 +66,47 @@ async function main() {
     if (p.graphic.includes('/api/content/graphic')) return false
     if (TIME_BOUND.test(text) || RETIRED.test(text)) return false
     if (p.type === 'prelaunch') return false
+    // A reel with no footage is a cover image. Publishing it would put a video
+    // thumbnail on the feed as though it were a card.
+    if (p.type === 'video' && !p.video_url?.trim()) return false
     return true
   })
 
+  const slideCount = (g: string | null) => (g ?? '').split(',').filter(Boolean).length
+
   const slots = nextDates(WEEKS * DAYS.length)
 
-  // Interleave so coaching leads without the feed becoming one long block of it.
-  const coaching = usable.filter(p => COACHING.has(p.type ?? ''))
-  const other = usable.filter(p => !COACHING.has(p.type ?? ''))
+  // Carousels first. There are only two and they are the best dwell-time format
+  // we own, so they must not sink to the bottom of a date-ordered list again.
+  const carousels = usable.filter(p => slideCount(p.graphic) > 1)
+  const singles = usable.filter(p => slideCount(p.graphic) <= 1)
+  const coaching = singles.filter(p => COACHING.has(p.type ?? ''))
+  const other = singles.filter(p => !COACHING.has(p.type ?? ''))
+
   const picked: typeof usable = []
-  while (picked.length < slots.length && (coaching.length || other.length)) {
+  // Space the carousels out rather than stacking them: one early, one mid-run.
+  const carouselSlots = new Set([1, Math.floor(slots.length / 2)])
+  for (let i = 0; i < slots.length; i++) {
+    if (carouselSlots.has(i) && carousels.length) { picked.push(carousels.shift()!); continue }
     // 4 coaching : 6 other, per ten
-    for (let i = 0; i < 2 && coaching.length && picked.length < slots.length; i++) picked.push(coaching.shift()!)
-    for (let i = 0; i < 3 && other.length && picked.length < slots.length; i++) picked.push(other.shift()!)
+    const wantCoaching = picked.filter(p => COACHING.has(p.type ?? '')).length / Math.max(picked.length, 1) < 0.4
+    const pool = wantCoaching && coaching.length ? coaching : (other.length ? other : coaching)
+    if (!pool.length) break
+    picked.push(pool.shift()!)
   }
 
   console.log(`\n${all.length} unposted  ->  ${usable.length} usable  ->  scheduling ${picked.length} over ${WEEKS} weeks\n`)
-  console.log('date        day  time   type        title')
-  console.log('-'.repeat(78))
+  console.log('date        day  time   format       type        title')
+  console.log('-'.repeat(86))
 
   const updates: Array<{ id: string; date: string; iso: string }> = []
   picked.forEach((p, i) => {
     const date = slots[i]
     const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][new Date(`${date}T00:00:00`).getDay()]
     const iso = new Date(`${date}T${POST_TIME}:00+10:00`).toISOString()
-    console.log(`${date}  ${day}  ${POST_TIME}  ${String(p.type ?? '').padEnd(10)}  ${String(p.title ?? '').slice(0, 44)}`)
+    const n = slideCount(p.graphic)
+    const fmt = n > 1 ? `CAROUSEL x${n}` : 'card'
+    console.log(`${date}  ${day}  ${POST_TIME}  ${fmt.padEnd(12)} ${String(p.type ?? '').padEnd(10)}  ${String(p.title ?? '').slice(0, 38)}`)
     updates.push({ id: p.id, date, iso })
   })
 
