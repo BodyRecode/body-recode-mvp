@@ -186,7 +186,7 @@ async function main() {
         .map(l => l.trim().startsWith('#') ? `<p class="t">${esc(l)}</p>` : `<p>${esc(l)}</p>`).join('')
       return `<article><div class="w"><b>${i + 1}</b><span>${day} ${date}</span><span>${POST_TIME}</span>
         <em>${slides.length > 1 ? `Carousel · ${slides.length}` : 'Card'}</em></div>
-        <div class="p">${slides.map(u => `<img src="https://bodyrecode.au${u}">`).join('')}</div>
+        <div class="p">${slides.map(u => `<img src="file://${process.cwd()}/public${u}">`).join('')}</div>
         <div class="c"><h3>${esc(p.title ?? '')}</h3>${cap}</div></article>`
     }).join('')
     const out = '/private/tmp/claude-501/-Users-kadedunstone/a957f6f2-3385-4ca0-b65f-aa046fb50c30/scratchpad/proposal.html'
