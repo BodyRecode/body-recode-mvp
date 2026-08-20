@@ -29,11 +29,18 @@
 // at four in ten. `coach` and `pattern` types carry the coaching angle, so the
 // picker takes those first and fills the rest around them.
 //
+// --sheet renders the PROPOSAL as a visual sheet and opens it, writing nothing.
+// Kade's standing rule, 20 Aug: he sees it on screen before it enters the
+// calendar. The first version of this read from the DB instead, which meant it
+// could only ever show what had already been written - useless as an approval
+// step, and it left a stale sheet on his screen showing rejected posts.
+//
 // DRY RUN BY DEFAULT. Pass --commit to write.
 //   npx tsx --env-file=.env.local scripts/schedule-personal-brand.ts
 //   npx tsx --env-file=.env.local scripts/schedule-personal-brand.ts --commit
 import { createClient } from '@supabase/supabase-js'
-import { readFileSync } from 'node:fs'
+import { readFileSync, writeFileSync } from 'node:fs'
+import { execSync } from 'node:child_process'
 
 const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
 const commit = process.argv.includes('--commit')
@@ -138,6 +145,41 @@ async function main() {
     console.log(`${date}  ${day}  ${POST_TIME}  ${fmt.padEnd(12)} ${String(p.type ?? '').padEnd(10)}  ${String(p.title ?? '').slice(0, 38)}`)
     updates.push({ id: p.id, date, iso })
   })
+
+  if (process.argv.includes('--sheet')) {
+    const esc = (t: string) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    const cards = picked.map((p, i) => {
+      const slides = (p.graphic ?? '').split(',').map(x => x.trim()).filter(Boolean)
+      const date = slots[i]
+      const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][new Date(`${date}T00:00:00`).getDay()]
+      const cap = (p.caption ?? '').split('\n').filter(l => l.trim())
+        .map(l => l.trim().startsWith('#') ? `<p class="t">${esc(l)}</p>` : `<p>${esc(l)}</p>`).join('')
+      return `<article><div class="w"><b>${i + 1}</b><span>${day} ${date}</span><span>${POST_TIME}</span>
+        <em>${slides.length > 1 ? `Carousel · ${slides.length}` : 'Card'}</em></div>
+        <div class="p">${slides.map(u => `<img src="https://bodyrecode.au${u}">`).join('')}</div>
+        <div class="c"><h3>${esc(p.title ?? '')}</h3>${cap}</div></article>`
+    }).join('')
+    const out = '/private/tmp/claude-501/-Users-kadedunstone/a957f6f2-3385-4ca0-b65f-aa046fb50c30/scratchpad/proposal.html'
+    writeFileSync(out, `<style>
+body{background:#faf9f7;font-family:-apple-system,sans-serif;padding:26px;max-width:1400px;margin:0 auto}
+h1{font-size:23px;margin:0 0 4px}.s{color:#6b6b6b;font-size:13.5px;margin:0 0 20px;line-height:1.6}
+.s b{color:#1a1a1a}
+article{display:grid;grid-template-columns:108px 1fr 380px;gap:20px;background:#fff;border:1px solid #e6e3de;
+border-radius:13px;padding:18px 20px;margin-bottom:12px;align-items:start}
+.w{font-size:12px;color:#6b6b6b;display:flex;flex-direction:column;gap:2px}
+.w b{font-size:19px;color:#1a1a1a}.w em{font-style:normal;font-size:11px;color:#9a9a9a;margin-top:4px}
+.p{display:flex;gap:5px;flex-wrap:wrap}
+.p img{width:150px;height:auto;border-radius:7px;border:1px solid #e6e3de;display:block}
+.c h3{font-size:15px;margin:0 0 8px}.c p{font-size:13.5px;line-height:1.55;color:#4a4a4a;margin:0 0 7px}
+.c p.t{color:#9a9a9a;font-size:11.5px}
+</style><h1>PROPOSED · ${picked.length} posts, not yet scheduled</h1>
+<p class="s">Nothing has been written to the calendar. Carousels show every slide.<br>
+<b>Excluded automatically:</b> colour photos of Kade, bare cards with no eyebrow label,
+repeated headlines, unfilmed reels, time-bound copy, anything naming the retired AI product.</p>${cards}`)
+    execSync(`open "${out}"`)
+    console.log(`\nProposal sheet opened. ${picked.length} posts. NOTHING WRITTEN.`)
+    return
+  }
 
   if (!commit) {
     console.log(`\nDRY RUN. Nothing written. Re-run with --commit to schedule.`)
