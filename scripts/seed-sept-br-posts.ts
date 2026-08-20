@@ -3,10 +3,10 @@ const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPAB
 const POSTS = [
  ['2026-09-01','readiness','authority','Only 18 women in 100 could handle a hard plan',
   `Eighty-eight women have now been assessed.\n\nEighteen in every hundred came out able to handle a hard training plan.\n\nThe rest get one anyway. That is how plans are written: they assume a body that can absorb the work, then the same programme goes to the woman who can and the woman who cannot.\n\nOnly one of them gets a result.\n\nThe free 14-day Challenge tells you which one you are on day one.`],
- ['2026-09-02','readiness','contrarian','Same symptoms. Opposite fix.',
-  `Two women walk in with the same complaint. Tired all the time, flat sessions, a body that will not change.\n\nOne of them needs to do more.\n\nThe other is already doing too much, and every extra session makes it worse.\n\nFrom the outside they look identical. That is why the woman training hardest in any group is so often the one getting the least back.\n\nThe difference is capacity: what her body can absorb this week, not how willing she is.`],
- ['2026-09-03','neurowellness','pattern','Four in ten sleep badly',
-  `The women we assess do not come to us about sleep.\n\nThey come about fat that will not move, a plan that stopped working, a body that used to respond.\n\nThen we score them and sleep comes out bottom of the five. Awake at 2am. Up at 6 feeling like they never went to bed.\n\nYour body does not change during the session. It changes overnight.`],
+ ['2026-09-02','readiness','pattern','Same place. Different cause.',
+  `Nearly half the women we assess say the fat sits in the middle.\n\nWhich on its own tells you almost nothing, because three of the four causes push it there.\n\nStress was central from the start, and the arms and legs get thinner while the middle fills.\n\nFalling oestrogen is different. It started at the hips and thighs and moved to the middle over the last few years.\n\nSame place. Nothing like the same correction. And in the second phase they look identical, which is where most women get typed wrong.\n\nSo the question is not where it sits. It is whether it moved.`],
+ ['2026-09-03','neurowellness','contrarian','Awake at 3am, and told it is just your age',
+  `Sixty per cent of the women we profile are perimenopausal or past it, and the broken sleep gets waved off as part of the deal.\n\nIt is not nothing. Four in ten of the women we assess come out worst on sleep, and not one of them came to us about it. They came about fat that would not move.\n\nHer body does not change during the session. It changes overnight, and it has not had a proper night in two years.\n\nBeing in the transition explains why it is happening. It does not mean nothing can be done about it.`],
  ['2026-09-04','readiness','contrarian','How hard can you go? Wrong question.',
   `Every plan a woman is handed asks how hard she can go.\n\nNobody asks whether her body can take it right now.\n\nShe already has the willingness. What changes week to week is what her body can actually absorb, and that moves with sleep, stress, and whatever the last six months have been.\n\nPush a body that cannot absorb it and it does not get fitter. It holds on.`],
  ['2026-09-05','neurowellness','authority','You can still train hard. You just cannot recover.',
@@ -34,8 +34,11 @@ async function main(){
       ? Array.from({ length: CAROUSELS[date] }, (_, n) => `/calendar/${base}-s${n + 1}.png`).join(',')
       : `/calendar/${base}.png`
     if (!commit) { console.log(`${date}  ${String(pillar).padEnd(14)} ${title}`); continue }
+    // Match on DATE ONLY. Matching on (date, type) meant changing a post's type
+    // created a second row rather than updating the first, and left a
+    // superseded duplicate on the same day.
     const { data: existing } = await db.from('calendar_posts').select('id')
-      .eq('brand','body_recode').eq('platform','instagram').eq('date',date).eq('type',type).limit(1)
+      .eq('brand','body_recode').eq('platform','instagram').eq('date',date).neq('type','story').limit(1)
     const row = { brand:'body_recode', platform:'instagram', date, time:'07:00', type,
       title, caption, graphic, phase:'scale' }
     if (existing?.length) await db.from('calendar_posts').update(row).eq('id', existing[0].id)
