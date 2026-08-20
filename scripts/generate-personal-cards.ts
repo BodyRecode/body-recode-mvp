@@ -113,12 +113,16 @@ async function main() {
     // handful of headshots read as one repeated image down a feed, however good
     // the photo is. Zoom pulls in, offset moves the subject off dead centre, and
     // the pairs alternate direction so consecutive posts do not lean the same way.
+    // Tight. Kade asked twice for closer, and the earlier 1.05-1.5 range still
+    // read as full-body-in-a-room. Ceiling is 1.95: at 2.1 the top of the head
+    // starts clipping, because the crop is top-anchored (Satori ignores
+    // objectPosition, so anchoring centre would take the head off entirely).
     const CROPS = [
-      { zoom: 1.30, offset: -0.45 }, { zoom: 1.15, offset: 0.40 },
-      { zoom: 1.45, offset: 0.30 },  { zoom: 1.25, offset: -0.55 },
-      { zoom: 1.10, offset: 0.50 },  { zoom: 1.40, offset: -0.35 },
-      { zoom: 1.20, offset: 0.45 },  { zoom: 1.35, offset: -0.50 },
-      { zoom: 1.50, offset: 0.25 },  { zoom: 1.05, offset: -0.40 },
+      { zoom: 1.75, offset: -0.45 }, { zoom: 1.60, offset: 0.40 },
+      { zoom: 1.90, offset: 0.30 },  { zoom: 1.70, offset: -0.55 },
+      { zoom: 1.55, offset: 0.50 },  { zoom: 1.85, offset: -0.35 },
+      { zoom: 1.65, offset: 0.45 },  { zoom: 1.80, offset: -0.50 },
+      { zoom: 1.95, offset: 0.25 },  { zoom: 1.58, offset: -0.40 },
     ]
     const crop = CROPS[i % CROPS.length]
     const url = isPhoto
