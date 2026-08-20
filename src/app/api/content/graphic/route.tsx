@@ -868,6 +868,12 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
       // so a centred crop takes the head off. Zooming crops from the bottom.
       const zoom = Math.min(Math.max(parseFloat(searchParams.get('zoom') ?? '1') || 1, 1), 2.5)
       const offset = Math.min(Math.max(parseFloat(searchParams.get('offset') ?? '0') || 0, -1), 1)
+      // ?vshift= lifts the subject up the frame. 0 keeps the historic
+      // top-anchored behaviour; 1 pulls the image fully up to bottom-anchored.
+      // Needed because zooming alone only tightens around whatever is already
+      // there - if the source has headroom above the crown, the face still sits
+      // low in the card and no amount of zoom raises it.
+      const vshift = Math.min(Math.max(parseFloat(searchParams.get('vshift') ?? '0') || 0, 0), 1)
       const scale = Math.max(W / 1080, H / natH) * zoom
       const imgW = Math.round(1080 * scale), imgH = Math.round(natH * scale)
       // Slack is whatever the scaled image has spare beyond the canvas; offset
@@ -875,11 +881,12 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
       // rather than pulling a blank edge into frame.
       const slack = Math.max(0, (imgW - W) / 2)
       const left = Math.round((W - imgW) / 2 + offset * slack)
+      const top = -Math.round(vshift * Math.max(0, imgH - H))
       return new ImageResponse(
         (
           <div style={{ width: `${W}px`, height: `${H}px`, position: 'relative', display: 'flex', fontFamily: 'sans-serif', overflow: 'hidden' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={photoSrc} style={{ position: 'absolute', top: 0, left: `${left}px`, width: `${imgW}px`, height: `${imgH}px` }} alt="" />
+            <img src={photoSrc} style={{ position: 'absolute', top: `${top}px`, left: `${left}px`, width: `${imgW}px`, height: `${imgH}px` }} alt="" />
             <div style={{ position: 'absolute', top: 0, left: 0, width: `${W}px`, height: `${H}px`, background: 'linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(0,0,0,0.5) 68%, rgba(0,0,0,0.88) 100%)' }} />
             <div style={{ position: 'absolute', bottom: isStory ? '120px' : '90px', left: isStory ? '110px' : '90px', right: '90px', display: 'flex', flexDirection: 'column' }}>
               <TextBlock onDark />
