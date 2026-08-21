@@ -51,7 +51,10 @@ const CHECKS = [
 const AGE_NARROW = /\bover 40\b|\b40\+|\b45\+|\bover 45\b|\bwomen in their fifties\b/i
 
 // Our vocabulary, not theirs. These read as jargon cold.
-const JARGON = /floor sleep|score the floor|body state|capacity is fine|regulation is gone|n=\d+|section 0\d/i
+// 'the floor' is ours, not theirs. Kade, 21 Aug: "no one says that - people say
+// the lowest score". The first version of this rule only caught two phrasings and
+// two of the three September graphics leaked it through anyway, so match the word.
+const JARGON = /\bfloor\b|body state|capacity is fine|regulation is gone|n=\d+|section 0\d/i
 
 async function main() {
   const { data } = await db.from('calendar_posts')
