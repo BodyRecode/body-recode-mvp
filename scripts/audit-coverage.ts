@@ -56,6 +56,22 @@ const AGE_NARROW = /\bover 40\b|\b40\+|\b45\+|\bover 45\b|\bwomen in their fifti
 // two of the three September graphics leaked it through anyway, so match the word.
 const JARGON = /\bfloor\b|body state|capacity is fine|regulation is gone|n=\d+|section 0\d/i
 
+// Marketing-speak. Reads as normal English in a strategy doc, and as agency copy
+// to a woman who is awake at 3am. Kade, 22 Aug: "people dont use the word lands".
+const SPEAK = /\blands\b|\bleverage|\bunpack\b|move the needle|double down|game.?changer|\bholistic\b|\bmindful\b|\boptimi[sz]e\b|\bactionable\b|\bthe journey\b|\bin this space\b/i
+
+// BR's own line is "the body is not broken, it is being misread", so saying SHE is
+// broken contradicts the brand in the same sentence. Kade, 22 Aug.
+//
+// The first version of this matched any "broken" and was useless: of six hits on the
+// live calendar, five were correct usage, including the positioning line itself and
+// "you cannot outperform a broken map". A rule that flags our own brand line is a bad
+// rule. So this matches only "least broken", and her being the subject of the verb.
+// "Not broken" is the correct usage and must never trip it.
+// 'most broken' slipped through the first tightening and the audit passed while the
+// phrase was still in a live caption. Any degree word plus broken is the same claim.
+const BROKEN = /(?:least|most|more|less|somewhat|slightly|a bit)\s+broken\b|\b(?:you|she|her body|your body|their bodies?)\s+(?:is|are|'re)\s+broken\b/i
+
 async function main() {
   const { data } = await db.from('calendar_posts')
     .select('date, title, caption, graphic, type')
@@ -92,6 +108,15 @@ async function main() {
   for (const p of jargon) console.log(`        ${p.date}  "${text(p).match(JARGON)?.[0]}"`)
   console.log(`${narrow.length ? 'FAIL' : 'PASS'}  ${'audience · age not narrowed'.padEnd(28)} ${narrow.length} found     4 in 10 are under 45`)
   for (const p of narrow) console.log(`        ${p.date}  "${text(p).match(AGE_NARROW)?.[0]}"`)
+
+  const speak = rows.filter(p => SPEAK.test(text(p)))
+  const broken = rows.filter(p => BROKEN.test(text(p)))
+  if (speak.length) fails++
+  if (broken.length) fails++
+  console.log(`${speak.length ? 'FAIL' : 'PASS'}  ${'clarity · no marketing-speak'.padEnd(28)} ${speak.length} found     her words, not an agency's`)
+  for (const p of speak) console.log(`        ${p.date}  "${text(p).match(SPEAK)?.[0]}"`)
+  console.log(`${broken.length ? 'FAIL' : 'PASS'}  ${'never says she is broken'.padEnd(28)} ${broken.length} found     the body is not broken, it is misread`)
+  for (const p of broken) console.log(`        ${p.date}  "${text(p).match(BROKEN)?.[0]}"`)
 
   console.log(fails ? `\n${fails} FAILING. Fix before scheduling.\n` : '\nAll checks pass.\n')
 }
