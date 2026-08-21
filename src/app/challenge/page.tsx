@@ -456,15 +456,15 @@ export default function ChallengePage() {
           <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>The real problem</p>
           <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '24px', color: '#1A1A1A' }}>Your body has stopped losing fat. Here is why.</h2>
           <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '18px' }}>
-            Your body has shifted into a state where it is actively resisting the inputs that used to work. Cortisol elevates. Metabolism suppresses. Fat goes to the storage zones, mainly stomach and waist, and stays there. The system is hanging on to everything because nothing in the environment is telling it that it is safe to release.
+            Your body has shifted into a state where it works against the things that used to work. It holds on, recovery takes longer, and fat settles around the middle and stays, because nothing is telling it that it is safe to let go. What is causing that is not the same in everyone. Three of the four common causes push fat to the same place, which is why where it sits tells you almost nothing on its own, and why guessing is how most plans end up aimed at the wrong thing.
           </p>
 
           {/* NEW: the three-step physiology chain, made visual (stacks on mobile) */}
           <div className="br-3col" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', margin: '24px 0 28px' }}>
             {[
-              { k: 'Trigger', v: 'Chronic stress load stays high' },
-              { k: 'Response', v: 'Cortisol elevates, metabolism suppresses' },
-              { k: 'Result', v: 'Fat locks into storage and holds' },
+              { k: 'Trigger', v: 'Something shifts. Load, hormones or fuel' },
+                { k: 'Response', v: 'The body stops adapting and starts protecting' },
+                { k: 'Result', v: 'Fat settles into storage and holds' },
             ].map(step => (
               <div key={step.k} style={{ background: '#ffffff', border: '1px solid rgba(27,109,252,0.2)', borderRadius: '12px', padding: '16px 14px' }}>
                 <p style={{ fontSize: '10px', fontWeight: 800, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>{step.k}</p>
@@ -614,7 +614,7 @@ export default function ChallengePage() {
         <div style={{ maxWidth: '680px', margin: '0 auto', padding: '88px 24px' }}>
           <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '14px' }}>Sample preview</p>
           <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '10px', color: '#1A1A1A' }}>What your Day 14 result looks like.</h2>
-          <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '36px' }}>You take the Check-In on Day 7. By Day 14, the full Body Decode Report drops. One of four patterns. Why fat loss has stalled in your specific case. Three actions to take next.</p>
+          <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '36px' }}>You take the Check-In on Day 7. By Day 14, the full Body Decode Report drops. One of four patterns. Your readiness, which is what decides whether a plan works or backfires. Why fat loss has stalled in your specific case. Three actions to take next.</p>
           <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 24px rgba(0, 0, 0, 0.06)' }}>
             <div style={{ background: '#1A1A1A', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <p style={{ fontSize: '11px', fontWeight: 700, color: '#FFFFFF', letterSpacing: '0.1em', textTransform: 'uppercase', margin: 0 }}>Your Body Decode Result</p>
@@ -711,9 +711,9 @@ export default function ChallengePage() {
       <div style={{ background: '#F7F7F7', borderTop: '1px solid #E5E5E5', borderBottom: '1px solid #E5E5E5' }}>
         <div style={{ maxWidth: '680px', margin: '0 auto', padding: '72px 24px' }}>
           <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>Is this for you?</p>
-          <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '24px', color: '#1A1A1A' }}>This is built for a Depleted State.</h2>
+          <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.025em', lineHeight: 1.2, marginBottom: '24px', color: '#1A1A1A' }}>This is built for a body that has stopped responding.</h2>
           <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '20px' }}>
-            The 14-Day Body Decode Challenge is built specifically for adults in a Depleted State. If your scorecard came back 5-8, this is your starting point. If you have not taken the scorecard yet, the symptoms above will tell you whether you are in the right place.
+            Most women who start the 14-Day Body Decode Challenge have been doing the right things for a while and getting less back for it. Of the women we have assessed, about a third have nothing spare, half are somewhere in the middle, and fewer than one in five could handle a hard plan today. The fourteen days work out which one you are before anyone writes you a plan, so you do not need to know before you start.
           </p>
           {/* NEW: gym requirement restated as a qualifier in the fit section */}
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', background: '#ffffff', border: '1px solid #E5E5E5', borderLeft: '3px solid #1B6DFC', borderRadius: '12px', padding: '16px 18px', marginBottom: '24px' }}>
