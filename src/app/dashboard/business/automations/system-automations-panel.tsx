@@ -43,6 +43,11 @@ const AUTOMATIC_AUTOMATIONS = [
     steps: 4,
   },
   {
+    name: 'ManyChat DM Capture - Instagram comment to lead',
+    description: `The second half of comment-to-DM. A post says "comment HORMONES and I'll send you the guide", ManyChat replies publicly, DMs the PDF, asks for an email, and then calls POST /api/webhooks/manychat with it. Without that last call the address stops inside ManyChat: across the first 125 leads, not one had ever arrived from a DM, a comment or ig_dm, while MAP had been asking for addresses since 7 August.\n\nThe lead is filed as source=instagram, because that is where the person came from, with the keyword in source_detail as "manychat · HORMONES · @handle" so each flow is attributable. A lead_event is written either way.\n\nNo duplicates: somebody who comments on three September posts is one lead with three keywords against their name, not three rows. An existing email gets its source_detail appended instead.\n\nAuthenticated by a shared secret in the x-manychat-secret header, because ManyChat cannot sign a request the way Stripe and Calendly do. With MANYCHAT_WEBHOOK_SECRET unset the route refuses everything rather than running open.\n\nIt records the lead and the keyword. It does NOT subscribe anyone to anything. "Want me to email you a copy" is consent to send the copy, not consent to join a marketing list.`,
+    trigger: 'POST /api/webhooks/manychat, called by an External Request step at the end of a ManyChat flow. Inbound, not scheduled.',
+  },
+  {
     id: 'inbound-reply-forward',
     name: 'Inbound Reply Forward + Alert',
     description: `When anyone replies to an app-sent email (reply-to routes to replies.bodyrecode.au → Postmark inbound webhook), the full reply is forwarded to ${coach().email} with Reply-To set to the original sender, so Kade reads and answers it straight from his normal inbox - no dashboard trip needed. Known leads/clients also thread into Business → Inbox as a "Reply received" event; replies from unknown senders (which were previously logged-and-discarded) are now rescued to the inbox too, flagged as not-a-saved-contact. A window-gated SMS heads-up (Mon-Sat 08:30-20:00 AEST, to Kade's number) fires alongside so a reply is never missed. Forward + SMS are best-effort and never block the webhook.`,
