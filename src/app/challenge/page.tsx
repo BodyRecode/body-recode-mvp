@@ -633,7 +633,7 @@ export default function ChallengePage() {
               <div style={{ paddingTop: '22px', borderTop: '1px solid #E5E5E5' }}>
                 <p style={{ fontSize: '10px', fontWeight: 700, color: '#6B6B6B', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '14px' }}>Your three actions for week two</p>
                 {[
-                  'Sleep is your highest leverage point. Cortisol resets overnight. Prioritise sleep quality above everything else this week.',
+                  'Sleep is where the most changes for the least effort. Prioritise sleep quality above everything else this week.',
                   'Keep training intensity moderate. Hard sessions spike cortisol further and can slow progress in this pattern.',
                   'Eat breakfast within 60 minutes of waking. This supports your morning cortisol curve and begins the process of hormonal regulation for the day.',
                 ].map((action, i) => (
