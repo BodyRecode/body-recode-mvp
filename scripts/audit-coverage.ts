@@ -58,7 +58,10 @@ const JARGON = /\bfloor\b|body state|capacity is fine|regulation is gone|n=\d+|s
 
 // Marketing-speak. Reads as normal English in a strategy doc, and as agency copy
 // to a woman who is awake at 3am. Kade, 22 Aug: "people dont use the word lands".
-const SPEAK = /\blands\b|\bleverage|\bunpack\b|move the needle|double down|game.?changer|\bholistic\b|\bmindful\b|\boptimi[sz]e\b|\bactionable\b|\bthe journey\b|\bin this space\b/i
+// The first version matched only the plural, so the singular verb walked through:
+// N1 ran with "where half the women we assess land", and S1 and S2 with "landed".
+// Match the whole verb. "landing page" is our own term and stays allowed.
+const SPEAK = /\blands?\b(?! page)|\blanded\b|\bleverage|\bunpack\b|move the needle|double down|game.?changer|\bholistic\b|\bmindful\b|\boptimi[sz]e\b|\bactionable\b|\bthe journey\b|\bin this space\b/i
 
 // BR's own line is "the body is not broken, it is being misread", so saying SHE is
 // broken contradicts the brand in the same sentence. Kade, 22 Aug.
