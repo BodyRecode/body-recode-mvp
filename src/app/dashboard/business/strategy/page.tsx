@@ -945,11 +945,9 @@ const ROUND2_ADS: Round1Ad[] = [
   { slug: 'a1-wrong-one', short: 'The wrong one', layer: 'streamA', audience: 'Women 40+, neurowellness',
     img: '/creative/round2/a1-wrong-one.png',
     headline: `Training scored highest. Sleep scored lowest. Guess which one your plan adds more of`,
-    primaryText: `You train three or four times a week.
+    primaryText: `Not one of these 86 women came to us about their sleep. They came about a body that would not move.
 
-You eat well most days.
-
-And you sleep badly, and have done for years, and not one person has ever asked you about it.
+They train three or four times a week. They eat well most days. And they sleep badly, and have done for years, and not one person has ever asked them about it.
 
 We have now scored 86 women on five things. Energy, sleep, stress, how they respond to training, and how they respond to fat loss.
 
@@ -969,9 +967,9 @@ It is genuinely free, and it starts the day you join.`,
   { slug: 'a2-four-in-ten', short: 'Four in ten', layer: 'streamA', audience: 'Women 40+, neurowellness',
     img: '/creative/round2/a2-four-in-ten.png',
     headline: `You did not come here about sleep. It is the one that scores worst anyway`,
-    primaryText: `You did not come here about sleep.
+    primaryText: `Four in ten score worst on it, and it had been going on longer than the thing they actually rang about.
 
-You came because the fat will not move. Because a plan that used to work has stopped working. Because your body used to respond and now it does not.
+Nobody rings about their sleep. They ring because the fat will not move. Because a plan that used to work has stopped working. Because your body used to respond and now it does not.
 
 Then we score you, and sleep comes out bottom of the five.
 
@@ -993,9 +991,9 @@ It is genuinely free, and it starts the day you join.`,
   { slug: 'a3-under-recovering', short: 'Under-recovering', layer: 'streamA', audience: 'Women 40+, neurowellness',
     img: '/creative/round2/a3-under-recovering.png',
     headline: `Two women, same complaint. One needs to train more, one needs to stop`,
-    primaryText: `Two women walk in with the same complaint.
+    primaryText: `Same age, same words, same frustration. Put them in a room and they would agree about everything.
 
-Tired all the time. Sessions feel flat. Body will not change.
+Two women, the same week. Tired all the time. Sessions feel flat. Body will not change.
 
 One of them genuinely needs to do more.
 
@@ -1015,7 +1013,7 @@ It is genuinely free, and it starts the day you join.`,
   { slug: 'b1-eighteen', short: 'Eighteen per cent', layer: 'streamB', audience: 'Women 40+, readiness',
     img: '/creative/round2/b1-eighteen.png',
     headline: `88 women assessed. 18 in every 100 were ready for a hard plan. The rest got one anyway`,
-    primaryText: `You are doing everything right and it is not showing up.
+    primaryText: `Thirty-one per cent come out depleted. For them a hard plan does not just fail, it makes things worse.
 
 We have now assessed 88 women. Only 18 in every 100 came out ready for a hard training plan.
 
@@ -1037,7 +1035,7 @@ It is genuinely free, and it starts the day you join.`,
   { slug: 'b2-wrong-question', short: 'The wrong question', layer: 'streamB', audience: 'Women 40+, readiness',
     img: '/creative/round2/b2-wrong-question.png',
     headline: `Every plan asks how hard you can go. Nobody asks whether your body can take it`,
-    primaryText: `You are willing to work hard. That was never the problem.
+    primaryText: `The scorecard scores five things, and only one of them is about effort.
 
 Every plan asks how hard you can go. Nobody asks whether your body can take it right now.
 
@@ -1057,9 +1055,9 @@ It is genuinely free, and it starts the day you join.`,
   { slug: 'b3-eight-weeks', short: 'Eight weeks away', layer: 'streamB', audience: 'Women 40+, readiness',
     img: '/creative/round2/b3-eight-weeks.png',
     headline: `The plan you keep starting and quitting might be a good plan. It might just be early`,
-    primaryText: `You have started this plan before.
+    primaryText: `Week one felt fine. By week six she had decided she just did not have the discipline for it.
 
-Maybe twice. It worked for a fortnight, and then it did not.
+She had started that plan before. Maybe twice. It worked for a fortnight, and then it did not.
 
 Here is the part almost nobody says out loud, because there is no money in telling someone to wait.
 
