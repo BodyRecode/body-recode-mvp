@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
 
   const { data: post, error: fetchErr } = await admin
     .from('calendar_posts')
-    .select('id, date, time, type, brand, platform, title, caption, graphic, video_url, posted_at, scheduled_publish_at, publish_attempts')
+    .select('id, date, time, type, brand, platform, title, caption, graphic, video_url, posted_at, scheduled_publish_at, publish_attempts, story_auto')
     .eq('id', body.calendar_post_id)
     .single()
   if (fetchErr || !post) {
@@ -56,8 +56,12 @@ export async function POST(request: NextRequest) {
   if (post.platform && post.platform !== 'instagram') {
     return NextResponse.json({ error: 'unsupported_platform', platform: post.platform, message: 'This poster only publishes to Instagram. LinkedIn / other platforms stay manual.' }, { status: 400 })
   }
-  if (post.type === 'story') {
-    return NextResponse.json({ error: 'stories_not_supported', message: 'Instagram Stories must be posted manually - the API strips link stickers, countdown stickers, and polls, which kills the story value.' }, { status: 400 })
+  // Stories publish only when the row is marked story_auto. The API strips link
+  // stickers, countdowns and polls, and the story doctrine says the sticker IS
+  // the point, so a story that carries one has to go up by hand. story_auto
+  // marks the ones that were never going to have a sticker anyway.
+  if (post.type === 'story' && !post.story_auto) {
+    return NextResponse.json({ error: 'story_needs_sticker', message: 'This story is phone-manual. The API strips link stickers, countdowns and polls, so a story that needs one goes up by hand. Mark story_auto if it is a plain image.' }, { status: 400 })
   }
   // Brand routing. Each brand has its OWN Instagram account and its own
   // credential pair; nothing is shared and nothing falls back. A brand we have
@@ -174,7 +178,8 @@ export async function POST(request: NextRequest) {
   // right on the brand account and nonsense on the personal one, where it would
   // point the reader at the account they are already looking at.
   const finalCaption = account === 'body_recode' ? appendBrFooter(caption) : caption
-  const result = await publishToInstagram({ imageUrls, videoUrl, caption: finalCaption, account })
+  const isStory = post.type === 'story'
+  const result = await publishToInstagram({ imageUrls, videoUrl, caption: finalCaption, account, story: isStory })
 
   if (!result.ok) {
     await admin

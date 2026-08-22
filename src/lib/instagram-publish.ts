@@ -1,9 +1,19 @@
 // Instagram Graph API native publishing client.
 //
-// Publishes feed posts + carousels (image-based) from the Content Calendar
-// directly to Instagram without third-party schedulers. Stories are NOT
-// supported (Meta API strips link stickers / countdown / polls, so stories
-// stay phone-manual).
+// Publishes feed posts, carousels and reels from the Content Calendar directly
+// to Instagram without third-party schedulers.
+//
+// STORIES, from 2026-08-22, and only the plain-image kind. The API strips link
+// stickers, countdowns and polls, and the story doctrine in
+// build_warmup_stories.py says the sticker IS the point: the tap is the
+// completion signal that recovers ranking. So a story only publishes here when
+// calendar_posts.story_auto is true, which marks the ones that were never going
+// to carry a sticker anyway. Everything else stays phone-manual.
+//
+// Two ways stories differ from every other type:
+//   - No caption. Stories have no caption field; the text is in the image.
+//   - No scheduled_publish_time. Meta rejects it for STORIES, so our own cron
+//     has to fire at the moment the story should go live.
 //
 // TWO ACCOUNTS, from 2026-08-20. @kade_dunstone_ was the only channel with no
 // automation, so it died whenever Kade got busy - twice, most recently going
@@ -44,6 +54,9 @@ export interface PublishInput {
   // used as the cover frame. Meta must be able to fetch the URL itself, so it
   // has to be publicly reachable - Supabase `videos` bucket, not a signed URL.
   videoUrl?: string
+  /** Publish to Stories rather than the feed. Plain image only: no caption, no
+   *  sticker, and Meta rejects scheduled_publish_time for this type. */
+  story?: boolean
   /** Which IG account to publish to. Defaults to body_recode so existing
    *  callers are unchanged. */
   account?: IgAccount
@@ -166,13 +179,22 @@ export async function publishToInstagram(input: PublishInput): Promise<PublishRe
     return { ok: false, error: e instanceof Error ? e.message : String(e), stage: 'env' }
   }
 
-  const isReel = !!input.videoUrl
-  const isCarousel = !isReel && input.imageUrls.length > 1
+  const isStory = !!input.story
+  const isReel = !isStory && !!input.videoUrl
+  const isCarousel = !isStory && !isReel && input.imageUrls.length > 1
   const isScheduled = !!input.scheduledPublishTime
   let containerId: string
 
   try {
-    if (isReel) {
+    if (isStory) {
+      // No caption and no scheduled_publish_time: Meta rejects both for
+      // STORIES. The cron calls this at the moment it should be live.
+      const story = await graphPost(account, `/${igId}/media`, {
+        media_type: 'STORIES',
+        image_url: input.imageUrls[0],
+      })
+      containerId = story.id
+    } else if (isReel) {
       // Video containers transcode asynchronously and take far longer than
       // images, so the FINISHED poll below is mandatory rather than an
       // optimisation. Publishing early returns a "media not ready" error.

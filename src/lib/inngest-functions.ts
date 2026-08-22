@@ -2150,7 +2150,9 @@ export const igPublisherCron = inngest.createFunction(
         .select('id, title, caption, graphic, publish_attempts, brand')
         .in('brand', ['body_recode', 'personal_brand'])
         .eq('platform', 'instagram')
-        .neq('type', 'story')
+        // Stories are excluded unless marked story_auto: the API strips
+        // stickers, so only the plain-image ones can publish themselves.
+        .or('type.neq.story,story_auto.eq.true')
         .is('posted_at', null)
         .not('scheduled_publish_at', 'is', null)
         .lte('scheduled_publish_at', nowIso)
