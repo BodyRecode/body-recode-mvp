@@ -47,8 +47,12 @@ export async function POST(request: NextRequest) {
 
   const email = String(body.email ?? '').trim().toLowerCase()
   const keyword = String(body.keyword ?? '').trim().toUpperCase() || 'UNKNOWN'
-  const name = String(body.name ?? '').trim() || null
+  // igUsername is read before name, because name falls back to it.
+  // name is NOT NULL on leads, and ManyChat does not always have a first name.
+  // Fall back to the handle, then to something honest rather than empty.
   const igUsername = String(body.ig_username ?? '').trim() || null
+  const rawName = String(body.name ?? '').trim()
+  const name = rawName || (igUsername ? `@${igUsername}` : 'Instagram DM')
 
   if (!EMAIL.test(email)) {
     return NextResponse.json({ error: 'bad_email', message: 'No usable email address in the request body.' }, { status: 400 })
@@ -75,7 +79,10 @@ export async function POST(request: NextRequest) {
 
   const coachId = await getDefaultCoachId(admin)
   const { data: created, error } = await admin.from('leads').insert({
-    coach_id: coachId, name, email, source: 'instagram', source_detail: detail, status: 'new',
+    coach_id: coachId, name, email, source: 'instagram', source_detail: detail,
+    // 'new_check_in' is the first value in the leads_status_check constraint and
+    // the same entry point every other public surface uses. There is no 'new'.
+    status: 'new_check_in',
   }).select('id').single()
 
   if (error) {
