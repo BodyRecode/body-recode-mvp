@@ -584,13 +584,26 @@ async function checkScorecardAutomation(admin: ReturnType<typeof createAdminClie
     //
     // Two rules now: only ever reactivate the OLDEST, and treat the existence
     // of a second one as a failure to surface rather than a row to nurse.
-    const { data: matches, error } = await admin
+    //
+    // MATCHED BY PATTERN, NOT BY EXACT NAME (23 Aug 2026). An exact list only ever
+    // catches the spellings we already know about, and the whole problem was a
+    // THIRD row nobody predicted. A pattern catches the next one whatever it is
+    // called, including whatever punctuation an editor happens to use.
+    //
+    // Rows prefixed [RETIRED are excluded deliberately. The em-dash duplicate was
+    // renamed to "[RETIRED 2026-08-17 duplicate] ..." so it can never be mistaken
+    // for the live one, and its 8 execution records were KEPT: they are the audit
+    // trail of the double-send that took four attempts to stop. Deleting the row
+    // would have destroyed the evidence without touching whatever created it,
+    // which has still never been established.
+    const { data: allMatches, error } = await admin
       .from('be_workflows')
       .select('id, name, is_active, created_at')
-      .in('name', ['Scorecard - Follow-up Sequence', 'Scorecard — Follow-up Sequence'])
+      .ilike('name', '%scorecard%follow-up sequence%')
       .eq('trigger_type', 'form_submitted')
       .order('created_at', { ascending: true })
 
+    const matches = (allMatches ?? []).filter(w => !w.name?.startsWith('[RETIRED'))
     const workflow = matches?.[0] ?? null
     const duplicates = (matches ?? []).slice(1)
 
@@ -720,6 +733,19 @@ async function checkScorecardAutomation(admin: ReturnType<typeof createAdminClie
 
 // THE SEEDED CONTENT, HOISTED so the health check can compare against it rather
 // than only counting steps.
+//
+// THIS IS NOT WHAT IS LIVE, AND IT MUST NOT BE MADE SO BY A DUMP. The five emails
+// in the database were rewritten in the UI and have better subject lines than
+// these. Re-sync writes this array OVER them, so clicking it replaces good copy
+// with old copy. The drift check below now says so instead of reporting ok.
+//
+// The obvious fix, regenerate this array from the live rows, is WRONG: the live
+// bodies contain a literal bodyrecode.au in all five emails, while these use
+// ${brand().marketingDomain} so a white-label tenant gets its own domain. Dumping
+// live into here would hardcode Body Recode's domain into every tenant's sequence.
+//
+// Reconciling them means rewriting the live prose back into this array with the
+// brand() calls restored. An editorial job on five emails, not a copy and paste.
 //
 // 23 Aug 2026, Kade: "now the automation doesnt say it needs re-syncing?" It did
 // not. The check counted nine steps, found nine, and reported ok while every
