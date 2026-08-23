@@ -21,13 +21,12 @@ async function main() {
     .ilike('name', '%corecard%').order('created_at')
 
   for (const w of wfs ?? []) {
-    const q = (t: string, f: Record<string, unknown> = {}) =>
-      Object.entries(f).reduce((b, [k, v]) => b.eq(k, v),
-        db.from(t).select('id', { count: 'exact', head: true }).eq('workflow_id', w.id) as never) as never
-
-    const { count: steps } = await q('be_workflow_steps')
-    const { count: execs } = await q('be_workflow_executions')
-    const { count: running } = await q('be_workflow_executions', { status: 'running' })
+    const { count: steps } = await db.from('be_workflow_steps')
+      .select('id', { count: 'exact', head: true }).eq('workflow_id', w.id)
+    const { count: execs } = await db.from('be_workflow_executions')
+      .select('id', { count: 'exact', head: true }).eq('workflow_id', w.id)
+    const { count: running } = await db.from('be_workflow_executions')
+      .select('id', { count: 'exact', head: true }).eq('workflow_id', w.id).eq('status', 'running')
 
     console.log(`\n${w.is_active ? 'LIVE    ' : 'inactive'}  ${w.name}`)
     console.log(`          created ${w.created_at?.slice(0, 10)}  coach_id ${w.coach_id ?? 'NULL'}`)
