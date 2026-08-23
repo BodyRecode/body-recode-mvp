@@ -170,14 +170,60 @@ async function waitForContainerReady(account: IgAccount, containerId: string, tr
   throw new Error(`Container ${containerId} never reached FINISHED after ${(tries * delayMs) / 1000}s`)
 }
 
+// WHO ARE WE ABOUT TO POST AS?
+//
+// Kade, 23 Aug 2026: "the past two days ive had to delete the BR post that has
+// mistakenly been posted to my personal brand page". Two Body Recode posts, on
+// 21 and 22 Aug, published to @kade_dunstone_.
+//
+// The account map in this file was never wrong. The ENV VARS behind it are: the
+// token in META_GRAPH_ACCESS_TOKEN reaches exactly one Instagram account, and it
+// is the personal one. So the code asked for Body Recode, resolved credentials
+// that belong to the personal page, and posted there, correctly, as instructed.
+//
+// Nothing downstream could catch that. calendar_posts recorded brand=body_recode,
+// the publish returned success, and the only detector was Kade opening the wrong
+// app and finding a client post on his personal feed.
+//
+// So the publisher now asks Meta who the target account actually is and refuses
+// if the answer is not the handle it expects. An env var can be wrong; a username
+// coming back from Graph cannot be. One extra call per publish, and it makes
+// posting to the wrong audience impossible rather than merely unlikely.
+const identityCache = new Map<string, string>()
+
+async function assertIdentity(account: IgAccount, igId: string, token: string): Promise<string | null> {
+  const expected = ACCOUNTS[account].handle.replace(/^@/, '').toLowerCase()
+  let actual = identityCache.get(igId)
+  if (!actual) {
+    const res = await fetch(`${GRAPH_BASE}/${igId}?fields=username&access_token=${encodeURIComponent(token)}`)
+    const json = await res.json().catch(() => ({})) as { username?: string; error?: { message?: string } }
+    if (!json.username) {
+      return `Cannot confirm which Instagram account ${ACCOUNTS[account].idVar} points at`
+        + `${json.error?.message ? `: ${json.error.message}` : ''}. Refusing to publish rather than guess.`
+    }
+    actual = json.username.toLowerCase()
+    identityCache.set(igId, actual)
+  }
+  if (actual !== expected) {
+    return `WRONG ACCOUNT. Publishing as "${account}" resolved to @${actual}, expected @${expected}. `
+      + `${ACCOUNTS[account].tokenVar} and ${ACCOUNTS[account].idVar} belong to the wrong Instagram account. `
+      + `Refusing to publish: this is how Body Recode posts reached the personal feed on 21 and 22 Aug 2026.`
+  }
+  return null
+}
+
 export async function publishToInstagram(input: PublishInput): Promise<PublishResult | PublishError> {
   const account: IgAccount = input.account ?? 'body_recode'
   let igId: string
+  let token: string
   try {
-    igId = env(account).igId
+    ({ igId, token } = env(account))
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : String(e), stage: 'env' }
   }
+
+  const wrongAccount = await assertIdentity(account, igId, token)
+  if (wrongAccount) return { ok: false, error: wrongAccount, stage: 'env' }
 
   const isStory = !!input.story
   const isReel = !isStory && !!input.videoUrl
