@@ -12,11 +12,6 @@ function errorRedirect(reason: string) {
 }
 
 export async function GET(request: NextRequest) {
-  // Retired 24 Aug 2026 - see src/lib/scorecard-report-retired.ts. This one is a
-  // GET a person can land on from an old email, so redirect rather than 410.
-  return NextResponse.redirect(`${appUrl()}/scorecard`, { status: 302 })
-
-  // eslint-disable-next-line no-unreachable
   const { stripe, opts } = tenantStripe()
   const email = request.nextUrl.searchParams.get('email')?.toLowerCase().trim()
 
