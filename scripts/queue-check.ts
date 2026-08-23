@@ -21,10 +21,17 @@ async function main() {
     console.log(`  21-31 Aug: ${aug.length} feed posts`)
     console.log(`  Sept:      ${sep.length} feed posts`)
     console.log(`  last one:  ${b.at(-1)?.date.slice(0,10) ?? 'NOTHING QUEUED'}`)
+    // `scheduled` IS NOT WHAT PUBLISHES A POST. The auto-publisher selects on
+    // scheduled_publish_at being set and in the past; `scheduled` is a flag the
+    // dashboard reads. Reporting the flag said "11 of 11 scheduled to
+    // auto-publish" while five personal-brand posts had no timestamp and were
+    // never going to run, and it said the same for all 23 September posts.
     const sch = b.filter(r => r.scheduled).length
+    const armed = b.filter(r => r.scheduled && r.scheduled_publish_at).length
     const withGraphic = b.filter(r => r.graphic).length
     const withCaption = b.filter(r => r.caption && r.caption.length > 40).length
-    console.log(`  scheduled to auto-publish: ${sch} of ${b.length}`)
+    console.log(`  flagged scheduled:         ${sch} of ${b.length}`)
+    console.log(`  ARMED (has publish time):  ${armed} of ${sch}${armed < sch ? `   <-- ${sch - armed} will never run` : ''}`)
     console.log(`  has a graphic: ${withGraphic}   has a real caption: ${withCaption}`)
     for (const r of b) console.log(`     ${r.date.slice(0,10)}  sched=${r.scheduled?'Y':'n'} gfx=${r.graphic?'Y':'n'}  ${(r.title??'').slice(0,44)}`)
   }
