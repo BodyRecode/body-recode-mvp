@@ -567,6 +567,70 @@ async function checkClientsWithMissedCheckins(admin: ReturnType<typeof createAdm
 
 // ─── Automation checks ────────────────────────────────────────────────────
 
+// WHO ARE WE, AND FOR HOW MUCH LONGER?
+//
+// Added 24 Aug 2026 after four days in which every Body Recode post published to
+// @kade_dunstone_. The cause was two changes on one afternoon: the account ID was
+// pointed at the personal account, and the Meta app's re-authorisation dropped the
+// Body Recode Page. Nothing could see either, because the env vars are Sensitive
+// and cannot be read back by anyone, including from the Vercel dashboard.
+//
+// So this asks Meta the two questions that matter and cannot be answered any other
+// way. Which handle is behind each brand, and when does the token die.
+//
+// The expiry half is the quieter risk. These tokens last about 60 days, and when
+// one lapses both accounts simply stop publishing. A silence looks exactly like a
+// quiet week, which is the failure mode this whole file exists to prevent.
+async function checkInstagramAccounts(): Promise<CheckResult> {
+  const BRANDS = [
+    { name: 'body_recode', expect: 'body_recode_', tokenVar: 'META_GRAPH_ACCESS_TOKEN', idVar: 'META_IG_BUSINESS_ACCOUNT_ID' },
+    { name: 'personal_brand', expect: 'kade_dunstone_', tokenVar: 'META_GRAPH_ACCESS_TOKEN_PB', idVar: 'META_IG_BUSINESS_ACCOUNT_ID_PB' },
+  ]
+  const wrong: string[] = []
+  const expiring: string[] = []
+
+  try {
+    for (const b of BRANDS) {
+      const token = process.env[b.tokenVar]?.trim()
+      const igId = process.env[b.idVar]?.trim()
+      if (!token || !igId) { wrong.push(`${b.name}: ${!token ? b.tokenVar : b.idVar} is not set`); continue }
+
+      const who = await fetch(`https://graph.facebook.com/v21.0/${igId}?fields=username&access_token=${encodeURIComponent(token)}`)
+        .then(r => r.json()).catch(() => ({})) as { username?: string; error?: { message?: string } }
+      const actual = who.username?.toLowerCase()
+      if (!actual) wrong.push(`${b.name}: cannot resolve ${b.idVar}${who.error?.message ? ` (${who.error.message})` : ''}`)
+      else if (actual !== b.expect) wrong.push(`${b.name} resolves to @${actual}, expected @${b.expect}`)
+
+      const dbg = await fetch(`https://graph.facebook.com/v21.0/debug_token?input_token=${encodeURIComponent(token)}&access_token=${encodeURIComponent(token)}`)
+        .then(r => r.json()).catch(() => ({})) as { data?: { expires_at?: number } }
+      const exp = dbg.data?.expires_at
+      if (exp && exp > 0) {
+        const days = Math.floor((exp * 1000 - Date.now()) / 86_400_000)
+        if (days <= 14) expiring.push(`${b.tokenVar} expires in ${days} day${days === 1 ? '' : 's'}`)
+      }
+    }
+  } catch (e) {
+    return { name: 'Instagram Accounts', status: 'failed', detail: String(e),
+      manualFix: 'Open /api/ig/accounts while signed in to see which handle each brand resolves to.' }
+  }
+
+  if (wrong.length) {
+    return {
+      name: 'Instagram Accounts', status: 'failed',
+      detail: wrong.join('. ') + '. Posts for that brand are refused rather than published, which is deliberate.',
+      manualFix: 'Regenerate the token in the Graph API Explorer granting BOTH Pages, extend it to long-lived, and update the four Meta vars in Vercel. Then open /api/ig/accounts to confirm.',
+    }
+  }
+  if (expiring.length) {
+    return {
+      name: 'Instagram Accounts', status: 'failed',
+      detail: expiring.join('. ') + '. When it lapses BOTH accounts stop publishing, and a silent queue looks like a quiet week.',
+      manualFix: 'Generate a new token in the Graph API Explorer, extend it to long-lived in the Access Token Debugger, and update the Meta vars in Vercel.',
+    }
+  }
+  return { name: 'Instagram Accounts', status: 'ok', detail: 'Both brands resolve to the right handle, tokens valid.' }
+}
+
 async function checkScorecardAutomation(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
   try {
     // Match BOTH spellings — the canonical hyphen name and the legacy em-dash
@@ -1225,6 +1289,7 @@ export async function GET(request: NextRequest) {
     inngestRegistration,
     funnel,
     personalBrandCadence,
+    igAccounts,
   ] = await Promise.all([
     checkBookingWrite(admin),
     checkLeadWrite(admin),
@@ -1242,6 +1307,7 @@ export async function GET(request: NextRequest) {
     checkInngestRegistration(),
     checkFunnelActivity(admin),
     checkPersonalBrandCadence(admin),
+    checkInstagramAccounts(),
   ])
 
   const checks: CheckResult[] = [
@@ -1252,7 +1318,7 @@ export async function GET(request: NextRequest) {
     // Data integrity
     clientsIntake, activePrograms, activeNutrition, stuckLeads, pendingIntakes, missedCheckins,
     // Automation + pipeline
-    automation, publishingPulse, inngestRegistration, funnel, personalBrandCadence,
+    automation, publishingPulse, inngestRegistration, funnel, personalBrandCadence, igAccounts,
   ]
 
   const failures = checks.filter(c => c.status === 'failed')
