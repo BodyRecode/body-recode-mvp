@@ -241,7 +241,7 @@ export function emailUnsubscribeFooter(unsubUrl: string): string {
         </tr>
         <tr>
           <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:20px 0 0;font-family:${EMAIL_FF};font-size:12px;line-height:1.7;color:${EMAIL_MUTED};">
-            <p style="margin:0 0 6px;">You are receiving this because you took the Body State Scorecard or signed up at ${t.name}.</p>
+            <p style="margin:0 0 6px;">You are receiving this because you took the Readiness Scorecard or signed up at ${t.name}.</p>
             <p style="margin:0 0 6px;"><a href="${unsubUrl}" style="color:${EMAIL_MUTED};text-decoration:underline;">Unsubscribe from these emails</a></p>
             <p style="margin:0;color:#8A8A8E;">${c.fullName} &middot; ${t.name} &middot; ${c.location}</p>
           </td>

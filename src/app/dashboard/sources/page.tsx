@@ -123,7 +123,7 @@ export default async function SourcesPage() {
       </Card>
 
       <Card className="mb-5">
-        <SectionLabel meta="Body State Scorecard">Scorecard URLs</SectionLabel>
+        <SectionLabel meta="Readiness Scorecard">Scorecard URLs</SectionLabel>
         <div className="space-y-3">
           {SCORECARD_SOURCES.map(src => (
             <SourceItem

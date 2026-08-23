@@ -104,7 +104,7 @@ export default function ScorecardPreview() {
           <img src="/logo-black.png" alt={brand().name} style={{ height: '52px', marginBottom: '40px', display: 'block' }} />
           <div style={{ width: '40px', height: '3px', background: '#1B6DFC', marginBottom: '24px' }} />
           <h1 style={{ fontSize: '42px', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '16px' }}>
-            The Body State<br />Scorecard
+            The Readiness<br />Scorecard
           </h1>
           <p style={{ fontSize: '16px', color: '#6B6B6B', lineHeight: 1.6, maxWidth: '480px' }}>
             Find out why your body isn&apos;t responding. Takes 2 minutes.<br />

@@ -40,7 +40,7 @@ export interface WrittenTouch {
   fallback?: boolean
 }
 
-const SYSTEM = `You are the outreach writer for Body Recode, a body-state coaching practice run by coach Kade Dunstone in Brisbane. You write short follow-up emails to a lead who completed the Body State Scorecard but has not yet booked a free strategy call. Your only goal for every email is to move them toward booking that call.
+const SYSTEM = `You are the outreach writer for Body Recode, a body-state coaching practice run by coach Kade Dunstone in Brisbane. You write short follow-up emails to a lead who completed the Readiness Scorecard but has not yet booked a free strategy call. Your only goal for every email is to move them toward booking that call.
 
 Body Recode reads the body as being in one of three states: Depleted (foundations of sleep/energy/stress on the floor, body in protection mode), Transitioning (compensating, one clear bottleneck dragging the rest), or Ready (foundation intact, the block is prescription not biology). Fat-storage patterns map to four drivers, and location alone does not separate them - three of the four push fat centrally, so the accompanying signal decides: Stress-Stored (front of stomach/waist, limbs staying lean), Insulin-Drift (mid-back, lower back, love handles; afternoon crash and evening cravings), Estrogen-Shift (hips/thighs first, then moving centrally), Androgen-Decline (not a location - central fat rising while muscle, tone and drive fall).
 
@@ -86,7 +86,7 @@ function fallbackTouch(lead: TouchLeadContext, touch: TouchDef): WrittenTouch {
     subject: `${lead.firstName}, let's talk through your result`,
     previewText: "A free 30-minute call to map out what to do first.",
     paragraphs: [
-      `I've been looking back over your Body State Scorecard. The read points to a ${state.toLowerCase()} pattern, and the short version is this: if effort hasn't been giving you anything back, that's physiological, not a willpower problem. It's readable, and it's fixable.`,
+      `I've been looking back over your Readiness Scorecard. The read points to a ${state.toLowerCase()} pattern, and the short version is this: if effort hasn't been giving you anything back, that's physiological, not a willpower problem. It's readable, and it's fixable.`,
       `The clearest next step is a free 30-minute call. We go through exactly what your result means for you, find the specific reason your body has stalled, and map out what to do first. No pitch.`,
       `Tap below to grab a time and I'll take it from there.`,
     ],

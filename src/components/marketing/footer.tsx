@@ -100,7 +100,7 @@ export default function MarketingFooter({ variant = 'consumer' }: { variant?: Va
             ) : (
               <>
                 <a href="/performance-coaching" style={footerLink}>Online 1:1</a>
-                <a href="/scorecard" style={footerLink}>Body State Scorecard</a>
+                <a href="/scorecard" style={footerLink}>Readiness Scorecard</a>
                 <a href="/book" style={footerLink}>Book a call</a>
                 <a href={brand().marketingDomain} style={footerLinkMuted}>{brand().name}™ Platform →</a>
               </>

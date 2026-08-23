@@ -369,7 +369,7 @@ export async function POST(request: NextRequest) {
             <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#FFFFFF" style="background-color:#FFFFFF;">
               <tr>
                 <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:14px 18px;border:1px solid #E5E5E5;border-radius:12px;font-family:${EMAIL_FF};">
-                  <p style="margin:0 0 4px;font-size:10px;font-weight:700;color:#6B6B6B;letter-spacing:0.12em;text-transform:uppercase;font-family:${EMAIL_FF};">Body State</p>
+                  <p style="margin:0 0 4px;font-size:10px;font-weight:700;color:#6B6B6B;letter-spacing:0.12em;text-transform:uppercase;font-family:${EMAIL_FF};">Readiness</p>
                   <p style="margin:0;font-size:16px;font-weight:800;color:${stateColor};letter-spacing:-0.01em;font-family:${EMAIL_FF};">${body_state}</p>
                 </td>
               </tr>

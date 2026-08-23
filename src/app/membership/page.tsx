@@ -102,7 +102,7 @@ const FAQS = [
 ]
 
 const FILTER_ROWS: FilterRow[] = [
-  { state: 'No pattern read yet', desc: 'Start with the free 2-minute Body State Scorecard. It captures your state and routes you into the free 14-Day Challenge if you are Depleted. Day 7 Check-In identifies your pattern. Day 14 Result tells you which one. Then come back here ready.', cta: 'Start with the Scorecard', href: `${brand().performanceDomain}/scorecard?intent=challenge&source=membership_filter` },
+  { state: 'No pattern read yet', desc: 'Start with the free 2-minute Readiness Scorecard. It captures your state and routes you into the free 14-Day Challenge if you are Depleted. Day 7 Check-In identifies your pattern. Day 14 Result tells you which one. Then come back here ready.', cta: 'Start with the Scorecard', href: `${brand().performanceDomain}/scorecard?intent=challenge&source=membership_filter` },
   { state: 'Want focused six weeks first', desc: 'The 6-Week Body Rewire Blueprint is concentrated pattern correction. $97 one-time. By Week 6 the pattern is corrected and the Membership becomes the natural ascension.', cta: 'Start with the Blueprint', href: '/blueprint' },
   { state: "Don't know your state yet?", desc: 'Take the 2-minute scorecard first. It tells you which state you are in and which next step is built for you.', cta: 'Take the Scorecard', href: `${brand().performanceDomain}/scorecard?source=membership_filter` },
 ]

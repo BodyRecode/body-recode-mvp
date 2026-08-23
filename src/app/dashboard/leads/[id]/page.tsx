@@ -335,7 +335,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       <div className="space-y-4">
         {lead.scorecard_score != null ? (
           <Card>
-            <CardTitle>Body State Scorecard</CardTitle>
+            <CardTitle>Readiness Scorecard</CardTitle>
             {sections && (
               <div className="grid grid-cols-5 gap-2 mb-4">
                 {Object.entries(SCORECARD_SECTIONS).map(([key, title]) => {

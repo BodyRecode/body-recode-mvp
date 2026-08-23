@@ -693,10 +693,10 @@ async function resyncScorecardWorkflow(
     {
       position: 1, type: 'action', action_type: 'send_email',
       config: {
-        subject: 'Your Body State result',
+        subject: 'Your readiness result',
         body: `Hi {{first_name}},
 
-Your scorecard result: {{scorecard_score}}/15. Body state: {{scorecard_state}}.
+Your scorecard result: {{scorecard_score}}/15. Readiness: {{scorecard_state}}.
 
 That result tells you one specific thing: which state your body is currently in.
 
@@ -723,11 +723,11 @@ Body Recode`,
         subject: 'What your {{scorecard_state}} result actually means',
         body: `Hi {{first_name}},
 
-Your score was {{scorecard_score}}/15. Body state: {{scorecard_state}}.
+Your score was {{scorecard_score}}/15. Readiness: {{scorecard_state}}.
 
 Most people look at that result and think they need to train harder or eat less. That is usually the wrong call.
 
-Your body state is a biological signal. It tells you how your body is currently handling load, how well it is recovering, and how much capacity it has to respond right now. The right prescription depends entirely on that state.
+Your readiness is a biological signal. It tells you how your body is currently handling load, how well it is recovering, and how much capacity it has to respond right now. The right prescription depends entirely on that state.
 
 The Body Decode Report goes through exactly what {{scorecard_state}} means for your training, your nutrition, and your fat loss. It is written specifically to your result, not a generic guide.
 
@@ -743,7 +743,7 @@ Body Recode`,
     {
       position: 5, type: 'action', action_type: 'send_email',
       config: {
-        subject: 'Re: your Body State Scorecard',
+        subject: 'Re: your Readiness Scorecard',
         body: `Hi {{first_name}},
 
 Following up on your scorecard.
@@ -769,7 +769,7 @@ Body Recode`,
         subject: 'The prescription problem',
         body: `Hi {{first_name}},
 
-Most coaching programs give everyone the same plan. Same training, same nutrition, same timeline. Your body state does not factor into it at all.
+Most coaching programs give everyone the same plan. Same training, same nutrition, same timeline. Your readiness does not factor into it at all.
 
 Your scorecard came back as {{scorecard_state}}. That is a specific biological pattern, not a label. It tells me how your body is handling load, how well it is recovering, and how much capacity it has to adapt right now.
 

@@ -235,7 +235,7 @@ export default function HelpPage() {
               <div>
                 <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-widest mb-3">Phase 1 - Lead Arrives</p>
                 <div className="space-y-2">
-                  <ChecklistItem text="Lead completes the Body State Scorecard at performance.bodyrecode.au" />
+                  <ChecklistItem text="Lead completes the Readiness Scorecard at performance.bodyrecode.au" />
                   <ChecklistItem text="Lead is automatically created in the CRM - no action needed" />
                   <ChecklistItem text="You receive a scorecard submission notification email immediately" />
                   <ChecklistItem text="Lead is offered the $37 Body Decode Report post-scorecard" />
@@ -470,7 +470,7 @@ export default function HelpPage() {
 
           {/* Section 1 */}
           <Section id="lead-pipeline" title="1. Lead Pipeline" colour="teal">
-            <p>Every potential client enters the system as a <strong>lead</strong>. Leads are created manually or automatically when someone completes the Body State Scorecard at performance.bodyrecode.au.</p>
+            <p>Every potential client enters the system as a <strong>lead</strong>. Leads are created manually or automatically when someone completes the Readiness Scorecard at performance.bodyrecode.au.</p>
             <p>On the lead detail page, the <strong>Contact</strong> section has an <strong>Edit</strong> link that lets you update the lead&apos;s name, email, and phone number directly from the dashboard without going to Supabase.</p>
             <p>Leads move through statuses as they progress:</p>
             <StatusList items={[
@@ -485,8 +485,8 @@ export default function HelpPage() {
               { label: 'Active - Pre-Start', desc: 'In the 3-7 day window between Foundational Read paid and the coaching start date. Distinct from the Deliberate Start (IEEP) which is the locked 2-week phase after coaching has begun.' },
               { label: 'Active Coaching', desc: 'Coaching underway.' },
             ]} />
-            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Body State Scorecard on Lead Detail</p>
-            <p>When a lead completes the Body State Scorecard (on performance.bodyrecode.au), their score and state are recorded as a <strong>scorecard_completed</strong> event on their lead record. On the lead detail page, a <strong>Body State Scorecard</strong> card appears below the contact info showing:</p>
+            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Readiness Scorecard on Lead Detail</p>
+            <p>When a lead completes the Readiness Scorecard (on performance.bodyrecode.au), their score and state are recorded as a <strong>scorecard_completed</strong> event on their lead record. On the lead detail page, a <strong>Readiness Scorecard</strong> card appears below the contact info showing:</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm mt-1">
               <li>Their total score (e.g. 7 / 15)</li>
               <li>Their body state (Depleted / Transitioning / Ready) as a colour-coded badge</li>
@@ -496,7 +496,7 @@ export default function HelpPage() {
             <p className="mt-2">This card only appears if the lead has a scorecard_completed event. Legacy leads who entered before the scorecard was the lead magnet will not show this card.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Scorecard Lead Creation</p>
-            <p>When someone completes the Body State Scorecard on performance.bodyrecode.au, a lead is <strong>automatically created</strong> in the CRM - no manual entry required. Their name, email, score, body state, and section scores are all captured. You receive a branded notification email immediately on every scorecard submission.</p>
+            <p>When someone completes the Readiness Scorecard on performance.bodyrecode.au, a lead is <strong>automatically created</strong> in the CRM - no manual entry required. Their name, email, score, body state, and section scores are all captured. You receive a branded notification email immediately on every scorecard submission.</p>
             <p className="mt-2">Leads created this way are tagged with <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">source_detail: scorecard</code>. This is now the primary lead entry path.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Fat Map Zone Typing (from 2026-06-24)</p>
@@ -1328,9 +1328,9 @@ export default function HelpPage() {
             <Note><strong>Duplicate scorecard sequence (found + fixed 2026-07-28).</strong> Two copies of the scorecard follow-up workflow were sitting in <code>be_workflows</code> — one named with an em-dash, one with a hyphen — both active, both listening on the same <code>form_submitted</code> / <code>scorecard</code> trigger. <code>fireTrigger()</code> enrols a lead into <strong>every</strong> active workflow matching a trigger, so from 13 Jul every scorecard lead ran both sequences and got near-duplicate emails one second apart on all five touches (e.g. &ldquo;Your Body State result&rdquo; + &ldquo;Why your body has stopped responding&rdquo;). Four leads were affected: Carmine Epis, Kim Stevenson, Brittany Vos, Nic McKirdy. The em-dash copy is now deactivated — the workflow runner re-checks <code>is_active</code> before every step, so the in-flight runs cancelled themselves at their next wake-up with nothing further sent. Root cause of the recurrence risk: <code>/api/scorecard/seed-automation</code> looked the workflow up with <code>maybeSingle()</code>, which errors and returns null once two rows match, so re-running it would have created a <em>third</em> copy. It now takes all matches, keeps the live one, and deactivates any extras. If you ever add a workflow by hand, check nothing else is already listening on the same trigger.</Note>
 
             <p className="font-semibold text-[#1A1A1A] mt-4">Scorecard Follow-up Sequence (automatic)</p>
-            <p>Fires when someone completes the Body State Scorecard. <strong>5 emails over 13 days</strong>. Each email is personalised to the lead&apos;s score and body state using <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">{`{{scorecard_score}}`}</code>, <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">{`{{scorecard_state}}`}</code>, and <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">{`{{first_name}}`}</code>. Voice: leads with fat loss as the symptom (buyer language), introduces body state vocabulary as the diagnostic. Emails 1-2 push the $37 Body Decode Report; emails 3-4 push the free strategy call; email 5 names both options based on state.</p>
+            <p>Fires when someone completes the Readiness Scorecard. <strong>5 emails over 13 days</strong>. Each email is personalised to the lead&apos;s score and body state using <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">{`{{scorecard_score}}`}</code>, <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">{`{{scorecard_state}}`}</code>, and <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">{`{{first_name}}`}</code>. Voice: leads with fat loss as the symptom (buyer language), introduces body state vocabulary as the diagnostic. Emails 1-2 push the $37 Body Decode Report; emails 3-4 push the free strategy call; email 5 names both options based on state.</p>
             <div className="space-y-1">
-              <SeqRow day="Immediate" label="Email 1 - Your Body State result + book a call or get the report" />
+              <SeqRow day="Immediate" label="Email 1 - Your readiness result + book a call or get the report" />
               <SeqRow day="Day 2" label="Email 2 - What your body state result actually means" />
               <SeqRow day="Day 4" label="Email 3 - Following up on your scorecard" />
               <SeqRow day="Day 8" label="Email 4 - The prescription problem" />
@@ -2483,7 +2483,7 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">System Automations</p>
             <p>These run automatically. You cannot break them by doing nothing - they are always active.</p>
             <StatusList items={[
-              { label: 'Scorecard Follow-up Sequence', desc: '5-email sequence over 13 days. Fires when someone completes the Body State Scorecard. Voice leads with fat loss / buyer language; body state vocabulary used as the diagnostic frame. Emails 1-2 drive the $37 report; emails 3-4 drive the free strategy call; email 5 names both options based on state.' },
+              { label: 'Scorecard Follow-up Sequence', desc: '5-email sequence over 13 days. Fires when someone completes the Readiness Scorecard. Voice leads with fat loss / buyer language; body state vocabulary used as the diagnostic frame. Emails 1-2 drive the $37 report; emails 3-4 drive the free strategy call; email 5 names both options based on state.' },
               { label: 'Performance Report Follow-up', desc: '3-email sequence. Fires when someone purchases the $37 Body Decode Report via Stripe. Cancels the scorecard follow-up and replaces it with report-specific copy.' },
               { label: 'Zoom Booking Confirmation', desc: 'Confirmation + .ics, 2-hour reminder, 30-minute reminder, coach notification. Fires automatically when a lead books via bodyrecode.au/book. Single Zoom call covers diagnosis through pricing through decision (Zoom 1 / Zoom 2 split deprecated 2026-04-29).' },
               { label: 'Self-Guided Program Offer', desc: '$97 program offer email. Fires automatically as part of the Zoom 1 Declined sequence below - no second action needed.' },
@@ -2700,14 +2700,14 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">QR Code URLs</p>
             <p>For physical print materials. Each URL passes a source tag through to the lead record on submission.</p>
             <StatusList items={[
-              { label: 'Floor Banner', desc: 'bodyrecode.au/not-a-sign-up?source=qr_floor_banner - routes to the Body State Scorecard' },
+              { label: 'Floor Banner', desc: 'bodyrecode.au/not-a-sign-up?source=qr_floor_banner - routes to the Readiness Scorecard' },
               { label: 'Window Decal', desc: 'bodyrecode.au/not-a-sign-up?source=qr_window' },
               { label: 'Business Card', desc: 'bodyrecode.au/not-a-sign-up?source=qr_card' },
-              { label: 'Flyer', desc: 'bodyrecode.au/not-a-sign-up?source=qr_flyer - routes to the Body State Scorecard' },
+              { label: 'Flyer', desc: 'bodyrecode.au/not-a-sign-up?source=qr_flyer - routes to the Readiness Scorecard' },
             ]} />
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Scorecard URLs</p>
-            <p>Use these for Instagram bio, scorecard-specific posts, and DMs to gym members offering complementary first sessions. These link directly to the Body State Scorecard with source tracking. Use these as the primary link in bio for any channel.</p>
+            <p>Use these for Instagram bio, scorecard-specific posts, and DMs to gym members offering complementary first sessions. These link directly to the Readiness Scorecard with source tracking. Use these as the primary link in bio for any channel.</p>
             <StatusList items={[
               { label: 'Instagram', desc: 'performance.bodyrecode.au/scorecard?source=instagram' },
               { label: 'Website', desc: 'performance.bodyrecode.au/scorecard?source=website' },
@@ -3055,7 +3055,7 @@ export default function HelpPage() {
             </ul>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Body State Terminology</p>
-            <p><strong>Public-facing (Scorecard + social content):</strong> Depleted / Transitioning / Ready. Use these in all Instagram content and the Body State Scorecard.</p>
+            <p><strong>Public-facing (Scorecard + social content):</strong> Depleted / Transitioning / Ready. Use these in all Instagram content and the Readiness Scorecard.</p>
             <p className="mt-1"><strong>CFFS classification (coaching system only):</strong> Remediation / Optimisation / Post-Optimisation. These are revealed after the full CFFS assessment - not used in pre-CFFS content or social media.</p>
             <Note>Never conflate the two terminologies. The gap between them is intentional - the scorecard gives a signal, the CFFS gives the real classification. That distinction protects the value of the paid coaching system.</Note>
           </Section>
@@ -3205,7 +3205,7 @@ export default function HelpPage() {
             <p>Switch between 7, 30, and 90 day views using the buttons at the top right. All four stats and the daily chart update to match the selected window.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Live Pages</p>
-            <p>Quick links to open any page on performance.bodyrecode.au directly from the dashboard - Homepage, How It Works, Online Coaching, Brisbane, Body State Scorecard.</p>
+            <p>Quick links to open any page on performance.bodyrecode.au directly from the dashboard - Homepage, How It Works, Online Coaching, Brisbane, Readiness Scorecard.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Data Accuracy Note</p>
             <p>Vercel Analytics was enabled in April 2026 - no historical traffic data exists before that date. In the early weeks, visitor counts are low and conversion rate will appear inflated or misleading because scorecard submissions (from the leads DB) span a longer window than visitor data. A warning banner appears automatically while visitor data is sparse. Numbers will stabilise and become meaningful once 4-6 weeks of tracking data has accumulated.</p>

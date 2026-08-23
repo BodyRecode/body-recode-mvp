@@ -136,7 +136,7 @@ export async function POST(req: NextRequest) {
       whatsAppNumber: '',
     },
     products: {
-      scorecardName: 'Body State Scorecard',
+      scorecardName: 'Readiness Scorecard',
       reportProductName: 'Body Decode Report',
       reportPrice: 37,
       challengeName: '14-Day Body Decode Challenge',

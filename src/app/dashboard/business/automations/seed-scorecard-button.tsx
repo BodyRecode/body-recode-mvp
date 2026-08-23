@@ -44,7 +44,7 @@ export default function SeedScorecardButton() {
         </div>
         <div>
           <p className="text-sm font-medium text-[#1A1A1A]">Scorecard Follow-up Sequence</p>
-          <p className="text-xs text-stone-500 mt-0.5">9-step sequence triggered when someone completes the Body State Scorecard</p>
+          <p className="text-xs text-stone-500 mt-0.5">9-step sequence triggered when someone completes the Readiness Scorecard</p>
           {error && <p className="text-xs text-red-700 mt-1">{error}</p>}
         </div>
       </div>

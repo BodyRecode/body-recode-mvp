@@ -2132,7 +2132,7 @@ export default function StrategyPage() {
             </ul>
             <div className="p-3 bg-white border border-emerald-500/30 rounded-lg">
               <p className="text-[10px] font-bold tracking-[0.18em] text-emerald-700 uppercase mb-1.5">Say readiness outward</p>
-              <p className="text-sm text-stone-700">readiness (not &ldquo;body state&rdquo;) &middot; capacity (training response) &middot; regulation (sleep + stress load). Body state has to be taught; readiness is a category the market already prices. <strong>Vocabulary only &mdash; Fat Map v2.0 and the governance rule are untouched.</strong> The product is still named the Body State Scorecard; rename it with the ad restart, and leave the DB columns alone.</p>
+              <p className="text-sm text-stone-700">readiness (not &ldquo;body state&rdquo;) &middot; capacity (training response) &middot; regulation (sleep + stress load). Body state has to be taught; readiness is a category the market already prices. <strong>Vocabulary only &mdash; Fat Map v2.0 and the governance rule are untouched.</strong> The product is still named the Readiness Scorecard; rename it with the ad restart, and leave the DB columns alone.</p>
             </div>
           </Card>
 
@@ -2445,7 +2445,7 @@ export default function StrategyPage() {
               topics: [
                 '"Your body is operating in one of three states right now. Find out which one."',
                 '"I built a free tool that tells you which state your body is in. 2 minutes. Link in bio."',
-                '"The Body State Scorecard. 2 minutes. Free. Find out why you\'re stuck."',
+                '"The Readiness Scorecard. 2 minutes. Free. Find out why you\'re stuck."',
                 '"Before I prescribe anything, I read the body first. You can do the same - link in bio."',
                 '"Find out your body state in 2 minutes. Free. No email until you see your result."',
               ],
@@ -2687,7 +2687,7 @@ export default function StrategyPage() {
             day="Day 8"
             format="Photo card (photo-split or photo-top)"
             graphic='Photo card. Label: "Body Recode™". Text: "Find out which state your body is in." Sub: "Free. 2 minutes." Use: /api/content/graphic?style=photo-split&label=Body+Recode™&text=Find+out+which+state+your+body+is+in.&sub=Free.+2+minutes.'
-            caption={`I built a free tool that tells you which state your body is currently operating in.\n\n5 sections. 2 minutes. No email required until you see your result.\n\nIt tells you:\n- Which body state you're in\n- Why your body is responding the way it is\n- What that means for your training and fat loss right now\n\nTake the Body State Scorecard - link in bio.`}
+            caption={`I built a free tool that tells you which state your body is currently operating in.\n\n5 sections. 2 minutes. No email required until you see your result.\n\nIt tells you:\n- Which body state you're in\n- Why your body is responding the way it is\n- What that means for your training and fat loss right now\n\nTake the Readiness Scorecard - link in bio.`}
             hashtags="#bodyrecode #bodystate #performancecoaching #cortisol #onlinecoaching"
           />
         </div>
@@ -3714,7 +3714,7 @@ export default function StrategyPage() {
             items: [
               'Start Meta ads at $20-30/day AUD',
               '3 ad angles running simultaneously (Silent Frustration / Contrarian / Diagnosis)',
-              'All ads send to the Body State Scorecard',
+              'All ads send to the Readiness Scorecard',
               'Film gym reel session before this phase starts',
               'Continue 4x/week organic posting',
             ],

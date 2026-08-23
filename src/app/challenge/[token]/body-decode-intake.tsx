@@ -349,7 +349,7 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
           }}>
             <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#1B6DFC' }} />
             <span style={{ fontSize: '12px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-              Body State Scorecard
+              Readiness Scorecard
             </span>
           </div>
 

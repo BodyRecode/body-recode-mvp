@@ -10,7 +10,7 @@ import { PageHeader, Card, SectionLabel, Btn, MONO_FONT } from '@/components/das
 
 const publicLinks = [
   { label: 'Booking page',         url: '/book',                 desc: 'Public Zoom booking' },
-  { label: 'Body State Scorecard', url: '/scorecard',            desc: 'Lead magnet - body state quiz' },
+  { label: 'Readiness Scorecard', url: '/scorecard',            desc: 'Lead magnet - body state quiz' },
   { label: 'Performance Check-In', url: '/performance-check-in', desc: 'Free 3-min check-in' },
 ]
 
@@ -77,7 +77,7 @@ export default function BusinessHubPage() {
           <div className="min-w-0">
             <p className="text-[14px] font-semibold text-[#1A1A1A] mb-1">Scorecard Follow-up Automation</p>
             <p className="text-[12px] text-[#6B6B6B] leading-relaxed max-w-xl">
-              A 4-email sequence that fires when someone completes the Body State Scorecard. Directs leads to book a free call or get the $37 Body Decode Report.
+              A 4-email sequence that fires when someone completes the Readiness Scorecard. Directs leads to book a free call or get the $37 Body Decode Report.
             </p>
           </div>
           <div className="flex items-center gap-2 shrink-0">

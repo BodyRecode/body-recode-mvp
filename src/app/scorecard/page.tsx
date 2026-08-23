@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import { brand } from "@/config/tenant";
 
 /**
- * The canonical Body State Scorecard lives at performance.bodyrecode.au/scorecard
+ * The canonical Readiness Scorecard lives at performance.bodyrecode.au/scorecard
  * (in the performance-bodyrecode repo). The legacy bodyrecode.au/scorecard URL is preserved
  * as a redirect because it may still be referenced from older surfaces (Instagram bio,
  * QR codes printed in the past, etc.):

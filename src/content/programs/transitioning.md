@@ -1,5 +1,5 @@
 # Body Recode - Self-Guided Program
-## Body State: Transitioning (Score 9–12/15)
+## Readiness: Transitioning (Score 9–12/15)
 
 ---
 
@@ -281,5 +281,5 @@ The principle of gradually increasing the demand placed on the body over time. T
 **Phase**
 A distinct training block with a specific focus. Each phase in this program has a different volume, intensity, and intent. Moving through phases in order is important - skipping ahead does not accelerate results.
 
-**Body State**
+**Readiness**
 The classification your scorecard assigned you - Depleted, Transitioning, or Ready. It reflects how your body is currently handling stress, recovering from training, and managing energy output. It is not a permanent label. It changes as the conditions driving it change.
