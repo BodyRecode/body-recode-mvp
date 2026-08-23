@@ -670,10 +670,43 @@ async function checkScorecardAutomation(admin: ReturnType<typeof createAdminClie
       }
     }
 
+    // STRUCTURE IS NOT CONTENT. Nine steps can all be nine stale steps. Compare
+    // the live copy against the seed and say so, because the sequence lives in the
+    // database and a code change never reaches it on its own.
+    //
+    // Report, do NOT auto-resync. A wrong step count is structurally broken and
+    // worth fixing unattended; different copy may be a deliberate edit made in the
+    // UI, and silently overwriting that is how the duplicate workflow survived
+    // three weeks.
+    const { data: liveSteps } = await admin
+      .from('be_workflow_steps')
+      .select('position, config')
+      .eq('workflow_id', workflow.id)
+      .order('position')
+
+    const drifted = SCORECARD_STEPS.filter(seed => {
+      const live = (liveSteps ?? []).find(l => l.position === seed.position)
+      if (!live) return true
+      const a = (seed.config ?? {}) as Record<string, unknown>
+      const b = (live.config ?? {}) as Record<string, unknown>
+      return (['subject', 'body'] as const).some(f => f in a && a[f] !== (b as Record<string, unknown>)[f])
+    })
+
+    if (drifted.length) {
+      const first = (drifted[0].config as Record<string, unknown>).subject
+      return {
+        name: 'Scorecard Automation',
+        status: 'failed',
+        detail: `Active with ${stepCount} steps, but ${drifted.length} of them send copy that no longer matches the source. `
+          + `Leads are getting the old wording right now${first ? `, starting with "${String(first)}"` : ''}.`,
+        manualFix: 'CHECK WHICH WAY THE DRIFT RUNS BEFORE RE-SYNCING. Re-sync overwrites live with the seed in this file, so if the live copy is the newer one, re-syncing destroys it. That is the state this sequence was found in on 23 Aug 2026: the five emails had been rewritten in the UI and the seed was never updated. Compare first, then either update the live steps directly or bring the seed up to match.',
+      }
+    }
+
     return {
       name: 'Scorecard Automation',
       status: 'ok',
-      detail: `Active — ${stepCount} steps configured`,
+      detail: `Active — ${stepCount} steps, copy matches the source`,
     }
   } catch (e) {
     return {
@@ -685,11 +718,15 @@ async function checkScorecardAutomation(admin: ReturnType<typeof createAdminClie
   }
 }
 
-async function resyncScorecardWorkflow(
-  admin: ReturnType<typeof createAdminClient>,
-  existingId?: string
-): Promise<boolean> {
-  const steps = [
+// THE SEEDED CONTENT, HOISTED so the health check can compare against it rather
+// than only counting steps.
+//
+// 23 Aug 2026, Kade: "now the automation doesnt say it needs re-syncing?" It did
+// not. The check counted nine steps, found nine, and reported ok while every
+// email underneath still said Body State after the rename. A check that can only
+// see structure reports healthy through any amount of content drift, which is
+// worse than no check because it is trusted.
+const SCORECARD_STEPS = [
     {
       position: 1, type: 'action', action_type: 'send_email',
       config: {
@@ -811,6 +848,13 @@ Body Recode`,
       },
     },
   ]
+
+
+async function resyncScorecardWorkflow(
+  admin: ReturnType<typeof createAdminClient>,
+  existingId?: string
+): Promise<boolean> {
+  const steps = SCORECARD_STEPS
 
   try {
     if (existingId) {
