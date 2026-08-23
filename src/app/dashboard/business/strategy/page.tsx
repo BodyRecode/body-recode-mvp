@@ -1438,10 +1438,21 @@ function PostToIgButton({ post, onPublished }: { post: ScheduledPost; onPublishe
   if (post.posted_at) {
     return <span className="text-xs font-semibold text-green-600">✓ Posted</span>
   }
-  if (post.scheduled_publish_at) {
+  // A SCHEDULED TIME IN THE PAST IS NOT A PUBLISHED POST. This showed "Scheduled
+  // 24 Aug, 07:00" for a post that had failed three times and never went out, and
+  // it returned before the publish button rendered, so there was no way to retry.
+  // Kade, 24 Aug 2026: "it says its already been published at 7:00 and its now
+  // 910" ... "i checked insta nothing postsed".
+  //
+  // Meta's own scheduling can also silently drop a container, so "we asked for it"
+  // is never the same claim as "it went out". Only posted_at means published.
+  if (post.scheduled_publish_at && new Date(post.scheduled_publish_at) > new Date()) {
     const when = new Date(post.scheduled_publish_at).toLocaleString('en-AU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
     return <span className="text-xs font-semibold text-blue-600"><Clock size={11} strokeWidth={2.5} className="inline mr-0.5 align-[-1px]" /> Scheduled {when}</span>
   }
+  const overdue = post.scheduled_publish_at && !post.posted_at
+    ? new Date(post.scheduled_publish_at).toLocaleString('en-AU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
+    : null
 
   async function publish(schedule: boolean) {
     setStatus(schedule ? 'scheduling' : 'publishing')
@@ -1487,6 +1498,11 @@ function PostToIgButton({ post, onPublished }: { post: ScheduledPost; onPublishe
 
   return (
     <div className="flex items-center gap-1.5">
+      {overdue && (
+        <span className="text-xs font-semibold text-amber-700" title={`Handed to Meta for ${overdue}. It never went out.`}>
+          missed {overdue}
+        </span>
+      )}
       <button
         onClick={() => publish(false)}
         title="Publish to Instagram immediately"
