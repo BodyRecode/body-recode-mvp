@@ -36,9 +36,10 @@ async function main() {
   // would collide, so the second moves to the afternoon slot.
   const taken = new Set<string>()
   const plan = rows.map(r => {
+    const NEXT_SLOT: Record<string, string> = { '07:00': '12:30', '12:30': '17:30', '17:30': '19:30' }
     let time = (r.time ?? '07:00').slice(0, 5)
     while (taken.has(`${r.date} ${time}`)) {
-      time = { '07:00': '12:30', '12:30': '17:30', '17:30': '19:30' }[time] ?? '19:30'
+      time = NEXT_SLOT[time] ?? '19:30'
     }
     taken.add(`${r.date} ${time}`)
     return { ...r, at: `${r.date}T${time}:00+10:00`, moved: time !== (r.time ?? '').slice(0, 5) }

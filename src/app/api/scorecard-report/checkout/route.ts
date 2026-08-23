@@ -3,6 +3,7 @@ import Stripe from 'stripe'
 import { tenantStripe } from '@/lib/tenant-stripe'
 import { appUrl } from '@/lib/app-url'
 import { brand } from "@/config/tenant";
+import { REPORT_RETIRED } from '@/lib/scorecard-report-retired'
 
 
 const CORS = {
@@ -16,6 +17,10 @@ export async function OPTIONS() {
 }
 
 export async function POST(request: NextRequest) {
+  // Retired 24 Aug 2026 - see src/lib/scorecard-report-retired.ts
+  return NextResponse.json(REPORT_RETIRED, { status: 410, headers: CORS })
+
+  // eslint-disable-next-line no-unreachable
   const { stripe, opts } = tenantStripe()
   const { name, email, score, body_state, section_scores } = await request.json()
 

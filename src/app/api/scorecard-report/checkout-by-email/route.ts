@@ -3,9 +3,14 @@ import Stripe from 'stripe'
 import { tenantStripe } from '@/lib/tenant-stripe'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { appUrl } from '@/lib/app-url'
+import { REPORT_RETIRED } from '@/lib/scorecard-report-retired'
 
 
 export async function POST(request: NextRequest) {
+  // Retired 24 Aug 2026 - see src/lib/scorecard-report-retired.ts
+  return NextResponse.json(REPORT_RETIRED, { status: 410 })
+
+  // eslint-disable-next-line no-unreachable
   const { stripe, opts } = tenantStripe()
   const { email } = await request.json()
 
