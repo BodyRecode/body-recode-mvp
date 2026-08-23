@@ -111,7 +111,7 @@ export default function KadePage() {
                     2
                   </span>
                   <p className="text-[13px] text-[#D8CDB5] leading-relaxed">
-                    On Day 0 in the portal, a <span className="text-[#FAF3EB] font-semibold">2-minute Body State Scorecard</span> reads your state and sets your path.
+                    On Day 0 in the portal, a <span className="text-[#FAF3EB] font-semibold">2-minute Readiness Scorecard</span> reads your state and sets your path.
                   </p>
                 </div>
               </div>

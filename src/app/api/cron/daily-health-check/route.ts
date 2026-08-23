@@ -584,13 +584,26 @@ async function checkScorecardAutomation(admin: ReturnType<typeof createAdminClie
     //
     // Two rules now: only ever reactivate the OLDEST, and treat the existence
     // of a second one as a failure to surface rather than a row to nurse.
-    const { data: matches, error } = await admin
+    //
+    // MATCHED BY PATTERN, NOT BY EXACT NAME (23 Aug 2026). An exact list only ever
+    // catches the spellings we already know about, and the whole problem was a
+    // THIRD row nobody predicted. A pattern catches the next one whatever it is
+    // called, including whatever punctuation an editor happens to use.
+    //
+    // Rows prefixed [RETIRED are excluded deliberately. The em-dash duplicate was
+    // renamed to "[RETIRED 2026-08-17 duplicate] ..." so it can never be mistaken
+    // for the live one, and its 8 execution records were KEPT: they are the audit
+    // trail of the double-send that took four attempts to stop. Deleting the row
+    // would have destroyed the evidence without touching whatever created it,
+    // which has still never been established.
+    const { data: allMatches, error } = await admin
       .from('be_workflows')
       .select('id, name, is_active, created_at')
-      .in('name', ['Scorecard - Follow-up Sequence', 'Scorecard — Follow-up Sequence'])
+      .ilike('name', '%scorecard%follow-up sequence%')
       .eq('trigger_type', 'form_submitted')
       .order('created_at', { ascending: true })
 
+    const matches = (allMatches ?? []).filter(w => !w.name?.startsWith('[RETIRED'))
     const workflow = matches?.[0] ?? null
     const duplicates = (matches ?? []).slice(1)
 
@@ -670,10 +683,43 @@ async function checkScorecardAutomation(admin: ReturnType<typeof createAdminClie
       }
     }
 
+    // STRUCTURE IS NOT CONTENT. Nine steps can all be nine stale steps. Compare
+    // the live copy against the seed and say so, because the sequence lives in the
+    // database and a code change never reaches it on its own.
+    //
+    // Report, do NOT auto-resync. A wrong step count is structurally broken and
+    // worth fixing unattended; different copy may be a deliberate edit made in the
+    // UI, and silently overwriting that is how the duplicate workflow survived
+    // three weeks.
+    const { data: liveSteps } = await admin
+      .from('be_workflow_steps')
+      .select('position, config')
+      .eq('workflow_id', workflow.id)
+      .order('position')
+
+    const drifted = SCORECARD_STEPS.filter(seed => {
+      const live = (liveSteps ?? []).find(l => l.position === seed.position)
+      if (!live) return true
+      const a = (seed.config ?? {}) as Record<string, unknown>
+      const b = (live.config ?? {}) as Record<string, unknown>
+      return (['subject', 'body'] as const).some(f => f in a && a[f] !== (b as Record<string, unknown>)[f])
+    })
+
+    if (drifted.length) {
+      const first = (drifted[0].config as Record<string, unknown>).subject
+      return {
+        name: 'Scorecard Automation',
+        status: 'failed',
+        detail: `Active with ${stepCount} steps, but ${drifted.length} of them send copy that no longer matches the source. `
+          + `Leads are getting the old wording right now${first ? `, starting with "${String(first)}"` : ''}.`,
+        manualFix: 'CHECK WHICH WAY THE DRIFT RUNS BEFORE RE-SYNCING. Re-sync overwrites live with the seed in this file, so if the live copy is the newer one, re-syncing destroys it. That is the state this sequence was found in on 23 Aug 2026: the five emails had been rewritten in the UI and the seed was never updated. Compare first, then either update the live steps directly or bring the seed up to match.',
+      }
+    }
+
     return {
       name: 'Scorecard Automation',
       status: 'ok',
-      detail: `Active — ${stepCount} steps configured`,
+      detail: `Active — ${stepCount} steps, copy matches the source`,
     }
   } catch (e) {
     return {
@@ -685,18 +731,35 @@ async function checkScorecardAutomation(admin: ReturnType<typeof createAdminClie
   }
 }
 
-async function resyncScorecardWorkflow(
-  admin: ReturnType<typeof createAdminClient>,
-  existingId?: string
-): Promise<boolean> {
-  const steps = [
+// THE SEEDED CONTENT, HOISTED so the health check can compare against it rather
+// than only counting steps.
+//
+// THIS IS NOT WHAT IS LIVE, AND IT MUST NOT BE MADE SO BY A DUMP. The five emails
+// in the database were rewritten in the UI and have better subject lines than
+// these. Re-sync writes this array OVER them, so clicking it replaces good copy
+// with old copy. The drift check below now says so instead of reporting ok.
+//
+// The obvious fix, regenerate this array from the live rows, is WRONG: the live
+// bodies contain a literal bodyrecode.au in all five emails, while these use
+// ${brand().marketingDomain} so a white-label tenant gets its own domain. Dumping
+// live into here would hardcode Body Recode's domain into every tenant's sequence.
+//
+// Reconciling them means rewriting the live prose back into this array with the
+// brand() calls restored. An editorial job on five emails, not a copy and paste.
+//
+// 23 Aug 2026, Kade: "now the automation doesnt say it needs re-syncing?" It did
+// not. The check counted nine steps, found nine, and reported ok while every
+// email underneath still said Body State after the rename. A check that can only
+// see structure reports healthy through any amount of content drift, which is
+// worse than no check because it is trusted.
+const SCORECARD_STEPS = [
     {
       position: 1, type: 'action', action_type: 'send_email',
       config: {
-        subject: 'Your Body State result',
+        subject: 'Your readiness result',
         body: `Hi {{first_name}},
 
-Your scorecard result: {{scorecard_score}}/15. Body state: {{scorecard_state}}.
+Your scorecard result: {{scorecard_score}}/15. Readiness: {{scorecard_state}}.
 
 That result tells you one specific thing: which state your body is currently in.
 
@@ -723,11 +786,11 @@ Body Recode`,
         subject: 'What your {{scorecard_state}} result actually means',
         body: `Hi {{first_name}},
 
-Your score was {{scorecard_score}}/15. Body state: {{scorecard_state}}.
+Your score was {{scorecard_score}}/15. Readiness: {{scorecard_state}}.
 
 Most people look at that result and think they need to train harder or eat less. That is usually the wrong call.
 
-Your body state is a biological signal. It tells you how your body is currently handling load, how well it is recovering, and how much capacity it has to respond right now. The right prescription depends entirely on that state.
+Your readiness is a biological signal. It tells you how your body is currently handling load, how well it is recovering, and how much capacity it has to respond right now. The right prescription depends entirely on that state.
 
 The Body Decode Report goes through exactly what {{scorecard_state}} means for your training, your nutrition, and your fat loss. It is written specifically to your result, not a generic guide.
 
@@ -743,7 +806,7 @@ Body Recode`,
     {
       position: 5, type: 'action', action_type: 'send_email',
       config: {
-        subject: 'Re: your Body State Scorecard',
+        subject: 'Re: your Readiness Scorecard',
         body: `Hi {{first_name}},
 
 Following up on your scorecard.
@@ -769,7 +832,7 @@ Body Recode`,
         subject: 'The prescription problem',
         body: `Hi {{first_name}},
 
-Most coaching programs give everyone the same plan. Same training, same nutrition, same timeline. Your body state does not factor into it at all.
+Most coaching programs give everyone the same plan. Same training, same nutrition, same timeline. Your readiness does not factor into it at all.
 
 Your scorecard came back as {{scorecard_state}}. That is a specific biological pattern, not a label. It tells me how your body is handling load, how well it is recovering, and how much capacity it has to adapt right now.
 
@@ -811,6 +874,13 @@ Body Recode`,
       },
     },
   ]
+
+
+async function resyncScorecardWorkflow(
+  admin: ReturnType<typeof createAdminClient>,
+  existingId?: string
+): Promise<boolean> {
+  const steps = SCORECARD_STEPS
 
   try {
     if (existingId) {

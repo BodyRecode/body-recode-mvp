@@ -67,10 +67,10 @@ export function buildDormantReadEmail(ctx: DormantLeadContext): { subject: strin
 
   const html = darkEmailShell(`
 ${emailLogo()}
-${emailEyebrow('Your Body State read')}
+${emailEyebrow('Your readiness read')}
 ${emailHeading(`Here's what your scorecard actually said, ${ctx.firstName}.`)}
 ${emailDivider()}
-${emailBody(`You did the Body State Scorecard a while back and I never walked you through what it meant. That's on me, so here it is properly.`)}
+${emailBody(`You did the Readiness Scorecard a while back and I never walked you through what it meant. That's on me, so here it is properly.`)}
 ${emailStatusCard({
     eyebrow: 'Your result',
     headline: ctx.score != null ? `${shortState} · ${ctx.score}/15` : shortState,

@@ -48,7 +48,7 @@ export type TenantConfig = {
 
   /** Layer 2: Product wrapping — prices, product names, offer structure */
   products: {
-    scorecardName: string           // "Body State Scorecard"
+    scorecardName: string           // "Readiness Scorecard"
     reportProductName: string       // "Body Decode Report"
     reportPrice: number             // 37
     challengeName: string           // "14-Day Body Decode Challenge"
@@ -183,7 +183,7 @@ const BODY_RECODE_TENANT: TenantConfig = {
     whatsAppNumber: '61400336284',
   },
   products: {
-    scorecardName: 'Body State Scorecard',
+    scorecardName: 'Readiness Scorecard',
     reportProductName: 'Body Decode Report',
     reportPrice: 37,
     challengeName: '14-Day Body Decode Challenge',

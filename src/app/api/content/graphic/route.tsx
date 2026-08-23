@@ -338,7 +338,7 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
 
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {/* Label */}
-            <div style={{ fontSize: '38px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '24px' }}>Body State Scorecard</div>
+            <div style={{ fontSize: '38px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '24px' }}>Readiness Scorecard</div>
 
             {/* Headline */}
             <div style={{ fontSize: '62px', fontWeight: 800, color: '#1A1A1A', lineHeight: 1.15, letterSpacing: '-0.02em', maxWidth: '880px', marginBottom: '36px' }}>
@@ -524,7 +524,7 @@ async function _generateGraphic(request: NextRequest): Promise<ImageResponse> {
           {/* CTA pill */}
           <div style={{ background: 'rgba(27,109,252,0.12)', border: '1px solid rgba(27,109,252,0.4)', borderRadius: '100px', padding: '22px 52px', display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{ fontSize: '36px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.01em' }}>
-              {label || 'Take the Body State Scorecard'}
+              {label || 'Take the Readiness Scorecard'}
             </div>
             <div style={{ fontSize: '36px', color: '#1B6DFC' }}>→</div>
           </div>

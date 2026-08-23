@@ -478,7 +478,7 @@ function PatternConfirm({ pattern, source, token, firstName, onConfirm, onAdjust
   const fromChallenge = source === 'challenge'
   const intro = fromChallenge
     ? 'From your 14-Day Challenge, your biological pattern came back as'
-    : 'Based on your Body State Scorecard, your biological pattern looks like'
+    : 'Based on your Readiness Scorecard, your biological pattern looks like'
   // Both branches have to leave the door genuinely open. The Challenge read is
   // the strongest signal in the funnel, but it is still a read, and stating it
   // as settled is what stopped buyers correcting it before Week 1.

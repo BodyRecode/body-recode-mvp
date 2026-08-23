@@ -57,7 +57,7 @@ const STAGES: StageGroup[] = [
     accent: '#1A1A1A',
     funnel: 'shared',
     pages: [
-      { name: 'Body State Scorecard', url: `${brand().performanceDomain}/scorecard`, description: 'Canonical scorecard URL. State-routed result page CTAs.', external: true },
+      { name: 'Readiness Scorecard', url: `${brand().performanceDomain}/scorecard`, description: 'Canonical scorecard URL. State-routed result page CTAs.', external: true },
       { name: 'Scorecard (legacy redirect)', url: '/scorecard', description: 'Redirects to performance.bodyrecode.au/scorecard with query string preserved.' },
       { name: '$37 Body Decode Report (token-gated)', url: '/report/{token}', description: 'Stripe-purchased report. Token per buyer.', tokenKind: 'scorecardReport' },
       { name: 'Get Report', url: '/get-report', description: 'Post-purchase landing.' },

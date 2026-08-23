@@ -102,7 +102,7 @@ const FAQS = [
 ]
 
 const FILTER_ROWS: FilterRow[] = [
-  { state: 'Don\'t know your pattern yet', desc: 'Start with the free 2-minute Body State Scorecard. It reads your state and points you to the free 14-Day Challenge if you are Depleted. By Day 14, the Body Decode Check-In shows you your pattern. Then you come back here.', cta: 'Start with the Scorecard', href: `${brand().performanceDomain}/scorecard?intent=challenge&source=blueprint_filter` },
+  { state: 'Don\'t know your pattern yet', desc: 'Start with the free 2-minute Readiness Scorecard. It reads your state and points you to the free 14-Day Challenge if you are Depleted. By Day 14, the Body Decode Check-In shows you your pattern. Then you come back here.', cta: 'Start with the Scorecard', href: `${brand().performanceDomain}/scorecard?intent=challenge&source=blueprint_filter` },
   { state: 'Past Depleted (Ready State)', desc: 'Your body is already responding. You do not need a six-week reset. You need the ongoing system that takes you from responding to really building.', cta: 'See the Membership', href: '/membership' },
   { state: "Don't know your state yet?", desc: 'Take the 2-minute scorecard first. It tells you which state you are in and which next step is built for you.', cta: 'Take the Scorecard', href: `${brand().performanceDomain}/scorecard?source=blueprint_filter` },
 ]

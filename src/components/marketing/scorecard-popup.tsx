@@ -47,7 +47,7 @@ export default function ScorecardPopup() {
           Why is your body not responding?
         </h2>
         <p className="text-sm text-stone-600 leading-relaxed mb-6">
-          The Body State Scorecard tells you which state your body is currently operating in — and why your training and fat loss may not be responding the way you expect.
+          The Readiness Scorecard tells you which state your body is currently operating in — and why your training and fat loss may not be responding the way you expect.
         </p>
 
         <div className="flex flex-col gap-3">

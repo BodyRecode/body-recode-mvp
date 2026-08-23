@@ -4,7 +4,7 @@ import { isProductLive } from '@/lib/product-launch'
 
 export const metadata: Metadata = {
   title: 'Body Recode · Links',
-  description: 'The 14-Day Body Decode Challenge, the Body State Scorecard, and everything Body Recode.',
+  description: 'The 14-Day Body Decode Challenge, the Readiness Scorecard, and everything Body Recode.',
   robots: { index: false, follow: true },
 }
 
@@ -16,7 +16,7 @@ export default function LinksPage() {
   const links = [
     {
       href: `${t.marketingDomain}/scorecard?source=bio`,
-      title: 'Body State Scorecard',
+      title: 'Readiness Scorecard',
       desc: 'Read your starting state in 2 minutes',
     },
     {

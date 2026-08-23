@@ -75,7 +75,7 @@ const ASSET_GROUPS: AssetGroup[] = [
     title: 'Client-Facing Pages',
     icon: FileText,
     assets: [
-      { label: 'Scorecard',               description: 'Body State Scorecard at performance.bodyrecode.au/scorecard',                  href: '/scorecard',          external: true },
+      { label: 'Scorecard',               description: 'Readiness Scorecard at performance.bodyrecode.au/scorecard',                  href: '/scorecard',          external: true },
       { label: 'Scorecard Results (example)', description: 'What the lead sees after completing the scorecard',             href: '/scorecard-preview',  external: true },
       { label: 'Book a Call',             description: 'Public booking page at bodyrecode.au/book',                         href: '/book',               external: true },
       { label: 'Orientation Guide',       description: 'Page sent to leads after Zoom 1',                                   href: '/orientation',        external: true },

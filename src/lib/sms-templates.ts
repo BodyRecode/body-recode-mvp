@@ -22,7 +22,7 @@ export function tplScorecardCompleted({ firstName, bookingUrl }: TemplateInputs)
   const name = firstName ? `Hi ${firstName}, ` : 'Hi, '
   const c = coach()
   const url = bookingUrl ?? `${brand().marketingDomain}/book`
-  return `${name}${c.firstName} here. Got your Body State Scorecard. Want to talk through your pattern? Book: ${url}. STOP to opt out. -${c.firstName[0]}`
+  return `${name}${c.firstName} here. Got your Readiness Scorecard. Want to talk through your pattern? Book: ${url}. STOP to opt out. -${c.firstName[0]}`
 }
 
 /** Challenge just enrolled (Funnel B). */

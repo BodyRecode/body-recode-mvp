@@ -33,7 +33,7 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
         paragraphs: [
           'Their scorecard read written out in full: body state, score, and their pattern if one was named, each in the approved lead-facing language.',
           'Deliberately has NO button. The only call to action is a line asking them to reply, because a reply is a lower bar than a booking and it starts a conversation instead of a funnel step.',
-          'Opens by owning it: "You did the Body State Scorecard a while back and I never walked you through what it meant. That is on me, so here it is properly."',
+          'Opens by owning it: "You did the Readiness Scorecard a while back and I never walked you through what it meant. That is on me, so here it is properly."',
         ],
         cta: 'Reply to this email (no button)',
       },
@@ -62,7 +62,7 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
     name: 'Scorecard Follow-up Sequence',
     description: '5-email sequence over 13 days. Fat-loss-explicit voice. Emails 1-2 push the $37 Body Decode Report; emails 3-4 push the free strategy call; email 5 names both options based on state.',
     trigger: 'Scorecard completed',
-    triggerDetail: 'Fires automatically when a lead submits the Body State Scorecard on performance.bodyrecode.au/scorecard. Each email is personalised to the lead\'s score, body state, and first name.',
+    triggerDetail: 'Fires automatically when a lead submits the Readiness Scorecard on performance.bodyrecode.au/scorecard. Each email is personalised to the lead\'s score, body state, and first name.',
     steps: [
       {
         day: 'Immediately',

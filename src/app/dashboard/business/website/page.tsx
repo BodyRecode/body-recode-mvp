@@ -240,7 +240,7 @@ export default function WebsitePage() {
             { label: 'How It Works', path: '/how-it-works', note: 'Explains the Body Recode method and the two-layer system' },
             { label: 'Online Coaching', path: '/online', note: 'Service page for online clients - links to scorecard' },
             { label: 'Brisbane', path: '/brisbane', note: 'Geo-targeted page for face-to-face clients' },
-            { label: 'Body State Scorecard', path: '/scorecard', note: 'Primary conversion point - lead capture via quiz' },
+            { label: 'Readiness Scorecard', path: '/scorecard', note: 'Primary conversion point - lead capture via quiz' },
             { label: 'Founder Program', path: '/founder', note: 'Active offer page - current primary CTA destination' },
           ].map(p => (
             <a

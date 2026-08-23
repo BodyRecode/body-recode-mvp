@@ -234,7 +234,7 @@ export default function ReportClient({ report }: { report: {
 
           {/* Lead */}
           <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.7, margin: 0 }}>
-            Based on your Body State Scorecard results. Score: <strong style={{ color: '#1A1A1A' }}>{report.score}/15</strong>.
+            Based on your Readiness Scorecard results. Score: <strong style={{ color: '#1A1A1A' }}>{report.score}/15</strong>.
           </p>
         </div>
       </div>
