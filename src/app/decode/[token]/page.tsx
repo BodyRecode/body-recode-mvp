@@ -23,7 +23,7 @@ export default async function DecodePortalPage({ params }: { params: Promise<{ t
 
   const { data: enrollment } = await admin
     .from('challenge_enrollments')
-    .select('id, lead_id, enrolled_at, status, leads(name, scorecard_profile, scorecard_body_state, scorecard_section_scores, biological_sex, age_band, fat_storage, cycle_status, storage_direction)')
+    .select('id, lead_id, enrolled_at, status, ascension_intent, leads(name, scorecard_profile, scorecard_body_state, scorecard_section_scores, approach_response, biological_sex, age_band, fat_storage, cycle_status, storage_direction)')
     .eq('token', token)
     .in('status', PORTAL_ACCESS_STATUSES)
     .single()
@@ -71,6 +71,29 @@ export default async function DecodePortalPage({ params }: { params: Promise<{ t
   // people still get all five days, just without the pattern block.
   const patternKey = patternKeyForProfile(profile === 'Indeterminate' ? null : profile)
 
+  // What she has already answered, so the intake asks only what is missing.
+  //
+  // This replaced a link out to the public scorecard, which was a real leak:
+  // she had just typed her name, email and phone into the signup form, and the
+  // scorecard would have asked for all three again inside sixty seconds. It
+  // takes no prefill params, so there was no way to carry them across. The
+  // in-portal intake asks the same questions, already knows who she is from the
+  // token, and skips anything on file.
+  const sex = lead?.biological_sex ?? null
+  const known = {
+    scores: hasRead,
+    sex: !!sex,
+    age: !!lead?.age_band,
+    storage: !!lead?.fat_storage,
+    // Cycle and direction are female-only, so they are "known" for men by
+    // definition rather than by having been answered.
+    cycle: sex === 'M' || !!lead?.cycle_status,
+    direction: sex === 'M' || !!lead?.storage_direction,
+    approach: !!lead?.approach_response,
+    // Asked nowhere else on the platform. Never assume it.
+    ascensionIntent: !!enrollment.ascension_intent,
+  }
+
   const currentDay = currentDecodeDay(enrollment.enrolled_at)
 
   // One row per enrolment per day. Without it "she ignored the lesson" and "she
@@ -83,6 +106,8 @@ export default async function DecodePortalPage({ params }: { params: Promise<{ t
       token={token}
       firstName={firstName}
       hasRead={hasRead}
+      known={known}
+      knownSex={sex === 'M' || sex === 'F' ? sex : null}
       bodyState={bodyState}
       sectionScores={scores}
       profile={profile}

@@ -1,7 +1,8 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { brand } from '@/config/tenant'
+import BodyDecodeIntakeForm from '@/app/challenge/[token]/body-decode-intake'
 import { CHECKIN_PATTERNS } from '@/lib/checkin-patterns'
 import { DECODE_DAYS, isDayUnlocked } from '@/lib/decode-days'
 
@@ -39,6 +40,8 @@ export default function DecodePortalClient({
   profile,
   patternKey,
   currentDay,
+  known,
+  knownSex,
 }: {
   token: string
   firstName: string
@@ -48,33 +51,37 @@ export default function DecodePortalClient({
   profile: string | null
   patternKey: string | null
   currentDay: number
+  known: { scores: boolean; sex: boolean; age: boolean; storage: boolean; cycle: boolean; direction: boolean; approach: boolean; ascensionIntent: boolean }
+  knownSex: 'M' | 'F' | null
 }) {
+  const router = useRouter()
   const pattern = patternKey ? CHECKIN_PATTERNS[patternKey] : null
   const lowest = twoLowest(sectionScores)
 
-  // No scorecard on file means there is no read to explain. Send her to take it
-  // rather than showing five locked cards about a result she does not have.
+  // No scorecard on file, so the questions run HERE rather than on the public
+  // scorecard. She has just typed her name, email and phone into the signup
+  // form; the scorecard takes no prefill params and would have asked for all
+  // three again inside sixty seconds. This form already knows who she is from
+  // the token and skips everything on file, so someone arriving from the
+  // scorecard sees almost nothing to answer.
   if (!hasRead) {
     return (
-      <main style={{ maxWidth: '640px', margin: '0 auto', padding: '64px 24px' }}>
+      <main style={{ maxWidth: '640px', margin: '0 auto', padding: '56px 24px 72px' }}>
         <p style={{ fontSize: '11px', fontWeight: 700, color: BLUE, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 12px' }}>
           The Body Decode
         </p>
         <h1 style={{ fontSize: '28px', fontWeight: 800, color: INK, letterSpacing: '-0.02em', lineHeight: 1.2, margin: '0 0 14px' }}>
-          One thing first, {firstName}.
+          Right, {firstName}. The questions.
         </h1>
-        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 28px' }}>
-          The five days explain your read, so we need the read before they make any sense. It is about two minutes of questions and there is nothing to pay.
+        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 30px' }}>
+          About two minutes, and your report is on screen the moment you finish. Nothing to pay and nothing to download.
         </p>
-        <a
-          href={`${brand().performanceDomain}/scorecard?source=decode_portal`}
-          style={{
-            display: 'block', padding: '18px', borderRadius: '12px', background: BLUE,
-            color: '#FFFFFF', fontSize: '17px', fontWeight: 800, textAlign: 'center', textDecoration: 'none',
-          }}
-        >
-          Get my read
-        </a>
+        <BodyDecodeIntakeForm
+          token={token}
+          known={known}
+          knownSex={knownSex}
+          onComplete={() => router.refresh()}
+        />
       </main>
     )
   }
