@@ -1749,7 +1749,7 @@ export const executeWorkflowFunction = inngest.createFunction(
         const admin = createAdminClient()
         const { data: wf } = await admin
           .from('be_workflows')
-          .select('is_active')
+          .select('is_active, trigger_config')
           .eq('id', workflowId)
           .maybeSingle()
         if (!wf) return 'workflow_deleted'
@@ -1757,11 +1757,29 @@ export const executeWorkflowFunction = inngest.createFunction(
         if (!ctx.leadId) return null
         const { data } = await admin
           .from('leads')
-          .select('converted_to_client_id, status, active, zoom_1_date')
+          .select('converted_to_client_id, status, active, zoom_1_date, biological_sex')
           .eq('id', ctx.leadId)
           .maybeSingle()
         if (!data) return 'lead_deleted'
         if (data.active === false) return 'lead_inactive'
+        // A male in the scorecard follow-up sequence is being aimed at The Body
+        // Decode, which opens "a free assessment for WOMEN whose bodies have
+        // stopped responding". The copy itself is sex-neutral, so this was
+        // invisible until a man completed the scorecard on 24 Aug 2026 and got
+        // "Why your body has stopped responding" pointing at a page that
+        // excludes him in its first line.
+        //
+        // Scoped to the female sequence by trigger_config, NOT applied to every
+        // workflow: the male sequence runs on this same executor and must not
+        // stop itself. Sex is only ever 'M' or 'F' or null here (see
+        // scorecard/submit), and null keeps the existing behaviour.
+        //
+        // This is the belt. The braces are in scorecard/submit, which now fires
+        // a different trigger for males so they never enter this sequence at
+        // all. Both exist because this one also catches anyone ALREADY in
+        // flight, which the trigger split cannot do.
+        const trigForm = (wf.trigger_config as { form?: string } | null)?.form
+        if (trigForm === 'scorecard' && data.biological_sex === 'M') return 'male_wrong_sequence'
         if (data.converted_to_client_id) return 'converted_to_client'
         if (data.status === 'closed_declined') return 'closed_declined'
         // Stop the moment they engage, not only when they convert.
