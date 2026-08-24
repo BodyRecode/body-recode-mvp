@@ -69,6 +69,28 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Biological sex is required for accurate pattern assignment.' }, { status: 400 })
   }
 
+  // The Body Decode is female-only. The page says so in its first line, the
+  // report is built on female hormonal patterns, and typeFatMapProfile hard-
+  // gates a male out of Estrogen-Shift, so five days of lessons would be
+  // walking him through a pattern set never aimed at him.
+  //
+  // The signup form already offers him the call instead of a submit button.
+  // This is the server-side half: a client-only gate is a suggestion.
+  //
+  // 'prefer_not_to_say' still enrols. Without sex the two hard-gated patterns
+  // cannot be assigned and typing falls back to the sex-neutral cortisol route
+  // - a softer read rather than a refused signup, which is the call /challenge
+  // already makes. Only an explicit 'male' is turned away.
+  //
+  // Scoped to product === 'decode'. /challenge shares this route and has always
+  // accepted men.
+  if (product === 'decode' && validGender === 'male') {
+    return NextResponse.json({
+      error: 'The Body Decode reads female hormonal patterns. Book a free 30-minute call instead: https://bodyrecode.au/book',
+      redirect: '/book',
+    }, { status: 400 })
+  }
+
   const admin = createAdminClient()
 
   // Find or create lead

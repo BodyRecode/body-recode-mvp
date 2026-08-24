@@ -320,9 +320,31 @@ export async function POST(request: NextRequest) {
   // Wrapped so a workflow-trigger failure can never abort the submit flow
   // (and, historically, silently skip the Booking Agent enrollment that used
   // to sit right after this call).
+  //
+  // SEX DECIDES WHICH SEQUENCE HE OR SHE ENTERS (25 Aug 2026).
+  //
+  // The standard sequence points every email at The Body Decode, and that page
+  // opens "a free assessment for WOMEN whose bodies have stopped responding".
+  // The email copy is sex-neutral, so this was invisible until a man completed
+  // the scorecard on 24 Aug and was sent to a product that excludes him in its
+  // first line.
+  //
+  // Done at the TRIGGER because the automation engine cannot branch: `condition`
+  // is a valid step type in the schema and the editor offers it, but no
+  // evaluator was ever written, so a condition step is a silent no-op. The only
+  // lever that exists is which workflow gets fired.
+  //
+  // The match is a subset test on the WORKFLOW's trigger_config
+  // (automation-engine.ts), so a distinct `form` value is what keeps the two
+  // apart. Firing { form: 'scorecard', sex: 'M' } would NOT work: the existing
+  // workflow only requires form === 'scorecard' and would still match.
+  //
+  // Null sex keeps the existing behaviour. It is rare (the public form asks on
+  // the details step) and the audience is ~90% female.
+  const trigger = sexVal === 'M' ? 'scorecard_male' : 'scorecard'
   try {
-    await fireTrigger('form_submitted', { leadId }, { form: 'scorecard' })
-    console.log('[scorecard/submit] Automation triggered for lead:', leadId)
+    await fireTrigger('form_submitted', { leadId }, { form: trigger })
+    console.log('[scorecard/submit] Automation triggered for lead:', leadId, 'form:', trigger)
   } catch (triggerErr) {
     console.error('[scorecard/submit] form_submitted trigger failed:', triggerErr)
   }

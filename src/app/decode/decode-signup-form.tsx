@@ -147,17 +147,50 @@ export default function DecodeSignupForm({ position }: { position: string }) {
         <p style={{ fontSize: '14px', color: '#DC2626', lineHeight: 1.55, margin: 0 }}>{error}</p>
       )}
 
-      <button type="submit" disabled={submitting} style={{
-        width: '100%', padding: '18px', borderRadius: '12px', border: 'none',
-        background: BLUE, color: '#FFFFFF', fontSize: '17px', fontWeight: 800,
-        cursor: submitting ? 'not-allowed' : 'pointer', opacity: submitting ? 0.6 : 1,
-      }}>
-        {submitting ? 'One moment...' : 'Start the questions'}
-      </button>
+      {/* A man who picks Male is offered the call instead of being enrolled.
+          The page says "for women whose bodies have stopped responding" in its
+          first line, the report is built on female hormonal patterns, and
+          typeFatMapProfile hard-gates him out of Estrogen-Shift. Enrolling him
+          would spend five days telling him about a pattern set that was never
+          aimed at him.
 
-      <p style={{ fontSize: '13px', color: '#6B6B6B', textAlign: 'center', margin: '2px 0 0' }}>
-        Free. No card. Two minutes of questions, then your report.
-      </p>
+          Told here rather than after he submits: he has already typed four
+          fields by this point and the honest thing is to say so before he
+          finishes, not after. 'Prefer not to say' still enrols - the read
+          degrades to the sex-neutral route rather than being refused, which is
+          the same call /challenge makes. */}
+      {form.gender === 'male' ? (
+        <div style={{ border: `1.5px solid ${BLUE}`, borderRadius: '12px', padding: '20px 22px', background: 'rgba(27,109,252,0.04)' }}>
+          <p style={{ fontSize: '16px', fontWeight: 800, color: '#1A1A1A', margin: '0 0 10px', lineHeight: 1.35 }}>
+            This one is built for women.
+          </p>
+          <p style={{ fontSize: '14.5px', color: '#4A4A4A', lineHeight: 1.6, margin: '0 0 16px' }}>
+            The Body Decode reads female hormonal patterns, so the report would be
+            aimed at the wrong thing. Rather than send you something that does not
+            fit, come and go through it with me. Thirty minutes, free, no pitch.
+          </p>
+          <a href="/book" style={{
+            display: 'block', textAlign: 'center', padding: '16px', borderRadius: '12px',
+            background: BLUE, color: '#FFFFFF', fontSize: '16px', fontWeight: 800, textDecoration: 'none',
+          }}>
+            Book a free 30-minute call
+          </a>
+        </div>
+      ) : (
+        <>
+          <button type="submit" disabled={submitting} style={{
+            width: '100%', padding: '18px', borderRadius: '12px', border: 'none',
+            background: BLUE, color: '#FFFFFF', fontSize: '17px', fontWeight: 800,
+            cursor: submitting ? 'not-allowed' : 'pointer', opacity: submitting ? 0.6 : 1,
+          }}>
+            {submitting ? 'One moment...' : 'Start the questions'}
+          </button>
+
+          <p style={{ fontSize: '13px', color: '#6B6B6B', textAlign: 'center', margin: '2px 0 0' }}>
+            Free. No card. Two minutes of questions, then your report.
+          </p>
+        </>
+      )}
 
       <InboxNote />
     </form>
