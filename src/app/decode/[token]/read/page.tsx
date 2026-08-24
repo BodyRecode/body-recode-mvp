@@ -6,6 +6,7 @@ import { logPortalVisit } from '@/lib/challenge-portal-visit'
 import { typeFatMapProfile } from '@/lib/fat-map-profile'
 import { CHECKIN_PATTERNS } from '@/lib/checkin-patterns'
 import { currentDecodeDay, patternKeyForProfile } from '@/lib/decode-days'
+import { DecodeFeedbackCard } from '../decode-feedback-card'
 
 const BLUE = '#1B6DFC'
 const INK = '#1A1A1A'
@@ -157,6 +158,19 @@ export default async function DecodeReadPage({ params }: { params: Promise<{ tok
           This is a baseline, not a verdict. Patterns are states, not identities, and states respond to inputs.
         </p>
       </section>
+
+      {/* Accuracy capture, deliberately HERE and not at the end of the five
+          days: this is the moment she first meets her read, and it is the only
+          place we can ask whether the diagnosis actually landed. Completion
+          tells us she stayed; only this tells us we were right. */}
+      <div style={{ marginTop: '10px' }}>
+        <DecodeFeedbackCard
+          moment="read"
+          challengeEnrollmentId={enrollment.id}
+          leadId={enrollment.lead_id}
+          firstName={firstName}
+        />
+      </div>
     </main>
   )
 }

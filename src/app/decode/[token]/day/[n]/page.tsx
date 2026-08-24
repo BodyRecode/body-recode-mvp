@@ -13,6 +13,7 @@ import {
   type DecodeDayNumber,
 } from '@/lib/decode-days'
 import { DECODE_LESSON_VIDEOS, DECODE_READ_VIDEO } from '@/lib/video-urls'
+import { DecodeFeedbackCard } from '../../decode-feedback-card'
 
 const BLUE = '#1B6DFC'
 const INK = '#1A1A1A'
@@ -164,6 +165,19 @@ export default async function DecodeDayPage({
             >
               See the Blueprint
             </Link>
+          </div>
+
+          {/* Satisfaction capture, AFTER the Blueprint card rather than before
+              it. Asking her to rate us while the offer is still on screen reads
+              as a condition of the offer, and it would depress the ask that
+              actually matters commercially. */}
+          <div style={{ marginTop: '22px' }}>
+            <DecodeFeedbackCard
+              moment="day5"
+              challengeEnrollmentId={enrollment.id}
+              leadId={enrollment.lead_id}
+              firstName={lead?.name?.split(' ')[0] ?? null}
+            />
           </div>
         </section>
       )}
