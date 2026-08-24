@@ -57,3 +57,26 @@ export const DAY_14_ASCENSION_POSTER = videoUrl('poster-day-14-ascension-reel.jp
 // Week 6 ascension video is NOT yet delivered by Amanda. Its portal card and
 // email still render the in-production placeholder. Add the entry here and
 // swap the two placeholder call sites when it lands.
+
+/**
+ * The Body Decode — five daily lesson videos, keyed by day (1-5).
+ *
+ * Amanda fronts all five (Kade's decision 23 Aug 2026: Amanda teaches, Kade
+ * reads). They are UNIVERSAL, not pattern-specific — the pattern-specific
+ * content is the text underneath, pulled from CHECKIN_PATTERNS. Five videos,
+ * not twenty.
+ *
+ * Not yet delivered. Until they are, the day pages render the lesson premise
+ * and the pattern block with no player, which is a legible page rather than a
+ * broken one. Scripts: 09_PARTNERSHIPS/Amanda_Contra/2026-08-23_FIVE_DAY_READ_SCRIPTS_v1.md
+ */
+export const DECODE_LESSON_VIDEOS: Record<number, string> = {
+  1: videoUrl('decode-lesson-1-your-two-lowest.mp4'),
+  2: videoUrl('decode-lesson-2-why-holding.mp4'),
+  3: videoUrl('decode-lesson-3-where-it-shows.mp4'),
+  4: videoUrl('decode-lesson-4-what-this-is-not.mp4'),
+  5: videoUrl('decode-lesson-5-what-moves-it.mp4'),
+}
+
+/** Day 5, Kade delivering the full read. Replaces challenge-day-14.mp4. */
+export const DECODE_READ_VIDEO = videoUrl('decode-day-5-the-read.mp4')
