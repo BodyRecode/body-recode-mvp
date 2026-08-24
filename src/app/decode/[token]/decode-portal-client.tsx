@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import BodyDecodeIntakeForm from '@/app/challenge/[token]/body-decode-intake'
 import { CHECKIN_PATTERNS } from '@/lib/checkin-patterns'
-import { DECODE_DAYS, isDayUnlocked } from '@/lib/decode-days'
+import { DECODE_DAYS, isDayUnlocked, readinessPlain } from '@/lib/decode-days'
 
 const SECTION_LABELS: Record<'01' | '02' | '03' | '04' | '05', string> = {
   '01': 'Energy',
@@ -57,6 +57,7 @@ export default function DecodePortalClient({
   const router = useRouter()
   const pattern = patternKey ? CHECKIN_PATTERNS[patternKey] : null
   const lowest = twoLowest(sectionScores)
+  const readiness = readinessPlain(bodyState)
 
   // No scorecard on file, so the questions run HERE rather than on the public
   // scorecard. She has just typed her name, email and phone into the signup
@@ -99,14 +100,19 @@ export default function DecodePortalClient({
           substitute for it - the whole document is one tap away and always
           has been. */}
       <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '22px 24px', marginBottom: '14px' }}>
-        {bodyState && (
+        {readiness && (
           <>
             <p style={{ fontSize: '10px', fontWeight: 800, color: MUTED, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 6px' }}>
               Your readiness
             </p>
-            <p style={{ fontSize: '19px', fontWeight: 800, color: INK, letterSpacing: '-0.015em', margin: '0 0 18px' }}>
-              {bodyState}
+            <p style={{ fontSize: '19px', fontWeight: 800, color: INK, letterSpacing: '-0.015em', margin: '0 0 6px' }}>
+              {readiness.label}
             </p>
+            {readiness.means && (
+              <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.6, margin: '0 0 18px' }}>
+                {readiness.means}
+              </p>
+            )}
           </>
         )}
 

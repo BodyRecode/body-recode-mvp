@@ -192,3 +192,47 @@ export function patternKeyForProfile(profile: string | null | undefined): string
   if (!profile) return null
   return PROFILE_TO_PATTERN_KEY[profile] ?? null
 }
+
+/**
+ * Readiness, said in words she can use.
+ *
+ * "Readiness" is the locked outward vocabulary (it replaced "body state"
+ * because body state has to be taught and readiness is a category the market
+ * already prices). The problem found 24 Aug is that we swapped the LABEL and
+ * kept the jargon underneath, so it rendered as:
+ *
+ *     Your readiness came back Depleted State.
+ *
+ * Two unfamiliar things at once, and for a high scorer it read "Your readiness
+ * came back Ready State", which is nonsense on the page.
+ *
+ * So: drop the word "State", say what it MEANS in the same breath, and give her
+ * the prevalence so she knows she is not unusual. A word has to be taught
+ * before it can carry weight, and this is the one place it can be taught in
+ * passing rather than in a paragraph.
+ *
+ * Prevalence figures are n=88 and therefore exactly quotable, but they are
+ * given as ratios anyway because ratios survive a growing sample.
+ */
+export const READINESS_PLAIN: Record<string, { label: string; means: string; prevalence: string }> = {
+  'Depleted State': {
+    label: 'Depleted',
+    means: 'There is nothing spare right now, so anything that asks more of you has nowhere to come from.',
+    prevalence: 'about a third',
+  },
+  'Transitioning State': {
+    label: 'Transitioning',
+    means: 'There is some capacity there, it is just not consistent, so you get a good week and then lose it again.',
+    prevalence: 'about half',
+  },
+  'Ready State': {
+    label: 'Ready',
+    means: 'Your foundations are holding up, which means a hard plan would probably work on you right now.',
+    prevalence: 'fewer than one in five',
+  },
+}
+
+export function readinessPlain(bodyState: string | null | undefined) {
+  if (!bodyState) return null
+  return READINESS_PLAIN[bodyState] ?? { label: bodyState.replace(/ State$/, ''), means: '', prevalence: '' }
+}

@@ -5,7 +5,7 @@ import { PORTAL_ACCESS_STATUSES } from '@/lib/challenge-access'
 import { logPortalVisit } from '@/lib/challenge-portal-visit'
 import { typeFatMapProfile } from '@/lib/fat-map-profile'
 import { CHECKIN_PATTERNS } from '@/lib/checkin-patterns'
-import { currentDecodeDay, patternKeyForProfile } from '@/lib/decode-days'
+import { currentDecodeDay, patternKeyForProfile, readinessPlain } from '@/lib/decode-days'
 import { DecodeFeedbackCard } from '../decode-feedback-card'
 
 const BLUE = '#1B6DFC'
@@ -74,6 +74,7 @@ export default async function DecodeReadPage({ params }: { params: Promise<{ tok
 
   const patternKey = patternKeyForProfile(profile === 'Indeterminate' ? null : profile)
   const pattern = patternKey ? CHECKIN_PATTERNS[patternKey] : null
+  const readiness = readinessPlain(bodyState)
 
   await logPortalVisit(enrollment.lead_id, enrollment.id, currentDecodeDay(enrollment.enrolled_at))
 
@@ -97,9 +98,11 @@ export default async function DecodeReadPage({ params }: { params: Promise<{ tok
       {scores && (
         <section style={card()}>
           <p style={eyebrow()}>Your five scores</p>
-          {bodyState && (
+          {readiness && (
             <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 18px' }}>
-              Your readiness came back <strong style={{ color: INK }}>{bodyState}</strong>.
+              Your readiness came back <strong style={{ color: INK }}>{readiness.label}</strong>.
+              {readiness.means && ` ${readiness.means}`}
+              {readiness.prevalence && ` It is where ${readiness.prevalence} of the women we assess land.`}
             </p>
           )}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
