@@ -64,7 +64,7 @@ export default function DecodePortalClient({
           One thing first, {firstName}.
         </h1>
         <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 28px' }}>
-          The five days explain your read, so we need the read before they make any sense. It is about ten minutes and there is nothing to pay.
+          The five days explain your read, so we need the read before they make any sense. It is about two minutes of questions and there is nothing to pay.
         </p>
         <a
           href={`${brand().performanceDomain}/scorecard?source=decode_portal`}

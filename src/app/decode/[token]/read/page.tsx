@@ -24,13 +24,13 @@ const SECTION_LABELS: Record<'01' | '02' | '03' | '04' | '05', string> = {
  *
  * This page is the whole point of option B, chosen by Kade 24 Aug 2026.
  *
- * The alternative on the table was to name her pattern at minute ten and let
+ * The alternative on the table was to name her pattern the moment she finishes the questions and let
  * the five days release the explanation a part at a time. That was rejected,
  * and rightly: it is the same shape as the $37 report we had just retired for
  * selling her something she was about to be handed, only one layer in. Pacing
  * something she has already earned is still holding it back.
  *
- * So the read is complete and open from minute ten. The five days are Amanda
+ * So the read is complete and open from the moment she finishes the questions. The five days are Amanda
  * walking her through it, not unlocking it, because nobody absorbs a document
  * this long in one sitting. The lessons pace; the read does not.
  *

@@ -53,7 +53,7 @@ export default async function DecodeDayPage({
   const currentDay = currentDecodeDay(enrollment.enrolled_at)
 
   // Paces the LESSONS, not the read. Her full read is open at
-  // /decode/[token]/read from minute ten and this gate must never be extended to
+  // /decode/[token]/read from the moment she finishes the questions and this gate must never be extended to
   // cover it - see the header comment on that page for why.
   //
   // Kept server-side because a day URL is guessable and the hub only renders

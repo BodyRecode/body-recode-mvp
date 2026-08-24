@@ -92,7 +92,7 @@ export default function DecodeSignupForm({ position }: { position: string }) {
           You&apos;re in, {form.first_name}.
         </p>
         <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.65, margin: 0 }}>
-          Taking you to the questions now. About ten minutes, then your report.
+          Taking you to the questions now. About two minutes, then your report.
         </p>
       </div>
     )
@@ -155,7 +155,7 @@ export default function DecodeSignupForm({ position }: { position: string }) {
       </button>
 
       <p style={{ fontSize: '13px', color: '#6B6B6B', textAlign: 'center', margin: '2px 0 0' }}>
-        Free. No card. About ten minutes, then your report.
+        Free. No card. Two minutes of questions, then your report.
       </p>
 
       <InboxNote />

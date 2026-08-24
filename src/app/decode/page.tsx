@@ -84,7 +84,7 @@ const VOICES: Voice[] = [
 
 const FAQS = [
   { q: 'What is this, exactly?', a: 'A free online assessment. You answer questions about your sleep, stress load, energy, and how your body responds to training and to fat loss. Those five things get scored, and the pattern across them tells us which of four common causes is behind your body not responding. You get that as a written report, and then five short videos walk you through it, one a day.' },
-  { q: 'How long does it actually take?', a: 'About ten minutes to answer the questions, and your read is on screen straight after. Then five lessons, one a day, and each is a couple of minutes. Nothing is timed and nothing expires.' },
+  { q: 'How long does it actually take?', a: 'The questions are twelve taps and four boxes to type in, so about two minutes. Your report is on screen straight after. Then five short videos, one a day, a few minutes each. Nothing is timed and nothing expires.' },
   { q: 'Is anything held back until later?', a: 'No. Your full read is there from the start and stays there. The five lessons walk you through it a part at a time because it is a lot to take in at once, not because it unlocks.' },
   { q: 'Do I need to know my pattern before I start?', a: 'No, and that is the point. Working it out is what the read does. If you already know it from the scorecard it carries straight over and you are not asked anything twice.' },
   { q: 'Is there anything to buy?', a: 'Not to get the read. It is free and there is no card at signup. There is a paid next step if you want to correct what the read finds, and it is entirely optional.' },
@@ -107,11 +107,11 @@ export default function DecodeLandingPage() {
         headlineAccent="And the fat won't move."
         videoSlot={<DecodeExplainer src={DECODE_EXPLAINER_VIDEO} poster={DECODE_EXPLAINER_POSTER} />}
         leads={[
-          'The Body Decode is a free online assessment. About ten minutes of questions, and at the end you get a written report naming which of four common causes is behind your body not responding, why it is happening, what it usually gets mistaken for, and the three things that shift it.',
+          'The Body Decode is a free online assessment. About two minutes of questions, and at the end you get a written report naming which of four common causes is behind your body not responding, why it is happening, what it usually gets mistaken for, and the three things that shift it.',
           'The report is yours to keep. Then five short videos, one a day, walking you through it.',
         ]}
         stats={[
-          { value: '10 min', label: 'of questions' },
+          { value: '2 min', label: 'of questions' },
           { value: '5 videos', label: 'one a day, a few minutes each' },
           { value: '$0', label: 'no card, nothing to buy' },
         ]}

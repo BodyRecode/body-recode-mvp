@@ -16,17 +16,17 @@
 //   pattern in about four minutes. The Challenge made her wait a fortnight for
 //   something another page of ours gives away immediately.
 //
-// So: she gets her COMPLETE read at minute ten, and the five days are Amanda
+// So: she gets her COMPLETE read the moment she finishes the questions, and the five days are Amanda
 // walking her through it.
 //
 // OPTION B, chosen by Kade 24 Aug 2026. The alternative was to name her pattern
-// at minute ten and let each day release one part of the explanation. It was
+// the moment she finishes the questions and let each day release one part of the explanation. It was
 // rejected because it is the same shape as the $37 report retired the same day
 // for selling her something she was about to be handed - pacing what she has
 // already earned is still holding it back, one layer in.
 //
 // The practical rule that falls out: THE DAY GATE PACES THE LESSONS, NEVER THE
-// READ. Her full read lives at /decode/[token]/read and is open from minute ten
+// READ. Her full read lives at /decode/[token]/read and is open from the moment she finishes the questions
 // with no unlock check on it. The five days exist because nobody absorbs a
 // document that long in one sitting, not because it is doled out.
 //
@@ -146,7 +146,7 @@ export function currentDecodeDay(enrolledAt: string | Date, now: Date = new Date
 }
 
 /** True when this day has been reached and its LESSON should open. Never
- * applied to her read, which is open from minute ten. */
+ * applied to her read, which is open from the moment she finishes the questions. */
 export function isDayUnlocked(day: DecodeDayNumber, currentDay: number): boolean {
   return currentDay >= day
 }
