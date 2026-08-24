@@ -394,7 +394,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               ))}
             </div>
             {enrollment.token && (
-              <Link href={`/challenge/${enrollment.token}`} target="_blank"
+              <Link href={`/decode/${enrollment.token}`} target="_blank"
                 className="inline-block mt-3 text-[13px] font-bold text-[#1B6DFC] hover:underline">
                 Open their Challenge portal ↗
               </Link>

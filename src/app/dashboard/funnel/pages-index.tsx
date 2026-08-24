@@ -91,7 +91,7 @@ const STAGES: StageGroup[] = [
     accent: '#DC2626',
     funnel: 'B',
     pages: [
-      { name: 'Challenge landing page', url: '/challenge', description: 'Marketing landing with state-first positioning + signup form.' },
+      { name: 'The Body Decode landing page', url: '/decode', description: 'Funnel B Stage 1. /challenge now redirects here (cut over 24 Aug 2026); its portal artefact routes stay live for past finishers.' },
       { name: 'Challenge portal home', url: '/challenge/{token}', description: 'Participant portal home. Daily coaching note + section index.', tokenKind: 'challenge' },
       { name: 'Training plan', url: '/challenge/{token}/training', description: 'Full 14-day training plan.', tokenKind: 'challenge' },
       { name: 'Nutrition guide (HABNS)', url: '/challenge/{token}/nutrition', description: 'Meal builder + shopping list + nutrition principles.', tokenKind: 'challenge' },

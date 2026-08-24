@@ -334,7 +334,7 @@ export default function ParticipantView({
       <Section title="Coach actions">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <ActionLink
-            href={`/challenge/${enrollment.token}`}
+            href={`/decode/${enrollment.token}`}
             label="Open portal as participant"
             sub="See exactly what the participant sees"
             external
