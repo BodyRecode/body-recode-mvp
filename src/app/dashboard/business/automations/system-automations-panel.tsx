@@ -133,6 +133,13 @@ const AUTOMATIC_AUTOMATIONS = [
     steps: 1,
   },
   {
+    id: 'decode-daily-arc',
+    name: 'The Body Decode · daily arc',
+    description: 'One email at 7am Brisbane and one SMS four hours later, five days, each pointing at that day\'s lesson. Plus a single day-1 nudge that replaces the lesson for anyone who signed up and never answered the questions, since she has no read for the lessons to explain. Fires on challenge/enrolled ONLY when product is "decode" - /challenge and /decode share the enrol route, and the five Challenge functions bail on decode so a Body Decode signup never receives the 14-day arc. Every send logs a lead event with its Resend id, re-anchors to 7am daily so it cannot drift, and re-reads the enrolment before each send so an inactive one stops it mid-flight.',
+    trigger: 'challenge/enrolled with product = decode',
+    steps: 6,
+  },
+  {
     id: 'report-followup',
     name: 'Body Decode Report Follow-up (retired)',
     description: 'RETIRED 24 Aug 2026 — cannot fire on a new purchase, because the $37 Body Decode Report is no longer sold. The Body Decode gives every signup the same five-part read free on day 5, so the paid version sold her something she was about to be handed. Selling is closed at all three entry points; delivery is deliberately still live (/report/[token], the scorecard_reports table and the Stripe webhook branch), so anyone who already paid keeps what they bought. Left wired rather than deleted so an in-flight session still completes. See src/lib/scorecard-report-retired.ts.',
