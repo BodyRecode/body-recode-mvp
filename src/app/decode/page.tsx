@@ -32,7 +32,7 @@
 import { Activity, Moon, Gauge, FileText, Compass, Dna, ShieldCheck, Lock, Zap } from 'lucide-react'
 import { coach, logoUrl, brand } from '@/config/tenant'
 import {
-  LandingRoot, Nav, Section, Eyebrow, Heading, Callout, Hero, ProofStrip,
+  LandingRoot, Nav, Section, Eyebrow, Heading, Callout, Hero, ProofStrip, StatTiles,
   FeatureList, EdgeLine, StepList, ContrastBlock, ProofVoices, FounderBlock,
   CTASection, RiskReversalRow, FAQ, Footer, BLUE, INK, SignalsList, Mechanism,
 } from '@/components/landing/kit'
@@ -55,10 +55,11 @@ const SECTIONS = [
 const SIGNALS = [
   'You wake at three in the morning with nothing actually wrong.',
   'The afternoon drops out from under you around three or four.',
-  'You eat well all day, then stand in the kitchen at nine at night not really hungry, eating anyway.',
+  'It has settled around your middle, and it never used to sit there.',
+  'You eat well all day, then stand in the kitchen at nine at night, not really hungry, eating anyway.',
   'The same clothes fit differently over a fortnight while the scale does not move.',
   'You train hard on Monday and still feel it on Thursday.',
-  'Someone tells you it is just your age, and the conversation ends there.',
+  'Someone tells you it is just your age, or just your hormones, and the conversation ends there.',
 ]
 
 const READ_PARTS: Feature[] = [
@@ -107,7 +108,7 @@ export default function DecodeLandingPage() {
         headlineAccent="And the fat won't move."
         videoSlot={<DecodeExplainer src={DECODE_EXPLAINER_VIDEO} poster={DECODE_EXPLAINER_POSTER} />}
         leads={[
-          'The Body Decode is a free online assessment. About two minutes of questions, and at the end you get a written report naming which of four common causes is behind your body not responding, why it is happening, what it usually gets mistaken for, and the three things that shift it.',
+          'The Body Decode is a free online assessment for women whose bodies have stopped responding. About two minutes of questions, and at the end you get a written report naming which of four common causes is behind it, why it is happening, what it usually gets mistaken for, and the three things that shift it.',
           'The report is yours to keep. Then five short videos, one a day, walking you through it.',
         ]}
         stats={[
@@ -167,6 +168,60 @@ export default function DecodeLandingPage() {
         ]}
         takeaway="That is not a malfunction. It is the system doing exactly what it is built to do, at a time you would rather it did not."
       />
+
+      {/* HORMONES. Missing from the first build entirely, which was the biggest
+          copy gap on the page: almost all of this audience is women and six in
+          ten are peri or post, so it is the conversation they are already having
+          with themselves.
+
+          The position is deliberately NOT "we fix your hormones". Doctrine is
+          that hormones get OVER-attributed, and the moment they take the blame
+          the checking stops. Menopause is the POPULATION, not a pillar.
+
+          n=27 and n=25 figures, so RATIOS ONLY - "about a third", never 37%.
+          Ratios survive a growing sample, decimals do not. */}
+      {/* White, not tint: Mechanism directly above is already the blue band, and
+          two tinted sections back to back read as one long band with no break. */}
+      <Section pad="72px 24px">
+        <Eyebrow>The hormone question</Eyebrow>
+        <div style={{ marginBottom: '22px' }}>
+          <Heading muted="It is just usually not the whole answer.">Hormones are genuinely in the mix.</Heading>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '26px', alignItems: 'center' }}>
+          <div>
+            <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: '0 0 16px' }}>
+              About six in ten of the women we assess are perimenopausal or past it. So hormones really are part of this, and nobody is arguing otherwise.
+            </p>
+            <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: '0 0 16px' }}>
+              Here is what happens next though. <strong style={{ color: INK }}>The moment hormones get the blame, everything else stops being checked.</strong> Not the load you are carrying. Not whether you are eating enough to support it. Not how long any of it has been going on.
+            </p>
+            <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
+              That is not being dismissed. It is being explained away, which is worse, because it sounds like an answer and it ends the conversation.
+            </p>
+          </div>
+          {/* woman-7 is the pre-dawn portrait. She is awake before sunrise,
+              which is the argument this section makes. Greyscale is locked. */}
+          <div
+            aria-hidden="true"
+            style={{
+              minHeight: '330px', borderRadius: '14px',
+              backgroundImage: 'url(/woman-7.jpg)', backgroundSize: 'cover',
+              backgroundPosition: '50% 18%', filter: 'grayscale(1)',
+            }}
+          />
+        </div>
+
+        <div style={{ margin: '28px 0 22px' }}>
+          <StatTiles stats={[
+            { value: 'About a third', label: 'come out oestrogen-driven' },
+            { value: 'About half', label: 'come out driven by stress load' },
+            { value: '1 in 25', label: 'are actually insulin' },
+          ]} />
+        </div>
+
+        <Callout tone="solid">So &ldquo;it is your hormones&rdquo; is right often enough to be believable, and wrong often enough to send most women down the wrong road for a year.</Callout>
+      </Section>
 
       {/* The data. This is the page's strongest asset and no competitor has it. */}
       <Section pad="72px 24px">
@@ -283,6 +338,53 @@ export default function DecodeLandingPage() {
         ]}
         callout="A generic plan is a guess. A read is what is actually happening. This is the read, and there is nothing to buy to get it."
       />
+
+      {/* IS THIS FOR ME. This existed on the first build and was lost in the kit
+          rebuild without being noticed - the three-state split and the
+          disqualifier went with it.
+
+          It qualifies on BEHAVIOUR, never on a score she has not seen yet. The
+          challenge page filtered to a Depleted State and turned away the half
+          who are Transitioning, and working out which one she is IS the
+          product. n=88 for the state split, so exact figures would be
+          quotable; ratios read better and survive a growing sample. */}
+      <Section bg="grey" pad="72px 24px">
+        <Eyebrow>Is this for you</Eyebrow>
+        <div style={{ marginBottom: '24px' }}>
+          <Heading muted="You do not need to know which one you are yet.">This is for women whose bodies have stopped responding.</Heading>
+        </div>
+
+        {/* woman-3 is the gym portrait: she is already doing the work, which is
+            the whole point of this section. Matching the portrait to the copy is
+            a constraint, not a preference. Greyscale is locked. */}
+        <div
+          aria-hidden="true"
+          style={{
+            height: '230px', borderRadius: '14px', marginBottom: '26px',
+            backgroundImage: 'url(/woman-3.jpg)', backgroundSize: 'cover',
+            backgroundPosition: '50% 20%', filter: 'grayscale(1)',
+          }}
+        />
+
+        <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: '0 0 22px' }}>
+          Almost everyone who does this is a woman, and most have been doing the right things for a while and getting less back for it. Of the women we have assessed:
+        </p>
+
+        <div style={{ marginBottom: '24px' }}>
+          <StatTiles stats={[
+            { value: 'A third', label: 'have nothing spare' },
+            { value: 'Half', label: 'are somewhere in the middle' },
+            { value: 'Under 1 in 5', label: 'could handle a hard plan today' },
+          ]} />
+        </div>
+
+        <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: '0 0 14px' }}>
+          The read works out which one you are <strong style={{ color: INK }}>before anyone writes you a plan</strong>, so you do not need to know before you start. That is the part everybody skips.
+        </p>
+        <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
+          If you are training well and progressing, this is not for you and it will not tell you much.
+        </p>
+      </Section>
 
       <Section pad="72px 24px">
         <Eyebrow>Before you start</Eyebrow>

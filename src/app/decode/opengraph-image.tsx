@@ -15,7 +15,7 @@ import { brand } from '@/config/tenant'
  */
 
 export const runtime = 'edge'
-export const alt = "The Body Decode. A free assessment: two minutes of questions, then a written report naming which of four causes is behind your body not responding."
+export const alt = "The Body Decode. A free assessment for women whose bodies have stopped responding: two minutes of questions, then a written report naming which of four causes is behind it."
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -53,7 +53,7 @@ export default async function Image() {
           <div style={{ width: '76px', height: '5px', background: BLUE, borderRadius: '3px', margin: '34px 0 30px', display: 'flex' }} />
 
           <div style={{ fontSize: '29px', color: '#4A4A4A', lineHeight: 1.45, maxWidth: '900px', display: 'flex' }}>
-            A free assessment. Two minutes of questions, then a written report naming which of four common causes is behind it, and the three things that shift it.
+            A free assessment for women whose bodies have stopped responding. Two minutes of questions, then a report naming which of four causes is behind it, and the three things that shift it.
           </div>
         </div>
 
