@@ -80,3 +80,16 @@ export const DECODE_LESSON_VIDEOS: Record<number, string> = {
 
 /** Day 5, Kade delivering the full read. Replaces challenge-day-14.mp4. */
 export const DECODE_READ_VIDEO = videoUrl('decode-day-5-the-read.mp4')
+
+/**
+ * The Body Decode landing page explainer. Kade.
+ *
+ * Replaces challenge-explainer.mp4, which cannot be re-cut: it argues FOR the
+ * fourteen days ("you get 14 days of structure designed to bring it to the point
+ * where it can be read properly"), so it is a new argument rather than an edit.
+ * Script 1 in 09_PARTNERSHIPS/Amanda_Contra/2026-08-24_BODY_DECODE_SCRIPTS_v2.md.
+ *
+ * Not delivered yet. The page renders a branded placeholder until it lands.
+ */
+export const DECODE_EXPLAINER_VIDEO = videoUrl('decode-explainer.mp4')
+export const DECODE_EXPLAINER_POSTER = videoUrl('poster-decode-explainer.jpg')
