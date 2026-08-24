@@ -172,13 +172,33 @@ export default async function DecodeDayPage({
           <p style={{ fontSize: '11px', fontWeight: 700, color: BLUE, letterSpacing: '0.11em', textTransform: 'uppercase', margin: '0 0 16px' }}>
             {block.heading} · from your read
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '13px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: isFinalDay ? '16px' : '13px' }}>
             {block.paragraphs.map((para, i) => (
-              <p key={i} style={{ fontSize: '15px', color: '#3A3A3A', lineHeight: 1.72, margin: 0 }}>
-                {para}
-              </p>
+              isFinalDay ? (
+                // Day 5 is the only numbered one. Its premise promises an order
+                // ("start with the regulation ones, not the training one") and a
+                // plain list showed none.
+                <div key={i} style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+                  <span style={{
+                    width: '26px', height: '26px', borderRadius: '50%', flexShrink: 0, marginTop: '1px',
+                    background: BLUE, color: '#FFFFFF', display: 'inline-flex',
+                    alignItems: 'center', justifyContent: 'center',
+                    fontSize: '12px', fontWeight: 900, fontVariantNumeric: 'tabular-nums',
+                  }}>{i + 1}</span>
+                  <p style={{ fontSize: '15px', color: '#3A3A3A', lineHeight: 1.72, margin: 0 }}>{para}</p>
+                </div>
+              ) : (
+                <p key={i} style={{ fontSize: '15px', color: '#3A3A3A', lineHeight: 1.72, margin: 0 }}>
+                  {para}
+                </p>
+              )
             ))}
           </div>
+          {isFinalDay && (
+            <p style={{ fontSize: '14px', color: MUTED, lineHeight: 1.65, margin: '18px 0 0', fontStyle: 'italic' }}>
+              In that order. The first two look least like progress and they are what make the third one work.
+            </p>
+          )}
         </section>
       )}
 
@@ -192,11 +212,13 @@ export default async function DecodeDayPage({
         </section>
       )}
 
-      <p style={{ margin: '20px 0 0' }}>
-        <Link href={`/decode/${token}/read`} style={{ fontSize: '14px', fontWeight: 700, color: BLUE, textDecoration: 'none' }}>
-          Read all five parts →
-        </Link>
-      </p>
+      {!isFinalDay && (
+        <p style={{ margin: '20px 0 0' }}>
+          <Link href={`/decode/${token}/read`} style={{ fontSize: '14px', fontWeight: 700, color: BLUE, textDecoration: 'none' }}>
+            Read all five parts →
+          </Link>
+        </p>
+      )}
 
       {isFinalDay && (
         <section style={{ marginTop: '32px' }}>
@@ -206,11 +228,17 @@ export default async function DecodeDayPage({
           <DecodeExplainer src={DECODE_READ_VIDEO} eyebrow="Kade, to close" title="Where this leaves you" />
 
           <div style={{ background: '#FFFFFF', border: `1.5px solid ${BLUE}`, borderRadius: '14px', padding: '24px 26px', marginTop: '22px' }}>
-            <p style={{ fontSize: '18px', fontWeight: 800, color: INK, letterSpacing: '-0.015em', margin: '0 0 8px' }}>
-              The report is the read. The next step is correction.
+            <p style={{ fontSize: '11px', fontWeight: 800, color: BLUE, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 10px' }}>
+              If you want to do something about it
+            </p>
+            <p style={{ fontSize: '19px', fontWeight: 800, color: INK, letterSpacing: '-0.015em', margin: '0 0 10px' }}>
+              Knowing your pattern and correcting it are two different jobs.
+            </p>
+            <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 16px' }}>
+              Your read tells you what is happening. It does not undo it, and that is the honest part. The 6-Week Blueprint is the other job: six weeks built around your pattern rather than the average, with the training and the eating set to it, a coaching note each week, and a check-in at week three to adjust.
             </p>
             <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 20px' }}>
-              Your read tells you what is happening. It does not undo it, and that is the honest part. The 6-Week Blueprint is six weeks shaped around your pattern, and it is where the correction happens.
+              <strong style={{ color: INK }}>$97 AUD, one time.</strong> Not a subscription. Your portal opens the day you start.
             </p>
             <Link
               href="/blueprint"
@@ -219,7 +247,7 @@ export default async function DecodeDayPage({
                 color: '#FFFFFF', fontSize: '16px', fontWeight: 800, textAlign: 'center', textDecoration: 'none',
               }}
             >
-              See the Blueprint
+              See the Blueprint · $97
             </Link>
           </div>
 
@@ -235,6 +263,12 @@ export default async function DecodeDayPage({
               firstName={lead?.name?.split(' ')[0] ?? null}
             />
           </div>
+
+          <p style={{ margin: '26px 0 0', textAlign: 'center' }}>
+            <Link href={`/decode/${token}/read`} style={{ fontSize: '14px', fontWeight: 700, color: BLUE, textDecoration: 'none' }}>
+              Your read is still here, any time →
+            </Link>
+          </p>
         </section>
       )}
     </main>
