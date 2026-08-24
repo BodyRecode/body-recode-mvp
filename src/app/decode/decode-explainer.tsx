@@ -17,7 +17,17 @@ const BLUE = '#1B6DFC'
  * and we fall back. That keeps the swap automatic on upload with no redeploy,
  * which is the whole reason these live in Supabase storage rather than public/.
  */
-export default function DecodeExplainer({ src, poster }: { src: string; poster: string }) {
+export default function DecodeExplainer({
+  src,
+  poster,
+  eyebrow = 'Ninety seconds',
+  title = 'How the read works',
+}: {
+  src: string
+  poster?: string
+  eyebrow?: string
+  title?: string
+}) {
   const [failed, setFailed] = useState(false)
 
   // Fallback matches the kit's VideoComingSoon treatment so the slot reads as
@@ -35,8 +45,8 @@ export default function DecodeExplainer({ src, poster }: { src: string; poster: 
           <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: 'rgba(27,109,252,0.18)', border: '1.5px solid rgba(255,255,255,0.4)', margin: '0 auto 18px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Play size={26} color="#FFFFFF" fill="#FFFFFF" style={{ marginLeft: '4px' }} />
           </div>
-          <p style={{ fontSize: '12px', fontWeight: 800, color: '#7BB3FF', letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 8px' }}>Ninety seconds</p>
-          <p style={{ fontSize: '20px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.015em', margin: '0 0 6px', lineHeight: 1.25 }}>How the read works</p>
+          <p style={{ fontSize: '12px', fontWeight: 800, color: '#7BB3FF', letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 8px' }}>{eyebrow}</p>
+          <p style={{ fontSize: '20px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.015em', margin: '0 0 6px', lineHeight: 1.25 }}>{title}</p>
           <p style={{ fontSize: '12px', fontWeight: 700, color: '#8A8A8E', letterSpacing: '0.08em', textTransform: 'uppercase', margin: 0 }}>Coming soon</p>
         </div>
       </div>

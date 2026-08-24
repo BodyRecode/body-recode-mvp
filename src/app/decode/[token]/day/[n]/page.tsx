@@ -13,6 +13,9 @@ import {
   type DecodeDayNumber,
 } from '@/lib/decode-days'
 import { DECODE_LESSON_VIDEOS, DECODE_READ_VIDEO } from '@/lib/video-urls'
+import DecodeExplainer from '../../../decode-explainer'
+import { Nav } from '@/components/landing/kit'
+import { logoUrl, brand } from '@/config/tenant'
 import { DecodeFeedbackCard } from '../../decode-feedback-card'
 
 const BLUE = '#1B6DFC'
@@ -86,10 +89,27 @@ export default async function DecodeDayPage({
   const block = patternBlockFor(day, patternKey)
   const isFinalDay = day.day === DECODE_DAYS.length
 
+  // Day 1 is the only day with no pattern block, because it reads her SCORES
+  // rather than her pattern. Without this it was the thinnest page in the whole
+  // product - a title, one line and a video - and it is the first lesson she
+  // opens. Her own scores are the content, worst first.
+  const SECTION_LABELS: Record<string, string> = {
+    '01': 'Energy', '02': 'Sleep', '03': 'Stress load',
+    '04': 'Training response', '05': 'Fat loss response',
+  }
+  const ordered = scores
+    ? (['03', '02', '01', '05', '04'] as const)
+        .filter(k => typeof scores[k] === 'number')
+        .sort((a, b) => scores[a] - scores[b])
+    : []
+  const showScores = day.day === 1 && ordered.length > 0
+
   await logPortalVisit(enrollment.lead_id, enrollment.id, currentDay)
 
   return (
-    <main style={{ maxWidth: '640px', margin: '0 auto', padding: '40px 24px 72px' }}>
+    <>
+    <Nav logo={logoUrl()} brandName={brand().name} />
+    <main style={{ maxWidth: '640px', margin: '0 auto', padding: '8px 24px 72px' }}>
       <Link href={`/decode/${token}`} style={{ fontSize: '13px', fontWeight: 700, color: BLUE, textDecoration: 'none' }}>
         ← All five days
       </Link>
@@ -106,10 +126,46 @@ export default async function DecodeDayPage({
 
       {/* Amanda's lesson. Not yet delivered, so the page renders without a
           player rather than with a broken one. */}
-      <VideoOrPlaceholder
+      <DecodeExplainer
         src={DECODE_LESSON_VIDEOS[day.day]}
-        label={`Lesson ${day.day}`}
+        eyebrow={`Day ${day.day} · a few minutes`}
+        title={day.title}
       />
+
+      {showScores && (
+        <section style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '24px 26px', marginTop: '24px' }}>
+          <p style={{ fontSize: '11px', fontWeight: 700, color: BLUE, letterSpacing: '0.11em', textTransform: 'uppercase', margin: '0 0 16px' }}>
+            Your five, worst first
+          </p>
+          <div style={{ display: 'grid', gap: '14px' }}>
+            {ordered.map((k, i) => {
+              const v = scores![k]
+              const colour = v === 1 ? '#DC2626' : v === 2 ? '#B7791F' : '#1056D6'
+              return (
+                <div key={k}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '6px', gap: '10px' }}>
+                    <span style={{ fontSize: '15px', fontWeight: 700, color: i < 2 ? colour : INK }}>
+                      {SECTION_LABELS[k]}{i < 2 ? ' · one of your two lowest' : ''}
+                    </span>
+                    <span style={{ fontSize: '14px', fontWeight: 800, color: colour, fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' }}>
+                      {v} out of 3
+                    </span>
+                  </div>
+                  <div style={{ height: '9px', background: '#ECEDEF', borderRadius: '99px', overflow: 'hidden' }}>
+                    <div style={{ width: `${(v / 3) * 100}%`, height: '100%', background: colour, borderRadius: '99px' }} />
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+          <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.72, margin: '22px 0 0' }}>
+            Look at the bottom two. Those are the ones deciding whether anything you do turns into a result, and they are almost always the two nobody has ever measured.
+          </p>
+          <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.72, margin: '14px 0 0' }}>
+            Now look at the top one. If it is training response, that is not good news. It means the thing you have been working hardest at is the thing that was least wrong, which is exactly why doing more of it has not paid off.
+          </p>
+        </section>
+      )}
 
       {block && (
         <section style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '24px 26px', marginTop: '24px' }}>
@@ -138,7 +194,7 @@ export default async function DecodeDayPage({
 
       <p style={{ margin: '20px 0 0' }}>
         <Link href={`/decode/${token}/read`} style={{ fontSize: '14px', fontWeight: 700, color: BLUE, textDecoration: 'none' }}>
-          Read the whole thing →
+          Read all five parts →
         </Link>
       </p>
 
@@ -147,7 +203,7 @@ export default async function DecodeDayPage({
           <p style={{ fontSize: '11px', fontWeight: 700, color: BLUE, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 10px' }}>
             Kade, to close
           </p>
-          <VideoOrPlaceholder src={DECODE_READ_VIDEO} label="Kade, to close" />
+          <DecodeExplainer src={DECODE_READ_VIDEO} eyebrow="Kade, to close" title="Where this leaves you" />
 
           <div style={{ background: '#FFFFFF', border: `1.5px solid ${BLUE}`, borderRadius: '14px', padding: '24px 26px', marginTop: '22px' }}>
             <p style={{ fontSize: '18px', fontWeight: 800, color: INK, letterSpacing: '-0.015em', margin: '0 0 8px' }}>
@@ -182,29 +238,6 @@ export default async function DecodeDayPage({
         </section>
       )}
     </main>
-  )
-}
-
-/**
- * Renders the player when the file is there and a legible note when it is not.
- *
- * Amanda has not delivered the six Body Decode videos yet. A <video> pointing at
- * a missing object renders as a dead black box with no explanation, which reads
- * as a broken page rather than an unfinished one.
- */
-function VideoOrPlaceholder({ src, label }: { src: string; label: string }) {
-  return (
-    <div style={{ background: '#F4F5F7', border: '1px solid #E5E5E5', borderRadius: '12px', overflow: 'hidden' }}>
-      <video
-        src={src}
-        controls
-        playsInline
-        preload="metadata"
-        style={{ width: '100%', display: 'block', background: '#000000' }}
-      />
-      <p style={{ fontSize: '12px', color: MUTED, margin: 0, padding: '10px 14px' }}>
-        {label}
-      </p>
-    </div>
+    </>
   )
 }
