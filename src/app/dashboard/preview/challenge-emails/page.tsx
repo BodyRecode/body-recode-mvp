@@ -5,7 +5,7 @@ import {
   buildDay5UnlockEmail,
   buildDay14FallbackEmail,
 } from '@/lib/challenge-checkin-emails'
-import { buildChallengeWelcomeEmail } from '@/lib/challenge-welcome-email'
+import { buildChallengeWelcomeEmail, buildBodyDecodeWelcomeEmail } from '@/lib/challenge-welcome-email'
 import { brand } from "@/config/tenant";
 
 const SAMPLE = {
@@ -33,6 +33,8 @@ const PATTERNS = [
 ]
 
 type EmailKey =
+  | 'decode-welcome'
+  | 'decode-welcome-returning'
   | 'welcome'
   | 'welcome-returning'
   | 'day5'
@@ -41,7 +43,9 @@ type EmailKey =
   | 'day14-fallback'
 
 const EMAIL_TABS: { key: EmailKey; label: string; trigger: string; iframeHeight: number }[] = [
-  { key: 'welcome', label: 'Welcome (new)', trigger: 'Sent on first Challenge enrolment (synchronous from /api/challenge/enroll)', iframeHeight: 1200 },
+  { key: 'decode-welcome', label: 'Body Decode welcome (new)', trigger: 'Sent on first Body Decode signup (synchronous from /api/challenge/enroll, product: decode). THE LIVE ONE — the Challenge welcomes below are legacy.', iframeHeight: 1200 },
+  { key: 'decode-welcome-returning', label: 'Body Decode welcome (returning)', trigger: 'Sent when someone already enrolled re-submits the Body Decode signup form.', iframeHeight: 1100 },
+  { key: 'welcome', label: 'Welcome (new)', trigger: 'LEGACY. Sent on first Challenge enrolment. /challenge cut over to /decode on 24 Aug 2026, so nothing sends this any more.', iframeHeight: 1200 },
   { key: 'welcome-returning', label: 'Welcome (returning)', trigger: 'Sent when an existing participant re-submits the signup form. No new drip scheduled.', iframeHeight: 1100 },
   { key: 'day5', label: 'Day 5 unlock', trigger: 'Sent on Day 5 by Inngest when the Week One Progress Session unlocks.', iframeHeight: 1300 },
   { key: 'day7', label: 'Day 7 Progress', trigger: 'Sent on Check-In submission, Day 7-13. No pattern reveal.', iframeHeight: 1400 },
@@ -56,12 +60,24 @@ export default async function ChallengeEmailsPreview({
 }) {
   const { email, pattern } = await searchParams
   const selectedEmail: EmailKey =
-    (EMAIL_TABS.find(t => t.key === email)?.key) ?? 'welcome'
+    (EMAIL_TABS.find(t => t.key === email)?.key) ?? 'decode-welcome'
   const selectedPatternSlug = PATTERNS.find(p => p.slug === pattern)?.slug ?? 'stress-stored'
   const selectedPatternLabel = PATTERNS.find(p => p.slug === selectedPatternSlug)?.label ?? 'Stress-Stored Pattern'
 
   const built = (() => {
     switch (selectedEmail) {
+      case 'decode-welcome':
+        return buildBodyDecodeWelcomeEmail({
+          firstName: SAMPLE.firstName,
+          portalUrl: SAMPLE.portalUrl,
+          returning: false,
+        })
+      case 'decode-welcome-returning':
+        return buildBodyDecodeWelcomeEmail({
+          firstName: SAMPLE.firstName,
+          portalUrl: SAMPLE.portalUrl,
+          returning: true,
+        })
       case 'welcome':
         return buildChallengeWelcomeEmail({
           firstName: SAMPLE.firstName,

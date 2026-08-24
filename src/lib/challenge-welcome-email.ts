@@ -13,6 +13,8 @@ export interface ChallengeWelcomeParams {
   firstName: string
   portalUrl: string
   returning?: boolean
+  /** 'decode' sends The Body Decode welcome. Anything else keeps the Challenge one. */
+  product?: string
 }
 
 export interface ChallengeWelcomeResult {
@@ -90,11 +92,85 @@ ${emailBody('Not seeing our emails? Check your junk or spam folder and move this
   return { subject, html }
 }
 
+/**
+ * The Body Decode welcome.
+ *
+ * ADDED 25 Aug 2026, after a signup received the Challenge welcome: subject
+ * "You're in, {name}. Day 1 starts now", body "over the next 14 days", and a
+ * contents list promising a 14-day training plan, the HABNS nutrition guide,
+ * the Morning Reset and Evening Rhythm sequences, a Day 7 Check-In and a Day 14
+ * report. NONE of that exists in The Body Decode. She is asked for nothing
+ * across the five days, which is the entire point of the rebuild.
+ *
+ * The cutover on 24 Aug moved the landing page and the portal hub but never
+ * touched this send, because the enrol route is shared and the email was one
+ * call inside it with no product argument to branch on.
+ *
+ * NO DAY-COUNT LANGUAGE AND NOTHING TO COMPLY WITH, matching
+ * decode-daily-emails.ts. There is no streak to praise here.
+ *
+ * The CTA label is state-neutral on purpose. Signup redirects her straight
+ * into the portal, so by the time she opens this she has usually already
+ * answered the questions - and the hub renders either the intake or her read
+ * depending on which. "Start the questions" would be wrong for most readers.
+ */
+export function buildBodyDecodeWelcomeEmail({
+  firstName,
+  portalUrl,
+  returning = false,
+}: {
+  firstName: string
+  portalUrl: string
+  returning?: boolean
+}): { subject: string; html: string } {
+  const subject = returning
+    ? `Here is your Body Decode link again, ${firstName}.`
+    : `${firstName}, your report is waiting.`
+
+  const heading = returning ? `Welcome back, ${firstName}.` : `You are in, ${firstName}.`
+
+  const intro = returning
+    ? [
+      `Hi ${firstName},`,
+      'Here is your link back into The Body Decode. Your report is where you left it, and it stays there.',
+    ]
+    : [
+      `Hi ${firstName},`,
+      'About two minutes of questions, and then your report opens. All of it, straight away.',
+      'Nothing is kept back and nothing unlocks later.',
+    ]
+
+  const html = challengeEmailShell(`
+${emailEyebrow('The Body Decode')}
+${emailHeading(heading)}
+${emailDivider()}
+${intro.map(line => emailBody(line)).join('\n')}
+${emailFeaturedCard(
+  emailNumberedList([
+    'Five things about you, scored out of three',
+    'Your two lowest, named',
+    'Which pattern is yours, and why it is happening',
+    'Where you will recognise it in an ordinary week',
+    'What it usually gets mistaken for, and the three things that shift it',
+  ]),
+  { eyebrow: 'What your report gives you' },
+)}
+${emailBody('Then five short videos, one a day, walking you through it a part at a time, because it is a lot to take in at once.', { bottom: 28 })}
+${emailBody('It is free, and there is nothing to buy to get it.', { bottom: 20 })}
+${emailCta({ href: portalUrl, label: 'Open my Body Decode' })}
+${emailUrlFallback(portalUrl, 'Bookmark this link — it is the way back to your report any time')}
+${emailBody('Not seeing our emails? Check your junk or spam folder and move this one to your inbox (or mark it "not spam"), so each day\'s video lands.')}
+`)
+
+  return { subject, html }
+}
+
 export async function sendChallengeWelcomeEmail({
   to,
   firstName,
   portalUrl,
   returning = false,
+  product,
 }: ChallengeWelcomeParams): Promise<ChallengeWelcomeResult> {
   const apiKey = process.env.RESEND_API_KEY
   if (!apiKey) {
@@ -102,7 +178,8 @@ export async function sendChallengeWelcomeEmail({
   }
 
   const resend = new Resend(apiKey)
-  const { subject, html } = buildChallengeWelcomeEmail({ firstName, portalUrl, returning })
+  const build = product === 'decode' ? buildBodyDecodeWelcomeEmail : buildChallengeWelcomeEmail
+  const { subject, html } = build({ firstName, portalUrl, returning })
 
   try {
     const { data, error } = await resend.emails.send({

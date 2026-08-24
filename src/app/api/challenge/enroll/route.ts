@@ -229,7 +229,13 @@ export async function POST(request: NextRequest) {
   const firstName = first_name.trim()
   const trimmedEmail = email.toLowerCase().trim()
   const trimmedPhone = e164Phone
-  const portalUrl = `${brand().marketingDomain}/challenge/${token}`
+  // The portal path follows the PRODUCT, not the route name. Both products
+  // write the same challenge_enrollments row and share this route, so the
+  // hardcoded /challenge path was sending Body Decode signups to the Challenge
+  // hub. It redirects to /decode/[token] so nobody was stranded, but the link
+  // in her welcome email should say what it is.
+  const isDecode = product === 'decode'
+  const portalUrl = `${brand().marketingDomain}/${isDecode ? 'decode' : 'challenge'}/${token}`
 
   const [welcome, coachNotify] = await Promise.all([
     sendChallengeWelcomeEmail({
@@ -237,6 +243,7 @@ export async function POST(request: NextRequest) {
       firstName,
       portalUrl,
       returning: isReturning,
+      product,
     }),
     sendCoachEnrollmentNotification({
       firstName,
@@ -253,7 +260,9 @@ export async function POST(request: NextRequest) {
     await logLeadEvent({
       leadId,
       type: 'challenge_welcome_sent',
-      subject: isReturning ? 'Challenge portal link re-sent' : 'Challenge welcome email sent',
+      subject: isReturning
+        ? `${isDecode ? 'Body Decode' : 'Challenge'} portal link re-sent`
+        : `${isDecode ? 'Body Decode' : 'Challenge'} welcome email sent`,
       notes: `Resend id: ${welcome.id ?? 'unknown'}. Returning: ${isReturning}.`,
     })
   }
