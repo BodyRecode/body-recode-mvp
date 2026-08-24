@@ -26,7 +26,7 @@
 
 import {
   darkEmailShell, emailLogo, emailEyebrow, emailHeading, emailDivider,
-  emailBody, emailCta, emailUrlFallback, emailFeaturedCard, emailCallout,
+  emailBody, emailCta, emailUrlFallback, emailCallout,
 } from './email-shell'
 import { darkEmailSignature } from './email-signature'
 import { DECODE_DAYS } from './decode-days'
@@ -142,10 +142,7 @@ ${emailHeading('You have not answered the questions yet.')}
 ${emailDivider()}
 ${emailBody(`Hi ${firstName},`)}
 ${emailBody('You signed up and then something got in the way, which is completely normal. The questions are still there and they take about two minutes.')}
-${emailFeaturedCard(
-  emailCallout({ eyebrow: 'What it takes', value: '2', unit: 'minutes' }),
-  { eyebrow: 'To get your read' },
-)}
+${emailCallout({ eyebrow: 'To get your read', value: '2', unit: 'minutes' })}
 ${emailBody('There is nothing to pay, nothing to download and nothing to do afterwards unless you want to. Your report is on screen the moment you finish, and it is yours to keep whatever you decide.', { bottom: 28 })}
 ${emailCta({ href: portalUrl, label: 'Answer the questions' })}
 ${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
@@ -157,7 +154,7 @@ ${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
 /** SMS, one per day. Short by design; the portal does the work. */
 export const DECODE_SMS: Record<number, string> = {
   1: `{{name}}, day 1 of your Body Decode is open: your two lowest scores, and why they are the two that matter. {{url}}`,
-  2: `Day 2 is up, {{name}}. Why your body is holding on, and why eating less has made it worse. {{url}}`,
+  2: `Day 2 is up, {{name}}. Why it is happening, and why eating less has been making it worse. {{url}}`,
   3: `Day 3, {{name}}. This is the one people say lands hardest: where your pattern shows up in an ordinary week. {{url}}`,
   4: `Day 4 is the part most people skip, {{name}}, and it is the one worth reading twice. What your pattern is NOT. {{url}}`,
   5: `Last one, {{name}}. Three things that actually move your pattern, in the order that matters. {{url}}`,
