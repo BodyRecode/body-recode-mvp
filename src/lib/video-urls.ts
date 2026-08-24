@@ -72,7 +72,7 @@ export const DAY_14_ASCENSION_POSTER = videoUrl('poster-day-14-ascension-reel.jp
  */
 export const DECODE_LESSON_VIDEOS: Record<number, string> = {
   1: videoUrl('decode-lesson-1-your-two-lowest.mp4'),
-  2: videoUrl('decode-lesson-2-why-holding.mp4'),
+  2: videoUrl('decode-lesson-2-why-it-happens.mp4'),
   3: videoUrl('decode-lesson-3-where-it-shows.mp4'),
   4: videoUrl('decode-lesson-4-what-this-is-not.mp4'),
   5: videoUrl('decode-lesson-5-what-moves-it.mp4'),
