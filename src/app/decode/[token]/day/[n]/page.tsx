@@ -15,7 +15,7 @@ import {
 import { DECODE_LESSON_VIDEOS, DECODE_READ_VIDEO } from '@/lib/video-urls'
 import DecodeExplainer from '../../../decode-explainer'
 import { Nav } from '@/components/landing/kit'
-import { logoUrl, brand } from '@/config/tenant'
+import { logoUrl, brand, coach } from '@/config/tenant'
 import { DecodeFeedbackCard } from '../../decode-feedback-card'
 
 const BLUE = '#1B6DFC'
@@ -125,11 +125,16 @@ export default async function DecodeDayPage({
       </p>
 
       {/* Amanda's lesson. Not yet delivered, so the page renders without a
-          player rather than with a broken one. */}
+          player rather than with a broken one.
+
+          The byline is the only thing that tells her who Amanda is. She met
+          Kade on the landing page and has never seen this face before, so
+          without it a stranger starts talking to her about her own report. */}
       <DecodeExplainer
         src={DECODE_LESSON_VIDEOS[day.day]}
         eyebrow={`Day ${day.day} · a few minutes`}
         title={day.title}
+        byline={{ name: 'Amanda', role: 'Walking you through your report, one part a day' }}
       />
 
       {showScores && (
@@ -225,7 +230,12 @@ export default async function DecodeDayPage({
           <p style={{ fontSize: '11px', fontWeight: 700, color: BLUE, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 10px' }}>
             Kade, to close
           </p>
-          <DecodeExplainer src={DECODE_READ_VIDEO} eyebrow="Kade, to close" title="Where this leaves you" />
+          <DecodeExplainer
+            src={DECODE_READ_VIDEO}
+            eyebrow="Kade, to close"
+            title="Where this leaves you"
+            byline={{ name: coach().fullName, role: coach().credentials }}
+          />
 
           <div style={{ background: '#FFFFFF', border: `1.5px solid ${BLUE}`, borderRadius: '14px', padding: '24px 26px', marginTop: '22px' }}>
             <p style={{ fontSize: '11px', fontWeight: 800, color: BLUE, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 10px' }}>

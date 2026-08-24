@@ -17,16 +17,51 @@ const BLUE = '#1B6DFC'
  * and we fall back. That keeps the swap automatic on upload with no redeploy,
  * which is the whole reason these live in Supabase storage rather than public/.
  */
+/**
+ * Who is talking, shown under the player.
+ *
+ * A woman meets Kade on the landing page (the Hero carries his name and
+ * credentials), signs up, and then on day 1 a different person starts talking
+ * to her about her own report. Nothing on the page said who that was: the
+ * lesson slot rendered with an eyebrow and the day title and no attribution at
+ * all, while Kade's day 5 close sat under a "Kade, to close" label. So the one
+ * face she had not met was the only one that went unnamed.
+ *
+ * This lives on the PAGE rather than in the script deliberately. It shows on
+ * every day at no recording cost, it is there before the videos land, and the
+ * wording can change later without a re-shoot.
+ */
+function Byline({ name, role }: { name: string; role: string }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', margin: '12px 2px 0' }}>
+      <span aria-hidden style={{
+        width: '30px', height: '30px', borderRadius: '50%', flexShrink: 0,
+        background: 'rgba(27,109,252,0.10)', border: '1px solid rgba(27,109,252,0.30)',
+        color: BLUE, fontSize: '13px', fontWeight: 800,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}>{name.charAt(0)}</span>
+      <span style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.45 }}>
+        <strong style={{ color: '#1A1A1A', fontWeight: 800 }}>{name}</strong>
+        <span style={{ margin: '0 6px', color: '#C4C4C4' }}>·</span>
+        {role}
+      </span>
+    </div>
+  )
+}
+
 export default function DecodeExplainer({
   src,
   poster,
   eyebrow = 'Ninety seconds',
   title = 'How the read works',
+  byline,
 }: {
   src: string
   poster?: string
   eyebrow?: string
   title?: string
+  /** Shown under the player. Omit where the page already names the speaker. */
+  byline?: { name: string; role: string }
 }) {
   const [failed, setFailed] = useState(false)
 
@@ -34,10 +69,11 @@ export default function DecodeExplainer({
   // part of the page rather than a hole in it.
   if (failed) {
     return (
+      <div style={{ marginBottom: '32px' }}>
       <div style={{
         position: 'relative', background: 'linear-gradient(135deg, #1A1A1A 0%, #0B1F3F 100%)',
         border: '1px solid rgba(27,109,252,0.35)', borderRadius: '14px', aspectRatio: '16 / 9',
-        marginBottom: '32px', overflow: 'hidden', display: 'flex', alignItems: 'center',
+        overflow: 'hidden', display: 'flex', alignItems: 'center',
         justifyContent: 'center', boxShadow: '0 10px 30px -8px rgba(27,109,252,0.35)',
       }}>
         <div style={{ position: 'absolute', top: '-100px', right: '-100px', width: '380px', height: '380px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(27,109,252,0.25) 0%, transparent 65%)', pointerEvents: 'none' }} />
@@ -50,26 +86,30 @@ export default function DecodeExplainer({
           <p style={{ fontSize: '12px', fontWeight: 700, color: '#8A8A8E', letterSpacing: '0.08em', textTransform: 'uppercase', margin: 0 }}>Coming soon</p>
         </div>
       </div>
+      {byline && <Byline {...byline} />}
+      </div>
     )
   }
 
   return (
-    <video
-      src={src}
-      poster={poster}
-      controls
-      playsInline
-      preload="metadata"
-      onError={() => setFailed(true)}
-      style={{
-        width: '100%',
-        display: 'block',
-        borderRadius: '14px',
-        marginBottom: '32px',
-        background: '#000000',
-        aspectRatio: '16 / 9',
-        objectFit: 'cover',
-      }}
-    />
+    <div style={{ marginBottom: '32px' }}>
+      <video
+        src={src}
+        poster={poster}
+        controls
+        playsInline
+        preload="metadata"
+        onError={() => setFailed(true)}
+        style={{
+          width: '100%',
+          display: 'block',
+          borderRadius: '14px',
+          background: '#000000',
+          aspectRatio: '16 / 9',
+          objectFit: 'cover',
+        }}
+      />
+      {byline && <Byline {...byline} />}
+    </div>
   )
 }
