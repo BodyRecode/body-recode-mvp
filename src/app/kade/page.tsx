@@ -78,7 +78,7 @@ export default function KadePage() {
 
             {/* Description */}
             <p className="relative text-[15px] text-[#D8CDB5] italic leading-relaxed mb-6">
-              About two minutes of questions, and at the end you get a written report naming your pattern &mdash; the one driving how your body has been responding. Then five short videos, one a day, walking you through it.
+              A free assessment for women whose bodies have stopped responding. About two minutes of questions, and at the end you get a written report naming your pattern &mdash; the one driving how your body has been responding. Then five short videos, one a day, walking you through it.
             </p>
 
             {/* Value props — slightly larger, divided cleanly */}
