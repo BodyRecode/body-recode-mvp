@@ -63,16 +63,16 @@ const SIGNALS = [
 ]
 
 const READ_PARTS: Feature[] = [
-  { icon: Dna, title: 'Your pattern, named and defined', timing: 'Part 1', desc: 'Which of four is holding your body. Not a guess from where the fat sits, because three of the four put it in the same place.', featured: true },
-  { icon: Activity, title: 'Why your body has been holding it', timing: 'Part 2', desc: 'The mechanism, not the symptoms. Regulation rather than metabolism, and why restriction reads to your body as more load.' },
+  { icon: Dna, title: 'Which of the four is yours', timing: 'Part 1', desc: 'Named, and explained in plain terms. Not a guess based on where the fat sits, because three of the four put it in the same place.', featured: true },
+  { icon: Activity, title: 'Why it is happening to you', timing: 'Part 2', desc: 'What is actually causing it, not just the symptoms, and why eating less and training more has been making it worse rather than better.' },
   { icon: Moon, title: 'Where it shows up in an ordinary week', timing: 'Part 3', desc: 'The lived signals. Most women recognise themselves in about ten seconds and have never had a name for any of it.' },
   { icon: ShieldCheck, title: 'What it is commonly mistaken for', timing: 'Part 4', desc: 'Laziness, willpower, too many carbs, just getting older. Every wrong explanation is a plan you already tried.' },
   { icon: Compass, title: 'Three actions, specific to you', timing: 'Part 5', desc: 'Aimed at your actual pattern rather than the average, and in the order that matters.' },
 ]
 
 const DAYS: Step[] = [
-  { number: '1', label: 'Your two lowest', weeks: 'Day 1', desc: 'Sleep and stress load are what decide whether the training turns into anything, and they are the two nobody measures.' },
-  { number: '2', label: 'Why your body is holding it', weeks: 'Day 2', desc: 'Regulation, not metabolism. Your body made a decision to hold on, and restriction reads to it as more load.' },
+  { number: '1', label: 'Your two lowest scores', weeks: 'Day 1', desc: 'Sleep and stress load are what decide whether the training turns into anything, and they are the two nobody measures.' },
+  { number: '2', label: 'Why it is happening', weeks: 'Day 2', desc: 'Your body has decided this is not a safe time to let go of stored fat. Eating less and training harder tells it the same thing again.' },
   { number: '3', label: 'Where this shows up', weeks: 'Day 3', desc: 'A pattern does not arrive as a diagnosis. It arrives as an ordinary week you have stopped noticing is strange.' },
   { number: '4', label: 'What this is not', weeks: 'Day 4', desc: 'The part most people skim, and the one worth reading twice.' },
   { number: '5', label: 'What moves it', weeks: 'Day 5', desc: 'Three actions, and the order to do them in. Start with the regulation ones, not the training one.' },
@@ -136,7 +136,7 @@ export default function DecodeLandingPage() {
           <Heading muted="Not a plan, a programme or a challenge.">We call it a read.</Heading>
         </div>
         <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: '0 0 16px' }}>
-          A read is an assessment of what your body is doing right now, done before anybody writes you anything. You answer questions about your sleep, your stress load, your energy, and how your body responds to training and to fat loss. Those five get scored out of three, and the pattern across them points at which of four common causes is holding you.
+          A read is an assessment of what your body is doing right now, done before anybody writes you anything. You answer questions about your sleep, your stress load, your energy, and how your body responds to training and to fat loss. Those five get scored out of three, and the pattern across them points at which of four common causes is behind it.
         </p>
         <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: '0 0 16px' }}>
           There is nothing to do during the five days. No training plan, no diet, nothing to comply with and no health form to fill in. You are not being asked to change anything yet, because working out what is actually wrong comes first.
@@ -164,7 +164,7 @@ export default function DecodeLandingPage() {
         steps={[
           { k: 'The load stays high', v: 'and it has been high for a while' },
           { k: 'Your body makes a decision', v: 'hold on, this is not the time' },
-          { k: 'You eat less and train more', v: 'which reads as more load, so it holds tighter' },
+          { k: 'You eat less and train more', v: 'which tells it the same thing again, so it digs in' },
         ]}
         takeaway="That is not a malfunction. It is the system doing exactly what it is built to do, at a time you would rather it did not."
       />
@@ -297,7 +297,7 @@ export default function DecodeLandingPage() {
         <div style={{ marginBottom: '24px' }}><Heading>A plan that does not know your pattern cannot fix it.</Heading></div>
         <ContrastBlock
           wrong={{ label: 'The usual order', body: 'A plan first, and you find out whether it fits by running it for twelve weeks. If it does not work, that gets read as you not wanting it enough.' }}
-          right={{ label: 'The Body Decode', body: 'The read first. Which pattern, why it is held, what it is mistaken for, and what actually moves it. Then you decide what to do about it, knowing what you are aiming at.' }}
+          right={{ label: 'The Body Decode', body: 'The read first. Which of the four is yours, why it is happening, what it usually gets confused with, and the three things that actually shift it. Then you decide what to do, knowing what you are aiming at.' }}
         />
         <Callout tone="solid">Read before you prescribe. It is the whole method, and this is the part of it that costs nothing.</Callout>
       </Section>

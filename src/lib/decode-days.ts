@@ -38,7 +38,7 @@
 // already holds, with Amanda presenting it.
 //
 //   Day 1  her five scores and her floor   (SECTION_READS, not pattern-specific)
-//   Day 2  whatItMeans    → report part 2
+//   Day 2  whatItMeans    → report part 2  (why it is happening)
 //   Day 3  whereItShows   → report part 3
 //   Day 4  whatItIsNot    → report part 4   (flagged as the most important)
 //   Day 5  actions        → report part 5, then the Blueprint
@@ -80,7 +80,7 @@ export const DECODE_DAYS: readonly DecodeDay[] = [
   {
     day: 1,
     eyebrow: 'Day 1',
-    title: 'Your two lowest',
+    title: 'Your two lowest scores',
     premise:
       'Sleep and stress load are what decide whether the training turns into anything, and they are the two nobody measures.',
     patternField: null,
@@ -89,9 +89,10 @@ export const DECODE_DAYS: readonly DecodeDay[] = [
   {
     day: 2,
     eyebrow: 'Day 2',
-    title: 'Why your body is holding it',
+    // "Holding" was ours, not hers. Kade, 24 Aug: make it easier to understand.
+    title: 'Why it is happening',
     premise:
-      'Regulation, not metabolism. Your body made a decision to hold on, and restriction reads to it as more load.',
+      'Your body has decided this is not a safe time to let go of stored fat. Eating less and training harder tells it the same thing again.',
     patternField: 'whatItMeans',
     patternHeading: 'What your pattern means',
   },
