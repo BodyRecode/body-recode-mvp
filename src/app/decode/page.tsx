@@ -63,7 +63,7 @@ const SIGNALS = [
 ]
 
 const READ_PARTS: Feature[] = [
-  { icon: Dna, title: 'Which of the four is yours', timing: 'Part 1', desc: 'Named, and explained in plain terms. Not a guess based on where the fat sits, because three of the four put it in the same place.', featured: true },
+  { icon: Dna, title: 'Which pattern is yours', timing: 'Part 1', desc: 'Named, and explained in plain terms. Not a guess based on where the fat sits, because different causes put it in the same place.', featured: true },
   { icon: Activity, title: 'Why it is happening to you', timing: 'Part 2', desc: 'What is actually causing it, not just the symptoms, and why eating less and training more has been making it worse rather than better.' },
   { icon: Moon, title: 'Where it shows up in an ordinary week', timing: 'Part 3', desc: 'The lived signals. Most women recognise themselves in about ten seconds and have never had a name for any of it.' },
   { icon: ShieldCheck, title: 'What it is commonly mistaken for', timing: 'Part 4', desc: 'Laziness, willpower, too many carbs, just getting older. Every wrong explanation is a plan you already tried.' },
@@ -297,7 +297,7 @@ export default function DecodeLandingPage() {
         <div style={{ marginBottom: '24px' }}><Heading>A plan that does not know your pattern cannot fix it.</Heading></div>
         <ContrastBlock
           wrong={{ label: 'The usual order', body: 'A plan first, and you find out whether it fits by running it for twelve weeks. If it does not work, that gets read as you not wanting it enough.' }}
-          right={{ label: 'The Body Decode', body: 'The read first. Which of the four is yours, why it is happening, what it usually gets confused with, and the three things that actually shift it. Then you decide what to do, knowing what you are aiming at.' }}
+          right={{ label: 'The Body Decode', body: 'The read first. Which pattern is yours, why it is happening, what it usually gets confused with, and the three things that actually shift it. Then you decide what to do, knowing what you are aiming at.' }}
         />
         <Callout tone="solid">Read before you prescribe. It is the whole method, and this is the part of it that costs nothing.</Callout>
       </Section>

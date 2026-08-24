@@ -7,19 +7,24 @@
  *   "Two of the three common causes push fat to the same place, so where it
  *    sits tells you almost nothing on its own."
  *
- * THREE CAUSES, NOT FOUR. Corrected 24 Aug 2026 after Kade asked why
- * testosterone was on a canvas aimed at women.
+ * THREE CAUSES, AND NO COUNT STATED. Corrected 24 Aug 2026 after Kade asked
+ * why testosterone was on a canvas aimed at women.
  *
  *   Androgen-Decline is MALE-ONLY. typeFatMapProfile hard-gates it: a female is
  *   remapped to Estrogen-Shift or Stress-Stored and can never be typed
  *   Androgen-Decline. It is also 0 of 27 in the profile data. So on a page that
  *   says "for women whose bodies have stopped responding" it was showing her a
- *   cause she cannot have, and inflating the count while doing it.
+ *   cause she cannot have.
  *
  *   For a woman there are three: stress load, falling oestrogen, insulin. Two
  *   arrive at the middle; insulin does not. The Fat Map is still four patterns,
- *   that is doctrine and unchanged. This is only about what is said to a
- *   female audience.
+ *   that is doctrine and unchanged.
+ *
+ *   THE HEADLINE STATES NO RATIO, deliberately. "Three of the four" is true of
+ *   the MODEL and is what the ads in market and every other asset say. "Two of
+ *   the three" is true of WHAT SHE CAN BE. Both are true at different scopes,
+ *   so any number here contradicts something. The argument never needed one:
+ *   different causes, same place, is the whole point. Do not add a count back.
  *
  * NO BODY DIAGRAM, deliberately. Marks, arrows and circles never go on a
  * woman's body in Body Recode creative; they go on data. So the argument is
@@ -78,8 +83,8 @@ export default function SamePlaceDifferentCausePage() {
           <p style={{ fontSize: '20px', fontWeight: 800, color: BLUE, letterSpacing: '0.18em', textTransform: 'uppercase', margin: '0 0 30px' }}>
             Why guessing fails
           </p>
-          <h1 style={{ fontSize: '104px', fontWeight: 800, letterSpacing: '-0.042em', lineHeight: 0.98, margin: 0, maxWidth: '15ch' }}>
-            Two of the three end up in the <span style={{ color: BLUE }}>same place</span>.
+          <h1 style={{ fontSize: '104px', fontWeight: 800, letterSpacing: '-0.042em', lineHeight: 0.98, margin: 0, maxWidth: '13ch' }}>
+            Different causes.<br /><span style={{ color: BLUE }}>Same place</span>.
           </h1>
         </div>
       </section>
