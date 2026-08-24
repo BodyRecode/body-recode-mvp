@@ -1105,7 +1105,7 @@ async function checkPersonalBrandCadence(admin: ReturnType<typeof createAdminCli
 //
 // BUMP `EXPECTED_INNGEST_FUNCTION_COUNT` every time you add or remove an
 // inngest.createFunction(...) in src/lib/inngest-functions.ts.
-const EXPECTED_INNGEST_FUNCTION_COUNT = 24
+const EXPECTED_INNGEST_FUNCTION_COUNT = 25
 async function checkInngestRegistration(): Promise<CheckResult> {
   try {
     const res = await fetch(`${appUrl()}/api/inngest`, { method: 'GET', cache: 'no-store' })
