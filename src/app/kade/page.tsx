@@ -34,7 +34,10 @@ export default function KadePage() {
         {/* Clay rule */}
         <div className="w-12 h-px bg-[#B5552F] mx-auto mb-10" />
 
-        {/* FEATURED SECTION — Challenge as hero product; scorecard now runs as the Day-0 in-portal gate */}
+        {/* FEATURED SECTION — The Body Decode as hero product. Swapped off the 14-Day
+            Challenge 25 Aug 2026: the Challenge handed over a plan and made her wait a
+            fortnight for the read, and Day 1 to Day 14 lost 14 of the 15 people who had
+            cleared every form. The Decode gives the read first, immediately. */}
         <section className="mb-12">
           {/* Section eyebrow with Clay rules either side */}
           <div className="flex items-center gap-3 mb-5">
@@ -44,7 +47,7 @@ export default function KadePage() {
           </div>
 
           <a
-            href={`${brand().marketingDomain}/challenge?source=kade`}
+            href={`${brand().marketingDomain}/decode?source=kade`}
             className="group block w-full rounded-2xl px-7 py-8 transition-all shadow-lg hover:shadow-xl overflow-hidden relative"
             style={{
               background: 'radial-gradient(circle at 20% 0%, #3a2a1f 0%, #2A1E16 55%, #1d130c 100%)',
@@ -61,7 +64,7 @@ export default function KadePage() {
 
             {/* Status row */}
             <div className="relative flex items-center justify-between mb-6">
-              <span className="text-[9px] font-bold tracking-[0.25em] text-[#E8B89A] uppercase">14-Day Diagnostic</span>
+              <span className="text-[9px] font-bold tracking-[0.25em] text-[#E8B89A] uppercase">Free assessment</span>
               <span className="inline-flex items-center gap-1.5 text-[9px] font-bold tracking-[0.2em] text-[#2A1E16] uppercase bg-[#E8B89A] px-2.5 py-1 rounded-full">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#B5552F]" />
                 Open Now
@@ -70,27 +73,27 @@ export default function KadePage() {
 
             {/* Title — bigger, more presence */}
             <h2 className="relative text-3xl font-semibold text-[#FAF3EB] mb-4 leading-[1.1] tracking-tight">
-              The 14-Day Body Decode Challenge
+              The Body Decode
             </h2>
 
             {/* Description */}
             <p className="relative text-[15px] text-[#D8CDB5] italic leading-relaxed mb-6">
-              Fourteen days of daily structured input. Day 7 check-in. By Day 14 your Body Decode Report names your specific pattern &mdash; the one driving how your body has been responding.
+              About two minutes of questions, and at the end you get a written report naming your pattern &mdash; the one driving how your body has been responding. Then five short videos, one a day, walking you through it.
             </p>
 
             {/* Value props — slightly larger, divided cleanly */}
             <div className="relative grid grid-cols-3 gap-3 mb-7 pt-5 border-t border-[#5a4a3a]/50">
               <div className="text-center">
-                <p className="text-base font-semibold text-[#FAF3EB] mb-0.5">Free</p>
-                <p className="text-[10px] text-[#8A7565] uppercase tracking-wider">No payment</p>
+                <p className="text-base font-semibold text-[#FAF3EB] mb-0.5">2 min</p>
+                <p className="text-[10px] text-[#8A7565] uppercase tracking-wider">Of questions</p>
               </div>
               <div className="text-center border-x border-[#5a4a3a]/40">
-                <p className="text-base font-semibold text-[#FAF3EB] mb-0.5">14 days</p>
-                <p className="text-[10px] text-[#8A7565] uppercase tracking-wider">Daily portal</p>
+                <p className="text-base font-semibold text-[#FAF3EB] mb-0.5">5 videos</p>
+                <p className="text-[10px] text-[#8A7565] uppercase tracking-wider">One a day</p>
               </div>
               <div className="text-center">
-                <p className="text-base font-semibold text-[#FAF3EB] mb-0.5">1 of 4</p>
-                <p className="text-[10px] text-[#8A7565] uppercase tracking-wider">Pattern read</p>
+                <p className="text-base font-semibold text-[#FAF3EB] mb-0.5">$0</p>
+                <p className="text-[10px] text-[#8A7565] uppercase tracking-wider">No card</p>
               </div>
             </div>
 
@@ -103,23 +106,21 @@ export default function KadePage() {
                     1
                   </span>
                   <p className="text-[13px] text-[#D8CDB5] leading-relaxed">
-                    <span className="text-[#FAF3EB] font-semibold">Join the free Challenge</span> &mdash; no payment, no card.
-                  </p>
+                    <span className="text-[#FAF3EB] font-semibold">Answer about two minutes of questions</span> &mdash; no payment, no card</p>
                 </div>
                 <div className="flex items-start gap-3.5">
                   <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#B5552F] text-[#FAF3EB] text-xs font-bold flex items-center justify-center mt-px">
                     2
                   </span>
                   <p className="text-[13px] text-[#D8CDB5] leading-relaxed">
-                    On Day 0 in the portal, a <span className="text-[#FAF3EB] font-semibold">2-minute Readiness Scorecard</span> reads your state and sets your path.
-                  </p>
+                    Your <span className="text-[#FAF3EB] font-semibold">written report arrives straight away</span>, then a short video each day for five days</p>
                 </div>
               </div>
             </div>
 
             {/* Full-width CTA button — more presence, clearer click target */}
             <div className="relative flex items-center justify-center gap-2 bg-[#B5552F] group-hover:bg-[#C9633A] text-[#FAF3EB] font-semibold text-base px-5 py-3.5 rounded-lg transition-colors w-full text-center">
-              Join the free Challenge
+              Start the Body Decode
               <span aria-hidden className="text-lg transition-transform group-hover:translate-x-0.5">→</span>
             </div>
           </a>
