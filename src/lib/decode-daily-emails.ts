@@ -55,7 +55,7 @@ const DAY_EMAIL: Record<number, { subject: (n: string) => string; preview: strin
     subject: n => `Why it is happening, ${n}`,
     preview: 'Your body has decided this is not a safe time to let go.',
     lines: [
-      'Yesterday was which two are holding you back. Today is why.',
+      'Yesterday was which two scores are the problem. Today is why.',
       'The short version: your body has decided this is not a good time to let go of stored fat. Eating less and training harder tells it the same thing again, which is why the last plan went the way it did.',
       'Today&rsquo;s lesson goes through what is causing that in your case specifically.',
     ],
