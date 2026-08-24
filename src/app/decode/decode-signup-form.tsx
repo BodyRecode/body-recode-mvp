@@ -64,7 +64,8 @@ export default function DecodeSignupForm({ position }: { position: string }) {
       const res = await fetch('/api/challenge/enroll', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, sms_opt_in: smsOptIn, position, ...utms }),
+        // product: 'decode' keeps the Challenge's six follow-up functions off her.
+        body: JSON.stringify({ ...form, sms_opt_in: smsOptIn, position, product: 'decode', ...utms }),
       })
       const data = await res.json()
       if (!res.ok) {

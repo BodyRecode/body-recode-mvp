@@ -31,6 +31,10 @@ import {
 } from './blueprint-emails'
 import { fromCoach, fromBrand } from '@/lib/email-shell'
 import { sendMarketingEmail } from '@/lib/marketing-email'
+import {
+  buildDecodeDayEmail, buildDecodeQuestionsNudgeEmail,
+  DECODE_SMS, DECODE_SMS_QUESTIONS_NUDGE,
+} from '@/lib/decode-daily-emails'
 import { coach, logoUrl, brand } from '@/config/tenant'
 import {
   buildMembershipCheckinPromptEmail,
@@ -142,6 +146,12 @@ export const challengeCheckinPromptFunction = inngest.createFunction(
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async ({ event, step }: { event: any; step: any }) => {
+    // Challenge-only. /decode posts to the same enrol route and fires the same
+    // event, so without this a Body Decode signup would receive the entire
+    // 14-day Challenge arc on top of her own. See the `product` field on
+    // /api/challenge/enroll.
+    if ((event.data as { product?: string }).product === 'decode') return
+
     const { token, email, firstName } = event.data as {
       token: string
       email: string
@@ -233,6 +243,12 @@ export const challengeSequenceFunction = inngest.createFunction(
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async ({ event, step }: { event: any; step: any }) => {
+    // Challenge-only. /decode posts to the same enrol route and fires the same
+    // event, so without this a Body Decode signup would receive the entire
+    // 14-day Challenge arc on top of her own. See the `product` field on
+    // /api/challenge/enroll.
+    if ((event.data as { product?: string }).product === 'decode') return
+
     const { token, email, firstName, phone } = event.data as {
       leadId: string
       token: string
@@ -426,6 +442,12 @@ export const challengeIntakeReminderFunction = inngest.createFunction(
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async ({ event, step }: { event: any; step: any }) => {
+    // Challenge-only. /decode posts to the same enrol route and fires the same
+    // event, so without this a Body Decode signup would receive the entire
+    // 14-day Challenge arc on top of her own. See the `product` field on
+    // /api/challenge/enroll.
+    if ((event.data as { product?: string }).product === 'decode') return
+
     const { leadId, token, email, firstName } = event.data as {
       leadId: string
       token: string
@@ -527,6 +549,12 @@ export const challengeFormsReminderFunction = inngest.createFunction(
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async ({ event, step }: { event: any; step: any }) => {
+    // Challenge-only. /decode posts to the same enrol route and fires the same
+    // event, so without this a Body Decode signup would receive the entire
+    // 14-day Challenge arc on top of her own. See the `product` field on
+    // /api/challenge/enroll.
+    if ((event.data as { product?: string }).product === 'decode') return
+
     const { leadId, token, email, firstName } = event.data as {
       leadId: string
       token: string
@@ -659,6 +687,12 @@ export const challengeSmsFunction = inngest.createFunction(
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async ({ event, step }: { event: any; step: any }) => {
+    // Challenge-only. /decode posts to the same enrol route and fires the same
+    // event, so without this a Body Decode signup would receive the entire
+    // 14-day Challenge arc on top of her own. See the `product` field on
+    // /api/challenge/enroll.
+    if ((event.data as { product?: string }).product === 'decode') return
+
     const { token, phone, firstName } = event.data as {
       token: string
       phone: string
@@ -2819,5 +2853,149 @@ export const reassessmentDigestCron = inngest.createFunction(
     })
 
     return { synced, sent: true, newCount: digest.newCount, overdueCount: digest.overdueCount }
+  }
+)
+
+
+// ─── THE BODY DECODE · daily arc ─────────────────────────────────────────
+//
+// One email and one SMS a day for five days, each pointing at that day's
+// lesson, plus a single nudge for anyone who signed up and never answered the
+// questions.
+//
+// THIS IS THE FUNCTION THE WHOLE REBUILD DEPENDS ON. The Challenge lost 14 of
+// the 15 people who cleared every form, and its Day 7 prompts did not exist in
+// code until 3 August, so 28 of 29 enrolments went through a funnel that never
+// asked them to come back. Five good pages nobody returns to is the same
+// outcome with better copy.
+//
+// Design decisions that are deliberate, not incidental:
+//
+//   EVERY SEND LOGS. project_checkin_prompt_logging_and_cohort is explicit that
+//   an unlogged email on a gating step makes its completion number
+//   uninterpretable, because "ignored it" and "never got one" look identical.
+//   That is the exact hole that hid the Challenge's central number for two
+//   months. Every email here writes a lead event with its Resend id.
+//
+//   RE-ANCHOR TO 7AM EACH DAY rather than adding 24h. A fixed cascade drifts by
+//   every retry and queue delay and never corrects; the Challenge's "morning"
+//   nudges were landing in the afternoon by the back half. Worst case here is
+//   one late day, then it self-corrects.
+//
+//   RE-READ THE ENROLMENT BEFORE EVERY SEND, so anyone who goes inactive stops
+//   hearing from us mid-arc.
+//
+//   MARKETING CLASS, so the unsubscribe footer and suppression list apply.
+export const decodeDailyArcFunction = inngest.createFunction(
+  {
+    id: 'decode-daily-arc',
+    retries: 2,
+    triggers: [{ event: 'challenge/enrolled' }],
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async ({ event, step }: { event: any; step: any }) => {
+    const d = event.data as {
+      leadId?: string
+      token: string
+      email: string
+      firstName: string
+      phone?: string
+      product?: string
+    }
+    // The mirror of the guard on the five Challenge functions: this one runs
+    // ONLY for Body Decode signups.
+    if (d.product !== 'decode') return
+
+    const { token, email, firstName, phone } = d
+    const base = `${brand().marketingDomain}/decode/${token}`
+    const formattedPhone = phone ? formatPhone(phone) : null
+
+    await step.sleepUntil('decode-anchor-7am', nextMorningAEST(new Date()))
+
+    for (let day = 1; day <= 5; day++) {
+      const gate = await step.run(`decode-gate-day${day}`, async () => {
+        const admin = createAdminClient()
+        const { data } = await admin
+          .from('challenge_enrollments')
+          .select('status, lead_id, leads(scorecard_body_state)')
+          .eq('token', token)
+          .single()
+        const lead = Array.isArray(data?.leads) ? data?.leads[0] : data?.leads
+        return {
+          active: data?.status === 'active',
+          leadId: (data?.lead_id as string | null) ?? null,
+          // No scorecard means no read, so the day lessons have nothing to
+          // explain. She gets the questions nudge below instead.
+          hasRead: !!lead?.scorecard_body_state,
+        }
+      })
+      if (!gate.active) return
+
+      if (day === 1 && !gate.hasRead) {
+        // One nudge, once, and only on day 1. Someone who has not answered has
+        // no read at all, so chasing her through five lessons about a result
+        // she does not have would be noise. This is the single highest-value
+        // send in the arc.
+        await step.run('decode-questions-nudge-email', async () => {
+          const { subject, html } = buildDecodeQuestionsNudgeEmail({ firstName, portalUrl: base })
+          const res = await sendMarketingEmail({
+            from: fromCoach(), source: 'decode', to: email, subject, html,
+          })
+          if (gate.leadId) {
+            await logLeadEvent({
+              leadId: gate.leadId,
+              type: 'decode_questions_nudge_sent',
+              subject,
+              resendEmailId: (res as { id?: string }).id,
+            })
+          }
+        })
+        if (formattedPhone) {
+          await step.run('decode-questions-nudge-sms', async () => {
+            await sendSms({
+              to: formattedPhone,
+              message: renderSms(DECODE_SMS_QUESTIONS_NUDGE, firstName, base),
+              leadId: gate.leadId,
+              trigger: 'decode_questions_nudge',
+            })
+          })
+        }
+        // Give her the day back rather than stacking a lesson on top of a nudge.
+        await alignToNextMorningAEST(step, 'decode-nudge-next-morning')
+        continue
+      }
+
+      const dayUrl = `${base}/day/${day}`
+
+      await step.run(`decode-day${day}-email`, async () => {
+        const { subject, html } = buildDecodeDayEmail({ day, firstName, dayUrl })
+        const res = await sendMarketingEmail({
+          from: fromCoach(), source: 'decode', to: email, subject, html,
+        })
+        if (gate.leadId) {
+          await logLeadEvent({
+            leadId: gate.leadId,
+            type: 'decode_day_email_sent',
+            subject: `Day ${day} · ${subject}`,
+            resendEmailId: (res as { id?: string }).id,
+          })
+        }
+      })
+
+      if (formattedPhone) {
+        // Four hours after the email, so the two do not land together.
+        await step.sleep(`decode-day${day}-sms-wait`, '4h')
+        await step.run(`decode-day${day}-sms`, async () => {
+          await sendSms({
+            to: formattedPhone,
+            message: renderSms(DECODE_SMS[day], firstName, dayUrl),
+            leadId: gate.leadId,
+            trigger: `decode_day${day}`,
+          })
+        })
+      }
+
+      if (day < 5) await alignToNextMorningAEST(step, `decode-day${day}-next-morning`)
+    }
   }
 )

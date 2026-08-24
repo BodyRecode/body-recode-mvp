@@ -20,12 +20,23 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 })
   }
 
-  const { first_name, last_name, email, phone, gender, sms_opt_in, utm_source, utm_medium, utm_campaign, utm_content } = body as {
+  const { first_name, last_name, email, phone, gender, sms_opt_in, product, utm_source, utm_medium, utm_campaign, utm_content } = body as {
     first_name: string
     last_name?: string
     email: string
     phone: string
     gender?: string
+    /**
+     * Which product she signed up to. Both /challenge and /decode post here,
+     * because the enrolment shape is identical, but the follow-up arcs are
+     * completely different: 14 days of Challenge SMS, PAR-Q chasers and a Day 7
+     * Check-In nudge would all be wrong for a Body Decode signup. This rides on
+     * the Inngest event so every downstream function can gate on it.
+     *
+     * Defaults to 'challenge' so nothing that already calls this route changes
+     * behaviour.
+     */
+    product?: 'challenge' | 'decode'
     sms_opt_in?: boolean
     utm_source?: string
     utm_medium?: string
@@ -175,6 +186,7 @@ export async function POST(request: NextRequest) {
           email: email.toLowerCase().trim(),
           firstName: first_name.trim(),
           phone: e164Phone,
+          product: product === 'decode' ? 'decode' : 'challenge',
         },
       })
     } catch (e) {

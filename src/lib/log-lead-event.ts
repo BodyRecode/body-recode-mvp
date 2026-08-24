@@ -31,6 +31,12 @@ export type LeadEventType =
   // least affordable to be blind on.
   | 'challenge_checkin_prompt_sent'
   | 'challenge_checkin_reminder_sent'
+  // Added 2026-08-24 for The Body Decode's daily arc. Same lesson as the two
+  // above, applied before it bites rather than after: any email on a gating
+  // funnel step MUST log, or "ignored it" and "never got one" are
+  // indistinguishable and the completion number cannot be read at all.
+  | 'decode_day_email_sent'
+  | 'decode_questions_nudge_sent'
   // Added 2026-08-14. One-off PAR-Q catch-up for the July cohort, who enrolled
   // before challengeFormsReminderFunction existed and so can never be reached
   // by it. Doubles as the do-not-resend guard.
