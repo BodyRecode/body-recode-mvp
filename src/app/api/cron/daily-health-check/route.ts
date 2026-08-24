@@ -1105,7 +1105,11 @@ async function checkPersonalBrandCadence(admin: ReturnType<typeof createAdminCli
 //
 // BUMP `EXPECTED_INNGEST_FUNCTION_COUNT` every time you add or remove an
 // inngest.createFunction(...) in src/lib/inngest-functions.ts.
-const EXPECTED_INNGEST_FUNCTION_COUNT = 25
+// 26 as at 2026-08-24. NOTE: this constant was found already STALE at 24 while
+// the endpoint exposed 25, so the nightly Inngest Registration row had been
+// failing before the Body Decode arc was added. Whoever added the 25th did not
+// bump it. The trip-wire works; it was just not being read.
+const EXPECTED_INNGEST_FUNCTION_COUNT = 26
 async function checkInngestRegistration(): Promise<CheckResult> {
   try {
     const res = await fetch(`${appUrl()}/api/inngest`, { method: 'GET', cache: 'no-store' })
