@@ -3,26 +3,31 @@
 /**
  * B-roll canvas: Same place, different cause
  *
- * Screen-record as B-roll for the /decode landing explainer, covering:
+ * Screen-record as B-roll for the /decode landing explainer, under:
+ *   "Two of the three common causes push fat to the same place, so where it
+ *    sits tells you almost nothing on its own."
  *
- *   "What's driving it isn't the same in everyone. Three of the four common
- *    causes push fat to the same place, so where it sits tells you almost
- *    nothing on its own."
+ * THREE CAUSES, NOT FOUR. Corrected 24 Aug 2026 after Kade asked why
+ * testosterone was on a canvas aimed at women.
  *
- * WHY THIS IS NOT /broll/four-patterns. That canvas is "Same sessions. Four
- * prescriptions" — RIR targets, finisher rules, rest intervals. It is about
- * calibrating training, which is a Blueprint idea. The Body Decode prescribes
- * nothing, so it would be showing the wrong product.
+ *   Androgen-Decline is MALE-ONLY. typeFatMapProfile hard-gates it: a female is
+ *   remapped to Estrogen-Shift or Stress-Stored and can never be typed
+ *   Androgen-Decline. It is also 0 of 27 in the profile data. So on a page that
+ *   says "for women whose bodies have stopped responding" it was showing her a
+ *   cause she cannot have, and inflating the count while doing it.
  *
- * DOCTRINE, and it has to stay right (fat-map-profile.ts):
- *   Stress-Stored     central anterior, front of the midsection
- *   Estrogen-Shift    hips and thighs, then redistributes centrally
- *   Androgen-Decline  central, a composition shift
- *   Insulin-Drift     posterior and flank, front relatively SPARED
- * So three arrive at the middle and insulin is the one that does not. That is
- * the whole argument: the location is shared, the cause is not.
+ *   For a woman there are three: stress load, falling oestrogen, insulin. Two
+ *   arrive at the middle; insulin does not. The Fat Map is still four patterns,
+ *   that is doctrine and unchanged. This is only about what is said to a
+ *   female audience.
  *
- * RECORD AT 1920 x 1080, landscape. See reference_video_aspect_ratios.
+ * NO BODY DIAGRAM, deliberately. Marks, arrows and circles never go on a
+ * woman's body in Body Recode creative; they go on data. So the argument is
+ * made by GROUPING causes under their destination rather than pointing at
+ * anatomy. It also reads faster, which is what cutaway footage needs.
+ *
+ * RECORD AT 1920 x 1080 landscape. Zones are a fixed 1080px so one zone is
+ * exactly one frame. Anchors #z1 #z2 #z3 restart a take at a zone.
  *
  * URL: /broll/same-place-different-cause (noindex - see /broll/layout.tsx)
  */
@@ -30,100 +35,114 @@
 const BLUE = '#1B6DFC'
 const INK = '#1A1A1A'
 const BODY = '#4A4A4A'
-const MUTED = '#6B6B6B'
+const MUTED = '#7A7A7A'
 
-const CAUSES = [
-  { name: 'Stress load', where: 'The middle', same: true, note: 'Front of the midsection, while the limbs stay lean.' },
-  { name: 'Falling oestrogen', where: 'The middle', same: true, note: 'Starts on the hips and thighs, then moves in.' },
-  { name: 'Falling testosterone', where: 'The middle', same: true, note: 'Central, with muscle going the other way.' },
-  { name: 'Insulin', where: 'Back and sides', same: false, note: 'Lower back and love handles. The front is spared.' },
+const MIDDLE = [
+  { name: 'Stress load', note: 'Front of the midsection, while the limbs stay lean.' },
+  { name: 'Falling oestrogen', note: 'Starts on the hips and thighs, then moves in.' },
 ]
+const ELSEWHERE = { name: 'Insulin', note: 'Lower back and love handles. The front is spared.' }
 
+// Fixed 1080px, NOT 100vh. This is a recording canvas: 100vh is the viewport
+// minus whatever browser chrome is showing, so a zone would never be exactly
+// one 1920x1080 frame and framing would shift between machines.
 const zone: React.CSSProperties = {
-  // Fixed 1080px, NOT 100vh. This is a recording canvas: 100vh is the browser
-  // viewport minus whatever chrome is showing, so a zone would never be exactly
-  // one 1920x1080 frame and the framing would shift between machines. Fixed
-  // height means one zone is one frame, every time.
   minHeight: '1080px', display: 'flex', flexDirection: 'column', justifyContent: 'center',
-  padding: '80px 96px', position: 'relative', overflow: 'hidden',
+  padding: '0 120px', position: 'relative', overflow: 'hidden',
+}
+
+function Glow({ side = 'right' }: { side?: 'right' | 'left' }) {
+  return (
+    <div aria-hidden style={{
+      position: 'absolute',
+      top: side === 'right' ? '-240px' : 'auto',
+      bottom: side === 'left' ? '-240px' : 'auto',
+      right: side === 'right' ? '-240px' : 'auto',
+      left: side === 'left' ? '-200px' : 'auto',
+      width: '660px', height: '660px', borderRadius: '50%',
+      background: 'radial-gradient(circle, rgba(27,109,252,0.11) 0%, transparent 66%)',
+      pointerEvents: 'none',
+    }} />
+  )
 }
 
 export default function SamePlaceDifferentCausePage() {
   return (
     <div style={{ background: '#FFFFFF', color: INK, fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
 
-      {/* ZONE 1 · the claim */}
+      {/* ZONE 1 · the claim and nothing else. Cutaway footage has about two
+          seconds to be read, so this zone is one sentence. */}
       <section id="z1" style={zone}>
-        <div aria-hidden style={{
-          position: 'absolute', top: '-220px', right: '-220px', width: '620px', height: '620px',
-          borderRadius: '50%', background: 'radial-gradient(circle, rgba(27,109,252,0.12) 0%, transparent 65%)',
-        }} />
+        <Glow />
         <div style={{ position: 'relative' }}>
-          <p style={{ fontSize: '19px', fontWeight: 800, color: BLUE, letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 22px' }}>
+          <p style={{ fontSize: '20px', fontWeight: 800, color: BLUE, letterSpacing: '0.18em', textTransform: 'uppercase', margin: '0 0 30px' }}>
             Why guessing fails
           </p>
-          <h1 style={{ fontSize: '84px', fontWeight: 800, letterSpacing: '-0.038em', lineHeight: 1.02, margin: '0 0 28px', maxWidth: '18ch' }}>
-            Three of the four end up in the same place.
+          <h1 style={{ fontSize: '104px', fontWeight: 800, letterSpacing: '-0.042em', lineHeight: 0.98, margin: 0, maxWidth: '15ch' }}>
+            Two of the three end up in the <span style={{ color: BLUE }}>same place</span>.
           </h1>
-          <p style={{ fontSize: '29px', color: BODY, lineHeight: 1.5, margin: 0, maxWidth: '36ch' }}>
-            So where it sits tells you almost nothing about what is causing it.
-          </p>
         </div>
       </section>
 
-      {/* ZONE 2 · the four, and where each lands */}
-      <section id="z2" style={{ ...zone, background: '#F7F7F7', borderTop: '1px solid #E5E5E5', borderBottom: '1px solid #E5E5E5' }}>
-        <p style={{ fontSize: '19px', fontWeight: 800, color: BLUE, letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 34px' }}>
-          Four common causes
+      {/* ZONE 2 · grouped by DESTINATION, not four equal cards. The asymmetry
+          IS the argument, so the layout shows it before anybody reads a word:
+          a wide bucket holding two, a narrow quiet one holding one. */}
+      <section id="z2" style={{ ...zone, background: '#F7F7F7', borderTop: '1px solid #E8E8E8', borderBottom: '1px solid #E8E8E8' }}>
+        <p style={{ fontSize: '20px', fontWeight: 800, color: BLUE, letterSpacing: '0.18em', textTransform: 'uppercase', margin: '0 0 40px' }}>
+          Where each one ends up
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '18px' }}>
-          {CAUSES.map(c => (
-            <div key={c.name} style={{
-              background: '#FFFFFF',
-              border: c.same ? `2px solid ${BLUE}` : '1.5px solid #D8D8D8',
-              borderRadius: '18px', padding: '34px 28px', minHeight: '380px',
-              display: 'flex', flexDirection: 'column',
-            }}>
-              <p style={{ fontSize: '30px', fontWeight: 800, letterSpacing: '-0.02em', margin: '0 0 22px', lineHeight: 1.15 }}>
-                {c.name}
-              </p>
-              <p style={{ fontSize: '20px', color: MUTED, lineHeight: 1.5, margin: '0 0 auto' }}>{c.note}</p>
-              <div style={{
-                marginTop: '28px', padding: '16px 20px', borderRadius: '12px',
-                background: c.same ? 'rgba(27,109,252,0.09)' : '#F2F2F2',
-                border: c.same ? `1.5px solid ${BLUE}` : '1.5px solid #DDDDDD',
-              }}>
-                <p style={{ fontSize: '15px', fontWeight: 800, color: c.same ? BLUE : MUTED, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 6px' }}>
-                  Ends up
-                </p>
-                <p style={{ fontSize: '25px', fontWeight: 800, color: c.same ? BLUE : INK, margin: 0 }}>{c.where}</p>
-              </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '32px', alignItems: 'stretch' }}>
+          <div style={{ border: `3px solid ${BLUE}`, borderRadius: '26px', background: 'rgba(27,109,252,0.05)', padding: '44px' }}>
+            <p style={{ fontSize: '58px', fontWeight: 800, color: BLUE, letterSpacing: '-0.03em', margin: '0 0 34px' }}>
+              The middle
+            </p>
+            <div style={{ display: 'grid', gap: '18px' }}>
+              {MIDDLE.map(c => (
+                <div key={c.name} style={{ background: '#FFFFFF', border: '1px solid #E0E6F2', borderRadius: '16px', padding: '28px 32px' }}>
+                  <p style={{ fontSize: '34px', fontWeight: 800, letterSpacing: '-0.02em', margin: '0 0 10px' }}>{c.name}</p>
+                  <p style={{ fontSize: '22px', color: MUTED, lineHeight: 1.45, margin: 0 }}>{c.note}</p>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+
+          <div style={{ border: '2px solid #DCDCDC', borderRadius: '26px', background: '#FFFFFF', padding: '44px 36px' }}>
+            <p style={{ fontSize: '58px', fontWeight: 800, color: '#9A9A9A', letterSpacing: '-0.03em', margin: '0 0 34px', lineHeight: 1 }}>
+              Back and sides
+            </p>
+            <div style={{ background: '#FAFAFA', border: '1px solid #E8E8E8', borderRadius: '16px', padding: '28px 30px' }}>
+              <p style={{ fontSize: '34px', fontWeight: 800, letterSpacing: '-0.02em', margin: '0 0 10px' }}>{ELSEWHERE.name}</p>
+              <p style={{ fontSize: '22px', color: MUTED, lineHeight: 1.45, margin: 0 }}>{ELSEWHERE.note}</p>
+            </div>
+          </div>
         </div>
+
+        <p style={{ fontSize: '28px', color: BODY, margin: '38px 0 0', maxWidth: '56ch' }}>
+          Two different causes, the same place on the body. You cannot tell them apart by looking.
+        </p>
       </section>
 
       {/* ZONE 3 · the consequence */}
       <section id="z3" style={zone}>
-        <div aria-hidden style={{
-          position: 'absolute', bottom: '-200px', left: '-180px', width: '520px', height: '520px',
-          borderRadius: '50%', background: 'radial-gradient(circle, rgba(27,109,252,0.09) 0%, transparent 70%)',
-        }} />
+        <Glow side="left" />
         <div style={{ position: 'relative' }}>
-          <h1 style={{ fontSize: '84px', fontWeight: 800, letterSpacing: '-0.038em', lineHeight: 1.02, margin: '0 0 30px', maxWidth: '19ch' }}>
-            Same place. <span style={{ color: BLUE }}>Opposite fix.</span>
+          <h1 style={{ fontSize: '104px', fontWeight: 800, letterSpacing: '-0.042em', lineHeight: 0.98, margin: '0 0 44px', maxWidth: '15ch' }}>
+            Same place.<br /><span style={{ color: BLUE }}>Opposite fix.</span>
           </h1>
-          <p style={{ fontSize: '29px', color: BODY, lineHeight: 1.5, margin: '0 0 46px', maxWidth: '40ch' }}>
-            One of them needs the load taken off. One needs more food, not less. Guessing is how most plans end up aimed at the wrong thing.
-          </p>
-          <div style={{
-            display: 'inline-block', background: 'rgba(27,109,252,0.07)',
-            border: `2px solid ${BLUE}`, borderRadius: '16px', padding: '26px 36px',
-          }}>
-            <p style={{ fontSize: '31px', fontWeight: 800, color: INK, margin: 0 }}>
-              Which is why you read first.
-            </p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', maxWidth: '1180px', marginBottom: '44px' }}>
+            <div style={{ background: '#FFFFFF', border: `2px solid ${BLUE}`, borderRadius: '20px', padding: '32px 36px' }}>
+              <p style={{ fontSize: '17px', fontWeight: 800, color: BLUE, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 12px' }}>One of them</p>
+              <p style={{ fontSize: '34px', fontWeight: 700, lineHeight: 1.25, margin: 0 }}>Needs the load taken off.</p>
+            </div>
+            <div style={{ background: '#FFFFFF', border: `2px solid ${BLUE}`, borderRadius: '20px', padding: '32px 36px' }}>
+              <p style={{ fontSize: '17px', fontWeight: 800, color: BLUE, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 12px' }}>The other</p>
+              <p style={{ fontSize: '34px', fontWeight: 700, lineHeight: 1.25, margin: 0 }}>Needs more food, not less.</p>
+            </div>
           </div>
+          <p style={{ fontSize: '34px', fontWeight: 800, color: INK, margin: 0 }}>
+            Which is why you read first.
+          </p>
         </div>
       </section>
     </div>
