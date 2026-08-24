@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { PORTAL_ACCESS_STATUSES } from '@/lib/challenge-access'
 import { logPortalVisit } from '@/lib/challenge-portal-visit'
-import { typeFatMapProfile } from '@/lib/fat-map-profile'
+import { typeFatMapProfile, leadDescriptor, type Profile } from '@/lib/fat-map-profile'
 import { currentDecodeDay, patternKeyForProfile } from '@/lib/decode-days'
 import DecodePortalClient from './decode-portal-client'
 
@@ -94,6 +94,18 @@ export default async function DecodePortalPage({ params }: { params: Promise<{ t
     ascensionIntent: !!enrollment.ascension_intent,
   }
 
+  // Lead-facing wording, phase-aware for Estrogen-Shift. pattern.desc is the
+  // coach-facing version and reads like a clinic letter.
+  const plainDesc = profile && profile !== 'Indeterminate'
+    ? leadDescriptor(profile as Profile, {
+        sex: sex ?? undefined,
+        ageBand: lead?.age_band ?? undefined,
+        fatStorage: lead?.fat_storage ?? undefined,
+        cycleStatus: lead?.cycle_status ?? undefined,
+        storageDirection: lead?.storage_direction ?? undefined,
+      })
+    : null
+
   const currentDay = currentDecodeDay(enrollment.enrolled_at)
 
   // One row per enrolment per day. Without it "she ignored the lesson" and "she
@@ -112,6 +124,7 @@ export default async function DecodePortalPage({ params }: { params: Promise<{ t
       sectionScores={scores}
       profile={profile}
       patternKey={patternKey}
+      plainDesc={plainDesc}
       currentDay={currentDay}
     />
   )

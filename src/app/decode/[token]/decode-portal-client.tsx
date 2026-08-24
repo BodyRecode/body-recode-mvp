@@ -3,6 +3,8 @@
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import BodyDecodeIntakeForm from '@/app/challenge/[token]/body-decode-intake'
+import { Nav } from '@/components/landing/kit'
+import { logoUrl, brand } from '@/config/tenant'
 import { CHECKIN_PATTERNS } from '@/lib/checkin-patterns'
 import { DECODE_DAYS, isDayUnlocked, readinessPlain } from '@/lib/decode-days'
 
@@ -39,6 +41,7 @@ export default function DecodePortalClient({
   sectionScores,
   profile,
   patternKey,
+  plainDesc,
   currentDay,
   known,
   knownSex,
@@ -50,6 +53,7 @@ export default function DecodePortalClient({
   sectionScores: Record<string, number> | null
   profile: string | null
   patternKey: string | null
+  plainDesc: string | null
   currentDay: number
   known: { scores: boolean; sex: boolean; age: boolean; storage: boolean; cycle: boolean; direction: boolean; approach: boolean; ascensionIntent: boolean }
   knownSex: 'M' | 'F' | null
@@ -88,12 +92,14 @@ export default function DecodePortalClient({
   }
 
   return (
-    <main style={{ maxWidth: '640px', margin: '0 auto', padding: '48px 24px 72px' }}>
+    <>
+    <Nav logo={logoUrl()} brandName={brand().name} />
+    <main style={{ maxWidth: '640px', margin: '0 auto', padding: '10px 24px 72px' }}>
       <p style={{ fontSize: '11px', fontWeight: 700, color: BLUE, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 12px' }}>
         The Body Decode · Day {Math.min(currentDay, DECODE_DAYS.length)} of {DECODE_DAYS.length}
       </p>
       <h1 style={{ fontSize: '30px', fontWeight: 800, color: INK, letterSpacing: '-0.025em', lineHeight: 1.15, margin: '0 0 28px' }}>
-        Your read, {firstName}.
+        {firstName}, here is what we found.
       </h1>
 
       {/* Her result at a glance. A summary of the full read below, never a
@@ -128,7 +134,7 @@ export default function DecodePortalClient({
                   background: 'rgba(27,109,252,0.07)', border: '1px solid rgba(27,109,252,0.22)',
                   padding: '7px 12px', borderRadius: '8px',
                 }}>
-                  {SECTION_LABELS[k]} · {sectionScores?.[k]}/3
+                  {SECTION_LABELS[k]} · {sectionScores?.[k]} out of 3
                 </span>
               ))}
             </div>
@@ -139,9 +145,17 @@ export default function DecodePortalClient({
           Your pattern
         </p>
         {pattern ? (
-          <p style={{ fontSize: '19px', fontWeight: 800, color: pattern.color, letterSpacing: '-0.015em', margin: 0 }}>
-            {pattern.label}
-          </p>
+          <>
+            <p style={{ fontSize: '20px', fontWeight: 800, color: pattern.color, letterSpacing: '-0.015em', margin: '0 0 6px' }}>
+              {pattern.label}
+            </p>
+            {/* The name on its own is a clinical-sounding label with no meaning
+                attached. One plain line so it means something before she opens
+                anything. */}
+            <p style={{ fontSize: '14.5px', color: '#4A4A4A', lineHeight: 1.6, margin: 0 }}>
+              {plainDesc}
+            </p>
+          </>
         ) : (
           // Indeterminate is a real outcome, not an error. Say so plainly rather
           // than leaving a blank where a name should be.
@@ -163,10 +177,10 @@ export default function DecodePortalClient({
           textDecoration: 'none', marginBottom: '14px',
         }}
       >
-        Read the whole thing
+        Read all five parts
       </Link>
       <p style={{ fontSize: '14px', color: MUTED, lineHeight: 1.7, margin: '0 0 28px' }}>
-        It is all there now, nothing unlocks later. Over the next five days I will walk you through it a part at a time, because it is a lot to take in at once.
+        All five parts are there now and nothing unlocks later. Over the next five days we go through it one part at a time, because it is a lot to take in at once.
       </p>
 
       {/* The five days */}
@@ -183,6 +197,18 @@ export default function DecodePortalClient({
               opacity: unlocked ? 1 : 0.62,
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', flexWrap: 'wrap' }}>
+                {/* A numeral, so five cards read as a sequence rather than five
+                    identical boxes. Filled once the day has arrived. */}
+                <span style={{
+                  width: '26px', height: '26px', borderRadius: '50%', flexShrink: 0,
+                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: '12px', fontWeight: 900, fontVariantNumeric: 'tabular-nums',
+                  background: unlocked ? BLUE : 'transparent',
+                  color: unlocked ? '#FFFFFF' : MUTED,
+                  border: unlocked ? 'none' : '1.5px solid #DDDDDD',
+                }}>
+                  {d.day}
+                </span>
                 <span style={{ fontSize: '10px', fontWeight: 800, color: unlocked ? BLUE : MUTED, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
                   {d.eyebrow}
                 </span>
@@ -196,16 +222,16 @@ export default function DecodePortalClient({
                 )}
                 {!unlocked && (
                   <span style={{ fontSize: '11px', fontWeight: 700, color: MUTED }}>
-                    Day {d.day}
+                    Not yet
                   </span>
                 )}
               </div>
-              <p style={{ fontSize: '17px', fontWeight: 800, color: INK, letterSpacing: '-0.015em', margin: '0 0 5px' }}>
+              <p style={{ fontSize: '17px', fontWeight: 800, color: INK, letterSpacing: '-0.015em', margin: '0 0 5px', paddingLeft: '34px' }}>
                 {d.title}
               </p>
               {/* The premise shows on locked cards too. A locked card that says
                   nothing gives her no reason to come back tomorrow. */}
-              <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.6, margin: 0 }}>
+              <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.6, margin: 0, paddingLeft: '34px' }}>
                 {d.premise}
               </p>
             </div>
@@ -221,5 +247,6 @@ export default function DecodePortalClient({
         })}
       </div>
     </main>
+    </>
   )
 }

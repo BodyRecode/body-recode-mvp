@@ -3,9 +3,11 @@ import Link from 'next/link'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { PORTAL_ACCESS_STATUSES } from '@/lib/challenge-access'
 import { logPortalVisit } from '@/lib/challenge-portal-visit'
-import { typeFatMapProfile } from '@/lib/fat-map-profile'
+import { typeFatMapProfile, leadDescriptor, type Profile } from '@/lib/fat-map-profile'
 import { CHECKIN_PATTERNS } from '@/lib/checkin-patterns'
 import { currentDecodeDay, patternKeyForProfile, readinessPlain } from '@/lib/decode-days'
+import { Nav } from '@/components/landing/kit'
+import { logoUrl, brand } from '@/config/tenant'
 import { DecodeFeedbackCard } from '../decode-feedback-card'
 
 const BLUE = '#1B6DFC'
@@ -76,10 +78,26 @@ export default async function DecodeReadPage({ params }: { params: Promise<{ tok
   const pattern = patternKey ? CHECKIN_PATTERNS[patternKey] : null
   const readiness = readinessPlain(bodyState)
 
+  // leadDescriptor() is the lead-facing wording and it is phase-aware for
+  // Estrogen-Shift, so it can say "you told me it used to sit on your hips and
+  // it is moving to your middle" instead of "an oestrogen-driven conservation
+  // state". pattern.desc is the coach-facing one; it does not belong here.
+  const plainDesc = profile && profile !== 'Indeterminate'
+    ? leadDescriptor(profile as Profile, {
+        sex: lead?.biological_sex ?? undefined,
+        ageBand: lead?.age_band ?? undefined,
+        fatStorage: lead?.fat_storage ?? undefined,
+        cycleStatus: lead?.cycle_status ?? undefined,
+        storageDirection: lead?.storage_direction ?? undefined,
+      })
+    : null
+
   await logPortalVisit(enrollment.lead_id, enrollment.id, currentDecodeDay(enrollment.enrolled_at))
 
   return (
-    <main style={{ maxWidth: '660px', margin: '0 auto', padding: '40px 24px 80px' }}>
+    <>
+    <Nav logo={logoUrl()} brandName={brand().name} />
+    <main style={{ maxWidth: '660px', margin: '0 auto', padding: '8px 24px 80px' }}>
       <Link href={`/decode/${token}`} style={{ fontSize: '13px', fontWeight: 700, color: BLUE, textDecoration: 'none' }}>
         ← The five days
       </Link>
@@ -88,10 +106,10 @@ export default async function DecodeReadPage({ params }: { params: Promise<{ tok
         Your read · yours to keep
       </p>
       <h1 style={{ fontSize: '31px', fontWeight: 800, color: INK, letterSpacing: '-0.025em', lineHeight: 1.14, margin: '0 0 12px' }}>
-        {firstName}, this is all of it.
+        {firstName}, here is the whole thing.
       </h1>
       <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 32px' }}>
-        Nothing here is held back and nothing unlocks later. Read it once now without rushing to act, then read it again tomorrow, because the second read is usually where it clicks. The five lessons walk you through it a part at a time.
+        Five parts, and you have all of them. Read it once now without rushing to do anything about it, then read it again tomorrow, because the second time is usually when it lands. Over the next five days we go through it one part at a time.
       </p>
 
       {/* Your scores */}
@@ -105,20 +123,26 @@ export default async function DecodeReadPage({ params }: { params: Promise<{ tok
               {readiness.prevalence && ` It is where ${readiness.prevalence} of the women we assess land.`}
             </p>
           )}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            {(['01', '02', '03', '04', '05'] as const).map(k => {
+          {/* Bars, not a list of numbers. Same device as the landing page, so
+              the thing she was shown about 86 women now shows her own. A 2 out
+              of 3 is 67%, and near-identical bars ARE the finding: the whole
+              spread is narrow and none of it is good. */}
+          <div style={{ display: 'grid', gap: '14px' }}>
+            {(['02', '03', '01', '05', '04'] as const).map(k => {
               const v = scores[k]
               if (typeof v !== 'number') return null
               const colour = v === 1 ? '#DC2626' : v === 2 ? '#B7791F' : '#1056D6'
               return (
-                <div key={k} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <span style={{
-                    width: '30px', height: '30px', borderRadius: '50%', flexShrink: 0,
-                    border: `1.5px solid ${colour}`, color: colour,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '13px', fontWeight: 900,
-                  }}>{v}</span>
-                  <span style={{ fontSize: '15px', fontWeight: 600, color: INK }}>{SECTION_LABELS[k]}</span>
+                <div key={k}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '6px' }}>
+                    <span style={{ fontSize: '15px', fontWeight: 700, color: v === 1 ? colour : INK }}>{SECTION_LABELS[k]}</span>
+                    <span style={{ fontSize: '14px', fontWeight: 800, color: colour, fontVariantNumeric: 'tabular-nums' }}>
+                      {v} out of 3
+                    </span>
+                  </div>
+                  <div style={{ height: '9px', background: '#ECEDEF', borderRadius: '99px', overflow: 'hidden' }}>
+                    <div style={{ width: `${(v / 3) * 100}%`, height: '100%', background: colour, borderRadius: '99px' }} />
+                  </div>
                 </div>
               )
             })}
@@ -130,22 +154,22 @@ export default async function DecodeReadPage({ params }: { params: Promise<{ tok
         <>
           {/* Part 1 */}
           <section style={{ ...card(), borderLeft: `3px solid ${pattern.color}` }}>
-            <p style={{ ...eyebrow(), color: pattern.color }}>Part 1 · Your pattern</p>
+            <p style={{ ...eyebrow(), color: pattern.color }}>Part 1 · Which one you are</p>
             <p style={{ fontSize: '22px', fontWeight: 800, color: pattern.color, letterSpacing: '-0.02em', margin: '0 0 12px' }}>
               {pattern.label}
             </p>
-            <p style={{ fontSize: '15px', color: '#3A3A3A', lineHeight: 1.72, margin: 0 }}>{pattern.desc}</p>
+            <p style={{ fontSize: '16px', color: '#3A3A3A', lineHeight: 1.75, margin: 0 }}>{plainDesc ?? pattern.desc}</p>
           </section>
 
-          <Part n={2} title="What this pattern means" paragraphs={pattern.whatItMeans} />
-          <Part n={3} title="Where this shows up" paragraphs={pattern.whereItShows} />
+          <Part n={2} title="Why it is happening" paragraphs={pattern.whatItMeans} />
+          <Part n={3} title="Where you will recognise it" paragraphs={pattern.whereItShows} />
           <Part
             n={4}
-            title="What this is NOT"
+            title="What it is not"
             paragraphs={pattern.whatItIsNot}
             note="This is the part most people skim, and it is the one worth reading twice. The way a pattern usually gets explained is often part of the reason it has stayed unsolved."
           />
-          <Part n={5} title="Your three actions" paragraphs={pattern.actions} />
+          <Part n={5} title="Where to start" paragraphs={pattern.actions} />
         </>
       ) : (
         <section style={card()}>
@@ -175,6 +199,7 @@ export default async function DecodeReadPage({ params }: { params: Promise<{ tok
         />
       </div>
     </main>
+    </>
   )
 }
 
