@@ -71,15 +71,15 @@ export default function DecodePortalClient({
   // scorecard sees almost nothing to answer.
   if (!hasRead) {
     return (
-      <main style={{ maxWidth: '640px', margin: '0 auto', padding: '56px 24px 72px' }}>
-        <p style={{ fontSize: '11px', fontWeight: 700, color: BLUE, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 12px' }}>
-          The Body Decode
-        </p>
-        <h1 style={{ fontSize: '28px', fontWeight: 800, color: INK, letterSpacing: '-0.02em', lineHeight: 1.2, margin: '0 0 14px' }}>
-          Right, {firstName}. The questions.
-        </h1>
-        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 30px' }}>
-          About two minutes, and your report is on screen the moment you finish. Nothing to pay and nothing to download.
+      <>
+      <Nav logo={logoUrl()} brandName={brand().name} />
+      <main style={{ maxWidth: '640px', margin: '0 auto', padding: '10px 24px 72px' }}>
+        {/* Deliberately NO heading here. The intake form carries its own h1
+            ("Before we start, let's read your body"), and stacking a second one
+            above it gave the first screen two competing headlines. A one-line
+            welcome is enough to make it feel addressed to her. */}
+        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: '18px 0 24px' }}>
+          You&apos;re in, {firstName}. Nothing to pay and nothing to download, and your report is on screen the moment you finish.
         </p>
         <BodyDecodeIntakeForm
           token={token}
@@ -88,6 +88,7 @@ export default function DecodePortalClient({
           onComplete={() => router.refresh()}
         />
       </main>
+      </>
     )
   }
 

@@ -354,6 +354,10 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
           </div>
 
           {/* Headline */}
+          {/* Product-NEUTRAL copy. This form is shared by the 14-day Challenge
+              and the 5-day Body Decode, so it must never name a length: it said
+              "across the next 14 days" and rendered that to every Body Decode
+              signup. */}
           <h1 style={{
             fontSize: 'clamp(32px, 6vw, 46px)', fontWeight: 900,
             letterSpacing: '-0.035em', lineHeight: 1.08, margin: '0 0 22px', color: '#1A1A1A',
@@ -369,8 +373,8 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
           {/* Lead paragraph */}
           <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 28px' }}>
             {returning
-              ? `We already have your read from the scorecard, so we are not asking any of it again. Just the ${totalQuestions === 1 ? 'one thing' : `${totalQuestions} things`} we still need before your 14 days begin.`
-              : `Two minutes. The same questions every ${brand().name} client answers at the start. This tells us what your body is actually doing right now and shapes what you see across the next 14 days.`}
+              ? `We already have most of this from your scorecard, so we are not asking any of it again. Just the ${totalQuestions === 1 ? 'one thing' : `${totalQuestions} things`} we still need.`
+              : `Two minutes. The same questions every ${brand().name} client answers at the start. This is what tells us what your body is actually doing right now, and everything you see after this is built on it.`}
                                 </p>
 
           {/* Stats grid */}

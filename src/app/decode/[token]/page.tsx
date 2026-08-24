@@ -23,7 +23,7 @@ export default async function DecodePortalPage({ params }: { params: Promise<{ t
 
   const { data: enrollment } = await admin
     .from('challenge_enrollments')
-    .select('id, lead_id, enrolled_at, status, ascension_intent, leads(name, scorecard_profile, scorecard_body_state, scorecard_section_scores, approach_response, biological_sex, age_band, fat_storage, cycle_status, storage_direction)')
+    .select('id, lead_id, enrolled_at, status, ascension_intent, leads(name, gender, scorecard_profile, scorecard_body_state, scorecard_section_scores, approach_response, biological_sex, age_band, fat_storage, cycle_status, storage_direction)')
     .eq('token', token)
     .in('status', PORTAL_ACCESS_STATUSES)
     .single()
@@ -79,7 +79,17 @@ export default async function DecodePortalPage({ params }: { params: Promise<{ t
   // takes no prefill params, so there was no way to carry them across. The
   // in-portal intake asks the same questions, already knows who she is from the
   // token, and skips anything on file.
-  const sex = lead?.biological_sex ?? null
+  // The signup form asks biological sex and the enrol route writes it to
+  // `leads.gender` as 'female' / 'male'. Everything downstream reads
+  // `leads.biological_sex` as 'F' / 'M'. The two never met, so a fresh signup
+  // arrived with known.sex = false and the intake asked her biological sex
+  // AGAIN, about thirty seconds after she picked it on the form. Same class of
+  // friction as the scorecard hop.
+  //
+  // 'prefer_not_to_say' maps to null on purpose: it is a real answer, but it
+  // cannot key the two sex-gated patterns, so it must not masquerade as known.
+  const sexFromGender = lead?.gender === 'female' ? 'F' : lead?.gender === 'male' ? 'M' : null
+  const sex = (lead?.biological_sex ?? sexFromGender) as 'M' | 'F' | null
   const known = {
     scores: hasRead,
     sex: !!sex,

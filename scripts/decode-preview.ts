@@ -12,6 +12,7 @@
 import { createClient } from '@supabase/supabase-js'
 
 const EMAIL = 'decode-preview@bodyrecode.au'
+const FRESH_EMAIL = 'decode-preview-fresh@bodyrecode.au'
 
 async function main() {
   const admin = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
@@ -74,5 +75,57 @@ async function main() {
   console.log(`\nProfile: Depleted, sleep and stress at the floor, perimenopausal,`)
   console.log(`fat moving hips -> middle, so she types Estrogen-Shift.`)
   console.log(`Enrolled 4 days ago, so all five days are open.\n`)
+
+  // ---- A SECOND record with NOTHING answered -----------------------------
+  // This is what a real participant meets FIRST: straight off the signup form,
+  // no scorecard on file, so the hub renders the questions rather than a read.
+  // Only `gender` is set, because that is the one thing signup captures.
+  const freshFields = {
+    name: 'PREVIEW Fresh Signup',
+    email: FRESH_EMAIL,
+    gender: 'female',
+    status: 'new_check_in',
+    active: false,
+    source_detail: 'INTERNAL PREVIEW - not a real lead',
+  }
+  const { data: fEx } = await admin.from('leads').select('id').eq('email', FRESH_EMAIL).maybeSingle()
+  let freshLead: string
+  if (fEx) {
+    // Wipe anything a previous run through the form left behind, so this record
+    // always shows the very first screen.
+    await admin.from('leads').update({
+      ...freshFields,
+      scorecard_score: null, scorecard_body_state: null, scorecard_section_scores: null,
+      scorecard_profile: null, biological_sex: null, age_band: null, fat_storage: null,
+      cycle_status: null, storage_direction: null, approach_response: null,
+    }).eq('id', fEx.id)
+    freshLead = fEx.id
+  } else {
+    const { data, error } = await admin.from('leads')
+      .insert({ ...freshFields, coach_id: coach?.id ?? null }).select('id').single()
+    if (error) { console.error(error); return }
+    freshLead = data.id
+  }
+
+  const { data: fEnr } = await admin.from('challenge_enrollments')
+    .select('id, token').eq('lead_id', freshLead).maybeSingle()
+  let freshToken: string
+  if (fEnr) {
+    await admin.from('challenge_enrollments')
+      .update({ enrolled_at: new Date().toISOString(), status: 'active', ascension_intent: null }).eq('id', fEnr.id)
+    freshToken = fEnr.token
+  } else {
+    const { data, error } = await admin.from('challenge_enrollments')
+      .insert({ lead_id: freshLead, enrolled_at: new Date().toISOString(), status: 'active', current_day: 1, wave: 1 })
+      .select('token').single()
+    if (error) { console.error(error); return }
+    freshToken = data.token
+  }
+
+  console.log(`FIRST SCREEN a participant actually sees\n${'='.repeat(52)}`)
+  console.log(`\n${base}/${freshToken}`)
+  console.log(`\nBrand new signup, nothing answered. The hub renders the questions`)
+  console.log(`instead of a read. Sex is already known from the signup form, so it`)
+  console.log(`is not asked again. Re-run this script to reset it.\n`)
 }
 main()
