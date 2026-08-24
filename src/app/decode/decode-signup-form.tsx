@@ -92,7 +92,7 @@ export default function DecodeSignupForm({ position }: { position: string }) {
           You&apos;re in, {form.first_name}.
         </p>
         <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.65, margin: 0 }}>
-          Taking you to the questions now. About ten minutes, then your read.
+          Taking you to the questions now. About ten minutes, then your report.
         </p>
       </div>
     )
@@ -139,7 +139,7 @@ export default function DecodeSignupForm({ position }: { position: string }) {
 
       <label style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', fontSize: '13.5px', color: '#5A5A5A', lineHeight: 1.55, margin: '4px 0 2px' }}>
         <input type="checkbox" checked={smsOptIn} onChange={e => setSmsOptIn(e.target.checked)} style={{ marginTop: '3px' }} />
-        <span>Text me each day&apos;s lesson. One message a day for five days, and you can reply STOP any time.</span>
+        <span>Text me each day&apos;s video. One message a day for five days, and you can reply STOP any time.</span>
       </label>
 
       {error && (
@@ -151,11 +151,11 @@ export default function DecodeSignupForm({ position }: { position: string }) {
         background: BLUE, color: '#FFFFFF', fontSize: '17px', fontWeight: 800,
         cursor: submitting ? 'not-allowed' : 'pointer', opacity: submitting ? 0.6 : 1,
       }}>
-        {submitting ? 'One moment...' : 'Get my read'}
+        {submitting ? 'One moment...' : 'Start the questions'}
       </button>
 
       <p style={{ fontSize: '13px', color: '#6B6B6B', textAlign: 'center', margin: '2px 0 0' }}>
-        Free. No card. Your read in about ten minutes.
+        Free. No card. About ten minutes, then your report.
       </p>
 
       <InboxNote />

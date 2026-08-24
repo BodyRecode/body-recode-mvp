@@ -83,6 +83,7 @@ const VOICES: Voice[] = [
 ]
 
 const FAQS = [
+  { q: 'What is this, exactly?', a: 'A free online assessment. You answer questions about your sleep, stress load, energy, and how your body responds to training and to fat loss. Those five things get scored, and the pattern across them tells us which of four common causes is behind your body not responding. You get that as a written report, and then five short videos walk you through it, one a day.' },
   { q: 'How long does it actually take?', a: 'About ten minutes to answer the questions, and your read is on screen straight after. Then five lessons, one a day, and each is a couple of minutes. Nothing is timed and nothing expires.' },
   { q: 'Is anything held back until later?', a: 'No. Your full read is there from the start and stays there. The five lessons walk you through it a part at a time because it is a lot to take in at once, not because it unlocks.' },
   { q: 'Do I need to know my pattern before I start?', a: 'No, and that is the point. Working it out is what the read does. If you already know it from the scorecard it carries straight over and you are not asked anything twice.' },
@@ -106,21 +107,41 @@ export default function DecodeLandingPage() {
         headlineAccent="And the fat won't move."
         videoSlot={<DecodeExplainer src={DECODE_EXPLAINER_VIDEO} poster={DECODE_EXPLAINER_POSTER} />}
         leads={[
-          'Your body has shifted into protection mode, and protection mode resists fat loss by design. Push harder and it holds tighter.',
-          "What's driving that isn't the same in everyone. Three of the four common causes push fat to the same place, so where it sits tells you almost nothing on its own. Guessing is how most plans end up aimed at the wrong thing, and it is why the last one didn't work.",
+          'The Body Decode is a free online assessment. About ten minutes of questions, and at the end you get a written report naming which of four common causes is behind your body not responding, why it is happening, what it usually gets mistaken for, and the three things that shift it.',
+          'The report is yours to keep. Then five short videos, one a day, walking you through it.',
         ]}
         stats={[
-          { value: '10 min', label: 'to your full read' },
-          { value: '5 days', label: 'of short lessons' },
-          { value: 'Free', label: 'no card to start' },
+          { value: '10 min', label: 'of questions' },
+          { value: '5 videos', label: 'one a day, a few minutes each' },
+          { value: '$0', label: 'no card, nothing to buy' },
         ]}
         form={<DecodeSignupForm position="hero" />}
         proofStrip={<ProofStrip items={[
           { icon: Lock, label: 'No card required' },
-          { icon: FileText, label: 'Your read is yours to keep' },
-          { icon: ShieldCheck, label: 'Nothing to buy to get it' },
+          { icon: FileText, label: 'A written report you keep' },
+          { icon: ShieldCheck, label: 'Nothing to buy, ever, to get it' },
         ]} />}
       />
+
+      {/* "Read" is our word, not hers, and until 24 Aug this page leaned on it
+          from the first line without ever defining it. Kade: "it's too cryptic
+          for me to understand straight away what it actually is, let alone
+          anyone else." Same rule that keeps the spine line off this page: a
+          word has to be taught before it can carry weight. Plain description
+          first, name second, vocabulary only after that. */}
+      <Section bg="grey" pad="64px 24px">
+        <Eyebrow>In plain terms</Eyebrow>
+        <div style={{ marginBottom: '20px' }}>
+          <Heading muted="Not a plan, a programme or a challenge.">We call it a read.</Heading>
+        </div>
+        <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: '0 0 16px' }}>
+          A read is an assessment of what your body is doing right now, done before anybody writes you anything. You answer questions about your sleep, your stress load, your energy, and how your body responds to training and to fat loss. Those five get scored out of three, and the pattern across them points at which of four common causes is holding you.
+        </p>
+        <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: '0 0 16px' }}>
+          There is nothing to do during the five days. No training plan, no diet, nothing to comply with and no health form to fill in. You are not being asked to change anything yet, because working out what is actually wrong comes first.
+        </p>
+        <Callout tone="solid">If you have ever been handed a plan and found out months later it was aimed at the wrong thing, this is the step that was missing.</Callout>
+      </Section>
 
       {/* SignalsList is a bare fragment with no container of its own, so it has
           to be wrapped in a Section or it runs full-bleed. */}
@@ -137,8 +158,8 @@ export default function DecodeLandingPage() {
 
       <Mechanism
         eyebrow="What is actually happening"
-        headline="Regulation, not metabolism."
-        body="Your body is constantly reading its own situation and deciding how safe it is to let go of stored energy. Sleep, load, whether you are eating enough, how hard you are training, and how long all of it has been going on."
+        headline="Your body has gone into protection mode."
+        body="Protection mode resists fat loss by design, and it is regulation rather than metabolism. Your body is constantly reading its own situation and deciding how safe it is to let go of stored energy: your sleep, the load you are under, whether you are eating enough, how hard you are training, and how long all of it has been going on."
         steps={[
           { k: 'The load stays high', v: 'and it has been high for a while' },
           { k: 'Your body makes a decision', v: 'hold on, this is not the time' },
@@ -227,19 +248,19 @@ export default function DecodeLandingPage() {
       </Section>
 
       <Section pad="72px 24px">
-        <Eyebrow>What your read contains</Eyebrow>
-        <div style={{ marginBottom: '10px' }}><Heading>Five parts. All of it at minute ten.</Heading></div>
+        <Eyebrow>What you actually get</Eyebrow>
+        <div style={{ marginBottom: '10px' }}><Heading>A written report, in five parts.</Heading></div>
         <p style={{ fontSize: '16px', color: '#6B6B6B', lineHeight: 1.7, margin: '10px 0 28px' }}>
-          Nothing is held back and nothing unlocks later. Your read is complete from the start and it stays yours whatever you decide to do next.
+          You get all five parts as soon as you finish the questions. Nothing is held back and nothing unlocks later, and it stays yours whatever you decide to do next.
         </p>
         <FeatureList items={READ_PARTS} />
       </Section>
 
       <Section bg="grey" pad="72px 24px">
-        <Eyebrow>The five days</Eyebrow>
+        <Eyebrow>The five videos</Eyebrow>
         <Heading>Then someone walks you through it.</Heading>
         <p style={{ fontSize: '16px', color: '#6B6B6B', lineHeight: 1.7, margin: '10px 0 32px' }}>
-          One short lesson a day, covering one part of your read. Not because it unlocks, but because a document this long does not get absorbed in one sitting.
+          One short video a day, each covering one part of your report. Not because it unlocks, but because a report this long does not get absorbed in one sitting.
         </p>
         <StepList items={DAYS} />
       </Section>
@@ -277,10 +298,10 @@ export default function DecodeLandingPage() {
       <CTASection
         dark={false}
         eyebrow="Get your read"
-        heading="About ten minutes."
-        headingMuted="Then you know what you are aiming at."
-        sub="Free, and no card to start. Your full read on screen when you finish the questions, then five short lessons walking you through it. If you are training well and progressing, this is not for you and it will not tell you much."
-        riskReversal={<RiskReversalRow icon={Lock} items={['No card, ever, to get the read', 'Your read is yours to keep', 'Nothing prescribed, nothing to comply with', 'Reply STOP to the texts any time']} />}
+        heading="Ten minutes of questions."
+        headingMuted="Then you know what you are actually dealing with."
+        sub="Free, and there is no card at signup. Your report is on screen the moment you finish the questions, then five short videos walk you through it. If you are training well and progressing, this is not for you and it will not tell you much."
+        riskReversal={<RiskReversalRow icon={Lock} items={['No card at any point to get the report', 'The report is yours to keep', 'Nothing prescribed, nothing to comply with', 'Reply STOP to the texts any time']} />}
         form={<DecodeSignupForm position="footer" />}
       />
 
