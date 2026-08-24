@@ -134,9 +134,9 @@ const AUTOMATIC_AUTOMATIONS = [
   },
   {
     id: 'report-followup',
-    name: 'Body Decode Report Follow-up',
-    description: '3-email sequence sent after a $37 Body Decode Report is purchased. Cancels the scorecard sequence and replaces it.',
-    trigger: 'Report purchased via Stripe',
+    name: 'Body Decode Report Follow-up (retired)',
+    description: 'RETIRED 24 Aug 2026 — cannot fire on a new purchase, because the $37 Body Decode Report is no longer sold. The Body Decode gives every signup the same five-part read free on day 5, so the paid version sold her something she was about to be handed. Selling is closed at all three entry points; delivery is deliberately still live (/report/[token], the scorecard_reports table and the Stripe webhook branch), so anyone who already paid keeps what they bought. Left wired rather than deleted so an in-flight session still completes. See src/lib/scorecard-report-retired.ts.',
+    trigger: 'Report purchased via Stripe — no longer reachable',
     steps: 3,
   },
   {

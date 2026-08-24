@@ -1,9 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server'
-import Stripe from 'stripe'
-import { tenantStripe } from '@/lib/tenant-stripe'
-import { appUrl } from '@/lib/app-url'
-import { brand } from "@/config/tenant";
+import { NextResponse } from 'next/server'
+import { brand } from '@/config/tenant'
+import { REPORT_RETIRED } from '@/lib/scorecard-report-retired'
 
+// The $37 Body Decode Report was retired on 24 Aug 2026. See
+// src/lib/scorecard-report-retired.ts for why, and for what deliberately stays.
+//
+// The route is kept rather than deleted because the scorecard on
+// performance.bodyrecode.au posted here cross-origin. A deleted route gives a
+// stale cached page a 404 with no explanation; this gives it a 410 it can read.
 
 const CORS = {
   'Access-Control-Allow-Origin': brand().performanceDomain,
@@ -15,42 +19,6 @@ export async function OPTIONS() {
   return new NextResponse(null, { status: 204, headers: CORS })
 }
 
-export async function POST(request: NextRequest) {
-  const { stripe, opts } = tenantStripe()
-  const { name, email, score, body_state, section_scores } = await request.json()
-
-  if (!name?.trim() || !email?.trim() || !score || !body_state) {
-    return NextResponse.json({ error: 'Missing required fields.' }, { status: 400, headers: CORS })
-  }
-
-  const session = await stripe.checkout.sessions.create({
-    mode: 'payment',
-    payment_method_types: ['card'],
-    customer_email: email,
-    line_items: [
-      {
-        price_data: {
-          currency: 'aud',
-          unit_amount: 3700, // $37.00
-          product_data: {
-            name: 'Body Decode Report',
-            description: 'Your personalised body state interpretation — what your scores mean for your training and fat loss.',
-          },
-        },
-        quantity: 1,
-      },
-    ],
-    metadata: {
-      type: 'scorecard_report',
-      name: name.trim(),
-      email: email.toLowerCase().trim(),
-      score: String(score),
-      body_state,
-      section_scores: JSON.stringify(section_scores ?? {}),
-    },
-    success_url: `${appUrl()}/report/pending?email=${encodeURIComponent(email)}`,
-    cancel_url: `${brand().performanceDomain}/scorecard`,
-  }, opts)
-
-  return NextResponse.json({ url: session.url }, { headers: CORS })
+export async function POST() {
+  return NextResponse.json(REPORT_RETIRED, { status: 410, headers: CORS })
 }

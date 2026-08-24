@@ -726,7 +726,10 @@ export default function ChallengePage() {
           <p style={{ fontSize: '15px', color: '#1A1A1A', lineHeight: 1.7, marginBottom: '24px', fontWeight: 700 }}>If you are in a different state, the right starting point is different.</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '32px' }}>
             {[
-              { state: 'Transitioning State (9-11)', desc: 'Your body has capacity but is not producing consistently. The $37 Body Decode Report is the faster fit. It tells you exactly which bottleneck is holding the system before you add any input.', cta: 'Get the Report', href: '/buy-report' },
+              // Pointed at the $37 report until 24 Aug 2026. That product is retired
+              // (src/lib/scorecard-report-retired.ts) and the state routing already
+              // says Transitioning goes to the Blueprint, so this now agrees with it.
+              { state: 'Transitioning State (9-11)', desc: 'Your body has capacity but is not producing consistently. The Blueprint is the faster fit. It works out which bottleneck is holding the system, then corrects it over six weeks, rather than adding more input on top.', cta: 'See the Blueprint', href: '/blueprint' },
               { state: 'Ready State (12-15)', desc: 'Your biology is already in position to respond. You do not need a reset. You need the ongoing precision system that takes you from responding to compounding.', cta: 'See the Membership', href: '/membership' },
               { state: "Don't know your state yet?", desc: 'Take the 2-minute scorecard first. It tells you which state you are in and which next step is built for you.', cta: 'Take the Scorecard', href: `${brand().performanceDomain}/scorecard?source=challenge_filter` },
             ].map(row => (

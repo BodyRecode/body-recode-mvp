@@ -238,7 +238,7 @@ export default function HelpPage() {
                   <ChecklistItem text="Lead completes the Readiness Scorecard at performance.bodyrecode.au" />
                   <ChecklistItem text="Lead is automatically created in the CRM - no action needed" />
                   <ChecklistItem text="You receive a scorecard submission notification email immediately" />
-                  <ChecklistItem text="Lead is offered the $37 Body Decode Report post-scorecard" />
+                  <ChecklistItem text="Lead is routed to their state-correct next step post-scorecard (the $37 Body Decode Report was retired 24 Aug 2026)" />
                   <ChecklistItem text="Follow-up email sequence begins automatically" />
                 </div>
               </div>
@@ -515,8 +515,8 @@ export default function HelpPage() {
             <p>After completing the scorecard, the CTA shown on the result page <strong>depends on the lead&apos;s body state</strong>. This was changed 2026-04-30 to remove the $37/free-call cannibalisation that had been driving $37 conversion to zero. Each state now sees ONE primary path matched to where their body actually is:</p>
             <ul className="space-y-1.5 list-disc list-inside text-[#3A3A3A] text-sm mt-1">
               <li><strong>Depleted (5-8):</strong> Free 30-minute call only. A PDF will not unstick a body in protection mode. CTA links to <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">bodyrecode.au/book?from=scorecard_depleted</code>.</li>
-              <li><strong>Transitioning (9-11):</strong> $37 Body Decode Report only. The bullseye buyer. No competing free option drains conversions.</li>
-              <li><strong>Ready (12-15):</strong> $37 Body Decode Report with custom framing (&quot;Your biology is ready. The prescription is the gap.&quot;). High-intent lead, $37 acts as a self-screening commit signal.</li>
+              <li><strong>Transitioning (9-11):</strong> the 6-Week Blueprint. Reassigned 24 Aug 2026 when the $37 report was retired; it matches the state routing, which already said Transitioning goes to the Blueprint.</li>
+              <li><strong>Ready (12-15):</strong> the Membership. Same reassignment.</li>
             </ul>
             <p className="mt-2">The Body Decode Report itself: a personalised web-based analysis of their body state, section scores, and what to stop and start doing. Purchased via Stripe at <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">$37 AUD</code> and delivered automatically by email as a unique link at <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">app.bodyrecode.au/report/[token]</code>.</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm mt-1">
@@ -1337,8 +1337,8 @@ export default function HelpPage() {
               <SeqRow day="Day 13" label="Email 5 - Last one from me" />
             </div>
 
-            <p className="font-semibold text-[#1A1A1A] mt-4">Body Decode Report Delivery + Follow-up Sequence (automatic)</p>
-            <p>Fires when a lead purchases the $37 Body Decode Report via Stripe. The delivery email goes out immediately with a unique link to their report. The scorecard follow-up sequence is cancelled at this point and replaced with a 3-email report-specific follow-up.</p>
+            <p className="font-semibold text-[#1A1A1A] mt-4">Body Decode Report Delivery + Follow-up Sequence (RETIRED 24 Aug 2026)</p>
+            <p><strong>The $37 Body Decode Report is no longer sold, so this can no longer fire on a new purchase.</strong> The Body Decode (Funnel B Stage 1) gives every signup the same five-part read free on day 5, so the paid version was selling something she was about to be handed. Selling is closed at all three entry points. <strong>Delivery is deliberately still live</strong> — anyone who already bought keeps their report at <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">app.bodyrecode.au/report/[token]</code>, and a session already in flight still completes. One tail remains: the live scorecard follow-up emails still link <code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">/get-report</code> and must be edited in the workflow UI, never re-seeded, because the live copy is newer than the code seed. That URL redirects to the scorecard meanwhile.</p>
             <div className="space-y-1">
               <SeqRow day="Immediate" label="Report delivery - unique link to their report at app.bodyrecode.au/report/[token]" />
               <SeqRow day="Day 2" label="Your report is the starting point - call as the next step" />
@@ -2485,7 +2485,7 @@ export default function HelpPage() {
             <p>These run automatically. You cannot break them by doing nothing - they are always active.</p>
             <StatusList items={[
               { label: 'Scorecard Follow-up Sequence', desc: '5-email sequence over 13 days. Fires when someone completes the Readiness Scorecard. Voice leads with fat loss / buyer language; body state vocabulary used as the diagnostic frame. Emails 1-2 drive the $37 report; emails 3-4 drive the free strategy call; email 5 names both options based on state.' },
-              { label: 'Performance Report Follow-up', desc: '3-email sequence. Fires when someone purchases the $37 Body Decode Report via Stripe. Cancels the scorecard follow-up and replaces it with report-specific copy.' },
+              { label: 'Performance Report Follow-up (retired)', desc: 'RETIRED 24 Aug 2026. Cannot fire on a new purchase - the $37 Body Decode Report is no longer sold, because The Body Decode gives the same five-part read free on day 5. Delivery of already-purchased reports still works.' },
               { label: 'Zoom Booking Confirmation', desc: 'Confirmation + .ics, 2-hour reminder, 30-minute reminder, coach notification. Fires automatically when a lead books via bodyrecode.au/book. Single Zoom call covers diagnosis through pricing through decision (Zoom 1 / Zoom 2 split deprecated 2026-04-29).' },
               { label: 'Self-Guided Program Offer', desc: '$97 program offer email. Fires automatically as part of the Zoom 1 Declined sequence below - no second action needed.' },
               { label: 'Program Buyer Nurture', desc: '3-email sequence at Week 4, 8, and 12. Fires automatically when the $97 program is purchased via Stripe.' },
