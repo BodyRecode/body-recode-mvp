@@ -56,7 +56,7 @@ for (const blk of md.split('\n### ').slice(1)) {
   <section class="ad">
     <div class="meta"><span class="stream">${esc(STREAM[ad])}</span><span class="slug">${esc(ad)} · ${esc(slug)}</span></div>
     <h2>${esc(title)}</h2>
-    ${imgTag}
+    <div class="shot">${imgTag}</div>
     <p class="lbl">Headline</p>
     <p class="headline">${esc(headline)}</p>
     <p class="lbl">Primary text</p>
@@ -76,11 +76,33 @@ const html = `<!doctype html><html><head><meta charset="utf-8"><title>Round 2 Ad
   .sub { color: #6B6B6B; margin: 0 0 4px; }
   .warn { background: #FFF6E5; border: 1px solid #E8C97A; border-radius: 8px; padding: 12px 14px; margin: 18px 0 0; font-size: 12.5px; }
   .ad { page-break-before: always; border-top: 3px solid #1B6DFC; padding-top: 14px; }
-  .ad:first-of-type { page-break-before: avoid; }
+  /* The cover keeps its own page. It was sharing page 1 with the first ad, and
+     the title block plus the routing note leave under 151mm - not enough for a
+     205mm creative, so ad A1's image jumped to page 2 and stranded its heading
+     on a half-empty page. Ads 2-7 were always fine because they start fresh. */
   .meta { display: flex; justify-content: space-between; font-size: 10px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #1B6DFC; }
   .meta .slug { color: #9A9A9A; }
   h2 { font-size: 21px; letter-spacing: -0.02em; margin: 6px 0 12px; }
-  img { width: 100%; max-width: 360px; display: block; border: 1px solid #E5E5E5; border-radius: 8px; margin: 0 0 14px; }
+  /* THE CREATIVE GETS ITS OWN PAGE.
+     At 360px wide the 10px labels inside the scorecard card were too small to
+     read at normal zoom, which defeats the point of an approval doc - the card
+     is the thing being checked. But these are 4:5 (1080x1350), so full column
+     width overflows an A4 page and leaves a blank one behind it. Its own page
+     at full width is the only way to get both: readable card, no gap. */
+  .shot { page-break-after: always; }
+  /* 205mm, NOT the full 232mm the page allows. The stream label and the ad
+     title sit above it, so a taller image cannot fit beneath them and Chrome
+     pushes it to the next page - leaving the heading stranded on a blank one.
+     At 4:5 this lands about 164mm wide, still far bigger than the 360px that
+     made the scorecard card unreadable. */
+  /* EXPLICIT WIDTH, not width:100% + max-height. With max-height and
+     object-fit:contain Chrome laid the box out at the image's intrinsic height
+     first, letterboxed the picture inside it, and paginated on the box - so the
+     image still jumped to its own page and stranded the heading on a blank one.
+     164mm at 4:5 is 205mm tall, which fits under the label and title with room
+     to spare, and is still far bigger than the 360px that made the scorecard
+     card unreadable. */
+  img { width: 164mm; height: auto; display: block; border: 1px solid #E5E5E5; border-radius: 8px; margin: 0; }
   .noimg { padding: 20px; background: #FAFAFA; border: 1px dashed #CCC; color: #9A9A9A; margin-bottom: 14px; }
   .lbl { font-size: 9.5px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8A8E; margin: 14px 0 4px; }
   .headline { font-size: 15px; font-weight: 800; margin: 0; }
