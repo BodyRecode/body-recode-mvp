@@ -24,16 +24,21 @@ type TrainingStatus = 'active' | 'returning' | 'new' | null
 /**
  * Zoom call companion.
  *
- * ONE STAGE ON SCREEN AT A TIME. The previous pass put all five stages on a
- * single scroll with every question list and every card open, which read as
- * endless during a call. The content did not change; what changed is that you
- * see only the stage you are in, and detail sits one tap away instead of
- * always on.
+ * ONE STAGE ON SCREEN AT A TIME, AND EVERYTHING IN THAT STAGE VISIBLE.
+ *
+ * Two passes got this to where it is. The first put all five stages on one
+ * endless scroll, which was unusable mid-call. The second cut it to one stage
+ * at a time but folded the detail away, and folded detail during a call is
+ * detail you do not open. So: one stage on screen, and inside that stage every
+ * list open. Kade, 26 Aug 2026: an example of how to say it, then everything
+ * involved actually listed.
  *
  * Rules for anything added here:
- *   - What he SAYS is always visible. Everything else can be folded.
- *   - Sub-question sets are shut by default. The hot spot block is the one
- *     exception, because that is the point of stage 2.
+ *   - What he SAYS leads the card, labelled as an example, not a line to
+ *     recite word for word.
+ *   - Everything that stage involves is listed under it, open. Folds still
+ *     exist so he can shrink a section he has finished with, but they open by
+ *     default and nothing starts hidden.
  *
  * Spoken content lives in `src/lib/companion-content.ts`. Edit there.
  */
@@ -222,7 +227,7 @@ ${tail}`
       {/* Scope flags — stage 1 only, they are a pre-call item */}
       {scopeFlags.length > 0 && step === 1 && (
         <div className="max-w-3xl mx-auto px-5 pt-5">
-          <details className="rounded-xl bg-amber-50 border border-amber-300">
+          <details open className="rounded-xl bg-amber-50 border border-amber-300">
             <summary className="px-4 py-3 cursor-pointer select-none text-[13px] font-bold text-amber-900 flex items-center gap-1.5">
               <AlertTriangle size={13} /> {scopeFlags.length} outside scope · ask, note, do not interpret
             </summary>
@@ -377,8 +382,8 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
 
         {/* 03 HOW IT WORKS */}
         {step === 3 && (
-          <div className="space-y-2.5">
-            <p className="text-[14px] text-[#6B6B6B] leading-relaxed">Same five stages as the how-it-works page, in the same order. Read the script on each and anchor it back to their words from stage 2. Tap Detail if you need it.</p>
+          <div className="space-y-3">
+            <p className="text-[14px] text-[#6B6B6B] leading-relaxed">The same five stages as the how-it-works page, in the same order. Each one gives you an example of how to say it, then everything that stage actually involves, listed. Nothing is hidden behind a tap. Anchor every stage back to their words from stage 2.</p>
             {HOW_IT_WORKS_STAGES.map(card => (
               <div key={card.number} className="rounded-xl border border-[#E5E5E5] overflow-hidden">
                 <div className="px-4 pt-3 pb-2.5 flex items-baseline gap-2.5">
@@ -386,7 +391,10 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
                   <h3 className="text-[15px] font-extrabold tracking-tight">{card.title}</h3>
                   <span className="text-[11px] text-[#999999] ml-auto shrink-0 hidden sm:inline">{card.subtitle}</span>
                 </div>
+
+                {/* Example of how he says it. One way of saying it, not a line to recite. */}
                 <div className="bg-blue-50 border-y border-[#B5CFFC] px-4 py-3">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#1B6DFC] mb-1.5">Example of how you say it</p>
                   <p className="text-[15px] leading-relaxed text-[#1A1A1A]">{card.coachScript}</p>
                   {card.number === '02' && summary?.profileLabel && (
                     <p className="text-[14px] leading-relaxed text-[#1A1A1A] mt-2 pt-2 border-t border-[#B5CFFC]">
@@ -396,12 +404,15 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
                     </p>
                   )}
                 </div>
-                <details>
-                  <summary className="px-4 py-2 cursor-pointer select-none text-[12px] font-semibold text-[#6B6B6B] hover:text-[#1A1A1A]">Detail</summary>
-                  <div className="px-4 pb-4 space-y-3">
-                    <p className="text-[14px] leading-relaxed text-[#4A4A4A]">{card.body}</p>
 
-                    {'domains' in card && card.domains && (
+                {/* Everything that stage involves, listed in full. Open. */}
+                <div className="px-4 py-3.5 space-y-3">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#999999]">Everything involved</p>
+                  <p className="text-[14px] leading-relaxed text-[#4A4A4A]">{card.body}</p>
+
+                  {'domains' in card && card.domains && (
+                    <div>
+                      <p className="text-[12px] font-bold text-[#1A1A1A] mb-1.5">The eight areas, and what each one covers</p>
                       <div className="grid grid-cols-2 gap-1.5">
                         {card.domains.map(d => (
                           <div key={d.n} className="rounded-lg border border-[#E5E5E5] bg-[#F7F7F7] p-2">
@@ -410,102 +421,109 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
                           </div>
                         ))}
                       </div>
-                    )}
-                    {'output' in card && card.output && (
-                      <p className="text-[13px] leading-relaxed text-[#1A1A1A] bg-blue-50 border border-[#B5CFFC] rounded-lg p-3">
-                        <span className="font-bold text-[#1B6DFC]">Output · </span>{card.output}
-                      </p>
-                    )}
+                    </div>
+                  )}
+                  {'output' in card && card.output && (
+                    <p className="text-[13px] leading-relaxed text-[#1A1A1A] bg-blue-50 border border-[#B5CFFC] rounded-lg p-3">
+                      <span className="font-bold text-[#1B6DFC]">What she ends up with · </span>{card.output}
+                    </p>
+                  )}
 
-                    {'statesIntro' in card && card.statesIntro && (
-                      <p className="text-[13px] leading-relaxed text-[#4A4A4A]"><span className="font-bold text-[#1B6DFC]">First: your readiness. </span>{card.statesIntro}</p>
-                    )}
-                    {'states' in card && card.states && (
+                  {'states' in card && card.states && (
+                    <div>
+                      <p className="text-[12px] font-bold text-[#1A1A1A] mb-1">First: how much she can handle</p>
+                      {'statesIntro' in card && card.statesIntro && (
+                        <p className="text-[13px] leading-relaxed text-[#4A4A4A] mb-1.5">{card.statesIntro}</p>
+                      )}
                       <div className="space-y-1.5">
-                        {card.states.map(s => {
-                          const theirs = readiness === s.name
+                        {card.states.map(st => {
+                          const theirs = readiness === st.name
                           return (
-                            <div key={s.n} className={`rounded-lg p-2.5 border ${theirs ? 'bg-blue-50 border-[#1B6DFC]' : 'bg-[#F7F7F7] border-[#E5E5E5]'}`}>
+                            <div key={st.n} className={`rounded-lg p-2.5 border ${theirs ? 'bg-blue-50 border-[#1B6DFC]' : 'bg-[#F7F7F7] border-[#E5E5E5]'}`}>
                               <p className={`text-[12px] font-bold ${theirs ? 'text-[#1B6DFC]' : 'text-[#1A1A1A]'}`}>
-                                {s.name}<span className="font-semibold text-[#6B6B6B]"> · say &ldquo;{s.plain}&rdquo;</span>{theirs && <span className="font-semibold"> · theirs</span>}
+                                {st.name}<span className="font-semibold text-[#6B6B6B]"> · say &ldquo;{st.plain}&rdquo;</span>{theirs && <span className="font-semibold"> · theirs</span>}
                               </p>
-                              <p className="text-[12px] text-[#6B6B6B] leading-snug">{s.desc}</p>
+                              <p className="text-[12px] text-[#6B6B6B] leading-snug">{st.desc}</p>
                             </div>
                           )
                         })}
                       </div>
-                    )}
+                    </div>
+                  )}
 
-                    {'patternsIntro' in card && card.patternsIntro && (
-                      <p className="text-[13px] leading-relaxed text-[#4A4A4A]"><span className="font-bold text-[#1B6DFC]">Then: your pattern. </span>{card.patternsIntro}</p>
-                    )}
-                    {'patterns' in card && card.patterns && (
+                  {'patterns' in card && card.patterns && (
+                    <div>
+                      <p className="text-[12px] font-bold text-[#1A1A1A] mb-1">Then: what is driving it</p>
+                      {'patternsIntro' in card && card.patternsIntro && (
+                        <p className="text-[13px] leading-relaxed text-[#4A4A4A] mb-1.5">{card.patternsIntro}</p>
+                      )}
                       <div className="grid sm:grid-cols-2 gap-2">
-                        {card.patterns.map(p => {
-                          const theirs = summary?.profileLabel === p.name
+                        {card.patterns.map(pt => {
+                          const theirs = summary?.profileLabel === pt.name
                           return (
-                            <div key={p.name} className={`rounded-lg p-2.5 border ${theirs ? 'bg-blue-50 border-[#1B6DFC]' : 'bg-[#F7F7F7] border-[#E5E5E5]'}`}>
+                            <div key={pt.name} className={`rounded-lg p-2.5 border ${theirs ? 'bg-blue-50 border-[#1B6DFC]' : 'bg-[#F7F7F7] border-[#E5E5E5]'}`}>
                               <p className={`text-[12px] font-bold ${theirs ? 'text-[#1B6DFC]' : 'text-[#1A1A1A]'}`}>
-                                {p.name} Pattern{theirs && <span className="font-semibold"> · theirs{summary?.provisional ? ', provisional' : ''}</span>}
+                                {pt.name} Pattern{theirs && <span className="font-semibold"> · theirs{summary?.provisional ? ', provisional' : ''}</span>}
                               </p>
-                              <p className="text-[11px] font-semibold text-[#999999]">Say &ldquo;the {p.plain} one&rdquo; · {p.driver}</p>
-                              <p className="text-[12px] text-[#6B6B6B] leading-snug mt-0.5">{p.desc}</p>
+                              <p className="text-[11px] font-semibold text-[#999999]">Say &ldquo;the {pt.plain} one&rdquo; · {pt.driver}</p>
+                              <p className="text-[12px] text-[#6B6B6B] leading-snug mt-0.5">{pt.desc}</p>
                             </div>
                           )
                         })}
                       </div>
-                    )}
+                    </div>
+                  )}
 
-                    {'pieces' in card && card.pieces && (
+                  {'pieces' in card && card.pieces && (
+                    <div>
+                      <p className="text-[12px] font-bold text-[#1A1A1A] mb-1.5">What gets built</p>
                       <div className="grid sm:grid-cols-2 gap-2">
-                        {card.pieces.map(p => (
-                          <div key={p.name} className="rounded-lg p-2.5 border bg-[#F7F7F7] border-[#E5E5E5]">
-                            <p className="text-[12px] font-bold text-[#1A1A1A]">{p.name}</p>
-                            <p className="text-[12px] text-[#6B6B6B] leading-snug">{p.desc}</p>
+                        {card.pieces.map(pc => (
+                          <div key={pc.name} className="rounded-lg p-2.5 border bg-[#F7F7F7] border-[#E5E5E5]">
+                            <p className="text-[12px] font-bold text-[#1A1A1A]">{pc.name}</p>
+                            <p className="text-[12px] text-[#6B6B6B] leading-snug">{pc.desc}</p>
                           </div>
                         ))}
                       </div>
-                    )}
+                    </div>
+                  )}
 
-                    {'portalIntro' in card && card.portalIntro && (
-                      <p className="text-[13px] leading-relaxed text-[#3A3A3A] bg-[#F7F7F7] border border-[#E5E5E5] rounded-lg p-3">
-                        <span className="font-bold text-[#1B6DFC]">Your client portal · </span>{card.portalIntro}
-                      </p>
-                    )}
-                    {'portal' in card && card.portal && (
-                      <details>
-                        <summary className="cursor-pointer select-none text-[12px] font-semibold text-[#6B6B6B] hover:text-[#1A1A1A]">What is in the portal ({card.portal.length})</summary>
-                        <div className="mt-2 space-y-1.5">
-                          {card.portal.map(p => (
-                            <p key={p.name} className="text-[12px] leading-snug">
-                              <span className="inline-block w-1.5 h-1.5 rounded-full mr-2 align-middle bg-[#1B6DFC]" />
-                              <span className="font-semibold">{p.name}</span><span className="text-[#6B6B6B]"> - {p.desc}</span>
-                            </p>
-                          ))}
+                  {'portal' in card && card.portal && (
+                    <div>
+                      <p className="text-[12px] font-bold text-[#1A1A1A] mb-1">Everything she can log into, all {card.portal.length} of them</p>
+                      {'portalIntro' in card && card.portalIntro && (
+                        <p className="text-[13px] leading-relaxed text-[#4A4A4A] mb-1.5">{card.portalIntro}</p>
+                      )}
+                      <div className="grid sm:grid-cols-2 gap-x-4 gap-y-1.5">
+                        {card.portal.map(pl => (
+                          <p key={pl.name} className="text-[12px] leading-snug">
+                            <span className="inline-block w-1.5 h-1.5 rounded-full mr-2 align-middle bg-[#1B6DFC]" />
+                            <span className="font-semibold">{pl.name}</span><span className="text-[#6B6B6B]"> - {pl.desc}</span>
+                          </p>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {'reads' in card && card.reads && (
+                    <div className="grid sm:grid-cols-2 gap-2">
+                      {card.reads.map(r => (
+                        <div key={r.name} className="rounded-lg p-2.5 border bg-[#F7F7F7] border-[#E5E5E5]">
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-[#1B6DFC]">{r.tag}</p>
+                          <p className="text-[13px] font-extrabold text-[#1A1A1A]">{r.name}</p>
+                          <p className="text-[12px] text-[#6B6B6B] leading-snug">{r.desc}</p>
                         </div>
-                      </details>
-                    )}
+                      ))}
+                    </div>
+                  )}
 
-                    {'reads' in card && card.reads && (
-                      <div className="grid sm:grid-cols-2 gap-2">
-                        {card.reads.map(r => (
-                          <div key={r.name} className="rounded-lg p-2.5 border bg-[#F7F7F7] border-[#E5E5E5]">
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-[#1B6DFC]">{r.tag}</p>
-                            <p className="text-[13px] font-extrabold text-[#1A1A1A]">{r.name}</p>
-                            <p className="text-[12px] text-[#6B6B6B] leading-snug">{r.desc}</p>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {'detail' in card && card.detail && (
-                      <p className="text-[14px] leading-relaxed text-[#4A4A4A]">{card.detail}</p>
-                    )}
-                    {'note' in card && card.note && (
-                      <p className="text-[12px] leading-relaxed text-[#6B6B6B] bg-[#F7F7F7] border border-[#E5E5E5] rounded-lg p-3">{card.note}</p>
-                    )}
-                  </div>
-                </details>
+                  {'detail' in card && card.detail && (
+                    <p className="text-[14px] leading-relaxed text-[#4A4A4A]">{card.detail}</p>
+                  )}
+                  {'note' in card && card.note && (
+                    <p className="text-[12px] leading-relaxed text-[#6B6B6B] bg-[#F7F7F7] border border-[#E5E5E5] rounded-lg p-3">{card.note}</p>
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -521,7 +539,7 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
             )}
             <Say text={`You've seen what I do, and you've seen how it gets to the thing you told me about.
 
-Here's what's included: the foundational intake and CFFS, your training program, nutrition structure, weekly check-in and CFWS read, direct access between sessions, and two coached sessions a week.`} />
+Here's what's included. The questionnaire, and the document I write off it. Your training program. Your nutrition. A short check-in every week with my written response on it. All of it in one place you log into. Direct access to me between sessions. And two coached sessions a week.`} />
             <div className="space-y-1.5">
               {PACKAGES.map(p => (
                 <div key={p.tier} className="flex items-baseline justify-between gap-3 rounded-lg border border-[#E5E5E5] px-3.5 py-2.5">
@@ -719,9 +737,12 @@ function IconBtn({ onClick, label, children }: { onClick: () => void; label: str
   )
 }
 
+/** An example of how to say it, not a line to recite. Labelled that way so it
+ *  reads as a guide mid-call rather than a teleprompter. */
 function Say({ text }: { text: string }) {
   return (
     <div className="rounded-xl bg-blue-50 border-l-[3px] border-[#1B6DFC] px-4 py-3.5">
+      <p className="text-[10px] font-bold uppercase tracking-widest text-[#1B6DFC] mb-1.5">Example of how you say it</p>
       <p className="text-[16px] leading-relaxed text-[#1A1A1A] whitespace-pre-line">&ldquo;{text}&rdquo;</p>
     </div>
   )
@@ -748,7 +769,7 @@ function Block({ title, items, accent = false }: { title: string; items: string[
 
 function Fold({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <details className="rounded-xl border border-[#E5E5E5]">
+    <details open className="rounded-xl border border-[#E5E5E5]">
       <summary className="px-3.5 py-2.5 cursor-pointer select-none text-[12px] font-semibold text-[#6B6B6B] hover:text-[#1A1A1A]">{title}</summary>
       <div className="px-3.5 pb-3.5">{children}</div>
     </details>

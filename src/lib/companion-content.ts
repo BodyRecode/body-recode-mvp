@@ -229,12 +229,19 @@ export const HOW_IT_WORKS_STAGES = [
 
 // ─── Pricing & Packages ────────────────────────────────────────────────────
 
+/**
+ * Said out loud when the price lands, so it follows the same rule as the stage
+ * 3 scripts: the ordinary thing first, our name for it second. CFFS and CFWS
+ * are gone. She has no idea what either letter means and this is the worst
+ * possible moment to make her work it out. 26 Aug 2026.
+ */
 export const WHATS_INCLUDED = [
-  'Foundational intake and CFFS, your biological read',
-  'Training program written from your data, not a template',
-  'Nutrition structure built around your profile',
-  'Weekly check-in and CFWS, your weekly read on how your body\'s responding',
-  'Direct access between sessions',
+  'The full questionnaire, and the document I write off it: what\'s going on with your body and why',
+  'A training program written from your answers, not a template',
+  'Nutrition built around what your body is doing, adjusted as it changes',
+  'A short check-in every week, and my written response on every one',
+  'All of it in one place you log into on your phone, updated as I change things',
+  'Direct access to me between sessions',
   'Two coached sessions per week (in-person packages)',
 ] as const
 
