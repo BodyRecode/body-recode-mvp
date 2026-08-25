@@ -65,16 +65,22 @@ const APPROACH_OPTIONS: { value: QualifierAnswer; label: string }[] = [
 
 // Day 0 forward-intent question. Replaces the scorecard's
 // investment_readiness — that question makes no sense at the entry to a
-// free Challenge ("ready to invest in 1-on-1?" right after taking the
+// free offer ("ready to invest in 1-on-1?" right after taking the
 // free thing reads as bait-and-switch and tags ~all cold-paid enrollers
 // as freebie hunters). This asks where they'd ascend TO instead — a
-// forward-fit question that aligns with the state-routed result card
-// they're about to see.
+// forward-fit question that aligns with the result card they're about
+// to see.
+//
+// SAYS "YOUR REPORT", NOT "THE CHALLENGE" (25 Aug 2026). Every person who
+// answers this form is now a Body Decode signup - /challenge redirects and
+// nothing creates a Challenge enrolment any more - so the question was naming
+// a product the reader has never heard of, at the one moment we ask her what
+// she wants next.
 const ASCENSION_INTENT_OPTIONS: { value: QualifierAnswer; label: string }[] = [
   { value: 'A', label: 'Want my body fully decoded — the 6-week Blueprint' },
   { value: 'B', label: 'Want ongoing coaching rhythm — Membership' },
   { value: 'C', label: 'Want 1:1 work with Kade' },
-  { value: 'D', label: 'Not sure yet — let me see what the Challenge surfaces' },
+  { value: 'D', label: 'Not sure yet — let me see what my report says' },
 ]
 
 type BiologicalSex = 'M' | 'F'
@@ -530,7 +536,7 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
           {!known.ascensionIntent && (
           <div>
             <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', marginBottom: '10px' }}>
-              If the Challenge points at something deeper, where would you want to go next?
+              If your report points at something deeper, where would you want to go next?
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {ASCENSION_INTENT_OPTIONS.map(o => (
