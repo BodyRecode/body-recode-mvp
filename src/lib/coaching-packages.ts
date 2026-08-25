@@ -52,10 +52,15 @@ export interface CoachingPackage {
  * defend. Its floor is the $49/week Membership.
  *
  * The four links below were created 26 Aug 2026 against the SAME Stripe
- * products as the old prices, so reporting stays continuous. Automatic tax was
- * mirrored from each product's previous link rather than normalised: it is ON
- * for online and 3x, OFF for 1x and 2x. That inconsistency predates the
- * reprice and is an accounting decision, not a code one.
+ * products as the old prices, so reporting stays continuous.
+ *
+ * GST IS OFF EVERYWHERE, by Kade's decision the same day. It had been on for
+ * the online and 3x links and on Samantha's live subscription, which was an
+ * accident of how they were set up rather than a choice. No GST was ever
+ * actually charged - every invoice on that subscription shows no tax - but the
+ * flag was live and would have started applying the moment a tax registration
+ * was added in Stripe. All 16 payment links and all 3 active subscriptions are
+ * now off. Revisit if turnover crosses the $75k registration threshold.
  *
  * The launch entries stay so the clients on them keep their rate and can still
  * be billed. `retired` keeps them off the list offered to anyone new.
