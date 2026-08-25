@@ -108,63 +108,114 @@ export const BODY_STATE_LANGUAGE: Record<string, { colour: string; badge: string
   },
 }
 
-// ─── How The System Works (mirrors performance.bodyrecode.au/how-it-works) ─
+// ─── How The System Works ──────────────────────────────────────────────────
+//
+// Mirrors performance.bodyrecode.au/how-it-works verbatim (rebuilt 2026-08-25).
+// The lead may have read that page before the call, so what he says here has to
+// be the same five stages in the same order, in the same words.
+//
+// The old model here (Biological Intake → Where it shows up → What type of body
+// → Execution → Continuous Loop) is retired. Two things changed:
+//   - readiness is now stated OUTWARD as readiness, not "body state"
+//   - the four anatomical zones are gone; the read places her two ways,
+//     readiness first, then pattern
+//
+// One deliberate difference from the page: the SPOKEN scripts carry no pattern
+// count. Four is true of the model, three is true of what a woman can be
+// (Androgen-Decline is male-only), so any number in a sentence said to her
+// contradicts one or the other. The count stays in the written detail, which
+// describes the model. Pattern_Count_Scope_Rule, 24 Aug 2026.
 
 export const HOW_IT_WORKS_STAGES = [
   {
     number: '01',
-    title: 'Biological Intake',
-    subtitle: '221 Data Points',
-    body: 'The system begins with a structured biological intake across eight signal domains. 221 data points in total. Nothing is assumed. Nothing is filled in from a template.',
-    chips: ['Training History', 'Nutrition History', 'Metabolic Indicators', 'Hormonal Signals', 'Recovery Patterns', 'Stress Markers', 'Sleep Quality', 'Body Composition'],
-    coachScript: '"First thing you do is the foundational intake. 221 questions across eight areas. This is what gives me the data to read what\'s actually going on with your body, not from a template, from you."',
+    title: 'The Foundational Read',
+    subtitle: 'Stage One · 221 data points',
+    heading: 'I read your body before I prescribe anything',
+    body: 'This is the Foundational Read: 221 data points across eight signal domains, plus baseline measurements, photos, and any recent bloodwork. Nothing assumed, nothing pulled from a template. It exists to surface what is actually happening, not to confirm what I expect.',
+    domains: [
+      { n: '01', name: 'Training Load', desc: 'Volume, intensity, recovery debt' },
+      { n: '02', name: 'Sleep Quality', desc: 'Depth, duration, regularity' },
+      { n: '03', name: 'Nutritional Pattern', desc: 'Timing, composition, adequacy' },
+      { n: '04', name: 'Stress Load', desc: 'Cumulative system pressure' },
+      { n: '05', name: 'Recovery Capacity', desc: 'Resilience between stressors' },
+      { n: '06', name: 'Hormonal State', desc: 'Cortisol, insulin, sex hormones' },
+      { n: '07', name: 'Movement History', desc: 'Past training, current capacity' },
+      { n: '08', name: 'Behavioural Context', desc: 'Adherence, environment, identity' },
+    ],
+    output: 'Your Foundational Read: your body\'s current state, the pattern driving it, and what to address first.',
+    coachScript: '"Before I write you anything, I read your body. That\'s the Foundational Read: 221 data points across eight areas, plus your measurements, photos, and any recent bloodwork. It\'s not a template, and it\'s not me confirming what I already think. It\'s there to show me what\'s actually happening with you."',
   },
   {
     number: '02',
-    title: 'Where it shows up',
-    subtitle: 'Four location-plus-signal pairs',
-    body: 'Your body shows biological load in four ways. Where you carry it narrows it down, but three of the four push fat to the same place, so the signal that comes with it is what actually decides.',
-    zones: [
-      { dot: 'red',    region: 'Front of the middle, while arms and legs stay lean', driver: 'Stress and cortisol' },
-      { dot: 'amber',  region: 'Mid-back, lower back and love handles, front spared', driver: 'Insulin, with an afternoon crash' },
-      { dot: 'purple', region: 'Hips, glutes and thighs, or moving to the middle',    driver: 'Oestrogen' },
-      { dot: 'cyan',   region: 'Middle filling while muscle and drive fall',          driver: 'Androgen' },
+    title: 'The read places you two ways',
+    subtitle: 'Stage Two · Readiness, then pattern',
+    heading: 'The read places you two ways',
+    body: 'I read your data through five analytical frameworks (the Body Recode™ Interpretive Pillars). The output is your Foundational Read, and it answers two questions: how much load your body can handle right now, and what is actually driving the stall.',
+    statesIntro: 'Which of three states your body is in decides whether it is safe to push at all, or whether we rebuild capacity first. Most people are further back than they expect, and that is the single most important thing to get right.',
+    states: [
+      { n: '01', name: 'Depleted', line: 'Under load it cannot clear', desc: 'Run-down and carrying more than it can recover from. Training hard here digs the hole deeper. Most women are further into this than they think.' },
+      { n: '02', name: 'Transitioning', line: 'Stabilised, building capacity', desc: 'The system has settled and can take real work again. This is where change actually starts to show.' },
+      { n: '03', name: 'Ready', line: 'Performing', desc: 'Recovered and responding. Now the work is sharpening what you have and holding it for the long run.' },
     ],
-    coachScript: '"Your body shows this in four ways. Front of your middle while your arms and legs stay lean \u2014 that\'s stress. Back and sides, mid-back and love handles, with the front spared \u2014 that\'s insulin, and the two to four o\'clock crash tells you the same thing. Hips and thighs, or it starting to move to your middle \u2014 that\'s oestrogen. Middle filling while muscle and drive drop off \u2014 that\'s androgen. Where you carry it narrows it down. The signal that comes with it is what decides."',
+    patternsIntro: 'Every client also sorts into one of four patterns. Each needs a materially different approach to training, nutrition, and recovery.',
+    patterns: [
+      { name: 'Stress-Stored', driver: 'Cortisol-driven', line: 'Holding tight under load', desc: 'Chronic stress keeps the system in protection. Fat stores around the midsection. Pushing harder closes the door further.' },
+      { name: 'Insulin-Drift', driver: 'Blood-sugar driven', line: 'Energy is inconsistent', desc: 'Insulin sensitivity has drifted. Afternoon crashes, persistent cravings, heaviness after meals. Fuelling needs restructuring.' },
+      { name: 'Estrogen-Shift', driver: 'Hormonal-driven', line: 'Your body has changed', desc: 'Oestrogen shift drives conservation. Fat distribution shifts. Recovery feels different. Restriction makes it worse.' },
+      { name: 'Androgen-Decline', driver: 'Testosterone-driven', line: 'Capacity is slipping', desc: 'Declining androgen signal. Recovery slower, drive flat, muscle no longer responding. System needs less demand, more inputs.' },
+    ],
+    note: 'These name observed patterns of where the body stores and how it signals. They describe how your body is behaving, not a measurement of your hormone levels.',
+    coachScript: '"Your read places you two ways. First, how much load you can handle right now: depleted, transitioning, or ready. Most people are further back than they expect, and getting that wrong is why the last few things haven\'t worked. Second, what\'s actually driving the stall. That\'s your pattern, and each one needs a different approach to training, food, and recovery."',
   },
   {
     number: '03',
-    title: 'What type of body',
-    subtitle: 'Four biological profiles',
-    body: 'Your scorecard already pointed at one of these. It is a provisional read from a handful of answers. The intake is what confirms it or moves it, because each one needs a materially different approach.',
+    title: 'I build training and nutrition around your read',
+    subtitle: 'Stage Three · Program, nutrition, portal',
+    heading: 'I build training and nutrition around your read',
+    body: 'With your Foundational Read in place, I build everything within its boundaries: training, nutrition, weekly check-in flow. All delivered through your client portal.',
     pieces: [
-      { name: 'Stress-Stored', desc: 'Managing a lot, holding on. The harder you push, the tighter the body holds.' },
-      { name: 'Estrogen-Shift', desc: 'Body has changed. What used to work doesn\'t anymore. Distribution and recovery feel different.' },
-      { name: 'Insulin-Drift', desc: 'Energy is inconsistent. Eating well but feeling flat. Body partitioning energy differently than it used to.' },
-      { name: 'Androgen-Decline', desc: 'Response has dropped off. Muscle harder to hold, recovery slower than it used to be.' },
+      { name: 'Training Program', desc: 'Load, volume, and modality derived entirely from your read. Not a generic phase. Not a template.' },
+      { name: 'Nutrition Plan', desc: 'Built around your biological profile. I adjust it as your body responds.' },
+      { name: 'Weekly Check-In', desc: 'Each week I read your data and produce a weekly read, a snapshot of how your body is responding.' },
+      { name: 'Progress Tracking', desc: 'Photos, measurements, and your readiness scored again over time, so movement is visible rather than assumed.' },
     ],
-    coachScript: '"Your scorecard already put you in one of these four \u2014 that\'s what it pointed at, off a handful of answers. Your intake is what confirms it or moves it, because 221 questions tells me a lot more than five does. Once it\'s confirmed it sets the rules for everything I do with you."',
-    bridge: 'Two reads of the same body. Where the load is showing narrows it down. The signal that comes with it decides which driver it is. Both feed into how I write your training and nutrition, neither alone gives the full picture, which is exactly why the scorecard read stays provisional until the intake.',
+    portalIntro: 'One login. Everything I build for you, live. Nothing gets sent as a PDF you lose in your inbox. Every client gets their own portal, open from day one and updated as I adjust things. It runs in your phone\'s browser, so there is no app to download.',
+    portal: [
+      { name: 'Your Foundational Read', desc: 'The full read written out in plain language: your readiness, your pattern, and why I am prescribing what I am prescribing.' },
+      { name: 'Training Program', desc: 'Every session with sets, reps, and loads. Log each workout as you go so I can see what actually happened, not what was planned.' },
+      { name: 'Nutrition Plan', desc: 'Your meals and targets, with food swaps if something does not suit you, and simple adherence logging.' },
+      { name: 'Daily Sequences', desc: 'A Morning Reset and an Evening Rhythm built to your read. Short, specific, and the part most women are missing.' },
+      { name: 'Recovery Protocols', desc: 'Prescribed recovery work for whatever your read flagged, rather than generic advice to sleep more.' },
+      { name: 'Supplement Stack', desc: 'What to take, when to take it, and the reason it is there. Nothing on the list without a reason.' },
+      { name: 'Weekly Check-In', desc: 'Submit in a few minutes each week. Your full check-in history sits there, with my written response on every one.' },
+      { name: 'Progress', desc: 'Photos, measurements, and your Progress Read at the end of each block, tracked in one place over time.' },
+      { name: 'Blood Work', desc: 'Upload your panels and see your markers read against your profile, plus a guide you can hand to your GP.' },
+      { name: 'Messages and Resources', desc: 'A direct line to me between check-ins, alongside your guides, glossary, and reference material.' },
+    ],
+    coachScript: '"Once I\'ve got your read, I build inside it: your training, your nutrition, your daily sequences, recovery, supplements. All of it lives in your portal. One login, open from day one, updated as I adjust things. Nothing gets emailed to you as a PDF you lose in your inbox, and there\'s no app to download."',
   },
   {
     number: '04',
-    title: 'Execution',
-    subtitle: 'Program · Nutrition · Synthesis · Portal',
-    body: 'With the read in place, execution begins. Training, nutrition, and weekly check-in synthesis are all delivered through your client portal. Live from day one.',
-    pieces: [
-      { name: 'Training Program', desc: 'Load, volume and modality derived from your read, not a template' },
-      { name: 'Nutrition Structure', desc: 'Built around your biological profile, adjusted as state shifts' },
-      { name: 'Weekly Check-In', desc: 'Structured data capture produces the CFWS in real time' },
-      { name: 'Client Portal', desc: 'Program, plan, synthesis docs and check-in history in one place' },
+    title: 'I read every week and adjust',
+    subtitle: 'Stage Four · Two reads running together',
+    heading: 'I read every week and adjust',
+    body: 'While a block is live, two reads run together: the Foundational Read that set the boundaries, and the Weekly Read from each check-in. Each feeds the next. I read, I adjust, I read again. The plan adapts as your body adapts, right up to the end of the block.',
+    reads: [
+      { tag: 'The Foundation', name: 'Foundational Read', desc: 'Produced once at the start. Defines your biological profile, readiness, and the boundaries I work within. Doesn\'t change week to week.' },
+      { tag: 'The Weekly Update', name: 'Weekly Read', desc: 'Produced every week from your check-in. Captures how your body\'s responding to what we\'ve applied. Drives my next adjustment.' },
     ],
-    coachScript: '"Everything lives in your portal, training program, nutrition, weekly check-ins. All in one place. All driven by your read."',
+    coachScript: '"From there we\'re in a cycle. Your Foundational Read sets the boundaries and doesn\'t change. Every week your check-in gives me a Weekly Read on how your body\'s responding to what we\'ve applied, and that drives the next adjustment. I read, I adjust, I read again. It\'s not a static plan, it adapts as your body adapts."',
   },
   {
     number: '05',
-    title: 'The Continuous Loop',
-    subtitle: 'CFFS + CFWS in parallel',
-    body: 'Two documents run in parallel the whole way through: the CFFS, the foundation that doesn\'t change, and the CFWS, your weekly read. I produce a fresh CFWS every week, capturing how your body\'s responding to what we\'ve applied.',
-    coachScript: '"Once we\'re going we\'re in a continuous cycle, I read, I adjust, I read again. Every week I do what\'s called a CFWS, your weekly read on how your body\'s responding to what we\'ve applied. That feeds my next adjustment. It\'s not a static plan, it adapts as your body adapts."',
+    title: 'The Progress Read',
+    subtitle: 'Stage Five · End of every block',
+    heading: 'At the end of every block, I read you again',
+    body: 'A training block is a chapter, not the whole story. When one finishes, I don\'t just roll into the next. I read your body again and set where it sits now against where it started. This is your Progress Read: proof, in plain terms, of how far the block actually moved you.',
+    detail: 'You answer a short check-in, about five minutes, and I read it alongside everything from the block. Your readiness is scored again, so the shift is something you can see, not just something you have to take on faith.',
+    note: 'Your Progress Read never changes the pattern I identified in your Foundational Read. It measures the one thing that matters to you between blocks: are you actually moving, and in the right direction.',
+    coachScript: '"At the end of every block I read you again. That\'s your Progress Read: where you started, where you are now, and your readiness scored again, so the shift is something you can see rather than something you take on faith. The pattern doesn\'t change. What changes is how much your body can handle."',
   },
 ] as const
 

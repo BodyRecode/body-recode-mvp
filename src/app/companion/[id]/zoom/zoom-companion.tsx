@@ -83,6 +83,10 @@ export default function ZoomCompanion({
   const mmss = `${Math.floor(elapsed / 60)}:${String(elapsed % 60).padStart(2, '0')}`
   const scoreDisplay = totalScore ? ` — ${totalScore}/15` : ''
 
+  /** Readiness said outward. The scorecard stores 'Depleted State'; the stage-3
+   *  cards are labelled Depleted / Transitioning / Ready, so theirs highlights. */
+  const readiness = bodyState.replace(/ State$/, '')
+
   const preface = training === 'returning'
     ? 'Coming back into it, this gives us a clear starting point.\n\n'
     : training === 'new' ? 'This is the starting point — important context for how we ease you in.\n\n' : ''
@@ -367,7 +371,7 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
         {/* 03 HOW IT WORKS */}
         {step === 3 && (
           <div className="space-y-2.5">
-            <p className="text-[14px] text-[#6B6B6B] leading-relaxed">Read the script on each. Anchor every one back to their words from stage 2. Tap Detail if you need it.</p>
+            <p className="text-[14px] text-[#6B6B6B] leading-relaxed">Same five stages as the how-it-works page, in the same order. Read the script on each and anchor it back to their words from stage 2. Tap Detail if you need it.</p>
             {HOW_IT_WORKS_STAGES.map(card => (
               <div key={card.number} className="rounded-xl border border-[#E5E5E5] overflow-hidden">
                 <div className="px-4 pt-3 pb-2.5 flex items-baseline gap-2.5">
@@ -377,10 +381,10 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
                 </div>
                 <div className="bg-blue-50 border-y border-[#B5CFFC] px-4 py-3">
                   <p className="text-[15px] leading-relaxed text-[#1A1A1A]">{card.coachScript}</p>
-                  {card.number === '03' && summary?.profileLabel && (
+                  {card.number === '02' && summary?.profileLabel && (
                     <p className="text-[14px] leading-relaxed text-[#1A1A1A] mt-2 pt-2 border-t border-[#B5CFFC]">
                       {summary.provisional
-                        ? `Then: "Yours points toward ${summary.profileLabel}. I want the intake before I commit to that."`
+                        ? `Then: "Yours points toward ${summary.profileLabel}. I want the full read before I commit to that."`
                         : `Then: "Yours is ${summary.profileLabel}."`}
                     </p>
                   )}
@@ -389,40 +393,109 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
                   <summary className="px-4 py-2 cursor-pointer select-none text-[12px] font-semibold text-[#6B6B6B] hover:text-[#1A1A1A]">Detail</summary>
                   <div className="px-4 pb-4 space-y-3">
                     <p className="text-[14px] leading-relaxed text-[#4A4A4A]">{card.body}</p>
-                    {'chips' in card && card.chips && (
-                      <div className="flex flex-wrap gap-1.5">
-                        {card.chips.map(c => <span key={c} className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#F4F4F4] text-[#4A4A4A] border border-[#E5E5E5]">{c}</span>)}
-                      </div>
-                    )}
-                    {'zones' in card && card.zones && (
-                      <div className="space-y-1.5">
-                        {card.zones.map(z => (
-                          <p key={z.region} className="text-[13px] leading-snug">
-                            <span className={`inline-block w-1.5 h-1.5 rounded-full mr-2 align-middle ${
-                              z.dot === 'red' ? 'bg-red-500' : z.dot === 'amber' ? 'bg-amber-500' : z.dot === 'purple' ? 'bg-violet-500' : 'bg-cyan-500'
-                            }`} />
-                            <span className="font-semibold">{z.region}</span><span className="text-[#6B6B6B]"> — {z.driver}</span>
-                          </p>
+
+                    {'domains' in card && card.domains && (
+                      <div className="grid grid-cols-2 gap-1.5">
+                        {card.domains.map(d => (
+                          <div key={d.n} className="rounded-lg border border-[#E5E5E5] bg-[#F7F7F7] p-2">
+                            <p className="text-[12px] font-bold text-[#1A1A1A]"><span className="font-mono text-[10px] text-[#1B6DFC] mr-1.5">{d.n}</span>{d.name}</p>
+                            <p className="text-[11px] text-[#6B6B6B] leading-snug">{d.desc}</p>
+                          </div>
                         ))}
                       </div>
                     )}
-                    {'pieces' in card && card.pieces && (
-                      <div className="grid sm:grid-cols-2 gap-2">
-                        {card.pieces.map(p => {
-                          const theirs = summary?.profileLabel === p.name
+                    {'output' in card && card.output && (
+                      <p className="text-[13px] leading-relaxed text-[#1A1A1A] bg-blue-50 border border-[#B5CFFC] rounded-lg p-3">
+                        <span className="font-bold text-[#1B6DFC]">Output · </span>{card.output}
+                      </p>
+                    )}
+
+                    {'statesIntro' in card && card.statesIntro && (
+                      <p className="text-[13px] leading-relaxed text-[#4A4A4A]"><span className="font-bold text-[#1B6DFC]">First: your readiness. </span>{card.statesIntro}</p>
+                    )}
+                    {'states' in card && card.states && (
+                      <div className="space-y-1.5">
+                        {card.states.map(s => {
+                          const theirs = readiness === s.name
                           return (
-                            <div key={p.name} className={`rounded-lg p-2.5 border ${theirs ? 'bg-blue-50 border-[#1B6DFC]' : 'bg-[#F7F7F7] border-[#E5E5E5]'}`}>
+                            <div key={s.n} className={`rounded-lg p-2.5 border ${theirs ? 'bg-blue-50 border-[#1B6DFC]' : 'bg-[#F7F7F7] border-[#E5E5E5]'}`}>
                               <p className={`text-[12px] font-bold ${theirs ? 'text-[#1B6DFC]' : 'text-[#1A1A1A]'}`}>
-                                {p.name}{theirs && <span className="font-semibold"> · theirs{summary?.provisional ? ', provisional' : ''}</span>}
+                                {s.name}<span className="font-semibold text-[#6B6B6B]"> · {s.line}</span>{theirs && <span className="font-semibold"> · theirs</span>}
                               </p>
-                              <p className="text-[12px] text-[#6B6B6B] leading-snug">{p.desc}</p>
+                              <p className="text-[12px] text-[#6B6B6B] leading-snug">{s.desc}</p>
                             </div>
                           )
                         })}
                       </div>
                     )}
-                    {'bridge' in card && card.bridge && (
-                      <p className="text-[13px] leading-relaxed text-[#3A3A3A] bg-[#F7F7F7] border border-[#E5E5E5] rounded-lg p-3">{card.bridge}</p>
+
+                    {'patternsIntro' in card && card.patternsIntro && (
+                      <p className="text-[13px] leading-relaxed text-[#4A4A4A]"><span className="font-bold text-[#1B6DFC]">Then: your pattern. </span>{card.patternsIntro}</p>
+                    )}
+                    {'patterns' in card && card.patterns && (
+                      <div className="grid sm:grid-cols-2 gap-2">
+                        {card.patterns.map(p => {
+                          const theirs = summary?.profileLabel === p.name
+                          return (
+                            <div key={p.name} className={`rounded-lg p-2.5 border ${theirs ? 'bg-blue-50 border-[#1B6DFC]' : 'bg-[#F7F7F7] border-[#E5E5E5]'}`}>
+                              <p className={`text-[12px] font-bold ${theirs ? 'text-[#1B6DFC]' : 'text-[#1A1A1A]'}`}>
+                                {p.name} Pattern{theirs && <span className="font-semibold"> · theirs{summary?.provisional ? ', provisional' : ''}</span>}
+                              </p>
+                              <p className="text-[11px] font-semibold text-[#999999]">{p.driver} · {p.line}</p>
+                              <p className="text-[12px] text-[#6B6B6B] leading-snug mt-0.5">{p.desc}</p>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    )}
+
+                    {'pieces' in card && card.pieces && (
+                      <div className="grid sm:grid-cols-2 gap-2">
+                        {card.pieces.map(p => (
+                          <div key={p.name} className="rounded-lg p-2.5 border bg-[#F7F7F7] border-[#E5E5E5]">
+                            <p className="text-[12px] font-bold text-[#1A1A1A]">{p.name}</p>
+                            <p className="text-[12px] text-[#6B6B6B] leading-snug">{p.desc}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {'portalIntro' in card && card.portalIntro && (
+                      <p className="text-[13px] leading-relaxed text-[#3A3A3A] bg-[#F7F7F7] border border-[#E5E5E5] rounded-lg p-3">
+                        <span className="font-bold text-[#1B6DFC]">Your client portal · </span>{card.portalIntro}
+                      </p>
+                    )}
+                    {'portal' in card && card.portal && (
+                      <details>
+                        <summary className="cursor-pointer select-none text-[12px] font-semibold text-[#6B6B6B] hover:text-[#1A1A1A]">What is in the portal ({card.portal.length})</summary>
+                        <div className="mt-2 space-y-1.5">
+                          {card.portal.map(p => (
+                            <p key={p.name} className="text-[12px] leading-snug">
+                              <span className="inline-block w-1.5 h-1.5 rounded-full mr-2 align-middle bg-[#1B6DFC]" />
+                              <span className="font-semibold">{p.name}</span><span className="text-[#6B6B6B]"> - {p.desc}</span>
+                            </p>
+                          ))}
+                        </div>
+                      </details>
+                    )}
+
+                    {'reads' in card && card.reads && (
+                      <div className="grid sm:grid-cols-2 gap-2">
+                        {card.reads.map(r => (
+                          <div key={r.name} className="rounded-lg p-2.5 border bg-[#F7F7F7] border-[#E5E5E5]">
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-[#1B6DFC]">{r.tag}</p>
+                            <p className="text-[13px] font-extrabold text-[#1A1A1A]">{r.name}</p>
+                            <p className="text-[12px] text-[#6B6B6B] leading-snug">{r.desc}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {'detail' in card && card.detail && (
+                      <p className="text-[14px] leading-relaxed text-[#4A4A4A]">{card.detail}</p>
+                    )}
+                    {'note' in card && card.note && (
+                      <p className="text-[12px] leading-relaxed text-[#6B6B6B] bg-[#F7F7F7] border border-[#E5E5E5] rounded-lg p-3">{card.note}</p>
                     )}
                   </div>
                 </details>
