@@ -5,7 +5,7 @@ import { PORTAL_ACCESS_STATUSES } from '@/lib/challenge-access'
 import { logPortalVisit } from '@/lib/challenge-portal-visit'
 import { typeFatMapProfile, leadDescriptor, type Profile } from '@/lib/fat-map-profile'
 import { CHECKIN_PATTERNS } from '@/lib/checkin-patterns'
-import { currentDecodeDay, patternKeyForProfile, readinessPlain } from '@/lib/decode-days'
+import { currentDecodeDay, patternKeyForProfile, readinessPlain, DECODE_DAYS } from '@/lib/decode-days'
 import { Nav } from '@/components/landing/kit'
 import { logoUrl, brand } from '@/config/tenant'
 import { DecodeFeedbackCard } from '../decode-feedback-card'
@@ -92,7 +92,9 @@ export default async function DecodeReadPage({ params }: { params: Promise<{ tok
       })
     : null
 
-  await logPortalVisit(enrollment.lead_id, enrollment.id, currentDecodeDay(enrollment.enrolled_at))
+  const currentDay = currentDecodeDay(enrollment.enrolled_at)
+  const todaysDay = DECODE_DAYS.find(d => d.day === Math.min(currentDay, DECODE_DAYS.length))
+  await logPortalVisit(enrollment.lead_id, enrollment.id, currentDay)
 
   return (
     <>
@@ -108,9 +110,27 @@ export default async function DecodeReadPage({ params }: { params: Promise<{ tok
       <h1 style={{ fontSize: '31px', fontWeight: 800, color: INK, letterSpacing: '-0.025em', lineHeight: 1.14, margin: '0 0 12px' }}>
         {firstName}, here is the whole thing.
       </h1>
-      <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 32px' }}>
+      <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 20px' }}>
         Five parts, and you have all of them. Read it once now without rushing to do anything about it, then read it again tomorrow, because the second time is usually when it lands. Over the next five days we go through it one part at a time.
       </p>
+
+      {/* Contents. This document runs to about four screens on a phone with no
+          way to see its shape or get back to a part she wants to re-read - and
+          the copy above literally asks her to read it twice. Five links is
+          cheaper than making her scroll for it. */}
+      {pattern && (
+        <nav style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', margin: '0 0 32px' }}>
+          {PART_TITLES.map((t, i) => (
+            <a key={t} href={`#part-${i + 1}`} style={{
+              fontSize: '13px', fontWeight: 700, color: BLUE, textDecoration: 'none',
+              background: 'rgba(27,109,252,0.06)', border: '1px solid rgba(27,109,252,0.20)',
+              borderRadius: '99px', padding: '7px 13px',
+            }}>
+              {i + 1}. {t}
+            </a>
+          ))}
+        </nav>
+      )}
 
       {/* Your scores */}
       {scores && (
@@ -153,7 +173,7 @@ export default async function DecodeReadPage({ params }: { params: Promise<{ tok
       {pattern ? (
         <>
           {/* Part 1 */}
-          <section style={{ ...card(), borderLeft: `3px solid ${pattern.color}` }}>
+          <section id="part-1" style={{ ...card(), borderLeft: `3px solid ${pattern.color}`, scrollMarginTop: '16px' }}>
             <p style={{ ...eyebrow(), color: pattern.color }}>Part 1 · Which one you are</p>
             <p style={{ fontSize: '22px', fontWeight: 800, color: pattern.color, letterSpacing: '-0.02em', margin: '0 0 12px' }}>
               {pattern.label}
@@ -169,7 +189,12 @@ export default async function DecodeReadPage({ params }: { params: Promise<{ tok
             paragraphs={pattern.whatItIsNot}
             note="This is the part most people skim, and it is the one worth reading twice. The way a pattern usually gets explained is often part of the reason it has stayed unsolved."
           />
-          <Part n={5} title="Where to start" paragraphs={pattern.actions} />
+          {/* NUMBERED, unlike parts 2-4. These are three actions in a
+              deliberate order - the regulation ones before the training one -
+              and rendering them as three loose paragraphs threw the order away,
+              which is the one thing about them that matters. Day 5 numbers them
+              too, so the read and the lesson agree. */}
+          <Part n={5} title="Where to start" paragraphs={pattern.actions} numbered />
         </>
       ) : (
         <section style={card()}>
@@ -198,18 +223,60 @@ export default async function DecodeReadPage({ params }: { params: Promise<{ tok
           firstName={firstName}
         />
       </div>
+
+      {/* The page stopped on the feedback form. She has just read four screens
+          of a document about herself and the only way onward was the back link
+          at the very top, which is now a long way behind her. */}
+      <div style={{ borderTop: '1px solid #E5E5E5', margin: '28px 0 0', paddingTop: '24px' }}>
+        <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.72, margin: '0 0 18px' }}>
+          That is the whole read, and it stays at this link. Nothing else unlocks it and nothing expires.
+        </p>
+        {todaysDay && (
+          <Link href={`/decode/${token}/day/${todaysDay.day}`} style={{
+            display: 'block', padding: '16px', borderRadius: '12px', background: BLUE,
+            color: '#FFFFFF', fontSize: '15.5px', fontWeight: 800, textAlign: 'center', textDecoration: 'none',
+          }}>
+            Day {todaysDay.day} · {todaysDay.title}
+          </Link>
+        )}
+        <p style={{ fontSize: '14px', color: MUTED, lineHeight: 1.7, margin: '16px 0 0', textAlign: 'center' }}>
+          <Link href={`/decode/${token}`} style={{ color: BLUE, fontWeight: 700, textDecoration: 'none' }}>
+            Back to the five days
+          </Link>
+        </p>
+      </div>
     </main>
     </>
   )
 }
 
-function Part({ n, title, paragraphs, note }: { n: number; title: string; paragraphs: string[]; note?: string }) {
+const PART_TITLES = [
+  'Which one you are',
+  'Why it is happening',
+  'Where you will recognise it',
+  'What it is not',
+  'Where to start',
+]
+
+function Part({ n, title, paragraphs, note, numbered = false }: { n: number; title: string; paragraphs: string[]; note?: string; numbered?: boolean }) {
   return (
-    <section style={card()}>
+    <section id={`part-${n}`} style={{ ...card(), scrollMarginTop: '16px' }}>
       <p style={eyebrow()}>Part {n} · {title}</p>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '13px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: numbered ? '16px' : '13px' }}>
         {paragraphs.map((p, i) => (
-          <p key={i} style={{ fontSize: '15px', color: '#3A3A3A', lineHeight: 1.72, margin: 0 }}>{p}</p>
+          numbered ? (
+            <div key={i} style={{ display: 'flex', gap: '13px', alignItems: 'flex-start' }}>
+              <span style={{
+                width: '25px', height: '25px', borderRadius: '50%', flexShrink: 0, marginTop: '1px',
+                background: BLUE, color: '#FFFFFF', fontSize: '12px', fontWeight: 900,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontVariantNumeric: 'tabular-nums',
+              }}>{i + 1}</span>
+              <p style={{ fontSize: '15px', color: '#3A3A3A', lineHeight: 1.72, margin: 0 }}>{p}</p>
+            </div>
+          ) : (
+            <p key={i} style={{ fontSize: '15px', color: '#3A3A3A', lineHeight: 1.72, margin: 0 }}>{p}</p>
+          )
         ))}
       </div>
       {note && (
