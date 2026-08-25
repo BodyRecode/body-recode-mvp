@@ -148,19 +148,17 @@ export default async function CRMContactPage({ params }: { params: Promise<{ id:
               <FileText size={12} />
               Performance Report
             </Link>
+            {/* Both of these used to point at their own companions: one a
+                superseded copy, the other a route that does not exist. The lead
+                page has always linked the live companion at /companion/[id]/zoom
+                and this now matches it, so there is one companion, not three. */}
             <Link
-              href={`/dashboard/leads/${lead.id}/zoom-1`}
+              href={`/companion/${lead.id}/zoom`}
+              target="_blank"
               className="flex items-center gap-1.5 text-xs text-stone-700 hover:text-[#1A1A1A] border border-stone-300 hover:border-stone-500 px-3 py-1.5 rounded-lg transition-colors"
             >
               <Calendar size={12} />
-              Zoom 1 Companion
-            </Link>
-            <Link
-              href={`/dashboard/leads/${lead.id}/zoom-2`}
-              className="flex items-center gap-1.5 text-xs text-stone-700 hover:text-[#1A1A1A] border border-stone-300 hover:border-stone-500 px-3 py-1.5 rounded-lg transition-colors"
-            >
-              <Calendar size={12} />
-              Zoom 2 Companion
+              Call Companion
             </Link>
             {lead.converted_to_client_id && (
               <Link
