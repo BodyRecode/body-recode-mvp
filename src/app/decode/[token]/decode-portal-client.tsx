@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import BodyDecodeIntakeForm from '@/app/challenge/[token]/body-decode-intake'
 import { Nav } from '@/components/landing/kit'
-import { logoUrl, brand } from '@/config/tenant'
+import { logoUrl, brand, coach } from '@/config/tenant'
 import { CHECKIN_PATTERNS } from '@/lib/checkin-patterns'
 import { DECODE_DAYS, isDayUnlocked, readinessPlain } from '@/lib/decode-days'
 
@@ -43,6 +43,7 @@ export default function DecodePortalClient({
   patternKey,
   plainDesc,
   currentDay,
+  unlockLabels,
   known,
   knownSex,
 }: {
@@ -55,6 +56,9 @@ export default function DecodePortalClient({
   patternKey: string | null
   plainDesc: string | null
   currentDay: number
+  /** "Opens tomorrow" / "Opens Thursday", keyed by day. Locked days only, and
+   *  computed on the server so the label cannot differ after hydration. */
+  unlockLabels: Record<number, string>
   known: { scores: boolean; sex: boolean; age: boolean; storage: boolean; cycle: boolean; direction: boolean; approach: boolean; ascensionIntent: boolean }
   knownSex: 'M' | 'F' | null
 }) {
@@ -62,6 +66,7 @@ export default function DecodePortalClient({
   const pattern = patternKey ? CHECKIN_PATTERNS[patternKey] : null
   const lowest = twoLowest(sectionScores)
   const readiness = readinessPlain(bodyState)
+  const coachEmail = coach().email
 
   // No scorecard on file, so the questions run HERE rather than on the public
   // scorecard. She has just typed her name, email and phone into the signup
@@ -223,7 +228,7 @@ export default function DecodePortalClient({
                 )}
                 {!unlocked && (
                   <span style={{ fontSize: '11px', fontWeight: 700, color: MUTED }}>
-                    Not yet
+                    {unlockLabels[d.day] ?? 'Not yet'}
                   </span>
                 )}
               </div>
@@ -235,6 +240,21 @@ export default function DecodePortalClient({
               <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.6, margin: 0, paddingLeft: '34px' }}>
                 {d.premise}
               </p>
+              {/* Today's card was a Link with no affordance - a blue border
+                  among four grey boxes and nothing saying it could be opened,
+                  or that a lesson is a few minutes of video rather than more
+                  reading. This is the one thing on the page she is meant to do
+                  today, so it says so. */}
+              {unlocked && (
+                <p style={{
+                  display: 'flex', alignItems: 'center', gap: '6px', paddingLeft: '34px',
+                  fontSize: '14px', fontWeight: 800, color: BLUE, margin: '12px 0 0',
+                }}>
+                  {isToday ? 'Watch today\u2019s lesson' : 'Watch again'}
+                  <span aria-hidden style={{ fontSize: '15px' }}>&rarr;</span>
+                  <span style={{ fontWeight: 600, color: MUTED }}>&middot; a few minutes</span>
+                </p>
+              )}
             </div>
           )
 
@@ -246,6 +266,24 @@ export default function DecodePortalClient({
             <div key={d.day}>{inner}</div>
           )
         })}
+      </div>
+
+      {/* The page used to stop dead under the last day card: no close, no way
+          to ask anything, nothing telling her the report does not expire. On
+          the hub she returns to every day for five days, that read as an
+          unfinished page. */}
+      <div style={{ borderTop: '1px solid #E5E5E5', margin: '32px 0 0', paddingTop: '24px' }}>
+        <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 14px' }}>
+          Your report is not going anywhere. This page stays at the same link, so you can come back
+          to it whenever you want, whatever you decide to do next.
+        </p>
+        <p style={{ fontSize: '14px', color: MUTED, lineHeight: 1.7, margin: 0 }}>
+          Something not sound like you, or a question about your result?{' '}
+          <a href={`mailto:${coachEmail}?subject=${encodeURIComponent('My Body Decode')}`} style={{ color: BLUE, fontWeight: 700, textDecoration: 'none' }}>
+            Email me
+          </a>{' '}
+          and it comes straight to me.
+        </p>
       </div>
     </main>
     </>

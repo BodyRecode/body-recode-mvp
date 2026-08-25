@@ -3,7 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { PORTAL_ACCESS_STATUSES } from '@/lib/challenge-access'
 import { logPortalVisit } from '@/lib/challenge-portal-visit'
 import { typeFatMapProfile, leadDescriptor, type Profile } from '@/lib/fat-map-profile'
-import { currentDecodeDay, patternKeyForProfile } from '@/lib/decode-days'
+import { currentDecodeDay, patternKeyForProfile, DECODE_DAYS, isDayUnlocked } from '@/lib/decode-days'
 import DecodePortalClient from './decode-portal-client'
 
 /**
@@ -118,6 +118,30 @@ export default async function DecodePortalPage({ params }: { params: Promise<{ t
 
   const currentDay = currentDecodeDay(enrollment.enrolled_at)
 
+  // WHEN each locked day opens, computed HERE on the server rather than in the
+  // client component. DecodePortalClient is still server-rendered first, so
+  // doing this date maths there would render one label on the server and a
+  // different one after hydration whenever the two straddle a boundary.
+  //
+  // "Not yet" was the whole label before this. The Challenge died because
+  // people did not come back - 14 of the 15 who cleared every form were gone by
+  // Day 14 - and a locked card that will not say WHEN gives her nothing to come
+  // back for. Day N opens exactly (N-1) x 24h after she enrolled, per
+  // currentDecodeDay, so these are the real times and not a guess.
+  const enrolledMs = new Date(enrollment.enrolled_at).getTime()
+  const startOfToday = new Date()
+  startOfToday.setHours(0, 0, 0, 0)
+  const unlockLabels: Record<number, string> = {}
+  for (const d of DECODE_DAYS) {
+    if (isDayUnlocked(d.day, currentDay)) continue
+    const opensAt = new Date(enrolledMs + (d.day - 1) * 86_400_000)
+    const daysOut = Math.round((new Date(opensAt).setHours(0, 0, 0, 0) - startOfToday.getTime()) / 86_400_000)
+    unlockLabels[d.day] =
+      daysOut <= 0 ? 'Opens later today'
+      : daysOut === 1 ? 'Opens tomorrow'
+      : `Opens ${opensAt.toLocaleDateString('en-AU', { weekday: 'long', timeZone: 'Australia/Brisbane' })}`
+  }
+
   // One row per enrolment per day. Without it "she ignored the lesson" and "she
   // never opened the portal" are indistinguishable, which is exactly what made
   // the Challenge's Day 1 to Day 14 leak invisible for two months.
@@ -136,6 +160,7 @@ export default async function DecodePortalPage({ params }: { params: Promise<{ t
       patternKey={patternKey}
       plainDesc={plainDesc}
       currentDay={currentDay}
+      unlockLabels={unlockLabels}
     />
   )
 }
