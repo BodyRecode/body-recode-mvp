@@ -1,17 +1,23 @@
 import type { Metadata } from 'next'
 import { brand, coach, logoUrl } from '@/config/tenant'
-import { isProductLive } from '@/lib/product-launch'
 
 export const metadata: Metadata = {
   title: 'Body Recode · Links',
-  description: 'The 14-Day Body Decode Challenge, the Readiness Scorecard, and everything Body Recode.',
+  description: 'The Body Decode, the Readiness Scorecard, and everything Body Recode.',
   robots: { index: false, follow: true },
 }
 
 export default function LinksPage() {
   const t = brand()
-  const challengeLive = isProductLive('challenge')
-  const challengeSignup = `${t.marketingDomain}/challenge?source=bio`
+  // THE BODY DECODE, not the retired Challenge. This page is the Instagram bio
+  // link, so until 25 Aug 2026 the most-tapped destination Body Recode owns was
+  // still advertising fourteen days of daily structured input, a Day 7 check-in
+  // and a Day 14 reveal - none of which exist any more - behind a launch flag
+  // that said "Opens Mon 13 July".
+  //
+  // /challenge redirects to /decode so nobody was stranded, but the card sold
+  // the wrong product before they ever tapped it.
+  const decodeSignup = `${t.marketingDomain}/decode?source=bio`
 
   const links = [
     {
@@ -49,9 +55,9 @@ export default function LinksPage() {
           </p>
         </div>
 
-        {/* Featured — the Challenge (scorecard now runs as the Day-0 in-portal gate) */}
+        {/* Featured — The Body Decode */}
         <a
-          href={challengeSignup}
+          href={decodeSignup}
           className="group block w-full rounded-[18px] p-7 mb-6 relative overflow-hidden transition-shadow hover:shadow-2xl"
           style={{ background: 'linear-gradient(140deg, #17191F 0%, #0C1B33 100%)', boxShadow: '0 14px 34px rgba(11,31,51,0.28)' }}
         >
@@ -63,30 +69,30 @@ export default function LinksPage() {
           <div className="relative">
             <div className="flex items-center justify-between mb-5">
               <span className="text-[10px] font-bold tracking-[0.18em] uppercase" style={{ color: '#8FB4F5' }}>
-                14-Day Diagnostic
+                Free assessment
               </span>
               <span
                 className="inline-flex items-center gap-1.5 text-[9px] font-bold tracking-[0.16em] uppercase px-2.5 py-1 rounded-full"
-                style={{ background: challengeLive ? '#1B6DFC' : 'rgba(255,255,255,0.10)', color: challengeLive ? '#FFFFFF' : '#8FB4F5' }}
+                style={{ background: '#1B6DFC', color: '#FFFFFF' }}
               >
-                <span className="w-1.5 h-1.5 rounded-full" style={{ background: challengeLive ? '#FFFFFF' : '#1B6DFC' }} />
-                {challengeLive ? 'Open now' : 'Opens Mon 13 July'}
+                <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#FFFFFF' }} />
+                Open now
               </span>
             </div>
 
             <h1 className="text-[26px] font-extrabold leading-[1.1] tracking-tight mb-3" style={{ color: '#FFFFFF' }}>
-              The 14-Day Body Decode Challenge
+              The Body Decode
             </h1>
             <p className="text-[14px] leading-relaxed mb-6" style={{ color: 'rgba(255,255,255,0.68)' }}>
-              Fourteen days of daily structured input. A Day 7 check-in. By Day 14 your Body Decode Report names the specific
-              pattern driving how your body has been responding.
+              About two minutes of questions, then a written report naming which pattern is behind your body not
+              responding, why it is happening, and the three things that shift it. Then five short videos, one a day.
             </p>
 
             <div className="grid grid-cols-3 gap-3 mb-6 pt-5" style={{ borderTop: '1px solid rgba(255,255,255,0.12)' }}>
               {[
-                { big: 'Free', small: 'No payment' },
-                { big: '14 days', small: 'Daily portal' },
-                { big: '1 of 4', small: 'Pattern read' },
+                { big: '2 min', small: 'Of questions' },
+                { big: '5 videos', small: 'One a day' },
+                { big: '$0', small: 'No card' },
               ].map((v) => (
                 <div key={v.small} className="text-center">
                   <p className="text-[15px] font-bold mb-0.5" style={{ color: '#FFFFFF' }}>{v.big}</p>
@@ -99,11 +105,11 @@ export default function LinksPage() {
               className="flex items-center justify-center gap-2 font-bold text-[15px] px-5 py-3.5 rounded-xl w-full text-center transition-colors"
               style={{ background: '#1B6DFC', color: '#FFFFFF' }}
             >
-              {challengeLive ? 'Join the free Challenge' : 'Join the waitlist'}
+              Get my report
               <span aria-hidden className="transition-transform group-hover:translate-x-0.5">&rarr;</span>
             </div>
             <p className="text-center text-[11px] mt-3" style={{ color: 'rgba(255,255,255,0.45)' }}>
-              Free to join. On Day 0 inside the portal, a 2-minute scorecard reads your state and sets your path.
+              Free, no card, and nothing to buy to get it. Your report is on screen the moment you finish.
             </p>
           </div>
         </a>
