@@ -53,8 +53,9 @@ export default function DecodeExplainer({
   src,
   poster,
   eyebrow = 'Ninety seconds',
-  title = 'How the read works',
+  title = 'How it works',
   byline,
+  hideWhenMissing = false,
 }: {
   src: string
   poster?: string
@@ -62,12 +63,25 @@ export default function DecodeExplainer({
   title?: string
   /** Shown under the player. Omit where the page already names the speaker. */
   byline?: { name: string; role: string }
+  /**
+   * Render NOTHING rather than a "coming soon" card when the file is missing.
+   *
+   * For the portal, the placeholder is honest and useful - she is inside the
+   * product and a card saying a video is coming tells her something true. On the
+   * LANDING PAGE it is the opposite: it sits directly under the headline, so the
+   * most prominent thing a stranger arriving from a cold ad sees is a box
+   * announcing that the product is not finished. The page reads better with the
+   * headline, the copy and the signup form and no video at all until the file
+   * lands, at which point it appears on its own with no redeploy.
+   */
+  hideWhenMissing?: boolean
 }) {
   const [failed, setFailed] = useState(false)
 
   // Fallback matches the kit's VideoComingSoon treatment so the slot reads as
   // part of the page rather than a hole in it.
   if (failed) {
+    if (hideWhenMissing) return null
     return (
       <div style={{ marginBottom: '32px' }}>
       <div style={{

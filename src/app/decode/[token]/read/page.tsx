@@ -105,7 +105,7 @@ export default async function DecodeReadPage({ params }: { params: Promise<{ tok
       </Link>
 
       <p style={{ fontSize: '11px', fontWeight: 700, color: BLUE, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '26px 0 10px' }}>
-        Your read · yours to keep
+        Your report · yours to keep
       </p>
       <h1 style={{ fontSize: '31px', fontWeight: 800, color: INK, letterSpacing: '-0.025em', lineHeight: 1.14, margin: '0 0 12px' }}>
         {firstName}, here is the whole thing.

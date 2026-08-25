@@ -175,7 +175,7 @@ export default async function DecodeDayPage({
       {block && (
         <section style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '24px 26px', marginTop: '24px' }}>
           <p style={{ fontSize: '11px', fontWeight: 700, color: BLUE, letterSpacing: '0.11em', textTransform: 'uppercase', margin: '0 0 16px' }}>
-            {block.heading} · from your read
+            {block.heading} · from your report
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: isFinalDay ? '16px' : '13px' }}>
             {block.paragraphs.map((para, i) => (

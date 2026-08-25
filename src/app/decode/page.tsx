@@ -106,7 +106,7 @@ export default function DecodeLandingPage() {
         credentials={c.credentials}
         headline="You're training. You're eating well."
         headlineAccent="And the fat won't move."
-        videoSlot={<DecodeExplainer src={DECODE_EXPLAINER_VIDEO} poster={DECODE_EXPLAINER_POSTER} />}
+        videoSlot={<DecodeExplainer src={DECODE_EXPLAINER_VIDEO} poster={DECODE_EXPLAINER_POSTER} hideWhenMissing />}
         leads={[
           'The Body Decode is a free online assessment for women whose bodies have stopped responding. About two minutes of questions, and at the end you get a written report naming which of four common causes is behind it, why it is happening, what it usually gets mistaken for, and the three things that shift it.',
           'The report is yours to keep. Then five short videos, one a day, walking you through it.',
@@ -399,7 +399,7 @@ export default function DecodeLandingPage() {
 
       <CTASection
         dark={false}
-        eyebrow="Get your read"
+        eyebrow="Get your report"
         heading="Ten minutes of questions."
         headingMuted="Then you know what you are actually dealing with."
         sub="Free, and there is no card at signup. Your report is on screen the moment you finish the questions, then five short videos walk you through it. If you are training well and progressing, this is not for you and it will not tell you much."

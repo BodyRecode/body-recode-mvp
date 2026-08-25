@@ -364,7 +364,7 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
           }}>
             Before we start,
             <br />
-            <span style={{ color: '#1B6DFC' }}>let&apos;s read your body.</span>
+            <span style={{ color: '#1B6DFC' }}>a few questions about you.</span>
           </h1>
 
           {/* Divider line */}
@@ -382,7 +382,7 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
             {[
               { value: timeLabel, label: 'To complete' },
               { value: `${totalQuestions}`, label: 'Questions' },
-              { value: 'Now', label: 'Get your read' },
+              { value: 'Now', label: 'Get your report' },
             ].map(stat => (
               <div key={stat.label} style={{
                 background: '#FFFFFF', border: '1px solid #E5E5E5',

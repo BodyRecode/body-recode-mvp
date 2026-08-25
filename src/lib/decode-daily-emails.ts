@@ -142,13 +142,13 @@ ${emailHeading('You have not answered the questions yet.')}
 ${emailDivider()}
 ${emailBody(`Hi ${firstName},`)}
 ${emailBody('You signed up and then something got in the way, which is completely normal. The questions are still there and they take about two minutes.')}
-${emailCallout({ eyebrow: 'To get your read', value: '2', unit: 'minutes' })}
+${emailCallout({ eyebrow: 'To get your report', value: '2', unit: 'minutes' })}
 ${emailBody('There is nothing to pay, nothing to download and nothing to do afterwards unless you want to. Your report is on screen the moment you finish, and it is yours to keep whatever you decide.', { bottom: 28 })}
 ${emailCta({ href: portalUrl, label: 'Answer the questions' })}
 ${emailUrlFallback(portalUrl, 'Or paste this link into your browser')}
 `, 'Two minutes, and your report is on screen the moment you finish.')
 
-  return { subject: `${firstName}, two minutes and your read is done`, html }
+  return { subject: `${firstName}, two minutes and your report is done`, html }
 }
 
 /** SMS, one per day. Short by design; the portal does the work. */
