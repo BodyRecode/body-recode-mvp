@@ -30,7 +30,13 @@ export async function logPortalVisit(leadId: string, enrollmentId: string, day: 
     await admin.from('lead_events').insert({
       lead_id: leadId,
       type: 'challenge_portal_opened',
-      subject: `Challenge portal opened - day ${day}`,
+      // The TYPE stays 'challenge_portal_opened': scripts/challenge-attendance.ts
+      // queries it by name and every historical row carries it. Only the
+      // human-readable subject changed, on 25 Aug 2026, because after the
+      // cutover every caller of this function is a /decode page - the Challenge
+      // portal hub redirects - so "Challenge portal opened" is now always wrong
+      // in the timeline Kade actually reads.
+      subject: `Body Decode portal opened - day ${day}`,
       notes: marker,
       sent_at: new Date().toISOString(),
     })

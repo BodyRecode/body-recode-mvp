@@ -91,6 +91,10 @@ export async function POST(request: NextRequest) {
     }, { status: 400 })
   }
 
+  // Which product this signup is for. Declared here because it is read from the
+  // enrolment event onward, well before the welcome email is composed.
+  const isDecode = product === 'decode'
+
   const admin = createAdminClient()
 
   // Find or create lead
@@ -186,11 +190,15 @@ export async function POST(request: NextRequest) {
     token = enrollment.token
 
     // Log the enrollment event
+    // The event TYPE stays 'challenge_enrolled' - it is queried by name in the
+    // dashboard, the cohort script and the health check, and renaming it would
+    // orphan every historical row. Only the human-readable subject follows the
+    // product, because that is what Kade reads in a lead's timeline.
     await logLeadEvent({
       leadId,
       type: 'challenge_enrolled',
-      subject: '14-Day Body Decode Challenge enrolled',
-      notes: `Enrolled in 14-Day Body Decode Challenge. Token: ${token}`,
+      subject: isDecode ? 'The Body Decode enrolled' : '14-Day Body Decode Challenge enrolled',
+      notes: `Enrolled in ${isDecode ? 'The Body Decode' : 'the 14-Day Body Decode Challenge'}. Token: ${token}`,
     })
 
     // Fire automation trigger for challenge welcome sequence
@@ -234,7 +242,6 @@ export async function POST(request: NextRequest) {
   // hardcoded /challenge path was sending Body Decode signups to the Challenge
   // hub. It redirects to /decode/[token] so nobody was stranded, but the link
   // in her welcome email should say what it is.
-  const isDecode = product === 'decode'
   const portalUrl = `${brand().marketingDomain}/${isDecode ? 'decode' : 'challenge'}/${token}`
 
   const [welcome, coachNotify] = await Promise.all([
