@@ -1,3 +1,4 @@
+import { scorecardSteps } from '@/lib/scorecard-sequence'
 import { NextResponse, NextRequest } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
@@ -27,123 +28,10 @@ const WORKFLOW_NAME = 'Scorecard - Follow-up Sequence'
 // gets renamed in place rather than orphaned alongside a duplicate.
 const WORKFLOW_NAME_LEGACY = 'Scorecard — Follow-up Sequence'
 
-const STEPS = [
-  {
-    position: 1, type: 'action', action_type: 'send_email',
-    config: {
-      subject: 'Why your body has stopped responding, {{first_name}}',
-      body: `Hi {{first_name}},
-
-You just took the scorecard. Result: {{scorecard_score}}/15. Body state: {{scorecard_state}}.
-
-That number is the starting point, not the answer. It tells you which of three states your body is currently in. It does not tell you why fat loss has stalled, what specifically is making things worse, or what to fix first.
-
-The Body Decode Report does.
-
-It is a written breakdown of the specific physiology behind your {{scorecard_state}} score, the fat-storage pattern your body is locked in, what is quietly making it worse, and the exact order to unstick it. Written specifically to your result. Not a generic guide.
-
-$37. Delivered in 5 minutes. Yours to keep.
-
-Get your report: ${brand().marketingDomain}/get-report
-
-If you would rather talk it through first, you can book a free 30-minute strategy call: ${brand().marketingDomain}/book
-
-Kade
-Body Recode`,
-    },
-  },
-  { position: 2, type: 'wait', action_type: null, config: { unit: 'days', amount: '2' } },
-  {
-    position: 3, type: 'action', action_type: 'send_email',
-    config: {
-      subject: 'What your {{scorecard_state}} result actually means',
-      body: `Hi {{first_name}},
-
-Your score was {{scorecard_score}}/15. Body state: {{scorecard_state}}.
-
-Most people in your situation think they need to train harder or eat less. That is usually the wrong call.
-
-When a body has stopped responding to effort, the issue is rarely the effort itself. It is the prescription. Pushing harder against a body that is already resisting is what got it stuck in the first place.
-
-The Body Decode Report walks through what {{scorecard_state}} actually means for your training, your nutrition, your recovery, and most importantly, why fat loss has stalled. It is written to your specific result. It tells you what to stop immediately, and the order to fix what is left.
-
-$37. Delivered in 5 minutes.
-
-Get your report: ${brand().marketingDomain}/get-report
-
-Kade
-Body Recode`,
-    },
-  },
-  { position: 4, type: 'wait', action_type: null, config: { unit: 'days', amount: '2' } },
-  {
-    position: 5, type: 'action', action_type: 'send_email',
-    config: {
-      subject: 'Re: your scorecard',
-      body: `Hi {{first_name}},
-
-Following up on your scorecard.
-
-The most common thing I hear after someone takes it: "That finally explains why nothing has been working."
-
-Knowing your state is the first piece. Knowing what to do about it is the second. That is what the call is for.
-
-30 minutes. Free. No pitch. We go through your scorecard together, identify the specific bottleneck, and map out what to do first.
-
-Book here: ${brand().marketingDomain}/book
-
-If you would rather have the breakdown in writing first, the report is at ${brand().marketingDomain}/get-report.
-
-Kade
-Body Recode`,
-    },
-  },
-  { position: 6, type: 'wait', action_type: null, config: { unit: 'days', amount: '4' } },
-  {
-    position: 7, type: 'action', action_type: 'send_email',
-    config: {
-      subject: 'The prescription problem',
-      body: `Hi {{first_name}},
-
-Most coaching programs give everyone the same plan. Same training, same nutrition, same timeline. Your body state does not factor in at all.
-
-Your scorecard came back as {{scorecard_state}}. That is a specific biological pattern, not a label. It tells me how your body is handling load, how well it is recovering, and how much capacity it has to respond right now.
-
-A program built for a Ready state will make a Depleted state worse. That is not a motivation problem. It is a prescription problem.
-
-The fastest way to address it is the call. 30 minutes, free, no pitch. We map out what your specific state needs first, and what to stop immediately.
-
-Book here: ${brand().marketingDomain}/book
-
-Kade
-Body Recode`,
-    },
-  },
-  { position: 8, type: 'wait', action_type: null, config: { unit: 'days', amount: '5' } },
-  {
-    position: 9, type: 'action', action_type: 'send_email',
-    config: {
-      subject: 'Last one from me, {{first_name}}',
-      body: `Hi {{first_name}},
-
-Last email from me on this.
-
-Your scorecard result is still there whenever you want to act on it. Two doors based on your {{scorecard_state}} score:
-
-1. Body Decode Report ($37). Written breakdown of your result, the fat pattern you are locked in, and the order to fix it. Best if you want to act on it yourself.
-
-2. Free 30-minute call. Best if you would rather talk it through first.
-
-Get the report: ${brand().marketingDomain}/get-report
-Book the call: ${brand().marketingDomain}/book
-
-No follow-up after this.
-
-Kade
-Body Recode`,
-    },
-  },
-]
+// One definition, in src/lib/scorecard-sequence.ts. This route's own copy had
+// gone stale against the live rows, which made "Re-sync" a button that quietly
+// replaced current emails with retired ones.
+const STEPS = scorecardSteps()
 
 async function runResync(coachId: string | null): Promise<{ ok: boolean; error?: string; workflowId?: string; action?: string }> {
   const admin = createAdminClient()

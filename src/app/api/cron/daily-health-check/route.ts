@@ -1,3 +1,4 @@
+import { scorecardSteps } from '@/lib/scorecard-sequence'
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
@@ -735,6 +736,9 @@ async function checkScorecardAutomation(admin: ReturnType<typeof createAdminClie
       .select('id', { count: 'exact', head: true })
       .eq('workflow_id', workflow.id)
 
+    // 9 is scorecardSteps().length. Kept as a literal rather than derived so a
+    // step accidentally deleted from the shared module cannot make this check
+    // agree with the damage and re-seed the live rows to match it.
     if (stepCount !== 9) {
       const seeded = await resyncScorecardWorkflow(admin, workflow.id)
       if (seeded) {
@@ -816,128 +820,15 @@ async function checkScorecardAutomation(admin: ReturnType<typeof createAdminClie
 // email underneath still said Body State after the rename. A check that can only
 // see structure reports healthy through any amount of content drift, which is
 // worse than no check because it is trusted.
-const SCORECARD_STEPS = [
-    {
-      position: 1, type: 'action', action_type: 'send_email',
-      config: {
-        subject: 'Your readiness result',
-        body: `Hi {{first_name}},
-
-Your scorecard result: {{scorecard_score}}/15. Readiness: {{scorecard_state}}.
-
-That result tells you one specific thing: which state your body is currently in.
-
-That state determines what works. It also determines what makes things worse. Most people apply the same approach regardless of their state. That is why most people stay stuck.
-
-If you want to understand exactly what is driving your result and what needs to change first, book a free 30-minute call. We go through your scorecard together, identify the specific bottleneck, and map out the first steps.
-
-Book here: ${brand().marketingDomain}/book
-
----
-
-Want the written breakdown first? The Body Decode Report ($37) covers what your {{scorecard_state}} result means biologically, what is actively working against you right now, and what needs to change first.
-
-Get your report here: ${brand().marketingDomain}/get-report
-
-Kade
-Body Recode`,
-      },
-    },
-    { position: 2, type: 'wait', action_type: null, config: { unit: 'days', amount: '2' } },
-    {
-      position: 3, type: 'action', action_type: 'send_email',
-      config: {
-        subject: 'What your {{scorecard_state}} result actually means',
-        body: `Hi {{first_name}},
-
-Your score was {{scorecard_score}}/15. Readiness: {{scorecard_state}}.
-
-Most people look at that result and think they need to train harder or eat less. That is usually the wrong call.
-
-Your readiness is a biological signal. It tells you how your body is currently handling load, how well it is recovering, and how much capacity it has to respond right now. The right prescription depends entirely on that state.
-
-The Body Decode Report goes through exactly what {{scorecard_state}} means for your training, your nutrition, and your fat loss. It is written specifically to your result, not a generic guide.
-
-$37. Delivered to your inbox within minutes.
-
-Get your report here: ${brand().marketingDomain}/get-report
-
-Kade
-Body Recode`,
-      },
-    },
-    { position: 4, type: 'wait', action_type: null, config: { unit: 'days', amount: '2' } },
-    {
-      position: 5, type: 'action', action_type: 'send_email',
-      config: {
-        subject: 'Re: your Readiness Scorecard',
-        body: `Hi {{first_name}},
-
-Following up on your scorecard.
-
-The most common thing I hear after someone takes it: "That finally explains why nothing has been working."
-
-Knowing your state is the first piece. The second is knowing exactly what to do about it. That is what the call is for.
-
-30 minutes. Free. No pitch.
-
-Book here: ${brand().marketingDomain}/book
-
-If the timing is not right, no problem. The link will be there when you are ready.
-
-Kade
-Body Recode`,
-      },
-    },
-    { position: 6, type: 'wait', action_type: null, config: { unit: 'days', amount: '4' } },
-    {
-      position: 7, type: 'action', action_type: 'send_email',
-      config: {
-        subject: 'The prescription problem',
-        body: `Hi {{first_name}},
-
-Most coaching programs give everyone the same plan. Same training, same nutrition, same timeline. Your readiness does not factor into it at all.
-
-Your scorecard came back as {{scorecard_state}}. That is a specific biological pattern, not a label. It tells me how your body is handling load, how well it is recovering, and how much capacity it has to adapt right now.
-
-A program built for a Ready state will not work for a Depleted state. That is not a motivation problem. That is a prescription problem.
-
-That is exactly what the call addresses. Building the approach around your actual state, not a generic template.
-
-Book here: ${brand().marketingDomain}/book
-
----
-
-If you would rather start with the written read of your state instead, the {{scorecard_state}} Field Guide is $19. 25 pages. What this state means, why standard moves are not landing, the first four moves to bring the load down. Instant delivery to your inbox.
-
-Get the {{scorecard_state}} Field Guide: ${brand().marketingDomain}/field-guide/{{scorecard_state}}?email={{email}}&source=email_descension_day8
-
-Kade
-Body Recode`,
-      },
-    },
-    { position: 8, type: 'wait', action_type: null, config: { unit: 'days', amount: '5' } },
-    {
-      position: 9, type: 'action', action_type: 'send_email',
-      config: {
-        subject: 'Last one from me, {{first_name}}',
-        body: `Hi {{first_name}},
-
-Last email from me on this.
-
-Your scorecard result is still there whenever you want to act on it. The call is still available. The report and the {{scorecard_state}} Field Guide are still there if you want the written breakdown first.
-
-No follow-up after this.
-
-Book a call: ${brand().marketingDomain}/book
-Get the report + bundled Field Guide: ${brand().marketingDomain}/get-report
-Or just the Field Guide ($19): ${brand().marketingDomain}/field-guide/{{scorecard_state}}?email={{email}}&source=email_descension_day13
-
-Kade
-Body Recode`,
-      },
-    },
-  ]
+// The nine steps now live in ONE place: src/lib/scorecard-sequence.ts.
+//
+// This file used to carry its own copy and it had gone stale. The live rows
+// were rewritten in the UI on 24 Aug 2026 to sell The Body Decode instead of
+// the retired $37 report; this copy still sold the report and pointed at
+// /get-report. So the drift check reported the sequence FAILED every night -
+// wrongly - and offered a Re-sync that would have replaced the live emails with
+// dead ones.
+const SCORECARD_STEPS = scorecardSteps()
 
 
 async function resyncScorecardWorkflow(
