@@ -14,22 +14,54 @@ export interface CoachingPackage {
   value: CoachingPackageValue
   label: string
   price: string
-  /** Stripe payment link. Empty string for non-billing packages (contra/comp). */
+  /** Stripe payment link. Empty string for non-billing packages (contra/comp),
+   *  and for a repriced package whose new link has not been created yet. */
   stripe: string
   tier: 'standard' | 'launch' | 'comp'
   format: 'online' | 'in_person'
   sessionsPerWeek: number
+  /** Repriced on 26 Aug 2026, new Stripe payment link not created yet. The
+   *  Send / Copy / Schedule controls stay disabled until one exists, because a
+   *  live button under a new label would charge the OLD amount. */
+  linkPending?: boolean
+  /** Grandfathered. Existing clients keep it; it is not offered to anyone new. */
+  retired?: boolean
 }
 
+/**
+ * Repriced 26 Aug 2026, off what clients have ACTUALLY paid rather than off
+ * the old list, because the old list never once transacted.
+ *
+ * Nobody had ever paid a list price. Every paying client was on the 50% launch
+ * rate or a negotiated one, and the launch rate ran for the DURATION of the
+ * engagement, so it never ended. Per session, what people really pay is
+ * remarkably consistent: Greg $75, Samantha $75, Razia $68, Cristobal $99.50.
+ * At $299/week, two sessions read as $150 each next to a trainer in the same
+ * building charging a third of that. The launch rate was the market price. So
+ * the list came down to meet it instead of being discounted to it.
+ *
+ *   online $149 -> $69   1x $199 -> $139   2x $299 -> $189   3x $409 -> $225
+ *
+ * 3x is $225 because that is exactly what Greg already pays for 3x. A new
+ * client should not pay more than the longest-standing one for the same thing,
+ * and it makes 3x the obvious value on the sheet, which is where the business
+ * wants people anyway.
+ *
+ * Online has never produced a dollar at any price, so there was nothing to
+ * defend. Its floor is the $49/week Membership.
+ *
+ * The launch entries stay so the clients on them keep their rate and can still
+ * be billed. `retired` keeps them off the list offered to anyone new.
+ */
 export const COACHING_PACKAGES: CoachingPackage[] = [
-  { value: 'online',         label: 'Online',                   price: '$149/week',   stripe: 'https://buy.stripe.com/aFacN72Ey2GW7MH2915ZC02', tier: 'standard', format: 'online',    sessionsPerWeek: 0 },
-  { value: '1x',             label: 'In-Person 1x + self-led',  price: '$199/week',   stripe: 'https://buy.stripe.com/eVq5kFeng0yO6ID7tl5ZC0a', tier: 'standard', format: 'in_person', sessionsPerWeek: 1 },
-  { value: '2x',             label: 'In-Person 2x',             price: '$299/week',   stripe: 'https://buy.stripe.com/4gM28t3ICftIff9cNF5ZC00', tier: 'standard', format: 'in_person', sessionsPerWeek: 2 },
-  { value: '3x',             label: 'In-Person 3x',             price: '$409/week',   stripe: 'https://buy.stripe.com/aFabJ3frk0yO8QL6ph5ZC03', tier: 'standard', format: 'in_person', sessionsPerWeek: 3 },
-  { value: 'online_launch',  label: 'Online (Launch)',          price: '$74.50/week', stripe: 'https://buy.stripe.com/14A28t0wq5T8aYT8xp5ZC04', tier: 'launch',   format: 'online',    sessionsPerWeek: 0 },
-  { value: '1x_launch',      label: 'In-Person 1x + self-led (Launch)', price: '$99.50/week', stripe: 'https://buy.stripe.com/bJefZj0wqdlA3wrbJB5ZC0b', tier: 'launch',   format: 'in_person', sessionsPerWeek: 1 },
-  { value: '2x_launch',      label: 'In-Person 2x (Launch)',    price: '$149.50/week',stripe: 'https://buy.stripe.com/4gM4gB3IC4P46IDcNF5ZC05', tier: 'launch',   format: 'in_person', sessionsPerWeek: 2 },
-  { value: '3x_launch',      label: 'In-Person 3x (Launch)',    price: '$204.50/week',stripe: 'https://buy.stripe.com/eVq7sNdjc0yO6ID4h95ZC06', tier: 'launch',   format: 'in_person', sessionsPerWeek: 3 },
+  { value: 'online',         label: 'Online',                   price: '$69/week',    stripe: '', linkPending: true, tier: 'standard', format: 'online',    sessionsPerWeek: 0 },
+  { value: '1x',             label: 'In-Person 1x + self-led',  price: '$139/week',   stripe: '', linkPending: true, tier: 'standard', format: 'in_person', sessionsPerWeek: 1 },
+  { value: '2x',             label: 'In-Person 2x',             price: '$189/week',   stripe: '', linkPending: true, tier: 'standard', format: 'in_person', sessionsPerWeek: 2 },
+  { value: '3x',             label: 'In-Person 3x',             price: '$225/week',   stripe: '', linkPending: true, tier: 'standard', format: 'in_person', sessionsPerWeek: 3 },
+  { value: 'online_launch',  label: 'Online (Launch)',          price: '$74.50/week', stripe: 'https://buy.stripe.com/14A28t0wq5T8aYT8xp5ZC04', tier: 'launch',   format: 'online',    sessionsPerWeek: 0, retired: true },
+  { value: '1x_launch',      label: 'In-Person 1x + self-led (Launch)', price: '$99.50/week', stripe: 'https://buy.stripe.com/bJefZj0wqdlA3wrbJB5ZC0b', tier: 'launch',   format: 'in_person', sessionsPerWeek: 1, retired: true },
+  { value: '2x_launch',      label: 'In-Person 2x (Launch)',    price: '$149.50/week',stripe: 'https://buy.stripe.com/4gM4gB3IC4P46IDcNF5ZC05', tier: 'launch',   format: 'in_person', sessionsPerWeek: 2, retired: true },
+  { value: '3x_launch',      label: 'In-Person 3x (Launch)',    price: '$204.50/week',stripe: 'https://buy.stripe.com/eVq7sNdjc0yO6ID4h95ZC06', tier: 'launch',   format: 'in_person', sessionsPerWeek: 3, retired: true },
   // Non-billing arrangements. Stripe link empty so the Send / Copy / Schedule
   // controls in PackageManager are suppressed for these. Both excluded from
   // every filter helper below (ONLINE/IN_PERSON/N-session), so they sit

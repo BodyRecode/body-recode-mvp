@@ -557,17 +557,17 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
             )}
             <Say text={`You've seen what I do, and you've seen how it gets to the thing you told me about.
 
-Here's what's included. The questionnaire, and the document I write off it. Your training program. Your nutrition. A short check-in every week with my written response on it. All of it in one place you log into. Direct access to me between sessions. And two coached sessions a week.`} />
+Here's what's included. The questionnaire, and the document I write off it. Your training program. Your nutrition. A short check-in every week with my written response on it. All of it in one place you log into. Direct access to me between sessions. And a session with me each week.`} />
             <div className="space-y-1.5">
               {PACKAGES.map(p => (
                 <div key={p.tier} className="flex items-baseline justify-between gap-3 rounded-lg border border-[#E5E5E5] px-3.5 py-2.5">
                   <p className="text-[14px] font-bold truncate">
                     {p.tier}{p.coachAssessed && <span className="ml-1.5 text-[11px] font-semibold text-[#B7791F]">assessed</span>}
                   </p>
-                  <p className="text-[14px] font-black shrink-0">{p.price} <span className="text-[12px] font-semibold text-[#1B6DFC]">/ {p.founding}</span></p>
+                  <p className="text-[14px] font-black shrink-0">{p.price}</p>
                 </div>
               ))}
-              <p className="text-[13px] text-[#6B6B6B] pt-1">Plus {COMMENCEMENT_FEE} one-off to get started. Second figure is the founding rate.</p>
+              <p className="text-[13px] text-[#6B6B6B] pt-1">Plus {COMMENCEMENT_FEE} one-off to get started. One rate each, no founding column: the list price came down instead.</p>
             </div>
             <Fold title="What's included, in full">
               <ul className="space-y-1.5">
@@ -576,8 +576,8 @@ Here's what's included. The questionnaire, and the document I write off it. Your
                 ))}
               </ul>
             </Fold>
-            <Fold title="Founding client offer">
-              <p className="text-[13px] font-bold text-[#1B6DFC] mb-1">{FOUNDING_OFFER.headline}</p>
+            <Fold title="If they ask about the founding rate">
+              <p className="text-[13px] font-bold text-amber-700 mb-1">{FOUNDING_OFFER.headline}</p>
               <p className="text-[13px] text-[#3A3A3A] leading-relaxed">{FOUNDING_OFFER.blurb}</p>
             </Fold>
             {summary && summary.objections.length > 0 && (
@@ -597,7 +597,7 @@ Here's what's included. The questionnaire, and the document I write off it. Your
                 <Asks items={summary.keyLines.map(k => k.replace(/^"|"$/g, ''))} />
               </Fold>
             )}
-            <Boundary text="Lead with 2x. Mention 1x only if their history shows self-discipline. After the number, pause. Don't fill the silence." />
+            <Boundary text="Lead with 1x at $139. It is the number a gym member can carry, and it includes everything. 2x and 3x are there for someone who asks for more contact, not the opening bid. After the number, pause. Don't fill the silence." />
           </div>
         )}
 

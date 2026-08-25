@@ -147,7 +147,7 @@ export function formatValue(value: number, unit: Unit): string {
 }
 
 /** Monthly value of a coaching package for an off-platform (no-Stripe) client.
- * Reads the package price string ("$299/week") and normalises to monthly.
+ * Reads the package price string ("$189/week") and normalises to monthly.
  * Returns 0 for non-billing (contra/comp) packages or unparseable prices. */
 function packageMonthly(pkg: string | null): number {
   if (!pkg || isNonBillingPackage(pkg)) return 0

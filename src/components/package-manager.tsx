@@ -9,6 +9,8 @@ const PACKAGES = COACHING_PACKAGES.map(p => ({
   label: `${p.label} - ${p.price}`,
   stripe: p.stripe,
   tier: p.tier,
+  linkPending: !!p.linkPending,
+  retired: !!p.retired,
 }))
 
 interface PackageManagerProps {
@@ -102,6 +104,10 @@ export default function PackageManager({
   }
 
   const currentInfo = packages.find(p => p.value === pkg)
+  // Repriced 26 Aug 2026 with no new Stripe link yet. Everything that could
+  // send or copy a link is suppressed until one exists, because the old link
+  // charges the old amount under the new label.
+  const linkPending = !!currentInfo?.linkPending
   // Non-billing packages have no Stripe link, so the Send / Copy / Schedule
   // controls don't apply. The "Package updated" toast and the section header
   // still render; everything below this is suppressed for contra/comp.
@@ -139,8 +145,9 @@ export default function PackageManager({
             ))}
           </div>
         </div>
+        {packages.some(p => p.tier === 'launch' && p.value === pkg) && (
         <div>
-          <p className="text-[10px] font-semibold text-amber-500/80 uppercase tracking-widest mb-1.5">Launch Rate (50% off)</p>
+          <p className="text-[10px] font-semibold text-amber-500/80 uppercase tracking-widest mb-1.5">Launch Rate (retired, grandfathered)</p>
           <div className="flex flex-wrap gap-2">
             {packages.filter(p => p.tier === 'launch').map(p => (
               <button
@@ -158,6 +165,7 @@ export default function PackageManager({
             ))}
           </div>
         </div>
+        )}
         <div>
           <p className="text-[10px] font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Non-billing (Contra / Comp)</p>
           <div className="flex flex-wrap gap-2">
@@ -183,9 +191,17 @@ export default function PackageManager({
       </div>
       {saved && <p className="text-xs text-blue-500">Package updated</p>}
 
-      {currentInfo && isNonBilling && (
+      {currentInfo && linkPending && (
+        <div className="text-xs text-amber-900 bg-amber-50 border border-amber-300 rounded-lg px-3 py-2">
+          <span className="font-bold">Repriced 26 Aug 2026, Stripe link not created yet.</span> Create a weekly
+          AUD payment link for {currentInfo.label} in Stripe, paste it into COACHING_PACKAGES, and these controls
+          come back. They are hidden so nothing goes out charging the old amount under the new price.
+        </div>
+      )}
+
+      {currentInfo && isNonBilling && !linkPending && (
         <div className="text-xs text-stone-600 bg-stone-100/40 border border-stone-200 rounded-lg px-3 py-2">
-          Non-billing arrangement — no subscription link to send.
+          Non-billing arrangement - no subscription link to send.
         </div>
       )}
 

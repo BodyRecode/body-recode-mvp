@@ -296,21 +296,42 @@ export const WHATS_INCLUDED = [
   'A short check-in every week, and my written response on every one',
   'All of it in one place you log into on your phone, updated as I change things',
   'Direct access to me between sessions',
-  'Two coached sessions per week (in-person packages)',
+  'Coached sessions with me each week, one to three depending on the package (in-person)',
 ] as const
 
+/**
+ * Repriced 26 Aug 2026. The ORDER matters: this is the order he reads them out,
+ * and it now runs cheapest first.
+ *
+ * Nobody had ever paid a list price. Every paying client was on the 50% launch
+ * rate or a negotiated one, and per session what they actually pay lands
+ * between $68 and $75. The launch rate was the market price, so the list came
+ * down to meet it. 3x is $225 because that is what Greg already pays for 3x.
+ *
+ * Must stay in step with COACHING_PACKAGES in `src/lib/coaching-packages.ts`,
+ * which is what actually bills. This list is only what he reads on the call.
+ */
 export const PACKAGES = [
-  { tier: 'In-Person 2x', price: '$299/week', founding: '$149.50/week', desc: 'Two coached sessions per week. The default starting structure.', coachAssessed: false, stripe: 'https://buy.stripe.com/4gM28t3ICftIff9cNF5ZC00', stripeFounding: 'https://buy.stripe.com/4gM4gB3IC4P46IDcNF5ZC05' },
-  { tier: 'In-Person 3x', price: '$409/week', founding: '$204.50/week', desc: 'Three coached sessions per week. Offered when schedule and capacity allow.', coachAssessed: true, stripe: 'https://buy.stripe.com/aFabJ3frk0yO8QL6ph5ZC03', stripeFounding: 'https://buy.stripe.com/eVq7sNdjc0yO6ID4h95ZC06' },
-  { tier: 'In-Person 1x + self-led', price: '$199/week', founding: '$99.50/week', desc: 'One coached session per week, you train independently the rest. For clients who already train consistently on their own.', coachAssessed: true, stripe: 'https://buy.stripe.com/eVq5kFeng0yO6ID7tl5ZC0a', stripeFounding: 'https://buy.stripe.com/bJefZj0wqdlA3wrbJB5ZC0b' },
-  { tier: 'Online', price: '$149/week', founding: '$74.50/week', desc: 'Same system, same interpretation, weekly check-ins and direct access, no in-person sessions.', coachAssessed: false, stripe: 'https://buy.stripe.com/aFacN72Ey2GW7MH2915ZC02', stripeFounding: 'https://buy.stripe.com/14A28t0wq5T8aYT8xp5ZC04' },
+  { tier: 'In-Person 1x + self-led', price: '$139/week', desc: 'One coached session per week, you train independently the rest. The default on the gym floor.', coachAssessed: false },
+  { tier: 'In-Person 2x', price: '$189/week', desc: 'Two coached sessions per week.', coachAssessed: false },
+  { tier: 'In-Person 3x', price: '$225/week', desc: 'Three coached sessions per week. Offered when schedule and capacity allow.', coachAssessed: true },
+  { tier: 'Online', price: '$69/week', desc: 'Same system, same interpretation, weekly check-ins and direct access, no in-person sessions.', coachAssessed: false },
 ] as const
 
 export const COMMENCEMENT_FEE = '$297'
 
+/**
+ * Retired 26 Aug 2026. Half rate for the DURATION of the engagement meant the
+ * discount never ended, so the book would have filled with permanently
+ * half-price clients and the revenue ceiling halved with it. The list prices
+ * came down instead, which is the honest version of the same thing.
+ *
+ * Kept as an export because the companion still has to tell him what to say if
+ * a lead has heard about it, and because the clients already on it keep it.
+ */
 export const FOUNDING_OFFER = {
-  headline: 'Founding Client Offer · First 20 clients · 50% off',
-  blurb: 'Half rate for the duration of their engagement. No agreement, no extra requirement, same coaching, half the fee. Mention only after the standard pricing has landed, or when relevant to the conversation.',
+  headline: 'Founding rate: retired. Do not offer it.',
+  blurb: 'The 50% launch rate is gone. The list prices came down instead, so there is nothing left to discount off. Anyone already on it keeps it for as long as they stay. If a lead has heard about it from someone, say it closed, and that the current rates are lower than the ones it was discounting.',
 }
 
 // ─── Coach drawer content ──────────────────────────────────────────────────
@@ -325,7 +346,7 @@ export const OBJECTION_HANDLING = {
 
 Repeat back: "Yeah, feels like a stretch right now. Got it."
 
-"Here's how I'd look at it. You're not paying for two sessions a week. You're paying for me reading your body the whole time, loading it, recovering it, working out what's actually going on, adjusting. Most people don't have that at any price point.
+"Here's how I'd look at it. You're not paying for the sessions. You're paying for me reading your body the whole time, loading it, recovering it, working out what's actually going on, adjusting. Most people don't have that at any price point.
 
 The real question isn't whether it's expensive. It's whether what you've been doing has actually been working."
 
@@ -337,7 +358,7 @@ The real question isn't whether it's expensive. It's whether what you've been do
       label: 'Step 2, Introduce Online',
       content: `"There's an online option. Same system, same weekly read, same direct access, just remote instead of face to face.
 
-That's $149 a week. Same $297 to get started."
+That's $69 a week. Same $297 to get started."
 
 ↳ If online works, Stage 4 decision panel, Path C (Online).
 ↳ If price still holds, non-enrolment is fine. Close cleanly.`,
@@ -350,7 +371,7 @@ export const ONLINE_SCRIPT = `"There's an online option, and it's not a lesser v
 
 For some people that's actually the right fit, schedule, location, or just preference.
 
-$149 a week. Same 12-week minimum. Same standards."`
+$69 a week. Same 12-week minimum. Same standards."`
 
 // ─── Opening ───────────────────────────────────────────────────────────────
 

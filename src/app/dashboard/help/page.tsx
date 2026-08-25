@@ -621,12 +621,12 @@ export default function HelpPage() {
 
             <Training title="What the Pitch half is for">
               <p><strong>Stage 3 - Tie hot spot to training.</strong> This is the heart of the conversion. Walk through the four system cards in order, but every card gets anchored back to what they told you in Stage 2. Card 2 is where you name their likely biological profile - read the description back and watch them recognise themselves.</p>
-              <p className="mt-2"><strong>Stage 4 - Offer &amp; Packages.</strong> They&apos;ve seen what you do and how it gets to their thing. State what&apos;s included, then the price. $299/week for in-person 2x. Pause after stating it. The silence is not awkward, it is the lead processing.</p>
-              <p className="mt-2">After pricing, mention the launch rate (half off, locked for engagement duration) as a single add-on line at the end. Don&apos;t lead with the discount. Frame as &quot;And one more thing. There is a launch rate open right now...&quot;</p>
+              <p className="mt-2"><strong>Stage 4 - Offer &amp; Packages.</strong> They&apos;ve seen what you do and how it gets to their thing. State what&apos;s included, then the price. $139/week for in-person 1x + self-led, which is what you lead with. Pause after stating it. The silence is not awkward, it is the lead processing.</p>
+              <p className="mt-2"><strong>There is no launch rate to mention any more.</strong> It was retired on 26 Aug 2026 and the list prices came down instead, so there is nothing left to discount off. If a lead has heard about it from someone, say it closed and that the current rates are lower than the ones it was discounting.</p>
               <p className="mt-2"><strong>Decision.</strong> Three paths. Know which one you&apos;re in before you respond. Path A closes cleanly. Do not re-pitch.</p>
             </Training>
 
-            <Note>Lead with in-person 2x ($299/week). Only introduce online ($149/week) if the lead can&apos;t do in-person. The 3x package ($409/week) and the 1x + self-led package ($199/week) are both coach-assessed. Only mention 1x if their training history shows real self-discipline (returning trainer with a strong base, busy professional who&apos;s trained consistently for years). Skip 1x for new trainers, anyone who admitted inconsistency in Stage 2, or anyone where 2x is non-negotiable for habit-building.</Note>
+            <Note><strong>Repriced 26 Aug 2026.</strong> Lead with <strong>in-person 1x + self-led at $139/week</strong>. It is a number a gym member can carry, and it includes the whole system, so nothing is being discounted to get there. 2x ($189/week) and 3x ($225/week) are for someone who asks for more contact with you, not the opening bid. 3x is $225 because that is exactly what Greg already pays for 3x, and a new client should not pay more than your longest-standing one for the same thing. Online is $69/week, and it has to sit below in-person 1x because it has no sessions in it. 3x stays coach-assessed. <strong>The 50% launch rate is retired</strong> - the list prices came down instead, so there is nothing left to discount off. Anyone already on the launch rate keeps it.</Note>
           </Section>
 
           {/* Section 3 */}
@@ -1235,12 +1235,12 @@ export default function HelpPage() {
           <Section id="coaching-package" title="12. Coaching Package and Upgrades" colour="teal">
             <p>On the client profile, set the client&apos;s <strong>Coaching Package</strong> to record which plan they are on:</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
-              <li><strong>Online - $149/week</strong></li>
-              <li><strong>In-Person 1x + self-led - $199/week</strong> (coach-assessed)</li>
-              <li><strong>In-Person 2x - $299/week</strong></li>
-              <li><strong>In-Person 3x - $409/week</strong></li>
+              <li><strong>In-Person 1x + self-led - $139/week</strong> (lead with this)</li>
+              <li><strong>In-Person 2x - $189/week</strong></li>
+              <li><strong>In-Person 3x - $225/week</strong> (coach-assessed)</li>
+              <li><strong>Online - $69/week</strong></li>
             </ul>
-            <p>Launch Rate (50% off) variants of all four are also available as the second row of buttons - use only when the launch rate has been verbally offered on the Zoom.</p>
+            <p>The Launch Rate (50% off) row is <strong>retired</strong>. It only appears now if the client you are looking at is already on one of those rates, so they can keep it. It cannot be assigned to anyone new.</p>
             <p className="font-semibold text-[#1A1A1A] mt-4">Non-billing (Contra / Comp)</p>
             <p>A third row holds <strong>Contra (trade)</strong> and <strong>No-charge / comp</strong>. Use these when the client is not on a paid weekly subscription — e.g. a contra deal where they provide work in exchange for the coaching seat, or a founding-friend comp. Clients on a non-billing package are skipped by the Payments tracker: no Stripe-customer flag, no subscription-overdue indicator, no entry on the dashboard overview Payments counter. The weekly Send / Copy / Schedule controls don&apos;t appear because there is no recurring Stripe link to send. Switch them back to a paid package if the arrangement changes.</p>
             <p className="mt-2"><strong>Foundational Read on non-billing clients:</strong> Even on a non-billing package, the $297 Foundational Read is optional per client. Open the client&apos;s Payments section — for clients on Contra / No-charge, you&apos;ll see a <em>Foundational Read (optional)</em> block with <strong>Send Foundational Read link</strong> and <strong>Copy link</strong>. Use this when you want the contra client to still pay the foundational read. Once paid, the section flips to &quot;Paid {`{date}`}&quot; and the Stripe payment is recorded against the client like any other Foundational Read.</p>
@@ -1249,15 +1249,15 @@ export default function HelpPage() {
             <p>If you want to queue the subscription link now but have it land in the client&apos;s inbox on a specific date, click <strong>Schedule Send</strong>, pick a date, and confirm. The system will send it automatically at 8am Brisbane time on that day. A yellow <em>Scheduled for [date]</em> badge appears on the profile - click Cancel next to it to remove the scheduled send before it fires. Once sent, the badge is replaced with the sent date.</p>
             <p>To upgrade a client from 2x to 3x:</p>
             <ol className="space-y-1.5 list-decimal list-inside text-[#3A3A3A] text-sm">
-              <li>Cancel the existing $299/week subscription in Stripe.</li>
+              <li>Cancel the existing $189/week subscription in Stripe.</li>
               <li>Select <strong>In-Person 3x</strong> on the client profile.</li>
-              <li>Copy and send the $409/week subscription link to the client.</li>
+              <li>Copy and send the $225/week subscription link to the client.</li>
               <li>Update to 3x once they have subscribed.</li>
             </ol>
             <Note>The 3x package is coach-assessed. Only offer it during weekly check-ins once you have enough data to confirm the client can sustain three sessions per week.</Note>
             <p className="font-semibold text-[#1A1A1A] mt-4">Upgrade Companion</p>
             <p>When a 2x client reaches Week 8 and is consistently progressing, a teal <strong>Upgrade Companion</strong> link appears in the Coaching Package card on their profile. This opens a 5-stage conversation guide that walks through how to raise and present the upgrade in a session. The client dashboard also surfaces an <strong>Upgrade</strong> badge next to eligible clients and shows a teal banner at the top of the clients list.</p>
-            <p>The upgrade companion covers: performance check (is the client actually ready?), making the case using their data, presenting the $299 to $409 price difference, handling objections, and closing with a clear yes/defer/no outcome.</p>
+            <p>The upgrade companion covers: performance check (is the client actually ready?), making the case using their data, presenting the $189 to $225 price difference, handling objections, and closing with a clear yes/defer/no outcome.</p>
             <Training title="Why 3x is not offered on the Zoom">
               <p>On the Zoom call, you have a report, one conversation, and whatever they told you about themselves. That is not enough data to know whether a client can sustain three sessions per week on top of their life. Offering 3x too early sets up a client for a load they cannot maintain - and when they struggle with it, they attribute the problem to the program rather than the prescription.</p>
               <p className="mt-2">The 3x upgrade should come from the CFWS data. Several weeks of check-ins will show you whether a client&apos;s recovery, regulation, and schedule can support a third session. When the data says yes, you make the offer from a position of evidence. The client will feel the difference between being sold a bigger package at the start and being assessed for one after you&apos;ve watched them closely for weeks.</p>
@@ -1891,11 +1891,12 @@ export default function HelpPage() {
             <p>Three payment links are used in the coaching entry process:</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
               <li><strong>Foundational Read - $297</strong> - Generated uniquely per lead. Triggers automatic client creation when paid.</li>
-              <li><strong>In-Person 2x - $299/week</strong> - Static link. Standard entry package. Send after Foundational Read is confirmed.</li>
-              <li><strong>In-Person 3x - $409/week</strong> - Static link. Coach-assessed upgrade, offered during weekly check-ins not on the Zoom.</li>
-              <li><strong>In-Person 1x + self-led - $199/week</strong> - Static link. Coach-assessed, only for self-disciplined trainers with a consistent training history. Not a default option on the Zoom.</li>
-              <li><strong>Online - $149/week</strong> - Static link. Fallback if lead objects to in-person pricing.</li>
+              <li><strong>In-Person 1x + self-led - $139/week</strong> - Standard entry package. Send after the Foundational Read is confirmed.</li>
+              <li><strong>In-Person 2x - $189/week</strong> - For someone who wants more contact.</li>
+              <li><strong>In-Person 3x - $225/week</strong> - Coach-assessed upgrade, offered during weekly check-ins not on the Zoom.</li>
+              <li><strong>Online - $69/week</strong> - No in-person sessions. Also the fallback if a lead objects to in-person pricing.</li>
             </ul>
+            <p className="text-amber-800 font-semibold">All four were repriced on 26 Aug 2026 and their new Stripe payment links do not exist yet. Until they do, the Send / Copy / Schedule buttons on the client profile are hidden for those packages, so nothing can go out charging the old amount under the new label.</p>
             <p>Payment links for the weekly subscription are available in the Zoom companion Stage 8 Decision panel.</p>
             <Note>Always send the Foundational Read first. Coaching does not start until both the Foundational Read and the first weekly subscription payment are received.</Note>
           </Section>
@@ -2626,10 +2627,10 @@ export default function HelpPage() {
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Products</p>
             <StatusList items={[
               { label: 'Coaching Foundational Read', desc: '$297 - one-time. Send to every lead who agrees to proceed at the Zoom call.' },
-              { label: 'Online Coaching', desc: '$149/week recurring' },
-              { label: 'In-Person 1x + self-led', desc: '$199/week recurring - coach-assessed, only for self-disciplined trainers' },
-              { label: 'In-Person 2x', desc: '$299/week recurring - lead with this on the Zoom' },
-              { label: 'In-Person 3x', desc: '$409/week recurring - coach-assessed, offer during check-ins' },
+              { label: 'In-Person 1x + self-led', desc: '$139/week recurring - lead with this on the Zoom' },
+              { label: 'In-Person 2x', desc: '$189/week recurring' },
+              { label: 'In-Person 3x', desc: '$225/week recurring - coach-assessed, offer during check-ins' },
+              { label: 'Online Coaching', desc: '$69/week recurring' },
             ]} />
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">Automatic Recording</p>
