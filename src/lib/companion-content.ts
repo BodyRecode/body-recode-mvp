@@ -120,11 +120,19 @@ export const BODY_STATE_LANGUAGE: Record<string, { colour: string; badge: string
 //   - the four anatomical zones are gone; the read places her two ways,
 //     readiness first, then pattern
 //
-// One deliberate difference from the page: the SPOKEN scripts carry no pattern
-// count. Four is true of the model, three is true of what a woman can be
-// (Androgen-Decline is male-only), so any number in a sentence said to her
-// contradicts one or the other. The count stays in the written detail, which
-// describes the model. Pattern_Count_Scope_Rule, 24 Aug 2026.
+// TWO deliberate differences from the page, both only in what he SAYS:
+//
+// 1. PLAIN WORDS FIRST. The written detail is the page verbatim, because she may
+//    have read it. The spoken script is not. Read, readiness and pattern are our
+//    words, and a stranger on a first call has to translate every one of them, so
+//    each script says what the thing plainly is and only then names it: "you fill
+//    out a long questionnaire ... I write you a document ... that is what I call
+//    your Foundational Read." Say_It_Plainly_First, 24 Aug 2026.
+//
+// 2. NO PATTERN COUNT. Four is true of the model, three is true of what a woman
+//    can be (Androgen-Decline is male-only), so any number in a sentence said to
+//    her contradicts one or the other. The count stays in the written detail,
+//    which describes the model. Pattern_Count_Scope_Rule, 24 Aug 2026.
 
 export const HOW_IT_WORKS_STAGES = [
   {
@@ -144,7 +152,7 @@ export const HOW_IT_WORKS_STAGES = [
       { n: '08', name: 'Behavioural Context', desc: 'Adherence, environment, identity' },
     ],
     output: 'Your Foundational Read: your body\'s current state, the pattern driving it, and what to address first.',
-    coachScript: '"Before I write you anything, I read your body. That\'s the Foundational Read: 221 data points across eight areas, plus your measurements, photos, and any recent bloodwork. It\'s not a template, and it\'s not me confirming what I already think. It\'s there to show me what\'s actually happening with you."',
+    coachScript: '"Before I write you anything, you fill out a long questionnaire. 221 questions across eight areas: training, sleep, food, stress, recovery, hormones, your history, and what your day to day actually looks like. Plus your measurements, photos, and any recent blood tests. I go through the lot and write you a document that says what\'s actually going on with your body and why. That document is what I call your Foundational Read. None of it is a template, and none of it is me confirming what I already think."',
   },
   {
     number: '02',
@@ -154,19 +162,19 @@ export const HOW_IT_WORKS_STAGES = [
     body: 'I read your data through five analytical frameworks (the Body Recode™ Interpretive Pillars). The output is your Foundational Read, and it answers two questions: how much load your body can handle right now, and what is actually driving the stall.',
     statesIntro: 'Which of three states your body is in decides whether it is safe to push at all, or whether we rebuild capacity first. Most people are further back than they expect, and that is the single most important thing to get right.',
     states: [
-      { n: '01', name: 'Depleted', line: 'Under load it cannot clear', desc: 'Run-down and carrying more than it can recover from. Training hard here digs the hole deeper. Most women are further into this than they think.' },
-      { n: '02', name: 'Transitioning', line: 'Stabilised, building capacity', desc: 'The system has settled and can take real work again. This is where change actually starts to show.' },
-      { n: '03', name: 'Ready', line: 'Performing', desc: 'Recovered and responding. Now the work is sharpening what you have and holding it for the long run.' },
+      { n: '01', name: 'Depleted', plain: 'run down', line: 'Under load it cannot clear', desc: 'Run-down and carrying more than it can recover from. Training hard here digs the hole deeper. Most women are further into this than they think.' },
+      { n: '02', name: 'Transitioning', plain: 'steadying', line: 'Stabilised, building capacity', desc: 'The system has settled and can take real work again. This is where change actually starts to show.' },
+      { n: '03', name: 'Ready', plain: 'ready to push', line: 'Performing', desc: 'Recovered and responding. Now the work is sharpening what you have and holding it for the long run.' },
     ],
     patternsIntro: 'Every client also sorts into one of four patterns. Each needs a materially different approach to training, nutrition, and recovery.',
     patterns: [
-      { name: 'Stress-Stored', driver: 'Cortisol-driven', line: 'Holding tight under load', desc: 'Chronic stress keeps the system in protection. Fat stores around the midsection. Pushing harder closes the door further.' },
-      { name: 'Insulin-Drift', driver: 'Blood-sugar driven', line: 'Energy is inconsistent', desc: 'Insulin sensitivity has drifted. Afternoon crashes, persistent cravings, heaviness after meals. Fuelling needs restructuring.' },
-      { name: 'Estrogen-Shift', driver: 'Hormonal-driven', line: 'Your body has changed', desc: 'Oestrogen shift drives conservation. Fat distribution shifts. Recovery feels different. Restriction makes it worse.' },
-      { name: 'Androgen-Decline', driver: 'Testosterone-driven', line: 'Capacity is slipping', desc: 'Declining androgen signal. Recovery slower, drive flat, muscle no longer responding. System needs less demand, more inputs.' },
+      { name: 'Stress-Stored', plain: 'stress', driver: 'Cortisol-driven', line: 'Holding tight under load', desc: 'Chronic stress keeps the system in protection. Fat stores around the midsection. Pushing harder closes the door further.' },
+      { name: 'Insulin-Drift', plain: 'blood sugar', driver: 'Blood-sugar driven', line: 'Energy is inconsistent', desc: 'Insulin sensitivity has drifted. Afternoon crashes, persistent cravings, heaviness after meals. Fuelling needs restructuring.' },
+      { name: 'Estrogen-Shift', plain: 'hormones changing', driver: 'Hormonal-driven', line: 'Your body has changed', desc: 'Oestrogen shift drives conservation. Fat distribution shifts. Recovery feels different. Restriction makes it worse.' },
+      { name: 'Androgen-Decline', plain: 'capacity dropping off', driver: 'Testosterone-driven', line: 'Capacity is slipping', desc: 'Declining androgen signal. Recovery slower, drive flat, muscle no longer responding. System needs less demand, more inputs.' },
     ],
     note: 'These name observed patterns of where the body stores and how it signals. They describe how your body is behaving, not a measurement of your hormone levels.',
-    coachScript: '"Your read places you two ways. First, how much load you can handle right now: depleted, transitioning, or ready. Most people are further back than they expect, and getting that wrong is why the last few things haven\'t worked. Second, what\'s actually driving the stall. That\'s your pattern, and each one needs a different approach to training, food, and recovery."',
+    coachScript: '"That document answers two questions. First: how much training you can actually handle right now. There are three levels, run down, steadying, or ready to push, and most people are further back than they expect. Getting that wrong is usually why the last few things didn\'t work. Second: what\'s actually causing the stall. Stress, blood sugar, your hormones changing, or your capacity dropping off. That one I call your pattern, and it changes how I train you and how I feed you."',
   },
   {
     number: '03',
@@ -193,7 +201,7 @@ export const HOW_IT_WORKS_STAGES = [
       { name: 'Blood Work', desc: 'Upload your panels and see your markers read against your profile, plus a guide you can hand to your GP.' },
       { name: 'Messages and Resources', desc: 'A direct line to me between check-ins, alongside your guides, glossary, and reference material.' },
     ],
-    coachScript: '"Once I\'ve got your read, I build inside it: your training, your nutrition, your daily sequences, recovery, supplements. All of it lives in your portal. One login, open from day one, updated as I adjust things. Nothing gets emailed to you as a PDF you lose in your inbox, and there\'s no app to download."',
+    coachScript: '"Once I\'ve got that, I build everything around it. Your training program, what you eat, a short morning and evening routine, recovery work, supplements. All of it sits in a private website you log into on your phone. There\'s no app to download, and nothing gets emailed to you as a PDF you lose. It\'s open from day one and I update it as I change things."',
   },
   {
     number: '04',
@@ -205,7 +213,7 @@ export const HOW_IT_WORKS_STAGES = [
       { tag: 'The Foundation', name: 'Foundational Read', desc: 'Produced once at the start. Defines your biological profile, readiness, and the boundaries I work within. Doesn\'t change week to week.' },
       { tag: 'The Weekly Update', name: 'Weekly Read', desc: 'Produced every week from your check-in. Captures how your body\'s responding to what we\'ve applied. Drives my next adjustment.' },
     ],
-    coachScript: '"From there we\'re in a cycle. Your Foundational Read sets the boundaries and doesn\'t change. Every week your check-in gives me a Weekly Read on how your body\'s responding to what we\'ve applied, and that drives the next adjustment. I read, I adjust, I read again. It\'s not a static plan, it adapts as your body adapts."',
+    coachScript: '"From there we\'re in a cycle. That first document sets the boundaries and doesn\'t change. Then every week you fill in a short check-in, and I write back on what your body did with what we applied and what I\'m changing next. That\'s the weekly one. It\'s not a static plan, it adapts as your body adapts."',
   },
   {
     number: '05',
@@ -215,7 +223,7 @@ export const HOW_IT_WORKS_STAGES = [
     body: 'A training block is a chapter, not the whole story. When one finishes, I don\'t just roll into the next. I read your body again and set where it sits now against where it started. This is your Progress Read: proof, in plain terms, of how far the block actually moved you.',
     detail: 'You answer a short check-in, about five minutes, and I read it alongside everything from the block. Your readiness is scored again, so the shift is something you can see, not just something you have to take on faith.',
     note: 'Your Progress Read never changes the pattern I identified in your Foundational Read. It measures the one thing that matters to you between blocks: are you actually moving, and in the right direction.',
-    coachScript: '"At the end of every block I read you again. That\'s your Progress Read: where you started, where you are now, and your readiness scored again, so the shift is something you can see rather than something you take on faith. The pattern doesn\'t change. What changes is how much your body can handle."',
+    coachScript: '"A block is a stretch of weeks working on one thing. When one finishes, instead of rolling straight into the next, I get you to answer a short check-in, about five minutes, and I write up where you started against where you are now. Whether you can handle more than you could at the start, and by how much. I call that your Progress Read. It means you can see the shift instead of taking my word for it."',
   },
 ] as const
 

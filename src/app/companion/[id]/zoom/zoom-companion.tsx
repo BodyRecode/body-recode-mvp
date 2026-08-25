@@ -87,6 +87,13 @@ export default function ZoomCompanion({
    *  cards are labelled Depleted / Transitioning / Ready, so theirs highlights. */
   const readiness = bodyState.replace(/ State$/, '')
 
+  /** Their pattern, plus the ordinary-words handle for it. He says the plain
+   *  thing first and our name for it second, never the other way round. */
+  const patternStage = HOW_IT_WORKS_STAGES.find(c => 'patterns' in c)
+  const theirPattern = patternStage && 'patterns' in patternStage
+    ? patternStage.patterns.find(p => p.name === summary?.profileLabel)
+    : undefined
+
   const preface = training === 'returning'
     ? 'Coming back into it, this gives us a clear starting point.\n\n'
     : training === 'new' ? 'This is the starting point — important context for how we ease you in.\n\n' : ''
@@ -384,8 +391,8 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
                   {card.number === '02' && summary?.profileLabel && (
                     <p className="text-[14px] leading-relaxed text-[#1A1A1A] mt-2 pt-2 border-t border-[#B5CFFC]">
                       {summary.provisional
-                        ? `Then: "Yours points toward ${summary.profileLabel}. I want the full read before I commit to that."`
-                        : `Then: "Yours is ${summary.profileLabel}."`}
+                        ? `Then: "Yours points at ${theirPattern ? `the ${theirPattern.plain} one. I call that ${summary.profileLabel}` : summary.profileLabel}. I want the full questionnaire back before I commit to it."`
+                        : `Then: "Yours is ${theirPattern ? `the ${theirPattern.plain} one. I call that ${summary.profileLabel}` : summary.profileLabel}."`}
                     </p>
                   )}
                 </div>
@@ -420,7 +427,7 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
                           return (
                             <div key={s.n} className={`rounded-lg p-2.5 border ${theirs ? 'bg-blue-50 border-[#1B6DFC]' : 'bg-[#F7F7F7] border-[#E5E5E5]'}`}>
                               <p className={`text-[12px] font-bold ${theirs ? 'text-[#1B6DFC]' : 'text-[#1A1A1A]'}`}>
-                                {s.name}<span className="font-semibold text-[#6B6B6B]"> · {s.line}</span>{theirs && <span className="font-semibold"> · theirs</span>}
+                                {s.name}<span className="font-semibold text-[#6B6B6B]"> · say &ldquo;{s.plain}&rdquo;</span>{theirs && <span className="font-semibold"> · theirs</span>}
                               </p>
                               <p className="text-[12px] text-[#6B6B6B] leading-snug">{s.desc}</p>
                             </div>
@@ -441,7 +448,7 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
                               <p className={`text-[12px] font-bold ${theirs ? 'text-[#1B6DFC]' : 'text-[#1A1A1A]'}`}>
                                 {p.name} Pattern{theirs && <span className="font-semibold"> · theirs{summary?.provisional ? ', provisional' : ''}</span>}
                               </p>
-                              <p className="text-[11px] font-semibold text-[#999999]">{p.driver} · {p.line}</p>
+                              <p className="text-[11px] font-semibold text-[#999999]">Say &ldquo;the {p.plain} one&rdquo; · {p.driver}</p>
                               <p className="text-[12px] text-[#6B6B6B] leading-snug mt-0.5">{p.desc}</p>
                             </div>
                           )
