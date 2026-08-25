@@ -443,13 +443,13 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
                   )}
                   {'output' in card && card.output && (
                     <p className="text-[13px] leading-relaxed text-[#1A1A1A] bg-blue-50 border border-[#B5CFFC] rounded-lg p-3">
-                      <span className="font-bold text-[#1B6DFC]">What she ends up with · </span>{sx(card.output)}
+                      <span className="font-bold text-[#1B6DFC]">What {firstName} ends up with · </span>{sx(card.output)}
                     </p>
                   )}
 
                   {'states' in card && card.states && (
                     <div>
-                      <p className="text-[12px] font-bold text-[#1A1A1A] mb-1">First: how much she can handle</p>
+                      <p className="text-[12px] font-bold text-[#1A1A1A] mb-1">First: how much {firstName} can handle</p>
                       {'statesIntro' in card && card.statesIntro && (
                         <p className="text-[13px] leading-relaxed text-[#4A4A4A] mb-1.5">{sx(card.statesIntro)}</p>
                       )}
@@ -508,7 +508,7 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
 
                   {'portal' in card && card.portal && (
                     <div>
-                      <p className="text-[12px] font-bold text-[#1A1A1A] mb-1">Everything she can log into, all {card.portal.length} of them</p>
+                      <p className="text-[12px] font-bold text-[#1A1A1A] mb-1">Everything {firstName} can log into, all {card.portal.length} of them</p>
                       {'portalIntro' in card && card.portalIntro && (
                         <p className="text-[13px] leading-relaxed text-[#4A4A4A] mb-1.5">{sx(card.portalIntro)}</p>
                       )}

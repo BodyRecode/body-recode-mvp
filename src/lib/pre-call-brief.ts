@@ -7,6 +7,7 @@
  * Pure function. Deterministic. Run inline after scorecard submit.
  */
 
+import { pronounsFor, resolveLeadSex } from '@/lib/lead-sex'
 import {
   type SectionKey,
   type SectionScores,
@@ -36,6 +37,9 @@ export interface LeadBriefInput {
   lead_quality?: Quality | null
   // Fat Map typing signals (optional — legacy leads/briefs omit them).
   biological_sex?: BiologicalSex | null
+  /** Secondary sex key, written by the enrol/signup routes only. Pronouns and
+   *  the companion's pattern gate fall back to it; typing never does. */
+  gender?: string | null
   age_band?: AgeBand | null
   fat_storage?: FatStorage | null
   cycle_status?: CycleStatus | null
@@ -372,26 +376,30 @@ const STATE_SHORT: Record<StateName, string> = {
 function buildCriticalHold(input: LeadBriefInput, profile: Profile): string[] {
   const holds: string[] = []
   const approach = input.approach_response
+  // These are read off the lead page seconds before the call. A male lead
+  // reading his own brief back as "her" is the same failure as showing him a
+  // pattern he cannot have.
+  const p = pronounsFor(resolveLeadSex({ biological_sex: input.biological_sex, gender: input.gender }))
 
   // Hold #1 — derived from approach answer
   if (approach === 'D') {
     holds.push('Will push to change the program when frustrated. Don\'t. The frustration IS the pattern showing up live.')
   } else if (approach === 'C') {
-    holds.push('Will want to push harder when output drops. Don\'t let her. Pushing harder is what put the body here.')
+    holds.push(`Will want to push harder when output drops. Don't let ${p.object}. Pushing harder is what put the body here.`)
   } else if (profile === 'Indeterminate') {
     holds.push('No single Fat Map signal in the scorecard. Hold the read open - intake decides which profile applies. Don\'t pre-commit to one in the room.')
   } else {
-    holds.push(`${profile} profile - hold the read steady. Don\'t let her pull you off it just because you don\'t have all the data yet.`)
+    holds.push(`${profile} profile - hold the read steady. Don't let ${p.object} pull you off it just because you don't have all the data yet.`)
   }
 
   // Hold #2 — derived from investment + state
   const inv = input.investment_readiness
   if (inv === 'C' || inv === 'D') {
-    holds.push('She\'s exploring/free-only. Don\'t sell. Read her, give the picture, let the offer land flat.')
+    holds.push(`${p.Contracted} exploring/free-only. Don't sell. Read ${p.object}, give the picture, let the offer land flat.`)
   } else if (inv === 'A') {
-    holds.push('She\'s ready to invest. Run the close cleanly - don\'t under-pitch.')
+    holds.push(`${p.Contracted} ready to invest. Run the close cleanly - don't under-pitch.`)
   } else {
-    holds.push('Read her warmth in the room. Investment signal is mid - the conversation determines path.')
+    holds.push(`Read ${p.possessive} warmth in the room. Investment signal is mid - the conversation determines path.`)
   }
 
   // Hold #3 — path probability headline

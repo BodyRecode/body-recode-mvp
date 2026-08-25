@@ -34,6 +34,7 @@ export interface LeadRowForBrief {
   investment_readiness: string | null
   lead_quality: string | null
   biological_sex: string | null
+  gender: string | null
   age_band: string | null
   fat_storage: string | null
   cycle_status: string | null
@@ -102,6 +103,7 @@ export function buildLeadBrief(
     investment_readiness: letter(lead.investment_readiness),
     lead_quality: (lead.lead_quality as 'green' | 'yellow' | 'red' | null) ?? null,
     biological_sex: (lead.biological_sex as BiologicalSex | null) ?? null,
+    gender: (lead.gender as string | null) ?? null,
     age_band: (lead.age_band as AgeBand | null) ?? null,
     fat_storage: (lead.fat_storage as FatStorage | null) ?? null,
     cycle_status: (lead.cycle_status as CycleStatus | null) ?? null,

@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import ZoomCompanion from './zoom-companion'
 import { buildLeadBrief } from '@/lib/lead-brief'
 import type { Arrival } from '@/lib/companion-content'
+import { resolveLeadSex } from '@/lib/lead-sex'
 
 export default async function ZoomCompanionPage({ params }: { params: Promise<{ id: string }> }) {
   const admin = createAdminClient()
@@ -42,7 +43,7 @@ export default async function ZoomCompanionPage({ params }: { params: Promise<{ 
       scopeFlags={scopeFlags}
       prepNotes={prepNotes}
       arrival={arrival}
-      biologicalSex={(lead.biological_sex as 'M' | 'F' | null) ?? null}
+      biologicalSex={resolveLeadSex(lead)}
       initialNotes={lead.notes ?? ''}
     />
   )
