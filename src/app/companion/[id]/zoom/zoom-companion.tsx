@@ -557,7 +557,9 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
             )}
             <Say text={`You've seen what I do, and you've seen how it gets to the thing you told me about.
 
-Here's what's included. The questionnaire, and the document I write off it. Your training program. Your nutrition. A short check-in every week with my written response on it. All of it in one place you log into. Direct access to me between sessions. And a session with me each week.`} />
+Here's what's included. The questionnaire, and the document I write off it. Your training program. Your nutrition. A short check-in every week with my written response on it. All of it in one place you log into. Direct access to me between sessions. And your sessions with me.
+
+Three a week is $225, and that one I assess before I put anyone on it. Most people start on two, and that's $189 a week. Plus the $297 to get started.`} />
             <div className="space-y-1.5">
               {PACKAGES.map(p => (
                 <div key={p.tier} className="flex items-baseline justify-between gap-3 rounded-lg border border-[#E5E5E5] px-3.5 py-2.5">
@@ -597,7 +599,7 @@ Here's what's included. The questionnaire, and the document I write off it. Your
                 <Asks items={summary.keyLines.map(k => k.replace(/^"|"$/g, ''))} />
               </Fold>
             )}
-            <Boundary text="Lead with 1x at $139. It is the number a gym member can carry, and it includes everything. 2x and 3x are there for someone who asks for more contact, not the opening bid. After the number, pause. Don't fill the silence." />
+            <Boundary text="Read them highest to lowest. Open on 3x at $225 and say it's assessed, so it sets the top of the sheet without being the thing you're selling. That lands most people on 2x at $189, and 1x at $139 if two is a stretch. After the number, pause. Don't fill the silence." />
           </div>
         )}
 

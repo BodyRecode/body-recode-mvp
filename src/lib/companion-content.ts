@@ -296,12 +296,17 @@ export const WHATS_INCLUDED = [
   'A short check-in every week, and my written response on every one',
   'All of it in one place you log into on your phone, updated as I change things',
   'Direct access to me between sessions',
-  'Coached sessions with me each week, one to three depending on the package (in-person)',
+  'Two coached sessions a week with me (in-person packages)',
 ] as const
 
 /**
  * Repriced 26 Aug 2026. The ORDER matters: this is the order he reads them out,
- * and it now runs cheapest first.
+ * and it runs HIGHEST TO LOWEST.
+ *
+ * He opens on 3x at $225 AND says it is assessed. That is deliberate: it sets
+ * the top of the sheet without being the thing he is selling, so 2x at $189
+ * arrives as the sensible middle rather than as the opening ask. Most clients
+ * start on 2x. 1x at $139 is there if 2x is a stretch. Online last.
  *
  * Nobody had ever paid a list price. Every paying client was on the 50% launch
  * rate or a negotiated one, and per session what they actually pay lands
@@ -312,9 +317,9 @@ export const WHATS_INCLUDED = [
  * which is what actually bills. This list is only what he reads on the call.
  */
 export const PACKAGES = [
-  { tier: 'In-Person 1x + self-led', price: '$139/week', desc: 'One coached session per week, you train independently the rest. The default on the gym floor.', coachAssessed: false },
-  { tier: 'In-Person 2x', price: '$189/week', desc: 'Two coached sessions per week.', coachAssessed: false },
-  { tier: 'In-Person 3x', price: '$225/week', desc: 'Three coached sessions per week. Offered when schedule and capacity allow.', coachAssessed: true },
+  { tier: 'In-Person 3x', price: '$225/week', desc: 'Three coached sessions per week. He OPENS here and says it is assessed, so it anchors the sheet without being the thing he sells.', coachAssessed: true },
+  { tier: 'In-Person 2x', price: '$189/week', desc: 'Two coached sessions per week. Where most people actually start.', coachAssessed: false },
+  { tier: 'In-Person 1x + self-led', price: '$139/week', desc: 'One coached session per week, you train independently the rest. Offered if 2x is a stretch.', coachAssessed: false },
   { tier: 'Online', price: '$69/week', desc: 'Same system, same interpretation, weekly check-ins and direct access, no in-person sessions.', coachAssessed: false },
 ] as const
 
