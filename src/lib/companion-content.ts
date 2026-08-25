@@ -108,6 +108,60 @@ export const BODY_STATE_LANGUAGE: Record<string, { colour: string; badge: string
   },
 }
 
+// ─── Sex gate ──────────────────────────────────────────────────────────────
+//
+// Two of the four patterns are hard-gated by sex, and `typeFatMapProfile`
+// already enforces it: a male can never be typed Estrogen-Shift, a female can
+// never be typed Androgen-Decline. Until 26 Aug 2026 the companion showed all
+// four to everyone, so a male lead sat through a card for a pattern he cannot
+// have, next to a line about oestrogen. Garv (25 Aug, scorecard, male) is the
+// lead that surfaced it.
+//
+// The page copy this mirrors is written for women, because the site is. That
+// is correct for the site and wrong in the room when the lead is a man, so the
+// audience noun is a token here rather than a fixed word.
+//
+// `null` is the common case: 99 of 130 leads predate the details step. Unknown
+// shows everything and says so, rather than guessing.
+
+export type LeadSex = 'M' | 'F' | null
+
+/** women / men / people. Never guess it from a name. */
+export function audienceNoun(sex: LeadSex): string {
+  return sex === 'F' ? 'women' : sex === 'M' ? 'men' : 'people'
+}
+
+/** Drops the pattern this lead cannot be typed as. */
+export function patternsForSex<T extends { name: string }>(patterns: readonly T[], sex: LeadSex): T[] {
+  if (sex === 'M') return patterns.filter(p => p.name !== 'Estrogen-Shift')
+  if (sex === 'F') return patterns.filter(p => p.name !== 'Androgen-Decline')
+  return [...patterns]
+}
+
+/** The spoken causes list, built from whatever patterns are actually in play. */
+export function causesPhrase(patterns: readonly { plain: string }[]): string {
+  const parts = patterns.map(p => p.plain)
+  if (parts.length === 0) return 'Stress, blood sugar, or hormones'
+  const joined = parts.length === 1
+    ? parts[0]
+    : `${parts.slice(0, -1).join(', ')}, or ${parts[parts.length - 1]}`
+  return joined.charAt(0).toUpperCase() + joined.slice(1)
+}
+
+/** Fills {audience} and {causes} in any companion string. */
+export function fillCopy(text: string, sex: LeadSex, patterns: readonly { plain: string }[]): string {
+  return text
+    .split('{audience}').join(audienceNoun(sex))
+    .split('{causes}').join(causesPhrase(patterns))
+}
+
+/** What to put on screen so he knows which way the companion is gated. */
+export const SEX_GATE_NOTE: Record<'M' | 'F' | 'unknown', string> = {
+  M: 'Male lead. Estrogen-Shift is hidden, he cannot be typed as it. Everything below reads "men".',
+  F: 'Female lead. Androgen-Decline is hidden, she cannot be typed as it.',
+  unknown: 'Sex was never captured on this lead, so nothing is gated and all four patterns are showing. Ask early, and do not name a pattern until you have.',
+}
+
 // ─── How The System Works ──────────────────────────────────────────────────
 //
 // Mirrors performance.bodyrecode.au/how-it-works verbatim (rebuilt 2026-08-25).
@@ -162,11 +216,11 @@ export const HOW_IT_WORKS_STAGES = [
     body: 'I read your data through five analytical frameworks (the Body Recode™ Interpretive Pillars). The output is your Foundational Read, and it answers two questions: how much load your body can handle right now, and what is actually driving the stall.',
     statesIntro: 'Which of three states your body is in decides whether it is safe to push at all, or whether we rebuild capacity first. Most people are further back than they expect, and that is the single most important thing to get right.',
     states: [
-      { n: '01', name: 'Depleted', plain: 'run down', line: 'Under load it cannot clear', desc: 'Run-down and carrying more than it can recover from. Training hard here digs the hole deeper. Most women are further into this than they think.' },
+      { n: '01', name: 'Depleted', plain: 'run down', line: 'Under load it cannot clear', desc: 'Run-down and carrying more than it can recover from. Training hard here digs the hole deeper. Most {audience} are further into this than they think.' },
       { n: '02', name: 'Transitioning', plain: 'steadying', line: 'Stabilised, building capacity', desc: 'The system has settled and can take real work again. This is where change actually starts to show.' },
       { n: '03', name: 'Ready', plain: 'ready to push', line: 'Performing', desc: 'Recovered and responding. Now the work is sharpening what you have and holding it for the long run.' },
     ],
-    patternsIntro: 'Every client also sorts into one of four patterns. Each needs a materially different approach to training, nutrition, and recovery.',
+    patternsIntro: 'Every client also sorts into a pattern. Each one needs a materially different approach to training, nutrition, and recovery.',
     patterns: [
       { name: 'Stress-Stored', plain: 'stress', driver: 'Cortisol-driven', line: 'Holding tight under load', desc: 'Chronic stress keeps the system in protection. Fat stores around the midsection. Pushing harder closes the door further.' },
       { name: 'Insulin-Drift', plain: 'blood sugar', driver: 'Blood-sugar driven', line: 'Energy is inconsistent', desc: 'Insulin sensitivity has drifted. Afternoon crashes, persistent cravings, heaviness after meals. Fuelling needs restructuring.' },
@@ -174,7 +228,7 @@ export const HOW_IT_WORKS_STAGES = [
       { name: 'Androgen-Decline', plain: 'capacity dropping off', driver: 'Testosterone-driven', line: 'Capacity is slipping', desc: 'Declining androgen signal. Recovery slower, drive flat, muscle no longer responding. System needs less demand, more inputs.' },
     ],
     note: 'These name observed patterns of where the body stores and how it signals. They describe how your body is behaving, not a measurement of your hormone levels.',
-    coachScript: '"That document answers two questions. First: how much training you can actually handle right now. There are three levels, run down, steadying, or ready to push, and most people are further back than they expect. Getting that wrong is usually why the last few things didn\'t work. Second: what\'s actually causing the stall. Stress, blood sugar, your hormones changing, or your capacity dropping off. That one I call your pattern, and it changes how I train you and how I feed you."',
+    coachScript: '"That document answers two questions. First: how much training you can actually handle right now. There are three levels, run down, steadying, or ready to push, and most {audience} are further back than they expect. Getting that wrong is usually why the last few things didn\'t work. Second: what\'s actually causing the stall. {causes}. That one I call your pattern, and it changes how I train you and how I feed you."',
   },
   {
     number: '03',
@@ -193,7 +247,7 @@ export const HOW_IT_WORKS_STAGES = [
       { name: 'Your Foundational Read', desc: 'The full read written out in plain language: your readiness, your pattern, and why I am prescribing what I am prescribing.' },
       { name: 'Training Program', desc: 'Every session with sets, reps, and loads. Log each workout as you go so I can see what actually happened, not what was planned.' },
       { name: 'Nutrition Plan', desc: 'Your meals and targets, with food swaps if something does not suit you, and simple adherence logging.' },
-      { name: 'Daily Sequences', desc: 'A Morning Reset and an Evening Rhythm built to your read. Short, specific, and the part most women are missing.' },
+      { name: 'Daily Sequences', desc: 'A Morning Reset and an Evening Rhythm built to your read. Short, specific, and the part most {audience} are missing.' },
       { name: 'Recovery Protocols', desc: 'Prescribed recovery work for whatever your read flagged, rather than generic advice to sleep more.' },
       { name: 'Supplement Stack', desc: 'What to take, when to take it, and the reason it is there. Nothing on the list without a reason.' },
       { name: 'Weekly Check-In', desc: 'Submit in a few minutes each week. Your full check-in history sits there, with my written response on every one.' },

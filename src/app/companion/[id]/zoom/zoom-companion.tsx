@@ -15,7 +15,11 @@ import {
   OPENING_THANKS,
   OPENING_QUESTIONS,
   OPENING_NOTE,
+  SEX_GATE_NOTE,
+  patternsForSex,
+  fillCopy,
   type Arrival,
+  type LeadSex,
 } from '@/lib/companion-content'
 import PrepAnswers from '@/components/prep-answers'
 
@@ -52,6 +56,7 @@ export default function ZoomCompanion({
   prepNotes,
   initialNotes,
   arrival,
+  biologicalSex,
 }: {
   leadId: string
   leadName: string
@@ -62,6 +67,7 @@ export default function ZoomCompanion({
   prepNotes: string | null
   initialNotes: string
   arrival: Arrival
+  biologicalSex: LeadSex
 }) {
   const firstName = leadName.split(' ')[0]
   const state = BODY_STATE_LANGUAGE[bodyState] ?? BODY_STATE_LANGUAGE['Transitioning State']
@@ -98,6 +104,15 @@ export default function ZoomCompanion({
   const theirPattern = patternStage && 'patterns' in patternStage
     ? patternStage.patterns.find(p => p.name === summary?.profileLabel)
     : undefined
+
+  /** Sex gate. Two of the four patterns are hard-gated, and the page copy this
+   *  mirrors is written for women because the site is. Both are handled here so
+   *  a male lead never sees a pattern he cannot have or hears "most women". */
+  const shownPatterns = patternStage && 'patterns' in patternStage
+    ? patternsForSex(patternStage.patterns, biologicalSex)
+    : []
+  const sx = (t: string) => fillCopy(t, biologicalSex, shownPatterns)
+  const gateNote = SEX_GATE_NOTE[biologicalSex === 'M' ? 'M' : biologicalSex === 'F' ? 'F' : 'unknown']
 
   const preface = training === 'returning'
     ? 'Coming back into it, this gives us a clear starting point.\n\n'
@@ -384,6 +399,9 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
         {step === 3 && (
           <div className="space-y-3">
             <p className="text-[14px] text-[#6B6B6B] leading-relaxed">The same five stages as the how-it-works page, in the same order. Each one gives you an example of how to say it, then everything that stage actually involves, listed. Nothing is hidden behind a tap. Anchor every stage back to their words from stage 2.</p>
+            <div className={`rounded-xl px-4 py-3 border ${biologicalSex ? 'bg-[#F7F7F7] border-[#E5E5E5]' : 'bg-amber-50 border-amber-300'}`}>
+              <p className={`text-[13px] leading-relaxed ${biologicalSex ? 'text-[#3A3A3A]' : 'text-amber-900'}`}>{gateNote}</p>
+            </div>
             {HOW_IT_WORKS_STAGES.map(card => (
               <div key={card.number} className="rounded-xl border border-[#E5E5E5] overflow-hidden">
                 <div className="px-4 pt-3 pb-2.5 flex items-baseline gap-2.5">
@@ -395,7 +413,7 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
                 {/* Example of how he says it. One way of saying it, not a line to recite. */}
                 <div className="bg-blue-50 border-y border-[#B5CFFC] px-4 py-3">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-[#1B6DFC] mb-1.5">Example of how you say it</p>
-                  <p className="text-[15px] leading-relaxed text-[#1A1A1A]">{card.coachScript}</p>
+                  <p className="text-[15px] leading-relaxed text-[#1A1A1A]">{sx(card.coachScript)}</p>
                   {card.number === '02' && summary?.profileLabel && (
                     <p className="text-[14px] leading-relaxed text-[#1A1A1A] mt-2 pt-2 border-t border-[#B5CFFC]">
                       {summary.provisional
@@ -408,7 +426,7 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
                 {/* Everything that stage involves, listed in full. Open. */}
                 <div className="px-4 py-3.5 space-y-3">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-[#999999]">Everything involved</p>
-                  <p className="text-[14px] leading-relaxed text-[#4A4A4A]">{card.body}</p>
+                  <p className="text-[14px] leading-relaxed text-[#4A4A4A]">{sx(card.body)}</p>
 
                   {'domains' in card && card.domains && (
                     <div>
@@ -425,7 +443,7 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
                   )}
                   {'output' in card && card.output && (
                     <p className="text-[13px] leading-relaxed text-[#1A1A1A] bg-blue-50 border border-[#B5CFFC] rounded-lg p-3">
-                      <span className="font-bold text-[#1B6DFC]">What she ends up with · </span>{card.output}
+                      <span className="font-bold text-[#1B6DFC]">What she ends up with · </span>{sx(card.output)}
                     </p>
                   )}
 
@@ -433,7 +451,7 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
                     <div>
                       <p className="text-[12px] font-bold text-[#1A1A1A] mb-1">First: how much she can handle</p>
                       {'statesIntro' in card && card.statesIntro && (
-                        <p className="text-[13px] leading-relaxed text-[#4A4A4A] mb-1.5">{card.statesIntro}</p>
+                        <p className="text-[13px] leading-relaxed text-[#4A4A4A] mb-1.5">{sx(card.statesIntro)}</p>
                       )}
                       <div className="space-y-1.5">
                         {card.states.map(st => {
@@ -443,7 +461,7 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
                               <p className={`text-[12px] font-bold ${theirs ? 'text-[#1B6DFC]' : 'text-[#1A1A1A]'}`}>
                                 {st.name}<span className="font-semibold text-[#6B6B6B]"> · say &ldquo;{st.plain}&rdquo;</span>{theirs && <span className="font-semibold"> · theirs</span>}
                               </p>
-                              <p className="text-[12px] text-[#6B6B6B] leading-snug">{st.desc}</p>
+                              <p className="text-[12px] text-[#6B6B6B] leading-snug">{sx(st.desc)}</p>
                             </div>
                           )
                         })}
@@ -455,10 +473,10 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
                     <div>
                       <p className="text-[12px] font-bold text-[#1A1A1A] mb-1">Then: what is driving it</p>
                       {'patternsIntro' in card && card.patternsIntro && (
-                        <p className="text-[13px] leading-relaxed text-[#4A4A4A] mb-1.5">{card.patternsIntro}</p>
+                        <p className="text-[13px] leading-relaxed text-[#4A4A4A] mb-1.5">{sx(card.patternsIntro)}</p>
                       )}
                       <div className="grid sm:grid-cols-2 gap-2">
-                        {card.patterns.map(pt => {
+                        {patternsForSex(card.patterns, biologicalSex).map(pt => {
                           const theirs = summary?.profileLabel === pt.name
                           return (
                             <div key={pt.name} className={`rounded-lg p-2.5 border ${theirs ? 'bg-blue-50 border-[#1B6DFC]' : 'bg-[#F7F7F7] border-[#E5E5E5]'}`}>
@@ -466,7 +484,7 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
                                 {pt.name} Pattern{theirs && <span className="font-semibold"> · theirs{summary?.provisional ? ', provisional' : ''}</span>}
                               </p>
                               <p className="text-[11px] font-semibold text-[#999999]">Say &ldquo;the {pt.plain} one&rdquo; · {pt.driver}</p>
-                              <p className="text-[12px] text-[#6B6B6B] leading-snug mt-0.5">{pt.desc}</p>
+                              <p className="text-[12px] text-[#6B6B6B] leading-snug mt-0.5">{sx(pt.desc)}</p>
                             </div>
                           )
                         })}
@@ -481,7 +499,7 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
                         {card.pieces.map(pc => (
                           <div key={pc.name} className="rounded-lg p-2.5 border bg-[#F7F7F7] border-[#E5E5E5]">
                             <p className="text-[12px] font-bold text-[#1A1A1A]">{pc.name}</p>
-                            <p className="text-[12px] text-[#6B6B6B] leading-snug">{pc.desc}</p>
+                            <p className="text-[12px] text-[#6B6B6B] leading-snug">{sx(pc.desc)}</p>
                           </div>
                         ))}
                       </div>
@@ -492,13 +510,13 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
                     <div>
                       <p className="text-[12px] font-bold text-[#1A1A1A] mb-1">Everything she can log into, all {card.portal.length} of them</p>
                       {'portalIntro' in card && card.portalIntro && (
-                        <p className="text-[13px] leading-relaxed text-[#4A4A4A] mb-1.5">{card.portalIntro}</p>
+                        <p className="text-[13px] leading-relaxed text-[#4A4A4A] mb-1.5">{sx(card.portalIntro)}</p>
                       )}
                       <div className="grid sm:grid-cols-2 gap-x-4 gap-y-1.5">
                         {card.portal.map(pl => (
                           <p key={pl.name} className="text-[12px] leading-snug">
                             <span className="inline-block w-1.5 h-1.5 rounded-full mr-2 align-middle bg-[#1B6DFC]" />
-                            <span className="font-semibold">{pl.name}</span><span className="text-[#6B6B6B]"> - {pl.desc}</span>
+                            <span className="font-semibold">{pl.name}</span><span className="text-[#6B6B6B]"> - {sx(pl.desc)}</span>
                           </p>
                         ))}
                       </div>
@@ -511,17 +529,17 @@ I'll ask a few questions about how things are going day to day. Then we'll talk 
                         <div key={r.name} className="rounded-lg p-2.5 border bg-[#F7F7F7] border-[#E5E5E5]">
                           <p className="text-[10px] font-bold uppercase tracking-widest text-[#1B6DFC]">{r.tag}</p>
                           <p className="text-[13px] font-extrabold text-[#1A1A1A]">{r.name}</p>
-                          <p className="text-[12px] text-[#6B6B6B] leading-snug">{r.desc}</p>
+                          <p className="text-[12px] text-[#6B6B6B] leading-snug">{sx(r.desc)}</p>
                         </div>
                       ))}
                     </div>
                   )}
 
                   {'detail' in card && card.detail && (
-                    <p className="text-[14px] leading-relaxed text-[#4A4A4A]">{card.detail}</p>
+                    <p className="text-[14px] leading-relaxed text-[#4A4A4A]">{sx(card.detail)}</p>
                   )}
                   {'note' in card && card.note && (
-                    <p className="text-[12px] leading-relaxed text-[#6B6B6B] bg-[#F7F7F7] border border-[#E5E5E5] rounded-lg p-3">{card.note}</p>
+                    <p className="text-[12px] leading-relaxed text-[#6B6B6B] bg-[#F7F7F7] border border-[#E5E5E5] rounded-lg p-3">{sx(card.note)}</p>
                   )}
                 </div>
               </div>

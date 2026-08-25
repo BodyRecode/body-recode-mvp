@@ -42,6 +42,7 @@ export default async function ZoomCompanionPage({ params }: { params: Promise<{ 
       scopeFlags={scopeFlags}
       prepNotes={prepNotes}
       arrival={arrival}
+      biologicalSex={(lead.biological_sex as 'M' | 'F' | null) ?? null}
       initialNotes={lead.notes ?? ''}
     />
   )
