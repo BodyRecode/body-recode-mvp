@@ -928,7 +928,7 @@ type Round1Ad = {
 const LAUNCH_PACK_VERSION = 'v1.9'
 // Round 2 pack, the one to upload from for the 1 Sep restart. Bump on republish;
 // it drives the card title and both download links.
-const ROUND2_PACK_VERSION = 'v1.9'
+const ROUND2_PACK_VERSION = 'v2.0'
 // Strategy doc is v2.5 (14 Aug): two pillars, readiness vocabulary, sample-size
 // rule, story cadence. Mirrored to public/docs/strategy/body-recode/.
 
@@ -944,32 +944,33 @@ const ROUND2_PACK_VERSION = 'v1.9'
 const ROUND2_ADS: Round1Ad[] = [
   { slug: 'a1-wrong-one', short: 'The wrong one', layer: 'streamA', audience: 'Women 40+, neurowellness',
     img: '/creative/round2/a1-wrong-one.png',
-    headline: `Training scored highest. Sleep scored lowest. Guess which one your plan adds more of`,
+    headline: `Her best score out of five was 2.05 out of 3. Get your own five scored free in two minutes`,
     primaryText: `Not one of these 86 women came to us about their sleep. They came about a body that would not move.
 
 They train three or four times a week. They eat well most days. And they sleep badly, and have done for years, and not one person has ever asked them about it.
 
 We have now scored 86 women on five things. Energy, sleep, stress, how they respond to training, and how they respond to fat loss.
 
-Training came out the best of the five.
+Training came out the best of the five, at 2.05 out of three. On that scale a two means some progress, but inconsistent. That is the best thing about her.
 
 Sleep came out the worst.
 
 So the thing this group works hardest at is the thing least wrong with them. And the thing most wrong has never once been looked at.
 
-Then they get handed a plan that starts by adding more training.>
-The free 14-Day Body Decode Challenge. No payment, no card, nothing to cancel.
+Then they get handed a plan that starts by adding more training.
 
-Day 1 scores five things and shows you where you actually are. You get a training plan, a nutrition guide and a short daily note in your portal. Day 7 scores eight markers against day one. Day 14 names which of the four patterns is driving yours.
+The Body Decode is free. Two minutes of questions, then your report. No card, nothing to cancel.
 
-It is genuinely free, and it starts the day you join.`,
+You answer them and your report opens straight away. Which pattern is behind it, why it is happening, what it usually gets mistaken for, and the three things that shift it. Then five short videos, one a day, walk you through it.
+
+It is genuinely free, and there is nothing to buy to get it.`,
     description: `Five things scored. Most people are surprised by which one comes last.` },
   { slug: 'a2-four-in-ten', short: 'Four in ten', layer: 'streamA', audience: 'Women 40+, neurowellness',
     img: '/creative/round2/a2-four-in-ten.png',
-    headline: `You did not come here about sleep. It is the one that scores worst anyway`,
-    primaryText: `Four in ten score worst on it, and it had been going on longer than the thing they actually rang about.
+    headline: `You did not come here about sleep. It scores worst anyway. Find out where yours sits, free`,
+    primaryText: `Four in ten score worst on it, and it had been going on longer than the thing they actually came to us about.
 
-Nobody rings about their sleep. They ring because the fat will not move. Because a plan that used to work has stopped working. Because your body used to respond and now it does not.
+Nobody comes to us about their sleep. They come because the fat will not move. Because a plan that used to work has stopped working. Because your body used to respond and now it does not.
 
 Then we score you, and sleep comes out bottom of the five.
 
@@ -981,16 +982,17 @@ Your body does not change during the session. It changes overnight. The session 
 
 Train hard on four hours of broken sleep and you are not building anything. You are just adding one more thing to recover from.
 
-Of the 86 women we have scored, nearly four in ten came out at the bottom on sleep. Almost none of them came to us about it.>
-The free 14-Day Body Decode Challenge. No payment, no card, nothing to cancel.
+Of the 86 women we have scored, nearly four in ten came out at the bottom on sleep. Almost none of them came to us about it.
 
-Day 1 scores five things and shows you where you actually are. You get a training plan, a nutrition guide and a short daily note in your portal. Day 7 scores eight markers against day one. Day 14 names which of the four patterns is driving yours.
+The Body Decode is free. Two minutes of questions, then your report. No card, nothing to cancel.
 
-It is genuinely free, and it starts the day you join.`,
+You answer them and your report opens straight away. Which pattern is behind it, why it is happening, what it usually gets mistaken for, and the three things that shift it. Then five short videos, one a day, walk you through it.
+
+It is genuinely free, and there is nothing to buy to get it.`,
     description: `The one nobody assessed.` },
   { slug: 'a3-under-recovering', short: 'Under-recovering', layer: 'streamA', audience: 'Women 40+, neurowellness',
     img: '/creative/round2/a3-under-recovering.png',
-    headline: `Two women, same complaint. One needs to train more, one needs to stop`,
+    headline: `Two women, same complaint. One needs to train more, one needs to stop. A free read says which`,
     primaryText: `Same age, same words, same frustration. Put them in a room and they would agree about everything.
 
 Two women, the same week. Tired all the time. Sessions feel flat. Body will not change.
@@ -1003,16 +1005,17 @@ From the outside they are identical. Same words, same frustration, same effort.
 
 That is why the woman training hardest in any group is so often the one getting the least back.
 
-You cannot work out which one you are by trying harder. Trying harder is what both of them are already doing.>
-The free 14-Day Body Decode Challenge. No payment, no card, nothing to cancel.
+You cannot work out which one you are by trying harder. Trying harder is what both of them are already doing.
 
-Day 1 scores five things and shows you where you actually are. You get a training plan, a nutrition guide and a short daily note in your portal. Day 7 scores eight markers against day one. Day 14 names which of the four patterns is driving yours.
+The Body Decode is free. Two minutes of questions, then your report. No card, nothing to cancel.
 
-It is genuinely free, and it starts the day you join.`,
+You answer them and your report opens straight away. Which pattern is behind it, why it is happening, what it usually gets mistaken for, and the three things that shift it. Then five short videos, one a day, walk you through it.
+
+It is genuinely free, and there is nothing to buy to get it.`,
     description: `Two things that look the same from outside.` },
   { slug: 'b1-eighteen', short: 'Eighteen per cent', layer: 'streamB', audience: 'Women 40+, readiness',
     img: '/creative/round2/b1-eighteen.png',
-    headline: `88 women assessed. 18 in every 100 were ready for a hard plan. The rest got one anyway`,
+    headline: `88 assessed, 18 in every 100 ready for a hard plan. Find out if you are, free, in two minutes`,
     primaryText: `Thirty-one per cent come out depleted. For them a hard plan does not just fail, it makes things worse.
 
 We have now assessed 88 women. Only 18 in every 100 came out ready for a hard training plan.
@@ -1025,16 +1028,17 @@ Half of the women we assess come out in the middle. Not wrecked, not ready. Doin
 
 Give a hard plan to a body that cannot take it yet and it does not half work. You go backwards. Then you decide the problem was you.
 
-It usually was not.>
-The free 14-Day Body Decode Challenge. No payment, no card, nothing to cancel.
+It usually was not.
 
-Day 1 scores five things and shows you where you actually are. You get a training plan, a nutrition guide and a short daily note in your portal. Day 7 scores eight markers against day one. Day 14 names which of the four patterns is driving yours.
+The Body Decode is free. Two minutes of questions, then your report. No card, nothing to cancel.
 
-It is genuinely free, and it starts the day you join.`,
+You answer them and your report opens straight away. Which pattern is behind it, why it is happening, what it usually gets mistaken for, and the three things that shift it. Then five short videos, one a day, walk you through it.
+
+It is genuinely free, and there is nothing to buy to get it.`,
     description: `Most people are not in the group they think.` },
   { slug: 'b2-wrong-question', short: 'The wrong question', layer: 'streamB', audience: 'Women 40+, readiness',
     img: '/creative/round2/b2-wrong-question.png',
-    headline: `Every plan asks how hard you can go. Nobody asks whether your body can take it`,
+    headline: `Every plan asks how hard you can go. This one asks what you can take, and it costs nothing`,
     primaryText: `The scorecard scores five things, and only one of them is about effort.
 
 Every plan asks how hard you can go. Nobody asks whether your body can take it right now.
@@ -1045,16 +1049,17 @@ Push a body that cannot absorb it and it does not get fitter.
 
 It holds on to fat. It holds on to fluid. It stops giving you sessions.
 
-And because the effort went up and nothing changed, you assume you need to push harder still.>
-The free 14-Day Body Decode Challenge. No payment, no card, nothing to cancel.
+And because the effort went up and nothing changed, you assume you need to push harder still.
 
-Day 1 scores five things and shows you where you actually are. You get a training plan, a nutrition guide and a short daily note in your portal. Day 7 scores eight markers against day one. Day 14 names which of the four patterns is driving yours.
+The Body Decode is free. Two minutes of questions, then your report. No card, nothing to cancel.
 
-It is genuinely free, and it starts the day you join.`,
+You answer them and your report opens straight away. Which pattern is behind it, why it is happening, what it usually gets mistaken for, and the three things that shift it. Then five short videos, one a day, walk you through it.
+
+It is genuinely free, and there is nothing to buy to get it.`,
     description: `The question nobody asks first.` },
   { slug: 'b3-eight-weeks', short: 'Eight weeks away', layer: 'streamB', audience: 'Women 40+, readiness',
     img: '/creative/round2/b3-eight-weeks.png',
-    headline: `The plan you keep starting and quitting might be a good plan. It might just be early`,
+    headline: `The plan you keep quitting might be a good plan, just early. A free two-minute read tells you which`,
     primaryText: `Week one felt fine. By week six she had decided she just did not have the discipline for it.
 
 She had started that plan before. Maybe twice. It worked for a fortnight, and then it did not.
@@ -1067,17 +1072,18 @@ There is a version of you it would work brilliantly for. She sleeps through. Her
 
 Give the same woman the same programme two months later, after the thing underneath has been sorted out, and it does exactly what it was meant to do the first time.
 
-So the first question was never what to do. It was what your body can take right now.>
-The free 14-Day Body Decode Challenge. No payment, no card, nothing to cancel.
+So the first question was never what to do. It was what your body can take right now.
 
-Day 1 scores five things and shows you where you actually are. You get a training plan, a nutrition guide and a short daily note in your portal. Day 7 scores eight markers against day one. Day 14 names which of the four patterns is driving yours.
+The Body Decode is free. Two minutes of questions, then your report. No card, nothing to cancel.
 
-It is genuinely free, and it starts the day you join.`,
+You answer them and your report opens straight away. Which pattern is behind it, why it is happening, what it usually gets mistaken for, and the three things that shift it. Then five short videos, one a day, walk you through it.
+
+It is genuinely free, and there is nothing to buy to get it.`,
     description: `Not wrong. Early.` },
   { slug: 'm1-one-in-25', short: 'One in twenty-five', layer: 'metabolic', audience: 'Either sex, disqualifier',
     img: '/creative/round2/m1-one-in-25.png',
-    headline: `The internet says your problem is insulin. In the women we assess it is about one in 25`,
-    primaryText: `You have been told your problem is insulin.
+    headline: `The internet says insulin. In the women we assess it is one in 25. Find out which you are, free`,
+    primaryText: `Twenty-four of every twenty-five are cutting carbs for a problem they do not have.
 
 Cut the carbs. Skip breakfast. Fast for sixteen hours.
 
@@ -1087,14 +1093,15 @@ The other twenty-four are doing everything the insulin advice says, for a proble
 
 Insulin is real. When it is the one driving things, cutting the load works, and it works quickly.
 
-It is just not what is going on in most women over 40.
+It is just not what is going on in most of the women we assess.
 
-There are four things that do this. One of them is yours, and aiming at the wrong one is how you lose a year.>
-The free 14-Day Body Decode Challenge. No payment, no card, nothing to cancel.
+There are four things that do this. One of them is yours, and aiming at the wrong one is how you lose a year.
 
-Day 1 scores five things and shows you where you actually are. You get a training plan, a nutrition guide and a short daily note in your portal. Day 7 scores eight markers against day one. Day 14 names which of the four patterns is driving yours.
+The Body Decode is free. Two minutes of questions, then your report. No card, nothing to cancel.
 
-It is genuinely free, and it starts the day you join.`,
+You answer them and your report opens straight away. Which pattern is behind it, why it is happening, what it usually gets mistaken for, and the three things that shift it. Then five short videos, one a day, walk you through it.
+
+It is genuinely free, and there is nothing to buy to get it.`,
     description: `Probably not the one you were told.` },
 ]
 
@@ -1584,7 +1591,22 @@ const CHALLENGE_WAVES_CLIENT = [
 // primary text keeps its paragraph breaks, because the line breaks are part of
 // the format rather than incidental.
 function Round1AdCard({ ad }: { ad: Round1Ad }) {
-  const url = `${brand().marketingDomain}/challenge?utm_source=meta&utm_campaign=funnelb_broad_r1&utm_content=${ad.slug}`
+  // THE DESTINATION FOLLOWS THE AD, because this one card renders both sets.
+  //
+  // Round 2 (streamA / streamB / metabolic) is the 1 Sep pack and goes to
+  // /decode DIRECTLY. /challenge redirects and preserves the query string, so
+  // the old URL still worked - but uploading it makes a retired URL the
+  // campaign destination and the pixel learns on a redirect. The pack itself
+  // says so: "the ads should point at /decode directly".
+  //
+  // The archived Round 1 layers keep the old destination on purpose. Their copy
+  // still promises fourteen days, so pointing them at a page that offers a
+  // two-minute report would be a worse mismatch than leaving them where the
+  // creative expects. They are archived and are not to be run.
+  const isRound2 = ad.layer === 'streamA' || ad.layer === 'streamB' || ad.layer === 'metabolic'
+  const url = isRound2
+    ? `${brand().marketingDomain}/decode?utm_source=meta&utm_campaign=funnelb_broad_r2&utm_content=${ad.slug}`
+    : `${brand().marketingDomain}/challenge?utm_source=meta&utm_campaign=funnelb_broad_r1&utm_content=${ad.slug}`
   const [open, setOpen] = useState(false)
   return (
     <div className="border border-stone-200 rounded-xl overflow-hidden bg-white">
