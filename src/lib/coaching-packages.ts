@@ -20,9 +20,10 @@ export interface CoachingPackage {
   tier: 'standard' | 'launch' | 'comp'
   format: 'online' | 'in_person'
   sessionsPerWeek: number
-  /** Repriced on 26 Aug 2026, new Stripe payment link not created yet. The
-   *  Send / Copy / Schedule controls stay disabled until one exists, because a
-   *  live button under a new label would charge the OLD amount. */
+  /** Set while a package has been repriced but its new Stripe payment link does
+   *  not exist yet. Suppresses Send / Copy / Schedule, because a live button
+   *  under a new label would charge the OLD amount. Cleared 26 Aug 2026 once
+   *  the four new links were created; keep the flag for the next reprice. */
   linkPending?: boolean
   /** Grandfathered. Existing clients keep it; it is not offered to anyone new. */
   retired?: boolean
@@ -50,14 +51,20 @@ export interface CoachingPackage {
  * Online has never produced a dollar at any price, so there was nothing to
  * defend. Its floor is the $49/week Membership.
  *
+ * The four links below were created 26 Aug 2026 against the SAME Stripe
+ * products as the old prices, so reporting stays continuous. Automatic tax was
+ * mirrored from each product's previous link rather than normalised: it is ON
+ * for online and 3x, OFF for 1x and 2x. That inconsistency predates the
+ * reprice and is an accounting decision, not a code one.
+ *
  * The launch entries stay so the clients on them keep their rate and can still
  * be billed. `retired` keeps them off the list offered to anyone new.
  */
 export const COACHING_PACKAGES: CoachingPackage[] = [
-  { value: 'online',         label: 'Online',                   price: '$69/week',    stripe: '', linkPending: true, tier: 'standard', format: 'online',    sessionsPerWeek: 0 },
-  { value: '1x',             label: 'In-Person 1x + self-led',  price: '$139/week',   stripe: '', linkPending: true, tier: 'standard', format: 'in_person', sessionsPerWeek: 1 },
-  { value: '2x',             label: 'In-Person 2x',             price: '$189/week',   stripe: '', linkPending: true, tier: 'standard', format: 'in_person', sessionsPerWeek: 2 },
-  { value: '3x',             label: 'In-Person 3x',             price: '$225/week',   stripe: '', linkPending: true, tier: 'standard', format: 'in_person', sessionsPerWeek: 3 },
+  { value: 'online',         label: 'Online',                   price: '$69/week',    stripe: 'https://buy.stripe.com/4gM00lengftI6IDdRJ5ZC0c', tier: 'standard', format: 'online',    sessionsPerWeek: 0 },
+  { value: '1x',             label: 'In-Person 1x + self-led',  price: '$139/week',   stripe: 'https://buy.stripe.com/5kQ8wR92W0yO0kf14X5ZC0d', tier: 'standard', format: 'in_person', sessionsPerWeek: 1 },
+  { value: '2x',             label: 'In-Person 2x',             price: '$189/week',   stripe: 'https://buy.stripe.com/28E9AV2Ey3L01ojaFx5ZC0e', tier: 'standard', format: 'in_person', sessionsPerWeek: 2 },
+  { value: '3x',             label: 'In-Person 3x',             price: '$225/week',   stripe: 'https://buy.stripe.com/00w14p5QKa9od719Bt5ZC0f', tier: 'standard', format: 'in_person', sessionsPerWeek: 3 },
   { value: 'online_launch',  label: 'Online (Launch)',          price: '$74.50/week', stripe: 'https://buy.stripe.com/14A28t0wq5T8aYT8xp5ZC04', tier: 'launch',   format: 'online',    sessionsPerWeek: 0, retired: true },
   { value: '1x_launch',      label: 'In-Person 1x + self-led (Launch)', price: '$99.50/week', stripe: 'https://buy.stripe.com/bJefZj0wqdlA3wrbJB5ZC0b', tier: 'launch',   format: 'in_person', sessionsPerWeek: 1, retired: true },
   { value: '2x_launch',      label: 'In-Person 2x (Launch)',    price: '$149.50/week',stripe: 'https://buy.stripe.com/4gM4gB3IC4P46IDcNF5ZC05', tier: 'launch',   format: 'in_person', sessionsPerWeek: 2, retired: true },

@@ -1896,7 +1896,7 @@ export default function HelpPage() {
               <li><strong>In-Person 3x - $225/week</strong> - Coach-assessed upgrade, offered during weekly check-ins not on the Zoom.</li>
               <li><strong>Online - $69/week</strong> - No in-person sessions. Also the fallback if a lead objects to in-person pricing.</li>
             </ul>
-            <p className="text-amber-800 font-semibold">All four were repriced on 26 Aug 2026 and their new Stripe payment links do not exist yet. Until they do, the Send / Copy / Schedule buttons on the client profile are hidden for those packages, so nothing can go out charging the old amount under the new label.</p>
+            <p>All four were repriced on 26 Aug 2026 and new Stripe payment links were created the same day, against the same Stripe products as the old prices so your reporting stays continuous. The old links still exist and still charge the old amounts - do not send them. <strong>Automatic tax is ON for the online and 3x links and OFF for 1x and 2x.</strong> That inconsistency predates the reprice and was carried over deliberately rather than changed without you; it is worth settling with your accountant.</p>
             <p>Payment links for the weekly subscription are available in the Zoom companion Stage 8 Decision panel.</p>
             <Note>Always send the Foundational Read first. Coaching does not start until both the Foundational Read and the first weekly subscription payment are received.</Note>
           </Section>
