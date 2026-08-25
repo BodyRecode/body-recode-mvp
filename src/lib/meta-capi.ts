@@ -35,6 +35,25 @@ export type CapiEventName =
   | 'InitiateCheckout'
   | 'Purchase'
   | 'Subscribe'
+  /**
+   * Booking a strategy call. Added 25 Aug 2026.
+   *
+   * MEASUREMENT ONLY - do NOT make this an ad set's conversion event. A Body
+   * Decode signup is the frequent action; a call booking is rare, and Meta needs
+   * roughly 50 conversions a week per ad set to leave the learning phase. At
+   * $25/day, optimising on the rare one gives the algorithm almost nothing to
+   * learn from.
+   *
+   * It exists because /book was firing NOTHING, so every call the funnel
+   * produced was invisible. That is not a male-traffic problem, which is how it
+   * was first framed: emails 3, 4 and 5 of the female sequence push /book, and
+   * so does the scorecard result for Transitioning and Ready. Meta was blind to
+   * all of it.
+   *
+   * `Schedule` is a Meta STANDARD event, so it reports without a custom
+   * conversion having to be defined first.
+   */
+  | 'Schedule'
 
 export interface CapiEventOptions {
   eventName: CapiEventName

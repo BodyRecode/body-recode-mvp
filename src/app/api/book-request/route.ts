@@ -8,6 +8,7 @@ import { fromCoach, fromBrand } from '@/lib/email-shell'
 import { buildCustomTimeRequestEmail, buildBookingConfirmationEmail } from '@/lib/booking-emails'
 import { coach, brand } from '@/config/tenant'
 import { inngest } from '@/lib/inngest'
+import { fireMetaCapiEvent, extractClientContext } from '@/lib/meta-capi'
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
@@ -136,6 +137,43 @@ export async function POST(request: NextRequest) {
     })
   } catch (e) {
     console.error('[book-request] inngest.send failed:', e)
+  }
+
+  // Tell Meta a call was booked.
+  //
+  // MEASUREMENT, NOT OPTIMISATION. This route fired nothing before 25 Aug 2026,
+  // so every strategy call the funnel produced was invisible to Meta and the
+  // algorithm was being trained away from an outcome worth many multiples of a
+  // $97 Blueprint. Do NOT make Schedule an ad set's conversion event: bookings
+  // are rare next to Body Decode signups, and at $25/day optimising on the rare
+  // event starves the learning phase. Keep the ad sets on Lead.
+  //
+  // Non-blocking, like every other CAPI call here: a Meta failure must never
+  // cost someone their booking.
+  try {
+    const { clientIp, clientUserAgent } = extractClientContext(request)
+    const [bookFirstName, ...bookLastNameParts] = cleanName.split(' ')
+    await fireMetaCapiEvent({
+      eventName: 'Schedule',
+      eventSourceUrl: `${brand().marketingDomain}/book`,
+      actionSource: 'website',
+      userData: {
+        email: cleanEmail,
+        phone: cleanPhone ?? undefined,
+        firstName: bookFirstName,
+        lastName: bookLastNameParts.join(' ') || undefined,
+        country: 'AU',
+        clientIp,
+        clientUserAgent,
+      },
+      customData: {
+        content_name: 'strategy_call_requested',
+        source: 'book_request_form',
+        preferred_time: cleanPreferredTime,
+      },
+    })
+  } catch (capiErr) {
+    console.error('[book-request] CAPI fire threw (non-fatal):', capiErr)
   }
 
   return NextResponse.json({ success: true })
