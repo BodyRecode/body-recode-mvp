@@ -53,10 +53,9 @@
 // feedback_readiness_vocabulary_outward.
 
 import { CHECKIN_PATTERNS, type CheckinPattern } from './checkin-patterns'
-
-/** The pattern fields the five days walk through, in order. */
 import { nextMorningAEST } from './aest-morning'
 
+/** The pattern fields the five days walk through, in order. */
 export type PatternField = 'whatItMeans' | 'whereItShows' | 'whatItIsNot' | 'actions'
 
 export type DecodeDayNumber = 1 | 2 | 3 | 4 | 5
@@ -130,13 +129,11 @@ export const DECODE_DAYS: readonly DecodeDay[] = [
 export const DECODE_LENGTH_DAYS = DECODE_DAYS.length
 
 /**
- * WHEN a given day's lesson opens.
+ * THE DAY CADENCE IS ANCHORED TO 7am BRISBANE, changed 25 Aug 2026, because the
+ * page and the emails were on two different clocks.
  *
- * ANCHORED TO 7am BRISBANE, changed 25 Aug 2026, because the page and the
- * emails were on two different clocks.
- *
- * It used to be a rolling 24h from the moment she enrolled. The daily sends
- * were never on that clock: `decodeDailyArcFunction` sleeps until the next 7am
+ * The gate used to count a rolling 24h from the moment she enrolled. The daily
+ * sends were never on that clock: `decodeDailyArcFunction` sleeps until a 7am
  * and then sends one lesson each morning. Enrol at 11:33am on Tuesday and Day 2
  * opened at 11:33am Wednesday while its email did not arrive until 7am
  * Thursday, so from lunch time onward the portal header counted a day she had
@@ -146,17 +143,50 @@ export const DECODE_LENGTH_DAYS = DECODE_DAYS.length
  * literally true instead of approximately true.
  *
  * DAY 1 IS THE EXCEPTION and opens immediately on enrolment. Signup drops her
- * straight into the portal; making her wait until the next 7am to see anything
- * would put a night between the keenest moment she will ever have and the first
- * thing we give her. Its email still arrives the next morning, which is the one
+ * straight into the portal; making her wait until a 7am to see anything would
+ * put a night between the keenest moment she will ever have and the first thing
+ * we give her. Its email still arrives the next morning, which is the one
  * direction of drift that is deliberate.
  */
+
+/**
+ * MINIMUM GAP between enrolling and the first lesson email.
+ *
+ * Without it, enrolling at 6:59am puts the next 7am sixty seconds away, so she
+ * gets the welcome email at 6:59 and the Day 1 lesson email at 7:00 - two
+ * emails a minute apart, both pointing at the portal she is already looking at,
+ * because signup redirects her straight into it.
+ *
+ * The daily emails are RETURN PROMPTS, not announcements. The Challenge died
+ * because nobody came back, not because nobody arrived, so a lesson email spent
+ * on someone who is currently on the page is a wasted one.
+ *
+ * Three hours covers the awkward window (roughly 4am to 7am) and leaves
+ * everything else alone: an 11pm signup still gets Day 1 at 7am eight hours
+ * later, which is exactly right.
+ */
+const MIN_HOURS_BEFORE_FIRST_EMAIL = 3
+
+/**
+ * The morning Day 1's email goes out, and the anchor every later day counts
+ * from. Exported so the send loop uses the same instant the gate does.
+ */
+export function decodeFirstMorning(enrolledAt: string | Date): Date {
+  const start = enrolledAt instanceof Date ? enrolledAt : new Date(enrolledAt)
+  const first = nextMorningAEST(start)
+  if (first.getTime() - start.getTime() >= MIN_HOURS_BEFORE_FIRST_EMAIL * 3_600_000) return first
+  return new Date(first.getTime() + 86_400_000)
+}
+
+/** When day N's lesson opens. The single answer to that question - the gate and
+ *  the hub's "Opens Thursday" labels both derive from it. */
 export function decodeDayOpensAt(enrolledAt: string | Date, day: number): Date {
   const start = enrolledAt instanceof Date ? enrolledAt : new Date(enrolledAt)
   if (day <= 1) return start
-  // The first 7am after enrolment is when Day 1's EMAIL goes out; Day 2 lands
-  // the morning after that, and so on. Same arithmetic the send loop uses.
-  const firstMorning = nextMorningAEST(start)
+  // Day 1's email morning is the anchor; Day 2 lands the morning after that,
+  // and so on. The send loop calls decodeFirstMorning too, so the two cannot
+  // disagree about when a day begins.
+  const firstMorning = decodeFirstMorning(start)
   return new Date(firstMorning.getTime() + (day - 1) * 86_400_000)
 }
 
@@ -173,7 +203,7 @@ export function decodeDayOpensAt(enrolledAt: string | Date, day: number): Date {
 export function currentDecodeDay(enrolledAt: string | Date, now: Date = new Date()): number {
   const start = enrolledAt instanceof Date ? enrolledAt : new Date(enrolledAt)
   if (Number.isNaN(start.getTime())) return 1
-  const firstMorning = nextMorningAEST(start)
+  const firstMorning = decodeFirstMorning(start)
   const elapsed = Math.floor((now.getTime() - firstMorning.getTime()) / 86_400_000)
   return Math.max(1, elapsed + 1)
 }

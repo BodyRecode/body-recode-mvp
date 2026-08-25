@@ -2,29 +2,35 @@
  * Proves the page gate and the email sends open a lesson at the same instant,
  * for a spread of enrolment times including the awkward ones.
  */
-import { currentDecodeDay, decodeDayOpensAt, isDayUnlocked, DECODE_DAYS } from '../src/lib/decode-days'
-import { nextMorningAEST } from '../src/lib/aest-morning'
+import { currentDecodeDay, decodeDayOpensAt, decodeFirstMorning, isDayUnlocked, DECODE_DAYS } from '../src/lib/decode-days'
 
 const BNE = (d: Date) => d.toLocaleString('en-AU', { timeZone: 'Australia/Brisbane', weekday: 'short', hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short' })
 
-// The send loop: sleep to the next 7am, then one email per morning.
+// Mirrors decodeDailyArcFunction: sleepUntil(decodeFirstMorning(enrolled_at)),
+// then one email per morning.
 function emailTimeFor(enrolled: Date, day: number): Date {
-  const first = nextMorningAEST(enrolled)
+  const first = decodeFirstMorning(enrolled)
   return new Date(first.getTime() + (day - 1) * 86_400_000)
 }
 
 const CASES = [
   ['midday',            '2026-08-25T01:33:00Z'],  // Tue 11:33am BNE - Kade's test
-  ['just before 7am',   '2026-08-25T20:59:00Z'],  // Wed 06:59am BNE
+  ['just before 7am',   '2026-08-25T20:59:00Z'],  // Wed 06:59am BNE - the double-send case
   ['just after 7am',    '2026-08-25T21:01:00Z'],  // Wed 07:01am BNE
-  ['late evening',      '2026-08-25T13:00:00Z'],  // Tue 11:00pm BNE
+  ['4am, inside gap',   '2026-08-25T18:00:00Z'],  // Wed 04:00am BNE
+  ['late evening',      '2026-08-25T13:00:00Z'],  // Tue 11:00pm BNE - 8h gap, allowed
   ['midnight',          '2026-08-25T14:00:00Z'],  // Wed 12:00am BNE
 ]
+
+const MIN_GAP_H = 3
 
 let bad = 0
 for (const [label, iso] of CASES) {
   const enrolled = new Date(iso)
-  console.log(`\n${label}  (enrolled ${BNE(enrolled)})`)
+  const gapH = (decodeFirstMorning(enrolled).getTime() - enrolled.getTime()) / 3_600_000
+  const gapOk = gapH >= MIN_GAP_H
+  if (!gapOk) bad++
+  console.log(`\n${label}  (enrolled ${BNE(enrolled)})  gap to first email: ${gapH.toFixed(1)}h ${gapOk ? '' : '*** TOO SOON ***'}`)
   for (const d of DECODE_DAYS) {
     const opens = decodeDayOpensAt(enrolled, d.day)
     const email = emailTimeFor(enrolled, d.day)

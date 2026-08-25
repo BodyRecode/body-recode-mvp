@@ -1,6 +1,7 @@
 import { inngest } from './inngest'
 import { createAdminClient } from './supabase/admin'
 import { nextMorningAEST } from './aest-morning'
+import { decodeFirstMorning } from './decode-days'
 import { Resend } from 'resend'
 import { sendSms, formatPhone } from './twilio'
 import { darkEmailSignature } from './email-signature'
@@ -2923,7 +2924,28 @@ export const decodeDailyArcFunction = inngest.createFunction(
     const base = `${brand().marketingDomain}/decode/${token}`
     const formattedPhone = phone ? formatPhone(phone) : null
 
-    await step.sleepUntil('decode-anchor-7am', nextMorningAEST(new Date()))
+    // Read enrolled_at from the ROW rather than taking the clock here.
+    //
+    // The page gate computes every unlock from that column, so anchoring the
+    // sends to anything else is how the two drifted apart in the first place.
+    // It is also replay-safe: a bare new Date() outside step.run returns a
+    // different value on every Inngest retry, which is exactly the kind of
+    // silent shift that made the old mismatch so hard to see.
+    const enrolledAt: string = await step.run('decode-read-enrolled-at', async () => {
+      const admin = createAdminClient()
+      const { data } = await admin
+        .from('challenge_enrollments')
+        .select('enrolled_at')
+        .eq('token', token)
+        .maybeSingle()
+      return (data?.enrolled_at as string) ?? new Date().toISOString()
+    })
+
+    // decodeFirstMorning, NOT nextMorningAEST. The pages call the same function,
+    // so when a lesson opens and when its email sends are one decision made in
+    // one place. It also enforces a minimum gap after enrolment: without it,
+    // signing up at 6:59am put this email sixty seconds after the welcome one.
+    await step.sleepUntil('decode-anchor-7am', decodeFirstMorning(enrolledAt))
 
     for (let day = 1; day <= 5; day++) {
       const gate = await step.run(`decode-gate-day${day}`, async () => {
