@@ -55,6 +55,8 @@
 import { CHECKIN_PATTERNS, type CheckinPattern } from './checkin-patterns'
 
 /** The pattern fields the five days walk through, in order. */
+import { nextMorningAEST } from './aest-morning'
+
 export type PatternField = 'whatItMeans' | 'whereItShows' | 'whatItIsNot' | 'actions'
 
 export type DecodeDayNumber = 1 | 2 | 3 | 4 | 5
@@ -128,21 +130,51 @@ export const DECODE_DAYS: readonly DecodeDay[] = [
 export const DECODE_LENGTH_DAYS = DECODE_DAYS.length
 
 /**
+ * WHEN a given day's lesson opens.
+ *
+ * ANCHORED TO 7am BRISBANE, changed 25 Aug 2026, because the page and the
+ * emails were on two different clocks.
+ *
+ * It used to be a rolling 24h from the moment she enrolled. The daily sends
+ * were never on that clock: `decodeDailyArcFunction` sleeps until the next 7am
+ * and then sends one lesson each morning. Enrol at 11:33am on Tuesday and Day 2
+ * opened at 11:33am Wednesday while its email did not arrive until 7am
+ * Thursday, so from lunch time onward the portal header counted a day she had
+ * never been prompted for, every day, widening to a full lesson by Day 5.
+ *
+ * Now both advance at the same instant, and "a new lesson each morning" is
+ * literally true instead of approximately true.
+ *
+ * DAY 1 IS THE EXCEPTION and opens immediately on enrolment. Signup drops her
+ * straight into the portal; making her wait until the next 7am to see anything
+ * would put a night between the keenest moment she will ever have and the first
+ * thing we give her. Its email still arrives the next morning, which is the one
+ * direction of drift that is deliberate.
+ */
+export function decodeDayOpensAt(enrolledAt: string | Date, day: number): Date {
+  const start = enrolledAt instanceof Date ? enrolledAt : new Date(enrolledAt)
+  if (day <= 1) return start
+  // The first 7am after enrolment is when Day 1's EMAIL goes out; Day 2 lands
+  // the morning after that, and so on. Same arithmetic the send loop uses.
+  const firstMorning = nextMorningAEST(start)
+  return new Date(firstMorning.getTime() + (day - 1) * 86_400_000)
+}
+
+/**
  * Which day she is on, 1-indexed, where the day she enrols is Day 1.
  *
  * Returns a number that can exceed DECODE_LENGTH_DAYS: a finisher who comes
  * back on day 40 should still see all five unlocked rather than falling off
  * the end. Callers clamp for display, never for access.
  *
- * Deliberately mirrors the Challenge portal's arithmetic rather than reading
- * `current_day` off the enrolment row. That column exists but the Challenge
- * page recalculated from `enrolled_at` and never wrote it, so it cannot be
- * trusted on any row created before this shipped.
+ * Derived from decodeDayOpensAt so the gate and the "Opens Thursday" labels on
+ * the hub can never disagree - one function decides when a day opens.
  */
 export function currentDecodeDay(enrolledAt: string | Date, now: Date = new Date()): number {
   const start = enrolledAt instanceof Date ? enrolledAt : new Date(enrolledAt)
   if (Number.isNaN(start.getTime())) return 1
-  const elapsed = Math.floor((now.getTime() - start.getTime()) / 86_400_000)
+  const firstMorning = nextMorningAEST(start)
+  const elapsed = Math.floor((now.getTime() - firstMorning.getTime()) / 86_400_000)
   return Math.max(1, elapsed + 1)
 }
 

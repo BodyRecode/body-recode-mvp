@@ -3,7 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { PORTAL_ACCESS_STATUSES } from '@/lib/challenge-access'
 import { logPortalVisit } from '@/lib/challenge-portal-visit'
 import { typeFatMapProfile, leadDescriptor, type Profile } from '@/lib/fat-map-profile'
-import { currentDecodeDay, patternKeyForProfile, DECODE_DAYS, isDayUnlocked } from '@/lib/decode-days'
+import { currentDecodeDay, patternKeyForProfile, DECODE_DAYS, isDayUnlocked, decodeDayOpensAt } from '@/lib/decode-days'
 import DecodePortalClient from './decode-portal-client'
 
 /**
@@ -128,18 +128,20 @@ export default async function DecodePortalPage({ params }: { params: Promise<{ t
   // Day 14 - and a locked card that will not say WHEN gives her nothing to come
   // back for. Day N opens exactly (N-1) x 24h after she enrolled, per
   // currentDecodeDay, so these are the real times and not a guess.
-  const enrolledMs = new Date(enrollment.enrolled_at).getTime()
   const startOfToday = new Date()
   startOfToday.setHours(0, 0, 0, 0)
   const unlockLabels: Record<number, string> = {}
   for (const d of DECODE_DAYS) {
     if (isDayUnlocked(d.day, currentDay)) continue
-    const opensAt = new Date(enrolledMs + (d.day - 1) * 86_400_000)
+    // decodeDayOpensAt, NOT the arithmetic inlined here. The whole reason this
+    // page and the emails drifted was two places each deciding for themselves
+    // when a day begins.
+    const opensAt = decodeDayOpensAt(enrollment.enrolled_at, d.day)
     const daysOut = Math.round((new Date(opensAt).setHours(0, 0, 0, 0) - startOfToday.getTime()) / 86_400_000)
     unlockLabels[d.day] =
       daysOut <= 0 ? 'Opens later today'
-      : daysOut === 1 ? 'Opens tomorrow'
-      : `Opens ${opensAt.toLocaleDateString('en-AU', { weekday: 'long', timeZone: 'Australia/Brisbane' })}`
+      : daysOut === 1 ? 'Opens tomorrow morning'
+      : `Opens ${opensAt.toLocaleDateString('en-AU', { weekday: 'long', timeZone: 'Australia/Brisbane' })} morning`
   }
 
   // One row per enrolment per day. Without it "she ignored the lesson" and "she

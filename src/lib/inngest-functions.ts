@@ -1,5 +1,6 @@
 import { inngest } from './inngest'
 import { createAdminClient } from './supabase/admin'
+import { nextMorningAEST } from './aest-morning'
 import { Resend } from 'resend'
 import { sendSms, formatPhone } from './twilio'
 import { darkEmailSignature } from './email-signature'
@@ -628,15 +629,9 @@ export const challengeFormsReminderFunction = inngest.createFunction(
  * `from`, meaning: if `from` is before today's 7am AEST, returns today 7am;
  * otherwise returns tomorrow 7am.
  */
-function nextMorningAEST(from: Date): Date {
-  // 7am AEST = 21:00 UTC (previous UTC day, since Brisbane is UTC+10)
-  const target = new Date(from)
-  target.setUTCHours(21, 0, 0, 0)  // 21:00 UTC = 07:00 AEST next day
-  if (target <= from) {
-    target.setUTCDate(target.getUTCDate() + 1)
-  }
-  return target
-}
+// MOVED to src/lib/aest-morning.ts so the Body Decode day gate can share it.
+// Read the header there: two copies of this cadence is what let the page and
+// the emails drift a day apart.
 
 /**
  * Inngest helper: after any preceding step.sleep(), sleep further until the
