@@ -2387,7 +2387,23 @@ export const speedToLeadChallengeFunction = inngest.createFunction(
     triggers: [{ event: 'challenge/enrolled' }],
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async ({ event, step }: { event: { data: { leadId?: string; token?: string } }; step: any }) => {
+  async ({ event, step }: { event: { data: { leadId?: string; token?: string; product?: string } }; step: any }) => {
+    // THE SIXTH LISTENER ON challenge/enrolled, and the one the 24 Aug sweep
+    // missed. The other five got this guard; this one did not, because its event
+    // type was narrowed to { leadId, token } and `product` was not even visible
+    // to read.
+    //
+    // What it sends is tplChallengeEnrolled: "welcome to the 14-Day Body Decode.
+    // Day 1 lands tomorrow morning." Every Body Decode signup with SMS opt-in
+    // would have got it, naming a product that no longer exists.
+    //
+    // Worse than the wording: sendLeadSms caps at one message per 24h, so this
+    // would have SUPPRESSED the legitimate Day 1 SMS from decode-daily-arc. The
+    // Decode arc sends its own SMS; there is nothing for speed-to-lead to add.
+    //
+    // It had not fired yet only because no real Decode signup has opted into SMS
+    // since the cutover. It would have hit the first one.
+    if (event.data.product === 'decode') return { ok: true, reason: 'decode_has_its_own_sms' }
     const { leadId } = event.data
     if (!leadId) return { ok: false, reason: 'no_lead_id' }
     return processSpeedToLeadStep(leadId, 'challenge_enrolled', undefined, step)

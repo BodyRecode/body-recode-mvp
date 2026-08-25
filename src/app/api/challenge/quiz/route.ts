@@ -32,13 +32,28 @@ export async function POST(request: NextRequest) {
 
   const { data: enrollment, error: fetchError } = await admin
     .from('challenge_enrollments')
-    .select('id, enrolled_at, leads(name, email, gender, cycle_status, age_band)')
+    .select('id, enrolled_at, product, leads(name, email, gender, cycle_status, age_band)')
     .eq('token', token)
     .in('status', PORTAL_ACCESS_STATUSES)
     .single()
 
   if (fetchError || !enrollment) {
     return NextResponse.json({ error: 'Enrollment not found.' }, { status: 404 })
+  }
+
+  // This route sends Challenge Day 7 / Day 14 emails, and it looked leads up by
+  // token with no product check - so a Body Decode token submitted here would
+  // have been emailed a full 14-Day Challenge report describing a Day 7 Check-In
+  // and a Day 14 reveal that no longer exist.
+  //
+  // Nothing in /decode links to /challenge/[token]/check-in, so this needed a
+  // hand-edited URL or an old email to reach. But the sibling Challenge routes
+  // are deliberately kept alive for people who finished the real thing, so the
+  // door stays open - it just should not open for the wrong product.
+  if (enrollment.product === 'decode') {
+    return NextResponse.json({
+      error: 'This check-in belongs to the retired 14-Day Challenge. Your Body Decode read is already complete.',
+    }, { status: 409 })
   }
 
   const leadRecord = Array.isArray(enrollment.leads) ? enrollment.leads[0] : enrollment.leads

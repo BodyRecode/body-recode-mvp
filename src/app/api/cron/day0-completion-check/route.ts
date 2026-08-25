@@ -30,6 +30,11 @@ export async function GET() {
 
   const since = new Date(Date.now() - 21 * 24 * 60 * 60 * 1000).toISOString()
   const { data: rows, error } = await supabase
+    // NO product filter, deliberately: this is a coach-only completion number
+    // and it should cover everyone who enrolled, whichever product they are on.
+    // The eyebrow said "Challenge · Day 0 Scorecard" while the figures had
+    // silently become a blend of both, so the label was dropped rather than the
+    // rows filtered. Added 25 Aug 2026.
     .from('challenge_enrollments')
     .select('enrolled_at, status, body_decode_intake_completed_at, leads(name)')
     .eq('status', 'active')
@@ -69,7 +74,7 @@ export async function GET() {
 
   const html = darkEmailShell(`
 ${emailLogo()}
-${emailEyebrow('Challenge · Day 0 Scorecard')}
+${emailEyebrow('Day 0 Scorecard')}
 ${emailHeading(`${done.length} of ${all.length} enrollers have completed`)}
 ${emailDivider()}
 ${emailBody('Daily read on the in-portal Day 0 scorecard. Anyone pending cannot see their training, nutrition, Day 5, Check-In or Day 14 reveal until they finish it.')}

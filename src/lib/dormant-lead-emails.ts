@@ -33,7 +33,19 @@ export interface DormantLeadContext {
   profile: string | null
   /** True when the scorecard read was low confidence. */
   provisional: boolean
-  /** True if they have already been through the 14-Day Challenge. */
+  /**
+   * True if they already have an enrolment of ANY kind - Challenge or Body
+   * Decode. It is set from the presence of a `challenge_enrollments` row, and
+   * that table now holds both products, so the name is a legacy one.
+   *
+   * Only used to decide whether to PITCH a free front-end offer (`!didChallenge`
+   * at the Depleted branch below), and for that "has any enrolment" is exactly
+   * the right test - someone already inside The Body Decode should not be
+   * pitched a free entry product either. Corrected 25 Aug 2026.
+   *
+   * DO NOT use it to write copy that says "you did the 14-Day Challenge". It no
+   * longer means that, and there is now a `product` column that does.
+   */
   didChallenge: boolean
   /**
    * Sets the Estrogen-Shift phase. Null for every one of the 84, because the

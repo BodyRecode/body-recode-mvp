@@ -44,6 +44,10 @@ async function main() {
     .from('challenge_enrollments')
     .select('token, status, body_decode_intake_completed_at, lead_id, leads(id, name, email, sms_opt_in_at, sms_opted_out_at)')
     .eq('status', 'active')
+    // CHALLENGE ONLY. The copy says "your Challenge is still on hold" and points
+    // at the Challenge portal. Decode rows match this query too - only the
+    // hardcoded name allowlist was stopping them. Added 25 Aug 2026.
+    .eq('product', 'challenge')
     .is('body_decode_intake_completed_at', null)
 
   if (error) {

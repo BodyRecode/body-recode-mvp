@@ -176,6 +176,13 @@ export async function POST(request: NextRequest) {
         lead_id: leadId,
         enrolled_at: new Date().toISOString(),
         status: 'active',
+        // WHICH PRODUCT THIS ROW IS. Added 25 Aug 2026 after an audit found four
+        // places that could not tell a Body Decode enrolment from a Challenge
+        // one, because both write this same table and nothing on the row said
+        // which. The enrol EVENT carried `product`, so anything reading the
+        // event could branch - but anything reading the TABLE was blind, and
+        // that is where the leaks were.
+        product: isDecode ? 'decode' : 'challenge',
         current_day: 1,
         wave: slot.wave,
       })

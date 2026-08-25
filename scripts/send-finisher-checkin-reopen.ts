@@ -40,6 +40,11 @@ async function main() {
     .from('challenge_enrollments')
     .select('token, lead_id, enrolled_at, leads(name, email)')
     .eq('status', 'completed')
+    // CHALLENGE ONLY. This sends Challenge finisher copy about a check-in that
+    // The Body Decode does not have. It had no date cutoff and no product
+    // filter, so the moment Decode enrolments start reaching 'completed' a
+    // re-run would quietly have included them. Added 25 Aug 2026.
+    .eq('product', 'challenge')
     .is('quiz_completed_at', null)
 
   if (error) throw new Error(error.message)
