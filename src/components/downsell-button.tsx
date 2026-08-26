@@ -45,7 +45,7 @@ export default function DownsellButton({ leadId, alreadyPurchased }: { leadId: s
 
   if (alreadyPurchased) {
     return (
-      <span className="inline-flex items-center gap-1.5 text-xs font-medium text-blue-500 bg-blue-50 px-3 py-1.5 rounded-full border border-blue-600/20">
+      <span className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-blue-500 bg-blue-50 px-3 py-1.5 rounded-full border border-blue-600/20">
         Program purchased
       </span>
     )
@@ -53,7 +53,7 @@ export default function DownsellButton({ leadId, alreadyPurchased }: { leadId: s
 
   return (
     <div className="space-y-2">
-      {error && <p className="text-xs text-red-700">{error}</p>}
+      {error && <p className="text-[12.5px] text-red-700">{error}</p>}
       <div className="flex items-center gap-3">
         <button
           onClick={sendEmail}
@@ -65,7 +65,7 @@ export default function DownsellButton({ leadId, alreadyPurchased }: { leadId: s
         <button
           onClick={copyLink}
           disabled={copying || copied}
-          className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 border border-[#E5E5E5] text-[#3A3A3A] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] hover:bg-blue-50 transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 border border-[#E8EAEE] text-[#43474F] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] hover:bg-blue-50 transition-colors disabled:opacity-50"
         >
           {copying ? 'Generating...' : copied ? 'Copied!' : 'Copy Link'}
         </button>

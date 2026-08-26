@@ -30,7 +30,7 @@ export default function Zoom1DeclinedButton({ leadId }: { leadId: string }) {
 
   return (
     <div className="flex items-center gap-3">
-      {error && <p className="text-xs text-red-700">{error}</p>}
+      {error && <p className="text-[12.5px] text-red-700">{error}</p>}
       <button
         onClick={send}
         disabled={loading}

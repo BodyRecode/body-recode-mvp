@@ -27,7 +27,7 @@ export function CopilotStarters({
             <button
               onClick={() => setOpen(isOpen ? null : cat.label)}
               aria-expanded={isOpen}
-              className="text-left text-[13px] font-semibold text-[#1A1A1A] border border-[#E5E5E5] hover:border-[#B5CFFC] bg-white rounded-lg px-3 py-2 transition-colors flex items-center justify-between"
+              className="text-left text-[13px] font-semibold text-[#141821] border border-[#E8EAEE] hover:border-[#B5CFFC] bg-white rounded-lg px-3 py-2 transition-colors flex items-center justify-between"
             >
               <span>{cat.label}</span>
               <span className={`text-[#1B6DFC] transition-transform ${isOpen ? 'rotate-90' : ''}`}>›</span>

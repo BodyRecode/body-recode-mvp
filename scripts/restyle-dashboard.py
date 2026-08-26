@@ -11,6 +11,21 @@ import re, sys, pathlib
 
 ROOTS = ['src/app/dashboard', 'src/components/dashboard']
 
+# Plus the shared components that only the dashboard uses. src/components is
+# mixed - the same folder holds client-portal and public-page components, which
+# have their own design language and must never be swept. A component is fair
+# game only when every file importing it lives under src/app/dashboard.
+def dashboard_only_components():
+    app = list(pathlib.Path('src/app').rglob('*.tsx'))
+    sources = [(f, f.read_text()) for f in app]
+    out = []
+    for comp in pathlib.Path('src/components').glob('*.tsx'):
+        token = "@/components/" + comp.stem
+        importers = [f for f, text in sources if token + "'" in text or token + '"' in text]
+        if importers and all('src/app/dashboard/' in str(f) for f in importers):
+            out.append(comp)
+    return out
+
 # --- colour + surface tokens -------------------------------------------
 SUBS = [
     # The stone ramp -> the dashboard neutrals. Mapped on the bare token so it
@@ -106,10 +121,11 @@ def sweep(path: pathlib.Path) -> int:
 def main():
     changed = 0
     scanned = 0
-    for root in ROOTS:
-        for path in pathlib.Path(root).rglob('*.tsx'):
-            scanned += 1
-            changed += sweep(path)
+    targets = [p for root in ROOTS for p in pathlib.Path(root).rglob('*.tsx')]
+    targets += dashboard_only_components()
+    for path in targets:
+        scanned += 1
+        changed += sweep(path)
     print(f'scanned {scanned} files, rewrote {changed}')
 
 if __name__ == '__main__':

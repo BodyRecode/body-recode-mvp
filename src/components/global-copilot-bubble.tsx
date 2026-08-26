@@ -165,30 +165,30 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
     <>
       {/* First-time nudge — points at the bubble on first sight, once ever. */}
       {!open && !introSeen && (
-        <div className="fixed bottom-24 right-5 z-50 w-[264px] max-w-[calc(100vw-2.5rem)] bg-[#1A1A1A] text-white rounded-2xl shadow-2xl p-4 print:hidden">
-          <p className="text-[10px] font-bold text-[#8FB6FF] uppercase tracking-widest mb-1" style={{ fontFamily: MONO }}>New · Co-Pilot</p>
-          <p className="text-[13px] leading-relaxed text-[#E5E5E5] mb-3">Ask me anything about the {brandName} method — I&apos;m on every page. Explain a read, teach the doctrine, or pressure-test a call.</p>
+        <div className="fixed bottom-24 right-5 z-50 w-[264px] max-w-[calc(100vw-2.5rem)] bg-[#141821] text-white rounded-xl shadow-2xl p-4 print:hidden">
+          <p className="text-[10px] font-medium text-[#8FB6FF] mb-1" style={{ fontFamily: MONO }}>New · Co-Pilot</p>
+          <p className="text-[13px] leading-relaxed text-[#E8EAEE] mb-3">Ask me anything about the {brandName} method — I&apos;m on every page. Explain a read, teach the doctrine, or pressure-test a call.</p>
           <div className="flex items-center gap-2">
             <button onClick={openPanel} className="text-[13px] font-semibold bg-[#1B6DFC] hover:bg-[#1558d6] text-white rounded-lg px-3 py-1.5 transition-colors">See what I can do</button>
             <button onClick={dismissIntro} className="text-[13px] text-[#B5B5B5] hover:text-white px-2 py-1.5">Dismiss</button>
           </div>
-          <div className="absolute -bottom-1.5 right-9 w-3 h-3 bg-[#1A1A1A] rotate-45" />
+          <div className="absolute -bottom-1.5 right-9 w-3 h-3 bg-[#141821] rotate-45" />
         </div>
       )}
 
       {open && (
         <div
-          className="fixed bottom-24 right-5 z-50 w-[380px] max-w-[calc(100vw-2.5rem)] h-[560px] max-h-[calc(100vh-8rem)] shadow-2xl rounded-2xl print:hidden"
+          className="fixed bottom-24 right-5 z-50 w-[380px] max-w-[calc(100vw-2.5rem)] h-[560px] max-h-[calc(100vh-8rem)] shadow-2xl rounded-xl print:hidden"
           role="dialog"
           aria-label="Coach Co-Pilot"
         >
-          <div className="border border-[#E5E5E5] bg-[#FFFFFF] rounded-2xl overflow-hidden flex flex-col h-full">
-            <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E5E5E5] bg-[#FAFAF7] shrink-0">
-              <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest" style={{ fontFamily: MONO, letterSpacing: '0.14em' }}>
+          <div className="border border-[#E8EAEE] bg-[#FFFFFF] rounded-xl overflow-hidden flex flex-col h-full">
+            <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[#FAFAF7] shrink-0">
+              <p className="text-[10px] font-medium text-[#1B6DFC]" style={{ fontFamily: MONO, letterSpacing: '0.14em' }}>
                 Co-Pilot · Doctrine tutor
               </p>
-              <span className="ml-auto text-[10px] text-[#999999]" style={{ fontFamily: MONO }}>read-only · coach only</span>
-              <button onClick={() => setOpen(false)} aria-label="Close co-pilot" className="text-[#999999] hover:text-[#1A1A1A] text-lg leading-none -my-1">✕</button>
+              <span className="ml-auto text-[10px] text-[#98A0AD]" style={{ fontFamily: MONO }}>read-only · coach only</span>
+              <button onClick={() => setOpen(false)} aria-label="Close co-pilot" className="text-[#98A0AD] hover:text-[#141821] text-lg leading-none -my-1">✕</button>
             </div>
 
             {/* Persistent "What I can help with" bar — available any time, not
@@ -204,24 +204,24 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
                 <circle cx="12" cy="16.4" r="1" fill="#1B6DFC" />
               </svg>
               <span className="text-[13px] font-semibold">What I can help with</span>
-              <span className="ml-auto text-[#9AA3AF] text-xs">{showHelp ? '▲' : '▼'}</span>
+              <span className="ml-auto text-[#9AA3AF] text-[12.5px]">{showHelp ? '▲' : '▼'}</span>
             </button>
 
             <div ref={scrollRef} className="px-5 py-4 space-y-4 flex-1 min-h-0 overflow-y-auto">
               {showPrefs ? (
-                <div className="text-sm text-[#3A3A3A]">
+                <div className="text-sm text-[#43474F]">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-[13px] font-semibold text-[#1A1A1A]">Your coaching preferences</p>
+                    <p className="text-[13px] font-semibold text-[#141821]">Your coaching preferences</p>
                     <button onClick={() => setShowPrefs(false)} className="text-[12px] text-[#1B6DFC] hover:underline">Back</button>
                   </div>
-                  <p className="text-[12.5px] text-[#6B6B6B] leading-relaxed mb-2.5">Tell me how you like to coach and I&apos;ll keep it in mind everywhere (e.g. &quot;favour 4-day splits when the gates allow&quot;, &quot;keep first blocks to 3 sets&quot;, &quot;prefer dairy-free swaps&quot;). This is soft guidance only — it never overrides a client&apos;s readiness gates, phase, or safety.</p>
+                  <p className="text-[12.5px] text-[#666D7A] leading-relaxed mb-2.5">Tell me how you like to coach and I&apos;ll keep it in mind everywhere (e.g. &quot;favour 4-day splits when the gates allow&quot;, &quot;keep first blocks to 3 sets&quot;, &quot;prefer dairy-free swaps&quot;). This is soft guidance only — it never overrides a client&apos;s readiness gates, phase, or safety.</p>
                   <textarea
                     value={prefsText}
                     onChange={e => setPrefsText(e.target.value)}
                     disabled={prefsBusy}
                     rows={7}
                     placeholder="e.g. Favour fewer, higher-quality movements. Default to 3-day weeks unless the client has more capacity…"
-                    className="w-full resize-none text-[13px] border border-[#E5E5E5] rounded-xl px-3 py-2 focus:outline-none focus:border-[#1B6DFC] disabled:opacity-60"
+                    className="w-full resize-none text-[13px] border border-[#E8EAEE] rounded-xl px-3 py-2 focus:outline-none focus:border-[#1B6DFC] disabled:opacity-60"
                   />
                   <div className="flex items-center gap-2 mt-2.5">
                     <button
@@ -235,13 +235,13 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
                   </div>
                 </div>
               ) : showHelp ? (
-                <div className="text-sm text-[#3A3A3A]">
-                  <p className="mb-3 text-[#1A1A1A] font-semibold">I&apos;m on every page. Here&apos;s what I can help with:</p>
+                <div className="text-sm text-[#43474F]">
+                  <p className="mb-3 text-[#141821] font-semibold">I&apos;m on every page. Here&apos;s what I can help with:</p>
                   <div className="space-y-2.5 mb-4">
                     {CAPABILITIES.map(c => (
                       <div key={c.title} className="border border-[#EDEDED] rounded-xl px-3.5 py-2.5">
-                        <p className="text-[13px] font-bold text-[#1A1A1A] mb-0.5">{c.title}</p>
-                        <p className="text-[12.5px] text-[#6B6B6B] leading-relaxed">{c.body}</p>
+                        <p className="text-[13px] font-bold text-[#141821] mb-0.5">{c.title}</p>
+                        <p className="text-[12.5px] text-[#666D7A] leading-relaxed">{c.body}</p>
                       </div>
                     ))}
                   </div>
@@ -249,13 +249,13 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
                   <button onClick={openPrefs} className="w-full text-left text-[12.5px] text-[#1B6DFC] border border-[#B5CFFC] bg-[rgba(27,109,252,0.04)] hover:bg-[rgba(27,109,252,0.08)] rounded-xl px-3.5 py-2.5 mb-3 transition-colors">
                     ⚙ Set your coaching preferences — I&apos;ll remember how you like to work
                   </button>
-                  <p className="mb-1.5 text-[11px] font-bold text-[#999999] uppercase tracking-widest" style={{ fontFamily: MONO }}>Try asking</p>
+                  <p className="mb-1.5 text-[11px] font-medium text-[#98A0AD]" style={{ fontFamily: MONO }}>Try asking</p>
                   <CopilotStarters categories={generalStarterCategories(pathname)} onPick={send} />
                 </div>
               ) : (
                 <>
                   {messages.length === 0 && (
-                    <div className="text-sm text-[#6B6B6B]">
+                    <div className="text-sm text-[#666D7A]">
                       <p className="mb-3">Ask me anything about the {brandName} method. Tap <span className="font-semibold text-[#1B6DFC]">What I can help with</span> above, or pick a category:</p>
                       <CopilotStarters categories={generalStarterCategories(pathname)} onPick={send} />
                     </div>
@@ -264,15 +264,15 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
                   {messages.map((m, i) => (
                     <div key={i} className={m.role === 'user' ? 'flex justify-end' : ''}>
                       <div className={m.role === 'user'
-                        ? 'max-w-[85%] bg-[#1B6DFC] text-white rounded-2xl rounded-br-sm px-4 py-2.5 text-sm leading-relaxed'
-                        : 'max-w-[92%] bg-[#F5F3EE] text-[#1A1A1A] rounded-2xl rounded-bl-sm px-4 py-3 text-sm leading-relaxed'}>
+                        ? 'max-w-[85%] bg-[#1B6DFC] text-white rounded-xl rounded-br-sm px-4 py-2.5 text-sm leading-relaxed'
+                        : 'max-w-[92%] bg-[#F5F3EE] text-[#141821] rounded-xl rounded-bl-sm px-4 py-3 text-sm leading-relaxed'}>
                         <p className="whitespace-pre-wrap">{m.content}</p>
                       </div>
                     </div>
                   ))}
 
                   {loading && (
-                    <div className="bg-[#F5F3EE] rounded-2xl rounded-bl-sm px-4 py-3 inline-flex items-center gap-1.5 w-fit" aria-label="Co-pilot is typing">
+                    <div className="bg-[#F5F3EE] rounded-xl rounded-bl-sm px-4 py-3 inline-flex items-center gap-1.5 w-fit" aria-label="Co-pilot is typing">
                       <span className="w-2 h-2 rounded-full bg-[#9AA3AF] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '0ms' }} />
                       <span className="w-2 h-2 rounded-full bg-[#9AA3AF] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '150ms' }} />
                       <span className="w-2 h-2 rounded-full bg-[#9AA3AF] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '300ms' }} />
@@ -281,7 +281,7 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
 
                   {!loading && last && last.role === 'assistant' && !!last.followups?.length && (
                     <div className="flex flex-col gap-1.5 pt-1">
-                      <p className="text-[10px] font-bold text-[#999999] uppercase tracking-widest" style={{ fontFamily: MONO }}>Follow up</p>
+                      <p className="text-[10px] font-medium text-[#98A0AD]" style={{ fontFamily: MONO }}>Follow up</p>
                       {last.followups.map((f, i) => (
                         <button
                           key={i}
@@ -309,14 +309,14 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
                 <span aria-hidden>☀</span>
                 Morning brief
                 {!!awaiting && awaiting > 0 && (
-                  <span className="text-[11px] font-bold text-white bg-[#E4572E] rounded-full px-1.5 py-0.5 leading-none" style={{ fontFamily: MONO }}>
+                  <span className="text-[11px] font-medium text-white bg-[#E4572E] rounded-full px-1.5 py-0.5 leading-none" style={{ fontFamily: MONO }}>
                     {awaiting} awaiting
                   </span>
                 )}
               </button>
             </div>
 
-            <div className="border-t border-[#E5E5E5] p-3 mt-2">
+            <div className="border-t border-[#E8EAEE] p-3 mt-2">
               <form onSubmit={e => { e.preventDefault(); send(input) }} className="flex items-end gap-2">
                 <textarea
                   value={input}
@@ -324,7 +324,7 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
                   onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(input) } }}
                   placeholder="Ask about the method…"
                   rows={2}
-                  className="flex-1 resize-none text-sm border border-[#E5E5E5] rounded-xl px-3 py-2 focus:outline-none focus:border-[#1B6DFC]"
+                  className="flex-1 resize-none text-sm border border-[#E8EAEE] rounded-xl px-3 py-2 focus:outline-none focus:border-[#1B6DFC]"
                 />
                 <button
                   type="submit"
@@ -360,7 +360,7 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
         {!open && !!awaiting && awaiting > 0 && (
           <span
             aria-label={`${awaiting} clients awaiting you`}
-            className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-[#E4572E] text-white text-[11px] font-bold flex items-center justify-center border-2 border-white shadow"
+            className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-[#E4572E] text-white text-[11px] font-medium flex items-center justify-center border-2 border-white shadow"
             style={{ fontFamily: MONO }}
           >
             {awaiting > 9 ? '9+' : awaiting}

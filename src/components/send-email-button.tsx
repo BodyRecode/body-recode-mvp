@@ -44,7 +44,7 @@ export default function SendEmailButton({
   const baseClass = 'text-sm font-medium px-4 py-2.5 rounded-lg transition-colors disabled:opacity-50'
   const variantClass =
     variant === 'outline'
-      ? 'border border-[#E5E5E5] text-[#3A3A3A] hover:border-[#1B6DFC] hover:text-[#1B6DFC] hover:bg-blue-50'
+      ? 'border border-[#E8EAEE] text-[#43474F] hover:border-[#1B6DFC] hover:text-[#1B6DFC] hover:bg-blue-50'
       : 'bg-[#1B6DFC] text-white font-semibold hover:bg-[#5390FF]'
 
   if (status === 'sent') {

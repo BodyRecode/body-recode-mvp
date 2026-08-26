@@ -101,7 +101,7 @@ export default function ReintakeButton({ clientId, clientName, clientEmail, late
         <button
           onClick={createInvitation}
           disabled={status === 'loading'}
-          className="text-sm px-4 py-2 border border-[#E5E5E5] text-[#3A3A3A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 transition-colors disabled:opacity-50"
+          className="text-sm px-4 py-2 border border-[#E8EAEE] text-[#43474F] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 transition-colors disabled:opacity-50"
           title={status === 'error' ? errorMsg : 'Send a fresh 221-question intake to an existing client for reassessment (block-end, life-context shift, etc). Uses the same form as New Intake but with re-intake email copy.'}
         >
           {status === 'loading' ? 'Creating…' : status === 'error' ? `Error: ${errorMsg}` : 'Re-intake'}
@@ -111,19 +111,19 @@ export default function ReintakeButton({ clientId, clientName, clientEmail, late
   }
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl p-5 mt-4">
+    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 mt-4">
       <StatusLine latestInvitation={latestInvitation} latestSentAt={latestSentAt} />
-      <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1B6DFC] mb-3">Re-intake link ready</p>
-      <p className="text-xs text-[#6B6B6B] mb-3">
+      <p className="text-[12px] font-medium tracking-[0.12em] text-[#1B6DFC] mb-3">Re-intake link ready</p>
+      <p className="text-[12.5px] text-[#666D7A] mb-3">
         This will send the re-intake email variant when you click Send email — copy acknowledges the client is already coaching and asks for a fresh read for reassessment.
       </p>
       <div className="bg-[#FFFFFF] rounded-lg px-4 py-3 flex items-center gap-3 mb-4">
-        <p className="text-[#6B6B6B] text-xs font-mono flex-1 truncate">
+        <p className="text-[#666D7A] text-[12.5px] font-mono flex-1 truncate">
           {window.location.origin}/intake/{token}
         </p>
         <button
           onClick={copy}
-          className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-md border border-[#D4D4D4] text-[#3A3A3A] hover:border-[#999999] hover:text-[#1A1A1A] transition-colors"
+          className="shrink-0 text-[12.5px] font-medium px-3 py-1.5 rounded-md border border-[#CFD4DC] text-[#43474F] hover:border-[#98A0AD] hover:text-[#141821] transition-colors"
         >
           {copied ? 'Copied!' : 'Copy'}
         </button>
@@ -140,7 +140,7 @@ export default function ReintakeButton({ clientId, clientName, clientEmail, late
         )}
         <button
           onClick={() => { setStatus('idle'); setToken('') }}
-          className="text-xs text-[#999999] hover:text-[#3A3A3A] transition-colors"
+          className="text-[12.5px] text-[#98A0AD] hover:text-[#43474F] transition-colors"
         >
           Dismiss
         </button>

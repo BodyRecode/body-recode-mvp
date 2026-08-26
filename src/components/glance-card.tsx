@@ -45,10 +45,10 @@ export function flagsPill(raw: number | string | undefined | null): GlancePill |
 }
 
 const PILL_TONE: Record<NonNullable<GlancePill['tone']>, string> = {
-  neutral: 'text-[#1A1A1A] bg-[#F5F3EE] border-[#E5E5E5]',
+  neutral: 'text-[#141821] bg-[#F5F3EE] border-[#E8EAEE]',
   accent: 'text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border-[#B5CFFC]',
   flag: 'text-amber-700 bg-amber-50 border-amber-200',
-  muted: 'text-[#6B6B6B] bg-stone-100 border-stone-200',
+  muted: 'text-[#666D7A] bg-[#F4F6F9] border-[#EFF1F4]',
 }
 
 export function GlanceCard({
@@ -69,19 +69,18 @@ export function GlanceCard({
   children?: React.ReactNode
 }) {
   return (
-    <div className={`border border-[#E5E5E5] bg-[#FFFFFF] rounded-2xl overflow-hidden ${className}`}>
-      <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E5E5E5] bg-[#FAFAF7]">
+    <div className={`border border-[#E8EAEE] bg-[#FFFFFF] rounded-xl overflow-hidden ${className}`}>
+      <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[#FAFAF7]">
         <p
-          className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest"
-          style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+          className="text-[10px] font-medium text-[#1B6DFC]"
         >
           {label}
         </p>
       </div>
       <div className="px-5 py-4">
-        <p className="text-sm text-[#1A1A1A] leading-relaxed whitespace-pre-wrap font-medium">{headline}</p>
+        <p className="text-sm text-[#141821] leading-relaxed whitespace-pre-wrap font-medium">{headline}</p>
         {subline && (
-          <p className="text-sm text-stone-600 leading-relaxed mt-2">{subline}</p>
+          <p className="text-sm text-[#666D7A] leading-relaxed mt-2">{subline}</p>
         )}
         {pills.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-4">
@@ -100,7 +99,7 @@ export function GlanceCard({
             <div key={gi} className="mt-4">
               {group.label && (
                 <p
-                  className={`text-[10px] font-bold uppercase tracking-wider mb-1.5 ${group.tone === 'muted' ? 'text-stone-500' : 'text-[#1B6DFC]'}`}
+                  className={`text-[11.5px] font-mediumr mb-1.5 ${group.tone === 'muted' ? 'text-[#FBFCFD]0' : 'text-[#1B6DFC]'}`}
                 >
                   {group.label}
                 </p>
@@ -108,7 +107,7 @@ export function GlanceCard({
               <ul className="space-y-1.5">
                 {group.items.map((item, i) => (
                   <li key={i} className="flex items-start gap-2 text-[13px] text-[#2A2A2A] leading-snug">
-                    <span className={`mt-0.5 shrink-0 ${group.tone === 'muted' ? 'text-stone-400' : 'text-[#1B6DFC]'}`}>•</span>
+                    <span className={`mt-0.5 shrink-0 ${group.tone === 'muted' ? 'text-[#98A0AD]' : 'text-[#1B6DFC]'}`}>•</span>
                     <span>{item}</span>
                   </li>
                 ))}

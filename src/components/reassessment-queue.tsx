@@ -36,14 +36,14 @@ export default function ReassessmentQueue({
 
   if (!rows.length) {
     return (
-      <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-5 mb-7">
+      <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 mb-7">
         <div className="flex items-center gap-2.5 mb-1">
           <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
-          <h2 className="text-[11px] font-bold text-[#1A1A1A] uppercase tracking-[0.14em]">
+          <h2 className="text-[11px] font-medium text-[#141821] tracking-[0.14em]">
             Reassessment queue
           </h2>
         </div>
-        <p className="text-sm text-[#6B6B6B]">
+        <p className="text-sm text-[#666D7A]">
           Nothing open. Signals are being monitored weekly; anything that crosses a threshold will appear here.
         </p>
       </div>
@@ -83,21 +83,21 @@ export default function ReassessmentQueue({
   }
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-5 mb-7">
+    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 mb-7">
       <div className="flex items-center justify-between gap-3 flex-wrap mb-1">
         <div className="flex items-center gap-2.5">
           <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
-          <h2 className="text-[11px] font-bold text-[#1A1A1A] uppercase tracking-[0.14em]">
+          <h2 className="text-[11px] font-medium text-[#141821] tracking-[0.14em]">
             Reassessment queue
           </h2>
         </div>
         {overdueCount > 0 && (
-          <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#FEE7E7] text-[#DC2626]">
+          <span className="inline-flex items-center gap-1 text-[11.5px] font-mediumr px-2 py-0.5 rounded-full bg-[#FEE7E7] text-[#DC2626]">
             <AlertTriangle size={11} /> {overdueCount} overdue
           </span>
         )}
       </div>
-      <p className="text-sm text-[#6B6B6B] mb-4">
+      <p className="text-sm text-[#666D7A] mb-4">
         {sorted.length} open. Each stays here until you send a Progress Check or dismiss it with a reason.
       </p>
 
@@ -116,29 +116,29 @@ export default function ReassessmentQueue({
             <li
               key={t.id}
               className="border rounded-xl px-4 py-3"
-              style={{ borderColor: overdue ? '#F5C6C6' : '#E5E5E5', background: overdue ? '#FEF7F7' : '#FFFFFF' }}
+              style={{ borderColor: overdue ? '#F5C6C6' : '#E8EAEE', background: overdue ? '#FEF7F7' : '#FFFFFF' }}
             >
               <div className="flex items-start justify-between gap-4 flex-wrap">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 flex-wrap mb-0.5">
                     <Link
                       href={`/dashboard/clients/${t.client_id}`}
-                      className="text-sm font-bold text-[#1A1A1A] hover:text-[#1B6DFC] transition-colors"
+                      className="text-sm font-bold text-[#141821] hover:text-[#1B6DFC] transition-colors"
                     >
                       {t.client_name}
                     </Link>
-                    <span className="text-sm text-[#6B6B6B]">{reasonLabels[t.reason] ?? t.reason}</span>
+                    <span className="text-sm text-[#666D7A]">{reasonLabels[t.reason] ?? t.reason}</span>
                     {t.trigger_class === 'deterministic' ? (
-                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#F4F4F4] text-[#6B6B6B]">
+                      <span className="text-[11.5px] font-mediumr px-2 py-0.5 rounded-full bg-[#F4F6F9] text-[#666D7A]">
                         Scheduled
                       </span>
                     ) : (
-                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-50 text-[#1B6DFC]">
+                      <span className="text-[11.5px] font-mediumr px-2 py-0.5 rounded-full bg-blue-50 text-[#1B6DFC]">
                         Signal
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-[#999999]">
+                  <p className="text-[12.5px] text-[#98A0AD]">
                     {age === 0 ? 'Fired today' : age === 1 ? 'Open 1 day' : `Open ${age} days`}
                   </p>
                 </div>
@@ -151,7 +151,7 @@ export default function ReassessmentQueue({
                       resolve(t.id, 'send_progress_check')
                     }}
                     disabled={busy}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-[#1B6DFC] hover:bg-[#5390FF] disabled:opacity-60 transition-colors"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12.5px] font-medium text-white bg-[#1B6DFC] hover:bg-[#5390FF] disabled:opacity-60 transition-colors"
                   >
                     {busy ? <Loader2 size={12} className="animate-spin" /> : <Send size={12} />}
                     Send
@@ -159,7 +159,7 @@ export default function ReassessmentQueue({
                   <button
                     onClick={() => setDismissingId(dismissingId === t.id ? null : t.id)}
                     disabled={busy}
-                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium border border-[#E5E5E5] text-[#3A3A3A] hover:border-[#D4D4D4] disabled:opacity-60 transition-colors"
+                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[12.5px] font-medium border border-[#E8EAEE] text-[#43474F] hover:border-[#CFD4DC] disabled:opacity-60 transition-colors"
                   >
                     <X size={12} /> Dismiss
                   </button>
@@ -167,8 +167,8 @@ export default function ReassessmentQueue({
               </div>
 
               {dismissingId === t.id && (
-                <div className="mt-3 pt-3 border-t border-[#E5E5E5]">
-                  <label className="block text-xs font-bold text-[#1A1A1A] mb-1.5">
+                <div className="mt-3 pt-3 border-t border-[#E8EAEE]">
+                  <label className="block text-[12.5px] font-medium text-[#141821] mb-1.5">
                     Why are you dismissing this? Required.
                   </label>
                   <textarea
@@ -176,19 +176,19 @@ export default function ReassessmentQueue({
                     onChange={e => setNote(e.target.value)}
                     rows={2}
                     placeholder="e.g. Spoke to her Friday, the amber week was a work trip."
-                    className="w-full text-sm border border-[#E5E5E5] rounded-lg px-3 py-2 focus:outline-none focus:border-[#1B6DFC]"
+                    className="w-full text-sm border border-[#E8EAEE] rounded-lg px-3 py-2 focus:outline-none focus:border-[#1B6DFC]"
                   />
                   <div className="flex items-center gap-2 mt-2">
                     <button
                       onClick={() => resolve(t.id, 'dismiss', note)}
                       disabled={busy || note.trim().length < 3}
-                      className="px-3.5 py-2 rounded-lg text-xs font-bold text-white bg-[#1A1A1A] hover:bg-[#3A3A3A] disabled:opacity-40 transition-colors"
+                      className="px-3.5 py-2 rounded-lg text-[12.5px] font-medium text-white bg-[#141821] hover:bg-[#3A3A3A] disabled:opacity-40 transition-colors"
                     >
                       {busy ? 'Saving…' : 'Confirm dismissal'}
                     </button>
                     <button
                       onClick={() => { setDismissingId(null); setNote('') }}
-                      className="px-3 py-2 rounded-lg text-xs font-medium text-[#6B6B6B] hover:text-[#1A1A1A]"
+                      className="px-3 py-2 rounded-lg text-[12.5px] font-medium text-[#666D7A] hover:text-[#141821]"
                     >
                       Cancel
                     </button>

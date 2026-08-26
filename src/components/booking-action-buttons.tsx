@@ -175,37 +175,37 @@ export default function BookingActionButtons({
       {step === 'idle' && (
         <button
           onClick={openSlotPicker}
-          className="w-full text-left px-4 py-3 rounded-lg border border-[#E5E5E5] text-sm font-medium text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+          className="w-full text-left px-4 py-3 rounded-lg border border-[#E8EAEE] text-sm font-medium text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
         >
           Book a call
         </button>
       )}
 
       {step === 'loading-slots' && (
-        <div className="px-4 py-3 rounded-lg border border-[#E5E5E5] text-sm text-[#999999]">
+        <div className="px-4 py-3 rounded-lg border border-[#E8EAEE] text-sm text-[#98A0AD]">
           Loading slots...
         </div>
       )}
 
       {step === 'picking' && (
-        <div className="rounded-lg border border-[#E5E5E5] bg-[#FFFFFF] p-4">
+        <div className="rounded-lg border border-[#E8EAEE] bg-[#FFFFFF] p-4">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider">Pick a time</p>
-            <button onClick={() => setStep('idle')} className="text-xs text-[#999999] hover:text-[#6B6B6B] transition-colors">Cancel</button>
+            <p className="text-[12.5px] font-medium text-[#666D7A]">Pick a time</p>
+            <button onClick={() => setStep('idle')} className="text-[12.5px] text-[#98A0AD] hover:text-[#666D7A] transition-colors">Cancel</button>
           </div>
           {days.length === 0 ? (
-            <p className="text-xs text-[#999999]">No available slots in the next 14 days. Use Custom time below or check your availability settings.</p>
+            <p className="text-[12.5px] text-[#98A0AD]">No available slots in the next 14 days. Use Custom time below or check your availability settings.</p>
           ) : (
             <div className="space-y-3 max-h-64 overflow-y-auto pr-1">
               {days.map(day => (
                 <div key={day}>
-                  <p className="text-[10px] font-bold text-[#999999] uppercase tracking-widest mb-1.5">{formatDay(day)}</p>
+                  <p className="text-[10px] font-medium text-[#98A0AD] mb-1.5">{formatDay(day)}</p>
                   <div className="flex flex-wrap gap-1.5">
                     {grouped[day].map(slot => (
                       <button
                         key={slot}
                         onClick={() => { setSelectedSlot(slot); setStep('confirming') }}
-                        className="px-3 py-1.5 text-xs font-medium rounded-md border border-[#E5E5E5] text-[#3A3A3A] hover:border-blue-600 hover:text-blue-500 transition-colors"
+                        className="px-3 py-1.5 text-[12.5px] font-medium rounded-md border border-[#E8EAEE] text-[#43474F] hover:border-blue-600 hover:text-blue-500 transition-colors"
                       >
                         {formatTime(slot)}
                       </button>
@@ -215,10 +215,10 @@ export default function BookingActionButtons({
               ))}
             </div>
           )}
-          <div className="mt-3 pt-3 border-t border-[#E5E5E5]">
+          <div className="mt-3 pt-3 border-t border-[#E8EAEE]">
             <button
               onClick={() => setStep('custom')}
-              className="text-xs text-blue-500 hover:text-blue-700 transition-colors font-medium"
+              className="text-[12.5px] text-blue-500 hover:text-blue-700 transition-colors font-medium"
             >
               + Pick a custom time (outside published availability)
             </button>
@@ -227,25 +227,25 @@ export default function BookingActionButtons({
       )}
 
       {step === 'custom' && (
-        <div className="rounded-lg border border-[#E5E5E5] bg-[#FFFFFF] p-4">
+        <div className="rounded-lg border border-[#E8EAEE] bg-[#FFFFFF] p-4">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider">Custom time</p>
-            <button onClick={() => setStep('picking')} className="text-xs text-[#999999] hover:text-[#6B6B6B] transition-colors">Back</button>
+            <p className="text-[12.5px] font-medium text-[#666D7A]">Custom time</p>
+            <button onClick={() => setStep('picking')} className="text-[12.5px] text-[#98A0AD] hover:text-[#666D7A] transition-colors">Back</button>
           </div>
-          <p className="text-xs text-[#999999] mb-3">Brisbane time. This bypasses your published availability - use when {leadName.split(' ')[0]} needs a slot you don&apos;t normally offer.</p>
+          <p className="text-[12.5px] text-[#98A0AD] mb-3">Brisbane time. This bypasses your published availability - use when {leadName.split(' ')[0]} needs a slot you don&apos;t normally offer.</p>
           <div className="space-y-2 mb-3">
             <input
               type="date"
               value={customDate}
               onChange={e => setCustomDate(e.target.value)}
-              className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-md px-3 py-2 text-xs text-[#1A1A1A] focus:outline-none focus:border-blue-600 transition-colors [color-scheme:dark]"
+              className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-md px-3 py-2 text-[12.5px] text-[#141821] focus:outline-none focus:border-blue-600 transition-colors [color-scheme:dark]"
             />
             <input
               type="time"
               value={customTime}
               onChange={e => setCustomTime(e.target.value)}
               step={900}
-              className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-md px-3 py-2 text-xs text-[#1A1A1A] focus:outline-none focus:border-blue-600 transition-colors [color-scheme:dark]"
+              className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-md px-3 py-2 text-[12.5px] text-[#141821] focus:outline-none focus:border-blue-600 transition-colors [color-scheme:dark]"
             />
           </div>
           <button
@@ -259,13 +259,13 @@ export default function BookingActionButtons({
       )}
 
       {step === 'confirming' && selectedSlot && (
-        <div className="rounded-lg border border-[#E5E5E5] bg-[#FFFFFF] p-4">
+        <div className="rounded-lg border border-[#E8EAEE] bg-[#FFFFFF] p-4">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider">Confirm booking</p>
-            <button onClick={() => setStep('picking')} className="text-xs text-[#999999] hover:text-[#6B6B6B] transition-colors">Back</button>
+            <p className="text-[12.5px] font-medium text-[#666D7A]">Confirm booking</p>
+            <button onClick={() => setStep('picking')} className="text-[12.5px] text-[#98A0AD] hover:text-[#666D7A] transition-colors">Back</button>
           </div>
-          <p className="text-sm font-semibold text-[#1A1A1A] mb-0.5">{selectedDate}</p>
-          <p className="text-xs text-[#6B6B6B] mb-4">{selectedTime} Brisbane · 30 min · {leadName}</p>
+          <p className="text-sm font-semibold text-[#141821] mb-0.5">{selectedDate}</p>
+          <p className="text-[12.5px] text-[#666D7A] mb-4">{selectedTime} Brisbane · 30 min · {leadName}</p>
           <button
             onClick={confirmBooking}
             className="w-full px-4 py-2.5 rounded-lg bg-[#1B6DFC] hover:bg-[#5390FF] text-white text-sm font-bold transition-colors"
@@ -276,7 +276,7 @@ export default function BookingActionButtons({
       )}
 
       {step === 'booking' && (
-        <div className="px-4 py-3 rounded-lg border border-[#E5E5E5] text-sm text-[#999999]">
+        <div className="px-4 py-3 rounded-lg border border-[#E8EAEE] text-sm text-[#98A0AD]">
           Booking...
         </div>
       )}
@@ -292,7 +292,7 @@ export default function BookingActionButtons({
           <div className="px-4 py-3 rounded-lg border border-red-200 bg-red-500/5 text-sm text-red-700">
             {errorMsg || 'Something went wrong.'}
           </div>
-          <button onClick={() => setStep('idle')} className="text-xs text-[#999999] hover:text-[#3A3A3A] transition-colors">Try again</button>
+          <button onClick={() => setStep('idle')} className="text-[12.5px] text-[#98A0AD] hover:text-[#43474F] transition-colors">Try again</button>
         </div>
       )}
 
@@ -301,7 +301,7 @@ export default function BookingActionButtons({
         <button
           onClick={sendBookingLink}
           disabled={linkState === 'loading'}
-          className="w-full text-left px-4 py-3 rounded-lg border border-[#E5E5E5] text-sm font-medium text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
+          className="w-full text-left px-4 py-3 rounded-lg border border-[#E8EAEE] text-sm font-medium text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
         >
           {linkState === 'loading' ? 'Sending...' : linkState === 'sent' ? 'Booking link sent ✓' : linkState === 'error' ? 'Failed to send' : 'Send booking link'}
         </button>
@@ -313,18 +313,18 @@ export default function BookingActionButtons({
           onClick={sendConfirmation}
           disabled={confirmState === 'loading' || !hasZoomDate}
           title={!hasZoomDate ? 'Book a call or set a Zoom date in Actions first' : undefined}
-          className="w-full text-left px-4 py-3 rounded-lg border border-[#E5E5E5] text-sm font-medium text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full text-left px-4 py-3 rounded-lg border border-[#E8EAEE] text-sm font-medium text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {confirmState === 'loading' ? 'Sending...' : confirmState === 'sent' ? 'Confirmation sent ✓' : confirmState === 'error' ? (errorMsg || 'Failed to send') : 'Send booking confirmation'}
         </button>
       )}
 
       {!hasZoomDate && (step === 'idle' || step === 'done') && (
-        <p className="text-xs text-[#999999]">Use &quot;Book a call&quot; above, or set a Zoom date in Actions before sending the confirmation.</p>
+        <p className="text-[12.5px] text-[#98A0AD]">Use &quot;Book a call&quot; above, or set a Zoom date in Actions before sending the confirmation.</p>
       )}
 
       {(linkState === 'error' || confirmState === 'error') && errorMsg && (
-        <p className="text-xs text-red-700">{errorMsg}</p>
+        <p className="text-[12.5px] text-red-700">{errorMsg}</p>
       )}
     </div>
   )

@@ -19,7 +19,7 @@ export default function OverrideSubscriptionButton({ clientId }: { clientId: str
     <button
       onClick={handleClick}
       disabled={loading}
-      className="text-xs text-[#999999] hover:text-blue-500 border border-[#E5E5E5] hover:border-blue-200/50 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 whitespace-nowrap"
+      className="text-[12.5px] text-[#98A0AD] hover:text-blue-500 border border-[#E8EAEE] hover:border-blue-200/50 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 whitespace-nowrap"
     >
       {loading ? 'Overriding…' : 'Override payment'}
     </button>
