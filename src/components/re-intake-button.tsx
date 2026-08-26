@@ -113,7 +113,7 @@ export default function ReintakeButton({ clientId, clientName, clientEmail, late
   return (
     <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 mt-4">
       <StatusLine latestInvitation={latestInvitation} latestSentAt={latestSentAt} />
-      <p className="text-[12px] font-medium tracking-[0.12em] text-[#1B6DFC] mb-3">Re-intake link ready</p>
+      <p className="text-[12px] font-medium text-[#1B6DFC] mb-3">Re-intake link ready</p>
       <p className="text-[12.5px] text-[#666D7A] mb-3">
         This will send the re-intake email variant when you click Send email — copy acknowledges the client is already coaching and asks for a fresh read for reassessment.
       </p>

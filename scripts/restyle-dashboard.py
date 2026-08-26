@@ -103,6 +103,10 @@ def calm(m):
     cls = m.group(1)
     cls = re.sub(r'\s*\buppercase\b', '', cls)
     cls = re.sub(r'\s*\btracking-(?:wider|widest|wide)\b', '', cls)
+    # Arbitrary tracking too. Stripping `uppercase` while leaving
+    # `tracking-[0.12em]` behind is worse than either: a Title Case label
+    # stretched to letter-spacing that only ever made sense in caps.
+    cls = re.sub(r'\s*\btracking-\[0?\.\d+em\]', '', cls)
     cls = cls.replace('font-bold', 'font-medium')
     cls = re.sub(r'\btext-xs\b', 'text-[12.5px]', cls)
     return f'className="{cls}"'

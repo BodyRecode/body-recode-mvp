@@ -39,7 +39,7 @@ export default function ReassessmentQueue({
       <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 mb-7">
         <div className="flex items-center gap-2.5 mb-1">
           <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
-          <h2 className="text-[11px] font-medium text-[#141821] tracking-[0.14em]">
+          <h2 className="text-[11px] font-medium text-[#141821]">
             Reassessment queue
           </h2>
         </div>
@@ -87,7 +87,7 @@ export default function ReassessmentQueue({
       <div className="flex items-center justify-between gap-3 flex-wrap mb-1">
         <div className="flex items-center gap-2.5">
           <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
-          <h2 className="text-[11px] font-medium text-[#141821] tracking-[0.14em]">
+          <h2 className="text-[11px] font-medium text-[#141821]">
             Reassessment queue
           </h2>
         </div>

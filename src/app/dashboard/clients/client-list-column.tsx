@@ -75,7 +75,7 @@ export default function ClientListColumn({ clients }: { clients: ClientListEntry
           ) : (
             groups.map(group => (
               <div key={group.status}>
-                <p className="px-3 pt-2.5 pb-1 text-[10.5px] font-semibold tracking-[0.07em] text-[#9AA2B0]">
+                <p className="px-3 pt-2.5 pb-1 text-[10.5px] font-semibold text-[#9AA2B0]">
                   {STATUS_LABEL[group.status]}
                   <span className="ml-1.5 font-normal tracking-normal">{group.items.length}</span>
                 </p>

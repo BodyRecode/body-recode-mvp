@@ -51,7 +51,7 @@ export default function NewIntakeButton({ clientId, clientName, clientEmail }: P
 
   return (
     <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 mt-4">
-      <p className="text-[12px] font-medium tracking-[0.12em] text-[#1B6DFC] mb-3">New intake link ready</p>
+      <p className="text-[12px] font-medium text-[#1B6DFC] mb-3">New intake link ready</p>
       <div className="bg-[#FFFFFF] rounded-lg px-4 py-3 flex items-center gap-3 mb-4">
         <p className="text-[#666D7A] text-[12.5px] font-mono flex-1 truncate">
           {window.location.origin}/intake/{token}

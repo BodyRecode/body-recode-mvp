@@ -2158,7 +2158,7 @@ export default function StrategyPage() {
               Across <strong>86 scorecards</strong>, <strong className="text-[#141821]">Sleep (1.80) and Stress Load (1.86) are the two worst-scoring sections. Training Response (2.06) is the best.</strong> The thing these women work hardest at is the least broken thing about them.
             </p>
             <div className="p-3 bg-white border border-emerald-500/30 rounded-lg mb-3">
-              <p className="text-[10px] font-medium tracking-[0.18em] text-emerald-700 mb-1.5">The spine line</p>
+              <p className="text-[10px] font-medium text-emerald-700 mb-1.5">The spine line</p>
               <p className="text-base font-semibold text-[#141821] leading-snug italic">&ldquo;Capacity is fine. Regulation is gone.&rdquo;</p>
               <p className="text-[12.5px] text-[#666D7A] mt-2">Training response is <em>capacity</em>. Sleep + stress load are <em>regulation</em>. Proven on our own data, nothing borrowed.</p>
             </div>
@@ -2169,7 +2169,7 @@ export default function StrategyPage() {
               <li><strong>Menopause is the population, not a pillar.</strong> It runs through both lanes.</li>
             </ul>
             <div className="p-3 bg-white border border-emerald-500/30 rounded-lg">
-              <p className="text-[10px] font-medium tracking-[0.18em] text-emerald-700 mb-1.5">Say readiness outward</p>
+              <p className="text-[10px] font-medium text-emerald-700 mb-1.5">Say readiness outward</p>
               <p className="text-sm text-[#141821]">readiness (not &ldquo;body state&rdquo;) &middot; capacity (training response) &middot; regulation (sleep + stress load). Body state has to be taught; readiness is a category the market already prices. <strong>Vocabulary only &mdash; Fat Map v2.0 and the governance rule are untouched.</strong> The product is still named the Readiness Scorecard; rename it with the ad restart, and leave the DB columns alone.</p>
             </div>
           </Card>
@@ -2208,7 +2208,7 @@ export default function StrategyPage() {
               Brands are built by becoming known for ONE thing. Variety of message is <em>not</em> authority. Variety of <strong>expression</strong> on the same message is authority. ~1% of any given audience has actually seen a previous post; even they forget within days. The instinct to vary the topic is the instinct that prevents brand recognition from forming.
             </p>
             <div className="p-3 bg-white border border-[#1B6DFC]/30 rounded-lg mb-3">
-              <p className="text-[10px] font-medium tracking-[0.18em] text-[#1B6DFC] mb-1.5">The ONE Body Recode message</p>
+              <p className="text-[10px] font-medium text-[#1B6DFC] mb-1.5">The ONE Body Recode message</p>
               <p className="text-base font-semibold text-[#141821] leading-snug italic">
                 "It's a state problem, not a discipline / training / nutrition / willpower problem. Read the state first, then prescribe."
               </p>
@@ -2240,7 +2240,7 @@ export default function StrategyPage() {
             </ul>
             <p className="text-[12.5px] text-[#666D7A] mt-2">Full detail in <strong className="text-blue-700">Strategy Docs → Body Recode</strong> (Part II). Same 5 types, same archetype rotation - the formats just give each a sharper, repeatable shape.</p>
             <div className="mt-3 p-3 bg-white border border-emerald-500/30 rounded-lg">
-              <p className="text-[10px] font-medium tracking-[0.18em] text-emerald-700 mb-1.5">Two doors + the Challenge promo layer</p>
+              <p className="text-[10px] font-medium text-emerald-700 mb-1.5">Two doors + the Challenge promo layer</p>
               <p className="text-[12.5px] text-[#141821] leading-relaxed">CTA by post type: <strong>doctrine/engagement → &quot;find your state&quot; (scorecard)</strong>; <strong>Challenge promo → &quot;join the free 14-day Challenge&quot;</strong>. Run ~1 explicit Challenge-promo post/week (rotating angles: what it is / what you get / who it&apos;s for / proof / why now / objection-kill), with a heavier burst when a wave opens. Typical week = 4 doctrine + 1 promo.</p>
             </div>
           </Card>
@@ -2251,7 +2251,7 @@ export default function StrategyPage() {
               ~3 IG Stories/day carry the doctrine in short form (hook · pattern spotlight · quote · inside-the-challenge · photo overlay). Their link sticker points to the <strong>free Challenge</strong> - stories are cold / top-of-funnel, so they feed the Challenge entry, not the paid product.
             </p>
             <div className="p-3 bg-white border border-blue-500/30 rounded-lg">
-              <p className="text-[10px] font-medium tracking-[0.18em] text-blue-600 mb-1.5">Weekly Blueprint beat (added Jul 2026)</p>
+              <p className="text-[10px] font-medium text-blue-600 mb-1.5">Weekly Blueprint beat (added Jul 2026)</p>
               <p className="text-[12.5px] text-[#141821] leading-relaxed">One story/week (Thursday, 5pm) drives the <strong>warm</strong> audience to <strong>bodyrecode.au/blueprint</strong> rather than the Challenge - the story-level expression of &quot;August = Blueprint drive.&quot; Keeps cold traffic on the free Challenge (per the evergreen ladder, Blueprint is warm-only) while giving Blueprint a consistent organic beat. Posting-reminder link stickers route automatically: Blueprint → /blueprint, every other story → /challenge.</p>
             </div>
           </Card>
@@ -2351,7 +2351,7 @@ export default function StrategyPage() {
               ].map(row => (
                 <div key={row.gate} className="p-3 bg-white rounded-lg border border-amber-200">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[10px] font-medium tracking-[0.15em] text-amber-700">{row.gate}</span>
+                    <span className="text-[10px] font-medium text-amber-700">{row.gate}</span>
                     <span className="text-sm font-bold text-[#141821]">{row.label}</span>
                     <span className="text-[12.5px] text-[#98A0AD]">·</span>
                     <span className="text-[12.5px] text-[#666D7A]">{row.metric}</span>

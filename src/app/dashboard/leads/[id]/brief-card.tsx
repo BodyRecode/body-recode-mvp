@@ -35,7 +35,7 @@ export default function BriefCard({ summary, scopeFlags }: { summary: BriefSumma
       <div className="p-5 grid sm:grid-cols-2 gap-x-6 gap-y-4">
         {/* The read */}
         <div>
-          <p className="text-[10px] font-medium text-[#98A0AD] tracking-[0.14em] mb-1.5">The read</p>
+          <p className="text-[10px] font-medium text-[#98A0AD] mb-1.5">The read</p>
           <p className="text-[15px] font-bold text-[#141821] leading-snug">
             {summary.stateLabel}
             {summary.profileLabel && <> · {summary.profileLabel}</>}
@@ -48,7 +48,7 @@ export default function BriefCard({ summary, scopeFlags }: { summary: BriefSumma
 
         {/* Quality */}
         <div>
-          <p className="text-[10px] font-medium text-[#98A0AD] tracking-[0.14em] mb-1.5">Lead quality</p>
+          <p className="text-[10px] font-medium text-[#98A0AD] mb-1.5">Lead quality</p>
           <p className="text-[15px] font-black" style={{ color: qualityColour }}>
             {summary.quality}
             <span className="text-[12px] font-semibold text-[#98A0AD]"> · {summary.redCount} flag{summary.redCount === 1 ? '' : 's'}</span>
@@ -69,7 +69,7 @@ export default function BriefCard({ summary, scopeFlags }: { summary: BriefSumma
 
         {/* Offer */}
         <div>
-          <p className="text-[10px] font-medium text-[#98A0AD] tracking-[0.14em] mb-1.5">Offer</p>
+          <p className="text-[10px] font-medium text-[#98A0AD] mb-1.5">Offer</p>
           {summary.doNotPitch && (
             <p className="inline-flex items-center gap-1.5 text-[12px] font-medium text-red-700 mb-1">
               <Ban size={12} /> Do not pitch 1:1
@@ -80,7 +80,7 @@ export default function BriefCard({ summary, scopeFlags }: { summary: BriefSumma
 
         {/* Path */}
         <div>
-          <p className="text-[10px] font-medium text-[#98A0AD] tracking-[0.14em] mb-1.5">Likely path</p>
+          <p className="text-[10px] font-medium text-[#98A0AD] mb-1.5">Likely path</p>
           <p className="inline-flex items-start gap-1.5 text-[13px] text-[#43474F] leading-relaxed">
             <Route size={13} className="text-[#98A0AD] mt-0.5 shrink-0" />
             {summary.pathLine}
@@ -91,7 +91,7 @@ export default function BriefCard({ summary, scopeFlags }: { summary: BriefSumma
       {/* Critical hold */}
       {summary.criticalHold.length > 0 && (
         <div className="px-5 pb-5">
-          <p className="text-[10px] font-medium text-[#98A0AD] tracking-[0.14em] mb-2">Hold these</p>
+          <p className="text-[10px] font-medium text-[#98A0AD] mb-2">Hold these</p>
           <ol className="space-y-1.5">
             {summary.criticalHold.map((h, i) => (
               <li key={i} className="flex gap-2.5 text-[13px] text-[#43474F] leading-snug">

@@ -7,7 +7,7 @@ export default function OrientationPage() {
 
         {/* Header */}
         <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
-          <p className="text-[10px] text-[#98A0AD] tracking-[0.25em] font-semibold mb-10">{brand().name}&trade; &middot; Performance Coaching</p>
+          <p className="text-[10px] text-[#98A0AD] font-semibold mb-10">{brand().name}&trade; &middot; Performance Coaching</p>
           <div className="w-8 h-px bg-blue-500/60 mb-8" />
           <h1 className="text-4xl font-light text-[#141821] mb-4 leading-tight tracking-tight">Performance Coaching<br />Orientation</h1>
           <p className="text-[#666D7A] text-base leading-relaxed">How this works. What to expect. How we begin.</p>
@@ -85,7 +85,7 @@ export default function OrientationPage() {
 
         </div>
 
-        <p className="text-[10px] text-[#141821] tracking-[0.25em] mt-20">{brand().name}&trade;</p>
+        <p className="text-[10px] text-[#141821] mt-20">{brand().name}&trade;</p>
 
       </div>
     </div>
@@ -97,7 +97,7 @@ function OrientationSection({ title, children }: { title: string; children: Reac
     <section>
       <div className="flex items-center gap-4 mb-6">
         <div className="w-1 h-4 bg-blue-500/50 rounded-full shrink-0" />
-        <h2 className="text-[12.5px] font-semibold text-blue-500/70 tracking-[0.15em]"
+        <h2 className="text-[12.5px] font-semibold text-blue-500/70"
           dangerouslySetInnerHTML={{ __html: title }}
         />
       </div>

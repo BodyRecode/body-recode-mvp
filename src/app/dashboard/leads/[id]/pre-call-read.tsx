@@ -186,7 +186,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
 
       if (b.kind === 'label') {
         out.push(
-          <p key={i} className="text-[11px] font-medium text-[#141821] tracking-[0.1em] pt-3 ml-1">
+          <p key={i} className="text-[11px] font-medium text-[#141821] pt-3 ml-1">
             {b.text}
           </p>
         )

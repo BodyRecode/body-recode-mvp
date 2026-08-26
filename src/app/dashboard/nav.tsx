@@ -215,7 +215,7 @@ export default function DashboardNav({
           group.key === 'meta' && showDev ? [...group.items, DEV_ONLY] : group.items
         return (
           <div key={group.key} className="mb-0.5">
-            <p className="px-2 pt-3.5 pb-1.5 text-[10.5px] font-semibold tracking-[0.07em] text-[#9AA2B0]">
+            <p className="px-2 pt-3.5 pb-1.5 text-[10.5px] font-semibold text-[#9AA2B0]">
               {group.label}
             </p>
             <div className="flex flex-col gap-[1px]">

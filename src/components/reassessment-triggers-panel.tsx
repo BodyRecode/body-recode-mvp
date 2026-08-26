@@ -61,7 +61,7 @@ export default function ReassessmentTriggersPanel({
     <div className="bg-white border border-[#E8EAEE] rounded-xl p-6 mb-6">
       <div className="flex items-center gap-2.5 mb-1">
         <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
-        <h2 className="text-[11px] font-medium text-[#141821] tracking-[0.14em]">
+        <h2 className="text-[11px] font-medium text-[#141821]">
           Reassessment queue
         </h2>
       </div>

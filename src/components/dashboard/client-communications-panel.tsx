@@ -59,7 +59,7 @@ export default function ClientCommunicationsPanel({ rows }: { rows: ClientCommun
   return (
     <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 mb-4">
       <div className="flex items-center justify-between mb-3">
-        <p className="text-[12px] font-medium tracking-[0.12em] text-[#1B6DFC]">Communications</p>
+        <p className="text-[12px] font-medium text-[#1B6DFC]">Communications</p>
         <span className="text-[10px] text-[#666D7A]">{rows.length === 0 ? 'Nothing sent yet' : `Last ${rows.length}`}</span>
       </div>
 

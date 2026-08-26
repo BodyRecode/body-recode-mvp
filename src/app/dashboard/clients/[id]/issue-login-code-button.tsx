@@ -54,7 +54,7 @@ export default function IssueLoginCodeButton({ clientId }: { clientId: string })
 
       {issued && (
         <div className="mt-2 w-full max-w-sm bg-blue-50 border border-[#1B6DFC]/30 rounded-xl p-3">
-          <p className="text-[12px] font-medium tracking-[0.12em] text-[#1B6DFC] mb-1">Sign-in code</p>
+          <p className="text-[12px] font-medium text-[#1B6DFC] mb-1">Sign-in code</p>
           <div className="flex items-center gap-3">
             <span className="font-mono text-2xl font-extrabold tracking-[0.25em] text-[#141821]">{issued.code}</span>
             <button

@@ -554,7 +554,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             href={`/dashboard/clients/${id}/program`}
             className="block bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-xl p-4 mb-4 transition-colors"
           >
-            <p className="text-[12px] font-medium tracking-[0.12em] text-amber-700 mb-1">Pending block-end reading</p>
+            <p className="text-[12px] font-medium text-amber-700 mb-1">Pending block-end reading</p>
             <p className="text-sm text-amber-900">
               <span className="font-semibold">{pendingTrajectory.block_name}</span> ended{endedAt ? ` around ${endedAt}` : ''} but its trajectory reading was never generated. Click through to generate it now →
             </p>
@@ -566,10 +566,14 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       <div data-tab="admin">
 
       {/* Deliberate Start Window */}
-      <div className="bg-[#FFFFFF] border border-[#E8EAEE] border-l-[3px] border-l-[#1B6DFC] rounded-xl p-5 mb-4">
+      <div className="border border-[#E8EAEE] rounded-xl p-5 mb-4"
+        style={{
+          background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
+          boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
+        }}>
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-[12px] font-medium tracking-[0.12em] text-[#1B6DFC] mb-1">Coaching Start Date</p>
+            <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em] mb-1">Coaching Start Date</p>
             {client.coaching_started_at ? (
               <p className="text-sm text-[#43474F]">
                 {(() => {
@@ -592,9 +596,13 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       </div>
 
       {/* Fixed Session Slot */}
-      <div className="bg-[#FFFFFF] border border-[#E8EAEE] border-l-[3px] border-l-[#1B6DFC] rounded-xl p-5 mb-4">
+      <div className="border border-[#E8EAEE] rounded-xl p-5 mb-4"
+        style={{
+          background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
+          boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
+        }}>
         <div className="flex items-center justify-between mb-3">
-          <p className="text-[12px] font-medium tracking-[0.12em] text-[#1B6DFC]">Face-to-Face Session</p>
+          <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Face-to-Face Session</p>
           <Link
             href={`/dashboard/clients/${id}/fixed-session`}
             className="text-[12.5px] text-blue-500 hover:text-blue-700 transition-colors"
@@ -645,9 +653,13 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       </div>
 
       {/* Package */}
-      <div className="bg-[#FFFFFF] border border-[#E8EAEE] border-l-[3px] border-l-[#1B6DFC] rounded-xl p-5 mb-4">
+      <div className="border border-[#E8EAEE] rounded-xl p-5 mb-4"
+        style={{
+          background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
+          boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
+        }}>
         <div className="flex items-center justify-between mb-3">
-          <p className="text-[12px] font-medium tracking-[0.12em] text-[#1B6DFC]">Coaching Package</p>
+          <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Coaching Package</p>
           {client.subscription_active ? (
             <span className="text-[12.5px] font-semibold px-2.5 py-1 rounded-full border border-blue-200 text-blue-500 bg-blue-50">
               Subscription Active
@@ -689,9 +701,13 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       <ClientCommunicationsPanel rows={communications} />
 
       {/* Onboarding status */}
-      <div className="bg-[#FFFFFF] border border-[#E8EAEE] border-l-[3px] border-l-[#1B6DFC] rounded-xl p-5 mb-4">
+      <div className="border border-[#E8EAEE] rounded-xl p-5 mb-4"
+        style={{
+          background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
+          boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
+        }}>
         <div className="flex items-center justify-between mb-3">
-          <p className="text-[12px] font-medium tracking-[0.12em] text-[#1B6DFC]">Onboarding</p>
+          <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Onboarding</p>
           <div className="flex items-center gap-2 flex-wrap">
             <SendPortalEmailButton clientId={client.id} />
             <SendPortalOrientationButton clientId={client.id} />
@@ -766,7 +782,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               <span className="text-[#8A5A14] text-[13px] font-bold leading-none">!</span>
             </div>
             <div className="min-w-0">
-              <p className="text-[12px] font-medium tracking-[0.12em] text-[#8A5A14] mb-1">Signals to reconcile</p>
+              <p className="text-[12px] font-medium text-[#8A5A14] mb-1">Signals to reconcile</p>
               <p className="text-sm font-semibold text-[#141821] mb-1.5">{fatDivergence.headline}</p>
               <p className="text-[13px] text-[#43474F] leading-relaxed">{fatDivergence.detail}</p>
             </div>
@@ -776,10 +792,14 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
       {/* Foundational intake status */}
       {latestFoundationalInvitation && (
-        <div className="bg-[#FFFFFF] border border-[#E8EAEE] border-l-[3px] border-l-[#1B6DFC] rounded-xl p-5 mb-4">
+        <div className="border border-[#E8EAEE] rounded-xl p-5 mb-4"
+        style={{
+          background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
+          boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
+        }}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[12px] font-medium tracking-[0.12em] text-[#1B6DFC] mb-1">Intake</p>
+              <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em] mb-1">Intake</p>
               <div className="flex items-center gap-2">
                 <span
                   className={`text-xs font-medium px-2.5 py-1 rounded-full border capitalize ${
@@ -840,10 +860,14 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           dietary fields, the Dietary & Consumption editor below is the faster
           path; this client-driven flow also auto-regenerates the CFFS.  */}
       {latestFoundationalInvitation?.status === 'complete' && (
-        <div className="bg-[#FFFFFF] border border-[#E8EAEE] border-l-[3px] border-l-[#1B6DFC] rounded-xl p-5 mb-4">
+        <div className="border border-[#E8EAEE] rounded-xl p-5 mb-4"
+        style={{
+          background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
+          boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
+        }}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[12px] font-medium tracking-[0.12em] text-[#1B6DFC] mb-1">Supplementary intake</p>
+              <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em] mb-1">Supplementary intake</p>
               {latestSupplementaryInvitation ? (
                 <div className="flex items-center gap-2">
                   <span
@@ -1681,7 +1705,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         {/* Check-in submission log */}
         {recentCheckins && recentCheckins.length > 0 && (
           <div className="bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl p-4">
-            <p className="text-[12px] font-medium tracking-[0.12em] text-[#1B6DFC] mb-3">Recent Submissions</p>
+            <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em] mb-3">Recent Submissions</p>
             <div className="space-y-2">
               {recentCheckins.slice(0, 8).map((ci, i) => {
                 const fb = ci.id ? feedbackByCheckinId.get(ci.id) : undefined
@@ -1718,7 +1742,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         {feedbackHistory && feedbackHistory.length > 0 && (
           <div className="bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl p-4">
             <div className="flex items-center justify-between mb-3">
-              <p className="text-[12px] font-medium tracking-[0.12em] text-[#1B6DFC]">Coach Response History</p>
+              <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Coach Response History</p>
               <p className="text-[10px] text-[#43474F]">{feedbackHistory.length} total</p>
             </div>
             <div className="space-y-3">
