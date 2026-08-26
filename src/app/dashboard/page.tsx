@@ -243,9 +243,9 @@ export default async function DashboardHomePage() {
         <Card>
           <SectionLabel
             cta={
-              <a href="/dashboard/coaching" className="text-[12px] text-[#1B6DFC] hover:text-[#5390FF] transition-colors">
-                View coaching →
-              </a>
+              <Link href="/dashboard/checkins" className="text-[12px] text-[#1B6DFC] hover:text-[#5390FF] transition-colors">
+                Review queue →
+              </Link>
             }
           >
             Recent Check-Ins
@@ -255,7 +255,7 @@ export default async function DashboardHomePage() {
               {recentCheckins.map((ci: { id: string; form_type: string; week_number: number; submitted_at: string; clients: { name: string }[] | { name: string } | null; client_id: string }) => (
                 <DataRow
                   key={ci.id}
-                  href={`/dashboard/clients/${ci.client_id}`}
+                  href={`/dashboard/clients/${ci.client_id}/checkins/${ci.week_number}/${String(ci.form_type).toLowerCase()}`}
                   avatar={(Array.isArray(ci.clients) ? ci.clients[0]?.name : ci.clients?.name) ?? 'Unknown'}
                   primary={Array.isArray(ci.clients) ? ci.clients[0]?.name : ci.clients?.name ?? 'Unknown'}
                   secondary={`Week ${ci.week_number} · Form ${ci.form_type}`}

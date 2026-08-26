@@ -282,6 +282,118 @@ export function StatCard({
 }
 
 /* ===========================================================
+ * Ring - completion donut. One number, and the two counts it
+ * is made of, so the percentage can always be checked against
+ * what it actually divided.
+ * =========================================================== */
+export function Ring({
+  value,
+  size = 116,
+  accent = 'teal',
+  label,
+  legend,
+}: {
+  /** 0-100. */
+  value: number
+  size?: number
+  accent?: Accent
+  /** Text inside the ring. Defaults to the rounded percentage. */
+  label?: ReactNode
+  /** Counts under the ring - always show what the percentage divided. */
+  legend?: { label: string; count: number; accent?: Accent }[]
+}) {
+  const a = ACCENT[accent]
+  const pct = Math.max(0, Math.min(100, value))
+  const stroke = Math.round(size * 0.1)
+  const r = (size - stroke) / 2
+  const circumference = 2 * Math.PI * r
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <div className="relative" style={{ width: size, height: size }}>
+        <svg width={size} height={size} className="-rotate-90" aria-hidden>
+          <circle
+            cx={size / 2} cy={size / 2} r={r}
+            fill="none" stroke="#EFF1F4" strokeWidth={stroke}
+          />
+          <circle
+            cx={size / 2} cy={size / 2} r={r}
+            fill="none" stroke={a.bar} strokeWidth={stroke} strokeLinecap="round"
+            strokeDasharray={`${(pct / 100) * circumference} ${circumference}`}
+          />
+        </svg>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span
+            className="text-[20px] font-semibold text-[#141821] tracking-[-0.03em]"
+            style={{ fontVariantNumeric: 'tabular-nums' }}
+          >
+            {label ?? `${Math.round(pct)}%`}
+          </span>
+        </div>
+      </div>
+      {legend && legend.length > 0 && (
+        <div className="flex items-center gap-3 flex-wrap justify-center">
+          {legend.map((item, i) => {
+            const la = ACCENT[item.accent ?? 'neutral']
+            return (
+              <span key={item.label} className="flex items-center gap-3">
+                {i > 0 && <span className="text-[#E8EAEE]" aria-hidden>|</span>}
+                <span className="inline-flex items-center gap-1.5 text-[12px] text-[#666D7A]">
+                  <span className="w-[6px] h-[6px] rounded-full" style={{ background: la.bar }} aria-hidden />
+                  <span style={{ fontVariantNumeric: 'tabular-nums' }} className="font-medium text-[#141821]">
+                    {item.count}
+                  </span>
+                  {item.label}
+                </span>
+              </span>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
+
+/* ===========================================================
+ * RangeTabs - plain text tabs for switching a list's window.
+ * Active is colour, not a pill: the tabs sit above data and
+ * should not compete with it.
+ * =========================================================== */
+export function RangeTabs({
+  options,
+  active,
+}: {
+  options: { href: string; label: string; key: string }[]
+  active: string
+}) {
+  return (
+    <div className="flex items-center gap-5 border-b border-[#E8EAEE] mb-5">
+      {options.map((o) => {
+        const on = o.key === active
+        return (
+          <Link
+            key={o.key}
+            href={o.href}
+            aria-current={on ? 'true' : undefined}
+            className={`relative pb-2.5 text-[13.5px] transition-colors ${
+              on ? 'text-[#1B6DFC] font-medium' : 'text-[#666D7A] hover:text-[#141821]'
+            }`}
+          >
+            {o.label}
+            {on && (
+              <span
+                aria-hidden
+                className="absolute left-0 right-0 -bottom-px h-[2px] rounded-full"
+                style={{ background: '#1B6DFC' }}
+              />
+            )}
+          </Link>
+        )
+      })}
+    </div>
+  )
+}
+
+/* ===========================================================
  * Data row - link row used for lists inside cards
  * =========================================================== */
 export function DataRow({

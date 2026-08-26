@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import type { ComponentType } from 'react'
 import {
   Sunrise, Activity, Terminal,
-  Users, MessageCircle, ListChecks, Dumbbell, CalendarDays, HeartPulse, Star, Sparkles,
+  Users, ClipboardCheck, MessageCircle, ListChecks, Dumbbell, CalendarDays, HeartPulse, Star, Sparkles,
   Globe, Magnet, Hourglass, Filter, Contact, Inbox, Zap,
   LayoutTemplate, Megaphone, BookOpen, BarChart3, Workflow, MessageSquare, Globe2,
   LayoutDashboard, Gauge, CalendarCheck, CreditCard, Clock, TrendingUp, Compass, Handshake,
@@ -36,6 +36,7 @@ const GROUPS: NavGroup[] = [
     label: 'Clients',
     items: [
       { href: '/dashboard/coaching', label: 'Coaching', icon: Users },
+      { href: '/dashboard/checkins', label: 'Check Ins', icon: ClipboardCheck },
       { href: '/dashboard/messages', label: 'Messages', icon: MessageCircle },
       { href: '/dashboard/programs', label: 'Programs', icon: ListChecks },
       { href: '/dashboard/gym-sessions', label: 'Gym', icon: Dumbbell },
