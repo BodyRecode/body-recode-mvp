@@ -143,7 +143,7 @@ export default function BlockedTimesManager({ rows }: { rows: Row[] }) {
               value={reason}
               onChange={e => setReason(e.target.value)}
               placeholder="e.g. Doctor appointment"
-              className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-500"
+              className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-500"
             />
           </div>
 

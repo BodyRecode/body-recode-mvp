@@ -28,7 +28,7 @@ export default function HermonySettings() {
           <div>
             <div className="text-[10px] text-[#666D7A] mb-2">Wordmark</div>
             <div className="p-8 rounded-xl border border-[#E8EAEE] bg-white flex items-center gap-5">
-              <span className="inline-flex items-center justify-center w-20 h-20 rounded-full overflow-hidden bg-white border" style={{ borderColor: '#1A1A1A' }}>
+              <span className="inline-flex items-center justify-center w-20 h-20 rounded-full overflow-hidden bg-white border" style={{ borderColor: '#141821' }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={HARMONY.logoUrl} alt={`${HARMONY.name} logo`} className="w-full h-full object-cover" />
               </span>
@@ -53,21 +53,21 @@ export default function HermonySettings() {
           <div className="text-[10px] text-[#666D7A] mb-3">Palette</div>
           <div className="flex items-center gap-4 flex-wrap">
             <div className="flex items-center gap-2">
-              <div className="w-12 h-10 rounded-lg border" style={{ background: HARMONY.accentBar, borderColor: '#E5E5E5' }} />
+              <div className="w-12 h-10 rounded-lg border" style={{ background: HARMONY.accentBar, borderColor: '#E8EAEE' }} />
               <div>
                 <div className="text-[13px] font-semibold text-[#141821]">Terracotta</div>
                 <div className="text-[10px] text-[#666D7A]" style={{ fontFamily: MONO_FONT }}>{HARMONY.accentBar}</div>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-12 h-10 rounded-lg border" style={{ background: '#1A1A1A', borderColor: '#E5E5E5' }} />
+              <div className="w-12 h-10 rounded-lg border" style={{ background: '#141821', borderColor: '#E8EAEE' }} />
               <div>
                 <div className="text-[13px] font-semibold text-[#141821]">Ink</div>
-                <div className="text-[10px] text-[#666D7A]" style={{ fontFamily: MONO_FONT }}>#1A1A1A</div>
+                <div className="text-[10px] text-[#666D7A]" style={{ fontFamily: MONO_FONT }}>#141821</div>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-12 h-10 rounded-lg border" style={{ background: '#FAF6EF', borderColor: '#E5E5E5' }} />
+              <div className="w-12 h-10 rounded-lg border" style={{ background: '#FAF6EF', borderColor: '#E8EAEE' }} />
               <div>
                 <div className="text-[13px] font-semibold text-[#141821]">Cream</div>
                 <div className="text-[10px] text-[#666D7A]" style={{ fontFamily: MONO_FONT }}>#FAF6EF</div>

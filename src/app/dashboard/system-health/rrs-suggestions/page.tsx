@@ -210,7 +210,7 @@ export default async function RrsSuggestionsDashboard() {
                     <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#666D7A] w-[110px]">SBST action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-stone-100">
+                <tbody className="divide-y divide-[#F4F6F9]">
                   {sortedStates.map(state => {
                     const s = stateStats[state] ?? { shown: 0, assigned: 0, dismissed: 0, sbst_removed: 0 }
                     const rate = s.shown > 0 ? (s.assigned / s.shown) * 100 : null
@@ -256,7 +256,7 @@ export default async function RrsSuggestionsDashboard() {
                     <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Suggested in states</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-stone-100">
+                <tbody className="divide-y divide-[#F4F6F9]">
                   {sortedProtocols.map(([slug, s]) => {
                     const rate = (s.assigned_count / s.suggested_count) * 100
                     const protocol = protocolBySlug(slug)
@@ -298,7 +298,7 @@ export default async function RrsSuggestionsDashboard() {
                     <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Assigned</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-stone-100">
+                <tbody className="divide-y divide-[#F4F6F9]">
                   {recent.map(r => {
                     const assignedProtocol = r.assigned_protocol_slug ? protocolBySlug(r.assigned_protocol_slug) : null
                     const clientName = clientNameById.get(r.client_id) ?? r.client_id.slice(0, 8)
@@ -375,11 +375,11 @@ function TrendSparkline({ days, data }: { days: string[]; data: Record<string, {
     <div className="flex items-center gap-6">
       <div className="flex-1">
         <svg viewBox={`0 0 ${width} ${height + 4}`} className="w-full h-16" preserveAspectRatio="none">
-          <polyline points={shownPoints} fill="none" stroke="#E5E5E5" strokeWidth="0.5" />
+          <polyline points={shownPoints} fill="none" stroke="#E8EAEE" strokeWidth="0.5" />
           <polyline points={assignedPoints} fill="none" stroke="#1B6DFC" strokeWidth="0.6" />
         </svg>
         <div className="flex items-center gap-3 mt-1 text-[10px] text-[#666D7A]">
-          <span className="inline-flex items-center gap-1"><span className="w-2 h-0.5 bg-stone-300" /> shown</span>
+          <span className="inline-flex items-center gap-1"><span className="w-2 h-0.5 bg-[#E8EAEE]" /> shown</span>
           <span className="inline-flex items-center gap-1"><span className="w-2 h-0.5 bg-[#1B6DFC]" /> assigned</span>
           <span className="ml-auto font-mono">{days[0]} to {days[days.length - 1]}</span>
         </div>

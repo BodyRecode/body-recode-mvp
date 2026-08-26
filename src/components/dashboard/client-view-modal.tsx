@@ -60,7 +60,7 @@ export default function ClientViewModal({
 
       {open && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-sm"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#141821]/60 backdrop-blur-sm"
           onClick={() => setOpen(false)}
         >
           <div

@@ -12,7 +12,7 @@ const ACCENT: Record<Accent, { bar: string; text: string; bg: string; ring: stri
   blue:       { bar: '#1B6DFC', text: '#1B6DFC', bg: 'rgba(27,109,252,0.08)',  ring: '#B5CFFC' },
   neutral:    { bar: '#98A0AD', text: '#666D7A', bg: 'rgba(153,153,153,0.06)', ring: '#E8EAEE' },
   sage:       { bar: '#7A8A6B', text: '#4D5A41', bg: 'rgba(122,138,107,0.10)', ring: '#C5CFBA' },
-  ink:        { bar: '#1A1A1A', text: '#1A1A1A', bg: 'rgba(26,26,26,0.06)',    ring: '#D4D4D4' },
+  ink:        { bar: '#141821', text: '#141821', bg: 'rgba(26,26,26,0.06)',    ring: '#D4D4D4' },
   terracotta: { bar: '#B06C47', text: '#8A5335', bg: 'rgba(176,108,71,0.09)',  ring: '#E4C4B4' },
 }
 

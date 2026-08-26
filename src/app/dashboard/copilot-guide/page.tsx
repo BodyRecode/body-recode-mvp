@@ -185,7 +185,7 @@ export default function CopilotGuidePage() {
         {LESSONS.map((l) => (
           <Card key={l.n}>
             <div className="flex items-start gap-3.5">
-              <div className="w-8 h-8 rounded-lg bg-[#1A1A1A] text-white flex items-center justify-center shrink-0 text-[13px] font-bold tabular-nums" style={{ fontFamily: MONO_FONT }}>
+              <div className="w-8 h-8 rounded-lg bg-[#141821] text-white flex items-center justify-center shrink-0 text-[13px] font-bold tabular-nums" style={{ fontFamily: MONO_FONT }}>
                 {String(l.n).padStart(2, '0')}
               </div>
               <div className="min-w-0 flex-1">
@@ -256,7 +256,7 @@ export default function CopilotGuidePage() {
         <p className="text-[11px] font-medium text-[#98A0AD] mb-3" style={{ fontFamily: MONO_FONT }}>Take it with you</p>
         <div className="flex flex-wrap items-center gap-3">
           <a href="/docs/copilot-guide/COACH_COPILOT_GUIDE.pdf" target="_blank" rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-[13px] font-semibold px-3.5 py-2 bg-[#1A1A1A] text-white rounded-lg hover:bg-black transition-colors">
+            className="inline-flex items-center gap-2 text-[13px] font-semibold px-3.5 py-2 bg-[#141821] text-white rounded-lg hover:bg-black transition-colors">
             <Download size={14} /> Download the guide (PDF)
           </a>
           <a href="/docs/copilot-guide/COACH_COPILOT_GUIDE.md" target="_blank" rel="noopener noreferrer"

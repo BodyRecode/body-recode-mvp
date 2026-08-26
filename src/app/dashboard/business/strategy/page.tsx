@@ -159,7 +159,7 @@ const PHASE_STYLES: Record<CampaignPhase, { label: string; color: string }> = {
 
 // Phase date ranges for calendar highlighting
 const PHASE_RANGES: { phase: CampaignPhase; start: string; end: string; topBorder: string }[] = [
-  { phase: 'prelaunch', start: '2026-04-08', end: '2026-04-21', topBorder: 'border-t-2 border-t-stone-500/60' },
+  { phase: 'prelaunch', start: '2026-04-08', end: '2026-04-21', topBorder: 'border-t-2 border-t-[#FBFCFD]0/60' },
   { phase: 'ads',       start: '2026-04-22', end: '2026-05-06', topBorder: 'border-t-2 border-t-blue-500/60' },
   { phase: 'optimise',  start: '2026-05-07', end: '2026-05-23', topBorder: 'border-t-2 border-t-amber-500/60' },
   { phase: 'scale',     start: '2026-05-24', end: '2026-12-31', topBorder: 'border-t-2 border-t-blue-500/60' },
@@ -366,7 +366,7 @@ function ContentCalendar() {
       <div className="flex items-center gap-2 flex-wrap">
         <button
           onClick={() => setBrandFilter('all')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${brandFilter === 'all' ? 'bg-stone-300 text-[#141821] border-[#CFD4DC]' : 'text-[#666D7A] border-[#E8EAEE] hover:text-[#141821]'}`}
+          className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${brandFilter === 'all' ? 'bg-[#E8EAEE] text-[#141821] border-[#CFD4DC]' : 'text-[#666D7A] border-[#E8EAEE] hover:text-[#141821]'}`}
         >All brands</button>
         {(Object.entries(BRAND_STYLES) as [Brand, typeof BRAND_STYLES[Brand]][]).map(([k, s]) => (
           <button
@@ -384,7 +384,7 @@ function ContentCalendar() {
       <div className="flex items-center gap-2 flex-wrap">
         <button
           onClick={() => setPlatformFilter('all')}
-          className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${platformFilter === 'all' ? 'bg-stone-300 text-[#141821] border-[#CFD4DC]' : 'text-[#666D7A] border-[#E8EAEE] hover:text-[#141821]'}`}
+          className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${platformFilter === 'all' ? 'bg-[#E8EAEE] text-[#141821] border-[#CFD4DC]' : 'text-[#666D7A] border-[#E8EAEE] hover:text-[#141821]'}`}
         >All platforms</button>
         {(Object.entries(platformChipStyles) as [Platform, typeof platformChipStyles[Platform]][]).map(([k, s]) => (
           <button
@@ -462,7 +462,7 @@ function ContentCalendar() {
                 onClick={() => { const newDs = isSelected ? null : ds; setSelected(newDs); const firstPost = newDs ? posts.filter(p => p.date === newDs)[0] ?? null : null; setActivePost(firstPost) }}
                 className={`bg-[#FBFCFD] min-h-[80px] p-1.5 cursor-pointer transition-colors hover:bg-[#F4F6F9] ${getPhaseForDate(ds)} ${isSelected ? 'ring-1 ring-blue-500 ring-inset' : ''}`}
               >
-                <div className={`text-xs font-semibold mb-1 w-5 h-5 flex items-center justify-center rounded-full ${isToday ? 'bg-blue-500 text-stone-50' : 'text-[#666D7A]'}`}>
+                <div className={`text-xs font-semibold mb-1 w-5 h-5 flex items-center justify-center rounded-full ${isToday ? 'bg-blue-500 text-[#FBFCFD]' : 'text-[#666D7A]'}`}>
                   {day}
                 </div>
                 <div className="space-y-0.5">
@@ -633,7 +633,7 @@ function ContentCalendar() {
                       <a
                         href={dlUrl}
                         download={`${dlName}.png`}
-                        className="flex items-center justify-center gap-1.5 w-full mb-1.5 px-3 py-2 bg-[#EFF1F4] hover:bg-stone-300 border border-[#E8EAEE] rounded-lg text-[12.5px] font-medium text-[#141821] transition-colors"
+                        className="flex items-center justify-center gap-1.5 w-full mb-1.5 px-3 py-2 bg-[#EFF1F4] hover:bg-[#E8EAEE] border border-[#E8EAEE] rounded-lg text-[12.5px] font-medium text-[#141821] transition-colors"
                       >
                         ↓ Slide {i + 1}
                       </a>
@@ -653,7 +653,7 @@ function ContentCalendar() {
                     <a
                       href={dlUrl}
                       download={`${dlName}.png`}
-                      className="flex items-center justify-center gap-1.5 w-full mb-2 px-3 py-2 bg-[#EFF1F4] hover:bg-stone-300 border border-[#E8EAEE] rounded-lg text-[12.5px] font-medium text-[#141821] transition-colors"
+                      className="flex items-center justify-center gap-1.5 w-full mb-2 px-3 py-2 bg-[#EFF1F4] hover:bg-[#E8EAEE] border border-[#E8EAEE] rounded-lg text-[12.5px] font-medium text-[#141821] transition-colors"
                     >
                       ↓ Download graphic
                     </a>
@@ -795,30 +795,30 @@ function ContentCalendar() {
                 <label className="block text-[12.5px] text-[#666D7A] mb-1">Post Title</label>
                 <input type="text" value={form.title ?? ''} onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
                   placeholder="e.g. Three body states carousel"
-                  className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-500" />
+                  className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-500" />
               </div>
             </div>
             <div>
               <label className="block text-[12.5px] text-[#666D7A] mb-1">Graphic Brief</label>
               <input type="text" value={form.graphic ?? ''} onChange={e => setForm(f => ({ ...f, graphic: e.target.value }))}
                 placeholder="e.g. Insight card. Label: The Real Problem. Text: Your body isn't broken."
-                className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-500" />
+                className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-500" />
             </div>
             <div>
               <label className="block text-[12.5px] text-[#666D7A] mb-1">Caption</label>
               <textarea rows={6} value={form.caption ?? ''} onChange={e => setForm(f => ({ ...f, caption: e.target.value }))}
                 placeholder="Write the full post caption here..."
-                className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-500 resize-none" />
+                className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-500 resize-none" />
             </div>
             <div>
               <label className="block text-[12.5px] text-[#666D7A] mb-1">Hashtags (optional)</label>
               <input type="text" value={form.notes ?? ''} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
                 placeholder="#bodyrecode #bodystate ..."
-                className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-500" />
+                className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-500" />
             </div>
             <div className="flex items-center gap-2">
               <button onClick={savePost} disabled={!form.date || !form.title || saving}
-                className="bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors">
+                className="bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors">
                 {saving ? 'Saving...' : editId ? 'Save Changes' : 'Schedule Post'}
               </button>
               <button onClick={() => { setShowForm(false); setEditId(null); setForm({ type: 'authority', phase: 'prelaunch', brand: 'body_recode', platform: 'instagram', time: POST_TYPE_DEFAULT_TIMES['authority'] }) }}
@@ -894,7 +894,7 @@ function CopyButton({ value, label }: { value: string; label?: string }) {
         setTimeout(() => setCopied(false), 1500)
       }}
       className={`text-[11.5px] font-medium px-2 py-0.5 rounded transition-colors ${
-        copied ? 'bg-blue-500 text-stone-50' : 'bg-[#EFF1F4] text-[#666D7A] hover:bg-stone-300'
+        copied ? 'bg-blue-500 text-[#FBFCFD]' : 'bg-[#EFF1F4] text-[#666D7A] hover:bg-[#E8EAEE]'
       }`}
     >
       {copied ? 'Copied' : (label ?? 'Copy')}
@@ -1426,7 +1426,7 @@ function PostToIgButton({ post, onPublished }: { post: ScheduledPost; onPublishe
       <button
         onClick={toggleMarked}
         title={isMarked ? 'Mark this post as not yet scheduled' : 'Mark this post as scheduled (you scheduled it manually in IG / Meta Business Suite / etc)'}
-        className={`text-xs font-semibold px-2.5 py-1 rounded transition-colors ${isMarked ? 'bg-blue-50 text-blue-700 border border-blue-300 hover:bg-blue-100' : 'bg-[#EFF1F4] hover:bg-stone-300 text-[#141821]'}`}
+        className={`text-xs font-semibold px-2.5 py-1 rounded transition-colors ${isMarked ? 'bg-blue-50 text-blue-700 border border-blue-300 hover:bg-blue-100' : 'bg-[#EFF1F4] hover:bg-[#E8EAEE] text-[#141821]'}`}
       >
         {isMarked ? <><Clock size={11} strokeWidth={2.5} className="inline mr-0.5 align-[-1px]" /> Marked scheduled</> : 'Mark as scheduled'}
       </button>
@@ -1520,7 +1520,7 @@ function PostToIgButton({ post, onPublished }: { post: ScheduledPost; onPublishe
       <button
         onClick={() => publish(true)}
         title="Hand the post to Meta with the scheduled date+time. Meta publishes it automatically. Requires ≥10min in the future."
-        className="text-[12.5px] font-semibold px-2.5 py-1 bg-[#EFF1F4] hover:bg-stone-300 text-[#141821] rounded transition-colors"
+        className="text-[12.5px] font-semibold px-2.5 py-1 bg-[#EFF1F4] hover:bg-[#E8EAEE] text-[#141821] rounded transition-colors"
       >
         Schedule
       </button>
@@ -3674,7 +3674,7 @@ export default function StrategyPage() {
           {/* Archetype split */}
           <Card>
             <SectionLabel>Which Archetypes LinkedIn Reaches</SectionLabel>
-            <Body className="mb-3">Per the validated client mix (100% Remediation / Depleted), the 4 archetypes split unevenly across IG and LinkedIn. LinkedIn primarily reaches archetypes 1 and 4. See <strong className="text-stone-300">Positioning tab</strong> for full archetype detail.</Body>
+            <Body className="mb-3">Per the validated client mix (100% Remediation / Depleted), the 4 archetypes split unevenly across IG and LinkedIn. LinkedIn primarily reaches archetypes 1 and 4. See <strong className="text-[#E8EAEE]">Positioning tab</strong> for full archetype detail.</Body>
             <div className="space-y-2">
               {[
                 { num: '01', name: 'Stressed Executive Woman', strength: 'Primary on LinkedIn',     color: 'teal' as const,   note: 'LinkedIn morning scroll before work matches her schedule exactly.' },

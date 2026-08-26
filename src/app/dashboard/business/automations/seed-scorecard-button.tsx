@@ -51,7 +51,7 @@ export default function SeedScorecardButton() {
       <button
         onClick={sync}
         disabled={loading}
-        className="shrink-0 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
+        className="shrink-0 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
       >
         {loading ? 'Syncing...' : done ? 'Synced' : 'Re-sync'}
       </button>

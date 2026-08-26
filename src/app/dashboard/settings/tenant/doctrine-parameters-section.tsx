@@ -279,7 +279,7 @@ export function DoctrineParametersSection({
             />
           </Field>
 
-          <div className="flex items-center justify-between pt-2 border-t border-stone-100 gap-3 flex-wrap">
+          <div className="flex items-center justify-between pt-2 border-t border-[#F4F6F9] gap-3 flex-wrap">
             <p className="text-[11px] text-[#666D7A] italic flex-1 min-w-[220px]">
               Cache invalidates on save. Generators read new values on their next call.
             </p>
@@ -381,7 +381,7 @@ function LivePreviewPanel({ live, onDismiss }: { live: LivePreviewResult; onDism
           </div>
         </div>
 
-        <p className="text-[10px] text-[#666D7A] italic pt-2 border-t border-stone-100">
+        <p className="text-[10px] text-[#666D7A] italic pt-2 border-t border-[#F4F6F9]">
           Sample based on a fixed stub check-in (Sarah, Week 3). Comparable across previews so you can iterate on tuning. Real check-ins use the full generator with retry-on-leak.
         </p>
       </div>
@@ -424,7 +424,7 @@ function PreviewPanel({
           <div className="space-y-2">
             {preview.systemPromptBlocks.map((block) => (
               <div key={block.generator} className="border border-[#E8EAEE] rounded-md bg-white">
-                <div className="px-3 py-1.5 border-b border-stone-100 text-[11px] font-medium text-[#666D7A]">{block.generator}</div>
+                <div className="px-3 py-1.5 border-b border-[#F4F6F9] text-[11px] font-medium text-[#666D7A]">{block.generator}</div>
                 <pre className="p-3 text-[11px] text-[#141821] whitespace-pre-wrap font-mono leading-relaxed">{block.text}</pre>
               </div>
             ))}

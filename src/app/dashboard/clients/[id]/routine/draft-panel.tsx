@@ -248,7 +248,7 @@ function SequencePreview({ icon, sequence }: { icon: React.ReactNode; sequence: 
           ))}
         </ol>
         {sequence.coach_note && sequence.coach_note.trim().length > 0 && (
-          <div className="mt-3 pt-3 border-t border-stone-100">
+          <div className="mt-3 pt-3 border-t border-[#F4F6F9]">
             <p className="text-[9px] font-medium text-[#1B6DFC] mb-1">Coach note</p>
             <p className="text-[12px] text-[#666D7A] leading-relaxed">{sequence.coach_note}</p>
           </div>

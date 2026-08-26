@@ -112,7 +112,7 @@ export function EditableSection({
         </div>
       )}
 
-      <div className="divide-y divide-stone-100">
+      <div className="divide-y divide-[#F4F6F9]">
         {fields.map((f) => {
           const isNumeric = numericKeys.has(f.label)
           const isBool = booleanKeys.has(f.label)

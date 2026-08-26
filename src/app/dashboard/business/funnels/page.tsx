@@ -19,7 +19,7 @@ export default async function FunnelsPage() {
         </div>
         <Link
           href="/dashboard/business/funnels/new"
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
         >
           <Plus size={14} strokeWidth={2.5} />
           New Funnel
@@ -80,7 +80,7 @@ export default async function FunnelsPage() {
           </p>
           <Link
             href="/dashboard/business/funnels/new"
-            className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+            className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
           >
             <Plus size={14} strokeWidth={2.5} />
             Create your first funnel

@@ -71,7 +71,7 @@ export default function HermonyCoaching() {
           cta={
             <div className="flex items-center gap-2">
               <button className="text-[12px] text-[#666D7A] hover:text-[#141821]">Active</button>
-              <span className="text-[#E5E5E5]">·</span>
+              <span className="text-[#E8EAEE]">·</span>
               <button className="text-[12px] text-[#666D7A] hover:text-[#141821]">Inactive</button>
             </div>
           }

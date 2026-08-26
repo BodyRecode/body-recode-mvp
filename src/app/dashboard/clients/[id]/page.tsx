@@ -463,7 +463,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           slice: additive, reads existing data). Full tabbed restructure to follow post-launch. */}
       {(() => {
         const dot = (v?: string | null) =>
-          v === 'Green' ? 'bg-emerald-500' : v === 'Amber' ? 'bg-amber-500' : v === 'Red' ? 'bg-red-500' : 'bg-stone-300'
+          v === 'Green' ? 'bg-emerald-500' : v === 'Amber' ? 'bg-amber-500' : v === 'Red' ? 'bg-red-500' : 'bg-[#E8EAEE]'
         const READY = [
           { label: 'Capacity', v: activeCffs?.exposure_readiness_capacity as string | null | undefined },
           { label: 'Schedule', v: activeCffs?.exposure_readiness_schedule as string | null | undefined },
@@ -1111,7 +1111,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   >
                     <span
                       className="w-1 h-1 rounded-full"
-                      style={{ background: activeCffs.photos_used > 0 ? '#1B6DFC' : '#999999' }}
+                      style={{ background: activeCffs.photos_used > 0 ? '#1B6DFC' : '#98A0AD' }}
                     />
                     Photos {activeCffs.photos_used > 0 ? `✓ ${activeCffs.photos_used}/3` : '✗ Not provided'}
                   </span>
@@ -1153,7 +1153,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               style={{
                 borderColor: readinessReport.status === 'regression' ? '#FEE7E7'
                   : readinessReport.status === 'reassessment' ? '#F0DCB4'
-                  : '#E5E5E5',
+                  : '#E8EAEE',
               }}
             >
               <div className="flex items-center justify-between px-5 py-3 border-b border-[#E8EAEE]">
@@ -1197,7 +1197,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                       <li key={i} className="flex items-start gap-2 text-[13px]">
                         <span
                           className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0"
-                          style={{ background: d.severity === 'high' ? '#DC2626' : '#6B6B6B' }}
+                          style={{ background: d.severity === 'high' ? '#DC2626' : '#666D7A' }}
                         />
                         <span className={d.severity === 'high' ? 'text-[#141821]' : 'text-[#666D7A]'}>{d.message}</span>
                       </li>
@@ -1286,7 +1286,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                       className="text-[11px] font-medium"
                       style={{
                         fontFamily: MONO_FONT,
-                        color: readinessReport.block.isAtBlockEnd ? '#B7791F' : '#999999',
+                        color: readinessReport.block.isAtBlockEnd ? '#B7791F' : '#98A0AD',
                       }}
                     >
                       {readinessReport.block.isAtBlockEnd

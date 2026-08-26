@@ -90,7 +90,7 @@ export default async function SmsPulsePage() {
         {recentLogs.length === 0 ? (
           <div className="p-8 text-center text-[13px] text-[#666D7A]">No SMS activity yet. Consented scorecard + challenge submissions will land here.</div>
         ) : (
-          <ul className="divide-y divide-stone-100">
+          <ul className="divide-y divide-[#F4F6F9]">
             {recentLogs.map((row) => (
               <LogRowView key={row.id} row={row} />
             ))}

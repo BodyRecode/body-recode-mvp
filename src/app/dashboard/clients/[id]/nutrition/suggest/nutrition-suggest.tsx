@@ -717,7 +717,7 @@ export default function NutritionPrescriptionSuggest({
           value={foodExclusionsText}
           onChange={e => setFoodExclusionsText(e.target.value)}
           placeholder="e.g. dairy, shellfish (comma separated)"
-          className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400"
+          className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD]"
         />
         <ReasonDisplay text={suggestion.food_exclusions_reason} />
       </div>
@@ -767,7 +767,7 @@ export default function NutritionPrescriptionSuggest({
             <button
               type="button"
               onClick={() => setOverrideActive(false)}
-              className="px-3 py-1.5 border border-[#CFD4DC] hover:border-stone-600 text-[#141821] text-[12.5px] font-semibold rounded-lg transition-colors"
+              className="px-3 py-1.5 border border-[#CFD4DC] hover:border-[#666D7A] text-[#141821] text-[12.5px] font-semibold rounded-lg transition-colors"
             >
               Remove override (apply standard floors)
             </button>
@@ -859,7 +859,7 @@ export default function NutritionPrescriptionSuggest({
                 onChange={e => setOverrideJustification(e.target.value)}
                 rows={5}
                 placeholder="e.g. Client is on Vyvanse + GLP-1 + Brintellix stack with documented actual intake ~1,400 kcal/day for 6+ weeks. Bridging from current capacity to bodyweight floor over 4 weeks; reassess at Week 4 check-in."
-                className="w-full bg-white border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 leading-relaxed"
+                className="w-full bg-white border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] leading-relaxed"
               />
               <p className="text-[11px] text-[#666D7A] mt-1">
                 {overrideJustification.length}/20 characters minimum. Documented for audit and licensee review.
@@ -925,7 +925,7 @@ export default function NutritionPrescriptionSuggest({
             (overrideActive && (overrideFloorKcal < 800 || overrideFloorKcal > 4000)) ? 'Bridge mode floor must be between 800 and 4,000 kcal' :
             undefined
           }
-          className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-stone-300 disabled:text-[#666D7A] disabled:cursor-not-allowed text-white font-semibold text-sm rounded-lg transition-colors"
+          className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-[#E8EAEE] disabled:text-[#666D7A] disabled:cursor-not-allowed text-white font-semibold text-sm rounded-lg transition-colors"
         >
           {generating ? 'Generating plan...' : 'Approve & Generate Plan'}
         </button>

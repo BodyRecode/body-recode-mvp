@@ -119,7 +119,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
     nextBooking ? `${bne(nextBooking.scheduled_at)} Brisbane` : null,
   )
 
-  const stateColour = lead.scorecard_body_state ? STATE_COLOUR[lead.scorecard_body_state] : '#6B6B6B'
+  const stateColour = lead.scorecard_body_state ? STATE_COLOUR[lead.scorecard_body_state] : '#666D7A'
   const qualityColour = lead.lead_quality === 'red' ? '#DC2626' : lead.lead_quality === 'yellow' ? '#D97706' : '#16A34A'
   const sections = lead.scorecard_section_scores as Record<string, number> | null
   const checkInAnswers = lead.check_in_answers as Record<string, number> | null
@@ -348,7 +348,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               <div className="grid grid-cols-5 gap-2 mb-4">
                 {Object.entries(SCORECARD_SECTIONS).map(([key, title]) => {
                   const s = sections[key]
-                  const color = s === 1 ? '#DC2626' : s === 2 ? '#B7791F' : s === 3 ? '#1B6DFC' : '#999999'
+                  const color = s === 1 ? '#DC2626' : s === 2 ? '#B7791F' : s === 3 ? '#1B6DFC' : '#98A0AD'
                   const bg = s === 1 ? '#FEE7E7' : s === 2 ? '#FEF6E7' : s === 3 ? '#F3F7FF' : '#F4F4F4'
                   return (
                     <div key={key} className="rounded-lg p-2.5 text-center" style={{ background: bg, border: `1px solid ${color}33` }}>

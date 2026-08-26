@@ -498,7 +498,7 @@ export default function CopilotPanel({
                 <p className="text-[12.5px] text-[#666D7A] leading-relaxed mb-2.5">It’s saved as a draft (not live). Open the program page to review every session, edit if needed, and publish when you’re happy.</p>
                 <a
                   href={`/dashboard/clients/${clientId}/program`}
-                  className="inline-block text-[13px] font-semibold px-3.5 py-1.5 bg-[#1A1A1A] text-white rounded-lg hover:bg-black transition-colors"
+                  className="inline-block text-[13px] font-semibold px-3.5 py-1.5 bg-[#141821] text-white rounded-lg hover:bg-black transition-colors"
                 >
                   Review the draft
                 </a>
@@ -573,7 +573,7 @@ export default function CopilotPanel({
                 <p className="text-[12.5px] text-[#666D7A] leading-relaxed mb-2.5">It’s saved as a draft (not live). Open the nutrition page to review the meals, edit if needed, and publish when you’re happy.</p>
                 <a
                   href={`/dashboard/clients/${clientId}/nutrition`}
-                  className="inline-block text-[13px] font-semibold px-3.5 py-1.5 bg-[#1A1A1A] text-white rounded-lg hover:bg-black transition-colors"
+                  className="inline-block text-[13px] font-semibold px-3.5 py-1.5 bg-[#141821] text-white rounded-lg hover:bg-black transition-colors"
                 >
                   Review the draft
                 </a>
@@ -625,7 +625,7 @@ export default function CopilotPanel({
                 {m.content && <p className="text-[12.5px] text-[#666D7A] leading-relaxed mb-2.5">{m.content}</p>}
                 <a
                   href={`/dashboard/clients/${clientId}/${nutritionEdit ? 'nutrition' : 'program'}`}
-                  className="inline-block text-[13px] font-semibold px-3.5 py-1.5 bg-[#1A1A1A] text-white rounded-lg hover:bg-black transition-colors"
+                  className="inline-block text-[13px] font-semibold px-3.5 py-1.5 bg-[#141821] text-white rounded-lg hover:bg-black transition-colors"
                 >
                   Review the draft
                 </a>

@@ -164,7 +164,7 @@ function ReadOnlyCard({
       <div className="px-5 py-3 border-b border-[#E8EAEE] bg-[#FBFCFD]">
         <h3 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">{title}</h3>
       </div>
-      <div className="divide-y divide-stone-100">
+      <div className="divide-y divide-[#F4F6F9]">
         {fields.map((f) => (
           <div key={f.label} className="px-5 py-3 flex items-baseline gap-4">
             <div className="w-52 shrink-0 text-[12px] text-[#666D7A] font-mono">{f.label}</div>

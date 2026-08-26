@@ -12,7 +12,7 @@ const PATTERN_COLOURS: Record<string, string> = {
   'metabolic-drift': '#B7791F',
   'hormonal-shift': '#8b5cf6',
   'system-overload': '#1B6DFC',
-  'pending': '#999999',
+  'pending': '#98A0AD',
 }
 
 const PATTERN_LABELS: Record<string, string> = {
@@ -106,7 +106,7 @@ function AvgBadge({ avg }: { avg: number }) {
 }
 
 function PatternBadge({ pattern }: { pattern: string }) {
-  const colour = PATTERN_COLOURS[pattern] ?? '#999999'
+  const colour = PATTERN_COLOURS[pattern] ?? '#98A0AD'
   const label = PATTERN_LABELS[pattern] ?? pattern
   return (
     <span
@@ -357,14 +357,14 @@ export default function FunnelClient({
                   <TD>
                     {e.quizCompleted
                       ? <StatusBadge label="Completed" colour="#1B6DFC" />
-                      : <StatusBadge label="Pending" colour="#999999" />}
+                      : <StatusBadge label="Pending" colour="#98A0AD" />}
                   </TD>
                   <TD>
                     {e.hasBlueprintPurchase
                       ? <StatusBadge label="Purchased" colour="#8b5cf6" />
                       : e.currentDay >= 14
                         ? <StatusBadge label="Not yet" colour="#DC2626" />
-                        : <StatusBadge label="In challenge" colour="#999999" />}
+                        : <StatusBadge label="In challenge" colour="#98A0AD" />}
                   </TD>
                   <TD>
                     <div className="flex items-center justify-between gap-2">
@@ -405,7 +405,7 @@ export default function FunnelClient({
                       ? <StatusBadge label="Active" colour="#1B6DFC" />
                       : e.currentWeek === 6
                         ? <StatusBadge label="Not joined" colour="#DC2626" />
-                        : <StatusBadge label="Not yet" colour="#999999" />}
+                        : <StatusBadge label="Not yet" colour="#98A0AD" />}
                   </TD>
                   <TD><span style={{ fontFamily: MONO_FONT }}>{formatDate(e.purchaseDate)}</span></TD>
                 </TR>

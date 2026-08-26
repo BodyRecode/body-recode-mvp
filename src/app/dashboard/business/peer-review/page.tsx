@@ -305,7 +305,7 @@ export default function PeerReviewPage() {
             {activeTemplate !== 'agenda' && (
               <button
                 onClick={() => copy(activeTemplate === 'outreach' ? OUTREACH_TEMPLATE : FOLLOWUP_TEMPLATE, activeTemplate)}
-                className="mt-4 px-4 py-2 text-[12.5px] font-medium rounded-lg bg-[#EFF1F4] text-[#141821] hover:bg-stone-300 transition-colors"
+                className="mt-4 px-4 py-2 text-[12.5px] font-medium rounded-lg bg-[#EFF1F4] text-[#141821] hover:bg-[#E8EAEE] transition-colors"
               >
                 {copiedKey === activeTemplate ? 'Copied' : 'Copy to clipboard'}
               </button>
@@ -350,21 +350,21 @@ export default function PeerReviewPage() {
                     value={reviewer.name}
                     onChange={e => updateReviewer(reviewer.id, 'name', e.target.value)}
                     placeholder="Full name"
-                    className="flex-1 bg-transparent text-sm text-[#141821] placeholder-stone-400 outline-none"
+                    className="flex-1 bg-transparent text-sm text-[#141821] placeholder-[#98A0AD] outline-none"
                   />
 
                   <input
                     value={reviewer.field}
                     onChange={e => updateReviewer(reviewer.id, 'field', e.target.value)}
                     placeholder="Field (e.g. GP, Physio, EP)"
-                    className="w-44 bg-transparent text-sm text-[#666D7A] placeholder-stone-400 outline-none"
+                    className="w-44 bg-transparent text-sm text-[#666D7A] placeholder-[#98A0AD] outline-none"
                   />
 
                   <input
                     value={reviewer.contactDate}
                     onChange={e => updateReviewer(reviewer.id, 'contactDate', e.target.value)}
                     placeholder="Date contacted"
-                    className="w-32 bg-transparent text-sm text-[#666D7A] placeholder-stone-400 outline-none"
+                    className="w-32 bg-transparent text-sm text-[#666D7A] placeholder-[#98A0AD] outline-none"
                   />
 
                   <select
@@ -397,7 +397,7 @@ export default function PeerReviewPage() {
                           value={reviewer.organisation}
                           onChange={e => updateReviewer(reviewer.id, 'organisation', e.target.value)}
                           placeholder="Practice / hospital / gym"
-                          className="w-full bg-[#EFF1F4] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 outline-none"
+                          className="w-full bg-[#EFF1F4] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] outline-none"
                         />
                       </div>
                       <div>
@@ -406,7 +406,7 @@ export default function PeerReviewPage() {
                           value={reviewer.feedback}
                           onChange={e => updateReviewer(reviewer.id, 'feedback', e.target.value)}
                           placeholder="Key feedback points"
-                          className="w-full bg-[#EFF1F4] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 outline-none"
+                          className="w-full bg-[#EFF1F4] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] outline-none"
                         />
                       </div>
                     </div>
@@ -418,7 +418,7 @@ export default function PeerReviewPage() {
                         onChange={e => updateReviewer(reviewer.id, 'notes', e.target.value)}
                         placeholder="Notes from your follow-up call..."
                         rows={3}
-                        className="w-full bg-[#EFF1F4] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 outline-none resize-none"
+                        className="w-full bg-[#EFF1F4] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] outline-none resize-none"
                       />
                     </div>
 
@@ -440,7 +440,7 @@ export default function PeerReviewPage() {
                         onChange={e => updateReviewer(reviewer.id, 'socialDm', e.target.value)}
                         placeholder="Short DM for Facebook / Instagram outreach..."
                         rows={5}
-                        className="w-full bg-[#EFF1F4] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 outline-none resize-none"
+                        className="w-full bg-[#EFF1F4] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] outline-none resize-none"
                       />
                       <p className="text-[12.5px] text-[#98A0AD] mt-1">Short opener only. Goal is a reply, not a full read. Send full message once they respond.</p>
                     </div>

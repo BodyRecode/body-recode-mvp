@@ -41,11 +41,11 @@ type StageGroup = {
 }
 
 const FUNNEL_TAG_META: Record<FunnelTag, { label: string; color: string; bg: string }> = {
-  'shared': { label: 'Shared entry · A + B', color: '#1A1A1A', bg: '#F5F5F5' },
+  'shared': { label: 'Shared entry · A + B', color: '#141821', bg: '#F5F5F5' },
   'A':      { label: 'Funnel A · Direct 1:1', color: '#FFFFFF', bg: '#1B6DFC' },
   'B':      { label: 'Funnel B · Product ladder', color: '#FFFFFF', bg: '#8b5cf6' },
   'A+B':    { label: 'Funnels A + B converge', color: '#FFFFFF', bg: '#0A337A' },
-  'meta':   { label: 'Production / Strategy', color: '#FFFFFF', bg: '#6B6B6B' },
+  'meta':   { label: 'Production / Strategy', color: '#FFFFFF', bg: '#666D7A' },
 }
 
 // URL catalog. Each group is explicitly tagged Funnel A / Funnel B / shared
@@ -54,7 +54,7 @@ const STAGES: StageGroup[] = [
   {
     stage: 'Entry · Scorecard + $37 Body Decode Report',
     blurb: 'The single front door for both Funnel A and Funnel B. Lives on the performance domain; supporting APIs live in this repo.',
-    accent: '#1A1A1A',
+    accent: '#141821',
     funnel: 'shared',
     pages: [
       { name: 'Readiness Scorecard', url: `${brand().performanceDomain}/scorecard`, description: 'Canonical scorecard URL. State-routed result page CTAs.', external: true },
@@ -357,7 +357,7 @@ export default function PagesIndex({ tokens }: { tokens: Tokens }) {
                       href={fullForOpen}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group flex items-start gap-3 px-5 py-3 hover:bg-blue-50/40 transition border-b last:border-b-0 border-stone-100"
+                      className="group flex items-start gap-3 px-5 py-3 hover:bg-blue-50/40 transition border-b last:border-b-0 border-[#F4F6F9]"
                     >
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">

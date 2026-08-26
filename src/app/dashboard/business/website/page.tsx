@@ -62,7 +62,7 @@ function DailyChart({ data }: { data: DayData[] }) {
                   </div>
                 )}
                 <div
-                  className={`w-full rounded-sm transition-all ${isToday ? 'bg-blue-500' : d.views > 0 ? 'bg-[#FBFCFD]0 group-hover:bg-stone-600' : 'bg-[#F4F6F9]'}`}
+                  className={`w-full rounded-sm transition-all ${isToday ? 'bg-blue-500' : d.views > 0 ? 'bg-[#FBFCFD]0 group-hover:bg-[#666D7A]' : 'bg-[#F4F6F9]'}`}
                   style={{ height: `${height}%`, minHeight: d.views > 0 ? '4px' : '2px' }}
                 />
                 {data.length <= 14 && (

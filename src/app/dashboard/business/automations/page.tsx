@@ -48,7 +48,7 @@ export default async function AutomationsPage() {
         </div>
         <Link
           href="/dashboard/business/automations/new"
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
         >
           <Plus size={14} strokeWidth={2.5} />
           New Workflow
@@ -149,7 +149,7 @@ export default async function AutomationsPage() {
           <p className="text-[#98A0AD] text-[12.5px] mb-6">Build workflows to automate your entire lead and client journey</p>
           <Link
             href="/dashboard/business/automations/new"
-            className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+            className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
           >
             <Plus size={14} strokeWidth={2.5} />
             Build your first workflow

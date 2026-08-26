@@ -19,7 +19,7 @@ import type { RouterMode } from '@/lib/recovery-state-machine'
 function modeLabel(mode: RouterMode): { label: string; colour: string; bg: string } {
   switch (mode) {
     case 'disabled':
-      return { label: 'Router disabled', colour: '#6B6B6B', bg: 'rgba(168,162,158,0.06)' }
+      return { label: 'Router disabled', colour: '#666D7A', bg: 'rgba(168,162,158,0.06)' }
     case 'observe_only':
       return { label: 'Observe-only (Phase 2 — shadow log)', colour: '#B7791F', bg: 'rgba(245,158,11,0.10)' }
     case 'live_soft_gate':
@@ -33,7 +33,7 @@ function tierColour(tier: number): string {
   if (tier === 1) return '#DC2626'
   if (tier === 2) return '#B7791F'
   if (tier <= 4) return '#60a5fa'
-  return '#6B6B6B'
+  return '#666D7A'
 }
 
 function actionLabel(action: string | null | undefined): string {
@@ -58,7 +58,7 @@ function actionLabel(action: string | null | undefined): string {
 function rsibPill(value: string | undefined, kind: 'recovery' | 'sessions' | 'sleep'): { label: string; colour: string } {
   if (kind === 'recovery') {
     const n = Number(value)
-    if (!Number.isFinite(n)) return { label: '—', colour: '#6B6B6B' }
+    if (!Number.isFinite(n)) return { label: '—', colour: '#666D7A' }
     if (n <= 2) return { label: `Recovery ${n}`, colour: '#DC2626' }
     if (n === 3) return { label: `Recovery 3`, colour: '#B7791F' }
     return { label: `Recovery ${n}`, colour: '#1B6DFC' }

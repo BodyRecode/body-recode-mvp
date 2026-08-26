@@ -262,7 +262,7 @@ export default function ParticipantView({
       <div className="rounded-xl border border-[#E8EAEE] bg-white p-5 mb-6">
         <div className="flex items-center justify-between mb-3">
           <p className="text-[11.5px] font-medium text-[#666D7A]">Day-by-day progress</p>
-          <span className="text-[12px] font-medium" style={{ color: isComplete ? '#1B6DFC' : '#1A1A1A' }}>
+          <span className="text-[12px] font-medium" style={{ color: isComplete ? '#1B6DFC' : '#141821' }}>
             {isComplete ? 'Completed' : `Day ${currentDay} · ${14 - currentDay} day${14 - currentDay === 1 ? '' : 's'} to go`}
           </span>
         </div>
@@ -281,7 +281,7 @@ export default function ParticipantView({
               <div key={d} className="flex flex-col items-center" style={{ width: '7.14%' }}>
                 <div
                   className={`w-2 h-2 rounded-full ${isToday ? 'ring-2 ring-blue-500 ring-offset-1' : ''}`}
-                  style={{ background: isPast ? '#1B6DFC' : '#E5E5E5' }}
+                  style={{ background: isPast ? '#1B6DFC' : '#E8EAEE' }}
                 />
                 <span className={`text-[9px] font-bold mt-1 ${isMilestone ? 'text-[#141821]' : 'text-[#98A0AD]'}`} style={{ fontVariantNumeric: 'tabular-nums' }}>
                   {d}
@@ -305,7 +305,7 @@ export default function ParticipantView({
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <Stat label="Pattern" value={
-                <span style={{ color: enrollment.quiz_result ? (PATTERN_COLOURS[enrollment.quiz_result] ?? '#1A1A1A') : '#999999' }}>
+                <span style={{ color: enrollment.quiz_result ? (PATTERN_COLOURS[enrollment.quiz_result] ?? '#141821') : '#98A0AD' }}>
                   {enrollment.quiz_result ? (PATTERN_LABELS[enrollment.quiz_result] ?? enrollment.quiz_result) : '-'}
                 </span>
               } />
@@ -317,7 +317,7 @@ export default function ParticipantView({
           <div className="rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] p-5">
             <div className="inline-flex items-center gap-2 mb-2">
               {currentDay < 7 ? <Clock className="w-4 h-4 text-[#98A0AD]" /> : <AlertCircle className="w-4 h-4 text-amber-500" />}
-              <span className="text-[12px] font-medium" style={{ color: currentDay < 7 ? '#6B6B6B' : '#B7791F' }}>
+              <span className="text-[12px] font-medium" style={{ color: currentDay < 7 ? '#666D7A' : '#B7791F' }}>
                 {currentDay < 7 ? 'Locked until Day 7' : 'Pending — Day 7+'}
               </span>
             </div>
@@ -502,10 +502,10 @@ function StatusPill({ status }: { status: string }) {
   const config: Record<string, { label: string; color: string; bg: string }> = {
     sent: { label: 'Sent', color: '#1056D6', bg: 'rgba(27,109,252,0.10)' },
     sent_inferred: { label: 'Sent (inferred)', color: '#1056D6', bg: 'rgba(27,109,252,0.06)' },
-    scheduled: { label: 'Scheduled', color: '#6B6B6B', bg: '#F5F5F5' },
+    scheduled: { label: 'Scheduled', color: '#666D7A', bg: '#F5F5F5' },
     overdue: { label: 'Overdue', color: '#DC2626', bg: 'rgba(220,38,38,0.08)' },
-    skipped: { label: 'Skipped', color: '#999999', bg: '#F5F5F5' },
-    no_phone: { label: 'No phone', color: '#999999', bg: '#F5F5F5' },
+    skipped: { label: 'Skipped', color: '#98A0AD', bg: '#F5F5F5' },
+    no_phone: { label: 'No phone', color: '#98A0AD', bg: '#F5F5F5' },
   }
   const c = config[status] ?? config.scheduled
   return (

@@ -216,7 +216,7 @@ export default function TodayDashboardPage() {
             <button onClick={() => setDate(todayIso())} className="text-[12.5px] bg-blue-500 text-white px-3 py-1.5 rounded font-medium hover:bg-blue-600">Today</button>
             <button onClick={() => setDate(dateOffset(1))} className="text-[12.5px] bg-white border border-[#E8EAEE] px-3 py-1.5 rounded font-medium hover:bg-[#F4F6F9]">Tomorrow →</button>
             <input type="date" value={date} onChange={e => setDate(e.target.value)} className="text-[12.5px] bg-white border border-[#E8EAEE] px-2 py-1 rounded font-medium" />
-            <button onClick={load} className="text-[12.5px] bg-[#EFF1F4] hover:bg-stone-300 text-[#141821] px-3 py-1.5 rounded font-medium ml-auto">↻ Refresh</button>
+            <button onClick={load} className="text-[12.5px] bg-[#EFF1F4] hover:bg-[#E8EAEE] text-[#141821] px-3 py-1.5 rounded font-medium ml-auto">↻ Refresh</button>
           </div>
         </div>
 

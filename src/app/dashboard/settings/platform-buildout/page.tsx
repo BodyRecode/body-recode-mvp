@@ -189,7 +189,7 @@ export default function PlatformBuildoutPage() {
 
 function PhaseCard({ phase }: { phase: Phase }) {
   const p = phaseProgress(phase)
-  const barColor = p.pct === 100 ? 'bg-green-500' : p.pct >= 50 ? 'bg-blue-500' : p.pct > 0 ? 'bg-amber-500' : 'bg-stone-300'
+  const barColor = p.pct === 100 ? 'bg-green-500' : p.pct >= 50 ? 'bg-blue-500' : p.pct > 0 ? 'bg-amber-500' : 'bg-[#E8EAEE]'
 
   return (
     <section className="bg-white border border-[#E8EAEE] rounded-xl overflow-hidden">
@@ -218,7 +218,7 @@ function PhaseCard({ phase }: { phase: Phase }) {
       </div>
 
       {/* Phase explainer — full context on what this phase means, why it exists, when to tackle it */}
-      <details className="px-5 py-3 border-b border-stone-100 bg-blue-50/20">
+      <details className="px-5 py-3 border-b border-[#F4F6F9] bg-blue-50/20">
         <summary className="cursor-pointer text-[11px] font-medium text-blue-900 select-none">
           What this phase means
         </summary>
@@ -231,7 +231,7 @@ function PhaseCard({ phase }: { phase: Phase }) {
 
       {/* Phase docs */}
       {phase.docs && phase.docs.length > 0 && (
-        <div className="px-5 py-3 border-b border-stone-100 bg-[#FBFCFD]/50">
+        <div className="px-5 py-3 border-b border-[#F4F6F9] bg-[#FBFCFD]/50">
           <div className="text-[11px] font-medium text-[#666D7A] mb-3">Docs for this phase</div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {phase.docs.map((d) => (
@@ -241,7 +241,7 @@ function PhaseCard({ phase }: { phase: Phase }) {
         </div>
       )}
 
-      <ul className="divide-y divide-stone-100">
+      <ul className="divide-y divide-[#F4F6F9]">
         {phase.steps.map((step) => (
           <StepRow key={step.id} step={step} />
         ))}

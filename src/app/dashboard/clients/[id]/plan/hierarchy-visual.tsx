@@ -36,7 +36,7 @@ const phaseColour: Record<string, string> = {
 }
 
 const statusDot: Record<string, string> = {
-  planned: 'bg-stone-400',
+  planned: 'bg-[#98A0AD]',
   in_progress: 'bg-amber-400',
   complete: 'bg-green-500',
   skipped: 'bg-[#EFF1F4]',
@@ -78,8 +78,8 @@ export default function HierarchyVisual({
             {PILLARS.map((p, i) => (
               <div key={p.label} className="flex items-start gap-2">
                 <div className="flex flex-col items-center shrink-0 mt-1">
-                  <div className={`w-1.5 h-1.5 rounded-full ${i === 3 ? 'bg-blue-400' : i === 4 ? 'bg-blue-500' : 'bg-stone-400'}`} />
-                  {i < PILLARS.length - 1 && <div className="w-px h-4 bg-stone-300" />}
+                  <div className={`w-1.5 h-1.5 rounded-full ${i === 3 ? 'bg-blue-400' : i === 4 ? 'bg-blue-500' : 'bg-[#98A0AD]'}`} />
+                  {i < PILLARS.length - 1 && <div className="w-px h-4 bg-[#E8EAEE]" />}
                 </div>
                 <div>
                   <p className={`text-[10px] font-bold ${p.colour}`}>{p.label}</p>
@@ -140,7 +140,7 @@ export default function HierarchyVisual({
 
           {/* Connector */}
           <div className="flex items-center gap-2 pl-1">
-            <div className="w-px h-3 bg-stone-300 ml-0.5" />
+            <div className="w-px h-3 bg-[#E8EAEE] ml-0.5" />
             <span className="text-[9px] text-[#141821]">current block</span>
           </div>
 
@@ -163,7 +163,7 @@ export default function HierarchyVisual({
 
           {/* Connector */}
           <div className="flex items-center gap-2 pl-1">
-            <div className="w-px h-3 bg-stone-300 ml-0.5" />
+            <div className="w-px h-3 bg-[#E8EAEE] ml-0.5" />
             <span className="text-[9px] text-[#141821]">generates program</span>
           </div>
 
@@ -188,7 +188,7 @@ export default function HierarchyVisual({
 
           {/* Connector */}
           <div className="flex items-center gap-2 pl-1">
-            <div className="w-px h-3 bg-stone-300 ml-0.5" />
+            <div className="w-px h-3 bg-[#E8EAEE] ml-0.5" />
             <span className="text-[9px] text-[#141821]">supported by</span>
           </div>
 
@@ -228,7 +228,7 @@ export default function HierarchyVisual({
       {/* Footer legend */}
       <div className="px-5 py-3 border-t border-[#E8EAEE] flex items-center gap-4 flex-wrap">
         {[
-          { dot: 'bg-stone-400', label: 'Planned' },
+          { dot: 'bg-[#98A0AD]', label: 'Planned' },
           { dot: 'bg-amber-400', label: 'In Progress' },
           { dot: 'bg-green-500', label: 'Complete' },
         ].map(item => (

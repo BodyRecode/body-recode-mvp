@@ -139,7 +139,7 @@ export default function FunnelEditor({ funnel }: FunnelEditorProps) {
                 if (isNew) setSlug(autoSlug(e.target.value))
               }}
               placeholder="e.g. Free Consultation"
-              className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-500"
+              className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-500"
             />
           </div>
           <div>
@@ -154,7 +154,7 @@ export default function FunnelEditor({ funnel }: FunnelEditorProps) {
                 value={slug}
                 onChange={e => setSlug(autoSlug(e.target.value))}
                 placeholder="free-consultation"
-                className="flex-1 bg-transparent px-2 py-2.5 text-sm text-[#141821] placeholder-stone-400 focus:outline-none"
+                className="flex-1 bg-transparent px-2 py-2.5 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none"
               />
             </div>
           </div>
@@ -168,7 +168,7 @@ export default function FunnelEditor({ funnel }: FunnelEditorProps) {
           </div>
           <button
             onClick={() => setIsActive(v => !v)}
-            className={`relative w-10 h-6 rounded-full transition-colors ${isActive ? 'bg-blue-500' : 'bg-stone-300'}`}
+            className={`relative w-10 h-6 rounded-full transition-colors ${isActive ? 'bg-blue-500' : 'bg-[#E8EAEE]'}`}
           >
             <span className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${isActive ? 'left-5' : 'left-1'}`} />
           </button>
@@ -185,7 +185,7 @@ export default function FunnelEditor({ funnel }: FunnelEditorProps) {
             value={headline}
             onChange={e => setHeadline(e.target.value)}
             placeholder="Stop guessing. Start transforming."
-            className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-500"
           />
         </div>
 
@@ -197,7 +197,7 @@ export default function FunnelEditor({ funnel }: FunnelEditorProps) {
             value={subheadline}
             onChange={e => setSubheadline(e.target.value)}
             placeholder="A short supporting line under the headline"
-            className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-500"
           />
         </div>
 
@@ -209,7 +209,7 @@ export default function FunnelEditor({ funnel }: FunnelEditorProps) {
             onChange={e => setBody(e.target.value)}
             placeholder="Describe what they'll get, who it's for, what happens next..."
             rows={6}
-            className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-3 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-500 resize-none"
+            className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-3 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-500 resize-none"
           />
         </div>
 
@@ -222,7 +222,7 @@ export default function FunnelEditor({ funnel }: FunnelEditorProps) {
               value={ctaLabel}
               onChange={e => setCtaLabel(e.target.value)}
               placeholder="Book a Free Call"
-              className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-500"
+              className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-500"
             />
           </div>
           <div>
@@ -247,7 +247,7 @@ export default function FunnelEditor({ funnel }: FunnelEditorProps) {
           <button
             onClick={save}
             disabled={saving}
-            className="bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-sm font-semibold px-6 py-2.5 rounded-lg transition-colors"
+            className="bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] text-sm font-semibold px-6 py-2.5 rounded-lg transition-colors"
           >
             {saving ? 'Saving...' : isNew ? 'Create Funnel' : 'Save Changes'}
           </button>

@@ -10,7 +10,7 @@ const STATUS_HEX: Record<ReturnType<typeof statusAccent>, string> = {
   amber: '#B7791F',
   blue: '#1B6DFC',
   sage: '#7A8A6B',
-  neutral: '#6B6B6B',
+  neutral: '#666D7A',
 }
 
 export default function TicketStatusForm({
@@ -68,7 +68,7 @@ export default function TicketStatusForm({
               style={{
                 background: active ? `${hex}14` : '#FFFFFF',
                 color: active ? hex : '#4A4A4A',
-                borderColor: active ? hex : '#E5E5E5',
+                borderColor: active ? hex : '#E8EAEE',
               }}
             >
               {STATUS_LABELS[s]}

@@ -65,7 +65,7 @@ export default function AutoResponseToggle({
         aria-pressed={enabled}
       >
         <span className={`inline-block w-7 h-4 rounded-full relative transition-colors ${enabled ? 'bg-white/30' : 'bg-[#EFF1F4]'}`}>
-          <span className={`absolute top-0.5 ${enabled ? 'left-3.5 bg-white' : 'left-0.5 bg-[#6B6B6B]'} w-3 h-3 rounded-full transition-all`} />
+          <span className={`absolute top-0.5 ${enabled ? 'left-3.5 bg-white' : 'left-0.5 bg-[#666D7A]'} w-3 h-3 rounded-full transition-all`} />
         </span>
         {pending ? 'Working…' : enabled ? 'On' : 'Off'}
       </button>

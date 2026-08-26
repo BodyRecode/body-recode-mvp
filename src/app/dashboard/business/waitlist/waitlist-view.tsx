@@ -82,7 +82,7 @@ export default function WaitlistView({ rows }: { rows: WaitlistRow[] }) {
   }), [rows])
 
   const tabs: Array<{ key: Product | 'all'; label: string; count: number; accent: string }> = [
-    { key: 'all',        label: 'All',        count: grouped.all.length,        accent: '#1A1A1A' },
+    { key: 'all',        label: 'All',        count: grouped.all.length,        accent: '#141821' },
     { key: 'challenge',  label: 'Challenge',  count: grouped.challenge.length,  accent: PRODUCT_META.challenge.accent },
     { key: 'blueprint',  label: 'Blueprint',  count: grouped.blueprint.length,  accent: PRODUCT_META.blueprint.accent },
     { key: 'membership', label: 'Membership', count: grouped.membership.length, accent: PRODUCT_META.membership.accent },
@@ -102,7 +102,7 @@ export default function WaitlistView({ rows }: { rows: WaitlistRow[] }) {
             onClick={() => setActiveTab(t.key)}
             className={`text-left rounded-xl border p-4 transition ${
               activeTab === t.key
-                ? 'border-stone-900 bg-white shadow-sm'
+                ? 'border-[#141821] bg-white shadow-sm'
                 : 'border-[#E8EAEE] bg-white hover:border-[#E8EAEE]'
             }`}
           >

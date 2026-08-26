@@ -244,7 +244,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                   <p className="text-[14px] font-semibold text-[#141821] truncate">{client.name}</p>
                   <div className="flex items-center gap-2 mt-0.5">
                     {client.rebuildTraining && <span className="text-[12px]" style={{ color: red.text }}>Training: Rebuild</span>}
-                    {client.rebuildTraining && client.rebuildNutrition && <span className="text-[#E5E5E5] text-[12.5px]">·</span>}
+                    {client.rebuildTraining && client.rebuildNutrition && <span className="text-[#E8EAEE] text-[12.5px]">·</span>}
                     {client.rebuildNutrition && <span className="text-[12px]" style={{ color: red.text }}>Nutrition: Rebuild</span>}
                   </div>
                   </div>
@@ -364,9 +364,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                     </p>
                     {client.weekNumber !== null && client.daysUntilStart !== null && client.daysUntilStart <= 0 && (
                       <>
-                        <span className="text-[#E5E5E5] text-[12.5px]">·</span>
+                        <span className="text-[#E8EAEE] text-[12.5px]">·</span>
                         <span className="text-[11px] text-[#666D7A] font-medium">Week {client.weekNumber}</span>
-                        <span className="text-[#E5E5E5] text-[12.5px]">·</span>
+                        <span className="text-[#E8EAEE] text-[12.5px]">·</span>
                         <span
                           className={`text-[11px] font-semibold ${client.hasFormA ? 'text-[#1B6DFC]' : 'text-[#98A0AD]'}`}
                           style={{ fontFamily: MONO_FONT }}
@@ -403,7 +403,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                 {client.readiness?.status === 'advisory' && (
                   <span
                     className="text-[10px] font-semibold px-2 py-0.5 rounded-full border"
-                    style={{ color: '#6B6B6B', borderColor: '#E5E5E5', background: '#FFFFFF' }}
+                    style={{ color: '#666D7A', borderColor: '#E8EAEE', background: '#FFFFFF' }}
                     title={client.readiness.drift.map((d: { message: string }) => d.message).join(' · ')}
                   >
                     Drift

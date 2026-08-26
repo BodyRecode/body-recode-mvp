@@ -636,7 +636,7 @@ export default function GroupClassesPage() {
         <div className="px-5 py-4 space-y-2">
           {cls.principles.map((p, i) => (
             <div key={i} className="flex items-start gap-2">
-              <div className="w-1 h-1 rounded-full bg-[#999999] mt-2 shrink-0" />
+              <div className="w-1 h-1 rounded-full bg-[#98A0AD] mt-2 shrink-0" />
               <p className="text-[14px] text-[#43474F]">{p}</p>
             </div>
           ))}

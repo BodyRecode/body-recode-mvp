@@ -268,7 +268,7 @@ export default async function NutritionEngineHealthPage({
                     {ruleRows.map(r => {
                       const isHigh = r.fire_rate > 0.25
                       return (
-                        <tr key={r.code} className={`border-b border-stone-100 ${isHigh ? 'bg-red-50/40' : ''}`}>
+                        <tr key={r.code} className={`border-b border-[#F4F6F9] ${isHigh ? 'bg-red-50/40' : ''}`}>
                           <td className="py-2.5 pr-3 align-top">
                             <p className="font-mono text-[12.5px] text-[#141821]">{r.code}</p>
                           </td>

@@ -126,7 +126,7 @@ function FilterChip({ href, active, children }: { href: string; active: boolean;
       style={{
         background: active ? '#1B6DFC' : '#FFFFFF',
         color: active ? '#FFFFFF' : '#4A4A4A',
-        borderColor: active ? '#1B6DFC' : '#E5E5E5',
+        borderColor: active ? '#1B6DFC' : '#E8EAEE',
       }}
     >
       {children}

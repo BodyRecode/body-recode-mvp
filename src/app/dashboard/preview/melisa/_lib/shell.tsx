@@ -84,7 +84,7 @@ export function HarmonyShell({ children }: { children: React.ReactNode }) {
       {/* Preview banner - thin strip */}
       <div
         className="text-center py-1 text-[11.5px] font-medium"
-        style={{ backgroundColor: '#1A1A1A', color: '#F8F8F8', letterSpacing: '0.14em' }}
+        style={{ backgroundColor: '#141821', color: '#F8F8F8', letterSpacing: '0.14em' }}
       >
         Preview mockup · not a live tenant · <Link href="/dashboard/preview" className="underline">back to previews</Link>
       </div>

@@ -91,7 +91,7 @@ export default function OffboardPanel({
             open to you. Records kept for {RETENTION_YEARS} years.
             </p>
           </div>
-          <button onClick={() => setOpen(true)} className="flex-none px-4 py-2 rounded-lg text-[12.5px] font-medium bg-[#EFF1F4] text-[#141821] hover:bg-stone-300 transition-colors">
+          <button onClick={() => setOpen(true)} className="flex-none px-4 py-2 rounded-lg text-[12.5px] font-medium bg-[#EFF1F4] text-[#141821] hover:bg-[#E8EAEE] transition-colors">
             Offboard
           </button>
         </div>

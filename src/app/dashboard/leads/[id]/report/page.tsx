@@ -36,7 +36,7 @@ export default async function LeadReportPage({ params }: { params: Promise<{ id:
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <a href={`/dashboard/leads/${id}`} style={{ color: '#999999', fontSize: '13px', textDecoration: 'none' }}>
+          <a href={`/dashboard/leads/${id}`} style={{ color: '#98A0AD', fontSize: '13px', textDecoration: 'none' }}>
             ← {lead.name}
           </a>
           <span style={{ color: '#333333' }}>|</span>
@@ -44,7 +44,7 @@ export default async function LeadReportPage({ params }: { params: Promise<{ id:
             Performance Check-In Report
           </span>
           {scheduledAt && (
-            <span style={{ color: '#999999', fontSize: '12px' }}>Sends {scheduledAt} Brisbane</span>
+            <span style={{ color: '#98A0AD', fontSize: '12px' }}>Sends {scheduledAt} Brisbane</span>
           )}
         </div>
         <PrintButton clientName={lead.name} />

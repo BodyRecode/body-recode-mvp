@@ -80,7 +80,7 @@ export default function CreateBookingButton() {
     <>
       <button
         onClick={openModal}
-        className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+        className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
       >
         <Plus size={14} strokeWidth={2.5} />
         New Booking
@@ -199,7 +199,7 @@ export default function CreateBookingButton() {
                   value={form.meetingLink}
                   onChange={(e) => setForm(f => ({ ...f, meetingLink: e.target.value }))}
                   placeholder="https://zoom.us/j/..."
-                  className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-[#CFD4DC]"
+                  className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#CFD4DC]"
                 />
               </div>
             </div>
@@ -214,7 +214,7 @@ export default function CreateBookingButton() {
               <button
                 onClick={submit}
                 disabled={!form.contactId || !form.date || !form.time || isPending}
-                className="flex-1 flex items-center justify-center gap-2 text-sm font-semibold bg-blue-500 hover:bg-blue-500 text-stone-50 disabled:opacity-40 disabled:cursor-not-allowed py-2.5 rounded-lg transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 text-sm font-semibold bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] disabled:opacity-40 disabled:cursor-not-allowed py-2.5 rounded-lg transition-colors"
               >
                 {isPending && <Loader2 size={13} className="animate-spin" />}
                 Book

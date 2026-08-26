@@ -66,7 +66,7 @@ function DraftPlanPreview({ plan }: { plan: Plan }) {
           <div key={block.id}>
             {i > 0 && (
               <div className="flex justify-center py-1">
-                <div className="w-px h-4 bg-stone-300" />
+                <div className="w-px h-4 bg-[#E8EAEE]" />
               </div>
             )}
             <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">

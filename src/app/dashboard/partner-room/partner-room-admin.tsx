@@ -168,7 +168,7 @@ export default function PartnerRoomAdmin({ initialGuests }: { initialGuests: Gue
       <div>
         <p
           className="text-[12px] font-medium mb-4"
-          style={{ color: '#6B6B6B' }}
+          style={{ color: '#666D7A' }}
         >
           Guests ({initialGuests.length})
         </p>

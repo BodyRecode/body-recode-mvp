@@ -141,7 +141,7 @@ export default function FeedbackDashboardPage() {
             <option value="all">All stages</option>
             {Object.entries(STAGE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
           </select>
-          <button onClick={load} className="text-[12.5px] bg-[#EFF1F4] hover:bg-stone-300 text-[#141821] px-3 py-1.5 rounded font-medium">↻ Refresh</button>
+          <button onClick={load} className="text-[12.5px] bg-[#EFF1F4] hover:bg-[#E8EAEE] text-[#141821] px-3 py-1.5 rounded font-medium">↻ Refresh</button>
         </div>
 
         {loading && <p className="text-sm text-[#666D7A]">Loading...</p>}
@@ -202,7 +202,7 @@ export default function FeedbackDashboardPage() {
                     <button onClick={() => markSeen(r.id)} className="text-[12.5px] bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded font-medium">✓ Mark seen</button>
                   )}
                   {r.permission_status === 'pending' && r.response_text && (
-                    <button onClick={() => sendConsent(r.id)} className="text-[12.5px] bg-[#EFF1F4] hover:bg-stone-300 text-[#141821] px-3 py-1.5 rounded font-medium inline-flex items-center gap-1"><Mail size={12} strokeWidth={2.5} /> Send consent email</button>
+                    <button onClick={() => sendConsent(r.id)} className="text-[12.5px] bg-[#EFF1F4] hover:bg-[#E8EAEE] text-[#141821] px-3 py-1.5 rounded font-medium inline-flex items-center gap-1"><Mail size={12} strokeWidth={2.5} /> Send consent email</button>
                   )}
                   {r.permission_status === 'granted' && !r.testimonial_published_at && (
                     <button onClick={() => {

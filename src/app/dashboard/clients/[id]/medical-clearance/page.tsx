@@ -121,7 +121,7 @@ Kade`
           <Link
             href={`/dashboard/clients/${id}/medical-clearance/print`}
             target="_blank"
-            className="text-[12.5px] bg-[#EFF1F4] text-[#141821] hover:bg-stone-300 hover:text-[#141821] px-3 py-1.5 rounded-lg transition-colors"
+            className="text-[12.5px] bg-[#EFF1F4] text-[#141821] hover:bg-[#E8EAEE] hover:text-[#141821] px-3 py-1.5 rounded-lg transition-colors"
           >
             Open printable form ↗
           </Link>

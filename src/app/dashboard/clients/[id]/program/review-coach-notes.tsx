@@ -51,14 +51,14 @@ export default function ReviewCoachNotes({ reviewId, existingNotes }: { reviewId
         onChange={e => setNotes(e.target.value)}
         placeholder="Write feedback for the client. This will appear on their portal home page."
         rows={3}
-        className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-[12.5px] text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-500 resize-none"
+        className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-[12.5px] text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-500 resize-none"
         autoFocus
       />
       <div className="flex gap-2">
         <button
           onClick={handleSave}
           disabled={saving}
-          className="text-[12.5px] font-semibold bg-blue-500 hover:bg-blue-300 disabled:bg-stone-300 text-white px-3 py-1.5 rounded-lg transition-colors"
+          className="text-[12.5px] font-semibold bg-blue-500 hover:bg-blue-300 disabled:bg-[#E8EAEE] text-white px-3 py-1.5 rounded-lg transition-colors"
         >
           {saving ? 'Saving...' : 'Save'}
         </button>

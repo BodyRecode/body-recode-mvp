@@ -73,7 +73,7 @@ export default function NewClientPage() {
   }
 
   const inputClass =
-    'w-full bg-[#F4F6F9] border border-[#E8EAEE] text-[#141821] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#CFD4DC] transition-colors placeholder-stone-400'
+    'w-full bg-[#F4F6F9] border border-[#E8EAEE] text-[#141821] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#CFD4DC] transition-colors placeholder-[#98A0AD]'
 
   // Success state - show the link
   if (intakeLink) {
@@ -95,7 +95,7 @@ export default function NewClientPage() {
             <p className="text-[#666D7A] text-[12.5px] font-mono flex-1 truncate">{intakeLink}</p>
             <button
               onClick={copyLink}
-              className="shrink-0 text-[12.5px] font-medium px-3 py-1.5 rounded-md border border-[#CFD4DC] text-[#141821] hover:border-stone-600 hover:text-[#141821] transition-colors"
+              className="shrink-0 text-[12.5px] font-medium px-3 py-1.5 rounded-md border border-[#CFD4DC] text-[#141821] hover:border-[#666D7A] hover:text-[#141821] transition-colors"
             >
               {copied ? 'Copied!' : 'Copy'}
             </button>
@@ -127,7 +127,7 @@ export default function NewClientPage() {
           </Link>
           <Link
             href={`/dashboard/clients/${clientId}`}
-            className="flex-1 text-center text-sm px-4 py-2.5 bg-white text-stone-50 font-medium rounded-lg hover:bg-[#FBFCFD] transition-colors"
+            className="flex-1 text-center text-sm px-4 py-2.5 bg-white text-[#FBFCFD] font-medium rounded-lg hover:bg-[#FBFCFD] transition-colors"
           >
             View client
           </Link>
@@ -207,7 +207,7 @@ export default function NewClientPage() {
         <button
           onClick={handleCreate}
           disabled={loading}
-          className="flex-1 px-5 py-2.5 rounded-lg text-sm bg-white text-stone-50 font-medium hover:bg-[#FBFCFD] transition-colors disabled:opacity-50"
+          className="flex-1 px-5 py-2.5 rounded-lg text-sm bg-white text-[#FBFCFD] font-medium hover:bg-[#FBFCFD] transition-colors disabled:opacity-50"
         >
           {loading ? 'Creating…' : 'Create client & generate link'}
         </button>

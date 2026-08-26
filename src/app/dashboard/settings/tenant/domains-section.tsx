@@ -110,7 +110,7 @@ export function DomainsSection() {
                   <th className="text-right px-3 py-2 text-[11px] font-medium text-[#666D7A]"></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-stone-100">
+              <tbody className="divide-y divide-[#F4F6F9]">
                 {domains.map((d) => (
                   <tr key={d.id}>
                     <td className="px-3 py-2 font-mono text-[#141821]">{d.domain}</td>

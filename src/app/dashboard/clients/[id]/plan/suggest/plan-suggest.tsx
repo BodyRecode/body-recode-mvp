@@ -488,7 +488,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
         <button
           onClick={handleApprove}
           disabled={saving}
-          className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-stone-300 disabled:text-[#666D7A] text-white font-semibold text-sm rounded-lg transition-colors"
+          className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-[#E8EAEE] disabled:text-[#666D7A] text-white font-semibold text-sm rounded-lg transition-colors"
         >
           {saving ? 'Saving arc...' : 'Save as Draft'}
         </button>

@@ -66,7 +66,7 @@ export default async function OutreachQueuePage() {
 
       {touches.length === 0 ? (
         <div className="border border-[#E8EAEE] rounded-xl p-10 text-center">
-          <Inbox className="w-8 h-8 text-stone-300 mx-auto mb-3" />
+          <Inbox className="w-8 h-8 text-[#E8EAEE] mx-auto mb-3" />
           <p className="text-[#666D7A] text-sm font-medium mb-1">The queue is clear</p>
           <p className="text-[#666D7A] text-sm">
             New scorecard leads get their first draft a day after they complete it. Approved and skipped drafts drop off this list.

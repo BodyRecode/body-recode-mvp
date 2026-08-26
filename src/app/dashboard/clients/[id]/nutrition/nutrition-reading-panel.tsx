@@ -152,14 +152,14 @@ export default function NutritionReadingPanel({
               style={{
                 fontFamily: MONO_FONT,
                 letterSpacing: '0.06em',
-                color: published ? '#1B6DFC' : '#6B6B6B',
+                color: published ? '#1B6DFC' : '#666D7A',
                 background: published ? 'rgba(27,109,252,0.10)' : '#FFFFFF',
-                borderColor: published ? '#B5CFFC' : '#E5E5E5',
+                borderColor: published ? '#B5CFFC' : '#E8EAEE',
               }}
             >
               <span
                 className="w-1 h-1 rounded-full"
-                style={{ background: published ? '#1B6DFC' : '#999999' }}
+                style={{ background: published ? '#1B6DFC' : '#98A0AD' }}
               />
               {published ? 'Live in portal' : 'Unpublished'}
             </span>

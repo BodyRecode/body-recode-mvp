@@ -317,7 +317,7 @@ function PaymentsStatusCard({
     >
       <div
         className="rounded-xl border bg-[#FFFFFF] px-5 py-4 flex items-center gap-4 transition-colors group-hover:border-[#CFD4DC]"
-        style={{ borderColor: '#E5E5E5' }}
+        style={{ borderColor: '#E8EAEE' }}
       >
         <span className="w-1 h-10 rounded-full" style={{ background: a.bar }} />
         <div

@@ -95,12 +95,12 @@ function categoryColor(cat: string) {
   const map: Record<string, string> = {
     problem_aware: 'bg-red-50 text-red-700 border-red-500/20',
     solution_aware: 'bg-blue-50 text-blue-500 border-blue-500/20',
-    unaware: 'bg-stone-300 text-[#666D7A] border-[#CFD4DC]',
+    unaware: 'bg-[#E8EAEE] text-[#666D7A] border-[#CFD4DC]',
     contrarian: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
     curiosity: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
     authority: 'bg-blue-50 text-blue-700 border-blue-500/20',
   }
-  return map[cat] ?? 'bg-stone-300 text-[#666D7A] border-[#CFD4DC]'
+  return map[cat] ?? 'bg-[#E8EAEE] text-[#666D7A] border-[#CFD4DC]'
 }
 
 function categoryLabel(cat: string) {
@@ -115,7 +115,7 @@ function messageTypeColor(type: string) {
     system_explanation: 'bg-blue-50 text-blue-700 border-blue-500/20',
     authority: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
   }
-  return map[type] ?? 'bg-stone-300 text-[#666D7A] border-[#CFD4DC]'
+  return map[type] ?? 'bg-[#E8EAEE] text-[#666D7A] border-[#CFD4DC]'
 }
 
 function messageTypeLabel(type: string) {
@@ -269,7 +269,7 @@ function HooksTab({ hooks, setHooks }: { hooks: Hook[]; setHooks: React.Dispatch
         <p className="text-[12.5px] text-[#666D7A]">{hooks.length} hooks in library</p>
         <button
           onClick={() => { setShowForm(true); setEditingId(null); setForm({ hook_text: '', category: 'problem_aware' }) }}
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
         >
           <Plus size={13} /> Add Hook
         </button>
@@ -284,7 +284,7 @@ function HooksTab({ hooks, setHooks }: { hooks: Hook[]; setHooks: React.Dispatch
               onChange={e => setForm(f => ({ ...f, hook_text: e.target.value }))}
               placeholder="Your body isn't broken - it's protecting you"
               rows={2}
-              className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-500 resize-none"
+              className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-500 resize-none"
             />
           </div>
           <div>
@@ -299,7 +299,7 @@ function HooksTab({ hooks, setHooks }: { hooks: Hook[]; setHooks: React.Dispatch
           </div>
           <div className="flex items-center gap-2">
             <button onClick={save} disabled={saving || !form.hook_text.trim()}
-              className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
+              className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
             >
               <Check size={12} /> {saving ? 'Saving...' : 'Save'}
             </button>
@@ -398,7 +398,7 @@ function MessagesTab({ messages, setMessages }: { messages: Message[]; setMessag
         <p className="text-[12.5px] text-[#666D7A]">{messages.length} messages in library</p>
         <button
           onClick={() => { setShowForm(true); setEditingId(null); setForm({ message_text: '', type: 'education' }) }}
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
         >
           <Plus size={13} /> Add Message
         </button>
@@ -413,7 +413,7 @@ function MessagesTab({ messages, setMessages }: { messages: Message[]; setMessag
               onChange={e => setForm(f => ({ ...f, message_text: e.target.value }))}
               placeholder="Stress triggers cortisol, which tells the body to hold fat - especially around the belly. Training harder into that state makes it worse."
               rows={4}
-              className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-500 resize-none"
+              className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-500 resize-none"
             />
           </div>
           <div>
@@ -428,7 +428,7 @@ function MessagesTab({ messages, setMessages }: { messages: Message[]; setMessag
           </div>
           <div className="flex items-center gap-2">
             <button onClick={save} disabled={saving || !form.message_text.trim()}
-              className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
+              className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
             >
               <Check size={12} /> {saving ? 'Saving...' : 'Save'}
             </button>
@@ -516,7 +516,7 @@ function CtasTab({ ctas, setCtas }: { ctas: Cta[]; setCtas: React.Dispatch<React
         <p className="text-[12.5px] text-[#666D7A]">{ctas.length} CTAs in library</p>
         <button
           onClick={() => { setShowForm(true); setEditingId(null); setForm({ cta_text: '' }) }}
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
         >
           <Plus size={13} /> Add CTA
         </button>
@@ -531,12 +531,12 @@ function CtasTab({ ctas, setCtas }: { ctas: Cta[]; setCtas: React.Dispatch<React
               value={form.cta_text}
               onChange={e => setForm({ cta_text: e.target.value })}
               placeholder="Run your Performance Check-In"
-              className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-500"
+              className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-500"
             />
           </div>
           <div className="flex items-center gap-2">
             <button onClick={save} disabled={saving || !form.cta_text.trim()}
-              className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
+              className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
             >
               <Check size={12} /> {saving ? 'Saving...' : 'Save'}
             </button>
@@ -561,7 +561,7 @@ function CtasTab({ ctas, setCtas }: { ctas: Cta[]; setCtas: React.Dispatch<React
                     onChange={e => setForm({ cta_text: e.target.value })}
                     className="flex-1 bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-1.5 text-sm text-[#141821] focus:outline-none focus:border-blue-500"
                   />
-                  <button onClick={save} disabled={saving} className="flex items-center gap-1 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-[12.5px] font-semibold px-2.5 py-1.5 rounded-lg">
+                  <button onClick={save} disabled={saving} className="flex items-center gap-1 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-2.5 py-1.5 rounded-lg">
                     <Check size={12} /> {saving ? 'Saving...' : 'Save'}
                   </button>
                   <button onClick={() => setEditingId(null)} className="text-[12.5px] text-[#666D7A] hover:text-[#141821]">
@@ -743,7 +743,7 @@ function GenerateTab({
           <button
             onClick={generate}
             disabled={generating || generatingAll || variantCount === 0}
-            className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 font-semibold px-5 py-2.5 rounded-lg transition-colors text-sm"
+            className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] font-semibold px-5 py-2.5 rounded-lg transition-colors text-sm"
           >
             <Zap size={15} />
             {generating ? 'Generating...' : 'Generate'}
@@ -778,7 +778,7 @@ function GenerateTab({
             <button
               onClick={generateAll}
               disabled={generatingAll || generating}
-              className="shrink-0 flex items-center gap-2 bg-stone-300 hover:bg-stone-400 disabled:opacity-50 text-[#141821] font-semibold px-4 py-2.5 rounded-lg transition-colors text-sm"
+              className="shrink-0 flex items-center gap-2 bg-[#E8EAEE] hover:bg-[#98A0AD] disabled:opacity-50 text-[#141821] font-semibold px-4 py-2.5 rounded-lg transition-colors text-sm"
             >
               <Zap size={15} />
               {generatingAll ? 'Running...' : 'Generate All'}
@@ -1048,7 +1048,7 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
                     </div>
                     <button
                       onClick={() => downloadGraphic(output.content_text, graphicStyle[output.id] ?? 'quote', output.id)}
-                      className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
+                      className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
                     >
                       <Download size={12} /> Download 1080×1080 PNG
                     </button>
@@ -1080,7 +1080,7 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
                     <button
                       onClick={() => downloadCarouselZip(output.id)}
                       disabled={downloadingCarousel === output.id}
-                      className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
+                      className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
                     >
                       <Download size={12} />
                       {downloadingCarousel === output.id ? 'Packaging...' : `Download ${carouselSlides[output.id].length} slides as ZIP`}
@@ -1145,7 +1145,7 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
                         <button
                           onClick={() => generateReel(output)}
                           disabled={generatingReelId === output.id}
-                          className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
+                          className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
                         >
                           <Video size={12} /> {generatingReelId === output.id ? 'Submitting...' : 'Generate Reel'}
                         </button>
@@ -1200,7 +1200,7 @@ function ScoreSelector({ score, onChange }: { score: number; onChange: (s: numbe
             <button
               key={val}
               onClick={() => { onChange(Number(val)); setOpen(false) }}
-              className={`w-full text-left px-3 py-1.5 text-xs hover:bg-stone-300 ${c}`}
+              className={`w-full text-left px-3 py-1.5 text-xs hover:bg-[#E8EAEE] ${c}`}
             >
               {l}
             </button>
@@ -1225,7 +1225,7 @@ function StatusDropdown({ status, onChange }: { status: string; onChange: (s: st
             <button
               key={s.value}
               onClick={() => { onChange(s.value); setOpen(false) }}
-              className="w-full text-left px-3 py-1.5 text-[12.5px] hover:bg-stone-300 text-[#141821]"
+              className="w-full text-left px-3 py-1.5 text-[12.5px] hover:bg-[#E8EAEE] text-[#141821]"
             >
               {s.label}
             </button>
@@ -1275,11 +1275,11 @@ function SelectableList({
                 }`}
               >
                 <div className={`w-3.5 h-3.5 rounded border shrink-0 mt-0.5 flex items-center justify-center ${active ? 'bg-blue-500 border-blue-500' : 'border-[#CFD4DC]'}`}>
-                  {active && <Check size={9} className="text-stone-50" strokeWidth={3} />}
+                  {active && <Check size={9} className="text-[#FBFCFD]" strokeWidth={3} />}
                 </div>
                 <span className="flex-1 leading-relaxed line-clamp-2">{item.label}</span>
                 {item.badge && (
-                  <span className={`shrink-0 text-xs font-medium px-1.5 py-0.5 rounded-full border ${item.badgeColor ?? 'bg-stone-300 text-[#666D7A] border-[#CFD4DC]'}`}>
+                  <span className={`shrink-0 text-xs font-medium px-1.5 py-0.5 rounded-full border ${item.badgeColor ?? 'bg-[#E8EAEE] text-[#666D7A] border-[#CFD4DC]'}`}>
                     {item.badge}
                   </span>
                 )}
@@ -1339,7 +1339,7 @@ function CardsTab() {
               <p className="text-[12.5px] text-[#666D7A] mb-2 truncate">{card.label}</p>
               <button
                 onClick={() => handleDownload(card.file)}
-                className="w-full flex items-center justify-center gap-1.5 px-3 py-1.5 bg-[#EFF1F4] hover:bg-stone-300 border border-[#E8EAEE] rounded-lg text-[12.5px] text-[#141821] transition-colors"
+                className="w-full flex items-center justify-center gap-1.5 px-3 py-1.5 bg-[#EFF1F4] hover:bg-[#E8EAEE] border border-[#E8EAEE] rounded-lg text-[12.5px] text-[#141821] transition-colors"
               >
                 <Download size={11} />
                 Download PNG

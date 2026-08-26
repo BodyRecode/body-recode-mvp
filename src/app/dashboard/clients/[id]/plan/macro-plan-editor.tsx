@@ -291,7 +291,7 @@ export default function MacroPlanEditor({
                   {/* Connector line between blocks */}
                   {i > 0 && (
                     <div className="flex items-center gap-2 px-6 py-1">
-                      <div className="w-px h-4 bg-stone-300 mx-auto" />
+                      <div className="w-px h-4 bg-[#E8EAEE] mx-auto" />
                     </div>
                   )}
 

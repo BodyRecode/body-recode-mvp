@@ -8,7 +8,7 @@ const TEAL_HOVER = '#5390FF'
 const INK = '#0f0f0f'
 const WHITE = '#ffffff'
 const PAGE_BG = '#fafaf7'
-const CARD_BORDER = '#E5E5E5'
+const CARD_BORDER = '#E8EAEE'
 const SOFT = '#f5f3ee'
 const SCREEN_FONT = "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif"
 
@@ -152,7 +152,7 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
 
             {/* Body State Classification */}
             <div style={{ background: WHITE, border: `1px solid ${CARD_BORDER}`, padding: '32px 36px', borderRadius: 6 }}>
-              <p style={{ fontSize: 9, fontWeight: 700, color: '#999999', textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: 20 }}>
+              <p style={{ fontSize: 9, fontWeight: 700, color: '#98A0AD', textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: 20 }}>
                 Body State Classification
               </p>
               <p style={{ fontSize: 22, fontWeight: 800, color: INK, letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 12 }}>
@@ -170,7 +170,7 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
                   and must justify it against whatever the funnel read first. */}
               {cffs.pattern_classification && (
                 <div style={{ marginTop: 20, paddingTop: 20, borderTop: `1px solid ${CARD_BORDER}` }}>
-                  <p style={{ fontSize: 9, fontWeight: 700, color: '#999999', textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: 10 }}>
+                  <p style={{ fontSize: 9, fontWeight: 700, color: '#98A0AD', textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: 10 }}>
                     Pattern Classification
                   </p>
                   <p style={{ fontSize: 22, fontWeight: 800, color: INK, letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 8 }}>
@@ -211,7 +211,7 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
 
             {/* Exposure Readiness */}
             <div style={{ background: WHITE, border: `1px solid ${CARD_BORDER}`, padding: '32px 36px', borderRadius: 6 }}>
-              <p style={{ fontSize: 9, fontWeight: 700, color: '#999999', textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: 20 }}>
+              <p style={{ fontSize: 9, fontWeight: 700, color: '#98A0AD', textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: 20 }}>
                 Exposure Readiness
               </p>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
@@ -228,7 +228,7 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
                     <p style={{ fontSize: 13, fontWeight: 800, color: readinessColour[item.value] || '#9ca3af', marginBottom: 4 }}>
                       {item.value}
                     </p>
-                    <p style={{ fontSize: 10, fontWeight: 600, color: '#999999', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                    <p style={{ fontSize: 10, fontWeight: 600, color: '#98A0AD', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                       {item.label}
                     </p>
                   </div>
@@ -278,7 +278,7 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
 
           {/* Footer */}
           <div style={{ marginTop: 48, paddingTop: 24, borderTop: `2px solid ${INK}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <p style={{ fontSize: 10, fontWeight: 600, color: '#999999', letterSpacing: '0.05em' }}>
+            <p style={{ fontSize: 10, fontWeight: 600, color: '#98A0AD', letterSpacing: '0.05em' }}>
               © {brand().name} · www.bodyrecode.au · {brand().supportEmail}
                                       </p>
             <p style={{ fontSize: 10, fontWeight: 600, color: '#aaaaaa', letterSpacing: '0.05em' }}>

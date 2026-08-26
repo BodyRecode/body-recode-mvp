@@ -112,7 +112,7 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
           value={planName}
           onChange={e => setPlanName(e.target.value)}
           placeholder="e.g. Foundation Nutrition - Training Support"
-          className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-700"
+          className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-700"
           required
         />
       </div>
@@ -167,7 +167,7 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
           value={ptsPhase}
           onChange={e => setPtsPhase(e.target.value)}
           placeholder="e.g. Accumulation - Hypertrophy, or No active program"
-          className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-700"
+          className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-700"
         />
       </div>
 
@@ -260,7 +260,7 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
           value={foodExclusions}
           onChange={e => setFoodExclusions(e.target.value)}
           placeholder="e.g. dairy, shellfish, eggs (comma separated)"
-          className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-700"
+          className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-700"
         />
       </div>
 
@@ -271,7 +271,7 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
           value={coachGuidance}
           onChange={e => setCoachGuidance(e.target.value)}
           placeholder="Standing context for this plan — travel block, recent dietary change, post-illness framing, life event constraints. Read at every generation. Persists on the plan; leave blank to keep the prior plan's guidance."
-          className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-3 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-700 min-h-[120px]"
+          className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-3 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-700 min-h-[120px]"
           rows={5}
         />
         <p className="text-[12.5px] text-[#98A0AD] mt-2">Bounded by HABNS doctrine: cannot override validator floors, appetite-suppression hard rules, dietary restrictions or preferences. See nutrition-prompt.ts § COACH GUIDANCE.</p>
@@ -293,7 +293,7 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
         <button
           type="submit"
           disabled={loading}
-          className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-stone-300 disabled:text-[#666D7A] text-white font-semibold text-sm rounded-lg transition-colors"
+          className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-[#E8EAEE] disabled:text-[#666D7A] text-white font-semibold text-sm rounded-lg transition-colors"
         >
           {loading ? 'Generating plan...' : 'Generate Plan'}
         </button>

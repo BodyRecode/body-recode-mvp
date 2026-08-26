@@ -63,7 +63,7 @@ export default function InboxCompose({ leadId, leadName, leadEmail }: Props) {
           value={subject}
           onChange={e => setSubject(e.target.value)}
           placeholder="Subject"
-          className="w-full bg-transparent text-sm text-[#141821] placeholder-stone-400 focus:outline-none"
+          className="w-full bg-transparent text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none"
         />
       </div>
       <textarea
@@ -71,7 +71,7 @@ export default function InboxCompose({ leadId, leadName, leadEmail }: Props) {
         onChange={e => setMessage(e.target.value)}
         placeholder="Write your message..."
         rows={4}
-        className="w-full bg-transparent px-4 py-3 text-sm text-[#141821] placeholder-stone-400 focus:outline-none resize-none"
+        className="w-full bg-transparent px-4 py-3 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none resize-none"
       />
       <div className="px-4 py-3 border-t border-[#E8EAEE] flex items-center justify-between">
         {error && <p className="text-red-700 text-[12.5px]">{error}</p>}
@@ -80,7 +80,7 @@ export default function InboxCompose({ leadId, leadName, leadEmail }: Props) {
         <button
           onClick={send}
           disabled={sending}
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-[12.5px] font-semibold px-4 py-2 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-4 py-2 rounded-lg transition-colors"
         >
           <Send size={12} />
           {sending ? 'Sending...' : 'Send'}

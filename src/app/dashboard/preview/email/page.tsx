@@ -12,9 +12,9 @@ const bookingLinkHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta
 <body style="margin:0;padding:0;background-color:#FFFFFF;">
   <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E8EAEE;overflow:hidden;">
         <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E8EAEE;">
             <img src="${logoUrl()}" width="130" alt="Body Recode" style="display:block;"/>
           </td>
         </tr>
@@ -27,7 +27,7 @@ const bookingLinkHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/><meta
                 <td><a href="${BOOKING_LINK}" style="display:inline-block;padding:14px 28px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Book your Zoom call</a></td>
               </tr>
             </table>
-            <p style="margin:0 0 24px;font-size:13px;color:#999999;">Or copy this link: ${BOOKING_LINK}</p>
+            <p style="margin:0 0 24px;font-size:13px;color:#98A0AD;">Or copy this link: ${BOOKING_LINK}</p>
             ${darkEmailSignature()}
           </td>
         </tr>
@@ -40,9 +40,9 @@ const confirmationHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/><met
 <body style="margin:0;padding:0;background-color:#FFFFFF;">
   <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:48px 20px;">
     <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E5E5E5;overflow:hidden;">
+      <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="max-width:520px;background-color:#FFFFFF;border-radius:16px;border:1px solid #E8EAEE;overflow:hidden;">
         <tr>
-          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E5E5E5;">
+          <td bgcolor="#FFFFFF" style="background-color:#FFFFFF;padding:28px 40px;border-bottom:1px solid #E8EAEE;">
             <img src="${logoUrl()}" width="130" alt="Body Recode" style="display:block;"/>
           </td>
         </tr>
@@ -52,14 +52,14 @@ const confirmationHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/><met
             <p style="margin:0 0 24px;font-size:15px;color:#4A4A4A;line-height:1.75;">Your Zoom call with Kade is confirmed.</p>
             <table cellpadding="0" cellspacing="0" style="width:100%;margin-bottom:24px;">
               <tr>
-                <td style="padding:20px 24px;background:#F8F8F8;border-radius:12px;border:1px solid #E5E5E5;">
-                  <p style="margin:0 0 4px;font-size:16px;font-weight:700;color:#1A1A1A;">${dateStr}</p>
+                <td style="padding:20px 24px;background:#F8F8F8;border-radius:12px;border:1px solid #E8EAEE;">
+                  <p style="margin:0 0 4px;font-size:16px;font-weight:700;color:#141821;">${dateStr}</p>
                   <p style="margin:0 0 16px;font-size:14px;color:#4A4A4A;">${timeStr} Brisbane · 30 min</p>
                   <a href="${meetingLink}" style="display:inline-block;padding:12px 24px;background:#1B6DFC;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">Join Zoom ↗</a>
                 </td>
               </tr>
             </table>
-            <p style="margin:0 0 24px;font-size:13px;color:#999999;">Open the attached file to add this to your calendar.</p>
+            <p style="margin:0 0 24px;font-size:13px;color:#98A0AD;">Open the attached file to add this to your calendar.</p>
             ${darkEmailSignature()}
           </td>
         </tr>

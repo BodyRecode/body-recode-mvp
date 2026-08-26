@@ -123,7 +123,7 @@ export default function AdsClient({ initialCampaigns }: Props) {
             value={form.name ?? ''}
             onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
             placeholder="e.g. Body Recode Jan"
-            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-500"
           />
         </div>
       </div>
@@ -189,7 +189,7 @@ export default function AdsClient({ initialCampaigns }: Props) {
         </div>
         <button
           onClick={() => { setShowForm(true); setEditingId(null); setForm(empty()) }}
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
         >
           <Plus size={15} />
           Add Campaign
@@ -223,7 +223,7 @@ export default function AdsClient({ initialCampaigns }: Props) {
             <button
               onClick={saveNew}
               disabled={saving || !form.name?.trim()}
-              className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
             >
               <Check size={12} />
               {saving ? 'Saving...' : 'Save Campaign'}
@@ -261,7 +261,7 @@ export default function AdsClient({ initialCampaigns }: Props) {
                     <button
                       onClick={saveEdit}
                       disabled={saving}
-                      className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
+                      className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
                     >
                       <Check size={12} />
                       {saving ? 'Saving...' : 'Save'}

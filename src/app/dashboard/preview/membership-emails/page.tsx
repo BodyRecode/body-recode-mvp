@@ -84,7 +84,7 @@ export default async function MembershipEmailsPreview({
     }}>
       <div style={{
         background: '#FFFFFF',
-        borderBottom: '1px solid #E5E5E5',
+        borderBottom: '1px solid #E8EAEE',
         padding: '20px 32px',
         position: 'sticky',
         top: 0,
@@ -95,10 +95,10 @@ export default async function MembershipEmailsPreview({
             <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 6px' }}>
               {brand().name} Membership · Email preview
                                       </p>
-            <h1 style={{ fontSize: '22px', fontWeight: 800, color: '#1A1A1A', margin: 0, letterSpacing: '-0.02em' }}>
+            <h1 style={{ fontSize: '22px', fontWeight: 800, color: '#141821', margin: 0, letterSpacing: '-0.02em' }}>
               All four Membership emails, rendered via the actual production builders.
             </h1>
-            <p style={{ fontSize: '13px', color: '#6B6B6B', margin: '8px 0 0', lineHeight: 1.5 }}>
+            <p style={{ fontSize: '13px', color: '#666D7A', margin: '8px 0 0', lineHeight: 1.5 }}>
               Sample data: <strong>{SAMPLE.firstName}</strong> · Block <strong>{SAMPLE.block}</strong> · completed week <strong>{SAMPLE.completedWeek}</strong>. What you see is exactly what gets sent.
             </p>
           </div>
@@ -110,7 +110,7 @@ export default async function MembershipEmailsPreview({
         <div style={{ marginTop: '18px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {GROUPS.map(group => (
             <div key={group} style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
-              <span style={{ fontSize: '11px', fontWeight: 700, color: '#999999', letterSpacing: '0.1em', textTransform: 'uppercase', minWidth: '110px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 700, color: '#98A0AD', letterSpacing: '0.1em', textTransform: 'uppercase', minWidth: '110px' }}>
                 {group}
               </span>
               {EMAIL_TABS.filter(t => t.group === group).map(tab => {
@@ -124,9 +124,9 @@ export default async function MembershipEmailsPreview({
                       padding: '6px 12px',
                       fontSize: '12px',
                       fontWeight: 600,
-                      color: active ? '#FFFFFF' : '#1A1A1A',
+                      color: active ? '#FFFFFF' : '#141821',
                       background: active ? '#1B6DFC' : '#FFFFFF',
-                      border: '1px solid ' + (active ? '#1B6DFC' : '#E5E5E5'),
+                      border: '1px solid ' + (active ? '#1B6DFC' : '#E8EAEE'),
                       borderRadius: '6px',
                       textDecoration: 'none',
                     }}
@@ -145,7 +145,7 @@ export default async function MembershipEmailsPreview({
           <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 4px' }}>
             {currentTab.trigger}
           </p>
-          <p style={{ fontSize: '15px', fontWeight: 700, color: '#1A1A1A', margin: 0 }}>
+          <p style={{ fontSize: '15px', fontWeight: 700, color: '#141821', margin: 0 }}>
             Subject: <span style={{ fontWeight: 500 }}>{built!.subject}</span>
           </p>
         </div>
@@ -154,7 +154,7 @@ export default async function MembershipEmailsPreview({
           style={{
             width: '100%',
             minHeight: `${currentTab.iframeHeight}px`,
-            border: '1px solid #E5E5E5',
+            border: '1px solid #E8EAEE',
             borderRadius: '12px',
             background: '#FFFFFF',
           }}

@@ -173,7 +173,7 @@ export default async function GettingStartedPage() {
         <div className="flex items-baseline justify-between mb-2">
           <span
             className="text-[10px]"
-            style={{ fontFamily: MONO_FONT, color: '#6B6B6B', letterSpacing: '0.16em' }}
+            style={{ fontFamily: MONO_FONT, color: '#666D7A', letterSpacing: '0.16em' }}
           >
             Setup progress
           </span>
@@ -203,14 +203,14 @@ export default async function GettingStartedPage() {
                   {step.done ? (
                     <CheckCircle2 className="w-6 h-6 text-emerald-600" />
                   ) : (
-                    <Circle className="w-6 h-6 text-stone-300" />
+                    <Circle className="w-6 h-6 text-[#E8EAEE]" />
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-baseline gap-3 flex-wrap mb-1">
                     <span
                       className="text-[10px]"
-                      style={{ fontFamily: MONO_FONT, color: '#6B6B6B', letterSpacing: '0.14em' }}
+                      style={{ fontFamily: MONO_FONT, color: '#666D7A', letterSpacing: '0.14em' }}
                     >
                       Step {String(i + 1).padStart(2, '0')}
                     </span>
@@ -240,7 +240,7 @@ export default async function GettingStartedPage() {
         <div className="flex items-start gap-3">
           <ShieldCheck className="w-4 h-4 text-[#666D7A] mt-0.5 shrink-0" />
           <div>
-            <div className="text-[10px] mb-1" style={{ fontFamily: MONO_FONT, color: '#6B6B6B', letterSpacing: '0.14em' }}>
+            <div className="text-[10px] mb-1" style={{ fontFamily: MONO_FONT, color: '#666D7A', letterSpacing: '0.14em' }}>
               Hard Safety Floors
             </div>
             <p className="text-[12px] text-[#666D7A] leading-relaxed">

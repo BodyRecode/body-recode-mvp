@@ -172,7 +172,7 @@ export default async function RecoveryRegulationPage() {
         <div className="mt-6 grid gap-4">
           {PLAYBOOK_PRIORITY_ORDER.map(pid => {
             const p = getPlaybook(pid)
-            const tierAccent = p.tier === 1 ? '#DC2626' : p.tier === 2 ? '#B7791F' : p.tier <= 4 ? '#60a5fa' : '#999999'
+            const tierAccent = p.tier === 1 ? '#DC2626' : p.tier === 2 ? '#B7791F' : p.tier <= 4 ? '#60a5fa' : '#98A0AD'
             return (
               <Card key={pid} className="relative overflow-hidden">
                 <span className="absolute left-0 top-0 bottom-0 w-[3px]" style={{ background: tierAccent }} />

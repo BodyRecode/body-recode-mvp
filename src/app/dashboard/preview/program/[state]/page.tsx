@@ -42,13 +42,13 @@ export default async function PreviewProgramPage({
 
   return (
     <div style={{
-      background: '#FFFFFF', minHeight: '100vh', color: '#1A1A1A',
+      background: '#FFFFFF', minHeight: '100vh', color: '#141821',
       fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
     }}>
 
       {/* Preview banner with state switcher tabs */}
       <div style={{
-        background: '#FAFAFA', borderBottom: '1px solid #E5E5E5',
+        background: '#FAFAFA', borderBottom: '1px solid #E8EAEE',
         padding: '10px 24px', display: 'flex', alignItems: 'center',
         justifyContent: 'center', gap: '14px', flexWrap: 'wrap',
       }}>
@@ -70,7 +70,7 @@ export default async function PreviewProgramPage({
               href={`/dashboard/preview/program/${s}`}
               style={{
                 fontSize: '12px', fontWeight: 700,
-                color: isActive ? stateColor : '#6B6B6B',
+                color: isActive ? stateColor : '#666D7A',
                 textDecoration: 'none', letterSpacing: '0.04em',
                 background: isActive ? `${stateColor}18` : 'transparent',
                 border: isActive ? `1px solid ${stateColor}40` : '1px solid transparent',
@@ -84,7 +84,7 @@ export default async function PreviewProgramPage({
       </div>
 
       {/* Header */}
-      <div style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E5E5', padding: '18px 24px' }}>
+      <div style={{ background: '#FFFFFF', borderBottom: '1px solid #E8EAEE', padding: '18px 24px' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap' }}>
           <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block' }} />
           <span style={{
@@ -114,7 +114,7 @@ export default async function PreviewProgramPage({
           </p>
           <h1 style={{
             fontSize: 'clamp(30px, 5vw, 44px)', fontWeight: 900,
-            letterSpacing: '-0.035em', margin: '8px 0 16px', color: '#1A1A1A', lineHeight: 1.05,
+            letterSpacing: '-0.035em', margin: '8px 0 16px', color: '#141821', lineHeight: 1.05,
           }}>
             Your 12-Week
             <br />
@@ -124,7 +124,7 @@ export default async function PreviewProgramPage({
           <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: '0 0 14px' }}>
             {strapline}
           </p>
-          <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.7, margin: 0 }}>
+          <p style={{ fontSize: '14px', color: '#666D7A', lineHeight: 1.7, margin: 0 }}>
             Bookmark this page. Everything you need is here and you can return to it any time.
           </p>
         </div>
@@ -133,7 +133,7 @@ export default async function PreviewProgramPage({
       {/* Program content card */}
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '24px 24px 0' }}>
         <div style={{
-          background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px',
+          background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '14px',
           padding: '32px', boxShadow: '0 1px 4px rgba(27, 109, 252, 0.04)',
         }}>
           <style>{`
@@ -146,7 +146,7 @@ export default async function PreviewProgramPage({
               color: ${sc.accent};
               margin: 44px 0 18px;
               padding-top: 36px;
-              border-top: 1px solid #E5E5E5;
+              border-top: 1px solid #E8EAEE;
             }
             .program-content h2:first-of-type {
               margin-top: 0;
@@ -165,7 +165,7 @@ export default async function PreviewProgramPage({
             .program-content h3 {
               font-size: 18px;
               font-weight: 800;
-              color: #1A1A1A;
+              color: #141821;
               letter-spacing: -0.02em;
               margin: 28px 0 10px;
               line-height: 1.3;
@@ -173,7 +173,7 @@ export default async function PreviewProgramPage({
             .program-content h4 {
               font-size: 13px;
               font-weight: 700;
-              color: #1A1A1A;
+              color: #141821;
               margin: 22px 0 8px;
               letter-spacing: -0.01em;
             }
@@ -224,7 +224,7 @@ export default async function PreviewProgramPage({
               background: #FAFAFA;
               border-radius: 10px;
               overflow: hidden;
-              border: 1px solid #E5E5E5;
+              border: 1px solid #E8EAEE;
             }
             .program-content th {
               text-align: left;
@@ -235,18 +235,18 @@ export default async function PreviewProgramPage({
               font-weight: 800;
               letter-spacing: 0.12em;
               text-transform: uppercase;
-              border-bottom: 1px solid #E5E5E5;
+              border-bottom: 1px solid #E8EAEE;
             }
             .program-content td {
               padding: 12px 14px;
               color: #4A4A4A;
-              border-bottom: 1px solid #E5E5E5;
+              border-bottom: 1px solid #E8EAEE;
               vertical-align: top;
               line-height: 1.65;
             }
-            .program-content td:first-child { color: #1A1A1A; font-weight: 600; }
+            .program-content td:first-child { color: #141821; font-weight: 600; }
             .program-content tr:last-child td { border-bottom: none; }
-            .program-content strong { color: #1A1A1A; font-weight: 700; }
+            .program-content strong { color: #141821; font-weight: 700; }
             .program-content hr { display: none; }
             .program-content blockquote {
               background: ${sc.accentSoftBg};
@@ -274,7 +274,7 @@ export default async function PreviewProgramPage({
       {/* Ascension CTA · dark Blueprint-style card */}
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '24px 24px 0' }}>
         <div style={{
-          background: '#1A1A1A', borderRadius: '14px', padding: '28px',
+          background: '#141821', borderRadius: '14px', padding: '28px',
           border: '1px solid rgba(27, 109, 252, 0.3)',
         }}>
           <p style={{ fontSize: '11px', fontWeight: 700, color: '#B5CFFC', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '10px' }}>
@@ -314,14 +314,14 @@ export default async function PreviewProgramPage({
             style={{
               width: '44px', height: '44px', borderRadius: '50%',
               objectFit: 'cover', objectPosition: 'top center',
-              border: '1px solid #E5E5E5', flexShrink: 0,
+              border: '1px solid #E8EAEE', flexShrink: 0,
             }}
           />
           <div style={{ flex: 1, minWidth: '200px' }}>
-            <p style={{ fontSize: '13px', fontWeight: 800, color: '#1A1A1A', margin: 0, lineHeight: 1.3 }}>
+            <p style={{ fontSize: '13px', fontWeight: 800, color: '#141821', margin: 0, lineHeight: 1.3 }}>
               Written by {c.fullName}
             </p>
-            <p style={{ fontSize: '11px', color: '#6B6B6B', margin: 0, lineHeight: 1.45 }}>
+            <p style={{ fontSize: '11px', color: '#666D7A', margin: 0, lineHeight: 1.45 }}>
               {c.credentials}
             </p>
           </div>
@@ -330,7 +330,7 @@ export default async function PreviewProgramPage({
 
       {/* Footer · support fallback */}
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '32px 24px 80px' }}>
-        <p style={{ fontSize: '13px', color: '#6B6B6B', textAlign: 'center', lineHeight: 1.65, margin: 0 }}>
+        <p style={{ fontSize: '13px', color: '#666D7A', textAlign: 'center', lineHeight: 1.65, margin: 0 }}>
           Question about the program?{' '}
           <a href={`mailto:${coach().email}?subject=12-Week%20Program%20question`} style={{ color: '#1B6DFC', textDecoration: 'underline', fontWeight: 700 }}>
             Email {coach().email}

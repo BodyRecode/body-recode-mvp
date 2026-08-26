@@ -232,7 +232,7 @@ function TenantRow({
   const capFull = capPct >= 100
 
   return (
-    <tr className="border-b border-stone-100 hover:bg-[#FBFCFD]">
+    <tr className="border-b border-[#F4F6F9] hover:bg-[#FBFCFD]">
       <td className="px-4 py-3 align-top">
         <div className="flex items-center gap-2">
           <span

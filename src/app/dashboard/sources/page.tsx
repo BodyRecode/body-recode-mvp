@@ -181,7 +181,7 @@ export default async function SourcesPage() {
                 </div>
                 <div className="h-1.5 bg-[#FFFFFF] border border-[#E8EAEE] rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-[#999999] rounded-full"
+                    className="h-full bg-[#98A0AD] rounded-full"
                     style={{ width: `${Math.round((unknownCount / total) * 100)}%` }}
                   />
                 </div>

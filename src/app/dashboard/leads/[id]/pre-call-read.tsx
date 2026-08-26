@@ -290,7 +290,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
           value={draft}
           onChange={e => setDraft(e.target.value)}
           placeholder="Paste or write the pre-call brief for this lead. Pattern, hot spot triggers, key lines..."
-          className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg p-4 text-[#141821] text-sm font-mono leading-relaxed focus:outline-none focus:border-[#CFD4DC] placeholder-[#999999]"
+          className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg p-4 text-[#141821] text-sm font-mono leading-relaxed focus:outline-none focus:border-[#CFD4DC] placeholder-[#98A0AD]"
           style={{ minHeight: '480px' }}
         />
       ) : brief ? (

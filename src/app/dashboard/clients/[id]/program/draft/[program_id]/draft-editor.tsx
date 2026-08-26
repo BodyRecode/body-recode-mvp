@@ -288,7 +288,7 @@ export default function DraftEditor({
               <button
                 onClick={handleSave}
                 disabled={saving || promoting}
-                className={`text-xs px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 ${isActive ? 'bg-[#1B6DFC] text-white font-semibold hover:bg-[#5390FF]' : 'border border-[#CFD4DC] text-[#141821] hover:border-stone-600'}`}
+                className={`text-xs px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 ${isActive ? 'bg-[#1B6DFC] text-white font-semibold hover:bg-[#5390FF]' : 'border border-[#CFD4DC] text-[#141821] hover:border-[#666D7A]'}`}
               >
                 {saving ? 'Saving…' : isActive ? 'Save' : 'Save Changes'}
               </button>
@@ -574,7 +574,7 @@ export default function DraftEditor({
             <button
               onClick={handleSave}
               disabled={saving || promoting}
-              className={`text-xs px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 ${isActive ? 'bg-[#1B6DFC] text-white font-semibold hover:bg-[#5390FF]' : 'border border-[#CFD4DC] text-[#141821] hover:border-stone-600'}`}
+              className={`text-xs px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 ${isActive ? 'bg-[#1B6DFC] text-white font-semibold hover:bg-[#5390FF]' : 'border border-[#CFD4DC] text-[#141821] hover:border-[#666D7A]'}`}
             >
               {saving ? 'Saving…' : isActive ? 'Save' : 'Save Changes'}
             </button>

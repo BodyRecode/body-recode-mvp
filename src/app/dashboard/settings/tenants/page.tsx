@@ -73,7 +73,7 @@ export default async function TenantsAdminPage() {
                 <th className="text-left px-4 py-3 font-medium text-[#141821] text-[11px]">Updated</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-stone-100">
+            <tbody className="divide-y divide-[#F4F6F9]">
               {tenants.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="px-4 py-8 text-center text-[#666D7A] text-[13px]">

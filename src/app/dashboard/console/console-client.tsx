@@ -422,7 +422,7 @@ function ApprovalCard({
         <button
           onClick={() => onDecide(action, true)}
           disabled={busy}
-          className="text-[13px] font-semibold px-4 py-2 rounded-lg bg-[#1A1A1A] text-white hover:bg-black disabled:opacity-50 transition-colors"
+          className="text-[13px] font-semibold px-4 py-2 rounded-lg bg-[#141821] text-white hover:bg-black disabled:opacity-50 transition-colors"
         >
           {busy ? 'Working…' : 'Confirm and send'}
         </button>

@@ -197,7 +197,7 @@ function SortableStep({
                         })}
                         rows={3}
                         placeholder={`Enter ${field.label.toLowerCase()}...`}
-                        className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-[12.5px] text-[#141821] placeholder-stone-400 resize-none focus:outline-none focus:border-[#CFD4DC]"
+                        className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-[12.5px] text-[#141821] placeholder-[#98A0AD] resize-none focus:outline-none focus:border-[#CFD4DC]"
                       />
                     ) : field.type === 'select' ? (
                       <select
@@ -220,7 +220,7 @@ function SortableStep({
                           config: { ...step.config, [field.key]: e.target.value }
                         })}
                         placeholder={`Enter ${field.label.toLowerCase()}...`}
-                        className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-[12.5px] text-[#141821] placeholder-stone-400 focus:outline-none focus:border-[#CFD4DC]"
+                        className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-[12.5px] text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#CFD4DC]"
                       />
                     )}
                   </div>
@@ -410,7 +410,7 @@ export default function WorkflowEditor({ initial }: Props) {
             value={name}
             onChange={e => setName(e.target.value)}
             placeholder="Workflow name..."
-            className="w-full bg-transparent text-[22px] font-semibold text-[#141821] tracking-[-0.025em] placeholder-stone-400 focus:outline-none border-b border-transparent focus:border-[#E8EAEE] pb-1 transition-colors"
+            className="w-full bg-transparent text-[22px] font-semibold text-[#141821] tracking-[-0.025em] placeholder-[#98A0AD] focus:outline-none border-b border-transparent focus:border-[#E8EAEE] pb-1 transition-colors"
           />
         </div>
         <div className="flex items-center gap-2">
@@ -428,7 +428,7 @@ export default function WorkflowEditor({ initial }: Props) {
           <button
             onClick={save}
             disabled={!name || !triggerType || isPending}
-            className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-sm font-semibold px-4 py-2 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             {isPending ? <Loader2 size={13} className="animate-spin" /> : <Save size={13} />}
             Save
