@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { ChevronRight, UserPlus, Users } from 'lucide-react'
 import { formatDate, getLeadStatusLabel, getLeadStatusColour, getLeadSourceLabel } from '@/lib/utils'
 import type { Lead } from '@/types'
-import { PageHeader, Btn, EmptyState, MONO_FONT } from '@/components/dashboard/ui'
+import { PageHeader, Btn, EmptyState, Avatar, MONO_FONT } from '@/components/dashboard/ui'
 
 const STATUS_GROUPS = [
   { label: 'Pipeline', statuses: ['new_check_in', 'report_sent', 'cold_no_booking'] },
@@ -126,12 +126,7 @@ export default async function LeadsPage({
             >
               <div className="flex items-center gap-4 min-w-0">
                 <div className="relative shrink-0">
-                  <div
-                    className="w-9 h-9 rounded-full bg-[#E5E5E5] border border-[#D4D4D4] flex items-center justify-center text-[13px] font-medium text-[#3A3A3A]"
-                    style={{ fontFamily: MONO_FONT }}
-                  >
-                    {lead.name.charAt(0).toUpperCase()}
-                  </div>
+                  <Avatar name={lead.name} size={36} />
                   {lead.lead_quality && (
                     <span
                       title={`Lead quality: ${lead.lead_quality}${lead.red_flag ? ' (red flag)' : ''}`}

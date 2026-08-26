@@ -27,6 +27,56 @@ export function accentColour(a: Accent = 'teal') {
 }
 
 /* ===========================================================
+ * Avatar - initials disc. Colour is derived from the name, so
+ * the same person is the same colour on every surface. Faces
+ * are what make a list of people read as people rather than
+ * as rows of text.
+ * =========================================================== */
+const AVATAR_HUES = [212, 158, 28, 342, 268, 190, 14, 120, 238, 44]
+
+function hueFor(name: string): number {
+  let hash = 0
+  for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) | 0
+  return AVATAR_HUES[Math.abs(hash) % AVATAR_HUES.length]
+}
+
+function initialsFor(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean).slice(0, 2)
+  if (parts.length === 0) return '?'
+  return parts.map(p => p[0]).join('').toUpperCase()
+}
+
+export function Avatar({
+  name,
+  size = 32,
+  ring = true,
+}: {
+  name: string
+  size?: number
+  /** White ring that lifts the disc off the row behind it. */
+  ring?: boolean
+}) {
+  const h = hueFor(name || '?')
+  return (
+    <span
+      aria-hidden
+      title={name}
+      className="inline-flex items-center justify-center rounded-full shrink-0 text-white font-semibold select-none"
+      style={{
+        width: size,
+        height: size,
+        fontSize: Math.round(size * 0.35),
+        letterSpacing: '-0.01em',
+        background: `linear-gradient(160deg, hsl(${h} 55% 54%), hsl(${h} 58% 41%))`,
+        boxShadow: `inset 0 1px 0 rgba(255,255,255,0.3), 0 1px 2px rgba(16,24,40,0.18)${ring ? ', 0 0 0 2px #FFFFFF' : ''}`,
+      }}
+    >
+      {initialsFor(name || '?')}
+    </span>
+  )
+}
+
+/* ===========================================================
  * Page header - the panel toolbar. Breadcrumb, title, actions
  * on one line; no hero, no backdrop.
  * =========================================================== */
@@ -47,7 +97,10 @@ export function PageHeader({
 }) {
   const a = ACCENT[accent]
   return (
-    <div className="mb-7 pb-4 border-b border-[#E8EAEE] flex items-start justify-between gap-5 flex-wrap">
+    <div
+      className="sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] flex items-start justify-between gap-5 flex-wrap print:static print:bg-transparent print:backdrop-blur-none"
+      style={{ background: 'rgba(255,255,255,0.88)', backdropFilter: 'blur(10px) saturate(1.5)' }}
+    >
       <div className="min-w-0">
         {eyebrow && (
           <p className="text-[11px] mb-1.5" style={{ color: a.text }}>
@@ -236,15 +289,19 @@ export function DataRow({
   primary,
   secondary,
   trailing,
+  avatar,
 }: {
   href?: string
   primary: ReactNode
   secondary?: ReactNode
   trailing?: ReactNode
+  /** Person's name - renders an initials disc at the head of the row. */
+  avatar?: string
 }) {
   const inner = (
-    <div className="flex items-center justify-between gap-3 py-2.5 px-2.5 -mx-2.5 rounded-lg hover:bg-[#F7F9FC] transition-colors group">
-      <div className="min-w-0">
+    <div className="flex items-center gap-3 py-2.5 px-2.5 -mx-2.5 rounded-lg hover:bg-[#F7F9FC] transition-colors group">
+      {avatar && <Avatar name={avatar} size={31} />}
+      <div className="min-w-0 flex-1">
         <p className="text-[13.5px] font-medium text-[#141821] tracking-[-0.012em] group-hover:text-[#1B6DFC] transition-colors truncate">
           {primary}
         </p>

@@ -211,9 +211,9 @@ export default async function DashboardHomePage() {
         <Card>
           <SectionLabel
             cta={
-              <a href="/dashboard/leads" className="text-[12px] text-[#1B6DFC] hover:text-[#5390FF] transition-colors">
+              <Link href="/dashboard/leads" className="text-[12px] text-[#1B6DFC] hover:text-[#5390FF] transition-colors">
                 View all →
-              </a>
+              </Link>
             }
           >
             Recent Leads
@@ -224,6 +224,7 @@ export default async function DashboardHomePage() {
                 <DataRow
                   key={lead.id}
                   href={`/dashboard/leads/${lead.id}`}
+                  avatar={lead.name}
                   primary={lead.name}
                   secondary={lead.email}
                   trailing={
@@ -255,6 +256,7 @@ export default async function DashboardHomePage() {
                 <DataRow
                   key={ci.id}
                   href={`/dashboard/clients/${ci.client_id}`}
+                  avatar={(Array.isArray(ci.clients) ? ci.clients[0]?.name : ci.clients?.name) ?? 'Unknown'}
                   primary={Array.isArray(ci.clients) ? ci.clients[0]?.name : ci.clients?.name ?? 'Unknown'}
                   secondary={`Week ${ci.week_number} · Form ${ci.form_type}`}
                   trailing={

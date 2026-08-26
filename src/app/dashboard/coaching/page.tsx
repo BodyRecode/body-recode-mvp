@@ -4,7 +4,7 @@ import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
 import { AlertTriangle, ArrowUpRight, ChevronRight, UserPlus, Users, Activity, RefreshCw } from 'lucide-react'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 import { ONLINE_PACKAGE_VALUES, IN_PERSON_PACKAGE_VALUES, TWO_SESSION_PACKAGE_VALUES } from '@/lib/coaching-packages'
-import { PageHeader, Btn, EmptyState, MONO_FONT, accentColour } from '@/components/dashboard/ui'
+import { PageHeader, Btn, EmptyState, Avatar, MONO_FONT, accentColour } from '@/components/dashboard/ui'
 import { evaluateReadiness, type ReadinessReport } from '@/lib/readiness-monitor'
 import ReassessmentQueue from '@/components/reassessment-queue'
 import { loadOpenTriggersWithClients } from '@/lib/reassessment-digest'
@@ -238,12 +238,15 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           <div className="divide-y divide-[#E5E5E5]">
             {clientsProcessed.filter(c => c.rebuildTraining || c.rebuildNutrition).map(client => (
               <div key={client.id} className="px-4 py-3 flex items-center justify-between gap-4">
-                <div className="min-w-0">
+                <div className="min-w-0 flex items-center gap-3">
+                  <Avatar name={client.name} size={31} />
+                  <div className="min-w-0">
                   <p className="text-[14px] font-semibold text-[#1A1A1A] truncate">{client.name}</p>
                   <div className="flex items-center gap-2 mt-0.5">
                     {client.rebuildTraining && <span className="text-[12px]" style={{ color: red.text }}>Training: Rebuild</span>}
                     {client.rebuildTraining && client.rebuildNutrition && <span className="text-[#E5E5E5] text-xs">·</span>}
                     {client.rebuildNutrition && <span className="text-[12px]" style={{ color: red.text }}>Nutrition: Rebuild</span>}
+                  </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
@@ -347,12 +350,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-5 py-4 flex items-center justify-between hover:border-[#D4D4D4] transition-colors group"
             >
               <div className="flex items-center gap-4 min-w-0">
-                <div
-                  className="w-9 h-9 rounded-full bg-[#E5E5E5] border border-[#D4D4D4] flex items-center justify-center text-[13px] font-medium text-[#3A3A3A] shrink-0"
-                  style={{ fontFamily: MONO_FONT }}
-                >
-                  {client.name.charAt(0).toUpperCase()}
-                </div>
+                <Avatar name={client.name} size={36} />
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="text-[14px] font-medium text-[#1A1A1A] group-hover:text-[#1B6DFC] transition-colors truncate">{client.name}</span>
