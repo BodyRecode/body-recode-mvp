@@ -13,7 +13,6 @@ import { LAUNCHER_BUTTON, launcherStyle, LAUNCHER_PANEL_SHADOW } from '@/compone
  * pathname as ticket context so Kade sees where the coach was when they filed.
  */
 
-const MONO = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
 const SIGNAL = '#1B6DFC'
 const AMBER = '#B7791F'
 const RED = '#DC2626'
@@ -68,7 +67,7 @@ export default function SupportLauncher() {
               </button>
             </div>
 
-            <div className="flex border-b border-[#EDEDED] bg-white shrink-0">
+            <div className="flex border-b border-[#EFF1F4] bg-white shrink-0">
               <TabBtn active={tab === 'report'} onClick={() => setTab('report')}>Report</TabBtn>
               <TabBtn active={tab === 'mine'} onClick={() => setTab('mine')}>My tickets</TabBtn>
             </div>
@@ -176,7 +175,7 @@ function ReportForm({ pathname, onSubmitted }: { pathname: string; onSubmitted: 
                 style={{
                   borderColor: active ? hex : '#E8EAEE',
                   background: active ? `${hex}12` : '#FFFFFF',
-                  color: active ? '#141821' : '#4A4A4A',
+                  color: active ? '#141821' : '#43474F',
                 }}
               >
                 <span className="block font-semibold">{CATEGORY_LABELS[c]}</span>
@@ -196,7 +195,7 @@ function ReportForm({ pathname, onSubmitted }: { pathname: string; onSubmitted: 
           maxLength={120}
           required
           placeholder="One-line summary"
-          className="w-full text-[13.5px] border border-[#E8EAEE] rounded-lg px-3 py-2 focus:outline-none focus:border-[#1B6DFC]"
+          className="w-full text-[13.5px] border border-[#E8EAEE] rounded-lg px-3 py-2 focus:outline-none focus:border-[#B9D0FD] focus:ring-[3px] focus:ring-[rgba(27,109,252,0.13)]"
         />
       </div>
 
@@ -210,11 +209,11 @@ function ReportForm({ pathname, onSubmitted }: { pathname: string; onSubmitted: 
           required
           rows={5}
           placeholder="What happened, what you expected, what you were doing…"
-          className="w-full text-[13.5px] resize-none border border-[#E8EAEE] rounded-lg px-3 py-2 focus:outline-none focus:border-[#1B6DFC]"
+          className="w-full text-[13.5px] resize-none border border-[#E8EAEE] rounded-lg px-3 py-2 focus:outline-none focus:border-[#B9D0FD] focus:ring-[3px] focus:ring-[rgba(27,109,252,0.13)]"
         />
       </div>
 
-      <div className="text-[11px] text-[#98A0AD]" style={{ fontFamily: MONO }}>
+      <div className="text-[11px] text-[#98A0AD]">
         We include the page you are on ({pathname || 'unknown'}) automatically.
       </div>
 
@@ -223,7 +222,7 @@ function ReportForm({ pathname, onSubmitted }: { pathname: string; onSubmitted: 
       <button
         type="submit"
         disabled={submitting || subject.trim().length < 3 || body.trim().length < 4}
-        className="w-full text-[13px] font-semibold px-4 py-2.5 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1558d6] transition-colors disabled:opacity-40"
+        className="w-full text-[13px] font-semibold px-4 py-2.5 text-white rounded-lg border border-[#1560E0] bg-[linear-gradient(180deg,#3B82F9,#1B6DFC)] hover:bg-[linear-gradient(180deg,#2E77F7,#1560E0)] shadow-[0_1px_2px_rgba(27,109,252,0.4),inset_0_1px_0_rgba(255,255,255,0.28)] transition-all active:translate-y-[0.5px] disabled:opacity-40"
       >
         {submitting ? 'Sending…' : 'File ticket'}
       </button>
@@ -267,21 +266,29 @@ function MyTicketsList({ visible }: { visible: boolean }) {
       {tickets.map(t => {
         const stHex = accentToHex(statusAccent(t.status))
         return (
-          <div key={t.id} className="border border-[#E8EAEE] rounded-xl px-3.5 py-2.5">
+          <div
+            key={t.id}
+            className="border border-[#E8EAEE] rounded-xl px-3.5 py-2.5"
+            style={{
+              background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
+              boxShadow: '0 1px 2px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
+            }}
+          >
             <div className="flex items-start gap-2 mb-1">
               <p className="text-[13px] font-semibold text-[#141821] flex-1 min-w-0 truncate">{t.subject}</p>
               <span
-                className="text-[10px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap"
-                style={{ fontFamily: MONO, letterSpacing: '0.08em', color: stHex, background: `${stHex}14`, border: `1px solid ${stHex}44` }}
+                className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-[3px] rounded-full whitespace-nowrap shrink-0"
+                style={{ color: stHex, background: `${stHex}14`, border: `1px solid ${stHex}44` }}
               >
+                <span className="w-[5px] h-[5px] rounded-full bg-current" aria-hidden />
                 {STATUS_LABELS[t.status]}
               </span>
             </div>
-            <p className="text-[11.5px] text-[#98A0AD]" style={{ fontFamily: MONO }}>
+            <p className="text-[11.5px] text-[#98A0AD]">
               {CATEGORY_LABELS[t.category]} · {formatDate(t.created_at)}
             </p>
             {t.status_note && (
-              <p className="text-[12.5px] text-[#4A4A4A] mt-2 whitespace-pre-wrap leading-relaxed border-t border-[#EDEDED] pt-2">
+              <p className="text-[12.5px] text-[#43474F] mt-2 whitespace-pre-wrap leading-relaxed border-t border-[#EFF1F4] pt-2">
                 <span className="font-semibold text-[#141821]">Kade:</span> {t.status_note}
               </p>
             )}

@@ -97,7 +97,7 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
               <p className="text-[#666D7A] text-[12.5px] font-mono flex-1 truncate">{portalLink}</p>
               <button
                 onClick={copyPortal}
-                className="shrink-0 text-[12.5px] font-medium px-3 py-1.5 rounded-md border border-[#CFD4DC] text-[#43474F] hover:border-[#4A4A4A] hover:text-[#141821] transition-colors"
+                className="shrink-0 text-[12.5px] font-medium px-3 py-1.5 rounded-md border border-[#CFD4DC] text-[#43474F] hover:border-[#43474F] hover:text-[#141821] transition-colors"
               >
                 {portalCopied ? 'Copied!' : 'Copy'}
               </button>
@@ -111,7 +111,7 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
             <p className="text-[#666D7A] text-[12.5px] font-mono flex-1 truncate">{intakeLink}</p>
             <button
               onClick={copy}
-              className="shrink-0 text-[12.5px] font-medium px-3 py-1.5 rounded-md border border-[#CFD4DC] text-[#43474F] hover:border-[#4A4A4A] hover:text-[#141821] transition-colors"
+              className="shrink-0 text-[12.5px] font-medium px-3 py-1.5 rounded-md border border-[#CFD4DC] text-[#43474F] hover:border-[#43474F] hover:text-[#141821] transition-colors"
             >
               {copied ? 'Copied!' : 'Copy'}
             </button>

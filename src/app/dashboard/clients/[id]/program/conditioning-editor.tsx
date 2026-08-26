@@ -66,7 +66,7 @@ export default function ConditioningEditor({
         <button
           onClick={save}
           disabled={!dirty || saving || isPending}
-          className="text-[13px] font-semibold px-4 py-2 rounded-lg bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#1558d6] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="text-[13px] font-semibold px-4 py-2 rounded-lg bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#1560E0] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           {saving ? 'Saving…' : dirty ? 'Save conditioning' : 'Saved'}
         </button>

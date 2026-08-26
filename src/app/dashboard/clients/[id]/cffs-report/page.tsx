@@ -185,7 +185,7 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
                     </div>
                   )}
                   {cffs.pattern_rationale && (
-                    <p style={{ fontSize: 13, lineHeight: 1.7, color: '#4A4A4A', margin: 0 }}>
+                    <p style={{ fontSize: 13, lineHeight: 1.7, color: '#43474F', margin: 0 }}>
                       {cffs.pattern_rationale}
                     </p>
                   )}
@@ -200,7 +200,7 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
                           ? ` — competing read: ${cffs.pattern_competing_read}`
                           : ''}
                       </p>
-                      <p style={{ fontSize: 13, lineHeight: 1.7, color: '#4A4A4A', margin: 0 }}>
+                      <p style={{ fontSize: 13, lineHeight: 1.7, color: '#43474F', margin: 0 }}>
                         {cffs.pattern_watch_for}
                       </p>
                     </div>

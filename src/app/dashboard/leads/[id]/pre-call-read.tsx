@@ -171,7 +171,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
               onClick={() => toggleSection(b.id)}
               className="flex items-center gap-2 group"
             >
-              <span className={`text-[#4A4A4A] group-hover:text-[#666D7A] transition-colors text-xs font-mono ${suppressed ? '' : 'rotate-90'} transform inline-block`}>▶</span>
+              <span className={`text-[#43474F] group-hover:text-[#666D7A] transition-colors text-xs font-mono ${suppressed ? '' : 'rotate-90'} transform inline-block`}>▶</span>
               <h3 className="text-[12.5px] font-medium text-[#1B6DFC]">
                 {b.title}
               </h3>
@@ -322,7 +322,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
             {renderBlocks()}
           </div>
 
-          <div className="pt-4 mt-2 border-t border-[#E8EAEE] flex flex-wrap gap-3 text-[11px] text-[#4A4A4A]">
+          <div className="pt-4 mt-2 border-t border-[#E8EAEE] flex flex-wrap gap-3 text-[11px] text-[#43474F]">
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 bg-[#1B6DFC] rounded-sm" />
               What you say
@@ -340,7 +340,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
       ) : (
         <div className="bg-[#FFFFFF] border border-[#E8EAEE] border-dashed rounded-lg p-6 text-center">
           <p className="text-[#98A0AD] text-sm">No pre-call read written yet for this lead.</p>
-          <p className="text-[#4A4A4A] text-[12.5px] mt-1">Click Add to write one.</p>
+          <p className="text-[#43474F] text-[12.5px] mt-1">Click Add to write one.</p>
         </div>
       )}
     </div>

@@ -120,7 +120,7 @@ export default function PartnerRoomAdmin({ initialGuests }: { initialGuests: Gue
         <form onSubmit={addGuest} className="grid gap-3">
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
-              <label className="block text-[12px] font-medium text-[#4A4A4A] mb-1.5">Name</label>
+              <label className="block text-[12px] font-medium text-[#43474F] mb-1.5">Name</label>
               <input
                 className={inputCls}
                 value={name}
@@ -130,7 +130,7 @@ export default function PartnerRoomAdmin({ initialGuests }: { initialGuests: Gue
               />
             </div>
             <div>
-              <label className="block text-[12px] font-medium text-[#4A4A4A] mb-1.5">
+              <label className="block text-[12px] font-medium text-[#43474F] mb-1.5">
                 Company <span className="text-[#B0B0B0]">(optional)</span>
               </label>
               <input
@@ -142,7 +142,7 @@ export default function PartnerRoomAdmin({ initialGuests }: { initialGuests: Gue
             </div>
           </div>
           <div>
-            <label className="block text-[12px] font-medium text-[#4A4A4A] mb-1.5">
+            <label className="block text-[12px] font-medium text-[#43474F] mb-1.5">
               Private note <span className="text-[#B0B0B0]">(optional, only you see this)</span>
             </label>
             <input
@@ -216,7 +216,7 @@ export default function PartnerRoomAdmin({ initialGuests }: { initialGuests: Gue
                     {/* The link */}
                     <div className="mt-3 flex items-center gap-2 flex-wrap">
                       <code
-                        className="text-[12px] text-[#4A4A4A] bg-[#F4F6F9] border border-[#E8EAEE] rounded-md px-2.5 py-1.5 max-w-full truncate"
+                        className="text-[12px] text-[#43474F] bg-[#F4F6F9] border border-[#E8EAEE] rounded-md px-2.5 py-1.5 max-w-full truncate"
                         style={{ fontFamily: MONO_FONT }}
                         title={g.url}
                       >

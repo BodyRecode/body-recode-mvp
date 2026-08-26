@@ -147,7 +147,7 @@ export default function LeadActions({ lead }: { lead: Lead }) {
               key={p.days}
               type="button"
               onClick={() => setFollowUp(daysFromNow(p.days))}
-              className="text-[12.5px] font-medium px-2.5 py-1 rounded-md border border-[#E8EAEE] text-[#4A4A4A] hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors"
+              className="text-[12.5px] font-medium px-2.5 py-1 rounded-md border border-[#E8EAEE] text-[#43474F] hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors"
             >
               {p.label}
             </button>

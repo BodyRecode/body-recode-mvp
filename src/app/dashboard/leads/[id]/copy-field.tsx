@@ -15,7 +15,7 @@ export default function CopyField({ value, label }: { value: string; label?: str
         setTimeout(() => setCopied(false), 1400)
       }}
       title={`Copy ${label ?? value}`}
-      className="group inline-flex items-center gap-1.5 text-[13px] text-[#4A4A4A] hover:text-[#1B6DFC] transition-colors max-w-full"
+      className="group inline-flex items-center gap-1.5 text-[13px] text-[#43474F] hover:text-[#1B6DFC] transition-colors max-w-full"
     >
       <span className="truncate">{value}</span>
       {copied

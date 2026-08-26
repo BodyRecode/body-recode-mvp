@@ -186,7 +186,7 @@ export default function TrajectoryReadingPanel({
             className="text-[11px] font-medium text-[#141821]"
           >
             Block-End Trajectory Reading{' '}
-            <span className="text-[#4A4A4A] font-normal">- Client Facing</span>
+            <span className="text-[#43474F] font-normal">- Client Facing</span>
           </h2>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
@@ -385,7 +385,7 @@ function ReScoreCard({ program }: { program: Reading }) {
           <div className="flex items-start gap-2 pt-3 border-t border-[#F0F0F0]">
             <Info size={12} className="text-[#98A0AD] mt-0.5 shrink-0" />
             <p className="text-[12px] text-[#666D7A] leading-relaxed">
-              <span className="font-semibold text-[#4A4A4A]">Pattern held. </span>
+              <span className="font-semibold text-[#43474F]">Pattern held. </span>
               {program.tr_pattern_confidence_note}
             </p>
           </div>
@@ -473,7 +473,7 @@ function CoachGuidance({ programId, initial }: { programId: string; initial: str
             onChange={e => setValue(e.target.value)}
             placeholder="e.g. Weeks 3 and 4 were disrupted by travel, not a loss of capacity. Frame the dip as expected and the recovery as the real signal."
             rows={4}
-            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-[13px] text-[#141821] placeholder:text-[#4A4A4A] focus:outline-none focus:border-[#CFD4DC] leading-relaxed resize-y"
+            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-[13px] text-[#141821] placeholder:text-[#43474F] focus:outline-none focus:border-[#CFD4DC] leading-relaxed resize-y"
           />
           {error && (
             <div className="mt-2 text-[11px] text-[#8A5A14]">{error}</div>

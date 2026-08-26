@@ -121,7 +121,7 @@ export default async function PreviewProgramPage({
             <span style={{ color: sc.accent }}>{stateLabel} State Program.</span>
           </h1>
           <div style={{ width: '48px', height: '3px', background: sc.accent, borderRadius: '2px', marginBottom: '20px' }} />
-          <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: '0 0 14px' }}>
+          <p style={{ fontSize: '17px', color: '#43474F', lineHeight: 1.75, margin: '0 0 14px' }}>
             {strapline}
           </p>
           <p style={{ fontSize: '14px', color: '#666D7A', lineHeight: 1.7, margin: 0 }}>
@@ -179,7 +179,7 @@ export default async function PreviewProgramPage({
             }
             .program-content p {
               font-size: 15px;
-              color: #4A4A4A;
+              color: #43474F;
               line-height: 1.75;
               margin: 0 0 14px;
             }
@@ -190,7 +190,7 @@ export default async function PreviewProgramPage({
             }
             .program-content ul li {
               font-size: 15px;
-              color: #4A4A4A;
+              color: #43474F;
               line-height: 1.75;
               margin-bottom: 8px;
               padding-left: 18px;
@@ -212,7 +212,7 @@ export default async function PreviewProgramPage({
             }
             .program-content ol li {
               font-size: 15px;
-              color: #4A4A4A;
+              color: #43474F;
               line-height: 1.75;
               margin-bottom: 8px;
             }
@@ -239,7 +239,7 @@ export default async function PreviewProgramPage({
             }
             .program-content td {
               padding: 12px 14px;
-              color: #4A4A4A;
+              color: #43474F;
               border-bottom: 1px solid #E8EAEE;
               vertical-align: top;
               line-height: 1.65;
@@ -254,7 +254,7 @@ export default async function PreviewProgramPage({
               padding: 14px 18px;
               margin: 18px 0;
               font-size: 14px;
-              color: #4A4A4A;
+              color: #43474F;
               border-radius: 0 10px 10px 0;
             }
             .program-content a { color: #1B6DFC; text-decoration: underline; font-weight: 600; }

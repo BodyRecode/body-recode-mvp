@@ -45,7 +45,7 @@ export function flagsPill(raw: number | string | undefined | null): GlancePill |
 }
 
 const PILL_TONE: Record<NonNullable<GlancePill['tone']>, string> = {
-  neutral: 'text-[#141821] bg-[#F5F3EE] border-[#E8EAEE]',
+  neutral: 'text-[#141821] bg-[#F4F6F9] border-[#E8EAEE]',
   accent: 'text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border-[#B5CFFC]',
   flag: 'text-amber-700 bg-amber-50 border-amber-200',
   muted: 'text-[#666D7A] bg-[#F4F6F9] border-[#EFF1F4]',
@@ -70,7 +70,7 @@ export function GlanceCard({
 }) {
   return (
     <div className={`border border-[#E8EAEE] bg-[#FFFFFF] rounded-xl overflow-hidden ${className}`}>
-      <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[#FAFAF7]">
+      <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[#FBFCFD]">
         <p
           className="text-[10px] font-medium text-[#1B6DFC]"
         >

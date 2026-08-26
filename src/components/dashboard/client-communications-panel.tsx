@@ -89,7 +89,7 @@ export default function ClientCommunicationsPanel({ rows }: { rows: ClientCommun
                     </span>
                   </div>
                   {row.subject && (
-                    <p className="text-[12.5px] text-[#4A4A4A] truncate mt-0.5">{row.subject}</p>
+                    <p className="text-[12.5px] text-[#43474F] truncate mt-0.5">{row.subject}</p>
                   )}
                   <div className="flex items-center gap-2 flex-wrap mt-1 text-[11px] text-[#666D7A]">
                     <span title={fullTimestamp(row.sent_at)}>{formatSentAt(row.sent_at)}</span>

@@ -67,7 +67,7 @@ export default function TicketStatusForm({
               className="text-[13px] font-semibold px-3 py-2 rounded-lg border transition-colors"
               style={{
                 background: active ? `${hex}14` : '#FFFFFF',
-                color: active ? hex : '#4A4A4A',
+                color: active ? hex : '#43474F',
                 borderColor: active ? hex : '#E8EAEE',
               }}
             >
@@ -90,7 +90,7 @@ export default function TicketStatusForm({
         className="w-full text-[13.5px] resize-none border border-[#E8EAEE] rounded-lg px-3 py-2 focus:outline-none focus:border-[#1B6DFC] bg-white mb-3"
       />
 
-      <label className="flex items-center gap-2 text-[13px] text-[#4A4A4A] mb-4">
+      <label className="flex items-center gap-2 text-[13px] text-[#43474F] mb-4">
         <input type="checkbox" checked={notify} onChange={e => setNotify(e.target.checked)} disabled={filerIsKade} />
         Email the filer about this change
         {filerIsKade && <span className="text-[11px] text-[#98A0AD]">(you filed this — no email sent)</span>}

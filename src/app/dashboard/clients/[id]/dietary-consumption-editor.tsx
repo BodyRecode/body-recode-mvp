@@ -224,7 +224,7 @@ export default function DietaryConsumptionEditor({
                 value={values[f.key]}
                 onChange={e => setField(f.key, e.target.value)}
                 rows={f.rows}
-                className={`w-full bg-[#FFFFFF] border rounded-lg p-3 text-[#141821] text-sm leading-relaxed focus:outline-none focus:border-[#CFD4DC] placeholder-[#4A4A4A] resize-y ${
+                className={`w-full bg-[#FFFFFF] border rounded-lg p-3 text-[#141821] text-sm leading-relaxed focus:outline-none focus:border-[#CFD4DC] placeholder-[#43474F] resize-y ${
                   f.required && missingRequired.includes(f.key) ? 'border-red-500/60' : 'border-[#E8EAEE]'
                 }`}
               />
@@ -256,13 +256,13 @@ export default function DietaryConsumptionEditor({
               {original[f.key].trim() ? (
                 <p className="text-sm text-[#43474F] leading-relaxed whitespace-pre-line">{original[f.key]}</p>
               ) : (
-                <p className="text-sm text-[#4A4A4A] italic">Not captured.</p>
+                <p className="text-sm text-[#43474F] italic">Not captured.</p>
               )}
             </div>
           ))}
         </div>
       ) : (
-        <p className="text-sm text-[#4A4A4A] italic">Not captured. This intake predates the Section D dietary/consumption fields — click Add to capture them, or send a supplementary intake.</p>
+        <p className="text-sm text-[#43474F] italic">Not captured. This intake predates the Section D dietary/consumption fields — click Add to capture them, or send a supplementary intake.</p>
       )}
     </div>
   )

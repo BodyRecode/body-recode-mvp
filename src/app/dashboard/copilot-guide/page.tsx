@@ -203,11 +203,11 @@ export default function CopilotGuidePage() {
                 </ol>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
-                  <div className="border border-[#EDEDED] bg-[#FAFAF7] rounded-xl px-3.5 py-2.5">
-                    <p className="text-[11px] font-medium text-[#22A054] mb-0.5">Example</p>
+                  <div className="border border-[#EFF1F4] bg-[#FBFCFD] rounded-xl px-3.5 py-2.5">
+                    <p className="text-[11px] font-medium text-[#177245] mb-0.5">Example</p>
                     <p className="text-[12.5px] text-[#4B4B4B] leading-relaxed">{l.example}</p>
                   </div>
-                  <div className="border border-[#EDEDED] bg-[#FAFAF7] rounded-xl px-3.5 py-2.5">
+                  <div className="border border-[#EFF1F4] bg-[#FBFCFD] rounded-xl px-3.5 py-2.5">
                     <p className="text-[11px] font-medium text-[#B4780E] mb-0.5">What it won’t do</p>
                     <p className="text-[12.5px] text-[#4B4B4B] leading-relaxed">{l.wont}</p>
                   </div>
@@ -234,7 +234,7 @@ export default function CopilotGuidePage() {
       {/* Guardrails + flag loop */}
       <Card className="mb-6">
         <div className="flex items-start gap-3">
-          <div className="w-9 h-9 rounded-xl bg-[#F5F3EE] border border-[#E7C9A0] flex items-center justify-center shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-[#F4F6F9] border border-[#E7C9A0] flex items-center justify-center shrink-0">
             <ShieldCheck size={17} className="text-[#B4780E]" />
           </div>
           <div className="min-w-0">
@@ -244,7 +244,7 @@ export default function CopilotGuidePage() {
               Flagged exchanges land in <Link href="/dashboard/copilot-review" className="text-[#1B6DFC] hover:underline">Clients → Co-Pilot Review</Link> to
               be checked and cleared. This is how the standard stays consistent as more coaches rely on it — catch drift before it spreads.
             </p>
-            <p className="text-[12.5px] text-[#8A8A8E] leading-relaxed">
+            <p className="text-[12.5px] text-[#666D7A] leading-relaxed">
               The best habit to build: after you generate any program or nutrition plan, ask the co-pilot to review it against the doctrine before you publish.
             </p>
           </div>

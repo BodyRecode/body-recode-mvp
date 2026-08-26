@@ -90,7 +90,7 @@ export default async function SupportInboxPage({ searchParams }: { searchParams:
         <Card><EmptyState title="Nothing here." hint={filter ? `No tickets with status "${STATUS_LABELS[filter]}" yet.` : 'When a coach files a ticket it will show up here.'} /></Card>
       ) : (
         <Card padding="none">
-          <ul className="divide-y divide-[#EDEDED]">
+          <ul className="divide-y divide-[#EFF1F4]">
             {shown.map(t => (
               <li key={t.id}>
                 <Link href={`/dashboard/support/${t.id}`} className="block px-5 py-4 hover:bg-[#FAFBFC] transition-colors">
@@ -125,7 +125,7 @@ function FilterChip({ href, active, children }: { href: string; active: boolean;
       className="text-[12px] px-3 py-1.5 rounded-full border transition-colors"
       style={{
         background: active ? '#1B6DFC' : '#FFFFFF',
-        color: active ? '#FFFFFF' : '#4A4A4A',
+        color: active ? '#FFFFFF' : '#43474F',
         borderColor: active ? '#1B6DFC' : '#E8EAEE',
       }}
     >

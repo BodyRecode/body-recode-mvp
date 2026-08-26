@@ -120,7 +120,7 @@ export default function MedicationsEditor({
             value={value}
             onChange={e => setValue(e.target.value)}
             placeholder="e.g. TRT 150mg test cypionate / week, year 2. CJC-1295 + ipamorelin 100mcg ED, 8 weeks on / 4 off. Metoprolol 25mg / day for BP, year 1. No NSAIDs. No other meds."
-            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg p-3 text-[#141821] text-sm leading-relaxed focus:outline-none focus:border-[#CFD4DC] placeholder-[#4A4A4A] min-h-[120px]"
+            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg p-3 text-[#141821] text-sm leading-relaxed focus:outline-none focus:border-[#CFD4DC] placeholder-[#43474F] min-h-[120px]"
           />
           {error && <p className="text-[12.5px] text-red-700">{error}</p>}
           <div className="flex items-center gap-2">
@@ -143,7 +143,7 @@ export default function MedicationsEditor({
       ) : value ? (
         <p className="text-sm text-[#43474F] leading-relaxed whitespace-pre-line">{value}</p>
       ) : (
-        <p className="text-sm text-[#4A4A4A] italic">None reported.</p>
+        <p className="text-sm text-[#43474F] italic">None reported.</p>
       )}
     </div>
   )

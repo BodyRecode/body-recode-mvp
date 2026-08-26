@@ -46,7 +46,18 @@ SUBS = [
     ('border-[#E5E5E5]', 'border-[#E8EAEE]'),
     ('divide-[#E5E5E5]', 'divide-[#EFF1F4]'),
     ('bg-[#E5E5E5]', 'bg-[#EFF1F4]'),
+    # One-off greys and blues that predate the palette. #F5F3EE and #FAFAF7 are
+    # the old warm neutrals - they read yellow beside the cool ones.
     ('#999999', '#98A0AD'),
+    ('#F5F3EE', '#F4F6F9'),
+    ('#FAFAF7', '#FBFCFD'),
+    ('#EDEDED', '#EFF1F4'),
+    ('#9AA3AF', '#98A0AD'),
+    ('#8A8A8E', '#666D7A'),
+    ('#B5B5B5', '#98A0AD'),
+    ('#4A4A4A', '#43474F'),
+    ('#22A054', '#177245'),
+    ('#1558d6', '#1560E0'),
     ('#E5E5E5', '#E8EAEE'),
     ('#6B6B6B', '#666D7A'),
     ('#1A1A1A', '#141821'),

@@ -89,7 +89,7 @@ export default function DashboardShell({
         <button
           type="button"
           onClick={() => setDrawerOpen(true)}
-          className="text-[#4A4A4A] hover:text-[#141821] p-1 -ml-1"
+          className="text-[#43474F] hover:text-[#141821] p-1 -ml-1"
           aria-label="Open menu"
         >
           <Menu size={20} />

@@ -616,11 +616,11 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             ))}
           </div>
         ) : (
-          <p className="text-sm text-[#4A4A4A]">No fixed slots assigned yet.</p>
+          <p className="text-sm text-[#43474F]">No fixed slots assigned yet.</p>
         )}
         {(upcomingClientSessions ?? []).length > 0 && (
           <div className="mt-4 pt-4 border-t border-[#E8EAEE] space-y-2">
-            <p className="text-[12.5px] text-[#4A4A4A] mb-2">Booked sessions</p>
+            <p className="text-[12.5px] text-[#43474F] mb-2">Booked sessions</p>
             {(upcomingClientSessions ?? []).map(s => (
               <div key={s.id} className="flex items-center justify-between">
                 <div>
@@ -629,7 +629,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                       timeZone: 'Australia/Brisbane', weekday: 'short', day: 'numeric', month: 'short',
                     })}
                   </span>
-                  <span className="text-[12.5px] text-[#4A4A4A] ml-2">
+                  <span className="text-[12.5px] text-[#43474F] ml-2">
                     {new Date(s.scheduled_at).toLocaleTimeString('en-AU', {
                       timeZone: 'Australia/Brisbane', hour: 'numeric', minute: '2-digit', hour12: true,
                     })} · {s.duration_minutes} min
@@ -713,7 +713,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               {item.href ? (
                 <Link href={item.href} className="text-[12.5px] text-blue-500 hover:text-blue-700 transition-colors">{item.label} →</Link>
               ) : (
-                <span className={`text-xs ${item.done ? 'text-[#43474F]' : 'text-[#4A4A4A]'}`}>{item.label}</span>
+                <span className={`text-xs ${item.done ? 'text-[#43474F]' : 'text-[#43474F]'}`}>{item.label}</span>
               )}
             </div>
           ))}
@@ -826,7 +826,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           <div className="flex items-center gap-2.5">
             <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
             <h2 className="text-[11px] font-medium text-[#1B6DFC]" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>
-              Updates <span className="text-[#4A4A4A] font-normal">- post-onboarding follow-ups</span>
+              Updates <span className="text-[#43474F] font-normal">- post-onboarding follow-ups</span>
             </h2>
           </div>
         </div>
@@ -1012,7 +1012,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       {!activeCffs ? (
         <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-8 text-center">
           <p className="text-[#666D7A] mb-2">No CFFS generated yet</p>
-          <p className="text-[#4A4A4A] text-sm mb-4">
+          <p className="text-[#43474F] text-sm mb-4">
             {latestFoundationalInvitation?.status === 'pending'
               ? 'Waiting for the client to complete their intake.'
               : latestIntakeId
@@ -1094,7 +1094,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             </div>
             <div className="flex items-center justify-between px-5 py-3">
               <div className="flex items-center gap-3 flex-wrap">
-                <p className="text-[#4A4A4A] text-[12.5px]">Generated {formatDate(activeCffs.generated_at)}</p>
+                <p className="text-[#43474F] text-[12.5px]">Generated {formatDate(activeCffs.generated_at)}</p>
                 {/* Visual Signal Integration: shows whether photos were read at generation time. */}
                 {typeof activeCffs.photos_used === 'number' && (
                   <span
@@ -1378,7 +1378,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   Visual Signal Summary
                 </p>
                 <span
-                  className="ml-auto text-[10px] text-[#4A4A4A]"
+                  className="ml-auto text-[10px] text-[#43474F]"
                 >
                   What the {activeCffs.photos_used ?? 3} baseline photo{(activeCffs.photos_used ?? 3) === 1 ? '' : 's'} contributed
                 </span>
@@ -1515,7 +1515,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                       </a>
                     ) : (
                       <div className="w-full aspect-[3/4] bg-[#EFF1F4] rounded-xl flex items-center justify-center">
-                        <p className="text-[#4A4A4A] text-[12.5px]">No photo</p>
+                        <p className="text-[#43474F] text-[12.5px]">No photo</p>
                       </div>
                     )}
                   </div>
@@ -1526,7 +1526,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         ) : (
           <div className="bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl p-5 text-center">
             <p className="text-[#98A0AD] text-sm">No baseline submitted yet</p>
-            <p className="text-[#4A4A4A] text-[12.5px] mt-1">Send the client their baseline link to begin</p>
+            <p className="text-[#43474F] text-[12.5px] mt-1">Send the client their baseline link to begin</p>
           </div>
         )}
       </MajorSection>
@@ -1589,7 +1589,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 </div>
               </div>
               <div className="flex items-center justify-between px-5 py-3">
-                <p className="text-[#4A4A4A] text-[12.5px]">Generated {formatDate(latestCfws.generated_at)}</p>
+                <p className="text-[#43474F] text-[12.5px]">Generated {formatDate(latestCfws.generated_at)}</p>
                 <div className="flex items-center gap-2">
                   <Link
                     href={`/dashboard/clients/${client.id}/cfws-report`}
@@ -1673,7 +1673,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 <RegenerateCFWSButton clientId={id} weekNumber={latestCompleteWeek} />
               </div>
             ) : (
-              <p className="text-[#4A4A4A] text-[12.5px] mt-1">Generated after each A+B check-in pair is complete</p>
+              <p className="text-[#43474F] text-[12.5px] mt-1">Generated after each A+B check-in pair is complete</p>
             )}
           </div>
         )}
@@ -1706,7 +1706,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                         </span>
                       )}
                     </div>
-                    <span className="text-[#4A4A4A]">{formatDate(ci.submitted_at)}</span>
+                    <span className="text-[#43474F]">{formatDate(ci.submitted_at)}</span>
                   </Link>
                 )
               })}
@@ -1719,7 +1719,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           <div className="bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl p-4">
             <div className="flex items-center justify-between mb-3">
               <p className="text-[12px] font-medium tracking-[0.12em] text-[#1B6DFC]">Coach Response History</p>
-              <p className="text-[10px] text-[#4A4A4A]">{feedbackHistory.length} total</p>
+              <p className="text-[10px] text-[#43474F]">{feedbackHistory.length} total</p>
             </div>
             <div className="space-y-3">
               {feedbackHistory.map(fb => (
@@ -1807,7 +1807,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           ) : !draftProgram ? (
             <div className="bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl p-5 text-center">
               <p className="text-[#98A0AD] text-sm">No program generated yet</p>
-              <p className="text-[#4A4A4A] text-[12.5px] mt-1">Generate a program once the CFFS is complete</p>
+              <p className="text-[#43474F] text-[12.5px] mt-1">Generate a program once the CFFS is complete</p>
             </div>
           ) : null}
         </div>
@@ -1884,7 +1884,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           ) : !draftNutritionPlan ? (
             <div className="bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl p-5 text-center">
               <p className="text-[#98A0AD] text-sm">No nutrition plan generated yet</p>
-              <p className="text-[#4A4A4A] text-[12.5px] mt-1">Generate a plan once the CFFS is complete</p>
+              <p className="text-[#43474F] text-[12.5px] mt-1">Generate a plan once the CFFS is complete</p>
             </div>
           ) : null}
         </div>

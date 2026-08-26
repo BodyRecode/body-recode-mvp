@@ -176,7 +176,7 @@ function TrendTable({ weeks, rows }: { weeks: WeekRange[]; rows: FlowResult[] })
                       className="text-right px-3 py-3 tabular-nums"
                       style={{
                         fontFamily: MONO_FONT,
-                        color: isCurrent ? '#98A0AD' : cellStatus ? STATUS_DOT[cellStatus] : '#4A4A4A',
+                        color: isCurrent ? '#98A0AD' : cellStatus ? STATUS_DOT[cellStatus] : '#43474F',
                         fontWeight: isLast ? 700 : 400,
                       }}
                     >

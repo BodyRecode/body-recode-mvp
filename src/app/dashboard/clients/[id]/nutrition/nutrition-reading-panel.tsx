@@ -142,7 +142,7 @@ export default function NutritionReadingPanel({
             className="text-[11px] font-medium text-[#141821]"
           >
             Nutrition Reading{' '}
-            <span className="text-[#4A4A4A] font-normal">- Client Facing</span>
+            <span className="text-[#43474F] font-normal">- Client Facing</span>
           </h2>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
@@ -247,7 +247,7 @@ export default function NutritionReadingPanel({
           <p className="text-[#98A0AD] text-[12px]">
             Click Generate &amp; Publish. The reading appears at the top of the client&apos;s nutrition plan and an email is sent to let them know the new plan is ready.
           </p>
-          <p className="text-[#4A4A4A] text-[11px] mt-3">
+          <p className="text-[#43474F] text-[11px] mt-3">
             Requires a published Foundational Reading. The Nutrition Reading builds from it.
           </p>
         </div>
@@ -373,7 +373,7 @@ function CoachGuidance({ planId, initial }: { planId: string; initial: string | 
             onChange={e => setValue(e.target.value)}
             placeholder="e.g. Client has a long history of restrictive dieting. Frame this plan strongly around fuel and stabilisation, never deficit. Avoid any language that hints at restriction."
             rows={4}
-            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-[13px] text-[#141821] placeholder:text-[#4A4A4A] focus:outline-none focus:border-[#CFD4DC] leading-relaxed resize-y"
+            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-[13px] text-[#141821] placeholder:text-[#43474F] focus:outline-none focus:border-[#CFD4DC] leading-relaxed resize-y"
           />
           {error && (
             <div className="mt-2 text-[11px] text-[#8A5A14]">{error}</div>

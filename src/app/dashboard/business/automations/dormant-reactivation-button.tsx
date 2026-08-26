@@ -73,7 +73,7 @@ export default function DormantReactivationButton() {
           <p className="text-[13px] font-bold text-[#141821] flex items-center gap-1.5">
             <Users size={14} className="text-[#1B6DFC]" /> Dormant Lead Reactivation
           </p>
-          <p className="text-[13px] text-[#4A4A4A] leading-relaxed mt-1 max-w-xl">
+          <p className="text-[13px] text-[#43474F] leading-relaxed mt-1 max-w-xl">
             Leads who did a scorecard and were never followed up. Sends their read, an SMS four days
             later, then the next step that matches their state. Anyone who replies drops out.
           </p>

@@ -174,7 +174,7 @@ export default function ConsoleClient({
         <div className="p-3 border-b border-[#E8EAEE]">
           <button
             onClick={newThread}
-            className="w-full text-[13px] font-semibold px-3 py-2 rounded-lg bg-[#1B6DFC] text-white hover:bg-[#1558d6] transition-colors"
+            className="w-full text-[13px] font-semibold px-3 py-2 rounded-lg bg-[#1B6DFC] text-white hover:bg-[#1560E0] transition-colors"
           >
             ＋ New conversation
           </button>
@@ -192,7 +192,7 @@ export default function ConsoleClient({
               className={`w-full text-left text-[12.5px] px-2.5 py-2 rounded-lg mb-0.5 truncate transition-colors ${
                 t.id === threadId
                   ? 'bg-[#E8F0FE] text-[#1B6DFC] font-medium'
-                  : 'text-[#4A4A4A] hover:bg-[#EFF1F4]'
+                  : 'text-[#43474F] hover:bg-[#EFF1F4]'
               }`}
               title={t.title}
             >
@@ -207,7 +207,7 @@ export default function ConsoleClient({
         <header className="px-5 py-3 border-b border-[#E8EAEE] flex items-center justify-between gap-3">
           <div className="min-w-0">
             <h1 className="text-[15px] font-semibold text-[#141821] truncate">Operator Console</h1>
-            <p className="text-[11.5px] text-[#8A8A8E] truncate">
+            <p className="text-[11.5px] text-[#666D7A] truncate">
               Reads your live data · you approve anything that sends
             </p>
           </div>
@@ -294,7 +294,7 @@ export default function ConsoleClient({
             ))}
 
             {busy && (
-              <div className="flex items-center gap-2 text-[12.5px] text-[#8A8A8E]">
+              <div className="flex items-center gap-2 text-[12.5px] text-[#666D7A]">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#1B6DFC] animate-pulse" />
                 Looking at your data…
               </div>
@@ -327,7 +327,7 @@ export default function ConsoleClient({
             <button
               onClick={() => void send(input)}
               disabled={busy || !input.trim()}
-              className="shrink-0 text-[13px] font-semibold px-4 py-2.5 rounded-xl bg-[#1B6DFC] text-white hover:bg-[#1558d6] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="shrink-0 text-[13px] font-semibold px-4 py-2.5 rounded-xl bg-[#1B6DFC] text-white hover:bg-[#1560E0] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               Send
             </button>
@@ -370,7 +370,7 @@ function ApprovalCard({
         </div>
       </div>
 
-      <div className="space-y-1.5 text-[12.5px] text-[#4A4A4A] mb-3">
+      <div className="space-y-1.5 text-[12.5px] text-[#43474F] mb-3">
         {typeof p.would_send_to === 'number' && (
           <p><strong className="text-[#141821]">{p.would_send_to}</strong> would receive this</p>
         )}
@@ -408,7 +408,7 @@ function ApprovalCard({
                   className="text-[11.5px] px-2.5 py-1.5 border-b border-[#F0F0F0] last:border-0 flex justify-between gap-2"
                 >
                   <span className="text-[#141821] truncate">{String(r.name ?? r.email ?? '—')}</span>
-                  <span className="text-[#8A8A8E] shrink-0" style={{ fontFamily: MONO }}>
+                  <span className="text-[#666D7A] shrink-0" style={{ fontFamily: MONO }}>
                     {String(r.state ?? '')}
                   </span>
                 </div>
@@ -429,7 +429,7 @@ function ApprovalCard({
         <button
           onClick={() => onDecide(action, false)}
           disabled={busy}
-          className="text-[13px] px-4 py-2 rounded-lg border border-[#E8EAEE] bg-white text-[#4A4A4A] hover:bg-[#FAFBFC] disabled:opacity-50 transition-colors"
+          className="text-[13px] px-4 py-2 rounded-lg border border-[#E8EAEE] bg-white text-[#43474F] hover:bg-[#FAFBFC] disabled:opacity-50 transition-colors"
         >
           Cancel
         </button>

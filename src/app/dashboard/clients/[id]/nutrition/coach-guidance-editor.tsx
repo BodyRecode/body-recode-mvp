@@ -255,7 +255,7 @@ export default function NutritionCoachGuidanceEditor({
                     onChange={e => setCoachNote(e.target.value)}
                     placeholder="One line of context the engine cannot read from CFFS / intake. e.g. 'Going from 3 to 4 meals is the real ask. Design meal 4 as a no-cook protein anchor.'"
                     rows={2}
-                    className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg px-2.5 py-2 text-[12px] text-[#141821] placeholder:text-[#4A4A4A] focus:outline-none focus:border-[#CFD4DC] leading-relaxed resize-y"
+                    className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg px-2.5 py-2 text-[12px] text-[#141821] placeholder:text-[#43474F] focus:outline-none focus:border-[#CFD4DC] leading-relaxed resize-y"
                   />
                 </div>
 
@@ -285,7 +285,7 @@ export default function NutritionCoachGuidanceEditor({
             onChange={e => setValue(e.target.value)}
             placeholder="e.g. Meal 4 designed as a no-cook 20g protein anchor (Greek yoghurt, eggs, protein shake). Bias meal 4 mid-afternoon to land on the client's 3-4pm crash and break the caffeine-bridge habit. Hold meals 1-3 structurally close to current plan; the change should read additive."
             rows={6}
-            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-[13px] text-[#141821] placeholder:text-[#4A4A4A] focus:outline-none focus:border-[#CFD4DC] leading-relaxed resize-y"
+            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-[13px] text-[#141821] placeholder:text-[#43474F] focus:outline-none focus:border-[#CFD4DC] leading-relaxed resize-y"
           />
           {error && (
             <div className="mt-2 text-[11px] text-[#8A5A14]">{error}</div>

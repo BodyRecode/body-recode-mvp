@@ -153,7 +153,7 @@ export default function ProgramReadingPanel({
             className="text-[11px] font-medium text-[#141821]"
           >
             Program Reading{' '}
-            <span className="text-[#4A4A4A] font-normal">- Client Facing</span>
+            <span className="text-[#43474F] font-normal">- Client Facing</span>
           </h2>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
@@ -274,7 +274,7 @@ export default function ProgramReadingPanel({
           <p className="text-[#98A0AD] text-[12px]">
             Click Generate &amp; Publish. The reading appears at the top of the client&apos;s program page and an email is sent to let them know the new block is ready.
           </p>
-          <p className="text-[#4A4A4A] text-[11px] mt-3">
+          <p className="text-[#43474F] text-[11px] mt-3">
             Requires a published Foundational Reading. The Program Reading builds from it.
           </p>
         </div>
@@ -400,7 +400,7 @@ function CoachGuidance({ programId, initial }: { programId: string; initial: str
             onChange={e => setValue(e.target.value)}
             placeholder="e.g. This block follows a stressful 8 weeks at work. Frame the deload framing strongly. Avoid any language that implies they should be pushing harder."
             rows={4}
-            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-[13px] text-[#141821] placeholder:text-[#4A4A4A] focus:outline-none focus:border-[#CFD4DC] leading-relaxed resize-y"
+            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-[13px] text-[#141821] placeholder:text-[#43474F] focus:outline-none focus:border-[#CFD4DC] leading-relaxed resize-y"
           />
           {error && (
             <div className="mt-2 text-[11px] text-[#8A5A14]">{error}</div>

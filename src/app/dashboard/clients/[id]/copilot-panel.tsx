@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import { ChevronDown } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { CopilotStarters } from '@/components/copilot-starters'
 import { clientStarterCategories } from '@/lib/copilot-starter-questions'
@@ -59,7 +60,6 @@ type Msg = {
   editTarget?: EditTarget
 }
 
-const MONO = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
 
 const cap = (s: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s)
 
@@ -381,11 +381,11 @@ export default function CopilotPanel({
 
   return (
     <div className={`border border-[#E8EAEE] bg-[#FFFFFF] rounded-xl overflow-hidden flex flex-col ${className ?? ''}`}>
-      <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[#FAFAF7] shrink-0">
-        <p className="text-[10px] font-medium text-[#1B6DFC]" style={{ fontFamily: MONO, letterSpacing: '0.14em' }}>
+      <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[#FBFCFD] shrink-0">
+        <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">
           Co-Pilot · Doctrine tutor
         </p>
-        <span className="ml-auto text-[10px] text-[#98A0AD]" style={{ fontFamily: MONO }}>coach only · you approve every change</span>
+        <span className="ml-auto text-[11.5px] text-[#98A0AD]">coach only · you approve every change</span>
         {onClose && (
           <button onClick={onClose} aria-label="Close co-pilot" className="text-[#98A0AD] hover:text-[#141821] text-lg leading-none -my-1">✕</button>
         )}
@@ -395,7 +395,7 @@ export default function CopilotPanel({
       <button
         onClick={() => setShowHelp(s => !s)}
         aria-expanded={showHelp}
-        className="flex items-center gap-2 px-5 py-2 border-b border-[#EDEDED] bg-white text-[#1B6DFC] hover:bg-[rgba(27,109,252,0.04)] transition-colors shrink-0"
+        className="flex items-center gap-2 px-5 py-2 border-b border-[#EFF1F4] bg-white text-[#1B6DFC] hover:bg-[rgba(27,109,252,0.04)] transition-colors shrink-0"
       >
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <circle cx="12" cy="12" r="9" stroke="#1B6DFC" strokeWidth="1.6" />
@@ -403,7 +403,7 @@ export default function CopilotPanel({
           <circle cx="12" cy="16.4" r="1" fill="#1B6DFC" />
         </svg>
         <span className="text-[13px] font-semibold">What I can help with</span>
-        <span className="ml-auto text-[#9AA3AF] text-[12.5px]">{showHelp ? '▲' : '▼'}</span>
+        <ChevronDown size={14} className={`ml-auto text-[#98A0AD] transition-transform duration-150 ${showHelp ? 'rotate-180' : ''}`} />
       </button>
 
       <div ref={scrollRef} className="px-5 py-4 space-y-4 flex-1 min-h-0 overflow-y-auto">
@@ -412,13 +412,13 @@ export default function CopilotPanel({
             <p className="mb-3 text-[#141821] font-semibold">Here for {clientFirstName}. What I can help with:</p>
             <div className="space-y-2.5 mb-3">
               {CAPABILITIES.map(c => (
-                <div key={c.title} className="border border-[#EDEDED] rounded-xl px-3.5 py-2.5">
-                  <p className="text-[13px] font-bold text-[#141821] mb-0.5">{c.title}</p>
+                <div key={c.title} className="border border-[#EFF1F4] rounded-xl px-3.5 py-2.5">
+                  <p className="text-[13px] font-semibold text-[#141821] mb-0.5">{c.title}</p>
                   <p className="text-[12.5px] text-[#666D7A] leading-relaxed">{c.body}</p>
                 </div>
               ))}
             </div>
-            <p className="text-[12.5px] text-[#8A8A8E] leading-relaxed">I read {clientFirstName}’s file to answer. I never publish anything to the client, and any plan I draft is a draft you review and approve.</p>
+            <p className="text-[12.5px] text-[#666D7A] leading-relaxed">I read {clientFirstName}’s file to answer. I never publish anything to the client, and any plan I draft is a draft you review and approve.</p>
           </div>
         )}
         {!showHelp && messages.length === 0 && (
@@ -443,13 +443,13 @@ export default function CopilotPanel({
             ]
             return (
               <div key={i} className="border border-[#B5CFFC] bg-[rgba(27,109,252,0.04)] rounded-xl px-4 py-3.5">
-                <p className="text-[10px] font-medium text-[#1B6DFC] mb-2.5" style={{ fontFamily: MONO }}>Proposed program draft</p>
+                <p className="text-[12.5px] font-medium text-[#1B6DFC] mb-2.5">Proposed program draft</p>
                 <label className="block text-[11px] font-medium text-[#666D7A] mb-1">Block name</label>
                 <input
                   value={d.block_name}
                   onChange={e => updateDraft(i, { block_name: e.target.value })}
                   disabled={gen}
-                  className="w-full text-sm border border-[#CBD9F2] rounded-lg px-2.5 py-1.5 mb-3 bg-white focus:outline-none focus:border-[#1B6DFC] disabled:opacity-60"
+                  className="w-full text-sm border border-[#CBD9F2] rounded-lg px-2.5 py-1.5 mb-3 bg-white focus:outline-none focus:border-[#B9D0FD] focus:ring-[3px] focus:ring-[rgba(27,109,252,0.13)] disabled:opacity-60"
                 />
                 <div className="space-y-2 mb-3">
                   {rows.map(([label, val, reason]) => (
@@ -458,11 +458,11 @@ export default function CopilotPanel({
                         <span className="text-[12px] text-[#666D7A]">{label}</span>
                         <span className="text-[13px] font-semibold text-[#141821] text-right">{val}</span>
                       </div>
-                      {reason && <p className="text-[11.5px] text-[#8A8A8E] leading-snug mt-0.5">{reason}</p>}
+                      {reason && <p className="text-[11.5px] text-[#666D7A] leading-snug mt-0.5">{reason}</p>}
                     </div>
                   ))}
                 </div>
-                <p className="text-[11.5px] text-[#8A8A8E] leading-snug mb-3">Equipment defaults to barbell, dumbbell, bodyweight. Change it on the full generator if this client differs. Generating creates a <strong>draft</strong> only. Nothing reaches {clientFirstName} until you publish it.</p>
+                <p className="text-[11.5px] text-[#666D7A] leading-snug mb-3">Equipment defaults to barbell, dumbbell, bodyweight. Change it on the full generator if this client differs. Generating creates a <strong>draft</strong> only. Nothing reaches {clientFirstName} until you publish it.</p>
                 {gen ? (
                   <div className="flex items-center gap-2 text-[13px] text-[#1B6DFC]">
                     <span className="w-2 h-2 rounded-full bg-[#1B6DFC] animate-bounce motion-reduce:animate-none" />
@@ -473,7 +473,7 @@ export default function CopilotPanel({
                     <button
                       onClick={() => generateDraft(i)}
                       disabled={busy}
-                      className="text-[13px] font-semibold px-3.5 py-1.5 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1558d6] transition-colors disabled:opacity-40"
+                      className="text-[13px] font-semibold px-3.5 py-1.5 text-white rounded-lg border border-[#1560E0] bg-[linear-gradient(180deg,#3B82F9,#1B6DFC)] hover:bg-[linear-gradient(180deg,#2E77F7,#1560E0)] shadow-[0_1px_2px_rgba(27,109,252,0.4),inset_0_1px_0_rgba(255,255,255,0.28)] transition-all active:translate-y-[0.5px] disabled:opacity-40"
                     >
                       Generate this draft
                     </button>
@@ -518,13 +518,13 @@ export default function CopilotPanel({
             ]
             return (
               <div key={i} className="border border-[#B5CFFC] bg-[rgba(27,109,252,0.04)] rounded-xl px-4 py-3.5">
-                <p className="text-[10px] font-medium text-[#1B6DFC] mb-2.5" style={{ fontFamily: MONO }}>Proposed nutrition draft</p>
+                <p className="text-[12.5px] font-medium text-[#1B6DFC] mb-2.5">Proposed nutrition draft</p>
                 <label className="block text-[11px] font-medium text-[#666D7A] mb-1">Plan name</label>
                 <input
                   value={n.plan_name}
                   onChange={e => setMessages(prev => prev.map((mm, ii) => (ii === i && mm.nutrition ? { ...mm, nutrition: { ...mm.nutrition, plan_name: e.target.value } } : mm)))}
                   disabled={gen}
-                  className="w-full text-sm border border-[#CBD9F2] rounded-lg px-2.5 py-1.5 mb-3 bg-white focus:outline-none focus:border-[#1B6DFC] disabled:opacity-60"
+                  className="w-full text-sm border border-[#CBD9F2] rounded-lg px-2.5 py-1.5 mb-3 bg-white focus:outline-none focus:border-[#B9D0FD] focus:ring-[3px] focus:ring-[rgba(27,109,252,0.13)] disabled:opacity-60"
                 />
                 <div className="space-y-2 mb-3">
                   {rows.map(([label, val, reason]) => (
@@ -533,11 +533,11 @@ export default function CopilotPanel({
                         <span className="text-[12px] text-[#666D7A]">{label}</span>
                         <span className="text-[13px] font-semibold text-[#141821] text-right">{val}</span>
                       </div>
-                      {reason && <p className="text-[11.5px] text-[#8A8A8E] leading-snug mt-0.5">{reason}</p>}
+                      {reason && <p className="text-[11.5px] text-[#666D7A] leading-snug mt-0.5">{reason}</p>}
                     </div>
                   ))}
                 </div>
-                <p className="text-[11.5px] text-[#8A8A8E] leading-snug mb-3">Generating builds the meals against the protein anchor and calorie floor, and creates a <strong>draft</strong> only. Nothing reaches {clientFirstName} until you publish it.</p>
+                <p className="text-[11.5px] text-[#666D7A] leading-snug mb-3">Generating builds the meals against the protein anchor and calorie floor, and creates a <strong>draft</strong> only. Nothing reaches {clientFirstName} until you publish it.</p>
                 {gen ? (
                   <div className="flex items-center gap-2 text-[13px] text-[#1B6DFC]">
                     <span className="w-2 h-2 rounded-full bg-[#1B6DFC] animate-bounce motion-reduce:animate-none" />
@@ -548,7 +548,7 @@ export default function CopilotPanel({
                     <button
                       onClick={() => generateNutritionDraft(i)}
                       disabled={busy}
-                      className="text-[13px] font-semibold px-3.5 py-1.5 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1558d6] transition-colors disabled:opacity-40"
+                      className="text-[13px] font-semibold px-3.5 py-1.5 text-white rounded-lg border border-[#1560E0] bg-[linear-gradient(180deg,#3B82F9,#1B6DFC)] hover:bg-[linear-gradient(180deg,#2E77F7,#1560E0)] shadow-[0_1px_2px_rgba(27,109,252,0.4),inset_0_1px_0_rgba(255,255,255,0.28)] transition-all active:translate-y-[0.5px] disabled:opacity-40"
                     >
                       Generate this draft
                     </button>
@@ -586,9 +586,9 @@ export default function CopilotPanel({
             const applying = applyingIdx === i
             return (
               <div key={i} className="border border-[#E7C9A0] bg-[rgba(180,120,20,0.05)] rounded-xl px-4 py-3.5">
-                <p className="text-[10px] font-medium text-[#B4780E] mb-2" style={{ fontFamily: MONO }}>Proposed change</p>
+                <p className="text-[12.5px] font-medium text-[#A96A12] mb-2">Proposed change</p>
                 <p className="text-[13px] text-[#141821] leading-relaxed mb-3 whitespace-pre-wrap">{m.edit.summary || 'Apply this change to the draft.'}</p>
-                <p className="text-[11.5px] text-[#8A8A8E] leading-snug mb-3">Only this changes. The rest of the draft stays exactly as it is, and it stays a draft until you publish it.</p>
+                <p className="text-[11.5px] text-[#666D7A] leading-snug mb-3">Only this changes. The rest of the draft stays exactly as it is, and it stays a draft until you publish it.</p>
                 {applying ? (
                   <div className="flex items-center gap-2 text-[13px] text-[#B4780E]">
                     <span className="w-2 h-2 rounded-full bg-[#B4780E] animate-bounce motion-reduce:animate-none" />
@@ -637,8 +637,8 @@ export default function CopilotPanel({
           return (
             <div key={i} className={m.role === 'user' ? 'flex justify-end' : ''}>
               <div className={m.role === 'user'
-                ? 'max-w-[85%] bg-[#1B6DFC] text-white rounded-xl rounded-br-sm px-4 py-2.5 text-sm leading-relaxed'
-                : 'max-w-[92%] bg-[#F5F3EE] text-[#141821] rounded-xl rounded-bl-sm px-4 py-3 text-sm leading-relaxed'}>
+                ? 'max-w-[85%] bg-[linear-gradient(180deg,#3B82F9,#1B6DFC)] text-white rounded-xl rounded-br-sm px-4 py-2.5 text-sm leading-relaxed shadow-[0_1px_2px_rgba(27,109,252,0.35)]'
+                : 'max-w-[92%] bg-[#F4F6F9] border border-[#E8EAEE] text-[#141821] rounded-xl rounded-bl-sm px-4 py-3 text-sm leading-relaxed'}>
                 <p className="whitespace-pre-wrap">{m.content}</p>
                 {m.role === 'assistant' && m.id && (
                   <button
@@ -655,10 +655,10 @@ export default function CopilotPanel({
         })}
 
         {(loading || proposing || proposingNutrition || proposingEdit) && (
-          <div className="bg-[#F5F3EE] rounded-xl rounded-bl-sm px-4 py-3 inline-flex items-center gap-1.5 w-fit" aria-label="Co-pilot is working">
-            <span className="w-2 h-2 rounded-full bg-[#9AA3AF] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '0ms' }} />
-            <span className="w-2 h-2 rounded-full bg-[#9AA3AF] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '150ms' }} />
-            <span className="w-2 h-2 rounded-full bg-[#9AA3AF] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '300ms' }} />
+          <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl rounded-bl-sm px-4 py-3 inline-flex items-center gap-1.5 w-fit" aria-label="Co-pilot is working">
+            <span className="w-2 h-2 rounded-full bg-[#98A0AD] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '0ms' }} />
+            <span className="w-2 h-2 rounded-full bg-[#98A0AD] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '150ms' }} />
+            <span className="w-2 h-2 rounded-full bg-[#98A0AD] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '300ms' }} />
           </div>
         )}
 
@@ -668,7 +668,7 @@ export default function CopilotPanel({
           if (!last || last.role !== 'assistant' || !last.followups?.length) return null
           return (
             <div className="flex flex-col gap-1.5 pt-1">
-              <p className="text-[10px] font-medium text-[#98A0AD]" style={{ fontFamily: MONO }}>Follow up</p>
+              <p className="text-[11.5px] text-[#98A0AD]">Follow up</p>
               {last.followups.map((f, i) => (
                 <button
                   key={i}
@@ -733,7 +733,7 @@ export default function CopilotPanel({
         </div>
       </div>
       {editMode && (
-        <p className="px-4 pt-1.5 text-[11.5px] text-[#8A8A8E] leading-snug shrink-0">
+        <p className="px-4 pt-1.5 text-[11.5px] text-[#666D7A] leading-snug shrink-0">
           Refine mode ({editMode}): describe one change to the {editMode} draft ({editMode === 'nutrition' ? '“swap the oats for berries”, “drop to 3 meals”' : '“swap the barbell squat for a hip thrust”, “drop the bench to 3 sets”'}). I’ll show it before it’s applied.
         </p>
       )}
@@ -754,7 +754,7 @@ export default function CopilotPanel({
           <button
             type="submit"
             disabled={busy || !input.trim()}
-            className={`text-sm font-medium px-4 py-2 text-white rounded-xl transition-colors disabled:opacity-40 ${editMode ? 'bg-[#B4780E] hover:bg-[#996408]' : 'bg-[#1B6DFC] hover:bg-[#1558d6]'}`}
+            className={`text-sm font-medium px-4 py-2 text-white rounded-xl transition-colors disabled:opacity-40 ${editMode ? 'bg-[#B4780E] hover:bg-[#996408]' : 'bg-[#1B6DFC] hover:bg-[#1560E0]'}`}
           >
             {editMode ? 'Propose' : 'Ask'}
           </button>
