@@ -1,14 +1,20 @@
 'use client'
 
 /**
- * Tab shell for the coach client profile. Each direct child is a
- * <div data-tab="overview|training|nutrition|health|admin"> group (server-
- * rendered); this client wrapper shows only the active tab's groups. Data
- * loads once on the server; switching tabs is instant (no re-fetch).
+ * The client record's tab row.
  *
- * Replaces the old long single-scroll + section-jump sidebar.
+ * The first five entries are in-page tabs: each direct child is a
+ * <div data-tab="overview|training|nutrition|health|admin"> group, server-
+ * rendered once, and this wrapper shows only the active group. Data loads
+ * once; switching is instant with no re-fetch.
+ *
+ * The entries after the divider are the client's OTHER pages. They used to
+ * live in a 160px "More on this client" column down the left, which made a
+ * fourth column once the client list arrived and hid four real destinations
+ * in a rail nobody read. Same row, one visual language, no extra column.
  */
 
+import Link from 'next/link'
 import { Children, isValidElement, useState, type ReactNode } from 'react'
 
 const TABS = [
@@ -21,7 +27,23 @@ const TABS = [
 
 type TabId = (typeof TABS)[number]['id']
 
-export default function ClientProfileTabs({ children }: { children: ReactNode }) {
+export const CLIENT_PAGES = [
+  { slug: 'direction', label: 'Direction' },
+  { slug: 'routine', label: 'Daily Sequences' },
+  { slug: 'recovery', label: 'Recovery' },
+  { slug: 'supplements', label: 'Supplements' },
+]
+
+const ITEM =
+  'relative px-3 py-2.5 text-[13px] whitespace-nowrap border-b-2 -mb-px transition-colors'
+
+export default function ClientProfileTabs({
+  children,
+  clientId,
+}: {
+  children: ReactNode
+  clientId: string
+}) {
   const [active, setActive] = useState<TabId>('overview')
 
   const panels = Children.toArray(children).filter(
@@ -30,21 +52,31 @@ export default function ClientProfileTabs({ children }: { children: ReactNode })
 
   return (
     <div>
-      <nav className="sticky top-0 z-10 flex gap-1 border-b border-[#E5E5E5] mb-6 overflow-x-auto bg-white/95 backdrop-blur-sm">
+      <nav className="sticky top-[68px] z-10 flex items-center gap-0.5 border-b border-[#E8EAEE] mb-6 overflow-x-auto bg-white/90 backdrop-blur-md">
         {TABS.map(t => (
           <button
             key={t.id}
             type="button"
             onClick={() => setActive(t.id)}
-            aria-current={active === t.id}
-            className={`px-4 py-2.5 text-sm font-semibold whitespace-nowrap border-b-2 -mb-px transition-colors ${
+            aria-current={active === t.id ? 'true' : undefined}
+            className={`${ITEM} ${
               active === t.id
-                ? 'border-[#1B6DFC] text-[#1B6DFC]'
-                : 'border-transparent text-[#999999] hover:text-[#3A3A3A]'
+                ? 'border-[#1B6DFC] text-[#1B6DFC] font-medium'
+                : 'border-transparent text-[#666D7A] hover:text-[#141821]'
             }`}
           >
             {t.label}
           </button>
+        ))}
+        <span className="mx-2 h-4 w-px bg-[#E8EAEE] shrink-0" aria-hidden />
+        {CLIENT_PAGES.map(p => (
+          <Link
+            key={p.slug}
+            href={`/dashboard/clients/${clientId}/${p.slug}`}
+            className={`${ITEM} border-transparent text-[#666D7A] hover:text-[#141821]`}
+          >
+            {p.label}
+          </Link>
         ))}
       </nav>
       <div className="space-y-4">{panels}</div>

@@ -1,7 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import ProfileSidebar from '../profile-sidebar'
+import ClientPageNav from '../client-page-nav'
 
 const phaseColour: Record<string, string> = {
   accumulation: 'text-blue-700 bg-blue-50 border-blue-200',
@@ -75,9 +75,9 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
   ] : []
 
   return (
-    <div className="flex gap-8 max-w-5xl">
-      <ProfileSidebar clientId={id} />
-      <div className="flex-1 min-w-0">
+    <div className="max-w-[980px]">
+      <div className="min-w-0">
+      <ClientPageNav clientId={id} />
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-2 text-stone-500 text-sm mb-2">

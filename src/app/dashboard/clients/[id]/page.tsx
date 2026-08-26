@@ -3,7 +3,7 @@ import OffboardPanel from './offboard-panel'
 import FreezePanel from './freeze-panel'
 import { signedBaselinePhotoSet } from '@/lib/baseline-photos'
 import { notFound } from 'next/navigation'
-import { ChevronLeft, Activity, RefreshCw, AlertTriangle as AlertTriangleIcon, Eye, Sparkles } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Activity, RefreshCw, AlertTriangle as AlertTriangleIcon, Eye, Sparkles } from 'lucide-react'
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
 import { getSuggestionsForState } from '@/lib/rrs-protocol-suggestions'
 import type { RecoveryPlaybookId } from '@/lib/recovery-doctrine'
@@ -45,7 +45,7 @@ import SendPortalOrientationButton from '@/components/send-portal-orientation-bu
 import SendSupplementaryIntakeButton from '@/components/send-supplementary-intake-button'
 import { computeFatDistributionDivergence } from '@/lib/fat-map-divergence'
 import SendSupplementaryEmailButton from '@/components/send-supplementary-email-button'
-import ProfileSidebar from './profile-sidebar'
+import { Avatar, Pill } from '@/components/dashboard/ui'
 import EditClientPhone from '@/components/edit-client-phone'
 import OverrideSubscriptionButton from '@/components/override-subscription-button'
 import ClientCommunicationsPanel from '@/components/dashboard/client-communications-panel'
@@ -391,26 +391,29 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   const medicationsActionRequired = !!medsAttention
 
   return (
-    <div className="flex gap-8 max-w-5xl">
-      <ProfileSidebar clientId={id} />
-      <div className="flex-1 min-w-0">
+    <div className="max-w-[980px]">
+      <div className="min-w-0">
       <div id="overview" className="scroll-mt-8">
         <Link
           href="/dashboard/coaching"
-          className="inline-flex items-center gap-1 text-[12px] text-[#999999] hover:text-[#3A3A3A] transition-colors mb-4"
+          className="xl:hidden inline-flex items-center gap-1 text-[12px] text-[#98A0AD] hover:text-[#141821] transition-colors mb-4"
         >
-          <ChevronLeft size={13} /> All Clients
+          <ChevronLeft size={13} /> All clients
         </Link>
         <PageHeader
-          eyebrow="Client"
-          title={client.name}
+          title={
+            <span className="flex items-center gap-3 min-w-0">
+              <Avatar name={client.name} size={34} />
+              <span className="truncate">{client.name}</span>
+            </span>
+          }
           subtitle={
-            <span className="inline-flex items-center gap-3 flex-wrap" style={{ fontFamily: MONO_FONT, letterSpacing: '0.02em' }}>
-              <span>Added {formatDate(client.created_at)}</span>
+            <span className="inline-flex items-center gap-2.5 flex-wrap">
+              <span className="text-[#666D7A]">Added {formatDate(client.created_at)}</span>
               {client.email && (
                 <>
-                  <span className="text-[#E5E5E5]">·</span>
-                  <span className="text-[#6B6B6B]">{client.email}</span>
+                  <span className="text-[#E8EAEE]">·</span>
+                  <a href={`mailto:${client.email}`} className="text-[#666D7A] hover:text-[#1B6DFC] transition-colors">{client.email}</a>
                 </>
               )}
               <EditClientPhone clientId={client.id} currentPhone={client.phone ?? null} />
@@ -482,45 +485,56 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           <div className="mb-6 space-y-3">
             {activeCffs && (
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-[11px] font-semibold px-3 py-1 rounded-full bg-[#F5F3EE] border border-[#E5E5E5] text-[#1A1A1A]">{activeCffs.body_state_classification}</span>
+                <Pill accent="ink">{activeCffs.body_state_classification}</Pill>
                 {/* Pattern sits beside state deliberately. The funnel sells both
                     labels; a 1:1 client should not silently lose one of them. */}
                 {client.pattern && (
                   <span
-                    className="text-[11px] font-semibold px-3 py-1 rounded-full bg-[#F3F7FF] border border-[rgba(27,109,252,0.25)] text-[#1B6DFC]"
                     title={
                       client.pattern_source === 'cffs'
                         ? 'Read from the full CFFS'
                         : `Provisional read from the ${client.pattern_source ?? 'funnel'}. Sharpens at the next CFFS.`
                     }
                   >
-                    {client.pattern}
-                    {client.pattern_source !== 'cffs' && ' (provisional)'}
+                    <Pill accent="teal">
+                      {client.pattern}
+                      {client.pattern_source !== 'cffs' && ' (provisional)'}
+                    </Pill>
                   </span>
                 )}
-                {activeCffs.resolution_state && (
-                  <span className="text-[11px] font-semibold px-3 py-1 rounded-full bg-[#F5F3EE] border border-[#E5E5E5] text-[#1A1A1A]">{activeCffs.resolution_state}</span>
-                )}
-                {!hasActiveProgram && (
-                  <span className="text-[11px] font-semibold px-3 py-1 rounded-full bg-stone-100 border border-stone-200 text-[#6B6B6B]">No active plan</span>
-                )}
-                <span className="mx-1 h-4 w-px bg-[#E5E5E5]" />
-                {READY.map(r => (
-                  <span key={r.label} className="inline-flex items-center gap-1.5 text-[11px] text-[#6B6B6B] px-2.5 py-1 rounded-full border border-[#E5E5E5] bg-[#FFFFFF]">
-                    <span className={`w-2 h-2 rounded-full ${dot(r.v)}`} /> {r.label}
-                  </span>
-                ))}
+                {activeCffs.resolution_state && <Pill accent="ink">{activeCffs.resolution_state}</Pill>}
+                {!hasActiveProgram && <Pill accent="neutral">No active plan</Pill>}
+                {/* Readiness reads as one instrument with four needles, not as
+                    four unrelated chips, so the four sit in a single control. */}
+                <span className="inline-flex items-center gap-3 text-[11.5px] text-[#666D7A] pl-2.5 pr-3 py-[3px] rounded-full border border-[#E8EAEE] bg-[linear-gradient(180deg,#FFFFFF,#FAFBFC)] shadow-[0_1px_2px_rgba(16,24,40,0.05)]">
+                  {READY.map(r => (
+                    <span key={r.label} className="inline-flex items-center gap-1.5" title={r.v ? `${r.label}: ${r.v}` : `${r.label}: not read yet`}>
+                      <span className={`w-[7px] h-[7px] rounded-full ${dot(r.v)}`} /> {r.label}
+                    </span>
+                  ))}
+                </span>
               </div>
             )}
-            <div className="flex items-center gap-4 bg-[#FFFFFF] border border-[#E5E5E5] border-l-4 border-l-[#1B6DFC] rounded-2xl px-5 py-4">
+            <div
+              className="flex items-center gap-4 border border-[#E8EAEE] rounded-xl px-5 py-4"
+              style={{
+                borderLeft: '3px solid #1B6DFC',
+                background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
+                boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
+              }}
+            >
               <div className="flex-1 min-w-0">
-                <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-0.5" style={{ fontFamily: MONO_FONT }}>Next step</p>
-                <p className="text-[15px] font-bold text-[#1A1A1A] leading-snug">{next.t}</p>
-                <p className="text-[13px] text-[#6B6B6B]">{next.s}</p>
+                <p className="text-[11.5px] text-[#1B6DFC] mb-1">Next step</p>
+                <p className="text-[15px] font-semibold text-[#141821] tracking-[-0.015em] leading-snug">{next.t}</p>
+                <p className="text-[13px] text-[#666D7A] mt-0.5">{next.s}</p>
               </div>
               {next.href && (
-                <Link href={next.href} className="shrink-0 text-[13px] font-semibold px-4 py-2 rounded-xl bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#1558d6] transition-colors">
-                  Go →
+                <Link
+                  href={next.href}
+                  className="shrink-0 inline-flex items-center gap-1.5 text-[12.5px] font-medium px-3.5 py-[7px] rounded-lg text-white border border-[#1560E0] bg-[linear-gradient(180deg,#3B82F9,#1B6DFC)] hover:bg-[linear-gradient(180deg,#2E77F7,#1560E0)] shadow-[0_1px_2px_rgba(27,109,252,0.4),inset_0_1px_0_rgba(255,255,255,0.28)] transition-all active:translate-y-[0.5px]"
+                >
+                  Go
+                  <ChevronRight size={14} />
                 </Link>
               )}
             </div>
@@ -548,7 +562,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         )
       })()}
 
-      <ClientProfileTabs>
+      <ClientProfileTabs clientId={id}>
       <div data-tab="admin">
 
       {/* Deliberate Start Window */}

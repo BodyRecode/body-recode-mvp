@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { Btn, Pill } from '@/components/dashboard/ui'
+import { Unlock } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 interface Props {
@@ -62,29 +64,17 @@ export default function ReopenCheckinButton({ clientId, overrideUntil: initial }
     })
     return (
       <div className="flex items-center gap-2">
-        <span className="text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-blue-50 border border-blue-200 text-blue-700">
-          Window open until {expires}
-        </span>
-        <button
-          type="button"
-          onClick={close}
-          disabled={pending}
-          className="text-xs font-medium text-[#6B6B6B] hover:text-[#1A1A1A] transition-colors disabled:opacity-50"
-        >
+        <Pill accent="teal">Window open until {expires}</Pill>
+        <Btn size="sm" variant="ghost" onClick={close} disabled={pending}>
           {pending ? 'Working…' : 'Close'}
-        </button>
+        </Btn>
       </div>
     )
   }
 
   return (
-    <button
-      type="button"
-      onClick={reopen}
-      disabled={pending}
-      className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
-    >
+    <Btn size="sm" onClick={reopen} disabled={pending} icon={Unlock}>
       {pending ? 'Working…' : 'Reopen check-in (24h)'}
-    </button>
+    </Btn>
   )
 }

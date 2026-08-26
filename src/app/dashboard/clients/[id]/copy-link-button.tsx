@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { appUrl } from "@/lib/app-url";
+import { Btn } from '@/components/dashboard/ui'
+import { Check, Link2 } from 'lucide-react'
 
 export default function CopyLinkButton({
   token,
@@ -21,11 +23,8 @@ export default function CopyLinkButton({
   }
 
   return (
-    <button
-      onClick={copy}
-      className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
-    >
-      {copied ? 'Copied!' : label}
-    </button>
+    <Btn size="sm" onClick={copy} icon={copied ? Check : Link2}>
+      {copied ? 'Copied' : label}
+    </Btn>
   )
 }

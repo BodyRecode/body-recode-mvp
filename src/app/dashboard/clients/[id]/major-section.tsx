@@ -1,14 +1,14 @@
 'use client'
 
 import { useState } from 'react'
+import { ChevronDown } from 'lucide-react'
 
 /**
- * Collapsible wrapper for the top-level sections of the client profile page.
+ * Collapsible wrapper for the top-level sections of the client record.
  *
  * Each major section (CFFS, Baseline, Weekly Check-In, Training, Nutrition,
- * Payments) wraps in one of these. The header stays visible — section name,
- * optional accent dot, action-required pill, and any right-side action
- * buttons (e.g. Copy link). The content collapses on click.
+ * Payments) wraps in one of these. The header stays visible - section name,
+ * an attention pill when there is work in it, and any right-side actions.
  *
  * Default state is computed server-side and passed via `defaultOpen`. Action-
  * required sections (no CFFS yet, no FR published, unanswered check-ins, etc.)
@@ -43,25 +43,33 @@ export default function MajorSection({
         <button
           type="button"
           onClick={() => setOpen(o => !o)}
-          className="flex items-center gap-2.5 min-w-0 group"
+          className="flex items-center gap-2.5 min-w-0 group text-left"
           aria-expanded={open}
         >
-          <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
-          <h2
-            className="text-[11px] font-bold text-[#1B6DFC] uppercase"
-            style={{ fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace', letterSpacing: '0.14em' }}
+          <span
+            className="w-[22px] h-[22px] rounded-md shrink-0 flex items-center justify-center text-[#1B6DFC] transition-colors group-hover:text-[#1056D6]"
+            style={{
+              background: 'rgba(27,109,252,0.08)',
+              boxShadow: 'inset 0 0 0 1px #B5CFFC',
+            }}
+            aria-hidden
           >
+            <ChevronDown
+              size={13}
+              strokeWidth={2.5}
+              className={`transition-transform duration-150 ${open ? '' : '-rotate-90'}`}
+            />
+          </span>
+          <h2 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em] truncate">
             {title}
-            {subtitle && <span className="text-[#6B6B6B] font-normal"> {subtitle}</span>}
+            {subtitle && <span className="text-[#98A0AD] font-normal"> {subtitle}</span>}
           </h2>
           {attentionLabel && !open && (
-            <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-amber-50 border border-amber-200 text-amber-700">
+            <span className="shrink-0 inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-[3px] rounded-full border border-[#F1DEB8] text-[#A96A12] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] shadow-[0_1px_2px_rgba(16,24,40,0.05)]">
+              <span className="w-[5px] h-[5px] rounded-full bg-current" aria-hidden />
               {attentionLabel}
             </span>
           )}
-          <span className="text-[10px] font-bold uppercase tracking-widest text-blue-500 group-hover:text-blue-700 transition-colors">
-            {open ? 'Close' : 'Open'}
-          </span>
         </button>
         {actionRight && (
           <div className="flex items-center gap-2 flex-wrap">{actionRight}</div>
