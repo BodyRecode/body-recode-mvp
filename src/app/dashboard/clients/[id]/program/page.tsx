@@ -1,4 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
+import ClientPageNav from '../client-page-nav'
+import { PageHeader, Btn } from '@/components/dashboard/ui'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import DraftActions from './draft-actions'
@@ -485,25 +487,15 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
   ])
 
   return (
-    <div className="max-w-5xl mx-auto">
-      {/* Header */}
-      <div className="mb-8 flex items-start justify-between">
-        <div>
-          <div className="flex items-center gap-2 text-stone-500 text-sm mb-2">
-            <Link href={`/dashboard/clients/${id}`} className="hover:text-stone-700 transition-colors">{client.name}</Link>
-            <span>/</span>
-            <span className="text-stone-700">Training Program</span>
-          </div>
-          <h1 className="text-2xl font-semibold text-[#1A1A1A]">Training Program</h1>
-        </div>
-        <div className="flex items-center gap-2">
+    <div className="max-w-[980px]">
+      <PageHeader
+        eyebrow={<Link href={`/dashboard/clients/${id}`} className="hover:text-[#1B6DFC] transition-colors">{client.name}</Link>}
+        title="Training Program"
+        cta={<>
           {activeProgram && (
-            <Link
-              href={`/dashboard/clients/${id}/train`}
-              className="text-xs font-bold px-3 py-1.5 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors"
-            >
-              Log a session →
-            </Link>
+            <Btn href={`/dashboard/clients/${id}/train`} variant="primary" size="sm">
+              Log a session
+            </Btn>
           )}
           {activeProgram && (
             <NotifyClientButton
@@ -522,14 +514,10 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
               confirmMessage="Delete this draft training program? This cannot be undone."
             />
           )}
-          <Link
-            href={`/dashboard/clients/${id}/plan`}
-            className="text-xs font-medium px-3 py-1.5 border border-stone-300 text-stone-600 rounded-lg hover:border-stone-500 hover:text-stone-800 transition-colors"
-          >
-            Macro Plan
-          </Link>
-        </div>
-      </div>
+          <Btn href={`/dashboard/clients/${id}/plan`} size="sm">Macro Plan</Btn>
+        </>}
+      />
+      <ClientPageNav clientId={id} />
 
       {/* Draft - show in full with Discard / Approve */}
       {draftProgram && (

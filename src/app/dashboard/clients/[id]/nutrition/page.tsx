@@ -1,4 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
+import ClientPageNav from '../client-page-nav'
+import { PageHeader, Btn } from '@/components/dashboard/ui'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { detectBridgeReadiness } from '@/lib/client-next-action'
@@ -682,25 +684,15 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
   }
 
   return (
-    <div className="max-w-5xl mx-auto">
-      {/* Header */}
-      <div className="mb-8 flex items-start justify-between">
-        <div>
-          <div className="flex items-center gap-2 text-stone-500 text-sm mb-2">
-            <Link href={`/dashboard/clients/${id}`} className="hover:text-stone-700 transition-colors">{client.name}</Link>
-            <span>/</span>
-            <span className="text-stone-700">Nutrition Plan</span>
-          </div>
-          <h1 className="text-2xl font-semibold text-[#1A1A1A]">Nutrition Plan</h1>
-        </div>
-        <div className="flex items-center gap-2">
+    <div className="max-w-[980px]">
+      <PageHeader
+        eyebrow={<Link href={`/dashboard/clients/${id}`} className="hover:text-[#1B6DFC] transition-colors">{client.name}</Link>}
+        title="Nutrition Plan"
+        cta={<>
           {activePlan && (
-            <Link
-              href={`/dashboard/clients/${id}/nutrition/log`}
-              className="text-xs font-bold px-3 py-1.5 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors"
-            >
-              Log today&apos;s meals →
-            </Link>
+            <Btn href={`/dashboard/clients/${id}/nutrition/log`} variant="primary" size="sm">
+              Log today&apos;s meals
+            </Btn>
           )}
           {activePlan && (
             <NotifyClientButton
@@ -719,32 +711,36 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
               confirmMessage="Delete this draft nutrition plan? This cannot be undone."
             />
           )}
-          <Link
-            href={`/dashboard/clients/${id}/nutrition/suggest`}
-            className="text-xs font-medium px-3 py-1.5 border border-stone-300 text-stone-600 rounded-lg hover:border-stone-500 hover:text-stone-800 transition-colors"
-          >
+          <Btn href={`/dashboard/clients/${id}/nutrition/suggest`} size="sm">
             {activePlan || draftPlan ? 'Regenerate' : 'Generate Plan'}
-          </Link>
-        </div>
-      </div>
+          </Btn>
+        </>}
+      />
+      <ClientPageNav clientId={id} />
 
       {/* Daily meal adherence — last 7 days */}
       {activePlan && mealAdherence && mealAdherence.days > 0 && (
-        <div className="mb-8 rounded-2xl border border-[#E5E5E5] bg-white p-4">
-          <div className="flex items-center justify-between mb-2">
-            <p className="text-[10px] font-bold text-[#6B6B6B] uppercase tracking-widest">Meal adherence · last 7 days</p>
-            <span className="text-xs font-semibold text-[#1A1A1A] tabular-nums">{mealAdherence.pct}% on plan</span>
+        <div
+          className="mb-8 rounded-xl border border-[#E8EAEE] p-4"
+          style={{
+            background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
+            boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
+          }}
+        >
+          <div className="flex items-center justify-between mb-2.5">
+            <p className="text-[12.5px] text-[#666D7A]">Meal adherence, last 7 days</p>
+            <span className="text-[13px] font-semibold text-[#141821] tabular-nums">{mealAdherence.pct}% on plan</span>
           </div>
-          <div className="flex h-2 rounded-full overflow-hidden bg-[#E5E5E5]">
+          <div className="flex h-2 rounded-full overflow-hidden bg-[#EFF1F4]">
             <div className="bg-[#1B6DFC]" style={{ width: `${mealAdherence.total ? (mealAdherence.ate / mealAdherence.total) * 100 : 0}%` }} />
             <div className="bg-amber-400" style={{ width: `${mealAdherence.total ? (mealAdherence.swapped / mealAdherence.total) * 100 : 0}%` }} />
             <div className="bg-[#D4D4D4]" style={{ width: `${mealAdherence.total ? (mealAdherence.skipped / mealAdherence.total) * 100 : 0}%` }} />
           </div>
-          <div className="flex gap-4 mt-2 text-xs text-[#6B6B6B]">
-            <span><span className="font-semibold text-[#1B6DFC]">{mealAdherence.ate}</span> ate</span>
-            <span><span className="font-semibold text-amber-700">{mealAdherence.swapped}</span> swapped</span>
-            <span><span className="font-semibold text-[#6B6B6B]">{mealAdherence.skipped}</span> skipped</span>
-            <span className="ml-auto text-[#999999]">{mealAdherence.days} day{mealAdherence.days === 1 ? '' : 's'} logged</span>
+          <div className="flex gap-4 mt-2.5 text-[12px] text-[#666D7A]">
+            <span><span className="font-semibold text-[#1B6DFC] tabular-nums">{mealAdherence.ate}</span> ate</span>
+            <span><span className="font-semibold text-[#A96A12] tabular-nums">{mealAdherence.swapped}</span> swapped</span>
+            <span><span className="font-semibold text-[#666D7A] tabular-nums">{mealAdherence.skipped}</span> skipped</span>
+            <span className="ml-auto text-[#98A0AD]">{mealAdherence.days} day{mealAdherence.days === 1 ? '' : 's'} logged</span>
           </div>
         </div>
       )}

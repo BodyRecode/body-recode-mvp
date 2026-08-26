@@ -27,7 +27,13 @@ const TABS = [
 
 type TabId = (typeof TABS)[number]['id']
 
+const TAB_LABELS = new Set<string>(TABS.map(t => t.label))
+
+/** Every page that hangs off a client record. One list, used by this tab row
+ *  and by ClientPageNav on the pages themselves. */
 export const CLIENT_PAGES = [
+  { slug: 'program', label: 'Training' },
+  { slug: 'nutrition', label: 'Nutrition' },
   { slug: 'direction', label: 'Direction' },
   { slug: 'routine', label: 'Daily Sequences' },
   { slug: 'recovery', label: 'Recovery' },
@@ -69,7 +75,10 @@ export default function ClientProfileTabs({
           </button>
         ))}
         <span className="mx-2 h-4 w-px bg-[#E8EAEE] shrink-0" aria-hidden />
-        {CLIENT_PAGES.map(p => (
+        {/* Training and Nutrition have an in-page tab AND a full page. Only the
+            tab shows here - two entries reading "Training" in one row would be
+            a puzzle. The tab links through to the page. */}
+        {CLIENT_PAGES.filter(p => !TAB_LABELS.has(p.label)).map(p => (
           <Link
             key={p.slug}
             href={`/dashboard/clients/${clientId}/${p.slug}`}
