@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Menu, X } from 'lucide-react'
 import DashboardNav from './nav'
+import type { NavBadges } from '@/lib/dashboard-badges'
 
 /**
  * App shell: a rail of every section down the left that never moves, and a
@@ -17,6 +18,7 @@ export default function DashboardShell({
   userEmail,
   hint,
   logout,
+  badges,
   children,
 }: {
   brandName: string
@@ -24,6 +26,7 @@ export default function DashboardShell({
   userEmail?: string
   hint?: ReactNode
   logout?: ReactNode
+  badges?: NavBadges
   children: ReactNode
 }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -70,7 +73,7 @@ export default function DashboardShell({
       </div>
       {hint && <div className="px-3 pb-1.5">{hint}</div>}
       <div className="flex-1 min-h-0 overflow-y-auto">
-        <DashboardNav onNavigate={() => setDrawerOpen(false)} />
+        <DashboardNav onNavigate={() => setDrawerOpen(false)} badges={badges} />
       </div>
       <div className="border-t border-[#E8EAEE] bg-white/60 px-3.5 py-2.5 flex items-center justify-between gap-2">
         <span className="text-[11px] text-[#98A0AD] truncate min-w-0">{userEmail}</span>
@@ -128,7 +131,7 @@ export default function DashboardShell({
           className="min-w-0 px-6 py-8 lg:px-9 lg:py-9 print:p-0"
           style={{ background: 'linear-gradient(180deg,#FDFDFE,#FFFFFF 260px)' }}
         >
-          <div className="max-w-[1180px] print:max-w-none">{children}</div>
+          <div className="max-w-[1320px] print:max-w-none">{children}</div>
         </main>
       </div>
     </div>

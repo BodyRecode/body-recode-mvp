@@ -7,6 +7,7 @@ import CommandKHint from './command-k-hint'
 import GlobalCopilotBubble from '@/components/global-copilot-bubble'
 import SupportLauncher from '@/components/support/support-launcher'
 import { brand } from '@/config/tenant'
+import { getNavBadges } from '@/lib/dashboard-badges'
 
 export default async function DashboardLayout({
   children,
@@ -18,6 +19,7 @@ export default async function DashboardLayout({
 
   if (!user) redirect('/login')
 
+  const badges = await getNavBadges()
   const tenantBrand = brand()
   const brandInitials = tenantBrand.name.split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase() || tenantBrand.name.slice(0, 2).toUpperCase()
 
@@ -29,6 +31,7 @@ export default async function DashboardLayout({
         userEmail={user.email}
         hint={<CommandKHint />}
         logout={<LogoutButton />}
+        badges={badges}
       >
         {children}
       </DashboardShell>

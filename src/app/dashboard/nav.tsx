@@ -14,6 +14,8 @@ import {
   Rocket, BookMarked, Bot, LifeBuoy, ShieldCheck, Settings,
 } from 'lucide-react'
 
+import type { NavBadges } from '@/lib/dashboard-badges'
+
 type Icon = ComponentType<{ size?: number; strokeWidth?: number; className?: string }>
 type NavLink = { href: string; label: string; icon: Icon; exact?: boolean }
 type NavGroup = { key: string; label: string; items: NavLink[] }
@@ -132,7 +134,17 @@ export function useNavLocation(): { group: string; label: string } | null {
   return null
 }
 
-function NavItem({ link, active, onNavigate }: { link: NavLink; active: boolean; onNavigate?: () => void }) {
+function NavItem({
+  link,
+  active,
+  badge,
+  onNavigate,
+}: {
+  link: NavLink
+  active: boolean
+  badge?: { count: number; tone: 'info' | 'alert' }
+  onNavigate?: () => void
+}) {
   const Icon = link.icon
   return (
     <Link
@@ -154,11 +166,34 @@ function NavItem({ link, active, onNavigate }: { link: NavLink; active: boolean;
       )}
       <Icon size={15} strokeWidth={2} className={active ? 'opacity-100' : 'opacity-60'} />
       <span className="truncate">{link.label}</span>
+      {badge && badge.count > 0 && (
+        <span
+          title={`${badge.count} waiting`}
+          className="ml-auto shrink-0 text-[10.5px] font-semibold text-white rounded-full px-1.5 py-px min-w-[18px] text-center"
+          style={{
+            fontVariantNumeric: 'tabular-nums',
+            background: badge.tone === 'alert'
+              ? 'linear-gradient(180deg,#EF4444,#DC2626)'
+              : 'linear-gradient(180deg,#3B82F9,#1B6DFC)',
+            boxShadow: badge.tone === 'alert'
+              ? '0 1px 2px rgba(220,38,38,0.35)'
+              : '0 1px 2px rgba(27,109,252,0.35)',
+          }}
+        >
+          {badge.count > 99 ? '99+' : badge.count}
+        </span>
+      )}
     </Link>
   )
 }
 
-export default function DashboardNav({ onNavigate }: { onNavigate?: () => void }) {
+export default function DashboardNav({
+  onNavigate,
+  badges = {},
+}: {
+  onNavigate?: () => void
+  badges?: NavBadges
+}) {
   const pathname = usePathname() || '/dashboard'
   const [devMode, setDevMode] = useState(false)
 
@@ -189,6 +224,7 @@ export default function DashboardNav({ onNavigate }: { onNavigate?: () => void }
                   key={link.href}
                   link={link}
                   active={isLinkActive(pathname, link)}
+                  badge={badges[link.href]}
                   onNavigate={onNavigate}
                 />
               ))}
