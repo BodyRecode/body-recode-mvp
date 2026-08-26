@@ -23,6 +23,9 @@ SKIP = (
     '/preview/', '/print/', '/help/',
     '/business/strategy/', '/business/personal-brand/', '/business/collective/',
     '/cffs-report/', '/cfws-report/', '/automations/system/',
+    # The lead record's title sits inside its command-bar card, so the nearest
+    # wrapper is not a page header. Styled by hand.
+    '/leads/[id]/',
 )
 MARKER = 'br-page-header'
 HEADER_CLASSES = (
@@ -58,7 +61,7 @@ def restyle(path):
                 break
             if cls.strip() in INNER_ONLY:
                 continue
-            cls = ' '.join(re.sub(r'\bmb-\d+\b', '', cls).split())
+            cls = ' '.join(re.sub(r'\bmb-\d+(?:\.\d+)?\b', '', cls).split())
             prefix = cls + ' ' if cls else ''
             lines[i] = indent + '<div className="' + prefix + HEADER_CLASSES + '">'
             changed = True

@@ -1,15 +1,18 @@
 import { createClient } from '@/lib/supabase/server'
+import { PageHeader, Card, Btn, Pill, EmptyState } from '@/components/dashboard/ui'
 import Link from 'next/link'
 import { Megaphone, Plus, Mail, MessageSquare, Send, Clock, FileText, CheckCircle2, XCircle } from 'lucide-react'
 
 const typeIcon = { email: Mail, sms: MessageSquare, social: Megaphone }
 
-const statusConfig: Record<string, { label: string; colour: string; icon: typeof Clock }> = {
-  draft: { label: 'Draft', colour: 'text-[#666D7A]', icon: FileText },
-  scheduled: { label: 'Scheduled', colour: 'text-amber-700', icon: Clock },
-  active: { label: 'Sending', colour: 'text-blue-500', icon: Send },
-  completed: { label: 'Sent', colour: 'text-blue-500', icon: CheckCircle2 },
-  cancelled: { label: 'Cancelled', colour: 'text-[#666D7A]', icon: XCircle },
+type Accent = 'teal' | 'amber' | 'neutral'
+
+const statusConfig: Record<string, { label: string; accent: Accent; icon: typeof Clock }> = {
+  draft: { label: 'Draft', accent: 'neutral', icon: FileText },
+  scheduled: { label: 'Scheduled', accent: 'amber', icon: Clock },
+  active: { label: 'Sending', accent: 'teal', icon: Send },
+  completed: { label: 'Sent', accent: 'teal', icon: CheckCircle2 },
+  cancelled: { label: 'Cancelled', accent: 'neutral', icon: XCircle },
 }
 
 export default async function CampaignsPage() {
@@ -25,35 +28,33 @@ export default async function CampaignsPage() {
 
   return (
     <div className="max-w-3xl">
-      <div className="flex items-center justify-between br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
-        <div>
-          <h1 className="text-[22px] font-semibold tracking-[-0.025em] mb-1">Campaigns</h1>
-          <p className="text-[#666D7A] text-sm">{drafts} draft · {sent} sent</p>
-        </div>
-        <Link
-          href="/dashboard/business/campaigns/new"
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
-        >
-          <Plus size={14} strokeWidth={2.5} />
-          New Campaign
-        </Link>
-      </div>
+      <PageHeader
+        title="Campaigns"
+        subtitle={`${drafts} draft · ${sent} sent`}
+        cta={
+          <Btn href="/dashboard/business/campaigns/new" variant="primary" icon={Plus}>
+            New campaign
+          </Btn>
+        }
+      />
 
       {campaigns && campaigns.length > 0 ? (
-        <div className="space-y-2">
+        <Card padding="none"><div className="divide-y divide-[#EFF1F4]">
           {campaigns.map(campaign => {
             const Icon = typeIcon[campaign.type as keyof typeof typeIcon] ?? Mail
             const cfg = statusConfig[campaign.status] ?? statusConfig.draft
-            const StatusIcon = cfg.icon
             return (
               <Link
                 key={campaign.id}
                 href={`/dashboard/business/campaigns/${campaign.id}`}
-                className="flex items-center gap-4 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 hover:border-[#E8EAEE] transition-colors group"
+                className="flex items-center gap-3.5 p-4 hover:bg-[#F7F9FC] transition-colors group"
               >
-                <div className="p-2 bg-[#EFF1F4] rounded-lg shrink-0">
-                  <Icon size={14} className="text-[#666D7A]" />
-                </div>
+                <span
+                  className="w-[30px] h-[30px] rounded-lg shrink-0 flex items-center justify-center text-[#1B6DFC]"
+                  style={{ background: 'rgba(27,109,252,0.08)', boxShadow: 'inset 0 0 0 1px #B5CFFC' }}
+                >
+                  <Icon size={14} />
+                </span>
 
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-[#141821] group-hover:text-blue-500 transition-colors truncate">
@@ -67,10 +68,7 @@ export default async function CampaignsPage() {
                 </div>
 
                 <div className="shrink-0 text-right">
-                  <div className={`flex items-center gap-1 text-xs font-medium ${cfg.colour}`}>
-                    <StatusIcon size={11} />
-                    {cfg.label}
-                  </div>
+                  <Pill accent={cfg.accent}>{cfg.label}</Pill>
                   {campaign.scheduled_at && campaign.status === 'scheduled' && (
                     <p className="text-[12.5px] text-[#98A0AD] mt-0.5">
                       {new Date(campaign.scheduled_at).toLocaleDateString('en-AU', {
@@ -90,24 +88,22 @@ export default async function CampaignsPage() {
               </Link>
             )
           })}
-        </div>
+        </div></Card>
       ) : (
-        <div className="bg-[#F4F6F9] border border-dashed border-[#E8EAEE] rounded-xl p-12 text-center">
-          <div className="flex justify-center mb-4">
-            <div className="p-3 bg-[#EFF1F4] rounded-xl">
-              <Megaphone size={24} className="text-[#666D7A]" strokeWidth={1.5} />
+        <Card padding="none">
+          <div className="pb-8">
+            <EmptyState
+              icon={Megaphone}
+              title="No campaigns yet"
+              hint="Send email or SMS broadcasts to your leads and clients"
+            />
+            <div className="flex justify-center">
+              <Btn href="/dashboard/business/campaigns/new" variant="primary" icon={Plus}>
+                Create your first campaign
+              </Btn>
             </div>
           </div>
-          <p className="text-[#666D7A] text-sm font-medium mb-1">No campaigns yet</p>
-          <p className="text-[#98A0AD] text-[12.5px] mb-6">Send email or SMS broadcasts to your leads and clients</p>
-          <Link
-            href="/dashboard/business/campaigns/new"
-            className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
-          >
-            <Plus size={14} strokeWidth={2.5} />
-            Create your first campaign
-          </Link>
-        </div>
+        </Card>
       )}
     </div>
   )

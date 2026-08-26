@@ -5,12 +5,15 @@ import RecordPaymentButton from './record-payment-button'
 import GetPaymentLinkButton from './get-payment-link-button'
 import PaymentsNav from './payments-nav'
 import Link from 'next/link'
+import { PageHeader, Card, StatCard, SectionLabel, EmptyState, Avatar, Pill } from '@/components/dashboard/ui'
 
-const statusConfig: Record<string, { label: string; icon: typeof Clock; colour: string }> = {
-  paid: { label: 'Paid', icon: CheckCircle2, colour: 'text-blue-500' },
-  pending: { label: 'Pending', icon: Clock, colour: 'text-amber-700' },
-  failed: { label: 'Failed', icon: XCircle, colour: 'text-red-700' },
-  refunded: { label: 'Refunded', icon: XCircle, colour: 'text-[#666D7A]' },
+type Accent = 'teal' | 'amber' | 'red' | 'neutral'
+
+const statusConfig: Record<string, { label: string; icon: typeof Clock; accent: Accent }> = {
+  paid: { label: 'Paid', icon: CheckCircle2, accent: 'teal' },
+  pending: { label: 'Pending', icon: Clock, accent: 'amber' },
+  failed: { label: 'Failed', icon: XCircle, accent: 'red' },
+  refunded: { label: 'Refunded', icon: XCircle, accent: 'neutral' },
 }
 
 export default async function PaymentsPage() {
@@ -39,42 +42,45 @@ export default async function PaymentsPage() {
 
   return (
     <div className="max-w-3xl">
-      <div className="flex items-center justify-between br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
-        <div>
-          <h1 className="text-[22px] font-semibold tracking-[-0.025em] mb-1">Payments</h1>
-          <p className="text-[#666D7A] text-sm">Products, invoices, and payment history</p>
-        </div>
-        <div className="flex items-center gap-2">
+      <PageHeader
+        title="Payments"
+        subtitle="Products, invoices, and payment history"
+        cta={<>
           <RecordPaymentButton products={products || []} />
           <CreateProductButton />
-        </div>
-      </div>
+        </>}
+      />
 
       <PaymentsNav />
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-3 mb-8">
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
-          <p className="text-[12.5px] font-semibold text-[#666D7A] mb-2">Total Revenue</p>
-          <p className="text-[26px] font-semibold text-[#141821] tracking-[-0.035em]">${totalRevenue.toLocaleString('en-AU')}</p>
-        </div>
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
-          <p className="text-[12.5px] font-semibold text-[#666D7A] mb-2">Pending</p>
-          <p className="text-[26px] font-semibold tracking-[-0.035em] text-amber-700">${pendingRevenue.toLocaleString('en-AU')}</p>
-        </div>
+        <StatCard
+          label="Collected"
+          value={`$${totalRevenue.toLocaleString('en-AU')}`}
+          sub="Every payment marked paid"
+          accent="teal"
+          icon={CheckCircle2}
+        />
+        <StatCard
+          label="Pending"
+          value={`$${pendingRevenue.toLocaleString('en-AU')}`}
+          sub="Recorded, not yet cleared"
+          accent={pendingRevenue > 0 ? 'amber' : 'neutral'}
+          icon={Clock}
+        />
       </div>
 
       {/* Products */}
       <div className="mb-8">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-[12.5px] font-semibold text-[#666D7A]">Products</h2>
-        </div>
+        <SectionLabel meta={products?.length ? `${products.length}` : undefined}>Products</SectionLabel>
         {products && products.length > 0 ? (
-          <div className="space-y-2">
+          <Card padding="none">
+            <div className="divide-y divide-[#EFF1F4]">
             {products.map((product) => (
               <div
                 key={product.id}
-                className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 flex items-center justify-between"
+                className="p-4 flex items-center justify-between gap-4 hover:bg-[#F7F9FC] transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-[#EFF1F4] rounded-lg">
@@ -103,21 +109,20 @@ export default async function PaymentsPage() {
                 </div>
               </div>
             ))}
-          </div>
+            </div>
+          </Card>
         ) : (
-          <div className="bg-[#F4F6F9] border border-dashed border-[#E8EAEE] rounded-xl p-8 text-center">
-            <Package size={20} className="text-[#98A0AD] mx-auto mb-2" />
-            <p className="text-[#666D7A] text-sm">No products yet</p>
-            <p className="text-[#98A0AD] text-[12.5px] mt-1">Add your coaching products above</p>
-          </div>
+          <Card padding="none">
+            <EmptyState icon={Package} title="No products yet" hint="Add your coaching products above" />
+          </Card>
         )}
       </div>
 
       {/* Payment history */}
       <div>
-        <h2 className="text-[12.5px] font-semibold text-[#666D7A] mb-3">Payment History</h2>
+        <SectionLabel>Payment history</SectionLabel>
         {payments && payments.length > 0 ? (
-          <div className="space-y-2">
+          <Card padding="none"><div className="divide-y divide-[#EFF1F4]">
             {payments.map((payment) => {
               const contact = payment.leads || payment.clients
               const contactHref = payment.lead_id
@@ -126,7 +131,6 @@ export default async function PaymentsPage() {
                 ? `/dashboard/clients/${payment.client_id}`
                 : null
               const cfg = statusConfig[payment.status] ?? statusConfig.pending
-              const Icon = cfg.icon
               const contactName = Array.isArray(contact)
                 ? contact[0]?.name
                 : (contact as { name: string } | null)?.name ?? 'Unknown'
@@ -137,8 +141,9 @@ export default async function PaymentsPage() {
               return (
                 <div
                   key={payment.id}
-                  className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 flex items-center gap-4"
+                  className="p-4 flex items-center gap-3.5 hover:bg-[#F7F9FC] transition-colors"
                 >
+                  <Avatar name={contactName} size={31} />
                   <div className="flex-1 min-w-0">
                     {contactHref ? (
                       <Link
@@ -166,19 +171,17 @@ export default async function PaymentsPage() {
                     </p>
                   </div>
 
-                  <div className={`flex items-center gap-1.5 text-xs shrink-0 ${cfg.colour}`}>
-                    <Icon size={13} />
-                    {cfg.label}
-                  </div>
+                  <span className="shrink-0">
+                    <Pill accent={cfg.accent}>{cfg.label}</Pill>
+                  </span>
                 </div>
               )
             })}
-          </div>
+          </div></Card>
         ) : (
-          <div className="bg-[#F4F6F9] border border-dashed border-[#E8EAEE] rounded-xl p-8 text-center">
-            <CreditCard size={20} className="text-[#98A0AD] mx-auto mb-2" />
-            <p className="text-[#666D7A] text-sm">No payments recorded yet</p>
-          </div>
+          <Card padding="none">
+            <EmptyState icon={CreditCard} title="No payments recorded yet" hint="Recorded and Stripe payments both land here" />
+          </Card>
         )}
       </div>
     </div>

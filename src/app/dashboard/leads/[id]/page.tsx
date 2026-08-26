@@ -16,7 +16,7 @@ import CommencementFeeButton from '@/components/commencement-fee-button'
 import DownsellButton from '@/components/downsell-button'
 import BookingActionButtons from '@/components/booking-action-buttons'
 import Link from 'next/link'
-import { MONO_FONT } from '@/components/dashboard/ui'
+import { MONO_FONT, Avatar } from '@/components/dashboard/ui'
 import { buildLeadBrief } from '@/lib/lead-brief'
 import BriefCard from './brief-card'
 import PrepAnswers from '@/components/prep-answers'
@@ -126,19 +126,27 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
   // ── Command bar ──────────────────────────────────────────────────────
   const commandBar = (
-    <div className="bg-white border border-[#E8EAEE] rounded-xl p-5 mb-5">
+    <div
+      className="border border-[#E8EAEE] rounded-xl p-5 mb-5"
+      style={{
+        background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
+        boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
+      }}
+    >
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0">
-          <div className="flex flex-wrap items-center gap-2 .5 br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
-            <h1 className="text-2xl font-black text-[#141821] tracking-tight">{lead.name}</h1>
-            <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border ${getLeadStatusColour(lead.status)}`}>
+          <div className="flex flex-wrap items-center gap-2.5 mb-1.5">
+            <Avatar name={lead.name} size={34} />
+            <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">{lead.name}</h1>
+            <span className={`text-[11px] font-medium px-2.5 py-[3px] rounded-full border ${getLeadStatusColour(lead.status)}`}>
               {getLeadStatusLabel(lead.status)}
             </span>
             {lead.lead_quality && (
               <span
-                className="text-[10px] font-medium px-2 py-0.5 rounded-full"
+                className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-[3px] rounded-full"
                 style={{ color: qualityColour, background: `${qualityColour}14`, border: `1px solid ${qualityColour}40` }}
               >
+                <span className="w-[5px] h-[5px] rounded-full bg-current" aria-hidden />
                 {lead.lead_quality}{lead.red_flag ? ' · flag' : ''}
               </span>
             )}
@@ -159,7 +167,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           {lead.scorecard_score != null && lead.scorecard_body_state && (
             <div className="text-right">
               <div className="flex items-baseline gap-1.5 justify-end">
-                <span className="text-3xl font-black leading-none" style={{ color: stateColour }}>{lead.scorecard_score}</span>
+                <span className="text-[30px] font-semibold leading-none tracking-[-0.035em]" style={{ color: stateColour, fontVariantNumeric: 'tabular-nums' }}>{lead.scorecard_score}</span>
                 <span className="text-[12.5px] text-[#98A0AD]">/ 15</span>
               </div>
               <p className="text-[11px] font-medium mt-0.5" style={{ color: stateColour }}>
