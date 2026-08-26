@@ -80,7 +80,7 @@ export default function CreateBookingButton() {
     <>
       <button
         onClick={openModal}
-        className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+        className="flex items-center gap-2 bg-[#1B6DFC] hover:bg-[#1560E0] text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
       >
         <Plus size={14} strokeWidth={2.5} />
         New Booking
@@ -89,7 +89,7 @@ export default function CreateBookingButton() {
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-[#FBFCFD]" onClick={close} />
-          <div className="relative bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-6 w-full max-w-md shadow-2xl">
+          <div className="relative bg-[#F4F6F9] br-card p-6 w-full max-w-md shadow-2xl">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold">New Booking</h2>
               <button onClick={close} className="text-[#666D7A] hover:text-[#141821] transition-colors">
@@ -144,7 +144,7 @@ export default function CreateBookingButton() {
                       onClick={() => setForm(f => ({ ...f, type: opt.value }))}
                       className={`flex-1 text-xs font-medium py-2 rounded-lg border transition-colors ${
                         form.type === opt.value
-                          ? 'bg-blue-50 border-blue-300 text-blue-500'
+                          ? 'bg-[rgba(27,109,252,0.08)] border-[#9CC0FB] text-[#1B6DFC]'
                           : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC] hover:text-[#141821]'
                       }`}
                     >
@@ -214,7 +214,7 @@ export default function CreateBookingButton() {
               <button
                 onClick={submit}
                 disabled={!form.contactId || !form.date || !form.time || isPending}
-                className="flex-1 flex items-center justify-center gap-2 text-sm font-semibold bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] disabled:opacity-40 disabled:cursor-not-allowed py-2.5 rounded-lg transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 text-sm font-semibold bg-[#1B6DFC] hover:bg-[#1560E0] text-[#FBFCFD] disabled:opacity-40 disabled:cursor-not-allowed py-2.5 rounded-lg transition-colors"
               >
                 {isPending && <Loader2 size={13} className="animate-spin" />}
                 Book

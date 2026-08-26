@@ -113,7 +113,7 @@ export default async function PreviewDownsellEmail({
           <a
             key={s}
             href={`/dashboard/preview/downsell-email/${s}`}
-            className={`text-sm font-medium px-4 py-2 rounded-lg border transition-colors ${s === state ? 'bg-blue-50 border-blue-200 text-blue-500' : 'border-[#E8EAEE] text-[#666D7A] hover:text-[#141821] hover:border-[#CFD4DC]'}`}
+            className={`text-sm font-medium px-4 py-2 rounded-lg border transition-colors ${s === state ? 'bg-[rgba(27,109,252,0.08)] border-[#B5CFFC] text-[#1B6DFC]' : 'border-[#E8EAEE] text-[#666D7A] hover:text-[#141821] hover:border-[#CFD4DC]'}`}
           >
             {STATE_LABELS[s]}
           </a>

@@ -57,7 +57,7 @@ export default async function CampaignsPage() {
                 </span>
 
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-[#141821] group-hover:text-blue-500 transition-colors truncate">
+                  <p className="text-sm font-medium text-[#141821] group-hover:text-[#1B6DFC] transition-colors truncate">
                     {campaign.name}
                   </p>
                   <p className="text-[12.5px] text-[#666D7A] mt-0.5">

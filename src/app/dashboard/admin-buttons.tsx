@@ -32,8 +32,8 @@ function ActionButton({
   const base = 'text-[12px] font-semibold px-3.5 py-2 rounded-lg transition-colors disabled:opacity-50 whitespace-nowrap'
   const palette =
     tone === 'caution'
-      ? 'border border-[#F0DCB4] text-[#B7791F] bg-[#FEF6E7] hover:border-[#D9B976] hover:text-[#8A5A14]'
-      : 'border border-[#E8EAEE] text-[#43474F] bg-[#FFFFFF] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
+      ? 'border border-[#F1DEB8] text-[#B7791F] bg-[#FDF6E9] hover:border-[#D9B976] hover:text-[#8A5A14]'
+      : 'border border-[#E8EAEE] text-[#43474F] bg-[#FFFFFF] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC]'
 
   return (
     <button

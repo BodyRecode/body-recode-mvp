@@ -29,7 +29,7 @@ export default function PaymentsNav() {
             href={t.href}
             className={`px-3 py-2 text-xs font-medium transition-colors border-b-2 -mb-px ${
               active
-                ? 'text-blue-500 border-blue-500'
+                ? 'text-[#1B6DFC] border-[#1B6DFC]'
                 : 'text-[#666D7A] hover:text-[#141821] border-transparent'
             }`}
           >

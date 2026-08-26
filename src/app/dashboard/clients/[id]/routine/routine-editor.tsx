@@ -102,7 +102,7 @@ export default function RoutineEditor({
           Reset both to defaults
         </button>
         <div className="flex items-center gap-3">
-          {error && <span className="text-[11px] text-amber-700">{error}</span>}
+          {error && <span className="text-[11px] text-[#A96A12]">{error}</span>}
           {savedAt && !saving && !error && (
             <span className="text-[11px] text-[#666D7A] inline-flex items-center gap-1">
               <Check size={11} />
@@ -112,7 +112,7 @@ export default function RoutineEditor({
           <button
             onClick={save}
             disabled={saving || isPending}
-            className="inline-flex items-center gap-1.5 text-[12.5px] font-medium px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] disabled:opacity-40 transition-colors"
+            className="inline-flex items-center gap-1.5 text-[12.5px] font-medium px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] disabled:opacity-40 transition-colors"
           >
             {saving ? <Loader2 size={12} className="animate-spin" /> : <Save size={12} />}
             {saving ? 'Saving...' : 'Save changes'}
@@ -204,7 +204,7 @@ function SequenceCard({
                 <button
                   onClick={() => removeStep(i)}
                   type="button"
-                  className="p-2 text-[#98A0AD] hover:text-red-700 transition-colors"
+                  className="p-2 text-[#98A0AD] hover:text-[#C82626] transition-colors"
                   title="Remove step"
                 >
                   <Trash2 size={12} />
@@ -220,7 +220,7 @@ function SequenceCard({
               Add step
             </button>
             {sequence.steps.length >= 7 && (
-              <p className="text-[10px] text-amber-700 mt-1">7+ steps hurts adherence. Consider consolidating.</p>
+              <p className="text-[10px] text-[#A96A12] mt-1">7+ steps hurts adherence. Consider consolidating.</p>
             )}
           </div>
         </div>

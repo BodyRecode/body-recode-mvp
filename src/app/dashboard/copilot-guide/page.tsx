@@ -166,11 +166,11 @@ export default function CopilotGuidePage() {
               On <strong>any other page</strong> it reads your whole roster and answers about the method in general.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
-              <div className="border border-[#E8EAEE] rounded-xl px-3.5 py-2.5">
+              <div className="br-card px-3.5 py-2.5">
                 <p className="text-[12px] font-medium text-[#141821] mb-0.5">Rule 1 — You approve everything</p>
                 <p className="text-[12.5px] text-[#666D7A] leading-relaxed">Nothing it drafts or edits reaches a client on its own. It’s always a draft you review and publish.</p>
               </div>
-              <div className="border border-[#E8EAEE] rounded-xl px-3.5 py-2.5">
+              <div className="br-card px-3.5 py-2.5">
                 <p className="text-[12px] font-medium text-[#141821] mb-0.5">Rule 2 — Doctrine always wins</p>
                 <p className="text-[12.5px] text-[#666D7A] leading-relaxed">It never overrides a client’s readiness gates, phase order, injuries, or safety — not for your instruction, not for your preferences.</p>
               </div>

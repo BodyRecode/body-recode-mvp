@@ -41,7 +41,7 @@ export default async function SupportInboxPage({ searchParams }: { searchParams:
     return (
       <div className="max-w-[1100px]">
         <PageHeader eyebrow="Admin" title="Support inbox" />
-        <div className="p-4 rounded-xl border border-red-200 bg-red-50 text-red-900 text-[13px]">
+        <div className="p-4 rounded-xl border border-[#F5C9C9] bg-[#FDEDED] text-[#8A1919] text-[13px]">
           Error loading tickets: {error.message}
         </div>
       </div>

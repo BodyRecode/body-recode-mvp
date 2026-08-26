@@ -64,13 +64,13 @@ export default function MealLoggingToggle({
           className={`flex-none px-4 py-2 rounded-lg text-xs font-bold transition-colors disabled:opacity-40 ${
             enabled
               ? 'bg-[#EFF1F4] text-[#141821] hover:bg-[#E8EAEE]'
-              : 'bg-[#1B6DFC] text-white hover:bg-[#5390FF]'
+              : 'bg-[#1B6DFC] text-white hover:bg-[#1560E0]'
           }`}
         >
           {busy ? 'Saving…' : enabled ? 'Turn off' : 'Turn on'}
         </button>
       </div>
-      {error && <p className="text-[12.5px] text-red-700 mt-3">{error}</p>}
+      {error && <p className="text-[12.5px] text-[#C82626] mt-3">{error}</p>}
     </div>
   )
 }

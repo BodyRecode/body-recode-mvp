@@ -53,7 +53,7 @@ export default async function PartnerBillingAdminPage() {
     return (
       <div className="max-w-[1100px]">
         <PageHeader eyebrow="Admin" title="Partner billing" subtitle="Collective Partner billing state." />
-        <div className="p-4 rounded-xl border border-red-200 bg-red-50 text-red-900 text-[13px]">
+        <div className="p-4 rounded-xl border border-[#F5C9C9] bg-[#FDEDED] text-[#8A1919] text-[13px]">
           Error: {error.message}
         </div>
       </div>
@@ -102,7 +102,7 @@ export default async function PartnerBillingAdminPage() {
         <MetricTile label="Per-client revenue last month" value={fmtAud(totalPerClientRevenueLastMonth)} hint="Sum of activeCount × per-client rate" />
       </div>
 
-      <div className="mb-6 p-4 rounded-xl border border-blue-200 bg-blue-50 text-[12px] text-blue-900 leading-relaxed">
+      <div className="mb-6 p-4 rounded-xl border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)] text-[12px] text-[#0A46B2] leading-relaxed">
         <strong>Billable month.</strong> Active-client counts are computed monthly on the 1st at 08:00 AEST by the Inngest cron <code>partner-active-client-counter</code>. The count for a month reflects clients active during that calendar month. Invoice in the following month for the previous month&apos;s activity. Current billable month: <strong>{fmtMonth(billableMonth)}</strong>.
       </div>
 
@@ -118,7 +118,7 @@ export default async function PartnerBillingAdminPage() {
             const perClient = pb.perActiveClientCents ?? 2000
             const currentMonthRevenue = currentMonthCount * perClient
             return (
-              <section key={row.coach_id} className="bg-white border border-[#E8EAEE] rounded-xl overflow-hidden">
+              <section key={row.coach_id} className="br-card overflow-hidden">
                 <div className="px-5 py-4 border-b border-[#E8EAEE] bg-[#FBFCFD]">
                   <div className="flex items-baseline justify-between gap-3 flex-wrap">
                     <div>
@@ -128,7 +128,7 @@ export default async function PartnerBillingAdminPage() {
                     </div>
                     <div className="text-right">
                       <div className="text-[10px] font-medium text-[#666D7A]">Tier</div>
-                      <div className="text-[16px] font-bold text-blue-700 mt-0.5 capitalize">{pb.tier}</div>
+                      <div className="text-[16px] font-bold text-[#1056D6] mt-0.5 capitalize">{pb.tier}</div>
                       {pb.activeFrom && (
                         <div className="text-[10px] font-mono text-[#98A0AD] mt-0.5">since {new Date(pb.activeFrom).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
                       )}
@@ -183,9 +183,9 @@ export default async function PartnerBillingAdminPage() {
                           <td className="px-3 py-2 text-right font-mono">{fmtAud(h.active_count * perClient)}</td>
                           <td className="px-3 py-2 text-right">
                             {h.billed_at ? (
-                              <span className="text-green-700 font-mono text-[11px]">✓ {new Date(h.billed_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}</span>
+                              <span className="text-[#177245] font-mono text-[11px]">✓ {new Date(h.billed_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}</span>
                             ) : (
-                              <span className="text-amber-700 font-mono text-[11px]">Pending</span>
+                              <span className="text-[#A96A12] font-mono text-[11px]">Pending</span>
                             )}
                           </td>
                         </tr>
@@ -199,7 +199,7 @@ export default async function PartnerBillingAdminPage() {
                         href={`https://dashboard.stripe.com/customers/${pb.customerId}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 px-2 py-1 rounded bg-[#F4F6F9] hover:bg-blue-100 text-[#141821] hover:text-blue-700 font-mono"
+                        className="inline-flex items-center gap-1 px-2 py-1 rounded bg-[#F4F6F9] hover:bg-[#DDE9FD] text-[#141821] hover:text-[#1056D6] font-mono"
                       >
                         Stripe: {pb.customerId} →
                       </a>
@@ -209,7 +209,7 @@ export default async function PartnerBillingAdminPage() {
                         href={`https://dashboard.stripe.com/subscriptions/${pb.subscriptionId}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 px-2 py-1 rounded bg-[#F4F6F9] hover:bg-blue-100 text-[#141821] hover:text-blue-700 font-mono"
+                        className="inline-flex items-center gap-1 px-2 py-1 rounded bg-[#F4F6F9] hover:bg-[#DDE9FD] text-[#141821] hover:text-[#1056D6] font-mono"
                       >
                         Sub: {pb.subscriptionId} →
                       </a>
@@ -225,7 +225,7 @@ export default async function PartnerBillingAdminPage() {
       <div className="mt-8 p-4 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] text-[12px] text-[#666D7A] leading-relaxed">
         <p><strong className="text-[#141821]">How this page works.</strong> Each Collective Partner has <code className="bg-white border border-[#E8EAEE] px-1 py-0.5 rounded">licence.partnerBilling</code> set on their <code className="bg-white border border-[#E8EAEE] px-1 py-0.5 rounded">tenant_config</code> row (tier + locked prices + Stripe customer). A monthly Inngest cron computes Active Client counts and writes rows to <code className="bg-white border border-[#E8EAEE] px-1 py-0.5 rounded">partner_active_client_counts</code>. This page reads both.</p>
         <p className="mt-2"><strong className="text-[#141821]">Invoicing.</strong> v1 is manual. Use the numbers above to create an invoice in Stripe. Mark the month as billed when done (v2 will do this automatically). Setup fee is a one-time invoice at partnership commencement; the locked monthly subscription is a Stripe subscription; the per-active-client fee is a monthly usage invoice for the previous month.</p>
-        <p className="mt-2">Related: <Link href="/dashboard/settings/tenants" className="text-blue-600 hover:text-blue-700 underline">Tenant registry</Link>, <Link href="/dashboard/settings/platform-buildout" className="text-blue-600 hover:text-blue-700 underline">Platform Buildout</Link>.</p>
+        <p className="mt-2">Related: <Link href="/dashboard/settings/tenants" className="text-[#1560E0] hover:text-[#1056D6] underline">Tenant registry</Link>, <Link href="/dashboard/settings/platform-buildout" className="text-[#1560E0] hover:text-[#1056D6] underline">Platform Buildout</Link>.</p>
       </div>
     </div>
   )
@@ -235,12 +235,12 @@ function MetricTile({ label, value, hint, tone = 'default' }: { label: string; v
   const valueColor = {
     default: 'text-[#141821]',
     stone: 'text-[#98A0AD]',
-    green: 'text-green-700',
-    amber: 'text-amber-700',
-    red: 'text-red-700',
+    green: 'text-[#177245]',
+    amber: 'text-[#A96A12]',
+    red: 'text-[#C82626]',
   }[tone]
   return (
-    <div className="bg-white border border-[#E8EAEE] rounded-xl p-3">
+    <div className="br-card p-3">
       <div className="text-[10px] font-medium text-[#666D7A] mb-1">{label}</div>
       <div className={`text-[20px] font-bold ${valueColor} font-mono`}>{value}</div>
       {hint && <div className="text-[10px] text-[#666D7A] mt-0.5 capitalize">{hint}</div>}

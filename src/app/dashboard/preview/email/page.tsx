@@ -72,7 +72,7 @@ export default function EmailPreviewPage() {
   return (
     <div className="max-w-2xl space-y-8">
       <div>
-        <div className="w-7 h-0.5 bg-blue-500 rounded mb-4" />
+        <div className="w-7 h-0.5 bg-[#1B6DFC] rounded mb-4" />
         <h1 className="text-xl font-bold text-[#141821] mb-1">Email Previews</h1>
         <p className="text-sm text-[#666D7A]">Booking emails sent from the lead profile.</p>
       </div>

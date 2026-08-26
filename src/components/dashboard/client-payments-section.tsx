@@ -41,9 +41,9 @@ const STATUS_META: Record<string, { label: string; tone: 'good' | 'warn' | 'bad'
 }
 
 const TONE_CLASS = {
-  good:  'text-blue-500',
-  warn:  'text-amber-700',
-  bad:   'text-red-700',
+  good:  'text-[#1B6DFC]',
+  warn:  'text-[#A96A12]',
+  bad:   'text-[#C82626]',
   muted: 'text-[#666D7A]',
 } as const
 
@@ -165,7 +165,7 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
               href={`https://dashboard.stripe.com/customers/${client.stripe_customer_id}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3 py-1.5 text-[12.5px] font-medium text-[#666D7A] hover:text-[#1B6DFC] border border-[#E8EAEE] hover:border-[#1B6DFC] hover:bg-blue-50 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-[12.5px] font-medium text-[#666D7A] hover:text-[#1B6DFC] border border-[#E8EAEE] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] rounded-lg transition-colors"
             >
               <ExternalLink size={12} />
               Open in Stripe
@@ -177,12 +177,12 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
 
       {/* Health flags */}
       {flags.length > 0 && (
-        <div className="bg-red-500/5 border border-red-500/20 rounded-xl p-4 mb-3">
+        <div className="bg-[#DC2626]/5 border border-[#DC2626]/20 rounded-xl p-4 mb-3">
           <div className="flex items-start gap-2.5">
-            <AlertTriangle size={14} className="text-red-700 shrink-0 mt-0.5" />
+            <AlertTriangle size={14} className="text-[#C82626] shrink-0 mt-0.5" />
             <div className="space-y-1">
               {flags.map((f, i) => (
-                <p key={i} className="text-[12.5px] text-red-700">{f}</p>
+                <p key={i} className="text-[12.5px] text-[#C82626]">{f}</p>
               ))}
             </div>
           </div>
@@ -193,7 +193,7 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
           Implicit untracked (no plan + no subs, no package set) → generic
           placeholder. Both suppress the plan/subscription grid below. */}
       {nonBillingPackage ? (
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 mb-3">
+        <div className="bg-[#F4F6F9] br-card p-4 mb-3">
           <div className="flex items-start gap-3">
             <CreditCard size={14} className="text-[#141821] shrink-0 mt-0.5" />
             <div className="space-y-1 flex-1">
@@ -211,7 +211,7 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
               Foundational Read (optional)
             </p>
             {commencementPaid ? (
-              <p className="text-[12.5px] text-blue-500">
+              <p className="text-[12.5px] text-[#1B6DFC]">
                 Paid {formatDate(commencementPaidAt)} — ${expectedCommencement} recorded on this client.
               </p>
             ) : (
@@ -220,7 +220,7 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
           </div>
         </div>
       ) : !isTracked ? (
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 mb-3 flex items-start gap-3">
+        <div className="bg-[#F4F6F9] br-card p-4 mb-3 flex items-start gap-3">
           <CreditCard size={14} className="text-[#666D7A] shrink-0 mt-0.5" />
           <div className="space-y-1">
             <p className="text-sm font-medium text-[#141821]">Not tracked for payments</p>
@@ -234,15 +234,15 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
       ) : (
         <div className="grid grid-cols-2 gap-3 mb-3">
           {/* Plan card */}
-          <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
+          <div className="bg-[#F4F6F9] br-card p-4">
             <p className="text-[10px] font-semibold text-[#666D7A] mb-2">Plan</p>
             <p className="text-sm font-medium text-[#141821] mb-1">{planLabel}</p>
             <p className="text-[12.5px] text-[#666D7A]">
               Foundational Read (${expectedCommencement}):{' '}
               {commencementPaid ? (
-                <span className="text-blue-500">paid {formatDate(commencementPaidAt)}</span>
+                <span className="text-[#1B6DFC]">paid {formatDate(commencementPaidAt)}</span>
               ) : (
-                <span className="text-amber-700">not paid</span>
+                <span className="text-[#A96A12]">not paid</span>
               )}
             </p>
             {!commencementPaid && (
@@ -253,7 +253,7 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
           </div>
 
           {/* Subscription card */}
-          <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
+          <div className="bg-[#F4F6F9] br-card p-4">
             <p className="text-[10px] font-semibold text-[#666D7A] mb-2">Subscription</p>
             {primarySub && subMeta ? (
               <>
@@ -270,7 +270,7 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
                   </p>
                 )}
                 {primarySub.cancel_at_period_end && (
-                  <p className="text-[12.5px] text-amber-700 mt-1">Cancels at period end</p>
+                  <p className="text-[12.5px] text-[#A96A12] mt-1">Cancels at period end</p>
                 )}
               </>
             ) : (
@@ -285,7 +285,7 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
           excluded from this rollup — it's a fixed one-off, not subscription
           revenue, and folding it in made short-tenure clients look identical
           to long-tenure clients on this tile. */}
-      <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 mb-3">
+      <div className="bg-[#F4F6F9] br-card p-4 mb-3">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <CircleDollarSign size={14} className="text-[#666D7A]" />
@@ -338,7 +338,7 @@ export default async function ClientPaymentsSection({ clientId }: { clientId: st
 
       {/* All subscriptions (if more than one) */}
       {(subs?.length ?? 0) > 1 && (
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
+        <div className="bg-[#F4F6F9] br-card p-4">
           <p className="text-[10px] font-semibold text-[#666D7A] mb-2">All subscriptions</p>
           <div className="space-y-1.5">
             {subs!.map(s => {

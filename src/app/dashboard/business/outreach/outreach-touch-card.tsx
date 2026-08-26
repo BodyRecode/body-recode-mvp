@@ -63,7 +63,7 @@ export default function OutreachTouchCard({ id, email, subject: initialSubject, 
       <input
         value={subject}
         onChange={e => setSubject(e.target.value)}
-        className="w-full text-sm font-medium text-[#141821] border border-[#E8EAEE] rounded-lg px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
+        className="w-full text-sm font-medium text-[#141821] border border-[#E8EAEE] rounded-lg px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 focus:border-[#5390FF]"
       />
 
       <label className="block text-[11px] font-semibold text-[#666D7A] mb-1">
@@ -73,7 +73,7 @@ export default function OutreachTouchCard({ id, email, subject: initialSubject, 
         value={body}
         onChange={e => setBody(e.target.value)}
         rows={Math.max(6, body.split('\n').length + 1)}
-        className="w-full text-sm text-[#141821] leading-relaxed border border-[#E8EAEE] rounded-lg px-3 py-2 font-sans resize-y focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400"
+        className="w-full text-sm text-[#141821] leading-relaxed border border-[#E8EAEE] rounded-lg px-3 py-2 font-sans resize-y focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 focus:border-[#5390FF]"
       />
 
       <div className="flex items-center justify-between mt-2 mb-4">
@@ -84,20 +84,20 @@ export default function OutreachTouchCard({ id, email, subject: initialSubject, 
           href={`/api/outreach/${id}/preview`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-[#666D7A] hover:text-blue-600"
+          className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-[#666D7A] hover:text-[#1560E0]"
           onClick={async e => { if (dirty) { e.preventDefault(); const ok = await save(); if (ok) window.open(`/api/outreach/${id}/preview`, '_blank') } }}
         >
           <Eye className="w-3.5 h-3.5" /> Preview email
         </a>
       </div>
 
-      {error && <p className="text-[12.5px] text-red-600 mb-3">{error}</p>}
+      {error && <p className="text-[12.5px] text-[#C82626] mb-3">{error}</p>}
 
       <div className="flex items-center gap-2">
         <button
           onClick={send}
           disabled={busy !== null}
-          className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg disabled:opacity-50"
+          className="inline-flex items-center gap-2 bg-[#1560E0] hover:bg-[#1056D6] text-white text-sm font-semibold px-4 py-2 rounded-lg disabled:opacity-50"
         >
           {busy === 'send' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
           Approve &amp; send
@@ -115,7 +115,7 @@ export default function OutreachTouchCard({ id, email, subject: initialSubject, 
         <button
           onClick={skip}
           disabled={busy !== null}
-          className="inline-flex items-center gap-2 text-[#666D7A] hover:text-red-600 text-sm font-medium px-3 py-2 rounded-lg disabled:opacity-50 ml-auto"
+          className="inline-flex items-center gap-2 text-[#666D7A] hover:text-[#C82626] text-sm font-medium px-3 py-2 rounded-lg disabled:opacity-50 ml-auto"
         >
           {busy === 'skip' ? <Loader2 className="w-4 h-4 animate-spin" /> : <X className="w-4 h-4" />}
           Skip

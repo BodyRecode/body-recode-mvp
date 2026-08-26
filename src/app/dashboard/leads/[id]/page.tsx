@@ -50,10 +50,10 @@ const EVENT_COLOURS: Record<string, string> = {
   prep_form_completed: 'bg-[#1B6DFC]',
   scorecard_completed: 'bg-[#1B6DFC]',
   day_zero_intake_completed: 'bg-[#1B6DFC]',
-  zoom_booked: 'bg-green-500',
-  challenge_enrolled: 'bg-green-500',
-  downsell_purchased: 'bg-green-500',
-  custom_time_requested: 'bg-amber-500',
+  zoom_booked: 'bg-[#22A05A]',
+  challenge_enrolled: 'bg-[#22A05A]',
+  downsell_purchased: 'bg-[#22A05A]',
+  custom_time_requested: 'bg-[#B7791F]',
   followup_cancelled: 'bg-red-400',
   zoom_declined: 'bg-red-400',
 }
@@ -69,7 +69,7 @@ const SCORECARD_SECTIONS: Record<string, string> = {
 }
 
 function Card({ children, className = '' }: { children: React.ReactNode; className?: string }) {
-  return <div className={`bg-white border border-[#E8EAEE] rounded-xl p-5 ${className}`}>{children}</div>
+  return <div className={`br-card p-5 ${className}`}>{children}</div>
 }
 
 function CardTitle({ children }: { children: React.ReactNode }) {
@@ -127,7 +127,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   // ── Command bar ──────────────────────────────────────────────────────
   const commandBar = (
     <div
-      className="border border-[#E8EAEE] rounded-xl p-5 mb-5"
+      className="br-card p-5 mb-5"
       style={{
         background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
         boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
@@ -205,20 +205,20 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             </Link>
           )}
           <Link href={`/companion/${lead.id}/zoom`} target="_blank"
-            className="text-[13px] font-bold px-3 py-1.5 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors">
+            className="text-[13px] font-bold px-3 py-1.5 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] transition-colors">
             Call companion ↗
           </Link>
         </div>
       </div>
 
       {scopeFlags.length > 0 && (
-        <div className="mt-4 rounded-xl bg-amber-50 border border-amber-300 p-3.5">
-          <p className="text-[11px] font-medium text-amber-900 mb-1.5 flex items-center gap-1.5">
+        <div className="mt-4 rounded-xl bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] p-3.5">
+          <p className="text-[11px] font-medium text-[#8A5A14] mb-1.5 flex items-center gap-1.5">
             <AlertTriangle size={12} /> Scope flags from their own words
           </p>
-          <p className="text-[13px] text-amber-900 leading-relaxed">
+          <p className="text-[13px] text-[#8A5A14] leading-relaxed">
             {scopeFlags.map(f => f.flag).join(' · ')}
-            <span className="text-amber-800"> — what to do about each is in the Brief tab.</span>
+            <span className="text-[#A96A12]"> — what to do about each is in the Brief tab.</span>
           </p>
         </div>
       )}
@@ -235,7 +235,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
     content: (
       <div className="space-y-4">
         {isStoredFallback && (
-          <p className="text-[12px] text-[#B7791F] bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+          <p className="text-[12px] text-[#B7791F] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] rounded-lg px-3 py-2">
             Showing the stored brief. Not enough scorecard data on file to rebuild it live.
           </p>
         )}
@@ -244,7 +244,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           ? <PreCallRead leadId={lead.id} initialBrief={brief} />
           : <Card><p className="text-sm text-[#666D7A]">No brief yet. It builds automatically once a scorecard is on file.</p></Card>}
         {supplement && (
-          <details className="bg-white border border-[#E8EAEE] rounded-xl group">
+          <details className="br-card group">
             <summary className="px-5 py-3.5 cursor-pointer select-none text-[13px] font-semibold text-[#666D7A] hover:text-[#141821]">
               In-person session supplement
               <span className="font-normal text-[#98A0AD]"> — only if you are running this at AF Newstead</span>

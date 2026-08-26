@@ -84,7 +84,7 @@ export default function NewClientPage() {
           <p className="text-[#666D7A] text-sm mt-1">{name} has been created</p>
         </div>
 
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-6 mb-4">
+        <div className="bg-[#F4F6F9] br-card p-6 mb-4">
           <p className="text-[12.5px] text-[#666D7A] mb-3">Intake link</p>
           <p className="text-[#141821] text-sm mb-1">
             Send this link to <span className="text-[#141821] font-medium">{name}</span> to complete their foundational intake.
@@ -121,7 +121,7 @@ export default function NewClientPage() {
               setIntakeToken('')
               setClientId('')
             }}
-            className="text-sm px-4 py-2.5 border border-[#E8EAEE] text-[#141821] rounded-lg hover:border-[#CFD4DC] transition-colors"
+            className="text-sm px-4 py-2.5 border border-[#E8EAEE] text-[#141821] rounded-lg br-card-hover transition-shadow"
           >
             Add another
           </Link>
@@ -150,7 +150,7 @@ export default function NewClientPage() {
         </p>
       </div>
 
-      <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-6 space-y-4">
+      <div className="bg-[#F4F6F9] br-card p-6 space-y-4">
         <div>
           <label className="block text-sm text-[#141821] mb-1.5">
             Full name <span className="text-[#98A0AD]">*</span>
@@ -195,12 +195,12 @@ export default function NewClientPage() {
         </div>
       </div>
 
-      {error && <p className="text-red-700 text-sm mt-3">{error}</p>}
+      {error && <p className="text-[#C82626] text-sm mt-3">{error}</p>}
 
       <div className="mt-4 flex gap-3">
         <Link
           href="/dashboard"
-          className="px-5 py-2.5 rounded-lg text-sm border border-[#E8EAEE] text-[#141821] hover:border-[#CFD4DC] transition-colors"
+          className="px-5 py-2.5 rounded-lg text-sm border border-[#E8EAEE] text-[#141821] br-card-hover transition-shadow"
         >
           Cancel
         </Link>

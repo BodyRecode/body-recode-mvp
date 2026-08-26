@@ -184,7 +184,7 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
           role="dialog"
           aria-label="Coach Co-Pilot"
         >
-          <div className="border border-[#E8EAEE] bg-[#FFFFFF] rounded-xl overflow-hidden flex flex-col h-full">
+          <div className="br-card overflow-hidden flex flex-col h-full">
             <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[linear-gradient(180deg,#FFFFFF,#FBFCFD)] shrink-0">
               <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Co-Pilot</p>
               <span className="ml-auto text-[11.5px] text-[#98A0AD]">Doctrine tutor · read-only</span>
@@ -223,7 +223,7 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
                     disabled={prefsBusy}
                     rows={7}
                     placeholder="e.g. Favour fewer, higher-quality movements. Default to 3-day weeks unless the client has more capacity…"
-                    className="w-full resize-none text-[13px] border border-[#E8EAEE] rounded-xl px-3 py-2 focus:outline-none focus:border-[#B9D0FD] focus:ring-[3px] focus:ring-[rgba(27,109,252,0.13)] disabled:opacity-60"
+                    className="w-full resize-none text-[13px] br-card px-3 py-2 focus:outline-none focus:border-[#B9D0FD] focus:ring-[3px] focus:ring-[rgba(27,109,252,0.13)] disabled:opacity-60"
                   />
                   <div className="flex items-center gap-2 mt-2.5">
                     <button
@@ -241,7 +241,7 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
                   <p className="mb-3 text-[#141821] font-semibold">I&apos;m on every page. Here&apos;s what I can help with:</p>
                   <div className="space-y-2.5 mb-4">
                     {CAPABILITIES.map(c => (
-                      <div key={c.title} className="border border-[#E8EAEE] rounded-xl px-3.5 py-2.5">
+                      <div key={c.title} className="br-card px-3.5 py-2.5">
                         <p className="text-[13px] font-semibold text-[#141821] mb-0.5">{c.title}</p>
                         <p className="text-[12.5px] text-[#666D7A] leading-relaxed">{c.body}</p>
                       </div>
@@ -275,7 +275,7 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
                   ))}
 
                   {loading && (
-                    <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl rounded-bl-sm px-4 py-3 inline-flex items-center gap-1.5 w-fit" aria-label="Co-pilot is typing">
+                    <div className="bg-[#F4F6F9] br-card rounded-bl-sm px-4 py-3 inline-flex items-center gap-1.5 w-fit" aria-label="Co-pilot is typing">
                       <span className="w-2 h-2 rounded-full bg-[#98A0AD] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '0ms' }} />
                       <span className="w-2 h-2 rounded-full bg-[#98A0AD] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '150ms' }} />
                       <span className="w-2 h-2 rounded-full bg-[#98A0AD] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '300ms' }} />
@@ -297,7 +297,7 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
                     </div>
                   )}
 
-                  {error && <div className="text-[13px] text-red-600">{error}</div>}
+                  {error && <div className="text-[13px] text-[#C82626]">{error}</div>}
                 </>
               )}
             </div>
@@ -327,7 +327,7 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
                   onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(input) } }}
                   placeholder="Ask about the method…"
                   rows={2}
-                  className="flex-1 resize-none text-sm border border-[#E8EAEE] rounded-xl px-3 py-2 focus:outline-none focus:border-[#B9D0FD] focus:ring-[3px] focus:ring-[rgba(27,109,252,0.13)]"
+                  className="flex-1 resize-none text-sm br-card px-3 py-2 focus:outline-none focus:border-[#B9D0FD] focus:ring-[3px] focus:ring-[rgba(27,109,252,0.13)]"
                 />
                 <button
                   type="submit"

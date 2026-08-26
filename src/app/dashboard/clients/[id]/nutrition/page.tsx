@@ -127,22 +127,22 @@ function nutritionNavSections(plan: NutritionPlan) {
 }
 
 const entryStateColour: Record<string, string> = {
-  stabilisation: 'text-amber-700 bg-amber-50 border-amber-200',
-  training_support: 'text-blue-500 bg-blue-50 border-blue-200',
+  stabilisation: 'text-[#A96A12] bg-[#FDF6E9] border-[#F1DEB8]',
+  training_support: 'text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border-[#B5CFFC]',
   high_output_support: 'text-violet-700 bg-violet-50 border-violet-200',
-  recovery_reset: 'text-red-700 bg-red-50 border-red-200',
+  recovery_reset: 'text-[#C82626] bg-[#FDEDED] border-[#F5C9C9]',
 }
 
 const carbColour: Record<string, string> = {
-  low: 'text-blue-700 bg-blue-50 border-blue-200',
+  low: 'text-[#1056D6] bg-[rgba(27,109,252,0.08)] border-[#B5CFFC]',
   moderate: 'text-orange-400 bg-orange-400/10 border-orange-400/30',
   high: 'text-green-400 bg-green-400/10 border-green-400/30',
 }
 
 const directionColour: Record<string, string> = {
   progress: 'text-green-400 bg-green-400/10 border-green-400/30',
-  hold: 'text-amber-700 bg-amber-50 border-amber-200',
-  rebuild: 'text-red-700 bg-red-50 border-red-200',
+  hold: 'text-[#A96A12] bg-[#FDF6E9] border-[#F1DEB8]',
+  rebuild: 'text-[#C82626] bg-[#FDEDED] border-[#F5C9C9]',
 }
 
 const directionLabel: Record<string, string> = {
@@ -172,7 +172,7 @@ function NutritionPlanBody({
     <div className="space-y-4">
 
       {/* Identity card */}
-      <div id={`${idPrefix}identity`} className="scroll-mt-8 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+      <div id={`${idPrefix}identity`} className="scroll-mt-8 bg-[#F4F6F9] br-card p-5">
         <div className="flex items-start justify-between mb-3">
           <div>
             <h2 className="text-lg font-semibold text-[#141821]">{plan.plan_name}</h2>
@@ -211,7 +211,7 @@ function NutritionPlanBody({
           valid until the coach regenerates. Plans with null doctrine_version
           are grandfathered and show no hint. */}
       {plan.doctrine_version && isDoctrineStale(plan.doctrine_version, 'nutrition_plan') && (
-        <div className="scroll-mt-8 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+        <div className="scroll-mt-8 bg-[#F4F6F9] br-card p-5">
           <div className="flex items-start gap-3">
             <svg className="w-5 h-5 text-[#666D7A] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -223,7 +223,7 @@ function NutritionPlanBody({
               </p>
               <Link
                 href={`/dashboard/clients/${plan.client_id}/nutrition/suggest`}
-                className="inline-block mt-2 text-[12.5px] font-semibold text-blue-600 hover:text-blue-700"
+                className="inline-block mt-2 text-[12.5px] font-semibold text-[#1560E0] hover:text-[#1056D6]"
               >
                 Regenerate with current doctrine →
               </Link>
@@ -283,13 +283,13 @@ function NutritionPlanBody({
           ? Math.min(startKcal + STAGE_KCAL, targetKcal ?? startKcal)
           : startKcal
         return (
-          <div id={`${idPrefix}bridge-mode`} className="scroll-mt-8 bg-amber-50 border border-amber-300 rounded-xl p-5">
+          <div id={`${idPrefix}bridge-mode`} className="scroll-mt-8 bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] rounded-xl p-5">
             <div className="flex items-start gap-3 mb-4">
-              <svg className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-5 h-5 text-[#A96A12] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               <div className="min-w-0 flex-1">
-                <p className="text-[11px] font-black text-amber-700 mb-1">Bridge Mode (Staged Ramp)</p>
+                <p className="text-[11px] font-black text-[#A96A12] mb-1">Bridge Mode (Staged Ramp)</p>
                 <p className="text-sm text-[#141821] leading-relaxed">
                   Currently feeding at <span className="font-semibold tabular-nums">{startKcal} kcal</span>{targetKcal && stagesRemaining > 0 && (
                     <>, ramping to <span className="font-semibold tabular-nums">~{targetKcal} kcal</span> over <span className="font-semibold">{stagesRemaining} more stage{stagesRemaining === 1 ? '' : 's'}</span> (~{totalRampWeeks} weeks at +{STAGE_KCAL} kcal per 2-week stage).</>
@@ -314,7 +314,7 @@ function NutritionPlanBody({
                   <span className="text-[#666D7A]"><span className="font-mono tabular-nums">{targetKcal}</span> target</span>
                 </div>
                 <div className="h-2 bg-[#EFF1F4] rounded-full overflow-hidden">
-                  <div className="h-full bg-amber-500 rounded-full transition-all" style={{ width: `${progressPct}%` }} />
+                  <div className="h-full bg-[#B7791F] rounded-full transition-all" style={{ width: `${progressPct}%` }} />
                 </div>
                 <p className="text-[11px] text-[#666D7A] mt-1">
                   Stage progress: {daysIntoBridge}/{totalBridgeDays} days through this 2-week stage{stagesRemaining > 0 && <> · {stagesRemaining} stage{stagesRemaining === 1 ? '' : 's'} remaining</>}
@@ -325,14 +325,14 @@ function NutritionPlanBody({
             {/* Check-in readiness signal */}
             {bridgeReadinessSignal && (
               <div className="pl-8 mb-4">
-                <p className="text-[10px] font-medium text-amber-700 mb-1.5">Step-up readiness (from recent check-ins)</p>
+                <p className="text-[10px] font-medium text-[#A96A12] mb-1.5">Step-up readiness (from recent check-ins)</p>
                 {bridgeReadinessSignal.ready ? (
-                  <div className="bg-emerald-50 border border-emerald-300 rounded-lg px-3 py-2.5">
+                  <div className="bg-[#EDF8F1] border border-emerald-300 rounded-lg px-3 py-2.5">
                     <div className="flex items-start gap-2">
-                      <span className="text-emerald-700 mt-0.5">✓</span>
+                      <span className="text-[#177245] mt-0.5">✓</span>
                       <div className="min-w-0 flex-1">
                         <p className="text-sm font-semibold text-emerald-800">Ready to step up</p>
-                        <p className="text-[12.5px] text-emerald-700 mt-1 leading-relaxed">{bridgeReadinessSignal.reason}</p>
+                        <p className="text-[12.5px] text-[#177245] mt-1 leading-relaxed">{bridgeReadinessSignal.reason}</p>
                         <Link
                           href={`/dashboard/clients/${plan.client_id}/nutrition/suggest`}
                           className="inline-block mt-2 text-[12.5px] font-semibold text-emerald-800 hover:text-emerald-900 underline"
@@ -358,15 +358,15 @@ function NutritionPlanBody({
 
             {plan.transitional_override_justification && (
               <div className="pl-8 mb-4">
-                <p className="text-[10px] font-medium text-amber-700 mb-1">Coach justification</p>
+                <p className="text-[10px] font-medium text-[#A96A12] mb-1">Coach justification</p>
                 <p className="text-[12.5px] text-[#141821] leading-relaxed italic">{plan.transitional_override_justification}</p>
               </div>
             )}
 
             {expiry && (
-              <div className="pl-8 pt-3 border-t border-amber-200">
+              <div className="pl-8 pt-3 border-t border-[#F1DEB8]">
                 <p className="text-[12.5px] text-[#666D7A]">
-                  <span className="font-semibold text-amber-700">Bridge window expires:</span>{' '}
+                  <span className="font-semibold text-[#A96A12]">Bridge window expires:</span>{' '}
                   {expiry.toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}
                   {daysToExpiry !== null && daysToExpiry >= 0 && <> (in {daysToExpiry} day{daysToExpiry === 1 ? '' : 's'})</>}
                   {daysToExpiry !== null && daysToExpiry < 0 && <> ({-daysToExpiry} day{daysToExpiry === -1 ? '' : 's'} overdue)</>}
@@ -396,7 +396,7 @@ function NutritionPlanBody({
       {plan.weekly_structure_notes && (() => {
         const { intro, points } = parseText(clean(plan.weekly_structure_notes))
         return (
-          <div id={`${idPrefix}structure`} className="scroll-mt-8 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+          <div id={`${idPrefix}structure`} className="scroll-mt-8 bg-[#F4F6F9] br-card overflow-hidden">
             <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE]">
               <span className="text-[11px] font-black text-[#1B6DFC]">01</span>
               <p className="text-[10px] font-medium text-[#666D7A]">Structure Logic</p>
@@ -429,7 +429,7 @@ function NutritionPlanBody({
         const carbPct = Math.round((carbKcal / denom) * 100)
         const fatPct = 100 - proteinPct - carbPct
         return (
-          <div id={`${idPrefix}daily-totals`} className="scroll-mt-8 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+          <div id={`${idPrefix}daily-totals`} className="scroll-mt-8 bg-[#F4F6F9] br-card overflow-hidden">
             <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE]">
               <span className="text-[11px] font-black text-[#1B6DFC]">↑</span>
               <p className="text-[10px] font-medium text-[#666D7A]">Daily Totals (sum of meals)</p>
@@ -444,7 +444,7 @@ function NutritionPlanBody({
                 </div>
                 <div className="text-right text-[12.5px]">
                   {band ? (
-                    <div className={kcalInBand ? 'text-blue-500' : 'text-red-700'}>
+                    <div className={kcalInBand ? 'text-[#1B6DFC]' : 'text-[#C82626]'}>
                       <p className="font-semibold">{kcalInBand ? 'Inside band' : 'Outside band'}</p>
                       <p className="text-[#666D7A] mt-0.5 tabular-nums">Target {band.low}–{band.high} kcal</p>
                     </div>
@@ -456,19 +456,19 @@ function NutritionPlanBody({
               <div className="pt-1">
                 <div className="flex h-2 rounded-full overflow-hidden bg-[#EFF1F4]">
                   <div style={{ width: `${proteinPct}%` }} className="bg-[#1B6DFC]" />
-                  <div style={{ width: `${carbPct}%` }} className="bg-amber-500" />
+                  <div style={{ width: `${carbPct}%` }} className="bg-[#B7791F]" />
                   <div style={{ width: `${fatPct}%` }} className="bg-violet-400" />
                 </div>
                 <div className="flex justify-between mt-2 text-[10px] tabular-nums">
                   <span className="text-[#1B6DFC]">P {proteinPct}%</span>
-                  <span className="text-amber-700">C {carbPct}%</span>
+                  <span className="text-[#A96A12]">C {carbPct}%</span>
                   <span className="text-violet-300">F {fatPct}%</span>
                 </div>
               </div>
               {proteinAnchor > 0 && (
                 <div className="flex items-center justify-between text-[12.5px] pt-3 border-t border-[#E8EAEE]">
                   <p className="text-[#666D7A]">Protein anchor</p>
-                  <p className={proteinOk ? 'text-blue-500' : 'text-red-700'}>
+                  <p className={proteinOk ? 'text-[#1B6DFC]' : 'text-[#C82626]'}>
                     <span className="tabular-nums">{totals.protein_g}g</span> vs anchor <span className="tabular-nums">{proteinAnchor}g</span>
                     {proteinDelta !== null && (
                       <span className="text-[#666D7A] ml-1">({proteinDelta > 0 ? '+' : ''}{proteinDelta}g)</span>
@@ -502,7 +502,7 @@ function NutritionPlanBody({
 
       {/* Training Day Adjustments */}
       {plan.training_day_adjustments && (
-        <div id={`${idPrefix}adjustments`} className="scroll-mt-8 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+        <div id={`${idPrefix}adjustments`} className="scroll-mt-8 bg-[#F4F6F9] br-card overflow-hidden">
           <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE]">
             <span className="text-[11px] font-black text-[#1B6DFC]">02</span>
             <p className="text-[10px] font-medium text-[#666D7A]">Training Day Adjustments</p>
@@ -526,7 +526,7 @@ function NutritionPlanBody({
 
       {/* Execution Rules */}
       {plan.execution_rules?.length > 0 && (
-        <div id={`${idPrefix}execution`} className="scroll-mt-8 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+        <div id={`${idPrefix}execution`} className="scroll-mt-8 bg-[#F4F6F9] br-card overflow-hidden">
           <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE]">
             <span className="text-[11px] font-black text-[#1B6DFC]">03</span>
             <p className="text-[10px] font-medium text-[#666D7A]">Execution Rules</p>
@@ -534,7 +534,7 @@ function NutritionPlanBody({
           <div className="px-5 py-4 space-y-2">
             {plan.execution_rules.map((rule, i) => (
               <div key={i} className="flex items-start gap-2">
-                <span className="text-blue-500 mt-0.5 shrink-0">•</span>
+                <span className="text-[#1B6DFC] mt-0.5 shrink-0">•</span>
                 <p className="text-sm text-[#141821]">{clean(rule)}</p>
               </div>
             ))}
@@ -544,7 +544,7 @@ function NutritionPlanBody({
 
       {/* What Not to Change */}
       {plan.what_not_to_change?.length > 0 && (
-        <div className="bg-[#EFF1F4]/40 border border-[#E8EAEE] rounded-xl px-5 py-4">
+        <div className="bg-[#EFF1F4]/40 br-card px-5 py-4">
           <p className="text-[10px] font-medium text-[#666D7A] mb-2">What Not to Change</p>
           <div className="space-y-1.5">
             {plan.what_not_to_change.map((item, i) => (
@@ -561,7 +561,7 @@ function NutritionPlanBody({
       {plan.progression_notes && (() => {
         const { intro, points } = parseText(clean(plan.progression_notes))
         return (
-          <div id={`${idPrefix}progression`} className="scroll-mt-8 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+          <div id={`${idPrefix}progression`} className="scroll-mt-8 bg-[#F4F6F9] br-card overflow-hidden">
             <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE]">
               <span className="text-[11px] font-black text-[#1B6DFC]">04</span>
               <p className="text-[10px] font-medium text-[#666D7A]">Progression Notes</p>
@@ -580,7 +580,7 @@ function NutritionPlanBody({
 
       {/* Substitutions */}
       {plan.substitution_options && (
-        <div id={`${idPrefix}substitutions`} className="scroll-mt-8 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+        <div id={`${idPrefix}substitutions`} className="scroll-mt-8 bg-[#F4F6F9] br-card p-5">
           <p className="text-[10px] font-medium text-[#666D7A] mb-3">Food Substitutions</p>
           <div className="grid grid-cols-3 gap-4">
             {(['protein', 'carbohydrate', 'fat'] as const).map(cat => (
@@ -733,7 +733,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
           </div>
           <div className="flex h-2 rounded-full overflow-hidden bg-[#EFF1F4]">
             <div className="bg-[#1B6DFC]" style={{ width: `${mealAdherence.total ? (mealAdherence.ate / mealAdherence.total) * 100 : 0}%` }} />
-            <div className="bg-amber-400" style={{ width: `${mealAdherence.total ? (mealAdherence.swapped / mealAdherence.total) * 100 : 0}%` }} />
+            <div className="bg-[#C08A2D]" style={{ width: `${mealAdherence.total ? (mealAdherence.swapped / mealAdherence.total) * 100 : 0}%` }} />
             <div className="bg-[#D4D4D4]" style={{ width: `${mealAdherence.total ? (mealAdherence.skipped / mealAdherence.total) * 100 : 0}%` }} />
           </div>
           <div className="flex gap-4 mt-2.5 text-[12px] text-[#666D7A]">
@@ -749,7 +749,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
       {draftPlan && (
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-[12.5px] font-medium px-2.5 py-1 rounded-full bg-amber-50 border border-amber-700 text-amber-700">
+            <span className="text-[12.5px] font-medium px-2.5 py-1 rounded-full bg-[#FDF6E9] border border-[#A96A12] text-[#A96A12]">
               Draft - Pending Approval
             </span>
             <div className="flex items-center gap-2">
@@ -767,15 +767,15 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
 
       {/* Rebuild alert */}
       {activePlan?.current_direction === 'rebuild' && (
-        <div className="mb-4 flex items-start gap-3 bg-red-50 border border-red-200/60 rounded-xl px-4 py-3">
-          <svg className="w-4 h-4 text-red-700 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <div className="mb-4 flex items-start gap-3 bg-[#FDEDED] border border-[#F5C9C9]/60 rounded-xl px-4 py-3">
+          <svg className="w-4 h-4 text-[#C82626] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
           </svg>
           <div className="flex-1">
-            <p className="text-sm font-semibold text-red-700">Client is struggling with nutrition</p>
-            <p className="text-[12.5px] text-red-700/70 mt-0.5">Latest check-in direction is Rebuild. Consider adjusting the plan or generating a new one.</p>
+            <p className="text-sm font-semibold text-[#C82626]">Client is struggling with nutrition</p>
+            <p className="text-[12.5px] text-[#C82626]/70 mt-0.5">Latest check-in direction is Rebuild. Consider adjusting the plan or generating a new one.</p>
           </div>
-          <Link href="./nutrition/suggest" className="text-[12.5px] font-semibold text-red-700 hover:text-red-700 shrink-0 mt-0.5">Regenerate →</Link>
+          <Link href="./nutrition/suggest" className="text-[12.5px] font-semibold text-[#C82626] hover:text-[#C82626] shrink-0 mt-0.5">Regenerate →</Link>
         </div>
       )}
 

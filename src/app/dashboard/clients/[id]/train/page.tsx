@@ -115,7 +115,7 @@ export default async function CoachTrainIndexPage({ params }: { params: Promise<
           <div className="flex items-center justify-between mb-2">
             <p className="text-[10px] font-medium text-[#666D7A]">This block</p>
             {momentum.streakWeeks >= 2 && (
-              <span className="text-[11.5px] font-medium text-[#1B6DFC] bg-blue-50 border border-[#1B6DFC]/30 rounded-full px-2 py-0.5">{momentum.streakWeeks} weeks fully logged</span>
+              <span className="text-[11.5px] font-medium text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border border-[#1B6DFC]/30 rounded-full px-2 py-0.5">{momentum.streakWeeks} weeks fully logged</span>
             )}
           </div>
           <div className="flex items-center gap-3">
@@ -129,7 +129,7 @@ export default async function CoachTrainIndexPage({ params }: { params: Promise<
 
       {/* Today */}
       {todaySessionIndex >= 0 && (
-        <div className="mb-6 rounded-xl border border-[#1B6DFC] bg-blue-50 p-5">
+        <div className="mb-6 rounded-xl border border-[#1B6DFC] bg-[rgba(27,109,252,0.08)] p-5">
           <p className="text-[10px] font-medium text-[#1B6DFC] mb-2">Today · {today}</p>
           <h2 className="text-xl font-bold text-[#141821] mb-1">{prescribedSessions[todaySessionIndex].day_label}{prescribedSessions[todaySessionIndex].skeleton ? ` · ${prescribedSessions[todaySessionIndex].skeleton}` : ''}</h2>
           <p className="text-sm text-[#666D7A] mb-4">{prescribedSessions[todaySessionIndex].flatExercises.length} exercise{prescribedSessions[todaySessionIndex].flatExercises.length === 1 ? '' : 's'}</p>
@@ -158,7 +158,7 @@ export default async function CoachTrainIndexPage({ params }: { params: Promise<
                 completion?.status === 'completed'
                   ? 'border-[#1B6DFC]/60'
                   : completion?.status === 'in_progress'
-                    ? 'border-amber-300'
+                    ? 'border-[#E5C98F]'
                     : 'border-[#E8EAEE]'
               }`}
             >
@@ -168,7 +168,7 @@ export default async function CoachTrainIndexPage({ params }: { params: Promise<
                   <p className="text-[12.5px] text-[#666D7A]">{s.flatExercises.length} exercise{s.flatExercises.length === 1 ? '' : 's'}</p>
                 </div>
                 {completion?.status === 'completed' && <span className="text-[10px] text-[#1B6DFC] shrink-0">Completed</span>}
-                {completion?.status === 'in_progress' && <span className="text-[10px] text-amber-700 shrink-0">In progress</span>}
+                {completion?.status === 'in_progress' && <span className="text-[10px] text-[#A96A12] shrink-0">In progress</span>}
               </div>
               <StartSessionButton
                 token=""

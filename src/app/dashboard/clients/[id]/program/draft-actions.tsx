@@ -49,20 +49,20 @@ export default function DraftActions({
   return (
     <div>
       {error && (
-        <p className="text-[12.5px] text-red-700 mb-3">{error}</p>
+        <p className="text-[12.5px] text-[#C82626] mb-3">{error}</p>
       )}
       <div className="flex items-center gap-2">
         <button
           onClick={handleDiscard}
           disabled={discarding || promoting}
-          className="text-[12.5px] px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-red-200 hover:text-red-700 hover:bg-red-50 transition-colors disabled:opacity-40"
+          className="text-[12.5px] px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#F5C9C9] hover:text-[#C82626] hover:bg-[#FDEDED] transition-colors disabled:opacity-40"
         >
           {discarding ? 'Discarding…' : 'Discard Draft'}
         </button>
         <button
           onClick={handleApprove}
           disabled={promoting || discarding}
-          className="text-[12.5px] px-4 py-1.5 bg-[#1B6DFC] text-white font-semibold rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-40"
+          className="text-[12.5px] px-4 py-1.5 bg-[#1B6DFC] text-white font-semibold rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-40"
         >
           {promoting ? 'Approving…' : 'Approve Program'}
         </button>

@@ -42,7 +42,7 @@ function SourceItem({
   showCount?: boolean
 }) {
   return (
-    <div className="border border-[#E8EAEE] bg-[#FFFFFF] rounded-xl p-4">
+    <div className="br-card p-4">
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="min-w-0">
           <p className="text-[14px] font-semibold text-[#141821]">{label}</p>

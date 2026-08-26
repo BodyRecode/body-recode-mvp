@@ -16,7 +16,7 @@ const TABS: { id: Tab; label: string }[] = [
 
 function Card({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={`bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 ${className}`}>
+    <div className={`br-card p-5 ${className}`}>
       {children}
     </div>
   )
@@ -32,11 +32,11 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 function Tag({ children, color = 'teal' }: { children: React.ReactNode; color?: 'teal' | 'violet' | 'amber' | 'orange' | 'stone' }) {
   const styles: Record<string, string> = {
-    teal:   'bg-blue-50 text-blue-500 border-blue-500/20',
+    teal:   'bg-[rgba(27,109,252,0.08)] text-[#1B6DFC] border-[#1B6DFC]/20',
     violet: 'bg-violet-500/10 text-violet-700 border-violet-500/20',
-    amber:  'bg-amber-50 text-amber-700 border-amber-500/20',
+    amber:  'bg-[#FDF6E9] text-[#A96A12] border-[#B7791F]/20',
     orange: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
-    stone:  'bg-[#FBFCFD]0/10 text-[#666D7A] border-[#CFD4DC]/20',
+    stone:  'bg-[#666D7A]/10 text-[#666D7A] border-[#CFD4DC]/20',
   }
   return (
     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border ${styles[color]}`}>
@@ -194,16 +194,16 @@ function PositioningTab() {
             'Not a generic founder content creator',
           ].map(s => (
             <div key={s} className="flex items-center gap-2 text-sm text-[#666D7A]">
-              <span className="text-red-700">-</span> {s}
+              <span className="text-[#C82626]">-</span> {s}
             </div>
           ))}
           <div className="flex items-start gap-2 text-sm text-[#141821] mt-3">
-            <span className="text-blue-500 mt-0.5">+</span>
+            <span className="text-[#1B6DFC] mt-0.5">+</span>
             <span>Someone who learned to interpret before acting - and built systems around that principle across the body, business, and software.</span>
           </div>
         </div>
-        <div className="mt-4 p-3 bg-blue-500/5 border border-blue-500/20 rounded-lg">
-          <p className="text-[12.5px] text-blue-700">The platform is the proof. Most coaches rent software. Kade built his own - a full coaching and CRM platform - using the same AI co-founder principles he teaches.</p>
+        <div className="mt-4 p-3 bg-[#1B6DFC]/5 border border-[#1B6DFC]/20 rounded-lg">
+          <p className="text-[12.5px] text-[#1056D6]">The platform is the proof. Most coaches rent software. Kade built his own - a full coaching and CRM platform - using the same AI co-founder principles he teaches.</p>
         </div>
       </Card>
 
@@ -241,7 +241,7 @@ function PositioningTab() {
                 <p className="text-sm font-medium text-[#141821]">{r.platform}</p>
                 <p className="text-[12.5px] text-[#666D7A]">{r.handle}</p>
               </div>
-              <code className="text-[12.5px] text-blue-500 bg-blue-50 px-2 py-1 rounded">{r.link}</code>
+              <code className="text-[12.5px] text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] px-2 py-1 rounded">{r.link}</code>
             </div>
           ))}
         </div>
@@ -315,8 +315,8 @@ function StoryTab() {
           {rebuilds.map(r => (
             <div key={r.title} className="border border-[#E8EAEE] rounded-lg overflow-hidden">
               <div className={`px-4 py-2.5 border-b border-[#E8EAEE] ${
-                r.color === 'teal' ? 'bg-blue-500/5' :
-                r.color === 'violet' ? 'bg-violet-500/5' : 'bg-amber-500/5'
+                r.color === 'teal' ? 'bg-[#1B6DFC]/5' :
+                r.color === 'violet' ? 'bg-violet-500/5' : 'bg-[#B7791F]/5'
               }`}>
                 <p className="text-sm font-semibold text-[#141821]">{r.title}</p>
               </div>
@@ -400,9 +400,9 @@ function PillarsTab() {
         <Card key={p.num}>
           <div className="flex items-start gap-4">
             <span className={`text-2xl font-bold font-mono ${
-              p.color === 'teal' ? 'text-blue-500/40' :
+              p.color === 'teal' ? 'text-[#1B6DFC]/40' :
               p.color === 'violet' ? 'text-violet-500/40' :
-              p.color === 'amber' ? 'text-amber-500/40' : 'text-orange-500/40'
+              p.color === 'amber' ? 'text-[#B7791F]/40' : 'text-orange-500/40'
             }`}>{p.num}</span>
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
@@ -626,7 +626,7 @@ function ScriptsTab() {
             onClick={() => setScriptTab(k)}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
               scriptTab === k
-                ? 'bg-blue-50 text-blue-500 border-blue-200'
+                ? 'bg-[rgba(27,109,252,0.08)] text-[#1B6DFC] border-[#B5CFFC]'
                 : 'text-[#666D7A] border-[#E8EAEE] hover:text-[#141821]'
             }`}
           >{v.label}</button>
@@ -662,7 +662,7 @@ function ScriptsTab() {
                       <p className="text-[10px] text-[#98A0AD]">Copy</p>
                       <button
                         onClick={() => navigator.clipboard.writeText(s.copy ?? [s.hook, s.body].filter(Boolean).join('\n\n'))}
-                        className="text-[12.5px] text-blue-500 hover:text-blue-700 transition-colors"
+                        className="text-[12.5px] text-[#1B6DFC] hover:text-[#1056D6] transition-colors"
                       >Copy</button>
                     </div>
                     <div className="bg-[#F4F6F9] rounded-lg p-3 text-sm text-[#141821] leading-relaxed whitespace-pre-line">
@@ -729,21 +729,21 @@ function CadenceTab() {
         <p className="text-sm text-[#141821] mb-4">Direct. Structured. No filler. Reads like someone who has thought about this for years and is now documenting it.</p>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p className="text-[10px] text-red-500/60 mb-2">Never</p>
+            <p className="text-[10px] text-[#DC2626]/60 mb-2">Never</p>
             <div className="space-y-1">
               {['Motivational fluff', '"Here\'s my morning routine"', 'Gym selfies', 'Vague inspiration', 'Hype'].map(t => (
                 <div key={t} className="flex items-center gap-2 text-[12.5px] text-[#666D7A]">
-                  <span className="text-red-500/60">-</span> {t}
+                  <span className="text-[#DC2626]/60">-</span> {t}
                 </div>
               ))}
             </div>
           </div>
           <div>
-            <p className="text-[10px] text-blue-500/60 mb-2">Always</p>
+            <p className="text-[10px] text-[#1B6DFC]/60 mb-2">Always</p>
             <div className="space-y-1">
               {['A specific observation', 'A named pattern', 'A reframe', 'A real moment from the journey'].map(t => (
                 <div key={t} className="flex items-center gap-2 text-[12.5px] text-[#141821]">
-                  <span className="text-blue-500/60">+</span> {t}
+                  <span className="text-[#1B6DFC]/60">+</span> {t}
                 </div>
               ))}
             </div>
@@ -808,7 +808,7 @@ function LaunchTab() {
           ].map(r => (
             <div key={r.platform} className="flex items-center justify-between py-2 border-b border-[#E8EAEE]/60 last:border-0">
               <p className="text-sm text-[#666D7A] w-36 shrink-0">{r.platform}</p>
-              <code className="text-[12.5px] text-blue-500 bg-blue-50 px-2 py-1 rounded">{r.url}</code>
+              <code className="text-[12.5px] text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] px-2 py-1 rounded">{r.url}</code>
             </div>
           ))}
         </div>

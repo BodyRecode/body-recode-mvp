@@ -187,7 +187,7 @@ export default function CommandPalette() {
       <div
         onClick={e => e.stopPropagation()}
         onKeyDown={onListKey}
-        className="w-full max-w-[640px] bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl shadow-[0_24px_60px_-12px_rgba(0,0,0,0.6)] overflow-hidden"
+        className="w-full max-w-[640px] br-card shadow-[0_24px_60px_-12px_rgba(0,0,0,0.6)] overflow-hidden"
         role="dialog"
         aria-label="Command palette"
       >

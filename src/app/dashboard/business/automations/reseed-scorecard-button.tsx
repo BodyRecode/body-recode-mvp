@@ -54,7 +54,7 @@ export default function ReseedScorecardButton({ stepCount }: { stepCount: number
           {loading ? 'Syncing...' : synced ? 'Synced ✓' : 'Re-sync'}
         </button>
       )}
-      {error && <p className="text-[12.5px] text-red-700 mt-1">{error}</p>}
+      {error && <p className="text-[12.5px] text-[#C82626] mt-1">{error}</p>}
     </div>
   )
 }

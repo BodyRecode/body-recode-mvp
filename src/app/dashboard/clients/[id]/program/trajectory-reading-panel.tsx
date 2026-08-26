@@ -218,8 +218,8 @@ export default function TrajectoryReadingPanel({
             disabled={generating || isPending}
             className={`inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
               generated
-                ? 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
-                : 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#5390FF] border border-[#1B6DFC]'
+                ? 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC]'
+                : 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#1560E0] border border-[#1B6DFC]'
             }`}
           >
             {generating ? <Loader2 size={13} className="animate-spin" /> : <Sparkles size={13} />}
@@ -231,8 +231,8 @@ export default function TrajectoryReadingPanel({
               disabled={publishing || isPending}
               className={`inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
                 published
-                  ? 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
-                  : 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#5390FF] border border-[#1B6DFC]'
+                  ? 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC]'
+                  : 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#1560E0] border border-[#1B6DFC]'
               }`}
             >
               {publishing ? <Loader2 size={13} className="animate-spin" /> : (published ? <EyeOff size={13} /> : <Eye size={13} />)}
@@ -245,8 +245,8 @@ export default function TrajectoryReadingPanel({
               disabled={notifying || isPending}
               className={`inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
                 emailSent
-                  ? 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
-                  : 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#5390FF] border border-[#1B6DFC]'
+                  ? 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC]'
+                  : 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#1560E0] border border-[#1B6DFC]'
               }`}
             >
               {notifying ? <Loader2 size={13} className="animate-spin" /> : <Mail size={13} />}
@@ -257,7 +257,7 @@ export default function TrajectoryReadingPanel({
       </div>
 
       {error && (
-        <div className="bg-[#FEF6E7] border border-[#F0DCB4] rounded-lg px-3 py-2 text-[12px] text-[#8A5A14] mb-3">
+        <div className="bg-[#FDF6E9] border border-[#F1DEB8] rounded-lg px-3 py-2 text-[12px] text-[#8A5A14] mb-3">
           {error}
         </div>
       )}
@@ -272,7 +272,7 @@ export default function TrajectoryReadingPanel({
       )}
 
       {!generated ? (
-        <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-8 text-center">
+        <div className="br-card p-8 text-center">
           {atBlockEnd ? (
             <>
               <p className="text-[#666D7A] text-[14px] mb-2">Block complete - trajectory reading available</p>
@@ -300,7 +300,7 @@ export default function TrajectoryReadingPanel({
         {program.tr_new_body_state && (
           <ReScoreCard program={program} />
         )}
-        <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden mb-3">
+        <div className="br-card overflow-hidden mb-3">
           <div className="flex items-center justify-between px-5 py-3 border-b border-[#E8EAEE] flex-wrap gap-2">
             <p
               className="text-[11px] text-[#98A0AD]"
@@ -313,7 +313,7 @@ export default function TrajectoryReadingPanel({
                   portalUrl={`/portal/${clientToken}/program/trajectory-reading`}
                   title="Block-End Reading — Document"
                   triggerLabel="Document"
-                  triggerClassName="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+                  triggerClassName="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC] transition-colors"
                 />
               )}
             </div>
@@ -348,7 +348,7 @@ function ReScoreCard({ program }: { program: Reading }) {
   const next = program.tr_new_body_state!
   const moved = !!prev && prev.toLowerCase() !== next.toLowerCase()
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden mb-3">
+    <div className="br-card overflow-hidden mb-3">
       <div className="flex items-center gap-2.5 px-5 py-3 border-b border-[#E8EAEE]">
         <span className="w-1 h-1 rounded-full bg-[#1B6DFC]" />
         <p
@@ -438,7 +438,7 @@ function CoachGuidance({ programId, initial }: { programId: string; initial: str
   }
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden mb-3">
+    <div className="br-card overflow-hidden mb-3">
       <button
         onClick={() => setOpen(o => !o)}
         className="w-full flex items-center justify-between gap-3 px-5 py-3 hover:bg-[#EFF1F4]/40 transition-colors text-left"
@@ -487,7 +487,7 @@ function CoachGuidance({ programId, initial }: { programId: string; initial: str
               disabled={!dirty || saving || isPending}
               className={`inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
                 dirty
-                  ? 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#5390FF] border border-[#1B6DFC]'
+                  ? 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#1560E0] border border-[#1B6DFC]'
                   : 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#666D7A]'
               }`}
             >
@@ -601,14 +601,14 @@ function EditableSection({
             <button
               onClick={cancel}
               disabled={saving}
-              className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E8EAEE] text-[#666D7A] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50 transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E8EAEE] text-[#666D7A] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] transition-colors disabled:opacity-50"
             >
               <X size={11} /> Cancel
             </button>
             <button
               onClick={save}
               disabled={saving || isPending || draft === (value ?? '')}
-              className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-md bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#5390FF] border border-[#1B6DFC] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-md bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#1560E0] border border-[#1B6DFC] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {saving ? <Loader2 size={11} className="animate-spin" /> : <Check size={11} />}
               {saving ? 'Saving' : 'Save'}

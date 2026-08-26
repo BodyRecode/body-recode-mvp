@@ -31,38 +31,38 @@ export function StripeConnectSection({
   const statusLabel = stripeAccountStatus ?? (stripeAccountId ? 'unknown' : 'not connected')
   const statusTone =
     stripeAccountStatus === 'active'
-      ? 'bg-green-100 text-green-700'
+      ? 'bg-[#D8EFE1] text-[#177245]'
       : stripeAccountStatus === 'restricted'
-        ? 'bg-red-100 text-red-700'
+        ? 'bg-[#FBDCDC] text-[#C82626]'
         : stripeAccountStatus === 'pending'
-          ? 'bg-amber-100 text-amber-700'
+          ? 'bg-[#FAEFD8] text-[#A96A12]'
           : 'bg-[#F4F6F9] text-[#666D7A]'
 
   const resultBanner =
     searchStatus === 'active' ? (
-      <div className="mb-3 p-3 rounded-lg border border-green-200 bg-green-50 text-[13px] text-green-900">
+      <div className="mb-3 p-3 rounded-lg border border-[#CAE7D5] bg-[#EDF8F1] text-[13px] text-[#0F4A2D]">
         <strong>Connected.</strong> Your Stripe account is ready to accept payments. Checkout callsites now route to your account when you update them to pass the tenant context.
       </div>
     ) : searchStatus === 'restricted' ? (
-      <div className="mb-3 p-3 rounded-lg border border-red-200 bg-red-50 text-[13px] text-red-900">
+      <div className="mb-3 p-3 rounded-lg border border-[#F5C9C9] bg-[#FDEDED] text-[13px] text-[#8A1919]">
         <strong>Restricted.</strong> Stripe needs more information (usually ID docs). Click Continue onboarding to finish.
       </div>
     ) : searchStatus === 'pending' ? (
-      <div className="mb-3 p-3 rounded-lg border border-amber-200 bg-amber-50 text-[13px] text-amber-900">
+      <div className="mb-3 p-3 rounded-lg border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] text-[13px] text-[#8A5A14]">
         <strong>Onboarding not complete.</strong> Click Continue onboarding to finish the Stripe form.
       </div>
     ) : searchStatus === 'retrieve_failed' ? (
-      <div className="mb-3 p-3 rounded-lg border border-red-200 bg-red-50 text-[13px] text-red-900">
+      <div className="mb-3 p-3 rounded-lg border border-[#F5C9C9] bg-[#FDEDED] text-[13px] text-[#8A1919]">
         Couldn&apos;t reach Stripe to check your account. Try again or reach out to Kade.
       </div>
     ) : searchStatus === 'no_account' ? (
-      <div className="mb-3 p-3 rounded-lg border border-red-200 bg-red-50 text-[13px] text-red-900">
+      <div className="mb-3 p-3 rounded-lg border border-[#F5C9C9] bg-[#FDEDED] text-[13px] text-[#8A1919]">
         No Stripe account on file. Click Connect Stripe to start onboarding.
       </div>
     ) : null
 
   return (
-    <div className="mb-4 bg-white border border-[#E8EAEE] rounded-xl overflow-hidden">
+    <div className="mb-4 br-card overflow-hidden">
       <div className="px-5 py-3 border-b border-[#E8EAEE] bg-[#FBFCFD]">
         <h3 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Stripe Connect</h3>
       </div>
@@ -74,7 +74,7 @@ export function StripeConnectSection({
         {resultBanner}
 
         {error && (
-          <div className="mb-3 p-3 rounded-lg border border-red-200 bg-red-50 text-[12px] text-red-800">{error}</div>
+          <div className="mb-3 p-3 rounded-lg border border-[#F5C9C9] bg-[#FDEDED] text-[12px] text-[#A11D1D]">{error}</div>
         )}
 
         <div className="mb-4 flex items-center gap-3">
@@ -89,14 +89,14 @@ export function StripeConnectSection({
           <button
             onClick={handleOnboard}
             disabled={pending}
-            className="px-4 py-2 rounded-md bg-blue-600 text-white text-[13px] font-semibold hover:bg-blue-700 disabled:opacity-40"
+            className="px-4 py-2 rounded-md bg-[#1560E0] text-white text-[13px] font-semibold hover:bg-[#1056D6] disabled:opacity-40"
           >
             {pending ? 'Opening Stripe…' : stripeAccountId ? 'Continue onboarding' : 'Connect Stripe'}
           </button>
         ) : (
           <div className="text-[13px] text-[#666D7A] leading-relaxed">
             Fully onboarded. To view your Stripe dashboard, log in at{' '}
-            <a href="https://dashboard.stripe.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 underline">
+            <a href="https://dashboard.stripe.com" target="_blank" rel="noopener noreferrer" className="text-[#1560E0] hover:text-[#1056D6] underline">
               dashboard.stripe.com
             </a>
             .

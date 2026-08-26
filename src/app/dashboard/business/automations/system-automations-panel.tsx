@@ -595,10 +595,10 @@ function AutomationRow({ a, href }: { a: typeof AUTOMATIC_AUTOMATIONS[0]; href: 
   return (
     <Link
       href={href}
-      className="flex items-center gap-4 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 hover:border-[#E8EAEE] transition-colors group"
+      className="flex items-center gap-4 bg-[#F4F6F9] br-card p-4 hover:border-[#E8EAEE] transition-colors group"
     >
-      <div className="p-2 bg-blue-50 rounded-lg shrink-0">
-        <Zap size={14} className="text-blue-500" strokeWidth={1.8} />
+      <div className="p-2 bg-[rgba(27,109,252,0.08)] rounded-lg shrink-0">
+        <Zap size={14} className="text-[#1B6DFC]" strokeWidth={1.8} />
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium text-[#141821]">{a.name}</p>
@@ -606,7 +606,7 @@ function AutomationRow({ a, href }: { a: typeof AUTOMATIC_AUTOMATIONS[0]; href: 
         <p className="text-[12.5px] text-[#98A0AD] mt-1">{a.trigger} · {a.steps} emails</p>
       </div>
       <div className="flex items-center gap-3 shrink-0">
-        <span className="flex items-center gap-1 text-[12.5px] font-medium text-blue-500">
+        <span className="flex items-center gap-1 text-[12.5px] font-medium text-[#1B6DFC]">
           <Zap size={10} />
           Active
         </span>
@@ -620,10 +620,10 @@ function ManualRow({ a, href }: { a: typeof MANUAL_AUTOMATIONS[0]; href: string 
   return (
     <Link
       href={href}
-      className="flex items-center gap-4 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 hover:border-[#E8EAEE] transition-colors group"
+      className="flex items-center gap-4 bg-[#F4F6F9] br-card p-4 hover:border-[#E8EAEE] transition-colors group"
     >
-      <div className="p-2 bg-amber-50 rounded-lg shrink-0">
-        <Hand size={14} className="text-amber-700" strokeWidth={1.8} />
+      <div className="p-2 bg-[#FDF6E9] rounded-lg shrink-0">
+        <Hand size={14} className="text-[#A96A12]" strokeWidth={1.8} />
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium text-[#141821]">{a.name}</p>
@@ -631,7 +631,7 @@ function ManualRow({ a, href }: { a: typeof MANUAL_AUTOMATIONS[0]; href: string 
         <p className="text-[12.5px] text-[#98A0AD] mt-1">{a.trigger} · {a.steps} emails</p>
       </div>
       <div className="flex items-center gap-3 shrink-0">
-        <span className="flex items-center gap-1 text-[12.5px] font-medium text-amber-700">
+        <span className="flex items-center gap-1 text-[12.5px] font-medium text-[#A96A12]">
           <Hand size={10} />
           Manual
         </span>

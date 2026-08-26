@@ -380,7 +380,7 @@ export default function CopilotPanel({
   }
 
   return (
-    <div className={`border border-[#E8EAEE] bg-[#FFFFFF] rounded-xl overflow-hidden flex flex-col ${className ?? ''}`}>
+    <div className={`br-card overflow-hidden flex flex-col ${className ?? ''}`}>
       <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[#FBFCFD] shrink-0">
         <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">
           Co-Pilot · Doctrine tutor
@@ -644,7 +644,7 @@ export default function CopilotPanel({
                   <button
                     onClick={() => toggleFlag(i)}
                     title={m.flagged ? 'Flagged for review — click to unflag' : 'Flag this answer for review'}
-                    className={`mt-2 inline-flex items-center gap-1 text-[11px] ${m.flagged ? 'text-amber-700 font-semibold' : 'text-[#98A0AD] hover:text-[#666D7A]'} transition-colors`}
+                    className={`mt-2 inline-flex items-center gap-1 text-[11px] ${m.flagged ? 'text-[#A96A12] font-semibold' : 'text-[#98A0AD] hover:text-[#666D7A]'} transition-colors`}
                   >
                     👎 {m.flagged ? 'Flagged for review' : 'Flag'}
                   </button>
@@ -655,7 +655,7 @@ export default function CopilotPanel({
         })}
 
         {(loading || proposing || proposingNutrition || proposingEdit) && (
-          <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl rounded-bl-sm px-4 py-3 inline-flex items-center gap-1.5 w-fit" aria-label="Co-pilot is working">
+          <div className="bg-[#F4F6F9] br-card rounded-bl-sm px-4 py-3 inline-flex items-center gap-1.5 w-fit" aria-label="Co-pilot is working">
             <span className="w-2 h-2 rounded-full bg-[#98A0AD] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '0ms' }} />
             <span className="w-2 h-2 rounded-full bg-[#98A0AD] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '150ms' }} />
             <span className="w-2 h-2 rounded-full bg-[#98A0AD] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '300ms' }} />
@@ -683,7 +683,7 @@ export default function CopilotPanel({
         })()}
 
         {error && (
-          <div className="text-[13px] text-red-600">{error}</div>
+          <div className="text-[13px] text-[#C82626]">{error}</div>
         )}
       </div>
 

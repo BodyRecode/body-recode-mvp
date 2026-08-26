@@ -37,15 +37,15 @@ export default function EnrollmentStatusActions({ token, status }: { token: stri
 
   if (isDeactivated) {
     return (
-      <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 flex items-center justify-between gap-3">
+      <div className="rounded-xl border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] p-4 flex items-center justify-between gap-3">
         <div>
-          <p className="text-sm font-bold text-amber-800">Enrollment deactivated</p>
-          <p className="text-[12.5px] text-amber-700 mt-1">Hidden from the Day 0 report and active funnel. Reactivate to restore it.</p>
+          <p className="text-sm font-bold text-[#A96A12]">Enrollment deactivated</p>
+          <p className="text-[12.5px] text-[#A96A12] mt-1">Hidden from the Day 0 report and active funnel. Reactivate to restore it.</p>
         </div>
         <button
           onClick={() => setStatus('active')}
           disabled={loading}
-          className="inline-flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-lg border border-amber-300 bg-white text-amber-800 hover:border-amber-500 hover:bg-amber-100 transition disabled:opacity-50 shrink-0"
+          className="inline-flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-lg border border-[#E5C98F] bg-white text-[#A96A12] hover:border-[#B7791F] hover:bg-[#FAEFD8] transition disabled:opacity-50 shrink-0"
         >
           <RotateCcw className="w-3.5 h-3.5" />
           {loading ? 'Saving…' : 'Reactivate enrollment'}
@@ -58,12 +58,12 @@ export default function EnrollmentStatusActions({ token, status }: { token: stri
     <button
       onClick={() => setStatus('inactive')}
       disabled={loading}
-      className="group w-full flex items-center justify-between rounded-xl border border-[#E8EAEE] bg-white p-4 hover:border-red-300 hover:bg-red-50 transition disabled:opacity-50 text-left"
+      className="group w-full flex items-center justify-between rounded-xl border border-[#E8EAEE] bg-white p-4 hover:border-[#EFAFAF] hover:bg-[#FDEDED] transition disabled:opacity-50 text-left"
     >
       <div>
         <div className="flex items-center gap-2">
-          <Ban className="w-3.5 h-3.5 text-[#98A0AD] group-hover:text-red-600 transition" />
-          <p className="text-sm font-bold text-[#141821] group-hover:text-red-700 transition">
+          <Ban className="w-3.5 h-3.5 text-[#98A0AD] group-hover:text-[#C82626] transition" />
+          <p className="text-sm font-bold text-[#141821] group-hover:text-[#C82626] transition">
             {loading ? 'Saving…' : 'Deactivate enrollment'}
           </p>
         </div>

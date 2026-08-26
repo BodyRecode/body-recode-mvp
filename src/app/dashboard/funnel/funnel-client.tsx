@@ -248,7 +248,7 @@ export default function FunnelClient({
       {/* Summary stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
         {summary.map(s => (
-          <div key={s.label} className="relative bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 overflow-hidden">
+          <div key={s.label} className="relative br-card p-5 overflow-hidden">
             <div
               className="absolute top-5 left-5 w-7 h-[3px] rounded-full"
               style={{ background: s.accent }}

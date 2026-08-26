@@ -56,7 +56,7 @@ export default async function BaselinePage({ params }: { params: Promise<{ id: s
           </p>
 
           {/* Measurements */}
-          <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+          <div className="bg-[#F4F6F9] br-card p-5">
             <p className="text-[10px] font-medium text-[#666D7A] mb-4">Measurements</p>
             <div className="grid grid-cols-4 gap-3">
               {[
@@ -82,7 +82,7 @@ export default async function BaselinePage({ params }: { params: Promise<{ id: s
 
           {/* Photos */}
           {(baselinePhotos.front || baselinePhotos.side || baselinePhotos.back) && (
-            <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+            <div className="bg-[#F4F6F9] br-card p-5">
               <p className="text-[10px] font-medium text-[#666D7A] mb-4">Progress Photos</p>
               <div className="grid grid-cols-3 gap-4">
                 {[

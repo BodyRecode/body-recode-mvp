@@ -46,7 +46,7 @@ export default async function FixedSessionPage({ params }: { params: Promise<{ i
       <FixedSlotsManager clientId={id} slots={slots ?? []} />
 
       {/* Individual session bookings */}
-      <div className="mt-6 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+      <div className="mt-6 bg-[#F4F6F9] br-card p-5">
         <p className="text-[12.5px] text-[#666D7A] mb-4">Booked Sessions</p>
 
         {(sessions ?? []).length === 0 ? (
@@ -69,7 +69,7 @@ export default async function FixedSessionPage({ params }: { params: Promise<{ i
                     })} · {s.duration_minutes} min
                   </span>
                 </div>
-                <span className={`text-xs ${s.confirmed_at ? 'text-blue-500' : 'text-[#666D7A]'}`}>
+                <span className={`text-xs ${s.confirmed_at ? 'text-[#1B6DFC]' : 'text-[#666D7A]'}`}>
                   {s.confirmed_at ? 'Confirmed' : 'Pending'}
                 </span>
               </div>

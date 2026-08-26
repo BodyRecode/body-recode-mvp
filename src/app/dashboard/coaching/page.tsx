@@ -304,7 +304,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       {/* Drift advisory banner - lowest priority */}
       {driftAdvisoryCount > 0 && (
         <div
-          className="mb-3 bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-4 py-3 flex items-center gap-3"
+          className="mb-3 br-card px-4 py-3 flex items-center gap-3"
         >
           <ArrowUpRight size={14} className="text-[#666D7A]" />
           <p className="text-[13px] text-[#666D7A]">
@@ -338,7 +338,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       )}
 
       {clientsProcessed.length === 0 ? (
-        <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl">
+        <div className="br-card">
           <EmptyState icon={Users} title="No clients yet" hint="Add your first client to get started" />
         </div>
       ) : (
@@ -347,7 +347,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
             <Link
               key={client.id}
               href={`/dashboard/clients/${client.id}`}
-              className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-5 py-4 flex items-center justify-between hover:border-[#CFD4DC] transition-colors group"
+              className="br-card px-5 py-4 flex items-center justify-between br-card-hover transition-shadow group"
             >
               <div className="flex items-center gap-4 min-w-0">
                 <Avatar name={client.name} size={36} />

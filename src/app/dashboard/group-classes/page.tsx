@@ -461,7 +461,7 @@ const CLASSES = [
 
 function ExerciseCard({ exercise }: { exercise: Exercise }) {
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-3 py-3">
+    <div className="br-card px-3 py-3">
       <p className="text-[14px] font-semibold text-[#141821] mb-2">{exercise.name}</p>
       <div className="space-y-1 mb-2">
         {exercise.cues.map((cue, i) => (
@@ -477,7 +477,7 @@ function ExerciseCard({ exercise }: { exercise: Exercise }) {
 
 function ScriptCard({ label, meta, children }: { label: string; meta?: string; children: React.ReactNode }) {
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden mb-4">
+    <div className="br-card overflow-hidden mb-4">
       <div className="flex items-center justify-between px-5 py-3 border-b border-[#E8EAEE]">
         <div className="flex items-center gap-2.5 min-w-0">
           <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC] shrink-0" />
@@ -550,7 +550,7 @@ export default function GroupClassesPage() {
               className={`flex-1 min-w-[120px] py-3 px-4 rounded-xl border text-[13px] font-semibold transition-colors ${
                 active
                   ? 'border-[#B5CFFC] text-[#1B6DFC] bg-[rgba(27,109,252,0.08)]'
-                  : 'border-[#E8EAEE] bg-[#FFFFFF] text-[#666D7A] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50'
+                  : 'border-[#E8EAEE] bg-[#FFFFFF] text-[#666D7A] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)]'
               }`}
             >
               {c.label}
@@ -570,7 +570,7 @@ export default function GroupClassesPage() {
               className={`flex-1 py-2 px-3 rounded-lg border text-[11px] font-semibold transition-colors ${
                 active
                   ? 'border-[#CFD4DC] text-[#141821] bg-[#EFF1F4]'
-                  : 'border-[#E8EAEE] bg-[#FFFFFF] text-[#666D7A] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50'
+                  : 'border-[#E8EAEE] bg-[#FFFFFF] text-[#666D7A] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)]'
               }`}
             >
               Day {day.toUpperCase()}

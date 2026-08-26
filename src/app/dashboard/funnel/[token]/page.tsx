@@ -60,7 +60,7 @@ export default async function ParticipantPage({ params }: { params: Promise<{ to
           Back to Funnel
         </Link>
         <PageHeader eyebrow="Funnel" title="Participant not found" />
-        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+        <div className="rounded-xl border border-[#F5C9C9] bg-[#FDEDED] p-4 text-sm text-[#C82626]">
           No enrollment exists for token <code>{token}</code>.
         </div>
       </div>

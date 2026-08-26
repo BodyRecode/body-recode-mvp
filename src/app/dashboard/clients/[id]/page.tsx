@@ -338,8 +338,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
   const statusColour = {
     pending: 'text-[#666D7A] bg-[#F4F6F9] border-[#E8EAEE]',
-    started: 'text-amber-700 bg-amber-50 border-amber-200',
-    complete: 'text-green-700 bg-green-50 border-green-200',
+    started: 'text-[#A96A12] bg-[#FDF6E9] border-[#F1DEB8]',
+    complete: 'text-[#177245] bg-[#EDF8F1] border-[#CAE7D5]',
   }
 
   // ── Per-section defaultOpen flags ──────────────────────────────────────
@@ -439,8 +439,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             href={`/dashboard/clients/${id}/recovery`}
             className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-[12px] transition-colors ${
               rrsChip.sbst_remove
-                ? 'border-red-300 bg-red-50 text-red-900 hover:bg-red-100'
-                : 'border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100'
+                ? 'border-[#EFAFAF] bg-[#FDEDED] text-[#8A1919] hover:bg-[#FBDCDC]'
+                : 'border-[#E5C98F] bg-[#FDF6E9] text-[#8A5A14] hover:bg-[#FAEFD8]'
             }`}
           >
             <AlertTriangleIcon size={14} className="shrink-0" />
@@ -463,7 +463,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           slice: additive, reads existing data). Full tabbed restructure to follow post-launch. */}
       {(() => {
         const dot = (v?: string | null) =>
-          v === 'Green' ? 'bg-emerald-500' : v === 'Amber' ? 'bg-amber-500' : v === 'Red' ? 'bg-red-500' : 'bg-[#E8EAEE]'
+          v === 'Green' ? 'bg-[#22A05A]' : v === 'Amber' ? 'bg-[#B7791F]' : v === 'Red' ? 'bg-[#DC2626]' : 'bg-[#E8EAEE]'
         const READY = [
           { label: 'Capacity', v: activeCffs?.exposure_readiness_capacity as string | null | undefined },
           { label: 'Schedule', v: activeCffs?.exposure_readiness_schedule as string | null | undefined },
@@ -523,14 +523,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               const allClear = !next.href
               return (
                 <div
-                  className="flex items-center gap-3.5 border rounded-xl px-5 py-4"
-                  style={{
-                    borderColor: allClear ? '#E8EAEE' : '#B9D0FD',
-                    background: allClear
-                      ? 'linear-gradient(180deg,#FFFFFF,#FBFCFD)'
-                      : 'linear-gradient(180deg,#F7FAFF,#F1F6FE)',
-                    boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
-                  }}
+                  className={`flex items-center gap-3.5 px-5 py-4 ${allClear ? 'br-card' : 'br-card-flagged'}`}
                 >
                   <span
                     className="w-[30px] h-[30px] rounded-lg shrink-0 flex items-center justify-center"
@@ -576,10 +569,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         return (
           <Link
             href={`/dashboard/clients/${id}/program`}
-            className="block bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-xl p-4 mb-4 transition-colors"
+            className="block rounded-xl p-4 mb-4 border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] hover:border-[#D9B976] transition-colors"
           >
-            <p className="text-[12px] font-medium text-amber-700 mb-1">Pending block-end reading</p>
-            <p className="text-sm text-amber-900">
+            <p className="text-[12px] font-medium text-[#A96A12] mb-1">Pending block-end reading</p>
+            <p className="text-sm text-[#8A5A14]">
               <span className="font-semibold">{pendingTrajectory.block_name}</span> ended{endedAt ? ` around ${endedAt}` : ''} but its trajectory reading was never generated. Click through to generate it now →
             </p>
           </Link>
@@ -590,7 +583,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       <div data-tab="admin">
 
       {/* Deliberate Start Window */}
-      <div className="border border-[#E8EAEE] rounded-xl p-5 mb-4"
+      <div className="br-card p-5 mb-4"
         style={{
           background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
           boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
@@ -620,7 +613,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       </div>
 
       {/* Fixed Session Slot */}
-      <div className="border border-[#E8EAEE] rounded-xl p-5 mb-4"
+      <div className="br-card p-5 mb-4"
         style={{
           background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
           boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
@@ -629,7 +622,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Face-to-Face Session</p>
           <Link
             href={`/dashboard/clients/${id}/fixed-session`}
-            className="text-[12.5px] text-blue-500 hover:text-blue-700 transition-colors"
+            className="text-[12.5px] text-[#1B6DFC] hover:text-[#1056D6] transition-colors"
           >
             {(clientFixedSlots ?? []).length > 0 ? 'Manage →' : 'Set up →'}
           </Link>
@@ -667,7 +660,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     })} · {s.duration_minutes} min
                   </span>
                 </div>
-                <span className={`text-xs ${s.confirmed_at ? 'text-blue-500' : 'text-[#98A0AD]'}`}>
+                <span className={`text-xs ${s.confirmed_at ? 'text-[#1B6DFC]' : 'text-[#98A0AD]'}`}>
                   {s.confirmed_at ? 'Confirmed' : 'Pending'}
                 </span>
               </div>
@@ -677,7 +670,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       </div>
 
       {/* Package */}
-      <div className="border border-[#E8EAEE] rounded-xl p-5 mb-4"
+      <div className="br-card p-5 mb-4"
         style={{
           background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
           boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
@@ -685,7 +678,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         <div className="flex items-center justify-between mb-3">
           <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Coaching Package</p>
           {client.subscription_active ? (
-            <span className="text-[12.5px] font-semibold px-2.5 py-1 rounded-full border border-blue-200 text-blue-500 bg-blue-50">
+            <span className="text-[12.5px] font-semibold px-2.5 py-1 rounded-full border border-[#B5CFFC] text-[#1B6DFC] bg-[rgba(27,109,252,0.08)]">
               Subscription Active
             </span>
           ) : (
@@ -709,10 +702,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           if (!isUpgradeCandidate) return null
           return (
             <div className="mt-3 pt-3 border-t border-[#E8EAEE] flex items-center justify-between">
-              <p className="text-[12.5px] text-blue-500">Eligible for 2x to 3x upgrade (Week {weekNumber})</p>
+              <p className="text-[12.5px] text-[#1B6DFC]">Eligible for 2x to 3x upgrade (Week {weekNumber})</p>
               <Link
                 href={`/companion/${id}/upgrade`}
-                className="text-[12.5px] font-semibold text-blue-500 hover:text-blue-700 border border-blue-200/50 px-3 py-1.5 rounded-lg transition-colors"
+                className="br-btn"
               >
                 Upgrade Companion →
               </Link>
@@ -725,7 +718,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       <ClientCommunicationsPanel rows={communications} />
 
       {/* Onboarding status */}
-      <div className="border border-[#E8EAEE] rounded-xl p-5 mb-4"
+      <div className="br-card p-5 mb-4"
         style={{
           background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
           boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
@@ -749,9 +742,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             { label: (bloodPanels?.length ?? 0) > 0 ? 'Blood Work' : (client.bloodwork_arranged_at ? 'Blood Work (arranging)' : 'Blood Work'), done: (bloodPanels?.length ?? 0) > 0 || !!client.bloodwork_arranged_at, href: null },
           ].map(item => (
             <div key={item.label} className="flex items-center gap-2">
-              <div className={`w-2 h-2 rounded-full flex-shrink-0 ${item.done ? 'bg-blue-500' : 'bg-[#EFF1F4]'}`} />
+              <div className={`w-2 h-2 rounded-full flex-shrink-0 ${item.done ? 'bg-[#1B6DFC]' : 'bg-[#EFF1F4]'}`} />
               {item.href ? (
-                <Link href={item.href} className="text-[12.5px] text-blue-500 hover:text-blue-700 transition-colors">{item.label} →</Link>
+                <Link href={item.href} className="text-[12.5px] text-[#1B6DFC] hover:text-[#1056D6] transition-colors">{item.label} →</Link>
               ) : (
                 <span className={`text-xs ${item.done ? 'text-[#43474F]' : 'text-[#43474F]'}`}>{item.label}</span>
               )}
@@ -770,23 +763,23 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             <div className="mt-3 pt-3 border-t border-[#E8EAEE] space-y-2">
               <div className="flex items-center justify-between">
                 {client.medical_clearance_received_at ? (
-                  <p className="text-[12.5px] text-blue-500">Medical clearance received</p>
+                  <p className="text-[12.5px] text-[#1B6DFC]">Medical clearance received</p>
                 ) : (
                   <>
-                    <p className="text-[12.5px] text-amber-700">Medical clearance required</p>
-                    <Link href={`/dashboard/clients/${id}/medical-clearance`} className="text-[12.5px] text-amber-700 hover:text-amber-700 underline transition-colors">Manage →</Link>
+                    <p className="text-[12.5px] text-[#A96A12]">Medical clearance required</p>
+                    <Link href={`/dashboard/clients/${id}/medical-clearance`} className="text-[12.5px] text-[#A96A12] hover:text-[#A96A12] underline transition-colors">Manage →</Link>
                   </>
                 )}
               </div>
               {!client.medical_clearance_received_at && (
                 <div className="flex items-center gap-2">
-                  <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${emailSentAt ? 'bg-blue-500' : 'bg-red-500'}`} />
+                  <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${emailSentAt ? 'bg-[#1B6DFC]' : 'bg-[#DC2626]'}`} />
                   {emailSentAt ? (
                     <p className="text-[10px] text-[#666D7A]" title={new Date(emailSentAt).toLocaleString('en-AU')}>
                       Client auto-email sent {new Date(emailSentAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
                     </p>
                   ) : (
-                    <p className="text-[10px] text-red-700">
+                    <p className="text-[10px] text-[#C82626]">
                       Client auto-email not sent. Run <code className="bg-[#EFF1F4] px-1 rounded">scripts/send-clearance-required-email.ts {client.id}</code> or nudge manually.
                     </p>
                   )}
@@ -800,7 +793,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       {/* Signals to reconcile: reported-vs-measured fat distribution divergence.
           Non-diagnostic coach prompt. Only renders when both signals exist and clash. */}
       {fatDivergence && (
-        <div className="bg-[#FEF6E7] border border-[#F0DCB4] border-l-[3px] border-l-[#C08A2D] rounded-xl p-5 mb-4">
+        <div className="bg-[#FDF6E9] border border-[#F1DEB8] border-l-[3px] border-l-[#C08A2D] rounded-xl p-5 mb-4">
           <div className="flex items-start gap-3">
             <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#C08A2D]/15 flex items-center justify-center">
               <span className="text-[#8A5A14] text-[13px] font-bold leading-none">!</span>
@@ -816,7 +809,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
       {/* Foundational intake status */}
       {latestFoundationalInvitation && (
-        <div className="border border-[#E8EAEE] rounded-xl p-5 mb-4"
+        <div className="br-card p-5 mb-4"
         style={{
           background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
           boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
@@ -884,7 +877,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           dietary fields, the Dietary & Consumption editor below is the faster
           path; this client-driven flow also auto-regenerates the CFFS.  */}
       {latestFoundationalInvitation?.status === 'complete' && (
-        <div className="border border-[#E8EAEE] rounded-xl p-5 mb-4"
+        <div className="br-card p-5 mb-4"
         style={{
           background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
           boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
@@ -1047,8 +1040,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       >
       {latestSupplementaryInvitation?.status === 'complete' && latestSupplementaryInvitation.completed_at && activeCffs?.generated_at &&
        new Date(latestSupplementaryInvitation.completed_at).getTime() > new Date(activeCffs.generated_at).getTime() && (
-        <div className="mb-4 rounded-xl border border-amber-300 bg-amber-50 p-4">
-          <p className="text-[11px] font-medium text-amber-800 mb-1">Supplementary intake newer than CFFS</p>
+        <div className="mb-4 rounded-xl border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] p-4">
+          <p className="text-[11px] font-medium text-[#A96A12] mb-1">Supplementary intake newer than CFFS</p>
           <p className="text-sm text-[#43474F] leading-relaxed mb-3">
             {client.name?.split(' ')[0] ?? 'The client'} submitted a supplementary intake on {formatDate(latestSupplementaryInvitation.completed_at)}. The dietary + medication context is saved on their file, but the CFFS still reflects the pre-update state. Click Regenerate below to refresh the CFFS so downstream artefacts (program, nutrition, weekly synthesis) read the new context.
           </p>
@@ -1058,7 +1051,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         </div>
       )}
       {!activeCffs ? (
-        <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-8 text-center">
+        <div className="br-card p-8 text-center">
           <p className="text-[#666D7A] mb-2">No CFFS generated yet</p>
           <p className="text-[#43474F] text-sm mb-4">
             {latestFoundationalInvitation?.status === 'pending'
@@ -1080,7 +1073,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               that needs acting on when new evidence arrives, and a note the
               coach has to go looking for is a note nobody reads. */}
           {activeCffs?.pattern_watch_for && (
-            <div className="rounded-xl border border-[rgba(27,109,252,0.25)] bg-[#F3F7FF] px-5 py-4 mb-4">
+            <div className="br-card-flagged px-5 py-4 mb-4">
               <p className="text-[10px] font-medium text-[#1B6DFC] mb-2">
                 Watch for
                 {activeCffs.pattern_competing_read && activeCffs.pattern_competing_read !== 'None'
@@ -1092,7 +1085,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           )}
 
           {/* State + Exposure Readiness */}
-          <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden mb-4">
+          <div className="br-card overflow-hidden mb-4">
             <div className="px-5 pt-5 pb-4 grid grid-cols-2 gap-4 border-b border-[#E8EAEE]">
               <div>
                 <p className="text-[10px] font-medium text-[#98A0AD] mb-2">Body State Classification</p>
@@ -1123,15 +1116,15 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 <div className="grid grid-cols-2 gap-2">
                   {readinessItems.map(item => (
                     <div key={item.label} className={`px-3 py-2 rounded-lg border-l-2 ${
-                      item.value === 'Green' ? 'bg-green-50 border-green-500' :
-                      item.value === 'Amber' ? 'bg-amber-50 border-amber-500' :
-                      item.value === 'Red' ? 'bg-red-50 border-red-500' :
+                      item.value === 'Green' ? 'bg-[#EDF8F1] border-[#22A05A]' :
+                      item.value === 'Amber' ? 'bg-[#FDF6E9] border-[#B7791F]' :
+                      item.value === 'Red' ? 'bg-[#FDEDED] border-[#DC2626]' :
                       'bg-[#EFF1F4] border-[#CFD4DC]'
                     }`}>
                       <p className={`text-xs font-bold mb-0.5 ${
                         item.value === 'Green' ? 'text-green-400' :
-                        item.value === 'Amber' ? 'text-amber-700' :
-                        item.value === 'Red' ? 'text-red-700' :
+                        item.value === 'Amber' ? 'text-[#A96A12]' :
+                        item.value === 'Red' ? 'text-[#C82626]' :
                         'text-[#666D7A]'
                       }`}>{item.value}</p>
                       <p className="text-[10px] text-[#98A0AD] font-medium">{item.label}</p>
@@ -1169,7 +1162,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 <Link
                   href={`/dashboard/clients/${client.id}/cffs-report`}
                   target="_blank"
-                  className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+                  className="br-btn"
                 >
                   Download PDF
                 </Link>
@@ -1362,7 +1355,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             <div className="mt-3">
               <Link
                 href={`/dashboard/clients/${id}/train`}
-                className="inline-flex items-center gap-2 rounded-xl bg-[#1B6DFC] px-4 py-2.5 text-sm font-bold text-white hover:bg-[#5390FF] transition-colors"
+                className="br-btn br-btn-primary"
               >
                 Log a session →
               </Link>
@@ -1402,7 +1395,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           )}
 
           {/* What is a CFFS */}
-          <div className="border-l-2 border-[#1B6DFC] bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl p-5 mb-4">
+          <div className="br-card p-5 mb-4">
             <p className="text-[10px] font-medium text-[#1B6DFC] mb-3">About This Report</p>
             <p className="text-sm font-semibold text-[#141821] leading-relaxed mb-3">
               This is not a summary. It is a structured interpretation of how this client&apos;s system is currently organising itself.
@@ -1442,13 +1435,13 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               coach scans the card first. Legacy rows with no summary render the
               sections open by default (unchanged behaviour). */}
           <details className="mb-6 group" open={!cffsSummary?.headline}>
-            <summary className="cursor-pointer text-[11px] font-semibold text-[#1B6DFC] hover:text-blue-700 select-none list-none flex items-center gap-1.5 mb-3">
+            <summary className="cursor-pointer text-[11px] font-semibold text-[#1B6DFC] hover:text-[#1056D6] select-none list-none flex items-center gap-1.5 mb-3">
               <span className="transition-transform group-open:rotate-90">▸</span>
               Full interpretive analysis ({cffsSections.length} sections)
             </summary>
             <div className="space-y-2">
               {cffsSections.map((section, i) => (
-                <div key={section.label} className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden">
+                <div key={section.label} className="br-card overflow-hidden">
                   <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[#FFFFFF]/80">
                     <span className="text-[11px] font-black text-[#1B6DFC]">{String(i + 1).padStart(2, '0')}</span>
                     <p className="text-[10px] font-medium text-[#666D7A]">{section.label}</p>
@@ -1475,7 +1468,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 {archivedCffs.map(c => (
                   <div
                     key={c.id}
-                    className="bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-lg px-4 py-3 flex items-center justify-between opacity-60"
+                    className="br-card-inset px-4 py-3 flex items-center justify-between opacity-60"
                   >
                     <span className="text-sm text-[#666D7A]">{formatDate(c.generated_at)}</span>
                     <span
@@ -1524,7 +1517,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         />
 
         {latestBaseline ? (
-          <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 space-y-4">
+          <div className="br-card p-5 space-y-4">
             <div className="flex items-center justify-between">
               <p className="text-[12.5px] text-[#98A0AD]">Week {latestBaseline.re_capture_week} capture · {new Date(latestBaseline.captured_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
               {baselineToken && (
@@ -1572,7 +1565,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             )}
           </div>
         ) : (
-          <div className="bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl p-5 text-center">
+          <div className="br-card p-5 text-center">
             <p className="text-[#98A0AD] text-sm">No baseline submitted yet</p>
             <p className="text-[#43474F] text-[12.5px] mt-1">Send the client their baseline link to begin</p>
           </div>
@@ -1606,7 +1599,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         {latestCfws ? (
           <>
             {/* Readiness grid */}
-            <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden mb-4">
+            <div className="br-card overflow-hidden mb-4">
               <div className="px-5 pt-5 pb-4 border-b border-[#E8EAEE]">
                 <div className="flex items-center justify-between mb-3">
                   <p className="text-[10px] font-medium text-[#98A0AD]">Exposure Readiness</p>
@@ -1620,15 +1613,15 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     { label: 'Behaviour', value: latestCfws.exposure_readiness_behaviour },
                   ].map(item => (
                     <div key={item.label} className={`px-3 py-2 rounded-lg border-l-2 ${
-                      item.value === 'Green' ? 'bg-green-50 border-green-500' :
-                      item.value === 'Amber' ? 'bg-amber-50 border-amber-500' :
-                      item.value === 'Red' ? 'bg-red-50 border-red-500' :
+                      item.value === 'Green' ? 'bg-[#EDF8F1] border-[#22A05A]' :
+                      item.value === 'Amber' ? 'bg-[#FDF6E9] border-[#B7791F]' :
+                      item.value === 'Red' ? 'bg-[#FDEDED] border-[#DC2626]' :
                       'bg-[#EFF1F4] border-[#CFD4DC]'
                     }`}>
                       <p className={`text-xs font-bold mb-0.5 ${
                         item.value === 'Green' ? 'text-green-400' :
-                        item.value === 'Amber' ? 'text-amber-700' :
-                        item.value === 'Red' ? 'text-red-700' :
+                        item.value === 'Amber' ? 'text-[#A96A12]' :
+                        item.value === 'Red' ? 'text-[#C82626]' :
                         'text-[#666D7A]'
                       }`}>{item.value}</p>
                       <p className="text-[10px] text-[#98A0AD] font-medium">{item.label}</p>
@@ -1642,7 +1635,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   <Link
                     href={`/dashboard/clients/${client.id}/cfws-report`}
                     target="_blank"
-                    className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+                    className="br-btn"
                   >
                     Download PDF
                   </Link>
@@ -1669,7 +1662,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             )}
 
             {/* About block */}
-            <div className="border-l-2 border-[#1B6DFC] bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl p-5 mb-4">
+            <div className="br-card p-5 mb-4">
               <p className="text-[10px] font-medium text-[#1B6DFC] mb-3">About This Report</p>
               <p className="text-sm font-semibold text-[#141821] leading-relaxed mb-3">
                 This is not a summary. It is a structured interpretation of how this client&apos;s system is behaving this week.
@@ -1692,13 +1685,13 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               ].filter(s => s.content)
               return (
                 <details className="mb-6 group" open={!cfwsSummary?.headline}>
-                  <summary className="cursor-pointer text-[11px] font-semibold text-[#1B6DFC] hover:text-blue-700 select-none list-none flex items-center gap-1.5 mb-3">
+                  <summary className="cursor-pointer text-[11px] font-semibold text-[#1B6DFC] hover:text-[#1056D6] select-none list-none flex items-center gap-1.5 mb-3">
                     <span className="transition-transform group-open:rotate-90">▸</span>
                     Full weekly analysis ({cfwsSections.length} sections)
                   </summary>
                   <div className="space-y-2">
                     {cfwsSections.map((section, i) => (
-                      <div key={section.label} className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden">
+                      <div key={section.label} className="br-card overflow-hidden">
                         <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[#FFFFFF]/80">
                           <span className="text-[11px] font-black text-[#1B6DFC]">{String(i + 1).padStart(2, '0')}</span>
                           <p className="text-[10px] font-medium text-[#666D7A]">{section.label}</p>
@@ -1714,7 +1707,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             })()}
           </>
         ) : (
-          <div className="bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl p-5 mb-3 text-center">
+          <div className="br-card p-5 mb-3 text-center">
             <p className="text-[#98A0AD] text-sm">No weekly synthesis yet</p>
             {latestCompleteWeek ? (
               <div className="mt-3">
@@ -1728,7 +1721,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
         {/* Check-in submission log */}
         {recentCheckins && recentCheckins.length > 0 && (
-          <div className="bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl p-4">
+          <div className="br-card p-4">
             <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em] mb-3">Recent Submissions</p>
             <div className="space-y-2">
               {recentCheckins.slice(0, 8).map((ci, i) => {
@@ -1744,7 +1737,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     <div className="flex items-center gap-2 min-w-0">
                       <span className="text-[#666D7A]">Week {ci.week_number} · Form {ci.form_type}</span>
                       {fb && (
-                        <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${sent ? 'bg-blue-50 border border-blue-200 text-blue-700' : 'bg-amber-50 border border-amber-200 text-amber-700'}`}>
+                        <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${sent ? 'bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] text-[#1056D6]' : 'bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] text-[#A96A12]'}`}>
                           {sent ? 'Response sent' : 'Draft'}
                         </span>
                       )}
@@ -1764,7 +1757,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
         {/* Coach response history */}
         {feedbackHistory && feedbackHistory.length > 0 && (
-          <div className="bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl p-4">
+          <div className="br-card p-4">
             <div className="flex items-center justify-between mb-3">
               <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Coach Response History</p>
               <p className="text-[10px] text-[#43474F]">{feedbackHistory.length} total</p>
@@ -1798,7 +1791,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             {prAudit && <ArtefactAuditPill audit={prAudit} />}
             <Link
               href={`/dashboard/clients/${id}/plan`}
-              className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+              className="br-btn"
             >
               Macro Plan
             </Link>
@@ -1810,12 +1803,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           {draftProgram && (
             <Link
               href={`/dashboard/clients/${id}/program/draft/${draftProgram.id}`}
-              className="block bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 hover:border-[#CFD4DC] transition-colors"
+              className="block br-card p-5 br-card-hover transition-shadow"
             >
               <div className="flex items-start justify-between mb-2">
                 <p className="text-sm font-semibold text-[#141821]">{draftProgram.block_name}</p>
                 <div className="flex gap-1.5">
-                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-amber-50 border border-amber-700 text-amber-700">Draft</span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#FDF6E9] border border-[#A96A12] text-[#A96A12]">Draft</span>
                   <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EFF1F4] text-[#666D7A] capitalize">{draftProgram.progression_phase}</span>
                   <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EFF1F4] text-[#666D7A] capitalize">{draftProgram.training_goal}</span>
                 </div>
@@ -1831,7 +1824,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           {activeProgram ? (
             <Link
               href={`/dashboard/clients/${id}/program`}
-              className="block bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 hover:border-[#CFD4DC] transition-colors"
+              className="block br-card p-5 br-card-hover transition-shadow"
             >
               <div className="flex items-start justify-between mb-2">
                 <p className="text-sm font-semibold text-[#141821]">{activeProgram.block_name}</p>
@@ -1853,7 +1846,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               <p className="text-[12.5px] text-[#1B6DFC] mt-2">View full program →</p>
             </Link>
           ) : !draftProgram ? (
-            <div className="bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl p-5 text-center">
+            <div className="br-card p-5 text-center">
               <p className="text-[#98A0AD] text-sm">No program generated yet</p>
               <p className="text-[#43474F] text-[12.5px] mt-1">Generate a program once the CFFS is complete</p>
             </div>
@@ -1876,7 +1869,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             {nrAudit && <ArtefactAuditPill audit={nrAudit} />}
             <Link
               href={`/dashboard/clients/${id}/nutrition/suggest`}
-              className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+              className="br-btn"
             >
               {activeNutritionPlan ? 'Regenerate' : 'Generate Plan'}
             </Link>
@@ -1888,12 +1881,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           {draftNutritionPlan && (
             <Link
               href={`/dashboard/clients/${id}/nutrition`}
-              className="block bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 hover:border-[#CFD4DC] transition-colors"
+              className="block br-card p-5 br-card-hover transition-shadow"
             >
               <div className="flex items-start justify-between mb-2">
                 <p className="text-sm font-semibold text-[#141821]">{draftNutritionPlan.plan_name}</p>
                 <div className="flex gap-1.5">
-                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-amber-50 border border-amber-700 text-amber-700">Draft</span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#FDF6E9] border border-[#A96A12] text-[#A96A12]">Draft</span>
                   <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EFF1F4] text-[#666D7A] capitalize">{draftNutritionPlan.entry_state.replace(/_/g, ' ')}</span>
                   <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EFF1F4] text-[#666D7A] capitalize">{draftNutritionPlan.carb_demand_level} carbs</span>
                 </div>
@@ -1907,7 +1900,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           {activeNutritionPlan ? (
             <Link
               href={`/dashboard/clients/${id}/nutrition`}
-              className="block bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 hover:border-[#CFD4DC] transition-colors"
+              className="block br-card p-5 br-card-hover transition-shadow"
             >
               <div className="flex items-start justify-between mb-2">
                 <p className="text-sm font-semibold text-[#141821]">{activeNutritionPlan.plan_name}</p>
@@ -1916,8 +1909,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EFF1F4] text-[#666D7A] capitalize">{activeNutritionPlan.carb_demand_level} carbs</span>
                   {activeNutritionPlan.current_direction && (
                     <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full capitalize ${
-                      activeNutritionPlan.current_direction === 'progress' ? 'bg-blue-50 text-blue-500' :
-                      activeNutritionPlan.current_direction === 'rebuild' ? 'bg-red-50 text-red-700' :
+                      activeNutritionPlan.current_direction === 'progress' ? 'bg-[rgba(27,109,252,0.08)] text-[#1B6DFC]' :
+                      activeNutritionPlan.current_direction === 'rebuild' ? 'bg-[#FDEDED] text-[#C82626]' :
                       'bg-[#EFF1F4] text-[#666D7A]'
                     }`}>{activeNutritionPlan.current_direction}</span>
                   )}
@@ -1930,7 +1923,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               <p className="text-[12.5px] text-[#1B6DFC] mt-2">View full nutrition plan →</p>
             </Link>
           ) : !draftNutritionPlan ? (
-            <div className="bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl p-5 text-center">
+            <div className="br-card p-5 text-center">
               <p className="text-[#98A0AD] text-sm">No nutrition plan generated yet</p>
               <p className="text-[#43474F] text-[12.5px] mt-1">Generate a plan once the CFFS is complete</p>
             </div>

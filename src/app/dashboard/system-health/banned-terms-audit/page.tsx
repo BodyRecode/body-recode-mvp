@@ -161,7 +161,7 @@ export default async function BannedTermsAuditPage() {
         </Card>
         <Card padding="md">
           <p className="text-[11.5px] font-medium text-[#98A0AD] mb-1">Leak rate</p>
-          <p className={`text-2xl font-bold ${leakRate > 30 ? 'text-red-600' : leakRate > 10 ? 'text-amber-700' : 'text-green-700'}`}>{leakRate}%</p>
+          <p className={`text-2xl font-bold ${leakRate > 30 ? 'text-[#C82626]' : leakRate > 10 ? 'text-[#A96A12]' : 'text-[#177245]'}`}>{leakRate}%</p>
           <p className="text-[10px] text-[#666D7A] mt-1">{totalArtefactsLeaked} of {totalArtefactsChecked} artefacts</p>
         </Card>
       </div>
@@ -177,12 +177,12 @@ export default async function BannedTermsAuditPage() {
                 <span className="text-[#141821] font-semibold min-w-[160px]">{d.label}</span>
                 <span className="text-[#666D7A] font-mono text-[10px]">v{d.current}</span>
                 <span className="flex-1 text-right text-[#666D7A]">
-                  <span className={pct === 100 ? 'text-green-700 font-semibold' : 'text-amber-700 font-semibold'}>{d.onCurrent}</span>
+                  <span className={pct === 100 ? 'text-[#177245] font-semibold' : 'text-[#A96A12] font-semibold'}>{d.onCurrent}</span>
                   <span> on current</span>
                   {d.stale > 0 && (
                     <>
                       <span className="text-[#D1D5DB] mx-2">·</span>
-                      <span className="text-amber-700 font-semibold">{d.stale}</span>
+                      <span className="text-[#A96A12] font-semibold">{d.stale}</span>
                       <span> stale</span>
                     </>
                   )}
@@ -199,14 +199,14 @@ export default async function BannedTermsAuditPage() {
 
       {reports.length === 0 ? (
         <Card padding="lg" className="text-center">
-          <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-2" />
+          <CheckCircle className="w-8 h-8 text-[#177245] mx-auto mb-2" />
           <p className="text-sm font-semibold text-[#141821]">All clean</p>
           <p className="text-[12.5px] text-[#666D7A] mt-1">No active client&apos;s published readings contain banned client-facing terms.</p>
         </Card>
       ) : (
         <>
           <div className="flex items-center gap-2 mb-3 text-[12.5px] text-[#666D7A]">
-            <AlertTriangle size={14} className="text-amber-700" />
+            <AlertTriangle size={14} className="text-[#A96A12]" />
             <span>{reports.length} client{reports.length === 1 ? '' : 's'} have at least one leaked artefact. Click Regenerate on the relevant artefact to clear it.</span>
           </div>
           <div className="space-y-3">
@@ -236,15 +236,15 @@ function LeakRow({ label, terms, clientHref, publishedAt, storedVersion, isStale
   if (hasLeaks) flags.push(`Leaked: ${terms.join(', ')}`)
   if (isStale) flags.push(`Stored v${storedVersion ?? 'unknown'} ≠ current v${currentVersion}`)
   return (
-    <div className={`rounded-lg border px-3 py-2 flex items-center justify-between gap-3 flex-wrap ${hasLeaks ? 'border-amber-200 bg-amber-50/40' : 'border-blue-200 bg-blue-50/40'}`}>
+    <div className={`rounded-lg border px-3 py-2 flex items-center justify-between gap-3 flex-wrap ${hasLeaks ? 'border-[#F1DEB8] bg-[#FDF6E9]/40' : 'border-[#B5CFFC] bg-[rgba(27,109,252,0.08)]/40'}`}>
       <div className="min-w-0">
-        <p className={`text-xs font-bold ${hasLeaks ? 'text-amber-900' : 'text-blue-900'}`}>{label}</p>
+        <p className={`text-xs font-bold ${hasLeaks ? 'text-[#8A5A14]' : 'text-[#0A46B2]'}`}>{label}</p>
         <p className="text-[10px] text-[#666D7A] mt-0.5">
           Published {publishedAt ? new Date(publishedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' }) : 'unknown'}
           {flags.map((f, i) => <span key={i}> · <span className="font-mono">{f}</span></span>)}
         </p>
       </div>
-      <Link href={clientHref} className={`shrink-0 text-[11.5px] font-medium ${hasLeaks ? 'text-amber-900 hover:text-amber-700' : 'text-blue-900 hover:text-blue-700'}`}>
+      <Link href={clientHref} className={`shrink-0 text-[11.5px] font-medium ${hasLeaks ? 'text-[#8A5A14] hover:text-[#A96A12]' : 'text-[#0A46B2] hover:text-[#1056D6]'}`}>
         Open to regenerate →
       </Link>
     </div>

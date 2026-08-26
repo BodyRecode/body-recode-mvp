@@ -8,13 +8,13 @@ export default function OrientationPage() {
         {/* Header */}
         <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
           <p className="text-[10px] text-[#98A0AD] font-semibold mb-10">{brand().name}&trade; &middot; Performance Coaching</p>
-          <div className="w-8 h-px bg-blue-500/60 mb-8" />
+          <div className="w-8 h-px bg-[#1B6DFC]/60 mb-8" />
           <h1 className="text-4xl font-light text-[#141821] mb-4 leading-tight tracking-tight">Performance Coaching<br />Orientation</h1>
           <p className="text-[#666D7A] text-base leading-relaxed">How this works. What to expect. How we begin.</p>
         </div>
 
         {/* Intro note */}
-        <div className="border-l-2 border-blue-200 pl-6 mb-16">
+        <div className="border-l-2 border-[#B5CFFC] pl-6 mb-16">
           <p className="text-[#666D7A] text-sm leading-relaxed italic">A calm introduction to the structure, pacing, and the philosophy behind {brand().name} Performance Coaching.</p>
         </div>
 
@@ -79,7 +79,7 @@ export default function OrientationPage() {
 
           {/* Closing */}
           <div className="pt-2">
-            <div className="w-8 h-px bg-blue-500/30 mb-8" />
+            <div className="w-8 h-px bg-[#1B6DFC]/30 mb-8" />
             <p className="text-[#666D7A] text-sm italic leading-relaxed">{brand().name} doesn&apos;t ask for blind commitment. It asks for clarity. Take what resonates. Leave what doesn&apos;t. Move forward in a way that feels deliberate, grounded, and aligned with what your system can truly hold.</p>
           </div>
 
@@ -96,8 +96,8 @@ function OrientationSection({ title, children }: { title: string; children: Reac
   return (
     <section>
       <div className="flex items-center gap-4 mb-6">
-        <div className="w-1 h-4 bg-blue-500/50 rounded-full shrink-0" />
-        <h2 className="text-[12.5px] font-semibold text-blue-500/70"
+        <div className="w-1 h-4 bg-[#1B6DFC]/50 rounded-full shrink-0" />
+        <h2 className="text-[12.5px] font-semibold text-[#1B6DFC]/70"
           dangerouslySetInnerHTML={{ __html: title }}
         />
       </div>

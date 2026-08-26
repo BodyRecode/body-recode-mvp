@@ -72,7 +72,7 @@ export default function FixedSlotsManager({
   }
 
   return (
-    <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-6">
+    <div className="bg-[#F4F6F9] br-card p-6">
       <p className="text-[12.5px] text-[#666D7A] mb-4">Fixed Weekly Slots</p>
 
       {slots.length === 0 ? (
@@ -88,7 +88,7 @@ export default function FixedSlotsManager({
               <button
                 onClick={() => handleRemove(slot.id)}
                 disabled={removing === slot.id}
-                className="text-[#98A0AD] hover:text-red-700 transition-colors text-[12.5px] disabled:opacity-40"
+                className="text-[#98A0AD] hover:text-[#C82626] transition-colors text-[12.5px] disabled:opacity-40"
               >
                 {removing === slot.id ? '...' : '✕'}
               </button>
@@ -100,7 +100,7 @@ export default function FixedSlotsManager({
       {!adding ? (
         <button
           onClick={() => setAdding(true)}
-          className="text-[12.5px] text-blue-500 hover:text-blue-700 transition-colors"
+          className="text-[12.5px] text-[#1B6DFC] hover:text-[#1056D6] transition-colors"
         >
           + Add slot
         </button>
@@ -115,7 +115,7 @@ export default function FixedSlotsManager({
                   onClick={() => setDay(i)}
                   className={`px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${
                     day === i
-                      ? 'border-blue-500 bg-blue-50 text-blue-500'
+                      ? 'border-[#1B6DFC] bg-[rgba(27,109,252,0.08)] text-[#1B6DFC]'
                       : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
                   }`}
                 >
@@ -132,7 +132,7 @@ export default function FixedSlotsManager({
                 type="time"
                 value={time}
                 onChange={e => setTime(e.target.value)}
-                className="bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-sm text-[#141821] focus:outline-none focus:border-blue-500"
+                className="bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
               />
             </div>
             <div>
@@ -144,7 +144,7 @@ export default function FixedSlotsManager({
                     onClick={() => setDuration(d)}
                     className={`px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${
                       duration === d
-                        ? 'border-blue-500 bg-blue-50 text-blue-500'
+                        ? 'border-[#1B6DFC] bg-[rgba(27,109,252,0.08)] text-[#1B6DFC]'
                         : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
                     }`}
                   >
@@ -155,13 +155,13 @@ export default function FixedSlotsManager({
             </div>
           </div>
 
-          {error && <p className="text-[12.5px] text-red-700">{error}</p>}
+          {error && <p className="text-[12.5px] text-[#C82626]">{error}</p>}
 
           <div className="flex gap-2">
             <button
               onClick={handleAdd}
               disabled={saving}
-              className="px-4 py-2 bg-blue-500 text-white text-[12.5px] font-medium rounded-lg disabled:opacity-40 hover:bg-blue-500 transition-colors"
+              className="px-4 py-2 bg-[#1B6DFC] text-white text-[12.5px] font-medium rounded-lg disabled:opacity-40 hover:bg-[#1560E0] transition-colors"
             >
               {saving ? 'Saving...' : 'Add slot'}
             </button>

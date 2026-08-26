@@ -36,7 +36,7 @@ export default function ReassessmentQueue({
 
   if (!rows.length) {
     return (
-      <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 mb-7">
+      <div className="br-card p-5 mb-7">
         <div className="flex items-center gap-2.5 mb-1">
           <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
           <h2 className="text-[11px] font-medium text-[#141821]">
@@ -83,7 +83,7 @@ export default function ReassessmentQueue({
   }
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 mb-7">
+    <div className="br-card p-5 mb-7">
       <div className="flex items-center justify-between gap-3 flex-wrap mb-1">
         <div className="flex items-center gap-2.5">
           <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
@@ -102,7 +102,7 @@ export default function ReassessmentQueue({
       </p>
 
       {error && (
-        <div className="mb-3 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+        <div className="mb-3 text-sm text-[#C82626] bg-[#FDEDED] border border-[#F5C9C9] rounded-lg px-3 py-2">
           {error}
         </div>
       )}
@@ -133,7 +133,7 @@ export default function ReassessmentQueue({
                         Scheduled
                       </span>
                     ) : (
-                      <span className="text-[11.5px] font-mediumr px-2 py-0.5 rounded-full bg-blue-50 text-[#1B6DFC]">
+                      <span className="text-[11.5px] font-mediumr px-2 py-0.5 rounded-full bg-[rgba(27,109,252,0.08)] text-[#1B6DFC]">
                         Signal
                       </span>
                     )}
@@ -151,7 +151,7 @@ export default function ReassessmentQueue({
                       resolve(t.id, 'send_progress_check')
                     }}
                     disabled={busy}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12.5px] font-medium text-white bg-[#1B6DFC] hover:bg-[#5390FF] disabled:opacity-60 transition-colors"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12.5px] font-medium text-white bg-[#1B6DFC] hover:bg-[#1560E0] disabled:opacity-60 transition-colors"
                   >
                     {busy ? <Loader2 size={12} className="animate-spin" /> : <Send size={12} />}
                     Send

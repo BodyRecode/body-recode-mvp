@@ -13,8 +13,8 @@ interface Props {
 }
 
 const options = [
-  { value: 'completed', label: 'Completed', icon: CheckCircle2, colour: 'text-blue-500' },
-  { value: 'no_show', label: 'No Show', icon: AlertCircle, colour: 'text-red-700' },
+  { value: 'completed', label: 'Completed', icon: CheckCircle2, colour: 'text-[#1B6DFC]' },
+  { value: 'no_show', label: 'No Show', icon: AlertCircle, colour: 'text-[#C82626]' },
   { value: 'cancelled', label: 'Cancel', icon: XCircle, colour: 'text-[#666D7A]' },
 ]
 
@@ -125,12 +125,12 @@ export default function BookingStatusButton({ bookingId, currentStatus, schedule
       {warning && (
         <>
           <div className="fixed inset-0 z-30 bg-black/20" onClick={() => setWarning(null)} />
-          <div className="absolute right-0 top-8 z-40 bg-amber-50 border border-amber-300 rounded-lg shadow-xl p-3 w-72">
-            <p className="text-[12.5px] font-semibold text-amber-900 mb-1.5">Heads up</p>
-            <p className="text-[11px] text-amber-900 leading-relaxed">{warning}</p>
+          <div className="absolute right-0 top-8 z-40 bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] rounded-lg shadow-xl p-3 w-72">
+            <p className="text-[12.5px] font-semibold text-[#8A5A14] mb-1.5">Heads up</p>
+            <p className="text-[11px] text-[#8A5A14] leading-relaxed">{warning}</p>
             <button
               onClick={() => setWarning(null)}
-              className="mt-2.5 w-full text-[12.5px] font-semibold text-amber-900 border border-amber-400 rounded-lg px-2 py-1.5 hover:bg-amber-100 transition-colors"
+              className="mt-2.5 w-full text-[12.5px] font-semibold text-[#8A5A14] border border-[#C08A2D] rounded-lg px-2 py-1.5 hover:bg-[#FAEFD8] transition-colors"
             >
               Got it
             </button>
@@ -189,7 +189,7 @@ export default function BookingStatusButton({ bookingId, currentStatus, schedule
               <button
                 onClick={submitReschedule}
                 disabled={!date || !time}
-                className="flex-1 text-[12.5px] font-semibold text-white bg-blue-500 rounded-lg px-2 py-1.5 hover:bg-blue-600 transition-colors disabled:opacity-40"
+                className="flex-1 text-[12.5px] font-semibold text-white bg-[#1B6DFC] rounded-lg px-2 py-1.5 hover:bg-[#1560E0] transition-colors disabled:opacity-40"
               >
                 Save
               </button>

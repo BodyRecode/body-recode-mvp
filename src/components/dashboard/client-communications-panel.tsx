@@ -57,7 +57,7 @@ function pickUrl(meta: Record<string, unknown> | null): string | null {
 
 export default function ClientCommunicationsPanel({ rows }: { rows: ClientCommunicationRow[] }) {
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 mb-4">
+    <div className="br-card p-5 mb-4">
       <div className="flex items-center justify-between mb-3">
         <p className="text-[12px] font-medium text-[#1B6DFC]">Communications</p>
         <span className="text-[10px] text-[#666D7A]">{rows.length === 0 ? 'Nothing sent yet' : `Last ${rows.length}`}</span>
@@ -78,8 +78,8 @@ export default function ClientCommunicationsPanel({ rows }: { rows: ClientCommun
                 key={row.id}
                 className="flex items-start gap-3 px-3 py-2.5 bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg"
               >
-                <div className="mt-0.5 w-7 h-7 rounded-md bg-blue-50 border border-blue-500/20 flex items-center justify-center flex-shrink-0">
-                  <Icon className="w-3.5 h-3.5 text-blue-500" />
+                <div className="mt-0.5 w-7 h-7 rounded-md bg-[rgba(27,109,252,0.08)] border border-[#1B6DFC]/20 flex items-center justify-center flex-shrink-0">
+                  <Icon className="w-3.5 h-3.5 text-[#1B6DFC]" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
@@ -106,7 +106,7 @@ export default function ClientCommunicationsPanel({ rows }: { rows: ClientCommun
                           href={url}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-blue-500 hover:text-blue-700 transition-colors"
+                          className="text-[#1B6DFC] hover:text-[#1056D6] transition-colors"
                         >
                           link
                         </a>

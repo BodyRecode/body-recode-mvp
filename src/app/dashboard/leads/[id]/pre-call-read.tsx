@@ -195,7 +195,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
 
       if (b.kind === 'script') {
         out.push(
-          <div key={i} className="bg-blue-50 border-l-2 border-[#1B6DFC] rounded-r-lg pl-4 pr-4 py-3 ml-1">
+          <div key={i} className="bg-[rgba(27,109,252,0.08)] border-l-2 border-[#1B6DFC] rounded-r-lg pl-4 pr-4 py-3 ml-1">
             <p className="text-[#141821] text-sm leading-relaxed whitespace-pre-line">&ldquo;{b.text}&rdquo;</p>
           </div>
         )
@@ -213,7 +213,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
 
       if (b.kind === 'conditional') {
         out.push(
-          <div key={i} className="bg-amber-50 border-l-2 border-amber-300 rounded-r-lg pl-4 pr-4 py-3 ml-1">
+          <div key={i} className="bg-[#FDF6E9] border-l-2 border-[#E5C98F] rounded-r-lg pl-4 pr-4 py-3 ml-1">
             <p className="text-[#141821] text-sm leading-relaxed whitespace-pre-line">{b.text}</p>
           </div>
         )
@@ -262,14 +262,14 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
               <button
                 onClick={cancel}
                 disabled={saving}
-                className="text-sm font-bold px-4 py-2 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+                className="text-sm font-bold px-4 py-2 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC] transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={save}
                 disabled={saving}
-                className="text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
+                className="text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-50"
               >
                 {saving ? 'Saving...' : 'Save'}
               </button>
@@ -277,7 +277,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
           ) : (
             <button
               onClick={startEdit}
-              className="text-sm font-bold px-4 py-2 border border-[#E8EAEE] text-[#43474F] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] hover:bg-blue-50 transition-colors"
+              className="text-sm font-bold px-4 py-2 border border-[#E8EAEE] text-[#43474F] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] transition-colors"
             >
               {brief ? 'Edit' : 'Add'}
             </button>
@@ -304,7 +304,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
                   className={`text-[11px] font-semibold px-2.5 py-1 rounded-md border transition-colors ${
                     collapsedState[s.id]
                       ? 'bg-[#F4F6F9] border-[#E8EAEE] text-[#666D7A] hover:border-[#1B6DFC] hover:text-[#1B6DFC]'
-                      : 'bg-blue-50 border-[#B5CFFC] text-[#1B6DFC]'
+                      : 'bg-[rgba(27,109,252,0.08)] border-[#B5CFFC] text-[#1B6DFC]'
                   }`}
                 >
                   {s.title}
@@ -328,7 +328,7 @@ export default function PreCallRead({ leadId, initialBrief }: PreCallReadProps) 
               What you say
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 bg-amber-400 rounded-sm" />
+              <span className="w-2 h-2 bg-[#C08A2D] rounded-sm" />
               Conditional response
             </span>
             <span className="flex items-center gap-1.5">

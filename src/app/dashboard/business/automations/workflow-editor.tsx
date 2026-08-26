@@ -125,7 +125,7 @@ function SortableStep({
       {/* Connector line */}
       <div className="absolute left-7 -top-4 w-px h-4 bg-[#EFF1F4]" />
 
-      <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+      <div className="bg-[#F4F6F9] br-card overflow-hidden">
         {/* Header */}
         <div className="flex items-center gap-3 p-3">
           <button
@@ -136,9 +136,9 @@ function SortableStep({
             <GripVertical size={14} />
           </button>
 
-          {step.type === 'wait' && <Clock size={14} className="text-amber-700 shrink-0" />}
+          {step.type === 'wait' && <Clock size={14} className="text-[#A96A12] shrink-0" />}
           {step.type === 'condition' && <GitBranch size={14} className="text-violet-700 shrink-0" />}
-          {step.type === 'action' && ActionIcon && <ActionIcon size={14} className="text-blue-500 shrink-0" />}
+          {step.type === 'action' && ActionIcon && <ActionIcon size={14} className="text-[#1B6DFC] shrink-0" />}
 
           <span className="text-sm font-medium text-[#141821] flex-1">
             {step.type === 'wait'
@@ -151,7 +151,7 @@ function SortableStep({
           <button onClick={() => setExpanded(e => !e)} className="text-[#666D7A] hover:text-[#141821] p-1">
             {expanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
           </button>
-          <button onClick={() => onDelete(step.id)} className="text-[#98A0AD] hover:text-red-700 transition-colors p-1">
+          <button onClick={() => onDelete(step.id)} className="text-[#98A0AD] hover:text-[#C82626] transition-colors p-1">
             <Trash2 size={13} />
           </button>
         </div>
@@ -173,7 +173,7 @@ function SortableStep({
                           onClick={() => onUpdate(step.id, { action_type: def.type, config: {} })}
                           className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-xs border transition-colors ${
                             step.action_type === def.type
-                              ? 'bg-blue-50 border-blue-300 text-blue-500'
+                              ? 'bg-[rgba(27,109,252,0.08)] border-[#9CC0FB] text-[#1B6DFC]'
                               : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC] hover:text-[#141821]'
                           }`}
                         >
@@ -287,10 +287,10 @@ function AddStepButton({ onAdd }: { onAdd: (type: StepType) => void }) {
       {open && (
         <>
           <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className="absolute top-8 z-20 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl shadow-2xl overflow-hidden w-44">
+          <div className="absolute top-8 z-20 bg-[#F4F6F9] br-card shadow-2xl overflow-hidden w-44">
             {[
-              { type: 'action' as StepType, label: 'Action', icon: Zap, colour: 'text-blue-500' },
-              { type: 'wait' as StepType, label: 'Wait / Delay', icon: Clock, colour: 'text-amber-700' },
+              { type: 'action' as StepType, label: 'Action', icon: Zap, colour: 'text-[#1B6DFC]' },
+              { type: 'wait' as StepType, label: 'Wait / Delay', icon: Clock, colour: 'text-[#A96A12]' },
               { type: 'condition' as StepType, label: 'Condition', icon: GitBranch, colour: 'text-violet-700' },
             ].map(opt => {
               const Icon = opt.icon
@@ -418,7 +418,7 @@ export default function WorkflowEditor({ initial }: Props) {
             onClick={() => setIsActive(a => !a)}
             className={`flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-lg border transition-colors ${
               isActive
-                ? 'bg-blue-50 border-blue-200 text-blue-500'
+                ? 'bg-[rgba(27,109,252,0.08)] border-[#B5CFFC] text-[#1B6DFC]'
                 : 'bg-[#EFF1F4] border-[#E8EAEE] text-[#666D7A]'
             }`}
           >
@@ -428,7 +428,7 @@ export default function WorkflowEditor({ initial }: Props) {
           <button
             onClick={save}
             disabled={!name || !triggerType || isPending}
-            className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center gap-2 bg-[#1B6DFC] hover:bg-[#1560E0] text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             {isPending ? <Loader2 size={13} className="animate-spin" /> : <Save size={13} />}
             Save
@@ -441,11 +441,11 @@ export default function WorkflowEditor({ initial }: Props) {
         <p className="text-[10px] font-semibold text-[#98A0AD] mb-2 ml-1">Trigger</p>
         {selectedTrigger && !showTriggerPicker ? (
           <div
-            className="bg-[#F4F6F9] border border-blue-200 rounded-xl p-4 flex items-center justify-between cursor-pointer hover:border-blue-500/60 transition-colors"
+            className="bg-[#F4F6F9] border border-[#B5CFFC] rounded-xl p-4 flex items-center justify-between cursor-pointer hover:border-[#1B6DFC]/60 transition-colors"
             onClick={() => setShowTriggerPicker(true)}
           >
             <div>
-              <p className="text-sm font-semibold text-blue-500">{selectedTrigger.label}</p>
+              <p className="text-sm font-semibold text-[#1B6DFC]">{selectedTrigger.label}</p>
               <p className="text-[12.5px] text-[#666D7A] mt-0.5">{selectedTrigger.description}</p>
             </div>
             <button className="text-[#98A0AD] hover:text-[#666D7A]">
@@ -453,7 +453,7 @@ export default function WorkflowEditor({ initial }: Props) {
             </button>
           </div>
         ) : (
-          <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
+          <div className="bg-[#F4F6F9] br-card p-4">
             <p className="text-[12.5px] text-[#666D7A] mb-3">Choose what starts this workflow:</p>
             <div className="space-y-2">
               {TRIGGERS.map(trigger => (
@@ -462,11 +462,11 @@ export default function WorkflowEditor({ initial }: Props) {
                   onClick={() => { setTriggerType(trigger.value); setShowTriggerPicker(false) }}
                   className={`w-full text-left px-3 py-2.5 rounded-lg border transition-colors ${
                     triggerType === trigger.value
-                      ? 'bg-blue-50 border-blue-300'
+                      ? 'bg-[rgba(27,109,252,0.08)] border-[#9CC0FB]'
                       : 'border-[#E8EAEE] hover:border-[#E8EAEE] hover:bg-[#EFF1F4]/50'
                   }`}
                 >
-                  <p className={`text-sm font-medium ${triggerType === trigger.value ? 'text-blue-500' : 'text-[#141821]'}`}>
+                  <p className={`text-sm font-medium ${triggerType === trigger.value ? 'text-[#1B6DFC]' : 'text-[#141821]'}`}>
                     {trigger.label}
                   </p>
                   <p className="text-[12.5px] text-[#666D7A] mt-0.5">{trigger.description}</p>

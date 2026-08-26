@@ -228,19 +228,19 @@ export default async function NutritionEngineHealthPage({
                 <p className="text-[11px] text-[#666D7A] mt-0.5">Total requests</p>
               </div>
               <div>
-                <p className="text-2xl font-bold text-emerald-600 tabular-nums">{pct(passedFirst)}</p>
+                <p className="text-2xl font-bold text-[#177245] tabular-nums">{pct(passedFirst)}</p>
                 <p className="text-[11px] text-[#666D7A] mt-0.5">Passed first-pass Haiku</p>
               </div>
               <div>
-                <p className="text-2xl font-bold text-blue-600 tabular-nums">{pct(passedRetry + sonnetSucceeded)}</p>
+                <p className="text-2xl font-bold text-[#1560E0] tabular-nums">{pct(passedRetry + sonnetSucceeded)}</p>
                 <p className="text-[11px] text-[#666D7A] mt-0.5">Passed on retry / Sonnet</p>
               </div>
               <div>
-                <p className="text-2xl font-bold text-amber-600 tabular-nums">{pct(sonnetFailed)}</p>
+                <p className="text-2xl font-bold text-[#A96A12] tabular-nums">{pct(sonnetFailed)}</p>
                 <p className="text-[11px] text-[#666D7A] mt-0.5">Sonnet fell back to Haiku</p>
               </div>
               <div>
-                <p className="text-2xl font-bold text-red-600 tabular-nums">{pct(returned422)}</p>
+                <p className="text-2xl font-bold text-[#C82626] tabular-nums">{pct(returned422)}</p>
                 <p className="text-[11px] text-[#666D7A] mt-0.5">Returned 422 to coach</p>
               </div>
             </div>
@@ -268,12 +268,12 @@ export default async function NutritionEngineHealthPage({
                     {ruleRows.map(r => {
                       const isHigh = r.fire_rate > 0.25
                       return (
-                        <tr key={r.code} className={`border-b border-[#F4F6F9] ${isHigh ? 'bg-red-50/40' : ''}`}>
+                        <tr key={r.code} className={`border-b border-[#F4F6F9] ${isHigh ? 'bg-[#FDEDED]/40' : ''}`}>
                           <td className="py-2.5 pr-3 align-top">
                             <p className="font-mono text-[12.5px] text-[#141821]">{r.code}</p>
                           </td>
                           <td className="py-2.5 pr-3 align-top text-right tabular-nums text-[#666D7A]">{r.requests_with_fire}</td>
-                          <td className={`py-2.5 pr-3 align-top text-right tabular-nums font-semibold ${isHigh ? 'text-red-700' : 'text-[#141821]'}`}>
+                          <td className={`py-2.5 pr-3 align-top text-right tabular-nums font-semibold ${isHigh ? 'text-[#C82626]' : 'text-[#141821]'}`}>
                             {(r.fire_rate * 100).toFixed(1)}%
                           </td>
                           <td className="py-2.5 align-top text-[12.5px] text-[#666D7A] leading-relaxed">{r.humanised}</td>

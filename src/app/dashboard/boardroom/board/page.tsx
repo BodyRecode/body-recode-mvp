@@ -72,7 +72,7 @@ export default async function BoardPage() {
       />
 
       <div className="mb-6 flex items-center gap-3">
-        <span className="text-[9px] font-medium bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Live briefing</span>
+        <span className="text-[9px] font-medium bg-[#D8EFE1] text-[#177245] px-1.5 py-0.5 rounded">Live briefing</span>
         <span className="text-[11px] text-[#666D7A] font-mono">
           Synthesised from all 4 C-suite snapshots + your context
         </span>
@@ -86,7 +86,7 @@ export default async function BoardPage() {
         />
       </Suspense>
 
-      <div className="mb-8 bg-white border border-[#E8EAEE] rounded-xl p-5">
+      <div className="mb-8 br-card p-5">
         <h3 className="text-[11px] font-medium text-[#666D7A] mb-3">Board inputs</h3>
         <p className="text-[13px] text-[#141821] leading-relaxed mb-4">
           The Board sees everything the C-suite sees + your stated goals + current pre-launch blockers. It synthesises across silos. Individual C-suite views are for depth; the Board is for altitude.
@@ -99,7 +99,7 @@ export default async function BoardPage() {
         </div>
       </div>
 
-      <div className="mb-8 p-4 rounded-xl border border-blue-200 bg-blue-50 text-[13px] text-blue-900 leading-relaxed">
+      <div className="mb-8 p-4 rounded-xl border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)] text-[13px] text-[#0A46B2] leading-relaxed">
         <strong>Renaming:</strong> Board persona names are placeholders (David · Naomi · Rachel). Rename via
         <Link href="/dashboard/settings/tenant" className="mx-1 underline font-semibold">
           /dashboard/settings/tenant
@@ -107,7 +107,7 @@ export default async function BoardPage() {
         once tenant-config supports persona overrides (coming next pass).
       </div>
 
-      <Link href="/dashboard/boardroom" className="text-[12px] text-blue-600 hover:text-blue-700 underline">
+      <Link href="/dashboard/boardroom" className="text-[12px] text-[#1560E0] hover:text-[#1056D6] underline">
         ← Back to Boardroom
       </Link>
     </div>

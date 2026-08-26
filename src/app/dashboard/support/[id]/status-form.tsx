@@ -96,7 +96,7 @@ export default function TicketStatusForm({
         {filerIsKade && <span className="text-[11px] text-[#98A0AD]">(you filed this — no email sent)</span>}
       </label>
 
-      {error && <div className="text-[12.5px] text-red-600 mb-3">{error}</div>}
+      {error && <div className="text-[12.5px] text-[#C82626] mb-3">{error}</div>}
       {saved && <div className="text-[12.5px] text-[#4D5A41] mb-3">Saved.</div>}
 
       <button

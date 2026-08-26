@@ -51,7 +51,7 @@ export default function ContactEditor({ leadId, initialName, initialEmail, initi
           type="text"
           value={name}
           onChange={e => setName(e.target.value)}
-          className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-blue-500"
+          className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
         />
       </div>
       <div>
@@ -60,7 +60,7 @@ export default function ContactEditor({ leadId, initialName, initialEmail, initi
           type="email"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-blue-500"
+          className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
         />
       </div>
       <div>
@@ -70,14 +70,14 @@ export default function ContactEditor({ leadId, initialName, initialEmail, initi
           value={phone}
           onChange={e => setPhone(e.target.value)}
           placeholder="0412 345 678"
-          className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-500"
+          className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1B6DFC]"
         />
       </div>
       <div className="flex items-center gap-2">
         <button
           onClick={save}
           disabled={saving}
-          className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
+          className="flex items-center gap-1.5 bg-[#1B6DFC] hover:bg-[#1560E0] disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
         >
           <Check size={12} />
           {saving ? 'Saving...' : 'Save'}

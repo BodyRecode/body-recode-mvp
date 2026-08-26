@@ -11,10 +11,10 @@ const typeLabel: Record<string, string> = {
 }
 
 const statusConfig: Record<string, { label: string; icon: typeof Clock; colour: string }> = {
-  scheduled: { label: 'Scheduled', icon: Clock, colour: 'text-amber-700' },
-  completed: { label: 'Completed', icon: CheckCircle2, colour: 'text-blue-500' },
+  scheduled: { label: 'Scheduled', icon: Clock, colour: 'text-[#A96A12]' },
+  completed: { label: 'Completed', icon: CheckCircle2, colour: 'text-[#1B6DFC]' },
   cancelled: { label: 'Cancelled', icon: XCircle, colour: 'text-[#666D7A]' },
-  no_show: { label: 'No Show', icon: AlertCircle, colour: 'text-red-700' },
+  no_show: { label: 'No Show', icon: AlertCircle, colour: 'text-[#C82626]' },
 }
 
 export default async function BookingsPage() {
@@ -65,7 +65,7 @@ export default async function BookingsPage() {
               return (
                 <div
                   key={booking.id}
-                  className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 flex items-center gap-4"
+                  className="bg-[#F4F6F9] br-card p-4 flex items-center gap-4"
                 >
                   <div className="shrink-0 w-14 text-center">
                     <p className="text-lg font-bold text-[#141821] leading-none">
@@ -80,7 +80,7 @@ export default async function BookingsPage() {
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
-                      <span className="text-[12.5px] font-semibold text-blue-500">
+                      <span className="text-[12.5px] font-semibold text-[#1B6DFC]">
                         {typeLabel[booking.type]}
                       </span>
                       <span className="text-[#141821]">·</span>
@@ -101,7 +101,7 @@ export default async function BookingsPage() {
                     </div>
                     <Link
                       href={contactHref}
-                      className="text-sm font-medium text-[#141821] hover:text-blue-500 transition-colors truncate block"
+                      className="text-sm font-medium text-[#141821] hover:text-[#1B6DFC] transition-colors truncate block"
                     >
                       {Array.isArray(contact) ? contact[0]?.name : (contact as { name: string } | null)?.name ?? 'Unknown'}
                     </Link>
@@ -149,7 +149,7 @@ export default async function BookingsPage() {
               return (
                 <div
                   key={booking.id}
-                  className="bg-[#F4F6F9]/60 border border-[#E8EAEE] rounded-xl p-4 flex items-center gap-4 opacity-70"
+                  className="bg-[#F4F6F9]/60 br-card p-4 flex items-center gap-4 opacity-70"
                 >
                   <div className="shrink-0 w-14 text-center">
                     <p className="text-base font-bold text-[#666D7A] leading-none">
@@ -170,7 +170,7 @@ export default async function BookingsPage() {
                     </div>
                     <Link
                       href={contactHref}
-                      className="text-sm font-medium text-[#666D7A] hover:text-blue-500 transition-colors truncate block"
+                      className="text-sm font-medium text-[#666D7A] hover:text-[#1B6DFC] transition-colors truncate block"
                     >
                       {Array.isArray(contact) ? contact[0]?.name : (contact as { name: string } | null)?.name ?? 'Unknown'}
                     </Link>

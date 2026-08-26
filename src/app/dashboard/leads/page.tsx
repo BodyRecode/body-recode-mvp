@@ -93,7 +93,7 @@ export default async function LeadsPage({
                     className={`text-[11px] px-3 py-1.5 rounded-full border transition-colors ${
                       active
                         ? getLeadStatusColour(s)
-                        : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] bg-[#FFFFFF]'
+                        : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC] bg-[#FFFFFF]'
                     }`}
                   >
                     {getLeadStatusLabel(s)}
@@ -108,7 +108,7 @@ export default async function LeadsPage({
 
       {/* Leads list */}
       {allLeads.length === 0 ? (
-        <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl">
+        <div className="br-card">
           <EmptyState
             icon={Users}
             title="No leads yet"
@@ -121,7 +121,7 @@ export default async function LeadsPage({
             <Link
               key={lead.id}
               href={`/dashboard/leads/${lead.id}`}
-              className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-5 py-4 flex items-center justify-between hover:border-[#CFD4DC] transition-colors group"
+              className="br-card px-5 py-4 flex items-center justify-between br-card-hover transition-shadow group"
             >
               <div className="flex items-center gap-4 min-w-0">
                 <div className="relative shrink-0">

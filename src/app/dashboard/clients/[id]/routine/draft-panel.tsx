@@ -154,7 +154,7 @@ export default function DraftPanel({
         <button
           onClick={generate}
           disabled={busy || isPending || publishing || discarding}
-          className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold px-3 py-1.5 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-40"
+          className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold px-3 py-1.5 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-40"
         >
           {busy ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
           {busy ? 'Generating...' : draft ? 'Regenerate' : 'Generate from client data'}
@@ -162,7 +162,7 @@ export default function DraftPanel({
       </div>
 
       {busy && (
-        <div className="px-5 py-4 bg-blue-50 border-b border-[#E8EAEE]">
+        <div className="px-5 py-4 bg-[rgba(27,109,252,0.08)] border-b border-[#E8EAEE]">
           <p className="text-[12.5px] text-[#1B6DFC] leading-relaxed">
             Reading intake, body state, medications, and training schedule. Then writing morning + evening sequences tailored to {clientName}. Typical 40 to 90 seconds - the page is not frozen, please don&apos;t refresh.
           </p>
@@ -170,8 +170,8 @@ export default function DraftPanel({
       )}
 
       {error && (
-        <div className="px-5 py-3 bg-amber-50 border-b border-amber-200">
-          <p className="text-[12.5px] text-amber-800">{error}</p>
+        <div className="px-5 py-3 bg-[#FDF6E9] border-b border-[#F1DEB8]">
+          <p className="text-[12.5px] text-[#A96A12]">{error}</p>
         </div>
       )}
 
@@ -198,7 +198,7 @@ export default function DraftPanel({
             <button
               onClick={discard}
               disabled={discarding || publishing || busy}
-              className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-[#666D7A] hover:text-red-700 disabled:opacity-40 transition-colors"
+              className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-[#666D7A] hover:text-[#C82626] disabled:opacity-40 transition-colors"
             >
               <X size={12} />
               {discarding ? 'Discarding...' : 'Discard draft'}
@@ -206,7 +206,7 @@ export default function DraftPanel({
             <button
               onClick={publish}
               disabled={publishing || discarding || busy}
-              className="inline-flex items-center gap-1.5 text-[12.5px] font-medium px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] disabled:opacity-40 transition-colors"
+              className="inline-flex items-center gap-1.5 text-[12.5px] font-medium px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] disabled:opacity-40 transition-colors"
             >
               {publishing ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
               {publishing ? 'Publishing...' : hasLive ? 'Replace live routine' : 'Publish as live'}

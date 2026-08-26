@@ -43,7 +43,7 @@ export default function HermonyCoaching() {
         ].map((s, i) => (
           <div
             key={i}
-            className="relative bg-[#FAFBFD] border border-[#E8EAEE] rounded-xl p-5 overflow-hidden"
+            className="relative bg-[#FAFBFD] br-card p-5 overflow-hidden"
           >
             <div
               className="absolute top-5 left-5 w-7 h-[3px] rounded-full"

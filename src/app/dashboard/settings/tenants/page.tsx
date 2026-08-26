@@ -36,7 +36,7 @@ export default async function TenantsAdminPage() {
     return (
       <div className="max-w-[1100px]">
         <PageHeader eyebrow="Admin" title="All tenants" subtitle="Multi-tenant registry across the platform." />
-        <div className="p-4 rounded-xl border border-red-200 bg-red-50 text-red-900 text-[13px]">
+        <div className="p-4 rounded-xl border border-[#F5C9C9] bg-[#FDEDED] text-[#8A1919] text-[13px]">
           Error loading tenants: {error.message}
         </div>
       </div>
@@ -60,7 +60,7 @@ export default async function TenantsAdminPage() {
         <MetricPill label="Powered by BR" value={String(tenants.filter(t => t.licence?.poweredBy === true).length)} />
       </div>
 
-      <div className="bg-white border border-[#E8EAEE] rounded-xl overflow-hidden">
+      <div className="br-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-[13px]">
             <thead className="bg-[#FBFCFD] border-b border-[#E8EAEE]">
@@ -86,7 +86,7 @@ export default async function TenantsAdminPage() {
                     <div className="font-mono text-[12px] font-medium text-[#141821]">{t.licence?.tenantId ?? '—'}</div>
                     <div className="font-mono text-[10px] text-[#98A0AD] mt-1">{t.coach_id.slice(0, 8)}…</div>
                     {t.licence?.poweredBy && (
-                      <div className="inline-block mt-1 px-1.5 py-0.5 text-[9px] font-medium text-blue-700 bg-blue-50 rounded">
+                      <div className="inline-block mt-1 px-1.5 py-0.5 text-[9px] font-medium text-[#1056D6] bg-[rgba(27,109,252,0.08)] rounded">
                         Powered by BR
                       </div>
                     )}
@@ -129,7 +129,7 @@ export default async function TenantsAdminPage() {
       </div>
 
       <div className="mt-6 flex items-center gap-3 text-[12px] text-[#666D7A]">
-        <Link href="/dashboard/settings/tenant" className="text-blue-600 hover:text-blue-700 underline">
+        <Link href="/dashboard/settings/tenant" className="text-[#1560E0] hover:text-[#1056D6] underline">
           View my own tenant config →
         </Link>
       </div>

@@ -162,7 +162,7 @@ export function DoctrineParametersSection({
   }
 
   return (
-    <div className="mb-4 bg-white border border-[#E8EAEE] rounded-xl overflow-hidden">
+    <div className="mb-4 br-card overflow-hidden">
       <div className="px-5 py-3 border-b border-[#E8EAEE] bg-[#FBFCFD]">
         <h3 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Doctrine parameters (Mode A+)</h3>
       </div>
@@ -172,19 +172,19 @@ export function DoctrineParametersSection({
         </p>
 
         {error && (
-          <div className="mb-3 p-3 rounded-lg border border-red-200 bg-red-50 text-[12px] text-red-800">{error}</div>
+          <div className="mb-3 p-3 rounded-lg border border-[#F5C9C9] bg-[#FDEDED] text-[12px] text-[#A11D1D]">{error}</div>
         )}
         {success && (
-          <div className="mb-3 p-3 rounded-lg border border-green-200 bg-green-50 text-[12px] text-green-800">{success}</div>
+          <div className="mb-3 p-3 rounded-lg border border-[#CAE7D5] bg-[#EDF8F1] text-[12px] text-[#125C37]">{success}</div>
         )}
 
-        <div className="mb-5 p-4 rounded-lg border border-blue-100 bg-blue-50/40">
+        <div className="mb-5 p-4 rounded-lg border border-[#DDE9FD] bg-[rgba(27,109,252,0.08)]/40">
           <div className="text-[11px] font-medium text-[#666D7A] mb-1">Start from a preset</div>
           <p className="text-[11px] text-[#666D7A] leading-relaxed mb-2">Overwrites the current form values. Nothing is saved until you click Save; tune the loaded shape as you like.</p>
           <select
             defaultValue=""
             onChange={(e) => { applyPreset(e.target.value); e.target.value = '' }}
-            className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] bg-white focus:outline-none focus:ring-2 focus:ring-[#5390FF]"
             disabled={pending || previewPending}
           >
             <option value="" disabled>Choose a preset...</option>
@@ -204,7 +204,7 @@ export function DoctrineParametersSection({
               value={voiceTone}
               onChange={(e) => setVoiceTone(e.target.value)}
               placeholder="warm and grounded"
-              className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5390FF]"
               disabled={pending}
             />
           </Field>
@@ -218,7 +218,7 @@ export function DoctrineParametersSection({
               onChange={(e) => setBannedPhrasesText(e.target.value)}
               rows={4}
               placeholder="downregulate\nsympathetic dominance"
-              className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] font-mono focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] font-mono focus:outline-none focus:ring-2 focus:ring-[#5390FF]"
               disabled={pending}
             />
           </Field>
@@ -232,7 +232,7 @@ export function DoctrineParametersSection({
               onChange={(e) => setTerminologyText(e.target.value)}
               rows={4}
               placeholder="winding down => settling\ndownregulate => soften"
-              className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] font-mono focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] font-mono focus:outline-none focus:ring-2 focus:ring-[#5390FF]"
               disabled={pending}
             />
           </Field>
@@ -246,7 +246,7 @@ export function DoctrineParametersSection({
               onChange={(e) => setCheckinGuidance(e.target.value)}
               rows={3}
               placeholder="Emphasise breath awareness in every regulation cue. Never prescribe measurable metrics."
-              className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5390FF]"
               disabled={pending}
             />
           </Field>
@@ -260,7 +260,7 @@ export function DoctrineParametersSection({
               onChange={(e) => setProgramGuidance(e.target.value)}
               rows={3}
               placeholder="Prefer 4 sessions per week over 5. Always include one restorative session."
-              className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5390FF]"
               disabled={pending}
             />
           </Field>
@@ -274,7 +274,7 @@ export function DoctrineParametersSection({
               onChange={(e) => setNutritionGuidance(e.target.value)}
               rows={3}
               placeholder="Emphasise plant-forward proteins. Prefer whole-food-first substitutions."
-              className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5390FF]"
               disabled={pending}
             />
           </Field>
@@ -304,7 +304,7 @@ export function DoctrineParametersSection({
             <button
               type="submit"
               disabled={pending || previewPending || livePending}
-              className="px-4 py-2 rounded-md bg-blue-600 text-white text-[13px] font-semibold hover:bg-blue-700 disabled:opacity-40"
+              className="px-4 py-2 rounded-md bg-[#1560E0] text-white text-[13px] font-semibold hover:bg-[#1056D6] disabled:opacity-40"
             >
               {pending ? 'Saving…' : 'Save doctrine parameters'}
             </button>
@@ -322,13 +322,13 @@ function LivePreviewPanel({ live, onDismiss }: { live: LivePreviewResult; onDism
   const platformClean = live.meta.platformBannedHits.length === 0
   const partnerClean = live.meta.partnerBannedHits.length === 0
   return (
-    <div className="mt-5 border border-emerald-200 rounded-xl bg-emerald-50/30 overflow-hidden">
-      <div className="px-5 py-3 border-b border-emerald-200 bg-emerald-50 flex items-center justify-between">
+    <div className="mt-5 border border-[#CAE7D5] rounded-xl bg-[#EDF8F1]/30 overflow-hidden">
+      <div className="px-5 py-3 border-b border-[#CAE7D5] bg-[#EDF8F1] flex items-center justify-between">
         <h4 className="text-[12px] font-medium text-emerald-900">Live sample · one Anthropic call</h4>
         <button
           type="button"
           onClick={onDismiss}
-          className="text-[11px] text-emerald-700 hover:text-emerald-900 underline"
+          className="text-[11px] text-[#177245] hover:text-emerald-900 underline"
         >
           Dismiss
         </button>
@@ -355,20 +355,20 @@ function LivePreviewPanel({ live, onDismiss }: { live: LivePreviewResult; onDism
         </div>
 
         <div className="grid gap-3 md:grid-cols-3">
-          <div className={`p-3 rounded-md border ${platformClean ? 'border-emerald-200 bg-emerald-50/50' : 'border-red-200 bg-red-50'}`}>
+          <div className={`p-3 rounded-md border ${platformClean ? 'border-[#CAE7D5] bg-[#EDF8F1]/50' : 'border-[#F5C9C9] bg-[#FDEDED]'}`}>
             <div className="text-[11.5px] font-medium mb-1" style={{ color: platformClean ? '#047857' : '#b91c1c' }}>Platform audit</div>
             {platformClean ? (
               <div className="text-[11px] text-emerald-800">Clean · no platform-banned terms leaked</div>
             ) : (
-              <div className="text-[11px] text-red-800">Leaked: {live.meta.platformBannedHits.join(', ')}</div>
+              <div className="text-[11px] text-[#A11D1D]">Leaked: {live.meta.platformBannedHits.join(', ')}</div>
             )}
           </div>
-          <div className={`p-3 rounded-md border ${partnerClean ? 'border-emerald-200 bg-emerald-50/50' : 'border-red-200 bg-red-50'}`}>
+          <div className={`p-3 rounded-md border ${partnerClean ? 'border-[#CAE7D5] bg-[#EDF8F1]/50' : 'border-[#F5C9C9] bg-[#FDEDED]'}`}>
             <div className="text-[11.5px] font-medium mb-1" style={{ color: partnerClean ? '#047857' : '#b91c1c' }}>Partner audit</div>
             {partnerClean ? (
               <div className="text-[11px] text-emerald-800">Clean · none of your banned phrases fired</div>
             ) : (
-              <div className="text-[11px] text-red-800">Fired: {live.meta.partnerBannedHits.join(', ')}</div>
+              <div className="text-[11px] text-[#A11D1D]">Fired: {live.meta.partnerBannedHits.join(', ')}</div>
             )}
           </div>
           <div className="p-3 rounded-md border border-[#E8EAEE] bg-white">
@@ -397,13 +397,13 @@ function PreviewPanel({
   onDismiss: () => void
 }) {
   return (
-    <div className="mt-5 border border-blue-200 rounded-xl bg-blue-50/30 overflow-hidden">
-      <div className="px-5 py-3 border-b border-blue-200 bg-blue-50 flex items-center justify-between">
-        <h4 className="text-[12px] font-medium text-blue-900">Preview (deterministic - no LLM call)</h4>
+    <div className="mt-5 border border-[#B5CFFC] rounded-xl bg-[rgba(27,109,252,0.08)]/30 overflow-hidden">
+      <div className="px-5 py-3 border-b border-[#B5CFFC] bg-[rgba(27,109,252,0.08)] flex items-center justify-between">
+        <h4 className="text-[12px] font-medium text-[#0A46B2]">Preview (deterministic - no LLM call)</h4>
         <button
           type="button"
           onClick={onDismiss}
-          className="text-[11px] text-blue-700 hover:text-blue-900 underline"
+          className="text-[11px] text-[#1056D6] hover:text-[#0A46B2] underline"
         >
           Dismiss
         </button>
@@ -443,8 +443,8 @@ function PreviewPanel({
                   <div className="text-[10px] font-medium text-[#666D7A] mb-1">Before</div>
                   <p className="text-[12px] text-[#141821] leading-relaxed">{preview.substitutionDemo.before}</p>
                 </div>
-                <div className="p-3 rounded-md border border-blue-200 bg-blue-50/60">
-                  <div className="text-[10px] font-medium text-blue-700 mb-1">After (post-generation rewrite)</div>
+                <div className="p-3 rounded-md border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)]/60">
+                  <div className="text-[10px] font-medium text-[#1056D6] mb-1">After (post-generation rewrite)</div>
                   <p className="text-[12px] text-[#141821] leading-relaxed">{preview.substitutionDemo.after}</p>
                 </div>
               </div>
@@ -463,7 +463,7 @@ function PreviewPanel({
           ) : (
             <div className="flex flex-wrap gap-1.5">
               {preview.bannedPhraseDemo.hits.map((hit, i) => (
-                <span key={i} className="px-2 py-0.5 rounded-md bg-red-100 text-red-800 text-[11px] font-mono">{hit}</span>
+                <span key={i} className="px-2 py-0.5 rounded-md bg-[#FBDCDC] text-[#A11D1D] text-[11px] font-mono">{hit}</span>
               ))}
             </div>
           )}
@@ -478,7 +478,7 @@ function SummaryChip({ on, label }: { on: boolean; label: string }) {
     <span
       className={
         on
-          ? 'px-2 py-0.5 rounded-md bg-blue-100 text-blue-800 text-[11px] font-semibold'
+          ? 'px-2 py-0.5 rounded-md bg-[#DDE9FD] text-[#0B4FCB] text-[11px] font-semibold'
           : 'px-2 py-0.5 rounded-md bg-[#F4F6F9] text-[#666D7A] text-[11px]'
       }
     >

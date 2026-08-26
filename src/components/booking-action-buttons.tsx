@@ -175,7 +175,7 @@ export default function BookingActionButtons({
       {step === 'idle' && (
         <button
           onClick={openSlotPicker}
-          className="w-full text-left px-4 py-3 rounded-lg border border-[#E8EAEE] text-sm font-medium text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+          className="w-full text-left px-4 py-3 rounded-lg border border-[#E8EAEE] text-sm font-medium text-[#43474F] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC] transition-colors"
         >
           Book a call
         </button>
@@ -205,7 +205,7 @@ export default function BookingActionButtons({
                       <button
                         key={slot}
                         onClick={() => { setSelectedSlot(slot); setStep('confirming') }}
-                        className="px-3 py-1.5 text-[12.5px] font-medium rounded-md border border-[#E8EAEE] text-[#43474F] hover:border-blue-600 hover:text-blue-500 transition-colors"
+                        className="px-3 py-1.5 text-[12.5px] font-medium rounded-md border border-[#E8EAEE] text-[#43474F] hover:border-[#1560E0] hover:text-[#1B6DFC] transition-colors"
                       >
                         {formatTime(slot)}
                       </button>
@@ -218,7 +218,7 @@ export default function BookingActionButtons({
           <div className="mt-3 pt-3 border-t border-[#E8EAEE]">
             <button
               onClick={() => setStep('custom')}
-              className="text-[12.5px] text-blue-500 hover:text-blue-700 transition-colors font-medium"
+              className="text-[12.5px] text-[#1B6DFC] hover:text-[#1056D6] transition-colors font-medium"
             >
               + Pick a custom time (outside published availability)
             </button>
@@ -238,20 +238,20 @@ export default function BookingActionButtons({
               type="date"
               value={customDate}
               onChange={e => setCustomDate(e.target.value)}
-              className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-md px-3 py-2 text-[12.5px] text-[#141821] focus:outline-none focus:border-blue-600 transition-colors [color-scheme:dark]"
+              className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-md px-3 py-2 text-[12.5px] text-[#141821] focus:outline-none focus:border-[#1560E0] transition-colors [color-scheme:dark]"
             />
             <input
               type="time"
               value={customTime}
               onChange={e => setCustomTime(e.target.value)}
               step={900}
-              className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-md px-3 py-2 text-[12.5px] text-[#141821] focus:outline-none focus:border-blue-600 transition-colors [color-scheme:dark]"
+              className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-md px-3 py-2 text-[12.5px] text-[#141821] focus:outline-none focus:border-[#1560E0] transition-colors [color-scheme:dark]"
             />
           </div>
           <button
             onClick={confirmCustomBooking}
             disabled={!customDate || !customTime}
-            className="w-full px-4 py-2.5 rounded-lg bg-[#1B6DFC] hover:bg-[#5390FF] text-white text-sm font-bold transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="w-full px-4 py-2.5 rounded-lg bg-[#1B6DFC] hover:bg-[#1560E0] text-white text-sm font-bold transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Book {leadName.split(' ')[0]}
           </button>
@@ -268,7 +268,7 @@ export default function BookingActionButtons({
           <p className="text-[12.5px] text-[#666D7A] mb-4">{selectedTime} Brisbane · 30 min · {leadName}</p>
           <button
             onClick={confirmBooking}
-            className="w-full px-4 py-2.5 rounded-lg bg-[#1B6DFC] hover:bg-[#5390FF] text-white text-sm font-bold transition-colors"
+            className="w-full px-4 py-2.5 rounded-lg bg-[#1B6DFC] hover:bg-[#1560E0] text-white text-sm font-bold transition-colors"
           >
             Confirm
           </button>
@@ -282,14 +282,14 @@ export default function BookingActionButtons({
       )}
 
       {step === 'done' && (
-        <div className="px-4 py-3 rounded-lg border border-blue-500/20 bg-blue-500/5 text-sm font-medium text-blue-500">
+        <div className="px-4 py-3 rounded-lg border border-[#1B6DFC]/20 bg-[#1B6DFC]/5 text-sm font-medium text-[#1B6DFC]">
           Booked - confirmation sent to {leadEmail}
         </div>
       )}
 
       {step === 'error' && (
         <div className="space-y-2">
-          <div className="px-4 py-3 rounded-lg border border-red-200 bg-red-500/5 text-sm text-red-700">
+          <div className="px-4 py-3 rounded-lg border border-[#F5C9C9] bg-[#DC2626]/5 text-sm text-[#C82626]">
             {errorMsg || 'Something went wrong.'}
           </div>
           <button onClick={() => setStep('idle')} className="text-[12.5px] text-[#98A0AD] hover:text-[#43474F] transition-colors">Try again</button>
@@ -301,7 +301,7 @@ export default function BookingActionButtons({
         <button
           onClick={sendBookingLink}
           disabled={linkState === 'loading'}
-          className="w-full text-left px-4 py-3 rounded-lg border border-[#E8EAEE] text-sm font-medium text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
+          className="w-full text-left px-4 py-3 rounded-lg border border-[#E8EAEE] text-sm font-medium text-[#43474F] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
         >
           {linkState === 'loading' ? 'Sending...' : linkState === 'sent' ? 'Booking link sent ✓' : linkState === 'error' ? 'Failed to send' : 'Send booking link'}
         </button>
@@ -313,7 +313,7 @@ export default function BookingActionButtons({
           onClick={sendConfirmation}
           disabled={confirmState === 'loading' || !hasZoomDate}
           title={!hasZoomDate ? 'Book a call or set a Zoom date in Actions first' : undefined}
-          className="w-full text-left px-4 py-3 rounded-lg border border-[#E8EAEE] text-sm font-medium text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full text-left px-4 py-3 rounded-lg border border-[#E8EAEE] text-sm font-medium text-[#43474F] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {confirmState === 'loading' ? 'Sending...' : confirmState === 'sent' ? 'Confirmation sent ✓' : confirmState === 'error' ? (errorMsg || 'Failed to send') : 'Send booking confirmation'}
         </button>
@@ -324,7 +324,7 @@ export default function BookingActionButtons({
       )}
 
       {(linkState === 'error' || confirmState === 'error') && errorMsg && (
-        <p className="text-[12.5px] text-red-700">{errorMsg}</p>
+        <p className="text-[12.5px] text-[#C82626]">{errorMsg}</p>
       )}
     </div>
   )

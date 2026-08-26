@@ -63,7 +63,7 @@ export default function SendSupplementaryEmailButton({
       onClick={trigger}
       disabled={status === 'sending'}
       title="Email the 5-question follow-up intake link to the client"
-      className="inline-flex items-center gap-1.5 text-[12.5px] font-medium px-3 py-1.5 rounded-lg border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
+      className="inline-flex items-center gap-1.5 text-[12.5px] font-medium px-3 py-1.5 rounded-lg border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
     >
       {status === 'sending'
         ? <><Loader2 size={12} className="animate-spin" /> Sending…</>

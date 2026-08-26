@@ -40,10 +40,10 @@ export default function LeadTabs({ tabs, initial }: { tabs: LeadTab[]; initial?:
             >
               <span className="inline-flex items-center gap-1.5">
                 {tab.label}
-                {tab.alert && <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />}
+                {tab.alert && <span className="w-1.5 h-1.5 rounded-full bg-[#B7791F]" />}
                 {tab.badge != null && tab.badge !== '' && (
                   <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
-                    on ? 'bg-blue-50 text-[#1B6DFC]' : 'bg-[#F4F6F9] text-[#98A0AD]'
+                    on ? 'bg-[rgba(27,109,252,0.08)] text-[#1B6DFC]' : 'bg-[#F4F6F9] text-[#98A0AD]'
                   }`}>
                     {tab.badge}
                   </span>

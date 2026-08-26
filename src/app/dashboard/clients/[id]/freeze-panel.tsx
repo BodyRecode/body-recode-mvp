@@ -51,28 +51,28 @@ export default function FreezePanel({
 
   if (frozenAt) {
     return (
-      <div className="rounded-xl border border-amber-300 bg-amber-50 p-5">
-        <p className="text-sm font-semibold text-amber-900">Engagement paused</p>
-        <p className="text-[12.5px] text-amber-800 mt-1">
+      <div className="rounded-xl border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] p-5">
+        <p className="text-sm font-semibold text-[#8A5A14]">Engagement paused</p>
+        <p className="text-[12.5px] text-[#A96A12] mt-1">
           Frozen on {new Date(frozenAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}
           {freezeNotes ? ` · ${freezeNotes}` : ''}
         </p>
-        <p className="text-[12.5px] text-amber-800 mt-2">
+        <p className="text-[12.5px] text-[#A96A12] mt-2">
           Portal locked, all automated contact stopped, Stripe subscription cancelled, email suppressed.
           Everything reversible with one click.
         </p>
-        {error && <p className="text-[12.5px] text-red-700 bg-red-50 border border-red-200 rounded-md px-3 py-2 mt-3">{error}</p>}
+        {error && <p className="text-[12.5px] text-[#C82626] bg-[#FDEDED] border border-[#F5C9C9] rounded-md px-3 py-2 mt-3">{error}</p>}
         {steps && (
           <ul className="text-[12.5px] space-y-1 mt-3">
             {steps.map((s, i) => (
-              <li key={i} className={s.done ? 'text-amber-800' : 'text-red-700'}>
+              <li key={i} className={s.done ? 'text-[#A96A12]' : 'text-[#C82626]'}>
                 {s.done ? '✓' : '!'} {s.step}{s.detail ? ` · ${s.detail}` : ''}
               </li>
             ))}
           </ul>
         )}
         <div className="mt-3">
-          <button onClick={unfreeze} disabled={busy} className="px-4 py-2 rounded-lg text-[12.5px] font-medium bg-amber-600 text-white hover:bg-amber-700 disabled:opacity-40 transition-colors">
+          <button onClick={unfreeze} disabled={busy} className="px-4 py-2 rounded-lg text-[12.5px] font-medium bg-[#A96A12] text-white hover:bg-[#A96A12] disabled:opacity-40 transition-colors">
             {busy ? 'Unfreezing…' : 'Unfreeze'}
           </button>
         </div>
@@ -113,7 +113,7 @@ export default function FreezePanel({
               Same lockout as offboarding, none of the finality. Their file stays intact. Reverse in one click.
             </p>
           </div>
-          <button onClick={() => setOpen(true)} className="flex-none px-4 py-2 rounded-lg text-[12.5px] font-medium bg-amber-100 text-amber-800 hover:bg-amber-200 transition-colors">
+          <button onClick={() => setOpen(true)} className="flex-none px-4 py-2 rounded-lg text-[12.5px] font-medium bg-[#FAEFD8] text-[#A96A12] hover:bg-[#F1DEB8] transition-colors">
             Freeze
           </button>
         </div>
@@ -148,11 +148,11 @@ export default function FreezePanel({
             </p>
           </div>
 
-          {error && <p className="text-[12.5px] text-red-700 bg-red-50 border border-red-200 rounded-md px-3 py-2">{error}</p>}
+          {error && <p className="text-[12.5px] text-[#C82626] bg-[#FDEDED] border border-[#F5C9C9] rounded-md px-3 py-2">{error}</p>}
           {steps && (
             <ul className="text-[12.5px] space-y-1">
               {steps.map((s, i) => (
-                <li key={i} className={s.done ? 'text-[#666D7A]' : 'text-amber-700'}>
+                <li key={i} className={s.done ? 'text-[#666D7A]' : 'text-[#A96A12]'}>
                   {s.done ? '✓' : '!'} {s.step}{s.detail ? ` · ${s.detail}` : ''}
                 </li>
               ))}
@@ -160,7 +160,7 @@ export default function FreezePanel({
           )}
 
           <div className="flex gap-2">
-            <button onClick={freeze} disabled={busy} className="px-4 py-2 rounded-lg text-[12.5px] font-medium bg-amber-600 text-white hover:bg-amber-700 disabled:opacity-40 transition-colors">
+            <button onClick={freeze} disabled={busy} className="px-4 py-2 rounded-lg text-[12.5px] font-medium bg-[#A96A12] text-white hover:bg-[#A96A12] disabled:opacity-40 transition-colors">
               {busy ? 'Freezing…' : 'Freeze'}
             </button>
             <button onClick={() => { setOpen(false); setError(null) }} disabled={busy} className="px-4 py-2 rounded-lg text-[12.5px] font-medium bg-[#F4F6F9] text-[#141821] hover:bg-[#EFF1F4] transition-colors">

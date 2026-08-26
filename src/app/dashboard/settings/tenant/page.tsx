@@ -104,11 +104,11 @@ export default async function TenantSettingsPage({
           <ReadOnlyCard title="Licence" fields={licenceFields(displayed.licence)} />
           <ReadOnlyCard title="Modality" fields={modalityFields(displayed.modality)} />
 
-          <div className="mt-6 p-4 rounded-xl border border-amber-200 bg-amber-50 text-[13px] text-amber-900 leading-relaxed">
+          <div className="mt-6 p-4 rounded-xl border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] text-[13px] text-[#8A5A14] leading-relaxed">
             <strong>Read-only:</strong> no tenant_config row exists for your coach_id yet. Values shown are the in-code fallback from
-            <code className="mx-1 bg-amber-100 px-1 py-0.5 rounded text-[12px]">src/config/tenant.ts</code>.
+            <code className="mx-1 bg-[#FAEFD8] px-1 py-0.5 rounded text-[12px]">src/config/tenant.ts</code>.
             To enable editing, ensure a row exists in the
-            <code className="mx-1 bg-amber-100 px-1 py-0.5 rounded text-[12px]">tenant_config</code>
+            <code className="mx-1 bg-[#FAEFD8] px-1 py-0.5 rounded text-[12px]">tenant_config</code>
             table with your coach_id.
           </div>
         </>
@@ -135,8 +135,8 @@ function StatusBanner({
     : { label: 'In-code only', tone: 'stone' as const, detail: 'NEXT_PUBLIC_TENANT_DB_ENABLED=false — flip to true to activate DB path' }
 
   const toneStyles = {
-    green: 'bg-green-50 border-green-200 text-green-900',
-    amber: 'bg-amber-50 border-amber-200 text-amber-900',
+    green: 'bg-[#EDF8F1] border-[#CAE7D5] text-[#0F4A2D]',
+    amber: 'bg-[#FDF6E9] border-[#F1DEB8] text-[#8A5A14]',
     stone: 'bg-[#FBFCFD] border-[#E8EAEE] text-[#141821]',
   }[status.tone]
 
@@ -145,7 +145,7 @@ function StatusBanner({
       <div className="flex items-center gap-3 mb-1">
         <span className="text-[12px] font-medium">{status.label}</span>
         <span className="text-[11px] font-mono opacity-70">tenant_id: {tenantId}</span>
-        {canEdit && <span className="text-[11.5px] font-medium bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">Editable</span>}
+        {canEdit && <span className="text-[11.5px] font-medium bg-[#DDE9FD] text-[#1056D6] px-1.5 py-0.5 rounded">Editable</span>}
       </div>
       <p className="text-[13px] leading-relaxed">{status.detail}</p>
     </div>
@@ -160,7 +160,7 @@ function ReadOnlyCard({
   fields: Array<{ label: string; value: string }>
 }) {
   return (
-    <div className="mb-4 bg-white border border-[#E8EAEE] rounded-xl overflow-hidden">
+    <div className="mb-4 br-card overflow-hidden">
       <div className="px-5 py-3 border-b border-[#E8EAEE] bg-[#FBFCFD]">
         <h3 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">{title}</h3>
       </div>

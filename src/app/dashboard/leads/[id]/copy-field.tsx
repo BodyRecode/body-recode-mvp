@@ -19,7 +19,7 @@ export default function CopyField({ value, label }: { value: string; label?: str
     >
       <span className="truncate">{value}</span>
       {copied
-        ? <Check size={12} className="text-green-600 shrink-0" />
+        ? <Check size={12} className="text-[#177245] shrink-0" />
         : <Copy size={12} className="opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />}
     </button>
   )

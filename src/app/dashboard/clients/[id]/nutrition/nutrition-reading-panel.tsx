@@ -177,8 +177,8 @@ export default function NutritionReadingPanel({
             disabled={generating || isPending}
             className={`inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
               generated
-                ? 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
-                : 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#5390FF] border border-[#1B6DFC]'
+                ? 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC]'
+                : 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#1560E0] border border-[#1B6DFC]'
             }`}
           >
             {generating ? <Loader2 size={13} className="animate-spin" /> : <Sparkles size={13} />}
@@ -188,7 +188,7 @@ export default function NutritionReadingPanel({
             <button
               onClick={togglePublish}
               disabled={publishing || isPending}
-              className="inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
             >
               {publishing ? <Loader2 size={13} className="animate-spin" /> : (published ? <EyeOff size={13} /> : <Eye size={13} />)}
               {publishing ? 'Updating...' : (published ? 'Unpublish' : 'Republish')}
@@ -199,21 +199,21 @@ export default function NutritionReadingPanel({
 
       {lintFindings.length > 0 && (
 
-        <div className="mb-3 rounded-xl border border-red-300 bg-red-50 p-4">
+        <div className="mb-3 rounded-xl border border-[#EFAFAF] bg-[#FDEDED] p-4">
 
-          <p className="text-[12.5px] font-medium text-red-900">Not published</p>
+          <p className="text-[12.5px] font-medium text-[#8A1919]">Not published</p>
 
-          <p className="text-[12.5px] text-red-800 mt-1">These have to be fixed before the client can see this. Edit the section or regenerate.</p>
+          <p className="text-[12.5px] text-[#A11D1D] mt-1">These have to be fixed before the client can see this. Edit the section or regenerate.</p>
 
           <ul className="mt-2 space-y-2">
 
             {lintFindings.map((f, i) => (
 
-              <li key={i} className="text-[12.5px] text-red-800">
+              <li key={i} className="text-[12.5px] text-[#A11D1D]">
 
                 <span className="font-semibold">{f.message}</span>
 
-                {f.excerpt && <span className="block mt-0.5 italic text-red-700">&ldquo;{f.excerpt}&rdquo;</span>}
+                {f.excerpt && <span className="block mt-0.5 italic text-[#C82626]">&ldquo;{f.excerpt}&rdquo;</span>}
 
               </li>
 
@@ -227,7 +227,7 @@ export default function NutritionReadingPanel({
 
 
       {error && (
-        <div className="bg-[#FEF6E7] border border-[#F0DCB4] rounded-lg px-3 py-2 text-[12px] text-[#8A5A14] mb-3">
+        <div className="bg-[#FDF6E9] border border-[#F1DEB8] rounded-lg px-3 py-2 text-[12px] text-[#8A5A14] mb-3">
           {error}
         </div>
       )}
@@ -242,7 +242,7 @@ export default function NutritionReadingPanel({
       )}
 
       {!generated ? (
-        <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-8 text-center">
+        <div className="br-card p-8 text-center">
           <p className="text-[#666D7A] text-[14px] mb-2">No Nutrition Reading yet</p>
           <p className="text-[#98A0AD] text-[12px]">
             Click Generate &amp; Publish. The reading appears at the top of the client&apos;s nutrition plan and an email is sent to let them know the new plan is ready.
@@ -252,7 +252,7 @@ export default function NutritionReadingPanel({
           </p>
         </div>
       ) : (
-        <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden mb-3">
+        <div className="br-card overflow-hidden mb-3">
           <div className="flex items-center justify-between px-5 py-3 border-b border-[#E8EAEE] flex-wrap gap-2">
             <p
               className="text-[11px] text-[#98A0AD]"
@@ -272,7 +272,7 @@ export default function NutritionReadingPanel({
                   portalUrl={`/portal/${clientToken}/my-plan/reading`}
                   title="Nutrition Reading — Document"
                   triggerLabel="Document"
-                  triggerClassName="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+                  triggerClassName="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC] transition-colors"
                 />
               )}
             </div>
@@ -338,7 +338,7 @@ function CoachGuidance({ planId, initial }: { planId: string; initial: string | 
   }
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden mb-3">
+    <div className="br-card overflow-hidden mb-3">
       <button
         onClick={() => setOpen(o => !o)}
         className="w-full flex items-center justify-between gap-3 px-5 py-3 hover:bg-[#EFF1F4]/40 transition-colors text-left"
@@ -387,7 +387,7 @@ function CoachGuidance({ planId, initial }: { planId: string; initial: string | 
               disabled={!dirty || saving || isPending}
               className={`inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
                 dirty
-                  ? 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#5390FF] border border-[#1B6DFC]'
+                  ? 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#1560E0] border border-[#1B6DFC]'
                   : 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#666D7A]'
               }`}
             >
@@ -501,14 +501,14 @@ function EditableSection({
             <button
               onClick={cancel}
               disabled={saving}
-              className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E8EAEE] text-[#666D7A] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50 transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E8EAEE] text-[#666D7A] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] transition-colors disabled:opacity-50"
             >
               <X size={11} /> Cancel
             </button>
             <button
               onClick={save}
               disabled={saving || isPending || draft === (value ?? '')}
-              className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-md bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#5390FF] border border-[#1B6DFC] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-md bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#1560E0] border border-[#1B6DFC] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {saving ? <Loader2 size={11} className="animate-spin" /> : <Check size={11} />}
               {saving ? 'Saving' : 'Save'}

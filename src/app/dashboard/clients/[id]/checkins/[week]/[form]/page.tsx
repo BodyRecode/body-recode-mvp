@@ -72,7 +72,7 @@ export default async function CheckInDetailPage({
         </div>
 
         <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
-          <p className="text-[12.5px] font-medium text-blue-500 mb-1">
+          <p className="text-[12.5px] font-medium text-[#1B6DFC] mb-1">
             Week {weekNumber} · Form {formType}
           </p>
           <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em] tracking-tight">{client.name}</h1>
@@ -97,7 +97,7 @@ export default async function CheckInDetailPage({
             const answered = section.questions.filter(q => responses[q.id])
             if (answered.length === 0) return null
             return (
-              <div key={section.title} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+              <div key={section.title} className="bg-[#F4F6F9] br-card p-5">
                 <p className="text-[12px] font-medium text-[#666D7A] mb-4">{section.title}</p>
                 <div className="space-y-5">
                   {answered.map(q => (

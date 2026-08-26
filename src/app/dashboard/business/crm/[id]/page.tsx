@@ -71,13 +71,13 @@ export default async function CRMContactPage({ params }: { params: Promise<{ id:
       </div>
 
       {/* Contact info */}
-      <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5 mb-4">
+      <div className="bg-[#F4F6F9] br-card p-5 mb-4">
         <h2 className="text-[12.5px] font-semibold text-[#666D7A] mb-4">Contact</h2>
         <div className="space-y-3">
           {lead.email && (
             <div className="flex items-center gap-3">
               <Mail size={14} className="text-[#666D7A] shrink-0" />
-              <a href={`mailto:${lead.email}`} className="text-sm text-[#141821] hover:text-blue-500 transition-colors">
+              <a href={`mailto:${lead.email}`} className="text-sm text-[#141821] hover:text-[#1B6DFC] transition-colors">
                 {lead.email}
               </a>
             </div>
@@ -85,7 +85,7 @@ export default async function CRMContactPage({ params }: { params: Promise<{ id:
           {lead.phone && (
             <div className="flex items-center gap-3">
               <Phone size={14} className="text-[#666D7A] shrink-0" />
-              <a href={`tel:${lead.phone}`} className="text-sm text-[#141821] hover:text-blue-500 transition-colors">
+              <a href={`tel:${lead.phone}`} className="text-sm text-[#141821] hover:text-[#1B6DFC] transition-colors">
                 {lead.phone}
               </a>
             </div>
@@ -103,7 +103,7 @@ export default async function CRMContactPage({ params }: { params: Promise<{ id:
       </div>
 
       {/* Pipeline stage */}
-      <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5 mb-4">
+      <div className="bg-[#F4F6F9] br-card p-5 mb-4">
         <h2 className="text-[12.5px] font-semibold text-[#666D7A] mb-4">Pipeline Stage</h2>
 
         {/* Progress bar */}
@@ -112,7 +112,7 @@ export default async function CRMContactPage({ params }: { params: Promise<{ id:
             <div
               key={stage}
               className={`h-1.5 flex-1 rounded-full transition-colors ${
-                i <= currentStageIndex ? 'bg-blue-500' : 'bg-[#EFF1F4]'
+                i <= currentStageIndex ? 'bg-[#1B6DFC]' : 'bg-[#EFF1F4]'
               }`}
             />
           ))}
@@ -137,7 +137,7 @@ export default async function CRMContactPage({ params }: { params: Promise<{ id:
 
       {/* Quick links */}
       {lead.check_in_answers && Object.keys(lead.check_in_answers as object).length > 0 && (
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5 mb-4">
+        <div className="bg-[#F4F6F9] br-card p-5 mb-4">
           <h2 className="text-[12.5px] font-semibold text-[#666D7A] mb-4">Quick Links</h2>
           <div className="flex flex-wrap gap-2">
             <Link
@@ -163,7 +163,7 @@ export default async function CRMContactPage({ params }: { params: Promise<{ id:
             {lead.converted_to_client_id && (
               <Link
                 href={`/dashboard/clients/${lead.converted_to_client_id}`}
-                className="flex items-center gap-1.5 text-[12.5px] text-blue-500 hover:text-blue-700 border border-blue-200 hover:border-blue-500/60 px-3 py-1.5 rounded-lg transition-colors"
+                className="flex items-center gap-1.5 text-[12.5px] text-[#1B6DFC] hover:text-[#1056D6] border border-[#B5CFFC] hover:border-[#1B6DFC]/60 px-3 py-1.5 rounded-lg transition-colors"
               >
                 <ArrowUpRight size={12} />
                 View Client Profile
@@ -174,7 +174,7 @@ export default async function CRMContactPage({ params }: { params: Promise<{ id:
       )}
 
       {/* Notes */}
-      <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+      <div className="bg-[#F4F6F9] br-card p-5">
         <h2 className="text-[12.5px] font-semibold text-[#666D7A] mb-4">Notes</h2>
         <NotesEditor leadId={lead.id} initialNotes={lead.notes || ''} />
       </div>

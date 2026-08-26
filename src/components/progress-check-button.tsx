@@ -64,7 +64,7 @@ export default function ProgressCheckButton({
         className={`inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-60 ${
           status === 'sent'
             ? 'border border-[#B5CFFC] bg-[rgba(27,109,252,0.10)] text-[#1B6DFC]'
-            : 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
+            : 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC]'
         }`}
         title="Email the client a short re-assessment so the Progress Read can re-score her body state."
       >

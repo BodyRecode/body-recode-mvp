@@ -14,18 +14,18 @@ export default function BriefCard({ summary, scopeFlags }: { summary: BriefSumma
   const qualityColour = summary.quality === 'RED' ? '#DC2626' : summary.quality === 'YELLOW' ? '#D97706' : '#16A34A'
 
   return (
-    <div className="bg-white border border-[#E8EAEE] rounded-xl overflow-hidden mb-4">
+    <div className="br-card overflow-hidden mb-4">
       {/* Scope — always first when present */}
       {scopeFlags.length > 0 && (
-        <div className="bg-amber-50 border-b border-amber-200 px-5 py-3.5">
-          <p className="text-[11px] font-medium text-amber-900 mb-2 flex items-center gap-1.5">
+        <div className="bg-[#FDF6E9] border-b border-[#F1DEB8] px-5 py-3.5">
+          <p className="text-[11px] font-medium text-[#8A5A14] mb-2 flex items-center gap-1.5">
             <AlertTriangle size={12} /> Outside scope · ask, note, do not interpret
           </p>
           <div className="space-y-1.5">
             {scopeFlags.map(f => (
-              <div key={f.flag} className="text-[13px] text-amber-900 leading-snug">
+              <div key={f.flag} className="text-[13px] text-[#8A5A14] leading-snug">
                 <span className="font-semibold">{f.flag}</span>
-                <span className="text-amber-800"> — {f.route}</span>
+                <span className="text-[#A96A12]"> — {f.route}</span>
               </div>
             ))}
           </div>
@@ -55,12 +55,12 @@ export default function BriefCard({ summary, scopeFlags }: { summary: BriefSumma
           </p>
           <div className="mt-1 space-y-0.5">
             {summary.approachLine && (
-              <p className={`text-[12px] leading-snug ${summary.approachFlagged ? 'text-red-700' : 'text-[#666D7A]'}`}>
+              <p className={`text-[12px] leading-snug ${summary.approachFlagged ? 'text-[#C82626]' : 'text-[#666D7A]'}`}>
                 When stuck: &quot;{summary.approachLine}&quot;
               </p>
             )}
             {summary.investmentLine && (
-              <p className={`text-[12px] leading-snug ${summary.investmentFlagged ? 'text-red-700' : 'text-[#666D7A]'}`}>
+              <p className={`text-[12px] leading-snug ${summary.investmentFlagged ? 'text-[#C82626]' : 'text-[#666D7A]'}`}>
                 Investment: &quot;{summary.investmentLine}&quot;
               </p>
             )}
@@ -71,7 +71,7 @@ export default function BriefCard({ summary, scopeFlags }: { summary: BriefSumma
         <div>
           <p className="text-[10px] font-medium text-[#98A0AD] mb-1.5">Offer</p>
           {summary.doNotPitch && (
-            <p className="inline-flex items-center gap-1.5 text-[12px] font-medium text-red-700 mb-1">
+            <p className="inline-flex items-center gap-1.5 text-[12px] font-medium text-[#C82626] mb-1">
               <Ban size={12} /> Do not pitch 1:1
             </p>
           )}

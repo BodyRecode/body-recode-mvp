@@ -79,7 +79,7 @@ export default async function TenantsHealthPage() {
       <div className="max-w-[1200px]">
         <PageHeader eyebrow="Settings · Tenants Health" title="Tenants Health" accent="amber" />
         <Card>
-          <div className="text-red-700 text-[13px]">Failed to load tenants: {tenantsErr.message}</div>
+          <div className="text-[#C82626] text-[13px]">Failed to load tenants: {tenantsErr.message}</div>
         </Card>
       </div>
     )
@@ -252,11 +252,11 @@ function TenantRow({
         <div className="text-[10px] text-[#666D7A]">{coachEmail}</div>
       </td>
       <td className="px-4 py-3 align-top">
-        <span className={lastLoginStale ? 'text-amber-700' : 'text-[#141821]'}>{lastLoginText}</span>
+        <span className={lastLoginStale ? 'text-[#A96A12]' : 'text-[#141821]'}>{lastLoginText}</span>
       </td>
       <td className="px-4 py-3 align-top">
         <div className="flex items-center gap-2 text-[12px]">
-          <span className={capFull ? 'font-bold text-red-700' : capWarn ? 'font-bold text-amber-700' : 'text-[#141821]'}>
+          <span className={capFull ? 'font-bold text-[#C82626]' : capWarn ? 'font-bold text-[#A96A12]' : 'text-[#141821]'}>
             {activeClients} / {cap}
           </span>
         </div>
@@ -305,7 +305,7 @@ function SignalDot({ on, label }: { on: boolean; label: string }) {
   if (on) {
     return (
       <span className="inline-flex items-center gap-1.5">
-        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+        <CheckCircle2 className="w-3.5 h-3.5 text-[#177245]" />
         <span className="text-[11px] text-[#141821]">{label}</span>
       </span>
     )

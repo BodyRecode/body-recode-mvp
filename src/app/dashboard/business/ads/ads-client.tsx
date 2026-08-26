@@ -23,7 +23,7 @@ const PLATFORM_LABELS: Record<string, string> = {
 }
 
 const PLATFORM_COLORS: Record<string, string> = {
-  meta: 'bg-blue-50 text-blue-700 border-blue-500/20',
+  meta: 'bg-[rgba(27,109,252,0.08)] text-[#1056D6] border-[#1B6DFC]/20',
   google: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
 }
 
@@ -110,7 +110,7 @@ export default function AdsClient({ initialCampaigns }: Props) {
           <select
             value={form.platform ?? 'meta'}
             onChange={e => setForm(f => ({ ...f, platform: e.target.value as 'meta' | 'google' }))}
-            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
           >
             <option value="meta">Meta</option>
             <option value="google">Google</option>
@@ -123,7 +123,7 @@ export default function AdsClient({ initialCampaigns }: Props) {
             value={form.name ?? ''}
             onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
             placeholder="e.g. Body Recode Jan"
-            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1B6DFC]"
           />
         </div>
       </div>
@@ -136,7 +136,7 @@ export default function AdsClient({ initialCampaigns }: Props) {
             step="0.01"
             value={form.spend ?? 0}
             onChange={e => setForm(f => ({ ...f, spend: parseFloat(e.target.value) || 0 }))}
-            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
           />
         </div>
         <div>
@@ -146,7 +146,7 @@ export default function AdsClient({ initialCampaigns }: Props) {
             min="0"
             value={form.leads_count ?? 0}
             onChange={e => setForm(f => ({ ...f, leads_count: parseInt(e.target.value) || 0 }))}
-            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
           />
         </div>
       </div>
@@ -157,7 +157,7 @@ export default function AdsClient({ initialCampaigns }: Props) {
             type="date"
             value={form.date_from ?? ''}
             onChange={e => setForm(f => ({ ...f, date_from: e.target.value || null }))}
-            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
           />
         </div>
         <div>
@@ -166,14 +166,14 @@ export default function AdsClient({ initialCampaigns }: Props) {
             type="date"
             value={form.date_to ?? ''}
             onChange={e => setForm(f => ({ ...f, date_to: e.target.value || null }))}
-            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
           />
         </div>
       </div>
       {/* Live CPL preview */}
       {(form.spend ?? 0) > 0 && (form.leads_count ?? 0) > 0 && (
         <p className="text-[12.5px] text-[#666D7A]">
-          CPL: <span className="text-blue-500 font-semibold">${cpl(form.spend ?? 0, form.leads_count ?? 0)}</span>
+          CPL: <span className="text-[#1B6DFC] font-semibold">${cpl(form.spend ?? 0, form.leads_count ?? 0)}</span>
         </p>
       )}
     </div>
@@ -189,7 +189,7 @@ export default function AdsClient({ initialCampaigns }: Props) {
         </div>
         <button
           onClick={() => { setShowForm(true); setEditingId(null); setForm(empty()) }}
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-[#1B6DFC] hover:bg-[#1560E0] text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
         >
           <Plus size={15} />
           Add Campaign
@@ -199,15 +199,15 @@ export default function AdsClient({ initialCampaigns }: Props) {
       {/* Summary cards */}
       {campaigns.length > 0 && (
         <div className="grid grid-cols-3 gap-3 mb-6">
-          <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
+          <div className="bg-[#F4F6F9] br-card p-4">
             <p className="text-[12.5px] text-[#666D7A] mb-1">Total Spend</p>
             <p className="text-xl font-semibold">${totalSpend.toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
           </div>
-          <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
+          <div className="bg-[#F4F6F9] br-card p-4">
             <p className="text-[12.5px] text-[#666D7A] mb-1">Total Leads</p>
             <p className="text-xl font-semibold">{totalLeads}</p>
           </div>
-          <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
+          <div className="bg-[#F4F6F9] br-card p-4">
             <p className="text-[12.5px] text-[#666D7A] mb-1">Avg CPL</p>
             <p className="text-xl font-semibold">{totalCpl !== '-' ? `$${totalCpl}` : '-'}</p>
           </div>
@@ -216,14 +216,14 @@ export default function AdsClient({ initialCampaigns }: Props) {
 
       {/* New campaign form */}
       {showForm && (
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5 mb-4">
+        <div className="bg-[#F4F6F9] br-card p-5 mb-4">
           <h2 className="text-sm font-semibold mb-4">New Campaign</h2>
           <FormFields />
           <div className="flex items-center gap-2 mt-4">
             <button
               onClick={saveNew}
               disabled={saving || !form.name?.trim()}
-              className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 bg-[#1B6DFC] hover:bg-[#1560E0] disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
             >
               <Check size={12} />
               {saving ? 'Saving...' : 'Save Campaign'}
@@ -253,7 +253,7 @@ export default function AdsClient({ initialCampaigns }: Props) {
       ) : (
         <div className="space-y-3">
           {campaigns.map(campaign => (
-            <div key={campaign.id} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+            <div key={campaign.id} className="bg-[#F4F6F9] br-card p-5">
               {editingId === campaign.id ? (
                 <>
                   <FormFields />
@@ -261,7 +261,7 @@ export default function AdsClient({ initialCampaigns }: Props) {
                     <button
                       onClick={saveEdit}
                       disabled={saving}
-                      className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
+                      className="flex items-center gap-1.5 bg-[#1B6DFC] hover:bg-[#1560E0] disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
                     >
                       <Check size={12} />
                       {saving ? 'Saving...' : 'Save'}
@@ -301,7 +301,7 @@ export default function AdsClient({ initialCampaigns }: Props) {
                       </div>
                       <div>
                         <p className="text-[12.5px] text-[#666D7A]">CPL</p>
-                        <p className="text-sm font-semibold text-blue-500">
+                        <p className="text-sm font-semibold text-[#1B6DFC]">
                           {cpl(campaign.spend ?? 0, campaign.leads_count ?? 0) !== '-'
                             ? `$${cpl(campaign.spend ?? 0, campaign.leads_count ?? 0)}`
                             : '-'}
@@ -319,7 +319,7 @@ export default function AdsClient({ initialCampaigns }: Props) {
                     <button
                       onClick={() => deleteCampaign(campaign.id)}
                       disabled={deletingId === campaign.id}
-                      className="p-1.5 text-[#666D7A] hover:text-red-700 transition-colors disabled:opacity-50"
+                      className="p-1.5 text-[#666D7A] hover:text-[#C82626] transition-colors disabled:opacity-50"
                     >
                       <Trash2 size={13} />
                     </button>

@@ -25,7 +25,7 @@ function Row({ label, value }: { label: string; value: unknown }) {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5 mb-4">
+    <div className="bg-[#F4F6F9] br-card p-5 mb-4">
       <p className="text-[12.5px] font-medium text-[#666D7A] mb-3">{title}</p>
       {children}
     </div>
@@ -117,7 +117,7 @@ export default async function IntakeViewPage({ params }: { params: Promise<{ id:
       </div>
 
       {!intake ? (
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+        <div className="bg-[#F4F6F9] br-card p-5">
           <p className="text-[#666D7A] text-sm">Intake not yet submitted.</p>
         </div>
       ) : (

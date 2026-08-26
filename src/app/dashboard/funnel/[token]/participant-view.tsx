@@ -280,7 +280,7 @@ export default function ParticipantView({
             return (
               <div key={d} className="flex flex-col items-center" style={{ width: '7.14%' }}>
                 <div
-                  className={`w-2 h-2 rounded-full ${isToday ? 'ring-2 ring-blue-500 ring-offset-1' : ''}`}
+                  className={`w-2 h-2 rounded-full ${isToday ? 'ring-2 ring-[#1B6DFC] ring-offset-1' : ''}`}
                   style={{ background: isPast ? '#1B6DFC' : '#E8EAEE' }}
                 />
                 <span className={`text-[9px] font-bold mt-1 ${isMilestone ? 'text-[#141821]' : 'text-[#98A0AD]'}`} style={{ fontVariantNumeric: 'tabular-nums' }}>
@@ -298,8 +298,8 @@ export default function ParticipantView({
           <div className="rounded-xl border border-[#E8EAEE] bg-white p-5">
             <div className="flex items-center justify-between mb-3">
               <div className="inline-flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-blue-600" />
-                <span className="text-[12px] font-medium text-blue-700">Completed</span>
+                <CheckCircle2 className="w-4 h-4 text-[#1560E0]" />
+                <span className="text-[12px] font-medium text-[#1056D6]">Completed</span>
               </div>
               <span className="text-[12.5px] text-[#666D7A]">{fmtDate(enrollment.quiz_completed_at!)}</span>
             </div>
@@ -316,7 +316,7 @@ export default function ParticipantView({
         ) : (
           <div className="rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] p-5">
             <div className="inline-flex items-center gap-2 mb-2">
-              {currentDay < 7 ? <Clock className="w-4 h-4 text-[#98A0AD]" /> : <AlertCircle className="w-4 h-4 text-amber-500" />}
+              {currentDay < 7 ? <Clock className="w-4 h-4 text-[#98A0AD]" /> : <AlertCircle className="w-4 h-4 text-[#B7791F]" />}
               <span className="text-[12px] font-medium" style={{ color: currentDay < 7 ? '#666D7A' : '#B7791F' }}>
                 {currentDay < 7 ? 'Locked until Day 7' : 'Pending — Day 7+'}
               </span>
@@ -484,7 +484,7 @@ function ActionLink({ href, label, sub, external }: { href: string; label: strin
       href={href}
       target={external ? '_blank' : undefined}
       rel={external ? 'noopener noreferrer' : undefined}
-      className="group flex items-center justify-between rounded-xl border border-[#E8EAEE] bg-white p-4 hover:border-blue-300 hover:bg-blue-50 transition"
+      className="group flex items-center justify-between rounded-xl border border-[#E8EAEE] bg-white p-4 hover:border-[#9CC0FB] hover:bg-[rgba(27,109,252,0.06)] transition"
     >
       <div>
         <div className="flex items-center gap-2">
@@ -493,7 +493,7 @@ function ActionLink({ href, label, sub, external }: { href: string; label: strin
         </div>
         <p className="text-[12.5px] text-[#666D7A] mt-1">{sub}</p>
       </div>
-      <ChevronRight className="w-4 h-4 text-[#98A0AD] group-hover:text-blue-600 transition" />
+      <ChevronRight className="w-4 h-4 text-[#98A0AD] group-hover:text-[#1560E0] transition" />
     </a>
   )
 }

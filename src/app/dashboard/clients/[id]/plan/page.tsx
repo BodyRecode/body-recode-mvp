@@ -34,16 +34,16 @@ interface Plan {
 }
 
 const phaseColour: Record<string, string> = {
-  accumulation: 'text-blue-700 bg-blue-50 border-blue-200',
+  accumulation: 'text-[#1056D6] bg-[rgba(27,109,252,0.08)] border-[#B5CFFC]',
   intensification: 'text-orange-400 bg-orange-400/10 border-orange-400/30',
-  realization: 'text-red-700 bg-red-50 border-red-200',
+  realization: 'text-[#C82626] bg-[#FDEDED] border-[#F5C9C9]',
   restoration: 'text-green-400 bg-green-400/10 border-green-400/30',
 }
 
 const goalColour: Record<string, string> = {
   strength: 'text-violet-700 bg-violet-50 border-violet-200',
   hypertrophy: 'text-pink-400 bg-pink-400/10 border-pink-400/30',
-  capacity: 'text-blue-500 bg-blue-50 border-blue-200',
+  capacity: 'text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border-[#B5CFFC]',
 }
 
 function DraftPlanPreview({ plan }: { plan: Plan }) {
@@ -52,7 +52,7 @@ function DraftPlanPreview({ plan }: { plan: Plan }) {
   return (
     <div className="space-y-3">
       {/* Plan identity */}
-      <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+      <div className="bg-[#F4F6F9] br-card p-5">
         <h2 className="text-base font-semibold text-[#141821]">{plan.plan_name}</h2>
         {plan.macro_objective && (
           <p className="text-sm text-[#666D7A] mt-1">{plan.macro_objective}</p>
@@ -69,7 +69,7 @@ function DraftPlanPreview({ plan }: { plan: Plan }) {
                 <div className="w-px h-4 bg-[#E8EAEE]" />
               </div>
             )}
-            <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
+            <div className="bg-[#F4F6F9] br-card p-4">
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <span className="text-[12.5px] font-medium text-[#98A0AD] w-5">{block.position}</span>
@@ -162,7 +162,7 @@ export default async function MacroPlanPage({ params }: { params: Promise<{ id: 
       {draftPlan && (
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-[12.5px] font-medium px-2.5 py-1 rounded-full bg-amber-50 border border-amber-700 text-amber-700">
+            <span className="text-[12.5px] font-medium px-2.5 py-1 rounded-full bg-[#FDF6E9] border border-[#A96A12] text-[#A96A12]">
               Draft Arc - Pending Approval
             </span>
             <PlanDraftActions planId={draftPlan.id} clientId={id} />

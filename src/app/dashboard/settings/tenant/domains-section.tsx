@@ -81,7 +81,7 @@ export function DomainsSection() {
   }
 
   return (
-    <div className="mb-4 bg-white border border-[#E8EAEE] rounded-xl overflow-hidden">
+    <div className="mb-4 br-card overflow-hidden">
       <div className="px-5 py-3 border-b border-[#E8EAEE] bg-[#FBFCFD]">
         <h3 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Custom domains</h3>
       </div>
@@ -91,7 +91,7 @@ export function DomainsSection() {
         </p>
 
         {error && (
-          <div className="mb-3 p-3 rounded-lg border border-red-200 bg-red-50 text-[12px] text-red-800">{error}</div>
+          <div className="mb-3 p-3 rounded-lg border border-[#F5C9C9] bg-[#FDEDED] text-[12px] text-[#A11D1D]">{error}</div>
         )}
 
         {loading ? (
@@ -116,20 +116,20 @@ export function DomainsSection() {
                     <td className="px-3 py-2 font-mono text-[#141821]">{d.domain}</td>
                     <td className="px-3 py-2">
                       {d.is_primary ? (
-                        <span className="text-[11.5px] font-medium bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">Primary</span>
+                        <span className="text-[11.5px] font-medium bg-[#DDE9FD] text-[#1056D6] px-1.5 py-0.5 rounded">Primary</span>
                       ) : (
                         <span className="text-[#98A0AD]">—</span>
                       )}
                     </td>
                     <td className="px-3 py-2 text-[#666D7A]">
-                      {d.verified_at ? new Date(d.verified_at).toLocaleDateString('en-AU') : <span className="text-amber-600">Pending</span>}
+                      {d.verified_at ? new Date(d.verified_at).toLocaleDateString('en-AU') : <span className="text-[#A96A12]">Pending</span>}
                     </td>
                     <td className="px-3 py-2 text-[#666D7A]">{d.notes ?? <span className="text-[#98A0AD]">—</span>}</td>
                     <td className="px-3 py-2 text-right">
                       <button
                         onClick={() => handleDelete(d.id)}
                         disabled={pending}
-                        className="text-[12px] text-red-600 hover:text-red-700 underline disabled:opacity-40"
+                        className="text-[12px] text-[#C82626] hover:text-[#C82626] underline disabled:opacity-40"
                       >
                         Remove
                       </button>
@@ -151,7 +151,7 @@ export function DomainsSection() {
                 placeholder="mycoach.com"
                 value={newDomain}
                 onChange={(e) => setNewDomain(e.target.value)}
-                className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] font-mono focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] font-mono focus:outline-none focus:ring-2 focus:ring-[#5390FF]"
                 disabled={pending}
               />
             </label>
@@ -162,14 +162,14 @@ export function DomainsSection() {
                 placeholder="e.g. rebrand, regional"
                 value={newNotes}
                 onChange={(e) => setNewNotes(e.target.value)}
-                className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5390FF]"
                 disabled={pending}
               />
             </label>
             <button
               type="submit"
               disabled={pending || !newDomain.trim()}
-              className="px-4 py-2 rounded-md bg-blue-600 text-white text-[13px] font-semibold hover:bg-blue-700 disabled:opacity-40"
+              className="px-4 py-2 rounded-md bg-[#1560E0] text-white text-[13px] font-semibold hover:bg-[#1056D6] disabled:opacity-40"
             >
               {pending ? 'Adding…' : 'Add'}
             </button>
@@ -186,12 +186,12 @@ export function DomainsSection() {
         </form>
 
         {envVarLine && (
-          <div className="p-3 rounded-lg border border-blue-200 bg-blue-50">
-            <p className="text-[11px] font-medium text-blue-900 mb-2">Vercel env var update</p>
-            <p className="text-[12px] text-blue-800 leading-relaxed mb-2">
-              Copy this line into <code className="bg-blue-100 px-1 py-0.5 rounded text-[11px]">NEXT_PUBLIC_TENANT_DOMAIN_MAP</code> in Vercel &rarr; Project settings &rarr; Environment variables, then trigger a redeploy. The map applies at edge middleware load, so a redeploy is required.
+          <div className="p-3 rounded-lg border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)]">
+            <p className="text-[11px] font-medium text-[#0A46B2] mb-2">Vercel env var update</p>
+            <p className="text-[12px] text-[#0B4FCB] leading-relaxed mb-2">
+              Copy this line into <code className="bg-[#DDE9FD] px-1 py-0.5 rounded text-[11px]">NEXT_PUBLIC_TENANT_DOMAIN_MAP</code> in Vercel &rarr; Project settings &rarr; Environment variables, then trigger a redeploy. The map applies at edge middleware load, so a redeploy is required.
             </p>
-            <div className="p-2 rounded bg-white border border-blue-100 font-mono text-[12px] text-[#141821] break-all select-all">{envVarLine}</div>
+            <div className="p-2 rounded bg-white border border-[#DDE9FD] font-mono text-[12px] text-[#141821] break-all select-all">{envVarLine}</div>
           </div>
         )}
       </div>

@@ -51,7 +51,7 @@ export default function AutoResponseToggle({
             ? 'On — when this client submits a check-in, an AI draft is generated and auto-sent 4 hours later unless you intervene. You can Edit, Send-now, or Skip from the response form during the window.'
             : 'Off — you write every check-in response manually for this client. The check-in still appears in Today\'s Focus as "needs response".'}
         </p>
-        {error && <p className="text-[12.5px] text-red-600 mt-1">{error}</p>}
+        {error && <p className="text-[12.5px] text-[#C82626] mt-1">{error}</p>}
       </div>
       <button
         type="button"

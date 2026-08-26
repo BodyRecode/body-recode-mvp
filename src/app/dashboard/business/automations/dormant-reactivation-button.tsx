@@ -67,7 +67,7 @@ export default function DormantReactivationButton() {
   }
 
   return (
-    <div className="mb-6 rounded-xl border border-[#B5CFFC] bg-blue-50/50 p-4">
+    <div className="mb-6 rounded-xl border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)]/50 p-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-[13px] font-bold text-[#141821] flex items-center gap-1.5">
@@ -78,16 +78,16 @@ export default function DormantReactivationButton() {
             later, then the next step that matches their state. Anyone who replies drops out.
           </p>
           {sent !== null && (
-            <p className="text-[13px] font-bold text-green-700 mt-2">
+            <p className="text-[13px] font-bold text-[#177245] mt-2">
               Sent. {sent} leads are now in the sequence.
             </p>
           )}
-          {error && <p className="text-[13px] font-bold text-red-700 mt-2">{error}</p>}
+          {error && <p className="text-[13px] font-bold text-[#C82626] mt-2">{error}</p>}
         </div>
         <button
           onClick={preview}
           disabled={busy}
-          className="shrink-0 inline-flex items-center gap-1.5 text-[13px] font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
+          className="shrink-0 inline-flex items-center gap-1.5 text-[13px] font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-50"
         >
           <Send size={13} /> {busy ? 'Working...' : 'See who gets it'}
         </button>
@@ -139,7 +139,7 @@ export default function DormantReactivationButton() {
                   Not yet
                 </button>
                 <button onClick={send} disabled={busy}
-                  className="text-[13px] font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] disabled:opacity-50">
+                  className="text-[13px] font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] disabled:opacity-50">
                   {busy ? 'Sending...' : `Send to ${dry.wouldSend}`}
                 </button>
               </div>

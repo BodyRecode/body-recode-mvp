@@ -58,7 +58,7 @@ export default function SupportLauncher() {
           role="dialog"
           aria-label="Support"
         >
-          <div className="border border-[#E8EAEE] bg-[#FFFFFF] rounded-xl overflow-hidden flex flex-col h-full">
+          <div className="br-card overflow-hidden flex flex-col h-full">
             <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[linear-gradient(180deg,#FFFFFF,#FBFCFD)] shrink-0">
               <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Support</p>
               <span className="ml-auto text-[11.5px] text-[#98A0AD]">Kade sees every ticket</span>
@@ -217,7 +217,7 @@ function ReportForm({ pathname, onSubmitted }: { pathname: string; onSubmitted: 
         We include the page you are on ({pathname || 'unknown'}) automatically.
       </div>
 
-      {error && <div className="text-[12.5px] text-red-600">{error}</div>}
+      {error && <div className="text-[12.5px] text-[#C82626]">{error}</div>}
 
       <button
         type="submit"
@@ -250,7 +250,7 @@ function MyTicketsList({ visible }: { visible: boolean }) {
     return () => { cancelled = true }
   }, [visible])
 
-  if (error) return <div className="p-5 text-[12.5px] text-red-600">{error}</div>
+  if (error) return <div className="p-5 text-[12.5px] text-[#C82626]">{error}</div>
   if (tickets === null) return <div className="p-5 text-[12.5px] text-[#98A0AD]">Loading…</div>
   if (tickets.length === 0) {
     return (
@@ -268,7 +268,7 @@ function MyTicketsList({ visible }: { visible: boolean }) {
         return (
           <div
             key={t.id}
-            className="border border-[#E8EAEE] rounded-xl px-3.5 py-2.5"
+            className="br-card px-3.5 py-2.5"
             style={{
               background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
               boxShadow: '0 1px 2px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',

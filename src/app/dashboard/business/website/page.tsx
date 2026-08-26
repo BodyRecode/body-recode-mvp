@@ -18,9 +18,9 @@ function StatCard({ label, value, sub, highlight }: {
   highlight?: boolean
 }) {
   return (
-    <div className={`bg-[#FFFFFF] border rounded-xl p-5 ${highlight ? 'border-blue-300' : 'border-[#E8EAEE]'}`}>
+    <div className={`bg-[#FFFFFF] border rounded-xl p-5 ${highlight ? 'border-[#9CC0FB]' : 'border-[#E8EAEE]'}`}>
       <p className="text-[12.5px] font-medium text-[#666D7A] mb-2">{label}</p>
-      <p className={`text-3xl font-black ${highlight ? 'text-blue-500' : 'text-[#141821]'}`}>{value}</p>
+      <p className={`text-3xl font-black ${highlight ? 'text-[#1B6DFC]' : 'text-[#141821]'}`}>{value}</p>
       {sub && <p className="text-[12.5px] mt-1 font-medium text-[#666D7A]">{sub}</p>}
     </div>
   )
@@ -28,7 +28,7 @@ function StatCard({ label, value, sub, highlight }: {
 
 function Insight({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5">
+    <div className="br-card p-5">
       <p className="text-[12.5px] font-medium text-[#666D7A] mb-3">{title}</p>
       <div className="space-y-2 text-sm text-[#666D7A] leading-relaxed">
         {children}
@@ -38,12 +38,12 @@ function Insight({ title, children }: { title: string; children: React.ReactNode
 }
 
 function DailyChart({ data }: { data: DayData[] }) {
-  if (!data || data.length === 0) return <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5"><p className="text-sm text-[#98A0AD]">No data yet.</p></div>
+  if (!data || data.length === 0) return <div className="br-card p-5"><p className="text-sm text-[#98A0AD]">No data yet.</p></div>
   const max = data.reduce((m, d) => Math.max(m, d.views), 1)
   const hasData = data.some(d => d.views > 0)
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5">
+    <div className="br-card p-5">
       <p className="text-[12.5px] font-medium text-[#666D7A] mb-5">Daily Page Views</p>
       {!hasData ? (
         <p className="text-sm text-[#98A0AD] py-4">No data yet for this period.</p>
@@ -62,7 +62,7 @@ function DailyChart({ data }: { data: DayData[] }) {
                   </div>
                 )}
                 <div
-                  className={`w-full rounded-sm transition-all ${isToday ? 'bg-blue-500' : d.views > 0 ? 'bg-[#FBFCFD]0 group-hover:bg-[#666D7A]' : 'bg-[#F4F6F9]'}`}
+                  className={`w-full rounded-sm transition-all ${isToday ? 'bg-[#1B6DFC]' : d.views > 0 ? 'bg-[#666D7A] group-hover:bg-[#666D7A]' : 'bg-[#F4F6F9]'}`}
                   style={{ height: `${height}%`, minHeight: d.views > 0 ? '4px' : '2px' }}
                 />
                 {data.length <= 14 && (
@@ -139,7 +139,7 @@ export default function WebsitePage() {
             <button
               key={d}
               onClick={() => setDays(d)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${days === d ? 'bg-blue-100 text-blue-500 border border-blue-200' : 'bg-[#EFF1F4] text-[#666D7A] border border-[#E8EAEE] hover:text-[#141821]'}`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${days === d ? 'bg-[#DDE9FD] text-[#1B6DFC] border border-[#B5CFFC]' : 'bg-[#EFF1F4] text-[#666D7A] border border-[#E8EAEE] hover:text-[#141821]'}`}
             >
               {d}d
             </button>
@@ -158,15 +158,15 @@ export default function WebsitePage() {
       {loading && <p className="text-sm text-[#666D7A] py-8 text-center">Loading analytics...</p>}
 
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-xl p-5">
-          <p className="text-sm font-semibold text-red-700 mb-1">Analytics unavailable</p>
+        <div className="bg-[#FDEDED] border border-[#F5C9C9] rounded-xl p-5">
+          <p className="text-sm font-semibold text-[#C82626] mb-1">Analytics unavailable</p>
           <p className="text-[12.5px] text-[#666D7A]">{error}</p>
         </div>
       )}
 
       {!loading && data && isSparse && (
-        <div className="bg-amber-50 border border-amber-500/20 rounded-xl px-4 py-3">
-          <p className="text-[12.5px] text-amber-700/80">Analytics tracking was enabled in April 2026 - visitor data only covers the last few days. Conversion rate and bounce rate will stabilise as more traffic accumulates over the coming weeks.</p>
+        <div className="bg-[#FDF6E9] border border-[#B7791F]/20 rounded-xl px-4 py-3">
+          <p className="text-[12.5px] text-[#A96A12]/80">Analytics tracking was enabled in April 2026 - visitor data only covers the last few days. Conversion rate and bounce rate will stabilise as more traffic accumulates over the coming weeks.</p>
         </div>
       )}
 
@@ -224,14 +224,14 @@ export default function WebsitePage() {
               <span className="text-[#141821] font-medium">What needs to keep happening:</span> daily Instagram activity - posts, stories, and direct outreach - is what drives consistent traffic. The chart should start showing a rhythm that maps to your posting schedule. Weeks without posts will show up as flatlines.
             </p>
             {isSparse && (
-              <p className="text-amber-700/70">The chart currently only has a few days of data. It will fill out over the coming weeks and become much more useful as a pattern-recognition tool once there are 14+ days of activity to compare.</p>
+              <p className="text-[#A96A12]/70">The chart currently only has a few days of data. It will fill out over the coming weeks and become much more useful as a pattern-recognition tool once there are 14+ days of activity to compare.</p>
             )}
           </Insight>
         </>
       )}
 
       {/* Pages */}
-      <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5">
+      <div className="br-card p-5">
         <p className="text-[12.5px] font-medium text-[#666D7A] mb-2">Live Pages</p>
         <p className="text-sm text-[#666D7A] mb-4">All six pages are live. The scorecard is the primary conversion point - every other page should funnel toward it. The Founder Program page is the current active offer.</p>
         <div className="grid sm:grid-cols-2 gap-2">

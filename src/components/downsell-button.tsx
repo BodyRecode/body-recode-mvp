@@ -45,7 +45,7 @@ export default function DownsellButton({ leadId, alreadyPurchased }: { leadId: s
 
   if (alreadyPurchased) {
     return (
-      <span className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-blue-500 bg-blue-50 px-3 py-1.5 rounded-full border border-blue-600/20">
+      <span className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] px-3 py-1.5 rounded-full border border-[#1560E0]/20">
         Program purchased
       </span>
     )
@@ -53,19 +53,19 @@ export default function DownsellButton({ leadId, alreadyPurchased }: { leadId: s
 
   return (
     <div className="space-y-2">
-      {error && <p className="text-[12.5px] text-red-700">{error}</p>}
+      {error && <p className="text-[12.5px] text-[#C82626]">{error}</p>}
       <div className="flex items-center gap-3">
         <button
           onClick={sendEmail}
           disabled={sending || sent}
-          className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-50"
         >
           {sending ? 'Sending...' : sent ? 'Email Sent' : 'Send Offer Email'}
         </button>
         <button
           onClick={copyLink}
           disabled={copying || copied}
-          className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 border border-[#E8EAEE] text-[#43474F] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] hover:bg-blue-50 transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 border border-[#E8EAEE] text-[#43474F] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] transition-colors disabled:opacity-50"
         >
           {copying ? 'Generating...' : copied ? 'Copied!' : 'Copy Link'}
         </button>

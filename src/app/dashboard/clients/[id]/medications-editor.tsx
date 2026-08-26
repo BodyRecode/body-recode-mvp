@@ -80,7 +80,7 @@ export default function MedicationsEditor({
   }
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-6 mb-4">
+    <div className="br-card p-6 mb-4">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2.5">
           <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
@@ -93,7 +93,7 @@ export default function MedicationsEditor({
         {!editing && (
           <button
             onClick={() => setEditing(true)}
-            className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+            className="br-btn"
           >
             {value ? 'Edit' : 'Add'}
           </button>
@@ -103,8 +103,8 @@ export default function MedicationsEditor({
         All prescribed medications and chronic over-the-counter use. Include hormonal support (TRT, GLP-1, peptides, anabolics), cardiovascular meds (beta-blockers, statins), CNS-active meds (SSRIs/SNRIs, stimulants, anxiolytics), anti-inflammatories (chronic NSAIDs, corticosteroids), anticoagulants, contraceptives/HRT, and similar. Free text, describe each with dose and duration if known. Drives prescription modulation and signal interpretation across program + nutrition.
       </p>
       {showStaleBanner && (
-        <div className="mb-3 px-3 py-2.5 rounded-lg border border-amber-700/50 bg-amber-500/5">
-          <p className="text-[12.5px] font-medium text-amber-700 mb-1">
+        <div className="mb-3 px-3 py-2.5 rounded-lg border border-[#A96A12]/50 bg-[#B7791F]/5">
+          <p className="text-[12.5px] font-medium text-[#A96A12] mb-1">
             Prescription is older than current medications
           </p>
           <p className="text-[12.5px] text-[#43474F] leading-relaxed">
@@ -122,19 +122,19 @@ export default function MedicationsEditor({
             placeholder="e.g. TRT 150mg test cypionate / week, year 2. CJC-1295 + ipamorelin 100mcg ED, 8 weeks on / 4 off. Metoprolol 25mg / day for BP, year 1. No NSAIDs. No other meds."
             className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg p-3 text-[#141821] text-sm leading-relaxed focus:outline-none focus:border-[#CFD4DC] placeholder-[#43474F] min-h-[120px]"
           />
-          {error && <p className="text-[12.5px] text-red-700">{error}</p>}
+          {error && <p className="text-[12.5px] text-[#C82626]">{error}</p>}
           <div className="flex items-center gap-2">
             <button
               onClick={save}
               disabled={saving || !dirty}
-              className="text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-40"
+              className="text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-40"
             >
               {saving ? 'Saving…' : 'Save'}
             </button>
             <button
               onClick={cancel}
               disabled={saving}
-              className="text-sm font-bold px-4 py-2 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+              className="text-sm font-bold px-4 py-2 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC] transition-colors"
             >
               Cancel
             </button>

@@ -70,15 +70,15 @@ const EQUIPMENT_OPTIONS = [
 ]
 
 const phaseColour: Record<string, string> = {
-  accumulation: 'text-blue-700 border-blue-400/40 bg-blue-50',
+  accumulation: 'text-[#1056D6] border-[#5390FF]/40 bg-[rgba(27,109,252,0.08)]',
   intensification: 'text-orange-400 border-orange-400/40 bg-orange-400/10',
-  realization: 'text-red-700 border-red-400/40 bg-red-50',
+  realization: 'text-[#C82626] border-red-400/40 bg-[#FDEDED]',
   restoration: 'text-green-400 border-green-400/40 bg-green-400/10',
 }
 const goalColour: Record<string, string> = {
   strength: 'text-violet-700 border-violet-400/40 bg-violet-50',
   hypertrophy: 'text-pink-400 border-pink-400/40 bg-pink-400/10',
-  capacity: 'text-blue-500 border-blue-300 bg-blue-50',
+  capacity: 'text-[#1B6DFC] border-[#9CC0FB] bg-[rgba(27,109,252,0.08)]',
 }
 
 const inputCls = 'bg-[#EFF1F4] border border-[#E8EAEE] text-[#141821] rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#1B6DFC] focus:border-transparent'
@@ -127,7 +127,7 @@ function ReasonCard({
 }) {
   const [editing, setEditing] = useState(false)
   return (
-    <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
+    <div className="bg-[#F4F6F9] br-card p-4">
       <div className="flex items-start justify-between mb-2">
         <p className="text-[10px] font-medium text-[#666D7A]">{label}</p>
         <button
@@ -323,8 +323,8 @@ export default function PrescriptionSuggest({
 
       {/* Phase 3 — Active recovery state notice */}
       {recoveryNotice && (
-        <div className="mb-8 rounded-xl border border-amber-300 bg-gradient-to-br from-amber-500/15 to-amber-500/5 px-5 py-4">
-          <div className="flex items-center gap-2 text-[10px] text-amber-700 font-semibold mb-2">
+        <div className="mb-8 rounded-xl border border-[#E5C98F] bg-gradient-to-br from-[#B7791F]/15 to-[#B7791F]/5 px-5 py-4">
+          <div className="flex items-center gap-2 text-[10px] text-[#A96A12] font-semibold mb-2">
             <AlertTriangle size={13} strokeWidth={2.5} className="shrink-0" /> Active recovery state · {recoveryNotice.playbookSource} · Tier {recoveryNotice.tier} · {recoveryNotice.enforcementMode === 'hard' ? 'HARD GATE' : 'SOFT GATE'}
           </div>
           <h2 className="text-base font-bold text-[#141821] mb-1">{recoveryNotice.playbookName}</h2>
@@ -352,10 +352,10 @@ export default function PrescriptionSuggest({
                 name="recovery_mode"
                 checked={overrideMode === 'apply'}
                 onChange={() => { setOverrideMode('apply'); setOverrideReason('') }}
-                className="mt-0.5 accent-blue-500"
+                className="mt-0.5 accent-[#1B6DFC]"
               />
               <span>
-                <strong className="text-blue-500">Apply constraints (recommended)</strong>
+                <strong className="text-[#1B6DFC]">Apply constraints (recommended)</strong>
                 <span className="block text-[#666D7A] mt-0.5">Generate the program with the recovery clamp applied. Doctrinally correct path.</span>
               </span>
             </label>
@@ -365,10 +365,10 @@ export default function PrescriptionSuggest({
                 name="recovery_mode"
                 checked={overrideMode === 'override'}
                 onChange={() => setOverrideMode('override')}
-                className="mt-0.5 accent-amber-400"
+                className="mt-0.5 accent-[#C08A2D]"
               />
               <span>
-                <strong className="text-amber-700">Override constraints (documented)</strong>
+                <strong className="text-[#A96A12]">Override constraints (documented)</strong>
                 <span className="block text-[#666D7A] mt-0.5">Skip the recovery clamp. Requires a written reason. Logged to recovery_adjustments audit trail.</span>
               </span>
             </label>
@@ -378,7 +378,7 @@ export default function PrescriptionSuggest({
                 onChange={e => setOverrideReason(e.target.value)}
                 placeholder="Why is the recovery clamp being skipped? (audit trail will record this)"
                 rows={3}
-                className="mt-1 w-full rounded-lg bg-[#F4F6F9] border border-[#E8EAEE] text-[#141821] text-[12.5px] px-3 py-2 focus:outline-none focus:border-amber-500"
+                className="mt-1 w-full rounded-lg bg-[#F4F6F9] border border-[#E8EAEE] text-[#141821] text-[12.5px] px-3 py-2 focus:outline-none focus:border-[#B7791F]"
               />
             )}
           </div>
@@ -387,7 +387,7 @@ export default function PrescriptionSuggest({
 
       {/* Plan block context */}
       {planBlock && (
-        <div className="mb-6 bg-blue-50 border border-blue-200 rounded-xl p-4">
+        <div className="mb-6 bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] rounded-xl p-4">
           <p className="text-[12.5px] font-medium text-[#1B6DFC] mb-1">From Macro Plan</p>
           <p className="text-sm text-[#141821]">{planBlock.training_plans?.plan_name}</p>
           {planBlock.training_plans?.macro_objective && (
@@ -410,9 +410,9 @@ export default function PrescriptionSuggest({
       />
 
       {error && !loading && (
-        <div ref={errorRef} className="bg-red-50 border border-red-200 rounded-xl p-4 mb-4">
-          <p className="text-sm font-semibold text-red-800 mb-1">Could not complete</p>
-          <p className="text-sm text-red-700 leading-relaxed">{error}</p>
+        <div ref={errorRef} className="bg-[#FDEDED] border border-[#F5C9C9] rounded-xl p-4 mb-4">
+          <p className="text-sm font-semibold text-[#A11D1D] mb-1">Could not complete</p>
+          <p className="text-sm text-[#C82626] leading-relaxed">{error}</p>
           <Link
             href={`/dashboard/clients/${clientId}/program/generate${planBlockId ? `?plan_block_id=${planBlockId}` : ''}`}
             className="text-[12.5px] text-[#666D7A] hover:text-[#141821] mt-2 block"
@@ -428,7 +428,7 @@ export default function PrescriptionSuggest({
 
           <div className="flex-1 min-w-0 space-y-4">
             {/* Overall rationale */}
-            <div id="rationale" className="scroll-mt-8 bg-[#F4F6F9] border border-blue-200 rounded-xl p-5">
+            <div id="rationale" className="scroll-mt-8 bg-[#F4F6F9] border border-[#B5CFFC] rounded-xl p-5">
               <p className="text-[10px] font-medium text-[#1B6DFC] mb-3">Prescription Rationale</p>
               {(() => {
                 const { intro, points } = parseReason(suggestion.overall_rationale)
@@ -438,7 +438,7 @@ export default function PrescriptionSuggest({
                     {points.length > 1 ? (
                       <div className="space-y-2 mt-1">
                         {points.map((point, i) => (
-                          <div key={i} className="flex items-start gap-2.5 border-l-2 border-blue-200 pl-3">
+                          <div key={i} className="flex items-start gap-2.5 border-l-2 border-[#B5CFFC] pl-3">
                             <p className="text-sm text-[#141821] leading-relaxed">{point}</p>
                           </div>
                         ))}
@@ -544,7 +544,7 @@ export default function PrescriptionSuggest({
             </div>
 
             {/* Equipment Access */}
-            <div id="equipment" className="scroll-mt-8 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
+            <div id="equipment" className="scroll-mt-8 bg-[#F4F6F9] br-card p-4">
               <p className="text-[10px] font-medium text-[#666D7A] mb-3">Equipment Access</p>
               <div className="grid grid-cols-2 gap-2">
                 {EQUIPMENT_OPTIONS.map(opt => (
@@ -562,7 +562,7 @@ export default function PrescriptionSuggest({
             <button
               onClick={handleGenerate}
               disabled={generating}
-              className="w-full py-3 px-4 bg-[#1B6DFC] text-white font-semibold rounded-md hover:bg-[#5390FF] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="w-full py-3 px-4 bg-[#1B6DFC] text-white font-semibold rounded-md hover:bg-[#1560E0] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               {generating ? 'Generating program… this may take 30–60s' : 'Approve & Generate Program'}
             </button>

@@ -123,23 +123,23 @@ function parseLines(field: string | string[] | null, fallbackSplit?: RegExp): st
 }
 
 const phaseColour: Record<string, string> = {
-  accumulation: 'text-blue-700 bg-blue-50 border-blue-200',
+  accumulation: 'text-[#1056D6] bg-[rgba(27,109,252,0.08)] border-[#B5CFFC]',
   intensification: 'text-orange-400 bg-orange-400/10 border-orange-400/30',
-  realization: 'text-red-700 bg-red-50 border-red-200',
+  realization: 'text-[#C82626] bg-[#FDEDED] border-[#F5C9C9]',
   restoration: 'text-green-400 bg-green-400/10 border-green-400/30',
 }
 
 const goalColour: Record<string, string> = {
   strength: 'text-violet-700 bg-violet-50 border-violet-200',
   hypertrophy: 'text-pink-400 bg-pink-400/10 border-pink-400/30',
-  capacity: 'text-blue-500 bg-blue-50 border-blue-200',
+  capacity: 'text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border-[#B5CFFC]',
 }
 
 function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: string }) {
   return (
     <div className="space-y-4">
       {/* Identity card */}
-      <div id={`${idPrefix}identity`} className="scroll-mt-8 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+      <div id={`${idPrefix}identity`} className="scroll-mt-8 bg-[#F4F6F9] br-card p-5">
         <div className="flex items-start justify-between mb-3">
           <div>
             <h2 className="text-lg font-semibold text-[#141821]">{program.block_name}</h2>
@@ -188,7 +188,7 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
           {/* Collapsible full clinical rationale */}
           {(program.prescription_rationale || program.weekly_pattern_summary || program.progression_notes) && (
             <details className="mt-5 group">
-              <summary className="cursor-pointer text-[11px] font-semibold text-[#1B6DFC] hover:text-blue-700 select-none list-none flex items-center gap-1.5">
+              <summary className="cursor-pointer text-[11px] font-semibold text-[#1B6DFC] hover:text-[#1056D6] select-none list-none flex items-center gap-1.5">
                 <span className="inline-block transition-transform group-open:rotate-90">▸</span>
                 Open full clinical rationale
               </summary>
@@ -196,14 +196,14 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
                 {program.prescription_rationale && (() => {
                   const { intro, points } = parseText(clean(program.prescription_rationale))
                   return (
-                    <div className="bg-white/60 border border-blue-100 rounded-lg px-4 py-3">
-                      <p className="text-[10px] font-medium text-blue-500 mb-2">Prescription Rationale</p>
+                    <div className="bg-white/60 border border-[#DDE9FD] rounded-lg px-4 py-3">
+                      <p className="text-[10px] font-medium text-[#1B6DFC] mb-2">Prescription Rationale</p>
                       <div className="space-y-2">
                         {intro && <p className="text-sm text-[#141821] leading-relaxed">{intro}</p>}
                         {points.length > 1 ? (
                           <div className="space-y-2">
                             {points.map((point, i) => (
-                              <div key={i} className="flex items-start gap-2.5 border-l-2 border-blue-200/30 pl-3">
+                              <div key={i} className="flex items-start gap-2.5 border-l-2 border-[#B5CFFC]/30 pl-3">
                                 <p className="text-sm text-[#141821] leading-relaxed">{point}</p>
                               </div>
                             ))}
@@ -270,14 +270,14 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
       {!program.rationale_summary?.headline && program.prescription_rationale && (() => {
         const { intro, points } = parseText(clean(program.prescription_rationale))
         return (
-          <div id={`${idPrefix}rationale`} className="scroll-mt-8 bg-blue-50 border border-blue-200/40 rounded-xl px-5 py-4">
-            <p className="text-[10px] font-medium text-blue-500 mb-3">Prescription Rationale</p>
+          <div id={`${idPrefix}rationale`} className="scroll-mt-8 bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC]/40 rounded-xl px-5 py-4">
+            <p className="text-[10px] font-medium text-[#1B6DFC] mb-3">Prescription Rationale</p>
             <div className="space-y-2">
               {intro && <p className="text-sm text-[#141821] leading-relaxed">{intro}</p>}
               {points.length > 1 ? (
                 <div className="space-y-2">
                   {points.map((point, i) => (
-                    <div key={i} className="flex items-start gap-2.5 border-l-2 border-blue-200/30 pl-3">
+                    <div key={i} className="flex items-start gap-2.5 border-l-2 border-[#B5CFFC]/30 pl-3">
                       <p className="text-sm text-[#141821] leading-relaxed">{point}</p>
                     </div>
                   ))}
@@ -291,7 +291,7 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
       })()}
 
       {!program.rationale_summary?.headline && program.weekly_pattern_summary && (
-        <div id={`${idPrefix}weekly-structure`} className="scroll-mt-8 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+        <div id={`${idPrefix}weekly-structure`} className="scroll-mt-8 bg-[#F4F6F9] br-card overflow-hidden">
           <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[#F4F6F9]/80">
             <span className="text-[11px] font-black text-[#1B6DFC]">01</span>
             <p className="text-[10px] font-medium text-[#666D7A]">Weekly Structure</p>
@@ -314,7 +314,7 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
       )}
 
       {!program.rationale_summary?.headline && program.progression_notes && (
-        <div id={`${idPrefix}progression`} className="scroll-mt-8 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+        <div id={`${idPrefix}progression`} className="scroll-mt-8 bg-[#F4F6F9] br-card overflow-hidden">
           <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[#F4F6F9]/80">
             <span className="text-[11px] font-black text-[#1B6DFC]">02</span>
             <p className="text-[10px] font-medium text-[#666D7A]">Progression Strategy</p>
@@ -345,7 +345,7 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
         <p className="text-[12.5px] font-medium text-[#666D7A] mb-3 px-1">Sessions</p>
         <div className="space-y-3">
           {program.sessions.map((session, sIdx) => (
-            <div key={sIdx} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+            <div key={sIdx} className="bg-[#F4F6F9] br-card overflow-hidden">
               <div className="px-5 py-3 border-b border-[#E8EAEE] flex items-center justify-between">
                 <h3 className="font-semibold text-[#141821] text-sm">{clean(session.day_label)}</h3>
                 <span className="text-[10px] text-[#98A0AD]">{session.skeleton}</span>
@@ -524,7 +524,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <span className="text-[12.5px] font-medium px-2.5 py-1 rounded-full bg-amber-50 border border-amber-700 text-amber-700">Draft - Pending Approval</span>
+              <span className="text-[12.5px] font-medium px-2.5 py-1 rounded-full bg-[#FDF6E9] border border-[#A96A12] text-[#A96A12]">Draft - Pending Approval</span>
             </div>
             <div className="flex items-center gap-2">
               {draftTrainingPlan && <RegenerateButton programId={draftProgram.id} />}
@@ -543,15 +543,15 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
 
       {/* Rebuild alert */}
       {activeProgram?.current_direction === 'rebuild' && (
-        <div className="mb-4 flex items-start gap-3 bg-red-50 border border-red-200/60 rounded-xl px-4 py-3">
-          <svg className="w-4 h-4 text-red-700 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <div className="mb-4 flex items-start gap-3 bg-[#FDEDED] border border-[#F5C9C9]/60 rounded-xl px-4 py-3">
+          <svg className="w-4 h-4 text-[#C82626] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
           </svg>
           <div className="flex-1">
-            <p className="text-sm font-semibold text-red-700">Client is struggling with training</p>
-            <p className="text-[12.5px] text-red-700/70 mt-0.5">Latest check-in direction is Rebuild. Consider adjusting the program or generating a new block.</p>
+            <p className="text-sm font-semibold text-[#C82626]">Client is struggling with training</p>
+            <p className="text-[12.5px] text-[#C82626]/70 mt-0.5">Latest check-in direction is Rebuild. Consider adjusting the program or generating a new block.</p>
           </div>
-          <Link href={`/dashboard/clients/${id}/plan`} className="text-[12.5px] font-semibold text-red-700 hover:text-red-700 shrink-0 mt-0.5">Open macro plan →</Link>
+          <Link href={`/dashboard/clients/${id}/plan`} className="text-[12.5px] font-semibold text-[#C82626] hover:text-[#C82626] shrink-0 mt-0.5">Open macro plan →</Link>
         </div>
       )}
 
@@ -595,9 +595,9 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
             return (
               <div className="mb-6">
                 {isPending ? (
-                  <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 mb-3">
-                    <p className="text-[12.5px] font-medium text-amber-700 mb-1">Pending block-end reading</p>
-                    <p className="text-sm text-amber-800">
+                  <div className="bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] rounded-lg px-4 py-3 mb-3">
+                    <p className="text-[12.5px] font-medium text-[#A96A12] mb-1">Pending block-end reading</p>
+                    <p className="text-sm text-[#A96A12]">
                       <span className="font-semibold">{archived.block_name}</span> ended{endedAt ? ` around ${endedAt}` : ''} but its trajectory reading was never generated. Generate it now so the client has a record of the block arc before the next one is in full swing.
                     </p>
                   </div>
@@ -679,7 +679,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
               <RegenerateButton programId={activeProgram.id} />
               <Link
                 href={`/dashboard/clients/${id}/program/draft/${activeProgram.id}`}
-                className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors"
+                className="br-btn"
               >
                 Edit exercises →
               </Link>
@@ -735,7 +735,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
           </p>
           <Link
             href={`/dashboard/clients/${id}/plan`}
-            className="inline-block text-[12.5px] font-semibold px-4 py-2 bg-blue-500 hover:bg-blue-500 text-white rounded-lg transition-colors"
+            className="inline-block text-[12.5px] font-semibold px-4 py-2 bg-[#1B6DFC] hover:bg-[#1560E0] text-white rounded-lg transition-colors"
           >
             Open macro plan →
           </Link>

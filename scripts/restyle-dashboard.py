@@ -28,6 +28,98 @@ def dashboard_only_components():
 
 # --- colour + surface tokens -------------------------------------------
 SUBS = [
+    # --- buttons --------------------------------------------------------
+    ('text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors', 'br-btn'),
+    ('text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors', 'br-btn'),
+    ('inline-flex items-center gap-2 rounded-xl bg-[#1B6DFC] px-4 py-2.5 text-sm font-bold text-white hover:bg-[#5390FF] transition-colors', 'br-btn br-btn-primary'),
+
+    # --- amber ----------------------------------------------------------
+    # Two amber vocabularies were running side by side - Tailwind's and the
+    # kit's. The kit's is the one the pills and chips use.
+    ('bg-amber-50 border border-amber-200', 'bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8]'),
+    ('border border-amber-200 bg-amber-50', 'border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)]'),
+    ('border border-amber-300 bg-amber-50', 'border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)]'),
+    ('bg-amber-50 border border-amber-300', 'bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8]'),
+    ('text-amber-700', 'text-[#A96A12]'),
+    ('text-amber-800', 'text-[#A96A12]'),
+    ('text-amber-900', 'text-[#8A5A14]'),
+    ('bg-[#FEF6E7]', 'bg-[#FDF6E9]'),
+    ('border-[#F0DCB4]', 'border-[#F1DEB8]'),
+
+    # --- blue -----------------------------------------------------------
+    # text-blue-500 and hover:bg-blue-50 predate Signal Blue.
+    ('hover:bg-[#5390FF]', 'hover:bg-[#1560E0]'),
+    ('text-blue-500', 'text-[#1B6DFC]'),
+    ('text-blue-700', 'text-[#1056D6]'),
+    ('hover:text-blue-700', 'hover:text-[#1056D6]'),
+    ('hover:bg-blue-50', 'hover:bg-[rgba(27,109,252,0.06)]'),
+    ('bg-blue-50', 'bg-[rgba(27,109,252,0.08)]'),
+    ('border-blue-200', 'border-[#B5CFFC]'),
+
+    # --- semantic ramps -------------------------------------------------
+    # Mapped on the bare token so every prefix comes along (bg-, text-,
+    # border-, hover:, from-). Safe now that apply_sub guards digit overlap.
+    ('amber-50', '[#FDF6E9]'),
+    ('amber-100', '[#FAEFD8]'),
+    ('amber-200', '[#F1DEB8]'),
+    ('amber-300', '[#E5C98F]'),
+    ('amber-400', '[#C08A2D]'),
+    ('amber-500', '[#B7791F]'),
+    ('amber-600', '[#A96A12]'),
+    ('amber-700', '[#A96A12]'),
+    ('amber-800', '[#8A5A14]'),
+    ('amber-900', '[#8A5A14]'),
+    ('blue-50', '[#EFF5FE]'),
+    ('blue-100', '[#DDE9FD]'),
+    ('blue-200', '[#B5CFFC]'),
+    ('blue-300', '[#9CC0FB]'),
+    ('blue-400', '[#5390FF]'),
+    ('blue-500', '[#1B6DFC]'),
+    ('blue-600', '[#1560E0]'),
+    ('blue-700', '[#1056D6]'),
+    ('blue-800', '[#0B4FCB]'),
+    ('blue-900', '[#0A46B2]'),
+    ('red-50', '[#FDEDED]'),
+    ('red-100', '[#FBDCDC]'),
+    ('red-200', '[#F5C9C9]'),
+    ('red-300', '[#EFAFAF]'),
+    ('red-500', '[#DC2626]'),
+    ('red-600', '[#C82626]'),
+    ('red-700', '[#C82626]'),
+    ('red-800', '[#A11D1D]'),
+    ('red-900', '[#8A1919]'),
+    ('emerald-50', '[#EDF8F1]'),
+    ('emerald-100', '[#D8EFE1]'),
+    ('emerald-200', '[#CAE7D5]'),
+    ('emerald-500', '[#22A05A]'),
+    ('emerald-600', '[#177245]'),
+    ('emerald-700', '[#177245]'),
+    ('green-50', '[#EDF8F1]'),
+    ('green-100', '[#D8EFE1]'),
+    ('green-200', '[#CAE7D5]'),
+    ('green-500', '[#22A05A]'),
+    ('green-600', '[#177245]'),
+    ('green-700', '[#177245]'),
+    ('green-800', '[#125C37]'),
+    ('green-900', '[#0F4A2D]'),
+
+    # --- surfaces -------------------------------------------------------
+    # Longest first: the bare `border ... rounded-xl` form must not eat the
+    # backgrounded ones before they are matched.
+    ('bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl', 'br-card'),
+    ('bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl', 'br-card'),
+    ('border border-[#E8EAEE] bg-[#FFFFFF] rounded-xl', 'br-card'),
+    ('bg-white border border-[#E8EAEE] rounded-xl', 'br-card'),
+    ('border border-[#E8EAEE] rounded-xl', 'br-card'),
+    ('bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-lg', 'br-card-inset'),
+    ('bg-[#F3F7FF] border border-[rgba(27,109,252,0.25)] rounded-xl', 'br-card-flagged'),
+    ('rounded-xl border border-[rgba(27,109,252,0.25)] bg-[#F3F7FF]', 'br-card-flagged'),
+    # Left rails on ordinary cards: the rail means "this one needs you", so on
+    # every card it means nothing.
+    ('border-l-2 border-[#1B6DFC] br-card', 'br-card'),
+    ('br-card border-l-2 border-[#1B6DFC]', 'br-card'),
+    ('hover:border-[#CFD4DC] transition-colors', 'br-card-hover transition-shadow'),
+
     # The stone ramp -> the dashboard neutrals. Mapped on the bare token so it
     # catches every prefix: bg-, text-, border-, divide-, ring-, placeholder-,
     # hover:, focus:, disabled:, from-, to-. 50-300 are surfaces and hairlines,
@@ -119,11 +211,22 @@ MONO_PARTIAL = re.compile(r"fontFamily: MONO_FONT, letterSpacing: '[^']*', ")
 # from the rail as the window widens.
 CONTAINER = re.compile(r'(return \(\s*\n\s*<div className=")max-w-(?:3xl|4xl|5xl|6xl|7xl) mx-auto(")')
 
+# A ramp token is a prefix of the next one up - stone-50 sits inside
+# stone-500, blue-50 inside blue-500. Plain string replacement ate the longer
+# one and left a stray digit welded to the replacement, producing a class name
+# that silently does nothing. Anything ending in a digit is replaced with a
+# "not followed by another digit" guard instead.
+def apply_sub(text: str, a: str, b: str) -> str:
+    if a and a[-1].isdigit():
+        return re.sub(re.escape(a) + r'(?!\d)', b.replace('\\', '\\\\'), text)
+    return text.replace(a, b)
+
+
 def sweep(path: pathlib.Path) -> int:
     src = path.read_text()
     out = src
     for a, b in SUBS:
-        out = out.replace(a, b)
+        out = apply_sub(out, a, b)
     out = SHOUT.sub(calm, out)
     out = MONO_LABEL.sub('', out)
     out = MONO_PARTIAL.sub('', out)

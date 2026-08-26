@@ -14,7 +14,7 @@ const TABS: { id: Tab; label: string }[] = [
 ]
 
 function Card({ children, className = '' }: { children: React.ReactNode; className?: string }) {
-  return <div className={`bg-white border border-[#E8EAEE] rounded-xl p-5 ${className}`}>{children}</div>
+  return <div className={`br-card p-5 ${className}`}>{children}</div>
 }
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
@@ -24,18 +24,18 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 function Tag({ children, color = 'sky' }: { children: React.ReactNode; color?: 'sky' | 'amber' | 'violet' | 'stone' | 'green' | 'red' }) {
   const styles: Record<string, string> = {
     sky:    'bg-[#1B6DFC]/10 text-[#1056D6] border-[#1B6DFC]/25',
-    amber:  'bg-amber-50 text-amber-700 border-amber-500/20',
+    amber:  'bg-[#FDF6E9] text-[#A96A12] border-[#B7791F]/20',
     violet: 'bg-violet-500/10 text-violet-700 border-violet-500/20',
-    stone:  'bg-[#FBFCFD]0/10 text-[#666D7A] border-[#CFD4DC]/20',
-    green:  'bg-green-50 text-green-700 border-green-500/20',
-    red:    'bg-red-50 text-red-700 border-red-500/20',
+    stone:  'bg-[#666D7A]/10 text-[#666D7A] border-[#CFD4DC]/20',
+    green:  'bg-[#EDF8F1] text-[#177245] border-[#22A05A]/20',
+    red:    'bg-[#FDEDED] text-[#C82626] border-[#DC2626]/20',
   }
   return <span className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border ${styles[color]}`}>{children}</span>
 }
 
 function Bullets({ items, tone = 'stone' }: { items: string[]; tone?: 'stone' | 'plus' | 'minus' }) {
   const mark = tone === 'plus' ? '+' : tone === 'minus' ? '-' : '·'
-  const cls = tone === 'plus' ? 'text-[#1B6DFC]' : tone === 'minus' ? 'text-red-600' : 'text-[#98A0AD]'
+  const cls = tone === 'plus' ? 'text-[#1B6DFC]' : tone === 'minus' ? 'text-[#C82626]' : 'text-[#98A0AD]'
   return (
     <div className="space-y-1.5">
       {items.map(s => (
@@ -161,15 +161,15 @@ function FunnelTab() {
           Content → <code className="text-[12.5px] bg-[#F4F6F9] px-1 rounded">/collective</code> → <code className="text-[12.5px] bg-[#F4F6F9] px-1 rounded">/collective/apply</code> (Fit Scorecard, ~9 questions) → scored across method / audience / modality / readiness → one of three tiers. Every CTA points to the Fit Scorecard, never a checkout.
         </p>
         <div className="space-y-3">
-          <div className="p-3 rounded-lg border border-green-500/20 bg-green-50/40">
+          <div className="p-3 rounded-lg border border-[#22A05A]/20 bg-[#EDF8F1]/40">
             <div className="flex items-center gap-2 mb-1"><Tag color="green">Ready</Tag><span className="text-sm font-semibold text-[#141821]">Book a call + instant SMS to Kade</span></div>
             <p className="text-[12.5px] text-[#666D7A]">Defined method + audience, supported modality. Goes on the founding waitlist.</p>
           </div>
-          <div className="p-3 rounded-lg border border-amber-500/20 bg-amber-50/40">
+          <div className="p-3 rounded-lg border border-[#B7791F]/20 bg-[#FDF6E9]/40">
             <div className="flex items-center gap-2 mb-1"><Tag color="amber">Building</Tag><span className="text-sm font-semibold text-[#141821]">Tailored "fix this first" + nurture</span></div>
             <p className="text-[12.5px] text-[#666D7A]">Method or audience but not both. This tier is also the Emerging Coach farm system - nurtured toward a future cohort.</p>
           </div>
-          <div className="p-3 rounded-lg border border-red-500/20 bg-red-50/40">
+          <div className="p-3 rounded-lg border border-[#DC2626]/20 bg-[#FDEDED]/40">
             <div className="flex items-center gap-2 mb-1"><Tag color="red">Not yet</Tag><span className="text-sm font-semibold text-[#141821]">Gentle decline + a resource</span></div>
             <p className="text-[12.5px] text-[#666D7A]">Unsupported modality, cheap-tool mindset, or too many reds.</p>
           </div>

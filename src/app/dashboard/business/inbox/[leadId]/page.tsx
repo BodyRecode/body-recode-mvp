@@ -6,15 +6,15 @@ import { ArrowLeft, Mail, Calendar, FileText, Send, AlertCircle, CheckCircle2, R
 import InboxCompose from './inbox-compose'
 
 const EVENT_CONFIG: Record<string, { label: string; icon: typeof Mail; colour: string }> = {
-  email_sent: { label: 'You', icon: Mail, colour: 'text-blue-500' },
-  email_received: { label: 'Reply received', icon: Mail, colour: 'text-blue-700' },
-  zoom_booked: { label: 'Zoom booked', icon: Calendar, colour: 'text-blue-500' },
+  email_sent: { label: 'You', icon: Mail, colour: 'text-[#1B6DFC]' },
+  email_received: { label: 'Reply received', icon: Mail, colour: 'text-[#1056D6]' },
+  zoom_booked: { label: 'Zoom booked', icon: Calendar, colour: 'text-[#1B6DFC]' },
   check_in_submitted: { label: 'Check-in submitted', icon: FileText, colour: 'text-[#666D7A]' },
-  followup_scheduled: { label: 'Follow-up scheduled', icon: Send, colour: 'text-amber-700' },
+  followup_scheduled: { label: 'Follow-up scheduled', icon: Send, colour: 'text-[#A96A12]' },
   followup_cancelled: { label: 'Follow-up cancelled', icon: AlertCircle, colour: 'text-[#666D7A]' },
-  reengagement_sent: { label: 'Re-engagement sent', icon: Mail, colour: 'text-blue-500' },
-  orientation_sent: { label: 'Orientation sent', icon: Mail, colour: 'text-blue-500' },
-  noshow_sequence_scheduled: { label: 'No-show sequence started', icon: RefreshCw, colour: 'text-amber-700' },
+  reengagement_sent: { label: 'Re-engagement sent', icon: Mail, colour: 'text-[#1B6DFC]' },
+  orientation_sent: { label: 'Orientation sent', icon: Mail, colour: 'text-[#1B6DFC]' },
+  noshow_sequence_scheduled: { label: 'No-show sequence started', icon: RefreshCw, colour: 'text-[#A96A12]' },
   report_scheduled: { label: 'Report scheduled', icon: FileText, colour: 'text-[#666D7A]' },
 }
 
@@ -62,7 +62,7 @@ export default async function InboxThreadPage({
             {lead.phone && <span>{lead.phone}</span>}
             <Link
               href={`/dashboard/business/crm/${lead.id}`}
-              className="text-blue-500 hover:text-blue-500 transition-colors"
+              className="text-[#1B6DFC] hover:text-[#1B6DFC] transition-colors"
             >
               View in CRM →
             </Link>
@@ -78,7 +78,7 @@ export default async function InboxThreadPage({
             const Icon = cfg.icon
 
             return (
-              <div key={event.id} className={`border rounded-xl p-4 ${event.type === 'email_received' ? 'bg-[#EFF1F4]/60 border-blue-500/20' : 'bg-[#F4F6F9] border-[#E8EAEE]'}`}>
+              <div key={event.id} className={`border rounded-xl p-4 ${event.type === 'email_received' ? 'bg-[#EFF1F4]/60 border-[#1B6DFC]/20' : 'bg-[#F4F6F9] border-[#E8EAEE]'}`}>
                 <div className="flex items-start gap-3">
                   <div className="mt-0.5 shrink-0">
                     <Icon size={13} className={cfg.colour} />
@@ -117,7 +117,7 @@ export default async function InboxThreadPage({
         <InboxCompose leadId={lead.id} leadName={lead.name} leadEmail={lead.email} />
       )}
       {!lead.email && (
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 text-[#666D7A] text-sm text-center">
+        <div className="bg-[#F4F6F9] br-card p-4 text-[#666D7A] text-sm text-center">
           No email address on file - can't send from here.
         </div>
       )}

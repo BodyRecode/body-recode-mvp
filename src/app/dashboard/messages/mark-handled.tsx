@@ -58,7 +58,7 @@ export default function MarkHandled({
           : handled ? <RotateCcw size={12} /> : <CheckCheck size={12} />}
         {handled ? 'Reopen' : 'Handled elsewhere'}
       </button>
-      {error && <span className="text-[12px] font-semibold text-red-700">{error}</span>}
+      {error && <span className="text-[12px] font-semibold text-[#C82626]">{error}</span>}
     </div>
   )
 }

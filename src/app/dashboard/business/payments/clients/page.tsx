@@ -38,16 +38,16 @@ const STATUS_META: Record<SubStatus | 'none', { label: string; tone: 'good' | 'w
 }
 
 const TONE_CLASS = {
-  good:  'text-blue-500',
-  warn:  'text-amber-700',
-  bad:   'text-red-700',
+  good:  'text-[#1B6DFC]',
+  warn:  'text-[#A96A12]',
+  bad:   'text-[#C82626]',
   muted: 'text-[#666D7A]',
 } as const
 
 const TONE_BG = {
-  good:  'bg-blue-50',
-  warn:  'bg-amber-50',
-  bad:   'bg-red-50',
+  good:  'bg-[rgba(27,109,252,0.08)]',
+  warn:  'bg-[#FDF6E9]',
+  bad:   'bg-[#FDEDED]',
   muted: 'bg-[#EFF1F4]/40',
 } as const
 
@@ -196,7 +196,7 @@ export default async function ClientStatusPage() {
       </div>
 
       {/* Table */}
-      <div className="border border-[#E8EAEE] rounded-xl overflow-hidden">
+      <div className="br-card overflow-hidden">
         <div className="grid grid-cols-[2fr_1.2fr_1fr_1.3fr_0.9fr_0.9fr] gap-3 px-4 py-3 bg-[#F4F6F9] border-b border-[#E8EAEE] text-[10px] font-semibold text-[#666D7A]">
           <div>Client</div>
           <div>Plan</div>
@@ -219,15 +219,15 @@ export default async function ClientStatusPage() {
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-[#141821] truncate">{r.name}</p>
                   {!r.stripeLinked && (
-                    <p className="text-[10px] text-amber-700/80 mt-0.5">No Stripe link</p>
+                    <p className="text-[10px] text-[#A96A12]/80 mt-0.5">No Stripe link</p>
                   )}
                 </div>
                 <div className="text-[12.5px] text-[#666D7A] truncate">{r.planName}</div>
                 <div className="text-[12.5px]">
                   {r.commencementPaid ? (
-                    <span className="text-blue-500">Paid</span>
+                    <span className="text-[#1B6DFC]">Paid</span>
                   ) : (
-                    <span className="text-amber-700">Not paid</span>
+                    <span className="text-[#A96A12]">Not paid</span>
                   )}
                 </div>
                 <div className="text-[12.5px] min-w-0">
@@ -241,7 +241,7 @@ export default async function ClientStatusPage() {
                       {r.nextCharge && ['active', 'trialing', 'past_due'].includes(r.sub) && (
                         <span className="text-[#98A0AD]"> · next {formatDate(r.nextCharge)}</span>
                       )}
-                      {r.cancelAtPeriodEnd && <span className="text-amber-700"> · cancels</span>}
+                      {r.cancelAtPeriodEnd && <span className="text-[#A96A12]"> · cancels</span>}
                     </p>
                   )}
                 </div>
@@ -262,7 +262,7 @@ export default async function ClientStatusPage() {
 
 function CountCard({ label, value, icon: Icon, tone }: { label: string; value: number; icon: typeof CheckCircle2; tone: 'good' | 'warn' | 'bad' | 'muted' }) {
   return (
-    <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
+    <div className="bg-[#F4F6F9] br-card p-4">
       <div className="flex items-center gap-2 mb-2">
         <Icon size={13} className={TONE_CLASS[tone]} />
         <p className="text-[10px] font-semibold text-[#666D7A]">{label}</p>

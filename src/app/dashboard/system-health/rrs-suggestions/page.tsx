@@ -158,7 +158,7 @@ export default async function RrsSuggestionsDashboard() {
       {totalShown === 0 && (
         <div className="rounded-xl border border-dashed border-[#E8EAEE] bg-[#FBFCFD] px-6 py-10 text-center">
           <p className="text-sm text-[#666D7A] leading-relaxed">
-            No suggestion events logged yet. The dashboard will populate as soon as a client is in an active RRS state and a coach opens their <Link href="/dashboard/clients" className="text-blue-500 underline">Recovery Protocols page</Link>.
+            No suggestion events logged yet. The dashboard will populate as soon as a client is in an active RRS state and a coach opens their <Link href="/dashboard/clients" className="text-[#1B6DFC] underline">Recovery Protocols page</Link>.
           </p>
         </div>
       )}
@@ -175,15 +175,15 @@ export default async function RrsSuggestionsDashboard() {
 
           {/* SBST removal follow-through */}
           {sbstRemovalStats.alerts_shown > 0 && (
-            <div className="mb-8 rounded-xl border border-red-200 bg-red-50 px-5 py-4">
-              <p className="text-[10px] font-medium text-red-800 mb-2">SBST removal follow-through (ns_overload)</p>
-              <p className="text-sm text-red-900">
+            <div className="mb-8 rounded-xl border border-[#F5C9C9] bg-[#FDEDED] px-5 py-4">
+              <p className="text-[10px] font-medium text-[#A11D1D] mb-2">SBST removal follow-through (ns_overload)</p>
+              <p className="text-sm text-[#8A1919]">
                 <span className="font-bold">{sbstRemovalStats.removals_confirmed}</span> of <span className="font-bold">{sbstRemovalStats.alerts_shown}</span> removal alerts actioned
                 <span className="ml-2 text-[13px] opacity-80">
                   ({sbstRemovalStats.alerts_shown > 0 ? Math.round((sbstRemovalStats.removals_confirmed / sbstRemovalStats.alerts_shown) * 100) : 0}%)
                 </span>
               </p>
-              <p className="text-[12px] text-red-800 mt-1 leading-relaxed">
+              <p className="text-[12px] text-[#A11D1D] mt-1 leading-relaxed">
                 Per 13D_16 sec 15, SBST assignments must be removed when a client enters ns_overload. This measures follow-through on that doctrine rule.
               </p>
             </div>
@@ -229,7 +229,7 @@ export default async function RrsSuggestionsDashboard() {
                           {rate === null ? <span className="text-[#98A0AD]">-</span> : `${rate.toFixed(0)}%`}
                         </td>
                         <td className="text-right px-4 py-2 text-[10px]">
-                          {sbstAction ? <span className={sbstAction === 'remove' ? 'text-red-700 font-bold' : 'text-amber-700'}>{sbstAction}</span> : <span className="text-[#98A0AD]">-</span>}
+                          {sbstAction ? <span className={sbstAction === 'remove' ? 'text-[#C82626] font-bold' : 'text-[#A96A12]'}>{sbstAction}</span> : <span className="text-[#98A0AD]">-</span>}
                         </td>
                       </tr>
                     )
@@ -269,7 +269,7 @@ export default async function RrsSuggestionsDashboard() {
                         <td className="text-right px-4 py-2 text-[13px]">{s.suggested_count}</td>
                         <td className="text-right px-4 py-2 text-[13px]">{s.assigned_count}</td>
                         <td className="text-right px-4 py-2 text-[13px] font-semibold">
-                          <span className={rate === 0 ? 'text-red-700' : rate < 30 ? 'text-amber-700' : rate < 60 ? 'text-[#141821]' : 'text-green-700'}>
+                          <span className={rate === 0 ? 'text-[#C82626]' : rate < 30 ? 'text-[#A96A12]' : rate < 60 ? 'text-[#141821]' : 'text-[#177245]'}>
                             {rate.toFixed(0)}%
                           </span>
                         </td>
@@ -308,13 +308,13 @@ export default async function RrsSuggestionsDashboard() {
                           {new Date(r.shown_at).toLocaleString('en-AU', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' })}
                         </td>
                         <td className="px-4 py-2 text-[12px]">
-                          <Link href={`/dashboard/clients/${r.client_id}/recovery`} className="text-blue-500 hover:underline">{clientName}</Link>
+                          <Link href={`/dashboard/clients/${r.client_id}/recovery`} className="text-[#1B6DFC] hover:underline">{clientName}</Link>
                         </td>
                         <td className="px-4 py-2 text-[11px] font-mono text-[#141821]">{r.rrs_playbook_id}</td>
                         <td className="px-4 py-2 text-[11px]">
-                          {r.action_taken === 'assigned' && <span className="text-green-700 font-semibold">assigned</span>}
-                          {r.action_taken === 'dismissed' && <span className="text-amber-700 font-semibold">dismissed</span>}
-                          {r.action_taken === 'sbst_removed' && <span className="text-red-700 font-semibold">sbst removed</span>}
+                          {r.action_taken === 'assigned' && <span className="text-[#177245] font-semibold">assigned</span>}
+                          {r.action_taken === 'dismissed' && <span className="text-[#A96A12] font-semibold">dismissed</span>}
+                          {r.action_taken === 'sbst_removed' && <span className="text-[#C82626] font-semibold">sbst removed</span>}
                           {!r.action_taken && <span className="text-[#98A0AD]">no action</span>}
                         </td>
                         <td className="px-4 py-2 text-[11px] text-[#666D7A]">
@@ -335,8 +335,8 @@ export default async function RrsSuggestionsDashboard() {
 
 function StatCard({ label, value, accent }: { label: string; value: string; accent?: 'green' | 'amber' | 'blue' }) {
   const colour =
-    accent === 'green' ? 'text-green-700' :
-    accent === 'amber' ? 'text-amber-700' :
+    accent === 'green' ? 'text-[#177245]' :
+    accent === 'amber' ? 'text-[#A96A12]' :
     accent === 'blue' ? 'text-[#1B6DFC]' :
     'text-[#141821]'
   return (
@@ -389,8 +389,8 @@ function TrendSparkline({ days, data }: { days: string[]; data: Record<string, {
         <p className="text-2xl font-bold text-[#1B6DFC]">{windowRate.toFixed(0)}%</p>
         {trendDelta !== null && (
           <div className="text-[11px] mt-1 inline-flex items-center gap-1 font-mono">
-            {trendDelta > 1 && <><TrendingUp size={11} className="text-green-700" /><span className="text-green-700">+{trendDelta.toFixed(0)}pt</span></>}
-            {trendDelta < -1 && <><TrendingDown size={11} className="text-red-700" /><span className="text-red-700">{trendDelta.toFixed(0)}pt</span></>}
+            {trendDelta > 1 && <><TrendingUp size={11} className="text-[#177245]" /><span className="text-[#177245]">+{trendDelta.toFixed(0)}pt</span></>}
+            {trendDelta < -1 && <><TrendingDown size={11} className="text-[#C82626]" /><span className="text-[#C82626]">{trendDelta.toFixed(0)}pt</span></>}
             {trendDelta >= -1 && trendDelta <= 1 && <><Minus size={11} className="text-[#666D7A]" /><span className="text-[#666D7A]">flat</span></>}
             <span className="text-[#98A0AD] ml-1">vs prior 7d</span>
           </div>

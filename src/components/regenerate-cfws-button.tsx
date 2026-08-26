@@ -44,7 +44,7 @@ export default function RegenerateCFWSButton({ clientId, weekNumber }: { clientI
       <button
         onClick={regenerate}
         disabled={status === 'loading' || status === 'done'}
-        className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
+        className="br-btn disabled:opacity-50"
       >
         {status === 'loading' ? 'Generating…' : status === 'done' ? 'Done - reloading' : status === 'error' ? `Error: ${errorMsg || 'retry'}` : 'Generate CFWS'}
       </button>

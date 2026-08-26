@@ -23,9 +23,9 @@ export interface RecoveryPlanSet {
 }
 
 const CONFIDENCE_STYLE: Record<RecoverySuggestionItem['confidence'], string> = {
-  high: 'bg-blue-50 border-blue-200 text-blue-700',
+  high: 'bg-[rgba(27,109,252,0.08)] border-[#B5CFFC] text-[#1056D6]',
   moderate: 'bg-[#F4F6F9] border-[#E8EAEE] text-[#666D7A]',
-  low: 'bg-amber-50 border-amber-200 text-amber-700',
+  low: 'bg-[#FDF6E9] border-[#F1DEB8] text-[#A96A12]',
 }
 
 /**
@@ -136,7 +136,7 @@ export default function RecoveryPlanSuggestionPanel({
     <div className="mb-6 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] overflow-hidden">
       <div className="px-5 py-4 border-b border-[#E8EAEE] flex items-start justify-between gap-4 flex-wrap">
         <div className="min-w-0">
-          <p className="text-[12px] font-medium text-blue-500 flex items-center gap-1.5">
+          <p className="text-[12px] font-medium text-[#1B6DFC] flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5" />
             Suggested recovery plan
           </p>
@@ -157,7 +157,7 @@ export default function RecoveryPlanSuggestionPanel({
               type="button"
               onClick={approvePlan}
               disabled={approving || generating}
-              className="px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white text-[12.5px] font-medium rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1.5"
+              className="px-3 py-2 bg-[#1B6DFC] hover:bg-[#1560E0] text-white text-[12.5px] font-medium rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1.5"
             >
               {approving ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Assigning…</> : <><CheckCheck className="w-3.5 h-3.5" /> Approve plan ({unassigned.length})</>}
             </button>
@@ -166,7 +166,7 @@ export default function RecoveryPlanSuggestionPanel({
             type="button"
             onClick={generate}
             disabled={generating || approving}
-            className="px-3 py-2 bg-blue-50 border border-blue-300 hover:bg-blue-100 text-blue-700 text-[12.5px] font-medium rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1.5"
+            className="px-3 py-2 bg-[rgba(27,109,252,0.08)] border border-[#9CC0FB] hover:bg-[#DDE9FD] text-[#1056D6] text-[12.5px] font-medium rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1.5"
           >
             {generating ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Reading their file…</> : set ? 'Regenerate' : 'Build a plan'}
           </button>
@@ -174,7 +174,7 @@ export default function RecoveryPlanSuggestionPanel({
       </div>
 
       {!hasEquipmentTagged && !set && (
-        <p className="px-5 py-3 text-[12.5px] text-amber-800 bg-amber-50 border-b border-amber-200 leading-relaxed">
+        <p className="px-5 py-3 text-[12.5px] text-[#A96A12] bg-[#FDF6E9] border-b border-[#F1DEB8] leading-relaxed">
           No equipment access tagged yet. Tag what {clientName} can access below first, otherwise everything needing kit is filtered out and you will only get the no-equipment protocols.
         </p>
       )}
@@ -185,15 +185,15 @@ export default function RecoveryPlanSuggestionPanel({
         </p>
       )}
 
-      {error && <p className="px-5 py-3 text-[12.5px] text-red-700">{error}</p>}
-      {status && <p className="px-5 py-3 text-[12.5px] text-blue-600">{status}</p>}
+      {error && <p className="px-5 py-3 text-[12.5px] text-[#C82626]">{error}</p>}
+      {status && <p className="px-5 py-3 text-[12.5px] text-[#1560E0]">{status}</p>}
 
       {set && !generating && (
         <div className="px-5 py-4">
           {set.rrs_note && (
-            <div className="mb-3 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2.5">
-              <p className="text-[11.5px] font-medium text-blue-700 mb-1">Recovery state in force</p>
-              <p className="text-[12.5px] text-blue-900 leading-relaxed">{set.rrs_note}</p>
+            <div className="mb-3 rounded-lg border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)] px-3 py-2.5">
+              <p className="text-[11.5px] font-medium text-[#1056D6] mb-1">Recovery state in force</p>
+              <p className="text-[12.5px] text-[#0A46B2] leading-relaxed">{set.rrs_note}</p>
             </div>
           )}
 
@@ -202,12 +202,12 @@ export default function RecoveryPlanSuggestionPanel({
           )}
 
           {clientMedications?.trim() && (
-            <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5">
-              <p className="text-[11.5px] font-medium text-amber-700 mb-1 flex items-center gap-1">
+            <div className="mb-4 rounded-lg border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] px-3 py-2.5">
+              <p className="text-[11.5px] font-medium text-[#A96A12] mb-1 flex items-center gap-1">
                 <AlertTriangle className="w-3 h-3" />
                 On medication, verify every contraindication yourself
               </p>
-              <p className="text-[12.5px] text-amber-900 leading-relaxed whitespace-pre-wrap">{clientMedications.trim()}</p>
+              <p className="text-[12.5px] text-[#8A5A14] leading-relaxed whitespace-pre-wrap">{clientMedications.trim()}</p>
             </div>
           )}
 
@@ -238,7 +238,7 @@ export default function RecoveryPlanSuggestionPanel({
                         type="button"
                         onClick={() => assignOne(s)}
                         disabled={assigning === s.slug || already || approving}
-                        className="shrink-0 px-3 py-1.5 border border-blue-300 bg-blue-50 hover:bg-blue-100 text-blue-700 text-[12.5px] font-medium rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1"
+                        className="shrink-0 px-3 py-1.5 border border-[#9CC0FB] bg-[rgba(27,109,252,0.08)] hover:bg-[#DDE9FD] text-[#1056D6] text-[12.5px] font-medium rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1"
                       >
                         {assigning === s.slug
                           ? <><Loader2 className="w-3 h-3 animate-spin" /> Assigning…</>

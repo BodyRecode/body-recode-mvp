@@ -32,7 +32,7 @@ export default async function CcoPage() {
       </Suspense>
 
       <div className="mb-6 flex items-center gap-3">
-        <span className="text-[9px] font-medium bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Live data</span>
+        <span className="text-[9px] font-medium bg-[#D8EFE1] text-[#177245] px-1.5 py-0.5 rounded">Live data</span>
         <span className="text-[11px] text-[#666D7A] font-mono">
           Snapshot at {new Date(snap.computedAt).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane' })} AEST
         </span>
@@ -201,16 +201,16 @@ export default async function CcoPage() {
       </div>
 
       <div className="mb-8 flex items-center gap-3 text-[13px]">
-        <Link href="/dashboard/feedback" className="text-blue-600 hover:text-blue-700 underline font-semibold">
+        <Link href="/dashboard/feedback" className="text-[#1560E0] hover:text-[#1056D6] underline font-semibold">
           → Open Feedback Triage
         </Link>
         <span className="text-[#98A0AD]">·</span>
-        <Link href="/dashboard/coaching" className="text-blue-600 hover:text-blue-700 underline font-semibold">
+        <Link href="/dashboard/coaching" className="text-[#1560E0] hover:text-[#1056D6] underline font-semibold">
           → Coaching queue
         </Link>
       </div>
 
-      <Link href="/dashboard/boardroom" className="text-[12px] text-blue-600 hover:text-blue-700 underline">
+      <Link href="/dashboard/boardroom" className="text-[12px] text-[#1560E0] hover:text-[#1056D6] underline">
         ← Back to Boardroom
       </Link>
     </div>
@@ -233,13 +233,13 @@ function Metric({
   const valueColor = {
     default: 'text-[#141821]',
     stone: 'text-[#98A0AD]',
-    green: 'text-green-700',
-    amber: 'text-amber-700',
-    red: 'text-red-700',
+    green: 'text-[#177245]',
+    amber: 'text-[#A96A12]',
+    red: 'text-[#C82626]',
   }[tone]
   const size = large ? 'text-[28px]' : 'text-[22px]'
   return (
-    <div className="bg-white border border-[#E8EAEE] rounded-xl p-5">
+    <div className="br-card p-5">
       <div className="text-[11px] font-medium text-[#666D7A] mb-2">{label}</div>
       <div className={`${size} font-bold ${valueColor} mb-1 font-mono`}>{value}</div>
       {hint && <div className="text-[11px] text-[#666D7A] leading-relaxed">{hint}</div>}

@@ -154,7 +154,7 @@ export function Card({
   return (
     <div
       style={style}
-      className={`border border-[#E8EAEE] rounded-xl ${pad} ${
+      className={`br-card ${pad} ${
         hover ? 'transition-shadow hover:shadow-[0_6px_16px_-6px_rgba(16,24,40,0.16),0_2px_4px_-2px_rgba(16,24,40,0.08)]' : ''
       } ${className}`}
     >
@@ -250,7 +250,7 @@ export function StatCard({
   const a = ACCENT[accent]
   const Inner = (
     <div
-      className="relative border border-[#E8EAEE] rounded-xl p-4 overflow-hidden h-full transition-shadow"
+      className="relative br-card p-4 overflow-hidden h-full transition-shadow"
       style={{
         background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
         boxShadow: `${SH2}, inset 0 1px 0 #FFFFFF`,

@@ -5,18 +5,18 @@ const TYPE_STYLES: Record<
   BriefingItem['type'],
   { badge: string; icon: string; badgeText: string; borderColor: string }
 > = {
-  action: { badge: 'bg-blue-100 text-blue-700', icon: '→', badgeText: 'Action', borderColor: 'border-blue-200' },
+  action: { badge: 'bg-[#DDE9FD] text-[#1056D6]', icon: '→', badgeText: 'Action', borderColor: 'border-[#B5CFFC]' },
   question: { badge: 'bg-purple-100 text-purple-700', icon: '?', badgeText: 'Question', borderColor: 'border-purple-200' },
   observation: { badge: 'bg-[#F4F6F9] text-[#141821]', icon: '·', badgeText: 'Observation', borderColor: 'border-[#E8EAEE]' },
-  alert: { badge: 'bg-red-100 text-red-700', icon: '!', badgeText: 'Alert', borderColor: 'border-red-300' },
+  alert: { badge: 'bg-[#FBDCDC] text-[#C82626]', icon: '!', badgeText: 'Alert', borderColor: 'border-[#EFAFAF]' },
 }
 
 const PRIORITY_STYLES: Record<
   BriefingItem['priority'],
   { ring: string }
 > = {
-  critical: { ring: 'ring-2 ring-red-300' },
-  high: { ring: 'ring-1 ring-amber-300' },
+  critical: { ring: 'ring-2 ring-[#EFAFAF]' },
+  high: { ring: 'ring-1 ring-[#E5C98F]' },
   normal: { ring: '' },
 }
 
@@ -86,12 +86,12 @@ function BriefingCard({ item }: { item: BriefingItem }) {
               {style.badgeText}
             </span>
             {item.priority === 'critical' && (
-              <span className="text-[9px] font-medium bg-red-100 text-red-700 px-1.5 py-0.5 rounded">
+              <span className="text-[9px] font-medium bg-[#FBDCDC] text-[#C82626] px-1.5 py-0.5 rounded">
                 Critical
               </span>
             )}
             {item.priority === 'high' && (
-              <span className="text-[9px] font-medium bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded">
+              <span className="text-[9px] font-medium bg-[#FAEFD8] text-[#A96A12] px-1.5 py-0.5 rounded">
                 High
               </span>
             )}
@@ -101,7 +101,7 @@ function BriefingCard({ item }: { item: BriefingItem }) {
           {item.cta_href && item.cta_label && (
             <Link
               href={item.cta_href}
-              className="inline-block mt-3 text-[13px] font-semibold text-blue-600 hover:text-blue-700 underline"
+              className="inline-block mt-3 text-[13px] font-semibold text-[#1560E0] hover:text-[#1056D6] underline"
             >
               {item.cta_label} →
             </Link>

@@ -38,8 +38,8 @@ export default function PlatformBuildoutPage() {
       />
 
       {/* Page explainer — how to read this page */}
-      <details className="mb-6 p-4 rounded-xl border border-blue-200 bg-blue-50/40">
-        <summary className="cursor-pointer text-[13px] font-bold text-blue-900 uppercase tracking-widest select-none">
+      <details className="mb-6 p-4 rounded-xl border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)]/40">
+        <summary className="cursor-pointer text-[13px] font-bold text-[#0A46B2] uppercase tracking-widest select-none">
           How to read this page
         </summary>
         <div className="mt-3 space-y-3 text-[13px] text-[#141821] leading-relaxed">
@@ -47,7 +47,7 @@ export default function PlatformBuildoutPage() {
           <p><strong>Scope.</strong> This tracks the platform and licensing build — tenancy, branding, billing, partner onboarding, and the AI capabilities a licensee gets. It deliberately does NOT track client-facing product work (recovery protocols, supplement stacks, the reading engine, the portal), which is why the percentage does not move when those ship.</p>
           <p><strong>What the manifest tracks.</strong> Every phase has a list of concrete steps. Each step has a status (shipped / in progress / planned / blocked / deferred), an effort estimate (S/M/L), commit SHAs where it was landed, files it touched, and notes on blockers or deferrals. Deferred steps don&apos;t count against progress — they&apos;re decisions to skip, not incomplete work.</p>
           <p><strong>What the callouts mean.</strong> The blue &quot;Next up&quot; card at the top surfaces the highest-priority actionable step (the first in-progress step, or the first planned step with no blocker). The green &quot;Phase gate&quot; card appears when a phase is 100% shipped but the next phase hasn&apos;t started — a signal to pause + review before absorbing the next phase&apos;s cost.</p>
-          <p><strong>Where it&apos;s enforced.</strong> The manifest is at <code className="bg-white px-1 py-0.5 rounded border border-blue-200 text-[11px]">src/lib/saas-buildout-manifest.ts</code>. The ship checklist (<code className="bg-white px-1 py-0.5 rounded border border-blue-200 text-[11px]">feedback_ship_checklist</code>) requires updating the manifest entry on every SaaS/white-label commit — status bump + commit SHA + shippedAt in the same commit. Silent drift is not allowed.</p>
+          <p><strong>Where it&apos;s enforced.</strong> The manifest is at <code className="bg-white px-1 py-0.5 rounded border border-[#B5CFFC] text-[11px]">src/lib/saas-buildout-manifest.ts</code>. The ship checklist (<code className="bg-white px-1 py-0.5 rounded border border-[#B5CFFC] text-[11px]">feedback_ship_checklist</code>) requires updating the manifest entry on every SaaS/white-label commit — status bump + commit SHA + shippedAt in the same commit. Silent drift is not allowed.</p>
         </div>
       </details>
 
@@ -107,13 +107,13 @@ export default function PlatformBuildoutPage() {
             <div className="text-[11px] font-medium text-[#666D7A]">Steps</div>
             <div className="text-[13px] text-[#141821] mt-1 font-mono">
               {shippedSteps} shipped · {inProgressSteps} in progress · {plannedSteps} planned · {deferredSteps} deferred
-              {blockedSteps > 0 && <> · <span className="text-red-600">{blockedSteps} blocked</span></>}
+              {blockedSteps > 0 && <> · <span className="text-[#C82626]">{blockedSteps} blocked</span></>}
             </div>
           </div>
         </div>
         <div className="w-full h-2 bg-[#F4F6F9] rounded-full overflow-hidden">
           <div
-            className="h-full bg-blue-500"
+            className="h-full bg-[#1B6DFC]"
             style={{ width: `${overallPct}%` }}
           />
         </div>
@@ -125,27 +125,27 @@ export default function PlatformBuildoutPage() {
       {/* Next up + phase gate */}
       <div className="mb-8 grid grid-cols-1 lg:grid-cols-2 gap-4">
         {next && (
-          <div className="p-4 rounded-xl border border-blue-200 bg-blue-50">
-            <div className="text-[11px] font-medium text-blue-700 mb-1">Next up</div>
+          <div className="p-4 rounded-xl border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)]">
+            <div className="text-[11px] font-medium text-[#1056D6] mb-1">Next up</div>
             <div className="text-[15px] font-semibold text-[#141821] mb-1">
               Phase {next.phase.id} · {next.step.title}
             </div>
             <p className="text-[13px] text-[#141821] leading-relaxed mb-2">{next.step.description}</p>
-            <p className="text-[11px] text-blue-800/80 italic leading-relaxed">
+            <p className="text-[11px] text-[#0B4FCB]/80 italic leading-relaxed">
               Why this: it&apos;s the first in-progress step (or the first planned step with no active blocker) across all phases in order.
             </p>
           </div>
         )}
         {gate && (
-          <div className="p-4 rounded-xl border border-green-200 bg-green-50">
-            <div className="text-[11px] font-medium text-green-700 mb-1">Phase gate</div>
+          <div className="p-4 rounded-xl border border-[#CAE7D5] bg-[#EDF8F1]">
+            <div className="text-[11px] font-medium text-[#177245] mb-1">Phase gate</div>
             <div className="text-[15px] font-semibold text-[#141821] mb-1">
               Phase {gate.id} complete — review before starting Phase {gate.id + 1}
             </div>
             <p className="text-[13px] text-[#141821] leading-relaxed mb-2">
               All non-deferred steps in this phase have shipped. Take a beat to validate outcomes before absorbing the next phase&apos;s cost.
             </p>
-            <p className="text-[11px] text-green-800/80 italic leading-relaxed">
+            <p className="text-[11px] text-[#125C37]/80 italic leading-relaxed">
               Why this: this phase has zero non-deferred planned/in-progress steps left, and the next phase has zero shipped/in-progress steps. That&apos;s a natural checkpoint.
             </p>
           </div>
@@ -153,7 +153,7 @@ export default function PlatformBuildoutPage() {
       </div>
 
       {/* Reference library — cross-phase docs */}
-      <div className="mb-8 bg-white border border-[#E8EAEE] rounded-xl overflow-hidden">
+      <div className="mb-8 br-card overflow-hidden">
         <div className="px-5 py-4 border-b border-[#E8EAEE] bg-[#FBFCFD]">
           <div className="text-[10px] font-medium text-[#666D7A]">Reference library</div>
           <h2 className="text-[16px] font-bold text-[#141821] mt-0.5">Cross-phase docs</h2>
@@ -178,7 +178,7 @@ export default function PlatformBuildoutPage() {
       {/* Footer */}
       <div className="mt-10 p-4 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] text-[12px] text-[#666D7A] leading-relaxed">
         <strong className="text-[#141821]">Source of truth:</strong> <code className="bg-[#F4F6F9] px-1 py-0.5 rounded text-[11px]">src/lib/saas-buildout-manifest.ts</code>. Every SaaS commit MUST update the relevant step entry in the same commit (see <code className="bg-[#F4F6F9] px-1 py-0.5 rounded text-[11px]">feedback_ship_checklist</code>). Strategic doc:{' '}
-        <Link href="/dashboard/help#platform-buildout" className="text-blue-600 hover:text-blue-700 underline">
+        <Link href="/dashboard/help#platform-buildout" className="text-[#1560E0] hover:text-[#1056D6] underline">
           POWERED_PLATFORM_BUILD_PLAN.md
         </Link>
         {' '}(Dropbox). Deployment runbook: PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.md.
@@ -189,10 +189,10 @@ export default function PlatformBuildoutPage() {
 
 function PhaseCard({ phase }: { phase: Phase }) {
   const p = phaseProgress(phase)
-  const barColor = p.pct === 100 ? 'bg-green-500' : p.pct >= 50 ? 'bg-blue-500' : p.pct > 0 ? 'bg-amber-500' : 'bg-[#E8EAEE]'
+  const barColor = p.pct === 100 ? 'bg-[#22A05A]' : p.pct >= 50 ? 'bg-[#1B6DFC]' : p.pct > 0 ? 'bg-[#B7791F]' : 'bg-[#E8EAEE]'
 
   return (
-    <section className="bg-white border border-[#E8EAEE] rounded-xl overflow-hidden">
+    <section className="br-card overflow-hidden">
       <div className="px-5 py-4 border-b border-[#E8EAEE] bg-[#FBFCFD]">
         <div className="flex items-baseline justify-between gap-3 flex-wrap">
           <div>
@@ -218,8 +218,8 @@ function PhaseCard({ phase }: { phase: Phase }) {
       </div>
 
       {/* Phase explainer — full context on what this phase means, why it exists, when to tackle it */}
-      <details className="px-5 py-3 border-b border-[#F4F6F9] bg-blue-50/20">
-        <summary className="cursor-pointer text-[11px] font-medium text-blue-900 select-none">
+      <details className="px-5 py-3 border-b border-[#F4F6F9] bg-[rgba(27,109,252,0.08)]/20">
+        <summary className="cursor-pointer text-[11px] font-medium text-[#0A46B2] select-none">
           What this phase means
         </summary>
         <div className="mt-3 space-y-2 text-[13px] text-[#141821] leading-relaxed">
@@ -253,7 +253,7 @@ function PhaseCard({ phase }: { phase: Phase }) {
 function DocCard({ doc }: { doc: Doc }) {
   const isSql = doc.mdUrl.endsWith('.sql')
   return (
-    <div className="p-3 rounded-xl border border-[#E8EAEE] bg-white hover:border-blue-300 transition-colors">
+    <div className="p-3 rounded-xl border border-[#E8EAEE] bg-white hover:border-[#9CC0FB] transition-colors">
       <div className="text-[13px] font-semibold text-[#141821] mb-1 break-all">{doc.title}</div>
       <p className="text-[11px] text-[#666D7A] leading-relaxed mb-2">{doc.description}</p>
       <div className="flex items-center gap-2 flex-wrap">
@@ -262,7 +262,7 @@ function DocCard({ doc }: { doc: Doc }) {
             href={doc.pdfUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[12px] font-medium px-2 py-1 rounded bg-blue-600 text-white hover:bg-blue-700"
+            className="text-[12px] font-medium px-2 py-1 rounded bg-[#1560E0] text-white hover:bg-[#1056D6]"
           >
             View .pdf
           </a>
@@ -271,7 +271,7 @@ function DocCard({ doc }: { doc: Doc }) {
           href={doc.mdUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[12px] font-medium px-2 py-1 rounded bg-[#F4F6F9] text-[#141821] hover:bg-blue-100 hover:text-blue-700"
+          className="text-[12px] font-medium px-2 py-1 rounded bg-[#F4F6F9] text-[#141821] hover:bg-[#DDE9FD] hover:text-[#1056D6]"
         >
           {isSql ? 'View .sql' : 'View .md'}
         </a>
@@ -279,7 +279,7 @@ function DocCard({ doc }: { doc: Doc }) {
           <a
             href={doc.docxUrl}
             download
-            className="text-[12px] font-medium px-2 py-1 rounded bg-[#F4F6F9] text-[#141821] hover:bg-blue-100 hover:text-blue-700"
+            className="text-[12px] font-medium px-2 py-1 rounded bg-[#F4F6F9] text-[#141821] hover:bg-[#DDE9FD] hover:text-[#1056D6]"
           >
             Download .docx
           </a>
@@ -301,7 +301,7 @@ function StatusChip({ status }: { status: StepStatus }) {
 function StepRow({ step }: { step: Step }) {
   const badge = statusBadge(step.status)
   const rowTint =
-    step.status === 'in_progress' ? 'bg-blue-50/50' : step.status === 'blocked' ? 'bg-red-50/40' : ''
+    step.status === 'in_progress' ? 'bg-[rgba(27,109,252,0.08)]/50' : step.status === 'blocked' ? 'bg-[#FDEDED]/40' : ''
 
   return (
     <li className={`px-5 py-4 ${rowTint}`}>
@@ -328,8 +328,8 @@ function StepRow({ step }: { step: Step }) {
           )}
 
           {step.blockedBy && (
-            <div className="text-[11px] text-amber-700 mb-2">
-              Blocked by: <code className="bg-amber-50 px-1 py-0.5 rounded text-[10px]">{step.blockedBy}</code>
+            <div className="text-[11px] text-[#A96A12] mb-2">
+              Blocked by: <code className="bg-[#FDF6E9] px-1 py-0.5 rounded text-[10px]">{step.blockedBy}</code>
             </div>
           )}
 
@@ -353,7 +353,7 @@ function StepRow({ step }: { step: Step }) {
                 {step.surfaces.map((s) => (
                   <li key={s} className="font-mono">
                     {s.startsWith('src/') ? (
-                      <Link href={`/${s}`} className="text-blue-600 hover:text-blue-700 underline">
+                      <Link href={`/${s}`} className="text-[#1560E0] hover:text-[#1056D6] underline">
                         {s}
                       </Link>
                     ) : (
@@ -373,13 +373,13 @@ function StepRow({ step }: { step: Step }) {
 function statusBadge(status: StepStatus): { label: string; classes: string } {
   switch (status) {
     case 'shipped':
-      return { label: 'Shipped', classes: 'bg-green-100 text-green-700' }
+      return { label: 'Shipped', classes: 'bg-[#D8EFE1] text-[#177245]' }
     case 'in_progress':
-      return { label: 'In progress', classes: 'bg-blue-100 text-blue-700' }
+      return { label: 'In progress', classes: 'bg-[#DDE9FD] text-[#1056D6]' }
     case 'planned':
       return { label: 'Planned', classes: 'bg-[#F4F6F9] text-[#666D7A]' }
     case 'blocked':
-      return { label: 'Blocked', classes: 'bg-red-100 text-red-700' }
+      return { label: 'Blocked', classes: 'bg-[#FBDCDC] text-[#C82626]' }
     case 'deferred':
       return { label: 'Deferred', classes: 'bg-[#F4F6F9] text-[#98A0AD]' }
   }

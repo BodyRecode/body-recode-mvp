@@ -78,27 +78,27 @@ const PLATFORMS = [
 
 const OUTPUT_STATUSES = [
   { value: 'draft', label: 'Draft', color: 'text-[#666D7A] bg-[#EFF1F4] border-[#E8EAEE]' },
-  { value: 'approved', label: 'Approved', color: 'text-blue-500 bg-blue-50 border-blue-500/20' },
-  { value: 'deployed', label: 'Deployed', color: 'text-blue-700 bg-blue-50 border-blue-500/20' },
+  { value: 'approved', label: 'Approved', color: 'text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border-[#1B6DFC]/20' },
+  { value: 'deployed', label: 'Deployed', color: 'text-[#1056D6] bg-[rgba(27,109,252,0.08)] border-[#1B6DFC]/20' },
   { value: 'winning', label: 'Winning', color: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20' },
-  { value: 'removed', label: 'Removed', color: 'text-red-700 bg-red-50 border-red-500/20' },
+  { value: 'removed', label: 'Removed', color: 'text-[#C82626] bg-[#FDEDED] border-[#DC2626]/20' },
 ]
 
 const SCORE_LABELS: Record<number, { label: string; color: string }> = {
   0: { label: 'Unscored', color: 'text-[#666D7A]' },
-  1: { label: 'Losing', color: 'text-red-700' },
+  1: { label: 'Losing', color: 'text-[#C82626]' },
   2: { label: 'Neutral', color: 'text-[#666D7A]' },
-  3: { label: 'Winning', color: 'text-blue-500' },
+  3: { label: 'Winning', color: 'text-[#1B6DFC]' },
 }
 
 function categoryColor(cat: string) {
   const map: Record<string, string> = {
-    problem_aware: 'bg-red-50 text-red-700 border-red-500/20',
-    solution_aware: 'bg-blue-50 text-blue-500 border-blue-500/20',
+    problem_aware: 'bg-[#FDEDED] text-[#C82626] border-[#DC2626]/20',
+    solution_aware: 'bg-[rgba(27,109,252,0.08)] text-[#1B6DFC] border-[#1B6DFC]/20',
     unaware: 'bg-[#E8EAEE] text-[#666D7A] border-[#CFD4DC]',
     contrarian: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
     curiosity: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
-    authority: 'bg-blue-50 text-blue-700 border-blue-500/20',
+    authority: 'bg-[rgba(27,109,252,0.08)] text-[#1056D6] border-[#1B6DFC]/20',
   }
   return map[cat] ?? 'bg-[#E8EAEE] text-[#666D7A] border-[#CFD4DC]'
 }
@@ -109,10 +109,10 @@ function categoryLabel(cat: string) {
 
 function messageTypeColor(type: string) {
   const map: Record<string, string> = {
-    education: 'bg-blue-50 text-blue-500 border-blue-500/20',
+    education: 'bg-[rgba(27,109,252,0.08)] text-[#1B6DFC] border-[#1B6DFC]/20',
     myth_busting: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
     story: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
-    system_explanation: 'bg-blue-50 text-blue-700 border-blue-500/20',
+    system_explanation: 'bg-[rgba(27,109,252,0.08)] text-[#1056D6] border-[#1B6DFC]/20',
     authority: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
   }
   return map[type] ?? 'bg-[#E8EAEE] text-[#666D7A] border-[#CFD4DC]'
@@ -167,7 +167,7 @@ export default function ContentClient({ initialHooks, initialMessages, initialCt
             onClick={() => setTab(t.key)}
             className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors -mb-px ${
               tab === t.key
-                ? 'border-blue-500 text-[#141821]'
+                ? 'border-[#1B6DFC] text-[#141821]'
                 : 'border-transparent text-[#666D7A] hover:text-[#141821]'
             }`}
           >
@@ -269,14 +269,14 @@ function HooksTab({ hooks, setHooks }: { hooks: Hook[]; setHooks: React.Dispatch
         <p className="text-[12.5px] text-[#666D7A]">{hooks.length} hooks in library</p>
         <button
           onClick={() => { setShowForm(true); setEditingId(null); setForm({ hook_text: '', category: 'problem_aware' }) }}
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-[#1B6DFC] hover:bg-[#1560E0] text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
         >
           <Plus size={13} /> Add Hook
         </button>
       </div>
 
       {(showForm || editingId) && (
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 mb-4 space-y-3">
+        <div className="bg-[#F4F6F9] br-card p-4 mb-4 space-y-3">
           <div>
             <label className="block text-[12.5px] text-[#666D7A] mb-1">Hook</label>
             <textarea
@@ -284,7 +284,7 @@ function HooksTab({ hooks, setHooks }: { hooks: Hook[]; setHooks: React.Dispatch
               onChange={e => setForm(f => ({ ...f, hook_text: e.target.value }))}
               placeholder="Your body isn't broken - it's protecting you"
               rows={2}
-              className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-500 resize-none"
+              className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1B6DFC] resize-none"
             />
           </div>
           <div>
@@ -292,14 +292,14 @@ function HooksTab({ hooks, setHooks }: { hooks: Hook[]; setHooks: React.Dispatch
             <select
               value={form.category}
               onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
-              className="bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-blue-500"
+              className="bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
             >
               {HOOK_CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
             </select>
           </div>
           <div className="flex items-center gap-2">
             <button onClick={save} disabled={saving || !form.hook_text.trim()}
-              className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
+              className="flex items-center gap-1.5 bg-[#1B6DFC] hover:bg-[#1560E0] disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
             >
               <Check size={12} /> {saving ? 'Saving...' : 'Save'}
             </button>
@@ -315,7 +315,7 @@ function HooksTab({ hooks, setHooks }: { hooks: Hook[]; setHooks: React.Dispatch
       ) : (
         <div className="space-y-2">
           {hooks.map(hook => (
-            <div key={hook.id} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
+            <div key={hook.id} className="bg-[#F4F6F9] br-card p-4">
               {editingId === hook.id ? null : (
                 <div className="flex items-start gap-3">
                   <div className="flex-1 min-w-0">
@@ -331,7 +331,7 @@ function HooksTab({ hooks, setHooks }: { hooks: Hook[]; setHooks: React.Dispatch
                     <button onClick={() => startEdit(hook)} className="p-1.5 text-[#666D7A] hover:text-[#141821]">
                       <Pencil size={13} />
                     </button>
-                    <button onClick={() => deleteHook(hook.id)} disabled={deletingId === hook.id} className="p-1.5 text-[#666D7A] hover:text-red-700 disabled:opacity-50">
+                    <button onClick={() => deleteHook(hook.id)} disabled={deletingId === hook.id} className="p-1.5 text-[#666D7A] hover:text-[#C82626] disabled:opacity-50">
                       <Trash2 size={13} />
                     </button>
                   </div>
@@ -398,14 +398,14 @@ function MessagesTab({ messages, setMessages }: { messages: Message[]; setMessag
         <p className="text-[12.5px] text-[#666D7A]">{messages.length} messages in library</p>
         <button
           onClick={() => { setShowForm(true); setEditingId(null); setForm({ message_text: '', type: 'education' }) }}
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-[#1B6DFC] hover:bg-[#1560E0] text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
         >
           <Plus size={13} /> Add Message
         </button>
       </div>
 
       {(showForm || editingId) && (
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 mb-4 space-y-3">
+        <div className="bg-[#F4F6F9] br-card p-4 mb-4 space-y-3">
           <div>
             <label className="block text-[12.5px] text-[#666D7A] mb-1">Message</label>
             <textarea
@@ -413,7 +413,7 @@ function MessagesTab({ messages, setMessages }: { messages: Message[]; setMessag
               onChange={e => setForm(f => ({ ...f, message_text: e.target.value }))}
               placeholder="Stress triggers cortisol, which tells the body to hold fat - especially around the belly. Training harder into that state makes it worse."
               rows={4}
-              className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-500 resize-none"
+              className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1B6DFC] resize-none"
             />
           </div>
           <div>
@@ -421,14 +421,14 @@ function MessagesTab({ messages, setMessages }: { messages: Message[]; setMessag
             <select
               value={form.type}
               onChange={e => setForm(f => ({ ...f, type: e.target.value }))}
-              className="bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-blue-500"
+              className="bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
             >
               {MESSAGE_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
             </select>
           </div>
           <div className="flex items-center gap-2">
             <button onClick={save} disabled={saving || !form.message_text.trim()}
-              className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
+              className="flex items-center gap-1.5 bg-[#1B6DFC] hover:bg-[#1560E0] disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
             >
               <Check size={12} /> {saving ? 'Saving...' : 'Save'}
             </button>
@@ -444,7 +444,7 @@ function MessagesTab({ messages, setMessages }: { messages: Message[]; setMessag
       ) : (
         <div className="space-y-2">
           {messages.map(msg => (
-            <div key={msg.id} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
+            <div key={msg.id} className="bg-[#F4F6F9] br-card p-4">
               <div className="flex items-start gap-3">
                 <div className="flex-1 min-w-0">
                   <span className={`inline-block text-xs font-medium px-2 py-0.5 rounded-full border mb-2 ${messageTypeColor(msg.type)}`}>
@@ -456,7 +456,7 @@ function MessagesTab({ messages, setMessages }: { messages: Message[]; setMessag
                   <button onClick={() => startEdit(msg)} className="p-1.5 text-[#666D7A] hover:text-[#141821]">
                     <Pencil size={13} />
                   </button>
-                  <button onClick={() => deleteMessage(msg.id)} disabled={deletingId === msg.id} className="p-1.5 text-[#666D7A] hover:text-red-700 disabled:opacity-50">
+                  <button onClick={() => deleteMessage(msg.id)} disabled={deletingId === msg.id} className="p-1.5 text-[#666D7A] hover:text-[#C82626] disabled:opacity-50">
                     <Trash2 size={13} />
                   </button>
                 </div>
@@ -516,14 +516,14 @@ function CtasTab({ ctas, setCtas }: { ctas: Cta[]; setCtas: React.Dispatch<React
         <p className="text-[12.5px] text-[#666D7A]">{ctas.length} CTAs in library</p>
         <button
           onClick={() => { setShowForm(true); setEditingId(null); setForm({ cta_text: '' }) }}
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-[#1B6DFC] hover:bg-[#1560E0] text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
         >
           <Plus size={13} /> Add CTA
         </button>
       </div>
 
       {(showForm || editingId) && (
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 mb-4 space-y-3">
+        <div className="bg-[#F4F6F9] br-card p-4 mb-4 space-y-3">
           <div>
             <label className="block text-[12.5px] text-[#666D7A] mb-1">CTA</label>
             <input
@@ -531,12 +531,12 @@ function CtasTab({ ctas, setCtas }: { ctas: Cta[]; setCtas: React.Dispatch<React
               value={form.cta_text}
               onChange={e => setForm({ cta_text: e.target.value })}
               placeholder="Run your Performance Check-In"
-              className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-blue-500"
+              className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1B6DFC]"
             />
           </div>
           <div className="flex items-center gap-2">
             <button onClick={save} disabled={saving || !form.cta_text.trim()}
-              className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
+              className="flex items-center gap-1.5 bg-[#1B6DFC] hover:bg-[#1560E0] disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
             >
               <Check size={12} /> {saving ? 'Saving...' : 'Save'}
             </button>
@@ -552,16 +552,16 @@ function CtasTab({ ctas, setCtas }: { ctas: Cta[]; setCtas: React.Dispatch<React
       ) : (
         <div className="space-y-2">
           {ctas.map(cta => (
-            <div key={cta.id} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 flex items-center justify-between">
+            <div key={cta.id} className="bg-[#F4F6F9] br-card p-4 flex items-center justify-between">
               {editingId === cta.id ? (
                 <div className="flex-1 flex items-center gap-2">
                   <input
                     type="text"
                     value={form.cta_text}
                     onChange={e => setForm({ cta_text: e.target.value })}
-                    className="flex-1 bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-1.5 text-sm text-[#141821] focus:outline-none focus:border-blue-500"
+                    className="flex-1 bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-1.5 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
                   />
-                  <button onClick={save} disabled={saving} className="flex items-center gap-1 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-2.5 py-1.5 rounded-lg">
+                  <button onClick={save} disabled={saving} className="flex items-center gap-1 bg-[#1B6DFC] hover:bg-[#1560E0] disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-2.5 py-1.5 rounded-lg">
                     <Check size={12} /> {saving ? 'Saving...' : 'Save'}
                   </button>
                   <button onClick={() => setEditingId(null)} className="text-[12.5px] text-[#666D7A] hover:text-[#141821]">
@@ -575,7 +575,7 @@ function CtasTab({ ctas, setCtas }: { ctas: Cta[]; setCtas: React.Dispatch<React
                     <button onClick={() => { setEditingId(cta.id); setForm({ cta_text: cta.cta_text }); setShowForm(false) }} className="p-1.5 text-[#666D7A] hover:text-[#141821]">
                       <Pencil size={13} />
                     </button>
-                    <button onClick={() => deleteCta(cta.id)} disabled={deletingId === cta.id} className="p-1.5 text-[#666D7A] hover:text-red-700 disabled:opacity-50">
+                    <button onClick={() => deleteCta(cta.id)} disabled={deletingId === cta.id} className="p-1.5 text-[#666D7A] hover:text-[#C82626] disabled:opacity-50">
                       <Trash2 size={13} />
                     </button>
                   </div>
@@ -683,7 +683,7 @@ function GenerateTab({
               onClick={() => setPlatform(p.value)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
                 platform === p.value
-                  ? 'bg-blue-50 border-blue-300 text-blue-500'
+                  ? 'bg-[rgba(27,109,252,0.08)] border-[#9CC0FB] text-[#1B6DFC]'
                   : 'bg-[#F4F6F9] border-[#E8EAEE] text-[#666D7A] hover:text-[#141821] hover:border-[#CFD4DC]'
               }`}
             >
@@ -727,7 +727,7 @@ function GenerateTab({
       />
 
       {/* Variant count + generate */}
-      <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+      <div className="bg-[#F4F6F9] br-card p-5">
         <div className="flex items-center justify-between mb-4">
           <div>
             <p className="text-[12.5px] text-[#666D7A] mb-0.5">Variants to generate</p>
@@ -743,19 +743,19 @@ function GenerateTab({
           <button
             onClick={generate}
             disabled={generating || generatingAll || variantCount === 0}
-            className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] font-semibold px-5 py-2.5 rounded-lg transition-colors text-sm"
+            className="flex items-center gap-2 bg-[#1B6DFC] hover:bg-[#1560E0] disabled:opacity-50 text-[#FBFCFD] font-semibold px-5 py-2.5 rounded-lg transition-colors text-sm"
           >
             <Zap size={15} />
             {generating ? 'Generating...' : 'Generate'}
           </button>
         </div>
 
-        {error && <p className="text-[12.5px] text-red-700">{error}</p>}
+        {error && <p className="text-[12.5px] text-[#C82626]">{error}</p>}
 
         {result && (
-          <div className="flex items-center justify-between bg-blue-50 border border-blue-500/20 rounded-lg px-4 py-3">
-            <p className="text-sm text-blue-500 font-medium">{result.generated.toLocaleString()} pieces of content generated.</p>
-            <button onClick={onViewOutputs} className="text-[12.5px] text-blue-500 hover:text-blue-700 underline">
+          <div className="flex items-center justify-between bg-[rgba(27,109,252,0.08)] border border-[#1B6DFC]/20 rounded-lg px-4 py-3">
+            <p className="text-sm text-[#1B6DFC] font-medium">{result.generated.toLocaleString()} pieces of content generated.</p>
+            <button onClick={onViewOutputs} className="text-[12.5px] text-[#1B6DFC] hover:text-[#1056D6] underline">
               View Outputs
             </button>
           </div>
@@ -764,7 +764,7 @@ function GenerateTab({
 
       {/* Generate All */}
       {hooks.length > 0 && messages.length > 0 && ctas.length > 0 && (
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+        <div className="bg-[#F4F6F9] br-card p-5">
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-sm font-semibold text-[#141821] mb-1">Generate Everything</p>
@@ -793,7 +793,7 @@ function GenerateTab({
               </div>
               <div className="h-1.5 bg-[#EFF1F4] rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-blue-500 rounded-full transition-all duration-500"
+                  className="h-full bg-[#1B6DFC] rounded-full transition-all duration-500"
                   style={{ width: `${(generateAllProgress.done / generateAllProgress.total) * 100}%` }}
                 />
               </div>
@@ -803,10 +803,10 @@ function GenerateTab({
       )}
 
       {/* Reel generation notice */}
-      <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+      <div className="bg-[#F4F6F9] br-card p-5">
         <div className="flex items-start gap-3">
           <div className="p-2 bg-[#EFF1F4] rounded-lg shrink-0">
-            <Video size={18} className="text-blue-500" strokeWidth={1.5} />
+            <Video size={18} className="text-[#1B6DFC]" strokeWidth={1.5} />
           </div>
           <div>
             <p className="text-sm font-semibold text-[#141821] mb-1">Reel Generation</p>
@@ -968,7 +968,7 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
         <select
           value={filterPlatform}
           onChange={e => setFilterPlatform(e.target.value)}
-          className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-3 py-1.5 text-[12.5px] text-[#141821] focus:outline-none focus:border-blue-500"
+          className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-3 py-1.5 text-[12.5px] text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
         >
           <option value="all">All platforms</option>
           {PLATFORMS.map(p => <option key={p.value} value={p.value}>{p.label}</option>)}
@@ -976,7 +976,7 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
         <select
           value={filterStatus}
           onChange={e => setFilterStatus(e.target.value)}
-          className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-3 py-1.5 text-[12.5px] text-[#141821] focus:outline-none focus:border-blue-500"
+          className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-3 py-1.5 text-[12.5px] text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
         >
           <option value="all">All statuses</option>
           {OUTPUT_STATUSES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
@@ -989,7 +989,7 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
       ) : (
         <div className="space-y-3">
           {filtered.map(output => (
-            <div key={output.id} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
+            <div key={output.id} className="bg-[#F4F6F9] br-card p-4">
               {/* Top row */}
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-[12.5px] font-medium text-[#666D7A] bg-[#EFF1F4] border border-[#E8EAEE] px-2 py-0.5 rounded-full">
@@ -1003,9 +1003,9 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
                 <StatusDropdown status={output.status} onChange={s => updateStatus(output.id, s)} />
                 <div className="ml-auto flex items-center gap-1">
                   <button onClick={() => copyText(output.id, output.content_text)} className="p-1.5 text-[#666D7A] hover:text-[#141821] transition-colors">
-                    {copiedId === output.id ? <Check size={13} className="text-blue-500" /> : <Copy size={13} />}
+                    {copiedId === output.id ? <Check size={13} className="text-[#1B6DFC]" /> : <Copy size={13} />}
                   </button>
-                  <button onClick={() => deleteOutput(output.id)} className="p-1.5 text-[#666D7A] hover:text-red-700 transition-colors">
+                  <button onClick={() => deleteOutput(output.id)} className="p-1.5 text-[#666D7A] hover:text-[#C82626] transition-colors">
                     <Trash2 size={13} />
                   </button>
                 </div>
@@ -1026,7 +1026,7 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
                           onClick={() => setGraphicStyle(g => ({ ...g, [output.id]: s.value }))}
                           className={`px-3 py-1 rounded-lg text-xs font-medium border transition-colors ${
                             (graphicStyle[output.id] ?? 'quote') === s.value
-                              ? 'bg-blue-50 border-blue-300 text-blue-500'
+                              ? 'bg-[rgba(27,109,252,0.08)] border-[#9CC0FB] text-[#1B6DFC]'
                               : 'bg-[#EFF1F4] border-[#E8EAEE] text-[#666D7A] hover:text-[#141821]'
                           }`}
                         >
@@ -1048,7 +1048,7 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
                     </div>
                     <button
                       onClick={() => downloadGraphic(output.content_text, graphicStyle[output.id] ?? 'quote', output.id)}
-                      className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
+                      className="flex items-center gap-1.5 bg-[#1B6DFC] hover:bg-[#1560E0] text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
                     >
                       <Download size={12} /> Download 1080×1080 PNG
                     </button>
@@ -1080,7 +1080,7 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
                     <button
                       onClick={() => downloadCarouselZip(output.id)}
                       disabled={downloadingCarousel === output.id}
-                      className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
+                      className="flex items-center gap-1.5 bg-[#1B6DFC] hover:bg-[#1560E0] disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
                     >
                       <Download size={12} />
                       {downloadingCarousel === output.id ? 'Packaging...' : `Download ${carouselSlides[output.id].length} slides as ZIP`}
@@ -1110,8 +1110,8 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
               {/* Reel section */}
               {output.video_status === 'ready' && output.video_url ? (
                 <div className="flex items-center gap-2 mt-2 pt-2 border-t border-[#E8EAEE]">
-                  <Video size={13} className="text-blue-500" />
-                  <span className="text-[12.5px] text-blue-500 font-medium">Reel ready</span>
+                  <Video size={13} className="text-[#1B6DFC]" />
+                  <span className="text-[12.5px] text-[#1B6DFC] font-medium">Reel ready</span>
                   <a href={output.video_url} target="_blank" rel="noopener noreferrer"
                     className="ml-auto flex items-center gap-1 text-[12.5px] text-[#666D7A] hover:text-[#141821]"
                   >
@@ -1125,7 +1125,7 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
                 </div>
               ) : output.video_status === 'failed' ? (
                 <div className="flex items-center gap-2 mt-2 pt-2 border-t border-[#E8EAEE]">
-                  <span className="text-[12.5px] text-red-700">Reel generation failed</span>
+                  <span className="text-[12.5px] text-[#C82626]">Reel generation failed</span>
                   <button onClick={() => setShowScriptFor(output.id)} className="ml-auto text-[12.5px] text-[#666D7A] hover:text-[#141821]">
                     Retry
                   </button>
@@ -1139,13 +1139,13 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
                         value={reelScript[output.id] ?? output.content_text}
                         onChange={e => setReelScript(s => ({ ...s, [output.id]: e.target.value }))}
                         rows={3}
-                        className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-[12.5px] text-[#141821] focus:outline-none focus:border-blue-500 resize-none"
+                        className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-[12.5px] text-[#141821] focus:outline-none focus:border-[#1B6DFC] resize-none"
                       />
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => generateReel(output)}
                           disabled={generatingReelId === output.id}
-                          className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
+                          className="flex items-center gap-1.5 bg-[#1B6DFC] hover:bg-[#1560E0] disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
                         >
                           <Video size={12} /> {generatingReelId === output.id ? 'Submitting...' : 'Generate Reel'}
                         </button>
@@ -1253,7 +1253,7 @@ function SelectableList({
         <label className="text-[12.5px] text-[#666D7A] font-medium">{label} ({selected.length} selected)</label>
         {items.length > 0 && (
           <div className="flex items-center gap-2">
-            <button onClick={onSelectAll} className="text-[12.5px] text-[#666D7A] hover:text-blue-500">All</button>
+            <button onClick={onSelectAll} className="text-[12.5px] text-[#666D7A] hover:text-[#1B6DFC]">All</button>
             <button onClick={onClear} className="text-[12.5px] text-[#666D7A] hover:text-[#141821]">None</button>
           </div>
         )}
@@ -1270,11 +1270,11 @@ function SelectableList({
                 onClick={() => onToggle(item.id)}
                 className={`w-full text-left flex items-start gap-2.5 px-3 py-2 rounded-lg border text-xs transition-colors ${
                   active
-                    ? 'bg-blue-50 border-blue-200 text-[#141821]'
+                    ? 'bg-[rgba(27,109,252,0.08)] border-[#B5CFFC] text-[#141821]'
                     : 'bg-[#F4F6F9] border-[#E8EAEE] text-[#666D7A] hover:border-[#E8EAEE] hover:text-[#141821]'
                 }`}
               >
-                <div className={`w-3.5 h-3.5 rounded border shrink-0 mt-0.5 flex items-center justify-center ${active ? 'bg-blue-500 border-blue-500' : 'border-[#CFD4DC]'}`}>
+                <div className={`w-3.5 h-3.5 rounded border shrink-0 mt-0.5 flex items-center justify-center ${active ? 'bg-[#1B6DFC] border-[#1B6DFC]' : 'border-[#CFD4DC]'}`}>
                   {active && <Check size={9} className="text-[#FBFCFD]" strokeWidth={3} />}
                 </div>
                 <span className="flex-1 leading-relaxed line-clamp-2">{item.label}</span>
@@ -1327,7 +1327,7 @@ function CardsTab() {
       <p className="text-[#666D7A] text-sm mb-6">16 card templates. Download any card as a 1080×1080 PNG ready to post.</p>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {CARDS.map(card => (
-          <div key={card.file} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+          <div key={card.file} className="bg-[#F4F6F9] br-card overflow-hidden">
             <div className="aspect-square bg-[#FBFCFD] overflow-hidden">
               <img
                 src={`/cards/${card.file}`}

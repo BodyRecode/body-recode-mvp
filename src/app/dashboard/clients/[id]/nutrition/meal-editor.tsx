@@ -135,7 +135,7 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals }
     const cp = Math.round((meal.carb_g * 4 / denom) * 100)
     const fp = 100 - pp - cp
     return (
-      <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+      <div className="bg-[#F4F6F9] br-card overflow-hidden">
         <div className="px-5 py-3 border-b border-[#E8EAEE] flex items-center justify-between">
           <div>
             <h3 className="font-semibold text-[#141821] text-sm">{meal.meal_name}</h3>
@@ -275,7 +275,7 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals }
 
   return (
     <div className="bg-white border-2 border-[#1B6DFC] rounded-xl overflow-hidden">
-      <div className="px-5 py-3 border-b border-[#E8EAEE] bg-blue-50/40 flex items-center justify-between gap-4">
+      <div className="px-5 py-3 border-b border-[#E8EAEE] bg-[rgba(27,109,252,0.08)]/40 flex items-center justify-between gap-4">
         <div className="flex-1 min-w-0 space-y-1">
           <input
             type="text"
@@ -327,7 +327,7 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals }
                     ))}
                   </select>
                   {lookupFood(f.name) && (
-                    <span className="text-[9px] text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">In table</span>
+                    <span className="text-[9px] text-[#177245] bg-[#EDF8F1] px-1.5 py-0.5 rounded">In table</span>
                   )}
                 </div>
               </div>
@@ -370,7 +370,7 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals }
                 </div>
                 <button
                   onClick={() => deleteFood(i)}
-                  className="text-[11px] text-[#98A0AD] hover:text-red-600 transition-colors px-1"
+                  className="text-[11px] text-[#98A0AD] hover:text-[#C82626] transition-colors px-1"
                   title="Delete food"
                 >
                   ✕
@@ -408,7 +408,7 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals }
             <span className="tabular-nums">
               {dailyPreview.protein_g}g P
               {proteinAnchor ? (
-                <span className={`ml-1 text-[10px] ${Math.abs(dailyPreview.protein_g - proteinAnchor) > 20 ? 'text-amber-700' : 'text-emerald-700'}`}>
+                <span className={`ml-1 text-[10px] ${Math.abs(dailyPreview.protein_g - proteinAnchor) > 20 ? 'text-[#A96A12]' : 'text-[#177245]'}`}>
                   vs {proteinAnchor}g anchor
                 </span>
               ) : null}
@@ -437,7 +437,7 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals }
         </div>
 
         {error && (
-          <p className="mt-2 text-[11px] text-red-700">{error}</p>
+          <p className="mt-2 text-[11px] text-[#C82626]">{error}</p>
         )}
       </div>
     </div>

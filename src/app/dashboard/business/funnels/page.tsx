@@ -19,7 +19,7 @@ export default async function FunnelsPage() {
         </div>
         <Link
           href="/dashboard/business/funnels/new"
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-[#1B6DFC] hover:bg-[#1560E0] text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
         >
           <Plus size={14} strokeWidth={2.5} />
           New Funnel
@@ -31,7 +31,7 @@ export default async function FunnelsPage() {
           {funnels.map(funnel => (
             <div
               key={funnel.id}
-              className="flex items-center gap-4 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 hover:border-[#E8EAEE] transition-colors"
+              className="flex items-center gap-4 bg-[#F4F6F9] br-card p-4 hover:border-[#E8EAEE] transition-colors"
             >
               <div className="p-2 bg-[#EFF1F4] rounded-lg shrink-0">
                 <Layers size={14} className="text-[#666D7A]" />
@@ -45,7 +45,7 @@ export default async function FunnelsPage() {
               </div>
 
               <div className="shrink-0 flex items-center gap-3">
-                <span className={`text-xs font-medium ${funnel.is_active ? 'text-blue-500' : 'text-[#666D7A]'}`}>
+                <span className={`text-xs font-medium ${funnel.is_active ? 'text-[#1B6DFC]' : 'text-[#666D7A]'}`}>
                   {funnel.is_active ? 'Live' : 'Off'}
                 </span>
                 <a
@@ -59,7 +59,7 @@ export default async function FunnelsPage() {
                 </a>
                 <Link
                   href={`/dashboard/business/funnels/${funnel.id}`}
-                  className="text-[12.5px] text-[#666D7A] hover:text-blue-500 transition-colors"
+                  className="text-[12.5px] text-[#666D7A] hover:text-[#1B6DFC] transition-colors"
                 >
                   Edit
                 </Link>
@@ -80,7 +80,7 @@ export default async function FunnelsPage() {
           </p>
           <Link
             href="/dashboard/business/funnels/new"
-            className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+            className="inline-flex items-center gap-2 bg-[#1B6DFC] hover:bg-[#1560E0] text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
           >
             <Plus size={14} strokeWidth={2.5} />
             Create your first funnel

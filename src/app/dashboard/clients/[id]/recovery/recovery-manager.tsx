@@ -144,8 +144,8 @@ export default function RecoveryManager({
   return (
     <div className="space-y-8">
       {error && (
-        <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3">
-          <p className="text-[12.5px] text-amber-800">{error}</p>
+        <div className="rounded-lg border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] px-4 py-3">
+          <p className="text-[12.5px] text-[#A96A12]">{error}</p>
         </div>
       )}
 
@@ -177,7 +177,7 @@ export default function RecoveryManager({
             <button
               onClick={saveAccess}
               disabled={savingAccess}
-              className="inline-flex items-center gap-1.5 text-[12.5px] font-medium px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] disabled:opacity-40 transition-colors"
+              className="inline-flex items-center gap-1.5 text-[12.5px] font-medium px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] disabled:opacity-40 transition-colors"
             >
               {savingAccess ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
               {savingAccess ? 'Saving...' : 'Save access'}
@@ -263,12 +263,12 @@ export default function RecoveryManager({
                   return (
                     <div key={p.slug}>
                       {isNewProgressionGroup && p.progression && (
-                        <div className="rounded-xl border border-amber-200 bg-amber-50/50 px-4 py-3 mb-2">
-                          <p className="text-[10px] font-medium text-amber-800 mb-1">{p.progression.group_label} - tiered progression</p>
-                          <p className="text-[12px] text-amber-900 leading-relaxed">{p.progression.group_rule}</p>
+                        <div className="rounded-xl border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)]/50 px-4 py-3 mb-2">
+                          <p className="text-[10px] font-medium text-[#A96A12] mb-1">{p.progression.group_label} - tiered progression</p>
+                          <p className="text-[12px] text-[#8A5A14] leading-relaxed">{p.progression.group_rule}</p>
                         </div>
                       )}
-                    <div className={`rounded-xl border overflow-hidden transition-colors ${isActive ? 'border-[#1B6DFC]/30 bg-blue-50/30' : 'border-[#E8EAEE] bg-white'}`}>
+                    <div className={`rounded-xl border overflow-hidden transition-colors ${isActive ? 'border-[#1B6DFC]/30 bg-[rgba(27,109,252,0.08)]/30' : 'border-[#E8EAEE] bg-white'}`}>
                       <div className="flex items-start justify-between gap-3 px-4 py-3">
                         <div className="flex-1 min-w-0">
                           <button
@@ -279,7 +279,7 @@ export default function RecoveryManager({
                             <div>
                               <div className="flex items-center gap-2 flex-wrap">
                                 {p.progression && (
-                                  <span className="text-[9px] font-medium text-amber-800 bg-amber-100 border border-amber-200 px-1.5 py-0.5 rounded">
+                                  <span className="text-[9px] font-medium text-[#A96A12] bg-[#FAEFD8] border border-[#F1DEB8] px-1.5 py-0.5 rounded">
                                     Level {p.progression.level}
                                   </span>
                                 )}
@@ -322,7 +322,7 @@ export default function RecoveryManager({
                           </div>
                           {p.contraindications.length > 0 && (
                             <div>
-                              <p className="text-[10px] font-medium text-red-700 mb-1">Contraindications</p>
+                              <p className="text-[10px] font-medium text-[#C82626] mb-1">Contraindications</p>
                               <ul className="text-[12px] text-[#141821] leading-relaxed space-y-0.5">
                                 {p.contraindications.map((c, i) => <li key={i}>- {c}</li>)}
                               </ul>
@@ -414,10 +414,10 @@ function RrsSuggestionBanner({
     setSbstRemovalConfirmed(true)
   }
 
-  const bannerBorder = showSbstRemovalAlert ? 'border-red-300' : 'border-amber-300'
-  const bannerBg = showSbstRemovalAlert ? 'bg-red-50' : 'bg-amber-50'
-  const textColour = showSbstRemovalAlert ? 'text-red-900' : 'text-amber-900'
-  const eyebrowColour = showSbstRemovalAlert ? 'text-red-800' : 'text-amber-800'
+  const bannerBorder = showSbstRemovalAlert ? 'border-[#EFAFAF]' : 'border-[#E5C98F]'
+  const bannerBg = showSbstRemovalAlert ? 'bg-[#FDEDED]' : 'bg-[#FDF6E9]'
+  const textColour = showSbstRemovalAlert ? 'text-[#8A1919]' : 'text-[#8A5A14]'
+  const eyebrowColour = showSbstRemovalAlert ? 'text-[#A11D1D]' : 'text-[#A96A12]'
 
   return (
     <div className={`rounded-xl border ${bannerBorder} ${bannerBg} overflow-hidden`}>
@@ -447,19 +447,19 @@ function RrsSuggestionBanner({
 
         {/* SBST-specific alert */}
         {suggestion.sbst_action && (
-          <div className={`ml-6 mb-3 rounded-lg border ${showSbstRemovalAlert ? 'border-red-400 bg-white' : 'border-amber-300 bg-white'} px-3 py-2`}>
+          <div className={`ml-6 mb-3 rounded-lg border ${showSbstRemovalAlert ? 'border-red-400 bg-white' : 'border-[#E5C98F] bg-white'} px-3 py-2`}>
             <p className={`text-[10px] font-bold ${eyebrowColour} uppercase tracking-widest mb-1`}>SBST action required</p>
             <p className={`text-[12px] ${textColour} leading-relaxed`}>{sbstActionLabel(suggestion.sbst_action)}</p>
             {showSbstRemovalAlert && !sbstRemovalConfirmed && (
               <button
                 onClick={markSbstRemoved}
-                className="mt-2 inline-flex items-center gap-1 text-[11px] font-medium px-3 py-1.5 bg-red-700 text-white rounded-lg hover:bg-red-800 transition-colors"
+                className="mt-2 inline-flex items-center gap-1 text-[11px] font-medium px-3 py-1.5 bg-[#C82626] text-white rounded-lg hover:bg-[#A11D1D] transition-colors"
               >
                 <Check size={12} /> Mark SBST removed
               </button>
             )}
             {sbstRemovalConfirmed && (
-              <p className="mt-2 text-[11px] text-green-700 inline-flex items-center gap-1">
+              <p className="mt-2 text-[11px] text-[#177245] inline-flex items-center gap-1">
                 <Check size={11} /> Confirmed. Now pause any active SBST assignments in the History section below.
               </p>
             )}
@@ -550,13 +550,13 @@ function AssignmentCard({ assignment, onEditNote, onPause, onResume, onComplete,
   const protocol = protocolBySlug(assignment.protocol_slug)
   if (!protocol) {
     return (
-      <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
-        <p className="text-[12.5px] text-amber-800">Unknown protocol slug: {assignment.protocol_slug}</p>
-        <button onClick={() => onDelete(assignment.id)} className="text-[11px] text-amber-800 underline mt-1">Delete</button>
+      <div className="rounded-xl border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] px-4 py-3">
+        <p className="text-[12.5px] text-[#A96A12]">Unknown protocol slug: {assignment.protocol_slug}</p>
+        <button onClick={() => onDelete(assignment.id)} className="text-[11px] text-[#A96A12] underline mt-1">Delete</button>
       </div>
     )
   }
-  const statusColour = assignment.status === 'active' ? 'text-[#1B6DFC]' : assignment.status === 'paused' ? 'text-amber-600' : 'text-[#666D7A]'
+  const statusColour = assignment.status === 'active' ? 'text-[#1B6DFC]' : assignment.status === 'paused' ? 'text-[#A96A12]' : 'text-[#666D7A]'
   return (
     <div className="rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
       <div className="flex items-start justify-between gap-3 px-4 py-3">
@@ -575,10 +575,10 @@ function AssignmentCard({ assignment, onEditNote, onPause, onResume, onComplete,
         </div>
         <div className="flex items-center gap-1 shrink-0">
           <button onClick={() => onEditNote(assignment)} className="text-[10px] font-medium text-[#666D7A] hover:text-[#141821] px-2 py-1">Edit note</button>
-          {onPause && <button onClick={() => onPause(assignment.id)} title="Pause" className="p-1.5 text-[#666D7A] hover:text-amber-700 rounded transition-colors"><Pause size={12} /></button>}
+          {onPause && <button onClick={() => onPause(assignment.id)} title="Pause" className="p-1.5 text-[#666D7A] hover:text-[#A96A12] rounded transition-colors"><Pause size={12} /></button>}
           {onResume && <button onClick={() => onResume(assignment.id)} title="Resume" className="p-1.5 text-[#666D7A] hover:text-[#1B6DFC] rounded transition-colors"><Play size={12} /></button>}
-          {onComplete && <button onClick={() => onComplete(assignment.id)} title="Mark complete" className="p-1.5 text-[#666D7A] hover:text-green-700 rounded transition-colors"><Check size={12} /></button>}
-          <button onClick={() => onDelete(assignment.id)} title="Delete" className="p-1.5 text-[#666D7A] hover:text-red-700 rounded transition-colors"><Trash2 size={12} /></button>
+          {onComplete && <button onClick={() => onComplete(assignment.id)} title="Mark complete" className="p-1.5 text-[#666D7A] hover:text-[#177245] rounded transition-colors"><Check size={12} /></button>}
+          <button onClick={() => onDelete(assignment.id)} title="Delete" className="p-1.5 text-[#666D7A] hover:text-[#C82626] rounded transition-colors"><Trash2 size={12} /></button>
         </div>
       </div>
     </div>

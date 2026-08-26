@@ -49,7 +49,7 @@ export default function AddSessionForm({ clientId, defaultDuration }: { clientId
     return (
       <button
         onClick={() => setOpen(true)}
-        className="mt-4 pt-4 border-t border-[#E8EAEE] w-full text-left text-[12.5px] text-blue-500 hover:text-blue-700 transition-colors"
+        className="mt-4 pt-4 border-t border-[#E8EAEE] w-full text-left text-[12.5px] text-[#1B6DFC] hover:text-[#1056D6] transition-colors"
       >
         + Book a session
       </button>
@@ -65,28 +65,28 @@ export default function AddSessionForm({ clientId, defaultDuration }: { clientId
           value={date}
           min={todayBrisbane()}
           onChange={e => setDate(e.target.value)}
-          className="col-span-1 bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-sm text-[#141821] focus:outline-none focus:border-blue-500 w-full"
+          className="col-span-1 bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC] w-full"
         />
         <input
           type="time"
           value={time}
           onChange={e => setTime(e.target.value)}
-          className="bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-sm text-[#141821] focus:outline-none focus:border-blue-500"
+          className="bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
         />
         <select
           value={duration}
           onChange={e => setDuration(Number(e.target.value))}
-          className="bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-sm text-[#141821] focus:outline-none focus:border-blue-500"
+          className="bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
         >
           {[45, 60, 75, 90].map(d => <option key={d} value={d}>{d} min</option>)}
         </select>
       </div>
-      {error && <p className="text-[12.5px] text-red-700">{error}</p>}
+      {error && <p className="text-[12.5px] text-[#C82626]">{error}</p>}
       <div className="flex gap-2">
         <button
           onClick={handleSave}
           disabled={saving}
-          className="px-4 py-2 bg-blue-500 text-white text-[12.5px] font-medium rounded-lg disabled:opacity-40 hover:bg-blue-500 transition-colors"
+          className="px-4 py-2 bg-[#1B6DFC] text-white text-[12.5px] font-medium rounded-lg disabled:opacity-40 hover:bg-[#1560E0] transition-colors"
         >
           {saving ? 'Saving...' : 'Confirm booking'}
         </button>

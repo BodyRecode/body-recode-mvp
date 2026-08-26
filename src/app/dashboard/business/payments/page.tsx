@@ -148,7 +148,7 @@ export default async function PaymentsPage() {
                     {contactHref ? (
                       <Link
                         href={contactHref}
-                        className="text-sm font-medium text-[#141821] hover:text-blue-500 transition-colors truncate block"
+                        className="text-sm font-medium text-[#141821] hover:text-[#1B6DFC] transition-colors truncate block"
                       >
                         {contactName}
                       </Link>

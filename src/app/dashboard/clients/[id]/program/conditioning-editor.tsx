@@ -49,7 +49,7 @@ export default function ConditioningEditor({
   }
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 mb-4">
+    <div className="br-card p-5 mb-4">
       <div className="flex items-center gap-2 mb-2 flex-wrap">
         <p className="text-[10px] font-medium text-[#1B6DFC]">Conditioning / Cardio</p>
         <span className="text-[10px] text-[#98A0AD]">shown to the client with their program</span>
@@ -61,7 +61,7 @@ export default function ConditioningEditor({
         placeholder="e.g. 1-2 easy runs per week, 5-6km, conversational pace, on non-lifting days. No intervals, tempo, or long runs this phase. Ease off if the Achilles complains."
         className="w-full resize-none text-sm text-[#141821] border border-[#E8EAEE] rounded-lg px-3 py-2 focus:outline-none focus:border-[#1B6DFC]"
       />
-      {error && <p className="text-[12.5px] text-red-600 mt-1">{error}</p>}
+      {error && <p className="text-[12.5px] text-[#C82626] mt-1">{error}</p>}
       <div className="flex justify-end mt-2">
         <button
           onClick={save}

@@ -101,7 +101,7 @@ export default function ProgramsGrid({ items }: { items: ProgramCard[] }) {
                 className={`text-[12px] px-3 py-1.5 rounded-md border transition-colors whitespace-nowrap ${
                   active
                     ? 'bg-[#EFF1F4] text-[#141821] border-[#CFD4DC]'
-                    : 'bg-transparent text-[#666D7A] border-[#E8EAEE] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50'
+                    : 'bg-transparent text-[#666D7A] border-[#E8EAEE] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)]'
                 }`}
               >
                 {f.label}
@@ -157,7 +157,7 @@ function ProgramCardTile({ item }: { item: ProgramCard }) {
 
   return (
     <Link href={href} className="block group">
-      <div className="relative bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 h-full transition-colors hover:border-[#CFD4DC] active:bg-[#EFF1F4]/40">
+      <div className="relative br-card p-5 h-full transition-colors hover:border-[#CFD4DC] active:bg-[#EFF1F4]/40">
         <div
           className="absolute top-5 left-5 w-7 h-[3px] rounded-full"
           style={{ background: accentBar.bar }}

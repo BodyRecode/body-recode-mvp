@@ -35,9 +35,9 @@ const TIER_LABEL: Record<Suggestion['recommendedTier'], string> = {
 }
 
 const CONFIDENCE_STYLE: Record<Suggestion['confidence'], string> = {
-  high: 'bg-blue-50 border-blue-200 text-blue-700',
+  high: 'bg-[rgba(27,109,252,0.08)] border-[#B5CFFC] text-[#1056D6]',
   moderate: 'bg-[#F4F6F9] border-[#E8EAEE] text-[#666D7A]',
-  low: 'bg-amber-50 border-amber-200 text-amber-700',
+  low: 'bg-[#FDF6E9] border-[#F1DEB8] text-[#A96A12]',
 }
 
 /**
@@ -159,7 +159,7 @@ export default function SuggestionPanel({
     <div className="mb-8 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] overflow-hidden">
       <div className="px-5 py-4 border-b border-[#E8EAEE] flex items-start justify-between gap-4 flex-wrap">
         <div className="min-w-0">
-          <p className="text-[12px] font-medium text-blue-500 flex items-center gap-1.5">
+          <p className="text-[12px] font-medium text-[#1B6DFC] flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5" />
             Suggested for {clientName}
           </p>
@@ -180,7 +180,7 @@ export default function SuggestionPanel({
               type="button"
               onClick={approvePlan}
               disabled={approving || generating}
-              className="px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white text-[12.5px] font-medium rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1.5"
+              className="px-3 py-2 bg-[#1B6DFC] hover:bg-[#1560E0] text-white text-[12.5px] font-medium rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1.5"
             >
               {approving ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Assigning…</> : <><CheckCheck className="w-3.5 h-3.5" /> Approve stack ({unassigned.length})</>}
             </button>
@@ -189,7 +189,7 @@ export default function SuggestionPanel({
             type="button"
             onClick={generate}
             disabled={generating || approving}
-            className="px-3 py-2 bg-blue-50 border border-blue-300 hover:bg-blue-100 text-blue-700 text-[12.5px] font-medium rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1.5"
+            className="px-3 py-2 bg-[rgba(27,109,252,0.08)] border border-[#9CC0FB] hover:bg-[#DDE9FD] text-[#1056D6] text-[12.5px] font-medium rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1.5"
           >
             {generating ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Reading their file…</> : set ? 'Regenerate' : 'Suggest a stack'}
           </button>
@@ -202,8 +202,8 @@ export default function SuggestionPanel({
         </p>
       )}
 
-      {error && <p className="px-5 py-3 text-[12.5px] text-red-700">{error}</p>}
-      {status && <p className="px-5 py-3 text-[12.5px] text-blue-600">{status}</p>}
+      {error && <p className="px-5 py-3 text-[12.5px] text-[#C82626]">{error}</p>}
+      {status && <p className="px-5 py-3 text-[12.5px] text-[#1560E0]">{status}</p>}
 
       {set && !generating && (
         <div className="px-5 py-4">
@@ -212,12 +212,12 @@ export default function SuggestionPanel({
           )}
 
           {clientMedications?.trim() && (
-            <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5">
-              <p className="text-[11.5px] font-medium text-amber-700 mb-1 flex items-center gap-1">
+            <div className="mb-4 rounded-lg border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] px-3 py-2.5">
+              <p className="text-[11.5px] font-medium text-[#A96A12] mb-1 flex items-center gap-1">
                 <AlertTriangle className="w-3 h-3" />
                 On medication, verify every interaction yourself
               </p>
-              <p className="text-[12.5px] text-amber-900 leading-relaxed whitespace-pre-wrap">{clientMedications.trim()}</p>
+              <p className="text-[12.5px] text-[#8A5A14] leading-relaxed whitespace-pre-wrap">{clientMedications.trim()}</p>
             </div>
           )}
 
@@ -236,7 +236,7 @@ export default function SuggestionPanel({
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className="text-[10px] font-medium text-[#98A0AD]">{i + 1}</span>
                           <p className="text-sm font-semibold text-[#141821]">{s.name}</p>
-                          <span className="text-[11.5px] font-medium px-2 py-0.5 rounded bg-blue-50 border border-blue-200 text-blue-700">
+                          <span className="text-[11.5px] font-medium px-2 py-0.5 rounded bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] text-[#1056D6]">
                             Start at {TIER_LABEL[s.recommendedTier]}
                           </span>
                           <span className={`text-[11.5px] font-medium px-2 py-0.5 rounded border ${CONFIDENCE_STYLE[s.confidence]}`}>
@@ -248,7 +248,7 @@ export default function SuggestionPanel({
                         type="button"
                         onClick={() => assign(s)}
                         disabled={assigning === s.slug || already}
-                        className="shrink-0 px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white text-[12.5px] font-medium rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1"
+                        className="shrink-0 px-3 py-1.5 bg-[#1B6DFC] hover:bg-[#1560E0] text-white text-[12.5px] font-medium rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1"
                       >
                         {assigning === s.slug
                           ? <><Loader2 className="w-3 h-3 animate-spin" /> Assigning…</>

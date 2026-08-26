@@ -48,7 +48,7 @@ export default async function CRMPage() {
         </div>
         <Link
           href="/dashboard/leads/new"
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-[#1B6DFC] hover:bg-[#1560E0] text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
         >
           <Plus size={14} strokeWidth={2.5} />
           New Lead
@@ -79,7 +79,7 @@ export default async function CRMPage() {
                     href={`/dashboard/business/crm/${lead.id}`}
                     className="block bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg p-3 hover:border-[#E8EAEE] transition-colors group"
                   >
-                    <p className="text-sm font-medium text-[#141821] group-hover:text-blue-500 transition-colors truncate">
+                    <p className="text-sm font-medium text-[#141821] group-hover:text-[#1B6DFC] transition-colors truncate">
                       {lead.name}
                     </p>
                     {lead.email && (

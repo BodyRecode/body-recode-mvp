@@ -3,8 +3,8 @@ import NutritionReviewCoachNotes from './review-coach-notes'
 
 const directionColour: Record<string, string> = {
   progress: 'text-green-400 bg-green-400/10 border-green-400/30',
-  hold: 'text-amber-700 bg-amber-50 border-amber-200',
-  rebuild: 'text-red-700 bg-red-50 border-red-200',
+  hold: 'text-[#A96A12] bg-[#FDF6E9] border-[#F1DEB8]',
+  rebuild: 'text-[#C82626] bg-[#FDEDED] border-[#F5C9C9]',
 }
 
 const directionLabel: Record<string, string> = {
@@ -51,7 +51,7 @@ export default async function NutritionWeeklyReview({
   const latest = reviews?.[0] ?? null
 
   return (
-    <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+    <div className="bg-[#F4F6F9] br-card overflow-hidden">
       <div className="px-5 py-4 flex items-center justify-between border-b border-[#E8EAEE]">
         <div>
           <p className="text-sm font-semibold text-[#141821]">Weekly Review</p>
@@ -88,7 +88,7 @@ export default async function NutritionWeeklyReview({
               <div className="space-y-1.5">
                 <div className="flex gap-2">
                   <span className="text-[12.5px] text-[#98A0AD] w-36 shrink-0">Followed plan</span>
-                  <span className={`text-xs font-medium ${review.adherence_confirmed ? 'text-blue-500' : 'text-red-700'}`}>
+                  <span className={`text-xs font-medium ${review.adherence_confirmed ? 'text-[#1B6DFC]' : 'text-[#C82626]'}`}>
                     {review.adherence_confirmed ? 'Yes' : 'No'}
                   </span>
                 </div>

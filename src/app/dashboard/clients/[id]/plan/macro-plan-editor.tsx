@@ -31,22 +31,22 @@ interface Plan {
 }
 
 const phaseColour: Record<string, string> = {
-  accumulation: 'text-blue-700 bg-blue-50 border-blue-200',
+  accumulation: 'text-[#1056D6] bg-[rgba(27,109,252,0.08)] border-[#B5CFFC]',
   intensification: 'text-orange-400 bg-orange-400/10 border-orange-400/30',
-  realization: 'text-red-700 bg-red-50 border-red-200',
+  realization: 'text-[#C82626] bg-[#FDEDED] border-[#F5C9C9]',
   restoration: 'text-green-400 bg-green-400/10 border-green-400/30',
 }
 
 const goalColour: Record<string, string> = {
   strength: 'text-violet-700 bg-violet-50 border-violet-200',
   hypertrophy: 'text-pink-400 bg-pink-400/10 border-pink-400/30',
-  capacity: 'text-blue-500 bg-blue-50 border-blue-200',
+  capacity: 'text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border-[#B5CFFC]',
 }
 
 const statusColour: Record<string, string> = {
   planned: 'text-[#666D7A] bg-[#EFF1F4] border-[#E8EAEE]',
-  in_progress: 'text-amber-700 bg-amber-50 border-amber-700',
-  complete: 'text-green-400 bg-green-400/10 border-green-700',
+  in_progress: 'text-[#A96A12] bg-[#FDF6E9] border-[#A96A12]',
+  complete: 'text-green-400 bg-green-400/10 border-[#177245]',
   skipped: 'text-[#98A0AD] bg-[#F4F6F9] border-[#E8EAEE]',
 }
 
@@ -205,12 +205,12 @@ export default function MacroPlanEditor({
   return (
     <div>
       {error && (
-        <p className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-md px-3 py-2 mb-4">{error}</p>
+        <p className="text-sm text-[#C82626] bg-[#FDEDED] border border-[#F5C9C9] rounded-md px-3 py-2 mb-4">{error}</p>
       )}
 
       {/* No plan yet - create one */}
       {!plan ? (
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-6">
+        <div className="bg-[#F4F6F9] br-card p-6">
           <h2 className="text-sm font-semibold text-[#141821] mb-4">Create Macro Plan</h2>
           <div className="space-y-4">
             <div>
@@ -236,7 +236,7 @@ export default function MacroPlanEditor({
             <button
               onClick={handleCreatePlan}
               disabled={saving}
-              className="w-full py-2.5 bg-[#1B6DFC] text-white font-semibold rounded-md hover:bg-[#5390FF] disabled:opacity-40 transition-colors"
+              className="w-full py-2.5 bg-[#1B6DFC] text-white font-semibold rounded-md hover:bg-[#1560E0] disabled:opacity-40 transition-colors"
             >
               {saving ? 'Creating…' : 'Create Plan'}
             </button>
@@ -245,7 +245,7 @@ export default function MacroPlanEditor({
       ) : (
         <div>
           {/* Plan header */}
-          <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5 mb-6">
+          <div className="bg-[#F4F6F9] br-card p-5 mb-6">
             <div className="flex items-start justify-between">
               <div>
                 <h2 className="text-base font-semibold text-[#141821]">{plan.plan_name}</h2>
@@ -265,7 +265,7 @@ export default function MacroPlanEditor({
 
           {/* Replace plan form */}
           {showCreatePlan && (
-            <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5 mb-4">
+            <div className="bg-[#F4F6F9] br-card p-5 mb-4">
               <p className="text-[12.5px] font-medium text-[#666D7A] mb-3">Replace Plan</p>
               <div className="space-y-3">
                 <input type="text" value={planForm.plan_name} onChange={e => setPlanForm(p => ({ ...p, plan_name: e.target.value }))} placeholder="Plan name" className={inputCls} />
@@ -358,7 +358,7 @@ export default function MacroPlanEditor({
                         </button>
                         <button
                           onClick={() => handleDeleteBlock(block.id)}
-                          className="text-[12.5px] text-[#98A0AD] hover:text-red-700 transition-colors"
+                          className="text-[12.5px] text-[#98A0AD] hover:text-[#C82626] transition-colors"
                         >
                           Remove
                         </button>
@@ -407,7 +407,7 @@ function BlockAddForm({
   saving: boolean
 }) {
   return (
-    <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+    <div className="bg-[#F4F6F9] br-card p-5">
       <p className="text-[12.5px] font-medium text-[#666D7A] mb-4">Add Meso Block</p>
       <BlockFormFields form={blockForm} setForm={setBlockForm} />
       <div className="flex gap-2 mt-4">

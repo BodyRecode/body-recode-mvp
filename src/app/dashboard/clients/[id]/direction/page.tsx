@@ -5,35 +5,35 @@ import ClientPageNav from '../client-page-nav'
 import { PageHeader } from '@/components/dashboard/ui'
 
 const phaseColour: Record<string, string> = {
-  accumulation: 'text-blue-700 bg-blue-50 border-blue-200',
+  accumulation: 'text-[#1056D6] bg-[rgba(27,109,252,0.08)] border-[#B5CFFC]',
   intensification: 'text-orange-400 bg-orange-400/10 border-orange-400/30',
-  realization: 'text-red-700 bg-red-50 border-red-200',
+  realization: 'text-[#C82626] bg-[#FDEDED] border-[#F5C9C9]',
   restoration: 'text-green-400 bg-green-400/10 border-green-400/30',
 }
 
 const goalColour: Record<string, string> = {
   strength: 'text-violet-700 bg-violet-50 border-violet-200',
   hypertrophy: 'text-pink-400 bg-pink-400/10 border-pink-400/30',
-  capacity: 'text-blue-500 bg-blue-50 border-blue-200',
+  capacity: 'text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border-[#B5CFFC]',
 }
 
 const entryStateColour: Record<string, string> = {
-  stabilisation: 'text-amber-700 bg-amber-50 border-amber-200',
-  training_support: 'text-blue-500 bg-blue-50 border-blue-200',
+  stabilisation: 'text-[#A96A12] bg-[#FDF6E9] border-[#F1DEB8]',
+  training_support: 'text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border-[#B5CFFC]',
   high_output_support: 'text-violet-700 bg-violet-50 border-violet-200',
-  recovery_reset: 'text-red-700 bg-red-50 border-red-200',
+  recovery_reset: 'text-[#C82626] bg-[#FDEDED] border-[#F5C9C9]',
 }
 
 const readinessColour: Record<string, string> = {
-  Green: 'bg-green-50 border-green-500 text-green-400',
-  Amber: 'bg-amber-50 border-amber-500 text-amber-700',
-  Red: 'bg-red-50 border-red-500 text-red-700',
+  Green: 'bg-[#EDF8F1] border-[#22A05A] text-green-400',
+  Amber: 'bg-[#FDF6E9] border-[#B7791F] text-[#A96A12]',
+  Red: 'bg-[#FDEDED] border-[#DC2626] text-[#C82626]',
 }
 
 const blockStatusStyle: Record<string, string> = {
   planned: 'border-[#E8EAEE] bg-[#F4F6F9] text-[#666D7A]',
-  in_progress: 'border-amber-700 bg-amber-50 text-amber-700',
-  complete: 'border-green-700 bg-green-400/10 text-green-400',
+  in_progress: 'border-[#A96A12] bg-[#FDF6E9] text-[#A96A12]',
+  complete: 'border-[#177245] bg-green-400/10 text-green-400',
   skipped: 'border-[#E8EAEE] bg-[#F4F6F9]/50 text-[#141821]',
 }
 
@@ -89,12 +89,12 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
 
         {/* Current State - CFFS */}
         {cffs ? (
-          <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+          <div className="bg-[#F4F6F9] br-card overflow-hidden">
             <div className="flex items-center justify-between px-5 py-3 border-b border-[#E8EAEE]">
               <p className="text-[10px] font-medium text-[#666D7A]">Current Body State</p>
               <div className="flex items-center gap-2">
                 {cfws && (
-                  <span className="text-[10px] text-blue-500 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-full">Week {cfws.week_number} readiness</span>
+                  <span className="text-[10px] text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] px-2 py-0.5 rounded-full">Week {cfws.week_number} readiness</span>
                 )}
                 <Link href={`/dashboard/clients/${id}`} className="text-[10px] text-[#98A0AD] hover:text-[#666D7A] transition-colors">View CFFS →</Link>
               </div>
@@ -117,13 +117,13 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
             </div>
           </div>
         ) : (
-          <div className="bg-[#F4F6F9]/50 border border-[#E8EAEE] rounded-xl p-5">
+          <div className="bg-[#F4F6F9]/50 br-card p-5">
             <p className="text-[#666D7A] text-sm">No CFFS generated yet</p>
           </div>
         )}
 
         {/* Macro Arc */}
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+        <div className="bg-[#F4F6F9] br-card overflow-hidden">
           <div className="flex items-center justify-between px-5 py-3 border-b border-[#E8EAEE]">
             <p className="text-[10px] font-medium text-[#666D7A]">Macro Training Arc</p>
             <Link href={`/dashboard/clients/${id}/plan`} className="text-[10px] text-[#98A0AD] hover:text-[#666D7A] transition-colors">
@@ -157,7 +157,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
                   }) => (
                     <div
                       key={block.id}
-                      className={`rounded-xl border px-4 py-3 ${blockStatusStyle[block.status] || blockStatusStyle.planned} ${block.status === 'in_progress' ? 'ring-1 ring-amber-700/50' : ''}`}
+                      className={`rounded-xl border px-4 py-3 ${blockStatusStyle[block.status] || blockStatusStyle.planned} ${block.status === 'in_progress' ? 'ring-1 ring-[#A96A12]/50' : ''}`}
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
@@ -166,7 +166,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
                             {block.block_name}
                           </p>
                           {block.status === 'in_progress' && (
-                            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-amber-100 text-amber-700">Current</span>
+                            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-[#FAEFD8] text-[#A96A12]">Current</span>
                           )}
                         </div>
                         <div className="flex items-center gap-1.5">
@@ -185,7 +185,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
                       {block.status === 'in_progress' && block.program_id && (
                         <Link
                           href={`/dashboard/clients/${id}/program`}
-                          className="text-[10px] text-blue-500 hover:text-blue-700 mt-1.5 inline-block transition-colors"
+                          className="text-[10px] text-[#1B6DFC] hover:text-[#1056D6] mt-1.5 inline-block transition-colors"
                         >
                           View program →
                         </Link>
@@ -193,7 +193,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
                       {block.status === 'in_progress' && !block.program_id && (
                         <Link
                           href={`/dashboard/clients/${id}/program/suggest?plan_block_id=${block.id}`}
-                          className="text-[10px] text-amber-700 hover:text-amber-700 mt-1.5 inline-block transition-colors"
+                          className="text-[10px] text-[#A96A12] hover:text-[#A96A12] mt-1.5 inline-block transition-colors"
                         >
                           Generate program →
                         </Link>
@@ -208,7 +208,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
           ) : (
             <div className="px-5 py-5 text-center">
               <p className="text-[#666D7A] text-sm">No macro plan created yet</p>
-              <Link href={`/dashboard/clients/${id}/plan`} className="text-[12.5px] text-blue-500 hover:text-blue-700 mt-2 inline-block transition-colors">
+              <Link href={`/dashboard/clients/${id}/plan`} className="text-[12.5px] text-[#1B6DFC] hover:text-[#1056D6] mt-2 inline-block transition-colors">
                 Create macro plan →
               </Link>
             </div>
@@ -216,7 +216,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
         </div>
 
         {/* Current Meso + Micro */}
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+        <div className="bg-[#F4F6F9] br-card overflow-hidden">
           <div className="flex items-center justify-between px-5 py-3 border-b border-[#E8EAEE]">
             <p className="text-[10px] font-medium text-[#666D7A]">Training Program</p>
             <Link href={`/dashboard/clients/${id}/program`} className="text-[10px] text-[#98A0AD] hover:text-[#666D7A] transition-colors">
@@ -251,7 +251,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
           ) : (
             <div className="px-5 py-5 text-center">
               <p className="text-[#666D7A] text-sm">No active program</p>
-              <Link href={`/dashboard/clients/${id}/plan`} className="text-[12.5px] text-blue-500 hover:text-blue-700 mt-2 inline-block transition-colors">
+              <Link href={`/dashboard/clients/${id}/plan`} className="text-[12.5px] text-[#1B6DFC] hover:text-[#1056D6] mt-2 inline-block transition-colors">
                 Open macro plan →
               </Link>
             </div>
@@ -259,7 +259,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
         </div>
 
         {/* Nutrition Alignment */}
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+        <div className="bg-[#F4F6F9] br-card overflow-hidden">
           <div className="flex items-center justify-between px-5 py-3 border-b border-[#E8EAEE]">
             <p className="text-[10px] font-medium text-[#666D7A]">Nutrition Alignment</p>
             <Link href={`/dashboard/clients/${id}/nutrition`} className="text-[10px] text-[#98A0AD] hover:text-[#666D7A] transition-colors">
@@ -299,9 +299,9 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
 
               {activeNutritionPlan.current_direction && (
                 <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-medium capitalize mb-3 ${
-                  activeNutritionPlan.current_direction === 'progress' ? 'text-green-400 bg-green-400/10 border-green-700' :
-                  activeNutritionPlan.current_direction === 'rebuild' ? 'text-red-700 bg-red-50 border-red-700' :
-                  'text-amber-700 bg-amber-50 border-amber-700'
+                  activeNutritionPlan.current_direction === 'progress' ? 'text-green-400 bg-green-400/10 border-[#177245]' :
+                  activeNutritionPlan.current_direction === 'rebuild' ? 'text-[#C82626] bg-[#FDEDED] border-[#C82626]' :
+                  'text-[#A96A12] bg-[#FDF6E9] border-[#A96A12]'
                 }`}>
                   Weekly direction: {activeNutritionPlan.current_direction}
                 </div>
@@ -313,7 +313,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
                   <div className="space-y-1">
                     {activeNutritionPlan.key_priorities.map((p: string, i: number) => (
                       <div key={i} className="flex items-start gap-2">
-                        <span className="text-blue-500 mt-0.5 shrink-0">•</span>
+                        <span className="text-[#1B6DFC] mt-0.5 shrink-0">•</span>
                         <p className="text-[12.5px] text-[#666D7A]">{p}</p>
                       </div>
                     ))}
@@ -324,7 +324,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
           ) : (
             <div className="px-5 py-5 text-center">
               <p className="text-[#666D7A] text-sm">No active nutrition plan</p>
-              <Link href={`/dashboard/clients/${id}/nutrition/suggest`} className="text-[12.5px] text-blue-500 hover:text-blue-700 mt-2 inline-block transition-colors">
+              <Link href={`/dashboard/clients/${id}/nutrition/suggest`} className="text-[12.5px] text-[#1B6DFC] hover:text-[#1056D6] mt-2 inline-block transition-colors">
                 Generate plan →
               </Link>
             </div>
@@ -333,7 +333,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
 
         {/* Signal Alignment Summary */}
         {(cffs || activeProgram || activeNutritionPlan) && (
-          <div className="bg-[#F4F6F9]/50 border border-[#E8EAEE] rounded-xl px-5 py-4">
+          <div className="bg-[#F4F6F9]/50 br-card px-5 py-4">
             <p className="text-[10px] font-medium text-[#666D7A] mb-3">Signal Alignment</p>
             <div className="space-y-2">
               {cffs && (
@@ -359,8 +359,8 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
                   <span className="text-[#666D7A]">Nutrition Direction</span>
                   <span className={`font-medium capitalize ${
                     activeNutritionPlan.current_direction === 'progress' ? 'text-green-400' :
-                    activeNutritionPlan.current_direction === 'rebuild' ? 'text-red-700' :
-                    'text-amber-700'
+                    activeNutritionPlan.current_direction === 'rebuild' ? 'text-[#C82626]' :
+                    'text-[#A96A12]'
                   }`}>{activeNutritionPlan.current_direction}</span>
                 </div>
               )}

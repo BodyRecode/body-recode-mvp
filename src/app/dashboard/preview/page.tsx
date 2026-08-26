@@ -116,7 +116,7 @@ export default function PreviewIndexPage() {
                       href={asset.href}
                       target={asset.external ? '_blank' : undefined}
                       rel={asset.external ? 'noopener noreferrer' : undefined}
-                      className="group flex items-center justify-between gap-4 bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-5 py-4 hover:border-[#CFD4DC] transition-colors"
+                      className="group flex items-center justify-between gap-4 br-card px-5 py-4 br-card-hover transition-shadow"
                     >
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">

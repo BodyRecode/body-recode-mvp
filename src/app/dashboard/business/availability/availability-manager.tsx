@@ -88,11 +88,11 @@ export default function AvailabilityManager({ rows }: { rows: Row[] }) {
   return (
     <div className="space-y-4">
       {rows.length === 0 ? (
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-6">
+        <div className="bg-[#F4F6F9] br-card p-6">
           <p className="text-sm text-[#98A0AD]">No availability set up yet. Add a slot below.</p>
         </div>
       ) : (
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl divide-y divide-[#EFF1F4]">
+        <div className="bg-[#F4F6F9] br-card divide-y divide-[#EFF1F4]">
           {rows.map(row => (
             <div key={row.id} className="flex items-center justify-between px-5 py-4">
               <div>
@@ -109,7 +109,7 @@ export default function AvailabilityManager({ rows }: { rows: Row[] }) {
                   disabled={toggling === row.id}
                   className={`text-xs font-medium px-3 py-1.5 rounded-lg border transition-colors ${
                     row.is_active
-                      ? 'border-blue-300 text-blue-500 hover:bg-blue-50'
+                      ? 'border-[#9CC0FB] text-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)]'
                       : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
                   }`}
                 >
@@ -118,7 +118,7 @@ export default function AvailabilityManager({ rows }: { rows: Row[] }) {
                 <button
                   onClick={() => handleRemove(row.id)}
                   disabled={removing === row.id}
-                  className="text-[#98A0AD] hover:text-red-700 transition-colors text-[12.5px]"
+                  className="text-[#98A0AD] hover:text-[#C82626] transition-colors text-[12.5px]"
                 >
                   {removing === row.id ? '...' : '✕'}
                 </button>
@@ -131,12 +131,12 @@ export default function AvailabilityManager({ rows }: { rows: Row[] }) {
       {!adding ? (
         <button
           onClick={() => setAdding(true)}
-          className="text-[12.5px] text-blue-500 hover:text-blue-700 transition-colors"
+          className="text-[12.5px] text-[#1B6DFC] hover:text-[#1056D6] transition-colors"
         >
           + Add availability
         </button>
       ) : (
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-6 space-y-5">
+        <div className="bg-[#F4F6F9] br-card p-6 space-y-5">
           <p className="text-[12.5px] text-[#666D7A]">New Availability Window</p>
 
           <div>
@@ -148,7 +148,7 @@ export default function AvailabilityManager({ rows }: { rows: Row[] }) {
                   onClick={() => setDay(i)}
                   className={`px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${
                     day === i
-                      ? 'border-blue-500 bg-blue-50 text-blue-500'
+                      ? 'border-[#1B6DFC] bg-[rgba(27,109,252,0.08)] text-[#1B6DFC]'
                       : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
                   }`}
                 >
@@ -165,7 +165,7 @@ export default function AvailabilityManager({ rows }: { rows: Row[] }) {
                 type="time"
                 value={startTime}
                 onChange={e => setStartTime(e.target.value)}
-                className="bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-sm text-[#141821] focus:outline-none focus:border-blue-500 w-full"
+                className="bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC] w-full"
               />
             </div>
             <div>
@@ -174,7 +174,7 @@ export default function AvailabilityManager({ rows }: { rows: Row[] }) {
                 type="time"
                 value={endTime}
                 onChange={e => setEndTime(e.target.value)}
-                className="bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-sm text-[#141821] focus:outline-none focus:border-blue-500 w-full"
+                className="bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-sm text-[#141821] focus:outline-none focus:border-[#1B6DFC] w-full"
               />
             </div>
           </div>
@@ -189,7 +189,7 @@ export default function AvailabilityManager({ rows }: { rows: Row[] }) {
                     onClick={() => setSlotDuration(d)}
                     className={`px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${
                       slotDuration === d
-                        ? 'border-blue-500 bg-blue-50 text-blue-500'
+                        ? 'border-[#1B6DFC] bg-[rgba(27,109,252,0.08)] text-[#1B6DFC]'
                         : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
                     }`}
                   >
@@ -207,7 +207,7 @@ export default function AvailabilityManager({ rows }: { rows: Row[] }) {
                     onClick={() => setBuffer(d)}
                     className={`px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${
                       buffer === d
-                        ? 'border-blue-500 bg-blue-50 text-blue-500'
+                        ? 'border-[#1B6DFC] bg-[rgba(27,109,252,0.08)] text-[#1B6DFC]'
                         : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
                     }`}
                   >
@@ -218,13 +218,13 @@ export default function AvailabilityManager({ rows }: { rows: Row[] }) {
             </div>
           </div>
 
-          {error && <p className="text-[12.5px] text-red-700">{error}</p>}
+          {error && <p className="text-[12.5px] text-[#C82626]">{error}</p>}
 
           <div className="flex gap-2">
             <button
               onClick={handleAdd}
               disabled={saving}
-              className="px-4 py-2 bg-blue-500 text-white text-[12.5px] font-medium rounded-lg disabled:opacity-40 hover:bg-blue-500 transition-colors"
+              className="px-4 py-2 bg-[#1B6DFC] text-white text-[12.5px] font-medium rounded-lg disabled:opacity-40 hover:bg-[#1560E0] transition-colors"
             >
               {saving ? 'Saving...' : 'Add'}
             </button>

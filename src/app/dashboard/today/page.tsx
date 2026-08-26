@@ -207,13 +207,13 @@ export default function TodayDashboardPage() {
         {/* Header */}
         <div className="mb-5">
           <div className="flex items-center gap-2  flex-wrap br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
-            <span className="text-[12.5px] font-medium text-blue-600">Today</span>
+            <span className="text-[12.5px] font-medium text-[#1560E0]">Today</span>
             {runbookEntry && <span className="text-[12.5px] font-semibold text-[#666D7A] bg-white border border-[#E8EAEE] px-2 py-0.5 rounded">{runbookEntry.label}</span>}
           </div>
           <h1 className="text-2xl sm:text-[26px] font-semibold tracking-[-0.035em] tracking-tight">{dateLabel}</h1>
           <div className="flex items-center gap-2 mt-3 flex-wrap">
             <button onClick={() => setDate(dateOffset(-1))} className="text-[12.5px] bg-white border border-[#E8EAEE] px-3 py-1.5 rounded font-medium hover:bg-[#F4F6F9]">← Yesterday</button>
-            <button onClick={() => setDate(todayIso())} className="text-[12.5px] bg-blue-500 text-white px-3 py-1.5 rounded font-medium hover:bg-blue-600">Today</button>
+            <button onClick={() => setDate(todayIso())} className="text-[12.5px] bg-[#1B6DFC] text-white px-3 py-1.5 rounded font-medium hover:bg-[#1560E0]">Today</button>
             <button onClick={() => setDate(dateOffset(1))} className="text-[12.5px] bg-white border border-[#E8EAEE] px-3 py-1.5 rounded font-medium hover:bg-[#F4F6F9]">Tomorrow →</button>
             <input type="date" value={date} onChange={e => setDate(e.target.value)} className="text-[12.5px] bg-white border border-[#E8EAEE] px-2 py-1 rounded font-medium" />
             <button onClick={load} className="text-[12.5px] bg-[#EFF1F4] hover:bg-[#E8EAEE] text-[#141821] px-3 py-1.5 rounded font-medium ml-auto">↻ Refresh</button>
@@ -230,8 +230,8 @@ export default function TodayDashboardPage() {
                 {timeSensitive.map(({ post, tr }) => (
                   <Row key={post.id}>
                     <div className="flex items-start gap-2 flex-wrap">
-                      <span className={`text-xs font-bold px-2 py-0.5 rounded ${tr.mins < 0 ? 'bg-red-100 text-red-700' : tr.mins < 30 ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'}`}>{post.time}</span>
-                      <span className={`text-xs font-semibold ${tr.mins < 0 ? 'text-red-700' : 'text-[#666D7A]'}`}>{tr.label}</span>
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded ${tr.mins < 0 ? 'bg-[#FBDCDC] text-[#C82626]' : tr.mins < 30 ? 'bg-[#FAEFD8] text-[#A96A12]' : 'bg-[#DDE9FD] text-[#1056D6]'}`}>{post.time}</span>
+                      <span className={`text-xs font-semibold ${tr.mins < 0 ? 'text-[#C82626]' : 'text-[#666D7A]'}`}>{tr.label}</span>
                       <span className="text-[12.5px] text-[#666D7A]">{post.type}</span>
                     </div>
                     <p className="text-sm font-medium mt-1">{post.title}</p>
@@ -246,14 +246,14 @@ export default function TodayDashboardPage() {
                 {feedPosts.map(p => {
                   const status = p.posted_at ? 'posted' : p.scheduled_publish_at ? 'scheduled' : p.scheduled ? 'marked_scheduled' : 'pending'
                   const statusEl = status === 'posted'
-                    ? <a href={p.ig_post_url ?? '#'} target="_blank" rel="noopener noreferrer" className="text-[12.5px] font-semibold text-green-700 bg-green-50 border border-green-300 px-2 py-0.5 rounded">✓ Posted</a>
-                    : status === 'scheduled' ? <span className="text-[12.5px] font-semibold text-blue-700 bg-blue-50 border border-blue-300 px-2 py-0.5 rounded inline-flex items-center gap-1"><Clock size={11} strokeWidth={2.5} /> Scheduled</span>
-                    : status === 'marked_scheduled' ? <span className="text-[12.5px] font-semibold text-blue-700 bg-blue-50 border border-blue-300 px-2 py-0.5 rounded inline-flex items-center gap-1"><Clock size={11} strokeWidth={2.5} /> Marked</span>
-                    : <span className="text-[12.5px] font-semibold text-amber-700 bg-amber-50 border border-amber-300 px-2 py-0.5 rounded">Pending</span>
+                    ? <a href={p.ig_post_url ?? '#'} target="_blank" rel="noopener noreferrer" className="text-[12.5px] font-semibold text-[#177245] bg-[#EDF8F1] border border-green-300 px-2 py-0.5 rounded">✓ Posted</a>
+                    : status === 'scheduled' ? <span className="text-[12.5px] font-semibold text-[#1056D6] bg-[rgba(27,109,252,0.08)] border border-[#9CC0FB] px-2 py-0.5 rounded inline-flex items-center gap-1"><Clock size={11} strokeWidth={2.5} /> Scheduled</span>
+                    : status === 'marked_scheduled' ? <span className="text-[12.5px] font-semibold text-[#1056D6] bg-[rgba(27,109,252,0.08)] border border-[#9CC0FB] px-2 py-0.5 rounded inline-flex items-center gap-1"><Clock size={11} strokeWidth={2.5} /> Marked</span>
+                    : <span className="text-[12.5px] font-semibold text-[#A96A12] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] px-2 py-0.5 rounded">Pending</span>
                   return (
                     <Row key={p.id}>
                       <div className="flex items-center gap-2 flex-wrap mb-1">
-                        <span className="text-[12.5px] font-semibold text-blue-500 bg-blue-50 border border-blue-500/20 px-2 py-0.5 rounded">{p.time ?? '—'}</span>
+                        <span className="text-[12.5px] font-semibold text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border border-[#1B6DFC]/20 px-2 py-0.5 rounded">{p.time ?? '—'}</span>
                         <span className="text-[10px] font-medium text-[#666D7A] bg-[#F4F6F9] border border-[#E8EAEE] px-1.5 py-0.5 rounded">{p.brand?.replace('_', ' ') ?? 'br'}</span>
                         <span className="text-[10px] font-medium text-[#666D7A] bg-[#F4F6F9] border border-[#E8EAEE] px-1.5 py-0.5 rounded">{p.platform ?? 'ig'}</span>
                         <span className="text-[10px] font-medium text-[#666D7A] bg-[#F4F6F9] border border-[#E8EAEE] px-1.5 py-0.5 rounded">{p.type}</span>
@@ -275,7 +275,7 @@ export default function TodayDashboardPage() {
                     <Row key={s.id} onClick={() => toggle(`story:${s.id}`)} interactive>
                       <div className="flex items-center gap-2">
                         <input type="checkbox" checked={checked} onChange={() => toggle(`story:${s.id}`)} className="cursor-pointer" />
-                        <span className="text-[12.5px] font-semibold text-blue-500 bg-blue-50 border border-blue-500/20 px-2 py-0.5 rounded">{s.time ?? '—'}</span>
+                        <span className="text-[12.5px] font-semibold text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border border-[#1B6DFC]/20 px-2 py-0.5 rounded">{s.time ?? '—'}</span>
                         <span className={`text-sm font-medium ${checked ? 'line-through text-[#98A0AD]' : ''}`}>{s.title}</span>
                       </div>
                     </Row>
@@ -334,7 +334,7 @@ export default function TodayDashboardPage() {
                     <Row key={l.id}>
                       <div className="flex items-start gap-2">
                         {overdueDays > 0 && (
-                          <span className="text-[12.5px] font-medium text-red-700 bg-red-100 border border-red-300 px-2 py-0.5 rounded shrink-0">
+                          <span className="text-[12.5px] font-medium text-[#C82626] bg-[#FBDCDC] border border-[#EFAFAF] px-2 py-0.5 rounded shrink-0">
                             {overdueDays}d late
                           </span>
                         )}
@@ -396,7 +396,7 @@ export default function TodayDashboardPage() {
                 {decisionsToday.map((d, i) => (
                   <Row key={`today-${i}`}>
                     <div className="flex items-start gap-2">
-                      <span className="text-[12.5px] font-medium text-red-700 bg-red-100 border border-red-300 px-2 py-0.5 rounded shrink-0">TODAY</span>
+                      <span className="text-[12.5px] font-medium text-[#C82626] bg-[#FBDCDC] border border-[#EFAFAF] px-2 py-0.5 rounded shrink-0">TODAY</span>
                       <span className="text-sm text-[#141821]">{d}</span>
                     </div>
                   </Row>
@@ -416,7 +416,7 @@ export default function TodayDashboardPage() {
                 {feedback.slice(0, 5).map(f => (
                   <Row key={f.id}>
                     <div className="flex items-start gap-2 flex-wrap">
-                      <span className="text-[12.5px] font-medium text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded">{f.stage}</span>
+                      <span className="text-[12.5px] font-medium text-[#1056D6] bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] px-2 py-0.5 rounded">{f.stage}</span>
                       <span className="text-[12.5px] text-[#666D7A]">{f.moment}</span>
                       <span className="text-[12.5px] text-[#98A0AD] ml-auto">{new Date(f.created_at).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' })}</span>
                     </div>
@@ -424,7 +424,7 @@ export default function TodayDashboardPage() {
                   </Row>
                 ))}
                 <Row>
-                  <a href="/dashboard/feedback" target="_blank" rel="noopener noreferrer" className="text-[12.5px] font-semibold text-blue-600 hover:text-blue-700">→ Open feedback triage</a>
+                  <a href="/dashboard/feedback" target="_blank" rel="noopener noreferrer" className="text-[12.5px] font-semibold text-[#1560E0] hover:text-[#1056D6]">→ Open feedback triage</a>
                 </Row>
               </Section>
             )}
@@ -481,7 +481,7 @@ function SaasBuildoutSection() {
       {gate && (
         <Row>
           <div className="flex items-start gap-2 mb-1">
-            <span className="text-[12.5px] font-medium text-green-700 bg-green-100 border border-green-300 px-2 py-0.5 rounded shrink-0">GATE</span>
+            <span className="text-[12.5px] font-medium text-[#177245] bg-[#D8EFE1] border border-green-300 px-2 py-0.5 rounded shrink-0">GATE</span>
             <span className="text-sm font-semibold text-[#141821]">Phase {gate.id} complete — review before starting Phase {gate.id + 1}</span>
           </div>
           <p className="text-[12.5px] text-[#666D7A] leading-relaxed ml-14">
@@ -492,22 +492,22 @@ function SaasBuildoutSection() {
       {next && (
         <Row>
           <div className="flex items-start gap-2 mb-1">
-            <span className="text-[12.5px] font-medium text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded shrink-0">NEXT UP</span>
+            <span className="text-[12.5px] font-medium text-[#1056D6] bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] px-2 py-0.5 rounded shrink-0">NEXT UP</span>
             <span className="text-sm font-semibold text-[#141821]">Phase {next.phase.id} · {next.step.title}</span>
           </div>
           <p className="text-[12.5px] text-[#666D7A] leading-relaxed ml-14">{next.step.description}</p>
         </Row>
       )}
       <Row>
-        <a href="/dashboard/settings/platform-buildout" className="text-[12.5px] font-semibold text-blue-600 hover:text-blue-700">→ Open Platform Buildout</a>
+        <a href="/dashboard/settings/platform-buildout" className="text-[12.5px] font-semibold text-[#1560E0] hover:text-[#1056D6]">→ Open Platform Buildout</a>
       </Row>
     </Section>
   )
 }
 
 function Section({ icon: Icon, title, tone, children }: { icon?: React.ElementType; title: string; tone: 'urgent' | 'default' | 'success'; children: React.ReactNode }) {
-  const border = tone === 'urgent' ? 'border-red-300' : tone === 'success' ? 'border-green-300' : 'border-[#E8EAEE]'
-  const chip = tone === 'urgent' ? 'bg-red-500/10 text-red-600' : tone === 'success' ? 'bg-green-500/10 text-green-600' : 'bg-[#1B6DFC]/10 text-[#1B6DFC]'
+  const border = tone === 'urgent' ? 'border-[#EFAFAF]' : tone === 'success' ? 'border-green-300' : 'border-[#E8EAEE]'
+  const chip = tone === 'urgent' ? 'bg-[#DC2626]/10 text-[#C82626]' : tone === 'success' ? 'bg-[#22A05A]/10 text-[#177245]' : 'bg-[#1B6DFC]/10 text-[#1B6DFC]'
   return (
     <div className={`bg-white border ${border} rounded-xl p-4 sm:p-5 mb-4`}>
       <h2 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em] mb-3 flex items-center gap-2">
@@ -550,7 +550,7 @@ function renderInstructionsWithLinks(text: string): React.ReactNode[] {
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-blue-600 hover:text-blue-700 underline font-medium"
+        className="text-[#1560E0] hover:text-[#1056D6] underline font-medium"
       >
         {label}
       </a>
@@ -612,12 +612,12 @@ function RunbookLink({ label, path }: { label: string; path: string }) {
     <div className="flex items-center gap-2 text-[12.5px]">
       <button
         onClick={open}
-        className="text-blue-600 hover:text-blue-700 underline font-medium text-left"
+        className="text-[#1560E0] hover:text-[#1056D6] underline font-medium text-left"
         title="Click to open the PDF in Preview"
       >
         {labelText}
       </button>
-      <button onClick={copy} className={`text-[10px] font-semibold px-2 py-0.5 rounded border transition-colors ${status === 'copied' ? 'bg-green-50 text-green-700 border-green-300' : 'bg-[#F4F6F9] text-[#666D7A] border-[#E8EAEE] hover:bg-[#EFF1F4]'}`}>
+      <button onClick={copy} className={`text-[10px] font-semibold px-2 py-0.5 rounded border transition-colors ${status === 'copied' ? 'bg-[#EDF8F1] text-[#177245] border-green-300' : 'bg-[#F4F6F9] text-[#666D7A] border-[#E8EAEE] hover:bg-[#EFF1F4]'}`}>
         {status === 'copied' ? '✓ Copied path' : 'Copy path'}
       </button>
     </div>
@@ -625,7 +625,7 @@ function RunbookLink({ label, path }: { label: string; path: string }) {
 }
 
 function Metric({ label, value, sub, tone }: { label: string; value: string; sub: string; tone: 'urgent' | 'success' | 'default' }) {
-  const valueColor = tone === 'urgent' ? 'text-red-700' : tone === 'success' ? 'text-green-700' : 'text-[#141821]'
+  const valueColor = tone === 'urgent' ? 'text-[#C82626]' : tone === 'success' ? 'text-[#177245]' : 'text-[#141821]'
   return (
     <div className="bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg p-3">
       <p className="text-[10px] font-medium text-[#666D7A] mb-1">{label}</p>

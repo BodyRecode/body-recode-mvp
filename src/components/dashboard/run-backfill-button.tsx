@@ -55,19 +55,19 @@ export default function RunBackfillButton() {
         type="button"
         onClick={run}
         disabled={pending}
-        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-50 border border-blue-200 hover:bg-blue-500/15 hover:border-blue-500/50 rounded-lg transition-colors disabled:opacity-50"
+        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] hover:bg-[#1560E0]/15 hover:border-[#1B6DFC]/50 rounded-lg transition-colors disabled:opacity-50"
       >
         <RefreshCw size={14} className={pending ? 'animate-spin' : ''} />
         {pending ? 'Running backfill…' : 'Run Stripe backfill'}
       </button>
 
       {error && (
-        <p className="text-[12.5px] text-red-700 mt-2">Error: {error}</p>
+        <p className="text-[12.5px] text-[#C82626] mt-2">Error: {error}</p>
       )}
 
       {result && (
-        <div className="mt-3 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 text-[12.5px] space-y-2">
-          <div className="flex items-center gap-1.5 text-blue-500 mb-2">
+        <div className="mt-3 bg-[#F4F6F9] br-card p-4 text-[12.5px] space-y-2">
+          <div className="flex items-center gap-1.5 text-[#1B6DFC] mb-2">
             <CheckCircle2 size={13} />
             <span className="font-medium">Backfill complete</span>
             <span className="text-[#666D7A] ml-2">{new Date(result.ran_at).toLocaleTimeString('en-AU')}</span>
@@ -90,7 +90,7 @@ export default function RunBackfillButton() {
           </p>
           {result.errors.length > 0 && (
             <div className="mt-2 pt-2 border-t border-[#E8EAEE]">
-              <p className="text-amber-700 font-medium mb-1">Warnings:</p>
+              <p className="text-[#A96A12] font-medium mb-1">Warnings:</p>
               {result.errors.slice(0, 5).map((e, i) => (
                 <p key={i} className="text-[#666D7A] text-[11px]">• {e}</p>
               ))}

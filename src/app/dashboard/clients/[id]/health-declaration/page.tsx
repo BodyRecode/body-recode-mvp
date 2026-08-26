@@ -15,7 +15,7 @@ function Row({ label, value }: { label: string; value: string | number | boolean
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5 mb-4">
+    <div className="bg-[#F4F6F9] br-card p-5 mb-4">
       <p className="text-[12.5px] font-medium text-[#666D7A] mb-3">{title}</p>
       {children}
     </div>
@@ -67,7 +67,7 @@ export default async function HealthDeclarationViewPage({ params }: { params: Pr
         </div>
         <div className="flex items-center gap-2">
           {client.medical_clearance_required && (
-            <span className="text-[12.5px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-lg">
+            <span className="text-[12.5px] font-semibold text-[#A96A12] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] px-3 py-1.5 rounded-lg">
               Clearance required
             </span>
           )}
@@ -82,7 +82,7 @@ export default async function HealthDeclarationViewPage({ params }: { params: Pr
       </div>
 
       {!d ? (
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+        <div className="bg-[#F4F6F9] br-card p-5">
           <p className="text-[#666D7A] text-sm">Form was submitted but detailed answers were not saved (submitted before this feature was added).</p>
         </div>
       ) : (
@@ -118,7 +118,7 @@ export default async function HealthDeclarationViewPage({ params }: { params: Pr
             {d.cardiovascularScreening?.symptoms?.length > 0 ? (
               <div className="space-y-1.5">
                 {d.cardiovascularScreening.symptoms.map((s: string) => (
-                  <div key={s} className={`text-sm px-3 py-2 rounded-lg ${s === 'None of the above' ? 'text-blue-500 bg-blue-50' : 'text-amber-700 bg-amber-50'}`}>
+                  <div key={s} className={`text-sm px-3 py-2 rounded-lg ${s === 'None of the above' ? 'text-[#1B6DFC] bg-[rgba(27,109,252,0.08)]' : 'text-[#A96A12] bg-[#FDF6E9]'}`}>
                     {s}
                   </div>
                 ))}

@@ -71,11 +71,11 @@ export default function GenerationProgressOverlay({
       <div className="bg-white border border-[#EFF1F4] rounded-xl shadow-2xl max-w-md w-full p-6">
         <div className="flex items-center gap-3 mb-4">
           <div className="relative w-3 h-3">
-            <div className="absolute inset-0 bg-blue-500 rounded-full animate-ping opacity-75" />
-            <div className="relative w-3 h-3 bg-blue-500 rounded-full" />
+            <div className="absolute inset-0 bg-[#1B6DFC] rounded-full animate-ping opacity-75" />
+            <div className="relative w-3 h-3 bg-[#1B6DFC] rounded-full" />
           </div>
-          <p className="text-[12px] font-medium text-blue-600">{title}</p>
-          <span className="ml-auto text-[12.5px] font-mono text-[#FBFCFD]0 tabular-nums">{elapsed}s</span>
+          <p className="text-[12px] font-medium text-[#1560E0]">{title}</p>
+          <span className="ml-auto text-[12.5px] font-mono text-[#666D7A] tabular-nums">{elapsed}s</span>
         </div>
         <p className="text-sm text-[#43474F] leading-relaxed mb-4 min-h-[2.5rem]">
           {currentStage.label}…
@@ -86,8 +86,8 @@ export default function GenerationProgressOverlay({
             const active = currentStage.start === s.start
             return (
               <div key={s.start} className="flex items-center gap-2">
-                <div className={`w-1.5 h-1.5 rounded-full ${done ? 'bg-blue-500' : active ? 'bg-blue-300 animate-pulse' : 'bg-[#E8EAEE]'}`} />
-                <span className={`text-xs ${done ? 'text-[#FBFCFD]0 line-through' : active ? 'text-[#141821]' : 'text-[#98A0AD]'}`}>{s.label}</span>
+                <div className={`w-1.5 h-1.5 rounded-full ${done ? 'bg-[#1B6DFC]' : active ? 'bg-[#9CC0FB] animate-pulse' : 'bg-[#E8EAEE]'}`} />
+                <span className={`text-xs ${done ? 'text-[#666D7A] line-through' : active ? 'text-[#141821]' : 'text-[#98A0AD]'}`}>{s.label}</span>
               </div>
             )
           })}

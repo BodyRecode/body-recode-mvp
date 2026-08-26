@@ -120,7 +120,7 @@ export default function ReplyBox({
           <button
             type="submit"
             disabled={!body.trim() || sending}
-            className="inline-flex items-center gap-2 bg-[#1B6DFC] text-[#FFFFFF] text-[13px] font-bold px-4 py-2 rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-2 bg-[#1B6DFC] text-[#FFFFFF] text-[13px] font-bold px-4 py-2 rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {sending ? <Loader2 size={13} className="animate-spin" /> : <Send size={13} />}
             {sending ? 'Sending...' : 'Send reply'}
@@ -129,12 +129,12 @@ export default function ReplyBox({
       </div>
 
       {notice && (
-        <div className="mt-3 bg-[#FEF6E7] border border-[#F0DCB4] rounded-lg px-3 py-2 text-[12px] text-[#8A5A14]">
+        <div className="mt-3 bg-[#FDF6E9] border border-[#F1DEB8] rounded-lg px-3 py-2 text-[12px] text-[#8A5A14]">
           {notice}
         </div>
       )}
       {error && (
-        <div className="mt-3 bg-[#FEF6E7] border border-[#F0DCB4] rounded-lg px-3 py-2 text-[12px] text-[#8A5A14]">
+        <div className="mt-3 bg-[#FDF6E9] border border-[#F1DEB8] rounded-lg px-3 py-2 text-[12px] text-[#8A5A14]">
           {error}
         </div>
       )}

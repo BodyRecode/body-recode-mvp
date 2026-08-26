@@ -50,7 +50,7 @@ export default function InboxCompose({ leadId, leadName, leadEmail }: Props) {
   }
 
   return (
-    <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+    <div className="bg-[#F4F6F9] br-card overflow-hidden">
       <div className="px-4 py-2.5 border-b border-[#E8EAEE]">
         <div className="flex items-center gap-2 text-[12.5px] text-[#666D7A]">
           <span>To:</span>
@@ -74,13 +74,13 @@ export default function InboxCompose({ leadId, leadName, leadEmail }: Props) {
         className="w-full bg-transparent px-4 py-3 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none resize-none"
       />
       <div className="px-4 py-3 border-t border-[#E8EAEE] flex items-center justify-between">
-        {error && <p className="text-red-700 text-[12.5px]">{error}</p>}
-        {sent && <p className="text-blue-500 text-[12.5px]">Sent.</p>}
+        {error && <p className="text-[#C82626] text-[12.5px]">{error}</p>}
+        {sent && <p className="text-[#1B6DFC] text-[12.5px]">Sent.</p>}
         {!error && !sent && <span />}
         <button
           onClick={send}
           disabled={sending}
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-4 py-2 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-[#1B6DFC] hover:bg-[#1560E0] disabled:opacity-50 text-[#FBFCFD] text-[12.5px] font-semibold px-4 py-2 rounded-lg transition-colors"
         >
           <Send size={12} />
           {sending ? 'Sending...' : 'Send'}

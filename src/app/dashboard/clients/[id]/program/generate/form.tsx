@@ -197,7 +197,7 @@ export default function GenerateProgramForm({
       </div>
 
       {planBlock && (
-        <div className="mb-6 bg-blue-50 border border-blue-200 rounded-xl p-4">
+        <div className="mb-6 bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] rounded-xl p-4">
           <p className="text-[12.5px] font-medium text-[#1B6DFC] mb-1">From Macro Plan</p>
           <p className="text-sm text-[#141821]">{planBlock.block_name}</p>
           <div className="flex flex-wrap gap-2 mt-1.5 text-[12.5px] text-[#666D7A]">
@@ -294,7 +294,7 @@ export default function GenerateProgramForm({
               <span className="ml-2 text-[#1B6DFC] normal-case font-normal">
                 {trainingDays.length} available
                 {trainingDays.length < form.training_frequency && (
-                  <span className="text-amber-700 ml-1">- need at least {form.training_frequency}</span>
+                  <span className="text-[#A96A12] ml-1">- need at least {form.training_frequency}</span>
                 )}
               </span>
             )}
@@ -428,7 +428,7 @@ export default function GenerateProgramForm({
         </div>
 
         {error && (
-          <p className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-md px-3 py-2">
+          <p className="text-sm text-[#C82626] bg-[#FDEDED] border border-[#F5C9C9] rounded-md px-3 py-2">
             {error}
           </p>
         )}
@@ -436,7 +436,7 @@ export default function GenerateProgramForm({
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3 px-4 bg-[#1B6DFC] text-white font-semibold rounded-md hover:bg-[#5390FF] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="w-full py-3 px-4 bg-[#1B6DFC] text-white font-semibold rounded-md hover:bg-[#1560E0] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           {loading ? 'Generating program… this may take 30–60s' : 'Generate Program'}
         </button>

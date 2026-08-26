@@ -223,15 +223,15 @@ export default function DraftEditor({
   }
 
   const phaseColour: Record<string, string> = {
-    accumulation: 'text-blue-700 bg-blue-50 border-blue-200',
+    accumulation: 'text-[#1056D6] bg-[rgba(27,109,252,0.08)] border-[#B5CFFC]',
     intensification: 'text-orange-400 bg-orange-400/10 border-orange-400/30',
-    realization: 'text-red-700 bg-red-50 border-red-200',
+    realization: 'text-[#C82626] bg-[#FDEDED] border-[#F5C9C9]',
     restoration: 'text-green-400 bg-green-400/10 border-green-400/30',
   }
   const goalColour: Record<string, string> = {
     strength: 'text-violet-700 bg-violet-50 border-violet-200',
     hypertrophy: 'text-pink-400 bg-pink-400/10 border-pink-400/30',
-    capacity: 'text-blue-500 bg-blue-50 border-blue-200',
+    capacity: 'text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border-[#B5CFFC]',
   }
 
   const inputCls =
@@ -270,7 +270,7 @@ export default function DraftEditor({
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">{program.block_name}</h1>
-            <p className={`text-sm mt-1 ${isActive ? 'text-[#666D7A]' : 'text-amber-700'}`}>
+            <p className={`text-sm mt-1 ${isActive ? 'text-[#666D7A]' : 'text-[#A96A12]'}`}>
               {isActive ? 'Editing active program - changes save in place' : 'Draft - pending coach review'}
             </p>
           </div>
@@ -279,7 +279,7 @@ export default function DraftEditor({
               <button
                 onClick={handleDiscard}
                 disabled={discarding || promoting}
-                className="text-[12.5px] px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-red-200 hover:text-red-700 hover:bg-red-50 transition-colors disabled:opacity-40"
+                className="text-[12.5px] px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#F5C9C9] hover:text-[#C82626] hover:bg-[#FDEDED] transition-colors disabled:opacity-40"
               >
                 {discarding ? 'Discarding…' : 'Discard Draft'}
               </button>
@@ -288,7 +288,7 @@ export default function DraftEditor({
               <button
                 onClick={handleSave}
                 disabled={saving || promoting}
-                className={`text-xs px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 ${isActive ? 'bg-[#1B6DFC] text-white font-semibold hover:bg-[#5390FF]' : 'border border-[#CFD4DC] text-[#141821] hover:border-[#666D7A]'}`}
+                className={`text-xs px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 ${isActive ? 'bg-[#1B6DFC] text-white font-semibold hover:bg-[#1560E0]' : 'border border-[#CFD4DC] text-[#141821] hover:border-[#666D7A]'}`}
               >
                 {saving ? 'Saving…' : isActive ? 'Save' : 'Save Changes'}
               </button>
@@ -297,7 +297,7 @@ export default function DraftEditor({
               <button
                 onClick={handlePromote}
                 disabled={promoting || saving || discarding}
-                className="text-[12.5px] px-4 py-1.5 bg-[#1B6DFC] text-white font-semibold rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-40"
+                className="text-[12.5px] px-4 py-1.5 bg-[#1B6DFC] text-white font-semibold rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-40"
               >
                 {promoting ? 'Promoting…' : 'Promote to Active'}
               </button>
@@ -315,19 +315,19 @@ export default function DraftEditor({
       </div>
 
       {error && (
-        <p className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-md px-3 py-2 mb-4">
+        <p className="text-sm text-[#C82626] bg-[#FDEDED] border border-[#F5C9C9] rounded-md px-3 py-2 mb-4">
           {error}
         </p>
       )}
 
       {dirty && (
-        <div className="mb-4 text-[12.5px] text-amber-700 bg-amber-50 border border-amber-200/50 rounded-lg px-3 py-2">
+        <div className="mb-4 text-[12.5px] text-[#A96A12] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8]/50 rounded-lg px-3 py-2">
           You have unsaved changes. Save before promoting or your edits will be lost.
         </div>
       )}
 
       {/* Program identity */}
-      <div className="bg-[#F4F6F9] border border-amber-200/40 rounded-xl p-5 mb-4">
+      <div className="bg-[#F4F6F9] border border-[#F1DEB8]/40 rounded-xl p-5 mb-4">
         <div className="flex items-start justify-between mb-2">
           <div>
             <p className="text-[12.5px] text-[#666D7A] mb-1 capitalize">
@@ -358,7 +358,7 @@ export default function DraftEditor({
       {/* Sessions */}
       <div className="space-y-3">
         {sessions.map((session, sIdx) => (
-          <div key={sIdx} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+          <div key={sIdx} className="bg-[#F4F6F9] br-card overflow-hidden">
             {/* Session header */}
             <div className="px-5 py-3 border-b border-[#E8EAEE] flex items-center justify-between">
               <h3 className="font-semibold text-[#141821] text-sm">{session.day_label}</h3>
@@ -557,7 +557,7 @@ export default function DraftEditor({
           <button
             onClick={handleDiscard}
             disabled={discarding || promoting}
-            className="text-[12.5px] px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-red-200 hover:text-red-700 hover:bg-red-50 transition-colors disabled:opacity-40"
+            className="text-[12.5px] px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#F5C9C9] hover:text-[#C82626] hover:bg-[#FDEDED] transition-colors disabled:opacity-40"
           >
             {discarding ? 'Discarding…' : 'Discard Draft'}
           </button>
@@ -574,7 +574,7 @@ export default function DraftEditor({
             <button
               onClick={handleSave}
               disabled={saving || promoting}
-              className={`text-xs px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 ${isActive ? 'bg-[#1B6DFC] text-white font-semibold hover:bg-[#5390FF]' : 'border border-[#CFD4DC] text-[#141821] hover:border-[#666D7A]'}`}
+              className={`text-xs px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 ${isActive ? 'bg-[#1B6DFC] text-white font-semibold hover:bg-[#1560E0]' : 'border border-[#CFD4DC] text-[#141821] hover:border-[#666D7A]'}`}
             >
               {saving ? 'Saving…' : isActive ? 'Save' : 'Save Changes'}
             </button>
@@ -583,7 +583,7 @@ export default function DraftEditor({
             <button
               onClick={handlePromote}
               disabled={promoting || saving || discarding}
-              className="text-[12.5px] px-4 py-1.5 bg-[#1B6DFC] text-white font-semibold rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-40"
+              className="text-[12.5px] px-4 py-1.5 bg-[#1B6DFC] text-white font-semibold rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-40"
             >
               {promoting ? 'Promoting…' : 'Promote to Active'}
             </button>

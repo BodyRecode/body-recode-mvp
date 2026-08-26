@@ -22,7 +22,7 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
     return (
       <a
         href={`/dashboard/clients/${clientId}`}
-        className="inline-block text-sm font-medium text-blue-500 hover:underline"
+        className="inline-block text-sm font-medium text-[#1B6DFC] hover:underline"
       >
         View client profile →
       </a>
@@ -81,12 +81,12 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
       <div className="space-y-4">
         {/* Portal access email status - never silent */}
         {portalEmailSent === true && (
-          <p className="text-sm text-green-600 font-medium">✓ Portal access email sent to the client.</p>
+          <p className="text-sm text-[#177245] font-medium">✓ Portal access email sent to the client.</p>
         )}
         {portalEmailSent === false && (
-          <div className="rounded-lg border border-red-300 bg-red-50 px-4 py-3 space-y-1">
-            <p className="text-sm text-red-700 font-bold inline-flex items-center gap-1.5"><AlertTriangle size={14} strokeWidth={2.5} className="shrink-0" /> Portal access email did NOT send{portalEmailReason ? ` (${portalEmailReason})` : ''}.</p>
-            <p className="text-[12.5px] text-red-700">Send the client their portal link manually (below). I&apos;ve also emailed you an alert.</p>
+          <div className="rounded-lg border border-[#EFAFAF] bg-[#FDEDED] px-4 py-3 space-y-1">
+            <p className="text-sm text-[#C82626] font-bold inline-flex items-center gap-1.5"><AlertTriangle size={14} strokeWidth={2.5} className="shrink-0" /> Portal access email did NOT send{portalEmailReason ? ` (${portalEmailReason})` : ''}.</p>
+            <p className="text-[12.5px] text-[#C82626]">Send the client their portal link manually (below). I&apos;ve also emailed you an alert.</p>
           </div>
         )}
 
@@ -125,7 +125,7 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
     <button
       onClick={convert}
       disabled={loading}
-      className="bg-blue-500 text-white text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-blue-500 transition-colors disabled:opacity-50"
+      className="bg-[#1B6DFC] text-white text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-50"
     >
       {loading ? 'Converting...' : 'Convert to Client'}
     </button>

@@ -54,14 +54,14 @@ Kade`
       </div>
 
       {approved ? (
-        <div className="bg-blue-50 border border-blue-500/20 rounded-xl p-5 mb-6">
-          <p className="text-sm font-semibold text-blue-500 mb-1">Clearance approved</p>
+        <div className="bg-[rgba(27,109,252,0.08)] border border-[#1B6DFC]/20 rounded-xl p-5 mb-6">
+          <p className="text-sm font-semibold text-[#1B6DFC] mb-1">Clearance approved</p>
           <p className="text-[12.5px] text-[#666D7A]">Approved on {new Date(client.medical_clearance_received_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}. Intake and baseline are unlocked.</p>
         </div>
       ) : submitted ? (
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-6 flex items-start justify-between gap-4">
+        <div className="bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] rounded-xl p-5 mb-6 flex items-start justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold text-amber-700 mb-1">Form uploaded - awaiting your approval</p>
+            <p className="text-sm font-semibold text-[#A96A12] mb-1">Form uploaded - awaiting your approval</p>
             <p className="text-[12.5px] text-[#666D7A]">
               Submitted {new Date(client.medical_clearance_submitted_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}. Review the document below and approve when satisfied.
             </p>
@@ -69,15 +69,15 @@ Kade`
           <ApproveClearanceButton clientId={id} />
         </div>
       ) : (
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5 mb-6">
-          <p className="text-sm font-semibold text-amber-700 mb-1">Waiting for client upload</p>
+        <div className="bg-[#F4F6F9] br-card p-5 mb-6">
+          <p className="text-sm font-semibold text-[#A96A12] mb-1">Waiting for client upload</p>
           <p className="text-[12.5px] text-[#666D7A]">The client has been notified. This page will update once they upload their completed form.</p>
         </div>
       )}
 
       {/* Uploaded document */}
       {submitted && docSignedUrl && (
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5 mb-6">
+        <div className="bg-[#F4F6F9] br-card p-5 mb-6">
           <p className="text-[12.5px] font-medium text-[#666D7A] mb-3">Uploaded Document</p>
           {docSignedUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
             <img src={docSignedUrl} alt="Medical clearance form" className="w-full rounded-lg border border-[#E8EAEE]" />
@@ -86,7 +86,7 @@ Kade`
               href={docSignedUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 text-sm text-blue-500 hover:text-blue-700 transition-colors"
+              className="flex items-center gap-3 text-sm text-[#1B6DFC] hover:text-[#1056D6] transition-colors"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -98,14 +98,14 @@ Kade`
       )}
 
       {/* WhatsApp message */}
-      <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5 mb-6">
+      <div className="bg-[#F4F6F9] br-card p-5 mb-6">
         <p className="text-[12.5px] font-medium text-[#666D7A] mb-3">WhatsApp Message Template</p>
         <pre className="text-sm text-[#141821] whitespace-pre-wrap leading-relaxed font-sans">{whatsappMessage}</pre>
       </div>
 
       {/* Remove clearance requirement */}
       {!approved && (
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5 mb-6 flex items-center justify-between gap-4">
+        <div className="bg-[#F4F6F9] br-card p-5 mb-6 flex items-center justify-between gap-4">
           <div>
             <p className="text-[12.5px] font-medium text-[#666D7A] mb-1">Remove Requirement</p>
             <p className="text-[12.5px] text-[#666D7A]">If the clearance was flagged in error, remove it to clear this client's file.</p>
@@ -115,7 +115,7 @@ Kade`
       )}
 
       {/* Printable form */}
-      <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+      <div className="bg-[#F4F6F9] br-card p-5">
         <div className="flex items-center justify-between mb-2">
           <p className="text-[12.5px] font-medium text-[#666D7A]">Blank Form (Coach Copy)</p>
           <Link

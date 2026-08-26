@@ -48,7 +48,7 @@ export default async function AutomationsPage() {
         </div>
         <Link
           href="/dashboard/business/automations/new"
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-[#1B6DFC] hover:bg-[#1560E0] text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
         >
           <Plus size={14} strokeWidth={2.5} />
           New Workflow
@@ -56,25 +56,25 @@ export default async function AutomationsPage() {
       </div>
 
       {duplicateGroups.length > 0 && (
-        <div className="mb-6 rounded-xl bg-amber-50 border border-amber-300 p-4">
-          <p className="text-[13px] font-bold text-amber-900 mb-1.5 flex items-center gap-1.5">
+        <div className="mb-6 rounded-xl bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] p-4">
+          <p className="text-[13px] font-bold text-[#8A5A14] mb-1.5 flex items-center gap-1.5">
             <AlertTriangle size={14} /> Duplicate workflows on the same trigger
           </p>
-          <p className="text-[13px] text-amber-900 leading-relaxed mb-3">
+          <p className="text-[13px] text-[#8A5A14] leading-relaxed mb-3">
             More than one active workflow fires on the same trigger with the same conditions. Only the
             oldest one runs, the rest are skipped, so nobody is being double-sent right now. But one of
             these is not doing anything and should be turned off.
           </p>
           {duplicateGroups.map((group, i) => (
             <div key={i} className="mb-2 last:mb-0">
-              <p className="text-[12px] font-mediumr text-amber-800 mb-1">
+              <p className="text-[12px] font-mediumr text-[#A96A12] mb-1">
                 Trigger: {group[0].trigger_type}
               </p>
               {group.map((w, j) => (
                 <Link key={w.id} href={`/dashboard/business/automations/${w.id}`}
-                  className="block text-[13px] text-amber-900 hover:underline">
+                  className="block text-[13px] text-[#8A5A14] hover:underline">
                   {j === 0 ? '✓ running' : '✗ skipped'} · {w.name}
-                  <span className="text-amber-700"> · created {new Date(w.created_at).toLocaleDateString('en-AU')}</span>
+                  <span className="text-[#A96A12]"> · created {new Date(w.created_at).toLocaleDateString('en-AU')}</span>
                 </Link>
               ))}
             </div>
@@ -98,18 +98,18 @@ export default async function AutomationsPage() {
               <Link
                 key={workflow.id}
                 href={`/dashboard/business/automations/${workflow.id}`}
-                className="flex items-center gap-4 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 hover:border-[#E8EAEE] transition-colors group"
+                className="flex items-center gap-4 bg-[#F4F6F9] br-card p-4 hover:border-[#E8EAEE] transition-colors group"
               >
-                <div className={`p-2 rounded-lg ${workflow.is_active ? 'bg-blue-50' : 'bg-[#EFF1F4]'}`}>
+                <div className={`p-2 rounded-lg ${workflow.is_active ? 'bg-[rgba(27,109,252,0.08)]' : 'bg-[#EFF1F4]'}`}>
                   <Zap
                     size={15}
-                    className={workflow.is_active ? 'text-blue-500' : 'text-[#666D7A]'}
+                    className={workflow.is_active ? 'text-[#1B6DFC]' : 'text-[#666D7A]'}
                     strokeWidth={1.8}
                   />
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-[#141821] group-hover:text-blue-500 transition-colors truncate">
+                  <p className="text-sm font-medium text-[#141821] group-hover:text-[#1B6DFC] transition-colors truncate">
                     {workflow.name}
                   </p>
                   <p className="text-[12.5px] text-[#666D7A] mt-0.5">
@@ -124,7 +124,7 @@ export default async function AutomationsPage() {
                     <ReseedScorecardButton stepCount={stepCount} />
                   )}
                   <span className={`flex items-center gap-1 text-xs font-medium ${
-                    workflow.is_active ? 'text-blue-500' : 'text-[#666D7A]'
+                    workflow.is_active ? 'text-[#1B6DFC]' : 'text-[#666D7A]'
                   }`}>
                     {workflow.is_active
                       ? <><Play size={11} />Active</>
@@ -149,7 +149,7 @@ export default async function AutomationsPage() {
           <p className="text-[#98A0AD] text-[12.5px] mb-6">Build workflows to automate your entire lead and client journey</p>
           <Link
             href="/dashboard/business/automations/new"
-            className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+            className="inline-flex items-center gap-2 bg-[#1B6DFC] hover:bg-[#1560E0] text-[#FBFCFD] text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
           >
             <Plus size={14} strokeWidth={2.5} />
             Build your first workflow

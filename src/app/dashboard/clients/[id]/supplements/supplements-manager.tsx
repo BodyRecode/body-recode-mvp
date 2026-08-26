@@ -106,8 +106,8 @@ export default function SupplementsManager({
   return (
     <div className="space-y-8">
       {error && (
-        <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3">
-          <p className="text-[12.5px] text-amber-800">{error}</p>
+        <div className="rounded-lg border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] px-4 py-3">
+          <p className="text-[12.5px] text-[#A96A12]">{error}</p>
         </div>
       )}
 
@@ -160,7 +160,7 @@ export default function SupplementsManager({
                   const isActive = activeSlugs.has(s.slug)
                   const isExpanded = expanded === s.slug
                   return (
-                    <div key={s.slug} className={`rounded-xl border overflow-hidden transition-colors ${isActive ? 'border-[#1B6DFC]/30 bg-blue-50/30' : 'border-[#E8EAEE] bg-white'}`}>
+                    <div key={s.slug} className={`rounded-xl border overflow-hidden transition-colors ${isActive ? 'border-[#1B6DFC]/30 bg-[rgba(27,109,252,0.08)]/30' : 'border-[#E8EAEE] bg-white'}`}>
                       <div className="flex items-start justify-between gap-3 px-4 py-3">
                         <button
                           onClick={() => setExpanded(isExpanded ? null : s.slug)}
@@ -196,7 +196,7 @@ export default function SupplementsManager({
                           </div>
                           {s.contraindications.length > 0 && (
                             <div>
-                              <p className="text-[10px] font-medium text-red-700 mb-1">Contraindications</p>
+                              <p className="text-[10px] font-medium text-[#C82626] mb-1">Contraindications</p>
                               <ul className="text-[12px] text-[#141821] leading-relaxed space-y-0.5">
                                 {s.contraindications.map((c, i) => <li key={i}>- {c}</li>)}
                               </ul>
@@ -264,13 +264,13 @@ function AssignmentRow({ assignment, onEditNote, onPause, onResume, onComplete, 
   const substance = substanceBySlug(assignment.substance_slug)
   if (!substance) {
     return (
-      <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
-        <p className="text-[12.5px] text-amber-800">Unknown substance slug: {assignment.substance_slug}</p>
-        <button onClick={() => onDelete(assignment.id)} className="text-[11px] text-amber-800 underline mt-1">Delete</button>
+      <div className="rounded-xl border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] px-4 py-3">
+        <p className="text-[12.5px] text-[#A96A12]">Unknown substance slug: {assignment.substance_slug}</p>
+        <button onClick={() => onDelete(assignment.id)} className="text-[11px] text-[#A96A12] underline mt-1">Delete</button>
       </div>
     )
   }
-  const statusColour = assignment.status === 'active' ? 'text-[#1B6DFC]' : assignment.status === 'paused' ? 'text-amber-600' : 'text-[#666D7A]'
+  const statusColour = assignment.status === 'active' ? 'text-[#1B6DFC]' : assignment.status === 'paused' ? 'text-[#A96A12]' : 'text-[#666D7A]'
   return (
     <div className="rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
       <div className="flex items-start justify-between gap-3 px-4 py-3">
@@ -289,10 +289,10 @@ function AssignmentRow({ assignment, onEditNote, onPause, onResume, onComplete, 
         </div>
         <div className="flex items-center gap-1 shrink-0">
           <button onClick={() => onEditNote(assignment)} className="text-[10px] font-medium text-[#666D7A] hover:text-[#141821] px-2 py-1">Edit note</button>
-          {onPause && <button onClick={() => onPause(assignment.id)} title="Pause" className="p-1.5 text-[#666D7A] hover:text-amber-700 rounded transition-colors"><Pause size={12} /></button>}
+          {onPause && <button onClick={() => onPause(assignment.id)} title="Pause" className="p-1.5 text-[#666D7A] hover:text-[#A96A12] rounded transition-colors"><Pause size={12} /></button>}
           {onResume && <button onClick={() => onResume(assignment.id)} title="Resume" className="p-1.5 text-[#666D7A] hover:text-[#1B6DFC] rounded transition-colors"><Play size={12} /></button>}
-          {onComplete && <button onClick={() => onComplete(assignment.id)} title="Mark complete" className="p-1.5 text-[#666D7A] hover:text-green-700 rounded transition-colors"><Check size={12} /></button>}
-          <button onClick={() => onDelete(assignment.id)} title="Delete" className="p-1.5 text-[#666D7A] hover:text-red-700 rounded transition-colors"><Trash2 size={12} /></button>
+          {onComplete && <button onClick={() => onComplete(assignment.id)} title="Mark complete" className="p-1.5 text-[#666D7A] hover:text-[#177245] rounded transition-colors"><Check size={12} /></button>}
+          <button onClick={() => onDelete(assignment.id)} title="Delete" className="p-1.5 text-[#666D7A] hover:text-[#C82626] rounded transition-colors"><Trash2 size={12} /></button>
         </div>
       </div>
     </div>

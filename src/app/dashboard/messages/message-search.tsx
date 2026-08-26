@@ -37,7 +37,7 @@ export default function MessageSearch({
         value={q}
         onChange={e => setQ(e.target.value)}
         placeholder="Search names and messages"
-        className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl pl-8 pr-8 py-2 text-[12px] text-[#141821] placeholder:text-[#98A0AD] focus:outline-none focus:border-[#1B6DFC]"
+        className="w-full br-card pl-8 pr-8 py-2 text-[12px] text-[#141821] placeholder:text-[#98A0AD] focus:outline-none focus:border-[#1B6DFC]"
       />
       {q && (
         <button

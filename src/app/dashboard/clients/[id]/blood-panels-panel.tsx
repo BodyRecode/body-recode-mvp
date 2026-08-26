@@ -75,10 +75,10 @@ export interface BloodPanelData {
 
 const FLAG_STYLE: Record<Marker['flag'], string> = {
   normal: 'text-[#98A0AD]',
-  low: 'text-amber-700',
-  high: 'text-amber-700',
-  very_low: 'text-red-700 font-semibold',
-  very_high: 'text-red-700 font-semibold',
+  low: 'text-[#A96A12]',
+  high: 'text-[#A96A12]',
+  very_low: 'text-[#C82626] font-semibold',
+  very_high: 'text-[#C82626] font-semibold',
   unknown: 'text-[#C4C4C4]',
 }
 const FLAG_LABEL: Record<Marker['flag'], string> = {
@@ -105,7 +105,7 @@ export default function BloodPanelsPanel({
 }) {
   if (panels.length === 0) {
     return (
-      <div className="bg-[#FFFFFF]/40 border border-[#E8EAEE] rounded-xl p-4">
+      <div className="bg-[#FFFFFF]/40 br-card p-4">
         <p className="text-[12.5px] text-[#98A0AD]">
           No blood panels uploaded yet. {clientFirstName} can upload a copy of their blood test results from the Health Markers section of their portal at any time. Once a panel arrives, it is transcribed automatically and appears here for you to analyse and approve.
         </p>
@@ -219,7 +219,7 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
   const isFailed = panel.status === 'failed' || panel.extraction_meta?.unreadable
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden">
+    <div className="br-card overflow-hidden">
       <GenerationProgressOverlay
         active={busy === 'reextract'}
         title="Re-reading Blood Panel File"
@@ -272,20 +272,20 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
       {/* Header */}
       <div className="px-4 py-3 border-b border-[#E8EAEE] flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2.5 flex-wrap">
-          <p className="text-[12px] font-medium text-blue-500">Blood panel · {dateLabel}</p>
+          <p className="text-[12px] font-medium text-[#1B6DFC]">Blood panel · {dateLabel}</p>
           {panel.lab_name && <span className="text-[10px] text-[#98A0AD]">{panel.lab_name}</span>}
           {approved && (
-            <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-blue-50 border border-blue-200 text-blue-700">Approved for plan</span>
+            <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] text-[#1056D6]">Approved for plan</span>
           )}
           {isFailed && (
-            <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-red-50 border border-red-200 text-red-700">Read failed</span>
+            <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-[#FDEDED] border border-[#F5C9C9] text-[#C82626]">Read failed</span>
           )}
         </div>
         <div className="flex items-center gap-2">
-          <button type="button" onClick={viewFile} disabled={busy === 'file'} className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors disabled:opacity-50">
+          <button type="button" onClick={viewFile} disabled={busy === 'file'} className="br-btn disabled:opacity-50">
             {busy === 'file' ? 'Opening…' : 'View file'}
           </button>
-          <button type="button" onClick={reextract} disabled={!!busy} className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors disabled:opacity-50">
+          <button type="button" onClick={reextract} disabled={!!busy} className="br-btn disabled:opacity-50">
             {busy === 'reextract' ? 'Re-reading…' : 'Re-read file'}
           </button>
         </div>
@@ -297,7 +297,7 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
         )}
         {panel.panel_summary && <p className="text-[12.5px] text-[#43474F] leading-relaxed">{panel.panel_summary}</p>}
         {panel.extraction_meta?.notes && (
-          <p className="text-[12.5px] text-amber-700">Reader notes: {panel.extraction_meta.notes}</p>
+          <p className="text-[12.5px] text-[#A96A12]">Reader notes: {panel.extraction_meta.notes}</p>
         )}
 
         {/* Markers table */}
@@ -330,10 +330,10 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
         )}
 
         {(panel.gp_flags?.length ?? 0) > 0 && (
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
-            <p className="text-[11.5px] font-medium text-amber-700 mb-1.5">Lab-flagged · route to GP</p>
+          <div className="bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] rounded-lg p-3">
+            <p className="text-[11.5px] font-medium text-[#A96A12] mb-1.5">Lab-flagged · route to GP</p>
             <ul className="space-y-1">
-              {panel.gp_flags!.map((f, i) => <li key={i} className="text-[12.5px] text-amber-800 leading-relaxed">{f}</li>)}
+              {panel.gp_flags!.map((f, i) => <li key={i} className="text-[12.5px] text-[#A96A12] leading-relaxed">{f}</li>)}
             </ul>
           </div>
         )}
@@ -341,20 +341,20 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
         {/* Action bar */}
         {hasMarkers && (
           <div className="flex items-center gap-2 flex-wrap pt-1">
-            <button type="button" onClick={analyze} disabled={!!busy} className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50">
+            <button type="button" onClick={analyze} disabled={!!busy} className="br-btn disabled:opacity-50">
               {busy === 'analyze' ? 'Analyzing…' : analysis ? 'Regenerate analysis' : 'Generate analysis'}
             </button>
             {analysis && (
-              <button type="button" onClick={generateReading} disabled={!!busy} className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50">
+              <button type="button" onClick={generateReading} disabled={!!busy} className="br-btn disabled:opacity-50">
                 {busy === 'reading' ? 'Generating…' : reading ? 'Regenerate reading' : 'Generate reading'}
               </button>
             )}
             {reading && (
-              <button type="button" onClick={togglePublish} disabled={!!busy} className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${publishedAt ? 'border border-[#E8EAEE] text-[#141821] hover:border-[#CFD4DC]' : 'bg-blue-500 text-white hover:bg-blue-600'}`}>
+              <button type="button" onClick={togglePublish} disabled={!!busy} className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${publishedAt ? 'border border-[#E8EAEE] text-[#141821] hover:border-[#CFD4DC]' : 'bg-[#1B6DFC] text-white hover:bg-[#1560E0]'}`}>
                 {busy === 'publish' ? 'Working…' : publishedAt ? 'Unpublish reading' : 'Publish reading'}
               </button>
             )}
-            <button type="button" onClick={toggleApprove} disabled={!!busy} className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${approved ? 'border border-blue-300 text-blue-700 hover:border-blue-500' : 'bg-[#1B6DFC] text-white hover:bg-[#5390FF]'}`}>
+            <button type="button" onClick={toggleApprove} disabled={!!busy} className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${approved ? 'border border-[#9CC0FB] text-[#1056D6] hover:border-[#1B6DFC]' : 'bg-[#1B6DFC] text-white hover:bg-[#1560E0]'}`}>
               {busy === 'approve' ? 'Working…' : approved ? 'Revoke plan approval' : 'Approve for plan'}
             </button>
           </div>
@@ -363,7 +363,7 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
         {/* Coach analysis render */}
         {analysis && (
           <div className="space-y-3 pt-1">
-            <p className="text-[11.5px] font-medium text-blue-500">Analysis (coach) {panel.analyzed_at && <span className="text-[#98A0AD] font-normal ml-1">· {shortDate(panel.analyzed_at)}</span>}</p>
+            <p className="text-[11.5px] font-medium text-[#1B6DFC]">Analysis (coach) {panel.analyzed_at && <span className="text-[#98A0AD] font-normal ml-1">· {shortDate(panel.analyzed_at)}</span>}</p>
             {analysis.groups.map((g, i) => (
               <div key={i} className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg p-4 space-y-2">
                 <div>
@@ -374,13 +374,13 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
                 <Influence label="Program" body={g.program_influence} />
                 <Influence label="Nutrition" body={g.nutrition_influence} />
                 {g.gp_note && (
-                  <p className="text-[11px] text-amber-700 leading-relaxed"><span className="font-medium text-[10px]">GP: </span>{g.gp_note}</p>
+                  <p className="text-[11px] text-[#A96A12] leading-relaxed"><span className="font-medium text-[10px]">GP: </span>{g.gp_note}</p>
                 )}
               </div>
             ))}
             {analysis.combined_picture && (
-              <div className="bg-[#FFFFFF] border border-blue-200 rounded-lg p-4">
-                <p className="text-[11.5px] font-medium text-blue-500 mb-1.5">Combined picture</p>
+              <div className="bg-[#FFFFFF] border border-[#B5CFFC] rounded-lg p-4">
+                <p className="text-[11.5px] font-medium text-[#1B6DFC] mb-1.5">Combined picture</p>
                 <p className="text-[12.5px] text-[#43474F] leading-relaxed whitespace-pre-wrap">{analysis.combined_picture}</p>
               </div>
             )}
@@ -391,8 +391,8 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
         {reading && (
           <div className="space-y-3 pt-1">
             <div className="flex items-center gap-2.5 flex-wrap">
-              <p className="text-[11.5px] font-medium text-blue-500">Reading (client)</p>
-              <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${publishedAt ? 'bg-blue-50 border border-blue-200 text-blue-700' : 'bg-amber-50 border border-amber-200 text-amber-700'}`}>
+              <p className="text-[11.5px] font-medium text-[#1B6DFC]">Reading (client)</p>
+              <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${publishedAt ? 'bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] text-[#1056D6]' : 'bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] text-[#A96A12]'}`}>
                 {publishedAt ? 'Published' : 'Draft (not on portal)'}
               </span>
             </div>
@@ -475,8 +475,8 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
           </div>
         )}
 
-        {error && <p className="text-[12.5px] text-red-700">{error}</p>}
-        {status && <p className="text-[12.5px] text-blue-500">{status}</p>}
+        {error && <p className="text-[12.5px] text-[#C82626]">{error}</p>}
+        {status && <p className="text-[12.5px] text-[#1B6DFC]">{status}</p>}
       </div>
     </div>
   )
@@ -503,7 +503,7 @@ function Influence({ label, body }: { label: string; body: string }) {
 function ReadingSection({ title, body, accent }: { title: string; body: string; accent?: boolean }) {
   return (
     <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg p-4">
-      <p className={`text-[11.5px] font-medium mb-2 ${accent ? 'text-blue-500' : 'text-[#98A0AD]'}`}>{title}</p>
+      <p className={`text-[11.5px] font-medium mb-2 ${accent ? 'text-[#1B6DFC]' : 'text-[#98A0AD]'}`}>{title}</p>
       <div className="text-[12.5px] text-[#43474F] leading-relaxed whitespace-pre-wrap">{body}</div>
     </div>
   )

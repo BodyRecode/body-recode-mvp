@@ -201,7 +201,7 @@ export default async function GettingStartedPage() {
               <div className="flex items-start gap-4">
                 <div className="shrink-0 mt-1">
                   {step.done ? (
-                    <CheckCircle2 className="w-6 h-6 text-emerald-600" />
+                    <CheckCircle2 className="w-6 h-6 text-[#177245]" />
                   ) : (
                     <Circle className="w-6 h-6 text-[#E8EAEE]" />
                   )}

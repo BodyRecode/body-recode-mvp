@@ -19,7 +19,7 @@ export default function ApproveClearanceButton({ clientId }: { clientId: string 
     <button
       onClick={handleClick}
       disabled={loading}
-      className="text-[12.5px] bg-blue-500 text-white font-medium px-3 py-1.5 rounded-lg hover:bg-blue-300 transition-colors disabled:opacity-50 whitespace-nowrap"
+      className="text-[12.5px] bg-[#1B6DFC] text-white font-medium px-3 py-1.5 rounded-lg hover:bg-[#9CC0FB] transition-colors disabled:opacity-50 whitespace-nowrap"
     >
       {loading ? 'Approving…' : 'Approve'}
     </button>

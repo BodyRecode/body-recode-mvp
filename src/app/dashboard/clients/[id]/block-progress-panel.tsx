@@ -29,7 +29,7 @@ export interface BlockProgressData {
 export function BlockProgressPanel({ data }: { data: BlockProgressData | null }) {
   if (!data) {
     return (
-      <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-5 py-4 mb-6">
+      <div className="br-card px-5 py-4 mb-6">
         <p className="text-[10px] text-[#98A0AD] mb-1" style={{ fontFamily: MONO_FONT }}>
           Block progress
         </p>
@@ -48,7 +48,7 @@ export function BlockProgressPanel({ data }: { data: BlockProgressData | null })
   return (
     <div
       className={`bg-[#FFFFFF] border rounded-xl px-5 py-4 mb-6 ${
-        blockEnded ? 'border-amber-300' : blockEndingSoon ? 'border-amber-500/20' : 'border-[#E8EAEE]'
+        blockEnded ? 'border-[#E5C98F]' : blockEndingSoon ? 'border-[#B7791F]/20' : 'border-[#E8EAEE]'
       }`}
     >
       <div className="flex items-center justify-between gap-3 mb-3">
@@ -90,13 +90,13 @@ export function BlockProgressPanel({ data }: { data: BlockProgressData | null })
       {data.blockName && <p className="text-sm font-semibold text-[#141821] mb-3">{data.blockName}</p>}
 
       <div className="grid grid-cols-3 gap-3 mb-3">
-        <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-3 py-2.5">
+        <div className="br-card px-3 py-2.5">
           <p className="text-[10px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}>Week</p>
           <p className="text-lg font-bold text-[#141821] tabular-nums" style={{ fontFamily: MONO_FONT }}>
             {data.blockWeek} <span className="text-[#98A0AD] text-sm font-normal">/ {data.weekDuration}</span>
           </p>
         </div>
-        <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-3 py-2.5">
+        <div className="br-card px-3 py-2.5">
           <p className="text-[10px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}>This week</p>
           <p className="text-lg font-bold text-[#141821] tabular-nums" style={{ fontFamily: MONO_FONT }}>
             {data.sessionsCompletedThisWeek}
@@ -106,7 +106,7 @@ export function BlockProgressPanel({ data }: { data: BlockProgressData | null })
             {data.sessionsInProgressThisWeek > 0 ? `${data.sessionsInProgressThisWeek} in progress` : `${completionPct}% logged`}
           </p>
         </div>
-        <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-3 py-2.5">
+        <div className="br-card px-3 py-2.5">
           <p className="text-[10px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}>Block total</p>
           <p className="text-lg font-bold text-[#141821] tabular-nums" style={{ fontFamily: MONO_FONT }}>
             {data.totalSessionsLoggedThisBlock}
@@ -129,7 +129,7 @@ export function BlockProgressPanel({ data }: { data: BlockProgressData | null })
       {data.totalSessionsLoggedThisBlock === 0 && (
         <p className="text-[12px] text-[#666D7A] italic">
           Client hasn&apos;t logged any sessions yet.{' '}
-          <Link href="/dashboard/help#training-program" className="text-blue-500 hover:underline">
+          <Link href="/dashboard/help#training-program" className="text-[#1B6DFC] hover:underline">
             How logging works
           </Link>
         </p>

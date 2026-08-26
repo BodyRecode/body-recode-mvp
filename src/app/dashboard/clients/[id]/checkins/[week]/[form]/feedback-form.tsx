@@ -208,7 +208,7 @@ export default function CheckinFeedbackForm({
   // write feedback retroactively, they unskip first then the form appears.
   if (skippedAt && !existing) {
     return (
-      <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+      <div className="bg-[#F4F6F9] br-card overflow-hidden">
         <div className="px-5 py-3 border-b border-[#E8EAEE] flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-3 flex-wrap">
             <p className="text-[12px] font-medium text-[#666D7A]">Coach response</p>
@@ -220,7 +220,7 @@ export default function CheckinFeedbackForm({
             type="button"
             onClick={unskip}
             disabled={skipping}
-            className="text-[12.5px] font-medium text-blue-700 hover:text-blue-200 transition-colors disabled:opacity-50"
+            className="text-[12.5px] font-medium text-[#1056D6] hover:text-[#B5CFFC] transition-colors disabled:opacity-50"
           >
             {skipping ? 'Working…' : 'Unskip and write response →'}
           </button>
@@ -237,8 +237,8 @@ export default function CheckinFeedbackForm({
             </div>
           )}
         </div>
-        {error && <p className="px-5 pb-4 text-[12.5px] text-red-700">{error}</p>}
-        {status && <p className="px-5 pb-4 text-[12.5px] text-blue-500">{status}</p>}
+        {error && <p className="px-5 pb-4 text-[12.5px] text-[#C82626]">{error}</p>}
+        {status && <p className="px-5 pb-4 text-[12.5px] text-[#1B6DFC]">{status}</p>}
       </div>
     )
   }
@@ -272,7 +272,7 @@ export default function CheckinFeedbackForm({
             type="button"
             onClick={skip}
             disabled={skipping}
-            className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
+            className="br-btn disabled:opacity-50"
           >
             Skip instead
           </button>
@@ -289,8 +289,8 @@ export default function CheckinFeedbackForm({
     if (existing) return null // a feedback row exists, no failure
     if (!autoResponseAttemptedAt || !autoResponseFailedReason) return null
     return (
-      <div className="mb-3 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3">
-        <p className="text-[12px] font-medium text-amber-700">AI auto-response failed</p>
+      <div className="mb-3 rounded-lg border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] px-4 py-3">
+        <p className="text-[12px] font-medium text-[#A96A12]">AI auto-response failed</p>
         <p className="text-[12.5px] text-[#43474F] mt-1 leading-relaxed">
           The auto-response pipeline ran at {new Date(autoResponseAttemptedAt).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane', weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })} but could not produce a clean draft. Reason: <span className="font-mono text-[10px]">{autoResponseFailedReason}</span>. Please write the response manually below, or click Generate response to try again.
         </p>
@@ -304,15 +304,15 @@ export default function CheckinFeedbackForm({
     return (
       <div>
       <AutoDraftBanner />
-      <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+      <div className="bg-[#F4F6F9] br-card overflow-hidden">
         <div className="px-5 py-3 border-b border-[#E8EAEE] flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-3 flex-wrap">
-            <p className="text-[12px] font-medium text-blue-500">Coach response</p>
+            <p className="text-[12px] font-medium text-[#1B6DFC]">Coach response</p>
             <span
               className={`text-[11.5px] font-medium px-2 py-0.5 rounded ${
                 sent
-                  ? 'bg-blue-50 border border-blue-200 text-blue-700'
-                  : 'bg-amber-50 border border-amber-200 text-amber-700'
+                  ? 'bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] text-[#1056D6]'
+                  : 'bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] text-[#A96A12]'
               }`}
             >
               {sent ? `Emailed ${formatShort(existing.email_sent_at!)}` : 'Draft (not sent)'}
@@ -324,7 +324,7 @@ export default function CheckinFeedbackForm({
           <button
             type="button"
             onClick={() => { setMode('edit'); setStatus(null); setError(null) }}
-            className="text-[12.5px] font-medium text-blue-700 hover:text-blue-200 transition-colors"
+            className="text-[12.5px] font-medium text-[#1056D6] hover:text-[#B5CFFC] transition-colors"
           >
             Edit response →
           </button>
@@ -334,7 +334,7 @@ export default function CheckinFeedbackForm({
           {existing.reframe && <SavedSection title="Reframe" body={existing.reframe} />}
           <SavedSection title="This week, hold this" body={existing.next_focus} accent />
         </div>
-        {status && <p className="px-5 pb-4 text-[12.5px] text-blue-500">{status}</p>}
+        {status && <p className="px-5 pb-4 text-[12.5px] text-[#1B6DFC]">{status}</p>}
       </div>
       </div>
     )
@@ -361,9 +361,9 @@ export default function CheckinFeedbackForm({
     />
     <AutoDraftBanner />
     <AiFailureBanner />
-    <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+    <div className="bg-[#F4F6F9] br-card p-5">
       <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
-        <p className="text-[12px] font-medium text-blue-500">
+        <p className="text-[12px] font-medium text-[#1B6DFC]">
           {existing ? 'Edit coach response' : 'Coach response'}
         </p>
         <div className="flex items-center gap-3">
@@ -391,7 +391,7 @@ export default function CheckinFeedbackForm({
       <div className="mb-5 rounded-lg border border-[#E8EAEE] bg-[#FFFFFF] px-4 py-3">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-[12px] font-medium text-blue-500">Draft with AI</p>
+            <p className="text-[12px] font-medium text-[#1B6DFC]">Draft with AI</p>
             <p className="text-[12.5px] text-[#666D7A] mt-1 leading-relaxed">
               Pulls this check-in (including the training and nutrition answers), the synthesis, the last 4 check-ins, the active program and nutrition plan, and the last 3 responses {clientFirstName} was sent. You review and approve before anything sends.
             </p>
@@ -400,7 +400,7 @@ export default function CheckinFeedbackForm({
             type="button"
             onClick={generateDraft}
             disabled={generating || pending}
-            className="shrink-0 px-3 py-2 bg-blue-50 border border-blue-300 hover:bg-blue-100 text-blue-700 text-[12.5px] font-medium rounded-lg transition-colors disabled:opacity-50"
+            className="shrink-0 px-3 py-2 bg-[rgba(27,109,252,0.08)] border border-[#9CC0FB] hover:bg-[#DDE9FD] text-[#1056D6] text-[12.5px] font-medium rounded-lg transition-colors disabled:opacity-50"
           >
             {generating ? 'Generating…' : 'Generate response'}
           </button>
@@ -418,7 +418,7 @@ export default function CheckinFeedbackForm({
             onChange={e => setCoachNotes(e.target.value)}
             rows={3}
             placeholder={`e.g. He's added 3 runs a week for a half marathon in October. Don't make this about food again, the anchor should be protecting his three gym sessions around the running load. Mention he's said "feeling stronger" two weeks running.`}
-            className="w-full bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg p-3 text-sm text-[#141821] placeholder:text-[#98A0AD] focus:outline-none focus:border-blue-500/60 resize-y"
+            className="w-full bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg p-3 text-sm text-[#141821] placeholder:text-[#98A0AD] focus:outline-none focus:border-[#1B6DFC]/60 resize-y"
           />
         </div>
       </div>
@@ -453,10 +453,10 @@ export default function CheckinFeedbackForm({
       </div>
 
       {error && (
-        <p className="mt-4 text-[12.5px] text-red-700">{error}</p>
+        <p className="mt-4 text-[12.5px] text-[#C82626]">{error}</p>
       )}
       {status && (
-        <p className="mt-4 text-[12.5px] text-blue-500">{status}</p>
+        <p className="mt-4 text-[12.5px] text-[#1B6DFC]">{status}</p>
       )}
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -464,7 +464,7 @@ export default function CheckinFeedbackForm({
           type="button"
           disabled={pending}
           onClick={() => submit(true)}
-          className="px-4 py-2.5 bg-blue-500 hover:bg-blue-500 text-white text-[12.5px] font-medium rounded-lg transition-colors disabled:opacity-50"
+          className="px-4 py-2.5 bg-[#1B6DFC] hover:bg-[#1560E0] text-white text-[12.5px] font-medium rounded-lg transition-colors disabled:opacity-50"
         >
           {pending ? 'Working…' : previouslyEmailed ? 'Save and re-send email' : 'Save and email client'}
         </button>
@@ -518,7 +518,7 @@ function Field({
         onChange={e => onChange(e.target.value)}
         rows={rows}
         placeholder={placeholder}
-        className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg p-3 text-sm text-[#141821] placeholder:text-[#141821] focus:outline-none focus:border-blue-500/60 resize-y"
+        className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg p-3 text-sm text-[#141821] placeholder:text-[#141821] focus:outline-none focus:border-[#1B6DFC]/60 resize-y"
       />
     </div>
   )
@@ -527,7 +527,7 @@ function Field({
 function SavedSection({ title, body, accent }: { title: string; body: string; accent?: boolean }) {
   return (
     <div>
-      <p className={`text-[12px] font-medium mb-2 ${accent ? 'text-blue-500' : 'text-[#666D7A]'}`}>{title}</p>
+      <p className={`text-[12px] font-medium mb-2 ${accent ? 'text-[#1B6DFC]' : 'text-[#666D7A]'}`}>{title}</p>
       <div className="text-sm text-[#141821] leading-relaxed space-y-3 whitespace-pre-wrap">{body}</div>
     </div>
   )

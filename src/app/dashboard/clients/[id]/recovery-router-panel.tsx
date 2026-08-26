@@ -86,7 +86,7 @@ export function RecoveryRouterPanel({
   const latestPlaybook = latest?.playbookId ? getPlaybook(latest.playbookId as RecoveryPlaybookId) : null
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden mb-6">
+    <div className="br-card overflow-hidden mb-6">
       {/* Header */}
       <div className="flex items-center justify-between gap-3 px-5 py-3 border-b border-[#E8EAEE]">
         <div className="flex items-center gap-2.5 min-w-0">

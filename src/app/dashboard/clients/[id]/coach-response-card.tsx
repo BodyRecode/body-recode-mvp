@@ -38,14 +38,14 @@ export default function CoachResponseCard({ clientId, feedback, meta }: CoachRes
       <div className="px-4 py-2.5 border-b border-[#E8EAEE] flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2.5 flex-wrap">
           <p className="text-[12.5px] font-semibold text-[#141821]">Week {week} · Form {form}</p>
-          <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${sent ? 'bg-blue-50 border border-blue-200 text-blue-700' : 'bg-amber-50 border border-amber-200 text-amber-700'}`}>
+          <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${sent ? 'bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] text-[#1056D6]' : 'bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] text-[#A96A12]'}`}>
             {sentLabel}
           </span>
         </div>
         {meta && (
           <Link
             href={`/dashboard/clients/${clientId}/checkins/${meta.week_number}/${meta.form_type}`}
-            className="text-[11.5px] font-medium text-blue-500 hover:text-blue-700"
+            className="text-[11.5px] font-medium text-[#1B6DFC] hover:text-[#1056D6]"
           >
             Open check-in →
           </Link>
@@ -63,7 +63,7 @@ export default function CoachResponseCard({ clientId, feedback, meta }: CoachRes
 function CollapsibleSection({ title, body, accent }: { title: string; body: string; accent?: boolean }) {
   const [open, setOpen] = useState(false)
   const preview = previewLine(body)
-  const titleClass = accent ? 'text-blue-500' : 'text-[#98A0AD]'
+  const titleClass = accent ? 'text-[#1B6DFC]' : 'text-[#98A0AD]'
 
   return (
     <div className="rounded-md border border-[#E8EAEE] bg-[#FFFFFF]/40">
@@ -78,7 +78,7 @@ function CollapsibleSection({ title, body, accent }: { title: string; body: stri
             <p className="text-[12.5px] text-[#666D7A] truncate">{preview}</p>
           )}
         </div>
-        <span className="shrink-0 text-[11.5px] font-medium text-blue-500 hover:text-blue-700">
+        <span className="shrink-0 text-[11.5px] font-medium text-[#1B6DFC] hover:text-[#1056D6]">
           {open ? 'Close' : 'Open'}
         </span>
       </button>

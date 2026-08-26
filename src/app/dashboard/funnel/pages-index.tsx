@@ -274,7 +274,7 @@ function CopyButton({ value }: { value: string }) {
           setTimeout(() => setCopied(false), 1200)
         })
       }}
-      className="inline-flex items-center gap-1 px-2 py-1 rounded text-[11.5px] font-medium text-[#666D7A] hover:text-blue-600 hover:bg-blue-50 transition"
+      className="inline-flex items-center gap-1 px-2 py-1 rounded text-[11.5px] font-medium text-[#666D7A] hover:text-[#1560E0] hover:bg-[rgba(27,109,252,0.06)] transition"
       title="Copy URL"
     >
       {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
@@ -357,11 +357,11 @@ export default function PagesIndex({ tokens }: { tokens: Tokens }) {
                       href={fullForOpen}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group flex items-start gap-3 px-5 py-3 hover:bg-blue-50/40 transition border-b last:border-b-0 border-[#F4F6F9]"
+                      className="group flex items-start gap-3 px-5 py-3 hover:bg-[rgba(27,109,252,0.06)]/40 transition border-b last:border-b-0 border-[#F4F6F9]"
                     >
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <p className="text-[13px] font-bold text-[#141821] group-hover:text-blue-700 transition truncate">{page.name}</p>
+                          <p className="text-[13px] font-bold text-[#141821] group-hover:text-[#1056D6] transition truncate">{page.name}</p>
                           {page.external && <ExternalLink className="w-3 h-3 text-[#98A0AD] flex-shrink-0" />}
                         </div>
                         <p className="text-[11px] font-mono text-[#666D7A] truncate mt-0.5">{fullForOpen}</p>
@@ -369,7 +369,7 @@ export default function PagesIndex({ tokens }: { tokens: Tokens }) {
                       </div>
                       <div className="flex items-center gap-1 flex-shrink-0 pt-1">
                         <CopyButton value={fullForOpen} />
-                        <span className="text-[11.5px] font-medium text-blue-600 opacity-0 group-hover:opacity-100 transition">Open</span>
+                        <span className="text-[11.5px] font-medium text-[#1560E0] opacity-0 group-hover:opacity-100 transition">Open</span>
                       </div>
                     </a>
                   )

@@ -138,7 +138,7 @@ export default function NutritionCoachGuidanceEditor({
   }
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden mb-3">
+    <div className="br-card overflow-hidden mb-3">
       <button
         onClick={() => setOpen(o => !o)}
         className="w-full flex items-center justify-between gap-3 px-5 py-3 hover:bg-[#EFF1F4]/40 transition-colors text-left"
@@ -208,7 +208,7 @@ export default function NutritionCoachGuidanceEditor({
                           className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${
                             active
                               ? 'bg-[rgba(27,109,252,0.12)] border-[#B5CFFC] text-[#1B6DFC]'
-                              : 'bg-[#FFFFFF] border-[#E8EAEE] text-[#666D7A] hover:border-[#1B6DFC] hover:bg-blue-50'
+                              : 'bg-[#FFFFFF] border-[#E8EAEE] text-[#666D7A] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)]'
                           }`}
                         >
                           {opt.label}
@@ -234,7 +234,7 @@ export default function NutritionCoachGuidanceEditor({
                           className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${
                             active
                               ? 'bg-[rgba(27,109,252,0.12)] border-[#B5CFFC] text-[#1B6DFC]'
-                              : 'bg-[#FFFFFF] border-[#E8EAEE] text-[#666D7A] hover:border-[#1B6DFC] hover:bg-blue-50'
+                              : 'bg-[#FFFFFF] border-[#E8EAEE] text-[#666D7A] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)]'
                           }`}
                         >
                           {opt.label}
@@ -299,7 +299,7 @@ export default function NutritionCoachGuidanceEditor({
               disabled={!dirty || saving || isPending}
               className={`inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
                 dirty
-                  ? 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#5390FF] border border-[#1B6DFC]'
+                  ? 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#1560E0] border border-[#1B6DFC]'
                   : 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#666D7A]'
               }`}
             >

@@ -44,16 +44,16 @@ export default function IssueLoginCodeButton({ clientId }: { clientId: string })
       <button
         onClick={issue}
         disabled={loading}
-        className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-60"
+        className="br-btn disabled:opacity-60"
         title="Generate a sign-in code to relay manually (for clients whose email blocks delivery)"
       >
         {loading ? 'Generating…' : issued ? 'New code' : 'Issue login code'}
       </button>
 
-      {error && <p className="text-[12.5px] text-red-600 mt-2">{error}</p>}
+      {error && <p className="text-[12.5px] text-[#C82626] mt-2">{error}</p>}
 
       {issued && (
-        <div className="mt-2 w-full max-w-sm bg-blue-50 border border-[#1B6DFC]/30 rounded-xl p-3">
+        <div className="mt-2 w-full max-w-sm bg-[rgba(27,109,252,0.08)] border border-[#1B6DFC]/30 rounded-xl p-3">
           <p className="text-[12px] font-medium text-[#1B6DFC] mb-1">Sign-in code</p>
           <div className="flex items-center gap-3">
             <span className="font-mono text-2xl font-extrabold tracking-[0.25em] text-[#141821]">{issued.code}</span>

@@ -103,7 +103,7 @@ export default function HeightEditor({
   }
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-6 mb-4">
+    <div className="br-card p-6 mb-4">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2.5">
           <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
@@ -116,7 +116,7 @@ export default function HeightEditor({
         {!editing && (
           <button
             onClick={() => setEditing(true)}
-            className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+            className="br-btn"
           >
             {resolved.heightCm ? 'Edit' : 'Add'}
           </button>
@@ -148,12 +148,12 @@ export default function HeightEditor({
           <p className="text-[11px] text-[#98A0AD]">
             Centimetres, not feet and inches. 5&apos;9&quot; is 175cm. Leave blank and save to clear.
           </p>
-          {error && <p className="text-[12.5px] text-red-600">{error}</p>}
+          {error && <p className="text-[12.5px] text-[#C82626]">{error}</p>}
           <div className="flex gap-2">
             <button
               onClick={save}
               disabled={saving}
-              className="text-[12.5px] font-medium px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
+              className="text-[12.5px] font-medium px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-50"
             >
               {saving ? 'Saving…' : 'Save'}
             </button>
@@ -174,8 +174,8 @@ export default function HeightEditor({
           </p>
           <p className="text-[11px] text-[#98A0AD]">Source: {resolved.label}</p>
           {stillMissing.length > 0 && (
-            <div className="mt-3 px-3 py-2.5 rounded-lg border border-amber-700/50 bg-amber-500/5">
-              <p className="text-[12.5px] font-medium text-amber-700 mb-1">
+            <div className="mt-3 px-3 py-2.5 rounded-lg border border-[#A96A12]/50 bg-[#B7791F]/5">
+              <p className="text-[12.5px] font-medium text-[#A96A12] mb-1">
                 Energy estimate still blocked
               </p>
               <p className="text-[12.5px] text-[#43474F] leading-relaxed">
@@ -185,8 +185,8 @@ export default function HeightEditor({
           )}
         </div>
       ) : (
-        <div className="px-3 py-2.5 rounded-lg border border-amber-700/50 bg-amber-500/5">
-          <p className="text-[12.5px] font-medium text-amber-700 mb-1">No height on file</p>
+        <div className="px-3 py-2.5 rounded-lg border border-[#A96A12]/50 bg-[#B7791F]/5">
+          <p className="text-[12.5px] font-medium text-[#A96A12] mb-1">No height on file</p>
           <p className="text-[12.5px] text-[#43474F] leading-relaxed">
             Nutrition plans for this client cannot carry an energy requirement. Add the height and regenerate
             the plan from the Nutrition page to pick it up.

@@ -66,7 +66,7 @@ export default function BoardroomLanding() {
         subtitle="Five role-specific dashboards. Each is a 10-minute weekly ritual with a decision queue. Grounded in your data. Named advisors ship in Phase 2."
       />
 
-      <div className="mb-6 p-4 rounded-xl border border-green-200 bg-green-50 text-[13px] text-green-900 leading-relaxed">
+      <div className="mb-6 p-4 rounded-xl border border-[#CAE7D5] bg-[#EDF8F1] text-[13px] text-[#0F4A2D] leading-relaxed">
         <strong>Phase 2 + 3 shipped.</strong> All 5 role dashboards live with real data + proactive AI briefings. Each dashboard fetches its snapshot server-side and generates a briefing via Claude tool-use. Persona voices distinct per role.
       </div>
 
@@ -75,13 +75,13 @@ export default function BoardroomLanding() {
           <Link
             key={r.role}
             href={r.href}
-            className={`block bg-white border rounded-xl p-5 hover:border-blue-300 transition-colors ${
-              (r as { board?: boolean }).board ? 'border-blue-300 ring-1 ring-blue-100' : 'border-[#E8EAEE]'
+            className={`block bg-white border rounded-xl p-5 hover:border-[#9CC0FB] transition-colors ${
+              (r as { board?: boolean }).board ? 'border-[#9CC0FB] ring-1 ring-[#DDE9FD]' : 'border-[#E8EAEE]'
             }`}
           >
             <div className="flex items-center justify-between mb-3">
               <div className="text-[24px] font-bold tracking-tight text-[#141821]">{r.role}</div>
-              <span className="text-[9px] font-medium bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Live</span>
+              <span className="text-[9px] font-medium bg-[#D8EFE1] text-[#177245] px-1.5 py-0.5 rounded">Live</span>
             </div>
             <div className="text-[12px] font-mono text-[#666D7A] mb-3">{r.persona === 'You' ? `You (${c.firstName})` : r.persona}</div>
             <p className="text-[13px] text-[#141821] leading-relaxed mb-3">{r.voice}</p>

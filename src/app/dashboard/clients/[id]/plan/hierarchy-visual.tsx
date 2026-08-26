@@ -29,25 +29,25 @@ interface NutritionPlan {
 }
 
 const phaseColour: Record<string, string> = {
-  accumulation: 'bg-blue-50 border-blue-200 text-blue-700',
+  accumulation: 'bg-[rgba(27,109,252,0.08)] border-[#B5CFFC] text-[#1056D6]',
   intensification: 'bg-orange-400/10 border-orange-400/30 text-orange-400',
-  realization: 'bg-red-50 border-red-200 text-red-700',
+  realization: 'bg-[#FDEDED] border-[#F5C9C9] text-[#C82626]',
   restoration: 'bg-green-400/10 border-green-400/30 text-green-400',
 }
 
 const statusDot: Record<string, string> = {
   planned: 'bg-[#98A0AD]',
-  in_progress: 'bg-amber-400',
-  complete: 'bg-green-500',
+  in_progress: 'bg-[#C08A2D]',
+  complete: 'bg-[#22A05A]',
   skipped: 'bg-[#EFF1F4]',
 }
 
 const PILLARS = [
-  { label: 'RRS', full: 'Recovery + Regulation', colour: 'text-red-700', desc: 'Governs all execution' },
+  { label: 'RRS', full: 'Recovery + Regulation', colour: 'text-[#C82626]', desc: 'Governs all execution' },
   { label: 'Fat Map', full: 'Fat Map Method', colour: 'text-orange-400', desc: 'Constraint authority' },
   { label: 'BIRS', full: 'Behaviour + Identity', colour: 'text-yellow-400', desc: 'Complexity limits' },
-  { label: 'PTS', full: 'Progressive Training', colour: 'text-blue-700', desc: 'Training demand' },
-  { label: 'HABNS', full: 'Nutrition Support', colour: 'text-blue-500', desc: 'Nutrition support' },
+  { label: 'PTS', full: 'Progressive Training', colour: 'text-[#1056D6]', desc: 'Training demand' },
+  { label: 'HABNS', full: 'Nutrition Support', colour: 'text-[#1B6DFC]', desc: 'Nutrition support' },
 ]
 
 export default function HierarchyVisual({
@@ -63,7 +63,7 @@ export default function HierarchyVisual({
   const currentBlock = plan?.plan_blocks.find(b => b.status === 'in_progress')
 
   return (
-    <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+    <div className="bg-[#F4F6F9] br-card overflow-hidden">
       <div className="px-5 py-3 border-b border-[#E8EAEE]">
         <p className="text-[10px] font-medium text-[#666D7A]">System Hierarchy</p>
         <p className="text-[12.5px] text-[#98A0AD] mt-0.5">How macro, meso, micro and nutrition interact</p>
@@ -78,7 +78,7 @@ export default function HierarchyVisual({
             {PILLARS.map((p, i) => (
               <div key={p.label} className="flex items-start gap-2">
                 <div className="flex flex-col items-center shrink-0 mt-1">
-                  <div className={`w-1.5 h-1.5 rounded-full ${i === 3 ? 'bg-blue-400' : i === 4 ? 'bg-blue-500' : 'bg-[#98A0AD]'}`} />
+                  <div className={`w-1.5 h-1.5 rounded-full ${i === 3 ? 'bg-[#5390FF]' : i === 4 ? 'bg-[#1B6DFC]' : 'bg-[#98A0AD]'}`} />
                   {i < PILLARS.length - 1 && <div className="w-px h-4 bg-[#E8EAEE]" />}
                 </div>
                 <div>
@@ -99,7 +99,7 @@ export default function HierarchyVisual({
           {/* Layer 1: Macro Arc */}
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#5390FF] shrink-0" />
               <p className="text-[9px] font-medium text-[#666D7A]">Macro Arc</p>
               {plan && <p className="text-[9px] text-[#98A0AD] ml-auto">{totalWeeks}w total</p>}
             </div>
@@ -116,7 +116,7 @@ export default function HierarchyVisual({
                       <div key={block.id} className="flex items-center gap-1">
                         <div className={`flex items-center gap-1.5 px-2 py-1 rounded border text-[9px] ${
                           block.status === 'in_progress'
-                            ? `${phaseColour[block.progression_phase] || 'bg-[#EFF1F4] border-[#E8EAEE] text-[#666D7A]'} ring-1 ring-amber-400/50`
+                            ? `${phaseColour[block.progression_phase] || 'bg-[#EFF1F4] border-[#E8EAEE] text-[#666D7A]'} ring-1 ring-[#C08A2D]/50`
                             : block.status === 'complete'
                             ? 'bg-[#EFF1F4]/30 border-[#E8EAEE] text-[#98A0AD]'
                             : phaseColour[block.progression_phase] || 'bg-[#EFF1F4] border-[#E8EAEE] text-[#666D7A]'
@@ -147,7 +147,7 @@ export default function HierarchyVisual({
           {/* Layer 2: Meso Block */}
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#C08A2D] shrink-0" />
               <p className="text-[9px] font-medium text-[#666D7A]">Meso Block</p>
             </div>
 
@@ -195,14 +195,14 @@ export default function HierarchyVisual({
           {/* Layer 4: Nutrition */}
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#1B6DFC] shrink-0" />
               <p className="text-[9px] font-medium text-[#666D7A]">Nutrition Support</p>
             </div>
 
             {nutritionPlan ? (
               <div className="flex gap-2 flex-wrap">
                 {nutritionPlan.entry_state && (
-                  <span className="text-[9px] px-2 py-1 bg-blue-50 border border-blue-500/20 rounded text-blue-500 capitalize">
+                  <span className="text-[9px] px-2 py-1 bg-[rgba(27,109,252,0.08)] border border-[#1B6DFC]/20 rounded text-[#1B6DFC] capitalize">
                     {nutritionPlan.entry_state}
                   </span>
                 )}
@@ -229,8 +229,8 @@ export default function HierarchyVisual({
       <div className="px-5 py-3 border-t border-[#E8EAEE] flex items-center gap-4 flex-wrap">
         {[
           { dot: 'bg-[#98A0AD]', label: 'Planned' },
-          { dot: 'bg-amber-400', label: 'In Progress' },
-          { dot: 'bg-green-500', label: 'Complete' },
+          { dot: 'bg-[#C08A2D]', label: 'In Progress' },
+          { dot: 'bg-[#22A05A]', label: 'Complete' },
         ].map(item => (
           <div key={item.label} className="flex items-center gap-1.5">
             <div className={`w-1.5 h-1.5 rounded-full ${item.dot}`} />

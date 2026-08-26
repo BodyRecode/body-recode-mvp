@@ -47,7 +47,7 @@ export function flagsPill(raw: number | string | undefined | null): GlancePill |
 const PILL_TONE: Record<NonNullable<GlancePill['tone']>, string> = {
   neutral: 'text-[#141821] bg-[#F4F6F9] border-[#E8EAEE]',
   accent: 'text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border-[#B5CFFC]',
-  flag: 'text-amber-700 bg-amber-50 border-amber-200',
+  flag: 'text-[#A96A12] bg-[#FDF6E9] border-[#F1DEB8]',
   muted: 'text-[#666D7A] bg-[#F4F6F9] border-[#EFF1F4]',
 }
 
@@ -69,7 +69,7 @@ export function GlanceCard({
   children?: React.ReactNode
 }) {
   return (
-    <div className={`border border-[#E8EAEE] bg-[#FFFFFF] rounded-xl overflow-hidden ${className}`}>
+    <div className={`br-card overflow-hidden ${className}`}>
       <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[#FBFCFD]">
         <p
           className="text-[10px] font-medium text-[#1B6DFC]"
@@ -99,7 +99,7 @@ export function GlanceCard({
             <div key={gi} className="mt-4">
               {group.label && (
                 <p
-                  className={`text-[11.5px] font-mediumr mb-1.5 ${group.tone === 'muted' ? 'text-[#FBFCFD]0' : 'text-[#1B6DFC]'}`}
+                  className={`text-[11.5px] font-mediumr mb-1.5 ${group.tone === 'muted' ? 'text-[#666D7A]' : 'text-[#1B6DFC]'}`}
                 >
                   {group.label}
                 </p>

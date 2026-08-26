@@ -36,7 +36,7 @@ export default async function AgreementViewPage({ params }: { params: Promise<{ 
         </div>
         <div className="flex items-center gap-2">
           {signedDate && (
-            <span className="text-[12.5px] font-semibold text-blue-500 bg-blue-50 border border-blue-200 px-3 py-1.5 rounded-lg">
+            <span className="text-[12.5px] font-semibold text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] px-3 py-1.5 rounded-lg">
               Signed {signedDate}
             </span>
           )}
@@ -53,13 +53,13 @@ export default async function AgreementViewPage({ params }: { params: Promise<{ 
       </div>
 
       {!client.agreement_accepted_at ? (
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+        <div className="bg-[#F4F6F9] br-card p-5">
           <p className="text-[#666D7A] text-sm">Agreement not yet signed.</p>
         </div>
       ) : (
         <>
           {/* Signature details */}
-          <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5 mb-6">
+          <div className="bg-[#F4F6F9] br-card p-5 mb-6">
             <p className="text-[12.5px] font-medium text-[#666D7A] mb-3">Signature Details</p>
             <div className="flex items-start justify-between gap-4 py-2.5 border-b border-[#E8EAEE]">
               <p className="text-[12.5px] text-[#666D7A] w-44 flex-shrink-0">Signed by</p>
@@ -76,12 +76,12 @@ export default async function AgreementViewPage({ params }: { params: Promise<{ 
           </div>
 
           {/* Full agreement document */}
-          <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+          <div className="bg-[#F4F6F9] br-card p-5">
             <p className="text-[12.5px] font-medium text-[#666D7A] mb-6">Full Agreement Document</p>
             <div className="space-y-8">
               {AGREEMENT_SECTIONS.map((section) => (
                 <div key={section.title}>
-                  <p className="text-[12.5px] font-medium text-blue-500 mb-4">{section.title}</p>
+                  <p className="text-[12.5px] font-medium text-[#1B6DFC] mb-4">{section.title}</p>
                   <div className="space-y-4">
                     {section.subsections.map((sub) => (
                       <div key={sub.title}>

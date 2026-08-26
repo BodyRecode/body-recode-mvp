@@ -38,7 +38,7 @@ export default function NotesEditor({ leadId, initialNotes }: Props) {
       />
       <div className="flex items-center justify-end gap-2">
         {saved && (
-          <span className="flex items-center gap-1 text-[12.5px] text-blue-500">
+          <span className="flex items-center gap-1 text-[12.5px] text-[#1B6DFC]">
             <Check size={12} />
             Saved
           </span>
@@ -46,7 +46,7 @@ export default function NotesEditor({ leadId, initialNotes }: Props) {
         <button
           onClick={save}
           disabled={!isDirty || isPending}
-          className="flex items-center gap-1.5 text-[12.5px] font-medium bg-blue-500 hover:bg-blue-500 text-[#FBFCFD] disabled:opacity-40 disabled:cursor-not-allowed px-3 py-1.5 rounded-lg transition-colors"
+          className="flex items-center gap-1.5 text-[12.5px] font-medium bg-[#1B6DFC] hover:bg-[#1560E0] text-[#FBFCFD] disabled:opacity-40 disabled:cursor-not-allowed px-3 py-1.5 rounded-lg transition-colors"
         >
           {isPending ? <Loader2 size={12} className="animate-spin" /> : null}
           Save Notes

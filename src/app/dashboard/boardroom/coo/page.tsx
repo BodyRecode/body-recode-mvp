@@ -32,14 +32,14 @@ export default async function CooPage() {
       </Suspense>
 
       <div className="mb-6 flex items-center gap-3">
-        <span className="text-[9px] font-medium bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Live data</span>
+        <span className="text-[9px] font-medium bg-[#D8EFE1] text-[#177245] px-1.5 py-0.5 rounded">Live data</span>
         <span className="text-[11px] text-[#666D7A] font-mono">
           Snapshot at {new Date(snap.computedAt).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane' })} AEST
         </span>
       </div>
 
       <h3 className="text-[11px] font-medium text-[#666D7A] mb-3">Coaching capacity</h3>
-      <div className="mb-8 bg-white border border-[#E8EAEE] rounded-xl p-5">
+      <div className="mb-8 br-card p-5">
         <div className="flex items-baseline justify-between mb-3 gap-4 flex-wrap">
           <div>
             <div className="text-[11px] font-medium text-[#666D7A]">
@@ -54,10 +54,10 @@ export default async function CooPage() {
             <div
               className={`text-[28px] font-bold mt-1 font-mono ${
                 snap.capacityPct !== null && snap.capacityPct >= 90
-                  ? 'text-red-700'
+                  ? 'text-[#C82626]'
                   : snap.capacityPct !== null && snap.capacityPct >= 70
-                    ? 'text-amber-700'
-                    : 'text-green-700'
+                    ? 'text-[#A96A12]'
+                    : 'text-[#177245]'
               }`}
             >
               {snap.capacityPct !== null ? `${Math.round(snap.capacityPct)}%` : '—'}
@@ -69,10 +69,10 @@ export default async function CooPage() {
             <div
               className={`h-full ${
                 snap.capacityPct >= 100
-                  ? 'bg-red-500'
+                  ? 'bg-[#DC2626]'
                   : snap.capacityPct >= 70
-                    ? 'bg-amber-500'
-                    : 'bg-blue-500'
+                    ? 'bg-[#B7791F]'
+                    : 'bg-[#1B6DFC]'
               }`}
               style={{ width: `${Math.min(snap.capacityPct, 100)}%` }}
             />
@@ -88,16 +88,16 @@ export default async function CooPage() {
         <QueueTile label="Medications" value={snap.medicationsReadingsPending} />
         <QueueTile label="Trajectory" value={snap.trajectoryReadingsPending} />
       </div>
-      <div className="mb-8 bg-white border border-[#E8EAEE] rounded-xl p-4">
+      <div className="mb-8 br-card p-4">
         <div className="flex items-baseline justify-between gap-3">
           <div className="text-[11px] font-medium text-[#666D7A]">Total pending</div>
           <div
             className={`text-[24px] font-bold font-mono ${
               (snap.totalPendingApproval ?? 0) > 15
-                ? 'text-red-700'
+                ? 'text-[#C82626]'
                 : (snap.totalPendingApproval ?? 0) > 5
-                  ? 'text-amber-700'
-                  : 'text-green-700'
+                  ? 'text-[#A96A12]'
+                  : 'text-[#177245]'
             }`}
           >
             {snap.totalPendingApproval ?? '—'}
@@ -169,20 +169,20 @@ export default async function CooPage() {
       </div>
 
       <div className="mb-8 flex items-center gap-3 text-[13px] flex-wrap">
-        <Link href="/dashboard/coaching" className="text-blue-600 hover:text-blue-700 underline font-semibold">
+        <Link href="/dashboard/coaching" className="text-[#1560E0] hover:text-[#1056D6] underline font-semibold">
           → Coaching queue
         </Link>
         <span className="text-[#98A0AD]">·</span>
-        <Link href="/dashboard/system-health" className="text-blue-600 hover:text-blue-700 underline font-semibold">
+        <Link href="/dashboard/system-health" className="text-[#1560E0] hover:text-[#1056D6] underline font-semibold">
           → System health
         </Link>
         <span className="text-[#98A0AD]">·</span>
-        <Link href="/dashboard/feedback" className="text-blue-600 hover:text-blue-700 underline font-semibold">
+        <Link href="/dashboard/feedback" className="text-[#1560E0] hover:text-[#1056D6] underline font-semibold">
           → Feedback triage
         </Link>
       </div>
 
-      <Link href="/dashboard/boardroom" className="text-[12px] text-blue-600 hover:text-blue-700 underline">
+      <Link href="/dashboard/boardroom" className="text-[12px] text-[#1560E0] hover:text-[#1056D6] underline">
         ← Back to Boardroom
       </Link>
     </div>
@@ -191,17 +191,17 @@ export default async function CooPage() {
 
 function QueueTile({ label, value }: { label: string; value: number | null }) {
   return (
-    <div className="bg-white border border-[#E8EAEE] rounded-xl p-3 text-center">
+    <div className="br-card p-3 text-center">
       <div className="text-[9px] font-medium text-[#666D7A] mb-1">{label}</div>
       <div
         className={`text-[22px] font-bold font-mono ${
           value === null
             ? 'text-[#98A0AD]'
             : value > 5
-              ? 'text-amber-700'
+              ? 'text-[#A96A12]'
               : value > 0
-                ? 'text-blue-700'
-                : 'text-green-700'
+                ? 'text-[#1056D6]'
+                : 'text-[#177245]'
         }`}
       >
         {value !== null ? value.toLocaleString() : '—'}
@@ -226,13 +226,13 @@ function Metric({
   const valueColor = {
     default: 'text-[#141821]',
     stone: 'text-[#98A0AD]',
-    green: 'text-green-700',
-    amber: 'text-amber-700',
-    red: 'text-red-700',
+    green: 'text-[#177245]',
+    amber: 'text-[#A96A12]',
+    red: 'text-[#C82626]',
   }[tone]
   const size = large ? 'text-[28px]' : 'text-[22px]'
   return (
-    <div className="bg-white border border-[#E8EAEE] rounded-xl p-5">
+    <div className="br-card p-5">
       <div className="text-[11px] font-medium text-[#666D7A] mb-2">{label}</div>
       <div className={`${size} font-bold ${valueColor} mb-1 font-mono`}>{value}</div>
       {hint && <div className="text-[11px] text-[#666D7A] leading-relaxed">{hint}</div>}

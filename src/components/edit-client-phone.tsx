@@ -32,7 +32,7 @@ export default function EditClientPhone({ clientId, currentPhone }: { clientId: 
           autoFocus
           className="bg-[#EFF1F4] border border-[#CFD4DC] text-[#141821] rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-[#1B6DFC] w-48"
         />
-        <button onClick={save} disabled={loading} className="text-[12.5px] text-blue-500 hover:text-blue-700 font-medium">
+        <button onClick={save} disabled={loading} className="text-[12.5px] text-[#1B6DFC] hover:text-[#1056D6] font-medium">
           {loading ? 'Saving…' : 'Save'}
         </button>
         <button onClick={() => { setValue(saved); setEditing(false) }} className="text-[12.5px] text-[#98A0AD] hover:text-[#43474F]">

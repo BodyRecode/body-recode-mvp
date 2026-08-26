@@ -81,36 +81,36 @@ export default async function AnalyticsPage() {
 
       {/* Top stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+        <div className="bg-[#F4F6F9] br-card p-5">
           <div className="flex items-center gap-2 mb-3">
-            <DollarSign size={14} className="text-blue-500" />
+            <DollarSign size={14} className="text-[#1B6DFC]" />
             <p className="text-[12.5px] font-semibold text-[#666D7A]">Total Revenue</p>
           </div>
           <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">${totalRevenue.toLocaleString('en-AU')}</p>
           <p className="text-[12.5px] text-[#666D7A] mt-1">${revenueThisMonth.toLocaleString('en-AU')} this month</p>
         </div>
 
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+        <div className="bg-[#F4F6F9] br-card p-5">
           <div className="flex items-center gap-2 mb-3">
-            <Users size={14} className="text-blue-500" />
+            <Users size={14} className="text-[#1B6DFC]" />
             <p className="text-[12.5px] font-semibold text-[#666D7A]">Total Leads</p>
           </div>
           <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">{totalLeads}</p>
           <p className="text-[12.5px] text-[#666D7A] mt-1">{leadsThisWeek} this week · {activeLeads} active</p>
         </div>
 
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+        <div className="bg-[#F4F6F9] br-card p-5">
           <div className="flex items-center gap-2 mb-3">
-            <TrendingUp size={14} className="text-blue-500" />
+            <TrendingUp size={14} className="text-[#1B6DFC]" />
             <p className="text-[12.5px] font-semibold text-[#666D7A]">Conversion</p>
           </div>
           <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">{conversionRate}%</p>
           <p className="text-[12.5px] text-[#666D7A] mt-1">{converted} of {totalLeads} converted</p>
         </div>
 
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+        <div className="bg-[#F4F6F9] br-card p-5">
           <div className="flex items-center gap-2 mb-3">
-            <CheckCircle2 size={14} className="text-blue-500" />
+            <CheckCircle2 size={14} className="text-[#1B6DFC]" />
             <p className="text-[12.5px] font-semibold text-[#666D7A]">Show-up Rate</p>
           </div>
           <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">{showUpRate}%</p>
@@ -120,7 +120,7 @@ export default async function AnalyticsPage() {
 
       <div className="grid md:grid-cols-2 gap-6 mb-6">
         {/* Pipeline funnel */}
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-6">
+        <div className="bg-[#F4F6F9] br-card p-6">
           <div className="flex items-center gap-2 mb-5">
             <BarChart2 size={14} className="text-[#666D7A]" />
             <h2 className="text-[12.5px] font-semibold text-[#666D7A]">Pipeline Breakdown</h2>
@@ -137,7 +137,7 @@ export default async function AnalyticsPage() {
                   </div>
                   <div className="h-1.5 bg-[#EFF1F4] rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-blue-500 rounded-full transition-all"
+                      className="h-full bg-[#1B6DFC] rounded-full transition-all"
                       style={{ width: `${pct}%` }}
                     />
                   </div>
@@ -148,7 +148,7 @@ export default async function AnalyticsPage() {
         </div>
 
         {/* Lead sources */}
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-6">
+        <div className="bg-[#F4F6F9] br-card p-6">
           <div className="flex items-center gap-2 mb-5">
             <TrendingUp size={14} className="text-[#666D7A]" />
             <h2 className="text-[12.5px] font-semibold text-[#666D7A]">Lead Sources</h2>
@@ -183,7 +183,7 @@ export default async function AnalyticsPage() {
       </div>
 
       {/* Bookings summary */}
-      <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-6">
+      <div className="bg-[#F4F6F9] br-card p-6">
         <div className="flex items-center gap-2 mb-5">
           <Calendar size={14} className="text-[#666D7A]" />
           <h2 className="text-[12.5px] font-semibold text-[#666D7A]">Bookings</h2>
@@ -191,8 +191,8 @@ export default async function AnalyticsPage() {
         <div className="grid grid-cols-4 gap-4">
           {[
             { label: 'Total', value: totalBookings, colour: 'text-[#141821]' },
-            { label: 'Completed', value: completedBookings, colour: 'text-blue-500' },
-            { label: 'No Show', value: noShows, colour: 'text-red-700' },
+            { label: 'Completed', value: completedBookings, colour: 'text-[#1B6DFC]' },
+            { label: 'No Show', value: noShows, colour: 'text-[#C82626]' },
             { label: 'Show-up Rate', value: `${showUpRate}%`, colour: 'text-[#141821]' },
           ].map(({ label, value, colour }) => (
             <div key={label} className="text-center">

@@ -83,7 +83,7 @@ export default function LeadActions({ lead }: { lead: Lead }) {
   }
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-6 mb-4 space-y-5">
+    <div className="br-card p-6 mb-4 space-y-5">
       <h2 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Actions</h2>
 
       {/* Status */}
@@ -192,7 +192,7 @@ export default function LeadActions({ lead }: { lead: Lead }) {
       <button
         onClick={save}
         disabled={saving}
-        className="bg-[#1B6DFC] text-[#FFFFFF] text-sm font-medium px-5 py-2.5 rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
+        className="bg-[#1B6DFC] text-[#FFFFFF] text-sm font-medium px-5 py-2.5 rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-50"
       >
         {saving ? 'Saving...' : saved ? 'Saved ✓' : 'Save changes'}
       </button>

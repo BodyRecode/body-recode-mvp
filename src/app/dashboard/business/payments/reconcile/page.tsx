@@ -65,7 +65,7 @@ export default async function ReconcilePage() {
         <div className="flex items-center gap-2 mb-3">
           <h3 className="text-[12.5px] font-semibold text-[#666D7A]">Stripe Backfill</h3>
         </div>
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+        <div className="bg-[#F4F6F9] br-card p-5">
           <p className="text-sm text-[#141821] mb-1">Pull every Stripe customer and subscription into the cache.</p>
           <p className="text-[12.5px] text-[#666D7A] mb-4">Safe to re-run. Matches Stripe customers to clients by email, populates <code className="text-[#666D7A]">stripe_customer_id</code>, and refreshes <code className="text-[#666D7A]">client_subscriptions</code> from live Stripe state. Run this once after the Phase 1 schema migration, then anytime you suspect drift.</p>
           <RunBackfillButton />
@@ -77,7 +77,7 @@ export default async function ReconcilePage() {
         <div className="flex items-center gap-2 mb-3">
           <h3 className="text-[12.5px] font-semibold text-[#666D7A]">Commencement Fee Backfill</h3>
         </div>
-        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+        <div className="bg-[#F4F6F9] br-card p-5">
           <p className="text-sm text-[#141821] mb-1">Patch historical clients whose $240 commencement payment landed before the tracker was wired.</p>
           <p className="text-[12.5px] text-[#666D7A] mb-4">Until recently, the lead-stage commencement webhook recorded payments in <code className="text-[#666D7A]">be_payments</code> only — it never wrote to <code className="text-[#666D7A]">client_payment_plan</code>. That left clients like Luke showing &quot;Not tracked for payments&quot; even though the fee landed. This walks every paid $240 no-subscription payment and marks the matching plan row as paid. Idempotent.</p>
           <RunCommencementBackfillButton />
@@ -91,7 +91,7 @@ export default async function ReconcilePage() {
           <span className="text-[12.5px] text-[#98A0AD]">{clientsNoStripe?.length ?? 0}</span>
         </div>
         {clientsNoStripe && clientsNoStripe.length > 0 ? (
-          <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+          <div className="bg-[#F4F6F9] br-card overflow-hidden">
             {clientsNoStripe.map(c => (
               <Link
                 key={c.id}
@@ -103,7 +103,7 @@ export default async function ReconcilePage() {
                   <p className="text-[12.5px] text-[#666D7A] truncate">{c.email ?? 'No email'}</p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
-                  <span className="text-[10px] text-amber-700 font-semibold">No link</span>
+                  <span className="text-[10px] text-[#A96A12] font-semibold">No link</span>
                   <ExternalLink size={12} className="text-[#98A0AD]" />
                 </div>
               </Link>
@@ -127,7 +127,7 @@ export default async function ReconcilePage() {
             <span className="text-[12.5px] text-[#98A0AD]">{products?.length ?? 0}</span>
           </div>
           {untaggedProducts.length > 0 && (
-            <div className="flex items-center gap-1.5 text-[12.5px] text-amber-700">
+            <div className="flex items-center gap-1.5 text-[12.5px] text-[#A96A12]">
               <AlertTriangle size={12} />
               {untaggedProducts.length} untagged
             </div>
@@ -137,7 +137,7 @@ export default async function ReconcilePage() {
           Tag every product by which business stream it belongs to. <strong className="text-[#666D7A]">Performance Coaching</strong> products count toward client LTV; the others don&apos;t. Until products are tagged, untagged paid payments are treated as Performance Coaching by default.
         </p>
         {products && products.length > 0 ? (
-          <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+          <div className="bg-[#F4F6F9] br-card overflow-hidden">
             {products.map(p => (
               <div
                 key={p.id}

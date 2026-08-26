@@ -39,7 +39,7 @@ export default function MarkCommencementButton({ clientId }: { clientId: string 
       type="button"
       onClick={mark}
       disabled={pending}
-      className="flex items-center gap-1.5 px-3 py-1.5 text-[12.5px] font-medium text-blue-500 hover:text-blue-700 border border-blue-200 hover:border-blue-500/50 rounded-lg transition-colors disabled:opacity-50"
+      className="flex items-center gap-1.5 px-3 py-1.5 text-[12.5px] font-medium text-[#1B6DFC] hover:text-[#1056D6] border border-[#B5CFFC] hover:border-[#1B6DFC]/50 rounded-lg transition-colors disabled:opacity-50"
     >
       <Check size={12} />
       {pending ? 'Saving…' : 'Mark commencement paid'}

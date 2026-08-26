@@ -136,8 +136,8 @@ export default function PackageManager({
                 disabled={saving}
                 className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
                   pkg === p.value
-                    ? 'bg-blue-50 border-blue-200 text-blue-500'
-                    : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
+                    ? 'bg-[rgba(27,109,252,0.08)] border-[#B5CFFC] text-[#1B6DFC]'
+                    : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC]'
                 }`}
               >
                 {p.label}
@@ -147,7 +147,7 @@ export default function PackageManager({
         </div>
         {packages.some(p => p.tier === 'launch' && p.value === pkg) && (
         <div>
-          <p className="text-[10px] font-semibold text-amber-500/80 mb-1.5">Launch Rate (retired, grandfathered)</p>
+          <p className="text-[10px] font-semibold text-[#B7791F]/80 mb-1.5">Launch Rate (retired, grandfathered)</p>
           <div className="flex flex-wrap gap-2">
             {packages.filter(p => p.tier === 'launch').map(p => (
               <button
@@ -156,8 +156,8 @@ export default function PackageManager({
                 disabled={saving}
                 className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
                   pkg === p.value
-                    ? 'bg-amber-50 border-amber-300 text-amber-700'
-                    : 'border-[#E8EAEE] text-[#666D7A] hover:border-amber-300 hover:text-amber-700'
+                    ? 'bg-[#FDF6E9] border-[#E5C98F] text-[#A96A12]'
+                    : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#E5C98F] hover:text-[#A96A12]'
                 }`}
               >
                 {p.label}
@@ -167,7 +167,7 @@ export default function PackageManager({
         </div>
         )}
         <div>
-          <p className="text-[10px] font-semibold text-[#FBFCFD]0 mb-1.5">Non-billing (Contra / Comp)</p>
+          <p className="text-[10px] font-semibold text-[#666D7A] mb-1.5">Non-billing (Contra / Comp)</p>
           <div className="flex flex-wrap gap-2">
             {packages.filter(p => p.tier === 'comp').map(p => (
               <button
@@ -176,8 +176,8 @@ export default function PackageManager({
                 disabled={saving}
                 className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
                   pkg === p.value
-                    ? 'bg-[#FBFCFD]0/15 border-[#FBFCFD]0/40 text-[#141821]'
-                    : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#FBFCFD]0/40 hover:text-[#141821]'
+                    ? 'bg-[#666D7A]/15 border-[#666D7A]/40 text-[#141821]'
+                    : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#666D7A]/40 hover:text-[#141821]'
                 }`}
               >
                 {p.label}
@@ -189,10 +189,10 @@ export default function PackageManager({
           </p>
         </div>
       </div>
-      {saved && <p className="text-[12.5px] text-blue-500">Package updated</p>}
+      {saved && <p className="text-[12.5px] text-[#1B6DFC]">Package updated</p>}
 
       {currentInfo && linkPending && (
-        <div className="text-[12.5px] text-amber-900 bg-amber-50 border border-amber-300 rounded-lg px-3 py-2">
+        <div className="text-[12.5px] text-[#8A5A14] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] rounded-lg px-3 py-2">
           <span className="font-bold">Repriced 26 Aug 2026, Stripe link not created yet.</span> Create a weekly
           AUD payment link for {currentInfo.label} in Stripe, paste it into COACHING_PACKAGES, and these controls
           come back. They are hidden so nothing goes out charging the old amount under the new price.
@@ -210,13 +210,13 @@ export default function PackageManager({
           {/* Scheduled send indicator */}
           {isScheduled && (
             <div className="flex items-center gap-3 text-[12.5px]">
-              <span className="text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full">
+              <span className="text-[#A96A12] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] px-2.5 py-1 rounded-full">
                 Subscription link scheduled for {scheduledDate}
               </span>
               <button
                 onClick={cancelSchedule}
                 disabled={cancelling}
-                className="text-[#98A0AD] hover:text-red-700 transition-colors"
+                className="text-[#98A0AD] hover:text-[#C82626] transition-colors"
               >
                 {cancelling ? 'Cancelling...' : 'Cancel'}
               </button>
@@ -230,26 +230,26 @@ export default function PackageManager({
             </div>
           )}
 
-          {scheduleSaved && <p className="text-[12.5px] text-amber-700">Send scheduled</p>}
+          {scheduleSaved && <p className="text-[12.5px] text-[#A96A12]">Send scheduled</p>}
 
           <div className="flex items-center gap-3 flex-wrap">
             <button
               onClick={sendLink}
               disabled={sending || sent}
-              className="text-[12.5px] font-medium px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
+              className="text-[12.5px] font-medium px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-50"
             >
               {sending ? 'Sending...' : sent ? 'Sent!' : 'Send to Client'}
             </button>
             <button
               onClick={copyLink}
-              className="text-[12.5px] font-medium px-4 py-2 border border-[#E8EAEE] text-[#43474F] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] hover:bg-blue-50 transition-colors"
+              className="text-[12.5px] font-medium px-4 py-2 border border-[#E8EAEE] text-[#43474F] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] transition-colors"
             >
               {copied ? 'Copied!' : 'Copy Link'}
             </button>
             {!isScheduled && (
               <button
                 onClick={() => setShowSchedule(v => !v)}
-                className="text-[12.5px] font-medium px-4 py-2 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-amber-300 hover:text-amber-700 transition-colors"
+                className="text-[12.5px] font-medium px-4 py-2 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#E5C98F] hover:text-[#A96A12] transition-colors"
               >
                 Schedule Send
               </button>
@@ -263,12 +263,12 @@ export default function PackageManager({
                 value={scheduleDate || todayStr}
                 min={todayStr}
                 onChange={e => setScheduleDate(e.target.value)}
-                className="text-[12.5px] bg-[#EFF1F4] border border-[#E8EAEE] text-[#141821] rounded-lg px-3 py-1.5 focus:outline-none focus:border-amber-500/50"
+                className="text-[12.5px] bg-[#EFF1F4] border border-[#E8EAEE] text-[#141821] rounded-lg px-3 py-1.5 focus:outline-none focus:border-[#B7791F]/50"
               />
               <button
                 onClick={scheduleLink}
                 disabled={scheduling || !scheduleDate}
-                className="text-[12.5px] font-medium px-3 py-1.5 bg-amber-100 border border-amber-200 text-amber-700 rounded-lg hover:bg-amber-500/30 transition-colors disabled:opacity-50"
+                className="text-[12.5px] font-medium px-3 py-1.5 bg-[#FAEFD8] border border-[#F1DEB8] text-[#A96A12] rounded-lg hover:bg-[#B7791F]/30 transition-colors disabled:opacity-50"
               >
                 {scheduling ? 'Saving...' : 'Confirm'}
               </button>

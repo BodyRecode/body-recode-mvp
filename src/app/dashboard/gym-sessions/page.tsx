@@ -201,7 +201,7 @@ export default function GymSessionsPage() {
               onClick={() => setActiveState(s.id)}
               style={active ? { borderColor: s.border, color: s.color, background: s.bg } : undefined}
               className={`flex-1 py-3 px-4 rounded-xl border text-[13px] font-semibold transition-colors ${
-                active ? '' : 'border-[#E8EAEE] bg-[#FFFFFF] text-[#666D7A] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50'
+                active ? '' : 'border-[#E8EAEE] bg-[#FFFFFF] text-[#666D7A] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)]'
               }`}
             >
               <span className="block">{s.label}</span>
@@ -226,7 +226,7 @@ export default function GymSessionsPage() {
               className={`flex-1 py-2 px-3 rounded-lg border text-[11px] font-semibold transition-colors ${
                 active
                   ? 'border-[#CFD4DC] text-[#141821] bg-[#EFF1F4]'
-                  : 'border-[#E8EAEE] bg-[#FFFFFF] text-[#666D7A] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50'
+                  : 'border-[#E8EAEE] bg-[#FFFFFF] text-[#666D7A] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)]'
               }`}
             >
               {p.label}
@@ -357,7 +357,7 @@ export default function GymSessionsPage() {
 
 function ScriptCard({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden mb-4">
+    <div className="br-card overflow-hidden mb-4">
       <div className="flex items-center gap-2.5 px-5 py-3 border-b border-[#E8EAEE]">
         <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC] shrink-0" />
         <p
@@ -387,7 +387,7 @@ function ScriptSection({ label, sublabel, children }: { label: string; sublabel?
 
 function ExerciseCard({ ex }: { ex: Exercise }) {
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-3 py-3">
+    <div className="br-card px-3 py-3">
       <div className="flex items-start justify-between gap-3 mb-2">
         <span className="text-[14px] font-semibold text-[#141821]">{ex.name}</span>
         <span

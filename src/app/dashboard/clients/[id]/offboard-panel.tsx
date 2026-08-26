@@ -141,11 +141,11 @@ export default function OffboardPanel({
             </p>
           </div>
 
-          {error && <p className="text-[12.5px] text-red-700 bg-red-50 border border-red-200 rounded-md px-3 py-2">{error}</p>}
+          {error && <p className="text-[12.5px] text-[#C82626] bg-[#FDEDED] border border-[#F5C9C9] rounded-md px-3 py-2">{error}</p>}
           {steps && (
             <ul className="text-[12.5px] space-y-1">
               {steps.map((s, i) => (
-                <li key={i} className={s.done ? 'text-[#666D7A]' : 'text-amber-700'}>
+                <li key={i} className={s.done ? 'text-[#666D7A]' : 'text-[#A96A12]'}>
                   {s.done ? '✓' : '!'} {s.step}{s.detail ? ` — ${s.detail}` : ''}
                 </li>
               ))}
@@ -153,7 +153,7 @@ export default function OffboardPanel({
           )}
 
           <div className="flex gap-2">
-            <button onClick={submit} disabled={busy} className="px-4 py-2 rounded-lg text-[12.5px] font-medium bg-red-600 text-white hover:bg-red-700 disabled:opacity-40 transition-colors">
+            <button onClick={submit} disabled={busy} className="px-4 py-2 rounded-lg text-[12.5px] font-medium bg-[#C82626] text-white hover:bg-[#C82626] disabled:opacity-40 transition-colors">
               {busy ? 'Ending…' : 'End engagement'}
             </button>
             <button onClick={() => { setOpen(false); setError(null) }} disabled={busy} className="px-4 py-2 rounded-lg text-[12.5px] font-medium bg-[#F4F6F9] text-[#141821] hover:bg-[#EFF1F4] transition-colors">

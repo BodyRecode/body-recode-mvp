@@ -12,9 +12,9 @@ const stepLabel: Record<string, string> = Object.fromEntries(
 )
 
 const stateChip: Record<string, string> = {
-  'Depleted State': 'bg-red-50 text-red-700 border-red-200',
-  'Transitioning State': 'bg-amber-50 text-amber-700 border-amber-200',
-  'Ready State': 'bg-blue-50 text-blue-700 border-blue-200',
+  'Depleted State': 'bg-[#FDEDED] text-[#C82626] border-[#F5C9C9]',
+  'Transitioning State': 'bg-[#FDF6E9] text-[#A96A12] border-[#F1DEB8]',
+  'Ready State': 'bg-[rgba(27,109,252,0.08)] text-[#1056D6] border-[#B5CFFC]',
 }
 
 interface TouchRow {
@@ -65,7 +65,7 @@ export default async function OutreachQueuePage() {
       </div>
 
       {touches.length === 0 ? (
-        <div className="border border-[#E8EAEE] rounded-xl p-10 text-center">
+        <div className="br-card p-10 text-center">
           <Inbox className="w-8 h-8 text-[#E8EAEE] mx-auto mb-3" />
           <p className="text-[#666D7A] text-sm font-medium mb-1">The queue is clear</p>
           <p className="text-[#666D7A] text-sm">
@@ -79,10 +79,10 @@ export default async function OutreachQueuePage() {
             const name = lead?.name || 'Unknown lead'
             const bodyState = lead?.scorecard_body_state
             return (
-              <div key={touch.id} className="border border-[#E8EAEE] rounded-xl overflow-hidden">
+              <div key={touch.id} className="br-card overflow-hidden">
                 <div className="flex items-center justify-between gap-3 px-5 py-3 bg-[#FBFCFD] border-b border-[#E8EAEE]">
                   <div className="flex items-center gap-3 min-w-0">
-                    <Link href={`/dashboard/leads/${touch.lead_id}`} className="font-semibold text-[#141821] hover:text-blue-600 truncate">
+                    <Link href={`/dashboard/leads/${touch.lead_id}`} className="font-semibold text-[#141821] hover:text-[#1560E0] truncate">
                       {name}
                     </Link>
                     {bodyState && (

@@ -22,7 +22,7 @@ export default function Zoom1DeclinedButton({ leadId }: { leadId: string }) {
 
   if (sent) {
     return (
-      <span className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 bg-blue-600/10 text-emerald-700 border border-blue-600/20 rounded-lg">
+      <span className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 bg-[#1560E0]/10 text-[#177245] border border-[#1560E0]/20 rounded-lg">
         Sequence Started
       </span>
     )
@@ -30,11 +30,11 @@ export default function Zoom1DeclinedButton({ leadId }: { leadId: string }) {
 
   return (
     <div className="flex items-center gap-3">
-      {error && <p className="text-[12.5px] text-red-700">{error}</p>}
+      {error && <p className="text-[12.5px] text-[#C82626]">{error}</p>}
       <button
         onClick={send}
         disabled={loading}
-        className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
+        className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-50"
       >
         {loading ? 'Starting...' : 'Start Declined Follow-up'}
       </button>

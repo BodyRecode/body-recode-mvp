@@ -34,7 +34,7 @@ export default async function WaitlistPage() {
           title="Product Waitlist"
           subtitle="Leads who signed up to be notified when each product launches."
         />
-        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+        <div className="rounded-xl border border-[#F5C9C9] bg-[#FDEDED] p-4 text-sm text-[#C82626]">
           Error loading waitlist: {error.message}
         </div>
       </div>

@@ -35,16 +35,16 @@ interface Suggestion {
 }
 
 const phaseColour: Record<string, string> = {
-  accumulation: 'text-blue-700 bg-blue-50 border-blue-200',
+  accumulation: 'text-[#1056D6] bg-[rgba(27,109,252,0.08)] border-[#B5CFFC]',
   intensification: 'text-orange-400 bg-orange-400/10 border-orange-400/30',
-  realization: 'text-red-700 bg-red-50 border-red-200',
+  realization: 'text-[#C82626] bg-[#FDEDED] border-[#F5C9C9]',
   restoration: 'text-green-400 bg-green-400/10 border-green-400/30',
 }
 
 const goalColour: Record<string, string> = {
   strength: 'text-violet-700 bg-violet-50 border-violet-200',
   hypertrophy: 'text-pink-400 bg-pink-400/10 border-pink-400/30',
-  capacity: 'text-blue-500 bg-blue-50 border-blue-200',
+  capacity: 'text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border-[#B5CFFC]',
 }
 
 const PHASES = ['accumulation', 'intensification', 'realization', 'restoration']
@@ -227,8 +227,8 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
 
   if (error && !suggestion) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-xl p-5">
-        <p className="text-red-700 text-sm">{error}</p>
+      <div className="bg-[#FDEDED] border border-[#F5C9C9] rounded-xl p-5">
+        <p className="text-[#C82626] text-sm">{error}</p>
         <a href={`/dashboard/clients/${clientId}/plan`} className="text-[12.5px] text-[#666D7A] hover:text-[#141821] mt-3 inline-block">
           Back to plan →
         </a>
@@ -246,9 +246,9 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
       <div className="flex-1 min-w-0 space-y-4">
 
       {/* Coach guidance — steer the arc, then regenerate (2026-07-12) */}
-      <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5">
+      <div className="br-card p-5">
         <div className="flex items-center gap-2 mb-2 flex-wrap">
-          <p className="text-[10px] font-medium text-blue-500">Coach Guidance</p>
+          <p className="text-[10px] font-medium text-[#1B6DFC]">Coach Guidance</p>
           <span className="text-[10px] text-[#98A0AD]">optional — steers the arc within doctrine, never breaks the safety gates</span>
         </div>
         <textarea
@@ -256,13 +256,13 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
           onChange={e => setCoachGuidance(e.target.value)}
           rows={3}
           placeholder="e.g. Bring body composition in sooner (hypertrophy-leaning, not a strength peak). Keep the running scaled right back this phase. Put a stress-management buffer around week 8 for his FIFO transition."
-          className="w-full resize-none text-sm bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg px-3 py-2 text-[#141821] focus:outline-none focus:border-blue-500"
+          className="w-full resize-none text-sm bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg px-3 py-2 text-[#141821] focus:outline-none focus:border-[#1B6DFC]"
         />
         <div className="flex justify-end mt-2">
           <button
             onClick={regenerate}
             disabled={loading || !coachGuidance.trim()}
-            className="text-[13px] font-semibold px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="text-[13px] font-semibold px-4 py-2 rounded-lg bg-[#1B6DFC] text-white hover:bg-[#1560E0] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             Regenerate arc with guidance
           </button>
@@ -294,12 +294,12 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
           )}
           {doctrine.warnings.length > 0 && (
             <>
-              <p className="text-[11px] font-semibold text-amber-700 mb-1.5">
+              <p className="text-[11px] font-semibold text-[#A96A12] mb-1.5">
                 Needs your judgement ({doctrine.warnings.length})
               </p>
               <ul className="space-y-1.5">
                 {doctrine.warnings.map((w, i) => (
-                  <li key={i} className="text-[13px] text-amber-800 leading-relaxed flex gap-2">
+                  <li key={i} className="text-[13px] text-[#A96A12] leading-relaxed flex gap-2">
                     <span className="shrink-0">·</span>
                     <span>{w}</span>
                   </li>
@@ -311,22 +311,22 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
       )}
 
       {/* Overall rationale */}
-      <div id="rationale" className="scroll-mt-8 bg-blue-50 border border-blue-200/40 rounded-xl px-5 py-4">
-        <p className="text-[10px] font-medium text-blue-500 mb-2">Arc Rationale</p>
+      <div id="rationale" className="scroll-mt-8 bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC]/40 rounded-xl px-5 py-4">
+        <p className="text-[10px] font-medium text-[#1B6DFC] mb-2">Arc Rationale</p>
         <p className="text-sm text-[#141821] leading-relaxed">{suggestion.overall_rationale}</p>
       </div>
 
       {/* Plan name + objective */}
-      <div id="plan-details" className="scroll-mt-8 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5 space-y-4">
+      <div id="plan-details" className="scroll-mt-8 bg-[#F4F6F9] br-card p-5 space-y-4">
         <div>
           <label className="block text-[10px] font-medium text-[#666D7A] mb-1.5">Plan Name</label>
           <input
             value={planName}
             onChange={e => setPlanName(e.target.value)}
-            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-blue-700"
+            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#1056D6]"
           />
           <div className="flex items-start gap-2 mt-2">
-            <span className="text-blue-500 text-[12.5px] mt-0.5 shrink-0">→</span>
+            <span className="text-[#1B6DFC] text-[12.5px] mt-0.5 shrink-0">→</span>
             <p className="text-[12.5px] text-[#141821] leading-relaxed">{suggestion.plan_name_reason}</p>
           </div>
         </div>
@@ -335,10 +335,10 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
           <input
             value={macroObjective}
             onChange={e => setMacroObjective(e.target.value)}
-            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-blue-700"
+            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#1056D6]"
           />
           <div className="flex items-start gap-2 mt-2">
-            <span className="text-blue-500 text-[12.5px] mt-0.5 shrink-0">→</span>
+            <span className="text-[#1B6DFC] text-[12.5px] mt-0.5 shrink-0">→</span>
             <p className="text-[12.5px] text-[#141821] leading-relaxed">{suggestion.macro_objective_reason}</p>
           </div>
         </div>
@@ -350,7 +350,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
         <p className="text-[10px] font-medium text-[#666D7A] mb-3 px-1">Meso Blocks</p>
         <div className="space-y-3">
           {blocks.map((block, i) => (
-            <div key={i} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+            <div key={i} className="bg-[#F4F6F9] br-card overflow-hidden">
               {/* Block header */}
               <div className="px-5 py-3 border-b border-[#E8EAEE] flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -373,7 +373,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
                   </button>
                   <button
                     onClick={() => removeBlock(i)}
-                    className="text-[10px] text-[#141821] hover:text-red-700 px-1 transition-colors"
+                    className="text-[10px] text-[#141821] hover:text-[#C82626] px-1 transition-colors"
                   >
                     ✕
                   </button>
@@ -393,7 +393,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
                     <p className="text-[10px] text-[#666D7A] leading-relaxed">Nutrition: {block.nutrition_context}</p>
                   )}
                   <div className="flex items-start gap-2 mt-1">
-                    <span className="text-blue-500 text-[10px] mt-0.5 shrink-0">→</span>
+                    <span className="text-[#1B6DFC] text-[10px] mt-0.5 shrink-0">→</span>
                     <p className="text-[12.5px] text-[#141821] leading-relaxed">{block.block_rationale}</p>
                   </div>
                 </div>
@@ -407,7 +407,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
                     <input
                       value={block.block_name}
                       onChange={e => updateBlock(i, { block_name: e.target.value })}
-                      className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-blue-700"
+                      className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-[#1056D6]"
                     />
                   </div>
                   <div className="grid grid-cols-3 gap-3">
@@ -473,8 +473,8 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3">
-          <p className="text-red-700 text-sm">{error}</p>
+        <div className="bg-[#FDEDED] border border-[#F5C9C9] rounded-lg px-4 py-3">
+          <p className="text-[#C82626] text-sm">{error}</p>
         </div>
       )}
 
@@ -488,7 +488,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
         <button
           onClick={handleApprove}
           disabled={saving}
-          className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-[#E8EAEE] disabled:text-[#666D7A] text-white font-semibold text-sm rounded-lg transition-colors"
+          className="px-5 py-2.5 bg-[#1B6DFC] hover:bg-[#1560E0] disabled:bg-[#E8EAEE] disabled:text-[#666D7A] text-white font-semibold text-sm rounded-lg transition-colors"
         >
           {saving ? 'Saving arc...' : 'Save as Draft'}
         </button>

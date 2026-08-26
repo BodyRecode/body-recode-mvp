@@ -42,7 +42,7 @@ export default function NewIntakeButton({ clientId, clientName, clientEmail }: P
       <button
         onClick={createInvitation}
         disabled={status === 'loading'}
-        className="text-sm px-4 py-2 border border-[#E8EAEE] text-[#43474F] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 transition-colors disabled:opacity-50"
+        className="text-sm px-4 py-2 border border-[#E8EAEE] text-[#43474F] rounded-lg hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] transition-colors disabled:opacity-50"
       >
         {status === 'loading' ? 'Creating…' : 'New intake'}
       </button>
@@ -50,7 +50,7 @@ export default function NewIntakeButton({ clientId, clientName, clientEmail }: P
   }
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 mt-4">
+    <div className="br-card p-5 mt-4">
       <p className="text-[12px] font-medium text-[#1B6DFC] mb-3">New intake link ready</p>
       <div className="bg-[#FFFFFF] rounded-lg px-4 py-3 flex items-center gap-3 mb-4">
         <p className="text-[#666D7A] text-[12.5px] font-mono flex-1 truncate">

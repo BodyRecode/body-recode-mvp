@@ -82,7 +82,7 @@ export default async function SmsPulsePage() {
         <Tile label="Cost 7d (AUD)" value={(sent7d * 0.06).toFixed(2)} hint="~$0.06 / segment" tone="stone" prefix="$" />
       </div>
 
-      <div className="mb-8 bg-white border border-[#E8EAEE] rounded-xl overflow-hidden">
+      <div className="mb-8 br-card overflow-hidden">
         <div className="px-5 py-3 border-b border-[#E8EAEE] bg-[#FBFCFD] flex items-baseline justify-between">
           <h3 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Recent log · last 30</h3>
           <span className="text-[11px] text-[#666D7A] font-mono">Newest first</span>
@@ -100,10 +100,10 @@ export default async function SmsPulsePage() {
 
       <div className="mb-8 p-4 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] text-[12px] text-[#666D7A] leading-relaxed">
         <p><strong className="text-[#141821]">How this works.</strong> Every outbound SMS routes through <code className="bg-white px-1 py-0.5 rounded border border-[#E8EAEE]">sendLeadSms()</code> which checks the lead&apos;s <code className="bg-white px-1 py-0.5 rounded border border-[#E8EAEE]">sms_opt_in_at</code>, hard-stops on <code className="bg-white px-1 py-0.5 rounded border border-[#E8EAEE]">sms_opted_out_at</code>, enforces frequency caps (1 per 24h + 3 per 7d), then logs to <code className="bg-white px-1 py-0.5 rounded border border-[#E8EAEE]">sms_logs</code>. The Inngest function respects AEST send-window rules and queues to next 08:30 if outside window.</p>
-        <p className="mt-2">Compliance: <strong className="text-[#141821]">STOP / STOPALL / UNSUBSCRIBE / CANCEL / QUIT / END / REVOKE</strong> all trigger hard opt-out at <Link href="/dashboard/leads" className="text-blue-600 hover:text-blue-700 underline">the lead level</Link>. Non-STOP replies email you at your admin address so you can respond from the CRM inbox.</p>
+        <p className="mt-2">Compliance: <strong className="text-[#141821]">STOP / STOPALL / UNSUBSCRIBE / CANCEL / QUIT / END / REVOKE</strong> all trigger hard opt-out at <Link href="/dashboard/leads" className="text-[#1560E0] hover:text-[#1056D6] underline">the lead level</Link>. Non-STOP replies email you at your admin address so you can respond from the CRM inbox.</p>
       </div>
 
-      <Link href="/dashboard" className="text-[12px] text-blue-600 hover:text-blue-700 underline">← Back to dashboard</Link>
+      <Link href="/dashboard" className="text-[12px] text-[#1560E0] hover:text-[#1056D6] underline">← Back to dashboard</Link>
     </div>
   )
 }
@@ -124,13 +124,13 @@ function Tile({
   const valueColor = {
     default: 'text-[#141821]',
     stone: 'text-[#98A0AD]',
-    green: 'text-green-700',
-    amber: 'text-amber-700',
-    red: 'text-red-700',
-    blue: 'text-blue-700',
+    green: 'text-[#177245]',
+    amber: 'text-[#A96A12]',
+    red: 'text-[#C82626]',
+    blue: 'text-[#1056D6]',
   }[tone]
   return (
-    <div className="bg-white border border-[#E8EAEE] rounded-xl p-3">
+    <div className="br-card p-3">
       <div className="text-[10px] font-medium text-[#666D7A] mb-1">{label}</div>
       <div className={`text-[22px] font-bold ${valueColor} font-mono`}>{prefix ?? ''}{value.toLocaleString?.() ?? value}</div>
       {hint && <div className="text-[10px] text-[#666D7A] mt-0.5">{hint}</div>}
@@ -141,16 +141,16 @@ function Tile({
 function LogRowView({ row }: { row: LogRow }) {
   const isOutbound = row.direction === 'outbound'
   const statusTone =
-    row.status === 'sent' ? 'text-green-700 bg-green-100'
-      : row.status === 'delivered' ? 'text-green-700 bg-green-100'
-      : row.status === 'failed' || row.status === 'undelivered' ? 'text-red-700 bg-red-100'
-      : row.status === 'queued' ? 'text-blue-700 bg-blue-100'
+    row.status === 'sent' ? 'text-[#177245] bg-[#D8EFE1]'
+      : row.status === 'delivered' ? 'text-[#177245] bg-[#D8EFE1]'
+      : row.status === 'failed' || row.status === 'undelivered' ? 'text-[#C82626] bg-[#FBDCDC]'
+      : row.status === 'queued' ? 'text-[#1056D6] bg-[#DDE9FD]'
       : row.status === 'received' ? 'text-purple-700 bg-purple-100'
       : 'text-[#666D7A] bg-[#F4F6F9]'
   return (
     <li className="px-5 py-3">
       <div className="flex items-center gap-3 mb-1 flex-wrap">
-        <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${isOutbound ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700'}`}>
+        <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${isOutbound ? 'bg-[#DDE9FD] text-[#1056D6]' : 'bg-purple-100 text-purple-700'}`}>
           {row.direction}
         </span>
         <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${statusTone}`}>
@@ -164,14 +164,14 @@ function LogRowView({ row }: { row: LogRow }) {
         {row.lead_id && (
           <>
             {' · '}
-            <Link href={`/dashboard/leads/${row.lead_id}`} className="text-blue-600 hover:text-blue-700 underline">
+            <Link href={`/dashboard/leads/${row.lead_id}`} className="text-[#1560E0] hover:text-[#1056D6] underline">
               lead
             </Link>
           </>
         )}
       </div>
       <div className="text-[13px] text-[#141821] mt-1">{row.body}</div>
-      {row.error && <div className="text-[11px] text-red-700 mt-1 font-mono">{row.error}</div>}
+      {row.error && <div className="text-[11px] text-[#C82626] mt-1 font-mono">{row.error}</div>}
     </li>
   )
 }

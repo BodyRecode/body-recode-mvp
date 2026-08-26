@@ -78,13 +78,13 @@ export default function NotifyClientButton({
         className={`text-xs px-3 py-1.5 rounded-lg border transition-colors disabled:opacity-50 ${
           notified
             ? 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC] hover:text-[#141821]'
-            : 'border-[#1B6DFC] text-[#1B6DFC] hover:bg-blue-50'
+            : 'border-[#1B6DFC] text-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)]'
         }`}
       >
         {loading ? 'Sending...' : notified ? 'Notify Again' : 'Notify Client'}
       </button>
       {error && (
-        <span className="text-[11px] text-red-700">{error}</span>
+        <span className="text-[11px] text-[#C82626]">{error}</span>
       )}
     </div>
   )

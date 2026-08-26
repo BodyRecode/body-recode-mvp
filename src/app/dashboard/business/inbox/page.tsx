@@ -75,7 +75,7 @@ export default async function InboxPage() {
               href={`/dashboard/business/inbox/${lead.id}`}
               className="flex items-center gap-4 bg-[#F4F6F9] border border-[#E8EAEE] first:rounded-t-xl last:rounded-b-xl -mb-px px-4 py-3.5 hover:bg-[#EFF1F4]/50 transition-colors group"
             >
-              <div className="w-8 h-8 rounded-full bg-[#EFF1F4] border border-[#E8EAEE] flex items-center justify-center shrink-0 text-[12.5px] font-medium text-[#666D7A] group-hover:border-blue-200 transition-colors">
+              <div className="w-8 h-8 rounded-full bg-[#EFF1F4] border border-[#E8EAEE] flex items-center justify-center shrink-0 text-[12.5px] font-medium text-[#666D7A] group-hover:border-[#B5CFFC] transition-colors">
                 {lead.name?.charAt(0)?.toUpperCase() ?? '?'}
               </div>
 

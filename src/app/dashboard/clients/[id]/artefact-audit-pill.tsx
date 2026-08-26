@@ -31,9 +31,9 @@ export default function ArtefactAuditPill({ audit }: { audit: ArtefactAuditResul
   }
 
   const statusColours: Record<typeof audit.status, { border: string; bg: string; text: string; icon: string }> = {
-    green: { border: 'border-green-200', bg: 'bg-green-50', text: 'text-green-700', icon: 'text-green-600' },
-    amber: { border: 'border-amber-200', bg: 'bg-amber-50', text: 'text-amber-700', icon: 'text-amber-600' },
-    red:   { border: 'border-red-200',   bg: 'bg-red-50',   text: 'text-red-700',   icon: 'text-red-600' },
+    green: { border: 'border-[#CAE7D5]', bg: 'bg-[#EDF8F1]', text: 'text-[#177245]', icon: 'text-[#177245]' },
+    amber: { border: 'border-[#F1DEB8]', bg: 'bg-[#FDF6E9]', text: 'text-[#A96A12]', icon: 'text-[#A96A12]' },
+    red:   { border: 'border-[#F5C9C9]',   bg: 'bg-[#FDEDED]',   text: 'text-[#C82626]',   icon: 'text-[#C82626]' },
   }
   const s = statusColours[audit.status]
   const Icon = audit.status === 'green' ? CheckCircle : audit.status === 'amber' ? AlertCircle : AlertTriangle
@@ -76,7 +76,7 @@ export default function ArtefactAuditPill({ audit }: { audit: ArtefactAuditResul
               <ul className="space-y-1">
                 {audit.issues.map((issue, i) => (
                   <li key={i} className="flex items-start gap-2 leading-snug">
-                    <span className={`mt-0.5 inline-block w-1.5 h-1.5 rounded-full shrink-0 ${issue.severity === 'error' ? 'bg-red-500' : 'bg-amber-500'}`} />
+                    <span className={`mt-0.5 inline-block w-1.5 h-1.5 rounded-full shrink-0 ${issue.severity === 'error' ? 'bg-[#DC2626]' : 'bg-[#B7791F]'}`} />
                     <span><span className="font-mono text-[10px]">{issue.code}</span> · {issue.message}</span>
                   </li>
                 ))}
@@ -97,7 +97,7 @@ export default function ArtefactAuditPill({ audit }: { audit: ArtefactAuditResul
 function DetailRow({ label, value, ok }: { label: string; value: string; ok: boolean }) {
   return (
     <div className="flex items-start gap-2">
-      <span className={`mt-0.5 inline-block w-1.5 h-1.5 rounded-full shrink-0 ${ok ? 'bg-green-500' : 'bg-amber-500'}`} />
+      <span className={`mt-0.5 inline-block w-1.5 h-1.5 rounded-full shrink-0 ${ok ? 'bg-[#22A05A]' : 'bg-[#B7791F]'}`} />
       <div className="min-w-0">
         <p className="text-[11.5px] font-medium text-[#666D7A]">{label}</p>
         <p className="text-[11px] text-[#141821] break-words">{value}</p>

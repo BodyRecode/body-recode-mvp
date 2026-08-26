@@ -38,7 +38,7 @@ export default function EditContact({ leadId, name, email, phone }: Props) {
 
   if (!editing) {
     return (
-      <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-6 mb-4">
+      <div className="br-card p-6 mb-4">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Contact</h2>
           <button
@@ -63,7 +63,7 @@ export default function EditContact({ leadId, name, email, phone }: Props) {
   }
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-6 mb-4">
+    <div className="br-card p-6 mb-4">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Contact</h2>
         <button onClick={cancel} className="text-[12.5px] text-[#98A0AD] hover:text-[#43474F] transition-colors">
@@ -103,7 +103,7 @@ export default function EditContact({ leadId, name, email, phone }: Props) {
         <button
           onClick={save}
           disabled={saving || !nameVal.trim()}
-          className="bg-[#1B6DFC] text-[#FFFFFF] text-sm font-medium px-5 py-2 rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-50"
+          className="bg-[#1B6DFC] text-[#FFFFFF] text-sm font-medium px-5 py-2 rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-50"
         >
           {saving ? 'Saving...' : 'Save'}
         </button>

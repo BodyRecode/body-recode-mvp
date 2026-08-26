@@ -39,8 +39,8 @@ function StatusLine({
   const completed = latestInvitation.status === 'complete'
   if (completed && latestInvitation.completed_at) {
     return (
-      <p className="text-[11px] font-medium text-emerald-700 mb-2 flex items-center gap-1.5">
-        <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
+      <p className="text-[11px] font-medium text-[#177245] mb-2 flex items-center gap-1.5">
+        <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#22A05A]" />
         Re-intake completed {formatWhen(latestInvitation.completed_at)}
       </p>
     )
@@ -54,8 +54,8 @@ function StatusLine({
     )
   }
   return (
-    <p className="text-[11px] font-medium text-amber-700 mb-2 flex items-center gap-1.5">
-      <span className="inline-block w-1.5 h-1.5 rounded-full bg-amber-500" />
+    <p className="text-[11px] font-medium text-[#A96A12] mb-2 flex items-center gap-1.5">
+      <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#B7791F]" />
       Re-intake link created {formatWhen(latestInvitation.created_at)} · not emailed yet
     </p>
   )
@@ -101,7 +101,7 @@ export default function ReintakeButton({ clientId, clientName, clientEmail, late
         <button
           onClick={createInvitation}
           disabled={status === 'loading'}
-          className="text-sm px-4 py-2 border border-[#E8EAEE] text-[#43474F] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 transition-colors disabled:opacity-50"
+          className="text-sm px-4 py-2 border border-[#E8EAEE] text-[#43474F] rounded-lg hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] transition-colors disabled:opacity-50"
           title={status === 'error' ? errorMsg : 'Send a fresh 221-question intake to an existing client for reassessment (block-end, life-context shift, etc). Uses the same form as New Intake but with re-intake email copy.'}
         >
           {status === 'loading' ? 'Creating…' : status === 'error' ? `Error: ${errorMsg}` : 'Re-intake'}
@@ -111,7 +111,7 @@ export default function ReintakeButton({ clientId, clientName, clientEmail, late
   }
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 mt-4">
+    <div className="br-card p-5 mt-4">
       <StatusLine latestInvitation={latestInvitation} latestSentAt={latestSentAt} />
       <p className="text-[12px] font-medium text-[#1B6DFC] mb-3">Re-intake link ready</p>
       <p className="text-[12.5px] text-[#666D7A] mb-3">
