@@ -139,29 +139,29 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
   return (
     <div className="space-y-4">
       {/* Identity card */}
-      <div id={`${idPrefix}identity`} className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl p-5">
+      <div id={`${idPrefix}identity`} className="scroll-mt-8 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
         <div className="flex items-start justify-between mb-3">
           <div>
-            <h2 className="text-lg font-semibold text-[#1A1A1A]">{program.block_name}</h2>
-            <p className="text-xs text-stone-500 mt-1 capitalize">
+            <h2 className="text-lg font-semibold text-[#141821]">{program.block_name}</h2>
+            <p className="text-[12.5px] text-[#666D7A] mt-1 capitalize">
               {program.training_frequency}x/week · {program.week_duration} weeks · {program.training_age}
             </p>
           </div>
           <div className="flex gap-1.5">
-            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${phaseColour[program.progression_phase] || 'text-stone-600 bg-stone-200 border-stone-300'}`}>
+            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${phaseColour[program.progression_phase] || 'text-[#666D7A] bg-[#EFF1F4] border-[#E8EAEE]'}`}>
               {program.progression_phase}
             </span>
-            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${goalColour[program.training_goal] || 'text-stone-600 bg-stone-200 border-stone-300'}`}>
+            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${goalColour[program.training_goal] || 'text-[#666D7A] bg-[#EFF1F4] border-[#E8EAEE]'}`}>
               {program.training_goal}
             </span>
           </div>
         </div>
         <div className="flex flex-wrap gap-1.5 mb-1">
           {program.equipment_access.map(eq => (
-            <span key={eq} className="text-xs bg-stone-200 text-stone-600 px-2 py-0.5 rounded capitalize">{eq}</span>
+            <span key={eq} className="text-[12.5px] bg-[#EFF1F4] text-[#666D7A] px-2 py-0.5 rounded capitalize">{eq}</span>
           ))}
         </div>
-        <p className="text-xs text-stone-400 mt-3">
+        <p className="text-[12.5px] text-[#98A0AD] mt-3">
           Generated {new Date(program.generated_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}
         </p>
       </div>
@@ -197,28 +197,28 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
                   const { intro, points } = parseText(clean(program.prescription_rationale))
                   return (
                     <div className="bg-white/60 border border-blue-100 rounded-lg px-4 py-3">
-                      <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-2">Prescription Rationale</p>
+                      <p className="text-[10px] font-medium text-blue-500 mb-2">Prescription Rationale</p>
                       <div className="space-y-2">
-                        {intro && <p className="text-sm text-stone-800 leading-relaxed">{intro}</p>}
+                        {intro && <p className="text-sm text-[#141821] leading-relaxed">{intro}</p>}
                         {points.length > 1 ? (
                           <div className="space-y-2">
                             {points.map((point, i) => (
                               <div key={i} className="flex items-start gap-2.5 border-l-2 border-blue-200/30 pl-3">
-                                <p className="text-sm text-stone-700 leading-relaxed">{point}</p>
+                                <p className="text-sm text-[#141821] leading-relaxed">{point}</p>
                               </div>
                             ))}
                           </div>
                         ) : (
-                          <p className="text-sm text-stone-700 leading-relaxed">{points[0]}</p>
+                          <p className="text-sm text-[#141821] leading-relaxed">{points[0]}</p>
                         )}
                       </div>
                     </div>
                   )
                 })()}
                 {program.weekly_pattern_summary && (
-                  <div id={`${idPrefix}weekly-structure`} className="scroll-mt-8 bg-white/60 border border-stone-200 rounded-lg overflow-hidden">
-                    <div className="flex items-center gap-3 px-4 py-2.5 border-b border-stone-200">
-                      <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Weekly Structure</p>
+                  <div id={`${idPrefix}weekly-structure`} className="scroll-mt-8 bg-white/60 border border-[#E8EAEE] rounded-lg overflow-hidden">
+                    <div className="flex items-center gap-3 px-4 py-2.5 border-b border-[#E8EAEE]">
+                      <p className="text-[10px] font-medium text-[#666D7A]">Weekly Structure</p>
                     </div>
                     <div className="px-4 py-3 space-y-3">
                       {parseLines(program.weekly_pattern_summary, /(?=(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|Day \d+)[^a-z]|Overall program|Constraints applied)/g).map((entry, i) => {
@@ -227,9 +227,9 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
                         const label = hasLabel ? entry.slice(0, colonIdx).trim() : null
                         const content = hasLabel ? entry.slice(colonIdx + 1).trim() : entry.trim()
                         return (
-                          <div key={i} className="border-l-2 border-stone-300 pl-3">
-                            {label && <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-wider mb-1">{clean(label)}</p>}
-                            <p className="text-sm text-stone-800 leading-relaxed">{clean(content)}</p>
+                          <div key={i} className="border-l-2 border-[#E8EAEE] pl-3">
+                            {label && <p className="text-[10px] font-medium text-[#1B6DFC] mb-1">{clean(label)}</p>}
+                            <p className="text-sm text-[#141821] leading-relaxed">{clean(content)}</p>
                           </div>
                         )
                       })}
@@ -237,9 +237,9 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
                   </div>
                 )}
                 {program.progression_notes && (
-                  <div id={`${idPrefix}progression`} className="scroll-mt-8 bg-white/60 border border-stone-200 rounded-lg overflow-hidden">
-                    <div className="flex items-center gap-3 px-4 py-2.5 border-b border-stone-200">
-                      <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Progression Strategy</p>
+                  <div id={`${idPrefix}progression`} className="scroll-mt-8 bg-white/60 border border-[#E8EAEE] rounded-lg overflow-hidden">
+                    <div className="flex items-center gap-3 px-4 py-2.5 border-b border-[#E8EAEE]">
+                      <p className="text-[10px] font-medium text-[#666D7A]">Progression Strategy</p>
                     </div>
                     <div className="px-4 py-3 space-y-3">
                       {parseLines(program.progression_notes, /(?=Week \d+)/g).map((entry, i) => {
@@ -248,9 +248,9 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
                         const label = hasLabel ? entry.slice(0, colonIdx).trim() : null
                         const content = hasLabel ? entry.slice(colonIdx + 1).trim() : entry.trim()
                         return (
-                          <div key={i} className="border-l-2 border-stone-300 pl-3">
-                            {label && <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-wider mb-1">{clean(label)}</p>}
-                            <p className="text-sm text-stone-800 leading-relaxed">{clean(content)}</p>
+                          <div key={i} className="border-l-2 border-[#E8EAEE] pl-3">
+                            {label && <p className="text-[10px] font-medium text-[#1B6DFC] mb-1">{clean(label)}</p>}
+                            <p className="text-sm text-[#141821] leading-relaxed">{clean(content)}</p>
                           </div>
                         )
                       })}
@@ -271,19 +271,19 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
         const { intro, points } = parseText(clean(program.prescription_rationale))
         return (
           <div id={`${idPrefix}rationale`} className="scroll-mt-8 bg-blue-50 border border-blue-200/40 rounded-xl px-5 py-4">
-            <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-3">Prescription Rationale</p>
+            <p className="text-[10px] font-medium text-blue-500 mb-3">Prescription Rationale</p>
             <div className="space-y-2">
-              {intro && <p className="text-sm text-stone-800 leading-relaxed">{intro}</p>}
+              {intro && <p className="text-sm text-[#141821] leading-relaxed">{intro}</p>}
               {points.length > 1 ? (
                 <div className="space-y-2">
                   {points.map((point, i) => (
                     <div key={i} className="flex items-start gap-2.5 border-l-2 border-blue-200/30 pl-3">
-                      <p className="text-sm text-stone-700 leading-relaxed">{point}</p>
+                      <p className="text-sm text-[#141821] leading-relaxed">{point}</p>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-stone-700 leading-relaxed">{points[0]}</p>
+                <p className="text-sm text-[#141821] leading-relaxed">{points[0]}</p>
               )}
             </div>
           </div>
@@ -291,10 +291,10 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
       })()}
 
       {!program.rationale_summary?.headline && program.weekly_pattern_summary && (
-        <div id={`${idPrefix}weekly-structure`} className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
-          <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-200 bg-stone-100/80">
+        <div id={`${idPrefix}weekly-structure`} className="scroll-mt-8 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+          <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[#F4F6F9]/80">
             <span className="text-[11px] font-black text-[#1B6DFC]">01</span>
-            <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Weekly Structure</p>
+            <p className="text-[10px] font-medium text-[#666D7A]">Weekly Structure</p>
           </div>
           <div className="px-5 py-4 space-y-3">
             {parseLines(program.weekly_pattern_summary, /(?=(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|Day \d+)[^a-z]|Overall program|Constraints applied)/g).map((entry, i) => {
@@ -303,9 +303,9 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
               const label = hasLabel ? entry.slice(0, colonIdx).trim() : null
               const content = hasLabel ? entry.slice(colonIdx + 1).trim() : entry.trim()
               return (
-                <div key={i} className="border-l-2 border-stone-300 pl-3">
-                  {label && <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-wider mb-1">{clean(label)}</p>}
-                  <p className="text-sm text-stone-800 leading-relaxed">{clean(content)}</p>
+                <div key={i} className="border-l-2 border-[#E8EAEE] pl-3">
+                  {label && <p className="text-[10px] font-medium text-[#1B6DFC] mb-1">{clean(label)}</p>}
+                  <p className="text-sm text-[#141821] leading-relaxed">{clean(content)}</p>
                 </div>
               )
             })}
@@ -314,10 +314,10 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
       )}
 
       {!program.rationale_summary?.headline && program.progression_notes && (
-        <div id={`${idPrefix}progression`} className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
-          <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-200 bg-stone-100/80">
+        <div id={`${idPrefix}progression`} className="scroll-mt-8 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+          <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[#F4F6F9]/80">
             <span className="text-[11px] font-black text-[#1B6DFC]">02</span>
-            <p className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Progression Strategy</p>
+            <p className="text-[10px] font-medium text-[#666D7A]">Progression Strategy</p>
           </div>
           <div className="px-5 py-4 space-y-3">
             {parseLines(program.progression_notes, /(?=Week \d+)/g).map((entry, i) => {
@@ -326,9 +326,9 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
               const label = hasLabel ? entry.slice(0, colonIdx).trim() : null
               const content = hasLabel ? entry.slice(colonIdx + 1).trim() : entry.trim()
               return (
-                <div key={i} className="border-l-2 border-stone-300 pl-3">
-                  {label && <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-wider mb-1">{clean(label)}</p>}
-                  <p className="text-sm text-stone-800 leading-relaxed">{clean(content)}</p>
+                <div key={i} className="border-l-2 border-[#E8EAEE] pl-3">
+                  {label && <p className="text-[10px] font-medium text-[#1B6DFC] mb-1">{clean(label)}</p>}
+                  <p className="text-sm text-[#141821] leading-relaxed">{clean(content)}</p>
                 </div>
               )
             })}
@@ -342,47 +342,47 @@ function ProgramBody({ program, idPrefix = '' }: { program: Program; idPrefix?: 
 
       {/* Sessions */}
       <div id={`${idPrefix}sessions`} className="scroll-mt-8 mt-2">
-        <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3 px-1">Sessions</p>
+        <p className="text-[12.5px] font-medium text-[#666D7A] mb-3 px-1">Sessions</p>
         <div className="space-y-3">
           {program.sessions.map((session, sIdx) => (
-            <div key={sIdx} className="bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
-              <div className="px-5 py-3 border-b border-stone-200 flex items-center justify-between">
-                <h3 className="font-semibold text-stone-900 text-sm">{clean(session.day_label)}</h3>
-                <span className="text-[10px] text-stone-400 uppercase tracking-wide">{session.skeleton}</span>
+            <div key={sIdx} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+              <div className="px-5 py-3 border-b border-[#E8EAEE] flex items-center justify-between">
+                <h3 className="font-semibold text-[#141821] text-sm">{clean(session.day_label)}</h3>
+                <span className="text-[10px] text-[#98A0AD]">{session.skeleton}</span>
               </div>
-              <div className="divide-y divide-stone-200/60">
+              <div className="divide-y divide-[#EFF1F4]/60">
                 {session.movement_prep?.length > 0 && (
-                  <div className="px-5 py-4 bg-stone-200/30">
-                    <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-1">
+                  <div className="px-5 py-4 bg-[#EFF1F4]/30">
+                    <p className="text-[10px] font-medium text-[#1B6DFC] mb-1">
                       Preparatory Entry - Movement Preparation
                     </p>
-                    <p className="text-[10px] text-stone-400 mb-3">Non-Slot · Prepare joints, tissues, and coordination for the session&apos;s primary exposures</p>
+                    <p className="text-[10px] text-[#98A0AD] mb-3">Non-Slot · Prepare joints, tissues, and coordination for the session&apos;s primary exposures</p>
                     <div className="space-y-1.5 mb-3">
                       {session.movement_prep.map((item, i) => (
                         <div key={i} className="flex items-start gap-2">
-                          <span className="text-stone-400 mt-0.5">•</span>
-                          <p className="text-sm text-stone-700">{item}</p>
+                          <span className="text-[#98A0AD] mt-0.5">•</span>
+                          <p className="text-sm text-[#141821]">{item}</p>
                         </div>
                       ))}
                     </div>
-                    <p className="text-xs text-stone-400 italic">Rest: short, informal (30–60 seconds as needed)</p>
+                    <p className="text-[12.5px] text-[#98A0AD] italic">Rest: short, informal (30–60 seconds as needed)</p>
                   </div>
                 )}
                 {session.blocks.map((block, bIdx) => (
                   <div key={bIdx} className="px-5 py-4">
-                    <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-3">{block.block_label}</p>
+                    <p className="text-[10px] font-medium text-[#1B6DFC] mb-3">{block.block_label}</p>
                     <div className="space-y-2.5">
                       {block.exercises.map((ex, eIdx) => (
                         <div key={eIdx}>
                           <div className="flex items-center gap-3 text-sm">
-                            <span className="flex-1 text-stone-800 font-medium">{ex.exercise_name}</span>
-                            <span className="text-stone-600 whitespace-nowrap tabular-nums">
+                            <span className="flex-1 text-[#141821] font-medium">{ex.exercise_name}</span>
+                            <span className="text-[#666D7A] whitespace-nowrap tabular-nums">
                               {ex.sets}×{ex.reps}
-                              {ex.rpe !== null && <span className="text-stone-400"> · RPE {ex.rpe}</span>}
+                              {ex.rpe !== null && <span className="text-[#98A0AD]"> · RPE {ex.rpe}</span>}
                             </span>
-                            <span className="text-stone-400 whitespace-nowrap text-xs w-16 text-right">{ex.rest}</span>
+                            <span className="text-[#98A0AD] whitespace-nowrap text-[12.5px] w-16 text-right">{ex.rest}</span>
                           </div>
-                          {ex.notes && <p className="text-xs text-stone-400 italic mt-0.5">{clean(ex.notes)}</p>}
+                          {ex.notes && <p className="text-[12.5px] text-[#98A0AD] italic mt-0.5">{clean(ex.notes)}</p>}
                         </div>
                       ))}
                     </div>
@@ -524,7 +524,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-50 border border-amber-700 text-amber-700 uppercase tracking-wide">Draft - Pending Approval</span>
+              <span className="text-[12.5px] font-medium px-2.5 py-1 rounded-full bg-amber-50 border border-amber-700 text-amber-700">Draft - Pending Approval</span>
             </div>
             <div className="flex items-center gap-2">
               {draftTrainingPlan && <RegenerateButton programId={draftProgram.id} />}
@@ -549,9 +549,9 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
           </svg>
           <div className="flex-1">
             <p className="text-sm font-semibold text-red-700">Client is struggling with training</p>
-            <p className="text-xs text-red-700/70 mt-0.5">Latest check-in direction is Rebuild. Consider adjusting the program or generating a new block.</p>
+            <p className="text-[12.5px] text-red-700/70 mt-0.5">Latest check-in direction is Rebuild. Consider adjusting the program or generating a new block.</p>
           </div>
-          <Link href={`/dashboard/clients/${id}/plan`} className="text-xs font-semibold text-red-700 hover:text-red-700 shrink-0 mt-0.5">Open macro plan →</Link>
+          <Link href={`/dashboard/clients/${id}/plan`} className="text-[12.5px] font-semibold text-red-700 hover:text-red-700 shrink-0 mt-0.5">Open macro plan →</Link>
         </div>
       )}
 
@@ -560,9 +560,9 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
         <div>
           {draftProgram && (
             <div className="flex items-center gap-3 mb-4 mt-2">
-              <div className="flex-1 h-px bg-stone-200" />
-              <p className="text-xs text-stone-400 uppercase tracking-widest">Current Active Program</p>
-              <div className="flex-1 h-px bg-stone-200" />
+              <div className="flex-1 h-px bg-[#EFF1F4]" />
+              <p className="text-[12.5px] text-[#98A0AD]">Current Active Program</p>
+              <div className="flex-1 h-px bg-[#EFF1F4]" />
             </div>
           )}
 
@@ -596,15 +596,15 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
               <div className="mb-6">
                 {isPending ? (
                   <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 mb-3">
-                    <p className="text-xs font-bold text-amber-700 uppercase tracking-widest mb-1">Pending block-end reading</p>
+                    <p className="text-[12.5px] font-medium text-amber-700 mb-1">Pending block-end reading</p>
                     <p className="text-sm text-amber-800">
                       <span className="font-semibold">{archived.block_name}</span> ended{endedAt ? ` around ${endedAt}` : ''} but its trajectory reading was never generated. Generate it now so the client has a record of the block arc before the next one is in full swing.
                     </p>
                   </div>
                 ) : (
-                  <div className="bg-stone-50 border border-stone-200 rounded-lg px-4 py-3 mb-3">
-                    <p className="text-xs font-bold text-stone-600 uppercase tracking-widest mb-1">Previous block reading</p>
-                    <p className="text-sm text-stone-700">
+                  <div className="bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg px-4 py-3 mb-3">
+                    <p className="text-[12.5px] font-medium text-[#666D7A] mb-1">Previous block reading</p>
+                    <p className="text-sm text-[#141821]">
                       Block-end reading for <span className="font-semibold">{archived.block_name}</span>{endedAt ? `, ended around ${endedAt}` : ''}. Published to the client portal. Edit + republish below if needed.
                     </p>
                   </div>
@@ -645,7 +645,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
             return (
               <>
                 <div className="mb-3 flex items-center justify-between gap-3 flex-wrap">
-                  <p className="text-[11px] text-[#999999] leading-relaxed max-w-[440px]">
+                  <p className="text-[11px] text-[#98A0AD] leading-relaxed max-w-[440px]">
                     Send a Progress Check so the block-end reading can re-score her body state from a fresh self-report. Once she submits it, generate the reading below.
                   </p>
                   <ProgressCheckButton
@@ -671,7 +671,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
           )}
 
           <div className="mb-3 flex items-center justify-between">
-            <p className="text-xs font-bold text-stone-400 uppercase tracking-widest">Sessions</p>
+            <p className="text-[12.5px] font-medium text-[#98A0AD]">Sessions</p>
             <div className="flex items-center gap-2">
               {/* Regenerate is available whenever there IS an active program.
                   It used to be gated on activeTrainingPlan too, which meant
@@ -679,7 +679,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
               <RegenerateButton programId={activeProgram.id} />
               <Link
                 href={`/dashboard/clients/${id}/program/draft/${activeProgram.id}`}
-                className="text-xs font-medium px-3 py-1.5 border border-stone-300 text-stone-600 rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors"
+                className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors"
               >
                 Edit exercises →
               </Link>
@@ -705,13 +705,13 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
           {/* Archived Programs */}
           {archivedPrograms.length > 0 && (
             <div className="mt-6">
-              <p className="text-stone-500 text-sm mb-3">Previous Programs ({archivedPrograms.length})</p>
+              <p className="text-[#666D7A] text-sm mb-3">Previous Programs ({archivedPrograms.length})</p>
               <div className="space-y-2">
                 {archivedPrograms.map(p => (
-                  <div key={p.id} className="bg-stone-100/50 border border-stone-200 rounded-lg px-4 py-3 flex items-center justify-between">
-                    <span className="text-sm text-stone-600 opacity-70">{p.block_name}</span>
+                  <div key={p.id} className="bg-[#F4F6F9]/50 border border-[#E8EAEE] rounded-lg px-4 py-3 flex items-center justify-between">
+                    <span className="text-sm text-[#666D7A] opacity-70">{p.block_name}</span>
                     <div className="flex items-center gap-3">
-                      <span className="text-xs text-stone-400">
+                      <span className="text-[12.5px] text-[#98A0AD]">
                         {new Date(p.generated_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
                         {' · '}<span className="capitalize">{p.progression_phase}</span>{' · '}<span className="capitalize">{p.training_goal}</span>
                       </span>
@@ -728,14 +728,14 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
           )}
         </div>
       ) : !draftProgram ? (
-        <div className="text-center py-16 px-6 border-2 border-dashed border-stone-200 rounded-xl">
-          <p className="text-stone-700 font-semibold mb-2">No program generated yet.</p>
-          <p className="text-stone-500 text-sm max-w-md mx-auto mb-5 leading-relaxed">
+        <div className="text-center py-16 px-6 border-2 border-dashed border-[#E8EAEE] rounded-xl">
+          <p className="text-[#141821] font-semibold mb-2">No program generated yet.</p>
+          <p className="text-[#666D7A] text-sm max-w-md mx-auto mb-5 leading-relaxed">
             Programs are generated from a meso block in the macro plan. Build (or open) the plan, then hit Generate Program on the block you want to load.
           </p>
           <Link
             href={`/dashboard/clients/${id}/plan`}
-            className="inline-block text-xs font-semibold px-4 py-2 bg-blue-500 hover:bg-blue-500 text-white rounded-lg transition-colors"
+            className="inline-block text-[12.5px] font-semibold px-4 py-2 bg-blue-500 hover:bg-blue-500 text-white rounded-lg transition-colors"
           >
             Open macro plan →
           </Link>

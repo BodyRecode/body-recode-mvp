@@ -46,9 +46,9 @@ export default async function CoachTrainIndexPage({ params }: { params: Promise<
   if (!program) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-8">
-        <Link href={`/dashboard/clients/${id}`} className="text-xs font-semibold text-[#1B6DFC] hover:text-[#5390FF]">← Back to {firstName}</Link>
-        <div className="mt-6 rounded-2xl border border-[#E5E5E5] bg-white p-6 text-center">
-          <p className="text-sm text-[#6B6B6B]">No active training program for {firstName} yet. Publish a program first, then you can log sessions here.</p>
+        <Link href={`/dashboard/clients/${id}`} className="text-[12.5px] font-semibold text-[#1B6DFC] hover:text-[#5390FF]">← Back to {firstName}</Link>
+        <div className="mt-6 rounded-xl border border-[#E8EAEE] bg-white p-6 text-center">
+          <p className="text-sm text-[#666D7A]">No active training program for {firstName} yet. Publish a program first, then you can log sessions here.</p>
         </div>
       </div>
     )
@@ -98,41 +98,41 @@ export default async function CoachTrainIndexPage({ params }: { params: Promise<
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
-      <Link href={`/dashboard/clients/${id}`} className="text-xs font-semibold text-[#1B6DFC] hover:text-[#5390FF]">← Back to {firstName}</Link>
+      <Link href={`/dashboard/clients/${id}`} className="text-[12.5px] font-semibold text-[#1B6DFC] hover:text-[#5390FF]">← Back to {firstName}</Link>
 
       <div className="mt-4 mb-6">
-        <p className="text-[10px] font-bold tracking-widest text-[#999999] uppercase mb-1">Log a session · {client.name}</p>
-        <h1 className="text-2xl font-bold text-[#1A1A1A] tracking-tight">{program.block_name ?? 'Training'}</h1>
-        <div className="flex flex-wrap items-center gap-2 mt-2 text-xs">
-          <span className="bg-white border border-[#E5E5E5] rounded-full px-2.5 py-0.5">Week <span className="text-[#1A1A1A] font-semibold">{blockWeek}</span> of {program.week_duration}</span>
-          <span className="bg-white border border-[#E5E5E5] rounded-full px-2.5 py-0.5 text-[#6B6B6B]">{daysLeftLabel}</span>
+        <p className="text-[10px] font-medium text-[#98A0AD] mb-1">Log a session · {client.name}</p>
+        <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em] tracking-tight">{program.block_name ?? 'Training'}</h1>
+        <div className="flex flex-wrap items-center gap-2 mt-2 text-[12.5px]">
+          <span className="bg-white border border-[#E8EAEE] rounded-full px-2.5 py-0.5">Week <span className="text-[#141821] font-semibold">{blockWeek}</span> of {program.week_duration}</span>
+          <span className="bg-white border border-[#E8EAEE] rounded-full px-2.5 py-0.5 text-[#666D7A]">{daysLeftLabel}</span>
         </div>
       </div>
 
       {/* Momentum */}
       {momentum.blockTotal > 0 && (
-        <div className="mb-6 rounded-2xl border border-[#E5E5E5] bg-white p-4">
+        <div className="mb-6 rounded-xl border border-[#E8EAEE] bg-white p-4">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-[10px] font-bold text-[#6B6B6B] uppercase tracking-widest">This block</p>
+            <p className="text-[10px] font-medium text-[#666D7A]">This block</p>
             {momentum.streakWeeks >= 2 && (
-              <span className="text-[10px] font-bold uppercase tracking-widest text-[#1B6DFC] bg-blue-50 border border-[#1B6DFC]/30 rounded-full px-2 py-0.5">{momentum.streakWeeks} weeks fully logged</span>
+              <span className="text-[11.5px] font-medium text-[#1B6DFC] bg-blue-50 border border-[#1B6DFC]/30 rounded-full px-2 py-0.5">{momentum.streakWeeks} weeks fully logged</span>
             )}
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex-1 h-2 rounded-full bg-[#E5E5E5] overflow-hidden">
+            <div className="flex-1 h-2 rounded-full bg-[#EFF1F4] overflow-hidden">
               <div className="h-full bg-[#1B6DFC]" style={{ width: `${momentumPct}%` }} />
             </div>
-            <p className="text-xs font-semibold text-[#1A1A1A] tabular-nums whitespace-nowrap">{momentum.loggedThisBlock} / {momentum.blockTotal} logged</p>
+            <p className="text-[12.5px] font-semibold text-[#141821] tabular-nums whitespace-nowrap">{momentum.loggedThisBlock} / {momentum.blockTotal} logged</p>
           </div>
         </div>
       )}
 
       {/* Today */}
       {todaySessionIndex >= 0 && (
-        <div className="mb-6 rounded-2xl border border-[#1B6DFC] bg-blue-50 p-5">
-          <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">Today · {today}</p>
-          <h2 className="text-xl font-bold text-[#1A1A1A] mb-1">{prescribedSessions[todaySessionIndex].day_label}{prescribedSessions[todaySessionIndex].skeleton ? ` · ${prescribedSessions[todaySessionIndex].skeleton}` : ''}</h2>
-          <p className="text-sm text-[#6B6B6B] mb-4">{prescribedSessions[todaySessionIndex].flatExercises.length} exercise{prescribedSessions[todaySessionIndex].flatExercises.length === 1 ? '' : 's'}</p>
+        <div className="mb-6 rounded-xl border border-[#1B6DFC] bg-blue-50 p-5">
+          <p className="text-[10px] font-medium text-[#1B6DFC] mb-2">Today · {today}</p>
+          <h2 className="text-xl font-bold text-[#141821] mb-1">{prescribedSessions[todaySessionIndex].day_label}{prescribedSessions[todaySessionIndex].skeleton ? ` · ${prescribedSessions[todaySessionIndex].skeleton}` : ''}</h2>
+          <p className="text-sm text-[#666D7A] mb-4">{prescribedSessions[todaySessionIndex].flatExercises.length} exercise{prescribedSessions[todaySessionIndex].flatExercises.length === 1 ? '' : 's'}</p>
           <StartSessionButton
             token=""
             clientId={client.id}
@@ -147,28 +147,28 @@ export default async function CoachTrainIndexPage({ params }: { params: Promise<
         </div>
       )}
 
-      <p className="text-[10px] text-[#6B6B6B] uppercase tracking-widest font-semibold mb-3">All sessions, week {blockWeek}</p>
+      <p className="text-[10px] text-[#666D7A] font-semibold mb-3">All sessions, week {blockWeek}</p>
       <div className="space-y-2">
         {prescribedSessions.map((s, idx) => {
           const completion = completionByIndex.get(idx)
           return (
             <div
               key={idx}
-              className={`bg-white border rounded-2xl p-4 ${
+              className={`bg-white border rounded-xl p-4 ${
                 completion?.status === 'completed'
                   ? 'border-[#1B6DFC]/60'
                   : completion?.status === 'in_progress'
                     ? 'border-amber-300'
-                    : 'border-[#E5E5E5]'
+                    : 'border-[#E8EAEE]'
               }`}
             >
               <div className="flex items-center justify-between gap-3 mb-1">
                 <div className="min-w-0">
-                  <p className="text-sm font-bold text-[#1A1A1A]">{s.day_label}{s.skeleton ? ` · ${s.skeleton}` : ''}</p>
-                  <p className="text-xs text-[#6B6B6B]">{s.flatExercises.length} exercise{s.flatExercises.length === 1 ? '' : 's'}</p>
+                  <p className="text-sm font-bold text-[#141821]">{s.day_label}{s.skeleton ? ` · ${s.skeleton}` : ''}</p>
+                  <p className="text-[12.5px] text-[#666D7A]">{s.flatExercises.length} exercise{s.flatExercises.length === 1 ? '' : 's'}</p>
                 </div>
-                {completion?.status === 'completed' && <span className="text-[10px] uppercase tracking-widest text-[#1B6DFC] shrink-0">Completed</span>}
-                {completion?.status === 'in_progress' && <span className="text-[10px] uppercase tracking-widest text-amber-700 shrink-0">In progress</span>}
+                {completion?.status === 'completed' && <span className="text-[10px] text-[#1B6DFC] shrink-0">Completed</span>}
+                {completion?.status === 'in_progress' && <span className="text-[10px] text-amber-700 shrink-0">In progress</span>}
               </div>
               <StartSessionButton
                 token=""

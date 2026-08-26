@@ -32,19 +32,19 @@ export default function MessageSearch({
       onSubmit={e => { e.preventDefault(); apply(q) }}
       className="relative mb-3"
     >
-      <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#999999] pointer-events-none" />
+      <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#98A0AD] pointer-events-none" />
       <input
         value={q}
         onChange={e => setQ(e.target.value)}
         placeholder="Search names and messages"
-        className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl pl-8 pr-8 py-2 text-[12px] text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:border-[#1B6DFC]"
+        className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl pl-8 pr-8 py-2 text-[12px] text-[#141821] placeholder:text-[#98A0AD] focus:outline-none focus:border-[#1B6DFC]"
       />
       {q && (
         <button
           type="button"
           onClick={() => { setQ(''); apply('') }}
           aria-label="Clear search"
-          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#999999] hover:text-[#1A1A1A] transition-colors"
+          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#98A0AD] hover:text-[#141821] transition-colors"
         >
           <X size={13} />
         </button>

@@ -66,7 +66,7 @@ export default function PrintTrigger({
         {backHref ? (
           <Link
             href={backHref}
-            className="inline-flex items-center gap-1 text-[12px] text-[#6B6B6B] hover:text-[#1A1A1A] transition-colors"
+            className="inline-flex items-center gap-1 text-[12px] text-[#666D7A] hover:text-[#141821] transition-colors"
             style={{ fontFamily: SCREEN_FONT }}
           >
             <ChevronLeft size={13} /> Back to client

@@ -80,10 +80,10 @@ export function HarmonyShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() || BASE
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#141821]">
       {/* Preview banner - thin strip */}
       <div
-        className="text-center py-1 text-[10px] font-bold uppercase tracking-widest"
+        className="text-center py-1 text-[11.5px] font-medium"
         style={{ backgroundColor: '#1A1A1A', color: '#F8F8F8', letterSpacing: '0.14em' }}
       >
         Preview mockup · not a live tenant · <Link href="/dashboard/preview" className="underline">back to previews</Link>
@@ -91,7 +91,7 @@ export function HarmonyShell({ children }: { children: React.ReactNode }) {
 
       {/* Sticky header - identical structure to real DashboardLayout */}
       <header
-        className="sticky top-0 z-50 border-b border-[#E5E5E5] backdrop-blur-xl"
+        className="sticky top-0 z-50 border-b border-[#E8EAEE] backdrop-blur-xl"
         style={{ background: 'rgba(255, 255, 255, 0.85)' }}
       >
         <div className="max-w-[1280px] mx-auto px-6 h-16 flex items-center justify-between gap-8">
@@ -103,19 +103,19 @@ export function HarmonyShell({ children }: { children: React.ReactNode }) {
               >
                 {HARMONY.initials}
               </span>
-              <span className="text-[16px] font-semibold text-[#1A1A1A] tracking-tight">{HARMONY.name}</span>
+              <span className="text-[16px] font-semibold text-[#141821] tracking-tight">{HARMONY.name}</span>
             </Link>
             <HarmonyNav pathname={pathname} />
           </div>
           <div className="flex items-center gap-3 shrink-0">
             <span
-              className="hidden md:inline-flex items-center gap-1.5 text-[11px] text-[#6B6B6B] px-2.5 py-1 rounded-full border border-[#E5E5E5] bg-[#F8F8F8]"
+              className="hidden md:inline-flex items-center gap-1.5 text-[11px] text-[#666D7A] px-2.5 py-1 rounded-full border border-[#E8EAEE] bg-[#FAFBFC]"
               style={{ fontFamily: MONO }}
             >
               <span className="w-1.5 h-1.5 rounded-full shadow-[0_0_6px] shadow-current" style={{ background: HARMONY.accentBar, color: HARMONY.accentBar }} />
               live
             </span>
-            <span className="hidden lg:inline text-[#999999] text-[11px] tracking-wide">{HARMONY.founder.toLowerCase()}@hermony.com.au</span>
+            <span className="hidden lg:inline text-[#98A0AD] text-[11px]">{HARMONY.founder.toLowerCase()}@hermony.com.au</span>
           </div>
         </div>
       </header>
@@ -142,12 +142,12 @@ function HarmonyNav({ pathname }: { pathname: string }) {
       {OVERVIEW.map((link) => (
         <TopLink key={link.href} link={link} pathname={pathname} />
       ))}
-      <span className="mx-1.5 h-5 w-px bg-[#E5E5E5]" aria-hidden />
+      <span className="mx-1.5 h-5 w-px bg-[#EFF1F4]" aria-hidden />
       <ClusterButton cluster={CRM_CLUSTER} pathname={pathname} />
       <ClusterButton cluster={CLIENTS_CLUSTER} pathname={pathname} />
       <ClusterButton cluster={MARKETING_CLUSTER} pathname={pathname} />
       <ClusterButton cluster={BUSINESS_CLUSTER} pathname={pathname} />
-      <span className="mx-1.5 h-5 w-px bg-[#E5E5E5]" aria-hidden />
+      <span className="mx-1.5 h-5 w-px bg-[#EFF1F4]" aria-hidden />
       {META.map((link) => (
         <TopLink key={link.href} link={link} pathname={pathname} />
       ))}
@@ -162,8 +162,8 @@ function TopLink({ link, pathname }: { link: NavLink; pathname: string }) {
       href={link.href}
       className={`relative text-[13px] px-3.5 py-2 rounded-md transition-colors whitespace-nowrap ${
         active
-          ? 'text-[#1A1A1A] bg-[#F0F0F0]'
-          : 'text-[#6B6B6B] hover:text-[#1A1A1A] hover:bg-[#F4F4F4]'
+          ? 'text-[#141821] bg-[#EFF1F4]'
+          : 'text-[#666D7A] hover:text-[#141821] hover:bg-[#F4F6F9]'
       }`}
     >
       {link.label}
@@ -186,8 +186,8 @@ function ClusterButton({ cluster, pathname }: { cluster: NavCluster; pathname: s
       href={target}
       className={`relative flex items-center gap-1 text-[13px] px-3.5 py-2 rounded-md transition-colors whitespace-nowrap ${
         active
-          ? 'text-[#1A1A1A] bg-[#F0F0F0]'
-          : 'text-[#6B6B6B] hover:text-[#1A1A1A] hover:bg-[#F4F4F4]'
+          ? 'text-[#141821] bg-[#EFF1F4]'
+          : 'text-[#666D7A] hover:text-[#141821] hover:bg-[#F4F6F9]'
       }`}
     >
       {cluster.label}

@@ -51,7 +51,7 @@ export default function MarkHandled({
         title={handled
           ? 'Reopen this conversation in your inbox'
           : 'Close this off without sending anything. Use when you answered by phone or text.'}
-        className="inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg border border-[#E5E5E5] text-[#4A4A4A] hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
+        className="inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg border border-[#E8EAEE] text-[#4A4A4A] hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
       >
         {busy
           ? <Loader2 size={12} className="animate-spin" />

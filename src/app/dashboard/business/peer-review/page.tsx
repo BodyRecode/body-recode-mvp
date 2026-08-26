@@ -19,7 +19,7 @@ type Reviewer = {
 }
 
 const STATUS_COLOURS: Record<ReviewerStatus, string> = {
-  'Not contacted': 'bg-stone-200 text-stone-600',
+  'Not contacted': 'bg-[#EFF1F4] text-[#666D7A]',
   'Contacted':     'bg-blue-500/15 text-blue-700',
   'Accessed site': 'bg-yellow-500/15 text-yellow-400',
   'Responded':     'bg-blue-500/15 text-blue-500',
@@ -232,10 +232,10 @@ export default function PeerReviewPage() {
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-2">
           <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-          <span className="text-xs font-semibold tracking-widest uppercase text-blue-500">System Development</span>
+          <span className="text-[12.5px] font-semibold text-blue-500">System Development</span>
         </div>
-        <h1 className="text-2xl font-bold text-[#1A1A1A] mb-2">Peer Review Program</h1>
-        <p className="text-sm text-stone-600 max-w-2xl">
+        <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em] mb-2">Peer Review Program</h1>
+        <p className="text-sm text-[#666D7A] max-w-2xl">
           Manage the {brand().name}™ peer review process. Track outreach, reviewer status, and feedback from medical, allied health, and performance professionals.
                           </p>
       </div>
@@ -248,16 +248,16 @@ export default function PeerReviewPage() {
           { label: 'Responded', value: stats.responded },
           { label: 'Complete', value: stats.complete },
         ].map(stat => (
-          <div key={stat.label} className="bg-stone-100 border border-stone-200 rounded-xl p-4">
-            <p className="text-2xl font-bold text-[#1A1A1A] mb-1">{stat.value}</p>
-            <p className="text-xs text-stone-500">{stat.label}</p>
+          <div key={stat.label} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
+            <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em] mb-1">{stat.value}</p>
+            <p className="text-[12.5px] text-[#666D7A]">{stat.label}</p>
           </div>
         ))}
       </div>
 
       {/* Review Assets */}
       <div className="mb-8">
-        <h2 className="text-sm font-semibold text-stone-700 mb-3">Review Assets</h2>
+        <h2 className="text-sm font-semibold text-[#141821] mb-3">Review Assets</h2>
         <div className="grid grid-cols-3 gap-3">
           {ASSETS.map(asset => (
             <a
@@ -265,13 +265,13 @@ export default function PeerReviewPage() {
               href={asset.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-start justify-between gap-3 bg-stone-100 border border-stone-200 rounded-xl p-4 hover:border-stone-300 transition-colors group"
+              className="flex items-start justify-between gap-3 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 hover:border-[#E8EAEE] transition-colors group"
             >
               <div>
-                <p className="text-sm font-medium text-[#1A1A1A] mb-1">{asset.label}</p>
-                <p className="text-xs text-stone-500">{asset.description}</p>
+                <p className="text-sm font-medium text-[#141821] mb-1">{asset.label}</p>
+                <p className="text-[12.5px] text-[#666D7A]">{asset.description}</p>
               </div>
-              <ExternalLink size={14} className="text-stone-400 group-hover:text-blue-500 transition-colors shrink-0 mt-0.5" />
+              <ExternalLink size={14} className="text-[#98A0AD] group-hover:text-blue-500 transition-colors shrink-0 mt-0.5" />
             </a>
           ))}
         </div>
@@ -279,9 +279,9 @@ export default function PeerReviewPage() {
 
       {/* Outreach Templates */}
       <div className="mb-8">
-        <h2 className="text-sm font-semibold text-stone-700 mb-3">Outreach Templates</h2>
-        <div className="bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
-          <div className="flex border-b border-stone-200">
+        <h2 className="text-sm font-semibold text-[#141821] mb-3">Outreach Templates</h2>
+        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+          <div className="flex border-b border-[#E8EAEE]">
             {([
               { key: 'outreach', label: 'Initial Outreach' },
               { key: 'followup', label: '2-Week Follow-Up' },
@@ -291,7 +291,7 @@ export default function PeerReviewPage() {
                 key={tab.key}
                 onClick={() => setActiveTemplate(tab.key)}
                 className={`px-5 py-3 text-xs font-medium transition-colors ${
-                  activeTemplate === tab.key ? 'text-blue-500 border-b-2 border-blue-500' : 'text-stone-500 hover:text-stone-700'
+                  activeTemplate === tab.key ? 'text-blue-500 border-b-2 border-blue-500' : 'text-[#666D7A] hover:text-[#141821]'
                 }`}
               >
                 {tab.label}
@@ -299,13 +299,13 @@ export default function PeerReviewPage() {
             ))}
           </div>
           <div className="p-4">
-            <pre className="text-xs text-stone-600 whitespace-pre-wrap leading-relaxed font-sans">
+            <pre className="text-[12.5px] text-[#666D7A] whitespace-pre-wrap leading-relaxed font-sans">
               {activeTemplate === 'outreach' ? OUTREACH_TEMPLATE : activeTemplate === 'followup' ? FOLLOWUP_TEMPLATE : CALL_AGENDA}
             </pre>
             {activeTemplate !== 'agenda' && (
               <button
                 onClick={() => copy(activeTemplate === 'outreach' ? OUTREACH_TEMPLATE : FOLLOWUP_TEMPLATE, activeTemplate)}
-                className="mt-4 px-4 py-2 text-xs font-medium rounded-lg bg-stone-200 text-stone-700 hover:bg-stone-300 transition-colors"
+                className="mt-4 px-4 py-2 text-[12.5px] font-medium rounded-lg bg-[#EFF1F4] text-[#141821] hover:bg-stone-300 transition-colors"
               >
                 {copiedKey === activeTemplate ? 'Copied' : 'Copy to clipboard'}
               </button>
@@ -317,10 +317,10 @@ export default function PeerReviewPage() {
       {/* Reviewer Tracker */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-semibold text-stone-700">Reviewer Tracker</h2>
+          <h2 className="text-sm font-semibold text-[#141821]">Reviewer Tracker</h2>
           <button
             onClick={addReviewer}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-blue-50 text-blue-500 border border-blue-500/20 rounded-lg hover:bg-blue-100 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-[12.5px] font-medium bg-blue-50 text-blue-500 border border-blue-500/20 rounded-lg hover:bg-blue-100 transition-colors"
           >
             <Plus size={13} />
             Add Reviewer
@@ -328,20 +328,20 @@ export default function PeerReviewPage() {
         </div>
 
         {reviewers.length === 0 ? (
-          <div className="bg-stone-100 border border-stone-200 rounded-xl p-10 text-center">
-            <p className="text-sm text-stone-500">No reviewers added yet.</p>
-            <p className="text-xs text-stone-400 mt-1">Click "Add Reviewer" to start tracking your outreach.</p>
+          <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-10 text-center">
+            <p className="text-sm text-[#666D7A]">No reviewers added yet.</p>
+            <p className="text-[12.5px] text-[#98A0AD] mt-1">Click "Add Reviewer" to start tracking your outreach.</p>
           </div>
         ) : (
           <div className="space-y-2">
             {reviewers.map(reviewer => (
-              <div key={reviewer.id} className="bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
+              <div key={reviewer.id} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
 
                 {/* Row */}
                 <div className="flex items-center gap-4 px-4 py-3">
                   <button
                     onClick={() => setExpandedId(expandedId === reviewer.id ? null : reviewer.id)}
-                    className="text-stone-400 hover:text-stone-600 transition-colors shrink-0"
+                    className="text-[#98A0AD] hover:text-[#666D7A] transition-colors shrink-0"
                   >
                     {expandedId === reviewer.id ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
                   </button>
@@ -350,21 +350,21 @@ export default function PeerReviewPage() {
                     value={reviewer.name}
                     onChange={e => updateReviewer(reviewer.id, 'name', e.target.value)}
                     placeholder="Full name"
-                    className="flex-1 bg-transparent text-sm text-[#1A1A1A] placeholder-stone-400 outline-none"
+                    className="flex-1 bg-transparent text-sm text-[#141821] placeholder-stone-400 outline-none"
                   />
 
                   <input
                     value={reviewer.field}
                     onChange={e => updateReviewer(reviewer.id, 'field', e.target.value)}
                     placeholder="Field (e.g. GP, Physio, EP)"
-                    className="w-44 bg-transparent text-sm text-stone-600 placeholder-stone-400 outline-none"
+                    className="w-44 bg-transparent text-sm text-[#666D7A] placeholder-stone-400 outline-none"
                   />
 
                   <input
                     value={reviewer.contactDate}
                     onChange={e => updateReviewer(reviewer.id, 'contactDate', e.target.value)}
                     placeholder="Date contacted"
-                    className="w-32 bg-transparent text-sm text-stone-600 placeholder-stone-400 outline-none"
+                    className="w-32 bg-transparent text-sm text-[#666D7A] placeholder-stone-400 outline-none"
                   />
 
                   <select
@@ -374,13 +374,13 @@ export default function PeerReviewPage() {
                     style={{ background: 'transparent' }}
                   >
                     {STATUSES.map(s => (
-                      <option key={s} value={s} className="bg-stone-100 text-[#1A1A1A]">{s}</option>
+                      <option key={s} value={s} className="bg-[#F4F6F9] text-[#141821]">{s}</option>
                     ))}
                   </select>
 
                   <button
                     onClick={() => deleteReviewer(reviewer.id)}
-                    className="text-stone-700 hover:text-red-500 transition-colors shrink-0"
+                    className="text-[#141821] hover:text-red-500 transition-colors shrink-0"
                   >
                     <Trash2 size={14} />
                   </button>
@@ -388,47 +388,47 @@ export default function PeerReviewPage() {
 
                 {/* Expanded */}
                 {expandedId === reviewer.id && (
-                  <div className="px-4 pb-4 border-t border-stone-200 pt-4 space-y-4">
+                  <div className="px-4 pb-4 border-t border-[#E8EAEE] pt-4 space-y-4">
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="text-xs text-stone-500 mb-1.5 block">Organisation</label>
+                        <label className="text-[12.5px] text-[#666D7A] mb-1.5 block">Organisation</label>
                         <input
                           value={reviewer.organisation}
                           onChange={e => updateReviewer(reviewer.id, 'organisation', e.target.value)}
                           placeholder="Practice / hospital / gym"
-                          className="w-full bg-stone-200 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] placeholder-stone-400 outline-none"
+                          className="w-full bg-[#EFF1F4] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 outline-none"
                         />
                       </div>
                       <div>
-                        <label className="text-xs text-stone-500 mb-1.5 block">Feedback Summary</label>
+                        <label className="text-[12.5px] text-[#666D7A] mb-1.5 block">Feedback Summary</label>
                         <input
                           value={reviewer.feedback}
                           onChange={e => updateReviewer(reviewer.id, 'feedback', e.target.value)}
                           placeholder="Key feedback points"
-                          className="w-full bg-stone-200 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] placeholder-stone-400 outline-none"
+                          className="w-full bg-[#EFF1F4] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 outline-none"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="text-xs text-stone-500 mb-1.5 block">Call Notes</label>
+                      <label className="text-[12.5px] text-[#666D7A] mb-1.5 block">Call Notes</label>
                       <textarea
                         value={reviewer.notes}
                         onChange={e => updateReviewer(reviewer.id, 'notes', e.target.value)}
                         placeholder="Notes from your follow-up call..."
                         rows={3}
-                        className="w-full bg-stone-200 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] placeholder-stone-400 outline-none resize-none"
+                        className="w-full bg-[#EFF1F4] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 outline-none resize-none"
                       />
                     </div>
 
                     <div>
                       <div className="flex items-center justify-between mb-1.5">
-                        <label className="text-xs text-stone-500">Social DM</label>
+                        <label className="text-[12.5px] text-[#666D7A]">Social DM</label>
                         {reviewer.socialDm && (
                           <button
                             onClick={() => copy(reviewer.socialDm, `dm-${reviewer.id}`)}
-                            className="flex items-center gap-1 text-xs text-stone-500 hover:text-blue-500 transition-colors"
+                            className="flex items-center gap-1 text-[12.5px] text-[#666D7A] hover:text-blue-500 transition-colors"
                           >
                             {copiedKey === `dm-${reviewer.id}` ? <Check size={11} /> : <Copy size={11} />}
                             {copiedKey === `dm-${reviewer.id}` ? 'Copied' : 'Copy'}
@@ -440,9 +440,9 @@ export default function PeerReviewPage() {
                         onChange={e => updateReviewer(reviewer.id, 'socialDm', e.target.value)}
                         placeholder="Short DM for Facebook / Instagram outreach..."
                         rows={5}
-                        className="w-full bg-stone-200 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] placeholder-stone-400 outline-none resize-none"
+                        className="w-full bg-[#EFF1F4] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 outline-none resize-none"
                       />
-                      <p className="text-xs text-stone-400 mt-1">Short opener only. Goal is a reply, not a full read. Send full message once they respond.</p>
+                      <p className="text-[12.5px] text-[#98A0AD] mt-1">Short opener only. Goal is a reply, not a full read. Send full message once they respond.</p>
                     </div>
 
                   </div>

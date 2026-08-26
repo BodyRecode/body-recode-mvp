@@ -33,7 +33,7 @@ function ActionButton({
   const palette =
     tone === 'caution'
       ? 'border border-[#F0DCB4] text-[#B7791F] bg-[#FEF6E7] hover:border-[#D9B976] hover:text-[#8A5A14]'
-      : 'border border-[#E5E5E5] text-[#3A3A3A] bg-[#FFFFFF] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
+      : 'border border-[#E8EAEE] text-[#43474F] bg-[#FFFFFF] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
 
   return (
     <button
@@ -49,10 +49,9 @@ function ActionButton({
 
 function FieldRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-2 p-4 rounded-xl border border-[#E5E5E5] bg-[#FFFFFF]">
+    <div className="flex flex-col gap-2 p-4 rounded-xl border border-[#E8EAEE] bg-[#FFFFFF]">
       <span
-        className="text-[10px] text-[#6B6B6B] uppercase"
-        style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+        className="text-[10px] text-[#666D7A]"
       >
         {label}
       </span>
@@ -136,7 +135,7 @@ export default function AdminButtons() {
         <select
           value={reportBodyState}
           onChange={e => setReportBodyState(e.target.value)}
-          className="text-[12px] bg-[#FFFFFF] border border-[#E5E5E5] text-[#3A3A3A] rounded-lg px-2.5 py-2 focus:outline-none focus:border-[#1B6DFC]"
+          className="text-[12px] bg-[#FFFFFF] border border-[#E8EAEE] text-[#43474F] rounded-lg px-2.5 py-2 focus:outline-none focus:border-[#1B6DFC]"
         >
           <option>Depleted State</option>
           <option>Transitioning State</option>

@@ -10,7 +10,7 @@ const statusConfig: Record<string, { label: string; icon: typeof Clock; colour: 
   paid: { label: 'Paid', icon: CheckCircle2, colour: 'text-blue-500' },
   pending: { label: 'Pending', icon: Clock, colour: 'text-amber-700' },
   failed: { label: 'Failed', icon: XCircle, colour: 'text-red-700' },
-  refunded: { label: 'Refunded', icon: XCircle, colour: 'text-stone-500' },
+  refunded: { label: 'Refunded', icon: XCircle, colour: 'text-[#666D7A]' },
 }
 
 export default async function PaymentsPage() {
@@ -41,8 +41,8 @@ export default async function PaymentsPage() {
     <div className="max-w-3xl">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-semibold mb-1">Payments</h1>
-          <p className="text-stone-600 text-sm">Products, invoices, and payment history</p>
+          <h1 className="text-[22px] font-semibold tracking-[-0.025em] mb-1">Payments</h1>
+          <p className="text-[#666D7A] text-sm">Products, invoices, and payment history</p>
         </div>
         <div className="flex items-center gap-2">
           <RecordPaymentButton products={products || []} />
@@ -54,35 +54,35 @@ export default async function PaymentsPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-3 mb-8">
-        <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
-          <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Total Revenue</p>
-          <p className="text-3xl font-bold text-[#1A1A1A]">${totalRevenue.toLocaleString('en-AU')}</p>
+        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+          <p className="text-[12.5px] font-semibold text-[#666D7A] mb-2">Total Revenue</p>
+          <p className="text-[26px] font-semibold text-[#141821] tracking-[-0.035em]">${totalRevenue.toLocaleString('en-AU')}</p>
         </div>
-        <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
-          <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Pending</p>
-          <p className="text-3xl font-bold text-amber-700">${pendingRevenue.toLocaleString('en-AU')}</p>
+        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+          <p className="text-[12.5px] font-semibold text-[#666D7A] mb-2">Pending</p>
+          <p className="text-[26px] font-semibold tracking-[-0.035em] text-amber-700">${pendingRevenue.toLocaleString('en-AU')}</p>
         </div>
       </div>
 
       {/* Products */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-xs font-semibold text-stone-500 uppercase tracking-wider">Products</h2>
+          <h2 className="text-[12.5px] font-semibold text-[#666D7A]">Products</h2>
         </div>
         {products && products.length > 0 ? (
           <div className="space-y-2">
             {products.map((product) => (
               <div
                 key={product.id}
-                className="bg-stone-100 border border-stone-200 rounded-xl p-4 flex items-center justify-between"
+                className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 flex items-center justify-between"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-stone-200 rounded-lg">
-                    <Package size={14} className="text-stone-600" />
+                  <div className="p-2 bg-[#EFF1F4] rounded-lg">
+                    <Package size={14} className="text-[#666D7A]" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-[#1A1A1A]">{product.name}</p>
-                    <p className="text-xs text-stone-500">
+                    <p className="text-sm font-medium text-[#141821]">{product.name}</p>
+                    <p className="text-[12.5px] text-[#666D7A]">
                       {product.type === 'subscription'
                         ? `${product.billing_interval} subscription`
                         : 'One-time payment'}
@@ -91,9 +91,9 @@ export default async function PaymentsPage() {
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <p className="text-sm font-semibold text-[#1A1A1A]">${product.price.toLocaleString('en-AU')}</p>
+                    <p className="text-sm font-semibold text-[#141821]">${product.price.toLocaleString('en-AU')}</p>
                     {product.type === 'subscription' && (
-                      <p className="text-xs text-stone-500">/ {product.billing_interval?.replace('ly', '')}</p>
+                      <p className="text-[12.5px] text-[#666D7A]">/ {product.billing_interval?.replace('ly', '')}</p>
                     )}
                   </div>
                   <GetPaymentLinkButton
@@ -105,17 +105,17 @@ export default async function PaymentsPage() {
             ))}
           </div>
         ) : (
-          <div className="bg-stone-100 border border-dashed border-stone-200 rounded-xl p-8 text-center">
-            <Package size={20} className="text-stone-400 mx-auto mb-2" />
-            <p className="text-stone-500 text-sm">No products yet</p>
-            <p className="text-stone-400 text-xs mt-1">Add your coaching products above</p>
+          <div className="bg-[#F4F6F9] border border-dashed border-[#E8EAEE] rounded-xl p-8 text-center">
+            <Package size={20} className="text-[#98A0AD] mx-auto mb-2" />
+            <p className="text-[#666D7A] text-sm">No products yet</p>
+            <p className="text-[#98A0AD] text-[12.5px] mt-1">Add your coaching products above</p>
           </div>
         )}
       </div>
 
       {/* Payment history */}
       <div>
-        <h2 className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Payment History</h2>
+        <h2 className="text-[12.5px] font-semibold text-[#666D7A] mb-3">Payment History</h2>
         {payments && payments.length > 0 ? (
           <div className="space-y-2">
             {payments.map((payment) => {
@@ -137,27 +137,27 @@ export default async function PaymentsPage() {
               return (
                 <div
                   key={payment.id}
-                  className="bg-stone-100 border border-stone-200 rounded-xl p-4 flex items-center gap-4"
+                  className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 flex items-center gap-4"
                 >
                   <div className="flex-1 min-w-0">
                     {contactHref ? (
                       <Link
                         href={contactHref}
-                        className="text-sm font-medium text-[#1A1A1A] hover:text-blue-500 transition-colors truncate block"
+                        className="text-sm font-medium text-[#141821] hover:text-blue-500 transition-colors truncate block"
                       >
                         {contactName}
                       </Link>
                     ) : (
-                      <p className="text-sm font-medium text-[#1A1A1A] truncate">{contactName}</p>
+                      <p className="text-sm font-medium text-[#141821] truncate">{contactName}</p>
                     )}
-                    <p className="text-xs text-stone-500 mt-0.5">{productName}</p>
+                    <p className="text-[12.5px] text-[#666D7A] mt-0.5">{productName}</p>
                   </div>
 
                   <div className="text-right shrink-0">
-                    <p className="text-sm font-semibold text-[#1A1A1A]">
+                    <p className="text-sm font-semibold text-[#141821]">
                       ${payment.amount.toLocaleString('en-AU')}
                     </p>
-                    <p className="text-xs text-stone-400">
+                    <p className="text-[12.5px] text-[#98A0AD]">
                       {new Date(payment.created_at).toLocaleDateString('en-AU', {
                         day: 'numeric',
                         month: 'short',
@@ -175,9 +175,9 @@ export default async function PaymentsPage() {
             })}
           </div>
         ) : (
-          <div className="bg-stone-100 border border-dashed border-stone-200 rounded-xl p-8 text-center">
-            <CreditCard size={20} className="text-stone-400 mx-auto mb-2" />
-            <p className="text-stone-500 text-sm">No payments recorded yet</p>
+          <div className="bg-[#F4F6F9] border border-dashed border-[#E8EAEE] rounded-xl p-8 text-center">
+            <CreditCard size={20} className="text-[#98A0AD] mx-auto mb-2" />
+            <p className="text-[#666D7A] text-sm">No payments recorded yet</p>
           </div>
         )}
       </div>

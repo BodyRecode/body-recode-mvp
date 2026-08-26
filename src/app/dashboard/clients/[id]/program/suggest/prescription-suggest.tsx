@@ -81,7 +81,7 @@ const goalColour: Record<string, string> = {
   capacity: 'text-blue-500 border-blue-300 bg-blue-50',
 }
 
-const inputCls = 'bg-stone-200 border border-stone-300 text-stone-900 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#1B6DFC] focus:border-transparent'
+const inputCls = 'bg-[#EFF1F4] border border-[#E8EAEE] text-[#141821] rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#1B6DFC] focus:border-transparent'
 
 function parseReason(text: string): { intro: string | null; points: string[] } {
   if (/\(\d+\)/.test(text)) {
@@ -100,12 +100,12 @@ function ReasonText({ text }: { text: string }) {
   const { intro, points } = parseReason(text)
   return (
     <div className="space-y-1.5 mt-2">
-      {intro && <p className="text-xs text-stone-700 leading-relaxed">{intro}</p>}
+      {intro && <p className="text-[12.5px] text-[#141821] leading-relaxed">{intro}</p>}
       {points.map((point, i) => (
         <div key={i} className={`flex items-start gap-2 ${points.length > 1 ? '' : ''}`}>
           {points.length > 1 && <span className="text-[#1B6DFC] shrink-0 mt-0.5 text-[10px]">•</span>}
-          {points.length === 1 && <span className="text-[#1B6DFC] text-xs mt-0.5 shrink-0">→</span>}
-          <p className="text-xs text-stone-600 leading-relaxed">{point}</p>
+          {points.length === 1 && <span className="text-[#1B6DFC] text-[12.5px] mt-0.5 shrink-0">→</span>}
+          <p className="text-[12.5px] text-[#666D7A] leading-relaxed">{point}</p>
         </div>
       ))}
     </div>
@@ -127,12 +127,12 @@ function ReasonCard({
 }) {
   const [editing, setEditing] = useState(false)
   return (
-    <div className="bg-stone-100 border border-stone-200 rounded-xl p-4">
+    <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
       <div className="flex items-start justify-between mb-2">
-        <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">{label}</p>
+        <p className="text-[10px] font-medium text-[#666D7A]">{label}</p>
         <button
           onClick={() => setEditing(e => !e)}
-          className="text-[10px] text-stone-400 hover:text-[#1B6DFC] transition-colors"
+          className="text-[10px] text-[#98A0AD] hover:text-[#1B6DFC] transition-colors"
         >
           {editing ? 'Done' : 'Edit'}
         </button>
@@ -140,7 +140,7 @@ function ReasonCard({
       {editing ? (
         <div className="mb-2">{children}</div>
       ) : (
-        <p className={`text-sm font-semibold mb-2 px-2.5 py-1 rounded-full border inline-block capitalize ${colour || 'text-stone-800 border-stone-300 bg-stone-200'}`}>
+        <p className={`text-sm font-semibold mb-2 px-2.5 py-1 rounded-full border inline-block capitalize ${colour || 'text-[#141821] border-[#E8EAEE] bg-[#EFF1F4]'}`}>
           {value}
         </p>
       )}
@@ -308,29 +308,29 @@ export default function PrescriptionSuggest({
       />
       {/* Header */}
       <div className="mb-8">
-        <div className="flex items-center gap-2 text-stone-500 text-sm mb-3">
-          <Link href={`/dashboard/clients/${clientId}`} className="hover:text-stone-700 transition-colors">{clientName}</Link>
+        <div className="flex items-center gap-2 text-[#666D7A] text-sm mb-3">
+          <Link href={`/dashboard/clients/${clientId}`} className="hover:text-[#141821] transition-colors">{clientName}</Link>
           <span>/</span>
-          <Link href={`/dashboard/clients/${clientId}/program`} className="hover:text-stone-700 transition-colors">Program</Link>
+          <Link href={`/dashboard/clients/${clientId}/program`} className="hover:text-[#141821] transition-colors">Program</Link>
           <span>/</span>
-          <span className="text-stone-700">Prescription Suggestion</span>
+          <span className="text-[#141821]">Prescription Suggestion</span>
         </div>
-        <h1 className="text-2xl font-bold text-[#1A1A1A]">Prescription Suggestion</h1>
-        <p className="text-sm text-stone-600 mt-1">
+        <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">Prescription Suggestion</h1>
+        <p className="text-sm text-[#666D7A] mt-1">
           Generated from CFFS, intake, and training history. Review the reasoning, edit if needed, then approve to generate the program.
         </p>
       </div>
 
       {/* Phase 3 — Active recovery state notice */}
       {recoveryNotice && (
-        <div className="mb-8 rounded-2xl border border-amber-300 bg-gradient-to-br from-amber-500/15 to-amber-500/5 px-5 py-4">
-          <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-amber-700 font-semibold mb-2">
+        <div className="mb-8 rounded-xl border border-amber-300 bg-gradient-to-br from-amber-500/15 to-amber-500/5 px-5 py-4">
+          <div className="flex items-center gap-2 text-[10px] text-amber-700 font-semibold mb-2">
             <AlertTriangle size={13} strokeWidth={2.5} className="shrink-0" /> Active recovery state · {recoveryNotice.playbookSource} · Tier {recoveryNotice.tier} · {recoveryNotice.enforcementMode === 'hard' ? 'HARD GATE' : 'SOFT GATE'}
           </div>
-          <h2 className="text-base font-bold text-[#1A1A1A] mb-1">{recoveryNotice.playbookName}</h2>
-          <p className="text-xs text-stone-700 mb-3">{recoveryNotice.purpose}</p>
-          <p className="text-xs text-stone-600 mb-3">Day {recoveryNotice.daysActive} of state. Constraints that will be auto-applied to this generation:</p>
-          <ul className="text-xs text-stone-700 space-y-1 mb-4 list-disc list-inside">
+          <h2 className="text-base font-bold text-[#141821] mb-1">{recoveryNotice.playbookName}</h2>
+          <p className="text-[12.5px] text-[#141821] mb-3">{recoveryNotice.purpose}</p>
+          <p className="text-[12.5px] text-[#666D7A] mb-3">Day {recoveryNotice.daysActive} of state. Constraints that will be auto-applied to this generation:</p>
+          <ul className="text-[12.5px] text-[#141821] space-y-1 mb-4 list-disc list-inside">
             {recoveryNotice.constraintsSummary.loadReductionPct && (
               <li>Load reduction <strong>{recoveryNotice.constraintsSummary.loadReductionPct[0]}–{recoveryNotice.constraintsSummary.loadReductionPct[1]}%</strong> (RPE drops 1–2 points across exercises)</li>
             )}
@@ -346,7 +346,7 @@ export default function PrescriptionSuggest({
           </ul>
 
           <div className="flex flex-col gap-2">
-            <label className="flex items-start gap-2 text-xs text-stone-700 cursor-pointer">
+            <label className="flex items-start gap-2 text-[12.5px] text-[#141821] cursor-pointer">
               <input
                 type="radio"
                 name="recovery_mode"
@@ -356,10 +356,10 @@ export default function PrescriptionSuggest({
               />
               <span>
                 <strong className="text-blue-500">Apply constraints (recommended)</strong>
-                <span className="block text-stone-600 mt-0.5">Generate the program with the recovery clamp applied. Doctrinally correct path.</span>
+                <span className="block text-[#666D7A] mt-0.5">Generate the program with the recovery clamp applied. Doctrinally correct path.</span>
               </span>
             </label>
-            <label className="flex items-start gap-2 text-xs text-stone-700 cursor-pointer">
+            <label className="flex items-start gap-2 text-[12.5px] text-[#141821] cursor-pointer">
               <input
                 type="radio"
                 name="recovery_mode"
@@ -369,7 +369,7 @@ export default function PrescriptionSuggest({
               />
               <span>
                 <strong className="text-amber-700">Override constraints (documented)</strong>
-                <span className="block text-stone-600 mt-0.5">Skip the recovery clamp. Requires a written reason. Logged to recovery_adjustments audit trail.</span>
+                <span className="block text-[#666D7A] mt-0.5">Skip the recovery clamp. Requires a written reason. Logged to recovery_adjustments audit trail.</span>
               </span>
             </label>
             {overrideMode === 'override' && (
@@ -378,7 +378,7 @@ export default function PrescriptionSuggest({
                 onChange={e => setOverrideReason(e.target.value)}
                 placeholder="Why is the recovery clamp being skipped? (audit trail will record this)"
                 rows={3}
-                className="mt-1 w-full rounded-lg bg-stone-100 border border-stone-300 text-stone-800 text-xs px-3 py-2 focus:outline-none focus:border-amber-500"
+                className="mt-1 w-full rounded-lg bg-[#F4F6F9] border border-[#E8EAEE] text-[#141821] text-[12.5px] px-3 py-2 focus:outline-none focus:border-amber-500"
               />
             )}
           </div>
@@ -388,10 +388,10 @@ export default function PrescriptionSuggest({
       {/* Plan block context */}
       {planBlock && (
         <div className="mb-6 bg-blue-50 border border-blue-200 rounded-xl p-4">
-          <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-wider mb-1">From Macro Plan</p>
-          <p className="text-sm text-stone-800">{planBlock.training_plans?.plan_name}</p>
+          <p className="text-[12.5px] font-medium text-[#1B6DFC] mb-1">From Macro Plan</p>
+          <p className="text-sm text-[#141821]">{planBlock.training_plans?.plan_name}</p>
           {planBlock.training_plans?.macro_objective && (
-            <p className="text-xs text-stone-500 mt-0.5">{planBlock.training_plans.macro_objective}</p>
+            <p className="text-[12.5px] text-[#666D7A] mt-0.5">{planBlock.training_plans.macro_objective}</p>
           )}
         </div>
       )}
@@ -415,7 +415,7 @@ export default function PrescriptionSuggest({
           <p className="text-sm text-red-700 leading-relaxed">{error}</p>
           <Link
             href={`/dashboard/clients/${clientId}/program/generate${planBlockId ? `?plan_block_id=${planBlockId}` : ''}`}
-            className="text-xs text-stone-600 hover:text-stone-800 mt-2 block"
+            className="text-[12.5px] text-[#666D7A] hover:text-[#141821] mt-2 block"
           >
             Fill in manually instead →
           </Link>
@@ -428,23 +428,23 @@ export default function PrescriptionSuggest({
 
           <div className="flex-1 min-w-0 space-y-4">
             {/* Overall rationale */}
-            <div id="rationale" className="scroll-mt-8 bg-stone-100 border border-blue-200 rounded-xl p-5">
-              <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-3">Prescription Rationale</p>
+            <div id="rationale" className="scroll-mt-8 bg-[#F4F6F9] border border-blue-200 rounded-xl p-5">
+              <p className="text-[10px] font-medium text-[#1B6DFC] mb-3">Prescription Rationale</p>
               {(() => {
                 const { intro, points } = parseReason(suggestion.overall_rationale)
                 return (
                   <div className="space-y-2">
-                    {intro && <p className="text-sm text-stone-800 leading-relaxed">{intro}</p>}
+                    {intro && <p className="text-sm text-[#141821] leading-relaxed">{intro}</p>}
                     {points.length > 1 ? (
                       <div className="space-y-2 mt-1">
                         {points.map((point, i) => (
                           <div key={i} className="flex items-start gap-2.5 border-l-2 border-blue-200 pl-3">
-                            <p className="text-sm text-stone-700 leading-relaxed">{point}</p>
+                            <p className="text-sm text-[#141821] leading-relaxed">{point}</p>
                           </div>
                         ))}
                       </div>
                     ) : (
-                      <p className="text-sm text-stone-800 leading-relaxed">{points[0]}</p>
+                      <p className="text-sm text-[#141821] leading-relaxed">{points[0]}</p>
                     )}
                   </div>
                 )
@@ -467,7 +467,7 @@ export default function PrescriptionSuggest({
                 <div className="grid grid-cols-2 gap-1.5">
                   {(['accumulation', 'intensification', 'realization', 'restoration'] as const).map(p => (
                     <button key={p} type="button" onClick={() => setForm(prev => ({ ...prev, progression_phase: p }))}
-                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.progression_phase === p ? 'bg-[#1B6DFC] text-white border-[#1B6DFC]' : 'bg-stone-200 text-stone-700 border-stone-300'}`}>
+                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.progression_phase === p ? 'bg-[#1B6DFC] text-white border-[#1B6DFC]' : 'bg-[#EFF1F4] text-[#141821] border-[#E8EAEE]'}`}>
                       {p}
                     </button>
                   ))}
@@ -481,7 +481,7 @@ export default function PrescriptionSuggest({
                 <div className="grid grid-cols-3 gap-1.5">
                   {(['strength', 'hypertrophy', 'capacity'] as const).map(g => (
                     <button key={g} type="button" onClick={() => setForm(prev => ({ ...prev, training_goal: g }))}
-                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.training_goal === g ? 'bg-[#1B6DFC] text-white border-[#1B6DFC]' : 'bg-stone-200 text-stone-700 border-stone-300'}`}>
+                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.training_goal === g ? 'bg-[#1B6DFC] text-white border-[#1B6DFC]' : 'bg-[#EFF1F4] text-[#141821] border-[#E8EAEE]'}`}>
                       {g}
                     </button>
                   ))}
@@ -495,7 +495,7 @@ export default function PrescriptionSuggest({
                 <input type="range" min={2} max={6} value={form.training_frequency}
                   onChange={e => setForm(p => ({ ...p, training_frequency: parseInt(e.target.value) }))}
                   className="w-full accent-[#1B6DFC]" />
-                <div className="flex justify-between text-xs text-stone-400 mt-1">
+                <div className="flex justify-between text-[12.5px] text-[#98A0AD] mt-1">
                   <span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
                 </div>
               </ReasonCard>
@@ -507,7 +507,7 @@ export default function PrescriptionSuggest({
                 <div className="grid grid-cols-3 gap-1.5">
                   {(['beginner', 'intermediate', 'advanced'] as const).map(a => (
                     <button key={a} type="button" onClick={() => setForm(prev => ({ ...prev, training_age: a }))}
-                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.training_age === a ? 'bg-[#1B6DFC] text-white border-[#1B6DFC]' : 'bg-stone-200 text-stone-700 border-stone-300'}`}>
+                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.training_age === a ? 'bg-[#1B6DFC] text-white border-[#1B6DFC]' : 'bg-[#EFF1F4] text-[#141821] border-[#E8EAEE]'}`}>
                       {a}
                     </button>
                   ))}
@@ -521,7 +521,7 @@ export default function PrescriptionSuggest({
                 <div className="grid grid-cols-3 gap-1.5">
                   {(['limited', 'developing', 'proficient'] as const).map(c => (
                     <button key={c} type="button" onClick={() => setForm(prev => ({ ...prev, movement_competency: c }))}
-                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.movement_competency === c ? 'bg-[#1B6DFC] text-white border-[#1B6DFC]' : 'bg-stone-200 text-stone-700 border-stone-300'}`}>
+                      className={`py-2 rounded-md text-xs font-medium border transition-colors capitalize ${form.movement_competency === c ? 'bg-[#1B6DFC] text-white border-[#1B6DFC]' : 'bg-[#EFF1F4] text-[#141821] border-[#E8EAEE]'}`}>
                       {c}
                     </button>
                   ))}
@@ -535,7 +535,7 @@ export default function PrescriptionSuggest({
                 <div className="grid grid-cols-3 gap-1.5">
                   {([4, 6, 8] as const).map(w => (
                     <button key={w} type="button" onClick={() => setForm(prev => ({ ...prev, week_duration: w }))}
-                      className={`py-2 rounded-md text-xs font-medium border transition-colors ${form.week_duration === w ? 'bg-[#1B6DFC] text-white border-[#1B6DFC]' : 'bg-stone-200 text-stone-700 border-stone-300'}`}>
+                      className={`py-2 rounded-md text-xs font-medium border transition-colors ${form.week_duration === w ? 'bg-[#1B6DFC] text-white border-[#1B6DFC]' : 'bg-[#EFF1F4] text-[#141821] border-[#E8EAEE]'}`}>
                       {w} weeks
                     </button>
                   ))}
@@ -544,14 +544,14 @@ export default function PrescriptionSuggest({
             </div>
 
             {/* Equipment Access */}
-            <div id="equipment" className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl p-4">
-              <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-3">Equipment Access</p>
+            <div id="equipment" className="scroll-mt-8 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
+              <p className="text-[10px] font-medium text-[#666D7A] mb-3">Equipment Access</p>
               <div className="grid grid-cols-2 gap-2">
                 {EQUIPMENT_OPTIONS.map(opt => (
                   <label key={opt.value} className="flex items-center gap-2.5 cursor-pointer">
                     <input type="checkbox" checked={form.equipment_access.includes(opt.value)} onChange={() => toggleEquipment(opt.value)}
-                      className="rounded border-stone-400 bg-stone-200 accent-[#1B6DFC]" />
-                    <span className={`text-sm transition-colors ${form.equipment_access.includes(opt.value) ? 'text-stone-800' : 'text-stone-500'}`}>
+                      className="rounded border-[#CFD4DC] bg-[#EFF1F4] accent-[#1B6DFC]" />
+                    <span className={`text-sm transition-colors ${form.equipment_access.includes(opt.value) ? 'text-[#141821]' : 'text-[#666D7A]'}`}>
                       {opt.label}
                     </span>
                   </label>
@@ -567,9 +567,9 @@ export default function PrescriptionSuggest({
               {generating ? 'Generating program… this may take 30–60s' : 'Approve & Generate Program'}
             </button>
 
-            <p className="text-xs text-stone-400 text-center">
+            <p className="text-[12.5px] text-[#98A0AD] text-center">
               Or{' '}
-              <Link href={`/dashboard/clients/${clientId}/program/generate${planBlockId ? `?plan_block_id=${planBlockId}` : ''}`} className="hover:text-stone-600 underline">
+              <Link href={`/dashboard/clients/${clientId}/program/generate${planBlockId ? `?plan_block_id=${planBlockId}` : ''}`} className="hover:text-[#666D7A] underline">
                 fill in manually
               </Link>
             </p>

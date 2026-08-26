@@ -51,19 +51,19 @@ export default function FreezePanel({
 
   if (frozenAt) {
     return (
-      <div className="rounded-2xl border border-amber-300 bg-amber-50 p-5">
+      <div className="rounded-xl border border-amber-300 bg-amber-50 p-5">
         <p className="text-sm font-semibold text-amber-900">Engagement paused</p>
-        <p className="text-xs text-amber-800 mt-1">
+        <p className="text-[12.5px] text-amber-800 mt-1">
           Frozen on {new Date(frozenAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}
           {freezeNotes ? ` · ${freezeNotes}` : ''}
         </p>
-        <p className="text-xs text-amber-800 mt-2">
+        <p className="text-[12.5px] text-amber-800 mt-2">
           Portal locked, all automated contact stopped, Stripe subscription cancelled, email suppressed.
           Everything reversible with one click.
         </p>
-        {error && <p className="text-xs text-red-700 bg-red-50 border border-red-200 rounded-md px-3 py-2 mt-3">{error}</p>}
+        {error && <p className="text-[12.5px] text-red-700 bg-red-50 border border-red-200 rounded-md px-3 py-2 mt-3">{error}</p>}
         {steps && (
-          <ul className="text-xs space-y-1 mt-3">
+          <ul className="text-[12.5px] space-y-1 mt-3">
             {steps.map((s, i) => (
               <li key={i} className={s.done ? 'text-amber-800' : 'text-red-700'}>
                 {s.done ? '✓' : '!'} {s.step}{s.detail ? ` · ${s.detail}` : ''}
@@ -72,7 +72,7 @@ export default function FreezePanel({
           </ul>
         )}
         <div className="mt-3">
-          <button onClick={unfreeze} disabled={busy} className="px-4 py-2 rounded-lg text-xs font-bold bg-amber-600 text-white hover:bg-amber-700 disabled:opacity-40 transition-colors">
+          <button onClick={unfreeze} disabled={busy} className="px-4 py-2 rounded-lg text-[12.5px] font-medium bg-amber-600 text-white hover:bg-amber-700 disabled:opacity-40 transition-colors">
             {busy ? 'Unfreezing…' : 'Unfreeze'}
           </button>
         </div>
@@ -104,55 +104,55 @@ export default function FreezePanel({
   }
 
   return (
-    <div className="rounded-2xl border border-stone-200 bg-white p-5">
+    <div className="rounded-xl border border-[#E8EAEE] bg-white p-5">
       {!open ? (
         <div className="flex items-center justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold text-stone-800">Pause engagement</p>
-            <p className="text-xs text-stone-600 mt-1">
+            <p className="text-sm font-semibold text-[#141821]">Pause engagement</p>
+            <p className="text-[12.5px] text-[#666D7A] mt-1">
               Same lockout as offboarding, none of the finality. Their file stays intact. Reverse in one click.
             </p>
           </div>
-          <button onClick={() => setOpen(true)} className="flex-none px-4 py-2 rounded-lg text-xs font-bold bg-amber-100 text-amber-800 hover:bg-amber-200 transition-colors">
+          <button onClick={() => setOpen(true)} className="flex-none px-4 py-2 rounded-lg text-[12.5px] font-medium bg-amber-100 text-amber-800 hover:bg-amber-200 transition-colors">
             Freeze
           </button>
         </div>
       ) : (
         <div className="space-y-4">
-          <p className="text-sm font-semibold text-stone-800">Pause engagement with {firstName}</p>
+          <p className="text-sm font-semibold text-[#141821]">Pause engagement with {firstName}</p>
 
           <div>
-            <label className="block text-xs font-bold text-stone-600 uppercase tracking-wider mb-1.5">
-              Why the freeze <span className="font-normal normal-case text-stone-400">(optional)</span>
+            <label className="block text-[12.5px] font-medium text-[#666D7A] mb-1.5">
+              Why the freeze <span className="font-normal normal-case text-[#98A0AD]">(optional)</span>
             </label>
             <textarea
               value={notes}
               onChange={e => setNotes(e.target.value)}
               rows={2}
               placeholder="Saving up, on holiday, surgery recovery. A few words for future you."
-              className="w-full bg-stone-100 border border-stone-300 rounded-md px-3 py-2 text-sm"
+              className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-md px-3 py-2 text-sm"
             />
           </div>
 
-          <div className="rounded-lg bg-stone-50 border border-stone-200 p-3">
-            <p className="text-xs font-semibold text-stone-700 mb-1.5">This will:</p>
-            <ul className="text-xs text-stone-600 space-y-0.5 list-disc pl-4">
+          <div className="rounded-lg bg-[#FBFCFD] border border-[#E8EAEE] p-3">
+            <p className="text-[12.5px] font-semibold text-[#141821] mb-1.5">This will:</p>
+            <ul className="text-[12.5px] text-[#666D7A] space-y-0.5 list-disc pl-4">
               <li>Lock their portal (they see a friendly &quot;on pause&quot; page)</li>
               <li>Stop every automated email: check-ins, log nudges, block-end, reminders</li>
               <li>Cancel any active Stripe subscription (no more weekly charges)</li>
               <li>Suppress their email address</li>
             </ul>
-            <p className="text-xs text-stone-500 mt-2">
+            <p className="text-[12.5px] text-[#666D7A] mt-2">
               Their plans, readings, photos, messages and history are unchanged and still open to you.
               Unfreeze restores the portal and email; Stripe billing needs a fresh payment link when they return.
             </p>
           </div>
 
-          {error && <p className="text-xs text-red-700 bg-red-50 border border-red-200 rounded-md px-3 py-2">{error}</p>}
+          {error && <p className="text-[12.5px] text-red-700 bg-red-50 border border-red-200 rounded-md px-3 py-2">{error}</p>}
           {steps && (
-            <ul className="text-xs space-y-1">
+            <ul className="text-[12.5px] space-y-1">
               {steps.map((s, i) => (
-                <li key={i} className={s.done ? 'text-stone-600' : 'text-amber-700'}>
+                <li key={i} className={s.done ? 'text-[#666D7A]' : 'text-amber-700'}>
                   {s.done ? '✓' : '!'} {s.step}{s.detail ? ` · ${s.detail}` : ''}
                 </li>
               ))}
@@ -160,10 +160,10 @@ export default function FreezePanel({
           )}
 
           <div className="flex gap-2">
-            <button onClick={freeze} disabled={busy} className="px-4 py-2 rounded-lg text-xs font-bold bg-amber-600 text-white hover:bg-amber-700 disabled:opacity-40 transition-colors">
+            <button onClick={freeze} disabled={busy} className="px-4 py-2 rounded-lg text-[12.5px] font-medium bg-amber-600 text-white hover:bg-amber-700 disabled:opacity-40 transition-colors">
               {busy ? 'Freezing…' : 'Freeze'}
             </button>
-            <button onClick={() => { setOpen(false); setError(null) }} disabled={busy} className="px-4 py-2 rounded-lg text-xs font-bold bg-stone-100 text-stone-700 hover:bg-stone-200 transition-colors">
+            <button onClick={() => { setOpen(false); setError(null) }} disabled={busy} className="px-4 py-2 rounded-lg text-[12.5px] font-medium bg-[#F4F6F9] text-[#141821] hover:bg-[#EFF1F4] transition-colors">
               Cancel
             </button>
           </div>

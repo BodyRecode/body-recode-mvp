@@ -105,15 +105,15 @@ export default function PartnerRoomAdmin({ initialGuests }: { initialGuests: Gue
   }
 
   const inputCls =
-    'w-full text-[14px] px-3.5 py-2.5 rounded-lg bg-[#FFFFFF] border border-[#E5E5E5] text-[#1A1A1A] placeholder:text-[#B0B0B0] focus:outline-none focus:border-[#1B6DFC] transition-colors'
+    'w-full text-[14px] px-3.5 py-2.5 rounded-lg bg-[#FFFFFF] border border-[#E8EAEE] text-[#141821] placeholder:text-[#B0B0B0] focus:outline-none focus:border-[#1B6DFC] transition-colors'
 
   return (
     <div className="grid gap-8">
       {/* Add a guest */}
       <Card padding="lg" accent="blue">
         <p
-          className="text-[11px] font-bold uppercase mb-4"
-          style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em', color: '#1B6DFC' }}
+          className="text-[12px] font-medium mb-4"
+          style={{ color: '#1B6DFC' }}
         >
           New guest link
         </p>
@@ -156,7 +156,7 @@ export default function PartnerRoomAdmin({ initialGuests }: { initialGuests: Gue
             <Btn type="submit" variant="primary" icon={Plus} disabled={busy || !name.trim()}>
               {busy ? 'Creating…' : 'Create link'}
             </Btn>
-            <span className="text-[12px] text-[#999999]">
+            <span className="text-[12px] text-[#98A0AD]">
               We&rsquo;ll copy the link to your clipboard automatically.
             </span>
           </div>
@@ -167,8 +167,8 @@ export default function PartnerRoomAdmin({ initialGuests }: { initialGuests: Gue
       {/* Guest list */}
       <div>
         <p
-          className="text-[11px] font-bold uppercase mb-4"
-          style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em', color: '#6B6B6B' }}
+          className="text-[12px] font-medium mb-4"
+          style={{ color: '#6B6B6B' }}
         >
           Guests ({initialGuests.length})
         </p>
@@ -188,8 +188,8 @@ export default function PartnerRoomAdmin({ initialGuests }: { initialGuests: Gue
                 <div className="flex items-start justify-between gap-4 flex-wrap">
                   <div className="min-w-0">
                     <div className="flex items-center gap-2.5 flex-wrap">
-                      <p className="text-[15px] font-semibold text-[#1A1A1A]">{g.name}</p>
-                      {g.company && <span className="text-[13px] text-[#999999]">{g.company}</span>}
+                      <p className="text-[15px] font-semibold text-[#141821]">{g.name}</p>
+                      {g.company && <span className="text-[13px] text-[#98A0AD]">{g.company}</span>}
                       {g.revoked ? (
                         <Pill accent="red">Revoked</Pill>
                       ) : g.visit_count > 0 ? (
@@ -198,25 +198,25 @@ export default function PartnerRoomAdmin({ initialGuests }: { initialGuests: Gue
                         <Pill accent="neutral">Not opened</Pill>
                       )}
                     </div>
-                    {g.note && <p className="text-[12px] text-[#999999] mt-1.5 truncate">{g.note}</p>}
+                    {g.note && <p className="text-[12px] text-[#98A0AD] mt-1.5 truncate">{g.note}</p>}
 
                     <div className="flex items-center gap-4 mt-3 flex-wrap">
                       <span
-                        className="inline-flex items-center gap-1.5 text-[12px] text-[#6B6B6B]"
+                        className="inline-flex items-center gap-1.5 text-[12px] text-[#666D7A]"
                         style={{ fontVariantNumeric: 'tabular-nums' }}
                         title="Times opened"
                       >
-                        <Eye size={13} className="text-[#999999]" />
+                        <Eye size={13} className="text-[#98A0AD]" />
                         {g.visit_count} {g.visit_count === 1 ? 'view' : 'views'}
                       </span>
-                      <span className="text-[12px] text-[#999999]">Last: {relTime(g.last_seen_at)}</span>
-                      <span className="text-[12px] text-[#999999]">Added {formatDate(g.created_at)}</span>
+                      <span className="text-[12px] text-[#98A0AD]">Last: {relTime(g.last_seen_at)}</span>
+                      <span className="text-[12px] text-[#98A0AD]">Added {formatDate(g.created_at)}</span>
                     </div>
 
                     {/* The link */}
                     <div className="mt-3 flex items-center gap-2 flex-wrap">
                       <code
-                        className="text-[12px] text-[#4A4A4A] bg-[#F4F4F4] border border-[#E5E5E5] rounded-md px-2.5 py-1.5 max-w-full truncate"
+                        className="text-[12px] text-[#4A4A4A] bg-[#F4F6F9] border border-[#E8EAEE] rounded-md px-2.5 py-1.5 max-w-full truncate"
                         style={{ fontFamily: MONO_FONT }}
                         title={g.url}
                       >

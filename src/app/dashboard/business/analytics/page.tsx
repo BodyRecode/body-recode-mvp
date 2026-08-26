@@ -75,55 +75,55 @@ export default async function AnalyticsPage() {
   return (
     <div className="max-w-4xl">
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold mb-1">Analytics</h1>
-        <p className="text-stone-600 text-sm">Live view of your business performance</p>
+        <h1 className="text-[22px] font-semibold tracking-[-0.025em] mb-1">Analytics</h1>
+        <p className="text-[#666D7A] text-sm">Live view of your business performance</p>
       </div>
 
       {/* Top stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-        <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
+        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
           <div className="flex items-center gap-2 mb-3">
             <DollarSign size={14} className="text-blue-500" />
-            <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider">Total Revenue</p>
+            <p className="text-[12.5px] font-semibold text-[#666D7A]">Total Revenue</p>
           </div>
-          <p className="text-2xl font-bold text-[#1A1A1A]">${totalRevenue.toLocaleString('en-AU')}</p>
-          <p className="text-xs text-stone-500 mt-1">${revenueThisMonth.toLocaleString('en-AU')} this month</p>
+          <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">${totalRevenue.toLocaleString('en-AU')}</p>
+          <p className="text-[12.5px] text-[#666D7A] mt-1">${revenueThisMonth.toLocaleString('en-AU')} this month</p>
         </div>
 
-        <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
+        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
           <div className="flex items-center gap-2 mb-3">
             <Users size={14} className="text-blue-500" />
-            <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider">Total Leads</p>
+            <p className="text-[12.5px] font-semibold text-[#666D7A]">Total Leads</p>
           </div>
-          <p className="text-2xl font-bold text-[#1A1A1A]">{totalLeads}</p>
-          <p className="text-xs text-stone-500 mt-1">{leadsThisWeek} this week · {activeLeads} active</p>
+          <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">{totalLeads}</p>
+          <p className="text-[12.5px] text-[#666D7A] mt-1">{leadsThisWeek} this week · {activeLeads} active</p>
         </div>
 
-        <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
+        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
           <div className="flex items-center gap-2 mb-3">
             <TrendingUp size={14} className="text-blue-500" />
-            <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider">Conversion</p>
+            <p className="text-[12.5px] font-semibold text-[#666D7A]">Conversion</p>
           </div>
-          <p className="text-2xl font-bold text-[#1A1A1A]">{conversionRate}%</p>
-          <p className="text-xs text-stone-500 mt-1">{converted} of {totalLeads} converted</p>
+          <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">{conversionRate}%</p>
+          <p className="text-[12.5px] text-[#666D7A] mt-1">{converted} of {totalLeads} converted</p>
         </div>
 
-        <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
+        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
           <div className="flex items-center gap-2 mb-3">
             <CheckCircle2 size={14} className="text-blue-500" />
-            <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider">Show-up Rate</p>
+            <p className="text-[12.5px] font-semibold text-[#666D7A]">Show-up Rate</p>
           </div>
-          <p className="text-2xl font-bold text-[#1A1A1A]">{showUpRate}%</p>
-          <p className="text-xs text-stone-500 mt-1">{completedBookings} completed · {noShows} no show</p>
+          <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">{showUpRate}%</p>
+          <p className="text-[12.5px] text-[#666D7A] mt-1">{completedBookings} completed · {noShows} no show</p>
         </div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6 mb-6">
         {/* Pipeline funnel */}
-        <div className="bg-stone-100 border border-stone-200 rounded-xl p-6">
+        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-6">
           <div className="flex items-center gap-2 mb-5">
-            <BarChart2 size={14} className="text-stone-600" />
-            <h2 className="text-xs font-semibold text-stone-600 uppercase tracking-wider">Pipeline Breakdown</h2>
+            <BarChart2 size={14} className="text-[#666D7A]" />
+            <h2 className="text-[12.5px] font-semibold text-[#666D7A]">Pipeline Breakdown</h2>
           </div>
           <div className="space-y-3">
             {stageOrder.map(({ key, label }) => {
@@ -132,10 +132,10 @@ export default async function AnalyticsPage() {
               return (
                 <div key={key}>
                   <div className="flex items-center justify-between mb-1">
-                    <p className="text-xs text-stone-600">{label}</p>
-                    <p className="text-xs font-semibold text-[#1A1A1A]">{count}</p>
+                    <p className="text-[12.5px] text-[#666D7A]">{label}</p>
+                    <p className="text-[12.5px] font-semibold text-[#141821]">{count}</p>
                   </div>
-                  <div className="h-1.5 bg-stone-200 rounded-full overflow-hidden">
+                  <div className="h-1.5 bg-[#EFF1F4] rounded-full overflow-hidden">
                     <div
                       className="h-full bg-blue-500 rounded-full transition-all"
                       style={{ width: `${pct}%` }}
@@ -148,10 +148,10 @@ export default async function AnalyticsPage() {
         </div>
 
         {/* Lead sources */}
-        <div className="bg-stone-100 border border-stone-200 rounded-xl p-6">
+        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-6">
           <div className="flex items-center gap-2 mb-5">
-            <TrendingUp size={14} className="text-stone-600" />
-            <h2 className="text-xs font-semibold text-stone-600 uppercase tracking-wider">Lead Sources</h2>
+            <TrendingUp size={14} className="text-[#666D7A]" />
+            <h2 className="text-[12.5px] font-semibold text-[#666D7A]">Lead Sources</h2>
           </div>
           {topSources.length > 0 ? (
             <div className="space-y-3">
@@ -160,13 +160,13 @@ export default async function AnalyticsPage() {
                 return (
                   <div key={source}>
                     <div className="flex items-center justify-between mb-1">
-                      <p className="text-xs text-stone-600 capitalize">{source.replace(/_/g, ' ')}</p>
+                      <p className="text-[12.5px] text-[#666D7A] capitalize">{source.replace(/_/g, ' ')}</p>
                       <div className="flex items-center gap-2">
-                        <p className="text-xs text-stone-500">{pct}%</p>
-                        <p className="text-xs font-semibold text-[#1A1A1A]">{count}</p>
+                        <p className="text-[12.5px] text-[#666D7A]">{pct}%</p>
+                        <p className="text-[12.5px] font-semibold text-[#141821]">{count}</p>
                       </div>
                     </div>
-                    <div className="h-1.5 bg-stone-200 rounded-full overflow-hidden">
+                    <div className="h-1.5 bg-[#EFF1F4] rounded-full overflow-hidden">
                       <div
                         className="h-full bg-violet-500 rounded-full transition-all"
                         style={{ width: `${pct}%` }}
@@ -177,27 +177,27 @@ export default async function AnalyticsPage() {
               })}
             </div>
           ) : (
-            <p className="text-stone-500 text-sm">No lead data yet</p>
+            <p className="text-[#666D7A] text-sm">No lead data yet</p>
           )}
         </div>
       </div>
 
       {/* Bookings summary */}
-      <div className="bg-stone-100 border border-stone-200 rounded-xl p-6">
+      <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-6">
         <div className="flex items-center gap-2 mb-5">
-          <Calendar size={14} className="text-stone-600" />
-          <h2 className="text-xs font-semibold text-stone-600 uppercase tracking-wider">Bookings</h2>
+          <Calendar size={14} className="text-[#666D7A]" />
+          <h2 className="text-[12.5px] font-semibold text-[#666D7A]">Bookings</h2>
         </div>
         <div className="grid grid-cols-4 gap-4">
           {[
-            { label: 'Total', value: totalBookings, colour: 'text-[#1A1A1A]' },
+            { label: 'Total', value: totalBookings, colour: 'text-[#141821]' },
             { label: 'Completed', value: completedBookings, colour: 'text-blue-500' },
             { label: 'No Show', value: noShows, colour: 'text-red-700' },
-            { label: 'Show-up Rate', value: `${showUpRate}%`, colour: 'text-[#1A1A1A]' },
+            { label: 'Show-up Rate', value: `${showUpRate}%`, colour: 'text-[#141821]' },
           ].map(({ label, value, colour }) => (
             <div key={label} className="text-center">
               <p className={`text-2xl font-bold ${colour}`}>{value}</p>
-              <p className="text-xs text-stone-500 mt-1">{label}</p>
+              <p className="text-[12.5px] text-[#666D7A] mt-1">{label}</p>
             </div>
           ))}
         </div>

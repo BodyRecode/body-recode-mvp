@@ -56,19 +56,19 @@ export default async function SystemHealthPage({
       <div className="mb-6 flex flex-wrap gap-2">
         <Link
           href="/dashboard/system-health/nutrition-engine"
-          className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold border border-stone-300 text-stone-700 rounded-lg hover:border-stone-500 hover:text-stone-900 transition-colors"
+          className="inline-flex items-center gap-2 px-3 py-1.5 text-[12.5px] font-semibold border border-[#E8EAEE] text-[#141821] rounded-lg hover:border-[#CFD4DC] hover:text-[#141821] transition-colors"
         >
           Nutrition engine telemetry →
         </Link>
         <Link
           href="/dashboard/system-health/banned-terms-audit"
-          className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold border border-stone-300 text-stone-700 rounded-lg hover:border-stone-500 hover:text-stone-900 transition-colors"
+          className="inline-flex items-center gap-2 px-3 py-1.5 text-[12.5px] font-semibold border border-[#E8EAEE] text-[#141821] rounded-lg hover:border-[#CFD4DC] hover:text-[#141821] transition-colors"
         >
           Banned-terms audit →
         </Link>
         <Link
           href="/dashboard/system-health/rrs-suggestions"
-          className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold border border-stone-300 text-stone-700 rounded-lg hover:border-stone-500 hover:text-stone-900 transition-colors"
+          className="inline-flex items-center gap-2 px-3 py-1.5 text-[12.5px] font-semibold border border-[#E8EAEE] text-[#141821] rounded-lg hover:border-[#CFD4DC] hover:text-[#141821] transition-colors"
         >
           RRS suggestion acceptance →
         </Link>
@@ -88,8 +88,7 @@ export default async function SystemHealthPage({
           {/* Run list */}
           <div className="md:w-56 md:flex-shrink-0">
             <p
-              className="text-[10px] font-bold text-[#999999] uppercase mb-3"
-              style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+              className="text-[10px] font-medium text-[#98A0AD] mb-3"
             >
               Run history
             </p>
@@ -112,7 +111,7 @@ export default async function SystemHealthPage({
                     href={`/dashboard/system-health?run=${run.id}`}
                     className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg border transition-colors ${
                       isSelected
-                        ? 'bg-[#E5E5E5] border-[#D4D4D4]'
+                        ? 'bg-[#EFF1F4] border-[#CFD4DC]'
                         : 'border-transparent hover:bg-[#FFFFFF]'
                     }`}
                   >
@@ -121,8 +120,8 @@ export default async function SystemHealthPage({
                       style={{ background: tone.bar }}
                     />
                     <div className="min-w-0">
-                      <p className={`text-[12px] font-semibold ${isSelected ? 'text-[#1A1A1A]' : 'text-[#3A3A3A]'}`}>{label}</p>
-                      <p className="text-[10px] text-[#999999]" style={{ fontFamily: MONO_FONT }}>{time}</p>
+                      <p className={`text-[12px] font-semibold ${isSelected ? 'text-[#141821]' : 'text-[#43474F]'}`}>{label}</p>
+                      <p className="text-[10px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}>{time}</p>
                       {run.status !== 'ok' && (
                         <p className="text-[10px] font-medium mt-0.5" style={{ color: tone.text }}>
                           {run.status === 'fixed'
@@ -143,7 +142,7 @@ export default async function SystemHealthPage({
               <RunDetail run={selectedRun} />
             ) : (
               <Card>
-                <p className="text-[#999999] text-[13px] text-center py-6">Select a run to view details.</p>
+                <p className="text-[#98A0AD] text-[13px] text-center py-6">Select a run to view details.</p>
               </Card>
             )}
           </div>

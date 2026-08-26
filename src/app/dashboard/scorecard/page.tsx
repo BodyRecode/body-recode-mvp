@@ -92,7 +92,7 @@ export default async function ScorecardPage() {
         </div>
       </div>
 
-      <p className="text-[11px] text-[#999999] mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}>
+      <p className="text-[11px] text-[#98A0AD] mb-2">
         Updated {updated} · Targets in src/lib/scorecard.ts (TARGETS) — set each quarter
       </p>
     </div>
@@ -102,11 +102,11 @@ export default async function ScorecardPage() {
 /* ── Weekly review agenda (the in-app manual) ───────────────────────────── */
 function ReviewAgenda() {
   return (
-    <details className="group mb-8 rounded-2xl border border-[#E5E5E5] bg-[#F3F7FF] open:bg-[#F3F7FF]">
+    <details className="group mb-8 rounded-xl border border-[#E8EAEE] bg-[#F3F7FF] open:bg-[#F3F7FF]">
       <summary className="flex items-center justify-between gap-4 cursor-pointer list-none px-5 py-4 select-none">
         <span className="flex items-center gap-2.5 min-w-0">
           <span className="w-7 h-[3px] rounded-full shrink-0" style={{ background: '#1B6DFC' }} />
-          <span className="text-[11px] font-bold uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: '0.12em', color: '#1B6DFC' }}>
+          <span className="text-[12px] font-medium" style={{ color: '#1B6DFC' }}>
             Run the weekly review · 15 min, every Monday
           </span>
         </span>
@@ -121,12 +121,12 @@ function ReviewAgenda() {
             'Leave the greens alone — don’t optimise what’s working. One red week is noise; act on a 3-week downward trend. Pivot the plan monthly, never on a single week.',
           ].map((step, i) => (
             <li key={i} className="flex gap-3">
-              <span className="shrink-0 w-5 h-5 rounded-full bg-[#1B6DFC] text-white text-[11px] font-bold flex items-center justify-center mt-0.5" style={{ fontVariantNumeric: 'tabular-nums' }}>{i + 1}</span>
-              <span className="text-[13px] text-[#3A3A3A] leading-relaxed">{step}</span>
+              <span className="shrink-0 w-5 h-5 rounded-full bg-[#1B6DFC] text-white text-[11px] font-medium flex items-center justify-center mt-0.5" style={{ fontVariantNumeric: 'tabular-nums' }}>{i + 1}</span>
+              <span className="text-[13px] text-[#43474F] leading-relaxed">{step}</span>
             </li>
           ))}
         </ol>
-        <p className="text-[11px] text-[#6B6B6B] mt-4 pt-3 border-t border-[#D9E4FB]">
+        <p className="text-[11px] text-[#666D7A] mt-4 pt-3 border-t border-[#D9E4FB]">
           The Monday 7am <strong>Weekly Pulse</strong> email carries this week already read (what changed, what flipped red). Targets are reviewed quarterly in <code>src/lib/scorecard.ts</code>.
         </p>
       </div>
@@ -140,21 +140,21 @@ function TrendTable({ weeks, rows }: { weeks: WeekRange[]; rows: FlowResult[] })
     <div className="overflow-x-auto">
       <table className="w-full border-collapse text-[13px]">
         <thead>
-          <tr className="border-b border-[#E5E5E5]">
-            <th className="text-left font-semibold text-[#1A1A1A] px-5 py-3 whitespace-nowrap">Metric</th>
+          <tr className="border-b border-[#E8EAEE]">
+            <th className="text-left font-semibold text-[#141821] px-5 py-3 whitespace-nowrap">Metric</th>
             {weeks.map((w, i) => (
               <th
                 key={i}
-                className={`text-right font-medium px-3 py-3 whitespace-nowrap ${w.isCurrent ? 'text-[#1B6DFC]' : 'text-[#6B6B6B]'}`}
+                className={`text-right font-medium px-3 py-3 whitespace-nowrap ${w.isCurrent ? 'text-[#1B6DFC]' : 'text-[#666D7A]'}`}
                 style={{ fontFamily: MONO_FONT, fontSize: 11, letterSpacing: '0.04em' }}
               >
                 {w.label}
               </th>
             ))}
-            <th className="text-right font-semibold text-[#6B6B6B] px-3 py-3 whitespace-nowrap" style={{ fontFamily: MONO_FONT, fontSize: 11, letterSpacing: '0.04em' }}>
+            <th className="text-right font-semibold text-[#666D7A] px-3 py-3 whitespace-nowrap" style={{ fontFamily: MONO_FONT, fontSize: 11, letterSpacing: '0.04em' }}>
               Target
             </th>
-            <th className="text-right font-semibold text-[#1A1A1A] px-5 py-3 whitespace-nowrap">Status</th>
+            <th className="text-right font-semibold text-[#141821] px-5 py-3 whitespace-nowrap">Status</th>
           </tr>
         </thead>
         <tbody>
@@ -163,8 +163,8 @@ function TrendTable({ weeks, rows }: { weeks: WeekRange[]; rows: FlowResult[] })
             return (
               <tr key={m.key} className="border-b border-[#F0F0F0] last:border-0 hover:bg-[#FAFBFD] transition-colors">
                 <td className="px-5 py-3">
-                  <div className="font-medium text-[#1A1A1A]">{m.label}</div>
-                  <div className="text-[11px] text-[#999999]">{m.hint}</div>
+                  <div className="font-medium text-[#141821]">{m.label}</div>
+                  <div className="text-[11px] text-[#98A0AD]">{m.hint}</div>
                 </td>
                 {m.values.map((v, i) => {
                   const isLast = i === lastIdx
@@ -184,7 +184,7 @@ function TrendTable({ weeks, rows }: { weeks: WeekRange[]; rows: FlowResult[] })
                     </td>
                   )
                 })}
-                <td className="text-right px-3 py-3 tabular-nums text-[#6B6B6B]" style={{ fontFamily: MONO_FONT }}>
+                <td className="text-right px-3 py-3 tabular-nums text-[#666D7A]" style={{ fontFamily: MONO_FONT }}>
                   {formatValue(m.target, m.unit)}
                 </td>
                 <td className="text-right px-5 py-3">
@@ -207,15 +207,15 @@ function SnapshotRow({ m }: { m: SnapshotResult }) {
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full shrink-0" style={{ background: STATUS_DOT[m.status] }} />
-            <span className="font-semibold text-[#1A1A1A] text-[14px] truncate">{m.label}</span>
+            <span className="font-semibold text-[#141821] text-[14px] truncate">{m.label}</span>
           </div>
-          <div className="text-[11px] text-[#999999] mt-1 ml-4">{m.hint}</div>
+          <div className="text-[11px] text-[#98A0AD] mt-1 ml-4">{m.hint}</div>
         </div>
         <div className="text-right shrink-0">
-          <div className="text-[24px] font-extrabold text-[#1A1A1A] tabular-nums leading-none" style={{ fontVariantNumeric: 'tabular-nums' }}>
+          <div className="text-[24px] font-extrabold text-[#141821] tabular-nums leading-none" style={{ fontVariantNumeric: 'tabular-nums' }}>
             {formatValue(m.actual, m.unit)}
           </div>
-          <div className="text-[11px] text-[#999999] mt-1" style={{ fontFamily: MONO_FONT }}>
+          <div className="text-[11px] text-[#98A0AD] mt-1" style={{ fontFamily: MONO_FONT }}>
             target {formatValue(m.target, m.unit)}
           </div>
         </div>

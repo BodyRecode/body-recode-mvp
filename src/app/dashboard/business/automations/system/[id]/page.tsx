@@ -644,7 +644,7 @@ export default async function SystemAutomationDetailPage({
 
       {/* Breadcrumb */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#999999', marginBottom: '32px' }}>
-        <Link href="/dashboard/business/automations" style={{ color: '#999999', textDecoration: 'none' }} className="hover:text-[#1A1A1A] transition-colors">
+        <Link href="/dashboard/business/automations" style={{ color: '#999999', textDecoration: 'none' }} className="hover:text-[#141821] transition-colors">
           Automations
         </Link>
         <span>/</span>

@@ -64,21 +64,21 @@ export default function ClientViewModal({
           onClick={() => setOpen(false)}
         >
           <div
-            className="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl h-[90vh] flex flex-col overflow-hidden"
+            className="relative bg-white rounded-xl shadow-2xl w-full max-w-2xl h-[90vh] flex flex-col overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-3 border-b border-stone-200 shrink-0">
+            <div className="flex items-center justify-between px-5 py-3 border-b border-[#E8EAEE] shrink-0">
               <div className="min-w-0 flex-1">
-                <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">Client preview</p>
-                <p className="text-sm font-semibold text-stone-900 truncate">{title}</p>
+                <p className="text-[10px] font-medium text-[#666D7A]">Client preview</p>
+                <p className="text-sm font-semibold text-[#141821] truncate">{title}</p>
               </div>
               <div className="flex items-center gap-2 shrink-0">
                 <a
                   href={portalUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-[11px] text-stone-500 hover:text-stone-800 transition-colors px-2 py-1"
+                  className="inline-flex items-center gap-1 text-[11px] text-[#666D7A] hover:text-[#141821] transition-colors px-2 py-1"
                   title="Open in new tab"
                 >
                   <ExternalLink size={12} /> Open in tab
@@ -87,7 +87,7 @@ export default function ClientViewModal({
                   type="button"
                   onClick={() => setOpen(false)}
                   aria-label="Close preview"
-                  className="p-1.5 rounded-md text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-colors"
+                  className="p-1.5 rounded-md text-[#666D7A] hover:text-[#141821] hover:bg-[#F4F6F9] transition-colors"
                 >
                   <X size={18} />
                 </button>
@@ -95,11 +95,11 @@ export default function ClientViewModal({
             </div>
 
             {/* Iframe body */}
-            <div className="relative flex-1 bg-stone-50">
+            <div className="relative flex-1 bg-[#FBFCFD]">
               {loading && (
-                <div className="absolute inset-0 flex items-center justify-center text-stone-400">
+                <div className="absolute inset-0 flex items-center justify-center text-[#98A0AD]">
                   <Loader2 size={20} className="animate-spin" />
-                  <span className="ml-2 text-xs">Loading client preview…</span>
+                  <span className="ml-2 text-[12.5px]">Loading client preview…</span>
                 </div>
               )}
               <iframe
@@ -111,7 +111,7 @@ export default function ClientViewModal({
             </div>
 
             {/* Footer */}
-            <div className="px-5 py-2.5 border-t border-stone-200 bg-stone-50 text-[11px] text-stone-500 shrink-0">
+            <div className="px-5 py-2.5 border-t border-[#E8EAEE] bg-[#FBFCFD] text-[11px] text-[#666D7A] shrink-0">
               You&apos;re looking at the client&apos;s portal exactly as they see it. Closing this preview returns you to the coach dashboard.
             </div>
           </div>

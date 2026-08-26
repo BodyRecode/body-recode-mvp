@@ -28,7 +28,7 @@ export function HarmonySite({ children }: { children: React.ReactNode }) {
     <div style={{ backgroundColor: H.cream, color: H.ink, fontFamily: H.sans }}>
       {/* Preview strip - dark thin line at very top */}
       <div
-        className="text-center py-1 text-[10px] font-bold uppercase tracking-widest sticky top-0 z-[60]"
+        className="text-center py-1 text-[11.5px] font-medium sticky top-0 z-[60]"
         style={{ backgroundColor: H.ink, color: H.cream, letterSpacing: '0.14em' }}
       >
         Preview mockup · not a live site · <Link href="/dashboard/preview" className="underline">back to previews</Link>
@@ -64,7 +64,7 @@ function SiteHeader({ pathname }: { pathname: string }) {
               {H.name}
             </div>
             <div
-              className="text-[9px] uppercase mt-1"
+              className="text-[9px] mt-1"
               style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.24em' }}
             >
               {H.sub}
@@ -93,7 +93,7 @@ function SiteHeader({ pathname }: { pathname: string }) {
 
         <Link
           href={`${BASE}/assessment`}
-          className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-full text-[12px] font-semibold uppercase transition-transform hover:scale-[1.02]"
+          className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-full text-[12px] font-semibold transition-transform hover:scale-[1.02]"
           style={{
             background: H.terracotta,
             color: H.cream,
@@ -126,7 +126,7 @@ function SiteFooter() {
             </p>
           </div>
           <div>
-            <div className="text-[10px] uppercase mb-4" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.2em' }}>Practice</div>
+            <div className="text-[10px] mb-4" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.2em' }}>Practice</div>
             <ul className="space-y-2 text-[13px]" style={{ color: H.inkSoft }}>
               <li><Link href={`${BASE}/assessment`}>The Assessment</Link></li>
               <li><Link href={`${BASE}/method`}>The Method</Link></li>
@@ -135,7 +135,7 @@ function SiteFooter() {
             </ul>
           </div>
           <div>
-            <div className="text-[10px] uppercase mb-4" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.2em' }}>Studio</div>
+            <div className="text-[10px] mb-4" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.2em' }}>Studio</div>
             <ul className="space-y-2 text-[13px]" style={{ color: H.inkSoft }}>
               <li>{H.location}</li>
               <li>studio@harmony.com.au</li>
@@ -143,7 +143,7 @@ function SiteFooter() {
             </ul>
           </div>
           <div>
-            <div className="text-[10px] uppercase mb-4" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.2em' }}>Fine print</div>
+            <div className="text-[10px] mb-4" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.2em' }}>Fine print</div>
             <ul className="space-y-2 text-[13px]" style={{ color: H.inkSoft }}>
               <li>Terms of practice</li>
               <li>Privacy</li>
@@ -157,11 +157,11 @@ function SiteFooter() {
           className="pt-6 border-t flex items-center justify-between gap-4 flex-wrap"
           style={{ borderColor: H.border }}
         >
-          <div className="text-[10px] uppercase" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.18em' }}>
+          <div className="text-[10px]" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.18em' }}>
             © 2026 {H.name} Practice Pty Ltd
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-[10px] uppercase" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.2em' }}>Powered by</span>
+            <span className="text-[10px]" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.2em' }}>Powered by</span>
             <span
               className="inline-flex items-center justify-center px-2 py-1 rounded"
               style={{

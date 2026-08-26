@@ -18,15 +18,15 @@ export default async function NutritionGeneratePage({ params }: { params: Promis
   return (
     <div className="max-w-2xl mx-auto">
       <div className="mb-8">
-        <div className="flex items-center gap-2 text-stone-500 text-sm mb-2">
-          <Link href={`/dashboard/clients/${id}`} className="hover:text-stone-700 transition-colors">{client.name}</Link>
+        <div className="flex items-center gap-2 text-[#666D7A] text-sm mb-2">
+          <Link href={`/dashboard/clients/${id}`} className="hover:text-[#141821] transition-colors">{client.name}</Link>
           <span>/</span>
-          <Link href={`/dashboard/clients/${id}/nutrition`} className="hover:text-stone-700 transition-colors">Nutrition Plan</Link>
+          <Link href={`/dashboard/clients/${id}/nutrition`} className="hover:text-[#141821] transition-colors">Nutrition Plan</Link>
           <span>/</span>
-          <span className="text-stone-700">Generate</span>
+          <span className="text-[#141821]">Generate</span>
         </div>
-        <h1 className="text-2xl font-semibold text-[#1A1A1A]">Generate Nutrition Plan</h1>
-        <p className="text-stone-500 text-sm mt-1">Fill in the prescription manually.</p>
+        <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">Generate Nutrition Plan</h1>
+        <p className="text-[#666D7A] text-sm mt-1">Fill in the prescription manually.</p>
       </div>
 
       <NutritionGenerateForm clientId={id} />

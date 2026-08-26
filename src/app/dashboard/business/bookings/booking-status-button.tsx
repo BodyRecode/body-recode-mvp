@@ -15,7 +15,7 @@ interface Props {
 const options = [
   { value: 'completed', label: 'Completed', icon: CheckCircle2, colour: 'text-blue-500' },
   { value: 'no_show', label: 'No Show', icon: AlertCircle, colour: 'text-red-700' },
-  { value: 'cancelled', label: 'Cancel', icon: XCircle, colour: 'text-stone-600' },
+  { value: 'cancelled', label: 'Cancel', icon: XCircle, colour: 'text-[#666D7A]' },
 ]
 
 /** Brisbane wall-clock parts of an instant, for prefilling the date/time inputs. */
@@ -86,7 +86,7 @@ export default function BookingStatusButton({ bookingId, currentStatus, schedule
       <button
         onClick={() => setOpen(!open)}
         disabled={isPending}
-        className="flex items-center gap-1 text-xs text-stone-600 hover:text-[#1A1A1A] border border-stone-300 hover:border-stone-500 px-2.5 py-1.5 rounded-lg transition-colors disabled:opacity-50"
+        className="flex items-center gap-1 text-[12.5px] text-[#666D7A] hover:text-[#141821] border border-[#E8EAEE] hover:border-[#CFD4DC] px-2.5 py-1.5 rounded-lg transition-colors disabled:opacity-50"
       >
         {isPending ? 'Saving...' : 'Update'}
         <ChevronDown size={11} />
@@ -95,11 +95,11 @@ export default function BookingStatusButton({ bookingId, currentStatus, schedule
       {open && !rescheduling && (
         <>
           <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 top-8 z-20 bg-stone-100 border border-stone-300 rounded-lg shadow-xl overflow-hidden min-w-36">
+          <div className="absolute right-0 top-8 z-20 bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg shadow-xl overflow-hidden min-w-36">
             {currentStatus === 'scheduled' && (
               <button
                 onClick={() => { setRescheduling(true); setOpen(false) }}
-                className="w-full flex items-center gap-2 px-3 py-2 text-xs hover:bg-stone-200 transition-colors text-[#1A1A1A] border-b border-stone-300"
+                className="w-full flex items-center gap-2 px-3 py-2 text-[12.5px] hover:bg-[#EFF1F4] transition-colors text-[#141821] border-b border-[#E8EAEE]"
               >
                 <CalendarClock size={12} />
                 Reschedule
@@ -111,7 +111,7 @@ export default function BookingStatusButton({ bookingId, currentStatus, schedule
                 <button
                   key={opt.value}
                   onClick={() => updateStatus(opt.value)}
-                  className={`w-full flex items-center gap-2 px-3 py-2 text-xs hover:bg-stone-200 transition-colors ${opt.colour}`}
+                  className={`w-full flex items-center gap-2 px-3 py-2 text-xs hover:bg-[#EFF1F4] transition-colors ${opt.colour}`}
                 >
                   <Icon size={12} />
                   {opt.label}
@@ -126,11 +126,11 @@ export default function BookingStatusButton({ bookingId, currentStatus, schedule
         <>
           <div className="fixed inset-0 z-30 bg-black/20" onClick={() => setWarning(null)} />
           <div className="absolute right-0 top-8 z-40 bg-amber-50 border border-amber-300 rounded-lg shadow-xl p-3 w-72">
-            <p className="text-xs font-semibold text-amber-900 mb-1.5">Heads up</p>
+            <p className="text-[12.5px] font-semibold text-amber-900 mb-1.5">Heads up</p>
             <p className="text-[11px] text-amber-900 leading-relaxed">{warning}</p>
             <button
               onClick={() => setWarning(null)}
-              className="mt-2.5 w-full text-xs font-semibold text-amber-900 border border-amber-400 rounded-lg px-2 py-1.5 hover:bg-amber-100 transition-colors"
+              className="mt-2.5 w-full text-[12.5px] font-semibold text-amber-900 border border-amber-400 rounded-lg px-2 py-1.5 hover:bg-amber-100 transition-colors"
             >
               Got it
             </button>
@@ -141,33 +141,33 @@ export default function BookingStatusButton({ bookingId, currentStatus, schedule
       {rescheduling && (
         <>
           <div className="fixed inset-0 z-10 bg-black/20" onClick={() => setRescheduling(false)} />
-          <div className="absolute right-0 top-8 z-20 bg-stone-100 border border-stone-300 rounded-lg shadow-xl p-3 w-64">
-            <p className="text-xs font-semibold text-[#1A1A1A] mb-2">Move this booking</p>
+          <div className="absolute right-0 top-8 z-20 bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg shadow-xl p-3 w-64">
+            <p className="text-[12.5px] font-semibold text-[#141821] mb-2">Move this booking</p>
             <div className="space-y-2">
               <div>
-                <label className="block text-[11px] font-medium text-stone-600 mb-1">Date</label>
+                <label className="block text-[11px] font-medium text-[#666D7A] mb-1">Date</label>
                 <input
                   type="date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="w-full bg-stone-200 border border-stone-300 rounded-lg px-2.5 py-1.5 text-xs text-[#1A1A1A] focus:outline-none focus:border-stone-500"
+                  className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-2.5 py-1.5 text-[12.5px] text-[#141821] focus:outline-none focus:border-[#CFD4DC]"
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-medium text-stone-600 mb-1">Time (Brisbane)</label>
+                <label className="block text-[11px] font-medium text-[#666D7A] mb-1">Time (Brisbane)</label>
                 <input
                   type="time"
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
-                  className="w-full bg-stone-200 border border-stone-300 rounded-lg px-2.5 py-1.5 text-xs text-[#1A1A1A] focus:outline-none focus:border-stone-500"
+                  className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-2.5 py-1.5 text-[12.5px] text-[#141821] focus:outline-none focus:border-[#CFD4DC]"
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-medium text-stone-600 mb-1">Duration</label>
+                <label className="block text-[11px] font-medium text-[#666D7A] mb-1">Duration</label>
                 <select
                   value={duration}
                   onChange={(e) => setDuration(e.target.value)}
-                  className="w-full bg-stone-200 border border-stone-300 rounded-lg px-2.5 py-1.5 text-xs text-[#1A1A1A] focus:outline-none focus:border-stone-500"
+                  className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-2.5 py-1.5 text-[12.5px] text-[#141821] focus:outline-none focus:border-[#CFD4DC]"
                 >
                   <option value="30">30 min</option>
                   <option value="45">45 min</option>
@@ -176,20 +176,20 @@ export default function BookingStatusButton({ bookingId, currentStatus, schedule
                 </select>
               </div>
             </div>
-            <p className="text-[11px] text-stone-500 leading-relaxed mt-2.5">
+            <p className="text-[11px] text-[#666D7A] leading-relaxed mt-2.5">
               Moves the Zoom meeting without changing the join link, cancels the old reminders, and emails them the corrected time.
             </p>
             <div className="flex gap-2 mt-2.5">
               <button
                 onClick={() => setRescheduling(false)}
-                className="flex-1 text-xs text-stone-600 border border-stone-300 rounded-lg px-2 py-1.5 hover:bg-stone-200 transition-colors"
+                className="flex-1 text-[12.5px] text-[#666D7A] border border-[#E8EAEE] rounded-lg px-2 py-1.5 hover:bg-[#EFF1F4] transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={submitReschedule}
                 disabled={!date || !time}
-                className="flex-1 text-xs font-semibold text-white bg-blue-500 rounded-lg px-2 py-1.5 hover:bg-blue-600 transition-colors disabled:opacity-40"
+                className="flex-1 text-[12.5px] font-semibold text-white bg-blue-500 rounded-lg px-2 py-1.5 hover:bg-blue-600 transition-colors disabled:opacity-40"
               >
                 Save
               </button>

@@ -43,15 +43,15 @@ export default function AutoResponseToggle({
   }
 
   return (
-    <div className="rounded-lg border border-[#E5E5E5] bg-white px-4 py-3 flex items-center justify-between gap-3 flex-wrap mb-4">
+    <div className="rounded-lg border border-[#E8EAEE] bg-white px-4 py-3 flex items-center justify-between gap-3 flex-wrap mb-4">
       <div className="min-w-0">
-        <p className="text-xs font-bold uppercase tracking-widest text-[#1B6DFC]">Auto check-in response</p>
-        <p className="text-xs text-[#6B6B6B] mt-1 leading-relaxed">
+        <p className="text-[12px] font-medium text-[#1B6DFC]">Auto check-in response</p>
+        <p className="text-[12.5px] text-[#666D7A] mt-1 leading-relaxed">
           {enabled
             ? 'On — when this client submits a check-in, an AI draft is generated and auto-sent 4 hours later unless you intervene. You can Edit, Send-now, or Skip from the response form during the window.'
             : 'Off — you write every check-in response manually for this client. The check-in still appears in Today\'s Focus as "needs response".'}
         </p>
-        {error && <p className="text-xs text-red-600 mt-1">{error}</p>}
+        {error && <p className="text-[12.5px] text-red-600 mt-1">{error}</p>}
       </div>
       <button
         type="button"
@@ -60,11 +60,11 @@ export default function AutoResponseToggle({
         className={`shrink-0 inline-flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-colors disabled:opacity-50 ${
           enabled
             ? 'bg-[#1B6DFC] text-white hover:bg-[#1057CC]'
-            : 'bg-white border border-[#E5E5E5] text-[#6B6B6B] hover:border-[#1B6DFC] hover:text-[#1B6DFC]'
+            : 'bg-white border border-[#E8EAEE] text-[#666D7A] hover:border-[#1B6DFC] hover:text-[#1B6DFC]'
         }`}
         aria-pressed={enabled}
       >
-        <span className={`inline-block w-7 h-4 rounded-full relative transition-colors ${enabled ? 'bg-white/30' : 'bg-[#E5E5E5]'}`}>
+        <span className={`inline-block w-7 h-4 rounded-full relative transition-colors ${enabled ? 'bg-white/30' : 'bg-[#EFF1F4]'}`}>
           <span className={`absolute top-0.5 ${enabled ? 'left-3.5 bg-white' : 'left-0.5 bg-[#6B6B6B]'} w-3 h-3 rounded-full transition-all`} />
         </span>
         {pending ? 'Working…' : enabled ? 'On' : 'Off'}

@@ -135,25 +135,25 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals }
     const cp = Math.round((meal.carb_g * 4 / denom) * 100)
     const fp = 100 - pp - cp
     return (
-      <div className="bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
-        <div className="px-5 py-3 border-b border-stone-200 flex items-center justify-between">
+      <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+        <div className="px-5 py-3 border-b border-[#E8EAEE] flex items-center justify-between">
           <div>
-            <h3 className="font-semibold text-stone-900 text-sm">{meal.meal_name}</h3>
-            <p className="text-[10px] text-stone-400 mt-0.5">{meal.timing}</p>
+            <h3 className="font-semibold text-[#141821] text-sm">{meal.meal_name}</h3>
+            <p className="text-[10px] text-[#98A0AD] mt-0.5">{meal.timing}</p>
           </div>
           <div className="flex items-center gap-3">
             <div className="text-right">
-              <p className="text-sm font-semibold text-[#1A1A1A] tabular-nums">{view.kcal} kcal</p>
-              <p className="text-[10px] text-stone-500 mt-0.5 tabular-nums">
+              <p className="text-sm font-semibold text-[#141821] tabular-nums">{view.kcal} kcal</p>
+              <p className="text-[10px] text-[#666D7A] mt-0.5 tabular-nums">
                 {meal.protein_g}g P · {meal.carb_g}g C · {meal.fat_g}g F
               </p>
-              <p className="text-[10px] text-stone-400 mt-0.5 tabular-nums uppercase tracking-wider">
+              <p className="text-[10px] text-[#98A0AD] mt-0.5 tabular-nums">
                 P {pp}% · C {cp}% · F {fp}%
               </p>
             </div>
             <button
               onClick={() => setEditing(true)}
-              className="text-[10px] font-semibold px-2.5 py-1 border border-stone-300 text-stone-600 rounded-md hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors"
+              className="text-[10px] font-semibold px-2.5 py-1 border border-[#E8EAEE] text-[#666D7A] rounded-md hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors"
             >
               Edit
             </button>
@@ -166,15 +166,15 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals }
               return (
                 <div key={i} className="flex items-start justify-between gap-3">
                   <div className="flex items-start gap-2 flex-1 min-w-0">
-                    <span className="text-stone-400 mt-0.5 shrink-0">•</span>
-                    <p className="text-sm text-stone-700">{f.name}</p>
+                    <span className="text-[#98A0AD] mt-0.5 shrink-0">•</span>
+                    <p className="text-sm text-[#141821]">{f.name}</p>
                   </div>
                   {f.protein_g !== null && (
-                    <div className="flex items-baseline gap-3 shrink-0 tabular-nums text-xs pt-0.5">
-                      <span className="text-stone-500"><span className="text-[10px] text-stone-400">P</span> {f.protein_g}g</span>
-                      <span className="text-stone-500"><span className="text-[10px] text-stone-400">C</span> {f.carb_g}g</span>
-                      <span className="text-stone-500"><span className="text-[10px] text-stone-400">F</span> {f.fat_g}g</span>
-                      <span className="text-stone-600 font-medium w-[60px] text-right">{f.kcal} kcal</span>
+                    <div className="flex items-baseline gap-3 shrink-0 tabular-nums text-[12.5px] pt-0.5">
+                      <span className="text-[#666D7A]"><span className="text-[10px] text-[#98A0AD]">P</span> {f.protein_g}g</span>
+                      <span className="text-[#666D7A]"><span className="text-[10px] text-[#98A0AD]">C</span> {f.carb_g}g</span>
+                      <span className="text-[#666D7A]"><span className="text-[10px] text-[#98A0AD]">F</span> {f.fat_g}g</span>
+                      <span className="text-[#666D7A] font-medium w-[60px] text-right">{f.kcal} kcal</span>
                     </div>
                   )}
                 </div>
@@ -182,7 +182,7 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals }
             })}
           </div>
           {meal.notes && (
-            <p className="text-xs text-stone-400 italic mt-2">{meal.notes}</p>
+            <p className="text-[12.5px] text-[#98A0AD] italic mt-2">{meal.notes}</p>
           )}
         </div>
       </div>
@@ -275,26 +275,26 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals }
 
   return (
     <div className="bg-white border-2 border-[#1B6DFC] rounded-xl overflow-hidden">
-      <div className="px-5 py-3 border-b border-stone-200 bg-blue-50/40 flex items-center justify-between gap-4">
+      <div className="px-5 py-3 border-b border-[#E8EAEE] bg-blue-50/40 flex items-center justify-between gap-4">
         <div className="flex-1 min-w-0 space-y-1">
           <input
             type="text"
             value={draftName}
             onChange={e => setDraftName(e.target.value)}
-            className="w-full font-semibold text-stone-900 text-sm bg-white border border-stone-300 rounded px-2 py-1 focus:outline-none focus:border-[#1B6DFC]"
+            className="w-full font-semibold text-[#141821] text-sm bg-white border border-[#E8EAEE] rounded px-2 py-1 focus:outline-none focus:border-[#1B6DFC]"
             placeholder="Meal name"
           />
           <input
             type="text"
             value={draftTiming}
             onChange={e => setDraftTiming(e.target.value)}
-            className="w-full text-[10px] text-stone-500 bg-white border border-stone-200 rounded px-2 py-1 focus:outline-none focus:border-[#1B6DFC]"
+            className="w-full text-[10px] text-[#666D7A] bg-white border border-[#E8EAEE] rounded px-2 py-1 focus:outline-none focus:border-[#1B6DFC]"
             placeholder="Timing (e.g. 07:00–08:00)"
           />
         </div>
         <div className="text-right shrink-0">
-          <p className="text-sm font-semibold text-[#1A1A1A] tabular-nums">{mealKcal} kcal</p>
-          <p className="text-[10px] text-stone-500 mt-0.5 tabular-nums">
+          <p className="text-sm font-semibold text-[#141821] tabular-nums">{mealKcal} kcal</p>
+          <p className="text-[10px] text-[#666D7A] mt-0.5 tabular-nums">
             {Math.round(mealMacros.protein_g)}g P · {Math.round(mealMacros.carb_g)}g C · {Math.round(mealMacros.fat_g)}g F
           </p>
         </div>
@@ -310,7 +310,7 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals }
                   value={f.name}
                   onChange={e => updateFood(i, { name: e.target.value })}
                   placeholder="e.g. 150g chicken thigh (raw)"
-                  className="w-full text-sm text-stone-800 bg-stone-50 border border-stone-200 rounded px-2 py-1 focus:outline-none focus:border-[#1B6DFC]"
+                  className="w-full text-sm text-[#141821] bg-[#FBFCFD] border border-[#E8EAEE] rounded px-2 py-1 focus:outline-none focus:border-[#1B6DFC]"
                 />
                 <div className="flex items-center gap-2">
                   <select
@@ -319,7 +319,7 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals }
                       if (e.target.value) swapFood(i, e.target.value)
                       e.target.value = ''
                     }}
-                    className="text-[10px] text-stone-600 bg-white border border-stone-200 rounded px-1.5 py-0.5 hover:border-[#1B6DFC] focus:outline-none focus:border-[#1B6DFC] max-w-[220px]"
+                    className="text-[10px] text-[#666D7A] bg-white border border-[#E8EAEE] rounded px-1.5 py-0.5 hover:border-[#1B6DFC] focus:outline-none focus:border-[#1B6DFC] max-w-[220px]"
                   >
                     <option value="">🔄 Swap food from reference table…</option>
                     {FOOD_DB_KEYS.map(k => (
@@ -327,50 +327,50 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals }
                     ))}
                   </select>
                   {lookupFood(f.name) && (
-                    <span className="text-[9px] text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded uppercase tracking-wide">In table</span>
+                    <span className="text-[9px] text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">In table</span>
                   )}
                 </div>
               </div>
               <div className="flex items-center gap-1.5 shrink-0">
-                <label className="flex items-center gap-1 text-[10px] text-stone-400 tabular-nums">
+                <label className="flex items-center gap-1 text-[10px] text-[#98A0AD] tabular-nums">
                   P
                   <input
                     type="number"
                     value={f.protein_g}
                     onChange={e => updateFood(i, { protein_g: Number(e.target.value) })}
-                    className="w-14 text-xs text-stone-800 bg-stone-50 border border-stone-200 rounded px-1.5 py-1 focus:outline-none focus:border-[#1B6DFC]"
+                    className="w-14 text-[12.5px] text-[#141821] bg-[#FBFCFD] border border-[#E8EAEE] rounded px-1.5 py-1 focus:outline-none focus:border-[#1B6DFC]"
                     step="0.1"
                     min="0"
                   />g
                 </label>
-                <label className="flex items-center gap-1 text-[10px] text-stone-400 tabular-nums">
+                <label className="flex items-center gap-1 text-[10px] text-[#98A0AD] tabular-nums">
                   C
                   <input
                     type="number"
                     value={f.carb_g}
                     onChange={e => updateFood(i, { carb_g: Number(e.target.value) })}
-                    className="w-14 text-xs text-stone-800 bg-stone-50 border border-stone-200 rounded px-1.5 py-1 focus:outline-none focus:border-[#1B6DFC]"
+                    className="w-14 text-[12.5px] text-[#141821] bg-[#FBFCFD] border border-[#E8EAEE] rounded px-1.5 py-1 focus:outline-none focus:border-[#1B6DFC]"
                     step="0.1"
                     min="0"
                   />g
                 </label>
-                <label className="flex items-center gap-1 text-[10px] text-stone-400 tabular-nums">
+                <label className="flex items-center gap-1 text-[10px] text-[#98A0AD] tabular-nums">
                   F
                   <input
                     type="number"
                     value={f.fat_g}
                     onChange={e => updateFood(i, { fat_g: Number(e.target.value) })}
-                    className="w-14 text-xs text-stone-800 bg-stone-50 border border-stone-200 rounded px-1.5 py-1 focus:outline-none focus:border-[#1B6DFC]"
+                    className="w-14 text-[12.5px] text-[#141821] bg-[#FBFCFD] border border-[#E8EAEE] rounded px-1.5 py-1 focus:outline-none focus:border-[#1B6DFC]"
                     step="0.1"
                     min="0"
                   />g
                 </label>
-                <div className="w-[60px] text-right text-xs font-medium text-stone-700 tabular-nums pt-1">
+                <div className="w-[60px] text-right text-[12.5px] font-medium text-[#141821] tabular-nums pt-1">
                   {kcalFromMacros(Number(f.protein_g) || 0, Number(f.carb_g) || 0, Number(f.fat_g) || 0)} kcal
                 </div>
                 <button
                   onClick={() => deleteFood(i)}
-                  className="text-[11px] text-stone-400 hover:text-red-600 transition-colors px-1"
+                  className="text-[11px] text-[#98A0AD] hover:text-red-600 transition-colors px-1"
                   title="Delete food"
                 >
                   ✕
@@ -382,26 +382,26 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals }
 
         <button
           onClick={addFood}
-          className="mt-3 text-xs font-semibold px-3 py-1.5 border border-dashed border-stone-300 text-stone-500 rounded hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors"
+          className="mt-3 text-[12.5px] font-semibold px-3 py-1.5 border border-dashed border-[#E8EAEE] text-[#666D7A] rounded hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors"
         >
           + Add food
         </button>
 
         <div className="mt-4">
-          <label className="text-[10px] font-bold uppercase tracking-widest text-stone-500 mb-1 block">Meal notes</label>
+          <label className="text-[11.5px] font-medium text-[#666D7A] mb-1 block">Meal notes</label>
           <textarea
             value={draftNotes}
             onChange={e => setDraftNotes(e.target.value)}
             placeholder="Optional preparation / execution note for this meal"
             rows={2}
-            className="w-full text-xs text-stone-700 bg-stone-50 border border-stone-200 rounded px-2 py-1.5 focus:outline-none focus:border-[#1B6DFC]"
+            className="w-full text-[12.5px] text-[#141821] bg-[#FBFCFD] border border-[#E8EAEE] rounded px-2 py-1.5 focus:outline-none focus:border-[#1B6DFC]"
           />
         </div>
 
-        <div className="mt-4 pt-3 border-t border-stone-200 flex items-center justify-between">
-          <div className="text-[11px] text-stone-500">
+        <div className="mt-4 pt-3 border-t border-[#E8EAEE] flex items-center justify-between">
+          <div className="text-[11px] text-[#666D7A]">
             Daily preview:{' '}
-            <span className="font-semibold text-stone-800 tabular-nums">
+            <span className="font-semibold text-[#141821] tabular-nums">
               {dailyPreview.kcal} kcal
             </span>
             {' '}·{' '}
@@ -422,14 +422,14 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals }
             <button
               onClick={cancel}
               disabled={pending}
-              className="text-xs font-semibold px-3 py-1.5 text-stone-600 rounded hover:text-stone-900 transition-colors disabled:opacity-50"
+              className="text-[12.5px] font-semibold px-3 py-1.5 text-[#666D7A] rounded hover:text-[#141821] transition-colors disabled:opacity-50"
             >
               Cancel
             </button>
             <button
               onClick={save}
               disabled={pending}
-              className="text-xs font-semibold px-4 py-1.5 bg-[#1B6DFC] text-white rounded hover:bg-[#1057CC] transition-colors disabled:opacity-50"
+              className="text-[12.5px] font-semibold px-4 py-1.5 bg-[#1B6DFC] text-white rounded hover:bg-[#1057CC] transition-colors disabled:opacity-50"
             >
               {pending ? 'Saving…' : 'Save meal'}
             </button>

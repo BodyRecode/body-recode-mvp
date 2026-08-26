@@ -30,7 +30,7 @@ export default function ResolveButton({ clientId, messageId }: { clientId: strin
       type="button"
       onClick={resolve}
       disabled={busy}
-      className="inline-flex items-center gap-1.5 text-[12px] font-medium px-3 py-1.5 rounded-md border border-[#E5E5E5] text-[#4B4B4B] hover:text-[#1A1A1A] hover:bg-[#F6F6F6] transition-colors disabled:opacity-50"
+      className="inline-flex items-center gap-1.5 text-[12px] font-medium px-3 py-1.5 rounded-md border border-[#E8EAEE] text-[#4B4B4B] hover:text-[#141821] hover:bg-[#F6F6F6] transition-colors disabled:opacity-50"
     >
       <Check size={13} strokeWidth={2.5} />
       {busy ? 'Resolving…' : 'Mark reviewed'}

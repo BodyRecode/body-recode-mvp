@@ -183,8 +183,7 @@ export default function TrajectoryReadingPanel({
         <div className="flex items-center gap-2.5">
           <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
           <h2
-            className="text-[11px] font-bold text-[#1A1A1A] uppercase"
-            style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+            className="text-[11px] font-medium text-[#141821]"
           >
             Block-End Trajectory Reading{' '}
             <span className="text-[#4A4A4A] font-normal">- Client Facing</span>
@@ -193,7 +192,7 @@ export default function TrajectoryReadingPanel({
         <div className="flex items-center gap-2 flex-wrap">
           {generated && (
             <span
-              className="inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border uppercase"
+              className="inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border"
               style={{
                 fontFamily: MONO_FONT,
                 letterSpacing: '0.06em',
@@ -208,8 +207,7 @@ export default function TrajectoryReadingPanel({
           )}
           {emailSent && (
             <span
-              className="inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] uppercase"
-              style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
+              className="inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border border-[#E8EAEE] bg-[#FFFFFF] text-[#666D7A]"
               title={`Notification sent ${new Date(program.trajectory_reading_email_sent_at!).toLocaleString('en-AU')}`}
             >
               <Mail size={10} /> Notified
@@ -220,7 +218,7 @@ export default function TrajectoryReadingPanel({
             disabled={generating || isPending}
             className={`inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
               generated
-                ? 'border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
+                ? 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
                 : 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#5390FF] border border-[#1B6DFC]'
             }`}
           >
@@ -233,7 +231,7 @@ export default function TrajectoryReadingPanel({
               disabled={publishing || isPending}
               className={`inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
                 published
-                  ? 'border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
+                  ? 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
                   : 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#5390FF] border border-[#1B6DFC]'
               }`}
             >
@@ -247,7 +245,7 @@ export default function TrajectoryReadingPanel({
               disabled={notifying || isPending}
               className={`inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
                 emailSent
-                  ? 'border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
+                  ? 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
                   : 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#5390FF] border border-[#1B6DFC]'
               }`}
             >
@@ -274,24 +272,24 @@ export default function TrajectoryReadingPanel({
       )}
 
       {!generated ? (
-        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-8 text-center">
+        <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-8 text-center">
           {atBlockEnd ? (
             <>
-              <p className="text-[#6B6B6B] text-[14px] mb-2">Block complete - trajectory reading available</p>
-              <p className="text-[#999999] text-[12px]">
+              <p className="text-[#666D7A] text-[14px] mb-2">Block complete - trajectory reading available</p>
+              <p className="text-[#98A0AD] text-[12px]">
                 Click Generate draft. It reads every weekly synthesis across this block into one arc. Review it, then Publish to surface it on the client portal. After publishing, a Notify Client button appears for the explicit email send (mirror of the Program / Nutrition pattern).
               </p>
             </>
           ) : (
             <>
-              <div className="inline-flex items-center gap-1.5 text-[11px] text-[#999999] mb-2" style={{ fontFamily: MONO_FONT }}>
+              <div className="inline-flex items-center gap-1.5 text-[11px] text-[#98A0AD] mb-2" style={{ fontFamily: MONO_FONT }}>
                 <CalendarClock size={12} />
                 {blockStatus?.currentWeek && blockStatus?.weekDuration
                   ? `Block in progress - week ${blockStatus.currentWeek} of ${blockStatus.weekDuration}`
                   : 'Block in progress'}
               </div>
-              <p className="text-[#6B6B6B] text-[14px] mb-2">Trajectory reading is for block end</p>
-              <p className="text-[#999999] text-[12px]">
+              <p className="text-[#666D7A] text-[14px] mb-2">Trajectory reading is for block end</p>
+              <p className="text-[#98A0AD] text-[12px]">
                 This reading is designed to read the whole block once it has finished{blockStatus?.weeksRemaining ? `, about ${blockStatus.weeksRemaining} week${blockStatus.weeksRemaining === 1 ? '' : 's'} from now` : ''}. You can still generate an early draft from the weeks completed so far.
               </p>
             </>
@@ -302,11 +300,10 @@ export default function TrajectoryReadingPanel({
         {program.tr_new_body_state && (
           <ReScoreCard program={program} />
         )}
-        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl overflow-hidden mb-3">
-          <div className="flex items-center justify-between px-5 py-3 border-b border-[#E5E5E5] flex-wrap gap-2">
+        <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden mb-3">
+          <div className="flex items-center justify-between px-5 py-3 border-b border-[#E8EAEE] flex-wrap gap-2">
             <p
-              className="text-[11px] text-[#999999]"
-              style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
+              className="text-[11px] text-[#98A0AD]"
             >
               Last updated {new Date(program.trajectory_reading_generated_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
             </p>
@@ -316,12 +313,12 @@ export default function TrajectoryReadingPanel({
                   portalUrl={`/portal/${clientToken}/program/trajectory-reading`}
                   title="Block-End Reading — Document"
                   triggerLabel="Document"
-                  triggerClassName="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+                  triggerClassName="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
                 />
               )}
             </div>
           </div>
-          <div className="divide-y divide-[#E5E5E5]">
+          <div className="divide-y divide-[#EFF1F4]">
             {SECTION_LABELS.map(({ field, label }, i) => (
               <EditableSection
                 key={field}
@@ -351,12 +348,11 @@ function ReScoreCard({ program }: { program: Reading }) {
   const next = program.tr_new_body_state!
   const moved = !!prev && prev.toLowerCase() !== next.toLowerCase()
   return (
-    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl overflow-hidden mb-3">
-      <div className="flex items-center gap-2.5 px-5 py-3 border-b border-[#E5E5E5]">
+    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden mb-3">
+      <div className="flex items-center gap-2.5 px-5 py-3 border-b border-[#E8EAEE]">
         <span className="w-1 h-1 rounded-full bg-[#1B6DFC]" />
         <p
-          className="text-[10px] font-bold text-[#6B6B6B] uppercase"
-          style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+          className="text-[10px] font-medium text-[#666D7A]"
         >
           Progress Read - State Re-Score
         </p>
@@ -365,30 +361,30 @@ function ReScoreCard({ program }: { program: Reading }) {
         <div className="flex items-center gap-3 flex-wrap mb-3">
           {prev && (
             <>
-              <span className="inline-flex items-center px-2.5 py-1 rounded-full border border-[#E5E5E5] bg-[#FAFAFA] text-[13px] font-semibold text-[#6B6B6B]">
+              <span className="inline-flex items-center px-2.5 py-1 rounded-full border border-[#E8EAEE] bg-[#FAFAFA] text-[13px] font-semibold text-[#666D7A]">
                 {prev}
               </span>
-              <span className="text-[#999999] text-[13px]">{moved ? 'moved to' : 'held at'}</span>
+              <span className="text-[#98A0AD] text-[13px]">{moved ? 'moved to' : 'held at'}</span>
             </>
           )}
           <span className="inline-flex items-center px-2.5 py-1 rounded-full border border-[#B5CFFC] bg-[rgba(27,109,252,0.10)] text-[13px] font-semibold text-[#1B6DFC]">
             {next}
           </span>
           {program.tr_state_direction && (
-            <span className="text-[11px] text-[#999999]" style={{ fontFamily: MONO_FONT, letterSpacing: '0.04em' }}>
+            <span className="text-[11px] text-[#98A0AD]">
               {program.tr_state_direction}
             </span>
           )}
         </div>
         {program.tr_state_rationale && (
-          <p className="text-[14px] text-[#1A1A1A] leading-relaxed whitespace-pre-line mb-3">
+          <p className="text-[14px] text-[#141821] leading-relaxed whitespace-pre-line mb-3">
             {program.tr_state_rationale}
           </p>
         )}
         {program.tr_pattern_confidence_note && (
           <div className="flex items-start gap-2 pt-3 border-t border-[#F0F0F0]">
-            <Info size={12} className="text-[#999999] mt-0.5 shrink-0" />
-            <p className="text-[12px] text-[#6B6B6B] leading-relaxed">
+            <Info size={12} className="text-[#98A0AD] mt-0.5 shrink-0" />
+            <p className="text-[12px] text-[#666D7A] leading-relaxed">
               <span className="font-semibold text-[#4A4A4A]">Pattern held. </span>
               {program.tr_pattern_confidence_note}
             </p>
@@ -442,35 +438,33 @@ function CoachGuidance({ programId, initial }: { programId: string; initial: str
   }
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl overflow-hidden mb-3">
+    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden mb-3">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between gap-3 px-5 py-3 hover:bg-[#E5E5E5]/40 transition-colors text-left"
+        className="w-full flex items-center justify-between gap-3 px-5 py-3 hover:bg-[#EFF1F4]/40 transition-colors text-left"
       >
         <div className="flex items-center gap-2.5">
           <MessageSquare size={13} className="text-[#1B6DFC]" />
           <p
-            className="text-[11px] font-bold text-[#1A1A1A] uppercase"
-            style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+            className="text-[11px] font-medium text-[#141821]"
           >
             Coach Guidance
           </p>
           {savedValue && (
             <span
               className="text-[10px] text-[#1B6DFC] px-1.5 py-0.5 rounded-full border border-[#B5CFFC] bg-[rgba(27,109,252,0.10)]"
-              style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
             >
               SET
             </span>
           )}
         </div>
-        <span className="text-[11px] text-[#999999]">{open ? 'Hide' : 'Edit'}</span>
+        <span className="text-[11px] text-[#98A0AD]">{open ? 'Hide' : 'Edit'}</span>
       </button>
       {open && (
-        <div className="px-5 pb-4 border-t border-[#E5E5E5]">
+        <div className="px-5 pb-4 border-t border-[#E8EAEE]">
           <div className="flex items-start gap-2 pt-3 mb-3">
-            <Info size={12} className="text-[#999999] mt-0.5 shrink-0" />
-            <p className="text-[11px] text-[#999999] leading-relaxed">
+            <Info size={12} className="text-[#98A0AD] mt-0.5 shrink-0" />
+            <p className="text-[11px] text-[#98A0AD] leading-relaxed">
               Standing notes for the AI. Applied on every Generate and Regenerate of this block&apos;s trajectory reading. Use it to steer how the arc is framed (e.g. account for a known life event mid-block). Each block starts fresh.
             </p>
           </div>
@@ -479,13 +473,13 @@ function CoachGuidance({ programId, initial }: { programId: string; initial: str
             onChange={e => setValue(e.target.value)}
             placeholder="e.g. Weeks 3 and 4 were disrupted by travel, not a loss of capacity. Frame the dip as expected and the recovery as the real signal."
             rows={4}
-            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-3 py-2.5 text-[13px] text-[#1A1A1A] placeholder:text-[#4A4A4A] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
+            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-[13px] text-[#141821] placeholder:text-[#4A4A4A] focus:outline-none focus:border-[#CFD4DC] leading-relaxed resize-y"
           />
           {error && (
             <div className="mt-2 text-[11px] text-[#8A5A14]">{error}</div>
           )}
           <div className="flex items-center justify-between mt-3">
-            <p className="text-[10px] text-[#999999]">
+            <p className="text-[10px] text-[#98A0AD]">
               {savedAt ? 'Saved.' : (savedValue ? 'Last applied to next regeneration.' : 'No guidance set yet.')}
             </p>
             <button
@@ -494,7 +488,7 @@ function CoachGuidance({ programId, initial }: { programId: string; initial: str
               className={`inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
                 dirty
                   ? 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#5390FF] border border-[#1B6DFC]'
-                  : 'border border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B]'
+                  : 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#666D7A]'
               }`}
             >
               {saving ? <Loader2 size={12} className="animate-spin" /> : <Save size={12} />}
@@ -577,8 +571,7 @@ function EditableSection({
             {String(index + 1).padStart(2, '0')}
           </span>
           <p
-            className="text-[10px] font-bold text-[#6B6B6B] uppercase truncate"
-            style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+            className="text-[10px] font-medium text-[#666D7A] truncate"
           >
             {label}
           </p>
@@ -586,7 +579,7 @@ function EditableSection({
         {!editing && (
           <button
             onClick={() => setEditing(true)}
-            className="inline-flex items-center gap-1 text-[10px] text-[#999999] hover:text-[#1B6DFC] transition-colors"
+            className="inline-flex items-center gap-1 text-[10px] text-[#98A0AD] hover:text-[#1B6DFC] transition-colors"
             aria-label="Edit section"
           >
             <Pencil size={11} /> Edit
@@ -601,14 +594,14 @@ function EditableSection({
             value={draft}
             onChange={e => setDraft(e.target.value)}
             rows={Math.max(4, draft.split('\n').length + 1)}
-            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-3 py-2.5 text-[14px] text-[#1A1A1A] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
+            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-[14px] text-[#141821] focus:outline-none focus:border-[#CFD4DC] leading-relaxed resize-y"
           />
           {error && <p className="mt-2 text-[11px] text-[#8A5A14]">{error}</p>}
           <div className="flex items-center justify-end gap-2 mt-2">
             <button
               onClick={cancel}
               disabled={saving}
-              className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E5E5E5] text-[#6B6B6B] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50 transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E8EAEE] text-[#666D7A] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50 transition-colors disabled:opacity-50"
             >
               <X size={11} /> Cancel
             </button>
@@ -623,7 +616,7 @@ function EditableSection({
           </div>
         </>
       ) : (
-        <p className="text-[14px] text-[#1A1A1A] leading-relaxed whitespace-pre-line">
+        <p className="text-[14px] text-[#141821] leading-relaxed whitespace-pre-line">
           {value || '(empty)'}
         </p>
       )}

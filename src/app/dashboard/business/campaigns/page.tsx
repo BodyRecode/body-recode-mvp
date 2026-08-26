@@ -5,11 +5,11 @@ import { Megaphone, Plus, Mail, MessageSquare, Send, Clock, FileText, CheckCircl
 const typeIcon = { email: Mail, sms: MessageSquare, social: Megaphone }
 
 const statusConfig: Record<string, { label: string; colour: string; icon: typeof Clock }> = {
-  draft: { label: 'Draft', colour: 'text-stone-500', icon: FileText },
+  draft: { label: 'Draft', colour: 'text-[#666D7A]', icon: FileText },
   scheduled: { label: 'Scheduled', colour: 'text-amber-700', icon: Clock },
   active: { label: 'Sending', colour: 'text-blue-500', icon: Send },
   completed: { label: 'Sent', colour: 'text-blue-500', icon: CheckCircle2 },
-  cancelled: { label: 'Cancelled', colour: 'text-stone-500', icon: XCircle },
+  cancelled: { label: 'Cancelled', colour: 'text-[#666D7A]', icon: XCircle },
 }
 
 export default async function CampaignsPage() {
@@ -27,8 +27,8 @@ export default async function CampaignsPage() {
     <div className="max-w-3xl">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-semibold mb-1">Campaigns</h1>
-          <p className="text-stone-600 text-sm">{drafts} draft · {sent} sent</p>
+          <h1 className="text-[22px] font-semibold tracking-[-0.025em] mb-1">Campaigns</h1>
+          <p className="text-[#666D7A] text-sm">{drafts} draft · {sent} sent</p>
         </div>
         <Link
           href="/dashboard/business/campaigns/new"
@@ -49,17 +49,17 @@ export default async function CampaignsPage() {
               <Link
                 key={campaign.id}
                 href={`/dashboard/business/campaigns/${campaign.id}`}
-                className="flex items-center gap-4 bg-stone-100 border border-stone-200 rounded-xl p-4 hover:border-stone-300 transition-colors group"
+                className="flex items-center gap-4 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 hover:border-[#E8EAEE] transition-colors group"
               >
-                <div className="p-2 bg-stone-200 rounded-lg shrink-0">
-                  <Icon size={14} className="text-stone-600" />
+                <div className="p-2 bg-[#EFF1F4] rounded-lg shrink-0">
+                  <Icon size={14} className="text-[#666D7A]" />
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-[#1A1A1A] group-hover:text-blue-500 transition-colors truncate">
+                  <p className="text-sm font-medium text-[#141821] group-hover:text-blue-500 transition-colors truncate">
                     {campaign.name}
                   </p>
-                  <p className="text-xs text-stone-500 mt-0.5">
+                  <p className="text-[12.5px] text-[#666D7A] mt-0.5">
                     {campaign.type.toUpperCase()}
                     {campaign.subject ? ` · ${campaign.subject}` : ''}
                     {campaign.recipient_count > 0 ? ` · ${campaign.recipient_count} recipients` : ''}
@@ -72,7 +72,7 @@ export default async function CampaignsPage() {
                     {cfg.label}
                   </div>
                   {campaign.scheduled_at && campaign.status === 'scheduled' && (
-                    <p className="text-xs text-stone-400 mt-0.5">
+                    <p className="text-[12.5px] text-[#98A0AD] mt-0.5">
                       {new Date(campaign.scheduled_at).toLocaleDateString('en-AU', {
                         day: 'numeric', month: 'short',
                         hour: 'numeric', minute: '2-digit', hour12: true,
@@ -80,7 +80,7 @@ export default async function CampaignsPage() {
                     </p>
                   )}
                   {campaign.sent_at && (
-                    <p className="text-xs text-stone-400 mt-0.5">
+                    <p className="text-[12.5px] text-[#98A0AD] mt-0.5">
                       {new Date(campaign.sent_at).toLocaleDateString('en-AU', {
                         day: 'numeric', month: 'short',
                       })}
@@ -92,14 +92,14 @@ export default async function CampaignsPage() {
           })}
         </div>
       ) : (
-        <div className="bg-stone-100 border border-dashed border-stone-200 rounded-xl p-12 text-center">
+        <div className="bg-[#F4F6F9] border border-dashed border-[#E8EAEE] rounded-xl p-12 text-center">
           <div className="flex justify-center mb-4">
-            <div className="p-3 bg-stone-200 rounded-xl">
-              <Megaphone size={24} className="text-stone-500" strokeWidth={1.5} />
+            <div className="p-3 bg-[#EFF1F4] rounded-xl">
+              <Megaphone size={24} className="text-[#666D7A]" strokeWidth={1.5} />
             </div>
           </div>
-          <p className="text-stone-600 text-sm font-medium mb-1">No campaigns yet</p>
-          <p className="text-stone-400 text-xs mb-6">Send email or SMS broadcasts to your leads and clients</p>
+          <p className="text-[#666D7A] text-sm font-medium mb-1">No campaigns yet</p>
+          <p className="text-[#98A0AD] text-[12.5px] mb-6">Send email or SMS broadcasts to your leads and clients</p>
           <Link
             href="/dashboard/business/campaigns/new"
             className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-sm font-semibold px-4 py-2 rounded-lg transition-colors"

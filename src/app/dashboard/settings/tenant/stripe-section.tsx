@@ -36,7 +36,7 @@ export function StripeConnectSection({
         ? 'bg-red-100 text-red-700'
         : stripeAccountStatus === 'pending'
           ? 'bg-amber-100 text-amber-700'
-          : 'bg-stone-100 text-stone-500'
+          : 'bg-[#F4F6F9] text-[#666D7A]'
 
   const resultBanner =
     searchStatus === 'active' ? (
@@ -62,12 +62,12 @@ export function StripeConnectSection({
     ) : null
 
   return (
-    <div className="mb-4 bg-white border border-stone-200 rounded-xl overflow-hidden">
-      <div className="px-5 py-3 border-b border-stone-200 bg-stone-50">
-        <h3 className="text-[13px] font-bold text-stone-900 uppercase tracking-widest">Stripe Connect</h3>
+    <div className="mb-4 bg-white border border-[#E8EAEE] rounded-xl overflow-hidden">
+      <div className="px-5 py-3 border-b border-[#E8EAEE] bg-[#FBFCFD]">
+        <h3 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Stripe Connect</h3>
       </div>
       <div className="p-5">
-        <p className="text-[13px] text-stone-600 leading-relaxed mb-4">
+        <p className="text-[13px] text-[#666D7A] leading-relaxed mb-4">
           Connect your Stripe account to accept payments directly from your clients. Your customers pay you, and Stripe deposits into your bank account. The platform is the payment processor; your clients never see &quot;Body Recode&quot; on a receipt.
         </p>
 
@@ -78,10 +78,10 @@ export function StripeConnectSection({
         )}
 
         <div className="mb-4 flex items-center gap-3">
-          <span className="text-[11px] font-bold text-stone-500 uppercase tracking-widest">Status</span>
-          <span className={`text-[11px] font-bold uppercase tracking-widest px-2 py-0.5 rounded ${statusTone}`}>{statusLabel}</span>
+          <span className="text-[11px] font-medium text-[#666D7A]">Status</span>
+          <span className={`text-[12px] font-medium px-2 py-0.5 rounded ${statusTone}`}>{statusLabel}</span>
           {stripeAccountId && (
-            <span className="text-[11px] font-mono text-stone-500 break-all">{stripeAccountId}</span>
+            <span className="text-[11px] font-mono text-[#666D7A] break-all">{stripeAccountId}</span>
           )}
         </div>
 
@@ -94,7 +94,7 @@ export function StripeConnectSection({
             {pending ? 'Opening Stripe…' : stripeAccountId ? 'Continue onboarding' : 'Connect Stripe'}
           </button>
         ) : (
-          <div className="text-[13px] text-stone-600 leading-relaxed">
+          <div className="text-[13px] text-[#666D7A] leading-relaxed">
             Fully onboarded. To view your Stripe dashboard, log in at{' '}
             <a href="https://dashboard.stripe.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 underline">
               dashboard.stripe.com

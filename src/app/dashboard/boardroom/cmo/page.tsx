@@ -10,8 +10,8 @@ export const revalidate = 0
 
 function BriefingSkeleton({ persona }: { persona: string }) {
   return (
-    <div className="mb-8 p-4 rounded-xl border border-stone-200 bg-stone-50 text-[13px] text-stone-500 leading-relaxed">
-      <strong className="text-stone-900">{persona}</strong> is drafting the briefing…
+    <div className="mb-8 p-4 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] text-[13px] text-[#666D7A] leading-relaxed">
+      <strong className="text-[#141821]">{persona}</strong> is drafting the briefing…
     </div>
   )
 }
@@ -32,13 +32,13 @@ export default async function CmoPage() {
       </Suspense>
 
       <div className="mb-6 flex items-center gap-3">
-        <span className="text-[9px] font-bold uppercase tracking-widest bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Live data</span>
-        <span className="text-[11px] text-stone-500 font-mono">
+        <span className="text-[9px] font-medium bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Live data</span>
+        <span className="text-[11px] text-[#666D7A] font-mono">
           Snapshot at {new Date(snap.computedAt).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane' })} AEST
         </span>
       </div>
 
-      <h3 className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">Funnel volumes (trailing 30d)</h3>
+      <h3 className="text-[11px] font-medium text-[#666D7A] mb-3">Funnel volumes (trailing 30d)</h3>
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
         <FunnelStep label="Scorecards" value={snap.scorecardsCompleted30d} />
         <FunnelStep label="Leads" value={snap.leadsCaptured30d} />
@@ -47,7 +47,7 @@ export default async function CmoPage() {
         <FunnelStep label="Membership" value={snap.membershipStarts30d} />
       </div>
 
-      <h3 className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">Conversion rates</h3>
+      <h3 className="text-[11px] font-medium text-[#666D7A] mb-3">Conversion rates</h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <Metric
           label="Scorecard → Challenge"
@@ -82,26 +82,26 @@ export default async function CmoPage() {
         />
       </div>
 
-      <h3 className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">Wave 1 status</h3>
-      <div className="mb-8 bg-white border border-stone-200 rounded-2xl p-5">
+      <h3 className="text-[11px] font-medium text-[#666D7A] mb-3">Wave 1 status</h3>
+      <div className="mb-8 bg-white border border-[#E8EAEE] rounded-xl p-5">
         <div className="flex items-baseline justify-between mb-3 gap-4 flex-wrap">
           <div>
-            <div className="text-[11px] font-bold text-stone-500 uppercase tracking-widest">
+            <div className="text-[11px] font-medium text-[#666D7A]">
               Current wave
             </div>
-            <div className="text-[24px] font-bold text-stone-900 mt-1">
+            <div className="text-[24px] font-bold text-[#141821] mt-1">
               Wave {snap.waveNumber ?? '?'} · {snap.waveLabel ?? 'unknown'}
             </div>
           </div>
           <div className="text-right">
-            <div className="text-[11px] font-bold text-stone-500 uppercase tracking-widest">Fill</div>
-            <div className="text-[24px] font-bold text-stone-900 mt-1 font-mono">
+            <div className="text-[11px] font-medium text-[#666D7A]">Fill</div>
+            <div className="text-[24px] font-bold text-[#141821] mt-1 font-mono">
               {snap.waveFilled ?? '?'} / {snap.waveCap ?? '?'}
             </div>
           </div>
         </div>
         {snap.waveFillPct !== null && (
-          <div className="w-full h-2 bg-stone-100 rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-[#F4F6F9] rounded-full overflow-hidden">
             <div
               className={`h-full ${
                 snap.waveFillPct >= 100
@@ -116,7 +116,7 @@ export default async function CmoPage() {
         )}
       </div>
 
-      <h3 className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">Ad performance (last 30d)</h3>
+      <h3 className="text-[11px] font-medium text-[#666D7A] mb-3">Ad performance (last 30d)</h3>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         <Metric
           label="Ad spend 30d"
@@ -152,7 +152,7 @@ export default async function CmoPage() {
         />
       </div>
 
-      <h3 className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">Content pulse</h3>
+      <h3 className="text-[11px] font-medium text-[#666D7A] mb-3">Content pulse</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         <Metric
           label="Posts last 7d"
@@ -175,9 +175,9 @@ export default async function CmoPage() {
 
 function FunnelStep({ label, value }: { label: string; value: number | null }) {
   return (
-    <div className="bg-white border border-stone-200 rounded-xl p-3 text-center">
-      <div className="text-[9px] font-bold text-stone-500 uppercase tracking-widest mb-1">{label}</div>
-      <div className="text-[22px] font-bold text-stone-900 font-mono">
+    <div className="bg-white border border-[#E8EAEE] rounded-xl p-3 text-center">
+      <div className="text-[9px] font-medium text-[#666D7A] mb-1">{label}</div>
+      <div className="text-[22px] font-bold text-[#141821] font-mono">
         {value !== null ? value.toLocaleString() : '—'}
       </div>
     </div>
@@ -198,18 +198,18 @@ function Metric({
   large?: boolean
 }) {
   const valueColor = {
-    default: 'text-stone-900',
-    stone: 'text-stone-400',
+    default: 'text-[#141821]',
+    stone: 'text-[#98A0AD]',
     green: 'text-green-700',
     amber: 'text-amber-700',
     red: 'text-red-700',
   }[tone]
   const size = large ? 'text-[28px]' : 'text-[22px]'
   return (
-    <div className="bg-white border border-stone-200 rounded-2xl p-5">
-      <div className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-2">{label}</div>
+    <div className="bg-white border border-[#E8EAEE] rounded-xl p-5">
+      <div className="text-[11px] font-medium text-[#666D7A] mb-2">{label}</div>
       <div className={`${size} font-bold ${valueColor} mb-1 font-mono`}>{value}</div>
-      {hint && <div className="text-[11px] text-stone-500 leading-relaxed">{hint}</div>}
+      {hint && <div className="text-[11px] text-[#666D7A] leading-relaxed">{hint}</div>}
     </div>
   )
 }

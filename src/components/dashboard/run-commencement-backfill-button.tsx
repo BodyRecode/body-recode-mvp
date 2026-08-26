@@ -62,21 +62,21 @@ export default function RunCommencementBackfillButton() {
         {pending ? 'Backfilling…' : 'Backfill commencement fees'}
       </button>
 
-      {error && <p className="text-xs text-red-700 mt-2">Error: {error}</p>}
+      {error && <p className="text-[12.5px] text-red-700 mt-2">Error: {error}</p>}
 
       {result && (
-        <div className="mt-3 bg-stone-100 border border-stone-200 rounded-xl p-4 text-xs space-y-1.5">
+        <div className="mt-3 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 text-[12.5px] space-y-1.5">
           <div className="flex items-center gap-1.5 text-blue-500 mb-1">
             <CheckCircle2 size={13} />
             <span className="font-medium">Backfill complete</span>
           </div>
-          <p className="text-stone-700">
-            <span className="text-stone-500">Scanned:</span> {result.scanned}
-            <span className="text-stone-500 ml-3">Unique clients:</span> {result.uniqueClients}
+          <p className="text-[#141821]">
+            <span className="text-[#666D7A]">Scanned:</span> {result.scanned}
+            <span className="text-[#666D7A] ml-3">Unique clients:</span> {result.uniqueClients}
           </p>
-          <p className="text-stone-700">
-            <span className="text-stone-500">Newly marked paid:</span> {result.newlyMarked}
-            <span className="text-stone-500 ml-3">Already marked:</span> {result.alreadyMarked}
+          <p className="text-[#141821]">
+            <span className="text-[#666D7A]">Newly marked paid:</span> {result.newlyMarked}
+            <span className="text-[#666D7A] ml-3">Already marked:</span> {result.alreadyMarked}
             {result.failed > 0 && (
               <span className="text-amber-700 ml-3">Failed: {result.failed}</span>
             )}

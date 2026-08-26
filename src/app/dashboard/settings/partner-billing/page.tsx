@@ -107,8 +107,8 @@ export default async function PartnerBillingAdminPage() {
       </div>
 
       {rows.length === 0 ? (
-        <div className="p-8 rounded-2xl border border-stone-200 bg-stone-50 text-center text-[13px] text-stone-500">
-          No Collective Partners on file yet. When a partner signs the Collective Partner Agreement, set <code className="bg-white border border-stone-200 px-1 py-0.5 rounded">licence.partnerBilling</code> on their <code className="bg-white border border-stone-200 px-1 py-0.5 rounded">tenant_config</code> row with tier + locked prices + Stripe customer id.
+        <div className="p-8 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] text-center text-[13px] text-[#666D7A]">
+          No Collective Partners on file yet. When a partner signs the Collective Partner Agreement, set <code className="bg-white border border-[#E8EAEE] px-1 py-0.5 rounded">licence.partnerBilling</code> on their <code className="bg-white border border-[#E8EAEE] px-1 py-0.5 rounded">tenant_config</code> row with tier + locked prices + Stripe customer id.
         </div>
       ) : (
         <div className="space-y-6">
@@ -118,19 +118,19 @@ export default async function PartnerBillingAdminPage() {
             const perClient = pb.perActiveClientCents ?? 2000
             const currentMonthRevenue = currentMonthCount * perClient
             return (
-              <section key={row.coach_id} className="bg-white border border-stone-200 rounded-2xl overflow-hidden">
-                <div className="px-5 py-4 border-b border-stone-200 bg-stone-50">
+              <section key={row.coach_id} className="bg-white border border-[#E8EAEE] rounded-xl overflow-hidden">
+                <div className="px-5 py-4 border-b border-[#E8EAEE] bg-[#FBFCFD]">
                   <div className="flex items-baseline justify-between gap-3 flex-wrap">
                     <div>
-                      <div className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">{row.licence.tenantId}</div>
-                      <h2 className="text-[18px] font-bold text-stone-900 mt-0.5">{row.brand?.name ?? row.coach?.fullName}</h2>
-                      <div className="text-[11px] text-stone-500 mt-0.5">{row.coach?.fullName} · {row.coach?.email}</div>
+                      <div className="text-[10px] font-medium text-[#666D7A]">{row.licence.tenantId}</div>
+                      <h2 className="text-[18px] font-bold text-[#141821] mt-0.5">{row.brand?.name ?? row.coach?.fullName}</h2>
+                      <div className="text-[11px] text-[#666D7A] mt-0.5">{row.coach?.fullName} · {row.coach?.email}</div>
                     </div>
                     <div className="text-right">
-                      <div className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">Tier</div>
+                      <div className="text-[10px] font-medium text-[#666D7A]">Tier</div>
                       <div className="text-[16px] font-bold text-blue-700 mt-0.5 capitalize">{pb.tier}</div>
                       {pb.activeFrom && (
-                        <div className="text-[10px] font-mono text-stone-400 mt-0.5">since {new Date(pb.activeFrom).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+                        <div className="text-[10px] font-mono text-[#98A0AD] mt-0.5">since {new Date(pb.activeFrom).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
                       )}
                     </div>
                   </div>
@@ -161,20 +161,20 @@ export default async function PartnerBillingAdminPage() {
                     />
                   </div>
 
-                  <div className="mb-3 text-[11px] font-bold text-stone-500 uppercase tracking-widest">6-month history</div>
-                  <table className="w-full text-[12px] border border-stone-200 rounded-lg overflow-hidden">
-                    <thead className="bg-stone-50">
+                  <div className="mb-3 text-[11px] font-medium text-[#666D7A]">6-month history</div>
+                  <table className="w-full text-[12px] border border-[#E8EAEE] rounded-lg overflow-hidden">
+                    <thead className="bg-[#FBFCFD]">
                       <tr>
-                        <th className="text-left px-3 py-2 font-bold text-stone-500 text-[10px] uppercase tracking-widest">Month</th>
-                        <th className="text-right px-3 py-2 font-bold text-stone-500 text-[10px] uppercase tracking-widest">Active clients</th>
-                        <th className="text-right px-3 py-2 font-bold text-stone-500 text-[10px] uppercase tracking-widest">Per-client revenue</th>
-                        <th className="text-right px-3 py-2 font-bold text-stone-500 text-[10px] uppercase tracking-widest">Billed</th>
+                        <th className="text-left px-3 py-2 font-medium text-[#666D7A] text-[10px]">Month</th>
+                        <th className="text-right px-3 py-2 font-medium text-[#666D7A] text-[10px]">Active clients</th>
+                        <th className="text-right px-3 py-2 font-medium text-[#666D7A] text-[10px]">Per-client revenue</th>
+                        <th className="text-right px-3 py-2 font-medium text-[#666D7A] text-[10px]">Billed</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-stone-100">
                       {history.length === 0 ? (
                         <tr>
-                          <td colSpan={4} className="px-3 py-3 text-center text-stone-400 italic">No monthly rows yet. Cron runs on the 1st of each month.</td>
+                          <td colSpan={4} className="px-3 py-3 text-center text-[#98A0AD] italic">No monthly rows yet. Cron runs on the 1st of each month.</td>
                         </tr>
                       ) : history.map((h) => (
                         <tr key={h.month_start}>
@@ -199,7 +199,7 @@ export default async function PartnerBillingAdminPage() {
                         href={`https://dashboard.stripe.com/customers/${pb.customerId}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 px-2 py-1 rounded bg-stone-100 hover:bg-blue-100 text-stone-700 hover:text-blue-700 font-mono"
+                        className="inline-flex items-center gap-1 px-2 py-1 rounded bg-[#F4F6F9] hover:bg-blue-100 text-[#141821] hover:text-blue-700 font-mono"
                       >
                         Stripe: {pb.customerId} →
                       </a>
@@ -209,7 +209,7 @@ export default async function PartnerBillingAdminPage() {
                         href={`https://dashboard.stripe.com/subscriptions/${pb.subscriptionId}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 px-2 py-1 rounded bg-stone-100 hover:bg-blue-100 text-stone-700 hover:text-blue-700 font-mono"
+                        className="inline-flex items-center gap-1 px-2 py-1 rounded bg-[#F4F6F9] hover:bg-blue-100 text-[#141821] hover:text-blue-700 font-mono"
                       >
                         Sub: {pb.subscriptionId} →
                       </a>
@@ -222,9 +222,9 @@ export default async function PartnerBillingAdminPage() {
         </div>
       )}
 
-      <div className="mt-8 p-4 rounded-xl border border-stone-200 bg-stone-50 text-[12px] text-stone-600 leading-relaxed">
-        <p><strong className="text-stone-900">How this page works.</strong> Each Collective Partner has <code className="bg-white border border-stone-200 px-1 py-0.5 rounded">licence.partnerBilling</code> set on their <code className="bg-white border border-stone-200 px-1 py-0.5 rounded">tenant_config</code> row (tier + locked prices + Stripe customer). A monthly Inngest cron computes Active Client counts and writes rows to <code className="bg-white border border-stone-200 px-1 py-0.5 rounded">partner_active_client_counts</code>. This page reads both.</p>
-        <p className="mt-2"><strong className="text-stone-900">Invoicing.</strong> v1 is manual. Use the numbers above to create an invoice in Stripe. Mark the month as billed when done (v2 will do this automatically). Setup fee is a one-time invoice at partnership commencement; the locked monthly subscription is a Stripe subscription; the per-active-client fee is a monthly usage invoice for the previous month.</p>
+      <div className="mt-8 p-4 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] text-[12px] text-[#666D7A] leading-relaxed">
+        <p><strong className="text-[#141821]">How this page works.</strong> Each Collective Partner has <code className="bg-white border border-[#E8EAEE] px-1 py-0.5 rounded">licence.partnerBilling</code> set on their <code className="bg-white border border-[#E8EAEE] px-1 py-0.5 rounded">tenant_config</code> row (tier + locked prices + Stripe customer). A monthly Inngest cron computes Active Client counts and writes rows to <code className="bg-white border border-[#E8EAEE] px-1 py-0.5 rounded">partner_active_client_counts</code>. This page reads both.</p>
+        <p className="mt-2"><strong className="text-[#141821]">Invoicing.</strong> v1 is manual. Use the numbers above to create an invoice in Stripe. Mark the month as billed when done (v2 will do this automatically). Setup fee is a one-time invoice at partnership commencement; the locked monthly subscription is a Stripe subscription; the per-active-client fee is a monthly usage invoice for the previous month.</p>
         <p className="mt-2">Related: <Link href="/dashboard/settings/tenants" className="text-blue-600 hover:text-blue-700 underline">Tenant registry</Link>, <Link href="/dashboard/settings/platform-buildout" className="text-blue-600 hover:text-blue-700 underline">Platform Buildout</Link>.</p>
       </div>
     </div>
@@ -233,17 +233,17 @@ export default async function PartnerBillingAdminPage() {
 
 function MetricTile({ label, value, hint, tone = 'default' }: { label: string; value: string; hint?: string; tone?: 'default' | 'stone' | 'green' | 'amber' | 'red' }) {
   const valueColor = {
-    default: 'text-stone-900',
-    stone: 'text-stone-400',
+    default: 'text-[#141821]',
+    stone: 'text-[#98A0AD]',
     green: 'text-green-700',
     amber: 'text-amber-700',
     red: 'text-red-700',
   }[tone]
   return (
-    <div className="bg-white border border-stone-200 rounded-xl p-3">
-      <div className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">{label}</div>
+    <div className="bg-white border border-[#E8EAEE] rounded-xl p-3">
+      <div className="text-[10px] font-medium text-[#666D7A] mb-1">{label}</div>
       <div className={`text-[20px] font-bold ${valueColor} font-mono`}>{value}</div>
-      {hint && <div className="text-[10px] text-stone-500 mt-0.5 capitalize">{hint}</div>}
+      {hint && <div className="text-[10px] text-[#666D7A] mt-0.5 capitalize">{hint}</div>}
     </div>
   )
 }

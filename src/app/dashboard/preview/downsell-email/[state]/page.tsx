@@ -81,14 +81,14 @@ export default async function PreviewDownsellEmail({
   return (
     <div className="max-w-3xl space-y-10">
       <div>
-        <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1">Previewing</p>
-        <h1 className="text-xl font-semibold text-[#1A1A1A]">{stateLabel} State - Downsell Emails</h1>
-        <p className="text-sm text-stone-500 mt-1">Using placeholder name "Sarah". Buttons are non-functional in preview.</p>
+        <p className="text-[12.5px] font-semibold text-[#666D7A] mb-1">Previewing</p>
+        <h1 className="text-xl font-semibold text-[#141821]">{stateLabel} State - Downsell Emails</h1>
+        <p className="text-sm text-[#666D7A] mt-1">Using placeholder name "Sarah". Buttons are non-functional in preview.</p>
       </div>
 
       <div>
-        <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Email 1 - Offer (sent on decline)</p>
-        <div className="rounded-xl overflow-hidden border border-stone-200">
+        <p className="text-[12.5px] font-semibold text-[#666D7A] mb-3">Email 1 - Offer (sent on decline)</p>
+        <div className="rounded-xl overflow-hidden border border-[#E8EAEE]">
           <iframe
             srcDoc={offerHtml}
             className="w-full border-0"
@@ -98,8 +98,8 @@ export default async function PreviewDownsellEmail({
       </div>
 
       <div>
-        <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Email 2 - Delivery (sent after payment)</p>
-        <div className="rounded-xl overflow-hidden border border-stone-200">
+        <p className="text-[12.5px] font-semibold text-[#666D7A] mb-3">Email 2 - Delivery (sent after payment)</p>
+        <div className="rounded-xl overflow-hidden border border-[#E8EAEE]">
           <iframe
             srcDoc={deliveryHtml}
             className="w-full border-0"
@@ -113,7 +113,7 @@ export default async function PreviewDownsellEmail({
           <a
             key={s}
             href={`/dashboard/preview/downsell-email/${s}`}
-            className={`text-sm font-medium px-4 py-2 rounded-lg border transition-colors ${s === state ? 'bg-blue-50 border-blue-200 text-blue-500' : 'border-stone-300 text-stone-600 hover:text-[#1A1A1A] hover:border-stone-500'}`}
+            className={`text-sm font-medium px-4 py-2 rounded-lg border transition-colors ${s === state ? 'bg-blue-50 border-blue-200 text-blue-500' : 'border-[#E8EAEE] text-[#666D7A] hover:text-[#141821] hover:border-[#CFD4DC]'}`}
           >
             {STATE_LABELS[s]}
           </a>

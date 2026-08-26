@@ -158,7 +158,7 @@ export default async function MessagesInboxPage({
             <MessageSearch initialQuery={sp.q ?? ''} selectedClientId={selected.clientId} />
 
             {visible.length === 0 && (
-              <p className="text-[12px] text-[#999999] px-1 py-3">
+              <p className="text-[12px] text-[#98A0AD] px-1 py-3">
                 Nothing matches &ldquo;{sp.q}&rdquo;.
               </p>
             )}
@@ -176,21 +176,21 @@ export default async function MessagesInboxPage({
                   className={`block rounded-xl border px-4 py-3 transition-colors ${
                     isSelected
                       ? 'border-[#1B6DFC] bg-[#F3F7FF]'
-                      : 'border-[#E5E5E5] bg-[#FFFFFF] hover:border-[#1B6DFC]/40 hover:bg-[#FAFBFD]'
+                      : 'border-[#E8EAEE] bg-[#FFFFFF] hover:border-[#1B6DFC]/40 hover:bg-[#FAFBFD]'
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2 mb-1">
-                    <p className={`text-[13px] font-bold truncate ${isSelected ? 'text-[#1B6DFC]' : 'text-[#1A1A1A]'}`}>
+                    <p className={`text-[13px] font-bold truncate ${isSelected ? 'text-[#1B6DFC]' : 'text-[#141821]'}`}>
                       {name}
                     </p>
                     <div className="flex items-center gap-1.5 shrink-0">
                       {c.ended && (
-                        <span className="text-[9px] font-bold uppercase tracking-wider text-[#999999] border border-[#E5E5E5] rounded px-1 py-px">
+                        <span className="text-[9px] font-medium text-[#98A0AD] border border-[#E8EAEE] rounded px-1 py-px">
                           Ended
                         </span>
                       )}
                       {c.awaitingReply && <span className="w-2 h-2 rounded-full bg-[#1B6DFC]" aria-label="Awaiting reply" />}
-                      {c.latest && <span className="text-[10px] text-[#999999]">{when(c.latest.created_at)}</span>}
+                      {c.latest && <span className="text-[10px] text-[#98A0AD]">{when(c.latest.created_at)}</span>}
                     </div>
                   </div>
                   {/* How long they have been waiting is the actionable number,
@@ -200,9 +200,9 @@ export default async function MessagesInboxPage({
                       Waiting {when(c.waitingSince).replace(' ago', '')}
                     </p>
                   )}
-                  <p className="text-[11px] text-[#6B6B6B] leading-snug line-clamp-2">
+                  <p className="text-[11px] text-[#666D7A] leading-snug line-clamp-2">
                     {preview === null ? (
-                      <span className="italic text-[#999999]">No messages yet</span>
+                      <span className="italic text-[#98A0AD]">No messages yet</span>
                     ) : (
                       <>
                         {c.latest!.sender === 'coach' ? 'You: ' : ''}
@@ -231,15 +231,15 @@ export default async function MessagesInboxPage({
               thread at a time, so there is no reason to hide history from the
               coach that the client can already see. */}
           <Card accent={selected.awaitingReply ? 'blue' : undefined}>
-            <div className="flex items-center justify-between gap-3 mb-5 pb-4 border-b border-[#E5E5E5]">
+            <div className="flex items-center justify-between gap-3 mb-5 pb-4 border-b border-[#E8EAEE]">
               <div className="min-w-0">
                 <Link
                   href={`/dashboard/clients/${selected.clientId}`}
-                  className="text-[16px] font-bold text-[#1A1A1A] hover:text-[#1B6DFC] transition-colors"
+                  className="text-[16px] font-bold text-[#141821] hover:text-[#1B6DFC] transition-colors"
                 >
                   {selectedName}
                 </Link>
-                <p className="text-[12px] text-[#999999] mt-0.5">
+                <p className="text-[12px] text-[#98A0AD] mt-0.5">
                   {selected.thread.length} message{selected.thread.length === 1 ? '' : 's'}
                   {selected.awaitingReply && ' · awaiting your reply'}
                   {selected.handled && ' · handled elsewhere'}
@@ -250,7 +250,7 @@ export default async function MessagesInboxPage({
                 <Link
                   href={`/portal/${selectedClient.onboarding_token}/message`}
                   target="_blank"
-                  className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#6B6B6B] hover:text-[#1B6DFC] transition-colors shrink-0"
+                  className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#666D7A] hover:text-[#1B6DFC] transition-colors shrink-0"
                 >
                   <ExternalLink size={12} />
                   Their view
@@ -276,7 +276,7 @@ export default async function MessagesInboxPage({
             />
 
             {selected.thread.length === 0 && (
-              <p className="text-[12px] text-[#999999] mt-6 text-center py-6 border-t border-[#E5E5E5]">
+              <p className="text-[12px] text-[#98A0AD] mt-6 text-center py-6 border-t border-[#E8EAEE]">
                 No messages with {selectedFirstName} yet. Whatever you send lands in their portal and their inbox.
               </p>
             )}
@@ -288,15 +288,15 @@ export default async function MessagesInboxPage({
                   className={
                     m.sender === 'coach'
                       ? 'rounded-xl bg-[#F3F7FF] border border-[rgba(27,109,252,0.25)] px-4 py-3 ml-8'
-                      : 'rounded-xl bg-[#F7F7F7] border border-[#E5E5E5] px-4 py-3 mr-8'
+                      : 'rounded-xl bg-[#F7F7F7] border border-[#E8EAEE] px-4 py-3 mr-8'
                   }
                 >
                   <div className="flex items-center justify-between mb-1.5">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-[#999999]">
+                    <p className="text-[11.5px] font-medium text-[#98A0AD]">
                       {m.sender === 'coach' ? 'You' : selectedFirstName}
                     </p>
                     <div className="flex items-center gap-2 shrink-0">
-                      <span className="text-[10px] text-[#999999]">{when(m.created_at)}</span>
+                      <span className="text-[10px] text-[#98A0AD]">{when(m.created_at)}</span>
                       {/* Read receipt. Only meaningful on the coach's own
                           messages: it is stamped when the client opens their
                           portal thread. */}
@@ -310,7 +310,7 @@ export default async function MessagesInboxPage({
                             Read {when(m.client_read_at).replace(' ago', '')}
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-medium text-[#999999]">
+                          <span className="inline-flex items-center gap-1 text-[10px] font-medium text-[#98A0AD]">
                             <Check size={12} />
                             Not read yet
                           </span>
@@ -330,7 +330,7 @@ export default async function MessagesInboxPage({
                       {anchorChipLabel(m.anchor_kind, m.anchor_label)} →
                     </Link>
                   )}
-                  <p className="text-[14px] text-[#3A3A3A] leading-relaxed whitespace-pre-wrap">{m.body}</p>
+                  <p className="text-[14px] text-[#43474F] leading-relaxed whitespace-pre-wrap">{m.body}</p>
                 </div>
               ))}
             </div>

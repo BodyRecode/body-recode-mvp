@@ -58,8 +58,8 @@ export default async function CoachRoutineEditorPage({
       />
 
       <div className="mt-10 mb-4 flex items-center gap-3">
-        <h2 className="text-lg font-semibold text-[#1A1A1A]">Live routine</h2>
-        <span className="text-[10px] text-stone-500 uppercase tracking-widest">What the client sees on their portal</span>
+        <h2 className="text-lg font-semibold text-[#141821]">Live routine</h2>
+        <span className="text-[10px] text-[#666D7A]">What the client sees on their portal</span>
       </div>
 
       <RoutineEditor

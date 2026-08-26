@@ -36,7 +36,7 @@ export default function RefreshStripeButton({ clientId }: { clientId: string }) 
       type="button"
       onClick={refresh}
       disabled={pending}
-      className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-stone-600 hover:text-[#1B6DFC] border border-stone-200 hover:border-[#1B6DFC] hover:bg-blue-50 rounded-lg transition-colors disabled:opacity-50"
+      className="flex items-center gap-1.5 px-3 py-1.5 text-[12.5px] font-medium text-[#666D7A] hover:text-[#1B6DFC] border border-[#E8EAEE] hover:border-[#1B6DFC] hover:bg-blue-50 rounded-lg transition-colors disabled:opacity-50"
     >
       <RefreshCw size={12} className={pending ? 'animate-spin' : ''} />
       {pending ? 'Syncing…' : 'Refresh from Stripe'}

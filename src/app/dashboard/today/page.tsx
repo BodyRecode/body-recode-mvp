@@ -202,25 +202,25 @@ export default function TodayDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-50 text-[#1A1A1A]">
+    <div className="min-h-screen bg-[#FBFCFD] text-[#141821]">
       <div className="max-w-3xl mx-auto px-4 py-6 sm:px-6 sm:py-8">
         {/* Header */}
         <div className="mb-5">
           <div className="flex items-center gap-2 mb-1 flex-wrap">
-            <span className="text-xs font-bold text-blue-600 uppercase tracking-widest">Today</span>
-            {runbookEntry && <span className="text-xs font-semibold text-stone-600 bg-white border border-stone-300 px-2 py-0.5 rounded">{runbookEntry.label}</span>}
+            <span className="text-[12.5px] font-medium text-blue-600">Today</span>
+            {runbookEntry && <span className="text-[12.5px] font-semibold text-[#666D7A] bg-white border border-[#E8EAEE] px-2 py-0.5 rounded">{runbookEntry.label}</span>}
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{dateLabel}</h1>
+          <h1 className="text-2xl sm:text-[26px] font-semibold tracking-[-0.035em] tracking-tight">{dateLabel}</h1>
           <div className="flex items-center gap-2 mt-3 flex-wrap">
-            <button onClick={() => setDate(dateOffset(-1))} className="text-xs bg-white border border-stone-300 px-3 py-1.5 rounded font-medium hover:bg-stone-100">← Yesterday</button>
-            <button onClick={() => setDate(todayIso())} className="text-xs bg-blue-500 text-white px-3 py-1.5 rounded font-medium hover:bg-blue-600">Today</button>
-            <button onClick={() => setDate(dateOffset(1))} className="text-xs bg-white border border-stone-300 px-3 py-1.5 rounded font-medium hover:bg-stone-100">Tomorrow →</button>
-            <input type="date" value={date} onChange={e => setDate(e.target.value)} className="text-xs bg-white border border-stone-300 px-2 py-1 rounded font-medium" />
-            <button onClick={load} className="text-xs bg-stone-200 hover:bg-stone-300 text-stone-700 px-3 py-1.5 rounded font-medium ml-auto">↻ Refresh</button>
+            <button onClick={() => setDate(dateOffset(-1))} className="text-[12.5px] bg-white border border-[#E8EAEE] px-3 py-1.5 rounded font-medium hover:bg-[#F4F6F9]">← Yesterday</button>
+            <button onClick={() => setDate(todayIso())} className="text-[12.5px] bg-blue-500 text-white px-3 py-1.5 rounded font-medium hover:bg-blue-600">Today</button>
+            <button onClick={() => setDate(dateOffset(1))} className="text-[12.5px] bg-white border border-[#E8EAEE] px-3 py-1.5 rounded font-medium hover:bg-[#F4F6F9]">Tomorrow →</button>
+            <input type="date" value={date} onChange={e => setDate(e.target.value)} className="text-[12.5px] bg-white border border-[#E8EAEE] px-2 py-1 rounded font-medium" />
+            <button onClick={load} className="text-[12.5px] bg-[#EFF1F4] hover:bg-stone-300 text-[#141821] px-3 py-1.5 rounded font-medium ml-auto">↻ Refresh</button>
           </div>
         </div>
 
-        {loading && <p className="text-sm text-stone-500">Loading…</p>}
+        {loading && <p className="text-sm text-[#666D7A]">Loading…</p>}
 
         {!loading && (
           <>
@@ -231,8 +231,8 @@ export default function TodayDashboardPage() {
                   <Row key={post.id}>
                     <div className="flex items-start gap-2 flex-wrap">
                       <span className={`text-xs font-bold px-2 py-0.5 rounded ${tr.mins < 0 ? 'bg-red-100 text-red-700' : tr.mins < 30 ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'}`}>{post.time}</span>
-                      <span className={`text-xs font-semibold ${tr.mins < 0 ? 'text-red-700' : 'text-stone-600'}`}>{tr.label}</span>
-                      <span className="text-xs text-stone-500 uppercase tracking-wide">{post.type}</span>
+                      <span className={`text-xs font-semibold ${tr.mins < 0 ? 'text-red-700' : 'text-[#666D7A]'}`}>{tr.label}</span>
+                      <span className="text-[12.5px] text-[#666D7A]">{post.type}</span>
                     </div>
                     <p className="text-sm font-medium mt-1">{post.title}</p>
                   </Row>
@@ -246,17 +246,17 @@ export default function TodayDashboardPage() {
                 {feedPosts.map(p => {
                   const status = p.posted_at ? 'posted' : p.scheduled_publish_at ? 'scheduled' : p.scheduled ? 'marked_scheduled' : 'pending'
                   const statusEl = status === 'posted'
-                    ? <a href={p.ig_post_url ?? '#'} target="_blank" rel="noopener noreferrer" className="text-xs font-semibold text-green-700 bg-green-50 border border-green-300 px-2 py-0.5 rounded">✓ Posted</a>
-                    : status === 'scheduled' ? <span className="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 px-2 py-0.5 rounded inline-flex items-center gap-1"><Clock size={11} strokeWidth={2.5} /> Scheduled</span>
-                    : status === 'marked_scheduled' ? <span className="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-300 px-2 py-0.5 rounded inline-flex items-center gap-1"><Clock size={11} strokeWidth={2.5} /> Marked</span>
-                    : <span className="text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-300 px-2 py-0.5 rounded">Pending</span>
+                    ? <a href={p.ig_post_url ?? '#'} target="_blank" rel="noopener noreferrer" className="text-[12.5px] font-semibold text-green-700 bg-green-50 border border-green-300 px-2 py-0.5 rounded">✓ Posted</a>
+                    : status === 'scheduled' ? <span className="text-[12.5px] font-semibold text-blue-700 bg-blue-50 border border-blue-300 px-2 py-0.5 rounded inline-flex items-center gap-1"><Clock size={11} strokeWidth={2.5} /> Scheduled</span>
+                    : status === 'marked_scheduled' ? <span className="text-[12.5px] font-semibold text-blue-700 bg-blue-50 border border-blue-300 px-2 py-0.5 rounded inline-flex items-center gap-1"><Clock size={11} strokeWidth={2.5} /> Marked</span>
+                    : <span className="text-[12.5px] font-semibold text-amber-700 bg-amber-50 border border-amber-300 px-2 py-0.5 rounded">Pending</span>
                   return (
                     <Row key={p.id}>
                       <div className="flex items-center gap-2 flex-wrap mb-1">
-                        <span className="text-xs font-semibold text-blue-500 bg-blue-50 border border-blue-500/20 px-2 py-0.5 rounded">{p.time ?? '—'}</span>
-                        <span className="text-[10px] font-medium text-stone-600 bg-stone-100 border border-stone-300 px-1.5 py-0.5 rounded uppercase">{p.brand?.replace('_', ' ') ?? 'br'}</span>
-                        <span className="text-[10px] font-medium text-stone-600 bg-stone-100 border border-stone-300 px-1.5 py-0.5 rounded uppercase">{p.platform ?? 'ig'}</span>
-                        <span className="text-[10px] font-medium text-stone-600 bg-stone-100 border border-stone-300 px-1.5 py-0.5 rounded uppercase">{p.type}</span>
+                        <span className="text-[12.5px] font-semibold text-blue-500 bg-blue-50 border border-blue-500/20 px-2 py-0.5 rounded">{p.time ?? '—'}</span>
+                        <span className="text-[10px] font-medium text-[#666D7A] bg-[#F4F6F9] border border-[#E8EAEE] px-1.5 py-0.5 rounded">{p.brand?.replace('_', ' ') ?? 'br'}</span>
+                        <span className="text-[10px] font-medium text-[#666D7A] bg-[#F4F6F9] border border-[#E8EAEE] px-1.5 py-0.5 rounded">{p.platform ?? 'ig'}</span>
+                        <span className="text-[10px] font-medium text-[#666D7A] bg-[#F4F6F9] border border-[#E8EAEE] px-1.5 py-0.5 rounded">{p.type}</span>
                         <span className="ml-auto">{statusEl}</span>
                       </div>
                       <p className="text-sm font-medium">{p.title}</p>
@@ -275,8 +275,8 @@ export default function TodayDashboardPage() {
                     <Row key={s.id} onClick={() => toggle(`story:${s.id}`)} interactive>
                       <div className="flex items-center gap-2">
                         <input type="checkbox" checked={checked} onChange={() => toggle(`story:${s.id}`)} className="cursor-pointer" />
-                        <span className="text-xs font-semibold text-blue-500 bg-blue-50 border border-blue-500/20 px-2 py-0.5 rounded">{s.time ?? '—'}</span>
-                        <span className={`text-sm font-medium ${checked ? 'line-through text-stone-400' : ''}`}>{s.title}</span>
+                        <span className="text-[12.5px] font-semibold text-blue-500 bg-blue-50 border border-blue-500/20 px-2 py-0.5 rounded">{s.time ?? '—'}</span>
+                        <span className={`text-sm font-medium ${checked ? 'line-through text-[#98A0AD]' : ''}`}>{s.title}</span>
                       </div>
                     </Row>
                   )
@@ -297,10 +297,10 @@ export default function TodayDashboardPage() {
                     <Row key={i} interactive>
                       <div className="flex items-start gap-2" onClick={() => toggle(key)}>
                         <input type="checkbox" checked={checked} onChange={() => toggle(key)} className="cursor-pointer mt-0.5" />
-                        <span className={`text-sm ${checked ? 'line-through text-stone-400' : 'text-stone-800 font-medium'}`}>{task}</span>
+                        <span className={`text-sm ${checked ? 'line-through text-[#98A0AD]' : 'text-[#141821] font-medium'}`}>{task}</span>
                       </div>
                       {instructions && !checked && (
-                        <div className="mt-1.5 ml-6 text-xs text-stone-600 leading-relaxed whitespace-pre-line">
+                        <div className="mt-1.5 ml-6 text-[12.5px] text-[#666D7A] leading-relaxed whitespace-pre-line">
                           {renderInstructionsWithLinks(instructions)}
                         </div>
                       )}
@@ -334,17 +334,17 @@ export default function TodayDashboardPage() {
                     <Row key={l.id}>
                       <div className="flex items-start gap-2">
                         {overdueDays > 0 && (
-                          <span className="text-xs font-bold text-red-700 bg-red-100 border border-red-300 px-2 py-0.5 rounded shrink-0">
+                          <span className="text-[12.5px] font-medium text-red-700 bg-red-100 border border-red-300 px-2 py-0.5 rounded shrink-0">
                             {overdueDays}d late
                           </span>
                         )}
                         <div className="min-w-0">
-                          <a href={`/dashboard/leads/${l.id}`} className="text-sm font-semibold text-stone-900 hover:text-[#1B6DFC]">
+                          <a href={`/dashboard/leads/${l.id}`} className="text-sm font-semibold text-[#141821] hover:text-[#1B6DFC]">
                             {l.name ?? 'Unnamed lead'}
                           </a>
-                          <span className="text-xs text-stone-500"> · {getLeadStatusLabel(l.status)}</span>
+                          <span className="text-[12.5px] text-[#666D7A]"> · {getLeadStatusLabel(l.status)}</span>
                           {l.follow_up_note && (
-                            <p className="text-xs text-stone-600 leading-relaxed mt-0.5">{l.follow_up_note}</p>
+                            <p className="text-[12.5px] text-[#666D7A] leading-relaxed mt-0.5">{l.follow_up_note}</p>
                           )}
                         </div>
                       </div>
@@ -357,7 +357,7 @@ export default function TodayDashboardPage() {
             {/* ⏳ STILL DECIDING — warm, waiting, not yet due */}
             {deciding.length > 0 && (
               <Section icon={Clock} title={`Still deciding (${deciding.length})`} tone="default">
-                <p className="text-xs text-stone-500 mb-2 leading-relaxed">
+                <p className="text-[12.5px] text-[#666D7A] mb-2 leading-relaxed">
                   Had a call, asked for time. Nothing is owed today, but they are warm and they are
                   waiting. Open one if something has changed.
                 </p>
@@ -372,16 +372,16 @@ export default function TodayDashboardPage() {
                       <div className="min-w-0">
                         <a
                           href={`/dashboard/leads/${l.id}`}
-                          className="text-sm font-semibold text-stone-900 hover:text-[#1B6DFC]"
+                          className="text-sm font-semibold text-[#141821] hover:text-[#1B6DFC]"
                         >
                           {l.name ?? 'Unnamed lead'}
                         </a>
-                        <span className="text-xs text-stone-500">
+                        <span className="text-[12.5px] text-[#666D7A]">
                           {' '}· {getLeadStatusLabel(l.status)} · you follow up in {daysUntil}d
                           {daysSinceCall !== null ? ` · call was ${daysSinceCall}d ago` : ''}
                         </span>
                         {l.follow_up_note && (
-                          <p className="text-xs text-stone-600 leading-relaxed mt-0.5">{l.follow_up_note}</p>
+                          <p className="text-[12.5px] text-[#666D7A] leading-relaxed mt-0.5">{l.follow_up_note}</p>
                         )}
                       </div>
                     </Row>
@@ -396,15 +396,15 @@ export default function TodayDashboardPage() {
                 {decisionsToday.map((d, i) => (
                   <Row key={`today-${i}`}>
                     <div className="flex items-start gap-2">
-                      <span className="text-xs font-bold text-red-700 bg-red-100 border border-red-300 px-2 py-0.5 rounded shrink-0">TODAY</span>
-                      <span className="text-sm text-stone-800">{d}</span>
+                      <span className="text-[12.5px] font-medium text-red-700 bg-red-100 border border-red-300 px-2 py-0.5 rounded shrink-0">TODAY</span>
+                      <span className="text-sm text-[#141821]">{d}</span>
                     </div>
                   </Row>
                 ))}
                 {upcomingDecisions.filter(u => u.date !== date).slice(0, 3).map((entry, i) => (
-                  <div key={`up-${i}`} className="border-t border-stone-200 pt-2 mt-2">
-                    <p className="text-xs font-semibold text-stone-600 mb-1">{new Date(entry.date + 'T00:00:00').toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' })} · {entry.label}</p>
-                    {entry.decisions.map((d, j) => <p key={j} className="text-xs text-stone-600 leading-relaxed pl-3">{d}</p>)}
+                  <div key={`up-${i}`} className="border-t border-[#E8EAEE] pt-2 mt-2">
+                    <p className="text-[12.5px] font-semibold text-[#666D7A] mb-1">{new Date(entry.date + 'T00:00:00').toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' })} · {entry.label}</p>
+                    {entry.decisions.map((d, j) => <p key={j} className="text-[12.5px] text-[#666D7A] leading-relaxed pl-3">{d}</p>)}
                   </div>
                 ))}
               </Section>
@@ -416,15 +416,15 @@ export default function TodayDashboardPage() {
                 {feedback.slice(0, 5).map(f => (
                   <Row key={f.id}>
                     <div className="flex items-start gap-2 flex-wrap">
-                      <span className="text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded">{f.stage}</span>
-                      <span className="text-xs text-stone-500">{f.moment}</span>
-                      <span className="text-xs text-stone-400 ml-auto">{new Date(f.created_at).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' })}</span>
+                      <span className="text-[12.5px] font-medium text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded">{f.stage}</span>
+                      <span className="text-[12.5px] text-[#666D7A]">{f.moment}</span>
+                      <span className="text-[12.5px] text-[#98A0AD] ml-auto">{new Date(f.created_at).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' })}</span>
                     </div>
-                    {f.response_text && <p className="text-xs text-stone-700 mt-1 line-clamp-2 italic">&ldquo;{f.response_text}&rdquo;</p>}
+                    {f.response_text && <p className="text-[12.5px] text-[#141821] mt-1 line-clamp-2 italic">&ldquo;{f.response_text}&rdquo;</p>}
                   </Row>
                 ))}
                 <Row>
-                  <a href="/dashboard/feedback" target="_blank" rel="noopener noreferrer" className="text-xs font-semibold text-blue-600 hover:text-blue-700">→ Open feedback triage</a>
+                  <a href="/dashboard/feedback" target="_blank" rel="noopener noreferrer" className="text-[12.5px] font-semibold text-blue-600 hover:text-blue-700">→ Open feedback triage</a>
                 </Row>
               </Section>
             )}
@@ -435,8 +435,8 @@ export default function TodayDashboardPage() {
             {/* 📚 RUNBOOK CONTEXT */}
             {runbookEntry && (
               <Section icon={BookOpen} title="Runbook context" tone="default">
-                <p className="text-xs text-stone-600 mb-2">Phase: <strong>{runbookEntry.phase.replace('_', ' ')}</strong></p>
-                {runbookEntry.notes?.map((n, i) => <p key={i} className="text-sm text-stone-700 leading-relaxed">{n}</p>)}
+                <p className="text-[12.5px] text-[#666D7A] mb-2">Phase: <strong>{runbookEntry.phase.replace('_', ' ')}</strong></p>
+                {runbookEntry.notes?.map((n, i) => <p key={i} className="text-sm text-[#141821] leading-relaxed">{n}</p>)}
                 <div className="mt-3 space-y-1.5">
                   <RunbookLink
                     label="Pre-Launch 12-Day Runbook (now → Sun 12 Jul)"
@@ -461,7 +461,7 @@ export default function TodayDashboardPage() {
             {/* Empty-day fallback */}
             {!runbookEntry && posts.length === 0 && (
               <Section icon={Palmtree} title="Light day" tone="default">
-                <p className="text-sm text-stone-600">No runbook items for this date. No posts scheduled. {date < todayIso() ? 'Past date.' : 'Take the day.'}</p>
+                <p className="text-sm text-[#666D7A]">No runbook items for this date. No posts scheduled. {date < todayIso() ? 'Past date.' : 'Take the day.'}</p>
               </Section>
             )}
           </>
@@ -481,10 +481,10 @@ function SaasBuildoutSection() {
       {gate && (
         <Row>
           <div className="flex items-start gap-2 mb-1">
-            <span className="text-xs font-bold text-green-700 bg-green-100 border border-green-300 px-2 py-0.5 rounded shrink-0">GATE</span>
-            <span className="text-sm font-semibold text-stone-800">Phase {gate.id} complete — review before starting Phase {gate.id + 1}</span>
+            <span className="text-[12.5px] font-medium text-green-700 bg-green-100 border border-green-300 px-2 py-0.5 rounded shrink-0">GATE</span>
+            <span className="text-sm font-semibold text-[#141821]">Phase {gate.id} complete — review before starting Phase {gate.id + 1}</span>
           </div>
-          <p className="text-xs text-stone-600 leading-relaxed ml-14">
+          <p className="text-[12.5px] text-[#666D7A] leading-relaxed ml-14">
             All non-deferred steps in this phase have shipped. Take a beat to validate outcomes before absorbing the next phase&apos;s cost.
           </p>
         </Row>
@@ -492,25 +492,25 @@ function SaasBuildoutSection() {
       {next && (
         <Row>
           <div className="flex items-start gap-2 mb-1">
-            <span className="text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded shrink-0">NEXT UP</span>
-            <span className="text-sm font-semibold text-stone-800">Phase {next.phase.id} · {next.step.title}</span>
+            <span className="text-[12.5px] font-medium text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded shrink-0">NEXT UP</span>
+            <span className="text-sm font-semibold text-[#141821]">Phase {next.phase.id} · {next.step.title}</span>
           </div>
-          <p className="text-xs text-stone-600 leading-relaxed ml-14">{next.step.description}</p>
+          <p className="text-[12.5px] text-[#666D7A] leading-relaxed ml-14">{next.step.description}</p>
         </Row>
       )}
       <Row>
-        <a href="/dashboard/settings/platform-buildout" className="text-xs font-semibold text-blue-600 hover:text-blue-700">→ Open Platform Buildout</a>
+        <a href="/dashboard/settings/platform-buildout" className="text-[12.5px] font-semibold text-blue-600 hover:text-blue-700">→ Open Platform Buildout</a>
       </Row>
     </Section>
   )
 }
 
 function Section({ icon: Icon, title, tone, children }: { icon?: React.ElementType; title: string; tone: 'urgent' | 'default' | 'success'; children: React.ReactNode }) {
-  const border = tone === 'urgent' ? 'border-red-300' : tone === 'success' ? 'border-green-300' : 'border-stone-200'
+  const border = tone === 'urgent' ? 'border-red-300' : tone === 'success' ? 'border-green-300' : 'border-[#E8EAEE]'
   const chip = tone === 'urgent' ? 'bg-red-500/10 text-red-600' : tone === 'success' ? 'bg-green-500/10 text-green-600' : 'bg-[#1B6DFC]/10 text-[#1B6DFC]'
   return (
     <div className={`bg-white border ${border} rounded-xl p-4 sm:p-5 mb-4`}>
-      <h2 className="text-sm font-bold text-stone-700 mb-3 uppercase tracking-wide flex items-center gap-2">
+      <h2 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em] mb-3 flex items-center gap-2">
         {Icon ? <span className={`w-6 h-6 rounded-md flex items-center justify-center shrink-0 ${chip}`}><Icon size={14} strokeWidth={2.5} /></span> : null}
         {title}
       </h2>
@@ -521,7 +521,7 @@ function Section({ icon: Icon, title, tone, children }: { icon?: React.ElementTy
 
 function Row({ children, onClick, interactive }: { children: React.ReactNode; onClick?: () => void; interactive?: boolean }) {
   return (
-    <div onClick={onClick} className={`py-2 ${interactive ? 'cursor-pointer hover:bg-stone-50 -mx-2 px-2 rounded' : ''}`}>
+    <div onClick={onClick} className={`py-2 ${interactive ? 'cursor-pointer hover:bg-[#FBFCFD] -mx-2 px-2 rounded' : ''}`}>
       {children}
     </div>
   )
@@ -609,7 +609,7 @@ function RunbookLink({ label, path }: { label: string; path: string }) {
     label
 
   return (
-    <div className="flex items-center gap-2 text-xs">
+    <div className="flex items-center gap-2 text-[12.5px]">
       <button
         onClick={open}
         className="text-blue-600 hover:text-blue-700 underline font-medium text-left"
@@ -617,7 +617,7 @@ function RunbookLink({ label, path }: { label: string; path: string }) {
       >
         {labelText}
       </button>
-      <button onClick={copy} className={`text-[10px] font-semibold px-2 py-0.5 rounded border transition-colors ${status === 'copied' ? 'bg-green-50 text-green-700 border-green-300' : 'bg-stone-100 text-stone-600 border-stone-300 hover:bg-stone-200'}`}>
+      <button onClick={copy} className={`text-[10px] font-semibold px-2 py-0.5 rounded border transition-colors ${status === 'copied' ? 'bg-green-50 text-green-700 border-green-300' : 'bg-[#F4F6F9] text-[#666D7A] border-[#E8EAEE] hover:bg-[#EFF1F4]'}`}>
         {status === 'copied' ? '✓ Copied path' : 'Copy path'}
       </button>
     </div>
@@ -625,12 +625,12 @@ function RunbookLink({ label, path }: { label: string; path: string }) {
 }
 
 function Metric({ label, value, sub, tone }: { label: string; value: string; sub: string; tone: 'urgent' | 'success' | 'default' }) {
-  const valueColor = tone === 'urgent' ? 'text-red-700' : tone === 'success' ? 'text-green-700' : 'text-[#1A1A1A]'
+  const valueColor = tone === 'urgent' ? 'text-red-700' : tone === 'success' ? 'text-green-700' : 'text-[#141821]'
   return (
-    <div className="bg-stone-50 border border-stone-200 rounded-lg p-3">
-      <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">{label}</p>
+    <div className="bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg p-3">
+      <p className="text-[10px] font-medium text-[#666D7A] mb-1">{label}</p>
       <p className={`text-xl font-bold ${valueColor} leading-none`}>{value}</p>
-      <p className="text-[10px] text-stone-500 mt-1">{sub}</p>
+      <p className="text-[10px] text-[#666D7A] mt-1">{sub}</p>
     </div>
   )
 }

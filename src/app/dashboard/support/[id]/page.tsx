@@ -33,7 +33,7 @@ export default async function SupportTicketPage({ params }: { params: Promise<{ 
   return (
     <div className="max-w-[860px]">
       <div className="mb-6">
-        <Link href="/dashboard/support" className="text-[12px] text-[#6B6B6B] hover:text-[#1B6DFC]">← All tickets</Link>
+        <Link href="/dashboard/support" className="text-[12px] text-[#666D7A] hover:text-[#1B6DFC]">← All tickets</Link>
       </div>
 
       <PageHeader
@@ -46,25 +46,25 @@ export default async function SupportTicketPage({ params }: { params: Promise<{ 
         <Pill accent={categoryAccent(cat)}>{CATEGORY_LABELS[cat]}</Pill>
         <Pill accent={statusAccent(status)}>{STATUS_LABELS[status]}</Pill>
         {ticket.page_url && (
-          <span className="text-[11px] text-[#999999] truncate">on {ticket.page_url as string}</span>
+          <span className="text-[11px] text-[#98A0AD] truncate">on {ticket.page_url as string}</span>
         )}
       </div>
 
       <Card className="mb-6">
-        <p className="text-[11px] font-bold text-[#6B6B6B] uppercase tracking-widest mb-3" style={{ fontFamily: "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace" }}>
+        <p className="text-[11px] font-medium text-[#666D7A] mb-3" style={{ fontFamily: "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace" }}>
           What they said
         </p>
-        <div className="text-[14px] text-[#1A1A1A] whitespace-pre-wrap leading-relaxed">
+        <div className="text-[14px] text-[#141821] whitespace-pre-wrap leading-relaxed">
           {ticket.body as string}
         </div>
       </Card>
 
       {ticket.status_note && (
         <Card className="mb-6" accent="blue" tint>
-          <p className="text-[11px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-3" style={{ fontFamily: "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace" }}>
+          <p className="text-[11px] font-medium text-[#1B6DFC] mb-3" style={{ fontFamily: "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace" }}>
             Current note to filer
           </p>
-          <div className="text-[14px] text-[#1A1A1A] whitespace-pre-wrap leading-relaxed">
+          <div className="text-[14px] text-[#141821] whitespace-pre-wrap leading-relaxed">
             {ticket.status_note as string}
           </div>
         </Card>

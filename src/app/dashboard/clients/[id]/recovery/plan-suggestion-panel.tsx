@@ -24,7 +24,7 @@ export interface RecoveryPlanSet {
 
 const CONFIDENCE_STYLE: Record<RecoverySuggestionItem['confidence'], string> = {
   high: 'bg-blue-50 border-blue-200 text-blue-700',
-  moderate: 'bg-stone-100 border-stone-300 text-stone-600',
+  moderate: 'bg-[#F4F6F9] border-[#E8EAEE] text-[#666D7A]',
   low: 'bg-amber-50 border-amber-200 text-amber-700',
 }
 
@@ -133,18 +133,18 @@ export default function RecoveryPlanSuggestionPanel({
   }
 
   return (
-    <div className="mb-6 rounded-2xl border border-stone-200 bg-stone-50 overflow-hidden">
-      <div className="px-5 py-4 border-b border-stone-200 flex items-start justify-between gap-4 flex-wrap">
+    <div className="mb-6 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] overflow-hidden">
+      <div className="px-5 py-4 border-b border-[#E8EAEE] flex items-start justify-between gap-4 flex-wrap">
         <div className="min-w-0">
-          <p className="text-xs font-bold uppercase tracking-widest text-blue-500 flex items-center gap-1.5">
+          <p className="text-[12px] font-medium text-blue-500 flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5" />
             Suggested recovery plan
           </p>
-          <p className="text-xs text-stone-600 mt-1.5 leading-relaxed max-w-2xl">
+          <p className="text-[12.5px] text-[#666D7A] mt-1.5 leading-relaxed max-w-2xl">
             Reads {clientName}&apos;s foundational synthesis, intake domain scores, recent syntheses and check-ins, active program, medications and equipment access, then builds a plan from the protocols they can actually do. Works whether or not they are in a recovery state. Suggestions only until you approve.
           </p>
           {set && (
-            <p className="text-[11px] text-stone-500 mt-1.5">
+            <p className="text-[11px] text-[#666D7A] mt-1.5">
               Generated {new Date(set.generated_at).toLocaleString('en-AU', {
                 timeZone: 'Australia/Brisbane', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true,
               })}
@@ -157,7 +157,7 @@ export default function RecoveryPlanSuggestionPanel({
               type="button"
               onClick={approvePlan}
               disabled={approving || generating}
-              className="px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1.5"
+              className="px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white text-[12.5px] font-medium rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1.5"
             >
               {approving ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Assigning…</> : <><CheckCheck className="w-3.5 h-3.5" /> Approve plan ({unassigned.length})</>}
             </button>
@@ -166,7 +166,7 @@ export default function RecoveryPlanSuggestionPanel({
             type="button"
             onClick={generate}
             disabled={generating || approving}
-            className="px-3 py-2 bg-blue-50 border border-blue-300 hover:bg-blue-100 text-blue-700 text-xs font-bold rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1.5"
+            className="px-3 py-2 bg-blue-50 border border-blue-300 hover:bg-blue-100 text-blue-700 text-[12.5px] font-medium rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1.5"
           >
             {generating ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Reading their file…</> : set ? 'Regenerate' : 'Build a plan'}
           </button>
@@ -174,45 +174,45 @@ export default function RecoveryPlanSuggestionPanel({
       </div>
 
       {!hasEquipmentTagged && !set && (
-        <p className="px-5 py-3 text-xs text-amber-800 bg-amber-50 border-b border-amber-200 leading-relaxed">
+        <p className="px-5 py-3 text-[12.5px] text-amber-800 bg-amber-50 border-b border-amber-200 leading-relaxed">
           No equipment access tagged yet. Tag what {clientName} can access below first, otherwise everything needing kit is filtered out and you will only get the no-equipment protocols.
         </p>
       )}
 
       {generating && (
-        <p className="px-5 py-4 text-xs text-stone-500 leading-relaxed">
+        <p className="px-5 py-4 text-[12.5px] text-[#666D7A] leading-relaxed">
           Holding their whole picture in one pass on the clinical model. 30 to 60 seconds. The page is not frozen, please don&apos;t refresh.
         </p>
       )}
 
-      {error && <p className="px-5 py-3 text-xs text-red-700">{error}</p>}
-      {status && <p className="px-5 py-3 text-xs text-blue-600">{status}</p>}
+      {error && <p className="px-5 py-3 text-[12.5px] text-red-700">{error}</p>}
+      {status && <p className="px-5 py-3 text-[12.5px] text-blue-600">{status}</p>}
 
       {set && !generating && (
         <div className="px-5 py-4">
           {set.rrs_note && (
             <div className="mb-3 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2.5">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-blue-700 mb-1">Recovery state in force</p>
-              <p className="text-xs text-blue-900 leading-relaxed">{set.rrs_note}</p>
+              <p className="text-[11.5px] font-medium text-blue-700 mb-1">Recovery state in force</p>
+              <p className="text-[12.5px] text-blue-900 leading-relaxed">{set.rrs_note}</p>
             </div>
           )}
 
           {set.overview && (
-            <p className="text-sm text-stone-800 leading-relaxed mb-4 whitespace-pre-wrap">{set.overview}</p>
+            <p className="text-sm text-[#141821] leading-relaxed mb-4 whitespace-pre-wrap">{set.overview}</p>
           )}
 
           {clientMedications?.trim() && (
             <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-amber-700 mb-1 flex items-center gap-1">
+              <p className="text-[11.5px] font-medium text-amber-700 mb-1 flex items-center gap-1">
                 <AlertTriangle className="w-3 h-3" />
                 On medication, verify every contraindication yourself
               </p>
-              <p className="text-xs text-amber-900 leading-relaxed whitespace-pre-wrap">{clientMedications.trim()}</p>
+              <p className="text-[12.5px] text-amber-900 leading-relaxed whitespace-pre-wrap">{clientMedications.trim()}</p>
             </div>
           )}
 
           {set.suggestions.length === 0 ? (
-            <p className="text-sm text-stone-600 leading-relaxed">No protocols suggested for {clientName} right now.</p>
+            <p className="text-sm text-[#666D7A] leading-relaxed">No protocols suggested for {clientName} right now.</p>
           ) : (
             <div className="space-y-3">
               {set.suggestions.map((s, i) => {
@@ -220,17 +220,17 @@ export default function RecoveryPlanSuggestionPanel({
                 const already = activeSlugs.includes(s.slug)
                 const open = openDetail === s.slug
                 return (
-                  <div key={s.slug} className="rounded-lg border border-stone-200 bg-white p-4">
+                  <div key={s.slug} className="rounded-lg border border-[#E8EAEE] bg-white p-4">
                     <div className="flex items-start justify-between gap-3 flex-wrap">
                       <div className="flex items-center gap-2 flex-wrap min-w-0">
-                        <span className="text-[10px] font-bold text-stone-400">{i + 1}</span>
-                        <p className="text-sm font-semibold text-[#1A1A1A]">{s.name}</p>
+                        <span className="text-[10px] font-medium text-[#98A0AD]">{i + 1}</span>
+                        <p className="text-sm font-semibold text-[#141821]">{s.name}</p>
                         {protocol && (
-                          <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-stone-100 border border-stone-300 text-stone-600">
+                          <span className="text-[11.5px] font-medium px-2 py-0.5 rounded bg-[#F4F6F9] border border-[#E8EAEE] text-[#666D7A]">
                             {protocol.category}
                           </span>
                         )}
-                        <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded border ${CONFIDENCE_STYLE[s.confidence]}`}>
+                        <span className={`text-[11.5px] font-medium px-2 py-0.5 rounded border ${CONFIDENCE_STYLE[s.confidence]}`}>
                           {s.confidence} confidence
                         </span>
                       </div>
@@ -238,7 +238,7 @@ export default function RecoveryPlanSuggestionPanel({
                         type="button"
                         onClick={() => assignOne(s)}
                         disabled={assigning === s.slug || already || approving}
-                        className="shrink-0 px-3 py-1.5 border border-blue-300 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1"
+                        className="shrink-0 px-3 py-1.5 border border-blue-300 bg-blue-50 hover:bg-blue-100 text-blue-700 text-[12.5px] font-medium rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1"
                       >
                         {assigning === s.slug
                           ? <><Loader2 className="w-3 h-3 animate-spin" /> Assigning…</>
@@ -246,12 +246,12 @@ export default function RecoveryPlanSuggestionPanel({
                       </button>
                     </div>
 
-                    <p className="text-sm text-stone-700 leading-relaxed mt-2.5">{s.rationale}</p>
+                    <p className="text-sm text-[#141821] leading-relaxed mt-2.5">{s.rationale}</p>
 
                     {s.watch && (
-                      <div className="mt-2.5 rounded border border-stone-200 bg-stone-50 px-3 py-2">
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-stone-500 mb-1">Watch</p>
-                        <p className="text-xs text-stone-700 leading-relaxed">{s.watch}</p>
+                      <div className="mt-2.5 rounded border border-[#E8EAEE] bg-[#FBFCFD] px-3 py-2">
+                        <p className="text-[11.5px] font-medium text-[#666D7A] mb-1">Watch</p>
+                        <p className="text-[12.5px] text-[#141821] leading-relaxed">{s.watch}</p>
                       </div>
                     )}
 
@@ -260,38 +260,38 @@ export default function RecoveryPlanSuggestionPanel({
                         <button
                           type="button"
                           onClick={() => setOpenDetail(open ? null : s.slug)}
-                          className="mt-2.5 text-[11px] font-bold text-stone-500 hover:text-stone-700 transition-colors flex items-center gap-1"
+                          className="mt-2.5 text-[11px] font-medium text-[#666D7A] hover:text-[#141821] transition-colors flex items-center gap-1"
                         >
                           {open ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
                           Dosing, equipment and safety record
                         </button>
                         {open && (
-                          <div className="mt-2 space-y-2.5 text-xs">
+                          <div className="mt-2 space-y-2.5 text-[12.5px]">
                             <div>
-                              <p className="text-[10px] font-bold uppercase tracking-widest text-stone-500 mb-1">Dosing</p>
-                              <p className="text-stone-700 leading-relaxed">
+                              <p className="text-[11.5px] font-medium text-[#666D7A] mb-1">Dosing</p>
+                              <p className="text-[#141821] leading-relaxed">
                                 {protocol.dosing.frequency}. {protocol.dosing.duration}.
                                 {protocol.dosing.timing ? ` ${protocol.dosing.timing}.` : ''}
                                 {protocol.dosing.intensity_notes ? ` ${protocol.dosing.intensity_notes}` : ''}
                               </p>
                             </div>
                             <div>
-                              <p className="text-[10px] font-bold uppercase tracking-widest text-stone-500 mb-1">Equipment</p>
-                              <p className="text-stone-700 leading-relaxed">
+                              <p className="text-[11.5px] font-medium text-[#666D7A] mb-1">Equipment</p>
+                              <p className="text-[#141821] leading-relaxed">
                                 {protocol.required_equipment.map(e => EQUIPMENT_LABELS[e]).join(', ')}
                               </p>
                             </div>
                             <div>
-                              <p className="text-[10px] font-bold uppercase tracking-widest text-stone-500 mb-1">Contraindications</p>
+                              <p className="text-[11.5px] font-medium text-[#666D7A] mb-1">Contraindications</p>
                               {protocol.contraindications.length > 0 ? (
-                                <ul className="list-disc list-inside text-stone-700 leading-relaxed space-y-0.5">
+                                <ul className="list-disc list-inside text-[#141821] leading-relaxed space-y-0.5">
                                   {protocol.contraindications.map(c => <li key={c}>{c}</li>)}
                                 </ul>
-                              ) : <p className="text-stone-600">None listed.</p>}
+                              ) : <p className="text-[#666D7A]">None listed.</p>}
                             </div>
                             <div>
-                              <p className="text-[10px] font-bold uppercase tracking-widest text-stone-500 mb-1">Safety notes</p>
-                              <p className="text-stone-700 leading-relaxed">{protocol.safety_notes}</p>
+                              <p className="text-[11.5px] font-medium text-[#666D7A] mb-1">Safety notes</p>
+                              <p className="text-[#141821] leading-relaxed">{protocol.safety_notes}</p>
                             </div>
                           </div>
                         )}
@@ -308,7 +308,7 @@ export default function RecoveryPlanSuggestionPanel({
               <button
                 type="button"
                 onClick={() => setShowNotNow(!showNotNow)}
-                className="text-[11px] font-bold text-stone-500 hover:text-stone-700 transition-colors flex items-center gap-1"
+                className="text-[11px] font-medium text-[#666D7A] hover:text-[#141821] transition-colors flex items-center gap-1"
               >
                 {showNotNow ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
                 Considered and ruled out ({set.not_now.length})
@@ -316,8 +316,8 @@ export default function RecoveryPlanSuggestionPanel({
               {showNotNow && (
                 <ul className="mt-2 space-y-1.5">
                   {set.not_now.map(n => (
-                    <li key={n.slug} className="text-xs text-stone-600 leading-relaxed">
-                      <span className="font-semibold text-stone-700">{n.name}:</span> {n.reason}
+                    <li key={n.slug} className="text-[12.5px] text-[#666D7A] leading-relaxed">
+                      <span className="font-semibold text-[#141821]">{n.name}:</span> {n.reason}
                     </li>
                   ))}
                 </ul>
@@ -328,7 +328,7 @@ export default function RecoveryPlanSuggestionPanel({
       )}
 
       {!set && !generating && !error && (
-        <p className="px-5 py-4 text-xs text-stone-500 leading-relaxed">
+        <p className="px-5 py-4 text-[12.5px] text-[#666D7A] leading-relaxed">
           No plan built yet for {clientName}.
         </p>
       )}

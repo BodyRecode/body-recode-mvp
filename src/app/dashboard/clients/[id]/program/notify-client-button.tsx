@@ -58,7 +58,7 @@ export default function NotifyClientButton({
     return (
       <span
         title="Publish the Program Reading first. The reading frames the block."
-        className="text-xs px-3 py-1.5 border border-stone-200 text-stone-400 rounded-lg cursor-not-allowed"
+        className="text-[12.5px] px-3 py-1.5 border border-[#E8EAEE] text-[#98A0AD] rounded-lg cursor-not-allowed"
       >
         Notify Client
       </span>
@@ -68,7 +68,7 @@ export default function NotifyClientButton({
   return (
     <div className="flex items-center gap-2">
       {notified && (
-        <span className="text-[11px] text-stone-500">
+        <span className="text-[11px] text-[#666D7A]">
           Notified {formatDate(publishedToClientAt!)}
         </span>
       )}
@@ -77,7 +77,7 @@ export default function NotifyClientButton({
         disabled={loading}
         className={`text-xs px-3 py-1.5 rounded-lg border transition-colors disabled:opacity-50 ${
           notified
-            ? 'border-stone-300 text-stone-600 hover:border-stone-500 hover:text-stone-800'
+            ? 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC] hover:text-[#141821]'
             : 'border-[#1B6DFC] text-[#1B6DFC] hover:bg-blue-50'
         }`}
       >

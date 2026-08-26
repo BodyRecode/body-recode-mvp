@@ -86,18 +86,18 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
         {portalEmailSent === false && (
           <div className="rounded-lg border border-red-300 bg-red-50 px-4 py-3 space-y-1">
             <p className="text-sm text-red-700 font-bold inline-flex items-center gap-1.5"><AlertTriangle size={14} strokeWidth={2.5} className="shrink-0" /> Portal access email did NOT send{portalEmailReason ? ` (${portalEmailReason})` : ''}.</p>
-            <p className="text-xs text-red-700">Send the client their portal link manually (below). I&apos;ve also emailed you an alert.</p>
+            <p className="text-[12.5px] text-red-700">Send the client their portal link manually (below). I&apos;ve also emailed you an alert.</p>
           </div>
         )}
 
         {portalLink && (
           <div className="space-y-1.5">
-            <p className="text-xs font-medium text-[#6B6B6B]">Portal link (client signs in here):</p>
-            <div className="bg-[#E5E5E5] rounded-lg px-4 py-3 flex items-center gap-3">
-              <p className="text-[#6B6B6B] text-xs font-mono flex-1 truncate">{portalLink}</p>
+            <p className="text-[12.5px] font-medium text-[#666D7A]">Portal link (client signs in here):</p>
+            <div className="bg-[#EFF1F4] rounded-lg px-4 py-3 flex items-center gap-3">
+              <p className="text-[#666D7A] text-[12.5px] font-mono flex-1 truncate">{portalLink}</p>
               <button
                 onClick={copyPortal}
-                className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-md border border-[#D4D4D4] text-[#3A3A3A] hover:border-[#4A4A4A] hover:text-[#1A1A1A] transition-colors"
+                className="shrink-0 text-[12.5px] font-medium px-3 py-1.5 rounded-md border border-[#CFD4DC] text-[#43474F] hover:border-[#4A4A4A] hover:text-[#141821] transition-colors"
               >
                 {portalCopied ? 'Copied!' : 'Copy'}
               </button>
@@ -106,12 +106,12 @@ export default function ConvertButton({ leadId, leadName, alreadyConverted, clie
         )}
 
         <div className="space-y-1.5">
-          <p className="text-xs font-medium text-[#6B6B6B]">Intake link:</p>
-          <div className="bg-[#E5E5E5] rounded-lg px-4 py-3 flex items-center gap-3">
-            <p className="text-[#6B6B6B] text-xs font-mono flex-1 truncate">{intakeLink}</p>
+          <p className="text-[12.5px] font-medium text-[#666D7A]">Intake link:</p>
+          <div className="bg-[#EFF1F4] rounded-lg px-4 py-3 flex items-center gap-3">
+            <p className="text-[#666D7A] text-[12.5px] font-mono flex-1 truncate">{intakeLink}</p>
             <button
               onClick={copy}
-              className="shrink-0 text-xs font-medium px-3 py-1.5 rounded-md border border-[#D4D4D4] text-[#3A3A3A] hover:border-[#4A4A4A] hover:text-[#1A1A1A] transition-colors"
+              className="shrink-0 text-[12.5px] font-medium px-3 py-1.5 rounded-md border border-[#CFD4DC] text-[#43474F] hover:border-[#4A4A4A] hover:text-[#141821] transition-colors"
             >
               {copied ? 'Copied!' : 'Copy'}
             </button>

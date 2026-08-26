@@ -99,12 +99,12 @@ export default async function CoachLogSessionPage({
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
-      <Link href={completeHref} className="text-xs font-semibold text-[#1B6DFC] hover:text-[#5390FF]">← Back to sessions</Link>
+      <Link href={completeHref} className="text-[12.5px] font-semibold text-[#1B6DFC] hover:text-[#5390FF]">← Back to sessions</Link>
       <div className="mt-4 mb-5">
-        <p className="text-[10px] font-bold tracking-widest text-[#999999] uppercase mb-1">Logging for {client.name} · Week {session.week_number_in_block}</p>
-        <h1 className="text-2xl font-bold text-[#1A1A1A] tracking-tight">{session.day_label}{session.session_name ? ` · ${session.session_name}` : ''}</h1>
+        <p className="text-[10px] font-medium text-[#98A0AD] mb-1">Logging for {client.name} · Week {session.week_number_in_block}</p>
+        <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em] tracking-tight">{session.day_label}{session.session_name ? ` · ${session.session_name}` : ''}</h1>
         {session.status === 'completed' && session.completed_at && (
-          <p className="text-xs text-[#1B6DFC] mt-1">Logged {new Date(session.completed_at).toLocaleString('en-AU', { dateStyle: 'medium', timeStyle: 'short' })}</p>
+          <p className="text-[12.5px] text-[#1B6DFC] mt-1">Logged {new Date(session.completed_at).toLocaleString('en-AU', { dateStyle: 'medium', timeStyle: 'short' })}</p>
         )}
       </div>
 

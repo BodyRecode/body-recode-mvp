@@ -154,7 +154,7 @@ function NavItem({
       className={`relative flex items-center gap-2.5 px-2.5 py-[7px] rounded-lg text-[13px] transition-colors ${
         active
           ? 'bg-white text-[#1B6DFC] font-medium shadow-[0_1px_3px_rgba(16,24,40,0.09),0_1px_2px_-1px_rgba(16,24,40,0.05)]'
-          : 'text-[#464C58] hover:bg-white/85 hover:text-[#1A1A1A]'
+          : 'text-[#464C58] hover:bg-white/85 hover:text-[#141821]'
       }`}
     >
       {active && (
@@ -215,7 +215,7 @@ export default function DashboardNav({
           group.key === 'meta' && showDev ? [...group.items, DEV_ONLY] : group.items
         return (
           <div key={group.key} className="mb-0.5">
-            <p className="px-2 pt-3.5 pb-1.5 text-[10.5px] font-semibold uppercase tracking-[0.07em] text-[#9AA2B0]">
+            <p className="px-2 pt-3.5 pb-1.5 text-[10.5px] font-semibold tracking-[0.07em] text-[#9AA2B0]">
               {group.label}
             </p>
             <div className="flex flex-col gap-[1px]">
@@ -234,7 +234,7 @@ export default function DashboardNav({
       })}
       {showDev && (
         <p
-          className="mt-3 mx-2 text-[10px] font-semibold uppercase tracking-widest text-[#B45309] bg-[#FEF3C7] px-1.5 py-0.5 rounded inline-block"
+          className="mt-3 mx-2 text-[11.5px] font-medium text-[#B45309] bg-[#FEF3C7] px-1.5 py-0.5 rounded inline-block"
           title="Dev-only nav items are visible (append ?dev=1 to any dashboard URL to toggle)"
         >
           dev

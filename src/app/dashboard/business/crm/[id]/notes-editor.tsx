@@ -34,11 +34,11 @@ export default function NotesEditor({ leadId, initialNotes }: Props) {
         onChange={(e) => setNotes(e.target.value)}
         placeholder="Add notes about this lead..."
         rows={5}
-        className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2.5 text-sm text-[#1A1A1A] placeholder-stone-400 resize-none focus:outline-none focus:border-stone-500 transition-colors"
+        className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-sm text-[#141821] placeholder-stone-400 resize-none focus:outline-none focus:border-[#CFD4DC] transition-colors"
       />
       <div className="flex items-center justify-end gap-2">
         {saved && (
-          <span className="flex items-center gap-1 text-xs text-blue-500">
+          <span className="flex items-center gap-1 text-[12.5px] text-blue-500">
             <Check size={12} />
             Saved
           </span>
@@ -46,7 +46,7 @@ export default function NotesEditor({ leadId, initialNotes }: Props) {
         <button
           onClick={save}
           disabled={!isDirty || isPending}
-          className="flex items-center gap-1.5 text-xs font-medium bg-blue-500 hover:bg-blue-500 text-stone-50 disabled:opacity-40 disabled:cursor-not-allowed px-3 py-1.5 rounded-lg transition-colors"
+          className="flex items-center gap-1.5 text-[12.5px] font-medium bg-blue-500 hover:bg-blue-500 text-stone-50 disabled:opacity-40 disabled:cursor-not-allowed px-3 py-1.5 rounded-lg transition-colors"
         >
           {isPending ? <Loader2 size={12} className="animate-spin" /> : null}
           Save Notes

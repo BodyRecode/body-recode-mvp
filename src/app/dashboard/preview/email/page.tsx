@@ -73,27 +73,27 @@ export default function EmailPreviewPage() {
     <div className="max-w-2xl space-y-8">
       <div>
         <div className="w-7 h-0.5 bg-blue-500 rounded mb-4" />
-        <h1 className="text-xl font-bold text-[#1A1A1A] mb-1">Email Previews</h1>
-        <p className="text-sm text-stone-500">Booking emails sent from the lead profile.</p>
+        <h1 className="text-xl font-bold text-[#141821] mb-1">Email Previews</h1>
+        <p className="text-sm text-[#666D7A]">Booking emails sent from the lead profile.</p>
       </div>
 
       <div>
-        <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Booking Link Email</p>
-        <p className="text-xs text-stone-400 mb-3">Sent when you click "Send booking link" on a lead profile. Directs them to pick a time themselves.</p>
-        <div className="rounded-xl overflow-hidden border border-stone-200">
+        <p className="text-[12.5px] font-semibold text-[#666D7A] mb-3">Booking Link Email</p>
+        <p className="text-[12.5px] text-[#98A0AD] mb-3">Sent when you click "Send booking link" on a lead profile. Directs them to pick a time themselves.</p>
+        <div className="rounded-xl overflow-hidden border border-[#E8EAEE]">
           <iframe srcDoc={bookingLinkHtml} className="w-full border-0" style={{ height: '480px' }} />
         </div>
       </div>
 
       <div>
-        <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Booking Confirmation Email</p>
-        <p className="text-xs text-stone-400 mb-3">Sent when you click "Send booking confirmation" on a lead profile. Confirms a time you have already agreed on.</p>
-        <div className="rounded-xl overflow-hidden border border-stone-200">
+        <p className="text-[12.5px] font-semibold text-[#666D7A] mb-3">Booking Confirmation Email</p>
+        <p className="text-[12.5px] text-[#98A0AD] mb-3">Sent when you click "Send booking confirmation" on a lead profile. Confirms a time you have already agreed on.</p>
+        <div className="rounded-xl overflow-hidden border border-[#E8EAEE]">
           <iframe srcDoc={confirmationHtml} className="w-full border-0" style={{ height: '560px' }} />
         </div>
       </div>
 
-      <Link href="/dashboard/preview" className="inline-block text-xs text-stone-500 hover:text-stone-700 transition-colors">
+      <Link href="/dashboard/preview" className="inline-block text-[12.5px] text-[#666D7A] hover:text-[#141821] transition-colors">
         ← Back to all assets
       </Link>
     </div>

@@ -65,18 +65,18 @@ export default async function CheckInDetailPage({
         <div className="mb-8">
           <Link
             href={`/dashboard/clients/${id}`}
-            className="text-xs text-stone-500 hover:text-stone-700 transition-colors"
+            className="text-[12.5px] text-[#666D7A] hover:text-[#141821] transition-colors"
           >
             ← Back to {client.name}
           </Link>
         </div>
 
         <div className="mb-8">
-          <p className="text-xs font-bold tracking-widest text-blue-500 uppercase mb-1">
+          <p className="text-[12.5px] font-medium text-blue-500 mb-1">
             Week {weekNumber} · Form {formType}
           </p>
-          <h1 className="text-2xl font-bold text-[#1A1A1A] tracking-tight">{client.name}</h1>
-          <p className="text-stone-500 text-sm mt-1">Submitted {submittedAt}</p>
+          <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em] tracking-tight">{client.name}</h1>
+          <p className="text-[#666D7A] text-sm mt-1">Submitted {submittedAt}</p>
         </div>
 
         <div className="space-y-6">
@@ -97,13 +97,13 @@ export default async function CheckInDetailPage({
             const answered = section.questions.filter(q => responses[q.id])
             if (answered.length === 0) return null
             return (
-              <div key={section.title} className="bg-stone-100 border border-stone-200 rounded-xl p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-stone-500 mb-4">{section.title}</p>
+              <div key={section.title} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+                <p className="text-[12px] font-medium text-[#666D7A] mb-4">{section.title}</p>
                 <div className="space-y-5">
                   {answered.map(q => (
                     <div key={q.id}>
-                      <p className="text-xs text-stone-500 mb-1.5 leading-relaxed">{q.text}</p>
-                      <p className="text-sm text-stone-800 leading-relaxed">{responses[q.id]}</p>
+                      <p className="text-[12.5px] text-[#666D7A] mb-1.5 leading-relaxed">{q.text}</p>
+                      <p className="text-sm text-[#141821] leading-relaxed">{responses[q.id]}</p>
                     </div>
                   ))}
                 </div>

@@ -89,21 +89,21 @@ export default async function CopilotReviewPage() {
                   >
                     {nameById.get(f.client_id) ?? 'Unknown client'}
                   </Link>
-                  <span className="ml-2 text-[12px] text-[#999999]">{fmtWhen(f.flagged_at)}</span>
+                  <span className="ml-2 text-[12px] text-[#98A0AD]">{fmtWhen(f.flagged_at)}</span>
                 </div>
                 <ResolveButton clientId={f.client_id} messageId={f.id} />
               </div>
 
               {f.question && (
                 <div className="mb-3">
-                  <p className="text-[11px] font-bold uppercase tracking-wider text-[#999999] mb-1">Coach asked</p>
+                  <p className="text-[12px] font-mediumr text-[#98A0AD] mb-1">Coach asked</p>
                   <p className="text-[13px] text-[#4B4B4B] whitespace-pre-wrap">{f.question}</p>
                 </div>
               )}
 
               <div>
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#999999] mb-1">Co-pilot answered (flagged)</p>
-                <p className="text-[13px] text-[#1A1A1A] whitespace-pre-wrap">{f.content}</p>
+                <p className="text-[12px] font-mediumr text-[#98A0AD] mb-1">Co-pilot answered (flagged)</p>
+                <p className="text-[13px] text-[#141821] whitespace-pre-wrap">{f.content}</p>
               </div>
             </Card>
           ))}

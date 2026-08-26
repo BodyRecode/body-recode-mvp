@@ -107,15 +107,15 @@ export default function SupplementsManager({
     <div className="space-y-8">
       {error && (
         <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3">
-          <p className="text-xs text-amber-800">{error}</p>
+          <p className="text-[12.5px] text-amber-800">{error}</p>
         </div>
       )}
 
       {activeAssignments.length > 0 && (
         <div>
           <div className="mb-3 flex items-center gap-3">
-            <h2 className="text-base font-semibold text-[#1A1A1A]">Active for {clientName}</h2>
-            <span className="text-[10px] text-stone-500 uppercase tracking-widest">Shown on their portal</span>
+            <h2 className="text-base font-semibold text-[#141821]">Active for {clientName}</h2>
+            <span className="text-[10px] text-[#666D7A]">Shown on their portal</span>
           </div>
           <div className="space-y-3">
             {activeAssignments.map(a => (
@@ -126,11 +126,11 @@ export default function SupplementsManager({
       )}
 
       {(pausedAssignments.length > 0 || completedAssignments.length > 0) && (
-        <details className="rounded-lg border border-stone-200 bg-white">
-          <summary className="cursor-pointer px-5 py-3 text-sm font-medium text-stone-700">
+        <details className="rounded-lg border border-[#E8EAEE] bg-white">
+          <summary className="cursor-pointer px-5 py-3 text-sm font-medium text-[#141821]">
             History: {pausedAssignments.length} paused, {completedAssignments.length} completed
           </summary>
-          <div className="px-5 py-3 border-t border-stone-200 space-y-3">
+          <div className="px-5 py-3 border-t border-[#E8EAEE] space-y-3">
             {pausedAssignments.map(a => (
               <AssignmentRow key={a.id} assignment={a} onEditNote={editNote} onResume={id => update(id, { status: 'active' })} onDelete={del} />
             ))}
@@ -143,8 +143,8 @@ export default function SupplementsManager({
 
       <div>
         <div className="mb-3">
-          <h2 className="text-base font-semibold text-[#1A1A1A]">Substance library</h2>
-          <p className="text-[11px] text-stone-500 mt-1">
+          <h2 className="text-base font-semibold text-[#141821]">Substance library</h2>
+          <p className="text-[11px] text-[#666D7A] mt-1">
             {allSubstances.length} substance{allSubstances.length === 1 ? '' : 's'} in the library. More added as research completes.
           </p>
         </div>
@@ -154,31 +154,31 @@ export default function SupplementsManager({
           if (catSubs.length === 0) return null
           return (
             <div key={cat} className="mb-6">
-              <h3 className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-2">{CATEGORY_LABELS[cat]}</h3>
+              <h3 className="text-[10px] font-medium text-[#666D7A] mb-2">{CATEGORY_LABELS[cat]}</h3>
               <div className="space-y-2">
                 {catSubs.map(s => {
                   const isActive = activeSlugs.has(s.slug)
                   const isExpanded = expanded === s.slug
                   return (
-                    <div key={s.slug} className={`rounded-xl border overflow-hidden transition-colors ${isActive ? 'border-[#1B6DFC]/30 bg-blue-50/30' : 'border-stone-200 bg-white'}`}>
+                    <div key={s.slug} className={`rounded-xl border overflow-hidden transition-colors ${isActive ? 'border-[#1B6DFC]/30 bg-blue-50/30' : 'border-[#E8EAEE] bg-white'}`}>
                       <div className="flex items-start justify-between gap-3 px-4 py-3">
                         <button
                           onClick={() => setExpanded(isExpanded ? null : s.slug)}
                           className="flex items-start gap-2 text-left flex-1 min-w-0"
                         >
-                          {isExpanded ? <ChevronUp size={14} className="text-stone-400 mt-1 shrink-0" /> : <ChevronDown size={14} className="text-stone-400 mt-1 shrink-0" />}
+                          {isExpanded ? <ChevronUp size={14} className="text-[#98A0AD] mt-1 shrink-0" /> : <ChevronDown size={14} className="text-[#98A0AD] mt-1 shrink-0" />}
                           <div className="min-w-0">
                             <div className="flex items-center gap-2">
-                              <span className="text-sm font-semibold text-[#1A1A1A]">{s.name}</span>
-                              {isActive && <span className="text-[9px] font-bold text-[#1B6DFC] uppercase tracking-widest bg-[#1B6DFC]/10 px-1.5 py-0.5 rounded">Active</span>}
+                              <span className="text-sm font-semibold text-[#141821]">{s.name}</span>
+                              {isActive && <span className="text-[9px] font-medium text-[#1B6DFC] bg-[#1B6DFC]/10 px-1.5 py-0.5 rounded">Active</span>}
                             </div>
-                            <p className="text-[12px] text-stone-500 mt-0.5">{s.short_description}</p>
+                            <p className="text-[12px] text-[#666D7A] mt-0.5">{s.short_description}</p>
                           </div>
                         </button>
                         <button
                           onClick={() => assign(s.slug)}
                           disabled={isActive || assigning === s.slug}
-                          className="shrink-0 inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1.5 border border-[#1B6DFC] text-[#1B6DFC] rounded-lg hover:bg-[#1B6DFC] hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                          className="shrink-0 inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1.5 border border-[#1B6DFC] text-[#1B6DFC] rounded-lg hover:bg-[#1B6DFC] hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                         >
                           {assigning === s.slug ? <Loader2 size={10} className="animate-spin" /> : <Plus size={10} />}
                           {isActive ? 'Assigned' : 'Assign'}
@@ -186,31 +186,31 @@ export default function SupplementsManager({
                       </div>
 
                       {isExpanded && (
-                        <div className="px-4 pb-4 pt-1 border-t border-stone-200 bg-stone-50 space-y-4">
+                        <div className="px-4 pb-4 pt-1 border-t border-[#E8EAEE] bg-[#FBFCFD] space-y-4">
                           <Detail label="What it does" body={s.what_it_does} />
                           <div className="space-y-2">
-                            <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">Three tiers (client picks)</p>
+                            <p className="text-[10px] font-medium text-[#666D7A]">Three tiers (client picks)</p>
                             <TierCard tier={s.tiers.essential} />
                             <TierCard tier={s.tiers.enhanced} />
                             <TierCard tier={s.tiers.elite} />
                           </div>
                           {s.contraindications.length > 0 && (
                             <div>
-                              <p className="text-[10px] font-bold text-red-700 uppercase tracking-widest mb-1">Contraindications</p>
-                              <ul className="text-[12px] text-stone-700 leading-relaxed space-y-0.5">
+                              <p className="text-[10px] font-medium text-red-700 mb-1">Contraindications</p>
+                              <ul className="text-[12px] text-[#141821] leading-relaxed space-y-0.5">
                                 {s.contraindications.map((c, i) => <li key={i}>- {c}</li>)}
                               </ul>
                             </div>
                           )}
                           <Detail label="Safety" body={s.safety_notes} />
-                          <div className="rounded-lg bg-white border border-stone-200 px-3 py-2">
-                            <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-1">Coach doctrine</p>
-                            <p className="text-[12px] text-stone-700 leading-relaxed">{s.coach_doctrine}</p>
+                          <div className="rounded-lg bg-white border border-[#E8EAEE] px-3 py-2">
+                            <p className="text-[10px] font-medium text-[#1B6DFC] mb-1">Coach doctrine</p>
+                            <p className="text-[12px] text-[#141821] leading-relaxed">{s.coach_doctrine}</p>
                           </div>
                           {s.research_reference && (
-                            <div className="flex items-start gap-2 text-[11px] text-stone-500">
+                            <div className="flex items-start gap-2 text-[11px] text-[#666D7A]">
                               <FileText size={12} className="mt-0.5 shrink-0" />
-                              <span>Research report: <code className="bg-stone-100 px-1 rounded">{s.research_reference}</code></span>
+                              <span>Research report: <code className="bg-[#F4F6F9] px-1 rounded">{s.research_reference}</code></span>
                             </div>
                           )}
                         </div>
@@ -230,25 +230,25 @@ export default function SupplementsManager({
 function Detail({ label, body }: { label: string; body: string }) {
   return (
     <div>
-      <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">{label}</p>
-      <p className="text-[12px] text-stone-700 leading-relaxed">{body}</p>
+      <p className="text-[10px] font-medium text-[#666D7A] mb-1">{label}</p>
+      <p className="text-[12px] text-[#141821] leading-relaxed">{body}</p>
     </div>
   )
 }
 
 function TierCard({ tier }: { tier: { label: string; form: string; dose: string; timing: string; notes: string; fits_client_profile: string } }) {
   return (
-    <div className="rounded-lg border border-stone-200 bg-white px-3 py-3">
+    <div className="rounded-lg border border-[#E8EAEE] bg-white px-3 py-3">
       <div className="flex items-center gap-2 mb-1.5">
-        <span className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest">{tier.label}</span>
+        <span className="text-[10px] font-medium text-[#1B6DFC]">{tier.label}</span>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-[12px] text-stone-700">
-        <div><span className="text-stone-500 font-medium">Form:</span> {tier.form}</div>
-        <div><span className="text-stone-500 font-medium">Dose:</span> {tier.dose}</div>
-        <div className="md:col-span-2"><span className="text-stone-500 font-medium">Timing:</span> {tier.timing}</div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-[12px] text-[#141821]">
+        <div><span className="text-[#666D7A] font-medium">Form:</span> {tier.form}</div>
+        <div><span className="text-[#666D7A] font-medium">Dose:</span> {tier.dose}</div>
+        <div className="md:col-span-2"><span className="text-[#666D7A] font-medium">Timing:</span> {tier.timing}</div>
       </div>
-      <p className="text-[11px] text-stone-500 mt-2 leading-relaxed">{tier.notes}</p>
-      <p className="text-[11px] text-stone-500 mt-1 italic leading-relaxed">Fits: {tier.fits_client_profile}</p>
+      <p className="text-[11px] text-[#666D7A] mt-2 leading-relaxed">{tier.notes}</p>
+      <p className="text-[11px] text-[#666D7A] mt-1 italic leading-relaxed">Fits: {tier.fits_client_profile}</p>
     </div>
   )
 }
@@ -265,34 +265,34 @@ function AssignmentRow({ assignment, onEditNote, onPause, onResume, onComplete, 
   if (!substance) {
     return (
       <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
-        <p className="text-xs text-amber-800">Unknown substance slug: {assignment.substance_slug}</p>
+        <p className="text-[12.5px] text-amber-800">Unknown substance slug: {assignment.substance_slug}</p>
         <button onClick={() => onDelete(assignment.id)} className="text-[11px] text-amber-800 underline mt-1">Delete</button>
       </div>
     )
   }
-  const statusColour = assignment.status === 'active' ? 'text-[#1B6DFC]' : assignment.status === 'paused' ? 'text-amber-600' : 'text-stone-500'
+  const statusColour = assignment.status === 'active' ? 'text-[#1B6DFC]' : assignment.status === 'paused' ? 'text-amber-600' : 'text-[#666D7A]'
   return (
-    <div className="rounded-xl border border-stone-200 bg-white overflow-hidden">
+    <div className="rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
       <div className="flex items-start justify-between gap-3 px-4 py-3">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-[#1A1A1A]">{substance.name}</span>
+            <span className="text-sm font-semibold text-[#141821]">{substance.name}</span>
             <span className={`text-[9px] font-bold uppercase tracking-widest ${statusColour}`}>{assignment.status}</span>
           </div>
-          <p className="text-[11px] text-stone-500 mt-0.5">3 tiers visible on portal · Essential / Enhanced / Elite</p>
+          <p className="text-[11px] text-[#666D7A] mt-0.5">3 tiers visible on portal · Essential / Enhanced / Elite</p>
           {assignment.coach_note && (
-            <div className="mt-2 rounded-lg bg-stone-50 border border-stone-200 px-3 py-2">
-              <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-0.5">Coach note (shown to client)</p>
-              <p className="text-[12px] text-stone-700 leading-relaxed whitespace-pre-line">{assignment.coach_note}</p>
+            <div className="mt-2 rounded-lg bg-[#FBFCFD] border border-[#E8EAEE] px-3 py-2">
+              <p className="text-[10px] font-medium text-[#666D7A] mb-0.5">Coach note (shown to client)</p>
+              <p className="text-[12px] text-[#141821] leading-relaxed whitespace-pre-line">{assignment.coach_note}</p>
             </div>
           )}
         </div>
         <div className="flex items-center gap-1 shrink-0">
-          <button onClick={() => onEditNote(assignment)} className="text-[10px] font-medium text-stone-500 hover:text-[#1A1A1A] px-2 py-1">Edit note</button>
-          {onPause && <button onClick={() => onPause(assignment.id)} title="Pause" className="p-1.5 text-stone-500 hover:text-amber-700 rounded transition-colors"><Pause size={12} /></button>}
-          {onResume && <button onClick={() => onResume(assignment.id)} title="Resume" className="p-1.5 text-stone-500 hover:text-[#1B6DFC] rounded transition-colors"><Play size={12} /></button>}
-          {onComplete && <button onClick={() => onComplete(assignment.id)} title="Mark complete" className="p-1.5 text-stone-500 hover:text-green-700 rounded transition-colors"><Check size={12} /></button>}
-          <button onClick={() => onDelete(assignment.id)} title="Delete" className="p-1.5 text-stone-500 hover:text-red-700 rounded transition-colors"><Trash2 size={12} /></button>
+          <button onClick={() => onEditNote(assignment)} className="text-[10px] font-medium text-[#666D7A] hover:text-[#141821] px-2 py-1">Edit note</button>
+          {onPause && <button onClick={() => onPause(assignment.id)} title="Pause" className="p-1.5 text-[#666D7A] hover:text-amber-700 rounded transition-colors"><Pause size={12} /></button>}
+          {onResume && <button onClick={() => onResume(assignment.id)} title="Resume" className="p-1.5 text-[#666D7A] hover:text-[#1B6DFC] rounded transition-colors"><Play size={12} /></button>}
+          {onComplete && <button onClick={() => onComplete(assignment.id)} title="Mark complete" className="p-1.5 text-[#666D7A] hover:text-green-700 rounded transition-colors"><Check size={12} /></button>}
+          <button onClick={() => onDelete(assignment.id)} title="Delete" className="p-1.5 text-[#666D7A] hover:text-red-700 rounded transition-colors"><Trash2 size={12} /></button>
         </div>
       </div>
     </div>

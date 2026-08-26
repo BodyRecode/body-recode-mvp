@@ -46,7 +46,7 @@ export default function CopilotBubble({
     <>
       {open && sessionId && (
         <div
-          className="fixed bottom-24 right-5 z-50 w-[380px] max-w-[calc(100vw-2.5rem)] h-[560px] max-h-[calc(100vh-8rem)] shadow-2xl rounded-2xl"
+          className="fixed bottom-24 right-5 z-50 w-[380px] max-w-[calc(100vw-2.5rem)] h-[560px] max-h-[calc(100vh-8rem)] shadow-2xl rounded-xl"
           role="dialog"
           aria-label="Coach Co-Pilot"
         >

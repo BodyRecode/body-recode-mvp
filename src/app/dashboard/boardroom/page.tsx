@@ -75,27 +75,27 @@ export default function BoardroomLanding() {
           <Link
             key={r.role}
             href={r.href}
-            className={`block bg-white border rounded-2xl p-5 hover:border-blue-300 transition-colors ${
-              (r as { board?: boolean }).board ? 'border-blue-300 ring-1 ring-blue-100' : 'border-stone-200'
+            className={`block bg-white border rounded-xl p-5 hover:border-blue-300 transition-colors ${
+              (r as { board?: boolean }).board ? 'border-blue-300 ring-1 ring-blue-100' : 'border-[#E8EAEE]'
             }`}
           >
             <div className="flex items-center justify-between mb-3">
-              <div className="text-[24px] font-bold tracking-tight text-stone-900">{r.role}</div>
-              <span className="text-[9px] font-bold uppercase tracking-widest bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Live</span>
+              <div className="text-[24px] font-bold tracking-tight text-[#141821]">{r.role}</div>
+              <span className="text-[9px] font-medium bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Live</span>
             </div>
-            <div className="text-[12px] font-mono text-stone-500 mb-3">{r.persona === 'You' ? `You (${c.firstName})` : r.persona}</div>
-            <p className="text-[13px] text-stone-700 leading-relaxed mb-3">{r.voice}</p>
-            <div className="text-[11px] text-stone-500 font-semibold uppercase tracking-widest">{r.ritual}</div>
+            <div className="text-[12px] font-mono text-[#666D7A] mb-3">{r.persona === 'You' ? `You (${c.firstName})` : r.persona}</div>
+            <p className="text-[13px] text-[#141821] leading-relaxed mb-3">{r.voice}</p>
+            <div className="text-[11px] text-[#666D7A] font-semibold">{r.ritual}</div>
           </Link>
         ))}
       </div>
 
-      <div className="mt-8 p-5 rounded-xl border border-stone-200 bg-stone-50">
-        <h3 className="text-[13px] font-bold text-stone-900 uppercase tracking-widest mb-3">How the briefings work</h3>
-        <p className="text-[13px] text-stone-700 leading-relaxed mb-3">
+      <div className="mt-8 p-5 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD]">
+        <h3 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em] mb-3">How the briefings work</h3>
+        <p className="text-[13px] text-[#141821] leading-relaxed mb-3">
           Each role page fetches its live snapshot from Supabase, then Claude generates 2-4 proactive briefing items grounded in the specific data. Board of Advisors gets ALL 4 C-suite snapshots + founder context and synthesises across silos.
         </p>
-        <p className="text-[13px] text-stone-700 leading-relaxed">
+        <p className="text-[13px] text-[#141821] leading-relaxed">
           Briefings cache 15 min per role to keep API costs low. Persona voices distinct: Sarah warm/patient (CFO), Marcus sharp/challenging (CMO), Priya empathetic (CCO), James systems-thinker (COO). Board voices: Steward long-term, Operator execution, Coach founder-focused.
         </p>
       </div>

@@ -337,7 +337,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   } | null)?.rationale_summary ?? null
 
   const statusColour = {
-    pending: 'text-[#6B6B6B] bg-stone-100 border-stone-200',
+    pending: 'text-[#666D7A] bg-[#F4F6F9] border-[#E8EAEE]',
     started: 'text-amber-700 bg-amber-50 border-amber-200',
     complete: 'text-green-700 bg-green-50 border-green-200',
   }
@@ -448,7 +448,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             <span>{rrsChip.playbook_name}</span>
             <span className="text-[10px] opacity-70">({rrsChip.days_active}d)</span>
             <span className="text-[10px] opacity-60">·</span>
-            <span className="inline-flex items-center gap-1 text-[11px] font-bold">
+            <span className="inline-flex items-center gap-1 text-[11px] font-medium">
               <Sparkles size={11} />
               {rrsChip.sbst_remove
                 ? 'SBST removal action required'
@@ -552,9 +552,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         return (
           <Link
             href={`/dashboard/clients/${id}/program`}
-            className="block bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-2xl p-4 mb-4 transition-colors"
+            className="block bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-xl p-4 mb-4 transition-colors"
           >
-            <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-amber-700 mb-1">Pending block-end reading</p>
+            <p className="text-[12px] font-medium tracking-[0.12em] text-amber-700 mb-1">Pending block-end reading</p>
             <p className="text-sm text-amber-900">
               <span className="font-semibold">{pendingTrajectory.block_name}</span> ended{endedAt ? ` around ${endedAt}` : ''} but its trajectory reading was never generated. Click through to generate it now →
             </p>
@@ -566,12 +566,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       <div data-tab="admin">
 
       {/* Deliberate Start Window */}
-      <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-2xl p-5 mb-4">
+      <div className="bg-[#FFFFFF] border border-[#E8EAEE] border-l-[3px] border-l-[#1B6DFC] rounded-xl p-5 mb-4">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1B6DFC] mb-1">Coaching Start Date</p>
+            <p className="text-[12px] font-medium tracking-[0.12em] text-[#1B6DFC] mb-1">Coaching Start Date</p>
             {client.coaching_started_at ? (
-              <p className="text-sm text-[#3A3A3A]">
+              <p className="text-sm text-[#43474F]">
                 {(() => {
                   const start = new Date(client.coaching_started_at)
                   const today = new Date()
@@ -584,7 +584,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 })()}
               </p>
             ) : (
-              <p className="text-sm text-[#999999]">Not set - set a start date to begin the Deliberate Start Window</p>
+              <p className="text-sm text-[#98A0AD]">Not set - set a start date to begin the Deliberate Start Window</p>
             )}
           </div>
           <SetStartDate clientId={client.id} currentDate={client.coaching_started_at} />
@@ -592,12 +592,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       </div>
 
       {/* Fixed Session Slot */}
-      <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-2xl p-5 mb-4">
+      <div className="bg-[#FFFFFF] border border-[#E8EAEE] border-l-[3px] border-l-[#1B6DFC] rounded-xl p-5 mb-4">
         <div className="flex items-center justify-between mb-3">
-          <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1B6DFC]">Face-to-Face Session</p>
+          <p className="text-[12px] font-medium tracking-[0.12em] text-[#1B6DFC]">Face-to-Face Session</p>
           <Link
             href={`/dashboard/clients/${id}/fixed-session`}
-            className="text-xs text-blue-500 hover:text-blue-700 transition-colors"
+            className="text-[12.5px] text-blue-500 hover:text-blue-700 transition-colors"
           >
             {(clientFixedSlots ?? []).length > 0 ? 'Manage →' : 'Set up →'}
           </Link>
@@ -606,10 +606,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           <div className="space-y-1">
             {(clientFixedSlots ?? []).map(slot => (
               <div key={slot.id}>
-                <span className="text-sm text-[#1A1A1A] font-medium">
+                <span className="text-sm text-[#141821] font-medium">
                   {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][slot.day_of_week]}s
                 </span>
-                <span className="text-xs text-[#999999] ml-2">
+                <span className="text-[12.5px] text-[#98A0AD] ml-2">
                   · {new Date(`1970-01-01T${slot.session_time}`).toLocaleTimeString('en-AU', { hour: 'numeric', minute: '2-digit', hour12: true })} · {slot.duration_minutes} min
                 </span>
               </div>
@@ -619,23 +619,23 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           <p className="text-sm text-[#4A4A4A]">No fixed slots assigned yet.</p>
         )}
         {(upcomingClientSessions ?? []).length > 0 && (
-          <div className="mt-4 pt-4 border-t border-[#E5E5E5] space-y-2">
-            <p className="text-xs text-[#4A4A4A] uppercase tracking-wider mb-2">Booked sessions</p>
+          <div className="mt-4 pt-4 border-t border-[#E8EAEE] space-y-2">
+            <p className="text-[12.5px] text-[#4A4A4A] mb-2">Booked sessions</p>
             {(upcomingClientSessions ?? []).map(s => (
               <div key={s.id} className="flex items-center justify-between">
                 <div>
-                  <span className="text-xs text-[#3A3A3A]">
+                  <span className="text-[12.5px] text-[#43474F]">
                     {new Date(s.scheduled_at).toLocaleDateString('en-AU', {
                       timeZone: 'Australia/Brisbane', weekday: 'short', day: 'numeric', month: 'short',
                     })}
                   </span>
-                  <span className="text-xs text-[#4A4A4A] ml-2">
+                  <span className="text-[12.5px] text-[#4A4A4A] ml-2">
                     {new Date(s.scheduled_at).toLocaleTimeString('en-AU', {
                       timeZone: 'Australia/Brisbane', hour: 'numeric', minute: '2-digit', hour12: true,
                     })} · {s.duration_minutes} min
                   </span>
                 </div>
-                <span className={`text-xs ${s.confirmed_at ? 'text-blue-500' : 'text-[#999999]'}`}>
+                <span className={`text-xs ${s.confirmed_at ? 'text-blue-500' : 'text-[#98A0AD]'}`}>
                   {s.confirmed_at ? 'Confirmed' : 'Pending'}
                 </span>
               </div>
@@ -645,16 +645,16 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       </div>
 
       {/* Package */}
-      <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-2xl p-5 mb-4">
+      <div className="bg-[#FFFFFF] border border-[#E8EAEE] border-l-[3px] border-l-[#1B6DFC] rounded-xl p-5 mb-4">
         <div className="flex items-center justify-between mb-3">
-          <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1B6DFC]">Coaching Package</p>
+          <p className="text-[12px] font-medium tracking-[0.12em] text-[#1B6DFC]">Coaching Package</p>
           {client.subscription_active ? (
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full border border-blue-200 text-blue-500 bg-blue-50">
+            <span className="text-[12.5px] font-semibold px-2.5 py-1 rounded-full border border-blue-200 text-blue-500 bg-blue-50">
               Subscription Active
             </span>
           ) : (
             <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold px-2.5 py-1 rounded-full border border-[#E5E5E5] text-[#999999]">
+              <span className="text-[12.5px] font-semibold px-2.5 py-1 rounded-full border border-[#E8EAEE] text-[#98A0AD]">
                 Awaiting Payment
               </span>
               <OverrideSubscriptionButton clientId={client.id} />
@@ -672,11 +672,11 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           const isUpgradeCandidate = TWO_SESSION_PACKAGE_VALUES.includes(client.package) && (weekNumber ?? 0) >= 8
           if (!isUpgradeCandidate) return null
           return (
-            <div className="mt-3 pt-3 border-t border-[#E5E5E5] flex items-center justify-between">
-              <p className="text-xs text-blue-500">Eligible for 2x to 3x upgrade (Week {weekNumber})</p>
+            <div className="mt-3 pt-3 border-t border-[#E8EAEE] flex items-center justify-between">
+              <p className="text-[12.5px] text-blue-500">Eligible for 2x to 3x upgrade (Week {weekNumber})</p>
               <Link
                 href={`/companion/${id}/upgrade`}
-                className="text-xs font-semibold text-blue-500 hover:text-blue-700 border border-blue-200/50 px-3 py-1.5 rounded-lg transition-colors"
+                className="text-[12.5px] font-semibold text-blue-500 hover:text-blue-700 border border-blue-200/50 px-3 py-1.5 rounded-lg transition-colors"
               >
                 Upgrade Companion →
               </Link>
@@ -689,9 +689,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       <ClientCommunicationsPanel rows={communications} />
 
       {/* Onboarding status */}
-      <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-2xl p-5 mb-4">
+      <div className="bg-[#FFFFFF] border border-[#E8EAEE] border-l-[3px] border-l-[#1B6DFC] rounded-xl p-5 mb-4">
         <div className="flex items-center justify-between mb-3">
-          <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1B6DFC]">Onboarding</p>
+          <p className="text-[12px] font-medium tracking-[0.12em] text-[#1B6DFC]">Onboarding</p>
           <div className="flex items-center gap-2 flex-wrap">
             <SendPortalEmailButton clientId={client.id} />
             <SendPortalOrientationButton clientId={client.id} />
@@ -709,11 +709,11 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             { label: (bloodPanels?.length ?? 0) > 0 ? 'Blood Work' : (client.bloodwork_arranged_at ? 'Blood Work (arranging)' : 'Blood Work'), done: (bloodPanels?.length ?? 0) > 0 || !!client.bloodwork_arranged_at, href: null },
           ].map(item => (
             <div key={item.label} className="flex items-center gap-2">
-              <div className={`w-2 h-2 rounded-full flex-shrink-0 ${item.done ? 'bg-blue-500' : 'bg-[#E5E5E5]'}`} />
+              <div className={`w-2 h-2 rounded-full flex-shrink-0 ${item.done ? 'bg-blue-500' : 'bg-[#EFF1F4]'}`} />
               {item.href ? (
-                <Link href={item.href} className="text-xs text-blue-500 hover:text-blue-700 transition-colors">{item.label} →</Link>
+                <Link href={item.href} className="text-[12.5px] text-blue-500 hover:text-blue-700 transition-colors">{item.label} →</Link>
               ) : (
-                <span className={`text-xs ${item.done ? 'text-[#3A3A3A]' : 'text-[#4A4A4A]'}`}>{item.label}</span>
+                <span className={`text-xs ${item.done ? 'text-[#43474F]' : 'text-[#4A4A4A]'}`}>{item.label}</span>
               )}
             </div>
           ))}
@@ -727,14 +727,14 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           const clearanceEmail = communications.find(c => c.kind === 'medical_clearance_required')
           const emailSentAt = clearanceEmail?.sent_at as string | undefined
           return (
-            <div className="mt-3 pt-3 border-t border-[#E5E5E5] space-y-2">
+            <div className="mt-3 pt-3 border-t border-[#E8EAEE] space-y-2">
               <div className="flex items-center justify-between">
                 {client.medical_clearance_received_at ? (
-                  <p className="text-xs text-blue-500">Medical clearance received</p>
+                  <p className="text-[12.5px] text-blue-500">Medical clearance received</p>
                 ) : (
                   <>
-                    <p className="text-xs text-amber-700">Medical clearance required</p>
-                    <Link href={`/dashboard/clients/${id}/medical-clearance`} className="text-xs text-amber-700 hover:text-amber-700 underline transition-colors">Manage →</Link>
+                    <p className="text-[12.5px] text-amber-700">Medical clearance required</p>
+                    <Link href={`/dashboard/clients/${id}/medical-clearance`} className="text-[12.5px] text-amber-700 hover:text-amber-700 underline transition-colors">Manage →</Link>
                   </>
                 )}
               </div>
@@ -742,12 +742,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 <div className="flex items-center gap-2">
                   <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${emailSentAt ? 'bg-blue-500' : 'bg-red-500'}`} />
                   {emailSentAt ? (
-                    <p className="text-[10px] text-[#6B6B6B]" title={new Date(emailSentAt).toLocaleString('en-AU')}>
+                    <p className="text-[10px] text-[#666D7A]" title={new Date(emailSentAt).toLocaleString('en-AU')}>
                       Client auto-email sent {new Date(emailSentAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
                     </p>
                   ) : (
                     <p className="text-[10px] text-red-700">
-                      Client auto-email not sent. Run <code className="bg-[#E5E5E5] px-1 rounded">scripts/send-clearance-required-email.ts {client.id}</code> or nudge manually.
+                      Client auto-email not sent. Run <code className="bg-[#EFF1F4] px-1 rounded">scripts/send-clearance-required-email.ts {client.id}</code> or nudge manually.
                     </p>
                   )}
                 </div>
@@ -760,15 +760,15 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       {/* Signals to reconcile: reported-vs-measured fat distribution divergence.
           Non-diagnostic coach prompt. Only renders when both signals exist and clash. */}
       {fatDivergence && (
-        <div className="bg-[#FEF6E7] border border-[#F0DCB4] border-l-[3px] border-l-[#C08A2D] rounded-2xl p-5 mb-4">
+        <div className="bg-[#FEF6E7] border border-[#F0DCB4] border-l-[3px] border-l-[#C08A2D] rounded-xl p-5 mb-4">
           <div className="flex items-start gap-3">
             <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#C08A2D]/15 flex items-center justify-center">
               <span className="text-[#8A5A14] text-[13px] font-bold leading-none">!</span>
             </div>
             <div className="min-w-0">
-              <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#8A5A14] mb-1">Signals to reconcile</p>
-              <p className="text-sm font-semibold text-[#1A1A1A] mb-1.5">{fatDivergence.headline}</p>
-              <p className="text-[13px] text-[#3A3A3A] leading-relaxed">{fatDivergence.detail}</p>
+              <p className="text-[12px] font-medium tracking-[0.12em] text-[#8A5A14] mb-1">Signals to reconcile</p>
+              <p className="text-sm font-semibold text-[#141821] mb-1.5">{fatDivergence.headline}</p>
+              <p className="text-[13px] text-[#43474F] leading-relaxed">{fatDivergence.detail}</p>
             </div>
           </div>
         </div>
@@ -776,10 +776,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
       {/* Foundational intake status */}
       {latestFoundationalInvitation && (
-        <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-2xl p-5 mb-4">
+        <div className="bg-[#FFFFFF] border border-[#E8EAEE] border-l-[3px] border-l-[#1B6DFC] rounded-xl p-5 mb-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1B6DFC] mb-1">Intake</p>
+              <p className="text-[12px] font-medium tracking-[0.12em] text-[#1B6DFC] mb-1">Intake</p>
               <div className="flex items-center gap-2">
                 <span
                   className={`text-xs font-medium px-2.5 py-1 rounded-full border capitalize ${
@@ -789,7 +789,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   {latestFoundationalInvitation.status}
                 </span>
                 {latestFoundationalInvitation.status === 'complete' && latestFoundationalInvitation.completed_at && (
-                  <span className="text-xs text-[#999999]">
+                  <span className="text-[12.5px] text-[#98A0AD]">
                     Completed {formatDate(latestFoundationalInvitation.completed_at)}
                   </span>
                 )}
@@ -825,7 +825,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         <div id="updates" className="flex items-center justify-between mb-3 mt-2 scroll-mt-8">
           <div className="flex items-center gap-2.5">
             <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
-            <h2 className="text-[11px] font-bold text-[#1B6DFC] uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>
+            <h2 className="text-[11px] font-medium text-[#1B6DFC]" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>
               Updates <span className="text-[#4A4A4A] font-normal">- post-onboarding follow-ups</span>
             </h2>
           </div>
@@ -840,10 +840,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           dietary fields, the Dietary & Consumption editor below is the faster
           path; this client-driven flow also auto-regenerates the CFFS.  */}
       {latestFoundationalInvitation?.status === 'complete' && (
-        <div className="bg-[#FFFFFF] border border-[#E5E5E5] border-l-[3px] border-l-[#1B6DFC] rounded-2xl p-5 mb-4">
+        <div className="bg-[#FFFFFF] border border-[#E8EAEE] border-l-[3px] border-l-[#1B6DFC] rounded-xl p-5 mb-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1B6DFC] mb-1">Supplementary intake</p>
+              <p className="text-[12px] font-medium tracking-[0.12em] text-[#1B6DFC] mb-1">Supplementary intake</p>
               {latestSupplementaryInvitation ? (
                 <div className="flex items-center gap-2">
                   <span
@@ -854,21 +854,21 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     {latestSupplementaryInvitation.status}
                   </span>
                   {latestSupplementaryInvitation.status === 'complete' && latestSupplementaryInvitation.completed_at && (
-                    <span className="text-xs text-[#999999]">
+                    <span className="text-[12.5px] text-[#98A0AD]">
                       Completed {formatDate(latestSupplementaryInvitation.completed_at)}
                     </span>
                   )}
                   {latestSupplementaryInvitation.status === 'pending' && (
-                    <span className="text-xs text-[#999999]">
+                    <span className="text-[12.5px] text-[#98A0AD]">
                       Sitting in their portal since {formatDate(latestSupplementaryInvitation.created_at)}
                     </span>
                   )}
                 </div>
               ) : (
-                <p className="text-xs text-[#999999]">Not sent yet — adds a 9-question follow-up card (meds + dietary/consumption) to the client&apos;s portal.</p>
+                <p className="text-[12.5px] text-[#98A0AD]">Not sent yet — adds a 9-question follow-up card (meds + dietary/consumption) to the client&apos;s portal.</p>
               )}
               {latestSupplementaryInvitation?.status === 'complete' && (
-                <p className="text-[11px] text-[#999999] mt-1">Need to update meds or dietary context again? Send a fresh one.</p>
+                <p className="text-[11px] text-[#98A0AD] mt-1">Need to update meds or dietary context again? Send a fresh one.</p>
               )}
             </div>
             <div className="flex items-center gap-2">
@@ -1000,8 +1000,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       {latestSupplementaryInvitation?.status === 'complete' && latestSupplementaryInvitation.completed_at && activeCffs?.generated_at &&
        new Date(latestSupplementaryInvitation.completed_at).getTime() > new Date(activeCffs.generated_at).getTime() && (
         <div className="mb-4 rounded-xl border border-amber-300 bg-amber-50 p-4">
-          <p className="text-[11px] font-bold tracking-widest text-amber-800 uppercase mb-1">Supplementary intake newer than CFFS</p>
-          <p className="text-sm text-[#3A3A3A] leading-relaxed mb-3">
+          <p className="text-[11px] font-medium text-amber-800 mb-1">Supplementary intake newer than CFFS</p>
+          <p className="text-sm text-[#43474F] leading-relaxed mb-3">
             {client.name?.split(' ')[0] ?? 'The client'} submitted a supplementary intake on {formatDate(latestSupplementaryInvitation.completed_at)}. The dietary + medication context is saved on their file, but the CFFS still reflects the pre-update state. Click Regenerate below to refresh the CFFS so downstream artefacts (program, nutrition, weekly synthesis) read the new context.
           </p>
           {latestIntakeId && (
@@ -1010,8 +1010,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         </div>
       )}
       {!activeCffs ? (
-        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl p-8 text-center">
-          <p className="text-[#6B6B6B] mb-2">No CFFS generated yet</p>
+        <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-8 text-center">
+          <p className="text-[#666D7A] mb-2">No CFFS generated yet</p>
           <p className="text-[#4A4A4A] text-sm mb-4">
             {latestFoundationalInvitation?.status === 'pending'
               ? 'Waiting for the client to complete their intake.'
@@ -1033,37 +1033,37 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               coach has to go looking for is a note nobody reads. */}
           {activeCffs?.pattern_watch_for && (
             <div className="rounded-xl border border-[rgba(27,109,252,0.25)] bg-[#F3F7FF] px-5 py-4 mb-4">
-              <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">
+              <p className="text-[10px] font-medium text-[#1B6DFC] mb-2">
                 Watch for
                 {activeCffs.pattern_competing_read && activeCffs.pattern_competing_read !== 'None'
                   ? ` — competing read: ${activeCffs.pattern_competing_read}`
                   : ''}
               </p>
-              <p className="text-[13px] text-[#3A3A3A] leading-relaxed">{activeCffs.pattern_watch_for}</p>
+              <p className="text-[13px] text-[#43474F] leading-relaxed">{activeCffs.pattern_watch_for}</p>
             </div>
           )}
 
           {/* State + Exposure Readiness */}
-          <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl overflow-hidden mb-4">
-            <div className="px-5 pt-5 pb-4 grid grid-cols-2 gap-4 border-b border-[#E5E5E5]">
+          <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden mb-4">
+            <div className="px-5 pt-5 pb-4 grid grid-cols-2 gap-4 border-b border-[#E8EAEE]">
               <div>
-                <p className="text-[10px] font-bold text-[#999999] uppercase tracking-widest mb-2">Body State Classification</p>
-                <p className="text-lg font-bold text-[#1A1A1A] leading-tight mb-2">{activeCffs.body_state_classification}</p>
+                <p className="text-[10px] font-medium text-[#98A0AD] mb-2">Body State Classification</p>
+                <p className="text-lg font-bold text-[#141821] leading-tight mb-2">{activeCffs.body_state_classification}</p>
                 <div className="flex items-center gap-2">
                   <div className="w-1 h-3.5 bg-[#1B6DFC]" />
-                  <p className="text-xs text-[#6B6B6B]">Resolution: <span className="text-[#1A1A1A] font-semibold">{activeCffs.resolution_state}</span></p>
+                  <p className="text-[12.5px] text-[#666D7A]">Resolution: <span className="text-[#141821] font-semibold">{activeCffs.resolution_state}</span></p>
                 </div>
                 {/* Pattern sits with the state on the screen the coach actually
                     works from, not only on the printable report. */}
                 {activeCffs.pattern_classification && (
-                  <div className="mt-4 pt-4 border-t border-[#E5E5E5]">
-                    <p className="text-[10px] font-bold text-[#999999] uppercase tracking-widest mb-2">Pattern Classification</p>
-                    <p className="text-lg font-bold text-[#1A1A1A] leading-tight mb-2">{activeCffs.pattern_classification}</p>
+                  <div className="mt-4 pt-4 border-t border-[#E8EAEE]">
+                    <p className="text-[10px] font-medium text-[#98A0AD] mb-2">Pattern Classification</p>
+                    <p className="text-lg font-bold text-[#141821] leading-tight mb-2">{activeCffs.pattern_classification}</p>
                     {activeCffs.pattern_confidence && (
                       <div className="flex items-center gap-2">
                         <div className="w-1 h-3.5 bg-[#1B6DFC]" />
-                        <p className="text-xs text-[#6B6B6B]">
-                          Confidence: <span className="text-[#1A1A1A] font-semibold capitalize">{activeCffs.pattern_confidence}</span>
+                        <p className="text-[12.5px] text-[#666D7A]">
+                          Confidence: <span className="text-[#141821] font-semibold capitalize">{activeCffs.pattern_confidence}</span>
                         </p>
                       </div>
                     )}
@@ -1071,22 +1071,22 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 )}
               </div>
               <div>
-                <p className="text-[10px] font-bold text-[#999999] uppercase tracking-widest mb-3">Exposure Readiness</p>
+                <p className="text-[10px] font-medium text-[#98A0AD] mb-3">Exposure Readiness</p>
                 <div className="grid grid-cols-2 gap-2">
                   {readinessItems.map(item => (
                     <div key={item.label} className={`px-3 py-2 rounded-lg border-l-2 ${
                       item.value === 'Green' ? 'bg-green-50 border-green-500' :
                       item.value === 'Amber' ? 'bg-amber-50 border-amber-500' :
                       item.value === 'Red' ? 'bg-red-50 border-red-500' :
-                      'bg-[#E5E5E5] border-[#D4D4D4]'
+                      'bg-[#EFF1F4] border-[#CFD4DC]'
                     }`}>
                       <p className={`text-xs font-bold mb-0.5 ${
                         item.value === 'Green' ? 'text-green-400' :
                         item.value === 'Amber' ? 'text-amber-700' :
                         item.value === 'Red' ? 'text-red-700' :
-                        'text-[#6B6B6B]'
+                        'text-[#666D7A]'
                       }`}>{item.value}</p>
-                      <p className="text-[10px] text-[#999999] font-medium uppercase tracking-wide">{item.label}</p>
+                      <p className="text-[10px] text-[#98A0AD] font-medium">{item.label}</p>
                     </div>
                   ))}
                 </div>
@@ -1094,16 +1094,15 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             </div>
             <div className="flex items-center justify-between px-5 py-3">
               <div className="flex items-center gap-3 flex-wrap">
-                <p className="text-[#4A4A4A] text-xs">Generated {formatDate(activeCffs.generated_at)}</p>
+                <p className="text-[#4A4A4A] text-[12.5px]">Generated {formatDate(activeCffs.generated_at)}</p>
                 {/* Visual Signal Integration: shows whether photos were read at generation time. */}
                 {typeof activeCffs.photos_used === 'number' && (
                   <span
                     className={`inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border uppercase ${
                       activeCffs.photos_used > 0
                         ? 'text-[#1B6DFC] bg-[rgba(27,109,252,0.10)] border-[#B5CFFC]'
-                        : 'text-[#999999] bg-[#FFFFFF] border-[#E5E5E5]'
+                        : 'text-[#98A0AD] bg-[#FFFFFF] border-[#E8EAEE]'
                     }`}
-                    style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
                     title={
                       activeCffs.photos_used > 0
                         ? `Baseline photos read by the Fat Map: ${activeCffs.photos_used} of 3`
@@ -1122,7 +1121,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 <Link
                   href={`/dashboard/clients/${client.id}/cffs-report`}
                   target="_blank"
-                  className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+                  className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
                 >
                   Download PDF
                 </Link>
@@ -1150,24 +1149,24 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           {/* Doctrine: Signal Monitoring v1.0 - readiness monitor panel */}
           {readinessReport && (readinessReport.status !== 'clean' || readinessReport.block?.weeksRemaining != null) && (
             <div
-              className="bg-[#FFFFFF] border rounded-2xl overflow-hidden mb-4"
+              className="bg-[#FFFFFF] border rounded-xl overflow-hidden mb-4"
               style={{
                 borderColor: readinessReport.status === 'regression' ? '#FEE7E7'
                   : readinessReport.status === 'reassessment' ? '#F0DCB4'
                   : '#E5E5E5',
               }}
             >
-              <div className="flex items-center justify-between px-5 py-3 border-b border-[#E5E5E5]">
+              <div className="flex items-center justify-between px-5 py-3 border-b border-[#E8EAEE]">
                 <div className="flex items-center gap-2.5">
                   {readinessReport.status === 'regression' ? (
                     <Activity size={13} className="text-[#DC2626]" />
                   ) : readinessReport.status === 'reassessment' ? (
                     <RefreshCw size={13} className="text-[#B7791F]" />
                   ) : (
-                    <AlertTriangleIcon size={13} className="text-[#6B6B6B]" />
+                    <AlertTriangleIcon size={13} className="text-[#666D7A]" />
                   )}
                   <p
-                    className="text-[10px] font-bold uppercase"
+                    className="text-[11.5px] font-medium"
                     style={{
                       fontFamily: MONO_FONT,
                       letterSpacing: '0.14em',
@@ -1182,15 +1181,15 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                       : 'Block Status'}
                   </p>
                 </div>
-                <span className="text-[10px] text-[#999999]" style={{ fontFamily: MONO_FONT }}>
+                <span className="text-[10px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}>
                   Signal Monitoring v1.0
                 </span>
               </div>
 
               {/* Drift conditions */}
               {readinessReport.drift.length > 0 && (
-                <div className="px-5 py-4 border-b border-[#E5E5E5]">
-                  <p className="text-[10px] font-bold text-[#999999] uppercase mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>
+                <div className="px-5 py-4 border-b border-[#E8EAEE]">
+                  <p className="text-[10px] font-medium text-[#98A0AD] mb-2">
                     Drift this week
                   </p>
                   <ul className="space-y-1.5">
@@ -1200,7 +1199,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                           className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0"
                           style={{ background: d.severity === 'high' ? '#DC2626' : '#6B6B6B' }}
                         />
-                        <span className={d.severity === 'high' ? 'text-[#1A1A1A]' : 'text-[#6B6B6B]'}>{d.message}</span>
+                        <span className={d.severity === 'high' ? 'text-[#141821]' : 'text-[#666D7A]'}>{d.message}</span>
                       </li>
                     ))}
                   </ul>
@@ -1213,35 +1212,35 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 const creep = creepEntry?.rpeCreep
                 if (!creep || creep.findings.length === 0) return null
                 return (
-                  <div className="px-5 py-4 border-b border-[#E5E5E5]">
+                  <div className="px-5 py-4 border-b border-[#E8EAEE]">
                     <div className="flex items-center justify-between mb-2">
-                      <p className="text-[10px] font-bold text-[#999999] uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>
+                      <p className="text-[10px] font-medium text-[#98A0AD]">
                         RPE creep — week {creep.weekNumberInBlock}
                       </p>
-                      <span className="text-[10px] text-[#999999]" style={{ fontFamily: MONO_FONT }}>
+                      <span className="text-[10px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}>
                         {creep.creepingCount} exercise{creep.creepingCount === 1 ? '' : 's'}{creep.severeCount > 0 ? ` · ${creep.severeCount} severe` : ''}
                       </span>
                     </div>
                     <ul className="space-y-1">
                       {creep.findings.slice(0, 6).map((f, i) => (
                         <li key={i} className="flex items-center justify-between gap-3 text-[12px]">
-                          <span className={f.severe ? 'text-[#1A1A1A]' : 'text-[#6B6B6B]'}>{f.exerciseName}</span>
+                          <span className={f.severe ? 'text-[#141821]' : 'text-[#666D7A]'}>{f.exerciseName}</span>
                           <span className="shrink-0 tabular-nums" style={{ fontFamily: MONO_FONT }}>
-                            <span className="text-[#999999]">RPE</span>{' '}
-                            <span className="text-[#999999]">{f.prescribedRpe}</span>
-                            <span className="text-[#999999]"> → </span>
+                            <span className="text-[#98A0AD]">RPE</span>{' '}
+                            <span className="text-[#98A0AD]">{f.prescribedRpe}</span>
+                            <span className="text-[#98A0AD]"> → </span>
                             <span className={f.severe ? 'text-[#DC2626]' : 'text-[#B7791F]'}>{f.avgLoggedRpe}</span>
                             <span className={f.severe ? 'text-[#DC2626]' : 'text-[#B7791F]'}> (+{f.delta})</span>
                             {f.maxLoggedRpe >= 9.5 && (
                               <span className="text-[#DC2626]"> · max {f.maxLoggedRpe}</span>
                             )}
-                            <span className="text-[#999999]"> · {f.setCount} set{f.setCount === 1 ? '' : 's'}</span>
+                            <span className="text-[#98A0AD]"> · {f.setCount} set{f.setCount === 1 ? '' : 's'}</span>
                           </span>
                         </li>
                       ))}
                     </ul>
                     {creep.findings.length > 6 && (
-                      <p className="text-[11px] text-[#999999] mt-2" style={{ fontFamily: MONO_FONT }}>
+                      <p className="text-[11px] text-[#98A0AD] mt-2" style={{ fontFamily: MONO_FONT }}>
                         +{creep.findings.length - 6} more not shown
                       </p>
                     )}
@@ -1251,16 +1250,16 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
               {/* Reassessment reasons */}
               {readinessReport.reassessmentReasons.length > 0 && (
-                <div className="px-5 py-4 border-b border-[#E5E5E5]">
-                  <p className="text-[10px] font-bold text-[#999999] uppercase mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>
+                <div className="px-5 py-4 border-b border-[#E8EAEE]">
+                  <p className="text-[10px] font-medium text-[#98A0AD] mb-2">
                     Reassessment triggers
                   </p>
                   <ul className="space-y-2">
                     {readinessReport.reassessmentReasons.map((r, i) => (
                       <li key={i} className="text-[13px]">
-                        <p className="text-[#1A1A1A]">{r.message}</p>
-                        <p className="text-[11px] text-[#999999] mt-0.5" style={{ fontFamily: MONO_FONT }}>
-                          Recommended depth: <span className="text-[#6B6B6B]">{r.recommendedDepth}</span>
+                        <p className="text-[#141821]">{r.message}</p>
+                        <p className="text-[11px] text-[#98A0AD] mt-0.5" style={{ fontFamily: MONO_FONT }}>
+                          Recommended depth: <span className="text-[#666D7A]">{r.recommendedDepth}</span>
                         </p>
                       </li>
                     ))}
@@ -1277,8 +1276,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               {readinessReport.block && (
                 <div className="px-5 py-3">
                   <div className="flex items-center justify-between text-[12px]">
-                    <span className="text-[#999999]">
-                      Block <span className="text-[#3A3A3A]">{readinessReport.block.blockName ?? '-'}</span>
+                    <span className="text-[#98A0AD]">
+                      Block <span className="text-[#43474F]">{readinessReport.block.blockName ?? '-'}</span>
                       {readinessReport.block.weekDuration != null && (
                         <> · {readinessReport.block.weekDuration}-week duration</>
                       )}
@@ -1319,7 +1318,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               >
                 Log a session →
               </Link>
-              <p className="mt-1.5 text-xs text-[#999999]">Log a workout on {(client.name ?? 'the client').split(' ')[0]}&apos;s behalf when you train them in person. It appears in their portal too.</p>
+              <p className="mt-1.5 text-[12.5px] text-[#98A0AD]">Log a workout on {(client.name ?? 'the client').split(' ')[0]}&apos;s behalf when you train them in person. It appears in their portal too.</p>
             </div>
           )}
 
@@ -1355,12 +1354,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           )}
 
           {/* What is a CFFS */}
-          <div className="border-l-2 border-[#1B6DFC] bg-[#FFFFFF]/50 border border-[#E5E5E5] rounded-2xl p-5 mb-4">
-            <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-3">About This Report</p>
-            <p className="text-sm font-semibold text-[#1A1A1A] leading-relaxed mb-3">
+          <div className="border-l-2 border-[#1B6DFC] bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl p-5 mb-4">
+            <p className="text-[10px] font-medium text-[#1B6DFC] mb-3">About This Report</p>
+            <p className="text-sm font-semibold text-[#141821] leading-relaxed mb-3">
               This is not a summary. It is a structured interpretation of how this client&apos;s system is currently organising itself.
             </p>
-            <p className="text-sm text-[#999999] leading-relaxed">
+            <p className="text-sm text-[#98A0AD] leading-relaxed">
               The CFFS translates 221 data points across eight signal domains into a single, coherent picture of the client&apos;s current body state. Nothing here prescribes or diagnoses - you remain the interpretive authority.
             </p>
           </div>
@@ -1374,20 +1373,18 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               <div className="flex items-center gap-3 px-5 py-3 border-b border-[#B5CFFC] bg-[rgba(27,109,252,0.06)]">
                 <Eye size={13} className="text-[#1B6DFC]" />
                 <p
-                  className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest"
-                  style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+                  className="text-[10px] font-medium text-[#1B6DFC]"
                 >
                   Visual Signal Summary
                 </p>
                 <span
                   className="ml-auto text-[10px] text-[#4A4A4A]"
-                  style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
                 >
                   What the {activeCffs.photos_used ?? 3} baseline photo{(activeCffs.photos_used ?? 3) === 1 ? '' : 's'} contributed
                 </span>
               </div>
               <div className="px-5 py-4">
-                <p className="text-sm text-[#1A1A1A] leading-relaxed">{activeCffs.visual_signal_summary}</p>
+                <p className="text-sm text-[#141821] leading-relaxed">{activeCffs.visual_signal_summary}</p>
               </div>
             </div>
           )}
@@ -1403,13 +1400,13 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             </summary>
             <div className="space-y-2">
               {cffsSections.map((section, i) => (
-                <div key={section.label} className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl overflow-hidden">
-                  <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E5E5E5] bg-[#FFFFFF]/80">
+                <div key={section.label} className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden">
+                  <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[#FFFFFF]/80">
                     <span className="text-[11px] font-black text-[#1B6DFC]">{String(i + 1).padStart(2, '0')}</span>
-                    <p className="text-[10px] font-bold text-[#6B6B6B] uppercase tracking-widest">{section.label}</p>
+                    <p className="text-[10px] font-medium text-[#666D7A]">{section.label}</p>
                   </div>
                   <div className="px-5 py-4">
-                    <p className="text-sm text-[#1A1A1A] leading-relaxed">{section.content}</p>
+                    <p className="text-sm text-[#141821] leading-relaxed">{section.content}</p>
                   </div>
                 </div>
               ))}
@@ -1425,14 +1422,14 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           {/* Archived CFFS */}
           {archivedCffs.length > 0 && (
             <div className="mt-8">
-              <p className="text-[#999999] text-sm mb-3">Previous CFFS ({archivedCffs.length})</p>
+              <p className="text-[#98A0AD] text-sm mb-3">Previous CFFS ({archivedCffs.length})</p>
               <div className="space-y-2">
                 {archivedCffs.map(c => (
                   <div
                     key={c.id}
-                    className="bg-[#FFFFFF]/50 border border-[#E5E5E5] rounded-lg px-4 py-3 flex items-center justify-between opacity-60"
+                    className="bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-lg px-4 py-3 flex items-center justify-between opacity-60"
                   >
-                    <span className="text-sm text-[#6B6B6B]">{formatDate(c.generated_at)}</span>
+                    <span className="text-sm text-[#666D7A]">{formatDate(c.generated_at)}</span>
                     <span
                       className={`text-xs px-2 py-0.5 rounded-full border ${getStateColour(c.body_state_classification)}`}
                     >
@@ -1479,9 +1476,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         />
 
         {latestBaseline ? (
-          <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl p-5 space-y-4">
+          <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 space-y-4">
             <div className="flex items-center justify-between">
-              <p className="text-xs text-[#999999] uppercase tracking-wider">Week {latestBaseline.re_capture_week} capture · {new Date(latestBaseline.captured_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+              <p className="text-[12.5px] text-[#98A0AD]">Week {latestBaseline.re_capture_week} capture · {new Date(latestBaseline.captured_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
               {baselineToken && (
                 <CopyLinkButton token={baselineToken} label="Re-capture link" path="/baseline" />
               )}
@@ -1495,9 +1492,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 { label: 'Hips', value: latestBaseline.hips_cm, unit: 'cm' },
                 { label: 'Chest', value: latestBaseline.chest_cm, unit: 'cm' },
               ].map(m => (
-                <div key={m.label} className="bg-[#E5E5E5]/50 rounded-xl p-3 text-center">
-                  <p className="text-xs text-[#999999] mb-1">{m.label}</p>
-                  <p className="text-base font-semibold text-[#1A1A1A]">{m.value ?? '-'}<span className="text-xs text-[#999999] ml-1">{m.unit}</span></p>
+                <div key={m.label} className="bg-[#EFF1F4]/50 rounded-xl p-3 text-center">
+                  <p className="text-[12.5px] text-[#98A0AD] mb-1">{m.label}</p>
+                  <p className="text-base font-semibold text-[#141821]">{m.value ?? '-'}<span className="text-[12.5px] text-[#98A0AD] ml-1">{m.unit}</span></p>
                 </div>
               ))}
             </div>
@@ -1511,14 +1508,14 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   { label: 'Back', url: baselinePhotos.back },
                 ].map(photo => (
                   <div key={photo.label} className="space-y-1.5">
-                    <p className="text-xs text-[#999999] text-center">{photo.label}</p>
+                    <p className="text-[12.5px] text-[#98A0AD] text-center">{photo.label}</p>
                     {photo.url ? (
                       <a href={photo.url} target="_blank" rel="noopener noreferrer">
                         <img src={photo.url} alt={photo.label} className="w-full aspect-[3/4] object-cover rounded-xl hover:opacity-80 transition-opacity" />
                       </a>
                     ) : (
-                      <div className="w-full aspect-[3/4] bg-[#E5E5E5] rounded-xl flex items-center justify-center">
-                        <p className="text-[#4A4A4A] text-xs">No photo</p>
+                      <div className="w-full aspect-[3/4] bg-[#EFF1F4] rounded-xl flex items-center justify-center">
+                        <p className="text-[#4A4A4A] text-[12.5px]">No photo</p>
                       </div>
                     )}
                   </div>
@@ -1527,9 +1524,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             )}
           </div>
         ) : (
-          <div className="bg-[#FFFFFF]/50 border border-[#E5E5E5] rounded-xl p-5 text-center">
-            <p className="text-[#999999] text-sm">No baseline submitted yet</p>
-            <p className="text-[#4A4A4A] text-xs mt-1">Send the client their baseline link to begin</p>
+          <div className="bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl p-5 text-center">
+            <p className="text-[#98A0AD] text-sm">No baseline submitted yet</p>
+            <p className="text-[#4A4A4A] text-[12.5px] mt-1">Send the client their baseline link to begin</p>
           </div>
         )}
       </MajorSection>
@@ -1561,11 +1558,11 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         {latestCfws ? (
           <>
             {/* Readiness grid */}
-            <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl overflow-hidden mb-4">
-              <div className="px-5 pt-5 pb-4 border-b border-[#E5E5E5]">
+            <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden mb-4">
+              <div className="px-5 pt-5 pb-4 border-b border-[#E8EAEE]">
                 <div className="flex items-center justify-between mb-3">
-                  <p className="text-[10px] font-bold text-[#999999] uppercase tracking-widest">Exposure Readiness</p>
-                  <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest">Week {latestCfws.week_number}</p>
+                  <p className="text-[10px] font-medium text-[#98A0AD]">Exposure Readiness</p>
+                  <p className="text-[10px] font-medium text-[#1B6DFC]">Week {latestCfws.week_number}</p>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   {[
@@ -1578,26 +1575,26 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                       item.value === 'Green' ? 'bg-green-50 border-green-500' :
                       item.value === 'Amber' ? 'bg-amber-50 border-amber-500' :
                       item.value === 'Red' ? 'bg-red-50 border-red-500' :
-                      'bg-[#E5E5E5] border-[#D4D4D4]'
+                      'bg-[#EFF1F4] border-[#CFD4DC]'
                     }`}>
                       <p className={`text-xs font-bold mb-0.5 ${
                         item.value === 'Green' ? 'text-green-400' :
                         item.value === 'Amber' ? 'text-amber-700' :
                         item.value === 'Red' ? 'text-red-700' :
-                        'text-[#6B6B6B]'
+                        'text-[#666D7A]'
                       }`}>{item.value}</p>
-                      <p className="text-[10px] text-[#999999] font-medium uppercase tracking-wide">{item.label}</p>
+                      <p className="text-[10px] text-[#98A0AD] font-medium">{item.label}</p>
                     </div>
                   ))}
                 </div>
               </div>
               <div className="flex items-center justify-between px-5 py-3">
-                <p className="text-[#4A4A4A] text-xs">Generated {formatDate(latestCfws.generated_at)}</p>
+                <p className="text-[#4A4A4A] text-[12.5px]">Generated {formatDate(latestCfws.generated_at)}</p>
                 <div className="flex items-center gap-2">
                   <Link
                     href={`/dashboard/clients/${client.id}/cfws-report`}
                     target="_blank"
-                    className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+                    className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
                   >
                     Download PDF
                   </Link>
@@ -1624,12 +1621,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             )}
 
             {/* About block */}
-            <div className="border-l-2 border-[#1B6DFC] bg-[#FFFFFF]/50 border border-[#E5E5E5] rounded-2xl p-5 mb-4">
-              <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-3">About This Report</p>
-              <p className="text-sm font-semibold text-[#1A1A1A] leading-relaxed mb-3">
+            <div className="border-l-2 border-[#1B6DFC] bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl p-5 mb-4">
+              <p className="text-[10px] font-medium text-[#1B6DFC] mb-3">About This Report</p>
+              <p className="text-sm font-semibold text-[#141821] leading-relaxed mb-3">
                 This is not a summary. It is a structured interpretation of how this client&apos;s system is behaving this week.
               </p>
-              <p className="text-sm text-[#999999] leading-relaxed">
+              <p className="text-sm text-[#98A0AD] leading-relaxed">
                 The CFWS translates weekly check-in signals across training load, recovery, regulation, and lifestyle into a coherent picture. Nothing here prescribes or diagnoses - you remain the interpretive authority.
               </p>
             </div>
@@ -1653,13 +1650,13 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   </summary>
                   <div className="space-y-2">
                     {cfwsSections.map((section, i) => (
-                      <div key={section.label} className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl overflow-hidden">
-                        <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E5E5E5] bg-[#FFFFFF]/80">
+                      <div key={section.label} className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden">
+                        <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[#FFFFFF]/80">
                           <span className="text-[11px] font-black text-[#1B6DFC]">{String(i + 1).padStart(2, '0')}</span>
-                          <p className="text-[10px] font-bold text-[#6B6B6B] uppercase tracking-widest">{section.label}</p>
+                          <p className="text-[10px] font-medium text-[#666D7A]">{section.label}</p>
                         </div>
                         <div className="px-5 py-4">
-                          <p className="text-sm text-[#1A1A1A] leading-relaxed">{section.content}</p>
+                          <p className="text-sm text-[#141821] leading-relaxed">{section.content}</p>
                         </div>
                       </div>
                     ))}
@@ -1669,22 +1666,22 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             })()}
           </>
         ) : (
-          <div className="bg-[#FFFFFF]/50 border border-[#E5E5E5] rounded-xl p-5 mb-3 text-center">
-            <p className="text-[#999999] text-sm">No weekly synthesis yet</p>
+          <div className="bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl p-5 mb-3 text-center">
+            <p className="text-[#98A0AD] text-sm">No weekly synthesis yet</p>
             {latestCompleteWeek ? (
               <div className="mt-3">
                 <RegenerateCFWSButton clientId={id} weekNumber={latestCompleteWeek} />
               </div>
             ) : (
-              <p className="text-[#4A4A4A] text-xs mt-1">Generated after each A+B check-in pair is complete</p>
+              <p className="text-[#4A4A4A] text-[12.5px] mt-1">Generated after each A+B check-in pair is complete</p>
             )}
           </div>
         )}
 
         {/* Check-in submission log */}
         {recentCheckins && recentCheckins.length > 0 && (
-          <div className="bg-[#FFFFFF]/50 border border-[#E5E5E5] rounded-xl p-4">
-            <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1B6DFC] mb-3">Recent Submissions</p>
+          <div className="bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl p-4">
+            <p className="text-[12px] font-medium tracking-[0.12em] text-[#1B6DFC] mb-3">Recent Submissions</p>
             <div className="space-y-2">
               {recentCheckins.slice(0, 8).map((ci, i) => {
                 const fb = ci.id ? feedbackByCheckinId.get(ci.id) : undefined
@@ -1694,17 +1691,17 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   <Link
                     key={i}
                     href={`/dashboard/clients/${id}/checkins/${ci.week_number}/${ci.form_type}`}
-                    className="flex items-center justify-between text-xs hover:bg-[#E5E5E5]/50 -mx-2 px-2 py-1 rounded-lg transition-colors"
+                    className="flex items-center justify-between text-[12.5px] hover:bg-[#EFF1F4]/50 -mx-2 px-2 py-1 rounded-lg transition-colors"
                   >
                     <div className="flex items-center gap-2 min-w-0">
-                      <span className="text-[#6B6B6B]">Week {ci.week_number} · Form {ci.form_type}</span>
+                      <span className="text-[#666D7A]">Week {ci.week_number} · Form {ci.form_type}</span>
                       {fb && (
                         <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${sent ? 'bg-blue-50 border border-blue-200 text-blue-700' : 'bg-amber-50 border border-amber-200 text-amber-700'}`}>
                           {sent ? 'Response sent' : 'Draft'}
                         </span>
                       )}
                       {skipped && (
-                        <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-[#E5E5E5] border border-[#D4D4D4] text-[#6B6B6B]">
+                        <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-[#EFF1F4] border border-[#CFD4DC] text-[#666D7A]">
                           Skipped
                         </span>
                       )}
@@ -1719,10 +1716,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
         {/* Coach response history */}
         {feedbackHistory && feedbackHistory.length > 0 && (
-          <div className="bg-[#FFFFFF]/50 border border-[#E5E5E5] rounded-xl p-4">
+          <div className="bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl p-4">
             <div className="flex items-center justify-between mb-3">
-              <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1B6DFC]">Coach Response History</p>
-              <p className="text-[10px] text-[#4A4A4A] uppercase tracking-widest">{feedbackHistory.length} total</p>
+              <p className="text-[12px] font-medium tracking-[0.12em] text-[#1B6DFC]">Coach Response History</p>
+              <p className="text-[10px] text-[#4A4A4A]">{feedbackHistory.length} total</p>
             </div>
             <div className="space-y-3">
               {feedbackHistory.map(fb => (
@@ -1753,7 +1750,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             {prAudit && <ArtefactAuditPill audit={prAudit} />}
             <Link
               href={`/dashboard/clients/${id}/plan`}
-              className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+              className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
             >
               Macro Plan
             </Link>
@@ -1765,20 +1762,20 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           {draftProgram && (
             <Link
               href={`/dashboard/clients/${id}/program/draft/${draftProgram.id}`}
-              className="block bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl p-5 hover:border-[#D4D4D4] transition-colors"
+              className="block bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 hover:border-[#CFD4DC] transition-colors"
             >
               <div className="flex items-start justify-between mb-2">
-                <p className="text-sm font-semibold text-[#1A1A1A]">{draftProgram.block_name}</p>
+                <p className="text-sm font-semibold text-[#141821]">{draftProgram.block_name}</p>
                 <div className="flex gap-1.5">
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 border border-amber-700 text-amber-700 uppercase tracking-wide">Draft</span>
-                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#E5E5E5] text-[#6B6B6B] capitalize">{draftProgram.progression_phase}</span>
-                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#E5E5E5] text-[#6B6B6B] capitalize">{draftProgram.training_goal}</span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-amber-50 border border-amber-700 text-amber-700">Draft</span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EFF1F4] text-[#666D7A] capitalize">{draftProgram.progression_phase}</span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EFF1F4] text-[#666D7A] capitalize">{draftProgram.training_goal}</span>
                 </div>
               </div>
-              <p className="text-xs text-[#999999]">
+              <p className="text-[12.5px] text-[#98A0AD]">
                 {draftProgram.training_frequency}x/week · {draftProgram.week_duration} weeks · Generated {formatDate(draftProgram.generated_at)}
               </p>
-              <p className="text-xs text-[#1B6DFC] mt-2">Review &amp; edit draft →</p>
+              <p className="text-[12.5px] text-[#1B6DFC] mt-2">Review &amp; edit draft →</p>
             </Link>
           )}
 
@@ -1786,31 +1783,31 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           {activeProgram ? (
             <Link
               href={`/dashboard/clients/${id}/program`}
-              className="block bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl p-5 hover:border-[#D4D4D4] transition-colors"
+              className="block bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 hover:border-[#CFD4DC] transition-colors"
             >
               <div className="flex items-start justify-between mb-2">
-                <p className="text-sm font-semibold text-[#1A1A1A]">{activeProgram.block_name}</p>
+                <p className="text-sm font-semibold text-[#141821]">{activeProgram.block_name}</p>
                 <div className="flex gap-1.5">
-                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#E5E5E5] text-[#6B6B6B] capitalize">
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EFF1F4] text-[#666D7A] capitalize">
                     {activeProgram.progression_phase}
                   </span>
-                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#E5E5E5] text-[#6B6B6B] capitalize">
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EFF1F4] text-[#666D7A] capitalize">
                     {activeProgram.training_goal}
                   </span>
                 </div>
               </div>
-              <p className="text-xs text-[#999999]">
+              <p className="text-[12.5px] text-[#98A0AD]">
                 {activeProgram.training_frequency}x/week · {activeProgram.week_duration} weeks · Generated {formatDate(activeProgram.generated_at)}
               </p>
               {activeProgram.pr_why_this_block && (
-                <p className="text-xs text-[#6B6B6B] mt-2 leading-relaxed line-clamp-3">{activeProgram.pr_why_this_block}</p>
+                <p className="text-[12.5px] text-[#666D7A] mt-2 leading-relaxed line-clamp-3">{activeProgram.pr_why_this_block}</p>
               )}
-              <p className="text-xs text-[#1B6DFC] mt-2">View full program →</p>
+              <p className="text-[12.5px] text-[#1B6DFC] mt-2">View full program →</p>
             </Link>
           ) : !draftProgram ? (
-            <div className="bg-[#FFFFFF]/50 border border-[#E5E5E5] rounded-xl p-5 text-center">
-              <p className="text-[#999999] text-sm">No program generated yet</p>
-              <p className="text-[#4A4A4A] text-xs mt-1">Generate a program once the CFFS is complete</p>
+            <div className="bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl p-5 text-center">
+              <p className="text-[#98A0AD] text-sm">No program generated yet</p>
+              <p className="text-[#4A4A4A] text-[12.5px] mt-1">Generate a program once the CFFS is complete</p>
             </div>
           ) : null}
         </div>
@@ -1831,7 +1828,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             {nrAudit && <ArtefactAuditPill audit={nrAudit} />}
             <Link
               href={`/dashboard/clients/${id}/nutrition/suggest`}
-              className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+              className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
             >
               {activeNutritionPlan ? 'Regenerate' : 'Generate Plan'}
             </Link>
@@ -1843,18 +1840,18 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           {draftNutritionPlan && (
             <Link
               href={`/dashboard/clients/${id}/nutrition`}
-              className="block bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl p-5 hover:border-[#D4D4D4] transition-colors"
+              className="block bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 hover:border-[#CFD4DC] transition-colors"
             >
               <div className="flex items-start justify-between mb-2">
-                <p className="text-sm font-semibold text-[#1A1A1A]">{draftNutritionPlan.plan_name}</p>
+                <p className="text-sm font-semibold text-[#141821]">{draftNutritionPlan.plan_name}</p>
                 <div className="flex gap-1.5">
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 border border-amber-700 text-amber-700 uppercase tracking-wide">Draft</span>
-                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#E5E5E5] text-[#6B6B6B] capitalize">{draftNutritionPlan.entry_state.replace(/_/g, ' ')}</span>
-                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#E5E5E5] text-[#6B6B6B] capitalize">{draftNutritionPlan.carb_demand_level} carbs</span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-amber-50 border border-amber-700 text-amber-700">Draft</span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EFF1F4] text-[#666D7A] capitalize">{draftNutritionPlan.entry_state.replace(/_/g, ' ')}</span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EFF1F4] text-[#666D7A] capitalize">{draftNutritionPlan.carb_demand_level} carbs</span>
                 </div>
               </div>
-              <p className="text-xs text-[#999999]">Generated {formatDate(draftNutritionPlan.generated_at)}</p>
-              <p className="text-xs text-[#1B6DFC] mt-2">Review &amp; approve draft →</p>
+              <p className="text-[12.5px] text-[#98A0AD]">Generated {formatDate(draftNutritionPlan.generated_at)}</p>
+              <p className="text-[12.5px] text-[#1B6DFC] mt-2">Review &amp; approve draft →</p>
             </Link>
           )}
 
@@ -1862,32 +1859,32 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           {activeNutritionPlan ? (
             <Link
               href={`/dashboard/clients/${id}/nutrition`}
-              className="block bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl p-5 hover:border-[#D4D4D4] transition-colors"
+              className="block bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 hover:border-[#CFD4DC] transition-colors"
             >
               <div className="flex items-start justify-between mb-2">
-                <p className="text-sm font-semibold text-[#1A1A1A]">{activeNutritionPlan.plan_name}</p>
+                <p className="text-sm font-semibold text-[#141821]">{activeNutritionPlan.plan_name}</p>
                 <div className="flex gap-1.5">
-                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#E5E5E5] text-[#6B6B6B] capitalize">{activeNutritionPlan.entry_state.replace(/_/g, ' ')}</span>
-                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#E5E5E5] text-[#6B6B6B] capitalize">{activeNutritionPlan.carb_demand_level} carbs</span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EFF1F4] text-[#666D7A] capitalize">{activeNutritionPlan.entry_state.replace(/_/g, ' ')}</span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EFF1F4] text-[#666D7A] capitalize">{activeNutritionPlan.carb_demand_level} carbs</span>
                   {activeNutritionPlan.current_direction && (
                     <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full capitalize ${
                       activeNutritionPlan.current_direction === 'progress' ? 'bg-blue-50 text-blue-500' :
                       activeNutritionPlan.current_direction === 'rebuild' ? 'bg-red-50 text-red-700' :
-                      'bg-[#E5E5E5] text-[#6B6B6B]'
+                      'bg-[#EFF1F4] text-[#666D7A]'
                     }`}>{activeNutritionPlan.current_direction}</span>
                   )}
                 </div>
               </div>
-              <p className="text-xs text-[#999999]">Generated {formatDate(activeNutritionPlan.generated_at)}</p>
+              <p className="text-[12.5px] text-[#98A0AD]">Generated {formatDate(activeNutritionPlan.generated_at)}</p>
               {activeNutritionPlan.nr_what_this_nutrition_is_doing && (
-                <p className="text-xs text-[#6B6B6B] mt-2 leading-relaxed line-clamp-3">{activeNutritionPlan.nr_what_this_nutrition_is_doing}</p>
+                <p className="text-[12.5px] text-[#666D7A] mt-2 leading-relaxed line-clamp-3">{activeNutritionPlan.nr_what_this_nutrition_is_doing}</p>
               )}
-              <p className="text-xs text-[#1B6DFC] mt-2">View full nutrition plan →</p>
+              <p className="text-[12.5px] text-[#1B6DFC] mt-2">View full nutrition plan →</p>
             </Link>
           ) : !draftNutritionPlan ? (
-            <div className="bg-[#FFFFFF]/50 border border-[#E5E5E5] rounded-xl p-5 text-center">
-              <p className="text-[#999999] text-sm">No nutrition plan generated yet</p>
-              <p className="text-[#4A4A4A] text-xs mt-1">Generate a plan once the CFFS is complete</p>
+            <div className="bg-[#FFFFFF]/50 border border-[#E8EAEE] rounded-xl p-5 text-center">
+              <p className="text-[#98A0AD] text-sm">No nutrition plan generated yet</p>
+              <p className="text-[#4A4A4A] text-[12.5px] mt-1">Generate a plan once the CFFS is complete</p>
             </div>
           ) : null}
         </div>

@@ -26,15 +26,15 @@ export default function HermonySettings() {
         <SectionLabel accent="terracotta">Brand</SectionLabel>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <div className="text-[10px] text-[#6B6B6B] uppercase mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>Wordmark</div>
-            <div className="p-8 rounded-xl border border-[#E5E5E5] bg-white flex items-center gap-5">
+            <div className="text-[10px] text-[#666D7A] mb-2">Wordmark</div>
+            <div className="p-8 rounded-xl border border-[#E8EAEE] bg-white flex items-center gap-5">
               <span className="inline-flex items-center justify-center w-20 h-20 rounded-full overflow-hidden bg-white border" style={{ borderColor: '#1A1A1A' }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={HARMONY.logoUrl} alt={`${HARMONY.name} logo`} className="w-full h-full object-cover" />
               </span>
               <div>
-                <div className="text-[26px] font-semibold text-[#1A1A1A] tracking-tight" style={{ letterSpacing: '0.02em' }}>{HARMONY.name.toUpperCase()}</div>
-                <div className="text-[11px] text-[#6B6B6B]" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>
+                <div className="text-[26px] font-semibold text-[#141821] tracking-tight" style={{ letterSpacing: '0.02em' }}>{HARMONY.name.toUpperCase()}</div>
+                <div className="text-[11px] text-[#666D7A]">
                   {HARMONY.sub.toUpperCase()}
                 </div>
               </div>
@@ -49,31 +49,31 @@ export default function HermonySettings() {
           </div>
         </div>
 
-        <div className="pt-6 mt-6 border-t border-[#E5E5E5]">
-          <div className="text-[10px] text-[#6B6B6B] uppercase mb-3" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>Palette</div>
+        <div className="pt-6 mt-6 border-t border-[#E8EAEE]">
+          <div className="text-[10px] text-[#666D7A] mb-3">Palette</div>
           <div className="flex items-center gap-4 flex-wrap">
             <div className="flex items-center gap-2">
               <div className="w-12 h-10 rounded-lg border" style={{ background: HARMONY.accentBar, borderColor: '#E5E5E5' }} />
               <div>
-                <div className="text-[13px] font-semibold text-[#1A1A1A]">Terracotta</div>
-                <div className="text-[10px] text-[#6B6B6B]" style={{ fontFamily: MONO_FONT }}>{HARMONY.accentBar}</div>
+                <div className="text-[13px] font-semibold text-[#141821]">Terracotta</div>
+                <div className="text-[10px] text-[#666D7A]" style={{ fontFamily: MONO_FONT }}>{HARMONY.accentBar}</div>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-12 h-10 rounded-lg border" style={{ background: '#1A1A1A', borderColor: '#E5E5E5' }} />
               <div>
-                <div className="text-[13px] font-semibold text-[#1A1A1A]">Ink</div>
-                <div className="text-[10px] text-[#6B6B6B]" style={{ fontFamily: MONO_FONT }}>#1A1A1A</div>
+                <div className="text-[13px] font-semibold text-[#141821]">Ink</div>
+                <div className="text-[10px] text-[#666D7A]" style={{ fontFamily: MONO_FONT }}>#1A1A1A</div>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-12 h-10 rounded-lg border" style={{ background: '#FAF6EF', borderColor: '#E5E5E5' }} />
               <div>
-                <div className="text-[13px] font-semibold text-[#1A1A1A]">Cream</div>
-                <div className="text-[10px] text-[#6B6B6B]" style={{ fontFamily: MONO_FONT }}>#FAF6EF</div>
+                <div className="text-[13px] font-semibold text-[#141821]">Cream</div>
+                <div className="text-[10px] text-[#666D7A]" style={{ fontFamily: MONO_FONT }}>#FAF6EF</div>
               </div>
             </div>
-            <div className="ml-2 text-[11px] text-[#999999] italic max-w-[280px]">
+            <div className="ml-2 text-[11px] text-[#98A0AD] italic max-w-[280px]">
               Placeholder palette. Swap once Melisa hands over her final brand guide.
             </div>
           </div>
@@ -93,7 +93,7 @@ export default function HermonySettings() {
           <KV label="Program generation guidance" value={yoga.parameters.programGenerationGuidance} />
           <KV label="Nutrition generation guidance" value={yoga.parameters.nutritionGenerationGuidance} />
         </div>
-        <p className="text-[11px] text-[#999999] italic mt-5 pt-5 border-t border-[#E5E5E5]">
+        <p className="text-[11px] text-[#98A0AD] italic mt-5 pt-5 border-t border-[#E8EAEE]">
           Every generator - check-in feedback, plan readings, content drafts - reads these on the next call. Edit any of them and the next draft respects the change.
         </p>
       </Card>
@@ -106,7 +106,7 @@ export default function HermonySettings() {
         <p className="text-[13px] text-[#4B4B4B] leading-relaxed mb-4">
           The engine holds a set of safety limits that your voice + guidance tuning cannot override. This is what makes it legally defensible for you to run other people&apos;s practice on the platform.
         </p>
-        <ul className="text-[13px] text-[#1A1A1A] leading-relaxed space-y-2 list-disc pl-5">
+        <ul className="text-[13px] text-[#141821] leading-relaxed space-y-2 list-disc pl-5">
           <li>Regulation Readiness Score clamps + drift monitoring</li>
           <li>Fat Map training limits per body state</li>
           <li>Injury contraindications applied to every prescribed session</li>
@@ -114,7 +114,7 @@ export default function HermonySettings() {
           <li>Minimum protein + calorie floors on every nutrition plan</li>
           <li>Platform banned client-terms (Body Recode brand-internal vocabulary)</li>
         </ul>
-        <p className="text-[11px] text-[#999999] italic mt-4">
+        <p className="text-[11px] text-[#98A0AD] italic mt-4">
           Per Collective Partner Agreement §7 + IP Licence Deed clause 4.1(h).
         </p>
       </Card>
@@ -123,25 +123,25 @@ export default function HermonySettings() {
       <Card>
         <SectionLabel accent="terracotta">Billing</SectionLabel>
         <div className="grid md:grid-cols-3 gap-4">
-          <div className="p-4 rounded-xl border border-[#E5E5E5] bg-[#FAFBFD]">
-            <div className="text-[10px] text-[#6B6B6B] uppercase mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>Tier</div>
-            <div className="text-[15px] font-semibold text-[#1A1A1A]">Launch (founding rate)</div>
+          <div className="p-4 rounded-xl border border-[#E8EAEE] bg-[#FAFBFD]">
+            <div className="text-[10px] text-[#666D7A] mb-2">Tier</div>
+            <div className="text-[15px] font-semibold text-[#141821]">Launch (founding rate)</div>
           </div>
-          <div className="p-4 rounded-xl border border-[#E5E5E5] bg-[#FAFBFD]">
-            <div className="text-[10px] text-[#6B6B6B] uppercase mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>Platform subscription</div>
-            <div className="text-[15px] font-semibold text-[#1A1A1A]">$400 / month</div>
+          <div className="p-4 rounded-xl border border-[#E8EAEE] bg-[#FAFBFD]">
+            <div className="text-[10px] text-[#666D7A] mb-2">Platform subscription</div>
+            <div className="text-[15px] font-semibold text-[#141821]">$400 / month</div>
           </div>
-          <div className="p-4 rounded-xl border border-[#E5E5E5] bg-[#FAFBFD]">
-            <div className="text-[10px] text-[#6B6B6B] uppercase mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>Per active student</div>
-            <div className="text-[15px] font-semibold text-[#1A1A1A]">$40 / mo · arrears</div>
+          <div className="p-4 rounded-xl border border-[#E8EAEE] bg-[#FAFBFD]">
+            <div className="text-[10px] text-[#666D7A] mb-2">Per active student</div>
+            <div className="text-[15px] font-semibold text-[#141821]">$40 / mo · arrears</div>
           </div>
         </div>
-        <p className="text-[11px] text-[#999999] italic mt-4">
+        <p className="text-[11px] text-[#98A0AD] italic mt-4">
           Locked at signing under the founding rate. Body Recode cannot raise your rate for as long as your subscription is continuous - even under change of control.
         </p>
       </Card>
 
-      <div className="mt-10 pt-6 border-t border-[#E5E5E5] flex items-center justify-between text-[10px] text-[#999999]" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>
+      <div className="mt-10 pt-6 border-t border-[#E8EAEE] flex items-center justify-between text-[10px] text-[#98A0AD]">
         <div className="uppercase">INTERPRETATION ENGINE · DOCTRINE · SAFETY FLOORS — POWERED BY BODY RECODE</div>
         <div className="uppercase">BRAND · VOICE · PRACTICE — {HARMONY.name.toUpperCase()}</div>
       </div>
@@ -152,8 +152,8 @@ export default function HermonySettings() {
 function KV({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <div className="text-[10px] text-[#6B6B6B] uppercase mb-1" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>{label}</div>
-      <div className="text-[13px] text-[#1A1A1A] leading-relaxed">{value}</div>
+      <div className="text-[10px] text-[#666D7A] mb-1">{label}</div>
+      <div className="text-[13px] text-[#141821] leading-relaxed">{value}</div>
     </div>
   )
 }

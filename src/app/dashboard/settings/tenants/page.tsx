@@ -60,66 +60,66 @@ export default async function TenantsAdminPage() {
         <MetricPill label="Powered by BR" value={String(tenants.filter(t => t.licence?.poweredBy === true).length)} />
       </div>
 
-      <div className="bg-white border border-stone-200 rounded-xl overflow-hidden">
+      <div className="bg-white border border-[#E8EAEE] rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-[13px]">
-            <thead className="bg-stone-50 border-b border-stone-200">
+            <thead className="bg-[#FBFCFD] border-b border-[#E8EAEE]">
               <tr>
-                <th className="text-left px-4 py-3 font-bold text-stone-700 text-[11px] uppercase tracking-widest">Tenant</th>
-                <th className="text-left px-4 py-3 font-bold text-stone-700 text-[11px] uppercase tracking-widest">Brand</th>
-                <th className="text-left px-4 py-3 font-bold text-stone-700 text-[11px] uppercase tracking-widest">Coach</th>
-                <th className="text-left px-4 py-3 font-bold text-stone-700 text-[11px] uppercase tracking-widest">Modality</th>
-                <th className="text-left px-4 py-3 font-bold text-stone-700 text-[11px] uppercase tracking-widest">Pricing</th>
-                <th className="text-left px-4 py-3 font-bold text-stone-700 text-[11px] uppercase tracking-widest">Updated</th>
+                <th className="text-left px-4 py-3 font-medium text-[#141821] text-[11px]">Tenant</th>
+                <th className="text-left px-4 py-3 font-medium text-[#141821] text-[11px]">Brand</th>
+                <th className="text-left px-4 py-3 font-medium text-[#141821] text-[11px]">Coach</th>
+                <th className="text-left px-4 py-3 font-medium text-[#141821] text-[11px]">Modality</th>
+                <th className="text-left px-4 py-3 font-medium text-[#141821] text-[11px]">Pricing</th>
+                <th className="text-left px-4 py-3 font-medium text-[#141821] text-[11px]">Updated</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-100">
               {tenants.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-stone-500 text-[13px]">
+                  <td colSpan={6} className="px-4 py-8 text-center text-[#666D7A] text-[13px]">
                     No tenants yet. Insert one via SQL or the coach signup flow.
                   </td>
                 </tr>
               ) : tenants.map((t) => (
-                <tr key={t.coach_id} className="hover:bg-stone-50 transition-colors">
+                <tr key={t.coach_id} className="hover:bg-[#FBFCFD] transition-colors">
                   <td className="px-4 py-3 align-top">
-                    <div className="font-mono text-[12px] font-bold text-stone-900">{t.licence?.tenantId ?? '—'}</div>
-                    <div className="font-mono text-[10px] text-stone-400 mt-1">{t.coach_id.slice(0, 8)}…</div>
+                    <div className="font-mono text-[12px] font-medium text-[#141821]">{t.licence?.tenantId ?? '—'}</div>
+                    <div className="font-mono text-[10px] text-[#98A0AD] mt-1">{t.coach_id.slice(0, 8)}…</div>
                     {t.licence?.poweredBy && (
-                      <div className="inline-block mt-1 px-1.5 py-0.5 text-[9px] font-bold text-blue-700 bg-blue-50 rounded uppercase tracking-widest">
+                      <div className="inline-block mt-1 px-1.5 py-0.5 text-[9px] font-medium text-blue-700 bg-blue-50 rounded">
                         Powered by BR
                       </div>
                     )}
                   </td>
                   <td className="px-4 py-3 align-top">
-                    <div className="font-semibold text-stone-900">{t.brand?.name ?? '—'}</div>
-                    <div className="text-[11px] text-stone-500 mt-0.5">{t.brand?.apexDomain ?? ''}</div>
+                    <div className="font-semibold text-[#141821]">{t.brand?.name ?? '—'}</div>
+                    <div className="text-[11px] text-[#666D7A] mt-0.5">{t.brand?.apexDomain ?? ''}</div>
                     {t.brand?.accentColor && (
                       <div className="flex items-center gap-1.5 mt-1.5">
-                        <div className="w-3 h-3 rounded-full border border-stone-200" style={{ background: t.brand.accentColor }} />
-                        <span className="font-mono text-[10px] text-stone-500">{t.brand.accentColor}</span>
+                        <div className="w-3 h-3 rounded-full border border-[#E8EAEE]" style={{ background: t.brand.accentColor }} />
+                        <span className="font-mono text-[10px] text-[#666D7A]">{t.brand.accentColor}</span>
                       </div>
                     )}
                   </td>
                   <td className="px-4 py-3 align-top">
-                    <div className="font-semibold text-stone-900">{t.coach?.fullName ?? '—'}</div>
-                    <div className="text-[11px] text-stone-500 mt-0.5">{t.coach?.email ?? ''}</div>
-                    <div className="text-[11px] text-stone-400 mt-0.5">{t.coach?.location ?? ''}</div>
+                    <div className="font-semibold text-[#141821]">{t.coach?.fullName ?? '—'}</div>
+                    <div className="text-[11px] text-[#666D7A] mt-0.5">{t.coach?.email ?? ''}</div>
+                    <div className="text-[11px] text-[#98A0AD] mt-0.5">{t.coach?.location ?? ''}</div>
                   </td>
                   <td className="px-4 py-3 align-top">
-                    <div className="font-semibold text-stone-900 capitalize">{t.modality?.label ?? t.modality?.id ?? '—'}</div>
-                    <div className="text-[11px] text-stone-500 mt-0.5 font-mono">mode {t.modality?.doctrineMode ?? '—'}</div>
+                    <div className="font-semibold text-[#141821] capitalize">{t.modality?.label ?? t.modality?.id ?? '—'}</div>
+                    <div className="text-[11px] text-[#666D7A] mt-0.5 font-mono">mode {t.modality?.doctrineMode ?? '—'}</div>
                   </td>
                   <td className="px-4 py-3 align-top">
-                    <div className="font-mono text-[11px] text-stone-700">
+                    <div className="font-mono text-[11px] text-[#141821]">
                       Report ${(t.products as unknown as { reportPrice?: number })?.reportPrice ?? '—'}
                     </div>
-                    <div className="font-mono text-[11px] text-stone-700">Blueprint ${t.products?.blueprintPrice ?? '—'}</div>
-                    <div className="font-mono text-[11px] text-stone-700">Membership ${t.products?.membershipPrice ?? '—'}/wk</div>
+                    <div className="font-mono text-[11px] text-[#141821]">Blueprint ${t.products?.blueprintPrice ?? '—'}</div>
+                    <div className="font-mono text-[11px] text-[#141821]">Membership ${t.products?.membershipPrice ?? '—'}/wk</div>
                   </td>
                   <td className="px-4 py-3 align-top">
-                    <div className="text-[11px] text-stone-500">{formatDate(t.updated_at)}</div>
-                    <div className="text-[10px] text-stone-400 mt-0.5">v{t.licence?.version ?? '?'}</div>
+                    <div className="text-[11px] text-[#666D7A]">{formatDate(t.updated_at)}</div>
+                    <div className="text-[10px] text-[#98A0AD] mt-0.5">v{t.licence?.version ?? '?'}</div>
                   </td>
                 </tr>
               ))}
@@ -128,18 +128,18 @@ export default async function TenantsAdminPage() {
         </div>
       </div>
 
-      <div className="mt-6 flex items-center gap-3 text-[12px] text-stone-500">
+      <div className="mt-6 flex items-center gap-3 text-[12px] text-[#666D7A]">
         <Link href="/dashboard/settings/tenant" className="text-blue-600 hover:text-blue-700 underline">
           View my own tenant config →
         </Link>
       </div>
 
-      <div className="mt-8 p-4 rounded-xl border border-stone-200 bg-stone-50 text-[12px] text-stone-600 leading-relaxed">
-        <strong className="text-stone-900">Read-only registry.</strong> Coach signup UI + tenant provisioning form land in a follow-up pass.
+      <div className="mt-8 p-4 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] text-[12px] text-[#666D7A] leading-relaxed">
+        <strong className="text-[#141821]">Read-only registry.</strong> Coach signup UI + tenant provisioning form land in a follow-up pass.
         For now, insert new tenants via
-        <code className="mx-1 bg-white border border-stone-200 px-1 py-0.5 rounded text-[11px]">supabase db query --linked</code>
+        <code className="mx-1 bg-white border border-[#E8EAEE] px-1 py-0.5 rounded text-[11px]">supabase db query --linked</code>
         or via the pipeline test script
-        <code className="mx-1 bg-white border border-stone-200 px-1 py-0.5 rounded text-[11px]">scripts/test-melisa-full-pipeline.ts</code>.
+        <code className="mx-1 bg-white border border-[#E8EAEE] px-1 py-0.5 rounded text-[11px]">scripts/test-melisa-full-pipeline.ts</code>.
       </div>
     </div>
   )
@@ -147,9 +147,9 @@ export default async function TenantsAdminPage() {
 
 function MetricPill({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-stone-50 border border-stone-200">
-      <span className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">{label}</span>
-      <span className="text-[14px] font-bold text-stone-900">{value}</span>
+    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#FBFCFD] border border-[#E8EAEE]">
+      <span className="text-[10px] font-medium text-[#666D7A]">{label}</span>
+      <span className="text-[14px] font-bold text-[#141821]">{value}</span>
     </div>
   )
 }

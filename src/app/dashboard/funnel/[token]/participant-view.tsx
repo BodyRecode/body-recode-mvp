@@ -259,14 +259,14 @@ export default function ParticipantView({
       </div>
 
       {/* Day timeline progress bar */}
-      <div className="rounded-xl border border-stone-200 bg-white p-5 mb-6">
+      <div className="rounded-xl border border-[#E8EAEE] bg-white p-5 mb-6">
         <div className="flex items-center justify-between mb-3">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-stone-500">Day-by-day progress</p>
-          <span className="text-[11px] font-bold uppercase tracking-widest" style={{ color: isComplete ? '#1B6DFC' : '#1A1A1A' }}>
+          <p className="text-[11.5px] font-medium text-[#666D7A]">Day-by-day progress</p>
+          <span className="text-[12px] font-medium" style={{ color: isComplete ? '#1B6DFC' : '#1A1A1A' }}>
             {isComplete ? 'Completed' : `Day ${currentDay} · ${14 - currentDay} day${14 - currentDay === 1 ? '' : 's'} to go`}
           </span>
         </div>
-        <div className="relative h-2 bg-stone-100 rounded-full overflow-hidden mb-3">
+        <div className="relative h-2 bg-[#F4F6F9] rounded-full overflow-hidden mb-3">
           <div
             className="absolute inset-y-0 left-0 rounded-full transition-all"
             style={{ width: `${Math.round((currentDay / 14) * 100)}%`, background: '#1B6DFC' }}
@@ -283,7 +283,7 @@ export default function ParticipantView({
                   className={`w-2 h-2 rounded-full ${isToday ? 'ring-2 ring-blue-500 ring-offset-1' : ''}`}
                   style={{ background: isPast ? '#1B6DFC' : '#E5E5E5' }}
                 />
-                <span className={`text-[9px] font-bold mt-1 ${isMilestone ? 'text-stone-900' : 'text-stone-400'}`} style={{ fontVariantNumeric: 'tabular-nums' }}>
+                <span className={`text-[9px] font-bold mt-1 ${isMilestone ? 'text-[#141821]' : 'text-[#98A0AD]'}`} style={{ fontVariantNumeric: 'tabular-nums' }}>
                   {d}
                 </span>
               </div>
@@ -295,13 +295,13 @@ export default function ParticipantView({
       {/* Check-In status */}
       <Section title="Body Decode Check-In">
         {quizCompleted ? (
-          <div className="rounded-xl border border-stone-200 bg-white p-5">
+          <div className="rounded-xl border border-[#E8EAEE] bg-white p-5">
             <div className="flex items-center justify-between mb-3">
               <div className="inline-flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-blue-600" />
-                <span className="text-[11px] font-bold uppercase tracking-widest text-blue-700">Completed</span>
+                <span className="text-[12px] font-medium text-blue-700">Completed</span>
               </div>
-              <span className="text-xs text-stone-500">{fmtDate(enrollment.quiz_completed_at!)}</span>
+              <span className="text-[12.5px] text-[#666D7A]">{fmtDate(enrollment.quiz_completed_at!)}</span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <Stat label="Pattern" value={
@@ -314,14 +314,14 @@ export default function ParticipantView({
             </div>
           </div>
         ) : (
-          <div className="rounded-xl border border-stone-200 bg-stone-50 p-5">
+          <div className="rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] p-5">
             <div className="inline-flex items-center gap-2 mb-2">
-              {currentDay < 7 ? <Clock className="w-4 h-4 text-stone-400" /> : <AlertCircle className="w-4 h-4 text-amber-500" />}
-              <span className="text-[11px] font-bold uppercase tracking-widest" style={{ color: currentDay < 7 ? '#6B6B6B' : '#B7791F' }}>
+              {currentDay < 7 ? <Clock className="w-4 h-4 text-[#98A0AD]" /> : <AlertCircle className="w-4 h-4 text-amber-500" />}
+              <span className="text-[12px] font-medium" style={{ color: currentDay < 7 ? '#6B6B6B' : '#B7791F' }}>
                 {currentDay < 7 ? 'Locked until Day 7' : 'Pending — Day 7+'}
               </span>
             </div>
-            <p className="text-sm text-stone-600">
+            <p className="text-sm text-[#666D7A]">
               {currentDay < 7
                 ? `Check-In unlocks on Day 7. ${7 - currentDay} day${7 - currentDay === 1 ? '' : 's'} to go.`
                 : `Check-In is unlocked but not yet submitted. Late-takers who submit on Day 14+ receive the Body Decode Report immediately instead of the Day 7 progress email.`}
@@ -352,29 +352,29 @@ export default function ParticipantView({
 
       {/* Email audit */}
       <Section title="Email audit">
-        <div className="rounded-xl border border-stone-200 bg-white overflow-hidden">
+        <div className="rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-stone-50 border-b border-stone-200">
-                <th className="text-left text-[10px] font-bold uppercase tracking-widest text-stone-500 px-4 py-2.5">Day</th>
-                <th className="text-left text-[10px] font-bold uppercase tracking-widest text-stone-500 px-4 py-2.5">Send</th>
-                <th className="text-left text-[10px] font-bold uppercase tracking-widest text-stone-500 px-4 py-2.5">Status</th>
-                <th className="text-left text-[10px] font-bold uppercase tracking-widest text-stone-500 px-4 py-2.5">When</th>
-                <th className="text-left text-[10px] font-bold uppercase tracking-widest text-stone-500 px-4 py-2.5">Resend ID</th>
+              <tr className="bg-[#FBFCFD] border-b border-[#E8EAEE]">
+                <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Day</th>
+                <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Send</th>
+                <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Status</th>
+                <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">When</th>
+                <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Resend ID</th>
               </tr>
             </thead>
             <tbody>
               {emailTimeline.map((item, i) => (
-                <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-stone-50/50'}>
-                  <td className="px-4 py-3 text-xs font-bold text-stone-700" style={{ fontVariantNumeric: 'tabular-nums' }}>Day {item.day}</td>
-                  <td className="px-4 py-3 text-stone-900">{item.label}{item.note && <div className="text-[11px] text-stone-500 mt-1">{item.note}</div>}</td>
+                <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-[#FBFCFD]/50'}>
+                  <td className="px-4 py-3 text-[12.5px] font-medium text-[#141821]" style={{ fontVariantNumeric: 'tabular-nums' }}>Day {item.day}</td>
+                  <td className="px-4 py-3 text-[#141821]">{item.label}{item.note && <div className="text-[11px] text-[#666D7A] mt-1">{item.note}</div>}</td>
                   <td className="px-4 py-3">
                     <StatusPill status={item.status} />
                   </td>
-                  <td className="px-4 py-3 text-stone-600 text-xs">
+                  <td className="px-4 py-3 text-[#666D7A] text-[12.5px]">
                     {item.sentAt ? fmtDate(item.sentAt) : fmtDate(item.scheduledFor.toISOString())}
                   </td>
-                  <td className="px-4 py-3 text-stone-500 text-xs font-mono">
+                  <td className="px-4 py-3 text-[#666D7A] text-[12.5px] font-mono">
                     {item.resendId ? item.resendId.slice(0, 12) + '…' : '-'}
                   </td>
                 </tr>
@@ -386,32 +386,32 @@ export default function ParticipantView({
 
       {/* SMS audit */}
       <Section title={`SMS Minimal Pulse (17 messages${lead?.phone ? '' : ' · no phone on file'})`}>
-        <div className="rounded-xl border border-stone-200 bg-white overflow-hidden">
+        <div className="rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-stone-50 border-b border-stone-200">
-                <th className="text-left text-[10px] font-bold uppercase tracking-widest text-stone-500 px-4 py-2.5">Day</th>
-                <th className="text-left text-[10px] font-bold uppercase tracking-widest text-stone-500 px-4 py-2.5">Window</th>
-                <th className="text-left text-[10px] font-bold uppercase tracking-widest text-stone-500 px-4 py-2.5">Title</th>
-                <th className="text-left text-[10px] font-bold uppercase tracking-widest text-stone-500 px-4 py-2.5">Status</th>
-                <th className="text-left text-[10px] font-bold uppercase tracking-widest text-stone-500 px-4 py-2.5">Scheduled</th>
+              <tr className="bg-[#FBFCFD] border-b border-[#E8EAEE]">
+                <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Day</th>
+                <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Window</th>
+                <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Title</th>
+                <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Status</th>
+                <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Scheduled</th>
               </tr>
             </thead>
             <tbody>
               {smsTimeline.map((item, i) => (
-                <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-stone-50/50'}>
-                  <td className="px-4 py-3 text-xs font-bold text-stone-700" style={{ fontVariantNumeric: 'tabular-nums' }}>Day {item.day}</td>
-                  <td className="px-4 py-3 text-xs uppercase tracking-wider text-stone-500">{item.window}</td>
-                  <td className="px-4 py-3 text-stone-900">{item.label}</td>
+                <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-[#FBFCFD]/50'}>
+                  <td className="px-4 py-3 text-[12.5px] font-medium text-[#141821]" style={{ fontVariantNumeric: 'tabular-nums' }}>Day {item.day}</td>
+                  <td className="px-4 py-3 text-[12.5px] text-[#666D7A]">{item.window}</td>
+                  <td className="px-4 py-3 text-[#141821]">{item.label}</td>
                   <td className="px-4 py-3">
                     <StatusPill status={item.status} />
                   </td>
-                  <td className="px-4 py-3 text-stone-600 text-xs">{fmtDate(item.scheduledFor.toISOString())}</td>
+                  <td className="px-4 py-3 text-[#666D7A] text-[12.5px]">{fmtDate(item.scheduledFor.toISOString())}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <div className="px-4 py-3 border-t border-stone-200 text-[11px] text-stone-500">
+          <div className="px-4 py-3 border-t border-[#E8EAEE] text-[11px] text-[#666D7A]">
             Note: Inngest SMS sends are not currently audited per-send in <code>lead_events</code>. The &quot;sent (inferred)&quot; status reflects what should have fired based on the participant&apos;s current day. Verify actual Twilio delivery in the Twilio console if needed.
           </div>
         </div>
@@ -420,23 +420,23 @@ export default function ParticipantView({
       {/* Raw lead events */}
       {events.length > 0 && (
         <Section title="Raw lead events (audit log)">
-          <div className="rounded-xl border border-stone-200 bg-white overflow-hidden">
+          <div className="rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-stone-50 border-b border-stone-200">
-                  <th className="text-left text-[10px] font-bold uppercase tracking-widest text-stone-500 px-4 py-2.5">Type</th>
-                  <th className="text-left text-[10px] font-bold uppercase tracking-widest text-stone-500 px-4 py-2.5">Subject</th>
-                  <th className="text-left text-[10px] font-bold uppercase tracking-widest text-stone-500 px-4 py-2.5">When</th>
-                  <th className="text-left text-[10px] font-bold uppercase tracking-widest text-stone-500 px-4 py-2.5">Notes</th>
+                <tr className="bg-[#FBFCFD] border-b border-[#E8EAEE]">
+                  <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Type</th>
+                  <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Subject</th>
+                  <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">When</th>
+                  <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Notes</th>
                 </tr>
               </thead>
               <tbody>
                 {events.map(e => (
                   <tr key={e.id}>
-                    <td className="px-4 py-3 text-xs font-mono text-stone-700">{e.type}</td>
-                    <td className="px-4 py-3 text-stone-900 text-xs">{e.subject ?? '-'}</td>
-                    <td className="px-4 py-3 text-stone-600 text-xs">{fmtDate(e.sent_at)}</td>
-                    <td className="px-4 py-3 text-stone-500 text-xs">{e.notes ?? '-'}</td>
+                    <td className="px-4 py-3 text-[12.5px] font-mono text-[#141821]">{e.type}</td>
+                    <td className="px-4 py-3 text-[#141821] text-[12.5px]">{e.subject ?? '-'}</td>
+                    <td className="px-4 py-3 text-[#666D7A] text-[12.5px]">{fmtDate(e.sent_at)}</td>
+                    <td className="px-4 py-3 text-[#666D7A] text-[12.5px]">{e.notes ?? '-'}</td>
                   </tr>
                 ))}
               </tbody>
@@ -451,7 +451,7 @@ export default function ParticipantView({
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="mb-6">
-      <h2 className="text-[11px] font-bold uppercase tracking-widest text-stone-500 mb-3">{title}</h2>
+      <h2 className="text-[12px] font-medium text-[#666D7A] mb-3">{title}</h2>
       {children}
     </div>
   )
@@ -459,12 +459,12 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 function InfoTile({ icon: Icon, label, value }: { icon: typeof User; label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-stone-200 bg-white p-3.5">
+    <div className="rounded-xl border border-[#E8EAEE] bg-white p-3.5">
       <div className="flex items-center gap-1.5 mb-1.5">
-        <Icon className="w-3 h-3 text-stone-400" />
-        <span className="text-[10px] font-bold uppercase tracking-widest text-stone-500">{label}</span>
+        <Icon className="w-3 h-3 text-[#98A0AD]" />
+        <span className="text-[11.5px] font-medium text-[#666D7A]">{label}</span>
       </div>
-      <p className="text-sm text-stone-900 font-medium truncate">{value}</p>
+      <p className="text-sm text-[#141821] font-medium truncate">{value}</p>
     </div>
   )
 }
@@ -472,8 +472,8 @@ function InfoTile({ icon: Icon, label, value }: { icon: typeof User; label: stri
 function Stat({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div>
-      <p className="text-[10px] font-bold uppercase tracking-widest text-stone-500 mb-1.5">{label}</p>
-      <p className="text-sm font-semibold text-stone-900">{value}</p>
+      <p className="text-[11.5px] font-medium text-[#666D7A] mb-1.5">{label}</p>
+      <p className="text-sm font-semibold text-[#141821]">{value}</p>
     </div>
   )
 }
@@ -484,16 +484,16 @@ function ActionLink({ href, label, sub, external }: { href: string; label: strin
       href={href}
       target={external ? '_blank' : undefined}
       rel={external ? 'noopener noreferrer' : undefined}
-      className="group flex items-center justify-between rounded-xl border border-stone-200 bg-white p-4 hover:border-blue-300 hover:bg-blue-50 transition"
+      className="group flex items-center justify-between rounded-xl border border-[#E8EAEE] bg-white p-4 hover:border-blue-300 hover:bg-blue-50 transition"
     >
       <div>
         <div className="flex items-center gap-2">
-          <p className="text-sm font-bold text-stone-900">{label}</p>
-          {external && <ExternalLink className="w-3 h-3 text-stone-400" />}
+          <p className="text-sm font-bold text-[#141821]">{label}</p>
+          {external && <ExternalLink className="w-3 h-3 text-[#98A0AD]" />}
         </div>
-        <p className="text-xs text-stone-500 mt-1">{sub}</p>
+        <p className="text-[12.5px] text-[#666D7A] mt-1">{sub}</p>
       </div>
-      <ChevronRight className="w-4 h-4 text-stone-400 group-hover:text-blue-600 transition" />
+      <ChevronRight className="w-4 h-4 text-[#98A0AD] group-hover:text-blue-600 transition" />
     </a>
   )
 }
@@ -510,7 +510,7 @@ function StatusPill({ status }: { status: string }) {
   const c = config[status] ?? config.scheduled
   return (
     <span
-      className="inline-block text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded"
+      className="inline-block text-[11.5px] font-medium px-2 py-1 rounded"
       style={{ color: c.color, background: c.bg }}
     >
       {c.label}

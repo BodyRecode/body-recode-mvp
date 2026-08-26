@@ -172,7 +172,7 @@ export default async function GettingStartedPage() {
       <div className="mb-8">
         <div className="flex items-baseline justify-between mb-2">
           <span
-            className="text-[10px] uppercase"
+            className="text-[10px]"
             style={{ fontFamily: MONO_FONT, color: '#6B6B6B', letterSpacing: '0.16em' }}
           >
             Setup progress
@@ -184,7 +184,7 @@ export default async function GettingStartedPage() {
             {completed} / {total} · {pct}%
           </span>
         </div>
-        <div className="h-[6px] rounded-full overflow-hidden bg-stone-200">
+        <div className="h-[6px] rounded-full overflow-hidden bg-[#EFF1F4]">
           <div
             className="h-full transition-all duration-500"
             style={{ width: `${pct}%`, backgroundColor: t.brand.accentColor ?? '#1B6DFC' }}
@@ -209,20 +209,20 @@ export default async function GettingStartedPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-baseline gap-3 flex-wrap mb-1">
                     <span
-                      className="text-[10px] uppercase"
+                      className="text-[10px]"
                       style={{ fontFamily: MONO_FONT, color: '#6B6B6B', letterSpacing: '0.14em' }}
                     >
                       Step {String(i + 1).padStart(2, '0')}
                     </span>
                     <Icon className="w-3.5 h-3.5" style={{ color: t.brand.accentColor ?? '#1B6DFC' }} />
                   </div>
-                  <h3 className="text-[16px] font-bold text-stone-900 mb-1">{step.title}</h3>
-                  <div className="text-[11px] text-stone-500 mb-3" style={{ fontFamily: MONO_FONT }}>{step.subtitle}</div>
-                  <p className="text-[13px] leading-relaxed text-stone-700 mb-4">{step.description}</p>
+                  <h3 className="text-[16px] font-bold text-[#141821] mb-1">{step.title}</h3>
+                  <div className="text-[11px] text-[#666D7A] mb-3" style={{ fontFamily: MONO_FONT }}>{step.subtitle}</div>
+                  <p className="text-[13px] leading-relaxed text-[#141821] mb-4">{step.description}</p>
                   {!step.done && (
                     <Link
                       href={step.href}
-                      className="inline-flex items-center gap-2 text-[12px] font-semibold px-4 py-2 rounded-md border border-stone-300 bg-white hover:bg-stone-50 transition-colors"
+                      className="inline-flex items-center gap-2 text-[12px] font-semibold px-4 py-2 rounded-md border border-[#E8EAEE] bg-white hover:bg-[#FBFCFD] transition-colors"
                     >
                       {step.external ? 'Kade to complete' : 'Open the settings'}
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -236,17 +236,17 @@ export default async function GettingStartedPage() {
       </div>
 
       {/* Safety floors reminder */}
-      <div className="mt-10 pt-8 border-t border-stone-200">
+      <div className="mt-10 pt-8 border-t border-[#E8EAEE]">
         <div className="flex items-start gap-3">
-          <ShieldCheck className="w-4 h-4 text-stone-500 mt-0.5 shrink-0" />
+          <ShieldCheck className="w-4 h-4 text-[#666D7A] mt-0.5 shrink-0" />
           <div>
-            <div className="text-[10px] uppercase mb-1" style={{ fontFamily: MONO_FONT, color: '#6B6B6B', letterSpacing: '0.14em' }}>
+            <div className="text-[10px] mb-1" style={{ fontFamily: MONO_FONT, color: '#6B6B6B', letterSpacing: '0.14em' }}>
               Hard Safety Floors
             </div>
-            <p className="text-[12px] text-stone-600 leading-relaxed">
+            <p className="text-[12px] text-[#666D7A] leading-relaxed">
               Some things cannot be tuned by you or by us: RRS clamps, Fat Map training limits, injury contraindications, eligibility floors, minimum protein and calorie floors, platform-wide banned client terms. Your Mode A+ tuning layers ON TOP of these. This is what makes it legally defensible for you to run other people&apos;s practice on the platform.
             </p>
-            <p className="text-[11px] text-stone-500 italic mt-2">
+            <p className="text-[11px] text-[#666D7A] italic mt-2">
               Per Collective Partner Agreement §7 + IP Licence Deed clause 4.1(h).
             </p>
           </div>

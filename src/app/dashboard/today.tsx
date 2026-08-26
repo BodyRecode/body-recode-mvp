@@ -378,8 +378,7 @@ export default async function TodayWidget() {
         <div className="flex items-center gap-2.5">
           <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
           <h2
-            className="text-[11px] font-bold text-[#1A1A1A] uppercase"
-            style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+            className="text-[11px] font-medium text-[#141821]"
           >
             Today&apos;s Focus
           </h2>
@@ -425,7 +424,7 @@ export default async function TodayWidget() {
       {sorted.length === 0 ? (
         <EmptyStateBlock />
       ) : (
-        <div className="divide-y divide-[#E5E5E5]">
+        <div className="divide-y divide-[#EFF1F4]">
           {sorted.map((action, i) => (
             <ActionRow key={action.clientId} action={action} index={i} />
           ))}
@@ -451,7 +450,7 @@ function SummaryPill({
   const a = accentColour(accent)
   return (
     <span
-      className="inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border uppercase"
+      className="inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border"
       style={{
         fontFamily: MONO_FONT,
         letterSpacing: '0.08em',
@@ -473,11 +472,10 @@ function ActionRow({ action, index }: { action: ClientNextAction; index: number 
   return (
     <Link
       href={action.href}
-      className="flex items-center gap-3.5 px-1 py-3.5 group hover:bg-[#E5E5E5]/40 -mx-1 px-2 rounded-lg transition-colors"
+      className="flex items-center gap-3.5 px-1 py-3.5 group hover:bg-[#EFF1F4]/40 -mx-1 px-2 rounded-lg transition-colors"
     >
       <span
-        className="text-[11px] font-bold tabular-nums text-[#999999] group-hover:text-[#1B6DFC] transition-colors shrink-0 w-6 text-right"
-        style={{ fontFamily: MONO_FONT, letterSpacing: '0.04em' }}
+        className="text-[11px] font-medium tabular-nums text-[#98A0AD] group-hover:text-[#1B6DFC] transition-colors shrink-0 w-6 text-right"
       >
         {String(index + 1).padStart(2, '0')}
       </span>
@@ -489,13 +487,12 @@ function ActionRow({ action, index }: { action: ClientNextAction; index: number 
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2 flex-wrap">
-          <p className="text-[13px] font-bold text-[#1A1A1A] group-hover:text-[#1B6DFC] transition-colors truncate">
+          <p className="text-[13px] font-bold text-[#141821] group-hover:text-[#1B6DFC] transition-colors truncate">
             {action.clientName}
           </p>
           {action.badge && (
             <span
-              className="inline-flex items-center text-[9px] px-1.5 py-0.5 rounded-full border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)] text-[#1B6DFC] uppercase"
-              style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
+              className="inline-flex items-center text-[9px] px-1.5 py-0.5 rounded-full border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)] text-[#1B6DFC]"
             >
               {action.badge}
             </span>
@@ -509,8 +506,7 @@ function ActionRow({ action, index }: { action: ClientNextAction; index: number 
         </p>
         {action.sublabel && (
           <p
-            className="text-[10px] text-[#999999] uppercase mt-0.5 truncate"
-            style={{ fontFamily: MONO_FONT, letterSpacing: '0.1em' }}
+            className="text-[10px] text-[#98A0AD] mt-0.5 truncate"
           >
             {action.sublabel}
           </p>
@@ -518,7 +514,7 @@ function ActionRow({ action, index }: { action: ClientNextAction; index: number 
       </div>
       <ArrowUpRight
         size={16}
-        className="text-[#999999] group-hover:text-[#1B6DFC] transition-colors shrink-0"
+        className="text-[#98A0AD] group-hover:text-[#1B6DFC] transition-colors shrink-0"
       />
     </Link>
   )
@@ -549,8 +545,8 @@ function iconFor(action: ClientNextAction) {
 function EmptyStateBlock() {
   return (
     <div className="py-8 text-center">
-      <p className="text-[14px] text-[#6B6B6B] mb-1">No active clients yet</p>
-      <p className="text-[12px] text-[#999999]">
+      <p className="text-[14px] text-[#666D7A] mb-1">No active clients yet</p>
+      <p className="text-[12px] text-[#98A0AD]">
         Per-client focus board will populate as clients onboard.
       </p>
     </div>

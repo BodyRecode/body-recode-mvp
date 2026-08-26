@@ -51,57 +51,57 @@ export default async function NutritionWeeklyReview({
   const latest = reviews?.[0] ?? null
 
   return (
-    <div className="bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
-      <div className="px-5 py-4 flex items-center justify-between border-b border-stone-200">
+    <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+      <div className="px-5 py-4 flex items-center justify-between border-b border-[#E8EAEE]">
         <div>
-          <p className="text-sm font-semibold text-stone-700">Weekly Review</p>
+          <p className="text-sm font-semibold text-[#141821]">Weekly Review</p>
           <div className="flex items-center gap-2 mt-1">
             {currentDirection ? (
-              <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${directionColour[currentDirection] || 'text-stone-600 bg-stone-200 border-stone-300'}`}>
+              <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${directionColour[currentDirection] || 'text-[#666D7A] bg-[#EFF1F4] border-[#E8EAEE]'}`}>
                 {directionLabel[currentDirection] ?? currentDirection}
               </span>
             ) : (
-              <span className="text-xs text-stone-400">No review yet</span>
+              <span className="text-[12.5px] text-[#98A0AD]">No review yet</span>
             )}
             {lastReviewAt && (
-              <span className="text-xs text-stone-400">
+              <span className="text-[12.5px] text-[#98A0AD]">
                 Last reviewed {new Date(lastReviewAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
               </span>
             )}
           </div>
         </div>
-        <p className="text-[10px] text-stone-400 uppercase tracking-wider">Client submits via portal</p>
+        <p className="text-[10px] text-[#98A0AD]">Client submits via portal</p>
       </div>
 
       {reviews && reviews.length > 0 ? (
-        <div className="divide-y divide-stone-200/60">
+        <div className="divide-y divide-[#EFF1F4]/60">
           {(reviews as Review[]).map((review) => (
             <div key={review.id} className="px-5 py-4 space-y-2.5">
               <div className="flex items-center justify-between">
-                <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${directionColour[review.direction] || 'text-stone-600 bg-stone-200 border-stone-300'}`}>
+                <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${directionColour[review.direction] || 'text-[#666D7A] bg-[#EFF1F4] border-[#E8EAEE]'}`}>
                   {directionLabel[review.direction] ?? review.direction}
                 </span>
-                <span className="text-xs text-stone-400">
+                <span className="text-[12.5px] text-[#98A0AD]">
                   {new Date(review.reviewed_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
                 </span>
               </div>
               <div className="space-y-1.5">
                 <div className="flex gap-2">
-                  <span className="text-xs text-stone-400 w-36 shrink-0">Followed plan</span>
+                  <span className="text-[12.5px] text-[#98A0AD] w-36 shrink-0">Followed plan</span>
                   <span className={`text-xs font-medium ${review.adherence_confirmed ? 'text-blue-500' : 'text-red-700'}`}>
                     {review.adherence_confirmed ? 'Yes' : 'No'}
                   </span>
                 </div>
                 {review.signal_category && (
                   <div className="flex gap-2">
-                    <span className="text-xs text-stone-400 w-36 shrink-0">What they noticed</span>
-                    <span className="text-xs text-stone-700">{review.signal_category.split(',').map(s => signalLabel[s.trim()] ?? s.trim().replace(/_/g, ' ')).join(', ')}</span>
+                    <span className="text-[12.5px] text-[#98A0AD] w-36 shrink-0">What they noticed</span>
+                    <span className="text-[12.5px] text-[#141821]">{review.signal_category.split(',').map(s => signalLabel[s.trim()] ?? s.trim().replace(/_/g, ' ')).join(', ')}</span>
                   </div>
                 )}
                 {review.signals_noted && (
                   <div className="flex gap-2">
-                    <span className="text-xs text-stone-400 w-36 shrink-0">Notes</span>
-                    <span className="text-xs text-stone-700 leading-relaxed">{review.signals_noted}</span>
+                    <span className="text-[12.5px] text-[#98A0AD] w-36 shrink-0">Notes</span>
+                    <span className="text-[12.5px] text-[#141821] leading-relaxed">{review.signals_noted}</span>
                   </div>
                 )}
               </div>
@@ -111,12 +111,12 @@ export default async function NutritionWeeklyReview({
         </div>
       ) : (
         <div className="px-5 py-6 text-center">
-          <p className="text-sm text-stone-400">No reviews submitted yet.</p>
+          <p className="text-sm text-[#98A0AD]">No reviews submitted yet.</p>
           {/* There is no standalone nutrition check-in any more. Nutrition is a
               section of the ONE weekly check-in, and submit-weekly-checkin still
               writes the nutrition_reviews rows this panel reads, so the panel is
               live even though the separate flow is gone. */}
-          <p className="text-xs text-stone-700 mt-1">
+          <p className="text-[12.5px] text-[#141821] mt-1">
             Fills in from the nutrition section of the weekly check-in. There is no separate nutrition check-in.
           </p>
         </div>

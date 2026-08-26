@@ -24,7 +24,7 @@ export default function ArtefactAuditPill({ audit }: { audit: ArtefactAuditResul
 
   if (!audit) {
     return (
-      <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-[#F3F3F0] border border-[#E5E5E5] text-[#999999]">
+      <span className="inline-flex items-center gap-1 text-[11.5px] font-medium px-1.5 py-0.5 rounded bg-[#F3F3F0] border border-[#E8EAEE] text-[#98A0AD]">
         Not published
       </span>
     )
@@ -48,7 +48,7 @@ export default function ArtefactAuditPill({ audit }: { audit: ArtefactAuditResul
       <button
         type="button"
         onClick={() => setExpanded(e => !e)}
-        className={`inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded border ${s.border} ${s.bg} ${s.text} hover:opacity-90 transition-opacity`}
+        className={`inline-flex items-center gap-1.5 text-[11.5px] font-medium px-2 py-1 rounded border ${s.border} ${s.bg} ${s.text} hover:opacity-90 transition-opacity`}
         aria-expanded={expanded}
       >
         <Icon size={11} className={s.icon} />
@@ -57,7 +57,7 @@ export default function ArtefactAuditPill({ audit }: { audit: ArtefactAuditResul
       </button>
 
       {expanded && (
-        <div className={`mt-1 rounded-md border ${s.border} ${s.bg} px-3 py-2 text-[11px] text-[#3A3A3A] max-w-md space-y-2`}>
+        <div className={`mt-1 rounded-md border ${s.border} ${s.bg} px-3 py-2 text-[11px] text-[#43474F] max-w-md space-y-2`}>
           <DetailRow
             label="Doctrine version"
             value={audit.storedDoctrineVersion
@@ -72,7 +72,7 @@ export default function ArtefactAuditPill({ audit }: { audit: ArtefactAuditResul
           />
           {audit.issues.length > 0 && (
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-[#6B6B6B] mb-1">Validator findings</p>
+              <p className="text-[11.5px] font-medium text-[#666D7A] mb-1">Validator findings</p>
               <ul className="space-y-1">
                 {audit.issues.map((issue, i) => (
                   <li key={i} className="flex items-start gap-2 leading-snug">
@@ -84,7 +84,7 @@ export default function ArtefactAuditPill({ audit }: { audit: ArtefactAuditResul
             </div>
           )}
           {audit.publishedAt && (
-            <p className="text-[10px] text-[#999999]">
+            <p className="text-[10px] text-[#98A0AD]">
               Published {new Date(audit.publishedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
             </p>
           )}
@@ -99,8 +99,8 @@ function DetailRow({ label, value, ok }: { label: string; value: string; ok: boo
     <div className="flex items-start gap-2">
       <span className={`mt-0.5 inline-block w-1.5 h-1.5 rounded-full shrink-0 ${ok ? 'bg-green-500' : 'bg-amber-500'}`} />
       <div className="min-w-0">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-[#6B6B6B]">{label}</p>
-        <p className="text-[11px] text-[#1A1A1A] break-words">{value}</p>
+        <p className="text-[11.5px] font-medium text-[#666D7A]">{label}</p>
+        <p className="text-[11px] text-[#141821] break-words">{value}</p>
       </div>
     </div>
   )

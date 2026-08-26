@@ -261,8 +261,7 @@ export default async function DashboardHomePage() {
                   secondary={`Week ${ci.week_number} · Form ${ci.form_type}`}
                   trailing={
                     <span
-                      className="text-[10px] text-[#6B6B6B]"
-                      style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
+                      className="text-[10px] text-[#666D7A]"
                     >
                       {new Date(ci.submitted_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
                     </span>
@@ -317,7 +316,7 @@ function PaymentsStatusCard({
       className="block mb-6 group"
     >
       <div
-        className="rounded-2xl border bg-[#FFFFFF] px-5 py-4 flex items-center gap-4 transition-colors group-hover:border-[#D4D4D4]"
+        className="rounded-xl border bg-[#FFFFFF] px-5 py-4 flex items-center gap-4 transition-colors group-hover:border-[#CFD4DC]"
         style={{ borderColor: '#E5E5E5' }}
       >
         <span className="w-1 h-10 rounded-full" style={{ background: a.bar }} />
@@ -329,8 +328,7 @@ function PaymentsStatusCard({
         </div>
         <div className="min-w-0 flex-1">
           <p
-            className="text-[10px] text-[#6B6B6B] uppercase mb-0.5"
-            style={{ fontFamily: MONO_FONT, letterSpacing: '0.12em' }}
+            className="text-[10px] text-[#666D7A] mb-0.5"
           >
             Payments
           </p>
@@ -343,12 +341,12 @@ function PaymentsStatusCard({
               : `${overdueCount} ${overdueCount === 1 ? 'client' : 'clients'} overdue`}
           </p>
           {!isCurrent && namePreview && (
-            <p className="text-[12px] text-[#6B6B6B] truncate mt-0.5">{namePreview}</p>
+            <p className="text-[12px] text-[#666D7A] truncate mt-0.5">{namePreview}</p>
           )}
         </div>
         <ArrowUpRight
           size={16}
-          className="text-[#999999] group-hover:text-[#1B6DFC] transition-colors shrink-0"
+          className="text-[#98A0AD] group-hover:text-[#1B6DFC] transition-colors shrink-0"
         />
       </div>
     </Link>

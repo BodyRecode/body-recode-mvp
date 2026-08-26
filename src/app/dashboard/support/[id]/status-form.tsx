@@ -50,8 +50,8 @@ export default function TicketStatusForm({
   }
 
   return (
-    <div className="border border-[#E5E5E5] bg-[#FAFBFD] rounded-2xl p-6">
-      <p className="text-[11px] font-bold text-[#6B6B6B] uppercase tracking-widest mb-4" style={{ fontFamily: MONO }}>
+    <div className="border border-[#E8EAEE] bg-[#FAFBFD] rounded-xl p-6">
+      <p className="text-[11px] font-medium text-[#666D7A] mb-4" style={{ fontFamily: MONO }}>
         Update status
       </p>
 
@@ -77,7 +77,7 @@ export default function TicketStatusForm({
         })}
       </div>
 
-      <label htmlFor="status-note" className="block text-[11px] font-bold text-[#6B6B6B] uppercase tracking-widest mb-2" style={{ fontFamily: MONO }}>
+      <label htmlFor="status-note" className="block text-[11px] font-medium text-[#666D7A] mb-2" style={{ fontFamily: MONO }}>
         Note to filer (optional)
       </label>
       <textarea
@@ -87,13 +87,13 @@ export default function TicketStatusForm({
         maxLength={2000}
         rows={4}
         placeholder={`Shown to the filer verbatim. Use plain language, no jargon. Blank means no note.`}
-        className="w-full text-[13.5px] resize-none border border-[#E5E5E5] rounded-lg px-3 py-2 focus:outline-none focus:border-[#1B6DFC] bg-white mb-3"
+        className="w-full text-[13.5px] resize-none border border-[#E8EAEE] rounded-lg px-3 py-2 focus:outline-none focus:border-[#1B6DFC] bg-white mb-3"
       />
 
       <label className="flex items-center gap-2 text-[13px] text-[#4A4A4A] mb-4">
         <input type="checkbox" checked={notify} onChange={e => setNotify(e.target.checked)} disabled={filerIsKade} />
         Email the filer about this change
-        {filerIsKade && <span className="text-[11px] text-[#999999]">(you filed this — no email sent)</span>}
+        {filerIsKade && <span className="text-[11px] text-[#98A0AD]">(you filed this — no email sent)</span>}
       </label>
 
       {error && <div className="text-[12.5px] text-red-600 mb-3">{error}</div>}

@@ -52,7 +52,7 @@ export default function DashboardShell({
       >
         {brandInitials}
       </span>
-      <span className="text-[14px] font-semibold text-[#1A1A1A] tracking-[-0.015em] truncate">
+      <span className="text-[14px] font-semibold text-[#141821] tracking-[-0.015em] truncate">
         {brandName}
       </span>
     </Link>
@@ -65,7 +65,7 @@ export default function DashboardShell({
         <button
           type="button"
           onClick={() => setDrawerOpen(false)}
-          className="lg:hidden text-[#6B6B6B] hover:text-[#1A1A1A] p-1 -mr-1"
+          className="lg:hidden text-[#666D7A] hover:text-[#141821] p-1 -mr-1"
           aria-label="Close menu"
         >
           <X size={18} />
@@ -83,13 +83,13 @@ export default function DashboardShell({
   )
 
   return (
-    <div className="min-h-screen bg-white text-[#1A1A1A]">
+    <div className="min-h-screen bg-white text-[#141821]">
       {/* Mobile bar */}
       <div className="lg:hidden sticky top-0 z-40 flex items-center gap-3 h-14 px-4 border-b border-[#E8EAEE] bg-white/90 backdrop-blur-xl print:hidden">
         <button
           type="button"
           onClick={() => setDrawerOpen(true)}
-          className="text-[#4A4A4A] hover:text-[#1A1A1A] p-1 -ml-1"
+          className="text-[#4A4A4A] hover:text-[#141821] p-1 -ml-1"
           aria-label="Open menu"
         >
           <Menu size={20} />

@@ -77,7 +77,7 @@ const PLATFORMS = [
 ]
 
 const OUTPUT_STATUSES = [
-  { value: 'draft', label: 'Draft', color: 'text-stone-600 bg-stone-200 border-stone-300' },
+  { value: 'draft', label: 'Draft', color: 'text-[#666D7A] bg-[#EFF1F4] border-[#E8EAEE]' },
   { value: 'approved', label: 'Approved', color: 'text-blue-500 bg-blue-50 border-blue-500/20' },
   { value: 'deployed', label: 'Deployed', color: 'text-blue-700 bg-blue-50 border-blue-500/20' },
   { value: 'winning', label: 'Winning', color: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20' },
@@ -85,9 +85,9 @@ const OUTPUT_STATUSES = [
 ]
 
 const SCORE_LABELS: Record<number, { label: string; color: string }> = {
-  0: { label: 'Unscored', color: 'text-stone-500' },
+  0: { label: 'Unscored', color: 'text-[#666D7A]' },
   1: { label: 'Losing', color: 'text-red-700' },
-  2: { label: 'Neutral', color: 'text-stone-600' },
+  2: { label: 'Neutral', color: 'text-[#666D7A]' },
   3: { label: 'Winning', color: 'text-blue-500' },
 }
 
@@ -95,12 +95,12 @@ function categoryColor(cat: string) {
   const map: Record<string, string> = {
     problem_aware: 'bg-red-50 text-red-700 border-red-500/20',
     solution_aware: 'bg-blue-50 text-blue-500 border-blue-500/20',
-    unaware: 'bg-stone-300 text-stone-600 border-stone-400',
+    unaware: 'bg-stone-300 text-[#666D7A] border-[#CFD4DC]',
     contrarian: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
     curiosity: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
     authority: 'bg-blue-50 text-blue-700 border-blue-500/20',
   }
-  return map[cat] ?? 'bg-stone-300 text-stone-600 border-stone-400'
+  return map[cat] ?? 'bg-stone-300 text-[#666D7A] border-[#CFD4DC]'
 }
 
 function categoryLabel(cat: string) {
@@ -115,7 +115,7 @@ function messageTypeColor(type: string) {
     system_explanation: 'bg-blue-50 text-blue-700 border-blue-500/20',
     authority: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
   }
-  return map[type] ?? 'bg-stone-300 text-stone-600 border-stone-400'
+  return map[type] ?? 'bg-stone-300 text-[#666D7A] border-[#CFD4DC]'
 }
 
 function messageTypeLabel(type: string) {
@@ -123,7 +123,7 @@ function messageTypeLabel(type: string) {
 }
 
 function statusStyle(status: string) {
-  return OUTPUT_STATUSES.find(s => s.value === status)?.color ?? 'text-stone-600 bg-stone-200 border-stone-300'
+  return OUTPUT_STATUSES.find(s => s.value === status)?.color ?? 'text-[#666D7A] bg-[#EFF1F4] border-[#E8EAEE]'
 }
 
 function platformLabel(p: string) {
@@ -154,21 +154,21 @@ export default function ContentClient({ initialHooks, initialMessages, initialCt
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-semibold mb-1">Content Engine</h1>
-          <p className="text-stone-600 text-sm">Build hook, message, and CTA libraries. Generate batches of ad copy and reels.</p>
+          <h1 className="text-[22px] font-semibold tracking-[-0.025em] mb-1">Content Engine</h1>
+          <p className="text-[#666D7A] text-sm">Build hook, message, and CTA libraries. Generate batches of ad copy and reels.</p>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 mb-6 border-b border-stone-200">
+      <div className="flex items-center gap-1 mb-6 border-b border-[#E8EAEE]">
         {tabs.map(t => (
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
             className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors -mb-px ${
               tab === t.key
-                ? 'border-blue-500 text-[#1A1A1A]'
-                : 'border-transparent text-stone-500 hover:text-stone-700'
+                ? 'border-blue-500 text-[#141821]'
+                : 'border-transparent text-[#666D7A] hover:text-[#141821]'
             }`}
           >
             {t.label}
@@ -266,44 +266,44 @@ function HooksTab({ hooks, setHooks }: { hooks: Hook[]; setHooks: React.Dispatch
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <p className="text-xs text-stone-500">{hooks.length} hooks in library</p>
+        <p className="text-[12.5px] text-[#666D7A]">{hooks.length} hooks in library</p>
         <button
           onClick={() => { setShowForm(true); setEditingId(null); setForm({ hook_text: '', category: 'problem_aware' }) }}
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
         >
           <Plus size={13} /> Add Hook
         </button>
       </div>
 
       {(showForm || editingId) && (
-        <div className="bg-stone-100 border border-stone-200 rounded-xl p-4 mb-4 space-y-3">
+        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 mb-4 space-y-3">
           <div>
-            <label className="block text-xs text-stone-500 mb-1">Hook</label>
+            <label className="block text-[12.5px] text-[#666D7A] mb-1">Hook</label>
             <textarea
               value={form.hook_text}
               onChange={e => setForm(f => ({ ...f, hook_text: e.target.value }))}
               placeholder="Your body isn't broken - it's protecting you"
               rows={2}
-              className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500 resize-none"
+              className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-500 resize-none"
             />
           </div>
           <div>
-            <label className="block text-xs text-stone-500 mb-1">Category</label>
+            <label className="block text-[12.5px] text-[#666D7A] mb-1">Category</label>
             <select
               value={form.category}
               onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
-              className="bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500"
+              className="bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-blue-500"
             >
               {HOOK_CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
             </select>
           </div>
           <div className="flex items-center gap-2">
             <button onClick={save} disabled={saving || !form.hook_text.trim()}
-              className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-xs font-semibold px-3 py-1.5 rounded-lg"
+              className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
             >
               <Check size={12} /> {saving ? 'Saving...' : 'Save'}
             </button>
-            <button onClick={() => { setShowForm(false); setEditingId(null) }} className="text-xs text-stone-500 hover:text-stone-700 flex items-center gap-1">
+            <button onClick={() => { setShowForm(false); setEditingId(null) }} className="text-[12.5px] text-[#666D7A] hover:text-[#141821] flex items-center gap-1">
               <X size={12} /> Cancel
             </button>
           </div>
@@ -311,11 +311,11 @@ function HooksTab({ hooks, setHooks }: { hooks: Hook[]; setHooks: React.Dispatch
       )}
 
       {hooks.length === 0 && !showForm ? (
-        <EmptyState icon={<Zap size={24} className="text-stone-500" strokeWidth={1.5} />} title="No hooks yet" description="Add your first hook to start building the library." />
+        <EmptyState icon={<Zap size={24} className="text-[#666D7A]" strokeWidth={1.5} />} title="No hooks yet" description="Add your first hook to start building the library." />
       ) : (
         <div className="space-y-2">
           {hooks.map(hook => (
-            <div key={hook.id} className="bg-stone-100 border border-stone-200 rounded-xl p-4">
+            <div key={hook.id} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
               {editingId === hook.id ? null : (
                 <div className="flex items-start gap-3">
                   <div className="flex-1 min-w-0">
@@ -325,13 +325,13 @@ function HooksTab({ hooks, setHooks }: { hooks: Hook[]; setHooks: React.Dispatch
                       </span>
                       <ScoreSelector score={hook.performance_score} onChange={s => setScore(hook.id, s)} />
                     </div>
-                    <p className="text-sm text-[#1A1A1A]">{hook.hook_text}</p>
+                    <p className="text-sm text-[#141821]">{hook.hook_text}</p>
                   </div>
                   <div className="flex items-center gap-1 shrink-0">
-                    <button onClick={() => startEdit(hook)} className="p-1.5 text-stone-500 hover:text-stone-700">
+                    <button onClick={() => startEdit(hook)} className="p-1.5 text-[#666D7A] hover:text-[#141821]">
                       <Pencil size={13} />
                     </button>
-                    <button onClick={() => deleteHook(hook.id)} disabled={deletingId === hook.id} className="p-1.5 text-stone-500 hover:text-red-700 disabled:opacity-50">
+                    <button onClick={() => deleteHook(hook.id)} disabled={deletingId === hook.id} className="p-1.5 text-[#666D7A] hover:text-red-700 disabled:opacity-50">
                       <Trash2 size={13} />
                     </button>
                   </div>
@@ -395,44 +395,44 @@ function MessagesTab({ messages, setMessages }: { messages: Message[]; setMessag
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <p className="text-xs text-stone-500">{messages.length} messages in library</p>
+        <p className="text-[12.5px] text-[#666D7A]">{messages.length} messages in library</p>
         <button
           onClick={() => { setShowForm(true); setEditingId(null); setForm({ message_text: '', type: 'education' }) }}
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
         >
           <Plus size={13} /> Add Message
         </button>
       </div>
 
       {(showForm || editingId) && (
-        <div className="bg-stone-100 border border-stone-200 rounded-xl p-4 mb-4 space-y-3">
+        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 mb-4 space-y-3">
           <div>
-            <label className="block text-xs text-stone-500 mb-1">Message</label>
+            <label className="block text-[12.5px] text-[#666D7A] mb-1">Message</label>
             <textarea
               value={form.message_text}
               onChange={e => setForm(f => ({ ...f, message_text: e.target.value }))}
               placeholder="Stress triggers cortisol, which tells the body to hold fat - especially around the belly. Training harder into that state makes it worse."
               rows={4}
-              className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500 resize-none"
+              className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-500 resize-none"
             />
           </div>
           <div>
-            <label className="block text-xs text-stone-500 mb-1">Type</label>
+            <label className="block text-[12.5px] text-[#666D7A] mb-1">Type</label>
             <select
               value={form.type}
               onChange={e => setForm(f => ({ ...f, type: e.target.value }))}
-              className="bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500"
+              className="bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-blue-500"
             >
               {MESSAGE_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
             </select>
           </div>
           <div className="flex items-center gap-2">
             <button onClick={save} disabled={saving || !form.message_text.trim()}
-              className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-xs font-semibold px-3 py-1.5 rounded-lg"
+              className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
             >
               <Check size={12} /> {saving ? 'Saving...' : 'Save'}
             </button>
-            <button onClick={() => { setShowForm(false); setEditingId(null) }} className="text-xs text-stone-500 hover:text-stone-700 flex items-center gap-1">
+            <button onClick={() => { setShowForm(false); setEditingId(null) }} className="text-[12.5px] text-[#666D7A] hover:text-[#141821] flex items-center gap-1">
               <X size={12} /> Cancel
             </button>
           </div>
@@ -440,23 +440,23 @@ function MessagesTab({ messages, setMessages }: { messages: Message[]; setMessag
       )}
 
       {messages.length === 0 && !showForm ? (
-        <EmptyState icon={<Zap size={24} className="text-stone-500" strokeWidth={1.5} />} title="No messages yet" description="Add your first message block to start building the library." />
+        <EmptyState icon={<Zap size={24} className="text-[#666D7A]" strokeWidth={1.5} />} title="No messages yet" description="Add your first message block to start building the library." />
       ) : (
         <div className="space-y-2">
           {messages.map(msg => (
-            <div key={msg.id} className="bg-stone-100 border border-stone-200 rounded-xl p-4">
+            <div key={msg.id} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
               <div className="flex items-start gap-3">
                 <div className="flex-1 min-w-0">
                   <span className={`inline-block text-xs font-medium px-2 py-0.5 rounded-full border mb-2 ${messageTypeColor(msg.type)}`}>
                     {messageTypeLabel(msg.type)}
                   </span>
-                  <p className="text-sm text-[#1A1A1A] whitespace-pre-wrap">{msg.message_text}</p>
+                  <p className="text-sm text-[#141821] whitespace-pre-wrap">{msg.message_text}</p>
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
-                  <button onClick={() => startEdit(msg)} className="p-1.5 text-stone-500 hover:text-stone-700">
+                  <button onClick={() => startEdit(msg)} className="p-1.5 text-[#666D7A] hover:text-[#141821]">
                     <Pencil size={13} />
                   </button>
-                  <button onClick={() => deleteMessage(msg.id)} disabled={deletingId === msg.id} className="p-1.5 text-stone-500 hover:text-red-700 disabled:opacity-50">
+                  <button onClick={() => deleteMessage(msg.id)} disabled={deletingId === msg.id} className="p-1.5 text-[#666D7A] hover:text-red-700 disabled:opacity-50">
                     <Trash2 size={13} />
                   </button>
                 </div>
@@ -513,34 +513,34 @@ function CtasTab({ ctas, setCtas }: { ctas: Cta[]; setCtas: React.Dispatch<React
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <p className="text-xs text-stone-500">{ctas.length} CTAs in library</p>
+        <p className="text-[12.5px] text-[#666D7A]">{ctas.length} CTAs in library</p>
         <button
           onClick={() => { setShowForm(true); setEditingId(null); setForm({ cta_text: '' }) }}
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
         >
           <Plus size={13} /> Add CTA
         </button>
       </div>
 
       {(showForm || editingId) && (
-        <div className="bg-stone-100 border border-stone-200 rounded-xl p-4 mb-4 space-y-3">
+        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 mb-4 space-y-3">
           <div>
-            <label className="block text-xs text-stone-500 mb-1">CTA</label>
+            <label className="block text-[12.5px] text-[#666D7A] mb-1">CTA</label>
             <input
               type="text"
               value={form.cta_text}
               onChange={e => setForm({ cta_text: e.target.value })}
               placeholder="Run your Performance Check-In"
-              className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500"
+              className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-500"
             />
           </div>
           <div className="flex items-center gap-2">
             <button onClick={save} disabled={saving || !form.cta_text.trim()}
-              className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-xs font-semibold px-3 py-1.5 rounded-lg"
+              className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
             >
               <Check size={12} /> {saving ? 'Saving...' : 'Save'}
             </button>
-            <button onClick={() => { setShowForm(false); setEditingId(null) }} className="text-xs text-stone-500 hover:text-stone-700 flex items-center gap-1">
+            <button onClick={() => { setShowForm(false); setEditingId(null) }} className="text-[12.5px] text-[#666D7A] hover:text-[#141821] flex items-center gap-1">
               <X size={12} /> Cancel
             </button>
           </div>
@@ -548,34 +548,34 @@ function CtasTab({ ctas, setCtas }: { ctas: Cta[]; setCtas: React.Dispatch<React
       )}
 
       {ctas.length === 0 && !showForm ? (
-        <EmptyState icon={<Zap size={24} className="text-stone-500" strokeWidth={1.5} />} title="No CTAs yet" description="Add your first call-to-action." />
+        <EmptyState icon={<Zap size={24} className="text-[#666D7A]" strokeWidth={1.5} />} title="No CTAs yet" description="Add your first call-to-action." />
       ) : (
         <div className="space-y-2">
           {ctas.map(cta => (
-            <div key={cta.id} className="bg-stone-100 border border-stone-200 rounded-xl p-4 flex items-center justify-between">
+            <div key={cta.id} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 flex items-center justify-between">
               {editingId === cta.id ? (
                 <div className="flex-1 flex items-center gap-2">
                   <input
                     type="text"
                     value={form.cta_text}
                     onChange={e => setForm({ cta_text: e.target.value })}
-                    className="flex-1 bg-stone-200 border border-stone-300 rounded-lg px-3 py-1.5 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500"
+                    className="flex-1 bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-1.5 text-sm text-[#141821] focus:outline-none focus:border-blue-500"
                   />
-                  <button onClick={save} disabled={saving} className="flex items-center gap-1 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-xs font-semibold px-2.5 py-1.5 rounded-lg">
+                  <button onClick={save} disabled={saving} className="flex items-center gap-1 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-[12.5px] font-semibold px-2.5 py-1.5 rounded-lg">
                     <Check size={12} /> {saving ? 'Saving...' : 'Save'}
                   </button>
-                  <button onClick={() => setEditingId(null)} className="text-xs text-stone-500 hover:text-stone-700">
+                  <button onClick={() => setEditingId(null)} className="text-[12.5px] text-[#666D7A] hover:text-[#141821]">
                     <X size={13} />
                   </button>
                 </div>
               ) : (
                 <>
-                  <p className="text-sm text-[#1A1A1A]">{cta.cta_text}</p>
+                  <p className="text-sm text-[#141821]">{cta.cta_text}</p>
                   <div className="flex items-center gap-1">
-                    <button onClick={() => { setEditingId(cta.id); setForm({ cta_text: cta.cta_text }); setShowForm(false) }} className="p-1.5 text-stone-500 hover:text-stone-700">
+                    <button onClick={() => { setEditingId(cta.id); setForm({ cta_text: cta.cta_text }); setShowForm(false) }} className="p-1.5 text-[#666D7A] hover:text-[#141821]">
                       <Pencil size={13} />
                     </button>
-                    <button onClick={() => deleteCta(cta.id)} disabled={deletingId === cta.id} className="p-1.5 text-stone-500 hover:text-red-700 disabled:opacity-50">
+                    <button onClick={() => deleteCta(cta.id)} disabled={deletingId === cta.id} className="p-1.5 text-[#666D7A] hover:text-red-700 disabled:opacity-50">
                       <Trash2 size={13} />
                     </button>
                   </div>
@@ -675,7 +675,7 @@ function GenerateTab({
     <div className="space-y-6">
       {/* Platform selector */}
       <div>
-        <label className="block text-xs text-stone-500 mb-2">Platform</label>
+        <label className="block text-[12.5px] text-[#666D7A] mb-2">Platform</label>
         <div className="flex flex-wrap gap-2">
           {PLATFORMS.map(p => (
             <button
@@ -684,7 +684,7 @@ function GenerateTab({
               className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
                 platform === p.value
                   ? 'bg-blue-50 border-blue-300 text-blue-500'
-                  : 'bg-stone-100 border-stone-300 text-stone-600 hover:text-[#1A1A1A] hover:border-stone-400'
+                  : 'bg-[#F4F6F9] border-[#E8EAEE] text-[#666D7A] hover:text-[#141821] hover:border-[#CFD4DC]'
               }`}
             >
               {p.label}
@@ -727,15 +727,15 @@ function GenerateTab({
       />
 
       {/* Variant count + generate */}
-      <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
+      <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <p className="text-xs text-stone-500 mb-0.5">Variants to generate</p>
-            <p className="text-2xl font-semibold text-[#1A1A1A]">
+            <p className="text-[12.5px] text-[#666D7A] mb-0.5">Variants to generate</p>
+            <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">
               {variantCount > 0 ? variantCount.toLocaleString() : '-'}
             </p>
             {variantCount > 0 && (
-              <p className="text-xs text-stone-500 mt-0.5">
+              <p className="text-[12.5px] text-[#666D7A] mt-0.5">
                 {selectedHooks.length} hooks × {selectedMessages.length} messages × {selectedCtas.length} CTAs
               </p>
             )}
@@ -750,12 +750,12 @@ function GenerateTab({
           </button>
         </div>
 
-        {error && <p className="text-xs text-red-700">{error}</p>}
+        {error && <p className="text-[12.5px] text-red-700">{error}</p>}
 
         {result && (
           <div className="flex items-center justify-between bg-blue-50 border border-blue-500/20 rounded-lg px-4 py-3">
             <p className="text-sm text-blue-500 font-medium">{result.generated.toLocaleString()} pieces of content generated.</p>
-            <button onClick={onViewOutputs} className="text-xs text-blue-500 hover:text-blue-700 underline">
+            <button onClick={onViewOutputs} className="text-[12.5px] text-blue-500 hover:text-blue-700 underline">
               View Outputs
             </button>
           </div>
@@ -764,21 +764,21 @@ function GenerateTab({
 
       {/* Generate All */}
       {hooks.length > 0 && messages.length > 0 && ctas.length > 0 && (
-        <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
+        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="text-sm font-semibold text-[#1A1A1A] mb-1">Generate Everything</p>
-              <p className="text-xs text-stone-600 leading-relaxed">
+              <p className="text-sm font-semibold text-[#141821] mb-1">Generate Everything</p>
+              <p className="text-[12.5px] text-[#666D7A] leading-relaxed">
                 Use every hook, message, and CTA across all 5 platforms in one run.
               </p>
-              <p className="text-xs text-stone-500 mt-1">
-                {hooks.length} hooks × {messages.length} messages × {ctas.length} CTAs × 5 platforms = <span className="text-[#1A1A1A] font-semibold">{allVariantCount.toLocaleString()} outputs</span>
+              <p className="text-[12.5px] text-[#666D7A] mt-1">
+                {hooks.length} hooks × {messages.length} messages × {ctas.length} CTAs × 5 platforms = <span className="text-[#141821] font-semibold">{allVariantCount.toLocaleString()} outputs</span>
               </p>
             </div>
             <button
               onClick={generateAll}
               disabled={generatingAll || generating}
-              className="shrink-0 flex items-center gap-2 bg-stone-300 hover:bg-stone-400 disabled:opacity-50 text-[#1A1A1A] font-semibold px-4 py-2.5 rounded-lg transition-colors text-sm"
+              className="shrink-0 flex items-center gap-2 bg-stone-300 hover:bg-stone-400 disabled:opacity-50 text-[#141821] font-semibold px-4 py-2.5 rounded-lg transition-colors text-sm"
             >
               <Zap size={15} />
               {generatingAll ? 'Running...' : 'Generate All'}
@@ -788,10 +788,10 @@ function GenerateTab({
           {generateAllProgress && (
             <div className="mt-4">
               <div className="flex items-center justify-between mb-1.5">
-                <p className="text-xs text-stone-600">Generating {generateAllProgress.platform}...</p>
-                <p className="text-xs text-stone-500">{generateAllProgress.done}/{generateAllProgress.total} platforms</p>
+                <p className="text-[12.5px] text-[#666D7A]">Generating {generateAllProgress.platform}...</p>
+                <p className="text-[12.5px] text-[#666D7A]">{generateAllProgress.done}/{generateAllProgress.total} platforms</p>
               </div>
-              <div className="h-1.5 bg-stone-200 rounded-full overflow-hidden">
+              <div className="h-1.5 bg-[#EFF1F4] rounded-full overflow-hidden">
                 <div
                   className="h-full bg-blue-500 rounded-full transition-all duration-500"
                   style={{ width: `${(generateAllProgress.done / generateAllProgress.total) * 100}%` }}
@@ -803,19 +803,19 @@ function GenerateTab({
       )}
 
       {/* Reel generation notice */}
-      <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
+      <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
         <div className="flex items-start gap-3">
-          <div className="p-2 bg-stone-200 rounded-lg shrink-0">
+          <div className="p-2 bg-[#EFF1F4] rounded-lg shrink-0">
             <Video size={18} className="text-blue-500" strokeWidth={1.5} />
           </div>
           <div>
-            <p className="text-sm font-semibold text-[#1A1A1A] mb-1">Reel Generation</p>
-            <p className="text-xs text-stone-600 leading-relaxed">
+            <p className="text-sm font-semibold text-[#141821] mb-1">Reel Generation</p>
+            <p className="text-[12.5px] text-[#666D7A] leading-relaxed">
               Once you have outputs, you can generate AI avatar reels from any piece of copy - your face, your voice, no camera required.
               Powered by ElevenLabs (voice clone) and HeyGen (avatar video). Set up your avatar and voice clone first, then reels are one click from the Outputs tab.
             </p>
-            <p className="text-xs text-stone-500 mt-2">
-              Requires: <span className="text-stone-600">ELEVENLABS_API_KEY, ELEVENLABS_VOICE_ID, HEYGEN_API_KEY, HEYGEN_AVATAR_ID</span> in Vercel env vars.
+            <p className="text-[12.5px] text-[#666D7A] mt-2">
+              Requires: <span className="text-[#666D7A]">ELEVENLABS_API_KEY, ELEVENLABS_VOICE_ID, HEYGEN_API_KEY, HEYGEN_AVATAR_ID</span> in Vercel env vars.
             </p>
           </div>
         </div>
@@ -968,7 +968,7 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
         <select
           value={filterPlatform}
           onChange={e => setFilterPlatform(e.target.value)}
-          className="bg-stone-100 border border-stone-200 rounded-lg px-3 py-1.5 text-xs text-stone-700 focus:outline-none focus:border-blue-500"
+          className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-3 py-1.5 text-[12.5px] text-[#141821] focus:outline-none focus:border-blue-500"
         >
           <option value="all">All platforms</option>
           {PLATFORMS.map(p => <option key={p.value} value={p.value}>{p.label}</option>)}
@@ -976,23 +976,23 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
         <select
           value={filterStatus}
           onChange={e => setFilterStatus(e.target.value)}
-          className="bg-stone-100 border border-stone-200 rounded-lg px-3 py-1.5 text-xs text-stone-700 focus:outline-none focus:border-blue-500"
+          className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-3 py-1.5 text-[12.5px] text-[#141821] focus:outline-none focus:border-blue-500"
         >
           <option value="all">All statuses</option>
           {OUTPUT_STATUSES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
         </select>
-        <p className="text-xs text-stone-500 ml-auto">{filtered.length} outputs</p>
+        <p className="text-[12.5px] text-[#666D7A] ml-auto">{filtered.length} outputs</p>
       </div>
 
       {filtered.length === 0 ? (
-        <EmptyState icon={<Clapperboard size={24} className="text-stone-500" strokeWidth={1.5} />} title="No outputs yet" description="Go to Generate and create your first batch of content." />
+        <EmptyState icon={<Clapperboard size={24} className="text-[#666D7A]" strokeWidth={1.5} />} title="No outputs yet" description="Go to Generate and create your first batch of content." />
       ) : (
         <div className="space-y-3">
           {filtered.map(output => (
-            <div key={output.id} className="bg-stone-100 border border-stone-200 rounded-xl p-4">
+            <div key={output.id} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
               {/* Top row */}
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-xs font-medium text-stone-600 bg-stone-200 border border-stone-300 px-2 py-0.5 rounded-full">
+                <span className="text-[12.5px] font-medium text-[#666D7A] bg-[#EFF1F4] border border-[#E8EAEE] px-2 py-0.5 rounded-full">
                   {platformLabel(output.platform)}
                 </span>
                 {output.hook?.category && (
@@ -1002,20 +1002,20 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
                 )}
                 <StatusDropdown status={output.status} onChange={s => updateStatus(output.id, s)} />
                 <div className="ml-auto flex items-center gap-1">
-                  <button onClick={() => copyText(output.id, output.content_text)} className="p-1.5 text-stone-500 hover:text-stone-700 transition-colors">
+                  <button onClick={() => copyText(output.id, output.content_text)} className="p-1.5 text-[#666D7A] hover:text-[#141821] transition-colors">
                     {copiedId === output.id ? <Check size={13} className="text-blue-500" /> : <Copy size={13} />}
                   </button>
-                  <button onClick={() => deleteOutput(output.id)} className="p-1.5 text-stone-500 hover:text-red-700 transition-colors">
+                  <button onClick={() => deleteOutput(output.id)} className="p-1.5 text-[#666D7A] hover:text-red-700 transition-colors">
                     <Trash2 size={13} />
                   </button>
                 </div>
               </div>
 
               {/* Content */}
-              <p className="text-sm text-[#1A1A1A] whitespace-pre-wrap mb-3">{output.content_text}</p>
+              <p className="text-sm text-[#141821] whitespace-pre-wrap mb-3">{output.content_text}</p>
 
               {/* Graphic section */}
-              <div className="pt-2 border-t border-stone-200 mb-2">
+              <div className="pt-2 border-t border-[#E8EAEE] mb-2">
                 {showGraphicFor === output.id ? (
                   <div className="space-y-3 mt-2">
                     {/* Style picker */}
@@ -1027,18 +1027,18 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
                           className={`px-3 py-1 rounded-lg text-xs font-medium border transition-colors ${
                             (graphicStyle[output.id] ?? 'quote') === s.value
                               ? 'bg-blue-50 border-blue-300 text-blue-500'
-                              : 'bg-stone-200 border-stone-300 text-stone-600 hover:text-[#1A1A1A]'
+                              : 'bg-[#EFF1F4] border-[#E8EAEE] text-[#666D7A] hover:text-[#141821]'
                           }`}
                         >
                           {s.label}
                         </button>
                       ))}
-                      <button onClick={() => setShowGraphicFor(null)} className="ml-auto text-xs text-stone-500 hover:text-stone-700">
+                      <button onClick={() => setShowGraphicFor(null)} className="ml-auto text-[12.5px] text-[#666D7A] hover:text-[#141821]">
                         <X size={13} />
                       </button>
                     </div>
                     {/* Preview */}
-                    <div className="rounded-xl overflow-hidden border border-stone-300 w-64 h-64">
+                    <div className="rounded-xl overflow-hidden border border-[#E8EAEE] w-64 h-64">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={graphicUrl(output.content_text, graphicStyle[output.id] ?? 'quote')}
@@ -1048,7 +1048,7 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
                     </div>
                     <button
                       onClick={() => downloadGraphic(output.content_text, graphicStyle[output.id] ?? 'quote', output.id)}
-                      className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 text-stone-50 text-xs font-semibold px-3 py-1.5 rounded-lg"
+                      className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
                     >
                       <Download size={12} /> Download 1080×1080 PNG
                     </button>
@@ -1056,8 +1056,8 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
                 ) : showCarouselFor === output.id && carouselSlides[output.id] ? (
                   <div className="space-y-3 mt-2">
                     <div className="flex items-center justify-between">
-                      <p className="text-xs font-semibold text-stone-600">{carouselSlides[output.id].length} slides</p>
-                      <button onClick={() => setShowCarouselFor(null)} className="text-stone-500 hover:text-stone-700">
+                      <p className="text-[12.5px] font-semibold text-[#666D7A]">{carouselSlides[output.id].length} slides</p>
+                      <button onClick={() => setShowCarouselFor(null)} className="text-[#666D7A] hover:text-[#141821]">
                         <X size={13} />
                       </button>
                     </div>
@@ -1065,7 +1065,7 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
                     <div className="flex gap-2 overflow-x-auto pb-1">
                       {carouselSlides[output.id].map(slide => (
                         <div key={slide.slide} className="shrink-0">
-                          <div className="w-28 h-28 rounded-lg overflow-hidden border border-stone-300">
+                          <div className="w-28 h-28 rounded-lg overflow-hidden border border-[#E8EAEE]">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                               src={graphicUrl(slide.text, slide.style)}
@@ -1073,14 +1073,14 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
                               className="w-full h-full object-cover"
                             />
                           </div>
-                          <p className="text-xs text-stone-400 text-center mt-1">{slide.slide}</p>
+                          <p className="text-[12.5px] text-[#98A0AD] text-center mt-1">{slide.slide}</p>
                         </div>
                       ))}
                     </div>
                     <button
                       onClick={() => downloadCarouselZip(output.id)}
                       disabled={downloadingCarousel === output.id}
-                      className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-xs font-semibold px-3 py-1.5 rounded-lg"
+                      className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
                     >
                       <Download size={12} />
                       {downloadingCarousel === output.id ? 'Packaging...' : `Download ${carouselSlides[output.id].length} slides as ZIP`}
@@ -1090,15 +1090,15 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
                   <div className="flex items-center gap-3 mt-2">
                     <button
                       onClick={() => setShowGraphicFor(output.id)}
-                      className="flex items-center gap-1.5 text-xs text-stone-500 hover:text-stone-700 transition-colors"
+                      className="flex items-center gap-1.5 text-[12.5px] text-[#666D7A] hover:text-[#141821] transition-colors"
                     >
                       <Image size={12} /> Create Graphic
                     </button>
-                    <span className="text-stone-700 text-xs">·</span>
+                    <span className="text-[#141821] text-[12.5px]">·</span>
                     <button
                       onClick={() => generateCarousel(output.id, output.content_text)}
                       disabled={generatingCarousel === output.id}
-                      className="flex items-center gap-1.5 text-xs text-stone-500 hover:text-stone-700 transition-colors disabled:opacity-50"
+                      className="flex items-center gap-1.5 text-[12.5px] text-[#666D7A] hover:text-[#141821] transition-colors disabled:opacity-50"
                     >
                       <Clapperboard size={12} />
                       {generatingCarousel === output.id ? 'Building slides...' : 'Create Carousel'}
@@ -1109,47 +1109,47 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
 
               {/* Reel section */}
               {output.video_status === 'ready' && output.video_url ? (
-                <div className="flex items-center gap-2 mt-2 pt-2 border-t border-stone-200">
+                <div className="flex items-center gap-2 mt-2 pt-2 border-t border-[#E8EAEE]">
                   <Video size={13} className="text-blue-500" />
-                  <span className="text-xs text-blue-500 font-medium">Reel ready</span>
+                  <span className="text-[12.5px] text-blue-500 font-medium">Reel ready</span>
                   <a href={output.video_url} target="_blank" rel="noopener noreferrer"
-                    className="ml-auto flex items-center gap-1 text-xs text-stone-600 hover:text-[#1A1A1A]"
+                    className="ml-auto flex items-center gap-1 text-[12.5px] text-[#666D7A] hover:text-[#141821]"
                   >
                     <Download size={12} /> Download
                   </a>
                 </div>
               ) : output.video_status === 'rendering' || pollingIds.has(output.id) ? (
-                <div className="flex items-center gap-2 mt-2 pt-2 border-t border-stone-200">
-                  <RefreshCw size={13} className="text-stone-500 animate-spin" />
-                  <span className="text-xs text-stone-500">Rendering reel...</span>
+                <div className="flex items-center gap-2 mt-2 pt-2 border-t border-[#E8EAEE]">
+                  <RefreshCw size={13} className="text-[#666D7A] animate-spin" />
+                  <span className="text-[12.5px] text-[#666D7A]">Rendering reel...</span>
                 </div>
               ) : output.video_status === 'failed' ? (
-                <div className="flex items-center gap-2 mt-2 pt-2 border-t border-stone-200">
-                  <span className="text-xs text-red-700">Reel generation failed</span>
-                  <button onClick={() => setShowScriptFor(output.id)} className="ml-auto text-xs text-stone-500 hover:text-stone-700">
+                <div className="flex items-center gap-2 mt-2 pt-2 border-t border-[#E8EAEE]">
+                  <span className="text-[12.5px] text-red-700">Reel generation failed</span>
+                  <button onClick={() => setShowScriptFor(output.id)} className="ml-auto text-[12.5px] text-[#666D7A] hover:text-[#141821]">
                     Retry
                   </button>
                 </div>
               ) : (
-                <div className="mt-2 pt-2 border-t border-stone-200">
+                <div className="mt-2 pt-2 border-t border-[#E8EAEE]">
                   {showScriptFor === output.id ? (
                     <div className="space-y-2">
-                      <label className="block text-xs text-stone-500">Script for reel (edit if needed)</label>
+                      <label className="block text-[12.5px] text-[#666D7A]">Script for reel (edit if needed)</label>
                       <textarea
                         value={reelScript[output.id] ?? output.content_text}
                         onChange={e => setReelScript(s => ({ ...s, [output.id]: e.target.value }))}
                         rows={3}
-                        className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-xs text-[#1A1A1A] focus:outline-none focus:border-blue-500 resize-none"
+                        className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-[12.5px] text-[#141821] focus:outline-none focus:border-blue-500 resize-none"
                       />
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => generateReel(output)}
                           disabled={generatingReelId === output.id}
-                          className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-xs font-semibold px-3 py-1.5 rounded-lg"
+                          className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg"
                         >
                           <Video size={12} /> {generatingReelId === output.id ? 'Submitting...' : 'Generate Reel'}
                         </button>
-                        <button onClick={() => setShowScriptFor(null)} className="text-xs text-stone-500 hover:text-stone-700">
+                        <button onClick={() => setShowScriptFor(null)} className="text-[12.5px] text-[#666D7A] hover:text-[#141821]">
                           Cancel
                         </button>
                       </div>
@@ -1157,7 +1157,7 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
                   ) : (
                     <button
                       onClick={() => setShowScriptFor(output.id)}
-                      className="flex items-center gap-1.5 text-xs text-stone-500 hover:text-stone-700 transition-colors"
+                      className="flex items-center gap-1.5 text-[12.5px] text-[#666D7A] hover:text-[#141821] transition-colors"
                     >
                       <Video size={12} /> Generate Reel
                     </button>
@@ -1176,12 +1176,12 @@ function OutputsTab({ outputs, setOutputs }: { outputs: Output[]; setOutputs: Re
 
 function EmptyState({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
   return (
-    <div className="bg-stone-100 border border-dashed border-stone-300 rounded-xl p-12 text-center">
+    <div className="bg-[#F4F6F9] border border-dashed border-[#E8EAEE] rounded-xl p-12 text-center">
       <div className="flex justify-center mb-4">
-        <div className="p-3 bg-stone-200 rounded-xl">{icon}</div>
+        <div className="p-3 bg-[#EFF1F4] rounded-xl">{icon}</div>
       </div>
-      <p className="text-stone-600 text-sm font-medium mb-1">{title}</p>
-      <p className="text-stone-400 text-xs">{description}</p>
+      <p className="text-[#666D7A] text-sm font-medium mb-1">{title}</p>
+      <p className="text-[#98A0AD] text-[12.5px]">{description}</p>
     </div>
   )
 }
@@ -1195,7 +1195,7 @@ function ScoreSelector({ score, onChange }: { score: number; onChange: (s: numbe
         {label} <ChevronDown size={10} />
       </button>
       {open && (
-        <div className="absolute top-full left-0 mt-1 bg-stone-200 border border-stone-300 rounded-lg overflow-hidden z-10 w-28 shadow-xl">
+        <div className="absolute top-full left-0 mt-1 bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg overflow-hidden z-10 w-28 shadow-xl">
           {Object.entries(SCORE_LABELS).map(([val, { label: l, color: c }]) => (
             <button
               key={val}
@@ -1220,12 +1220,12 @@ function StatusDropdown({ status, onChange }: { status: string; onChange: (s: st
         {current.label} <ChevronDown size={10} />
       </button>
       {open && (
-        <div className="absolute top-full left-0 mt-1 bg-stone-200 border border-stone-300 rounded-lg overflow-hidden z-10 w-28 shadow-xl">
+        <div className="absolute top-full left-0 mt-1 bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg overflow-hidden z-10 w-28 shadow-xl">
           {OUTPUT_STATUSES.map(s => (
             <button
               key={s.value}
               onClick={() => { onChange(s.value); setOpen(false) }}
-              className="w-full text-left px-3 py-1.5 text-xs hover:bg-stone-300 text-stone-700"
+              className="w-full text-left px-3 py-1.5 text-[12.5px] hover:bg-stone-300 text-[#141821]"
             >
               {s.label}
             </button>
@@ -1250,16 +1250,16 @@ function SelectableList({
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
-        <label className="text-xs text-stone-500 font-medium">{label} ({selected.length} selected)</label>
+        <label className="text-[12.5px] text-[#666D7A] font-medium">{label} ({selected.length} selected)</label>
         {items.length > 0 && (
           <div className="flex items-center gap-2">
-            <button onClick={onSelectAll} className="text-xs text-stone-500 hover:text-blue-500">All</button>
-            <button onClick={onClear} className="text-xs text-stone-500 hover:text-stone-700">None</button>
+            <button onClick={onSelectAll} className="text-[12.5px] text-[#666D7A] hover:text-blue-500">All</button>
+            <button onClick={onClear} className="text-[12.5px] text-[#666D7A] hover:text-[#141821]">None</button>
           </div>
         )}
       </div>
       {items.length === 0 ? (
-        <p className="text-xs text-stone-400 italic">{emptyText}</p>
+        <p className="text-[12.5px] text-[#98A0AD] italic">{emptyText}</p>
       ) : (
         <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
           {items.map(item => {
@@ -1270,16 +1270,16 @@ function SelectableList({
                 onClick={() => onToggle(item.id)}
                 className={`w-full text-left flex items-start gap-2.5 px-3 py-2 rounded-lg border text-xs transition-colors ${
                   active
-                    ? 'bg-blue-50 border-blue-200 text-[#1A1A1A]'
-                    : 'bg-stone-100 border-stone-200 text-stone-600 hover:border-stone-300 hover:text-stone-700'
+                    ? 'bg-blue-50 border-blue-200 text-[#141821]'
+                    : 'bg-[#F4F6F9] border-[#E8EAEE] text-[#666D7A] hover:border-[#E8EAEE] hover:text-[#141821]'
                 }`}
               >
-                <div className={`w-3.5 h-3.5 rounded border shrink-0 mt-0.5 flex items-center justify-center ${active ? 'bg-blue-500 border-blue-500' : 'border-stone-400'}`}>
+                <div className={`w-3.5 h-3.5 rounded border shrink-0 mt-0.5 flex items-center justify-center ${active ? 'bg-blue-500 border-blue-500' : 'border-[#CFD4DC]'}`}>
                   {active && <Check size={9} className="text-stone-50" strokeWidth={3} />}
                 </div>
                 <span className="flex-1 leading-relaxed line-clamp-2">{item.label}</span>
                 {item.badge && (
-                  <span className={`shrink-0 text-xs font-medium px-1.5 py-0.5 rounded-full border ${item.badgeColor ?? 'bg-stone-300 text-stone-600 border-stone-400'}`}>
+                  <span className={`shrink-0 text-xs font-medium px-1.5 py-0.5 rounded-full border ${item.badgeColor ?? 'bg-stone-300 text-[#666D7A] border-[#CFD4DC]'}`}>
                     {item.badge}
                   </span>
                 )}
@@ -1324,11 +1324,11 @@ function CardsTab() {
 
   return (
     <div>
-      <p className="text-stone-600 text-sm mb-6">16 card templates. Download any card as a 1080×1080 PNG ready to post.</p>
+      <p className="text-[#666D7A] text-sm mb-6">16 card templates. Download any card as a 1080×1080 PNG ready to post.</p>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {CARDS.map(card => (
-          <div key={card.file} className="bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
-            <div className="aspect-square bg-stone-50 overflow-hidden">
+          <div key={card.file} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+            <div className="aspect-square bg-[#FBFCFD] overflow-hidden">
               <img
                 src={`/cards/${card.file}`}
                 alt={card.label}
@@ -1336,10 +1336,10 @@ function CardsTab() {
               />
             </div>
             <div className="p-3">
-              <p className="text-xs text-stone-600 mb-2 truncate">{card.label}</p>
+              <p className="text-[12.5px] text-[#666D7A] mb-2 truncate">{card.label}</p>
               <button
                 onClick={() => handleDownload(card.file)}
-                className="w-full flex items-center justify-center gap-1.5 px-3 py-1.5 bg-stone-200 hover:bg-stone-300 border border-stone-300 rounded-lg text-xs text-stone-700 transition-colors"
+                className="w-full flex items-center justify-center gap-1.5 px-3 py-1.5 bg-[#EFF1F4] hover:bg-stone-300 border border-[#E8EAEE] rounded-lg text-[12.5px] text-[#141821] transition-colors"
               >
                 <Download size={11} />
                 Download PNG

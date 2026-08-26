@@ -170,8 +170,8 @@ export default function ConsoleClient({
   return (
     <div className="flex gap-5 h-[calc(100vh-9rem)] -mt-2">
       {/* ── Threads ─────────────────────────────────────────────── */}
-      <aside className="hidden md:flex w-[248px] shrink-0 flex-col rounded-2xl border border-[#E5E5E5] bg-[#FAFAFA] overflow-hidden">
-        <div className="p-3 border-b border-[#E5E5E5]">
+      <aside className="hidden md:flex w-[248px] shrink-0 flex-col rounded-xl border border-[#E8EAEE] bg-[#FAFAFA] overflow-hidden">
+        <div className="p-3 border-b border-[#E8EAEE]">
           <button
             onClick={newThread}
             className="w-full text-[13px] font-semibold px-3 py-2 rounded-lg bg-[#1B6DFC] text-white hover:bg-[#1558d6] transition-colors"
@@ -181,7 +181,7 @@ export default function ConsoleClient({
         </div>
         <div className="flex-1 overflow-y-auto p-2">
           {threads.length === 0 && (
-            <p className="text-[12px] text-[#999999] px-2 py-3 leading-relaxed">
+            <p className="text-[12px] text-[#98A0AD] px-2 py-3 leading-relaxed">
               Your conversations show up here and stay put, so you can pick a piece of work back up.
             </p>
           )}
@@ -192,7 +192,7 @@ export default function ConsoleClient({
               className={`w-full text-left text-[12.5px] px-2.5 py-2 rounded-lg mb-0.5 truncate transition-colors ${
                 t.id === threadId
                   ? 'bg-[#E8F0FE] text-[#1B6DFC] font-medium'
-                  : 'text-[#4A4A4A] hover:bg-[#F0F0F0]'
+                  : 'text-[#4A4A4A] hover:bg-[#EFF1F4]'
               }`}
               title={t.title}
             >
@@ -203,16 +203,16 @@ export default function ConsoleClient({
       </aside>
 
       {/* ── Conversation ────────────────────────────────────────── */}
-      <section className="flex-1 min-w-0 flex flex-col rounded-2xl border border-[#E5E5E5] bg-white overflow-hidden">
-        <header className="px-5 py-3 border-b border-[#E5E5E5] flex items-center justify-between gap-3">
+      <section className="flex-1 min-w-0 flex flex-col rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
+        <header className="px-5 py-3 border-b border-[#E8EAEE] flex items-center justify-between gap-3">
           <div className="min-w-0">
-            <h1 className="text-[15px] font-semibold text-[#1A1A1A] truncate">Operator Console</h1>
+            <h1 className="text-[15px] font-semibold text-[#141821] truncate">Operator Console</h1>
             <p className="text-[11.5px] text-[#8A8A8E] truncate">
               Reads your live data · you approve anything that sends
             </p>
           </div>
           <span
-            className="hidden sm:inline-flex items-center gap-1.5 text-[10.5px] text-[#6B6B6B] px-2 py-1 rounded-full border border-[#E5E5E5] bg-[#F8F8F8] shrink-0"
+            className="hidden sm:inline-flex items-center gap-1.5 text-[10.5px] text-[#666D7A] px-2 py-1 rounded-full border border-[#E8EAEE] bg-[#FAFBFC] shrink-0"
             style={{ fontFamily: MONO }}
           >
             <span className="w-1.5 h-1.5 rounded-full bg-[#1B6DFC]" />
@@ -223,10 +223,10 @@ export default function ConsoleClient({
         <div ref={scrollRef} className="flex-1 overflow-y-auto px-5 py-5">
           {empty && (
             <div className="max-w-[620px] mx-auto pt-8">
-              <h2 className="text-[19px] font-semibold text-[#1A1A1A] mb-2">
+              <h2 className="text-[19px] font-semibold text-[#141821] mb-2">
                 What do you want to look at, {coachFirstName}?
               </h2>
-              <p className="text-[13.5px] text-[#6B6B6B] leading-relaxed mb-6">
+              <p className="text-[13.5px] text-[#666D7A] leading-relaxed mb-6">
                 Ask about your leads, your clients, what has been sent, or what is firing. I read the
                 real data rather than guessing. If something needs sending, I will show you exactly
                 who would get it and wait for you to say yes.
@@ -236,7 +236,7 @@ export default function ConsoleClient({
                   <button
                     key={s}
                     onClick={() => send(s)}
-                    className="text-left text-[13px] text-[#1A1A1A] px-3.5 py-2.5 rounded-xl border border-[#E5E5E5] hover:border-[#1B6DFC] hover:bg-[#F8FAFF] transition-colors"
+                    className="text-left text-[13px] text-[#141821] px-3.5 py-2.5 rounded-xl border border-[#E8EAEE] hover:border-[#1B6DFC] hover:bg-[#F8FAFF] transition-colors"
                   >
                     {s}
                   </button>
@@ -250,7 +250,7 @@ export default function ConsoleClient({
               <div key={m.id ?? i}>
                 {m.role === 'user' ? (
                   <div className="flex justify-end">
-                    <div className="max-w-[85%] bg-[#F0F4FF] text-[#1A1A1A] text-[13.5px] leading-relaxed px-4 py-2.5 rounded-2xl rounded-br-md whitespace-pre-wrap">
+                    <div className="max-w-[85%] bg-[#F0F4FF] text-[#141821] text-[13.5px] leading-relaxed px-4 py-2.5 rounded-xl rounded-br-md whitespace-pre-wrap">
                       {m.content}
                     </div>
                   </div>
@@ -264,7 +264,7 @@ export default function ConsoleClient({
                             title={t.error ?? undefined}
                             className={`text-[10.5px] px-2 py-0.5 rounded-full border ${
                               t.ok
-                                ? 'border-[#E5E5E5] bg-[#F8F8F8] text-[#6B6B6B]'
+                                ? 'border-[#E8EAEE] bg-[#FAFBFC] text-[#666D7A]'
                                 : 'border-[#F5C2C2] bg-[#FDF2F2] text-[#B42318]'
                             }`}
                             style={{ fontFamily: MONO }}
@@ -276,7 +276,7 @@ export default function ConsoleClient({
                         ))}
                       </div>
                     )}
-                    <div className="text-[13.5px] text-[#1A1A1A] leading-[1.65] whitespace-pre-wrap">
+                    <div className="text-[13.5px] text-[#141821] leading-[1.65] whitespace-pre-wrap">
                       {m.content}
                     </div>
                   </div>
@@ -308,7 +308,7 @@ export default function ConsoleClient({
           </div>
         </div>
 
-        <div className="border-t border-[#E5E5E5] p-3.5">
+        <div className="border-t border-[#E8EAEE] p-3.5">
           <div className="max-w-[720px] mx-auto flex items-end gap-2">
             <textarea
               value={input}
@@ -322,7 +322,7 @@ export default function ConsoleClient({
               rows={1}
               placeholder="Ask about your leads, clients, sends or automations…"
               disabled={busy}
-              className="flex-1 resize-none text-[13.5px] leading-relaxed px-3.5 py-2.5 rounded-xl border border-[#E5E5E5] focus:border-[#1B6DFC] focus:outline-none disabled:bg-[#FAFAFA] max-h-[140px]"
+              className="flex-1 resize-none text-[13.5px] leading-relaxed px-3.5 py-2.5 rounded-xl border border-[#E8EAEE] focus:border-[#1B6DFC] focus:outline-none disabled:bg-[#FAFAFA] max-h-[140px]"
             />
             <button
               onClick={() => void send(input)}
@@ -359,11 +359,11 @@ function ApprovalCard({
   const [showList, setShowList] = useState(false)
 
   return (
-    <div className="rounded-2xl border-2 border-[#F0A73F] bg-[#FFFBF3] p-4">
+    <div className="rounded-xl border-2 border-[#F0A73F] bg-[#FFFBF3] p-4">
       <div className="flex items-start gap-2.5 mb-3">
         <span className="text-[15px] leading-none mt-0.5">⏸</span>
         <div className="min-w-0">
-          <p className="text-[13.5px] font-semibold text-[#1A1A1A]">{action.summary}</p>
+          <p className="text-[13.5px] font-semibold text-[#141821]">{action.summary}</p>
           <p className="text-[11.5px] text-[#8A6D3B] mt-0.5">
             Nothing has happened yet. This waits for you.
           </p>
@@ -372,12 +372,12 @@ function ApprovalCard({
 
       <div className="space-y-1.5 text-[12.5px] text-[#4A4A4A] mb-3">
         {typeof p.would_send_to === 'number' && (
-          <p><strong className="text-[#1A1A1A]">{p.would_send_to}</strong> would receive this</p>
+          <p><strong className="text-[#141821]">{p.would_send_to}</strong> would receive this</p>
         )}
         {typeof p.excluded_count === 'number' && p.excluded_count > 0 && (
           <div>
-            <p><strong className="text-[#1A1A1A]">{p.excluded_count}</strong> excluded:</p>
-            <ul className="mt-1 ml-4 space-y-0.5 text-[12px] text-[#6B6B6B]">
+            <p><strong className="text-[#141821]">{p.excluded_count}</strong> excluded:</p>
+            <ul className="mt-1 ml-4 space-y-0.5 text-[12px] text-[#666D7A]">
               {Object.entries(excludedByReason).map(([reason, n]) => (
                 <li key={reason}>{n} · {reason}</li>
               ))}
@@ -385,10 +385,10 @@ function ApprovalCard({
           </div>
         )}
         {typeof p.sequence === 'string' && (
-          <p className="text-[12px] text-[#6B6B6B] pt-1">{p.sequence}</p>
+          <p className="text-[12px] text-[#666D7A] pt-1">{p.sequence}</p>
         )}
-        {typeof p.lead === 'string' && <p>Lead: <strong className="text-[#1A1A1A]">{p.lead}</strong></p>}
-        {typeof p.date === 'string' && <p>Date: <strong className="text-[#1A1A1A]">{p.date}</strong></p>}
+        {typeof p.lead === 'string' && <p>Lead: <strong className="text-[#141821]">{p.lead}</strong></p>}
+        {typeof p.date === 'string' && <p>Date: <strong className="text-[#141821]">{p.date}</strong></p>}
         {typeof p.note === 'string' && <p>Note: {p.note}</p>}
       </div>
 
@@ -407,7 +407,7 @@ function ApprovalCard({
                   key={i}
                   className="text-[11.5px] px-2.5 py-1.5 border-b border-[#F0F0F0] last:border-0 flex justify-between gap-2"
                 >
-                  <span className="text-[#1A1A1A] truncate">{String(r.name ?? r.email ?? '—')}</span>
+                  <span className="text-[#141821] truncate">{String(r.name ?? r.email ?? '—')}</span>
                   <span className="text-[#8A8A8E] shrink-0" style={{ fontFamily: MONO }}>
                     {String(r.state ?? '')}
                   </span>
@@ -429,7 +429,7 @@ function ApprovalCard({
         <button
           onClick={() => onDecide(action, false)}
           disabled={busy}
-          className="text-[13px] px-4 py-2 rounded-lg border border-[#E5E5E5] bg-white text-[#4A4A4A] hover:bg-[#F8F8F8] disabled:opacity-50 transition-colors"
+          className="text-[13px] px-4 py-2 rounded-lg border border-[#E8EAEE] bg-white text-[#4A4A4A] hover:bg-[#FAFBFC] disabled:opacity-50 transition-colors"
         >
           Cancel
         </button>

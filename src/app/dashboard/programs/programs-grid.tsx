@@ -100,14 +100,13 @@ export default function ProgramsGrid({ items }: { items: ProgramCard[] }) {
                 onClick={() => setFilter(f.id)}
                 className={`text-[12px] px-3 py-1.5 rounded-md border transition-colors whitespace-nowrap ${
                   active
-                    ? 'bg-[#E5E5E5] text-[#1A1A1A] border-[#D4D4D4]'
-                    : 'bg-transparent text-[#6B6B6B] border-[#E5E5E5] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50'
+                    ? 'bg-[#EFF1F4] text-[#141821] border-[#CFD4DC]'
+                    : 'bg-transparent text-[#666D7A] border-[#E8EAEE] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50'
                 }`}
               >
                 {f.label}
                 <span
-                  className="ml-2 text-[10px] text-[#999999]"
-                  style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
+                  className="ml-2 text-[10px] text-[#98A0AD]"
                 >
                   {count}
                 </span>
@@ -116,14 +115,14 @@ export default function ProgramsGrid({ items }: { items: ProgramCard[] }) {
           })}
         </div>
         <div className="relative w-full sm:w-64">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#999999]" />
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#98A0AD]" />
           <input
             type="search"
             inputMode="search"
             placeholder="Search clients..."
             value={query}
             onChange={e => setQuery(e.target.value)}
-            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-md pl-9 pr-3 py-2 text-[13px] text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:border-[#D4D4D4]"
+            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-md pl-9 pr-3 py-2 text-[13px] text-[#141821] placeholder:text-[#98A0AD] focus:outline-none focus:border-[#CFD4DC]"
           />
         </div>
       </div>
@@ -158,23 +157,22 @@ function ProgramCardTile({ item }: { item: ProgramCard }) {
 
   return (
     <Link href={href} className="block group">
-      <div className="relative bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-5 h-full transition-colors hover:border-[#D4D4D4] active:bg-[#E5E5E5]/40">
+      <div className="relative bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 h-full transition-colors hover:border-[#CFD4DC] active:bg-[#EFF1F4]/40">
         <div
           className="absolute top-5 left-5 w-7 h-[3px] rounded-full"
           style={{ background: accentBar.bar }}
         />
         <ArrowUpRight
           size={14}
-          className="absolute top-5 right-5 text-[#999999] group-hover:text-[#6B6B6B] transition-colors"
+          className="absolute top-5 right-5 text-[#98A0AD] group-hover:text-[#666D7A] transition-colors"
         />
 
         <div className="mt-4 mb-3">
-          <p className="text-[16px] font-semibold text-[#1A1A1A] group-hover:text-[#1B6DFC] transition-colors leading-tight">
+          <p className="text-[16px] font-semibold text-[#141821] group-hover:text-[#1B6DFC] transition-colors leading-tight">
             {item.client_name}
           </p>
           <p
-            className="text-[10px] text-[#6B6B6B] uppercase mt-1.5"
-            style={{ fontFamily: MONO_FONT, letterSpacing: '0.10em' }}
+            className="text-[10px] text-[#666D7A] mt-1.5"
           >
             {item.package_label}
           </p>
@@ -200,8 +198,8 @@ function ProgramCardTile({ item }: { item: ProgramCard }) {
               )}
             </div>
 
-            <div className="flex items-center justify-between text-[11px] text-[#999999]">
-              <span style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}>
+            <div className="flex items-center justify-between text-[11px] text-[#98A0AD]">
+              <span>
                 {item.current_week != null ? (
                   <>Wk {item.current_week}{item.week_duration ? ` / ${item.week_duration}` : ''}</>
                 ) : (
@@ -218,7 +216,7 @@ function ProgramCardTile({ item }: { item: ProgramCard }) {
             </div>
           </>
         ) : (
-          <p className="text-[13px] text-[#6B6B6B] leading-snug">
+          <p className="text-[13px] text-[#666D7A] leading-snug">
             No active program. Tap to open the macro plan and build one.
           </p>
         )}

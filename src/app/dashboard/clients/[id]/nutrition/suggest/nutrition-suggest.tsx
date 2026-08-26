@@ -23,12 +23,12 @@ function ReasonDisplay({ text }: { text: string }) {
   const { intro, points } = parseReason(text)
   return (
     <div className="space-y-1.5 mt-2">
-      {intro && <p className="text-xs text-stone-700 leading-relaxed">{intro}</p>}
+      {intro && <p className="text-[12.5px] text-[#141821] leading-relaxed">{intro}</p>}
       {points.map((point, i) => (
         <div key={i} className="flex items-start gap-2">
           {points.length > 1 && <span className="text-blue-500 shrink-0 mt-0.5 text-[10px]">•</span>}
-          {points.length === 1 && <span className="text-blue-500 text-xs mt-0.5 shrink-0">→</span>}
-          <p className="text-xs text-stone-600 leading-relaxed">{point}</p>
+          {points.length === 1 && <span className="text-blue-500 text-[12.5px] mt-0.5 shrink-0">→</span>}
+          <p className="text-[12.5px] text-[#666D7A] leading-relaxed">{point}</p>
         </div>
       ))}
     </div>
@@ -110,20 +110,20 @@ function ReasonCard({
     : value
 
   return (
-    <div className="bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
+    <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
       <div className="px-5 py-4">
         <div className="flex items-start justify-between gap-4 mb-3">
-          <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">{label}</p>
+          <p className="text-[10px] font-medium text-[#666D7A]">{label}</p>
           <button
             onClick={onEdit}
-            className="text-[10px] text-stone-400 hover:text-blue-500 transition-colors shrink-0"
+            className="text-[10px] text-[#98A0AD] hover:text-blue-500 transition-colors shrink-0"
           >
             {editing ? 'Done' : 'Edit'}
           </button>
         </div>
 
         {!editing && (
-          <span className="inline-block text-sm font-semibold text-[#1A1A1A] bg-stone-200 border border-stone-300 px-3 py-1 rounded-lg capitalize mb-3">
+          <span className="inline-block text-sm font-semibold text-[#141821] bg-[#EFF1F4] border border-[#E8EAEE] px-3 py-1 rounded-lg capitalize mb-3">
             {displayValue}
           </span>
         )}
@@ -429,7 +429,7 @@ export default function NutritionPrescriptionSuggest({
     return (
       <div className="bg-red-50 border border-red-200 rounded-xl p-5">
         <p className="text-red-700 text-sm">{error}</p>
-        <a href={`/dashboard/clients/${clientId}/nutrition/generate`} className="text-xs text-stone-500 hover:text-stone-700 mt-3 inline-block">
+        <a href={`/dashboard/clients/${clientId}/nutrition/generate`} className="text-[12.5px] text-[#666D7A] hover:text-[#141821] mt-3 inline-block">
           Fill in manually instead →
         </a>
       </div>
@@ -465,22 +465,22 @@ export default function NutritionPrescriptionSuggest({
 
       {/* Overall rationale */}
       <div id="rationale" className="scroll-mt-8 bg-blue-50 border border-blue-200/40 rounded-xl px-5 py-4">
-        <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-3">Overall Rationale</p>
+        <p className="text-[10px] font-medium text-blue-500 mb-3">Overall Rationale</p>
         {(() => {
           const { intro, points } = parseReason(suggestion.overall_rationale)
           return (
             <div className="space-y-2">
-              {intro && <p className="text-sm text-stone-800 leading-relaxed">{intro}</p>}
+              {intro && <p className="text-sm text-[#141821] leading-relaxed">{intro}</p>}
               {points.length > 1 ? (
                 <div className="space-y-2 mt-1">
                   {points.map((point, i) => (
                     <div key={i} className="flex items-start gap-2.5 border-l-2 border-blue-200/40 pl-3">
-                      <p className="text-sm text-stone-700 leading-relaxed">{point}</p>
+                      <p className="text-sm text-[#141821] leading-relaxed">{point}</p>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-stone-800 leading-relaxed">{points[0]}</p>
+                <p className="text-sm text-[#141821] leading-relaxed">{points[0]}</p>
               )}
             </div>
           )
@@ -499,7 +499,7 @@ export default function NutritionPrescriptionSuggest({
         <input
           value={planName}
           onChange={e => setPlanName(e.target.value)}
-          className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] mb-3"
+          className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] mb-3"
         />
       </ReasonCard>
       </div>
@@ -521,11 +521,11 @@ export default function NutritionPrescriptionSuggest({
               className={`text-left px-3 py-2 rounded-lg border text-xs transition-colors ${
                 entryState === opt.value
                   ? 'border-blue-500 bg-blue-50 text-blue-700'
-                  : 'border-stone-300 text-stone-600 hover:border-stone-500'
+                  : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
               }`}
             >
               <p className="font-semibold capitalize">{opt.label}</p>
-              <p className="text-stone-500 mt-0.5">{opt.desc}</p>
+              <p className="text-[#666D7A] mt-0.5">{opt.desc}</p>
             </button>
           ))}
         </div>
@@ -549,7 +549,7 @@ export default function NutritionPrescriptionSuggest({
               className={`px-3 py-1.5 rounded-lg border text-xs capitalize transition-colors ${
                 bodyState === opt
                   ? 'border-blue-500 bg-blue-50 text-blue-700'
-                  : 'border-stone-300 text-stone-600 hover:border-stone-500'
+                  : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
               }`}
             >
               {opt.replace(/_/g, ' ')}
@@ -571,7 +571,7 @@ export default function NutritionPrescriptionSuggest({
         <input
           value={ptsPhase}
           onChange={e => setPtsPhase(e.target.value)}
-          className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] mb-3"
+          className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] mb-3"
         />
       </ReasonCard>
       </div>
@@ -590,12 +590,12 @@ export default function NutritionPrescriptionSuggest({
             type="number"
             value={proteinAnchorG}
             onChange={e => setProteinAnchorG(Number(e.target.value))}
-            className="w-28 bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A]"
+            className="w-28 bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821]"
             min={80}
             max={300}
             step={5}
           />
-          <span className="text-stone-500 text-sm">grams/day</span>
+          <span className="text-[#666D7A] text-sm">grams/day</span>
         </div>
       </ReasonCard>
       </div>
@@ -617,7 +617,7 @@ export default function NutritionPrescriptionSuggest({
               className={`px-4 py-1.5 rounded-lg border text-xs capitalize transition-colors ${
                 carbDemandLevel === opt
                   ? 'border-blue-500 bg-blue-50 text-blue-700'
-                  : 'border-stone-300 text-stone-600 hover:border-stone-500'
+                  : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
               }`}
             >
               {opt}
@@ -644,7 +644,7 @@ export default function NutritionPrescriptionSuggest({
               className={`px-4 py-1.5 rounded-lg border text-xs transition-colors ${
                 mealFrequency === n
                   ? 'border-blue-500 bg-blue-50 text-blue-700'
-                  : 'border-stone-300 text-stone-600 hover:border-stone-500'
+                  : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
               }`}
             >
               {n} meals
@@ -671,7 +671,7 @@ export default function NutritionPrescriptionSuggest({
               className={`px-3 py-1.5 rounded-lg border text-xs transition-colors ${
                 trainingDaysPerWeek === n
                   ? 'border-blue-500 bg-blue-50 text-blue-700'
-                  : 'border-stone-300 text-stone-600 hover:border-stone-500'
+                  : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
               }`}
             >
               {n}x
@@ -688,8 +688,8 @@ export default function NutritionPrescriptionSuggest({
           { label: 'Recovery Status', value: recoveryStatus, field: 'recovery', options: RECOVERY_OPTIONS, setter: setRecoveryStatus, reason: suggestion.recovery_status_reason },
           { label: 'Uncertainty Level', value: uncertaintyLevel, field: 'uncertainty', options: UNCERTAINTY_OPTIONS, setter: setUncertaintyLevel, reason: suggestion.uncertainty_level_reason },
         ].map(({ label, value, field, options, setter, reason }) => (
-          <div key={field} className="bg-stone-100 border border-stone-200 rounded-xl p-4">
-            <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-2">{label}</p>
+          <div key={field} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
+            <p className="text-[10px] font-medium text-[#666D7A] mb-2">{label}</p>
             <div className="flex flex-col gap-1.5 mb-3">
               {options.map(opt => (
                 <button
@@ -698,26 +698,26 @@ export default function NutritionPrescriptionSuggest({
                   className={`px-3 py-1 rounded-lg border text-xs capitalize transition-colors ${
                     value === opt
                       ? 'border-blue-500 bg-blue-50 text-blue-700'
-                      : 'border-stone-300 text-stone-600 hover:border-stone-500'
+                      : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
                   }`}
                 >
                   {opt}
                 </button>
               ))}
             </div>
-            <p className="text-[10px] text-stone-400 leading-relaxed">{reason}</p>
+            <p className="text-[10px] text-[#98A0AD] leading-relaxed">{reason}</p>
           </div>
         ))}
       </div>
 
       {/* Food Exclusions */}
-      <div id="exclusions" className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl p-5">
-        <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-2">Food Exclusions</p>
+      <div id="exclusions" className="scroll-mt-8 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+        <p className="text-[10px] font-medium text-[#666D7A] mb-2">Food Exclusions</p>
         <input
           value={foodExclusionsText}
           onChange={e => setFoodExclusionsText(e.target.value)}
           placeholder="e.g. dairy, shellfish (comma separated)"
-          className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] placeholder-stone-400"
+          className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400"
         />
         <ReasonDisplay text={suggestion.food_exclusions_reason} />
       </div>
@@ -731,8 +731,8 @@ export default function NutritionPrescriptionSuggest({
               <path strokeLinecap="round" strokeLinejoin="round" d="M7 11l5-5m0 0l5 5m-5-5v12" />
             </svg>
             <div className="min-w-0 flex-1">
-              <p className="text-[11px] font-black text-teal-700 uppercase tracking-widest mb-1">Existing bridge plan — step up</p>
-              <p className="text-sm text-stone-800 leading-relaxed">
+              <p className="text-[11px] font-black text-teal-700 mb-1">Existing bridge plan — step up</p>
+              <p className="text-sm text-[#141821] leading-relaxed">
                 Active plan is at <span className="font-semibold tabular-nums">{activeBridge.floorKcal} kcal</span> bridge floor. Pick a step-up preset (keeps bridge mode on but increases the floor), or remove the override entirely.
               </p>
             </div>
@@ -747,7 +747,7 @@ export default function NutritionPrescriptionSuggest({
                   setOverrideJustification(`${activeBridge.justification}\n\n[Step-up from ${activeBridge.floorKcal} to ${activeBridge.floorKcal + 200} kcal — eating consistency markers in recent check-ins support increase.]`)
                 }
               }}
-              className="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold rounded-lg transition-colors"
+              className="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white text-[12.5px] font-semibold rounded-lg transition-colors"
             >
               Step up +200 kcal → {activeBridge.floorKcal + 200}
             </button>
@@ -760,14 +760,14 @@ export default function NutritionPrescriptionSuggest({
                   setOverrideJustification(`${activeBridge.justification}\n\n[Step-up from ${activeBridge.floorKcal} to ${activeBridge.floorKcal + 300} kcal — eating consistency markers in recent check-ins support increase.]`)
                 }
               }}
-              className="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold rounded-lg transition-colors"
+              className="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white text-[12.5px] font-semibold rounded-lg transition-colors"
             >
               Step up +300 kcal → {activeBridge.floorKcal + 300}
             </button>
             <button
               type="button"
               onClick={() => setOverrideActive(false)}
-              className="px-3 py-1.5 border border-stone-400 hover:border-stone-600 text-stone-700 text-xs font-semibold rounded-lg transition-colors"
+              className="px-3 py-1.5 border border-[#CFD4DC] hover:border-stone-600 text-[#141821] text-[12.5px] font-semibold rounded-lg transition-colors"
             >
               Remove override (apply standard floors)
             </button>
@@ -780,7 +780,7 @@ export default function NutritionPrescriptionSuggest({
           explicitly prescribes a sub-floor calorie target with documented
           justification. Validator skips the standard carb/fat g/kg floors
           when this is on. Auto-expires after 4 weeks. */}
-      <div id="bridge-mode" className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl p-5">
+      <div id="bridge-mode" className="scroll-mt-8 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
         <label className="flex items-start gap-3 cursor-pointer">
           <input
             type="checkbox"
@@ -789,8 +789,8 @@ export default function NutritionPrescriptionSuggest({
             className="mt-0.5 w-4 h-4 accent-blue-600"
           />
           <div className="min-w-0 flex-1">
-            <p className="text-xs font-bold uppercase tracking-widest text-stone-500 mb-1">Transitional plan (bridge mode)</p>
-            <p className="text-xs text-stone-600 leading-relaxed">
+            <p className="text-[12px] font-medium text-[#666D7A] mb-1">Transitional plan (bridge mode)</p>
+            <p className="text-[12.5px] text-[#666D7A] leading-relaxed">
               Enable when the client cannot physically execute the bodyweight-derived calorie floor (chronic under-eating, severe appetite suppression, post-illness recovery). Replaces the standard carb / fat g/kg floors with an explicit kcal floor you set. Auto-expires after 4 weeks — regenerate then.
             </p>
           </div>
@@ -798,15 +798,15 @@ export default function NutritionPrescriptionSuggest({
         {overrideActive && (
           <div className="mt-4 pl-7 space-y-3">
             {bridgeSuggesting && (
-              <div className="flex items-center gap-2 text-xs text-blue-600 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2">
+              <div className="flex items-center gap-2 text-[12.5px] text-blue-600 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2">
                 <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
                 Reading client medications, baseline and recent check-ins to suggest a floor and draft a justification…
               </div>
             )}
             {bridgeSuggestionMeta && !bridgeSuggesting && (
-              <div className="text-xs text-stone-600 bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 leading-relaxed">
+              <div className="text-[12.5px] text-[#666D7A] bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg px-3 py-2 leading-relaxed">
                 <div className="flex items-start justify-between gap-3 mb-1">
-                  <p className="font-semibold text-stone-700">AI prefill (you can edit)</p>
+                  <p className="font-semibold text-[#141821]">AI prefill (you can edit)</p>
                   <button
                     type="button"
                     onClick={() => fetchBridgeSuggestion(true)}
@@ -817,8 +817,8 @@ export default function NutritionPrescriptionSuggest({
                   </button>
                 </div>
                 {bridgeSuggestionMeta.standard_floor_kcal && (
-                  <p className="text-stone-500">
-                    Standard bodyweight-derived floor (would apply without override): <span className="font-mono text-stone-700">{bridgeSuggestionMeta.standard_floor_kcal} kcal</span>. Bridge mode replaces this.
+                  <p className="text-[#666D7A]">
+                    Standard bodyweight-derived floor (would apply without override): <span className="font-mono text-[#141821]">{bridgeSuggestionMeta.standard_floor_kcal} kcal</span>. Bridge mode replaces this.
                   </p>
                 )}
                 {bridgeSuggestionMeta.anchor_scaled_from !== null && bridgeSuggestionMeta.suggested_protein_anchor_g && (
@@ -829,12 +829,12 @@ export default function NutritionPrescriptionSuggest({
                   </p>
                 )}
                 {bridgeSuggestionMeta.evidence_summary && (
-                  <p className="text-stone-500 mt-1 italic">{bridgeSuggestionMeta.evidence_summary}</p>
+                  <p className="text-[#666D7A] mt-1 italic">{bridgeSuggestionMeta.evidence_summary}</p>
                 )}
               </div>
             )}
             <div>
-              <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1.5">
+              <label className="block text-[10px] font-medium text-[#666D7A] mb-1.5">
                 Minimum daily kcal floor
               </label>
               <input
@@ -844,14 +844,14 @@ export default function NutritionPrescriptionSuggest({
                 step={50}
                 value={overrideFloorKcal}
                 onChange={e => setOverrideFloorKcal(parseInt(e.target.value) || 0)}
-                className="w-32 bg-white border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A]"
+                className="w-32 bg-white border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821]"
               />
-              <p className="text-[11px] text-stone-500 mt-1">
+              <p className="text-[11px] text-[#666D7A] mt-1">
                 Between 800 and 4,000. Validator enforces this in place of the bodyweight carb/fat floors.
               </p>
             </div>
             <div>
-              <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1.5">
+              <label className="block text-[10px] font-medium text-[#666D7A] mb-1.5">
                 Justification (required, ≥20 characters)
               </label>
               <textarea
@@ -859,9 +859,9 @@ export default function NutritionPrescriptionSuggest({
                 onChange={e => setOverrideJustification(e.target.value)}
                 rows={5}
                 placeholder="e.g. Client is on Vyvanse + GLP-1 + Brintellix stack with documented actual intake ~1,400 kcal/day for 6+ weeks. Bridging from current capacity to bodyweight floor over 4 weeks; reassess at Week 4 check-in."
-                className="w-full bg-white border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] placeholder-stone-400 leading-relaxed"
+                className="w-full bg-white border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 leading-relaxed"
               />
-              <p className="text-[11px] text-stone-500 mt-1">
+              <p className="text-[11px] text-[#666D7A] mt-1">
                 {overrideJustification.length}/20 characters minimum. Documented for audit and licensee review.
               </p>
             </div>
@@ -879,13 +879,13 @@ export default function NutritionPrescriptionSuggest({
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
             </svg>
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-bold uppercase tracking-widest text-amber-700 mb-1">Prescription can&apos;t be generated as-is</p>
-              <p className="text-xs text-amber-900 leading-relaxed">
+              <p className="text-[12px] font-medium text-amber-700 mb-1">Prescription can&apos;t be generated as-is</p>
+              <p className="text-[12.5px] text-amber-900 leading-relaxed">
                 This combination violates the appetite-suppression hard rules. The engine would burn a generation attempt only to fail validation. Adjust before clicking Generate.
               </p>
             </div>
           </div>
-          <ul className="text-xs text-amber-900 leading-relaxed space-y-1 mb-3 ml-8 list-disc">
+          <ul className="text-[12.5px] text-amber-900 leading-relaxed space-y-1 mb-3 ml-8 list-disc">
             {feasibility.reasons.map((r, i) => <li key={i}>{r}</li>)}
           </ul>
           {feasibility.suggestions.length > 0 && (
@@ -894,7 +894,7 @@ export default function NutritionPrescriptionSuggest({
                 <button
                   key={i}
                   onClick={() => applyFeasibilityPatch(s.patch)}
-                  className="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold rounded-lg transition-colors"
+                  className="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-[12.5px] font-semibold rounded-lg transition-colors"
                 >
                   {s.label}
                 </button>
@@ -908,7 +908,7 @@ export default function NutritionPrescriptionSuggest({
       <div className="flex items-center justify-between pt-2">
         <a
           href={`/dashboard/clients/${clientId}/nutrition/generate`}
-          className="text-xs text-stone-400 hover:text-stone-600 transition-colors"
+          className="text-[12.5px] text-[#98A0AD] hover:text-[#666D7A] transition-colors"
         >
           Fill in manually instead
         </a>
@@ -925,7 +925,7 @@ export default function NutritionPrescriptionSuggest({
             (overrideActive && (overrideFloorKcal < 800 || overrideFloorKcal > 4000)) ? 'Bridge mode floor must be between 800 and 4,000 kcal' :
             undefined
           }
-          className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-stone-300 disabled:text-stone-500 disabled:cursor-not-allowed text-white font-semibold text-sm rounded-lg transition-colors"
+          className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-stone-300 disabled:text-[#666D7A] disabled:cursor-not-allowed text-white font-semibold text-sm rounded-lg transition-colors"
         >
           {generating ? 'Generating plan...' : 'Approve & Generate Plan'}
         </button>

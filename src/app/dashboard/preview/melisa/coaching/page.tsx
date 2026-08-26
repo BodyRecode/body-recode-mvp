@@ -27,7 +27,7 @@ export default function HermonyCoaching() {
         accent="terracotta"
         cta={
           <button
-            className="inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-2 rounded-lg border border-[#E5E5E5] bg-white text-[#1A1A1A] hover:bg-[#F4F4F4] transition-colors"
+            className="inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-2 rounded-lg border border-[#E8EAEE] bg-white text-[#141821] hover:bg-[#F4F6F9] transition-colors"
           >
             <UserPlus size={14} /> Invite a student
           </button>
@@ -43,25 +43,24 @@ export default function HermonyCoaching() {
         ].map((s, i) => (
           <div
             key={i}
-            className="relative bg-[#FAFBFD] border border-[#E5E5E5] rounded-2xl p-5 overflow-hidden"
+            className="relative bg-[#FAFBFD] border border-[#E8EAEE] rounded-xl p-5 overflow-hidden"
           >
             <div
               className="absolute top-5 left-5 w-7 h-[3px] rounded-full"
               style={{ background: HARMONY.accentBar }}
             />
             <p
-              className="text-[10px] text-[#6B6B6B] uppercase mt-4 mb-3"
-              style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+              className="text-[10px] text-[#666D7A] mt-4 mb-3"
             >
               {s.label}
             </p>
             <p
-              className="text-[40px] font-extrabold text-[#1A1A1A] tracking-tight leading-none mb-2.5"
+              className="text-[40px] font-extrabold text-[#141821] tracking-tight leading-none mb-2.5"
               style={{ fontVariantNumeric: 'tabular-nums' }}
             >
               {s.value}
             </p>
-            <p className="text-[11px] text-[#999999] truncate">{s.sub}</p>
+            <p className="text-[11px] text-[#98A0AD] truncate">{s.sub}</p>
           </div>
         ))}
       </div>
@@ -71,19 +70,18 @@ export default function HermonyCoaching() {
           accent="terracotta"
           cta={
             <div className="flex items-center gap-2">
-              <button className="text-[12px] text-[#6B6B6B] hover:text-[#1A1A1A]">Active</button>
+              <button className="text-[12px] text-[#666D7A] hover:text-[#141821]">Active</button>
               <span className="text-[#E5E5E5]">·</span>
-              <button className="text-[12px] text-[#6B6B6B] hover:text-[#1A1A1A]">Inactive</button>
+              <button className="text-[12px] text-[#666D7A] hover:text-[#141821]">Inactive</button>
             </div>
           }
         >
           <span className="px-6">All Students</span>
         </SectionLabel>
 
-        <div className="border-t border-[#E5E5E5]">
+        <div className="border-t border-[#E8EAEE]">
           <div
-            className="grid grid-cols-[2fr_1fr_1.5fr_1fr_1fr_0.5fr] gap-4 px-6 py-3 border-b border-[#E5E5E5] text-[10px] text-[#6B6B6B] uppercase"
-            style={{ fontFamily: MONO_FONT, letterSpacing: '0.12em' }}
+            className="grid grid-cols-[2fr_1fr_1.5fr_1fr_1fr_0.5fr] gap-4 px-6 py-3 border-b border-[#E8EAEE] text-[10px] text-[#666D7A]"
           >
             <div>Student</div>
             <div>State</div>
@@ -103,14 +101,14 @@ export default function HermonyCoaching() {
                 <div>
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-white text-[11px] font-bold"
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-white text-[11px] font-medium"
                       style={{ background: HARMONY.accentBar }}
                     >
                       {s.name.split(' ').map((n) => n[0]).join('')}
                     </div>
                     <div>
-                      <div className="text-[13px] font-semibold text-[#1A1A1A]">{s.name}</div>
-                      <div className="text-[11px] text-[#999999]">{s.email}</div>
+                      <div className="text-[13px] font-semibold text-[#141821]">{s.name}</div>
+                      <div className="text-[11px] text-[#98A0AD]">{s.email}</div>
                     </div>
                   </div>
                 </div>
@@ -121,7 +119,7 @@ export default function HermonyCoaching() {
                 <div className="text-[13px] text-[#4B4B4B]" style={{ fontFamily: MONO_FONT }}>W{s.week}</div>
                 <div className="text-[13px] text-[#4B4B4B]">Fri</div>
                 <div className="text-right">
-                  <ArrowUpRight size={14} className="inline-block text-[#999999]" />
+                  <ArrowUpRight size={14} className="inline-block text-[#98A0AD]" />
                 </div>
               </Link>
             )
@@ -151,7 +149,7 @@ export default function HermonyCoaching() {
         </Card>
       </div>
 
-      <div className="mt-10 pt-6 border-t border-[#E5E5E5] flex items-center justify-between text-[10px] text-[#999999]" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>
+      <div className="mt-10 pt-6 border-t border-[#E8EAEE] flex items-center justify-between text-[10px] text-[#98A0AD]">
         <div className="uppercase">INTERPRETATION ENGINE · POWERED BY BODY RECODE</div>
         <div className="uppercase">STUDENTS · {HARMONY.name.toUpperCase()}</div>
       </div>

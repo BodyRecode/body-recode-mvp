@@ -16,7 +16,7 @@ const TABS: { id: Tab; label: string }[] = [
 
 function Card({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={`bg-[#FFFFFF] border border-stone-200 rounded-xl p-5 ${className}`}>
+    <div className={`bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5 ${className}`}>
       {children}
     </div>
   )
@@ -24,7 +24,7 @@ function Card({ children, className = '' }: { children: React.ReactNode; classNa
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-[10px] font-semibold uppercase tracking-widest text-stone-500 mb-3">
+    <p className="text-[11.5px] font-medium text-[#666D7A] mb-3">
       {children}
     </p>
   )
@@ -36,7 +36,7 @@ function Tag({ children, color = 'teal' }: { children: React.ReactNode; color?: 
     violet: 'bg-violet-500/10 text-violet-700 border-violet-500/20',
     amber:  'bg-amber-50 text-amber-700 border-amber-500/20',
     orange: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
-    stone:  'bg-stone-500/10 text-stone-600 border-stone-500/20',
+    stone:  'bg-[#FBFCFD]0/10 text-[#666D7A] border-[#CFD4DC]/20',
   }
   return (
     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border ${styles[color]}`}>
@@ -100,8 +100,8 @@ function ContentKitTab() {
     <div className="space-y-5">
       <Card>
         <SectionLabel>Brand Colour — Clay</SectionLabel>
-        <p className="text-sm text-stone-600 leading-relaxed">
-          One signature colour across the whole @kade_dunstone_ feed &mdash; warm <span className="font-medium text-[#1A1A1A]">Clay</span>, deliberately distinct from Body Recode (Signal Blue), AI Co-Founder (indigo) and The Collective (sky blue). Pillars are told apart by the eyebrow label, not by colour. Variety comes from format (photo, carousel) and the solid-clay close slide &mdash; not from switching hue.
+        <p className="text-sm text-[#666D7A] leading-relaxed">
+          One signature colour across the whole @kade_dunstone_ feed &mdash; warm <span className="font-medium text-[#141821]">Clay</span>, deliberately distinct from Body Recode (Signal Blue), AI Co-Founder (indigo) and The Collective (sky blue). Pillars are told apart by the eyebrow label, not by colour. Variety comes from format (photo, carousel) and the solid-clay close slide &mdash; not from switching hue.
         </p>
         <div className="mt-4 flex flex-wrap gap-3">
           {[
@@ -109,11 +109,11 @@ function ContentKitTab() {
             { name: 'Ink', hex: '#2A1E16' },
             { name: 'Accent / solid', hex: '#B5552F' },
           ].map(s => (
-            <div key={s.name} className="flex items-center gap-2 border border-stone-200 rounded-lg px-3 py-2">
+            <div key={s.name} className="flex items-center gap-2 border border-[#E8EAEE] rounded-lg px-3 py-2">
               <span className="w-6 h-6 rounded" style={{ background: s.hex, border: '1px solid rgba(0,0,0,0.08)' }} />
               <div>
-                <p className="text-xs font-medium text-[#1A1A1A]">{s.name}</p>
-                <p className="text-[10px] text-stone-500 font-mono">{s.hex}</p>
+                <p className="text-[12.5px] font-medium text-[#141821]">{s.name}</p>
+                <p className="text-[10px] text-[#666D7A] font-mono">{s.hex}</p>
               </div>
             </div>
           ))}
@@ -122,7 +122,7 @@ function ContentKitTab() {
 
       <Card>
         <SectionLabel>Card Formats</SectionLabel>
-        <p className="text-xs text-stone-500 mb-4">Every post is one of these, always in clay. Live previews:</p>
+        <p className="text-[12.5px] text-[#666D7A] mb-4">Every post is one of these, always in clay. Live previews:</p>
         <div className="grid grid-cols-3 gap-3">
           {[
             { label: 'Colour card', url: kitPreview('style=personal&label=THINKING&text=Clarity+is+upstream+of+everything.') },
@@ -131,8 +131,8 @@ function ContentKitTab() {
           ].map(p => (
             <div key={p.label}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={p.url} alt={p.label} className="w-full rounded-lg border border-stone-200" />
-              <p className="text-[10px] text-stone-500 mt-1 text-center">{p.label}</p>
+              <img src={p.url} alt={p.label} className="w-full rounded-lg border border-[#E8EAEE]" />
+              <p className="text-[10px] text-[#666D7A] mt-1 text-center">{p.label}</p>
             </div>
           ))}
         </div>
@@ -146,27 +146,27 @@ function ContentKitTab() {
 
       <Card>
         <SectionLabel>Launch Content Plan</SectionLabel>
-        <p className="text-xs text-stone-500 mb-4">
-          The launch month <strong className="text-stone-600">leads with the human</strong> &mdash; story + photo posts carry it, two framework carousels teach, and sharp cards punctuate. Story hooks are specific scenes, not maxims; you write the detail in the caption. <strong className="text-stone-600">Reels start as a Phase-2 block from w/c 6 Jul</strong>, once the HeyGen avatar is ready (talking-head is where the relationship really forms). All <strong className="text-stone-600">scheduled in the one Content Calendar</strong> (Marketing Strategy → Content Calendar, filter Personal Brand) &mdash; this is the plan reference.
+        <p className="text-[12.5px] text-[#666D7A] mb-4">
+          The launch month <strong className="text-[#666D7A]">leads with the human</strong> &mdash; story + photo posts carry it, two framework carousels teach, and sharp cards punctuate. Story hooks are specific scenes, not maxims; you write the detail in the caption. <strong className="text-[#666D7A]">Reels start as a Phase-2 block from w/c 6 Jul</strong>, once the HeyGen avatar is ready (talking-head is where the relationship really forms). All <strong className="text-[#666D7A]">scheduled in the one Content Calendar</strong> (Marketing Strategy → Content Calendar, filter Personal Brand) &mdash; this is the plan reference.
         </p>
         <div className="space-y-4">
           {KIT_PLAN.map(wk => (
             <div key={wk.week}>
               <div className="flex items-baseline justify-between mb-2">
-                <p className="text-sm font-semibold text-[#1A1A1A]">{wk.week}</p>
-                <p className="text-xs text-stone-500">{wk.range}</p>
+                <p className="text-sm font-semibold text-[#141821]">{wk.week}</p>
+                <p className="text-[12.5px] text-[#666D7A]">{wk.range}</p>
               </div>
               <div className="space-y-1.5">
                 {wk.posts.map(p => (
-                  <div key={p.date} className="flex items-start gap-3 py-1.5 border-b border-stone-200/60 last:border-0">
-                    <span className="text-xs font-mono text-stone-500 w-12 shrink-0">{p.date}</span>
+                  <div key={p.date} className="flex items-start gap-3 py-1.5 border-b border-[#E8EAEE]/60 last:border-0">
+                    <span className="text-[12.5px] font-mono text-[#666D7A] w-12 shrink-0">{p.date}</span>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-0.5 flex-wrap">
                         <Tag color={KIT_PILLAR_COLOR[p.pillar]}>{p.pillar}</Tag>
                         <Tag color={formatColor[p.format]}>{p.format}</Tag>
-                        <span className="text-[10px] text-stone-400">{p.treatment}</span>
+                        <span className="text-[10px] text-[#98A0AD]">{p.treatment}</span>
                       </div>
-                      <p className="text-sm text-stone-700 leading-snug">{p.hook}</p>
+                      <p className="text-sm text-[#141821] leading-snug">{p.hook}</p>
                     </div>
                   </div>
                 ))}
@@ -184,7 +184,7 @@ function PositioningTab() {
     <div className="space-y-5">
       <Card>
         <SectionLabel>Who Kade Dunstone Is</SectionLabel>
-        <p className="text-stone-700 text-sm leading-relaxed">
+        <p className="text-[#141821] text-sm leading-relaxed">
           A performance coach, systems thinker, and software builder who has rebuilt his identity, career, and direction multiple times - and built frameworks out of every rebuild.
         </p>
         <div className="mt-4 space-y-2">
@@ -193,24 +193,24 @@ function PositioningTab() {
             'Not a motivational speaker',
             'Not a generic founder content creator',
           ].map(s => (
-            <div key={s} className="flex items-center gap-2 text-sm text-stone-600">
+            <div key={s} className="flex items-center gap-2 text-sm text-[#666D7A]">
               <span className="text-red-700">-</span> {s}
             </div>
           ))}
-          <div className="flex items-start gap-2 text-sm text-stone-800 mt-3">
+          <div className="flex items-start gap-2 text-sm text-[#141821] mt-3">
             <span className="text-blue-500 mt-0.5">+</span>
             <span>Someone who learned to interpret before acting - and built systems around that principle across the body, business, and software.</span>
           </div>
         </div>
         <div className="mt-4 p-3 bg-blue-500/5 border border-blue-500/20 rounded-lg">
-          <p className="text-xs text-blue-700">The platform is the proof. Most coaches rent software. Kade built his own - a full coaching and CRM platform - using the same AI co-founder principles he teaches.</p>
+          <p className="text-[12.5px] text-blue-700">The platform is the proof. Most coaches rent software. Kade built his own - a full coaching and CRM platform - using the same AI co-founder principles he teaches.</p>
         </div>
       </Card>
 
       <Card>
         <SectionLabel>Core Philosophy</SectionLabel>
-        <p className="text-2xl font-semibold text-[#1A1A1A] mb-3">Interpret before you act.</p>
-        <p className="text-stone-600 text-sm leading-relaxed">
+        <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em] mb-3">Interpret before you act.</p>
+        <p className="text-[#666D7A] text-sm leading-relaxed">
           Without correct interpretation - effort is misdirected, progress stalls, burnout increases.<br />
           With correct interpretation - decisions become clear, execution becomes effective, results become repeatable.
         </p>
@@ -223,7 +223,7 @@ function PositioningTab() {
 
       <Card>
         <SectionLabel>Confirmed Bio</SectionLabel>
-        <div className="bg-stone-100 rounded-lg p-4 text-sm text-stone-800 leading-relaxed font-mono">
+        <div className="bg-[#F4F6F9] rounded-lg p-4 text-sm text-[#141821] leading-relaxed font-mono">
           Three rebuilds. One constant. I never stopped building.<br />
           Performance coach. Father. Builder.<br />
           bodyrecode.au/kade
@@ -236,16 +236,16 @@ function PositioningTab() {
           {[
             { platform: 'Instagram', handle: '@kade_dunstone_', link: 'performance.bodyrecode.au/scorecard?source=instagram_kade' },
           ].map(r => (
-            <div key={r.platform} className="flex items-center justify-between py-2 border-b border-stone-200 last:border-0">
+            <div key={r.platform} className="flex items-center justify-between py-2 border-b border-[#E8EAEE] last:border-0">
               <div>
-                <p className="text-sm font-medium text-[#1A1A1A]">{r.platform}</p>
-                <p className="text-xs text-stone-600">{r.handle}</p>
+                <p className="text-sm font-medium text-[#141821]">{r.platform}</p>
+                <p className="text-[12.5px] text-[#666D7A]">{r.handle}</p>
               </div>
-              <code className="text-xs text-blue-500 bg-blue-50 px-2 py-1 rounded">{r.link}</code>
+              <code className="text-[12.5px] text-blue-500 bg-blue-50 px-2 py-1 rounded">{r.link}</code>
             </div>
           ))}
         </div>
-        <p className="mt-3 text-xs text-stone-500">Profile photo: clean headshot, dark background, on-brand</p>
+        <p className="mt-3 text-[12.5px] text-[#666D7A]">Profile photo: clean headshot, dark background, on-brand</p>
       </Card>
 
       <Card>
@@ -265,9 +265,9 @@ function PositioningTab() {
             'Most coaches rent software built by someone else. Building your own forces you to understand your business at a different level.',
             'You don\'t need to know how to code. You need to know what you\'re building and why. AI handles the rest.',
           ].map((p, i) => (
-            <div key={i} className="flex items-start gap-3 py-2 border-b border-stone-200/60 last:border-0">
-              <span className="text-xs text-stone-400 font-mono mt-0.5 w-4 shrink-0">{i + 1}</span>
-              <p className="text-sm text-stone-700">{p}</p>
+            <div key={i} className="flex items-start gap-3 py-2 border-b border-[#E8EAEE]/60 last:border-0">
+              <span className="text-[12.5px] text-[#98A0AD] font-mono mt-0.5 w-4 shrink-0">{i + 1}</span>
+              <p className="text-sm text-[#141821]">{p}</p>
             </div>
           ))}
         </div>
@@ -308,26 +308,26 @@ function StoryTab() {
     <div className="space-y-5">
       <Card>
         <SectionLabel>The Core Story</SectionLabel>
-        <p className="text-sm text-stone-600 mb-4">
+        <p className="text-sm text-[#666D7A] mb-4">
           Three identity rebuilds. Each one produced a framework. Every piece of content connects back to one of these.
         </p>
         <div className="space-y-4">
           {rebuilds.map(r => (
-            <div key={r.title} className="border border-stone-200 rounded-lg overflow-hidden">
-              <div className={`px-4 py-2.5 border-b border-stone-200 ${
+            <div key={r.title} className="border border-[#E8EAEE] rounded-lg overflow-hidden">
+              <div className={`px-4 py-2.5 border-b border-[#E8EAEE] ${
                 r.color === 'teal' ? 'bg-blue-500/5' :
                 r.color === 'violet' ? 'bg-violet-500/5' : 'bg-amber-500/5'
               }`}>
-                <p className="text-sm font-semibold text-[#1A1A1A]">{r.title}</p>
+                <p className="text-sm font-semibold text-[#141821]">{r.title}</p>
               </div>
               <div className="px-4 py-3 space-y-2">
                 <div>
-                  <p className="text-[10px] uppercase tracking-widest text-stone-400 mb-1">Context</p>
-                  <p className="text-sm text-stone-600">{r.context}</p>
+                  <p className="text-[10px] text-[#98A0AD] mb-1">Context</p>
+                  <p className="text-sm text-[#666D7A]">{r.context}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] uppercase tracking-widest text-stone-400 mb-1">What it produced</p>
-                  <p className="text-sm text-stone-800">{r.lesson}</p>
+                  <p className="text-[10px] text-[#98A0AD] mb-1">What it produced</p>
+                  <p className="text-sm text-[#141821]">{r.lesson}</p>
                 </div>
               </div>
             </div>
@@ -406,14 +406,14 @@ function PillarsTab() {
             }`}>{p.num}</span>
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
-                <p className="text-base font-semibold text-[#1A1A1A]">Pillar {p.num} - {p.title}</p>
+                <p className="text-base font-semibold text-[#141821]">Pillar {p.num} - {p.title}</p>
                 <Tag color={p.color}>{p.color === 'teal' ? 'Body' : p.color === 'violet' ? 'Mind' : p.color === 'amber' ? 'AI' : 'Story'}</Tag>
               </div>
-              <p className="text-sm text-stone-600 mb-3">{p.description}</p>
+              <p className="text-sm text-[#666D7A] mb-3">{p.description}</p>
               <div className="space-y-1">
                 {p.topics.map(t => (
-                  <div key={t} className="flex items-start gap-2 text-sm text-stone-700">
-                    <span className="text-stone-400 mt-1 shrink-0">-</span>
+                  <div key={t} className="flex items-start gap-2 text-sm text-[#141821]">
+                    <span className="text-[#98A0AD] mt-1 shrink-0">-</span>
                     {t}
                   </div>
                 ))}
@@ -627,7 +627,7 @@ function ScriptsTab() {
             className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
               scriptTab === k
                 ? 'bg-blue-50 text-blue-500 border-blue-200'
-                : 'text-stone-500 border-stone-200 hover:text-stone-700'
+                : 'text-[#666D7A] border-[#E8EAEE] hover:text-[#141821]'
             }`}
           >{v.label}</button>
         ))}
@@ -635,37 +635,37 @@ function ScriptsTab() {
 
       <Card>
         <SectionLabel>{current.label}</SectionLabel>
-        {scriptTab === 'launch' && <p className="text-xs text-stone-500 mb-4">Post these in order before any outreach or promotion begins.</p>}
-        {scriptTab === 'video' && <p className="text-xs text-stone-500 mb-4">Record using HeyGen avatar. Calm delivery, clean background. 60-90 seconds.</p>}
+        {scriptTab === 'launch' && <p className="text-[12.5px] text-[#666D7A] mb-4">Post these in order before any outreach or promotion begins.</p>}
+        {scriptTab === 'video' && <p className="text-[12.5px] text-[#666D7A] mb-4">Record using HeyGen avatar. Calm delivery, clean background. 60-90 seconds.</p>}
         <div className="space-y-2">
           {current.scripts.map((s, i) => (
-            <div key={s.id} className="border border-stone-200 rounded-lg overflow-hidden">
+            <div key={s.id} className="border border-[#E8EAEE] rounded-lg overflow-hidden">
               <button
                 onClick={() => setExpanded(expanded === s.id ? null : s.id)}
-                className="w-full flex items-center justify-between px-4 py-3 hover:bg-stone-100/50 transition-colors text-left"
+                className="w-full flex items-center justify-between px-4 py-3 hover:bg-[#F4F6F9]/50 transition-colors text-left"
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <span className="text-xs text-stone-400 font-mono shrink-0">{String(i + 1).padStart(2, '0')}</span>
-                  <span className="text-sm font-medium text-[#1A1A1A] truncate">{s.hook}</span>
+                  <span className="text-[12.5px] text-[#98A0AD] font-mono shrink-0">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="text-sm font-medium text-[#141821] truncate">{s.hook}</span>
                   <Tag color={s.pillarColor}>{s.type}</Tag>
                 </div>
-                <span className="text-stone-400 text-xs shrink-0 ml-2">{expanded === s.id ? 'hide' : 'view'}</span>
+                <span className="text-[#98A0AD] text-[12.5px] shrink-0 ml-2">{expanded === s.id ? 'hide' : 'view'}</span>
               </button>
               {expanded === s.id && (
-                <div className="px-4 pb-4 space-y-3 border-t border-stone-200">
+                <div className="px-4 pb-4 space-y-3 border-t border-[#E8EAEE]">
                   <div className="flex items-center gap-3 mt-3">
                     <Tag color={s.pillarColor}>{s.pillar}</Tag>
-                    <span className="text-xs text-stone-500">{s.platform}</span>
+                    <span className="text-[12.5px] text-[#666D7A]">{s.platform}</span>
                   </div>
                   <div>
                     <div className="flex items-center justify-between mb-1">
-                      <p className="text-[10px] uppercase tracking-widest text-stone-400">Copy</p>
+                      <p className="text-[10px] text-[#98A0AD]">Copy</p>
                       <button
                         onClick={() => navigator.clipboard.writeText(s.copy ?? [s.hook, s.body].filter(Boolean).join('\n\n'))}
-                        className="text-xs text-blue-500 hover:text-blue-700 transition-colors"
+                        className="text-[12.5px] text-blue-500 hover:text-blue-700 transition-colors"
                       >Copy</button>
                     </div>
-                    <div className="bg-stone-100 rounded-lg p-3 text-sm text-stone-800 leading-relaxed whitespace-pre-line">
+                    <div className="bg-[#F4F6F9] rounded-lg p-3 text-sm text-[#141821] leading-relaxed whitespace-pre-line">
                       {s.copy ?? [s.hook, s.body].filter(Boolean).join('\n\n')}
                     </div>
                   </div>
@@ -693,9 +693,9 @@ function CadenceTab() {
             { type: 'Reels',     desc: 'Personal story moments via HeyGen' },
             { type: 'Quote cards', desc: 'Contrarian positions' },
           ].map(r => (
-            <div key={r.type} className="flex items-center gap-3 py-2 border-b border-stone-200/60 last:border-0">
-              <p className="text-sm font-medium text-[#1A1A1A] w-28 shrink-0">{r.type}</p>
-              <p className="text-sm text-stone-600">{r.desc}</p>
+            <div key={r.type} className="flex items-center gap-3 py-2 border-b border-[#E8EAEE]/60 last:border-0">
+              <p className="text-sm font-medium text-[#141821] w-28 shrink-0">{r.type}</p>
+              <p className="text-sm text-[#666D7A]">{r.desc}</p>
             </div>
           ))}
         </div>
@@ -706,7 +706,7 @@ function CadenceTab() {
         <div className="flex items-center gap-2 mb-4">
           <Tag color="amber">1 personal-brand post per week</Tag>
         </div>
-        <p className="text-sm text-stone-600 leading-relaxed mb-3">
+        <p className="text-sm text-[#666D7A] leading-relaxed mb-3">
           Personal brand content (the four pillars) also goes on LinkedIn alongside The Collective posts and Body Recode executive reframe posts. Total LinkedIn feed: 4-6 posts/week across all three channels, posted from the same personal profile.
         </p>
         <div className="space-y-2">
@@ -715,34 +715,34 @@ function CadenceTab() {
             { channel: 'Personal Brand', freq: '1 post/wk' },
             { channel: 'Body Recode (NEW May 2026)', freq: '1-2 posts/wk' },
           ].map(r => (
-            <div key={r.channel} className="flex items-center gap-3 text-xs py-1.5 border-b border-stone-200/60 last:border-0">
-              <p className="text-[#1A1A1A] w-52 shrink-0">{r.channel}</p>
-              <p className="text-stone-600">{r.freq}</p>
+            <div key={r.channel} className="flex items-center gap-3 text-[12.5px] py-1.5 border-b border-[#E8EAEE]/60 last:border-0">
+              <p className="text-[#141821] w-52 shrink-0">{r.channel}</p>
+              <p className="text-[#666D7A]">{r.freq}</p>
             </div>
           ))}
         </div>
-        <p className="text-xs text-stone-400 mt-3">See <strong className="text-stone-600">Marketing Strategy → LinkedIn tab</strong> for the Body Recode LinkedIn pillars, tone rules, and 12-week pipeline.</p>
+        <p className="text-[12.5px] text-[#98A0AD] mt-3">See <strong className="text-[#666D7A]">Marketing Strategy → LinkedIn tab</strong> for the Body Recode LinkedIn pillars, tone rules, and 12-week pipeline.</p>
       </Card>
 
       <Card>
         <SectionLabel>Tone</SectionLabel>
-        <p className="text-sm text-stone-700 mb-4">Direct. Structured. No filler. Reads like someone who has thought about this for years and is now documenting it.</p>
+        <p className="text-sm text-[#141821] mb-4">Direct. Structured. No filler. Reads like someone who has thought about this for years and is now documenting it.</p>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p className="text-[10px] uppercase tracking-widest text-red-500/60 mb-2">Never</p>
+            <p className="text-[10px] text-red-500/60 mb-2">Never</p>
             <div className="space-y-1">
               {['Motivational fluff', '"Here\'s my morning routine"', 'Gym selfies', 'Vague inspiration', 'Hype'].map(t => (
-                <div key={t} className="flex items-center gap-2 text-xs text-stone-500">
+                <div key={t} className="flex items-center gap-2 text-[12.5px] text-[#666D7A]">
                   <span className="text-red-500/60">-</span> {t}
                 </div>
               ))}
             </div>
           </div>
           <div>
-            <p className="text-[10px] uppercase tracking-widest text-blue-500/60 mb-2">Always</p>
+            <p className="text-[10px] text-blue-500/60 mb-2">Always</p>
             <div className="space-y-1">
               {['A specific observation', 'A named pattern', 'A reframe', 'A real moment from the journey'].map(t => (
-                <div key={t} className="flex items-center gap-2 text-xs text-stone-700">
+                <div key={t} className="flex items-center gap-2 text-[12.5px] text-[#141821]">
                   <span className="text-blue-500/60">+</span> {t}
                 </div>
               ))}
@@ -753,7 +753,7 @@ function CadenceTab() {
 
       <Card>
         <SectionLabel>How Personal Brand Feeds Body Recode</SectionLabel>
-        <p className="text-sm text-stone-600 mb-4">The personal brand does not sell Body Recode directly. It builds the trust that makes Body Recode the obvious next step.</p>
+        <p className="text-sm text-[#666D7A] mb-4">The personal brand does not sell Body Recode directly. It builds the trust that makes Body Recode the obvious next step.</p>
         <div className="space-y-2">
           {[
             'Person follows @kade_dunstone_ because the thinking resonates',
@@ -761,14 +761,14 @@ function CadenceTab() {
             'They encounter Body Recode naturally through content references',
             'They take the scorecard because they already trust the thinking',
           ].map((s, i) => (
-            <div key={i} className="flex items-start gap-3 text-sm text-stone-700">
-              <span className="text-stone-400 font-mono text-xs mt-0.5 w-4 shrink-0">{i + 1}</span>
+            <div key={i} className="flex items-start gap-3 text-sm text-[#141821]">
+              <span className="text-[#98A0AD] font-mono text-[12.5px] mt-0.5 w-4 shrink-0">{i + 1}</span>
               {s}
             </div>
           ))}
         </div>
-        <div className="mt-4 p-3 bg-stone-100 rounded-lg border border-stone-200">
-          <p className="text-xs text-stone-600">Never pitch Body Recode directly from the personal account. Reference it. Link it occasionally. Let the trust do the selling.</p>
+        <div className="mt-4 p-3 bg-[#F4F6F9] rounded-lg border border-[#E8EAEE]">
+          <p className="text-[12.5px] text-[#666D7A]">Never pitch Body Recode directly from the personal account. Reference it. Link it occasionally. Let the trust do the selling.</p>
         </div>
       </Card>
     </div>
@@ -791,9 +791,9 @@ function LaunchTab() {
         <SectionLabel>Launch Checklist</SectionLabel>
         <div className="space-y-2">
           {steps.map((s, i) => (
-            <div key={i} className="flex items-center gap-3 py-2 border-b border-stone-200/60 last:border-0">
-              <div className="w-4 h-4 rounded border border-stone-300 shrink-0" />
-              <p className="text-sm text-stone-700">{s.step}</p>
+            <div key={i} className="flex items-center gap-3 py-2 border-b border-[#E8EAEE]/60 last:border-0">
+              <div className="w-4 h-4 rounded border border-[#E8EAEE] shrink-0" />
+              <p className="text-sm text-[#141821]">{s.step}</p>
             </div>
           ))}
         </div>
@@ -806,9 +806,9 @@ function LaunchTab() {
             { platform: 'Instagram bio',     url: 'performance.bodyrecode.au/scorecard?source=instagram_kade' },
             { platform: 'Instagram story',   url: 'performance.bodyrecode.au/scorecard?source=instagram_kade_story' },
           ].map(r => (
-            <div key={r.platform} className="flex items-center justify-between py-2 border-b border-stone-200/60 last:border-0">
-              <p className="text-sm text-stone-600 w-36 shrink-0">{r.platform}</p>
-              <code className="text-xs text-blue-500 bg-blue-50 px-2 py-1 rounded">{r.url}</code>
+            <div key={r.platform} className="flex items-center justify-between py-2 border-b border-[#E8EAEE]/60 last:border-0">
+              <p className="text-sm text-[#666D7A] w-36 shrink-0">{r.platform}</p>
+              <code className="text-[12.5px] text-blue-500 bg-blue-50 px-2 py-1 rounded">{r.url}</code>
             </div>
           ))}
         </div>
@@ -816,7 +816,7 @@ function LaunchTab() {
 
       <Card>
         <SectionLabel>Ecosystem Role</SectionLabel>
-        <div className="space-y-3 text-sm text-stone-600">
+        <div className="space-y-3 text-sm text-[#666D7A]">
           <p>The personal brand is the bridge. It does not sell either product directly.</p>
           <p>It builds the trust that makes both products the obvious next step.</p>
           <div className="mt-4 space-y-2">
@@ -829,8 +829,8 @@ function LaunchTab() {
               'One person can buy both products at different points',
             ].map((s, i) => (
               <div key={i} className="flex items-start gap-3">
-                <span className="text-stone-400 font-mono text-xs mt-0.5 shrink-0">{i + 1}</span>
-                <span className="text-stone-700">{s}</span>
+                <span className="text-[#98A0AD] font-mono text-[12.5px] mt-0.5 shrink-0">{i + 1}</span>
+                <span className="text-[#141821]">{s}</span>
               </div>
             ))}
           </div>
@@ -856,12 +856,12 @@ export default function PersonalBrandPage() {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="px-6 pt-6 pb-0 border-b border-stone-200">
+      <div className="px-6 pt-6 pb-0 border-b border-[#E8EAEE]">
         <div className="flex items-center gap-3 mb-1">
-          <h1 className="text-xl font-semibold text-[#1A1A1A]">Personal Brand</h1>
-          <span className="text-xs text-stone-500 bg-stone-200 px-2 py-0.5 rounded font-mono">@kade_dunstone_</span>
+          <h1 className="text-xl font-semibold text-[#141821]">Personal Brand</h1>
+          <span className="text-[12.5px] text-[#666D7A] bg-[#EFF1F4] px-2 py-0.5 rounded font-mono">@kade_dunstone_</span>
         </div>
-        <p className="text-sm text-stone-500 mb-4">Instagram - the thinking, the journey, the builder</p>
+        <p className="text-sm text-[#666D7A] mb-4">Instagram - the thinking, the journey, the builder</p>
 
         <div className="flex gap-1 overflow-x-auto pb-px">
           {TABS.map(t => (
@@ -870,8 +870,8 @@ export default function PersonalBrandPage() {
               onClick={() => setTab(t.id)}
               className={`px-3.5 py-2 text-sm font-medium rounded-t-lg whitespace-nowrap transition-colors ${
                 tab === t.id
-                  ? 'bg-[#FFFFFF] text-[#1A1A1A] border-t border-l border-r border-stone-200'
-                  : 'text-stone-500 hover:text-stone-700'
+                  ? 'bg-[#FFFFFF] text-[#141821] border-t border-l border-r border-[#E8EAEE]'
+                  : 'text-[#666D7A] hover:text-[#141821]'
               }`}
             >
               {t.label}

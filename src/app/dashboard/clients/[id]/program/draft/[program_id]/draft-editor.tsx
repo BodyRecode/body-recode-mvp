@@ -235,7 +235,7 @@ export default function DraftEditor({
   }
 
   const inputCls =
-    'bg-stone-200 border border-stone-300 text-stone-900 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-[#1B6DFC] focus:border-transparent'
+    'bg-[#EFF1F4] border border-[#E8EAEE] text-[#141821] rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-[#1B6DFC] focus:border-transparent'
 
   // Filtered swap results
   const currentPatterns = swapPath
@@ -257,20 +257,20 @@ export default function DraftEditor({
   const isActive = program.status === 'active'
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-[980px]">
       {/* Header */}
       <div className="mb-6">
-        <div className="flex items-center gap-2 text-stone-500 text-sm mb-2">
-          <Link href={`/dashboard/clients/${clientId}`} className="hover:text-stone-700 transition-colors">{clientName}</Link>
+        <div className="flex items-center gap-2 text-[#666D7A] text-sm mb-2">
+          <Link href={`/dashboard/clients/${clientId}`} className="hover:text-[#141821] transition-colors">{clientName}</Link>
           <span>/</span>
-          <Link href={`/dashboard/clients/${clientId}/program`} className="hover:text-stone-700 transition-colors">Training Program</Link>
+          <Link href={`/dashboard/clients/${clientId}/program`} className="hover:text-[#141821] transition-colors">Training Program</Link>
           <span>/</span>
-          <span className="text-stone-700">{isActive ? 'Edit Exercises' : 'Draft Review'}</span>
+          <span className="text-[#141821]">{isActive ? 'Edit Exercises' : 'Draft Review'}</span>
         </div>
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-[#1A1A1A]">{program.block_name}</h1>
-            <p className={`text-sm mt-1 ${isActive ? 'text-stone-500' : 'text-amber-700'}`}>
+            <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">{program.block_name}</h1>
+            <p className={`text-sm mt-1 ${isActive ? 'text-[#666D7A]' : 'text-amber-700'}`}>
               {isActive ? 'Editing active program - changes save in place' : 'Draft - pending coach review'}
             </p>
           </div>
@@ -279,7 +279,7 @@ export default function DraftEditor({
               <button
                 onClick={handleDiscard}
                 disabled={discarding || promoting}
-                className="text-xs px-3 py-1.5 border border-stone-300 text-stone-500 rounded-lg hover:border-red-200 hover:text-red-700 hover:bg-red-50 transition-colors disabled:opacity-40"
+                className="text-[12.5px] px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-red-200 hover:text-red-700 hover:bg-red-50 transition-colors disabled:opacity-40"
               >
                 {discarding ? 'Discarding…' : 'Discard Draft'}
               </button>
@@ -288,7 +288,7 @@ export default function DraftEditor({
               <button
                 onClick={handleSave}
                 disabled={saving || promoting}
-                className={`text-xs px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 ${isActive ? 'bg-[#1B6DFC] text-white font-semibold hover:bg-[#5390FF]' : 'border border-stone-400 text-stone-700 hover:border-stone-600'}`}
+                className={`text-xs px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 ${isActive ? 'bg-[#1B6DFC] text-white font-semibold hover:bg-[#5390FF]' : 'border border-[#CFD4DC] text-[#141821] hover:border-stone-600'}`}
               >
                 {saving ? 'Saving…' : isActive ? 'Save' : 'Save Changes'}
               </button>
@@ -297,7 +297,7 @@ export default function DraftEditor({
               <button
                 onClick={handlePromote}
                 disabled={promoting || saving || discarding}
-                className="text-xs px-4 py-1.5 bg-[#1B6DFC] text-white font-semibold rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-40"
+                className="text-[12.5px] px-4 py-1.5 bg-[#1B6DFC] text-white font-semibold rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-40"
               >
                 {promoting ? 'Promoting…' : 'Promote to Active'}
               </button>
@@ -305,7 +305,7 @@ export default function DraftEditor({
             {isActive && (
               <Link
                 href={`/dashboard/clients/${clientId}/program`}
-                className="text-xs px-3 py-1.5 border border-stone-300 text-stone-600 rounded-lg hover:border-stone-500 hover:text-stone-800 transition-colors"
+                className="text-[12.5px] px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#CFD4DC] hover:text-[#141821] transition-colors"
               >
                 Done
               </Link>
@@ -321,67 +321,67 @@ export default function DraftEditor({
       )}
 
       {dirty && (
-        <div className="mb-4 text-xs text-amber-700 bg-amber-50 border border-amber-200/50 rounded-lg px-3 py-2">
+        <div className="mb-4 text-[12.5px] text-amber-700 bg-amber-50 border border-amber-200/50 rounded-lg px-3 py-2">
           You have unsaved changes. Save before promoting or your edits will be lost.
         </div>
       )}
 
       {/* Program identity */}
-      <div className="bg-stone-100 border border-amber-200/40 rounded-xl p-5 mb-4">
+      <div className="bg-[#F4F6F9] border border-amber-200/40 rounded-xl p-5 mb-4">
         <div className="flex items-start justify-between mb-2">
           <div>
-            <p className="text-xs text-stone-500 mb-1 capitalize">
+            <p className="text-[12.5px] text-[#666D7A] mb-1 capitalize">
               {program.training_frequency}x/week · {program.week_duration} weeks · {program.training_age}
             </p>
           </div>
           <div className="flex gap-1.5">
-            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${phaseColour[program.progression_phase] || 'text-stone-600 bg-stone-200 border-stone-300'}`}>
+            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${phaseColour[program.progression_phase] || 'text-[#666D7A] bg-[#EFF1F4] border-[#E8EAEE]'}`}>
               {program.progression_phase}
             </span>
-            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${goalColour[program.training_goal] || 'text-stone-600 bg-stone-200 border-stone-300'}`}>
+            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${goalColour[program.training_goal] || 'text-[#666D7A] bg-[#EFF1F4] border-[#E8EAEE]'}`}>
               {program.training_goal}
             </span>
           </div>
         </div>
         <div className="flex flex-wrap gap-1.5">
           {program.equipment_access.map(eq => (
-            <span key={eq} className="text-xs bg-stone-200 text-stone-600 px-2 py-0.5 rounded capitalize">{eq}</span>
+            <span key={eq} className="text-[12.5px] bg-[#EFF1F4] text-[#666D7A] px-2 py-0.5 rounded capitalize">{eq}</span>
           ))}
         </div>
       </div>
 
       {/* Editing hint */}
-      <p className="text-xs text-stone-400 mb-4 px-1">
+      <p className="text-[12.5px] text-[#98A0AD] mb-4 px-1">
         Click any exercise row to edit. Use &ldquo;Swap&rdquo; to replace an exercise from the approved library.
       </p>
 
       {/* Sessions */}
       <div className="space-y-3">
         {sessions.map((session, sIdx) => (
-          <div key={sIdx} className="bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
+          <div key={sIdx} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
             {/* Session header */}
-            <div className="px-5 py-3 border-b border-stone-200 flex items-center justify-between">
-              <h3 className="font-semibold text-stone-900 text-sm">{session.day_label}</h3>
-              <span className="text-[10px] text-stone-400 uppercase tracking-wide">{session.skeleton}</span>
+            <div className="px-5 py-3 border-b border-[#E8EAEE] flex items-center justify-between">
+              <h3 className="font-semibold text-[#141821] text-sm">{session.day_label}</h3>
+              <span className="text-[10px] text-[#98A0AD]">{session.skeleton}</span>
             </div>
 
-            <div className="divide-y divide-stone-200/60">
+            <div className="divide-y divide-[#EFF1F4]/60">
               {/* Movement Prep - editable */}
               {session.movement_prep?.length > 0 && (
-                <div className="px-5 py-4 bg-stone-200/30">
-                  <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-1">
+                <div className="px-5 py-4 bg-[#EFF1F4]/30">
+                  <p className="text-[10px] font-medium text-[#1B6DFC] mb-1">
                     Preparatory Entry - Movement Preparation
                   </p>
-                  <p className="text-[10px] text-stone-400 mb-3">Non-Slot · Prepare joints, tissues, and coordination</p>
+                  <p className="text-[10px] text-[#98A0AD] mb-3">Non-Slot · Prepare joints, tissues, and coordination</p>
                   <div className="space-y-1.5">
                     {session.movement_prep.map((item, i) => (
                       <div key={i} className="flex items-center gap-2">
-                        <span className="text-stone-400">•</span>
+                        <span className="text-[#98A0AD]">•</span>
                         <input
                           type="text"
                           value={item}
                           onChange={e => updateMovementPrep(sIdx, i, e.target.value)}
-                          className="flex-1 bg-transparent border-b border-stone-300 text-sm text-stone-700 py-0.5 focus:outline-none focus:border-[#1B6DFC] transition-colors"
+                          className="flex-1 bg-transparent border-b border-[#E8EAEE] text-sm text-[#141821] py-0.5 focus:outline-none focus:border-[#1B6DFC] transition-colors"
                         />
                       </div>
                     ))}
@@ -392,7 +392,7 @@ export default function DraftEditor({
               {/* Blocks */}
               {session.blocks.map((block, bIdx) => (
                 <div key={bIdx} className="px-5 py-4">
-                  <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-3">{block.block_label}</p>
+                  <p className="text-[10px] font-medium text-[#1B6DFC] mb-3">{block.block_label}</p>
                   <div className="space-y-2">
                     {block.exercises.map((ex, eIdx) => {
                       const path: EditingPath = { sessionIdx: sIdx, blockIdx: bIdx, exerciseIdx: eIdx }
@@ -406,35 +406,35 @@ export default function DraftEditor({
                         swapPath?.exerciseIdx === eIdx
 
                       return (
-                        <div key={eIdx} className={`rounded-lg border transition-colors ${isEditing ? 'border-stone-400 bg-stone-200/50' : 'border-transparent hover:border-stone-300 cursor-pointer'}`}>
+                        <div key={eIdx} className={`rounded-lg border transition-colors ${isEditing ? 'border-[#CFD4DC] bg-[#EFF1F4]/50' : 'border-transparent hover:border-[#E8EAEE] cursor-pointer'}`}>
                           {/* Collapsed row */}
                           {!isEditing ? (
                             <div
                               className="flex items-center gap-3 text-sm px-3 py-2"
                               onClick={() => setEditingPath(path)}
                             >
-                              <span className="flex-1 text-stone-800 font-medium">{ex.exercise_name}</span>
-                              <span className="text-stone-600 whitespace-nowrap tabular-nums">
+                              <span className="flex-1 text-[#141821] font-medium">{ex.exercise_name}</span>
+                              <span className="text-[#666D7A] whitespace-nowrap tabular-nums">
                                 {ex.sets}×{ex.reps}
-                                {ex.rpe !== null && <span className="text-stone-400"> · RPE {ex.rpe}</span>}
+                                {ex.rpe !== null && <span className="text-[#98A0AD]"> · RPE {ex.rpe}</span>}
                               </span>
-                              <span className="text-stone-400 whitespace-nowrap text-xs w-16 text-right">{ex.rest}</span>
+                              <span className="text-[#98A0AD] whitespace-nowrap text-[12.5px] w-16 text-right">{ex.rest}</span>
                             </div>
                           ) : (
                             /* Expanded edit row */
                             <div className="px-3 py-3 space-y-3">
                               {/* Exercise name + swap */}
                               <div className="flex items-center gap-2">
-                                <span className="text-sm font-semibold text-stone-900 flex-1">{ex.exercise_name}</span>
+                                <span className="text-sm font-semibold text-[#141821] flex-1">{ex.exercise_name}</span>
                                 <button
                                   onClick={() => isSwapping ? closeSwap() : openSwap(path)}
-                                  className="text-xs px-2.5 py-1 border border-stone-400 text-stone-600 rounded hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors"
+                                  className="text-[12.5px] px-2.5 py-1 border border-[#CFD4DC] text-[#666D7A] rounded hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors"
                                 >
                                   {isSwapping ? 'Cancel' : 'Swap'}
                                 </button>
                                 <button
                                   onClick={() => { setEditingPath(null); closeSwap() }}
-                                  className="text-xs text-stone-400 hover:text-stone-600 transition-colors"
+                                  className="text-[12.5px] text-[#98A0AD] hover:text-[#666D7A] transition-colors"
                                 >
                                   Done
                                 </button>
@@ -442,33 +442,33 @@ export default function DraftEditor({
 
                               {/* Swap panel */}
                               {isSwapping && (
-                                <div className="border border-stone-300 rounded-lg bg-stone-100 overflow-hidden">
-                                  <div className="p-2 border-b border-stone-200">
+                                <div className="border border-[#E8EAEE] rounded-lg bg-[#F4F6F9] overflow-hidden">
+                                  <div className="p-2 border-b border-[#E8EAEE]">
                                     <input
                                       type="text"
                                       placeholder="Search exercises…"
                                       value={swapSearch}
                                       onChange={e => setSwapSearch(e.target.value)}
-                                      className="w-full bg-stone-200 border border-stone-300 text-stone-900 rounded px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-[#1B6DFC]"
+                                      className="w-full bg-[#EFF1F4] border border-[#E8EAEE] text-[#141821] rounded px-2 py-1.5 text-[12.5px] focus:outline-none focus:ring-1 focus:ring-[#1B6DFC]"
                                       autoFocus
                                     />
-                                    {!libraryLoaded && <p className="text-xs text-stone-400 mt-1 px-1">Loading library…</p>}
+                                    {!libraryLoaded && <p className="text-[12.5px] text-[#98A0AD] mt-1 px-1">Loading library…</p>}
                                     {libraryLoaded && !swapSearch && currentPatterns.length > 0 && (
-                                      <p className="text-[10px] text-stone-400 mt-1 px-1">Showing same pattern. Type to search all.</p>
+                                      <p className="text-[10px] text-[#98A0AD] mt-1 px-1">Showing same pattern. Type to search all.</p>
                                     )}
                                   </div>
-                                  <div className="max-h-48 overflow-y-auto divide-y divide-stone-200">
+                                  <div className="max-h-48 overflow-y-auto divide-y divide-[#EFF1F4]">
                                     {swapResults.length === 0 && (
-                                      <p className="text-xs text-stone-400 px-3 py-2">No matches found.</p>
+                                      <p className="text-[12.5px] text-[#98A0AD] px-3 py-2">No matches found.</p>
                                     )}
                                     {swapResults.map(lib => (
                                       <button
                                         key={lib.name}
                                         onClick={() => selectSwapExercise(lib, path)}
-                                        className="w-full text-left px-3 py-2 hover:bg-stone-200 transition-colors"
+                                        className="w-full text-left px-3 py-2 hover:bg-[#EFF1F4] transition-colors"
                                       >
-                                        <span className="text-sm text-stone-800 block">{lib.name}</span>
-                                        <span className="text-[10px] text-stone-400">
+                                        <span className="text-sm text-[#141821] block">{lib.name}</span>
+                                        <span className="text-[10px] text-[#98A0AD]">
                                           T{lib.tier} · {lib.primary_pattern} · {lib.equipment}
                                         </span>
                                       </button>
@@ -480,7 +480,7 @@ export default function DraftEditor({
                               {/* Edit fields */}
                               <div className="grid grid-cols-4 gap-2">
                                 <div>
-                                  <label className="block text-[10px] text-stone-500 mb-1">Sets</label>
+                                  <label className="block text-[10px] text-[#666D7A] mb-1">Sets</label>
                                   <input
                                     type="number"
                                     min={1}
@@ -493,7 +493,7 @@ export default function DraftEditor({
                                   />
                                 </div>
                                 <div>
-                                  <label className="block text-[10px] text-stone-500 mb-1">Reps</label>
+                                  <label className="block text-[10px] text-[#666D7A] mb-1">Reps</label>
                                   <input
                                     type="text"
                                     value={ex.reps}
@@ -502,7 +502,7 @@ export default function DraftEditor({
                                   />
                                 </div>
                                 <div>
-                                  <label className="block text-[10px] text-stone-500 mb-1">RPE</label>
+                                  <label className="block text-[10px] text-[#666D7A] mb-1">RPE</label>
                                   <input
                                     type="number"
                                     min={5}
@@ -519,7 +519,7 @@ export default function DraftEditor({
                                   />
                                 </div>
                                 <div>
-                                  <label className="block text-[10px] text-stone-500 mb-1">Rest</label>
+                                  <label className="block text-[10px] text-[#666D7A] mb-1">Rest</label>
                                   <input
                                     type="text"
                                     value={ex.rest}
@@ -529,7 +529,7 @@ export default function DraftEditor({
                                 </div>
                               </div>
                               <div>
-                                <label className="block text-[10px] text-stone-500 mb-1">Notes</label>
+                                <label className="block text-[10px] text-[#666D7A] mb-1">Notes</label>
                                 <input
                                   type="text"
                                   value={ex.notes}
@@ -557,14 +557,14 @@ export default function DraftEditor({
           <button
             onClick={handleDiscard}
             disabled={discarding || promoting}
-            className="text-xs px-3 py-1.5 border border-stone-300 text-stone-500 rounded-lg hover:border-red-200 hover:text-red-700 hover:bg-red-50 transition-colors disabled:opacity-40"
+            className="text-[12.5px] px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-red-200 hover:text-red-700 hover:bg-red-50 transition-colors disabled:opacity-40"
           >
             {discarding ? 'Discarding…' : 'Discard Draft'}
           </button>
         ) : (
           <Link
             href={`/dashboard/clients/${clientId}/program`}
-            className="text-xs px-3 py-1.5 border border-stone-300 text-stone-600 rounded-lg hover:border-stone-500 hover:text-stone-800 transition-colors"
+            className="text-[12.5px] px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#CFD4DC] hover:text-[#141821] transition-colors"
           >
             Done
           </Link>
@@ -574,7 +574,7 @@ export default function DraftEditor({
             <button
               onClick={handleSave}
               disabled={saving || promoting}
-              className={`text-xs px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 ${isActive ? 'bg-[#1B6DFC] text-white font-semibold hover:bg-[#5390FF]' : 'border border-stone-400 text-stone-700 hover:border-stone-600'}`}
+              className={`text-xs px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 ${isActive ? 'bg-[#1B6DFC] text-white font-semibold hover:bg-[#5390FF]' : 'border border-[#CFD4DC] text-[#141821] hover:border-stone-600'}`}
             >
               {saving ? 'Saving…' : isActive ? 'Save' : 'Save Changes'}
             </button>
@@ -583,7 +583,7 @@ export default function DraftEditor({
             <button
               onClick={handlePromote}
               disabled={promoting || saving || discarding}
-              className="text-xs px-4 py-1.5 bg-[#1B6DFC] text-white font-semibold rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-40"
+              className="text-[12.5px] px-4 py-1.5 bg-[#1B6DFC] text-white font-semibold rounded-lg hover:bg-[#5390FF] transition-colors disabled:opacity-40"
             >
               {promoting ? 'Promoting…' : 'Promote to Active'}
             </button>

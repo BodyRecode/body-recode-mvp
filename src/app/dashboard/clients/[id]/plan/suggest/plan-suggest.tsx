@@ -229,7 +229,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
     return (
       <div className="bg-red-50 border border-red-200 rounded-xl p-5">
         <p className="text-red-700 text-sm">{error}</p>
-        <a href={`/dashboard/clients/${clientId}/plan`} className="text-xs text-stone-500 hover:text-stone-700 mt-3 inline-block">
+        <a href={`/dashboard/clients/${clientId}/plan`} className="text-[12.5px] text-[#666D7A] hover:text-[#141821] mt-3 inline-block">
           Back to plan →
         </a>
       </div>
@@ -246,17 +246,17 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
       <div className="flex-1 min-w-0 space-y-4">
 
       {/* Coach guidance — steer the arc, then regenerate (2026-07-12) */}
-      <div className="bg-[#FFFFFF] border border-stone-200 rounded-xl p-5">
+      <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-5">
         <div className="flex items-center gap-2 mb-2 flex-wrap">
-          <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest">Coach Guidance</p>
-          <span className="text-[10px] text-stone-400">optional — steers the arc within doctrine, never breaks the safety gates</span>
+          <p className="text-[10px] font-medium text-blue-500">Coach Guidance</p>
+          <span className="text-[10px] text-[#98A0AD]">optional — steers the arc within doctrine, never breaks the safety gates</span>
         </div>
         <textarea
           value={coachGuidance}
           onChange={e => setCoachGuidance(e.target.value)}
           rows={3}
           placeholder="e.g. Bring body composition in sooner (hypertrophy-leaning, not a strength peak). Keep the running scaled right back this phase. Put a stress-management buffer around week 8 for his FIFO transition."
-          className="w-full resize-none text-sm bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 text-[#1A1A1A] focus:outline-none focus:border-blue-500"
+          className="w-full resize-none text-sm bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg px-3 py-2 text-[#141821] focus:outline-none focus:border-blue-500"
         />
         <div className="flex justify-end mt-2">
           <button
@@ -274,17 +274,17 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
           not a footnote under the arc. */}
       {doctrine && (doctrine.corrections.length > 0 || doctrine.warnings.length > 0) && (
         <div className="rounded-xl border border-[#1B6DFC]/30 bg-[#F3F7FF] px-5 py-4">
-          <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">
+          <p className="text-[10px] font-medium text-[#1B6DFC] mb-2">
             Doctrine clamp
           </p>
           {doctrine.corrections.length > 0 && (
             <>
-              <p className="text-[11px] font-semibold text-stone-600 mb-1.5">
+              <p className="text-[11px] font-semibold text-[#666D7A] mb-1.5">
                 Corrected automatically ({doctrine.corrections.length})
               </p>
               <ul className="space-y-1.5 mb-3">
                 {doctrine.corrections.map((c, i) => (
-                  <li key={i} className="text-[13px] text-stone-700 leading-relaxed flex gap-2">
+                  <li key={i} className="text-[13px] text-[#141821] leading-relaxed flex gap-2">
                     <span className="text-[#1B6DFC] shrink-0">·</span>
                     <span>{c}</span>
                   </li>
@@ -312,68 +312,68 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
 
       {/* Overall rationale */}
       <div id="rationale" className="scroll-mt-8 bg-blue-50 border border-blue-200/40 rounded-xl px-5 py-4">
-        <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-2">Arc Rationale</p>
-        <p className="text-sm text-stone-700 leading-relaxed">{suggestion.overall_rationale}</p>
+        <p className="text-[10px] font-medium text-blue-500 mb-2">Arc Rationale</p>
+        <p className="text-sm text-[#141821] leading-relaxed">{suggestion.overall_rationale}</p>
       </div>
 
       {/* Plan name + objective */}
-      <div id="plan-details" className="scroll-mt-8 bg-stone-100 border border-stone-200 rounded-xl p-5 space-y-4">
+      <div id="plan-details" className="scroll-mt-8 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5 space-y-4">
         <div>
-          <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1.5">Plan Name</label>
+          <label className="block text-[10px] font-medium text-[#666D7A] mb-1.5">Plan Name</label>
           <input
             value={planName}
             onChange={e => setPlanName(e.target.value)}
-            className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-700"
+            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-blue-700"
           />
           <div className="flex items-start gap-2 mt-2">
-            <span className="text-blue-500 text-xs mt-0.5 shrink-0">→</span>
-            <p className="text-xs text-stone-700 leading-relaxed">{suggestion.plan_name_reason}</p>
+            <span className="text-blue-500 text-[12.5px] mt-0.5 shrink-0">→</span>
+            <p className="text-[12.5px] text-[#141821] leading-relaxed">{suggestion.plan_name_reason}</p>
           </div>
         </div>
         <div>
-          <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1.5">Macro Objective</label>
+          <label className="block text-[10px] font-medium text-[#666D7A] mb-1.5">Macro Objective</label>
           <input
             value={macroObjective}
             onChange={e => setMacroObjective(e.target.value)}
-            className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-700"
+            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-blue-700"
           />
           <div className="flex items-start gap-2 mt-2">
-            <span className="text-blue-500 text-xs mt-0.5 shrink-0">→</span>
-            <p className="text-xs text-stone-700 leading-relaxed">{suggestion.macro_objective_reason}</p>
+            <span className="text-blue-500 text-[12.5px] mt-0.5 shrink-0">→</span>
+            <p className="text-[12.5px] text-[#141821] leading-relaxed">{suggestion.macro_objective_reason}</p>
           </div>
         </div>
-        <p className="text-[10px] text-stone-600">{blocks.length} blocks · {totalWeeks} weeks total</p>
+        <p className="text-[10px] text-[#666D7A]">{blocks.length} blocks · {totalWeeks} weeks total</p>
       </div>
 
       {/* Meso blocks */}
       <div id="blocks" className="scroll-mt-8">
-        <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-3 px-1">Meso Blocks</p>
+        <p className="text-[10px] font-medium text-[#666D7A] mb-3 px-1">Meso Blocks</p>
         <div className="space-y-3">
           {blocks.map((block, i) => (
-            <div key={i} className="bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
+            <div key={i} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
               {/* Block header */}
-              <div className="px-5 py-3 border-b border-stone-200 flex items-center justify-between">
+              <div className="px-5 py-3 border-b border-[#E8EAEE] flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-black text-stone-400">{String(i + 1).padStart(2, '0')}</span>
-                  <p className="text-sm font-semibold text-stone-800">{block.block_name}</p>
+                  <span className="text-[10px] font-black text-[#98A0AD]">{String(i + 1).padStart(2, '0')}</span>
+                  <p className="text-sm font-semibold text-[#141821]">{block.block_name}</p>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border capitalize ${phaseColour[block.progression_phase] || 'text-stone-600 bg-stone-200 border-stone-300'}`}>
+                  <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border capitalize ${phaseColour[block.progression_phase] || 'text-[#666D7A] bg-[#EFF1F4] border-[#E8EAEE]'}`}>
                     {block.progression_phase}
                   </span>
-                  <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border capitalize ${goalColour[block.training_goal] || 'text-stone-600 bg-stone-200 border-stone-300'}`}>
+                  <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border capitalize ${goalColour[block.training_goal] || 'text-[#666D7A] bg-[#EFF1F4] border-[#E8EAEE]'}`}>
                     {block.training_goal}
                   </span>
-                  <span className="text-[10px] text-stone-600">{block.week_duration}w</span>
+                  <span className="text-[10px] text-[#666D7A]">{block.week_duration}w</span>
                   <button
                     onClick={() => setEditingBlock(editingBlock === i ? null : i)}
-                    className="text-[10px] text-stone-400 hover:text-stone-600 px-2 py-0.5 transition-colors"
+                    className="text-[10px] text-[#98A0AD] hover:text-[#666D7A] px-2 py-0.5 transition-colors"
                   >
                     {editingBlock === i ? 'Done' : 'Edit'}
                   </button>
                   <button
                     onClick={() => removeBlock(i)}
-                    className="text-[10px] text-stone-700 hover:text-red-700 px-1 transition-colors"
+                    className="text-[10px] text-[#141821] hover:text-red-700 px-1 transition-colors"
                   >
                     ✕
                   </button>
@@ -383,18 +383,18 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
               {/* Block summary */}
               {editingBlock !== i && (
                 <div className="px-5 py-3 space-y-2">
-                  <div className="flex gap-4 text-xs text-stone-600">
+                  <div className="flex gap-4 text-[12.5px] text-[#666D7A]">
                     <span>{block.implied_frequency}x/week</span>
                     <span className="capitalize">{block.execution_arc} arc</span>
                     {block.phase_category && <span>{block.phase_category}</span>}
                     {block.phase_objective && <span>{block.phase_objective}</span>}
                   </div>
                   {block.nutrition_context && (
-                    <p className="text-[10px] text-stone-600 leading-relaxed">Nutrition: {block.nutrition_context}</p>
+                    <p className="text-[10px] text-[#666D7A] leading-relaxed">Nutrition: {block.nutrition_context}</p>
                   )}
                   <div className="flex items-start gap-2 mt-1">
                     <span className="text-blue-500 text-[10px] mt-0.5 shrink-0">→</span>
-                    <p className="text-xs text-stone-700 leading-relaxed">{block.block_rationale}</p>
+                    <p className="text-[12.5px] text-[#141821] leading-relaxed">{block.block_rationale}</p>
                   </div>
                 </div>
               )}
@@ -403,57 +403,57 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
               {editingBlock === i && (
                 <div className="px-5 py-4 space-y-3">
                   <div>
-                    <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Block Name</label>
+                    <label className="block text-[10px] font-medium text-[#666D7A] mb-1">Block Name</label>
                     <input
                       value={block.block_name}
                       onChange={e => updateBlock(i, { block_name: e.target.value })}
-                      className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-700"
+                      className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-blue-700"
                     />
                   </div>
                   <div className="grid grid-cols-3 gap-3">
                     <div>
-                      <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Phase</label>
-                      <select value={block.progression_phase} onChange={e => updateBlock(i, { progression_phase: e.target.value })} className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none">
+                      <label className="block text-[10px] font-medium text-[#666D7A] mb-1">Phase</label>
+                      <select value={block.progression_phase} onChange={e => updateBlock(i, { progression_phase: e.target.value })} className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none">
                         {PHASES.map(p => <option key={p} value={p} className="capitalize">{p}</option>)}
                       </select>
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Goal</label>
-                      <select value={block.training_goal} onChange={e => updateBlock(i, { training_goal: e.target.value })} className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none">
+                      <label className="block text-[10px] font-medium text-[#666D7A] mb-1">Goal</label>
+                      <select value={block.training_goal} onChange={e => updateBlock(i, { training_goal: e.target.value })} className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none">
                         {GOALS.map(g => <option key={g} value={g} className="capitalize">{g}</option>)}
                       </select>
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Weeks</label>
-                      <select value={block.week_duration} onChange={e => updateBlock(i, { week_duration: Number(e.target.value) })} className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none">
+                      <label className="block text-[10px] font-medium text-[#666D7A] mb-1">Weeks</label>
+                      <select value={block.week_duration} onChange={e => updateBlock(i, { week_duration: Number(e.target.value) })} className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none">
                         {DURATIONS.map(d => <option key={d} value={d}>{d} weeks</option>)}
                       </select>
                     </div>
                   </div>
                   <div className="grid grid-cols-3 gap-3">
                     <div>
-                      <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Arc</label>
-                      <select value={block.execution_arc} onChange={e => updateBlock(i, { execution_arc: e.target.value })} className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none">
+                      <label className="block text-[10px] font-medium text-[#666D7A] mb-1">Arc</label>
+                      <select value={block.execution_arc} onChange={e => updateBlock(i, { execution_arc: e.target.value })} className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none">
                         {ARCS.map(a => <option key={a} value={a} className="capitalize">{a}</option>)}
                       </select>
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Frequency</label>
-                      <select value={block.implied_frequency} onChange={e => updateBlock(i, { implied_frequency: Number(e.target.value) })} className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none">
+                      <label className="block text-[10px] font-medium text-[#666D7A] mb-1">Frequency</label>
+                      <select value={block.implied_frequency} onChange={e => updateBlock(i, { implied_frequency: Number(e.target.value) })} className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none">
                         {[2,3,4,5,6].map(n => <option key={n} value={n}>{n}x/week</option>)}
                       </select>
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Phase Category</label>
-                      <select value={block.phase_category} onChange={e => updateBlock(i, { phase_category: e.target.value })} className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none">
+                      <label className="block text-[10px] font-medium text-[#666D7A] mb-1">Phase Category</label>
+                      <select value={block.phase_category} onChange={e => updateBlock(i, { phase_category: e.target.value })} className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none">
                         <option value="">None</option>
                         {PHASE_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
                       </select>
                     </div>
                   </div>
                   <div>
-                    <label className="block text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Phase Objective</label>
-                    <select value={block.phase_objective} onChange={e => updateBlock(i, { phase_objective: e.target.value })} className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none">
+                    <label className="block text-[10px] font-medium text-[#666D7A] mb-1">Phase Objective</label>
+                    <select value={block.phase_objective} onChange={e => updateBlock(i, { phase_objective: e.target.value })} className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none">
                       <option value="">None</option>
                       {PHASE_OBJECTIVES.map(o => <option key={o} value={o}>{o}</option>)}
                     </select>
@@ -466,7 +466,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
 
         <button
           onClick={addBlock}
-          className="w-full mt-3 py-3 border-2 border-dashed border-stone-200 text-stone-400 rounded-xl text-sm hover:border-stone-300 hover:text-stone-600 transition-colors"
+          className="w-full mt-3 py-3 border-2 border-dashed border-[#E8EAEE] text-[#98A0AD] rounded-xl text-sm hover:border-[#E8EAEE] hover:text-[#666D7A] transition-colors"
         >
           + Add Block
         </button>
@@ -481,14 +481,14 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
       <div className="flex items-center justify-between pt-2">
         <a
           href={`/dashboard/clients/${clientId}/plan`}
-          className="text-xs text-stone-400 hover:text-stone-600 transition-colors"
+          className="text-[12.5px] text-[#98A0AD] hover:text-[#666D7A] transition-colors"
         >
           Back to plan
         </a>
         <button
           onClick={handleApprove}
           disabled={saving}
-          className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-stone-300 disabled:text-stone-500 text-white font-semibold text-sm rounded-lg transition-colors"
+          className="px-5 py-2.5 bg-blue-500 hover:bg-blue-500 disabled:bg-stone-300 disabled:text-[#666D7A] text-white font-semibold text-sm rounded-lg transition-colors"
         >
           {saving ? 'Saving arc...' : 'Save as Draft'}
         </button>

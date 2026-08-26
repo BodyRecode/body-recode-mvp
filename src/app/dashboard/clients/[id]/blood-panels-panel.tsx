@@ -74,7 +74,7 @@ export interface BloodPanelData {
 }
 
 const FLAG_STYLE: Record<Marker['flag'], string> = {
-  normal: 'text-[#999999]',
+  normal: 'text-[#98A0AD]',
   low: 'text-amber-700',
   high: 'text-amber-700',
   very_low: 'text-red-700 font-semibold',
@@ -105,8 +105,8 @@ export default function BloodPanelsPanel({
 }) {
   if (panels.length === 0) {
     return (
-      <div className="bg-[#FFFFFF]/40 border border-[#E5E5E5] rounded-xl p-4">
-        <p className="text-xs text-[#999999]">
+      <div className="bg-[#FFFFFF]/40 border border-[#E8EAEE] rounded-xl p-4">
+        <p className="text-[12.5px] text-[#98A0AD]">
           No blood panels uploaded yet. {clientFirstName} can upload a copy of their blood test results from the Health Markers section of their portal at any time. Once a panel arrives, it is transcribed automatically and appears here for you to analyse and approve.
         </p>
       </div>
@@ -219,7 +219,7 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
   const isFailed = panel.status === 'failed' || panel.extraction_meta?.unreadable
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl overflow-hidden">
+    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden">
       <GenerationProgressOverlay
         active={busy === 'reextract'}
         title="Re-reading Blood Panel File"
@@ -270,22 +270,22 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
         disclaimer="Research Lens is coach / admin only, exploratory, and never written to the panel or injected into the plan. Uses Claude Haiku 4.5. Typical: 25 to 45 seconds. The page is not frozen, please don't refresh."
       />
       {/* Header */}
-      <div className="px-4 py-3 border-b border-[#E5E5E5] flex items-center justify-between gap-3 flex-wrap">
+      <div className="px-4 py-3 border-b border-[#E8EAEE] flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2.5 flex-wrap">
-          <p className="text-[11px] font-bold uppercase tracking-widest text-blue-500">Blood panel · {dateLabel}</p>
-          {panel.lab_name && <span className="text-[10px] uppercase tracking-widest text-[#999999]">{panel.lab_name}</span>}
+          <p className="text-[12px] font-medium text-blue-500">Blood panel · {dateLabel}</p>
+          {panel.lab_name && <span className="text-[10px] text-[#98A0AD]">{panel.lab_name}</span>}
           {approved && (
-            <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-blue-50 border border-blue-200 text-blue-700">Approved for plan</span>
+            <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-blue-50 border border-blue-200 text-blue-700">Approved for plan</span>
           )}
           {isFailed && (
-            <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-red-50 border border-red-200 text-red-700">Read failed</span>
+            <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-red-50 border border-red-200 text-red-700">Read failed</span>
           )}
         </div>
         <div className="flex items-center gap-2">
-          <button type="button" onClick={viewFile} disabled={busy === 'file'} className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors disabled:opacity-50">
+          <button type="button" onClick={viewFile} disabled={busy === 'file'} className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors disabled:opacity-50">
             {busy === 'file' ? 'Opening…' : 'View file'}
           </button>
-          <button type="button" onClick={reextract} disabled={!!busy} className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors disabled:opacity-50">
+          <button type="button" onClick={reextract} disabled={!!busy} className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors disabled:opacity-50">
             {busy === 'reextract' ? 'Re-reading…' : 'Re-read file'}
           </button>
         </div>
@@ -293,19 +293,19 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
 
       <div className="px-4 py-4 space-y-4">
         {panel.client_note && (
-          <p className="text-xs text-[#6B6B6B] italic">Client note: &ldquo;{panel.client_note}&rdquo;</p>
+          <p className="text-[12.5px] text-[#666D7A] italic">Client note: &ldquo;{panel.client_note}&rdquo;</p>
         )}
-        {panel.panel_summary && <p className="text-xs text-[#3A3A3A] leading-relaxed">{panel.panel_summary}</p>}
+        {panel.panel_summary && <p className="text-[12.5px] text-[#43474F] leading-relaxed">{panel.panel_summary}</p>}
         {panel.extraction_meta?.notes && (
-          <p className="text-xs text-amber-700">Reader notes: {panel.extraction_meta.notes}</p>
+          <p className="text-[12.5px] text-amber-700">Reader notes: {panel.extraction_meta.notes}</p>
         )}
 
         {/* Markers table */}
         {hasMarkers ? (
-          <div className="border border-[#E5E5E5] rounded-lg overflow-hidden">
-            <table className="w-full text-xs">
+          <div className="border border-[#E8EAEE] rounded-lg overflow-hidden">
+            <table className="w-full text-[12.5px]">
               <thead>
-                <tr className="bg-[#FAFAFA] text-[#999999] text-[10px] uppercase tracking-widest">
+                <tr className="bg-[#FAFAFA] text-[#98A0AD] text-[10px]">
                   <th className="text-left font-bold px-3 py-2">Marker</th>
                   <th className="text-left font-bold px-3 py-2">Value</th>
                   <th className="text-left font-bold px-3 py-2">Ref range</th>
@@ -314,26 +314,26 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
               <tbody>
                 {markers.map((m, i) => (
                   <tr key={i} className="border-t border-[#F0F0F0]">
-                    <td className="px-3 py-2 text-[#3A3A3A]">{m.name}</td>
+                    <td className="px-3 py-2 text-[#43474F]">{m.name}</td>
                     <td className={`px-3 py-2 ${FLAG_STYLE[m.flag]}`}>
                       {[m.value, m.unit].filter(Boolean).join(' ')}
                       {FLAG_LABEL[m.flag] && <span className="ml-1.5 text-[10px]">({FLAG_LABEL[m.flag]})</span>}
                     </td>
-                    <td className="px-3 py-2 text-[#999999]">{m.reference_range ?? '—'}</td>
+                    <td className="px-3 py-2 text-[#98A0AD]">{m.reference_range ?? '—'}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         ) : (
-          <p className="text-xs text-[#999999]">No markers transcribed. Re-read the file, or ask {clientFirstName} for a clearer copy.</p>
+          <p className="text-[12.5px] text-[#98A0AD]">No markers transcribed. Re-read the file, or ask {clientFirstName} for a clearer copy.</p>
         )}
 
         {(panel.gp_flags?.length ?? 0) > 0 && (
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-amber-700 mb-1.5">Lab-flagged · route to GP</p>
+            <p className="text-[11.5px] font-medium text-amber-700 mb-1.5">Lab-flagged · route to GP</p>
             <ul className="space-y-1">
-              {panel.gp_flags!.map((f, i) => <li key={i} className="text-xs text-amber-800 leading-relaxed">{f}</li>)}
+              {panel.gp_flags!.map((f, i) => <li key={i} className="text-[12.5px] text-amber-800 leading-relaxed">{f}</li>)}
             </ul>
           </div>
         )}
@@ -341,16 +341,16 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
         {/* Action bar */}
         {hasMarkers && (
           <div className="flex items-center gap-2 flex-wrap pt-1">
-            <button type="button" onClick={analyze} disabled={!!busy} className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50">
+            <button type="button" onClick={analyze} disabled={!!busy} className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50">
               {busy === 'analyze' ? 'Analyzing…' : analysis ? 'Regenerate analysis' : 'Generate analysis'}
             </button>
             {analysis && (
-              <button type="button" onClick={generateReading} disabled={!!busy} className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50">
+              <button type="button" onClick={generateReading} disabled={!!busy} className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50">
                 {busy === 'reading' ? 'Generating…' : reading ? 'Regenerate reading' : 'Generate reading'}
               </button>
             )}
             {reading && (
-              <button type="button" onClick={togglePublish} disabled={!!busy} className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${publishedAt ? 'border border-stone-300 text-stone-700 hover:border-stone-500' : 'bg-blue-500 text-white hover:bg-blue-600'}`}>
+              <button type="button" onClick={togglePublish} disabled={!!busy} className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${publishedAt ? 'border border-[#E8EAEE] text-[#141821] hover:border-[#CFD4DC]' : 'bg-blue-500 text-white hover:bg-blue-600'}`}>
                 {busy === 'publish' ? 'Working…' : publishedAt ? 'Unpublish reading' : 'Publish reading'}
               </button>
             )}
@@ -363,25 +363,25 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
         {/* Coach analysis render */}
         {analysis && (
           <div className="space-y-3 pt-1">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-blue-500">Analysis (coach) {panel.analyzed_at && <span className="text-[#999999] font-normal ml-1">· {shortDate(panel.analyzed_at)}</span>}</p>
+            <p className="text-[11.5px] font-medium text-blue-500">Analysis (coach) {panel.analyzed_at && <span className="text-[#98A0AD] font-normal ml-1">· {shortDate(panel.analyzed_at)}</span>}</p>
             {analysis.groups.map((g, i) => (
-              <div key={i} className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg p-4 space-y-2">
+              <div key={i} className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg p-4 space-y-2">
                 <div>
-                  <p className="text-sm font-semibold text-[#1A1A1A]">{g.title}</p>
-                  <p className="text-[11px] text-[#999999] mt-0.5">{g.markers_referenced}</p>
+                  <p className="text-sm font-semibold text-[#141821]">{g.title}</p>
+                  <p className="text-[11px] text-[#98A0AD] mt-0.5">{g.markers_referenced}</p>
                 </div>
                 <Influence label="Coaching significance" body={g.coaching_significance} />
                 <Influence label="Program" body={g.program_influence} />
                 <Influence label="Nutrition" body={g.nutrition_influence} />
                 {g.gp_note && (
-                  <p className="text-[11px] text-amber-700 leading-relaxed"><span className="font-bold uppercase tracking-widest text-[10px]">GP: </span>{g.gp_note}</p>
+                  <p className="text-[11px] text-amber-700 leading-relaxed"><span className="font-medium text-[10px]">GP: </span>{g.gp_note}</p>
                 )}
               </div>
             ))}
             {analysis.combined_picture && (
               <div className="bg-[#FFFFFF] border border-blue-200 rounded-lg p-4">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-blue-500 mb-1.5">Combined picture</p>
-                <p className="text-xs text-[#3A3A3A] leading-relaxed whitespace-pre-wrap">{analysis.combined_picture}</p>
+                <p className="text-[11.5px] font-medium text-blue-500 mb-1.5">Combined picture</p>
+                <p className="text-[12.5px] text-[#43474F] leading-relaxed whitespace-pre-wrap">{analysis.combined_picture}</p>
               </div>
             )}
           </div>
@@ -391,7 +391,7 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
         {reading && (
           <div className="space-y-3 pt-1">
             <div className="flex items-center gap-2.5 flex-wrap">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-blue-500">Reading (client)</p>
+              <p className="text-[11.5px] font-medium text-blue-500">Reading (client)</p>
               <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${publishedAt ? 'bg-blue-50 border border-blue-200 text-blue-700' : 'bg-amber-50 border border-amber-200 text-amber-700'}`}>
                 {publishedAt ? 'Published' : 'Draft (not on portal)'}
               </span>
@@ -412,15 +412,15 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
               className="w-full px-4 py-2.5 flex items-center justify-between gap-3 text-left hover:bg-violet-50 transition-colors"
             >
               <span className="flex items-center gap-2 flex-wrap">
-                <span className="text-[11px] font-bold uppercase tracking-widest text-violet-700">Research Lens</span>
-                <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-violet-100 border border-violet-200 text-violet-700">coach only · exploratory · not shared · not in plan</span>
+                <span className="text-[12px] font-medium text-violet-700">Research Lens</span>
+                <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-violet-100 border border-violet-200 text-violet-700">coach only · exploratory · not shared · not in plan</span>
               </span>
-              <span className="text-xs font-medium text-violet-700 shrink-0">{busy === 'lens' ? 'Running…' : lensOpen ? 'Hide' : lens ? 'Show' : 'Run'}</span>
+              <span className="text-[12.5px] font-medium text-violet-700 shrink-0">{busy === 'lens' ? 'Running…' : lensOpen ? 'Hide' : lens ? 'Show' : 'Run'}</span>
             </button>
 
             {lensOpen && (
               <div className="px-4 pb-4 pt-1 space-y-3">
-                {!lens && busy === 'lens' && <p className="text-xs text-violet-700">Reading across markers…</p>}
+                {!lens && busy === 'lens' && <p className="text-[12.5px] text-violet-700">Reading across markers…</p>}
                 {lens && (
                   <>
                     {/* Derived metrics */}
@@ -436,36 +436,36 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
 
                     {/* Framed patterns */}
                     {lens.framed_patterns.length === 0 ? (
-                      <p className="text-xs text-violet-700">{lens.note ?? 'No contextual patterns assessable from these markers.'}</p>
+                      <p className="text-[12.5px] text-violet-700">{lens.note ?? 'No contextual patterns assessable from these markers.'}</p>
                     ) : (
                       lens.framed_patterns.map((p, i) => (
                         <div key={i} className="bg-white border border-violet-200 rounded-lg p-3 space-y-2">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <p className="text-sm font-semibold text-[#1A1A1A]">{p.label}</p>
-                            <span className="text-[9px] font-bold uppercase tracking-widest text-violet-600">{p.confidence}</span>
+                            <p className="text-sm font-semibold text-[#141821]">{p.label}</p>
+                            <span className="text-[9px] font-medium text-violet-600">{p.confidence}</span>
                           </div>
-                          <p className="text-xs text-[#3A3A3A] leading-relaxed">{p.observation}</p>
+                          <p className="text-[12.5px] text-[#43474F] leading-relaxed">{p.observation}</p>
                           {p.whatWouldClarify.length > 0 && (
-                            <p className="text-[11px] text-[#6B6B6B] leading-relaxed"><span className="font-bold uppercase tracking-widest text-[10px] text-violet-600">What would clarify: </span>{p.whatWouldClarify.join(', ')}</p>
+                            <p className="text-[11px] text-[#666D7A] leading-relaxed"><span className="font-medium text-[10px] text-violet-600">What would clarify: </span>{p.whatWouldClarify.join(', ')}</p>
                           )}
-                          <p className="text-[11px] text-[#3A3A3A] leading-relaxed"><span className="font-bold uppercase tracking-widest text-[10px] text-violet-600">Ask a clinician: </span>{p.clinicianQuestion}</p>
-                          {p.caveat && <p className="text-[11px] text-[#999999] italic leading-relaxed">{p.caveat}</p>}
+                          <p className="text-[11px] text-[#43474F] leading-relaxed"><span className="font-medium text-[10px] text-violet-600">Ask a clinician: </span>{p.clinicianQuestion}</p>
+                          {p.caveat && <p className="text-[11px] text-[#98A0AD] italic leading-relaxed">{p.caveat}</p>}
                         </div>
                       ))
                     )}
 
                     {lens.missing_for_patterns.length > 0 && (
-                      <details className="text-[11px] text-[#6B6B6B]">
+                      <details className="text-[11px] text-[#666D7A]">
                         <summary className="cursor-pointer">Not assessable ({lens.missing_for_patterns.length})</summary>
                         <ul className="mt-1 space-y-0.5 pl-3">{lens.missing_for_patterns.map((m, i) => <li key={i}>· {m}</li>)}</ul>
                       </details>
                     )}
                     {lens.unresolved_markers.length > 0 && (
-                      <p className="text-[11px] text-[#999999]">Unmapped markers (not read by the Lens): {lens.unresolved_markers.join(', ')}</p>
+                      <p className="text-[11px] text-[#98A0AD]">Unmapped markers (not read by the Lens): {lens.unresolved_markers.join(', ')}</p>
                     )}
 
                     <div className="flex items-center justify-between gap-3 pt-1">
-                      <p className="text-[10px] text-[#999999] italic leading-relaxed">{lens.disclaimer}</p>
+                      <p className="text-[10px] text-[#98A0AD] italic leading-relaxed">{lens.disclaimer}</p>
                       <button type="button" onClick={runLens} disabled={busy === 'lens'} className="text-[11px] font-medium text-violet-700 hover:text-violet-900 shrink-0 disabled:opacity-50">Re-run</button>
                     </div>
                   </>
@@ -475,8 +475,8 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
           </div>
         )}
 
-        {error && <p className="text-xs text-red-700">{error}</p>}
-        {status && <p className="text-xs text-blue-500">{status}</p>}
+        {error && <p className="text-[12.5px] text-red-700">{error}</p>}
+        {status && <p className="text-[12.5px] text-blue-500">{status}</p>}
       </div>
     </div>
   )
@@ -485,8 +485,8 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
 function Metric({ label, v }: { label: string; v: string }) {
   return (
     <span className="inline-flex items-baseline gap-1.5 bg-white border border-violet-200 rounded-md px-2 py-1">
-      <span className="text-[9px] font-bold uppercase tracking-widest text-violet-600">{label}</span>
-      <span className="text-xs font-medium text-[#1A1A1A]">{v}</span>
+      <span className="text-[9px] font-medium text-violet-600">{label}</span>
+      <span className="text-[12.5px] font-medium text-[#141821]">{v}</span>
     </span>
   )
 }
@@ -494,17 +494,17 @@ function Metric({ label, v }: { label: string; v: string }) {
 function Influence({ label, body }: { label: string; body: string }) {
   return (
     <div>
-      <p className="text-[10px] font-bold uppercase tracking-widest text-[#999999] mb-0.5">{label}</p>
-      <p className="text-xs text-[#3A3A3A] leading-relaxed whitespace-pre-wrap">{body}</p>
+      <p className="text-[11.5px] font-medium text-[#98A0AD] mb-0.5">{label}</p>
+      <p className="text-[12.5px] text-[#43474F] leading-relaxed whitespace-pre-wrap">{body}</p>
     </div>
   )
 }
 
 function ReadingSection({ title, body, accent }: { title: string; body: string; accent?: boolean }) {
   return (
-    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg p-4">
-      <p className={`text-[10px] font-bold uppercase tracking-widest mb-2 ${accent ? 'text-blue-500' : 'text-[#999999]'}`}>{title}</p>
-      <div className="text-xs text-[#3A3A3A] leading-relaxed whitespace-pre-wrap">{body}</div>
+    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg p-4">
+      <p className={`text-[11.5px] font-medium mb-2 ${accent ? 'text-blue-500' : 'text-[#98A0AD]'}`}>{title}</p>
+      <div className="text-[12.5px] text-[#43474F] leading-relaxed whitespace-pre-wrap">{body}</div>
     </div>
   )
 }

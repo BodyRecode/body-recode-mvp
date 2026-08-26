@@ -131,15 +131,13 @@ export default async function TenantsHealthPage() {
       <div className="mb-4 flex items-center justify-between">
         <Link
           href="/dashboard/settings"
-          className="inline-flex items-center gap-1 text-[11px] text-stone-500 hover:text-stone-800"
-          style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+          className="inline-flex items-center gap-1 text-[11px] text-[#666D7A] hover:text-[#141821]"
         >
           <ArrowLeft className="w-3 h-3" /> BACK TO SETTINGS
         </Link>
         <Link
           href="/dashboard/settings/tenants-health"
-          className="inline-flex items-center gap-1 text-[11px] text-stone-500 hover:text-stone-800"
-          style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+          className="inline-flex items-center gap-1 text-[11px] text-[#666D7A] hover:text-[#141821]"
         >
           <RefreshCw className="w-3 h-3" /> REFRESH
         </Link>
@@ -166,7 +164,7 @@ export default async function TenantsHealthPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-[12px]">
             <thead>
-              <tr className="text-[10px] uppercase text-stone-500 border-t border-b border-stone-200" style={{ fontFamily: MONO_FONT, letterSpacing: '0.12em' }}>
+              <tr className="text-[10px] text-[#666D7A] border-t border-b border-[#E8EAEE]">
                 <th className="text-left px-4 py-2 font-normal">Tenant</th>
                 <th className="text-left px-4 py-2 font-normal">Coach</th>
                 <th className="text-left px-4 py-2 font-normal">Last login</th>
@@ -194,7 +192,7 @@ export default async function TenantsHealthPage() {
         </div>
       </Card>
 
-      <div className="mt-6 text-[11px] text-stone-500 italic">
+      <div className="mt-6 text-[11px] text-[#666D7A] italic">
         Signal legend: ● configured · ○ not configured. Active-clients cap: Launch tier = 10, Studio tier = 30 (from Collective Partner Agreement). Last-login yellows after 14 days idle.
       </div>
     </div>
@@ -234,35 +232,35 @@ function TenantRow({
   const capFull = capPct >= 100
 
   return (
-    <tr className="border-b border-stone-100 hover:bg-stone-50">
+    <tr className="border-b border-stone-100 hover:bg-[#FBFCFD]">
       <td className="px-4 py-3 align-top">
         <div className="flex items-center gap-2">
           <span
-            className="inline-flex items-center justify-center w-7 h-7 rounded font-bold text-[11px] text-white shrink-0"
+            className="inline-flex items-center justify-center w-7 h-7 rounded font-medium text-[11px] text-white shrink-0"
             style={{ backgroundColor: tenant.brand?.accentColor ?? '#1B6DFC', fontFamily: MONO_FONT }}
           >
             {(brand[0] ?? '?').toUpperCase()}
           </span>
           <div>
-            <div className="font-semibold text-stone-900">{brand}</div>
-            <div className="text-[10px] text-stone-500" style={{ fontFamily: MONO_FONT }}>{tenant.licence?.tenantId ?? '—'}</div>
+            <div className="font-semibold text-[#141821]">{brand}</div>
+            <div className="text-[10px] text-[#666D7A]" style={{ fontFamily: MONO_FONT }}>{tenant.licence?.tenantId ?? '—'}</div>
           </div>
         </div>
       </td>
       <td className="px-4 py-3 align-top">
-        <div className="text-stone-800">{coachName}</div>
-        <div className="text-[10px] text-stone-500">{coachEmail}</div>
+        <div className="text-[#141821]">{coachName}</div>
+        <div className="text-[10px] text-[#666D7A]">{coachEmail}</div>
       </td>
       <td className="px-4 py-3 align-top">
-        <span className={lastLoginStale ? 'text-amber-700' : 'text-stone-800'}>{lastLoginText}</span>
+        <span className={lastLoginStale ? 'text-amber-700' : 'text-[#141821]'}>{lastLoginText}</span>
       </td>
       <td className="px-4 py-3 align-top">
         <div className="flex items-center gap-2 text-[12px]">
-          <span className={capFull ? 'font-bold text-red-700' : capWarn ? 'font-bold text-amber-700' : 'text-stone-800'}>
+          <span className={capFull ? 'font-bold text-red-700' : capWarn ? 'font-bold text-amber-700' : 'text-[#141821]'}>
             {activeClients} / {cap}
           </span>
         </div>
-        <div className="h-[3px] w-24 rounded-full bg-stone-200 mt-1 overflow-hidden">
+        <div className="h-[3px] w-24 rounded-full bg-[#EFF1F4] mt-1 overflow-hidden">
           <div
             className="h-full"
             style={{
@@ -286,14 +284,14 @@ function TenantRow({
       </td>
       <td className="px-4 py-3 align-top">
         {domainPrimary ? (
-          <div className="text-stone-800">{domainPrimary}</div>
+          <div className="text-[#141821]">{domainPrimary}</div>
         ) : (
           <SignalDot on={false} label="unset" />
         )}
       </td>
       <td className="px-4 py-3 align-top">
         {modeAPlusFields > 0 ? (
-          <span className="text-stone-800">{modeAPlusFields} / 6 fields</span>
+          <span className="text-[#141821]">{modeAPlusFields} / 6 fields</span>
         ) : (
           <SignalDot on={false} label="empty" />
         )}
@@ -308,24 +306,24 @@ function SignalDot({ on, label }: { on: boolean; label: string }) {
     return (
       <span className="inline-flex items-center gap-1.5">
         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-        <span className="text-[11px] text-stone-700">{label}</span>
+        <span className="text-[11px] text-[#141821]">{label}</span>
       </span>
     )
   }
   return (
     <span className="inline-flex items-center gap-1.5">
-      <Circle className="w-3.5 h-3.5 text-stone-400" />
-      <span className="text-[11px] text-stone-500">{label}</span>
+      <Circle className="w-3.5 h-3.5 text-[#98A0AD]" />
+      <span className="text-[11px] text-[#666D7A]">{label}</span>
     </span>
   )
 }
 
 function StatMini({ label, value, sub }: { label: string; value: number; sub: string }) {
   return (
-    <div className="p-4 rounded-2xl border border-stone-200 bg-white">
-      <div className="text-[10px] text-stone-500 uppercase mb-2" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>{label}</div>
-      <div className="text-[28px] font-extrabold text-stone-900 leading-none mb-1" style={{ fontVariantNumeric: 'tabular-nums' }}>{value}</div>
-      <div className="text-[11px] text-stone-500">{sub}</div>
+    <div className="p-4 rounded-xl border border-[#E8EAEE] bg-white">
+      <div className="text-[10px] text-[#666D7A] mb-2">{label}</div>
+      <div className="text-[28px] font-extrabold text-[#141821] leading-none mb-1" style={{ fontVariantNumeric: 'tabular-nums' }}>{value}</div>
+      <div className="text-[11px] text-[#666D7A]">{sub}</div>
     </div>
   )
 }

@@ -29,11 +29,11 @@ export interface BlockProgressData {
 export function BlockProgressPanel({ data }: { data: BlockProgressData | null }) {
   if (!data) {
     return (
-      <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl px-5 py-4 mb-6">
-        <p className="text-[10px] uppercase tracking-widest text-[#999999] mb-1" style={{ fontFamily: MONO_FONT }}>
+      <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-5 py-4 mb-6">
+        <p className="text-[10px] text-[#98A0AD] mb-1" style={{ fontFamily: MONO_FONT }}>
           Block progress
         </p>
-        <p className="text-sm text-[#6B6B6B]">No active program for this client yet.</p>
+        <p className="text-sm text-[#666D7A]">No active program for this client yet.</p>
       </div>
     )
   }
@@ -47,18 +47,18 @@ export function BlockProgressPanel({ data }: { data: BlockProgressData | null })
 
   return (
     <div
-      className={`bg-[#FFFFFF] border rounded-2xl px-5 py-4 mb-6 ${
-        blockEnded ? 'border-amber-300' : blockEndingSoon ? 'border-amber-500/20' : 'border-[#E5E5E5]'
+      className={`bg-[#FFFFFF] border rounded-xl px-5 py-4 mb-6 ${
+        blockEnded ? 'border-amber-300' : blockEndingSoon ? 'border-amber-500/20' : 'border-[#E8EAEE]'
       }`}
     >
       <div className="flex items-center justify-between gap-3 mb-3">
         <div className="flex items-center gap-2">
-          <span className="text-[10px] uppercase tracking-widest text-[#999999]" style={{ fontFamily: MONO_FONT }}>
+          <span className="text-[10px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}>
             Block progress
           </span>
           {blockEnded && (
             <span
-              className="text-[10px] uppercase px-2 py-0.5 rounded-full border"
+              className="text-[10px] px-2 py-0.5 rounded-full border"
               style={{
                 fontFamily: MONO_FONT,
                 letterSpacing: '0.08em',
@@ -72,7 +72,7 @@ export function BlockProgressPanel({ data }: { data: BlockProgressData | null })
           )}
           {blockEndingSoon && !blockEnded && (
             <span
-              className="text-[10px] uppercase px-2 py-0.5 rounded-full border"
+              className="text-[10px] px-2 py-0.5 rounded-full border"
               style={{
                 fontFamily: MONO_FONT,
                 letterSpacing: '0.08em',
@@ -87,36 +87,36 @@ export function BlockProgressPanel({ data }: { data: BlockProgressData | null })
         </div>
       </div>
 
-      {data.blockName && <p className="text-sm font-semibold text-[#1A1A1A] mb-3">{data.blockName}</p>}
+      {data.blockName && <p className="text-sm font-semibold text-[#141821] mb-3">{data.blockName}</p>}
 
       <div className="grid grid-cols-3 gap-3 mb-3">
-        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5">
-          <p className="text-[10px] uppercase tracking-widest text-[#999999]" style={{ fontFamily: MONO_FONT }}>Week</p>
-          <p className="text-lg font-bold text-[#1A1A1A] tabular-nums" style={{ fontFamily: MONO_FONT }}>
-            {data.blockWeek} <span className="text-[#999999] text-sm font-normal">/ {data.weekDuration}</span>
+        <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-3 py-2.5">
+          <p className="text-[10px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}>Week</p>
+          <p className="text-lg font-bold text-[#141821] tabular-nums" style={{ fontFamily: MONO_FONT }}>
+            {data.blockWeek} <span className="text-[#98A0AD] text-sm font-normal">/ {data.weekDuration}</span>
           </p>
         </div>
-        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5">
-          <p className="text-[10px] uppercase tracking-widest text-[#999999]" style={{ fontFamily: MONO_FONT }}>This week</p>
-          <p className="text-lg font-bold text-[#1A1A1A] tabular-nums" style={{ fontFamily: MONO_FONT }}>
+        <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-3 py-2.5">
+          <p className="text-[10px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}>This week</p>
+          <p className="text-lg font-bold text-[#141821] tabular-nums" style={{ fontFamily: MONO_FONT }}>
             {data.sessionsCompletedThisWeek}
-            <span className="text-[#999999] text-sm font-normal"> / {data.sessionsPrescribedThisWeek}</span>
+            <span className="text-[#98A0AD] text-sm font-normal"> / {data.sessionsPrescribedThisWeek}</span>
           </p>
-          <p className="text-[10px] text-[#999999]" style={{ fontFamily: MONO_FONT }}>
+          <p className="text-[10px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}>
             {data.sessionsInProgressThisWeek > 0 ? `${data.sessionsInProgressThisWeek} in progress` : `${completionPct}% logged`}
           </p>
         </div>
-        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5">
-          <p className="text-[10px] uppercase tracking-widest text-[#999999]" style={{ fontFamily: MONO_FONT }}>Block total</p>
-          <p className="text-lg font-bold text-[#1A1A1A] tabular-nums" style={{ fontFamily: MONO_FONT }}>
+        <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-3 py-2.5">
+          <p className="text-[10px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}>Block total</p>
+          <p className="text-lg font-bold text-[#141821] tabular-nums" style={{ fontFamily: MONO_FONT }}>
             {data.totalSessionsLoggedThisBlock}
           </p>
-          <p className="text-[10px] text-[#999999]" style={{ fontFamily: MONO_FONT }}>sessions logged</p>
+          <p className="text-[10px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}>sessions logged</p>
         </div>
       </div>
 
       {data.latestLoggedAt && (
-        <p className="text-[11px] text-[#6B6B6B]" style={{ fontFamily: MONO_FONT }}>
+        <p className="text-[11px] text-[#666D7A]" style={{ fontFamily: MONO_FONT }}>
           Last logged{' '}
           {new Date(data.latestLoggedAt).toLocaleString('en-AU', {
             dateStyle: 'medium',
@@ -127,7 +127,7 @@ export function BlockProgressPanel({ data }: { data: BlockProgressData | null })
       )}
 
       {data.totalSessionsLoggedThisBlock === 0 && (
-        <p className="text-[12px] text-[#6B6B6B] italic">
+        <p className="text-[12px] text-[#666D7A] italic">
           Client hasn&apos;t logged any sessions yet.{' '}
           <Link href="/dashboard/help#training-program" className="text-blue-500 hover:underline">
             How logging works

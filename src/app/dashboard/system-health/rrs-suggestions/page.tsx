@@ -143,7 +143,7 @@ export default async function RrsSuggestionsDashboard() {
     <div className="max-w-[1100px]">
       <Link
         href="/dashboard/system-health"
-        className="inline-flex items-center gap-1 text-[12px] text-[#999999] hover:text-[#3A3A3A] transition-colors mb-4"
+        className="inline-flex items-center gap-1 text-[12px] text-[#98A0AD] hover:text-[#43474F] transition-colors mb-4"
       >
         <ChevronLeft size={13} /> System Health
       </Link>
@@ -156,8 +156,8 @@ export default async function RrsSuggestionsDashboard() {
 
       {/* Empty state */}
       {totalShown === 0 && (
-        <div className="rounded-2xl border border-dashed border-stone-300 bg-stone-50 px-6 py-10 text-center">
-          <p className="text-sm text-stone-500 leading-relaxed">
+        <div className="rounded-xl border border-dashed border-[#E8EAEE] bg-[#FBFCFD] px-6 py-10 text-center">
+          <p className="text-sm text-[#666D7A] leading-relaxed">
             No suggestion events logged yet. The dashboard will populate as soon as a client is in an active RRS state and a coach opens their <Link href="/dashboard/clients" className="text-blue-500 underline">Recovery Protocols page</Link>.
           </p>
         </div>
@@ -175,8 +175,8 @@ export default async function RrsSuggestionsDashboard() {
 
           {/* SBST removal follow-through */}
           {sbstRemovalStats.alerts_shown > 0 && (
-            <div className="mb-8 rounded-2xl border border-red-200 bg-red-50 px-5 py-4">
-              <p className="text-[10px] font-bold text-red-800 uppercase tracking-widest mb-2">SBST removal follow-through (ns_overload)</p>
+            <div className="mb-8 rounded-xl border border-red-200 bg-red-50 px-5 py-4">
+              <p className="text-[10px] font-medium text-red-800 mb-2">SBST removal follow-through (ns_overload)</p>
               <p className="text-sm text-red-900">
                 <span className="font-bold">{sbstRemovalStats.removals_confirmed}</span> of <span className="font-bold">{sbstRemovalStats.alerts_shown}</span> removal alerts actioned
                 <span className="ml-2 text-[13px] opacity-80">
@@ -190,24 +190,24 @@ export default async function RrsSuggestionsDashboard() {
           )}
 
           {/* 30-day trend sparkline */}
-          <div className="mb-8 rounded-2xl border border-stone-200 bg-white px-5 py-4">
-            <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-3">30-day acceptance trend (assigned per day)</p>
+          <div className="mb-8 rounded-xl border border-[#E8EAEE] bg-white px-5 py-4">
+            <p className="text-[10px] font-medium text-[#666D7A] mb-3">30-day acceptance trend (assigned per day)</p>
             <TrendSparkline days={trendDays} data={dailyBuckets} />
           </div>
 
           {/* Per-state acceptance */}
           <div className="mb-8">
-            <h2 className="text-sm font-semibold text-[#1A1A1A] mb-3">Per-state acceptance</h2>
-            <div className="rounded-2xl border border-stone-200 bg-white overflow-hidden">
+            <h2 className="text-sm font-semibold text-[#141821] mb-3">Per-state acceptance</h2>
+            <div className="rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
               <table className="w-full text-sm">
-                <thead className="bg-stone-50 border-b border-stone-200">
+                <thead className="bg-[#FBFCFD] border-b border-[#E8EAEE]">
                   <tr>
-                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-stone-600 uppercase tracking-widest">State</th>
-                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-stone-600 uppercase tracking-widest">Shown</th>
-                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-stone-600 uppercase tracking-widest">Assigned</th>
-                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-stone-600 uppercase tracking-widest">Dismissed</th>
-                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-stone-600 uppercase tracking-widest">Acceptance</th>
-                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-stone-600 uppercase tracking-widest w-[110px]">SBST action</th>
+                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#666D7A]">State</th>
+                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Shown</th>
+                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Assigned</th>
+                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Dismissed</th>
+                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Acceptance</th>
+                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#666D7A] w-[110px]">SBST action</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-stone-100">
@@ -219,17 +219,17 @@ export default async function RrsSuggestionsDashboard() {
                     return (
                       <tr key={state} className={s.shown === 0 ? 'opacity-50' : ''}>
                         <td className="px-4 py-2">
-                          <div className="text-[13px] text-[#1A1A1A]">{playbook.name}</div>
-                          <div className="text-[10px] text-stone-500 font-mono">{state}</div>
+                          <div className="text-[13px] text-[#141821]">{playbook.name}</div>
+                          <div className="text-[10px] text-[#666D7A] font-mono">{state}</div>
                         </td>
                         <td className="text-right px-4 py-2 text-[13px]">{s.shown}</td>
                         <td className="text-right px-4 py-2 text-[13px]">{s.assigned}</td>
                         <td className="text-right px-4 py-2 text-[13px]">{s.dismissed}</td>
                         <td className="text-right px-4 py-2 text-[13px] font-semibold">
-                          {rate === null ? <span className="text-stone-400">-</span> : `${rate.toFixed(0)}%`}
+                          {rate === null ? <span className="text-[#98A0AD]">-</span> : `${rate.toFixed(0)}%`}
                         </td>
-                        <td className="text-right px-4 py-2 text-[10px] uppercase tracking-widest">
-                          {sbstAction ? <span className={sbstAction === 'remove' ? 'text-red-700 font-bold' : 'text-amber-700'}>{sbstAction}</span> : <span className="text-stone-400">-</span>}
+                        <td className="text-right px-4 py-2 text-[10px]">
+                          {sbstAction ? <span className={sbstAction === 'remove' ? 'text-red-700 font-bold' : 'text-amber-700'}>{sbstAction}</span> : <span className="text-[#98A0AD]">-</span>}
                         </td>
                       </tr>
                     )
@@ -241,19 +241,19 @@ export default async function RrsSuggestionsDashboard() {
 
           {/* Per-protocol pull rate */}
           <div className="mb-8">
-            <h2 className="text-sm font-semibold text-[#1A1A1A] mb-3">Per-protocol pull rate</h2>
-            <p className="text-[11px] text-stone-500 mb-3 leading-relaxed">
+            <h2 className="text-sm font-semibold text-[#141821] mb-3">Per-protocol pull rate</h2>
+            <p className="text-[11px] text-[#666D7A] mb-3 leading-relaxed">
               How often each suggested protocol gets one-click assigned vs skipped. Low-pull protocols are candidates to remove or move lower in priority in the state to protocol mapping.
             </p>
-            <div className="rounded-2xl border border-stone-200 bg-white overflow-hidden">
+            <div className="rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
               <table className="w-full text-sm">
-                <thead className="bg-stone-50 border-b border-stone-200">
+                <thead className="bg-[#FBFCFD] border-b border-[#E8EAEE]">
                   <tr>
-                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-stone-600 uppercase tracking-widest">Protocol</th>
-                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-stone-600 uppercase tracking-widest">Suggested</th>
-                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-stone-600 uppercase tracking-widest">Assigned</th>
-                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-stone-600 uppercase tracking-widest">Pull rate</th>
-                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-stone-600 uppercase tracking-widest">Suggested in states</th>
+                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Protocol</th>
+                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Suggested</th>
+                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Assigned</th>
+                    <th className="text-right px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Pull rate</th>
+                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Suggested in states</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-stone-100">
@@ -263,17 +263,17 @@ export default async function RrsSuggestionsDashboard() {
                     return (
                       <tr key={slug}>
                         <td className="px-4 py-2">
-                          <div className="text-[13px] text-[#1A1A1A]">{protocol?.name ?? slug}</div>
-                          <div className="text-[10px] text-stone-500 font-mono">{slug}</div>
+                          <div className="text-[13px] text-[#141821]">{protocol?.name ?? slug}</div>
+                          <div className="text-[10px] text-[#666D7A] font-mono">{slug}</div>
                         </td>
                         <td className="text-right px-4 py-2 text-[13px]">{s.suggested_count}</td>
                         <td className="text-right px-4 py-2 text-[13px]">{s.assigned_count}</td>
                         <td className="text-right px-4 py-2 text-[13px] font-semibold">
-                          <span className={rate === 0 ? 'text-red-700' : rate < 30 ? 'text-amber-700' : rate < 60 ? 'text-stone-700' : 'text-green-700'}>
+                          <span className={rate === 0 ? 'text-red-700' : rate < 30 ? 'text-amber-700' : rate < 60 ? 'text-[#141821]' : 'text-green-700'}>
                             {rate.toFixed(0)}%
                           </span>
                         </td>
-                        <td className="px-4 py-2 text-[11px] text-stone-500">
+                        <td className="px-4 py-2 text-[11px] text-[#666D7A]">
                           {Array.from(s.suggested_in_states).join(', ')}
                         </td>
                       </tr>
@@ -286,16 +286,16 @@ export default async function RrsSuggestionsDashboard() {
 
           {/* Recent activity */}
           <div className="mb-8">
-            <h2 className="text-sm font-semibold text-[#1A1A1A] mb-3">Recent suggestion events (last 20)</h2>
-            <div className="rounded-2xl border border-stone-200 bg-white overflow-hidden">
+            <h2 className="text-sm font-semibold text-[#141821] mb-3">Recent suggestion events (last 20)</h2>
+            <div className="rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
               <table className="w-full text-sm">
-                <thead className="bg-stone-50 border-b border-stone-200">
+                <thead className="bg-[#FBFCFD] border-b border-[#E8EAEE]">
                   <tr>
-                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-stone-600 uppercase tracking-widest">When</th>
-                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-stone-600 uppercase tracking-widest">Client</th>
-                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-stone-600 uppercase tracking-widest">State</th>
-                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-stone-600 uppercase tracking-widest">Action</th>
-                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-stone-600 uppercase tracking-widest">Assigned</th>
+                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#666D7A]">When</th>
+                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Client</th>
+                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#666D7A]">State</th>
+                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Action</th>
+                    <th className="text-left px-4 py-2 font-semibold text-[11px] text-[#666D7A]">Assigned</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-stone-100">
@@ -304,20 +304,20 @@ export default async function RrsSuggestionsDashboard() {
                     const clientName = clientNameById.get(r.client_id) ?? r.client_id.slice(0, 8)
                     return (
                       <tr key={r.id}>
-                        <td className="px-4 py-2 text-[11px] text-stone-500 font-mono">
+                        <td className="px-4 py-2 text-[11px] text-[#666D7A] font-mono">
                           {new Date(r.shown_at).toLocaleString('en-AU', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' })}
                         </td>
                         <td className="px-4 py-2 text-[12px]">
                           <Link href={`/dashboard/clients/${r.client_id}/recovery`} className="text-blue-500 hover:underline">{clientName}</Link>
                         </td>
-                        <td className="px-4 py-2 text-[11px] font-mono text-stone-700">{r.rrs_playbook_id}</td>
+                        <td className="px-4 py-2 text-[11px] font-mono text-[#141821]">{r.rrs_playbook_id}</td>
                         <td className="px-4 py-2 text-[11px]">
                           {r.action_taken === 'assigned' && <span className="text-green-700 font-semibold">assigned</span>}
                           {r.action_taken === 'dismissed' && <span className="text-amber-700 font-semibold">dismissed</span>}
                           {r.action_taken === 'sbst_removed' && <span className="text-red-700 font-semibold">sbst removed</span>}
-                          {!r.action_taken && <span className="text-stone-400">no action</span>}
+                          {!r.action_taken && <span className="text-[#98A0AD]">no action</span>}
                         </td>
-                        <td className="px-4 py-2 text-[11px] text-stone-600">
+                        <td className="px-4 py-2 text-[11px] text-[#666D7A]">
                           {assignedProtocol?.name ?? (r.assigned_protocol_slug ?? '-')}
                         </td>
                       </tr>
@@ -338,10 +338,10 @@ function StatCard({ label, value, accent }: { label: string; value: string; acce
     accent === 'green' ? 'text-green-700' :
     accent === 'amber' ? 'text-amber-700' :
     accent === 'blue' ? 'text-[#1B6DFC]' :
-    'text-[#1A1A1A]'
+    'text-[#141821]'
   return (
-    <div className="rounded-2xl border border-stone-200 bg-white px-4 py-3">
-      <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">{label}</p>
+    <div className="rounded-xl border border-[#E8EAEE] bg-white px-4 py-3">
+      <p className="text-[10px] font-medium text-[#666D7A] mb-1">{label}</p>
       <p className={`text-2xl font-bold ${colour}`}>{value}</p>
     </div>
   )
@@ -378,21 +378,21 @@ function TrendSparkline({ days, data }: { days: string[]; data: Record<string, {
           <polyline points={shownPoints} fill="none" stroke="#E5E5E5" strokeWidth="0.5" />
           <polyline points={assignedPoints} fill="none" stroke="#1B6DFC" strokeWidth="0.6" />
         </svg>
-        <div className="flex items-center gap-3 mt-1 text-[10px] text-stone-500">
+        <div className="flex items-center gap-3 mt-1 text-[10px] text-[#666D7A]">
           <span className="inline-flex items-center gap-1"><span className="w-2 h-0.5 bg-stone-300" /> shown</span>
           <span className="inline-flex items-center gap-1"><span className="w-2 h-0.5 bg-[#1B6DFC]" /> assigned</span>
           <span className="ml-auto font-mono">{days[0]} to {days[days.length - 1]}</span>
         </div>
       </div>
       <div className="w-32 text-right">
-        <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">30d acceptance</p>
+        <p className="text-[10px] font-medium text-[#666D7A]">30d acceptance</p>
         <p className="text-2xl font-bold text-[#1B6DFC]">{windowRate.toFixed(0)}%</p>
         {trendDelta !== null && (
           <div className="text-[11px] mt-1 inline-flex items-center gap-1 font-mono">
             {trendDelta > 1 && <><TrendingUp size={11} className="text-green-700" /><span className="text-green-700">+{trendDelta.toFixed(0)}pt</span></>}
             {trendDelta < -1 && <><TrendingDown size={11} className="text-red-700" /><span className="text-red-700">{trendDelta.toFixed(0)}pt</span></>}
-            {trendDelta >= -1 && trendDelta <= 1 && <><Minus size={11} className="text-stone-500" /><span className="text-stone-500">flat</span></>}
-            <span className="text-stone-400 ml-1">vs prior 7d</span>
+            {trendDelta >= -1 && trendDelta <= 1 && <><Minus size={11} className="text-[#666D7A]" /><span className="text-[#666D7A]">flat</span></>}
+            <span className="text-[#98A0AD] ml-1">vs prior 7d</span>
           </div>
         )}
       </div>

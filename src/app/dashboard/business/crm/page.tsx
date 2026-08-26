@@ -43,8 +43,8 @@ export default async function CRMPage() {
     <div>
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-semibold mb-1">CRM</h1>
-          <p className="text-stone-600 text-sm">{total} active lead{total !== 1 ? 's' : ''} in pipeline</p>
+          <h1 className="text-[22px] font-semibold tracking-[-0.025em] mb-1">CRM</h1>
+          <p className="text-[#666D7A] text-sm">{total} active lead{total !== 1 ? 's' : ''} in pipeline</p>
         </div>
         <Link
           href="/dashboard/leads/new"
@@ -63,10 +63,10 @@ export default async function CRMPage() {
             <div key={stage} className="shrink-0 w-52">
               {/* Stage header */}
               <div className="flex items-center justify-between mb-2 px-1">
-                <p className="text-xs font-semibold text-stone-600 uppercase tracking-wider">
+                <p className="text-[12.5px] font-semibold text-[#666D7A]">
                   {stageLabel[stage]}
                 </p>
-                <span className="text-xs text-stone-400 bg-stone-200 px-1.5 py-0.5 rounded-full">
+                <span className="text-[12.5px] text-[#98A0AD] bg-[#EFF1F4] px-1.5 py-0.5 rounded-full">
                   {cards.length}
                 </span>
               </div>
@@ -77,19 +77,19 @@ export default async function CRMPage() {
                   <Link
                     key={lead.id}
                     href={`/dashboard/business/crm/${lead.id}`}
-                    className="block bg-stone-100 border border-stone-200 rounded-lg p-3 hover:border-stone-300 transition-colors group"
+                    className="block bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg p-3 hover:border-[#E8EAEE] transition-colors group"
                   >
-                    <p className="text-sm font-medium text-[#1A1A1A] group-hover:text-blue-500 transition-colors truncate">
+                    <p className="text-sm font-medium text-[#141821] group-hover:text-blue-500 transition-colors truncate">
                       {lead.name}
                     </p>
                     {lead.email && (
-                      <p className="text-xs text-stone-500 truncate mt-0.5">{lead.email}</p>
+                      <p className="text-[12.5px] text-[#666D7A] truncate mt-0.5">{lead.email}</p>
                     )}
                     <div className="flex items-center justify-between mt-2">
-                      <span className="text-[10px] text-stone-400 uppercase tracking-wider">
+                      <span className="text-[10px] text-[#98A0AD]">
                         {lead.source || 'direct'}
                       </span>
-                      <span className="text-[10px] text-stone-400">
+                      <span className="text-[10px] text-[#98A0AD]">
                         {new Date(lead.created_at).toLocaleDateString('en-AU', {
                           day: 'numeric',
                           month: 'short',
@@ -100,8 +100,8 @@ export default async function CRMPage() {
                 ))}
 
                 {cards.length === 0 && (
-                  <div className="bg-stone-100/50 border border-dashed border-stone-200 rounded-lg p-3">
-                    <p className="text-xs text-stone-700 text-center">Empty</p>
+                  <div className="bg-[#F4F6F9]/50 border border-dashed border-[#E8EAEE] rounded-lg p-3">
+                    <p className="text-[12.5px] text-[#141821] text-center">Empty</p>
                   </div>
                 )}
               </div>
@@ -111,10 +111,10 @@ export default async function CRMPage() {
       </div>
 
       {/* Closed leads link */}
-      <div className="mt-6 pt-6 border-t border-stone-200">
+      <div className="mt-6 pt-6 border-t border-[#E8EAEE]">
         <Link
           href="/dashboard/leads"
-          className="text-xs text-stone-500 hover:text-stone-700 transition-colors flex items-center gap-1"
+          className="text-[12.5px] text-[#666D7A] hover:text-[#141821] transition-colors flex items-center gap-1"
         >
           <Users size={12} />
           View all leads including closed →

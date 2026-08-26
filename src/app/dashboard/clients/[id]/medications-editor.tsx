@@ -80,13 +80,12 @@ export default function MedicationsEditor({
   }
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 mb-4">
+    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-6 mb-4">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2.5">
           <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
           <h2
-            className="text-[11px] font-bold text-[#1A1A1A] uppercase"
-            style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+            className="text-[11px] font-medium text-[#141821]"
           >
             Medications
           </h2>
@@ -94,21 +93,21 @@ export default function MedicationsEditor({
         {!editing && (
           <button
             onClick={() => setEditing(true)}
-            className="text-xs font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+            className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
           >
             {value ? 'Edit' : 'Add'}
           </button>
         )}
       </div>
-      <p className="text-[#999999] text-xs mb-3">
+      <p className="text-[#98A0AD] text-[12.5px] mb-3">
         All prescribed medications and chronic over-the-counter use. Include hormonal support (TRT, GLP-1, peptides, anabolics), cardiovascular meds (beta-blockers, statins), CNS-active meds (SSRIs/SNRIs, stimulants, anxiolytics), anti-inflammatories (chronic NSAIDs, corticosteroids), anticoagulants, contraceptives/HRT, and similar. Free text, describe each with dose and duration if known. Drives prescription modulation and signal interpretation across program + nutrition.
       </p>
       {showStaleBanner && (
         <div className="mb-3 px-3 py-2.5 rounded-lg border border-amber-700/50 bg-amber-500/5">
-          <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-1">
+          <p className="text-[12.5px] font-medium text-amber-700 mb-1">
             Prescription is older than current medications
           </p>
-          <p className="text-xs text-[#3A3A3A] leading-relaxed">
+          <p className="text-[12.5px] text-[#43474F] leading-relaxed">
             Medications {daysSinceUpdate !== null ? `were updated ${daysSinceUpdate}d ago` : 'have been updated'}. The active{' '}
             {programStale && nutritionStale ? 'training program and nutrition plan' : programStale ? 'training program' : 'nutrition plan'}{' '}
             {programStale && nutritionStale ? 'were' : 'was'} generated before that change. Recovery capacity, RPE ceilings, exercise selection, and protein synthesis assumptions may no longer match. Consider regenerating from the macro plan / nutrition page.
@@ -121,9 +120,9 @@ export default function MedicationsEditor({
             value={value}
             onChange={e => setValue(e.target.value)}
             placeholder="e.g. TRT 150mg test cypionate / week, year 2. CJC-1295 + ipamorelin 100mcg ED, 8 weeks on / 4 off. Metoprolol 25mg / day for BP, year 1. No NSAIDs. No other meds."
-            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg p-3 text-[#1A1A1A] text-sm leading-relaxed focus:outline-none focus:border-[#D4D4D4] placeholder-[#4A4A4A] min-h-[120px]"
+            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg p-3 text-[#141821] text-sm leading-relaxed focus:outline-none focus:border-[#CFD4DC] placeholder-[#4A4A4A] min-h-[120px]"
           />
-          {error && <p className="text-xs text-red-700">{error}</p>}
+          {error && <p className="text-[12.5px] text-red-700">{error}</p>}
           <div className="flex items-center gap-2">
             <button
               onClick={save}
@@ -135,14 +134,14 @@ export default function MedicationsEditor({
             <button
               onClick={cancel}
               disabled={saving}
-              className="text-sm font-bold px-4 py-2 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+              className="text-sm font-bold px-4 py-2 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
             >
               Cancel
             </button>
           </div>
         </div>
       ) : value ? (
-        <p className="text-sm text-[#3A3A3A] leading-relaxed whitespace-pre-line">{value}</p>
+        <p className="text-sm text-[#43474F] leading-relaxed whitespace-pre-line">{value}</p>
       ) : (
         <p className="text-sm text-[#4A4A4A] italic">None reported.</p>
       )}

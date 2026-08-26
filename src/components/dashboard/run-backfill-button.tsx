@@ -62,37 +62,37 @@ export default function RunBackfillButton() {
       </button>
 
       {error && (
-        <p className="text-xs text-red-700 mt-2">Error: {error}</p>
+        <p className="text-[12.5px] text-red-700 mt-2">Error: {error}</p>
       )}
 
       {result && (
-        <div className="mt-3 bg-stone-100 border border-stone-200 rounded-xl p-4 text-xs space-y-2">
+        <div className="mt-3 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 text-[12.5px] space-y-2">
           <div className="flex items-center gap-1.5 text-blue-500 mb-2">
             <CheckCircle2 size={13} />
             <span className="font-medium">Backfill complete</span>
-            <span className="text-stone-500 ml-2">{new Date(result.ran_at).toLocaleTimeString('en-AU')}</span>
+            <span className="text-[#666D7A] ml-2">{new Date(result.ran_at).toLocaleTimeString('en-AU')}</span>
           </div>
-          <p className="text-stone-700">
-            <span className="text-stone-500">Stripe customers scanned:</span> {result.stripe_customers_seen}
-            <span className="text-stone-500 ml-3">Matched to clients:</span> {result.matched_clients}
+          <p className="text-[#141821]">
+            <span className="text-[#666D7A]">Stripe customers scanned:</span> {result.stripe_customers_seen}
+            <span className="text-[#666D7A] ml-3">Matched to clients:</span> {result.matched_clients}
           </p>
-          <p className="text-stone-700">
-            <span className="text-stone-500">Subscriptions synced:</span> {result.subscriptions_synced}
+          <p className="text-[#141821]">
+            <span className="text-[#666D7A]">Subscriptions synced:</span> {result.subscriptions_synced}
             {Object.keys(result.subscriptions_by_status).length > 0 && (
-              <span className="text-stone-500 ml-2">
+              <span className="text-[#666D7A] ml-2">
                 ({Object.entries(result.subscriptions_by_status).map(([k, v]) => `${k}: ${v}`).join(', ')})
               </span>
             )}
           </p>
-          <p className="text-stone-700">
-            <span className="text-stone-500">Orphan Stripe customers:</span> {result.unmatched_stripe_customers.length}
-            <span className="text-stone-500 ml-3">Clients with no Stripe link:</span> {result.unmatched_clients.length}
+          <p className="text-[#141821]">
+            <span className="text-[#666D7A]">Orphan Stripe customers:</span> {result.unmatched_stripe_customers.length}
+            <span className="text-[#666D7A] ml-3">Clients with no Stripe link:</span> {result.unmatched_clients.length}
           </p>
           {result.errors.length > 0 && (
-            <div className="mt-2 pt-2 border-t border-stone-200">
+            <div className="mt-2 pt-2 border-t border-[#E8EAEE]">
               <p className="text-amber-700 font-medium mb-1">Warnings:</p>
               {result.errors.slice(0, 5).map((e, i) => (
-                <p key={i} className="text-stone-500 text-[11px]">• {e}</p>
+                <p key={i} className="text-[#666D7A] text-[11px]">• {e}</p>
               ))}
             </div>
           )}

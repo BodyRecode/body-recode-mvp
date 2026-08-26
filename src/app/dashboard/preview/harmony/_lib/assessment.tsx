@@ -112,7 +112,7 @@ function IntroScreen({ onBegin }: { onBegin: () => void }) {
   return (
     <div className="flex-1 flex items-center justify-center px-8 py-24">
       <div className="max-w-[720px] text-center">
-        <div className="inline-flex items-center gap-2 text-[10px] uppercase mb-10" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
+        <div className="inline-flex items-center gap-2 text-[10px] mb-10" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
           <span className="w-6 h-[1px]" style={{ backgroundColor: H.terracottaDeep }} />
           The Practice Readiness Assessment
           <span className="w-6 h-[1px]" style={{ backgroundColor: H.terracottaDeep }} />
@@ -162,7 +162,7 @@ function QuestionScreen({
       <ProgressBar progress={progress} step={index + 1} total={TOTAL_QS} />
       <div className="flex-1 flex items-center justify-center px-8 py-16">
         <div className="max-w-[720px] w-full">
-          <div className="text-[10px] uppercase mb-6" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
+          <div className="text-[10px] mb-6" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
             {domainLabel} · Question {index + 1} of {TOTAL_QS}
           </div>
           <h2 className="text-[36px] leading-[1.2] mb-10 -tracking-[0.005em] max-w-[24ch]" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
@@ -201,7 +201,7 @@ function QuestionScreen({
           {index > 0 && (
             <button
               onClick={onBack}
-              className="mt-10 inline-flex items-center gap-2 text-[11px] uppercase"
+              className="mt-10 inline-flex items-center gap-2 text-[11px]"
               style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.16em' }}
             >
               <ArrowLeft size={12} /> Previous
@@ -229,7 +229,7 @@ function SectionBreakScreen({
   return (
     <div className="flex-1 flex items-center justify-center px-8 py-24">
       <div className="max-w-[620px] text-center">
-        <div className="text-[10px] uppercase mb-8" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
+        <div className="text-[10px] mb-8" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
           {meta.eyebrow}
         </div>
         <h2 className="text-[42px] leading-[1.15] mb-6 -tracking-[0.01em]" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
@@ -240,7 +240,7 @@ function SectionBreakScreen({
         </p>
         <button
           onClick={onContinue}
-          className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-[12px] font-semibold uppercase"
+          className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-[12px] font-semibold"
           style={{ background: H.ink, color: H.cream, fontFamily: H.mono, letterSpacing: '0.16em' }}
         >
           Continue <ArrowRight size={12} />
@@ -273,7 +273,7 @@ function EmailScreen({
       <ProgressBar progress={100} step={12} total={12} />
       <div className="flex-1 flex items-center justify-center px-8 py-16">
         <div className="max-w-[560px] w-full">
-          <div className="text-[10px] uppercase mb-6" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
+          <div className="text-[10px] mb-6" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
             Where should Melisa send it?
           </div>
           <h2 className="text-[38px] leading-[1.2] mb-4 -tracking-[0.005em]" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
@@ -285,7 +285,7 @@ function EmailScreen({
 
           <form onSubmit={onSubmit} className="space-y-5">
             <div>
-              <label className="block text-[10px] uppercase mb-2" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.16em' }}>
+              <label className="block text-[10px] mb-2" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.16em' }}>
                 First name
               </label>
               <input
@@ -299,7 +299,7 @@ function EmailScreen({
               />
             </div>
             <div>
-              <label className="block text-[10px] uppercase mb-2" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.16em' }}>
+              <label className="block text-[10px] mb-2" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.16em' }}>
                 Email
               </label>
               <input
@@ -315,14 +315,14 @@ function EmailScreen({
               <button
                 type="button"
                 onClick={onBack}
-                className="inline-flex items-center gap-2 text-[11px] uppercase"
+                className="inline-flex items-center gap-2 text-[11px]"
                 style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.16em' }}
               >
                 <ArrowLeft size={12} /> Previous
               </button>
               <button
                 type="submit"
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-[12px] font-semibold uppercase disabled:opacity-40"
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-[12px] font-semibold disabled:opacity-40"
                 style={{ background: H.terracotta, color: H.cream, fontFamily: H.mono, letterSpacing: '0.16em' }}
                 disabled={!firstName.trim() || !email.trim()}
               >
@@ -358,7 +358,7 @@ function WritingScreen({ firstName }: { firstName: string }) {
             />
           ))}
         </div>
-        <div className="text-[10px] uppercase mb-4" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
+        <div className="text-[10px] mb-4" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
           Reading your answers
         </div>
         <h2 className="text-[32px] leading-[1.2] -tracking-[0.005em]" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
@@ -390,7 +390,7 @@ function ResultScreen({ firstName, state, score }: { firstName: string; state: P
             style={{ backgroundColor: H.terracottaSoft, border: `1px solid ${H.terracotta}` }}
           >
             <Check size={12} style={{ color: H.terracottaDeep }} strokeWidth={2.5} />
-            <span className="text-[10px] uppercase" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.14em' }}>
+            <span className="text-[10px]" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.14em' }}>
               Your Practice Read is on its way to your inbox
             </span>
           </div>
@@ -405,7 +405,7 @@ function ResultScreen({ firstName, state, score }: { firstName: string; state: P
         {/* State typing */}
         <div className="rounded-sm border overflow-hidden mb-8" style={{ borderColor: H.border, backgroundColor: '#FFFFFF' }}>
           <div className="p-10 md:p-14 border-b" style={{ borderColor: H.border, backgroundColor: H.creamDeep }}>
-            <div className="text-[10px] uppercase mb-6" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
+            <div className="text-[10px] mb-6" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
               {meta.eyebrow}
             </div>
             <div className="grid md:grid-cols-[2fr_1fr] gap-8 items-baseline">
@@ -413,7 +413,7 @@ function ResultScreen({ firstName, state, score }: { firstName: string; state: P
                 {meta.headline}
               </h2>
               <div className="text-right">
-                <div className="text-[10px] uppercase mb-1" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.18em' }}>
+                <div className="text-[10px] mb-1" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.18em' }}>
                   Practice State
                 </div>
                 <div className="text-[38px] leading-none" style={{ fontFamily: H.serif, color: H.terracotta, fontWeight: 500 }}>
@@ -435,7 +435,7 @@ function ResultScreen({ firstName, state, score }: { firstName: string; state: P
               className="p-6 rounded-sm mb-10"
               style={{ backgroundColor: H.terracottaSoft, borderLeft: `3px solid ${H.terracotta}` }}
             >
-              <div className="text-[10px] uppercase mb-2" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.18em' }}>
+              <div className="text-[10px] mb-2" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.18em' }}>
                 What the practice looks like from here
               </div>
               <p className="text-[14px] leading-[1.7]" style={{ color: H.ink }}>
@@ -444,7 +444,7 @@ function ResultScreen({ firstName, state, score }: { firstName: string; state: P
             </div>
 
             <div className="mb-10">
-              <div className="text-[10px] uppercase mb-4" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.18em' }}>
+              <div className="text-[10px] mb-4" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.18em' }}>
                 From your Practice Read
               </div>
               <div className="space-y-4">
@@ -464,7 +464,7 @@ function ResultScreen({ firstName, state, score }: { firstName: string; state: P
 
         {/* Next step: Foundation Call */}
         <div className="rounded-sm border p-10" style={{ borderColor: H.terracotta, borderWidth: '2px', backgroundColor: H.cream }}>
-          <div className="text-[10px] uppercase mb-4" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
+          <div className="text-[10px] mb-4" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
             The Next Step, if you want it
           </div>
           <h3 className="text-[30px] leading-tight mb-4 -tracking-[0.005em]" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
@@ -474,7 +474,7 @@ function ResultScreen({ firstName, state, score }: { firstName: string; state: P
             After you have sat with your Read for a day or two, book a 30-minute conversation with Melisa. It is a one-time free call for practitioners who feel the studio might be their next place. No sales pitch; if the fit isn&apos;t there, she will tell you so.
           </p>
           <button
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-[12px] font-semibold uppercase"
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-[12px] font-semibold"
             style={{ background: H.ink, color: H.cream, fontFamily: H.mono, letterSpacing: '0.16em' }}
           >
             Book the Foundation Call <ArrowRight size={12} />
@@ -484,7 +484,7 @@ function ResultScreen({ firstName, state, score }: { firstName: string; state: P
         <div className="mt-16 text-center">
           <Link
             href={BASE}
-            className="text-[11px] uppercase"
+            className="text-[11px]"
             style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.2em' }}
           >
             ← Back to Harmony
@@ -503,7 +503,7 @@ function ProgressBar({ progress, step, total }: { progress: number; step: number
     <div className="sticky top-[22px] z-40 backdrop-blur-md py-4 px-8 border-b" style={{ backgroundColor: 'rgba(250,246,239,0.85)', borderColor: H.border }}>
       <div className="max-w-[720px] mx-auto">
         <div className="flex items-center justify-between mb-2">
-          <div className="text-[10px] uppercase" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.16em' }}>
+          <div className="text-[10px]" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.16em' }}>
             The Assessment
           </div>
           <div className="text-[10px]" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.1em' }}>

@@ -145,38 +145,38 @@ export default async function BannedTermsAuditPage() {
 
   return (
     <div className="max-w-4xl">
-      <Link href="/dashboard/system-health" className="inline-flex items-center gap-1 text-xs text-[#999999] hover:text-[#3A3A3A] transition-colors mb-4">
+      <Link href="/dashboard/system-health" className="inline-flex items-center gap-1 text-[12.5px] text-[#98A0AD] hover:text-[#43474F] transition-colors mb-4">
         <ChevronLeft size={13} /> System Health
       </Link>
-      <PageHeader eyebrow="System Health" title="Banned-Terms Audit" subtitle={<span style={{ fontFamily: MONO_FONT, letterSpacing: '0.02em' }}>Scan every active client&apos;s published readings against the shared banned-client-terms list. Surfaces every leaked artefact so regenerates can be prioritised.</span>} />
+      <PageHeader eyebrow="System Health" title="Banned-Terms Audit" subtitle={<span>Scan every active client&apos;s published readings against the shared banned-client-terms list. Surfaces every leaked artefact so regenerates can be prioritised.</span>} />
 
       <div className="grid grid-cols-3 gap-3 mb-6">
         <Card padding="md">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-[#999999] mb-1">Active clients scanned</p>
-          <p className="text-2xl font-bold text-[#1A1A1A]">{(clients ?? []).length}</p>
+          <p className="text-[11.5px] font-medium text-[#98A0AD] mb-1">Active clients scanned</p>
+          <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">{(clients ?? []).length}</p>
         </Card>
         <Card padding="md">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-[#999999] mb-1">Published artefacts checked</p>
-          <p className="text-2xl font-bold text-[#1A1A1A]">{totalArtefactsChecked}</p>
+          <p className="text-[11.5px] font-medium text-[#98A0AD] mb-1">Published artefacts checked</p>
+          <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">{totalArtefactsChecked}</p>
         </Card>
         <Card padding="md">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-[#999999] mb-1">Leak rate</p>
+          <p className="text-[11.5px] font-medium text-[#98A0AD] mb-1">Leak rate</p>
           <p className={`text-2xl font-bold ${leakRate > 30 ? 'text-red-600' : leakRate > 10 ? 'text-amber-700' : 'text-green-700'}`}>{leakRate}%</p>
-          <p className="text-[10px] text-[#6B6B6B] mt-1">{totalArtefactsLeaked} of {totalArtefactsChecked} artefacts</p>
+          <p className="text-[10px] text-[#666D7A] mt-1">{totalArtefactsLeaked} of {totalArtefactsChecked} artefacts</p>
         </Card>
       </div>
 
       <Card padding="md" className="mb-6">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-[#999999] mb-3">Doctrine version coverage</p>
+        <p className="text-[11.5px] font-medium text-[#98A0AD] mb-3">Doctrine version coverage</p>
         <div className="space-y-2">
           {doctrineSummary.map(d => {
             const total = d.onCurrent + d.stale
             const pct = total > 0 ? Math.round((d.onCurrent / total) * 100) : 100
             return (
-              <div key={d.key} className="flex items-center gap-3 text-xs">
-                <span className="text-[#1A1A1A] font-semibold min-w-[160px]">{d.label}</span>
-                <span className="text-[#6B6B6B] font-mono text-[10px]">v{d.current}</span>
-                <span className="flex-1 text-right text-[#6B6B6B]">
+              <div key={d.key} className="flex items-center gap-3 text-[12.5px]">
+                <span className="text-[#141821] font-semibold min-w-[160px]">{d.label}</span>
+                <span className="text-[#666D7A] font-mono text-[10px]">v{d.current}</span>
+                <span className="flex-1 text-right text-[#666D7A]">
                   <span className={pct === 100 ? 'text-green-700 font-semibold' : 'text-amber-700 font-semibold'}>{d.onCurrent}</span>
                   <span> on current</span>
                   {d.stale > 0 && (
@@ -191,7 +191,7 @@ export default async function BannedTermsAuditPage() {
             )
           })}
         </div>
-        <p className="text-[10px] text-[#999999] mt-3 leading-relaxed">
+        <p className="text-[10px] text-[#98A0AD] mt-3 leading-relaxed">
           A doctrine bump in <span className="font-mono">src/lib/doctrine-versions.ts</span> renders all rows on the old version stale.
           The audit panel below names the affected clients so the impact of a bump is visible before regenerate work begins.
         </p>
@@ -200,12 +200,12 @@ export default async function BannedTermsAuditPage() {
       {reports.length === 0 ? (
         <Card padding="lg" className="text-center">
           <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-2" />
-          <p className="text-sm font-semibold text-[#1A1A1A]">All clean</p>
-          <p className="text-xs text-[#6B6B6B] mt-1">No active client&apos;s published readings contain banned client-facing terms.</p>
+          <p className="text-sm font-semibold text-[#141821]">All clean</p>
+          <p className="text-[12.5px] text-[#666D7A] mt-1">No active client&apos;s published readings contain banned client-facing terms.</p>
         </Card>
       ) : (
         <>
-          <div className="flex items-center gap-2 mb-3 text-xs text-[#6B6B6B]">
+          <div className="flex items-center gap-2 mb-3 text-[12.5px] text-[#666D7A]">
             <AlertTriangle size={14} className="text-amber-700" />
             <span>{reports.length} client{reports.length === 1 ? '' : 's'} have at least one leaked artefact. Click Regenerate on the relevant artefact to clear it.</span>
           </div>
@@ -213,8 +213,8 @@ export default async function BannedTermsAuditPage() {
             {reports.map(r => (
               <Card key={r.clientId} padding="md">
                 <div className="flex items-center justify-between mb-3">
-                  <p className="text-sm font-bold text-[#1A1A1A]">{r.clientName}</p>
-                  <Link href={`/dashboard/clients/${r.clientId}`} className="text-xs font-bold text-[#1B6DFC] hover:text-[#1057CC]">Open profile →</Link>
+                  <p className="text-sm font-bold text-[#141821]">{r.clientName}</p>
+                  <Link href={`/dashboard/clients/${r.clientId}`} className="text-[12.5px] font-medium text-[#1B6DFC] hover:text-[#1057CC]">Open profile →</Link>
                 </div>
                 <div className="space-y-2">
                   {r.fr && <LeakRow label="Foundational Reading" terms={r.fr.leaks} clientHref={`/dashboard/clients/${r.clientId}#cffs`} publishedAt={r.fr.publishedAt} storedVersion={r.fr.storedVersion} isStale={r.fr.isStale} currentVersion={DOCTRINE_VERSIONS.foundational_reading} />}
@@ -239,12 +239,12 @@ function LeakRow({ label, terms, clientHref, publishedAt, storedVersion, isStale
     <div className={`rounded-lg border px-3 py-2 flex items-center justify-between gap-3 flex-wrap ${hasLeaks ? 'border-amber-200 bg-amber-50/40' : 'border-blue-200 bg-blue-50/40'}`}>
       <div className="min-w-0">
         <p className={`text-xs font-bold ${hasLeaks ? 'text-amber-900' : 'text-blue-900'}`}>{label}</p>
-        <p className="text-[10px] text-[#6B6B6B] mt-0.5">
+        <p className="text-[10px] text-[#666D7A] mt-0.5">
           Published {publishedAt ? new Date(publishedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' }) : 'unknown'}
           {flags.map((f, i) => <span key={i}> · <span className="font-mono">{f}</span></span>)}
         </p>
       </div>
-      <Link href={clientHref} className={`shrink-0 text-[10px] font-bold uppercase tracking-widest ${hasLeaks ? 'text-amber-900 hover:text-amber-700' : 'text-blue-900 hover:text-blue-700'}`}>
+      <Link href={clientHref} className={`shrink-0 text-[11.5px] font-medium ${hasLeaks ? 'text-amber-900 hover:text-amber-700' : 'text-blue-900 hover:text-blue-700'}`}>
         Open to regenerate →
       </Link>
     </div>

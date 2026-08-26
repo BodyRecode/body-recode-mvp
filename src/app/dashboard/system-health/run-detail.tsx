@@ -72,32 +72,32 @@ export default function RunDetail({ run }: { run: Run }) {
     if (s === 'ok') return <span className="text-blue-500 font-bold">&#10003;</span>
     if (s === 'fixed') return <span className="text-amber-700 font-bold">&#9889;</span>
     if (s === 'failed') return <span className="text-red-700 font-bold">&#10007;</span>
-    return <span className="text-stone-400">&#8212;</span>
+    return <span className="text-[#98A0AD]">&#8212;</span>
   }
 
   const statusTextColor = (s: CheckStatus) => {
-    if (s === 'ok') return 'text-[#1A1A1A]'
+    if (s === 'ok') return 'text-[#141821]'
     if (s === 'fixed') return 'text-amber-700'
     if (s === 'failed') return 'text-red-700'
-    return 'text-stone-600'
+    return 'text-[#666D7A]'
   }
 
   return (
     <div>
       {/* Header */}
-      <div className="bg-stone-100 border border-stone-200 rounded-xl p-5 mb-4">
+      <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5 mb-4">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-xs text-stone-500 mb-1">{dateStr}</p>
+            <p className="text-[12.5px] text-[#666D7A] mb-1">{dateStr}</p>
             <span className={`inline-block text-xs font-bold px-3 py-1 rounded-full border ${overallColor}`}>
               {overallLabel}
             </span>
-            <p className="text-xs text-stone-400 mt-2">{checks.length} checks run</p>
+            <p className="text-[12.5px] text-[#98A0AD] mt-2">{checks.length} checks run</p>
           </div>
           <button
             onClick={download}
             disabled={downloading}
-            className="flex-shrink-0 text-xs font-semibold px-4 py-2 border border-stone-300 text-stone-700 rounded-lg hover:border-stone-500 hover:text-[#1A1A1A] transition-colors disabled:opacity-50"
+            className="flex-shrink-0 text-[12.5px] font-semibold px-4 py-2 border border-[#E8EAEE] text-[#141821] rounded-lg hover:border-[#CFD4DC] hover:text-[#141821] transition-colors disabled:opacity-50"
           >
             {downloading ? 'Downloading...' : 'Download .md'}
           </button>
@@ -105,13 +105,13 @@ export default function RunDetail({ run }: { run: Run }) {
 
         {/* Summary callouts */}
         {failures.length > 0 && (
-          <div className="mt-4 pt-4 border-t border-stone-200">
-            <p className="text-xs font-bold text-red-700 uppercase tracking-wider mb-2">Needs manual attention</p>
+          <div className="mt-4 pt-4 border-t border-[#E8EAEE]">
+            <p className="text-[12.5px] font-medium text-red-700 mb-2">Needs manual attention</p>
             <div className="space-y-1.5">
               {failures.map((f, i) => (
                 <div key={i}>
-                  <p className="text-xs text-stone-700 font-medium">{f.name}</p>
-                  {f.manualFix && <p className="text-xs text-stone-500 mt-0.5">{f.manualFix}</p>}
+                  <p className="text-[12.5px] text-[#141821] font-medium">{f.name}</p>
+                  {f.manualFix && <p className="text-[12.5px] text-[#666D7A] mt-0.5">{f.manualFix}</p>}
                 </div>
               ))}
             </div>
@@ -119,11 +119,11 @@ export default function RunDetail({ run }: { run: Run }) {
         )}
 
         {fixes.length > 0 && (
-          <div className="mt-4 pt-4 border-t border-stone-200">
-            <p className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2">Auto-fixed</p>
+          <div className="mt-4 pt-4 border-t border-[#E8EAEE]">
+            <p className="text-[12.5px] font-medium text-amber-700 mb-2">Auto-fixed</p>
             <div className="space-y-1">
               {fixes.map((f, i) => (
-                <p key={i} className="text-xs text-stone-600">{f.name} - {f.action}</p>
+                <p key={i} className="text-[12.5px] text-[#666D7A]">{f.name} - {f.action}</p>
               ))}
             </div>
           </div>
@@ -136,21 +136,21 @@ export default function RunDetail({ run }: { run: Run }) {
           const sectionChecks = checks.slice(section.range[0], section.range[1])
           if (sectionChecks.length === 0) return null
           return (
-            <div key={section.label} className="bg-stone-100 border border-stone-200 rounded-xl p-5">
-              <p className="text-xs font-bold tracking-widest text-stone-500 uppercase mb-4">{section.label}</p>
+            <div key={section.label} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
+              <p className="text-[12.5px] font-medium text-[#666D7A] mb-4">{section.label}</p>
               <div className="space-y-3">
                 {sectionChecks.map((c, i) => (
-                  <div key={i} className={`pb-3 ${i < sectionChecks.length - 1 ? 'border-b border-stone-200' : ''}`}>
+                  <div key={i} className={`pb-3 ${i < sectionChecks.length - 1 ? 'border-b border-[#E8EAEE]' : ''}`}>
                     <div className="flex items-center gap-2 mb-1">
                       {statusIcon(c.status)}
                       <span className={`text-sm font-semibold ${statusTextColor(c.status)}`}>{c.name}</span>
                     </div>
-                    <p className="text-xs text-stone-500 pl-5">{c.detail}</p>
+                    <p className="text-[12.5px] text-[#666D7A] pl-5">{c.detail}</p>
                     {c.action && (
-                      <p className="text-xs text-amber-700 pl-5 mt-1">&#9889; {c.action}</p>
+                      <p className="text-[12.5px] text-amber-700 pl-5 mt-1">&#9889; {c.action}</p>
                     )}
                     {c.manualFix && (
-                      <p className="text-xs text-red-700 pl-5 mt-1">Action needed: {c.manualFix}</p>
+                      <p className="text-[12.5px] text-red-700 pl-5 mt-1">Action needed: {c.manualFix}</p>
                     )}
                   </div>
                 ))}

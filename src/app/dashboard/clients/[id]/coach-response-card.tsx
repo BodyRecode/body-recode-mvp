@@ -34,10 +34,10 @@ export default function CoachResponseCard({ clientId, feedback, meta }: CoachRes
     : 'Draft (not sent)'
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg overflow-hidden">
-      <div className="px-4 py-2.5 border-b border-[#E5E5E5] flex items-center justify-between gap-3 flex-wrap">
+    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg overflow-hidden">
+      <div className="px-4 py-2.5 border-b border-[#E8EAEE] flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2.5 flex-wrap">
-          <p className="text-xs font-semibold text-[#1A1A1A]">Week {week} · Form {form}</p>
+          <p className="text-[12.5px] font-semibold text-[#141821]">Week {week} · Form {form}</p>
           <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${sent ? 'bg-blue-50 border border-blue-200 text-blue-700' : 'bg-amber-50 border border-amber-200 text-amber-700'}`}>
             {sentLabel}
           </span>
@@ -45,7 +45,7 @@ export default function CoachResponseCard({ clientId, feedback, meta }: CoachRes
         {meta && (
           <Link
             href={`/dashboard/clients/${clientId}/checkins/${meta.week_number}/${meta.form_type}`}
-            className="text-[10px] font-bold uppercase tracking-widest text-blue-500 hover:text-blue-700"
+            className="text-[11.5px] font-medium text-blue-500 hover:text-blue-700"
           >
             Open check-in →
           </Link>
@@ -63,28 +63,28 @@ export default function CoachResponseCard({ clientId, feedback, meta }: CoachRes
 function CollapsibleSection({ title, body, accent }: { title: string; body: string; accent?: boolean }) {
   const [open, setOpen] = useState(false)
   const preview = previewLine(body)
-  const titleClass = accent ? 'text-blue-500' : 'text-[#999999]'
+  const titleClass = accent ? 'text-blue-500' : 'text-[#98A0AD]'
 
   return (
-    <div className="rounded-md border border-[#E5E5E5] bg-[#FFFFFF]/40">
+    <div className="rounded-md border border-[#E8EAEE] bg-[#FFFFFF]/40">
       <button
         type="button"
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between gap-3 px-3 py-2 hover:bg-[#E5E5E5]/40 transition-colors text-left"
+        className="w-full flex items-center justify-between gap-3 px-3 py-2 hover:bg-[#EFF1F4]/40 transition-colors text-left"
       >
         <div className="min-w-0 flex-1">
-          <p className={`text-[10px] font-bold uppercase tracking-widest mb-0.5 ${titleClass}`}>{title}</p>
+          <p className={`text-[11.5px] font-medium mb-0.5 ${titleClass}`}>{title}</p>
           {!open && (
-            <p className="text-xs text-[#6B6B6B] truncate">{preview}</p>
+            <p className="text-[12.5px] text-[#666D7A] truncate">{preview}</p>
           )}
         </div>
-        <span className="shrink-0 text-[10px] font-bold uppercase tracking-widest text-blue-500 hover:text-blue-700">
+        <span className="shrink-0 text-[11.5px] font-medium text-blue-500 hover:text-blue-700">
           {open ? 'Close' : 'Open'}
         </span>
       </button>
       {open && (
         <div className="px-3 pb-3 pt-1">
-          <div className="text-xs text-[#3A3A3A] leading-relaxed whitespace-pre-wrap">{body}</div>
+          <div className="text-[12.5px] text-[#43474F] leading-relaxed whitespace-pre-wrap">{body}</div>
         </div>
       )}
     </div>

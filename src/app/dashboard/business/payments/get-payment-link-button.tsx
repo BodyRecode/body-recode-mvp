@@ -41,7 +41,7 @@ export default function GetPaymentLinkButton({ productId, cachedUrl }: Props) {
         className={`flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg border transition-colors ${
           copied
             ? 'border-blue-300 text-blue-500 bg-blue-50'
-            : 'border-stone-300 text-stone-600 hover:border-stone-500 hover:text-[#1A1A1A]'
+            : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC] hover:text-[#141821]'
         }`}
         title={url}
       >
@@ -55,7 +55,7 @@ export default function GetPaymentLinkButton({ productId, cachedUrl }: Props) {
     <button
       onClick={generate}
       disabled={loading}
-      className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg border border-stone-300 text-stone-600 hover:border-stone-500 hover:text-[#1A1A1A] disabled:opacity-50 transition-colors"
+      className="flex items-center gap-1.5 text-[12.5px] font-medium px-3 py-1.5 rounded-lg border border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC] hover:text-[#141821] disabled:opacity-50 transition-colors"
     >
       {loading ? <Loader2 size={12} className="animate-spin" /> : <Link2 size={12} />}
       {loading ? 'Generating...' : 'Get Link'}

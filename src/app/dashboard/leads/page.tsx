@@ -49,11 +49,11 @@ export default async function LeadsPage({
         subtitle={`${allLeads.length} ${showInactive ? 'inactive' : 'active'} ${allLeads.length === 1 ? 'lead' : 'leads'}`}
         cta={
           <div className="flex items-center gap-3">
-            <div className="inline-flex items-center bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg p-0.5">
+            <div className="inline-flex items-center bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg p-0.5">
               <Link
                 href="/dashboard/leads"
                 className={`text-[12px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
-                  !showInactive ? 'bg-[#1B6DFC] text-[#FFFFFF]' : 'text-[#6B6B6B] hover:text-[#1A1A1A]'
+                  !showInactive ? 'bg-[#1B6DFC] text-[#FFFFFF]' : 'text-[#666D7A] hover:text-[#141821]'
                 }`}
               >
                 Active
@@ -61,7 +61,7 @@ export default async function LeadsPage({
               <Link
                 href="/dashboard/leads?view=inactive"
                 className={`text-[12px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
-                  showInactive ? 'bg-[#E5E5E5] text-[#1A1A1A]' : 'text-[#6B6B6B] hover:text-[#1A1A1A]'
+                  showInactive ? 'bg-[#EFF1F4] text-[#141821]' : 'text-[#666D7A] hover:text-[#141821]'
                 }`}
               >
                 Inactive
@@ -79,8 +79,7 @@ export default async function LeadsPage({
         {STATUS_GROUPS.map(group => (
           <div key={group.label}>
             <p
-              className="text-[10px] font-bold text-[#999999] uppercase mb-2.5"
-              style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+              className="text-[10px] font-medium text-[#98A0AD] mb-2.5"
             >
               {group.label}
             </p>
@@ -94,7 +93,7 @@ export default async function LeadsPage({
                     className={`text-[11px] px-3 py-1.5 rounded-full border transition-colors ${
                       active
                         ? getLeadStatusColour(s)
-                        : 'border-[#E5E5E5] text-[#6B6B6B] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] bg-[#FFFFFF]'
+                        : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] bg-[#FFFFFF]'
                     }`}
                   >
                     {getLeadStatusLabel(s)}
@@ -109,7 +108,7 @@ export default async function LeadsPage({
 
       {/* Leads list */}
       {allLeads.length === 0 ? (
-        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl">
+        <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl">
           <EmptyState
             icon={Users}
             title="No leads yet"
@@ -122,7 +121,7 @@ export default async function LeadsPage({
             <Link
               key={lead.id}
               href={`/dashboard/leads/${lead.id}`}
-              className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-5 py-4 flex items-center justify-between hover:border-[#D4D4D4] transition-colors group"
+              className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-5 py-4 flex items-center justify-between hover:border-[#CFD4DC] transition-colors group"
             >
               <div className="flex items-center gap-4 min-w-0">
                 <div className="relative shrink-0">
@@ -139,8 +138,8 @@ export default async function LeadsPage({
                   )}
                 </div>
                 <div className="min-w-0">
-                  <p className="text-[14px] font-medium text-[#1A1A1A] truncate group-hover:text-[#1B6DFC] transition-colors">{lead.name}</p>
-                  <p className="text-[12px] text-[#999999] truncate mt-0.5">
+                  <p className="text-[14px] font-medium text-[#141821] truncate group-hover:text-[#1B6DFC] transition-colors">{lead.name}</p>
+                  <p className="text-[12px] text-[#98A0AD] truncate mt-0.5">
                     {lead.email}
                     {lead.phone ? ` · ${lead.phone}` : ''}
                     {' · '}
@@ -153,8 +152,7 @@ export default async function LeadsPage({
               <div className="flex items-center gap-3 shrink-0 ml-4">
                 {lead.red_flag && (
                   <span
-                    className="text-[10px] font-bold px-2 py-1 rounded-full bg-[#FEE7E7] border border-[#F5C6C6] text-[#DC2626] uppercase"
-                    style={{ fontFamily: MONO_FONT, letterSpacing: '0.08em' }}
+                    className="text-[10px] font-medium px-2 py-1 rounded-full bg-[#FEE7E7] border border-[#F5C6C6] text-[#DC2626]"
                     title="Red flag - half show rate, half close rate historically"
                   >
                     Red Flag
@@ -163,7 +161,7 @@ export default async function LeadsPage({
                 <span className={`text-[11px] font-medium px-2.5 py-1 rounded-full border whitespace-nowrap ${getLeadStatusColour(lead.status)}`}>
                   {getLeadStatusLabel(lead.status)}
                 </span>
-                <ChevronRight size={16} className="text-[#999999] group-hover:text-[#1B6DFC] transition-colors" />
+                <ChevronRight size={16} className="text-[#98A0AD] group-hover:text-[#1B6DFC] transition-colors" />
               </div>
             </Link>
           ))}

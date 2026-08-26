@@ -93,16 +93,16 @@ export default async function SupportInboxPage({ searchParams }: { searchParams:
           <ul className="divide-y divide-[#EDEDED]">
             {shown.map(t => (
               <li key={t.id}>
-                <Link href={`/dashboard/support/${t.id}`} className="block px-5 py-4 hover:bg-[#F8F8F8] transition-colors">
+                <Link href={`/dashboard/support/${t.id}`} className="block px-5 py-4 hover:bg-[#FAFBFC] transition-colors">
                   <div className="flex items-start gap-3">
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 mb-1 flex-wrap">
                         <Pill accent={categoryAccent(t.category)}>{CATEGORY_LABELS[t.category]}</Pill>
                         <Pill accent={statusAccent(t.status)}>{STATUS_LABELS[t.status]}</Pill>
-                        <span className="text-[11px] text-[#999999]">{formatDate(t.created_at)}</span>
+                        <span className="text-[11px] text-[#98A0AD]">{formatDate(t.created_at)}</span>
                       </div>
-                      <p className="text-[14px] font-semibold text-[#1A1A1A] truncate">{t.subject}</p>
-                      <p className="text-[12px] text-[#6B6B6B] mt-0.5">
+                      <p className="text-[14px] font-semibold text-[#141821] truncate">{t.subject}</p>
+                      <p className="text-[12px] text-[#666D7A] mt-0.5">
                         {emailById.get(t.coach_id) ?? 'unknown'}
                         {t.page_url ? ` · ${t.page_url}` : ''}
                       </p>

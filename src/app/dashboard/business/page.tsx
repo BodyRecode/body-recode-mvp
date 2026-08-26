@@ -43,16 +43,16 @@ export default function BusinessHubPage() {
 
       <Card className="mb-4" padding="md">
         <SectionLabel>Public Links</SectionLabel>
-        <div className="divide-y divide-[#E5E5E5]">
+        <div className="divide-y divide-[#EFF1F4]">
           {publicLinks.map(link => (
             <div key={link.url} className="flex items-center justify-between py-3 first:pt-0 last:pb-0">
               <div className="min-w-0">
-                <p className="text-[14px] text-[#1A1A1A] font-medium">{link.label}</p>
-                <p className="text-[12px] text-[#999999] mt-0.5">{link.desc}</p>
+                <p className="text-[14px] text-[#141821] font-medium">{link.label}</p>
+                <p className="text-[12px] text-[#98A0AD] mt-0.5">{link.desc}</p>
               </div>
               <div className="flex items-center gap-3 shrink-0">
                 <span
-                  className="text-[11px] text-[#999999] hidden sm:inline"
+                  className="text-[11px] text-[#98A0AD] hidden sm:inline"
                   style={{ fontFamily: MONO_FONT }}
                 >
                   bodyrecode.au{link.url}
@@ -61,7 +61,7 @@ export default function BusinessHubPage() {
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-1.5 text-[#999999] hover:text-[#1B6DFC] transition-colors"
+                  className="p-1.5 text-[#98A0AD] hover:text-[#1B6DFC] transition-colors"
                   aria-label={`Open ${link.label}`}
                 >
                   <ExternalLink size={14} />
@@ -75,8 +75,8 @@ export default function BusinessHubPage() {
       <Card padding="md">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="min-w-0">
-            <p className="text-[14px] font-semibold text-[#1A1A1A] mb-1">Scorecard Follow-up Automation</p>
-            <p className="text-[12px] text-[#6B6B6B] leading-relaxed max-w-xl">
+            <p className="text-[14px] font-semibold text-[#141821] mb-1">Scorecard Follow-up Automation</p>
+            <p className="text-[12px] text-[#666D7A] leading-relaxed max-w-xl">
               A 4-email sequence that fires when someone completes the Readiness Scorecard. Directs leads to book a free call or get the $37 Body Decode Report.
             </p>
           </div>

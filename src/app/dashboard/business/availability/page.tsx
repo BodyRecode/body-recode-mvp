@@ -14,16 +14,16 @@ export default async function AvailabilityPage() {
     <div className="max-w-2xl space-y-8">
       <div>
         <div className="mb-6">
-          <h1 className="text-xl font-semibold text-[#1A1A1A]">Availability</h1>
-          <p className="text-stone-600 text-sm mt-1">Set the days and times leads can book a Zoom call.</p>
+          <h1 className="text-xl font-semibold text-[#141821]">Availability</h1>
+          <p className="text-[#666D7A] text-sm mt-1">Set the days and times leads can book a Zoom call.</p>
         </div>
         <AvailabilityManager rows={rows ?? []} />
       </div>
 
       <div>
         <div className="mb-4">
-          <p className="text-sm font-semibold text-[#1A1A1A]">Blocked Times</p>
-          <p className="text-stone-500 text-xs mt-1">Block out specific times so they won't appear as available to leads.</p>
+          <p className="text-sm font-semibold text-[#141821]">Blocked Times</p>
+          <p className="text-[#666D7A] text-[12.5px] mt-1">Block out specific times so they won't appear as available to leads.</p>
         </div>
         <BlockedTimesManager rows={blockedTimes ?? []} />
       </div>

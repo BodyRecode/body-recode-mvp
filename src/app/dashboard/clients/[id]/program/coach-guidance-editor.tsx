@@ -125,62 +125,58 @@ export default function CoachGuidanceEditor({
   }
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl overflow-hidden mb-3">
+    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden mb-3">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between gap-3 px-5 py-3 hover:bg-[#E5E5E5]/40 transition-colors text-left"
+        className="w-full flex items-center justify-between gap-3 px-5 py-3 hover:bg-[#EFF1F4]/40 transition-colors text-left"
       >
         <div className="flex items-center gap-2.5">
           <MessageSquare size={13} className="text-[#1B6DFC]" />
           <p
-            className="text-[11px] font-bold text-[#1A1A1A] uppercase"
-            style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+            className="text-[11px] font-medium text-[#141821]"
           >
             Coach Guidance (macro arc)
           </p>
           {savedValue && (
             <span
               className="text-[10px] text-[#1B6DFC] px-1.5 py-0.5 rounded-full border border-[#B5CFFC] bg-[rgba(27,109,252,0.10)]"
-              style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
             >
               SET
             </span>
           )}
         </div>
-        <span className="text-[11px] text-[#999999]">{open ? 'Hide' : 'Edit'}</span>
+        <span className="text-[11px] text-[#98A0AD]">{open ? 'Hide' : 'Edit'}</span>
       </button>
       {open && (
-        <div className="px-5 pb-4 border-t border-[#E5E5E5]">
+        <div className="px-5 pb-4 border-t border-[#E8EAEE]">
           <div className="flex items-start gap-2 pt-3 mb-3">
-            <Info size={12} className="text-[#999999] mt-0.5 shrink-0" />
-            <p className="text-[11px] text-[#999999] leading-relaxed">
+            <Info size={12} className="text-[#98A0AD] mt-0.5 shrink-0" />
+            <p className="text-[11px] text-[#98A0AD] leading-relaxed">
               Standing steering for the program generator. Applied to every Generate and Regenerate of every phase in this macro arc. Use it to override engine-default conservatism (RPE, volume, exercise complexity, session density). Does not override recovery state, injury limits, or doctrine safety floors.
             </p>
           </div>
 
           {/* AI assist panel */}
-          <div className="mb-3 border border-[#E5E5E5] rounded-lg bg-[#FFFFFF]">
+          <div className="mb-3 border border-[#E8EAEE] rounded-lg bg-[#FFFFFF]">
             <button
               onClick={() => setAssistOpen(o => !o)}
-              className="w-full flex items-center justify-between gap-2 px-3 py-2 hover:bg-[#E5E5E5]/40 transition-colors text-left"
+              className="w-full flex items-center justify-between gap-2 px-3 py-2 hover:bg-[#EFF1F4]/40 transition-colors text-left"
             >
               <div className="flex items-center gap-2">
                 <Sparkles size={12} className="text-[#1B6DFC]" />
                 <span
-                  className="text-[10px] font-bold text-[#3A3A3A] uppercase"
-                  style={{ fontFamily: MONO_FONT, letterSpacing: '0.12em' }}
+                  className="text-[10px] font-medium text-[#43474F]"
                 >
                   Suggest with AI
                 </span>
               </div>
-              <span className="text-[10px] text-[#999999]">{assistOpen ? 'Close' : 'Open'}</span>
+              <span className="text-[10px] text-[#98A0AD]">{assistOpen ? 'Close' : 'Open'}</span>
             </button>
             {assistOpen && (
-              <div className="px-3 pb-3 border-t border-[#E5E5E5]">
+              <div className="px-3 pb-3 border-t border-[#E8EAEE]">
                 <div className="pt-3 mb-3">
                   <p
-                    className="text-[10px] font-bold text-[#6B6B6B] uppercase mb-1.5"
-                    style={{ fontFamily: MONO_FONT, letterSpacing: '0.12em' }}
+                    className="text-[10px] font-medium text-[#666D7A] mb-1.5"
                   >
                     Intent
                   </p>
@@ -194,7 +190,7 @@ export default function CoachGuidanceEditor({
                           className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${
                             active
                               ? 'bg-[rgba(27,109,252,0.12)] border-[#B5CFFC] text-[#1B6DFC]'
-                              : 'bg-[#FFFFFF] border-[#E5E5E5] text-[#6B6B6B] hover:border-[#1B6DFC] hover:bg-blue-50'
+                              : 'bg-[#FFFFFF] border-[#E8EAEE] text-[#666D7A] hover:border-[#1B6DFC] hover:bg-blue-50'
                           }`}
                         >
                           {opt.label}
@@ -206,8 +202,7 @@ export default function CoachGuidanceEditor({
 
                 <div className="mb-3">
                   <p
-                    className="text-[10px] font-bold text-[#6B6B6B] uppercase mb-1.5"
-                    style={{ fontFamily: MONO_FONT, letterSpacing: '0.12em' }}
+                    className="text-[10px] font-medium text-[#666D7A] mb-1.5"
                   >
                     Levers
                   </p>
@@ -221,7 +216,7 @@ export default function CoachGuidanceEditor({
                           className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${
                             active
                               ? 'bg-[rgba(27,109,252,0.12)] border-[#B5CFFC] text-[#1B6DFC]'
-                              : 'bg-[#FFFFFF] border-[#E5E5E5] text-[#6B6B6B] hover:border-[#1B6DFC] hover:bg-blue-50'
+                              : 'bg-[#FFFFFF] border-[#E8EAEE] text-[#666D7A] hover:border-[#1B6DFC] hover:bg-blue-50'
                           }`}
                         >
                           {opt.label}
@@ -233,8 +228,7 @@ export default function CoachGuidanceEditor({
 
                 <div className="mb-3">
                   <p
-                    className="text-[10px] font-bold text-[#6B6B6B] uppercase mb-1.5"
-                    style={{ fontFamily: MONO_FONT, letterSpacing: '0.12em' }}
+                    className="text-[10px] font-medium text-[#666D7A] mb-1.5"
                   >
                     Coach note (optional)
                   </p>
@@ -243,7 +237,7 @@ export default function CoachGuidanceEditor({
                     onChange={e => setCoachNote(e.target.value)}
                     placeholder="One line of context the engine cannot read from CFFS / intake. e.g. 'Came off two weeks of high work stress, now back to normal sleep.'"
                     rows={2}
-                    className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-2.5 py-2 text-[12px] text-[#1A1A1A] placeholder:text-[#4A4A4A] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
+                    className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg px-2.5 py-2 text-[12px] text-[#141821] placeholder:text-[#4A4A4A] focus:outline-none focus:border-[#CFD4DC] leading-relaxed resize-y"
                   />
                 </div>
 
@@ -252,7 +246,7 @@ export default function CoachGuidanceEditor({
                 )}
 
                 <div className="flex items-center justify-between">
-                  <p className="text-[10px] text-[#999999]">
+                  <p className="text-[10px] text-[#98A0AD]">
                     Draft is editable before saving. CFFS context is pulled automatically.
                   </p>
                   <button
@@ -273,13 +267,13 @@ export default function CoachGuidanceEditor({
             onChange={e => setValue(e.target.value)}
             placeholder="e.g. Training-age advanced (10+ years). Target RPE 8 on primaries from week 1. No machine variations where a barbell or dumbbell version exists. Supersets allowed. Bias volume to the top of the range. He can handle and wants intensity."
             rows={6}
-            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-3 py-2.5 text-[13px] text-[#1A1A1A] placeholder:text-[#4A4A4A] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
+            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-[13px] text-[#141821] placeholder:text-[#4A4A4A] focus:outline-none focus:border-[#CFD4DC] leading-relaxed resize-y"
           />
           {error && (
             <div className="mt-2 text-[11px] text-[#8A5A14]">{error}</div>
           )}
           <div className="flex items-center justify-between mt-3">
-            <p className="text-[10px] text-[#999999]">
+            <p className="text-[10px] text-[#98A0AD]">
               {savedAt ? 'Saved. Will apply on next Regenerate.' : (savedValue ? 'Applied on every Generate or Regenerate of this arc.' : 'No guidance set yet.')}
             </p>
             <button
@@ -288,7 +282,7 @@ export default function CoachGuidanceEditor({
               className={`inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
                 dirty
                   ? 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#5390FF] border border-[#1B6DFC]'
-                  : 'border border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B]'
+                  : 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#666D7A]'
               }`}
             >
               {saving ? <Loader2 size={12} className="animate-spin" /> : <Save size={12} />}

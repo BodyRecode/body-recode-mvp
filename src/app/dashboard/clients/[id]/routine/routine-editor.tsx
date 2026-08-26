@@ -92,11 +92,11 @@ export default function RoutineEditor({
         defaultSequence={canonicalDefaults.evening}
       />
 
-      <div className="flex items-center justify-between gap-4 pt-4 border-t border-stone-200">
+      <div className="flex items-center justify-between gap-4 pt-4 border-t border-[#E8EAEE]">
         <button
           onClick={resetAll}
           disabled={saving}
-          className="inline-flex items-center gap-1.5 text-xs font-medium text-stone-500 hover:text-stone-800 disabled:opacity-40 transition-colors"
+          className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-[#666D7A] hover:text-[#141821] disabled:opacity-40 transition-colors"
         >
           <RotateCcw size={12} />
           Reset both to defaults
@@ -104,7 +104,7 @@ export default function RoutineEditor({
         <div className="flex items-center gap-3">
           {error && <span className="text-[11px] text-amber-700">{error}</span>}
           {savedAt && !saving && !error && (
-            <span className="text-[11px] text-stone-500 inline-flex items-center gap-1">
+            <span className="text-[11px] text-[#666D7A] inline-flex items-center gap-1">
               <Check size={11} />
               Saved {savedAt.toLocaleTimeString('en-AU', { hour: 'numeric', minute: '2-digit' })}
             </span>
@@ -112,7 +112,7 @@ export default function RoutineEditor({
           <button
             onClick={save}
             disabled={saving || isPending}
-            className="inline-flex items-center gap-1.5 text-xs font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] disabled:opacity-40 transition-colors"
+            className="inline-flex items-center gap-1.5 text-[12.5px] font-medium px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] disabled:opacity-40 transition-colors"
           >
             {saving ? <Loader2 size={12} className="animate-spin" /> : <Save size={12} />}
             {saving ? 'Saving...' : 'Save changes'}
@@ -153,24 +153,24 @@ function SequenceCard({
   }
 
   return (
-    <div className="rounded-2xl border border-stone-200 bg-white overflow-hidden">
-      <div className="flex items-center gap-3 px-5 py-3 border-b border-stone-200">
+    <div className="rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
+      <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE]">
         <div className="w-8 h-8 rounded-lg bg-[#1B6DFC]/10 flex items-center justify-center">
           {icon}
         </div>
         <div className="flex-1">
-          <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest">{eyebrow}</p>
+          <p className="text-[10px] font-medium text-[#1B6DFC]">{eyebrow}</p>
           <input
             type="text"
             value={sequence.title}
             onChange={e => onChange({ ...sequence, title: e.target.value })}
-            className="w-full text-base font-semibold text-[#1A1A1A] bg-transparent border-none p-0 focus:outline-none focus:ring-0"
+            className="w-full text-base font-semibold text-[#141821] bg-transparent border-none p-0 focus:outline-none focus:ring-0"
           />
         </div>
         <button
           onClick={resetSequence}
           type="button"
-          className="text-[10px] text-stone-500 hover:text-stone-800 uppercase tracking-widest inline-flex items-center gap-1"
+          className="text-[10px] text-[#666D7A] hover:text-[#141821] inline-flex items-center gap-1"
           title="Reset just this sequence to the canonical default"
         >
           <RotateCcw size={10} />
@@ -180,31 +180,31 @@ function SequenceCard({
 
       <div className="px-5 py-4 space-y-4">
         <div>
-          <label className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">Tagline (shown under title on portal)</label>
+          <label className="text-[10px] font-medium text-[#666D7A]">Tagline (shown under title on portal)</label>
           <input
             type="text"
             value={sequence.tagline}
             onChange={e => onChange({ ...sequence, tagline: e.target.value })}
-            className="mt-1 w-full text-sm text-stone-700 bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 focus:outline-none focus:border-[#1B6DFC]"
+            className="mt-1 w-full text-sm text-[#141821] bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg px-3 py-2 focus:outline-none focus:border-[#1B6DFC]"
           />
         </div>
 
         <div>
-          <label className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">Steps</label>
+          <label className="text-[10px] font-medium text-[#666D7A]">Steps</label>
           <div className="mt-1 space-y-2">
             {sequence.steps.map((step, i) => (
               <div key={i} className="flex items-start gap-2">
-                <span className="text-xs text-stone-400 pt-2.5 w-5 text-right shrink-0">{i + 1}.</span>
+                <span className="text-[12.5px] text-[#98A0AD] pt-2.5 w-5 text-right shrink-0">{i + 1}.</span>
                 <input
                   type="text"
                   value={step}
                   onChange={e => updateStep(i, e.target.value)}
-                  className="flex-1 text-sm text-stone-800 bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 focus:outline-none focus:border-[#1B6DFC]"
+                  className="flex-1 text-sm text-[#141821] bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg px-3 py-2 focus:outline-none focus:border-[#1B6DFC]"
                 />
                 <button
                   onClick={() => removeStep(i)}
                   type="button"
-                  className="p-2 text-stone-400 hover:text-red-700 transition-colors"
+                  className="p-2 text-[#98A0AD] hover:text-red-700 transition-colors"
                   title="Remove step"
                 >
                   <Trash2 size={12} />
@@ -214,7 +214,7 @@ function SequenceCard({
             <button
               onClick={addStep}
               type="button"
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-[#1B6DFC] hover:text-[#5390FF] transition-colors mt-1"
+              className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-[#1B6DFC] hover:text-[#5390FF] transition-colors mt-1"
             >
               <Plus size={12} />
               Add step
@@ -226,15 +226,15 @@ function SequenceCard({
         </div>
 
         <div>
-          <label className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">
-            Coach note <span className="text-stone-400 normal-case tracking-normal">(optional, shown to client under the steps)</span>
+          <label className="text-[10px] font-medium text-[#666D7A]">
+            Coach note <span className="text-[#98A0AD] normal-case tracking-normal">(optional, shown to client under the steps)</span>
           </label>
           <textarea
             value={sequence.coach_note ?? ''}
             onChange={e => onChange({ ...sequence, coach_note: e.target.value })}
             rows={3}
             placeholder="e.g. Skip the outside walk on rain days — 5 min stretching at home works."
-            className="mt-1 w-full text-sm text-stone-800 bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 focus:outline-none focus:border-[#1B6DFC] resize-none"
+            className="mt-1 w-full text-sm text-[#141821] bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg px-3 py-2 focus:outline-none focus:border-[#1B6DFC] resize-none"
           />
         </div>
       </div>

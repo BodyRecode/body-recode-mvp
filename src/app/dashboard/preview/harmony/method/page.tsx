@@ -40,7 +40,7 @@ export default function HarmonyMethod() {
       <section className="pt-24 pb-16 px-8">
         <div className="max-w-[820px] mx-auto">
           <div
-            className="text-[10px] uppercase mb-8"
+            className="text-[10px] mb-8"
             style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}
           >
             The Method
@@ -71,7 +71,7 @@ export default function HarmonyMethod() {
                   <Icon size={26} style={{ color: H.terracottaDeep }} />
                 </div>
                 <div
-                  className="text-[10px] uppercase mb-4"
+                  className="text-[10px] mb-4"
                   style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}
                 >
                   Pillar {String(i + 1).padStart(2, '0')}
@@ -128,7 +128,7 @@ export default function HarmonyMethod() {
       <div className="py-10 text-center px-8">
         <Link
           href={BASE}
-          className="text-[11px] uppercase"
+          className="text-[11px]"
           style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.2em' }}
         >
           ← Back to Harmony

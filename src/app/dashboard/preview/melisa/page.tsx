@@ -62,7 +62,7 @@ export default function HermonyHome() {
       {/* Payments status card - inline (mirrors PaymentsStatusCard) */}
       <Link href="#" className="block mb-6 group">
         <div
-          className="rounded-2xl border bg-[#FFFFFF] px-5 py-4 flex items-center gap-4 transition-colors group-hover:border-[#D4D4D4]"
+          className="rounded-xl border bg-[#FFFFFF] px-5 py-4 flex items-center gap-4 transition-colors group-hover:border-[#CFD4DC]"
           style={{ borderColor: '#E5E5E5' }}
         >
           <span className="w-1 h-10 rounded-full" style={{ background: HARMONY.accentBar }} />
@@ -74,8 +74,7 @@ export default function HermonyHome() {
           </div>
           <div className="min-w-0 flex-1">
             <p
-              className="text-[10px] text-[#6B6B6B] uppercase mb-0.5"
-              style={{ fontFamily: MONO_FONT, letterSpacing: '0.12em' }}
+              className="text-[10px] text-[#666D7A] mb-0.5"
             >
               Payments
             </p>
@@ -85,7 +84,7 @@ export default function HermonyHome() {
           </div>
           <ArrowUpRight
             size={16}
-            className="text-[#999999] group-hover:text-[#1A1A1A] transition-colors shrink-0"
+            className="text-[#98A0AD] group-hover:text-[#141821] transition-colors shrink-0"
           />
         </div>
       </Link>
@@ -168,8 +167,7 @@ export default function HermonyHome() {
                 secondary={`Week ${ci.week} · Form ${ci.form_type}`}
                 trailing={
                   <span
-                    className="text-[10px] text-[#6B6B6B]"
-                    style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
+                    className="text-[10px] text-[#666D7A]"
                   >
                     {new Date(ci.submitted_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
                   </span>
@@ -188,7 +186,7 @@ export default function HermonyHome() {
           {['Send bulk email', 'Recalculate scores', 'Publish weekly brief', 'Roll block boundaries', 'Backfill readings', 'System diagnostics'].map((label) => (
             <button
               key={label}
-              className="text-[12px] px-3 py-2 rounded-lg border border-[#E5E5E5] bg-[#F8F8F8] text-[#4B4B4B] hover:text-[#1A1A1A] hover:bg-[#F0F0F0] transition-colors"
+              className="text-[12px] px-3 py-2 rounded-lg border border-[#E8EAEE] bg-[#FAFBFC] text-[#4B4B4B] hover:text-[#141821] hover:bg-[#EFF1F4] transition-colors"
             >
               {label}
             </button>
@@ -197,7 +195,7 @@ export default function HermonyHome() {
       </Card>
 
       {/* Sub-footer note about IP boundary */}
-      <div className="mt-10 pt-6 border-t border-[#E5E5E5] flex items-center justify-between text-[10px] text-[#999999]" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>
+      <div className="mt-10 pt-6 border-t border-[#E8EAEE] flex items-center justify-between text-[10px] text-[#98A0AD]">
         <div className="uppercase">INTERPRETATION ENGINE · DOCTRINE · SAFETY FLOORS — POWERED BY BODY RECODE</div>
         <div className="uppercase">BRAND · VOICE · PRACTICE — {HARMONY.name.toUpperCase()}</div>
       </div>

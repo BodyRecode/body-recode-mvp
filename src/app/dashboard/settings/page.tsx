@@ -53,10 +53,10 @@ export default async function SettingsIndex() {
           <Link
             key={s.href}
             href={s.href}
-            className="block bg-white border border-stone-200 rounded-2xl p-5 hover:border-blue-300 transition-colors"
+            className="block bg-white border border-[#E8EAEE] rounded-xl p-5 hover:border-blue-300 transition-colors"
           >
-            <h2 className="text-[16px] font-bold text-stone-900 mb-2">{s.title}</h2>
-            <p className="text-[13px] text-stone-600 leading-relaxed">{s.description}</p>
+            <h2 className="text-[16px] font-bold text-[#141821] mb-2">{s.title}</h2>
+            <p className="text-[13px] text-[#666D7A] leading-relaxed">{s.description}</p>
           </Link>
         ))}
       </div>

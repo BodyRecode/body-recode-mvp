@@ -11,8 +11,8 @@ export const revalidate = 0
 
 function BriefingSkeleton({ persona }: { persona: string }) {
   return (
-    <div className="mb-8 p-4 rounded-xl border border-stone-200 bg-stone-50 text-[13px] text-stone-500 leading-relaxed">
-      <strong className="text-stone-900">{persona}</strong> is drafting the briefing…
+    <div className="mb-8 p-4 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] text-[13px] text-[#666D7A] leading-relaxed">
+      <strong className="text-[#141821]">{persona}</strong> is drafting the briefing…
     </div>
   )
 }
@@ -34,13 +34,13 @@ export default async function CfoPage() {
       </Suspense>
 
       <div className="mb-6 flex items-center gap-3">
-        <span className="text-[9px] font-bold uppercase tracking-widest bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Live data</span>
-        <span className="text-[11px] text-stone-500 font-mono">
+        <span className="text-[9px] font-medium bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Live data</span>
+        <span className="text-[11px] text-[#666D7A] font-mono">
           Snapshot at {new Date(snap.computedAt).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane' })} AEST
         </span>
       </div>
 
-      <h3 className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">Recurring revenue</h3>
+      <h3 className="text-[11px] font-medium text-[#666D7A] mb-3">Recurring revenue</h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <Metric
           label="MRR"
@@ -61,7 +61,7 @@ export default async function CfoPage() {
         />
       </div>
 
-      <h3 className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">Revenue windows</h3>
+      <h3 className="text-[11px] font-medium text-[#666D7A] mb-3">Revenue windows</h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <Metric
           label="Revenue last 30d"
@@ -81,7 +81,7 @@ export default async function CfoPage() {
         />
       </div>
 
-      <h3 className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">Risk signals</h3>
+      <h3 className="text-[11px] font-medium text-[#666D7A] mb-3">Risk signals</h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <Metric
           label="Refund rate 30d"
@@ -103,15 +103,15 @@ export default async function CfoPage() {
         />
       </div>
 
-      <div className="mb-8 bg-white border border-stone-200 rounded-2xl p-5">
-        <h3 className="text-[13px] font-bold text-stone-900 uppercase tracking-widest mb-3">Product config context</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-[13px] font-mono text-stone-700">
-          <div>Report price: <span className="text-stone-900 font-bold">${p.reportPrice}</span></div>
-          <div>Blueprint price: <span className="text-stone-900 font-bold">${p.blueprintPrice}</span></div>
-          <div>Membership: <span className="text-stone-900 font-bold">${p.membershipPrice}/wk</span></div>
-          <div>Foundational Read: <span className="text-stone-900 font-bold">${p.coachingPackage2xPrice}</span></div>
+      <div className="mb-8 bg-white border border-[#E8EAEE] rounded-xl p-5">
+        <h3 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em] mb-3">Product config context</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-[13px] font-mono text-[#141821]">
+          <div>Report price: <span className="text-[#141821] font-bold">${p.reportPrice}</span></div>
+          <div>Blueprint price: <span className="text-[#141821] font-bold">${p.blueprintPrice}</span></div>
+          <div>Membership: <span className="text-[#141821] font-bold">${p.membershipPrice}/wk</span></div>
+          <div>Foundational Read: <span className="text-[#141821] font-bold">${p.coachingPackage2xPrice}</span></div>
         </div>
-        <p className="text-[12px] text-stone-500 mt-3 leading-relaxed">
+        <p className="text-[12px] text-[#666D7A] mt-3 leading-relaxed">
           These are the current tenant pricing values. Change via <Link href="/dashboard/settings/tenant" className="text-blue-600 hover:text-blue-700 underline">/dashboard/settings/tenant → Product wrapping</Link>.
         </p>
       </div>
@@ -137,18 +137,18 @@ function Metric({
   large?: boolean
 }) {
   const valueColor = {
-    default: 'text-stone-900',
-    stone: 'text-stone-400',
+    default: 'text-[#141821]',
+    stone: 'text-[#98A0AD]',
     green: 'text-green-700',
     amber: 'text-amber-700',
     red: 'text-red-700',
   }[tone]
   const size = large ? 'text-[28px]' : 'text-[22px]'
   return (
-    <div className="bg-white border border-stone-200 rounded-2xl p-5">
-      <div className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-2">{label}</div>
+    <div className="bg-white border border-[#E8EAEE] rounded-xl p-5">
+      <div className="text-[11px] font-medium text-[#666D7A] mb-2">{label}</div>
       <div className={`${size} font-bold ${valueColor} mb-1 font-mono`}>{value}</div>
-      {hint && <div className="text-[11px] text-stone-500 leading-relaxed">{hint}</div>}
+      {hint && <div className="text-[11px] text-[#666D7A] leading-relaxed">{hint}</div>}
     </div>
   )
 }

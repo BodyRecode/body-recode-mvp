@@ -43,15 +43,15 @@ export default function SeedScorecardButton() {
           <Zap size={14} className="text-blue-500" strokeWidth={1.8} />
         </div>
         <div>
-          <p className="text-sm font-medium text-[#1A1A1A]">Scorecard Follow-up Sequence</p>
-          <p className="text-xs text-stone-500 mt-0.5">9-step sequence triggered when someone completes the Readiness Scorecard</p>
-          {error && <p className="text-xs text-red-700 mt-1">{error}</p>}
+          <p className="text-sm font-medium text-[#141821]">Scorecard Follow-up Sequence</p>
+          <p className="text-[12.5px] text-[#666D7A] mt-0.5">9-step sequence triggered when someone completes the Readiness Scorecard</p>
+          {error && <p className="text-[12.5px] text-red-700 mt-1">{error}</p>}
         </div>
       </div>
       <button
         onClick={sync}
         disabled={loading}
-        className="shrink-0 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
+        className="shrink-0 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
       >
         {loading ? 'Syncing...' : done ? 'Synced' : 'Re-sync'}
       </button>

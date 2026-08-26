@@ -101,8 +101,7 @@ export default function PreviewIndexPage() {
               <div className="flex items-center gap-2.5 mb-3">
                 <Icon size={14} className="text-[#1B6DFC]" />
                 <p
-                  className="text-[10px] font-bold text-[#999999] uppercase"
-                  style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+                  className="text-[10px] font-medium text-[#98A0AD]"
                 >
                   {group.title}
                 </p>
@@ -117,23 +116,23 @@ export default function PreviewIndexPage() {
                       href={asset.href}
                       target={asset.external ? '_blank' : undefined}
                       rel={asset.external ? 'noopener noreferrer' : undefined}
-                      className="group flex items-center justify-between gap-4 bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-5 py-4 hover:border-[#D4D4D4] transition-colors"
+                      className="group flex items-center justify-between gap-4 bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-5 py-4 hover:border-[#CFD4DC] transition-colors"
                     >
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-[14px] font-semibold text-[#1A1A1A] group-hover:text-[#1B6DFC] transition-colors truncate">{asset.label}</span>
+                          <span className="text-[14px] font-semibold text-[#141821] group-hover:text-[#1B6DFC] transition-colors truncate">{asset.label}</span>
                           {asset.tag && tag && (
                             <span
-                              className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full border whitespace-nowrap"
-                              style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em', color: tag.text, background: tag.bg, borderColor: tag.ring }}
+                              className="text-[11.5px] font-medium px-2 py-0.5 rounded-full border whitespace-nowrap"
+                              style={{ color: tag.text, background: tag.bg, borderColor: tag.ring }}
                             >
                               {asset.tag}
                             </span>
                           )}
                         </div>
-                        <p className="text-[12px] text-[#999999] leading-relaxed">{asset.description}</p>
+                        <p className="text-[12px] text-[#98A0AD] leading-relaxed">{asset.description}</p>
                       </div>
-                      <ArrowIcon size={14} className="text-[#999999] group-hover:text-[#1B6DFC] transition-colors shrink-0" />
+                      <ArrowIcon size={14} className="text-[#98A0AD] group-hover:text-[#1B6DFC] transition-colors shrink-0" />
                     </Link>
                   )
                 })}

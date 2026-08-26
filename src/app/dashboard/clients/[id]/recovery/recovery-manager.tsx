@@ -145,7 +145,7 @@ export default function RecoveryManager({
     <div className="space-y-8">
       {error && (
         <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3">
-          <p className="text-xs text-amber-800">{error}</p>
+          <p className="text-[12.5px] text-amber-800">{error}</p>
         </div>
       )}
 
@@ -162,22 +162,22 @@ export default function RecoveryManager({
       )}
 
       {/* Equipment access */}
-      <div className="rounded-2xl border border-stone-200 bg-white overflow-hidden">
-        <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-stone-200">
+      <div className="rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
+        <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-[#E8EAEE]">
           <div>
-            <h2 className="text-base font-semibold text-[#1A1A1A]">Equipment access</h2>
-            <p className="text-[11px] text-stone-500">Tag what {clientName} can actually do. Protocol library filters to match.</p>
+            <h2 className="text-base font-semibold text-[#141821]">Equipment access</h2>
+            <p className="text-[11px] text-[#666D7A]">Tag what {clientName} can actually do. Protocol library filters to match.</p>
           </div>
           <div className="flex items-center gap-3">
             {accessSavedAt && !savingAccess && (
-              <span className="text-[11px] text-stone-500 inline-flex items-center gap-1">
+              <span className="text-[11px] text-[#666D7A] inline-flex items-center gap-1">
                 <Check size={11} /> Saved
               </span>
             )}
             <button
               onClick={saveAccess}
               disabled={savingAccess}
-              className="inline-flex items-center gap-1.5 text-xs font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] disabled:opacity-40 transition-colors"
+              className="inline-flex items-center gap-1.5 text-[12.5px] font-medium px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#5390FF] disabled:opacity-40 transition-colors"
             >
               {savingAccess ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
               {savingAccess ? 'Saving...' : 'Save access'}
@@ -185,7 +185,7 @@ export default function RecoveryManager({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 divide-y md:divide-y-0 md:divide-x divide-stone-200">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 divide-y md:divide-y-0 md:divide-x divide-[#EFF1F4]">
           <AccessGroup title="At home" icon={<Home size={12} />} tags={HOME_EQUIPMENT} access={access} onToggle={toggleAccess} />
           <AccessGroup title="At the gym" icon={<Dumbbell size={12} />} tags={GYM_EQUIPMENT} access={access} onToggle={toggleAccess} />
         </div>
@@ -195,8 +195,8 @@ export default function RecoveryManager({
       {activeAssignments.length > 0 && (
         <div>
           <div className="mb-3 flex items-center gap-3">
-            <h2 className="text-base font-semibold text-[#1A1A1A]">Active for {clientName}</h2>
-            <span className="text-[10px] text-stone-500 uppercase tracking-widest">Shown on their portal</span>
+            <h2 className="text-base font-semibold text-[#141821]">Active for {clientName}</h2>
+            <span className="text-[10px] text-[#666D7A]">Shown on their portal</span>
           </div>
           <div className="space-y-3">
             {activeAssignments.map(a => (
@@ -208,11 +208,11 @@ export default function RecoveryManager({
 
       {/* Paused / completed */}
       {(pausedAssignments.length > 0 || completedAssignments.length > 0) && (
-        <details className="rounded-lg border border-stone-200 bg-white">
-          <summary className="cursor-pointer px-5 py-3 text-sm font-medium text-stone-700">
+        <details className="rounded-lg border border-[#E8EAEE] bg-white">
+          <summary className="cursor-pointer px-5 py-3 text-sm font-medium text-[#141821]">
             History: {pausedAssignments.length} paused, {completedAssignments.length} completed
           </summary>
-          <div className="px-5 py-3 border-t border-stone-200 space-y-3">
+          <div className="px-5 py-3 border-t border-[#E8EAEE] space-y-3">
             {pausedAssignments.map(a => (
               <AssignmentCard key={a.id} assignment={a} onEditNote={editCoachNote} onResume={id => updateAssignment(id, { status: 'active' })} onDelete={deleteAssignment} />
             ))}
@@ -226,8 +226,8 @@ export default function RecoveryManager({
       {/* Protocol library */}
       <div>
         <div className="mb-3">
-          <h2 className="text-base font-semibold text-[#1A1A1A]">Protocol library</h2>
-          <p className="text-[11px] text-stone-500 mt-1">
+          <h2 className="text-base font-semibold text-[#141821]">Protocol library</h2>
+          <p className="text-[11px] text-[#666D7A] mt-1">
             {availableProtocols.length} of {RECOVERY_PROTOCOLS.length} protocols available given {clientName}&apos;s equipment access. Add access above to unlock more.
           </p>
         </div>
@@ -252,7 +252,7 @@ export default function RecoveryManager({
           let lastProgressionGroup: string | null = null
           return (
             <div key={cat} className="mb-6">
-              <h3 className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-2">{CATEGORY_LABELS[cat]}</h3>
+              <h3 className="text-[10px] font-medium text-[#666D7A] mb-2">{CATEGORY_LABELS[cat]}</h3>
               <div className="space-y-2">
                 {sortedProtocols.map(p => {
                   const isActive = activeSlugs.has(p.slug)
@@ -264,36 +264,36 @@ export default function RecoveryManager({
                     <div key={p.slug}>
                       {isNewProgressionGroup && p.progression && (
                         <div className="rounded-xl border border-amber-200 bg-amber-50/50 px-4 py-3 mb-2">
-                          <p className="text-[10px] font-bold text-amber-800 uppercase tracking-widest mb-1">{p.progression.group_label} - tiered progression</p>
+                          <p className="text-[10px] font-medium text-amber-800 mb-1">{p.progression.group_label} - tiered progression</p>
                           <p className="text-[12px] text-amber-900 leading-relaxed">{p.progression.group_rule}</p>
                         </div>
                       )}
-                    <div className={`rounded-xl border overflow-hidden transition-colors ${isActive ? 'border-[#1B6DFC]/30 bg-blue-50/30' : 'border-stone-200 bg-white'}`}>
+                    <div className={`rounded-xl border overflow-hidden transition-colors ${isActive ? 'border-[#1B6DFC]/30 bg-blue-50/30' : 'border-[#E8EAEE] bg-white'}`}>
                       <div className="flex items-start justify-between gap-3 px-4 py-3">
                         <div className="flex-1 min-w-0">
                           <button
                             onClick={() => setExpandedProtocol(isExpanded ? null : p.slug)}
                             className="flex items-start gap-2 text-left w-full"
                           >
-                            {isExpanded ? <ChevronUp size={14} className="text-stone-400 mt-1 shrink-0" /> : <ChevronDown size={14} className="text-stone-400 mt-1 shrink-0" />}
+                            {isExpanded ? <ChevronUp size={14} className="text-[#98A0AD] mt-1 shrink-0" /> : <ChevronDown size={14} className="text-[#98A0AD] mt-1 shrink-0" />}
                             <div>
                               <div className="flex items-center gap-2 flex-wrap">
                                 {p.progression && (
-                                  <span className="text-[9px] font-bold text-amber-800 uppercase tracking-widest bg-amber-100 border border-amber-200 px-1.5 py-0.5 rounded">
+                                  <span className="text-[9px] font-medium text-amber-800 bg-amber-100 border border-amber-200 px-1.5 py-0.5 rounded">
                                     Level {p.progression.level}
                                   </span>
                                 )}
-                                <span className="text-sm font-semibold text-[#1A1A1A]">{p.name}</span>
-                                {isActive && <span className="text-[9px] font-bold text-[#1B6DFC] uppercase tracking-widest bg-[#1B6DFC]/10 px-1.5 py-0.5 rounded">Active</span>}
+                                <span className="text-sm font-semibold text-[#141821]">{p.name}</span>
+                                {isActive && <span className="text-[9px] font-medium text-[#1B6DFC] bg-[#1B6DFC]/10 px-1.5 py-0.5 rounded">Active</span>}
                               </div>
-                              <p className="text-[12px] text-stone-500 mt-0.5">{p.short_description}</p>
+                              <p className="text-[12px] text-[#666D7A] mt-0.5">{p.short_description}</p>
                             </div>
                           </button>
                         </div>
                         <button
                           onClick={() => assignProtocol(p.slug)}
                           disabled={isActive || assigning === p.slug}
-                          className="shrink-0 inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1.5 border border-[#1B6DFC] text-[#1B6DFC] rounded-lg hover:bg-[#1B6DFC] hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                          className="shrink-0 inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1.5 border border-[#1B6DFC] text-[#1B6DFC] rounded-lg hover:bg-[#1B6DFC] hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                         >
                           {assigning === p.slug ? <Loader2 size={10} className="animate-spin" /> : <Plus size={10} />}
                           {isActive ? 'Assigned' : 'Assign'}
@@ -301,14 +301,14 @@ export default function RecoveryManager({
                       </div>
 
                       {isExpanded && (
-                        <div className="px-4 pb-4 pt-1 border-t border-stone-200 bg-stone-50 space-y-3">
+                        <div className="px-4 pb-4 pt-1 border-t border-[#E8EAEE] bg-[#FBFCFD] space-y-3">
                           <ProtocolDetail label="What it does" body={p.what_it_does} />
                           <div>
-                            <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Steps</p>
+                            <p className="text-[10px] font-medium text-[#666D7A] mb-1">Steps</p>
                             <ol className="space-y-1">
                               {p.steps.map((s, i) => (
-                                <li key={i} className="text-[12px] text-stone-700 leading-relaxed flex gap-2">
-                                  <span className="text-stone-400">{i + 1}.</span>
+                                <li key={i} className="text-[12px] text-[#141821] leading-relaxed flex gap-2">
+                                  <span className="text-[#98A0AD]">{i + 1}.</span>
                                   <span>{s}</span>
                                 </li>
                               ))}
@@ -322,16 +322,16 @@ export default function RecoveryManager({
                           </div>
                           {p.contraindications.length > 0 && (
                             <div>
-                              <p className="text-[10px] font-bold text-red-700 uppercase tracking-widest mb-1">Contraindications</p>
-                              <ul className="text-[12px] text-stone-700 leading-relaxed space-y-0.5">
+                              <p className="text-[10px] font-medium text-red-700 mb-1">Contraindications</p>
+                              <ul className="text-[12px] text-[#141821] leading-relaxed space-y-0.5">
                                 {p.contraindications.map((c, i) => <li key={i}>- {c}</li>)}
                               </ul>
                             </div>
                           )}
                           <ProtocolDetail label="Safety" body={p.safety_notes} />
-                          <div className="rounded-lg bg-white border border-stone-200 px-3 py-2">
-                            <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-1">Coach doctrine</p>
-                            <p className="text-[12px] text-stone-700 leading-relaxed">{p.coach_doctrine}</p>
+                          <div className="rounded-lg bg-white border border-[#E8EAEE] px-3 py-2">
+                            <p className="text-[10px] font-medium text-[#1B6DFC] mb-1">Coach doctrine</p>
+                            <p className="text-[12px] text-[#141821] leading-relaxed">{p.coach_doctrine}</p>
                           </div>
                         </div>
                       )}
@@ -345,8 +345,8 @@ export default function RecoveryManager({
         })}
 
         {availableProtocols.length === 0 && (
-          <div className="rounded-xl border border-dashed border-stone-300 bg-stone-50 px-6 py-8 text-center">
-            <p className="text-sm text-stone-500">No protocols available. Tag {clientName}&apos;s equipment access above to unlock the library.</p>
+          <div className="rounded-xl border border-dashed border-[#E8EAEE] bg-[#FBFCFD] px-6 py-8 text-center">
+            <p className="text-sm text-[#666D7A]">No protocols available. Tag {clientName}&apos;s equipment access above to unlock the library.</p>
           </div>
         )}
       </div>
@@ -420,7 +420,7 @@ function RrsSuggestionBanner({
   const eyebrowColour = showSbstRemovalAlert ? 'text-red-800' : 'text-amber-800'
 
   return (
-    <div className={`rounded-2xl border ${bannerBorder} ${bannerBg} overflow-hidden`}>
+    <div className={`rounded-xl border ${bannerBorder} ${bannerBg} overflow-hidden`}>
       <div className="px-5 py-4">
         <div className="flex items-start justify-between gap-3 mb-2">
           <div className="flex items-start gap-2 flex-1">
@@ -453,7 +453,7 @@ function RrsSuggestionBanner({
             {showSbstRemovalAlert && !sbstRemovalConfirmed && (
               <button
                 onClick={markSbstRemoved}
-                className="mt-2 inline-flex items-center gap-1 text-[11px] font-bold px-3 py-1.5 bg-red-700 text-white rounded-lg hover:bg-red-800 transition-colors"
+                className="mt-2 inline-flex items-center gap-1 text-[11px] font-medium px-3 py-1.5 bg-red-700 text-white rounded-lg hover:bg-red-800 transition-colors"
               >
                 <Check size={12} /> Mark SBST removed
               </button>
@@ -473,15 +473,15 @@ function RrsSuggestionBanner({
             {suggestedProtocols.map(p => {
               const isActive = activeSlugs.has(p.slug)
               return (
-                <div key={p.slug} className="flex items-center justify-between gap-3 rounded-lg bg-white border border-stone-200 px-3 py-2">
+                <div key={p.slug} className="flex items-center justify-between gap-3 rounded-lg bg-white border border-[#E8EAEE] px-3 py-2">
                   <div className="flex-1 min-w-0">
-                    <p className="text-[13px] font-semibold text-[#1A1A1A]">{p.name}</p>
-                    <p className="text-[11px] text-stone-500 mt-0.5 line-clamp-1">{p.short_description}</p>
+                    <p className="text-[13px] font-semibold text-[#141821]">{p.name}</p>
+                    <p className="text-[11px] text-[#666D7A] mt-0.5 line-clamp-1">{p.short_description}</p>
                   </div>
                   <button
                     onClick={() => onAssign(p.slug)}
                     disabled={isActive || assigning === p.slug}
-                    className="shrink-0 inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1.5 border border-[#1B6DFC] text-[#1B6DFC] rounded-lg hover:bg-[#1B6DFC] hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                    className="shrink-0 inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1.5 border border-[#1B6DFC] text-[#1B6DFC] rounded-lg hover:bg-[#1B6DFC] hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                   >
                     {assigning === p.slug ? <Loader2 size={10} className="animate-spin" /> : <Plus size={10} />}
                     {isActive ? 'Assigned' : 'Assign'}
@@ -496,7 +496,7 @@ function RrsSuggestionBanner({
         {suggestion.do_not_suggest.length > 0 && (
           <div className="ml-6 mt-3">
             <p className={`text-[10px] font-bold ${eyebrowColour} uppercase tracking-widest`}>Do not suggest in this state</p>
-            <p className="text-[11px] text-stone-600 mt-1 leading-relaxed">
+            <p className="text-[11px] text-[#666D7A] mt-1 leading-relaxed">
               {suggestion.do_not_suggest.map(slug => protocolBySlug(slug)?.name).filter(Boolean).join(' · ')}
             </p>
           </div>
@@ -509,8 +509,8 @@ function RrsSuggestionBanner({
 function ProtocolDetail({ label, body }: { label: string; body: string }) {
   return (
     <div>
-      <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">{label}</p>
-      <p className="text-[12px] text-stone-700 leading-relaxed">{body}</p>
+      <p className="text-[10px] font-medium text-[#666D7A] mb-1">{label}</p>
+      <p className="text-[12px] text-[#141821] leading-relaxed">{body}</p>
     </div>
   )
 }
@@ -519,8 +519,8 @@ function AccessGroup({ title, icon, tags, access, onToggle }: { title: string; i
   return (
     <div className="p-5">
       <div className="flex items-center gap-2 mb-3">
-        <span className="text-stone-500">{icon}</span>
-        <span className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">{title}</span>
+        <span className="text-[#666D7A]">{icon}</span>
+        <span className="text-[10px] font-medium text-[#666D7A]">{title}</span>
       </div>
       <div className="space-y-1.5">
         {tags.map(tag => (
@@ -529,9 +529,9 @@ function AccessGroup({ title, icon, tags, access, onToggle }: { title: string; i
               type="checkbox"
               checked={access.includes(tag)}
               onChange={() => onToggle(tag)}
-              className="w-4 h-4 rounded border-stone-300 text-[#1B6DFC] focus:ring-[#1B6DFC]"
+              className="w-4 h-4 rounded border-[#E8EAEE] text-[#1B6DFC] focus:ring-[#1B6DFC]"
             />
-            <span className="text-[13px] text-stone-700 group-hover:text-[#1A1A1A]">{EQUIPMENT_LABELS[tag]}</span>
+            <span className="text-[13px] text-[#141821] group-hover:text-[#141821]">{EQUIPMENT_LABELS[tag]}</span>
           </label>
         ))}
       </div>
@@ -551,34 +551,34 @@ function AssignmentCard({ assignment, onEditNote, onPause, onResume, onComplete,
   if (!protocol) {
     return (
       <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
-        <p className="text-xs text-amber-800">Unknown protocol slug: {assignment.protocol_slug}</p>
+        <p className="text-[12.5px] text-amber-800">Unknown protocol slug: {assignment.protocol_slug}</p>
         <button onClick={() => onDelete(assignment.id)} className="text-[11px] text-amber-800 underline mt-1">Delete</button>
       </div>
     )
   }
-  const statusColour = assignment.status === 'active' ? 'text-[#1B6DFC]' : assignment.status === 'paused' ? 'text-amber-600' : 'text-stone-500'
+  const statusColour = assignment.status === 'active' ? 'text-[#1B6DFC]' : assignment.status === 'paused' ? 'text-amber-600' : 'text-[#666D7A]'
   return (
-    <div className="rounded-xl border border-stone-200 bg-white overflow-hidden">
+    <div className="rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
       <div className="flex items-start justify-between gap-3 px-4 py-3">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-[#1A1A1A]">{protocol.name}</span>
+            <span className="text-sm font-semibold text-[#141821]">{protocol.name}</span>
             <span className={`text-[9px] font-bold uppercase tracking-widest ${statusColour}`}>{assignment.status}</span>
           </div>
-          <p className="text-[11px] text-stone-500 mt-0.5">{protocol.dosing.frequency} · {protocol.dosing.duration}</p>
+          <p className="text-[11px] text-[#666D7A] mt-0.5">{protocol.dosing.frequency} · {protocol.dosing.duration}</p>
           {assignment.coach_note && (
-            <div className="mt-2 rounded-lg bg-stone-50 border border-stone-200 px-3 py-2">
-              <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-0.5">Coach note (shown to client)</p>
-              <p className="text-[12px] text-stone-700 leading-relaxed whitespace-pre-line">{assignment.coach_note}</p>
+            <div className="mt-2 rounded-lg bg-[#FBFCFD] border border-[#E8EAEE] px-3 py-2">
+              <p className="text-[10px] font-medium text-[#666D7A] mb-0.5">Coach note (shown to client)</p>
+              <p className="text-[12px] text-[#141821] leading-relaxed whitespace-pre-line">{assignment.coach_note}</p>
             </div>
           )}
         </div>
         <div className="flex items-center gap-1 shrink-0">
-          <button onClick={() => onEditNote(assignment)} className="text-[10px] font-medium text-stone-500 hover:text-[#1A1A1A] px-2 py-1">Edit note</button>
-          {onPause && <button onClick={() => onPause(assignment.id)} title="Pause" className="p-1.5 text-stone-500 hover:text-amber-700 rounded transition-colors"><Pause size={12} /></button>}
-          {onResume && <button onClick={() => onResume(assignment.id)} title="Resume" className="p-1.5 text-stone-500 hover:text-[#1B6DFC] rounded transition-colors"><Play size={12} /></button>}
-          {onComplete && <button onClick={() => onComplete(assignment.id)} title="Mark complete" className="p-1.5 text-stone-500 hover:text-green-700 rounded transition-colors"><Check size={12} /></button>}
-          <button onClick={() => onDelete(assignment.id)} title="Delete" className="p-1.5 text-stone-500 hover:text-red-700 rounded transition-colors"><Trash2 size={12} /></button>
+          <button onClick={() => onEditNote(assignment)} className="text-[10px] font-medium text-[#666D7A] hover:text-[#141821] px-2 py-1">Edit note</button>
+          {onPause && <button onClick={() => onPause(assignment.id)} title="Pause" className="p-1.5 text-[#666D7A] hover:text-amber-700 rounded transition-colors"><Pause size={12} /></button>}
+          {onResume && <button onClick={() => onResume(assignment.id)} title="Resume" className="p-1.5 text-[#666D7A] hover:text-[#1B6DFC] rounded transition-colors"><Play size={12} /></button>}
+          {onComplete && <button onClick={() => onComplete(assignment.id)} title="Mark complete" className="p-1.5 text-[#666D7A] hover:text-green-700 rounded transition-colors"><Check size={12} /></button>}
+          <button onClick={() => onDelete(assignment.id)} title="Delete" className="p-1.5 text-[#666D7A] hover:text-red-700 rounded transition-colors"><Trash2 size={12} /></button>
         </div>
       </div>
     </div>

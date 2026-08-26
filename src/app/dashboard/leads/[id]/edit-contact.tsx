@@ -38,24 +38,24 @@ export default function EditContact({ leadId, name, email, phone }: Props) {
 
   if (!editing) {
     return (
-      <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl p-6 mb-4">
+      <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-6 mb-4">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-sm font-semibold text-[#3A3A3A] uppercase tracking-wider">Contact</h2>
+          <h2 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Contact</h2>
           <button
             onClick={() => setEditing(true)}
-            className="text-xs text-[#999999] hover:text-[#3A3A3A] transition-colors"
+            className="text-[12.5px] text-[#98A0AD] hover:text-[#43474F] transition-colors"
           >
             Edit
           </button>
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p className="text-xs text-[#999999] mb-1">Email</p>
-            <p className="text-[#1A1A1A] text-sm">{email || '-'}</p>
+            <p className="text-[12.5px] text-[#98A0AD] mb-1">Email</p>
+            <p className="text-[#141821] text-sm">{email || '-'}</p>
           </div>
           <div>
-            <p className="text-xs text-[#999999] mb-1">Phone</p>
-            <p className="text-[#1A1A1A] text-sm">{phone || '-'}</p>
+            <p className="text-[12.5px] text-[#98A0AD] mb-1">Phone</p>
+            <p className="text-[#141821] text-sm">{phone || '-'}</p>
           </div>
         </div>
       </div>
@@ -63,40 +63,40 @@ export default function EditContact({ leadId, name, email, phone }: Props) {
   }
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl p-6 mb-4">
+    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-6 mb-4">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-sm font-semibold text-[#3A3A3A] uppercase tracking-wider">Contact</h2>
-        <button onClick={cancel} className="text-xs text-[#999999] hover:text-[#3A3A3A] transition-colors">
+        <h2 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Contact</h2>
+        <button onClick={cancel} className="text-[12.5px] text-[#98A0AD] hover:text-[#43474F] transition-colors">
           Cancel
         </button>
       </div>
       <div className="space-y-3">
         <div>
-          <label className="block text-xs text-[#999999] mb-1">Name</label>
+          <label className="block text-[12.5px] text-[#98A0AD] mb-1">Name</label>
           <input
             type="text"
             value={nameVal}
             onChange={e => setNameVal(e.target.value)}
-            className="w-full bg-[#E5E5E5] border border-[#E5E5E5] rounded-lg px-3 py-2 text-[#1A1A1A] text-sm focus:outline-none focus:border-[#1B6DFC]"
+            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-[#141821] text-sm focus:outline-none focus:border-[#1B6DFC]"
           />
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-xs text-[#999999] mb-1">Email</label>
+            <label className="block text-[12.5px] text-[#98A0AD] mb-1">Email</label>
             <input
               type="email"
               value={emailVal}
               onChange={e => setEmailVal(e.target.value)}
-              className="w-full bg-[#E5E5E5] border border-[#E5E5E5] rounded-lg px-3 py-2 text-[#1A1A1A] text-sm focus:outline-none focus:border-[#1B6DFC]"
+              className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-[#141821] text-sm focus:outline-none focus:border-[#1B6DFC]"
             />
           </div>
           <div>
-            <label className="block text-xs text-[#999999] mb-1">Phone</label>
+            <label className="block text-[12.5px] text-[#98A0AD] mb-1">Phone</label>
             <input
               type="tel"
               value={phoneVal}
               onChange={e => setPhoneVal(e.target.value)}
-              className="w-full bg-[#E5E5E5] border border-[#E5E5E5] rounded-lg px-3 py-2 text-[#1A1A1A] text-sm focus:outline-none focus:border-[#1B6DFC]"
+              className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-[#141821] text-sm focus:outline-none focus:border-[#1B6DFC]"
             />
           </div>
         </div>

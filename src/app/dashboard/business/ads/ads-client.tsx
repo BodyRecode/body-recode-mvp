@@ -106,73 +106,73 @@ export default function AdsClient({ initialCampaigns }: Props) {
     <div className="space-y-3">
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs text-stone-500 mb-1">Platform</label>
+          <label className="block text-[12.5px] text-[#666D7A] mb-1">Platform</label>
           <select
             value={form.platform ?? 'meta'}
             onChange={e => setForm(f => ({ ...f, platform: e.target.value as 'meta' | 'google' }))}
-            className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-blue-500"
           >
             <option value="meta">Meta</option>
             <option value="google">Google</option>
           </select>
         </div>
         <div>
-          <label className="block text-xs text-stone-500 mb-1">Campaign Name</label>
+          <label className="block text-[12.5px] text-[#666D7A] mb-1">Campaign Name</label>
           <input
             type="text"
             value={form.name ?? ''}
             onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
             placeholder="e.g. Body Recode Jan"
-            className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-500"
           />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs text-stone-500 mb-1">Spend (AUD)</label>
+          <label className="block text-[12.5px] text-[#666D7A] mb-1">Spend (AUD)</label>
           <input
             type="number"
             min="0"
             step="0.01"
             value={form.spend ?? 0}
             onChange={e => setForm(f => ({ ...f, spend: parseFloat(e.target.value) || 0 }))}
-            className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-blue-500"
           />
         </div>
         <div>
-          <label className="block text-xs text-stone-500 mb-1">Leads Generated</label>
+          <label className="block text-[12.5px] text-[#666D7A] mb-1">Leads Generated</label>
           <input
             type="number"
             min="0"
             value={form.leads_count ?? 0}
             onChange={e => setForm(f => ({ ...f, leads_count: parseInt(e.target.value) || 0 }))}
-            className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-blue-500"
           />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs text-stone-500 mb-1">Date From</label>
+          <label className="block text-[12.5px] text-[#666D7A] mb-1">Date From</label>
           <input
             type="date"
             value={form.date_from ?? ''}
             onChange={e => setForm(f => ({ ...f, date_from: e.target.value || null }))}
-            className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-blue-500"
           />
         </div>
         <div>
-          <label className="block text-xs text-stone-500 mb-1">Date To</label>
+          <label className="block text-[12.5px] text-[#666D7A] mb-1">Date To</label>
           <input
             type="date"
             value={form.date_to ?? ''}
             onChange={e => setForm(f => ({ ...f, date_to: e.target.value || null }))}
-            className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-sm text-[#1A1A1A] focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-sm text-[#141821] focus:outline-none focus:border-blue-500"
           />
         </div>
       </div>
       {/* Live CPL preview */}
       {(form.spend ?? 0) > 0 && (form.leads_count ?? 0) > 0 && (
-        <p className="text-xs text-stone-600">
+        <p className="text-[12.5px] text-[#666D7A]">
           CPL: <span className="text-blue-500 font-semibold">${cpl(form.spend ?? 0, form.leads_count ?? 0)}</span>
         </p>
       )}
@@ -184,8 +184,8 @@ export default function AdsClient({ initialCampaigns }: Props) {
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-semibold mb-1">Ads</h1>
-          <p className="text-stone-600 text-sm">Track Meta and Google performance. Spend, leads, cost-per-lead.</p>
+          <h1 className="text-[22px] font-semibold tracking-[-0.025em] mb-1">Ads</h1>
+          <p className="text-[#666D7A] text-sm">Track Meta and Google performance. Spend, leads, cost-per-lead.</p>
         </div>
         <button
           onClick={() => { setShowForm(true); setEditingId(null); setForm(empty()) }}
@@ -199,16 +199,16 @@ export default function AdsClient({ initialCampaigns }: Props) {
       {/* Summary cards */}
       {campaigns.length > 0 && (
         <div className="grid grid-cols-3 gap-3 mb-6">
-          <div className="bg-stone-100 border border-stone-200 rounded-xl p-4">
-            <p className="text-xs text-stone-500 mb-1">Total Spend</p>
+          <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
+            <p className="text-[12.5px] text-[#666D7A] mb-1">Total Spend</p>
             <p className="text-xl font-semibold">${totalSpend.toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
           </div>
-          <div className="bg-stone-100 border border-stone-200 rounded-xl p-4">
-            <p className="text-xs text-stone-500 mb-1">Total Leads</p>
+          <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
+            <p className="text-[12.5px] text-[#666D7A] mb-1">Total Leads</p>
             <p className="text-xl font-semibold">{totalLeads}</p>
           </div>
-          <div className="bg-stone-100 border border-stone-200 rounded-xl p-4">
-            <p className="text-xs text-stone-500 mb-1">Avg CPL</p>
+          <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
+            <p className="text-[12.5px] text-[#666D7A] mb-1">Avg CPL</p>
             <p className="text-xl font-semibold">{totalCpl !== '-' ? `$${totalCpl}` : '-'}</p>
           </div>
         </div>
@@ -216,21 +216,21 @@ export default function AdsClient({ initialCampaigns }: Props) {
 
       {/* New campaign form */}
       {showForm && (
-        <div className="bg-stone-100 border border-stone-200 rounded-xl p-5 mb-4">
+        <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5 mb-4">
           <h2 className="text-sm font-semibold mb-4">New Campaign</h2>
           <FormFields />
           <div className="flex items-center gap-2 mt-4">
             <button
               onClick={saveNew}
               disabled={saving || !form.name?.trim()}
-              className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
             >
               <Check size={12} />
               {saving ? 'Saving...' : 'Save Campaign'}
             </button>
             <button
               onClick={() => setShowForm(false)}
-              className="flex items-center gap-1.5 text-xs text-stone-500 hover:text-stone-700 transition-colors"
+              className="flex items-center gap-1.5 text-[12.5px] text-[#666D7A] hover:text-[#141821] transition-colors"
             >
               <X size={12} />
               Cancel
@@ -241,19 +241,19 @@ export default function AdsClient({ initialCampaigns }: Props) {
 
       {/* Campaign list */}
       {campaigns.length === 0 && !showForm ? (
-        <div className="bg-stone-100 border border-dashed border-stone-300 rounded-xl p-12 text-center">
+        <div className="bg-[#F4F6F9] border border-dashed border-[#E8EAEE] rounded-xl p-12 text-center">
           <div className="flex justify-center mb-4">
-            <div className="p-3 bg-stone-200 rounded-xl">
-              <TrendingUp size={24} className="text-stone-500" strokeWidth={1.5} />
+            <div className="p-3 bg-[#EFF1F4] rounded-xl">
+              <TrendingUp size={24} className="text-[#666D7A]" strokeWidth={1.5} />
             </div>
           </div>
-          <p className="text-stone-600 text-sm font-medium mb-1">No campaigns yet</p>
-          <p className="text-stone-400 text-xs">Add your first Meta or Google campaign to start tracking spend and CPL.</p>
+          <p className="text-[#666D7A] text-sm font-medium mb-1">No campaigns yet</p>
+          <p className="text-[#98A0AD] text-[12.5px]">Add your first Meta or Google campaign to start tracking spend and CPL.</p>
         </div>
       ) : (
         <div className="space-y-3">
           {campaigns.map(campaign => (
-            <div key={campaign.id} className="bg-stone-100 border border-stone-200 rounded-xl p-5">
+            <div key={campaign.id} className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
               {editingId === campaign.id ? (
                 <>
                   <FormFields />
@@ -261,14 +261,14 @@ export default function AdsClient({ initialCampaigns }: Props) {
                     <button
                       onClick={saveEdit}
                       disabled={saving}
-                      className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
+                      className="flex items-center gap-1.5 bg-blue-500 hover:bg-blue-500 disabled:opacity-50 text-stone-50 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
                     >
                       <Check size={12} />
                       {saving ? 'Saving...' : 'Save'}
                     </button>
                     <button
                       onClick={cancelEdit}
-                      className="flex items-center gap-1.5 text-xs text-stone-500 hover:text-stone-700 transition-colors"
+                      className="flex items-center gap-1.5 text-[12.5px] text-[#666D7A] hover:text-[#141821] transition-colors"
                     >
                       <X size={12} />
                       Cancel
@@ -283,24 +283,24 @@ export default function AdsClient({ initialCampaigns }: Props) {
                         {PLATFORM_LABELS[campaign.platform] ?? campaign.platform}
                       </span>
                       {campaign.date_from && (
-                        <span className="text-xs text-stone-400">
+                        <span className="text-[12.5px] text-[#98A0AD]">
                           {new Date(campaign.date_from).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
                           {campaign.date_to && ` – ${new Date(campaign.date_to).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}`}
                         </span>
                       )}
                     </div>
-                    <p className="text-sm font-semibold text-[#1A1A1A] mb-3">{campaign.name}</p>
+                    <p className="text-sm font-semibold text-[#141821] mb-3">{campaign.name}</p>
                     <div className="flex items-center gap-6">
                       <div>
-                        <p className="text-xs text-stone-500">Spend</p>
+                        <p className="text-[12.5px] text-[#666D7A]">Spend</p>
                         <p className="text-sm font-semibold">${(campaign.spend ?? 0).toLocaleString('en-AU', { minimumFractionDigits: 2 })}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-stone-500">Leads</p>
+                        <p className="text-[12.5px] text-[#666D7A]">Leads</p>
                         <p className="text-sm font-semibold">{campaign.leads_count ?? 0}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-stone-500">CPL</p>
+                        <p className="text-[12.5px] text-[#666D7A]">CPL</p>
                         <p className="text-sm font-semibold text-blue-500">
                           {cpl(campaign.spend ?? 0, campaign.leads_count ?? 0) !== '-'
                             ? `$${cpl(campaign.spend ?? 0, campaign.leads_count ?? 0)}`
@@ -312,14 +312,14 @@ export default function AdsClient({ initialCampaigns }: Props) {
                   <div className="flex items-center gap-1 ml-4">
                     <button
                       onClick={() => startEdit(campaign)}
-                      className="p-1.5 text-stone-500 hover:text-stone-700 transition-colors"
+                      className="p-1.5 text-[#666D7A] hover:text-[#141821] transition-colors"
                     >
                       <Pencil size={13} />
                     </button>
                     <button
                       onClick={() => deleteCampaign(campaign.id)}
                       disabled={deletingId === campaign.id}
-                      className="p-1.5 text-stone-500 hover:text-red-700 transition-colors disabled:opacity-50"
+                      className="p-1.5 text-[#666D7A] hover:text-red-700 transition-colors disabled:opacity-50"
                     >
                       <Trash2 size={13} />
                     </button>

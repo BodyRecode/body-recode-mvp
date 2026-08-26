@@ -23,7 +23,7 @@ export default function HarmonyScorecard() {
       <section className="pt-24 pb-16 px-8">
         <div className="max-w-[920px] mx-auto text-center">
           <div
-            className="inline-flex items-center gap-2 text-[10px] uppercase mb-8"
+            className="inline-flex items-center gap-2 text-[10px] mb-8"
             style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}
           >
             <span className="w-6 h-[1px]" style={{ backgroundColor: H.terracottaDeep }} />
@@ -45,7 +45,7 @@ export default function HarmonyScorecard() {
       <section className="py-16 px-8" style={{ backgroundColor: H.creamDeep }}>
         <div className="max-w-[820px] mx-auto">
           <div
-            className="text-[10px] uppercase mb-6 text-center"
+            className="text-[10px] mb-6 text-center"
             style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}
           >
             What you get
@@ -70,7 +70,7 @@ export default function HarmonyScorecard() {
       <section className="py-24 px-8">
         <div className="max-w-[1000px] mx-auto">
           <div className="mb-14 text-center">
-            <div className="text-[10px] uppercase mb-4" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
+            <div className="text-[10px] mb-4" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
               What we ask
             </div>
             <h2
@@ -85,7 +85,7 @@ export default function HarmonyScorecard() {
             {questions.map((q, i) => (
               <div key={i} className="p-6 rounded-sm border" style={{ borderColor: H.border, backgroundColor: H.cream }}>
                 <div
-                  className="text-[10px] uppercase mb-4"
+                  className="text-[10px] mb-4"
                   style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.2em' }}
                 >
                   0{i + 1} · {q.section}
@@ -108,7 +108,7 @@ export default function HarmonyScorecard() {
       <section className="py-24 px-8" style={{ backgroundColor: H.ink }}>
         <div className="max-w-[820px] mx-auto text-center">
           <div
-            className="text-[10px] uppercase mb-6"
+            className="text-[10px] mb-6"
             style={{ fontFamily: H.mono, color: H.terracotta, letterSpacing: '0.24em' }}
           >
             When you&apos;re ready
@@ -135,7 +135,7 @@ export default function HarmonyScorecard() {
             <ArrowRight size={14} />
           </button>
           <div className="mt-10 pt-8 border-t max-w-[520px] mx-auto" style={{ borderColor: '#2C2C2C' }}>
-            <div className="text-[10px] uppercase mb-3" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.2em' }}>
+            <div className="text-[10px] mb-3" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.2em' }}>
               What follows
             </div>
             <div className="grid grid-cols-2 gap-4 text-left">
@@ -155,7 +155,7 @@ export default function HarmonyScorecard() {
       <div className="py-10 text-center px-8">
         <Link
           href={BASE}
-          className="text-[11px] uppercase"
+          className="text-[11px]"
           style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.2em' }}
         >
           ← Back to Harmony

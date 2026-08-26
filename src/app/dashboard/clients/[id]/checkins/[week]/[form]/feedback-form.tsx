@@ -208,11 +208,11 @@ export default function CheckinFeedbackForm({
   // write feedback retroactively, they unskip first then the form appears.
   if (skippedAt && !existing) {
     return (
-      <div className="bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
-        <div className="px-5 py-3 border-b border-stone-200 flex items-center justify-between gap-3 flex-wrap">
+      <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+        <div className="px-5 py-3 border-b border-[#E8EAEE] flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-3 flex-wrap">
-            <p className="text-xs font-bold uppercase tracking-widest text-stone-600">Coach response</p>
-            <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-[#E5E5E5] border border-[#D4D4D4] text-stone-600">
+            <p className="text-[12px] font-medium text-[#666D7A]">Coach response</p>
+            <span className="text-[11.5px] font-medium px-2 py-0.5 rounded bg-[#EFF1F4] border border-[#CFD4DC] text-[#666D7A]">
               Skipped {new Date(skippedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
             </span>
           </div>
@@ -220,25 +220,25 @@ export default function CheckinFeedbackForm({
             type="button"
             onClick={unskip}
             disabled={skipping}
-            className="text-xs font-bold text-blue-700 hover:text-blue-200 transition-colors disabled:opacity-50"
+            className="text-[12.5px] font-medium text-blue-700 hover:text-blue-200 transition-colors disabled:opacity-50"
           >
             {skipping ? 'Working…' : 'Unskip and write response →'}
           </button>
         </div>
         <div className="px-5 py-5">
-          <p className="text-sm text-stone-700 leading-relaxed">
+          <p className="text-sm text-[#141821] leading-relaxed">
             You marked this check-in as not needing a coach response.
             {clientFirstName} sees no Coach response card on their portal for this check-in.
           </p>
           {skipReason && (
-            <div className="mt-3 rounded-lg bg-[#FFFFFF] border border-stone-200 p-3">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-stone-500 mb-1">Your note</p>
-              <p className="text-xs text-stone-700 whitespace-pre-wrap leading-relaxed">{skipReason}</p>
+            <div className="mt-3 rounded-lg bg-[#FFFFFF] border border-[#E8EAEE] p-3">
+              <p className="text-[11.5px] font-medium text-[#666D7A] mb-1">Your note</p>
+              <p className="text-[12.5px] text-[#141821] whitespace-pre-wrap leading-relaxed">{skipReason}</p>
             </div>
           )}
         </div>
-        {error && <p className="px-5 pb-4 text-xs text-red-700">{error}</p>}
-        {status && <p className="px-5 pb-4 text-xs text-blue-500">{status}</p>}
+        {error && <p className="px-5 pb-4 text-[12.5px] text-red-700">{error}</p>}
+        {status && <p className="px-5 pb-4 text-[12.5px] text-blue-500">{status}</p>}
       </div>
     )
   }
@@ -254,8 +254,8 @@ export default function CheckinFeedbackForm({
     return (
       <div className="mb-3 rounded-lg border border-[#1B6DFC]/30 bg-[#1B6DFC]/5 px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
         <div className="min-w-0">
-          <p className="text-[11px] font-bold uppercase tracking-widest text-[#1B6DFC]">AI draft, awaiting your approval</p>
-          <p className="text-xs text-[#3A3A3A] mt-1 leading-relaxed">
+          <p className="text-[12px] font-medium text-[#1B6DFC]">AI draft, awaiting your approval</p>
+          <p className="text-[12.5px] text-[#43474F] mt-1 leading-relaxed">
             This response was AI-generated when {clientFirstName} submitted the check-in. Nothing has been sent to {clientFirstName}. The Approve &amp; Send button in your inbox does the same thing as Send now below.
           </p>
         </div>
@@ -264,7 +264,7 @@ export default function CheckinFeedbackForm({
             type="button"
             onClick={() => submit(true)}
             disabled={pending}
-            className="text-xs font-bold px-3 py-1.5 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1057CC] transition-colors disabled:opacity-50"
+            className="text-[12.5px] font-medium px-3 py-1.5 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1057CC] transition-colors disabled:opacity-50"
           >
             Send now
           </button>
@@ -272,7 +272,7 @@ export default function CheckinFeedbackForm({
             type="button"
             onClick={skip}
             disabled={skipping}
-            className="text-xs font-bold px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
+            className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
           >
             Skip instead
           </button>
@@ -290,8 +290,8 @@ export default function CheckinFeedbackForm({
     if (!autoResponseAttemptedAt || !autoResponseFailedReason) return null
     return (
       <div className="mb-3 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3">
-        <p className="text-[11px] font-bold uppercase tracking-widest text-amber-700">AI auto-response failed</p>
-        <p className="text-xs text-[#3A3A3A] mt-1 leading-relaxed">
+        <p className="text-[12px] font-medium text-amber-700">AI auto-response failed</p>
+        <p className="text-[12.5px] text-[#43474F] mt-1 leading-relaxed">
           The auto-response pipeline ran at {new Date(autoResponseAttemptedAt).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane', weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })} but could not produce a clean draft. Reason: <span className="font-mono text-[10px]">{autoResponseFailedReason}</span>. Please write the response manually below, or click Generate response to try again.
         </p>
       </div>
@@ -304,12 +304,12 @@ export default function CheckinFeedbackForm({
     return (
       <div>
       <AutoDraftBanner />
-      <div className="bg-stone-100 border border-stone-200 rounded-xl overflow-hidden">
-        <div className="px-5 py-3 border-b border-stone-200 flex items-center justify-between gap-3 flex-wrap">
+      <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl overflow-hidden">
+        <div className="px-5 py-3 border-b border-[#E8EAEE] flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-3 flex-wrap">
-            <p className="text-xs font-bold uppercase tracking-widest text-blue-500">Coach response</p>
+            <p className="text-[12px] font-medium text-blue-500">Coach response</p>
             <span
-              className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded ${
+              className={`text-[11.5px] font-medium px-2 py-0.5 rounded ${
                 sent
                   ? 'bg-blue-50 border border-blue-200 text-blue-700'
                   : 'bg-amber-50 border border-amber-200 text-amber-700'
@@ -317,14 +317,14 @@ export default function CheckinFeedbackForm({
             >
               {sent ? `Emailed ${formatShort(existing.email_sent_at!)}` : 'Draft (not sent)'}
             </span>
-            <span className="text-[10px] uppercase tracking-widest text-stone-500">
+            <span className="text-[10px] text-[#666D7A]">
               Last saved {formatShort(existing.updated_at)}
             </span>
           </div>
           <button
             type="button"
             onClick={() => { setMode('edit'); setStatus(null); setError(null) }}
-            className="text-xs font-bold text-blue-700 hover:text-blue-200 transition-colors"
+            className="text-[12.5px] font-medium text-blue-700 hover:text-blue-200 transition-colors"
           >
             Edit response →
           </button>
@@ -334,7 +334,7 @@ export default function CheckinFeedbackForm({
           {existing.reframe && <SavedSection title="Reframe" body={existing.reframe} />}
           <SavedSection title="This week, hold this" body={existing.next_focus} accent />
         </div>
-        {status && <p className="px-5 pb-4 text-xs text-blue-500">{status}</p>}
+        {status && <p className="px-5 pb-4 text-[12.5px] text-blue-500">{status}</p>}
       </div>
       </div>
     )
@@ -361,14 +361,14 @@ export default function CheckinFeedbackForm({
     />
     <AutoDraftBanner />
     <AiFailureBanner />
-    <div className="bg-stone-100 border border-stone-200 rounded-xl p-5">
+    <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-5">
       <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
-        <p className="text-xs font-bold uppercase tracking-widest text-blue-500">
+        <p className="text-[12px] font-medium text-blue-500">
           {existing ? 'Edit coach response' : 'Coach response'}
         </p>
         <div className="flex items-center gap-3">
           {previouslyEmailed && (
-            <p className="text-[10px] uppercase tracking-widest text-stone-500">
+            <p className="text-[10px] text-[#666D7A]">
               Emailed {formatShort(existing!.email_sent_at!)}
             </p>
           )}
@@ -376,7 +376,7 @@ export default function CheckinFeedbackForm({
             <button
               type="button"
               onClick={() => { setMode('view'); setStatus(null); setError(null) }}
-              className="text-xs text-stone-600 hover:text-stone-800 transition-colors"
+              className="text-[12.5px] text-[#666D7A] hover:text-[#141821] transition-colors"
             >
               Cancel
             </button>
@@ -384,15 +384,15 @@ export default function CheckinFeedbackForm({
         </div>
       </div>
 
-      <p className="text-xs text-stone-500 leading-relaxed mb-4">
+      <p className="text-[12.5px] text-[#666D7A] leading-relaxed mb-4">
         Three fields go to {clientFirstName} as a dark-template email and appear under this check-in in their portal. Reframe is optional, use it when {clientFirstName} is misreading their own signal.
       </p>
 
-      <div className="mb-5 rounded-lg border border-stone-200 bg-[#FFFFFF] px-4 py-3">
+      <div className="mb-5 rounded-lg border border-[#E8EAEE] bg-[#FFFFFF] px-4 py-3">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-xs font-bold uppercase tracking-widest text-blue-500">Draft with AI</p>
-            <p className="text-xs text-stone-500 mt-1 leading-relaxed">
+            <p className="text-[12px] font-medium text-blue-500">Draft with AI</p>
+            <p className="text-[12.5px] text-[#666D7A] mt-1 leading-relaxed">
               Pulls this check-in (including the training and nutrition answers), the synthesis, the last 4 check-ins, the active program and nutrition plan, and the last 3 responses {clientFirstName} was sent. You review and approve before anything sends.
             </p>
           </div>
@@ -400,17 +400,17 @@ export default function CheckinFeedbackForm({
             type="button"
             onClick={generateDraft}
             disabled={generating || pending}
-            className="shrink-0 px-3 py-2 bg-blue-50 border border-blue-300 hover:bg-blue-100 text-blue-700 text-xs font-bold rounded-lg transition-colors disabled:opacity-50"
+            className="shrink-0 px-3 py-2 bg-blue-50 border border-blue-300 hover:bg-blue-100 text-blue-700 text-[12.5px] font-medium rounded-lg transition-colors disabled:opacity-50"
           >
             {generating ? 'Generating…' : 'Generate response'}
           </button>
         </div>
 
-        <div className="mt-3 pt-3 border-t border-stone-200">
-          <label className="block text-[11px] font-bold uppercase tracking-widest text-stone-600 mb-1">
+        <div className="mt-3 pt-3 border-t border-[#E8EAEE]">
+          <label className="block text-[12px] font-medium text-[#666D7A] mb-1">
             Add details for the AI (optional)
           </label>
-          <p className="text-xs text-stone-500 mb-2 leading-relaxed">
+          <p className="text-[12.5px] text-[#666D7A] mb-2 leading-relaxed">
             Anything you know that the check-in does not show, or what you want this response to land on. Whatever you name here gets addressed, and if you name a focus it becomes the &ldquo;this week, hold this&rdquo; anchor. Saved with the check-in, so it is still here next time you generate.
           </p>
           <textarea
@@ -418,7 +418,7 @@ export default function CheckinFeedbackForm({
             onChange={e => setCoachNotes(e.target.value)}
             rows={3}
             placeholder={`e.g. He's added 3 runs a week for a half marathon in October. Don't make this about food again, the anchor should be protecting his three gym sessions around the running load. Mention he's said "feeling stronger" two weeks running.`}
-            className="w-full bg-stone-50 border border-stone-200 rounded-lg p-3 text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-blue-500/60 resize-y"
+            className="w-full bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg p-3 text-sm text-[#141821] placeholder:text-[#98A0AD] focus:outline-none focus:border-blue-500/60 resize-y"
           />
         </div>
       </div>
@@ -453,10 +453,10 @@ export default function CheckinFeedbackForm({
       </div>
 
       {error && (
-        <p className="mt-4 text-xs text-red-700">{error}</p>
+        <p className="mt-4 text-[12.5px] text-red-700">{error}</p>
       )}
       {status && (
-        <p className="mt-4 text-xs text-blue-500">{status}</p>
+        <p className="mt-4 text-[12.5px] text-blue-500">{status}</p>
       )}
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -464,7 +464,7 @@ export default function CheckinFeedbackForm({
           type="button"
           disabled={pending}
           onClick={() => submit(true)}
-          className="px-4 py-2.5 bg-blue-500 hover:bg-blue-500 text-white text-xs font-bold rounded-lg transition-colors disabled:opacity-50"
+          className="px-4 py-2.5 bg-blue-500 hover:bg-blue-500 text-white text-[12.5px] font-medium rounded-lg transition-colors disabled:opacity-50"
         >
           {pending ? 'Working…' : previouslyEmailed ? 'Save and re-send email' : 'Save and email client'}
         </button>
@@ -472,7 +472,7 @@ export default function CheckinFeedbackForm({
           type="button"
           disabled={pending}
           onClick={() => submit(false)}
-          className="px-4 py-2.5 border border-stone-300 hover:border-stone-500 text-stone-700 text-xs font-bold rounded-lg transition-colors disabled:opacity-50"
+          className="px-4 py-2.5 border border-[#E8EAEE] hover:border-[#CFD4DC] text-[#141821] text-[12.5px] font-medium rounded-lg transition-colors disabled:opacity-50"
         >
           Save without sending
         </button>
@@ -481,7 +481,7 @@ export default function CheckinFeedbackForm({
             type="button"
             disabled={skipping}
             onClick={skip}
-            className="ml-auto text-xs font-medium text-stone-500 hover:text-stone-700 transition-colors disabled:opacity-50"
+            className="ml-auto text-[12.5px] font-medium text-[#666D7A] hover:text-[#141821] transition-colors disabled:opacity-50"
           >
             {skipping ? 'Working…' : 'Skip without responding'}
           </button>
@@ -511,14 +511,14 @@ function Field({
 }) {
   return (
     <div>
-      <label className="block text-xs font-bold uppercase tracking-widest text-stone-600 mb-1">{label}</label>
-      <p className="text-xs text-stone-500 mb-2 leading-relaxed">{hint}</p>
+      <label className="block text-[12px] font-medium text-[#666D7A] mb-1">{label}</label>
+      <p className="text-[12.5px] text-[#666D7A] mb-2 leading-relaxed">{hint}</p>
       <textarea
         value={value}
         onChange={e => onChange(e.target.value)}
         rows={rows}
         placeholder={placeholder}
-        className="w-full bg-[#FFFFFF] border border-stone-200 rounded-lg p-3 text-sm text-stone-900 placeholder:text-stone-700 focus:outline-none focus:border-blue-500/60 resize-y"
+        className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg p-3 text-sm text-[#141821] placeholder:text-[#141821] focus:outline-none focus:border-blue-500/60 resize-y"
       />
     </div>
   )
@@ -527,8 +527,8 @@ function Field({
 function SavedSection({ title, body, accent }: { title: string; body: string; accent?: boolean }) {
   return (
     <div>
-      <p className={`text-[11px] font-bold uppercase tracking-widest mb-2 ${accent ? 'text-blue-500' : 'text-stone-500'}`}>{title}</p>
-      <div className="text-sm text-stone-800 leading-relaxed space-y-3 whitespace-pre-wrap">{body}</div>
+      <p className={`text-[12px] font-medium mb-2 ${accent ? 'text-blue-500' : 'text-[#666D7A]'}`}>{title}</p>
+      <div className="text-sm text-[#141821] leading-relaxed space-y-3 whitespace-pre-wrap">{body}</div>
     </div>
   )
 }

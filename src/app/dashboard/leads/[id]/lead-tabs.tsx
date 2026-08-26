@@ -27,7 +27,7 @@ export default function LeadTabs({ tabs, initial }: { tabs: LeadTab[]; initial?:
 
   return (
     <div>
-      <div className="flex items-center gap-1 border-b border-[#E5E5E5] mb-5 overflow-x-auto">
+      <div className="flex items-center gap-1 border-b border-[#E8EAEE] mb-5 overflow-x-auto">
         {available.map(tab => {
           const on = tab.id === current?.id
           return (
@@ -35,7 +35,7 @@ export default function LeadTabs({ tabs, initial }: { tabs: LeadTab[]; initial?:
               key={tab.id}
               onClick={() => setActive(tab.id)}
               className={`relative shrink-0 px-3.5 py-2.5 text-[13px] font-semibold transition-colors ${
-                on ? 'text-[#1B6DFC]' : 'text-[#6B6B6B] hover:text-[#1A1A1A]'
+                on ? 'text-[#1B6DFC]' : 'text-[#666D7A] hover:text-[#141821]'
               }`}
             >
               <span className="inline-flex items-center gap-1.5">
@@ -43,7 +43,7 @@ export default function LeadTabs({ tabs, initial }: { tabs: LeadTab[]; initial?:
                 {tab.alert && <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />}
                 {tab.badge != null && tab.badge !== '' && (
                   <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
-                    on ? 'bg-blue-50 text-[#1B6DFC]' : 'bg-[#F4F4F4] text-[#999999]'
+                    on ? 'bg-blue-50 text-[#1B6DFC]' : 'bg-[#F4F6F9] text-[#98A0AD]'
                   }`}>
                     {tab.badge}
                   </span>

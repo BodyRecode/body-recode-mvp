@@ -274,7 +274,7 @@ function CopyButton({ value }: { value: string }) {
           setTimeout(() => setCopied(false), 1200)
         })
       }}
-      className="inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-widest text-stone-500 hover:text-blue-600 hover:bg-blue-50 transition"
+      className="inline-flex items-center gap-1 px-2 py-1 rounded text-[11.5px] font-medium text-[#666D7A] hover:text-blue-600 hover:bg-blue-50 transition"
       title="Copy URL"
     >
       {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
@@ -287,7 +287,7 @@ function FunnelBadge({ funnel }: { funnel: FunnelTag }) {
   const meta = FUNNEL_TAG_META[funnel]
   return (
     <span
-      className="inline-block text-[9px] font-extrabold uppercase tracking-widest px-2 py-1 rounded whitespace-nowrap"
+      className="inline-block text-[9px] font-extrabold px-2 py-1 rounded whitespace-nowrap"
       style={{ color: meta.color, background: meta.bg }}
     >
       {meta.label}
@@ -305,29 +305,29 @@ export default function PagesIndex({ tokens }: { tokens: Tokens }) {
   return (
     <div className="space-y-4 mt-2">
       {/* Active tokens summary */}
-      <div className="rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-[12px] text-stone-600 leading-relaxed">
-        <p className="font-bold text-stone-700 mb-2">Active tokens applied to {'{token}'} URLs:</p>
+      <div className="rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] px-4 py-3 text-[12px] text-[#666D7A] leading-relaxed">
+        <p className="font-bold text-[#141821] mb-2">Active tokens applied to {'{token}'} URLs:</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1 font-mono text-[11px]">
-          <div>Challenge: <span className="text-stone-900">{tokens.challenge ? tokens.challenge.slice(0, 14) + '…' : '—'}</span></div>
-          <div>Blueprint: <span className="text-stone-900">{tokens.blueprint ? tokens.blueprint.slice(0, 14) + '…' : '—'}</span></div>
-          <div>Membership: <span className="text-stone-900">{tokens.membership ? tokens.membership.slice(0, 14) + '…' : '—'}</span></div>
-          <div>Portal (onboarding): <span className="text-stone-900">{tokens.portalOnboarding ? tokens.portalOnboarding.slice(0, 14) + '…' : '—'}</span></div>
-          <div>Check-in: <span className="text-stone-900">{tokens.portalCheckin ? tokens.portalCheckin.slice(0, 14) + '…' : '—'}</span></div>
-          <div>Baseline: <span className="text-stone-900">{tokens.portalBaseline ? tokens.portalBaseline.slice(0, 14) + '…' : '—'}</span></div>
-          <div>Intake (foundational): <span className="text-stone-900">{tokens.intakeFoundational ? tokens.intakeFoundational.slice(0, 14) + '…' : '—'}</span></div>
-          <div>Intake (supplementary): <span className="text-stone-900">{tokens.intakeSupplementary ? tokens.intakeSupplementary.slice(0, 14) + '…' : '—'}</span></div>
-          <div>Scorecard Report: <span className="text-stone-900">{tokens.scorecardReport ? tokens.scorecardReport.slice(0, 14) + '…' : '—'}</span></div>
+          <div>Challenge: <span className="text-[#141821]">{tokens.challenge ? tokens.challenge.slice(0, 14) + '…' : '—'}</span></div>
+          <div>Blueprint: <span className="text-[#141821]">{tokens.blueprint ? tokens.blueprint.slice(0, 14) + '…' : '—'}</span></div>
+          <div>Membership: <span className="text-[#141821]">{tokens.membership ? tokens.membership.slice(0, 14) + '…' : '—'}</span></div>
+          <div>Portal (onboarding): <span className="text-[#141821]">{tokens.portalOnboarding ? tokens.portalOnboarding.slice(0, 14) + '…' : '—'}</span></div>
+          <div>Check-in: <span className="text-[#141821]">{tokens.portalCheckin ? tokens.portalCheckin.slice(0, 14) + '…' : '—'}</span></div>
+          <div>Baseline: <span className="text-[#141821]">{tokens.portalBaseline ? tokens.portalBaseline.slice(0, 14) + '…' : '—'}</span></div>
+          <div>Intake (foundational): <span className="text-[#141821]">{tokens.intakeFoundational ? tokens.intakeFoundational.slice(0, 14) + '…' : '—'}</span></div>
+          <div>Intake (supplementary): <span className="text-[#141821]">{tokens.intakeSupplementary ? tokens.intakeSupplementary.slice(0, 14) + '…' : '—'}</span></div>
+          <div>Scorecard Report: <span className="text-[#141821]">{tokens.scorecardReport ? tokens.scorecardReport.slice(0, 14) + '…' : '—'}</span></div>
         </div>
       </div>
 
       {STAGES.map((group, gi) => {
         const isCollapsed = !!collapsed[gi]
         return (
-          <div key={gi} className="rounded-xl border border-stone-200 bg-white overflow-hidden">
+          <div key={gi} className="rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
             {/* Group header */}
             <button
               onClick={() => toggle(gi)}
-              className="w-full text-left px-5 py-4 flex items-start justify-between gap-4 hover:bg-stone-50 transition"
+              className="w-full text-left px-5 py-4 flex items-start justify-between gap-4 hover:bg-[#FBFCFD] transition"
             >
               <div className="flex items-start gap-3 flex-1 min-w-0">
                 <div className="w-1 h-12 rounded-full flex-shrink-0" style={{ background: group.accent }} />
@@ -335,19 +335,19 @@ export default function PagesIndex({ tokens }: { tokens: Tokens }) {
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <FunnelBadge funnel={group.funnel} />
                   </div>
-                  <h3 className="text-[15px] font-bold text-stone-900">{group.stage}</h3>
-                  <p className="text-[12px] text-stone-500 mt-0.5 leading-snug">{group.blurb}</p>
+                  <h3 className="text-[15px] font-bold text-[#141821]">{group.stage}</h3>
+                  <p className="text-[12px] text-[#666D7A] mt-0.5 leading-snug">{group.blurb}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2 pt-1 flex-shrink-0">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-stone-400">{group.pages.length} page{group.pages.length === 1 ? '' : 's'}</span>
-                {isCollapsed ? <ChevronDown className="w-4 h-4 text-stone-400" /> : <ChevronUp className="w-4 h-4 text-stone-400" />}
+                <span className="text-[11.5px] font-medium text-[#98A0AD]">{group.pages.length} page{group.pages.length === 1 ? '' : 's'}</span>
+                {isCollapsed ? <ChevronDown className="w-4 h-4 text-[#98A0AD]" /> : <ChevronUp className="w-4 h-4 text-[#98A0AD]" />}
               </div>
             </button>
 
             {/* Pages */}
             {!isCollapsed && (
-              <div className="border-t border-stone-200">
+              <div className="border-t border-[#E8EAEE]">
                 {group.pages.map((page, pi) => {
                   const url = urlFor(page, tokens)
                   const fullForOpen = fullUrl(url)
@@ -361,15 +361,15 @@ export default function PagesIndex({ tokens }: { tokens: Tokens }) {
                     >
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <p className="text-[13px] font-bold text-stone-900 group-hover:text-blue-700 transition truncate">{page.name}</p>
-                          {page.external && <ExternalLink className="w-3 h-3 text-stone-400 flex-shrink-0" />}
+                          <p className="text-[13px] font-bold text-[#141821] group-hover:text-blue-700 transition truncate">{page.name}</p>
+                          {page.external && <ExternalLink className="w-3 h-3 text-[#98A0AD] flex-shrink-0" />}
                         </div>
-                        <p className="text-[11px] font-mono text-stone-500 truncate mt-0.5">{fullForOpen}</p>
-                        <p className="text-[11px] text-stone-500 mt-1 leading-snug">{page.description}</p>
+                        <p className="text-[11px] font-mono text-[#666D7A] truncate mt-0.5">{fullForOpen}</p>
+                        <p className="text-[11px] text-[#666D7A] mt-1 leading-snug">{page.description}</p>
                       </div>
                       <div className="flex items-center gap-1 flex-shrink-0 pt-1">
                         <CopyButton value={fullForOpen} />
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-blue-600 opacity-0 group-hover:opacity-100 transition">Open</span>
+                        <span className="text-[11.5px] font-medium text-blue-600 opacity-0 group-hover:opacity-100 transition">Open</span>
                       </div>
                     </a>
                   )

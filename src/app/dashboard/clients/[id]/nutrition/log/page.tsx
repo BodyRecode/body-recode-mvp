@@ -37,9 +37,9 @@ export default async function CoachMealLogPage({ params }: { params: Promise<{ i
   if (!plan) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-8">
-        <Link href={`/dashboard/clients/${id}/nutrition`} className="text-xs font-semibold text-[#1B6DFC] hover:text-[#5390FF]">← Back to nutrition</Link>
-        <div className="mt-6 rounded-2xl border border-[#E5E5E5] bg-white p-6 text-center">
-          <p className="text-sm text-[#6B6B6B]">No active nutrition plan for {firstName} yet. Publish a plan first.</p>
+        <Link href={`/dashboard/clients/${id}/nutrition`} className="text-[12.5px] font-semibold text-[#1B6DFC] hover:text-[#5390FF]">← Back to nutrition</Link>
+        <div className="mt-6 rounded-xl border border-[#E8EAEE] bg-white p-6 text-center">
+          <p className="text-sm text-[#666D7A]">No active nutrition plan for {firstName} yet. Publish a plan first.</p>
         </div>
       </div>
     )
@@ -75,10 +75,10 @@ export default async function CoachMealLogPage({ params }: { params: Promise<{ i
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
-      <Link href={backHref} className="text-xs font-semibold text-[#1B6DFC] hover:text-[#5390FF]">← Back to nutrition</Link>
+      <Link href={backHref} className="text-[12.5px] font-semibold text-[#1B6DFC] hover:text-[#5390FF]">← Back to nutrition</Link>
       <div className="mt-4 mb-5">
-        <p className="text-[10px] font-bold tracking-widest text-[#999999] uppercase mb-1">Log meals · {client.name}</p>
-        <h1 className="text-2xl font-bold text-[#1A1A1A] tracking-tight">{plan.plan_name}</h1>
+        <p className="text-[10px] font-medium text-[#98A0AD] mb-1">Log meals · {client.name}</p>
+        <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em] tracking-tight">{plan.plan_name}</h1>
       </div>
       <MealLogClient
         token=""

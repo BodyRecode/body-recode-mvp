@@ -164,8 +164,7 @@ export default function ClientReadingPanel({
         <div className="flex items-center gap-2.5">
           <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
           <h2
-            className="text-[11px] font-bold text-[#1A1A1A] uppercase"
-            style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+            className="text-[11px] font-medium text-[#141821]"
           >
             Foundational Reading{' '}
             <span className="text-[#4A4A4A] font-normal">- Client Facing</span>
@@ -174,7 +173,7 @@ export default function ClientReadingPanel({
         <div className="flex items-center gap-2 flex-wrap">
           {generated && (
             <span
-              className="inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border uppercase"
+              className="inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border"
               style={{
                 fontFamily: MONO_FONT,
                 letterSpacing: '0.06em',
@@ -192,8 +191,7 @@ export default function ClientReadingPanel({
           )}
           {emailSent && (
             <span
-              className="inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] uppercase"
-              style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
+              className="inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border border-[#E8EAEE] bg-[#FFFFFF] text-[#666D7A]"
               title={`Notification sent ${new Date(cffs.client_reading_email_sent_at!).toLocaleString('en-AU')}`}
             >
               <Mail size={10} /> Notified
@@ -204,7 +202,7 @@ export default function ClientReadingPanel({
             disabled={generating || isPending}
             className={`inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
               generated
-                ? 'border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
+                ? 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
                 : 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#5390FF] border border-[#1B6DFC]'
             }`}
           >
@@ -215,7 +213,7 @@ export default function ClientReadingPanel({
             <button
               onClick={togglePublish}
               disabled={publishing || isPending}
-              className="inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
             >
               {publishing ? <Loader2 size={13} className="animate-spin" /> : (published ? <EyeOff size={13} /> : <Eye size={13} />)}
               {publishing ? 'Updating...' : (published ? 'Unpublish' : 'Republish')}
@@ -228,7 +226,7 @@ export default function ClientReadingPanel({
               title={emailSent ? 'Send the client another email that their reading is live' : 'Email the client that their reading is live in the portal'}
               className={`inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
                 emailSent
-                  ? 'border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
+                  ? 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC]'
                   : 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#5390FF] border border-[#1B6DFC]'
               }`}
             >
@@ -243,15 +241,15 @@ export default function ClientReadingPanel({
 
         <div className="mb-3 rounded-xl border border-red-300 bg-red-50 p-4">
 
-          <p className="text-xs font-bold text-red-900 uppercase tracking-wider">Not published</p>
+          <p className="text-[12.5px] font-medium text-red-900">Not published</p>
 
-          <p className="text-xs text-red-800 mt-1">These have to be fixed before the client can see this. Edit the section or regenerate.</p>
+          <p className="text-[12.5px] text-red-800 mt-1">These have to be fixed before the client can see this. Edit the section or regenerate.</p>
 
           <ul className="mt-2 space-y-2">
 
             {lintFindings.map((f, i) => (
 
-              <li key={i} className="text-xs text-red-800">
+              <li key={i} className="text-[12.5px] text-red-800">
 
                 <span className="font-semibold">{f.message}</span>
 
@@ -284,31 +282,30 @@ export default function ClientReadingPanel({
       )}
 
       {!generated ? (
-        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-8 text-center">
-          <p className="text-[#6B6B6B] text-[14px] mb-2">No client-facing reading yet</p>
-          <p className="text-[#999999] text-[12px]">
+        <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl p-8 text-center">
+          <p className="text-[#666D7A] text-[14px] mb-2">No client-facing reading yet</p>
+          <p className="text-[#98A0AD] text-[12px]">
             Click Generate &amp; Publish. The reading goes live in the client portal. Then use Notify client to email them it is ready.
           </p>
         </div>
       ) : (
-        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl overflow-hidden mb-3">
-          <div className="flex items-center justify-between px-5 py-3 border-b border-[#E5E5E5] flex-wrap gap-2">
+        <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden mb-3">
+          <div className="flex items-center justify-between px-5 py-3 border-b border-[#E8EAEE] flex-wrap gap-2">
             <p
-              className="text-[11px] text-[#999999]"
-              style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
+              className="text-[11px] text-[#98A0AD]"
             >
               Last updated {new Date(cffs.client_reading_generated_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
             </p>
             <div className="flex items-center gap-2">
               <Link
                 href={`/dashboard/clients/${clientId}/foundational-reading-preview`}
-                className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+                className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
               >
                 Preview
               </Link>
               <Link
                 href={`/api/dashboard/clients/${clientId}/foundational-reading/pdf`}
-                className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E5E5E5] bg-[#FFFFFF] text-[#3A3A3A] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+                className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
               >
                 <Download size={11} /> PDF
               </Link>
@@ -321,7 +318,7 @@ export default function ClientReadingPanel({
               )}
             </div>
           </div>
-          <div className="divide-y divide-[#E5E5E5]">
+          <div className="divide-y divide-[#EFF1F4]">
             {SECTION_LABELS.map(({ field, label }, i) => (
               <EditableSection
                 key={field}
@@ -382,35 +379,33 @@ function CoachGuidance({ cffsId, initial }: { cffsId: string; initial: string | 
   }
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl overflow-hidden mb-3">
+    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl overflow-hidden mb-3">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between gap-3 px-5 py-3 hover:bg-[#E5E5E5]/40 transition-colors text-left"
+        className="w-full flex items-center justify-between gap-3 px-5 py-3 hover:bg-[#EFF1F4]/40 transition-colors text-left"
       >
         <div className="flex items-center gap-2.5">
           <MessageSquare size={13} className="text-[#1B6DFC]" />
           <p
-            className="text-[11px] font-bold text-[#1A1A1A] uppercase"
-            style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+            className="text-[11px] font-medium text-[#141821]"
           >
             Coach Guidance
           </p>
           {savedValue && (
             <span
               className="text-[10px] text-[#1B6DFC] px-1.5 py-0.5 rounded-full border border-[#B5CFFC] bg-[rgba(27,109,252,0.10)]"
-              style={{ fontFamily: MONO_FONT, letterSpacing: '0.06em' }}
             >
               SET
             </span>
           )}
         </div>
-        <span className="text-[11px] text-[#999999]">{open ? 'Hide' : 'Edit'}</span>
+        <span className="text-[11px] text-[#98A0AD]">{open ? 'Hide' : 'Edit'}</span>
       </button>
       {open && (
-        <div className="px-5 pb-4 border-t border-[#E5E5E5]">
+        <div className="px-5 pb-4 border-t border-[#E8EAEE]">
           <div className="flex items-start gap-2 pt-3 mb-3">
-            <Info size={12} className="text-[#999999] mt-0.5 shrink-0" />
-            <p className="text-[11px] text-[#999999] leading-relaxed">
+            <Info size={12} className="text-[#98A0AD] mt-0.5 shrink-0" />
+            <p className="text-[11px] text-[#98A0AD] leading-relaxed">
               Standing notes for the AI. Applied on every Generate and Regenerate. Use this for context the intake did not capture, or to steer how a section is framed. Persists across regenerations.
             </p>
           </div>
@@ -419,13 +414,13 @@ function CoachGuidance({ cffsId, initial }: { cffsId: string; initial: string | 
             onChange={e => setValue(e.target.value)}
             placeholder="e.g. Sam mentioned in our intake call that she is sensitive about historic restrictive eating. Frame nutrition section as supportive, never targeted."
             rows={4}
-            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-3 py-2.5 text-[13px] text-[#1A1A1A] placeholder:text-[#4A4A4A] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
+            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-[13px] text-[#141821] placeholder:text-[#4A4A4A] focus:outline-none focus:border-[#CFD4DC] leading-relaxed resize-y"
           />
           {error && (
             <div className="mt-2 text-[11px] text-[#8A5A14]">{error}</div>
           )}
           <div className="flex items-center justify-between mt-3">
-            <p className="text-[10px] text-[#999999]">
+            <p className="text-[10px] text-[#98A0AD]">
               {savedAt ? 'Saved.' : (savedValue ? 'Last applied to next regeneration.' : 'No guidance set yet.')}
             </p>
             <button
@@ -434,7 +429,7 @@ function CoachGuidance({ cffsId, initial }: { cffsId: string; initial: string | 
               className={`inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
                 dirty
                   ? 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#5390FF] border border-[#1B6DFC]'
-                  : 'border border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B]'
+                  : 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#666D7A]'
               }`}
             >
               {saving ? <Loader2 size={12} className="animate-spin" /> : <Save size={12} />}
@@ -517,8 +512,7 @@ function EditableSection({
             {String(index + 1).padStart(2, '0')}
           </span>
           <p
-            className="text-[10px] font-bold text-[#6B6B6B] uppercase truncate"
-            style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
+            className="text-[10px] font-medium text-[#666D7A] truncate"
           >
             {label}
           </p>
@@ -526,7 +520,7 @@ function EditableSection({
         {!editing && (
           <button
             onClick={() => setEditing(true)}
-            className="inline-flex items-center gap-1 text-[10px] text-[#999999] hover:text-[#1B6DFC] transition-colors"
+            className="inline-flex items-center gap-1 text-[10px] text-[#98A0AD] hover:text-[#1B6DFC] transition-colors"
             aria-label="Edit section"
           >
             <Pencil size={11} /> Edit
@@ -541,14 +535,14 @@ function EditableSection({
             value={draft}
             onChange={e => setDraft(e.target.value)}
             rows={Math.max(4, draft.split('\n').length + 1)}
-            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-3 py-2.5 text-[14px] text-[#1A1A1A] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
+            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg px-3 py-2.5 text-[14px] text-[#141821] focus:outline-none focus:border-[#CFD4DC] leading-relaxed resize-y"
           />
           {error && <p className="mt-2 text-[11px] text-[#8A5A14]">{error}</p>}
           <div className="flex items-center justify-end gap-2 mt-2">
             <button
               onClick={cancel}
               disabled={saving}
-              className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E5E5E5] text-[#6B6B6B] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50 transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E8EAEE] text-[#666D7A] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50 transition-colors disabled:opacity-50"
             >
               <X size={11} /> Cancel
             </button>
@@ -563,7 +557,7 @@ function EditableSection({
           </div>
         </>
       ) : (
-        <p className="text-[14px] text-[#1A1A1A] leading-relaxed whitespace-pre-line">
+        <p className="text-[14px] text-[#141821] leading-relaxed whitespace-pre-line">
           {value || '(empty)'}
         </p>
       )}

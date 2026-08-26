@@ -36,7 +36,7 @@ export default async function OutreachQueuePage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) {
-    return <div className="max-w-3xl p-6 text-stone-600">Please sign in.</div>
+    return <div className="max-w-3xl p-6 text-[#666D7A]">Please sign in.</div>
   }
 
   const admin = createAdminClient()
@@ -53,22 +53,22 @@ export default async function OutreachQueuePage() {
     <div className="max-w-3xl">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-semibold mb-1">Booking Agent</h1>
-          <p className="text-stone-600 text-sm">
+          <h1 className="text-[22px] font-semibold tracking-[-0.025em] mb-1">Booking Agent</h1>
+          <p className="text-[#666D7A] text-sm">
             {touches.length} draft{touches.length === 1 ? '' : 's'} waiting for approval
           </p>
         </div>
-        <div className="flex items-center gap-2 text-xs text-stone-500 bg-stone-50 border border-stone-200 rounded-lg px-3 py-2">
+        <div className="flex items-center gap-2 text-[12.5px] text-[#666D7A] bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg px-3 py-2">
           <Send className="w-3.5 h-3.5" />
           Nothing sends until you approve it
         </div>
       </div>
 
       {touches.length === 0 ? (
-        <div className="border border-stone-200 rounded-xl p-10 text-center">
+        <div className="border border-[#E8EAEE] rounded-xl p-10 text-center">
           <Inbox className="w-8 h-8 text-stone-300 mx-auto mb-3" />
-          <p className="text-stone-600 text-sm font-medium mb-1">The queue is clear</p>
-          <p className="text-stone-500 text-sm">
+          <p className="text-[#666D7A] text-sm font-medium mb-1">The queue is clear</p>
+          <p className="text-[#666D7A] text-sm">
             New scorecard leads get their first draft a day after they complete it. Approved and skipped drafts drop off this list.
           </p>
         </div>
@@ -79,19 +79,19 @@ export default async function OutreachQueuePage() {
             const name = lead?.name || 'Unknown lead'
             const bodyState = lead?.scorecard_body_state
             return (
-              <div key={touch.id} className="border border-stone-200 rounded-xl overflow-hidden">
-                <div className="flex items-center justify-between gap-3 px-5 py-3 bg-stone-50 border-b border-stone-200">
+              <div key={touch.id} className="border border-[#E8EAEE] rounded-xl overflow-hidden">
+                <div className="flex items-center justify-between gap-3 px-5 py-3 bg-[#FBFCFD] border-b border-[#E8EAEE]">
                   <div className="flex items-center gap-3 min-w-0">
-                    <Link href={`/dashboard/leads/${touch.lead_id}`} className="font-semibold text-stone-900 hover:text-blue-600 truncate">
+                    <Link href={`/dashboard/leads/${touch.lead_id}`} className="font-semibold text-[#141821] hover:text-blue-600 truncate">
                       {name}
                     </Link>
                     {bodyState && (
-                      <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full border ${stateChip[bodyState] ?? 'bg-stone-100 text-stone-600 border-stone-200'}`}>
+                      <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full border ${stateChip[bodyState] ?? 'bg-[#F4F6F9] text-[#666D7A] border-[#E8EAEE]'}`}>
                         {bodyState.replace(' State', '')}
                       </span>
                     )}
                   </div>
-                  <span className="text-xs font-medium text-stone-500 whitespace-nowrap">
+                  <span className="text-[12.5px] font-medium text-[#666D7A] whitespace-nowrap">
                     {stepLabel[touch.step_key] ?? touch.step_key}
                   </span>
                 </div>

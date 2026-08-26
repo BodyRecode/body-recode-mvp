@@ -56,7 +56,7 @@ export default function ProductCategoryEditor({
       value={value}
       disabled={pending}
       onChange={(e) => save(e.target.value as Category)}
-      className="bg-stone-100 border border-stone-200 hover:border-stone-300 text-xs text-stone-700 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-blue-500/50 disabled:opacity-50"
+      className="bg-[#F4F6F9] border border-[#E8EAEE] hover:border-[#E8EAEE] text-[12.5px] text-[#141821] rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-blue-500/50 disabled:opacity-50"
     >
       {CATEGORY_OPTIONS.map(opt => (
         <option key={opt.value} value={opt.value}>{opt.label}</option>

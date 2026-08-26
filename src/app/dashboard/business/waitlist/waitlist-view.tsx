@@ -103,22 +103,22 @@ export default function WaitlistView({ rows }: { rows: WaitlistRow[] }) {
             className={`text-left rounded-xl border p-4 transition ${
               activeTab === t.key
                 ? 'border-stone-900 bg-white shadow-sm'
-                : 'border-stone-200 bg-white hover:border-stone-300'
+                : 'border-[#E8EAEE] bg-white hover:border-[#E8EAEE]'
             }`}
           >
             <div className="flex items-center justify-between mb-2">
               <span
-                className="text-[10px] font-bold uppercase tracking-widest"
+                className="text-[11.5px] font-medium"
                 style={{ color: t.accent }}
               >
                 {t.label}
               </span>
-              <Users className="w-3.5 h-3.5 text-stone-400" />
+              <Users className="w-3.5 h-3.5 text-[#98A0AD]" />
             </div>
-            <p className="text-2xl font-black text-stone-900 leading-none">
+            <p className="text-2xl font-black text-[#141821] leading-none">
               {t.count}
             </p>
-            <p className="text-xs text-stone-500 mt-1">
+            <p className="text-[12.5px] text-[#666D7A] mt-1">
               {t.count === 1 ? '1 signup' : `${t.count} signups`}
             </p>
           </button>
@@ -128,12 +128,12 @@ export default function WaitlistView({ rows }: { rows: WaitlistRow[] }) {
       {/* Active tab header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h2 className="text-lg font-bold text-stone-900">
+          <h2 className="text-lg font-bold text-[#141821]">
             {activeTab === 'all'
               ? 'All product waitlist signups'
               : `${PRODUCT_META[activeTab].label} waitlist`}
           </h2>
-          <p className="text-sm text-stone-500 mt-1">
+          <p className="text-sm text-[#666D7A] mt-1">
             {visible.length === 0
               ? 'No signups yet.'
               : `${visible.length} ${visible.length === 1 ? 'lead' : 'leads'} waiting for launch. Sorted newest first.`}
@@ -142,7 +142,7 @@ export default function WaitlistView({ rows }: { rows: WaitlistRow[] }) {
         {visible.length > 0 && (
           <button
             onClick={() => downloadCsv(visible, csvName)}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-stone-300 bg-white text-sm font-semibold text-stone-700 hover:border-stone-400 transition"
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-[#E8EAEE] bg-white text-sm font-semibold text-[#141821] hover:border-[#CFD4DC] transition"
           >
             <Download className="w-3.5 h-3.5" />
             Export CSV
@@ -152,48 +152,48 @@ export default function WaitlistView({ rows }: { rows: WaitlistRow[] }) {
 
       {/* Table */}
       {visible.length === 0 ? (
-        <div className="rounded-xl border border-stone-200 bg-stone-50 p-8 text-center">
-          <Users className="w-6 h-6 text-stone-400 mx-auto mb-2" />
-          <p className="text-sm font-semibold text-stone-700">No signups in this segment yet</p>
-          <p className="text-xs text-stone-500 mt-1">
+        <div className="rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] p-8 text-center">
+          <Users className="w-6 h-6 text-[#98A0AD] mx-auto mb-2" />
+          <p className="text-sm font-semibold text-[#141821]">No signups in this segment yet</p>
+          <p className="text-[12.5px] text-[#666D7A] mt-1">
             Rows appear here as soon as leads click &quot;Join the waitlist&quot; on the scorecard result page.
           </p>
         </div>
       ) : (
-        <div className="rounded-xl border border-stone-200 bg-white overflow-hidden">
+        <div className="rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-stone-50 border-b border-stone-200">
-                <th className="text-left text-[11px] font-bold uppercase tracking-widest text-stone-500 px-4 py-3">Email</th>
-                <th className="text-left text-[11px] font-bold uppercase tracking-widest text-stone-500 px-4 py-3">Name</th>
-                <th className="text-left text-[11px] font-bold uppercase tracking-widest text-stone-500 px-4 py-3">Phone</th>
-                <th className="text-left text-[11px] font-bold uppercase tracking-widest text-stone-500 px-4 py-3">Sex</th>
-                <th className="text-left text-[11px] font-bold uppercase tracking-widest text-stone-500 px-4 py-3">Body state</th>
+              <tr className="bg-[#FBFCFD] border-b border-[#E8EAEE]">
+                <th className="text-left text-[12px] font-medium text-[#666D7A] px-4 py-3">Email</th>
+                <th className="text-left text-[12px] font-medium text-[#666D7A] px-4 py-3">Name</th>
+                <th className="text-left text-[12px] font-medium text-[#666D7A] px-4 py-3">Phone</th>
+                <th className="text-left text-[12px] font-medium text-[#666D7A] px-4 py-3">Sex</th>
+                <th className="text-left text-[12px] font-medium text-[#666D7A] px-4 py-3">Body state</th>
                 {activeTab === 'all' && (
-                  <th className="text-left text-[11px] font-bold uppercase tracking-widest text-stone-500 px-4 py-3">Product</th>
+                  <th className="text-left text-[12px] font-medium text-[#666D7A] px-4 py-3">Product</th>
                 )}
-                <th className="text-left text-[11px] font-bold uppercase tracking-widest text-stone-500 px-4 py-3">Source</th>
-                <th className="text-left text-[11px] font-bold uppercase tracking-widest text-stone-500 px-4 py-3">Joined</th>
+                <th className="text-left text-[12px] font-medium text-[#666D7A] px-4 py-3">Source</th>
+                <th className="text-left text-[12px] font-medium text-[#666D7A] px-4 py-3">Joined</th>
               </tr>
             </thead>
             <tbody>
               {visible.map((r, i) => {
                 const meta = PRODUCT_META[r.product]
                 return (
-                  <tr key={r.id} className={i % 2 === 0 ? 'bg-white' : 'bg-stone-50/50'}>
-                    <td className="px-4 py-3 text-stone-900 font-medium">
+                  <tr key={r.id} className={i % 2 === 0 ? 'bg-white' : 'bg-[#FBFCFD]/50'}>
+                    <td className="px-4 py-3 text-[#141821] font-medium">
                       <div className="flex items-center gap-2">
-                        <Mail className="w-3 h-3 text-stone-400 flex-shrink-0" />
+                        <Mail className="w-3 h-3 text-[#98A0AD] flex-shrink-0" />
                         <span>{r.email}</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-stone-700">{[r.first_name, r.last_name].filter(Boolean).join(' ') || '-'}</td>
-                    <td className="px-4 py-3 text-stone-600 text-xs">{r.phone ?? '-'}</td>
-                    <td className="px-4 py-3 text-stone-600 text-xs capitalize">{r.gender ? r.gender.replace(/_/g, ' ') : '-'}</td>
-                    <td className="px-4 py-3 text-stone-700">
+                    <td className="px-4 py-3 text-[#141821]">{[r.first_name, r.last_name].filter(Boolean).join(' ') || '-'}</td>
+                    <td className="px-4 py-3 text-[#666D7A] text-[12.5px]">{r.phone ?? '-'}</td>
+                    <td className="px-4 py-3 text-[#666D7A] text-[12.5px] capitalize">{r.gender ? r.gender.replace(/_/g, ' ') : '-'}</td>
+                    <td className="px-4 py-3 text-[#141821]">
                       {r.body_state ? (
                         <div className="inline-flex items-center gap-1.5">
-                          <MapPin className="w-3 h-3 text-stone-400" />
+                          <MapPin className="w-3 h-3 text-[#98A0AD]" />
                           {r.body_state}
                         </div>
                       ) : '-'}
@@ -201,17 +201,17 @@ export default function WaitlistView({ rows }: { rows: WaitlistRow[] }) {
                     {activeTab === 'all' && (
                       <td className="px-4 py-3">
                         <span
-                          className="inline-block text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded"
+                          className="inline-block text-[11.5px] font-medium px-2 py-1 rounded"
                           style={{ color: meta.accent, background: meta.bg }}
                         >
                           {r.product}
                         </span>
                       </td>
                     )}
-                    <td className="px-4 py-3 text-stone-600 text-xs">{r.source ?? '-'}</td>
-                    <td className="px-4 py-3 text-stone-600 text-xs">
+                    <td className="px-4 py-3 text-[#666D7A] text-[12.5px]">{r.source ?? '-'}</td>
+                    <td className="px-4 py-3 text-[#666D7A] text-[12.5px]">
                       <div className="flex items-center gap-1.5">
-                        <Calendar className="w-3 h-3 text-stone-400" />
+                        <Calendar className="w-3 h-3 text-[#98A0AD]" />
                         {fmtDate(r.created_at)}
                       </div>
                     </td>

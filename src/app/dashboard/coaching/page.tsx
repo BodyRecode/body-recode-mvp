@@ -179,7 +179,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
       {/* Filters */}
       <div className="flex items-center gap-3 mb-7 flex-wrap">
-        <div className="inline-flex items-center bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg p-0.5">
+        <div className="inline-flex items-center bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg p-0.5">
           {[
             { label: 'All', value: 'all' },
             { label: 'Face-to-Face', value: 'face_to_face' },
@@ -189,7 +189,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               key={opt.value}
               href={buildHref({ type: opt.value === 'all' ? null : opt.value })}
               className={`text-[12px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
-                typeFilter === opt.value ? 'bg-[#1B6DFC] text-[#FFFFFF]' : 'text-[#6B6B6B] hover:text-[#1A1A1A]'
+                typeFilter === opt.value ? 'bg-[#1B6DFC] text-[#FFFFFF]' : 'text-[#666D7A] hover:text-[#141821]'
               }`}
             >
               {opt.label}
@@ -197,9 +197,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           ))}
         </div>
 
-        <div className="h-4 w-px bg-[#E5E5E5]" />
+        <div className="h-4 w-px bg-[#EFF1F4]" />
 
-        <div className="inline-flex items-center bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg p-0.5">
+        <div className="inline-flex items-center bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg p-0.5">
           {[
             { label: 'Active', inactive: false },
             { label: 'Inactive', inactive: true },
@@ -208,7 +208,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               key={opt.label}
               href={buildHref({ view: opt.inactive ? 'inactive' : null })}
               className={`text-[12px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
-                showInactive === opt.inactive ? 'bg-[#E5E5E5] text-[#1A1A1A]' : 'text-[#6B6B6B] hover:text-[#1A1A1A]'
+                showInactive === opt.inactive ? 'bg-[#EFF1F4] text-[#141821]' : 'text-[#666D7A] hover:text-[#141821]'
               }`}
             >
               {opt.label}
@@ -220,7 +220,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       {/* Action queue - clients needing attention */}
       {clientsProcessed.some(c => c.rebuildTraining || c.rebuildNutrition) && (
         <div
-          className="mb-5 bg-[#FFFFFF] border rounded-2xl overflow-hidden"
+          className="mb-5 bg-[#FFFFFF] border rounded-xl overflow-hidden"
           style={{ borderColor: red.ring }}
         >
           <div
@@ -229,22 +229,22 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           >
             <AlertTriangle size={14} style={{ color: red.text }} />
             <p
-              className="text-[10px] font-bold uppercase"
-              style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em', color: red.text }}
+              className="text-[11.5px] font-medium"
+              style={{ color: red.text }}
             >
               Needs attention
             </p>
           </div>
-          <div className="divide-y divide-[#E5E5E5]">
+          <div className="divide-y divide-[#EFF1F4]">
             {clientsProcessed.filter(c => c.rebuildTraining || c.rebuildNutrition).map(client => (
               <div key={client.id} className="px-4 py-3 flex items-center justify-between gap-4">
                 <div className="min-w-0 flex items-center gap-3">
                   <Avatar name={client.name} size={31} />
                   <div className="min-w-0">
-                  <p className="text-[14px] font-semibold text-[#1A1A1A] truncate">{client.name}</p>
+                  <p className="text-[14px] font-semibold text-[#141821] truncate">{client.name}</p>
                   <div className="flex items-center gap-2 mt-0.5">
                     {client.rebuildTraining && <span className="text-[12px]" style={{ color: red.text }}>Training: Rebuild</span>}
-                    {client.rebuildTraining && client.rebuildNutrition && <span className="text-[#E5E5E5] text-xs">·</span>}
+                    {client.rebuildTraining && client.rebuildNutrition && <span className="text-[#E5E5E5] text-[12.5px]">·</span>}
                     {client.rebuildNutrition && <span className="text-[12px]" style={{ color: red.text }}>Nutrition: Rebuild</span>}
                   </div>
                   </div>
@@ -304,11 +304,11 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       {/* Drift advisory banner - lowest priority */}
       {driftAdvisoryCount > 0 && (
         <div
-          className="mb-3 bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-4 py-3 flex items-center gap-3"
+          className="mb-3 bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-4 py-3 flex items-center gap-3"
         >
-          <ArrowUpRight size={14} className="text-[#6B6B6B]" />
-          <p className="text-[13px] text-[#6B6B6B]">
-            <span className="font-semibold text-[#1A1A1A]">{driftAdvisoryCount} client{driftAdvisoryCount > 1 ? 's' : ''}</span> with drift advisories this week.
+          <ArrowUpRight size={14} className="text-[#666D7A]" />
+          <p className="text-[13px] text-[#666D7A]">
+            <span className="font-semibold text-[#141821]">{driftAdvisoryCount} client{driftAdvisoryCount > 1 ? 's' : ''}</span> with drift advisories this week.
           </p>
         </div>
       )}
@@ -338,7 +338,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       )}
 
       {clientsProcessed.length === 0 ? (
-        <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl">
+        <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl">
           <EmptyState icon={Users} title="No clients yet" hint="Add your first client to get started" />
         </div>
       ) : (
@@ -347,32 +347,32 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
             <Link
               key={client.id}
               href={`/dashboard/clients/${client.id}`}
-              className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-5 py-4 flex items-center justify-between hover:border-[#D4D4D4] transition-colors group"
+              className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-5 py-4 flex items-center justify-between hover:border-[#CFD4DC] transition-colors group"
             >
               <div className="flex items-center gap-4 min-w-0">
                 <Avatar name={client.name} size={36} />
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-[14px] font-medium text-[#1A1A1A] group-hover:text-[#1B6DFC] transition-colors truncate">{client.name}</span>
+                    <span className="text-[14px] font-medium text-[#141821] group-hover:text-[#1B6DFC] transition-colors truncate">{client.name}</span>
                     {client.latestCffs?.reassessment_flagged && (
                       <AlertTriangle size={13} style={{ color: amber.text }} />
                     )}
                   </div>
                   <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                    <p className="text-[11px] text-[#999999]">
+                    <p className="text-[11px] text-[#98A0AD]">
                       Added {formatDate(client.created_at)}
                     </p>
                     {client.weekNumber !== null && client.daysUntilStart !== null && client.daysUntilStart <= 0 && (
                       <>
-                        <span className="text-[#E5E5E5] text-xs">·</span>
-                        <span className="text-[11px] text-[#6B6B6B] font-medium">Week {client.weekNumber}</span>
-                        <span className="text-[#E5E5E5] text-xs">·</span>
+                        <span className="text-[#E5E5E5] text-[12.5px]">·</span>
+                        <span className="text-[11px] text-[#666D7A] font-medium">Week {client.weekNumber}</span>
+                        <span className="text-[#E5E5E5] text-[12.5px]">·</span>
                         <span
-                          className={`text-[11px] font-semibold ${client.hasFormA ? 'text-[#1B6DFC]' : 'text-[#999999]'}`}
+                          className={`text-[11px] font-semibold ${client.hasFormA ? 'text-[#1B6DFC]' : 'text-[#98A0AD]'}`}
                           style={{ fontFamily: MONO_FONT }}
                         >A</span>
                         <span
-                          className={`text-[11px] font-semibold ${client.hasFormB ? 'text-[#1B6DFC]' : 'text-[#999999]'}`}
+                          className={`text-[11px] font-semibold ${client.hasFormB ? 'text-[#1B6DFC]' : 'text-[#98A0AD]'}`}
                           style={{ fontFamily: MONO_FONT }}
                         >B</span>
                       </>
@@ -384,8 +384,8 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               <div className="flex items-center gap-3 shrink-0 ml-3">
                 {client.readiness?.status === 'regression' && (
                   <span
-                    className="text-[10px] font-semibold px-2.5 py-1 rounded-full border uppercase inline-flex items-center gap-1"
-                    style={{ fontFamily: MONO_FONT, letterSpacing: '0.08em', color: red.text, borderColor: red.ring, background: red.bg }}
+                    className="text-[10px] font-semibold px-2.5 py-1 rounded-full border inline-flex items-center gap-1"
+                    style={{ color: red.text, borderColor: red.ring, background: red.bg }}
                     title={client.readiness.drift.filter((d: { severity: string }) => d.severity === 'high').map((d: { message: string }) => d.message).join(' · ')}
                   >
                     <Activity size={10} /> Regression
@@ -393,8 +393,8 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                 )}
                 {client.readiness?.status === 'reassessment' && (
                   <span
-                    className="text-[10px] font-semibold px-2.5 py-1 rounded-full border uppercase inline-flex items-center gap-1"
-                    style={{ fontFamily: MONO_FONT, letterSpacing: '0.08em', color: amber.text, borderColor: amber.ring, background: amber.bg }}
+                    className="text-[10px] font-semibold px-2.5 py-1 rounded-full border inline-flex items-center gap-1"
+                    style={{ color: amber.text, borderColor: amber.ring, background: amber.bg }}
                     title={client.readiness.reassessmentReasons.map((r: { message: string }) => r.message).join(' · ')}
                   >
                     <RefreshCw size={10} /> Reassess
@@ -402,8 +402,8 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                 )}
                 {client.readiness?.status === 'advisory' && (
                   <span
-                    className="text-[10px] font-semibold px-2 py-0.5 rounded-full border uppercase"
-                    style={{ fontFamily: MONO_FONT, letterSpacing: '0.08em', color: '#6B6B6B', borderColor: '#E5E5E5', background: '#FFFFFF' }}
+                    className="text-[10px] font-semibold px-2 py-0.5 rounded-full border"
+                    style={{ color: '#6B6B6B', borderColor: '#E5E5E5', background: '#FFFFFF' }}
                     title={client.readiness.drift.map((d: { message: string }) => d.message).join(' · ')}
                   >
                     Drift
@@ -411,8 +411,8 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                 )}
                 {client.upgradeCandidate && (
                   <span
-                    className="text-[10px] font-semibold px-2.5 py-1 rounded-full border uppercase"
-                    style={{ fontFamily: MONO_FONT, letterSpacing: '0.08em', color: teal.text, borderColor: teal.ring, background: teal.bg }}
+                    className="text-[10px] font-semibold px-2.5 py-1 rounded-full border"
+                    style={{ color: teal.text, borderColor: teal.ring, background: teal.bg }}
                   >
                     Upgrade
                   </span>
@@ -450,11 +450,11 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                     {client.latestCffs.body_state_classification}
                   </span>
                 ) : (
-                  <span className="text-[11px] text-[#999999] px-2.5 py-1 rounded-full border border-[#E5E5E5]">
+                  <span className="text-[11px] text-[#98A0AD] px-2.5 py-1 rounded-full border border-[#E8EAEE]">
                     No CFFS
                   </span>
                 )}
-                <ChevronRight size={16} className="text-[#999999] group-hover:text-[#1B6DFC] transition-colors" />
+                <ChevronRight size={16} className="text-[#98A0AD] group-hover:text-[#1B6DFC] transition-colors" />
               </div>
             </Link>
           ))}

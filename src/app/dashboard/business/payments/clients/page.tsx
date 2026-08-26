@@ -41,14 +41,14 @@ const TONE_CLASS = {
   good:  'text-blue-500',
   warn:  'text-amber-700',
   bad:   'text-red-700',
-  muted: 'text-stone-500',
+  muted: 'text-[#666D7A]',
 } as const
 
 const TONE_BG = {
   good:  'bg-blue-50',
   warn:  'bg-amber-50',
   bad:   'bg-red-50',
-  muted: 'bg-stone-200/40',
+  muted: 'bg-[#EFF1F4]/40',
 } as const
 
 function formatAud(amount: number | null | undefined): string {
@@ -176,15 +176,15 @@ export default async function ClientStatusPage() {
   return (
     <div className="max-w-6xl">
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold mb-1">Payments</h1>
-        <p className="text-stone-600 text-sm">Products, invoices, and payment history</p>
+        <h1 className="text-[22px] font-semibold tracking-[-0.025em] mb-1">Payments</h1>
+        <p className="text-[#666D7A] text-sm">Products, invoices, and payment history</p>
       </div>
 
       <PaymentsNav />
 
       <div className="mb-4">
-        <h2 className="text-lg font-semibold text-[#1A1A1A] mb-1">Client Status</h2>
-        <p className="text-stone-500 text-sm">Every client and their payment plan health. Sorted with attention-needed rows on top.</p>
+        <h2 className="text-lg font-semibold text-[#141821] mb-1">Client Status</h2>
+        <p className="text-[#666D7A] text-sm">Every client and their payment plan health. Sorted with attention-needed rows on top.</p>
       </div>
 
       {/* Counts */}
@@ -196,8 +196,8 @@ export default async function ClientStatusPage() {
       </div>
 
       {/* Table */}
-      <div className="border border-stone-200 rounded-xl overflow-hidden">
-        <div className="grid grid-cols-[2fr_1.2fr_1fr_1.3fr_0.9fr_0.9fr] gap-3 px-4 py-3 bg-stone-100 border-b border-stone-200 text-[10px] font-semibold text-stone-500 uppercase tracking-wider">
+      <div className="border border-[#E8EAEE] rounded-xl overflow-hidden">
+        <div className="grid grid-cols-[2fr_1.2fr_1fr_1.3fr_0.9fr_0.9fr] gap-3 px-4 py-3 bg-[#F4F6F9] border-b border-[#E8EAEE] text-[10px] font-semibold text-[#666D7A]">
           <div>Client</div>
           <div>Plan</div>
           <div>Foundational Read</div>
@@ -206,7 +206,7 @@ export default async function ClientStatusPage() {
           <div className="text-right">Lifetime PC</div>
         </div>
         {rows.length === 0 ? (
-          <div className="p-8 text-center text-stone-500 text-sm">No clients yet.</div>
+          <div className="p-8 text-center text-[#666D7A] text-sm">No clients yet.</div>
         ) : (
           rows.map(r => {
             const meta = STATUS_META[r.sub]
@@ -214,46 +214,46 @@ export default async function ClientStatusPage() {
               <Link
                 key={r.id}
                 href={`/dashboard/clients/${r.id}#payments`}
-                className="grid grid-cols-[2fr_1.2fr_1fr_1.3fr_0.9fr_0.9fr] gap-3 px-4 py-3 border-b border-stone-200 last:border-b-0 hover:bg-stone-100/50 transition-colors items-center"
+                className="grid grid-cols-[2fr_1.2fr_1fr_1.3fr_0.9fr_0.9fr] gap-3 px-4 py-3 border-b border-[#E8EAEE] last:border-b-0 hover:bg-[#F4F6F9]/50 transition-colors items-center"
               >
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-[#1A1A1A] truncate">{r.name}</p>
+                  <p className="text-sm font-medium text-[#141821] truncate">{r.name}</p>
                   {!r.stripeLinked && (
                     <p className="text-[10px] text-amber-700/80 mt-0.5">No Stripe link</p>
                   )}
                 </div>
-                <div className="text-xs text-stone-600 truncate">{r.planName}</div>
-                <div className="text-xs">
+                <div className="text-[12.5px] text-[#666D7A] truncate">{r.planName}</div>
+                <div className="text-[12.5px]">
                   {r.commencementPaid ? (
                     <span className="text-blue-500">Paid</span>
                   ) : (
                     <span className="text-amber-700">Not paid</span>
                   )}
                 </div>
-                <div className="text-xs min-w-0">
+                <div className="text-[12.5px] min-w-0">
                   <div className="flex items-center gap-1.5">
                     <span className={`inline-block w-1.5 h-1.5 rounded-full ${TONE_BG[meta.tone]}`} />
                     <span className={`${TONE_CLASS[meta.tone]} font-medium`}>{meta.label}</span>
                   </div>
                   {r.sub !== 'none' && (
-                    <p className="text-stone-500 text-[11px] mt-0.5 truncate">
+                    <p className="text-[#666D7A] text-[11px] mt-0.5 truncate">
                       {formatAud(r.subAmount)}{r.subInterval ? `/${r.subInterval}` : ''}
                       {r.nextCharge && ['active', 'trialing', 'past_due'].includes(r.sub) && (
-                        <span className="text-stone-400"> · next {formatDate(r.nextCharge)}</span>
+                        <span className="text-[#98A0AD]"> · next {formatDate(r.nextCharge)}</span>
                       )}
                       {r.cancelAtPeriodEnd && <span className="text-amber-700"> · cancels</span>}
                     </p>
                   )}
                 </div>
-                <div className="text-xs text-stone-600 text-right">{formatDate(r.lastPaid)}</div>
-                <div className="text-xs text-[#1A1A1A] text-right font-medium">{formatAud(r.lifetimePC)}</div>
+                <div className="text-[12.5px] text-[#666D7A] text-right">{formatDate(r.lastPaid)}</div>
+                <div className="text-[12.5px] text-[#141821] text-right font-medium">{formatAud(r.lifetimePC)}</div>
               </Link>
             )
           })
         )}
       </div>
 
-      <p className="text-xs text-stone-400 mt-3">
+      <p className="text-[12.5px] text-[#98A0AD] mt-3">
         Click any row to jump to that client&apos;s Payments section. Status is cached from Stripe; use the &quot;Refresh from Stripe&quot; button on a client to pull live state.
       </p>
     </div>
@@ -262,10 +262,10 @@ export default async function ClientStatusPage() {
 
 function CountCard({ label, value, icon: Icon, tone }: { label: string; value: number; icon: typeof CheckCircle2; tone: 'good' | 'warn' | 'bad' | 'muted' }) {
   return (
-    <div className="bg-stone-100 border border-stone-200 rounded-xl p-4">
+    <div className="bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4">
       <div className="flex items-center gap-2 mb-2">
         <Icon size={13} className={TONE_CLASS[tone]} />
-        <p className="text-[10px] font-semibold text-stone-500 uppercase tracking-wider">{label}</p>
+        <p className="text-[10px] font-semibold text-[#666D7A]">{label}</p>
       </div>
       <p className={`text-2xl font-bold ${TONE_CLASS[tone]}`}>{value}</p>
     </div>

@@ -161,7 +161,7 @@ export default async function NutritionEngineHealthPage({
       {/* Filter bar */}
       <div className="mb-6 flex flex-wrap items-center gap-3">
         <div className="flex items-center gap-1.5">
-          <span className="text-[10px] font-bold text-[#999999] uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>Window</span>
+          <span className="text-[10px] font-medium text-[#98A0AD]">Window</span>
           {WINDOWS.map(w => (
             <Link
               key={w.value}
@@ -169,7 +169,7 @@ export default async function NutritionEngineHealthPage({
               className={`px-2.5 py-1 text-xs rounded-md border transition-colors ${
                 w.value === days
                   ? 'bg-[#1B6DFC] border-[#1B6DFC] text-white'
-                  : 'border-stone-300 text-stone-600 hover:border-stone-500'
+                  : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
               }`}
             >
               {w.label}
@@ -178,13 +178,13 @@ export default async function NutritionEngineHealthPage({
         </div>
         {doctrineVersions.length > 0 && (
           <div className="flex items-center gap-1.5 flex-wrap">
-            <span className="text-[10px] font-bold text-[#999999] uppercase" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>Doctrine</span>
+            <span className="text-[10px] font-medium text-[#98A0AD]">Doctrine</span>
             <Link
               href={filterHref(undefined, '')}
               className={`px-2.5 py-1 text-xs rounded-md border transition-colors ${
                 !doctrineParam
                   ? 'bg-[#1B6DFC] border-[#1B6DFC] text-white'
-                  : 'border-stone-300 text-stone-600 hover:border-stone-500'
+                  : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
               }`}
             >
               All
@@ -196,7 +196,7 @@ export default async function NutritionEngineHealthPage({
                 className={`px-2.5 py-1 text-xs rounded-md border font-mono transition-colors ${
                   v === doctrineParam
                     ? 'bg-[#1B6DFC] border-[#1B6DFC] text-white'
-                    : 'border-stone-300 text-stone-600 hover:border-stone-500'
+                    : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
                 }`}
               >
                 v{v}
@@ -219,49 +219,49 @@ export default async function NutritionEngineHealthPage({
         <>
           {/* Headline numbers */}
           <Card>
-            <p className="text-[10px] font-bold text-[#999999] uppercase mb-4" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>
+            <p className="text-[10px] font-medium text-[#98A0AD] mb-4">
               Last {days} days · {doctrineParam ? `doctrine v${doctrineParam}` : 'all doctrine versions'}
             </p>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               <div>
-                <p className="text-2xl font-bold text-[#1A1A1A] tabular-nums">{totalRequests.toLocaleString()}</p>
-                <p className="text-[11px] text-stone-500 mt-0.5">Total requests</p>
+                <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em] tabular-nums">{totalRequests.toLocaleString()}</p>
+                <p className="text-[11px] text-[#666D7A] mt-0.5">Total requests</p>
               </div>
               <div>
                 <p className="text-2xl font-bold text-emerald-600 tabular-nums">{pct(passedFirst)}</p>
-                <p className="text-[11px] text-stone-500 mt-0.5">Passed first-pass Haiku</p>
+                <p className="text-[11px] text-[#666D7A] mt-0.5">Passed first-pass Haiku</p>
               </div>
               <div>
                 <p className="text-2xl font-bold text-blue-600 tabular-nums">{pct(passedRetry + sonnetSucceeded)}</p>
-                <p className="text-[11px] text-stone-500 mt-0.5">Passed on retry / Sonnet</p>
+                <p className="text-[11px] text-[#666D7A] mt-0.5">Passed on retry / Sonnet</p>
               </div>
               <div>
                 <p className="text-2xl font-bold text-amber-600 tabular-nums">{pct(sonnetFailed)}</p>
-                <p className="text-[11px] text-stone-500 mt-0.5">Sonnet fell back to Haiku</p>
+                <p className="text-[11px] text-[#666D7A] mt-0.5">Sonnet fell back to Haiku</p>
               </div>
               <div>
                 <p className="text-2xl font-bold text-red-600 tabular-nums">{pct(returned422)}</p>
-                <p className="text-[11px] text-stone-500 mt-0.5">Returned 422 to coach</p>
+                <p className="text-[11px] text-[#666D7A] mt-0.5">Returned 422 to coach</p>
               </div>
             </div>
           </Card>
 
           {/* Per-rule fire-rate */}
           <Card className="mt-4">
-            <p className="text-[10px] font-bold text-[#999999] uppercase mb-4" style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}>
+            <p className="text-[10px] font-medium text-[#98A0AD] mb-4">
               Validator rule fire rates · {ruleRows.length} {ruleRows.length === 1 ? 'rule' : 'rules'} fired in window
             </p>
             {ruleRows.length === 0 ? (
-              <p className="text-sm text-stone-500">No validator rules fired in this window. Every plan validated clean — possibly a sign the rules aren&apos;t tight enough, or the engine is in great shape.</p>
+              <p className="text-sm text-[#666D7A]">No validator rules fired in this window. Every plan validated clean — possibly a sign the rules aren&apos;t tight enough, or the engine is in great shape.</p>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="text-left border-b border-stone-200">
-                      <th className="pb-2 pr-3 text-[10px] font-bold text-stone-500 uppercase tracking-widest">Rule</th>
-                      <th className="pb-2 pr-3 text-[10px] font-bold text-stone-500 uppercase tracking-widest text-right">Requests</th>
-                      <th className="pb-2 pr-3 text-[10px] font-bold text-stone-500 uppercase tracking-widest text-right">Fire rate</th>
-                      <th className="pb-2 text-[10px] font-bold text-stone-500 uppercase tracking-widest">Doctrine intent</th>
+                    <tr className="text-left border-b border-[#E8EAEE]">
+                      <th className="pb-2 pr-3 text-[10px] font-medium text-[#666D7A]">Rule</th>
+                      <th className="pb-2 pr-3 text-[10px] font-medium text-[#666D7A] text-right">Requests</th>
+                      <th className="pb-2 pr-3 text-[10px] font-medium text-[#666D7A] text-right">Fire rate</th>
+                      <th className="pb-2 text-[10px] font-medium text-[#666D7A]">Doctrine intent</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -270,19 +270,19 @@ export default async function NutritionEngineHealthPage({
                       return (
                         <tr key={r.code} className={`border-b border-stone-100 ${isHigh ? 'bg-red-50/40' : ''}`}>
                           <td className="py-2.5 pr-3 align-top">
-                            <p className="font-mono text-xs text-stone-700">{r.code}</p>
+                            <p className="font-mono text-[12.5px] text-[#141821]">{r.code}</p>
                           </td>
-                          <td className="py-2.5 pr-3 align-top text-right tabular-nums text-stone-600">{r.requests_with_fire}</td>
-                          <td className={`py-2.5 pr-3 align-top text-right tabular-nums font-semibold ${isHigh ? 'text-red-700' : 'text-stone-700'}`}>
+                          <td className="py-2.5 pr-3 align-top text-right tabular-nums text-[#666D7A]">{r.requests_with_fire}</td>
+                          <td className={`py-2.5 pr-3 align-top text-right tabular-nums font-semibold ${isHigh ? 'text-red-700' : 'text-[#141821]'}`}>
                             {(r.fire_rate * 100).toFixed(1)}%
                           </td>
-                          <td className="py-2.5 align-top text-xs text-stone-500 leading-relaxed">{r.humanised}</td>
+                          <td className="py-2.5 align-top text-[12.5px] text-[#666D7A] leading-relaxed">{r.humanised}</td>
                         </tr>
                       )
                     })}
                   </tbody>
                 </table>
-                <p className="text-[11px] text-stone-400 mt-3">
+                <p className="text-[11px] text-[#98A0AD] mt-3">
                   Rows tinted red have fired in more than 25% of requests in this window. That&apos;s a signal the rule might be too tight or the prompt isn&apos;t guiding the model well enough; investigate before tuning. Run rates can also spike right after a doctrine bump because the prompt and validator drift apart momentarily.
                 </p>
               </div>

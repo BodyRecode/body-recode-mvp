@@ -10,8 +10,8 @@ export const revalidate = 0
 
 function BriefingSkeleton({ persona }: { persona: string }) {
   return (
-    <div className="mb-8 p-4 rounded-xl border border-stone-200 bg-stone-50 text-[13px] text-stone-500 leading-relaxed">
-      <strong className="text-stone-900">{persona}</strong> is drafting the briefing…
+    <div className="mb-8 p-4 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] text-[13px] text-[#666D7A] leading-relaxed">
+      <strong className="text-[#141821]">{persona}</strong> is drafting the briefing…
     </div>
   )
 }
@@ -32,25 +32,25 @@ export default async function CooPage() {
       </Suspense>
 
       <div className="mb-6 flex items-center gap-3">
-        <span className="text-[9px] font-bold uppercase tracking-widest bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Live data</span>
-        <span className="text-[11px] text-stone-500 font-mono">
+        <span className="text-[9px] font-medium bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Live data</span>
+        <span className="text-[11px] text-[#666D7A] font-mono">
           Snapshot at {new Date(snap.computedAt).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane' })} AEST
         </span>
       </div>
 
-      <h3 className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">Coaching capacity</h3>
-      <div className="mb-8 bg-white border border-stone-200 rounded-2xl p-5">
+      <h3 className="text-[11px] font-medium text-[#666D7A] mb-3">Coaching capacity</h3>
+      <div className="mb-8 bg-white border border-[#E8EAEE] rounded-xl p-5">
         <div className="flex items-baseline justify-between mb-3 gap-4 flex-wrap">
           <div>
-            <div className="text-[11px] font-bold text-stone-500 uppercase tracking-widest">
+            <div className="text-[11px] font-medium text-[#666D7A]">
               Active clients
             </div>
-            <div className="text-[28px] font-bold text-stone-900 mt-1 font-mono">
+            <div className="text-[28px] font-bold text-[#141821] mt-1 font-mono">
               {snap.activeClients ?? '—'} / {snap.capacityCap}
             </div>
           </div>
           <div className="text-right">
-            <div className="text-[11px] font-bold text-stone-500 uppercase tracking-widest">Fill</div>
+            <div className="text-[11px] font-medium text-[#666D7A]">Fill</div>
             <div
               className={`text-[28px] font-bold mt-1 font-mono ${
                 snap.capacityPct !== null && snap.capacityPct >= 90
@@ -65,7 +65,7 @@ export default async function CooPage() {
           </div>
         </div>
         {snap.capacityPct !== null && (
-          <div className="w-full h-2 bg-stone-100 rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-[#F4F6F9] rounded-full overflow-hidden">
             <div
               className={`h-full ${
                 snap.capacityPct >= 100
@@ -80,7 +80,7 @@ export default async function CooPage() {
         )}
       </div>
 
-      <h3 className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">Reading pipeline (pending coach approval)</h3>
+      <h3 className="text-[11px] font-medium text-[#666D7A] mb-3">Reading pipeline (pending coach approval)</h3>
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4">
         <QueueTile label="Foundational" value={snap.foundationalReadingsPending} />
         <QueueTile label="Program" value={snap.programReadingsPending} />
@@ -88,9 +88,9 @@ export default async function CooPage() {
         <QueueTile label="Medications" value={snap.medicationsReadingsPending} />
         <QueueTile label="Trajectory" value={snap.trajectoryReadingsPending} />
       </div>
-      <div className="mb-8 bg-white border border-stone-200 rounded-xl p-4">
+      <div className="mb-8 bg-white border border-[#E8EAEE] rounded-xl p-4">
         <div className="flex items-baseline justify-between gap-3">
-          <div className="text-[11px] font-bold text-stone-500 uppercase tracking-widest">Total pending</div>
+          <div className="text-[11px] font-medium text-[#666D7A]">Total pending</div>
           <div
             className={`text-[24px] font-bold font-mono ${
               (snap.totalPendingApproval ?? 0) > 15
@@ -105,7 +105,7 @@ export default async function CooPage() {
         </div>
       </div>
 
-      <h3 className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">Service delivery quality</h3>
+      <h3 className="text-[11px] font-medium text-[#666D7A] mb-3">Service delivery quality</h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <Metric
           label="Median TTFR (30d cohort)"
@@ -147,7 +147,7 @@ export default async function CooPage() {
         />
       </div>
 
-      <h3 className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">Onboarding pipeline</h3>
+      <h3 className="text-[11px] font-medium text-[#666D7A] mb-3">Onboarding pipeline</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         <Metric
           label="Clients in onboarding (30d)"
@@ -172,11 +172,11 @@ export default async function CooPage() {
         <Link href="/dashboard/coaching" className="text-blue-600 hover:text-blue-700 underline font-semibold">
           → Coaching queue
         </Link>
-        <span className="text-stone-400">·</span>
+        <span className="text-[#98A0AD]">·</span>
         <Link href="/dashboard/system-health" className="text-blue-600 hover:text-blue-700 underline font-semibold">
           → System health
         </Link>
-        <span className="text-stone-400">·</span>
+        <span className="text-[#98A0AD]">·</span>
         <Link href="/dashboard/feedback" className="text-blue-600 hover:text-blue-700 underline font-semibold">
           → Feedback triage
         </Link>
@@ -191,12 +191,12 @@ export default async function CooPage() {
 
 function QueueTile({ label, value }: { label: string; value: number | null }) {
   return (
-    <div className="bg-white border border-stone-200 rounded-xl p-3 text-center">
-      <div className="text-[9px] font-bold text-stone-500 uppercase tracking-widest mb-1">{label}</div>
+    <div className="bg-white border border-[#E8EAEE] rounded-xl p-3 text-center">
+      <div className="text-[9px] font-medium text-[#666D7A] mb-1">{label}</div>
       <div
         className={`text-[22px] font-bold font-mono ${
           value === null
-            ? 'text-stone-400'
+            ? 'text-[#98A0AD]'
             : value > 5
               ? 'text-amber-700'
               : value > 0
@@ -224,18 +224,18 @@ function Metric({
   large?: boolean
 }) {
   const valueColor = {
-    default: 'text-stone-900',
-    stone: 'text-stone-400',
+    default: 'text-[#141821]',
+    stone: 'text-[#98A0AD]',
     green: 'text-green-700',
     amber: 'text-amber-700',
     red: 'text-red-700',
   }[tone]
   const size = large ? 'text-[28px]' : 'text-[22px]'
   return (
-    <div className="bg-white border border-stone-200 rounded-2xl p-5">
-      <div className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-2">{label}</div>
+    <div className="bg-white border border-[#E8EAEE] rounded-xl p-5">
+      <div className="text-[11px] font-medium text-[#666D7A] mb-2">{label}</div>
       <div className={`${size} font-bold ${valueColor} mb-1 font-mono`}>{value}</div>
-      {hint && <div className="text-[11px] text-stone-500 leading-relaxed">{hint}</div>}
+      {hint && <div className="text-[11px] text-[#666D7A] leading-relaxed">{hint}</div>}
     </div>
   )
 }

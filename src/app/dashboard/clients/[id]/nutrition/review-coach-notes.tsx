@@ -27,14 +27,14 @@ export default function NutritionReviewCoachNotes({ reviewId, existingNotes }: {
     return (
       <div className="mt-2">
         {notes ? (
-          <div className="bg-stone-200/50 rounded-lg px-3 py-2 text-xs text-stone-700 leading-relaxed">
+          <div className="bg-[#EFF1F4]/50 rounded-lg px-3 py-2 text-[12.5px] text-[#141821] leading-relaxed">
             <span className="text-blue-500 font-semibold mr-1">Your note:</span>{notes}
-            <button onClick={() => setEditing(true)} className="ml-2 text-stone-500 hover:text-stone-700 underline text-[10px]">edit</button>
+            <button onClick={() => setEditing(true)} className="ml-2 text-[#666D7A] hover:text-[#141821] underline text-[10px]">edit</button>
           </div>
         ) : (
           <button
             onClick={() => setEditing(true)}
-            className="text-[11px] text-stone-400 hover:text-blue-500 transition-colors"
+            className="text-[11px] text-[#98A0AD] hover:text-blue-500 transition-colors"
           >
             + Add feedback for client
           </button>
@@ -51,20 +51,20 @@ export default function NutritionReviewCoachNotes({ reviewId, existingNotes }: {
         onChange={e => setNotes(e.target.value)}
         placeholder="Write feedback for the client. This will appear on their portal home page."
         rows={3}
-        className="w-full bg-stone-200 border border-stone-300 rounded-lg px-3 py-2 text-xs text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:border-blue-500 resize-none"
+        className="w-full bg-[#EFF1F4] border border-[#E8EAEE] rounded-lg px-3 py-2 text-[12.5px] text-[#141821] placeholder-stone-400 focus:outline-none focus:border-blue-500 resize-none"
         autoFocus
       />
       <div className="flex gap-2">
         <button
           onClick={handleSave}
           disabled={saving}
-          className="text-xs font-semibold bg-blue-500 hover:bg-blue-300 disabled:bg-stone-300 text-white px-3 py-1.5 rounded-lg transition-colors"
+          className="text-[12.5px] font-semibold bg-blue-500 hover:bg-blue-300 disabled:bg-stone-300 text-white px-3 py-1.5 rounded-lg transition-colors"
         >
           {saving ? 'Saving...' : 'Save'}
         </button>
         <button
           onClick={() => { setEditing(false); setNotes(existingNotes ?? '') }}
-          className="text-xs text-stone-500 hover:text-stone-700 px-3 py-1.5"
+          className="text-[12.5px] text-[#666D7A] hover:text-[#141821] px-3 py-1.5"
         >
           Cancel
         </button>

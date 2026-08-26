@@ -76,15 +76,15 @@ export function EditableSection({
   }
 
   return (
-    <div className="mb-4 bg-white border border-stone-200 rounded-xl overflow-hidden">
-      <div className="px-5 py-3 border-b border-stone-200 bg-stone-50 flex items-center justify-between gap-3">
-        <h3 className="text-[13px] font-bold text-stone-900 uppercase tracking-widest">{title}</h3>
+    <div className="mb-4 bg-white border border-[#E8EAEE] rounded-xl overflow-hidden">
+      <div className="px-5 py-3 border-b border-[#E8EAEE] bg-[#FBFCFD] flex items-center justify-between gap-3">
+        <h3 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">{title}</h3>
         {editing ? (
           <div className="flex items-center gap-2">
             <button
               onClick={cancel}
               disabled={saving}
-              className="text-[12px] px-3 py-1 rounded-md text-stone-600 hover:bg-stone-100 disabled:opacity-50"
+              className="text-[12px] px-3 py-1 rounded-md text-[#666D7A] hover:bg-[#F4F6F9] disabled:opacity-50"
             >
               Cancel
             </button>
@@ -120,14 +120,14 @@ export function EditableSection({
           const inputType = isColor ? 'color' : isNumeric ? 'number' : 'text'
           return (
             <div key={f.label} className="px-5 py-2.5 flex items-center gap-4">
-              <div className="w-52 shrink-0 text-[12px] text-stone-500 font-mono">{f.label}</div>
+              <div className="w-52 shrink-0 text-[12px] text-[#666D7A] font-mono">{f.label}</div>
               <div className="flex-1">
                 {editing ? (
                   isBool ? (
                     <select
                       value={values[f.label]}
                       onChange={(e) => setValues({ ...values, [f.label]: e.target.value })}
-                      className="w-full px-2 py-1 text-[13px] font-mono border border-stone-300 rounded focus:outline-none focus:border-blue-500"
+                      className="w-full px-2 py-1 text-[13px] font-mono border border-[#E8EAEE] rounded focus:outline-none focus:border-blue-500"
                     >
                       <option value="true">true</option>
                       <option value="false">false</option>
@@ -137,12 +137,12 @@ export function EditableSection({
                       type={inputType}
                       value={values[f.label]}
                       onChange={(e) => setValues({ ...values, [f.label]: e.target.value })}
-                      className={`px-2 py-1 text-[13px] font-mono border border-stone-300 rounded focus:outline-none focus:border-blue-500 ${isColor ? 'w-24 h-8 p-1' : 'w-full'}`}
+                      className={`px-2 py-1 text-[13px] font-mono border border-[#E8EAEE] rounded focus:outline-none focus:border-blue-500 ${isColor ? 'w-24 h-8 p-1' : 'w-full'}`}
                     />
                   )
                 ) : (
-                  <div className="text-[13px] text-stone-900 font-mono break-all">
-                    {f.value || <span className="text-stone-400 italic">(empty)</span>}
+                  <div className="text-[13px] text-[#141821] font-mono break-all">
+                    {f.value || <span className="text-[#98A0AD] italic">(empty)</span>}
                   </div>
                 )}
               </div>

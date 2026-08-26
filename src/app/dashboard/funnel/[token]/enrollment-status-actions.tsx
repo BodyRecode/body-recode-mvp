@@ -40,7 +40,7 @@ export default function EnrollmentStatusActions({ token, status }: { token: stri
       <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 flex items-center justify-between gap-3">
         <div>
           <p className="text-sm font-bold text-amber-800">Enrollment deactivated</p>
-          <p className="text-xs text-amber-700 mt-1">Hidden from the Day 0 report and active funnel. Reactivate to restore it.</p>
+          <p className="text-[12.5px] text-amber-700 mt-1">Hidden from the Day 0 report and active funnel. Reactivate to restore it.</p>
         </div>
         <button
           onClick={() => setStatus('active')}
@@ -58,16 +58,16 @@ export default function EnrollmentStatusActions({ token, status }: { token: stri
     <button
       onClick={() => setStatus('inactive')}
       disabled={loading}
-      className="group w-full flex items-center justify-between rounded-xl border border-stone-200 bg-white p-4 hover:border-red-300 hover:bg-red-50 transition disabled:opacity-50 text-left"
+      className="group w-full flex items-center justify-between rounded-xl border border-[#E8EAEE] bg-white p-4 hover:border-red-300 hover:bg-red-50 transition disabled:opacity-50 text-left"
     >
       <div>
         <div className="flex items-center gap-2">
-          <Ban className="w-3.5 h-3.5 text-stone-400 group-hover:text-red-600 transition" />
-          <p className="text-sm font-bold text-stone-900 group-hover:text-red-700 transition">
+          <Ban className="w-3.5 h-3.5 text-[#98A0AD] group-hover:text-red-600 transition" />
+          <p className="text-sm font-bold text-[#141821] group-hover:text-red-700 transition">
             {loading ? 'Saving…' : 'Deactivate enrollment'}
           </p>
         </div>
-        <p className="text-xs text-stone-500 mt-1">Retire a duplicate or mistaken sign-up. Reversible, deletes nothing.</p>
+        <p className="text-[12.5px] text-[#666D7A] mt-1">Retire a duplicate or mistaken sign-up. Reversible, deletes nothing.</p>
       </div>
     </button>
   )

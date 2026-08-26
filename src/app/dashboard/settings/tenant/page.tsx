@@ -137,15 +137,15 @@ function StatusBanner({
   const toneStyles = {
     green: 'bg-green-50 border-green-200 text-green-900',
     amber: 'bg-amber-50 border-amber-200 text-amber-900',
-    stone: 'bg-stone-50 border-stone-200 text-stone-700',
+    stone: 'bg-[#FBFCFD] border-[#E8EAEE] text-[#141821]',
   }[status.tone]
 
   return (
     <div className={`mb-6 p-4 rounded-xl border ${toneStyles}`}>
       <div className="flex items-center gap-3 mb-1">
-        <span className="text-[11px] font-bold uppercase tracking-widest">{status.label}</span>
+        <span className="text-[12px] font-medium">{status.label}</span>
         <span className="text-[11px] font-mono opacity-70">tenant_id: {tenantId}</span>
-        {canEdit && <span className="text-[10px] font-bold uppercase tracking-widest bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">Editable</span>}
+        {canEdit && <span className="text-[11.5px] font-medium bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">Editable</span>}
       </div>
       <p className="text-[13px] leading-relaxed">{status.detail}</p>
     </div>
@@ -160,16 +160,16 @@ function ReadOnlyCard({
   fields: Array<{ label: string; value: string }>
 }) {
   return (
-    <div className="mb-4 bg-white border border-stone-200 rounded-xl overflow-hidden">
-      <div className="px-5 py-3 border-b border-stone-200 bg-stone-50">
-        <h3 className="text-[13px] font-bold text-stone-900 uppercase tracking-widest">{title}</h3>
+    <div className="mb-4 bg-white border border-[#E8EAEE] rounded-xl overflow-hidden">
+      <div className="px-5 py-3 border-b border-[#E8EAEE] bg-[#FBFCFD]">
+        <h3 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">{title}</h3>
       </div>
       <div className="divide-y divide-stone-100">
         {fields.map((f) => (
           <div key={f.label} className="px-5 py-3 flex items-baseline gap-4">
-            <div className="w-52 shrink-0 text-[12px] text-stone-500 font-mono">{f.label}</div>
-            <div className="flex-1 text-[13px] text-stone-900 font-mono break-all">
-              {f.value || <span className="text-stone-400 italic">(empty)</span>}
+            <div className="w-52 shrink-0 text-[12px] text-[#666D7A] font-mono">{f.label}</div>
+            <div className="flex-1 text-[13px] text-[#141821] font-mono break-all">
+              {f.value || <span className="text-[#98A0AD] italic">(empty)</span>}
             </div>
           </div>
         ))}

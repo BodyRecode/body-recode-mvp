@@ -42,11 +42,11 @@ function SourceItem({
   showCount?: boolean
 }) {
   return (
-    <div className="border border-[#E5E5E5] bg-[#FFFFFF] rounded-xl p-4">
+    <div className="border border-[#E8EAEE] bg-[#FFFFFF] rounded-xl p-4">
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="min-w-0">
-          <p className="text-[14px] font-semibold text-[#1A1A1A]">{label}</p>
-          <p className="text-[12px] text-[#999999] mt-0.5">{desc}</p>
+          <p className="text-[14px] font-semibold text-[#141821]">{label}</p>
+          <p className="text-[12px] text-[#98A0AD] mt-0.5">{desc}</p>
         </div>
         {showCount && (
           <Pill accent={count > 0 ? 'teal' : 'neutral'}>
@@ -56,7 +56,7 @@ function SourceItem({
       </div>
       <div className="flex items-center gap-2">
         <code
-          className="flex-1 text-[11px] text-[#1B6DFC] bg-[#FFFFFF] border border-[#E5E5E5] rounded-lg px-3 py-2 truncate"
+          className="flex-1 text-[11px] text-[#1B6DFC] bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg px-3 py-2 truncate"
           style={{ fontFamily: MONO_FONT }}
         >
           {url}
@@ -143,7 +143,7 @@ export default async function SourcesPage() {
           All Leads by Source
         </SectionLabel>
         {total === 0 ? (
-          <p className="text-[#999999] text-[13px]">No leads yet.</p>
+          <p className="text-[#98A0AD] text-[13px]">No leads yet.</p>
         ) : (
           <div className="space-y-3">
             {LEAD_SOURCES.map(src => {
@@ -153,16 +153,16 @@ export default async function SourcesPage() {
               return (
                 <div key={src.value}>
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-[13px] text-[#3A3A3A]">{src.label}</span>
+                    <span className="text-[13px] text-[#43474F]">{src.label}</span>
                     <span
-                      className="text-[13px] font-semibold text-[#1A1A1A]"
+                      className="text-[13px] font-semibold text-[#141821]"
                       style={{ fontVariantNumeric: 'tabular-nums' }}
                     >
                       {count}
-                      <span className="text-[#999999] font-normal text-[11px] ml-1.5">{pct}%</span>
+                      <span className="text-[#98A0AD] font-normal text-[11px] ml-1.5">{pct}%</span>
                     </span>
                   </div>
-                  <div className="h-1.5 bg-[#FFFFFF] border border-[#E5E5E5] rounded-full overflow-hidden">
+                  <div className="h-1.5 bg-[#FFFFFF] border border-[#E8EAEE] rounded-full overflow-hidden">
                     <div className="h-full bg-[#1B6DFC] rounded-full" style={{ width: `${pct}%` }} />
                   </div>
                 </div>
@@ -171,15 +171,15 @@ export default async function SourcesPage() {
             {unknownCount > 0 && (
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[13px] text-[#999999]">Unknown</span>
+                  <span className="text-[13px] text-[#98A0AD]">Unknown</span>
                   <span
-                    className="text-[13px] font-semibold text-[#6B6B6B]"
+                    className="text-[13px] font-semibold text-[#666D7A]"
                     style={{ fontVariantNumeric: 'tabular-nums' }}
                   >
                     {unknownCount}
                   </span>
                 </div>
-                <div className="h-1.5 bg-[#FFFFFF] border border-[#E5E5E5] rounded-full overflow-hidden">
+                <div className="h-1.5 bg-[#FFFFFF] border border-[#E8EAEE] rounded-full overflow-hidden">
                   <div
                     className="h-full bg-[#999999] rounded-full"
                     style={{ width: `${Math.round((unknownCount / total) * 100)}%` }}

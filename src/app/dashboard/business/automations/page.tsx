@@ -43,8 +43,8 @@ export default async function AutomationsPage() {
     <div className="max-w-3xl">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-semibold mb-1">Automations</h1>
-          <p className="text-stone-600 text-sm">{active} active · {total} total</p>
+          <h1 className="text-[22px] font-semibold tracking-[-0.025em] mb-1">Automations</h1>
+          <p className="text-[#666D7A] text-sm">{active} active · {total} total</p>
         </div>
         <Link
           href="/dashboard/business/automations/new"
@@ -67,7 +67,7 @@ export default async function AutomationsPage() {
           </p>
           {duplicateGroups.map((group, i) => (
             <div key={i} className="mb-2 last:mb-0">
-              <p className="text-[11px] font-bold uppercase tracking-wider text-amber-800 mb-1">
+              <p className="text-[12px] font-mediumr text-amber-800 mb-1">
                 Trigger: {group[0].trigger_type}
               </p>
               {group.map((w, j) => (
@@ -88,7 +88,7 @@ export default async function AutomationsPage() {
 
       {workflows && workflows.length > 0 ? (
         <div>
-          <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-3">Custom Workflows</p>
+          <p className="text-[12.5px] font-semibold text-[#666D7A] mb-3">Custom Workflows</p>
           <div className="space-y-2">
             {workflows.map((workflow) => {
             const stepCount = Array.isArray(workflow.be_workflow_steps)
@@ -98,21 +98,21 @@ export default async function AutomationsPage() {
               <Link
                 key={workflow.id}
                 href={`/dashboard/business/automations/${workflow.id}`}
-                className="flex items-center gap-4 bg-stone-100 border border-stone-200 rounded-xl p-4 hover:border-stone-300 transition-colors group"
+                className="flex items-center gap-4 bg-[#F4F6F9] border border-[#E8EAEE] rounded-xl p-4 hover:border-[#E8EAEE] transition-colors group"
               >
-                <div className={`p-2 rounded-lg ${workflow.is_active ? 'bg-blue-50' : 'bg-stone-200'}`}>
+                <div className={`p-2 rounded-lg ${workflow.is_active ? 'bg-blue-50' : 'bg-[#EFF1F4]'}`}>
                   <Zap
                     size={15}
-                    className={workflow.is_active ? 'text-blue-500' : 'text-stone-500'}
+                    className={workflow.is_active ? 'text-blue-500' : 'text-[#666D7A]'}
                     strokeWidth={1.8}
                   />
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-[#1A1A1A] group-hover:text-blue-500 transition-colors truncate">
+                  <p className="text-sm font-medium text-[#141821] group-hover:text-blue-500 transition-colors truncate">
                     {workflow.name}
                   </p>
-                  <p className="text-xs text-stone-500 mt-0.5">
+                  <p className="text-[12.5px] text-[#666D7A] mt-0.5">
                     {triggerLabel[workflow.trigger_type] ?? workflow.trigger_type}
                     {' · '}
                     {stepCount} step{stepCount !== 1 ? 's' : ''}
@@ -124,14 +124,14 @@ export default async function AutomationsPage() {
                     <ReseedScorecardButton stepCount={stepCount} />
                   )}
                   <span className={`flex items-center gap-1 text-xs font-medium ${
-                    workflow.is_active ? 'text-blue-500' : 'text-stone-500'
+                    workflow.is_active ? 'text-blue-500' : 'text-[#666D7A]'
                   }`}>
                     {workflow.is_active
                       ? <><Play size={11} />Active</>
                       : <><Pause size={11} />Paused</>
                     }
                   </span>
-                  <ChevronRight size={14} className="text-stone-400 group-hover:text-stone-600 transition-colors" />
+                  <ChevronRight size={14} className="text-[#98A0AD] group-hover:text-[#666D7A] transition-colors" />
                 </div>
               </Link>
             )
@@ -139,14 +139,14 @@ export default async function AutomationsPage() {
           </div>
         </div>
       ) : (
-        <div className="bg-stone-100 border border-dashed border-stone-200 rounded-xl p-12 text-center">
+        <div className="bg-[#F4F6F9] border border-dashed border-[#E8EAEE] rounded-xl p-12 text-center">
           <div className="flex justify-center mb-4">
-            <div className="p-3 bg-stone-200 rounded-xl">
-              <Zap size={24} className="text-stone-500" strokeWidth={1.5} />
+            <div className="p-3 bg-[#EFF1F4] rounded-xl">
+              <Zap size={24} className="text-[#666D7A]" strokeWidth={1.5} />
             </div>
           </div>
-          <p className="text-stone-600 text-sm font-medium mb-1">No automations yet</p>
-          <p className="text-stone-400 text-xs mb-6">Build workflows to automate your entire lead and client journey</p>
+          <p className="text-[#666D7A] text-sm font-medium mb-1">No automations yet</p>
+          <p className="text-[#98A0AD] text-[12.5px] mb-6">Build workflows to automate your entire lead and client journey</p>
           <Link
             href="/dashboard/business/automations/new"
             className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-500 text-stone-50 text-sm font-semibold px-4 py-2 rounded-lg transition-colors"

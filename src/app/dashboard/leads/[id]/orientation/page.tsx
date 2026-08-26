@@ -2,23 +2,23 @@ import { brand } from "@/config/tenant";
 
 export default function OrientationPage() {
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#141821]">
       <div className="max-w-2xl mx-auto px-8 py-16">
 
         {/* Header */}
         <div className="mb-16">
-          <p className="text-[10px] text-stone-400 uppercase tracking-[0.25em] font-semibold mb-10">{brand().name}&trade; &middot; Performance Coaching</p>
+          <p className="text-[10px] text-[#98A0AD] tracking-[0.25em] font-semibold mb-10">{brand().name}&trade; &middot; Performance Coaching</p>
           <div className="w-8 h-px bg-blue-500/60 mb-8" />
-          <h1 className="text-4xl font-light text-[#1A1A1A] mb-4 leading-tight tracking-tight">Performance Coaching<br />Orientation</h1>
-          <p className="text-stone-600 text-base leading-relaxed">How this works. What to expect. How we begin.</p>
+          <h1 className="text-4xl font-light text-[#141821] mb-4 leading-tight tracking-tight">Performance Coaching<br />Orientation</h1>
+          <p className="text-[#666D7A] text-base leading-relaxed">How this works. What to expect. How we begin.</p>
         </div>
 
         {/* Intro note */}
         <div className="border-l-2 border-blue-200 pl-6 mb-16">
-          <p className="text-stone-600 text-sm leading-relaxed italic">A calm introduction to the structure, pacing, and the philosophy behind {brand().name} Performance Coaching.</p>
+          <p className="text-[#666D7A] text-sm leading-relaxed italic">A calm introduction to the structure, pacing, and the philosophy behind {brand().name} Performance Coaching.</p>
         </div>
 
-        <div className="space-y-14 text-stone-700 text-[15px] leading-relaxed">
+        <div className="space-y-14 text-[#141821] text-[15px] leading-relaxed">
 
           <OrientationSection title="A Note on How to Read This">
             <p>This orientation is not something to get through quickly. It is designed to be read slowly, in your own time, without needing to take notes, make decisions, or figure anything out as you go. You don&apos;t need to agree with everything you read, and you don&apos;t need to be certain about anything by the end.</p>
@@ -80,12 +80,12 @@ export default function OrientationPage() {
           {/* Closing */}
           <div className="pt-2">
             <div className="w-8 h-px bg-blue-500/30 mb-8" />
-            <p className="text-stone-500 text-sm italic leading-relaxed">{brand().name} doesn&apos;t ask for blind commitment. It asks for clarity. Take what resonates. Leave what doesn&apos;t. Move forward in a way that feels deliberate, grounded, and aligned with what your system can truly hold.</p>
+            <p className="text-[#666D7A] text-sm italic leading-relaxed">{brand().name} doesn&apos;t ask for blind commitment. It asks for clarity. Take what resonates. Leave what doesn&apos;t. Move forward in a way that feels deliberate, grounded, and aligned with what your system can truly hold.</p>
           </div>
 
         </div>
 
-        <p className="text-[10px] text-stone-700 uppercase tracking-[0.25em] mt-20">{brand().name}&trade;</p>
+        <p className="text-[10px] text-[#141821] tracking-[0.25em] mt-20">{brand().name}&trade;</p>
 
       </div>
     </div>
@@ -97,7 +97,7 @@ function OrientationSection({ title, children }: { title: string; children: Reac
     <section>
       <div className="flex items-center gap-4 mb-6">
         <div className="w-1 h-4 bg-blue-500/50 rounded-full shrink-0" />
-        <h2 className="text-xs font-semibold text-blue-500/70 uppercase tracking-[0.15em]"
+        <h2 className="text-[12.5px] font-semibold text-blue-500/70 tracking-[0.15em]"
           dangerouslySetInnerHTML={{ __html: title }}
         />
       </div>

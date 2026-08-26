@@ -27,17 +27,17 @@ export default async function NutritionSuggestPage({ params }: { params: Promise
     .maybeSingle()
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="max-w-[980px]">
       <div className="mb-8">
-        <div className="flex items-center gap-2 text-stone-500 text-sm mb-2">
-          <Link href={`/dashboard/clients/${id}`} className="hover:text-stone-700 transition-colors">{client.name}</Link>
+        <div className="flex items-center gap-2 text-[#666D7A] text-sm mb-2">
+          <Link href={`/dashboard/clients/${id}`} className="hover:text-[#141821] transition-colors">{client.name}</Link>
           <span>/</span>
-          <Link href={`/dashboard/clients/${id}/nutrition`} className="hover:text-stone-700 transition-colors">Nutrition Plan</Link>
+          <Link href={`/dashboard/clients/${id}/nutrition`} className="hover:text-[#141821] transition-colors">Nutrition Plan</Link>
           <span>/</span>
-          <span className="text-stone-700">Prescription</span>
+          <span className="text-[#141821]">Prescription</span>
         </div>
-        <h1 className="text-2xl font-semibold text-[#1A1A1A]">Nutrition Prescription</h1>
-        <p className="text-stone-500 text-sm mt-1">Review the suggested prescription before generating the plan.</p>
+        <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">Nutrition Prescription</h1>
+        <p className="text-[#666D7A] text-sm mt-1">Review the suggested prescription before generating the plan.</p>
       </div>
 
       <NutritionPrescriptionSuggest

@@ -17,8 +17,8 @@ function BoardSkeleton() {
   return (
     <div className="mb-8 space-y-3">
       {['Steward', 'Operator', 'Coach'].map((v) => (
-        <div key={v} className="p-4 rounded-xl border border-stone-200 bg-stone-50 text-[13px] text-stone-500 leading-relaxed">
-          <strong className="text-stone-900">{v}</strong> is thinking…
+        <div key={v} className="p-4 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] text-[13px] text-[#666D7A] leading-relaxed">
+          <strong className="text-[#141821]">{v}</strong> is thinking…
         </div>
       ))}
     </div>
@@ -72,8 +72,8 @@ export default async function BoardPage() {
       />
 
       <div className="mb-6 flex items-center gap-3">
-        <span className="text-[9px] font-bold uppercase tracking-widest bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Live briefing</span>
-        <span className="text-[11px] text-stone-500 font-mono">
+        <span className="text-[9px] font-medium bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Live briefing</span>
+        <span className="text-[11px] text-[#666D7A] font-mono">
           Synthesised from all 4 C-suite snapshots + your context
         </span>
       </div>
@@ -86,9 +86,9 @@ export default async function BoardPage() {
         />
       </Suspense>
 
-      <div className="mb-8 bg-white border border-stone-200 rounded-2xl p-5">
-        <h3 className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3">Board inputs</h3>
-        <p className="text-[13px] text-stone-700 leading-relaxed mb-4">
+      <div className="mb-8 bg-white border border-[#E8EAEE] rounded-xl p-5">
+        <h3 className="text-[11px] font-medium text-[#666D7A] mb-3">Board inputs</h3>
+        <p className="text-[13px] text-[#141821] leading-relaxed mb-4">
           The Board sees everything the C-suite sees + your stated goals + current pre-launch blockers. It synthesises across silos. Individual C-suite views are for depth; the Board is for altitude.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-[13px]">
@@ -118,10 +118,10 @@ function BoardInput({ icon: Icon, label, href }: { icon: React.ElementType; labe
   return (
     <Link
       href={href}
-      className="flex items-center gap-3 p-3 rounded-xl border border-stone-200 bg-stone-50 hover:bg-stone-100 transition-colors"
+      className="flex items-center gap-3 p-3 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] hover:bg-[#F4F6F9] transition-colors"
     >
       <span className="w-8 h-8 rounded-lg bg-[#1B6DFC]/10 flex items-center justify-center text-[#1B6DFC] shrink-0"><Icon size={16} strokeWidth={2.5} /></span>
-      <span className="text-stone-700 font-semibold">{label}</span>
+      <span className="text-[#141821] font-semibold">{label}</span>
     </Link>
   )
 }

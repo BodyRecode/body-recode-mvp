@@ -41,7 +41,7 @@ function Hero() {
         <div className="grid md:grid-cols-[1.4fr_1fr] gap-16 items-center relative">
           <div>
             <div
-              className="inline-flex items-center gap-2 text-[10px] uppercase mb-8"
+              className="inline-flex items-center gap-2 text-[10px] mb-8"
               style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}
             >
               <span className="w-6 h-[1px]" style={{ backgroundColor: H.terracottaDeep }} />
@@ -108,7 +108,7 @@ function Hero() {
               />
               <div className="absolute bottom-6 left-6 right-6">
                 <div
-                  className="text-[10px] uppercase mb-1.5"
+                  className="text-[10px] mb-1.5"
                   style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.24em' }}
                 >
                   Founded 2026
@@ -137,7 +137,7 @@ function TrustBar() {
     <div className="border-y py-6 px-8" style={{ borderColor: H.border, backgroundColor: H.creamDeep }}>
       <div className="max-w-[1240px] mx-auto flex flex-wrap items-center justify-center gap-x-10 gap-y-3">
         {words.map((w, i) => (
-          <span key={i} className="text-[10px] uppercase" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.24em' }}>
+          <span key={i} className="text-[10px]" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.24em' }}>
             {w}
           </span>
         ))}
@@ -154,7 +154,7 @@ function FunnelStrip() {
     <section id="scorecard" className="py-28 px-8">
       <div className="max-w-[900px] mx-auto text-center">
         <div
-          className="inline-flex items-center gap-2 text-[10px] uppercase mb-8"
+          className="inline-flex items-center gap-2 text-[10px] mb-8"
           style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}
         >
           <span className="w-6 h-[1px]" style={{ backgroundColor: H.terracottaDeep }} />
@@ -225,7 +225,7 @@ function TheMethod() {
       <div className="max-w-[1240px] mx-auto">
         <div className="text-center mb-16">
           <div
-            className="inline-flex items-center gap-2 text-[10px] uppercase mb-6"
+            className="inline-flex items-center gap-2 text-[10px] mb-6"
             style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}
           >
             <span className="w-6 h-[1px]" style={{ backgroundColor: H.terracottaDeep }} />
@@ -249,7 +249,7 @@ function TheMethod() {
                   <Icon size={20} style={{ color: H.terracottaDeep }} />
                 </div>
                 <div
-                  className="text-[10px] uppercase mb-3"
+                  className="text-[10px] mb-3"
                   style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}
                 >
                   {String(i + 1).padStart(2, '0')} · {p.label}
@@ -298,7 +298,7 @@ function HowItWorks() {
       <div className="max-w-[1240px] mx-auto">
         <div className="mb-16">
           <div
-            className="text-[10px] uppercase mb-4"
+            className="text-[10px] mb-4"
             style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}
           >
             The Path
@@ -333,7 +333,7 @@ function HowItWorks() {
                     {s.label}
                   </h3>
                   <div
-                    className="text-[11px] uppercase"
+                    className="text-[11px]"
                     style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.16em' }}
                   >
                     {s.price}
@@ -390,7 +390,7 @@ function Programmes() {
       <div className="max-w-[1240px] mx-auto">
         <div className="text-center mb-14">
           <div
-            className="inline-flex items-center gap-2 text-[10px] uppercase mb-6"
+            className="inline-flex items-center gap-2 text-[10px] mb-6"
             style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}
           >
             <span className="w-6 h-[1px]" style={{ backgroundColor: H.terracottaDeep }} />
@@ -418,7 +418,7 @@ function Programmes() {
             >
               {c.feature && (
                 <div
-                  className="absolute top-0 right-0 px-3 py-1 text-[9px] uppercase"
+                  className="absolute top-0 right-0 px-3 py-1 text-[9px]"
                   style={{
                     background: H.terracotta,
                     color: H.cream,
@@ -431,7 +431,7 @@ function Programmes() {
                 </div>
               )}
               <div
-                className="text-[10px] uppercase mb-4"
+                className="text-[10px] mb-4"
                 style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}
               >
                 {c.tag}
@@ -450,7 +450,7 @@ function Programmes() {
               <p className="text-[13px] leading-[1.7] mb-8" style={{ color: H.inkSoft }}>{c.body}</p>
               <Link
                 href={c.href}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-[11px] font-semibold uppercase"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-[11px] font-semibold"
                 style={{
                   background: c.feature ? H.terracotta : 'transparent',
                   color: c.feature ? H.cream : H.ink,
@@ -483,7 +483,7 @@ function SocialProof() {
       <div className="max-w-[1240px] mx-auto">
         <div className="mb-14">
           <div
-            className="text-[10px] uppercase mb-4"
+            className="text-[10px] mb-4"
             style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}
           >
             Practitioners
@@ -509,7 +509,7 @@ function SocialProof() {
               </p>
               <footer>
                 <div className="text-[13px] font-semibold" style={{ color: H.ink }}>{q.who}</div>
-                <div className="text-[10px] uppercase mt-1" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.18em' }}>{q.tag}</div>
+                <div className="text-[10px] mt-1" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.18em' }}>{q.tag}</div>
               </footer>
             </blockquote>
           ))}
@@ -538,7 +538,7 @@ function AboutMelisa() {
               >
                 M
               </div>
-              <div className="text-[10px] uppercase" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
+              <div className="text-[10px]" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
                 Portrait placeholder
               </div>
             </div>
@@ -546,7 +546,7 @@ function AboutMelisa() {
         </div>
         <div>
           <div
-            className="text-[10px] uppercase mb-4"
+            className="text-[10px] mb-4"
             style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}
           >
             About Melisa
@@ -605,7 +605,7 @@ function FAQ() {
       <div className="max-w-[900px] mx-auto">
         <div className="text-center mb-14">
           <div
-            className="text-[10px] uppercase mb-4"
+            className="text-[10px] mb-4"
             style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}
           >
             Questions
@@ -652,7 +652,7 @@ function FinalCTA() {
     <section className="py-28 px-8" style={{ backgroundColor: H.ink }}>
       <div className="max-w-[820px] mx-auto text-center">
         <div
-          className="inline-flex items-center gap-2 text-[10px] uppercase mb-8"
+          className="inline-flex items-center gap-2 text-[10px] mb-8"
           style={{ fontFamily: H.mono, color: H.terracotta, letterSpacing: '0.24em' }}
         >
           <span className="w-6 h-[1px]" style={{ backgroundColor: H.terracotta }} />
