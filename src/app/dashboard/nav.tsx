@@ -2,236 +2,163 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { createPortal } from 'react-dom'
-import { ChevronDown } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import type { ComponentType } from 'react'
+import {
+  Sunrise, Activity, Terminal,
+  Users, MessageCircle, ListChecks, Dumbbell, CalendarDays, HeartPulse, Star, Sparkles,
+  Globe, Magnet, Hourglass, Filter, Contact, Inbox, Zap,
+  LayoutTemplate, Megaphone, BookOpen, BarChart3, Workflow, MessageSquare, Globe2,
+  LayoutDashboard, Gauge, CalendarCheck, CreditCard, Clock, TrendingUp, Compass, Handshake,
+  User, Users2,
+  Rocket, BookMarked, Bot, LifeBuoy, ShieldCheck, Settings,
+} from 'lucide-react'
 
-type NavLink = { href: string; label: string; exact?: boolean }
-type NavCluster = { key: string; label: string; items: NavLink[] }
+type Icon = ComponentType<{ size?: number; strokeWidth?: number; className?: string }>
+type NavLink = { href: string; label: string; icon: Icon; exact?: boolean }
+type NavGroup = { key: string; label: string; items: NavLink[] }
 
-const OVERVIEW: NavLink[] = [
-  { href: '/dashboard/today', label: 'Today' },
-  { href: '/dashboard', label: 'Live', exact: true },
-  // Top level rather than under Meta: the console is a place you go to work,
-  // not a settings page you visit once.
-  { href: '/dashboard/console', label: 'Console' },
+/* The sidebar replaced a top nav with six hover dropdowns. Every route that
+ * lived in a dropdown is now visible in the rail: nothing was dropped, only
+ * regrouped so the labels read the way the work does. */
+const GROUPS: NavGroup[] = [
+  {
+    key: 'overview',
+    label: 'Overview',
+    items: [
+      { href: '/dashboard/today', label: 'Today', icon: Sunrise },
+      { href: '/dashboard', label: 'Live', icon: Activity, exact: true },
+      { href: '/dashboard/console', label: 'Console', icon: Terminal },
+    ],
+  },
+  {
+    key: 'clients',
+    label: 'Clients',
+    items: [
+      { href: '/dashboard/coaching', label: 'Coaching', icon: Users },
+      { href: '/dashboard/messages', label: 'Messages', icon: MessageCircle },
+      { href: '/dashboard/programs', label: 'Programs', icon: ListChecks },
+      { href: '/dashboard/gym-sessions', label: 'Gym', icon: Dumbbell },
+      { href: '/dashboard/group-classes', label: 'Classes', icon: CalendarDays },
+      { href: '/dashboard/recovery-regulation', label: 'Recovery', icon: HeartPulse },
+      { href: '/dashboard/feedback', label: 'Feedback', icon: Star },
+      { href: '/dashboard/copilot-review', label: 'Co-Pilot Review', icon: Sparkles },
+    ],
+  },
+  {
+    key: 'crm',
+    label: 'Pipeline',
+    items: [
+      { href: '/dashboard/leads', label: 'Leads', icon: Magnet },
+      { href: '/dashboard/sources', label: 'Sources', icon: Globe },
+      { href: '/dashboard/business/waitlist', label: 'Waitlist', icon: Hourglass },
+      { href: '/dashboard/funnel', label: 'Funnel', icon: Filter },
+      { href: '/dashboard/business/crm', label: 'CRM', icon: Contact },
+      { href: '/dashboard/business/inbox', label: 'Inbox', icon: Inbox },
+      { href: '/dashboard/business/outreach', label: 'Booking Agent', icon: Zap },
+    ],
+  },
+  {
+    key: 'marketing',
+    label: 'Marketing',
+    items: [
+      { href: '/dashboard/business/campaigns', label: 'Campaigns', icon: Megaphone },
+      { href: '/dashboard/business/content', label: 'Content', icon: BookOpen },
+      { href: '/dashboard/business/ads', label: 'Ads', icon: BarChart3 },
+      { href: '/dashboard/business/automations', label: 'Automations', icon: Workflow },
+      { href: '/dashboard/sms', label: 'SMS Pulse', icon: MessageSquare },
+      { href: '/dashboard/business/funnels', label: 'Funnel Pages', icon: LayoutTemplate },
+      { href: '/dashboard/business/website', label: 'Website', icon: Globe2 },
+    ],
+  },
+  {
+    key: 'business',
+    label: 'Business',
+    items: [
+      { href: '/dashboard/business', label: 'Hub', icon: LayoutDashboard, exact: true },
+      { href: '/dashboard/scorecard', label: 'CEO Scorecard', icon: Gauge },
+      { href: '/dashboard/business/bookings', label: 'Bookings', icon: CalendarCheck },
+      { href: '/dashboard/business/payments', label: 'Payments', icon: CreditCard },
+      { href: '/dashboard/business/availability', label: 'Availability', icon: Clock },
+      { href: '/dashboard/business/analytics', label: 'Analytics', icon: TrendingUp },
+      { href: '/dashboard/business/strategy', label: 'Strategy', icon: Compass },
+      { href: '/dashboard/partner-room', label: 'Partner Room', icon: Handshake },
+    ],
+  },
+  {
+    key: 'brands',
+    label: 'Brands',
+    items: [
+      { href: '/dashboard/business/personal-brand', label: 'Personal Brand', icon: User },
+      { href: '/dashboard/business/collective', label: 'The Collective', icon: Users2 },
+    ],
+  },
+  {
+    key: 'meta',
+    label: 'Setup',
+    items: [
+      { href: '/dashboard/getting-started', label: 'Setup', icon: Rocket },
+      { href: '/dashboard/help', label: 'Guide', icon: BookMarked },
+      { href: '/dashboard/copilot-guide', label: 'Co-Pilot', icon: Bot },
+      { href: '/dashboard/support', label: 'Support', icon: LifeBuoy },
+      { href: '/dashboard/system-health', label: 'System', icon: ShieldCheck },
+      { href: '/dashboard/settings', label: 'Settings', icon: Settings },
+    ],
+  },
 ]
 
-const CRM_CLUSTER: NavCluster = {
-  key: 'crm',
-  label: 'CRM',
-  items: [
-    { href: '/dashboard/sources', label: 'Sources' },
-    { href: '/dashboard/leads', label: 'Leads' },
-    { href: '/dashboard/business/waitlist', label: 'Waitlist' },
-    { href: '/dashboard/funnel', label: 'Funnel' },
-    { href: '/dashboard/business/crm', label: 'CRM' },
-    { href: '/dashboard/business/inbox', label: 'Inbox' },
-    { href: '/dashboard/business/outreach', label: 'Booking Agent' },
-  ],
+const DEV_ONLY: NavLink = {
+  href: '/dashboard/business/peer-review',
+  label: 'Peer Review',
+  icon: ShieldCheck,
 }
-
-const CLIENTS_CLUSTER: NavCluster = {
-  key: 'clients',
-  label: 'Clients',
-  items: [
-    { href: '/dashboard/coaching', label: 'Coaching' },
-    { href: '/dashboard/messages', label: 'Messages' },
-    { href: '/dashboard/programs', label: 'Programs' },
-    { href: '/dashboard/gym-sessions', label: 'Gym' },
-    { href: '/dashboard/group-classes', label: 'Classes' },
-    { href: '/dashboard/recovery-regulation', label: 'Recovery' },
-    { href: '/dashboard/feedback', label: 'Feedback' },
-    { href: '/dashboard/copilot-review', label: 'Co-Pilot Review' },
-  ],
-}
-
-const MARKETING_CLUSTER: NavCluster = {
-  key: 'marketing',
-  label: 'Marketing',
-  items: [
-    { href: '/dashboard/business/funnels', label: 'Funnel Pages' },
-    { href: '/dashboard/business/campaigns', label: 'Campaigns' },
-    { href: '/dashboard/business/content', label: 'Content' },
-    { href: '/dashboard/business/ads', label: 'Ads' },
-    { href: '/dashboard/business/automations', label: 'Automations' },
-    { href: '/dashboard/sms', label: 'SMS Pulse' },
-    { href: '/dashboard/business/website', label: 'Website' },
-  ],
-}
-
-const BUSINESS_CLUSTER: NavCluster = {
-  key: 'business',
-  label: 'Business',
-  items: [
-    { href: '/dashboard/business', label: 'Hub', exact: true },
-    { href: '/dashboard/scorecard', label: 'CEO' },
-    { href: '/dashboard/business/bookings', label: 'Bookings' },
-    { href: '/dashboard/business/payments', label: 'Payments' },
-    { href: '/dashboard/business/availability', label: 'Availability' },
-    { href: '/dashboard/business/analytics', label: 'Analytics' },
-    { href: '/dashboard/business/strategy', label: 'Strategy' },
-    { href: '/dashboard/partner-room', label: 'Partner Room' },
-  ],
-}
-
-const BRANDS_CLUSTER_BASE: NavLink[] = [
-  { href: '/dashboard/business/personal-brand', label: 'Personal Brand' },
-  { href: '/dashboard/business/collective', label: 'The Collective' },
-]
-
-const META: NavLink[] = [
-  { href: '/dashboard/getting-started', label: 'Setup' },
-  { href: '/dashboard/help', label: 'Guide' },
-  { href: '/dashboard/copilot-guide', label: 'Co-Pilot' },
-  { href: '/dashboard/support', label: 'Support' },
-  { href: '/dashboard/system-health', label: 'System' },
-  { href: '/dashboard/settings', label: 'Settings' },
-]
-
-const DEV_ONLY_ROUTES = new Set([
-  '/dashboard/business/peer-review',
-])
+const DEV_ONLY_ROUTES = new Set([DEV_ONLY.href])
 
 function isLinkActive(pathname: string, link: NavLink): boolean {
-  return link.exact ? pathname === link.href : pathname === link.href || pathname.startsWith(link.href + '/')
+  return link.exact
+    ? pathname === link.href
+    : pathname === link.href || pathname.startsWith(link.href + '/')
 }
 
-function clusterActive(pathname: string, cluster: NavCluster): boolean {
-  return cluster.items.some((item) => isLinkActive(pathname, item))
+/** Label for the page you are on - used by the panel header breadcrumb. */
+export function useNavLocation(): { group: string; label: string } | null {
+  const pathname = usePathname() || '/dashboard'
+  for (const group of GROUPS) {
+    for (const item of group.items) {
+      if (isLinkActive(pathname, item)) return { group: group.label, label: item.label }
+    }
+  }
+  return null
 }
 
-function TopLink({ link, pathname }: { link: NavLink; pathname: string }) {
-  const active = isLinkActive(pathname, link)
+function NavItem({ link, active, onNavigate }: { link: NavLink; active: boolean; onNavigate?: () => void }) {
+  const Icon = link.icon
   return (
     <Link
       href={link.href}
-      className={`relative text-[13px] px-3.5 py-2 rounded-md transition-colors whitespace-nowrap ${
+      onClick={onNavigate}
+      aria-current={active ? 'page' : undefined}
+      className={`relative flex items-center gap-2.5 px-2.5 py-[7px] rounded-lg text-[13px] transition-colors ${
         active
-          ? 'text-[#1A1A1A] bg-[#F0F0F0]'
-          : 'text-[#6B6B6B] hover:text-[#1A1A1A] hover:bg-[#F4F4F4]'
+          ? 'bg-white text-[#1B6DFC] font-medium shadow-[0_1px_3px_rgba(16,24,40,0.09),0_1px_2px_-1px_rgba(16,24,40,0.05)]'
+          : 'text-[#464C58] hover:bg-white/85 hover:text-[#1A1A1A]'
       }`}
     >
-      {link.label}
       {active && (
-        <span className="absolute left-1/2 -translate-x-1/2 -bottom-[17px] w-6 h-[2px] rounded-full bg-[#1B6DFC]" />
+        <span
+          aria-hidden
+          className="absolute left-0 top-[7px] bottom-[7px] w-[3px] rounded-r-[3px]"
+          style={{ background: 'linear-gradient(180deg,#4B8DFF,#1B6DFC)' }}
+        />
       )}
+      <Icon size={15} strokeWidth={2} className={active ? 'opacity-100' : 'opacity-60'} />
+      <span className="truncate">{link.label}</span>
     </Link>
   )
 }
 
-function ClusterDropdown({
-  cluster,
-  pathname,
-  openKey,
-  setOpenKey,
-}: {
-  cluster: NavCluster
-  pathname: string
-  openKey: string | null
-  setOpenKey: (k: string | null) => void
-}) {
-  const active = clusterActive(pathname, cluster)
-  const open = openKey === cluster.key
-  const buttonRef = useRef<HTMLButtonElement>(null)
-  const menuRef = useRef<HTMLDivElement>(null)
-  const [menuPos, setMenuPos] = useState<{ top: number; left: number } | null>(null)
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => setMounted(true), [])
-
-  useLayoutEffect(() => {
-    if (!open || !buttonRef.current) return
-    const rect = buttonRef.current.getBoundingClientRect()
-    setMenuPos({ top: rect.bottom + 8, left: rect.left })
-  }, [open])
-
-  useEffect(() => {
-    if (!open) return
-    const onClickOutside = (e: MouseEvent) => {
-      const target = e.target as Node
-      if (buttonRef.current?.contains(target)) return
-      if (menuRef.current?.contains(target)) return
-      setOpenKey(null)
-    }
-    const onEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpenKey(null)
-    }
-    const onScroll = () => {
-      if (!buttonRef.current) return
-      const rect = buttonRef.current.getBoundingClientRect()
-      setMenuPos({ top: rect.bottom + 8, left: rect.left })
-    }
-    document.addEventListener('mousedown', onClickOutside)
-    document.addEventListener('keydown', onEscape)
-    window.addEventListener('scroll', onScroll, true)
-    window.addEventListener('resize', onScroll)
-    return () => {
-      document.removeEventListener('mousedown', onClickOutside)
-      document.removeEventListener('keydown', onEscape)
-      window.removeEventListener('scroll', onScroll, true)
-      window.removeEventListener('resize', onScroll)
-    }
-  }, [open, setOpenKey])
-
-  return (
-    <>
-      <button
-        ref={buttonRef}
-        type="button"
-        onClick={() => setOpenKey(open ? null : cluster.key)}
-        className={`relative flex items-center gap-1 text-[13px] px-3.5 py-2 rounded-md transition-colors whitespace-nowrap ${
-          active || open
-            ? 'text-[#1A1A1A] bg-[#F0F0F0]'
-            : 'text-[#6B6B6B] hover:text-[#1A1A1A] hover:bg-[#F4F4F4]'
-        }`}
-        aria-expanded={open}
-        aria-haspopup="menu"
-      >
-        {cluster.label}
-        <ChevronDown
-          size={12}
-          strokeWidth={2.5}
-          className={`transition-transform ${open ? 'rotate-180' : ''}`}
-        />
-        {active && (
-          <span className="absolute left-1/2 -translate-x-1/2 -bottom-[17px] w-6 h-[2px] rounded-full bg-[#1B6DFC]" />
-        )}
-      </button>
-      {mounted && open && menuPos && createPortal(
-        <div
-          ref={menuRef}
-          role="menu"
-          className="fixed min-w-[180px] rounded-lg border border-[#E5E5E5] bg-white shadow-[0_8px_24px_-6px_rgba(0,0,0,0.12)] py-1.5"
-          style={{ top: menuPos.top, left: menuPos.left, zIndex: 60 }}
-        >
-          {cluster.items.map((item) => {
-            const itemActive = isLinkActive(pathname, item)
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setOpenKey(null)}
-                className={`block px-3.5 py-2 text-[13px] transition-colors ${
-                  itemActive
-                    ? 'text-[#1B6DFC] bg-[#F0F6FF] font-medium'
-                    : 'text-[#4B4B4B] hover:text-[#1A1A1A] hover:bg-[#F6F6F6]'
-                }`}
-              >
-                {item.label}
-              </Link>
-            )
-          })}
-        </div>,
-        document.body
-      )}
-    </>
-  )
-}
-
-export default function DashboardNav() {
+export default function DashboardNav({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname() || '/dashboard'
-  const [openKey, setOpenKey] = useState<string | null>(null)
   const [devMode, setDevMode] = useState(false)
 
   useEffect(() => {
@@ -243,41 +170,38 @@ export default function DashboardNav() {
     return () => window.removeEventListener('popstate', check)
   }, [pathname])
 
-  const brandsCluster: NavCluster = {
-    key: 'brands',
-    label: 'Brands',
-    items: BRANDS_CLUSTER_BASE,
-  }
-
-  const metaLinks: NavLink[] = devMode
-    ? [...META, { href: '/dashboard/business/peer-review', label: 'Peer Review' }]
-    : META
-
-  const onDevOnlyRoute = DEV_ONLY_ROUTES.has(pathname)
-  const showDevAffordance = devMode || onDevOnlyRoute
+  const showDev = devMode || DEV_ONLY_ROUTES.has(pathname)
 
   return (
-    <nav className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide">
-      {OVERVIEW.map((link) => (
-        <TopLink key={link.href} link={link} pathname={pathname} />
-      ))}
-      <span className="mx-1.5 h-5 w-px bg-[#E5E5E5]" aria-hidden />
-      <ClusterDropdown cluster={CRM_CLUSTER} pathname={pathname} openKey={openKey} setOpenKey={setOpenKey} />
-      <ClusterDropdown cluster={CLIENTS_CLUSTER} pathname={pathname} openKey={openKey} setOpenKey={setOpenKey} />
-      <ClusterDropdown cluster={MARKETING_CLUSTER} pathname={pathname} openKey={openKey} setOpenKey={setOpenKey} />
-      <ClusterDropdown cluster={BUSINESS_CLUSTER} pathname={pathname} openKey={openKey} setOpenKey={setOpenKey} />
-      <ClusterDropdown cluster={brandsCluster} pathname={pathname} openKey={openKey} setOpenKey={setOpenKey} />
-      <span className="mx-1.5 h-5 w-px bg-[#E5E5E5]" aria-hidden />
-      {metaLinks.map((link) => (
-        <TopLink key={link.href} link={link} pathname={pathname} />
-      ))}
-      {showDevAffordance && (
-        <span
-          className="ml-1.5 text-[10px] font-semibold uppercase tracking-widest text-[#B45309] bg-[#FEF3C7] px-1.5 py-0.5 rounded"
+    <nav className="px-2.5 pb-4 pt-1">
+      {GROUPS.map((group) => {
+        const items =
+          group.key === 'meta' && showDev ? [...group.items, DEV_ONLY] : group.items
+        return (
+          <div key={group.key} className="mb-0.5">
+            <p className="px-2 pt-3.5 pb-1.5 text-[10.5px] font-semibold uppercase tracking-[0.07em] text-[#9AA2B0]">
+              {group.label}
+            </p>
+            <div className="flex flex-col gap-[1px]">
+              {items.map((link) => (
+                <NavItem
+                  key={link.href}
+                  link={link}
+                  active={isLinkActive(pathname, link)}
+                  onNavigate={onNavigate}
+                />
+              ))}
+            </div>
+          </div>
+        )
+      })}
+      {showDev && (
+        <p
+          className="mt-3 mx-2 text-[10px] font-semibold uppercase tracking-widest text-[#B45309] bg-[#FEF3C7] px-1.5 py-0.5 rounded inline-block"
           title="Dev-only nav items are visible (append ?dev=1 to any dashboard URL to toggle)"
         >
           dev
-        </span>
+        </p>
       )}
     </nav>
   )

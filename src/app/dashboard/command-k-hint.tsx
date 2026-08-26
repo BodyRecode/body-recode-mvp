@@ -21,12 +21,12 @@ export default function CommandKHint() {
     <button
       onClick={open}
       aria-label="Open command palette"
-      className="hidden md:inline-flex items-center gap-2 text-[11px] text-[#6B6B6B] hover:text-[#1B6DFC] px-2.5 py-1 rounded-md border border-[#E5E5E5] bg-[#FFFFFF] hover:border-[#1B6DFC] hover:bg-blue-50 transition-colors"
+      className="w-full flex items-center gap-2 text-[12.5px] text-[#98A0AD] hover:text-[#1B6DFC] px-2.5 py-[7px] rounded-lg border border-[#E8EAEE] bg-white hover:border-[#B9D0FD] transition-colors shadow-[0_1px_2px_rgba(16,24,40,0.05)]"
     >
-      <Search size={12} />
-      <span>Search</span>
+      <Search size={13} className="shrink-0" />
+      <span className="truncate">Search or jump to</span>
       <span
-        className="inline-flex items-center gap-0.5 text-[10px] text-[#999999] px-1.5 py-0.5 rounded border border-[#E5E5E5] bg-[#FFFFFF]"
+        className="ml-auto shrink-0 inline-flex items-center gap-0.5 text-[10px] text-[#98A0AD] px-1.5 py-0.5 rounded border border-[#EFF1F4] bg-[#FAFBFC]"
         style={{ fontFamily: MONO_FONT }}
       >
         {isMac ? '⌘' : 'Ctrl'} K

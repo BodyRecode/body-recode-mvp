@@ -7,21 +7,28 @@ type Accent = 'teal' | 'amber' | 'red' | 'neutral' | 'blue' | 'sage' | 'ink' | '
 
 const ACCENT: Record<Accent, { bar: string; text: string; bg: string; ring: string }> = {
   teal:       { bar: '#1B6DFC', text: '#1B6DFC', bg: 'rgba(27,109,252,0.08)',  ring: '#B5CFFC' },
-  amber:      { bar: '#B7791F', text: '#B7791F', bg: 'rgba(183,121,31,0.08)',  ring: '#F0DCB4' },
-  red:        { bar: '#DC2626', text: '#DC2626', bg: 'rgba(220,38,38,0.08)',   ring: '#F5C6C6' },
+  amber:      { bar: '#B7791F', text: '#A96A12', bg: 'rgba(183,121,31,0.08)',  ring: '#F1DEB8' },
+  red:        { bar: '#DC2626', text: '#C82626', bg: 'rgba(220,38,38,0.08)',   ring: '#F5C9C9' },
   blue:       { bar: '#1B6DFC', text: '#1B6DFC', bg: 'rgba(27,109,252,0.08)',  ring: '#B5CFFC' },
-  neutral:    { bar: '#999999', text: '#6B6B6B', bg: 'rgba(153,153,153,0.06)', ring: '#E5E5E5' },
+  neutral:    { bar: '#98A0AD', text: '#666D7A', bg: 'rgba(153,153,153,0.06)', ring: '#E8EAEE' },
   sage:       { bar: '#7A8A6B', text: '#4D5A41', bg: 'rgba(122,138,107,0.10)', ring: '#C5CFBA' },
   ink:        { bar: '#1A1A1A', text: '#1A1A1A', bg: 'rgba(26,26,26,0.06)',    ring: '#D4D4D4' },
   terracotta: { bar: '#B06C47', text: '#8A5335', bg: 'rgba(176,108,71,0.09)',  ring: '#E4C4B4' },
 }
+
+/* Shared elevation. One light source from above: a hairline border, a 1px
+ * white highlight along the top edge, and a short soft shadow. Deep shadows
+ * and glows are deliberately absent - depth comes from stacking surfaces. */
+const SH1 = '0 1px 2px rgba(16,24,40,0.05)'
+const SH2 = '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05)'
 
 export function accentColour(a: Accent = 'teal') {
   return ACCENT[a]
 }
 
 /* ===========================================================
- * Page header - eyebrow + title + subtitle, optional CTA
+ * Page header - the panel toolbar. Breadcrumb, title, actions
+ * on one line; no hero, no backdrop.
  * =========================================================== */
 export function PageHeader({
   eyebrow,
@@ -29,74 +36,40 @@ export function PageHeader({
   subtitle,
   accent = 'teal',
   cta,
-  glow = true,
 }: {
   eyebrow?: ReactNode
   title: ReactNode
   subtitle?: ReactNode
   accent?: Accent
   cta?: ReactNode
+  /** Retained for call-site compatibility; the header no longer paints a glow. */
   glow?: boolean
 }) {
   const a = ACCENT[accent]
   return (
-    <div className="relative mb-10 pb-6">
-      <div
-        aria-hidden
-        className="absolute inset-0 -mx-6 -mt-10 pointer-events-none"
-        style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, #E5E5E5 1px, transparent 0)',
-          backgroundSize: '22px 22px',
-          maskImage: 'radial-gradient(ellipse 60% 80% at 20% 0%, black 0%, transparent 70%)',
-          WebkitMaskImage: 'radial-gradient(ellipse 60% 80% at 20% 0%, black 0%, transparent 70%)',
-        }}
-      />
-      {glow && (
-        <div
-          aria-hidden
-          className="absolute -top-24 -right-24 w-[420px] h-[420px] pointer-events-none"
-          style={{
-            background: `radial-gradient(circle, ${a.bg} 0%, transparent 60%)`,
-            filter: 'blur(40px)',
-          }}
-        />
-      )}
-      <div className="relative flex items-start justify-between gap-6 flex-wrap">
-        <div className="min-w-0">
-          {eyebrow && (
-            <p
-              className="text-[11px] font-bold uppercase mb-5"
-              style={{
-                fontFamily: MONO_FONT,
-                letterSpacing: '0.12em',
-                color: a.text,
-              }}
-            >
-              {eyebrow}
-            </p>
-          )}
-          <h1
-            className="text-[40px] font-extrabold text-[#1A1A1A] leading-[1.15] mb-5"
-            style={{ letterSpacing: '-0.025em' }}
-          >
-            {title}
-          </h1>
-          <div
-            className="w-12 h-[3px] rounded-full mb-5"
-            style={{ background: a.bar }}
-          />
-          {subtitle && (
-            <div className="text-[15px] text-[#4A4A4A] max-w-xl leading-relaxed">{subtitle}</div>
-          )}
-        </div>
-        {cta && <div className="shrink-0">{cta}</div>}
+    <div className="mb-7 pb-4 border-b border-[#E8EAEE] flex items-start justify-between gap-5 flex-wrap">
+      <div className="min-w-0">
+        {eyebrow && (
+          <p className="text-[11px] mb-1.5" style={{ color: a.text }}>
+            {eyebrow}
+          </p>
+        )}
+        <h1 className="text-[22px] font-semibold text-[#141821] leading-[1.2] tracking-[-0.025em]">
+          {title}
+        </h1>
+        {subtitle && (
+          <div className="text-[13.5px] text-[#666D7A] max-w-2xl leading-relaxed mt-1.5">
+            {subtitle}
+          </div>
+        )}
       </div>
+      {cta && <div className="shrink-0 flex items-center gap-2 flex-wrap">{cta}</div>}
     </div>
   )
 }
 
 /* ===========================================================
- * Card - base surface
+ * Card - base surface, raised a hair off the page
  * =========================================================== */
 export function Card({
   children,
@@ -120,14 +93,16 @@ export function Card({
     padding === 'sm' ? 'p-4' :
     padding === 'md' ? 'p-5' : 'p-6'
   const a = accent ? ACCENT[accent] : null
-  const bg = tint ? '#F3F7FF' : '#FFFFFF'
-  const style: React.CSSProperties = { background: bg }
+  const style: React.CSSProperties = {
+    background: tint ? 'linear-gradient(180deg,#F6FAFF,#F1F6FE)' : 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
+    boxShadow: `${SH2}, inset 0 1px 0 #FFFFFF`,
+  }
   if (a) style.borderLeft = `3px solid ${a.bar}`
   return (
     <div
       style={style}
-      className={`border border-[#E5E5E5] rounded-2xl ${pad} ${
-        hover ? 'transition-colors hover:border-[#D4D4D4]' : ''
+      className={`border border-[#E8EAEE] rounded-xl ${pad} ${
+        hover ? 'transition-shadow hover:shadow-[0_6px_16px_-6px_rgba(16,24,40,0.16),0_2px_4px_-2px_rgba(16,24,40,0.08)]' : ''
       } ${className}`}
     >
       {children}
@@ -136,7 +111,7 @@ export function Card({
 }
 
 /* ===========================================================
- * Section label - small accent bar + mono uppercase label
+ * Section label - accent tile + heading
  * =========================================================== */
 export function SectionLabel({
   children,
@@ -151,23 +126,22 @@ export function SectionLabel({
 }) {
   const a = ACCENT[accent]
   return (
-    <div className="flex items-center justify-between gap-4 mb-5">
+    <div className="flex items-center justify-between gap-4 mb-3">
       <div className="flex items-center gap-2.5 min-w-0">
-        <span className="w-7 h-[3px] rounded-full shrink-0" style={{ background: a.bar }} />
-        <h2
-          className="text-[11px] font-bold uppercase truncate"
-          style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em', color: a.text }}
+        <span
+          className="w-[22px] h-[22px] rounded-md shrink-0 flex items-center justify-center"
+          style={{
+            background: `linear-gradient(180deg, ${a.bg}, ${a.bg})`,
+            boxShadow: `inset 0 0 0 1px ${a.ring}`,
+          }}
+          aria-hidden
         >
+          <span className="w-[7px] h-[7px] rounded-[2px]" style={{ background: a.bar }} />
+        </span>
+        <h2 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em] truncate">
           {children}
         </h2>
-        {meta && (
-          <span
-            className="text-[10px] text-[#999999] ml-2"
-            style={{ fontFamily: MONO_FONT, letterSpacing: '0.1em' }}
-          >
-            {meta}
-          </span>
-        )}
+        {meta && <span className="text-[11.5px] text-[#98A0AD] ml-1 shrink-0">{meta}</span>}
       </div>
       {cta && <div className="shrink-0">{cta}</div>}
     </div>
@@ -175,7 +149,7 @@ export function SectionLabel({
 }
 
 /* ===========================================================
- * Pill - small mono uppercase chip
+ * Pill - status chip with a leading dot
  * =========================================================== */
 export function Pill({
   children,
@@ -193,16 +167,17 @@ export function Pill({
       : { background: a.bg, color: a.text, borderColor: a.ring }
   return (
     <span
-      className="inline-flex items-center gap-1.5 text-[10px] uppercase px-2 py-0.5 rounded-full border whitespace-nowrap"
-      style={{ fontFamily: MONO_FONT, letterSpacing: '0.08em', ...styles }}
+      className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-[3px] rounded-full border whitespace-nowrap"
+      style={{ boxShadow: SH1, ...styles }}
     >
+      <span className="w-[5px] h-[5px] rounded-full shrink-0" style={{ background: 'currentColor' }} aria-hidden />
       {children}
     </span>
   )
 }
 
 /* ===========================================================
- * Stat card - accent bar + label + tabular number + sublabel
+ * Stat card - label, tabular number, supporting note
  * =========================================================== */
 export function StatCard({
   label,
@@ -221,34 +196,33 @@ export function StatCard({
 }) {
   const a = ACCENT[accent]
   const Inner = (
-    <div className="relative bg-[#FAFBFD] border border-[#E5E5E5] rounded-2xl p-5 overflow-hidden h-full transition-colors hover:border-[#D4D4D4] hover:bg-[#F3F7FF]">
-      <div
-        className="absolute top-5 left-5 w-7 h-[3px] rounded-full"
-        style={{ background: a.bar }}
-      />
+    <div
+      className="relative border border-[#E8EAEE] rounded-xl p-4 overflow-hidden h-full transition-shadow"
+      style={{
+        background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
+        boxShadow: `${SH2}, inset 0 1px 0 #FFFFFF`,
+      }}
+    >
       {Icon && (
-        <Icon
-          size={16}
-          className="absolute top-5 right-5 text-[#999999]"
-        />
+        <span
+          className="absolute top-4 right-4 w-[22px] h-[22px] rounded-md flex items-center justify-center"
+          style={{ background: a.bg, boxShadow: `inset 0 0 0 1px ${a.ring}` }}
+        >
+          <Icon size={12} className="opacity-90" />
+        </span>
       )}
+      <p className="text-[11.5px] text-[#666D7A] mb-1.5 pr-7">{label}</p>
       <p
-        className="text-[10px] text-[#6B6B6B] uppercase mt-4 mb-3"
-        style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
-      >
-        {label}
-      </p>
-      <p
-        className="text-[40px] font-extrabold text-[#1A1A1A] tracking-tight leading-none mb-2.5"
+        className="text-[26px] font-semibold text-[#141821] tracking-[-0.035em] leading-none"
         style={{ fontVariantNumeric: 'tabular-nums' }}
       >
         {value}
       </p>
-      {sub && <p className="text-[11px] text-[#999999] truncate">{sub}</p>}
+      {sub && <p className="text-[11.5px] text-[#98A0AD] truncate mt-1.5">{sub}</p>}
     </div>
   )
   return href ? (
-    <Link href={href} className="block">{Inner}</Link>
+    <Link href={href} className="block group [&>div]:hover:shadow-[0_6px_16px_-6px_rgba(16,24,40,0.16),0_2px_4px_-2px_rgba(16,24,40,0.08)]">{Inner}</Link>
   ) : (
     <div>{Inner}</div>
   )
@@ -269,13 +243,13 @@ export function DataRow({
   trailing?: ReactNode
 }) {
   const inner = (
-    <div className="flex items-center justify-between gap-3 py-2.5 px-2 -mx-2 rounded-lg hover:bg-[#F4F4F4] transition-colors group">
+    <div className="flex items-center justify-between gap-3 py-2.5 px-2.5 -mx-2.5 rounded-lg hover:bg-[#F7F9FC] transition-colors group">
       <div className="min-w-0">
-        <p className="text-[14px] font-medium text-[#1A1A1A] group-hover:text-[#1B6DFC] transition-colors truncate">
+        <p className="text-[13.5px] font-medium text-[#141821] tracking-[-0.012em] group-hover:text-[#1B6DFC] transition-colors truncate">
           {primary}
         </p>
         {secondary && (
-          <p className="text-[12px] text-[#6B6B6B] truncate">{secondary}</p>
+          <p className="text-[12px] text-[#666D7A] truncate">{secondary}</p>
         )}
       </div>
       {trailing && <div className="shrink-0">{trailing}</div>}
@@ -299,12 +273,15 @@ export function EmptyState({
   return (
     <div className="flex flex-col items-center text-center py-8 px-4">
       {Icon && (
-        <div className="w-10 h-10 rounded-full border border-[#E5E5E5] bg-[#F8F8F8] flex items-center justify-center mb-3">
-          <Icon size={16} className="text-[#999999]" />
+        <div
+          className="w-10 h-10 rounded-full border border-[#E8EAEE] flex items-center justify-center mb-3"
+          style={{ background: 'linear-gradient(180deg,#FFFFFF,#F7F9FB)', boxShadow: SH1 }}
+        >
+          <Icon size={16} className="text-[#98A0AD]" />
         </div>
       )}
-      <p className="text-[13px] text-[#6B6B6B]">{title}</p>
-      {hint && <p className="text-[12px] text-[#999999] mt-1">{hint}</p>}
+      <p className="text-[13px] text-[#666D7A]">{title}</p>
+      {hint && <p className="text-[12px] text-[#98A0AD] mt-1">{hint}</p>}
     </div>
   )
 }
@@ -331,16 +308,16 @@ export function Btn({
   type?: 'button' | 'submit'
   disabled?: boolean
 }) {
-  const sizing = size === 'sm' ? 'text-[12px] px-3 py-1.5' : 'text-[13px] px-4 py-2'
+  const sizing = size === 'sm' ? 'text-[12px] px-3 py-1.5' : 'text-[12.5px] px-3.5 py-[7px]'
   const palette =
     variant === 'primary'
-      ? 'bg-[#1B6DFC] text-[#FFFFFF] hover:bg-[#1056D6] border border-transparent font-semibold'
+      ? 'text-white border border-[#1560E0] font-medium bg-[linear-gradient(180deg,#3B82F9,#1B6DFC)] hover:bg-[linear-gradient(180deg,#2E77F7,#1560E0)] shadow-[0_1px_2px_rgba(27,109,252,0.4),inset_0_1px_0_rgba(255,255,255,0.28)]'
       : variant === 'caution'
-      ? 'bg-[#FEF6E7] text-[#B7791F] border border-[#F0DCB4] hover:border-[#D9B976] hover:text-[#8A5A14]'
+      ? 'text-[#A96A12] border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] hover:border-[#D9B976] hover:text-[#8A5A14] shadow-[0_1px_2px_rgba(16,24,40,0.05)]'
       : variant === 'ghost'
-      ? 'bg-transparent text-[#6B6B6B] hover:text-[#1A1A1A] hover:bg-[#F4F4F4] border border-transparent'
-      : 'bg-[#FFFFFF] text-[#1A1A1A] border border-[#E5E5E5] hover:border-[#D4D4D4] hover:text-[#1B6DFC]'
-  const base = `inline-flex items-center gap-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap ${sizing} ${palette}`
+      ? 'bg-transparent text-[#666D7A] hover:text-[#141821] hover:bg-[#F4F6F9] border border-transparent'
+      : 'text-[#141821] border border-[#E8EAEE] bg-[linear-gradient(180deg,#FFFFFF,#FAFBFC)] hover:border-[#CFD4DC] shadow-[0_1px_2px_rgba(16,24,40,0.05)] hover:shadow-[0_1px_3px_rgba(16,24,40,0.09),0_1px_2px_-1px_rgba(16,24,40,0.05)]'
+  const base = `inline-flex items-center gap-2 rounded-lg font-medium transition-all active:translate-y-[0.5px] disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap ${sizing} ${palette}`
   const content = (
     <>
       {Icon && <Icon size={size === 'sm' ? 13 : 14} />}
