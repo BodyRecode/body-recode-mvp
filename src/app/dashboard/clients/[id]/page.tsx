@@ -3,7 +3,7 @@ import OffboardPanel from './offboard-panel'
 import FreezePanel from './freeze-panel'
 import { signedBaselinePhotoSet } from '@/lib/baseline-photos'
 import { notFound } from 'next/navigation'
-import { ChevronLeft, ChevronRight, Activity, RefreshCw, AlertTriangle as AlertTriangleIcon, Eye, Sparkles } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ArrowRight, CheckCircle2, Activity, RefreshCw, AlertTriangle as AlertTriangleIcon, Eye, Sparkles } from 'lucide-react'
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
 import { getSuggestionsForState } from '@/lib/rrs-protocol-suggestions'
 import type { RecoveryPlaybookId } from '@/lib/recovery-doctrine'
@@ -515,29 +515,53 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 </span>
               </div>
             )}
-            <div
-              className="flex items-center gap-4 border border-[#E8EAEE] rounded-xl px-5 py-4"
-              style={{
-                borderLeft: '3px solid #1B6DFC',
-                background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
-                boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
-              }}
-            >
-              <div className="flex-1 min-w-0">
-                <p className="text-[11.5px] text-[#1B6DFC] mb-1">Next step</p>
-                <p className="text-[15px] font-semibold text-[#141821] tracking-[-0.015em] leading-snug">{next.t}</p>
-                <p className="text-[13px] text-[#666D7A] mt-0.5">{next.s}</p>
-              </div>
-              {next.href && (
-                <Link
-                  href={next.href}
-                  className="shrink-0 inline-flex items-center gap-1.5 text-[12.5px] font-medium px-3.5 py-[7px] rounded-lg text-white border border-[#1560E0] bg-[linear-gradient(180deg,#3B82F9,#1B6DFC)] hover:bg-[linear-gradient(180deg,#2E77F7,#1560E0)] shadow-[0_1px_2px_rgba(27,109,252,0.4),inset_0_1px_0_rgba(255,255,255,0.28)] transition-all active:translate-y-[0.5px]"
+            {/* Two different messages, so two different cards. With something
+                to do it is an instruction and reads blue; with nothing to do
+                it is the all-clear, and dressing that in the same urgent blue
+                taught the eye to ignore both. */}
+            {(() => {
+              const allClear = !next.href
+              return (
+                <div
+                  className="flex items-center gap-3.5 border rounded-xl px-5 py-4"
+                  style={{
+                    borderColor: allClear ? '#E8EAEE' : '#B9D0FD',
+                    background: allClear
+                      ? 'linear-gradient(180deg,#FFFFFF,#FBFCFD)'
+                      : 'linear-gradient(180deg,#F7FAFF,#F1F6FE)',
+                    boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
+                  }}
                 >
-                  Go
-                  <ChevronRight size={14} />
-                </Link>
-              )}
-            </div>
+                  <span
+                    className="w-[30px] h-[30px] rounded-lg shrink-0 flex items-center justify-center"
+                    style={{
+                      color: allClear ? '#177245' : '#1B6DFC',
+                      background: allClear ? 'rgba(23,114,69,0.09)' : 'rgba(27,109,252,0.10)',
+                      boxShadow: `inset 0 0 0 1px ${allClear ? '#CAE7D5' : '#B5CFFC'}`,
+                    }}
+                    aria-hidden
+                  >
+                    {allClear ? <CheckCircle2 size={15} /> : <ArrowRight size={15} />}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[12px] text-[#98A0AD] mb-0.5">
+                      {allClear ? 'Nothing waiting' : 'Next step'}
+                    </p>
+                    <p className="text-[15px] font-semibold text-[#141821] tracking-[-0.015em] leading-snug">{next.t}</p>
+                    <p className="text-[13px] text-[#666D7A] mt-0.5">{next.s}</p>
+                  </div>
+                  {next.href && (
+                    <Link
+                      href={next.href}
+                      className="shrink-0 inline-flex items-center gap-1.5 text-[12.5px] font-medium px-3.5 py-[7px] rounded-lg text-white border border-[#1560E0] bg-[linear-gradient(180deg,#3B82F9,#1B6DFC)] hover:bg-[linear-gradient(180deg,#2E77F7,#1560E0)] shadow-[0_1px_2px_rgba(27,109,252,0.4),inset_0_1px_0_rgba(255,255,255,0.28)] transition-all active:translate-y-[0.5px]"
+                    >
+                      Go
+                      <ChevronRight size={14} />
+                    </Link>
+                  )}
+                </div>
+              )
+            })()}
           </div>
         )
       })()}
