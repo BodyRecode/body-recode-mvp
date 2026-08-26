@@ -58,7 +58,7 @@ export default function ClientProfileTabs({
 
   return (
     <div>
-      <nav className="sticky top-[68px] z-10 flex items-center gap-0.5 border-b border-[#E8EAEE] mb-6 overflow-x-auto bg-white/90 backdrop-blur-md">
+      <nav className="flex items-center gap-0.5 border-b border-[#E8EAEE] mb-6 overflow-x-auto">
         {TABS.map(t => (
           <button
             key={t.id}

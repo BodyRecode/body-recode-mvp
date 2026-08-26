@@ -200,7 +200,7 @@ export default function HelpPage() {
       <div className="flex gap-8 items-start">
 
         {/* Sidebar */}
-        <nav className="w-48 shrink-0 sticky top-8 self-start overflow-y-auto max-h-[calc(100vh-8rem)]">
+        <nav className="w-48 shrink-0 sticky top-[104px] self-start overflow-y-auto max-h-[calc(100vh-8rem)]">
           <ul className="space-y-0.5">
             {SECTIONS.filter(s => s.category === activeTab).map(({ id, title, colour }) => {
               const isActive = activeSection === id
