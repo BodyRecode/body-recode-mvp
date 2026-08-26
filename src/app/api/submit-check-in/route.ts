@@ -200,7 +200,7 @@ export async function POST(request: NextRequest) {
                 Your responses have been received and are being reviewed.
               </p>
               <p style="margin:0 0 16px;font-size:15px;color:#999999;line-height:1.7;">
-                From this submission, a short interpretive report will be prepared, reflecting the patterns currently showing up across your training, recovery, and overall consistency.
+                From this submission, a short written report will be prepared, reflecting the patterns currently showing up across your training, recovery, and overall consistency.
               </p>
               <p style="margin:0 0 36px;font-size:15px;color:#999999;line-height:1.7;">
                 You can expect this report within one business day. No further action is required from you at this stage.
