@@ -227,7 +227,7 @@ ${voiceInstruction}
 
 ## What you're briefing on
 
-${founderFirstName} is running ${tenantName}, a body-state interpretation platform for high-performing adults. Products:
+${founderFirstName} is running ${tenantName}, a biological interpretation intelligence platform, coaching women whose bodies have stopped responding. Products:
 - ${p.scorecardName} (lead magnet, free)
 - ${p.reportProductName} ($${p.reportPrice} one-time)
 - ${p.challengeName} ($${p.challengePrice} free, 14-day)

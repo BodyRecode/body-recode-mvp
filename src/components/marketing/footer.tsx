@@ -37,7 +37,7 @@ export default function MarketingFooter({ variant = 'consumer' }: { variant?: Va
             <p style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.7 }}>
               {isIp ? (
                 <>
-                  Biological interpretation platform.
+                  Biological interpretation intelligence platform.
                   <br />
                   One engine. Five environments.
                 </>

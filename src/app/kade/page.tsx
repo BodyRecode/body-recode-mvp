@@ -163,7 +163,7 @@ export default function KadePage() {
           >
             <div>
               <p className="text-base font-semibold text-[#2A1E16] group-hover:text-[#B5552F] transition-colors">{brand().name}™</p>
-              <p className="text-xs text-[#6E5B4D] mt-0.5 italic">The biological interpretation platform</p>
+              <p className="text-xs text-[#6E5B4D] mt-0.5 italic">The biological interpretation intelligence platform</p>
             </div>
             <span className="text-[#2A1E16] group-hover:text-[#B5552F] text-lg transition-colors" aria-hidden>→</span>
           </a>

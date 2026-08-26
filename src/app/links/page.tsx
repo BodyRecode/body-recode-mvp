@@ -28,7 +28,7 @@ export default function LinksPage() {
     {
       href: t.marketingDomain,
       title: `${t.name}™`,
-      desc: 'The biological interpretation platform',
+      desc: 'The biological interpretation intelligence platform',
     },
     {
       href: t.performanceDomain,

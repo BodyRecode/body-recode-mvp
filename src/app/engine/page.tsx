@@ -490,7 +490,7 @@ export default function EnginePage() {
 
       {/* FOOTER */}
       <footer style={{ padding: '64px 24px', textAlign: 'center' }}>
-        <p style={{ fontFamily: MONO, fontSize: 11, letterSpacing: '0.18em', color: TXT_MUTE, textTransform: 'uppercase', marginBottom: 14 }}>{brand().name}™ · Biological Interpretation Platform</p>
+        <p style={{ fontFamily: MONO, fontSize: 11, letterSpacing: '0.18em', color: TXT_MUTE, textTransform: 'uppercase', marginBottom: 14 }}>{brand().name}™ · Biological Interpretation Intelligence Platform</p>
         <div style={{ display: 'flex', gap: 20, justifyContent: 'center', flexWrap: 'wrap' }}>
           <a href="/" style={navLink}>Home</a>
           <a href="/#engine" style={navLink}>The schematic</a>

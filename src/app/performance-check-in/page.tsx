@@ -82,7 +82,7 @@ export default function PerformanceCheckInPage() {
           <div className="grid md:grid-cols-3 gap-10">
             {[
               { step: '01', title: 'Continue with your day', body: 'Once you complete the check-in, there\'s nothing further required. You can continue on without taking any further action.' },
-              { step: '02', title: 'Receive your report', body: 'A short interpretive report will be sent to you by email, reflecting the patterns currently showing up across your training, recovery, and consistency.' },
+              { step: '02', title: 'Receive your report', body: 'A short written report will be sent to you by email, reflecting the patterns currently showing up across your training, recovery, and consistency.' },
               { step: '03', title: 'Decide what to do with it', body: 'Some people read it and leave it there. Others notice things they\'d like to understand more deeply. If you choose to explore further, the email will include an optional link. That decision is entirely yours.' },
             ].map((item) => (
               <div key={item.step} className="border border-stone-200 rounded-2xl p-6">

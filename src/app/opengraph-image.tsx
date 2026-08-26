@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og'
 import { brand } from "@/config/tenant";
 
 export const runtime = 'edge'
-export const alt = 'Body Recode™ | Biological Interpretation Platform'
+export const alt = 'Body Recode™ | Biological Interpretation Intelligence Platform'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -65,7 +65,7 @@ export default async function Image() {
               textTransform: 'uppercase',
             }}
           >
-            Biological Interpretation Platform
+            Biological Interpretation Intelligence Platform
           </div>
           <div
             style={{

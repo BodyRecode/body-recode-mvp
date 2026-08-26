@@ -4,7 +4,7 @@ import LicensingEnquiryForm from '@/components/marketing/licensing-enquiry-form'
 import { brand } from "@/config/tenant";
 
 export const metadata: Metadata = {
-  title: 'Body Recode™ | Biological Interpretation Platform',
+  title: 'Body Recode™ | Biological Interpretation Intelligence Platform',
   description:
     'Body Recode™ is a biological interpretation system. One interpretive engine. Five environments. Licensable across performance coaching, executive, tactical, clinical and developmental contexts.',
 }
@@ -241,7 +241,7 @@ export default function HomePage() {
               marginBottom: 24,
             }}
           >
-            Biological Interpretation Platform
+            Biological Interpretation Intelligence Platform
           </p>
           <h1
             style={{
@@ -686,7 +686,7 @@ export default function HomePage() {
                 style={{ height: 56, width: 'auto', marginBottom: 18, filter: 'brightness(0) invert(1)' }}
               />
               <p style={{ fontSize: 13, color: TXT_DIM, lineHeight: 1.7 }}>
-                Biological interpretation platform.
+                Biological interpretation intelligence platform.
                 <br />
                 One engine. Five environments.
               </p>

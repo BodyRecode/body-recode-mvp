@@ -19,7 +19,7 @@ export type TenantConfig = {
   brand: {
     name: string                    // "Body Recode"
     nameWithMark: string            // "Body Recode™"
-    tagline: string                 // "Biological Interpretation Platform"
+    tagline: string                 // "Biological Interpretation Intelligence Platform"
     logoUrlLight: string            // /logo-black.png (light-mode logo)
     logoUrlDark: string             // /logo-white.png (dark-mode logo)
     apexDomain: string              // "bodyrecode.au"
@@ -158,7 +158,7 @@ const BODY_RECODE_TENANT: TenantConfig = {
   brand: {
     name: 'Body Recode',
     nameWithMark: 'Body Recode™',
-    tagline: 'Biological Interpretation Platform',
+    tagline: 'Biological Interpretation Intelligence Platform',
     logoUrlLight: '/logo-black.png',
     logoUrlDark: '/logo-white.png',
     apexDomain: 'bodyrecode.au',
