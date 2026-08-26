@@ -19,8 +19,8 @@ def dashboard_only_components():
     app = list(pathlib.Path('src/app').rglob('*.tsx'))
     sources = [(f, f.read_text()) for f in app]
     out = []
-    for comp in pathlib.Path('src/components').glob('*.tsx'):
-        token = "@/components/" + comp.stem
+    for comp in pathlib.Path('src/components').rglob('*.tsx'):
+        token = "@/components/" + str(comp.relative_to("src/components").with_suffix(""))
         importers = [f for f, text in sources if token + "'" in text or token + '"' in text]
         if importers and all('src/app/dashboard/' in str(f) for f in importers):
             out.append(comp)

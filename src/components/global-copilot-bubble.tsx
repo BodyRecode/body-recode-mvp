@@ -1,6 +1,8 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import { X } from 'lucide-react'
+import { LAUNCHER_BUTTON, launcherStyle, LAUNCHER_PANEL_SHADOW } from '@/components/launcher-style'
 import { usePathname } from 'next/navigation'
 import { CopilotStarters } from '@/components/copilot-starters'
 import { generalStarterCategories } from '@/lib/copilot-starter-questions'
@@ -178,17 +180,18 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
 
       {open && (
         <div
-          className="fixed bottom-24 right-5 z-50 w-[380px] max-w-[calc(100vw-2.5rem)] h-[560px] max-h-[calc(100vh-8rem)] shadow-2xl rounded-xl print:hidden"
+          className="fixed bottom-[76px] right-5 z-50 w-[380px] max-w-[calc(100vw-2.5rem)] h-[560px] max-h-[calc(100vh-8rem)] rounded-xl print:hidden"
+          style={{ boxShadow: LAUNCHER_PANEL_SHADOW }}
           role="dialog"
           aria-label="Coach Co-Pilot"
         >
           <div className="border border-[#E8EAEE] bg-[#FFFFFF] rounded-xl overflow-hidden flex flex-col h-full">
-            <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[#FAFAF7] shrink-0">
-              <p className="text-[10px] font-medium text-[#1B6DFC]" style={{ fontFamily: MONO, letterSpacing: '0.14em' }}>
-                Co-Pilot · Doctrine tutor
-              </p>
-              <span className="ml-auto text-[10px] text-[#98A0AD]" style={{ fontFamily: MONO }}>read-only · coach only</span>
-              <button onClick={() => setOpen(false)} aria-label="Close co-pilot" className="text-[#98A0AD] hover:text-[#141821] text-lg leading-none -my-1">✕</button>
+            <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[linear-gradient(180deg,#FFFFFF,#FBFCFD)] shrink-0">
+              <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Co-Pilot</p>
+              <span className="ml-auto text-[11.5px] text-[#98A0AD]">Doctrine tutor · read-only</span>
+              <button onClick={() => setOpen(false)} aria-label="Close co-pilot" className="text-[#98A0AD] hover:text-[#141821] -my-1">
+                <X size={16} />
+              </button>
             </div>
 
             {/* Persistent "What I can help with" bar — available any time, not
@@ -342,15 +345,16 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
       <button
         onClick={() => (open ? setOpen(false) : openPanel())}
         aria-label={open ? 'Close Co-Pilot' : 'Open Co-Pilot'}
-        title="Co-Pilot · doctrine tutor"
-        className="fixed bottom-5 right-5 z-50 h-14 w-14 rounded-full bg-[#1B6DFC] hover:bg-[#1558d6] text-white shadow-xl flex items-center justify-center transition-colors print:hidden"
+        title="Co-Pilot - doctrine tutor"
+        className={`${LAUNCHER_BUTTON} bottom-5 right-5`}
+        style={launcherStyle(open)}
       >
         {open ? (
-          <span className="text-2xl leading-none">✕</span>
+          <X size={20} />
         ) : (
           // Same neutral "Aperture" glyph as the client-scoped bubble so it's
           // visibly one co-pilot. White-label-swappable.
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <circle cx="12" cy="12" r="9" stroke="white" strokeWidth="1.6" />
             <circle cx="12" cy="12" r="5" stroke="white" strokeWidth="1.6" opacity="0.55" />
             <circle cx="12" cy="12" r="1.9" fill="white" />
@@ -360,8 +364,12 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
         {!open && !!awaiting && awaiting > 0 && (
           <span
             aria-label={`${awaiting} clients awaiting you`}
-            className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-[#E4572E] text-white text-[11px] font-medium flex items-center justify-center border-2 border-white shadow"
-            style={{ fontFamily: MONO }}
+            className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full text-white text-[11px] font-semibold flex items-center justify-center border-2 border-white"
+            style={{
+              background: 'linear-gradient(180deg,#EF4444,#DC2626)',
+              boxShadow: '0 1px 2px rgba(220,38,38,0.35)',
+              fontVariantNumeric: 'tabular-nums',
+            }}
           >
             {awaiting > 9 ? '9+' : awaiting}
           </span>

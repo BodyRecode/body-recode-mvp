@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { X } from 'lucide-react'
+import { LAUNCHER_BUTTON, launcherStyle, LAUNCHER_PANEL_SHADOW } from '@/components/launcher-style'
 import CopilotPanel from './copilot-panel'
 
 // randomUUID needs a secure context; fall back so a plain-http preview still works.
@@ -46,7 +48,8 @@ export default function CopilotBubble({
     <>
       {open && sessionId && (
         <div
-          className="fixed bottom-24 right-5 z-50 w-[380px] max-w-[calc(100vw-2.5rem)] h-[560px] max-h-[calc(100vh-8rem)] shadow-2xl rounded-xl"
+          className="fixed bottom-[76px] right-5 z-50 w-[380px] max-w-[calc(100vw-2.5rem)] h-[560px] max-h-[calc(100vh-8rem)] rounded-xl"
+          style={{ boxShadow: LAUNCHER_PANEL_SHADOW }}
           role="dialog"
           aria-label="Coach Co-Pilot"
         >
@@ -64,15 +67,16 @@ export default function CopilotBubble({
       <button
         onClick={() => (open ? setOpen(false) : openPanel())}
         aria-label={open ? 'Close Co-Pilot' : 'Open Co-Pilot'}
-        title="Co-Pilot · doctrine tutor"
-        className="fixed bottom-5 right-5 z-50 h-14 w-14 rounded-full bg-[#1B6DFC] hover:bg-[#1558d6] text-white shadow-xl flex items-center justify-center transition-colors"
+        title="Co-Pilot - doctrine tutor"
+        className={`${LAUNCHER_BUTTON} bottom-5 right-5`}
+        style={launcherStyle(open)}
       >
         {open ? (
-          <span className="text-2xl leading-none">✕</span>
+          <X size={20} />
         ) : (
           // Neutral brand glyph — "Aperture": concentric focus rings = the read
           // instrument (reads signals, interprets). White-label-swappable.
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <circle cx="12" cy="12" r="9" stroke="white" strokeWidth="1.6" />
             <circle cx="12" cy="12" r="5" stroke="white" strokeWidth="1.6" opacity="0.55" />
             <circle cx="12" cy="12" r="1.9" fill="white" />

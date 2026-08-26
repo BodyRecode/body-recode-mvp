@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
+import { LifeBuoy, X } from 'lucide-react'
 import { CATEGORIES, CATEGORY_LABELS, STATUS_LABELS, statusAccent, categoryAccent, type SupportCategory, type SupportStatus } from '@/lib/support-tickets'
+import { LAUNCHER_BUTTON, launcherStyle, LAUNCHER_PANEL_SHADOW } from '@/components/launcher-style'
 
 /**
  * Coach-facing Support launcher. Mounted globally in the dashboard layout.
@@ -13,7 +15,6 @@ import { CATEGORIES, CATEGORY_LABELS, STATUS_LABELS, statusAccent, categoryAccen
 
 const MONO = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
 const SIGNAL = '#1B6DFC'
-const SIGNAL_HOVER = '#1558d6'
 const AMBER = '#B7791F'
 const RED = '#DC2626'
 const SAGE = '#7A8A6B'
@@ -39,7 +40,7 @@ function accentToHex(a: 'red' | 'amber' | 'blue' | 'sage' | 'neutral'): string {
   if (a === 'amber') return AMBER
   if (a === 'blue') return SIGNAL
   if (a === 'sage') return SAGE
-  return '#6B6B6B'
+  return '#666D7A'
 }
 
 export default function SupportLauncher() {
@@ -53,17 +54,18 @@ export default function SupportLauncher() {
     <>
       {open && (
         <div
-          className="fixed bottom-24 left-5 z-[100] w-[400px] max-w-[calc(100vw-2.5rem)] h-[560px] max-h-[calc(100vh-8rem)] shadow-2xl rounded-2xl print:hidden"
+          className="fixed bottom-[76px] left-5 z-[100] w-[400px] max-w-[calc(100vw-2.5rem)] h-[560px] max-h-[calc(100vh-8rem)] rounded-xl print:hidden"
+          style={{ boxShadow: LAUNCHER_PANEL_SHADOW }}
           role="dialog"
           aria-label="Support"
         >
-          <div className="border border-[#E5E5E5] bg-[#FFFFFF] rounded-2xl overflow-hidden flex flex-col h-full">
-            <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E5E5E5] bg-[#FAFAF7] shrink-0">
-              <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest" style={{ fontFamily: MONO, letterSpacing: '0.14em' }}>
-                Support
-              </p>
-              <span className="ml-auto text-[10px] text-[#999999]" style={{ fontFamily: MONO }}>Kade sees every ticket</span>
-              <button onClick={() => setOpen(false)} aria-label="Close support" className="text-[#999999] hover:text-[#1A1A1A] text-lg leading-none -my-1">✕</button>
+          <div className="border border-[#E8EAEE] bg-[#FFFFFF] rounded-xl overflow-hidden flex flex-col h-full">
+            <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[linear-gradient(180deg,#FFFFFF,#FBFCFD)] shrink-0">
+              <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Support</p>
+              <span className="ml-auto text-[11.5px] text-[#98A0AD]">Kade sees every ticket</span>
+              <button onClick={() => setOpen(false)} aria-label="Close support" className="text-[#98A0AD] hover:text-[#141821] -my-1">
+                <X size={16} />
+              </button>
             </div>
 
             <div className="flex border-b border-[#EDEDED] bg-white shrink-0">
@@ -81,16 +83,11 @@ export default function SupportLauncher() {
       <button
         onClick={() => setOpen(o => !o)}
         aria-label={open ? 'Close Support' : 'Open Support'}
-        title="Report an issue or ask for help"
-        className="fixed bottom-5 left-5 z-50 h-12 rounded-full text-white shadow-xl inline-flex items-center gap-2 pl-4 pr-5 transition-colors print:hidden"
-        style={{ background: open ? '#1A1A1A' : SIGNAL, fontFamily: MONO }}
-        onMouseEnter={e => { if (!open) e.currentTarget.style.background = SIGNAL_HOVER }}
-        onMouseLeave={e => { if (!open) e.currentTarget.style.background = SIGNAL }}
+        title="Support - report an issue or ask for help"
+        className={`${LAUNCHER_BUTTON} bottom-5 left-5`}
+        style={launcherStyle(open)}
       >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 2 L14.5 8.5 L21.5 9 L16 13.5 L17.5 20.5 L12 16.5 L6.5 20.5 L8 13.5 L2.5 9 L9.5 8.5 Z" stroke="white" strokeWidth="1.6" strokeLinejoin="round" fill={open ? 'transparent' : 'rgba(255,255,255,0.15)'} />
-        </svg>
-        <span className="text-[12px] font-semibold uppercase tracking-widest">{open ? 'Close' : 'Support'}</span>
+        {open ? <X size={20} /> : <LifeBuoy size={21} />}
       </button>
     </>
   )
@@ -100,12 +97,11 @@ function TabBtn({ active, onClick, children }: { active: boolean; onClick: () =>
   return (
     <button
       onClick={onClick}
-      className="flex-1 text-[12px] font-semibold uppercase tracking-widest py-3 border-b-2 transition-colors"
+      className="flex-1 text-[13px] py-2.5 border-b-2 -mb-px transition-colors"
       style={{
-        fontFamily: MONO,
-        color: active ? '#1A1A1A' : '#6B6B6B',
+        fontWeight: active ? 500 : 400,
+        color: active ? SIGNAL : '#666D7A',
         borderColor: active ? SIGNAL : 'transparent',
-        background: active ? '#FAFAF7' : 'transparent',
       }}
     >
       {children}
@@ -157,8 +153,8 @@ function ReportForm({ pathname, onSubmitted }: { pathname: string; onSubmitted: 
         <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(122,138,107,0.15)' }}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke={SAGE} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
         </div>
-        <p className="text-[14px] font-semibold text-[#1A1A1A]">Ticket filed.</p>
-        <p className="text-[12.5px] text-[#6B6B6B] leading-relaxed">Kade sees it now. You will get an email when the status changes.</p>
+        <p className="text-[14px] font-semibold text-[#141821]">Ticket filed.</p>
+        <p className="text-[12.5px] text-[#666D7A] leading-relaxed">Kade sees it now. You will get an email when the status changes.</p>
       </div>
     )
   }
@@ -166,7 +162,7 @@ function ReportForm({ pathname, onSubmitted }: { pathname: string; onSubmitted: 
   return (
     <form onSubmit={submit} className="p-5 space-y-4">
       <div>
-        <label className="block text-[10px] font-bold text-[#6B6B6B] uppercase tracking-widest mb-2" style={{ fontFamily: MONO }}>What kind of thing?</label>
+        <label className="block text-[12.5px] text-[#666D7A] mb-2">What kind of thing?</label>
         <div className="grid grid-cols-2 gap-2">
           {CATEGORIES.map(c => {
             const active = c === category
@@ -178,9 +174,9 @@ function ReportForm({ pathname, onSubmitted }: { pathname: string; onSubmitted: 
                 onClick={() => setCategory(c)}
                 className="text-left text-[12.5px] rounded-lg px-3 py-2 border transition-colors"
                 style={{
-                  borderColor: active ? hex : '#E5E5E5',
+                  borderColor: active ? hex : '#E8EAEE',
                   background: active ? `${hex}12` : '#FFFFFF',
-                  color: active ? '#1A1A1A' : '#4A4A4A',
+                  color: active ? '#141821' : '#4A4A4A',
                 }}
               >
                 <span className="block font-semibold">{CATEGORY_LABELS[c]}</span>
@@ -191,7 +187,7 @@ function ReportForm({ pathname, onSubmitted }: { pathname: string; onSubmitted: 
       </div>
 
       <div>
-        <label htmlFor="support-subject" className="block text-[10px] font-bold text-[#6B6B6B] uppercase tracking-widest mb-2" style={{ fontFamily: MONO }}>Subject</label>
+        <label htmlFor="support-subject" className="block text-[12.5px] text-[#666D7A] mb-2">Subject</label>
         <input
           id="support-subject"
           type="text"
@@ -200,12 +196,12 @@ function ReportForm({ pathname, onSubmitted }: { pathname: string; onSubmitted: 
           maxLength={120}
           required
           placeholder="One-line summary"
-          className="w-full text-[13.5px] border border-[#E5E5E5] rounded-lg px-3 py-2 focus:outline-none focus:border-[#1B6DFC]"
+          className="w-full text-[13.5px] border border-[#E8EAEE] rounded-lg px-3 py-2 focus:outline-none focus:border-[#1B6DFC]"
         />
       </div>
 
       <div>
-        <label htmlFor="support-body" className="block text-[10px] font-bold text-[#6B6B6B] uppercase tracking-widest mb-2" style={{ fontFamily: MONO }}>Detail</label>
+        <label htmlFor="support-body" className="block text-[12.5px] text-[#666D7A] mb-2">Detail</label>
         <textarea
           id="support-body"
           value={body}
@@ -214,11 +210,11 @@ function ReportForm({ pathname, onSubmitted }: { pathname: string; onSubmitted: 
           required
           rows={5}
           placeholder="What happened, what you expected, what you were doing…"
-          className="w-full text-[13.5px] resize-none border border-[#E5E5E5] rounded-lg px-3 py-2 focus:outline-none focus:border-[#1B6DFC]"
+          className="w-full text-[13.5px] resize-none border border-[#E8EAEE] rounded-lg px-3 py-2 focus:outline-none focus:border-[#1B6DFC]"
         />
       </div>
 
-      <div className="text-[11px] text-[#999999]" style={{ fontFamily: MONO }}>
+      <div className="text-[11px] text-[#98A0AD]" style={{ fontFamily: MONO }}>
         We include the page you are on ({pathname || 'unknown'}) automatically.
       </div>
 
@@ -256,12 +252,12 @@ function MyTicketsList({ visible }: { visible: boolean }) {
   }, [visible])
 
   if (error) return <div className="p-5 text-[12.5px] text-red-600">{error}</div>
-  if (tickets === null) return <div className="p-5 text-[12.5px] text-[#999999]">Loading…</div>
+  if (tickets === null) return <div className="p-5 text-[12.5px] text-[#98A0AD]">Loading…</div>
   if (tickets.length === 0) {
     return (
       <div className="p-6 text-center">
-        <p className="text-[13px] text-[#6B6B6B]">No tickets yet.</p>
-        <p className="text-[12px] text-[#999999] mt-1">The ones you file will show here.</p>
+        <p className="text-[13px] text-[#666D7A]">No tickets yet.</p>
+        <p className="text-[12px] text-[#98A0AD] mt-1">The ones you file will show here.</p>
       </div>
     )
   }
@@ -271,22 +267,22 @@ function MyTicketsList({ visible }: { visible: boolean }) {
       {tickets.map(t => {
         const stHex = accentToHex(statusAccent(t.status))
         return (
-          <div key={t.id} className="border border-[#E5E5E5] rounded-xl px-3.5 py-2.5">
+          <div key={t.id} className="border border-[#E8EAEE] rounded-xl px-3.5 py-2.5">
             <div className="flex items-start gap-2 mb-1">
-              <p className="text-[13px] font-semibold text-[#1A1A1A] flex-1 min-w-0 truncate">{t.subject}</p>
+              <p className="text-[13px] font-semibold text-[#141821] flex-1 min-w-0 truncate">{t.subject}</p>
               <span
-                className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full whitespace-nowrap"
+                className="text-[10px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap"
                 style={{ fontFamily: MONO, letterSpacing: '0.08em', color: stHex, background: `${stHex}14`, border: `1px solid ${stHex}44` }}
               >
                 {STATUS_LABELS[t.status]}
               </span>
             </div>
-            <p className="text-[11.5px] text-[#999999]" style={{ fontFamily: MONO }}>
+            <p className="text-[11.5px] text-[#98A0AD]" style={{ fontFamily: MONO }}>
               {CATEGORY_LABELS[t.category]} · {formatDate(t.created_at)}
             </p>
             {t.status_note && (
               <p className="text-[12.5px] text-[#4A4A4A] mt-2 whitespace-pre-wrap leading-relaxed border-t border-[#EDEDED] pt-2">
-                <span className="font-semibold text-[#1A1A1A]">Kade:</span> {t.status_note}
+                <span className="font-semibold text-[#141821]">Kade:</span> {t.status_note}
               </p>
             )}
           </div>
