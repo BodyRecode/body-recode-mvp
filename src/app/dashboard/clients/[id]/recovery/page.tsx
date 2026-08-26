@@ -1,4 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
+import ClientPageNav from '../client-page-nav'
+import { PageHeader } from '@/components/dashboard/ui'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { RECOVERY_PROTOCOLS, type EquipmentTag } from '@/lib/recovery-protocols-seed'
@@ -95,21 +97,16 @@ export default async function CoachRecoveryPage({
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="mb-8">
-        <div className="flex items-center gap-2 text-stone-500 text-sm mb-2">
-          <Link href={`/dashboard/clients/${id}`} className="hover:text-stone-700 transition-colors">{client.name}</Link>
-          <span>/</span>
-          <span className="text-stone-700">Recovery Protocols</span>
-        </div>
-        <h1 className="text-2xl font-semibold text-[#1A1A1A]">Recovery Protocols</h1>
-        <p className="text-stone-600 text-sm mt-2 leading-relaxed">
-          Layer 3 coach-assigned recovery protocols for {client.name}. First tag what equipment they have access to at home and their gym. Then assign protocols from the filtered library - the client only sees what you assign.
-        </p>
-        <p className="text-[11px] text-stone-500 mt-2 leading-relaxed">
-          Note: this is separate from the RRS constraint governor (which reads signals and clamps programs). This surface is the prescription tool. RRS state can inform which protocols to assign, but does not auto-assign anything.
-        </p>
-      </div>
+    <div className="max-w-[980px]">
+      <PageHeader
+        eyebrow={<Link href={`/dashboard/clients/${id}`} className="hover:text-[#1B6DFC] transition-colors">{client.name}</Link>}
+        title="Recovery Protocols"
+        subtitle={`Layer 3 coach-assigned recovery protocols for ${client.name}. First tag what equipment they have access to at home and their gym. Then assign protocols from the filtered library - the client only sees what you assign.`}
+      />
+      <ClientPageNav clientId={id} />
+      <p className="text-[12.5px] text-[#98A0AD] -mt-2 mb-6 leading-relaxed">
+        Separate from the RRS constraint governor, which reads signals and clamps programs. This surface is the prescription tool: RRS state can inform which protocols to assign, but assigns nothing itself.
+      </p>
 
       <RecoveryPlanSuggestionPanel
         clientId={id}

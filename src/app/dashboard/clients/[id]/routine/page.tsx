@@ -1,4 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
+import ClientPageNav from '../client-page-nav'
+import { PageHeader } from '@/components/dashboard/ui'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { resolveDailyRoutine, CANONICAL_DAILY_ROUTINE, type DailyRoutine } from '@/lib/daily-routine-defaults'
@@ -33,23 +35,18 @@ export default async function CoachRoutineEditorPage({
   const draftResolved = hasDraft ? resolveDailyRoutine(draftRaw) : null
 
   return (
-    <div className="max-w-3xl mx-auto">
-      <div className="mb-8">
-        <div className="flex items-center gap-2 text-stone-500 text-sm mb-2">
-          <Link href={`/dashboard/clients/${id}`} className="hover:text-stone-700 transition-colors">{client.name}</Link>
-          <span>/</span>
-          <span className="text-stone-700">Daily Sequences</span>
-        </div>
-        <h1 className="text-2xl font-semibold text-[#1A1A1A]">Morning Reset + Evening Rhythm</h1>
-        <p className="text-stone-600 text-sm mt-2 leading-relaxed">
-          Generate a personalised routine from {client.name}&apos;s data. Review the draft, tweak any step, then publish. The client sees only the live version.
+    <div className="max-w-[860px]">
+      <PageHeader
+        eyebrow={<Link href={`/dashboard/clients/${id}`} className="hover:text-[#1B6DFC] transition-colors">{client.name}</Link>}
+        title="Morning Reset + Evening Rhythm"
+        subtitle={`Generate a personalised routine from ${client.name}'s data. Review the draft, tweak any step, then publish. The client sees only the live version.`}
+      />
+      <ClientPageNav clientId={id} />
+      {!hasCustomisations && !hasDraft && (
+        <p className="text-[12.5px] text-[#98A0AD] -mt-2 mb-6">
+          No live routine and no draft yet. Click Generate to create one from client data.
         </p>
-        {!hasCustomisations && !hasDraft && (
-          <p className="text-[11px] text-stone-500 mt-2 uppercase tracking-widest">
-            No live routine and no draft yet. Click Generate to create one from client data.
-          </p>
-        )}
-      </div>
+      )}
 
       <DraftPanel
         clientId={id}

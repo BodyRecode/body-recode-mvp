@@ -1,4 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
+import ClientPageNav from '../client-page-nav'
+import { PageHeader } from '@/components/dashboard/ui'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { SUPPLEMENT_SUBSTANCES } from '@/lib/supplement-substances-seed'
@@ -57,21 +59,16 @@ export default async function CoachSupplementsPage({
     : null
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="mb-8">
-        <div className="flex items-center gap-2 text-stone-500 text-sm mb-2">
-          <Link href={`/dashboard/clients/${id}`} className="hover:text-stone-700 transition-colors">{client.name}</Link>
-          <span>/</span>
-          <span className="text-stone-700">Supplements</span>
-        </div>
-        <h1 className="text-2xl font-semibold text-[#1A1A1A]">Supplement stack</h1>
-        <p className="text-stone-600 text-sm mt-2 leading-relaxed">
-          Layer 3 coach-assigned supplements for {client.name}. Assign a substance from the library - {client.name} sees all three tiers (Essential / Enhanced / Elite) and picks what fits their budget and commitment.
-        </p>
-        <p className="text-[11px] text-stone-500 mt-2 leading-relaxed">
-          Note: substance library lives in code. Deep research reports and doctrine rationale for each substance live at <code className="bg-stone-100 px-1 rounded">~/Dropbox/01_BODY_RECODE/00_PLAYBOOK/supplement_research/</code>. Add new substances by editing <code className="bg-stone-100 px-1 rounded">src/lib/supplement-substances-seed.ts</code>.
-        </p>
-      </div>
+    <div className="max-w-[980px]">
+      <PageHeader
+        eyebrow={<Link href={`/dashboard/clients/${id}`} className="hover:text-[#1B6DFC] transition-colors">{client.name}</Link>}
+        title="Supplement stack"
+        subtitle={`Layer 3 coach-assigned supplements for ${client.name}. Assign a substance from the library - ${client.name} sees all three tiers (Essential / Enhanced / Elite) and picks what fits their budget and commitment.`}
+      />
+      <ClientPageNav clientId={id} />
+      <p className="text-[12.5px] text-[#98A0AD] -mt-2 mb-6 leading-relaxed">
+        The substance library lives in code. Research reports and doctrine rationale sit at <code className="bg-[#F4F6F9] px-1 rounded">~/Dropbox/01_BODY_RECODE/00_PLAYBOOK/supplement_research/</code>; add substances in <code className="bg-[#F4F6F9] px-1 rounded">src/lib/supplement-substances-seed.ts</code>.
+      </p>
 
       <SuggestionPanel
         clientId={id}

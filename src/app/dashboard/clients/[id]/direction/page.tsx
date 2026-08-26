@@ -2,6 +2,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import ClientPageNav from '../client-page-nav'
+import { PageHeader } from '@/components/dashboard/ui'
 
 const phaseColour: Record<string, string> = {
   accumulation: 'text-blue-700 bg-blue-50 border-blue-200',
@@ -77,17 +78,12 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
   return (
     <div className="max-w-[980px]">
       <div className="min-w-0">
+      <PageHeader
+        eyebrow={<Link href={`/dashboard/clients/${id}`} className="hover:text-[#1B6DFC] transition-colors">{client.name}</Link>}
+        title="Direction"
+        subtitle="Macro arc, current meso block, and nutrition alignment - all in one view."
+      />
       <ClientPageNav clientId={id} />
-      {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-2 text-stone-500 text-sm mb-2">
-          <Link href={`/dashboard/clients/${id}`} className="hover:text-stone-700 transition-colors">{client.name}</Link>
-          <span>/</span>
-          <span className="text-stone-700">Direction</span>
-        </div>
-        <h1 className="text-2xl font-semibold text-[#1A1A1A]">Client Direction</h1>
-        <p className="text-stone-500 text-sm mt-1">Macro arc, current meso block, and nutrition alignment - all in one view.</p>
-      </div>
 
       <div className="space-y-4">
 
