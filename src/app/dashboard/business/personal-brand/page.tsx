@@ -858,7 +858,7 @@ export default function PersonalBrandPage() {
       {/* Header */}
       <div className="px-6 pt-6 pb-0 border-b border-[#E8EAEE]">
         <div className="flex items-center gap-3 mb-1">
-          <h1 className="text-xl font-semibold text-[#141821]">Personal Brand</h1>
+          <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">Personal Brand</h1>
           <span className="text-[12.5px] text-[#666D7A] bg-[#EFF1F4] px-2 py-0.5 rounded font-mono">@kade_dunstone_</span>
         </div>
         <p className="text-sm text-[#666D7A] mb-4">Instagram - the thinking, the journey, the builder</p>

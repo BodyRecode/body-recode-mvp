@@ -100,7 +100,7 @@ export default async function CoachTrainIndexPage({ params }: { params: Promise<
     <div className="max-w-2xl mx-auto px-4 py-8">
       <Link href={`/dashboard/clients/${id}`} className="text-[12.5px] font-semibold text-[#1B6DFC] hover:text-[#5390FF]">← Back to {firstName}</Link>
 
-      <div className="mt-4 mb-6">
+      <div className="mt-4 br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
         <p className="text-[10px] font-medium text-[#98A0AD] mb-1">Log a session · {client.name}</p>
         <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em] tracking-tight">{program.block_name ?? 'Training'}</h1>
         <div className="flex flex-wrap items-center gap-2 mt-2 text-[12.5px]">

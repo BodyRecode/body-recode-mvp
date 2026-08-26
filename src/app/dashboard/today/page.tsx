@@ -206,7 +206,7 @@ export default function TodayDashboardPage() {
       <div className="max-w-3xl mx-auto px-4 py-6 sm:px-6 sm:py-8">
         {/* Header */}
         <div className="mb-5">
-          <div className="flex items-center gap-2 mb-1 flex-wrap">
+          <div className="flex items-center gap-2  flex-wrap br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
             <span className="text-[12.5px] font-medium text-blue-600">Today</span>
             {runbookEntry && <span className="text-[12.5px] font-semibold text-[#666D7A] bg-white border border-[#E8EAEE] px-2 py-0.5 rounded">{runbookEntry.label}</span>}
           </div>

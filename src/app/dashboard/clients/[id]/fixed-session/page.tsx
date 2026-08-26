@@ -34,11 +34,11 @@ export default async function FixedSessionPage({ params }: { params: Promise<{ i
 
   return (
     <div className="max-w-lg">
-      <div className="mb-6">
+      <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
         <Link href={`/dashboard/clients/${id}`} className="text-[12.5px] text-[#666D7A] hover:text-[#141821] transition-colors block mb-4">
           ← Back to {client.name}
         </Link>
-        <h1 className="text-xl font-semibold text-[#141821]">Face-to-Face Sessions</h1>
+        <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">Face-to-Face Sessions</h1>
         <p className="text-[#666D7A] text-sm mt-1">Set recurring weekly slots and manage individual bookings.</p>
       </div>
 

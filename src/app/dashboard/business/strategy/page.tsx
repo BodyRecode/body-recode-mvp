@@ -3078,17 +3078,17 @@ export default function StrategyPage() {
           <div className="grid sm:grid-cols-3 gap-3">
             <Card>
               <SectionLabel>Daily Budget · Phase 1</SectionLabel>
-              <p className="text-xl font-semibold text-[#141821]">$25/day</p>
+              <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">$25/day</p>
               <p className="text-[12.5px] text-[#666D7A] mt-1">One broad ad set. Budget at campaign level.</p>
             </Card>
             <Card>
               <SectionLabel>Minimum Test Period</SectionLabel>
-              <p className="text-xl font-semibold text-[#141821]">2 weeks</p>
+              <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">2 weeks</p>
               <p className="text-[12.5px] text-[#666D7A] mt-1">Before judging the stage gate</p>
             </Card>
             <Card>
               <SectionLabel>Phase 1 Spend</SectionLabel>
-              <p className="text-xl font-semibold text-[#141821]">~$350</p>
+              <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">~$350</p>
               <p className="text-[12.5px] text-[#666D7A] mt-1">Before scale-or-debug decision</p>
             </Card>
           </div>

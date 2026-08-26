@@ -129,7 +129,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
     <div className="bg-white border border-[#E8EAEE] rounded-xl p-5 mb-5">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0">
-          <div className="flex flex-wrap items-center gap-2 mb-1.5">
+          <div className="flex flex-wrap items-center gap-2 .5 br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
             <h1 className="text-2xl font-black text-[#141821] tracking-tight">{lead.name}</h1>
             <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border ${getLeadStatusColour(lead.status)}`}>
               {getLeadStatusLabel(lead.status)}

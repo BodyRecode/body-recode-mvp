@@ -39,7 +39,7 @@ export default async function InboxPage() {
   if (sorted.length === 0) {
     return (
       <div className="max-w-2xl">
-        <div className="mb-8">
+        <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
           <h1 className="text-[22px] font-semibold tracking-[-0.025em] mb-1">Inbox</h1>
           <p className="text-[#666D7A] text-sm">One thread per contact - email history and outreach in one place</p>
         </div>
@@ -58,7 +58,7 @@ export default async function InboxPage() {
 
   return (
     <div className="max-w-3xl">
-      <div className="mb-8">
+      <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
         <h1 className="text-[22px] font-semibold tracking-[-0.025em] mb-1">Inbox</h1>
         <p className="text-[#666D7A] text-sm">{sorted.length} contacts</p>
       </div>

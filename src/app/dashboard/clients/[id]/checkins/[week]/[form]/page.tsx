@@ -71,7 +71,7 @@ export default async function CheckInDetailPage({
           </Link>
         </div>
 
-        <div className="mb-8">
+        <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
           <p className="text-[12.5px] font-medium text-blue-500 mb-1">
             Week {weekNumber} · Form {formType}
           </p>

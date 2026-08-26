@@ -79,7 +79,7 @@ export default function NewClientPage() {
   if (intakeLink) {
     return (
       <div className="max-w-lg mx-auto">
-        <div className="mb-8">
+        <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
           <h1 className="text-2xl font-semibold">Client added</h1>
           <p className="text-[#666D7A] text-sm mt-1">{name} has been created</p>
         </div>
@@ -139,7 +139,7 @@ export default function NewClientPage() {
   return (
     <div className="max-w-lg mx-auto">
       <div className="mb-8">
-        <div className="flex items-center gap-2 text-[#666D7A] text-sm mb-2">
+        <div className="flex items-center gap-2 text-[#666D7A] text-sm br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
           <Link href="/dashboard" className="hover:text-[#141821] transition-colors">Clients</Link>
           <span>/</span>
           <span className="text-[#141821]">New client</span>

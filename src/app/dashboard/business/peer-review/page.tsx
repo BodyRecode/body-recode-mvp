@@ -230,7 +230,7 @@ export default function PeerReviewPage() {
 
       {/* Header */}
       <div className="mb-8">
-        <div className="flex items-center gap-2 mb-2">
+        <div className="flex items-center gap-2 br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
           <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
           <span className="text-[12.5px] font-semibold text-blue-500">System Development</span>
         </div>

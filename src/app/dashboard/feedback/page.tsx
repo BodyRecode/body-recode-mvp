@@ -116,7 +116,7 @@ export default function FeedbackDashboardPage() {
   return (
     <div className="min-h-screen bg-[#FBFCFD] text-[#141821]">
       <div className="max-w-6xl mx-auto px-6 py-8">
-        <div className="mb-6">
+        <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
           <p className="text-[12.5px] font-medium text-[#666D7A] mb-1">Coach</p>
           <h1 className="text-2xl font-bold tracking-tight">Feedback triage</h1>
           <p className="text-sm text-[#666D7A] mt-1">All captured feedback across stages. Triage incoming, manage permission-to-publish, tag churn risk, mark testimonials as published.</p>

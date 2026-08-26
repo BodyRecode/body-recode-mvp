@@ -29,9 +29,9 @@ export default async function AgreementViewPage({ params }: { params: Promise<{ 
         <p className="text-sm text-[#666D7A]">Coaching Agreement - {client.name}</p>
       </div>
 
-      <div className="flex items-start justify-between mb-6">
+      <div className="flex items-start justify-between br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
         <div>
-          <h1 className="text-xl font-semibold text-[#141821]">{client.name}</h1>
+          <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">{client.name}</h1>
           <p className="text-[12.5px] text-[#666D7A] mt-1">Version 2.5 - Sole Trader, Queensland, Australia</p>
         </div>
         <div className="flex items-center gap-2">

@@ -32,7 +32,7 @@ export default async function BaselinePage({ params }: { params: Promise<{ id: s
     <div className="max-w-[980px]">
       <div className="mb-8 flex items-start justify-between">
         <div>
-          <div className="flex items-center gap-2 text-[#666D7A] text-sm mb-2">
+          <div className="flex items-center gap-2 text-[#666D7A] text-sm br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
             <Link href={`/dashboard/clients/${id}`} className="hover:text-[#141821] transition-colors">{client.name}</Link>
             <span>/</span>
             <span className="text-[#141821]">Baseline</span>

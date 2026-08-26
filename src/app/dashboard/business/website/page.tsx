@@ -129,9 +129,9 @@ export default function WebsitePage() {
     <div className="max-w-4xl space-y-6">
 
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
         <div>
-          <h1 className="text-xl font-bold text-[#141821]">Website</h1>
+          <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">Website</h1>
           <p className="text-sm text-[#666D7A] mt-0.5">performance.bodyrecode.au</p>
         </div>
         <div className="flex items-center gap-2">

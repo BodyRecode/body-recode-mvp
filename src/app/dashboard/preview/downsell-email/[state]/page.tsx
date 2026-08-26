@@ -82,7 +82,7 @@ export default async function PreviewDownsellEmail({
     <div className="max-w-3xl space-y-10">
       <div>
         <p className="text-[12.5px] font-semibold text-[#666D7A] mb-1">Previewing</p>
-        <h1 className="text-xl font-semibold text-[#141821]">{stateLabel} State - Downsell Emails</h1>
+        <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">{stateLabel} State - Downsell Emails</h1>
         <p className="text-sm text-[#666D7A] mt-1">Using placeholder name "Sarah". Buttons are non-functional in preview.</p>
       </div>
 

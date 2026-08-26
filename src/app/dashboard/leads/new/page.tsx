@@ -50,7 +50,7 @@ export default function NewLeadPage() {
 
   return (
     <div className="max-w-xl">
-      <div className="mb-8">
+      <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
         <h1 className="text-2xl font-semibold">Add Lead</h1>
         <p className="text-[#666D7A] text-sm mt-1">Manually add a lead from any source</p>
       </div>

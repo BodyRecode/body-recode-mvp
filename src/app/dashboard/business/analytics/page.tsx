@@ -74,7 +74,7 @@ export default async function AnalyticsPage() {
 
   return (
     <div className="max-w-4xl">
-      <div className="mb-8">
+      <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
         <h1 className="text-[22px] font-semibold tracking-[-0.025em] mb-1">Analytics</h1>
         <p className="text-[#666D7A] text-sm">Live view of your business performance</p>
       </div>

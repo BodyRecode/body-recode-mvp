@@ -13,8 +13,8 @@ export default async function AvailabilityPage() {
   return (
     <div className="max-w-2xl space-y-8">
       <div>
-        <div className="mb-6">
-          <h1 className="text-xl font-semibold text-[#141821]">Availability</h1>
+        <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
+          <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">Availability</h1>
           <p className="text-[#666D7A] text-sm mt-1">Set the days and times leads can book a Zoom call.</p>
         </div>
         <AvailabilityManager rows={rows ?? []} />

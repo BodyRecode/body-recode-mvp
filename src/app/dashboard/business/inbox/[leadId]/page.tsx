@@ -48,7 +48,7 @@ export default async function InboxThreadPage({
   return (
     <div className="max-w-2xl flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center gap-4 mb-6">
+      <div className="flex items-center gap-4 br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
         <Link
           href="/dashboard/business/inbox"
           className="p-1.5 text-[#666D7A] hover:text-[#141821] transition-colors"
