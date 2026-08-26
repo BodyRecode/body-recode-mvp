@@ -411,7 +411,7 @@ export default function HelpPage() {
           </Section>
 
           <Section id="operator-console" title="Operator Console - Run the Business by Talking to It" colour="violet">
-            <p>The console is a full page at <strong>Console</strong> in the top nav (<code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">/dashboard/console</code>). It is a conversation with your own business: ask it about your leads, your clients, what has actually been sent, and what is firing, and it goes and reads the live data before answering.</p>
+            <p>The console is a full page at <strong>Console</strong> in the sidebar (<code className="bg-[#E5E5E5] px-1 rounded text-blue-700 text-xs">/dashboard/console</code>). It is a conversation with your own business: ask it about your leads, your clients, what has actually been sent, and what is firing, and it goes and reads the live data before answering.</p>
 
             <Note><strong>This is not the co-pilot bubble, and the difference is deliberate.</strong> The bubble helps with the page you are already on and forgets when you close it. The console is where the work <em>is</em> the conversation — auditing a send, chasing down why leads stalled, staging a re-engagement — so its conversations are saved down the left-hand side and you can pick one back up days later.</Note>
 
@@ -1562,7 +1562,7 @@ export default function HelpPage() {
           </Section>
 
           <Section id="assets" title="16b. Assets" colour="teal">
-            <p>The <strong>Assets</strong> page (nav bar) is a central library of everything that goes out to leads and clients. Use it to review any asset before or after it is sent.</p>
+            <p>The <strong>Assets</strong> page (sidebar) is a central library of everything that goes out to leads and clients. Use it to review any asset before or after it is sent.</p>
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">What is listed</p>
             <ul className="space-y-1 list-disc list-inside text-[#3A3A3A] text-sm">
               <li><strong>Body Decode Reports ($37 deliverable)</strong>. Depleted, Transitioning, and Ready. The $37 report a lead receives after purchase, rendered with sample data so you can preview each state.</li>
@@ -1620,7 +1620,7 @@ export default function HelpPage() {
           </Section>
 
           <Section id="system-health" title="17b. System Health Check" colour="teal">
-            <p>The platform runs an automated health check every morning and sends a report to {coach().email}. Every run is also saved and viewable at <strong>Dashboard → System</strong> (top nav).</p>
+            <p>The platform runs an automated health check every morning and sends a report to {coach().email}. Every run is also saved and viewable at <strong>Setup → System</strong> in the sidebar.</p>
 
             <p className="font-semibold text-[#1A1A1A] mt-4">What it checks</p>
             <p>The check runs 19 tests across four groups every day:</p>
@@ -2399,7 +2399,7 @@ export default function HelpPage() {
           </Section>
 
           <Section id="ceo-dashboard" title="CEO Dashboard - Company Scorecard" colour="amber">
-            <p>The CEO Dashboard lives at <strong>Scorecard</strong> in the top nav (<strong>/dashboard/scorecard</strong>). It is the one-glance view of whether the business is winning this week. It is built on the rule from Ryan Deiss&apos;s Scalable Operating System: <strong>the scorecard mirrors your Value Engines</strong> - every metric maps to a stage in how Body Recode acquires customers (Growth Engine) or serves them (Fulfilment Engine), plus the cash view.</p>
+            <p>The CEO Dashboard lives at <strong>CEO Scorecard</strong> in the sidebar (Business group) (<strong>/dashboard/scorecard</strong>). It is the one-glance view of whether the business is winning this week. It is built on the rule from Ryan Deiss&apos;s Scalable Operating System: <strong>the scorecard mirrors your Value Engines</strong> - every metric maps to a stage in how Body Recode acquires customers (Growth Engine) or serves them (Fulfilment Engine), plus the cash view.</p>
 
             <p className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mt-4 mb-2">What you see</p>
             <ul className="space-y-1.5 list-disc list-inside text-[#3A3A3A] text-sm">
