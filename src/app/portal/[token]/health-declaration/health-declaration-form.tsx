@@ -218,12 +218,12 @@ export default function HealthDeclarationForm({
         key={opt}
         type="button"
         onClick={() => { setter(opt.toLowerCase() as YesNo); clearMissing(id) }}
-        className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors border ${
+        className={`px-6 py-3.5 min-h-[52px] rounded-xl text-[15px] font-medium transition-colors border-2 ${
           isSelected
-            ? 'bg-[#1B6DFC]/20 text-[#1B6DFC] border-[#1B6DFC]/40'
+            ? 'bg-[rgba(27,109,252,0.07)] text-[#141821] font-medium border-[#1B6DFC]'
             : hasError
-            ? 'bg-[#E8EAEE] text-[#666D7A] border-red-400'
-            : 'bg-[#E8EAEE] text-[#666D7A] border-[#E8EAEE] hover:border-[#1B6DFC] hover:bg-[#EFF5FE]'
+            ? 'bg-white text-[#43474F] border-[#EFAFAF]'
+            : 'bg-white text-[#43474F] border-[#E8EAEE] hover:border-[#B9D0FD]'
         }`}
       >
         {opt}
@@ -342,10 +342,10 @@ export default function HealthDeclarationForm({
                     return (
                       <button key={r} type="button"
                         onClick={() => { setHealthRating(r); clearMissing('healthRating') }}
-                        className={`py-2.5 rounded-xl text-sm font-semibold transition-colors border ${
-                          isSelected ? 'bg-[#1B6DFC]/20 text-[#1B6DFC] border-[#1B6DFC]/40'
-                          : hasError ? 'bg-[#E8EAEE] text-[#666D7A] border-red-400'
-                          : 'bg-[#E8EAEE] text-[#666D7A] border-[#E8EAEE] hover:border-[#1B6DFC] hover:bg-[#EFF5FE]'
+                        className={`py-3.5 min-h-[52px] rounded-xl text-[15px] font-medium transition-colors border-2 ${
+                          isSelected ? 'bg-[rgba(27,109,252,0.07)] text-[#141821] font-medium border-[#1B6DFC]'
+                          : hasError ? 'bg-white text-[#43474F] border-[#EFAFAF]'
+                          : 'bg-white text-[#43474F] border-[#E8EAEE] hover:border-[#B9D0FD]'
                         }`}
                       >{r}</button>
                     )
@@ -473,7 +473,7 @@ export default function HealthDeclarationForm({
                       {(['Yes', 'No'] as const).map(opt => (
                         <button key={opt} type="button"
                           onClick={() => setPainAggravated(opt.toLowerCase() as YesNo)}
-                          className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${painAggravated === opt.toLowerCase() ? 'bg-[#1B6DFC]/20 text-[#1B6DFC] border border-[#1B6DFC]/40' : 'bg-[#E8EAEE] text-[#666D7A] border border-[#E8EAEE] hover:border-[#1B6DFC] hover:bg-[#EFF5FE]'}`}
+                          className={`px-6 py-3.5 min-h-[52px] rounded-xl text-[15px] font-medium transition-colors ${painAggravated === opt.toLowerCase() ? 'bg-[rgba(27,109,252,0.07)] text-[#141821] font-medium border-2 border-[#1B6DFC]' : 'bg-white text-[#43474F] border-2 border-[#E8EAEE] hover:border-[#B9D0FD]'}`}
                         >{opt}</button>
                       ))}
                     </div>
@@ -484,7 +484,7 @@ export default function HealthDeclarationForm({
                       {(['Yes', 'No'] as const).map(opt => (
                         <button key={opt} type="button"
                           onClick={() => setPainTreatment(opt.toLowerCase() as YesNo)}
-                          className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${painTreatment === opt.toLowerCase() ? 'bg-[#1B6DFC]/20 text-[#1B6DFC] border border-[#1B6DFC]/40' : 'bg-[#E8EAEE] text-[#666D7A] border border-[#E8EAEE] hover:border-[#1B6DFC] hover:bg-[#EFF5FE]'}`}
+                          className={`px-6 py-3.5 min-h-[52px] rounded-xl text-[15px] font-medium transition-colors ${painTreatment === opt.toLowerCase() ? 'bg-[rgba(27,109,252,0.07)] text-[#141821] font-medium border-2 border-[#1B6DFC]' : 'bg-white text-[#43474F] border-2 border-[#E8EAEE] hover:border-[#B9D0FD]'}`}
                         >{opt}</button>
                       ))}
                     </div>
@@ -526,7 +526,7 @@ export default function HealthDeclarationForm({
                   {[1,2,3,4,5,6,7,8,9,10].map(n => (
                     <button key={n} type="button"
                       onClick={() => setEatingHabits(n)}
-                      className={`py-2.5 rounded-xl text-sm font-semibold transition-colors ${eatingHabits === n ? 'bg-[#1B6DFC]/20 text-[#1B6DFC] border border-[#1B6DFC]/40' : 'bg-[#E8EAEE] text-[#666D7A] border border-[#E8EAEE] hover:border-[#1B6DFC] hover:bg-[#EFF5FE]'}`}
+                      className={`py-3.5 min-h-[52px] rounded-xl text-[15px] font-medium transition-colors ${eatingHabits === n ? 'bg-[rgba(27,109,252,0.07)] text-[#141821] font-medium border-2 border-[#1B6DFC]' : 'bg-white text-[#43474F] border-2 border-[#E8EAEE] hover:border-[#B9D0FD]'}`}
                     >{n}</button>
                   ))}
                 </div>
@@ -538,7 +538,7 @@ export default function HealthDeclarationForm({
                   {(['Yes', 'No'] as const).map(opt => (
                     <button key={opt} type="button"
                       onClick={() => setNutritionSupport(opt.toLowerCase() as YesNo)}
-                      className={`px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors ${nutritionSupport === opt.toLowerCase() ? 'bg-[#1B6DFC]/20 text-[#1B6DFC] border border-[#1B6DFC]/40' : 'bg-[#E8EAEE] text-[#666D7A] border border-[#E8EAEE] hover:border-[#1B6DFC] hover:bg-[#EFF5FE]'}`}
+                      className={`px-6 py-3.5 min-h-[52px] rounded-xl text-[15px] font-medium transition-colors ${nutritionSupport === opt.toLowerCase() ? 'bg-[rgba(27,109,252,0.07)] text-[#141821] font-medium border-2 border-[#1B6DFC]' : 'bg-white text-[#43474F] border-2 border-[#E8EAEE] hover:border-[#B9D0FD]'}`}
                     >{opt}</button>
                   ))}
                 </div>

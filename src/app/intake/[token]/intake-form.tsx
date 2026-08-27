@@ -76,13 +76,14 @@ function ScaleInput({
           <button
             key={n}
             type="button"
+            aria-pressed={value === n}
             onClick={() => onChange(n)}
-            className={`flex-1 py-3.5 rounded-2xl text-sm font-bold transition-all duration-150 ${
+            className={`flex-1 min-h-[54px] py-3.5 rounded-2xl text-[16px] font-semibold transition-colors ${
               value === n
-                ? 'bg-[#1B6DFC] text-white shadow-sm'
+                ? 'bg-[#1B6DFC] text-white shadow-[0_1px_2px_rgba(27,109,252,0.4)]'
                 : hasError
-                ? 'bg-[#F4F6F9] text-[#98A0AD] border border-red-400'
-                : 'bg-[#F4F6F9] text-[#98A0AD] hover:bg-[#EFF1F4]'
+                ? 'bg-white text-[#43474F] border-2 border-[#EFAFAF]'
+                : 'bg-white text-[#43474F] border-2 border-[#E8EAEE] hover:border-[#B9D0FD]'
             }`}
           >
             {n}
@@ -135,7 +136,7 @@ function QuestionInput({
           onChange={e => onChange(e.target.value)}
           rows={3}
           placeholder="Your answer..."
-          className={`w-full bg-[#F4F6F9] rounded-2xl px-4 py-3.5 text-[15px] text-[#141821] placeholder-[#666D7A] focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 resize-none transition-all border ${errorBorder}`}
+          className={`w-full bg-[#F4F6F9] rounded-2xl px-4 py-3.5 text-[15px] text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 resize-none transition-all border ${errorBorder}`}
         />
       </div>
     )
@@ -156,19 +157,46 @@ function QuestionInput({
   }
 
   if (question.type === 'select') {
+    // Options, not a dropdown. There is exactly one select in the 221 and it
+    // has four options - a native picker on a phone is a wheel to spin and a
+    // choice you cannot see until you open it, for no gain.
     return (
       <div>
-        <label className={`block text-[15px] font-medium mb-3 leading-snug ${errorText}`}>{question.text}</label>
-        <select
-          value={(value as string) || ''}
-          onChange={e => onChange(e.target.value)}
-          className={`w-full bg-[#F4F6F9] rounded-2xl px-4 py-3.5 text-[15px] text-[#141821] focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 transition-all appearance-none border ${errorBorder}`}
-        >
-          <option value="">Select an option</option>
-          {question.options?.map(opt => (
-            <option key={opt} value={opt}>{opt}</option>
-          ))}
-        </select>
+        <p className={`text-[15px] font-medium mb-3 leading-snug ${errorText}`}>{question.text}</p>
+        <div className="space-y-2.5">
+          {question.options?.map(opt => {
+            const on = value === opt
+            return (
+              <button
+                key={opt}
+                type="button"
+                aria-pressed={on}
+                onClick={() => onChange(opt)}
+                className={`w-full flex items-center gap-3 text-left text-[15px] leading-snug px-4 py-3.5 min-h-[54px] rounded-2xl border-2 transition-colors ${
+                  on
+                    ? 'bg-[rgba(27,109,252,0.07)] border-[#1B6DFC] text-[#141821] font-medium'
+                    : hasError
+                      ? 'bg-white border-[#EFAFAF] text-[#43474F]'
+                      : 'bg-white border-[#E8EAEE] text-[#43474F] hover:border-[#B9D0FD]'
+                }`}
+              >
+                <span
+                  className={`w-5 h-5 shrink-0 rounded-full flex items-center justify-center border-2 transition-colors ${
+                    on ? 'bg-[#1B6DFC] border-[#1B6DFC]' : 'border-[#CFD4DC]'
+                  }`}
+                  aria-hidden
+                >
+                  {on && (
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={3.5} strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </span>
+                <span className="min-w-0">{opt}</span>
+              </button>
+            )
+          })}
+        </div>
       </div>
     )
   }
@@ -183,15 +211,21 @@ function QuestionInput({
             <button
               key={opt}
               type="button"
+              aria-pressed={selected.includes(opt)}
               onClick={() => onToggle(opt)}
-              className={`text-[13px] font-medium px-4 py-2.5 rounded-2xl transition-all duration-150 ${
+              className={`inline-flex items-center gap-2 text-[14.5px] font-medium px-4 py-3 min-h-[48px] rounded-2xl transition-colors ${
                 selected.includes(opt)
                   ? 'bg-[#1B6DFC] text-white'
                   : hasError
-                  ? 'bg-[#F4F6F9] text-[#98A0AD] border border-red-400'
-                  : 'bg-[#F4F6F9] text-[#98A0AD] hover:bg-[#EFF1F4]'
+                  ? 'bg-white text-[#43474F] border-2 border-[#EFAFAF]'
+                  : 'bg-white text-[#43474F] border-2 border-[#E8EAEE] hover:border-[#B9D0FD]'
               }`}
             >
+              {selected.includes(opt) && (
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M5 13l4 4L19 7" />
+                </svg>
+              )}
               {opt}
             </button>
           ))}
@@ -214,16 +248,16 @@ function QuestionInput({
               ? 'bg-[#1B6DFC]'
               : hasError
               ? 'bg-[#F4F6F9] border border-red-400'
-              : 'bg-[#F4F6F9] border border-[#666D7A]'
+              : 'bg-white border-2 border-[#CFD4DC]'
           }`}
         >
           {checked && (
-            <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
             </svg>
           )}
         </span>
-        <span className={`text-[14px] leading-relaxed ${hasError ? 'text-[#C82626]' : 'text-[#43474F]'}`}>{question.text}</span>
+        <span className={`text-[15px] leading-relaxed ${hasError ? 'text-[#C82626]' : 'text-[#43474F]'}`}>{question.text}</span>
       </button>
     )
   }
