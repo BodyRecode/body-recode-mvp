@@ -110,6 +110,13 @@ const STAGES: StageGroup[] = [
       { name: 'Day 7 framing page', url: '/challenge/{token}/day-7', description: 'Pre-Check-In intro. Leads into /check-in.', tokenKind: 'challenge' },
       { name: 'Body Decode Check-In', url: '/challenge/{token}/check-in', description: 'The form (Part 1 Progress Scan + Part 2 Signal Pattern).', tokenKind: 'challenge' },
       { name: 'Day 14 framing page', url: '/challenge/{token}/day-14', description: 'Day 14 Read host. Framed the $37 report, which was retired the same day.', tokenKind: 'challenge' },
+      // These are not separate routes: the [token] segment catches the literal
+      // word "preview" and each page special-cases it with a mocked enrollment.
+      // They still resolve, so they stay listed.
+      { name: 'Day 5 preview (no Supabase)', url: '/challenge/preview/day-5', description: 'Renders with a mocked enrollment - "preview" is caught by the [token] segment. For design review.' },
+      { name: 'Day 7 preview', url: '/challenge/preview/day-7', description: 'Day 7 preview, mocked enrollment.' },
+      { name: 'Day 14 preview', url: '/challenge/preview/day-14', description: 'Day 14 preview, mocked enrollment.' },
+      { name: 'Check-in preview', url: '/challenge/preview/check-in', description: 'Check-in form preview, mocked enrollment.' },
     ],
   },
   {
