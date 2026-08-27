@@ -19,8 +19,8 @@ import { logoUrl, brand, coach } from '@/config/tenant'
 import { DecodeFeedbackCard } from '../../decode-feedback-card'
 
 const BLUE = '#1B6DFC'
-const INK = '#1A1A1A'
-const MUTED = '#6B6B6B'
+const INK = '#141821'
+const MUTED = '#666D7A'
 
 /**
  * One day of The Body Decode.
@@ -120,7 +120,7 @@ export default async function DecodeDayPage({
       <h1 style={{ fontSize: '30px', fontWeight: 800, color: INK, letterSpacing: '-0.025em', lineHeight: 1.15, margin: '0 0 12px' }}>
         {day.title}
       </h1>
-      <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 28px' }}>
+      <p style={{ fontSize: '16px', color: '#43474F', lineHeight: 1.7, margin: '0 0 28px' }}>
         {day.premise}
       </p>
 
@@ -138,7 +138,7 @@ export default async function DecodeDayPage({
       />
 
       {showScores && (
-        <section style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '24px 26px', marginTop: '24px' }}>
+        <section style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '14px', padding: '24px 26px', marginTop: '24px' }}>
           <p style={{ fontSize: '11px', fontWeight: 700, color: BLUE, letterSpacing: '0.11em', textTransform: 'uppercase', margin: '0 0 16px' }}>
             Your five, worst first
           </p>
@@ -163,17 +163,17 @@ export default async function DecodeDayPage({
               )
             })}
           </div>
-          <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.72, margin: '22px 0 0' }}>
+          <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.72, margin: '22px 0 0' }}>
             Look at the bottom two. Those are the ones deciding whether anything you do turns into a result, and they are almost always the two nobody has ever measured.
           </p>
-          <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.72, margin: '14px 0 0' }}>
+          <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.72, margin: '14px 0 0' }}>
             Now look at the top one. If it is training response, that is not good news. It means the thing you have been working hardest at is the thing that was least wrong, which is exactly why doing more of it has not paid off.
           </p>
         </section>
       )}
 
       {block && (
-        <section style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '24px 26px', marginTop: '24px' }}>
+        <section style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '14px', padding: '24px 26px', marginTop: '24px' }}>
           <p style={{ fontSize: '11px', fontWeight: 700, color: BLUE, letterSpacing: '0.11em', textTransform: 'uppercase', margin: '0 0 16px' }}>
             {block.heading} · from your report
           </p>
@@ -190,10 +190,10 @@ export default async function DecodeDayPage({
                     alignItems: 'center', justifyContent: 'center',
                     fontSize: '12px', fontWeight: 900, fontVariantNumeric: 'tabular-nums',
                   }}>{i + 1}</span>
-                  <p style={{ fontSize: '15px', color: '#3A3A3A', lineHeight: 1.72, margin: 0 }}>{para}</p>
+                  <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.72, margin: 0 }}>{para}</p>
                 </div>
               ) : (
-                <p key={i} style={{ fontSize: '15px', color: '#3A3A3A', lineHeight: 1.72, margin: 0 }}>
+                <p key={i} style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.72, margin: 0 }}>
                   {para}
                 </p>
               )
@@ -210,8 +210,8 @@ export default async function DecodeDayPage({
       {!block && day.patternField && (
         // Pattern-keyed day, no pattern. Ready State, no section at the floor,
         // or "I am not sure" on direction of travel all land here.
-        <section style={{ background: '#FAFAFA', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '22px 24px', marginTop: '24px' }}>
-          <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: 0 }}>
+        <section style={{ background: '#FAFAFA', border: '1px solid #E8EAEE', borderRadius: '14px', padding: '22px 24px', marginTop: '24px' }}>
+          <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.7, margin: 0 }}>
             Your answers do not point cleanly at one of the four patterns, so there is no pattern-specific section here. That is a real result rather than a missing one, and it usually means the foundations are in better shape than the four compensation patterns describe.
           </p>
         </section>
@@ -244,10 +244,10 @@ export default async function DecodeDayPage({
             <p style={{ fontSize: '19px', fontWeight: 800, color: INK, letterSpacing: '-0.015em', margin: '0 0 10px' }}>
               Knowing your pattern and correcting it are two different jobs.
             </p>
-            <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 16px' }}>
+            <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.7, margin: '0 0 16px' }}>
               Your read tells you what is happening. It does not undo it, and that is the honest part. The 6-Week Blueprint is the other job: six weeks built around your pattern rather than the average, with the training and the eating set to it, a coaching note each week, and a check-in at week three to adjust.
             </p>
-            <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 20px' }}>
+            <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.7, margin: '0 0 20px' }}>
               <strong style={{ color: INK }}>$97 AUD, one time.</strong> Not a subscription. Your portal opens the day you start.
             </p>
             <Link

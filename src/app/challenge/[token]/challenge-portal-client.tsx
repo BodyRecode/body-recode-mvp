@@ -126,7 +126,7 @@ function ExpandableResource({ resource }: { resource: typeof RESOURCES_STATIC[0]
 
   return (
     <div style={{
-      background: '#FFFFFF', border: '1px solid #ECEEF2', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)',
+      background: '#FFFFFF', border: '1px solid #E8EAEE', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)',
       borderRadius: '12px', overflow: 'hidden',
     }}>
       <div
@@ -145,8 +145,8 @@ function ExpandableResource({ resource }: { resource: typeof RESOURCES_STATIC[0]
           <resource.icon size={20} strokeWidth={2} />
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <p style={{ fontSize: '15px', fontWeight: 700, color: '#1A1A1A', margin: '0 0 3px' }}>{resource.title}</p>
-          <p style={{ fontSize: '13px', color: '#6B6B6B', margin: 0, lineHeight: 1.4 }}>{resource.desc}</p>
+          <p style={{ fontSize: '15px', fontWeight: 700, color: '#141821', margin: '0 0 3px' }}>{resource.title}</p>
+          <p style={{ fontSize: '13px', color: '#666D7A', margin: 0, lineHeight: 1.4 }}>{resource.desc}</p>
         </div>
         {resource.locked ? (
           <span style={{
@@ -179,7 +179,7 @@ function ExpandableResource({ resource }: { resource: typeof RESOURCES_STATIC[0]
         )}
       </div>
       {resource.steps && open && (
-        <div style={{ borderTop: '1px solid #E5E5E5', padding: '16px 20px' }}>
+        <div style={{ borderTop: '1px solid #E8EAEE', padding: '16px 20px' }}>
           {resource.steps.map((step, i) => (
             <div key={i} style={{ display: 'flex', gap: '12px', marginBottom: i < resource.steps!.length - 1 ? '12px' : 0 }}>
               <span style={{
@@ -188,7 +188,7 @@ function ExpandableResource({ resource }: { resource: typeof RESOURCES_STATIC[0]
               }}>
                 {String(i + 1).padStart(2, '0')}
               </span>
-              <p style={{ fontSize: '14px', color: '#999999', margin: 0, lineHeight: 1.6 }}>{step}</p>
+              <p style={{ fontSize: '14px', color: '#98A0AD', margin: 0, lineHeight: 1.6 }}>{step}</p>
             </div>
           ))}
         </div>
@@ -205,7 +205,7 @@ function LockedMilestoneCard({
     <div style={{ marginBottom: '48px' }}>
       <SectionLabel icon={Lock} text={label} />
       <div style={{
-        background: '#FFFFFF', border: '1px solid #ECEEF2', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)',
+        background: '#FFFFFF', border: '1px solid #E8EAEE', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)',
         borderRadius: '12px', padding: '24px', textAlign: 'center',
       }}>
         <div style={{
@@ -215,10 +215,10 @@ function LockedMilestoneCard({
         }}>
           <Lock size={20} strokeWidth={2.5} />
         </div>
-        <p style={{ fontSize: '15px', fontWeight: 700, color: '#4A4A4A', marginBottom: '6px' }}>
+        <p style={{ fontSize: '15px', fontWeight: 700, color: '#43474F', marginBottom: '6px' }}>
           Unlocks on Day {unlockDay}
         </p>
-        <p style={{ fontSize: '13px', color: '#999999', margin: 0 }}>
+        <p style={{ fontSize: '13px', color: '#98A0AD', margin: 0 }}>
           {days} day{days === 1 ? '' : 's'} to go
         </p>
       </div>
@@ -316,8 +316,8 @@ function SafetyForm({ token, onComplete }: { token: string; onComplete: () => vo
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-      <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', borderRadius: '12px', padding: '20px' }}>
-        <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.7, margin: 0 }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', borderRadius: '12px', padding: '20px' }}>
+        <p style={{ fontSize: '13px', color: '#666D7A', lineHeight: 1.7, margin: 0 }}>
           This is the standard physical activity readiness questionnaire plus the declarations we
           are required to hold before prescribing any training. Please answer honestly. If you
           answer YES to anything, you must speak to a doctor before starting the training part of
@@ -327,7 +327,7 @@ function SafetyForm({ token, onComplete }: { token: string; onComplete: () => vo
 
       {PARQ_QUESTIONS.map((q, i) => (
         <div key={q.id}>
-          <p style={{ fontSize: '14px', fontWeight: 600, color: '#3A3A3A', lineHeight: 1.6, marginBottom: '12px' }}>
+          <p style={{ fontSize: '14px', fontWeight: 600, color: '#43474F', lineHeight: 1.6, marginBottom: '12px' }}>
             <span style={{ color: '#1B6DFC', marginRight: '8px', fontWeight: 800 }}>{i + 1}.</span>
             {q.text}
           </p>
@@ -340,10 +340,10 @@ function SafetyForm({ token, onComplete }: { token: string; onComplete: () => vo
                   flex: 1, padding: '10px', borderRadius: '8px', border: 'none',
                   background: answers[q.id] === val
                     ? val === 'no' ? 'rgba(27, 109, 252,0.12)' : 'rgba(239,68,68,0.12)'
-                    : '#E5E5E5',
+                    : '#E8EAEE',
                   color: answers[q.id] === val
                     ? val === 'no' ? '#1B6DFC' : '#DC2626'
-                    : '#4A4A4A',
+                    : '#43474F',
                   fontSize: '14px', fontWeight: 700, cursor: 'pointer',
                   outline: answers[q.id] === val
                     ? val === 'no' ? '1px solid rgba(27, 109, 252,0.3)' : '1px solid rgba(239,68,68,0.3)'
@@ -367,14 +367,14 @@ function SafetyForm({ token, onComplete }: { token: string; onComplete: () => vo
           <p style={{ fontSize: '14px', color: '#DC2626', fontWeight: 700, marginBottom: '8px' }}>
             Medical clearance required
           </p>
-          <p style={{ fontSize: '13px', color: '#999999', lineHeight: 1.7, margin: 0 }}>
+          <p style={{ fontSize: '13px', color: '#98A0AD', lineHeight: 1.7, margin: 0 }}>
             You have answered YES to one or more questions. Please consult your doctor before beginning the physical training component of this challenge. You can still access all other challenge resources. If your doctor clears you, please contact us at {coach().email}.
           </p>
         </div>
       )}
 
-      <div style={{ height: '1px', background: '#ECEEF2', margin: '4px 0' }} />
-      <p style={{ fontSize: '13px', fontWeight: 700, color: '#6B6B6B', letterSpacing: '0.08em', textTransform: 'uppercase', margin: 0 }}>
+      <div style={{ height: '1px', background: '#E8EAEE', margin: '4px 0' }} />
+      <p style={{ fontSize: '13px', fontWeight: 700, color: '#666D7A', letterSpacing: '0.08em', textTransform: 'uppercase', margin: 0 }}>
         And tick to confirm
       </p>
 
@@ -385,15 +385,15 @@ function SafetyForm({ token, onComplete }: { token: string; onComplete: () => vo
           style={{
             display: 'flex', gap: '14px', alignItems: 'flex-start',
             background: checks[d.id] ? 'rgba(27, 109, 252,0.06)' : '#FFFFFF',
-            border: checks[d.id] ? '1px solid rgba(27, 109, 252,0.25)' : '1px solid #E5E5E5',
+            border: checks[d.id] ? '1px solid rgba(27, 109, 252,0.25)' : '1px solid #E8EAEE',
             borderRadius: '10px', padding: '16px', cursor: 'pointer',
             transition: 'all 0.15s ease',
           }}
         >
           <div style={{
             width: '20px', height: '20px', borderRadius: '5px', flexShrink: 0, marginTop: '1px',
-            background: checks[d.id] ? '#1B6DFC' : '#E5E5E5',
-            border: checks[d.id] ? 'none' : '1px solid #D4D4D4',
+            background: checks[d.id] ? '#1B6DFC' : '#E8EAEE',
+            border: checks[d.id] ? 'none' : '1px solid #CFD4DC',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             transition: 'all 0.15s ease',
           }}>
@@ -403,7 +403,7 @@ function SafetyForm({ token, onComplete }: { token: string; onComplete: () => vo
               </svg>
             )}
           </div>
-          <p style={{ fontSize: '14px', color: checks[d.id] ? '#3A3A3A' : '#6B6B6B', lineHeight: 1.6, margin: 0, transition: 'color 0.15s ease' }}>
+          <p style={{ fontSize: '14px', color: checks[d.id] ? '#43474F' : '#666D7A', lineHeight: 1.6, margin: 0, transition: 'color 0.15s ease' }}>
             {d.text}
           </p>
         </div>
@@ -416,8 +416,8 @@ function SafetyForm({ token, onComplete }: { token: string; onComplete: () => vo
         disabled={!ready || submitting}
         style={{
           width: '100%', padding: '14px', borderRadius: '10px', border: 'none',
-          background: ready ? '#1B6DFC' : '#E5E5E5',
-          color: ready ? '#FFFFFF' : '#4A4A4A',
+          background: ready ? '#1B6DFC' : '#E8EAEE',
+          color: ready ? '#FFFFFF' : '#43474F',
           fontSize: '15px', fontWeight: 700,
           cursor: ready && !submitting ? 'pointer' : 'not-allowed',
           transition: 'all 0.2s ease',
@@ -460,15 +460,15 @@ function ParqForm({ token, onComplete }: { token: string; onComplete: () => void
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-      <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', borderRadius: '12px', padding: '20px' }}>
-        <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.7, margin: 0 }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', borderRadius: '12px', padding: '20px' }}>
+        <p style={{ fontSize: '13px', color: '#666D7A', lineHeight: 1.7, margin: 0 }}>
           The PAR-Q is a standard physical activity readiness questionnaire. Please answer all questions honestly. If you answer YES to any question, you must consult a doctor before beginning the training component of this challenge.
         </p>
       </div>
 
       {PARQ_QUESTIONS.map((q, i) => (
         <div key={q.id}>
-          <p style={{ fontSize: '14px', fontWeight: 600, color: '#3A3A3A', lineHeight: 1.6, marginBottom: '12px' }}>
+          <p style={{ fontSize: '14px', fontWeight: 600, color: '#43474F', lineHeight: 1.6, marginBottom: '12px' }}>
             <span style={{ color: '#1B6DFC', marginRight: '8px', fontWeight: 800 }}>{i + 1}.</span>
             {q.text}
           </p>
@@ -481,10 +481,10 @@ function ParqForm({ token, onComplete }: { token: string; onComplete: () => void
                   flex: 1, padding: '10px', borderRadius: '8px', border: 'none',
                   background: answers[q.id] === val
                     ? val === 'no' ? 'rgba(27, 109, 252,0.12)' : 'rgba(239,68,68,0.12)'
-                    : '#E5E5E5',
+                    : '#E8EAEE',
                   color: answers[q.id] === val
                     ? val === 'no' ? '#1B6DFC' : '#DC2626'
-                    : '#4A4A4A',
+                    : '#43474F',
                   fontSize: '14px', fontWeight: 700, cursor: 'pointer',
                   outline: answers[q.id] === val
                     ? val === 'no' ? '1px solid rgba(27, 109, 252,0.3)' : '1px solid rgba(239,68,68,0.3)'
@@ -508,7 +508,7 @@ function ParqForm({ token, onComplete }: { token: string; onComplete: () => void
           <p style={{ fontSize: '14px', color: '#DC2626', fontWeight: 700, marginBottom: '8px' }}>
             Medical clearance required
           </p>
-          <p style={{ fontSize: '13px', color: '#999999', lineHeight: 1.7, margin: 0 }}>
+          <p style={{ fontSize: '13px', color: '#98A0AD', lineHeight: 1.7, margin: 0 }}>
             You have answered YES to one or more questions. Please consult your doctor before beginning the physical training component of this challenge. You can still access all other challenge resources. If your doctor clears you, please contact us at {coach().email}.
                                 </p>
         </div>
@@ -523,8 +523,8 @@ function ParqForm({ token, onComplete }: { token: string; onComplete: () => void
         disabled={!allAnswered || anyYes || submitting}
         style={{
           width: '100%', padding: '14px', borderRadius: '10px', border: 'none',
-          background: allAnswered && !anyYes ? '#1B6DFC' : '#E5E5E5',
-          color: allAnswered && !anyYes ? '#FFFFFF' : '#4A4A4A',
+          background: allAnswered && !anyYes ? '#1B6DFC' : '#E8EAEE',
+          color: allAnswered && !anyYes ? '#FFFFFF' : '#43474F',
           fontSize: '15px', fontWeight: 700,
           cursor: allAnswered && !anyYes && !submitting ? 'pointer' : 'not-allowed',
           transition: 'all 0.2s ease',
@@ -577,8 +577,8 @@ function HealthDecForm({ token, onComplete }: { token: string; onComplete: () =>
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', borderRadius: '12px', padding: '20px' }}>
-        <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.7, margin: 0 }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', borderRadius: '12px', padding: '20px' }}>
+        <p style={{ fontSize: '13px', color: '#666D7A', lineHeight: 1.7, margin: 0 }}>
           Please read and confirm each declaration below. By submitting this form you acknowledge and agree to the following statements.
         </p>
       </div>
@@ -590,15 +590,15 @@ function HealthDecForm({ token, onComplete }: { token: string; onComplete: () =>
           style={{
             display: 'flex', gap: '14px', alignItems: 'flex-start',
             background: checks[d.id] ? 'rgba(27, 109, 252,0.06)' : '#FFFFFF',
-            border: checks[d.id] ? '1px solid rgba(27, 109, 252,0.25)' : '1px solid #E5E5E5',
+            border: checks[d.id] ? '1px solid rgba(27, 109, 252,0.25)' : '1px solid #E8EAEE',
             borderRadius: '10px', padding: '16px', cursor: 'pointer',
             transition: 'all 0.15s ease',
           }}
         >
           <div style={{
             width: '20px', height: '20px', borderRadius: '5px', flexShrink: 0, marginTop: '1px',
-            background: checks[d.id] ? '#1B6DFC' : '#E5E5E5',
-            border: checks[d.id] ? 'none' : '1px solid #D4D4D4',
+            background: checks[d.id] ? '#1B6DFC' : '#E8EAEE',
+            border: checks[d.id] ? 'none' : '1px solid #CFD4DC',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             transition: 'all 0.15s ease',
           }}>
@@ -608,7 +608,7 @@ function HealthDecForm({ token, onComplete }: { token: string; onComplete: () =>
               </svg>
             )}
           </div>
-          <p style={{ fontSize: '14px', color: checks[d.id] ? '#3A3A3A' : '#6B6B6B', lineHeight: 1.6, margin: 0, transition: 'color 0.15s ease' }}>
+          <p style={{ fontSize: '14px', color: checks[d.id] ? '#43474F' : '#666D7A', lineHeight: 1.6, margin: 0, transition: 'color 0.15s ease' }}>
             {d.text}
           </p>
         </div>
@@ -623,8 +623,8 @@ function HealthDecForm({ token, onComplete }: { token: string; onComplete: () =>
         disabled={!allChecked || submitting}
         style={{
           width: '100%', padding: '14px', borderRadius: '10px', border: 'none',
-          background: allChecked ? '#1B6DFC' : '#E5E5E5',
-          color: allChecked ? '#FFFFFF' : '#4A4A4A',
+          background: allChecked ? '#1B6DFC' : '#E8EAEE',
+          color: allChecked ? '#FFFFFF' : '#43474F',
           fontSize: '15px', fontWeight: 700,
           cursor: allChecked && !submitting ? 'pointer' : 'not-allowed',
           transition: 'all 0.2s ease',
@@ -674,13 +674,13 @@ export default function ChallengePortalClient({
 
   return (
     <div style={{
-      minHeight: '100vh', background: '#F5F7FA', color: '#1A1A1A',
+      minHeight: '100vh', background: '#F5F7FA', color: '#141821',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', position: 'relative',
     }}>
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 340, background: 'radial-gradient(1000px 280px at 50% -50px, rgba(27,109,252,0.07), transparent 70%)', pointerEvents: 'none' }} />
 
       {/* Header */}
-      <div style={{ borderBottom: '1px solid #ECEEF2', padding: '18px 24px', background: '#FFFFFF', position: 'sticky', top: 0, zIndex: 20 }}>
+      <div style={{ borderBottom: '1px solid #E8EAEE', padding: '18px 24px', background: '#FFFFFF', position: 'sticky', top: 0, zIndex: 20 }}>
         <div style={{ maxWidth: '720px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block' }} />
           <div style={{
@@ -780,7 +780,7 @@ export default function ChallengePortalClient({
                 <p style={{ fontSize: '14px', fontWeight: 700, color: '#8A5A14', marginBottom: '4px' }}>
                   Required before training
                 </p>
-                <p style={{ fontSize: '13px', color: '#999999', lineHeight: 1.6, margin: 0 }}>
+                <p style={{ fontSize: '13px', color: '#98A0AD', lineHeight: 1.6, margin: 0 }}>
                   Seven yes-or-no questions and five things to tick. Nothing to type. Twelve taps and your training plan and nutrition guide unlock.
                 </p>
               </div>
@@ -824,18 +824,18 @@ export default function ChallengePortalClient({
         {todayNote && (
           <div style={{ marginBottom: '48px' }}>
             <div style={{
-              background: '#FFFFFF', border: '1px solid #ECEEF2', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)',
+              background: '#FFFFFF', border: '1px solid #E8EAEE', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)',
               borderLeft: '3px solid #1B6DFC',
               borderRadius: '12px', padding: '22px 22px',
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 11, marginBottom: 16 }}>
                 <img src={coach().photoUrl} width={38} height={38} style={{ borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} alt={coach().firstName} />
                 <div>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A' }}>{coach().firstName}</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: '#141821' }}>{coach().firstName}</div>
                   <div style={{ fontSize: 10, fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Day {currentDay} · {todayNote.focus}</div>
                 </div>
               </div>
-              <p style={{ fontSize: '15px', color: '#3A3A3A', lineHeight: 1.75, margin: 0 }}>
+              <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.75, margin: 0 }}>
                 {todayNote.note}
               </p>
             </div>
@@ -861,7 +861,7 @@ export default function ChallengePortalClient({
             <SectionLabel icon={LineChart} text="Week One Progress" />
             <div style={{
               background: '#FFFFFF',
-              border: '1px solid #E5E5E5',
+              border: '1px solid #E8EAEE',
               borderLeft: '3px solid #1B6DFC',
               borderRadius: '14px',
               padding: '24px 26px',
@@ -875,18 +875,18 @@ export default function ChallengePortalClient({
                   Week One Progress Session
                 </span>
                 <span style={{
-                  fontSize: '10px', fontWeight: 700, color: '#6B6B6B',
-                  background: '#F5F5F5', border: '1px solid #E5E5E5',
+                  fontSize: '10px', fontWeight: 700, color: '#666D7A',
+                  background: '#F5F5F5', border: '1px solid #E8EAEE',
                   borderRadius: '99px', padding: '3px 9px',
                   letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 }}>
                   On demand
                 </span>
               </div>
-              <p style={{ fontSize: '22px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', margin: '0 0 12px', lineHeight: 1.25 }}>
+              <p style={{ fontSize: '22px', fontWeight: 800, color: '#141821', letterSpacing: '-0.02em', margin: '0 0 12px', lineHeight: 1.25 }}>
                 Decode what your body has been doing this week.
               </p>
-              <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 20px' }}>
+              <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.7, margin: '0 0 20px' }}>
                 A focused session walking you through exactly what has been happening in your biology, what the signals mean, and what Week 2 is building toward. Pre-recorded, watch any time.
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '24px' }}>
@@ -904,7 +904,7 @@ export default function ChallengePortalClient({
                     }}>
                       {String(i + 1).padStart(2, '0')}
                     </span>
-                    <p style={{ fontSize: '14px', color: '#3A3A3A', margin: 0, lineHeight: 1.6 }}>{item}</p>
+                    <p style={{ fontSize: '14px', color: '#43474F', margin: 0, lineHeight: 1.6 }}>{item}</p>
                   </div>
                 ))}
               </div>
@@ -939,7 +939,7 @@ export default function ChallengePortalClient({
             <SectionLabel icon={ClipboardCheck} text="Body Decode Check-In" />
             <div style={{
               background: '#FFFFFF',
-              border: '1px solid #E5E5E5',
+              border: '1px solid #E8EAEE',
               borderLeft: '3px solid #1B6DFC',
               borderRadius: '14px',
               padding: '24px 26px',
@@ -954,21 +954,21 @@ export default function ChallengePortalClient({
                 </span>
                 <span style={{
                   fontSize: '10px', fontWeight: 700,
-                  color: savedQuizResult ? '#1056D6' : '#6B6B6B',
+                  color: savedQuizResult ? '#1056D6' : '#666D7A',
                   background: savedQuizResult ? 'rgba(27,109,252,0.10)' : '#F5F5F5',
-                  border: `1px solid ${savedQuizResult ? 'rgba(27,109,252,0.25)' : '#E5E5E5'}`,
+                  border: `1px solid ${savedQuizResult ? 'rgba(27,109,252,0.25)' : '#E8EAEE'}`,
                   borderRadius: '99px', padding: '3px 9px',
                   letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 }}>
                   {savedQuizResult ? 'Progress in' : '5-10 min · Unlocked'}
                 </span>
               </div>
-              <p style={{ fontSize: '22px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', margin: '0 0 12px', lineHeight: 1.25 }}>
+              <p style={{ fontSize: '22px', fontWeight: 800, color: '#141821', letterSpacing: '-0.02em', margin: '0 0 12px', lineHeight: 1.25 }}>
                 {savedQuizResult
                   ? 'Your Day 7 progress is in.'
                   : 'Read the pattern your biology has settled into.'}
               </p>
-              <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 20px' }}>
+              <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.7, margin: '0 0 20px' }}>
                 {savedQuizResult
                   ? `Your 7-day progress, marker breakdown, and Week 2 focus are on the Day 7 page.${currentDay < 14 ? ` Your full Body Decode Report arrives on Day 14. ${14 - currentDay} day${14 - currentDay === 1 ? '' : 's'} to go.` : ''}`
                   : 'It reads how your body has shifted this week to identify your specific pattern. Rate 8 biological markers, answer 2 signal questions. Your 7-day progress is shown immediately; your full Body Decode Report arrives on Day 14.'}
@@ -1006,7 +1006,7 @@ export default function ChallengePortalClient({
             <SectionLabel icon={FileText} text="Body Decode Report" />
             <div style={{
               background: '#FFFFFF',
-              border: '1px solid #E5E5E5',
+              border: '1px solid #E8EAEE',
               borderLeft: '3px solid #1B6DFC',
               borderRadius: '14px',
               padding: '24px 26px',
@@ -1030,12 +1030,12 @@ export default function ChallengePortalClient({
                   {savedQuizResult ? 'Report ready' : 'Action needed'}
                 </span>
               </div>
-              <p style={{ fontSize: '22px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', margin: '0 0 12px', lineHeight: 1.25 }}>
+              <p style={{ fontSize: '22px', fontWeight: 800, color: '#141821', letterSpacing: '-0.02em', margin: '0 0 12px', lineHeight: 1.25 }}>
                 {savedQuizResult
                   ? 'Your Body Decode Report is ready.'
                   : 'Take your Day 7 Check-In first.'}
               </p>
-              <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 20px' }}>
+              <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.7, margin: '0 0 20px' }}>
                 {savedQuizResult
                   ? 'Open the Day 14 page for the full read. Your pattern, what it means, where it shows up, what it is NOT, and the three actions specific to your pattern.'
                   : 'Your Body Decode Report depends on the Day 7 Check-In. Take it now and your Report will unlock immediately.'}
@@ -1064,10 +1064,10 @@ export default function ChallengePortalClient({
             borderRadius: '16px', padding: '28px 24px', marginBottom: '48px',
           }}>
             <SectionLabel icon={Compass} text="What comes next" />
-            <p style={{ fontSize: '20px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', marginBottom: '12px', lineHeight: 1.3 }}>
+            <p style={{ fontSize: '20px', fontWeight: 800, color: '#141821', letterSpacing: '-0.02em', marginBottom: '12px', lineHeight: 1.3 }}>
               You have built the foundation. Now build on it.
             </p>
-            <p style={{ fontSize: '14px', color: '#1A1A1A', lineHeight: 1.7, marginBottom: '20px' }}>
+            <p style={{ fontSize: '14px', color: '#141821', lineHeight: 1.7, marginBottom: '20px' }}>
               The 6-Week {brand().name} Blueprint takes everything you have started here and adds structure, pattern recognition, and education to help you understand exactly why your body responds the way it does.
                                               </p>
             <a

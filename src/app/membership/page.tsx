@@ -44,8 +44,8 @@ function CheckoutForm({ position, darkBg }: { position: string; teal?: boolean; 
   }
 
   const inputStyle: React.CSSProperties = {
-    width: '100%', padding: '15px 16px', borderRadius: '10px', border: '1px solid #D4D4D4',
-    background: '#ffffff', color: '#1A1A1A', fontSize: '15px', outline: 'none', boxSizing: 'border-box',
+    width: '100%', padding: '15px 16px', borderRadius: '10px', border: '1px solid #CFD4DC',
+    background: '#ffffff', color: '#141821', fontSize: '15px', outline: 'none', boxSizing: 'border-box',
   }
 
   return (
@@ -59,7 +59,7 @@ function CheckoutForm({ position, darkBg }: { position: string; teal?: boolean; 
         style={{ width: '100%', padding: '17px', borderRadius: '10px', border: 'none', background: loading ? 'rgba(27,109,252,0.6)' : BLUE, color: '#ffffff', fontSize: '16px', fontWeight: 800, cursor: loading ? 'not-allowed' : 'pointer', letterSpacing: '0.01em', transition: 'background 0.2s', boxSizing: 'border-box' }}>
         {loading ? 'Redirecting to checkout...' : 'Join the Membership · $49 per week'}
       </button>
-      <p style={{ fontSize: '12px', color: '#999999', textAlign: 'center', margin: 0 }}>Secure checkout via Stripe. Billed weekly. Cancel anytime.</p>
+      <p style={{ fontSize: '12px', color: '#98A0AD', textAlign: 'center', margin: 0 }}>Secure checkout via Stripe. Billed weekly. Cancel anytime.</p>
     </form>
   )
 }
@@ -168,7 +168,7 @@ export default function MembershipPage() {
       <Section borderTop pad="88px 24px 0">
         <Eyebrow>What this is</Eyebrow>
         <Heading>Not a restart. A continuation.</Heading>
-        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, margin: '14px 0 0' }}>If you have done the Blueprint, the Membership picks up exactly where it ended. If you are starting here, your intake locks your pattern first, then Block A begins. Either way your portal opens and the progression continues without a gap.</p>
+        <p style={{ fontSize: '16px', color: '#43474F', lineHeight: 1.75, margin: '14px 0 0' }}>If you have done the Blueprint, the Membership picks up exactly where it ended. If you are starting here, your intake locks your pattern first, then Block A begins. Either way your portal opens and the progression continues without a gap.</p>
         <Callout>This is not a content library you subscribe to. It is an ongoing coaching system that uses your weekly check-in data to track whether the work is landing.</Callout>
       </Section>
 
@@ -177,7 +177,7 @@ export default function MembershipPage() {
         <Section bg="tint">
           <Eyebrow>Why this works</Eyebrow>
           <Heading>State shift is a months-long arc, not a six-week event.</Heading>
-          <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, margin: '24px 0 24px' }}>Correcting the pattern brings the body out of acute compensation. But moving from Depleted to Transitioning takes months of consistent inputs landing on a stable system. Moving from Transitioning to Ready takes longer. The arc that follows pattern correction needs infrastructure.</p>
+          <p style={{ fontSize: '16px', color: '#43474F', lineHeight: 1.75, margin: '24px 0 24px' }}>Correcting the pattern brings the body out of acute compensation. But moving from Depleted to Transitioning takes months of consistent inputs landing on a stable system. Moving from Transitioning to Ready takes longer. The arc that follows pattern correction needs infrastructure.</p>
           <ContrastBlock
             wrong={{ label: 'Most subscriptions', body: 'A content library you log into. New videos, new plans, same for everyone. Nothing calibrates to whether the work is actually landing on your body.' }}
             right={{ label: 'The Membership', body: 'An ongoing coaching system. Your weekly check-in data calibrates each block, and a monthly Loom from me reads your numbers. The work adjusts as your state shifts.' }}
@@ -198,7 +198,7 @@ export default function MembershipPage() {
         <Section bg="grey" pad="72px 24px">
           <Eyebrow>What is included</Eyebrow>
           <Heading>Six things. All inside your portal.</Heading>
-          <p style={{ fontSize: '16px', color: '#6B6B6B', lineHeight: 1.7, margin: '10px 0 28px' }}>No external apps. No separate logins. Everything lives in the portal you already know.</p>
+          <p style={{ fontSize: '16px', color: '#666D7A', lineHeight: 1.7, margin: '10px 0 28px' }}>No external apps. No separate logins. Everything lives in the portal you already know.</p>
           <FeatureList items={WHAT_YOU_GET} />
         </Section>
       </div>

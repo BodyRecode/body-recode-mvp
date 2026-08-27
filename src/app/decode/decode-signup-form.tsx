@@ -89,10 +89,10 @@ export default function DecodeSignupForm({ position }: { position: string }) {
         background: 'rgba(27,109,252,0.07)', border: '1px solid rgba(27,109,252,0.3)',
         borderRadius: '16px', padding: '30px 26px', textAlign: 'center',
       }}>
-        <p style={{ fontSize: '19px', fontWeight: 800, color: '#1A1A1A', margin: '0 0 8px' }}>
+        <p style={{ fontSize: '19px', fontWeight: 800, color: '#141821', margin: '0 0 8px' }}>
           You&apos;re in, {form.first_name}.
         </p>
-        <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.65, margin: 0 }}>
+        <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.65, margin: 0 }}>
           Taking you to the questions now. About two minutes, then your report.
         </p>
       </div>
@@ -101,7 +101,7 @@ export default function DecodeSignupForm({ position }: { position: string }) {
 
   const field: React.CSSProperties = {
     width: '100%', padding: '14px 16px', borderRadius: '10px',
-    border: '1px solid #D8D8D8', fontSize: '16px', color: '#1A1A1A',
+    border: '1px solid #D8D8D8', fontSize: '16px', color: '#141821',
     background: '#FFFFFF', boxSizing: 'border-box',
   }
 
@@ -126,7 +126,7 @@ export default function DecodeSignupForm({ position }: { position: string }) {
           female-only and Androgen-Decline male-only, so without it the read
           cannot be typed correctly. Asked here rather than later because the
           enrol API requires it. */}
-      <select style={{ ...field, color: form.gender ? '#1A1A1A' : '#8A8A8A' }} value={form.gender} required
+      <select style={{ ...field, color: form.gender ? '#141821' : '#8A8A8A' }} value={form.gender} required
         onChange={e => setForm({ ...form, gender: e.target.value })}>
         <option value="">Biological sex (needed for an accurate read)</option>
         <option value="female">Female</option>
@@ -161,10 +161,10 @@ export default function DecodeSignupForm({ position }: { position: string }) {
           the same call /challenge makes. */}
       {form.gender === 'male' ? (
         <div style={{ border: `1.5px solid ${BLUE}`, borderRadius: '12px', padding: '20px 22px', background: 'rgba(27,109,252,0.04)' }}>
-          <p style={{ fontSize: '16px', fontWeight: 800, color: '#1A1A1A', margin: '0 0 10px', lineHeight: 1.35 }}>
+          <p style={{ fontSize: '16px', fontWeight: 800, color: '#141821', margin: '0 0 10px', lineHeight: 1.35 }}>
             This one is built for women.
           </p>
-          <p style={{ fontSize: '14.5px', color: '#4A4A4A', lineHeight: 1.6, margin: '0 0 16px' }}>
+          <p style={{ fontSize: '14.5px', color: '#43474F', lineHeight: 1.6, margin: '0 0 16px' }}>
             The Body Decode reads female hormonal patterns, so the report would be
             aimed at the wrong thing. Rather than send you something that does not
             fit, come and go through it with me. Thirty minutes, free, no pitch.
@@ -186,7 +186,7 @@ export default function DecodeSignupForm({ position }: { position: string }) {
             {submitting ? 'One moment...' : 'Start the questions'}
           </button>
 
-          <p style={{ fontSize: '13px', color: '#6B6B6B', textAlign: 'center', margin: '2px 0 0' }}>
+          <p style={{ fontSize: '13px', color: '#666D7A', textAlign: 'center', margin: '2px 0 0' }}>
             Free. No card. Two minutes of questions, then your report.
           </p>
         </>

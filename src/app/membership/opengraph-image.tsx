@@ -97,7 +97,7 @@ export default async function Image() {
             style={{
               fontSize: '80px',
               fontWeight: 900,
-              color: '#1A1A1A',
+              color: '#141821',
               lineHeight: 1.0,
               letterSpacing: '-0.035em',
               marginBottom: '24px',
@@ -124,7 +124,7 @@ export default async function Image() {
             style={{
               fontSize: '26px',
               fontWeight: 500,
-              color: '#4A4A4A',
+              color: '#43474F',
               lineHeight: 1.4,
               maxWidth: '1000px',
             }}
@@ -141,7 +141,7 @@ export default async function Image() {
             justifyContent: 'space-between',
             position: 'relative',
             paddingTop: '24px',
-            borderTop: '1px solid #E5E5E5',
+            borderTop: '1px solid #E8EAEE',
           }}
         >
           <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -149,13 +149,13 @@ export default async function Image() {
               style={{
                 fontSize: '18px',
                 fontWeight: 800,
-                color: '#1A1A1A',
+                color: '#141821',
                 marginBottom: '4px',
               }}
             >
               Built by {c.fullName}
             </div>
-            <div style={{ fontSize: '15px', color: '#6B6B6B' }}>
+            <div style={{ fontSize: '15px', color: '#666D7A' }}>
               {c.credentials}
             </div>
           </div>

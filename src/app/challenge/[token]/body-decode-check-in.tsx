@@ -80,13 +80,13 @@ function CheckInResult({ resultKey, progressScore }: { resultKey: string; progre
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
       {/* Bridge callback line — references Day 7 score without repeating the card */}
-      <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.7, margin: 0 }}>
-        You finished the 14 days. On Day 7 you logged <strong style={{ color: '#1A1A1A' }}>{progressScore} of 8 markers improving</strong>. That signal is what made this reading possible.
+      <p style={{ fontSize: '14px', color: '#43474F', lineHeight: 1.7, margin: 0 }}>
+        You finished the 14 days. On Day 7 you logged <strong style={{ color: '#141821' }}>{progressScore} of 8 markers improving</strong>. That signal is what made this reading possible.
       </p>
 
       {/* Pattern hero — dark, big, branded */}
       <div style={{
-        background: '#1A1A1A',
+        background: '#141821',
         border: `1px solid ${pattern.color}40`,
         borderLeft: `4px solid ${pattern.color}`,
         borderRadius: '16px',
@@ -105,19 +105,19 @@ function CheckInResult({ resultKey, progressScore }: { resultKey: string; progre
       </div>
 
       {/* What this pattern means — doctrinal interpretation */}
-      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '24px 26px' }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '14px', padding: '24px 26px' }}>
         <p style={{ fontSize: '11px', fontWeight: 700, color: pattern.color, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 14px' }}>
           What this pattern means
         </p>
         {pattern.whatItMeans.map((para, i) => (
-          <p key={i} style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.75, margin: i === 0 ? '0' : '14px 0 0' }}>
+          <p key={i} style={{ fontSize: '14px', color: '#43474F', lineHeight: 1.75, margin: i === 0 ? '0' : '14px 0 0' }}>
             {para}
           </p>
         ))}
       </div>
 
       {/* Where this shows up — lived expression */}
-      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '24px 26px' }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '14px', padding: '24px 26px' }}>
         <p style={{ fontSize: '11px', fontWeight: 700, color: pattern.color, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 14px' }}>
           Where this shows up
         </p>
@@ -125,32 +125,32 @@ function CheckInResult({ resultKey, progressScore }: { resultKey: string; progre
           {pattern.whereItShows.map((item, i) => (
             <div key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
               <span style={{ display: 'inline-block', width: '6px', height: '6px', background: pattern.color, borderRadius: '99px', marginTop: '9px', flexShrink: 0 }} />
-              <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.65, margin: 0 }}>{item}</p>
+              <p style={{ fontSize: '14px', color: '#43474F', lineHeight: 1.65, margin: 0 }}>{item}</p>
             </div>
           ))}
         </div>
       </div>
 
       {/* What this is NOT — anti-shame misread defusal */}
-      <div style={{ background: '#F7F7F5', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '24px 26px' }}>
-        <p style={{ fontSize: '11px', fontWeight: 700, color: '#6B6B6B', letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 8px' }}>
+      <div style={{ background: '#F7F7F5', border: '1px solid #E8EAEE', borderRadius: '14px', padding: '24px 26px' }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: '#666D7A', letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 8px' }}>
           What this is NOT
         </p>
-        <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.6, margin: '0 0 14px', fontStyle: 'italic' }}>
+        <p style={{ fontSize: '13px', color: '#666D7A', lineHeight: 1.6, margin: '0 0 14px', fontStyle: 'italic' }}>
           Read these. The way this pattern is usually framed is part of the reason it stays unsolved.
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {pattern.whatItIsNot.map((item, i) => (
             <div key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-              <span style={{ fontSize: '14px', fontWeight: 800, color: '#6B6B6B', minWidth: '16px' }}>×</span>
-              <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.65, margin: 0 }}>{item}</p>
+              <span style={{ fontSize: '14px', fontWeight: 800, color: '#666D7A', minWidth: '16px' }}>×</span>
+              <p style={{ fontSize: '14px', color: '#43474F', lineHeight: 1.65, margin: 0 }}>{item}</p>
             </div>
           ))}
         </div>
       </div>
 
       {/* Three pattern-specific actions */}
-      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '24px 26px' }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '14px', padding: '24px 26px' }}>
         <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 16px' }}>
           Your three pattern-specific actions
         </p>
@@ -160,7 +160,7 @@ function CheckInResult({ resultKey, progressScore }: { resultKey: string; progre
               <span style={{ fontSize: '11px', fontWeight: 800, color: pattern.color, minWidth: '20px', paddingTop: '2px', fontFamily: 'monospace' }}>
                 {String(i + 1).padStart(2, '0')}
               </span>
-              <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.7, margin: 0 }}>{action}</p>
+              <p style={{ fontSize: '14px', color: '#43474F', lineHeight: 1.7, margin: 0 }}>{action}</p>
             </div>
           ))}
         </div>
@@ -168,7 +168,7 @@ function CheckInResult({ resultKey, progressScore }: { resultKey: string; progre
 
       {/* What comes next — Blueprint ascension */}
       <div style={{
-        background: '#1A1A1A',
+        background: '#141821',
         border: '1px solid rgba(27,109,252,0.3)',
         borderRadius: '14px',
         padding: '28px 26px',
@@ -226,7 +226,7 @@ function Day7InPortalView({
       {/* Progress score card */}
       <div style={{
         background: '#FFFFFF',
-        border: '1px solid #E5E5E5',
+        border: '1px solid #E8EAEE',
         borderLeft: '3px solid #1B6DFC',
         borderRadius: '14px',
         padding: '24px 26px',
@@ -236,19 +236,19 @@ function Day7InPortalView({
         </p>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '14px', marginBottom: '16px' }}>
           <span style={{ fontSize: '48px', fontWeight: 900, color: '#1B6DFC', letterSpacing: '-0.04em', lineHeight: 1 }}>{progressScore}</span>
-          <span style={{ fontSize: '15px', fontWeight: 600, color: '#4A4A4A' }}>of 8 markers improving</span>
+          <span style={{ fontSize: '15px', fontWeight: 600, color: '#43474F' }}>of 8 markers improving</span>
         </div>
-        <div style={{ height: '8px', background: '#E5E5E5', borderRadius: '99px', overflow: 'hidden', marginBottom: '14px' }}>
+        <div style={{ height: '8px', background: '#E8EAEE', borderRadius: '99px', overflow: 'hidden', marginBottom: '14px' }}>
           <div style={{ height: '100%', width: `${progressPercent}%`, background: '#1B6DFC', borderRadius: '99px', transition: 'width 0.6s ease' }} />
         </div>
-        <p style={{ fontSize: '14px', color: '#4A4A4A', margin: 0, lineHeight: 1.65 }}>
+        <p style={{ fontSize: '14px', color: '#43474F', margin: 0, lineHeight: 1.65 }}>
           {interpretation}
         </p>
       </div>
 
       {/* Per-marker breakdown */}
       <div style={{
-        background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '24px 26px',
+        background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '14px', padding: '24px 26px',
       }}>
         <p style={{ fontSize: '11px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 16px' }}>
           Marker-by-marker
@@ -265,8 +265,8 @@ function Day7InPortalView({
                 borderBottom: i < PROGRESS_MARKERS.length - 1 ? '1px solid #F0F0F0' : 'none',
               }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', margin: '0 0 2px' }}>{m.label}</p>
-                  <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0, lineHeight: 1.5 }}>{m.sub}</p>
+                  <p style={{ fontSize: '14px', fontWeight: 700, color: '#141821', margin: '0 0 2px' }}>{m.label}</p>
+                  <p style={{ fontSize: '12px', color: '#666D7A', margin: 0, lineHeight: 1.5 }}>{m.sub}</p>
                 </div>
                 <span style={{
                   fontSize: '11px', fontWeight: 700,
@@ -284,7 +284,7 @@ function Day7InPortalView({
 
       {/* Universal Week 2 guidance */}
       <div style={{
-        background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '24px 26px',
+        background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '14px', padding: '24px 26px',
       }}>
         <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 16px' }}>
           What to focus on in Week 2
@@ -304,7 +304,7 @@ function Day7InPortalView({
               }}>
                 {String(i + 1).padStart(2, '0')}
               </span>
-              <p style={{ fontSize: '14px', color: '#4A4A4A', margin: 0, lineHeight: 1.7 }}>{principle}</p>
+              <p style={{ fontSize: '14px', color: '#43474F', margin: 0, lineHeight: 1.7 }}>{principle}</p>
             </div>
           ))}
         </div>
@@ -312,7 +312,7 @@ function Day7InPortalView({
 
       {/* Day 14 teaser */}
       <div style={{
-        background: '#1A1A1A',
+        background: '#141821',
         border: '1px solid rgba(27,109,252,0.3)',
         borderRadius: '14px',
         padding: '24px 26px',
@@ -429,24 +429,24 @@ export default function BodyDecodeCheckIn({
 
   const progressOptions = [
     { value: 'better',    label: 'Improving',         color: '#1B6DFC' },
-    { value: 'same',      label: 'About the same',    color: '#4A4A4A' },
-    { value: 'challenge', label: 'Still a challenge', color: '#6B6B6B' },
+    { value: 'same',      label: 'About the same',    color: '#43474F' },
+    { value: 'challenge', label: 'Still a challenge', color: '#666D7A' },
   ]
 
   if (step === 'progress') {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
-        <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '18px 20px', marginBottom: '20px' }}>
-          <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.7, margin: 0 }}>
+        <div style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '12px', padding: '18px 20px', marginBottom: '20px' }}>
+          <p style={{ fontSize: '14px', color: '#666D7A', lineHeight: 1.7, margin: 0 }}>
             Rate each marker honestly based on how it has changed since Day 1. There is no right answer. This is a reflection, not a test.
           </p>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px' }}>
           {PROGRESS_MARKERS.map(marker => (
-            <div key={marker.id} style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '16px 18px' }}>
+            <div key={marker.id} style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '12px', padding: '16px 18px' }}>
               <div style={{ marginBottom: '12px' }}>
-                <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', margin: '0 0 2px' }}>{marker.label}</p>
-                <p style={{ fontSize: '12px', color: '#4A4A4A', margin: 0 }}>{marker.sub}</p>
+                <p style={{ fontSize: '14px', fontWeight: 700, color: '#141821', margin: '0 0 2px' }}>{marker.label}</p>
+                <p style={{ fontSize: '12px', color: '#43474F', margin: 0 }}>{marker.sub}</p>
               </div>
               <div style={{ display: 'flex', gap: '8px' }}>
                 {progressOptions.map(opt => {
@@ -457,9 +457,9 @@ export default function BodyDecodeCheckIn({
                       onClick={() => setProgress(p => ({ ...p, [marker.id]: opt.value }))}
                       style={{
                         flex: 1, padding: '9px 6px', borderRadius: '8px',
-                        border: selected ? '1px solid rgba(27, 109, 252,0.45)' : '1px solid #E5E5E5',
+                        border: selected ? '1px solid rgba(27, 109, 252,0.45)' : '1px solid #E8EAEE',
                         background: selected ? 'rgba(27, 109, 252,0.10)' : '#F7F7F7',
-                        color: selected ? '#1056D6' : '#3A3A3A',
+                        color: selected ? '#1056D6' : '#43474F',
                         fontSize: '12px', fontWeight: selected ? 700 : 600,
                         cursor: 'pointer',
                         transition: 'all 0.12s ease', lineHeight: 1.3, textAlign: 'center',
@@ -478,8 +478,8 @@ export default function BodyDecodeCheckIn({
           disabled={!allProgressDone}
           style={{
             width: '100%', padding: '15px', borderRadius: '10px', border: 'none',
-            background: allProgressDone ? '#1B6DFC' : '#E5E5E5',
-            color: allProgressDone ? '#FFFFFF' : '#4A4A4A',
+            background: allProgressDone ? '#1B6DFC' : '#E8EAEE',
+            color: allProgressDone ? '#FFFFFF' : '#43474F',
             fontSize: '15px', fontWeight: 700,
             cursor: allProgressDone ? 'pointer' : 'not-allowed',
             transition: 'all 0.2s ease',
@@ -493,15 +493,15 @@ export default function BodyDecodeCheckIn({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
-      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '18px 20px', marginBottom: '20px' }}>
-        <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.7, margin: 0 }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '12px', padding: '18px 20px', marginBottom: '20px' }}>
+        <p style={{ fontSize: '14px', color: '#666D7A', lineHeight: 1.7, margin: 0 }}>
           {showPhaseQuestion ? 'Three more questions.' : 'Two more questions.'} These help identify the biological pattern most active in your body right now.
         </p>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '24px' }}>
         {activeSignalQuestions.map((q, qi) => (
           <div key={q.id}>
-            <p style={{ fontSize: '15px', fontWeight: 700, color: '#1A1A1A', marginBottom: '12px', lineHeight: 1.5 }}>
+            <p style={{ fontSize: '15px', fontWeight: 700, color: '#141821', marginBottom: '12px', lineHeight: 1.5 }}>
               <span style={{ color: '#1B6DFC', marginRight: '8px' }}>{qi + 1}.</span>
               {q.question}
             </p>
@@ -514,9 +514,9 @@ export default function BodyDecodeCheckIn({
                     onClick={() => setSignals(s => ({ ...s, [q.id]: opt.value }))}
                     style={{
                       width: '100%', padding: '13px 16px', borderRadius: '10px',
-                      border: selected ? '1px solid rgba(27, 109, 252,0.45)' : '1px solid #E5E5E5',
+                      border: selected ? '1px solid rgba(27, 109, 252,0.45)' : '1px solid #E8EAEE',
                       background: selected ? 'rgba(27, 109, 252,0.10)' : '#FFFFFF',
-                      color: selected ? '#1056D6' : '#3A3A3A',
+                      color: selected ? '#1056D6' : '#43474F',
                       fontSize: '14px', fontWeight: selected ? 600 : 500,
                       textAlign: 'left', cursor: 'pointer',
                       transition: 'all 0.15s ease', lineHeight: 1.5,
@@ -534,8 +534,8 @@ export default function BodyDecodeCheckIn({
         <button
           onClick={() => setStep('progress')}
           style={{
-            padding: '15px 20px', borderRadius: '10px', border: '1px solid #E5E5E5',
-            background: 'transparent', color: '#4A4A4A',
+            padding: '15px 20px', borderRadius: '10px', border: '1px solid #E8EAEE',
+            background: 'transparent', color: '#43474F',
             fontSize: '14px', fontWeight: 600, cursor: 'pointer',
           }}
         >
@@ -546,8 +546,8 @@ export default function BodyDecodeCheckIn({
           disabled={!allSignalsDone || submitting}
           style={{
             flex: 1, padding: '15px', borderRadius: '10px', border: 'none',
-            background: allSignalsDone ? '#1B6DFC' : '#E5E5E5',
-            color: allSignalsDone ? '#FFFFFF' : '#4A4A4A',
+            background: allSignalsDone ? '#1B6DFC' : '#E8EAEE',
+            color: allSignalsDone ? '#FFFFFF' : '#43474F',
             fontSize: '15px', fontWeight: 700,
             cursor: allSignalsDone && !submitting ? 'pointer' : 'not-allowed',
             transition: 'all 0.2s ease',

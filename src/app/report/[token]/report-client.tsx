@@ -146,7 +146,7 @@ export default function ReportClient({ report }: { report: {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FFFFFF', color: '#1A1A1A', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#FFFFFF', color: '#141821', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
       <style>{`
         @media print {
           body { background: white !important; color: black !important; }
@@ -156,7 +156,7 @@ export default function ReportClient({ report }: { report: {
       `}</style>
 
       {/* Header */}
-      <div style={{ borderBottom: '1px solid #E5E5E5', padding: '18px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ borderBottom: '1px solid #E8EAEE', padding: '18px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <img src="/logo-black.png" alt={brand().name} style={{ height: '64px' }} />
         <button
           className="no-print"
@@ -208,14 +208,14 @@ export default function ReportClient({ report }: { report: {
               style={{
                 width: '40px', height: '40px', borderRadius: '50%',
                 objectFit: 'cover', objectPosition: 'top center',
-                border: '1px solid #E5E5E5', flexShrink: 0,
+                border: '1px solid #E8EAEE', flexShrink: 0,
               }}
             />
             <div>
-              <p style={{ fontSize: '13px', fontWeight: 800, color: '#1A1A1A', margin: 0, lineHeight: 1.3 }}>
+              <p style={{ fontSize: '13px', fontWeight: 800, color: '#141821', margin: 0, lineHeight: 1.3 }}>
                 Prepared by {c.fullName}
               </p>
-              <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0, lineHeight: 1.3 }}>
+              <p style={{ fontSize: '12px', color: '#666D7A', margin: 0, lineHeight: 1.3 }}>
                 {c.credentials}
               </p>
             </div>
@@ -224,7 +224,7 @@ export default function ReportClient({ report }: { report: {
           {/* Headline */}
           <h1 style={{
             fontSize: 'clamp(38px, 7vw, 56px)', fontWeight: 900,
-            letterSpacing: '-0.035em', lineHeight: 1.05, margin: '0 0 22px', color: '#1A1A1A',
+            letterSpacing: '-0.035em', lineHeight: 1.05, margin: '0 0 22px', color: '#141821',
           }}>
             {firstName}, here is what your body is telling you.
           </h1>
@@ -233,8 +233,8 @@ export default function ReportClient({ report }: { report: {
           <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '24px' }} />
 
           {/* Lead */}
-          <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.7, margin: 0 }}>
-            Based on your Readiness Scorecard results. Score: <strong style={{ color: '#1A1A1A' }}>{report.score}/15</strong>.
+          <p style={{ fontSize: '17px', color: '#43474F', lineHeight: 1.7, margin: 0 }}>
+            Based on your Readiness Scorecard results. Score: <strong style={{ color: '#141821' }}>{report.score}/15</strong>.
           </p>
         </div>
       </div>
@@ -247,17 +247,17 @@ export default function ReportClient({ report }: { report: {
             <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: state.color, flexShrink: 0 }} />
             <span style={{ fontSize: '11px', fontWeight: 700, color: state.color, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{report.body_state}</span>
           </div>
-          <h2 style={{ fontSize: '22px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', marginBottom: '16px', lineHeight: 1.3 }}>
+          <h2 style={{ fontSize: '22px', fontWeight: 800, color: '#141821', letterSpacing: '-0.02em', marginBottom: '16px', lineHeight: 1.3 }}>
             {state.headline}
           </h2>
-          <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
+          <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.75, margin: 0 }}>
             {state.biology}
           </p>
         </div>
 
         {/* Score Breakdown */}
         <div style={{ marginBottom: '40px' }}>
-          <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '20px' }}>
+          <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#43474F', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '20px' }}>
             Your section scores
           </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -266,25 +266,25 @@ export default function ReportClient({ report }: { report: {
               const s = scores[key] ?? 2
               const c = getScoreColor(s)
               return (
-                <div key={key} style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '16px 20px' }}>
+                <div key={key} style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '12px', padding: '16px 20px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-                    <span style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A' }}>{section}</span>
+                    <span style={{ fontSize: '14px', fontWeight: 700, color: '#141821' }}>{section}</span>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <span style={{ fontSize: '11px', fontWeight: 600, color: c }}>{getScoreLabel(s)}</span>
                       <div style={{ display: 'flex', gap: '4px' }}>
                         {[1, 2, 3].map(n => (
                           <div key={n} style={{
                             width: '20px', height: '20px', borderRadius: '50%',
-                            background: n === s ? `rgba(${s === 1 ? '220,38,38' : s === 2 ? '183,121,31' : '27,109,252'},0.15)` : '#E5E5E5',
-                            border: `1.5px solid ${n === s ? c : '#E5E5E5'}`,
+                            background: n === s ? `rgba(${s === 1 ? '220,38,38' : s === 2 ? '183,121,31' : '27,109,252'},0.15)` : '#E8EAEE',
+                            border: `1.5px solid ${n === s ? c : '#E8EAEE'}`,
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            fontSize: '9px', fontWeight: 700, color: n === s ? c : '#4A4A4A',
+                            fontSize: '9px', fontWeight: 700, color: n === s ? c : '#43474F',
                           }}>{n}</div>
                         ))}
                       </div>
                     </div>
                   </div>
-                  <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.65, margin: 0 }}>
+                  <p style={{ fontSize: '13px', color: '#666D7A', lineHeight: 1.65, margin: 0 }}>
                     {SECTION_INTERPRETATIONS[section]?.[s] ?? ''}
                   </p>
                 </div>
@@ -294,20 +294,20 @@ export default function ReportClient({ report }: { report: {
         </div>
 
         {/* What is working against you */}
-        <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '16px', padding: '32px', marginBottom: '32px' }}>
-          <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '16px' }}>
+        <div style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '16px', padding: '32px', marginBottom: '32px' }}>
+          <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#43474F', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '16px' }}>
             What is working against you right now
           </h3>
-          <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '16px' }}>
+          <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.75, marginBottom: '16px' }}>
             {state.whatIsHappening}
           </p>
-          <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.7, marginBottom: '0' }}>
-            Your lowest-scoring areas (<strong style={{ color: '#1A1A1A' }}>{lowestSections[0]?.name}</strong>{lowestSections[1] ? <> and <strong style={{ color: '#1A1A1A' }}>{lowestSections[1].name}</strong></> : null}) are the most likely bottlenecks. Address these before adding more intensity elsewhere.
+          <p style={{ fontSize: '14px', color: '#666D7A', lineHeight: 1.7, marginBottom: '0' }}>
+            Your lowest-scoring areas (<strong style={{ color: '#141821' }}>{lowestSections[0]?.name}</strong>{lowestSections[1] ? <> and <strong style={{ color: '#141821' }}>{lowestSections[1].name}</strong></> : null}) are the most likely bottlenecks. Address these before adding more intensity elsewhere.
           </p>
         </div>
 
         {/* Stop doing */}
-        <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '16px', padding: '32px', marginBottom: '32px' }}>
+        <div style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '16px', padding: '32px', marginBottom: '32px' }}>
           <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#DC2626', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '16px' }}>
             Stop doing
           </h3>
@@ -315,25 +315,25 @@ export default function ReportClient({ report }: { report: {
             {state.stopDoing.map((item, i) => (
               <div key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                 <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#DC2626', marginTop: '7px', flexShrink: 0 }} />
-                <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.65, margin: 0 }}>{item}</p>
+                <p style={{ fontSize: '14px', color: '#43474F', lineHeight: 1.65, margin: 0 }}>{item}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* Start doing */}
-        <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '16px', padding: '32px', marginBottom: '32px' }}>
+        <div style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '16px', padding: '32px', marginBottom: '32px' }}>
           <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '16px' }}>
             What to focus on first
           </h3>
-          <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.75, marginBottom: '20px' }}>
+          <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.75, marginBottom: '20px' }}>
             {state.primaryFocus}
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {state.startDoing.map((item, i) => (
               <div key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                 <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#1B6DFC', marginTop: '7px', flexShrink: 0 }} />
-                <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.65, margin: 0 }}>{item}</p>
+                <p style={{ fontSize: '14px', color: '#43474F', lineHeight: 1.65, margin: 0 }}>{item}</p>
               </div>
             ))}
           </div>
@@ -342,7 +342,7 @@ export default function ReportClient({ report }: { report: {
         {/* CTA — light featured card matching the design system */}
         <div style={{
           background: '#FFFFFF',
-          border: '1px solid #E5E5E5',
+          border: '1px solid #E8EAEE',
           borderLeft: '3px solid #1B6DFC',
           borderRadius: '16px',
           padding: '32px',
@@ -351,10 +351,10 @@ export default function ReportClient({ report }: { report: {
           <p style={{ fontSize: '11px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.12em', textTransform: 'uppercase' as const, margin: '0 0 10px' }}>
             Next Step
           </p>
-          <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.02em', marginBottom: '12px', lineHeight: 1.25 }}>
+          <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#141821', letterSpacing: '-0.02em', marginBottom: '12px', lineHeight: 1.25 }}>
             The report tells you the state. A call tells you the fix.
           </h3>
-          <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, marginBottom: '24px' }}>
+          <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.7, marginBottom: '24px' }}>
             We go through your results together, identify the specific driver behind what is not working, and map out exactly what needs to change first. Free. 30 minutes. No pitch.
           </p>
           <a

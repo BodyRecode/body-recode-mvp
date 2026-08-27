@@ -18,11 +18,11 @@ export default async function TrainingPage({ params }: { params: Promise<{ token
 
   return (
     <div style={{
-      minHeight: '100vh', background: '#F5F7FA', color: '#1A1A1A',
+      minHeight: '100vh', background: '#F5F7FA', color: '#141821',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     }}>
       {/* Header */}
-      <div style={{ borderBottom: '1px solid #ECEEF2', padding: '18px 24px', background: '#FFFFFF', position: 'sticky', top: 0, zIndex: 20 }}>
+      <div style={{ borderBottom: '1px solid #E8EAEE', padding: '18px 24px', background: '#FFFFFF', position: 'sticky', top: 0, zIndex: 20 }}>
         <div style={{ maxWidth: '720px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block' }} />
           <Link href={`/challenge/${token}`} style={{ fontSize: '13px', color: '#1B6DFC', textDecoration: 'none', fontWeight: 500 }}>

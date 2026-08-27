@@ -43,8 +43,8 @@ function CheckoutForm({ position, darkBg }: { position: string; teal?: boolean; 
   }
 
   const inputStyle: React.CSSProperties = {
-    width: '100%', padding: '15px 16px', borderRadius: '10px', border: '1px solid #D4D4D4',
-    background: '#ffffff', color: '#1A1A1A', fontSize: '15px', outline: 'none', boxSizing: 'border-box',
+    width: '100%', padding: '15px 16px', borderRadius: '10px', border: '1px solid #CFD4DC',
+    background: '#ffffff', color: '#141821', fontSize: '15px', outline: 'none', boxSizing: 'border-box',
   }
 
   return (
@@ -58,7 +58,7 @@ function CheckoutForm({ position, darkBg }: { position: string; teal?: boolean; 
         style={{ width: '100%', padding: '17px', borderRadius: '10px', border: 'none', background: loading ? 'rgba(27,109,252,0.6)' : BLUE, color: '#ffffff', fontSize: '16px', fontWeight: 800, cursor: loading ? 'not-allowed' : 'pointer', letterSpacing: '0.01em', transition: 'background 0.2s', boxSizing: 'border-box' }}>
         {loading ? 'Redirecting to checkout...' : 'Start the 6-Week Body Rewire · $97 AUD'}
       </button>
-      <p style={{ fontSize: '12px', color: '#999999', textAlign: 'center', margin: 0 }}>Secure checkout via Stripe. Instant portal access on payment.</p>
+      <p style={{ fontSize: '12px', color: '#98A0AD', textAlign: 'center', margin: 0 }}>Secure checkout via Stripe. Instant portal access on payment.</p>
     </form>
   )
 }
@@ -168,8 +168,8 @@ export default function BlueprintPage() {
       <Section borderTop pad="72px 24px 0">
         <Eyebrow>Where the challenge left off</Eyebrow>
         <Heading muted="The Blueprint fixes it.">The Challenge found your pattern.</Heading>
-        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, margin: '28px 0 18px' }}>Fourteen days took enough pressure off your body to see it clearly. The Day 7 Check-In and Day 14 Result showed you which of the four patterns is holding your fat loss. That was the diagnosis.</p>
-        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, margin: '0 0 4px' }}>Knowing your pattern is not the same as fixing it. The 6-Week Body Rewire is six weeks of focused work, built around your specific pattern. Training, nutrition timing, weekly coaching notes, and biology lessons, all built around the same pattern. Your body is still Depleted, but now the work is aimed straight at what is holding you.</p>
+        <p style={{ fontSize: '16px', color: '#43474F', lineHeight: 1.75, margin: '28px 0 18px' }}>Fourteen days took enough pressure off your body to see it clearly. The Day 7 Check-In and Day 14 Result showed you which of the four patterns is holding your fat loss. That was the diagnosis.</p>
+        <p style={{ fontSize: '16px', color: '#43474F', lineHeight: 1.75, margin: '0 0 4px' }}>Knowing your pattern is not the same as fixing it. The 6-Week Body Rewire is six weeks of focused work, built around your specific pattern. Training, nutrition timing, weekly coaching notes, and biology lessons, all built around the same pattern. Your body is still Depleted, but now the work is aimed straight at what is holding you.</p>
         <Callout>New here and skipped the Challenge? No problem. A quick two-question check finds your pattern before your portal opens. Same result, same programme.</Callout>
       </Section>
 
@@ -178,7 +178,7 @@ export default function BlueprintPage() {
         <Section bg="tint">
           <Eyebrow>Why the standard answer fails</Eyebrow>
           <Heading>Generic programmes push on the exact thing that is stuck.</Heading>
-          <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, margin: '24px 0 24px' }}>When a body stalls, it is stuck in a holding pattern. But that holding pattern is not the same for everyone. Cortisol-driven storage is nothing like insulin-driven storage. What a Stress-Stored body needs to unstick is the opposite of what an Insulin-Drift body needs. Same plan, opposite result.</p>
+          <p style={{ fontSize: '16px', color: '#43474F', lineHeight: 1.75, margin: '24px 0 24px' }}>When a body stalls, it is stuck in a holding pattern. But that holding pattern is not the same for everyone. Cortisol-driven storage is nothing like insulin-driven storage. What a Stress-Stored body needs to unstick is the opposite of what an Insulin-Drift body needs. Same plan, opposite result.</p>
           <ContrastBlock
             wrong={{ label: 'The usual playbook', body: 'One programme for everyone. Same intensity, same meal timing, same number of sets. When your body has a specific pattern holding it, that one-size plan either does nothing or pulls the knot tighter.' }}
             right={{ label: 'The Blueprint', body: 'Built around your specific pattern instead. Training intensity, nutrition timing, weekly coaching, biology lessons. Four versions, because the plan has to match the pattern.' }}
@@ -202,7 +202,7 @@ export default function BlueprintPage() {
       <Section bg="grey" pad="72px 24px">
         <Eyebrow>The three phases</Eyebrow>
         <Heading>Regulate. Adapt. Embed.</Heading>
-        <p style={{ fontSize: '16px', color: '#6B6B6B', lineHeight: 1.7, margin: '10px 0 32px' }}>Each phase has a job. The order is not random. It follows how the body actually changes.</p>
+        <p style={{ fontSize: '16px', color: '#666D7A', lineHeight: 1.7, margin: '10px 0 32px' }}>Each phase has a job. The order is not random. It follows how the body actually changes.</p>
         <StepList items={PHASES} />
       </Section>
 
@@ -210,7 +210,7 @@ export default function BlueprintPage() {
       <Section pad="72px 24px">
         <Eyebrow>What is inside</Eyebrow>
         <Heading>Everything you need, in one portal.</Heading>
-        <p style={{ fontSize: '16px', color: '#6B6B6B', lineHeight: 1.7, margin: '10px 0 28px' }}>No external apps. No separate downloads. Everything lives in your Blueprint portal from the moment you purchase.</p>
+        <p style={{ fontSize: '16px', color: '#666D7A', lineHeight: 1.7, margin: '10px 0 28px' }}>No external apps. No separate downloads. Everything lives in your Blueprint portal from the moment you purchase.</p>
         <FeatureList items={WHAT_YOU_GET} />
       </Section>
 

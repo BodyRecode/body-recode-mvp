@@ -40,7 +40,7 @@ const FOUR_PATTERNS = [
 ]
 
 const card: React.CSSProperties = {
-  background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px',
+  background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '14px',
   padding: '24px 26px', boxShadow: '0 1px 4px rgba(27, 109, 252, 0.04)',
 }
 
@@ -50,12 +50,12 @@ const cardLabel: React.CSSProperties = {
 }
 
 const cardTitle: React.CSSProperties = {
-  fontSize: '22px', fontWeight: 800, color: '#1A1A1A',
+  fontSize: '22px', fontWeight: 800, color: '#141821',
   letterSpacing: '-0.02em', margin: '0 0 14px', lineHeight: 1.25,
 }
 
 const cardBody: React.CSSProperties = {
-  fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: 0,
+  fontSize: '15px', color: '#43474F', lineHeight: 1.7, margin: 0,
 }
 
 export default async function Day7Page({ params }: { params: Promise<{ token: string }> }) {
@@ -88,11 +88,11 @@ export default async function Day7Page({ params }: { params: Promise<{ token: st
 
   return (
     <div style={{
-      minHeight: '100vh', background: '#FFFFFF', color: '#1A1A1A',
+      minHeight: '100vh', background: '#FFFFFF', color: '#141821',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     }}>
       {/* Header */}
-      <div style={{ borderBottom: '1px solid #E5E5E5', padding: '18px 24px', background: '#FFFFFF' }}>
+      <div style={{ borderBottom: '1px solid #E8EAEE', padding: '18px 24px', background: '#FFFFFF' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block' }} />
           <Link href={`/challenge/${token}`} style={{ fontSize: '13px', color: '#1B6DFC', textDecoration: 'none', fontWeight: 500 }}>
@@ -122,14 +122,14 @@ export default async function Day7Page({ params }: { params: Promise<{ token: st
           </p>
           <h1 style={{
             fontSize: 'clamp(34px, 6vw, 48px)', fontWeight: 900,
-            letterSpacing: '-0.035em', margin: '8px 0 18px', color: '#1A1A1A', lineHeight: 1.05,
+            letterSpacing: '-0.035em', margin: '8px 0 18px', color: '#141821', lineHeight: 1.05,
           }}>
             Read the pattern
             <br />
             <span style={{ color: '#1B6DFC' }}>your biology has settled into.</span>
           </h1>
           <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '24px' }} />
-          <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
+          <p style={{ fontSize: '17px', color: '#43474F', lineHeight: 1.75, margin: 0 }}>
             It reads how your body has shifted this week to identify your specific pattern. The pattern is what makes the rest of the Challenge make sense.
           </p>
         </div>
@@ -140,7 +140,7 @@ export default async function Day7Page({ params }: { params: Promise<{ token: st
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '0 24px 24px' }}>
         <div style={{
           position: 'relative', width: '100%', aspectRatio: '16 / 9',
-          background: '#1A1A1A', borderRadius: '14px', overflow: 'hidden',
+          background: '#141821', borderRadius: '14px', overflow: 'hidden',
           border: '1px solid #2C2C2C',
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
         }}>
@@ -169,7 +169,7 @@ export default async function Day7Page({ params }: { params: Promise<{ token: st
           }}>
             Take the Body Decode Check-In →
           </Link>
-          <p style={{ fontSize: '13px', color: '#6B6B6B', textAlign: 'center', marginTop: '12px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '13px', color: '#666D7A', textAlign: 'center', marginTop: '12px', lineHeight: 1.6 }}>
             Takes 5-10 minutes. Your result is yours to keep.
           </p>
         </div>
@@ -177,7 +177,7 @@ export default async function Day7Page({ params }: { params: Promise<{ token: st
 
       {/* Intro bridge */}
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '32px 24px 8px' }}>
-        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
+        <p style={{ fontSize: '16px', color: '#43474F', lineHeight: 1.75, margin: 0 }}>
           Below, the four patterns you may be identified as, why pattern identification matters, what happens after Day 7, and how the Check-In works. Read what is most useful to you before you take the audit.
         </p>
       </div>
@@ -198,7 +198,7 @@ export default async function Day7Page({ params }: { params: Promise<{ token: st
                 borderRadius: '10px', padding: '16px 18px',
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px', flexWrap: 'wrap' as const, gap: '8px' }}>
-                  <p style={{ fontSize: '17px', fontWeight: 800, color: '#1A1A1A', margin: 0, letterSpacing: '-0.01em' }}>{p.name}</p>
+                  <p style={{ fontSize: '17px', fontWeight: 800, color: '#141821', margin: 0, letterSpacing: '-0.01em' }}>{p.name}</p>
                   <span style={{
                     fontSize: '10px', fontWeight: 700, color: p.colour,
                     background: `${p.colour}15`, padding: '4px 10px', borderRadius: '6px',
@@ -207,19 +207,19 @@ export default async function Day7Page({ params }: { params: Promise<{ token: st
                     {String(i + 1).padStart(2, '0')}
                   </span>
                 </div>
-                <p style={{ fontSize: '12px', fontWeight: 700, color: '#6B6B6B', margin: '0 0 8px', letterSpacing: '0.04em', textTransform: 'uppercase' as const }}>
+                <p style={{ fontSize: '12px', fontWeight: 700, color: '#666D7A', margin: '0 0 8px', letterSpacing: '0.04em', textTransform: 'uppercase' as const }}>
                   {p.gender} · Driver: {p.driver}
                 </p>
-                <p style={{ fontSize: '14px', color: '#1A1A1A', margin: '0 0 6px', fontWeight: 600, lineHeight: 1.5 }}>
+                <p style={{ fontSize: '14px', color: '#141821', margin: '0 0 6px', fontWeight: 600, lineHeight: 1.5 }}>
                   {p.where}
                 </p>
-                <p style={{ fontSize: '13px', color: '#4A4A4A', margin: 0, lineHeight: 1.65 }}>
+                <p style={{ fontSize: '13px', color: '#43474F', margin: 0, lineHeight: 1.65 }}>
                   {p.signal}
                 </p>
               </div>
             ))}
           </div>
-          <p style={{ fontSize: '12px', color: '#6B6B6B', lineHeight: 1.6, margin: '16px 0 0' }}>
+          <p style={{ fontSize: '12px', color: '#666D7A', lineHeight: 1.6, margin: '16px 0 0' }}>
             These name an observed pattern of where the body stores and how it signals. They describe how your body is behaving, not a measurement of your hormone levels.
           </p>
         </div>
@@ -241,7 +241,7 @@ export default async function Day7Page({ params }: { params: Promise<{ token: st
             border: '1px solid rgba(27, 109, 252, 0.18)',
             borderRadius: '10px', padding: '16px 18px', margin: '8px 0',
           }}>
-            <p style={{ fontSize: '15px', fontWeight: 700, color: '#1A1A1A', margin: 0, lineHeight: 1.5 }}>
+            <p style={{ fontSize: '15px', fontWeight: 700, color: '#141821', margin: 0, lineHeight: 1.5 }}>
               The Check-In reads your pattern using seven days of real biological data. Not a personality quiz. Not a guess. The signals your body has actually been sending this week.
             </p>
           </div>
@@ -270,11 +270,11 @@ export default async function Day7Page({ params }: { params: Promise<{ token: st
                 <p style={{ fontSize: '11px', fontWeight: 800, color: '#1056D6', letterSpacing: '0.08em', textTransform: 'uppercase' as const, margin: '0 0 6px' }}>
                   {p.eyebrow}
                 </p>
-                <p style={{ fontSize: '14px', color: '#4A4A4A', margin: 0, lineHeight: 1.65 }}>{p.body}</p>
+                <p style={{ fontSize: '14px', color: '#43474F', margin: 0, lineHeight: 1.65 }}>{p.body}</p>
               </div>
             ))}
           </div>
-          <p style={{ ...cardBody, marginTop: '16px', marginBottom: 0, fontWeight: 700, color: '#1A1A1A' }}>
+          <p style={{ ...cardBody, marginTop: '16px', marginBottom: 0, fontWeight: 700, color: '#141821' }}>
             You do not need to think about any of that yet. Right now, your only job is to take the Check-In and read the pattern.
           </p>
         </div>
@@ -296,13 +296,13 @@ export default async function Day7Page({ params }: { params: Promise<{ token: st
               <p style={{ fontSize: '11px', fontWeight: 800, color: '#1056D6', letterSpacing: '0.08em', textTransform: 'uppercase' as const, margin: '0 0 6px' }}>
                 Part 1 · Progress scan
               </p>
-              <p style={{ fontSize: '15px', fontWeight: 700, color: '#1A1A1A', margin: '0 0 8px' }}>
+              <p style={{ fontSize: '15px', fontWeight: 700, color: '#141821', margin: '0 0 8px' }}>
                 Rate 8 biological markers
               </p>
-              <p style={{ fontSize: '13px', color: '#4A4A4A', margin: '0 0 10px', lineHeight: 1.65 }}>
+              <p style={{ fontSize: '13px', color: '#43474F', margin: '0 0 10px', lineHeight: 1.65 }}>
                 For each marker, choose: Improving, About the same, or Still a challenge. This gives you a progress score (0 to 8 improving) for Week 1.
               </p>
-              <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0, lineHeight: 1.55 }}>
+              <p style={{ fontSize: '12px', color: '#666D7A', margin: 0, lineHeight: 1.55 }}>
                 Markers: morning energy, afternoon energy, puffiness, sleep quality, cravings, mental clarity, mood stability, digestion.
               </p>
             </div>
@@ -313,10 +313,10 @@ export default async function Day7Page({ params }: { params: Promise<{ token: st
               <p style={{ fontSize: '11px', fontWeight: 800, color: '#1056D6', letterSpacing: '0.08em', textTransform: 'uppercase' as const, margin: '0 0 6px' }}>
                 Part 2 · Signal pattern
               </p>
-              <p style={{ fontSize: '15px', fontWeight: 700, color: '#1A1A1A', margin: '0 0 8px' }}>
+              <p style={{ fontSize: '15px', fontWeight: 700, color: '#141821', margin: '0 0 8px' }}>
                 Two questions identify your pattern
               </p>
-              <p style={{ fontSize: '13px', color: '#4A4A4A', margin: 0, lineHeight: 1.65 }}>
+              <p style={{ fontSize: '13px', color: '#43474F', margin: 0, lineHeight: 1.65 }}>
                 Two multiple-choice questions about where you most notice fat storage and what your lived experience has been this week. The combination determines your dominant pattern.
               </p>
             </div>
@@ -326,7 +326,7 @@ export default async function Day7Page({ params }: { params: Promise<{ token: st
             border: '1px solid rgba(27, 109, 252, 0.18)',
             borderRadius: '10px', padding: '16px 18px', marginTop: '20px',
           }}>
-            <p style={{ fontSize: '14px', color: '#1A1A1A', margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
+            <p style={{ fontSize: '14px', color: '#141821', margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
               Take it slowly. Answer honestly. There is no wrong answer. The result is yours to keep.
             </p>
           </div>
@@ -354,7 +354,7 @@ export default async function Day7Page({ params }: { params: Promise<{ token: st
         <Link href={`/challenge/${token}`} style={{
           display: 'inline-flex', alignItems: 'center', gap: '8px',
           padding: '14px 24px', borderRadius: '10px',
-          background: '#FFFFFF', border: '1px solid #E5E5E5', color: '#1A1A1A',
+          background: '#FFFFFF', border: '1px solid #E8EAEE', color: '#141821',
           fontSize: '14px', fontWeight: 700, textDecoration: 'none',
         }}>
           ← Back to your portal

@@ -11,8 +11,8 @@ import { logoUrl, brand } from '@/config/tenant'
 import { DecodeFeedbackCard } from '../decode-feedback-card'
 
 const BLUE = '#1B6DFC'
-const INK = '#1A1A1A'
-const MUTED = '#6B6B6B'
+const INK = '#141821'
+const MUTED = '#666D7A'
 
 const SECTION_LABELS: Record<'01' | '02' | '03' | '04' | '05', string> = {
   '01': 'Energy',
@@ -110,7 +110,7 @@ export default async function DecodeReadPage({ params }: { params: Promise<{ tok
       <h1 style={{ fontSize: '31px', fontWeight: 800, color: INK, letterSpacing: '-0.025em', lineHeight: 1.14, margin: '0 0 12px' }}>
         {firstName}, here is the whole thing.
       </h1>
-      <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 20px' }}>
+      <p style={{ fontSize: '16px', color: '#43474F', lineHeight: 1.7, margin: '0 0 20px' }}>
         Five parts, and you have all of them. Read it once now without rushing to do anything about it, then read it again tomorrow, because the second time is usually when it lands. Over the next five days we go through it one part at a time.
       </p>
 
@@ -137,7 +137,7 @@ export default async function DecodeReadPage({ params }: { params: Promise<{ tok
         <section style={card()}>
           <p style={eyebrow()}>Your five scores</p>
           {readiness && (
-            <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 18px' }}>
+            <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.7, margin: '0 0 18px' }}>
               Your readiness came back <strong style={{ color: INK }}>{readiness.label}</strong>.
               {readiness.means && ` ${readiness.means}`}
               {readiness.prevalence && ` It is where ${readiness.prevalence} of the women we assess land.`}
@@ -178,7 +178,7 @@ export default async function DecodeReadPage({ params }: { params: Promise<{ tok
             <p style={{ fontSize: '22px', fontWeight: 800, color: pattern.color, letterSpacing: '-0.02em', margin: '0 0 12px' }}>
               {pattern.label}
             </p>
-            <p style={{ fontSize: '16px', color: '#3A3A3A', lineHeight: 1.75, margin: 0 }}>{plainDesc ?? pattern.desc}</p>
+            <p style={{ fontSize: '16px', color: '#43474F', lineHeight: 1.75, margin: 0 }}>{plainDesc ?? pattern.desc}</p>
           </section>
 
           <Part n={2} title="Why it is happening" paragraphs={pattern.whatItMeans} />
@@ -199,14 +199,14 @@ export default async function DecodeReadPage({ params }: { params: Promise<{ tok
       ) : (
         <section style={card()}>
           <p style={eyebrow()}>Your pattern</p>
-          <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: 0 }}>
+          <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.7, margin: 0 }}>
             Your answers do not point cleanly at one of the four patterns. That is a real result rather than a missing one, and it usually means the foundations are in better shape than the four compensation patterns describe. Your five scores above are still the place to start.
           </p>
         </section>
       )}
 
       <section style={{ ...card(), background: '#FAFAFA' }}>
-        <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.72, margin: 0 }}>
+        <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.72, margin: 0 }}>
           This is a baseline, not a verdict. Patterns are states, not identities, and states respond to inputs.
         </p>
       </section>
@@ -227,8 +227,8 @@ export default async function DecodeReadPage({ params }: { params: Promise<{ tok
       {/* The page stopped on the feedback form. She has just read four screens
           of a document about herself and the only way onward was the back link
           at the very top, which is now a long way behind her. */}
-      <div style={{ borderTop: '1px solid #E5E5E5', margin: '28px 0 0', paddingTop: '24px' }}>
-        <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.72, margin: '0 0 18px' }}>
+      <div style={{ borderTop: '1px solid #E8EAEE', margin: '28px 0 0', paddingTop: '24px' }}>
+        <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.72, margin: '0 0 18px' }}>
           That is the whole read, and it stays at this link. Nothing else unlocks it and nothing expires.
         </p>
         {todaysDay && (
@@ -272,10 +272,10 @@ function Part({ n, title, paragraphs, note, numbered = false }: { n: number; tit
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontVariantNumeric: 'tabular-nums',
               }}>{i + 1}</span>
-              <p style={{ fontSize: '15px', color: '#3A3A3A', lineHeight: 1.72, margin: 0 }}>{p}</p>
+              <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.72, margin: 0 }}>{p}</p>
             </div>
           ) : (
-            <p key={i} style={{ fontSize: '15px', color: '#3A3A3A', lineHeight: 1.72, margin: 0 }}>{p}</p>
+            <p key={i} style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.72, margin: 0 }}>{p}</p>
           )
         ))}
       </div>
@@ -289,7 +289,7 @@ function Part({ n, title, paragraphs, note, numbered = false }: { n: number; tit
 function card(): React.CSSProperties {
   return {
     background: '#FFFFFF',
-    border: '1px solid #E5E5E5',
+    border: '1px solid #E8EAEE',
     borderRadius: '14px',
     padding: '24px 26px',
     marginBottom: '14px',

@@ -44,7 +44,7 @@ const SIX_WEEKS_PHASES = [
 ]
 
 const card: React.CSSProperties = {
-  background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px',
+  background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '14px',
   padding: '24px 26px', boxShadow: '0 1px 4px rgba(27, 109, 252, 0.04)',
 }
 
@@ -54,12 +54,12 @@ const cardLabel: React.CSSProperties = {
 }
 
 const cardTitle: React.CSSProperties = {
-  fontSize: '22px', fontWeight: 800, color: '#1A1A1A',
+  fontSize: '22px', fontWeight: 800, color: '#141821',
   letterSpacing: '-0.02em', margin: '0 0 14px', lineHeight: 1.25,
 }
 
 const cardBody: React.CSSProperties = {
-  fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: 0,
+  fontSize: '15px', color: '#43474F', lineHeight: 1.7, margin: 0,
 }
 
 export default async function Day5Page({ params }: { params: Promise<{ token: string }> }) {
@@ -91,11 +91,11 @@ export default async function Day5Page({ params }: { params: Promise<{ token: st
 
   return (
     <div style={{
-      minHeight: '100vh', background: '#FFFFFF', color: '#1A1A1A',
+      minHeight: '100vh', background: '#FFFFFF', color: '#141821',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     }}>
       {/* Header */}
-      <div style={{ borderBottom: '1px solid #E5E5E5', padding: '18px 24px', background: '#FFFFFF' }}>
+      <div style={{ borderBottom: '1px solid #E8EAEE', padding: '18px 24px', background: '#FFFFFF' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block' }} />
           <Link href={`/challenge/${token}`} style={{ fontSize: '13px', color: '#1B6DFC', textDecoration: 'none', fontWeight: 500 }}>
@@ -125,14 +125,14 @@ export default async function Day5Page({ params }: { params: Promise<{ token: st
           </p>
           <h1 style={{
             fontSize: 'clamp(34px, 6vw, 48px)', fontWeight: 900,
-            letterSpacing: '-0.035em', margin: '8px 0 18px', color: '#1A1A1A', lineHeight: 1.05,
+            letterSpacing: '-0.035em', margin: '8px 0 18px', color: '#141821', lineHeight: 1.05,
           }}>
             Decode what your body
             <br />
             <span style={{ color: '#1B6DFC' }}>has been doing this week.</span>
           </h1>
           <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '24px' }} />
-          <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
+          <p style={{ fontSize: '17px', color: '#43474F', lineHeight: 1.75, margin: 0 }}>
             A focused session walking you through what has actually happened in your biology across the first 5 days, why the signals you have been feeling matter, and what Week 2 is building toward.
           </p>
         </div>
@@ -144,7 +144,7 @@ export default async function Day5Page({ params }: { params: Promise<{ token: st
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '0 24px 24px' }}>
         <div style={{
           position: 'relative', width: '100%', aspectRatio: '16 / 9',
-          background: '#1A1A1A', borderRadius: '14px', overflow: 'hidden',
+          background: '#141821', borderRadius: '14px', overflow: 'hidden',
           border: '1px solid #2C2C2C',
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
         }}>
@@ -162,7 +162,7 @@ export default async function Day5Page({ params }: { params: Promise<{ token: st
 
       {/* Intro bridge */}
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '24px 24px 8px' }}>
-        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
+        <p style={{ fontSize: '16px', color: '#43474F', lineHeight: 1.75, margin: 0 }}>
           Below the video, the deeper detail. Read what is most useful to you, in your own time. Nothing to rush through. The information here is what makes Week 2 feel clearer.
         </p>
       </div>
@@ -191,8 +191,8 @@ export default async function Day5Page({ params }: { params: Promise<{ token: st
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <div style={{ flex: 1 }}>
-                  <p style={{ fontSize: '15px', fontWeight: 700, color: '#1A1A1A', margin: '0 0 4px' }}>{s.name}</p>
-                  <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.65, margin: 0 }}>{s.interpretation}</p>
+                  <p style={{ fontSize: '15px', fontWeight: 700, color: '#141821', margin: '0 0 4px' }}>{s.name}</p>
+                  <p style={{ fontSize: '14px', color: '#43474F', lineHeight: 1.65, margin: 0 }}>{s.interpretation}</p>
                 </div>
               </div>
             ))}
@@ -224,8 +224,8 @@ export default async function Day5Page({ params }: { params: Promise<{ token: st
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <div style={{ flex: 1 }}>
-                  <p style={{ fontSize: '15px', fontWeight: 700, color: '#1A1A1A', margin: '0 0 4px' }}>{s.marker}</p>
-                  <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.65, margin: 0 }}>{s.meaning}</p>
+                  <p style={{ fontSize: '15px', fontWeight: 700, color: '#141821', margin: '0 0 4px' }}>{s.marker}</p>
+                  <p style={{ fontSize: '14px', color: '#43474F', lineHeight: 1.65, margin: 0 }}>{s.meaning}</p>
                 </div>
               </div>
             ))}
@@ -249,7 +249,7 @@ export default async function Day5Page({ params }: { params: Promise<{ token: st
             border: '1px solid rgba(27, 109, 252, 0.18)',
             borderRadius: '10px', padding: '16px 18px', margin: '8px 0',
           }}>
-            <p style={{ fontSize: '15px', fontWeight: 700, color: '#1A1A1A', margin: 0, lineHeight: 1.5 }}>
+            <p style={{ fontSize: '15px', fontWeight: 700, color: '#141821', margin: 0, lineHeight: 1.5 }}>
               The reset clears the path. Results come from what you build on top of it.
             </p>
           </div>
@@ -281,12 +281,12 @@ export default async function Day5Page({ params }: { params: Promise<{ token: st
                 background: '#FAFAFA', border: '1px solid #EEEEEE',
                 borderLeft: '3px solid #1B6DFC', borderRadius: '10px', padding: '14px 16px',
               }}>
-                <p style={{ fontSize: '13px', fontWeight: 700, color: '#1A1A1A', margin: '0 0 6px' }}>{p.eyebrow}</p>
-                <p style={{ fontSize: '13px', color: '#4A4A4A', margin: 0, lineHeight: 1.6 }}>{p.body}</p>
+                <p style={{ fontSize: '13px', fontWeight: 700, color: '#141821', margin: '0 0 6px' }}>{p.eyebrow}</p>
+                <p style={{ fontSize: '13px', color: '#43474F', margin: 0, lineHeight: 1.6 }}>{p.body}</p>
               </div>
             ))}
           </div>
-          <p style={{ ...cardBody, marginTop: '6px', marginBottom: 0, fontWeight: 700, color: '#1A1A1A' }}>
+          <p style={{ ...cardBody, marginTop: '6px', marginBottom: 0, fontWeight: 700, color: '#141821' }}>
             Whatever it is for you, hold onto it. That is your evidence. That is your body telling you that what you are doing is working.
           </p>
         </div>
@@ -328,7 +328,7 @@ export default async function Day5Page({ params }: { params: Promise<{ token: st
           <h2 style={{ fontSize: '26px', fontWeight: 900, color: '#0B1F3F', letterSpacing: '-0.025em', margin: '0 0 8px', lineHeight: 1.18 }}>
             The 6-Week Body Rewire Blueprint
           </h2>
-          <p style={{ fontSize: '15px', color: '#1A1A1A', lineHeight: 1.7, margin: '0 0 20px' }}>
+          <p style={{ fontSize: '15px', color: '#141821', lineHeight: 1.7, margin: '0 0 20px' }}>
             What happens after Day 14 if you continue. The Blueprint is structured in three phases — two weeks each. Each phase has a specific biological job.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
@@ -343,7 +343,7 @@ export default async function Day5Page({ params }: { params: Promise<{ token: st
                   Phase {i + 1}
                 </p>
                 <p style={{ fontSize: '15px', fontWeight: 700, color: '#0B1F3F', margin: '0 0 8px' }}>{p.label}</p>
-                <p style={{ fontSize: '14px', color: '#3A3A3A', lineHeight: 1.65, margin: 0 }}>{p.body}</p>
+                <p style={{ fontSize: '14px', color: '#43474F', lineHeight: 1.65, margin: 0 }}>{p.body}</p>
               </div>
             ))}
           </div>
@@ -371,7 +371,7 @@ export default async function Day5Page({ params }: { params: Promise<{ token: st
         <Link href={`/challenge/${token}`} style={{
           display: 'inline-flex', alignItems: 'center', gap: '8px',
           padding: '14px 24px', borderRadius: '10px',
-          background: '#FFFFFF', border: '1px solid #E5E5E5', color: '#1A1A1A',
+          background: '#FFFFFF', border: '1px solid #E8EAEE', color: '#141821',
           fontSize: '14px', fontWeight: 700, textDecoration: 'none',
         }}>
           ← Back to your portal

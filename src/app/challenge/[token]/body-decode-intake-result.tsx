@@ -113,10 +113,10 @@ export default function BodyDecodeIntakeResult({ result, onContinue }: {
         <p style={{ fontSize: '11px', fontWeight: 700, color: stateColor, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '12px' }}>
           Your Body Decode read
         </p>
-        <h2 style={{ fontSize: '28px', fontWeight: 900, color: '#1A1A1A', letterSpacing: '-0.025em', marginBottom: '8px', lineHeight: 1.15 }}>
+        <h2 style={{ fontSize: '28px', fontWeight: 900, color: '#141821', letterSpacing: '-0.025em', marginBottom: '8px', lineHeight: 1.15 }}>
           {state}
         </h2>
-        <p style={{ fontSize: '14px', color: '#6B6B6B', fontWeight: 600, marginBottom: '16px' }}>
+        <p style={{ fontSize: '14px', color: '#666D7A', fontWeight: 600, marginBottom: '16px' }}>
           Score: {result.score} / 15
         </p>
         {result.profile && (
@@ -124,21 +124,21 @@ export default function BodyDecodeIntakeResult({ result, onContinue }: {
             <p style={{ fontSize: '11px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '6px' }}>
               Fat Map zone{result.profile_confidence === 'low' ? ' · provisional' : ''}
             </p>
-            <p style={{ fontSize: '20px', fontWeight: 900, color: '#1A1A1A', letterSpacing: '-0.02em', marginBottom: '4px' }}>
+            <p style={{ fontSize: '20px', fontWeight: 900, color: '#141821', letterSpacing: '-0.02em', marginBottom: '4px' }}>
               {result.profile}
             </p>
             {result.profile_driver && (
-              <p style={{ fontSize: '13px', color: '#6B6B6B', fontWeight: 500, margin: 0 }}>
+              <p style={{ fontSize: '13px', color: '#666D7A', fontWeight: 500, margin: 0 }}>
                 {result.profile_driver}
               </p>
             )}
           </div>
         )}
-        <p style={{ fontSize: '15px', color: '#3A3A3A', lineHeight: 1.7, margin: 0 }}>
+        <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.7, margin: 0 }}>
           {result.profile_descriptor}
         </p>
         {result.profile && (
-          <p style={{ fontSize: '12px', color: '#6B6B6B', lineHeight: 1.6, margin: '14px 0 0' }}>
+          <p style={{ fontSize: '12px', color: '#666D7A', lineHeight: 1.6, margin: '14px 0 0' }}>
             {PATTERN_DEFINITION_NOTE}
           </p>
         )}
@@ -147,13 +147,13 @@ export default function BodyDecodeIntakeResult({ result, onContinue }: {
       {/* 2. PER-SECTION READ */}
       {result.section_scores && (
         <div style={{
-          background: '#FFFFFF', border: '1px solid #E5E5E5',
+          background: '#FFFFFF', border: '1px solid #E8EAEE',
           borderRadius: '14px', padding: '24px 26px',
         }}>
           <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '6px' }}>
             Your read, section by section
           </p>
-          <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.7, margin: '0 0 22px' }}>
+          <p style={{ fontSize: '13px', color: '#666D7A', lineHeight: 1.7, margin: '0 0 22px' }}>
             What each of your five answers actually says about your body right now.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -183,7 +183,7 @@ export default function BodyDecodeIntakeResult({ result, onContinue }: {
                   </div>
                   <div style={{ flex: 1 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                      <p style={{ fontSize: '13px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.005em', margin: 0 }}>
+                      <p style={{ fontSize: '13px', fontWeight: 800, color: '#141821', letterSpacing: '-0.005em', margin: 0 }}>
                         {SECTION_LABELS[key]}
                       </p>
                       {isFloor && (
@@ -197,7 +197,7 @@ export default function BodyDecodeIntakeResult({ result, onContinue }: {
                         </span>
                       )}
                     </div>
-                    <p style={{ fontSize: '13px', color: '#4A4A4A', lineHeight: 1.65, margin: 0 }}>
+                    <p style={{ fontSize: '13px', color: '#43474F', lineHeight: 1.65, margin: 0 }}>
                       {read}
                     </p>
                   </div>
@@ -206,7 +206,7 @@ export default function BodyDecodeIntakeResult({ result, onContinue }: {
             })}
           </div>
           {floor && (
-            <p style={{ fontSize: '12px', color: '#6B6B6B', lineHeight: 1.65, margin: '20px 0 0', fontStyle: 'italic' }}>
+            <p style={{ fontSize: '12px', color: '#666D7A', lineHeight: 1.65, margin: '20px 0 0', fontStyle: 'italic' }}>
               Your floor is the section telling us the most. Everything else compensates around it — so it&apos;s where the next 14 days do their highest-leverage work.
             </p>
           )}
@@ -216,36 +216,36 @@ export default function BodyDecodeIntakeResult({ result, onContinue }: {
       {/* 3. FAT MAP ZONE DEEP DIVE — only when a named zone exists */}
       {pattern && (
         <div style={{
-          background: '#FFFFFF', border: '1px solid #E5E5E5',
+          background: '#FFFFFF', border: '1px solid #E8EAEE',
           borderLeft: `3px solid ${pattern.color}`,
           borderRadius: '14px', padding: '24px 26px',
         }}>
           <p style={{ fontSize: '11px', fontWeight: 700, color: pattern.color, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '8px' }}>
             Inside your zone · {pattern.label}
           </p>
-          <p style={{ fontSize: '14px', color: '#3A3A3A', lineHeight: 1.7, margin: '0 0 24px' }}>
+          <p style={{ fontSize: '14px', color: '#43474F', lineHeight: 1.7, margin: '0 0 24px' }}>
             {pattern.desc}
           </p>
 
           {/* What this pattern means */}
-          <p style={{ fontSize: '11px', fontWeight: 700, color: '#1A1A1A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px' }}>
+          <p style={{ fontSize: '11px', fontWeight: 700, color: '#141821', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px' }}>
             What this pattern means
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '26px' }}>
             {pattern.whatItMeans.map((para, i) => (
-              <p key={i} style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.7, margin: 0 }}>
+              <p key={i} style={{ fontSize: '14px', color: '#43474F', lineHeight: 1.7, margin: 0 }}>
                 {para}
               </p>
             ))}
           </div>
 
           {/* Where this shows up */}
-          <p style={{ fontSize: '11px', fontWeight: 700, color: '#1A1A1A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px' }}>
+          <p style={{ fontSize: '11px', fontWeight: 700, color: '#141821', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px' }}>
             Where this shows up in your day
           </p>
           <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 26px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {pattern.whereItShows.map((bullet, i) => (
-              <li key={i} style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.65, paddingLeft: '20px', position: 'relative' }}>
+              <li key={i} style={{ fontSize: '14px', color: '#43474F', lineHeight: 1.65, paddingLeft: '20px', position: 'relative' }}>
                 <span style={{
                   position: 'absolute', left: 0, top: '8px',
                   width: '6px', height: '6px', borderRadius: '50%',
@@ -258,18 +258,18 @@ export default function BodyDecodeIntakeResult({ result, onContinue }: {
 
           {/* What this is NOT */}
           <div style={{
-            background: '#FAFAFA', border: '1px solid #E5E5E5',
+            background: '#FAFAFA', border: '1px solid #E8EAEE',
             borderRadius: '10px', padding: '16px 18px',
           }}>
-            <p style={{ fontSize: '11px', fontWeight: 700, color: '#6B6B6B', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px' }}>
+            <p style={{ fontSize: '11px', fontWeight: 700, color: '#666D7A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px' }}>
               What this is NOT
             </p>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {pattern.whatItIsNot.map((bullet, i) => (
-                <li key={i} style={{ fontSize: '13px', color: '#4A4A4A', lineHeight: 1.65, paddingLeft: '18px', position: 'relative' }}>
+                <li key={i} style={{ fontSize: '13px', color: '#43474F', lineHeight: 1.65, paddingLeft: '18px', position: 'relative' }}>
                   <span style={{
                     position: 'absolute', left: 0, top: 0,
-                    fontSize: '13px', fontWeight: 800, color: '#6B6B6B',
+                    fontSize: '13px', fontWeight: 800, color: '#666D7A',
                   }}>
                     ×
                   </span>
@@ -283,18 +283,18 @@ export default function BodyDecodeIntakeResult({ result, onContinue }: {
 
       {/* 4. PRIMARY ACTION — Continue Challenge (always the default) */}
       <div style={{
-        background: '#FFFFFF', border: '1px solid #E5E5E5', borderLeft: '3px solid #1B6DFC',
+        background: '#FFFFFF', border: '1px solid #E8EAEE', borderLeft: '3px solid #1B6DFC',
         borderRadius: '14px', padding: '24px 26px',
       }}>
         <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>
           Your next 14 days
         </p>
-        <h3 style={{ fontSize: '20px', fontWeight: 900, color: '#1A1A1A', letterSpacing: '-0.015em', marginBottom: '8px' }}>
+        <h3 style={{ fontSize: '20px', fontWeight: 900, color: '#141821', letterSpacing: '-0.015em', marginBottom: '8px' }}>
           {state === 'Depleted State' ? 'The Challenge is your fit.' :
            state === 'Transitioning State' ? 'The Challenge will work for you.' :
            'The Challenge will reset your baseline.'}
         </h3>
-        <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.7, marginBottom: '18px' }}>
+        <p style={{ fontSize: '14px', color: '#666D7A', lineHeight: 1.7, marginBottom: '18px' }}>
           {state === 'Depleted State'
             ? 'Your body is in protection mode and needs a structured reset before more input. The next 14 days are designed exactly for that.'
             : state === 'Transitioning State'
@@ -337,7 +337,7 @@ export default function BodyDecodeIntakeResult({ result, onContinue }: {
           is the path. Do not reintroduce. */}
 
       {/* Honest source note */}
-      <p style={{ fontSize: '11px', color: '#999999', textAlign: 'center', margin: 0, lineHeight: 1.6 }}>
+      <p style={{ fontSize: '11px', color: '#98A0AD', textAlign: 'center', margin: 0, lineHeight: 1.6 }}>
         This read is based on what you just told us. Your coach can refine it from here.
       </p>
     </div>

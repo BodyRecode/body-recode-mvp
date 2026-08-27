@@ -58,11 +58,11 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
 
   return (
     <div style={{
-      minHeight: '100vh', background: '#FFFFFF', color: '#1A1A1A',
+      minHeight: '100vh', background: '#FFFFFF', color: '#141821',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     }}>
       {/* Header */}
-      <div style={{ borderBottom: '1px solid #E5E5E5', padding: '18px 24px', background: '#FFFFFF' }}>
+      <div style={{ borderBottom: '1px solid #E8EAEE', padding: '18px 24px', background: '#FFFFFF' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block' }} />
           <Link href={`/challenge/${token}/day-7`} style={{ fontSize: '13px', color: '#1B6DFC', textDecoration: 'none', fontWeight: 500 }}>
@@ -85,7 +85,7 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
           </p>
           <h1 style={{
             fontSize: 'clamp(28px, 5vw, 40px)', fontWeight: 900,
-            letterSpacing: '-0.035em', margin: '8px 0 18px', color: '#1A1A1A', lineHeight: 1.1,
+            letterSpacing: '-0.035em', margin: '8px 0 18px', color: '#141821', lineHeight: 1.1,
           }}>
             {showingResult
               ? 'Your Body Decode Report'
@@ -95,12 +95,12 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
           </h1>
           <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '20px' }} />
           {!savedResult && (
-            <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: 0 }}>
+            <p style={{ fontSize: '16px', color: '#43474F', lineHeight: 1.7, margin: 0 }}>
               Ten taps, about a minute. Rate eight biological markers against how they felt on Day 1, then answer two signal questions. Nothing to type. Your full Body Decode Report is delivered on Day 14, identifying which of four patterns your body is currently working through.
             </p>
           )}
           {showingDay7View && (
-            <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: 0 }}>
+            <p style={{ fontSize: '16px', color: '#43474F', lineHeight: 1.7, margin: 0 }}>
               You finished the Check-In. Below is what your body has done across the first seven days, what those signals mean, and what to focus on through Week 2. Your full Body Decode Report arrives on Day 14.
             </p>
           )}
@@ -111,7 +111,7 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
       {locked && (
         <div style={{ maxWidth: '720px', margin: '0 auto', padding: '0 24px 80px' }}>
           <div style={{
-            background: '#F5F5F5', borderRadius: '14px', border: '1px dashed #D4D4D4',
+            background: '#F5F5F5', borderRadius: '14px', border: '1px dashed #CFD4DC',
             padding: '48px 24px', textAlign: 'center',
           }}>
             <div style={{
@@ -121,10 +121,10 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
             }}>
               <Lock size={24} strokeWidth={2.5} />
             </div>
-            <p style={{ fontSize: '16px', fontWeight: 700, color: '#4A4A4A', marginBottom: '6px' }}>
+            <p style={{ fontSize: '16px', fontWeight: 700, color: '#43474F', marginBottom: '6px' }}>
               Unlocks on Day 7
             </p>
-            <p style={{ fontSize: '14px', color: '#6B6B6B', margin: 0 }}>
+            <p style={{ fontSize: '14px', color: '#666D7A', margin: 0 }}>
               You are currently on Day {currentDay} of 14.
             </p>
           </div>
@@ -149,7 +149,7 @@ export default async function CheckInPage({ params }: { params: Promise<{ token:
         <Link href={`/challenge/${token}`} style={{
           display: 'inline-flex', alignItems: 'center', gap: '8px',
           padding: '14px 24px', borderRadius: '10px',
-          background: '#FFFFFF', border: '1px solid #E5E5E5', color: '#1A1A1A',
+          background: '#FFFFFF', border: '1px solid #E8EAEE', color: '#141821',
           fontSize: '14px', fontWeight: 700, textDecoration: 'none',
         }}>
           ← Back to your portal

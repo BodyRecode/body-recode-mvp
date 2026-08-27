@@ -6,7 +6,7 @@ import { Beef, Apple, Zap, Repeat } from 'lucide-react'
 import { PORTAL_ACCESS_STATUSES } from '@/lib/challenge-access'
 
 const card: React.CSSProperties = {
-  background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: '14px', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 22px',
+  background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '14px', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 22px',
 }
 
 const label: React.CSSProperties = {
@@ -15,7 +15,7 @@ const label: React.CSSProperties = {
 }
 
 const sectionTitle: React.CSSProperties = {
-  fontSize: '26px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.025em', margin: '6px 0 0', lineHeight: 1.2,
+  fontSize: '26px', fontWeight: 800, color: '#141821', letterSpacing: '-0.025em', margin: '6px 0 0', lineHeight: 1.2,
 }
 
 export default async function NutritionPage({ params }: { params: Promise<{ token: string }> }) {
@@ -31,11 +31,11 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
 
   return (
     <div style={{
-      minHeight: '100vh', background: '#F5F7FA', color: '#1A1A1A',
+      minHeight: '100vh', background: '#F5F7FA', color: '#141821',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     }}>
       {/* Header */}
-      <div style={{ borderBottom: '1px solid #ECEEF2', padding: '18px 24px', background: '#FFFFFF', position: 'sticky', top: 0, zIndex: 20 }}>
+      <div style={{ borderBottom: '1px solid #E8EAEE', padding: '18px 24px', background: '#FFFFFF', position: 'sticky', top: 0, zIndex: 20 }}>
         <div style={{ maxWidth: '720px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block' }} />
           <Link href={`/challenge/${token}`} style={{ fontSize: '13px', color: '#1B6DFC', textDecoration: 'none', fontWeight: 500 }}>
@@ -74,7 +74,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
                 background: '#1B6DFC', padding: '3px 10px', borderRadius: '99px', letterSpacing: '0.08em',
               }}>HABNS</span>
             </div>
-            <p style={{ fontSize: '15px', color: '#3A3A3A', lineHeight: 1.75, margin: 0 }}>
+            <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.75, margin: 0 }}>
               The Hybrid Animal-Based Nutrition System is built on the nutrient density of animal foods as its foundation, with fruit as the primary carbohydrate source and strategic clean carbohydrates placed only around training. It works with your hormones rather than against them.
             </p>
           </div>
@@ -89,7 +89,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
                 <span style={{ width: 32, height: 32, borderRadius: 9, background: 'rgba(27,109,252,0.10)', color: '#1B6DFC', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <p.icon size={16} strokeWidth={2.2} />
                 </span>
-                <p style={{ fontSize: '13px', color: '#6B6B6B', margin: 0, lineHeight: 1.55 }}>{p.text}</p>
+                <p style={{ fontSize: '13px', color: '#666D7A', margin: 0, lineHeight: 1.55 }}>{p.text}</p>
               </div>
             ))}
           </div>
@@ -99,7 +99,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
         <div style={{ marginBottom: '48px' }}>
           <p style={label}>Animal-Based Foundation Foods</p>
           <p style={sectionTitle}>What to eat</p>
-          <p style={{ fontSize: '14px', color: '#6B6B6B', marginTop: '8px', marginBottom: '16px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '14px', color: '#666D7A', marginTop: '8px', marginBottom: '16px', lineHeight: 1.6 }}>
             These foods form the base of every meal. They are nutrient-dense, digestion-friendly, and hormonally supportive.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -128,9 +128,9 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
               <div key={f.cat} style={{ ...card }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '6px' }}>
                   <p style={{ fontSize: '14px', fontWeight: 700, color: '#1B6DFC', margin: 0 }}>{f.cat}</p>
-                  <span style={{ fontSize: '11px', color: '#6B6B6B', background: '#E5E5E5', padding: '2px 8px', borderRadius: '99px', whiteSpace: 'nowrap' as const, marginLeft: '10px' }}>{f.note}</span>
+                  <span style={{ fontSize: '11px', color: '#666D7A', background: '#E8EAEE', padding: '2px 8px', borderRadius: '99px', whiteSpace: 'nowrap' as const, marginLeft: '10px' }}>{f.note}</span>
                 </div>
-                <p style={{ fontSize: '13px', color: '#999999', margin: 0, lineHeight: 1.55 }}>{f.items}</p>
+                <p style={{ fontSize: '13px', color: '#98A0AD', margin: 0, lineHeight: 1.55 }}>{f.items}</p>
               </div>
             ))}
           </div>
@@ -140,7 +140,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
         <div style={{ marginBottom: '48px' }}>
           <p style={label}>For These 14 Days</p>
           <p style={sectionTitle}>What to remove</p>
-          <p style={{ fontSize: '14px', color: '#6B6B6B', marginTop: '8px', marginBottom: '16px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '14px', color: '#666D7A', marginTop: '8px', marginBottom: '16px', lineHeight: 1.6 }}>
             These foods drive the inflammation, blood sugar swings, and hormonal disruption you are resetting from.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
@@ -158,7 +158,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
                 <svg style={{ flexShrink: 0, marginTop: '2px' }} width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#DC2626" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
-                <p style={{ fontSize: '13px', color: '#6B6B6B', margin: 0, lineHeight: 1.5 }}>{item}</p>
+                <p style={{ fontSize: '13px', color: '#666D7A', margin: 0, lineHeight: 1.5 }}>{item}</p>
               </div>
             ))}
           </div>
@@ -168,7 +168,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
         <div style={{ marginBottom: '48px' }}>
           <p style={label}>Carbohydrate Strategy</p>
           <p style={sectionTitle}>Timing is everything</p>
-          <p style={{ fontSize: '14px', color: '#6B6B6B', marginTop: '8px', marginBottom: '16px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '14px', color: '#666D7A', marginTop: '8px', marginBottom: '16px', lineHeight: 1.6 }}>
             Clean carbohydrates are only eaten in the window around your training sessions. Outside of training, fat is your fuel.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' }}>
@@ -178,22 +178,22 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
               { window: 'Post-training', rule: 'Protein + clean starchy carbs within 1 hour.' },
             ].map(w => (
               <div key={w.window} style={{ ...card, display: 'flex', gap: '0', alignItems: 'stretch', padding: 0, overflow: 'hidden' }}>
-                <div style={{ background: 'rgba(27,109,252,0.08)', borderRight: '1px solid #ECEEF2', padding: '14px 16px', minWidth: '120px', display: 'flex', alignItems: 'center' }}>
+                <div style={{ background: 'rgba(27,109,252,0.08)', borderRight: '1px solid #E8EAEE', padding: '14px 16px', minWidth: '120px', display: 'flex', alignItems: 'center' }}>
                   <p style={{ fontSize: '12px', fontWeight: 700, color: '#1B6DFC', margin: 0, textTransform: 'uppercase' as const, letterSpacing: '0.06em' }}>{w.window}</p>
                 </div>
                 <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center' }}>
-                  <p style={{ fontSize: '13px', color: '#3A3A3A', margin: 0, lineHeight: 1.5 }}>{w.rule}</p>
+                  <p style={{ fontSize: '13px', color: '#43474F', margin: 0, lineHeight: 1.5 }}>{w.rule}</p>
                 </div>
               </div>
             ))}
           </div>
           <div style={{ marginBottom: '12px' }}>
-            <p style={{ fontSize: '13px', fontWeight: 700, color: '#6B6B6B', textTransform: 'uppercase' as const, letterSpacing: '0.08em', marginBottom: '10px' }}>Post-training carb options</p>
+            <p style={{ fontSize: '13px', fontWeight: 700, color: '#666D7A', textTransform: 'uppercase' as const, letterSpacing: '0.08em', marginBottom: '10px' }}>Post-training carb options</p>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' as const }}>
               {['White rice', 'Potatoes', 'Sweet potato', 'Banana', 'Honey', 'Berries', 'Pineapple'].map(c => (
                 <span key={c} style={{
-                  fontSize: '13px', fontWeight: 600, color: '#1A1A1A',
-                  background: '#F5F5F5', border: '1px solid #ECEEF2',
+                  fontSize: '13px', fontWeight: 600, color: '#141821',
+                  background: '#F5F5F5', border: '1px solid #E8EAEE',
                   borderRadius: '6px', padding: '5px 12px',
                 }}>{c}</span>
               ))}
@@ -203,7 +203,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
             <p style={{ fontSize: '10px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.12em', textTransform: 'uppercase' as const, margin: '0 0 8px' }}>
               Why this works
             </p>
-            <p style={{ fontSize: '14px', color: '#1A1A1A', lineHeight: 1.7, margin: 0 }}>
+            <p style={{ fontSize: '14px', color: '#141821', lineHeight: 1.7, margin: 0 }}>
               This approach resets insulin sensitivity, reduces inflammation, and teaches your body to use stored fat for energy. After the challenge, carbohydrate flexibility increases inside the <strong style={{ fontWeight: 700 }}>6-Week Blueprint</strong>.
             </p>
           </div>
@@ -213,7 +213,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
         <div style={{ marginBottom: '48px' }}>
           <p style={label}>Daily Rhythm</p>
           <p style={sectionTitle}>How a full day looks</p>
-          <p style={{ fontSize: '14px', color: '#6B6B6B', marginTop: '8px', marginBottom: '24px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '14px', color: '#666D7A', marginTop: '8px', marginBottom: '24px', lineHeight: 1.6 }}>
             The peri-workout protocol travels with your training time. The rest of your day is anchor meals — protein and fat at the times that fit your life.
           </p>
 
@@ -222,7 +222,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
             <p style={{ fontSize: '10px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.12em', textTransform: 'uppercase' as const, margin: '0 0 14px' }}>
               The peri-workout protocol
             </p>
-            <p style={{ fontSize: '14px', color: '#4A4A4A', marginBottom: '14px', lineHeight: 1.6 }}>
+            <p style={{ fontSize: '14px', color: '#43474F', marginBottom: '14px', lineHeight: 1.6 }}>
               Four steps that always wrap around training — whenever training happens.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -233,7 +233,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
                 { num: '04', when: 'Post-training meal', timing: '1-2 hours after training', what: 'Protein + clean carbs. Beef + rice, chicken + potato, ground turkey + sweet potato.' },
               ].map(p => (
                 <div key={p.num} style={{
-                  background: '#FFFFFF', border: '1px solid #ECEEF2', borderLeft: '3px solid #1B6DFC',
+                  background: '#FFFFFF', border: '1px solid #E8EAEE', borderLeft: '3px solid #1B6DFC',
                   borderRadius: '12px', padding: '16px 20px', display: 'flex', gap: '14px', alignItems: 'flex-start',
                   boxShadow: '0 1px 3px rgba(27, 109, 252, 0.05)',
                 }}>
@@ -245,10 +245,10 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
                   }}>{p.num}</span>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', flexWrap: 'wrap' as const, marginBottom: '4px' }}>
-                      <p style={{ fontSize: '16px', fontWeight: 800, color: '#1A1A1A', margin: 0, letterSpacing: '-0.01em' }}>{p.when}</p>
-                      <span style={{ fontSize: '12px', color: '#6B6B6B', fontWeight: 600 }}>{p.timing}</span>
+                      <p style={{ fontSize: '16px', fontWeight: 800, color: '#141821', margin: 0, letterSpacing: '-0.01em' }}>{p.when}</p>
+                      <span style={{ fontSize: '12px', color: '#666D7A', fontWeight: 600 }}>{p.timing}</span>
                     </div>
-                    <p style={{ fontSize: '13px', color: '#4A4A4A', margin: 0, lineHeight: 1.65 }}>{p.what}</p>
+                    <p style={{ fontSize: '13px', color: '#43474F', margin: 0, lineHeight: 1.65 }}>{p.what}</p>
                   </div>
                 </div>
               ))}
@@ -257,10 +257,10 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
 
           {/* Block 2: Daily Anchors */}
           <div style={{ marginBottom: '36px' }}>
-            <p style={{ fontSize: '10px', fontWeight: 700, color: '#6B6B6B', letterSpacing: '0.12em', textTransform: 'uppercase' as const, margin: '0 0 14px' }}>
+            <p style={{ fontSize: '10px', fontWeight: 700, color: '#666D7A', letterSpacing: '0.12em', textTransform: 'uppercase' as const, margin: '0 0 14px' }}>
               Your daily anchors
             </p>
-            <p style={{ fontSize: '14px', color: '#4A4A4A', marginBottom: '14px', lineHeight: 1.6 }}>
+            <p style={{ fontSize: '14px', color: '#43474F', marginBottom: '14px', lineHeight: 1.6 }}>
               The rest of the day. Protein and fat at the times that fit your schedule. Wherever your training sits, the protocol slots in around these.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -272,10 +272,10 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
               ].map(m => (
                 <div key={m.time} style={{ ...card, padding: '14px 18px' }}>
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', flexWrap: 'wrap' as const, marginBottom: '3px' }}>
-                    <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', margin: 0 }}>{m.time}</p>
+                    <p style={{ fontSize: '14px', fontWeight: 700, color: '#141821', margin: 0 }}>{m.time}</p>
                     <span style={{ fontSize: '13px', color: '#1056D6', fontWeight: 600 }}>{m.what}</span>
                   </div>
-                  <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0, lineHeight: 1.55 }}>{m.note}</p>
+                  <p style={{ fontSize: '12px', color: '#666D7A', margin: 0, lineHeight: 1.55 }}>{m.note}</p>
                 </div>
               ))}
             </div>
@@ -286,7 +286,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
             <p style={{ fontSize: '10px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.12em', textTransform: 'uppercase' as const, margin: '0 0 14px' }}>
               How it slots in
             </p>
-            <p style={{ fontSize: '14px', color: '#4A4A4A', marginBottom: '20px', lineHeight: 1.6 }}>
+            <p style={{ fontSize: '14px', color: '#43474F', marginBottom: '20px', lineHeight: 1.6 }}>
               Three example days. The same four-step protocol moves to wrap your training. Find the one that fits your schedule.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -332,12 +332,12 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
                 },
               ].map(day => (
                 <div key={day.label} style={{
-                  background: '#FFFFFF', border: '1px solid #ECEEF2',
+                  background: '#FFFFFF', border: '1px solid #E8EAEE',
                   borderRadius: '14px', padding: '20px 22px',
                 }}>
                   <div style={{ marginBottom: '14px' }}>
-                    <p style={{ fontSize: '15px', fontWeight: 800, color: '#1A1A1A', margin: '0 0 2px', letterSpacing: '-0.01em' }}>{day.label}</p>
-                    <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0 }}>{day.sub}</p>
+                    <p style={{ fontSize: '15px', fontWeight: 800, color: '#141821', margin: '0 0 2px', letterSpacing: '-0.01em' }}>{day.label}</p>
+                    <p style={{ fontSize: '12px', color: '#666D7A', margin: 0 }}>{day.sub}</p>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                     {day.timeline.map((row) => {
@@ -347,18 +347,18 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
                           display: 'flex', gap: '12px', alignItems: 'flex-start',
                           padding: '10px 12px', borderRadius: '8px',
                           background: isPeri ? 'rgba(27,109,252,0.06)' : '#F7F7F7',
-                          border: isPeri ? '1px solid rgba(27,109,252,0.18)' : '1px solid #ECEEF2',
+                          border: isPeri ? '1px solid rgba(27,109,252,0.18)' : '1px solid #E8EAEE',
                         }}>
                           <span style={{
                             fontSize: '11px', fontWeight: 700,
-                            color: isPeri ? '#1056D6' : '#6B6B6B',
+                            color: isPeri ? '#1056D6' : '#666D7A',
                             minWidth: '64px', flexShrink: 0,
                             fontFamily: '"Courier New",Consolas,monospace',
                             paddingTop: '1px',
                           }}>{row.time}</span>
                           <p style={{
                             fontSize: '13px',
-                            color: isPeri ? '#1A1A1A' : '#3A3A3A',
+                            color: isPeri ? '#141821' : '#43474F',
                             fontWeight: isPeri ? 600 : 500,
                             margin: 0, lineHeight: 1.5, flex: 1,
                           }}>{row.text}</p>
@@ -373,12 +373,12 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
             {/* Rest day reminder */}
             <div style={{
               ...card, marginTop: '16px',
-              background: '#F7F7F7', borderLeft: '3px solid #6B6B6B',
+              background: '#F7F7F7', borderLeft: '3px solid #666D7A',
             }}>
-              <p style={{ fontSize: '10px', fontWeight: 700, color: '#6B6B6B', letterSpacing: '0.12em', textTransform: 'uppercase' as const, margin: '0 0 8px' }}>
+              <p style={{ fontSize: '10px', fontWeight: 700, color: '#666D7A', letterSpacing: '0.12em', textTransform: 'uppercase' as const, margin: '0 0 8px' }}>
                 Rest days
               </p>
-              <p style={{ fontSize: '14px', color: '#1A1A1A', lineHeight: 1.7, margin: 0 }}>
+              <p style={{ fontSize: '14px', color: '#141821', lineHeight: 1.7, margin: 0 }}>
                 Drop the peri-workout protocol entirely. Anchor meals only — protein, fat, and fruit. No starchy carbs.
               </p>
             </div>
@@ -390,7 +390,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
         <div style={{ marginBottom: '48px' }}>
           <p style={label}>Meal Builder</p>
           <p style={sectionTitle}>Build every meal the same way</p>
-          <p style={{ fontSize: '14px', color: '#6B6B6B', marginTop: '8px', marginBottom: '16px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '14px', color: '#666D7A', marginTop: '8px', marginBottom: '16px', lineHeight: 1.6 }}>
             Every meal follows the same structure. Start with protein, add fat, add fruit, then carbs only if it is a training day.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '16px' }}>
@@ -402,9 +402,9 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
             ].map(m => (
               <div key={m.num} style={{ ...card }}>
                 <p style={{ fontSize: '24px', fontWeight: 900, color: '#1B6DFC', margin: '0 0 2px', letterSpacing: '-0.02em' }}>{m.num}</p>
-                <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', margin: '0 0 2px' }}>{m.title}</p>
-                <p style={{ fontSize: '11px', color: '#6B6B6B', textTransform: 'uppercase' as const, letterSpacing: '0.06em', margin: '0 0 8px' }}>{m.sub}</p>
-                <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0, lineHeight: 1.55 }}>{m.items}</p>
+                <p style={{ fontSize: '14px', fontWeight: 700, color: '#141821', margin: '0 0 2px' }}>{m.title}</p>
+                <p style={{ fontSize: '11px', color: '#666D7A', textTransform: 'uppercase' as const, letterSpacing: '0.06em', margin: '0 0 8px' }}>{m.sub}</p>
+                <p style={{ fontSize: '12px', color: '#666D7A', margin: 0, lineHeight: 1.55 }}>{m.items}</p>
               </div>
             ))}
           </div>
@@ -448,14 +448,14 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
             ].map(e => (
               <div key={e.meal} style={card}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                  <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', margin: 0 }}>{e.meal}</p>
-                  <span style={{ fontSize: '11px', color: '#6B6B6B', background: '#E5E5E5', padding: '2px 8px', borderRadius: '99px' }}>{e.tag}</span>
+                  <p style={{ fontSize: '14px', fontWeight: 700, color: '#141821', margin: 0 }}>{e.meal}</p>
+                  <span style={{ fontSize: '11px', color: '#666D7A', background: '#E8EAEE', padding: '2px 8px', borderRadius: '99px' }}>{e.tag}</span>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   {e.items.map(item => (
                     <div key={item} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
                       <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#1B6DFC', flexShrink: 0, marginTop: '7px' }} />
-                      <p style={{ fontSize: '13px', color: '#6B6B6B', margin: 0, lineHeight: 1.55 }}>{item}</p>
+                      <p style={{ fontSize: '13px', color: '#666D7A', margin: 0, lineHeight: 1.55 }}>{item}</p>
                     </div>
                   ))}
                 </div>
@@ -468,7 +468,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
         <div style={{ marginBottom: '48px' }}>
           <p style={label}>Hydration and Electrolytes</p>
           <p style={sectionTitle}>Salt and water are your base</p>
-          <p style={{ fontSize: '14px', color: '#6B6B6B', marginTop: '8px', marginBottom: '16px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '14px', color: '#666D7A', marginTop: '8px', marginBottom: '16px', lineHeight: 1.6 }}>
             Most people are chronically under-hydrated and low on electrolytes. Fixing this alone improves energy, focus, and training performance.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
@@ -484,7 +484,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
                 ].map(i => (
                   <div key={i} style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
                     <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#1B6DFC', flexShrink: 0, marginTop: '6px' }} />
-                    <p style={{ fontSize: '13px', color: '#999999', margin: 0, lineHeight: 1.45 }}>{i}</p>
+                    <p style={{ fontSize: '13px', color: '#98A0AD', margin: 0, lineHeight: 1.45 }}>{i}</p>
                   </div>
                 ))}
               </div>
@@ -501,7 +501,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
                 ].map(i => (
                   <div key={i} style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
                     <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#1B6DFC', flexShrink: 0, marginTop: '6px' }} />
-                    <p style={{ fontSize: '13px', color: '#999999', margin: 0, lineHeight: 1.45 }}>{i}</p>
+                    <p style={{ fontSize: '13px', color: '#98A0AD', margin: 0, lineHeight: 1.45 }}>{i}</p>
                   </div>
                 ))}
               </div>
@@ -513,7 +513,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
         <div style={{ marginBottom: '48px' }}>
           <p style={label}>Supplements</p>
           <p style={sectionTitle}>What supports the system</p>
-          <p style={{ fontSize: '14px', color: '#6B6B6B', marginTop: '8px', marginBottom: '16px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '14px', color: '#666D7A', marginTop: '8px', marginBottom: '16px', lineHeight: 1.6 }}>
             All optional. Supplements support consistency - they do not replace food quality.
           </p>
           <div style={card}>
@@ -529,12 +529,12 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
                   display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
                   paddingTop: i === 0 ? '0' : '14px',
                   paddingBottom: '14px',
-                  borderBottom: i < 4 ? '1px solid #ECEEF2' : 'none',
+                  borderBottom: i < 4 ? '1px solid #E8EAEE' : 'none',
                   opacity: s.comingSoon ? 0.75 : 1,
                 }}>
                   <div style={{ flex: 1 }}>
-                    <p style={{ fontSize: '14px', fontWeight: 600, color: '#1A1A1A', margin: '0 0 3px' }}>{s.name}</p>
-                    <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0, lineHeight: 1.4 }}>{s.note}</p>
+                    <p style={{ fontSize: '14px', fontWeight: 600, color: '#141821', margin: '0 0 3px' }}>{s.name}</p>
+                    <p style={{ fontSize: '12px', color: '#666D7A', margin: 0, lineHeight: 1.4 }}>{s.note}</p>
                   </div>
                   {s.comingSoon ? (
                     <span style={{ fontSize: '11px', fontWeight: 700, color: '#B7791F', background: 'rgba(217,119,6,0.08)', border: '1px solid rgba(217,119,6,0.25)', padding: '3px 10px', borderRadius: '99px', marginLeft: '16px', whiteSpace: 'nowrap' as const, letterSpacing: '0.04em', textTransform: 'uppercase' as const }}>Coming soon</span>
@@ -551,7 +551,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
         <div>
           <p style={label}>Shopping List</p>
           <p style={sectionTitle}>Everything you need</p>
-          <p style={{ fontSize: '14px', color: '#6B6B6B', marginTop: '8px', marginBottom: '16px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '14px', color: '#666D7A', marginTop: '8px', marginBottom: '16px', lineHeight: 1.6 }}>
             Keep it simple. Stock these and you will not need to think about food choices during the challenge.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -571,7 +571,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
                   }} />
                   <div>
                     <p style={{ fontSize: '13px', fontWeight: 700, color: '#1B6DFC', margin: '0 0 4px' }}>{s.cat}</p>
-                    <p style={{ fontSize: '13px', color: '#6B6B6B', margin: 0, lineHeight: 1.6 }}>{s.items}</p>
+                    <p style={{ fontSize: '13px', color: '#666D7A', margin: 0, lineHeight: 1.6 }}>{s.items}</p>
                   </div>
                 </div>
               </div>

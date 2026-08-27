@@ -95,35 +95,35 @@ const SESSION_C: Exercise[] = [
 ]
 
 const card: React.CSSProperties = {
-  background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: '14px', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '18px 20px',
+  background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '14px', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '18px 20px',
 }
 const label: React.CSSProperties = {
   fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '4px',
 }
 const sectionTitle: React.CSSProperties = {
-  fontSize: '26px', fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.025em', margin: '6px 0 0', lineHeight: 1.2,
+  fontSize: '26px', fontWeight: 800, color: '#141821', letterSpacing: '-0.025em', margin: '6px 0 0', lineHeight: 1.2,
 }
 
 function ExerciseCard({ ex, index, mode }: { ex: Exercise; index: number; mode: 'gym' | 'home' }) {
   const name = mode === 'home' ? ex.home.name : ex.name
   const cue = mode === 'home' ? ex.home.cue : ex.cue
   return (
-    <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderLeft: '3px solid #1B6DFC', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', borderRadius: '14px', padding: '20px 22px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+    <div style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderLeft: '3px solid #1B6DFC', boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', borderRadius: '14px', padding: '20px 22px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
       <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
         <span style={{ fontSize: '12px', fontWeight: 800, color: '#1B6DFC', background: 'rgba(27,109,252,0.08)', padding: '4px 10px', borderRadius: '6px', fontFamily: '"Courier New",Consolas,monospace', letterSpacing: '0.04em', minWidth: '34px', textAlign: 'center', flexShrink: 0, marginTop: '2px' }}>
           {String(index + 1).padStart(2, '0')}
         </span>
-        <p style={{ fontSize: '19px', fontWeight: 800, color: '#1A1A1A', margin: 0, lineHeight: 1.25, letterSpacing: '-0.015em', flex: 1 }}>{name}</p>
+        <p style={{ fontSize: '19px', fontWeight: 800, color: '#141821', margin: 0, lineHeight: 1.25, letterSpacing: '-0.015em', flex: 1 }}>{name}</p>
       </div>
       <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', paddingLeft: '48px' }}>
-        <span style={{ fontSize: '12px', fontWeight: 700, color: '#3A3A3A', background: '#F5F5F5', border: '1px solid #ECEEF2', borderRadius: '6px', padding: '5px 11px', letterSpacing: '0.01em' }}>{ex.sets}</span>
+        <span style={{ fontSize: '12px', fontWeight: 700, color: '#43474F', background: '#F5F5F5', border: '1px solid #E8EAEE', borderRadius: '6px', padding: '5px 11px', letterSpacing: '0.01em' }}>{ex.sets}</span>
         <span style={{ fontSize: '12px', fontWeight: 700, color: '#1056D6', background: 'rgba(27,109,252,0.10)', border: '1px solid rgba(27,109,252,0.25)', borderRadius: '6px', padding: '5px 11px', letterSpacing: '0.01em' }}>{ex.rir}</span>
         {mode === 'home' && (
           <span style={{ fontSize: '12px', fontWeight: 700, color: '#0E7A4F', background: 'rgba(16,160,100,0.10)', border: '1px solid rgba(16,160,100,0.25)', borderRadius: '6px', padding: '5px 11px', letterSpacing: '0.01em' }}>At home</span>
         )}
       </div>
-      <div style={{ paddingLeft: '48px', borderTop: '1px solid #ECEEF2', paddingTop: '12px' }}>
-        <p style={{ fontSize: '13px', color: '#4A4A4A', margin: 0, lineHeight: 1.7 }}>{cue}</p>
+      <div style={{ paddingLeft: '48px', borderTop: '1px solid #E8EAEE', paddingTop: '12px' }}>
+        <p style={{ fontSize: '13px', color: '#43474F', margin: 0, lineHeight: 1.7 }}>{cue}</p>
       </div>
     </div>
   )
@@ -162,13 +162,13 @@ export default function TrainingPlan({ initialMode = 'gym' }: { initialMode?: 'g
       <div style={{ marginBottom: '48px' }}>
         <p style={label}>Choose your setup</p>
         <p style={sectionTitle}>Gym or at home</p>
-        <p style={{ fontSize: '14px', color: '#4A4A4A', margin: '8px 0 16px', lineHeight: 1.6 }}>
+        <p style={{ fontSize: '14px', color: '#43474F', margin: '8px 0 16px', lineHeight: 1.6 }}>
           Same plan, two ways to run it. The at-home version uses a loaded backpack, a resistance band, and furniture. Switch any time.
         </p>
         <ModeToggle mode={mode} setMode={setMode} />
         {mode === 'home' && (
           <div style={{ ...card, marginTop: '12px', background: 'rgba(16,160,100,0.06)', border: '1px solid rgba(16,160,100,0.2)' }}>
-            <p style={{ fontSize: '14px', color: '#1A1A1A', margin: 0, lineHeight: 1.65 }}>
+            <p style={{ fontSize: '14px', color: '#141821', margin: 0, lineHeight: 1.65 }}>
               <span style={{ color: '#0E7A4F', fontWeight: 700 }}>Home kit:</span> a sturdy backpack you can load with books or water bottles, one resistance band, and a solid chair, table, or stairs. That is enough for all three sessions.
             </p>
           </div>
@@ -187,8 +187,8 @@ export default function TrainingPlan({ initialMode = 'gym' }: { initialMode?: 'g
             { heading: 'Walk on rest days', body: '30 to 60 minutes of low-intensity walking on every non-training day. This is not optional. Walking is active recovery and directly supports cortisol regulation.' },
           ].map(p => (
             <div key={p.heading} style={{ ...card }}>
-              <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', margin: '0 0 5px' }}>{p.heading}</p>
-              <p style={{ fontSize: '13px', color: '#4A4A4A', margin: 0, lineHeight: 1.65 }}>{p.body}</p>
+              <p style={{ fontSize: '14px', fontWeight: 700, color: '#141821', margin: '0 0 5px' }}>{p.heading}</p>
+              <p style={{ fontSize: '13px', color: '#43474F', margin: 0, lineHeight: 1.65 }}>{p.body}</p>
             </div>
           ))}
         </div>
@@ -198,7 +198,7 @@ export default function TrainingPlan({ initialMode = 'gym' }: { initialMode?: 'g
       <div style={{ marginBottom: '48px' }}>
         <p style={label}>Every session</p>
         <p style={sectionTitle}>Warm-up sequence</p>
-        <p style={{ fontSize: '14px', color: '#6B6B6B', marginTop: '8px', marginBottom: '16px', lineHeight: 1.6 }}>
+        <p style={{ fontSize: '14px', color: '#666D7A', marginTop: '8px', marginBottom: '16px', lineHeight: 1.6 }}>
           Do this before every session. 5 to 8 minutes. It prepares the joints, nervous system, and movement patterns.
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -212,7 +212,7 @@ export default function TrainingPlan({ initialMode = 'gym' }: { initialMode?: 'g
           ].map((step, i) => (
             <div key={step} style={{ ...card, padding: '12px 16px', display: 'flex', gap: '12px', alignItems: 'center' }}>
               <span style={{ fontSize: '11px', fontWeight: 800, color: '#1B6DFC', minWidth: '18px' }}>{String(i + 1).padStart(2, '0')}</span>
-              <p style={{ fontSize: '13px', color: '#6B6B6B', margin: 0 }}>{step}</p>
+              <p style={{ fontSize: '13px', color: '#666D7A', margin: 0 }}>{step}</p>
             </div>
           ))}
         </div>
@@ -222,7 +222,7 @@ export default function TrainingPlan({ initialMode = 'gym' }: { initialMode?: 'g
       <div style={{ marginBottom: '48px' }}>
         <p style={label}>The Schedule</p>
         <p style={sectionTitle}>14-day overview</p>
-        <p style={{ fontSize: '14px', color: '#4A4A4A', marginTop: '8px', marginBottom: '16px', lineHeight: 1.6 }}>
+        <p style={{ fontSize: '14px', color: '#43474F', marginTop: '8px', marginBottom: '16px', lineHeight: 1.6 }}>
           Day 1 is your orientation day — no training. Your first session is Day 2. Week one has 4 sessions, week two has 3. Start any day of the week — the structure works around your life.
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -241,14 +241,14 @@ export default function TrainingPlan({ initialMode = 'gym' }: { initialMode?: 'g
             ] },
           ].map(w => (
             <div key={w.week}>
-              <p style={{ fontSize: '13px', fontWeight: 700, color: '#1A1A1A', marginBottom: '10px' }}>{w.week}</p>
+              <p style={{ fontSize: '13px', fontWeight: 700, color: '#141821', marginBottom: '10px' }}>{w.week}</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 {w.days.map(d => (
                   <div key={d.day} style={{ ...card, display: 'flex', alignItems: 'center', padding: '12px 16px', gap: '0' }}>
-                    <span style={{ fontSize: '12px', color: '#6B6B6B', fontWeight: 700, minWidth: '64px' }}>{d.day}</span>
+                    <span style={{ fontSize: '12px', color: '#666D7A', fontWeight: 700, minWidth: '64px' }}>{d.day}</span>
                     <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                       <span style={{ fontSize: '13px', color: '#1B6DFC', fontWeight: 700 }}>{d.session}</span>
-                      <span style={{ fontSize: '12px', color: '#6B6B6B' }}>{d.type}</span>
+                      <span style={{ fontSize: '12px', color: '#666D7A' }}>{d.type}</span>
                     </div>
                   </div>
                 ))}
@@ -257,7 +257,7 @@ export default function TrainingPlan({ initialMode = 'gym' }: { initialMode?: 'g
           ))}
         </div>
         <div style={{ ...card, marginTop: '12px', background: 'rgba(27,109,252,0.07)', border: '1px solid rgba(27,109,252,0.2)' }}>
-          <p style={{ fontSize: '14px', color: '#1A1A1A', margin: 0, lineHeight: 1.65 }}>
+          <p style={{ fontSize: '14px', color: '#141821', margin: 0, lineHeight: 1.65 }}>
             <span style={{ color: '#1B6DFC', fontWeight: 700 }}>All other days:</span> Walk 30 to 60 minutes. Light, low intensity. This is active recovery, not optional rest.
           </p>
         </div>
@@ -269,7 +269,7 @@ export default function TrainingPlan({ initialMode = 'gym' }: { initialMode?: 'g
           <div style={{ marginBottom: '16px' }}>
             <p style={label}>Session {s.key}</p>
             <p style={sectionTitle}>{s.title}</p>
-            <p style={{ fontSize: '14px', color: '#6B6B6B', marginTop: '8px', lineHeight: 1.6 }}>{s.blurb}</p>
+            <p style={{ fontSize: '14px', color: '#666D7A', marginTop: '8px', lineHeight: 1.6 }}>{s.blurb}</p>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {s.list.map((ex, i) => <ExerciseCard key={ex.name} ex={ex} index={i} mode={mode} />)}
@@ -280,7 +280,7 @@ export default function TrainingPlan({ initialMode = 'gym' }: { initialMode?: 'g
       {/* RIR Explainer */}
       <div style={{ ...card }}>
         <p style={{ fontSize: '13px', fontWeight: 700, color: '#1B6DFC', marginBottom: '8px' }}>What does RIR mean?</p>
-        <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.7, margin: '0 0 12px' }}>
+        <p style={{ fontSize: '14px', color: '#666D7A', lineHeight: 1.7, margin: '0 0 12px' }}>
           RIR stands for Reps In Reserve. It tells you how close to failure to go on each set.
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -291,11 +291,11 @@ export default function TrainingPlan({ initialMode = 'gym' }: { initialMode?: 'g
           ].map(r => (
             <div key={r.rir} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
               <span style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', background: 'rgba(27,109,252,0.1)', padding: '2px 8px', borderRadius: '4px', whiteSpace: 'nowrap', flexShrink: 0, marginTop: '1px' }}>{r.rir}</span>
-              <p style={{ fontSize: '13px', color: '#6B6B6B', margin: 0, lineHeight: 1.55 }}>{r.desc}</p>
+              <p style={{ fontSize: '13px', color: '#666D7A', margin: 0, lineHeight: 1.55 }}>{r.desc}</p>
             </div>
           ))}
         </div>
-        <p style={{ fontSize: '13px', color: '#6B6B6B', margin: '12px 0 0', lineHeight: 1.6 }}>
+        <p style={{ fontSize: '13px', color: '#666D7A', margin: '12px 0 0', lineHeight: 1.6 }}>
           Staying within these ranges keeps intensity productive and recovery manageable across the full 14 days.
         </p>
       </div>

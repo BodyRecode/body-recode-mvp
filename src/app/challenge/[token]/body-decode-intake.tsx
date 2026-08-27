@@ -145,7 +145,7 @@ function PillOption({ selected, label, onClick, compact }: {
       style={{
         display: 'flex', alignItems: 'center', gap: '12px',
         background: selected ? 'rgba(27,109,252,0.08)' : '#FFFFFF',
-        border: `1.5px solid ${selected ? '#1B6DFC' : '#E5E5E5'}`,
+        border: `1.5px solid ${selected ? '#1B6DFC' : '#E8EAEE'}`,
         borderRadius: '12px', padding: compact ? '12px 14px' : '14px 16px',
         cursor: 'pointer', textAlign: 'left', width: '100%',
         transition: 'all 0.15s ease', fontFamily: 'inherit',
@@ -154,12 +154,12 @@ function PillOption({ selected, label, onClick, compact }: {
       <div style={{
         width: '20px', height: '20px', borderRadius: '50%', flexShrink: 0,
         background: selected ? '#1B6DFC' : '#FFFFFF',
-        border: `1.5px solid ${selected ? '#1B6DFC' : '#D4D4D4'}`,
+        border: `1.5px solid ${selected ? '#1B6DFC' : '#CFD4DC'}`,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
         {selected && <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#FFFFFF' }} />}
       </div>
-      <span style={{ fontSize: '14px', color: selected ? '#1056D6' : '#3A3A3A', fontWeight: selected ? 600 : 500, lineHeight: 1.45 }}>
+      <span style={{ fontSize: '14px', color: selected ? '#1056D6' : '#43474F', fontWeight: selected ? 600 : 500, lineHeight: 1.45 }}>
         {label}
       </span>
     </button>
@@ -180,7 +180,7 @@ function ScoreSection({ section, selected, onSelect }: {
         <span style={{ fontSize: '10px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
           {section.key}
         </span>
-        <h2 style={{ fontSize: '18px', fontWeight: 800, letterSpacing: '-0.01em', color: '#1A1A1A', margin: 0 }}>
+        <h2 style={{ fontSize: '18px', fontWeight: 800, letterSpacing: '-0.01em', color: '#141821', margin: 0 }}>
           {section.title}
         </h2>
         {selected && (
@@ -201,7 +201,7 @@ function ScoreSection({ section, selected, onSelect }: {
               style={{
                 display: 'flex', alignItems: 'flex-start', gap: '14px',
                 background: isSelected ? `rgba(${accentRgba},0.10)` : '#FFFFFF',
-                border: `1.5px solid ${isSelected ? scoreColor : '#E5E5E5'}`,
+                border: `1.5px solid ${isSelected ? scoreColor : '#E8EAEE'}`,
                 borderRadius: '12px', padding: '14px 16px',
                 cursor: 'pointer', textAlign: 'left', width: '100%',
                 transition: 'all 0.15s ease', fontFamily: 'inherit',
@@ -210,15 +210,15 @@ function ScoreSection({ section, selected, onSelect }: {
               <div style={{
                 width: '28px', height: '28px', borderRadius: '50%', flexShrink: 0,
                 background: isSelected ? `rgba(${accentRgba},0.18)` : '#F5F5F5',
-                border: `1.5px solid ${isSelected ? scoreColor : '#D4D4D4'}`,
+                border: `1.5px solid ${isSelected ? scoreColor : '#CFD4DC'}`,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '12px', fontWeight: 800, color: isSelected ? scoreColor : '#6B6B6B',
+                fontSize: '12px', fontWeight: 800, color: isSelected ? scoreColor : '#666D7A',
               }}>
                 {row.score}
               </div>
               <p style={{
                 fontSize: '14px',
-                color: isSelected ? scoreColor : '#3A3A3A',
+                color: isSelected ? scoreColor : '#43474F',
                 fontWeight: isSelected ? 600 : 500,
                 lineHeight: 1.6, flex: 1, margin: 0,
               }}>
@@ -366,7 +366,7 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
               signup. */}
           <h1 style={{
             fontSize: 'clamp(32px, 6vw, 46px)', fontWeight: 900,
-            letterSpacing: '-0.035em', lineHeight: 1.08, margin: '0 0 22px', color: '#1A1A1A',
+            letterSpacing: '-0.035em', lineHeight: 1.08, margin: '0 0 22px', color: '#141821',
           }}>
             Before we start,
             <br />
@@ -377,7 +377,7 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
           <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '24px' }} />
 
           {/* Lead paragraph */}
-          <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 28px' }}>
+          <p style={{ fontSize: '16px', color: '#43474F', lineHeight: 1.7, margin: '0 0 28px' }}>
             {returning
               ? `We already have most of this from your scorecard, so we are not asking any of it again. Just the ${totalQuestions === 1 ? 'one thing' : `${totalQuestions} things`} we still need.`
               : `Two minutes. The same questions every ${brand().name} client answers at the start. This is what tells us what your body is actually doing right now, and everything you see after this is built on it.`}
@@ -391,12 +391,12 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
               { value: 'Now', label: 'Get your report' },
             ].map(stat => (
               <div key={stat.label} style={{
-                background: '#FFFFFF', border: '1px solid #E5E5E5',
+                background: '#FFFFFF', border: '1px solid #E8EAEE',
                 borderRadius: '12px', padding: '14px',
                 textAlign: 'center',
               }}>
                 <p style={{ fontSize: '20px', fontWeight: 900, color: '#1B6DFC', margin: '0 0 4px', letterSpacing: '-0.02em' }}>{stat.value}</p>
-                <p style={{ fontSize: '10px', color: '#6B6B6B', margin: 0, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{stat.label}</p>
+                <p style={{ fontSize: '10px', color: '#666D7A', margin: 0, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{stat.label}</p>
               </div>
             ))}
           </div>
@@ -407,12 +407,12 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
       {/* PROGRESS */}
       <div style={{ marginBottom: '32px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-          <span style={{ fontSize: '12px', color: '#4A4A4A', fontWeight: 600 }}>
+          <span style={{ fontSize: '12px', color: '#43474F', fontWeight: 600 }}>
             {answeredQuestions} of {totalQuestions} answered
           </span>
           <span style={{ fontSize: '12px', color: '#1056D6', fontWeight: 700 }}>{progressPct}%</span>
         </div>
-        <div style={{ height: '4px', background: '#E5E5E5', borderRadius: '99px', overflow: 'hidden' }}>
+        <div style={{ height: '4px', background: '#E8EAEE', borderRadius: '99px', overflow: 'hidden' }}>
           <div style={{ height: '100%', background: '#1B6DFC', borderRadius: '99px', width: `${progressPct}%`, transition: 'width 0.3s ease' }} />
         </div>
       </div>
@@ -448,7 +448,7 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
 
           {!known.sex && (
           <div>
-            <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', marginBottom: '10px' }}>Biological sex</p>
+            <p style={{ fontSize: '14px', fontWeight: 700, color: '#141821', marginBottom: '10px' }}>Biological sex</p>
             <div style={{ display: 'flex', gap: '8px' }}>
               {SEX_OPTIONS.map(o => (
                 <div key={o.value} style={{ flex: 1 }}>
@@ -461,7 +461,7 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
 
           {!known.age && (
           <div>
-            <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', marginBottom: '10px' }}>Age</p>
+            <p style={{ fontSize: '14px', fontWeight: 700, color: '#141821', marginBottom: '10px' }}>Age</p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
               {AGE_OPTIONS.map(o => (
                 <PillOption key={o.value} selected={age === o.value} label={o.label} onClick={() => setAge(o.value)} compact />
@@ -472,7 +472,7 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
 
           {!known.storage && (
           <div>
-            <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', marginBottom: '10px' }}>Where do you tend to store fat?</p>
+            <p style={{ fontSize: '14px', fontWeight: 700, color: '#141821', marginBottom: '10px' }}>Where do you tend to store fat?</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {STORAGE_OPTIONS.map(o => (
                 <PillOption key={o.value} selected={storage === o.value} label={o.label} onClick={() => setStorage(o.value)} compact />
@@ -485,7 +485,7 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
             <div>
               {!known.direction && (
                 <>
-                  <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', marginBottom: '10px' }}>Has where it sits changed over the last few years?</p>
+                  <p style={{ fontSize: '14px', fontWeight: 700, color: '#141821', marginBottom: '10px' }}>Has where it sits changed over the last few years?</p>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '18px' }}>
                     {DIRECTION_OPTIONS.map(o => (
                       <PillOption key={o.value} selected={direction === o.value} label={o.label} onClick={() => setDirection(o.value)} compact />
@@ -495,7 +495,7 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
               )}
               {!known.cycle && (
                 <>
-                  <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', marginBottom: '10px' }}>Cycle status</p>
+                  <p style={{ fontSize: '14px', fontWeight: 700, color: '#141821', marginBottom: '10px' }}>Cycle status</p>
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
                     {CYCLE_OPTIONS.map(o => (
                       <PillOption key={o.value} selected={cycle === o.value} label={o.label} onClick={() => setCycle(o.value)} compact />
@@ -520,7 +520,7 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
 
           {!known.approach && (
           <div>
-            <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', marginBottom: '10px' }}>
+            <p style={{ fontSize: '14px', fontWeight: 700, color: '#141821', marginBottom: '10px' }}>
               When something stops working, what do you usually do?
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -535,7 +535,7 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
               all-or-nothing bypass did to 9 of 29 enrolments. */}
           {!known.ascensionIntent && (
           <div>
-            <p style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', marginBottom: '10px' }}>
+            <p style={{ fontSize: '14px', fontWeight: 700, color: '#141821', marginBottom: '10px' }}>
               If your report points at something deeper, where would you want to go next?
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -558,8 +558,8 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
         disabled={!complete || submitting}
         style={{
           width: '100%', padding: '18px', borderRadius: '12px', border: 'none',
-          background: complete ? '#1B6DFC' : '#E5E5E5',
-          color: complete ? '#FFFFFF' : '#6B6B6B',
+          background: complete ? '#1B6DFC' : '#E8EAEE',
+          color: complete ? '#FFFFFF' : '#666D7A',
           fontSize: '16px', fontWeight: 800, letterSpacing: '-0.01em',
           cursor: complete && !submitting ? 'pointer' : 'not-allowed',
           transition: 'all 0.2s ease',

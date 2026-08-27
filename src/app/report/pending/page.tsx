@@ -29,13 +29,13 @@ export default function ReportPendingPage() {
   const c = coach()
   return (
     <div style={{
-      minHeight: '100vh', background: '#FFFFFF', color: '#1A1A1A',
+      minHeight: '100vh', background: '#FFFFFF', color: '#141821',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     }}>
       <PurchaseTracker value={37} contentName="scorecard_report" />
 
       {/* Header */}
-      <div style={{ borderBottom: '1px solid #E5E5E5', padding: '18px 24px', background: '#FFFFFF' }}>
+      <div style={{ borderBottom: '1px solid #E8EAEE', padding: '18px 24px', background: '#FFFFFF' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
           <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block' }} />
         </div>
@@ -70,14 +70,14 @@ export default function ReportPendingPage() {
           </div>
           <h1 style={{
             fontSize: 'clamp(30px, 5.5vw, 44px)', fontWeight: 900,
-            letterSpacing: '-0.035em', margin: '8px 0 18px', color: '#1A1A1A', lineHeight: 1.05,
+            letterSpacing: '-0.035em', margin: '8px 0 18px', color: '#141821', lineHeight: 1.05,
           }}>
             Your Body Decode Report
             <br />
             <span style={{ color: '#1B6DFC' }}>is on its way.</span>
           </h1>
           <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '24px' }} />
-          <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
+          <p style={{ fontSize: '17px', color: '#43474F', lineHeight: 1.75, margin: 0 }}>
             Watch your inbox. The report writes itself against your scorecard result, then lands at the email you paid with. Usually within a minute.
           </p>
         </div>
@@ -86,7 +86,7 @@ export default function ReportPendingPage() {
       {/* What happens next - 3 step timeline */}
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '24px 24px 0' }}>
         <div style={{
-          background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px',
+          background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '14px',
           padding: '28px 28px 22px', boxShadow: '0 1px 4px rgba(27, 109, 252, 0.04)',
         }}>
           <p style={{ fontSize: '11px', fontWeight: 700, color: '#1B6DFC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '14px' }}>
@@ -100,7 +100,7 @@ export default function ReportPendingPage() {
               return (
                 <div key={step.title} style={{
                   background: '#FAFAFA', border: '1px solid #EEEEEE',
-                  borderLeft: `3px solid ${isDone ? '#1B6DFC' : isActive ? '#1056D6' : '#D4D4D4'}`,
+                  borderLeft: `3px solid ${isDone ? '#1B6DFC' : isActive ? '#1056D6' : '#CFD4DC'}`,
                   borderRadius: '10px', padding: '14px 16px',
                   display: 'flex', gap: '14px', alignItems: 'flex-start',
                 }}>
@@ -110,16 +110,16 @@ export default function ReportPendingPage() {
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     flexShrink: 0,
                   }}>
-                    <Icon size={16} style={{ color: isDone ? '#1B6DFC' : isActive ? '#1056D6' : '#6B6B6B' }} />
+                    <Icon size={16} style={{ color: isDone ? '#1B6DFC' : isActive ? '#1056D6' : '#666D7A' }} />
                   </div>
                   <div style={{ flex: 1 }}>
-                    <p style={{ fontSize: '11px', fontWeight: 800, color: isDone ? '#1056D6' : isActive ? '#1056D6' : '#6B6B6B', letterSpacing: '0.08em', textTransform: 'uppercase', margin: '0 0 4px' }}>
+                    <p style={{ fontSize: '11px', fontWeight: 800, color: isDone ? '#1056D6' : isActive ? '#1056D6' : '#666D7A', letterSpacing: '0.08em', textTransform: 'uppercase', margin: '0 0 4px' }}>
                       {step.eyebrow}
                     </p>
-                    <p style={{ fontSize: '15px', fontWeight: 700, color: '#1A1A1A', margin: '0 0 4px', letterSpacing: '-0.01em' }}>
+                    <p style={{ fontSize: '15px', fontWeight: 700, color: '#141821', margin: '0 0 4px', letterSpacing: '-0.01em' }}>
                       {step.title}
                     </p>
-                    <p style={{ fontSize: '13px', color: '#4A4A4A', lineHeight: 1.65, margin: 0 }}>
+                    <p style={{ fontSize: '13px', color: '#43474F', lineHeight: 1.65, margin: 0 }}>
                       {step.body}
                     </p>
                   </div>
@@ -138,7 +138,7 @@ export default function ReportPendingPage() {
       {/* What to do while you wait */}
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '32px 24px 0' }}>
         <div style={{
-          background: '#1A1A1A', borderRadius: '14px', padding: '28px',
+          background: '#141821', borderRadius: '14px', padding: '28px',
           border: '1px solid rgba(27, 109, 252, 0.3)',
         }}>
           <p style={{ fontSize: '11px', fontWeight: 700, color: '#B5CFFC', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '10px' }}>
@@ -179,14 +179,14 @@ export default function ReportPendingPage() {
             style={{
               width: '44px', height: '44px', borderRadius: '50%',
               objectFit: 'cover', objectPosition: 'top center',
-              border: '1px solid #E5E5E5', flexShrink: 0,
+              border: '1px solid #E8EAEE', flexShrink: 0,
             }}
           />
           <div style={{ flex: 1, minWidth: '200px' }}>
-            <p style={{ fontSize: '13px', fontWeight: 800, color: '#1A1A1A', margin: 0, lineHeight: 1.3 }}>
+            <p style={{ fontSize: '13px', fontWeight: 800, color: '#141821', margin: 0, lineHeight: 1.3 }}>
               Written by {c.fullName}
             </p>
-            <p style={{ fontSize: '11px', color: '#6B6B6B', margin: 0, lineHeight: 1.45 }}>
+            <p style={{ fontSize: '11px', color: '#666D7A', margin: 0, lineHeight: 1.45 }}>
               {c.credentials}
             </p>
           </div>
@@ -195,7 +195,7 @@ export default function ReportPendingPage() {
 
       {/* Footer · help link */}
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '32px 24px 80px' }}>
-        <p style={{ fontSize: '13px', color: '#6B6B6B', textAlign: 'center', lineHeight: 1.65, margin: 0 }}>
+        <p style={{ fontSize: '13px', color: '#666D7A', textAlign: 'center', lineHeight: 1.65, margin: 0 }}>
           Still nothing in 10 minutes?{' '}
           <a href={`mailto:${coach().email}?subject=Body%20Decode%20Report%20not%20received`} style={{ color: '#1B6DFC', textDecoration: 'underline', fontWeight: 700 }}>
             Email {coach().email}

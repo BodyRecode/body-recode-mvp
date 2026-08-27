@@ -28,6 +28,17 @@ ROOTS = [
     # The weekly check-in form lives outside /portal but is the same client
     # doing the same thing, and was missed by the first pass because of it.
     'src/app/checkin',
+    # The funnel portals and the forms that feed them. Same person, same
+    # palette. Their own design language - tinted grounds, dark heroes, wider
+    # type - is untouched here, exactly as the client portal's was.
+    'src/app/challenge',
+    'src/app/decode',
+    'src/app/blueprint',
+    'src/app/membership',
+    'src/app/intake',
+    'src/app/intake-supplement',
+    'src/app/report',
+    'src/app/f',
 ]
 
 SUBS = [

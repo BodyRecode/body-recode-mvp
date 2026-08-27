@@ -135,10 +135,10 @@ export default function DecodeLandingPage() {
         <div style={{ marginBottom: '20px' }}>
           <Heading muted="Not a plan, a programme or a challenge.">We call it a read.</Heading>
         </div>
-        <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: '0 0 16px' }}>
+        <p style={{ fontSize: '17px', color: '#43474F', lineHeight: 1.75, margin: '0 0 16px' }}>
           A read is an assessment of what your body is doing right now, done before anybody writes you anything. You answer questions about your sleep, your stress load, your energy, and how your body responds to training and to fat loss. Those five get scored out of three, and the pattern across them points at which of four common causes is behind it.
         </p>
-        <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: '0 0 16px' }}>
+        <p style={{ fontSize: '17px', color: '#43474F', lineHeight: 1.75, margin: '0 0 16px' }}>
           There is nothing to do during the five days. No training plan, no diet, nothing to comply with and no health form to fill in. You are not being asked to change anything yet, because working out what is actually wrong comes first.
         </p>
         <Callout tone="solid">If you have ever been handed a plan and found out months later it was aimed at the wrong thing, this is the step that was missing.</Callout>
@@ -190,13 +190,13 @@ export default function DecodeLandingPage() {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '26px', alignItems: 'center' }}>
           <div>
-            <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: '0 0 16px' }}>
+            <p style={{ fontSize: '17px', color: '#43474F', lineHeight: 1.75, margin: '0 0 16px' }}>
               About six in ten of the women we assess are perimenopausal or past it. So hormones really are part of this, and nobody is arguing otherwise.
             </p>
-            <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: '0 0 16px' }}>
+            <p style={{ fontSize: '17px', color: '#43474F', lineHeight: 1.75, margin: '0 0 16px' }}>
               Here is what happens next though. <strong style={{ color: INK }}>The moment hormones get the blame, everything else stops being checked.</strong> Not the load you are carrying. Not whether you are eating enough to support it. Not how long any of it has been going on.
             </p>
-            <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
+            <p style={{ fontSize: '17px', color: '#43474F', lineHeight: 1.75, margin: 0 }}>
               That is not being dismissed. It is being explained away, which is worse, because it sounds like an answer and it ends the conversation.
             </p>
           </div>
@@ -246,7 +246,7 @@ export default function DecodeLandingPage() {
           {/* The artifact floating over the photograph. Proof, not a claim, and
               the thing the eye stops on. Straight out of the ad creative system. */}
           <div style={{
-            background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '0 14px 14px 0',
+            background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '0 14px 14px 0',
             padding: '30px 30px 26px', boxShadow: '0 18px 44px rgba(16,24,40,0.10)',
           }}>
             <p style={{ fontSize: '10.5px', fontWeight: 800, color: BLUE, letterSpacing: '0.15em', textTransform: 'uppercase', margin: '0 0 4px' }}>
@@ -255,7 +255,7 @@ export default function DecodeLandingPage() {
             <p style={{ fontSize: '20px', fontWeight: 800, letterSpacing: '-0.02em', margin: '0 0 3px', color: INK }}>
               Average score, by section.
             </p>
-            <p style={{ fontSize: '13.5px', color: '#6B6B6B', margin: '0 0 22px' }}>
+            <p style={{ fontSize: '13.5px', color: '#666D7A', margin: '0 0 22px' }}>
               Out of three. Worst two in red.
             </p>
 
@@ -271,19 +271,19 @@ export default function DecodeLandingPage() {
                   <div style={{ height: '9px', background: '#ECEDEF', borderRadius: '99px', overflow: 'hidden' }}>
                     <div style={{ width: `${(s.score / 3) * 100}%`, height: '100%', background: s.low ? RED : BLUE, borderRadius: '99px' }} />
                   </div>
-                  {s.note && <p style={{ fontSize: '12.5px', color: '#6B6B6B', margin: '5px 0 0', lineHeight: 1.5 }}>{s.note}</p>}
+                  {s.note && <p style={{ fontSize: '12.5px', color: '#666D7A', margin: '5px 0 0', lineHeight: 1.5 }}>{s.note}</p>}
                 </div>
               ))}
             </div>
 
-            <div style={{ borderTop: '1px solid #E5E5E5', margin: '22px 0 0', paddingTop: '16px' }}>
-              <p style={{ fontSize: '13.5px', color: '#6B6B6B', margin: '0 0 3px' }}>Even the best of the five only reaches 2.05.</p>
+            <div style={{ borderTop: '1px solid #E8EAEE', margin: '22px 0 0', paddingTop: '16px' }}>
+              <p style={{ fontSize: '13.5px', color: '#666D7A', margin: '0 0 3px' }}>Even the best of the five only reaches 2.05.</p>
               <p style={{ fontSize: '14.5px', fontWeight: 800, color: INK, margin: 0 }}>Nothing here is working. Training is just closest.</p>
             </div>
           </div>
         </div>
 
-        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, margin: '30px 0 0' }}>
+        <p style={{ fontSize: '16px', color: '#43474F', lineHeight: 1.75, margin: '30px 0 0' }}>
           A 2 out of 3 on our scale means some progress, but inconsistent, and hard to build on. So nothing here is working. Training is just the closest to working, <strong style={{ color: INK }}>and it is the only one of the three anybody ever writes a plan for.</strong> Your training score is really a score of your effort, and the effort was never the problem. The two that decide whether your body can absorb any of it are the two nobody measured.
         </p>
       </Section>
@@ -305,7 +305,7 @@ export default function DecodeLandingPage() {
       <Section pad="72px 24px">
         <Eyebrow>What you actually get</Eyebrow>
         <div style={{ marginBottom: '10px' }}><Heading>A written report, in five parts.</Heading></div>
-        <p style={{ fontSize: '16px', color: '#6B6B6B', lineHeight: 1.7, margin: '10px 0 28px' }}>
+        <p style={{ fontSize: '16px', color: '#666D7A', lineHeight: 1.7, margin: '10px 0 28px' }}>
           You get all five parts as soon as you finish the questions. Nothing is held back and nothing unlocks later, and it stays yours whatever you decide to do next.
         </p>
         <FeatureList items={READ_PARTS} />
@@ -314,7 +314,7 @@ export default function DecodeLandingPage() {
       <Section bg="grey" pad="72px 24px">
         <Eyebrow>The five videos</Eyebrow>
         <Heading>Then someone walks you through it.</Heading>
-        <p style={{ fontSize: '16px', color: '#6B6B6B', lineHeight: 1.7, margin: '10px 0 32px' }}>
+        <p style={{ fontSize: '16px', color: '#666D7A', lineHeight: 1.7, margin: '10px 0 32px' }}>
           One short video a day, each covering one part of your report. Not because it unlocks, but because a report this long does not get absorbed in one sitting.
         </p>
         <StepList items={DAYS} />
@@ -366,7 +366,7 @@ export default function DecodeLandingPage() {
           }}
         />
 
-        <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: '0 0 22px' }}>
+        <p style={{ fontSize: '17px', color: '#43474F', lineHeight: 1.75, margin: '0 0 22px' }}>
           Almost everyone who does this is a woman, and most have been doing the right things for a while and getting less back for it. Of the women we have assessed:
         </p>
 
@@ -378,10 +378,10 @@ export default function DecodeLandingPage() {
           ]} />
         </div>
 
-        <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: '0 0 14px' }}>
+        <p style={{ fontSize: '17px', color: '#43474F', lineHeight: 1.75, margin: '0 0 14px' }}>
           The read works out which one you are <strong style={{ color: INK }}>before anyone writes you a plan</strong>, so you do not need to know before you start. That is the part everybody skips.
         </p>
-        <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
+        <p style={{ fontSize: '17px', color: '#43474F', lineHeight: 1.75, margin: 0 }}>
           If you are training well and progressing, this is not for you and it will not tell you much.
         </p>
       </Section>

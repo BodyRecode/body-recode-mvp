@@ -1132,7 +1132,7 @@ export default function MembershipPortalClient({
   const thisWeekCheckin = checkins.find(c => c.week_number === checkinWeek)
 
   const card = (children: React.ReactNode, style?: React.CSSProperties) => (
-    <div style={{ background: '#FFFFFF', border: '1px solid #ECEEF2', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 22px', marginBottom: 16, ...style }}>
+    <div style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: 14, boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 8px 20px rgba(16,24,40,0.05)', padding: '20px 22px', marginBottom: 16, ...style }}>
       {children}
     </div>
   )
@@ -1152,7 +1152,7 @@ export default function MembershipPortalClient({
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#F5F7FA', color: '#1A1A1A', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', position: 'relative' }}>
+    <div style={{ minHeight: '100vh', background: '#F5F7FA', color: '#141821', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', position: 'relative' }}>
       <style>{`
         .bp-lift { transition: transform .15s ease, box-shadow .15s ease; }
         .bp-lift:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(16,24,40,0.08), 0 20px 38px rgba(16,24,40,0.13) !important; }
@@ -1160,18 +1160,18 @@ export default function MembershipPortalClient({
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 360, background: `radial-gradient(1100px 300px at 50% -60px, ${config.colour}12, transparent 70%)`, pointerEvents: 'none' }} />
 
       {/* Header */}
-      <div style={{ background: '#FFFFFF', borderBottom: '1px solid #ECEEF2', padding: '16px 0', position: 'sticky', top: 0, zIndex: 20 }}>
+      <div style={{ background: '#FFFFFF', borderBottom: '1px solid #E8EAEE', padding: '16px 0', position: 'sticky', top: 0, zIndex: 20 }}>
         <div style={{ maxWidth: 720, margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <img src={logoUrl()} width={140} alt={brand().name} />
           <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A' }}>{enrollment.first_name}</div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: '#141821' }}>{enrollment.first_name}</div>
             <div style={{ fontSize: 12, color: config.colour, fontWeight: 600 }}>Membership - Block {block}</div>
           </div>
         </div>
       </div>
 
       {/* Nav */}
-      <div style={{ background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(6px)', borderBottom: '1px solid #ECEEF2', overflowX: 'auto', position: 'sticky', top: 57, zIndex: 20 }}>
+      <div style={{ background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(6px)', borderBottom: '1px solid #E8EAEE', overflowX: 'auto', position: 'sticky', top: 57, zIndex: 20 }}>
         <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', gap: 6, padding: '10px 24px' }}>
           {NAV_ITEMS.map(item => (
             <button
@@ -1179,7 +1179,7 @@ export default function MembershipPortalClient({
               onClick={() => setActiveTab(item.id)}
               style={{
                 padding: '9px 16px', fontSize: 13, fontWeight: 700,
-                color: activeTab === item.id ? '#FFFFFF' : '#4A4A4A',
+                color: activeTab === item.id ? '#FFFFFF' : '#43474F',
                 background: activeTab === item.id ? config.colour : 'transparent', border: 'none', cursor: 'pointer',
                 borderRadius: 99, whiteSpace: 'nowrap',
                 boxShadow: activeTab === item.id ? `0 2px 8px ${config.colour}55` : 'none', transition: 'all 0.15s',
@@ -1226,15 +1226,15 @@ export default function MembershipPortalClient({
               <div style={{ display: 'flex', gap: 16, marginBottom: 12 }}>
                 <div style={{ flex: 1, background: '#FFFFFF', borderRadius: 8, padding: '12px 16px', textAlign: 'center' }}>
                   <div style={{ fontSize: 24, fontWeight: 800, color: config.colour }}>Block {block}</div>
-                  <div style={{ fontSize: 11, color: '#4A4A4A', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Consolidate</div>
+                  <div style={{ fontSize: 11, color: '#43474F', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Consolidate</div>
                 </div>
                 <div style={{ flex: 1, background: '#FFFFFF', borderRadius: 8, padding: '12px 16px', textAlign: 'center' }}>
-                  <div style={{ fontSize: 24, fontWeight: 800, color: '#1A1A1A' }}>Week {currentWeek}</div>
-                  <div style={{ fontSize: 11, color: '#4A4A4A', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>of 6</div>
+                  <div style={{ fontSize: 24, fontWeight: 800, color: '#141821' }}>Week {currentWeek}</div>
+                  <div style={{ fontSize: 11, color: '#43474F', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>of 6</div>
                 </div>
                 <div style={{ flex: 1, background: '#FFFFFF', borderRadius: 8, padding: '12px 16px', textAlign: 'center' }}>
-                  <div style={{ fontSize: 24, fontWeight: 800, color: '#1A1A1A' }}>{currentPhase.name}</div>
-                  <div style={{ fontSize: 11, color: '#4A4A4A', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Phase</div>
+                  <div style={{ fontSize: 24, fontWeight: 800, color: '#141821' }}>{currentPhase.name}</div>
+                  <div style={{ fontSize: 11, color: '#43474F', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Phase</div>
                 </div>
               </div>
             </>)}
@@ -1263,8 +1263,8 @@ export default function MembershipPortalClient({
                       style={{
                         display: 'block', textDecoration: 'none', color: 'inherit',
                         background: '#FFFFFF',
-                        border: '1px solid #E5E5E5',
-                        borderLeft: i === 0 ? '4px solid #1B6DFC' : '1px solid #E5E5E5',
+                        border: '1px solid #E8EAEE',
+                        borderLeft: i === 0 ? '4px solid #1B6DFC' : '1px solid #E8EAEE',
                         borderRadius: 12, overflow: 'hidden',
                       }}
                     >
@@ -1284,12 +1284,12 @@ export default function MembershipPortalClient({
                             {b.kind === 'bolt_on_ai' ? 'AI Deep-Dive' : b.kind === 'protocol' ? 'Protocol Pack' : 'Bolt-on'}  ·  ${b.price.toFixed(0)}
                           </div>
                           <div style={{
-                            fontSize: 16, fontWeight: 800, color: '#1A1A1A', letterSpacing: '-0.01em',
+                            fontSize: 16, fontWeight: 800, color: '#141821', letterSpacing: '-0.01em',
                             lineHeight: 1.25, marginBottom: 4,
                           }}>
                             {b.name}
                           </div>
-                          <div style={{ fontSize: 13, color: '#4A4A4A', lineHeight: 1.5 }}>
+                          <div style={{ fontSize: 13, color: '#43474F', lineHeight: 1.5 }}>
                             {b.tagline}
                           </div>
                         </div>
@@ -1308,11 +1308,11 @@ export default function MembershipPortalClient({
               <div style={{ display: 'flex', alignItems: 'center', gap: 11, marginBottom: 16 }}>
                 <img src={coach().photoUrl} width={38} height={38} style={{ borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} alt={coach().firstName} />
                 <div>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A' }}>{coach().firstName}</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: '#141821' }}>{coach().firstName}</div>
                   <div style={{ fontSize: 10, fontWeight: 700, color: config.colour, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Week {currentWeek} coaching note</div>
                 </div>
               </div>
-              <p style={{ fontSize: 14, color: '#4A4A4A', lineHeight: 1.8, margin: 0 }}>{coachingNote}</p>
+              <p style={{ fontSize: 14, color: '#43474F', lineHeight: 1.8, margin: 0 }}>{coachingNote}</p>
             </>)}
 
             {/* Phase structure */}
@@ -1324,14 +1324,14 @@ export default function MembershipPortalClient({
                   return (
                     <div key={phase.name} style={{
                       background: '#FFFFFF', borderRadius: 8, padding: '12px 14px',
-                      border: `1px solid ${isActive ? config.colour + '50' : '#E5E5E5'}`,
+                      border: `1px solid ${isActive ? config.colour + '50' : '#E8EAEE'}`,
                       opacity: phase.number > currentPhase.number ? 0.4 : 1,
                     }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-                        <span style={{ fontSize: 14, fontWeight: 700, color: isActive ? config.colour : '#999999' }}>{phase.name}</span>
-                        <span style={{ fontSize: 12, color: '#4A4A4A' }}>Weeks {phase.weeks}</span>
+                        <span style={{ fontSize: 14, fontWeight: 700, color: isActive ? config.colour : '#98A0AD' }}>{phase.name}</span>
+                        <span style={{ fontSize: 12, color: '#43474F' }}>Weeks {phase.weeks}</span>
                       </div>
-                      <p style={{ fontSize: 13, color: '#6B6B6B', margin: 0, lineHeight: 1.6 }}>{phase.description}</p>
+                      <p style={{ fontSize: 13, color: '#666D7A', margin: 0, lineHeight: 1.6 }}>{phase.description}</p>
                     </div>
                   )
                 })}
@@ -1348,7 +1348,7 @@ export default function MembershipPortalClient({
               {([{ id: 'gym', label: 'Gym' }, { id: 'home', label: 'Home DBs' }, { id: 'bodyweight', label: 'No Equipment' }] as const).map(t => (
                 <button key={t.id} onClick={() => setEquipment(t.id)} style={{
                   padding: '8px 16px', fontSize: 13, fontWeight: 600,
-                  color: equipment === t.id ? '#FFFFFF' : '#4A4A4A',
+                  color: equipment === t.id ? '#FFFFFF' : '#43474F',
                   background: equipment === t.id ? config.colour : 'transparent',
                   border: 'none', borderRadius: 6, cursor: 'pointer',
                 }}>
@@ -1362,13 +1362,13 @@ export default function MembershipPortalClient({
               {label('Block A Progression', LineChart)}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {trainingData.progression.map((p, i) => (
-                  <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', paddingBottom: 8, borderBottom: i < trainingData.progression.length - 1 ? '1px solid #E5E5E5' : 'none' }}>
+                  <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', paddingBottom: 8, borderBottom: i < trainingData.progression.length - 1 ? '1px solid #E8EAEE' : 'none' }}>
                     <div style={{ minWidth: 80 }}>
-                      <div style={{ fontSize: 12, fontWeight: 700, color: '#1A1A1A' }}>{p.phase}</div>
-                      <div style={{ fontSize: 11, color: '#4A4A4A' }}>Weeks {p.weeks}</div>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: '#141821' }}>{p.phase}</div>
+                      <div style={{ fontSize: 11, color: '#43474F' }}>Weeks {p.weeks}</div>
                     </div>
                     <div style={{ minWidth: 60, fontSize: 13, fontWeight: 700, color: config.colour }}>{p.rir}</div>
-                    <div style={{ fontSize: 13, color: '#6B6B6B', lineHeight: 1.5 }}>{p.notes}</div>
+                    <div style={{ fontSize: 13, color: '#666D7A', lineHeight: 1.5 }}>{p.notes}</div>
                   </div>
                 ))}
               </div>
@@ -1381,7 +1381,7 @@ export default function MembershipPortalClient({
                 {trainingData.rules.map((rule, i) => (
                   <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                     <div style={{ width: 6, height: 6, borderRadius: '50%', background: config.colour, marginTop: 6, flexShrink: 0 }} />
-                    <span style={{ fontSize: 13, color: '#4A4A4A', lineHeight: 1.65 }}>{rule}</span>
+                    <span style={{ fontSize: 13, color: '#43474F', lineHeight: 1.65 }}>{rule}</span>
                   </div>
                 ))}
               </div>
@@ -1393,26 +1393,26 @@ export default function MembershipPortalClient({
                 <button
                   onClick={() => setExpandedSession(expandedSession === session.id ? null : session.id)}
                   style={{
-                    width: '100%', background: '#FFFFFF', border: `1px solid ${expandedSession === session.id ? config.colour + '40' : '#E5E5E5'}`,
+                    width: '100%', background: '#FFFFFF', border: `1px solid ${expandedSession === session.id ? config.colour + '40' : '#E8EAEE'}`,
                     borderRadius: 12, padding: '16px 20px', cursor: 'pointer',
                     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                   }}
                 >
                   <div style={{ textAlign: 'left' }}>
-                    <div style={{ fontSize: 15, fontWeight: 700, color: '#1A1A1A' }}>{session.name}</div>
-                    <div style={{ fontSize: 12, color: '#4A4A4A', marginTop: 2 }}>{session.subtitle}</div>
+                    <div style={{ fontSize: 15, fontWeight: 700, color: '#141821' }}>{session.name}</div>
+                    <div style={{ fontSize: 12, color: '#43474F', marginTop: 2 }}>{session.subtitle}</div>
                   </div>
                   <div style={{ fontSize: 18, color: config.colour }}>{expandedSession === session.id ? '−' : '+'}</div>
                 </button>
                 {expandedSession === session.id && (
-                  <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderTop: 'none', borderRadius: '0 0 12px 12px', padding: '0 20px 16px' }}>
+                  <div style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderTop: 'none', borderRadius: '0 0 12px 12px', padding: '0 20px 16px' }}>
                     {session[equipment].map((ex, i) => (
-                      <div key={i} style={{ padding: '14px 0', borderBottom: i < session[equipment].length - 1 ? '1px solid #E5E5E5' : 'none' }}>
+                      <div key={i} style={{ padding: '14px 0', borderBottom: i < session[equipment].length - 1 ? '1px solid #E8EAEE' : 'none' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 4 }}>
-                          <span style={{ fontSize: 14, fontWeight: 600, color: '#1A1A1A' }}>{ex.name}</span>
+                          <span style={{ fontSize: 14, fontWeight: 600, color: '#141821' }}>{ex.name}</span>
                           <span style={{ fontSize: 13, color: config.colour, fontWeight: 700, whiteSpace: 'nowrap', marginLeft: 12 }}>{ex.sets} x {ex.reps}</span>
                         </div>
-                        <p style={{ fontSize: 12, color: '#6B6B6B', margin: 0, lineHeight: 1.6 }}>{ex.notes}</p>
+                        <p style={{ fontSize: 12, color: '#666D7A', margin: 0, lineHeight: 1.6 }}>{ex.notes}</p>
                       </div>
                     ))}
                   </div>
@@ -1427,22 +1427,22 @@ export default function MembershipPortalClient({
           <div>
             {card(<>
               {label('Block A Nutrition Strategy', Salad)}
-              <p style={{ fontSize: 14, color: '#4A4A4A', lineHeight: 1.8, margin: 0 }}>{nutritionData.headline}</p>
+              <p style={{ fontSize: 14, color: '#43474F', lineHeight: 1.8, margin: 0 }}>{nutritionData.headline}</p>
             </>)}
 
-            <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '16px 20px', marginBottom: 16 }}>
-              <div style={{ fontSize: 12, fontWeight: 700, color: '#4A4A4A', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 8 }}>Foundation</div>
-              <p style={{ fontSize: 13, color: '#6B6B6B', margin: 0, lineHeight: 1.7 }}>The HABNS foundation from your Blueprint is unchanged. Protein, fat, fruit, post-training starchy carbs. Remove list still applies. Block A adds precision on top - it does not replace the foundation.</p>
+            <div style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: 12, padding: '16px 20px', marginBottom: 16 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: '#43474F', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 8 }}>Foundation</div>
+              <p style={{ fontSize: 13, color: '#666D7A', margin: 0, lineHeight: 1.7 }}>The HABNS foundation from your Blueprint is unchanged. Protein, fat, fruit, post-training starchy carbs. Remove list still applies. Block A adds precision on top - it does not replace the foundation.</p>
             </div>
 
             {nutritionData.newStrategy.map((s, i) => (
-              <div key={i} style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '20px 22px', marginBottom: 16 }}>
+              <div key={i} style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: 12, padding: '20px 22px', marginBottom: 16 }}>
                 {label(`New in Block A: ${s.title}`)}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                   {s.points.map((point, j) => (
                     <div key={j} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                       <div style={{ width: 6, height: 6, borderRadius: '50%', background: config.colour, marginTop: 6, flexShrink: 0 }} />
-                      <span style={{ fontSize: 13, color: '#4A4A4A', lineHeight: 1.65 }}>{point}</span>
+                      <span style={{ fontSize: 13, color: '#43474F', lineHeight: 1.65 }}>{point}</span>
                     </div>
                   ))}
                 </div>
@@ -1455,10 +1455,10 @@ export default function MembershipPortalClient({
                 {nutritionData.phaseNotes.map((note, i) => (
                   <div key={i} style={{ background: '#FFFFFF', borderRadius: 8, padding: '12px 14px' }}>
                     <div style={{ display: 'flex', gap: 8, marginBottom: 6 }}>
-                      <span style={{ fontSize: 13, fontWeight: 700, color: '#1A1A1A' }}>{note.phase}</span>
-                      <span style={{ fontSize: 12, color: '#4A4A4A' }}>Weeks {note.weeks}</span>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: '#141821' }}>{note.phase}</span>
+                      <span style={{ fontSize: 12, color: '#43474F' }}>Weeks {note.weeks}</span>
                     </div>
-                    <p style={{ fontSize: 13, color: '#6B6B6B', margin: 0, lineHeight: 1.6 }}>{note.note}</p>
+                    <p style={{ fontSize: 13, color: '#666D7A', margin: 0, lineHeight: 1.6 }}>{note.note}</p>
                   </div>
                 ))}
               </div>
@@ -1471,7 +1471,7 @@ export default function MembershipPortalClient({
           <div>
             {card(<>
               {label('Pattern Resource Library', BookOpen)}
-              <p style={{ fontSize: 14, color: '#4A4A4A', margin: 0, lineHeight: 1.7 }}>Deep-dive guides for the {config.label} pattern. These go beyond the programme - they explain the biology, the protocols, and how to apply them.</p>
+              <p style={{ fontSize: 14, color: '#43474F', margin: 0, lineHeight: 1.7 }}>Deep-dive guides for the {config.label} pattern. These go beyond the programme - they explain the biology, the protocols, and how to apply them.</p>
             </>)}
 
             {resources.map((resource, i) => (
@@ -1480,18 +1480,18 @@ export default function MembershipPortalClient({
                   onClick={() => setExpandedResource(expandedResource === resource.title ? null : resource.title)}
                   style={{
                     width: '100%', background: '#FFFFFF',
-                    border: `1px solid ${expandedResource === resource.title ? config.colour + '40' : '#E5E5E5'}`,
+                    border: `1px solid ${expandedResource === resource.title ? config.colour + '40' : '#E8EAEE'}`,
                     borderRadius: expandedResource === resource.title ? '12px 12px 0 0' : 12,
                     padding: '16px 20px', cursor: 'pointer',
                     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                   }}
                 >
-                  <span style={{ fontSize: 14, fontWeight: 700, color: '#1A1A1A', textAlign: 'left' }}>{resource.title}</span>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: '#141821', textAlign: 'left' }}>{resource.title}</span>
                   <span style={{ fontSize: 18, color: config.colour, flexShrink: 0, marginLeft: 12 }}>{expandedResource === resource.title ? '−' : '+'}</span>
                 </button>
                 {expandedResource === resource.title && (
-                  <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderTop: 'none', borderRadius: '0 0 12px 12px', padding: '16px 20px' }}>
-                    <p style={{ fontSize: 14, color: '#4A4A4A', margin: 0, lineHeight: 1.8 }}>{resource.content}</p>
+                  <div style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderTop: 'none', borderRadius: '0 0 12px 12px', padding: '16px 20px' }}>
+                    <p style={{ fontSize: 14, color: '#43474F', margin: 0, lineHeight: 1.8 }}>{resource.content}</p>
                   </div>
                 )}
               </div>
@@ -1504,7 +1504,7 @@ export default function MembershipPortalClient({
           <div>
             {card(<>
               {label('Weekly Check-In', ClipboardCheck)}
-              <p style={{ fontSize: 14, color: '#4A4A4A', margin: '0 0 4px', lineHeight: 1.7 }}>Week {currentWeek} of Block {block}. Rate each marker from 1 (poor) to 5 (excellent).</p>
+              <p style={{ fontSize: 14, color: '#43474F', margin: '0 0 4px', lineHeight: 1.7 }}>Week {currentWeek} of Block {block}. Rate each marker from 1 (poor) to 5 (excellent).</p>
             </>)}
 
             {thisWeekCheckin ? (
@@ -1513,21 +1513,21 @@ export default function MembershipPortalClient({
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                   {CHECKIN_MARKERS.map(m => (
                     <div key={m.key} style={{ background: '#FFFFFF', borderRadius: 8, padding: '10px 12px' }}>
-                      <div style={{ fontSize: 11, color: '#4A4A4A', marginBottom: 4 }}>{m.label}</div>
+                      <div style={{ fontSize: 11, color: '#43474F', marginBottom: 4 }}>{m.label}</div>
                       <div style={{ fontSize: 20, fontWeight: 700, color: config.colour }}>{(thisWeekCheckin as any)[m.key]}/5</div>
                     </div>
                   ))}
                 </div>
                 {thisWeekCheckin.notes && (
-                  <p style={{ fontSize: 13, color: '#6B6B6B', margin: '12px 0 0', lineHeight: 1.7 }}>{thisWeekCheckin.notes}</p>
+                  <p style={{ fontSize: 13, color: '#666D7A', margin: '12px 0 0', lineHeight: 1.7 }}>{thisWeekCheckin.notes}</p>
                 )}
               </div>
             ) : (
               <form onSubmit={submitCheckin}>
                 {CHECKIN_MARKERS.map(marker => (
-                  <div key={marker.key} style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '16px 20px', marginBottom: 12 }}>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: '#1A1A1A', marginBottom: 4 }}>{marker.label}</div>
-                    <div style={{ fontSize: 12, color: '#4A4A4A', marginBottom: 12 }}>{marker.description}</div>
+                  <div key={marker.key} style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: 12, padding: '16px 20px', marginBottom: 12 }}>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: '#141821', marginBottom: 4 }}>{marker.label}</div>
+                    <div style={{ fontSize: 12, color: '#43474F', marginBottom: 12 }}>{marker.description}</div>
                     <div style={{ display: 'flex', gap: 8 }}>
                       {[1, 2, 3, 4, 5].map(val => (
                         <button
@@ -1536,8 +1536,8 @@ export default function MembershipPortalClient({
                           onClick={() => setCheckinForm(f => ({ ...f, [marker.key]: val }))}
                           style={{
                             flex: 1, padding: '10px', borderRadius: 8, border: 'none',
-                            background: checkinForm[marker.key] === val ? config.colour : '#E5E5E5',
-                            color: checkinForm[marker.key] === val ? '#FFFFFF' : '#4A4A4A',
+                            background: checkinForm[marker.key] === val ? config.colour : '#E8EAEE',
+                            color: checkinForm[marker.key] === val ? '#FFFFFF' : '#43474F',
                             fontWeight: 700, fontSize: 16, cursor: 'pointer',
                           }}
                         >
@@ -1547,13 +1547,13 @@ export default function MembershipPortalClient({
                     </div>
                   </div>
                 ))}
-                <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '16px 20px', marginBottom: 16 }}>
-                  <div style={{ fontSize: 14, fontWeight: 600, color: '#1A1A1A', marginBottom: 8 }}>Notes (optional)</div>
+                <div style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: 12, padding: '16px 20px', marginBottom: 16 }}>
+                  <div style={{ fontSize: 14, fontWeight: 600, color: '#141821', marginBottom: 8 }}>Notes (optional)</div>
                   <textarea
                     value={checkinNotes}
                     onChange={e => setCheckinNotes(e.target.value)}
                     placeholder="Any observations this week..."
-                    style={{ width: '100%', background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 8, padding: '12px', color: '#1A1A1A', fontSize: 14, lineHeight: 1.6, resize: 'vertical', minHeight: 80, boxSizing: 'border-box' }}
+                    style={{ width: '100%', background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: 8, padding: '12px', color: '#141821', fontSize: 14, lineHeight: 1.6, resize: 'vertical', minHeight: 80, boxSizing: 'border-box' }}
                   />
                 </div>
                 {checkinError && <p style={{ fontSize: 13, color: '#DC2626', marginBottom: 12 }}>{checkinError}</p>}
@@ -1577,11 +1577,11 @@ export default function MembershipPortalClient({
               <div style={{ marginTop: 24 }}>
                 {label('Previous Check-Ins', CalendarDays)}
                 {[...checkins].sort((a, b) => b.week_number - a.week_number).slice(0, 5).map(c => (
-                  <div key={c.id} style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 10, padding: '14px 16px', marginBottom: 10 }}>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: '#4A4A4A', marginBottom: 8 }}>Block {block} - Week {c.week_number}</div>
+                  <div key={c.id} style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: 10, padding: '14px 16px', marginBottom: 10 }}>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: '#43474F', marginBottom: 8 }}>Block {block} - Week {c.week_number}</div>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                       {CHECKIN_MARKERS.map(m => (
-                        <div key={m.key} style={{ fontSize: 12, color: '#4A4A4A' }}>
+                        <div key={m.key} style={{ fontSize: 12, color: '#43474F' }}>
                           {m.label}: <span style={{ color: config.colour, fontWeight: 700 }}>{(c as any)[m.key]}</span>
                         </div>
                       ))}
@@ -1598,12 +1598,12 @@ export default function MembershipPortalClient({
           <div>
             {card(<>
               {label('Check-In Trend Dashboard', LineChart)}
-              <p style={{ fontSize: 14, color: '#4A4A4A', margin: 0, lineHeight: 1.7 }}>Your 8 biological markers visualised over time. Data from weekly check-ins.</p>
+              <p style={{ fontSize: 14, color: '#43474F', margin: 0, lineHeight: 1.7 }}>Your 8 biological markers visualised over time. Data from weekly check-ins.</p>
             </>)}
 
             {checkins.length === 0 ? (
-              <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, padding: '40px 20px', textAlign: 'center' }}>
-                <p style={{ fontSize: 14, color: '#4A4A4A', margin: 0 }}>No check-in data yet. Complete your first weekly check-in to start tracking.</p>
+              <div style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: 12, padding: '40px 20px', textAlign: 'center' }}>
+                <p style={{ fontSize: 14, color: '#43474F', margin: 0 }}>No check-in data yet. Complete your first weekly check-in to start tracking.</p>
               </div>
             ) : (
               <>
@@ -1618,12 +1618,12 @@ export default function MembershipPortalClient({
                       const colour = avg >= 4 ? '#1B6DFC' : avg >= 3 ? '#B7791F' : '#DC2626'
                       return (
                         <div key={m.key} style={{ background: '#FFFFFF', borderRadius: 8, padding: '12px 14px' }}>
-                          <div style={{ fontSize: 11, color: '#4A4A4A', marginBottom: 4 }}>{m.label}</div>
+                          <div style={{ fontSize: 11, color: '#43474F', marginBottom: 4 }}>{m.label}</div>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                             <span style={{ fontSize: 22, fontWeight: 800, color: colour }}>{avg}</span>
-                            <span style={{ fontSize: 11, color: '#4A4A4A' }}>/ 5</span>
+                            <span style={{ fontSize: 11, color: '#43474F' }}>/ 5</span>
                           </div>
-                          <div style={{ marginTop: 6, height: 4, background: '#E5E5E5', borderRadius: 2 }}>
+                          <div style={{ marginTop: 6, height: 4, background: '#E8EAEE', borderRadius: 2 }}>
                             <div style={{ height: 4, background: colour, borderRadius: 2, width: `${(avg / 5) * 100}%` }} />
                           </div>
                         </div>
@@ -1639,7 +1639,7 @@ export default function MembershipPortalClient({
                     const sorted = [...checkins].sort((a, b) => a.week_number - b.week_number)
                     return (
                       <div key={m.key} style={{ marginBottom: 16 }}>
-                        <div style={{ fontSize: 12, fontWeight: 600, color: '#4A4A4A', marginBottom: 6 }}>{m.label}</div>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: '#43474F', marginBottom: 6 }}>{m.label}</div>
                         <div style={{ display: 'flex', gap: 4, alignItems: 'flex-end', height: 40 }}>
                           {sorted.map(c => {
                             const val = (c as any)[m.key] ?? 0
@@ -1647,7 +1647,7 @@ export default function MembershipPortalClient({
                             return (
                               <div key={c.week_number} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                                 <div style={{ width: '100%', height: `${(val / 5) * 36}px`, background: colour, borderRadius: 3, minHeight: 4 }} />
-                                <div style={{ fontSize: 9, color: '#4A4A4A' }}>W{c.week_number}</div>
+                                <div style={{ fontSize: 9, color: '#43474F' }}>W{c.week_number}</div>
                               </div>
                             )
                           })}

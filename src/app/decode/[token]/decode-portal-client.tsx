@@ -30,8 +30,8 @@ function twoLowest(scores: Record<string, number> | null): ('01' | '02' | '03' |
 }
 
 const BLUE = '#1B6DFC'
-const INK = '#1A1A1A'
-const MUTED = '#6B6B6B'
+const INK = '#141821'
+const MUTED = '#666D7A'
 
 export default function DecodePortalClient({
   token,
@@ -83,7 +83,7 @@ export default function DecodePortalClient({
             ("Before we start, let's read your body"), and stacking a second one
             above it gave the first screen two competing headlines. A one-line
             welcome is enough to make it feel addressed to her. */}
-        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.7, margin: '18px 0 24px' }}>
+        <p style={{ fontSize: '16px', color: '#43474F', lineHeight: 1.7, margin: '18px 0 24px' }}>
           You&apos;re in, {firstName}. Nothing to pay and nothing to download, and your report is on screen the moment you finish.
         </p>
         <BodyDecodeIntakeForm
@@ -111,7 +111,7 @@ export default function DecodePortalClient({
       {/* Her result at a glance. A summary of the full read below, never a
           substitute for it - the whole document is one tap away and always
           has been. */}
-      <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '22px 24px', marginBottom: '14px' }}>
+      <div style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '14px', padding: '22px 24px', marginBottom: '14px' }}>
         {readiness && (
           <>
             <p style={{ fontSize: '10px', fontWeight: 800, color: MUTED, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 6px' }}>
@@ -121,7 +121,7 @@ export default function DecodePortalClient({
               {readiness.label}
             </p>
             {readiness.means && (
-              <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.6, margin: '0 0 18px' }}>
+              <p style={{ fontSize: '14px', color: '#43474F', lineHeight: 1.6, margin: '0 0 18px' }}>
                 {readiness.means}
               </p>
             )}
@@ -158,14 +158,14 @@ export default function DecodePortalClient({
             {/* The name on its own is a clinical-sounding label with no meaning
                 attached. One plain line so it means something before she opens
                 anything. */}
-            <p style={{ fontSize: '14.5px', color: '#4A4A4A', lineHeight: 1.6, margin: 0 }}>
+            <p style={{ fontSize: '14.5px', color: '#43474F', lineHeight: 1.6, margin: 0 }}>
               {plainDesc}
             </p>
           </>
         ) : (
           // Indeterminate is a real outcome, not an error. Say so plainly rather
           // than leaving a blank where a name should be.
-          <p style={{ fontSize: '15px', color: '#4A4A4A', lineHeight: 1.65, margin: 0 }}>
+          <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.65, margin: 0 }}>
             Your answers do not point cleanly at one of the four. That is a real result, not a missing one. Your five scores still stand and the five days still run.
           </p>
         )}
@@ -198,7 +198,7 @@ export default function DecodePortalClient({
           const inner = (
             <div style={{
               background: unlocked ? '#FFFFFF' : '#FAFAFA',
-              border: isToday ? `1.5px solid ${BLUE}` : '1px solid #E5E5E5',
+              border: isToday ? `1.5px solid ${BLUE}` : '1px solid #E8EAEE',
               borderRadius: '12px', padding: '18px 20px',
               opacity: unlocked ? 1 : 0.62,
             }}>
@@ -237,7 +237,7 @@ export default function DecodePortalClient({
               </p>
               {/* The premise shows on locked cards too. A locked card that says
                   nothing gives her no reason to come back tomorrow. */}
-              <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.6, margin: 0, paddingLeft: '34px' }}>
+              <p style={{ fontSize: '14px', color: '#43474F', lineHeight: 1.6, margin: 0, paddingLeft: '34px' }}>
                 {d.premise}
               </p>
               {/* Today's card was a Link with no affordance - a blue border
@@ -272,8 +272,8 @@ export default function DecodePortalClient({
           to ask anything, nothing telling her the report does not expire. On
           the hub she returns to every day for five days, that read as an
           unfinished page. */}
-      <div style={{ borderTop: '1px solid #E5E5E5', margin: '32px 0 0', paddingTop: '24px' }}>
-        <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.7, margin: '0 0 14px' }}>
+      <div style={{ borderTop: '1px solid #E8EAEE', margin: '32px 0 0', paddingTop: '24px' }}>
+        <p style={{ fontSize: '14px', color: '#43474F', lineHeight: 1.7, margin: '0 0 14px' }}>
           Your report is not going anywhere. This page stays at the same link, so you can come back
           to it whenever you want, whatever you decide to do next.
         </p>

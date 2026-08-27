@@ -70,7 +70,7 @@ function ScaleInput({
 }) {
   return (
     <div className="py-1">
-      <p className={`text-[15px] font-medium mb-4 leading-snug ${hasError ? 'text-red-700' : 'text-[#1A1A1A]'}`}>{question.text}</p>
+      <p className={`text-[15px] font-medium mb-4 leading-snug ${hasError ? 'text-[#C82626]' : 'text-[#141821]'}`}>{question.text}</p>
       <div className="flex gap-2">
         {[0, 1, 2, 3, 4].map(n => (
           <button
@@ -81,8 +81,8 @@ function ScaleInput({
               value === n
                 ? 'bg-[#1B6DFC] text-white shadow-sm'
                 : hasError
-                ? 'bg-stone-100 text-stone-400 border border-red-400'
-                : 'bg-stone-100 text-stone-400 hover:bg-stone-200'
+                ? 'bg-[#F4F6F9] text-[#98A0AD] border border-red-400'
+                : 'bg-[#F4F6F9] text-[#98A0AD] hover:bg-[#EFF1F4]'
             }`}
           >
             {n}
@@ -91,8 +91,8 @@ function ScaleInput({
       </div>
       {question.scaleLabel && (
         <div className="flex justify-between mt-2">
-          <span className="text-[11px] text-stone-500 font-medium">{question.scaleLabel.low}</span>
-          <span className="text-[11px] text-stone-500 font-medium">{question.scaleLabel.high}</span>
+          <span className="text-[11px] text-[#666D7A] font-medium">{question.scaleLabel.low}</span>
+          <span className="text-[11px] text-[#666D7A] font-medium">{question.scaleLabel.high}</span>
         </div>
       )}
     </div>
@@ -112,8 +112,8 @@ function QuestionInput({
   onToggle: (opt: string) => void
   hasError: boolean
 }) {
-  const errorBorder = hasError ? 'border-red-400' : 'border-stone-200'
-  const errorText = hasError ? 'text-red-700' : 'text-[#1A1A1A]'
+  const errorBorder = hasError ? 'border-red-400' : 'border-[#EFF1F4]'
+  const errorText = hasError ? 'text-[#C82626]' : 'text-[#141821]'
 
   if (question.type === 'scale') {
     return (
@@ -135,7 +135,7 @@ function QuestionInput({
           onChange={e => onChange(e.target.value)}
           rows={3}
           placeholder="Your answer..."
-          className={`w-full bg-stone-100 rounded-2xl px-4 py-3.5 text-[15px] text-[#1A1A1A] placeholder-stone-600 focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 resize-none transition-all border ${errorBorder}`}
+          className={`w-full bg-[#F4F6F9] rounded-2xl px-4 py-3.5 text-[15px] text-[#141821] placeholder-[#666D7A] focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 resize-none transition-all border ${errorBorder}`}
         />
       </div>
     )
@@ -149,7 +149,7 @@ function QuestionInput({
           type="date"
           value={(value as string) || ''}
           onChange={e => onChange(e.target.value)}
-          className={`w-full bg-stone-100 rounded-2xl px-4 py-3.5 text-[15px] text-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 transition-all border ${errorBorder}`}
+          className={`w-full bg-[#F4F6F9] rounded-2xl px-4 py-3.5 text-[15px] text-[#141821] focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 transition-all border ${errorBorder}`}
         />
       </div>
     )
@@ -162,7 +162,7 @@ function QuestionInput({
         <select
           value={(value as string) || ''}
           onChange={e => onChange(e.target.value)}
-          className={`w-full bg-stone-100 rounded-2xl px-4 py-3.5 text-[15px] text-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 transition-all appearance-none border ${errorBorder}`}
+          className={`w-full bg-[#F4F6F9] rounded-2xl px-4 py-3.5 text-[15px] text-[#141821] focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 transition-all appearance-none border ${errorBorder}`}
         >
           <option value="">Select an option</option>
           {question.options?.map(opt => (
@@ -188,8 +188,8 @@ function QuestionInput({
                 selected.includes(opt)
                   ? 'bg-[#1B6DFC] text-white'
                   : hasError
-                  ? 'bg-stone-100 text-stone-400 border border-red-400'
-                  : 'bg-stone-100 text-stone-400 hover:bg-stone-200'
+                  ? 'bg-[#F4F6F9] text-[#98A0AD] border border-red-400'
+                  : 'bg-[#F4F6F9] text-[#98A0AD] hover:bg-[#EFF1F4]'
               }`}
             >
               {opt}
@@ -213,8 +213,8 @@ function QuestionInput({
             checked
               ? 'bg-[#1B6DFC]'
               : hasError
-              ? 'bg-stone-100 border border-red-400'
-              : 'bg-stone-100 border border-stone-600'
+              ? 'bg-[#F4F6F9] border border-red-400'
+              : 'bg-[#F4F6F9] border border-[#666D7A]'
           }`}
         >
           {checked && (
@@ -223,7 +223,7 @@ function QuestionInput({
             </svg>
           )}
         </span>
-        <span className={`text-[14px] leading-relaxed ${hasError ? 'text-red-700' : 'text-stone-700'}`}>{question.text}</span>
+        <span className={`text-[14px] leading-relaxed ${hasError ? 'text-[#C82626]' : 'text-[#43474F]'}`}>{question.text}</span>
       </button>
     )
   }
@@ -426,20 +426,20 @@ export default function IntakeForm({ token, clientName, portalToken, identity }:
     return (
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-8">
         <div className="text-center max-w-sm">
-          <div className="w-14 h-14 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+          <div className="w-14 h-14 bg-[#1B6DFC]/10 rounded-full flex items-center justify-center mx-auto mb-6">
             <svg className="w-7 h-7 text-[#1B6DFC]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
             </svg>
           </div>
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-4">Submitted</p>
-          <h1 className="text-2xl font-bold text-[#1A1A1A] mb-3 tracking-tight">You&apos;re all done.</h1>
-          <p className="text-stone-400 text-[15px] leading-relaxed mb-8">
+          <h1 className="text-2xl font-bold text-[#141821] mb-3 tracking-tight">You&apos;re all done.</h1>
+          <p className="text-[#98A0AD] text-[15px] leading-relaxed mb-8">
             Your intake has been submitted. Your coach will review everything and be in touch shortly.
           </p>
           {portalToken && (
             <a
               href={`/portal/${portalToken}`}
-              className="inline-block px-6 py-3 bg-[#1B6DFC] hover:bg-blue-300 text-white font-bold text-sm rounded-2xl transition-colors"
+              className="inline-block px-6 py-3 bg-[#1B6DFC] hover:bg-[#9CC0FB] text-white font-bold text-sm rounded-2xl transition-colors"
             >
               Back to your portal
             </a>
@@ -453,7 +453,7 @@ export default function IntakeForm({ token, clientName, portalToken, identity }:
     <div className="min-h-screen bg-[#FFFFFF]">
 
       {/* Progress bar */}
-      <div className="fixed top-0 left-0 right-0 h-[3px] bg-stone-100 z-20">
+      <div className="fixed top-0 left-0 right-0 h-[3px] bg-[#F4F6F9] z-20">
         <div
           className="h-full bg-[#1B6DFC] transition-all duration-500 ease-out"
           style={{ width: `${progressPct}%` }}
@@ -461,9 +461,9 @@ export default function IntakeForm({ token, clientName, portalToken, identity }:
       </div>
 
       {/* Sticky header */}
-      <div className="sticky top-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-b border-stone-200 px-5 py-3 flex items-center justify-between">
+      <div className="sticky top-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-b border-[#EFF1F4] px-5 py-3 flex items-center justify-between">
         <img src={logoUrl()} width="100" alt={brand().name} style={{ display: 'block' }} />
-        <p className="text-[11px] font-medium text-stone-500">{sectionIndex + 1} / {INTAKE_SECTIONS.length}</p>
+        <p className="text-[11px] font-medium text-[#666D7A]">{sectionIndex + 1} / {INTAKE_SECTIONS.length}</p>
       </div>
 
       <div className="max-w-lg mx-auto px-5 pt-8 pb-32">
@@ -471,13 +471,13 @@ export default function IntakeForm({ token, clientName, portalToken, identity }:
         {/* Section header */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-3">
-            <div className="h-px flex-1 bg-stone-100" />
-            <p className="text-[10px] font-bold tracking-[0.15em] text-stone-600 uppercase">{progressPct}% complete</p>
-            <div className="h-px flex-1 bg-stone-100" />
+            <div className="h-px flex-1 bg-[#F4F6F9]" />
+            <p className="text-[10px] font-bold tracking-[0.15em] text-[#666D7A] uppercase">{progressPct}% complete</p>
+            <div className="h-px flex-1 bg-[#F4F6F9]" />
           </div>
-          <h1 className="text-[22px] font-bold text-[#1A1A1A] tracking-tight mb-3">{section.title}</h1>
+          <h1 className="text-[22px] font-bold text-[#141821] tracking-tight mb-3">{section.title}</h1>
           {section.description && (
-            <p className="text-[13px] text-stone-400 whitespace-pre-line leading-relaxed">
+            <p className="text-[13px] text-[#98A0AD] whitespace-pre-line leading-relaxed">
               {section.description}
             </p>
           )}
@@ -485,25 +485,25 @@ export default function IntakeForm({ token, clientName, portalToken, identity }:
 
         {/* Validation message */}
         {validationMessage && (
-          <div className="mb-6 border-l-2 border-red-500 bg-red-50 rounded-r-2xl px-4 py-3">
-            <p className="text-red-700 text-sm font-medium">{validationMessage}</p>
-            <p className="text-red-700/70 text-xs mt-1">Missed questions are highlighted in red below.</p>
+          <div className="mb-6 border-l-2 border-[#DC2626] bg-[#FDEDED] rounded-r-2xl px-4 py-3">
+            <p className="text-[#C82626] text-sm font-medium">{validationMessage}</p>
+            <p className="text-[#C82626]/70 text-xs mt-1">Missed questions are highlighted in red below.</p>
           </div>
         )}
 
         {/* Divider */}
-        <div className="h-px bg-stone-100 mb-8" />
+        <div className="h-px bg-[#F4F6F9] mb-8" />
 
         {/* Confirmation card for identity details the client already entered in
             their Health Declaration. Shown read-only so they confirm rather than
             re-type. An Edit toggle reveals the underlying inputs for corrections,
             and any edit flows straight back to the submitted form data. */}
         {section.id === 'identity' && showIdentityConfirm && (
-          <div className="mb-8 rounded-2xl border border-stone-200 bg-stone-50/60 p-5">
+          <div className="mb-8 rounded-2xl border border-[#EFF1F4] bg-[#FBFCFD]/60 p-5">
             <div className="flex items-start justify-between gap-3 mb-4">
               <div>
-                <p className="text-[13px] font-bold text-[#1A1A1A]">Confirm your details</p>
-                <p className="text-[12px] text-stone-500 mt-0.5 leading-relaxed">
+                <p className="text-[13px] font-bold text-[#141821]">Confirm your details</p>
+                <p className="text-[12px] text-[#666D7A] mt-0.5 leading-relaxed">
                   We&apos;ve carried these across from your health declaration so you don&apos;t have to enter them again. Tap edit if anything needs changing.
                 </p>
               </div>
@@ -521,7 +521,7 @@ export default function IntakeForm({ token, clientName, portalToken, identity }:
                 {carriedQuestions.map(q => {
                   const hasError = errors.has(q.id)
                   return (
-                    <div key={q.id} id={`q-${q.id}`} className={hasError ? 'border-l-2 border-red-500 pl-4 -ml-4 scroll-mt-24' : 'scroll-mt-24'}>
+                    <div key={q.id} id={`q-${q.id}`} className={hasError ? 'border-l-2 border-[#DC2626] pl-4 -ml-4 scroll-mt-24' : 'scroll-mt-24'}>
                       <QuestionInput
                         question={q}
                         value={formData[q.id]}
@@ -529,28 +529,28 @@ export default function IntakeForm({ token, clientName, portalToken, identity }:
                         onToggle={(opt) => toggleMultiselect(q.id, opt)}
                         hasError={hasError}
                       />
-                      {hasError && <p className="text-red-700 text-xs mt-2 font-medium">Please answer this question.</p>}
+                      {hasError && <p className="text-[#C82626] text-xs mt-2 font-medium">Please answer this question.</p>}
                     </div>
                   )
                 })}
               </div>
             ) : (
-              <dl className="divide-y divide-stone-200">
+              <dl className="divide-y divide-[#EFF1F4]">
                 {carriedQuestions.map(q => {
                   const hasError = errors.has(q.id)
                   return (
                     <div key={q.id} id={`q-${q.id}`} className="flex items-baseline justify-between gap-4 py-2.5 scroll-mt-24">
-                      <dt className={`text-[13px] ${hasError ? 'text-red-700' : 'text-stone-500'}`}>{q.text}</dt>
-                      <dd className={`text-[14px] font-medium text-right ${hasError ? 'text-red-700' : 'text-[#1A1A1A]'}`}>
-                        {formatIdentityValue(q.id, formData[q.id] || identity?.[q.id]) || <span className="text-red-700 font-normal">Tap edit to add</span>}
+                      <dt className={`text-[13px] ${hasError ? 'text-[#C82626]' : 'text-[#666D7A]'}`}>{q.text}</dt>
+                      <dd className={`text-[14px] font-medium text-right ${hasError ? 'text-[#C82626]' : 'text-[#141821]'}`}>
+                        {formatIdentityValue(q.id, formData[q.id] || identity?.[q.id]) || <span className="text-[#C82626] font-normal">Tap edit to add</span>}
                       </dd>
                     </div>
                   )
                 })}
                 {identity?.emergency_contact_relationship && (
                   <div className="flex items-baseline justify-between gap-4 py-2.5">
-                    <dt className="text-[13px] text-stone-500">Emergency contact relationship</dt>
-                    <dd className="text-[14px] font-medium text-right text-[#1A1A1A]">{identity.emergency_contact_relationship}</dd>
+                    <dt className="text-[13px] text-[#666D7A]">Emergency contact relationship</dt>
+                    <dd className="text-[14px] font-medium text-right text-[#141821]">{identity.emergency_contact_relationship}</dd>
                   </div>
                 )}
               </dl>
@@ -566,7 +566,7 @@ export default function IntakeForm({ token, clientName, portalToken, identity }:
               <div
                 key={q.id}
                 id={`q-${q.id}`}
-                className={hasError ? 'border-l-2 border-red-500 pl-4 -ml-4 scroll-mt-24' : 'scroll-mt-24'}
+                className={hasError ? 'border-l-2 border-[#DC2626] pl-4 -ml-4 scroll-mt-24' : 'scroll-mt-24'}
               >
                 <QuestionInput
                   question={q}
@@ -576,7 +576,7 @@ export default function IntakeForm({ token, clientName, portalToken, identity }:
                   hasError={hasError}
                 />
                 {hasError && (
-                  <p className="text-red-700 text-xs mt-2 font-medium">Please answer this question.</p>
+                  <p className="text-[#C82626] text-xs mt-2 font-medium">Please answer this question.</p>
                 )}
               </div>
             )
@@ -584,19 +584,19 @@ export default function IntakeForm({ token, clientName, portalToken, identity }:
         </div>
 
         {error && (
-          <div className="mt-6 bg-red-50 border border-red-200 rounded-2xl px-4 py-3">
-            <p className="text-red-700 text-sm">{error}</p>
+          <div className="mt-6 bg-[#FDEDED] border border-[#F5C9C9] rounded-2xl px-4 py-3">
+            <p className="text-[#C82626] text-sm">{error}</p>
           </div>
         )}
       </div>
 
       {/* Fixed bottom navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-[#FFFFFF] border-t border-stone-200 px-5 py-4 z-10">
+      <div className="fixed bottom-0 left-0 right-0 bg-[#FFFFFF] border-t border-[#EFF1F4] px-5 py-4 z-10">
         <div className="max-w-lg mx-auto flex items-center justify-between gap-4">
           <button
             type="button"
             onClick={() => goToSection(sectionIndex - 1)}
-            className={`text-[13px] font-semibold text-stone-500 py-2 px-1 transition-colors hover:text-stone-700 ${
+            className={`text-[13px] font-semibold text-[#666D7A] py-2 px-1 transition-colors hover:text-[#43474F] ${
               sectionIndex === 0 ? 'invisible' : ''
             }`}
           >
@@ -624,7 +624,7 @@ export default function IntakeForm({ token, clientName, portalToken, identity }:
         </div>
 
         {sectionIndex === 0 && clientName && (
-          <p className="text-center text-[11px] text-stone-600 mt-2">Prepared for {clientName}</p>
+          <p className="text-center text-[11px] text-[#666D7A] mt-2">Prepared for {clientName}</p>
         )}
       </div>
 

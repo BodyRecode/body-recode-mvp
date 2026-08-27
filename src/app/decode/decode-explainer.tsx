@@ -40,8 +40,8 @@ function Byline({ name, role }: { name: string; role: string }) {
         color: BLUE, fontSize: '13px', fontWeight: 800,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>{name.charAt(0)}</span>
-      <span style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.45 }}>
-        <strong style={{ color: '#1A1A1A', fontWeight: 800 }}>{name}</strong>
+      <span style={{ fontSize: '13px', color: '#666D7A', lineHeight: 1.45 }}>
+        <strong style={{ color: '#141821', fontWeight: 800 }}>{name}</strong>
         <span style={{ margin: '0 6px', color: '#C4C4C4' }}>·</span>
         {role}
       </span>
@@ -85,7 +85,7 @@ export default function DecodeExplainer({
     return (
       <div style={{ marginBottom: '32px' }}>
       <div style={{
-        position: 'relative', background: 'linear-gradient(135deg, #1A1A1A 0%, #0B1F3F 100%)',
+        position: 'relative', background: 'linear-gradient(135deg, #141821 0%, #0B1F3F 100%)',
         border: '1px solid rgba(27,109,252,0.35)', borderRadius: '14px', aspectRatio: '16 / 9',
         overflow: 'hidden', display: 'flex', alignItems: 'center',
         justifyContent: 'center', boxShadow: '0 10px 30px -8px rgba(27,109,252,0.35)',

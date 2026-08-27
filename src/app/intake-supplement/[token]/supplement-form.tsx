@@ -144,12 +144,12 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-stone-50 text-stone-800 flex items-center justify-center px-6 py-12">
+      <div className="min-h-screen bg-[#FBFCFD] text-[#141821] flex items-center justify-center px-6 py-12">
         <div className="max-w-md text-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo-black.png" alt={brand().name} className="h-20 w-auto mx-auto mb-8" />
-          <h1 className="text-2xl font-semibold text-[#1A1A1A] mb-3">Thanks, that&apos;s in.</h1>
-          <p className="text-stone-600 text-sm leading-relaxed">
+          <h1 className="text-2xl font-semibold text-[#141821] mb-3">Thanks, that&apos;s in.</h1>
+          <p className="text-[#666D7A] text-sm leading-relaxed">
             Your follow-up answers have been saved to your file. Kade will weave them into the next program and nutrition cycle.
           </p>
         </div>
@@ -158,15 +158,15 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-stone-50 text-stone-800">
+    <div className="min-h-screen bg-[#FBFCFD] text-[#141821]">
       <div className="max-w-2xl mx-auto px-6 py-12">
         {/* Header */}
         <div className="mb-10">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo-black.png" alt={brand().name} className="h-20 w-auto mb-8" />
           <p className="text-[11px] font-bold text-[#1B6DFC] uppercase tracking-[0.2em] mb-2">Follow-up Intake</p>
-          <h1 className="text-2xl font-semibold text-[#1A1A1A] mb-3">Hi {clientName.split(' ')[0]}, just a few more questions.</h1>
-          <p className="text-stone-600 text-sm leading-relaxed">
+          <h1 className="text-2xl font-semibold text-[#141821] mb-3">Hi {clientName.split(' ')[0]}, just a few more questions.</h1>
+          <p className="text-[#666D7A] text-sm leading-relaxed">
             We have added a few questions to the intake since you completed yours, covering medications and dietary context. They feed directly into how your program and nutrition plan are built. About 3 minutes. As with the original intake, there are no right or wrong answers, just answer honestly.
           </p>
         </div>
@@ -178,20 +178,20 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
             return (
               <div key={q.id} id={`q-${q.id}`}>
                 <label
-                  className={`block text-[15px] font-medium mb-2 leading-snug ${hasError ? 'text-red-700' : 'text-[#1A1A1A]'}`}
+                  className={`block text-[15px] font-medium mb-2 leading-snug ${hasError ? 'text-[#C82626]' : 'text-[#141821]'}`}
                 >
                   {q.label}
                   {q.required && <span className="text-[#1B6DFC] ml-1">*</span>}
                 </label>
                 {q.hint && (
-                  <p className="text-[13px] text-stone-500 leading-relaxed mb-3">{q.hint}</p>
+                  <p className="text-[13px] text-[#666D7A] leading-relaxed mb-3">{q.hint}</p>
                 )}
                 <textarea
                   value={formData[q.id]}
                   onChange={e => setValue(q.id, e.target.value)}
                   rows={4}
                   placeholder="Your answer..."
-                  className={`w-full bg-stone-200 rounded-2xl px-4 py-3.5 text-[15px] text-[#1A1A1A] placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 resize-none transition-all border ${hasError ? 'border-red-500/50' : 'border-stone-200'}`}
+                  className={`w-full bg-[#EFF1F4] rounded-2xl px-4 py-3.5 text-[15px] text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 resize-none transition-all border ${hasError ? 'border-[#DC2626]/50' : 'border-[#EFF1F4]'}`}
                 />
               </div>
             )
@@ -200,7 +200,7 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
 
         {/* Errors */}
         {error && (
-          <div className="mt-6 px-4 py-3 rounded-xl border border-red-200 bg-red-500/5 text-red-700 text-sm">
+          <div className="mt-6 px-4 py-3 rounded-xl border border-[#F5C9C9] bg-[#DC2626]/5 text-[#C82626] text-sm">
             {error}
           </div>
         )}
@@ -210,7 +210,7 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
           <button
             onClick={submit}
             disabled={submitting}
-            className="px-8 py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] text-white font-bold text-sm rounded-xl transition-colors disabled:opacity-50"
+            className="px-8 py-3.5 bg-[#1B6DFC] hover:bg-[#1560E0] text-white font-bold text-sm rounded-xl transition-colors disabled:opacity-50"
           >
             {submitting ? 'Submitting…' : 'Submit follow-up'}
           </button>

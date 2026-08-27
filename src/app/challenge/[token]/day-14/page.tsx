@@ -6,7 +6,7 @@ import { logoUrl, brand } from '@/config/tenant'
 import { hasPortalAccess } from '@/lib/challenge-access'
 
 const card: React.CSSProperties = {
-  background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px',
+  background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '14px',
   padding: '24px 26px', boxShadow: '0 1px 4px rgba(27, 109, 252, 0.04)',
 }
 
@@ -16,12 +16,12 @@ const cardLabel: React.CSSProperties = {
 }
 
 const cardTitle: React.CSSProperties = {
-  fontSize: '22px', fontWeight: 800, color: '#1A1A1A',
+  fontSize: '22px', fontWeight: 800, color: '#141821',
   letterSpacing: '-0.02em', margin: '0 0 14px', lineHeight: 1.25,
 }
 
 const cardBody: React.CSSProperties = {
-  fontSize: '15px', color: '#4A4A4A', lineHeight: 1.7, margin: 0,
+  fontSize: '15px', color: '#43474F', lineHeight: 1.7, margin: 0,
 }
 
 const REPORT_PARTS = [
@@ -102,11 +102,11 @@ export default async function Day14Page({ params }: { params: Promise<{ token: s
 
   return (
     <div style={{
-      minHeight: '100vh', background: '#FFFFFF', color: '#1A1A1A',
+      minHeight: '100vh', background: '#FFFFFF', color: '#141821',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     }}>
       {/* Header */}
-      <div style={{ borderBottom: '1px solid #E5E5E5', padding: '18px 24px', background: '#FFFFFF' }}>
+      <div style={{ borderBottom: '1px solid #E8EAEE', padding: '18px 24px', background: '#FFFFFF' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <img src={logoUrl()} width="160" alt={brand().name} style={{ display: 'block' }} />
           <Link href={`/challenge/${token}`} style={{ fontSize: '13px', color: '#1B6DFC', textDecoration: 'none', fontWeight: 500 }}>
@@ -136,14 +136,14 @@ export default async function Day14Page({ params }: { params: Promise<{ token: s
           </p>
           <h1 style={{
             fontSize: 'clamp(34px, 6vw, 48px)', fontWeight: 900,
-            letterSpacing: '-0.035em', margin: '8px 0 18px', color: '#1A1A1A', lineHeight: 1.05,
+            letterSpacing: '-0.035em', margin: '8px 0 18px', color: '#141821', lineHeight: 1.05,
           }}>
             Fourteen days, settled
             <br />
             <span style={{ color: '#1B6DFC' }}>into a clear biological read.</span>
           </h1>
           <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '24px' }} />
-          <p style={{ fontSize: '17px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
+          <p style={{ fontSize: '17px', color: '#43474F', lineHeight: 1.75, margin: 0 }}>
             Today is the read. Your Body Decode Report takes the seven-day Check-In signal you submitted and the seven days of consolidation that followed and presents the pattern your biology has been working through, what it actually means, what it is not, and the three actions specific to it. Open the Report when you are ready.
           </p>
         </div>
@@ -154,7 +154,7 @@ export default async function Day14Page({ params }: { params: Promise<{ token: s
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '0 24px 24px' }}>
         <div style={{
           position: 'relative', width: '100%', aspectRatio: '16 / 9',
-          background: '#1A1A1A', borderRadius: '14px', overflow: 'hidden',
+          background: '#141821', borderRadius: '14px', overflow: 'hidden',
           border: '1px solid #2C2C2C',
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
         }}>
@@ -183,7 +183,7 @@ export default async function Day14Page({ params }: { params: Promise<{ token: s
           }}>
             Open your Body Decode Report →
           </Link>
-          <p style={{ fontSize: '13px', color: '#6B6B6B', textAlign: 'center', marginTop: '12px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '13px', color: '#666D7A', textAlign: 'center', marginTop: '12px', lineHeight: 1.6 }}>
             The Report is also in your inbox. Either is the same read.
           </p>
         </div>
@@ -191,7 +191,7 @@ export default async function Day14Page({ params }: { params: Promise<{ token: s
 
       {/* Intro bridge */}
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '32px 24px 8px' }}>
-        <p style={{ fontSize: '16px', color: '#4A4A4A', lineHeight: 1.75, margin: 0 }}>
+        <p style={{ fontSize: '16px', color: '#43474F', lineHeight: 1.75, margin: 0 }}>
           Below, what fourteen days has done in your body, how to read the Report, what to do with it, and what comes next. Read what is most useful to you, then open the Report.
         </p>
       </div>
@@ -212,7 +212,7 @@ export default async function Day14Page({ params }: { params: Promise<{ token: s
             border: '1px solid rgba(27, 109, 252, 0.18)',
             borderRadius: '10px', padding: '16px 18px', margin: '8px 0',
           }}>
-            <p style={{ fontSize: '15px', fontWeight: 700, color: '#1A1A1A', margin: 0, lineHeight: 1.5 }}>
+            <p style={{ fontSize: '15px', fontWeight: 700, color: '#141821', margin: 0, lineHeight: 1.5 }}>
               The pattern you are about to read could not have been read on Day 1. It needed fourteen days of clean signal to surface clearly. That is what you have given your body.
             </p>
           </div>
@@ -236,8 +236,8 @@ export default async function Day14Page({ params }: { params: Promise<{ token: s
                 <p style={{ fontSize: '11px', fontWeight: 800, color: '#1056D6', letterSpacing: '0.08em', textTransform: 'uppercase' as const, margin: '0 0 6px' }}>
                   {p.eyebrow}
                 </p>
-                <p style={{ fontSize: '15px', fontWeight: 700, color: '#1A1A1A', margin: '0 0 6px' }}>{p.title}</p>
-                <p style={{ fontSize: '13px', color: '#4A4A4A', margin: 0, lineHeight: 1.65 }}>{p.body}</p>
+                <p style={{ fontSize: '15px', fontWeight: 700, color: '#141821', margin: '0 0 6px' }}>{p.title}</p>
+                <p style={{ fontSize: '13px', color: '#43474F', margin: 0, lineHeight: 1.65 }}>{p.body}</p>
               </div>
             ))}
           </div>
@@ -258,11 +258,11 @@ export default async function Day14Page({ params }: { params: Promise<{ token: s
                 <p style={{ fontSize: '11px', fontWeight: 800, color: '#1056D6', letterSpacing: '0.08em', textTransform: 'uppercase' as const, margin: '0 0 6px' }}>
                   {p.eyebrow}
                 </p>
-                <p style={{ fontSize: '14px', color: '#4A4A4A', margin: 0, lineHeight: 1.65 }}>{p.body}</p>
+                <p style={{ fontSize: '14px', color: '#43474F', margin: 0, lineHeight: 1.65 }}>{p.body}</p>
               </div>
             ))}
           </div>
-          <p style={{ ...cardBody, marginTop: '16px', marginBottom: 0, fontWeight: 700, color: '#1A1A1A' }}>
+          <p style={{ ...cardBody, marginTop: '16px', marginBottom: 0, fontWeight: 700, color: '#141821' }}>
             The Report is the read. The Blueprint is the correction. They are designed to work together.
           </p>
         </div>
@@ -284,7 +284,7 @@ export default async function Day14Page({ params }: { params: Promise<{ token: s
             border: '1px solid rgba(27, 109, 252, 0.18)',
             borderRadius: '10px', padding: '16px 18px', marginTop: '8px',
           }}>
-            <p style={{ fontSize: '14px', color: '#1A1A1A', margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
+            <p style={{ fontSize: '14px', color: '#141821', margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
               You have done something most people will not do. You held fourteen consecutive days of clean structure. The read is the reward.
             </p>
           </div>
@@ -333,7 +333,7 @@ export default async function Day14Page({ params }: { params: Promise<{ token: s
         <Link href={`/challenge/${token}`} style={{
           display: 'inline-flex', alignItems: 'center', gap: '8px',
           padding: '14px 24px', borderRadius: '10px',
-          background: '#FFFFFF', border: '1px solid #E5E5E5', color: '#1A1A1A',
+          background: '#FFFFFF', border: '1px solid #E8EAEE', color: '#141821',
           fontSize: '14px', fontWeight: 700, textDecoration: 'none',
         }}>
           ← Back to your portal

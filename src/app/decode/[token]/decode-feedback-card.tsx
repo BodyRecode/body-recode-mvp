@@ -3,8 +3,8 @@
 import { useState } from 'react'
 
 const BLUE = '#1B6DFC'
-const INK = '#1A1A1A'
-const MUTED = '#6B6B6B'
+const INK = '#141821'
+const MUTED = '#666D7A'
 
 /**
  * Feedback capture for The Body Decode, in two distinct moments.
@@ -127,7 +127,7 @@ export function DecodeFeedbackCard({ challengeEnrollmentId, leadId, firstName, m
   }
 
   return (
-    <div style={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: '14px', padding: '24px 26px' }}>
+    <div style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: '14px', padding: '24px 26px' }}>
       <p style={{ fontSize: '18px', fontWeight: 800, color: INK, letterSpacing: '-0.015em', margin: '0 0 8px' }}>
         {copy.heading}
       </p>
