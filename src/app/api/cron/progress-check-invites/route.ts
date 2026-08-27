@@ -20,9 +20,16 @@
  * milestone fires fresh.
  *
  * Auth: Bearer ${CRON_SECRET}.
- * Schedule registered in vercel.json at "0 22 * * *" (8am Brisbane), which is
- * after the block-end notification run and, on a Monday, after the check-in
- * window has closed.
+ * Schedule registered in vercel.json at "0 22 * * 0" - MONDAY 8am Brisbane,
+ * once a week, deliberately.
+ *
+ * Daily was wrong. The check-in window opens Friday 6pm, so a send on a Friday
+ * morning gave the client ten hours before the ordering rule took the Progress
+ * Check away from her again until she had checked in. Landing it on Monday,
+ * after the weekend's check-ins are in, gives four and a half clear days and
+ * means the invite is never sent into a state where it immediately locks. The
+ * ordering is enforced at send time, which is why the portal no longer needs
+ * to gate the card at all.
  */
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -55,7 +62,7 @@ export async function GET(request: NextRequest) {
 
   const { data: programs, error } = await admin
     .from('programs')
-    .select('id, client_id, block_name, week_duration, generated_at, clients!inner(id, name, email, ended_at, frozen_at, coaching_started_at)')
+    .select('id, client_id, block_name, week_duration, generated_at, clients!inner(id, name, email, ended_at, frozen_at, coaching_started_at, onboarding_token)')
     .eq('is_active', true)
 
   if (error) {
@@ -72,6 +79,7 @@ export async function GET(request: NextRequest) {
     const c = program.clients as unknown as {
       id: string; name: string | null; email: string | null
       ended_at: string | null; frozen_at: string | null; coaching_started_at: string | null
+      onboarding_token: string | null
     }
     const name = c?.name ?? 'Unknown'
 
@@ -130,8 +138,11 @@ export async function GET(request: NextRequest) {
     }
 
     const checkUrl = `${appUrl()}/progress-check/${row.token}`
+    // The email sends her to her portal, where the Progress Check is waiting
+    // under This week - one front door rather than a deep link into a form.
+    const portalUrl = `${appUrl()}/portal/${c.onboarding_token}`
     const firstName = (c.name ?? '').split(' ')[0] || 'there'
-    const { subject, html } = buildProgressCheckInviteEmail({ firstName, checkUrl })
+    const { subject, html } = buildProgressCheckInviteEmail({ firstName, portalUrl })
 
     if (!resend) {
       skipped.push({ client: name, why: 'email not configured' })

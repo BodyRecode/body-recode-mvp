@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
   // invitation route. The admin client bypasses RLS, so this must be explicit.
   const { data: client } = await supabase
     .from('clients')
-    .select('id, name, email')
+    .select('id, name, email, onboarding_token')
     .eq('id', trigger.client_id)
     .eq('coach_id', user.id)
     .single()
@@ -102,8 +102,9 @@ export async function POST(request: NextRequest) {
   }
 
   const checkUrl = `${appUrl()}/progress-check/${check.token}`
+  const portalUrl = `${appUrl()}/portal/${client.onboarding_token}`
   const firstName = (client.name ?? '').split(' ')[0] || 'there'
-  const { subject, html } = buildProgressCheckInviteEmail({ firstName, checkUrl })
+  const { subject, html } = buildProgressCheckInviteEmail({ firstName, portalUrl })
 
   const resend = new Resend(process.env.RESEND_API_KEY)
   const { error: sendErr } = await resend.emails.send({

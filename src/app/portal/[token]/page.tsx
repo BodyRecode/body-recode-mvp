@@ -385,13 +385,14 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     // eslint-disable-next-line react-hooks/purity
     : submittedThisWindow && Date.now() < weekendEndsMs
 
-  // The Progress Check waits behind the weekly check-in, mirroring the gate on
-  // the coach's send. Both asks land in the same few days at block-end, and the
-  // bigger one arriving first is the one that gets done - while the weekly
-  // signal the synthesis runs on quietly gets dropped. The check-in comes
-  // first, full stop: an earlier version also unlocked once the window closed,
-  // which let it open on a Thursday, ahead of the very check-in it is supposed
-  // to follow.
+  // The Progress Check no longer needs a lock here. The ordering is enforced
+  // where it belongs - at send time: the invite only goes out on a Monday,
+  // after the weekend's check-in is in. An earlier version gated the card
+  // instead, which meant an invite sent on a Friday morning was taken away
+  // again at 6pm when the next window opened. Sent means available.
+  //
+  // Still used to tell her whether she is waiting on her own check-in or on
+  // her coach, before an invite exists.
   const progressCheckUnlocked = submittedThisWindow
 
   // Where the block itself is up to. Until now the portal said nothing about a
@@ -652,7 +653,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         {allOnboardingDone && client.coaching_started_at && (
           <div className="mb-10">
             <SectionLabel icon={NotebookPen} text="This week" />
-            {pendingProgressCheck && progressCheckUnlocked && (
+            {pendingProgressCheck && (
               <Link
                 href={`/progress-check/${pendingProgressCheck.token}`}
                 className="block rounded-2xl border border-[#B5CFFC] bg-[#F3F7FF] p-5 mb-3 hover:border-[#1B6DFC] transition-colors"
@@ -754,22 +755,6 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                         : progressCheckUnlocked
                           ? `Your Progress Check is on its way through - it will appear here. A few questions plus your measurements and photos, so ${coach().firstName} can read the whole block back to you and show you what has moved.`
                           : `Your Progress Check opens once this week's check-in is in: a few questions plus your measurements and photos, so ${coach().firstName} can read the whole block back to you and show you what has moved.`}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-            {pendingProgressCheck && !progressCheckUnlocked && (
-              <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5 mt-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded-full border border-[#E5E5E5] bg-[#FFFFFF] flex items-center justify-center flex-shrink-0">
-                    <NotebookPen size={14} className="text-[#999999]" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-[#1A1A1A]">Your Progress Check is next</p>
-                    <p className="text-xs text-[#6B6B6B] mt-0.5 leading-relaxed">
-                      It opens once this week&apos;s check-in is in. One thing at a time - the check-in
-                      first, then the bigger read on where the block has taken you.
                     </p>
                   </div>
                 </div>

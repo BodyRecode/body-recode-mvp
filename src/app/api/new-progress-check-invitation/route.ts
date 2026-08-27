@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
   // Client must belong to this coach (same guard as the intake invitation).
   const { data: client } = await supabase
     .from('clients')
-    .select('id, name, email, coaching_started_at')
+    .select('id, name, email, coaching_started_at, onboarding_token')
     .eq('id', clientId)
     .eq('coach_id', user.id)
     .single()
@@ -93,7 +93,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Client has no email address on file. Copy the link and send it manually.', token: row.token }, { status: 400 })
     }
     const firstName = (client.name ?? '').split(' ')[0] || 'there'
-    const { subject, html } = buildProgressCheckInviteEmail({ firstName, checkUrl })
+    const portalUrl = `${appUrl()}/portal/${client.onboarding_token}`
+    const { subject, html } = buildProgressCheckInviteEmail({ firstName, portalUrl })
     const resend = new Resend(process.env.RESEND_API_KEY)
     const { error: sendErr } = await resend.emails.send({
       from: fromCoach(),
