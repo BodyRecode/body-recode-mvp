@@ -25,6 +25,8 @@ const PATTERN_LABELS: Record<string, string> = {
 }
 
 type DecodeRow = {
+  /** 'decode' = the live Stage 1. 'challenge' = a legacy 14-day enrollment. */
+  product: 'decode' | 'challenge'
   id: string; token: string; name: string; email: string; phone: string
   currentDay: number; enrolledAt: string; quizResult: string | null
   quizCompleted: boolean; hasBlueprintPurchase: boolean
@@ -233,7 +235,19 @@ export default function FunnelClient({
   const amber = accentColour('amber')
 
   const summary = [
-    { label: 'The Body Decode', count: challengeEnrollments.length, sub: `${challengeEnrollments.filter(e => e.scorecardDone).length} did scorecard`, accent: '#1B6DFC' },
+    {
+      label: 'The Body Decode',
+      count: challengeEnrollments.filter(e => e.product === 'decode').length,
+      // The legacy count is stated rather than folded in: 30 people ran the
+      // retired 14-day arc and counting them as Body Decode signups would
+      // overstate the new offer thirtyfold on its first month.
+      sub: (() => {
+        const legacy = challengeEnrollments.filter(e => e.product !== 'decode').length
+        const done = challengeEnrollments.filter(e => e.product === 'decode' && e.scorecardDone).length
+        return legacy > 0 ? `${done} did scorecard · ${legacy} legacy Challenge` : `${done} did scorecard`
+      })(),
+      accent: '#1B6DFC',
+    },
     { label: 'Blueprint', count: blueprintEnrollments.length, sub: `${blueprintEnrollments.filter(e => e.hasMembership).length} ascended to membership`, accent: '#8b5cf6' },
     { label: 'Membership', count: membershipEnrollments.length, sub: `${membershipEnrollments.filter(e => !e.cancelledAt).length} active`, accent: '#B7791F' },
   ]
@@ -338,13 +352,17 @@ export default function FunnelClient({
               <TR><TD><span className="text-[#98A0AD]">No enrollments yet.</span></TD></TR>
             )}
             {filteredDecode.map(e => {
-              const atRisk = e.currentDay >= DECODE_DAYS.length && !e.hasBlueprintPurchase
+              const lastDay = e.product === 'decode' ? DECODE_DAYS.length : 14
+              const atRisk = e.currentDay >= lastDay && !e.hasBlueprintPurchase
               return (
                 <TR key={e.id} highlight={atRisk} href={`/dashboard/funnel/${e.token}`}>
                   <TDName name={e.name} email={e.email} drillHref={`/dashboard/funnel/${e.token}`} />
                   <TD>
-                    <span className="font-bold text-[#141821]" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Day {Math.min(e.currentDay, DECODE_DAYS.length)}</span>
-                    <span className="text-[11px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}> / {DECODE_DAYS.length}</span>
+                    <span className="font-bold text-[#141821]" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Day {Math.min(e.currentDay, lastDay)}</span>
+                    <span className="text-[11px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}> / {lastDay}</span>
+                    {e.product !== 'decode' && (
+                      <span className="ml-2 text-[10.5px] text-[#98A0AD]" title="Enrolled on the retired 14-day Challenge">legacy</span>
+                    )}
                   </TD>
                   <TD>
                     <OnboardTicks scorecard={e.scorecardDone} parq={e.parqDone} health={e.healthDone} />
@@ -363,7 +381,7 @@ export default function FunnelClient({
                   <TD>
                     {e.hasBlueprintPurchase
                       ? <StatusBadge label="Purchased" colour="#8b5cf6" />
-                      : e.currentDay >= DECODE_DAYS.length
+                      : e.currentDay >= lastDay
                         ? <StatusBadge label="Not yet" colour="#DC2626" />
                         : <StatusBadge label="Reading" colour="#98A0AD" />}
                   </TD>

@@ -23,7 +23,7 @@ export default async function FunnelPage() {
   ] = await Promise.all([
     admin
       .from('challenge_enrollments')
-      .select('id, token, status, current_day, enrolled_at, quiz_result, quiz_completed_at, parq_completed_at, health_dec_completed_at, body_decode_intake_completed_at, leads(name, email, phone, scorecard_profile, scorecard_score, scorecard_body_state)')
+      .select('id, token, status, product, current_day, enrolled_at, quiz_result, quiz_completed_at, parq_completed_at, health_dec_completed_at, body_decode_intake_completed_at, leads(name, email, phone, scorecard_profile, scorecard_score, scorecard_body_state)')
       .order('enrolled_at', { ascending: false }),
     admin
       .from('blueprint_enrollments')
@@ -101,11 +101,19 @@ export default async function FunnelPage() {
         name: (e.leads as any)?.name ?? 'Unknown',
         email: (e.leads as any)?.email ?? '',
         phone: (e.leads as any)?.phone ?? '',
+        // Two products live in this table: 30 legacy 14-day Challenge
+        // enrollments and the Body Decode that replaced it. The row has to
+        // know which, or a Challenge participant is shown "Day 3 of 5" for an
+        // arc she never ran.
+        product: (e.product === 'decode' ? 'decode' : 'challenge') as 'decode' | 'challenge',
         // Day computed live from enrolled_at - the stored current_day column is
         // not kept up to date, so reading it left every row stuck on "Day 1".
         // Uses currentDecodeDay(), the same function the client's own portal
         // uses, so the coach and the client can never be told different days.
-        currentDay: Math.min(currentDecodeDay(e.enrolled_at), DECODE_DAYS.length),
+        currentDay: Math.min(
+          currentDecodeDay(e.enrolled_at),
+          e.product === 'decode' ? DECODE_DAYS.length : 14,
+        ),
         enrolledAt: e.enrolled_at,
         quizResult: e.quiz_result,
         quizCompleted: !!e.quiz_completed_at,
