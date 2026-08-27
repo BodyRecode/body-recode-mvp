@@ -84,6 +84,10 @@
     {
       "path": "/api/cron/recovery-state-sweep",
       "schedule": "0 20 * * *"
+    },
+    {
+      "path": "/api/cron/progress-check-invites",
+      "schedule": "0 22 * * *"
     }
   ]
 }
