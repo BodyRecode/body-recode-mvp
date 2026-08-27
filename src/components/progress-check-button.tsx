@@ -18,29 +18,36 @@ export default function ProgressCheckButton({
   programId: string | null
   clientEmail?: string | null
 }) {
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error' | 'blocked'>('idle')
   const [error, setError] = useState('')
   const [url, setUrl] = useState('')
   const [copied, setCopied] = useState(false)
 
-  async function send() {
+  async function send(force = false) {
     if (status === 'sending') return
     if (!clientEmail) {
       setError('No email on file for this client. Add one, or copy the link once created.')
       setStatus('error')
       return
     }
-    if (!confirm('Email this client a Progress Check now? It is a short (about five minute) re-assessment. When she submits it you will be notified, and you can generate her Progress Read.')) return
+    if (!confirm('Email this client a Progress Check now? It asks for a short re-assessment plus her measurements and three photos, so it is a bigger ask than the weekly check-in. When she submits it you will be notified, and you can generate her Progress Read.')) return
     setStatus('sending')
     setError('')
     try {
       const res = await fetch('/api/new-progress-check-invitation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ clientId, programId, send: true }),
+        body: JSON.stringify({ clientId, programId, send: true, force }),
       })
       const data = await res.json().catch(() => ({}))
       if (data.url) setUrl(data.url)
+      // 409 = timing gate, not a failure. It is advisory, so the coach is told
+      // why and offered the override rather than simply stopped.
+      if (res.status === 409 && data.canForce) {
+        setError(data.error || 'Not the right moment to send this yet.')
+        setStatus('blocked')
+        return
+      }
       if (!res.ok) throw new Error(data.error || `Server returned ${res.status}`)
       setStatus('sent')
     } catch (e) {
@@ -59,7 +66,7 @@ export default function ProgressCheckButton({
   return (
     <div className="inline-flex flex-col items-start gap-1.5">
       <button
-        onClick={send}
+        onClick={() => send()}
         disabled={status === 'sending' || status === 'sent'}
         className={`inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-60 ${
           status === 'sent'
@@ -72,6 +79,17 @@ export default function ProgressCheckButton({
         {status === 'sending' ? 'Sending...' : status === 'sent' ? 'Progress Check sent' : 'Send Progress Check'}
       </button>
       {status === 'error' && <p className="text-[11px] text-[#8A5A14] max-w-[240px]">{error}</p>}
+      {status === 'blocked' && (
+        <div className="max-w-[280px]">
+          <p className="text-[11px] text-[#8A5A14] leading-relaxed">{error}</p>
+          <button
+            onClick={() => send(true)}
+            className="mt-1 text-[11px] font-medium text-[#1B6DFC] hover:text-[#1056D6] transition-colors"
+          >
+            Send it anyway
+          </button>
+        </div>
+      )}
       {url && (
         <button
           onClick={copy}

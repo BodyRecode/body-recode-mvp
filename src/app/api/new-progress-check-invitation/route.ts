@@ -7,6 +7,7 @@ import { fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { buildProgressCheckInviteEmail } from '@/lib/progress-check-invite-email'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
+import { evaluateProgressCheckReadiness, currentCoachingWeek } from '@/lib/progress-check-readiness'
 
 // Creates a Progress Check (delta re-assessment) invitation for a client and
 // returns its token. The client completes it at /progress-check/{token}. One
@@ -20,19 +21,57 @@ export async function POST(request: NextRequest) {
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
   if (!(await isCoachUser(user))) return forbidden()
 
-  const { clientId, programId, blockNumber, send } = await request.json().catch(() => ({}))
+  const { clientId, programId, blockNumber, send, force } = await request.json().catch(() => ({}))
   if (!clientId) return NextResponse.json({ error: 'Missing clientId' }, { status: 400 })
 
   // Client must belong to this coach (same guard as the intake invitation).
   const { data: client } = await supabase
     .from('clients')
-    .select('id, name, email')
+    .select('id, name, email, coaching_started_at')
     .eq('id', clientId)
     .eq('coach_id', user.id)
     .single()
   if (!client) return NextResponse.json({ error: 'Client not found' }, { status: 404 })
 
   const admin = createAdminClient()
+
+  // Timing gate: after block-end, and after this week's check-in. Enforced here
+  // rather than only in the UI so the block-end cron inherits the same rule the
+  // day it is built. `force` is the coach's override.
+  if (!force) {
+    const week = currentCoachingWeek(client.coaching_started_at ?? null)
+    const [{ data: program }, { count: checkinsThisWeek }] = await Promise.all([
+      programId
+        ? admin.from('programs').select('generated_at, week_duration').eq('id', programId).maybeSingle()
+        : Promise.resolve({ data: null }),
+      week != null
+        ? admin
+            .from('weekly_checkins')
+            .select('id', { count: 'exact', head: true })
+            .eq('client_id', clientId)
+            .eq('week_number', week)
+        : Promise.resolve({ count: 0 }),
+    ])
+
+    let blockWeek: number | null = null
+    if (program?.generated_at) {
+      const started = new Date(program.generated_at).getTime()
+      blockWeek = Math.floor((Date.now() - started) / (1000 * 60 * 60 * 24 * 7)) + 1
+    }
+
+    const readiness = evaluateProgressCheckReadiness({
+      coachingStartedAt: client.coaching_started_at ?? null,
+      blockWeek,
+      blockDuration: program?.week_duration ?? null,
+      checkinsThisWeek: checkinsThisWeek ?? 0,
+    })
+    if (!readiness.ready) {
+      return NextResponse.json(
+        { error: readiness.reason, blocker: readiness.blocker, canForce: true },
+        { status: 409 },
+      )
+    }
+  }
   const { data: row, error } = await admin
     .from('progress_checks')
     .insert({ client_id: clientId, program_id: programId ?? null, block_number: blockNumber ?? null })
