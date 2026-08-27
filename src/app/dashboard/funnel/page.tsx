@@ -1,5 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import FunnelClient from './funnel-client'
+import { currentDecodeDay, DECODE_DAYS } from '@/lib/decode-days'
 
 // Always fetch fresh - the funnel dashboard must reflect new enrollments
 // the moment they happen, not the cached version from page-build time.
@@ -100,13 +101,11 @@ export default async function FunnelPage() {
         name: (e.leads as any)?.name ?? 'Unknown',
         email: (e.leads as any)?.email ?? '',
         phone: (e.leads as any)?.phone ?? '',
-        // Day computed live from enrolled_at (same as the participant detail
-        // page) - the stored current_day column is not kept up to date, so
-        // reading it left every row stuck on "Day 1".
-        currentDay: Math.min(
-          Math.max(1, Math.floor((Date.now() - new Date(e.enrolled_at).getTime()) / (1000 * 60 * 60 * 24)) + 1),
-          14,
-        ),
+        // Day computed live from enrolled_at - the stored current_day column is
+        // not kept up to date, so reading it left every row stuck on "Day 1".
+        // Uses currentDecodeDay(), the same function the client's own portal
+        // uses, so the coach and the client can never be told different days.
+        currentDay: Math.min(currentDecodeDay(e.enrolled_at), DECODE_DAYS.length),
         enrolledAt: e.enrolled_at,
         quizResult: e.quiz_result,
         quizCompleted: !!e.quiz_completed_at,

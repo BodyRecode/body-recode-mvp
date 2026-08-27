@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { DECODE_DAYS } from '@/lib/decode-days'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { AlertTriangle, Search, ChevronRight } from 'lucide-react'
@@ -23,7 +24,7 @@ const PATTERN_LABELS: Record<string, string> = {
   'pending': 'Pending',
 }
 
-type ChallengeRow = {
+type DecodeRow = {
   id: string; token: string; name: string; email: string; phone: string
   currentDay: number; enrolledAt: string; quizResult: string | null
   quizCompleted: boolean; hasBlueprintPurchase: boolean
@@ -31,7 +32,7 @@ type ChallengeRow = {
   scorecardScore: number | null; scorecardBodyState: string | null; scorecardProfile: string | null
 }
 
-// Compact onboarding-status indicator for the Challenge table: shows, per
+// Compact onboarding-status indicator for the Body Decode table: shows, per
 // signup, whether they have completed the in-portal Scorecard, PAR-Q, and
 // Health Declaration yet.
 function OnboardTicks({ scorecard, parq, health }: { scorecard: boolean; parq: boolean; health: boolean }) {
@@ -53,7 +54,7 @@ function OnboardTicks({ scorecard, parq, health }: { scorecard: boolean; parq: b
   )
 }
 
-// Scorecard result cell for the Challenge table: when the Day 0 scorecard is
+// Scorecard result cell for the Body Decode table: when the Day 0 scorecard is
 // done, shows the score + body state (the actual result, not just a tick);
 // otherwise a muted "Pending". Colour keyed to body state.
 function ScorecardResult({ done, score, bodyState }: { done: boolean; score: number | null; bodyState: string | null }) {
@@ -207,17 +208,17 @@ export default function FunnelClient({
   membershipEnrollments,
   pagesTokens,
 }: {
-  challengeEnrollments: ChallengeRow[]
+  challengeEnrollments: DecodeRow[]
   blueprintEnrollments: BlueprintRow[]
   membershipEnrollments: MembershipRow[]
   pagesTokens: PagesTokens
 }) {
-  const [tab, setTab] = useState<'challenge' | 'blueprint' | 'membership' | 'pages'>('challenge')
+  const [tab, setTab] = useState<'decode' | 'blueprint' | 'membership' | 'pages'>('decode')
   const [search, setSearch] = useState('')
 
   const q = search.toLowerCase()
 
-  const filteredChallenge = challengeEnrollments.filter(e =>
+  const filteredDecode = challengeEnrollments.filter(e =>
     e.name.toLowerCase().includes(q) || e.email.toLowerCase().includes(q)
   )
   const filteredBlueprint = blueprintEnrollments.filter(e =>
@@ -232,7 +233,7 @@ export default function FunnelClient({
   const amber = accentColour('amber')
 
   const summary = [
-    { label: 'Challenge', count: challengeEnrollments.length, sub: `${challengeEnrollments.filter(e => e.scorecardDone).length} did scorecard`, accent: '#1B6DFC' },
+    { label: 'The Body Decode', count: challengeEnrollments.length, sub: `${challengeEnrollments.filter(e => e.scorecardDone).length} did scorecard`, accent: '#1B6DFC' },
     { label: 'Blueprint', count: blueprintEnrollments.length, sub: `${blueprintEnrollments.filter(e => e.hasMembership).length} ascended to membership`, accent: '#8b5cf6' },
     { label: 'Membership', count: membershipEnrollments.length, sub: `${membershipEnrollments.filter(e => !e.cancelledAt).length} active`, accent: '#B7791F' },
   ]
@@ -242,7 +243,7 @@ export default function FunnelClient({
       <PageHeader
         eyebrow="Funnel"
         title="Funnel Dashboard"
-        subtitle="Every participant across all three stages - Challenge, Blueprint, Membership."
+        subtitle="Every participant across all three stages - The Body Decode, Blueprint, Membership."
       />
 
       {/* Summary stats */}
@@ -301,7 +302,7 @@ export default function FunnelClient({
       <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
         <div className="inline-flex items-center bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg p-0.5">
           {([
-            { id: 'challenge', label: `Challenge (${challengeEnrollments.length})` },
+            { id: 'decode', label: `Body Decode (${challengeEnrollments.length})` },
             { id: 'blueprint', label: `Blueprint (${blueprintEnrollments.length})` },
             { id: 'membership', label: `Membership (${membershipEnrollments.length})` },
             { id: 'pages', label: 'Pages' },
@@ -331,19 +332,19 @@ export default function FunnelClient({
       {/* Tables */}
       <Card padding="none" className={`overflow-hidden ${tab === 'pages' ? 'hidden' : ''}`}>
 
-        {tab === 'challenge' && (
+        {tab === 'decode' && (
           <Table headers={['Name', 'Day', 'Setup', 'Scorecard', 'Pattern', 'Quiz', 'Blueprint', 'Enrolled']}>
-            {filteredChallenge.length === 0 && (
+            {filteredDecode.length === 0 && (
               <TR><TD><span className="text-[#98A0AD]">No enrollments yet.</span></TD></TR>
             )}
-            {filteredChallenge.map(e => {
-              const atRisk = e.currentDay >= 14 && !e.hasBlueprintPurchase
+            {filteredDecode.map(e => {
+              const atRisk = e.currentDay >= DECODE_DAYS.length && !e.hasBlueprintPurchase
               return (
                 <TR key={e.id} highlight={atRisk} href={`/dashboard/funnel/${e.token}`}>
                   <TDName name={e.name} email={e.email} drillHref={`/dashboard/funnel/${e.token}`} />
                   <TD>
-                    <span className="font-bold text-[#141821]" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Day {Math.min(e.currentDay, 14)}</span>
-                    <span className="text-[11px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}> / 14</span>
+                    <span className="font-bold text-[#141821]" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Day {Math.min(e.currentDay, DECODE_DAYS.length)}</span>
+                    <span className="text-[11px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}> / {DECODE_DAYS.length}</span>
                   </TD>
                   <TD>
                     <OnboardTicks scorecard={e.scorecardDone} parq={e.parqDone} health={e.healthDone} />
@@ -362,9 +363,9 @@ export default function FunnelClient({
                   <TD>
                     {e.hasBlueprintPurchase
                       ? <StatusBadge label="Purchased" colour="#8b5cf6" />
-                      : e.currentDay >= 14
+                      : e.currentDay >= DECODE_DAYS.length
                         ? <StatusBadge label="Not yet" colour="#DC2626" />
-                        : <StatusBadge label="In challenge" colour="#98A0AD" />}
+                        : <StatusBadge label="Reading" colour="#98A0AD" />}
                   </TD>
                   <TD>
                     <div className="flex items-center justify-between gap-2">
