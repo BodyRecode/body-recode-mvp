@@ -562,25 +562,27 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
     // stands for the whole of that week rather than appearing after it - the
     // coach sees it every morning of the week, not once on the last day.
     if (weeksIn >= input.activeProgram.weekDuration) {
-      const over = weeksIn - input.activeProgram.weekDuration
       const endMs = started + input.activeProgram.weekDuration * 7 * 86_400_000
       const daysLeft = Math.ceil((endMs - Date.now()) / 86_400_000)
-      const sublabel =
-        over > 0
-          ? `${input.activeProgram.blockName} finished ${over} week${over === 1 ? '' : 's'} ago`
-          : daysLeft > 1
-            ? `Final week of ${input.activeProgram.blockName} - ${daysLeft} days left`
-            : daysLeft === 1
-              ? `Final week of ${input.activeProgram.blockName} - last day`
-              : `${input.activeProgram.blockName} has reached its end`
+      const finished = Date.now() >= endMs
+      const weeksOver = finished ? Math.floor((Date.now() - endMs) / (7 * 86_400_000)) : 0
+      // During the final week this is awareness, not an instruction - the
+      // Progress Check closes a block and the block is not closed yet. It
+      // becomes an instruction the moment the week is done.
       return {
         clientId: input.clientId,
         clientName: input.clientName,
         stage: 'block_end_progress_check_due',
-        headline: 'Send the Progress Check',
-        sublabel,
+        headline: finished ? 'Send the Progress Check' : 'Final week of the block',
+        sublabel: finished
+          ? weeksOver >= 1
+            ? `${input.activeProgram.blockName} finished ${weeksOver} week${weeksOver === 1 ? '' : 's'} ago`
+            : `${input.activeProgram.blockName} has finished - goes once her check-in is in`
+          : daysLeft > 1
+            ? `${input.activeProgram.blockName} - ${daysLeft} days to go, then the Progress Check`
+            : `${input.activeProgram.blockName} - last day`,
         href: `${profileHref}/program`,
-        accent: 'amber',
+        accent: finished ? 'amber' : 'neutral',
         priority: 20,
         badge: composedBadge,
       }
@@ -971,16 +973,17 @@ export function computeConcurrentActions(
     if (weeksIn >= input.activeProgram.weekDuration) {
       const endMs = started + input.activeProgram.weekDuration * 7 * 86_400_000
       const daysLeft = Math.ceil((endMs - Date.now()) / 86_400_000)
+      const finished = Date.now() >= endMs
       push({
         ...base,
         stage: 'block_end_progress_check_due',
-        headline: 'Send the Progress Check',
-        sublabel:
-          daysLeft > 1 ? `Final week - ${daysLeft} days left`
-          : daysLeft === 1 ? 'Final week - last day'
-          : `${input.activeProgram.blockName} has ended`,
+        headline: finished ? 'Send the Progress Check' : 'Final week of the block',
+        sublabel: finished
+          ? `${input.activeProgram.blockName} has finished`
+          : daysLeft > 1 ? `${daysLeft} days to go`
+          : 'Last day',
         href: `${profileHref}/program`,
-        accent: 'amber',
+        accent: finished ? 'amber' : 'neutral',
         priority: 20,
       })
     }

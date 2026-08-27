@@ -3,8 +3,12 @@
  *
  * Two gates, both Kade's call (27 Aug 2026):
  *
- * 1. The block has ended. The Progress Check exists to close a block, so
- *    sending it mid-block asks the client to re-read a block she is still in.
+ * 1. The block has FINISHED - the final week is done, not merely reached.
+ *    "Block end" elsewhere in the app means the client is IN her last week,
+ *    which is right for showing a countdown but wrong for this: the Progress
+ *    Check closes the block, and a block with days left in it is not closed.
+ *    Sending during the final week also lands the ask before the check-in that
+ *    completes that week, which is the inversion gate 2 exists to prevent.
  *
  * 2. The most recent weekly check-in is in - regardless of where in the week
  *    we are. Block-end lands inside a normal check-in week, so without this the
@@ -37,9 +41,12 @@ export type ProgressCheckReadiness = {
 
 export type ProgressCheckReadinessInput = {
   coachingStartedAt: string | null
-  /** Current active block: weeks elapsed in it, and its prescribed duration. */
-  blockWeek: number | null
-  blockDuration: number | null
+  /**
+   * When the block finishes: generated_at + duration weeks. Null when the
+   * program has no start date or no prescribed duration, in which case the
+   * block gate cannot be evaluated and is skipped.
+   */
+  blockEndsAtMs: number | null
   /** Did she submit a weekly check-in in the window that most recently opened? */
   checkedInThisWindow: boolean
 }
@@ -47,14 +54,17 @@ export type ProgressCheckReadinessInput = {
 export function evaluateProgressCheckReadiness(
   input: ProgressCheckReadinessInput,
 ): ProgressCheckReadiness {
-  const { blockWeek, blockDuration, checkedInThisWindow } = input
+  const { blockEndsAtMs, checkedInThisWindow } = input
 
-  if (blockWeek != null && blockDuration != null && blockWeek < blockDuration) {
-    const remaining = blockDuration - blockWeek
+  if (blockEndsAtMs != null && Date.now() < blockEndsAtMs) {
+    const days = Math.ceil((blockEndsAtMs - Date.now()) / 86_400_000)
     return {
       ready: false,
       blocker: 'block_not_ended',
-      reason: `The block still has ${remaining} week${remaining === 1 ? '' : 's'} to run. The Progress Check closes a block, so it is sent once the block is done.`,
+      reason:
+        days > 7
+          ? `The block has ${Math.ceil(days / 7)} weeks still to run. The Progress Check closes a block, so it goes once the block is finished.`
+          : `She is still in the final week - ${days} day${days === 1 ? '' : 's'} to go. The Progress Check goes after she has finished it and sent the check-in that closes it out.`,
     }
   }
 

@@ -55,16 +55,16 @@ export async function POST(request: NextRequest) {
         .gte('submitted_at', windowOpenIso),
     ])
 
-    let blockWeek: number | null = null
-    if (program?.generated_at) {
-      const started = new Date(program.generated_at).getTime()
-      blockWeek = Math.floor((Date.now() - started) / (1000 * 60 * 60 * 24 * 7)) + 1
-    }
+    // The block finishes at generated_at + duration weeks, not when its final
+    // week begins.
+    const blockEndsAtMs =
+      program?.generated_at && program.week_duration
+        ? new Date(program.generated_at).getTime() + program.week_duration * 7 * 24 * 60 * 60 * 1000
+        : null
 
     const readiness = evaluateProgressCheckReadiness({
       coachingStartedAt: client.coaching_started_at ?? null,
-      blockWeek,
-      blockDuration: program?.week_duration ?? null,
+      blockEndsAtMs,
       checkedInThisWindow: (checkinsThisWindow ?? 0) > 0,
     })
     if (!readiness.ready) {

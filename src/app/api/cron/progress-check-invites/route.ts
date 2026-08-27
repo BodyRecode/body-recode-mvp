@@ -78,8 +78,10 @@ export async function GET(request: NextRequest) {
     if (!c || c.ended_at || c.frozen_at) continue
     if (!program.generated_at || !program.week_duration) continue
 
-    const blockWeek =
-      Math.floor((Date.now() - new Date(program.generated_at).getTime()) / (7 * 24 * 60 * 60 * 1000)) + 1
+    // The block finishes at generated_at + duration weeks. Not "has reached
+    // its final week" - a block with days left in it is not closed.
+    const blockEndsAtMs =
+      new Date(program.generated_at).getTime() + program.week_duration * 7 * 24 * 60 * 60 * 1000
 
     // Already raised for this block? The row is the idempotency record.
     const { count: existing } = await admin
@@ -96,8 +98,7 @@ export async function GET(request: NextRequest) {
 
     const readiness = evaluateProgressCheckReadiness({
       coachingStartedAt: c.coaching_started_at,
-      blockWeek,
-      blockDuration: program.week_duration,
+      blockEndsAtMs,
       checkedInThisWindow: (checkins ?? 0) > 0,
     })
     if (!readiness.ready) {
