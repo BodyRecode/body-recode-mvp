@@ -7,9 +7,16 @@ import { brand, coach } from "@/config/tenant";
 const AUTOMATIC_AUTOMATIONS = [
   // Client-stage automations
   {
+    id: 'progress-check-invite',
+    name: 'Progress Check Invite - fires on her check-in',
+    description: `The block-end Progress Check sends itself. Two gates: her block has FINISHED (the final week completed, not merely reached), and her weekly check-in for the most recent window is in. The second condition is the one that usually lands last, so the invite fires the instant she submits her check-in - not the next morning, and not on a schedule.\n\nOrder matters and is enforced, not suggested. Block-end falls inside a normal check-in week, and if the bigger ask arrives first it is the one that gets done while the weekly signal the CFWS runs on quietly disappears. The check-in goes first, full stop. Where a client never submits, the release valve is yours: Send it anyway on her Training page.\n\nThe email opens her PORTAL rather than deep-linking into the form - it waits under This week. One invitation exists per block: a progress_checks row against that program_id IS the record one was sent, and a new block means a new program, so the next milestone fires fresh.\n\nWrapped so it can never fail her check-in. A milestone landing late is recoverable; a lost check-in is not. A daily backstop cron catches anything the event missed and emails ${coach().email} when it does, because the backstop firing means the live path missed one.`,
+    trigger: "POST /api/submit-weekly-checkin (client submits) - plus /api/cron/progress-check-invites daily 8am Brisbane as backstop",
+    steps: 2,
+  },
+  {
     id: 'progress-check-submitted',
     name: 'Progress Check Submitted - Coach Notification',
-    description: `When a client submits their Progress Check (the short block-end re-assessment), a notification email fires to ${coach().email} with a link to their program page. Nothing publishes automatically: you open the program, click Generate on the Block-End / Progress Read panel to re-score their body state from the answers, review, then Publish and Notify. Best-effort - a failed notification never blocks the client's submission.`,
+    description: `When a client submits their Progress Check (the short block-end re-assessment), a notification email fires to ${coach().email} with a link to their program page. Nothing publishes automatically: you open the program, click Generate on the Block-End / Progress Read panel to re-score their body state from the answers, review, then Publish and Notify. Best-effort - a failed notification never blocks the client's submission.\n\nFrom 27 Aug the notification also says whether the milestone capture landed: her measurements, and how many of the three photos. Both are required on the form, so a submission arriving without them is flagged as an anomaly worth checking the logs for rather than read as a choice she made. That capture writes a fresh baselines row stamped with her coaching week - which is what finally makes a before-and-after possible, after every baseline on file sat in week one.`,
     trigger: 'POST /api/submit-progress-check (client submits)',
     steps: 1,
   },
