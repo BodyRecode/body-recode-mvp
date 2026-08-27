@@ -557,17 +557,28 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
   ) {
     const started = new Date(input.activeProgram.generatedAt).getTime()
     const weeksIn = Math.floor((Date.now() - started) / (1000 * 60 * 60 * 24 * 7)) + 1
+    // Block-end means the client is IN the final week, matching the convention
+    // on the program page (currentWeek >= startWeek + duration - 1). So this
+    // stands for the whole of that week rather than appearing after it - the
+    // coach sees it every morning of the week, not once on the last day.
     if (weeksIn >= input.activeProgram.weekDuration) {
       const over = weeksIn - input.activeProgram.weekDuration
+      const endMs = started + input.activeProgram.weekDuration * 7 * 86_400_000
+      const daysLeft = Math.ceil((endMs - Date.now()) / 86_400_000)
+      const sublabel =
+        over > 0
+          ? `${input.activeProgram.blockName} finished ${over} week${over === 1 ? '' : 's'} ago`
+          : daysLeft > 1
+            ? `Final week of ${input.activeProgram.blockName} - ${daysLeft} days left`
+            : daysLeft === 1
+              ? `Final week of ${input.activeProgram.blockName} - last day`
+              : `${input.activeProgram.blockName} has reached its end`
       return {
         clientId: input.clientId,
         clientName: input.clientName,
         stage: 'block_end_progress_check_due',
         headline: 'Send the Progress Check',
-        sublabel:
-          over > 0
-            ? `${input.activeProgram.blockName} ended ${over} week${over === 1 ? '' : 's'} ago`
-            : `${input.activeProgram.blockName} has reached its end`,
+        sublabel,
         href: `${profileHref}/program`,
         accent: 'amber',
         priority: 20,
