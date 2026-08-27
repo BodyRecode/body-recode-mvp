@@ -6,23 +6,25 @@
  * 1. The block has ended. The Progress Check exists to close a block, so
  *    sending it mid-block asks the client to re-read a block she is still in.
  *
- * 2. That week's weekly check-in is in. Block-end lands inside a normal
- *    check-in week, so without this the client gets the weekly check-in AND a
- *    24-question re-assessment with measurements and three photos in the same
- *    few days. The bigger ask arriving first is the one that gets done, and the
- *    weekly signal - which the CFWS runs on - is the one that quietly gets
- *    dropped. So the routine one goes first.
+ * 2. The most recent weekly check-in is in - regardless of where in the week
+ *    we are. Block-end lands inside a normal check-in week, so without this the
+ *    client gets the weekly check-in AND a 24-question re-assessment with
+ *    measurements and three photos in the same few days. The bigger ask
+ *    arriving first is the one that gets done, and the weekly signal - which
+ *    the CFWS runs on - is the one that quietly gets dropped.
  *
- *    With one release valve: once the check-in window has closed, waiting any
- *    longer just stalls the milestone, so a missed check-in must not block it
- *    indefinitely.
+ *    An earlier version unlocked automatically once the window closed, which
+ *    let a Thursday send land BEFORE the weekend's check-in - the exact
+ *    inversion the rule exists to prevent. The check-in comes first, full stop.
+ *    Where she never submits, the release valve is the coach's own override
+ *    below, which is a judgement call and belongs to a person.
  *
  * The gate is advisory, not a lock. `force` lets the coach send anyway - there
  * are real reasons to (a client leaving the country on Friday), and a coach
  * being told why is better served than a coach being stopped.
  */
 
-import { getCheckInWindowStatus, getWeekNumber } from '@/lib/weekly-checkin-questions'
+import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 
 export type ProgressCheckBlocker = 'block_not_ended' | 'weekly_checkin_pending'
 
@@ -38,14 +40,14 @@ export type ProgressCheckReadinessInput = {
   /** Current active block: weeks elapsed in it, and its prescribed duration. */
   blockWeek: number | null
   blockDuration: number | null
-  /** Weekly check-ins already submitted for the client's CURRENT coaching week. */
-  checkinsThisWeek: number
+  /** Did she submit a weekly check-in in the window that most recently opened? */
+  checkedInThisWindow: boolean
 }
 
 export function evaluateProgressCheckReadiness(
   input: ProgressCheckReadinessInput,
 ): ProgressCheckReadiness {
-  const { blockWeek, blockDuration, checkinsThisWeek } = input
+  const { blockWeek, blockDuration, checkedInThisWindow } = input
 
   if (blockWeek != null && blockDuration != null && blockWeek < blockDuration) {
     const remaining = blockDuration - blockWeek
@@ -56,14 +58,11 @@ export function evaluateProgressCheckReadiness(
     }
   }
 
-  if (checkinsThisWeek === 0) {
-    const window = getCheckInWindowStatus()
-    if (window.isOpen) {
-      return {
-        ready: false,
-        blocker: 'weekly_checkin_pending',
-        reason: 'This week’s check-in is still open and has not come in yet. Sending both at once means the weekly one gets skipped - it will unblock as soon as she submits it, or when the window closes.',
-      }
+  if (!checkedInThisWindow) {
+    return {
+      ready: false,
+      blocker: 'weekly_checkin_pending',
+      reason: 'Her weekly check-in for this window has not come in yet. The Progress Check goes after it, not before - sending now means the weekly one is the one that gets skipped. It unblocks as soon as she submits.',
     }
   }
 

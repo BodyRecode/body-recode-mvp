@@ -8,6 +8,7 @@ import { buildProgressCheckInviteEmail } from '@/lib/progress-check-invite-email
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
 import { evaluateProgressCheckReadiness, currentCoachingWeek } from '@/lib/progress-check-readiness'
+import { lastCheckinWindowOpenMs } from '@/lib/weekly-checkin-questions'
 
 // Creates a Progress Check (delta re-assessment) invitation for a client and
 // returns its token. The client completes it at /progress-check/{token}. One
@@ -39,18 +40,19 @@ export async function POST(request: NextRequest) {
   // rather than only in the UI so the block-end cron inherits the same rule the
   // day it is built. `force` is the coach's override.
   if (!force) {
-    const week = currentCoachingWeek(client.coaching_started_at ?? null)
-    const [{ data: program }, { count: checkinsThisWeek }] = await Promise.all([
+    // "Has she checked in" is asked against the window that most recently
+    // opened, not against her coaching week - the coaching week rolls over on
+    // her own start day and would answer a different question.
+    const windowOpenIso = new Date(lastCheckinWindowOpenMs()).toISOString()
+    const [{ data: program }, { count: checkinsThisWindow }] = await Promise.all([
       programId
         ? admin.from('programs').select('generated_at, week_duration').eq('id', programId).maybeSingle()
         : Promise.resolve({ data: null }),
-      week != null
-        ? admin
-            .from('weekly_checkins')
-            .select('id', { count: 'exact', head: true })
-            .eq('client_id', clientId)
-            .eq('week_number', week)
-        : Promise.resolve({ count: 0 }),
+      admin
+        .from('weekly_checkins')
+        .select('id', { count: 'exact', head: true })
+        .eq('client_id', clientId)
+        .gte('submitted_at', windowOpenIso),
     ])
 
     let blockWeek: number | null = null
@@ -63,7 +65,7 @@ export async function POST(request: NextRequest) {
       coachingStartedAt: client.coaching_started_at ?? null,
       blockWeek,
       blockDuration: program?.week_duration ?? null,
-      checkinsThisWeek: checkinsThisWeek ?? 0,
+      checkedInThisWindow: (checkinsThisWindow ?? 0) > 0,
     })
     if (!readiness.ready) {
       return NextResponse.json(

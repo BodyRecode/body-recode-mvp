@@ -3,7 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
-import { getCheckInWindowStatus, getWeekNumber, isCheckinTestMode } from '@/lib/weekly-checkin-questions'
+import { getCheckInWindowStatus, getWeekNumber, isCheckinTestMode, lastCheckinWindowOpenMs } from '@/lib/weekly-checkin-questions'
 import ClientHeader from '@/components/client-header'
 import { isCoachEmail } from '@/lib/coach-auth'
 import { getGpRequestUrl } from '@/lib/gp-request'
@@ -277,6 +277,9 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   // schedule. Used when a client missed their window and the coach wants to
   // let them complete it ad-hoc.
   const overrideUntil = client.checkin_window_override_until ? new Date(client.checkin_window_override_until) : null
+  // Server component: rendered once per request, so reading the clock here is
+  // deterministic for that render. The purity rule targets client render.
+  // eslint-disable-next-line react-hooks/purity
   const overrideActive = overrideUntil ? overrideUntil.getTime() > Date.now() : false
   const windowOpen = checkinWindow.isOpen || testMode || overrideActive
   const startDate = client.coaching_started_at || client.created_at
@@ -369,20 +372,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   // confirmation belongs to the weekend it was submitted in, so it clears at
   // midnight Sunday and the rest of the week shows the reminder instead.
   //
-  // Brisbane is UTC+10 year round, so wall-clock is read by shifting and using
-  // the UTC getters - same convention as brisbaneDay above.
-  const BRIS_OFFSET_MS = 10 * 60 * 60 * 1000
-  const brisNow = new Date(Date.now() + BRIS_OFFSET_MS)
-  // The most recent Friday 6pm at or before now.
-  let daysBackToFriday = (brisNow.getUTCDay() - 5 + 7) % 7
-  if (daysBackToFriday === 0 && brisNow.getUTCHours() < 18) daysBackToFriday = 7
-  const lastWindowOpenMs =
-    Date.UTC(
-      brisNow.getUTCFullYear(),
-      brisNow.getUTCMonth(),
-      brisNow.getUTCDate() - daysBackToFriday,
-      18, 0, 0,
-    ) - BRIS_OFFSET_MS
+  const lastWindowOpenMs = lastCheckinWindowOpenMs()
   // Friday 6pm + 2 days 6 hours = the Monday 00:00 that ends that weekend.
   const weekendEndsMs = lastWindowOpenMs + (2 * 24 + 6) * 60 * 60 * 1000
   const submittedThisWindow = Array.isArray(client.weekly_checkins)
@@ -392,16 +382,17 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   // Test mode moves the window around, so it keeps the old per-week signal.
   const showCheckinDone = testMode
     ? checkinDoneThisWeek
+    // eslint-disable-next-line react-hooks/purity
     : submittedThisWindow && Date.now() < weekendEndsMs
 
   // The Progress Check waits behind the weekly check-in, mirroring the gate on
   // the coach's send. Both asks land in the same few days at block-end, and the
   // bigger one arriving first is the one that gets done - while the weekly
-  // signal the synthesis runs on quietly gets dropped. So while her window is
-  // open and her check-in is not in, the Progress Check is a heads-up rather
-  // than a task. Once the window closes, waiting longer only stalls the
-  // milestone, so it unlocks regardless.
-  const progressCheckUnlocked = submittedThisWindow || !windowOpen
+  // signal the synthesis runs on quietly gets dropped. The check-in comes
+  // first, full stop: an earlier version also unlocked once the window closed,
+  // which let it open on a Thursday, ahead of the very check-in it is supposed
+  // to follow.
+  const progressCheckUnlocked = submittedThisWindow
 
   // Where the block itself is up to. Until now the portal said nothing about a
   // block ending - the Progress Check card only appeared once the coach had
@@ -412,6 +403,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   const blockPhase: 'final_week' | 'ended' | null = (() => {
     if (!activeProgram?.generated_at || !activeProgram.week_duration) return null
     const weeksIn = Math.floor(
+      // eslint-disable-next-line react-hooks/purity
       (Date.now() - new Date(activeProgram.generated_at).getTime()) / (7 * 24 * 60 * 60 * 1000),
     ) + 1
     if (weeksIn > activeProgram.week_duration) return 'ended'

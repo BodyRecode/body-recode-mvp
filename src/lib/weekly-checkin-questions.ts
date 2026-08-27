@@ -573,6 +573,27 @@ export function isCheckinTestMode(): boolean {
 }
 
 /** Returns whether the check-in window is currently open and which form is active */
+/**
+ * The most recent Friday 6pm Brisbane at or before now, as a UTC timestamp.
+ *
+ * This is the anchor for "has she checked in for the current week" - a
+ * question the portal and the Progress Check gate both ask, and which must not
+ * be answered two different ways. Brisbane is UTC+10 year round, so wall-clock
+ * is read by shifting and using the UTC getters.
+ */
+export function lastCheckinWindowOpenMs(now: number = Date.now()): number {
+  const BRIS_OFFSET_MS = 10 * 60 * 60 * 1000
+  const bris = new Date(now + BRIS_OFFSET_MS)
+  let daysBack = (bris.getUTCDay() - 5 + 7) % 7
+  if (daysBack === 0 && bris.getUTCHours() < 18) daysBack = 7
+  return Date.UTC(
+    bris.getUTCFullYear(),
+    bris.getUTCMonth(),
+    bris.getUTCDate() - daysBack,
+    18, 0, 0,
+  ) - BRIS_OFFSET_MS
+}
+
 export function getCheckInWindowStatus(): CheckInWindowStatus {
   const now = nowBrisbane()
   const day = now.getUTCDay() // 0=Sun, 1=Mon, ..., 5=Fri, 6=Sat
