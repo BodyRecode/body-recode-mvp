@@ -1,4 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
+import { WeekStrip, WeekStripLegend } from '@/components/dashboard/week-strip'
+import { buildWeekStrips } from '@/lib/week-strip-data'
 import OffboardPanel from './offboard-panel'
 import FreezePanel from './freeze-panel'
 import { signedBaselinePhotoSet } from '@/lib/baseline-photos'
@@ -390,6 +392,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   else if (medsReading && !medsPublishedAt) medsAttention = 'Reading not published'
   const medicationsActionRequired = !!medsAttention
 
+  const weekStrip = (await buildWeekStrips([id]))[id]
+
   return (
     <div className="max-w-[980px]">
       <div className="min-w-0">
@@ -578,6 +582,21 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           </Link>
         )
       })()}
+
+      {weekStrip && weekStrip.length > 0 && (
+        <div className="br-card px-5 py-4 mb-4 flex items-start justify-between gap-5 flex-wrap">
+          <div>
+            <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em] mb-0.5">Last seven days</p>
+            <p className="text-[12.5px] text-[#666D7A] mb-3">
+              Meal logging fills the square. A logged session is the green dot, and only ever adds.
+            </p>
+            <WeekStrip days={weekStrip} showInitials />
+          </div>
+          <div className="max-w-[320px]">
+            <WeekStripLegend />
+          </div>
+        </div>
+      )}
 
       <ClientProfileTabs clientId={id}>
       <div data-tab="admin">

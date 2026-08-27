@@ -1,4 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
+import { WeekStrip } from '@/components/dashboard/week-strip'
+import { buildWeekStrips } from '@/lib/week-strip-data'
 import Link from 'next/link'
 import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
 import { AlertTriangle, ArrowUpRight, ChevronRight, UserPlus, Users, Activity, RefreshCw } from 'lucide-react'
@@ -157,6 +159,10 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     const qs = Object.entries(next).map(([k, v]) => `${k}=${v}`).join('&')
     return `/dashboard/coaching${qs ? '?' + qs : ''}`
   }
+
+  // One batched pass for the whole list - a per-client query to draw seven
+  // squares would be a dozen round trips to render one page.
+  const weekStrips = await buildWeekStrips(clientsProcessed.map(c => c.id))
 
   return (
     <div className="max-w-[1100px]">
@@ -381,7 +387,12 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 shrink-0 ml-3">
+              <div className="flex items-center gap-3.5 shrink-0 ml-3">
+                {weekStrips[client.id] && (
+                  <span className="hidden md:inline-flex" title="Meal logging over the last 7 days. A green dot is a logged session.">
+                    <WeekStrip days={weekStrips[client.id]} />
+                  </span>
+                )}
                 {client.readiness?.status === 'regression' && (
                   <span
                     className="text-[10px] font-semibold px-2.5 py-1 rounded-full border inline-flex items-center gap-1"
