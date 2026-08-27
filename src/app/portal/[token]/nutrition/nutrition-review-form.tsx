@@ -78,7 +78,7 @@ export default function NutritionReviewForm({
     return (
       <div className="rounded-2xl border border-blue-200 bg-blue-50 p-8 text-center">
         <div className="w-12 h-12 rounded-full bg-[#1B6DFC] flex items-center justify-center mx-auto mb-4">
-          <svg className="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+          <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
@@ -86,7 +86,7 @@ export default function NutritionReviewForm({
         <p className="text-[#6B6B6B] text-sm mb-6">Your coach will see this when they review your plan.</p>
         <button
           onClick={() => router.push(`/portal/${token}`)}
-          className="text-sm font-semibold text-black bg-[#1B6DFC] px-6 py-2.5 rounded-xl hover:bg-[#5390FF] transition-colors"
+          className="text-sm font-semibold text-white bg-[#1B6DFC] px-6 py-2.5 rounded-xl hover:bg-[#1056D6] transition-colors"
         >
           Back to portal
         </button>
@@ -120,7 +120,7 @@ export default function NutritionReviewForm({
             adherenceConfirmed ? 'border-blue-500 bg-[#1B6DFC]' : 'border-[#D4D4D4]'
           }`}>
             {adherenceConfirmed && (
-              <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+              <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             )}
@@ -147,7 +147,7 @@ export default function NutritionReviewForm({
                 signalCategories.includes(opt.value) ? 'border-blue-500 bg-[#1B6DFC]' : 'border-[#D4D4D4]'
               }`}>
                 {signalCategories.includes(opt.value) && (
-                  <svg className="w-2.5 h-2.5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 )}

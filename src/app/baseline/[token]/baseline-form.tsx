@@ -262,7 +262,7 @@ export default function BaselineForm(props: Props) {
             </div>
             <button
               onClick={() => setStep('measurements')}
-              className="w-full bg-blue-500 text-black text-sm font-bold py-4 rounded-2xl hover:bg-blue-300 transition-colors"
+              className="w-full bg-[#1B6DFC] text-white text-sm font-bold py-4 rounded-2xl hover:bg-[#1056D6] transition-colors"
             >
               I'm ready — continue
             </button>
@@ -319,7 +319,7 @@ export default function BaselineForm(props: Props) {
 
             <button
               onClick={handleContinueMeasurements}
-              className="w-full bg-blue-500 text-black text-sm font-bold py-4 rounded-2xl hover:bg-blue-300 transition-colors"
+              className="w-full bg-[#1B6DFC] text-white text-sm font-bold py-4 rounded-2xl hover:bg-[#1056D6] transition-colors"
             >
               Continue to photos
             </button>
@@ -417,7 +417,7 @@ export default function BaselineForm(props: Props) {
 
             <button
               onClick={handleSubmit}
-              className="w-full bg-blue-500 text-black text-sm font-bold py-4 rounded-2xl hover:bg-blue-300 transition-colors"
+              className="w-full bg-[#1B6DFC] text-white text-sm font-bold py-4 rounded-2xl hover:bg-[#1056D6] transition-colors"
             >
               Submit baseline
             </button>

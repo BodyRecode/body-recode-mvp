@@ -394,7 +394,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                   <div className="flex items-start gap-3">
                     <div className={`w-5 h-5 rounded-full flex-shrink-0 mt-0.5 flex items-center justify-center ${task.done ? 'bg-[#1B6DFC]' : 'border-2 border-[#D4D4D4]'}`}>
                       {task.done && (
-                        <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                        <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                         </svg>
                       )}
@@ -408,7 +408,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                       {!task.done && task.available && task.href && !task.notice && (
                         <Link
                           href={task.href}
-                          className="inline-block mt-3 text-xs font-bold text-black bg-[#1B6DFC] px-4 py-2 rounded-xl hover:bg-[#5390FF] transition-colors"
+                          className="inline-block mt-3 text-xs font-bold text-white bg-[#1B6DFC] px-4 py-2 rounded-xl hover:bg-[#1056D6] transition-colors"
                         >
                           Start →
                         </Link>
@@ -623,8 +623,8 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             ) : checkinDoneThisWeek ? (
               <div className="rounded-2xl border border-blue-200 bg-blue-50 p-5">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-5 h-5 rounded-full bg-[#1B6DFC] flex items-center justify-center flex-shrink-0">
-                    <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <div className="w-7 h-7 rounded-full bg-[#1B6DFC] flex items-center justify-center flex-shrink-0 shadow-[0_1px_2px_rgba(27,109,252,0.4),inset_0_1px_0_rgba(255,255,255,0.25)]">
+                    <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
