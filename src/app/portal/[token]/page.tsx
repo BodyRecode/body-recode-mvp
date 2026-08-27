@@ -79,7 +79,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
 
   const { data: activeProgram } = await admin
     .from('programs')
-    .select('id, block_name, last_review_at')
+    .select('id, block_name, last_review_at, week_duration, generated_at')
     .eq('client_id', client?.id ?? '')
     .eq('is_active', true)
     .maybeSingle()
@@ -403,6 +403,22 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   // milestone, so it unlocks regardless.
   const progressCheckUnlocked = submittedThisWindow || !windowOpen
 
+  // Where the block itself is up to. Until now the portal said nothing about a
+  // block ending - the Progress Check card only appeared once the coach had
+  // sent an invite, so a client in her final week, or past it, saw nothing at
+  // all. This is stated as fact about the block rather than as a promise of a
+  // task, because the send is still manual and a promised form that never
+  // arrives is worse than no mention.
+  const blockPhase: 'final_week' | 'ended' | null = (() => {
+    if (!activeProgram?.generated_at || !activeProgram.week_duration) return null
+    const weeksIn = Math.floor(
+      (Date.now() - new Date(activeProgram.generated_at).getTime()) / (7 * 24 * 60 * 60 * 1000),
+    ) + 1
+    if (weeksIn > activeProgram.week_duration) return 'ended'
+    if (weeksIn === activeProgram.week_duration) return 'final_week'
+    return null
+  })()
+
   return (
     <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
       <ClientHeader />
@@ -718,6 +734,27 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                   <div>
                     <p className="text-sm font-semibold text-[#1A1A1A]">Check-in opens Friday 6:00 pm</p>
                     <p className="text-xs text-[#6B6B6B] mt-0.5">Nothing to do until then. It stays open until Sunday 6:30 pm.</p>
+                  </div>
+                </div>
+              </div>
+            )}
+            {!pendingProgressCheck && blockPhase && (
+              <div className="rounded-2xl border border-[#B5CFFC] bg-[#F3F7FF] p-5 mt-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-7 h-7 rounded-full border border-[#B5CFFC] bg-[#FFFFFF] flex items-center justify-center flex-shrink-0">
+                    <NotebookPen size={14} className="text-[#1B6DFC]" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-[#1A1A1A]">
+                      {blockPhase === 'final_week'
+                        ? 'Final week of this block'
+                        : 'You have finished this block'}
+                    </p>
+                    <p className="text-xs text-[#6B6B6B] mt-0.5 leading-relaxed">
+                      {activeProgram?.block_name}. {coach().firstName} will send you a Progress Check
+                      to close it out - a few questions plus your measurements and photos, so he can
+                      read the whole block back to you and show you what has moved.
+                    </p>
                   </div>
                 </div>
               </div>

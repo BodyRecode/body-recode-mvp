@@ -6,7 +6,16 @@ import { PROGRESS_CHECK_SECTIONS } from '@/lib/progress-check-questions'
 import { compressImage, isUnreadableImageFormat } from '@/lib/compress-image'
 import { brand } from '@/config/tenant'
 
-export default function ProgressCheckForm({ token, firstName }: { token: string; firstName: string }) {
+export default function ProgressCheckForm({
+  token,
+  firstName,
+  checkinFirstHref,
+}: {
+  token: string
+  firstName: string
+  /** Set when her weekly check-in window is open and she has not submitted. */
+  checkinFirstHref?: string | null
+}) {
   const router = useRouter()
   const [responses, setResponses] = useState<Record<string, string>>({})
   const [submitting, setSubmitting] = useState(false)
@@ -95,6 +104,22 @@ export default function ProgressCheckForm({ token, firstName }: { token: string;
         <p className="text-[#4A4A4A] leading-relaxed mb-6">
           A few minutes on how your body has been across the last few weeks. This is what lets me re-score your state and show you what has actually moved. Answer for your usual experience, not just today.
         </p>
+
+        {checkinFirstHref && (
+          <div className="rounded-2xl border border-[#B5CFFC] bg-[#F3F7FF] p-5 mb-5">
+            <p className="text-[13px] font-semibold text-[#1A1A1A] mb-1">Your weekly check-in is open this weekend</p>
+            <p className="text-[13px] text-[#4A4A4A] leading-relaxed">
+              If you have a few minutes, do that one first - it is the shorter of the two and it
+              closes Sunday evening. This will still be here afterwards.
+            </p>
+            <a
+              href={checkinFirstHref}
+              className="inline-block mt-3 text-[13px] font-semibold text-[#1B6DFC] hover:text-[#1056D6] transition-colors"
+            >
+              Go to my check-in →
+            </a>
+          </div>
+        )}
 
         <div className="bg-white border border-[#E5E5E5] rounded-2xl p-5 mb-10">
           <p className="text-[13px] font-semibold text-[#1A1A1A] mb-2">Before you start, have these ready</p>

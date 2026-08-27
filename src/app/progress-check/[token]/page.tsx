@@ -1,4 +1,5 @@
 import { createAdminClient } from '@/lib/supabase/admin'
+import { getCheckInWindowStatus, getWeekNumber } from '@/lib/weekly-checkin-questions'
 import ProgressCheckForm from './progress-check-form'
 
 // Client-facing Progress Check (delta re-assessment). Reached via the unique
@@ -10,7 +11,7 @@ export default async function ProgressCheckPage({ params }: { params: Promise<{ 
 
   const { data: pc } = await admin
     .from('progress_checks')
-    .select('token, status, clients(name)')
+    .select('token, status, client_id, clients(name, onboarding_token, coaching_started_at)')
     .eq('token', token)
     .maybeSingle()
 
@@ -41,8 +42,32 @@ export default async function ProgressCheckPage({ params }: { params: Promise<{ 
     )
   }
 
-  const clientRel = pc.clients as unknown as { name?: string } | { name?: string }[] | null
-  const clientName = (Array.isArray(clientRel) ? clientRel[0]?.name : clientRel?.name) ?? ''
+  const clientRel = pc.clients as unknown as
+    | { name?: string; onboarding_token?: string; coaching_started_at?: string }
+    | { name?: string; onboarding_token?: string; coaching_started_at?: string }[]
+    | null
+  const client = Array.isArray(clientRel) ? clientRel[0] : clientRel
+  const clientName = client?.name ?? ''
   const firstName = clientName.split(' ')[0]
-  return <ProgressCheckForm token={token} firstName={firstName} />
+
+  // Ordering, offered rather than enforced. If her check-in window is open and
+  // she has not submitted, the weekly one should go first - but she followed a
+  // link her coach sent her, so refusing the page would lose the Progress Check
+  // and rescue nothing. A line at the top does the same job without stranding
+  // anyone who carries on.
+  const window = getCheckInWindowStatus()
+  let checkinFirstHref: string | null = null
+  if (window.isOpen && client?.onboarding_token && client.coaching_started_at) {
+    const week = getWeekNumber(client.coaching_started_at)
+    const { count } = await admin
+      .from('weekly_checkins')
+      .select('id', { count: 'exact', head: true })
+      .eq('client_id', pc.client_id)
+      .eq('week_number', week)
+    if (!count) checkinFirstHref = `/portal/${client.onboarding_token}/checkin`
+  }
+
+  return (
+    <ProgressCheckForm token={token} firstName={firstName} checkinFirstHref={checkinFirstHref} />
+  )
 }
