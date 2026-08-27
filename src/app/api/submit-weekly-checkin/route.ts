@@ -92,6 +92,20 @@ export async function POST(request: NextRequest) {
     }).catch(err => console.error('Inngest send error (weekly-checkin/submitted):', err))
   }
 
+  // Block-end Progress Check. Her check-in is the second half of the gate, so
+  // the moment it lands is the moment the Progress Check is due - not the next
+  // morning, and not the following Monday. Wrapped so it can never fail her
+  // submission: a milestone landing late is recoverable, a lost check-in is not.
+  if (inserted?.id) {
+    import('@/lib/progress-check-dispatch')
+      .then(({ dispatchProgressCheckIfDue }) =>
+        dispatchProgressCheckIfDue(admin, clientId, 'checkin_submitted'))
+      .then(r => {
+        if (r.sent) console.log(`[progress-check] sent to ${r.client} on check-in submit`)
+      })
+      .catch(err => console.error('[progress-check] dispatch on check-in failed:', err))
+  }
+
   // Recovery and Regulation — Phase 2 RSIB ingest.
   // The three RSIB questions per 13D_13 are already captured under
   // a_recovery / a_sessions / a_sleep (and b_*) in the existing form,
