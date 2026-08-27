@@ -394,6 +394,15 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     ? checkinDoneThisWeek
     : submittedThisWindow && Date.now() < weekendEndsMs
 
+  // The Progress Check waits behind the weekly check-in, mirroring the gate on
+  // the coach's send. Both asks land in the same few days at block-end, and the
+  // bigger one arriving first is the one that gets done - while the weekly
+  // signal the synthesis runs on quietly gets dropped. So while her window is
+  // open and her check-in is not in, the Progress Check is a heads-up rather
+  // than a task. Once the window closes, waiting longer only stalls the
+  // milestone, so it unlocks regardless.
+  const progressCheckUnlocked = submittedThisWindow || !windowOpen
+
   return (
     <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
       <ClientHeader />
@@ -635,16 +644,16 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         {allOnboardingDone && client.coaching_started_at && (
           <div className="mb-10">
             <SectionLabel icon={NotebookPen} text="This week" />
-            {pendingProgressCheck && (
+            {pendingProgressCheck && progressCheckUnlocked && (
               <Link
                 href={`/progress-check/${pendingProgressCheck.token}`}
                 className="block rounded-2xl border border-[#B5CFFC] bg-[#F3F7FF] p-5 mb-3 hover:border-[#1B6DFC] transition-colors"
               >
                 <p className="text-sm font-semibold text-[#1A1A1A] mb-1">Your Progress Check is ready</p>
                 <p className="text-xs text-[#6B6B6B] leading-relaxed">
-                  You have reached the end of a block. A few minutes of questions, your measurements
-                  and three photos - this is what lets {coach().firstName} re-read where you are now
-                  and show you what has moved. →
+                  You have reached the end of a block. A few questions, your measurements and three
+                  photos - this is what lets {coach().firstName} re-read where you are now and show
+                  you what has moved. →
                 </p>
               </Link>
             )}
@@ -709,6 +718,22 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                   <div>
                     <p className="text-sm font-semibold text-[#1A1A1A]">Check-in opens Friday 6:00 pm</p>
                     <p className="text-xs text-[#6B6B6B] mt-0.5">Nothing to do until then. It stays open until Sunday 6:30 pm.</p>
+                  </div>
+                </div>
+              </div>
+            )}
+            {pendingProgressCheck && !progressCheckUnlocked && (
+              <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5 mt-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-7 h-7 rounded-full border border-[#E5E5E5] bg-[#FFFFFF] flex items-center justify-center flex-shrink-0">
+                    <NotebookPen size={14} className="text-[#999999]" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-[#1A1A1A]">Your Progress Check is next</p>
+                    <p className="text-xs text-[#6B6B6B] mt-0.5 leading-relaxed">
+                      It opens once this week&apos;s check-in is in. One thing at a time - the check-in
+                      first, then the bigger read on where the block has taken you.
+                    </p>
                   </div>
                 </div>
               </div>
