@@ -504,7 +504,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     }
     return {
       eyebrow: 'Where you are up to',
-      headline: 'Nothing waiting on you',
+      headline: `Nothing waiting on you, ${firstName}`,
       body: `Week ${weekNumber} of ${activeProgram.block_name}. Your check-in is in and the next window opens ${opensAt}.`,
       cta: null,
       resting: true,
