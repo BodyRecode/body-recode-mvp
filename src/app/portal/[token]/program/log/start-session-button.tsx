@@ -76,8 +76,8 @@ export default function StartSessionButton(props: Props) {
   const baseClass = 'block w-full text-center font-semibold rounded-xl transition-colors disabled:opacity-50'
   const sizeClass = props.variant === 'primary' ? 'py-3.5 text-sm' : 'py-2.5 text-xs mt-2'
   const colourClass = isCompleted
-    ? 'bg-[#E5E5E5] text-[#3A3A3A] hover:bg-[#262421]'
-    : 'bg-[#1B6DFC] text-white hover:bg-[#5390FF]'
+    ? 'bg-[#E8EAEE] text-[#43474F] hover:bg-[#262421]'
+    : 'bg-[#1B6DFC] text-white hover:bg-[#1560E0]'
 
   return (
     <>
@@ -88,7 +88,7 @@ export default function StartSessionButton(props: Props) {
       >
         {loading ? 'Loading…' : label}
       </button>
-      {error && <p className="mt-2 text-xs text-red-700 text-center">{error}</p>}
+      {error && <p className="mt-2 text-xs text-[#C82626] text-center">{error}</p>}
     </>
   )
 }

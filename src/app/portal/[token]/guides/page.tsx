@@ -47,13 +47,13 @@ export default async function GuidesIndexPage({ params }: { params: Promise<{ to
   const visibleGuides = GUIDES
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#141821]">
       <ClientHeader />
       <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-10">
-          <Link href={`/portal/${token}/resources`} className="text-[12px] text-[#999999] hover:text-[#3A3A3A] transition-colors">← Back to resources</Link>
-          <h1 className="text-[30px] font-extrabold text-[#1A1A1A] tracking-tight leading-[1.1] mt-4 mb-2">Practical guides</h1>
-          <p className="text-[#6B6B6B] text-[15px]">Short, actionable. Read once, reference often.</p>
+          <Link href={`/portal/${token}/resources`} className="text-[12px] text-[#98A0AD] hover:text-[#43474F] transition-colors">← Back to resources</Link>
+          <h1 className="text-[30px] font-extrabold text-[#141821] tracking-tight leading-[1.1] mt-4 mb-2">Practical guides</h1>
+          <p className="text-[#666D7A] text-[15px]">Short, actionable. Read once, reference often.</p>
         </div>
 
         <div className="space-y-3">
@@ -63,17 +63,17 @@ export default async function GuidesIndexPage({ params }: { params: Promise<{ to
               <Link
                 key={g.slug}
                 href={`/portal/${token}/guides/${g.slug}`}
-                className="group block rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-blue-50 transition-colors"
+                className="group block rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-[#EFF5FE] transition-colors"
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-[#FFFFFF] border border-[#E5E5E5] flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-10 h-10 rounded-xl bg-[#FFFFFF] border border-[#E8EAEE] flex items-center justify-center shrink-0 mt-0.5">
                     <Icon size={16} className="text-[#1B6DFC]" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[15px] font-semibold text-[#1A1A1A] mb-1 group-hover:text-[#1B6DFC] transition-colors">{g.title}</p>
-                    <p className="text-[12px] text-[#6B6B6B] leading-relaxed">{g.desc}</p>
+                    <p className="text-[15px] font-semibold text-[#141821] mb-1 group-hover:text-[#1B6DFC] transition-colors">{g.title}</p>
+                    <p className="text-[12px] text-[#666D7A] leading-relaxed">{g.desc}</p>
                   </div>
-                  <ArrowUpRight size={14} className="text-[#999999] group-hover:text-[#1B6DFC] transition-colors shrink-0 mt-2" />
+                  <ArrowUpRight size={14} className="text-[#98A0AD] group-hover:text-[#1B6DFC] transition-colors shrink-0 mt-2" />
                 </div>
               </Link>
             )

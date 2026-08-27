@@ -26,8 +26,8 @@ export default async function PortalMedicalClearancePage({ params }: { params: P
   }
 
   const SubmittedDocCard = () => docSignedUrl ? (
-    <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5">
-      <p className="text-[10px] font-bold text-[#999999] uppercase tracking-widest mb-3">Your submitted form</p>
+    <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-5">
+      <p className="text-[11.5px] font-medium text-[#98A0AD] mb-3">Your submitted form</p>
       {docSignedUrl.match(/\.(jpg|jpeg|png|gif|webp)(\?|$)/i) ? (
         <img src={docSignedUrl} alt="Your submitted clearance form" className="w-full rounded-lg" />
       ) : (
@@ -89,11 +89,11 @@ export default async function PortalMedicalClearancePage({ params }: { params: P
           { step: '2', title: 'See your GP', desc: 'Take the form to your doctor and ask them to complete and sign the exercise clearance section.' },
           { step: '3', title: 'Upload completed form', desc: 'Scan or photograph the completed form and upload it here.' },
         ].map(s => (
-          <div key={s.step} className="flex items-start gap-4 bg-[#FFFFFF] rounded-2xl p-5 border border-[#E5E5E5]">
+          <div key={s.step} className="flex items-start gap-4 bg-[#FFFFFF] rounded-2xl p-5 border border-[#E8EAEE]">
             <div className="w-7 h-7 rounded-full bg-[#1B6DFC] flex items-center justify-center flex-shrink-0 text-white text-xs font-bold">{s.step}</div>
             <div>
-              <p className="text-sm font-semibold text-[#1A1A1A] mb-0.5">{s.title}</p>
-              <p className="text-xs text-[#999999]">{s.desc}</p>
+              <p className="text-sm font-semibold text-[#141821] mb-0.5">{s.title}</p>
+              <p className="text-xs text-[#98A0AD]">{s.desc}</p>
             </div>
           </div>
         ))}
@@ -102,20 +102,20 @@ export default async function PortalMedicalClearancePage({ params }: { params: P
       {/* Download form (real PDF, server-rendered via puppeteer) */}
       <a
         href={`/api/portal/${token}/medical-clearance/pdf`}
-        className="flex items-center justify-between w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl px-5 py-4 hover:border-[#D4D4D4] transition-colors mb-3"
+        className="flex items-center justify-between w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl px-5 py-4 hover:border-[#CFD4DC] transition-colors mb-3"
       >
         <div>
-          <p className="text-sm font-semibold text-[#1A1A1A]">Download Medical Clearance Form</p>
-          <p className="text-xs text-[#999999] mt-0.5">Single-page PDF, pre-filled with your name. Email it to your GP or print to take in.</p>
+          <p className="text-sm font-semibold text-[#141821]">Download Medical Clearance Form</p>
+          <p className="text-xs text-[#98A0AD] mt-0.5">Single-page PDF, pre-filled with your name. Email it to your GP or print to take in.</p>
         </div>
-        <svg className="w-5 h-5 text-[#6B6B6B]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-5 h-5 text-[#666D7A]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" />
         </svg>
       </a>
       <Link
         href={`/portal/${token}/medical-clearance/print`}
         target="_blank"
-        className="block text-center text-xs text-[#999999] hover:text-[#6B6B6B] transition-colors mb-8"
+        className="block text-center text-xs text-[#98A0AD] hover:text-[#666D7A] transition-colors mb-8"
       >
         Or open the form in a new tab →
       </Link>

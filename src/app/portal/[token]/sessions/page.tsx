@@ -126,45 +126,45 @@ export default async function SessionsPage({ params }: { params: Promise<{ token
       description="Face-to-face coaching at AF Newstead."
     >
       {!hasFixedSlots ? (
-          <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF]/50 p-6">
-            <p className="text-sm font-semibold text-[#6B6B6B] mb-1">No fixed session assigned yet</p>
-            <p className="text-xs text-[#999999] leading-relaxed">Your coach will assign your fixed session slot. You will see your schedule here once it is set up.</p>
+          <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF]/50 p-6">
+            <p className="text-sm font-semibold text-[#666D7A] mb-1">No fixed session assigned yet</p>
+            <p className="text-xs text-[#98A0AD] leading-relaxed">Your coach will assign your fixed session slot. You will see your schedule here once it is set up.</p>
           </div>
         ) : (
           <>
             {/* Fixed slots summary */}
-            <div className="rounded-2xl border border-blue-200 bg-blue-50 p-5 mb-8">
+            <div className="rounded-2xl border border-[#B5CFFC] bg-[#EFF5FE] p-5 mb-8">
               <p className="text-xs font-bold tracking-widest text-[#1B6DFC] uppercase mb-3">Your fixed slots</p>
               <div className="space-y-1">
                 {(fixedSlots ?? []).map(slot => (
                   <div key={slot.id} className="flex items-center gap-2">
-                    <span className="text-sm font-bold text-[#1A1A1A]">{DAYS[slot.day_of_week]}s</span>
-                    <span className="text-sm text-[#6B6B6B]">
+                    <span className="text-sm font-bold text-[#141821]">{DAYS[slot.day_of_week]}s</span>
+                    <span className="text-sm text-[#666D7A]">
                       · {new Date(`1970-01-01T${slot.session_time}`).toLocaleTimeString('en-AU', { hour: 'numeric', minute: '2-digit', hour12: true })} · {slot.duration_minutes} min
                     </span>
                   </div>
                 ))}
               </div>
-              <p className="text-xs text-[#999999] mt-2">AF Newstead</p>
+              <p className="text-xs text-[#98A0AD] mt-2">AF Newstead</p>
             </div>
 
             {/* All upcoming sessions */}
             <div className="mb-8">
-              <p className="text-xs font-bold tracking-widest text-[#999999] uppercase mb-4">Upcoming sessions</p>
+              <p className="text-[12.5px] font-medium text-[#98A0AD] mb-4">Upcoming sessions</p>
               {allSessions.length === 0 ? (
-                <p className="text-sm text-[#999999]">No sessions scheduled yet.</p>
+                <p className="text-sm text-[#98A0AD]">No sessions scheduled yet.</p>
               ) : (
                 <div className="space-y-2">
                   {allSessions.slice(0, 10).map((session, i) => (
-                    <div key={i} className="flex items-center justify-between rounded-xl bg-[#FFFFFF] border border-[#E5E5E5] px-4 py-3">
+                    <div key={i} className="flex items-center justify-between rounded-xl bg-[#FFFFFF] border border-[#E8EAEE] px-4 py-3">
                       <div>
-                        <p className="text-sm font-medium text-[#1A1A1A]">{session.displayDate}</p>
-                        <p className="text-xs text-[#999999] mt-0.5">{session.displayTime} · {session.durMin} min</p>
+                        <p className="text-sm font-medium text-[#141821]">{session.displayDate}</p>
+                        <p className="text-xs text-[#98A0AD] mt-0.5">{session.displayTime} · {session.durMin} min</p>
                       </div>
                       {session.confirmed ? (
-                        <span className="text-xs font-bold text-[#1B6DFC] bg-blue-50 px-2.5 py-1 rounded-full">Confirmed</span>
+                        <span className="text-xs font-bold text-[#1B6DFC] bg-[#EFF5FE] px-2.5 py-1 rounded-full">Confirmed</span>
                       ) : (
-                        <span className="text-xs text-[#999999]">Scheduled</span>
+                        <span className="text-xs text-[#98A0AD]">Scheduled</span>
                       )}
                     </div>
                   ))}

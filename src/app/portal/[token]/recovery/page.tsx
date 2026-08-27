@@ -81,8 +81,8 @@ export default async function ClientRecoveryPage({
       description="Situational tools your coach has assigned. Do these when your body signals it needs them, not every day."
     >
       {assignments.length === 0 ? (
-        <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] px-6 py-10 text-center">
-          <p className="text-[14px] text-[#6B6B6B] leading-relaxed">
+        <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] px-6 py-10 text-center">
+          <p className="text-[14px] text-[#666D7A] leading-relaxed">
             No recovery protocols assigned right now. Your coach will assign these based on your signals - training load, sleep, and how you&apos;re tracking.
           </p>
         </div>
@@ -93,24 +93,24 @@ export default async function ClientRecoveryPage({
               <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-3">{CATEGORY_LABELS[cat]}</p>
               <div className="space-y-4">
                 {byCategory[cat].map(a => (
-                  <div key={a.id} className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] overflow-hidden">
-                    <div className="px-5 py-4 border-b border-[#E5E5E5]">
+                  <div key={a.id} className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] overflow-hidden">
+                    <div className="px-5 py-4 border-b border-[#E8EAEE]">
                       {a.protocol.progression && (
-                        <p className="text-[10px] font-bold text-amber-800 uppercase tracking-widest mb-1">
+                        <p className="text-[11.5px] font-medium text-[#8A5A14] mb-1">
                           {a.protocol.progression.group_label} · Level {a.protocol.progression.level}
                         </p>
                       )}
-                      <h2 className="text-lg font-semibold text-[#1A1A1A] leading-tight">{a.protocol.name}</h2>
-                      <p className="text-[13px] text-[#6B6B6B] mt-1">{a.protocol.short_description}</p>
+                      <h2 className="text-lg font-semibold text-[#141821] leading-tight">{a.protocol.name}</h2>
+                      <p className="text-[13px] text-[#666D7A] mt-1">{a.protocol.short_description}</p>
                     </div>
                     <div className="px-5 py-4 space-y-4">
                       <div>
-                        <p className="text-[10px] font-bold text-[#6B6B6B] uppercase tracking-widest mb-2">Steps</p>
+                        <p className="text-[11.5px] font-medium text-[#666D7A] mb-2">Steps</p>
                         <ol className="space-y-2">
                           {a.protocol.steps.map((s, i) => (
                             <li key={i} className="flex items-start gap-3">
                               <span className="w-5 h-5 rounded-full bg-[#1B6DFC]/10 text-[#1B6DFC] text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
-                              <p className="text-[14px] text-[#1A1A1A] leading-relaxed flex-1">{s}</p>
+                              <p className="text-[14px] text-[#141821] leading-relaxed flex-1">{s}</p>
                             </li>
                           ))}
                         </ol>
@@ -121,29 +121,29 @@ export default async function ClientRecoveryPage({
                         {a.protocol.dosing.timing && <PortalDosing label="When" body={a.protocol.dosing.timing} />}
                       </div>
                       {a.coach_note && (
-                        <div className="pt-3 border-t border-[#E5E5E5]">
+                        <div className="pt-3 border-t border-[#E8EAEE]">
                           <div className="flex items-start gap-2">
                             <Sparkles size={12} className="text-[#1B6DFC] mt-0.5 shrink-0" />
                             <div>
                               <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-1">A note from your coach</p>
-                              <p className="text-[13px] text-[#6B6B6B] leading-relaxed whitespace-pre-line">{a.coach_note}</p>
+                              <p className="text-[13px] text-[#666D7A] leading-relaxed whitespace-pre-line">{a.coach_note}</p>
                             </div>
                           </div>
                         </div>
                       )}
                       {a.protocol.contraindications.length > 0 && (
                         <details className="pt-2">
-                          <summary className="cursor-pointer text-[11px] text-[#6B6B6B] hover:text-[#1A1A1A]">Safety notes and when to skip</summary>
+                          <summary className="cursor-pointer text-[11px] text-[#666D7A] hover:text-[#141821]">Safety notes and when to skip</summary>
                           <div className="mt-2 space-y-2">
                             <div>
-                              <p className="text-[10px] font-bold text-red-700 uppercase tracking-widest mb-1">Do not do this if</p>
-                              <ul className="text-[12px] text-[#6B6B6B] leading-relaxed space-y-0.5">
+                              <p className="text-[11.5px] font-medium text-[#C82626] mb-1">Do not do this if</p>
+                              <ul className="text-[12px] text-[#666D7A] leading-relaxed space-y-0.5">
                                 {a.protocol.contraindications.map((c, i) => <li key={i}>- {c}</li>)}
                               </ul>
                             </div>
                             <div>
-                              <p className="text-[10px] font-bold text-[#6B6B6B] uppercase tracking-widest mb-1">Safety</p>
-                              <p className="text-[12px] text-[#6B6B6B] leading-relaxed">{a.protocol.safety_notes}</p>
+                              <p className="text-[11.5px] font-medium text-[#666D7A] mb-1">Safety</p>
+                              <p className="text-[12px] text-[#666D7A] leading-relaxed">{a.protocol.safety_notes}</p>
                             </div>
                           </div>
                         </details>
@@ -166,8 +166,8 @@ export default async function ClientRecoveryPage({
 function PortalDosing({ label, body }: { label: string; body: string }) {
   return (
     <div className="rounded-lg bg-[#F5F7FA] px-3 py-2">
-      <p className="text-[9px] font-bold text-[#6B6B6B] uppercase tracking-widest mb-0.5">{label}</p>
-      <p className="text-[12px] text-[#1A1A1A] leading-relaxed">{body}</p>
+      <p className="text-[9px] font-medium text-[#666D7A] mb-0.5">{label}</p>
+      <p className="text-[12px] text-[#141821] leading-relaxed">{body}</p>
     </div>
   )
 }

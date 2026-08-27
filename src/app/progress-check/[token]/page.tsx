@@ -19,8 +19,8 @@ export default async function ProgressCheckPage({ params }: { params: Promise<{ 
     return (
       <div className="min-h-screen bg-white flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
-          <h1 className="text-xl font-semibold text-[#1A1A1A] mb-2">Link not found</h1>
-          <p className="text-[#6B6B6B] text-sm">This Progress Check link is invalid or has expired. Please contact your coach.</p>
+          <h1 className="text-xl font-semibold text-[#141821] mb-2">Link not found</h1>
+          <p className="text-[#666D7A] text-sm">This Progress Check link is invalid or has expired. Please contact your coach.</p>
         </div>
       </div>
     )
@@ -35,8 +35,8 @@ export default async function ProgressCheckPage({ params }: { params: Promise<{ 
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h1 className="text-xl font-semibold text-[#1A1A1A] mb-2">Progress Check received</h1>
-          <p className="text-[#6B6B6B] text-sm leading-relaxed">Thanks. Kade will read this alongside your recent check-ins and send through your Progress Read.</p>
+          <h1 className="text-xl font-semibold text-[#141821] mb-2">Progress Check received</h1>
+          <p className="text-[#666D7A] text-sm leading-relaxed">Thanks. Kade will read this alongside your recent check-ins and send through your Progress Read.</p>
         </div>
       </div>
     )

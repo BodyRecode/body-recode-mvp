@@ -33,8 +33,8 @@ export default async function PortalMealLogPage({ params }: { params: Promise<{ 
   if (!client.meal_logging_enabled) {
     return (
       <PortalPageShell backHref={`/portal/${token}/my-plan`} eyebrow="Nutrition" title="Log today's meals">
-        <div className="rounded-2xl border border-[#E5E5E5] bg-white p-6 text-center">
-          <p className="text-sm text-[#6B6B6B]">
+        <div className="rounded-2xl border border-[#E8EAEE] bg-white p-6 text-center">
+          <p className="text-sm text-[#666D7A]">
             Meal logging is not switched on for you. Your weekly check-in covers your nutrition, so there is nothing to do here.
           </p>
         </div>
@@ -45,8 +45,8 @@ export default async function PortalMealLogPage({ params }: { params: Promise<{ 
   if (!plan) {
     return (
       <PortalPageShell backHref={`/portal/${token}/my-plan`} eyebrow="Nutrition" title="Log today's meals">
-        <div className="rounded-2xl border border-[#E5E5E5] bg-white p-6 text-center">
-          <p className="text-sm text-[#6B6B6B]">No active nutrition plan yet. Once your coach sets it up, you&apos;ll log your meals here.</p>
+        <div className="rounded-2xl border border-[#E8EAEE] bg-white p-6 text-center">
+          <p className="text-sm text-[#666D7A]">No active nutrition plan yet. Once your coach sets it up, you&apos;ll log your meals here.</p>
         </div>
       </PortalPageShell>
     )

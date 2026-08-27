@@ -135,18 +135,18 @@ const RestTimer = forwardRef<RestTimerHandle>(function RestTimer(_props, ref) {
   const pct = total > 0 ? Math.max(0, Math.min(100, (remaining / total) * 100)) : 0
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-[#E5E5E5] bg-white/95 backdrop-blur-sm shadow-[0_-4px_16px_rgba(0,0,0,0.06)]">
+    <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-[#E8EAEE] bg-white/95 backdrop-blur-sm shadow-[0_-4px_16px_rgba(0,0,0,0.06)]">
       <div className="max-w-md mx-auto px-4 py-3">
         {!active ? (
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-[#6B6B6B] uppercase tracking-widest whitespace-nowrap">Rest timer</span>
+            <span className="text-[12.5px] font-medium text-[#666D7A] whitespace-nowrap">Rest timer</span>
             <div className="flex-1 grid grid-cols-4 gap-1.5">
               {PRESETS.map(p => (
                 <button
                   key={p}
                   type="button"
                   onClick={() => start(p)}
-                  className="py-2 rounded-lg border border-[#E5E5E5] text-sm font-semibold text-[#1A1A1A] tabular-nums hover:border-[#1B6DFC] hover:bg-blue-50 transition-colors"
+                  className="py-2 rounded-lg border border-[#E8EAEE] text-sm font-semibold text-[#141821] tabular-nums hover:border-[#1B6DFC] hover:bg-[#EFF5FE] transition-colors"
                 >
                   {fmt(p)}
                 </button>
@@ -156,7 +156,7 @@ const RestTimer = forwardRef<RestTimerHandle>(function RestTimer(_props, ref) {
         ) : (
           <div>
             {/* Progress bar */}
-            <div className="h-1.5 rounded-full bg-[#E5E5E5] overflow-hidden mb-2.5">
+            <div className="h-1.5 rounded-full bg-[#E8EAEE] overflow-hidden mb-2.5">
               <div
                 className={`h-full transition-[width] duration-300 ease-linear ${done ? 'bg-[#1B6DFC]' : 'bg-[#1B6DFC]'}`}
                 style={{ width: `${done ? 100 : pct}%` }}
@@ -167,7 +167,7 @@ const RestTimer = forwardRef<RestTimerHandle>(function RestTimer(_props, ref) {
                 {done ? (
                   <p className="text-lg font-bold text-[#1B6DFC] leading-none">Rest done</p>
                 ) : (
-                  <p className="text-3xl font-bold text-[#1A1A1A] tabular-nums leading-none">{fmt(remaining)}</p>
+                  <p className="text-3xl font-bold text-[#141821] tabular-nums leading-none">{fmt(remaining)}</p>
                 )}
               </div>
               <div className="flex items-center gap-1.5">
@@ -175,7 +175,7 @@ const RestTimer = forwardRef<RestTimerHandle>(function RestTimer(_props, ref) {
                   <button
                     type="button"
                     onClick={() => adjust(-15)}
-                    className="px-2.5 h-9 rounded-lg border border-[#E5E5E5] text-xs font-semibold text-[#6B6B6B] hover:border-[#D4D4D4] transition-colors tabular-nums"
+                    className="px-2.5 h-9 rounded-lg border border-[#E8EAEE] text-xs font-semibold text-[#666D7A] hover:border-[#CFD4DC] transition-colors tabular-nums"
                   >
                     −15s
                   </button>
@@ -183,7 +183,7 @@ const RestTimer = forwardRef<RestTimerHandle>(function RestTimer(_props, ref) {
                 <button
                   type="button"
                   onClick={() => adjust(15)}
-                  className="px-2.5 h-9 rounded-lg border border-[#E5E5E5] text-xs font-semibold text-[#6B6B6B] hover:border-[#D4D4D4] transition-colors tabular-nums"
+                  className="px-2.5 h-9 rounded-lg border border-[#E8EAEE] text-xs font-semibold text-[#666D7A] hover:border-[#CFD4DC] transition-colors tabular-nums"
                 >
                   +15s
                 </button>
@@ -191,7 +191,7 @@ const RestTimer = forwardRef<RestTimerHandle>(function RestTimer(_props, ref) {
                   <button
                     type="button"
                     onClick={skip}
-                    className="px-4 h-9 rounded-lg bg-[#1B6DFC] text-white text-xs font-bold hover:bg-[#5390FF] transition-colors"
+                    className="px-4 h-9 rounded-lg bg-[#1B6DFC] text-white text-xs font-bold hover:bg-[#1560E0] transition-colors"
                   >
                     Done
                   </button>
@@ -199,7 +199,7 @@ const RestTimer = forwardRef<RestTimerHandle>(function RestTimer(_props, ref) {
                   <button
                     type="button"
                     onClick={pause}
-                    className="px-4 h-9 rounded-lg border border-[#1B6DFC] text-[#1B6DFC] text-xs font-bold hover:bg-blue-50 transition-colors"
+                    className="px-4 h-9 rounded-lg border border-[#1B6DFC] text-[#1B6DFC] text-xs font-bold hover:bg-[#EFF5FE] transition-colors"
                   >
                     Pause
                   </button>
@@ -207,7 +207,7 @@ const RestTimer = forwardRef<RestTimerHandle>(function RestTimer(_props, ref) {
                   <button
                     type="button"
                     onClick={resume}
-                    className="px-4 h-9 rounded-lg bg-[#1B6DFC] text-white text-xs font-bold hover:bg-[#5390FF] transition-colors"
+                    className="px-4 h-9 rounded-lg bg-[#1B6DFC] text-white text-xs font-bold hover:bg-[#1560E0] transition-colors"
                   >
                     Resume
                   </button>
@@ -216,7 +216,7 @@ const RestTimer = forwardRef<RestTimerHandle>(function RestTimer(_props, ref) {
                   type="button"
                   onClick={skip}
                   aria-label="Dismiss rest timer"
-                  className="px-2.5 h-9 rounded-lg text-xs font-semibold text-[#999999] hover:text-[#6B6B6B] transition-colors"
+                  className="px-2.5 h-9 rounded-lg text-xs font-semibold text-[#98A0AD] hover:text-[#666D7A] transition-colors"
                 >
                   Skip
                 </button>

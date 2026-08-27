@@ -79,20 +79,20 @@ export default function ClearanceUploadForm({ clientId, portalToken: _portalToke
 
   return (
     <div>
-      <p className="text-xs font-bold tracking-widest text-[#999999] uppercase mb-3">Upload completed form</p>
+      <p className="text-[12.5px] font-medium text-[#98A0AD] mb-3">Upload completed form</p>
       {missingFile && (
-        <div className="mb-4 border-l-2 border-red-500 bg-red-50 rounded-r-2xl px-4 py-3">
-          <p className="text-red-700 text-sm font-medium">Please upload your completed clearance form before submitting.</p>
+        <div className="mb-4 border-l-2 border-[#DC2626] bg-[#FDEDED] rounded-r-2xl px-4 py-3">
+          <p className="text-[#C82626] text-sm font-medium">Please upload your completed clearance form before submitting.</p>
         </div>
       )}
       <form onSubmit={handleSubmit} className="space-y-4">
         <label
           className={`flex flex-col items-center justify-center w-full h-32 rounded-2xl border-2 border-dashed transition-colors cursor-pointer ${
             file
-              ? 'border-[#1B6DFC]/40 bg-blue-50'
+              ? 'border-[#1B6DFC]/40 bg-[#EFF5FE]'
               : missingFile
-              ? 'border-red-400 bg-red-50'
-              : 'border-[#E5E5E5] bg-[#FFFFFF] hover:border-[#D4D4D4]'
+              ? 'border-red-400 bg-[#FDEDED]'
+              : 'border-[#E8EAEE] bg-[#FFFFFF] hover:border-[#CFD4DC]'
           }`}
         >
           <input
@@ -104,30 +104,30 @@ export default function ClearanceUploadForm({ clientId, portalToken: _portalToke
           {optimising ? (
             <div className="flex items-center gap-3 px-4">
               <div className="w-5 h-5 border-2 border-[#1B6DFC] border-t-transparent rounded-full animate-spin" />
-              <span className="text-[#6B6B6B] text-sm">Optimising photo...</span>
+              <span className="text-[#666D7A] text-sm">Optimising photo...</span>
             </div>
           ) : file ? (
             <div className="text-center px-4">
               <p className="text-sm font-semibold text-[#1B6DFC] mb-1">{file.name}</p>
-              <p className="text-xs text-[#999999]">{(file.size / 1024 / 1024).toFixed(2)} MB · tap to change</p>
+              <p className="text-xs text-[#98A0AD]">{(file.size / 1024 / 1024).toFixed(2)} MB · tap to change</p>
             </div>
           ) : (
             <div className="text-center px-4">
-              <svg className={`w-8 h-8 mx-auto mb-2 ${missingFile ? 'text-red-700' : 'text-[#999999]'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className={`w-8 h-8 mx-auto mb-2 ${missingFile ? 'text-[#C82626]' : 'text-[#98A0AD]'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
               </svg>
-              <p className={`text-sm ${missingFile ? 'text-red-700' : 'text-[#6B6B6B]'}`}>Tap to upload photo or PDF</p>
-              <p className="text-xs text-[#999999] mt-1">Photos are optimised automatically. PDFs must be under 4 MB.</p>
+              <p className={`text-sm ${missingFile ? 'text-[#C82626]' : 'text-[#666D7A]'}`}>Tap to upload photo or PDF</p>
+              <p className="text-xs text-[#98A0AD] mt-1">Photos are optimised automatically. PDFs must be under 4 MB.</p>
             </div>
           )}
         </label>
 
-        {error && <p className="text-red-700 text-sm">{error}</p>}
+        {error && <p className="text-[#C82626] text-sm">{error}</p>}
 
         <button
           type="submit"
           disabled={uploading}
-          className="w-full bg-[#1B6DFC] text-white text-sm font-bold py-4 rounded-2xl hover:bg-[#5390FF] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          className="w-full bg-[#1B6DFC] text-white text-sm font-bold py-4 rounded-2xl hover:bg-[#1560E0] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
         >
           {uploading ? 'Uploading…' : 'Submit completed form'}
         </button>

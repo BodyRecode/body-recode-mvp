@@ -19,7 +19,7 @@ export default async function PortalLoginPage({
   const t = brand()
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A] flex flex-col items-center justify-center px-6 py-12">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#141821] flex flex-col items-center justify-center px-6 py-12">
       <div className="w-full max-w-sm">
         <div className="text-center mb-10">
           <img
@@ -28,12 +28,12 @@ export default async function PortalLoginPage({
             alt={t.name}
             className="mx-auto mb-8"
           />
-          <h1 className="text-2xl font-bold text-[#1A1A1A] mb-2">Client Portal</h1>
-          <p className="text-[#6B6B6B] text-sm">Sign in to your coaching portal.</p>
+          <h1 className="text-2xl font-bold text-[#141821] mb-2">Client Portal</h1>
+          <p className="text-[#666D7A] text-sm">Sign in to your coaching portal.</p>
         </div>
         {errorMessage && (
-          <div className="mb-6 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
-            <p className="text-sm text-red-700">{errorMessage}</p>
+          <div className="mb-6 bg-[#FDEDED] border border-[#F5C9C9] rounded-xl px-4 py-3">
+            <p className="text-sm text-[#C82626]">{errorMessage}</p>
           </div>
         )}
         <LoginForm redirect={redirectTo} />

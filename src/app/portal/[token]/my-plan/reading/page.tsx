@@ -49,10 +49,10 @@ export default async function PortalNutritionReadingPage({
 
   if (!plan) {
     return (
-      <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A] flex flex-col items-center justify-center px-6 py-12">
-        <div className="w-full max-w-md bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-8 text-center">
-          <p className="text-[#1A1A1A] text-lg font-semibold mb-2">Nutrition Reading not yet available</p>
-          <p className="text-[#6B6B6B] text-sm mb-6">
+      <div className="min-h-screen bg-[#FFFFFF] text-[#141821] flex flex-col items-center justify-center px-6 py-12">
+        <div className="w-full max-w-md bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl p-8 text-center">
+          <p className="text-[#141821] text-lg font-semibold mb-2">Nutrition Reading not yet available</p>
+          <p className="text-[#666D7A] text-sm mb-6">
             Your Nutrition Reading will appear here once your coach has finalised the current plan.
           </p>
           <Link
@@ -72,7 +72,7 @@ export default async function PortalNutritionReadingPage({
       <div className="no-print" style={{ position: 'fixed', top: 16, left: 16, zIndex: 50 }}>
         <Link
           href={`/portal/${token}/my-plan`}
-          className="inline-flex items-center gap-1.5 text-[12px] font-medium px-3 py-1.5 rounded-lg bg-[#FFFFFF]/80 backdrop-blur border border-[#E5E5E5] text-[#3A3A3A] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50 transition-colors"
+          className="inline-flex items-center gap-1.5 text-[12px] font-medium px-3 py-1.5 rounded-lg bg-[#FFFFFF]/80 backdrop-blur border border-[#E8EAEE] text-[#43474F] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-[#EFF5FE] transition-colors"
         >
           <ChevronLeft size={13} /> Back to plan
         </Link>

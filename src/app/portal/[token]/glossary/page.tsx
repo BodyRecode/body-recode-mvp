@@ -100,20 +100,20 @@ export default async function GlossaryPage({ params }: { params: Promise<{ token
   }
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#141821]">
       <ClientHeader />
       <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-10">
-          <Link href={`/portal/${token}/resources`} className="text-[12px] text-[#999999] hover:text-[#3A3A3A] transition-colors">← Back to resources</Link>
-          <h1 className="text-[30px] font-extrabold text-[#1A1A1A] tracking-tight leading-[1.1] mt-4 mb-2">Glossary</h1>
-          <p className="text-[#6B6B6B] text-[15px]">Plain-language definitions of every term you hear from your coach.</p>
+          <Link href={`/portal/${token}/resources`} className="text-[12px] text-[#98A0AD] hover:text-[#43474F] transition-colors">← Back to resources</Link>
+          <h1 className="text-[30px] font-extrabold text-[#141821] tracking-tight leading-[1.1] mt-4 mb-2">Glossary</h1>
+          <p className="text-[#666D7A] text-[15px]">Plain-language definitions of every term you hear from your coach.</p>
         </div>
 
         <div className="space-y-3">
           {TERMS.map(t => (
-            <div key={t.term} className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5">
-              <p className="text-[14px] font-semibold text-[#1A1A1A] mb-1.5">{t.term}</p>
-              <p className="text-[13px] text-[#6B6B6B] leading-relaxed">{t.def}</p>
+            <div key={t.term} className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-5">
+              <p className="text-[14px] font-semibold text-[#141821] mb-1.5">{t.term}</p>
+              <p className="text-[13px] text-[#666D7A] leading-relaxed">{t.def}</p>
             </div>
           ))}
         </div>

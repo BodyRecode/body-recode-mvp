@@ -57,14 +57,14 @@ export default async function ClientRoutinePage({
 
 function SequenceCard({ icon, sequence }: { icon: React.ReactNode; sequence: DailySequence }) {
   return (
-    <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] overflow-hidden">
-      <div className="flex items-start gap-3 px-5 py-4 border-b border-[#E5E5E5]">
+    <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] overflow-hidden">
+      <div className="flex items-start gap-3 px-5 py-4 border-b border-[#E8EAEE]">
         <div className="w-10 h-10 rounded-xl bg-[#1B6DFC]/10 flex items-center justify-center shrink-0 mt-0.5">
           {icon}
         </div>
         <div className="flex-1 min-w-0">
-          <h2 className="text-lg font-semibold text-[#1A1A1A] leading-tight">{sequence.title}</h2>
-          <p className="text-[13px] text-[#6B6B6B] mt-1">{sequence.tagline}</p>
+          <h2 className="text-lg font-semibold text-[#141821] leading-tight">{sequence.title}</h2>
+          <p className="text-[13px] text-[#666D7A] mt-1">{sequence.tagline}</p>
         </div>
       </div>
 
@@ -75,15 +75,15 @@ function SequenceCard({ icon, sequence }: { icon: React.ReactNode; sequence: Dai
               <span className="w-6 h-6 rounded-full bg-[#1B6DFC]/10 text-[#1B6DFC] text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">
                 {i + 1}
               </span>
-              <p className="text-[14px] text-[#1A1A1A] leading-relaxed flex-1">{step}</p>
+              <p className="text-[14px] text-[#141821] leading-relaxed flex-1">{step}</p>
             </li>
           ))}
         </ol>
 
         {sequence.coach_note && sequence.coach_note.trim().length > 0 && (
-          <div className="mt-5 pt-4 border-t border-[#E5E5E5]">
+          <div className="mt-5 pt-4 border-t border-[#E8EAEE]">
             <p className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">A note from your coach</p>
-            <p className="text-[13px] text-[#6B6B6B] leading-relaxed whitespace-pre-line">{sequence.coach_note}</p>
+            <p className="text-[13px] text-[#666D7A] leading-relaxed whitespace-pre-line">{sequence.coach_note}</p>
           </div>
         )}
       </div>

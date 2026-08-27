@@ -98,17 +98,17 @@ export default function ProgressCheckForm({
     <div className="min-h-screen bg-[#F7F7F7] px-5 py-12">
       <div className="max-w-2xl mx-auto">
         <p className="text-[11px] font-bold tracking-[0.2em] text-[#1B6DFC] uppercase mb-3">{brand().name}™ · Progress Check</p>
-        <h1 className="text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-3">
+        <h1 className="text-3xl font-extrabold text-[#141821] tracking-tight mb-3">
           {firstName ? `${firstName}, a quick read on where you are now.` : 'A quick read on where you are now.'}
         </h1>
-        <p className="text-[#4A4A4A] leading-relaxed mb-6">
+        <p className="text-[#43474F] leading-relaxed mb-6">
           A few minutes on how your body has been across the last few weeks. This is what lets me re-score your state and show you what has actually moved. Answer for your usual experience, not just today.
         </p>
 
         {checkinFirstHref && (
           <div className="rounded-2xl border border-[#B5CFFC] bg-[#F3F7FF] p-5 mb-5">
-            <p className="text-[13px] font-semibold text-[#1A1A1A] mb-1">Your weekly check-in is open this weekend</p>
-            <p className="text-[13px] text-[#4A4A4A] leading-relaxed">
+            <p className="text-[13px] font-semibold text-[#141821] mb-1">Your weekly check-in is open this weekend</p>
+            <p className="text-[13px] text-[#43474F] leading-relaxed">
               If you have a few minutes, do that one first - it is the shorter of the two and it
               closes Sunday evening. This will still be here afterwards.
             </p>
@@ -121,27 +121,27 @@ export default function ProgressCheckForm({
           </div>
         )}
 
-        <div className="bg-white border border-[#E5E5E5] rounded-2xl p-5 mb-10">
-          <p className="text-[13px] font-semibold text-[#1A1A1A] mb-2">Before you start, have these ready</p>
-          <ul className="text-[13px] text-[#4A4A4A] leading-relaxed space-y-1">
+        <div className="bg-white border border-[#E8EAEE] rounded-2xl p-5 mb-10">
+          <p className="text-[13px] font-semibold text-[#141821] mb-2">Before you start, have these ready</p>
+          <ul className="text-[13px] text-[#43474F] leading-relaxed space-y-1">
             <li>· Scales and a tape measure - weight, waist, hips and chest</li>
             <li>· Somewhere to take three photos: front, side and back</li>
           </ul>
-          <p className="text-[12px] text-[#6B6B6B] leading-relaxed mt-3">
+          <p className="text-[12px] text-[#666D7A] leading-relaxed mt-3">
             All of it is needed to finish. The measurements and photos are the part that lets me show
             you what has changed rather than tell you, so this read does not work without them.
           </p>
         </div>
 
         {PROGRESS_CHECK_SECTIONS.map(section => (
-          <div key={section.id} className="bg-white border border-[#E5E5E5] rounded-2xl p-6 md:p-7 mb-5">
-            <h2 className="text-lg font-extrabold text-[#1A1A1A] mb-1">{section.title}</h2>
-            <p className="text-[13px] text-[#6B6B6B] leading-relaxed mb-6">{section.description}</p>
+          <div key={section.id} className="bg-white border border-[#E8EAEE] rounded-2xl p-6 md:p-7 mb-5">
+            <h2 className="text-lg font-extrabold text-[#141821] mb-1">{section.title}</h2>
+            <p className="text-[13px] text-[#666D7A] leading-relaxed mb-6">{section.description}</p>
 
             <div className="space-y-7">
               {section.questions.map(q => (
                 <div key={q.id}>
-                  <p className="text-[15px] font-semibold text-[#1A1A1A] leading-snug mb-3">{q.text}</p>
+                  <p className="text-[15px] font-semibold text-[#141821] leading-snug mb-3">{q.text}</p>
 
                   {q.type === 'scale' && (
                     <div>
@@ -153,7 +153,7 @@ export default function ProgressCheckForm({
                               key={n}
                               type="button"
                               onClick={() => set(q.id, String(n))}
-                              className={`flex-1 h-11 rounded-lg border text-sm font-bold transition-colors ${active ? 'bg-[#1B6DFC] border-[#1B6DFC] text-white' : 'bg-white border-[#D4D4D4] text-[#3A3A3A] hover:border-[#1B6DFC]'}`}
+                              className={`flex-1 h-11 rounded-lg border text-sm font-bold transition-colors ${active ? 'bg-[#1B6DFC] border-[#1B6DFC] text-white' : 'bg-white border-[#CFD4DC] text-[#43474F] hover:border-[#1B6DFC]'}`}
                             >
                               {n}
                             </button>
@@ -161,7 +161,7 @@ export default function ProgressCheckForm({
                         })}
                       </div>
                       {q.scaleLabel && (
-                        <div className="flex justify-between mt-1.5 text-[11px] text-[#999999]">
+                        <div className="flex justify-between mt-1.5 text-[11px] text-[#98A0AD]">
                           <span>{q.scaleLabel.low}</span>
                           <span>{q.scaleLabel.high}</span>
                         </div>
@@ -178,7 +178,7 @@ export default function ProgressCheckForm({
                             key={opt}
                             type="button"
                             onClick={() => set(q.id, opt)}
-                            className={`flex-1 px-4 py-3 rounded-lg border text-sm font-semibold text-left transition-colors ${active ? 'bg-[#1B6DFC]/5 border-[#1B6DFC] text-[#1A1A1A]' : 'bg-white border-[#D4D4D4] text-[#3A3A3A] hover:border-[#1B6DFC]'}`}
+                            className={`flex-1 px-4 py-3 rounded-lg border text-sm font-semibold text-left transition-colors ${active ? 'bg-[#1B6DFC]/5 border-[#1B6DFC] text-[#141821]' : 'bg-white border-[#CFD4DC] text-[#43474F] hover:border-[#1B6DFC]'}`}
                           >
                             {opt}
                           </button>
@@ -192,7 +192,7 @@ export default function ProgressCheckForm({
                       value={responses[q.id] ?? ''}
                       onChange={e => set(q.id, e.target.value)}
                       rows={3}
-                      className="w-full rounded-lg border border-[#D4D4D4] p-3 text-sm text-[#1A1A1A] leading-relaxed focus:border-[#1B6DFC] focus:outline-none resize-y"
+                      className="w-full rounded-lg border border-[#CFD4DC] p-3 text-sm text-[#141821] leading-relaxed focus:border-[#1B6DFC] focus:outline-none resize-y"
                       placeholder="Optional"
                     />
                   )}
@@ -203,9 +203,9 @@ export default function ProgressCheckForm({
         ))}
 
         {/* Measurements and photos - the milestone capture. */}
-        <div className="bg-white border border-[#E5E5E5] rounded-2xl p-6 md:p-7 mb-5">
-          <h2 className="text-lg font-extrabold text-[#1A1A1A] mb-1">Measurements and photos</h2>
-          <p className="text-[13px] text-[#6B6B6B] leading-relaxed mb-6">
+        <div className="bg-white border border-[#E8EAEE] rounded-2xl p-6 md:p-7 mb-5">
+          <h2 className="text-lg font-extrabold text-[#141821] mb-1">Measurements and photos</h2>
+          <p className="text-[13px] text-[#666D7A] leading-relaxed mb-6">
             This is the part that lets me show you what has actually changed rather than tell you.
             Same conditions as last time if you can - morning, before eating, same lighting.
           </p>
@@ -218,7 +218,7 @@ export default function ProgressCheckForm({
               { id: 'chest', label: 'Chest (cm)', value: chest, set: setChest },
             ].map(f => (
               <div key={f.id}>
-                <label htmlFor={`pc-${f.id}`} className="block text-[13px] font-semibold text-[#1A1A1A] mb-2">
+                <label htmlFor={`pc-${f.id}`} className="block text-[13px] font-semibold text-[#141821] mb-2">
                   {f.label}
                 </label>
                 <input
@@ -228,15 +228,15 @@ export default function ProgressCheckForm({
                   step="0.1"
                   value={f.value}
                   onChange={e => f.set(e.target.value)}
-                  className="w-full rounded-lg border border-[#D4D4D4] px-3 py-3 text-[15px] text-[#1A1A1A] focus:border-[#1B6DFC] focus:outline-none"
+                  className="w-full rounded-lg border border-[#CFD4DC] px-3 py-3 text-[15px] text-[#141821] focus:border-[#1B6DFC] focus:outline-none"
                   placeholder="-"
                 />
               </div>
             ))}
           </div>
 
-          <p className="text-[15px] font-semibold text-[#1A1A1A] leading-snug mb-1">Progress photos</p>
-          <p className="text-[13px] text-[#6B6B6B] leading-relaxed mb-4">
+          <p className="text-[15px] font-semibold text-[#141821] leading-snug mb-1">Progress photos</p>
+          <p className="text-[13px] text-[#666D7A] leading-relaxed mb-4">
             Three photos, same as your first set - front, side and back, relaxed stance, no flexing.
             Only I ever see these.
           </p>
@@ -250,21 +250,21 @@ export default function ProgressCheckForm({
               const isProcessing = processing.has(id)
               return (
                 <div key={id} className="bg-[#F7F7F7] rounded-2xl p-5">
-                  <p className="text-sm font-medium text-[#1A1A1A] mb-3">{label}</p>
+                  <p className="text-sm font-medium text-[#141821] mb-3">{label}</p>
                   {isProcessing ? (
                     <div className="flex items-center gap-3 py-2">
                       <div className="w-5 h-5 border-2 border-[#1B6DFC] border-t-transparent rounded-full animate-spin" />
-                      <span className="text-[#6B6B6B] text-sm">Optimising photo…</span>
+                      <span className="text-[#666D7A] text-sm">Optimising photo…</span>
                     </div>
                   ) : file ? (
                     <div className="flex items-center justify-between gap-3">
-                      <p className="text-[#4A4A4A] text-sm truncate">{file.name}</p>
-                      <button type="button" onClick={() => set(null)} className="text-[#6B6B6B] text-xs hover:text-[#1A1A1A] shrink-0">Remove</button>
+                      <p className="text-[#43474F] text-sm truncate">{file.name}</p>
+                      <button type="button" onClick={() => set(null)} className="text-[#666D7A] text-xs hover:text-[#141821] shrink-0">Remove</button>
                     </div>
                   ) : (
                     <label className="block cursor-pointer">
-                      <div className="border-2 border-dashed border-[#D4D4D4] rounded-xl p-6 text-center hover:border-[#1B6DFC]/50 transition-colors">
-                        <p className="text-[#6B6B6B] text-sm">Tap to upload</p>
+                      <div className="border-2 border-dashed border-[#CFD4DC] rounded-xl p-6 text-center hover:border-[#1B6DFC]/50 transition-colors">
+                        <p className="text-[#666D7A] text-sm">Tap to upload</p>
                       </div>
                       <input
                         type="file"
@@ -276,7 +276,7 @@ export default function ProgressCheckForm({
                     </label>
                   )}
                   {unreadable.has(id) && (
-                    <p className="text-amber-700 text-xs mt-2 leading-relaxed">
+                    <p className="text-[#A96A12] text-xs mt-2 leading-relaxed">
                       This photo is in HEIC format, which we can&apos;t read for the visual read. It will
                       still save, but to get the full read switch your camera to JPEG and retake it —
                       iPhone: Settings → Camera → Formats → Most Compatible.
@@ -289,7 +289,7 @@ export default function ProgressCheckForm({
 
         </div>
 
-        {error && <p className="text-sm text-red-700 mb-3">{error}</p>}
+        {error && <p className="text-sm text-[#C82626] mb-3">{error}</p>}
         <div className="flex items-center gap-4 mt-2">
           <button
             onClick={submit}
@@ -298,7 +298,7 @@ export default function ProgressCheckForm({
           >
             {submitting ? 'Sending…' : 'Submit Progress Check'}
           </button>
-          <span className="text-[13px] text-[#6B6B6B]">
+          <span className="text-[13px] text-[#666D7A]">
             {answeredCount} / {requiredIds.length} answered
             {answeredCount === requiredIds.length && !measurementsGiven && ' · measurements still needed'}
             {answeredCount === requiredIds.length && measurementsGiven && !allPhotos && ' · photos still needed'}

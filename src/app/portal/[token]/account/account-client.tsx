@@ -30,14 +30,14 @@ export default function AccountClient({ clientId, clientName, email, phone, pack
 
 function Section({ icon: Icon, title, description, children }: { icon: typeof UserIcon; title: string; description: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] overflow-hidden">
+    <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] overflow-hidden">
       <div className="flex items-start gap-3 px-5 pt-5">
-        <div className="w-10 h-10 rounded-xl bg-[#FFFFFF] border border-[#E5E5E5] flex items-center justify-center shrink-0">
+        <div className="w-10 h-10 rounded-xl bg-[#FFFFFF] border border-[#E8EAEE] flex items-center justify-center shrink-0">
           <Icon size={16} className="text-[#1B6DFC]" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-[15px] font-semibold text-[#1A1A1A] mb-1">{title}</p>
-          <p className="text-[12px] text-[#6B6B6B] leading-relaxed">{description}</p>
+          <p className="text-[15px] font-semibold text-[#141821] mb-1">{title}</p>
+          <p className="text-[12px] text-[#666D7A] leading-relaxed">{description}</p>
         </div>
       </div>
       <div className="px-5 pb-5 pt-4">{children}</div>
@@ -84,30 +84,30 @@ function ContactCard({ clientId, email, phone }: { clientId: string; email: stri
     <Section icon={UserIcon} title="Contact details" description="Keep these up to date so we can reach you.">
       <div className="space-y-3">
         <div>
-          <label className="text-[11px] font-bold text-[#999999] uppercase tracking-widest mb-1.5 block">Email</label>
+          <label className="text-[12px] font-medium text-[#98A0AD] mb-1.5 block">Email</label>
           <input
             type="email"
             value={emailValue}
             onChange={e => setEmailValue(e.target.value)}
-            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5 text-[14px] text-[#1A1A1A] focus:outline-none focus:border-[#D4D4D4]"
+            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-3 py-2.5 text-[14px] text-[#141821] focus:outline-none focus:border-[#CFD4DC]"
           />
-          <p className="text-[11px] text-[#999999] mt-1">Changing this also changes the email you sign in with.</p>
+          <p className="text-[11px] text-[#98A0AD] mt-1">Changing this also changes the email you sign in with.</p>
         </div>
         <div>
-          <label className="text-[11px] font-bold text-[#999999] uppercase tracking-widest mb-1.5 block">Phone</label>
+          <label className="text-[12px] font-medium text-[#98A0AD] mb-1.5 block">Phone</label>
           <input
             type="tel"
             value={phoneValue}
             onChange={e => setPhoneValue(e.target.value)}
             placeholder="+61 ..."
-            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5 text-[14px] text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:border-[#D4D4D4]"
+            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-3 py-2.5 text-[14px] text-[#141821] placeholder:text-[#98A0AD] focus:outline-none focus:border-[#CFD4DC]"
           />
         </div>
         {error && <p className="text-[12px] text-[#8A5A14]">{error}</p>}
         <button
           onClick={save}
           disabled={!dirty || saving}
-          className="w-full inline-flex items-center justify-center gap-2 bg-[#1B6DFC] text-[#FFFFFF] text-[13px] font-bold py-2.5 rounded-xl hover:bg-[#5390FF] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-full inline-flex items-center justify-center gap-2 bg-[#1B6DFC] text-[#FFFFFF] text-[13px] font-bold py-2.5 rounded-xl hover:bg-[#1560E0] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {saving ? <Loader2 size={13} className="animate-spin" /> : saved ? <Check size={13} /> : null}
           {saving ? 'Saving...' : saved ? 'Saved' : 'Save changes'}
@@ -168,13 +168,13 @@ function PauseCard({ clientId, clientName, packageLabel }: { clientId: string; c
           onChange={e => setReason(e.target.value)}
           placeholder="Optional. What is prompting the pause?"
           rows={3}
-          className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5 text-[13px] text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
+          className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-3 py-2.5 text-[13px] text-[#141821] placeholder:text-[#98A0AD] focus:outline-none focus:border-[#CFD4DC] leading-relaxed resize-y"
         />
         {error && <p className="text-[12px] text-[#8A5A14]">{error}</p>}
         <button
           onClick={submit}
           disabled={submitting}
-          className="w-full inline-flex items-center justify-center gap-2 bg-[#FFFFFF] border border-[#E5E5E5] text-[#3A3A3A] text-[13px] font-bold py-2.5 rounded-xl hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-40"
+          className="w-full inline-flex items-center justify-center gap-2 bg-[#FFFFFF] border border-[#E8EAEE] text-[#43474F] text-[13px] font-bold py-2.5 rounded-xl hover:border-[#1B6DFC] hover:bg-[#EFF5FE] hover:text-[#1B6DFC] transition-colors disabled:opacity-40"
         >
           {submitting && <Loader2 size={13} className="animate-spin" />}
           {submitting ? 'Sending request...' : 'Request pause'}
@@ -224,30 +224,30 @@ function ReferCard({ clientId, clientName }: { clientId: string; clientName: str
     <Section icon={Heart} title="Refer a friend" description="Know someone who would benefit from this work? Send their details and your coach will reach out personally.">
       <div className="space-y-3">
         <div>
-          <label className="text-[11px] font-bold text-[#999999] uppercase tracking-widest mb-1.5 block">Their name</label>
+          <label className="text-[12px] font-medium text-[#98A0AD] mb-1.5 block">Their name</label>
           <input
             value={name}
             onChange={e => setName(e.target.value)}
-            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5 text-[14px] text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:border-[#D4D4D4]"
+            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-3 py-2.5 text-[14px] text-[#141821] placeholder:text-[#98A0AD] focus:outline-none focus:border-[#CFD4DC]"
           />
         </div>
         <div>
-          <label className="text-[11px] font-bold text-[#999999] uppercase tracking-widest mb-1.5 block">Their email</label>
+          <label className="text-[12px] font-medium text-[#98A0AD] mb-1.5 block">Their email</label>
           <input
             type="email"
             value={contactEmail}
             onChange={e => setContactEmail(e.target.value)}
-            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5 text-[14px] text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:border-[#D4D4D4]"
+            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-3 py-2.5 text-[14px] text-[#141821] placeholder:text-[#98A0AD] focus:outline-none focus:border-[#CFD4DC]"
           />
         </div>
         <div>
-          <label className="text-[11px] font-bold text-[#999999] uppercase tracking-widest mb-1.5 block">Note (optional)</label>
+          <label className="text-[12px] font-medium text-[#98A0AD] mb-1.5 block">Note (optional)</label>
           <textarea
             value={note}
             onChange={e => setNote(e.target.value)}
             placeholder="Why are they a good fit?"
             rows={3}
-            className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-3 py-2.5 text-[13px] text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
+            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-3 py-2.5 text-[13px] text-[#141821] placeholder:text-[#98A0AD] focus:outline-none focus:border-[#CFD4DC] leading-relaxed resize-y"
           />
         </div>
         {error && <p className="text-[12px] text-[#8A5A14]">{error}</p>}
@@ -255,7 +255,7 @@ function ReferCard({ clientId, clientName }: { clientId: string; clientName: str
         <button
           onClick={submit}
           disabled={submitting || !name.trim() || !contactEmail.trim()}
-          className="w-full inline-flex items-center justify-center gap-2 bg-[#FFFFFF] border border-[#E5E5E5] text-[#3A3A3A] text-[13px] font-bold py-2.5 rounded-xl hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors disabled:opacity-40"
+          className="w-full inline-flex items-center justify-center gap-2 bg-[#FFFFFF] border border-[#E8EAEE] text-[#43474F] text-[13px] font-bold py-2.5 rounded-xl hover:border-[#1B6DFC] hover:bg-[#EFF5FE] hover:text-[#1B6DFC] transition-colors disabled:opacity-40"
         >
           {submitting && <Loader2 size={13} className="animate-spin" />}
           {submitting ? 'Sending...' : 'Refer'}
@@ -272,7 +272,7 @@ function DownloadCard({ portalToken }: { portalToken: string }) {
     <Section icon={Download} title="Download your data" description="Export everything we hold about you as a JSON file. Your intake, baselines, check-ins, readings.">
       <a
         href={`/api/portal/${portalToken}/export`}
-        className="w-full inline-flex items-center justify-center gap-2 bg-[#FFFFFF] border border-[#E5E5E5] text-[#3A3A3A] text-[13px] font-bold py-2.5 rounded-xl hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+        className="w-full inline-flex items-center justify-center gap-2 bg-[#FFFFFF] border border-[#E8EAEE] text-[#43474F] text-[13px] font-bold py-2.5 rounded-xl hover:border-[#1B6DFC] hover:bg-[#EFF5FE] hover:text-[#1B6DFC] transition-colors"
       >
         <Download size={13} /> Download my data (JSON)
       </a>

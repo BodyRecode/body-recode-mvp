@@ -15,8 +15,8 @@ export default async function BaselinePage({ params }: { params: Promise<{ token
     return (
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
-          <h1 className="text-xl font-semibold text-[#1A1A1A] mb-2">Link not found</h1>
-          <p className="text-stone-500 text-sm">This baseline link is invalid or has expired. Please contact your coach.</p>
+          <h1 className="text-xl font-semibold text-[#141821] mb-2">Link not found</h1>
+          <p className="text-[#666D7A] text-sm">This baseline link is invalid or has expired. Please contact your coach.</p>
         </div>
       </div>
     )
@@ -34,17 +34,17 @@ export default async function BaselinePage({ params }: { params: Promise<{ token
     return (
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
-          <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-5">
+          <div className="w-14 h-14 bg-[#EFF5FE] rounded-full flex items-center justify-center mx-auto mb-5">
             <svg className="w-7 h-7 text-[#1B6DFC]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h1 className="text-xl font-semibold text-[#1A1A1A] mb-2">Baseline submitted</h1>
-          <p className="text-[#999999] text-sm mb-7">Your baseline documentation has been received. Your coach will be in touch shortly.</p>
+          <h1 className="text-xl font-semibold text-[#141821] mb-2">Baseline submitted</h1>
+          <p className="text-[#98A0AD] text-sm mb-7">Your baseline documentation has been received. Your coach will be in touch shortly.</p>
           {client.onboarding_token && (
             <a
               href={`/portal/${client.onboarding_token}`}
-              className="inline-flex items-center gap-2 bg-[#1B6DFC] text-white text-sm font-bold px-6 py-3 rounded-xl hover:bg-[#5390FF] transition-colors"
+              className="inline-flex items-center gap-2 bg-[#1B6DFC] text-white text-sm font-bold px-6 py-3 rounded-xl hover:bg-[#1560E0] transition-colors"
             >
               Back to your portal
             </a>

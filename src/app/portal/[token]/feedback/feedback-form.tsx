@@ -82,20 +82,20 @@ export default function FeedbackForm({
           <Check size={16} className="text-[#1B6DFC]" />
           <p className="text-[14px] font-bold text-[#1B6DFC] uppercase tracking-widest">Thanks</p>
         </div>
-        <p className="text-[14px] text-[#1A1A1A] leading-relaxed mb-4">
+        <p className="text-[14px] text-[#141821] leading-relaxed mb-4">
           Got it. Kade reads every one of these and uses them to shape what we build next. If your
           note needs a reply you will hear back directly.
         </p>
         <div className="flex gap-3">
           <button
             onClick={() => { setSubmitted(false); router.refresh() }}
-            className="text-[12px] font-medium px-3 py-1.5 border border-[#E5E5E5] text-[#6B6B6B] rounded-lg hover:border-[#1B6DFC] hover:bg-blue-50 hover:text-[#1B6DFC] transition-colors"
+            className="text-[12px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#1B6DFC] hover:bg-[#EFF5FE] hover:text-[#1B6DFC] transition-colors"
           >
             Send another
           </button>
           <Link
             href={`/portal/${portalToken}`}
-            className="text-[12px] font-semibold px-3 py-1.5 bg-[#1B6DFC] text-[#FFFFFF] rounded-lg hover:bg-[#5390FF] transition-colors"
+            className="text-[12px] font-semibold px-3 py-1.5 bg-[#1B6DFC] text-[#FFFFFF] rounded-lg hover:bg-[#1560E0] transition-colors"
           >
             Back to portal
           </Link>
@@ -108,7 +108,7 @@ export default function FeedbackForm({
     <div className="space-y-6">
       {/* Category */}
       <div>
-        <p className="text-[10px] font-bold text-[#6B6B6B] uppercase tracking-widest mb-3">
+        <p className="text-[11.5px] font-medium text-[#666D7A] mb-3">
           What is this about
         </p>
         <div className="space-y-2">
@@ -122,20 +122,20 @@ export default function FeedbackForm({
                 className={`w-full text-left p-4 rounded-xl border transition-colors ${
                   selected
                     ? 'border-[#1B6DFC] bg-[rgba(27,109,252,0.08)]'
-                    : 'border-[#E5E5E5] bg-[#FFFFFF] hover:border-[#D4D4D4]'
+                    : 'border-[#E8EAEE] bg-[#FFFFFF] hover:border-[#CFD4DC]'
                 }`}
               >
                 <div className="flex items-center gap-2.5">
                   <span
                     className={`w-3 h-3 rounded-full border-2 shrink-0 ${
-                      selected ? 'border-[#1B6DFC] bg-[#1B6DFC]' : 'border-[#999999]'
+                      selected ? 'border-[#1B6DFC] bg-[#1B6DFC]' : 'border-[#98A0AD]'
                     }`}
                   />
-                  <p className={`text-[14px] font-semibold ${selected ? 'text-[#1A1A1A]' : 'text-[#1A1A1A]'}`}>
+                  <p className={`text-[14px] font-semibold ${selected ? 'text-[#141821]' : 'text-[#141821]'}`}>
                     {opt.label}
                   </p>
                 </div>
-                <p className="text-[12px] text-[#999999] leading-relaxed mt-1.5 ml-[22px]">
+                <p className="text-[12px] text-[#98A0AD] leading-relaxed mt-1.5 ml-[22px]">
                   {opt.hint}
                 </p>
               </button>
@@ -146,7 +146,7 @@ export default function FeedbackForm({
 
       {/* Body */}
       <div>
-        <p className="text-[10px] font-bold text-[#6B6B6B] uppercase tracking-widest mb-2">
+        <p className="text-[11.5px] font-medium text-[#666D7A] mb-2">
           Tell us more
         </p>
         <textarea
@@ -155,12 +155,12 @@ export default function FeedbackForm({
           placeholder="The more specific the better. What did you do, what did you expect, what actually happened, or what would make this better for you."
           rows={8}
           maxLength={MAX_LEN + 200}
-          className="w-full bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl px-4 py-3 text-[14px] text-[#1A1A1A] placeholder:text-[#999999] focus:outline-none focus:border-[#D4D4D4] leading-relaxed resize-y"
+          className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-xl px-4 py-3 text-[14px] text-[#141821] placeholder:text-[#98A0AD] focus:outline-none focus:border-[#CFD4DC] leading-relaxed resize-y"
         />
         <div className="flex items-center justify-between mt-2">
-          <p className="text-[11px] text-[#999999]">
+          <p className="text-[11px] text-[#98A0AD]">
             {tooLong ? (
-              <span className="text-amber-700">Trim by {body.length - MAX_LEN} characters.</span>
+              <span className="text-[#A96A12]">Trim by {body.length - MAX_LEN} characters.</span>
             ) : (
               `${body.length} / ${MAX_LEN}`
             )}
@@ -177,7 +177,7 @@ export default function FeedbackForm({
       <button
         onClick={submit}
         disabled={submitting || tooShort || tooLong}
-        className="w-full inline-flex items-center justify-center gap-2 py-3.5 bg-[#1B6DFC] hover:bg-[#5390FF] text-[#FFFFFF] font-bold text-[14px] rounded-2xl transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+        className="w-full inline-flex items-center justify-center gap-2 py-3.5 bg-[#1B6DFC] hover:bg-[#1560E0] text-[#FFFFFF] font-bold text-[14px] rounded-2xl transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
       >
         {submitting ? <Loader2 size={14} className="animate-spin" /> : null}
         {submitting ? 'Sending…' : 'Send to Kade'}

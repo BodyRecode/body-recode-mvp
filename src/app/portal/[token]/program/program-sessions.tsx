@@ -46,12 +46,12 @@ export default function ProgramSessions({ sessions }: { sessions: Session[] }) {
 
   return (
     <div className="space-y-3">
-      <p className="text-xs font-bold text-[#999999] uppercase tracking-widest">Sessions</p>
+      <p className="text-[12.5px] font-medium text-[#98A0AD]">Sessions</p>
       {sessions.map((session, si) => {
         const isOpen = open.has(si)
         const count = exerciseCount(session)
         return (
-          <div key={si} className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl overflow-hidden">
+          <div key={si} className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl overflow-hidden">
             {/* Header — tap to expand */}
             <button
               type="button"
@@ -60,11 +60,11 @@ export default function ProgramSessions({ sessions }: { sessions: Session[] }) {
               className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left hover:bg-[#FAFAF7] transition-colors"
             >
               <div className="min-w-0">
-                <p className="text-sm font-bold text-[#1A1A1A]">{session.day_label}</p>
-                <p className="text-xs text-[#999999] mt-0.5">{session.skeleton}{count > 0 ? ` · ${count} exercise${count === 1 ? '' : 's'}` : ''}</p>
+                <p className="text-sm font-bold text-[#141821]">{session.day_label}</p>
+                <p className="text-xs text-[#98A0AD] mt-0.5">{session.skeleton}{count > 0 ? ` · ${count} exercise${count === 1 ? '' : 's'}` : ''}</p>
               </div>
               <svg
-                className={`w-4 h-4 text-[#999999] shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                className={`w-4 h-4 text-[#98A0AD] shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}
                 fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
@@ -72,19 +72,19 @@ export default function ProgramSessions({ sessions }: { sessions: Session[] }) {
             </button>
 
             {isOpen && (
-              <div className="border-t border-[#E5E5E5]">
+              <div className="border-t border-[#E8EAEE]">
                 {/* Movement prep */}
                 {/* "3 sets" is ambiguous without this. See program-prompt SETS ARE WORKING SETS. */}
-                <p className="text-xs text-stone-500 mb-3">
+                <p className="text-xs text-[#666D7A] mb-3">
                   Sets shown are working sets. Warm-up sets are extra.
                 </p>
                 {session.movement_prep && session.movement_prep.length > 0 && (
-                  <div className="px-5 py-3 border-b border-[#E5E5E5]/60">
-                    <p className="text-xs font-semibold text-[#999999] uppercase tracking-wider mb-2">Movement Preparation</p>
+                  <div className="px-5 py-3 border-b border-[#E8EAEE]/60">
+                    <p className="text-[12.5px] font-semibold text-[#98A0AD] mb-2">Movement Preparation</p>
                     <ul className="space-y-1">
                       {session.movement_prep.map((item, i) => (
-                        <li key={i} className="text-xs text-[#6B6B6B] flex gap-2">
-                          <span className="text-[#999999] shrink-0">·</span>
+                        <li key={i} className="text-xs text-[#666D7A] flex gap-2">
+                          <span className="text-[#98A0AD] shrink-0">·</span>
                           <span>{item}</span>
                         </li>
                       ))}
@@ -94,18 +94,18 @@ export default function ProgramSessions({ sessions }: { sessions: Session[] }) {
 
                 {/* Blocks */}
                 {session.blocks.map((block, bi) => (
-                  <div key={bi} className="px-5 py-3 border-b border-[#E5E5E5]/40 last:border-0">
+                  <div key={bi} className="px-5 py-3 border-b border-[#E8EAEE]/40 last:border-0">
                     <p className="text-xs font-bold text-[#1B6DFC] uppercase tracking-widest mb-2">{block.block_label}</p>
                     <div className="space-y-3">
                       {block.exercises.map((ex, ei) => (
                         <div key={ei} className="flex flex-col gap-1">
-                          <p className="text-sm font-semibold text-[#1A1A1A]">{ex.exercise_name}</p>
+                          <p className="text-sm font-semibold text-[#141821]">{ex.exercise_name}</p>
                           <div className="flex flex-wrap gap-2">
-                            <span className="text-xs bg-[#E5E5E5] text-[#3A3A3A] px-2 py-0.5 rounded-lg">{ex.sets} × {ex.reps}</span>
-                            {ex.rpe && <span className="text-xs bg-[#E5E5E5] text-[#6B6B6B] px-2 py-0.5 rounded-lg">RPE {ex.rpe}</span>}
-                            {ex.rest && <span className="text-xs bg-[#E5E5E5] text-[#6B6B6B] px-2 py-0.5 rounded-lg">{ex.rest} rest</span>}
+                            <span className="text-xs bg-[#E8EAEE] text-[#43474F] px-2 py-0.5 rounded-lg">{ex.sets} × {ex.reps}</span>
+                            {ex.rpe && <span className="text-xs bg-[#E8EAEE] text-[#666D7A] px-2 py-0.5 rounded-lg">RPE {ex.rpe}</span>}
+                            {ex.rest && <span className="text-xs bg-[#E8EAEE] text-[#666D7A] px-2 py-0.5 rounded-lg">{ex.rest} rest</span>}
                           </div>
-                          {ex.notes && <p className="text-xs text-[#999999] leading-relaxed">{ex.notes}</p>}
+                          {ex.notes && <p className="text-xs text-[#98A0AD] leading-relaxed">{ex.notes}</p>}
                         </div>
                       ))}
                     </div>

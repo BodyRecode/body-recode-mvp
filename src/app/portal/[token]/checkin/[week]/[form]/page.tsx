@@ -79,11 +79,11 @@ export default async function PortalCheckinDetail({
       description={`Submitted ${submittedAt} · ${answeredCount} responses`}
     >
       {feedback ? (
-          <div className="mb-10 rounded-2xl border border-blue-200 bg-[#FFFFFF] overflow-hidden">
-            <div className="px-5 py-3 border-b border-[#E5E5E5] flex items-center justify-between">
+          <div className="mb-10 rounded-2xl border border-[#B5CFFC] bg-[#FFFFFF] overflow-hidden">
+            <div className="px-5 py-3 border-b border-[#E8EAEE] flex items-center justify-between">
               <p className="text-[11px] font-bold uppercase tracking-widest text-[#1B6DFC]">Body Recode read</p>
               {feedback.email_sent_at && (
-                <p className="text-[10px] uppercase tracking-widest text-[#999999]">
+                <p className="text-[11.5px] text-[#98A0AD]">
                   Sent {new Date(feedback.email_sent_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
                 </p>
               )}
@@ -92,21 +92,21 @@ export default async function PortalCheckinDetail({
               <Section title="Interpretation" body={feedback.interpretation} />
               {feedback.reframe && <Section title="Reframe" body={feedback.reframe} />}
               <Section title="This week, hold this" body={feedback.next_focus} accent />
-              <p className="text-sm text-[#3A3A3A] leading-relaxed border-t border-[#E5E5E5] pt-4">
+              <p className="text-sm text-[#43474F] leading-relaxed border-t border-[#E8EAEE] pt-4">
                 Kade will personally review your check-in and this response, and decide what, if anything, changes in your plan.
               </p>
             </div>
           </div>
         ) : (
-          <div className="mb-10 rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] px-5 py-4">
-            <p className="text-[11px] font-bold uppercase tracking-widest text-[#999999]">Body Recode read</p>
-            <p className="mt-2 text-sm text-[#6B6B6B]">Your read for this check-in is not ready yet. You will receive an email when it is.</p>
+          <div className="mb-10 rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] px-5 py-4">
+            <p className="text-[12px] font-medium text-[#98A0AD]">Body Recode read</p>
+            <p className="mt-2 text-sm text-[#666D7A]">Your read for this check-in is not ready yet. You will receive an email when it is.</p>
           </div>
         )}
 
-      <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] px-5 py-5">
-        <p className="text-[11px] font-bold uppercase tracking-widest text-[#999999] mb-3">Your responses</p>
-        <p className="text-sm text-[#6B6B6B] leading-relaxed">
+      <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] px-5 py-5">
+        <p className="text-[12px] font-medium text-[#98A0AD] mb-3">Your responses</p>
+        <p className="text-sm text-[#666D7A] leading-relaxed">
           Your full {answeredCount}-response check-in is in your coach's view. If you want to see your own answers again, your coach can share them.
         </p>
       </div>
@@ -117,8 +117,8 @@ export default async function PortalCheckinDetail({
 function Section({ title, body, accent }: { title: string; body: string; accent?: boolean }) {
   return (
     <div>
-      <p className={`text-[11px] font-bold uppercase tracking-widest mb-2 ${accent ? 'text-[#1B6DFC]' : 'text-[#6B6B6B]'}`}>{title}</p>
-      <div className="text-sm text-[#3A3A3A] leading-relaxed space-y-3 whitespace-pre-wrap">{body}</div>
+      <p className={`text-[11px] font-bold uppercase tracking-widest mb-2 ${accent ? 'text-[#1B6DFC]' : 'text-[#666D7A]'}`}>{title}</p>
+      <div className="text-sm text-[#43474F] leading-relaxed space-y-3 whitespace-pre-wrap">{body}</div>
     </div>
   )
 }

@@ -191,19 +191,19 @@ export default function BaselineForm(props: Props) {
     return (
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
-          <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-5">
+          <div className="w-14 h-14 bg-[#EFF5FE] rounded-full flex items-center justify-center mx-auto mb-5">
             <svg className="w-7 h-7 text-[#1B6DFC]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
           <img src={logoUrl()} width="110" alt={brand().name} style={{ display: 'block', margin: '0 auto 20px' }} />
-          <h1 className="text-2xl font-bold text-[#1A1A1A] mb-3">Baseline received.</h1>
-          <p className="text-[#6B6B6B] text-sm leading-relaxed">Baseline documentation protects interpretive integrity. It allows exposure to be guided by structure rather than emotion. This marks the starting calibration point of your coaching arc.</p>
-          <p className="text-[#999999] text-xs mt-4 mb-7">Your coach will review your documentation and your Deliberate Start Window will begin shortly.</p>
+          <h1 className="text-2xl font-bold text-[#141821] mb-3">Baseline received.</h1>
+          <p className="text-[#666D7A] text-sm leading-relaxed">Baseline documentation protects interpretive integrity. It allows exposure to be guided by structure rather than emotion. This marks the starting calibration point of your coaching arc.</p>
+          <p className="text-[#98A0AD] text-xs mt-4 mb-7">Your coach will review your documentation and your Deliberate Start Window will begin shortly.</p>
           {portalHref && (
             <a
               href={portalHref}
-              className="inline-flex items-center gap-2 bg-[#1B6DFC] text-white text-sm font-bold px-6 py-3 rounded-xl hover:bg-[#5390FF] transition-colors"
+              className="inline-flex items-center gap-2 bg-[#1B6DFC] text-white text-sm font-bold px-6 py-3 rounded-xl hover:bg-[#1560E0] transition-colors"
             >
               Back to your portal
             </a>
@@ -217,30 +217,30 @@ export default function BaselineForm(props: Props) {
     return (
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-6">
         <div className="text-center max-w-sm">
-          <div className="w-10 h-10 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-stone-600 text-sm">Submitting your baseline…</p>
+          <div className="w-10 h-10 border-2 border-[#1B6DFC] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-[#666D7A] text-sm">Submitting your baseline…</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#141821]">
       <ClientHeader homeHref={portalHref} />
       <div className="max-w-lg mx-auto px-6 py-10">
 
         {/* Header */}
         <div className="mb-10">
-          <h1 className="text-2xl font-bold text-[#1A1A1A] mb-1">Baseline Documentation</h1>
-          <p className="text-stone-600 text-sm">Hi {firstName} — this is a formal calibration event, not a cosmetic assessment.</p>
+          <h1 className="text-2xl font-bold text-[#141821] mb-1">Baseline Documentation</h1>
+          <p className="text-[#666D7A] text-sm">Hi {firstName} — this is a formal calibration event, not a cosmetic assessment.</p>
         </div>
 
         {/* STEP: Intro */}
         {step === 'intro' && (
           <div className="space-y-6">
-            <div className="bg-stone-100 rounded-2xl p-6 space-y-4">
-              <h2 className="text-base font-semibold text-[#1A1A1A]">Before you start</h2>
-              <p className="text-stone-600 text-sm leading-relaxed">This documentation establishes your structural reference point for all future interpretation. It exists to protect interpretive precision — accuracy matters, appearance does not.</p>
+            <div className="bg-[#F4F6F9] rounded-2xl p-6 space-y-4">
+              <h2 className="text-base font-semibold text-[#141821]">Before you start</h2>
+              <p className="text-[#666D7A] text-sm leading-relaxed">This documentation establishes your structural reference point for all future interpretation. It exists to protect interpretive precision — accuracy matters, appearance does not.</p>
               <div className="space-y-3 pt-2">
                 {[
                   'Complete this in the morning, before food or training',
@@ -252,10 +252,10 @@ export default function BaselineForm(props: Props) {
                   'Repeat all future re-captures at the same time of day under the same conditions',
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                    <div className="w-5 h-5 rounded-full bg-[#1B6DFC]/10 border border-[#1B6DFC]/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#1B6DFC]" />
                     </div>
-                    <p className="text-stone-700 text-sm">{item}</p>
+                    <p className="text-[#43474F] text-sm">{item}</p>
                   </div>
                 ))}
               </div>
@@ -273,14 +273,14 @@ export default function BaselineForm(props: Props) {
         {step === 'measurements' && (
           <div className="space-y-6">
             <div className="space-y-1">
-              <h2 className="text-base font-semibold text-[#1A1A1A]">Measurements</h2>
-              <p className="text-stone-500 text-sm">Record in the units shown. Use a soft tape, don't compress tissue.</p>
+              <h2 className="text-base font-semibold text-[#141821]">Measurements</h2>
+              <p className="text-[#666D7A] text-sm">Record in the units shown. Use a soft tape, don't compress tissue.</p>
             </div>
 
             {validationMessage && (
-              <div className="border-l-2 border-red-500 bg-red-50 rounded-r-2xl px-4 py-3">
-                <p className="text-red-700 text-sm font-medium">{validationMessage}</p>
-                <p className="text-red-700/70 text-xs mt-1">Missing fields are highlighted in red below.</p>
+              <div className="border-l-2 border-[#DC2626] bg-[#FDEDED] rounded-r-2xl px-4 py-3">
+                <p className="text-[#C82626] text-sm font-medium">{validationMessage}</p>
+                <p className="text-[#C82626]/70 text-xs mt-1">Missing fields are highlighted in red below.</p>
               </div>
             )}
 
@@ -296,9 +296,9 @@ export default function BaselineForm(props: Props) {
               ].map(({ id, label, unit, value, set, helper }) => {
                 const hasError = missing.has(id)
                 return (
-                  <div key={label} className={`bg-stone-100 rounded-2xl p-5 ${hasError ? 'border-l-2 border-red-500' : ''}`}>
-                    <label className={`block text-sm font-medium mb-1 ${hasError ? 'text-red-700' : 'text-[#1A1A1A]'}`}>{label}</label>
-                    <p className="text-stone-500 text-xs mb-3">{helper}</p>
+                  <div key={label} className={`bg-[#F4F6F9] rounded-2xl p-5 ${hasError ? 'border-l-2 border-[#DC2626]' : ''}`}>
+                    <label className={`block text-sm font-medium mb-1 ${hasError ? 'text-[#C82626]' : 'text-[#141821]'}`}>{label}</label>
+                    <p className="text-[#666D7A] text-xs mb-3">{helper}</p>
                     <div className="flex items-center gap-3">
                       <input
                         type="number"
@@ -307,11 +307,11 @@ export default function BaselineForm(props: Props) {
                         value={value}
                         onChange={e => { set(e.target.value); clearMissing(id) }}
                         placeholder="0.0"
-                        className={`flex-1 bg-stone-200 text-[#1A1A1A] text-base rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500/50 placeholder-stone-400 border ${hasError ? 'border-red-400' : 'border-transparent'}`}
+                        className={`flex-1 bg-[#EFF1F4] text-[#141821] text-base rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#1B6DFC]/50 placeholder-[#98A0AD] border ${hasError ? 'border-red-400' : 'border-transparent'}`}
                       />
-                      <span className="text-stone-600 text-sm font-medium w-8">{unit}</span>
+                      <span className="text-[#666D7A] text-sm font-medium w-8">{unit}</span>
                     </div>
-                    {hasError && <p className="text-red-700 text-xs mt-2 font-medium">Please enter a value.</p>}
+                    {hasError && <p className="text-[#C82626] text-xs mt-2 font-medium">Please enter a value.</p>}
                   </div>
                 )
               })}
@@ -330,20 +330,20 @@ export default function BaselineForm(props: Props) {
         {step === 'photos' && (
           <div className="space-y-6">
             <div className="space-y-1">
-              <h2 className="text-base font-semibold text-[#1A1A1A]">Composition documentation</h2>
-              <p className="text-stone-500 text-sm">Three positions required. Images must reflect structural reality, not posed presentation.</p>
+              <h2 className="text-base font-semibold text-[#141821]">Composition documentation</h2>
+              <p className="text-[#666D7A] text-sm">Three positions required. Images must reflect structural reality, not posed presentation.</p>
             </div>
 
             {validationMessage && (
-              <div className="border-l-2 border-red-500 bg-red-50 rounded-r-2xl px-4 py-3">
-                <p className="text-red-700 text-sm font-medium">{validationMessage}</p>
-                <p className="text-red-700/70 text-xs mt-1">Missing photos are highlighted in red below.</p>
+              <div className="border-l-2 border-[#DC2626] bg-[#FDEDED] rounded-r-2xl px-4 py-3">
+                <p className="text-[#C82626] text-sm font-medium">{validationMessage}</p>
+                <p className="text-[#C82626]/70 text-xs mt-1">Missing photos are highlighted in red below.</p>
               </div>
             )}
 
-            <div className="bg-stone-100 rounded-2xl p-5 space-y-2">
-              <p className="text-xs font-semibold text-stone-600 uppercase tracking-wider">Photo standards</p>
-              <ul className="space-y-1.5 text-stone-600 text-sm">
+            <div className="bg-[#F4F6F9] rounded-2xl p-5 space-y-2">
+              <p className="text-[12.5px] font-semibold text-[#666D7A]">Photo standards</p>
+              <ul className="space-y-1.5 text-[#666D7A] text-sm">
                 <li>· Minimal, consistent clothing — neutral colours, no compression garments</li>
                 <li>· Natural light where possible — face the light source</li>
                 <li>· Camera at mid-torso height, level angle, full body in frame</li>
@@ -360,35 +360,35 @@ export default function BaselineForm(props: Props) {
                 const hasError = missing.has(id)
                 const isProcessing = processing.has(id)
                 return (
-                  <div key={label} className={`bg-stone-100 rounded-2xl p-5 ${hasError ? 'border-l-2 border-red-500' : ''}`}>
-                    <p className={`text-sm font-medium mb-3 ${hasError ? 'text-red-700' : 'text-[#1A1A1A]'}`}>{label}</p>
+                  <div key={label} className={`bg-[#F4F6F9] rounded-2xl p-5 ${hasError ? 'border-l-2 border-[#DC2626]' : ''}`}>
+                    <p className={`text-sm font-medium mb-3 ${hasError ? 'text-[#C82626]' : 'text-[#141821]'}`}>{label}</p>
                     {isProcessing ? (
                       <div className="flex items-center gap-3 py-2">
-                        <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-                        <span className="text-stone-600 text-sm">Optimising photo...</span>
+                        <div className="w-5 h-5 border-2 border-[#1B6DFC] border-t-transparent rounded-full animate-spin" />
+                        <span className="text-[#666D7A] text-sm">Optimising photo...</span>
                       </div>
                     ) : file ? (
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3 min-w-0">
-                          <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                            <svg className="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <div className="w-8 h-8 rounded-lg bg-[#1B6DFC]/10 flex items-center justify-center flex-shrink-0">
+                            <svg className="w-4 h-4 text-[#1B6DFC]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                             </svg>
                           </div>
                           <div className="min-w-0">
-                            <p className="text-stone-700 text-sm truncate max-w-[180px]">{file.name}</p>
-                            <p className="text-stone-500 text-xs">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                            <p className="text-[#43474F] text-sm truncate max-w-[180px]">{file.name}</p>
+                            <p className="text-[#666D7A] text-xs">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
                           </div>
                         </div>
-                        <button onClick={() => set(null)} className="text-stone-500 text-xs hover:text-[#1A1A1A]">Remove</button>
+                        <button onClick={() => set(null)} className="text-[#666D7A] text-xs hover:text-[#141821]">Remove</button>
                       </div>
                     ) : (
                       <label className="block cursor-pointer">
-                        <div className={`border-2 border-dashed rounded-xl p-6 text-center hover:border-blue-500/50 transition-colors ${hasError ? 'border-red-400' : 'border-stone-300'}`}>
-                          <svg className="w-6 h-6 text-stone-500 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div className={`border-2 border-dashed rounded-xl p-6 text-center hover:border-[#1B6DFC]/50 transition-colors ${hasError ? 'border-red-400' : 'border-[#E8EAEE]'}`}>
+                          <svg className="w-6 h-6 text-[#666D7A] mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
                           </svg>
-                          <p className="text-stone-500 text-sm">Tap to upload</p>
+                          <p className="text-[#666D7A] text-sm">Tap to upload</p>
                         </div>
                         <input
                           type="file"
@@ -399,9 +399,9 @@ export default function BaselineForm(props: Props) {
                         />
                       </label>
                     )}
-                    {hasError && <p className="text-red-700 text-xs mt-2 font-medium">Please upload this photo.</p>}
+                    {hasError && <p className="text-[#C82626] text-xs mt-2 font-medium">Please upload this photo.</p>}
                     {unreadable.has(id) && (
-                      <p className="text-amber-700 text-xs mt-2 leading-relaxed">
+                      <p className="text-[#A96A12] text-xs mt-2 leading-relaxed">
                         This photo is in HEIC format, which we can&apos;t read for the visual assessment.
                         Your baseline will still save, but to get the full read please switch your camera
                         to JPEG and retake it — iPhone: Settings → Camera → Formats → Most Compatible.
@@ -413,7 +413,7 @@ export default function BaselineForm(props: Props) {
               })}
             </div>
 
-            {error && <p className="text-red-700 text-sm text-center">{error}</p>}
+            {error && <p className="text-[#C82626] text-sm text-center">{error}</p>}
 
             <button
               onClick={handleSubmit}
@@ -422,7 +422,7 @@ export default function BaselineForm(props: Props) {
               Submit baseline
             </button>
 
-            <button onClick={() => { setMissing(new Set()); setValidationMessage(''); setStep('measurements') }} className="w-full text-stone-500 text-sm py-2 hover:text-[#1A1A1A] transition-colors">
+            <button onClick={() => { setMissing(new Set()); setValidationMessage(''); setStep('measurements') }} className="w-full text-[#666D7A] text-sm py-2 hover:text-[#141821] transition-colors">
               ← Back to measurements
             </button>
           </div>

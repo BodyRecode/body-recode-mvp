@@ -55,7 +55,7 @@ export default function PortalReadingDownload({
         background: 'rgba(255, 255, 255, 0.85)',
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
-        borderBottom: '1px solid #E5E5E5',
+        borderBottom: '1px solid #E8EAEE',
       }}
     >
       <div
@@ -71,7 +71,7 @@ export default function PortalReadingDownload({
       >
         <Link
           href={backHref}
-          className="inline-flex items-center gap-1 text-[12px] text-[#6B6B6B] hover:text-[#1A1A1A] transition-colors"
+          className="inline-flex items-center gap-1 text-[12px] text-[#666D7A] hover:text-[#141821] transition-colors"
           style={{ fontFamily: SCREEN_FONT }}
         >
           <ChevronLeft size={13} /> Back to portal
