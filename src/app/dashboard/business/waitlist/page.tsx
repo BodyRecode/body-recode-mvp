@@ -48,7 +48,7 @@ export default async function WaitlistPage() {
       <PageHeader
         eyebrow="Business Engine"
         title="Product Waitlist"
-        subtitle="Leads who signed up via the Scorecard result page to be notified when Challenge / Blueprint / Membership launch. One row per (email, product). Re-clicks are idempotent."
+        subtitle="Leads who asked to be told when a product opens, from the Scorecard result page. One row per (email, product), re-clicks idempotent. The Body Decode rows are historical - it is live now, so nobody new joins that list."
       />
       <WaitlistView rows={rows} />
     </div>

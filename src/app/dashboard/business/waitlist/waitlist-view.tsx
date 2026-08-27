@@ -20,7 +20,11 @@ type WaitlistRow = {
 }
 
 const PRODUCT_META: Record<Product, { label: string; accent: string; bg: string }> = {
-  challenge: { label: '14-Day Body Decode Challenge', accent: '#ef4444', bg: 'rgba(239,68,68,0.06)' },
+  // The stored product key stays 'challenge' - it is what the signup writes and
+  // what three historical rows hold. Only the label moves, because the offer
+  // those people joined a list for is now The Body Decode. Signal Blue to match
+  // Stage 1 everywhere else; the old red read like a warning.
+  challenge: { label: 'The Body Decode', accent: '#1B6DFC', bg: 'rgba(27,109,252,0.06)' },
   blueprint: { label: '6-Week Body Rewire Blueprint', accent: '#f59e0b', bg: 'rgba(245,158,11,0.06)' },
   membership: { label: 'Body Recode Membership', accent: '#1B6DFC', bg: 'rgba(27,109,252,0.06)' },
 }
@@ -83,7 +87,7 @@ export default function WaitlistView({ rows }: { rows: WaitlistRow[] }) {
 
   const tabs: Array<{ key: Product | 'all'; label: string; count: number; accent: string }> = [
     { key: 'all',        label: 'All',        count: grouped.all.length,        accent: '#141821' },
-    { key: 'challenge',  label: 'Challenge',  count: grouped.challenge.length,  accent: PRODUCT_META.challenge.accent },
+    { key: 'challenge',  label: 'Body Decode',  count: grouped.challenge.length,  accent: PRODUCT_META.challenge.accent },
     { key: 'blueprint',  label: 'Blueprint',  count: grouped.blueprint.length,  accent: PRODUCT_META.blueprint.accent },
     { key: 'membership', label: 'Membership', count: grouped.membership.length, accent: PRODUCT_META.membership.accent },
   ]
