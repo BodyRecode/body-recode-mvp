@@ -1,4 +1,4 @@
-import { ListChecks, MessageCircle, FileText, CalendarDays, NotebookPen, LayoutGrid, Dumbbell, Salad, LineChart, Activity, BookOpen, Sunrise, Snowflake, Pill, type LucideIcon } from 'lucide-react'
+import { ListChecks, MessageCircle, FileText, CalendarDays, NotebookPen, LayoutGrid, type LucideIcon } from 'lucide-react'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { notFound, redirect } from 'next/navigation'
@@ -6,7 +6,6 @@ import Link from 'next/link'
 import { getCheckInWindowStatus, getWeekNumber, isCheckinTestMode, lastCheckinWindowOpenMs } from '@/lib/weekly-checkin-questions'
 import ClientHeader from '@/components/client-header'
 import { isCoachEmail } from '@/lib/coach-auth'
-import { getGpRequestUrl } from '@/lib/gp-request'
 import { brand, coach } from '@/config/tenant'
 
 function SectionLabel({ icon: Icon, text }: { icon: LucideIcon; text: string }) {
@@ -137,7 +136,6 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   const showBloodworkGuide = bloodworkGuideGender === 'male' || bloodworkGuideGender === 'female'
 
   // Personal GP request list, if the coach has prepared one for this client.
-  const gpRequestUrl = await getGpRequestUrl(admin, client.id)
 
   // Blood work is an onboarding step with two completion paths: the client has
   // uploaded a panel, OR has recorded they will arrange one. Either addresses it.
@@ -257,7 +255,6 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         .select('weekly_checkin_id')
         .in('weekly_checkin_id', recentCheckinIds)
     : { data: [] as Array<{ weekly_checkin_id: string }> }
-  const checkinIdsWithFeedback = new Set((recentFeedbackRows ?? []).map(r => r.weekly_checkin_id))
 
   // Outstanding Progress Check (block-end / 12-week milestone). Sent by email
   // today, which means a lost email is a missed milestone - so it also lives
@@ -682,91 +679,49 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
           </div>
         )}
 
-        {/* Daily anchors - Morning Reset + Evening Rhythm sequences.
-            Always shown post-onboarding: these are foundation practices,
-            not gated on any specific artefact being published. */}
+        {/* Everything else - one line each.
+            These are destinations, not messages. Each used to get a section
+            heading, an icon chip and a description card, so eleven places she
+            might browse to carried the same visual weight as the one thing
+            actually being asked of her. They are a list now. Anything that is
+            a MESSAGE to her - a reply, a new reading, a note from her coach -
+            keeps its own block above. */}
         {allOnboardingDone && (
           <div className="mb-10">
-            <SectionLabel icon={Sunrise} text="Daily Sequences" />
-            <Link
-              href={`/portal/${token}/routine`}
-              className="block rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-[#EFF5FE] transition-colors"
-            >
-              <div className="flex items-center justify-between gap-4">
-                <div className="min-w-0">
-                  <p className="text-sm font-semibold text-[#141821] mb-1">Morning Reset + Evening Rhythm</p>
-                  <p className="text-xs text-[#666D7A] leading-relaxed">Two short sequences that anchor your day - one on waking, one before sleep. Do them consistently before you worry about optimising anything else.</p>
-                </div>
-                <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">Open →</span>
-              </div>
-            </Link>
+            <p className="text-[12.5px] text-[#98A0AD] mb-3">Everything else</p>
+            <div className="rounded-2xl border border-[#E8EAEE] overflow-hidden bg-white">
+              {([
+                { href: `/portal/${token}/program`, label: 'Training program', meta: activeProgram?.block_name ?? null, show: true },
+                { href: `/portal/${token}/my-plan`, label: 'Nutrition plan', meta: null, show: true },
+                { href: `/portal/${token}/routine`, label: 'Daily sequences', meta: null, show: true },
+                { href: `/portal/${token}/recovery`, label: 'Recovery protocols', meta: null, show: (activeRecoveryCount ?? 0) > 0 },
+                { href: `/portal/${token}/supplements`, label: 'Supplement stack', meta: null, show: (activeSupplementCount ?? 0) > 0 },
+                { href: `/portal/${token}/sessions`, label: 'Your sessions', meta: null, show: client.session_type === 'face_to_face' },
+                { href: `/portal/${token}/progress`, label: 'Progress', meta: null, show: true },
+                { href: `/portal/${token}/bloods`, label: 'Health markers', meta: null, show: true },
+                { href: `/portal/${token}/checkin-history`, label: 'Your check-ins', meta: recentCheckins.length > 0 ? `${recentCheckins.length} recent` : null, show: true },
+                { href: `/portal/${token}/message`, label: `Message ${coach().firstName}`, meta: null, show: true },
+                { href: `/portal/${token}/resources`, label: 'Readings and guides', meta: null, show: true },
+                { href: `/portal/${token}/feedback`, label: 'Share feedback', meta: null, show: true },
+              ] as { href: string; label: string; meta: string | null; show: boolean }[])
+                .filter(i => i.show)
+                .map(i => (
+                  <Link
+                    key={i.href}
+                    href={i.href}
+                    className="flex items-center justify-between gap-3 px-5 py-4 border-b border-[#EFF1F4] last:border-b-0 hover:bg-[#F7F9FC] transition-colors"
+                  >
+                    <span className="text-[15px] text-[#141821] min-w-0 truncate">{i.label}</span>
+                    <span className="flex items-center gap-2 shrink-0">
+                      {i.meta && <span className="text-[12.5px] text-[#98A0AD] truncate max-w-[130px]">{i.meta}</span>}
+                      <span className="text-[#CFD4DC]">&rsaquo;</span>
+                    </span>
+                  </Link>
+                ))}
+            </div>
           </div>
         )}
 
-        {allOnboardingDone && (activeRecoveryCount ?? 0) > 0 && (
-          <div className="mb-10">
-            <SectionLabel icon={Snowflake} text="Recovery" />
-            <Link
-              href={`/portal/${token}/recovery`}
-              className="block rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-[#EFF5FE] transition-colors"
-            >
-              <div className="flex items-center justify-between gap-4">
-                <div className="min-w-0">
-                  <p className="text-sm font-semibold text-[#141821] mb-1">{activeRecoveryCount} recovery protocol{activeRecoveryCount === 1 ? '' : 's'} active</p>
-                  <p className="text-xs text-[#666D7A] leading-relaxed">Situational tools your coach has assigned. Do these when your body signals it needs them, not every day.</p>
-                </div>
-                <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">Open →</span>
-              </div>
-            </Link>
-          </div>
-        )}
-
-        {allOnboardingDone && (activeSupplementCount ?? 0) > 0 && (
-          <div className="mb-10">
-            <SectionLabel icon={Pill} text="Supplement Stack" />
-            <Link
-              href={`/portal/${token}/supplements`}
-              className="block rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-[#EFF5FE] transition-colors"
-            >
-              <div className="flex items-center justify-between gap-4">
-                <div className="min-w-0">
-                  <p className="text-sm font-semibold text-[#141821] mb-1">{activeSupplementCount} substance{activeSupplementCount === 1 ? '' : 's'} prescribed</p>
-                  <p className="text-xs text-[#666D7A] leading-relaxed">Each has three tiers - Essential, Enhanced, Elite. Pick the tier that fits your budget and commitment level.</p>
-                </div>
-                <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">Open →</span>
-              </div>
-            </Link>
-          </div>
-        )}
-
-        {/* Sessions - face-to-face clients */}
-        {allOnboardingDone && client.session_type === 'face_to_face' && (
-          <div className="mb-10">
-            <SectionLabel icon={CalendarDays} text="Sessions" />
-            <Link
-              href={`/portal/${token}/sessions`}
-              className="block rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-[#EFF5FE] transition-colors"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-semibold text-[#141821] mb-1">Your face-to-face sessions</p>
-                  {(fixedSlots ?? []).length > 0 ? (
-                    <div className="space-y-0.5 mt-1">
-                      {(fixedSlots ?? []).map(slot => (
-                        <p key={slot.id} className="text-xs text-[#666D7A]">
-                          {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][slot.day_of_week]}s · {new Date(`1970-01-01T${slot.session_time}`).toLocaleTimeString('en-AU', { hour: 'numeric', minute: '2-digit', hour12: true })} · {slot.duration_minutes} min
-                        </p>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-xs text-[#98A0AD]">Fixed slot not yet assigned</p>
-                  )}
-                </div>
-                <span className="text-xs font-bold text-[#1B6DFC] ml-4">View →</span>
-              </div>
-            </Link>
-          </div>
-        )}
 
         {/* Weekly check-in task. Gated on active program existence per
             13_FEATURE_REGISTRY.md "Weekly check-in program gate". The check-in
@@ -892,128 +847,6 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
           </div>
         )}
 
-        {/* Training. The weekly training check-in is now folded into the single
-            "This week" check-in above, so this section is just the read-only
-            program viewer. */}
-        <div className="mb-10">
-          <SectionLabel icon={Dumbbell} text="Training" />
-            {activeProgram ? (
-              <div className="space-y-3">
-                <Link
-                  href={`/portal/${token}/program`}
-                  className="block rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF]/50 p-4 hover:border-[#E8EAEE] transition-colors"
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-[#43474F]">View your program</p>
-                      <p className="text-xs text-[#98A0AD] mt-0.5">{activeProgram.block_name}</p>
-                    </div>
-                    <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
-                  </div>
-                </Link>
-              </div>
-            ) : (
-              <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF]/50 p-5">
-                <p className="text-sm font-semibold text-[#666D7A] mb-1">Your program is being built</p>
-                <p className="text-xs text-[#98A0AD] leading-relaxed">Your coach is putting your training program together based on your intake. You will see it here once it is ready.</p>
-              </div>
-            )}
-        </div>
-
-        {/* Nutrition. The weekly nutrition check-in is now folded into the single
-            "This week" check-in above, so this section is just the read-only
-            plan viewer. */}
-        <div className="mb-10">
-          <SectionLabel icon={Salad} text="Nutrition" />
-            {activeNutritionPlan ? (
-              <div className="space-y-3">
-                <Link
-                  href={`/portal/${token}/my-plan`}
-                  className="block rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF]/50 p-4 hover:border-[#E8EAEE] transition-colors"
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-[#43474F]">View your nutrition plan</p>
-                      <p className="text-xs text-[#98A0AD] mt-0.5">{activeNutritionPlan.plan_name}</p>
-                    </div>
-                    <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
-                  </div>
-                </Link>
-              </div>
-            ) : (
-              <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF]/50 p-5">
-                <p className="text-sm font-semibold text-[#666D7A] mb-1">Your nutrition plan is being built</p>
-                <p className="text-xs text-[#98A0AD] leading-relaxed">Your coach is building your nutrition plan. You will see it here once it is ready.</p>
-              </div>
-            )}
-        </div>
-
-        {/* Progress */}
-        <div className="mb-10">
-          <SectionLabel icon={LineChart} text="Progress" />
-          <Link
-            href={`/portal/${token}/progress`}
-            className="block rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF]/50 p-4 hover:border-[#E8EAEE] transition-colors"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-[#43474F]">Measurements</p>
-                <p className="text-xs text-[#98A0AD] mt-0.5">Track your bodyweight, waist, hips and chest over time.</p>
-              </div>
-              <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
-            </div>
-          </Link>
-        </div>
-
-        {/* Health Markers - always-on self-serve blood test upload, plus the
-            gender-matched baseline-bloodwork education guide. */}
-        <div className="mb-10">
-          <SectionLabel icon={Activity} text="Health Markers" />
-          <div className="space-y-3">
-            {gpRequestUrl && (
-              <a
-                href={gpRequestUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block rounded-2xl border border-[#1B6DFC] bg-[#EFF5FE] p-4 hover:bg-[#DDE9FD] transition-colors"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-[#141821]">Your blood test request — for your GP</p>
-                    <p className="text-xs text-[#666D7A] mt-0.5">A list of the markers to discuss, prepared for you. Print or save it and take it to your appointment.</p>
-                  </div>
-                  <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">Open →</span>
-                </div>
-              </a>
-            )}
-            <Link
-              href={`/portal/${token}/bloods`}
-              className="block rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF]/50 p-4 hover:border-[#1B6DFC]/40 hover:bg-[#EFF5FE] transition-colors"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-[#43474F]">Blood test results</p>
-                  <p className="text-xs text-[#98A0AD] mt-0.5">Have recent blood work? Upload a copy so your coach can factor it into your plan.</p>
-                </div>
-                <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
-              </div>
-            </Link>
-            {showBloodworkGuide && (
-              <Link
-                href={`/portal/${token}/guides/baseline-bloodwork`}
-                className="block rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF]/50 p-4 hover:border-[#1B6DFC]/40 hover:bg-[#EFF5FE] transition-colors"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-[#43474F]">Understanding your baseline bloodwork</p>
-                    <p className="text-xs text-[#98A0AD] mt-0.5">What a comprehensive baseline panel covers and what each marker measures. Download the guide to keep.</p>
-                  </div>
-                  <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
-                </div>
-              </Link>
-            )}
-          </div>
-        </div>
 
         {/* Coach feedback */}
         {(latestProgramReview?.coach_notes || latestNutritionReview?.coach_notes) && (
@@ -1042,93 +875,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
           </div>
         )}
 
-        {/* Recent check-ins */}
-        {recentCheckins.length > 0 && (
-          <div className="mb-10">
-            <div className="flex items-center justify-between mb-4">
-              <p className="text-[12.5px] font-medium text-[#98A0AD]">Recent check-ins</p>
-              <Link href={`/portal/${token}/checkin-history`} className="text-xs text-[#1B6DFC] hover:text-[#1B6DFC] transition-colors">View all →</Link>
-            </div>
-            <div className="space-y-2">
-              {recentCheckins.map((c: { id?: string; week_number: number; form_type: string; submitted_at: string }, i: number) => {
-                const hasFeedback = c.id ? checkinIdsWithFeedback.has(c.id) : false
-                return (
-                  <Link
-                    key={c.id ?? i}
-                    href={`/portal/${token}/checkin/${c.week_number}/${c.form_type.toLowerCase()}`}
-                    className="flex items-center justify-between rounded-xl bg-[#FFFFFF] px-4 py-3 hover:bg-[#E8EAEE] transition-colors"
-                  >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <p className="text-sm text-[#141821] font-medium">Week {c.week_number}, Form {c.form_type}</p>
-                      {hasFeedback && (
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#1B6DFC] bg-[#EFF5FE] border border-[#B5CFFC] rounded px-1.5 py-0.5">Coach response</span>
-                      )}
-                    </div>
-                    <p className="text-xs text-[#98A0AD] ml-3 shrink-0">{new Date(c.submitted_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}</p>
-                  </Link>
-                )
-              })}
-            </div>
-          </div>
-        )}
 
-        {/* Talk to your coach - always present, not only when a reply is
-            waiting. Contacting the coach should never require hunting through
-            Resources for it. */}
-        <div className="mb-10">
-          <SectionLabel icon={MessageCircle} text={`Talk to ${coach().firstName}`} />
-          <Link
-            href={`/portal/${token}/message`}
-            className="flex items-center justify-between w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl px-5 py-4 hover:border-[#1B6DFC]/40 hover:bg-[#EFF5FE] transition-colors"
-          >
-            <div>
-              <p className="text-sm font-semibold text-[#141821]">Messages</p>
-              <p className="text-xs text-[#98A0AD] mt-0.5">
-                Ask about your plan, your training, or how you are feeling. Replies land here.
-              </p>
-            </div>
-            <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">Open →</span>
-          </Link>
-        </div>
-
-        {/* Resources */}
-        <div className="mb-10">
-          <SectionLabel icon={BookOpen} text="Resources" />
-          <Link
-            href={`/portal/${token}/resources`}
-            className="flex items-center justify-between w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl px-5 py-4 hover:border-[#1B6DFC]/40 hover:bg-[#EFF5FE] transition-colors mb-3"
-          >
-            <div>
-              <p className="text-sm font-semibold text-[#141821]">All resources</p>
-              <p className="text-xs text-[#98A0AD] mt-0.5">Progress, readings, glossary, practical guides, account.</p>
-            </div>
-            <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
-          </Link>
-          <a
-            href={`${t.appDomain}/coaching-guide`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-between w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl px-5 py-4 hover:border-[#E8EAEE] transition-colors mb-3"
-          >
-            <div>
-              <p className="text-sm font-semibold text-[#141821]">Active Coaching Client Guide</p>
-              <p className="text-xs text-[#98A0AD] mt-0.5">How the coaching process works and what to expect each week.</p>
-            </div>
-            <svg className="w-5 h-5 text-[#666D7A] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
-          </a>
-          <Link
-            href={`/portal/${token}/feedback`}
-            className="flex items-center justify-between w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl px-5 py-4 hover:border-[#1B6DFC]/40 hover:bg-[#EFF5FE] transition-colors"
-          >
-            <div>
-              <p className="text-sm font-semibold text-[#141821]">Share feedback</p>
-              <p className="text-xs text-[#98A0AD] mt-0.5">Tell us what is working, what is not, what would help.</p>
-            </div>
-            <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">Open →</span>
-          </Link>
-        </div>
 
         <div className="h-16" />{/* canonical bottom spacer */}
       </div>
