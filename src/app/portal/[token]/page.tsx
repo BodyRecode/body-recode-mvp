@@ -30,7 +30,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
 
   const { data: client } = await admin
     .from('clients')
-    .select('*, baselines(id), intake_invitations(status, token, kind), weekly_checkins(id, week_number, form_type, submitted_at), session_type')
+    .select('*, baselines(id), intake_invitations(status, token, kind), weekly_checkins(id, week_number, form_type, submitted_at), progress_checks(id, token, status, created_at), session_type')
     .eq('onboarding_token', token)
     .single()
 
@@ -258,6 +258,16 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         .in('weekly_checkin_id', recentCheckinIds)
     : { data: [] as Array<{ weekly_checkin_id: string }> }
   const checkinIdsWithFeedback = new Set((recentFeedbackRows ?? []).map(r => r.weekly_checkin_id))
+
+  // Outstanding Progress Check (block-end / 12-week milestone). Sent by email
+  // today, which means a lost email is a missed milestone - so it also lives
+  // here, where she already goes.
+  const pendingProgressCheck = (Array.isArray(client.progress_checks) ? client.progress_checks : [])
+    .filter((p: { status: string }) => p.status !== 'complete')
+    .sort((a: { created_at: string }, b: { created_at: string }) =>
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0] as
+    | { id: string; token: string; status: string; created_at: string }
+    | undefined
 
   const checkinWindow = getCheckInWindowStatus()
   const testMode = isCheckinTestMode()
@@ -592,6 +602,19 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         {allOnboardingDone && client.coaching_started_at && (
           <div className="mb-10">
             <SectionLabel icon={NotebookPen} text="This week" />
+            {pendingProgressCheck && (
+              <Link
+                href={`/progress-check/${pendingProgressCheck.token}`}
+                className="block rounded-2xl border border-[#B5CFFC] bg-[#F3F7FF] p-5 mb-3 hover:border-[#1B6DFC] transition-colors"
+              >
+                <p className="text-sm font-semibold text-[#1A1A1A] mb-1">Your Progress Check is ready</p>
+                <p className="text-xs text-[#6B6B6B] leading-relaxed">
+                  You have reached the end of a block. A few minutes of questions, your measurements
+                  and three photos - this is what lets {coach().firstName} re-read where you are now
+                  and show you what has moved. →
+                </p>
+              </Link>
+            )}
             {!activeProgram ? (
               <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5">
                 <p className="text-sm font-semibold text-[#1A1A1A] mb-1">Your program is being built</p>
