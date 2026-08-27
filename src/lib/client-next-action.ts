@@ -899,3 +899,116 @@ export function sortNextActions(actions: ClientNextAction[]): ClientNextAction[]
     return a.clientName.localeCompare(b.clientName)
   })
 }
+
+
+/**
+ * Everything else outstanding for a client, beyond the one action the state
+ * machine picks.
+ *
+ * Today's Focus shows one row per client, and that row shows the single
+ * highest-priority action. That is right for the ONBOARDING sequence, which is
+ * strictly ordered - a client waiting on her intake cannot also be waiting on
+ * her baseline, and showing both would invent work that is not actionable yet.
+ *
+ * But several things are genuinely concurrent: a failed payment, an unanswered
+ * check-in, a block that has reached its final week, a recovery state with
+ * nothing assigned. Any of those can be true at once, all of them are
+ * actionable now, and until now the lower-priority ones were simply invisible
+ * on a client who already had something more urgent. This returns those,
+ * minus whichever one the primary action already covers.
+ */
+export function computeConcurrentActions(
+  input: ClientNextActionInput,
+  primary: ClientNextAction,
+): ClientNextAction[] {
+  const profileHref = `/dashboard/clients/${input.clientId}`
+  const out: ClientNextAction[] = []
+  const push = (a: ClientNextAction) => {
+    if (a.stage !== primary.stage) out.push(a)
+  }
+
+  const base = { clientId: input.clientId, clientName: input.clientName, badge: null }
+
+  // Money first - a billing failure outranks coaching nuance everywhere else,
+  // so it must not disappear behind it here either.
+  if (input.paymentSignal) {
+    const stage =
+      input.paymentSignal === 'past_due' ? 'payment_past_due'
+      : input.paymentSignal === 'unpaid' ? 'payment_unpaid'
+      : input.paymentSignal === 'canceled' ? 'payment_canceled'
+      : 'payment_commencement_missing'
+    push({
+      ...base,
+      stage: stage as NextActionStage,
+      headline: 'Payment needs attention',
+      sublabel: input.paymentDetail ?? 'Billing issue on this client',
+      href: `${profileHref}#payments`,
+      accent: 'red',
+      priority: 10,
+    })
+  }
+
+  if (input.unansweredCheckin) {
+    const u = input.unansweredCheckin
+    push({
+      ...base,
+      stage: 'active_checkin_feedback_pending',
+      headline: `Respond to Week ${u.weekNumber} check-in`,
+      sublabel: u.daysSince <= 0 ? 'Submitted today' : `Submitted ${u.daysSince} day${u.daysSince === 1 ? '' : 's'} ago`,
+      href: `${profileHref}/checkins/${u.weekNumber}/${u.formType.toLowerCase()}`,
+      accent: u.daysSince >= 3 ? 'amber' : 'teal',
+      priority: 20,
+    })
+  }
+
+  if (
+    input.activeProgram?.generatedAt &&
+    input.activeProgram.weekDuration &&
+    !input.progressCheckForActiveBlock
+  ) {
+    const started = new Date(input.activeProgram.generatedAt).getTime()
+    const weeksIn = Math.floor((Date.now() - started) / (1000 * 60 * 60 * 24 * 7)) + 1
+    if (weeksIn >= input.activeProgram.weekDuration) {
+      const endMs = started + input.activeProgram.weekDuration * 7 * 86_400_000
+      const daysLeft = Math.ceil((endMs - Date.now()) / 86_400_000)
+      push({
+        ...base,
+        stage: 'block_end_progress_check_due',
+        headline: 'Send the Progress Check',
+        sublabel:
+          daysLeft > 1 ? `Final week - ${daysLeft} days left`
+          : daysLeft === 1 ? 'Final week - last day'
+          : `${input.activeProgram.blockName} has ended`,
+        href: `${profileHref}/program`,
+        accent: 'amber',
+        priority: 20,
+      })
+    }
+  }
+
+  if (input.pendingTrajectoryReading) {
+    push({
+      ...base,
+      stage: 'active_trajectory_reading_pending',
+      headline: 'Block-end reading not generated',
+      sublabel: input.pendingTrajectoryReading.blockName,
+      href: `${profileHref}/program`,
+      accent: 'amber',
+      priority: 20,
+    })
+  }
+
+  if (input.activeRecoveryStateName && input.activeRecoveryProtocolCount === 0) {
+    push({
+      ...base,
+      stage: 'active_recovery_no_protocols',
+      headline: 'Recovery state, no protocols',
+      sublabel: input.activeRecoveryStateName,
+      href: `${profileHref}/recovery`,
+      accent: 'amber',
+      priority: 30,
+    })
+  }
+
+  return sortNextActions(out)
+}

@@ -27,6 +27,7 @@ import {
 import { Card, MONO_FONT, accentColour } from '@/components/dashboard/ui'
 import {
   computeClientNextAction,
+  computeConcurrentActions,
   sortNextActions,
   type ClientNextAction,
   type ClientNextActionInput,
@@ -227,6 +228,7 @@ export default async function TodayWidget() {
 
   // ── For each client, build the snapshot + run the state machine ────────
   const actions: ClientNextAction[] = []
+  const concurrent = new Map<string, ClientNextAction[]>()
   for (const client of clients) {
     const clientCffs = (cffsByClient.get(client.id) ?? []).sort(
       (a, b) => new Date(b.generated_at).getTime() - new Date(a.generated_at).getTime()
@@ -366,7 +368,13 @@ export default async function TodayWidget() {
       paymentDetail,
     }
 
-    actions.push(computeClientNextAction(input))
+    const primary = computeClientNextAction(input)
+    actions.push(primary)
+    // Everything else still outstanding on this client. The row shows one
+    // action; these are the concurrent ones that used to be invisible behind
+    // it - a failed payment under an unanswered check-in, a block in its final
+    // week under either.
+    concurrent.set(input.clientId, computeConcurrentActions(input, primary))
   }
 
   const sorted = sortNextActions(actions)
@@ -437,7 +445,7 @@ export default async function TodayWidget() {
       ) : (
         <div className="divide-y divide-[#EFF1F4]">
           {sorted.map((action, i) => (
-            <ActionRow key={action.clientId} action={action} index={i} />
+            <ActionRow key={action.clientId} action={action} index={i} also={concurrent.get(action.clientId) ?? []} />
           ))}
         </div>
       )}
@@ -477,10 +485,19 @@ function SummaryPill({
   )
 }
 
-function ActionRow({ action, index }: { action: ClientNextAction; index: number }) {
+function ActionRow({
+  action,
+  index,
+  also,
+}: {
+  action: ClientNextAction
+  index: number
+  /** Other work outstanding on the same client, shown under the headline. */
+  also: ClientNextAction[]
+}) {
   const a = accentColour(action.accent)
   const Icon = iconFor(action)
-  return (
+  const row = (
     <Link
       href={action.href}
       className="flex items-center gap-3.5 px-1 py-3.5 group hover:bg-[#EFF1F4]/40 -mx-1 px-2 rounded-lg transition-colors"
@@ -528,6 +545,32 @@ function ActionRow({ action, index }: { action: ClientNextAction; index: number 
         className="text-[#98A0AD] group-hover:text-[#1B6DFC] transition-colors shrink-0"
       />
     </Link>
+  )
+
+  if (also.length === 0) return row
+
+  return (
+    <div>
+      {row}
+      <div className="flex flex-wrap gap-1.5 pl-[68px] pb-3 -mt-1">
+        {also.map(extra => {
+          const ea = accentColour(extra.accent)
+          const EIcon = iconFor(extra)
+          return (
+            <Link
+              key={extra.stage}
+              href={extra.href}
+              title={extra.sublabel ?? undefined}
+              className="inline-flex items-center gap-1.5 text-[11px] px-2 py-[3px] rounded-full border transition-colors hover:brightness-95"
+              style={{ background: ea.bg, borderColor: ea.ring, color: ea.text }}
+            >
+              <EIcon size={11} />
+              {extra.headline}
+            </Link>
+          )
+        })}
+      </div>
+    </div>
   )
 }
 
