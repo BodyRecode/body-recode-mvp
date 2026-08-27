@@ -361,6 +361,39 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     : false
   const missedCheckin = !windowOpen && !submittedInLastWindow && weekNumber && weekNumber > 1
 
+  // How long the "check-in done" confirmation stands.
+  //
+  // It used to be keyed on the per-client week number, which rolls over on the
+  // client's OWN start day - so a Tuesday starter kept seeing "done for this
+  // week" until Tuesday, days after the window it referred to had closed. The
+  // confirmation belongs to the weekend it was submitted in, so it clears at
+  // midnight Sunday and the rest of the week shows the reminder instead.
+  //
+  // Brisbane is UTC+10 year round, so wall-clock is read by shifting and using
+  // the UTC getters - same convention as brisbaneDay above.
+  const BRIS_OFFSET_MS = 10 * 60 * 60 * 1000
+  const brisNow = new Date(Date.now() + BRIS_OFFSET_MS)
+  // The most recent Friday 6pm at or before now.
+  let daysBackToFriday = (brisNow.getUTCDay() - 5 + 7) % 7
+  if (daysBackToFriday === 0 && brisNow.getUTCHours() < 18) daysBackToFriday = 7
+  const lastWindowOpenMs =
+    Date.UTC(
+      brisNow.getUTCFullYear(),
+      brisNow.getUTCMonth(),
+      brisNow.getUTCDate() - daysBackToFriday,
+      18, 0, 0,
+    ) - BRIS_OFFSET_MS
+  // Friday 6pm + 2 days 6 hours = the Monday 00:00 that ends that weekend.
+  const weekendEndsMs = lastWindowOpenMs + (2 * 24 + 6) * 60 * 60 * 1000
+  const submittedThisWindow = Array.isArray(client.weekly_checkins)
+    ? client.weekly_checkins.some((c: { submitted_at?: string | null }) =>
+        c.submitted_at && new Date(c.submitted_at).getTime() >= lastWindowOpenMs)
+    : false
+  // Test mode moves the window around, so it keeps the old per-week signal.
+  const showCheckinDone = testMode
+    ? checkinDoneThisWeek
+    : submittedThisWindow && Date.now() < weekendEndsMs
+
   return (
     <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A]">
       <ClientHeader />
@@ -620,7 +653,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                 <p className="text-sm font-semibold text-[#1A1A1A] mb-1">Your program is being built</p>
                 <p className="text-xs text-[#6B6B6B] leading-relaxed">Weekly check-ins begin once your training program is in place. Your coach is reviewing your intake and baseline now. We will let you know the moment your program is ready.</p>
               </div>
-            ) : checkinDoneThisWeek ? (
+            ) : showCheckinDone ? (
               <div className="rounded-2xl border border-blue-200 bg-blue-50 p-5">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-7 h-7 rounded-full bg-[#1B6DFC] flex items-center justify-center flex-shrink-0 shadow-[0_1px_2px_rgba(27,109,252,0.4),inset_0_1px_0_rgba(255,255,255,0.25)]">
@@ -668,9 +701,16 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                 </div>
               </div>
             ) : (
-              <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF]/50 p-5">
-                <p className="text-sm font-semibold text-[#999999] mb-1">Check-in window closed</p>
-                <p className="text-xs text-[#999999]">Opens {opensAt} every Friday.</p>
+              <div className="rounded-2xl border border-[#E5E5E5] bg-[#FFFFFF] p-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-7 h-7 rounded-full border border-[#E5E5E5] bg-[#FFFFFF] flex items-center justify-center flex-shrink-0">
+                    <CalendarDays size={14} className="text-[#999999]" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-[#1A1A1A]">Check-in opens Friday 6:00 pm</p>
+                    <p className="text-xs text-[#6B6B6B] mt-0.5">Nothing to do until then. It stays open until Sunday 6:30 pm.</p>
+                  </div>
+                </div>
               </div>
             )}
           </div>
