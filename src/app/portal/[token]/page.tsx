@@ -67,15 +67,6 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   }
 
   // is_active=true is the single source of truth for the current plan.
-  // status='active' can match multiple rows (promote demotes via is_active
-  // only) and break .maybeSingle(). See fix in /portal/[token]/my-plan/page.tsx.
-  const { data: activeNutritionPlan } = await admin
-    .from('nutrition_plans')
-    .select('id, plan_name, last_review_at')
-    .eq('client_id', client?.id ?? '')
-    .eq('is_active', true)
-    .maybeSingle()
-
   const { data: activeProgram } = await admin
     .from('programs')
     .select('id, block_name, last_review_at, week_duration, generated_at, activated_at')
@@ -112,28 +103,6 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     .order('reviewed_at', { ascending: false })
     .limit(1)
     .maybeSingle()
-
-  // Load fixed slots for sessions card
-  const { data: fixedSlots } = await admin
-    .from('client_fixed_slots')
-    .select('id, day_of_week, session_time, duration_minutes')
-    .eq('client_id', client.id)
-    .order('day_of_week', { ascending: true })
-
-  // Gender drives which baseline-bloodwork education PDF we surface in the
-  // Health Markers section. Lives on intakes, not clients. Clients whose
-  // gender is unset or neither male nor female don't see the card at all —
-  // there is no appropriate version to serve them, and the guide page itself
-  // bounces them if they reach the URL directly.
-  const { data: genderIntake } = await admin
-    .from('intakes')
-    .select('gender')
-    .eq('client_id', client.id)
-    .order('submitted_at', { ascending: false })
-    .limit(1)
-    .maybeSingle()
-  const bloodworkGuideGender = (genderIntake?.gender ?? '').toLowerCase()
-  const showBloodworkGuide = bloodworkGuideGender === 'male' || bloodworkGuideGender === 'female'
 
   // Personal GP request list, if the coach has prepared one for this client.
 
@@ -246,15 +215,6 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   const recentCheckins = Array.isArray(client.weekly_checkins)
     ? [...client.weekly_checkins].sort((a: { submitted_at: string }, b: { submitted_at: string }) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime()).slice(0, 3)
     : []
-
-  // Per-check-in coach feedback lookup. Only the 3 recent IDs, so cheap.
-  const recentCheckinIds = (recentCheckins as Array<{ id?: string }>).map(c => c.id).filter(Boolean) as string[]
-  const { data: recentFeedbackRows } = recentCheckinIds.length > 0
-    ? await admin
-        .from('weekly_checkin_feedback')
-        .select('weekly_checkin_id')
-        .in('weekly_checkin_id', recentCheckinIds)
-    : { data: [] as Array<{ weekly_checkin_id: string }> }
 
   // Outstanding Progress Check (block-end / 12-week milestone). Sent by email
   // today, which means a lost email is a missed milestone - so it also lives
