@@ -415,17 +415,135 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     return null
   })()
 
+  /**
+   * The single next thing, and how it is said.
+   *
+   * The portal used to open with "Welcome, Cristobal. Your coaching portal,
+   * everything in one place" and then leave her to work out which of fifteen
+   * sections wanted something from her. Intake loses nine people, the PAR-Q
+   * five, day 1-14 fourteen of fifteen. A screen that opens on one instruction
+   * is the only part of a redesign aimed at that.
+   *
+   * Written as sentences rather than labels: this is a note from a coach about
+   * where she is up to, not an app telling her a task is outstanding.
+   */
+  const nextUp: {
+    eyebrow: string
+    headline: string
+    body: string
+    cta: { label: string; href: string } | null
+    /** No action of hers - a calm state rather than an instruction. */
+    resting?: boolean
+  } = (() => {
+    const firstOutstanding = tasks.find(t => !t.done && t.available && t.href)
+    if (!allOnboardingDone && firstOutstanding) {
+      return {
+        eyebrow: 'To get started',
+        headline: firstOutstanding.title,
+        body: firstOutstanding.description,
+        cta: { label: 'Start', href: firstOutstanding.href! },
+      }
+    }
+    if (pendingProgressCheck && progressCheckUnlocked) {
+      return {
+        eyebrow: 'Next for you',
+        headline: 'Your Progress Check',
+        body: `You have finished this block. A few questions, your measurements and three photos - about ten minutes. It is what lets ${coach().firstName} read the whole block back to you and show you what has moved.`,
+        cta: { label: 'Start my Progress Check', href: `/progress-check/${pendingProgressCheck.token}` },
+      }
+    }
+    if (windowOpen && !showCheckinDone && activeProgram) {
+      return {
+        eyebrow: 'This week',
+        headline: `Your week ${weekNumber} check-in`,
+        body: isClosingDay
+          ? 'The window closes tonight at 6:30 pm. A few minutes is all it takes.'
+          : `A few minutes on how the week has actually gone. It closes ${closesAt}.`,
+        cta: { label: 'Start my check-in', href: `/portal/${token}/checkin` },
+      }
+    }
+    if (pendingProgressCheck && !progressCheckUnlocked) {
+      return {
+        eyebrow: 'Next for you',
+        headline: 'Your Progress Check',
+        body: 'Your check-in for this week comes first - it is the shorter of the two. This opens as soon as it is in.',
+        cta: null,
+      }
+    }
+    if (missedCheckin) {
+      return {
+        eyebrow: 'This week',
+        headline: 'Last week\u2019s check-in did not come through',
+        body: `Nothing to fix - the window has closed. The next one opens ${opensAt}, and ${coach().firstName} will read the two together.`,
+        cta: null,
+      }
+    }
+    if (blockPhase === 'ended') {
+      return {
+        eyebrow: 'Next for you',
+        headline: 'You have finished this block',
+        body: `${activeProgram?.block_name ?? 'Your block'}. Your Progress Check is on its way through - it will appear here.`,
+        cta: null,
+        resting: true,
+      }
+    }
+    if (blockPhase === 'final_week') {
+      return {
+        eyebrow: 'This week',
+        headline: 'Final week of this block',
+        body: `${activeProgram?.block_name ?? 'Your block'}. Finish the week and send your check-in, and your Progress Check opens next.`,
+        cta: null,
+        resting: true,
+      }
+    }
+    if (!activeProgram) {
+      return {
+        eyebrow: 'Where you are up to',
+        headline: 'Your program is being built',
+        body: `${coach().firstName} is reading your intake and baseline now. Weekly check-ins begin once it is in place, and you will hear the moment it is ready.`,
+        cta: null,
+        resting: true,
+      }
+    }
+    return {
+      eyebrow: 'Where you are up to',
+      headline: 'Nothing waiting on you',
+      body: `Week ${weekNumber} of ${activeProgram.block_name}. Your check-in is in and the next window opens ${opensAt}.`,
+      cta: null,
+      resting: true,
+    }
+  })()
+
   return (
     <div className="min-h-screen bg-[#FFFFFF] text-[#141821]">
       <ClientHeader />
       <div className="max-w-lg mx-auto px-6 py-10">
-        {/* Premium hero panel */}
-        <div className="relative overflow-hidden rounded-[18px] p-7 mb-8 shadow-[0_14px_34px_rgba(11,31,51,0.28)]" style={{ background: 'linear-gradient(140deg, #17191F 0%, #0C1B33 100%)' }}>
-          <div className="pointer-events-none absolute -top-24 -right-16 w-72 h-72 rounded-full" style={{ background: 'radial-gradient(circle, rgba(27,109,252,0.28), transparent 70%)' }} />
+        {/* The one thing, at full size. Everything else is a line further down. */}
+        <div
+          className="relative overflow-hidden rounded-[18px] px-7 pt-7 pb-6 mb-8 shadow-[0_14px_34px_rgba(11,31,51,0.28)]"
+          style={{ background: 'linear-gradient(140deg, #17191F 0%, #0C1B33 100%)' }}
+        >
+          <div
+            className="pointer-events-none absolute -top-24 -right-16 w-72 h-72 rounded-full"
+            style={{ background: 'radial-gradient(circle, rgba(27,109,252,0.28), transparent 70%)' }}
+          />
           <div className="relative">
-            <p className="text-[12px] font-medium text-[#8FB4F5] mb-2.5">Performance Coaching</p>
-            <h1 className="text-[30px] font-extrabold text-white tracking-tight leading-[1.1] mb-2">Welcome, {firstName}</h1>
-            <p className="text-white/60 text-[14px] leading-relaxed">Your coaching portal, everything in one place.</p>
+            <p className="text-[11px] tracking-[0.12em] uppercase text-[#8FB4F5] mb-3">{nextUp.eyebrow}</p>
+            <h1 className="text-[26px] font-semibold text-white tracking-[-0.03em] leading-[1.18] mb-2.5">
+              {nextUp.headline}
+            </h1>
+            <p className="text-white/65 text-[14px] leading-relaxed">{nextUp.body}</p>
+            {nextUp.cta && (
+              <Link
+                href={nextUp.cta.href}
+                className="block text-center mt-6 bg-[#1B6DFC] hover:bg-[#1056D6] text-white text-[15px] font-semibold py-4 rounded-xl transition-colors"
+              >
+                {nextUp.cta.label}
+              </Link>
+            )}
+            {!nextUp.cta && !nextUp.resting && (
+              <p className="mt-5 text-[12.5px] text-white/45">Nothing to do here just yet.</p>
+            )}
           </div>
         </div>
 
