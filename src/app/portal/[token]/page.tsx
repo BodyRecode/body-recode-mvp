@@ -79,7 +79,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
 
   const { data: activeProgram } = await admin
     .from('programs')
-    .select('id, block_name, last_review_at, week_duration, generated_at')
+    .select('id, block_name, last_review_at, week_duration, generated_at, activated_at')
     .eq('client_id', client?.id ?? '')
     .eq('is_active', true)
     .maybeSingle()
@@ -402,10 +402,13 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   // task, because the send is still manual and a promised form that never
   // arrives is worse than no mention.
   const blockPhase: 'final_week' | 'ended' | null = (() => {
-    if (!activeProgram?.generated_at || !activeProgram.week_duration) return null
+    // activated_at is the block's true start; generated_at is when the draft
+    // was built and can be weeks earlier.
+    const startedAt = activeProgram?.activated_at ?? activeProgram?.generated_at
+    if (!startedAt || !activeProgram?.week_duration) return null
     const weeksIn = Math.floor(
       // eslint-disable-next-line react-hooks/purity
-      (Date.now() - new Date(activeProgram.generated_at).getTime()) / (7 * 24 * 60 * 60 * 1000),
+      (Date.now() - new Date(startedAt).getTime()) / (7 * 24 * 60 * 60 * 1000),
     ) + 1
     if (weeksIn > activeProgram.week_duration) return 'ended'
     if (weeksIn === activeProgram.week_duration) return 'final_week'

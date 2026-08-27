@@ -14,7 +14,7 @@ type Admin = ReturnType<typeof createAdminClient>
 export async function loadBlockProgress(admin: Admin, clientId: string): Promise<BlockProgressData | null> {
   const { data: program } = await admin
     .from('programs')
-    .select('id, block_name, week_duration, sessions, generated_at')
+    .select('id, block_name, week_duration, sessions, generated_at, activated_at')
     .eq('client_id', clientId)
     .eq('is_active', true)
     .maybeSingle()
@@ -22,8 +22,8 @@ export async function loadBlockProgress(admin: Admin, clientId: string): Promise
   if (!program) return null
 
   const prescribedSessions = parsePrescribedSessions(program.sessions)
-  const blockWeek = currentBlockWeek(program.generated_at)
-  const days = daysUntilBlockEnd(program.generated_at, program.week_duration)
+  const blockWeek = currentBlockWeek(program.activated_at ?? program.generated_at)
+  const days = daysUntilBlockEnd(program.activated_at ?? program.generated_at, program.week_duration)
 
   const { data: completions } = await admin
     .from('session_completions')

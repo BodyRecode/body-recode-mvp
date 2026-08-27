@@ -37,7 +37,9 @@ export async function POST(
   // Promote draft to active
   const { error } = await admin
     .from('programs')
-    .update({ status: 'active', is_active: true })
+    // activated_at is the block's true start. generated_at is when the draft
+    // was built, which can be weeks earlier.
+    .update({ status: 'active', is_active: true, activated_at: new Date().toISOString() })
     .eq('id', id)
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })

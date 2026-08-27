@@ -44,6 +44,8 @@ export interface ClientNextActionInput {
     blockName: string
     weekDuration: number | null
     generatedAt: string | null
+    /** When the draft was promoted - the block's true start. */
+    activatedAt: string | null
     programReadingPublishedAt: string | null
   } | null
 
@@ -555,7 +557,9 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
     input.activeProgram.weekDuration &&
     !input.progressCheckForActiveBlock
   ) {
-    const started = new Date(input.activeProgram.generatedAt).getTime()
+    const started = new Date(
+      input.activeProgram.activatedAt ?? input.activeProgram.generatedAt,
+    ).getTime()
     const weeksIn = Math.floor((Date.now() - started) / (1000 * 60 * 60 * 24 * 7)) + 1
     // Block-end means the client is IN the final week, matching the convention
     // on the program page (currentWeek >= startWeek + duration - 1). So this
@@ -968,7 +972,9 @@ export function computeConcurrentActions(
     input.activeProgram.weekDuration &&
     !input.progressCheckForActiveBlock
   ) {
-    const started = new Date(input.activeProgram.generatedAt).getTime()
+    const started = new Date(
+      input.activeProgram.activatedAt ?? input.activeProgram.generatedAt,
+    ).getTime()
     const weeksIn = Math.floor((Date.now() - started) / (1000 * 60 * 60 * 24 * 7)) + 1
     if (weeksIn >= input.activeProgram.weekDuration) {
       const endMs = started + input.activeProgram.weekDuration * 7 * 86_400_000

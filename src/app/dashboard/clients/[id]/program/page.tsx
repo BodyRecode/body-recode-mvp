@@ -53,6 +53,7 @@ interface Program {
   weekly_pattern_summary: string | string[] | null
   progression_notes: string | string[] | null
   generated_at: string
+  activated_at?: string | null
   is_active: boolean
   status: 'draft' | 'active'
   current_direction: string | null
@@ -406,7 +407,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
   // one-line summary, so we fetch just the light columns for those. Pulling
   // every archived block's full `sessions` was the main cost of opening this
   // page for long-tenured clients. All three loads run in parallel.
-  const ARCHIVED_COLS = 'id, block_name, generated_at, progression_phase, training_goal, week_duration, trajectory_reading_published_at, is_active, status'
+  const ARCHIVED_COLS = 'id, block_name, generated_at, activated_at, progression_phase, training_goal, week_duration, trajectory_reading_published_at, is_active, status'
   const [{ data: client }, { data: livePrograms }, { data: archivedRaw }] = await Promise.all([
     admin.from('clients').select('id, name, email, onboarding_token, coaching_started_at').eq('id', id).maybeSingle(),
     admin.from('programs').select('*').eq('client_id', id).or('is_active.eq.true,status.eq.draft').order('generated_at', { ascending: false }),
@@ -627,7 +628,9 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
               this page above), so a mid-block countdown panel was redundant. */}
           {(() => {
             const cs = client.coaching_started_at as string | null
-            const gen = activeProgram.generated_at
+            // activated_at is the block's true start; generated_at is when the
+            // draft was built and can be weeks earlier.
+            const gen = activeProgram.activated_at ?? activeProgram.generated_at
             const dur = activeProgram.week_duration ?? null
             if (!cs || !gen || !dur) return null
             const startMs = new Date(cs).getTime()

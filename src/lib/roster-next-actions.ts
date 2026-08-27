@@ -69,7 +69,7 @@ export async function computeRosterNextActions(admin: SupabaseClient): Promise<R
     admin.from('progress_checks').select('program_id, status'),
     admin
       .from('programs')
-      .select('id, client_id, block_name, week_duration, generated_at, is_active, program_reading_published_at')
+      .select('id, client_id, block_name, week_duration, generated_at, activated_at, is_active, program_reading_published_at')
       .eq('is_active', true),
     admin
       .from('programs')
@@ -266,6 +266,7 @@ export async function computeRosterNextActions(admin: SupabaseClient): Promise<R
             blockName: activeProgram.block_name,
             weekDuration: activeProgram.week_duration ?? null,
             generatedAt: activeProgram.generated_at ?? null,
+            activatedAt: activeProgram.activated_at ?? null,
             programReadingPublishedAt: activeProgram.program_reading_published_at ?? null,
           }
         : null,

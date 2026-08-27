@@ -100,8 +100,12 @@ export function currentBlockWeek(programGeneratedAt: string): number {
  *
  * Returns negative numbers if block has already ended.
  */
-export function daysUntilBlockEnd(programGeneratedAt: string, weekDuration: number): number {
-  const start = new Date(programGeneratedAt).getTime()
+export function daysUntilBlockEnd(
+  /** activated_at when present (the block's true start), else generated_at. */
+  programStartedAt: string,
+  weekDuration: number,
+): number {
+  const start = new Date(programStartedAt).getTime()
   const blockEnd = start + weekDuration * 7 * 24 * 60 * 60 * 1000
   const ms = blockEnd - Date.now()
   return Math.floor(ms / (1000 * 60 * 60 * 24))

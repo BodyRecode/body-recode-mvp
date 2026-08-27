@@ -112,7 +112,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       .order('created_at', { ascending: false }),
     admin
       .from('programs')
-      .select('id, block_name, progression_phase, training_goal, training_frequency, week_duration, generated_at, current_direction, pr_why_this_block')
+      .select('id, block_name, progression_phase, training_goal, training_frequency, week_duration, generated_at, activated_at, current_direction, pr_why_this_block')
       .eq('client_id', id)
       .eq('is_active', true)
       .maybeSingle(),
@@ -155,7 +155,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   // above) so the RPE-creep read can join the parallel batch below.
   const activeProgram = activePrograms || null
   const blockWeek = activeProgram?.generated_at
-    ? currentBlockWeek(activeProgram.generated_at)
+    ? currentBlockWeek(activeProgram.activated_at ?? activeProgram.generated_at)
     : null
 
   // Everything here depends only on `id` / `client.id` / `activeProgram` — all

@@ -36,7 +36,7 @@ export default async function CoachTrainIndexPage({ params }: { params: Promise<
 
   const { data: program } = await admin
     .from('programs')
-    .select('id, block_name, week_duration, sessions, generated_at')
+    .select('id, block_name, week_duration, sessions, generated_at, activated_at')
     .eq('client_id', client.id)
     .eq('is_active', true)
     .maybeSingle()
@@ -55,8 +55,8 @@ export default async function CoachTrainIndexPage({ params }: { params: Promise<
   }
 
   const prescribedSessions = parsePrescribedSessions(program.sessions)
-  const blockWeek = currentBlockWeek(program.generated_at)
-  const daysLeft = daysUntilBlockEnd(program.generated_at, program.week_duration)
+  const blockWeek = currentBlockWeek(program.activated_at ?? program.generated_at)
+  const daysLeft = daysUntilBlockEnd(program.activated_at ?? program.generated_at, program.week_duration)
   const today = todayBrisbaneDayName()
 
   const { data: completions } = await admin

@@ -9,6 +9,7 @@ import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
 import { evaluateProgressCheckReadiness, currentCoachingWeek } from '@/lib/progress-check-readiness'
 import { lastCheckinWindowOpenMs } from '@/lib/weekly-checkin-questions'
+import { blockEndMs } from '@/lib/block-window'
 
 // Creates a Progress Check (delta re-assessment) invitation for a client and
 // returns its token. The client completes it at /progress-check/{token}. One
@@ -46,7 +47,7 @@ export async function POST(request: NextRequest) {
     const windowOpenIso = new Date(lastCheckinWindowOpenMs()).toISOString()
     const [{ data: program }, { count: checkinsThisWindow }] = await Promise.all([
       programId
-        ? admin.from('programs').select('generated_at, week_duration').eq('id', programId).maybeSingle()
+        ? admin.from('programs').select('generated_at, activated_at, week_duration').eq('id', programId).maybeSingle()
         : Promise.resolve({ data: null }),
       admin
         .from('weekly_checkins')
@@ -55,12 +56,7 @@ export async function POST(request: NextRequest) {
         .gte('submitted_at', windowOpenIso),
     ])
 
-    // The block finishes at generated_at + duration weeks, not when its final
-    // week begins.
-    const blockEndsAtMs =
-      program?.generated_at && program.week_duration
-        ? new Date(program.generated_at).getTime() + program.week_duration * 7 * 24 * 60 * 60 * 1000
-        : null
+    const blockEndsAtMs = blockEndMs(program)
 
     const readiness = evaluateProgressCheckReadiness({
       coachingStartedAt: client.coaching_started_at ?? null,

@@ -14,6 +14,7 @@
 import { Resend } from 'resend'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { evaluateProgressCheckReadiness } from '@/lib/progress-check-readiness'
+import { blockEndMs } from '@/lib/block-window'
 import { buildProgressCheckInviteEmail } from '@/lib/progress-check-invite-email'
 import { logClientCommunication } from '@/lib/client-communications'
 import { fromCoach, COACH_BCC } from '@/lib/email-shell'
@@ -41,12 +42,13 @@ export async function dispatchProgressCheckIfDue(
 
   const { data: program } = await admin
     .from('programs')
-    .select('id, block_name, week_duration, generated_at')
+    .select('id, block_name, week_duration, generated_at, activated_at')
     .eq('client_id', clientId)
     .eq('is_active', true)
     .maybeSingle()
 
-  if (!program?.generated_at || !program.week_duration) {
+  const blockEndsAtMs = blockEndMs(program)
+  if (!program || blockEndsAtMs == null) {
     return { sent: false, client: name, why: 'no dated active block' }
   }
 
@@ -57,9 +59,6 @@ export async function dispatchProgressCheckIfDue(
     .select('id', { count: 'exact', head: true })
     .eq('program_id', program.id)
   if (existing && existing > 0) return { sent: false, client: name, why: 'already sent for this block' }
-
-  const blockEndsAtMs =
-    new Date(program.generated_at).getTime() + program.week_duration * 7 * 24 * 60 * 60 * 1000
 
   // Called from the check-in handler, the check-in that just landed IS the
   // qualifying one, so this is true by construction. The cron re-derives it.

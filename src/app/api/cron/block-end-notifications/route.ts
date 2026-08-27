@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
   // Pull every active program with its client
   const { data: programs, error } = await admin
     .from('programs')
-    .select('id, client_id, block_name, week_duration, generated_at, clients!inner(id, name, ended_at, frozen_at)')
+    .select('id, client_id, block_name, week_duration, generated_at, activated_at, clients!inner(id, name, ended_at, frozen_at)')
     .eq('is_active', true)
     // Offboarded or frozen clients receive nothing. Inner join so they drop out
     // entirely rather than being filtered after the fact and missed.
@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
 
   for (const program of programs) {
     if (!program.generated_at || !program.week_duration) continue
-    const days = daysUntilBlockEnd(program.generated_at, program.week_duration)
+    const days = daysUntilBlockEnd(program.activated_at ?? program.generated_at, program.week_duration)
     const client = (program.clients as unknown) as { id: string; name: string } | null
     if (!client) continue
 
