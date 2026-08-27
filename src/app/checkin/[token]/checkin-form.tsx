@@ -331,7 +331,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
               type="button"
               onClick={handleSubmit}
               disabled={submitting}
-              className="flex-1 bg-[#1B6DFC] text-black text-[15px] font-bold py-4 rounded-xl hover:bg-[#1B6DFC] transition-colors disabled:opacity-40 tracking-tight"
+              className="flex-1 bg-[#1B6DFC] text-white text-[15px] font-semibold py-4 rounded-xl hover:bg-[#1056D6] transition-colors disabled:opacity-40 tracking-tight"
             >
               {submitting ? 'Submitting…' : 'Submit check-in'}
             </button>
@@ -339,7 +339,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
             <button
               type="button"
               onClick={handleContinue}
-              className="flex-1 bg-white text-black text-[15px] font-bold py-4 rounded-xl hover:bg-[#F4F6F9] transition-colors tracking-tight"
+              className="flex-1 bg-[#1B6DFC] text-white text-[15px] font-semibold py-4 rounded-xl hover:bg-[#1056D6] transition-colors tracking-tight"
             >
               Continue
             </button>
