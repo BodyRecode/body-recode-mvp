@@ -740,13 +740,20 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                     <p className="text-sm font-semibold text-[#1A1A1A]">
                       {blockPhase === 'final_week'
                         ? 'Final week of this block'
-                        : 'You have finished this block'}
+                        : progressCheckUnlocked
+                          ? 'Your Progress Check is coming'
+                          : 'You have finished this block'}
                     </p>
                     <p className="text-xs text-[#6B6B6B] mt-0.5 leading-relaxed">
                       {activeProgram?.block_name}.{' '}
+                      {/* Three states, because "what am I waiting on" has three
+                          different answers and telling her the wrong one is
+                          worse than telling her nothing. */}
                       {blockPhase === 'final_week'
                         ? `Finish the week and send your check-in, and your Progress Check opens next: a few questions plus your measurements and photos, so ${coach().firstName} can read the whole block back to you.`
-                        : `Your Progress Check opens once this week's check-in is in: a few questions plus your measurements and photos, so ${coach().firstName} can read the whole block back to you and show you what has moved.`}
+                        : progressCheckUnlocked
+                          ? `Your Progress Check is on its way through - it will appear here. A few questions plus your measurements and photos, so ${coach().firstName} can read the whole block back to you and show you what has moved.`
+                          : `Your Progress Check opens once this week's check-in is in: a few questions plus your measurements and photos, so ${coach().firstName} can read the whole block back to you and show you what has moved.`}
                     </p>
                   </div>
                 </div>
