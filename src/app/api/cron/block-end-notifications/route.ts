@@ -97,6 +97,9 @@ export async function GET(request: NextRequest) {
     const firstName = client.name.split(' ')[0]
     const blockLabel = program.block_name ?? 'Current block'
     const clientUrl = `${APP_URL}/dashboard/clients/${client.id}`
+    // On completion, send the coach to the Training page - that is where the
+    // Send Progress Check button and the reading panel both live.
+    const ctaUrl = eventType === 'block_complete' ? `${clientUrl}/program` : clientUrl
 
     const subject = eventType === 'block_end_warning_7d'
       ? `${client.name}: block ends in 7 days`
@@ -108,9 +111,9 @@ export async function GET(request: NextRequest) {
 
     const body = eventType === 'block_end_warning_7d'
       ? `${firstName}'s block "${blockLabel}" reaches its end in 7 days. Plan the reassessment now: review CFWS history, decide whether the next block continues the macro arc or pivots based on observed signals.`
-      : `${firstName}'s block "${blockLabel}" has completed today. Per Signal Monitoring v1.0, the block end is one of the reassessment triggers. Generate the next block from the macro plan only after the reassessment review.`
+      : `${firstName}'s block "${blockLabel}" has completed today. First step is the Progress Check: send it from her Training page so she can re-report where she is now and send fresh measurements and photos. Her Progress Read is generated from that. Per Signal Monitoring v1.0, block end is a reassessment trigger - generate the next block from the macro plan only after the review. Note the Progress Check waits on this week's check-in, so if that has not come in yet the send will tell you.`
 
-    const ctaLabel = eventType === 'block_end_warning_7d' ? 'Open client profile' : 'Review and generate next block'
+    const ctaLabel = eventType === 'block_end_warning_7d' ? 'Open client profile' : 'Send the Progress Check'
 
     try {
       await resend.emails.send({
@@ -122,7 +125,7 @@ export async function GET(request: NextRequest) {
           heading,
           body,
           ctaLabel,
-          ctaUrl: clientUrl,
+          ctaUrl,
         }),
       })
     } catch (err) {

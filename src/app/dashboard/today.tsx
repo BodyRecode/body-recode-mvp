@@ -49,6 +49,7 @@ export default async function TodayWidget() {
     { data: baselines },
     { data: cffsRows },
     { data: trainingPlans },
+    { data: progressCheckRows },
     { data: programs },
     { data: archivedProgramsPendingTrajectory },
     { data: nutritionPlans },
@@ -73,6 +74,9 @@ export default async function TodayWidget() {
       .from('cffs')
       .select('id, client_id, generated_at, client_reading_published_at, is_archived'),
     admin.from('training_plans').select('client_id'),
+    // Progress Checks already raised, so the block-end prompt stops once one
+    // has been sent rather than nagging until the reading is generated.
+    admin.from('progress_checks').select('program_id, status'),
     admin
       .from('programs')
       .select('id, client_id, block_name, week_duration, generated_at, is_active, program_reading_published_at')
@@ -134,6 +138,10 @@ export default async function TodayWidget() {
   // ── Build lookups by client_id for fast in-memory join ─────────────────
   const intakeIds = new Set((intakes ?? []).map((r) => r.client_id))
   const baselineIds = new Set((baselines ?? []).map((r) => r.client_id))
+  const progressChecksByProgram = new Map<string, { status: string }>()
+  for (const pc of progressCheckRows ?? []) {
+    if (pc.program_id) progressChecksByProgram.set(pc.program_id, { status: pc.status })
+  }
   const planIds = new Set((trainingPlans ?? []).map((r) => r.client_id))
 
   const cffsByClient = new Map<string, NonNullable<typeof cffsRows>>()
@@ -309,6 +317,9 @@ export default async function TodayWidget() {
             generatedAt: activeProgram.generated_at ?? null,
             programReadingPublishedAt: activeProgram.program_reading_published_at ?? null,
           }
+        : null,
+      progressCheckForActiveBlock: activeProgram
+        ? progressChecksByProgram.get(activeProgram.id) ?? null
         : null,
       activeNutritionPlan: activeNutrition
         ? {

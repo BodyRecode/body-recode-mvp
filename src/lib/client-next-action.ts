@@ -47,6 +47,12 @@ export interface ClientNextActionInput {
     programReadingPublishedAt: string | null
   } | null
 
+  /**
+   * A Progress Check already raised against the ACTIVE program, if any. Used
+   * to stop the block-end prompt nagging once one has been sent.
+   */
+  progressCheckForActiveBlock: { status: string } | null
+
   /** The active nutrition_plans row, if any. */
   activeNutritionPlan: {
     id: string
@@ -172,6 +178,7 @@ export type NextActionStage =
   | 'active_reassessment'
   | 'active_checkin_overdue'
   | 'active_checkin_feedback_pending'
+  | 'block_end_progress_check_due'
   | 'active_trajectory_reading_pending'
   | 'active_drift'
   | 'active_recovery_no_protocols'    // in an RRS state with nothing assigned to help
@@ -535,6 +542,37 @@ export function computeClientNextAction(input: ClientNextActionInput): ClientNex
       accent: u.daysSince >= 3 ? 'amber' : 'teal',
       priority: 20,
       badge: composedBadge,
+    }
+  }
+
+  // ── Block ended, no Progress Check sent ────────────────────────────────
+  // Until now the only signal that a block had ended was the daily cron email
+  // and the button appearing on the client's Training page - so a milestone
+  // was missed by simply not opening that page in the right week. Surfacing it
+  // here puts it where the coach already looks every morning.
+  if (
+    input.activeProgram?.generatedAt &&
+    input.activeProgram.weekDuration &&
+    !input.progressCheckForActiveBlock
+  ) {
+    const started = new Date(input.activeProgram.generatedAt).getTime()
+    const weeksIn = Math.floor((Date.now() - started) / (1000 * 60 * 60 * 24 * 7)) + 1
+    if (weeksIn >= input.activeProgram.weekDuration) {
+      const over = weeksIn - input.activeProgram.weekDuration
+      return {
+        clientId: input.clientId,
+        clientName: input.clientName,
+        stage: 'block_end_progress_check_due',
+        headline: 'Send the Progress Check',
+        sublabel:
+          over > 0
+            ? `${input.activeProgram.blockName} ended ${over} week${over === 1 ? '' : 's'} ago`
+            : `${input.activeProgram.blockName} has reached its end`,
+        href: `${profileHref}/program`,
+        accent: 'amber',
+        priority: 20,
+        badge: composedBadge,
+      }
     }
   }
 
