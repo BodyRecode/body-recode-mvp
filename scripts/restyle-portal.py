@@ -21,7 +21,14 @@ since it is already on these values.
 import re
 import pathlib
 
-ROOTS = ['src/app/portal', 'src/app/baseline', 'src/app/progress-check']
+ROOTS = [
+    'src/app/portal',
+    'src/app/baseline',
+    'src/app/progress-check',
+    # The weekly check-in form lives outside /portal but is the same client
+    # doing the same thing, and was missed by the first pass because of it.
+    'src/app/checkin',
+]
 
 SUBS = [
     # The old greys -> the shared neutrals.

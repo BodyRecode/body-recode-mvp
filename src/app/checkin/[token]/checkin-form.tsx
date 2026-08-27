@@ -29,16 +29,16 @@ function QuestionInput({
   if (question.type === 'text') {
     return (
       <div>
-        <label className={`block text-[15px] font-medium mb-2 leading-snug ${hasError ? 'text-red-700' : 'text-[#1A1A1A]'}`}>{question.text}</label>
+        <label className={`block text-[15px] font-medium mb-2 leading-snug ${hasError ? 'text-[#C82626]' : 'text-[#141821]'}`}>{question.text}</label>
         {question.helper && (
-          <p className="text-[13px] text-stone-500 mb-3 leading-relaxed">{question.helper}</p>
+          <p className="text-[13px] text-[#666D7A] mb-3 leading-relaxed">{question.helper}</p>
         )}
         <textarea
           value={value || ''}
           onChange={e => onChange(e.target.value)}
           rows={4}
           placeholder="Your response..."
-          className={`w-full bg-stone-50 rounded-xl px-4 py-3 text-[15px] text-[#1A1A1A] placeholder-stone-600 focus:outline-none focus:border-stone-600 resize-none transition-colors border ${hasError ? 'border-red-400' : 'border-stone-200'}`}
+          className={`w-full bg-white rounded-xl px-4 py-3.5 text-[15px] text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#B9D0FD] focus:ring-[3px] focus:ring-[rgba(27,109,252,0.13)] resize-none transition-colors border-2 ${hasError ? 'border-[#EFAFAF]' : 'border-[#E8EAEE]'}`}
         />
       </div>
     )
@@ -54,24 +54,44 @@ function QuestionInput({
     }
     return (
       <div>
-        <p className={`text-[15px] font-medium mb-3 leading-snug ${hasError ? 'text-red-700' : 'text-[#1A1A1A]'}`}>{question.text}</p>
-        <div className="space-y-2">
-          {question.options?.map(opt => (
-            <button
-              key={opt}
-              type="button"
-              onClick={() => handleClick(opt)}
-              className={`w-full text-left text-[14px] px-4 py-3 rounded-xl border transition-all duration-150 ${
-                isSelected(opt)
-                  ? 'bg-blue-500/10 border-blue-500 text-blue-300'
-                  : hasError
-                  ? 'bg-stone-50 border-red-400 text-stone-700'
-                  : 'bg-stone-50 border-stone-200 text-stone-700 hover:border-stone-600'
-              }`}
-            >
-              {opt}
-            </button>
-          ))}
+        <p className={`text-[15px] font-medium mb-3 leading-snug ${hasError ? 'text-[#C82626]' : 'text-[#141821]'}`}>{question.text}</p>
+        <div className="space-y-2.5">
+          {question.options?.map(opt => {
+            const on = isSelected(opt)
+            return (
+              <button
+                key={opt}
+                type="button"
+                aria-pressed={on}
+                onClick={() => handleClick(opt)}
+                className={`w-full flex items-center gap-3 text-left text-[15px] leading-snug px-4 py-3.5 min-h-[54px] rounded-xl border-2 transition-colors ${
+                  on
+                    ? 'bg-[rgba(27,109,252,0.07)] border-[#1B6DFC] text-[#141821] font-medium'
+                    : hasError
+                      ? 'bg-white border-[#EFAFAF] text-[#43474F]'
+                      : 'bg-white border-[#E8EAEE] text-[#43474F] hover:border-[#B9D0FD]'
+                }`}
+              >
+                {/* The mark carries the state as well as the colour. On a phone,
+                    in daylight, a pale tint alone is not enough to tell her which
+                    one she picked - and the old selected state was pale blue text
+                    on a pale blue tint, which told her nothing at all. */}
+                <span
+                  className={`w-5 h-5 shrink-0 flex items-center justify-center border-2 transition-colors ${
+                    question.multi ? 'rounded-[6px]' : 'rounded-full'
+                  } ${on ? 'bg-[#1B6DFC] border-[#1B6DFC]' : 'border-[#CFD4DC]'}`}
+                  aria-hidden
+                >
+                  {on && (
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={3.5} strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </span>
+                <span className="min-w-0">{opt}</span>
+              </button>
+            )
+          })}
         </div>
       </div>
     )
@@ -210,13 +230,13 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
       <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-8">
         <div className="text-center max-w-sm">
           <img src={logoUrl()} width="120" alt={brand().name} style={{ display: 'block', margin: '0 auto 24px' }} />
-          <div className="w-14 h-14 bg-blue-500/10 border border-blue-500/30 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="w-7 h-7 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="w-14 h-14 bg-[#1B6DFC]/10 border border-[#1B6DFC]/30 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg className="w-7 h-7 text-[#1B6DFC]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-[#1A1A1A] mb-3 tracking-tight">Received, {firstName}.</h1>
-          <p className="text-stone-500 text-[15px] leading-relaxed">
+          <h1 className="text-2xl font-bold text-[#141821] mb-3 tracking-tight">Received, {firstName}.</h1>
+          <p className="text-[#666D7A] text-[15px] leading-relaxed">
             Your check-in has been submitted. Your coach will review it and be in touch.
           </p>
         </div>
@@ -228,39 +248,39 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
     <div className="min-h-screen bg-[#FFFFFF]">
 
       {/* Progress bar */}
-      <div className="fixed top-0 left-0 right-0 h-[2px] bg-stone-50 z-20">
+      <div className="fixed top-0 left-0 right-0 h-[2px] bg-[#FBFCFD] z-20">
         <div
-          className="h-full bg-blue-500 transition-all duration-500 ease-out"
+          className="h-full bg-[#1B6DFC] transition-all duration-500 ease-out"
           style={{ width: `${progressPct}%` }}
         />
       </div>
 
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-b border-stone-200 px-5 py-3 flex items-center justify-between">
+      <div className="sticky top-0 z-10 bg-[#FFFFFF]/95 backdrop-blur-sm border-b border-[#EFF1F4] px-5 py-3 flex items-center justify-between">
         <img src={logoUrl()} width="100" alt={brand().name} style={{ display: 'block' }} />
-        <p className="text-[11px] font-medium text-stone-600">{sectionIndex + 1} / {sections.length}</p>
+        <p className="text-[11px] font-medium text-[#666D7A]">{sectionIndex + 1} / {sections.length}</p>
       </div>
 
       <div className="max-w-lg mx-auto px-5 pt-8 pb-32">
 
         {/* Section header */}
         <div className="mb-8">
-          <p className="text-[10px] font-bold tracking-[0.15em] text-stone-600 uppercase mb-3">
+          <p className="text-[10px] font-bold tracking-[0.15em] text-[#666D7A] uppercase mb-3">
             Week {weekNumber} · Form {formType} · {progressPct}% complete
           </p>
-          <h1 className="text-[22px] font-bold text-[#1A1A1A] tracking-tight">{section.title}</h1>
+          <h1 className="text-[22px] font-bold text-[#141821] tracking-tight">{section.title}</h1>
         </div>
 
         {/* Validation message */}
         {validationMessage && (
-          <div className="mb-6 border-l-2 border-red-500 bg-red-50 rounded-r-2xl px-4 py-3">
-            <p className="text-red-700 text-sm font-medium">{validationMessage}</p>
-            <p className="text-red-700/70 text-xs mt-1">Missed questions are highlighted in red below.</p>
+          <div className="mb-6 border-l-2 border-[#DC2626] bg-[#FDEDED] rounded-r-2xl px-4 py-3">
+            <p className="text-[#C82626] text-sm font-medium">{validationMessage}</p>
+            <p className="text-[#C82626]/70 text-xs mt-1">Missed questions are highlighted in red below.</p>
           </div>
         )}
 
         {/* Divider */}
-        <div className="h-px bg-stone-50 mb-8" />
+        <div className="h-px bg-[#FBFCFD] mb-8" />
 
         {/* Questions */}
         <div className="space-y-8">
@@ -270,7 +290,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
               <div
                 key={q.id}
                 id={`q-${q.id}`}
-                className={hasError ? 'border-l-2 border-red-500 pl-4 -ml-4 scroll-mt-24' : 'scroll-mt-24'}
+                className={hasError ? 'border-l-2 border-[#DC2626] pl-4 -ml-4 scroll-mt-24' : 'scroll-mt-24'}
               >
                 <QuestionInput
                   question={q}
@@ -279,7 +299,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
                   hasError={hasError}
                 />
                 {hasError && (
-                  <p className="text-red-700 text-xs mt-2 font-medium">Please answer this question.</p>
+                  <p className="text-[#C82626] text-xs mt-2 font-medium">Please answer this question.</p>
                 )}
               </div>
             )
@@ -287,19 +307,19 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
         </div>
 
         {error && (
-          <div className="mt-6 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
-            <p className="text-red-700 text-sm">{error}</p>
+          <div className="mt-6 bg-[#FDEDED] border border-[#F5C9C9] rounded-xl px-4 py-3">
+            <p className="text-[#C82626] text-sm">{error}</p>
           </div>
         )}
       </div>
 
       {/* Fixed bottom navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-[#FFFFFF] border-t border-stone-200 px-5 py-4 z-10">
+      <div className="fixed bottom-0 left-0 right-0 bg-[#FFFFFF] border-t border-[#EFF1F4] px-5 py-4 z-10">
         <div className="max-w-lg mx-auto flex items-center justify-between gap-4">
           <button
             type="button"
             onClick={() => goToSection(sectionIndex - 1)}
-            className={`text-[13px] font-semibold text-stone-500 py-2 px-1 transition-colors hover:text-stone-700 ${
+            className={`text-[13px] font-semibold text-[#666D7A] py-2 px-1 transition-colors hover:text-[#43474F] ${
               sectionIndex === 0 ? 'invisible' : ''
             }`}
           >
@@ -311,7 +331,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
               type="button"
               onClick={handleSubmit}
               disabled={submitting}
-              className="flex-1 bg-blue-500 text-black text-[15px] font-bold py-4 rounded-xl hover:bg-blue-500 transition-colors disabled:opacity-40 tracking-tight"
+              className="flex-1 bg-[#1B6DFC] text-black text-[15px] font-bold py-4 rounded-xl hover:bg-[#1B6DFC] transition-colors disabled:opacity-40 tracking-tight"
             >
               {submitting ? 'Submitting…' : 'Submit check-in'}
             </button>
@@ -319,7 +339,7 @@ export default function CheckInForm({ clientId, clientName, weekNumber, formType
             <button
               type="button"
               onClick={handleContinue}
-              className="flex-1 bg-white text-black text-[15px] font-bold py-4 rounded-xl hover:bg-stone-100 transition-colors tracking-tight"
+              className="flex-1 bg-white text-black text-[15px] font-bold py-4 rounded-xl hover:bg-[#F4F6F9] transition-colors tracking-tight"
             >
               Continue
             </button>
