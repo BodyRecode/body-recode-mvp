@@ -639,48 +639,6 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
           </div>
         )}
 
-        {/* Everything else - one line each.
-            These are destinations, not messages. Each used to get a section
-            heading, an icon chip and a description card, so eleven places she
-            might browse to carried the same visual weight as the one thing
-            actually being asked of her. They are a list now. Anything that is
-            a MESSAGE to her - a reply, a new reading, a note from her coach -
-            keeps its own block above. */}
-        {allOnboardingDone && (
-          <div className="mb-10">
-            <p className="text-[12.5px] text-[#98A0AD] mb-3">Everything else</p>
-            <div className="rounded-2xl border border-[#E8EAEE] overflow-hidden bg-white">
-              {([
-                { href: `/portal/${token}/program`, label: 'Training program', meta: activeProgram?.block_name ?? null, show: true },
-                { href: `/portal/${token}/my-plan`, label: 'Nutrition plan', meta: null, show: true },
-                { href: `/portal/${token}/routine`, label: 'Daily sequences', meta: null, show: true },
-                { href: `/portal/${token}/recovery`, label: 'Recovery protocols', meta: null, show: (activeRecoveryCount ?? 0) > 0 },
-                { href: `/portal/${token}/supplements`, label: 'Supplement stack', meta: null, show: (activeSupplementCount ?? 0) > 0 },
-                { href: `/portal/${token}/sessions`, label: 'Your sessions', meta: null, show: client.session_type === 'face_to_face' },
-                { href: `/portal/${token}/progress`, label: 'Progress', meta: null, show: true },
-                { href: `/portal/${token}/bloods`, label: 'Health markers', meta: null, show: true },
-                { href: `/portal/${token}/checkin-history`, label: 'Your check-ins', meta: recentCheckins.length > 0 ? `${recentCheckins.length} recent` : null, show: true },
-                { href: `/portal/${token}/message`, label: `Message ${coach().firstName}`, meta: null, show: true },
-                { href: `/portal/${token}/resources`, label: 'Readings and guides', meta: null, show: true },
-                { href: `/portal/${token}/feedback`, label: 'Share feedback', meta: null, show: true },
-              ] as { href: string; label: string; meta: string | null; show: boolean }[])
-                .filter(i => i.show)
-                .map(i => (
-                  <Link
-                    key={i.href}
-                    href={i.href}
-                    className="flex items-center justify-between gap-3 px-5 py-4 border-b border-[#EFF1F4] last:border-b-0 hover:bg-[#F7F9FC] transition-colors"
-                  >
-                    <span className="text-[15px] text-[#141821] min-w-0 truncate">{i.label}</span>
-                    <span className="flex items-center gap-2 shrink-0">
-                      {i.meta && <span className="text-[12.5px] text-[#98A0AD] truncate max-w-[130px]">{i.meta}</span>}
-                      <span className="text-[#CFD4DC]">&rsaquo;</span>
-                    </span>
-                  </Link>
-                ))}
-            </div>
-          </div>
-        )}
 
 
         {/* Weekly check-in task. Gated on active program existence per
@@ -836,6 +794,49 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         )}
 
 
+
+        {/* Everything else - one line each.
+            These are destinations, not messages. Each used to get a section
+            heading, an icon chip and a description card, so eleven places she
+            might browse to carried the same visual weight as the one thing
+            actually being asked of her. They are a list now. Anything that is
+            a MESSAGE to her - a reply, a new reading, a note from her coach -
+            keeps its own block above. */}
+        {allOnboardingDone && (
+          <div className="mb-10">
+            <p className="text-[12.5px] text-[#98A0AD] mb-3">Everything else</p>
+            <div className="rounded-2xl border border-[#E8EAEE] overflow-hidden bg-white">
+              {([
+                { href: `/portal/${token}/program`, label: 'Training program', meta: activeProgram?.block_name ?? null, show: true },
+                { href: `/portal/${token}/my-plan`, label: 'Nutrition plan', meta: null, show: true },
+                { href: `/portal/${token}/routine`, label: 'Daily sequences', meta: null, show: true },
+                { href: `/portal/${token}/recovery`, label: 'Recovery protocols', meta: null, show: (activeRecoveryCount ?? 0) > 0 },
+                { href: `/portal/${token}/supplements`, label: 'Supplement stack', meta: null, show: (activeSupplementCount ?? 0) > 0 },
+                { href: `/portal/${token}/sessions`, label: 'Your sessions', meta: null, show: client.session_type === 'face_to_face' },
+                { href: `/portal/${token}/progress`, label: 'Progress', meta: null, show: true },
+                { href: `/portal/${token}/bloods`, label: 'Health markers', meta: null, show: true },
+                { href: `/portal/${token}/checkin-history`, label: 'Your check-ins', meta: recentCheckins.length > 0 ? `${recentCheckins.length} recent` : null, show: true },
+                { href: `/portal/${token}/message`, label: `Message ${coach().firstName}`, meta: null, show: true },
+                { href: `/portal/${token}/resources`, label: 'Readings and guides', meta: null, show: true },
+                { href: `/portal/${token}/feedback`, label: 'Share feedback', meta: null, show: true },
+              ] as { href: string; label: string; meta: string | null; show: boolean }[])
+                .filter(i => i.show)
+                .map(i => (
+                  <Link
+                    key={i.href}
+                    href={i.href}
+                    className="flex items-center justify-between gap-3 px-5 py-4 border-b border-[#EFF1F4] last:border-b-0 hover:bg-[#F7F9FC] transition-colors"
+                  >
+                    <span className="text-[15px] text-[#141821] min-w-0 truncate">{i.label}</span>
+                    <span className="flex items-center gap-2 shrink-0">
+                      {i.meta && <span className="text-[12.5px] text-[#98A0AD] truncate max-w-[130px]">{i.meta}</span>}
+                      <span className="text-[#CFD4DC]">&rsaquo;</span>
+                    </span>
+                  </Link>
+                ))}
+            </div>
+          </div>
+        )}
 
         <div className="h-16" />{/* canonical bottom spacer */}
       </div>
