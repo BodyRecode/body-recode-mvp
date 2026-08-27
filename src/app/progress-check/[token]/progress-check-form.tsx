@@ -25,9 +25,6 @@ export default function ProgressCheckForm({ token, firstName }: { token: string;
   const [photoBack, setPhotoBack] = useState<File | null>(null)
   const [processing, setProcessing] = useState<Set<string>>(new Set())
   const [unreadable, setUnreadable] = useState<Set<string>>(new Set())
-  // An explicit choice, not a silent omission: the client either provides the
-  // photos or says she cannot this time, and the coach sees which.
-  const [skipPhotos, setSkipPhotos] = useState(false)
 
   async function handlePhotoPick(id: string, file: File | null, set: (f: File | null) => void) {
     if (!file) {
@@ -59,10 +56,10 @@ export default function ProgressCheckForm({ token, firstName }: { token: string;
   )
   const answeredCount = requiredIds.filter(id => (responses[id] ?? '').trim() !== '').length
   const allPhotos = Boolean(photoFront && photoSide && photoBack)
-  const photosSettled = allPhotos || skipPhotos
-  const weightGiven = bodyweight.trim() !== '' && Number.isFinite(parseFloat(bodyweight))
+  const num = (v: string) => v.trim() !== '' && Number.isFinite(parseFloat(v))
+  const measurementsGiven = num(bodyweight) && num(waist) && num(hips) && num(chest)
   const canSubmit =
-    answeredCount === requiredIds.length && weightGiven && photosSettled && !submitting
+    answeredCount === requiredIds.length && measurementsGiven && allPhotos && !submitting
 
   async function submit() {
     setSubmitting(true)
@@ -76,7 +73,6 @@ export default function ProgressCheckForm({ token, firstName }: { token: string;
     fd.append('waist', waist)
     fd.append('hips', hips)
     fd.append('chest', chest)
-    fd.append('photosSkipped', skipPhotos && !allPhotos ? 'true' : 'false')
     if (photoFront) fd.append('photoFront', photoFront)
     if (photoSide) fd.append('photoSide', photoSide)
     if (photoBack) fd.append('photoBack', photoBack)
@@ -96,9 +92,21 @@ export default function ProgressCheckForm({ token, firstName }: { token: string;
         <h1 className="text-3xl font-extrabold text-[#1A1A1A] tracking-tight mb-3">
           {firstName ? `${firstName}, a quick read on where you are now.` : 'A quick read on where you are now.'}
         </h1>
-        <p className="text-[#4A4A4A] leading-relaxed mb-10">
+        <p className="text-[#4A4A4A] leading-relaxed mb-6">
           A few minutes on how your body has been across the last few weeks. This is what lets me re-score your state and show you what has actually moved. Answer for your usual experience, not just today.
         </p>
+
+        <div className="bg-white border border-[#E5E5E5] rounded-2xl p-5 mb-10">
+          <p className="text-[13px] font-semibold text-[#1A1A1A] mb-2">Before you start, have these ready</p>
+          <ul className="text-[13px] text-[#4A4A4A] leading-relaxed space-y-1">
+            <li>· Scales and a tape measure - weight, waist, hips and chest</li>
+            <li>· Somewhere to take three photos: front, side and back</li>
+          </ul>
+          <p className="text-[12px] text-[#6B6B6B] leading-relaxed mt-3">
+            All of it is needed to finish. The measurements and photos are the part that lets me show
+            you what has changed rather than tell you, so this read does not work without them.
+          </p>
+        </div>
 
         {PROGRESS_CHECK_SECTIONS.map(section => (
           <div key={section.id} className="bg-white border border-[#E5E5E5] rounded-2xl p-6 md:p-7 mb-5">
@@ -179,15 +187,14 @@ export default function ProgressCheckForm({ token, firstName }: { token: string;
 
           <div className="grid grid-cols-2 gap-4 mb-7">
             {[
-              { id: 'bodyweight', label: 'Weight (kg)', value: bodyweight, set: setBodyweight, required: true },
-              { id: 'waist', label: 'Waist (cm)', value: waist, set: setWaist, required: false },
-              { id: 'hips', label: 'Hips (cm)', value: hips, set: setHips, required: false },
-              { id: 'chest', label: 'Chest (cm)', value: chest, set: setChest, required: false },
+              { id: 'bodyweight', label: 'Weight (kg)', value: bodyweight, set: setBodyweight },
+              { id: 'waist', label: 'Waist (cm)', value: waist, set: setWaist },
+              { id: 'hips', label: 'Hips (cm)', value: hips, set: setHips },
+              { id: 'chest', label: 'Chest (cm)', value: chest, set: setChest },
             ].map(f => (
               <div key={f.id}>
                 <label htmlFor={`pc-${f.id}`} className="block text-[13px] font-semibold text-[#1A1A1A] mb-2">
                   {f.label}
-                  {!f.required && <span className="font-normal text-[#999999]"> · optional</span>}
                 </label>
                 <input
                   id={`pc-${f.id}`}
@@ -255,19 +262,6 @@ export default function ProgressCheckForm({ token, firstName }: { token: string;
             })}
           </div>
 
-          {!allPhotos && (
-            <label className="flex items-start gap-3 mt-5 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={skipPhotos}
-                onChange={e => setSkipPhotos(e.target.checked)}
-                className="mt-0.5 w-4 h-4 accent-[#1B6DFC]"
-              />
-              <span className="text-[13px] text-[#4A4A4A] leading-relaxed">
-                I can&apos;t take photos this time. Send the rest without them.
-              </span>
-            </label>
-          )}
         </div>
 
         {error && <p className="text-sm text-red-700 mb-3">{error}</p>}
@@ -281,8 +275,8 @@ export default function ProgressCheckForm({ token, firstName }: { token: string;
           </button>
           <span className="text-[13px] text-[#6B6B6B]">
             {answeredCount} / {requiredIds.length} answered
-            {answeredCount === requiredIds.length && !weightGiven && ' · weight still needed'}
-            {answeredCount === requiredIds.length && weightGiven && !photosSettled && ' · photos still needed'}
+            {answeredCount === requiredIds.length && !measurementsGiven && ' · measurements still needed'}
+            {answeredCount === requiredIds.length && measurementsGiven && !allPhotos && ' · photos still needed'}
           </span>
         </div>
       </div>

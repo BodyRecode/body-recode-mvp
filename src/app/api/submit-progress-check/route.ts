@@ -68,7 +68,6 @@ export async function POST(request: NextRequest) {
     return Number.isFinite(v) ? v : null
   }
   const bodyweight = num('bodyweight')
-  const photosSkipped = form.get('photosSkipped') === 'true'
   let captureSaved = false
   let photosSaved = 0
 
@@ -138,9 +137,11 @@ export async function POST(request: NextRequest) {
       html: `<p>${clientName} has completed their Progress Check.</p>
 <p>${
         captureSaved
-          ? `Fresh capture saved: weight${photosSaved > 0 ? ` and ${photosSaved} photo${photosSaved === 1 ? '' : 's'}` : ', no photos'}.`
-          : 'No fresh measurements were provided with this one.'
-      }${photosSkipped ? ' She said she could not take photos this time.' : ''}</p>
+          ? `Fresh capture saved: measurements and ${photosSaved} photo${photosSaved === 1 ? '' : 's'}.${
+              photosSaved < 3 ? ' Fewer than three photos landed - worth checking the file.' : ''
+            }`
+          : 'No capture was saved with this one, which should not happen now that measurements and photos are required. Worth checking the logs.'
+      }</p>
 <p>Open their program, then use <b>Generate</b> on the Block-End / Progress Read panel to draft the reading. It will re-score their body state from these answers. Review it, then publish.</p>
 <p><a href="${programUrl}">${programUrl}</a></p>`,
     })
