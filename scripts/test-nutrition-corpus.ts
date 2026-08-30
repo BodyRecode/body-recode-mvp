@@ -239,6 +239,8 @@ interface TestCase {
   plan: MealLike[]
   /** Optional bridge override */
   override?: { active: boolean; floor_kcal: number }
+  /** Coach opt-in: require the first meal to carry the highest protein. */
+  firstMealHighestProtein?: boolean
   /** Expected outcome */
   expected: {
     ok: boolean
@@ -264,6 +266,26 @@ const cases: TestCase[] = [
     profile: profiles.standard_male,
     plan: standardMaleStarvedBreakfast,
     expected: { ok: false, must_contain: ['FIRST_MEAL_PROTEIN_TOO_LOW'] },
+  },
+
+  // ── first_meal_highest_protein is OPT-IN and OFF by default (2026-08-30) ──
+  // A plan whose breakfast is not the highest-protein main meal is fine unless
+  // the coach asked for that rule. Every active client's plan is shaped this
+  // way, and so is the standard fixture above, so a global rule would have
+  // silently rewritten three people's plans. The corpus caught it shipping
+  // ungated; these two cases stop it regressing.
+  {
+    name: 'standard fixture (breakfast 27g vs lunch 45g) passes when the coach has NOT opted in',
+    profile: profiles.standard_male,
+    plan: standardMale4Meal,
+    expected: { ok: true },
+  },
+  {
+    name: 'same plan trips FIRST_MEAL_NOT_HIGHEST_PROTEIN once the coach opts in',
+    profile: profiles.standard_male,
+    plan: standardMale4Meal,
+    firstMealHighestProtein: true,
+    expected: { ok: false, must_contain: ['FIRST_MEAL_NOT_HIGHEST_PROTEIN'] },
   },
 
   // ── Appetite-suppression rule fires for Amanda's 3-meal plan ──────────
@@ -425,6 +447,7 @@ function runValidatorCase(c: TestCase): { pass: boolean; detail: string } {
     medications: c.profile.medications,
     carb_demand_level: c.profile.prescription.carb_demand_level,
     transitional_override: c.override ?? null,
+    first_meal_highest_protein: c.firstMealHighestProtein ?? false,
   }
 
   const result = validateNutritionPlan(input)

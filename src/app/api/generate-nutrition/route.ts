@@ -64,6 +64,11 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
     transitional_override_floor_kcal,
     transitional_override_justification,
     coach_guidance,
+    // 2026-08-30. Require the first meal to carry the highest or equal-highest
+    // protein of the main meals. OFF by default and deliberately not doctrine:
+    // the floor check already stops a starved breakfast, while "highest" is a
+    // per-client instruction that every current client's plan breaks.
+    first_meal_highest_protein,
   } = body
 
   if (!client_id || !entry_state || !protein_anchor_g || !carb_demand_level) {
@@ -387,6 +392,9 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
       medications: client?.medications ?? null,
       carb_demand_level: (String(p.carb_demand_level || carb_demand_level || '').toLowerCase() as 'low' | 'moderate' | 'high' | '') || null,
       transitional_override: overrideActive ? { active: true, floor_kcal: overrideFloor } : null,
+      // Coach opt-in, off by default. Per-client instruction, not doctrine:
+      // see first_meal_highest_protein in nutrition-validation.ts.
+      first_meal_highest_protein: Boolean(first_meal_highest_protein),
       // Substitution audit added 2026-06-09 (item E). If the model
       // proposes a swap labelled "equivalent" but the food-reference
       // table shows the macros diverge >20% protein/carb/fat or >15% kcal,

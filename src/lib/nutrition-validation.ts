@@ -225,6 +225,19 @@ export interface NutritionValidationInput {
     floor_kcal: number
   } | null
   /**
+   * Coach opt-in: require the day's first meal to carry the HIGHEST or
+   * equal-highest protein of the main meals.
+   *
+   * NOT doctrine and deliberately off by default. "Do not leave breakfast
+   * starved" is doctrine and the FIRST_MEAL_PROTEIN_TOO_LOW floor already
+   * enforces it. "Breakfast must be the highest" is a stronger, per-client
+   * instruction: it appears in Cristobal's brief and in no one else's, and as
+   * of 2026-08-30 EVERY active client's plan breaks it, as does the corpus
+   * fixture for a good standard plan. Turning one client's brief into a global
+   * rule would silently rewrite three other people's plans.
+   */
+  first_meal_highest_protein?: boolean | null
+  /**
    * Substitution options from the generated plan. Validated against the
    * food-reference table at generation time. Added 2026-06-09 (item E in
    * the licensee-readiness plan) after Ruby's published plan was found to
@@ -594,6 +607,37 @@ export function validateNutritionPlan(
         code: 'FIRST_MEAL_PROTEIN_TOO_LOW',
         message: `${firstName}: ${firstP}g protein is below the ${floor}g floor for the day's first meal (target ~${Math.round(perMealTarget)}g across ${input.meals.length} meals). Do not leave breakfast the starved meal — bring its protein up.`,
       })
+    }
+
+    // 2026-08-30, OPT-IN ONLY (see first_meal_highest_protein). The floor above
+    // stops breakfast being STARVED. It does not make it the anchor, and the
+    // two are not the same requirement.
+    //
+    // Cristobal's briefs called breakfast-highest "a hard requirement, not a
+    // preference" across four generations and it was met on NONE of them,
+    // including the plan live with him: 19g vs 38g, then 37g vs 48g, then 45g
+    // vs 48g. Every one cleared the floor comfortably and broke the rule. A
+    // requirement enforced only in prose is a requirement that quietly does not
+    // hold, so this is the same fix already applied to meal counts.
+    //
+    // Gated because it is a per-client instruction, not doctrine: every active
+    // client's plan breaks it, and so does the corpus fixture for a good plan.
+    // The regression corpus caught exactly that when it shipped ungated.
+    //
+    // Compared against MAIN meals only: a lighter afternoon snack is by design.
+    // Suppressed clients stay exempt for the same reason they are exempt above,
+    // their first meal is deliberately kept low.
+    const mainMeals = input.meals.filter(m => !/snack/i.test(String(m.meal_name ?? '')))
+    if (input.first_meal_highest_protein && mainMeals.length > 1) {
+      const highest = Math.max(...mainMeals.map(m => Number(m.protein_g) || 0))
+      const firstIsMain = !/snack/i.test(String(first.meal_name ?? ''))
+      if (firstIsMain && firstP < highest) {
+        const leader = mainMeals.find(m => (Number(m.protein_g) || 0) === highest)
+        issues.push({
+          code: 'FIRST_MEAL_NOT_HIGHEST_PROTEIN',
+          message: `${firstName}: ${firstP}g protein is below ${leader?.meal_name ?? 'a later meal'} at ${highest}g. The day's first meal must carry the HIGHEST or equal-highest protein of the main meals. Rebalance rather than bolting protein on top: bring ${firstName} up and bring ${leader?.meal_name ?? 'the heaviest meal'} down, so the daily total still lands on the anchor.`,
+        })
+      }
     }
   }
 
