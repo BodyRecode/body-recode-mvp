@@ -29,6 +29,20 @@ export async function POST(request: NextRequest) {
   if (!(await isCoachUser(user))) return forbidden()
 
   const body = await request.json()
+  return runProgramGenerationInternal(body)
+}
+
+/**
+ * Internal generation entrypoint. Skips the coach auth check so server-side
+ * admin scripts can generate a block for one client without a browser session.
+ * Mirrors `runNutritionGenerationInternal` in generate-nutrition/route.ts,
+ * which exists for the same reason. Everything it produces is still a DRAFT:
+ * publishing stays a separate, deliberate coach action.
+ *
+ * Extracted 2026-08-30. Do NOT call this from anything reachable without auth.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function runProgramGenerationInternal(body: any): Promise<NextResponse> {
   const {
     client_id,
     cffs_id,
