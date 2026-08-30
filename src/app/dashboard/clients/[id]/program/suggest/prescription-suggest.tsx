@@ -29,6 +29,7 @@ interface Suggestion {
   training_goal_reason: string
   training_frequency: number
   training_frequency_reason: string
+  concurrent_endurance_sessions: number
   training_age: string
   training_age_reason: string
   movement_competency: string
@@ -230,6 +231,7 @@ export default function PrescriptionSuggest({
     progression_phase: 'accumulation',
     training_goal: 'strength',
     training_frequency: 3,
+    concurrent_endurance_sessions: 0,
     training_age: 'intermediate',
     movement_competency: 'developing',
     week_duration: 4 as 4 | 6 | 8,
@@ -622,6 +624,24 @@ export default function PrescriptionSuggest({
                   className="w-full accent-[#1B6DFC]" />
                 <div className="flex justify-between text-[12.5px] text-[#98A0AD] mt-1">
                   <span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
+                </div>
+              </ReasonCard>
+            </div>
+
+            {/* Concurrent endurance load. Coach-declared: nothing in the schema
+                records it, and the doctrine set range assumes lifting is the
+                client's whole training load. */}
+            <div id="endurance" className="scroll-mt-8">
+              <ReasonCard
+                label={`Endurance sessions in their week - ${form.concurrent_endurance_sessions}`}
+                value={form.concurrent_endurance_sessions === 0 ? 'none, pure strength block' : `${form.concurrent_endurance_sessions} / week`}
+                reason="Runs, rides or swims the client is doing alongside this block. The set range assumes lifting is their whole training load, which is wrong for anyone doing real endurance work. Above zero, sets aim at the floor of the range for their phase and tier instead of the middle. The ceiling does not move, so writing more deliberately is still allowed."
+              >
+                <input type="range" min={0} max={7} value={form.concurrent_endurance_sessions}
+                  onChange={e => setForm(p => ({ ...p, concurrent_endurance_sessions: parseInt(e.target.value) }))}
+                  className="w-full accent-[#1B6DFC]" />
+                <div className="flex justify-between text-[12.5px] text-[#98A0AD] mt-1">
+                  <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>
                 </div>
               </ReasonCard>
             </div>

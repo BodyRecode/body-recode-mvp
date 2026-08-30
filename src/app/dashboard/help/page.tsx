@@ -2021,6 +2021,25 @@ export default function HelpPage() {
               <li><strong>Phase B remaining</strong>: load progression sparklines per exercise on the client profile, missed-session detection, top-of-coaching-list block-ending banner.</li>
               <li><strong>Phase C</strong>: auto-fill the Recovery Router&apos;s <code className="bg-[#EFF1F4] px-1 rounded text-[#1056D6] text-[12.5px]">session_repeatability</code> signal from logged data (compare last week&apos;s avg loads to this week&apos;s); surface &quot;missed &gt;2 sessions&quot; as a router signal.</li>
             </ul>
+          
+            <p className="text-[12.5px] font-medium text-[#666D7A] mt-6 mb-2">Set volume, and what to do when they also run (2026-08-30)</p>
+            <p>Working sets per session are governed by phase and tier. Trunk and core work is excluded from the count.</p>
+            <div className="overflow-x-auto mt-2">
+              <table className="text-[12.5px] w-full">
+                <thead><tr className="text-[#666D7A] text-left"><th className="font-medium pb-1">Phase (advanced tier)</th><th className="font-medium pb-1">Min</th><th className="font-medium pb-1">Target</th><th className="font-medium pb-1">Max</th></tr></thead>
+                <tbody>
+                  <tr className="border-t border-[#E8EAEE]"><td className="py-1">Restoration</td><td>12</td><td><strong>14</strong></td><td>16</td></tr>
+                  <tr className="border-t border-[#E8EAEE]"><td className="py-1">Accumulation</td><td>14</td><td><strong>17</strong></td><td>20</td></tr>
+                  <tr className="border-t border-[#E8EAEE]"><td className="py-1">Intensification</td><td>13</td><td><strong>16</strong></td><td>18</td></tr>
+                  <tr className="border-t border-[#E8EAEE]"><td className="py-1">Realization</td><td>13</td><td><strong>16</strong></td><td>18</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p className="mt-3"><strong>The clamp aims at target, not min.</strong> Anything below target is pushed up to it, so the published minimum is not normally reachable. That is correct for a pure strength block and wrong for a client who is also doing endurance work: coming out of restoration at 14 sets, an accumulation block puts them at 17 in the same week their running volume climbs.</p>
+            <p className="mt-2"><strong>Endurance sessions in their week</strong> is a slider on the prescription page, next to Training Frequency. Set it to the number of runs, rides or swims the client is actually doing. Above zero, the target drops to that phase and tier&apos;s own published minimum. It is not a new invented number: the doctrine already says 14 is acceptable for accumulation at advanced, and concurrent endurance is exactly the case it is acceptable for.</p>
+            <Note><strong>It stops inflation, it does not force a reduction.</strong> The ceiling does not move, so anything you deliberately write between the floor and the ceiling still stands. What changes is that a lighter block is no longer silently pushed back up on regeneration. Recorded on the block in <code className="bg-[#EFF1F4] px-1 rounded text-[#1B6DFC] text-[12.5px]">concurrent_endurance_sessions</code>, so a block also stops being blind to the fact the client runs.</Note>
+
+            <Note><strong>Two things the generator does not do.</strong> It never writes <strong>Conditioning</strong> - that is coach-set in the conditioning editor until the conditioning modality exists, so a block for a runner can come out silent on running. And it is never given race or event context, so the client note can claim a past race is &ldquo;behind you&rdquo; while ignoring the one they are training for. Check both before publishing.</Note>
           </Section>
 
           {/* Program Reading - client-facing translation of the active block */}

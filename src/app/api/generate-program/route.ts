@@ -70,6 +70,12 @@ export async function runProgramGenerationInternal(body: any): Promise<NextRespo
     // Pattern stays HELD: only a full 221 re-intake may revise the CFFS.
     body_state_override,
     body_state_override_reason,
+    // 2026-08-30. Programmed endurance sessions in the client's week (runs,
+    // rides, swims). Coach-declared: nothing in the schema records endurance
+    // load, `conditioning` is free text and every program is modality
+    // 'strength'. Above zero, the doctrine aims at the phase/tier floor
+    // instead of the middle of the range. See getSetsPerSessionRange.
+    concurrent_endurance_sessions,
     // 2026-08-30. Opt in to carrying re-scored exposure readiness from the
     // recent weekly syntheses. See readiness-carry-forward.ts for why the CFFS
     // values alone are wrong: they are scored once at intake and never move,
@@ -534,16 +540,20 @@ export async function runProgramGenerationInternal(body: any): Promise<NextRespo
       .map((e: { name: string; primary_pattern: string; mechanical_bias?: string }) =>
         [e.name.trim().toLowerCase(), { pattern: e.primary_pattern, bias: e.mechanical_bias ?? '' }])
   )
+  const enduranceSessions = Number.isFinite(Number(concurrent_endurance_sessions))
+    ? Math.max(0, Math.floor(Number(concurrent_endurance_sessions)))
+    : 0
   const clamp = clampProgramToDoctrine(
     programData.sessions || [],
     phaseForDoctrine,
     effectiveTier,
     patternByName,
-    exerciseMeta
+    exerciseMeta,
+    enduranceSessions
   )
   programData.sessions = clamp.sessions
   if (clamp.notes.length > 0) {
-    const doctrineNote = `Doctrine clamp applied (effective tier: ${effectiveTier}, phase: ${phaseForDoctrine}). ${clamp.notes.join(' ')}`
+    const doctrineNote = `Doctrine clamp applied (effective tier: ${effectiveTier}, phase: ${phaseForDoctrine}${enduranceSessions > 0 ? `, ${enduranceSessions} concurrent endurance sessions so sets aim at the floor` : ''}). ${clamp.notes.join(' ')}`
     programData.weekly_pattern_summary = Array.isArray(programData.weekly_pattern_summary)
       ? [doctrineNote, ...programData.weekly_pattern_summary]
       : [doctrineNote, ...(programData.weekly_pattern_summary ? [programData.weekly_pattern_summary] : [])]
@@ -626,6 +636,9 @@ export async function runProgramGenerationInternal(body: any): Promise<NextRespo
       body_state_override: appliedBodyStateOverride,
       body_state_override_reason: appliedBodyStateOverride ? (body_state_override_reason ?? null) : null,
       body_state_at_generation: appliedBodyStateOverride ?? cffs?.body_state_classification ?? null,
+      // What endurance load this block was built alongside. Nothing else in the
+      // schema records it, so without this a block has no idea the client runs.
+      concurrent_endurance_sessions: enduranceSessions,
       // What readiness this block was actually clamped on, and which weeks
       // justified it. NULL means the CFFS values were used unchanged.
       readiness_at_generation: appliedReadinessCarry

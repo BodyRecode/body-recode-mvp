@@ -158,7 +158,25 @@ export function getRPECeilings(
  */
 export function getSetsPerSessionRange(
   phase: ProgressionPhase,
-  tier: EffectiveTier
+  tier: EffectiveTier,
+  /**
+   * Programmed endurance sessions in the same week (runs, rides, swims).
+   * Above zero, the TARGET drops to this cell's own `min`.
+   *
+   * The table below maps phase x tier only, which silently assumes lifting is
+   * the client's whole training load. That holds for most of the roster and
+   * breaks for anyone doing real endurance work. Cristobal exposed it on
+   * 2026-08-30: coming out of restoration at 14 sets a session, an accumulation
+   * block pushed him to 17 in the same week he added three runs including a
+   * long one, so lifting volume rose 20% at the moment total load rose most.
+   *
+   * Deliberately NOT a new invented number. Moving to the cell's published
+   * `min` keeps the decision inside the doctrine's own stated bounds: the table
+   * already says 14 is acceptable for accumulation/advanced, and concurrent
+   * endurance is precisely the case it is acceptable for. A bespoke reduced
+   * floor would be a figure nobody could defend.
+   */
+  concurrentEnduranceSessions = 0
 ): { min: number; target: number; max: number } {
   const TABLE: Record<ProgressionPhase, Record<EffectiveTier, [number, number, number]>> = {
     restoration: {
@@ -187,6 +205,10 @@ export function getSetsPerSessionRange(
     },
   }
   const [min, target, max] = TABLE[phase][tier]
+  // Concurrent endurance load: aim at the floor rather than the middle of the
+  // range. Max is untouched, so a coach who deliberately writes more is not
+  // trimmed harder than before.
+  if (concurrentEnduranceSessions > 0) return { min, target: min, max }
   return { min, target, max }
 }
 
@@ -370,10 +392,12 @@ export function clampProgramToDoctrine(
    */
   patternByName?: Map<string, string>,
   /** Exercise name (lowercased) to pattern AND mechanical bias, for the weekly balance check. */
-  exerciseMeta?: Map<string, { pattern: string; bias: string }>
+  exerciseMeta?: Map<string, { pattern: string; bias: string }>,
+  /** Programmed endurance sessions in the same week. See getSetsPerSessionRange. */
+  concurrentEnduranceSessions = 0
 ): ClampResult {
   const ceilings = getRPECeilings(phase, tier)
-  const range = getSetsPerSessionRange(phase, tier)
+  const range = getSetsPerSessionRange(phase, tier, concurrentEnduranceSessions)
   const cloned: Session[] = JSON.parse(JSON.stringify(sessions))
   const notes: string[] = []
   let rpeClamps = 0
