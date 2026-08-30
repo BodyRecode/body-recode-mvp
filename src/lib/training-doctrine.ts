@@ -347,6 +347,53 @@ export function weeklyPrimaryBalance(
   }
 }
 
+/**
+ * Weekly working sets split into upper and lower drivers. Trunk, carry,
+ * rotation and locomotion are neither, and are excluded.
+ *
+ * Exists for the concurrent-endurance case (2026-08-30). Running and cycling
+ * are large lower-body loads, so when they sit alongside a lifting block the
+ * legs are already the most-trained tissue the client owns and the upper body
+ * is what will actually detrain. Cristobal's first concurrent block came out
+ * 27 lower against 19 upper on top of three runs, which is backwards.
+ *
+ * The doctrine rule that follows from it: with endurance declared, the lifting
+ * should not ALSO be lower-biased. Upper at least equals lower. Deliberately a
+ * parity rule rather than a percentage, because a percentage would be a number
+ * neither of us could defend.
+ */
+/** Is this exercise a lower-body driver? Unmapped names count as not-lower. */
+function isLowerEx(
+  ex: { exercise_name?: string },
+  patternByName?: Map<string, string>
+): boolean {
+  if (!patternByName) return false
+  const pattern = patternByName.get((ex.exercise_name ?? '').trim().toLowerCase())
+  if (!pattern) return false
+  return LOWER_PATTERNS.has(pattern) || pattern === 'lower_leg'
+}
+
+export function weeklyUpperLowerBalance(
+  sessions: Session[],
+  patternByName: Map<string, string>
+): { upper: number; lower: number } {
+  let upper = 0
+  let lower = 0
+  for (const session of sessions) {
+    for (const block of session.blocks ?? []) {
+      if (blockRole(block.block_label) === 'trunk') continue
+      for (const ex of block.exercises ?? []) {
+        const pattern = patternByName.get((ex.exercise_name ?? '').trim().toLowerCase())
+        if (!pattern) continue
+        const sets = parseInt(String(ex.sets ?? 0)) || 0
+        if (LOWER_PATTERNS.has(pattern) || pattern === 'lower_leg') lower += sets
+        else if (UPPER_PATTERNS.has(pattern)) upper += sets
+      }
+    }
+  }
+  return { upper, lower }
+}
+
 export function sessionIsFullBody(
   session: Session,
   patternByName: Map<string, string>
@@ -441,14 +488,24 @@ export function clampProgramToDoctrine(
         for (const block of session.blocks ?? []) {
           if (over <= 0) break
           if (blockRole(block.block_label) !== role) continue
-          for (const ex of block.exercises ?? []) {
+          // With endurance in the week, take the cut from lower-body work
+          // first: running already loads those patterns, the upper body is
+          // what detrains. Two passes so lower is exhausted before upper.
+          const exercises = block.exercises ?? []
+          const passes = concurrentEnduranceSessions > 0
+            ? [exercises.filter(e => isLowerEx(e, patternByName)), exercises.filter(e => !isLowerEx(e, patternByName))]
+            : [exercises]
+          for (const pass of passes) {
             if (over <= 0) break
-            const cur = parseInt(String(ex.sets ?? 0)) || 0
-            if (cur <= 1) continue
-            const cut = Math.min(cur - 1, over)
-            ex.sets = cur - cut
-            over -= cut
-            setsTrimmed += cut
+            for (const ex of pass) {
+              if (over <= 0) break
+              const cur = parseInt(String(ex.sets ?? 0)) || 0
+              if (cur <= 1) continue
+              const cut = Math.min(cur - 1, over)
+              ex.sets = cur - cut
+              over -= cut
+              setsTrimmed += cut
+            }
           }
         }
       }
@@ -463,14 +520,23 @@ export function clampProgramToDoctrine(
         for (const block of session.blocks ?? []) {
           if (remaining <= 0) break
           if (blockRole(block.block_label) !== role) continue
-          for (const ex of block.exercises ?? []) {
+          // Mirror of the trim bias: added volume lands on upper-body work
+          // first when endurance already covers the legs.
+          const exercisesA = block.exercises ?? []
+          const passesA = concurrentEnduranceSessions > 0
+            ? [exercisesA.filter(e => !isLowerEx(e, patternByName)), exercisesA.filter(e => isLowerEx(e, patternByName))]
+            : [exercisesA]
+          for (const pass of passesA) {
             if (remaining <= 0) break
-            const cur = parseInt(String(ex.sets ?? 0)) || 0
-            // Add up to 2 sets per exercise per pass to spread the load.
-            const add = Math.min(2, remaining)
-            ex.sets = cur + add
-            remaining -= add
-            setsAdded += add
+            for (const ex of pass) {
+              if (remaining <= 0) break
+              const cur = parseInt(String(ex.sets ?? 0)) || 0
+              // Add up to 2 sets per exercise per pass to spread the load.
+              const add = Math.min(2, remaining)
+              ex.sets = cur + add
+              remaining -= add
+              setsAdded += add
+            }
           }
         }
       }
@@ -505,6 +571,21 @@ export function clampProgramToDoctrine(
   }
 
   // ── The week's primaries must vary, and must include hip extension ─────────
+  // Concurrent-endurance parity advisory. Running already loads the legs, so
+  // the lifting should not ALSO be lower-biased. Reported rather than forced:
+  // mechanically trimming to parity could gut a block that is deliberately
+  // leg-focused for a reason the doctrine cannot see.
+  if (concurrentEnduranceSessions > 0 && patternByName) {
+    const bal = weeklyUpperLowerBalance(cloned, patternByName)
+    if (bal.lower > bal.upper) {
+      notes.push(
+        `Concurrent endurance (${concurrentEnduranceSessions} sessions/week): lifting is still lower-biased ` +
+        `(${bal.lower} lower vs ${bal.upper} upper working sets). Running already loads those patterns; ` +
+        `the upper body is what detrains. Consider moving sets from squat and hinge into pressing and pulling.`
+      )
+    }
+  }
+
   if (exerciseMeta && cloned.length > 1) {
     const bal = weeklyPrimaryBalance(cloned, exerciseMeta)
     if (bal.allSamePattern) {

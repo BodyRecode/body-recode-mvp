@@ -177,6 +177,12 @@ export async function runProgramGenerationInternal(body: any): Promise<NextRespo
   const appliedReadinessCarry =
     carry_readiness && readinessCarry?.hasChange ? readinessCarry : null
 
+  // Declared here rather than at the clamp: both the PROMPT (which shapes what
+  // the model writes) and the clamp (which is only a backstop) need it.
+  const enduranceSessions = Number.isFinite(Number(concurrent_endurance_sessions))
+    ? Math.max(0, Math.floor(Number(concurrent_endurance_sessions)))
+    : 0
+
   // Fetch injury context and training days from intake
   let injuryContext = {
     injury_location_current: [] as string[],
@@ -424,7 +430,7 @@ export async function runProgramGenerationInternal(body: any): Promise<NextRespo
         // and 7.6k. This is assembly work, not analysis.
         output_config: { effort: AI_EFFORT.assembly } as never,
         system: withTemporalContext(buildProgramSystemPrompt() + recoveryPromptSection),
-        messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, effectiveCffs, exercises as ExerciseRow[], macroPlanContext, client.medications, coachGuidance, appliedBodyStateOverride ? { state: appliedBodyStateOverride, original: cffs?.body_state_classification ?? null, reason: body_state_override_reason ?? null } : null, appliedReadinessCarry) }],
+        messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, effectiveCffs, exercises as ExerciseRow[], macroPlanContext, client.medications, coachGuidance, appliedBodyStateOverride ? { state: appliedBodyStateOverride, original: cffs?.body_state_classification ?? null, reason: body_state_override_reason ?? null } : null, appliedReadinessCarry, enduranceSessions) }],
       }).finalMessage()
     } catch (err) {
       lastError = `AI error: ${err instanceof Error ? err.message : String(err)}`
@@ -540,9 +546,6 @@ export async function runProgramGenerationInternal(body: any): Promise<NextRespo
       .map((e: { name: string; primary_pattern: string; mechanical_bias?: string }) =>
         [e.name.trim().toLowerCase(), { pattern: e.primary_pattern, bias: e.mechanical_bias ?? '' }])
   )
-  const enduranceSessions = Number.isFinite(Number(concurrent_endurance_sessions))
-    ? Math.max(0, Math.floor(Number(concurrent_endurance_sessions)))
-    : 0
   const clamp = clampProgramToDoctrine(
     programData.sessions || [],
     phaseForDoctrine,

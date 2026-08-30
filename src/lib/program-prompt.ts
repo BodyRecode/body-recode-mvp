@@ -655,7 +655,9 @@ export function buildProgramUserPrompt(
   medications?: string | null,
   coachGuidance?: string | null,
   bodyStateOverride?: { state: string; original: string | null; reason: string | null } | null,
-  readinessCarry?: { weeksExamined: number[]; domains: { domain: string; foundational: string | null; weekly: string | null; carried: boolean }[] } | null
+  readinessCarry?: { weeksExamined: number[]; domains: { domain: string; foundational: string | null; weekly: string | null; carried: boolean }[] } | null,
+  /** Programmed endurance sessions in the client's week. See getSetsPerSessionRange. */
+  concurrentEnduranceSessions?: number
 ): string {
   const parts: string[] = []
 
@@ -728,6 +730,22 @@ MOVEMENT LIMITATIONS:
 - Current injury locations: ${inputs.injury_location_current.length > 0 ? inputs.injury_location_current.join(', ') : 'None reported'}
 - Primary concern: ${inputs.injury_primary_concern || 'None declared'}
 - Aggravating movements: ${inputs.injury_aggravating_movements || 'None declared'}`)
+
+  // CONCURRENT ENDURANCE. The clamp can only shave or shift sets after the
+  // fact; what the model writes is decided here. Cristobal's first concurrent
+  // block came out 27 lower-body working sets against 19 upper, on top of three
+  // runs, because nothing told the generator the runs existed.
+  if (concurrentEnduranceSessions && concurrentEnduranceSessions > 0) {
+    parts.push(`
+CONCURRENT ENDURANCE LOAD:
+This client also does ${concurrentEnduranceSessions} programmed endurance sessions per week (running, cycling or swimming) ALONGSIDE this lifting block. That work is not listed here and you are not programming it, but you must program around it.
+
+- Endurance work is a large LOWER-BODY load. Their legs are already the most-trained tissue they own. The upper body is the part that will actually detrain, because running contributes nothing to it.
+- Therefore this block must NOT be lower-body biased. Across the week, upper-body working sets (horizontal push, vertical push, horizontal pull, vertical pull) must be AT LEAST EQUAL to lower-body working sets (squat, hinge, calf and lower-leg work).
+- Keep the sessions full body as required, but express that with fewer, higher-quality lower-body slots and more upper-body volume. One primary lower-body movement per session is enough.
+- Total working sets per session aim at the FLOOR of the range, not the middle. The client is absorbing endurance fatigue this block does not see.
+- Do not add conditioning, cardio or capacity finishers. They already have more than enough.`)
+  }
 
   // CFFS READINESS CONTEXT
   if (cffs) {
