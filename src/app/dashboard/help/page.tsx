@@ -2107,6 +2107,16 @@ export default function HelpPage() {
               <li><strong>Publish + Notify.</strong> Same two clicks as any reading. When a re-score is present the client&apos;s document is titled <strong>Progress Read</strong> and leads with a &ldquo;Where you are now&rdquo; section; without a Progress Check it stays the plain Block-End Reading.</li>
             </ul>
             <Note><strong>Coach-gated end to end.</strong> Sending the check, generating, and publishing are all deliberate clicks. The re-score is a draft until you publish it, so an odd self-report can never surface to the client unchecked.</Note>
+
+            <p className="text-[12.5px] font-medium text-[#666D7A] mt-6 mb-2">Carrying the re-score into the next block (2026-08-30)</p>
+            <p>The Progress Read writes its re-scored state to the <strong>programs</strong> row. The program generator reads <strong>body state from the CFFS</strong>. Those are two different places, so until now a re-score never reached the block it was collected to inform: you could re-score a client to Transitioning and the next block would still be built against the Depleted-era foundational read.</p>
+            <ul className="space-y-1.5 list-disc list-inside text-[#43474F] text-sm mt-2">
+              <li>When a re-score exists that <strong>differs</strong> from the live CFFS, the <strong>prescription suggest page</strong> now shows it at the top, with the option to build the block on the re-scored state or ignore it and use the foundational read. Carrying it is the default, since the Progress Check was collected for exactly this.</li>
+              <li><strong>The CFFS is never touched.</strong> Pattern stays held. Only a full 221-question re-intake with fresh photos may revise the foundational read, and a Progress Check is deliberately not that.</li>
+              <li><strong>Readiness signals are not re-scored.</strong> Only the state moves. The four readiness flags still date from the CFFS, so the prompt labels them as historical and is told that where a readiness flag is more restrictive than the new state implies, <strong>the more restrictive constraint wins</strong>. The failure mode is deliberately conservative.</li>
+              <li>What the block was actually built against is recorded on the program row in <code className="bg-[#EFF1F4] px-1 rounded text-[#1B6DFC] text-[12.5px]">body_state_at_generation</code>, with the override and your note beside it, so a block never silently loses the reason its level was set the way it was.</li>
+            </ul>
+            <Note><strong>Two vocabularies, one axis.</strong> The Progress Read speaks the client labels (Depleted / Transitioning / Ready); the CFFS and the program eligibility rules speak the internal ones (Remediation / Optimisation / Post-Optimisation). The carry-forward translates between them. An unrecognised state is rejected outright rather than passed into the prompt, because an unknown word there would silently derive the wrong eligibility level instead of failing.</Note>
           </Section>
 
           <Section id="macro-arc" title="21. Macro Training Arc" colour="teal">

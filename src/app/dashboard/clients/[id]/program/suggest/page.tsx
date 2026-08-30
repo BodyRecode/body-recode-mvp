@@ -2,6 +2,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound, redirect } from 'next/navigation'
 import PrescriptionSuggest from './prescription-suggest'
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
+import { cffsStateForAnyStateLabel } from '@/lib/pattern-doctrine'
 
 export default async function SuggestPage({
   params,
@@ -66,6 +67,41 @@ export default async function SuggestPage({
       }
     : null
 
+  // 2026-08-30 — surface a Progress Read re-score that has not reached a block.
+  // The Progress Read writes its re-scored state to programs.tr_new_body_state,
+  // but generate-program reads cffs.body_state_classification, so without this
+  // the coach has to remember the re-score exists. Only offered when the
+  // re-scored state actually DIFFERS from what the CFFS still says.
+  const [{ data: latestRead }, { data: activeCffs }] = await Promise.all([
+    admin
+      .from('programs')
+      .select('tr_new_body_state, tr_previous_body_state, tr_state_direction, tr_state_rationale, tr_progress_check_id, block_name')
+      .eq('client_id', id)
+      .not('tr_new_body_state', 'is', null)
+      .order('generated_at', { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+    admin
+      .from('cffs')
+      .select('body_state_classification')
+      .eq('client_id', id)
+      .eq('is_archived', false)
+      .maybeSingle(),
+  ])
+
+  const rescoredInternal = cffsStateForAnyStateLabel(latestRead?.tr_new_body_state ?? null)
+  const reScoreNotice =
+    rescoredInternal && activeCffs?.body_state_classification && rescoredInternal !== activeCffs.body_state_classification
+      ? {
+          publicLabel: latestRead!.tr_new_body_state as string,
+          internalLabel: rescoredInternal,
+          cffsLabel: activeCffs.body_state_classification as string,
+          direction: (latestRead!.tr_state_direction as string | null) ?? null,
+          rationale: (latestRead!.tr_state_rationale as string | null) ?? null,
+          fromBlock: (latestRead!.block_name as string | null) ?? null,
+        }
+      : null
+
   return (
     <PrescriptionSuggest
       clientId={id}
@@ -73,6 +109,7 @@ export default async function SuggestPage({
       planBlock={planBlock}
       planBlockId={plan_block_id ?? null}
       recoveryNotice={recoveryNotice}
+      reScoreNotice={reScoreNotice}
     />
   )
 }

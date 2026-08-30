@@ -653,7 +653,8 @@ export function buildProgramUserPrompt(
   exercises: ExerciseRow[],
   macroPlan?: MacroPlanContext | null,
   medications?: string | null,
-  coachGuidance?: string | null
+  coachGuidance?: string | null,
+  bodyStateOverride?: { state: string; original: string | null; reason: string | null } | null
 ): string {
   const parts: string[] = []
 
@@ -729,9 +730,17 @@ MOVEMENT LIMITATIONS:
 
   // CFFS READINESS CONTEXT
   if (cffs) {
+    // A carried-forward Progress Read re-score changes the STATE only. The four
+    // readiness signals below still date from the CFFS and have NOT been
+    // re-scored, so they are labelled as historical rather than silently
+    // presented as current. Deliberately conservative: where a stale readiness
+    // flag and a newer state disagree, the tighter constraint should win.
+    const stateLine = bodyStateOverride
+      ? `- Body state classification: ${bodyStateOverride.state} (RE-SCORED at the last Progress Check, superseding the CFFS value of ${bodyStateOverride.original ?? 'unknown'})${bodyStateOverride.reason ? `\n- Coach note on the re-score: ${bodyStateOverride.reason}` : ''}\n- The four readiness signals below were NOT re-scored and still date from the original CFFS. Treat them as historical context. Where a readiness signal is more restrictive than the re-scored state would imply, APPLY THE MORE RESTRICTIVE CONSTRAINT.`
+      : `- Body state classification: ${cffs.body_state_classification}`
     parts.push(`
 CFFS BODY STATE & READINESS:
-- Body state classification: ${cffs.body_state_classification}
+${stateLine}
 - Resolution state: ${cffs.resolution_state}
 - Capacity readiness: ${cffs.exposure_readiness_capacity}
 - Schedule readiness: ${cffs.exposure_readiness_schedule}

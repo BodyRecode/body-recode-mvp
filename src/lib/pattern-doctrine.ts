@@ -105,6 +105,39 @@ export function cffsStateForScorecardState(scorecardState: string | null | undef
 }
 
 /**
+ * Progress Read body state to CFFS body state.
+ *
+ * A THIRD spelling of the same axis. The Progress Read
+ * (`trajectory-generator.ts`) re-scores state onto `programs.tr_new_body_state`
+ * using the BARE public labels from its `STATE_ORDER`: Depleted / Transitioning
+ * / Ready. Note these are NOT the scorecard's labels above, which carry the
+ * word "State" ("Depleted State"), so `SCORECARD_STATE_TO_CFFS_STATE` does not
+ * match them and returns null.
+ *
+ * Anything carrying a re-score forward into a generator that reads
+ * `body_state_classification` MUST translate first. Feeding "Transitioning"
+ * into the program prompt hands the eligibility rules a word they do not
+ * define, and the block silently derives the wrong level.
+ */
+export const PUBLIC_STATE_TO_CFFS_STATE: Record<string, string> = {
+  'Depleted': 'Remediation',
+  'Transitioning': 'Optimisation',
+  'Ready': 'Post-Optimisation',
+}
+
+/**
+ * Accepts either vocabulary and returns the internal CFFS classification.
+ * Returns null for anything unrecognised, so callers can reject rather than
+ * pass an unknown state into a prompt.
+ */
+export function cffsStateForAnyStateLabel(label: string | null | undefined): string | null {
+  if (!label) return null
+  const trimmed = label.trim()
+  if (Object.values(PUBLIC_STATE_TO_CFFS_STATE).includes(trimmed)) return trimmed
+  return PUBLIC_STATE_TO_CFFS_STATE[trimmed] ?? SCORECARD_STATE_TO_CFFS_STATE[trimmed] ?? null
+}
+
+/**
  * What each body STATE means, for grounding a generator that would otherwise
  * describe the state from the model's own general knowledge. Keyed by the
  * internal classification names (the values `signalPattern` takes in the $37

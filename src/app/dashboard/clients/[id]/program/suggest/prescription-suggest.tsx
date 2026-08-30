@@ -167,22 +167,38 @@ interface RecoveryNotice {
   }
 }
 
+interface ReScoreNotice {
+  publicLabel: string
+  internalLabel: string
+  cffsLabel: string
+  direction: string | null
+  rationale: string | null
+  fromBlock: string | null
+}
+
 export default function PrescriptionSuggest({
   clientId,
   clientName,
   planBlock,
   planBlockId,
   recoveryNotice,
+  reScoreNotice,
 }: {
   clientId: string
   clientName: string
   planBlock: PlanBlock | null
   planBlockId: string | null
   recoveryNotice: RecoveryNotice | null
+  reScoreNotice: ReScoreNotice | null
 }) {
   const router = useRouter()
   const [overrideMode, setOverrideMode] = useState<'apply' | 'override'>('apply')
   const [overrideReason, setOverrideReason] = useState('')
+  // Default ON when a re-score is pending: the Progress Check was collected to
+  // inform this block, so carrying it is the expected path and ignoring it is
+  // the deliberate one.
+  const [carryReScore, setCarryReScore] = useState(true)
+  const [reScoreReason, setReScoreReason] = useState('')
   const [suggestion, setSuggestion] = useState<Suggestion | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -279,6 +295,14 @@ export default function PrescriptionSuggest({
           prescription_rationale: suggestion?.overall_rationale ?? null,
           ...form,
           ...(recoveryNotice && overrideMode === 'override' ? { recovery_override_reason: overrideReason.trim() } : {}),
+          ...(reScoreNotice && carryReScore
+            ? {
+                body_state_override: reScoreNotice.internalLabel,
+                body_state_override_reason:
+                  reScoreReason.trim() ||
+                  `Carried forward from the Progress Read re-score: ${reScoreNotice.cffsLabel} to ${reScoreNotice.publicLabel}.`,
+              }
+            : {}),
         }),
       })
       const { data, error: apiError } = await parseApiResponse<any>(res)
@@ -322,6 +346,45 @@ export default function PrescriptionSuggest({
       </div>
 
       {/* Phase 3 — Active recovery state notice */}
+      {reScoreNotice && (
+        <div className="mb-6 rounded-lg border border-[#1B6DFC]/30 bg-[#1B6DFC]/[0.04] p-5">
+          <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-[#1B6DFC] mb-2">
+            Progress Read re-score not yet carried into a block
+          </div>
+          <h2 className="text-base font-bold text-[#141821] mb-1">
+            {reScoreNotice.cffsLabel} &rarr; {reScoreNotice.publicLabel}
+            {reScoreNotice.direction ? ` · ${reScoreNotice.direction}` : ''}
+          </h2>
+          {reScoreNotice.rationale && (
+            <p className="text-[12.5px] text-[#141821] mb-3">{reScoreNotice.rationale}</p>
+          )}
+          <p className="text-[12.5px] text-[#666D7A] mb-3">
+            The foundational read still says <strong>{reScoreNotice.cffsLabel}</strong> and is not changed by this.
+            Only a full re-intake can revise it. Carrying the re-score forward affects this block only.
+            Readiness signals were not re-scored, so the tighter constraint still wins.
+          </p>
+          <div className="flex flex-col gap-2">
+            <label className="flex items-center gap-2 text-[12.5px] text-[#141821]">
+              <input type="radio" checked={carryReScore} onChange={() => setCarryReScore(true)} />
+              Build this block on the re-scored state ({reScoreNotice.internalLabel})
+            </label>
+            <label className="flex items-center gap-2 text-[12.5px] text-[#141821]">
+              <input type="radio" checked={!carryReScore} onChange={() => setCarryReScore(false)} />
+              Ignore the re-score and use the foundational read ({reScoreNotice.cffsLabel})
+            </label>
+          </div>
+          {carryReScore && (
+            <input
+              type="text"
+              value={reScoreReason}
+              onChange={e => setReScoreReason(e.target.value)}
+              placeholder="Optional note on why the state moved (recorded on the block)"
+              className="mt-3 w-full rounded border border-[#D8DBE2] px-3 py-2 text-[12.5px]"
+            />
+          )}
+        </div>
+      )}
+
       {recoveryNotice && (
         <div className="mb-8 rounded-xl border border-[#E5C98F] bg-gradient-to-br from-[#B7791F]/15 to-[#B7791F]/5 px-5 py-4">
           <div className="flex items-center gap-2 text-[10px] text-[#A96A12] font-semibold mb-2">

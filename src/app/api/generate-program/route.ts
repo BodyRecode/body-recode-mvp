@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
+import { cffsStateForAnyStateLabel } from '@/lib/pattern-doctrine'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { resolveEffectiveTier, clampProgramToDoctrine, requiresFullBodySessions } from '@/lib/training-doctrine'
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
@@ -45,6 +46,15 @@ export async function POST(request: NextRequest) {
     // Phase 3 soft-gate override: when present, recovery clamp is skipped
     // and an override audit row is written instead.
     recovery_override_reason,
+    // 2026-08-30. Carries a Progress Read re-score forward into this block
+    // WITHOUT touching the CFFS. The Progress Read writes its re-scored state
+    // to programs.tr_new_body_state, but this generator reads
+    // cffs.body_state_classification, so a re-score never reached the block it
+    // was collected to inform. Accepts either vocabulary (Depleted /
+    // Transitioning / Ready, or Remediation / Optimisation / Post-Optimisation).
+    // Pattern stays HELD: only a full 221 re-intake may revise the CFFS.
+    body_state_override,
+    body_state_override_reason,
   } = body
 
   if (!client_id || !training_frequency || !training_goal || !training_age || !movement_competency || !progression_phase || !equipment_access || !week_duration || !block_name) {
@@ -93,6 +103,32 @@ export async function POST(request: NextRequest) {
       .eq('is_archived', false)
       .maybeSingle()
     cffs = data
+  }
+
+  // Body-state override (2026-08-30). Translate to the internal CFFS
+  // vocabulary and REJECT anything unrecognised — passing an unknown state
+  // into the prompt silently derives the wrong eligibility level rather than
+  // failing loudly. Nothing here writes to the cffs table.
+  let effectiveCffs = cffs
+  let appliedBodyStateOverride: string | null = null
+  if (body_state_override) {
+    const mapped = cffsStateForAnyStateLabel(body_state_override)
+    if (!mapped) {
+      return NextResponse.json(
+        { error: `Unrecognised body_state_override "${body_state_override}". Expected Depleted | Transitioning | Ready, or Remediation | Optimisation | Post-Optimisation.` },
+        { status: 400 }
+      )
+    }
+    if (!cffs) {
+      return NextResponse.json(
+        { error: 'body_state_override requires an existing CFFS to override. Generate the foundational read first.' },
+        { status: 400 }
+      )
+    }
+    appliedBodyStateOverride = mapped
+    // Shallow copy so the override reaches the prompt and the persisted row
+    // without mutating the fetched CFFS object.
+    effectiveCffs = { ...cffs, body_state_classification: mapped }
   }
 
   // Fetch injury context and training days from intake
@@ -342,7 +378,7 @@ export async function POST(request: NextRequest) {
         // and 7.6k. This is assembly work, not analysis.
         output_config: { effort: AI_EFFORT.assembly } as never,
         system: withTemporalContext(buildProgramSystemPrompt() + recoveryPromptSection),
-        messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, cffs, exercises as ExerciseRow[], macroPlanContext, client.medications, coachGuidance) }],
+        messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, effectiveCffs, exercises as ExerciseRow[], macroPlanContext, client.medications, coachGuidance, appliedBodyStateOverride ? { state: appliedBodyStateOverride, original: cffs?.body_state_classification ?? null, reason: body_state_override_reason ?? null } : null) }],
       }).finalMessage()
     } catch (err) {
       lastError = `AI error: ${err instanceof Error ? err.message : String(err)}`
@@ -544,6 +580,12 @@ export async function POST(request: NextRequest) {
       client_id,
       intake_id: intake_id || null,
       cffs_id: cffs?.id || null,
+      // Provenance for a carried-forward Progress Read re-score. The CFFS row
+      // referenced above is UNCHANGED; these record what the block was
+      // actually built against.
+      body_state_override: appliedBodyStateOverride,
+      body_state_override_reason: appliedBodyStateOverride ? (body_state_override_reason ?? null) : null,
+      body_state_at_generation: appliedBodyStateOverride ?? cffs?.body_state_classification ?? null,
       block_name: programData.block_name || block_name,
       progression_phase,
       training_goal,
