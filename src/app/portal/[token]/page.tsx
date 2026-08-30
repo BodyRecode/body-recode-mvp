@@ -1,4 +1,5 @@
 import { ListChecks, MessageCircle, FileText, CalendarDays, NotebookPen, LayoutGrid, type LucideIcon } from 'lucide-react'
+import { resolveCurrentBodyState } from '@/lib/body-state-current'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { notFound, redirect } from 'next/navigation'
@@ -133,6 +134,22 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     .order('client_reading_published_at', { ascending: false })
     .limit(1)
   const publishedReading = publishedReadingRows?.[0] ?? null
+
+  // Client-facing state (2026-08-30). requirePublished: the client should meet
+  // a new state inside a Progress Read the coach has approved, never via this
+  // line quietly changing before anything has been said to them.
+  const { data: portalReScoreRows } = await admin
+    .from('programs')
+    .select('tr_new_body_state, tr_state_direction, block_name, trajectory_reading_published_at, generated_at')
+    .eq('client_id', client.id)
+    .not('tr_new_body_state', 'is', null)
+    .order('generated_at', { ascending: false })
+    .limit(1)
+  const portalBodyState = resolveCurrentBodyState({
+    foundational: publishedReading?.body_state_classification ?? null,
+    reScore: portalReScoreRows?.[0] ?? null,
+    requirePublished: true,
+  })
 
   const firstName = client.name?.split(' ')[0] ?? 'there'
   const agreementDone = !!client.agreement_accepted_at
@@ -614,7 +631,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                   <p className="text-sm font-semibold text-[#141821] mb-1">Foundational Reading</p>
                   <p className="text-xs text-[#666D7A] leading-relaxed">
                     A read of how your body is currently organising itself
-                    {publishedReading.body_state_classification ? `, currently in ${publishedReading.body_state_classification}.` : '.'}
+                    {portalBodyState.label ? `, currently in ${portalBodyState.label}.` : '.'}
                   </p>
                 </div>
                 <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>

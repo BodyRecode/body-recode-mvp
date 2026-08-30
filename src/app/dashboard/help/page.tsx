@@ -2118,6 +2118,15 @@ export default function HelpPage() {
               <li><strong>Readiness signals are not re-scored.</strong> Only the state moves. The four readiness flags still date from the CFFS, so the prompt labels them as historical and is told that where a readiness flag is more restrictive than the new state implies, <strong>the more restrictive constraint wins</strong>. The failure mode is deliberately conservative.</li>
               <li>What the block was actually built against is recorded on the program row in <code className="bg-[#EFF1F4] px-1 rounded text-[#1B6DFC] text-[12.5px]">body_state_at_generation</code>, with the override and your note beside it, so a block never silently loses the reason its level was set the way it was.</li>
             </ul>
+            <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">Where the re-scored state shows up (2026-08-30)</p>
+            <p>The foundational read is scored once and never changes - it is the permanent record of who the client was at intake, and it stays the anchor. It just stops being presented as <em>current</em> once a Progress Read has re-scored them.</p>
+            <ul className="space-y-1.5 list-disc list-inside text-[#43474F] text-sm mt-2">
+              <li><strong>Coach surfaces</strong> - the state pill on the client record, the Body State Classification card, and the coaching list - show the re-scored state as soon as the Progress Read is <em>generated</em>, with a line naming the block it came from and what the foundational read said. A dot beside the pill in the list marks a re-scored client.</li>
+              <li><strong>The client portal waits for you to publish.</strong> Until the Progress Read is published the portal still says the foundational state. The client should meet a new state inside a reading you have approved, not via a line quietly changing before you have said anything to them.</li>
+              <li>The CFFS row is never written to. The foundational read and its published client reading are untouched.</li>
+              <li>The CFFS report and Direction pages deliberately keep showing the foundational value - they <em>are</em> the foundational report.</li>
+            </ul>
+
             <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">Readiness moves too (2026-08-30)</p>
             <p>The foundational read scores the four readiness signals <strong>once, at intake, and they never move again</strong> - but readiness is genuinely re-scored <strong>every week</strong> in the weekly synthesis. Cristobal&apos;s intake said regulation Red; every weekly synthesis from week 3 to week 8 said Green. Because the program generator only ever read the foundational values, his next block would have been clamped to Stabilisation Only on a constraint the data cleared five weeks earlier.</p>
             <ul className="space-y-1.5 list-disc list-inside text-[#43474F] text-sm mt-2">

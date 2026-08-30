@@ -4,6 +4,7 @@ import { buildWeekStrips } from '@/lib/week-strip-data'
 import Link from 'next/link'
 import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
 import { AlertTriangle, ArrowUpRight, ChevronRight, UserPlus, Users, Activity, RefreshCw } from 'lucide-react'
+import { resolveCurrentBodyState, latestReScore } from '@/lib/body-state-current'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 import { ONLINE_PACKAGE_VALUES, IN_PERSON_PACKAGE_VALUES, TWO_SESSION_PACKAGE_VALUES } from '@/lib/coaching-packages'
 import { PageHeader, Btn, EmptyState, Avatar, MONO_FONT, accentColour } from '@/components/dashboard/ui'
@@ -52,7 +53,10 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         block_name,
         week_duration,
         generated_at,
-        is_active
+        is_active,
+        tr_new_body_state,
+        tr_state_direction,
+        trajectory_reading_published_at
       )
     `)
     .eq('active', !showInactive)
@@ -134,7 +138,15 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         })
       : null
 
-    return { ...client, daysUntilStart, weekNumber, latestCffs, latestCfws, hasFormA, hasFormB, rebuildTraining: rebuildTrainingIds.has(client.id), rebuildNutrition: rebuildNutritionIds.has(client.id), upgradeCandidate, readiness }
+    // Current body state: the CFFS value never moves after intake, so a
+    // Progress Read re-score has to be layered on. Coach-facing list, so an
+    // unpublished draft counts.
+    const bodyState = resolveCurrentBodyState({
+      foundational: latestCffs?.body_state_classification ?? null,
+      reScore: latestReScore(client.programs ?? []),
+    })
+
+    return { ...client, daysUntilStart, weekNumber, latestCffs, latestCfws, bodyState, hasFormA, hasFormB, rebuildTraining: rebuildTrainingIds.has(client.id), rebuildNutrition: rebuildNutritionIds.has(client.id), upgradeCandidate, readiness }
   }))
 
   // Roster-level reassessment queue. This is what the Monday digest links to:
@@ -457,8 +469,11 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                     Starts today
                   </span>
                 ) : client.latestCffs ? (
-                  <span className={`text-[11px] font-medium px-2.5 py-1 rounded-full border whitespace-nowrap ${getStateColour(client.latestCffs.body_state_classification)}`}>
-                    {client.latestCffs.body_state_classification}
+                  <span
+                    className={`text-[11px] font-medium px-2.5 py-1 rounded-full border whitespace-nowrap ${getStateColour(client.bodyState.label)}`}
+                    title={client.bodyState.reScored ? `Re-scored at the last Progress Check. Foundational read: ${client.bodyState.foundational}` : undefined}
+                  >
+                    {client.bodyState.label}{client.bodyState.reScored ? ' ·' : ''}
                   </span>
                 ) : (
                   <span className="text-[11px] text-[#98A0AD] px-2.5 py-1 rounded-full border border-[#E8EAEE]">

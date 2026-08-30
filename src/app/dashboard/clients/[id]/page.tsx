@@ -1,3 +1,4 @@
+import { resolveCurrentBodyState } from '@/lib/body-state-current'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { WeekStrip, WeekStripLegend } from '@/components/dashboard/week-strip'
 import { buildWeekStrips } from '@/lib/week-strip-data'
@@ -224,6 +225,21 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
     : null
 
   const activeCffs = cffsRecords?.find(c => !c.is_archived) || null
+
+  // Current body state (2026-08-30). The CFFS value is scored once at intake
+  // and never moves; a Progress Read re-scores onto programs.tr_new_body_state.
+  // Coach-facing, so an unpublished draft re-score counts here.
+  const { data: reScoreRows } = await admin
+    .from('programs')
+    .select('tr_new_body_state, tr_state_direction, block_name, trajectory_reading_published_at, generated_at')
+    .eq('client_id', id)
+    .not('tr_new_body_state', 'is', null)
+    .order('generated_at', { ascending: false })
+    .limit(1)
+  const bodyState = resolveCurrentBodyState({
+    foundational: activeCffs?.body_state_classification ?? null,
+    reScore: reScoreRows?.[0] ?? null,
+  })
   const archivedCffs = cffsRecords?.filter(c => c.is_archived) || []
   // Split by kind. The foundational invitation is the original 221-question
   // intake (drives status of the Intake row). The supplementary is the
@@ -489,7 +505,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           <div className="mb-6 space-y-3">
             {activeCffs && (
               <div className="flex flex-wrap items-center gap-2">
-                <Pill accent="ink">{activeCffs.body_state_classification}</Pill>
+                <Pill accent="ink">{bodyState.label}</Pill>
+                {bodyState.reScored && (
+                  <span className="text-[11px] text-[#666D7A]">
+                    re-scored{bodyState.blockName ? ` at the end of ${bodyState.blockName}` : ''} · foundational read said {bodyState.foundational}
+                  </span>
+                )}
                 {/* Pattern sits beside state deliberately. The funnel sells both
                     labels; a 1:1 client should not silently lose one of them. */}
                 {client.pattern && (
@@ -1108,7 +1129,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             <div className="px-5 pt-5 pb-4 grid grid-cols-2 gap-4 border-b border-[#E8EAEE]">
               <div>
                 <p className="text-[10px] font-medium text-[#98A0AD] mb-2">Body State Classification</p>
-                <p className="text-lg font-bold text-[#141821] leading-tight mb-2">{activeCffs.body_state_classification}</p>
+                <p className="text-lg font-bold text-[#141821] leading-tight mb-2">{bodyState.label}</p>
+                {bodyState.reScored && (
+                  <p className="text-[11px] text-[#666D7A] -mt-1 mb-2">
+                    Re-scored to {bodyState.reScoredPublicLabel}{bodyState.direction ? ` (${bodyState.direction})` : ''} at the last Progress Check. The foundational read said {bodyState.foundational} and is unchanged.
+                  </p>
+                )}
                 <div className="flex items-center gap-2">
                   <div className="w-1 h-3.5 bg-[#1B6DFC]" />
                   <p className="text-[12.5px] text-[#666D7A]">Resolution: <span className="text-[#141821] font-semibold">{activeCffs.resolution_state}</span></p>
