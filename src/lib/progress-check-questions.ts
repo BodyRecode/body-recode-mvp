@@ -51,7 +51,11 @@ export const PROGRESS_CHECK_SECTIONS: Section[] = [
     questions: [
       { id: 'pc_stress_level', text: 'My overall stress load has been high.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
       { id: 'pc_stress_direction', text: 'Stress load, compared to your last read:', type: 'select', options: [...DIRECTION], required: true },
-      { id: 'pc_wired_tired', text: 'I feel wired but tired.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
+      // promptText: the client keeps the natural phrasing; the generator never
+      // sees it. "wired but tired" is on the banned client-facing list, so
+      // rendering the question verbatim into the prompt deadlocked the whole
+      // Progress Read. See Question.promptText in intake-questions.ts.
+      { id: 'pc_wired_tired', text: 'I feel wired but tired.', promptText: 'I feel activated but unable to settle, and rest does not restore me.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
     ],
   },
   {

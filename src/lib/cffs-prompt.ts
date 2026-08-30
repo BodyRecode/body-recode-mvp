@@ -139,7 +139,9 @@ export function summarizeScaleSection(
 ): string {
   const scaleQuestions = questions.filter(q => q.type === 'scale')
   const scored = scaleQuestions
-    .map(q => ({ text: q.text, score: responses[q.id] }))
+    // promptText when present: see Question.promptText. Rendering q.text
+    // verbatim can hand the model a term the output audit will then reject.
+    .map(q => ({ text: q.promptText ?? q.text, score: responses[q.id] }))
     .filter(x => x.score !== undefined && x.score !== null)
 
   if (scored.length === 0) return 'No data provided'

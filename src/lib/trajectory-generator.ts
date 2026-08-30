@@ -60,7 +60,9 @@ function formatProgressCheck(responses: Record<string, string>): string {
     const answered = section.questions.filter(q => (responses[q.id] ?? '').toString().trim())
     if (!answered.length) continue
     out.push(`[${section.title}]`)
-    for (const q of answered) out.push(`Q: ${q.text}\nA: ${responses[q.id]}`)
+    // promptText when present: see Question.promptText. Rendering q.text
+    // verbatim is what deadlocked this generator against its own audit.
+    for (const q of answered) out.push(`Q: ${q.promptText ?? q.text}\nA: ${responses[q.id]}`)
   }
   return out.join('\n')
 }

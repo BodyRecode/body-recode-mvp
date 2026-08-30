@@ -22,21 +22,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Missing program_id' }, { status: 400 })
   }
 
-  let result
-  try {
-    result = await generateTrajectoryReadingForProgram(program_id)
-  } catch (err) {
-    if (err instanceof TrajectoryGenerationError) {
-      return NextResponse.json({ error: err.message }, { status: err.status })
-    }
-    const msg = err instanceof Error ? err.message : String(err)
-    console.error('Trajectory generation failed:', msg)
-    return NextResponse.json({ error: msg }, { status: 500 })
-  }
-
   // Banned-terms audit added 2026-06-09 — see banned-client-terms.ts.
   // Trajectory Reading is client-facing; same enforcement as FR/PR/NR.
   const { auditClientReadingFields } = await import('@/lib/banned-client-terms')
+  const { findPartnerBannedPhrase, applyPartnerTerminology } = await import('@/lib/doctrine-parameters')
   const requiredKeys = [
     'tr_where_this_block_started',
     'tr_how_your_signal_moved',
@@ -44,22 +33,56 @@ export async function POST(request: NextRequest) {
     'tr_what_this_sets_up_next',
     'tr_coach_note',
   ] as const
-  const audit = auditClientReadingFields(result.sections as unknown as Record<string, unknown>, requiredKeys as unknown as string[])
 
-  // Partner-specific banned phrase check (Mode A+ overlay). Additive.
-  const { findPartnerBannedPhrase, applyPartnerTerminology } = await import('@/lib/doctrine-parameters')
-  const partnerLeaks: string[] = []
-  for (const key of requiredKeys) {
-    const val = (result.sections as unknown as Record<string, unknown>)[key]
-    if (typeof val !== 'string') continue
-    const hit = findPartnerBannedPhrase(val)
-    if (hit && !partnerLeaks.includes(hit)) partnerLeaks.push(hit)
+  // Retry on leak (2026-08-30), matching generate-cffs and the weekly check-in
+  // generator. This route previously drafted ONCE and, on any leak, told the
+  // coach to "Click Regenerate" with no reason given — so a phrase the model
+  // kept reaching for became an unexplained dead end you could click forever.
+  // That is exactly what happened: the Progress Check asked "I feel wired but
+  // tired" verbatim, the prompt rendered it, and every attempt quoted it back.
+  // That specific cause is fixed at source via Question.promptText; this loop
+  // is the backstop so the next one degrades instead of deadlocking.
+  const MAX_ATTEMPTS = 3
+  let result: Awaited<ReturnType<typeof generateTrajectoryReadingForProgram>> | null = null
+  let audit: ReturnType<typeof auditClientReadingFields> | null = null
+  let lastLeaks: string[] = []
+
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    let candidate
+    try {
+      candidate = await generateTrajectoryReadingForProgram(program_id)
+    } catch (err) {
+      if (err instanceof TrajectoryGenerationError) {
+        return NextResponse.json({ error: err.message }, { status: err.status })
+      }
+      const msg = err instanceof Error ? err.message : String(err)
+      console.error('Trajectory generation failed:', msg)
+      return NextResponse.json({ error: msg }, { status: 500 })
+    }
+
+    const candidateAudit = auditClientReadingFields(candidate.sections as unknown as Record<string, unknown>, requiredKeys as unknown as string[])
+    const partnerLeaks: string[] = []
+    for (const key of requiredKeys) {
+      const val = (candidate.sections as unknown as Record<string, unknown>)[key]
+      if (typeof val !== 'string') continue
+      const hit = findPartnerBannedPhrase(val)
+      if (hit && !partnerLeaks.includes(hit)) partnerLeaks.push(hit)
+    }
+
+    if (candidateAudit.ok && partnerLeaks.length === 0) {
+      result = candidate
+      audit = candidateAudit
+      break
+    }
+    lastLeaks = [...candidateAudit.leaks, ...partnerLeaks]
+    console.warn(`[trajectory] attempt ${attempt}/${MAX_ATTEMPTS} leaked: ${lastLeaks.join(', ')}`)
   }
 
-  if (!audit.ok || partnerLeaks.length > 0) {
-    const allLeaks = [...audit.leaks, ...partnerLeaks]
+  if (!result || !audit) {
+    // Name the phrase and say it is repeating, so a structural collision reads
+    // as structural rather than as bad luck.
     return NextResponse.json(
-      { error: `Reading leaked internal terminology (${allLeaks.join(', ')}). Click Regenerate to redraft.` },
+      { error: `Reading leaked internal terminology on all ${MAX_ATTEMPTS} attempts (${lastLeaks.join(', ')}). This is likely a source collision rather than a bad draft: check whether a question or the doctrine feeds that phrase into the prompt.` },
       { status: 500 }
     )
   }

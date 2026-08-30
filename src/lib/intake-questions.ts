@@ -7,6 +7,19 @@ export interface Question {
   options?: string[]
   required?: boolean
   scaleLabel?: { low: string; high: string }
+  /**
+   * What a generator's prompt sees INSTEAD of `text`. The client always sees
+   * `text`; this only exists so a question can be phrased naturally for a human
+   * without handing an internal term to a model that must not say it back.
+   *
+   * Added 2026-08-30 after the Progress Read deadlocked: `pc_wired_tired` asks
+   * "I feel wired but tired", `formatProgressCheck` rendered it verbatim into
+   * the prompt, the model quoted the client's own signal back, and the
+   * banned-terms audit then rejected the entire reading. Four of four attempts.
+   * See `scripts/audit-question-text.ts`, which fails if any question text hits
+   * the banned list without one of these.
+   */
+  promptText?: string
 }
 
 export interface Section {
@@ -40,7 +53,11 @@ export const INTAKE_SECTIONS: Section[] = [
     questions: [
       { id: 'fm_01', text: 'I tend to store fat primarily around my midsection.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
       { id: 'fm_02', text: 'My waist measurement increases quickly during stressful periods.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
-      { id: 'fm_03', text: 'I feel wired but tired most days.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
+      // promptText: "wired but tired" is banned in client-facing readings, and
+      // cffs-prompt.ts renders scale-question text into the CFFS prompt, so the
+      // client's own phrasing was reaching a model that must not say it back.
+      // Same collision that deadlocked the Progress Read. See Question.promptText.
+      { id: 'fm_03', text: 'I feel wired but tired most days.', promptText: 'I feel activated but unable to settle most days, and rest does not restore me.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
       { id: 'fm_04', text: 'I experience frequent cravings for salty or savoury foods.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
       { id: 'fm_05', text: 'My sleep quality declines noticeably during high-pressure weeks.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
       { id: 'fm_06', text: 'I store fat predominantly around my hips and thighs.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
