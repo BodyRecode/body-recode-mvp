@@ -3,6 +3,7 @@ import { notFound, redirect } from 'next/navigation'
 import PrescriptionSuggest from './prescription-suggest'
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
 import { cffsStateForAnyStateLabel } from '@/lib/pattern-doctrine'
+import { deriveReadinessCarryForward } from '@/lib/readiness-carry-forward'
 
 export default async function SuggestPage({
   params,
@@ -89,6 +90,28 @@ export default async function SuggestPage({
       .maybeSingle(),
   ])
 
+  // Readiness carry-forward. Derived here purely so the coach can SEE which
+  // domains would move, and on what weekly evidence, before opting in.
+  const { data: weeklyReadiness } = await admin
+    .from('cfws')
+    .select('week_number, exposure_readiness_capacity, exposure_readiness_schedule, exposure_readiness_regulation, exposure_readiness_behaviour')
+    .eq('client_id', id)
+    .eq('is_archived', false)
+    .order('week_number', { ascending: false })
+    .limit(12)
+
+  const { data: cffsReadiness } = await admin
+    .from('cffs')
+    .select('exposure_readiness_capacity, exposure_readiness_schedule, exposure_readiness_regulation, exposure_readiness_behaviour')
+    .eq('client_id', id)
+    .eq('is_archived', false)
+    .maybeSingle()
+
+  const readinessCarry = cffsReadiness
+    ? deriveReadinessCarryForward(weeklyReadiness ?? [], cffsReadiness)
+    : null
+  const readinessNotice = readinessCarry?.hasChange ? readinessCarry : null
+
   const rescoredInternal = cffsStateForAnyStateLabel(latestRead?.tr_new_body_state ?? null)
   const reScoreNotice =
     rescoredInternal && activeCffs?.body_state_classification && rescoredInternal !== activeCffs.body_state_classification
@@ -110,6 +133,7 @@ export default async function SuggestPage({
       planBlockId={plan_block_id ?? null}
       recoveryNotice={recoveryNotice}
       reScoreNotice={reScoreNotice}
+      readinessNotice={readinessNotice}
     />
   )
 }

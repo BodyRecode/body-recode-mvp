@@ -167,6 +167,12 @@ interface RecoveryNotice {
   }
 }
 
+interface ReadinessNotice {
+  weeksExamined: number[]
+  domains: { domain: string; foundational: string | null; weekly: string | null; carried: boolean; heldReason: string | null }[]
+  hasChange: boolean
+}
+
 interface ReScoreNotice {
   publicLabel: string
   internalLabel: string
@@ -183,6 +189,7 @@ export default function PrescriptionSuggest({
   planBlockId,
   recoveryNotice,
   reScoreNotice,
+  readinessNotice,
 }: {
   clientId: string
   clientName: string
@@ -190,6 +197,7 @@ export default function PrescriptionSuggest({
   planBlockId: string | null
   recoveryNotice: RecoveryNotice | null
   reScoreNotice: ReScoreNotice | null
+  readinessNotice: ReadinessNotice | null
 }) {
   const router = useRouter()
   const [overrideMode, setOverrideMode] = useState<'apply' | 'override'>('apply')
@@ -199,6 +207,9 @@ export default function PrescriptionSuggest({
   // the deliberate one.
   const [carryReScore, setCarryReScore] = useState(true)
   const [reScoreReason, setReScoreReason] = useState('')
+  // Default ON: the weekly syntheses are the live reading of readiness, and the
+  // intake-era values are the stale ones. Opting out is the deliberate choice.
+  const [carryReadiness, setCarryReadiness] = useState(true)
   const [suggestion, setSuggestion] = useState<Suggestion | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -295,6 +306,7 @@ export default function PrescriptionSuggest({
           prescription_rationale: suggestion?.overall_rationale ?? null,
           ...form,
           ...(recoveryNotice && overrideMode === 'override' ? { recovery_override_reason: overrideReason.trim() } : {}),
+          ...(readinessNotice && carryReadiness ? { carry_readiness: true } : {}),
           ...(reScoreNotice && carryReScore
             ? {
                 body_state_override: reScoreNotice.internalLabel,
@@ -346,6 +358,56 @@ export default function PrescriptionSuggest({
       </div>
 
       {/* Phase 3 — Active recovery state notice */}
+      {readinessNotice && (
+        <div className="mb-6 rounded-lg border border-[#1B6DFC]/30 bg-[#1B6DFC]/[0.04] p-5">
+          <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-[#1B6DFC] mb-2">
+            Readiness has moved since the foundational read
+          </div>
+          <p className="text-[12.5px] text-[#666D7A] mb-3">
+            The foundational read scores readiness once, at intake, and it never moves again.
+            The weekly syntheses re-score it every week. A domain is only carried when the last
+            three weeks agree unanimously, so one disrupted week cannot shift a constraint.
+            Weeks used: {readinessNotice.weeksExamined.slice().sort((a, b) => a - b).join(', ')}.
+          </p>
+          <table className="w-full text-[12.5px] mb-3">
+            <thead>
+              <tr className="text-[#666D7A] text-left">
+                <th className="font-medium pb-1">Domain</th>
+                <th className="font-medium pb-1">Foundational</th>
+                <th className="font-medium pb-1">Last 3 weeks</th>
+                <th className="font-medium pb-1"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {readinessNotice.domains.map(d => (
+                <tr key={d.domain} className="border-t border-[#E8EAEE]">
+                  <td className="py-1 capitalize text-[#141821]">{d.domain}</td>
+                  <td className="py-1 text-[#666D7A]">{d.foundational ?? '—'}</td>
+                  <td className="py-1 text-[#141821]">{d.weekly ?? 'not unanimous'}</td>
+                  <td className="py-1 text-[#666D7A]">
+                    {d.carried
+                      ? <span className="font-semibold text-[#1B6DFC]">will carry</span>
+                      : d.heldReason === 'weeks_disagree' ? 'held, weeks disagree'
+                      : d.heldReason === 'insufficient_weeks' ? 'held, under 3 weeks'
+                      : 'unchanged'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="flex flex-col gap-2">
+            <label className="flex items-center gap-2 text-[12.5px] text-[#141821]">
+              <input type="radio" checked={carryReadiness} onChange={() => setCarryReadiness(true)} />
+              Clamp this block on the re-scored readiness
+            </label>
+            <label className="flex items-center gap-2 text-[12.5px] text-[#141821]">
+              <input type="radio" checked={!carryReadiness} onChange={() => setCarryReadiness(false)} />
+              Use the foundational readiness from intake
+            </label>
+          </div>
+        </div>
+      )}
+
       {reScoreNotice && (
         <div className="mb-6 rounded-lg border border-[#1B6DFC]/30 bg-[#1B6DFC]/[0.04] p-5">
           <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-[#1B6DFC] mb-2">

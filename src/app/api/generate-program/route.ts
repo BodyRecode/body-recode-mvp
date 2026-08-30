@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { cffsStateForAnyStateLabel } from '@/lib/pattern-doctrine'
+import { deriveReadinessCarryForward, applyReadinessCarryForward } from '@/lib/readiness-carry-forward'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { resolveEffectiveTier, clampProgramToDoctrine, requiresFullBodySessions } from '@/lib/training-doctrine'
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
@@ -55,6 +56,11 @@ export async function POST(request: NextRequest) {
     // Pattern stays HELD: only a full 221 re-intake may revise the CFFS.
     body_state_override,
     body_state_override_reason,
+    // 2026-08-30. Opt in to carrying re-scored exposure readiness from the
+    // recent weekly syntheses. See readiness-carry-forward.ts for why the CFFS
+    // values alone are wrong: they are scored once at intake and never move,
+    // while readiness is genuinely re-scored every week in the CFWS.
+    carry_readiness,
   } = body
 
   if (!client_id || !training_frequency || !training_goal || !training_age || !movement_competency || !progression_phase || !equipment_access || !week_duration || !block_name) {
@@ -130,6 +136,26 @@ export async function POST(request: NextRequest) {
     // without mutating the fetched CFFS object.
     effectiveCffs = { ...cffs, body_state_classification: mapped }
   }
+
+  // Readiness carry-forward (2026-08-30). Derived server-side from the weekly
+  // syntheses so the coach cannot hand-type a clamp, but applied only on
+  // explicit opt-in so the suggest page shows exactly what will change first.
+  let readinessCarry = null
+  if (cffs) {
+    const { data: weeklyRows } = await admin
+      .from('cfws')
+      .select('week_number, exposure_readiness_capacity, exposure_readiness_schedule, exposure_readiness_regulation, exposure_readiness_behaviour')
+      .eq('client_id', client_id)
+      .eq('is_archived', false)
+      .order('week_number', { ascending: false })
+      .limit(12)
+    readinessCarry = deriveReadinessCarryForward(weeklyRows ?? [], cffs)
+    if (carry_readiness && readinessCarry.hasChange) {
+      effectiveCffs = applyReadinessCarryForward(effectiveCffs!, readinessCarry)
+    }
+  }
+  const appliedReadinessCarry =
+    carry_readiness && readinessCarry?.hasChange ? readinessCarry : null
 
   // Fetch injury context and training days from intake
   let injuryContext = {
@@ -378,7 +404,7 @@ export async function POST(request: NextRequest) {
         // and 7.6k. This is assembly work, not analysis.
         output_config: { effort: AI_EFFORT.assembly } as never,
         system: withTemporalContext(buildProgramSystemPrompt() + recoveryPromptSection),
-        messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, effectiveCffs, exercises as ExerciseRow[], macroPlanContext, client.medications, coachGuidance, appliedBodyStateOverride ? { state: appliedBodyStateOverride, original: cffs?.body_state_classification ?? null, reason: body_state_override_reason ?? null } : null) }],
+        messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, effectiveCffs, exercises as ExerciseRow[], macroPlanContext, client.medications, coachGuidance, appliedBodyStateOverride ? { state: appliedBodyStateOverride, original: cffs?.body_state_classification ?? null, reason: body_state_override_reason ?? null } : null, appliedReadinessCarry) }],
       }).finalMessage()
     } catch (err) {
       lastError = `AI error: ${err instanceof Error ? err.message : String(err)}`
@@ -586,6 +612,17 @@ export async function POST(request: NextRequest) {
       body_state_override: appliedBodyStateOverride,
       body_state_override_reason: appliedBodyStateOverride ? (body_state_override_reason ?? null) : null,
       body_state_at_generation: appliedBodyStateOverride ?? cffs?.body_state_classification ?? null,
+      // What readiness this block was actually clamped on, and which weeks
+      // justified it. NULL means the CFFS values were used unchanged.
+      readiness_at_generation: appliedReadinessCarry
+        ? {
+            weeks: appliedReadinessCarry.weeksExamined,
+            applied: Object.fromEntries(
+              appliedReadinessCarry.domains.map(d => [d.domain, d.carried ? d.weekly : d.foundational])
+            ),
+            carried: appliedReadinessCarry.domains.filter(d => d.carried).map(d => d.domain),
+          }
+        : null,
       block_name: programData.block_name || block_name,
       progression_phase,
       training_goal,

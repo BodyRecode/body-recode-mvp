@@ -654,7 +654,8 @@ export function buildProgramUserPrompt(
   macroPlan?: MacroPlanContext | null,
   medications?: string | null,
   coachGuidance?: string | null,
-  bodyStateOverride?: { state: string; original: string | null; reason: string | null } | null
+  bodyStateOverride?: { state: string; original: string | null; reason: string | null } | null,
+  readinessCarry?: { weeksExamined: number[]; domains: { domain: string; foundational: string | null; weekly: string | null; carried: boolean }[] } | null
 ): string {
   const parts: string[] = []
 
@@ -730,14 +731,25 @@ MOVEMENT LIMITATIONS:
 
   // CFFS READINESS CONTEXT
   if (cffs) {
-    // A carried-forward Progress Read re-score changes the STATE only. The four
-    // readiness signals below still date from the CFFS and have NOT been
-    // re-scored, so they are labelled as historical rather than silently
-    // presented as current. Deliberately conservative: where a stale readiness
-    // flag and a newer state disagree, the tighter constraint should win.
+    // A carried-forward Progress Read re-score changes the STATE. Readiness is
+    // carried separately and only when the recent weekly syntheses agree
+    // unanimously (see readiness-carry-forward.ts).
+    //
+    // An earlier version told the model that where a readiness flag was more
+    // restrictive than the re-scored state implied, the tighter constraint
+    // should win. That reads as caution and is not: readiness is re-scored
+    // weekly, so it guaranteed a stale intake-era Red beat months of Green and
+    // rebuilt the same clamp. The caveat now applies ONLY to domains that were
+    // genuinely not re-scored.
+    const carriedDomains = (readinessCarry?.domains ?? []).filter(d => d.carried)
     const stateLine = bodyStateOverride
-      ? `- Body state classification: ${bodyStateOverride.state} (RE-SCORED at the last Progress Check, superseding the CFFS value of ${bodyStateOverride.original ?? 'unknown'})${bodyStateOverride.reason ? `\n- Coach note on the re-score: ${bodyStateOverride.reason}` : ''}\n- The four readiness signals below were NOT re-scored and still date from the original CFFS. Treat them as historical context. Where a readiness signal is more restrictive than the re-scored state would imply, APPLY THE MORE RESTRICTIVE CONSTRAINT.`
+      ? `- Body state classification: ${bodyStateOverride.state} (RE-SCORED at the last Progress Check, superseding the CFFS value of ${bodyStateOverride.original ?? 'unknown'})${bodyStateOverride.reason ? `\n- Coach note on the re-score: ${bodyStateOverride.reason}` : ''}`
       : `- Body state classification: ${cffs.body_state_classification}`
+    const readinessProvenance = carriedDomains.length
+      ? `\n\nREADINESS PROVENANCE: ${carriedDomains.map(d => `${d.domain} was re-scored to ${d.weekly} (the intake-era value was ${d.foundational ?? 'unknown'})`).join('; ')}. These reflect the client's CURRENT state, confirmed unanimously across weekly syntheses for weeks ${readinessCarry!.weeksExamined.slice().sort((a, b) => a - b).join(', ')}. Treat them as current and prescribe to them. Any domain not named here still carries its original intake value and has NOT been re-scored, so treat those conservatively.`
+      : bodyStateOverride
+        ? `\n\nREADINESS PROVENANCE: the four readiness signals below were NOT re-scored and still carry their original intake values. Treat them conservatively.`
+        : ''
     parts.push(`
 CFFS BODY STATE & READINESS:
 ${stateLine}
@@ -749,7 +761,7 @@ ${stateLine}
 - Capacity constraints: ${cffs.capacity_constraints_and_guardrails}
 - Risk flags: ${cffs.risk_flags_and_watch_items}
 
-Eligibility assessment: derive client level (0–4) from body state classification and readiness signals above. Apply all corresponding constraints before proceeding.`)
+Eligibility assessment: derive client level (0–4) from body state classification and readiness signals above. Apply all corresponding constraints before proceeding.${readinessProvenance}`)
   } else {
     parts.push(`
 CFFS BODY STATE & READINESS: Not available. Apply conservative defaults — treat as Level 3 Optimisation state, all readiness indicators Amber. Apply moderate conservatism throughout.`)
