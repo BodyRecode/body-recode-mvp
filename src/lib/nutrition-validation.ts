@@ -232,9 +232,13 @@ export function humaniseValidationIssue(issue: ValidationIssue): string {
 export function rebalanceFirstMealProtein(meals: MealLike[]): number {
   if (!Array.isArray(meals) || meals.length < 2) return 0
 
-  const isMain = (m: MealLike) => !/snack/i.test(String(m.meal_name ?? ''))
+  // EVERY EATING WINDOW IS A MEAL (Kade, 2026-08-31). There are no snacks, so
+  // no window is excluded from the comparison. The old /snack/i filter meant a
+  // plan could satisfy "breakfast carries the most protein" while two larger
+  // windows sat outside the comparison entirely — which is how a 24g breakfast
+  // passed against a 50g dinner.
   const first = meals[0]
-  if (!first || !isMain(first)) return 0
+  if (!first) return 0
 
   const P = (m: MealLike) => Number(m.protein_g) || 0
   // Grams parsed from the food's name: "180g chicken breast", "Greek yoghurt (200g)".
@@ -276,8 +280,7 @@ export function rebalanceFirstMealProtein(meals: MealLike[]): number {
 
   let moved = 0
   for (let pass = 0; pass < 4; pass++) {
-    const mains = meals.filter(isMain)
-    const leader = mains.reduce((a, b) => (P(b) > P(a) ? b : a), mains[0])
+    const leader = meals.reduce((a, b) => (P(b) > P(a) ? b : a), meals[0])
     if (leader === first || P(first) >= P(leader)) break
 
     const need = Math.ceil((P(leader) - P(first)) / 2) + 1
@@ -851,12 +854,14 @@ export function validateNutritionPlan(
     // Compared against MAIN meals only: a lighter afternoon snack is by design.
     // Suppressed clients stay exempt for the same reason they are exempt above,
     // their first meal is deliberately kept low.
-    const mainMeals = input.meals.filter(m => !/snack/i.test(String(m.meal_name ?? '')))
-    if (input.first_meal_highest_protein && mainMeals.length > 1) {
-      const highest = Math.max(...mainMeals.map(m => Number(m.protein_g) || 0))
-      const firstIsMain = !/snack/i.test(String(first.meal_name ?? ''))
-      if (firstIsMain && firstP < highest) {
-        const leader = mainMeals.find(m => (Number(m.protein_g) || 0) === highest)
+    // EVERY EATING WINDOW IS A MEAL (Kade, 2026-08-31). Compared against ALL
+    // windows, not a "main meals" subset. The old /snack/i exclusion let a plan
+    // pass while larger windows sat outside the comparison: a 24g breakfast
+    // cleared it against a 50g dinner because two windows were ignored.
+    if (input.first_meal_highest_protein && input.meals.length > 1) {
+      const highest = Math.max(...input.meals.map(m => Number(m.protein_g) || 0))
+      if (firstP < highest) {
+        const leader = input.meals.find(m => (Number(m.protein_g) || 0) === highest)
         issues.push({
           // WARNING, not error (fixed 2026-08-31, hours after shipping).
           // Shipped as blocking, which was wrong twice over: no plan any client
