@@ -252,8 +252,9 @@ export async function POST(request: NextRequest) {
   }
 
   const now = new Date().toISOString()
-  // Auto-publish on generation. Regenerations stay published silently. Mirrors
-  // the Foundational Reading flow.
+  // NOT auto-published. (This comment used to say "Auto-publish on generation",
+  // contradicting the code directly beneath it — see program_reading_published_at
+  // below and the reason it is nulled.)
   const { data: updated, error: updateErr } = await admin
     .from('programs')
     .update({
