@@ -634,6 +634,15 @@ export function validateNutritionPlan(
       if (firstIsMain && firstP < highest) {
         const leader = mainMeals.find(m => (Number(m.protein_g) || 0) === highest)
         issues.push({
+          // WARNING, not error (fixed 2026-08-31, hours after shipping).
+          // Shipped as blocking, which was wrong twice over: no plan any client
+          // has ever had satisfies this rule, and the generator cannot reliably
+          // hit it, so a rule that had never once been met became a hard stop
+          // and nutrition regeneration failed outright. The floor check above
+          // is the safety rule and stays blocking; "breakfast is the anchor" is
+          // a quality preference and belongs in front of the coach, not in the
+          // way of the plan.
+          severity: 'warning',
           code: 'FIRST_MEAL_NOT_HIGHEST_PROTEIN',
           message: `${firstName}: ${firstP}g protein is below ${leader?.meal_name ?? 'a later meal'} at ${highest}g. The day's first meal must carry the HIGHEST or equal-highest protein of the main meals. Rebalance rather than bolting protein on top: bring ${firstName} up and bring ${leader?.meal_name ?? 'the heaviest meal'} down, so the daily total still lands on the anchor.`,
         })

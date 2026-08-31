@@ -281,11 +281,13 @@ const cases: TestCase[] = [
     expected: { ok: true },
   },
   {
-    name: 'same plan trips FIRST_MEAL_NOT_HIGHEST_PROTEIN once the coach opts in',
+    name: 'coach opt-in surfaces FIRST_MEAL_NOT_HIGHEST_PROTEIN as a WARNING, plan still passes',
     profile: profiles.standard_male,
     plan: standardMale4Meal,
     firstMealHighestProtein: true,
-    expected: { ok: false, must_contain: ['FIRST_MEAL_NOT_HIGHEST_PROTEIN'] },
+    // ok stays TRUE: it is a quality flag for the coach, not a blocker. Shipped
+    // blocking on 30 Aug and that stopped nutrition generating at all.
+    expected: { ok: true, must_contain: ['FIRST_MEAL_NOT_HIGHEST_PROTEIN'] },
   },
 
   // ── Appetite-suppression rule fires for Amanda's 3-meal plan ──────────
