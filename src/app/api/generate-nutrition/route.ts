@@ -6,7 +6,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildNutritionSystemPrompt, buildNutritionUserPrompt, NutritionPrescriptionInputs } from '@/lib/nutrition-prompt'
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
 import { buildRecoveryNutritionPromptSection } from '@/lib/recovery-program-clamp'
-import { validateNutritionPlan, normalizeMealAndDayTotals, rebalanceFirstMealProtein, MealLike, BRIDGE_CEILING_BUFFER, detectAppetiteSuppression } from '@/lib/nutrition-validation'
+import { validateNutritionPlan, normalizeMealAndDayTotals, rebalanceFirstMealProtein, trimDayToKcalTarget, MealLike, BRIDGE_CEILING_BUFFER, detectAppetiteSuppression } from '@/lib/nutrition-validation'
 import { DOCTRINE_VERSIONS } from '@/lib/doctrine-versions'
 import { emitValidatorEvent, type ValidatorEventTier, type ValidatorEventFinalOutcome } from '@/lib/nutrition-telemetry'
 import { randomUUID } from 'crypto'
@@ -441,6 +441,15 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
     if (first_meal_highest_protein) {
       const moved = rebalanceFirstMealProtein((p.meals as MealLike[]) ?? [])
       if (moved > 0) console.log(`[generate-nutrition] Rebalanced ${moved}g protein into the first meal`)
+    }
+    // Energy trim runs AFTER the protein rebalance, because rebalancing rescales
+    // foods and so moves the day total. This gets the last word on energy.
+    // Only ever trims, and only fat-carrying foods: protein has an anchor and
+    // carbohydrate has a safety floor, and both are validated below, so if a
+    // trim ever pushed carbohydrate under the floor it is caught and retried.
+    if (kcalTarget) {
+      const cut = trimDayToKcalTarget((p.meals as MealLike[]) ?? [], kcalTarget)
+      if (cut > 0) console.log(`[generate-nutrition] Trimmed ${cut} kcal of fat to reach ${kcalTarget.low}-${kcalTarget.high}`)
     }
     normalizeMealAndDayTotals(p as { meals?: MealLike[]; estimated_calorie_band?: string | null })
     return validateNutritionPlan({

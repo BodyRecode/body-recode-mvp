@@ -23,6 +23,7 @@
 import {
   validateNutritionPlan,
   normalizeMealAndDayTotals,
+  trimDayToKcalTarget,
   checkPrescriptionFeasibility,
   NUTRITION_DOCTRINE_VERSION,
   type NutritionValidationInput,
@@ -243,6 +244,8 @@ interface TestCase {
   firstMealHighestProtein?: boolean
   /** Coach-set daily energy target. */
   dayKcalTarget?: { low: number; high: number }
+  /** Run the deterministic energy trim first, as generate-nutrition does. */
+  trimFirst?: boolean
   /** Expected outcome */
   expected: {
     ok: boolean
@@ -315,6 +318,18 @@ const cases: TestCase[] = [
     name: 'no coach target means no energy check',
     profile: profiles.standard_male,
     plan: standardMale4Meal,
+    expected: { ok: true, must_not_contain: ['DAY_KCAL_OUTSIDE_TARGET'] },
+  },
+
+  // ── The energy trim runs before validation, so an over-target plan that
+  //    the TRIMMER can rescue no longer fails. Guards the wiring: if the trim
+  //    is ever removed from runValidate this case starts failing.
+  {
+    name: 'over-target plan is trimmed into range rather than rejected',
+    profile: profiles.standard_male,
+    plan: standardMale4Meal,
+    dayKcalTarget: { low: 1500, high: 1700 },
+    trimFirst: true,
     expected: { ok: true, must_not_contain: ['DAY_KCAL_OUTSIDE_TARGET'] },
   },
 
@@ -466,6 +481,7 @@ const feasibilityCases: FeasibilityCase[] = [
 function runValidatorCase(c: TestCase): { pass: boolean; detail: string } {
   // Normalise totals (matches what generate-nutrition does pre-validate)
   const planCopy = { meals: JSON.parse(JSON.stringify(c.plan)) as MealLike[], estimated_calorie_band: null as string | null }
+  if (c.trimFirst && c.dayKcalTarget) trimDayToKcalTarget(planCopy.meals, c.dayKcalTarget)
   normalizeMealAndDayTotals(planCopy)
 
   const input: NutritionValidationInput = {

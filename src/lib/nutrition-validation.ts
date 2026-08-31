@@ -308,6 +308,111 @@ export function rebalanceFirstMealProtein(meals: MealLike[]): number {
   return moved
 }
 
+/**
+ * Deterministically trim a plan down into the coach's energy target by
+ * reducing FAT-carrying foods.
+ *
+ * Same reasoning as rebalanceFirstMealProtein: the generator lands where it
+ * lands (2,456 then 2,553 against a 2,300 then 2,400 ask) and asking it again
+ * does not change that. What it cannot do is arithmetic to a target; what it
+ * can do is write a sensible plan. So it writes, and this lands it.
+ *
+ * Fat is the right place to take it from. Protein has an anchor and carbohydrate
+ * has a bodyweight safety floor, both of which will reject a plan that dips
+ * under them, and for an endurance client the carbohydrate is the point. Fat is
+ * the residual, and a 2,553 kcal plan for a 78kg client was carrying ~128g of it.
+ *
+ * Only trims. Never scales a plan UP to reach a target, because inventing food
+ * to hit a number is not the same kind of act as removing a little oil.
+ *
+ * Returns kcal removed (0 = already inside, or nothing safe to trim).
+ */
+export function trimDayToKcalTarget(
+  meals: MealLike[],
+  target: { low: number; high: number }
+): number {
+  if (!Array.isArray(meals) || !meals.length) return 0
+  const kcalOf = (m: MealLike) =>
+    (Number(m.protein_g) || 0) * 4 + (Number(m.carb_g) || 0) * 4 + (Number(m.fat_g) || 0) * 9
+  const dayKcal = () => meals.reduce((s, m) => s + kcalOf(m), 0)
+
+  const start = dayKcal()
+  if (start <= target.high) return 0
+  // Aim just inside the ceiling rather than the midpoint: take the least that
+  // does the job, so the plan stays as close to what the model intended.
+  const aim = target.high - 25
+
+  const gramsOf = (name: string): number | null => {
+    const m = String(name).match(/(\d+(?:\.\d+)?)\s*g\b/i)
+    if (!m) return null
+    const g = parseFloat(m[1])
+    return Number.isFinite(g) && g > 0 ? g : null
+  }
+  // Fat-carrying: fat is the dominant macro by energy. Oils, butter, avocado,
+  // nuts, cooking fats. Deliberately excludes mince and yoghurt, whose protein
+  // we are trying to keep.
+  const fatCarrier = (f: StructuredFood) => {
+    const fk = (Number(f.fat_g) || 0) * 9
+    return fk > 0 && fk > (Number(f.protein_g) || 0) * 4 && fk > (Number(f.carb_g) || 0) * 4
+  }
+  const recount = (m: MealLike) => {
+    const fs = (m.foods ?? []) as StructuredFood[]
+    m.protein_g = fs.reduce((s, f) => s + (Number(f.protein_g) || 0), 0)
+    m.carb_g = fs.reduce((s, f) => s + (Number(f.carb_g) || 0), 0)
+    m.fat_g = fs.reduce((s, f) => s + (Number(f.fat_g) || 0), 0)
+  }
+
+  // PUREST fats first, biggest first within that. Trimming olive oil or butter
+  // costs only fat; trimming almonds or avocado also costs protein and carbs,
+  // and both of those have floors to respect. Taking the cut from the purest
+  // source keeps the drift off the macros that matter.
+  const fatShare = (f: StructuredFood) => {
+    const fk = (Number(f.fat_g) || 0) * 9
+    const k = fk + (Number(f.protein_g) || 0) * 4 + (Number(f.carb_g) || 0) * 4
+    return k > 0 ? fk / k : 0
+  }
+  const candidates: { food: StructuredFood; meal: MealLike }[] = []
+  for (const m of meals) {
+    for (const f of ((m.foods ?? []) as StructuredFood[])) {
+      if (fatCarrier(f) && gramsOf(f.name) !== null) candidates.push({ food: f, meal: m })
+    }
+  }
+  candidates.sort((a, b) => {
+    const pure = fatShare(b.food) - fatShare(a.food)
+    if (Math.abs(pure) > 0.05) return pure
+    return (Number(b.food.fat_g) || 0) - (Number(a.food.fat_g) || 0)
+  })
+
+  let removed = 0
+  for (const { food, meal } of candidates) {
+    if (dayKcal() <= aim) break
+    const g = gramsOf(food.name)
+    if (g === null) continue
+    const fk = (Number(food.fat_g) || 0) * 9
+    const pk = (Number(food.protein_g) || 0) * 4
+    const ck = (Number(food.carb_g) || 0) * 4
+    const foodKcal = fk + pk + ck
+    if (foodKcal <= 0) continue
+
+    const over = dayKcal() - aim
+    // Never take more than 40% off any single food: a plan should look trimmed,
+    // not gutted, and the client reads these portions.
+    const maxCut = foodKcal * 0.4
+    const cut = Math.min(over, maxCut)
+    const factor = (foodKcal - cut) / foodKcal
+    const newG = Math.round(g * factor)
+    if (newG < 1 || factor >= 0.999) continue
+
+    food.name = String(food.name).replace(/(\d+(?:\.\d+)?)(\s*g\b)/i, `${newG}$2`)
+    food.protein_g = Math.round((Number(food.protein_g) || 0) * factor)
+    food.carb_g = Math.round((Number(food.carb_g) || 0) * factor)
+    food.fat_g = Math.round((Number(food.fat_g) || 0) * factor)
+    recount(meal)
+    removed += Math.round(cut)
+  }
+  return dayKcal() < start ? start - dayKcal() : 0
+}
+
 export interface NutritionValidationInput {
   meals: MealLike[]
   estimated_calorie_band: string | null
