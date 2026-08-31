@@ -204,6 +204,110 @@ export function humaniseValidationIssue(issue: ValidationIssue): string {
   }
 }
 
+/**
+ * Deterministically shift protein into the day's FIRST meal until it carries
+ * the highest protein of the main meals.
+ *
+ * Why this is code and not a prompt instruction: asking has failed on FIVE
+ * consecutive generations for the same client, as a blocking error, as a
+ * warning, and as prose spelling out target grams meal by meal. Breakfast came
+ * back 19g, 37g, 45g, 33g and 26g against leaders of 38g, 48g, 48g, 62g and
+ * 49g. The generator is reliable on structure and unreliable on arithmetic
+ * distribution, so the distribution should not be asked for.
+ *
+ * How it works, and what it refuses to do:
+ * - It RESCALES portions of protein-dominant foods. It never invents foods,
+ *   never moves food between meals (chicken breast at breakfast), and never
+ *   edits a food whose gram weight cannot be read from its name.
+ * - The gram figure in the NAME is rewritten with the macros, because the plan
+ *   is a document the client reads. A plan whose text disagrees with its own
+ *   numbers is the failure this engine has been burned by before.
+ * - Every donor gives exactly what the recipient takes, so the DAILY protein
+ *   total is preserved.
+ * - Portions are clamped to 0.6x-1.6x of what the model chose, so a plan can
+ *   be nudged but not rewritten into something absurd.
+ *
+ * Returns the number of grams moved (0 = nothing needed or nothing safe).
+ */
+export function rebalanceFirstMealProtein(meals: MealLike[]): number {
+  if (!Array.isArray(meals) || meals.length < 2) return 0
+
+  const isMain = (m: MealLike) => !/snack/i.test(String(m.meal_name ?? ''))
+  const first = meals[0]
+  if (!first || !isMain(first)) return 0
+
+  const P = (m: MealLike) => Number(m.protein_g) || 0
+  // Grams parsed from the food's name: "180g chicken breast", "Greek yoghurt (200g)".
+  const gramsOf = (name: string): number | null => {
+    const m = String(name).match(/(\d+(?:\.\d+)?)\s*g\b/i)
+    if (!m) return null
+    const g = parseFloat(m[1])
+    return Number.isFinite(g) && g > 0 ? g : null
+  }
+  // A protein VEHICLE, not necessarily a protein-dominant food. Full-fat Greek
+  // yoghurt carries more fat calories than protein calories, and is exactly what
+  // you reach for to lift breakfast protein, so a strict "protein is the biggest
+  // macro" test excludes the obvious candidate. Share-based instead: meaningful
+  // absolute protein, and protein at least ~30% of the food's energy. That keeps
+  // yoghurt, mince, chicken and eggs, and rejects almonds (15%), rice (7%),
+  // banana (4%) and oils (0%).
+  const proteinVehicle = (f: StructuredFood) => {
+    const pg = Number(f.protein_g) || 0
+    const kcal = pg * 4 + (Number(f.carb_g) || 0) * 4 + (Number(f.fat_g) || 0) * 9
+    return pg >= 5 && kcal > 0 && (pg * 4) / kcal >= 0.3
+  }
+  const scaleFood = (f: StructuredFood, factor: number) => {
+    const g = gramsOf(f.name)
+    if (g === null) return false
+    const newG = Math.round(g * factor)
+    if (newG < 1) return false
+    f.name = String(f.name).replace(/(\d+(?:\.\d+)?)(\s*g\b)/i, `${newG}$2`)
+    f.protein_g = Math.round((Number(f.protein_g) || 0) * factor)
+    f.carb_g = Math.round((Number(f.carb_g) || 0) * factor)
+    f.fat_g = Math.round((Number(f.fat_g) || 0) * factor)
+    return true
+  }
+  const recount = (m: MealLike) => {
+    const fs = (m.foods ?? []) as StructuredFood[]
+    m.protein_g = fs.reduce((s, f) => s + (Number(f.protein_g) || 0), 0)
+    m.carb_g = fs.reduce((s, f) => s + (Number(f.carb_g) || 0), 0)
+    m.fat_g = fs.reduce((s, f) => s + (Number(f.fat_g) || 0), 0)
+  }
+
+  let moved = 0
+  for (let pass = 0; pass < 4; pass++) {
+    const mains = meals.filter(isMain)
+    const leader = mains.reduce((a, b) => (P(b) > P(a) ? b : a), mains[0])
+    if (leader === first || P(first) >= P(leader)) break
+
+    const need = Math.ceil((P(leader) - P(first)) / 2) + 1
+    const donor = ((leader.foods ?? []) as StructuredFood[])
+      .filter(f => proteinVehicle(f) && gramsOf(f.name) !== null)
+      .sort((a, b) => (Number(b.protein_g) || 0) - (Number(a.protein_g) || 0))[0]
+    const taker = ((first.foods ?? []) as StructuredFood[])
+      .filter(f => proteinVehicle(f) && gramsOf(f.name) !== null)
+      .sort((a, b) => (Number(b.protein_g) || 0) - (Number(a.protein_g) || 0))[0]
+    if (!donor || !taker) break
+
+    const donorP = Number(donor.protein_g) || 0
+    const takerP = Number(taker.protein_g) || 0
+    if (donorP <= 0 || takerP <= 0) break
+
+    // Clamp both sides to 0.6x-1.6x so portions stay recognisable.
+    const give = Math.min(need, donorP - Math.ceil(donorP * 0.6), Math.floor(takerP * 0.6))
+    if (give < 2) break
+
+    const okDonor = scaleFood(donor, (donorP - give) / donorP)
+    const okTaker = scaleFood(taker, (takerP + give) / takerP)
+    if (!okDonor || !okTaker) break
+
+    recount(leader)
+    recount(first)
+    moved += give
+  }
+  return moved
+}
+
 export interface NutritionValidationInput {
   meals: MealLike[]
   estimated_calorie_band: string | null
@@ -224,6 +328,21 @@ export interface NutritionValidationInput {
     active: boolean
     floor_kcal: number
   } | null
+  /**
+   * Coach-set daily energy target. When present, the plan's computed day total
+   * must land inside it (plus a small rounding tolerance) or the plan is
+   * rejected and retried.
+   *
+   * Nothing checked this before 2026-08-31. `estimated_calorie_band` is
+   * RECOMPUTED from the meals the model wrote, so it always agreed with itself
+   * and proved nothing. The engine's own target band is 85-100% of TDEE and far
+   * too wide to hold a plan to a coaching decision: Cristobal's was 2,230-2,630
+   * while the coach had asked for 2,300, so a 2,456 kcal plan sailed through.
+   *
+   * Coach-declared rather than inferred from the brief, so the instruction and
+   * the check cannot disagree.
+   */
+  day_kcal_target?: { low: number; high: number } | null
   /**
    * Coach opt-in: require the day's first meal to carry the HIGHEST or
    * equal-highest protein of the main meals.
@@ -647,6 +766,22 @@ export function validateNutritionPlan(
           message: `${firstName}: ${firstP}g protein is below ${leader?.meal_name ?? 'a later meal'} at ${highest}g. The day's first meal must carry the HIGHEST or equal-highest protein of the main meals. Rebalance rather than bolting protein on top: bring ${firstName} up and bring ${leader?.meal_name ?? 'the heaviest meal'} down, so the daily total still lands on the anchor.`,
         })
       }
+    }
+  }
+
+  // Coach-set daily energy target (2026-08-31). Blocking: a plan that misses
+  // the coach's number by more than rounding is not the plan they asked for,
+  // and the retry loop can act on a whole-day figure reliably.
+  if (input.day_kcal_target && totals.kcal > 0) {
+    const { low, high } = input.day_kcal_target
+    const TOL = 60 // per-meal integer rounding across 4-5 meals
+    if (totals.kcal < low - TOL || totals.kcal > high + TOL) {
+      const dir = totals.kcal > high ? 'above' : 'below'
+      const delta = totals.kcal > high ? totals.kcal - high : low - totals.kcal
+      issues.push({
+        code: 'DAY_KCAL_OUTSIDE_TARGET',
+        message: `The day totals ${totals.kcal} kcal, ${delta} kcal ${dir} the coach's target of ${low}-${high}. Adjust portion sizes on the existing foods until the day lands inside the target. Do not add or remove meals.`,
+      })
     }
   }
 

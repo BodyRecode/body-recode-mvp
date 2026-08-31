@@ -241,6 +241,8 @@ interface TestCase {
   override?: { active: boolean; floor_kcal: number }
   /** Coach opt-in: require the first meal to carry the highest protein. */
   firstMealHighestProtein?: boolean
+  /** Coach-set daily energy target. */
+  dayKcalTarget?: { low: number; high: number }
   /** Expected outcome */
   expected: {
     ok: boolean
@@ -288,6 +290,32 @@ const cases: TestCase[] = [
     // ok stays TRUE: it is a quality flag for the coach, not a blocker. Shipped
     // blocking on 30 Aug and that stopped nutrition generating at all.
     expected: { ok: true, must_contain: ['FIRST_MEAL_NOT_HIGHEST_PROTEIN'] },
+  },
+
+  // ── Coach-set day energy target is enforced (2026-08-31) ─────────────────
+  // Nothing checked the day total against the coach's actual number before
+  // this: estimated_calorie_band is recomputed from the model's own meals, so
+  // it always agreed with itself. Cristobal was asked for 2,300 and returned
+  // 2,456 with every check passing.
+  {
+    name: 'day total inside the coach target passes',
+    profile: profiles.standard_male,
+    plan: standardMale4Meal,
+    dayKcalTarget: { low: 1600, high: 2100 },
+    expected: { ok: true },
+  },
+  {
+    name: 'day total above the coach target trips DAY_KCAL_OUTSIDE_TARGET',
+    profile: profiles.standard_male,
+    plan: standardMale4Meal,
+    dayKcalTarget: { low: 1200, high: 1400 },
+    expected: { ok: false, must_contain: ['DAY_KCAL_OUTSIDE_TARGET'] },
+  },
+  {
+    name: 'no coach target means no energy check',
+    profile: profiles.standard_male,
+    plan: standardMale4Meal,
+    expected: { ok: true, must_not_contain: ['DAY_KCAL_OUTSIDE_TARGET'] },
   },
 
   // ── Appetite-suppression rule fires for Amanda's 3-meal plan ──────────
@@ -450,6 +478,7 @@ function runValidatorCase(c: TestCase): { pass: boolean; detail: string } {
     carb_demand_level: c.profile.prescription.carb_demand_level,
     transitional_override: c.override ?? null,
     first_meal_highest_protein: c.firstMealHighestProtein ?? false,
+    day_kcal_target: c.dayKcalTarget ?? null,
   }
 
   const result = validateNutritionPlan(input)

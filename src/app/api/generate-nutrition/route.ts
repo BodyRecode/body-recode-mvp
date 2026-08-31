@@ -6,7 +6,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildNutritionSystemPrompt, buildNutritionUserPrompt, NutritionPrescriptionInputs } from '@/lib/nutrition-prompt'
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
 import { buildRecoveryNutritionPromptSection } from '@/lib/recovery-program-clamp'
-import { validateNutritionPlan, normalizeMealAndDayTotals, MealLike, BRIDGE_CEILING_BUFFER, detectAppetiteSuppression } from '@/lib/nutrition-validation'
+import { validateNutritionPlan, normalizeMealAndDayTotals, rebalanceFirstMealProtein, MealLike, BRIDGE_CEILING_BUFFER, detectAppetiteSuppression } from '@/lib/nutrition-validation'
 import { DOCTRINE_VERSIONS } from '@/lib/doctrine-versions'
 import { emitValidatorEvent, type ValidatorEventTier, type ValidatorEventFinalOutcome } from '@/lib/nutrition-telemetry'
 import { randomUUID } from 'crypto'
@@ -69,6 +69,13 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
     // the floor check already stops a starved breakfast, while "highest" is a
     // per-client instruction that every current client's plan breaks.
     first_meal_highest_protein,
+    // 2026-08-31. Coach-set daily energy target. Nothing checked the day total
+    // against what the coach actually asked for: `estimated_calorie_band` is
+    // recomputed from the model's own meals so it always agreed with itself,
+    // and the engine's 85-100%-of-TDEE band is far too wide to hold a plan to a
+    // coaching decision. Cristobal was asked for 2,300 and returned 2,456.
+    target_kcal_low,
+    target_kcal_high,
   } = body
 
   if (!client_id || !entry_state || !protein_anchor_g || !carb_demand_level) {
@@ -401,7 +408,21 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
   // the food macros (Haiku is unreliable at summing). The validator then only
   // enforces structural rules: foods are structured, protein anchor matches,
   // sane daily safety floors.
+  const kcalTarget =
+    Number.isFinite(Number(target_kcal_low)) && Number.isFinite(Number(target_kcal_high))
+      ? { low: Number(target_kcal_low), high: Number(target_kcal_high) }
+      : null
+
   function runValidate(p: Record<string, unknown>) {
+    // Deterministic protein rebalance BEFORE normalising and validating.
+    // Asking the model to shape per-meal protein failed five generations
+    // running, so it is done in code. Rescales protein-vehicle portions and
+    // rewrites the gram figure in each food's name; never invents or moves
+    // food. See rebalanceFirstMealProtein.
+    if (first_meal_highest_protein) {
+      const moved = rebalanceFirstMealProtein((p.meals as MealLike[]) ?? [])
+      if (moved > 0) console.log(`[generate-nutrition] Rebalanced ${moved}g protein into the first meal`)
+    }
     normalizeMealAndDayTotals(p as { meals?: MealLike[]; estimated_calorie_band?: string | null })
     return validateNutritionPlan({
       meals: (p.meals as MealLike[]) || [],
@@ -415,6 +436,7 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
       // Coach opt-in, off by default. Per-client instruction, not doctrine:
       // see first_meal_highest_protein in nutrition-validation.ts.
       first_meal_highest_protein: Boolean(first_meal_highest_protein),
+      day_kcal_target: kcalTarget,
       // Substitution audit added 2026-06-09 (item E). If the model
       // proposes a swap labelled "equivalent" but the food-reference
       // table shows the macros diverge >20% protein/carb/fat or >15% kcal,
