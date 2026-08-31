@@ -14,7 +14,7 @@
 import { Resend } from 'resend'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { evaluateProgressCheckReadiness } from '@/lib/progress-check-readiness'
-import { blockEndMs } from '@/lib/block-window'
+import { blockFinalWeekStartMs } from '@/lib/block-window'
 import { buildProgressCheckInviteEmail } from '@/lib/progress-check-invite-email'
 import { logClientCommunication } from '@/lib/client-communications'
 import { fromCoach, COACH_BCC } from '@/lib/email-shell'
@@ -47,8 +47,8 @@ export async function dispatchProgressCheckIfDue(
     .eq('is_active', true)
     .maybeSingle()
 
-  const blockEndsAtMs = blockEndMs(program)
-  if (!program || blockEndsAtMs == null) {
+  const blockFinalWeekStartsAtMs = blockFinalWeekStartMs(program)
+  if (!program || blockFinalWeekStartsAtMs == null) {
     return { sent: false, client: name, why: 'no dated active block' }
   }
 
@@ -67,7 +67,7 @@ export async function dispatchProgressCheckIfDue(
 
   const readiness = evaluateProgressCheckReadiness({
     coachingStartedAt: client.coaching_started_at ?? null,
-    blockEndsAtMs,
+    blockFinalWeekStartsAtMs,
     checkedInThisWindow,
   })
   if (!readiness.ready) {

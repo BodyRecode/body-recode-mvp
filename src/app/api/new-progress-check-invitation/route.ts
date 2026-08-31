@@ -9,7 +9,7 @@ import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
 import { evaluateProgressCheckReadiness, currentCoachingWeek } from '@/lib/progress-check-readiness'
 import { lastCheckinWindowOpenMs } from '@/lib/weekly-checkin-questions'
-import { blockEndMs } from '@/lib/block-window'
+import { blockFinalWeekStartMs } from '@/lib/block-window'
 
 // Creates a Progress Check (delta re-assessment) invitation for a client and
 // returns its token. The client completes it at /progress-check/{token}. One
@@ -56,11 +56,11 @@ export async function POST(request: NextRequest) {
         .gte('submitted_at', windowOpenIso),
     ])
 
-    const blockEndsAtMs = blockEndMs(program)
+    const blockFinalWeekStartsAtMs = blockFinalWeekStartMs(program)
 
     const readiness = evaluateProgressCheckReadiness({
       coachingStartedAt: client.coaching_started_at ?? null,
-      blockEndsAtMs,
+      blockFinalWeekStartsAtMs,
       checkedInThisWindow: (checkinsThisWindow ?? 0) > 0,
     })
     if (!readiness.ready) {

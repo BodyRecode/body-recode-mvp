@@ -34,6 +34,24 @@ export function blockEndMs(program: BlockDates | null | undefined): number | nul
   return start + program.week_duration * 7 * 24 * 60 * 60 * 1000
 }
 
+/**
+ * The moment the FINAL week begins: start + (duration - 1) weeks.
+ *
+ * 2026-08-31. The Progress Check gate used to wait for `blockEndMs`, the
+ * calendar end. But the portal has always told the client, in her final week,
+ * "finish the week and send your check-in, and your Progress Check opens
+ * next". The backend did not keep that promise: Razia sat in week 8 of 8
+ * reading it, sent her check-in, and nothing opened, because the end date was
+ * still six days away. Keying on the final week also survives bad activation
+ * dates - her Block 2 was activated eight days before Block 1 finished, so her
+ * recorded dates never matched what she actually did.
+ */
+export function blockFinalWeekStartMs(program: BlockDates | null | undefined): number | null {
+  const start = blockStartMs(program)
+  if (start == null || !program?.week_duration) return null
+  return start + (program.week_duration - 1) * 7 * 24 * 60 * 60 * 1000
+}
+
 /** Which week of the block she is in, 1-based. Null if unknowable. */
 export function blockWeek(program: BlockDates | null | undefined, now = Date.now()): number | null {
   const start = blockStartMs(program)

@@ -3,12 +3,22 @@
  *
  * Two gates, both Kade's call (27 Aug 2026):
  *
- * 1. The block has FINISHED - the final week is done, not merely reached.
- *    "Block end" elsewhere in the app means the client is IN her last week,
- *    which is right for showing a countdown but wrong for this: the Progress
- *    Check closes the block, and a block with days left in it is not closed.
- *    Sending during the final week also lands the ask before the check-in that
- *    completes that week, which is the inversion gate 2 exists to prevent.
+ * 1. The block has REACHED ITS FINAL WEEK.
+ *
+ *    REVISED 31 Aug 2026 (Kade). This used to wait for the calendar end date,
+ *    on the reasoning that a block with days left in it is not closed. Two
+ *    things broke that:
+ *
+ *    - The portal has always told the client, in her final week, "finish the
+ *      week and send your check-in, and your Progress Check opens next". The
+ *      backend did not keep that promise. Razia read it in week 8 of 8, sent
+ *      her check-in, and nothing opened, because the end date was six days out.
+ *    - Activation dates drift. Her Block 2 was activated eight days before
+ *      Block 1 finished, so a rule keyed on a calendar date inherits every bad
+ *      activation date in the system. "She reached her final week" does not.
+ *
+ *    Gate 2 still prevents the inversion this used to guard against: the
+ *    check-in must already be in before the bigger ask goes.
  *
  * 2. The most recent weekly check-in is in - regardless of where in the week
  *    we are. Block-end lands inside a normal check-in week, so without this the
@@ -42,11 +52,11 @@ export type ProgressCheckReadiness = {
 export type ProgressCheckReadinessInput = {
   coachingStartedAt: string | null
   /**
-   * When the block finishes: generated_at + duration weeks. Null when the
-   * program has no start date or no prescribed duration, in which case the
-   * block gate cannot be evaluated and is skipped.
+   * When the block's FINAL WEEK begins: start + (duration - 1) weeks. Null when
+   * the program has no start date or no prescribed duration, in which case the
+   * block gate cannot be evaluated and is skipped. See blockFinalWeekStartMs.
    */
-  blockEndsAtMs: number | null
+  blockFinalWeekStartsAtMs: number | null
   /** Did she submit a weekly check-in in the window that most recently opened? */
   checkedInThisWindow: boolean
 }
@@ -54,17 +64,17 @@ export type ProgressCheckReadinessInput = {
 export function evaluateProgressCheckReadiness(
   input: ProgressCheckReadinessInput,
 ): ProgressCheckReadiness {
-  const { blockEndsAtMs, checkedInThisWindow } = input
+  const { blockFinalWeekStartsAtMs, checkedInThisWindow } = input
 
-  if (blockEndsAtMs != null && Date.now() < blockEndsAtMs) {
-    const days = Math.ceil((blockEndsAtMs - Date.now()) / 86_400_000)
+  if (blockFinalWeekStartsAtMs != null && Date.now() < blockFinalWeekStartsAtMs) {
+    const days = Math.ceil((blockFinalWeekStartsAtMs - Date.now()) / 86_400_000)
     return {
       ready: false,
       blocker: 'block_not_ended',
       reason:
         days > 7
-          ? `The block has ${Math.ceil(days / 7)} weeks still to run. The Progress Check closes a block, so it goes once the block is finished.`
-          : `She is still in the final week - ${days} day${days === 1 ? '' : 's'} to go. The Progress Check goes after she has finished it and sent the check-in that closes it out.`,
+          ? `The block has ${Math.ceil(days / 7)} weeks to run before its final week. The Progress Check closes a block, so it opens once she reaches that last week.`
+          : `She reaches her final week in ${days} day${days === 1 ? '' : 's'}. The Progress Check opens then, once her check-in is also in.`,
     }
   }
 
