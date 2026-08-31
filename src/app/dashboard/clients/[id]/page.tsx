@@ -375,10 +375,18 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   const latestCheckin = (recentCheckins ?? [])
     .slice()
     .sort((a, b) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime())[0] ?? null
+  // 2026-08-31: this used to test whether a feedback ROW EXISTED, not whether it
+  // was SENT. The AI auto-draft writes that row the moment a check-in lands, so
+  // generating a draft silently marked the check-in as answered. Razia and
+  // Samantha both sat with unsent drafts from 30 Aug while their client pages
+  // said "Weekly loop active - Everything is up to date". A draft nobody sent is
+  // not a reply; the client heard nothing either way.
+  const latestCheckinFeedback = latestCheckin?.id ? feedbackByCheckinId.get(latestCheckin.id) ?? null : null
+  const latestCheckinDraftUnsent = !!latestCheckinFeedback && !latestCheckinFeedback.email_sent_at
   const latestCheckinNeedsResponse =
     !!latestCheckin &&
     !!latestCheckin.id &&
-    !feedbackByCheckinId.has(latestCheckin.id) &&
+    !latestCheckinFeedback?.email_sent_at &&
     !latestCheckin.coach_skipped_at
   const cfwsActionRequired = latestCheckinNeedsResponse || (!!latestCompleteWeek && (!latestCfws || latestCfws.week_number < latestCompleteWeek))
   const trainingActionRequired = !activeProgram || !!draftProgram
@@ -497,6 +505,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           !latestBaseline ? { t: 'Waiting on baseline', s: 'Client to upload measurements and progress photos.', href: `/dashboard/clients/${id}/baseline` } :
           !activeCffs ? { t: 'Generate the Foundational Synthesis', s: 'Onboarding complete - ready to synthesise.', href: `#cffs` } :
           !frPublished ? { t: 'Publish the Foundational Reading', s: 'Synthesis done - the client is waiting on their reading.', href: `#cffs` } :
+          latestCheckinDraftUnsent ? { t: 'Send the check-in reply', s: 'A draft is written and waiting. It has not been sent, so she has heard nothing.', href: `#cfws` } :
           latestCheckinNeedsResponse ? { t: 'Respond to the weekly check-in', s: 'Latest check-in needs your response.', href: `#cfws` } :
           !hasActiveProgram ? { t: 'Generate the first training plan', s: 'Reading published. Design the first block.', href: `/dashboard/clients/${id}/program` } :
           !hasActiveNutrition ? { t: 'Generate the nutrition plan', s: 'Training plan is live - add nutrition.', href: `/dashboard/clients/${id}/nutrition` } :
@@ -1626,7 +1635,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         title="Weekly Synthesis"
         subtitle="- CFWS"
         defaultOpen={cfwsActionRequired}
-        attentionLabel={latestCheckinNeedsResponse ? 'Latest check-in needs response' : (cfwsActionRequired ? 'New CFWS ready to generate' : null)}
+        attentionLabel={latestCheckinDraftUnsent ? 'Draft written but NOT SENT' : (latestCheckinNeedsResponse ? 'Latest check-in needs response' : (cfwsActionRequired ? 'New CFWS ready to generate' : null))}
         actionRight={
           <>
             <ReopenCheckinButton clientId={id} overrideUntil={client.checkin_window_override_until ?? null} />
