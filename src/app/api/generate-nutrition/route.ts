@@ -438,6 +438,13 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
     // running, so it is done in code. Rescales protein-vehicle portions and
     // rewrites the gram figure in each food's name; never invents or moves
     // food. See rebalanceFirstMealProtein.
+    // Normalise FIRST. Both helpers below read each meal's protein_g/carb_g/
+    // fat_g, and the model's stated meal totals routinely disagree with the sum
+    // of that meal's own foods. Reading them before they are reconciled made
+    // the trim see an understated day (2,493 kcal looked under a 2,430 ceiling)
+    // and decline to act, so the energy check it exists to satisfy then failed.
+    normalizeMealAndDayTotals(p as { meals?: MealLike[]; estimated_calorie_band?: string | null })
+
     if (first_meal_highest_protein) {
       const moved = rebalanceFirstMealProtein((p.meals as MealLike[]) ?? [])
       if (moved > 0) console.log(`[generate-nutrition] Rebalanced ${moved}g protein into the first meal`)
@@ -451,6 +458,7 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
       const cut = trimDayToKcalTarget((p.meals as MealLike[]) ?? [], kcalTarget)
       if (cut > 0) console.log(`[generate-nutrition] Trimmed ${cut} kcal of fat to reach ${kcalTarget.low}-${kcalTarget.high}`)
     }
+    // Normalise again so the calorie band reflects the trimmed meals.
     normalizeMealAndDayTotals(p as { meals?: MealLike[]; estimated_calorie_band?: string | null })
     return validateNutritionPlan({
       meals: (p.meals as MealLike[]) || [],
