@@ -346,17 +346,22 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
     const finalUserPrompt = correctionNote
       ? `${userPrompt}\n\n═══════════════════════════════════════\nVALIDATION CORRECTION REQUIRED\n═══════════════════════════════════════\nYour previous output was rejected by automatic validation. Issues:\n${correctionNote}\n\nRegenerate the plan correcting every issue above. Recompute every food's macros from the reference table; recompute each meal's protein_g/carb_g/fat_g as the sum of its foods; derive estimated_calorie_band from the meal totals last.\n\nIf a daily macro is BELOW a stated floor or anchor: increase portion sizes on the relevant foods until you hit it.\nIf a daily macro is ABOVE the stated anchor (e.g. PROTEIN_ANCHOR_MISMATCH says you delivered MORE protein than prescribed): REDUCE portion sizes on the highest-protein foods — do not add carbs or fat to "balance it out". The protein anchor is a target, not a floor: 95g means 95g (±20g), not "at least 95g". A 117g delivery for a 95g anchor means you must cut roughly 22g of protein from the meal foods. Trim primary protein portions first (e.g. 180g chicken → 140g chicken; 150g Greek yoghurt → 100g; drop one of two protein items in a meal).`
       : userPrompt
-    const message = await anthropic.messages.create({
+    // Assistant prefill is not universally supported: claude-sonnet-4-6 rejects
+    // it with a 400 ("This model does not support assistant message prefill").
+    // Try with, fall back without, rather than hard-coding which models allow
+    // it — a model list would rot the next time one is added.
+    const buildRequest = (withPrefill: boolean): Anthropic.MessageCreateParamsNonStreaming => ({
       model: modelId,
       max_tokens: 16000,
       system: [
         // Stable prompt stays cached; the date is volatile so it sits AFTER the
         // breakpoint, otherwise the cache would be invalidated every day.
-        { type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } },
-        { type: 'text', text: temporalContext() },
+        { type: 'text' as const, text: systemPrompt, cache_control: { type: 'ephemeral' as const } },
+        { type: 'text' as const, text: temporalContext() },
       ],
-      messages: [
-        { role: 'user', content: finalUserPrompt },
+      messages: (withPrefill
+        ? [
+        { role: 'user' as const, content: finalUserPrompt },
         // Assistant prefill (2026-08-31). Forces the response to CONTINUE from
         // an open brace, so the model physically cannot write a preamble.
         //
@@ -372,13 +377,27 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
         //
         // Third instance of this shape: see the CFWS max_tokens outage, where
         // thinking ate the budget and went unnoticed for three weeks.
-        { role: 'assistant', content: '{' },
-      ],
+        { role: 'assistant' as const, content: '{' },
+          ]
+        : [{ role: 'user' as const, content: finalUserPrompt }]),
     })
+
+    let usedPrefill = true
+    let message
+    try {
+      message = await anthropic.messages.create(buildRequest(true))
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err)
+      if (!/prefill/i.test(msg)) throw err
+      console.warn(`[generate-nutrition] ${modelId} rejects prefill, retrying without`)
+      usedPrefill = false
+      message = await anthropic.messages.create(buildRequest(false))
+    }
+
     const content = (message.content.find(b => b.type === 'text') ?? message.content[0])
     if (content.type !== 'text') throw new Error('Unexpected AI response')
     // The prefill is not echoed back, so put it back before parsing.
-    const responseText = '{' + content.text
+    const responseText = usedPrefill ? '{' + content.text : content.text
     // 2026-07-06 parse resilience: brace-counter extract → whole-text JSON.parse
     // fallback → diagnostic error with stop_reason + usage + preview.
     // Sonnet's parse failures on Amanda's Stage 2 attempts were surfacing as
