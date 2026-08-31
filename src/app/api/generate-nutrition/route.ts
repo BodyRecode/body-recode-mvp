@@ -348,21 +348,41 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
         { type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } },
         { type: 'text', text: temporalContext() },
       ],
-      messages: [{ role: 'user', content: finalUserPrompt }],
+      messages: [
+        { role: 'user', content: finalUserPrompt },
+        // Assistant prefill (2026-08-31). Forces the response to CONTINUE from
+        // an open brace, so the model physically cannot write a preamble.
+        //
+        // Without it the Sonnet escalation was unusable: it spent the entire
+        // 16,000-token output budget reasoning in prose ("I'll work through
+        // this systematically before writing any JSON. Step 1: Anchor
+        // arithmetic...") and hit stop_reason=max_tokens before emitting a
+        // single character of JSON. The earlier "parse error at position 1"
+        // was the same failure — position 1 is the "I" of "I'll".
+        //
+        // Haiku happened to comply without this, which is why the escalation
+        // path was the only one visibly broken. Luck, not design.
+        //
+        // Third instance of this shape: see the CFWS max_tokens outage, where
+        // thinking ate the budget and went unnoticed for three weeks.
+        { role: 'assistant', content: '{' },
+      ],
     })
     const content = (message.content.find(b => b.type === 'text') ?? message.content[0])
     if (content.type !== 'text') throw new Error('Unexpected AI response')
+    // The prefill is not echoed back, so put it back before parsing.
+    const responseText = '{' + content.text
     // 2026-07-06 parse resilience: brace-counter extract → whole-text JSON.parse
     // fallback → diagnostic error with stop_reason + usage + preview.
     // Sonnet's parse failures on Amanda's Stage 2 attempts were surfacing as
     // "Could not parse nutrition plan output" with no diagnostic info, making
     // it impossible to know whether the model truncated, wrapped in prose, or
     // emitted unbalanced JSON. Now each failure explains itself.
-    const jsonText = extractFirstJsonObject(content.text)
+    const jsonText = extractFirstJsonObject(responseText)
     if (jsonText) return JSON.parse(jsonText)
     // Fallback: try parsing the entire response as JSON in case the model
     // emitted a clean object with no prose wrapper.
-    const trimmed = content.text.trim()
+    const trimmed = responseText.trim()
     if (trimmed.startsWith('{')) {
       try {
         return JSON.parse(trimmed)
@@ -372,7 +392,7 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
     }
     const stopReason = message.stop_reason
     const usage = message.usage
-    const preview = content.text.slice(0, 300).replace(/\s+/g, ' ')
+    const preview = responseText.slice(0, 300).replace(/\s+/g, ' ')
     throw new Error(`Could not parse nutrition plan output from ${modelId} (stop_reason=${stopReason}, in=${usage?.input_tokens ?? '?'}, out=${usage?.output_tokens ?? '?'}). Response preview: "${preview}"`)
   }
 
