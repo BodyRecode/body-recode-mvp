@@ -289,7 +289,11 @@ export function requiresFullBodySessions(
  * Counting resilience work as a driver would let the full-body rule pass on a
  * session that never trains the legs.
  */
-const LOWER_PATTERNS = new Set(['squat', 'hinge'])
+// 2026-08-31: 'abduction' (3 exercises in the library) was in NEITHER set, so
+// hip abduction counted toward neither side and quietly vanished from every
+// balance check. 'lower_leg' was handled by a special case at each call site;
+// both now live here so there is one definition.
+const LOWER_PATTERNS = new Set(['squat', 'hinge', 'lower_leg', 'abduction'])
 /** Upper-body drivers. Carry, rotation and locomotion are trunk/whole-body. */
 const UPPER_PATTERNS = new Set([
   'horizontal_push', 'vertical_push', 'horizontal_pull', 'vertical_pull',
@@ -370,7 +374,7 @@ function isLowerEx(
   if (!patternByName) return false
   const pattern = patternByName.get((ex.exercise_name ?? '').trim().toLowerCase())
   if (!pattern) return false
-  return LOWER_PATTERNS.has(pattern) || pattern === 'lower_leg'
+  return LOWER_PATTERNS.has(pattern)
 }
 
 export function weeklyUpperLowerBalance(
@@ -386,7 +390,7 @@ export function weeklyUpperLowerBalance(
         const pattern = patternByName.get((ex.exercise_name ?? '').trim().toLowerCase())
         if (!pattern) continue
         const sets = parseInt(String(ex.sets ?? 0)) || 0
-        if (LOWER_PATTERNS.has(pattern) || pattern === 'lower_leg') lower += sets
+        if (LOWER_PATTERNS.has(pattern)) lower += sets
         else if (UPPER_PATTERNS.has(pattern)) upper += sets
       }
     }
@@ -429,6 +433,114 @@ interface ClampResult {
  *   When short, sets are added to Primary blocks first, then Secondary,
  *   then Capacity. Trunk stability is left alone.
  */
+/**
+ * Upper/lower distribution the coach actually asked for.
+ *
+ * 2026-08-31. The clamp already enforced RPE and per-session set COUNT, but
+ * distribution was only ever reported, and only when concurrent endurance was
+ * declared. Greg's Block 2 was regenerated three times asking in the prompt for
+ * an upper bias and came back 12/18, then 11/23 — the ask got further from the
+ * target each run. Prompt text does not steer this; code has to.
+ *
+ * Moves sets BETWEEN EXISTING EXERCISES inside each session. It never swaps,
+ * adds or removes a movement, so the coach's session intent survives: the
+ * exercises chosen stay exactly as generated and only their set counts shift.
+ * Session totals are preserved, so this cannot fight the set-count clamp.
+ *
+ * Guardrails, mirroring the nutrition trimmer:
+ *  - never takes an exercise below 1 working set
+ *  - moves at most `maxMovePerSession` sets in a session (default 4)
+ *  - if it cannot reach the ask inside the cap it stops and reports, rather
+ *    than quietly delivering something that looks correct
+ *  - a session with no exercise on the receiving side is reported, not forced:
+ *    you cannot make a session upper-biased by piling sets on its only press.
+ */
+/** No single working movement carries more than this. See "SPREAD, DON'T PILE". */
+const PER_MOVEMENT_SET_CEILING = 3
+
+export function enforceUpperLowerBias(
+  sessions: Session[],
+  patternByName: Map<string, string>,
+  bias: 'upper' | 'lower',
+  maxMovePerSession = 4
+): { sessions: Session[]; setsMoved: number; notes: string[] } {
+  const cloned: Session[] = JSON.parse(JSON.stringify(sessions))
+  const notes: string[] = []
+  let setsMoved = 0
+
+  for (const session of cloned) {
+    const label = session.day_label ?? 'a session'
+    const working: { ex: Exercise; lower: boolean }[] = []
+    for (const block of session.blocks ?? []) {
+      if (blockRole(block.block_label) === 'trunk') continue
+      for (const ex of block.exercises ?? []) {
+        const pattern = patternByName.get((ex.exercise_name ?? '').trim().toLowerCase())
+        if (!pattern) continue
+        const isLower = LOWER_PATTERNS.has(pattern)
+        const isUpper = UPPER_PATTERNS.has(pattern)
+        if (!isLower && !isUpper) continue
+        working.push({ ex, lower: isLower })
+      }
+    }
+    if (working.length === 0) continue
+
+    const give = working.filter(w => (bias === 'upper' ? w.lower : !w.lower))
+    const take = working.filter(w => (bias === 'upper' ? !w.lower : w.lower))
+    const sideName = bias === 'upper' ? 'upper-body' : 'lower-body'
+    const sideArticle = bias === 'upper' ? 'an' : 'a'
+
+    if (take.length === 0) {
+      notes.push(
+        `${label} has no ${sideName} movement to shift sets into, so its balance was left alone. ` +
+        `Piling sets onto a side that is not represented is not a fix; the session needs ${sideArticle} ${sideName} exercise.`
+      )
+      continue
+    }
+
+    const setsOf = (w: { ex: Exercise }) => parseInt(String(w.ex.sets ?? 0)) || 0
+    const total = working.reduce((n, w) => n + setsOf(w), 0)
+    // Target roughly 60/40 in favour of the declared side.
+    const wanted = Math.round(total * 0.6)
+    let deficit = wanted - take.reduce((n, w) => n + setsOf(w), 0)
+    if (deficit <= 0) continue
+
+    const cap = Math.min(deficit, maxMovePerSession)
+    let moved = 0
+    // Take from the largest donor first so no single movement is gutted, and
+    // never push a receiver past PER_MOVEMENT_SET_CEILING. The doctrine's
+    // "SPREAD, DON'T PILE" rule is explicit that no single working movement
+    // gets more than 2-3 sets; without this the bias reached its target by
+    // stacking one row to 4 sets, which is the exact failure Restoration
+    // must avoid.
+    while (moved < cap) {
+      const donor = give
+        .filter(w => setsOf(w) > 1)
+        .sort((a, b) => setsOf(b) - setsOf(a))[0]
+      const receiver = take
+        .filter(w => setsOf(w) < PER_MOVEMENT_SET_CEILING)
+        .sort((a, b) => setsOf(a) - setsOf(b))[0]
+      if (!donor || !receiver) break
+      donor.ex.sets = setsOf(donor) - 1
+      receiver.ex.sets = setsOf(receiver) + 1
+      moved++
+    }
+    setsMoved += moved
+    deficit -= moved
+
+    if (moved > 0) {
+      notes.push(`${label}: moved ${moved} working set${moved === 1 ? '' : 's'} into ${sideName} work for the declared ${bias} bias.`)
+    }
+    if (deficit > 0) {
+      notes.push(
+        `${label} is still ${deficit} set${deficit === 1 ? '' : 's'} short of the ${bias} bias after moving the ${moved} allowed. ` +
+        `Going further would drop a movement below one working set, push one past ${PER_MOVEMENT_SET_CEILING} sets, or exceed the ${maxMovePerSession}-set-per-session safety cap. The fix is exercise selection, not more set shuffling.`
+      )
+    }
+  }
+
+  return { sessions: cloned, setsMoved, notes }
+}
+
 export function clampProgramToDoctrine(
   sessions: Session[],
   phase: ProgressionPhase,
@@ -575,14 +687,24 @@ export function clampProgramToDoctrine(
   // the lifting should not ALSO be lower-biased. Reported rather than forced:
   // mechanically trimming to parity could gut a block that is deliberately
   // leg-focused for a reason the doctrine cannot see.
-  if (concurrentEnduranceSessions > 0 && patternByName) {
+  // 2026-08-31: this used to run ONLY when endurance was declared, so a block
+  // with no endurance was never checked for balance at all. Greg's Block 2 came
+  // back 12 upper / 18 lower and nothing said a word. The endurance case gets a
+  // sharper warning because running already loads the legs, but every block is
+  // now measured.
+  if (patternByName) {
     const bal = weeklyUpperLowerBalance(cloned, patternByName)
-    if (bal.lower > bal.upper) {
+    if (bal.lower > bal.upper * 1.5 && bal.upper > 0) {
       notes.push(
-        `Concurrent endurance (${concurrentEnduranceSessions} sessions/week): lifting is still lower-biased ` +
-        `(${bal.lower} lower vs ${bal.upper} upper working sets). Running already loads those patterns; ` +
-        `the upper body is what detrains. Consider moving sets from squat and hinge into pressing and pulling.`
+        concurrentEnduranceSessions > 0
+          ? `Concurrent endurance (${concurrentEnduranceSessions} sessions/week): lifting is still lower-biased ` +
+            `(${bal.lower} lower vs ${bal.upper} upper working sets). Running already loads those patterns; ` +
+            `the upper body is what detrains. Consider moving sets from squat and hinge into pressing and pulling.`
+          : `Weekly balance: this block is lower-biased (${bal.lower} lower vs ${bal.upper} upper working sets). ` +
+            `Full-body blocks should not sit this far from parity unless that is deliberate.`
       )
+    } else if (bal.upper === 0 && bal.lower > 0) {
+      notes.push(`Weekly balance: no recognised upper-body working sets in the whole block (${bal.lower} lower).`)
     }
   }
 

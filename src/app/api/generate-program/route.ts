@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { cffsStateForAnyStateLabel } from '@/lib/pattern-doctrine'
 import { deriveReadinessCarryForward, applyReadinessCarryForward } from '@/lib/readiness-carry-forward'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { resolveEffectiveTier, clampProgramToDoctrine, requiresFullBodySessions } from '@/lib/training-doctrine'
+import { resolveEffectiveTier, clampProgramToDoctrine, requiresFullBodySessions, enforceUpperLowerBias } from '@/lib/training-doctrine'
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
 import { clampProgramToRecoveryManifest, buildRecoveryPromptSection } from '@/lib/recovery-program-clamp'
 import {
@@ -81,6 +81,12 @@ export async function runProgramGenerationInternal(body: any): Promise<NextRespo
     // values alone are wrong: they are scored once at intake and never move,
     // while readiness is genuinely re-scored every week in the CFWS.
     carry_readiness,
+    // 2026-08-31. Coach-declared upper/lower emphasis for a full-body block.
+    // 'upper' | 'lower' | null. Distribution was previously only REPORTED, and
+    // only when endurance was declared, so asking for it in the prompt did
+    // nothing: Greg's Block 2 was regenerated three times and drifted further
+    // from the ask each run. See enforceUpperLowerBias.
+    upper_lower_bias,
   } = body
 
   if (!client_id || !training_frequency || !training_goal || !training_age || !movement_competency || !progression_phase || !equipment_access || !week_duration || !block_name) {
@@ -555,6 +561,17 @@ export async function runProgramGenerationInternal(body: any): Promise<NextRespo
     enduranceSessions
   )
   programData.sessions = clamp.sessions
+
+  // Distribution enforcement runs AFTER the set-count clamp, because it moves
+  // sets between exercises without changing a session's total. Running it
+  // first would let the clamp undo it.
+  if (upper_lower_bias === 'upper' || upper_lower_bias === 'lower') {
+    const biased = enforceUpperLowerBias(programData.sessions, patternByName, upper_lower_bias)
+    programData.sessions = biased.sessions
+    clamp.notes.push(...biased.notes)
+    console.log('[generate-program] Upper/lower bias:', { bias: upper_lower_bias, setsMoved: biased.setsMoved })
+  }
+
   if (clamp.notes.length > 0) {
     const doctrineNote = `Doctrine clamp applied (effective tier: ${effectiveTier}, phase: ${phaseForDoctrine}${enduranceSessions > 0 ? `, ${enduranceSessions} concurrent endurance sessions so sets aim at the floor` : ''}). ${clamp.notes.join(' ')}`
     programData.weekly_pattern_summary = Array.isArray(programData.weekly_pattern_summary)
