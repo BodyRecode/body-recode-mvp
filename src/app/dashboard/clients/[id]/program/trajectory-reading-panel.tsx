@@ -129,7 +129,8 @@ export default function TrajectoryReadingPanel({
       })
       const data = await res.json().catch(() => ({}))
       if (!res.ok) throw new Error(data.error || `Server returned ${res.status}`)
-      if (action === 'publish') setNotice('Published to the client portal. Click Notify Client to email her the link.')
+      // No pronoun: said "email her the link" for every client, men included.
+      if (action === 'publish') setNotice('Published to the client portal. Click Notify Client to email them the link.')
       startTransition(() => router.refresh())
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Could not update')

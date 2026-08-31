@@ -94,7 +94,7 @@ export default function ClientReadingPanel({
         : ''
       const baseMsg = emailSent
         ? 'Replace the live reading with a fresh draft? Your client will not be re-emailed.'
-        : 'Replace the current draft? This will publish the new version to the portal and send the client an email.'
+        : 'Replace the current draft with a fresh one? Nothing is published or emailed; you still publish separately.'
       if (!confirm(baseMsg + '\n\nThis will overwrite any inline edits you have made.' + guidanceNote)) return
     }
     setError(null)
@@ -186,7 +186,7 @@ export default function ClientReadingPanel({
                 className="w-1 h-1 rounded-full"
                 style={{ background: published ? '#1B6DFC' : '#98A0AD' }}
               />
-              {published ? 'Live in portal' : 'Unpublished'}
+              {published ? 'Live in portal' : generated ? 'Unpublished' : 'Not generated yet'}
             </span>
           )}
           {emailSent && (
@@ -207,7 +207,9 @@ export default function ClientReadingPanel({
             }`}
           >
             {generating ? <Loader2 size={13} className="animate-spin" /> : <Sparkles size={13} />}
-            {generating ? 'Generating...' : generated ? 'Regenerate' : 'Generate & Publish'}
+            {/* Generation does NOT publish - the route nulls the published
+                timestamp on purpose. */}
+            {generating ? 'Generating...' : generated ? 'Regenerate' : 'Generate draft'}
           </button>
           {generated && (
             <button
@@ -216,7 +218,11 @@ export default function ClientReadingPanel({
               className="inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
             >
               {publishing ? <Loader2 size={13} className="animate-spin" /> : (published ? <EyeOff size={13} /> : <Eye size={13} />)}
-              {publishing ? 'Updating...' : (published ? 'Unpublish' : 'Republish')}
+              {/* "Publish", not "Republish": this said Republish even on a reading
+                  that had never been published, so a coach looking for a publish
+                  button concluded there wasn't one. Same fix as the program
+                  reading panel (cd88d369). */}
+              {publishing ? 'Updating...' : (published ? 'Unpublish' : 'Publish')}
             </button>
           )}
           {published && (

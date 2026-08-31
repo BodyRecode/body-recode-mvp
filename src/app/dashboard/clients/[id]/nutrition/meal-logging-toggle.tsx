@@ -54,7 +54,9 @@ export default function MealLoggingToggle({
           <p className="text-sm font-semibold text-[#141821]">Daily meal logging</p>
           <p className="text-[12.5px] text-[#666D7A] mt-1 leading-relaxed">
             {enabled
-              ? `${clientFirstName} sees a "Log today's meals" button on her nutrition plan and can mark each meal as eaten, swapped or skipped.`
+              // No pronoun: this said "her nutrition plan" for every client,
+              // including the men. The client's own name and "their" carry it.
+              ? `${clientFirstName} sees a "Log today's meals" button on their nutrition plan and can mark each meal as eaten, swapped or skipped.`
               : 'Off. The weekly check-in already asks whether the plan was followed. Switch this on only when a plan is failing and you need to know which meal, and when.'}
           </p>
         </div>
