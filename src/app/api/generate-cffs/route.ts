@@ -65,13 +65,34 @@ export async function POST(request: NextRequest) {
   }
   if (!(await isCoachUser(user))) return forbidden()
 
+  const body = await request.json()
+  return runCFFSGenerationInternal(body)
+}
+
+/**
+ * Internal entrypoint. Sixth of the set, after generate-nutrition and
+ * generate-program (30 Aug), then generate-trajectory-reading,
+ * suggest-nutrition and suggest-plan (1 Sep). A server-side script can run the
+ * read for one client without a browser session.
+ *
+ * The read was the last generator still unreachable outside the browser, and
+ * it is the one that matters most: every other artefact derives from the CFFS,
+ * so a failure here is the most expensive to diagnose blind.
+ *
+ * Pure extraction, auth unchanged on POST.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function runCFFSGenerationInternal(body: any): Promise<NextResponse> {
+  const { intake_id, client_id } = body ?? {}
+  if (!intake_id || !client_id) {
+    return NextResponse.json({ error: 'intake_id and client_id required' }, { status: 400 })
+  }
+
   // All data fetches + writes go through the admin client to bypass RLS,
   // which would otherwise hide intakes / baselines from the coach. Mirrors
   // the pattern in every other generate-* route (program reading,
-  // nutrition reading, etc.). Auth gating above is what protects the route.
+  // nutrition reading, etc.). Auth gating on POST is what protects the route.
   const admin = createAdminClient()
-
-  const { intake_id, client_id } = await request.json()
 
   // Fetch intake + client medications + latest baseline (measurements + photo
   // URLs). Medications context is critical for pattern interpretation
