@@ -25,7 +25,22 @@ export async function POST(request: NextRequest) {
   if (!(await isCoachUser(user))) return forbidden()
 
   const body = await request.json()
-  const { client_id } = body
+  return runSuggestNutritionInternal(body)
+}
+
+/**
+ * Internal entrypoint. Same reason as the other three: a server-side script can
+ * run this for one client without a browser session.
+ *
+ * Added 2026-09-01 while diagnosing a "Failed to load suggestion" the coach hit
+ * on Samantha. That message is the PAGE's fallback for a response it could not
+ * parse, which means the route threw before it could return its own detailed
+ * error. Without a way to run this outside the browser there was no way to see
+ * the real one.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function runSuggestNutritionInternal(body: any): Promise<NextResponse> {
+  const { client_id } = body ?? {}
   if (!client_id) return NextResponse.json({ error: 'client_id required' }, { status: 400 })
 
   const admin = createAdminClient()
