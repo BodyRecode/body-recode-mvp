@@ -24,8 +24,40 @@
  * thrown.
  */
 
+import { createHash } from 'crypto'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { composeSupplementsOntoMeals, type PlanSupplement, type CompositionIssue } from '@/lib/consumption-plan'
+import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
+
+/**
+ * A fingerprint of the CLINICAL picture behind a supplement decision.
+ *
+ * Deliberately excludes anything about the food. Calories, macros and meal
+ * count are not clinically relevant to which substances a client should take,
+ * so stepping her calories must not trigger a re-decision. See the column
+ * comment in sql/2026-09-01_nutrition_plans_supplements_fingerprint.sql.
+ */
+export async function computeSupplementSignalFingerprint(
+  admin: SupabaseClient,
+  clientId: string,
+): Promise<string> {
+  const [{ data: client }, { data: panels }, { data: assignments }, rrs] = await Promise.all([
+    admin.from('clients').select('medications, medications_analysis').eq('id', clientId).maybeSingle(),
+    admin.from('blood_panels').select('id').eq('client_id', clientId).order('submitted_at', { ascending: false }).limit(1),
+    admin.from('supplement_assignments').select('substance_slug').eq('client_id', clientId).eq('status', 'active'),
+    getActiveConstraintManifest(clientId).catch(() => null),
+  ])
+
+  const signal = {
+    medications: client?.medications ?? null,
+    medications_analysis: client?.medications_analysis ?? null,
+    latest_panel: panels?.[0]?.id ?? null,
+    // Sorted so the order the coach assigned things in cannot change the hash.
+    assigned: (assignments ?? []).map(a => a.substance_slug).sort(),
+    rrs: rrs ? JSON.stringify(rrs) : null,
+  }
+  return createHash('sha256').update(JSON.stringify(signal)).digest('hex').slice(0, 32)
+}
 
 export interface ConsumptionPlanResult {
   planId: string
@@ -35,6 +67,8 @@ export interface ConsumptionPlanResult {
   /** Set when the supplement side failed. The plan still exists. */
   supplementError: string | null
   publishable: boolean
+  /** True when the previous plan's supplements were reused unchanged. */
+  carriedForward: boolean
 }
 
 /**
@@ -50,7 +84,7 @@ export async function attachSupplementsToPlan(
   planId: string,
 ): Promise<ConsumptionPlanResult> {
   const base: ConsumptionPlanResult = {
-    planId, supplements: [], issues: [], supplementError: null, publishable: true,
+    planId, supplements: [], issues: [], supplementError: null, publishable: true, carriedForward: false,
   }
 
   const { data: plan, error: planErr } = await admin
@@ -61,6 +95,30 @@ export async function attachSupplementsToPlan(
 
   if (planErr || !plan) {
     return { ...base, supplementError: `could not read the plan back: ${planErr?.message ?? 'not found'}` }
+  }
+
+  // ── Carry forward when nothing clinical has moved ────────────────────────
+  // Checked BEFORE the engine is called, so an unchanged picture costs no API
+  // call and cannot produce a different answer to last time.
+  const fingerprint = await computeSupplementSignalFingerprint(admin, clientId)
+  const { data: prev } = await admin
+    .from('nutrition_plans')
+    .select('supplements, supplements_fingerprint')
+    .eq('client_id', clientId)
+    .not('supplements', 'is', null)
+    .order('generated_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  if (prev?.supplements_fingerprint && prev.supplements_fingerprint === fingerprint) {
+    const carried = (prev.supplements as PlanSupplement[]) ?? []
+    const composed = composeSupplementsOntoMeals((plan.meals as never[]) ?? [], carried.map(s => ({ ...s, carried_forward: true })))
+    const { error: carryErr } = await admin
+      .from('nutrition_plans')
+      .update({ supplements: composed.supplements, supplements_fingerprint: fingerprint })
+      .eq('id', planId)
+    if (carryErr) return { ...base, supplementError: `could not carry supplements forward: ${carryErr.message}` }
+    return { planId, supplements: composed.supplements, issues: composed.issues, supplementError: null, publishable: composed.publishable, carriedForward: true }
   }
 
   let proposed: PlanSupplement[] = []
@@ -102,7 +160,7 @@ export async function attachSupplementsToPlan(
 
   const { error: saveErr } = await admin
     .from('nutrition_plans')
-    .update({ supplements: composed.supplements })
+    .update({ supplements: composed.supplements, supplements_fingerprint: fingerprint })
     .eq('id', planId)
 
   if (saveErr) {
@@ -115,5 +173,6 @@ export async function attachSupplementsToPlan(
     issues: composed.issues,
     supplementError: null,
     publishable: composed.publishable,
+    carriedForward: false,
   }
 }

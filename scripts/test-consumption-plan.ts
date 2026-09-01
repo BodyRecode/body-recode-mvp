@@ -84,5 +84,26 @@ console.log('\n8. what the client sees')
   check('meal order, standalone last', JSON.stringify(seen) === JSON.stringify(['a','b','c']), seen)
 }
 
+
+// ── Carry-forward: what a regeneration must NOT change ──────────────────────
+// Compared field by field rather than as text, because destructuring a key out
+// of an object reorders the rest and makes two identical stacks compare unequal.
+console.log('\n9. carry-forward preserves everything except the carried flag')
+{
+  const original: PlanSupplement = {
+    substance_slug: 'magnesium-glycinate', name: 'Magnesium Glycinate', tier: 'essential',
+    dose: '400mg', timing_meal_number: 4, timing_note: 'with dinner',
+    rationale_coach_facing: 'sleep', rationale_client_facing: 'Helps you wind down.',
+    watch: ['none'], carried_forward: false, assigned: true,
+  }
+  const r = composeSupplementsOntoMeals(meals, [{ ...original, carried_forward: true }])
+  const got = r.supplements[0]
+  const fields: (keyof PlanSupplement)[] = ['substance_slug','name','tier','dose','timing_meal_number','timing_note','rationale_coach_facing','rationale_client_facing','watch','assigned']
+  const drifted = fields.filter(f => JSON.stringify(got[f]) !== JSON.stringify(original[f]))
+  check('no clinical field drifted', drifted.length === 0, drifted)
+  check('carried flag set', got.carried_forward === true)
+  check('still publishable', r.publishable)
+}
+
 console.log(`\n${pass} passed, ${fail} failed`)
 process.exit(fail === 0 ? 0 : 1)
