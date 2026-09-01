@@ -36,9 +36,17 @@ interface Meal {
   notes: string | null
 }
 
+/** What the last surgical adjustment did. Null after a full regeneration. */
+interface LastStep {
+  summary?: string
+  notes?: string[]
+  changes?: { meal_index: number; food_index: number; food_name: string; field: string; from: number; to: number }[]
+}
+
 interface NutritionPlan {
   id: string
   client_id: string
+  last_step?: LastStep | null
   plan_name: string
   entry_state: string
   body_state: string
@@ -168,6 +176,10 @@ function NutritionPlanBody({
   bridgeBodyweightKg?: number | null
   bridgeReadinessSignal?: { ready: boolean; reason: string } | null
 }) {
+  // Kade, 1 Sep 2026: a diet adjustment changes only the named thing, and the
+  // change must be easy to spot. `last_step` records exactly which foods moved.
+  const lastStep = plan.last_step ?? null
+  const lastStepChanges = lastStep?.changes ?? []
   return (
     <div className="space-y-4">
 
@@ -487,14 +499,33 @@ function NutritionPlanBody({
           the FOOD_DB reference table. */}
       <div id={`${idPrefix}meals`} className="scroll-mt-8">
         <p className="text-[12.5px] font-medium text-[#666D7A] mb-3 px-1">Meal Structure</p>
+        {/* What the last adjustment did. Kade, 1 Sep 2026: adjustments change
+            only the named thing, and the change must be easy to spot. */}
+        {lastStep && (
+          <div className="mb-3 rounded-lg border border-[#EFAFAF] bg-[#FDEDED] px-4 py-3">
+            <p className="text-[12.5px] font-semibold text-[#8A1919]">{lastStep.summary}</p>
+            <p className="text-[11px] text-[#8A1919] opacity-80 mt-0.5">
+              Changed items are marked in red below. Everything else is unchanged.
+            </p>
+            {Array.isArray(lastStep.notes) && lastStep.notes.length > 0 && (
+              <ul className="mt-1.5 space-y-0.5">
+                {lastStep.notes.map((n: string, i: number) => (
+                  <li key={i} className="text-[11px] text-[#8A1919] opacity-80">{n}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
         <div className="space-y-3">
-          {plan.meals.map((meal) => (
+          {plan.meals.map((meal, mi) => (
             <MealEditor
               key={meal.meal_number}
               planId={plan.id}
               meal={meal as unknown as Parameters<typeof MealEditor>[0]['meal']}
               proteinAnchor={plan.protein_anchor_g}
               siblingMeals={plan.meals as unknown as Parameters<typeof MealEditor>[0]['siblingMeals']}
+              mealIndex={mi}
+              changedFoods={lastStepChanges}
             />
           ))}
         </div>

@@ -26,6 +26,15 @@
 import { useState, useMemo, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { FOOD_DB, lookupFood, type FoodMacros } from '@/lib/food-reference'
+
+/**
+ * A food touched by the last adjustment, so it can be marked.
+ *
+ * Kade, 1 Sep 2026: "the change i want highlighted in red so it easily
+ * noticeable". A calorie step moves a few numbers across several meals; without
+ * marking them the coach has to diff two plans by eye to see what happened.
+ */
+export type ChangedFood = { meal_index: number; food_index: number; field: string; from: number; to: number }
 import { kcalFromMacros, computeMealMacros, normalizeFood, type FoodInput } from '@/lib/nutrition-validation'
 
 interface EditableFood {
@@ -53,6 +62,10 @@ interface Props {
   proteinAnchor?: number
   /** All meals for the plan — used to compute the plan-level daily band. */
   siblingMeals: EditableMeal[]
+  /** This meal's position in the plan, so change records can be matched to it. */
+  mealIndex?: number
+  /** Foods touched by the last adjustment. Rendered in red. */
+  changedFoods?: ChangedFood[]
 }
 
 /** Turn any FoodInput shape into an EditableFood with sane defaults. */
@@ -95,7 +108,7 @@ function macrosForGrams(macros: FoodMacros, grams: number) {
   }
 }
 
-export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals }: Props) {
+export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals, mealIndex, changedFoods }: Props) {
   const router = useRouter()
   const [editing, setEditing] = useState(false)
   const [pending, startTransition] = useTransition()
@@ -163,17 +176,31 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals }
           <div className="space-y-1.5">
             {meal.foods.map((food, i) => {
               const f = normalizeFood(food)
+              // Changed by the last adjustment. Marked per FIELD, not per food,
+              // so a carbohydrate change does not light up the protein figure.
+              const changed = (changedFoods ?? []).filter(c => c.meal_index === mealIndex && c.food_index === i)
+              const changedFields = new Set(changed.map(c => c.field))
+              const wasChanged = changed.length > 0
+              const macro = (field: string, label: string, value: number | null) =>
+                changedFields.has(field)
+                  ? <span className="text-[#DC2626] font-semibold"><span className="text-[10px]">{label}</span> {value}g</span>
+                  : <span className="text-[#666D7A]"><span className="text-[10px] text-[#98A0AD]">{label}</span> {value}g</span>
               return (
-                <div key={i} className="flex items-start justify-between gap-3">
+                <div key={i} className={`flex items-start justify-between gap-3${wasChanged ? ' bg-[#FDEDED] -mx-2 px-2 py-1 rounded' : ''}`}>
                   <div className="flex items-start gap-2 flex-1 min-w-0">
-                    <span className="text-[#98A0AD] mt-0.5 shrink-0">•</span>
-                    <p className="text-sm text-[#141821]">{f.name}</p>
+                    <span className={`mt-0.5 shrink-0 ${wasChanged ? 'text-[#DC2626]' : 'text-[#98A0AD]'}`}>•</span>
+                    <p className="text-sm text-[#141821]">
+                      {f.name}
+                      {wasChanged && (
+                        <span className="ml-2 text-[10px] font-semibold text-[#DC2626] uppercase tracking-wide">changed</span>
+                      )}
+                    </p>
                   </div>
                   {f.protein_g !== null && (
                     <div className="flex items-baseline gap-3 shrink-0 tabular-nums text-[12.5px] pt-0.5">
-                      <span className="text-[#666D7A]"><span className="text-[10px] text-[#98A0AD]">P</span> {f.protein_g}g</span>
-                      <span className="text-[#666D7A]"><span className="text-[10px] text-[#98A0AD]">C</span> {f.carb_g}g</span>
-                      <span className="text-[#666D7A]"><span className="text-[10px] text-[#98A0AD]">F</span> {f.fat_g}g</span>
+                      {macro('protein_g', 'P', f.protein_g)}
+                      {macro('carb_g', 'C', f.carb_g)}
+                      {macro('fat_g', 'F', f.fat_g)}
                       <span className="text-[#666D7A] font-medium w-[60px] text-right">{f.kcal} kcal</span>
                     </div>
                   )}
