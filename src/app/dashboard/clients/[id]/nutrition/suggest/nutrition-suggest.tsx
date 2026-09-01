@@ -420,7 +420,7 @@ export default function NutritionPrescriptionSuggest({
           { start: 40, label: 'Returning the prescription suggestion for your review' },
           { start: 60, label: 'Taking longer than usual, give it another moment' },
         ]}
-        disclaimer="Prescription suggestion uses Claude Sonnet 4.6 for the full interpretive synthesis (body state, PTS phase, anchor, carb tier, feasibility checks). Typical: 30 to 50 seconds. The page is not frozen, please don't refresh."
+        disclaimer="Prescription suggestion uses Claude Sonnet 5 for the full interpretive synthesis (body state, PTS phase, anchor, carb tier, feasibility checks). Typical: 45 to 90 seconds, and it can run longer on a first request. Measured at 49s server-side on 1 Sep 2026, so treat anything under two minutes as still working. The page is not frozen, please don't refresh."
       />
     )
   }
@@ -454,11 +454,11 @@ export default function NutritionPrescriptionSuggest({
           { start: 0,   label: 'Reading client context (CFFS, intake, baseline, medications, dietary)' },
           { start: 5,   label: 'Drafting 3 candidate plans in parallel (Claude Haiku 4.5)' },
           { start: 40,  label: 'Validating each candidate against doctrine rules' },
-          { start: 50,  label: 'Escalating to Claude Sonnet 4.6 if no candidate passed' },
+          { start: 50,  label: 'Escalating to Claude Sonnet 5 if no candidate passed' },
           { start: 95,  label: 'Polishing the higher-accuracy plan' },
           { start: 135, label: 'Taking longer than usual, give it another moment' },
         ]}
-        disclaimer="Nutrition plan generation uses Claude Haiku 4.5 with Sonnet 4.6 escalation for high-accuracy constraint satisfaction. Typical: 60 to 90 seconds. The page is not frozen, please don't refresh."
+        disclaimer="Nutrition plan generation uses Claude Haiku 4.5 with Sonnet 5 escalation for high-accuracy constraint satisfaction. Typical: 60 to 90 seconds. The page is not frozen, please don't refresh."
       />
       <StickyScrollNav sections={NAV_SECTIONS} />
       <div className="flex-1 min-w-0 space-y-4">

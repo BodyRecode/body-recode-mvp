@@ -21,7 +21,7 @@ import { parseApiResponse } from '@/lib/parse-api-response'
  * Mirrors src/app/dashboard/clients/[id]/program/regenerate-button.tsx.
  *
  * While busy, surfaces the shared GenerationProgressOverlay with stages
- * matched to the nutrition pipeline (Sonnet 4.6, 60-90s typical, includes
+ * matched to the nutrition pipeline (Sonnet 5, 60-90s typical, includes
  * validator escalation).
  */
 export default function NutritionRegenerateButton({ nutritionPlanId }: { nutritionPlanId: string }) {
@@ -68,11 +68,11 @@ export default function NutritionRegenerateButton({ nutritionPlanId }: { nutriti
           { start: 3,   label: 'Reading latest CFFS, medications, dietary context, coach guidance' },
           { start: 8,   label: 'Drafting 3 candidate plans in parallel (Claude Haiku 4.5)' },
           { start: 40,  label: 'Validating each candidate against doctrine rules' },
-          { start: 50,  label: 'Escalating to Claude Sonnet 4.6 if no candidate passed' },
+          { start: 50,  label: 'Escalating to Claude Sonnet 5 if no candidate passed' },
           { start: 95,  label: 'Polishing the higher-accuracy plan' },
           { start: 135, label: 'Taking longer than usual, give it another moment' },
         ]}
-        disclaimer="Nutrition regeneration uses Claude Haiku 4.5 with Sonnet 4.6 escalation for high-accuracy constraint satisfaction. Typical: 60 to 90 seconds. The page is not frozen, please don't refresh."
+        disclaimer="Nutrition regeneration uses Claude Haiku 4.5 with Sonnet 5 escalation for high-accuracy constraint satisfaction. Typical: 60 to 90 seconds. The page is not frozen, please don't refresh."
       />
 
       <div className="flex flex-col items-end gap-1">

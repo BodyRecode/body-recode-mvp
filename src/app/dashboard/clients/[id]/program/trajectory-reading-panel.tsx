@@ -178,7 +178,7 @@ export default function TrajectoryReadingPanel({
           { start: 45, label: 'Saving the new draft and refreshing the panel' },
           { start: 75, label: 'Taking longer than usual, give it another moment' },
         ]}
-        disclaimer="Trajectory Reading reads the whole block's signal arc, not a single moment. Uses Claude Sonnet 4.6. Typical: 50 to 70 seconds. The page is not frozen, please don't refresh."
+        disclaimer="Trajectory Reading reads the whole block's signal arc, not a single moment. Uses Claude Sonnet 5. Typical: 50 to 70 seconds. The page is not frozen, please don't refresh."
       />
       <div className="flex items-center justify-between gap-4 mb-3 flex-wrap">
         <div className="flex items-center gap-2.5">

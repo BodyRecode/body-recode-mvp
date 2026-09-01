@@ -113,7 +113,7 @@ export default function RegenerateButton({ programId }: { programId: string }) {
           { start: 90,  label: 'Replacing the previous draft and redirecting to the program view' },
           { start: 130, label: 'Taking longer than usual, give it another moment' },
         ]}
-        disclaimer="Program regeneration uses Claude Sonnet 4.6 for high-accuracy constraint satisfaction across exercise selection, set / rep design, RPE, and RRS recovery clamps. Typical: 60 to 120 seconds. The page is not frozen, please don't refresh."
+        disclaimer="Program regeneration uses Claude Sonnet 5 for high-accuracy constraint satisfaction across exercise selection, set / rep design, RPE, and RRS recovery clamps. Typical: 60 to 120 seconds. The page is not frozen, please don't refresh."
       />
       <button
         onClick={regenerate}

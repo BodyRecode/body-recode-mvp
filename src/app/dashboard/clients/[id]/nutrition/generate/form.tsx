@@ -98,11 +98,11 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
           { start: 0,   label: 'Reading client context (CFFS, intake, baseline, medications, dietary)' },
           { start: 5,   label: 'Drafting 3 candidate plans in parallel (Claude Haiku 4.5)' },
           { start: 40,  label: 'Validating each candidate against doctrine rules' },
-          { start: 50,  label: 'Escalating to Claude Sonnet 4.6 if no candidate passed' },
+          { start: 50,  label: 'Escalating to Claude Sonnet 5 if no candidate passed' },
           { start: 95,  label: 'Polishing the higher-accuracy plan' },
           { start: 135, label: 'Taking longer than usual, give it another moment' },
         ]}
-        disclaimer="Nutrition plan generation uses Claude Haiku 4.5 with Sonnet 4.6 escalation for high-accuracy constraint satisfaction. Typical: 60 to 90 seconds. The page is not frozen, please don't refresh."
+        disclaimer="Nutrition plan generation uses Claude Haiku 4.5 with Sonnet 5 escalation for high-accuracy constraint satisfaction. Typical: 60 to 90 seconds. The page is not frozen, please don't refresh."
       />
 
       {/* Plan Name */}

@@ -181,7 +181,7 @@ export default function GenerateProgramForm({
           { start: 150, label: 'Still going. This one runs about two minutes, please do not refresh' },
           { start: 240, label: 'Longer than expected. If nothing happens by 5 minutes, try again' },
         ]}
-        disclaimer="Program generation uses Claude Sonnet 4.6 for high-accuracy constraint satisfaction across exercise selection, set / rep design, RPE, and RRS recovery clamps. Typical: about two minutes, and roughly the first 90 seconds show no visible movement while the model works. The page is not frozen, please don't refresh."
+        disclaimer="Program generation uses Claude Sonnet 5 for high-accuracy constraint satisfaction across exercise selection, set / rep design, RPE, and RRS recovery clamps. Typical: about two minutes, and roughly the first 90 seconds show no visible movement while the model works. The page is not frozen, please don't refresh."
       />
       <div className="mb-8">
         <button
