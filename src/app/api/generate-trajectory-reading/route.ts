@@ -17,7 +17,27 @@ export async function POST(request: NextRequest) {
   }
   if (!(await isCoachUser(user))) return forbidden()
 
-  const { program_id } = await request.json()
+  const body = await request.json()
+  return runTrajectoryReadingGenerationInternal(body)
+}
+
+/**
+ * Internal generation entrypoint. Skips the coach auth check so server-side
+ * admin scripts can generate a Progress Read for one client without a browser
+ * session. Mirrors `runNutritionGenerationInternal` and
+ * `runProgramGenerationInternal`, which exist for the same reason.
+ *
+ * Everything it produces is still a DRAFT: publishing, and the client email,
+ * stay separate deliberate coach actions via /api/publish-trajectory-reading.
+ *
+ * Extracted 2026-09-01. Do NOT call this from anything reachable without auth.
+ * The retry loop, the banned-terms audit and the re-score audit all live BELOW
+ * this line, so calling `generateTrajectoryReadingForProgram` directly would
+ * skip every one of them on client-facing text.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function runTrajectoryReadingGenerationInternal(body: any): Promise<NextResponse> {
+  const { program_id } = body ?? {}
   if (!program_id) {
     return NextResponse.json({ error: 'Missing program_id' }, { status: 400 })
   }
