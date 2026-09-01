@@ -18,7 +18,17 @@ export async function POST(request: NextRequest) {
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
   if (!(await isCoachUser(user))) return forbidden()
 
-  const { client_id, coach_guidance } = await request.json()
+  const body = await request.json()
+  return runSuggestPlanInternal(body)
+}
+
+/**
+ * Internal entrypoint. Same reason as the other four: a server-side script can
+ * run this for one client without a browser session. Added 2026-09-01.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function runSuggestPlanInternal(body: any): Promise<NextResponse> {
+  const { client_id, coach_guidance } = body ?? {}
   if (!client_id) return NextResponse.json({ error: 'client_id required' }, { status: 400 })
   const guidance = typeof coach_guidance === 'string' ? coach_guidance.trim() : ''
 
