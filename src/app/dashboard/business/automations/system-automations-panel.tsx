@@ -296,6 +296,13 @@ const AUTOMATIC_AUTOMATIONS = [
     steps: 1,
   },
   {
+    id: 'reassessment-digest',
+    name: 'Reassessment Digest',
+    description: 'Monday 7am Brisbane: re-syncs reassessment triggers for every live client, then emails Kade anything open. The re-sync pass is what fires the time-based reasons (block end, twelve-week cap) — no check-in would ever fire those. Sends NOTHING on a clean week, so silence means clean rather than broken. A trigger already notified does not reappear the next week; it returns only once it passes 7 days open, moving into an Overdue section with a red accent. Exists because evaluateReadiness() computed the Signal Monitoring v1.0 thresholds correctly and then nothing happened with them: the result was rendered on a dashboard, so escalation depended on Kade happening to look. Dry run on live data found Razia and Amanda both in regression with triggers nothing had surfaced. Added 2026-08-19.',
+    trigger: "Inngest cron: reassessmentDigestCron at 0 21 * * 0 UTC (Monday 7am Brisbane)",
+    steps: 4,
+  },
+  {
     id: 'weekly-checkin-auto-rescue',
     name: 'Weekly Check-In Auto-Response Rescue',
     description: 'Every 4h: re-fires the weekly-checkin/submitted Inngest event for any check-in that the auto-response pipeline never touched (auto_response_attempted_at IS NULL AND no feedback row AND submitted >6h ago AND client opted in). Safety net for transient Inngest delivery failures. Built 2026-06-14 after Ruby-Cate Week 6 silently dropped.',

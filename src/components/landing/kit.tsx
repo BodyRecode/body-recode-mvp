@@ -4,7 +4,7 @@
 // Landing template kit — the reusable, tenant-aware section library extracted
 // from the challenge / blueprint / membership pages. Every landing page is a
 // composition of these components fed its own content. Design system:
-// Pure White / Graphite (#1A1A1A) / Signal Blue (#1B6DFC).
+// Pure White / Graphite (#1A1A1A) / Signal Blue (var(--lt-accent)).
 //
 // Because the pages already read coach()/brand()/logoUrl() from tenant config,
 // composing a page from this kit is automatically white-label per coach.
@@ -15,14 +15,23 @@ import type { ReactNode, CSSProperties } from 'react'
 import { ChevronDown, Zap } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
-export const BLUE = '#1B6DFC'
+export const BLUE = 'var(--lt-accent)'
 export const INK = '#1A1A1A'
 const CONTAINER = 680
 
 // ---- Page shell -----------------------------------------------------------
-export function LandingRoot({ children }: { children: ReactNode }) {
+// `accent` themes the whole template. Defaults to Body Recode Signal Blue, so
+// existing BR pages are unchanged; pass a coach's brand colour for white-label.
+export function LandingRoot({ children, accent = '#1B6DFC' }: { children: ReactNode; accent?: string }) {
+  const themeVars = {
+    '--lt-accent': accent,
+    '--lt-accent-ink': `color-mix(in srgb, ${accent} 82%, #000)`,
+    '--lt-accent-light': `color-mix(in srgb, ${accent} 55%, #fff)`,
+    minHeight: '100vh', background: '#FFFFFF', color: INK,
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+  } as CSSProperties
   return (
-    <div style={{ minHeight: '100vh', background: '#FFFFFF', color: INK, fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+    <div style={themeVars}>
       {/* Phone-first responsive helpers (inline styles can't hold media queries) */}
       <style>{`@media (max-width: 560px){ .lt-3col{ grid-template-columns:1fr !important } .lt-2col{ grid-template-columns:1fr !important } }`}</style>
       {children}
@@ -44,7 +53,7 @@ export function Nav({ logo, brandName }: { logo: string; brandName: string }) {
 type Bg = 'white' | 'tint' | 'grey' | 'dark'
 const BG_MAP: Record<Bg, CSSProperties> = {
   white: { background: '#FFFFFF' },
-  tint: { background: '#F3F7FF', borderTop: '1px solid rgba(27,109,252,0.2)', borderBottom: '1px solid rgba(27,109,252,0.2)' },
+  tint: { background: 'color-mix(in srgb, var(--lt-accent) 5%, #fff)', borderTop: '1px solid color-mix(in srgb, var(--lt-accent) 20%, transparent)', borderBottom: '1px solid color-mix(in srgb, var(--lt-accent) 20%, transparent)' },
   grey: { background: '#F7F7F7', borderTop: '1px solid #E5E5E5', borderBottom: '1px solid #E5E5E5' },
   dark: { background: INK, position: 'relative', overflow: 'hidden' },
 }
@@ -53,7 +62,7 @@ export function Section({ bg = 'white', borderTop = false, pad = '88px 24px', gl
   return (
     <div style={{ ...BG_MAP[bg], ...(borderTop && bg === 'white' ? { borderTop: '1px solid #E5E5E5' } : {}) }}>
       {(bg === 'dark' || glow) && (
-        <div style={{ position: 'absolute', top: '-200px', right: '-200px', width: '500px', height: '500px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(27,109,252,0.15) 0%, transparent 65%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', top: '-200px', right: '-200px', width: '500px', height: '500px', borderRadius: '50%', background: 'radial-gradient(circle, color-mix(in srgb, var(--lt-accent) 15%, transparent) 0%, transparent 65%)', pointerEvents: 'none' }} />
       )}
       <div style={{ maxWidth: CONTAINER, margin: '0 auto', padding: pad, position: 'relative' }}>
         {children}
@@ -82,8 +91,8 @@ export function Lead({ children, dark }: { children: ReactNode; dark?: boolean }
 
 export function Callout({ children, tone = 'tint' }: { children: ReactNode; tone?: 'tint' | 'solid' }) {
   const s = tone === 'solid'
-    ? { background: 'rgba(27,109,252,0.1)', border: '1px solid rgba(27,109,252,0.25)' }
-    : { background: 'rgba(27,109,252,0.08)', border: '1px solid rgba(27,109,252,0.2)' }
+    ? { background: 'color-mix(in srgb, var(--lt-accent) 10%, transparent)', border: '1px solid color-mix(in srgb, var(--lt-accent) 25%, transparent)' }
+    : { background: 'color-mix(in srgb, var(--lt-accent) 8%, transparent)', border: '1px solid color-mix(in srgb, var(--lt-accent) 20%, transparent)' }
   return (
     <div style={{ ...s, borderRadius: '12px', padding: '20px 22px', marginTop: '24px' }}>
       <p style={{ fontSize: '17px', color: INK, fontWeight: 700, margin: 0, lineHeight: 1.5 }}>{children}</p>
@@ -92,9 +101,10 @@ export function Callout({ children, tone = 'tint' }: { children: ReactNode; tone
 }
 
 // ---- Hero -----------------------------------------------------------------
-export function Hero({ badge, coachName, credentials, headline, headlineAccent, videoSlot, leads, stats, proofStrip, form }: {
+export function Hero({ badge, coachName, coachPhoto = '/kade.jpg', credentials, headline, headlineAccent, videoSlot, leads, stats, proofStrip, form }: {
   badge: string
   coachName: string
+  coachPhoto?: string
   credentials: string
   headline: ReactNode
   headlineAccent?: ReactNode
@@ -106,15 +116,15 @@ export function Hero({ badge, coachName, credentials, headline, headlineAccent, 
 }) {
   return (
     <div style={{ position: 'relative', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', top: '-120px', right: '-120px', width: '500px', height: '500px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(27,109,252,0.12) 0%, transparent 65%)', pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', bottom: '0', left: '-100px', width: '340px', height: '340px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(27,109,252,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', top: '-120px', right: '-120px', width: '500px', height: '500px', borderRadius: '50%', background: 'radial-gradient(circle, color-mix(in srgb, var(--lt-accent) 12%, transparent) 0%, transparent 65%)', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', bottom: '0', left: '-100px', width: '340px', height: '340px', borderRadius: '50%', background: 'radial-gradient(circle, color-mix(in srgb, var(--lt-accent) 7%, transparent) 0%, transparent 70%)', pointerEvents: 'none' }} />
       <div style={{ maxWidth: CONTAINER, margin: '0 auto', padding: '48px 24px 64px' }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(27,109,252,0.1)', border: '1px solid rgba(27,109,252,0.25)', borderRadius: '99px', padding: '7px 16px', marginBottom: '20px' }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'color-mix(in srgb, var(--lt-accent) 10%, transparent)', border: '1px solid color-mix(in srgb, var(--lt-accent) 25%, transparent)', borderRadius: '99px', padding: '7px 16px', marginBottom: '20px' }}>
           <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: BLUE }} />
-          <span style={{ fontSize: '12px', fontWeight: 700, color: '#1056D6', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{badge}</span>
+          <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--lt-accent-ink)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{badge}</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '28px' }}>
-          <img src="/kade.jpg" alt={coachName} style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', objectPosition: 'top center', border: '1px solid #E5E5E5', flexShrink: 0 }} />
+          <img src={coachPhoto} alt={coachName} style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', objectPosition: 'top center', border: '1px solid #E5E5E5', flexShrink: 0 }} />
           <div>
             <p style={{ fontSize: '13px', fontWeight: 800, color: INK, margin: 0, lineHeight: 1.3 }}>Built by {coachName}</p>
             <p style={{ fontSize: '12px', color: '#6B6B6B', margin: 0, lineHeight: 1.3 }}>{credentials}</p>
@@ -173,13 +183,13 @@ export function LandingVideo({ src, poster }: { src: string; poster?: string }) 
 // Branded "coming soon" video frame (used until a real explainer is produced).
 export function VideoComingSoon({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
-    <div style={{ position: 'relative', background: 'linear-gradient(135deg, #1A1A1A 0%, #0B1F3F 100%)', border: '1px solid rgba(27,109,252,0.35)', borderRadius: '14px', aspectRatio: '16 / 9', marginBottom: '32px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 30px -8px rgba(27,109,252,0.35)' }}>
-      <div style={{ position: 'absolute', top: '-100px', right: '-100px', width: '380px', height: '380px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(27,109,252,0.25) 0%, transparent 65%)', pointerEvents: 'none' }} />
+    <div style={{ position: 'relative', background: 'linear-gradient(135deg, #1A1A1A 0%, #0B1F3F 100%)', border: '1px solid color-mix(in srgb, var(--lt-accent) 35%, transparent)', borderRadius: '14px', aspectRatio: '16 / 9', marginBottom: '32px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 30px -8px color-mix(in srgb, var(--lt-accent) 35%, transparent)' }}>
+      <div style={{ position: 'absolute', top: '-100px', right: '-100px', width: '380px', height: '380px', borderRadius: '50%', background: 'radial-gradient(circle, color-mix(in srgb, var(--lt-accent) 25%, transparent) 0%, transparent 65%)', pointerEvents: 'none' }} />
       <div style={{ position: 'relative', textAlign: 'center', padding: '24px' }}>
-        <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: 'rgba(27,109,252,0.18)', border: '1.5px solid rgba(255,255,255,0.4)', margin: '0 auto 18px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: 'color-mix(in srgb, var(--lt-accent) 18%, transparent)', border: '1.5px solid rgba(255,255,255,0.4)', margin: '0 auto 18px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <svg width="26" height="26" viewBox="0 0 24 24" fill="#FFFFFF" style={{ marginLeft: '4px' }}><polygon points="6,4 22,12 6,20" /></svg>
         </div>
-        <p style={{ fontSize: '12px', fontWeight: 800, color: '#7BB3FF', letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 8px' }}>{eyebrow}</p>
+        <p style={{ fontSize: '12px', fontWeight: 800, color: 'var(--lt-accent-light)', letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 8px' }}>{eyebrow}</p>
         <p style={{ fontSize: '20px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.015em', margin: '0 0 6px', lineHeight: 1.25 }}>{title}</p>
         <p style={{ fontSize: '12px', fontWeight: 700, color: '#8A8A8E', letterSpacing: '0.08em', textTransform: 'uppercase', margin: 0 }}>Coming soon</p>
       </div>
@@ -195,14 +205,14 @@ export function FeatureList({ items }: { items: Feature[] }) {
       {items.map(item => {
         const Icon = item.icon
         return (
-          <div key={item.title} style={{ background: '#FFFFFF', border: item.featured ? `1px solid ${BLUE}` : '1px solid #E5E5E5', borderLeft: item.featured ? `3px solid ${BLUE}` : '1px solid #E5E5E5', borderRadius: '12px', padding: '20px 22px', display: 'flex', gap: '18px', alignItems: 'flex-start', boxShadow: item.featured ? '0 1px 3px rgba(27,109,252,0.06)' : 'none' }}>
-            <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: item.featured ? BLUE : 'rgba(27,109,252,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <div key={item.title} style={{ background: '#FFFFFF', border: item.featured ? `1px solid ${BLUE}` : '1px solid #E5E5E5', borderLeft: item.featured ? `3px solid ${BLUE}` : '1px solid #E5E5E5', borderRadius: '12px', padding: '20px 22px', display: 'flex', gap: '18px', alignItems: 'flex-start', boxShadow: item.featured ? '0 1px 3px color-mix(in srgb, var(--lt-accent) 6%, transparent)' : 'none' }}>
+            <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: item.featured ? BLUE : 'color-mix(in srgb, var(--lt-accent) 8%, transparent)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <Icon size={20} strokeWidth={2} color={item.featured ? '#FFFFFF' : BLUE} />
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px', flexWrap: 'wrap' }}>
                 <p style={{ fontSize: '15px', fontWeight: 800, color: INK, margin: 0, letterSpacing: '-0.005em' }}>{item.title}</p>
-                <span style={{ fontSize: '10px', fontWeight: 700, color: item.featured ? '#1056D6' : '#6B6B6B', background: item.featured ? 'rgba(27,109,252,0.1)' : '#F5F5F5', padding: '3px 8px', borderRadius: '4px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{item.timing}</span>
+                <span style={{ fontSize: '10px', fontWeight: 700, color: item.featured ? 'var(--lt-accent-ink)' : '#6B6B6B', background: item.featured ? 'color-mix(in srgb, var(--lt-accent) 10%, transparent)' : '#F5F5F5', padding: '3px 8px', borderRadius: '4px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{item.timing}</span>
               </div>
               <p style={{ fontSize: '13px', color: '#4A4A4A', lineHeight: 1.65, margin: 0 }}>{item.desc}</p>
             </div>
@@ -225,7 +235,7 @@ export function ColorCardList({ items }: { items: ColorCard[] }) {
             <span style={{ fontSize: '12px', color: '#999999' }}>· {p.tag}</span>
           </div>
           <p style={{ fontSize: '13px', color: '#3A3A3A', lineHeight: 1.6, margin: '0 0 8px', fontWeight: 600 }}>{p.signal}</p>
-          {p.bodyLabel && <p style={{ fontSize: '11px', fontWeight: 700, color: '#1056D6', textTransform: 'uppercase', letterSpacing: '0.06em', margin: '0 0 4px' }}>{p.bodyLabel}</p>}
+          {p.bodyLabel && <p style={{ fontSize: '11px', fontWeight: 700, color: 'var(--lt-accent-ink)', textTransform: 'uppercase', letterSpacing: '0.06em', margin: '0 0 4px' }}>{p.bodyLabel}</p>}
           <p style={{ fontSize: '13px', color: '#6B6B6B', lineHeight: 1.6, margin: 0 }}>{p.body}</p>
         </div>
       ))}
@@ -243,14 +253,14 @@ export function StepList({ items }: { items: Step[] }) {
         return (
           <div key={s.label} style={{ background: '#ffffff', border: '1px solid #E5E5E5', borderLeft: s.status ? `4px solid ${accent}` : '1px solid #E5E5E5', borderRadius: '12px', padding: '20px 22px', display: 'flex', gap: '18px', alignItems: 'flex-start' }}>
             {s.number && (
-              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(27,109,252,0.1)', border: '1px solid rgba(27,109,252,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '13px', fontWeight: 800, color: BLUE }}>{s.number}</div>
+              <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'color-mix(in srgb, var(--lt-accent) 10%, transparent)', border: '1px solid color-mix(in srgb, var(--lt-accent) 20%, transparent)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '13px', fontWeight: 800, color: BLUE }}>{s.number}</div>
             )}
             <div style={{ flex: 1 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', flexWrap: 'wrap' }}>
                 <span style={{ fontSize: '16px', fontWeight: 800, color: s.status === 'complete' ? '#999999' : INK }}>{s.label}</span>
                 <span style={{ fontSize: '12px', color: '#999999', fontWeight: 600 }}>{s.weeks}</span>
                 {s.status === 'complete' && <span style={{ fontSize: '11px', fontWeight: 700, color: '#4A4A4A', background: '#F7F7F7', padding: '2px 8px', borderRadius: '99px' }}>Complete</span>}
-                {s.status === 'active' && <span style={{ fontSize: '11px', fontWeight: 700, color: '#1056D6', background: 'rgba(27,109,252,0.1)', padding: '2px 8px', borderRadius: '99px' }}>Starts here</span>}
+                {s.status === 'active' && <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--lt-accent-ink)', background: 'color-mix(in srgb, var(--lt-accent) 10%, transparent)', padding: '2px 8px', borderRadius: '99px' }}>Starts here</span>}
               </div>
               <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.65, margin: 0 }}>{s.desc}</p>
             </div>
@@ -279,9 +289,9 @@ export function ContrastBlock({ wrong, right }: { wrong: { label: string; body: 
         <p style={{ fontSize: '15px', fontWeight: 800, color: '#8B2E22', margin: '0 0 8px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{wrong.label}</p>
         <p style={{ fontSize: '16px', color: '#5A3A36', lineHeight: 1.65, margin: 0 }}>{wrong.body}</p>
       </div>
-      <div style={{ background: '#F0F7FF', border: '1px solid rgba(27,109,252,0.25)', borderRadius: '14px', padding: '22px 24px' }}>
-        <p style={{ fontSize: '15px', fontWeight: 800, color: '#1056D6', margin: '0 0 8px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{right.label}</p>
-        <p style={{ fontSize: '16px', color: '#284066', lineHeight: 1.65, margin: 0 }}>{right.body}</p>
+      <div style={{ background: 'color-mix(in srgb, var(--lt-accent) 6%, #fff)', border: '1px solid color-mix(in srgb, var(--lt-accent) 25%, transparent)', borderRadius: '14px', padding: '22px 24px' }}>
+        <p style={{ fontSize: '15px', fontWeight: 800, color: 'var(--lt-accent-ink)', margin: '0 0 8px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{right.label}</p>
+        <p style={{ fontSize: '16px', color: '#3A3A3A', lineHeight: 1.65, margin: 0 }}>{right.body}</p>
       </div>
     </div>
   )
@@ -295,7 +305,7 @@ export function ProofVoices({ intro, voices }: { intro?: string; voices: Voice[]
       {intro && <p style={{ fontSize: '15px', color: '#B4BAC3', lineHeight: 1.7, margin: '0 0 16px' }}>{intro}</p>}
       <div style={{ display: 'grid', gap: '12px' }}>
         {voices.map(v => (
-          <div key={v.name} style={{ background: 'rgba(27,109,252,0.08)', border: '1px solid rgba(77,141,255,0.35)', borderRadius: '14px', padding: '22px 24px' }}>
+          <div key={v.name} style={{ background: 'color-mix(in srgb, var(--lt-accent) 8%, transparent)', border: '1px solid rgba(77,141,255,0.35)', borderRadius: '14px', padding: '22px 24px' }}>
             {v.stateShift && (
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '7px', background: 'rgba(16,160,100,0.14)', border: '1px solid rgba(16,160,100,0.35)', borderRadius: '999px', padding: '5px 12px', marginBottom: '14px' }}>
                 <span style={{ fontSize: '11px', fontWeight: 800, color: '#4FD6A0', letterSpacing: '0.06em', textTransform: 'uppercase' }}>State progress · {v.stateShift}</span>
@@ -318,7 +328,7 @@ export function FounderBlock({ eyebrow, heading, photo, name, credentials, paras
     <Section>
       <Eyebrow>{eyebrow}</Eyebrow>
       <div style={{ marginBottom: '28px' }}><Heading>{heading}</Heading></div>
-      <div style={{ position: 'relative', borderRadius: '18px', overflow: 'hidden', marginBottom: '28px', boxShadow: '0 0 0 1px rgba(27,109,252,0.15), 0 24px 48px rgba(0,0,0,0.12)' }}>
+      <div style={{ position: 'relative', borderRadius: '18px', overflow: 'hidden', marginBottom: '28px', boxShadow: '0 0 0 1px color-mix(in srgb, var(--lt-accent) 15%, transparent), 0 24px 48px rgba(0,0,0,0.12)' }}>
         <img src={photo} alt={name} style={{ width: '100%', display: 'block', aspectRatio: '4 / 5', objectFit: 'cover', objectPosition: 'top center', filter: 'grayscale(1)' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 50%, rgba(12,10,9,0.88) 100%)' }} />
         <div style={{ position: 'absolute', bottom: '22px', left: '24px', right: '24px' }}>
@@ -348,7 +358,7 @@ export function StateFilter({ eyebrow, heading, intro, subhead, rows, closer }: 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '32px' }}>
         {rows.map(row => (
           <div key={row.state} style={{ background: '#ffffff', border: '1px solid #E5E5E5', borderRadius: '12px', padding: '18px 20px' }}>
-            <p style={{ fontSize: '13px', fontWeight: 800, color: '#1056D6', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{row.state}</p>
+            <p style={{ fontSize: '13px', fontWeight: 800, color: 'var(--lt-accent-ink)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{row.state}</p>
             <p style={{ fontSize: '14px', color: '#4A4A4A', lineHeight: 1.6, marginBottom: '14px' }}>{row.desc}</p>
             <a href={row.href} style={{ display: 'inline-block', fontSize: '13px', fontWeight: 700, color: BLUE, textDecoration: 'none', borderBottom: `1px solid ${BLUE}`, paddingBottom: '2px' }}>{row.cta} →</a>
           </div>
