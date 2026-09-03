@@ -14,7 +14,7 @@
  *
  * Pattern is a READ, not a permanent attribute. It is allowed to change as
  * evidence improves, because the evidence is not comparable: the scorecard is
- * 25 self-reported answers, the CFFS is 221 intake points plus photographs plus
+ * 25 self-reported answers, the CFFS is 230 intake points plus photographs plus
  * measurements plus (when present) blood markers. More evidence wins.
  *
  * Three rules keep that honest rather than chaotic:
@@ -77,7 +77,7 @@ export type PatternSource = (typeof PATTERN_SOURCES)[number]
 const SOURCE_WEIGHT: Record<PatternSource, number> = {
   scorecard: 1,   // 25 self-reported answers, often low confidence
   challenge: 2,   // confirmed against 14 days of behaviour
-  cffs: 3,        // 221 intake points, photos, measurements, blood markers
+  cffs: 3,        // 230 intake points, photos, measurements, blood markers
 }
 
 export function supersedes(incoming: PatternSource, existing: PatternSource | null | undefined): boolean {

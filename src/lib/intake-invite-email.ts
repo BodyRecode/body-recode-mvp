@@ -29,7 +29,7 @@ export interface IntakeInviteEmailParams {
  * at a natural reassessment point (block-end, life-context shift, post-travel,
  * etc.). Copy acknowledges the coaching is already underway, explains WHY a
  * fresh read is being asked for, and is honest about the time cost (30-40 min
- * for 221 questions — the existing "15-20 minutes" line under-sold it and was
+ * for 230 questions — the existing "15-20 minutes" line under-sold it and was
  * only added for first-time psychological onboarding).
  */
 export function buildIntakeInviteEmail({
@@ -68,7 +68,7 @@ export function buildIntakeInviteEmail({
     )
     bodyParagraphs.push(
       emailBody(
-        'Give it 30 to 40 minutes when you have a quiet block. It is 221 questions, most of them quick. There are no right or wrong answers, just where you are at now, not your best or worst days.',
+        'Give it 30 to 40 minutes when you have a quiet block. It is 230 questions, most of them quick. There are no right or wrong answers, just where you are at now, not your best or worst days.',
         { bottom: 28 },
       ),
     )

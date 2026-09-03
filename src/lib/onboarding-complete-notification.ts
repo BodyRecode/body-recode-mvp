@@ -79,7 +79,7 @@ export async function notifyOnboardingCompleteIfReady(
     eyebrow = 'Onboarding Complete'
     heading = `${client.name} has completed all onboarding forms`
     body =
-      `${client.name} has now submitted both their foundational intake (221 questions) and their baseline (measurements plus front, side, and back photos). ` +
+      `${client.name} has now submitted both their foundational intake (230 questions) and their baseline (measurements plus front, side, and back photos). ` +
       `All inputs the Fat Map and CFFS engine need are in place. ` +
       `Open the client profile to review the inputs, then click Generate CFFS on the Foundational Synthesis panel when you're ready to begin interpretation. ` +
       `The CFFS reads the photos as part of Spatial Patterning, so the visual evidence will flow into the interpretation automatically.`

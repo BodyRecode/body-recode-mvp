@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { brand } from "@/config/tenant";
 import { ADVISORY } from "@/config/advisors";
+import { getTotalQuestions } from "@/lib/intake-questions";
 
 export const metadata: Metadata = {
   title: 'The Engine — Inside Body Recode™ Biological Interpretation (Layer 1)',
@@ -29,7 +30,7 @@ const OPERATIONAL = 'Claude Haiku 4.5' // AI_MODELS.operational
 
 /* ---------- Data ---------- */
 const FOOTPRINT = [
-  { n: '221', l: 'intake signals', d: 'the read instrument · 8 domains' },
+  { n: String(getTotalQuestions()), l: 'intake questions', d: 'the read instrument · 8 domains' },
   { n: '5', l: 'interpretive pillars', d: 'FMM primary + PTS/HABNS/RRS/BIRS' },
   { n: '4 + 14', l: 'Fat Map', d: 'patterns + extended sub-zones' },
   { n: '3', l: 'body states', d: 'the classification' },
@@ -47,7 +48,7 @@ const STAGES = [
 const INPUTS = [
   {
     name: 'Foundational Intake',
-    meta: '8 domains · 221 scale signals',
+    meta: `8 domains · ${getTotalQuestions()} questions`,
     model: null,
     desc: 'The deep input. Eight scored signal domains map one-to-one onto eight JSONB buckets the engine reads: Fat Map, Injury, Training, Nutrition, Schedule, Sleep, Stress, Medications/Supplements.',
     store: 'intakes.*',

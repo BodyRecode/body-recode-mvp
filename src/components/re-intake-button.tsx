@@ -102,7 +102,7 @@ export default function ReintakeButton({ clientId, clientName, clientEmail, late
           onClick={createInvitation}
           disabled={status === 'loading'}
           className="text-sm px-4 py-2 border border-[#E8EAEE] text-[#43474F] rounded-lg hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] transition-colors disabled:opacity-50"
-          title={status === 'error' ? errorMsg : 'Send a fresh 221-question intake to an existing client for reassessment (block-end, life-context shift, etc). Uses the same form as New Intake but with re-intake email copy.'}
+          title={status === 'error' ? errorMsg : 'Send a fresh 230-question intake to an existing client for reassessment (block-end, life-context shift, etc). Uses the same form as New Intake but with re-intake email copy.'}
         >
           {status === 'loading' ? 'Creating…' : status === 'error' ? `Error: ${errorMsg}` : 'Re-intake'}
         </button>

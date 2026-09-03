@@ -192,9 +192,9 @@ export const HOW_IT_WORKS_STAGES = [
   {
     number: '01',
     title: 'The Foundational Read',
-    subtitle: 'Stage One · 221 data points',
+    subtitle: 'Stage One · 230 data points',
     heading: 'I read your body before I prescribe anything',
-    body: 'This is the Foundational Read: 221 data points across eight signal domains, plus baseline measurements, photos, and any recent bloodwork. Nothing assumed, nothing pulled from a template. It exists to surface what is actually happening, not to confirm what I expect.',
+    body: 'This is the Foundational Read: 230 data points across eight signal domains, plus baseline measurements, photos, and any recent bloodwork. Nothing assumed, nothing pulled from a template. It exists to surface what is actually happening, not to confirm what I expect.',
     domains: [
       { n: '01', name: 'Training Load', desc: 'Volume, intensity, recovery debt' },
       { n: '02', name: 'Sleep Quality', desc: 'Depth, duration, regularity' },
@@ -206,7 +206,7 @@ export const HOW_IT_WORKS_STAGES = [
       { n: '08', name: 'Behavioural Context', desc: 'Adherence, environment, identity' },
     ],
     output: 'Your Foundational Read: your body\'s current state, the pattern driving it, and what to address first.',
-    coachScript: '"Before I write you anything, you fill out a long questionnaire. 221 questions across eight areas: training, sleep, food, stress, recovery, hormones, your history, and what your day to day actually looks like. Plus your measurements, photos, and any recent blood tests. I go through the lot and write you a document that says what\'s actually going on with your body and why. That document is what I call your Foundational Read. None of it is a template, and none of it is me confirming what I already think."',
+    coachScript: '"Before I write you anything, you fill out a long questionnaire. 230 questions across eight areas: training, sleep, food, stress, recovery, hormones, your history, and what your day to day actually looks like. Plus your measurements, photos, and any recent blood tests. I go through the lot and write you a document that says what\'s actually going on with your body and why. That document is what I call your Foundational Read. None of it is a template, and none of it is me confirming what I already think."',
   },
   {
     number: '02',

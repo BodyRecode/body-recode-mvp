@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getTotalQuestions } from '@/lib/intake-questions'
 import { Resend } from 'resend'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
 import { buildPortalOrientationEmail } from '@/lib/portal-orientation-email'
@@ -184,7 +185,7 @@ export async function POST(request: NextRequest) {
         html: buildCoachNotificationEmail({
           eyebrow: 'Re-intake · Reassessment',
           heading: `${clientName} submitted their re-intake`,
-          body: `${clientName} has completed and submitted a fresh 221-question intake for reassessment. The intakes table now has a newer row that will be picked up on your next CFFS regenerate — head to the client profile and click Regenerate CFFS to run a fresh interpretation against the updated data. No new baseline or portal orientation was sent (existing client, existing portal).`,
+          body: `${clientName} has completed and submitted a fresh ${getTotalQuestions()}-question intake for reassessment. The intakes table now has a newer row that will be picked up on your next CFFS regenerate — head to the client profile and click Regenerate CFFS to run a fresh interpretation against the updated data. No new baseline or portal orientation was sent (existing client, existing portal).`,
           ctaLabel: 'Open client profile',
           ctaUrl: `${baseUrl}/dashboard/clients/${invitation.client_id}`,
           footnote: 'Next step: regenerate CFFS to inform the next training block.',
@@ -203,7 +204,7 @@ export async function POST(request: NextRequest) {
         html: buildCoachNotificationEmail({
           eyebrow: 'Foundational Intake',
           heading: `${clientName} submitted their intake`,
-          body: `${clientName} has completed and submitted all 221 questions of their foundational intake. Their baseline (measurements and front/side/back photos) is the remaining onboarding step. Once that lands you will receive a second email confirming the CFFS is ready to generate from your dashboard, and the Fat Map will read the photos as part of Spatial Patterning. The Portal Orientation email has been sent to them automatically so they can read through the portal while baseline is still outstanding.`,
+          body: `${clientName} has completed and submitted all ${getTotalQuestions()} questions of their foundational intake. Their baseline (measurements and front/side/back photos) is the remaining onboarding step. Once that lands you will receive a second email confirming the CFFS is ready to generate from your dashboard, and the Fat Map will read the photos as part of Spatial Patterning. The Portal Orientation email has been sent to them automatically so they can read through the portal while baseline is still outstanding.`,
           ctaLabel: 'Open client profile',
           ctaUrl: `${baseUrl}/dashboard/clients/${invitation.client_id}`,
           footnote: 'Their next portal task (Baseline Documentation) is now unlocked.',

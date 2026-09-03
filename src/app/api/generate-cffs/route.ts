@@ -237,7 +237,7 @@ export async function runCFFSGenerationInternal(body: any): Promise<NextResponse
   // Generate CFFS via Claude.
   //
   // Generation + parse retry loop (2026-07-11). Pre-this-date the route was
-  // single-shot with a 6000-token cap. For data-rich clients (full 221-question
+  // single-shot with a 6000-token cap. For data-rich clients (full 230-question
   // intake + baseline + 3 photos + an approved blood panel) the 14-field CFFS
   // JSON occasionally ran past the cap, truncated mid-object, and
   // extractFirstJsonObject returned null — surfacing to the coach as the opaque

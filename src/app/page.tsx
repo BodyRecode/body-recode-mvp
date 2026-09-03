@@ -2,12 +2,22 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import LicensingEnquiryForm from '@/components/marketing/licensing-enquiry-form'
 import { ADVISORY } from '@/config/advisors'
+import { getTotalQuestions } from '@/lib/intake-questions'
 import { brand } from "@/config/tenant";
+
+/*
+ * Never hardcode the intake size. It was published as 221 from April 2026 and
+ * was wrong from 3 June, when Section D grew: the real figure has been 230
+ * since then and the number was still on the homepage, the engine page, the
+ * social card and two client emails three months later. Read it from the
+ * question set instead.
+ */
+const QUESTIONS = getTotalQuestions()
 
 export const metadata: Metadata = {
   title: 'Body Recode™ | The interpretation engine',
   description:
-    'Body Recode™ reads what state a body is in before any training, nutrition or clinical intervention is designed. One engine, 221 structured signals, and it stops at the read. Licensable for practitioners, clinics and platforms.',
+    `Body Recode™ reads what state a body is in before any training, nutrition or clinical intervention is designed. One engine, ${QUESTIONS} structured questions, and it stops at the read. Licensable for practitioners, clinics and platforms.`,
 }
 
 /* ---------- Tokens (dark "platform" expression of the shared brand) ---------- */
@@ -27,13 +37,13 @@ const MONO = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
 /* ---------- Data ---------- */
 const DOMAINS = [
   { num: '01', name: 'Training Load', desc: 'How much they are training, how long they have been doing it, and how much of it is still sitting in their system unrecovered.' },
-  { num: '02', name: 'Recovery', desc: 'Whether they actually recover between sessions, or just turn up again tired and call it consistency.' },
+  { num: '02', name: 'Recovery and Sleep', desc: 'Whether they actually recover between sessions or just turn up again tired. Sleep quality rather than sleep hours, because the hours can be fine while the night repairs nothing.' },
   { num: '03', name: 'Stress Load', desc: 'How much pressure they are under, and whether their body ever gets the chance to come down from it.' },
   { num: '04', name: 'Hormonal Signals', desc: 'The symptoms that point to a hormone driving what is happening, plus blood results where they exist.' },
-  { num: '05', name: 'Fat Storage', desc: 'Where they store fat, and what that says about which hormone is behind it.' },
-  { num: '06', name: 'Sleep', desc: 'How well they sleep rather than how long. Whether the night is actually repairing anything.' },
-  { num: '07', name: 'Behaviour', desc: 'What they actually do day to day. It often says more about the state of the body than what they report feeling.' },
-  { num: '08', name: 'Emotional Load', desc: 'The pressure that is not physical. Worry, obligation, and the habit of pushing through. The body answers it the same way it answers training.' },
+  { num: '05', name: 'Fat Storage', desc: 'Where they store fat, and what that says about which hormone is behind it. Read through the Fat Map Method™.' },
+  { num: '06', name: 'Behaviour and Rhythm', desc: 'What they actually do day to day, and when their energy arrives and leaves. It often says more about the state of the body than what they report feeling.' },
+  { num: '07', name: 'Emotional Load', desc: 'The pressure that is not physical. Worry, obligation, and the habit of pushing through. The body answers it the same way it answers training.' },
+  { num: '08', name: 'What They Have Already Tried', desc: 'Every approach they have been through and how their body responded. A plan that has failed twice is information, not a false start.' },
 ]
 
 const PILLARS_SHORT = [
@@ -227,7 +237,7 @@ export default function HomePage() {
           >
             <span style={{ width: 7, height: 7, borderRadius: '50%', background: BLUE_LIGHT, boxShadow: `0 0 8px ${BLUE_LIGHT}` }} />
             <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: '0.08em', color: TXT_DIM }}>
-              221 questions in · 8 areas of the body covered · one read out
+              {QUESTIONS} questions in · 8 signal domains read · one read out
             </span>
           </div>
 
@@ -261,7 +271,7 @@ export default function HomePage() {
           <p style={{ fontSize: 18, lineHeight: 1.7, color: TXT_DIM, maxWidth: 620, marginBottom: 40 }}>
             One engine that reads what state a person&rsquo;s body is actually in: how they are storing fat and
             why, what their capacity and regulation can currently take, and what should not be touched yet. It
-            reads 221 structured signals and stops there. It does not write programs, diets or treatment.
+            reads {QUESTIONS} structured questions and stops there. It does not write programs, diets or treatment.
             What gets built on the read is yours.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
@@ -327,7 +337,7 @@ export default function HomePage() {
           afterwards is built from that answer.
         </Prose>
         <Grid min={220}>
-          <StatCard value="221" label="Questions asked" detail="Covering eight areas of the body, from sleep and stress through to training, food and fat storage. It takes most people around 45 minutes." />
+          <StatCard value={String(QUESTIONS)} label="Questions asked" detail="Eleven sections, covering sleep, stress, training, food, injury, medications and where they store fat. Most people take 30 to 60 minutes over it." />
           <StatCard value="5" label="Ways of reading them" detail="Five separate lenses look at the same answers. No single one decides the outcome on its own." />
           <StatCard value="3" label="Possible answers" detail="Every read lands on one of three states. That answer sets what should and should not be done next." />
         </Grid>
@@ -347,7 +357,7 @@ export default function HomePage() {
             accent
             label="Layer 1 · Interpretation"
             owner="Owned by Body Recode™"
-            body="Takes the 221 answers and produces a written read, called the CFFS. It says what state the body is in, what is driving it, and what should be left alone for now. It does not write a program and it does not write a diet. It finishes at the read."
+            body="Takes the answers and produces a written read, called the CFFS. It says what state the body is in, what is driving it, and what should be left alone for now. It does not write a program and it does not write a diet. It finishes at the read."
           />
           <LayerCard
             label="Layer 2 · Execution"
@@ -419,7 +429,7 @@ export default function HomePage() {
 
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {/* INPUT */}
-            <StageCard kicker="Step 1 · In" title="The questions" meta="221 of them">
+            <StageCard kicker="Step 1 · In" title="The questions" meta={`${QUESTIONS} of them`}>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                 {DOMAINS.map((d) => (
                   <span key={d.num} style={chip}>{d.name}</span>
@@ -514,11 +524,13 @@ export default function HomePage() {
       {/* ===== SIGNAL DOMAINS ===== */}
       <Section wide>
         <SectionLabel>The Questions</SectionLabel>
-        <SectionHeading>221 questions, across eight areas of the body.</SectionHeading>
+        <SectionHeading>{QUESTIONS} questions. Eight things the read looks for.</SectionHeading>
         <Prose style={{ maxWidth: 720, marginBottom: 44 }}>
-          Nothing is read until all of it is answered. It is a long form and that is deliberate: the
-          read is only as good as what it is given, and most of what matters here is not visible in a
-          consultation or a set of bloods.
+          The questions are grouped into eleven sections on the form, but that is just how they are
+          asked. What the read is actually looking for is the eight below, and each one is assembled
+          from answers scattered across the whole intake. Nothing is read until all of it is in. It is
+          a long form on purpose: most of what matters here is not visible in a consultation or a set
+          of bloods.
         </Prose>
         <Grid min={230}>
           {DOMAINS.map((d) => (
@@ -536,7 +548,7 @@ export default function HomePage() {
         <SectionLabel>Interpretive Pillars</SectionLabel>
         <SectionHeading>Five ways of reading the same answers.</SectionHeading>
         <Prose style={{ maxWidth: 720, marginBottom: 44 }}>
-          The same 221 answers get read five separate times, each time looking for something different.
+          The same answers get read five separate times, each time looking for something different.
           No one of them decides the outcome on its own. The read is what they say when you put them
           together, which is usually more interesting than any of them alone.
         </Prose>

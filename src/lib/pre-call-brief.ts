@@ -742,7 +742,7 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   lines.push('Bridge: "Based on what you told me about [their words], here\'s exactly how')
   lines.push('my coaching gets to that."')
   lines.push('')
-  lines.push('• 221-question intake → Foundational Read. From you, not a template.')
+  lines.push('• 230-question intake → Foundational Read. From you, not a template.')
   lines.push('• Fat Map - four location-plus-signal pairs. Location narrows, the signal decides.')
   if (!isIndeterminate) {
     lines.push(`  Yours points at ${profile}${profileConfidence === 'low' ? ', provisionally' : ''}.`)

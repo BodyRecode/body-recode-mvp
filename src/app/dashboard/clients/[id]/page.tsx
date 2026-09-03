@@ -241,7 +241,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
     reScore: reScoreRows?.[0] ?? null,
   })
   const archivedCffs = cffsRecords?.filter(c => c.is_archived) || []
-  // Split by kind. The foundational invitation is the original 221-question
+  // Split by kind. The foundational invitation is the original 230-question
   // intake (drives status of the Intake row). The supplementary is the
   // 5-question follow-up added 2026-05-12 (medications + dietary context)
   // and gets its own status row beneath. Treat a row with no `kind` as
@@ -1223,7 +1223,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 {latestIntakeId && (
                   <RegenerateCFFSButton clientId={client.id} intakeId={latestIntakeId} />
                 )}
-                {/* Re-intake: sends the client a fresh 221-question intake.
+                {/* Re-intake: sends the client a fresh 230-question intake.
                     Placed alongside Regenerate CFFS because the two actions
                     live on the same axis: "the CFFS needs a refresh — do I
                     regenerate against existing intake data, or ask the client
@@ -1455,7 +1455,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               This is not a summary. It is a structured interpretation of how this client&apos;s system is currently organising itself.
             </p>
             <p className="text-sm text-[#98A0AD] leading-relaxed">
-              The CFFS translates 221 data points across eight signal domains into a single, coherent picture of the client&apos;s current body state. Nothing here prescribes or diagnoses - you remain the interpretive authority.
+              The CFFS translates 230 data points across eight signal domains into a single, coherent picture of the client&apos;s current body state. Nothing here prescribes or diagnoses - you remain the interpretive authority.
             </p>
           </div>
 
