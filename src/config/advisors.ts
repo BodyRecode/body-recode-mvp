@@ -3,11 +3,15 @@
 // SINGLE SOURCE OF TRUTH. Both the public Performance Coaching page and the
 // (noindex) Engine page render from this file. Edit here and both update.
 //
-// STATUS (11 Aug 2026): all three advisors have AGREED to review the doctrine.
-// They are shown anonymously by credential for now. As each finalises their
-// review, fill in `name`, `credentials`, `photo` and (optional) `href`, and the
-// cards upgrade themselves automatically. Only publish a name once that person
-// has confirmed you may use it.
+// STATUS (3 Sep 2026): NOBODY HAS BEEN ASKED YET. An earlier note in this file
+// said all three had agreed; that was not the case, and the copy below had been
+// written as though the reviews were underway. Every line here is now
+// forward-looking on purpose.
+//
+// As each person actually agrees and finishes, fill in `name`, `credentials`,
+// `photo` and (optional) `href` and the cards upgrade themselves. Only publish a
+// name once that person has confirmed you may use it, and only move this copy to
+// the past tense once there is a completed review behind it.
 
 export type Advisor = {
   id: string
@@ -29,10 +33,10 @@ export type Advisor = {
 
 export const ADVISORY = {
   eyebrow: 'Independent Review',
-  heading: 'Reviewed, not just built.',
+  heading: 'Built to be reviewed.',
   intro:
     "Body Recode's doctrine sits under independent review by a small advisory group of practising clinicians and high-performance specialists. Before a method reaches you, it has been pressure-tested by people who work at the top of their fields.",
-  note: 'Full names, credentials and profiles are being added as each advisor’s review is finalised.',
+  note: 'Reviews are being sought now. Names and credentials will be published only where an advisor has completed a review and agreed to be named.',
   advisors: [
     {
       id: 'sports-medicine',
