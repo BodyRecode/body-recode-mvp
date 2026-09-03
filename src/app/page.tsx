@@ -112,10 +112,9 @@ const STATES = [
 const ENVIRONMENTS = [
   {
     live: true,
-    kicker: 'Health & Fitness',
-    title: 'Performance Coaching',
-    desc: 'The founder\u2019s own coaching practice, and the first thing built on the engine. It runs on the read daily, which is where the doctrine gets tested against real bodies. It is a separate product with its own brand, powered by the engine rather than part of it.',
-    link: { href: brand().performanceDomain, label: 'Visit Performance Coaching →' },
+    kicker: 'Health and fitness',
+    title: 'General population coaching',
+    desc: 'The engine runs daily inside the founder\u2019s own coaching practice, which is where the doctrine gets tested against real bodies over months rather than in theory. That practice is a separate business under its own name. It is not sold from here, it is not part of what you would license, and it is not where this platform is going.',
   },
   {
     kicker: 'Corporate & Executive',
@@ -683,10 +682,7 @@ export default function HomePage() {
                   </span>
                 </div>
                 <h3 style={{ fontSize: 18, fontWeight: 700, color: TXT, marginBottom: 10 }}>{e.title}</h3>
-                <p style={{ fontSize: 13, color: TXT_DIM, lineHeight: 1.75, marginBottom: e.link ? 18 : 0 }}>{e.desc}</p>
-                {e.link && (
-                  <a href={e.link.href} style={{ fontSize: 13, color: BLUE_LIGHT, fontWeight: 600, textDecoration: 'none' }}>{e.link.label}</a>
-                )}
+                <p style={{ fontSize: 13, color: TXT_DIM, lineHeight: 1.75 }}>{e.desc}</p>
               </div>
             ))}
           </Grid>
@@ -723,6 +719,27 @@ export default function HomePage() {
           Three ways of doing that, depending on whether you want to use it, put your own name on it, or
           have it feed something you have already built.
         </Prose>
+        <div
+          style={{
+            border: '1px solid rgba(27,109,252,0.35)',
+            background: 'linear-gradient(180deg, rgba(27,109,252,0.08), rgba(27,109,252,0.02))',
+            borderRadius: 16,
+            padding: '24px 28px',
+            marginBottom: 28,
+            maxWidth: 760,
+          }}
+        >
+          <p style={{ fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: '0.16em', color: BLUE_LIGHT, textTransform: 'uppercase', marginBottom: 10 }}>
+            On competing with you
+          </p>
+          <p style={{ fontSize: 14, color: TXT_BODY, lineHeight: 1.85 }}>
+            {brand().name}™ sells one thing, and it is the read. It does not sell training programs, meal
+            plans, supplements or coaching, and it has no plan to. The engine was built inside a coaching
+            practice, and that practice still runs on it, but it is a separate business under its own
+            name and it is not what is being licensed here. If you put this inside your product, you are
+            not handing a starting position to something that will come back at you later.
+          </p>
+        </div>
         <Grid min={260}>
           <LicenseCard title="Use it" desc="Run your clients through it and work from the read. You get the questions, the five lenses that read them and the written output, under the Body Recode™ name." />
           <LicenseCard title="Put your name on it" desc="The same thing under your own brand. Nothing in the questions or the read depends on the Body Recode™ name being visible." />
@@ -765,7 +782,7 @@ export default function HomePage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               <FooterHead>Where it applies</FooterHead>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <a href={brand().performanceDomain} style={{ fontSize: 13, color: BLUE_LIGHT, fontWeight: 600, textDecoration: 'none' }}>Performance Coaching</a>
+                <span style={{ fontSize: 13, color: TXT_DIM }}>Health and fitness</span>
                 <span style={{ fontFamily: MONO, fontSize: 9, fontWeight: 700, background: BLUE, color: TXT, padding: '2px 7px', borderRadius: 999, textTransform: 'uppercase', letterSpacing: '0.12em' }}>In use</span>
               </div>
               <span style={{ fontSize: 13, color: TXT_MUTE }}>Executive Performance</span>
