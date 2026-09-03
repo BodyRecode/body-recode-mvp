@@ -35,7 +35,11 @@ export const ADVISORY = {
   eyebrow: 'Independent Review',
   heading: 'Built to be reviewed.',
   intro:
-    "Body Recode's doctrine sits under independent review by a small advisory group of practising clinicians and high-performance specialists. Before a method reaches you, it has been pressure-tested by people who work at the top of their fields.",
+    "The Body Recode\u2122 doctrine is being submitted for independent review by a small advisory group of practising clinicians and high-performance specialists. The full doctrine is written down, it names the claims it has withdrawn, and it is being put in front of people qualified to challenge it.",
+  // Short "backed by" line for a hero or trust strip. Kept identical in wording
+  // to the performance-bodyrecode copy so the two sites never drift apart.
+  oneLiner:
+    'The Body Recode\u2122 doctrine is being submitted for independent review by an advisory group of practising clinicians and high-performance specialists.',
   note: 'Reviews are being sought now. Names and credentials will be published only where an advisor has completed a review and agreed to be named.',
   advisors: [
     {

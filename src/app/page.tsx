@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import LicensingEnquiryForm from '@/components/marketing/licensing-enquiry-form'
+import { ADVISORY } from '@/config/advisors'
 import { brand } from "@/config/tenant";
 
 export const metadata: Metadata = {
-  title: 'Body Recode™ | Biological Interpretation Intelligence Platform',
+  title: 'Body Recode™ | The interpretation engine',
   description:
-    'Body Recode™ is a biological interpretation system. One interpretive engine. Five environments. Licensable across performance coaching, executive, tactical, clinical and developmental contexts.',
+    'Body Recode™ reads what state a body is in before any training, nutrition or clinical intervention is designed. One engine, 221 structured signals, and it stops at the read. Licensable for practitioners, clinics and platforms.',
 }
 
 /* ---------- Tokens (dark "platform" expression of the shared brand) ---------- */
@@ -103,7 +104,7 @@ const ENVIRONMENTS = [
     live: true,
     kicker: 'Health & Fitness',
     title: 'Performance Coaching',
-    desc: 'The origin environment and first proof of concept. General-population clients whose bodies have stopped responding to effort. Available online worldwide and face-to-face in Brisbane.',
+    desc: 'The founder\u2019s own coaching practice, and the first thing built on the engine. It runs on the read daily, which is where the doctrine gets tested against real bodies. It is a separate product with its own brand, powered by the engine rather than part of it.',
     link: { href: brand().performanceDomain, label: 'Visit Performance Coaching →' },
   },
   {
@@ -166,7 +167,7 @@ export default function HomePage() {
           </a>
           <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
             <a href="#engine" className="nav-link" style={navLink}>The engine</a>
-            <a href="#environments" className="nav-link" style={navLink}>Environments</a>
+            <a href="#line" className="nav-link" style={navLink}>What it won&rsquo;t do</a>
             <a href="#licensing" className="nav-link" style={navLink}>Licensing</a>
             <a
               href="#enquire"
@@ -241,7 +242,7 @@ export default function HomePage() {
               marginBottom: 24,
             }}
           >
-            Biological Interpretation Intelligence Platform
+            The Interpretation Engine
           </p>
           <h1
             style={{
@@ -258,11 +259,11 @@ export default function HomePage() {
             before prescription.
           </h1>
           <p style={{ fontSize: 18, lineHeight: 1.7, color: TXT_DIM, maxWidth: 620, marginBottom: 40 }}>
-            {brand().name}™ is the upstream interpretive layer for performance, clinical and tactical
-                                  practice. One engine reads body state across 221 structured signals before any
-                                  intervention is designed. The system terminates at interpretation. What is built on top
-                                  of it is yours.
-                                </p>
+            One engine that reads what state a person&rsquo;s body is actually in: how they are storing fat and
+            why, what their capacity and regulation can currently take, and what should not be touched yet. It
+            reads 221 structured signals and stops there. It does not write programs, diets or treatment.
+            What gets built on the read is yours.
+          </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
             <a
               href="#enquire"
@@ -321,10 +322,10 @@ export default function HomePage() {
         <SectionLabel>The Solution</SectionLabel>
         <SectionHeading>Read the body first. Then prescribe.</SectionHeading>
         <Prose style={{ marginBottom: 44 }}>
-          {brand().name}™ sits one layer upstream of every intervention. Before anything is prescribed,
-                            the system asks one question: what state is this body actually in right now, and why is it
-                            organised that way?
-                          </Prose>
+          {brand().name}™ sits one step upstream of every intervention. Before anything is prescribed, it
+          answers one question: what state is this body in right now, and why is it organised that way?
+          Everything downstream is built from that answer.
+        </Prose>
         <Grid min={220}>
           <StatCard value="221" label="Intake data points" detail="Structured across eight signal domains. Not a questionnaire. A biological read." />
           <StatCard value="5" label="Interpretive pillars" detail="Each reads a different domain. The output is always a synthesis." />
@@ -352,6 +353,34 @@ export default function HomePage() {
             label="Layer 2 · Execution"
             owner="Owned by the practitioner"
             body="Downstream of the CFFS, the practitioner designs the actual intervention: training, nutrition, load management, clinical protocol, performance strategy. Everything here is derived from the interpretation. The interpretation never changes to accommodate the execution."
+          />
+        </Grid>
+      </Section>
+
+      {/* ===== THE LINE ===== */}
+      <Section id="line" wide>
+        <SectionLabel>The Line</SectionLabel>
+        <SectionHeading>What the engine will not do.</SectionHeading>
+        <Prose style={{ maxWidth: 720, marginBottom: 44 }}>
+          The limits are the product. An interpretation that quietly starts prescribing is no longer an
+          interpretation, and one that bends to suit what somebody wants to sell is worth nothing.
+        </Prose>
+        <Grid min={260}>
+          <LimitCard
+            title="It does not prescribe"
+            body="No programs, no meal plans, no protocols, no dosages. The output is a read. What is done about it is the practitioner\u2019s decision and the practitioner\u2019s responsibility."
+          />
+          <LimitCard
+            title="It does not diagnose"
+            body="It reads patterns in structured self-reported data. It does not name conditions, it does not replace investigation, and where something belongs with a doctor it is written to say so."
+          />
+          <LimitCard
+            title="It does not treat"
+            body="Nothing here is medical care and nothing here substitutes for it. The engine sits before the clinical picture and informs it. It does not stand in for it."
+          />
+          <LimitCard
+            title="It does not bend"
+            body="The interpretation never changes to accommodate the execution. If the read says the body cannot take what somebody wants to sell it, the read stands and the plan changes."
           />
         </Grid>
       </Section>
@@ -452,7 +481,7 @@ export default function HomePage() {
             </StageCard>
 
             <div style={{ textAlign: 'center', margin: '8px 0 4px', fontFamily: MONO, fontSize: 11, letterSpacing: '0.18em', color: TXT_MUTE, textTransform: 'uppercase' }}>
-              ↓ deployed into five environments ↓
+              ↓ the same read applies in five contexts ↓
             </div>
 
             <Grid min={170} gap={10} style={{ marginTop: 12 }}>
@@ -469,7 +498,7 @@ export default function HomePage() {
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
                     <span style={{ width: 7, height: 7, borderRadius: '50%', background: e.live ? BLUE_LIGHT : '#3A3D47', boxShadow: e.live ? `0 0 8px ${BLUE_LIGHT}` : 'none' }} />
                     <span style={{ fontFamily: MONO, fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', color: e.live ? BLUE_LIGHT : TXT_MUTE }}>
-                      {e.live ? 'Live' : 'In dev'}
+                      {e.live ? 'In use' : 'Not built'}
                     </span>
                   </div>
                   <p style={{ fontFamily: MONO, fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: TXT_MUTE, marginBottom: 5 }}>{e.kicker}</p>
@@ -596,12 +625,18 @@ export default function HomePage() {
       {/* ===== ENVIRONMENTS ===== */}
       <section id="environments" style={{ padding: '100px 24px', background: CANVAS_2, borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1040, margin: '0 auto' }}>
-          <SectionLabel>Environments</SectionLabel>
-          <SectionHeading>One engine. Five environments.</SectionHeading>
-          <Prose style={{ maxWidth: 720, marginBottom: 44 }}>
-            The interpretive layer does not care what environment the body is operating in. The body
-            responds to load through the same biological mechanisms regardless of context. What
-            changes between environments is what the practitioner does with the interpretation.
+          <SectionLabel>Where the read applies</SectionLabel>
+          <SectionHeading>One engine. The context changes, the biology does not.</SectionHeading>
+          <Prose style={{ maxWidth: 720, marginBottom: 20 }}>
+            The body responds to load through the same mechanisms whether the load is training, work,
+            deployment or illness. So the read is the same in every context. What changes is what the
+            practitioner does with it afterwards.
+          </Prose>
+          <Prose style={{ maxWidth: 720, marginBottom: 44, color: TXT_MUTE, fontSize: 14 }}>
+            Said plainly, because it matters: performance coaching is the only one of these in operation
+            today, and it is the founder&rsquo;s own practice. The other four are contexts the same read
+            applies to. They are not products, they are not in development, and nothing is being sold in
+            them. They are listed because the engine is context-agnostic by design, not because they exist.
           </Prose>
           <Grid min={300}>
             {ENVIRONMENTS.map((e) => (
@@ -630,7 +665,7 @@ export default function HomePage() {
                       letterSpacing: '0.12em',
                     }}
                   >
-                    {e.live ? 'Live' : 'In development'}
+                    {e.live ? 'In use today' : 'Not built'}
                   </span>
                 </div>
                 <h3 style={{ fontSize: 18, fontWeight: 700, color: TXT, marginBottom: 10 }}>{e.title}</h3>
@@ -643,6 +678,27 @@ export default function HomePage() {
           </Grid>
         </div>
       </section>
+
+      {/* ===== INDEPENDENT REVIEW ===== */}
+      <Section wide>
+        <SectionLabel>{ADVISORY.eyebrow}</SectionLabel>
+        <SectionHeading>{ADVISORY.heading}</SectionHeading>
+        <Prose style={{ maxWidth: 720, marginBottom: 44 }}>{ADVISORY.intro}</Prose>
+        <Grid min={260}>
+          {ADVISORY.advisors.map((a) => (
+            <div key={a.id} style={cardStyle}>
+              <p style={{ fontSize: 15, fontWeight: 700, color: TXT, marginBottom: 4 }}>{a.name ?? a.role}</p>
+              <p style={{ fontFamily: MONO, fontSize: 11, color: TXT_MUTE, marginBottom: 14 }}>
+                {a.name ? a.credentials ?? a.role : a.detail}
+              </p>
+              <p style={{ fontSize: 13, color: TXT_DIM, lineHeight: 1.75 }}>Reviewing {a.reviewing}</p>
+            </div>
+          ))}
+        </Grid>
+        <p style={{ fontSize: 12, color: TXT_MUTE, marginTop: 24, maxWidth: 720, lineHeight: 1.7 }}>
+          {ADVISORY.note}
+        </p>
+      </Section>
 
       {/* ===== LICENSING ===== */}
       <Section id="licensing" wide>
@@ -686,17 +742,17 @@ export default function HomePage() {
                 style={{ height: 56, width: 'auto', marginBottom: 18, filter: 'brightness(0) invert(1)' }}
               />
               <p style={{ fontSize: 13, color: TXT_DIM, lineHeight: 1.7 }}>
-                Biological interpretation intelligence platform.
+                The interpretation engine.
                 <br />
-                One engine. Five environments.
+                One read. It stops before the prescription.
               </p>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              <FooterHead>Environments</FooterHead>
+              <FooterHead>Where it applies</FooterHead>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <a href={brand().performanceDomain} style={{ fontSize: 13, color: BLUE_LIGHT, fontWeight: 600, textDecoration: 'none' }}>Performance Coaching</a>
-                <span style={{ fontFamily: MONO, fontSize: 9, fontWeight: 700, background: BLUE, color: TXT, padding: '2px 7px', borderRadius: 999, textTransform: 'uppercase', letterSpacing: '0.12em' }}>Live</span>
+                <span style={{ fontFamily: MONO, fontSize: 9, fontWeight: 700, background: BLUE, color: TXT, padding: '2px 7px', borderRadius: 999, textTransform: 'uppercase', letterSpacing: '0.12em' }}>In use</span>
               </div>
               <span style={{ fontSize: 13, color: TXT_MUTE }}>Executive Performance</span>
               <span style={{ fontSize: 13, color: TXT_MUTE }}>Operational Readiness</span>
@@ -832,6 +888,15 @@ function LayerCard({ accent, label, owner, body }: { accent?: boolean; label: st
       <p style={{ fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: '0.16em', color: accent ? BLUE_LIGHT : TXT_DIM, textTransform: 'uppercase', marginBottom: 8 }}>{label}</p>
       <p style={{ fontFamily: MONO, fontSize: 11, color: TXT_MUTE, marginBottom: 16 }}>{owner}</p>
       <p style={{ fontSize: 14, color: TXT_DIM, lineHeight: 1.85 }}>{body}</p>
+    </div>
+  )
+}
+
+function LimitCard({ title, body }: { title: string; body: string }) {
+  return (
+    <div style={{ ...cardStyle, padding: 28, borderLeft: `3px solid ${BORDER_STRONG}` }}>
+      <p style={{ fontSize: 15, fontWeight: 700, color: TXT, marginBottom: 10 }}>{title}</p>
+      <p style={{ fontSize: 13.5, color: TXT_DIM, lineHeight: 1.8 }}>{body}</p>
     </div>
   )
 }
