@@ -150,7 +150,7 @@ const html = shell(`
       ${p('Good to talk just now. As discussed, we are starting fresh, your portal is open again. Four steps to complete before we start coaching:')}
       ${step(1, 'Coaching Agreement')}
       ${step(2, 'Health Declaration')}
-      ${step(3, 'Foundational Intake (221 questions across 8 areas. Take your time. The more accurate it is, the better your read.)')}
+      ${step(3, 'Foundational Intake (230 questions across 8 areas. Take your time. The more accurate it is, the better your read.)')}
       ${step(4, 'Baseline Documentation', 24)}
       ${p('Once your intake is in, your CFFS generates automatically. That is the read I work from to write your program. No template. Built around what your body is actually doing.', 24)}
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;"><tr><td bgcolor="#1B6DFC" style="background-color:#1B6DFC;border-radius:8px;"><a href="${portalUrl}" style="display:inline-block;padding:14px 28px;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.02em;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Open my portal</a></td></tr></table>

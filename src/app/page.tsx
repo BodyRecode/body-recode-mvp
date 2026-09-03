@@ -337,7 +337,7 @@ export default function HomePage() {
           afterwards is built from that answer.
         </Prose>
         <Grid min={220}>
-          <StatCard value={String(QUESTIONS)} label="Questions asked" detail="Eleven sections, covering sleep, stress, training, food, injury, medications and where they store fat. Most people take 30 to 60 minutes over it." />
+          <StatCard value={String(QUESTIONS)} label="Questions asked" detail="Eleven sections, covering sleep, stress, training, food, injury, medications and where they store fat. Most people take 15 to 20 minutes over it." />
           <StatCard value="5" label="Ways of reading them" detail="Five separate lenses look at the same answers. No single one decides the outcome on its own." />
           <StatCard value="3" label="Possible answers" detail="Every read lands on one of three states. That answer sets what should and should not be done next." />
         </Grid>

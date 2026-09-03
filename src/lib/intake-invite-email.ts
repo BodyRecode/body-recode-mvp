@@ -28,9 +28,14 @@ export interface IntakeInviteEmailParams {
  * `reintake` — for existing clients who've been coaching for a stretch and are
  * at a natural reassessment point (block-end, life-context shift, post-travel,
  * etc.). Copy acknowledges the coaching is already underway, explains WHY a
- * fresh read is being asked for, and is honest about the time cost (30-40 min
- * for 230 questions — the existing "15-20 minutes" line under-sold it and was
- * only added for first-time psychological onboarding).
+ * fresh read is being asked for.
+ *
+ * TIME QUOTED IS 15-20 MINUTES, everywhere, on Kade's instruction (3 Sep 2026).
+ * A previous note here argued the re-intake copy should say 30-40 because
+ * "15-20 under-sold it". That was overruled: the surfaces disagreed with each
+ * other (15-20, 30-40, 30-60) and 15-20 is the figure of record. Nobody has
+ * ever measured it against submitted-intake timestamps, so if the number ever
+ * needs defending, measure it first.
  */
 export function buildIntakeInviteEmail({
   firstName,
@@ -68,7 +73,7 @@ export function buildIntakeInviteEmail({
     )
     bodyParagraphs.push(
       emailBody(
-        'Give it 30 to 40 minutes when you have a quiet block. It is 230 questions, most of them quick. There are no right or wrong answers, just where you are at now, not your best or worst days.',
+        'Give it 15 to 20 minutes when you have a quiet block. It is 230 questions, most of them quick. There are no right or wrong answers, just where you are at now, not your best or worst days.',
         { bottom: 28 },
       ),
     )

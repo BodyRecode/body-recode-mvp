@@ -668,7 +668,7 @@ export default function HelpPage() {
             <ol className="space-y-1.5 list-decimal list-inside text-[#43474F] text-sm">
               <li>Client profile created in the Clients dashboard.</li>
               <li>Welcome email sent to the client with their intake link.</li>
-              <li>Client completes the foundational intake (230 questions, 30-60 min).</li>
+              <li>Client completes the foundational intake (230 questions, 15-20 min).</li>
               <li>CFFS generated automatically and appears on the client profile.</li>
             </ol>
             <p>Your manual steps after conversion:</p>

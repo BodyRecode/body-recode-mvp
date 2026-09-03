@@ -1498,7 +1498,7 @@ ${emailFeaturedCard(
   emailNumberedList([
     'Coaching Agreement',
     'Health Declaration',
-    'Foundational Intake (230 questions across 8 areas, 30-60 min)',
+    'Foundational Intake (230 questions across 8 areas, 15-20 min)',
     'Baseline Documentation (photos and measurements)',
   ]),
   { eyebrow: 'Inside the portal, work through' },
