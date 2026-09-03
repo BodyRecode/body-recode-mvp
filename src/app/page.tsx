@@ -26,14 +26,14 @@ const MONO = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
 
 /* ---------- Data ---------- */
 const DOMAINS = [
-  { num: '01', name: 'Training Load', desc: 'Physical stress exposure, training history, volume and fatigue patterns.' },
-  { num: '02', name: 'Recovery Capacity', desc: 'The system’s ability to restore and return to baseline between exposures.' },
-  { num: '03', name: 'Stress Architecture', desc: 'How the stress response is organised and its capacity to resolve accumulated load.' },
-  { num: '04', name: 'Hormonal Signals', desc: 'Endocrine markers and hormonal regulation patterns affecting body state.' },
-  { num: '05', name: 'Fat Distribution', desc: 'Adaptive fat accumulation read as hormonal signalling via the Fat Map Method™.' },
-  { num: '06', name: 'Sleep Quality', desc: 'Sleep depth, recovery patterns and nervous system restoration during rest.' },
-  { num: '07', name: 'Behavioural Patterns', desc: 'Observable behaviours reflecting underlying biological state and adaptation capacity.' },
-  { num: '08', name: 'Emotional Load', desc: 'Emotional threat, identity load and over-compliance read as structural stressors.' },
+  { num: '01', name: 'Training Load', desc: 'How much they are training, how long they have been doing it, and how much of it is still sitting in their system unrecovered.' },
+  { num: '02', name: 'Recovery', desc: 'Whether they actually recover between sessions, or just turn up again tired and call it consistency.' },
+  { num: '03', name: 'Stress Load', desc: 'How much pressure they are under, and whether their body ever gets the chance to come down from it.' },
+  { num: '04', name: 'Hormonal Signals', desc: 'The symptoms that point to a hormone driving what is happening, plus blood results where they exist.' },
+  { num: '05', name: 'Fat Storage', desc: 'Where they store fat, and what that says about which hormone is behind it.' },
+  { num: '06', name: 'Sleep', desc: 'How well they sleep rather than how long. Whether the night is actually repairing anything.' },
+  { num: '07', name: 'Behaviour', desc: 'What they actually do day to day. It often says more about the state of the body than what they report feeling.' },
+  { num: '08', name: 'Emotional Load', desc: 'The pressure that is not physical. Worry, obligation, and the habit of pushing through. The body answers it the same way it answers training.' },
 ]
 
 const PILLARS_SHORT = [
@@ -49,25 +49,25 @@ const PILLARS = [
     num: '02',
     name: 'Performance Training System',
     abbr: 'PTS',
-    desc: 'Reads physical stress exposure, training load, fatigue and adaptation signals. Defines the risk and capacity picture for what training the body can tolerate now.',
+    desc: 'Reads how much training the body is doing, how well it is coping, and how much more it could take right now without going backwards.',
   },
   {
     num: '03',
     name: 'Hybrid Animal-Based Nutrition System',
     abbr: 'HABNS',
-    desc: 'Interprets nutritional sufficiency and biological threat signalling. Assesses whether intake is supporting regulation or reinforcing scarcity and hormonal disruption.',
+    desc: 'Reads whether they are eating enough, and enough of the right things. Long periods of eating too little register with the body as a shortage, and it protects itself accordingly.',
   },
   {
     num: '04',
     name: 'Recovery and Regulation System',
     abbr: 'RRS',
-    desc: 'Reads the system’s capacity to restore, downregulate and return to baseline. Distinguishes genuine recovery from suppression: the body that appears stable but is not regenerating.',
+    desc: 'Reads whether the body is genuinely recovering or has simply gone quiet. From the outside those look the same. They are not.',
   },
   {
     num: '05',
     name: 'Behaviour, Identity and Rhythm System',
     abbr: 'BIRS',
-    desc: 'Interprets emotional load, identity constraints and behavioural patterns as structural biological stressors. Compliance and identity threat are inputs, not psychology.',
+    desc: 'Reads the pressure that is not physical: work, family, obligation, the need to keep everyone happy. Counted as load on the body, not as psychology.',
   },
 ]
 
@@ -83,19 +83,19 @@ const STATES = [
     label: 'Remediation',
     pub: 'Depleted',
     c: '#F04438',
-    text: 'The body is under load it cannot resolve. Stress architecture is dominant. Recovery is compromised. Pushing performance-level intervention here is counterproductive. Most who present believing they are in Optimisation are actually here.',
+    text: 'Under more load than it can clear. Not recovering. Pushing hard here makes it worse, not better, which is the single most common mistake made with these people. Most who arrive certain they are in the middle state are actually in this one.',
   },
   {
     label: 'Optimisation',
     pub: 'Transitioning',
     c: '#F5A623',
-    text: 'The body has stabilised. Capacity exists to pursue body composition and performance goals. This is where most coaching begins, but very few clients are actually here when they arrive.',
+    text: 'Settled enough to take on work. There is room to chase body composition and performance. This is where nearly every coach assumes their client is starting, and very few of them actually are.',
   },
   {
     label: 'Post-Optimisation',
     pub: 'Ready',
     c: BLUE_LIGHT,
-    text: 'The body is performing. The goal shifts to identity-level performance and long-term system maintenance. Built over time. Cannot be forced.',
+    text: 'Working properly. The job changes to holding it there and pushing performance. It is arrived at over time and there is no way to hurry it.',
   },
 ]
 
@@ -110,22 +110,22 @@ const ENVIRONMENTS = [
   {
     kicker: 'Corporate & Executive',
     title: 'Executive Performance',
-    desc: 'High-performing professionals under chronic cognitive and organisational load. The body under sustained mental stress responds identically to physical stress: cortisol elevation, recovery suppression, regulatory disruption.',
+    desc: 'People under long-running mental and organisational pressure. The body treats that the same way it treats hard training: same stress response, same effect on recovery.',
   },
   {
     kicker: 'Military & Tactical',
     title: 'Operational Readiness',
-    desc: 'Defence personnel, law enforcement and tactical operators. The stakes of misread body state in this environment are operational. An operator in Remediation pushed through performance-level training is a liability.',
+    desc: 'Defence, police and tactical work, where getting it wrong is not just a bad training block. Someone with nothing left in the tank, pushed as though they are fresh, is a risk to the people around them.',
   },
   {
     kicker: 'Medical & Allied Health',
     title: 'Clinical Integration',
-    desc: 'GPs, physiotherapists, sports medicine practitioners and allied health professionals. Body Recode™ sits upstream of clinical assessment, providing a structured biological read that informs the clinical picture before the appointment.',
+    desc: 'GPs, physios, sports medicine and allied health. The read arrives before the appointment, so the clinician starts with a structured picture of the person rather than building one from scratch in fifteen minutes.',
   },
   {
     kicker: 'Education & Youth',
     title: 'Developmental Performance',
-    desc: 'Young athletes, student populations and development-stage bodies. The earlier a body is read correctly, the less dysfunction accumulates over time.',
+    desc: 'Young athletes and developing bodies. The earlier someone is read correctly, the less there is to undo later.',
   },
 ]
 
@@ -227,7 +227,7 @@ export default function HomePage() {
           >
             <span style={{ width: 7, height: 7, borderRadius: '50%', background: BLUE_LIGHT, boxShadow: `0 0 8px ${BLUE_LIGHT}` }} />
             <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: '0.08em', color: TXT_DIM }}>
-              v1.0 · 221 signals · 8 domains · 5 pillars · 3 states
+              221 questions in · 8 areas of the body covered · one read out
             </span>
           </div>
 
@@ -254,9 +254,9 @@ export default function HomePage() {
               marginBottom: 28,
             }}
           >
-            Interpretation
+            Read the body
             <br />
-            before prescription.
+            before you write the plan.
           </h1>
           <p style={{ fontSize: 18, lineHeight: 1.7, color: TXT_DIM, maxWidth: 620, marginBottom: 40 }}>
             One engine that reads what state a person&rsquo;s body is actually in: how they are storing fat and
@@ -302,17 +302,17 @@ export default function HomePage() {
       {/* ===== THE PROBLEM ===== */}
       <Section>
         <SectionLabel>The Problem</SectionLabel>
-        <SectionHeading>Every intervention fails at the same point.</SectionHeading>
+        <SectionHeading>Most plans fail in the same place.</SectionHeading>
         <Prose>
           <p style={{ marginBottom: 18 }}>
-            The conventional model is to assess goals, prescribe an approach, measure output and
-            adjust. This works when the body is in a state to respond. Most of the time, it is not.
-            The model assumes readiness. It rarely asks whether it exists.
+            The usual approach is to ask what someone wants, write them a plan, see what happens and
+            adjust. That works when the body is in a position to respond. A lot of the time it is not,
+            and nobody checked before they started.
           </p>
           <p>
-            The result is effort without response. Training that does not build. Nutrition that does
-            not shift body composition. Recovery that never fully lands. The intervention is not
-            wrong. The sequencing is.
+            So you get effort with nothing to show for it. Training that does not build anything.
+            Eating well and not changing shape. Rest that never quite lands. Usually the plan was
+            fine. It was given to a body that could not use it yet.
           </p>
         </Prose>
       </Section>
@@ -322,37 +322,37 @@ export default function HomePage() {
         <SectionLabel>The Solution</SectionLabel>
         <SectionHeading>Read the body first. Then prescribe.</SectionHeading>
         <Prose style={{ marginBottom: 44 }}>
-          {brand().name}™ sits one step upstream of every intervention. Before anything is prescribed, it
-          answers one question: what state is this body in right now, and why is it organised that way?
-          Everything downstream is built from that answer.
+          {brand().name}™ goes in one step earlier than everything else. Before a plan gets written it
+          answers one question: what state is this body in right now, and why. Everything that happens
+          afterwards is built from that answer.
         </Prose>
         <Grid min={220}>
-          <StatCard value="221" label="Intake data points" detail="Structured across eight signal domains. Not a questionnaire. A biological read." />
-          <StatCard value="5" label="Interpretive pillars" detail="Each reads a different domain. The output is always a synthesis." />
-          <StatCard value="3" label="Body state classifications" detail="Every body, every environment. The classification drives everything downstream." />
+          <StatCard value="221" label="Questions asked" detail="Covering eight areas of the body, from sleep and stress through to training, food and fat storage. It takes most people around 45 minutes." />
+          <StatCard value="5" label="Ways of reading them" detail="Five separate lenses look at the same answers. No single one decides the outcome on its own." />
+          <StatCard value="3" label="Possible answers" detail="Every read lands on one of three states. That answer sets what should and should not be done next." />
         </Grid>
       </Section>
 
       {/* ===== ARCHITECTURE ===== */}
       <Section wide>
         <SectionLabel>Architecture</SectionLabel>
-        <SectionHeading>Two layers. Neither collapses into the other.</SectionHeading>
+        <SectionHeading>Two layers, and neither one is allowed to change the other.</SectionHeading>
         <Prose style={{ maxWidth: 720, marginBottom: 44 }}>
-          The interpretive layer is owned by {brand().name}™. The execution layer is owned by the
-                            practitioner. The separation is architectural, not stylistic. It is what makes the system
-                            defensible and licensable.
-                          </Prose>
+          {brand().name}™ owns the reading. The practitioner owns what gets done about it. Keeping those
+          two apart is the whole design. It is why the read can be trusted, and it is why it can be
+          handed to someone else to use.
+        </Prose>
         <Grid min={300}>
           <LayerCard
             accent
             label="Layer 1 · Interpretation"
             owner="Owned by Body Recode™"
-            body="Takes structured input data across eight signal domains and produces the CFFS: Coach-Facing Foundational Synthesis. It does not prescribe. It does not design programs. Interpretation terminates at interpretation."
+            body="Takes the 221 answers and produces a written read, called the CFFS. It says what state the body is in, what is driving it, and what should be left alone for now. It does not write a program and it does not write a diet. It finishes at the read."
           />
           <LayerCard
             label="Layer 2 · Execution"
             owner="Owned by the practitioner"
-            body="Downstream of the CFFS, the practitioner designs the actual intervention: training, nutrition, load management, clinical protocol, performance strategy. Everything here is derived from the interpretation. The interpretation never changes to accommodate the execution."
+            body="The practitioner reads it and decides what to do: the training, the food, the workload, the clinical decisions. All of it built from the read. And the read never gets softened to make somebody’s plan easier to sell."
           />
         </Grid>
       </Section>
@@ -362,13 +362,14 @@ export default function HomePage() {
         <SectionLabel>The Line</SectionLabel>
         <SectionHeading>What the engine will not do.</SectionHeading>
         <Prose style={{ maxWidth: 720, marginBottom: 44 }}>
-          The limits are the product. An interpretation that quietly starts prescribing is no longer an
-          interpretation, and one that bends to suit what somebody wants to sell is worth nothing.
+          What it refuses to do matters as much as what it does. A read that quietly starts telling people
+          what to take is not a read any more, and one that softens when the answer is inconvenient is
+          not worth having.
         </Prose>
         <Grid min={260}>
           <LimitCard
             title="It does not prescribe"
-            body="No programs, no meal plans, no protocols, no dosages. The output is a read. What is done about it is the practitioner\u2019s decision and the practitioner\u2019s responsibility."
+            body="No programs, no meal plans, no protocols, no doses. It tells you what state the body is in. What gets done about it is the practitioner\u2019s call and the practitioner\u2019s responsibility."
           />
           <LimitCard
             title="It does not diagnose"
@@ -389,11 +390,11 @@ export default function HomePage() {
       <section id="engine" style={{ padding: '100px 24px', background: CANVAS_2, borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1040, margin: '0 auto' }}>
           <SectionLabel>The Engine</SectionLabel>
-          <SectionHeading>One interpretive core. Built to scale across industries.</SectionHeading>
+          <SectionHeading>One engine. The same four steps every time.</SectionHeading>
           <Prose style={{ maxWidth: 720, marginBottom: 28 }}>
-            Structured client data is read across five pillars, classified into a body state, and
-            resolved into the CFFS. The engine is environment-agnostic. Each execution layer is a
-            downstream application with its own product, interface and practitioner tools.
+            The answers go in. Five lenses read them. The body lands in one of three states. That comes
+            out as a written read. The engine does not know or care what industry it is being used in,
+            which is why the same four steps work wherever it is put.
           </Prose>
 
           <a
@@ -413,12 +414,12 @@ export default function HomePage() {
               marginBottom: 56,
             }}
           >
-            Open the engine — full technical breakdown →
+            Open the engine, full technical breakdown →
           </a>
 
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {/* INPUT */}
-            <StageCard kicker="Input" title="Foundational Intake" meta="221 structured signals">
+            <StageCard kicker="Step 1 · In" title="The questions" meta="221 of them">
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                 {DOMAINS.map((d) => (
                   <span key={d.num} style={chip}>{d.name}</span>
@@ -458,7 +459,7 @@ export default function HomePage() {
             <Connector />
 
             {/* CLASSIFICATION */}
-            <StageCard kicker="Classification" title="Body State" meta="1 of 3">
+            <StageCard kicker="Step 3 · The answer" title="One of three states" meta="every read lands on one">
               <Grid min={180} gap={10}>
                 {STATES.map((s) => (
                   <div key={s.label} style={{ border: `1px solid ${BORDER}`, borderLeft: `3px solid ${s.c}`, borderRadius: 10, padding: '14px 16px', background: 'rgba(255,255,255,0.02)' }}>
@@ -472,11 +473,11 @@ export default function HomePage() {
             <Connector />
 
             {/* OUTPUT */}
-            <StageCard kicker="Output" title="CFFS" meta="Coach-Facing Foundational Synthesis" tail>
+            <StageCard kicker="Step 4 · Out" title="The written read" meta="the CFFS" tail>
               <p style={{ fontSize: 14, color: TXT_DIM, lineHeight: 1.7 }}>
-                A single synthesised read. Non-prescriptive. Interpretation terminates here. The
-                execution layer is built downstream by the practitioner, and never changes the
-                interpretation to suit itself.
+                One document, written for whoever is going to act on it. What state the body is in, what
+                is driving it, and what to leave alone for now. It stops there. The plan is written by
+                the practitioner afterwards, and the read does not get changed to suit it.
               </p>
             </StageCard>
 
@@ -512,12 +513,12 @@ export default function HomePage() {
 
       {/* ===== SIGNAL DOMAINS ===== */}
       <Section wide>
-        <SectionLabel>Foundational Intake</SectionLabel>
-        <SectionHeading>221 structured signals. Eight domains.</SectionHeading>
+        <SectionLabel>The Questions</SectionLabel>
+        <SectionHeading>221 questions, across eight areas of the body.</SectionHeading>
         <Prose style={{ maxWidth: 720, marginBottom: 44 }}>
-          Before any interpretation begins, the system collects structured data across eight distinct
-          signal domains. The depth and specificity of the intake is what makes the output
-          defensible.
+          Nothing is read until all of it is answered. It is a long form and that is deliberate: the
+          read is only as good as what it is given, and most of what matters here is not visible in a
+          consultation or a set of bloods.
         </Prose>
         <Grid min={230}>
           {DOMAINS.map((d) => (
@@ -533,11 +534,11 @@ export default function HomePage() {
       {/* ===== INTERPRETIVE PILLARS ===== */}
       <Section wide>
         <SectionLabel>Interpretive Pillars</SectionLabel>
-        <SectionHeading>Five pillars. One synthesised read.</SectionHeading>
+        <SectionHeading>Five ways of reading the same answers.</SectionHeading>
         <Prose style={{ maxWidth: 720, marginBottom: 44 }}>
-          The engine reads the body across five distinct pillars simultaneously. Each contributes
-          signal data. No single pillar drives the output in isolation. The interpretation is always
-          a synthesis of the full picture.
+          The same 221 answers get read five separate times, each time looking for something different.
+          No one of them decides the outcome on its own. The read is what they say when you put them
+          together, which is usually more interesting than any of them alone.
         </Prose>
 
         {/* Pillar 1 featured */}
@@ -560,9 +561,9 @@ export default function HomePage() {
           </div>
           <h3 style={{ fontSize: 22, fontWeight: 700, color: TXT, marginBottom: 12 }}>Fat Map Method™</h3>
           <p style={{ fontSize: 14, color: TXT_DIM, lineHeight: 1.85, marginBottom: 24, maxWidth: 760 }}>
-            Fat accumulation patterns are read as hormonal and metabolic signalling, not simple energy
-            surplus. Where the body stores fat reflects its adaptive response to the current hormonal
-            and regulatory environment.
+            Where someone stores fat is treated as information about which hormone is driving it, rather
+            than as a simple matter of eating too much. The body puts it where the current hormonal
+            environment tells it to.
           </p>
           <Grid min={220} gap={10}>
             {FAT_ZONES.map((z) => (
@@ -579,7 +580,7 @@ export default function HomePage() {
             ))}
           </Grid>
           <p style={{ fontFamily: MONO, fontSize: 11, color: TXT_MUTE, lineHeight: 1.6, marginTop: 14 }}>
-            Location narrows the read, the accompanying signal decides it — three of the four drivers push storage centrally. Each pattern then resolves further into extended sub-zones.
+            Where it sits narrows it down. The symptom that comes with it decides. That second half matters because three of the four drivers push fat to the middle, so location on its own gets it wrong.
           </p>
         </div>
 
@@ -600,11 +601,11 @@ export default function HomePage() {
 
       {/* ===== BODY STATES ===== */}
       <Section wide>
-        <SectionLabel>Classification Output</SectionLabel>
-        <SectionHeading>Three body states. Every body, every environment.</SectionHeading>
+        <SectionLabel>The Answer</SectionLabel>
+        <SectionHeading>Three states. Every read lands on one of them.</SectionHeading>
         <Prose style={{ maxWidth: 720, marginBottom: 44 }}>
-          The interpretation produces one of three classifications. The classification drives the
-          entire downstream approach.
+          This is the part that decides everything else. Not what the person wants, and not what they
+          think they are ready for.
         </Prose>
         <Grid min={300}>
           {STATES.map((s) => (
@@ -617,8 +618,9 @@ export default function HomePage() {
           ))}
         </Grid>
         <p style={{ fontSize: 12, color: TXT_MUTE, marginTop: 24, maxWidth: 720, lineHeight: 1.7 }}>
-          Practitioner-facing labels are shown above. Consumer-facing translations (Depleted /
-          Transitioning / Ready) are used in client communication, never in the CFFS.
+          The labels above are the ones practitioners use. The plainer versions (Depleted, Transitioning,
+          Ready) are what the person themselves is told, because nobody wants to hear they are in
+          Remediation.
         </p>
       </Section>
 
@@ -702,17 +704,17 @@ export default function HomePage() {
 
       {/* ===== LICENSING ===== */}
       <Section id="licensing" wide>
-        <SectionLabel>For Practitioners and Organisations</SectionLabel>
-        <SectionHeading>The interpretation engine is licensable.</SectionHeading>
+        <SectionLabel>For practitioners and organisations</SectionLabel>
+        <SectionHeading>You can use the engine in your own practice.</SectionHeading>
         <Prose style={{ maxWidth: 720, marginBottom: 44 }}>
-          {brand().name}™ is built as one interpretive core with multiple execution layers on top. The
-                            interpretation engine, the intake architecture and the CFFS methodology are available for
-                            licensing, white-labelling or integration into existing workflows.
-                          </Prose>
+          The engine, the questions that feed it and the read that comes out are available to license.
+          Three ways of doing that, depending on whether you want to use it, put your own name on it, or
+          have it feed something you have already built.
+        </Prose>
         <Grid min={260}>
-          <LicenseCard title="License" desc="Use the Body Recode™ interpretation system within your practice. Full access to the intake architecture, the five interpretive pillars and the CFFS output framework." />
-          <LicenseCard title="White-label" desc="Deploy the system under your own brand. The engine, intake and output documents are built to operate independently of the Body Recode™ identity where required." />
-          <LicenseCard title="Integrate" desc="Embed the interpretation layer into existing clinical, coaching or organisational workflows. The system sits upstream of whatever the practitioner does with the output." />
+          <LicenseCard title="Use it" desc="Run your clients through it and work from the read. You get the questions, the five lenses that read them and the written output, under the Body Recode™ name." />
+          <LicenseCard title="Put your name on it" desc="The same thing under your own brand. Nothing in the questions or the read depends on the Body Recode™ name being visible." />
+          <LicenseCard title="Feed it into what you have" desc="If you already have a product, a clinic system or a coaching platform, the read can sit in front of it and hand it a starting point." />
         </Grid>
       </Section>
 
@@ -720,10 +722,10 @@ export default function HomePage() {
       <section id="enquire" style={{ padding: '100px 24px', background: CANVAS_2, borderTop: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 720, margin: '0 auto' }}>
           <SectionLabel>Enquire</SectionLabel>
-          <SectionHeading>Talk to us about deploying the system.</SectionHeading>
+            <SectionHeading>Talk to us about using it.</SectionHeading>
           <Prose style={{ marginBottom: 36 }}>
-            Licensing and integration enquiries are handled directly by the founder. Tell us where you
-            are operating and what you are trying to solve. We will respond within two business days.
+            These go straight to the founder, not to a sales team. Tell us what you do and what you are
+            trying to solve. You will get an answer within two working days.
           </Prose>
           <LicensingEnquiryForm />
         </div>
@@ -776,7 +778,7 @@ export default function HomePage() {
           </div>
           <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 24, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
             <p style={{ fontFamily: MONO, fontSize: 11, color: TXT_MUTE, letterSpacing: '0.04em' }}>© {YEAR} {brand().name}™. All rights reserved.</p>
-            <p style={{ fontFamily: MONO, fontSize: 11, color: TXT_MUTE, letterSpacing: '0.04em' }}>Interpretation before prescription.</p>
+            <p style={{ fontFamily: MONO, fontSize: 11, color: TXT_MUTE, letterSpacing: '0.04em' }}>Read first. Then prescribe.</p>
           </div>
         </div>
       </footer>
