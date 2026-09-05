@@ -66,8 +66,18 @@ export const INTAKE_SECTIONS: Section[] = [
       { id: 'fm_09', text: 'I bruise easily on my lower body.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
       { id: 'fm_10', text: 'Lower body fat gain is not closely linked to calorie intake changes.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
       { id: 'fm_11', text: 'I carry more fat across my upper back, chest, or arms.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
-      { id: 'fm_12', text: 'I gain muscle easily but struggle to lose upper-body fat.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
-      { id: 'fm_13', text: 'I feel strong but inflamed or tight in the upper body.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
+      // Corrected 5 Sep 2026. Was "I gain muscle easily but struggle to lose
+      // upper-body fat", which is the Androgen-Decline claim v2.0 RETIRED:
+      // 04_ANDROGEN_DECLINE says lean mass FALLS, and the discriminator is
+      // "softer arms and shoulders are less muscle, not more fat". The old
+      // wording asked the client to confirm the withdrawn model, and a high
+      // score on it was evidence for the opposite of what it was read as.
+      { id: 'fm_12', text: 'My arms and shoulders have lost shape or definition.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
+      // Corrected 5 Sep 2026 alongside fm_12, same reason: "I feel strong
+      // but" asserted preserved strength, which is the retired model. v2.0's
+      // single best question is whether strength is going backwards, and it is
+      // the LAST of the three signs to move, so it must be asked directly.
+      { id: 'fm_13', text: 'My strength on familiar lifts has been going backwards.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
       { id: 'fm_14', text: 'Fat gain in my upper body occurs even with consistent training.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
       { id: 'fm_15', text: 'I experience fluctuations in motivation and drive.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
       { id: 'fm_16', text: 'I experience bloating or abdominal distension regularly.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
@@ -80,6 +90,28 @@ export const INTAKE_SECTIONS: Section[] = [
       { id: 'fm_23', text: 'Rings, shoes, or clothing fit tighter at certain times.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
       { id: 'fm_24', text: 'Inflammation affects how lean or defined I appear.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
       { id: 'fm_25', text: 'Recovery from training feels inconsistent.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
+      // Holding Signals, added 5 Sep 2026. The Extended Zones rebuild finished
+      // with three observations and the intake captured ONE of them: fm_16 to
+      // fm_18 cover distension, and nothing anywhere in the 230 covered
+      // shoulder and neck bracing or trunk holding. That made two thirds of the
+      // finished layer unreachable from the intake, so it could never enter a
+      // read no matter what the doctrine said.
+      //
+      // Wording rules, from 09_EXTENDED_ZONES_v2.0 "How the report is taken":
+      // ask what the body DOES across a day, never whether the client braces,
+      // holds or cannot let go. Those words supply the answer, and a symptom
+      // narrative alone produced significant reported symptoms during sham
+      // exposure with nothing present. Hence "stay lifted" and "does not settle"
+      // rather than "bracing" and "holding".
+      //
+      // These are recorded as REPORTED, never measured, and per the counting
+      // rule in 11_INTERPRETATION_LOGIC_v2.0 the three observations enter a read
+      // ONCE, together, as a single binary. More of them present does not mean
+      // worse, and absence means nothing.
+      { id: 'fm_26', text: 'My shoulders stay lifted or tight even when I am not doing anything.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
+      { id: 'fm_27', text: 'My neck feels tight at the end of a demanding day, and it comes back under the same conditions.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
+      { id: 'fm_28', text: 'My middle does not fully let go between efforts, even at rest.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
+      { id: 'fm_29', text: 'These things track with how demanding life is, rather than with my weight.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
     ]
   },
   {

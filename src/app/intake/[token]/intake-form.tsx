@@ -157,7 +157,7 @@ function QuestionInput({
   }
 
   if (question.type === 'select') {
-    // Options, not a dropdown. There is exactly one select in the 230 and it
+    // Options, not a dropdown. There is exactly one select in the 234 and it
     // has four options - a native picker on a phone is a wheel to spin and a
     // choice you cannot see until you open it, for no gain.
     return (

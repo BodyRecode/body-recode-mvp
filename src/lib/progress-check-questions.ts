@@ -3,7 +3,7 @@ import type { Section } from './intake-questions'
 /**
  * Progress Check — the short re-assessment ("delta intake") a client completes at
  * a milestone (block-end / 12-week cap) so the system can honestly RE-SCORE their
- * body state. It is NOT the 230-point Foundational intake and it is NOT the weekly
+ * body state. It is NOT the 234-point Foundational intake and it is NOT the weekly
  * check-in. See 2026-08-11_Delta_Re-Read_Milestone_Spec.md.
  *
  * Design rules (from the spec):
@@ -12,7 +12,7 @@ import type { Section } from './intake-questions'
  *    "what has changed" block for new injuries or medication changes.
  *  - Deliberately short (~24 questions) so clients actually complete it.
  *  - Does NOT re-ask the Fat Map / storage pattern. Pattern is HELD; only a full
- *    re-read (230 re-intake + fresh photos) can revise it. Fresh measurements and
+ *    re-read (234 re-intake + fresh photos) can revise it. Fresh measurements and
  *    photos are prompted separately as optional, not here.
  *  - Direction questions ("since your last read") make the then-vs-now comparison
  *    the system produces honest and grounded in the client's own report.

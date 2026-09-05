@@ -668,7 +668,7 @@ export default function HelpPage() {
             <ol className="space-y-1.5 list-decimal list-inside text-[#43474F] text-sm">
               <li>Client profile created in the Clients dashboard.</li>
               <li>Welcome email sent to the client with their intake link.</li>
-              <li>Client completes the foundational intake (230 questions, 15-20 min).</li>
+              <li>Client completes the foundational intake (234 questions, 15-20 min).</li>
               <li>CFFS generated automatically and appears on the client profile.</li>
             </ol>
             <p>Your manual steps after conversion:</p>
@@ -819,13 +819,13 @@ export default function HelpPage() {
               <li><strong>Coaching Agreement</strong> - reviewed and e-signed in the portal. You receive a notification when signed.</li>
               <li><strong>Health Declaration</strong> - health and readiness screening. You receive a notification when submitted. If medical clearance is flagged, a Medical Clearance step is automatically inserted before intake unlocks.</li>
               <li><strong>Medical Clearance</strong> (if required) - the moment the health declaration flags clearance, the client gets an auto-email (Kade voice, dark template) pointing them at the Medical Clearance card on their portal. They download a real PDF (server-rendered via puppeteer, pre-filled with their name), take it to their GP, and upload the completed form. You review it and mark clearance received on the client profile, which unlocks the intake.</li>
-              <li><strong>Foundational Intake</strong> - 230-question intake covering all signal domains. You receive a notification when submitted.</li>
+              <li><strong>Foundational Intake</strong> - 234-question intake covering all signal domains. You receive a notification when submitted.</li>
               <li><strong>Baseline Documentation</strong> - bodyweight, waist, hips, chest, and three progress photos (front, side, back). You receive a notification when submitted. Once both intake and baseline are in, you get a second &quot;completed onboarding - CFFS ready&quot; email and the Generate CFFS button becomes available on the client profile.</li>
             </ol>
             <p>You receive a notification email at every step as the client completes it. All submitted documents (agreement, health declaration, intake, baseline) are viewable and printable from the client profile.</p>
             <Note>CFFS is coach-triggered, not auto-generated. After both intake and baseline are submitted, click <strong>Generate CFFS</strong> on the client profile. Auto-generation was removed 2026-05-13 so coach can review intake responses before locking the read.</Note>
             <Training title="What the intake is building">
-              <p>The 230-question intake is not a form. It is the raw material for the CFFS - a structured read of the client&apos;s current body state across all signal domains. The questions exist because body response patterns don&apos;t reveal themselves in a short intake. Depth matters.</p>
+              <p>The 234-question intake is not a form. It is the raw material for the CFFS - a structured read of the client&apos;s current body state across all signal domains. The questions exist because body response patterns don&apos;t reveal themselves in a short intake. Depth matters.</p>
               <p className="mt-2">The baseline measurements taken here are the reference point for everything that follows. Week 1 data only becomes meaningful because of what was captured here. Encourage the client to be accurate rather than aspirational with their numbers.</p>
             </Training>
 
@@ -1110,7 +1110,7 @@ export default function HelpPage() {
             <ul className="space-y-1 list-disc list-inside text-[#43474F] text-sm">
               <li><strong>Lightweight</strong>: re-run CFFS engine against the original intake plus the recent CFWS history. No client effort. Default for block-end and single-notch drift.</li>
               <li><strong>Delta intake</strong>: a shortened ~30-question form covering domains likely to have changed. Default for multi-notch drops or two-or-more concurrent Amber/Red signals.</li>
-              <li><strong>Full re-intake</strong>: client completes the full 230 questions again. Default for the 12-week cap, two-band body state changes, or Restoration phase exit.</li>
+              <li><strong>Full re-intake</strong>: client completes the full 234 questions again. Default for the 12-week cap, two-band body state changes, or Restoration phase exit.</li>
             </ul>
             <Note>The current Regenerate CFFS button performs the lightweight path (re-runs against existing intake). Delta intake and full re-intake flows are doctrine-defined but not yet implemented as separate UI flows. They will be added when the trigger conditions become common.</Note>
 
@@ -1863,7 +1863,7 @@ export default function HelpPage() {
             <p className="font-semibold text-[#141821] mt-4">Form drafts - clients can resume mid-form</p>
             <p>Every long form in the portal saves the client&apos;s answers to their browser as they go. If they close the tab or come back two days later, their progress is restored - they pick up where they left off, not from the start. This applies to:</p>
             <ul className="space-y-1 list-disc list-inside text-[#43474F] text-sm">
-              <li>Foundational Intake (230 questions)</li>
+              <li>Foundational Intake (234 questions)</li>
               <li>Health Declaration (40+ fields)</li>
               <li>Baseline Documentation (measurements only - photos must be re-picked, browser security)</li>
               <li>Weekly Check-In (Form A and Form B independently)</li>
@@ -2129,7 +2129,7 @@ export default function HelpPage() {
             <p className="text-[12.5px] font-medium text-[#666D7A] mt-6 mb-2">Progress Read - re-scoring body state at block-end (2026-08-11)</p>
             <p>The <strong>Progress Read</strong> is the same Block-End Reading with one addition: it re-scores the client&apos;s body state (Depleted / Transitioning / Ready) <strong>then vs now</strong>. It answers the client&apos;s real question at block-end - &ldquo;have I actually moved?&rdquo; - the way Equinox re-runs a fitness assessment. The pattern (Stress-Stored, Insulin-Drift, etc.) is <strong>held</strong>; only the state moves. A re-read never re-diagnoses the pattern, it only nudges confidence in it.</p>
             <ul className="space-y-1.5 list-disc list-inside text-[#43474F] text-sm mt-2">
-              <li><strong>Send Progress Check.</strong> At block-end a <strong>Send Progress Check</strong> button appears above the reading panel. One click emails the client the re-assessment - 24 questions plus her measurements and three photos, roughly ten minutes (it is <em>not</em> the 230-question intake). <strong>Two timing gates apply:</strong> she must have reached the <strong>final week</strong> of her block (revised 31 Aug 2026 from &ldquo;the block must have ended&rdquo;), and this week&apos;s check-in must be in, so she never gets both asks at once. A blocked send explains why and offers &ldquo;Send it anyway&rdquo;. Logs <code className="bg-[#EFF1F4] px-1 rounded text-[#1056D6] text-[12.5px]">progress_check_invite</code>.</li>
+              <li><strong>Send Progress Check.</strong> At block-end a <strong>Send Progress Check</strong> button appears above the reading panel. One click emails the client the re-assessment - 24 questions plus her measurements and three photos, roughly ten minutes (it is <em>not</em> the 234-question intake). <strong>Two timing gates apply:</strong> she must have reached the <strong>final week</strong> of her block (revised 31 Aug 2026 from &ldquo;the block must have ended&rdquo;), and this week&apos;s check-in must be in, so she never gets both asks at once. A blocked send explains why and offers &ldquo;Send it anyway&rdquo;. Logs <code className="bg-[#EFF1F4] px-1 rounded text-[#1056D6] text-[12.5px]">progress_check_invite</code>.</li>
               <li><strong>Client submits.</strong> You get a notification email with a link back to the program. Nothing publishes on its own.</li>
               <li><strong>Generate.</strong> Click Generate on the reading panel. It reads the block&apos;s weekly arc <em>and</em> the Progress Check answers, and produces the reading plus a <strong>State Re-Score</strong> card (previous state → new state, direction, a plain-language rationale, and a pattern-held note). Review and edit as normal.</li>
               <li><strong>Publish + Notify.</strong> Same two clicks as any reading. When a re-score is present the client&apos;s document is titled <strong>Progress Read</strong> and leads with a &ldquo;Where you are now&rdquo; section; without a Progress Check it stays the plain Block-End Reading.</li>
@@ -2142,7 +2142,7 @@ export default function HelpPage() {
             <p>The Progress Read writes its re-scored state to the <strong>programs</strong> row. The program generator reads <strong>body state from the CFFS</strong>. Those are two different places, so until now a re-score never reached the block it was collected to inform: you could re-score a client to Transitioning and the next block would still be built against the Depleted-era foundational read.</p>
             <ul className="space-y-1.5 list-disc list-inside text-[#43474F] text-sm mt-2">
               <li>When a re-score exists that <strong>differs</strong> from the live CFFS, the <strong>prescription suggest page</strong> now shows it at the top, with the option to build the block on the re-scored state or ignore it and use the foundational read. Carrying it is the default, since the Progress Check was collected for exactly this.</li>
-              <li><strong>The CFFS is never touched.</strong> Pattern stays held. Only a full 230-question re-intake with fresh photos may revise the foundational read, and a Progress Check is deliberately not that.</li>
+              <li><strong>The CFFS is never touched.</strong> Pattern stays held. Only a full 234-question re-intake with fresh photos may revise the foundational read, and a Progress Check is deliberately not that.</li>
               <li><strong>Readiness signals are not re-scored.</strong> Only the state moves. The four readiness flags still date from the CFFS, so the prompt labels them as historical and is told that where a readiness flag is more restrictive than the new state implies, <strong>the more restrictive constraint wins</strong>. The failure mode is deliberately conservative.</li>
               <li>What the block was actually built against is recorded on the program row in <code className="bg-[#EFF1F4] px-1 rounded text-[#1B6DFC] text-[12.5px]">body_state_at_generation</code>, with the override and your note beside it, so a block never silently loses the reason its level was set the way it was.</li>
             </ul>

@@ -14,7 +14,7 @@
  *
  * Pattern is a READ, not a permanent attribute. It is allowed to change as
  * evidence improves, because the evidence is not comparable: the scorecard is
- * 25 self-reported answers, the CFFS is 230 intake points plus photographs plus
+ * 25 self-reported answers, the CFFS is 234 intake points plus photographs plus
  * measurements plus (when present) blood markers. More evidence wins.
  *
  * Three rules keep that honest rather than chaotic:
@@ -77,7 +77,7 @@ export type PatternSource = (typeof PATTERN_SOURCES)[number]
 const SOURCE_WEIGHT: Record<PatternSource, number> = {
   scorecard: 1,   // 25 self-reported answers, often low confidence
   challenge: 2,   // confirmed against 14 days of behaviour
-  cffs: 3,        // 230 intake points, photos, measurements, blood markers
+  cffs: 3,        // 234 intake points, photos, measurements, blood markers
 }
 
 export function supersedes(incoming: PatternSource, existing: PatternSource | null | undefined): boolean {
@@ -165,7 +165,11 @@ export function patternTaxonomyPromptSection(incoming?: {
   const incomingBlock = incoming?.pattern
     ? `\nINCOMING READ
 The funnel already read this client as ${incoming.pattern} (source: ${incoming.source ?? 'unknown'}, confidence: ${incoming.confidence ?? 'unknown'}).
-That read came from far less evidence than you hold. You are not bound by it, and you should not defer to it. But if you depart from it you must say why in pattern_rationale, naming the evidence that moved you. If you agree with it, say what in this intake confirms it rather than simply repeating the label.\n`
+That read came from far less evidence than you hold. You are not bound by it, and you should not defer to it. But if you depart from it you must say why in pattern_rationale, naming the evidence that moved you. If you agree with it, say what in this intake confirms it rather than simply repeating the label.
+
+AND A SECOND, LESS OBVIOUS PROBLEM WITH IT. The client was very likely shown that read, by name and with a description, before completing this intake. So their self-reported answers here are not independent of it: a person who has been told they store fat under stress will read their own body through that description. This is measurable rather than theoretical. People given a symptom narrative report significant symptom increases during sham exposure with nothing present at all.
+
+Treat agreement between the funnel read and the client's self-report as WEAK confirmation, because the second may be an echo of the first. What is not affected is anything the client could not have known to align: measurements, photographs, blood markers, timing patterns, and the answers whose relevance is not obvious from a pattern description. Weight those normally and lean on them where the two sources agree suspiciously well.\n`
     : `\nINCOMING READ
 None. This client has no prior pattern read, so yours is the first.\n`
 

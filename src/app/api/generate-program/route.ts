@@ -67,7 +67,7 @@ export async function runProgramGenerationInternal(body: any): Promise<NextRespo
     // cffs.body_state_classification, so a re-score never reached the block it
     // was collected to inform. Accepts either vocabulary (Depleted /
     // Transitioning / Ready, or Remediation / Optimisation / Post-Optimisation).
-    // Pattern stays HELD: only a full 230 re-intake may revise the CFFS.
+    // Pattern stays HELD: only a full 234 re-intake may revise the CFFS.
     body_state_override,
     body_state_override_reason,
     // 2026-08-30. Programmed endurance sessions in the client's week (runs,

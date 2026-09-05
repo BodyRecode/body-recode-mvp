@@ -161,7 +161,7 @@ const STAGES: StageGroup[] = [
       { name: 'Performance landing', url: '/performance', description: 'Top-level Performance landing.' },
       { name: 'Client portal (onboarding token)', url: '/portal/{token}', description: 'Tier 4 client portal. Full system access. Uses clients.onboarding_token.', tokenKind: 'portalOnboarding' },
       { name: 'Client view (checkin token)', url: '/client/{token}', description: 'Legacy client view route. Uses clients.checkin_token.', tokenKind: 'portalCheckin' },
-      { name: 'Intake (230 questions)', url: '/intake/{token}', description: 'Foundational intake form. Triggers CFFS generation.', tokenKind: 'intakeFoundational' },
+      { name: 'Intake (234 questions)', url: '/intake/{token}', description: 'Foundational intake form. Triggers CFFS generation.', tokenKind: 'intakeFoundational' },
       { name: 'Intake supplement', url: '/intake-supplement/{token}', description: '5-question supplementary intake. Used to backfill data.', tokenKind: 'intakeSupplementary' },
       { name: 'Baseline measurements', url: '/baseline/{token}', description: 'Baseline measurements capture. Uses clients.baseline_token.', tokenKind: 'portalBaseline' },
       { name: 'Weekly check-in', url: '/checkin/{token}', description: 'Weekly check-in form. Uses clients.checkin_token.', tokenKind: 'portalCheckin' },

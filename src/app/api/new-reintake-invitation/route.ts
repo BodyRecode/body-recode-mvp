@@ -8,7 +8,7 @@ import { isCoachUser, forbidden } from '@/lib/api-auth'
 // existing-client reassessment case instead of the first-time onboarding case.
 //
 // A re-intake:
-//   - Uses the same 230-question form as the foundational intake
+//   - Uses the same 234-question form as the foundational intake
 //   - Loads via the same /intake/{token} page (form doesn't care about kind)
 //   - Sends the re-intake email variant on Send Email click
 //   - On submit, skips first-time-only side effects (Portal Orientation

@@ -23,7 +23,7 @@ export interface ProgressCheckInviteEmailParams {
  * answers let the system re-read where the client sits now (Depleted /
  * Transitioning / Ready) and produce the Progress Read.
  *
- * It is far lighter than the 230-question intake, but it is NOT five minutes:
+ * It is far lighter than the 234-question intake, but it is NOT five minutes:
  * as of 27 Aug it also requires her measurements and three photos, which is
  * what finally makes a before-and-after possible. This email has to say so.
  * A client who opens it expecting five minutes and meets a tape measure has

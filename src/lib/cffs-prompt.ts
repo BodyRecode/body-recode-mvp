@@ -51,11 +51,28 @@ Stress-Stored and Androgen-Decline are the hardest pair to separate in men. Both
 Stress-Stored keeps the limbs LEAN (fat leaves them). Androgen-Decline makes them SOFT (muscle
 leaves them). Ask which happened.
 
-HOLDING SIGNALS (cross-cutting, not a zone):
-Bracing, tension and vigilance patterns — shoulder bracing, neck holding, solar plexus
-compression, lower back bracing, digestive distension, ribcage pressure — are nervous-system
-output. They point at sympathetic load ALONGSIDE any pattern. They are not a fourth zone and
-they must never be used to reassign a pattern. Note them as accompanying load.
+HOLDING SIGNALS (revised 5 Sep 2026 to Extended Zones v2.0):
+There are THREE, not six: shoulder and neck bracing, trunk holding, and abdominal
+distension. They describe sustained muscular activity that no mechanical task explains.
+They may accompany any pattern and they must NEVER be used to reassign one.
+
+DO NOT SAY THEY POINT AT SYMPATHETIC LOAD. That conclusion was withdrawn and it was a
+category error: muscle tone is produced by alpha motor neurons through a somatic pathway,
+and resting human muscle spindle discharge is not modulated by increases in sympathetic
+drive. Name no pathway. Record only that muscular activity is present without a task to
+explain it.
+
+THEY ENTER THE READ ONCE, TOGETHER, AS A SINGLE BINARY: present or not present. This is
+a hard counting rule and it matters because your confidence is built on convergence. The
+three are correlated observations of one thing, so counting them separately would make a
+read look better supported than it is, and it would do that most strongly in the client
+who has least other evidence. Two signals do not double the weight of one. Three do not
+triple it. The number present says nothing about severity, duration or urgency, and
+absence says nothing at all.
+
+THEY ARE REPORTED, NEVER MEASURED. No instrument with an accredited site reaches the
+tissue at two of the three, and at the third it contradicts the read. Treat them as
+context. Never as a pattern and never as a grade.
 
 Each zone is interpreted through 4 internal pillars:
 1. Spatial Patterning (where expression appears)
@@ -345,7 +362,7 @@ This is the coach's at-a-glance card on the client profile. It must pass the "co
 
 VISUAL SIGNAL SUMMARY (the new field):
 When baseline photos were provided alongside this intake, you must produce a dedicated visual_signal_summary of 2-4 sentences that names plainly:
-1. What the photos actually showed against the four Fat Map patterns — anterior midsection and whether the limbs are lean (Stress-Stored), posterior and flank with the front spared (Insulin-Drift), gluteofemoral or migrating central (Estrogen-Shift), and central fat alongside lost muscle and chest fullness (Androgen-Decline). Note any bracing or holding signals separately as accompanying sympathetic load, not as a pattern.
+1. What the photos actually showed against the four Fat Map patterns — anterior midsection and whether the limbs are lean (Stress-Stored), posterior and flank with the front spared (Insulin-Drift), gluteofemoral or migrating central (Estrogen-Shift), and central fat alongside lost muscle and chest fullness (Androgen-Decline). Note any bracing or holding signals separately as accompanying context, not as a pattern, and name no nervous-system pathway for them.
 2. Where the visual evidence converged with the intake signals.
 3. Where it diverged - i.e. anything the photos failed to corroborate that the intake suggested, or anything the photos hinted at that the intake did not.
 This is a standalone coach-facing summary, NOT a substitute for the photo references already woven through primary_patterns_and_signals and closing_interpretive_notes. Write it so a coach scanning the CFFS can see in one glance what the visual layer contributed. Same prohibitions apply: no aesthetic judgments, no broken-body framing, conservative language, no causal claims, no em dashes. When NO photos were provided, OMIT this field from the JSON entirely (do not return an empty string).

@@ -9,7 +9,7 @@ import { isCoachUser, forbidden } from '@/lib/api-auth'
  * we do NOT email the link (the portal IS the channel).
  *
  * Supplementary intakes ask only the fields added after the original
- * 230-question intake (currently: medications + 4 dietary context fields). On
+ * 234-question intake (currently: medications + 4 dietary context fields). On
  * submission, the answers UPDATE the most recent intake row for the client,
  * update clients.medications, and trigger CFFS regeneration.
  *

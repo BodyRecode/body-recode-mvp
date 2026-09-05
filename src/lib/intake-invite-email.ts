@@ -73,7 +73,7 @@ export function buildIntakeInviteEmail({
     )
     bodyParagraphs.push(
       emailBody(
-        'Give it 15 to 20 minutes when you have a quiet block. It is 230 questions, most of them quick. There are no right or wrong answers, just where you are at now, not your best or worst days.',
+        'Give it 15 to 20 minutes when you have a quiet block. It is 234 questions, most of them quick. There are no right or wrong answers, just where you are at now, not your best or worst days.',
         { bottom: 28 },
       ),
     )

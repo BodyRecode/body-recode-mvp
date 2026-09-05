@@ -53,7 +53,7 @@ export const AI_MODELS = {
 export type AIModelTier = keyof typeof AI_MODELS
 
 /**
- * The deepest read in the system: 230 intake points, photos, blood markers,
+ * The deepest read in the system: 234 intake points, photos, blood markers,
  * state and pattern classification in one pass. Everything downstream inherits
  * its errors.
  *
@@ -94,7 +94,7 @@ export const CFFS_MODEL: string = AI_MODELS.clinical
  *            enumerated choices. Low effort: the rules do the thinking.
  *
  * ANALYSIS   Genuine synthesis where the answer is not implied by the inputs.
- *            The CFFS reading 230 intake points, a macro arc trading a fixed
+ *            The CFFS reading 234 intake points, a macro arc trading a fixed
  *            deadline against a Red readiness gate. Leave the default.
  *
  * Do not generalise this without measuring. `npm run repro:program` and
