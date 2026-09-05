@@ -1038,6 +1038,12 @@ type FeaturedBoltOn = {
   cover_signed_url: string
 }
 
+// Absolute check-in week <-> block numbering. Block A is weeks 1-6, B is 7-12,
+// C is 13-18, matching the Extension's 1-12 across its two blocks.
+const BLOCK_OFFSET: Record<string, number> = { A: 0, B: 6, C: 12 }
+const weekInBlock = (absolute: number) => ((absolute - 1) % 6) + 1
+const blockOfWeek = (absolute: number) => ['A', 'B', 'C'][Math.floor((absolute - 1) / 6)] ?? 'A'
+
 export default function MembershipPortalClient({
   enrollment,
   featuredBoltOns,
@@ -1072,7 +1078,27 @@ export default function MembershipPortalClient({
   const currentWeek = enrollment.current_week ?? 1
   // Week recorded on check-ins. Defaults to the block-relative week (membership);
   // the Extension passes its true 1-12 week so its 12 check-ins stay distinct.
-  const checkinWeek = checkinWeekNumber ?? currentWeek
+  // Check-ins are stored on an ABSOLUTE week number, not a block-relative one.
+  // membership_checkins is unique on (enrollment_id, week_number) with no block
+  // column, so storing the block-relative week meant Block B Week 1 collided
+  // with Block A Week 1 and every check-in in Block B and C was rejected 409.
+  // The Extension already passes its true 1-12 week for exactly this reason.
+  const blockOffset = BLOCK_OFFSET[block] ?? 0
+  const nominalCheckinWeek = checkinWeekNumber ?? blockOffset + currentWeek
+  // The check-in being asked for is the EARLIEST week still outstanding, not
+  // whatever week the portal has rolled to. The advance email names the week
+  // just completed, so without this the answers save one week ahead of the week
+  // they describe and the reminder keeps firing for a check-in already done.
+  const submittedWeeks = new Set(checkins.map(c => c.week_number))
+  const checkinWeek = (() => {
+    for (let w = 1; w <= nominalCheckinWeek; w++) {
+      if (!submittedWeeks.has(w)) return w
+    }
+    return nominalCheckinWeek
+  })()
+  // What the client is shown: the week inside its block, which is the only
+  // numbering the portal and the emails use.
+  const checkinWeekLabel = weekInBlock(checkinWeek)
   const phases = BLOCK_PHASES[block] ?? BLOCK_PHASES['A']
   const sessions = block === 'C' ? BLOCK_C_SESSIONS : block === 'B' ? BLOCK_B_SESSIONS : BLOCK_A_SESSIONS
   const trainingData = block === 'C'
@@ -1504,12 +1530,12 @@ export default function MembershipPortalClient({
           <div>
             {card(<>
               {label('Weekly Check-In', ClipboardCheck)}
-              <p style={{ fontSize: 14, color: '#43474F', margin: '0 0 4px', lineHeight: 1.7 }}>Week {currentWeek} of Block {block}. Rate each marker from 1 (poor) to 5 (excellent).</p>
+              <p style={{ fontSize: 14, color: '#43474F', margin: '0 0 4px', lineHeight: 1.7 }}>Week {checkinWeekLabel} of Block {block}. Rate each marker from 1 (poor) to 5 (excellent).</p>
             </>)}
 
             {thisWeekCheckin ? (
               <div style={{ background: '#FFFFFF', border: `1px solid ${config.colour}40`, borderRadius: 12, padding: '20px 22px', marginBottom: 16 }}>
-                {label('Week ' + currentWeek + ' submitted')}
+                {label('Week ' + checkinWeekLabel + ' submitted')}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                   {CHECKIN_MARKERS.map(m => (
                     <div key={m.key} style={{ background: '#FFFFFF', borderRadius: 8, padding: '10px 12px' }}>
@@ -1568,7 +1594,7 @@ export default function MembershipPortalClient({
                     opacity: CHECKIN_MARKERS.some(m => !checkinForm[m.key]) ? 0.5 : 1,
                   }}
                 >
-                  {checkinSubmitting ? 'Saving...' : 'Submit Week ' + currentWeek + ' Check-In'}
+                  {checkinSubmitting ? 'Saving...' : 'Submit Week ' + checkinWeekLabel + ' Check-In'}
                 </button>
               </form>
             )}
@@ -1578,7 +1604,7 @@ export default function MembershipPortalClient({
                 {label('Previous Check-Ins', CalendarDays)}
                 {[...checkins].sort((a, b) => b.week_number - a.week_number).slice(0, 5).map(c => (
                   <div key={c.id} style={{ background: '#FFFFFF', border: '1px solid #E8EAEE', borderRadius: 10, padding: '14px 16px', marginBottom: 10 }}>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: '#43474F', marginBottom: 8 }}>Block {block} - Week {c.week_number}</div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: '#43474F', marginBottom: 8 }}>Block {blockOfWeek(c.week_number)} - Week {weekInBlock(c.week_number)}</div>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                       {CHECKIN_MARKERS.map(m => (
                         <div key={m.key} style={{ fontSize: 12, color: '#43474F' }}>
@@ -1647,7 +1673,7 @@ export default function MembershipPortalClient({
                             return (
                               <div key={c.week_number} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                                 <div style={{ width: '100%', height: `${(val / 5) * 36}px`, background: colour, borderRadius: 3, minHeight: 4 }} />
-                                <div style={{ fontSize: 9, color: '#43474F' }}>W{c.week_number}</div>
+                                <div style={{ fontSize: 9, color: '#43474F' }}>W{weekInBlock(c.week_number)}</div>
                               </div>
                             )
                           })}

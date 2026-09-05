@@ -1498,7 +1498,19 @@ function CheckInTab({ pattern, currentWeek, token }: { pattern: string; currentW
       .catch(() => setLoading(false))
   }, [token])
 
-  const alreadySubmittedThisWeek = checkins.some(c => c.week_number === currentWeek)
+  // The check-in the client is actually being asked for is the EARLIEST week
+  // still outstanding, not whatever week the portal has advanced to. The
+  // advance email says "submit your Week 1 check-in" while the portal had
+  // already rolled to Week 2, so Dee Berry's Week 1 answers saved as Week 2
+  // (her own note on the row reads "This is for Week 1"), the Week 1 reminder
+  // kept firing at someone who had already checked in, and the Week 2 slot was
+  // burnt. Target the week the email names.
+  const submittedWeeks = new Set(checkins.map(c => c.week_number))
+  let targetWeek = currentWeek
+  for (let w = 1; w <= currentWeek; w++) {
+    if (!submittedWeeks.has(w)) { targetWeek = w; break }
+  }
+  const alreadySubmittedThisWeek = submittedWeeks.has(targetWeek)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -1507,12 +1519,12 @@ function CheckInTab({ pattern, currentWeek, token }: { pattern: string; currentW
     const res = await fetch('/api/blueprint/checkin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token, week_number: currentWeek, notes, ...markers }),
+      body: JSON.stringify({ token, week_number: targetWeek, notes, ...markers }),
     })
     if (res.ok) {
       const newCheckin: CheckIn = {
         id: crypto.randomUUID(),
-        week_number: currentWeek,
+        week_number: targetWeek,
         notes: notes || null,
         submitted_at: new Date().toISOString(),
         ...Object.fromEntries(CHECKIN_MARKERS.map(m => [m.key, markers[m.key]])),
@@ -1541,14 +1553,14 @@ function CheckInTab({ pattern, currentWeek, token }: { pattern: string; currentW
         <div style={{ padding: '40px', textAlign: 'center', color: '#43474F', fontSize: 13 }}>Loading...</div>
       ) : alreadySubmittedThisWeek || submitted ? (
         <div style={{ background: '#FFFFFF', border: `1px solid #E8EAEE`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '24px', marginBottom: 24 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Week {currentWeek} - Submitted</div>
-          <p style={{ fontSize: 14, color: '#666D7A', margin: 0, lineHeight: 1.7 }}>Check-in for this week is complete. The next one will be available at Week {Math.min(currentWeek + 1, 6)}.</p>
+          <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Week {targetWeek} - Submitted</div>
+          <p style={{ fontSize: 14, color: '#666D7A', margin: 0, lineHeight: 1.7 }}>Check-in for this week is complete. The next one will be available at Week {Math.min(targetWeek + 1, 6)}.</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit}>
           <div style={{ background: '#FFFFFF', border: `1px solid #E8EAEE`, borderLeft: `4px solid ${config.colour}`, borderRadius: 12, padding: '24px', marginBottom: 20 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: config.colour, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>
-              Week {currentWeek} Check-In
+              Week {targetWeek} Check-In
             </div>
             <p style={{ fontSize: 13, color: '#43474F', margin: '0 0 24px', lineHeight: 1.6 }}>
               Rate each marker for how this week has felt overall. 1 = poor, 5 = excellent.
@@ -1606,7 +1618,7 @@ function CheckInTab({ pattern, currentWeek, token }: { pattern: string; currentW
               disabled={submitting}
               style={{ marginTop: 20, width: '100%', padding: '14px', background: config.colour, color: '#FFFFFF', fontWeight: 700, fontSize: 14, borderRadius: 8, border: 'none', cursor: submitting ? 'not-allowed' : 'pointer', opacity: submitting ? 0.7 : 1 }}
             >
-              {submitting ? 'Saving...' : `Submit Week ${currentWeek} Check-In`}
+              {submitting ? 'Saving...' : `Submit Week ${targetWeek} Check-In`}
             </button>
           </div>
         </form>

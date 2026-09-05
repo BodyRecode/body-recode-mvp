@@ -114,7 +114,7 @@ const AUTOMATIC_AUTOMATIONS = [
   {
     id: 'blueprint-week-advance',
     name: 'Blueprint Week Advance',
-    description: 'Weekly block-progression emails through the Blueprint (one per week, Weeks 1-6), each with a check-in prompt + a 2-day reminder if the check-in is still outstanding. The reminder is also mirrored as a consent-gated SMS (opt-in only, STOP-respecting, capped 1/24h + 3/7d). Dormant until the Blueprint goes live.',
+    description: 'Weekly block-progression emails through the Blueprint (one per week, Weeks 1-6), each with a check-in prompt + a 2-day reminder if the check-in is still outstanding. Secondary to the daily funnel-week-advance cron, which derives the week owed from the purchase date; both are monotonic so neither can move a client backwards. The reminder is also mirrored as a consent-gated SMS (opt-in only, STOP-respecting, capped 1/24h + 3/7d). Dormant until the Blueprint goes live.',
     trigger: 'blueprint/enrolled Inngest event (weekly step)',
     steps: 6,
   },

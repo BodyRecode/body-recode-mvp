@@ -3808,8 +3808,14 @@ export default function HelpPage() {
           <Section id="bp-automation" title="Automation and Emails" colour="teal">
             <p>Two Inngest functions are triggered on the <strong>blueprint/enrolled</strong> event, fired from the Stripe webhook after enrollment creation.</p>
 
-            <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">blueprintWeekAdvanceFunction</p>
-            <p>Sleeps 7 days then advances <code className="text-[#1B6DFC] text-[12.5px] bg-[#EFF1F4] px-1 py-0.5 rounded">current_week</code> from 1 to 2, sleeps again, advances to 3, and so on up to week 6. On each advance it also sends a check-in prompt email. If the check-in is not submitted within 2 days, a reminder email fires automatically.</p>
+            <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">/api/cron/funnel-week-advance (primary)</p>
+            <p>Daily cron at 7am Brisbane. Recomputes the week every enrollment is owed straight from the purchase date - <code className="text-[#1B6DFC] text-[12.5px] bg-[#EFF1F4] px-1 py-0.5 rounded">floor((now - purchase_date) / 7 days) + 1</code> - and advances <code className="text-[#1B6DFC] text-[12.5px] bg-[#EFF1F4] px-1 py-0.5 rounded">current_week</code> to it, sending the check-in prompt email on that transition. It covers Blueprint, Membership and Extension. Because the week is derived rather than counted, a missed or failed day catches up the next morning and the schedule cannot drift.</p>
+
+            <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">blueprintWeekAdvanceFunction (secondary)</p>
+            <p>Sleeps 7 days then advances <code className="text-[#1B6DFC] text-[12.5px] bg-[#EFF1F4] px-1 py-0.5 rounded">current_week</code> from 1 to 2, sleeps again, advances to 3, and so on up to week 6, sending the same prompt email plus a reminder if the check-in is still outstanding 2 days later. Its advance is monotonic, so whichever mechanism reaches a week first wins and neither can move a client backwards.</p>
+
+            <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">Why there are two</p>
+            <p>The Inngest run sleeps 7 days, then 2 more for the reminder, then starts the next week - so a &quot;week&quot; cost 9-10 days and the error compounded. The first Blueprint client was 5 days late into Week 3 and would have been 16 days late into Week 6. The cron derives the week from a date instead of counting sleeps, which is why it is the primary and the sleep loop is now only a backstop.</p>
 
             <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">Check-in email cadence (per week)</p>
             <div className="space-y-1 mt-2">

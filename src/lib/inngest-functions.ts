@@ -1034,7 +1034,12 @@ export const blueprintWeekAdvanceFunction = inngest.createFunction(
           .single()
 
         if (!data || data.status !== 'active') return
-        if (data.current_week !== week - 1) return
+        // Monotonic. /api/cron/funnel-week-advance recomputes the week owed
+        // from purchase_date every morning and is the primary writer; this run
+        // is the second one. Whichever gets there first wins, and neither may
+        // move a client backwards - the old `!== week - 1` also let a run that
+        // resumed behind the cron drag the portal back a week.
+        if (data.current_week >= week) return
 
         await admin
           .from('blueprint_enrollments')
@@ -1174,6 +1179,10 @@ export const membershipWeekAdvanceFunction = inngest.createFunction(
 
           if (!data || data.cancelled_at) return
           if (data.current_block !== block) return
+          // Monotonic, same reason as the Blueprint loop. Without this a
+          // resumed run could pull a member back to an earlier week of the
+          // block the cron had already carried them past.
+          if ((data.current_week ?? 1) >= week) return
 
           await admin
             .from('membership_enrollments')
@@ -1220,11 +1229,16 @@ export const membershipWeekAdvanceFunction = inngest.createFunction(
           const completedWeek = week - 1
           if (completedWeek < 1) return
 
+          // membership_checkins stores an ABSOLUTE week (Block A 1-6, B 7-12,
+          // C 13-18) because the table is unique on (enrollment_id,
+          // week_number) with no block column. Looking it up block-relative
+          // found Block A's row while chasing Block B's and stayed silent.
+          const blockOffset = BLOCKS.indexOf(block) * WEEKS_PER_BLOCK
           const { data: existing } = await admin
             .from('membership_checkins')
             .select('id')
             .eq('enrollment_id', enrollment.id)
-            .eq('week_number', completedWeek)
+            .eq('week_number', blockOffset + completedWeek)
             .maybeSingle()
 
           if (existing) return
@@ -1299,7 +1313,8 @@ export const extensionWeekAdvanceFunction = inngest.createFunction(
           .single()
 
         if (!data) return
-        if (data.current_week !== week - 1) return
+        // Monotonic, same reason as the Blueprint loop.
+        if (data.current_week >= week) return
 
         await admin
           .from('extension_enrollments')
