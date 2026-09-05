@@ -48,7 +48,7 @@ export const INTAKE_SECTIONS: Section[] = [
   },
   {
     id: 'fat_map',
-    title: 'Section A — Body Pattern Signals',
+    title: 'Section A: Body Pattern Signals',
     description: 'This section captures recurring physical and recovery patterns that may not always be obvious day to day. Answer based on your usual experience across recent months. Focus on patterns rather than temporary spikes or short-term changes. There are no right or wrong responses.\n\n0 = Not present · 1 = Mild · 2 = Moderate · 3 = Frequent · 4 = Strong / Consistent',
     questions: [
       { id: 'fm_01', text: 'I tend to store fat primarily around my midsection.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
@@ -116,7 +116,7 @@ export const INTAKE_SECTIONS: Section[] = [
   },
   {
     id: 'injury',
-    title: 'Section B — Injury and Pain Status',
+    title: 'Section B: Injury and Pain Status',
     description: 'This section captures current pain presence, historical injuries, and movement sensitivities that may influence training tolerance. Answer based on your usual experience across recent months unless the question clearly refers to current status. Report patterns honestly.\n\n0 = No pain or limitation · 1 = Mild awareness, no limitation · 2 = Noticeable discomfort, manageable · 3 = Significant pain or limitation · 4 = Severe pain or restriction',
     questions: [
       { id: 'inj_01', text: 'I currently experience pain during daily activities.', type: 'scale', scaleLabel: { low: 'No pain', high: 'Severe' } },
@@ -157,7 +157,7 @@ export const INTAKE_SECTIONS: Section[] = [
   },
   {
     id: 'training',
-    title: 'Section C — Training History and Exposure',
+    title: 'Section C: Training History and Exposure',
     description: 'This section captures your training background, consistency patterns, exposure level, and familiarity with different training environments. Answer based on your overall history rather than short recent phases. Focus on long-term patterns of behaviour and exposure.\n\n0 = Never / Not applicable · 1 = Very limited · 2 = Occasional or inconsistent · 3 = Regular · 4 = Long-term and consistent',
     questions: [
       { id: 'tr_01', text: 'I have engaged in structured resistance training.', type: 'scale', scaleLabel: { low: 'Never', high: 'Long-term and consistent' } },
@@ -194,7 +194,7 @@ export const INTAKE_SECTIONS: Section[] = [
   },
   {
     id: 'nutrition',
-    title: 'Section D — Nutrition History and Dietary Context',
+    title: 'Section D: Nutrition History and Dietary Context',
     description: 'This section captures your nutrition history, dietary structure, behavioural patterns, and prior exposure to structured eating approaches. Answer based on your typical patterns across recent months rather than isolated weeks.\n\n0 = Never / Not applicable · 1 = Rarely · 2 = Sometimes · 3 = Often · 4 = Consistently',
     questions: [
       { id: 'nut_01', text: 'I follow a consistent eating pattern.', type: 'scale', scaleLabel: { low: 'Never', high: 'Consistently' } },
@@ -234,7 +234,7 @@ export const INTAKE_SECTIONS: Section[] = [
   },
   {
     id: 'schedule',
-    title: 'Section E — Schedule and Availability',
+    title: 'Section E: Schedule and Availability',
     description: 'This section captures your weekly structure, time availability, routine stability, and scheduling constraints as they relate to training and recovery. Answer based on your typical weekly pattern across recent months rather than isolated weeks.\n\n0 = Never / Not applicable · 1 = Rarely · 2 = Sometimes · 3 = Often · 4 = Consistently',
     questions: [
       { id: 'sch_01', text: 'My weekly schedule is predictable.', type: 'scale', scaleLabel: { low: 'Never', high: 'Consistently' } },
@@ -267,7 +267,7 @@ export const INTAKE_SECTIONS: Section[] = [
   },
   {
     id: 'sleep',
-    title: 'Section F — Sleep and Recovery',
+    title: 'Section F: Sleep and Recovery',
     description: 'This section captures your sleep patterns, perceived recovery capacity, and fatigue signals that may influence training response and load tolerance. Answer based on your typical patterns across recent months rather than isolated nights or short-term changes.\n\n0 = Never / Not applicable · 1 = Rarely · 2 = Sometimes · 3 = Often · 4 = Consistently',
     questions: [
       { id: 'sl_01', text: 'I get a consistent amount of sleep each night.', type: 'scale', scaleLabel: { low: 'Never', high: 'Consistently' } },
@@ -299,7 +299,7 @@ export const INTAKE_SECTIONS: Section[] = [
   },
   {
     id: 'stress',
-    title: 'Section G — Stress and Load Context',
+    title: 'Section G: Stress and Load Context',
     description: 'This section captures perceived stress levels, cognitive and emotional load, and life pressures that may influence training response, recovery, and behavioural capacity. Answer based on your typical experience across recent months rather than isolated stressful days.\n\n0 = Never / Not applicable · 1 = Rarely · 2 = Sometimes · 3 = Often · 4 = Consistently',
     questions: [
       { id: 'str_01', text: 'I feel mentally overwhelmed.', type: 'scale', scaleLabel: { low: 'Never', high: 'Consistently' } },
@@ -331,7 +331,7 @@ export const INTAKE_SECTIONS: Section[] = [
   },
   {
     id: 'supplement',
-    title: 'Section H — Medications, Supplements and Stimulant Use',
+    title: 'Section H: Medications, Supplements and Stimulant Use',
     description: 'This section captures current medications, supplements, stimulant exposure, and any performance or recovery compounds you are using. All of it shapes how we read your body\'s signal. The first question is asked in confidence and without judgement, disclosure produces a better read, missing context produces a worse one. The rest are 0–4 scale questions about your typical patterns across recent months.\n\n0 = Never / Not applicable · 1 = Occasionally · 2 = A few times per week · 3 = Most days · 4 = Daily or multiple times per day',
     questions: [
       { id: 'medications', text: 'List anything you are currently taking that may affect your hormones, recovery, training response, or body composition. Include:\n\n• Prescribed medications (hormonal support like TRT, HRT, or GLP-1; cardiovascular, antidepressants, ADHD medications, contraceptives, beta-blockers, corticosteroids)\n• Chronic over-the-counter use (daily anti-inflammatories, painkillers, antihistamines)\n• Performance and recovery peptides, SARMs, anabolic compounds, or any hormone-modulating compound\n• Hormone-affecting supplements at therapeutic dose (DIM, ashwagandha cycles, melatonin, etc.)\n\nInclude dose, frequency, and how long you have been on each where known. Write "None" if none apply.', type: 'text', required: true },
@@ -364,8 +364,8 @@ export const INTAKE_SECTIONS: Section[] = [
   },
   {
     id: 'goals',
-    title: 'Section I — High-Level Goal Declaration',
-    description: 'We ask about goals to understand what matters to you, not to lock you into a specific outcome. Your responses provide context only — they do not override safety requirements or determine program structure.\n\nYou may be broad, uncertain, or exploratory. You may leave any section blank. There are no right or wrong answers.',
+    title: 'Section I: High-Level Goal Declaration',
+    description: 'We ask about goals to understand what matters to you, not to lock you into a specific outcome. Your responses provide context only. They do not override safety requirements or determine program structure.\n\nYou may be broad, uncertain, or exploratory. You may leave any section blank. There are no right or wrong answers.',
     questions: [
       {
         id: 'goal_primary',
