@@ -2857,11 +2857,16 @@ export const reassessmentDigestCron = inngest.createFunction(
         .is('ended_at', null)
         .is('frozen_at', null)
       let created = 0
+      let retired = 0
       for (const c of clients ?? []) {
-        const r = await syncReassessmentTriggers(admin, c.id).catch(() => ({ created: 0 }))
+        const r = await syncReassessmentTriggers(admin, c.id).catch(() => ({ created: 0, retired: 0 }))
         created += r.created
+        // Since 2026-09-07 the sync also retires triggers whose cause has been
+        // dealt with, so the Monday digest reflects what is actually still open
+        // rather than everything that has ever fired.
+        retired += r.retired
       }
-      return { clients: clients?.length ?? 0, created }
+      return { clients: clients?.length ?? 0, created, retired }
     })
 
     const digest = await step.run('build-digest', async () => {

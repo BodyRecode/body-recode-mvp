@@ -1080,6 +1080,17 @@ export default function HelpPage() {
               <li>Time since the active CFFS exceeds 12 weeks (annual upper bound)</li>
             </ul>
 
+            <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">Triggers now retire themselves (added 2026-09-07)</p>
+            <p>Until this date, triggers were <strong>append-only</strong>. Nothing closed one when the thing it asked for had been done, so the only way a trigger left the queue was you dismissing it by hand. On 7 Sep the queue across four active clients had reached <strong>34</strong>, most of it long dealt with. A queue that never empties stops being read, which defeats the point of having one.</p>
+            <p>The Monday re-sync now closes a trigger when its cause is gone:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#43474F] text-sm">
+              <li><strong>Twelve-week cap</strong> closes once a newer CFFS exists. Regenerating the read is what the trigger asked for, so it should not still be asking.</li>
+              <li><strong>Block end</strong> closes when a new block is activated. It also de-duplicates: the anchor carries the block week, so a block left sitting past its end used to mint a fresh trigger <em>every week</em>. Razia had two for one block and Amanda three. You now get <strong>one row per block</strong>, and its age tells you how overdue it is.</li>
+              <li><strong>Signal-based triggers</strong> close when the CFWS they were anchored to is archived and replaced, or when the same signal fires again for a later week. The newer row is the live one; the older is duplicate work.</li>
+            </ul>
+            <p>It is deliberately cautious. It never touches a trigger you have actioned or dismissed, never closes one whose anchor is still current, and never closes a signal trigger just for being old, only when something newer has superseded it. When in doubt the trigger stays open, because a stale prompt is a smaller failure than a missed one. Nothing is retired for a client who has ended or is frozen: their open triggers are the record of where they were when they stopped.</p>
+            <p>After this shipped the same four clients went from 34 open to <strong>7</strong>, all of them real.</p>
+
             <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">Early-program signal-trigger suppression (added 2026-05-18)</p>
             <p>The four signal-based triggers above are suppressed until the active CFFS is at least <strong>21 days old</strong>. A reassessment on a freshly-generated CFFS would produce essentially the same read, since one or two weeks of CFWS signal isn&apos;t enough new evidence to invalidate it. The 21-day floor matches the &quot;three weeks of signal needed before re-interpreting&quot; principle. Time-based triggers (block end, 12-week cap) are NOT suppressed because they aren&apos;t signal-driven.</p>
             <p>Constant: <code className="bg-[#EFF1F4] px-1 rounded text-[#1056D6] text-[12.5px]">SIGNAL_BASED_TRIGGER_FLOOR_DAYS = 21</code> in <code className="bg-[#EFF1F4] px-1 rounded text-[#1056D6] text-[12.5px]">src/lib/readiness-monitor.ts</code>. Rationale captured in §3a of the doctrine doc.</p>

@@ -80,6 +80,142 @@ function anchorFor(
   }
 }
 
+
+/**
+ * Close open triggers whose cause has since been dealt with.
+ *
+ * Until 2026-09-07 `syncReassessmentTriggers` only ever INSERTED. Nothing
+ * anywhere retired a trigger when the condition behind it stopped being true,
+ * so closure was entirely manual and the queue only ever grew.
+ *
+ * Razia on 2026-09-07 is the case that surfaced it: her CFFS was regenerated
+ * from a 15-week-old read to a same-day one, and the `twelve_week_cap` trigger
+ * saying "the active CFFS is 12 weeks old" stayed open. Across four active
+ * clients the queue had reached 34, most of it triggers whose cause was long
+ * gone. A queue that never empties stops being read.
+ *
+ * What retires, and why it is safe:
+ *   twelve_week_cap  anchored to a specific CFFS. A newer un-archived CFFS
+ *                    exists means the read it asked for has happened.
+ *   block_end        anchored to program:<id>:week:<n>. That program no longer
+ *                    being the active one means the block moved on.
+ *   interpretive     anchored to a specific CFWS. That CFWS being archived, or
+ *                    a newer week having produced the SAME reason, means this
+ *                    row is duplicate work rather than a second signal.
+ *
+ * Deliberately conservative. It never touches 'actioned' or 'dismissed', never
+ * closes a trigger whose anchor is still current, and never closes an
+ * interpretive trigger just for being old: only when something newer has
+ * superseded it. When in doubt the trigger stays open, because a stale prompt
+ * is a smaller failure than a missed one.
+ */
+async function retireSupersededTriggers(
+  admin: SupabaseClient,
+  clientId: string,
+  ctx: {
+    activeCffsId: string | null
+    activeProgramId: string | null
+    cfwsRows: { id: string; week_number: number | null; is_archived: boolean | null }[]
+  }
+): Promise<{ retired: number }> {
+  const { data: open, error } = await admin
+    .from('reassessment_triggers')
+    .select('id, reason, anchor, fired_at')
+    .eq('client_id', clientId)
+    .eq('status', 'open')
+
+  if (error) {
+    console.error('[reassessment-triggers] retire lookup failed', error)
+    return { retired: 0 }
+  }
+  if (!open?.length) return { retired: 0 }
+
+  const cfwsById = new Map(ctx.cfwsRows.map(r => [r.id, r]))
+  const liveWeeks = ctx.cfwsRows.filter(r => !r.is_archived).map(r => r.week_number ?? -1)
+  const newestLiveWeek = liveWeeks.length ? Math.max(...liveWeeks) : null
+
+  const toClose: { id: string; note: string }[] = []
+
+  for (const t of open) {
+    const anchor = String(t.anchor ?? '')
+
+    if (t.reason === 'twelve_week_cap') {
+      const anchoredCffsId = anchor.startsWith('cffs:') ? anchor.slice(5) : null
+      if (anchoredCffsId && ctx.activeCffsId && anchoredCffsId !== ctx.activeCffsId) {
+        toClose.push({ id: t.id, note: 'Retired automatically: a newer CFFS has been generated, so the read this trigger asked for has happened.' })
+      }
+      continue
+    }
+
+    if (t.reason === 'block_end') {
+      const m = anchor.match(/^program:([^:]+):week:(\d+|x)$/)
+      const anchoredProgram = m?.[1] ?? null
+      const anchoredWeek = m && m[2] !== 'x' ? Number(m[2]) : null
+
+      if (anchoredProgram && ctx.activeProgramId && anchoredProgram !== ctx.activeProgramId) {
+        toClose.push({ id: t.id, note: 'Retired automatically: the client has moved on to a new block, so this block-end prompt no longer applies.' })
+        continue
+      }
+
+      // The anchor carries the block week, so a block left sitting past its end
+      // mints a fresh trigger EVERY week it stays there. Amanda had three for
+      // one block on 2026-09-07. Keep only the latest: one row saying the block
+      // has ended, whose age tells the coach how overdue it is.
+      if (anchoredProgram && anchoredWeek != null) {
+        const laterSameBlock = open.some(o => {
+          if (o.reason !== 'block_end' || o.id === t.id) return false
+          const om = String(o.anchor ?? '').match(/^program:([^:]+):week:(\d+)$/)
+          return !!om && om[1] === anchoredProgram && Number(om[2]) > anchoredWeek
+        })
+        if (laterSameBlock) {
+          toClose.push({ id: t.id, note: 'Retired automatically: superseded by a later block-end prompt for the same block. One open row per block, not one per week it sits unresolved.' })
+        }
+      }
+      continue
+    }
+
+    // Interpretive, CFWS-anchored.
+    if (!anchor.startsWith('cfws:')) continue
+    const anchoredId = anchor.slice(5)
+    const anchoredRow = cfwsById.get(anchoredId)
+
+    if (anchoredRow?.is_archived) {
+      toClose.push({ id: t.id, note: 'Retired automatically: the CFWS this was anchored to has been archived and replaced. Any signal still present will have re-fired against the replacement.' })
+      continue
+    }
+
+    // Same reason raised again off a later week: the older row is duplicate work.
+    const anchoredWeek = anchoredRow?.week_number ?? null
+    if (anchoredWeek != null && newestLiveWeek != null && anchoredWeek < newestLiveWeek) {
+      const newerSameReason = open.some(o => {
+        if (o.reason !== t.reason || o.id === t.id) return false
+        const oa = String(o.anchor ?? '')
+        if (!oa.startsWith('cfws:')) return false
+        const ow = cfwsById.get(oa.slice(5))?.week_number ?? null
+        return ow != null && ow > anchoredWeek
+      })
+      if (newerSameReason) {
+        toClose.push({ id: t.id, note: `Retired automatically: the same signal fired again for a later week, so this earlier instance is duplicate work rather than a second signal.` })
+      }
+    }
+  }
+
+  if (!toClose.length) return { retired: 0 }
+
+  const nowIso = new Date().toISOString()
+  let retired = 0
+  for (const c of toClose) {
+    const { error: uErr } = await admin
+      .from('reassessment_triggers')
+      .update({ status: 'dismissed', resolved_at: nowIso, resolution_note: c.note })
+      .eq('id', c.id)
+      .eq('status', 'open')
+    if (uErr) console.error('[reassessment-triggers] retire failed', c.id, uErr.message)
+    else retired++
+  }
+  return { retired }
+}
+
 /**
  * Recompute readiness for one client and persist any newly fired reasons.
  *
@@ -90,16 +226,18 @@ function anchorFor(
 export async function syncReassessmentTriggers(
   admin: SupabaseClient,
   clientId: string
-): Promise<{ created: number; reasons: ReassessmentReason[] }> {
+): Promise<{ created: number; reasons: ReassessmentReason[]; retired: number }> {
   const { data: client } = await admin
     .from('clients')
     .select('id, coaching_started_at, ended_at, frozen_at')
     .eq('id', clientId)
     .maybeSingle()
 
-  // Never raise work for a client who has left or is on hold.
+  // Never raise work for a client who has left or is on hold. Nothing is
+  // retired for them either: their open triggers are a record of where they
+  // were when they stopped, and clearing that silently would lose it.
   if (!client?.coaching_started_at || client.ended_at || client.frozen_at) {
-    return { created: 0, reasons: [] }
+    return { created: 0, reasons: [], retired: 0 }
   }
 
   const [{ data: cfwsRows }, { data: cffsRows }, { data: programs }] = await Promise.all([
@@ -136,7 +274,20 @@ export async function syncReassessmentTriggers(
     rpeCreep: null,
   })
 
-  if (!report.reassessmentReasons.length) return { created: 0, reasons: [] }
+  // Retire BEFORE the early return below. A client with nothing currently
+  // firing is exactly the client most likely to be carrying triggers whose
+  // cause is already dealt with, and returning early would skip the clean-up
+  // forever.
+  const { retired } = await retireSupersededTriggers(admin, clientId, {
+    activeCffsId: activeCffs?.id ?? null,
+    activeProgramId: activeProgram?.id ?? null,
+    cfwsRows: (cfwsRows ?? []).map(r => ({ id: r.id, week_number: r.week_number, is_archived: r.is_archived })),
+  })
+  if (retired > 0) {
+    console.log(`[reassessment-triggers] client=${String(clientId).slice(0, 8)} retired=${retired}`)
+  }
+
+  if (!report.reassessmentReasons.length) return { created: 0, reasons: [], retired }
 
   const ids = {
     cfwsId: (cfwsRows ?? []).find(r => !r.is_archived)?.id ?? null,
@@ -160,7 +311,7 @@ export async function syncReassessmentTriggers(
     })
     .filter((r): r is NonNullable<typeof r> => r !== null)
 
-  if (!rows.length) return { created: 0, reasons: [] }
+  if (!rows.length) return { created: 0, reasons: [], retired }
 
   // ignoreDuplicates so a repeat call is a no-op rather than resetting status
   // on a trigger a coach has already dealt with.
@@ -171,12 +322,13 @@ export async function syncReassessmentTriggers(
 
   if (error) {
     console.error('[reassessment-triggers] upsert failed', error)
-    return { created: 0, reasons: [] }
+    return { created: 0, reasons: [], retired }
   }
 
   return {
     created: inserted?.length ?? 0,
     reasons: (inserted ?? []).map(r => r.reason as ReassessmentReason),
+    retired,
   }
 }
 
