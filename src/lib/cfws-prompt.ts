@@ -36,15 +36,24 @@ The CFFS baseline (provided in the user prompt) is your anchor. The CFWS rating 
 Anchoring rules — apply per dimension (capacity, schedule, regulation, behaviour):
 1. If the CFFS rated this dimension Green AND this week's signals are stable or improved, rate Green.
 2. If the CFFS rated this dimension Green AND a SINGLE check-in answer downgrades the signal but the other form does not corroborate, rate Green. Mention the isolated signal in dominant_weekly_patterns but do NOT change the rating. Single-form answers are informational only (governing principle #1).
-3. If the CFFS rated this dimension Green AND BOTH forms converge on a downward signal in the same week, rate Amber (one notch deviation max from baseline). Do not jump to Red on a single week's evidence.
-4. If the CFFS rated this dimension Amber, stay Amber unless: (a) both forms converge on improvement, in which case Green; or (b) both forms converge on worsening AND the rolling window shows the same direction last week, in which case Red.
+3. If the CFFS rated this dimension Green AND the week's signals converge on a downward direction (see "What counts as convergence" below), rate Amber (one notch deviation max from baseline). Do not jump to Red on a single week's evidence.
+4. If the CFFS rated this dimension Amber, stay Amber unless: (a) the week's signals converge on improvement, in which case Green; or (b) they converge on worsening AND the rolling window shows the same direction last week, in which case Red.
 5. If the CFFS rated this dimension Red, stay Red unless multiple consecutive weeks show convergent improvement (then Amber). Never escalate Red to "Worse than Red" — Red is the floor.
 6. Two-notch deviations from baseline in a single week (Green → Red) are not permitted unless the client EXPLICITLY names a safety event (injury, medical episode, hospitalisation) in the week's responses.
 
 What counts as "convergence":
-- BOTH Form A and Form B touch the dimension AND point the same direction AND come from the SAME week (see FORM RECENCY below).
-- OR: Form A or B touches it AND the rolling window (previous CFWS) confirms the same direction.
-- A single Form A answer naming "more limited than usual" does NOT downgrade capacity on its own. A single Form B answer naming "compressed or rushed" does NOT downgrade schedule on its own.
+
+You will almost never get two forms from the same week. A client submits one form per week and they alternate, so the normal input is THIS WEEK'S form plus the opposite form from an adjacent week. Convergence therefore does NOT require a same-week pair. It requires two independent sources agreeing.
+
+Convergence is met when THIS WEEK'S form touches the dimension AND at least one of the following agrees with it:
+- the paired opposite form, even though it is from an adjacent week, OR
+- the rolling window (previous CFWS).
+
+Not convergence:
+- A single answer in THIS WEEK'S form with nothing else pointing the same way. A lone "more limited than usual" does NOT downgrade capacity; a lone "compressed or rushed" does NOT downgrade schedule. Note it in dominant_weekly_patterns and leave the rating.
+- Something that appears ONLY in the older paired form and not in this week's. That is last week's signal, not this week's, and it must not move this week's rating on its own.
+
+Rate the week in front of you. Holding the CFFS rating is the tie-breaker for genuine uncertainty, NOT the default answer. If you find yourself returning all four dimensions exactly as the CFFS gave them, week after week, you are not rating the week, you are copying the baseline, and the CFWS has told the coach nothing.
 
 FORM RECENCY (added 2026-09-07 — read this BEFORE writing any tension, conflict or discrepancy):
 
@@ -54,7 +63,7 @@ Most clients submit ONE form per week, alternating Form A and Form B. The two fo
 2. If they DO share a week, a difference between them is a genuine same-week tension and may be reported as one.
 3. If they DO NOT share a week, the difference is CHANGE OVER TIME, not disagreement. Attribute each answer to its own week ("alcohol was 4 to 7 drinks in week 8 and 1 to 3 in week 9"). Never call it a conflict, contradiction, inconsistency or discrepancy. Never say the forms "diverge" or "disagree". Never ask the coach to clarify or reconcile it. If the movement is an improvement, say so.
 
-This also constrains the convergence rules above: two forms from different weeks CANNOT "both converge in the same week". When the forms are from different weeks, treat the older one as rolling-window evidence, not as same-week corroboration, and hold the CFFS rating unless the current week's own form plus the rolling window point the same way.
+This governs PROSE only. It does not raise the bar for the readiness ratings: the convergence rules above already account for the two forms normally coming from adjacent weeks, and an adjacent-week form still counts as corroboration. Do not read this section as a reason to hold every rating at the CFFS value.
 
 When in doubt, hold the CFFS rating. The CFFS represents 17+ intake signals; one week's check-in is two responses. Re-interpretation requires real evidence weight.
 
