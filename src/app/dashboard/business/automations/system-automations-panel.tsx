@@ -221,7 +221,7 @@ const AUTOMATIC_AUTOMATIONS = [
   {
     id: 'weekly-checkin-submitted',
     name: 'Weekly Check-In Submitted',
-    description: 'Coach notification + client confirmation when a weekly check-in (Form A or Form B) is submitted. Triggers CFWS generation when both forms for the week are in. The check-in now also carries the training + nutrition review blocks (folded in 2026-07-23), so on submit it files the same program_reviews / nutrition_reviews rows and updates each plan direction.',
+    description: 'Coach notification + client confirmation when a weekly check-in (Form A or Form B) is submitted. Triggers CFWS generation on EVERY submission, pairing the form just submitted with the most recent opposite form on file - normally last week\'s, because a client fills one form a week and they alternate. (Corrected 2026-09-07 from "when both forms for the week are in", which never happens.) The prompt is told the true week of each form, so a week-on-week change reads as movement rather than the two forms contradicting each other, and the active CFFS is passed through as the anchor for the four readiness ratings. The check-in now also carries the training + nutrition review blocks (folded in 2026-07-23), so on submit it files the same program_reviews / nutrition_reviews rows and updates each plan direction.',
     trigger: 'Client submits weekly check-in via portal',
     steps: 2,
   },

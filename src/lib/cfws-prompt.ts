@@ -42,9 +42,19 @@ Anchoring rules — apply per dimension (capacity, schedule, regulation, behavio
 6. Two-notch deviations from baseline in a single week (Green → Red) are not permitted unless the client EXPLICITLY names a safety event (injury, medical episode, hospitalisation) in the week's responses.
 
 What counts as "convergence":
-- BOTH Form A and Form B touch the dimension AND point the same direction.
+- BOTH Form A and Form B touch the dimension AND point the same direction AND come from the SAME week (see FORM RECENCY below).
 - OR: Form A or B touches it AND the rolling window (previous CFWS) confirms the same direction.
 - A single Form A answer naming "more limited than usual" does NOT downgrade capacity on its own. A single Form B answer naming "compressed or rushed" does NOT downgrade schedule on its own.
+
+FORM RECENCY (added 2026-09-07 — read this BEFORE writing any tension, conflict or discrepancy):
+
+Most clients submit ONE form per week, alternating Form A and Form B. The two forms you are given are therefore usually from DIFFERENT weeks. The user prompt states the week each form belongs to. Before describing any difference between Form A and Form B:
+
+1. Check whether the two forms share a week number.
+2. If they DO share a week, a difference between them is a genuine same-week tension and may be reported as one.
+3. If they DO NOT share a week, the difference is CHANGE OVER TIME, not disagreement. Attribute each answer to its own week ("alcohol was 4 to 7 drinks in week 8 and 1 to 3 in week 9"). Never call it a conflict, contradiction, inconsistency or discrepancy. Never say the forms "diverge" or "disagree". Never ask the coach to clarify or reconcile it. If the movement is an improvement, say so.
+
+This also constrains the convergence rules above: two forms from different weeks CANNOT "both converge in the same week". When the forms are from different weeks, treat the older one as rolling-window evidence, not as same-week corroboration, and hold the CFFS rating unless the current week's own form plus the rolling window point the same way.
 
 When in doubt, hold the CFFS rating. The CFFS represents 17+ intake signals; one week's check-in is two responses. Re-interpretation requires real evidence weight.
 
@@ -59,6 +69,23 @@ export interface WeeklyCheckInPair {
   weekNumber: number
   formA: Record<string, string>
   formB: Record<string, string>
+  /**
+   * The week each form was ACTUALLY submitted for. Clients submit one form per
+   * week, alternating A and B, so the live path pairs this week's form with the
+   * most recent opposite form, which is normally a week older.
+   *
+   * Until 2026-09-07 both forms were handed to the model stamped with the
+   * current week and nothing said otherwise, so every ordinary week-on-week
+   * change read as a same-week contradiction. Cristobal's week 9 CFWS called
+   * "4 to 7 drinks" (week 8, his travel week) versus "1 to 3 drinks" (week 9) a
+   * discrepancy to clarify with him, when it was him drinking less. Razia's
+   * week 16 set a "uniformly positive" Form A against a heavy Form B; the
+   * positive one was week 15, before her grandmother died.
+   *
+   * Omit when both forms genuinely belong to weekNumber.
+   */
+  formAWeekNumber?: number
+  formBWeekNumber?: number
 }
 
 export interface CFWSCffsBaseline {
@@ -109,9 +136,35 @@ export function buildCFWSUserPrompt(
     }
   }
 
+  // Each form carries its own week. They differ on the live path, because a
+  // client submits one form per week and this week's is paired with the most
+  // recent opposite form. Say so explicitly: an unlabelled stale form is read
+  // as a same-week contradiction. See FORM RECENCY in the system prompt.
+  const aWeek = currentPair.formAWeekNumber ?? currentPair.weekNumber
+  const bWeek = currentPair.formBWeekNumber ?? currentPair.weekNumber
+  const sameWeek = aWeek === bWeek
+
   parts.push(`\n=== CURRENT WEEK (Week ${currentPair.weekNumber}) ===`)
-  parts.push(`FORM A — Experience-Forward:\n${formatResponses(currentPair.formA)}`)
-  parts.push(`FORM B — Pattern-Aware:\n${formatResponses(currentPair.formB)}`)
+
+  if (!sameWeek) {
+    const olderLabel = aWeek < bWeek ? 'A' : 'B'
+    const gap = Math.abs(bWeek - aWeek)
+    parts.push(
+      `FORM RECENCY WARNING: these two forms are from DIFFERENT weeks. ` +
+        `Form A is week ${aWeek}. Form B is week ${bWeek}. ` +
+        `Form ${olderLabel} is ${gap} week${gap > 1 ? 's' : ''} older and describes a different week of this client's life. ` +
+        `Any difference between them is CHANGE OVER TIME, not a contradiction. ` +
+        `Attribute every answer to its own week, do not call the difference a conflict, ` +
+        `inconsistency or discrepancy, and do not ask the coach to reconcile the two forms.`
+    )
+  }
+
+  parts.push(
+    `FORM A — Experience-Forward (week ${aWeek}${sameWeek ? '' : aWeek < bWeek ? ', OLDER' : ', this week'}):\n${formatResponses(currentPair.formA)}`
+  )
+  parts.push(
+    `FORM B — Pattern-Aware (week ${bWeek}${sameWeek ? '' : bWeek < aWeek ? ', OLDER' : ', this week'}):\n${formatResponses(currentPair.formB)}`
+  )
 
   if (recentPairs.length > 0) {
     parts.push(`\n=== ROLLING WINDOW (previous ${recentPairs.length} resolved week${recentPairs.length > 1 ? 's' : ''}) ===`)

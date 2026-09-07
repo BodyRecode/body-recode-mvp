@@ -110,7 +110,13 @@ async function main() {
         { id: c.client_id, name: nameOf.get(c.client_id)! },
         c.week_number,
         formA,
-        formB
+        formB,
+        // The paired form is usually from an earlier week. The prompt has to be
+        // told, or the gap reads as a same-week contradiction (2026-09-07).
+        {
+          formAWeekNumber: c.form_type === 'A' ? c.week_number : otherForm.week_number,
+          formBWeekNumber: c.form_type === 'B' ? c.week_number : otherForm.week_number,
+        }
       )
       console.log(`  OK    ${label}  (paired with ${otherFormType} from week ${otherForm.week_number})`)
       touchedClients.add(c.client_id)

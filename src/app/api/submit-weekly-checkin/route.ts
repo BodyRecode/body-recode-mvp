@@ -137,7 +137,14 @@ export async function POST(request: NextRequest) {
     const otherResponses = stripReviewKeys(otherForm.responses as Record<string, string>)
     const formAResponses = formType === 'A' ? currentResponses : otherResponses
     const formBResponses = formType === 'B' ? currentResponses : otherResponses
-    await generateCFWS(admin, client, weekNumber, formAResponses, formBResponses).catch(
+    // The opposite form is normally a week older, because clients submit one
+    // form per week. Pass both weeks so the prompt reads the gap as change over
+    // time rather than a same-week contradiction (2026-09-07).
+    const formWeeks = {
+      formAWeekNumber: formType === 'A' ? weekNumber : otherForm.week_number,
+      formBWeekNumber: formType === 'B' ? weekNumber : otherForm.week_number,
+    }
+    await generateCFWS(admin, client, weekNumber, formAResponses, formBResponses, formWeeks).catch(
       err => console.error('CFWS generation error:', err)
     )
 

@@ -57,7 +57,14 @@ export async function generateCFWS(
   client: { id: string; name: string },
   weekNumber: number,
   formAResponses: Record<string, string>,
-  formBResponses: Record<string, string>
+  formBResponses: Record<string, string>,
+  /**
+   * The week each form was actually submitted for. Callers pair this week's
+   * form with the most recent opposite form, which is normally a week older,
+   * so the prompt has to be told which is which. Defaults to weekNumber for
+   * both, i.e. a genuine same-week pair. See WeeklyCheckInPair in cfws-prompt.
+   */
+  formWeeks?: { formAWeekNumber?: number; formBWeekNumber?: number }
 ) {
   // Get last 2 resolved weeks for rolling window (excluding current)
   const { data: recentCheckins } = await admin
@@ -90,13 +97,41 @@ export async function generateCFWS(
     weekNumber,
     formA: formAResponses,
     formB: formBResponses,
+    formAWeekNumber: formWeeks?.formAWeekNumber ?? weekNumber,
+    formBWeekNumber: formWeeks?.formBWeekNumber ?? weekNumber,
   }
+
+  // The CFFS is the anchor for all four readiness ratings. Without it the
+  // rubric has no baseline to hold and the model rates the week cold, which
+  // pushes everything to Amber and puts "No CFFS baseline was available in
+  // this cycle's inputs" into coach-facing prose (Razia week 14, 23 Aug).
+  //
+  // /api/generate-cfws has always fetched this. This path never did, so every
+  // CFWS generated from a live check-in since the extraction on 2026-08-20 has
+  // been unanchored. Added 2026-09-07.
+  const { data: cffsRows, error: cffsError } = await admin
+    .from('cffs')
+    .select(
+      'body_state_classification, resolution_state, exposure_readiness_capacity, exposure_readiness_schedule, exposure_readiness_regulation, exposure_readiness_behaviour, capacity_constraints_and_guardrails, risk_flags_and_watch_items, generated_at'
+    )
+    .eq('client_id', client.id)
+    .eq('is_archived', false)
+    .order('generated_at', { ascending: false })
+    .limit(1)
+  if (cffsError) {
+    throw new Error(
+      `CFWS week ${weekNumber} for ${client.name}: CFFS baseline lookup failed: ${cffsError.message}`
+    )
+  }
+  const cffsBaseline = cffsRows?.[0] ?? null
 
   const message = await anthropic.messages.create({
     model: AI_MODELS.clinical,
     max_tokens: CFWS_MAX_TOKENS,
     system: withTemporalContext(buildCFWSSystemPrompt()),
-    messages: [{ role: 'user', content: buildCFWSUserPrompt(client.name, currentPair, recentPairs) }],
+    messages: [
+      { role: 'user', content: buildCFWSUserPrompt(client.name, currentPair, recentPairs, cffsBaseline) },
+    ],
   })
 
   // Every one of these was a silent `return` until 2026-08-20. Throw instead:

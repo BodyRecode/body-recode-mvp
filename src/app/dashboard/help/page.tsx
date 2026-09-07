@@ -1023,15 +1023,17 @@ export default function HelpPage() {
               <li>Rows with anything still waiting on you sort to the top. The rest stay newest-first.</li>
               <li>The chip on the right of a row is the way in. <strong>Review now</strong> (amber) means no response has been written. <strong>Draft ready</strong> means the auto-response has been generated and is sitting in the intervention window. <strong>Sent</strong> means the feedback email has gone. <strong>Skipped</strong> means you marked it as needing no response, which counts as answered.</li>
             </ul>
-            <p>When both Form A and Form B have been submitted for the week:</p>
+            <p>On every check-in submission:</p>
             <ol className="space-y-1.5 list-decimal list-inside text-[#43474F] text-sm">
               <li>The client receives a confirmation email.</li>
               <li>You receive a notification email with a link to the client profile.</li>
               <li>The <strong>CFWS</strong> (Coach-Facing Weekly Synthesis) generates automatically and appears on the client profile under <strong>Weekly Synthesis - CFWS</strong>.</li>
             </ol>
+            <Note>How the CFWS gets its pair (corrected 2026-09-07). This page used to say the CFWS runs &quot;when both Form A and Form B have been submitted for the week&quot;. That never happens. A client fills <strong>one</strong> form a week and the forms alternate, so a single week only ever holds an A or a B. What actually runs is: the CFWS generates on <strong>every</strong> submission, pairing the form just submitted with the <strong>most recent opposite form on file</strong>, which is normally last week&apos;s. The prompt is now told the real week of each form, so a week-on-week change reads as movement over time rather than the two forms contradicting each other. Before this, an ordinary improvement (Cristobal drinking less after a travel week) came back as a &quot;discrepancy between forms&quot; for you to chase.</Note>
             <p>The CFWS includes Exposure Readiness across 4 dimensions, plus 7 interpretive sections. Click <strong>Download PDF</strong> on the client profile to open the full formatted CFWS report - printable as a PDF.</p>
+            <p><strong>Readiness ratings are anchored to the CFFS</strong>, not re-derived each week. The rubric holds the CFFS rating for each of the four dimensions unless the week gives real evidence to move it, and one week can only move a dimension one notch. From 2026-08-20 to 2026-09-07 the automatic path was not passing the CFFS through at all, so ratings during that window were rated cold and skew Amber. Fixed 2026-09-07; ratings generated from here on are anchored again and may sit differently to the ones just before this date.</p>
             <p>The client profile also shows the last several check-in submissions under Recent Submissions.</p>
-            <Note>Use the Regenerate button to manually trigger a new CFWS if needed - for example if only one form was submitted and you want to generate from the latest available pair.</Note>
+            <Note>Use the Regenerate button to manually trigger a new CFWS if needed.</Note>
 
             <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">Alcohol signal in the check-in (added 2026-06-03)</p>
             <p>Both Form A and Form B now include a single bucketed question in the Recovery Signals section: <strong>Alcohol this week (standard drinks total)</strong>. Buckets: None, 1 to 3, 4 to 7, 8 to 14, 15+. One question, one tap. No free text, no follow-up.</p>
