@@ -327,7 +327,7 @@ const AUTOMATIC_AUTOMATIONS = [
   {
     id: 'program-log-nudge',
     name: 'Log-Your-Session Nudge',
-    description: 'Daily 8:30pm Brisbane cron. If today is a client\'s prescribed training day and they haven\'t logged (or started) that session yet, sends one SMS with a link to the log screen. One-way sender, no reply CTA. Phone-gated (matches the check-in crons), with a built-in cap of 1 nudge/day and 3/7 days so it never nags. Skips clients who already logged, aren\'t training today, or have no active program.',
+    description: 'Daily 8:30pm Brisbane cron. If today is a client\'s prescribed training day and they haven\'t logged (or started) that session yet, sends one SMS with a link to the log screen. One-way sender, no reply CTA. Phone-gated (matches the check-in crons), with a built-in cap of 1 nudge/day and 3/7 days so it never nags. Skips clients who already logged, aren\'t training today, or have no active program.\n\nNOTE (2026-09-07): this had NEVER fired. It matched today against the whole day_label with ===, and real labels are compound ("Monday — Full Body A (Squat / Push / Pull)"), so no client ever counted as training today. Fixed with a shared weekday matcher. Expect these to start sending.',
     trigger: 'Vercel cron daily (8:30pm AEST)',
     steps: 1,
   },

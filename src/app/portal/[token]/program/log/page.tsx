@@ -15,6 +15,7 @@ import {
   daysUntilBlockEnd,
   todayBrisbaneDayName,
   computeLoggingMomentum,
+  sessionMatchesDay,
 } from '@/lib/workout-logging'
 import StartSessionButton from './start-session-button'
 import { requirePortalClient } from '@/lib/portal-guard'
@@ -92,7 +93,7 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
 
   // Highlight today's session if it matches one of the prescribed day_labels
   const todaySessionIndex = prescribedSessions.findIndex(
-    s => s.day_label.toLowerCase() === today.toLowerCase(),
+    s => sessionMatchesDay(s.day_label, today),
   )
 
   const blockEndingSoon = daysLeft <= 7 && daysLeft >= 0

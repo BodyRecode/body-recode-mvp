@@ -78,19 +78,72 @@ export function parsePrescribedSessions(raw: unknown): PrescribedSession[] {
   })
 }
 
+/** Brisbane is UTC+10 year round, no daylight saving. */
+const BRISBANE_OFFSET_MS = 10 * 60 * 60 * 1000
+const DAY_MS = 24 * 60 * 60 * 1000
+
+/**
+ * Midnight Brisbane on the calendar day of the given timestamp, as epoch ms.
+ *
+ * Block weeks have to roll over at a day boundary, not at whatever time of day
+ * the coach happened to hit Activate. See currentBlockWeek.
+ */
+function brisbaneStartOfDay(iso: string): number {
+  const t = new Date(iso).getTime()
+  return Math.floor((t + BRISBANE_OFFSET_MS) / DAY_MS) * DAY_MS - BRISBANE_OFFSET_MS
+}
+
 /**
  * Compute which week of the block we're currently in (1-indexed).
  *
- * The block starts at programs.generated_at; this is the same timestamp
- * the rest of the system uses for block-end detection. If now < generated_at
- * (clock drift), returns 1.
+ * Anchored to MIDNIGHT BRISBANE on the block's start date, not the exact
+ * activation timestamp. Anchoring to the raw timestamp meant the block week
+ * rolled over at whatever time of day the program was activated, so a client
+ * could be mid-training-day in one week and in the next by lunchtime.
+ *
+ * Cristobal, 2026-09-07: Block 3 was activated 31 Aug at 12:20pm Brisbane. At
+ * 8am on Monday 7 Sep the log page still reported block week 1, whose three
+ * sessions were all logged, so there was no session left to start and no way
+ * to log the session Kade was actually running with him. It would have flipped
+ * to week 2 at 12:20pm, after the session finished. If now < start, returns 1.
  */
 export function currentBlockWeek(programGeneratedAt: string): number {
-  const start = new Date(programGeneratedAt)
-  const now = new Date()
-  const ms = now.getTime() - start.getTime()
+  const start = brisbaneStartOfDay(programGeneratedAt)
+  const ms = Date.now() - start
   if (ms < 0) return 1
-  return Math.floor(ms / (1000 * 60 * 60 * 24 * 7)) + 1
+  return Math.floor(ms / (7 * DAY_MS)) + 1
+}
+
+const WEEKDAY_NAMES = [
+  'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday',
+] as const
+
+/**
+ * Pull the weekday out of a prescribed session's day_label, or null when it
+ * does not name one.
+ *
+ * Labels are compound in practice: "Monday — Full Body A (Squat / Push / Pull)".
+ * Callers used to compare the WHOLE label against todayBrisbaneDayName() with
+ * ===, which never matched, so today's session was never highlighted, the Start
+ * button never appeared on the day it was due, and the evening log nudge never
+ * fired. Found 2026-09-07 on Cristobal.
+ *
+ * Word-boundary matched on purpose. "Day 1" and "Session A" return null rather
+ * than matching something, and an empty label returns null rather than matching
+ * every day, which a substring check would do.
+ */
+export function sessionDayName(dayLabel: string): string | null {
+  const label = dayLabel.toLowerCase()
+  for (const day of WEEKDAY_NAMES) {
+    if (new RegExp(`\\b${day}\\b`).test(label)) return day
+  }
+  return null
+}
+
+/** Does this prescribed session fall on the given weekday name? */
+export function sessionMatchesDay(dayLabel: string, dayName: string): boolean {
+  const day = sessionDayName(dayLabel)
+  return day !== null && day === dayName.toLowerCase()
 }
 
 /**
@@ -105,10 +158,12 @@ export function daysUntilBlockEnd(
   programStartedAt: string,
   weekDuration: number,
 ): number {
-  const start = new Date(programStartedAt).getTime()
-  const blockEnd = start + weekDuration * 7 * 24 * 60 * 60 * 1000
+  // Same midnight-Brisbane anchor as currentBlockWeek, so "week N of M" and
+  // "block ends in D days" cannot disagree about when the block started.
+  const start = brisbaneStartOfDay(programStartedAt)
+  const blockEnd = start + weekDuration * 7 * DAY_MS
   const ms = blockEnd - Date.now()
-  return Math.floor(ms / (1000 * 60 * 60 * 24))
+  return Math.floor(ms / DAY_MS)
 }
 
 /**

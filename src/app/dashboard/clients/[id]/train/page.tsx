@@ -15,6 +15,7 @@ import {
   daysUntilBlockEnd,
   todayBrisbaneDayName,
   computeLoggingMomentum,
+  sessionMatchesDay,
 } from '@/lib/workout-logging'
 import StartSessionButton from '@/app/portal/[token]/program/log/start-session-button'
 
@@ -90,7 +91,7 @@ export default async function CoachTrainIndexPage({ params }: { params: Promise<
   })
   const momentumPct = momentum.blockTotal > 0 ? Math.round((momentum.loggedThisBlock / momentum.blockTotal) * 100) : 0
 
-  const todaySessionIndex = prescribedSessions.findIndex(s => s.day_label.toLowerCase() === today.toLowerCase())
+  const todaySessionIndex = prescribedSessions.findIndex(s => sessionMatchesDay(s.day_label, today))
   const daysLeftLabel = daysLeft < 0 ? 'Block complete' : daysLeft === 0 ? 'Block ends today' : `${daysLeft} day${daysLeft === 1 ? '' : 's'} left`
 
   const startEndpoint = '/api/coach/log/start-session'

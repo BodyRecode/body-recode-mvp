@@ -3,7 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { sendSms, formatPhone } from '@/lib/twilio'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
-import { parsePrescribedSessions, currentBlockWeek, todayBrisbaneDayName } from '@/lib/workout-logging'
+import { parsePrescribedSessions, currentBlockWeek, todayBrisbaneDayName, sessionMatchesDay } from '@/lib/workout-logging'
 
 /**
  * Evening SMS nudge: if TODAY is a client's prescribed training day and they
@@ -79,7 +79,7 @@ export async function GET(request: NextRequest) {
     // program uses weekday day_labels; "Day 1" style labels never match, so no
     // nudge fires — which is the safe default.)
     const sessions = parsePrescribedSessions(program.sessions)
-    const todayIndex = sessions.findIndex(s => s.day_label.toLowerCase() === today.toLowerCase())
+    const todayIndex = sessions.findIndex(s => sessionMatchesDay(s.day_label, today))
     if (todayIndex < 0) {
       skippedNotTrainingDay++
       continue

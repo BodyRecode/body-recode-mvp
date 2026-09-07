@@ -3,7 +3,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { sendSms, formatPhone } from '@/lib/twilio'
 import { logClientCommunication } from '@/lib/client-communications'
-import { parsePrescribedSessions, todayBrisbaneDayName } from '@/lib/workout-logging'
+import { parsePrescribedSessions, todayBrisbaneDayName, sessionMatchesDay } from '@/lib/workout-logging'
 import { withTemporalContext } from '@/lib/temporal-context'
 
 /**
@@ -78,10 +78,7 @@ async function trainingContext(admin: ReturnType<typeof createAdminClient>): Pro
   // weekday, which is the safe default — the model just stays general.
   const today = todayBrisbaneDayName().toLowerCase()
   const sessions = parsePrescribedSessions(program.sessions)
-  const todaySession = sessions.find(s => {
-    const label = s.day_label.toLowerCase()
-    return label.includes(today) || today.includes(label)
-  })
+  const todaySession = sessions.find(s => sessionMatchesDay(s.day_label, today))
   if (todaySession) {
     if (todaySession.skeleton) {
       lines.push(`Today's session: ${todaySession.skeleton}`)
