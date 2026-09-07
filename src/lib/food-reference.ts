@@ -274,15 +274,34 @@ export function lookupFood(name: string): { canonical: string; macros: FoodMacro
   // Normalise repeated whitespace collapses ("chicken  thigh" → "chicken thigh")
   const collapseSpace = (s: string) => s.replace(/\s+/g, ' ').trim()
 
+  // 2026-09-07. Three more shapes the engine emits that never matched, all
+  // found on Samantha's plan where 13 of 13 review warnings were false:
+  //   - "cooked chicken breast"  — a state word the table does not carry
+  //   - "olive oil or butter"    — a CHOICE of two foods read as one name
+  //   - "Greek yoghurt full-fat. Rotate variety across meals." — a coaching
+  //     sentence swallowed into the food name by the comma splitter
+  // Strip a trailing sentence ("yoghurt. Rotate variety..." -> "yoghurt")
+  const stripSentence = (str: string) => str.split(/\.\s+/)[0].replace(/\.$/, '').trim()
+  // Strip cooking-state words so the food itself can be found. The STATE is
+  // still recovered separately by detectPreparedState so the drift check can
+  // refuse to compare a cooked portion against a raw table entry.
+  const stripState = (str: string) =>
+    str.replace(/\b(cooked|uncooked|raw|boiled|grilled|baked|roasted|steamed|fried|pan-fried|drained|tinned|canned|fresh|frozen|dry|dried)\b/g, ' ').replace(/\s+/g, ' ').trim()
+
   const transforms: Array<(s: string) => string> = [
     (s) => s,
     stripParen,
     stripCount,
     stripComma,
+    stripSentence,
+    stripState,
     (s) => stripComma(stripParen(s)),
     (s) => stripCount(stripParen(s)),
     (s) => stripCount(stripComma(s)),
     (s) => stripCount(stripComma(stripParen(s))),
+    (s) => stripState(stripParen(s)),
+    (s) => stripState(stripCount(stripParen(s))),
+    (s) => stripState(stripSentence(stripCount(stripParen(s)))),
   ]
   for (const t of transforms) {
     variants.add(collapseSpace(t(cleaned)))
@@ -295,7 +314,33 @@ export function lookupFood(name: string): { canonical: string; macros: FoodMacro
       if (macros.aliases.some(a => a === v)) return { canonical, macros }
     }
   }
+
+  // "olive oil or butter" is a CHOICE, not a food. Both halves are in the
+  // table individually; the phrase never will be. Resolve to the first half
+  // that matches, which is what the client will most likely reach for.
+  if (/\bor\b/.test(cleaned)) {
+    for (const half of cleaned.split(/\s+or\s+/)) {
+      const hit = lookupFood(half.trim())
+      if (hit) return hit
+    }
+  }
   return null
+}
+
+/**
+ * Is this portion named as PREPARED (cooked, boiled, grilled) rather than raw?
+ *
+ * The reference table stores raw and dry weights. A plan that says "240g white
+ * rice (cooked)" is describing roughly a third of the dry weight, because rice
+ * absorbs water. Comparing the two produces nonsense: Samantha's plan was told
+ * her rice was "267% off on carb" against a dry-rice entry. Rather than invent
+ * yield factors, the drift check uses this to REFUSE the comparison and say so.
+ */
+export function detectPreparedState(name: string): 'prepared' | 'raw' | 'unknown' {
+  const n = name.toLowerCase()
+  if (/\b(cooked|boiled|grilled|baked|roasted|steamed|fried|pan-fried)\b/.test(n)) return 'prepared'
+  if (/\b(raw|uncooked|dry|dried)\b/.test(n)) return 'raw'
+  return 'unknown'
 }
 
 /**
@@ -317,6 +362,8 @@ export function lookupFood(name: string): { canonical: string; macros: FoodMacro
  *   - { ok: false, unknown } when a food isn't in the reference table
  */
 export interface SubstitutionTarget {
+  /** The portion text exactly as written, so cooked/raw survives parsing. */
+  sourceText?: string
   name: string
   grams: number
 }
@@ -335,6 +382,12 @@ export interface SubstitutionValidationResult {
   ok: boolean
   unknown: string[]
   drifts: SubstitutionDrift[]
+  /**
+   * Subs whose cooked-vs-raw state made a comparison meaningless. NOT a
+   * problem with the plan, so these do not make `ok` false; they are surfaced
+   * only so a coach can eyeball them if they want to.
+   */
+  stateSkipped: string[]
 }
 
 export function validateSubstitutions(
@@ -344,10 +397,12 @@ export function validateSubstitutions(
 ): SubstitutionValidationResult {
   const unknown: string[] = []
   const drifts: SubstitutionDrift[] = []
+  /** Subs skipped because cooked-vs-raw makes the comparison meaningless. */
+  const stateSkipped: string[] = []
 
   const origLookup = lookupFood(original.name)
   if (!origLookup) {
-    return { ok: false, unknown: [original.name], drifts: [] }
+    return { ok: false, unknown: [original.name], drifts: [], stateSkipped: [] }
   }
   const origMacros = origLookup.macros
   const origP = origMacros.pg_protein * original.grams
@@ -355,10 +410,26 @@ export function validateSubstitutions(
   const origF = origMacros.pg_fat * original.grams
   const origK = origMacros.pg_kcal * original.grams
 
+  // The table stores RAW and DRY weights. When either side of a swap is named
+  // as cooked, the gram figures describe different things and a percentage
+  // comparison is meaningless: Samantha's plan was told 240g cooked rice was
+  // "267% off on carb" against a dry-rice entry. Refuse the comparison rather
+  // than invent yield factors. 2026-09-07.
+  const origState = detectPreparedState(original.sourceText ?? original.name)
+  const origTableState = origMacros.state
+
   for (const sub of subs) {
     const lookup = lookupFood(sub.name)
     if (!lookup) {
       unknown.push(sub.name)
+      continue
+    }
+    const subState = detectPreparedState(sub.sourceText ?? sub.name)
+    const stateMismatch =
+      (origState === 'prepared' && (origTableState === 'raw' || origTableState === 'dry')) ||
+      (subState === 'prepared' && (lookup.macros.state === 'raw' || lookup.macros.state === 'dry'))
+    if (stateMismatch) {
+      stateSkipped.push(sub.name)
       continue
     }
     const m = lookup.macros
@@ -376,7 +447,14 @@ export function validateSubstitutions(
     // longer noise-floods the audit.
     const pctOrZero = (sub: number, orig: number, absFloor: number): number => {
       if (Math.abs(sub - orig) < absFloor) return 0
-      if (orig <= 0) return Infinity
+      // A percentage against a NEGLIGIBLE baseline is not a percentage. Butter
+      // carries 0.005g of carbohydrate in a 5g serve, so avocado came out
+      // "169900% off on carb" — arithmetically true, useless to a coach, and
+      // it says nothing about whether the swap is sound. When the original
+      // barely contains the macro at all, there is no meaningful ratio to
+      // report, so the macro is skipped. The kcal check still catches a swap
+      // that is genuinely the wrong size. 2026-09-07.
+      if (orig < absFloor) return 0
       return Math.abs(sub - orig) / orig
     }
     const proteinPct = pctOrZero(subP, origP, 1.5)
@@ -400,7 +478,7 @@ export function validateSubstitutions(
     }
   }
 
-  return { ok: unknown.length === 0 && drifts.length === 0, unknown, drifts }
+  return { ok: unknown.length === 0 && drifts.length === 0, unknown, drifts, stateSkipped }
 }
 
 /**
@@ -455,12 +533,12 @@ export function parseSubstitutionLine(line: string): ParsedSubLine {
 
     // Canonical: "Food name (Ng [state])". State is optional after the grams.
     const canonical = cleaned.match(/^(.+?)\s*\(~?\s*(\d+(?:\.\d+)?)\s*g(?:\s+[^)]+)?\)\s*$/)
-    if (canonical) return { name: canonical[1].trim(), grams: parseFloat(canonical[2]) }
+    if (canonical) return { sourceText: text, name: canonical[1].trim(), grams: parseFloat(canonical[2]) }
 
     // Drift: "Ng Food name" with grams as a prefix instead of inside parens.
     // Common with one-word foods ("10g almonds", "15g olive oil").
     const gramsPrefix = cleaned.match(/^~?\s*(\d+(?:\.\d+)?)\s*g\s+(.+?)\s*$/)
-    if (gramsPrefix) return { name: gramsPrefix[2].trim(), grams: parseFloat(gramsPrefix[1]) }
+    if (gramsPrefix) return { sourceText: text, name: gramsPrefix[2].trim(), grams: parseFloat(gramsPrefix[1]) }
 
     return null
   }
