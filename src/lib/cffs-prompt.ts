@@ -108,6 +108,29 @@ PROHIBITED IN OUTPUT:
 - Optimisation targets or outcome promises
 - Instructions or how-to guidance
 
+EXPOSURE READINESS RUBRIC (added 2026-09-08 — read before assigning any of the four Green/Amber/Red values):
+
+Until this date the prompt asked for these four ratings and never said what they meant or how to score them. The result was that the SAME intake produced different answers on different runs: Razia's schedule came back Green in May, Amber on the morning of 7 Sep, and Green again that evening, on identical intake data. These four values are the anchor the weekly synthesis rates against, the input the reassessment triggers count, and a driver of programme clamping, so they cannot be a guess.
+
+WHAT EACH DOMAIN MEANS. Score each independently. Do not let a bad score in one drag the others down.
+
+- CAPACITY: how much physical work this person can absorb and recover from right now. Evidence: training history and current volume, recovery between sessions, injury and pain load, fatigue that persists past a night's sleep, blood markers bearing on recovery.
+- SCHEDULE: how reliably their week allows planned training and eating to happen. Evidence: work pattern and hours, shift or travel demands, caregiving, control over their own time, historical consistency of attendance. This is about the SHAPE OF THEIR WEEK, not their willingness. A motivated person with an unpredictable roster is Amber on schedule.
+- REGULATION: nervous-system and stress-recovery state. Evidence: sleep quality and continuity, stress load and how it lands, appetite and mood volatility, wired-but-tired presentation, relevant markers.
+- BEHAVIOUR: how consistently they execute what is agreed, independent of whether the week allowed it. Evidence: adherence history, all-or-nothing patterns, reactive eating, follow-through after disruption. Missing sessions because the week collapsed is a SCHEDULE signal, not a behaviour one. Missing them when the week allowed it is behaviour.
+
+HOW TO SCORE. Same three-step for all four:
+- GREEN: the evidence shows no meaningful constraint in this domain. Not "excellent", just not limiting.
+- AMBER: a real constraint is present and would shape how you load this person, but it is not the binding limit on everything.
+- RED: this domain is the binding constraint. Until it moves, progress in the others is capped by it.
+
+DISCIPLINE:
+1. Cite the evidence. Every rating must be defensible from something in the intake, the photos, the blood markers or the weekly evidence. If you cannot name what drove it, the honest answer is the less severe rating, not a hedge.
+2. One domain, one question. Ask only "is this domain limiting?" A person can be Red on regulation and Green on behaviour; that is a common and useful combination, not a contradiction.
+3. Do not score sentiment. Someone describing themselves as struggling is not automatically Amber. Someone cheerful is not automatically Green.
+4. At most ONE domain should be Red unless the evidence genuinely converges on two. Rating three or four Red says everything is the binding constraint, which says nothing.
+5. Prefer stability. On a regeneration for an existing client, if the evidence has not changed, the rating should not change. Moving a rating requires being able to say what moved it.
+
 VISUAL SIGNAL INTEGRATION:
 When baseline photos are provided alongside the intake data, treat them as ONE signal stream feeding Spatial Patterning (the first of the four internal pillars per Fat Map zone). They are not the conclusion. They are evidence that must converge with the scale signals, temporal data, regulatory context, and resource availability before any structural interpretation is reached.
 
@@ -195,7 +218,19 @@ export function buildCFFSUserPrompt(
   intake: Partial<Intake>,
   medications?: string | null,
   baseline?: CFFSBaselineContext | null,
-  bloodMarkerSection?: string | null
+  bloodMarkerSection?: string | null,
+  /**
+   * What the recent weekly syntheses say about the four readiness domains,
+   * rendered by formatReadinessEvidenceForPrompt. Added 2026-09-08.
+   *
+   * Deliberately EVIDENCE, not a substituted value. The weekly synthesis rates
+   * itself against this read, so if this read took its numbers from the
+   * weeklies the two would be reading each other and nothing would hold still.
+   * The model is shown what the weeks say and has to reconcile it in the open.
+   *
+   * Null on a first generation, which is correct: there are no weeks yet.
+   */
+  readinessEvidenceSection?: string | null
 ): string {
   const sectionResponseKeys: Record<string, keyof Intake> = {
     fat_map: 'fat_map_responses',
@@ -267,6 +302,9 @@ Aggravating movements: ${intake.injury_aggravating_movements || 'None declared'}
   // stream feeding Resource Availability + Regulatory Load, governed by the
   // BLOOD MARKER INTEGRATION rules in the system prompt. The route builds this
   // section (or passes null) so cffs-prompt stays free of the blood-panel lib.
+  if (readinessEvidenceSection && readinessEvidenceSection.trim()) {
+    parts.push(`\n${readinessEvidenceSection.trim()}`)
+  }
   if (bloodMarkerSection && bloodMarkerSection.trim()) {
     parts.push(`\n${bloodMarkerSection.trim()}`)
   }

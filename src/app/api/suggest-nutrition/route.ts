@@ -8,6 +8,7 @@ import {
   STIMULANT_FIRST_MEAL_PROTEIN_CAP,
   MIN_MEAL_COUNT_WHEN_SUPPRESSED,
 } from '@/lib/nutrition-validation'
+import { deriveReadinessCarryForward, formatReadinessEvidenceForPrompt } from '@/lib/readiness-carry-forward'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { resolveHeightCm, heightPromptLine } from '@/lib/client-height'
 import { withTemporalContext } from '@/lib/temporal-context'
@@ -144,6 +145,23 @@ CFFS — FOUNDATIONAL SYNTHESIS:
 - Tensions and trade-offs: ${cffs.tensions_and_trade_offs}
 - Primary patterns and signals: ${cffs.primary_patterns_and_signals}
 - Client context summary: ${cffs.client_context_summary}`)
+
+    // What the recent weekly syntheses say. The CFFS readiness values above are
+    // scored from intake and never move on their own, so on an established
+    // client they can be months out of date. Shown as evidence to reconcile,
+    // not substituted, so the suggestion can say which it followed. Widened
+    // here from generate-program on 2026-09-08. See readiness-carry-forward.ts.
+    const { data: cfwsReadinessRows } = await admin
+      .from('cfws')
+      .select('week_number, exposure_readiness_capacity, exposure_readiness_schedule, exposure_readiness_regulation, exposure_readiness_behaviour')
+      .eq('client_id', client_id)
+      .eq('is_archived', false)
+      .order('week_number', { ascending: false })
+      .limit(6)
+    const readinessEvidence = formatReadinessEvidenceForPrompt(
+      deriveReadinessCarryForward(cfwsReadinessRows ?? [], cffs)
+    )
+    if (readinessEvidence) contextParts.push(`\n${readinessEvidence}`)
   } else {
     contextParts.push(`\nCFFS: Not available. Apply conservative Stabilisation defaults.`)
   }

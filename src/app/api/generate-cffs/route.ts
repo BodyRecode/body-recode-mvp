@@ -8,6 +8,7 @@ import {
   type CFFSBaselineContext,
 } from '@/lib/cffs-prompt'
 import { buildBloodMarkerCFFSSection, type BloodMarker } from '@/lib/blood-panel-prompt'
+import { deriveReadinessCarryForward, formatReadinessEvidenceForPrompt } from '@/lib/readiness-carry-forward'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { resolveHeightCm } from '@/lib/client-height'
 import { signedBaselinePhotoUrl } from '@/lib/baseline-photos'
@@ -215,6 +216,36 @@ export async function runCFFSGenerationInternal(body: any): Promise<NextResponse
       source: { type: 'base64', media_type: image.media_type, data: image.base64 },
     })
   }
+  // What the recent weekly syntheses say about the four readiness domains.
+  // Shown to the model as EVIDENCE it must reconcile, never as a substituted
+  // value: the weekly synthesis rates itself against THIS read, so writing the
+  // weeklies back into it would have the two reading each other and nothing
+  // would hold still. Added 2026-09-08 alongside the readiness rubric, after
+  // the same intake produced Green, Amber, Green on three runs because nothing
+  // told the model how to score these at all.
+  const { data: cfwsForReadiness } = await admin
+    .from('cfws')
+    .select('week_number, exposure_readiness_capacity, exposure_readiness_schedule, exposure_readiness_regulation, exposure_readiness_behaviour')
+    .eq('client_id', client_id)
+    .eq('is_archived', false)
+    .order('week_number', { ascending: false })
+    .limit(6)
+
+  const { data: priorCffsRows } = await admin
+    .from('cffs')
+    .select('exposure_readiness_capacity, exposure_readiness_schedule, exposure_readiness_regulation, exposure_readiness_behaviour')
+    .eq('client_id', client_id)
+    .eq('is_archived', false)
+    .order('generated_at', { ascending: false })
+    .limit(1)
+
+  const readinessEvidenceSection = formatReadinessEvidenceForPrompt(
+    deriveReadinessCarryForward(cfwsForReadiness ?? [], priorCffsRows?.[0] ?? null)
+  )
+  if (readinessEvidenceSection) {
+    console.log(`[CFFS] client=${String(client_id).slice(0, 8)} readiness evidence from ${(cfwsForReadiness ?? []).length} weekly syntheses`)
+  }
+
   const bloodMarkerSection = buildBloodMarkerCFFSSection(
     bloodPanel
       ? {
@@ -236,7 +267,13 @@ export async function runCFFSGenerationInternal(body: any): Promise<NextResponse
 
   userContent.push({
     type: 'text',
-    text: buildCFFSUserPrompt(intake, clientRow?.medications ?? null, baselineContext, bloodMarkerSection),
+    text: buildCFFSUserPrompt(
+      intake,
+      clientRow?.medications ?? null,
+      baselineContext,
+      bloodMarkerSection,
+      readinessEvidenceSection
+    ),
   })
 
   // Generate CFFS via Claude.

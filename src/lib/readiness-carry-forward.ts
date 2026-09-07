@@ -146,3 +146,54 @@ export function applyReadinessCarryForward<T extends FoundationalReadiness>(
   }
   return out
 }
+
+/**
+ * Render the weekly readiness record as EVIDENCE for a prompt.
+ *
+ * Added 2026-09-08. `applyReadinessCarryForward` above silently substitutes a
+ * value, which is right for a program generator: it needs one number to clamp
+ * against and no opinion about it.
+ *
+ * The foundational read is the opposite case. It must stay the anchor, because
+ * the weekly synthesis scores itself AGAINST the foundational read. If the
+ * foundational read then took its numbers from the weeklies, the two would be
+ * reading each other: one drifting week nudges the foundational read, that
+ * becomes the new anchor, the next week drifts further from it, and nothing
+ * holds still.
+ *
+ * So the foundational read is shown what the weeks say and made to reconcile
+ * it in the open, rather than being handed a substituted number or left blind
+ * to a month of data. Informed by the weeklies, not scored from them.
+ */
+export function formatReadinessEvidenceForPrompt(
+  carry: ReadinessCarryForward
+): string | null {
+  if (!carry.weeksExamined.length) return null
+
+  const lines: string[] = []
+  lines.push('WEEKLY READINESS EVIDENCE (from the coach-facing weekly syntheses, NOT a substitute for your own read):')
+  lines.push(
+    `Weeks examined, newest first: ${carry.weeksExamined.join(', ')}. A domain below is only reported as agreed when all ${WINDOW} of those weeks give the SAME value. One disrupted week is deliberately not enough to move anything.`
+  )
+
+  for (const d of carry.domains) {
+    const label = d.domain.charAt(0).toUpperCase() + d.domain.slice(1)
+    if (d.weekly && d.carried) {
+      lines.push(
+        `  - ${label}: the last ${WINDOW} weeks agree on ${d.weekly}. The intake-based read says ${d.foundational ?? 'unscored'}. These DISAGREE.`
+      )
+    } else if (d.weekly) {
+      lines.push(`  - ${label}: the last ${WINDOW} weeks agree on ${d.weekly}, matching the intake-based read.`)
+    } else if (d.heldReason === 'weeks_disagree') {
+      lines.push(`  - ${label}: the weeks do NOT agree, so they carry no weight here. Score this from the intake evidence.`)
+    } else {
+      lines.push(`  - ${label}: fewer than ${WINDOW} weekly syntheses on file. Score this from the intake evidence.`)
+    }
+  }
+
+  lines.push(
+    'How to use this. Where the weeks unanimously disagree with the intake-based read, that is real evidence and you should generally follow it, because intake answers describe how life was on one day months ago and the weeks describe how it has actually been since. Say in pattern_rationale which you went with and why. Where the weeks agree with the intake read, or do not agree with each other, score the domain from the intake evidence as normal. Never move a domain more than one step (Green to Amber, or Amber to Red) on weekly evidence alone.'
+  )
+
+  return lines.join('\n')
+}
