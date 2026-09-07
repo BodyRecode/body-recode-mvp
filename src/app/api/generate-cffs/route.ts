@@ -119,7 +119,7 @@ export async function runCFFSGenerationInternal(body: any): Promise<NextResponse
     // the plan. This is the coach gate from the Health Markers feature.
     admin
       .from('blood_panels')
-      .select('panel_summary, collected_on, markers, analysis')
+      .select('panel_summary, collected_on, markers, analysis, cycle_day, cycle_note')
       .eq('client_id', client_id)
       .eq('approved_for_plan', true)
       .order('approved_at', { ascending: false, nullsFirst: false })
@@ -222,6 +222,11 @@ export async function runCFFSGenerationInternal(body: any): Promise<NextResponse
           collected_on: bloodPanel.collected_on ?? null,
           markers: (bloodPanel.markers ?? []) as BloodMarker[],
           combined_picture: (bloodPanel.analysis as { combined_picture?: string } | null)?.combined_picture ?? null,
+          // Lets the phase-dependent hormone markers be read against the band
+          // that actually applies, rather than reaching the model as four
+          // ranges and a shrug. Added 2026-09-08.
+          cycleDay: bloodPanel.cycle_day ?? null,
+          cycleNote: bloodPanel.cycle_note ?? null,
         }
       : null
   )

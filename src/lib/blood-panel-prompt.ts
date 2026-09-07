@@ -23,6 +23,7 @@
 
 import type { Intake } from '@/types'
 import { findLeakedTerms, stripEmDashes } from './medications-analysis-prompt'
+import { resolvePanelBands, type ResolvedBand } from './cycle-phase-bands'
 
 export type MarkerFlag = 'low' | 'normal' | 'high' | 'very_low' | 'very_high' | 'unknown'
 
@@ -356,6 +357,12 @@ export interface CFFSBloodContext {
   collected_on: string | null
   markers: BloodMarker[]
   combined_picture: string | null
+  /**
+   * Cycle context, when the client gave it. Lets the phase-dependent hormone
+   * ranges be read instead of sitting at 'unknown'. See cycle-phase-bands.ts.
+   */
+  cycleDay?: number | null
+  cycleNote?: string | null
 }
 
 /**
@@ -371,15 +378,37 @@ export function buildBloodMarkerCFFSSection(ctx: CFFSBloodContext | null): strin
   if (ctx.panel_summary) parts.push(ctx.panel_summary)
   if (ctx.collected_on) parts.push(`Collected: ${ctx.collected_on}`)
   // Lead with out-of-range markers; they carry the convergence signal.
+  // Resolve phase-dependent bands where the client gave us her cycle dates.
+  // Without this the hormone markers stay at 'range unclear' and the reader
+  // concludes they cannot be interpreted, which is what happened on 7 Sep.
+  const resolved = resolvePanelBands(ctx.markers, ctx.cycleDay ?? null)
+  const resolvedCount = Object.keys(resolved).length
+  if (resolvedCount > 0) {
+    parts.push(
+      `Cycle context: approximate cycle day ${ctx.cycleDay}. ${resolvedCount} phase-dependent marker${resolvedCount === 1 ? '' : 's'} below carry the applicable band for that phase. ` +
+        `The cycle day is client-reported and approximate: treat the phase as probable, not established.` +
+        (ctx.cycleNote ? ` Client's own words: "${ctx.cycleNote}"` : '')
+    )
+  }
   const flagged = ctx.markers.filter(m => m.flag && m.flag !== 'normal' && m.flag !== 'unknown')
-  const normal = ctx.markers.filter(m => !flagged.includes(m))
+  // A marker the lab could not band, but which we HAVE resolved, belongs with
+  // the flagged group when it sits outside its applicable band. Otherwise it
+  // gets buried under "within range" and read as unremarkable.
+  const resolvedOutside = ctx.markers.filter(
+    m => !flagged.includes(m) && resolved[m.name] && resolved[m.name].position !== 'within'
+  )
+  const normal = ctx.markers.filter(m => !flagged.includes(m) && !resolvedOutside.includes(m))
   if (flagged.length > 0) {
     parts.push('Outside the lab\'s reference range:')
-    parts.push(formatMarkersTable(flagged))
+    parts.push(formatMarkersTable(flagged, resolved))
+  }
+  if (resolvedOutside.length > 0) {
+    parts.push('Outside the band that applies to this client\'s cycle phase (not flagged by the lab, which printed all phases):')
+    parts.push(formatMarkersTable(resolvedOutside, resolved))
   }
   if (normal.length > 0) {
     parts.push('Within range:')
-    parts.push(formatMarkersTable(normal))
+    parts.push(formatMarkersTable(normal, resolved))
   }
   if (ctx.combined_picture) {
     parts.push('Coach analysis of this panel (already reconciled with prior context):')
@@ -401,14 +430,34 @@ const FLAG_LABEL: Record<MarkerFlag, string> = {
   unknown: 'range unclear',
 }
 
-export function formatMarkersTable(markers: BloodMarker[]): string {
+export function formatMarkersTable(
+  markers: BloodMarker[],
+  /**
+   * Optional per-marker phase-band resolution, keyed by marker name. When a
+   * marker resolves, the row says which printed band applies and where the
+   * value sits against it, INSTEAD of leaving the reader with four ranges and
+   * a shrug.
+   *
+   * This has to appear in the TABLE, not only in surrounding prose. On
+   * 2026-09-07 the coach analysis was given Razia's cycle day and handled it
+   * correctly, but the CFFS generated six minutes later read the markers table,
+   * saw 'range unclear', and wrote "cycle phase was not recorded on the report
+   * so it cannot be read conclusively" into its pattern watch-list. The table
+   * beat the prose.
+   */
+  resolvedBands?: Record<string, ResolvedBand> | null
+): string {
   if (!markers || markers.length === 0) return '(no markers transcribed)'
   return markers
     .map(m => {
       const val = [m.value, m.unit].filter(Boolean).join(' ')
       const ref = m.reference_range ? ` [ref ${m.reference_range}]` : ''
       const flag = m.flag && m.flag !== 'normal' ? ` (${FLAG_LABEL[m.flag] ?? m.flag})` : ''
-      return `  - ${m.name}: ${val}${ref}${flag}`
+      const r = resolvedBands?.[m.name]
+      const resolved = r
+        ? ` -> APPLICABLE BAND for this client's cycle phase: ${r.band.printed}, value ${r.position} it`
+        : ''
+      return `  - ${m.name}: ${val}${ref}${flag}${resolved}`
     })
     .join('\n')
 }
