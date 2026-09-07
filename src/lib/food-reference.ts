@@ -46,6 +46,21 @@ export interface FoodMacros {
  */
 export const FOOD_DB: Record<string, FoodMacros> = {
   // ─── Tier 1 proteins ─────────────────────────────────────────────────
+  // Added 2026-09-07. Every one of these appeared in a real client plan and
+  // came back "outside the reference table", which is what left Samantha's
+  // review showing warnings nobody could act on. Values are per gram.
+  'egg yolk': {
+    pg_protein: 0.16, pg_carb: 0.036, pg_fat: 0.27, pg_kcal: 3.22,
+    state: 'raw', aliases: ['whole egg yolk', 'egg yolks', 'yolk', 'yolks', 'whole egg yolks'],
+  },
+  'turkey breast (raw)': {
+    pg_protein: 0.24, pg_carb: 0, pg_fat: 0.01, pg_kcal: 1.09,
+    state: 'raw', aliases: ['turkey breast', 'turkey', 'turkey breast raw'],
+  },
+  'whey protein (powder)': {
+    pg_protein: 0.8, pg_carb: 0.08, pg_fat: 0.05, pg_kcal: 3.97,
+    state: 'dry', aliases: ['whey protein', 'whey', 'protein powder', 'whey protein powder'],
+  },
   'chicken breast (raw)': {
     pg_protein: 0.21, pg_carb: 0, pg_fat: 0.02, pg_kcal: 1.05,
     state: 'raw', aliases: ['chicken breast', 'raw chicken breast', 'chicken breast raw'],
@@ -72,7 +87,7 @@ export const FOOD_DB: Record<string, FoodMacros> = {
   },
   'cod (raw)': {
     pg_protein: 0.18, pg_carb: 0, pg_fat: 0.007, pg_kcal: 0.78,
-    state: 'raw', aliases: ['cod', 'white fish', 'hake', 'whitefish'],
+    state: 'raw', aliases: ['cod', 'white fish', 'hake', 'whitefish', 'haddock', 'white fish grilled', 'cooked white fish'],
   },
   'mackerel (raw)': {
     pg_protein: 0.19, pg_carb: 0, pg_fat: 0.13, pg_kcal: 1.93,
@@ -84,7 +99,7 @@ export const FOOD_DB: Record<string, FoodMacros> = {
   },
   'tuna in spring water (drained)': {
     pg_protein: 0.25, pg_carb: 0, pg_fat: 0.01, pg_kcal: 1.09,
-    state: 'drained', aliases: ['canned tuna', 'tuna canned', 'tuna in water', 'tuna in spring water', 'tuna spring water', 'canned tuna spring water', 'tuna'],
+    state: 'drained', aliases: ['canned tuna', 'tuna canned', 'tuna in water', 'tuna in spring water', 'tuna spring water', 'canned tuna spring water', 'tuna', 'tinned fish', 'canned fish', 'tinned fish drained'],
   },
   'whole egg': {
     pg_protein: 0.13, pg_carb: 0.011, pg_fat: 0.10, pg_kcal: 1.43,
@@ -113,11 +128,11 @@ export const FOOD_DB: Record<string, FoodMacros> = {
   },
   'banana (fresh)': {
     pg_protein: 0.011, pg_carb: 0.23, pg_fat: 0.003, pg_kcal: 0.96,
-    state: 'fresh', aliases: ['banana', 'fresh banana', 'ripe banana', 'medium banana'],
+    state: 'fresh', aliases: ['banana medium', 'medium banana', 'banana', 'fresh banana', 'ripe banana'],
   },
   'mixed berries (fresh)': {
     pg_protein: 0.009, pg_carb: 0.10, pg_fat: 0.005, pg_kcal: 0.48,
-    state: 'fresh', aliases: ['berries', 'mixed berries', 'fresh berries', 'blueberries', 'raspberries'],
+    state: 'fresh', aliases: ['berries', 'mixed berries', 'fresh berries', 'blueberries', 'raspberries', 'strawberries', 'mixed berries fresh or frozen', 'frozen berries'],
   },
   'melon (fresh)': {
     pg_protein: 0.005, pg_carb: 0.072, pg_fat: 0.001, pg_kcal: 0.31,
