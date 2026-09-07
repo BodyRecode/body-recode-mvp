@@ -35,6 +35,15 @@ import {
 import { derivePaymentSignal } from '@/lib/payment-signal'
 import { getPlaybook, type RecoveryPlaybookId } from '@/lib/recovery-doctrine'
 
+/**
+ * How old an unanswered check-in can be before Today's Focus stops asking for
+ * a reply. Replying to a check-in from five weeks ago reads worse to the client
+ * than staying quiet, and a dormant client's final check-in would otherwise sit
+ * on the board indefinitely. Nothing is hidden: /dashboard/checkins still lists
+ * it as "Draft ready" at any age.
+ */
+const UNANSWERED_CHECKIN_STALE_DAYS = 14
+
 export default async function TodayWidget() {
   const admin = createAdminClient()
 
@@ -110,11 +119,14 @@ export default async function TodayWidget() {
     admin
       .from('client_payment_plan')
       .select('client_id, commencement_fee_paid_at'),
-    // Look up which check-ins already have a coach feedback row so we can
-    // surface the "respond to check-in" action for the unanswered ones.
+    // Which check-ins have actually had a reply EMAILED. Selecting
+    // email_sent_at matters: a feedback row exists from the moment the client
+    // submits, because the auto-draft writes one. Treating any row as answered
+    // meant the "respond to check-in" action could never fire, and a drafted
+    // but unsent reply read as done (fixed 2026-09-07).
     admin
       .from('weekly_checkin_feedback')
-      .select('weekly_checkin_id'),
+      .select('weekly_checkin_id, email_sent_at'),
     // Layer 3 prescription surfaces, so Today's Focus can flag a client in a
     // recovery state with nothing assigned to recover with, and a long-steady
     // client who has never had either plan built (2026-08-17).
@@ -188,9 +200,11 @@ export default async function TodayWidget() {
     feedbackByClient.set(f.client_id, (feedbackByClient.get(f.client_id) ?? 0) + 1)
   }
 
-  // Check-ins that already have a coach response. Used to compute the
-  // "respond to check-in" Today's Focus action.
-  const checkinIdsAnswered = new Set((checkinFeedbackRows ?? []).map(r => r.weekly_checkin_id))
+  // Check-ins that have had a reply EMAILED. A drafted-but-unsent reply is NOT
+  // answered - that is the whole point of the action.
+  const checkinIdsAnswered = new Set(
+    (checkinFeedbackRows ?? []).filter(r => r.email_sent_at).map(r => r.weekly_checkin_id)
+  )
 
   // ── Layer 3 prescription lookups (2026-08-17) ───────────────────────────
   const recoveryCountByClient = new Map<string, number>()
@@ -275,11 +289,19 @@ export default async function TodayWidget() {
     const latest = [...clientCheckins].sort(
       (a, b) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime()
     )[0]
-    if (latest && !checkinIdsAnswered.has(latest.id) && !latest.coach_skipped_at) {
-      const daysSince = Math.max(
-        0,
-        Math.floor((today.getTime() - new Date(latest.submitted_at).getTime()) / 86400000)
-      )
+    const latestDaysSince = latest
+      ? Math.max(0, Math.floor((today.getTime() - new Date(latest.submitted_at).getTime()) / 86400000))
+      : 0
+    if (
+      latest &&
+      !checkinIdsAnswered.has(latest.id) &&
+      !latest.coach_skipped_at &&
+      // Past this, a reply is not work any more, it is a month-late apology.
+      // Keeps a dormant client's last-ever check-in from sitting here forever.
+      // It stays visible as "Draft ready" on /dashboard/checkins either way.
+      latestDaysSince <= UNANSWERED_CHECKIN_STALE_DAYS
+    ) {
+      const daysSince = latestDaysSince
       unansweredCheckin = {
         weekNumber: latest.week_number,
         formType: latest.form_type as 'A' | 'B',
