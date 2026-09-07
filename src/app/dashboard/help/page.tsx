@@ -1080,6 +1080,21 @@ export default function HelpPage() {
               <li>Time since the active CFFS exceeds 12 weeks (annual upper bound)</li>
             </ul>
 
+            <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">How the four readiness ratings get scored (added 2026-09-08)</p>
+            <p>The four ratings on a client&apos;s foundational read used to be produced with no instructions at all. The system was asked for a Green, Amber or Red on each and was never told what any of the four meant or how to decide. So the same client could come back scored differently on different days: Razia&apos;s Schedule was Green in May, Amber one morning, and Green again that evening, off exactly the same answers.</p>
+            <p>That mattered more than it sounds, because those four numbers are the starting point everything else measures against. The weekly synthesis scores itself against them, the reassessment prompts count them, and how hard a training block gets built is partly decided by them.</p>
+            <p>There is now a proper rule for each one:</p>
+            <ul className="space-y-1 list-disc list-inside text-[#43474F] text-sm">
+              <li><strong>Capacity</strong> — how much physical work they can take and recover from.</li>
+              <li><strong>Schedule</strong> — whether their week actually allows training and eating to happen. <em>This is the shape of their week, not their willingness.</em> A keen client on an unpredictable roster is Amber.</li>
+              <li><strong>Regulation</strong> — stress and nervous system: sleep, mood, appetite, wired-but-tired.</li>
+              <li><strong>Behaviour</strong> — whether they do what was agreed when the week allowed it. <em>Missing sessions because the week fell apart counts against Schedule, not Behaviour.</em></li>
+            </ul>
+            <p>Green means not currently limiting, Amber means limiting, Red means this is the thing holding everything else back. Only one should normally be Red: if three are Red, that tells you nothing about where to start. And on a re-run, if nothing in the evidence changed, the rating should not change either.</p>
+            <p><strong>The read can also see the weekly data now.</strong> Before this, those four ratings came only from the intake questionnaire, which for an established client can be months old. It now also gets shown what the last three weekly check-ins said, but only where all three agree, so one bad week never moves anything.</p>
+            <p>It is shown as evidence, not as the answer, and deliberately so. The weekly synthesis measures itself against the foundational read, so if the foundational read simply copied the weeklies the two would be taking their answer from each other and nothing would ever hold still. Instead it has to look at both and say in writing which it went with. It also cannot jump a rating two steps on weekly evidence alone.</p>
+            <p>The same weekly evidence now also reaches the training and nutrition suggestion tools, which previously only ever saw the intake-era numbers.</p>
+
             <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">Triggers now retire themselves (added 2026-09-07)</p>
             <p>Until this date, triggers were <strong>append-only</strong>. Nothing closed one when the thing it asked for had been done, so the only way a trigger left the queue was you dismissing it by hand. On 7 Sep the queue across four active clients had reached <strong>34</strong>, most of it long dealt with. A queue that never empties stops being read, which defeats the point of having one.</p>
             <p>The Monday re-sync now closes a trigger when its cause is gone:</p>
