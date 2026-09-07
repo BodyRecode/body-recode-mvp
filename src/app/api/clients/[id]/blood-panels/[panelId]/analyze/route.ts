@@ -119,7 +119,9 @@ export async function POST(
   try {
     message = await anthropic.messages.create({
       model: AI_MODELS.clinical,
-      max_tokens: 4000,
+      // Analysis runs over every marker, so a broad panel is the worst case. Raised with extraction on 2026-09-07. AI_MODELS.clinical is Sonnet 5 with extended
+      // thinking on, so the budget must cover thinking plus the JSON.
+      max_tokens: 16000,
       system: withTemporalContext(buildCoachAnalysisSystemPrompt()),
       messages: [{ role: 'user', content: userPrompt }],
     })

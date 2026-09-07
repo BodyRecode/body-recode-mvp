@@ -148,9 +148,19 @@ export async function POST(req: NextRequest) {
         ? { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } }
         : { type: 'image', source: { type: 'base64', media_type: imageMediaTypeOrNull!, data: base64 } }
 
+      // Budgets sized from a MEASURED extraction, not guessed. Razia's 8-page QML
+      // panel on 2026-09-07 used 10,050 output tokens (6,251 of them thinking) to
+      // read 56 markers. The previous 4,000 ceiling could not fit that: the call
+      // returned stop_reason 'max_tokens' with no text block at all, so the upload
+      // saved the file and silently produced no markers.
+      //
+      // AI_MODELS.clinical is Sonnet 5, which runs extended thinking by default.
+      // Same failure class as the CFWS outage (26 Jul to 20 Aug 2026): a budget that
+      // was ample for Haiku became a truncation the moment the tier moved. When a
+      // model tier changes, audit EVERY call site on that tier.
       const message = await anthropic.messages.create({
         model: AI_MODELS.clinical,
-        max_tokens: 4000,
+        max_tokens: 16000,
         system: withTemporalContext(buildExtractionSystemPrompt()),
         messages: [
           {

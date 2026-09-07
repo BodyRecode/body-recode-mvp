@@ -116,7 +116,9 @@ export async function POST(
     try {
       message = await anthropic.messages.create({
         model: AI_MODELS.clinical,
-        max_tokens: 3000,
+        // Client reading over a broad panel. Raised with extraction on 2026-09-07. AI_MODELS.clinical is Sonnet 5 with extended
+        // thinking on, so the budget must cover thinking plus the JSON.
+        max_tokens: 12000,
         system: withTemporalContext(buildClientReadingSystemPrompt()),
         messages: conversation,
       })

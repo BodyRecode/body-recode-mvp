@@ -98,7 +98,9 @@ export async function POST(
   try {
     message = await anthropic.messages.create({
       model: AI_MODELS.clinical,
-      max_tokens: 4000,
+      // Same extraction prompt as the portal upload. 4,000 could not fit a 56-marker panel (measured 10,050 on 2026-09-07). AI_MODELS.clinical is Sonnet 5 with extended
+      // thinking on, so the budget must cover thinking plus the JSON.
+      max_tokens: 16000,
       system: withTemporalContext(buildExtractionSystemPrompt()),
       messages: [
         {
