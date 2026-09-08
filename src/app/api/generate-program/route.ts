@@ -232,12 +232,55 @@ export async function runProgramGenerationInternal(body: any): Promise<NextRespo
     }
   }
 
-  // Use preferred_training_days from request body if provided, otherwise fall back to intake data.
+  // Days the client has ACTUALLY been training, read off the previous block's
+  // session labels ("Monday — Lower & Push Emphasis" -> "Monday").
+  //
+  // Added 2026-09-08. The fallback below used to go straight to intake
+  // availability, which is a pool the client filled in months ago, so a new
+  // block could silently land on completely different days from the eight
+  // weeks before it. Razia had trained Mon/Wed/Fri since July and two
+  // successive drafts came back Tue/Thu/Sat. Nothing warned; the coach only
+  // catches it by reading the day labels.
+  //
+  // Continuity is the right default. A client who has built a week around
+  // three fixed days should keep them unless someone deliberately says
+  // otherwise, and "otherwise" is what preferred_training_days is for.
+  const WEEKDAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+  let previousBlockDays: string[] = []
+  {
+    const { data: prevProgram } = await admin
+      .from('programs')
+      .select('sessions')
+      .eq('client_id', client_id)
+      .neq('status', 'draft')
+      .order('generated_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+    const prevSessions = Array.isArray(prevProgram?.sessions) ? prevProgram.sessions : []
+    previousBlockDays = Array.from(
+      new Set(
+        (prevSessions as { day_label?: unknown }[])
+          .map(sess => {
+            const label = typeof sess?.day_label === 'string' ? sess.day_label : ''
+            return WEEKDAYS.find(d => new RegExp(`\\b${d}\\b`, 'i').test(label)) ?? null
+          })
+          .filter((d): d is string => d !== null)
+      )
+    )
+  }
+
+  // Use preferred_training_days from the request when the coach supplied them,
+  // then the days the previous block actually used, then intake availability.
   // Fixed in-person day(s) are unioned in so they're always in the pool, even if
   // the coach didn't explicitly pick them.
   const baseTrainingDays: string[] = (preferred_training_days && preferred_training_days.length > 0)
     ? preferred_training_days
-    : intakeTrainingDays
+    : previousBlockDays.length > 0
+      ? previousBlockDays
+      : intakeTrainingDays
+  if (!preferred_training_days?.length && previousBlockDays.length > 0) {
+    console.log(`[generate-program] client=${String(client_id).slice(0, 8)} training days carried from the previous block: ${previousBlockDays.join(', ')}`)
+  }
   const resolvedTrainingDays: string[] = Array.from(new Set([...(baseTrainingDays ?? []), ...anchorDays]))
 
   // Resolve the plan block SERVER-SIDE when the caller did not supply one.
@@ -436,7 +479,7 @@ export async function runProgramGenerationInternal(body: any): Promise<NextRespo
         // and 7.6k. This is assembly work, not analysis.
         output_config: { effort: AI_EFFORT.assembly } as never,
         system: withTemporalContext(buildProgramSystemPrompt() + recoveryPromptSection),
-        messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, effectiveCffs, exercises as ExerciseRow[], macroPlanContext, client.medications, coachGuidance, appliedBodyStateOverride ? { state: appliedBodyStateOverride, original: cffs?.body_state_classification ?? null, reason: body_state_override_reason ?? null } : null, appliedReadinessCarry, enduranceSessions) }],
+        messages: [{ role: 'user', content: buildProgramUserPrompt(client.name, inputs, effectiveCffs, exercises as ExerciseRow[], macroPlanContext, client.medications, coachGuidance, appliedBodyStateOverride ? { state: appliedBodyStateOverride, original: cffs?.body_state_classification ?? null, reason: body_state_override_reason ?? null } : null, prescription_rationale ?? null, appliedReadinessCarry, enduranceSessions) }],
       }).finalMessage()
     } catch (err) {
       lastError = `AI error: ${err instanceof Error ? err.message : String(err)}`

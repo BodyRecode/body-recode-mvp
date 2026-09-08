@@ -83,6 +83,15 @@ Interpretation rules for common guidance phrases:
 
 When coach guidance and doctrine conflict on a safety-relevant variable, doctrine wins and you note it in weekly_pattern_summary as "Coach guidance partially applied: [variable] held at doctrine floor because [reason]".
 
+BLOCK BRIEF (THIS BLOCK ONLY)
+The user message may ALSO include a section labelled "BLOCK BRIEF". It carries the same authority and the same limits as COACH GUIDANCE above, with one difference: coach guidance is standing and applies to every block on the macro arc, whereas a block brief applies to THIS BLOCK ONLY. Where the two conflict, the block brief wins, because it is the more recent and more specific instruction.
+
+A block brief is where a coach puts the things that are true right now and not forever: exercises the client has just spent a block on and should not repeat, a movement they are sick of, a volume position for this block specifically, context from a recent blood panel or life event.
+
+Treat its contents as INSTRUCTIONS, not background. If it names exercises not to use, do not use them. If it names a volume position, hit it. If it says do not change the training days, do not change them. When you cannot honour something in it because doctrine forbids it, say so explicitly in weekly_pattern_summary as "Block brief partially applied: [what] because [reason]" rather than quietly ignoring it.
+
+Added 2026-09-08 after three consecutive blocks were generated against a written brief that never reached this prompt at all. The brief had been collected from the coach, stored on the record, and dropped.
+
 ═══════════════════════════════════════
 DOCTRINE BOUNDARIES (NEVER VIOLATE)
 ═══════════════════════════════════════
@@ -655,6 +664,20 @@ export function buildProgramUserPrompt(
   medications?: string | null,
   coachGuidance?: string | null,
   bodyStateOverride?: { state: string; original: string | null; reason: string | null } | null,
+  /**
+   * Per-block coach instruction, from `prescription_rationale`.
+   *
+   * Until 2026-09-08 this text was collected from the coach, written to
+   * `programs.prescription_rationale`, and NEVER SENT HERE. Three consecutive
+   * blocks across two clients were generated against briefs the model never
+   * saw: exclusion lists ignored, banned exercises used, volume targets
+   * missed, training days moved. It read as the model disobeying. It was the
+   * route dropping the field.
+   *
+   * Distinct from coachGuidance, which is STANDING and lives on the macro arc.
+   * This is THIS BLOCK ONLY and outranks it on conflict.
+   */
+  blockBrief?: string | null,
   readinessCarry?: { weeksExamined: number[]; domains: { domain: string; foundational: string | null; weekly: string | null; carried: boolean }[] } | null,
   /** Programmed endurance sessions in the client's week. See getSetsPerSessionRange. */
   concurrentEnduranceSessions?: number
@@ -666,8 +689,19 @@ export function buildProgramUserPrompt(
   // "COACH GUIDANCE (CONTEXT-LEVEL OVERRIDE)".
   const trimmedGuidance = coachGuidance?.trim()
   if (trimmedGuidance) {
-    parts.push(`COACH GUIDANCE (apply throughout — overrides engine-default conservatism within doctrine):
+    parts.push(`COACH GUIDANCE (standing, applies to every block on this arc — overrides engine-default conservatism within doctrine):
 ${trimmedGuidance}
+`)
+  }
+
+  // BLOCK BRIEF — this block only, and it outranks standing guidance on
+  // conflict because it is the more recent and more specific instruction.
+  // Authority and limits are defined in the system prompt under
+  // "BLOCK BRIEF (THIS BLOCK ONLY)".
+  const trimmedBrief = blockBrief?.trim()
+  if (trimmedBrief) {
+    parts.push(`BLOCK BRIEF (THIS BLOCK ONLY — instructions, not background. Outranks the standing coach guidance above where they conflict):
+${trimmedBrief}
 `)
   }
 
