@@ -3,6 +3,7 @@ import { estimateEnergyRequirement, ageFromDob, normaliseSex, type ActivityLevel
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { attachSupplementsToPlan } from '@/lib/consumption-plan-generate'
 import { buildNutritionSystemPrompt, buildNutritionUserPrompt, NutritionPrescriptionInputs } from '@/lib/nutrition-prompt'
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
 import { buildRecoveryNutritionPromptSection } from '@/lib/recovery-program-clamp'
@@ -769,5 +770,49 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
   if (!savedPlan) {
     return NextResponse.json({ error: 'Failed to save nutrition plan' }, { status: 500 })
   }
-  return NextResponse.json({ plan_id: savedPlan.id, client_id })
+
+  // ── Supplements (Unified Consumption Plan) ───────────────────────────────
+  //
+  // Wired in 2026-09-08. attachSupplementsToPlan and the whole unified
+  // consumption plan were specced and built on 1 Sep and then never called by
+  // anything: zero callers anywhere in the codebase. Every plan generated since
+  // has had a null supplements field, which is why Razia's showed nothing
+  // despite the feature existing.
+  //
+  // Runs AFTER the plan is saved, deliberately. Kade's rule from the spec: a
+  // client's food never waits on the supplement engine being healthy. A failure
+  // here is reported to the coach and the plan still stands.
+  //
+  // Nothing is prescribed to anyone by this. A fresh suggestion arrives
+  // UNASSIGNED and stays invisible to the client until the coach accepts it;
+  // only what the coach has already accepted carries forward.
+  let supplementResult: Awaited<ReturnType<typeof attachSupplementsToPlan>> | null = null
+  try {
+    supplementResult = await attachSupplementsToPlan(admin, client_id, savedPlan.id)
+    if (supplementResult.supplementError) {
+      console.error(`[generate-nutrition] supplements failed for plan ${savedPlan.id}: ${supplementResult.supplementError}`)
+    } else {
+      console.log(
+        `[generate-nutrition] plan ${savedPlan.id}: ${supplementResult.supplements.length} supplement(s)` +
+          `${supplementResult.carriedForward ? ' carried forward unchanged' : ''}` +
+          `${supplementResult.issues.length ? `, ${supplementResult.issues.length} composition issue(s)` : ''}`
+      )
+    }
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error(`[generate-nutrition] supplements threw for plan ${savedPlan.id}: ${msg}`)
+    supplementResult = {
+      planId: savedPlan.id, supplements: [], issues: [], supplementError: msg,
+      publishable: true, carriedForward: false,
+    }
+  }
+
+  return NextResponse.json({
+    plan_id: savedPlan.id,
+    client_id,
+    supplements: supplementResult?.supplements ?? [],
+    supplement_error: supplementResult?.supplementError ?? null,
+    supplement_issues: supplementResult?.issues ?? [],
+    supplements_carried_forward: supplementResult?.carriedForward ?? false,
+  })
 }
