@@ -49,7 +49,21 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
   }
 
   const prescribedSessions = parsePrescribedSessions(program.sessions)
-  const blockWeek = currentBlockWeek(program.activated_at ?? program.generated_at)
+  // Clamp to the last week of the block when it has run past its planned end.
+  //
+  // Blocks routinely overrun: the next one gets built when the check-in and
+  // progress data are in, not on the day the calendar says. In that gap the
+  // client keeps training. Reading the raw week meant looking up completions
+  // for, say, week 9 of an 8-week block, finding none, and offering a page of
+  // untouched sessions with no way to start one, because startSession refused
+  // anything past the end. Clamping here keeps the page pointed at the block's
+  // final week, which is where the write path now records too. Fixed
+  // 2026-09-08 after Razia's in-person session could not be logged at all.
+  const rawBlockWeek = currentBlockWeek(program.activated_at ?? program.generated_at)
+  const blockWeek = program.week_duration
+    ? Math.min(rawBlockWeek, program.week_duration)
+    : rawBlockWeek
+  const blockOverrun = program.week_duration ? rawBlockWeek > program.week_duration : false
   const daysLeft = daysUntilBlockEnd(program.activated_at ?? program.generated_at, program.week_duration)
   const today = todayBrisbaneDayName()
 
@@ -116,7 +130,9 @@ export default async function PortalProgramLogPage({ params }: { params: Promise
           )}
           {blockEnded && (
             <span className="bg-[#FDF6E9] border border-[#F1DEB8] text-[#A96A12] rounded-full px-2.5 py-0.5">
-              Block complete · awaiting reassessment
+              {blockOverrun
+                ? 'Block complete · keep logging, sessions count to the final week'
+                : 'Block complete · awaiting reassessment'}
             </span>
           )}
         </div>

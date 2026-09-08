@@ -44,11 +44,30 @@ export async function startSession(
   const prescribed: PrescribedSession | undefined = prescribedSessions[sessionIndex]
   if (!prescribed) return { status: 400, body: { error: 'Invalid sessionIndex' } }
 
-  if (program.week_duration && weekNumberInBlock > program.week_duration) {
-    return {
-      status: 400,
-      body: { error: `Week ${weekNumberInBlock} is past the block end (${program.week_duration} weeks)` },
-    }
+  // A block that has run past its planned end does NOT stop the client
+  // training, and it must not stop the work being recorded.
+  //
+  // This used to hard-refuse with "Week 9 is past the block end (8 weeks)".
+  // Blocks routinely run over: the coach builds the next one when the check-in
+  // and progress data are in, not on the calendar day the old one expires. In
+  // that gap the client keeps turning up, and every session they did was
+  // rejected and lost. Razia trained in person on 2026-09-08 and could not be
+  // logged at all, because Block 2 had ended two days earlier and Block 3 was
+  // still a draft. That session is simply gone.
+  //
+  // Losing real training data is a far worse outcome than an overrun week
+  // number. So: clamp the week to the last week of the block, record the
+  // session against it, and let the block-end reassessment trigger (which has
+  // already fired by definition) be the thing that prompts the coach.
+  const overrunWeek =
+    program.week_duration != null && weekNumberInBlock > program.week_duration
+      ? weekNumberInBlock
+      : null
+  const effectiveWeek = overrunWeek ? program.week_duration! : weekNumberInBlock
+  if (overrunWeek) {
+    console.log(
+      `[start-session] client=${String(clientId).slice(0, 8)} block overrun: week ${overrunWeek} of a ${program.week_duration}-week block, recording against week ${effectiveWeek}`
+    )
   }
 
   const { data: existing } = await admin
@@ -57,7 +76,7 @@ export async function startSession(
     .eq('client_id', clientId)
     .eq('program_id', program.id)
     .eq('session_index', sessionIndex)
-    .eq('week_number_in_block', weekNumberInBlock)
+    .eq('week_number_in_block', effectiveWeek)
     .neq('status', 'abandoned')
     .order('started_at', { ascending: false })
     .limit(1)
@@ -75,7 +94,7 @@ export async function startSession(
       session_index: sessionIndex,
       day_label: prescribed.day_label,
       session_name: prescribed.skeleton ?? null,
-      week_number_in_block: weekNumberInBlock,
+      week_number_in_block: effectiveWeek,
       prescription_snapshot: {
         day_label: prescribed.day_label,
         skeleton: prescribed.skeleton,

@@ -56,7 +56,14 @@ export default async function CoachTrainIndexPage({ params }: { params: Promise<
   }
 
   const prescribedSessions = parsePrescribedSessions(program.sessions)
-  const blockWeek = currentBlockWeek(program.activated_at ?? program.generated_at)
+  // Same clamp as the portal log page. A block past its planned end must still
+  // let the coach record an in-person session; the write path clamps to the
+  // final week and this has to agree with it or the page looks empty. Fixed
+  // 2026-09-08: Razia's session could not be logged from here at all.
+  const rawBlockWeek = currentBlockWeek(program.activated_at ?? program.generated_at)
+  const blockWeek = program.week_duration
+    ? Math.min(rawBlockWeek, program.week_duration)
+    : rawBlockWeek
   const daysLeft = daysUntilBlockEnd(program.activated_at ?? program.generated_at, program.week_duration)
   const today = todayBrisbaneDayName()
 
