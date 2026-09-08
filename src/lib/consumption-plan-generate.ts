@@ -28,6 +28,7 @@ import { createHash } from 'crypto'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { composeSupplementsOntoMeals, type PlanSupplement, type CompositionIssue } from '@/lib/consumption-plan'
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
+import { AI_MODELS } from '@/lib/ai-models'
 
 /**
  * A fingerprint of the CLINICAL picture behind a supplement decision.
@@ -127,6 +128,33 @@ export async function attachSupplementsToPlan(
     const result = await generateSupplementSuggestions(admin, clientId)
     if (!result.ok) {
       return { ...base, supplementError: result.error }
+    }
+
+    // Persist to `supplement_suggestions` as well as onto the plan.
+    //
+    // Added 2026-09-08. There are two callers of this engine and they were
+    // writing to different places: the Generate button on the coach's
+    // supplements page saves here and the page reads here, while this path only
+    // ever wrote onto the nutrition plan. So a generation from a plan produced
+    // real suggestions the accept UI could not see, and there was nothing to
+    // approve. Same engine, same output, one of the two stores.
+    //
+    // Best-effort, matching the route: a failed write must not throw away a
+    // clinical-tier call that already succeeded.
+    const { error: suggestSaveErr } = await admin
+      .from('supplement_suggestions')
+      .insert({
+        client_id: clientId,
+        generated_by: null, // system-generated, alongside a plan, not a coach click
+        model: AI_MODELS.clinical,
+        overview: result.overview,
+        suggestions: result.suggestions,
+        not_now: result.notNow,
+        gated: result.gated,
+        attempts: result.attempts,
+      })
+    if (suggestSaveErr) {
+      console.error('[consumption-plan] supplement_suggestions insert failed:', suggestSaveErr.message)
     }
 
     // Everything the coach has already accepted carries forward. Nothing here
