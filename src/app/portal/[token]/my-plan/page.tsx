@@ -4,7 +4,7 @@ import Link from 'next/link'
 import NutritionReadingInline from '@/components/nutrition-reading-inline'
 import PortalPageShell from '../portal-page-shell'
 import { computeNutritionTotals, type FoodInput } from '@/lib/nutrition-validation'
-import PlanMeals from './plan-meals'
+import PlanMeals, { type PlanSupplementRow } from './plan-meals'
 import AskAboutThis from '@/components/ask-about-this'
 import { requirePortalClient } from '@/lib/portal-guard'
 
@@ -60,7 +60,7 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
   // her plan today after 3 regens. Fixed 2026-05-26.
   const { data: plan } = await admin
     .from('nutrition_plans')
-    .select('id, plan_name, entry_state, estimated_calorie_band, meal_frequency, meals, training_day_adjustments, rest_day_adjustments, execution_rules, what_not_to_change, entry_state_summary, current_direction, last_review_at, nr_why_this_plan, nr_what_this_nutrition_is_doing, nr_how_well_know_its_working, nr_what_were_not_doing_yet, nr_coach_note, nutrition_reading_published_at, transitional_override_active, transitional_override_floor_kcal, transitional_override_expires_at, carb_demand_level, substitution_options')
+    .select('id, plan_name, entry_state, estimated_calorie_band, meal_frequency, meals, training_day_adjustments, rest_day_adjustments, execution_rules, what_not_to_change, entry_state_summary, current_direction, last_review_at, nr_why_this_plan, nr_what_this_nutrition_is_doing, nr_how_well_know_its_working, nr_what_were_not_doing_yet, nr_coach_note, nutrition_reading_published_at, transitional_override_active, transitional_override_floor_kcal, transitional_override_expires_at, carb_demand_level, substitution_options, supplements')
     .eq('client_id', client.id)
     .eq('is_active', true)
     .maybeSingle()
@@ -289,7 +289,10 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
 
             {/* Meals — collapsible; tap a meal to see macros + foods */}
             {Array.isArray(plan.meals) && plan.meals.length > 0 && (
-              <PlanMeals meals={plan.meals as Meal[]} />
+              <PlanMeals
+                meals={plan.meals as Meal[]}
+                supplements={(plan.supplements as PlanSupplementRow[] | null) ?? []}
+              />
             )}
 
             {/* Food substitutions: client-facing, collapsed by default so it

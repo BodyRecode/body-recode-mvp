@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { syncAssignedSupplementsOntoPlan } from '@/lib/consumption-plan-generate'
 import { isCoachEmail } from '@/lib/coach-auth'
 import { substanceBySlug } from '@/lib/supplement-substances-seed'
 
@@ -60,5 +61,15 @@ export async function POST(
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  return NextResponse.json({ ok: true, assignment: data })
+  // Mirror the acceptance onto the client's live nutrition plan, so an approved
+  // supplement appears WITH her meals rather than only on a separate page.
+  // Best-effort: the assignment is already recorded and must not be undone by a
+  // sync failure. Added 2026-09-08, closing the second half of the Unified
+  // Consumption Plan. See syncAssignedSupplementsOntoPlan.
+  const sync = await syncAssignedSupplementsOntoPlan(admin, id).catch(err => ({
+    ok: false as const, planId: null, assignedCount: 0, error: err instanceof Error ? err.message : String(err),
+  }))
+  if (!sync.ok) console.error(`[supplement-assign] plan sync failed for client ${id}: ${sync.error}`)
+
+  return NextResponse.json({ ok: true, assignment: data, plan_sync: sync })
 }

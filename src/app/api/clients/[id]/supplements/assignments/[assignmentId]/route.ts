@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { syncAssignedSupplementsOntoPlan } from '@/lib/consumption-plan-generate'
 import { isCoachEmail } from '@/lib/coach-auth'
 
 /**
@@ -54,7 +55,14 @@ export async function PATCH(
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  return NextResponse.json({ ok: true, assignment: data })
+  // Keep the client's live nutrition plan in step. Best-effort: the assignment
+  // change is already recorded and must not be undone by a sync failure.
+  const sync = await syncAssignedSupplementsOntoPlan(admin, id).catch(err => ({
+    ok: false as const, planId: null, assignedCount: 0, error: err instanceof Error ? err.message : String(err),
+  }))
+  if (!sync.ok) console.error(`[supplement-assign] plan sync failed for client ${id}: ${sync.error}`)
+
+  return NextResponse.json({ ok: true, assignment: data, plan_sync: sync })
 }
 
 export async function DELETE(
@@ -82,5 +90,12 @@ export async function DELETE(
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  return NextResponse.json({ ok: true })
+  // Removing an assignment must un-mark it on the plan too, or a supplement the
+  // coach has withdrawn keeps showing to the client alongside her meals.
+  const sync = await syncAssignedSupplementsOntoPlan(admin, id).catch(err => ({
+    ok: false as const, planId: null, assignedCount: 0, error: err instanceof Error ? err.message : String(err),
+  }))
+  if (!sync.ok) console.error(`[supplement-assign] plan sync failed for client ${id}: ${sync.error}`)
+
+  return NextResponse.json({ ok: true, plan_sync: sync })
 }

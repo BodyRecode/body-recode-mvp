@@ -176,3 +176,66 @@ export async function attachSupplementsToPlan(
     carriedForward: false,
   }
 }
+
+/**
+ * Re-mark the active plan's supplements after an assignment changes.
+ *
+ * Closes the second half of the Unified Consumption Plan, 2026-09-08.
+ *
+ * The suggestion half worked: the engine proposes, and the proposals are
+ * written onto the plan UNASSIGNED and invisible to the client. What never
+ * existed was the other half. Accepting a suggestion wrote a
+ * `supplement_assignments` row and nothing else, so the plan's own copy stayed
+ * unassigned forever and the client went on reading her supplements from a
+ * separate page, which is precisely what the spec was written to end:
+ *
+ *   "the coach generated a nutrition plan on one screen and a supplement stack
+ *    on another, reviewed them separately, published them separately, and the
+ *    client had to find them in two places."
+ *
+ * Called after an assignment is created or revoked. Re-reads what is actually
+ * assigned, flips the flag on the plan's supplements to match, and re-composes
+ * them onto the meals so an accepted supplement lands next to the meal it is
+ * taken with.
+ *
+ * Deliberately does NOT call the suggestion engine. Accepting one substance
+ * must not re-derive the others, or a coach's single click would silently
+ * rewrite the whole stack.
+ */
+export async function syncAssignedSupplementsOntoPlan(
+  admin: SupabaseClient,
+  clientId: string,
+): Promise<{ ok: boolean; planId: string | null; assignedCount: number; error?: string }> {
+  const { data: plan, error: planErr } = await admin
+    .from('nutrition_plans')
+    .select('id, meals, supplements')
+    .eq('client_id', clientId)
+    .eq('is_active', true)
+    .maybeSingle()
+
+  if (planErr) return { ok: false, planId: null, assignedCount: 0, error: planErr.message }
+  // No active plan, or a plan the engine has never run against. Nothing to sync,
+  // and not an error: the assignment itself has already been recorded.
+  if (!plan || !plan.supplements) return { ok: true, planId: plan?.id ?? null, assignedCount: 0 }
+
+  const { data: assignments, error: aErr } = await admin
+    .from('supplement_assignments')
+    .select('substance_slug')
+    .eq('client_id', clientId)
+    .eq('status', 'active')
+  if (aErr) return { ok: false, planId: plan.id, assignedCount: 0, error: aErr.message }
+
+  const assigned = new Set((assignments ?? []).map(a => a.substance_slug))
+  const current = (plan.supplements as PlanSupplement[]) ?? []
+  const remarked = current.map(s => ({ ...s, assigned: assigned.has(s.substance_slug) }))
+
+  const composed = composeSupplementsOntoMeals((plan.meals as never[]) ?? [], remarked)
+
+  const { error: upErr } = await admin
+    .from('nutrition_plans')
+    .update({ supplements: composed.supplements })
+    .eq('id', plan.id)
+  if (upErr) return { ok: false, planId: plan.id, assignedCount: 0, error: upErr.message }
+
+  return { ok: true, planId: plan.id, assignedCount: remarked.filter(s => s.assigned).length }
+}

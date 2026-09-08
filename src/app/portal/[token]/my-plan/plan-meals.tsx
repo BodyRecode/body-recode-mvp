@@ -21,7 +21,34 @@ interface Meal {
   notes: string | null
 }
 
-export default function PlanMeals({ meals }: { meals: Meal[] }) {
+/**
+ * A supplement the coach has ACCEPTED, placed against the meal it is taken
+ * with. Only accepted ones are ever passed in; suggestions the coach has not
+ * approved never reach the client.
+ */
+export interface PlanSupplementRow {
+  substance_slug: string
+  name?: string | null
+  dose?: string | null
+  timing_note?: string | null
+  timing_meal_number?: number | null
+  rationale_client_facing?: string | null
+  assigned?: boolean
+}
+
+export default function PlanMeals({
+  meals,
+  supplements = [],
+}: {
+  meals: Meal[]
+  /**
+   * Added 2026-09-08, closing the Unified Consumption Plan. Her supplements
+   * used to live on a separate portal page, so a plan and the things taken with
+   * it were two places she had to visit. Anything not tied to a specific meal
+   * is rendered by the caller as a standalone group.
+   */
+  supplements?: PlanSupplementRow[]
+}) {
   const [open, setOpen] = useState<Set<number>>(() => new Set(meals.length > 0 ? [0] : []))
 
   const toggle = (i: number) =>
@@ -102,6 +129,31 @@ export default function PlanMeals({ meals }: { meals: Meal[] }) {
                       })}
                     </ul>
                     {meal.notes && <p className="text-xs text-[#98A0AD] mt-2 italic">{meal.notes}</p>}
+
+                    {/* Accepted supplements taken with THIS meal. */}
+                    {(() => {
+                      const withMeal = supplements.filter(
+                        sup => sup.assigned && sup.timing_meal_number != null && sup.timing_meal_number === meal.meal_number
+                      )
+                      if (withMeal.length === 0) return null
+                      return (
+                        <div className="mt-3 pt-3 border-t border-[#EFF1F4]">
+                          <p className="text-[10.5px] uppercase tracking-wide text-[#98A0AD] mb-1.5">Take with this meal</p>
+                          <ul className="space-y-1">
+                            {withMeal.map(sup => (
+                              <li key={sup.substance_slug} className="text-xs text-[#666D7A] flex items-start gap-2">
+                                <span className="text-[#98A0AD] shrink-0">·</span>
+                                <span>
+                                  {sup.name ?? sup.substance_slug}
+                                  {sup.dose ? <span className="text-[#98A0AD]"> · {sup.dose}</span> : null}
+                                  {sup.timing_note ? <span className="text-[#98A0AD]"> · {sup.timing_note}</span> : null}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )
+                    })()}
                   </div>
                 )}
               </div>
