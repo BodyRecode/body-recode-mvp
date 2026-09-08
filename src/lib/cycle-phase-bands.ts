@@ -232,3 +232,100 @@ export function resolvePanelBands(
   }
   return out
 }
+
+/**
+ * Attach the resolved band to the marker rows themselves.
+ *
+ * WHY THIS IS SEPARATE FROM resolvePanelBands
+ *
+ * `resolvePanelBands` resolves at READ time, for one consumer that asked. That
+ * was enough for the CFFS prompt and nothing else. Every other reader of a
+ * panel (the coach markers table, the client's portal, the blood analysis, the
+ * research lens) goes to the stored rows, and those rows still said 'unknown'.
+ * Razia's LH, FSH, oestradiol and progesterone read as four uninterpretable
+ * numbers everywhere except one prompt, three weeks after she told us the date
+ * that makes them interpretable.
+ *
+ * So the answer is written ONTO the row, once, and every reader gets it.
+ *
+ * WHAT IS AND IS NOT TOUCHED
+ *
+ * `phase_resolved` is added. `flag`, `value`, `unit` and `reference_range` are
+ * returned exactly as the lab printed them and as the extractor transcribed
+ * them. The lab's own verdict is never overwritten, because a phase band is
+ * our arithmetic on a self-reported date and the lab's range is the lab's.
+ * A reader that wants the lab's view still has it; a reader that wants the
+ * phase view now has that too, clearly labelled as separate.
+ *
+ * Idempotent, and safe to re-run whenever a cycle date is added or corrected:
+ * a marker that no longer resolves has any previous `phase_resolved` removed
+ * rather than left behind stale.
+ */
+export interface MarkerWithBand {
+  name: string
+  value: string
+  unit?: string | null
+  reference_range: string | null
+  flag?: string
+  phase_resolved?: {
+    phase: CyclePhase
+    position: 'below' | 'within' | 'above'
+    band_printed: string
+    cycle_day: number
+    summary: string
+  }
+  [key: string]: unknown
+}
+
+export function annotateMarkersWithPhaseBands<T extends MarkerWithBand>(
+  markers: T[],
+  cycleDay: number | null
+): { markers: T[]; resolvedCount: number; changed: boolean } {
+  let resolvedCount = 0
+  let changed = false
+
+  const out = markers.map(m => {
+    const resolved = cycleDay == null ? null : resolveMarkerBand({
+      name: m.name,
+      value: m.value,
+      unit: m.unit,
+      reference_range: m.reference_range,
+      cycleDay,
+    })
+
+    if (!resolved) {
+      // Nothing resolvable now. Drop any stale annotation from a previous run
+      // rather than leaving a band that no longer applies.
+      if (m.phase_resolved) {
+        changed = true
+        const { phase_resolved: _dropped, ...rest } = m
+        return rest as T
+      }
+      return m
+    }
+
+    resolvedCount++
+    const next = {
+      phase: resolved.phase,
+      position: resolved.position,
+      band_printed: resolved.band.printed,
+      cycle_day: cycleDay as number,
+      summary: resolved.summary,
+    }
+    // Field by field, NOT JSON.stringify: Postgres returns jsonb keys in its
+    // own order, so stringifying would report a difference on every run and
+    // rewrite every panel forever.
+    const prev = m.phase_resolved
+    if (
+      !prev ||
+      prev.phase !== next.phase ||
+      prev.position !== next.position ||
+      prev.band_printed !== next.band_printed ||
+      prev.cycle_day !== next.cycle_day ||
+      prev.summary !== next.summary
+    ) changed = true
+    return { ...m, phase_resolved: next } as T
+  })
+
+  return { markers: out, resolvedCount, changed }
+}

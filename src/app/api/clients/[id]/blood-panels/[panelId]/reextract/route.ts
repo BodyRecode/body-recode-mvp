@@ -13,6 +13,7 @@ import {
 } from '@/lib/blood-panel-prompt'
 import { AI_MODELS } from '@/lib/ai-models'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
+import { annotateMarkersWithPhaseBands, type MarkerWithBand } from '@/lib/cycle-phase-bands'
 
 /**
  * Re-run the multimodal transcription for a panel whose upload-time extraction
@@ -37,7 +38,7 @@ export async function POST(
 
   const { data: panel } = await admin
     .from('blood_panels')
-    .select('id, client_id, file_path, file_type, lab_name, collected_on, client_note, approved_for_plan')
+    .select('id, client_id, file_path, file_type, lab_name, collected_on, client_note, approved_for_plan, cycle_day')
     .eq('id', panelId)
     .eq('client_id', id)
     .maybeSingle()
@@ -133,13 +134,21 @@ export async function POST(
     return NextResponse.json({ error: `Invalid extraction: ${(err as Error).message}` }, { status: 500 })
   }
 
+  // Re-extraction replaces the marker rows wholesale, which would throw away
+  // the phase bands resolved from her cycle date. Re-apply them here so a
+  // re-extract never silently returns the hormone markers to 'unknown'.
+  const banded = annotateMarkersWithPhaseBands(
+    extraction.markers as unknown as MarkerWithBand[],
+    (panel.cycle_day as number | null) ?? null
+  )
+
   const nowIso = new Date().toISOString()
   const { error: updateErr } = await admin
     .from('blood_panels')
     .update({
       status: extraction.unreadable ? 'failed' : (panel.approved_for_plan ? 'approved' : 'extracted'),
       panel_summary: extraction.panel_summary,
-      markers: extraction.markers,
+      markers: banded.markers,
       gp_flags: extraction.gp_flags,
       extraction_meta: { model: AI_MODELS.clinical, unreadable: extraction.unreadable, notes: extraction.notes, reextracted_at: nowIso },
       extracted_at: nowIso,

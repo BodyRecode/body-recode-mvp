@@ -10,6 +10,19 @@ interface Marker {
   unit: string | null
   reference_range: string | null
   flag: 'low' | 'normal' | 'high' | 'very_low' | 'very_high' | 'unknown'
+  /**
+   * Set only for phase-dependent hormone markers, and only once the client has
+   * given us the cycle date. The lab's own flag stays 'unknown' because the lab
+   * genuinely could not say; this is our arithmetic against the band it printed
+   * for her phase, shown alongside rather than replacing it.
+   */
+  phase_resolved?: {
+    phase: string
+    position: 'below' | 'within' | 'above'
+    band_printed: string
+    cycle_day: number
+    summary: string
+  } | null
 }
 
 interface AnalysisGroup {
@@ -81,6 +94,14 @@ const FLAG_STYLE: Record<Marker['flag'], string> = {
   very_high: 'text-[#C82626] font-semibold',
   unknown: 'text-[#C4C4C4]',
 }
+// A marker the lab left unbanded but which we HAVE resolved must not keep
+// reading as grey and unremarkable when it sits outside her phase band.
+const PHASE_STYLE: Record<'below' | 'within' | 'above', string> = {
+  within: 'text-[#43474F]',
+  below: 'text-[#C2410C]',
+  above: 'text-[#C2410C]',
+}
+
 const FLAG_LABEL: Record<Marker['flag'], string> = {
   normal: '', low: 'low', high: 'high', very_low: 'markedly low', very_high: 'markedly high', unknown: '?',
 }
@@ -315,11 +336,22 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
                 {markers.map((m, i) => (
                   <tr key={i} className="border-t border-[#F0F0F0]">
                     <td className="px-3 py-2 text-[#43474F]">{m.name}</td>
-                    <td className={`px-3 py-2 ${FLAG_STYLE[m.flag]}`}>
+                    <td className={`px-3 py-2 ${m.phase_resolved ? PHASE_STYLE[m.phase_resolved.position] : FLAG_STYLE[m.flag]}`}>
                       {[m.value, m.unit].filter(Boolean).join(' ')}
-                      {FLAG_LABEL[m.flag] && <span className="ml-1.5 text-[10px]">({FLAG_LABEL[m.flag]})</span>}
+                      {m.phase_resolved
+                        ? m.phase_resolved.position !== 'within' && (
+                            <span className="ml-1.5 text-[10px]">({m.phase_resolved.position} range for her phase)</span>
+                          )
+                        : FLAG_LABEL[m.flag] && <span className="ml-1.5 text-[10px]">({FLAG_LABEL[m.flag]})</span>}
                     </td>
-                    <td className="px-3 py-2 text-[#98A0AD]">{m.reference_range ?? '—'}</td>
+                    <td className="px-3 py-2 text-[#98A0AD]">
+                      {m.phase_resolved ? (
+                        <>
+                          <span className="text-[#43474F]">{m.phase_resolved.band_printed}</span>
+                          <span className="block text-[10px]">applied for day {m.phase_resolved.cycle_day}, approximate</span>
+                        </>
+                      ) : (m.reference_range ?? '\u2014')}
+                    </td>
                   </tr>
                 ))}
               </tbody>
