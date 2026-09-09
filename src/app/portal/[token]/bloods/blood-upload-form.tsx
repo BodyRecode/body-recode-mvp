@@ -15,6 +15,7 @@ export default function BloodUploadForm({ clientId }: { clientId: string }) {
   const [labName, setLabName] = useState('')
   const [collectedOn, setCollectedOn] = useState('')
   const [clientNote, setClientNote] = useState('')
+  const [lastPeriodStart, setLastPeriodStart] = useState('')
   const [uploading, setUploading] = useState(false)
   const [optimising, setOptimising] = useState(false)
   const [error, setError] = useState('')
@@ -55,6 +56,7 @@ export default function BloodUploadForm({ clientId }: { clientId: string }) {
     if (labName.trim()) formData.append('labName', labName.trim())
     if (collectedOn) formData.append('collectedOn', collectedOn)
     if (clientNote.trim()) formData.append('clientNote', clientNote.trim())
+    if (lastPeriodStart) formData.append('lastPeriodStart', lastPeriodStart)
 
     let res: Response
     try {
@@ -141,6 +143,27 @@ export default function BloodUploadForm({ clientId }: { clientId: string }) {
             className="w-full rounded-xl border border-[#E8EAEE] bg-[#FFFFFF] px-3 py-2.5 text-sm text-[#141821] focus:border-[#1B6DFC] focus:outline-none"
           />
         </div>
+      </div>
+
+      {/* Cycle context. Labs print four reference ranges for the hormone markers,
+          one per cycle phase, so without this those results cannot be read at
+          all. Optional and self-gating: anyone it does not apply to leaves it
+          blank. Left empty is not the same as unknown: the upload route falls
+          back to the date her weekly check-in keeps current on her record, so
+          most of the time this does not need answering twice. */}
+      <div>
+        <label className="block text-[12px] font-medium text-[#98A0AD] mb-1.5">
+          First day of your last period (optional)
+        </label>
+        <input
+          type="date"
+          value={lastPeriodStart}
+          onChange={e => setLastPeriodStart(e.target.value)}
+          className="w-full rounded-xl border border-[#E8EAEE] bg-[#FFFFFF] px-3 py-2.5 text-sm text-[#141821] focus:border-[#1B6DFC] focus:outline-none"
+        />
+        <p className="mt-1.5 text-[12px] text-[#98A0AD] leading-relaxed">
+          Only if it applies to you. Some hormone results are read against a different normal range depending on where you are in your cycle, so without this a few of them cannot be read properly at all.
+        </p>
       </div>
 
       <div>

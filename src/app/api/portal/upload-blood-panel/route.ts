@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { cycleDayFrom, parsePeriodStart } from '@/lib/cycle-phase-bands'
 import Anthropic from '@anthropic-ai/sdk'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
@@ -34,6 +35,7 @@ export async function POST(req: NextRequest) {
   const labName = (formData.get('labName') as string | null)?.trim() || null
   const collectedOnRaw = (formData.get('collectedOn') as string | null)?.trim() || null
   const clientNote = (formData.get('clientNote') as string | null)?.trim() || null
+  const lastPeriodRaw = (formData.get('lastPeriodStart') as string | null)?.trim() || null
 
   if (!file || !clientId) {
     return NextResponse.json({ error: 'Missing file or client' }, { status: 400 })
@@ -91,6 +93,31 @@ export async function POST(req: NextRequest) {
     )
   }
 
+  // Cycle context (2026-09-09). Labs print FOUR reference ranges for LH, FSH,
+  // oestradiol and progesterone, one per phase, so without a cycle day those
+  // markers come back unreadable — which is exactly what happened to Razia's
+  // 25 Aug panel. The columns and the resolver shipped 8 Sep; this is the
+  // capture that was missing, so cycle_day had been null on every panel since.
+  //
+  // If she does not answer, fall back to the date the weekly check-in keeps
+  // current on her client record. If she DOES answer, that is fresher, so it
+  // updates the client record too.
+  let lastPeriodStart = parsePeriodStart(lastPeriodRaw)
+  if (lastPeriodStart) {
+    const { error: syncError } = await admin
+      .from('clients')
+      .update({ last_period_start: lastPeriodStart })
+      .eq('id', clientId)
+    if (syncError) console.error('[bloods] client cycle date sync failed:', syncError.message)
+  } else {
+    const { data: clientRow } = await admin
+      .from('clients')
+      .select('last_period_start')
+      .eq('id', clientId)
+      .maybeSingle()
+    lastPeriodStart = (clientRow as { last_period_start?: string | null } | null)?.last_period_start ?? null
+  }
+
   // Insert the panel row immediately so nothing is lost even if extraction
   // fails. Extraction then updates this row in place.
   const { data: panel, error: insertError } = await admin
@@ -103,6 +130,11 @@ export async function POST(req: NextRequest) {
       lab_name: labName,
       collected_on: collectedOn,
       client_note: clientNote,
+      last_period_start: lastPeriodStart,
+      // Derived here from the date she gave. Recomputed after extraction, where
+      // the report's own printed date wins over her guess and would otherwise
+      // leave a cycle day measured against the wrong collection date.
+      cycle_day: cycleDayFrom(lastPeriodStart, collectedOn),
       status: 'uploaded',
     })
     .select('id')
@@ -195,6 +227,10 @@ export async function POST(req: NextRequest) {
               // Let the report's printed date/lab win over the client's guess.
               collected_on: extraction.collected_on ?? collectedOn,
               lab_name: extraction.lab_name ?? labName,
+              // Recompute against the date that WON. A cycle day measured from
+              // her guessed collection date, when the report says otherwise, is
+              // off by exactly the difference and reads as confident.
+              cycle_day: cycleDayFrom(lastPeriodStart, extraction.collected_on ?? collectedOn),
             })
             .eq('id', panel.id)
           extractionOk = !extraction.unreadable
