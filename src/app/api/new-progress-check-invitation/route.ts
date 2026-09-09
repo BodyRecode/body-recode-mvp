@@ -8,6 +8,7 @@ import { buildProgressCheckInviteEmail } from '@/lib/progress-check-invite-email
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
 import { evaluateProgressCheckReadiness, currentCoachingWeek } from '@/lib/progress-check-readiness'
+import { lastReadAtMs } from '@/lib/progress-check-dispatch'
 import { lastCheckinWindowOpenMs } from '@/lib/weekly-checkin-questions'
 import { blockFinalWeekStartMs } from '@/lib/block-window'
 
@@ -60,6 +61,7 @@ export async function POST(request: NextRequest) {
 
     const readiness = evaluateProgressCheckReadiness({
       coachingStartedAt: client.coaching_started_at ?? null,
+      lastReadAtMs: await lastReadAtMs(admin, clientId),
       blockFinalWeekStartsAtMs,
       checkedInThisWindow: (checkinsThisWindow ?? 0) > 0,
     })
