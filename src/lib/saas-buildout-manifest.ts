@@ -198,11 +198,12 @@ const READ_PHASES: Phase[] = [
       {
         id: 'product-tier-gating',
         title: 'Product tier gating',
-        description: 'Interpret versus Coach. Hide everything that is Kade’s and not theirs.',
-        status: 'planned',
+        description: 'Interpret versus Coach versus owner. Hide everything that is Kade’s and not theirs.',
+        status: 'shipped',
+        shippedAt: '2026-09-09',
         effort: 'M',
-        surfaces: ['src/config/tenant.ts', 'src/app/dashboard/nav.tsx'],
-        notes: 'The two tiers exist in the Practitioner Platform docs and NOWHERE in the code. tenant.ts:89 has tier: launch | studio, which is commercial, not product. Verified 9 Sep.',
+        surfaces: ['src/lib/product-tier.ts', 'src/app/dashboard/layout.tsx', 'src/app/dashboard/nav.tsx', 'src/config/tenant.ts', 'src/lib/tenant-resolver.ts', 'src/middleware.ts'],
+        notes: 'SHIPPED 9 Sep 2026, commit 723a2c2a. Three tiers: interpret (the read only), coach (adds Layer 2), owner (adds the business engine; Kade). ENFORCED IN THE DASHBOARD LAYOUT, not just hidden in the nav - every dashboard page renders through that layout so one check covers all of them including pages added later, and nav filtering is presentation only because someone can type a URL. FAILS CLOSED BOTH WAYS: an unclassified path resolves to owner, and a tenant row with no product_tier defaults to interpret, the LOWEST - getting that backwards would hand a new partner Kade’s ads, CRM and revenue on their first login, silently. New tenant_config.product_tier column, run against the live project. The test caught a real leak before it shipped: /dashboard/settings is interpret and the Kade-only admin pages (tenant registry, tenant health, partner billing, both buildout boards) live underneath it - the settings index hid them from the nav but the PAGES were reachable by URL. Pinned explicitly. Verified against 23 paths; Kade unaffected.',
       },
       {
         id: 'coach-screen',
