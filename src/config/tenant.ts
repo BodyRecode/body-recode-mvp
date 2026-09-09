@@ -15,6 +15,11 @@
  */
 
 export type TenantConfig = {
+  /** Which layers of the system this tenant gets. See src/lib/product-tier.ts.
+   *  Distinct from partnerBilling.tier, which is what they PAY. Body Recode
+   *  itself is 'owner'; a licensed coach is 'interpret' or 'coach'. */
+  productTier: import('@/lib/product-tier').ProductTier
+
   /** Layer 1: Brand shell — colors, name, logo, domain, email */
   brand: {
     name: string                    // "Body Recode"
@@ -155,6 +160,8 @@ export type TenantConfig = {
  * SOT clients will have their own tenant config in a per-tenant DB row.
  */
 const BODY_RECODE_TENANT: TenantConfig = {
+  // Kade's own instance. Everything, including the business engine.
+  productTier: 'owner',
   brand: {
     name: 'Body Recode',
     nameWithMark: 'Body Recode™',
@@ -286,6 +293,10 @@ export function coach(): TenantConfig['coach'] {
 }
 
 /** Convenience helper: get a product field */
+export function productTier(): TenantConfig['productTier'] {
+  return getTenant().productTier
+}
+
 export function products(): TenantConfig['products'] {
   return getTenant().products
 }

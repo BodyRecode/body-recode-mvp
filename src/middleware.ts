@@ -28,6 +28,10 @@ export async function middleware(request: NextRequest) {
   const tenantId = resolveTenantIdFromHost(host)
   const requestHeaders = new Headers(request.headers)
   requestHeaders.set('x-tenant-id', tenantId)
+  // The dashboard layout enforces the product tier and needs to know which page
+  // it is wrapping. A server component cannot read the pathname on its own, so
+  // it comes down the same way the tenant id does. See src/lib/product-tier.ts.
+  requestHeaders.set('x-pathname', pathname)
 
   /* ----------------------------------------------------------------
    * 1. www.bodyrecode.au → apex (production only)

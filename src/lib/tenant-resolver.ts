@@ -115,7 +115,7 @@ export async function loadTenantFromDb(tenantId: string): Promise<TenantConfig |
     const admin = createAdminClient()
     const { data, error } = await admin
       .from('tenant_config')
-      .select('brand, coach, products, licence, modality')
+      .select('brand, coach, products, licence, modality, product_tier')
       .eq('licence->>tenantId', tenantId)
       .maybeSingle()
 
@@ -124,6 +124,11 @@ export async function loadTenantFromDb(tenantId: string): Promise<TenantConfig |
     }
 
     const config: TenantConfig = {
+      // Defaults to the LOWEST tier, not the highest. A tenant row that has not
+      // been told what it may see gets the read and nothing else. Getting this
+      // backwards would hand a new partner Kade's ads, CRM and revenue on their
+      // first login, silently. See src/lib/product-tier.ts.
+      productTier: (data.product_tier as TenantConfig['productTier']) ?? 'interpret',
       brand: data.brand as TenantConfig['brand'],
       coach: data.coach as TenantConfig['coach'],
       products: data.products as TenantConfig['products'],

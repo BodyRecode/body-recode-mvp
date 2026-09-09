@@ -1,12 +1,14 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import { headers } from 'next/headers'
 import LogoutButton from '@/components/LogoutButton'
 import DashboardShell from './shell'
 import CommandPalette from './command-palette'
 import CommandKHint from './command-k-hint'
 import GlobalCopilotBubble from '@/components/global-copilot-bubble'
 import SupportLauncher from '@/components/support/support-launcher'
-import { brand } from '@/config/tenant'
+import { brand, productTier } from '@/config/tenant'
+import { canAccess, tierForPath } from '@/lib/product-tier'
 import { getNavBadges } from '@/lib/dashboard-badges'
 
 export default async function DashboardLayout({
@@ -18,6 +20,25 @@ export default async function DashboardLayout({
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) redirect('/login')
+
+  // Product tier gate. Every dashboard page renders through this layout, so one
+  // check here covers all of them — including any page added later, which fails
+  // closed until somebody classifies it.
+  //
+  // Hiding items in the nav is NOT this. That is presentation; someone can type
+  // a URL. This is the enforcement, and the nav filter below merely stops the
+  // tenant being shown doors that will not open.
+  //
+  // The pathname comes from middleware via x-pathname: a server component
+  // cannot read it directly.
+  const pathname = (await headers()).get('x-pathname') ?? '/dashboard'
+  const tier = productTier()
+  if (!canAccess(tier, pathname)) {
+    console.warn(
+      `[tier] ${user.email} (tier=${tier}) blocked from ${pathname}, which needs ${tierForPath(pathname)}`
+    )
+    redirect('/dashboard/today')
+  }
 
   const badges = await getNavBadges()
   const tenantBrand = brand()

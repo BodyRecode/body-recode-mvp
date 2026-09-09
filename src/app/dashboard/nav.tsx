@@ -1,6 +1,8 @@
 'use client'
 
 import Link from 'next/link'
+import { productTier } from '@/config/tenant'
+import { canAccess } from '@/lib/product-tier'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import type { ComponentType } from 'react'
@@ -117,6 +119,21 @@ const DEV_ONLY: NavLink = {
 }
 const DEV_ONLY_ROUTES = new Set([DEV_ONLY.href])
 
+/**
+ * The nav a given tenant should see.
+ *
+ * Presentation only — the real gate is in the dashboard layout, which redirects.
+ * This exists so a licensee is not shown doors that will not open. A group whose
+ * every item is out of reach disappears entirely rather than sitting there empty.
+ */
+function visibleGroups(): NavGroup[] {
+  const tier = productTier()
+  if (tier === 'owner') return GROUPS
+  return GROUPS
+    .map(g => ({ ...g, items: g.items.filter(i => canAccess(tier, i.href)) }))
+    .filter(g => g.items.length > 0)
+}
+
 function isLinkActive(pathname: string, link: NavLink): boolean {
   return link.exact
     ? pathname === link.href
@@ -126,7 +143,7 @@ function isLinkActive(pathname: string, link: NavLink): boolean {
 /** Label for the page you are on - used by the panel header breadcrumb. */
 export function useNavLocation(): { group: string; label: string } | null {
   const pathname = usePathname() || '/dashboard'
-  for (const group of GROUPS) {
+  for (const group of visibleGroups()) {
     for (const item of group.items) {
       if (isLinkActive(pathname, item)) return { group: group.label, label: item.label }
     }
@@ -210,7 +227,7 @@ export default function DashboardNav({
 
   return (
     <nav className="px-2.5 pb-4 pt-1">
-      {GROUPS.map((group) => {
+      {visibleGroups().map((group) => {
         const items =
           group.key === 'meta' && showDev ? [...group.items, DEV_ONLY] : group.items
         return (
