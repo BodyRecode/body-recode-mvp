@@ -1760,8 +1760,9 @@ export default function HelpPage() {
               <li><strong>Phase 1 · The read stands alone</strong> — separate the read from Kade&apos;s client records and his login. The internal entrypoint shipped 1 Sep; the real separation has not.</li>
               <li><strong>Phase 2 · The loop</strong> — intake, read, weekly check-in, re-read every 12 weeks. <strong>The re-read trigger is TIME, never block-end</strong> (Kade, 9 Sep): a block is Performance Coaching vocabulary and other coaches write 4, 8 or 12 week blocks or none. The Progress Check already collects everything; the generator that updates the read does not exist.</li>
               <li><strong>Phase 2 · Door 2</strong> — the coach&apos;s own screen. Mostly subtraction: a coach signing up today lands in Kade&apos;s entire business cockpit and there is no product tier gating anywhere. Ends at the gate — one real coach who is not Kade.</li>
-              <li><strong>Phase 3 · Door 1</strong> — other people&apos;s software embedding the read. Do not start before the gate clears.</li>
-              <li><strong>Phase 4 · Company and name</strong> — not development work, blocked by nothing, long lead time.</li>
+              <li><strong>Phase 3 · Better inputs, 3D body scanning</strong> — let the read take measured body geometry instead of a tape measure and three photos. NOT blocked by the gate; it sits after door 2 because it should not be done instead of finding a coach. The typing engine reads no measurements at all today, so this is a genuine accuracy gain on the hips-and-thighs versus middle axis — but a scan tells you where, never why.</li>
+              <li><strong>Phase 4 · Door 1</strong> — other people&apos;s software embedding the read. Do not start before the gate clears.</li>
+              <li><strong>Phase 5 · Company and name</strong> — not development work, blocked by nothing, long lead time.</li>
             </ul>
 
             <p className="font-semibold text-[#141821] mt-4">The Collective phases — now on the PERFORMANCE COACHING board (moved 9 Sep 2026)</p>
