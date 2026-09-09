@@ -471,13 +471,16 @@ export default function TodayDashboardPage() {
   )
 }
 
+// Body Recode board only. The Performance Coaching board is deliberately not surfaced
+// here — Layer 2 is not being waited for, and two buildout cards would compete for the
+// same attention. See /dashboard/settings/coaching-buildout.
 function SaasBuildoutSection() {
   const next = nextUpStep()
   const gate = phaseGateReview()
   if (!next && !gate) return null
 
   return (
-    <Section icon={Construction} title="SaaS buildout" tone={gate ? 'success' : 'default'}>
+    <Section icon={Construction} title="Body Recode buildout" tone={gate ? 'success' : 'default'}>
       {gate && (
         <Row>
           <div className="flex items-start gap-2 mb-1">
@@ -499,7 +502,7 @@ function SaasBuildoutSection() {
         </Row>
       )}
       <Row>
-        <a href="/dashboard/settings/platform-buildout" className="text-[12.5px] font-semibold text-[#1560E0] hover:text-[#1056D6]">→ Open Platform Buildout</a>
+        <a href="/dashboard/settings/platform-buildout" className="text-[12.5px] font-semibold text-[#1560E0] hover:text-[#1056D6]">→ Open Body Recode buildout</a>
       </Row>
     </Section>
   )

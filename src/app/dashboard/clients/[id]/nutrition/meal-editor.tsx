@@ -192,7 +192,7 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals, 
                     <p className="text-sm text-[#141821]">
                       {f.name}
                       {wasChanged && (
-                        <span className="ml-2 text-[10px] font-semibold text-[#DC2626] uppercase tracking-wide">changed</span>
+                        <span className="ml-2 text-[10px] font-semibold text-[#DC2626]">changed</span>
                       )}
                     </p>
                   </div>

@@ -20,8 +20,13 @@ export default async function SettingsIndex() {
     },
     {
       href: '/dashboard/settings/platform-buildout',
-      title: 'Platform buildout',
-      description: 'End-to-end SaaS / white-label build plan. Every phase, every step, current status. Source of truth for where the powered platform stands.',
+      title: 'Body Recode buildout',
+      description: 'The read as a sellable product. Intake, read, weekly check-in, re-read, and the two front doors. Every phase, every step, current status.',
+    },
+    {
+      href: '/dashboard/settings/coaching-buildout',
+      title: 'Performance Coaching buildout',
+      description: 'Layer 2 — the application that consumes the read. Programs, nutrition, the portal, the coaching loop. Split from the Body Recode board on 9 Sep 2026.',
     },
     isKade && {
       href: '/dashboard/settings/tenants',

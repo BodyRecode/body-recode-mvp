@@ -36,7 +36,7 @@ const SECTIONS = [
   { id: 'assets',           title: '16b. Assets',            colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'admin-actions',    title: '17. Admin Actions',      colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'system-health',    title: '17b. System Health',     colour: 'teal' as const, category: 'coaching' as Category },
-  { id: 'platform-buildout', title: '17e. Platform Buildout', colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'platform-buildout', title: '17e. Buildout boards', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'speed-to-lead-sms', title: '17f. Speed-to-Lead SMS', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'partner-billing',  title: '17g. Partner Billing (SOT)', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'doctrine-parameters', title: '17h. Doctrine Parameters (Mode A+)', colour: 'teal' as const, category: 'coaching' as Category },
@@ -1747,10 +1747,24 @@ export default function HelpPage() {
             <Note>The health check runs on Vercel&apos;s servers and cannot write directly to your local Dropbox. The download button in the dashboard is the bridge - one click saves the file locally.</Note>
           </Section>
 
-          <Section id="platform-buildout" title="17e. Platform Buildout (SaaS / white-label)" colour="teal">
-            <p>Manifest-driven dashboard at <strong>Dashboard → Settings → Platform Buildout</strong> that shows every phase (0-4) of the powered-platform build, every step, current status, commit refs, and gaps. One place to answer &quot;where are we?&quot; without hunting through Dropbox docs, git history, and memory files.</p>
+          <Section id="platform-buildout" title="17e. Buildout boards (Body Recode + Performance Coaching)" colour="teal">
+            <p><strong>There are TWO boards as of 9 Sep 2026</strong>, split along the Layer 1 / Layer 2 line the whole go-to-market rests on. Both render from the same component and behave identically; only the manifest behind them differs.</p>
+            <ul className="space-y-1 list-disc list-inside text-[#43474F] text-sm">
+              <li><strong>Dashboard → Settings → Body Recode buildout</strong> — the read as a sellable product. The engine, the loop, the re-read, tenancy and billing, and the two front doors. Manifest: <code>src/lib/saas-buildout-manifest.ts</code>.</li>
+              <li><strong>Dashboard → Settings → Performance Coaching buildout</strong> — Layer 2, the application that consumes the read. Programs, nutrition, the portal, the coaching loop. Manifest: <code>src/lib/performance-coaching-buildout-manifest.ts</code>. <strong>First pass</strong> — only Coach Co-Pilot and the Operator Console are audited; the rest is deliberately empty rather than guessed at.</li>
+            </ul>
+            <p className="mt-3">One place each to answer &quot;where are we?&quot; without hunting through Dropbox docs, git history and memory files.</p>
 
-            <p className="font-semibold text-[#141821] mt-4">What each phase covers</p>
+            <p className="font-semibold text-[#141821] mt-4">The Body Recode board — what each phase covers</p>
+            <ul className="space-y-1 list-disc list-inside text-[#43474F] text-sm">
+              <li><strong>Phase 1 · The read stands alone</strong> — separate the read from Kade&apos;s client records and his login. The internal entrypoint shipped 1 Sep; the real separation has not.</li>
+              <li><strong>Phase 2 · The loop</strong> — intake, read, weekly check-in, re-read every 12 weeks. <strong>The re-read trigger is TIME, never block-end</strong> (Kade, 9 Sep): a block is Performance Coaching vocabulary and other coaches write 4, 8 or 12 week blocks or none. The Progress Check already collects everything; the generator that updates the read does not exist.</li>
+              <li><strong>Phase 3 · Door 2</strong> — the coach&apos;s own screen. Mostly subtraction: a coach signing up today lands in Kade&apos;s entire business cockpit and there is no product tier gating anywhere. Ends at the gate — one real coach who is not Kade.</li>
+              <li><strong>Phase 8 · Door 1</strong> — other people&apos;s software embedding the read. Do not start before the gate clears.</li>
+              <li><strong>Phase 9 · Company and name</strong> — not development work, blocked by nothing, long lead time.</li>
+            </ul>
+
+            <p className="font-semibold text-[#141821] mt-4">The platform phases (now 4-7 on the Body Recode board)</p>
             <ul className="space-y-1 list-disc list-inside text-[#43474F] text-sm">
               <li><strong>Phase 0 · Decide &amp; verify</strong> — pricing lock, founding-partner agreement, doctrine mode A confirmation, verify unknowns.</li>
               <li><strong>Phase 1 · Pilot-ready (hand-gloved)</strong> — Melisa onboarding as pilot zero with targeted branding override before the full de-hardcode.</li>
@@ -1769,11 +1783,12 @@ export default function HelpPage() {
             </ul>
 
             <p className="font-semibold text-[#141821] mt-4">The Today runbook hook</p>
-            <p>Dashboard → Today surfaces a <strong>🏗 SaaS buildout</strong> section when there&apos;s a next-up step or a phase gate to close. It hides when there&apos;s nothing actionable so it stays out of the way.</p>
+            <p>Dashboard → Today surfaces a <strong>🏗 Body Recode buildout</strong> section when there&apos;s a next-up step or a phase gate to close. It hides when there&apos;s nothing actionable so it stays out of the way. <strong>The Performance Coaching board is deliberately NOT surfaced on Today</strong> — Layer 2 is not being waited for, and two buildout cards would compete for the same attention.</p>
 
             <p className="font-semibold text-[#141821] mt-4">Source of truth &amp; discipline</p>
-            <p>The buildout lives in <code>src/lib/saas-buildout-manifest.ts</code>. Every commit that ships or changes state on a SaaS/white-label step MUST update the corresponding manifest entry in the same commit — bump <code>status</code>, add the commit SHA to <code>commits</code>, stamp <code>shippedAt</code> if now shipped. See <code>feedback_ship_checklist</code> auto-memory (updated 2026-07-03) for the enforcement rule.</p>
-            <p>Strategic scope doc: <code>~/Dropbox/03_BODY_RECODE_COLLECTIVE/00_PARTNER_PROGRAMME/POWERED_PLATFORM_BUILD_PLAN.md</code>. Deployment runbook: <code>PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.md</code>.</p>
+            <p>Shared shape and helpers live in <code>src/lib/buildout-types.ts</code>; the boards render through <code>src/components/dashboard/buildout-board.tsx</code>. Every commit that ships or changes state on a step MUST update the corresponding manifest entry in the same commit — bump <code>status</code>, add the commit SHA to <code>commits</code>, stamp <code>shippedAt</code> if now shipped. See <code>feedback_ship_checklist</code> auto-memory (updated 2026-07-03) for the enforcement rule.</p>
+            <p>Strategic docs: <code>~/Dropbox/01_BODY_RECODE/06_SAAS_PLATFORM_BUILD/2026-09-01_Read_As_A_Product_Roadmap.md</code> (the read as a product, and the source for phases 1-3, 8 and 9) and <code>~/Dropbox/03_BODY_RECODE_COLLECTIVE/00_PARTNER_PROGRAMME/POWERED_PLATFORM_BUILD_PLAN.md</code> (the platform phases). Deployment runbook: <code>PHASE_2_TENANT_DEPLOYMENT_CHECKLIST.md</code>.</p>
+            <p><strong>Statuses on the Body Recode board were verified against the code on 9 Sep 2026</strong>, not read off design notes — a note claiming the re-read had a 12-week backstop turned out to be wrong, and had been for weeks.</p>
           </Section>
 
           <Section id="speed-to-lead-sms" title="17f. Speed-to-Lead SMS" colour="teal">

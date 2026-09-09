@@ -362,7 +362,7 @@ export default function PrescriptionSuggest({
       {/* Phase 3 — Active recovery state notice */}
       {readinessNotice && (
         <div className="mb-6 rounded-lg border border-[#1B6DFC]/30 bg-[#1B6DFC]/[0.04] p-5">
-          <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-[#1B6DFC] mb-2">
+          <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[#1B6DFC] mb-2">
             Readiness has moved since the foundational read
           </div>
           <p className="text-[12.5px] text-[#666D7A] mb-3">
@@ -412,7 +412,7 @@ export default function PrescriptionSuggest({
 
       {reScoreNotice && (
         <div className="mb-6 rounded-lg border border-[#1B6DFC]/30 bg-[#1B6DFC]/[0.04] p-5">
-          <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-[#1B6DFC] mb-2">
+          <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[#1B6DFC] mb-2">
             Progress Read re-score not yet carried into a block
           </div>
           <h2 className="text-base font-bold text-[#141821] mb-1">
