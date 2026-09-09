@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { parsePeriodStart } from '@/lib/cycle-phase-bands'
 import { generateCFWS } from '@/lib/cfws-generate'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { fromCoach, fromBrand, darkEmailShell, emailUrlFallback } from '@/lib/email-shell'
@@ -61,6 +62,33 @@ export async function POST(request: NextRequest) {
   if (insertError) {
     console.error('Check-in insert error:', insertError)
     return NextResponse.json({ error: 'Failed to save check-in' }, { status: 500 })
+  }
+
+  // Cycle context (2026-09-09). One optional question on both forms; when she
+  // answers it, refresh the date on the client so the WEEKLY read can resolve
+  // her phase. Asked every week on purpose — a date asked once rots, and a
+  // stale one silently produces a phase that is two weeks wrong.
+  //
+  // Best-effort AFTER the check-in is saved, and never allowed to fail her
+  // submission: a cycle date is a nice-to-have and her check-in is not. Same
+  // shape as the Progress Check treating photo capture as best-effort.
+  const periodStart = parsePeriodStart(responses?.cycle_period_start)
+  if (periodStart) {
+    const { error: cycleError } = await admin
+      .from('clients')
+      .update({ last_period_start: periodStart })
+      .eq('id', clientId)
+    if (cycleError) {
+      console.error('[checkin] cycle date update failed (check-in itself is saved):', cycleError.message)
+    }
+  } else if (responses?.cycle_period_start?.trim()) {
+    // She wrote something the parser would not accept. Say so in the log rather
+    // than silently dropping it: the parser is deliberately strict and
+    // day-first, so "about 3 weeks ago" lands here by design.
+    console.warn(
+      `[checkin] client ${String(clientId).slice(0, 8)} gave an unparseable period date: ` +
+      `"${String(responses.cycle_period_start).slice(0, 40)}"`
+    )
   }
 
   // Training + Nutrition reviews are now folded into the weekly check-in, so

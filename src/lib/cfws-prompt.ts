@@ -67,6 +67,17 @@ This governs PROSE only. It does not raise the bar for the readiness ratings: th
 
 When in doubt, hold the CFFS rating. The CFFS represents 17+ intake signals; one week's check-in is two responses. Re-interpretation requires real evidence weight.
 
+CYCLE PHASE (only when the user prompt states one):
+
+Where she is in her cycle changes what a week MEANS. Water retention, mood, sleep quality, cravings, appetite and training performance all move with phase. A luteal week read without that context looks like regression; a follicular week looks like a breakthrough. Neither reading is true.
+
+When a cycle phase is given:
+1. USE IT TO EXPLAIN, NEVER TO DISMISS. If her reported signal matches what that phase commonly does, say so plainly and let it soften the interpretation. If her signal does NOT match her phase, that is more notable, not less — do not force the two together.
+2. DO NOT MOVE A READINESS RATING ON PHASE ALONE. Phase is context for the prose. A rating still needs the evidence weight the convergence rules above demand.
+3. IT IS APPROXIMATE AND SELF-REPORTED. Say "around day 22" or "the luteal phase", never a precise claim. Never present it as established fact, and never let it outrank what she actually reported about her week.
+4. NEVER DIAGNOSE. No conclusion about her hormones, her cycle regularity, or any condition. Describe the pattern and stop.
+5. If no cycle phase is stated, say NOTHING about her cycle. Do not infer one from her symptoms, and do not note its absence.
+
 OUTPUT LANGUAGE:
 - Descriptive, not evaluative
 - Observational, not directional
@@ -97,6 +108,16 @@ export interface WeeklyCheckInPair {
   formBWeekNumber?: number
 }
 
+/** Where a check-in week sits in her cycle. Resolved deterministically by
+ *  cycleContextFor() in cycle-phase-bands.ts, and absent whenever it cannot be
+ *  resolved confidently — a missing date, a stale one, or a day beyond a
+ *  plausible luteal phase. Absent means the read says nothing about her cycle. */
+export interface CFWSCycleContext {
+  cycleDay: number
+  phase: string
+  summary: string
+}
+
 export interface CFWSCffsBaseline {
   body_state_classification: string | null
   resolution_state: string | null
@@ -113,7 +134,8 @@ export function buildCFWSUserPrompt(
   clientName: string,
   currentPair: WeeklyCheckInPair,
   recentPairs: WeeklyCheckInPair[],
-  cffsBaseline?: CFWSCffsBaseline | null
+  cffsBaseline?: CFWSCffsBaseline | null,
+  cycleContext?: CFWSCycleContext | null
 ): string {
   function formatResponses(responses: Record<string, string>): string {
     return Object.entries(responses)
@@ -143,6 +165,17 @@ export function buildCFWSUserPrompt(
       parts.push(`Established risk flags (already known, do not re-flag):`)
       parts.push(cffsBaseline.risk_flags_and_watch_items)
     }
+  }
+
+  // Stated BEFORE the week's responses, not after, and under its own heading.
+  // The lesson from the blood-panel path (see cycle-phase-bands.ts header) is
+  // that anything which only informs the prose loses to the structured data
+  // sitting above it. Absent when it cannot be resolved, and absent means the
+  // read says nothing about her cycle at all.
+  if (cycleContext) {
+    parts.push(`\n=== CYCLE PHASE (context for THIS week — see CYCLE PHASE rules) ===`)
+    parts.push(`She was ${cycleContext.summary} during this check-in week.`)
+    parts.push(`Approximate and self-reported. Use it to explain, never to dismiss, and never move a readiness rating on it alone.`)
   }
 
   // Each form carries its own week. They differ on the live path, because a

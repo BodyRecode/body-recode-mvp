@@ -30,7 +30,8 @@
 
 import Anthropic from '@anthropic-ai/sdk'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { buildCFWSSystemPrompt, buildCFWSUserPrompt, WeeklyCheckInPair } from '@/lib/cfws-prompt'
+import { buildCFWSSystemPrompt, buildCFWSUserPrompt, WeeklyCheckInPair, type CFWSCycleContext } from '@/lib/cfws-prompt'
+import { cycleContextFor } from '@/lib/cycle-phase-bands'
 import { withTemporalContext } from '@/lib/temporal-context'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { AI_MODELS } from '@/lib/ai-models'
@@ -50,6 +51,39 @@ function stripEmDashes(obj: unknown): unknown {
     return Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, stripEmDashes(v)]))
   }
   return obj
+}
+
+/**
+ * Where a check-in week sat in her cycle, or null.
+ *
+ * Dated against the check-in's own submission time rather than "now", so
+ * regenerating an old week does not stamp it with today's phase. Falls back to
+ * now when the row has no timestamp, which is the live path anyway.
+ *
+ * Returns null for a missing date, a stale one, or a day beyond a plausible
+ * luteal phase — and null means the read says nothing about her cycle at all.
+ * A wrong phase is worse than no phase: it is confidently two weeks out.
+ */
+export async function resolveCycleContext(
+  admin: ReturnType<typeof createAdminClient>,
+  clientId: string,
+  weekNumber: number
+): Promise<CFWSCycleContext | null> {
+  const [{ data: clientRow }, { data: checkinRow }] = await Promise.all([
+    admin.from('clients').select('last_period_start').eq('id', clientId).maybeSingle(),
+    admin
+      .from('weekly_checkins')
+      .select('created_at')
+      .eq('client_id', clientId)
+      .eq('week_number', weekNumber)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+  ])
+  const lastPeriodStart = (clientRow as { last_period_start?: string | null } | null)?.last_period_start ?? null
+  if (!lastPeriodStart) return null
+  const onDate = (checkinRow as { created_at?: string | null } | null)?.created_at ?? new Date().toISOString()
+  return cycleContextFor(lastPeriodStart, onDate)
 }
 
 export async function generateCFWS(
@@ -125,12 +159,17 @@ export async function generateCFWS(
   }
   const cffsBaseline = cffsRows?.[0] ?? null
 
+  const cycleContext = await resolveCycleContext(admin, client.id, weekNumber)
+
   const message = await anthropic.messages.create({
     model: AI_MODELS.clinical,
     max_tokens: CFWS_MAX_TOKENS,
     system: withTemporalContext(buildCFWSSystemPrompt()),
     messages: [
-      { role: 'user', content: buildCFWSUserPrompt(client.name, currentPair, recentPairs, cffsBaseline) },
+      {
+        role: 'user',
+        content: buildCFWSUserPrompt(client.name, currentPair, recentPairs, cffsBaseline, cycleContext),
+      },
     ],
   })
 

@@ -329,3 +329,125 @@ export function annotateMarkersWithPhaseBands<T extends MarkerWithBand>(
 
   return { markers: out, resolvedCount, changed }
 }
+
+/* ===========================================================
+ * Cycle context for the WEEKLY read (added 2026-09-09)
+ *
+ * Everything above serves blood panels: which of a lab's four printed bands
+ * applies. This section serves a different question — where in her cycle a
+ * given CHECK-IN week sits — because the same week means different things at
+ * day 3 and at day 24, and until now the weekly read had no idea which it was
+ * looking at. cycle-phase-bands.ts was referenced only by the blood-panel path.
+ *
+ * Same discipline as above: deterministic, no model, and anything it cannot
+ * resolve confidently returns null so the read says nothing rather than guess.
+ * =========================================================== */
+
+/**
+ * Parse a self-reported period start date out of a free-text answer.
+ *
+ * DELIBERATELY STRICT, and day-first. The clients are Australian, so "3/9"
+ * means 3 September, never 9 March. Ambiguity is not resolved by preference:
+ * anything that does not match a known shape returns null, and null means the
+ * read stays silent on her cycle. A wrong date is worse than no date, because
+ * it produces a confident phase that is off by two weeks.
+ *
+ * Accepts: 2026-09-03 (ISO) · 3/9/2026 · 3-9-26 · 3.9.2026 · "3 Sep 2026" ·
+ * "3 September" (current year assumed).
+ * Rejects: anything else, including bare "last Tuesday" or "about 3 weeks ago".
+ */
+export function parsePeriodStart(raw: string | null | undefined, today: Date = new Date()): string | null {
+  if (!raw) return null
+  const t = raw.trim().toLowerCase()
+  if (!t || /^(n\/?a|none|no|nil|-|—)$/.test(t)) return null
+
+  let y: number | null = null
+  let m: number | null = null
+  let d: number | null = null
+
+  // ISO first — unambiguous, and what a date input would give us.
+  const iso = t.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/)
+  if (iso) {
+    y = Number(iso[1]); m = Number(iso[2]); d = Number(iso[3])
+  }
+
+  // Day-first numeric: 3/9/2026, 3-9-26, 3.9.2026, 3/9
+  if (y === null) {
+    const dmy = t.match(/^(\d{1,2})[/\-.](\d{1,2})(?:[/\-.](\d{2}|\d{4}))?$/)
+    if (dmy) {
+      d = Number(dmy[1]); m = Number(dmy[2])
+      if (dmy[3]) {
+        const yy = Number(dmy[3])
+        y = yy < 100 ? 2000 + yy : yy
+      } else {
+        y = today.getFullYear()
+      }
+    }
+  }
+
+  // "3 Sep 2026" / "3 September" / "sep 3"
+  if (y === null) {
+    const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
+    const named = t.match(/^(\d{1,2})\s*(?:st|nd|rd|th)?\s+([a-z]{3,9})\.?(?:\s+(\d{4}))?$/)
+      || t.match(/^([a-z]{3,9})\.?\s+(\d{1,2})\s*(?:st|nd|rd|th)?(?:\s+(\d{4}))?$/)
+    if (named) {
+      const isDayFirst = /^\d/.test(named[1])
+      const dayPart = isDayFirst ? named[1] : named[2]
+      const monPart = isDayFirst ? named[2] : named[1]
+      const idx = MONTHS.indexOf(monPart.slice(0, 3))
+      if (idx >= 0) {
+        d = Number(dayPart); m = idx + 1; y = named[3] ? Number(named[3]) : today.getFullYear()
+      }
+    }
+  }
+
+  if (y === null || m === null || d === null) return null
+  if (m < 1 || m > 12 || d < 1 || d > 31) return null
+
+  const parsed = new Date(Date.UTC(y, m - 1, d))
+  // Reject a date the calendar rolled over (31 February becomes 3 March).
+  if (parsed.getUTCMonth() !== m - 1 || parsed.getUTCDate() !== d) return null
+
+  // A year was assumed for a bare "3/9". If that lands in the future, she means
+  // last year. Only ever roll BACKWARDS — a period cannot start tomorrow.
+  const todayUtc = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate())
+  let ms = parsed.getTime()
+  if (ms > todayUtc) {
+    const rolled = new Date(Date.UTC(y - 1, m - 1, d))
+    ms = rolled.getTime()
+    if (ms > todayUtc) return null
+  }
+  // Older than a long cycle and it cannot describe the current one.
+  if ((todayUtc - ms) / 86400000 > 60) return null
+
+  return new Date(ms).toISOString().slice(0, 10)
+}
+
+export interface CycleContext {
+  /** Day 1 is the first day of bleeding. */
+  cycleDay: number
+  phase: CyclePhase
+  /** One plain sentence for the prompt. Never a clinical conclusion. */
+  summary: string
+}
+
+/**
+ * Where a check-in week sits in her cycle. Null whenever it cannot be resolved,
+ * which includes a missing date, a stale one, or a day beyond a plausible
+ * luteal phase — in every one of those cases the read must say nothing rather
+ * than state a phase it is not sure of.
+ */
+export function cycleContextFor(
+  lastPeriodStart: string | Date | null | undefined,
+  onDate: string | Date | null | undefined
+): CycleContext | null {
+  const cycleDay = cycleDayFrom(lastPeriodStart, onDate)
+  if (cycleDay === null) return null
+  const phase = phaseForCycleDay(cycleDay)
+  if (phase === null || phase === 'post_menopausal') return null
+  return {
+    cycleDay,
+    phase,
+    summary: `approximately day ${cycleDay} of her cycle, which is the ${PHASE_LABEL[phase].toLowerCase()} phase`,
+  }
+}

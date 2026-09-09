@@ -3,6 +3,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCFWSSystemPrompt, buildCFWSUserPrompt, WeeklyCheckInPair } from '@/lib/cfws-prompt'
+import { resolveCycleContext } from '@/lib/cfws-generate'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { withTemporalContext } from '@/lib/temporal-context'
 import { AI_MODELS } from '@/lib/ai-models'
@@ -94,6 +95,10 @@ export async function POST(request: NextRequest) {
   // extractFirstJsonObject returned null and the coach saw "Could not parse
   // CFWS". Now: 12k cap, explicit max_tokens truncation detection, empty
   // content-block guard, resolution_state present check, 3 attempts.
+  // Same resolver the library path uses — one implementation, not a copy.
+  // Outside the retry loop: three attempts must not mean three lookups.
+  const cycleContext = await resolveCycleContext(admin, client.id, week_number)
+
   const MAX_TOKENS = 12000
   let parsed: Record<string, unknown> | null = null
   let lastError = 'unknown error'
@@ -105,7 +110,12 @@ export async function POST(request: NextRequest) {
         model: AI_MODELS.clinical,
         max_tokens: MAX_TOKENS,
         system: withTemporalContext(buildCFWSSystemPrompt()),
-        messages: [{ role: 'user', content: buildCFWSUserPrompt(client.name, currentPair, recentPairs, cffsBaseline) }],
+        messages: [
+          {
+            role: 'user',
+            content: buildCFWSUserPrompt(client.name, currentPair, recentPairs, cffsBaseline, cycleContext),
+          },
+        ],
       })
     } catch (err) {
       lastError = `AI error: ${err instanceof Error ? err.message : String(err)}`

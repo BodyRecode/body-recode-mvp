@@ -454,12 +454,42 @@ export const NUTRITION_SECTION: CheckInSection = {
  * (A or B) first, then Training, then Nutrition (only when the client has an
  * active nutrition plan). Used by both the check-in page and the form.
  */
+/**
+ * Cycle context. ONE optional question, on both forms, added 2026-09-09.
+ *
+ * The weekly read had no idea where in her cycle a check-in week sat. That
+ * matters because the same week means different things at day 3 and day 24 —
+ * water retention, mood, sleep, cravings and training performance all move with
+ * phase, so a luteal week reads as regression and a follicular week reads as a
+ * breakthrough when neither is true. One of the four Fat Map profiles is
+ * entirely hormonal.
+ *
+ * Deliberately NOT gated on a sex field, and deliberately optional. A client it
+ * does not apply to leaves it blank, nothing is stored, and the read says
+ * nothing about her cycle. Asked EVERY week rather than once, because a date
+ * asked once is a date that rots — and cycleContextFor() returns null past 60
+ * days, so a stale answer degrades to silence rather than to a confident phase
+ * that is two weeks wrong.
+ */
+export const CYCLE_SECTION: CheckInSection = {
+  title: 'Cycle',
+  questions: [
+    {
+      id: 'cycle_period_start',
+      type: 'text',
+      text: 'If your period has started since your last check-in, what date did it start?',
+      helper: 'Day one is the first day of bleeding. Leave this blank if it does not apply to you. It helps me read your week properly, because the same week can mean quite different things depending on where you are in your cycle.',
+      optional: true,
+    },
+  ],
+}
+
 export function getCheckinSections(
   formType: 'A' | 'B',
   opts: { includeNutrition: boolean },
 ): CheckInSection[] {
   const base = formType === 'A' ? FORM_A_SECTIONS : FORM_B_SECTIONS
-  return [...base, TRAINING_SECTION, ...(opts.includeNutrition ? [NUTRITION_SECTION] : [])]
+  return [...base, CYCLE_SECTION, TRAINING_SECTION, ...(opts.includeNutrition ? [NUTRITION_SECTION] : [])]
 }
 
 /** Response keys added by the Training + Nutrition sections. */
@@ -468,12 +498,18 @@ export const REVIEW_RESPONSE_KEYS = [
   'nutrition_adherence', 'nutrition_signal', 'nutrition_direction', 'nutrition_notes',
 ]
 
-/** Strip the merged Training/Nutrition keys so the CFWS prompt sees only the
- *  original reflective responses (keeps CFWS behaviour unchanged). */
+/** Keys that are structured CONTEXT rather than a reflective answer. The cycle
+ *  date reaches the CFWS as a resolved phase, not as a raw date in the response
+ *  list, so it is stripped here alongside the review keys. */
+export const CONTEXT_RESPONSE_KEYS = ['cycle_period_start']
+
+/** Strip the merged Training/Nutrition keys and the structured context keys so
+ *  the CFWS prompt sees only the original reflective responses (keeps CFWS
+ *  behaviour unchanged). */
 export function stripReviewKeys(responses: Record<string, string>): Record<string, string> {
   const out: Record<string, string> = {}
   for (const [k, v] of Object.entries(responses)) {
-    if (!REVIEW_RESPONSE_KEYS.includes(k)) out[k] = v
+    if (!REVIEW_RESPONSE_KEYS.includes(k) && !CONTEXT_RESPONSE_KEYS.includes(k)) out[k] = v
   }
   return out
 }

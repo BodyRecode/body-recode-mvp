@@ -1,4 +1,4 @@
-import { getCheckinSections } from './weekly-checkin-questions'
+import { getCheckinSections, CONTEXT_RESPONSE_KEYS } from './weekly-checkin-questions'
 import { partnerVoiceTone, partnerBannedPhrases, partnerCheckinCoachingGuidance } from './doctrine-parameters'
 
 /**
@@ -663,6 +663,12 @@ export function buildFeedbackUserPrompt(input: {
  *
  * `includeNutrition: true` is always safe here because unanswered questions
  * are filtered out below.
+ *
+ * 2026-09-09: CONTEXT_RESPONSE_KEYS are excluded. Her period start date is
+ * structured context for the WEEKLY READ, which has explicit doctrine for what
+ * a cycle phase may and may not be used to say. This prompt has none, and a raw
+ * date reaching a client-facing email is an ungoverned path to a comment about
+ * her cycle. It is deliberately never shown here.
  */
 function renderCheckinResponses(
   formType: 'A' | 'B',
@@ -671,7 +677,9 @@ function renderCheckinResponses(
   const sections = getCheckinSections(formType, { includeNutrition: true })
   const out: string[] = []
   for (const section of sections) {
-    const answered = section.questions.filter(q => (responses[q.id] ?? '').toString().trim())
+    const answered = section.questions.filter(
+      q => !CONTEXT_RESPONSE_KEYS.includes(q.id) && (responses[q.id] ?? '').toString().trim()
+    )
     if (answered.length === 0) continue
     out.push(`[${section.title}]`)
     for (const q of answered) {

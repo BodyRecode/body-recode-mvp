@@ -310,10 +310,11 @@ const LATER_PHASES: Phase[] = [
         id: 'input-cycle-phase',
         title: 'The read knows where she is in her cycle',
         description: 'A check-in on day 3 and a check-in on day 24 do not mean the same thing.',
-        status: 'planned',
+        status: 'shipped',
+        shippedAt: '2026-09-09',
         effort: 'M',
         surfaces: ['src/lib/cycle-phase-bands.ts', 'src/lib/weekly-checkin-questions.ts', 'src/lib/cfws-prompt.ts'],
-        notes: 'VERIFIED GAP, 9 Sep 2026. cycle-phase-bands.ts exists but is used ONLY to pick the right reference range when reading a blood panel — it is not referenced by the weekly check-in or the CFWS prompt at all. So the weekly read does not know her cycle phase. Highest value per unit of effort on this whole phase: costs nothing, needs no device, and one of the four profiles (Estrogen-Shift) is entirely hormonal. Related: the banked "ask for period date at upload" item.',
+        notes: 'SHIPPED 9 Sep 2026, the same day it was identified. The gap was real: cycle-phase-bands.ts existed but was referenced ONLY when picking a blood panel reference range, never by the weekly check-in or the CFWS prompt. Now: clients.last_period_start (new column, SQL in sql/2026-09-09_client_cycle_context.sql — KADE MUST RUN IT), one optional question on both check-in forms refreshing it weekly, parsePeriodStart() day-first and deliberately strict, cycleContextFor() resolving day and phase at read time, and a CYCLE PHASE section in the CFWS system prompt governing what it may and may not be used for. Absent whenever it cannot be resolved, because a phase two weeks wrong is worse than no phase. Excluded from the client-facing feedback email, which has no such doctrine. Highest value per unit of effort on this whole phase: costs nothing, needs no device, and one of the four profiles (Estrogen-Shift) is entirely hormonal. Related: the banked "ask for period date at upload" item.',
       },
       {
         id: 'input-apnoea-screen',
