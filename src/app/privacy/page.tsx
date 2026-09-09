@@ -120,8 +120,22 @@ export default function PrivacyPage() {
         </>)}
 
         {section(3, 'Sharing Your Information', <>
-          {p('We may share information with:')}
-          {bullets(['Payment processors', 'Email and SMS platforms', 'WhatsApp automation tools', 'Advertising partners (Meta and Google)', 'Coaching and administrative contractors'])}
+          {p('We use a small number of trusted providers to run Body Recode. Each one only receives what it needs to do its job, and each is bound by its own confidentiality and security obligations.')}
+          {subheading('A. Providers that handle your information')}
+          {bullets([
+            'Supabase — our database and secure file storage. Hosted in Sydney, Australia.',
+            'Anthropic — the interpretation engine that produces your read. See below.',
+            'Vercel — website and application hosting.',
+            'Inngest — runs scheduled and background tasks, such as reminders.',
+            'Resend — sends our emails.',
+            'Twilio — sends our SMS messages.',
+            'Stripe — processes payments. We never see or store your full card details.',
+            'Coaching and administrative contractors, bound by confidentiality agreements.',
+          ])}
+          {subheading('B. Advertising and analytics')}
+          {p('Meta and Google receive information about website visits and purchases so we can measure and target advertising. They do NOT receive your assessment answers, your photos, your measurements, or any other health information.')}
+          {subheading('C. How your health information is interpreted')}
+          {p('Your assessment answers, and where you provide them your photos, measurements and blood results, are processed by Anthropic to produce your read. Anthropic processes this on our instructions only, and under its commercial terms it does not use it to train its models. Body Recode does not use your identifiable information to train any model.')}
           {p('We never sell your information.')}
         </>)}
 
@@ -130,7 +144,11 @@ export default function PrivacyPage() {
         </>)}
 
         {section(5, 'Data Security', <>
-          {p('We take reasonable steps to protect your information using secure systems, encrypted gateways, and restricted access. No online transmission is completely secure.')}
+          {p('We take reasonable steps to protect your information using secure systems, encrypted gateways, and restricted access. Information is encrypted in transit and at rest. No online transmission is completely secure.')}
+          {subheading('Where your information is stored')}
+          {p('Your information is stored in Australia, in Sydney. Some of the providers listed above operate overseas, which means limited information may be processed outside Australia in the course of delivering the service.')}
+          {subheading('If something goes wrong')}
+          {p(`If a data breach occurs that is likely to cause you serious harm, we will notify you and the Office of the Australian Information Commissioner, as required by the Notifiable Data Breaches scheme. Email ${brand().supportEmail} to report a security concern.`)}
         </>)}
 
         {section(6, 'Your Rights (Australia)', <>

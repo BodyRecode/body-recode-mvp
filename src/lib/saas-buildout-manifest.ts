@@ -484,10 +484,10 @@ const LATER_PHASES: Phase[] = [
         id: 'security-subprocessor-register',
         title: 'Name every third party that touches client data',
         description: 'Published in the privacy policy, and repeated in the data processing agreement.',
-        status: 'planned',
+        status: 'in_progress',
         effort: 'S',
         surfaces: ['src/app/privacy/page.tsx'],
-        notes: '⚠ VERIFIED GAP, 9 Sep 2026: the privacy policy names NOBODY. Not Anthropic, not Supabase, not Resend, not Twilio, not Stripe, not Vercel. Only a generic line about payment processors and email platforms. Client health data goes to Anthropic on every read and nothing published says so. Already thin for Kade\u2019s own clients; a blocker once a coach\u2019s clients are involved, because "do you send our clients\u2019 data to a third-party AI, and does it train on it?" is among the first questions in any security review. The good answer is available — Anthropic\u2019s commercial terms do not train on API inputs — but it has to be stated in writing.',
+        notes: '⚠ VERIFIED GAP, 9 Sep 2026: the privacy policy names NOBODY. Not Anthropic, not Supabase, not Resend, not Twilio, not Stripe, not Vercel. Only a generic line about payment processors and email platforms. Client health data goes to Anthropic on every read and nothing published says so. Already thin for Kade\u2019s own clients; a blocker once a coach\u2019s clients are involved, because "do you send our clients\u2019 data to a third-party AI, and does it train on it?" is among the first questions in any security review. The good answer is available — Anthropic\u2019s commercial terms do not train on API inputs — but it has to be stated in writing. ✅ PRIVACY POLICY HALF DONE 9 Sep: all eight named (Supabase/Sydney, Anthropic, Vercel, Inngest, Resend, Twilio, Stripe, contractors), advertising separated out with an explicit statement that Meta and Google receive visits and purchases but NOT assessment answers, photos, measurements or health information, a paragraph on how health information is interpreted including that Anthropic does not train on it, plus data location (Sydney) and a Notifiable Data Breaches paragraph. Every provider verified in package.json and the code, not assumed — the stale "WhatsApp automation tools" line was dropped because no such integration exists any more. STILL OPEN: repeating it in the DPA, which cannot happen until the DPA exists.',
       },
       {
         id: 'security-route-guard-audit',
