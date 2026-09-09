@@ -1,5 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { lintClientReading, blockingFindings, type LintFinding } from './reading-lint'
+import { loadClientFactualContext } from './client-factual-context'
 
 /**
  * The gate every client-facing reading passes before it reaches a portal.
@@ -83,7 +84,7 @@ export async function checkReadingBeforePublish(
   // the generator read, so "not in the source" means exactly that.
   const [{ data: intake }, { data: cffs }, { data: nutrition }] = await Promise.all([
     admin.from('intakes').select('*').eq('client_id', clientId).order('submitted_at', { ascending: false }).limit(1).maybeSingle(),
-    admin.from('cffs').select('client_context_summary, primary_patterns_and_signals, capacity_constraints_and_guardrails').eq('client_id', clientId).eq('is_archived', false).maybeSingle(),
+    admin.from('cffs').select('generated_at, client_context_summary, primary_patterns_and_signals, capacity_constraints_and_guardrails').eq('client_id', clientId).eq('is_archived', false).maybeSingle(),
     admin.from('nutrition_plans').select('energy_tdee_kcal, estimated_calorie_band').eq('client_id', clientId).eq('is_active', true).maybeSingle(),
   ])
 
@@ -99,10 +100,37 @@ export async function checkReadingBeforePublish(
   const nums = (String(band).match(/\d{3,4}/g) ?? []).map(Number)
   if (nums.length) planKcal = Math.round(nums.reduce((a, b) => a + b, 0) / nums.length)
 
+  // The facts a reading must not contradict, from the same loader the
+  // generator uses. Sharing it is the point: if the guard assembled its own
+  // idea of what was true, a reading could be blocked for contradicting a fact
+  // the generator never had.
+  const facts = await loadClientFactualContext(admin, clientId, {
+    kind,
+    sourceGeneratedAt: (cffs as { generated_at?: string } | null)?.generated_at ?? null,
+  }).catch(() => null)
+
+  // Every value the client's own approved panel printed. A reading naming one
+  // has taken an interpretation that belongs with her GP.
+  const { data: panel } = await admin
+    .from('blood_panels')
+    .select('markers')
+    .eq('client_id', clientId)
+    .eq('status', 'approved')
+    .order('collected_on', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+  const labValues = ((panel?.markers ?? []) as { value?: unknown }[])
+    .map(m => String(m.value ?? '').match(/\d+(?:\.\d+)?/)?.[0])
+    .filter((v): v is string => Boolean(v))
+
   const findings = lintClientReading({
     sections,
     sourceMaterial,
     nutrition: nutrition?.energy_tdee_kcal ? { tdeeKcal: nutrition.energy_tdee_kcal, planKcal } : null,
+    tenure: facts ? { weeksInCoaching: facts.weeksInCoaching } : null,
+    labValues,
+    bodyState: facts?.bodyState ?? null,
+    sourceAgeWeeks: facts?.sourceAgeWeeks ?? null,
     // The week check needs a dated event, which only suggest-plan resolves.
     // Left off here rather than half-guessed; the generator already carries the
     // temporal context that prevents most of these.

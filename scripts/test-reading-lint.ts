@@ -118,5 +118,106 @@ console.log('\nEDGE CASES')
       .every(x => x.code !== 'WEEK_COUNT_MISMATCH'))
 }
 
+
+// ── Added 2026-09-09 with TENURE_MISMATCH, LAB_VALUE_NAMED, STATE_CONTRADICTION
+// and STALE_SOURCE. The real sentence from Razia's reading is the anchor case.
+
+console.log('\nTENURE_MISMATCH')
+{
+  const ONRAMP = "Your training history shows limited prior structured exposure, so we're building your on-ramp conservatively rather than assuming a fitness base that isn't there yet."
+  const f = lintClientReading({
+    sections: { cr_what_were_focusing_on_first: ONRAMP },
+    sourceMaterial: VICKI_SOURCE,
+    tenure: { weeksInCoaching: 15 },
+  })
+  check('the real Razia sentence blocks at 15 weeks',
+    f.some(x => x.code === 'TENURE_MISMATCH' && x.severity === 'block'))
+
+  const g = lintClientReading({
+    sections: { cr_what_were_focusing_on_first: ONRAMP },
+    sourceMaterial: VICKI_SOURCE,
+    tenure: { weeksInCoaching: 2 },
+  })
+  check('the same sentence is fine in week 2', !(g.some(x => x.code === 'TENURE_MISMATCH')))
+
+  // The corrected wording must pass, or the check makes the fix impossible.
+  const h = lintClientReading({
+    sections: { a: "Your training history before we started was limited, so we've built your first few blocks conservatively rather than assuming a base that wasn't there." },
+    sourceMaterial: VICKI_SOURCE,
+    tenure: { weeksInCoaching: 15 },
+  })
+  check('past tense about the time before coaching passes', !(h.some(x => x.code === 'TENURE_MISMATCH')))
+
+  check('no tenure supplied skips the check', !(lintClientReading({ sections: { a: ONRAMP }, sourceMaterial: VICKI_SOURCE }).some(x => x.code === 'TENURE_MISMATCH')))
+}
+
+console.log('\nLAB_VALUE_NAMED')
+{
+  const f = lintClientReading({
+    sections: { a: 'Your vitamin D came back at 24 nmol/L, which is low.' },
+    sourceMaterial: VICKI_SOURCE,
+    labValues: ['24', '5', '650'],
+  })
+  check('a marker value with a unit blocks',
+    f.some(x => x.code === 'LAB_VALUE_NAMED' && x.severity === 'block'))
+
+  check('the same number in ordinary prose passes', !(lintClientReading({
+      sections: { a: 'We will look at this again in 24 weeks once things have settled.' },
+      sourceMaterial: VICKI_SOURCE,
+      labValues: ['24'],
+    }).some(x => x.code === 'LAB_VALUE_NAMED')))
+
+  check('a value inside a longer number is not matched', !(lintClientReading({
+      sections: { a: 'Your target sits around 2400 kcal on training days.' },
+      sourceMaterial: VICKI_SOURCE,
+      labValues: ['24'],
+    }).some(x => x.code === 'LAB_VALUE_NAMED')))
+}
+
+console.log('\nSTATE_CONTRADICTION')
+{
+  check('naming a different state blocks',
+    lintClientReading({
+      sections: { a: 'You are in Optimisation, which means we can push harder.' },
+      sourceMaterial: VICKI_SOURCE,
+      bodyState: 'Remediation',
+    }).some(x => x.code === 'STATE_CONTRADICTION' && x.severity === 'block'))
+
+  check('naming the correct state passes', !(lintClientReading({
+      sections: { a: 'Right now your body is best described as being in a Remediation state.' },
+      sourceMaterial: VICKI_SOURCE,
+      bodyState: 'Remediation',
+    }).some(x => x.code === 'STATE_CONTRADICTION')))
+}
+
+console.log('\nSTALE_SOURCE')
+{
+  const f = lintClientReading({ sections: { a: 'Anything.' }, sourceMaterial: VICKI_SOURCE, sourceAgeWeeks: 15 })
+  check('a 15 week old source warns', f.some(x => x.code === 'STALE_SOURCE' && x.severity === 'warn'))
+  check('and does not block', f.filter(x => x.severity === 'block').length === 0)
+  check('a fresh source is silent', !(lintClientReading({ sections: { a: 'Anything.' }, sourceMaterial: VICKI_SOURCE, sourceAgeWeeks: 1 })
+      .some(x => x.code === 'STALE_SOURCE')))
+}
+
+console.log('\nQUALIFIED DENIALS ARE NOT DENIALS')
+{
+  // Razia's real section, 9 Sep 2026. It denies STEEP restriction and states
+  // the modest deficit in the next breath. The check blocked it from publishing.
+  const RAZIA = "We are not chasing aggressive fat loss or steep calorie restriction right now. Your nutrition plan does include a deliberate, modest reduction below what your body likely needs to maintain its current weight, but it's set small and conservative on purpose, not as a push for rapid change."
+  check('a denial of STEEP restriction alongside a stated deficit passes',
+    !lintClientReading({
+      sections: { cr_what_were_not_doing_yet: RAZIA },
+      sourceMaterial: VICKI_SOURCE,
+      nutrition: { tdeeKcal: 2006, planKcal: 1800 },
+    }).some(x => x.code === 'CONTRADICTS_NUTRITION_PLAN'))
+
+  check('a flat denial of any restriction still blocks',
+    lintClientReading({
+      sections: { a: "Calorie restriction isn't part of the picture here." },
+      sourceMaterial: VICKI_SOURCE,
+      nutrition: { tdeeKcal: 2006, planKcal: 1800 },
+    }).some(x => x.code === 'CONTRADICTS_NUTRITION_PLAN'))
+}
+
 console.log(`\n${passed} passed, ${failed} failed\n`)
 process.exit(failed > 0 ? 1 : 0)

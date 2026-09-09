@@ -64,7 +64,43 @@ export interface LintInput {
     date: Date
     now?: Date
   } | null
+  /** How long they have actually been coached here. */
+  tenure?: {
+    weeksInCoaching: number | null
+    /** Past this, beginning language is a finding. Defaults to 8. */
+    newUntilWeeks?: number
+  } | null
+  /** Values from the client's own blood panel, as printed. */
+  labValues?: string[]
+  /** The body state on the record, so a reading naming another is caught. */
+  bodyState?: string | null
+  /** Age of the assessment this reading was written from. */
+  sourceAgeWeeks?: number | null
 }
+
+/**
+ * Language that says "you are at the beginning". Deliberately phrases rather
+ * than single words: "start" appears in perfectly good sentences and would
+ * make this unusable.
+ */
+const BEGINNING_PHRASES: RegExp[] = [
+  /\bon[-\s]ramp\b/i,
+  /\bgetting started\b/i,
+  /\bjust starting\b/i,
+  /\bstarting out\b/i,
+  /\bnew to (?:training|structured training|this|lifting|the gym)\b/i,
+  /\byour first (?:few )?(?:weeks|sessions|block)\b/i,
+  /\bearly (?:days|weeks|stages)\b/i,
+  /\bfrom scratch\b/i,
+  /\beasing you in\b/i,
+  /\bfirst steps\b/i,
+  /\bbuilding a base (?:that isn'?t|you don'?t)\b/i,
+  /\b(?:isn'?t|is not) there yet\b/i,
+  /\bbeginning of your (?:journey|training)\b/i,
+]
+
+/** The three internal state names. A reading may use them; it may not use the wrong one. */
+const BODY_STATES = ['Remediation', 'Optimisation', 'Post-Optimisation']
 
 export function lintClientReading(input: LintInput): LintFinding[] {
   const findings: LintFinding[] = []
@@ -108,9 +144,21 @@ export function lintClientReading(input: LintInput): LintFinding[] {
         new RegExp(`\\b${TERM}\\b[^.]{0,60}${NEG}`, 'i'),
       ]
       const denial = { test: (x: string) => denials.some(r => r.test(x)) }
+      // A denial of SEVERE restriction is not a denial of restriction, and it
+      // is usually the honest thing to write: "we are not chasing steep calorie
+      // restriction" alongside a deliberate 200 kcal deficit is accurate.
+      // Razia's reading, 9 Sep 2026, was blocked from publishing by this check
+      // while its very next sentence stated the deficit plainly. Without this
+      // guard the check punishes the correct wording and pushes writers toward
+      // saying nothing about restriction at all.
+      const QUALIFIED = /\b(aggressive|steep|severe|extreme|drastic|crash|harsh|significant|major|large|strict)\b[^.]{0,30}(?:calorie restriction|restriction|restricting|deficit|cutting calories|tightening)/i
+      // Equally, a section that states the deficit somewhere is not denying it.
+      const ACKNOWLEDGES = /\b(?:deliberate|modest|small|slight|gentle|conservative|deliberately)\b[^.]{0,40}\b(?:reduction|deficit|below what)\b|\bdoes include a\b[^.]{0,40}\b(?:reduction|deficit)\b/i
       for (const [field, text] of all) {
+        if (ACKNOWLEDGES.test(text)) continue
         for (const s of sentences(text)) {
           if (!denial.test(s)) continue
+          if (QUALIFIED.test(s)) continue
           findings.push({
             severity: 'block',
             code: 'CONTRADICTS_NUTRITION_PLAN',
@@ -149,7 +197,93 @@ export function lintClientReading(input: LintInput): LintFinding[] {
     }
   }
 
-  // ── 4. Nothing to review ───────────────────────────────────────────────────
+  // ── 4. Describing an established client as a beginner ──────────────────────
+  // Razia, 8 Sep 2026: "we're building your on-ramp conservatively rather than
+  // assuming a fitness base that isn't there yet", sixteen weeks in and one day
+  // into her third block. The generator was never told when she started, so it
+  // wrote from her intake. Passing the fact prevents most of these; this
+  // catches the rest, because a model handed a four-month-old intake will
+  // gravitate back to its story.
+  const weeks = input.tenure?.weeksInCoaching
+  if (weeks != null && weeks >= (input.tenure?.newUntilWeeks ?? 8)) {
+    for (const [field, text] of all) {
+      for (const s of sentences(text)) {
+        const hit = BEGINNING_PHRASES.find(re => re.test(s))
+        if (!hit) continue
+        // "before we started your training was limited" is the correct way to
+        // say this and must not be caught. Past tense about the time before
+        // coaching is legitimate; present tense about now is not.
+        if (/\b(before we (started|began)|before joining|before you (started|came)|when you started|at the start|back then|used to)\b/i.test(s)) continue
+        findings.push({
+          severity: 'block',
+          code: 'TENURE_MISMATCH',
+          message: `${field} describes this client as starting out, but she has been coached here for ${weeks} weeks. Say it in the past tense, or drop it.`,
+          excerpt: excerpt(s),
+        })
+        break
+      }
+    }
+  }
+
+  // ── 5. A lab value in client-facing text ───────────────────────────────────
+  // Scope of practice. Out-of-range markers are routed to the client's GP; a
+  // reading that prints the number has quietly taken the interpretation on
+  // itself. Nothing prevented this before: her panel reaches the reading only
+  // as prose, but nothing stopped that prose carrying a figure through.
+  for (const value of input.labValues ?? []) {
+    const re = new RegExp(`(?<![\\d.])${value.replace('.', '\\.')}(?![\\d.])`)
+    for (const [field, text] of all) {
+      for (const s of sentences(text)) {
+        if (!re.test(s)) continue
+        // A bare number is only a lab value in the company of clinical framing.
+        // "24" alone is a week count or an age far more often than a marker.
+        if (!/\b(nmol|umol|µmol|mmol|pmol|ng|mg|mcg|iu|g\/l|u\/l|%|level|marker|reading|result|range|deficien|elevated|low|high)\b/i.test(s)) continue
+        findings.push({
+          severity: 'block',
+          code: 'LAB_VALUE_NAMED',
+          message: `${field} appears to state a value from her blood panel (${value}). Lab numbers belong with her GP, not in a reading. Describe the direction in plain words instead.`,
+          excerpt: excerpt(s),
+        })
+        break
+      }
+    }
+  }
+
+  // ── 6. A body state that is not the one on file ────────────────────────────
+  // Cheap to check, and everything downstream is built on the state being
+  // right. A reading that renames it silently contradicts her program, her
+  // plan and her portal.
+  if (input.bodyState) {
+    const onFile = input.bodyState.toLowerCase()
+    for (const [field, text] of all) {
+      for (const s of sentences(text)) {
+        for (const state of BODY_STATES) {
+          if (state.toLowerCase() === onFile) continue
+          if (!new RegExp(`\\b${state}\\b`, 'i').test(s)) continue
+          findings.push({
+            severity: 'block',
+            code: 'STATE_CONTRADICTION',
+            message: `${field} names ${state}, but this client's recorded state is ${input.bodyState}.`,
+            excerpt: excerpt(s),
+          })
+          break
+        }
+      }
+    }
+  }
+
+  // ── 7. Built on an assessment that has aged ────────────────────────────────
+  // A warning, not a block. Sometimes a fifteen-week-old read is still an
+  // accurate description of someone, and that judgement is the coach's.
+  if (input.sourceAgeWeeks != null && input.sourceAgeWeeks >= 12) {
+    findings.push({
+      severity: 'warn',
+      code: 'STALE_SOURCE',
+      message: `This reading is built on an assessment ${input.sourceAgeWeeks} weeks old. Check it still describes her before publishing.`,
+    })
+  }
+
+  // ── 8. Nothing to review ───────────────────────────────────────────────────
   if (all.length === 0) {
     findings.push({
       severity: 'block',

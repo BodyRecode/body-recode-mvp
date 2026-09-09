@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { loadClientFactualContext, formatFactualContextForPrompt } from '@/lib/client-factual-context'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
@@ -129,6 +130,14 @@ export async function POST(request: NextRequest) {
   // further isn't what this stage calls for" while her active plan carried a
   // 193 kcal deficit and 50g less carbohydrate. A client reading the
   // explanation and then opening the plan sees the coach contradict himself.
+  // The facts that stop it describing a person this client is not. Razia's
+  // 8 Sep reading called a sixteen-week client new because nothing here told
+  // it when she started. See client-factual-context.ts.
+  const factualContext = await loadClientFactualContext(admin, cffs.client_id, {
+    kind: 'cffs',
+    sourceGeneratedAt: cffs.generated_at ?? null,
+  }).catch(() => null)
+
   const [{ data: livePlan }, { data: liveProgram }] = await Promise.all([
     admin.from('nutrition_plans')
       .select('entry_state, carb_demand_level, protein_anchor_g, estimated_calorie_band, meal_frequency, energy_tdee_kcal, energy_target_low_kcal, energy_target_high_kcal')
@@ -178,7 +187,8 @@ export async function POST(request: NextRequest) {
         cffsContext,
         { name: client.name, package: client.package },
         cffs.cr_coach_guidance ?? null
-      ) + livePrescriptionSection(livePlan, liveProgram),
+      ) + livePrescriptionSection(livePlan, liveProgram)
+        + (factualContext ? formatFactualContextForPrompt(factualContext) : ''),
     },
   ]
   let cleaned: Record<string, string> | null = null
