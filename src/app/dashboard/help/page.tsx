@@ -1750,7 +1750,7 @@ export default function HelpPage() {
           <Section id="platform-buildout" title="17e. Buildout boards (Body Recode + Performance Coaching)" colour="teal">
             <p><strong>There are TWO boards as of 9 Sep 2026</strong>, split along the Layer 1 / Layer 2 line the whole go-to-market rests on. Both render from the same component and behave identically; only the manifest behind them differs.</p>
             <ul className="space-y-1 list-disc list-inside text-[#43474F] text-sm">
-              <li><strong>Dashboard → Settings → Body Recode buildout</strong> — the read as a sellable product. The engine, the loop, the re-read, tenancy and billing, and the two front doors. Manifest: <code>src/lib/saas-buildout-manifest.ts</code>.</li>
+              <li><strong>Dashboard → Settings → Body Recode buildout</strong> — the read as a sellable product. The engine, the loop, the re-read, and the two front doors. Manifest: <code>src/lib/saas-buildout-manifest.ts</code>.</li>
               <li><strong>Dashboard → Settings → Performance Coaching buildout</strong> — Layer 2, the application that consumes the read. Programs, nutrition, the portal, the coaching loop. Manifest: <code>src/lib/performance-coaching-buildout-manifest.ts</code>. <strong>First pass</strong> — only Coach Co-Pilot and the Operator Console are audited; the rest is deliberately empty rather than guessed at.</li>
             </ul>
             <p className="mt-3">One place each to answer &quot;where are we?&quot; without hunting through Dropbox docs, git history and memory files.</p>
@@ -1759,12 +1759,13 @@ export default function HelpPage() {
             <ul className="space-y-1 list-disc list-inside text-[#43474F] text-sm">
               <li><strong>Phase 1 · The read stands alone</strong> — separate the read from Kade&apos;s client records and his login. The internal entrypoint shipped 1 Sep; the real separation has not.</li>
               <li><strong>Phase 2 · The loop</strong> — intake, read, weekly check-in, re-read every 12 weeks. <strong>The re-read trigger is TIME, never block-end</strong> (Kade, 9 Sep): a block is Performance Coaching vocabulary and other coaches write 4, 8 or 12 week blocks or none. The Progress Check already collects everything; the generator that updates the read does not exist.</li>
-              <li><strong>Phase 3 · Door 2</strong> — the coach&apos;s own screen. Mostly subtraction: a coach signing up today lands in Kade&apos;s entire business cockpit and there is no product tier gating anywhere. Ends at the gate — one real coach who is not Kade.</li>
-              <li><strong>Phase 8 · Door 1</strong> — other people&apos;s software embedding the read. Do not start before the gate clears.</li>
-              <li><strong>Phase 9 · Company and name</strong> — not development work, blocked by nothing, long lead time.</li>
+              <li><strong>Phase 2 · Door 2</strong> — the coach&apos;s own screen. Mostly subtraction: a coach signing up today lands in Kade&apos;s entire business cockpit and there is no product tier gating anywhere. Ends at the gate — one real coach who is not Kade.</li>
+              <li><strong>Phase 3 · Door 1</strong> — other people&apos;s software embedding the read. Do not start before the gate clears.</li>
+              <li><strong>Phase 4 · Company and name</strong> — not development work, blocked by nothing, long lead time.</li>
             </ul>
 
-            <p className="font-semibold text-[#141821] mt-4">The platform phases (now 4-7 on the Body Recode board)</p>
+            <p className="font-semibold text-[#141821] mt-4">The Collective phases — now on the PERFORMANCE COACHING board (moved 9 Sep 2026)</p>
+            <p className="text-[#43474F] text-sm">The Collective was designed for coaches running the whole Performance Coaching product under their own brand, on BR doctrine. That is Layer 2 white-labelled, not the read, so these moved off the Body Recode board along with the tenancy, branding and billing work built for them. Door 2 depends on that multi-coach plumbing; it is tracked once, where it was built for, rather than on both boards.</p>
             <ul className="space-y-1 list-disc list-inside text-[#43474F] text-sm">
               <li><strong>Phase 0 · Decide &amp; verify</strong> — pricing lock, founding-partner agreement, doctrine mode A confirmation, verify unknowns.</li>
               <li><strong>Phase 1 · Pilot-ready (hand-gloved)</strong> — Melisa onboarding as pilot zero with targeted branding override before the full de-hardcode.</li>

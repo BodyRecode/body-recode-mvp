@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { BuildoutBoard } from '@/components/dashboard/buildout-board'
-import { PHASES, CROSS_PHASE_DOCS } from '@/lib/saas-buildout-manifest'
+import { PHASES } from '@/lib/saas-buildout-manifest'
 
 export const metadata = { title: 'Body Recode Buildout · Settings' }
 
@@ -8,7 +8,7 @@ export default function PlatformBuildoutPage() {
   return (
     <BuildoutBoard
       phases={PHASES}
-      crossPhaseDocs={CROSS_PHASE_DOCS}
+      crossPhaseDocs={[]}
       eyebrow="Settings · Body Recode buildout"
       title="Body Recode SaaS buildout"
       subtitle="The read as a sellable product. Every phase, every step, current status. src/lib/saas-buildout-manifest.ts is the source of truth — the ship checklist requires updating it on every commit that moves a step."
@@ -22,9 +22,9 @@ export default function PlatformBuildoutPage() {
             <p><strong>What this is.</strong> The plan to take the read — the part that works out what is going on with someone — and sell it separately from the coaching. Decided 29 August 2026. The strategic doc is <code className="bg-white px-1 py-0.5 rounded border border-[#B5CFFC] text-[11px]">2026-09-01_Read_As_A_Product_Roadmap.md</code> in Dropbox; this board is its operational counterpart.</p>
             <p><strong>The product is four steps.</strong> Initial intake, initial read, weekly check-in, and a re-read every 12 weeks. The re-read trigger is <strong>time, never block-end</strong> — a block is Performance Coaching vocabulary, and other coaches write 4, 8 or 12 week blocks or none at all.</p>
             <p><strong>Two front doors.</strong> Door 2 is a coach with no software of their own, running clients on Body Recode screens. Door 1 is a company that already has coaching software, embedding the read in the product they already sell. <strong>Door 2 first.</strong> A gym is not a third door — it is door 2 with an owner layer on top.</p>
-            <p><strong>Scope.</strong> This board tracks Layer 1: the engine, the loop, the re-read, and everything that lets somebody who is not Kade run it. The coaching application that consumes the read — programs, nutrition, the portal — is tracked separately on the{' '}
+            <p><strong>Scope.</strong> This board tracks Layer 1 only: the engine, the loop, the re-read, and the two front doors. <strong>The Collective is NOT here</strong> — it was designed for coaches running the whole Performance Coaching product under their own brand, which is Layer 2 white-labelled, so it moved (9 Sep) along with the tenancy, branding and billing work built for it. Door 2 depends on that multi-coach plumbing, which already shipped; it is tracked on the{' '}
               <Link href="/dashboard/settings/coaching-buildout" className="text-[#1560E0] hover:text-[#1056D6] underline">Performance Coaching board</Link>.</p>
-            <p><strong>The one thing blocking everything.</strong> Phase 3 ends with a real coach who is not Kade using it. Nothing past that moves until there is a name. Every previous attempt failed the same way: the Collective was 86% built and got one enquiry in six weeks, because the building happened before anyone had been asked.</p>
+            <p><strong>The one thing blocking everything.</strong> Phase 2 ends with a real coach who is not Kade using it. Nothing past that moves until there is a name. Every previous attempt failed the same way: the Collective was 86% built and got one enquiry in six weeks. Worth knowing the reason though — across 23 posts in a month it reached 447 people total, so it was never really shown to anyone. The offer was not rejected; it was never tested.</p>
             <p><strong>What the statuses mean.</strong> Every status on this board was verified against the code on 9 September 2026, not taken from a design note. That matters — a note claiming a 12-week re-read backstop already existed turned out to be wrong, and it had been wrong for weeks.</p>
           </div>
         </details>
