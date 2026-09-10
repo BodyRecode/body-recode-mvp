@@ -6,6 +6,38 @@ import { formatDate, getLeadStatusLabel, getLeadStatusColour, getLeadSourceLabel
 import type { Lead } from '@/types'
 import { PageHeader, Btn, EmptyState, Avatar, MONO_FONT } from '@/components/dashboard/ui'
 
+// A GOOD LEAD SHOULD SAY SO (10 Sep 2026).
+//
+// Only a red flag used to get a worded badge. A green lead carried nothing but
+// a 12px dot on the corner of their avatar, so the board read as "some people
+// are a problem and everyone else is unremarkable" — Komang came through green
+// and looked identical to a lead who had answered nothing at all.
+//
+// The badge also conflated two different things. `red_flag` is true at ONE
+// concern, so a yellow lead wore the same "Red Flag" wording as someone who
+// raised both. The count is now on the badge, so one concern and two are
+// visibly different.
+//
+// Driven by lead_quality (not red_flag) so all three states are covered, and a
+// lead who answered no qualifiers still shows nothing rather than a false green.
+const QUALITY_BADGE: Record<'green' | 'yellow' | 'red', { label: string; title: string; className: string }> = {
+  green: {
+    label: 'Green Flag',
+    title: 'No concerns — answered well on both how she responds when progress stalls and on readiness to invest.',
+    className: 'bg-[#E6F4EA] border border-[#BFE3CA] text-[#16A34A]',
+  },
+  yellow: {
+    label: '1 Red Flag',
+    title: 'One concern — either how she responds when progress stalls, or readiness to invest. The other answer was fine.',
+    className: 'bg-[#FEF3E2] border border-[#F5DCB3] text-[#D97706]',
+  },
+  red: {
+    label: '2 Red Flags',
+    title: 'Concerns on both — how she responds when progress stalls AND readiness to invest. Historically half show rate, half close rate.',
+    className: 'bg-[#FEE7E7] border border-[#F5C6C6] text-[#DC2626]',
+  },
+}
+
 const STATUS_GROUPS = [
   { label: 'Pipeline', statuses: ['new_check_in', 'report_sent', 'cold_no_booking'] },
   { label: 'Zoom', statuses: ['zoom_booked', 'zoom_1_booked', 'zoom_completed', 'zoom_1_completed', 'zoom_2_booked', 'zoom_2_completed', 'closed_no_show', 'closed_declined'] },
@@ -128,7 +160,7 @@ export default async function LeadsPage({
                   <Avatar name={lead.name} size={36} />
                   {lead.lead_quality && (
                     <span
-                      title={`Lead quality: ${lead.lead_quality}${lead.red_flag ? ' (red flag)' : ''}`}
+                      title={QUALITY_BADGE[lead.lead_quality].title}
                       className={`absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-[#FFFFFF] ${
                         lead.lead_quality === 'red' ? 'bg-[#DC2626]' :
                         lead.lead_quality === 'yellow' ? 'bg-[#D97706]' :
@@ -150,12 +182,12 @@ export default async function LeadsPage({
                 </div>
               </div>
               <div className="flex items-center gap-3 shrink-0 ml-4">
-                {lead.red_flag && (
+                {lead.lead_quality && (
                   <span
-                    className="text-[10px] font-medium px-2 py-1 rounded-full bg-[#FEE7E7] border border-[#F5C6C6] text-[#DC2626]"
-                    title="Red flag - half show rate, half close rate historically"
+                    className={`text-[10px] font-medium px-2 py-1 rounded-full whitespace-nowrap ${QUALITY_BADGE[lead.lead_quality].className}`}
+                    title={QUALITY_BADGE[lead.lead_quality].title}
                   >
-                    Red Flag
+                    {QUALITY_BADGE[lead.lead_quality].label}
                   </span>
                 )}
                 <span className={`text-[11px] font-medium px-2.5 py-1 rounded-full border whitespace-nowrap ${getLeadStatusColour(lead.status)}`}>
