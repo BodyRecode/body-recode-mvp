@@ -153,7 +153,7 @@ export async function POST(request: NextRequest) {
   // Find or create lead — fetch all rows by email, take first in JS to avoid PostgREST single-row errors
   const { data: existingRows, error: lookupError } = await supabase
     .from('leads')
-    .select('id, coach_id')
+    .select('id, coach_id, status, active')
     .eq('email', email.toLowerCase().trim())
 
   if (lookupError) {
@@ -165,9 +165,39 @@ export async function POST(request: NextRequest) {
 
   let leadId: string
 
+  // A returning lead resurfaces. Set by the existing-lead branch below and
+  // merged into the scorecard write, so it lands in the same UPDATE.
+  const resurface: { status?: string; active?: boolean } = {}
+
   if (existing) {
     leadId = existing.id
     console.log('[scorecard/submit] Found existing lead:', leadId)
+
+    // A FRESH SCORECARD IS A FRESH LEAD (10 Sep 2026).
+    //
+    // Someone who already had a lead row — the dormant list, an old challenge
+    // signup, a cold enquiry — and comes back and takes the scorecard was
+    // getting the coach notification email while staying invisible on
+    // /dashboard/leads: their status was left at whatever it was months ago
+    // (31 leads sit at cold_no_booking) and, if they had been deactivated
+    // (12 leads), they stayed on the Inactive tab entirely. The lead list
+    // sorts by updated_at so the row moved to the top, but wearing an old
+    // status pill and an old date, which is not what a new lead looks like.
+    //
+    // So: a scorecard always makes the lead active again, and pulls a dormant
+    // status back to new_check_in. Statuses that represent real progress are
+    // left alone — a booked call, a paid commencement or an active client must
+    // never be demoted to "new check-in" because they retook the quiz.
+    const DORMANT_STATUSES = new Set([
+      'cold_no_booking', 'report_sent', 'closed_no_show', 'closed_declined',
+    ])
+    if (existing.active === false) resurface.active = true
+    if (DORMANT_STATUSES.has(existing.status)) resurface.status = 'new_check_in'
+    if (Object.keys(resurface).length) {
+      console.log('[scorecard/submit] Resurfacing returning lead:', leadId, resurface, 'was:', {
+        status: existing.status, active: existing.active,
+      })
+    }
   } else {
     // Resolve to a constraint-safe source while preserving the original as source_detail.
     let dbSource: string
@@ -210,10 +240,14 @@ export async function POST(request: NextRequest) {
     await fireTrigger('lead_created', { leadId })
   }
 
-  // Persist scorecard result directly on the lead record
-  await supabase
+  // Persist scorecard result directly on the lead record.
+  // `error` is checked: this single UPDATE carries every scorecard field, so a
+  // silent failure here leaves a lead with nothing but a name and an email
+  // while the coach notification below still goes out saying they scored.
+  const { error: scorecardWriteError } = await supabase
     .from('leads')
     .update({
+      ...resurface,
       scorecard_score: score,
       scorecard_body_state: body_state,
       scorecard_section_scores: section_scores ?? null,
@@ -233,6 +267,10 @@ export async function POST(request: NextRequest) {
       updated_at: new Date().toISOString(),
     })
     .eq('id', leadId)
+
+  if (scorecardWriteError) {
+    console.error('[scorecard/submit] Scorecard write failed for lead:', leadId, scorecardWriteError)
+  }
 
   // Enrol qualifying leads into the Booking Agent — a short branded outreach
   // sequence toward a booked strategy call. Option A: it only DRAFTS touches
@@ -286,6 +324,11 @@ export async function POST(request: NextRequest) {
   }
 
   // Log scorecard result as a lead event
+  // Leaves a trail when a returning lead was pulled back into the pipeline,
+  // so the status change is explained rather than looking like a stray edit.
+  const resurfaceNote = Object.keys(resurface).length
+    ? ` Returning lead — reactivated from ${existing?.active === false ? 'inactive' : 'active'}/${existing?.status}.`
+    : ''
   const qualifierNote = leadQuality
     ? ` Quality: ${leadQuality}${redFlag ? ' (RED FLAG)' : ''}. Approach: ${approach_response}. Investment: ${investment_readiness}.`
     : ''
@@ -294,7 +337,7 @@ export async function POST(request: NextRequest) {
       leadId,
       type: 'scorecard_completed',
       subject: 'Scorecard completed',
-      notes: `Score: ${score}/15. Body state: ${body_state}.${qualifierNote}${section_scores ? ' Sections: ' + JSON.stringify(section_scores) : ''}`,
+      notes: `Score: ${score}/15. Body state: ${body_state}.${qualifierNote}${resurfaceNote}${section_scores ? ' Sections: ' + JSON.stringify(section_scores) : ''}`,
     })
     console.log('[scorecard/submit] Event logged for lead:', leadId)
   } catch (logErr) {
