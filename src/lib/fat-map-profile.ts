@@ -114,9 +114,9 @@ export function leadDescriptor(profile: Profile, signals: ProfileSignals = {}): 
 
   switch (signals.storageDirection) {
     case 'gluteofemoral':
-      return `It sits on your hips, glutes and outer thighs, and it has stayed there. That is the most distinctive place fat sits out of all four patterns, and it is oestrogen doing what it is meant to do. It also means eating less will not shift it, because what you are carrying is a slow-release store and restriction tells it to hold. ${closer}`
+      return `It sits on your hips, glutes and outer thighs, and it has stayed there. That is the most distinctive place fat sits out of all four patterns, and it is oestrogen doing what it is meant to do. It also means this is the slowest of the four to move, so cutting harder to speed it up mostly costs you muscle rather than buying you time. ${closer}`
     case 'to_middle':
-      return `You have told me it used to sit on your hips and thighs and it is moving to your middle. That movement is the signal, more than where it ends up, and muscle usually goes the same way even when the scale does not move. Eating less makes this one worse rather than slower. ${closer}`
+      return `You have told me it used to sit on your hips and thighs and it is moving to your middle. That movement is the signal, more than where it ends up, and muscle usually goes the same way even when the scale does not move. Which is why cutting hard is the wrong tool here: it takes fat off, and it takes more muscle with it than a steadier approach does. ${closer}`
     default:
       // Includes 'always_central', 'unsure' and never-asked, so no phase can be
       // claimed. It CAN still name hips and thighs, because that is true in
@@ -127,7 +127,7 @@ export function leadDescriptor(profile: Profile, signals: ProfileSignals = {}): 
       //
       // Structured like Stress-Stored, which is the one that lands: somewhere
       // she can check, her lived experience, then the loop she is stuck in.
-      return `This is the one that sits on the hips, glutes and thighs, and for a lot of women it starts moving toward the middle over time. What used to work stops working, and that isn't discipline slipping. It's also the one pattern where eating less makes things worse rather than just slower, which is usually why the harder you've dieted the more stuck it has felt. ${closer}`
+      return `This is the one that sits on the hips, glutes and thighs, and for a lot of women it starts moving toward the middle over time. What used to work stops working, and that isn't discipline slipping. It is also the slowest of the four to shift, which is usually why the harder you've dieted the less it has felt worth it. ${closer}`
   }
 }
 

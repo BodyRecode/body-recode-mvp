@@ -1173,8 +1173,16 @@ Where it sits narrows it. What comes with it decides.`,
     description: `Free 14 days. Which of the four is running it.` },
   { slug: 'ad-3-perimenopause', short: 'Perimenopause', layer: 'round1', audience: 'Female only',
     img: '/creative/round1/ad3-v2-squat-creative-B-headline-overlay.png',
-    headline: `Hips and thighs will not shift, and eating less is making it worse`,
-    primaryText: `When storage settles in the hips, glutes and outer thighs, restriction makes it worse.
+    headline: `[WITHDRAWN 10 Sep 2026] Hips and thighs will not shift, and eating less is making it worse`,
+    primaryText: `DO NOT RUN THIS AD. Withdrawn 10 September 2026.
+
+Its central claim is contradicted by randomised trials of energy restriction in postmenopausal women, which show fat loss rather than a tighter hold. See 03_ESTROGEN_SHIFT_EVIDENCE.md, Section C item 1. A factual claim in a paid ad that the trials contradict is a substantiation problem, so this cannot be revived for Round 2 as written. The offer it names is retired as well.
+
+Original copy kept below as a record only.
+
+---
+
+When storage settles in the hips, glutes and outer thighs, restriction makes it worse.
 
 Not slower. Worse.
 
@@ -1189,7 +1197,7 @@ What it answers to instead: consistent fuelling, protected sleep, regular meal t
 The tells. Storage settles low and outer, and later begins moving toward the middle. Bloating and water shift unpredictably across the month. Sleep gets lighter.
 
 Menopause is a transition. This is a pattern inside it, and patterns respond to inputs.`,
-    description: `Free 14 days. Why less food tightened the hold.` },
+    description: `WITHDRAWN. Claim contradicted; offer retired.` },
   { slug: 'ad-6-nobanner', short: 'Ad 6, no offer banner', layer: 'deferred', audience: 'Banner test',
     img: '/creative/round1/ad6-TEST-nobanner.png',
     headline: `The afternoon crash, the evening cravings, and the fat that will not shift are one signal`,

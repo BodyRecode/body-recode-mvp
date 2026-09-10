@@ -88,7 +88,7 @@ export const CHECKIN_PATTERNS: Record<string, CheckinPattern> = {
     desc: 'Oestrogen has changed, and your body has responded by holding on to more than it used to. This is the pattern behind fat that sits on the hips and thighs, or that has started moving towards your middle.',
     whatItMeans: [
       'Oestrogen does more than most people realise, and where your body stores fat is one of the things it decides. As it changes, that decision changes with it, and so does the shape of what you are carrying.',
-      'This is one of the most common patterns in women, and one of the most badly handled. The usual advice is to eat less, and this is the one pattern where eating less makes it worse rather than just slower.',
+      'This is one of the most common patterns in women, and one of the most badly handled. The usual advice is to eat less. Eating less will take fat off. It also takes muscle and bone with it, and in this pattern you are already losing muscle for reasons that have nothing to do with how you eat.',
       'The way out is not less food or more training. It is giving your body enough of what it needs, often enough, that it stops treating this as something to protect against. Steady fuelling, real recovery and rhythm, instead of more effort piled on a body that is already stretched.',
     ],
     whereItShows: [
@@ -99,12 +99,12 @@ export const CHECKIN_PATTERNS: Record<string, CheckinPattern> = {
     ],
     whatItIsNot: [
       'Not "just menopause." Menopause is a transition. This is a pattern within it that responds to inputs.',
-      'Not a sign you need to eat less. In this pattern, eating less makes your body hold on tighter rather than let go.',
+      'Not a sign you have been eating too much. Cutting hard does take fat off. It also costs you more muscle and more bone than a moderate approach does, and muscle is the thing you can least afford to lose right now.',
       'Not a willpower failure. What your hormones are doing has changed, and your body is responding exactly as it should.',
       'Not the end of progress. It is a different stage of progress with different rules.',
     ],
     actions: [
-      'Do not undereat. This is the pattern where eating less backfires, because your body reads short rations as a reason to hold on.',
+      'Do not crash diet. A steep cut moves the scale faster and costs you more muscle and bone doing it. Eat enough to train properly, and keep lifting. Resistance work is what protects what you have while the fat comes off.',
       'Protect sleep and recovery. A lot of what needs to settle here settles overnight.',
       'Eat at roughly the same times each day. Irregular eating muddies the signals your body uses to decide whether to hold on or let go.',
     ],
