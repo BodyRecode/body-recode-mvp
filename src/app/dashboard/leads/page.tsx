@@ -20,22 +20,44 @@ import { PageHeader, Btn, EmptyState, Avatar, MONO_FONT } from '@/components/das
 //
 // Driven by lead_quality (not red_flag) so all three states are covered, and a
 // lead who answered no qualifiers still shows nothing rather than a false green.
-const QUALITY_BADGE: Record<'green' | 'yellow' | 'red', { label: string; title: string; className: string }> = {
+const QUALITY_BADGE: Record<'green' | 'yellow' | 'red', { label: string; className: string }> = {
   green: {
     label: 'Green Flag',
-    title: 'No concerns — answered well on both how she responds when progress stalls and on readiness to invest.',
     className: 'bg-[#E6F4EA] border border-[#BFE3CA] text-[#16A34A]',
   },
   yellow: {
     label: '1 Red Flag',
-    title: 'One concern — either how she responds when progress stalls, or readiness to invest. The other answer was fine.',
     className: 'bg-[#FEF3E2] border border-[#F5DCB3] text-[#D97706]',
   },
   red: {
     label: '2 Red Flags',
-    title: 'Concerns on both — how she responds when progress stalls AND readiness to invest. Historically half show rate, half close rate.',
     className: 'bg-[#FEE7E7] border border-[#F5C6C6] text-[#DC2626]',
   },
+}
+
+// THE HOVER TEXT IS ABOUT A REAL PERSON (10 Sep 2026).
+//
+// This copy shipped hardcoded to "she", because the audience is ~90% female.
+// Matthew came through the same day and the badge described him as her. A male
+// lead is rare, not hypothetical, and a coach reading a brief about the wrong
+// person is exactly the kind of small wrongness that costs trust on a call.
+//
+// Sex comes from the scorecard (`biological_sex`). It is null for anyone who
+// answered before the question existed, so the neutral form is the fallback,
+// never a guess.
+//
+// Written with POSSESSIVES only — his / her / their — so there is no verb to
+// agree with and the three forms drop into identical sentences.
+function qualityTitle(quality: 'green' | 'yellow' | 'red', sex: 'M' | 'F' | null | undefined): string {
+  const poss = sex === 'M' ? 'his' : sex === 'F' ? 'her' : 'their'
+  switch (quality) {
+    case 'green':
+      return `No concerns — good answers on ${poss} response when progress stalls and on readiness to invest.`
+    case 'yellow':
+      return `One concern — either ${poss} response when progress stalls or ${poss} readiness to invest. The other answer was fine.`
+    case 'red':
+      return `Concerns on both — ${poss} response when progress stalls AND ${poss} readiness to invest. Historically half show rate, half close rate.`
+  }
 }
 
 const STATUS_GROUPS = [
@@ -160,7 +182,7 @@ export default async function LeadsPage({
                   <Avatar name={lead.name} size={36} />
                   {lead.lead_quality && (
                     <span
-                      title={QUALITY_BADGE[lead.lead_quality].title}
+                      title={qualityTitle(lead.lead_quality, lead.biological_sex)}
                       className={`absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-[#FFFFFF] ${
                         lead.lead_quality === 'red' ? 'bg-[#DC2626]' :
                         lead.lead_quality === 'yellow' ? 'bg-[#D97706]' :
@@ -185,7 +207,7 @@ export default async function LeadsPage({
                 {lead.lead_quality && (
                   <span
                     className={`text-[10px] font-medium px-2 py-1 rounded-full whitespace-nowrap ${QUALITY_BADGE[lead.lead_quality].className}`}
-                    title={QUALITY_BADGE[lead.lead_quality].title}
+                    title={qualityTitle(lead.lead_quality, lead.biological_sex)}
                   >
                     {QUALITY_BADGE[lead.lead_quality].label}
                   </span>

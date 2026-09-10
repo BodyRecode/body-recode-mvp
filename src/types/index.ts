@@ -52,6 +52,8 @@ export interface Lead {
   investment_readiness?: 'A' | 'B' | 'C' | 'D'
   red_flag?: boolean
   lead_quality?: 'green' | 'yellow' | 'red'
+  /** Captured on the scorecard. Null for leads who answered before it was asked. */
+  biological_sex?: 'M' | 'F' | null
   created_at: string
   updated_at: string
 }
