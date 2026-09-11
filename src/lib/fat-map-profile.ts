@@ -146,7 +146,8 @@ export function leadDescriptor(profile: Profile, signals: ProfileSignals = {}): 
  * Posterior/flank (mid-back, lower back, love handles) = insulin. Lost
  * tone/drive = androgen.
  *
- * Front vs back is the clean split between the two midsection patterns: the
+ * Front vs back NARROWS the field between the two midsection patterns (it does
+ * not decide it, see the revision note above): the
  * front belly is the cortisol tell, and sparing the front while holding
  * posterior/flank rules Stress-Stored OUT.
  *
