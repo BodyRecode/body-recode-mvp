@@ -123,7 +123,7 @@ function LessonDiagram({ week }: { week: number }) {
     </LessonFigure>
   )
   if (week === 3) return (
-    <LessonFigure eyebrow="Which way this runs" caption="Carrying more fat lowers testosterone. It is not a runaway loop: losing fat raises it back, in proportion to what you lose.">
+    <LessonFigure eyebrow="Which way this runs" caption="Carrying more fat lowers testosterone. It is not a runaway loop: losing fat raises it back, in proportion to what you lose. Note: the video in this lesson calls this a self-reinforcing loop. That was our earlier wording and we have since corrected it — the diagram here is the current one.">
       <ChipFlow steps={['More body fat', 'More aromatase', 'Testosterone drops', 'Lose fat, it comes back up']} />
     </LessonFigure>
   )
