@@ -43,13 +43,21 @@ accompanying signal decides it.
   Central fat rising while lean mass falls, chest filling via aromatisation, drive and
   recovery slipping. Discriminator: muscle and drive FALLING, not just fat rising.
 
-Front vs back is the clean split between the two midsection patterns: the front belly is the
-cortisol tell, and sparing the front while holding posterior/flank rules Stress-Stored out.
+Front vs back NARROWS the field between the two midsection patterns: sparing the front while
+holding posterior/flank points at Insulin-Drift. It does NOT rule Stress-Stored out on its own.
 Upper back storage types as Insulin-Drift, never androgen.
 
 Stress-Stored and Androgen-Decline are the hardest pair to separate in men. Both are central.
-Stress-Stored keeps the limbs LEAN (fat leaves them). Androgen-Decline makes them SOFT (muscle
-leaves them). Ask which happened.
+Stress-Stored leaves the limbs LOOKING lean. Androgen-Decline makes them SOFT (muscle leaves
+them). Ask which happened.
+
+REVISED 11 Sep 2026 against Fat_Map_Definitions_LOCKED v2.2. Two things you must not write:
+- Do NOT say or imply that fat LEAVES the limbs in Stress-Stored. The only longitudinal study
+  to measure it found cortisol predicted no change in leg or thigh fat, and in Cushing's
+  syndrome limb fat FELL as cortisol came down. Lean-looking limbs beside a filling middle is
+  an observation, not a mechanism.
+- Do NOT present the front-vs-back split, or the limb contrast, as confirming or excluding a
+  pattern. Neither has a supporting study. They narrow; they do not decide.
 
 HOLDING SIGNALS (revised 5 Sep 2026 to Extended Zones v2.0):
 There are THREE, not six: shoulder and neck bracing, trunk holding, and abdominal

@@ -15,9 +15,17 @@
  * Sex is the hard gate (it decides which zones are even possible). Fat-storage
  * location LEADS when supplied, but it only narrows the field — three of the four
  * drivers push fat centrally, so location alone misclassifies. The accompanying
- * signal decides: limbs thinning = cortisol, timing = insulin, muscle and drive
+ * signal decides: limbs staying lean = cortisol, timing = insulin, muscle and drive
  * falling = androgen. Age + cycle status are tiebreakers / confidence levers, and
  * for Estrogen-Shift they set the phase.
+ *
+ * REVISED 11 Sep 2026 against Fat_Map_Definitions_LOCKED v2.2. None of the three
+ * accompanying signals is a validated test. The limb signal has no supporting study
+ * at all (Goss 2012, PMID 22173571: cortisol predicted no two-year change in leg or
+ * thigh fat in 53 postmenopausal women), the afternoon timing window has none, and
+ * the muscle-and-drive signal misses early androgen decline by design because
+ * strength is the last of the three things to fall. The typing is unchanged. What
+ * changed is that the confidence value returned is a convergence score, not evidence.
  *
  * See 00_PLAYBOOK/Fat_Map_Definitions_LOCKED.md (v2.0, 2026-07-31) and
  * Fat_Map_Research_Review_2026-07-31.md for the evidence behind this.
@@ -68,7 +76,7 @@ export const PROFILE_DRIVERS: Record<Profile, string> = {
 
 /** Coach-facing descriptors (pre-call brief). Terse, clinical, coach voice. */
 export const PROFILE_DESCRIPTORS: Record<Profile, string> = {
-  'Stress-Stored': 'Central anterior storage. Front of the midsection fills while the limbs stay lean or thin out, that contrast is the tell. Harder you push, tighter the body holds.',
+  'Stress-Stored': 'Central anterior storage. Front of the midsection fills while the limbs stay lean or look leaner. That contrast is how it is read, not a mechanism: no study shows cortisol taking fat off the limbs. Harder you push, tighter the body holds.',
   'Insulin-Drift': 'Posterior and flank storage, mid-back, lower back, love handles, plus deep abdominal fullness, with the front relatively spared. Afternoon crash and evening cravings are the timing tell.',
   'Estrogen-Shift': 'Oestrogen-driven, and it runs in two phases. Phase 1 holds gluteofemoral (hips, glutes, outer thighs). Phase 2 redistributes centrally as oestrogen falls, lean mass with it. Read the phase before the location.',
   'Androgen-Decline': 'A composition shift, not a storage location. Central fat up, lean mass down, chest filling via aromatisation. Drive, recovery and capacity slipping.',

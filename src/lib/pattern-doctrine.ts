@@ -49,7 +49,7 @@ export function isCanonicalPattern(v: unknown): v is CanonicalPattern {
 /** What each pattern means, for the prompt. Kept short: the CFFS reasons, this only names. */
 export const PATTERN_DEFINITIONS: Record<CanonicalPattern, string> = {
   'Stress-Stored':
-    'Sympathetic load is the organising force. Storage sits central and ANTERIOR — the front of the midsection and waist — while the limbs stay lean or thin out. That contrast is the discriminator. Waist changes track stress rather than intake, sleep is disrupted, appetite and energy swing with load. Effort goes in, the body holds because it is defending.',
+    'Sympathetic load is the organising force. Storage sits central and ANTERIOR — the front of the midsection and waist — while the limbs stay lean or look leaner. That contrast is how it is read, not a mechanism: no study shows cortisol taking fat off the limbs (see Fat_Map_Definitions_LOCKED v2.2). Waist changes track stress rather than intake, sleep is disrupted, appetite and energy swing with load. Effort goes in, the body holds because it is defending.',
   'Insulin-Drift':
     'Metabolic handling has drifted. Storage sits POSTERIOR AND FLANK — mid-back, lower back, love handles — plus deep abdominal fullness, with the front relatively spared. The discriminator is timing: afternoon crash, evening cravings, heavy for an hour after eating. Generalised surface softness is not the signal.',
   'Estrogen-Shift':
