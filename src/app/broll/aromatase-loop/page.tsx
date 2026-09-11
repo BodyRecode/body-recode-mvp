@@ -3,6 +3,22 @@
 import { ArrowRight, RotateCw } from 'lucide-react'
 
 /**
+ * ⚠ WITHDRAWN DOCTRINE, 11 Sep 2026. DO NOT RE-RENDER THIS AS IS.
+ *
+ * This canvas teaches the aromatase loop as self-reinforcing. That framing was
+ * withdrawn from 04_ANDROGEN_DECLINE on 4 Sep and from
+ * Fat_Map_Definitions_LOCKED at v2.2 on 11 Sep. The strong arm is adiposity
+ * lowering testosterone; the reverse arm is much weaker, and weight loss
+ * reverses the picture in proportion to the weight lost (Corona 2013,
+ * PMID 23482592, 24 studies, where the degree of weight lost was the best
+ * predictor of the testosterone rise). A relationship that reverts in
+ * proportion to its input is not a loop.
+ *
+ * The page is left in place because a rendered video already exists from it.
+ * Rewrite the copy and re-render before this is used again. The honest version
+ * is more useful anyway: it says the thing is reversible rather than
+ * self-perpetuating.
+ *
  * B-roll canvas: The aromatase self-reinforcing loop
  *
  * White canvas matching the other /broll explainer canvases. Screen-record

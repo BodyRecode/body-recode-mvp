@@ -123,8 +123,8 @@ function LessonDiagram({ week }: { week: number }) {
     </LessonFigure>
   )
   if (week === 3) return (
-    <LessonFigure eyebrow="The self-reinforcing loop" caption="Fat cells convert testosterone into oestrogen, which makes fat harder to lose - so the loop keeps running.">
-      <ChipFlow steps={['More body fat', 'More aromatase', 'Testosterone to oestrogen', 'Harder to lose fat']} loop />
+    <LessonFigure eyebrow="Which way this runs" caption="Carrying more fat lowers testosterone. It is not a runaway loop: losing fat raises it back, in proportion to what you lose.">
+      <ChipFlow steps={['More body fat', 'More aromatase', 'Testosterone drops', 'Lose fat, it comes back up']} />
     </LessonFigure>
   )
   if (week === 4) return (

@@ -122,7 +122,7 @@ export function leadDescriptor(profile: Profile, signals: ProfileSignals = {}): 
 
   switch (signals.storageDirection) {
     case 'gluteofemoral':
-      return `It sits on your hips, glutes and outer thighs, and it has stayed there. That is the most distinctive place fat sits out of all four patterns, and it is oestrogen doing what it is meant to do. It also means this is the slowest of the four to move, so cutting harder to speed it up mostly costs you muscle rather than buying you time. ${closer}`
+      return `It sits on your hips, glutes and outer thighs, and it has stayed there. That is the most distinctive place fat sits out of all four patterns, and it is oestrogen doing what it is meant to do. It is also slow to shift, so cutting harder to speed it up mostly costs you muscle rather than buying you time. ${closer}`
     case 'to_middle':
       return `You have told me it used to sit on your hips and thighs and it is moving to your middle. That movement is the signal, more than where it ends up, and muscle usually goes the same way even when the scale does not move. Which is why cutting hard is the wrong tool here: it takes fat off, and it takes more muscle with it than a steadier approach does. ${closer}`
     default:
@@ -135,7 +135,7 @@ export function leadDescriptor(profile: Profile, signals: ProfileSignals = {}): 
       //
       // Structured like Stress-Stored, which is the one that lands: somewhere
       // she can check, her lived experience, then the loop she is stuck in.
-      return `This is the one that sits on the hips, glutes and thighs, and for a lot of women it starts moving toward the middle over time. What used to work stops working, and that isn't discipline slipping. It is also the slowest of the four to shift, which is usually why the harder you've dieted the less it has felt worth it. ${closer}`
+      return `This is the one that sits on the hips, glutes and thighs, and for a lot of women it starts moving toward the middle over time. What used to work stops working, and that isn't discipline slipping. It is also slow to shift, which is usually why the harder you've dieted the less it has felt worth it. ${closer}`
   }
 }
 
