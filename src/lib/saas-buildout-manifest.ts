@@ -242,6 +242,62 @@ const READ_PHASES: Phase[] = [
       },
     ],
   },
+  {
+    id: 99,
+    title: 'Evidence for door 1',
+    description: 'What a platform actually buys. Instrument from the FIRST paying coach, not the twentieth.',
+    longDescription: [
+      'A platform does not buy a customer count. It buys proof you move the metric it gets paid on, which for a coaching platform is retention: their revenue is subscriptions and churn is the enemy. "Thirty coaches pay me $150 a month" proves some coaches will pay for it standalone. It does NOT prove that embedding it keeps their users subscribed longer, and only the second claim is worth money to them.',
+      'So: FIFTEEN COACHES WITH OUTCOME DATA BEATS SIXTY WITHOUT IT. This phase exists because that is a design decision with a deadline. Capture it from the first paying coach or arrive at the platform conversation with a headcount and no argument.',
+      'It is also the moat. The doctrine and the constraint layer are an argument, not a barrier — a platform with two engineers can build A read in six months. Proprietary longitudinal outcome data on real clients is what turns the argument into something that cannot be reproduced by writing code.',
+      'THE HARD LINE THAT MAKES THIS WORK: sell the read, never the coaching application, to anyone outside Kade’s own practice. A component gets embedded. A competitor gets locked out. This retires the Tier 2 "sell coaches the full coaching app later" idea — it is in direct conflict with door 1, and door 1 is worth more.',
+    ],
+    order: 4,
+    steps: [
+      {
+        id: 'evidence-did-the-read-land',
+        title: 'Did the read land',
+        description: 'A structured question to the coach after each read: did this tell you something you would have missed.',
+        status: 'planned',
+        effort: 'S',
+        notes: 'The cheapest and most important of the set. It is the only evidence obtainable from coach ONE, before any client outcome exists, and it is what the first ten conversations are really testing. Free text plus a scale so it can be counted as well as quoted.',
+      },
+      {
+        id: 'evidence-client-retention',
+        title: 'Client retention per coach',
+        description: 'How long a coach’s clients stay, tracked from the date the read was issued.',
+        status: 'planned',
+        effort: 'M',
+        notes: 'THE metric a platform buys. Needs a start date per client and a definition of churn that does not depend on the coach remembering to mark someone inactive. Meaningless without a pre-read baseline, so capture how long that coach’s clients used to stay at onboarding, before the read is ever run.',
+      },
+      {
+        id: 'evidence-adherence-delta',
+        title: 'Adherence before and after',
+        description: 'Check-in completion and logging rates, compared against the same clients before the read.',
+        status: 'planned',
+        effort: 'M',
+        notes: 'Second-strongest evidence and already half-collected: the weekly loop records this. What is missing is the comparison and the baseline.',
+      },
+      {
+        id: 'evidence-view',
+        title: 'The evidence view',
+        description: 'One page that assembles the above into something showable to a platform or an investor.',
+        status: 'planned',
+        effort: 'M',
+        blockedBy: 'evidence-client-retention',
+        notes: 'Aggregates only, no client named. Its job is to answer "what happened to the people whose coaches used this" in one screen, computed rather than typed, the same rule as the launch board.',
+      },
+      {
+        id: 'evidence-multi-coach',
+        title: 'Owner account across several coaches',
+        description: 'A studio owner who buys, adds and removes coaches, and sees across all their clients.',
+        status: 'planned',
+        effort: 'L',
+        blockedBy: 'evidence-view',
+        notes: 'A studio with six coaches is structurally a miniature platform: multiple practitioners, one owner account, one bill. Making that work IS the rehearsal for door 1, and three studios is better evidence than thirty solo coaches. Settle before selling one: when a coach leaves the studio, does the client’s read go with the coach or stay with the studio.',
+      },
+    ],
+  },
 ]
 
 /* Door 1 and the legal clock — both deliberately after the platform phases. */
