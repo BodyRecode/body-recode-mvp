@@ -97,10 +97,11 @@ const GROUPS: NavGroup[] = [
      * here from Settings at the same time: a board nobody can find is a board
      * nobody reads. */
     key: 'saas',
-    label: 'SaaS',
+    label: 'Product',
     items: [
-      { href: '/dashboard/saas', label: 'Launch', icon: Flag, exact: true },
-      { href: '/dashboard/settings/platform-buildout', label: 'Buildout', icon: Blocks },
+      { href: '/dashboard/saas', label: 'SaaS Launch', icon: Flag, exact: true },
+      { href: '/dashboard/settings/platform-buildout', label: 'Body Recode Build', icon: Blocks },
+      { href: '/dashboard/settings/coaching-buildout', label: 'Coaching Build', icon: Blocks },
     ],
   },
   {
