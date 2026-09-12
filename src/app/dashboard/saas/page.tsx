@@ -131,9 +131,9 @@ export default async function SaasLaunchPage() {
       <SectionLabel>Demand · the function nobody holds</SectionLabel>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
         <StatCard
-          label="Applications, all time"
+          label="Coach enquiries, all time"
           value={snap.applicationsTotal}
-          sub={snap.applicationsTotal === 0 ? 'Nobody has asked' : 'Since the page went live in July'}
+          sub="Via the Collective form. There is no Body Recode enquiry route"
           accent={snap.applicationsTotal > 0 ? 'teal' : 'red'}
           icon={Handshake}
         />
@@ -167,10 +167,15 @@ export default async function SaasLaunchPage() {
 
       <Card className="mb-8">
         <p className="text-[13px] text-[#4A5160] leading-relaxed mb-4 max-w-3xl">
-          Six functions run this business. You hold four of them, James will hold finance and
-          structure, Oliver holds legal. <strong className="text-[#141821]">Commercial has never
-          been staffed</strong> and it is the one the gate is waiting on. These are the people who
-          put their hand up and have not been answered.
+          Six functions run this business. You hold four of them, your accountant takes finance and
+          structure, your lawyer takes legal. <strong className="text-[#141821]">Commercial has
+          never been staffed</strong> and it is the one the gate is waiting on.
+          <br /><br />
+          <strong className="text-[#141821]">Read this list carefully.</strong> These people applied
+          through the Collective form, which is the Performance Coaching product white-labelled, not
+          the read. <strong className="text-[#141821]">There is no way at all for a coach to enquire
+          about Body Recode</strong> — no page, no form, no price. That is not a small gap. It means
+          the read has never been offered to anyone, so it has never been refused either.
         </p>
 
         {snap.applications.length === 0 ? (
