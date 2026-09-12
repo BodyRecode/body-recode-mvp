@@ -54,6 +54,7 @@ const SECTIONS = [
   { id: 'business-engine',  title: 'Business Engine',        colour: 'amber' as const, category: 'business' as Category },
   { id: 'ceo-dashboard',    title: 'CEO Dashboard - Scorecard', colour: 'amber' as const, category: 'business' as Category },
   { id: 'partner-room',     title: 'Partner Room',           colour: 'amber' as const, category: 'business' as Category },
+  { id: 'saas-launch',      title: 'SaaS Launch Board',      colour: 'amber' as const, category: 'business' as Category },
   { id: 'be-crm',           title: '23. CRM & Pipeline',     colour: 'amber' as const, category: 'business' as Category },
   { id: 'be-bookings',      title: '24. Bookings',           colour: 'amber' as const, category: 'business' as Category },
   { id: 'be-automations',   title: '25. Automations',        colour: 'amber' as const, category: 'business' as Category },
@@ -2898,6 +2899,22 @@ export default function HelpPage() {
             <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">The one rule</p>
             <p>Keep it vision-level. A link like this can be forwarded, so treat it like a nice business card, not a vault. Anything sensitive - Arete&apos;s regulated detail, real revenue or pricing - stays in person, never behind the link.</p>
             <p className="mt-3 text-sm text-[#666D7A]">Guest link format: <code className="bg-[#EFF1F4] px-1 rounded text-[#1056D6] text-[12.5px]">app.bodyrecode.au/room/&#123;token&#125;</code>. Data lives in the <code className="bg-[#EFF1F4] px-1 rounded text-[#1056D6] text-[12.5px]">partner_rooms</code> table.</p>
+          </Section>
+
+          <Section id="saas-launch" title="SaaS Launch Board - Is Anyone Actually Buying It" colour="amber">
+            <p>The SaaS is a separate business from the coaching practice, so it has its own group in the sidebar with two pages. They answer two different questions and should never be merged.</p>
+
+            <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">The two boards</p>
+            <p><strong>SaaS &rarr; Launch</strong> (<code className="bg-[#EFF1F4] px-1 rounded text-[#1056D6] text-[12.5px]">/dashboard/saas</code>) answers <em>is anybody buying it</em>. <strong>SaaS &rarr; Buildout</strong> answers <em>what has been built</em>. The buildout board has existed since 9 Sep but lived in Settings where nothing linked to it; it moved into the sidebar on 12 Sep. Build status stays on the buildout board and its manifest file stays the source of truth for that. Nothing on the Launch board is typed by hand.</p>
+
+            <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">Why every number is live</p>
+            <p>Each figure on the Launch board is counted from real rows the moment you open the page. That is deliberate. The public Collective page once said &ldquo;3 founding members admitted&rdquo; when the real number was zero, and a partner application sat unactioned for 26 days because nothing surfaced it. A board that reports its own status drifts; one that counts rows cannot. If a count fails, the page says so rather than showing a zero.</p>
+
+            <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">How to read it</p>
+            <p>The page is ordered as an argument. <strong>The gate</strong> sits at the top and is red until a coach who is not you has an account, measured as coach accounts other than your own. Then <strong>demand</strong>, showing every application and how many days it has waited. Then <strong>evidence the engine runs</strong>, then <strong>the company</strong> work pulled from the buildout manifest, then the documents.</p>
+            <p className="mt-3">Six functions run this business: founder, product, commercial, finance, legal and build. You hold four, your accountant holds finance and structure, your lawyer holds legal. <strong>Commercial has never been staffed</strong>, and it is the one the gate is waiting on. The page is built to make that uncomfortable rather than easy to scroll past.</p>
+
+            <Note><strong>The evidence figures are system numbers on purpose</strong> - assessments completed, plans generated, check-ins processed. Client counts and revenue stay off anything shown to an outsider. The client group exists to develop and validate the engine against real longitudinal data, not to be a revenue business, and a small revenue number anchors a reader low while proving nothing about whether the system works.</Note>
           </Section>
 
           <Section id="be-ads" title="32. Ads" colour="amber">

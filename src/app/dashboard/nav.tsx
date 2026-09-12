@@ -13,6 +13,7 @@ import {
   LayoutTemplate, Megaphone, BookOpen, BarChart3, Workflow, MessageSquare, Globe2,
   LayoutDashboard, Gauge, CalendarCheck, CreditCard, Clock, TrendingUp, Compass, Handshake,
   User, Users2,
+  Flag, Blocks,
   Rocket, BookMarked, Bot, LifeBuoy, ShieldCheck, Settings,
 } from 'lucide-react'
 
@@ -88,6 +89,18 @@ const GROUPS: NavGroup[] = [
       { href: '/dashboard/business/analytics', label: 'Analytics', icon: TrendingUp },
       { href: '/dashboard/business/strategy', label: 'Strategy', icon: Compass },
       { href: '/dashboard/partner-room', label: 'Partner Room', icon: Handshake },
+    ],
+  },
+  {
+    /* The SaaS is a separate business from the coaching practice, so it gets its
+     * own section rather than a page inside Business. The buildout board moved
+     * here from Settings at the same time: a board nobody can find is a board
+     * nobody reads. */
+    key: 'saas',
+    label: 'SaaS',
+    items: [
+      { href: '/dashboard/saas', label: 'Launch', icon: Flag, exact: true },
+      { href: '/dashboard/settings/platform-buildout', label: 'Buildout', icon: Blocks },
     ],
   },
   {
