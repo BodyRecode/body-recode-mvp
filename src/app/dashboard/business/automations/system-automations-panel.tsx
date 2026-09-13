@@ -485,7 +485,7 @@ const MANUAL_AUTOMATIONS = [
   },
   {
     id: 'send-commencement-fee',
-    name: 'Send Foundational Read Link',
+    name: 'Send Commencement Fee Link',
     description: 'Manually email a lead the $297 Stripe checkout link to start coaching. Auto-triggered on Path C in the Zoom companion, but can also be sent manually.',
     trigger: 'Click "Send to Client" under Coaching Entry, or Path C in Zoom companion',
     steps: 1,

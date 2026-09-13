@@ -32,7 +32,7 @@ export async function POST(
   // Block once the fee is recorded as paid (or the client is past that point).
   const PAID_STATUSES = ['commencement_fee_paid', 'active_deliberate_start', 'active_coaching']
   if (PAID_STATUSES.includes(lead.status)) {
-    return NextResponse.json({ error: 'Foundational Read is already paid for this lead.' }, { status: 400 })
+    return NextResponse.json({ error: 'The commencement fee is already paid for this lead.' }, { status: 400 })
   }
   if (!lead.email) return NextResponse.json({ error: 'No email address for this lead' }, { status: 400 })
 
@@ -46,8 +46,8 @@ export async function POST(
           currency: 'aud',
           unit_amount: 29700,
           product_data: {
-            name: 'Body Recode - Foundational Read',
-            description: 'One-time Foundational Read for Body Recode Performance Coaching.',
+            name: 'Body Recode - Coaching Commencement Fee',
+            description: 'Covers your initial read before coaching begins and your re-read at 12 weeks.',
           },
         },
         quantity: 1,
@@ -65,9 +65,9 @@ export async function POST(
   const firstName = lead.name.split(' ')[0]
   const resend = new Resend(process.env.RESEND_API_KEY)
 
-  const subject = `${firstName}, your $297 Foundational Read link`
+  const subject = `${firstName}, your coaching commencement fee`
 
-  const explainer = `Here is the $297 Foundational Read link to get started. This covers the full read I do on your body before coaching begins, so the program you start on is built around your actual state, not a template.`
+  const explainer = `Here is the link for your $297 coaching commencement fee. It covers two reads on your body: the initial read before we start, so your program is built around where your body actually is rather than a template, and a full re-read at 12 weeks to see what has changed and set up the next phase.`
 
   const sendResult = await resend.emails.send({
     from: fromCoach(),
@@ -83,22 +83,22 @@ export async function POST(
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;">
         <tr>
           <td bgcolor="#1B6DFC" style="background-color:#1B6DFC;border-radius:8px;">
-            <a href="${session.url}" style="display:inline-block;padding:14px 28px;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.02em;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Pay for your Foundational Read</a>
+            <a href="${session.url}" style="display:inline-block;padding:14px 28px;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.02em;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Pay your commencement fee</a>
           </td>
         </tr>
       </table>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">If anything comes up before you pay, reply to this email.</p>
       ${darkEmailSignature()}
       <p style="margin:20px 0 0;font-size:13px;color:#6B6B6B;line-height:1.5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Or copy this link: ${session.url}</p>
-`, { previewText: `${firstName}, your $297 Foundational Read link.` }),
+`, { previewText: `${firstName}, your coaching commencement fee link.` }),
   })
 
   await logLeadEvent({
     leadId: id,
     type: 'email_sent',
-    subject: 'Foundational Read link sent',
+    subject: 'Commencement fee link sent',
     resendEmailId: sendResult.data?.id,
-    notes: `Stripe session: ${session.id}. Mode: payment ($297 one-off). Link expires ${new Date(session.expires_at * 1000).toISOString()}.`,
+    notes: `Stripe session: ${session.id}. Mode: payment ($297 commencement fee). Link expires ${new Date(session.expires_at * 1000).toISOString()}.`,
     sentAt: new Date(),
   })
 

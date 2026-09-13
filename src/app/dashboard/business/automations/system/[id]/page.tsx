@@ -395,20 +395,20 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
 
   'send-commencement-fee': {
     id: 'send-commencement-fee',
-    name: 'Send Foundational Read Link',
+    name: 'Send Commencement Fee Link',
     description: 'Manually email a lead the $297 Stripe checkout link to commence coaching.',
     trigger: 'Click "Send to Client" under Coaching Entry on the lead detail page, OR Path C in the Zoom companion',
     triggerDetail: 'Auto-triggered when Path C - Proceeding is selected in the Zoom companion. Can also be sent manually from the lead profile if needed.',
     steps: [
       {
         day: 'Immediately on click',
-        subject: '{firstName}, your $297 Foundational Read link',
+        subject: '{firstName}, your coaching commencement fee',
         paragraphs: [
           'Hi {firstName},',
-          'Here is the $297 Foundational Read link to get started. This covers the full read I do on your body before coaching begins, so the program you start on is built around your actual state, not a template.',
+          'Here is the link for your $297 coaching commencement fee. It covers two reads on your body: the initial read before we start, so your program is built around where your body actually is rather than a template, and a full re-read at 12 weeks to see what has changed and set up the next phase.',
           'Once payment is in, your portal access, intake, and the first foundational steps unlock automatically.',
         ],
-        cta: 'Pay for your Foundational Read →',
+        cta: 'Pay your commencement fee →',
       },
     ],
   },

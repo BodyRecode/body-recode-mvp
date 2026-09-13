@@ -262,7 +262,7 @@ export default function HelpPage() {
               <div>
                 <p className="text-[12.5px] font-medium text-[#666D7A] mb-3">Phase 3 - Coaching Entry</p>
                 <div className="space-y-2">
-                  <ChecklistItem text="From the lead detail page, click Send to Client under Coaching Entry - this emails the $297 Foundational Read link directly" />
+                  <ChecklistItem text="From the lead detail page, click Send to Client under Coaching Entry - this emails the $297 commencement fee link directly. It covers the initial read and the 12-week re-read, and it is the only way to charge the fee: the old static Stripe commencement links were switched off on 14 Sep 2026" />
                   <ChecklistItem text="Wait for the payment notification email to confirm payment received" />
                   <ChecklistItem text="Client profile, welcome email, and intake link are all created automatically - no action needed" />
                 </div>
@@ -612,7 +612,7 @@ export default function HelpPage() {
             <ul className="space-y-1 list-disc list-inside text-[#43474F] text-sm">
               <li><strong>Path A - Declined</strong> - Updates status to Closed Declined.</li>
               <li><strong>Path B - Needs Time</strong> - Updates status to Zoom Completed.</li>
-              <li><strong>Path C - Proceeding</strong> - Pathway selector (Full Rate or Online), then the Foundational Read link can be sent immediately.</li>
+              <li><strong>Path C - Proceeding</strong> - Pathway selector (Full Rate or Online), then the commencement fee link can be sent immediately.</li>
             </ul>
 
             <Training title="What the Listen half is for">

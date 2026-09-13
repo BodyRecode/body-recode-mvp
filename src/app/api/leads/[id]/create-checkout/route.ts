@@ -26,7 +26,7 @@ export async function POST(
   // Allow when converted-but-unpaid; block once the fee is on the lead.
   const PAID_STATUSES = ['commencement_fee_paid', 'active_deliberate_start', 'active_coaching']
   if (PAID_STATUSES.includes(lead.status)) {
-    return NextResponse.json({ error: 'Foundational Read is already paid for this lead.' }, { status: 400 })
+    return NextResponse.json({ error: 'The commencement fee is already paid for this lead.' }, { status: 400 })
   }
 
   const session = await stripe.checkout.sessions.create({
@@ -39,8 +39,8 @@ export async function POST(
           currency: 'aud',
           unit_amount: 29700, // $297.00
           product_data: {
-            name: 'Body Recode - Foundational Read',
-            description: 'One-time Foundational Read for Body Recode Performance Coaching.',
+            name: 'Body Recode - Coaching Commencement Fee',
+            description: 'Covers your initial read before coaching begins and your re-read at 12 weeks.',
           },
         },
         quantity: 1,
