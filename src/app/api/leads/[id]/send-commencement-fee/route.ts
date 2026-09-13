@@ -47,7 +47,7 @@ export async function POST(
           unit_amount: 29700,
           product_data: {
             name: 'Body Recode - Coaching Commencement Fee',
-            description: 'Covers your initial read before coaching begins and your re-read at 12 weeks.',
+            description: 'Covers your onboarding and Foundational Read before coaching begins, and your Progress Check at 12 weeks.',
           },
         },
         quantity: 1,
@@ -67,7 +67,7 @@ export async function POST(
 
   const subject = `${firstName}, your coaching commencement fee`
 
-  const explainer = `Here is the link for your $297 coaching commencement fee. It covers two reads on your body: the initial read before we start, so your program is built around where your body actually is rather than a template, and a full re-read at 12 weeks to see what has changed and set up the next phase.`
+  const explainer = `Here is the link for your $297 coaching commencement fee. It covers your onboarding, which finishes with your Foundational Read, the full read I do on your body before we start so your program is built around where your body actually is, and your Progress Check at 12 weeks to see what has changed.`
 
   const sendResult = await resend.emails.send({
     from: fromCoach(),

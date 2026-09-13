@@ -405,7 +405,7 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
         subject: '{firstName}, your coaching commencement fee',
         paragraphs: [
           'Hi {firstName},',
-          'Here is the link for your $297 coaching commencement fee. It covers two reads on your body: the initial read before we start, so your program is built around where your body actually is rather than a template, and a full re-read at 12 weeks to see what has changed and set up the next phase.',
+          'Here is the link for your $297 coaching commencement fee. It covers your onboarding, which finishes with your Foundational Read, the full read I do on your body before we start so your program is built around where your body actually is, and your Progress Check at 12 weeks to see what has changed.',
           'Once payment is in, your portal access, intake, and the first foundational steps unlock automatically.',
         ],
         cta: 'Pay your commencement fee →',

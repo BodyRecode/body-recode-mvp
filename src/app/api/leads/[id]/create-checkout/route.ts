@@ -40,7 +40,7 @@ export async function POST(
           unit_amount: 29700, // $297.00
           product_data: {
             name: 'Body Recode - Coaching Commencement Fee',
-            description: 'Covers your initial read before coaching begins and your re-read at 12 weeks.',
+            description: 'Covers your onboarding and Foundational Read before coaching begins, and your Progress Check at 12 weeks.',
           },
         },
         quantity: 1,

@@ -70,7 +70,7 @@ export async function POST(
           unit_amount: 29700,
           product_data: {
             name: `${brand().name} - Coaching Commencement Fee`,
-            description: 'Covers your initial read before coaching begins and your re-read at 12 weeks.',
+            description: 'Covers your onboarding and Foundational Read before coaching begins, and your Progress Check at 12 weeks.',
           },
         },
         quantity: 1,
@@ -98,7 +98,7 @@ export async function POST(
         <img src="${logoUrl()}" width="130" alt="Body Recode" style="display:block;border:0;" />
       </div>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Here is the link for your $297 coaching commencement fee. It covers two reads on your body: the initial read before we start, so your program is built around where your body actually is rather than a template, and a full re-read at 12 weeks to see what has changed and set up the next phase.</p>
+      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Here is the link for your $297 coaching commencement fee. It covers your onboarding, which finishes with your Foundational Read, the full read I do on your body before we start so your program is built around where your body actually is, and your Progress Check at 12 weeks to see what has changed.</p>
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;">
         <tr>
           <td bgcolor="#1B6DFC" style="background-color:#1B6DFC;border-radius:8px;">
@@ -191,7 +191,7 @@ export async function PUT(
           unit_amount: 29700,
           product_data: {
             name: `${brand().name} - Coaching Commencement Fee`,
-            description: 'Covers your initial read before coaching begins and your re-read at 12 weeks.',
+            description: 'Covers your onboarding and Foundational Read before coaching begins, and your Progress Check at 12 weeks.',
           },
         },
         quantity: 1,
