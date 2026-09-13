@@ -14,11 +14,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { darkEmailSignature } from '@/lib/email-signature'
-import { fromCoach, darkEmailShell } from '@/lib/email-shell'
+import { buildCommencementFeeEmail } from '@/lib/commencement-fee-email'
+import { fromCoach } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
-import { logoUrl, brand } from '@/config/tenant'
+import { brand } from '@/config/tenant'
 import { createTenantAwareCheckoutSession } from '@/lib/tenant-stripe'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
 
@@ -88,28 +88,12 @@ export async function POST(
   const firstName = client.name.split(' ')[0]
   const resend = new Resend(process.env.RESEND_API_KEY)
 
-  const subject = `${firstName}, your coaching commencement fee`
+  const { subject, html } = buildCommencementFeeEmail({ firstName, checkoutUrl: session.url ?? '' })
   const sendResult = await resend.emails.send({
     from: fromCoach(),
     to: client.email,
     subject,
-    html: darkEmailShell(`
-      <div style="margin-bottom:40px;">
-        <img src="${logoUrl()}" width="130" alt="Body Recode" style="display:block;border:0;" />
-      </div>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Here is the link for your $297 coaching commencement fee. It covers your onboarding, which finishes with your Foundational Read, the full read I do on your body before we start so your program is built around where your body actually is, and your Progress Check at 12 weeks to see what has changed.</p>
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;">
-        <tr>
-          <td bgcolor="#1B6DFC" style="background-color:#1B6DFC;border-radius:8px;">
-            <a href="${session.url}" style="display:inline-block;padding:14px 28px;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.02em;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Pay your commencement fee</a>
-          </td>
-        </tr>
-      </table>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Any questions, reply to this email.</p>
-      ${darkEmailSignature()}
-      <p style="margin:20px 0 0;font-size:13px;color:#6B6B6B;line-height:1.5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Or copy this link: ${session.url}</p>
-`, { previewText: `${firstName}, your coaching commencement fee link.` }),
+    html,
   })
 
   await logClientCommunication(admin, {
