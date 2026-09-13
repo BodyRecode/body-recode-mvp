@@ -529,7 +529,7 @@ const MANUAL_AUTOMATIONS = [
   {
     id: 'supplementary-intake-email',
     name: 'Supplementary Intake Nudge (one-off extra)',
-    description: 'The canonical "one-off extra" — emails the client the supplementary intake link on top of the system\'s default portal-only delivery. BCCs the coach so they have a copy in their inbox.',
+    description: 'The canonical "one-off extra" — emails the client the supplementary intake link on top of the system\'s default portal-only delivery. BCCs the coach so they have a copy in their inbox. The form asks only what that client has not answered (hormonal status, and/or medications and diet), and the coach notification on submit carries the same Needs attention alerts as the intake email.',
     trigger: 'Click "Email link" on the Updates → Supplementary intake row, OR run scripts/send-supplementary-intake-email.mjs',
     steps: 1,
   },

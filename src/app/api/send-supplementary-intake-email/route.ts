@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
 
   const firstName = client.name.split(' ')[0]
   const supplementUrl = `${appUrl()}/intake-supplement/${invitation.token}`
-  const subject = `${firstName}, a quick follow-up intake (3 minutes)`
+  const subject = `${firstName}, a quick follow-up intake`
 
   const resend = new Resend(process.env.RESEND_API_KEY)
   const sendResult = await resend.emails.send({
@@ -87,12 +87,12 @@ export async function POST(request: NextRequest) {
         <img src="${logoUrl()}" width="130" alt="Body Recode" style="display:block;border:0;" />
       </div>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Since you completed your original intake I've added five short follow-up questions covering medications and dietary context. They feed straight into your Foundational Reading and program, so the next iteration is built on the most accurate picture of where you actually are.</p>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 28px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">It's about three minutes. The form picks up where you left off if you have to step away mid-way.</p>
+      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Since you completed your original intake I've added a few questions. The form only asks the ones you haven't answered yet. They feed straight into your read, so the next one is built on the most accurate picture of where you actually are.</p>
+      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 28px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">It takes a few minutes at most. The form picks up where you left off if you have to step away mid-way.</p>
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;">
         <tr>
           <td bgcolor="#1B6DFC" style="background-color:#1B6DFC;border-radius:8px;">
-            <a href="${supplementUrl}" style="display:inline-block;padding:14px 28px;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.02em;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Complete the 5 questions</a>
+            <a href="${supplementUrl}" style="display:inline-block;padding:14px 28px;color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.02em;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Answer the follow-up questions</a>
           </td>
         </tr>
       </table>

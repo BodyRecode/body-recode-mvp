@@ -89,17 +89,17 @@ function darkEmailSignature() {
   return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" bgcolor="#0a0a0a" style="background-color:#0a0a0a;margin-top:32px;border-top:1px solid #1c1917;width:100%;"><tr><td bgcolor="#0a0a0a" style="background-color:#0a0a0a;padding:24px 16px 0 0;vertical-align:middle;width:64px;"><img src="https://bodyrecode.au/kade.jpg" width="48" height="48" style="border-radius:50%;display:block;object-fit:cover;object-position:top;border:0;" alt="Kade Dunstone" /></td><td bgcolor="#0a0a0a" style="background-color:#0a0a0a;padding-top:24px;vertical-align:middle;"><p style="margin:0;font-size:14px;font-weight:600;color:#ffffff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Kade Dunstone</p><p style="margin:2px 0 0;font-size:13px;color:#a8a29e;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Performance Coach · Body Recode</p><a href="https://performance.bodyrecode.au" style="font-size:12px;color:#a8a29e;text-decoration:none;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">performance.bodyrecode.au</a></td></tr></table>`
 }
 
-const subject = `${firstName}, a quick follow-up intake (3 minutes)`
+const subject = `${firstName}, a quick follow-up intake`
 const html = darkEmailShell(`
       <div style="margin-bottom:40px;"><img src="https://bodyrecode.au/logo-teal.png" width="130" alt="Body Recode" style="display:block;border:0;" /></div>
       <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
-      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Since you completed your original intake I've added five short follow-up questions covering medications and dietary context. They feed straight into your Foundational Reading and program, so the next iteration is built on the most accurate picture of where you actually are.</p>
+      <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Since you completed your original intake I've added a few questions. The form only asks the ones you haven't answered yet. They feed straight into your read, so the next one is built on the most accurate picture of where you actually are.</p>
       <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 28px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">It's about three minutes. The form picks up where you left off if you have to step away mid-way.</p>
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;"><tr><td bgcolor="#10E1C2" style="background-color:#10E1C2;border-radius:8px;"><a href="${supplementUrl}" style="display:inline-block;padding:14px 28px;color:#000000;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.02em;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Complete the 5 questions</a></td></tr></table>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;"><tr><td bgcolor="#10E1C2" style="background-color:#10E1C2;border-radius:8px;"><a href="${supplementUrl}" style="display:inline-block;padding:14px 28px;color:#000000;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.02em;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Answer the follow-up questions</a></td></tr></table>
       <p style="font-size:15px;color:#cfcfcf;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Anything come up while you're filling it in, reply to this email.</p>
       ${emailUrlFallback(supplementUrl, 'Or paste this link into your browser')}
       ${darkEmailSignature()}
-`, { previewText: `${firstName}, five quick follow-up questions for your intake.` })
+`, { previewText: `${firstName}, a few quick follow-up questions for your intake.` })
 
 // Mirrors COACH_BCC in src/lib/email-shell.ts. CLI scripts can't import
 // the TS module, so the address is duplicated here. Override with

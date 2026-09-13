@@ -3,6 +3,12 @@
 import { useState } from 'react'
 import { useFormDraft } from '@/lib/use-form-draft'
 import { brand } from "@/config/tenant";
+import { INTAKE_SECTIONS, isQuestionVisible, type Question } from '@/lib/intake-questions'
+import type { SupplementaryBlocks } from '@/lib/supplementary-blocks'
+
+// The intake's own Hormonal Status questions, so the follow-up can never ask
+// them differently from the intake.
+const HORMONAL_QUESTIONS: Question[] = INTAKE_SECTIONS.find(sec => sec.id === 'hormonal')?.questions ?? []
 
 interface Initial {
   medications: string
@@ -19,8 +25,12 @@ interface Initial {
 interface Props {
   token: string
   clientName: string
+  blocks: SupplementaryBlocks
   initial: Initial
 }
+
+// Initial (meds + diet) plus the hormonal answers, keyed by intake question id.
+type FormState = Initial & Record<string, string>
 
 const QUESTIONS: Array<{
   id: keyof Initial
@@ -84,12 +94,15 @@ const QUESTIONS: Array<{
   },
 ]
 
-type Draft = { formData: Initial }
+type Draft = { formData: FormState }
 
-export default function SupplementForm({ token, clientName, initial }: Props) {
-  const [draft, setDraft, clearDraft] = useFormDraft<Draft>(`intake-supplement:${token}`, { formData: initial })
+export default function SupplementForm({ token, clientName, blocks, initial }: Props) {
+  const [draft, setDraft, clearDraft] = useFormDraft<Draft>(`intake-supplement:${token}`, { formData: initial as FormState })
   const formData = draft.formData
-  const setFormData = (next: Initial | ((p: Initial) => Initial)) =>
+  const value = (id: string) => (typeof formData[id] === 'string' ? formData[id] : '')
+  const medsDietQuestions = blocks.medsDiet ? QUESTIONS : []
+  const hormonalVisible = blocks.hormonal ? HORMONAL_QUESTIONS.filter(q => isQuestionVisible(q, formData)) : []
+  const setFormData = (next: FormState | ((p: FormState) => FormState)) =>
     setDraft(prev => ({ ...prev, formData: typeof next === 'function' ? next(prev.formData) : next }))
 
   const [submitting, setSubmitting] = useState(false)
@@ -97,7 +110,7 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
   const [error, setError] = useState('')
   const [errors, setErrors] = useState<Set<string>>(new Set())
 
-  function setValue(id: keyof Initial, value: string) {
+  function setValue(id: string, value: string) {
     setFormData(prev => ({ ...prev, [id]: value }))
     if (errors.has(id)) {
       setErrors(prev => {
@@ -108,8 +121,15 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
     }
   }
 
+  function missingIds(): string[] {
+    return [
+      ...hormonalVisible.filter(q => q.required && !value(q.id).trim()).map(q => q.id),
+      ...medsDietQuestions.filter(q => q.required && !value(q.id).trim()).map(q => q.id),
+    ]
+  }
+
   function validate(): boolean {
-    const missing = QUESTIONS.filter(q => q.required && !formData[q.id].trim()).map(q => q.id)
+    const missing = missingIds()
     setErrors(new Set(missing))
     return missing.length === 0
   }
@@ -119,9 +139,9 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
     if (!validate()) {
       setError('Please answer all required questions.')
       // Scroll to first missing question
-      const first = QUESTIONS.find(q => q.required && !formData[q.id].trim())
+      const first = missingIds()[0]
       if (first) {
-        document.getElementById(`q-${first.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        document.getElementById(`q-${first}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
       }
       return
     }
@@ -167,13 +187,63 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
           <p className="text-[11px] font-bold text-[#1B6DFC] uppercase tracking-[0.2em] mb-2">Follow-up Intake</p>
           <h1 className="text-2xl font-semibold text-[#141821] mb-3">Hi {clientName.split(' ')[0]}, just a few more questions.</h1>
           <p className="text-[#666D7A] text-sm leading-relaxed">
-            We have added a few questions to the intake since you completed yours, covering medications and dietary context. They feed directly into how your program and nutrition plan are built. About 3 minutes. As with the original intake, there are no right or wrong answers, just answer honestly.
+            We have added a few questions to the intake since you completed yours{blocks.hormonal && !blocks.medsDiet ? ', about your hormonal status' : blocks.hormonal ? ', about your hormonal status, medications and diet' : ', about medications and diet'}. They help us read your body properly. {blocks.medsDiet ? 'About 3 minutes.' : 'About a minute.'} As with the original intake, there are no right or wrong answers, just answer honestly.
           </p>
         </div>
 
-        {/* Questions */}
+        {/* Hormonal status: the intake's own questions, conditional exactly as there */}
+        {hormonalVisible.length > 0 && (
+          <div className="space-y-8 mb-8">
+            <p className="text-[13px] text-[#666D7A] leading-relaxed">Some of how the body stores fat depends on hormones, and these help us read that properly. Some questions only appear when they apply to you.</p>
+            {hormonalVisible.map(q => {
+              const hasError = errors.has(q.id)
+              return (
+                <div key={q.id} id={`q-${q.id}`}>
+                  <p className={`text-[15px] font-medium mb-3 leading-snug ${hasError ? 'text-[#C82626]' : 'text-[#141821]'}`}>
+                    {q.text}
+                    {q.required && <span className="text-[#1B6DFC] ml-1">*</span>}
+                  </p>
+                  {q.type === 'select' ? (
+                    <div className="space-y-2.5">
+                      {q.options?.map(opt => {
+                        const on = value(q.id) === opt
+                        return (
+                          <button
+                            key={opt}
+                            type="button"
+                            aria-pressed={on}
+                            onClick={() => setValue(q.id, opt)}
+                            className={`w-full text-left text-[15px] leading-snug px-4 py-3.5 min-h-[54px] rounded-2xl border-2 transition-colors ${
+                              on
+                                ? 'bg-[rgba(27,109,252,0.07)] border-[#1B6DFC] text-[#141821] font-medium'
+                                : hasError
+                                  ? 'bg-white border-[#EFAFAF] text-[#43474F]'
+                                  : 'bg-white border-[#E8EAEE] text-[#43474F] hover:border-[#B9D0FD]'
+                            }`}
+                          >
+                            {opt}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  ) : (
+                    <textarea
+                      value={value(q.id)}
+                      onChange={e => setValue(q.id, e.target.value)}
+                      rows={3}
+                      placeholder="Your answer..."
+                      className={`w-full bg-[#EFF1F4] rounded-2xl px-4 py-3.5 text-[15px] text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 resize-none transition-all border ${hasError ? 'border-[#DC2626]/50' : 'border-[#EFF1F4]'}`}
+                    />
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        )}
+
+        {/* Medications and diet */}
         <div className="space-y-8">
-          {QUESTIONS.map(q => {
+          {medsDietQuestions.map(q => {
             const hasError = errors.has(q.id)
             return (
               <div key={q.id} id={`q-${q.id}`}>
@@ -187,7 +257,7 @@ export default function SupplementForm({ token, clientName, initial }: Props) {
                   <p className="text-[13px] text-[#666D7A] leading-relaxed mb-3">{q.hint}</p>
                 )}
                 <textarea
-                  value={formData[q.id]}
+                  value={value(q.id)}
                   onChange={e => setValue(q.id, e.target.value)}
                   rows={4}
                   placeholder="Your answer..."

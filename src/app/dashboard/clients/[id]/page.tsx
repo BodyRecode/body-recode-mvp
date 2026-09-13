@@ -284,7 +284,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   // flag pointing toward a hormonal-shift pattern + a panel/GP. Non-diagnostic.
   const { data: fatMapIntake } = await admin
     .from('intakes')
-    .select('fat_map_responses, gender, pregnant_or_postpartum, androgen_use')
+    .select('fat_map_responses, gender, pregnant_or_postpartum, androgen_use, sex_at_birth')
     .eq('client_id', id)
     .order('submitted_at', { ascending: false })
     .limit(1)
@@ -977,9 +977,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   )}
                 </div>
               ) : (
-                <p className="text-[12.5px] text-[#98A0AD]">Not sent yet — adds a 9-question follow-up card (meds + dietary/consumption) to the client&apos;s portal.</p>
+                <p className="text-[12.5px] text-[#98A0AD]">Not sent yet — adds a follow-up card to the client&apos;s portal asking only what they have not answered.</p>
               )}
-              {latestSupplementaryInvitation?.status === 'complete' && (
+              {fatMapIntake && !fatMapIntake.sex_at_birth && latestSupplementaryInvitation?.status !== 'pending' && (
+                <p className="text-[12px] text-[#A96A12] mt-1.5">No hormonal status on file. Send a fresh follow-up and it will ask only those questions (about a minute).</p>
+              )}
+              {latestSupplementaryInvitation?.status === 'complete' && fatMapIntake?.sex_at_birth && (
                 <p className="text-[11px] text-[#98A0AD] mt-1">Need to update meds or dietary context again? Send a fresh one.</p>
               )}
             </div>

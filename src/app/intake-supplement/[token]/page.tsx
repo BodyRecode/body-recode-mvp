@@ -1,11 +1,18 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import SupplementForm from './supplement-form'
+import { supplementaryBlocks } from '@/lib/supplementary-blocks'
 import { brand } from "@/config/tenant";
 
 /**
  * Supplementary intake form. Asks only the questions added to the intake
- * AFTER the client originally submitted. Currently five fields:
+ * AFTER the client originally submitted, and since 2026-09-13 only the blocks
+ * THIS client is missing (see lib/supplementary-blocks.ts). Two blocks:
+ *
+ * Hormonal status: the intake's Hormonal Status section, verbatim, written to
+ * the latest intake row.
+ *
+ * Medications and diet:
  *
  *   1. medications              (longitudinal -> clients.medications)
  *   2. dietary_restrictions     (per-intake  -> intakes.dietary_restrictions)
@@ -68,16 +75,19 @@ export default async function SupplementaryIntakePage({
 
   const { data: latestIntake } = await admin
     .from('intakes')
-    .select('id, dietary_restrictions, dietary_preferences, typical_day_eating, meals_per_day, fluid_intake, caffeine_intake, alcohol_intake, eating_context')
+    .select('id, dietary_restrictions, dietary_preferences, typical_day_eating, meals_per_day, fluid_intake, caffeine_intake, alcohol_intake, eating_context, sex_at_birth')
     .eq('client_id', invitation.client_id)
     .order('submitted_at', { ascending: false })
     .limit(1)
     .maybeSingle()
 
+  const blocks = supplementaryBlocks(latestIntake, client.medications)
+
   return (
     <SupplementForm
       token={token}
       clientName={client.name}
+      blocks={blocks}
       initial={{
         medications: client.medications ?? '',
         dietary_restrictions: latestIntake?.dietary_restrictions ?? '',

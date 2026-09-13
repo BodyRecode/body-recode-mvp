@@ -607,9 +607,9 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             >
               <div className="flex items-center justify-between gap-4">
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold text-[#141821] mb-1">5 follow-up questions</p>
+                  <p className="text-sm font-semibold text-[#141821] mb-1">A few follow-up questions</p>
                   <p className="text-xs text-[#666D7A] leading-relaxed">
-                    A few new questions have been added since you completed your original intake — covering medications and dietary context. About 3 minutes.
+                    A few new questions have been added since you completed your original intake. You will only be asked the ones you have not answered. A few minutes at most.
                   </p>
                 </div>
                 <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">Start →</span>
