@@ -92,7 +92,7 @@ const READ_PHASES: Phase[] = [
         status: 'planned',
         effort: 'M',
         blockedBy: 'read-takes-answers-directly',
-        notes: 'The intake is 230 questions across 11 sections (call getTotalQuestions(), never quote it) and the ONLY missing-data handling anywhere is one line about absent photos. No other company will put their clients through 230 questions, so this is the gate on both front doors. Design to the tightest constraint (an embedded host with ~20 fields) and the coach and consumer paths come free.',
+        notes: 'The intake is 234 questions across 11 sections as of 13 Sep 2026 — and this note previously said 230 while telling the reader never to quote the number, which is the whole point of the rule: call getTotalQuestions(). The ONLY missing-data handling anywhere is one line about absent photos. No other company will put their clients through 234 questions, so this is the gate on both front doors. Design to the tightest constraint (an embedded host with ~20 fields) and the coach and consumer paths come free.',
       },
       {
         id: 'read-usable-by-stranger',
