@@ -1,8 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function DownsellButton({ leadId, alreadyPurchased }: { leadId: string; alreadyPurchased?: boolean }) {
+  const router = useRouter()
   const [copying, setCopying] = useState(false)
   const [copied, setCopied] = useState(false)
   const [sending, setSending] = useState(false)
@@ -36,6 +38,7 @@ export default function DownsellButton({ leadId, alreadyPurchased }: { leadId: s
     const data = await res.json()
     if (data.sent) {
       setSent(true)
+      router.refresh()
       setTimeout(() => setSent(false), 3000)
     } else {
       setError(data.error ?? 'Failed to send email')
@@ -60,14 +63,14 @@ export default function DownsellButton({ leadId, alreadyPurchased }: { leadId: s
           disabled={sending || sent}
           className="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-50"
         >
-          {sending ? 'Sending...' : sent ? 'Email Sent' : 'Send Offer Email'}
+          {sending ? 'Sending...' : sent ? 'Email Sent' : 'Send offer email'}
         </button>
         <button
           onClick={copyLink}
           disabled={copying || copied}
           className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 border border-[#E8EAEE] text-[#43474F] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] transition-colors disabled:opacity-50"
         >
-          {copying ? 'Generating...' : copied ? 'Copied!' : 'Copy Link'}
+          {copying ? 'Generating...' : copied ? 'Copied!' : 'Copy offer link'}
         </button>
       </div>
     </div>

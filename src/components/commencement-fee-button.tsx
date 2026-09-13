@@ -99,7 +99,7 @@ export default function CommencementFeeButton({
           disabled={copying || copied || paid}
           className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 border border-[#E8EAEE] text-[#43474F] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] transition-colors disabled:opacity-50"
         >
-          {copying ? 'Generating...' : copied ? 'Copied!' : 'Copy Link'}
+          {copying ? 'Generating...' : copied ? 'Copied!' : 'Copy fee link'}
         </button>
       </div>
       <p className={`text-[12px] leading-relaxed ${toneClass}`}>{status.text}</p>

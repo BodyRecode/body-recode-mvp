@@ -5,16 +5,10 @@ import { formatDate, getLeadStatusLabel, getLeadStatusColour, getLeadSourceLabel
 import LeadActions from './lead-actions'
 import LeadDangerActions from './lead-danger-actions'
 import EditContact from './edit-contact'
-import ConvertButton from './convert-button'
-import CancelSequenceButton from './cancel-sequence-button'
 import PreCallRead from './pre-call-read'
 import LeadTabs, { type LeadTab } from './lead-tabs'
+import LeadActionsTab from './lead-actions-tab'
 import CopyField from './copy-field'
-import NoShowSequenceButton from '@/components/noshow-sequence-button'
-import Zoom1DeclinedButton from '@/components/zoom1-declined-button'
-import CommencementFeeButton from '@/components/commencement-fee-button'
-import DownsellButton from '@/components/downsell-button'
-import BookingActionButtons from '@/components/booking-action-buttons'
 import Link from 'next/link'
 import { MONO_FONT, Avatar } from '@/components/dashboard/ui'
 import { buildLeadBrief } from '@/lib/lead-brief'
@@ -110,7 +104,8 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       : Promise.resolve({ data: null }),
   ])
 
-  const nextBooking = (bookings ?? []).find(b => b.status === 'scheduled' && new Date(b.scheduled_at).getTime() > Date.now())
+  const now = Date.now()
+  const nextBooking = (bookings ?? []).find(b => b.status === 'scheduled' && new Date(b.scheduled_at).getTime() > now)
     ?? (bookings ?? []).find(b => b.status === 'scheduled')
 
   const { brief, supplement, prepNotes, scopeFlags, summary, isStoredFallback } = buildLeadBrief(
@@ -124,19 +119,6 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   const sections = lead.scorecard_section_scores as Record<string, number> | null
   const checkInAnswers = lead.check_in_answers as Record<string, number> | null
 
-  // Every commencement fee link emailed to this lead, newest first. Both
-  // subjects count: the event was logged as "Foundational Read link sent"
-  // until 14 Sep 2026. Shown under the Send to Client button so the coach can
-  // see what has already happened without opening the timeline. That line was
-  // dropped by accident in the 12 Aug lead page rebuild.
-  const feeSends = (events ?? []).filter(e =>
-    e.type === 'email_sent' && (e.subject === 'Commencement fee link sent' || e.subject === 'Foundational Read link sent'))
-  const lastFeeSend = feeSends[0] ?? null
-  const feeLinkExpiresAt = lastFeeSend
-    ? (String(lastFeeSend.notes ?? '').match(/Link expires (\S+?)\.?$/)?.[1]
-        ?? new Date(new Date(lastFeeSend.sent_at).getTime() + 24 * 36e5).toISOString())
-    : null
-  const feePaid = ['commencement_fee_paid', 'active_deliberate_start', 'active_coaching'].includes(lead.status)
 
   // ── Command bar ──────────────────────────────────────────────────────
   const commandBar = (
@@ -438,50 +420,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
     id: 'actions',
     label: 'Actions',
     content: (
-      <div className="space-y-4">
-        <Card>
-          <CardTitle>Booking</CardTitle>
-          <BookingActionButtons leadId={lead.id} leadName={lead.name} leadEmail={lead.email ?? undefined} hasZoomDate={!!lead.zoom_1_date || !!nextBooking} />
-          {bookings && bookings.length > 0 && (
-            <div className="mt-4 pt-3 border-t border-[#E8EAEE] space-y-1.5">
-              {bookings.map(b => (
-                <div key={b.id} className="flex items-center justify-between text-[12px]">
-                  <span className="text-[#43474F]">{bne(b.scheduled_at)} · {b.duration_minutes} min</span>
-                  <span className={b.status === 'scheduled' ? 'text-[#1B6DFC] font-semibold' : 'text-[#98A0AD]'}>{b.status}</span>
-                </div>
-              ))}
-            </div>
-          )}
-        </Card>
-
-        <Card>
-          <CardTitle>Coaching entry</CardTitle>
-          <div className="flex flex-wrap gap-2">
-            <ConvertButton leadId={lead.id} leadName={lead.name} alreadyConverted={!!lead.converted_to_client_id} clientId={lead.converted_to_client_id} />
-            <CommencementFeeButton
-              leadId={lead.id}
-              email={lead.email ?? null}
-              paid={feePaid}
-              lastSentAt={lastFeeSend?.sent_at ?? null}
-              linkExpiresAt={feeLinkExpiresAt}
-              timesSent={feeSends.length}
-            />
-            <DownsellButton leadId={lead.id} alreadyPurchased={!!lead.downsell_purchased} />
-          </div>
-        </Card>
-
-        <Card>
-          <CardTitle>Sequences</CardTitle>
-          <div className="flex flex-wrap gap-2">
-            <NoShowSequenceButton leadId={lead.id} />
-            <Zoom1DeclinedButton leadId={lead.id} />
-            <CancelSequenceButton leadId={lead.id} />
-          </div>
-          <p className="text-[11px] text-[#98A0AD] mt-3 leading-relaxed">
-            No-show re-engagement only applies once the status is Closed - No Show. Cancel stops any scheduled follow-up emails.
-          </p>
-        </Card>
-      </div>
+      <LeadActionsTab lead={lead} events={events ?? []} bookings={bookings ?? []} now={now} />
     ),
   })
 

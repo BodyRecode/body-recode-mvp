@@ -1,3 +1,4 @@
+import { logLeadEvent } from '@/lib/log-lead-event'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { Resend } from 'resend'
@@ -37,6 +38,12 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
     .from('leads')
     .update({ followup_email_ids: null })
     .eq('id', id)
+
+  await logLeadEvent({
+    leadId: id,
+    type: 'followup_cancelled',
+    subject: `Follow-up emails cancelled (${cancelled} of ${emailIds.length} still scheduled)`,
+  })
 
   return NextResponse.json({ cancelled })
 }

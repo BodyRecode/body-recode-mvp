@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-export default function CancelSequenceButton({ leadId }: { leadId: string }) {
+export default function CancelSequenceButton({ leadId, hasScheduled }: { leadId: string; hasScheduled: boolean }) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
@@ -25,8 +25,8 @@ export default function CancelSequenceButton({ leadId }: { leadId: string }) {
   return (
     <button
       onClick={handleClick}
-      disabled={loading}
-      className="text-[12.5px] text-[#98A0AD] hover:text-[#C82626] transition-colors disabled:opacity-50"
+      disabled={loading || !hasScheduled}
+      className="text-[12.5px] text-[#98A0AD] hover:text-[#C82626] transition-colors disabled:opacity-40 disabled:hover:text-[#98A0AD]"
     >
       {loading ? 'Cancelling…' : 'Cancel follow-up sequence'}
     </button>

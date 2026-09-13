@@ -262,7 +262,7 @@ export default function HelpPage() {
               <div>
                 <p className="text-[12.5px] font-medium text-[#666D7A] mb-3">Phase 3 - Coaching Entry</p>
                 <div className="space-y-2">
-                  <ChecklistItem text="From the lead detail page, click Send to Client under Coaching Entry - this emails the $297 commencement fee link directly. It covers onboarding, which finishes with the Foundational Read, and the Progress Check at 12 weeks, and it is the only way to charge the fee: the old static Stripe commencement links were switched off on 14 Sep 2026" />
+                  <ChecklistItem text="From the lead detail page, on the Actions tab, under After the call → starting coaching, click Send to Client - this emails the $297 commencement fee link directly. It covers onboarding, which finishes with the Foundational Read, and the Progress Check at 12 weeks, and it is the only way to charge the fee: the old static Stripe commencement links were switched off on 14 Sep 2026" />
                   <ChecklistItem text="The line under the buttons says what has happened: not sent yet, emailed to which address and when, until when the payment link works (24 hours), how many times it has been sent, or paid. Copy Link does not email anyone and is not recorded there" />
                   <ChecklistItem text="Wait for the payment notification email to confirm payment received" />
                   <ChecklistItem text="Client profile, welcome email, and intake link are all created automatically - no action needed" />
@@ -534,7 +534,7 @@ export default function HelpPage() {
             <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">Self-Guided Program (Downsell)</p>
             <p>Any lead with scorecard data will show a <strong>Self-Guided Program</strong> section on their detail page. This shows whether they have purchased the $97 program and lets you manually send the offer or copy the checkout link.</p>
             <ul className="space-y-1 list-disc list-inside text-[#43474F] text-sm mt-1">
-              <li><strong>Send Offer Email</strong> - creates a Stripe checkout session and sends a branded offer email immediately. Use this if you want to send the offer outside of the automated flow.</li>
+              <li><strong>Send offer email</strong> (Actions tab, under Not ready yet) - creates a Stripe checkout session and sends a branded offer email immediately. Use this if you want to send the offer outside of the automated flow.</li>
               <li><strong>Copy Link</strong> - copies the Stripe checkout URL to clipboard without sending an email.</li>
               <li>If the lead has already purchased, a <strong>Program purchased</strong> badge shows instead of the buttons.</li>
             </ul>
@@ -634,7 +634,7 @@ export default function HelpPage() {
 
           {/* Section 3 */}
           <Section id="coaching-entry" title="3. Coaching Entry" colour="teal">
-            <p>From the lead detail page, the Coaching Entry section has two paths — fee-first (default) or convert-first (manual override):</p>
+            <p>On the lead&apos;s <strong>Actions</strong> tab (rebuilt 14 Sep 2026), everything is in the order it happens: <strong>Book the call</strong>, then <strong>After the call</strong> with three outcomes (starting coaching, not ready yet, didn&apos;t show up), then <strong>Stop follow-up emails</strong>. The outcome that matches where the lead is gets a blue outline. Every button has a line under it saying what has already been done and when. Starting coaching has two paths — fee-first (default) or convert-first (manual override):</p>
 
             <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">Path A — fee first (default, recommended)</p>
             <ul className="space-y-1 list-disc list-inside text-[#43474F] text-sm">
@@ -1459,7 +1459,7 @@ export default function HelpPage() {
             </div>
 
             <p className="font-semibold text-[#141821] mt-4">No-Show Re-engagement Sequence (manual trigger)</p>
-            <p>Does not fire automatically. To trigger it: set the lead status to <strong>Closed - No Show</strong>, save, then click <strong>Start Re-engagement Sequence</strong> on the lead detail page. The button only appears when the status is Closed - No Show.</p>
+            <p>Does not fire automatically. To trigger it: set the lead status to <strong>Closed - No Show</strong>, save, then click <strong>Start re-engagement emails</strong> on the lead&apos;s Actions tab. The button shows whatever the status is, so set Closed - No Show first; nothing stops it running early.</p>
             <div className="space-y-1">
               <SeqRow day="Next morning 9am" label="Missed you - door left open, rebook when ready" />
               <SeqRow day="Day 4" label="Still here - patterns from your report worth talking through" />
@@ -1467,7 +1467,7 @@ export default function HelpPage() {
             </div>
 
             <p className="font-semibold text-[#141821] mt-4">Zoom 1 Declined Follow-up Sequence (manual trigger)</p>
-            <p>Does not fire automatically. To trigger it: set the lead status to <strong>Closed - Declined</strong>, save, then click <strong>Start Declined Follow-up</strong> on the lead detail page. The $97 self-guided program offer fires automatically as part of this sequence - no second action needed.</p>
+            <p>Does not fire automatically. To trigger it: set the lead status to <strong>Closed - Declined</strong>, save, then click <strong>Start declined follow-up emails</strong> on the lead&apos;s Actions tab. The $97 self-guided program offer fires automatically as part of this sequence - no second action needed.</p>
             <div className="space-y-1">
               <SeqRow day="Next morning 9am" label="Good speaking - timing understood, door stays open" />
               <SeqRow day="Day 5" label="Still here if the timing changes" />
@@ -2653,8 +2653,8 @@ export default function HelpPage() {
             <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">Manual Triggers</p>
             <p>These require a judgement call from you. Set the lead status first, save, then the trigger button appears on the lead detail page.</p>
             <StatusList items={[
-              { label: 'No-show Re-engagement', desc: 'Set status to Closed - No Show → save → click Start Re-engagement Sequence on the lead page. 3 emails: Day 1, Day 4, Day 10.' },
-              { label: 'Zoom 1 Declined Follow-up', desc: 'Set status to Closed - Declined → save → click Start Declined Follow-up on the lead page. 3 emails: Day 1, Day 5, Day 12. The $97 downsell offer fires automatically alongside it.' },
+              { label: 'No-show Re-engagement', desc: 'Set status to Closed - No Show → save → click Start re-engagement emails on the lead page. 3 emails: Day 1, Day 4, Day 10.' },
+              { label: 'Zoom 1 Declined Follow-up', desc: 'Set status to Closed - Declined → save → click Start declined follow-up emails on the lead page. 3 emails: Day 1, Day 5, Day 12. The $97 downsell offer fires automatically alongside it.' },
             ]} />
 
             <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">Custom Workflows</p>

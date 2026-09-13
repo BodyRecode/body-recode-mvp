@@ -22,7 +22,7 @@ export async function POST(
   if (!lead) return NextResponse.json({ error: 'Lead not found' }, { status: 404 })
   if (!lead.email) return NextResponse.json({ error: 'No email address' }, { status: 400 })
 
-  const result = await sendDownsellOffer(id, lead, admin)
+  const result = await sendDownsellOffer(id, lead, admin, 'Sent from the lead page.')
 
   if (!result.sent) {
     return NextResponse.json({ error: result.error }, { status: 400 })

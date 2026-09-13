@@ -28,7 +28,9 @@ const PROGRAM_NAMES: Record<string, string> = {
 export async function sendDownsellOffer(
   leadId: string,
   lead: { name: string; email: string },
-  admin: SupabaseClient
+  admin: SupabaseClient,
+  /** Recorded on the lead's timeline, so a hand-sent offer is not logged as automatic. */
+  note = 'Auto-sent on decline.'
 ): Promise<{ sent: boolean; error?: string }> {
   if (!lead.email) return { sent: false, error: 'No email address' }
   if (!process.env.RESEND_API_KEY) return { sent: false, error: 'Email not configured' }
@@ -104,7 +106,7 @@ ${darkEmailSignature()}
     lead_id: leadId,
     type: 'email_sent',
     subject: `Self-Guided Program offer sent (${stateLabel} State - $97)`,
-    notes: 'Auto-sent on decline.',
+    notes: note,
     sent_at: new Date().toISOString(),
   })
 
