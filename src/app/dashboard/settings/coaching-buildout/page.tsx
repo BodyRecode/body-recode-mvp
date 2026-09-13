@@ -26,7 +26,7 @@ export default function CoachingBuildoutPage() {
             <p><strong>Where this sits in the plan.</strong> Neither the coaching application nor the Collective is being waited for. The read goes to market first. This becomes the second tier sold to coaches already paying for the read — which is also how it finally gets finished on real coaches&apos; feedback rather than guesses.</p>
             <p><strong>One tension to hold.</strong> Selling a full coaching application competes with door 1 on the{' '}
               <Link href="/dashboard/settings/platform-buildout" className="text-[#1560E0] hover:text-[#1056D6] underline">Body Recode board</Link>. A coaching platform embeds the read because Body Recode is a neutral supplier; it will not embed a read from a company selling a competing coaching platform. Both can run for a while. Eventually one costs the other.</p>
-            <p><strong>⚠ This board is incomplete on purpose.</strong> The Collective phases and the capability layer carry real, verified history. The rest of Layer 2 has not been audited into steps yet, and it is left empty rather than filled with guesses — an invented status makes the percentage at the top start lying and nobody notices.</p>
+            <p><strong>Engine audited 14 Sep 2026.</strong> The coaching engine is now tracked in three phases: the engine as it stands, verified against the code; the work that makes it run without a coach reviewing every plan; and what a live session needs. Where the auto-memory and the code disagreed, the code won. One finding worth knowing: the tool that revises a nutrition plan one change at a time was built on 8 September and has never been connected to anything.</p>
           </div>
         </details>
       }
