@@ -179,7 +179,7 @@ const AUTOMATIC_AUTOMATIONS = [
   {
     id: 'intake-submitted',
     name: 'Foundational Intake Submitted',
-    description: `Coach notification when a client completes their ${getTotalQuestions()}-question intake. Also triggers automatic CFFS generation in the background.`,
+    description: `Coach notification when a client completes their ${getTotalQuestions()}-question intake. Turns red with a Needs attention subject when the client reports being pregnant now, or using testosterone or an anabolic compound without a prescription; the same alert shows on their profile. The CFFS is generated from the dashboard once the baseline is also in.`,
     trigger: 'Client submits Foundational Intake via portal',
     steps: 1,
   },

@@ -16,6 +16,7 @@ import { findLeakedTerms } from '@/lib/banned-client-terms'
 import { PROGRESS_CHECK_SECTIONS } from '@/lib/progress-check-questions'
 import { FORM_A_SECTIONS, FORM_B_SECTIONS } from '@/lib/weekly-checkin-questions'
 import { INTAKE_SECTIONS, type Section } from '@/lib/intake-questions'
+import { ALERT_ANSWERS } from '@/lib/hormonal-safety-alerts'
 
 const SOURCES: { label: string; sections: Section[] }[] = [
   { label: 'PROGRESS_CHECK', sections: PROGRESS_CHECK_SECTIONS },
@@ -46,6 +47,16 @@ for (const { label, sections } of SOURCES) {
         }
       }
     }
+  }
+}
+
+// Coach safety alerts match answer text verbatim. A reworded option would switch
+// the alert off with no error anywhere, so a missing string is a failure here.
+for (const [id, answer] of Object.entries(ALERT_ANSWERS)) {
+  const q = INTAKE_SECTIONS.flatMap(sec => sec.questions).find(x => x.id === id)
+  if (!q?.options?.includes(answer)) {
+    failures++
+    console.error(`FAIL  coach alert: intake question ${id} no longer offers "${answer}", so the alert in hormonal-safety-alerts.ts would never fire\n`)
   }
 }
 

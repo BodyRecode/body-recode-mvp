@@ -3,6 +3,7 @@ import { INTAKE_SECTIONS, isQuestionVisible } from '@/lib/intake-questions'
 import { getTotalQuestions } from '@/lib/intake-questions'
 import { Resend } from 'resend'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
+import { hormonalSafetyAlerts } from '@/lib/hormonal-safety-alerts'
 import { buildPortalOrientationEmail } from '@/lib/portal-orientation-email'
 import { logClientCommunication } from '@/lib/client-communications'
 import { createAdminClient } from '@/lib/supabase/admin'
@@ -191,17 +192,26 @@ export async function POST(request: NextRequest) {
     const clientName = intake.full_name || 'A client'
     const baseUrl = appUrl()
 
+    // Pregnant now, or non-prescribed androgen use: these lead the email,
+    // turn it red and name themselves in the subject, so they are seen before
+    // anyone opens the read. See hormonal-safety-alerts.ts for why only these.
+    const alerts = hormonalSafetyAlerts(hormonal)
+    const alertSubject = alerts.length > 0 ? `Needs attention: ${alerts.map(a => a.headline.toLowerCase()).join(', ')}. ` : ''
+    const alertParagraphs = alerts.map(a => `NEEDS ATTENTION: ${a.headline}. ${a.detail}`)
+    const alertAccent = alerts.length > 0 ? ('red' as const) : undefined
+
     if (isReintake) {
       // Re-intake coach notification: signal the reassessment is in and the
       // next step is regenerating the CFFS from the newest intake row.
       await resend.emails.send({
         from: fromBrand(),
         to: coach().email,
-        subject: `${clientName} submitted their re-intake`,
+        subject: `${alertSubject}${clientName} submitted their re-intake`,
         html: buildCoachNotificationEmail({
           eyebrow: 'Re-intake · Reassessment',
           heading: `${clientName} submitted their re-intake`,
-          body: `${clientName} has completed and submitted a fresh ${getTotalQuestions()}-question intake for reassessment. The intakes table now has a newer row that will be picked up on your next CFFS regenerate — head to the client profile and click Regenerate CFFS to run a fresh interpretation against the updated data. No new baseline or portal orientation was sent (existing client, existing portal).`,
+          accent: alertAccent,
+          body: [...alertParagraphs, `${clientName} has completed and submitted a fresh ${getTotalQuestions()}-question intake for reassessment. The intakes table now has a newer row that will be picked up on your next CFFS regenerate — head to the client profile and click Regenerate CFFS to run a fresh interpretation against the updated data. No new baseline or portal orientation was sent (existing client, existing portal).`],
           ctaLabel: 'Open client profile',
           ctaUrl: `${baseUrl}/dashboard/clients/${invitation.client_id}`,
           footnote: 'Next step: regenerate CFFS to inform the next training block.',
@@ -216,11 +226,12 @@ export async function POST(request: NextRequest) {
       await resend.emails.send({
         from: fromBrand(),
         to: coach().email,
-        subject: `${clientName} submitted their intake`,
+        subject: `${alertSubject}${clientName} submitted their intake`,
         html: buildCoachNotificationEmail({
           eyebrow: 'Foundational Intake',
           heading: `${clientName} submitted their intake`,
-          body: `${clientName} has completed and submitted all ${getTotalQuestions()} questions of their foundational intake. Their baseline (measurements and front/side/back photos) is the remaining onboarding step. Once that lands you will receive a second email confirming the CFFS is ready to generate from your dashboard, and the Fat Map will read the photos as part of Spatial Patterning. The Portal Orientation email has been sent to them automatically so they can read through the portal while baseline is still outstanding.`,
+          accent: alertAccent,
+          body: [...alertParagraphs, `${clientName} has completed and submitted all ${getTotalQuestions()} questions of their foundational intake. Their baseline (measurements and front/side/back photos) is the remaining onboarding step. Once that lands you will receive a second email confirming the CFFS is ready to generate from your dashboard, and the Fat Map will read the photos as part of Spatial Patterning. The Portal Orientation email has been sent to them automatically so they can read through the portal while baseline is still outstanding.`],
           ctaLabel: 'Open client profile',
           ctaUrl: `${baseUrl}/dashboard/clients/${invitation.client_id}`,
           footnote: 'Their next portal task (Baseline Documentation) is now unlocked.',
