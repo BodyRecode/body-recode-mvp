@@ -94,14 +94,54 @@ export interface CFFSReadInput {
   } | null
   /** Log prefix only. Never reaches the model. */
   label?: string
+  /** Total time the read may take across every attempt, in ms. A host with a
+   *  hard platform limit (a serverless function) passes what it has left, so
+   *  the read ends with an honest error instead of being killed mid-attempt.
+   *  Defaults to READ_TIME_BUDGET_MS. */
+  timeBudgetMs?: number
 }
 
 export type CFFSReadResult =
   | { ok: true; cffs: Record<string, unknown>; photosUsed: number }
   | { ok: false; error: string }
 
-const MAX_TOKENS = 12000
+/**
+ * Output budget, measured 13 Sep 2026 on four reads: 7,828 to 10,963 output
+ * tokens (thinking + JSON) against the old 12,000. One read used 91%, and the
+ * reads that came back EMPTY with stop_reason=max_tokens were the ones that
+ * tipped over. Doubled for headroom. A budget is a ceiling, not a target: an
+ * unused allowance costs nothing and does not lengthen the read.
+ *
+ * Above ~21k the SDK refuses a non-streaming call, which is one more reason the
+ * call below streams.
+ */
+const MAX_TOKENS = 24000
 const ATTEMPTS = 3
+
+/**
+ * TIME, and why the read streams (13 Sep 2026).
+ *
+ * The call used to be a single request that waited for the whole answer. A
+ * dropped connection looked identical to a model still thinking, so a read could
+ * hang for the SDK's 10-minute timeout, times five SDK retries, times three
+ * attempts. In production the 5-minute function limit cut it off first with a
+ * generic error; anywhere else (a host embedding the read) nothing did.
+ *
+ * Measured on a live read: with thinking display left at its hidden default the
+ * API sends nothing but a ping every ~30s (and the SDK hides pings), so the
+ * stream looked silent for 120s while the model was working perfectly. With
+ * display 'summarized' it streams thinking deltas continuously; the longest gap
+ * observed was 6.7s. So the read asks for summaries purely as a heartbeat. The
+ * summary text is never stored, never shown, never parsed.
+ *
+ *   IDLE_TIMEOUT_MS      no event at all for this long = the connection is dead.
+ *                        ~13x the longest healthy gap observed.
+ *   READ_TIME_BUDGET_MS  all attempts together. Normal reads took 87 to 235s.
+ *   MIN_ATTEMPT_MS       do not start an attempt that cannot plausibly finish.
+ */
+const IDLE_TIMEOUT_MS = 90_000
+export const READ_TIME_BUDGET_MS = 12 * 60_000
+const MIN_ATTEMPT_MS = 2 * 60_000
 
 /** Em dash stripper, applied to every string the model returns. */
 function stripEmDashes(obj: unknown): unknown {
@@ -116,9 +156,9 @@ function stripEmDashes(obj: unknown): unknown {
 /**
  * Run the read.
  *
- * Never throws for a content-level failure: three attempts, then an honest
- * error string. The Anthropic SDK's own retries cover transient network and 5xx;
- * this loop covers truncation and unparseable output, which those cannot see.
+ * Never throws: up to three attempts inside a time budget, then an honest error
+ * string. The SDK's retries cover a failed connection; this loop covers a stalled
+ * stream, truncation and unparseable output, which those cannot see.
  */
 export async function runRead(input: CFFSReadInput): Promise<CFFSReadResult> {
   const tag = input.label ? `[CFFS ${input.label}]` : '[CFFS]'
@@ -166,24 +206,59 @@ export async function runRead(input: CFFSReadInput): Promise<CFFSReadResult> {
     ),
   })
 
-  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 5 })
+  // SDK retries cover a failed CONNECT only; a stall mid-stream is ours to catch.
+  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 2 })
   let parsed: Record<string, unknown> | null = null
   let lastError = 'unknown error'
+  const readStartedAt = Date.now()
+  const budgetMs = input.timeBudgetMs ?? READ_TIME_BUDGET_MS
+  let attemptsMade = 0
 
   for (let attempt = 1; attempt <= ATTEMPTS; attempt++) {
-    let message
-    try {
-      message = await anthropic.messages.create({
-        model: CFFS_MODEL,
-        max_tokens: MAX_TOKENS,
-        system: withTemporalContext(buildCFFSSystemPrompt(input.incomingPattern ?? undefined)),
-        messages: [{ role: 'user', content: userContent }],
-      })
-    } catch (err) {
-      lastError = `AI error: ${err instanceof Error ? err.message : String(err)}`
-      console.error(`${tag} Anthropic API error (attempt ${attempt}/${ATTEMPTS}):`, lastError)
-      continue
+    const remainingMs = budgetMs - (Date.now() - readStartedAt)
+    if (remainingMs < MIN_ATTEMPT_MS) {
+      lastError = `${lastError}; not enough time left for another attempt`
+      console.warn(`${tag} stopping before attempt ${attempt}: ${Math.round(remainingMs / 1000)}s left`)
+      break
     }
+    attemptsMade = attempt
+
+    let message
+    const attemptStartedAt = Date.now()
+    const stream = anthropic.messages.stream({
+      model: CFFS_MODEL,
+      max_tokens: MAX_TOKENS,
+      thinking: { type: 'adaptive', display: 'summarized' },
+      system: withTemporalContext(buildCFFSSystemPrompt(input.incomingPattern ?? undefined)),
+      messages: [{ role: 'user', content: userContent }],
+    })
+    let stalled: 'idle' | 'deadline' | null = null
+    let idleTimer: ReturnType<typeof setTimeout> | undefined
+    const armIdle = () => {
+      clearTimeout(idleTimer)
+      idleTimer = setTimeout(() => { stalled = 'idle'; stream.abort() }, IDLE_TIMEOUT_MS)
+    }
+    const deadlineTimer = setTimeout(() => { stalled = 'deadline'; stream.abort() }, remainingMs)
+    try {
+      armIdle()
+      for await (const _event of stream) armIdle() // eslint-disable-line @typescript-eslint/no-unused-vars
+      message = await stream.finalMessage()
+    } catch (err) {
+      lastError = stalled === 'idle'
+        ? `the AI stopped responding for ${IDLE_TIMEOUT_MS / 1000}s (connection lost)`
+        : stalled === 'deadline'
+          ? `the read ran out of time after ${Math.round((Date.now() - readStartedAt) / 1000)}s`
+          : `AI error: ${err instanceof Error ? err.message : String(err)}`
+      console.error(`${tag} attempt ${attempt}/${ATTEMPTS} failed after ${Math.round((Date.now() - attemptStartedAt) / 1000)}s: ${lastError}`)
+      if (stalled === 'deadline') break
+      continue
+    } finally {
+      clearTimeout(idleTimer)
+      clearTimeout(deadlineTimer)
+    }
+
+    // Measured, not guessed: time, where the output budget went, and why it stopped.
+    console.log(`${tag} attempt ${attempt}/${ATTEMPTS} timing: ${Math.round((Date.now() - attemptStartedAt) / 1000)}s stop=${message.stop_reason} output_tokens=${message.usage?.output_tokens} input_tokens=${message.usage?.input_tokens} max_tokens=${MAX_TOKENS}`)
 
     const textBlock = message.content.find(b => b.type === 'text')
     if (!textBlock || textBlock.type !== 'text') {
@@ -231,8 +306,8 @@ export async function runRead(input: CFFSReadInput): Promise<CFFSReadResult> {
   }
 
   if (!parsed) {
-    console.error(`${tag} generation failed after ${ATTEMPTS} attempts:`, lastError)
-    return { ok: false, error: `CFFS generation failed after ${ATTEMPTS} attempts (${lastError}).` }
+    console.error(`${tag} generation failed after ${attemptsMade} attempt(s):`, lastError)
+    return { ok: false, error: `CFFS generation failed after ${attemptsMade} attempt${attemptsMade === 1 ? '' : 's'} (${lastError}).` }
   }
 
   const cffs = stripEmDashes(parsed) as Record<string, unknown>

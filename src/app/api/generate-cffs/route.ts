@@ -14,7 +14,10 @@ import {
 } from '@/lib/image-media-type'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
 
-export const maxDuration = 300
+// 800s is the Pro + fluid compute ceiling (verified on the project 13 Sep 2026).
+// Reads measured 87 to 235s; 300 left no room for a single retry.
+export const maxDuration = 800
+const ROUTE_STARTED_MARGIN_MS = 30_000
 
 // Anthropic vision accepts up to 5MB per image. Our baseline pipeline already
 // compresses to 1600px / 0.82 JPEG (~400KB) so we never approach the cap, but
@@ -76,6 +79,7 @@ export async function POST(request: NextRequest) {
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function runCFFSGenerationInternal(body: any): Promise<NextResponse> {
+  const routeStartedAt = Date.now()
   const { intake_id, client_id } = body ?? {}
   if (!intake_id || !client_id) {
     return NextResponse.json({ error: 'intake_id and client_id required' }, { status: 400 })
@@ -243,6 +247,10 @@ export async function runCFFSGenerationInternal(body: any): Promise<NextResponse
     priorReadiness: priorCffsRows?.[0] ?? null,
     incomingPattern,
     label: String(client_id).slice(0, 8),
+    // What is left of the function's limit after gathering the data, less a
+    // margin to save the result, so the read ends with an honest error rather
+    // than being killed by the platform mid-attempt.
+    timeBudgetMs: maxDuration * 1000 - (Date.now() - routeStartedAt) - ROUTE_STARTED_MARGIN_MS,
   })
 
   if (!result.ok) {
