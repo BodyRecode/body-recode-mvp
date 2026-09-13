@@ -389,7 +389,7 @@ export function buildDay14BodyDecodeReportEmail({
     <table cellpadding="0" cellspacing="0" border="0" style="margin:0 0 22px;"><tr><td style="width:48px;height:3px;background:#1B6DFC;border-radius:2px;line-height:0;">&nbsp;</td></tr></table>
     <p style="color:#4A4A4A;font-size:15px;line-height:1.7;margin:0;">Hi ${firstName},</p>
     <p style="color:#4A4A4A;font-size:15px;line-height:1.7;margin:8px 0 8px;">
-      You finished the 14 days. On Day 7 you logged ${progressScore} of 8 markers improving. That signal is what made this reading possible.
+      You finished the 14 days. On Day 7 you logged ${progressScore} of 8 markers improving. That signal is what made this read possible.
     </p>
     <p style="color:#4A4A4A;font-size:15px;line-height:1.7;margin:0 0 22px;">
       Below is the read itself. The pattern your biology has settled into, what it actually means, where it shows up, what it is commonly mistaken for, the three actions specific to it, and what to do next.

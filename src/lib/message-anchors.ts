@@ -39,9 +39,9 @@ interface AnchorDef {
 
 const ANCHORS: Record<AnchorKind, AnchorDef> = {
   foundational_reading: {
-    fallbackLabel: 'Foundational Reading',
+    fallbackLabel: 'Foundational Read',
     portalPath: 'foundational-reading',
-    askLabel: 'Ask about your reading',
+    askLabel: 'Ask about your read',
   },
   program: {
     fallbackLabel: 'Training program',

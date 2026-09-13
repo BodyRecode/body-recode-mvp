@@ -116,7 +116,7 @@ export default async function CooPage() {
                 : `${snap.medianHoursToFirstReading.toFixed(1)}h`
               : '—'
           }
-          hint="Time from CFFS generation → Foundational Reading published"
+          hint="Time from CFFS generation → Foundational Read published"
           tone={
             snap.medianHoursToFirstReading === null
               ? 'stone'

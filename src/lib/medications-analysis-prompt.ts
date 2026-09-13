@@ -157,12 +157,12 @@ export function buildCoachAnalysisUserPrompt(input: MedicationsAnalysisInput): s
  * ────────────────────────────────────────────────────────────────────────── */
 
 export function buildClientReadingSystemPrompt(): string {
-  return `You are the Body Recode interpretation engine producing the Medications Reading: a client-facing translation of what their current medications mean for their coaching. The client reads this in their portal. The coach has already seen the structured analysis; this is the plain-English version FOR the client.
+  return `You are the Body Recode interpretation engine producing the Medications Read: a client-facing translation of what their current medications mean for their coaching. The client reads this in their portal. The coach has already seen the structured analysis; this is the plain-English version FOR the client.
 
-EVERYTHING YOU WRITE GOES DIRECTLY TO THE CLIENT. Hold the same client-facing language discipline as the Foundational Reading, Program Reading, Nutrition Reading, and Weekly Check-In Coach Feedback. The five readings (FR, PR, NR, WCCF, MR) must read as ONE voice.
+EVERYTHING YOU WRITE GOES DIRECTLY TO THE CLIENT. Hold the same client-facing language discipline as the Foundational Read, Program Read, Nutrition Read, and Weekly Check-In Coach Feedback. The five readings (FR, PR, NR, WCCF, MR) must read as ONE voice.
 
 PURPOSE:
-The Medications Reading helps the client understand:
+The Medications Read helps the client understand:
 - What they're currently taking, named simply
 - Why those medications matter for the coaching we're doing together
 - What we're doing in their program and nutrition to work WITH these medications
@@ -191,7 +191,7 @@ Same internal terms forbidden as the weekly check-in feedback prompt. The client
 - Brand jargon: mid-arc, long-arc, stress-belt, wired-but-tired
 - Diagnostic labels and disease names. Reference what the medication does rather than what the client "has."
 
-You MAY use the three body state names (Remediation, Optimisation, Post-Optimisation) since those live in their Foundational Reading.
+You MAY use the three body state names (Remediation, Optimisation, Post-Optimisation) since those live in their Foundational Read.
 
 PROHIBITED:
 - Em dashes (-). Use commas, periods, or rewrite. Non-negotiable.
@@ -220,7 +220,7 @@ If the medications field is empty, return:
 {
   "mr_what_youre_taking": "No medications recorded yet. If you start anything new or change something existing, let your coach know so we can fold it into how we read your signals.",
   "mr_why_it_matters": "Medications shape how your body responds to training, food, stress, and recovery. When you have any on board, we want to know so we can interpret your week through that lens rather than against it.",
-  "mr_how_we_account_for_it": "Nothing to account for right now. As soon as anything changes, this reading will rebuild from what you tell us.",
+  "mr_how_we_account_for_it": "Nothing to account for right now. As soon as anything changes, this read will rebuild from what you tell us.",
   "mr_what_to_watch": "Tell us when anything changes, starts, stops, or shifts in dose. Even short courses (antibiotics, anti-inflammatories) are worth a heads up so we can read your week in context."
 }`
 }
@@ -247,12 +247,12 @@ export function buildClientReadingUserPrompt(input: {
   }
 
   if (cffs?.body_state_classification) {
-    lines.push(`Client's current body state (from their Foundational Reading): ${cffs.body_state_classification}`)
+    lines.push(`Client's current body state (from their Foundational Read): ${cffs.body_state_classification}`)
     lines.push('')
   }
 
   lines.push('TASK')
-  lines.push(`Draft the four-section Medications Reading for ${client.firstName}. Plain client-facing words. Reads as one voice with the Foundational, Program, Nutrition, and Weekly Check-In readings. Return JSON only.`)
+  lines.push(`Draft the four-section Medications Read for ${client.firstName}. Plain client-facing words. Reads as one voice with the Foundational, Program, Nutrition, and Weekly Check-In readings. Return JSON only.`)
 
   return lines.join('\n')
 }

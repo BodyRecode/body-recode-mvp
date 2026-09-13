@@ -79,11 +79,11 @@ export async function POST(request: NextRequest) {
     .limit(1)
 
   if (cffsErr) {
-    return NextResponse.json({ error: 'Failed to load Foundational Reading' }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to load Foundational Read' }, { status: 500 })
   }
   if (!cffsRows || cffsRows.length === 0) {
     return NextResponse.json(
-      { error: 'No published Foundational Reading found. Publish the Foundational Reading before generating the Nutrition Reading.' },
+      { error: 'No published Foundational Read found. Publish the Foundational Read before generating the Nutrition Read.' },
       { status: 400 }
     )
   }

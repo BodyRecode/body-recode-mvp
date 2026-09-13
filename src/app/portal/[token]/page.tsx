@@ -621,14 +621,14 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         {/* Foundational Reading - shown the moment Kade publishes it */}
         {publishedReading && (
           <div className="mb-10">
-            <SectionLabel icon={FileText} text="Your Reading" />
+            <SectionLabel icon={FileText} text="Your Read" />
             <Link
               href={`/portal/${token}/foundational-reading`}
               className="block rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-[#EFF5FE] transition-colors mb-3"
             >
               <div className="flex items-center justify-between gap-4">
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold text-[#141821] mb-1">Foundational Reading</p>
+                  <p className="text-sm font-semibold text-[#141821] mb-1">Foundational Read</p>
                   <p className="text-xs text-[#666D7A] leading-relaxed">
                     A read of how your body is currently organising itself
                     {portalBodyState.label ? `, currently in ${portalBodyState.label}.` : '.'}
@@ -644,7 +644,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
               >
                 <div className="flex items-center justify-between gap-4">
                   <div className="min-w-0">
-                    <p className="text-sm font-semibold text-[#141821] mb-1">Medications Reading</p>
+                    <p className="text-sm font-semibold text-[#141821] mb-1">Medications Read</p>
                     <p className="text-xs text-[#666D7A] leading-relaxed">
                       What you&apos;re currently taking, why it matters for your coaching, and what we account for in your program and nutrition.
                     </p>
@@ -817,7 +817,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             heading, an icon chip and a description card, so eleven places she
             might browse to carried the same visual weight as the one thing
             actually being asked of her. They are a list now. Anything that is
-            a MESSAGE to her - a reply, a new reading, a note from her coach -
+            a MESSAGE to her - a reply, a new read, a note from her coach -
             keeps its own block above. */}
         {allOnboardingDone && (
           <div className="mb-10">

@@ -85,8 +85,8 @@ export async function notifyOnboardingCompleteIfReady(
       `The CFFS reads the photos as part of Spatial Patterning, so the visual evidence will flow into the interpretation automatically.`
     footnote =
       opts.trigger === 'baseline'
-        ? 'Baseline was the final form. Their portal now waits on the Foundational Reading you publish.'
-        : 'Intake was the final form. Their portal now waits on the Foundational Reading you publish.'
+        ? 'Baseline was the final form. Their portal now waits on the Foundational Read you publish.'
+        : 'Intake was the final form. Their portal now waits on the Foundational Read you publish.'
   }
 
   try {

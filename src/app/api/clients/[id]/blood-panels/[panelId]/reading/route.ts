@@ -48,7 +48,7 @@ export async function POST(
 
   if (!panel.analysis) {
     return NextResponse.json(
-      { error: 'Generate the coach Blood Panel Analysis first. The reading translates from it.' },
+      { error: 'Generate the coach Blood Panel Analysis first. The read translates from it.' },
       { status: 400 }
     )
   }

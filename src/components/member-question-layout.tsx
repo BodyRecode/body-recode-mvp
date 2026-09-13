@@ -88,7 +88,7 @@ export default function MemberQuestionLayout({ data }: { data: MemberQuestionLay
           <img src="/logo-black.png" className="logo" alt={brand().name} />
           <div className="eyebrow">A Question for Kade</div>
           <h1>{data.memberName}, this is what I would tell you.</h1>
-          <p className="sub">A personalised reading against your pattern, your last four weeks of check-ins, and the {brand().name} framework.</p>
+          <p className="sub">A personalised read against your pattern, your last four weeks of check-ins, and the {brand().name} framework.</p>
           <div className="meta">{meta}</div>
           <div className="byline">By <strong>Kade Dunstone</strong> · Founder, {brand().name}</div>
           <div className="question">

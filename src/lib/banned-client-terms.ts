@@ -93,8 +93,23 @@ export function findLeakedTerms(text: string): string[] {
  * (space before the comma, two spaces after), which shipped to clients in
  * check-in responses.
  */
+/**
+ * Every document a client reads is a "Read", never a "Reading" (Kade, 14 Sep
+ * 2026). The prompts say Read, but a model writing English reaches for
+ * "Foundational Reading" out of habit, so the name is corrected on the way out
+ * rather than trusted. Titles only: "reading" as an ordinary word ("reading your
+ * check-ins", "the reading on your scale") is left alone. The block-end document
+ * is the Progress Read, whatever the model calls it.
+ */
+export function normaliseReadNames(text: string): string {
+  return text
+    .replace(/\bBlock-[Ee]nd (?:Trajectory )?Readings?\b/g, 'Progress Read')
+    .replace(/\bTrajectory Readings?\b/g, 'Progress Read')
+    .replace(/\b(Foundational|Program|Nutrition|Progress|Medications|Blood Panel|Weekly) Reading(s?)\b/g, '$1 Read$2')
+}
+
 export function stripEmDashes<T>(value: T): T {
-  if (typeof value === 'string') return value.replace(/[ \t]*—[ \t]*/g, ', ') as T
+  if (typeof value === 'string') return normaliseReadNames(value.replace(/[ \t]*—[ \t]*/g, ', ')) as T
   if (Array.isArray(value)) return value.map(stripEmDashes) as T
   if (value && typeof value === 'object') {
     return Object.fromEntries(

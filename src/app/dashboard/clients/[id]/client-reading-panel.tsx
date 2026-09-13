@@ -77,7 +77,7 @@ export default function ClientReadingPanel({
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`)
-      setEmailNotice(emailSent ? 'Client re-notified — their reading is live.' : 'Client notified — their reading is live.')
+      setEmailNotice(emailSent ? 'Client re-notified — their read is live.' : 'Client notified — their read is live.')
       startTransition(() => router.refresh())
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not notify the client')
@@ -93,7 +93,7 @@ export default function ClientReadingPanel({
         ? '\n\nYour Coach Guidance will be applied to the new draft.'
         : ''
       const baseMsg = emailSent
-        ? 'Replace the live reading with a fresh draft? Your client will not be re-emailed.'
+        ? 'Replace the live read with a fresh draft? Your client will not be re-emailed.'
         : 'Replace the current draft with a fresh one? Nothing is published or emailed; you still publish separately.'
       if (!confirm(baseMsg + '\n\nThis will overwrite any inline edits you have made.' + guidanceNote)) return
     }
@@ -121,7 +121,7 @@ export default function ClientReadingPanel({
   const togglePublish = async () => {
     if (publishing) return
     const action = published ? 'unpublish' : 'publish'
-    if (action === 'unpublish' && !confirm('Take this reading down from the client portal? You can republish at any time.')) return
+    if (action === 'unpublish' && !confirm('Take this read down from the client portal? You can republish at any time.')) return
     setError(null)
     setPublishing(true)
     try {
@@ -149,16 +149,16 @@ export default function ClientReadingPanel({
     <div className="mb-6">
       <GenerationProgressOverlay
         active={generating}
-        title="Foundational Reading"
+        title="Foundational Read"
         stages={[
           { start: 0,  label: 'Reading CFFS, intake, and coach guidance' },
-          { start: 4,  label: 'Drafting the 5 client-facing reading sections' },
+          { start: 4,  label: 'Drafting the 5 client-facing read sections' },
           { start: 18, label: 'Scanning for banned client-facing terms' },
           { start: 22, label: 'Auto-retrying if any banned terms leaked' },
           { start: 35, label: 'Saving the new draft and refreshing the panel' },
           { start: 55, label: 'Taking longer than usual, give it another moment' },
         ]}
-        disclaimer="Foundational Reading generation uses Claude Haiku 4.5 with automatic banned-term retry. Typical: 20 to 40 seconds. The page is not frozen, please don't refresh."
+        disclaimer="Foundational Read generation uses Claude Haiku 4.5 with automatic banned-term retry. Typical: 20 to 40 seconds. The page is not frozen, please don't refresh."
       />
       <div className="flex items-center justify-between gap-4 mb-3 flex-wrap">
         <div className="flex items-center gap-2.5">
@@ -166,7 +166,7 @@ export default function ClientReadingPanel({
           <h2
             className="text-[11px] font-medium text-[#141821]"
           >
-            Foundational Reading{' '}
+            Foundational Read{' '}
             <span className="text-[#43474F] font-normal">- Client Facing</span>
           </h2>
         </div>
@@ -229,7 +229,7 @@ export default function ClientReadingPanel({
             <button
               onClick={notifyClient}
               disabled={notifying || isPending}
-              title={emailSent ? 'Send the client another email that their reading is live' : 'Email the client that their reading is live in the portal'}
+              title={emailSent ? 'Send the client another email that their read is live' : 'Email the client that their read is live in the portal'}
               className={`inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
                 emailSent
                   ? 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC]'
@@ -289,9 +289,9 @@ export default function ClientReadingPanel({
 
       {!generated ? (
         <div className="br-card p-8 text-center">
-          <p className="text-[#666D7A] text-[14px] mb-2">No client-facing reading yet</p>
+          <p className="text-[#666D7A] text-[14px] mb-2">No client-facing read yet</p>
           <p className="text-[#98A0AD] text-[12px]">
-            Click Generate &amp; Publish. The reading goes live in the client portal. Then use Notify client to email them it is ready.
+            Click Generate &amp; Publish. The read goes live in the client portal. Then use Notify client to email them it is ready.
           </p>
         </div>
       ) : (
@@ -318,7 +318,7 @@ export default function ClientReadingPanel({
               {published && clientToken && (
                 <ClientViewModal
                   portalUrl={`/portal/${clientToken}/foundational-reading`}
-                  title="Foundational Reading — Client View"
+                  title="Foundational Read — Client View"
                   triggerLabel="Client view"
                 />
               )}

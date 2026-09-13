@@ -196,11 +196,11 @@ export function formatFactualContextForPrompt(ctx: ClientFactualContext): string
     )
   }
   if (!ctx.isFirstReading) {
-    lines.push('- She has read a reading from us before. Do not introduce concepts as though for the first time.')
+    lines.push('- She has had a read from us before. Do not introduce concepts as though for the first time.')
   }
   if (ctx.sourceAgeWeeks != null && ctx.sourceAgeWeeks >= 6) {
     lines.push(
-      `- The assessment behind this reading is ${ctx.sourceAgeWeeks} weeks old. Do not present it as a description of her today.`
+      `- The assessment behind this read is ${ctx.sourceAgeWeeks} weeks old. Do not present it as a description of her today.`
     )
   }
   if (ctx.medications) {

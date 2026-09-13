@@ -33,7 +33,7 @@ ${emailEyebrow('Body Recode AI Deep-Dive')}
 ${emailHeading(`Generating your ${productTitle}, ${firstName}.`)}
 ${emailDivider()}
 ${emailBody(`Hi ${firstName},`)}
-${emailBody(`Thanks for ordering the ${productTitle}. Your AI deep-dive is now in the engine. The reading reads your actual data and writes a personalised document. That takes a few minutes - the typical run is under ${etaMinutes} minutes.`)}
+${emailBody(`Thanks for ordering the ${productTitle}. Your AI deep-dive is now in the engine. The read reads your actual data and writes a personalised document. That takes a few minutes - the typical run is under ${etaMinutes} minutes.`)}
 ${emailBody(`As soon as it is ready, you will get a second email with the PDF and a reader link. No action needed from you.`)}
 ${emailStatusCard({
   eyebrow: 'What happens next',

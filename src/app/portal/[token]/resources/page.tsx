@@ -55,8 +55,8 @@ export default async function ResourcesHubPage({ params }: { params: Promise<{ t
       icon: TrendingUp,
     },
     {
-      title: 'Your readings',
-      description: 'Foundational Reading and any future weekly readings, all in one place.',
+      title: 'Your reads',
+      description: 'Foundational Read and any future weekly reads, all in one place.',
       href: `/portal/${token}/readings`,
       icon: FileText,
     },

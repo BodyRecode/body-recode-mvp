@@ -279,7 +279,7 @@ export function lintClientReading(input: LintInput): LintFinding[] {
     findings.push({
       severity: 'warn',
       code: 'STALE_SOURCE',
-      message: `This reading is built on an assessment ${input.sourceAgeWeeks} weeks old. Check it still describes her before publishing.`,
+      message: `This read is built on an assessment ${input.sourceAgeWeeks} weeks old. Check it still describes her before publishing.`,
     })
   }
 

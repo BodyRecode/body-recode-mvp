@@ -41,14 +41,14 @@ export default function ProgramReadingLayout({
 
   return (
     <ReadingHeroShell
-      eyebrow="Program Reading"
+      eyebrow="Program Read"
       heroTitle={reading.block_name}
-      heroSub="Why this block, what it is doing, and how we will read it as it unfolds. The bridge from your Foundational Reading to the sessions in this block."
+      heroSub="Why this block, what it is doing, and how we will read it as it unfolds. The bridge from your Foundational Read to the sessions in this block."
       pill={pill}
       clientName={client.name}
       aboutText={
         <p>
-          <b>About this reading.</b> Every block is built from where your body currently is, not from a generic template. This reading explains what we are trying to shift this time, what the work will ask of you, and what we are deliberately not chasing yet. Read it once before your first session. It frames everything that follows.
+          <b>About this reading.</b> Every block is built from where your body currently is, not from a generic template. This read explains what we are trying to shift this time, what the work will ask of you, and what we are deliberately not chasing yet. Read it once before your first session. It frames everything that follows.
         </p>
       }
       sections={[

@@ -64,7 +64,7 @@ export async function auditFoundationalReading(
   const isStale = isDoctrineStale(r.fr_doctrine_version, 'foundational_reading')
   return finalise({
     artefactType: 'fr',
-    artefactLabel: 'Foundational Reading',
+    artefactLabel: 'Foundational Read',
     artefactId: r.id,
     leakedTerms,
     storedDoctrineVersion: r.fr_doctrine_version ?? null,
@@ -98,7 +98,7 @@ export async function auditProgramReading(
   const isStale = isDoctrineStale(prog.pr_doctrine_version, 'program_reading')
   return finalise({
     artefactType: 'pr',
-    artefactLabel: prog.block_name ? `Program Reading (${prog.block_name})` : 'Program Reading',
+    artefactLabel: prog.block_name ? `Program Read (${prog.block_name})` : 'Program Read',
     artefactId: prog.id,
     leakedTerms,
     storedDoctrineVersion: prog.pr_doctrine_version ?? null,
@@ -205,14 +205,14 @@ function uniqueLower(arr: string[]): string[] {
 
 export function doctrineKeyLabel(key: DoctrineKey): string {
   switch (key) {
-    case 'foundational_reading': return 'Foundational Reading'
-    case 'program_reading': return 'Program Reading'
-    case 'nutrition_reading': return 'Nutrition Reading'
-    case 'trajectory_reading': return 'Trajectory Reading'
+    case 'foundational_reading': return 'Foundational Read'
+    case 'program_reading': return 'Program Read'
+    case 'nutrition_reading': return 'Nutrition Read'
+    case 'trajectory_reading': return 'Progress Read'
     case 'weekly_checkin_feedback': return 'Weekly Check-In Feedback'
     case 'medications_analysis': return 'Medications Analysis'
-    case 'medications_reading': return 'Medications Reading'
-    case 'blood_panel_reading': return 'Blood Panel Reading'
+    case 'medications_reading': return 'Medications Read'
+    case 'blood_panel_reading': return 'Blood Panel Read'
     case 'blood_panel_analysis': return 'Blood Panel Analysis'
     case 'cffs': return 'Foundational Synthesis'
     case 'program': return 'Training Program'

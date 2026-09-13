@@ -43,7 +43,7 @@ export default function RegenerateCFFSButton({ clientId, intakeId }: Props) {
           { start: 0,   label: 'Reading intake responses, baseline, medications, dietary context' },
           { start: 5,   label: 'Reading baseline photos for Fat Map spatial signal' },
           { start: 12,  label: 'Synthesising body state, primary patterns, capacity constraints' },
-          { start: 60,  label: 'Drafting the 5 client-facing Foundational Reading sections' },
+          { start: 60,  label: 'Drafting the 5 client-facing Foundational Read sections' },
           { start: 150, label: 'Saving and refreshing the page' },
           { start: 240, label: 'Taking longer than usual. If the connection dropped it retries on its own, give it a few more minutes' },
         ]}

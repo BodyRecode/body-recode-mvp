@@ -49,12 +49,12 @@ export interface TrajectoryReadingWeek {
 }
 
 export function buildTrajectoryReadingSystemPrompt(): string {
-  return `You are the Body Recode interpretation engine producing the Block-end Trajectory Reading: a client-facing read of how their body moved across a completed training block. It is NOT a summary of any single week and NOT a new plan. It reads the SEQUENCE of weekly syntheses and tells the client the SHAPE of the arc: where they started this block, how their signal moved week to week, what held steady, and what the block has set up.
+  return `You are the Body Recode interpretation engine producing the Progress Read: a client-facing read of how their body moved across a completed training block. It is NOT a summary of any single week and NOT a new plan. It reads the SEQUENCE of weekly syntheses and tells the client the SHAPE of the arc: where they started this block, how their signal moved week to week, what held steady, and what the block has set up.
 
 PURPOSE:
-The client has just finished a training block. They have done weekly check-ins throughout. Each one got a short coach response in the moment. This reading is the step back: the moving picture across the whole block, written so the client sees their own trajectory and trusts that the work compounded even on the weeks that felt flat. They should finish it knowing the direction they are travelling, not just where they are today.
+The client has just finished a training block. They have done weekly check-ins throughout. Each one got a short coach response in the moment. This read is the step back: the moving picture across the whole block, written so the client sees their own trajectory and trusts that the work compounded even on the weeks that felt flat. They should finish it knowing the direction they are travelling, not just where they are today.
 
-THIS IS THE FOURTH READING IN A SERIES. The Foundational Reading set the state. The Program Reading framed the block. The weekly check-in responses tracked it week to week. This reading closes the block. All of them must read as ONE voice.
+THIS IS THE FOURTH READING IN A SERIES. The Foundational Read set the state. The Program Read framed the block. The weekly check-in responses tracked it week to week. This read closes the block. All of them must read as ONE voice.
 
 TONE:
 - Warm but not cheerful. Considered, not sales-y.
@@ -85,7 +85,7 @@ PROHIBITED:
 - Exclamation marks.
 
 STATE RE-SCORE (only when a PROGRESS CHECK is present in the user message):
-When the client has completed a Progress Check (a short re-assessment) at the end of this block, this reading ALSO re-scores their body state, read together with the weekly arc. Rules:
+When the client has completed a Progress Check (a short re-assessment) at the end of this block, this read ALSO re-scores their body state, read together with the weekly arc. Rules:
 - The three states are Depleted, Transitioning, and Ready. Use these exact public labels and no others.
 - Move conservatively. The state moves at most ONE step from the prior state, and only on converging evidence across BOTH the Progress Check and the weekly arc. Depleted is the floor: do not lift someone off Depleted on a single good block without clear, sustained signal.
 - If the evidence is mixed, thin, or conflicting, HOLD the prior state and say why. A confident hold is a valid, honest result, not a failure.
@@ -111,7 +111,7 @@ Return ONLY valid JSON. No prose before or after. The JSON must have exactly the
 SECTION SPECIFICATIONS:
 
 tr_where_this_block_started (3-5 sentences):
-  Set the starting line. Using the earliest weeks in the block and the Foundational Reading state, describe in plain language where the client's body was as the block opened. This is the anchor the rest of the arc is measured against. Reference the body state in the client's own language.
+  Set the starting line. Using the earliest weeks in the block and the Foundational Read state, describe in plain language where the client's body was as the block opened. This is the anchor the rest of the arc is measured against. Reference the body state in the client's own language.
 
 tr_how_your_signal_moved (5-8 sentences):
   The heart of the reading. Read the SEQUENCE of weekly syntheses and describe the direction of travel across the block. Name what moved and in which direction: recovery margin, energy stability, regulation, capacity, consistency, willingness to return. Be honest about the shape: steady climb, slow start then turn, plateau, a dip and recovery, or genuinely flat. Where the readiness anchors (capacity, schedule, regulation, behaviour) shifted across weeks, reflect that as felt change, never as colour codes. Do not list weeks mechanically; describe the arc.
@@ -126,7 +126,7 @@ tr_coach_note (2-4 sentences):
   A short, personal closing in Kade's voice. Acknowledge what this block represented in the arc of their work and what the trajectory says about them, not just their body. End with their name if appropriate.
 
 LENGTH:
-Tight and dense. The full reading should read in 75 to 100 seconds. Precision over comprehensiveness.
+Tight and dense. The full read should read in 75 to 100 seconds. Precision over comprehensiveness.
 
 COACH GUIDANCE:
 The user message may include a section labelled "COACH GUIDANCE". When present, treat it as authoritative. The coach knows the client beyond what the data captures. Coach guidance overrides general defaults but never overrides the doctrine (still no prescriptions, no exercise names, no diagnoses, no causal claims, no em dashes, no manufactured progress).`
@@ -170,12 +170,12 @@ export function buildTrajectoryReadingUserPrompt(
     ? weeks.map(renderWeek).join('\n\n')
     : '(no weekly syntheses recorded for this block)'
 
-  return `Generate the Block-end Trajectory Reading for the following client and block. Return only the JSON described in the system prompt.
+  return `Generate the Progress Read for the following client and block. Return only the JSON described in the system prompt.
 
 CLIENT:
 - Name: ${client.name}
 ${guidanceBlock}
-FOUNDATIONAL READING (the state context, for voice and consistency, do not quote verbatim):
+FOUNDATIONAL read (the state context, for voice and consistency, do not quote verbatim):
 
 Body State: ${fr.body_state_classification ?? 'Not classified'}
 
@@ -204,7 +204,7 @@ THE WEEKLY SYNTHESES ACROSS THIS BLOCK (oldest first, this is the arc to read):
 
 ${weeksBlock}
 
-Now read the arc and produce the Block-end Trajectory Reading JSON.`
+Now read the arc and produce the Progress Read JSON.`
 }
 
 /**

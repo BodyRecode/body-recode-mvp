@@ -51,9 +51,9 @@ export default async function PortalProgramReadingPage({
     return (
       <div className="min-h-screen bg-[#FFFFFF] text-[#141821] flex flex-col items-center justify-center px-6 py-12">
         <div className="w-full max-w-md bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl p-8 text-center">
-          <p className="text-[#141821] text-lg font-semibold mb-2">Program Reading not yet available</p>
+          <p className="text-[#141821] text-lg font-semibold mb-2">Program Read not yet available</p>
           <p className="text-[#666D7A] text-sm mb-6">
-            Your Program Reading will appear here once your coach has finalised the current block.
+            Your Program Read will appear here once your coach has finalised the current block.
           </p>
           <Link
             href={`/portal/${token}/program`}

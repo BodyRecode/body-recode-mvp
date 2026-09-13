@@ -62,7 +62,7 @@ export default function TrajectoryReadingInline({
             className="text-[10px] font-bold text-[#1A1A1A] uppercase truncate"
             style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
           >
-            Block-End Reading
+            Progress Read
           </p>
         </div>
         <Link

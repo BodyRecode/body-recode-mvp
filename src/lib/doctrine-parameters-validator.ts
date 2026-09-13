@@ -116,7 +116,7 @@ export function validateDoctrineParameters(
       }
       const protectedHit = containsProtectedTerm(p)
       if (protectedHit) {
-        return { ok: false, error: `Banned phrase "${p}" contains the platform-protected term "${protectedHit}". This is a Hard Safety Floor - clients have already seen this term in their Foundational Reading + plans. Banning it would fail every audit.` }
+        return { ok: false, error: `Banned phrase "${p}" contains the platform-protected term "${protectedHit}". This is a Hard Safety Floor - clients have already seen this term in their Foundational Read + plans. Banning it would fail every audit.` }
       }
     }
   }
@@ -134,7 +134,7 @@ export function validateDoctrineParameters(
       }
       const fromProtected = containsProtectedTerm(from)
       if (fromProtected) {
-        return { ok: false, error: `Substitution "from" value "${from}" contains the platform-protected term "${fromProtected}". Rewriting this word mid-programme would break client continuity - they have already seen it in their Foundational Reading.` }
+        return { ok: false, error: `Substitution "from" value "${from}" contains the platform-protected term "${fromProtected}". Rewriting this word mid-programme would break client continuity - they have already seen it in their Foundational Read.` }
       }
       const toProtected = containsProtectedTerm(to)
       if (toProtected) {

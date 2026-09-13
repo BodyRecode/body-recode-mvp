@@ -13,14 +13,14 @@ const TERMS: Array<{ term: string; def: string }> = [
   },
   {
     term: 'CFFS - Coach-Facing Foundational Synthesis',
-    def: 'The structured interpretation your coach generates from your foundational intake. It translates your intake answers across eight signal domains into a single picture of how your body is currently organising itself. You see the client-facing version called the Foundational Reading; your coach reads the technical version.',
+    def: 'The structured interpretation your coach generates from your foundational intake. It translates your intake answers across eight signal domains into a single picture of how your body is currently organising itself. You see the client-facing version called the Foundational Read; your coach reads the technical version.',
   },
   {
     term: 'CFWS - Coach-Facing Weekly Synthesis',
     def: 'The weekly equivalent of the CFFS. Generated after both Form A and Form B check-ins are submitted. Reads what is happening in your body that week and feeds your coach\'s decisions about your training and nutrition.',
   },
   {
-    term: 'Foundational Reading',
+    term: 'Foundational Read',
     def: 'Your client-facing read of the same intake the CFFS was built from. Lives in your portal and explains where your body is right now, what it is signalling, what we are focusing on first, and what we are deliberately not doing yet.',
   },
   {

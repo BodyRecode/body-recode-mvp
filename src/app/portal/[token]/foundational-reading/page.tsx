@@ -48,9 +48,9 @@ export default async function PortalFoundationalReadingPage({
     return (
       <div className="min-h-screen bg-[#FFFFFF] text-[#141821] flex flex-col items-center justify-center px-6 py-12">
         <div className="w-full max-w-md bg-[#FFFFFF] border border-[#E8EAEE] rounded-2xl p-8 text-center">
-          <p className="text-[#141821] text-lg font-semibold mb-2">Foundational Reading not yet available</p>
+          <p className="text-[#141821] text-lg font-semibold mb-2">Foundational Read not yet available</p>
           <p className="text-[#666D7A] text-sm mb-6">
-            Your reading will appear here once it has been finalised and shared with you.
+            Your read will appear here once it has been finalised and shared with you.
           </p>
           <Link
             href={`/portal/${token}`}

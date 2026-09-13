@@ -57,7 +57,7 @@ export default function NotifyClientButton({
   if (!hasReading) {
     return (
       <span
-        title="Publish the Nutrition Reading first. The reading frames the plan."
+        title="Publish the Nutrition Read first. The read frames the plan."
         className="text-[12.5px] px-3 py-1.5 border border-[#E8EAEE] text-[#98A0AD] rounded-lg cursor-not-allowed"
       >
         Notify Client

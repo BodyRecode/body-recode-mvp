@@ -85,13 +85,13 @@ export default function TrajectoryReadingPanel({
       const wk = blockStatus?.currentWeek
       const dur = blockStatus?.weekDuration
       const where = wk && dur ? ` (currently week ${wk} of ${dur})` : ''
-      if (!confirm(`This block is not at its end yet${where}. The Trajectory Reading is designed to read the whole block once it has finished. Generate a draft anyway?`)) return
+      if (!confirm(`This block is not at its end yet${where}. The Progress Read is designed to read the whole block once it has finished. Generate a draft anyway?`)) return
     }
     if (generated) {
       const guidanceNote = program.tr_coach_guidance && program.tr_coach_guidance.trim()
         ? '\n\nYour Coach Guidance will be applied to the new draft.'
         : ''
-      if (!confirm('Replace the current draft with a fresh read of the block arc?\n\nThis overwrites any inline edits. If the reading is live, it stays live and the client is not re-emailed.' + guidanceNote)) return
+      if (!confirm('Replace the current draft with a fresh read of the block arc?\n\nThis overwrites any inline edits. If the read is live, it stays live and the client is not re-emailed.' + guidanceNote)) return
     }
     setError(null)
     setNotice(null)
@@ -116,8 +116,8 @@ export default function TrajectoryReadingPanel({
   const togglePublish = async () => {
     if (publishing) return
     const action = published ? 'unpublish' : 'publish'
-    if (action === 'publish' && !confirm('Publish this reading to the client portal? The client is NOT auto-emailed on publish — once published, a separate Notify Client button appears for the explicit send.')) return
-    if (action === 'unpublish' && !confirm('Take this reading down from the client portal? You can republish at any time.')) return
+    if (action === 'publish' && !confirm('Publish this read to the client portal? The client is NOT auto-emailed on publish — once published, a separate Notify Client button appears for the explicit send.')) return
+    if (action === 'unpublish' && !confirm('Take this read down from the client portal? You can republish at any time.')) return
     setError(null)
     setNotice(null)
     setPublishing(true)
@@ -142,8 +142,8 @@ export default function TrajectoryReadingPanel({
   const notifyClient = async () => {
     if (notifying) return
     const confirmMsg = emailSent
-      ? `Re-send the block-end reading notification email to the client? The previous send was ${new Date(program.trajectory_reading_email_sent_at!).toLocaleString('en-AU')}.`
-      : 'Send the block-end reading notification email to the client now?'
+      ? `Re-send the Progress Read notification email to the client? The previous send was ${new Date(program.trajectory_reading_email_sent_at!).toLocaleString('en-AU')}.`
+      : 'Send the Progress Read notification email to the client now?'
     if (!confirm(confirmMsg)) return
     setError(null)
     setNotice(null)
@@ -169,7 +169,7 @@ export default function TrajectoryReadingPanel({
     <div className="mb-6">
       <GenerationProgressOverlay
         active={generating}
-        title="Block-End Trajectory Reading"
+        title="Progress Read"
         stages={[
           { start: 0,  label: 'Reading every weekly synthesis (CFWS) from this block' },
           { start: 6,  label: 'Reading active program, CFFS, and coach guidance' },
@@ -178,7 +178,7 @@ export default function TrajectoryReadingPanel({
           { start: 45, label: 'Saving the new draft and refreshing the panel' },
           { start: 75, label: 'Taking longer than usual, give it another moment' },
         ]}
-        disclaimer="Trajectory Reading reads the whole block's signal arc, not a single moment. Uses Claude Sonnet 5. Typical: 50 to 70 seconds. The page is not frozen, please don't refresh."
+        disclaimer="Progress Read reads the whole block's signal arc, not a single moment. Uses Claude Sonnet 5. Typical: 50 to 70 seconds. The page is not frozen, please don't refresh."
       />
       <div className="flex items-center justify-between gap-4 mb-3 flex-wrap">
         <div className="flex items-center gap-2.5">
@@ -186,7 +186,7 @@ export default function TrajectoryReadingPanel({
           <h2
             className="text-[11px] font-medium text-[#141821]"
           >
-            Block-End Trajectory Reading{' '}
+            Progress Read{' '}
             <span className="text-[#43474F] font-normal">- Client Facing</span>
           </h2>
         </div>
@@ -276,7 +276,7 @@ export default function TrajectoryReadingPanel({
         <div className="br-card p-8 text-center">
           {atBlockEnd ? (
             <>
-              <p className="text-[#666D7A] text-[14px] mb-2">Block complete - trajectory reading available</p>
+              <p className="text-[#666D7A] text-[14px] mb-2">Block complete - Progress Read available</p>
               <p className="text-[#98A0AD] text-[12px]">
                 Click Generate draft. It reads every weekly synthesis across this block into one arc. Review it, then Publish to surface it on the client portal. After publishing, a Notify Client button appears for the explicit email send (mirror of the Program / Nutrition pattern).
               </p>
@@ -289,9 +289,9 @@ export default function TrajectoryReadingPanel({
                   ? `Block in progress - week ${blockStatus.currentWeek} of ${blockStatus.weekDuration}`
                   : 'Block in progress'}
               </div>
-              <p className="text-[#666D7A] text-[14px] mb-2">Trajectory reading is for block end</p>
+              <p className="text-[#666D7A] text-[14px] mb-2">Progress Read is for block end</p>
               <p className="text-[#98A0AD] text-[12px]">
-                This reading is designed to read the whole block once it has finished{blockStatus?.weeksRemaining ? `, about ${blockStatus.weeksRemaining} week${blockStatus.weeksRemaining === 1 ? '' : 's'} from now` : ''}. You can still generate an early draft from the weeks completed so far.
+                This read is designed to read the whole block once it has finished{blockStatus?.weeksRemaining ? `, about ${blockStatus.weeksRemaining} week${blockStatus.weeksRemaining === 1 ? '' : 's'} from now` : ''}. You can still generate an early draft from the weeks completed so far.
               </p>
             </>
           )}
@@ -312,7 +312,7 @@ export default function TrajectoryReadingPanel({
               {published && clientToken && (
                 <ClientViewModal
                   portalUrl={`/portal/${clientToken}/program/trajectory-reading`}
-                  title="Block-End Reading — Document"
+                  title="Progress Read — Document"
                   triggerLabel="Document"
                   triggerClassName="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC] transition-colors"
                 />
@@ -466,7 +466,7 @@ function CoachGuidance({ programId, initial }: { programId: string; initial: str
           <div className="flex items-start gap-2 pt-3 mb-3">
             <Info size={12} className="text-[#98A0AD] mt-0.5 shrink-0" />
             <p className="text-[11px] text-[#98A0AD] leading-relaxed">
-              Standing notes for the AI. Applied on every Generate and Regenerate of this block&apos;s trajectory reading. Use it to steer how the arc is framed (e.g. account for a known life event mid-block). Each block starts fresh.
+              Standing notes for the AI. Applied on every Generate and Regenerate of this block&apos;s Progress Read. Use it to steer how the arc is framed (e.g. account for a known life event mid-block). Each block starts fresh.
             </p>
           </div>
           <textarea

@@ -139,9 +139,9 @@ export default async function BannedTermsAuditPage() {
   }
   // Also count artefacts that PASSED the audit (no reports entry) — they are
   // necessarily on current version with no leaks, so all on-current.
-  doctrineSummary.push({ key: 'foundational_reading', label: 'Foundational Reading', current: DOCTRINE_VERSIONS.foundational_reading, onCurrent: frOnCurrent, stale: frStale })
-  doctrineSummary.push({ key: 'program_reading', label: 'Program Reading', current: DOCTRINE_VERSIONS.program_reading, onCurrent: prOnCurrent, stale: prStale })
-  doctrineSummary.push({ key: 'nutrition_reading', label: 'Nutrition Reading', current: DOCTRINE_VERSIONS.nutrition_reading, onCurrent: nrOnCurrent, stale: nrStale })
+  doctrineSummary.push({ key: 'foundational_reading', label: 'Foundational Read', current: DOCTRINE_VERSIONS.foundational_reading, onCurrent: frOnCurrent, stale: frStale })
+  doctrineSummary.push({ key: 'program_reading', label: 'Program Read', current: DOCTRINE_VERSIONS.program_reading, onCurrent: prOnCurrent, stale: prStale })
+  doctrineSummary.push({ key: 'nutrition_reading', label: 'Nutrition Read', current: DOCTRINE_VERSIONS.nutrition_reading, onCurrent: nrOnCurrent, stale: nrStale })
 
   return (
     <div className="max-w-4xl">
@@ -217,9 +217,9 @@ export default async function BannedTermsAuditPage() {
                   <Link href={`/dashboard/clients/${r.clientId}`} className="text-[12.5px] font-medium text-[#1B6DFC] hover:text-[#1057CC]">Open profile →</Link>
                 </div>
                 <div className="space-y-2">
-                  {r.fr && <LeakRow label="Foundational Reading" terms={r.fr.leaks} clientHref={`/dashboard/clients/${r.clientId}#cffs`} publishedAt={r.fr.publishedAt} storedVersion={r.fr.storedVersion} isStale={r.fr.isStale} currentVersion={DOCTRINE_VERSIONS.foundational_reading} />}
-                  {r.pr && <LeakRow label={`Program Reading${r.pr.programName ? ` (${r.pr.programName})` : ''}`} terms={r.pr.leaks} clientHref={`/dashboard/clients/${r.clientId}#training`} publishedAt={r.pr.publishedAt} storedVersion={r.pr.storedVersion} isStale={r.pr.isStale} currentVersion={DOCTRINE_VERSIONS.program_reading} />}
-                  {r.nr && <LeakRow label={`Nutrition Reading${r.nr.planName ? ` (${r.nr.planName})` : ''}`} terms={r.nr.leaks} clientHref={`/dashboard/clients/${r.clientId}#nutrition`} publishedAt={r.nr.publishedAt} storedVersion={r.nr.storedVersion} isStale={r.nr.isStale} currentVersion={DOCTRINE_VERSIONS.nutrition_reading} />}
+                  {r.fr && <LeakRow label="Foundational Read" terms={r.fr.leaks} clientHref={`/dashboard/clients/${r.clientId}#cffs`} publishedAt={r.fr.publishedAt} storedVersion={r.fr.storedVersion} isStale={r.fr.isStale} currentVersion={DOCTRINE_VERSIONS.foundational_reading} />}
+                  {r.pr && <LeakRow label={`Program Read${r.pr.programName ? ` (${r.pr.programName})` : ''}`} terms={r.pr.leaks} clientHref={`/dashboard/clients/${r.clientId}#training`} publishedAt={r.pr.publishedAt} storedVersion={r.pr.storedVersion} isStale={r.pr.isStale} currentVersion={DOCTRINE_VERSIONS.program_reading} />}
+                  {r.nr && <LeakRow label={`Nutrition Read${r.nr.planName ? ` (${r.nr.planName})` : ''}`} terms={r.nr.leaks} clientHref={`/dashboard/clients/${r.clientId}#nutrition`} publishedAt={r.nr.publishedAt} storedVersion={r.nr.storedVersion} isStale={r.nr.isStale} currentVersion={DOCTRINE_VERSIONS.nutrition_reading} />}
                 </div>
               </Card>
             ))}

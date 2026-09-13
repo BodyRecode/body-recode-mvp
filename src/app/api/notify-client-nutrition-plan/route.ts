@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
 
   if (!plan.nutrition_reading_published_at) {
     return NextResponse.json(
-      { error: 'Publish the Nutrition Reading before notifying the client. The reading frames the plan.' },
+      { error: 'Publish the Nutrition Read before notifying the client. The read frames the plan.' },
       { status: 400 }
     )
   }

@@ -51,7 +51,7 @@ export default async function MedicationsReadingPage({
   return (
     <PortalPageShell
       backHref={`/portal/${token}`}
-      eyebrow="Medications Reading"
+      eyebrow="Medications Read"
       title="How your medications shape your coaching"
       description={`Published ${publishedDate}`}
     >

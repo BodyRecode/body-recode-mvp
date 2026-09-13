@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
 
   if (!program.trajectory_reading_published_at) {
     return NextResponse.json(
-      { error: 'Publish the trajectory reading before notifying the client.' },
+      { error: 'Publish the Progress Read before notifying the client.' },
       { status: 400 }
     )
   }
@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
     })
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
-    console.error('Notify client trajectory reading email failed:', msg)
+    console.error('Notify client Progress Read email failed:', msg)
     return NextResponse.json({ error: `Send failed: ${msg}` }, { status: 500 })
   }
 

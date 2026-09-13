@@ -70,7 +70,7 @@ export function checkReadingFreshness(
     publishedAt: pub,
     changedAt: changed,
     message:
-      `This reading was published to the client before the ${label} was last changed ` +
+      `This read was published to the client before the ${label} was last changed ` +
       `(${when} earlier). It may describe a version they no longer have. Regenerate it ` +
       `or unpublish it.`,
   }

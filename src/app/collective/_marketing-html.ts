@@ -262,7 +262,7 @@ export const MARKETING_HTML = String.raw`
     <div>
       <div class="hbadge"><span class="dot"></span><span class="mono">The Body Recode Collective</span></div>
       <h1>You coach.<br>The platform<br>does <span class="a">the rest.</span></h1>
-      <p class="hsub">A collective of coaches practising to one standard. You get a branded coaching platform — <b>scorecard funnel</b>, <b>AI client readings</b>, programming, nutrition and payments — all powered by the Body Recode engine. You bring the practice; we bring the system.</p>
+      <p class="hsub">A collective of coaches practising to one standard. You get a branded coaching platform — <b>scorecard funnel</b>, <b>AI client reads</b>, programming, nutrition and payments — all powered by the Body Recode engine. You bring the practice; we bring the system.</p>
       <div class="cta">
         <a class="primary" href="/collective/apply">Apply to join the Collective &rarr;</a>
         <a class="ghost" href="#inside">See what you get</a>
@@ -279,7 +279,7 @@ export const MARKETING_HTML = String.raw`
           <div class="who">Sarah M · Wk 6</div>
         </div>
         <div class="readcard">
-          <div class="h"><span class="lab">AI Client Reading</span><span class="pill">New</span></div>
+          <div class="h"><span class="lab">AI Client Read</span><span class="pill">New</span></div>
           <div class="ln s1"></div><div class="ln s2"></div><div class="ln s3"></div>
         </div>
         <div class="grid2">
@@ -300,7 +300,7 @@ export const MARKETING_HTML = String.raw`
     <div class="stackchips">
       <span class="sc">Branded site</span>
       <span class="sc">Scorecard funnel</span>
-      <span class="sc">AI client readings</span>
+      <span class="sc">AI client reads</span>
       <span class="sc">Programming</span>
       <span class="sc">Nutrition</span>
       <span class="sc">Client portal</span>
@@ -360,7 +360,7 @@ export const MARKETING_HTML = String.raw`
     <div class="fgrid">
       <div class="fcard"><div class="ic"><span></span></div><h4>Branded site</h4><p>A fast site that looks like you. No Wix, no template, no web designer to chase.</p></div>
       <div class="fcard"><div class="ic"><span></span></div><h4>Scorecard funnel</h4><p>A quiz that segments leads and fires a personalised report. No more dead PDF lead magnets.</p></div>
-      <div class="fcard"><div class="ic"><span></span></div><h4>AI client readings</h4><p>The engine reads each client and tells you what they need next. No more staring at a spreadsheet.</p></div>
+      <div class="fcard"><div class="ic"><span></span></div><h4>AI client reads</h4><p>The engine reads each client and tells you what they need next. No more staring at a spreadsheet.</p></div>
       <div class="fcard"><div class="ic"><span></span></div><h4>Programming</h4><p>Plans, baselines and progressions, drafted for you to approve. No rebuilding every block from scratch.</p></div>
       <div class="fcard"><div class="ic"><span></span></div><h4>Nutrition</h4><p>Plans drafted to your guidance, inside the safety floors. No manual macro maths.</p></div>
       <div class="fcard"><div class="ic"><span></span></div><h4>Client portal</h4><p>Logins, check-ins, progress and readings, branded to you. No more juggling five apps.</p></div>
@@ -390,10 +390,10 @@ export const MARKETING_HTML = String.raw`
   <div class="wrap">
     <div class="eyebrow">// Whose coaching is it</div>
     <h2>You run on a proven engine. It still answers to you.</h2>
-    <p class="lead">You are not bringing your own software to plug in. You get a white-labelled instance of the engine that already runs Body Recode: the scorecard logic, the readings, the state model, the programming and nutrition doctrine, the safety floors. What keeps it <b>yours</b>, and not borrowed, is where your coaching drives it.</p>
+    <p class="lead">You are not bringing your own software to plug in. You get a white-labelled instance of the engine that already runs Body Recode: the scorecard logic, the reads, the state model, the programming and nutrition doctrine, the safety floors. What keeps it <b>yours</b>, and not borrowed, is where your coaching drives it.</p>
     <div class="fgrid">
       <div class="fcard"><div class="ic"><span></span></div><h4>Your modality</h4><p>A yoga teacher runs the yoga brain, not strength with the words swapped. Native to how you work.</p></div>
-      <div class="fcard"><div class="ic"><span></span></div><h4>You edit or veto</h4><p>Nothing reaches a client without your approval. Every reading, plan and block is yours to change or kill.</p></div>
+      <div class="fcard"><div class="ic"><span></span></div><h4>You edit or veto</h4><p>Nothing reaches a client without your approval. Every read, plan and block is yours to change or kill.</p></div>
       <div class="fcard"><div class="ic"><span></span></div><h4>You steer it</h4><p>Guidance fields and manual design let you direct the engine, or hand-write a program yourself.</p></div>
       <div class="fcard"><div class="ic"><span></span></div><h4>Your brand, your people</h4><p>Brand, voice, audience and client relationships are entirely yours. You can leave with all of it.</p></div>
     </div>
@@ -448,7 +448,7 @@ export const MARKETING_HTML = String.raw`
       </div>
     </div>
     <p class="prooflink">// take it yourself at performance.bodyrecode.au/scorecard</p>
-    <p class="proofnote">The scorecard is only the front door. The same platform runs the full client engine behind it: foundational, program and nutrition readings, check-ins and payments.</p>
+    <p class="proofnote">The scorecard is only the front door. The same platform runs the full client engine behind it: foundational, program and nutrition reads, check-ins and payments.</p>
   </div>
 </section>
 
@@ -560,7 +560,7 @@ export const MARKETING_HTML = String.raw`
           <span class="chip">Built &amp; runs Body Recode</span>
           <span class="chip">Live scorecard funnel</span>
           <span class="chip">Real paying clients</span>
-          <span class="chip">AI client readings</span>
+          <span class="chip">AI client reads</span>
           <span class="chip">Programming &amp; nutrition engine</span>
           <span class="chip">Portal &amp; payments</span>
           <span class="chip">Solo operator, no agency</span>

@@ -157,7 +157,7 @@ export async function runTrajectoryReadingGenerationInternal(body: any): Promise
     .single()
 
   if (updateErr) {
-    console.error('Failed to save trajectory reading:', updateErr)
+    console.error('Failed to save Progress Read:', updateErr)
     return NextResponse.json({ error: 'Failed to save reading' }, { status: 500 })
   }
 

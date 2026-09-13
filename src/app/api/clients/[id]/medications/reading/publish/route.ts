@@ -33,7 +33,7 @@ export async function POST(
   if (!client) return NextResponse.json({ error: 'Client not found' }, { status: 404 })
 
   if (action === 'publish' && !client.medications_reading_generated_at) {
-    return NextResponse.json({ error: 'Generate the Medications Reading before publishing' }, { status: 400 })
+    return NextResponse.json({ error: 'Generate the Medications Read before publishing' }, { status: 400 })
   }
 
   const { data: updated, error } = await admin

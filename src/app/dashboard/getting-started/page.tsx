@@ -138,7 +138,7 @@ export default async function GettingStartedPage() {
       done: firstStudentInvited,
       icon: UserPlus,
       href: '/dashboard/coaching',
-      description: 'Invite your first student via the coaching page. She completes intake, gets her Foundational Reading, and begins her first block. This is the real test that the platform is set up for you.',
+      description: 'Invite your first student via the coaching page. She completes intake, gets her Foundational Read, and begins her first block. This is the real test that the platform is set up for you.',
     },
     {
       key: 'first-checkin',

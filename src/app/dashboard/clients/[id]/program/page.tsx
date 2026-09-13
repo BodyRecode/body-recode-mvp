@@ -578,7 +578,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
               pending one or (b) re-view a published one. Without this the
               archived block's reading was unreachable from the program page
               entirely - the main TrajectoryReadingPanel below ties to the
-              ACTIVE program. Amber notice only shows when the reading hasn't
+              ACTIVE program. Amber notice only shows when the read hasn't
               been published yet (pending action). */}
           {(() => {
             const archived = archivedPrograms?.[0]
@@ -597,16 +597,16 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
               <div className="mb-6">
                 {isPending ? (
                   <div className="bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] rounded-lg px-4 py-3 mb-3">
-                    <p className="text-[12.5px] font-medium text-[#A96A12] mb-1">Pending block-end reading</p>
+                    <p className="text-[12.5px] font-medium text-[#A96A12] mb-1">Pending Progress Read</p>
                     <p className="text-sm text-[#A96A12]">
-                      <span className="font-semibold">{archived.block_name}</span> ended{endedAt ? ` around ${endedAt}` : ''} but its trajectory reading was never generated. Generate it now so the client has a record of the block arc before the next one is in full swing.
+                      <span className="font-semibold">{archived.block_name}</span> ended{endedAt ? ` around ${endedAt}` : ''} but its Progress Read was never generated. Generate it now so the client has a record of the block arc before the next one is in full swing.
                     </p>
                   </div>
                 ) : (
                   <div className="bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg px-4 py-3 mb-3">
                     <p className="text-[12.5px] font-medium text-[#666D7A] mb-1">Previous block reading</p>
                     <p className="text-sm text-[#141821]">
-                      Block-end reading for <span className="font-semibold">{archived.block_name}</span>{endedAt ? `, ended around ${endedAt}` : ''}. Published to the client portal. Edit + republish below if needed.
+                      Progress Read for <span className="font-semibold">{archived.block_name}</span>{endedAt ? `, ended around ${endedAt}` : ''}. Published to the client portal. Edit + republish below if needed.
                     </p>
                   </div>
                 )}
@@ -649,7 +649,7 @@ export default async function ProgramPage({ params }: { params: Promise<{ id: st
               <>
                 <div className="mb-3 flex items-center justify-between gap-3 flex-wrap">
                   <p className="text-[11px] text-[#98A0AD] leading-relaxed max-w-[440px]">
-                    Send a Progress Check so the block-end reading can re-score her body state from a fresh self-report. Once she submits it, generate the reading below.
+                    Send a Progress Check so the Progress Read can re-score her body state from a fresh self-report. Once she submits it, generate the read below.
                   </p>
                   <ProgressCheckButton
                     clientId={client.id}

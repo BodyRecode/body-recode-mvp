@@ -21,7 +21,7 @@ export type BoltOnAdCopy = {
 
 export const BOLT_ON_AD_COPY: Record<string, BoltOnAdCopy> = {
   'weekly-pattern-report': {
-    tagline: 'One personalised reading every week for four weeks. Read in 90 seconds. Walk into the weekend oriented.',
+    tagline: 'One personalised read every week for four weeks. Read in 90 seconds. Walk into the weekend oriented.',
     hero_headline: 'Four weeks. Four personalised readings. One $19.',
     hero_sub: 'Every Friday for the next four weeks, the Body Recode engine reads your latest check-in and your last four weeks of signal and writes you a short, prescriptive reading. Each one is one page. Three observations, one focus. Designed for a Friday afternoon read so you walk into the weekend with one thing to hold.',
     who_its_for: [
@@ -58,7 +58,7 @@ export const BOLT_ON_AD_COPY: Record<string, BoltOnAdCopy> = {
       'You are between phases and want a bridge block before re-committing to a new cycle.',
     ],
     whats_inside: [
-      'The reading - how your pattern and your constraint actually interact.',
+      'The read - how your pattern and your constraint actually interact.',
       'Week one - intent + 4-5 specific sessions, each with focus, movements, and notes.',
       'Week two - either progressed or held depending on what week one tells your system.',
       'Stepping back to normal - the first session back, deload-or-not, what to watch for.',
@@ -101,13 +101,13 @@ export const BOLT_ON_AD_COPY: Record<string, BoltOnAdCopy> = {
   'trajectory-deep-dive': {
     tagline: 'A fresh AI reading of how your signal moved across your last block.',
     hero_headline: 'A second reading of your block - on demand, between coaching cycles.',
-    hero_sub: 'Your weekly check-ins paint a picture of how the block actually unfolded. This deep-dive runs the same engine your coach uses for the official Block-End Reading, on the schedule you choose, with your weekly syntheses as the input. You read it once, mark it up, and arrive at your next check-in already oriented.',
+    hero_sub: 'Your weekly check-ins paint a picture of how the block actually unfolded. This deep-dive runs the same engine your coach uses for the official Progress Read, on the schedule you choose, with your weekly syntheses as the input. You read it once, mark it up, and arrive at your next check-in already oriented.',
     who_its_for: [
       'You feel the block went somewhere but cannot quite name what shifted.',
       'You want a second perspective on the same data before the next block plan locks in.',
       'You missed your coach reading window or want a fresh reading mid-block.',
       'You journal and you want a reference document to write back into.',
-      'You are between coaching cycles and want continuity in the reading discipline.',
+      'You are between coaching cycles and want continuity in the read discipline.',
     ],
     whats_inside: [
       'Where this block started - the signal you walked in with.',

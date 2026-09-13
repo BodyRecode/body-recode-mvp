@@ -19,7 +19,7 @@
 export const TAGLINES: string[] = [
   'Body composition is a signal, not a behaviour problem.',
   'The plan is downstream of the interpretation.',
-  'Most plateaus are a reading error, not a willpower one.',
+  'Most plateaus are a read error, not a willpower one.',
   'Compliance without interpretation is just well-organised guessing.',
   'The body keeps better notes than the spreadsheet.',
   'You cannot out-train a misread of the system.',

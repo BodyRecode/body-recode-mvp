@@ -31,7 +31,7 @@ export async function POST(
   if (!panel) return NextResponse.json({ error: 'Blood panel not found' }, { status: 404 })
 
   if (action === 'publish' && !panel.reading) {
-    return NextResponse.json({ error: 'Generate the client reading before publishing.' }, { status: 400 })
+    return NextResponse.json({ error: 'Generate the client read before publishing.' }, { status: 400 })
   }
 
   const publishedAt = action === 'publish' ? new Date().toISOString() : null

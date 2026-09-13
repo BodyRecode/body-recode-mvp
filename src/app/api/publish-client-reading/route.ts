@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
 
   if (action === 'publish' && !cffs.client_reading_generated_at) {
     return NextResponse.json(
-      { error: 'Generate the reading before publishing' },
+      { error: 'Generate the read before publishing' },
       { status: 400 }
     )
   }

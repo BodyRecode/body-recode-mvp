@@ -26,25 +26,25 @@ const READING_SOURCES = {
     table: 'cffs',
     sections: ['cr_where_you_are', 'cr_what_your_body_is_telling_us', 'cr_what_were_focusing_on_first', 'cr_what_were_not_doing_yet', 'cr_coach_note'],
     guidance: 'cr_coach_guidance',
-    label: 'Foundational Reading',
+    label: 'Foundational Read',
   },
   program: {
     table: 'programs',
     sections: ['pr_why_this_block', 'pr_what_this_program_is_doing', 'pr_how_well_know_its_working', 'pr_what_were_not_doing_yet', 'pr_coach_note'],
     guidance: 'pr_coach_guidance',
-    label: 'Program Reading',
+    label: 'Program Read',
   },
   nutrition: {
     table: 'nutrition_plans',
     sections: ['nr_why_this_plan', 'nr_what_this_nutrition_is_doing', 'nr_how_well_know_its_working', 'nr_what_were_not_doing_yet', 'nr_coach_note'],
     guidance: 'nr_coach_guidance',
-    label: 'Nutrition Reading',
+    label: 'Nutrition Read',
   },
   trajectory: {
     table: 'programs',
     sections: ['tr_where_this_block_started', 'tr_how_your_signal_moved', 'tr_what_held_steady', 'tr_what_this_sets_up_next', 'tr_coach_note', 'tr_state_rationale', 'tr_pattern_confidence_note'],
     guidance: 'tr_coach_guidance',
-    label: 'Block-End / Progress Read',
+    label: 'Progress Read',
   },
 } as const
 

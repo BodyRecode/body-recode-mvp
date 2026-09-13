@@ -14,7 +14,7 @@ const CATEGORIES = [
   {
     value: 'coaching_experience',
     label: 'Coaching experience',
-    hint: 'The readings, your check-ins, the program, the nutrition plan.',
+    hint: 'The reads, your check-ins, the program, the nutrition plan.',
   },
   {
     value: 'feature_request',

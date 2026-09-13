@@ -61,7 +61,7 @@ export default function NutritionReadingInline({
             className="text-[10px] font-bold text-white uppercase truncate"
             style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
           >
-            Nutrition Reading
+            Nutrition Read
           </p>
         </div>
         <Link
@@ -115,7 +115,7 @@ export default function NutritionReadingInline({
               </>
             ) : (
               <>
-                <ChevronDown size={13} /> Read the full reading
+                <ChevronDown size={13} /> Read the full read
               </>
             )}
           </button>

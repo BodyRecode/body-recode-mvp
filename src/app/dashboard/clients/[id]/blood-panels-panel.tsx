@@ -216,7 +216,7 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
       const p = json.panel as { approved_for_plan: boolean }
       setApproved(p.approved_for_plan)
       setStatus(p.approved_for_plan
-        ? 'Approved for plan. Regenerate the CFFS to fold these markers into the Foundational Reading, program, and nutrition.'
+        ? 'Approved for plan. Regenerate the CFFS to fold these markers into the Foundational Read, program, and nutrition.'
         : 'Approval revoked. These markers will not feed the next CFFS.')
       router.refresh()
     }
@@ -267,16 +267,16 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
       />
       <GenerationProgressOverlay
         active={busy === 'reading'}
-        title="Generating Client Reading"
+        title="Generating Client Read"
         stages={[
           { start: 0,  label: 'Reading the coach analysis you saved + CFFS + medications' },
           { start: 4,  label: 'Drafting the client-facing prose under conservative-disclosure doctrine' },
           { start: 20, label: 'Scanning for banned terms and over-claiming' },
           { start: 25, label: 'Auto-retrying if any banned terms leaked' },
-          { start: 35, label: 'Saving the new reading' },
+          { start: 35, label: 'Saving the new read' },
           { start: 55, label: 'Taking longer than usual, give it another moment' },
         ]}
-        disclaimer="Client reading uses Claude Haiku 4.5 with automatic banned-term retry, gated by conservative-disclosure doctrine (no diagnosis language, no severity scoring). Typical: 25 to 45 seconds. The page is not frozen, please don't refresh."
+        disclaimer="Client read uses Claude Haiku 4.5 with automatic banned-term retry, gated by conservative-disclosure doctrine (no diagnosis language, no severity scoring). Typical: 25 to 45 seconds. The page is not frozen, please don't refresh."
       />
       <GenerationProgressOverlay
         active={busy === 'lens'}

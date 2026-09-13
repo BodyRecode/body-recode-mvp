@@ -263,7 +263,7 @@ export async function POST(req: NextRequest) {
         heading: `${name} uploaded blood test results`,
         body: [
           `${name} has uploaded a copy of their blood test results to their portal. ${readState}`,
-          `Nothing influences their plan until you review the panel and click Approve for plan. Generate the coach analysis and client reading from their profile.`,
+          `Nothing influences their plan until you review the panel and click Approve for plan. Generate the coach analysis and client read from their profile.`,
         ],
         ctaLabel: 'Review blood panel',
         ctaUrl: `${baseUrl}/dashboard/clients/${clientId}#bloods`,

@@ -510,7 +510,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           !intakeDone ? { t: 'Waiting on intake', s: 'Client to complete their foundational intake.', href: null } :
           !latestBaseline ? { t: 'Waiting on baseline', s: 'Client to upload measurements and progress photos.', href: `/dashboard/clients/${id}/baseline` } :
           !activeCffs ? { t: 'Generate the Foundational Synthesis', s: 'Onboarding complete - ready to synthesise.', href: `#cffs` } :
-          !frPublished ? { t: 'Publish the Foundational Reading', s: 'Synthesis done - the client is waiting on their reading.', href: `#cffs` } :
+          !frPublished ? { t: 'Publish the Foundational Read', s: 'Synthesis done - the client is waiting on their reading.', href: `#cffs` } :
           latestCheckinDraftUnsent ? { t: 'Send the check-in reply', s: 'A draft is written and waiting. It has not been sent, so she has heard nothing.', href: `#cfws` } :
           latestCheckinNeedsResponse ? { t: 'Respond to the weekly check-in', s: 'Latest check-in needs your response.', href: `#cfws` } :
           !hasActiveProgram ? { t: 'Generate the first training plan', s: 'Reading published. Design the first block.', href: `/dashboard/clients/${id}/program` } :
@@ -600,7 +600,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       })()}
 
       {/* Pending block-end Trajectory Reading. Surfaces at top of profile so
-          a skipped block-end reading isn't only discoverable from the program
+          a skipped Progress Read isn't only discoverable from the program
           page (where it sits inline above the active block's panel). */}
       {pendingTrajectory && (() => {
         const endedAt = pendingTrajectory.generated_at && pendingTrajectory.week_duration
@@ -611,9 +611,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             href={`/dashboard/clients/${id}/program`}
             className="block rounded-xl p-4 mb-4 border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] hover:border-[#D9B976] transition-colors"
           >
-            <p className="text-[12px] font-medium text-[#A96A12] mb-1">Pending block-end reading</p>
+            <p className="text-[12px] font-medium text-[#A96A12] mb-1">Pending Progress Read</p>
             <p className="text-sm text-[#8A5A14]">
-              <span className="font-semibold">{pendingTrajectory.block_name}</span> ended{endedAt ? ` around ${endedAt}` : ''} but its trajectory reading was never generated. Click through to generate it now →
+              <span className="font-semibold">{pendingTrajectory.block_name}</span> ended{endedAt ? ` around ${endedAt}` : ''} but its Progress Read was never generated. Click through to generate it now →
             </p>
           </Link>
         )

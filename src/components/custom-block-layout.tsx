@@ -125,7 +125,7 @@ export default function CustomBlockLayout({ data }: { data: CustomBlockLayoutDat
           </div>
 
           <div className="section">
-            <h2><span className="num">01</span>The reading</h2>
+            <h2><span className="num">01</span>The read</h2>
             {data.sections.cb_reading.split(/\n+/).map((p, i) => <p key={i} className="intent">{p}</p>)}
           </div>
 

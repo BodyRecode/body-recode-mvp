@@ -37,7 +37,7 @@ export default function ReadingLayout({
 }) {
   return (
     <ReadingHeroShell
-      eyebrow="Foundational Reading"
+      eyebrow="Foundational Read"
       heroTitle="Your Starting Position"
       heroSub="A read of how your body is currently organising itself, across energy, recovery, sleep, stress, and training response. Not a verdict, a foundation we build from together."
       pill={reading.body_state_classification}

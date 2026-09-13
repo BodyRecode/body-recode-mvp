@@ -145,7 +145,7 @@ export default async function PortalMyPlanPage({ params }: { params: Promise<{ t
             {/* Bridge mode framing — friendly version of the coach-side bridge
                 banner. Staged framing: client sees the current stage, the
                 next stage, and the eventual target, all in plain language.
-                Sits ABOVE the nutrition reading so the client knows the
+                Sits ABOVE the nutrition read so the client knows the
                 framing before reading the per-meal detail. */}
             {plan.transitional_override_active && (
               <div className="bg-[#FDF6E9] border border-[#F1DEB8] rounded-2xl p-5">

@@ -44,14 +44,14 @@ export default function NutritionReadingLayout({
 
   return (
     <ReadingHeroShell
-      eyebrow="Nutrition Reading"
+      eyebrow="Nutrition Read"
       heroTitle={reading.plan_name}
-      heroSub="Why this plan, what it is doing, and how we will read it as it unfolds. The bridge from your Foundational Reading to the meals on your plate."
+      heroSub="Why this plan, what it is doing, and how we will read it as it unfolds. The bridge from your Foundational Read to the meals on your plate."
       pill={pill}
       clientName={client.name}
       aboutText={
         <p>
-          <b>About this reading.</b> Every plan is built from where your body currently is, not from a generic template. This reading explains what we are trying to support with food right now, what the plan will ask of your body, and what we are deliberately not chasing yet. Read it once before your first meal of the week. It frames everything that follows.
+          <b>About this reading.</b> Every plan is built from where your body currently is, not from a generic template. This read explains what we are trying to support with food right now, what the plan will ask of your body, and what we are deliberately not chasing yet. Read it once before your first meal of the week. It frames everything that follows.
         </p>
       }
       sections={[

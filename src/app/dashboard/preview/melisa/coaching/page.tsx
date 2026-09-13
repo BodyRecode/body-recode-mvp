@@ -141,7 +141,7 @@ export default function HermonyCoaching() {
         <Card>
           <SectionLabel accent="terracotta">Readings ready to notify</SectionLabel>
           <p className="text-[13px] text-[#4B4B4B] leading-relaxed mb-3">
-            1 nutrition plan and 1 block-end trajectory reading are drafted and waiting for you to click Notify.
+            1 nutrition plan and 1 Progress Read are drafted and waiting for you to click Notify.
           </p>
           <Link href="#" className="inline-flex items-center gap-1 text-[12px] font-semibold" style={{ color: HARMONY.accentText }}>
             Review + send <ArrowUpRight size={12} />

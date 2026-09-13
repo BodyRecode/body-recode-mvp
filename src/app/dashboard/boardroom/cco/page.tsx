@@ -169,7 +169,7 @@ export default async function CcoPage() {
               ? `${snap.feedbackAvgAccuracy30d.toFixed(1)}/10`
               : '—'
           }
-          hint="How accurate clients found the reading"
+          hint="How accurate clients found the read"
           tone={
             snap.feedbackAvgAccuracy30d === null
               ? 'stone'

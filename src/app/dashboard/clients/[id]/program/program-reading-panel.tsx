@@ -79,7 +79,7 @@ export default function ProgramReadingPanel({
         ? '\n\nYour Coach Guidance will be applied to the new draft.'
         : ''
       const baseMsg = emailSent
-        ? 'Replace the live reading with a fresh draft? Your client will not be re-emailed.'
+        ? 'Replace the live read with a fresh draft? Your client will not be re-emailed.'
         : 'Replace the current draft with a fresh one? Nothing is published or emailed; you still publish separately.'
       if (!confirm(baseMsg + '\n\nThis will overwrite any inline edits you have made.' + guidanceNote)) return
     }
@@ -107,7 +107,7 @@ export default function ProgramReadingPanel({
   const togglePublish = async () => {
     if (publishing) return
     const action = published ? 'unpublish' : 'publish'
-    if (action === 'unpublish' && !confirm('Take this reading down from the client portal? You can republish at any time.')) return
+    if (action === 'unpublish' && !confirm('Take this read down from the client portal? You can republish at any time.')) return
     setError(null)
     setPublishing(true)
     try {
@@ -135,16 +135,16 @@ export default function ProgramReadingPanel({
     <div className="mb-6">
       <GenerationProgressOverlay
         active={generating}
-        title="Program Reading"
+        title="Program Read"
         stages={[
           { start: 0,  label: 'Reading CFFS, active program block, and coach guidance' },
-          { start: 4,  label: 'Drafting the 5 client-facing reading sections' },
+          { start: 4,  label: 'Drafting the 5 client-facing read sections' },
           { start: 18, label: 'Scanning for banned client-facing terms' },
           { start: 22, label: 'Auto-retrying if any banned terms leaked' },
           { start: 35, label: 'Saving the new draft and refreshing the panel' },
           { start: 55, label: 'Taking longer than usual, give it another moment' },
         ]}
-        disclaimer="Program Reading generation uses Claude Haiku 4.5 with automatic banned-term retry. Typical: 20 to 40 seconds. The page is not frozen, please don't refresh."
+        disclaimer="Program Read generation uses Claude Haiku 4.5 with automatic banned-term retry. Typical: 20 to 40 seconds. The page is not frozen, please don't refresh."
       />
       <div className="flex items-center justify-between gap-4 mb-3 flex-wrap">
         <div className="flex items-center gap-2.5">
@@ -152,7 +152,7 @@ export default function ProgramReadingPanel({
           <h2
             className="text-[11px] font-medium text-[#141821]"
           >
-            Program Reading{' '}
+            Program Read{' '}
             <span className="text-[#43474F] font-normal">- Client Facing</span>
           </h2>
         </div>
@@ -267,7 +267,7 @@ export default function ProgramReadingPanel({
       )}
       {freshness.stale && (
         <div className="mx-5 mb-4 rounded-xl border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] px-4 py-3">
-          <p className="text-[12.5px] font-semibold text-[#8A5A14]">This reading is out of date</p>
+          <p className="text-[12.5px] font-semibold text-[#8A5A14]">This read is out of date</p>
           <p className="text-[12.5px] text-[#A96A12] mt-1 leading-relaxed">{freshness.message}</p>
         </div>
       )}
@@ -275,12 +275,12 @@ export default function ProgramReadingPanel({
 
       {!generated ? (
         <div className="br-card p-8 text-center">
-          <p className="text-[#666D7A] text-[14px] mb-2">No Program Reading yet</p>
+          <p className="text-[#666D7A] text-[14px] mb-2">No Program Read yet</p>
           <p className="text-[#98A0AD] text-[12px]">
-            Click Generate &amp; Publish. The reading appears at the top of the client&apos;s program page and an email is sent to let them know the new block is ready.
+            Click Generate &amp; Publish. The read appears at the top of the client&apos;s program page and an email is sent to let them know the new block is ready.
           </p>
           <p className="text-[#43474F] text-[11px] mt-3">
-            Requires a published Foundational Reading. The Program Reading builds from it.
+            Requires a published Foundational Read. The Program Read builds from it.
           </p>
         </div>
       ) : (
@@ -302,7 +302,7 @@ export default function ProgramReadingPanel({
               {published && clientToken && (
                 <ClientViewModal
                   portalUrl={`/portal/${clientToken}/program/reading`}
-                  title="Program Reading — Document"
+                  title="Program Read — Document"
                   triggerLabel="Document"
                   triggerClassName="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC] transition-colors"
                 />

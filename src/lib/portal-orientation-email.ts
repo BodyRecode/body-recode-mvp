@@ -80,7 +80,7 @@ ${mockup('portal-landing', 'Portal home page mockup')}
 ${emailBody(`When you sign in, you land here. The page is split into sections so you always know what is current.`)}
               <ul style="padding-left:18px;margin:0 0 16px;color:#6B6B6B;">
                 <li style="margin-bottom:6px;"><strong style="color:#1A1A1A;">This week</strong>: your weekly check-in (when the window is open) or a status note when it is not</li>
-                <li style="margin-bottom:6px;"><strong style="color:#1A1A1A;">Your reading</strong>: your Foundational Reading appears here once it is ready</li>
+                <li style="margin-bottom:6px;"><strong style="color:#1A1A1A;">Your read</strong>: your Foundational Read appears here once it is ready</li>
                 <li style="margin-bottom:6px;"><strong style="color:#1A1A1A;">Resources</strong>: the all-in-one menu shown next</li>
               </ul>
 
@@ -89,16 +89,16 @@ ${mockup('portal-resources', 'Portal resources hub mockup')}
 ${emailBody(`Six cards, one for each thing you might need beyond your weekly check-in and program:`)}
               <ul style="padding-left:18px;margin:0 0 16px;color:#6B6B6B;">
                 <li style="margin-bottom:6px;"><strong style="color:#1A1A1A;">Your progress</strong>: measurements over time, side by side with your starting baseline</li>
-                <li style="margin-bottom:6px;"><strong style="color:#1A1A1A;">Your readings</strong>: every Foundational Reading we generate for you, current and archived</li>
+                <li style="margin-bottom:6px;"><strong style="color:#1A1A1A;">Your reads</strong>: every Foundational Read we generate for you, current and archived</li>
                 <li style="margin-bottom:6px;"><strong style="color:#1A1A1A;">Glossary</strong>: plain-language definitions of every term you hear from me. RPE, body state, regulation, recovery margin, all of it</li>
                 <li style="margin-bottom:6px;"><strong style="color:#1A1A1A;">Practical guides</strong>: short, actionable. Sleep hygiene, stress regulation, pre-session prep, post-session recovery, weekly structure</li>
                 <li style="margin-bottom:6px;"><strong style="color:#1A1A1A;">Message your coach</strong>: a non-urgent message form. I reply by email. For anything urgent, the WhatsApp link is at the bottom of the portal</li>
                 <li style="margin-bottom:0;"><strong style="color:#1A1A1A;">Account and service</strong>: update your contact details, request a pause, refer a friend, download all your data</li>
               </ul>
 
-${emailEyebrow('03 · Your Foundational Reading', '#1A1A1A')}
-${mockup('portal-reading', 'Foundational Reading layout mockup')}
-${emailBody(`Your Foundational Reading is a structured read of how your body is currently organising itself, derived from the intake you completed. Five sections: where you are right now, what your body is telling us, what we are focusing on first, what we are not doing yet, and a note from me. It is not a verdict. It is the starting position we build from. You will get a separate email when it is ready.`)}
+${emailEyebrow('03 · Your Foundational Read', '#1A1A1A')}
+${mockup('portal-reading', 'Foundational Read layout mockup')}
+${emailBody(`Your Foundational Read is a structured read of how your body is currently organising itself, derived from the intake you completed. Five sections: where you are right now, what your body is telling us, what we are focusing on first, what we are not doing yet, and a note from me. It is not a verdict. It is the starting position we build from. You will get a separate email when it is ready.`)}
 
 ${emailEyebrow('04 · How to sign in', '#1A1A1A')}
 ${emailBody(`Open the link below and enter your email. You will get a 6-digit code by email. No password to set or remember.`)}

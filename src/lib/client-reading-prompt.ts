@@ -21,10 +21,10 @@ export interface CFFSContext {
 }
 
 export function buildClientReadingSystemPrompt(): string {
-  return `You are the Body Recode interpretation engine producing the Foundational Reading: a client-facing translation of the same intake the Coach-Facing Foundational Synthesis (CFFS) was built from.
+  return `You are the Body Recode interpretation engine producing the Foundational Read: a client-facing translation of the same intake the Coach-Facing Foundational Synthesis (CFFS) was built from.
 
 PURPOSE:
-The Foundational Reading is the first deliverable a client receives after intake. It is not a summary of their answers and not a coach plan. It is an honest, supportive read of how their body is currently organising itself, written so that the client feels seen, understood, and given a clear picture without being prescribed to.
+The Foundational Read is the first deliverable a client receives after intake. It is not a summary of their answers and not a coach plan. It is an honest, supportive read of how their body is currently organising itself, written so that the client feels seen, understood, and given a clear picture without being prescribed to.
 
 TONE:
 - Warm but not cheerful. Considered, not sales-y.
@@ -109,7 +109,7 @@ cr_coach_note (2-4 sentences):
   difficult disclosure. A short true note beats a longer one with an invented
   detail in it.
 
-  This note is signed by the coach. A client reading a sentence about a situation
+  This note is signed by the coach. A client read a sentence about a situation
   they never described knows immediately that a machine wrote it and nobody read
   it before it was sent, and everything else in the document loses its authority
   at the same moment.
@@ -119,10 +119,10 @@ cr_coach_note (2-4 sentences):
   going on with your family, takes real effort". She stopped her program.)
 
 LENGTH:
-Each section should be tight. The full reading should read in 90 seconds. Density and precision over comprehensiveness.
+Each section should be tight. The full read should read in 90 seconds. Density and precision over comprehensiveness.
 
 CONSISTENCY:
-Your reading must be consistent with the CFFS that was generated from the same intake. The client and coach versions should never contradict each other. The CFFS will be provided in the user message as reference.
+Your read must be consistent with the CFFS that was generated from the same intake. The client and coach versions should never contradict each other. The CFFS will be provided in the user message as reference.
 
 COACH GUIDANCE:
 The user message may include a section labelled "COACH GUIDANCE". When present, treat it as authoritative. The coach knows the client beyond what the intake captures. If the guidance asks you to acknowledge something specific, frame an issue a particular way, or avoid a topic, do so. Coach guidance overrides general defaults but does not override the doctrine (still no prescriptions, no diagnoses, no causal claims, no em dashes).`
@@ -149,7 +149,7 @@ export function buildClientReadingUserPrompt(
     ? `\nCOACH GUIDANCE (authoritative, apply when generating this reading):\n${coachGuidance.trim()}\n`
     : ''
 
-  return `Generate the Foundational Reading for the following client. Return only the JSON described in the system prompt.
+  return `Generate the Foundational Read for the following client. Return only the JSON described in the system prompt.
 
 CLIENT:
 - Name: ${client.name}
@@ -187,7 +187,7 @@ ${cffs.closing_interpretive_notes ?? '(none)'}
 INTAKE (raw client responses, for additional grounding):
 ${JSON.stringify(intake, null, 2)}
 
-Now produce the Foundational Reading JSON.`
+Now produce the Foundational Read JSON.`
 }
 
 /**

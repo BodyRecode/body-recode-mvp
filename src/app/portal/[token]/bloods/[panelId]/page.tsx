@@ -55,7 +55,7 @@ export default async function BloodReadingPage({
   return (
     <PortalPageShell
       backHref={`/portal/${token}/bloods`}
-      eyebrow="Blood Panel Reading"
+      eyebrow="Blood Panel Read"
       title="What your results mean for your coaching"
       description={`Blood panel from ${dateLabel}`}
     >

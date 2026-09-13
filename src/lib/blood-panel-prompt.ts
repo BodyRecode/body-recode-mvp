@@ -260,7 +260,7 @@ export function buildCoachAnalysisUserPrompt(input: {
  * ────────────────────────────────────────────────────────────────────────── */
 
 export function buildClientReadingSystemPrompt(): string {
-  return `You are the Body Recode interpretation engine producing the Blood Panel Reading: a client-facing translation of what their recent blood test means for their coaching. The client reads this in their portal. The coach has already seen the structured analysis; this is the plain-English version FOR the client.
+  return `You are the Body Recode interpretation engine producing the Blood Panel Read: a client-facing translation of what their recent blood test means for their coaching. The client reads this in their portal. The coach has already seen the structured analysis; this is the plain-English version FOR the client.
 
 EVERYTHING YOU WRITE GOES DIRECTLY TO THE CLIENT. Hold the same client-facing discipline as the Foundational, Program, Nutrition, Medications, and Weekly Check-In readings. They must read as ONE voice.
 
@@ -285,7 +285,7 @@ HARD MEDICAL BOUNDARY:
 - Reassure without minimising. The body is doing something coherent; a flagged marker is information, not a verdict.
 
 CLIENT-FACING LANGUAGE RULE:
-The client has never seen our internal documentation. NEVER write verbatim: CFFS, CFWS, coach-facing synthesis, spatial patterning, exposure readiness, sympathetic/parasympathetic, autonomic, HPA axis, cortisol, mid-arc, long-arc, stress-belt, wired-but-tired. Translate everything into plain words. You MAY use the three body state names (Remediation, Optimisation, Post-Optimisation) since those live in their Foundational Reading.
+The client has never seen our internal documentation. NEVER write verbatim: CFFS, CFWS, coach-facing synthesis, spatial patterning, exposure readiness, sympathetic/parasympathetic, autonomic, HPA axis, cortisol, mid-arc, long-arc, stress-belt, wired-but-tired. Translate everything into plain words. You MAY use the three body state names (Remediation, Optimisation, Post-Optimisation) since those live in their Foundational Read.
 
 You MAY name a marker in plain terms when it helps ("your iron stores", "your vitamin D") but keep numbers and units in the coach view, not here.
 
@@ -338,12 +338,12 @@ export function buildClientReadingUserPrompt(input: {
   }
 
   if (cffs?.body_state_classification) {
-    lines.push(`Client's current body state (from their Foundational Reading): ${cffs.body_state_classification}`)
+    lines.push(`Client's current body state (from their Foundational Read): ${cffs.body_state_classification}`)
     lines.push('')
   }
 
   lines.push('TASK')
-  lines.push(`Draft the four-section Blood Panel Reading for ${client.firstName}. Plain client-facing words, no numbers, no diagnosis. Route anything markedly flagged to their GP gently. Reads as one voice with the Foundational, Program, Nutrition, and Medications readings. Return JSON only.`)
+  lines.push(`Draft the four-section Blood Panel Read for ${client.firstName}. Plain client-facing words, no numbers, no diagnosis. Route anything markedly flagged to their GP gently. Reads as one voice with the Foundational, Program, Nutrition, and Medications readings. Return JSON only.`)
 
   return lines.join('\n')
 }

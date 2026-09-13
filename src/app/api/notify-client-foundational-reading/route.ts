@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
 
   if (!cffs.client_reading_published_at) {
     return NextResponse.json(
-      { error: 'Publish the reading before notifying the client.' },
+      { error: 'Publish the read before notifying the client.' },
       { status: 400 }
     )
   }
@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
     })
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
-    console.error('Notify client foundational reading email failed:', msg)
+    console.error('Notify client foundational read email failed:', msg)
     return NextResponse.json({ error: `Send failed: ${msg}` }, { status: 500 })
   }
 

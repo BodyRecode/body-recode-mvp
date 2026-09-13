@@ -57,7 +57,7 @@ export default function NotifyClientButton({
   if (!hasReading) {
     return (
       <span
-        title="Publish the Program Reading first. The reading frames the block."
+        title="Publish the Program Read first. The read frames the block."
         className="text-[12.5px] px-3 py-1.5 border border-[#E8EAEE] text-[#98A0AD] rounded-lg cursor-not-allowed"
       >
         Notify Client

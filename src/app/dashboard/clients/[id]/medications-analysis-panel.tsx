@@ -160,16 +160,16 @@ export default function MedicationsAnalysisPanel({
       />
       <GenerationProgressOverlay
         active={generatingReading}
-        title="Generating Medications Reading"
+        title="Generating Medications Read"
         stages={[
           { start: 0,  label: 'Reading the medications analysis you just saved' },
-          { start: 4,  label: 'Drafting the 4 client-facing reading sections' },
+          { start: 4,  label: 'Drafting the 4 client-facing read sections' },
           { start: 18, label: 'Scanning for banned client-facing terms' },
           { start: 22, label: 'Auto-retrying if any banned terms leaked' },
           { start: 35, label: 'Saving and refreshing the panel' },
           { start: 55, label: 'Taking longer than usual, give it another moment' },
         ]}
-        disclaimer="Medications Reading generation uses Claude Haiku 4.5 with automatic banned-term retry. Typical: 20 to 40 seconds. The page is not frozen, please don't refresh."
+        disclaimer="Medications Read generation uses Claude Haiku 4.5 with automatic banned-term retry. Typical: 20 to 40 seconds. The page is not frozen, please don't refresh."
       />
       <div className="br-card overflow-hidden">
         <div className="px-4 py-3 border-b border-[#E8EAEE] flex items-center justify-between gap-3 flex-wrap">
@@ -233,7 +233,7 @@ export default function MedicationsAnalysisPanel({
         <div className="br-card overflow-hidden">
           <div className="px-4 py-3 border-b border-[#E8EAEE] flex items-center justify-between gap-3 flex-wrap">
             <div className="flex items-center gap-2.5 flex-wrap">
-              <p className="text-[12px] font-medium text-[#1B6DFC]">Medications Reading (client)</p>
+              <p className="text-[12px] font-medium text-[#1B6DFC]">Medications Read (client)</p>
               {readingGeneratedAt && (
                 <span className="text-[10px] text-[#98A0AD]">
                   Generated {new Date(readingGeneratedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
@@ -272,7 +272,7 @@ export default function MedicationsAnalysisPanel({
 
           {!reading ? (
             <div className="px-4 py-6 text-center">
-              <p className="text-sm text-[#666D7A] mb-1">No client reading generated yet</p>
+              <p className="text-sm text-[#666D7A] mb-1">No client read generated yet</p>
               <p className="text-[12.5px] text-[#98A0AD]">Click Generate reading to produce the client-facing version. Reviews before you publish.</p>
             </div>
           ) : (

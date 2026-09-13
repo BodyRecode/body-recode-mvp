@@ -61,7 +61,7 @@ export default function ProgramReadingInline({
             className="text-[10px] font-bold text-white uppercase truncate"
             style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
           >
-            Program Reading
+            Program Read
           </p>
         </div>
         <Link
@@ -115,7 +115,7 @@ export default function ProgramReadingInline({
               </>
             ) : (
               <>
-                <ChevronDown size={13} /> Read the full reading
+                <ChevronDown size={13} /> Read the full read
               </>
             )}
           </button>

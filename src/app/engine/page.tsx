@@ -263,7 +263,7 @@ export default function EnginePage() {
                 <ColLabel>Does</ColLabel>
                 <p style={{ fontSize: 13, color: TXT_DIM, lineHeight: 1.8 }}>
                   Condenses the scored sections, reads the photos as one more signal rather than as evidence on their own,
-                  and resolves the whole picture through the Fat Map's four location-plus-signal patterns. Where two readings
+                  and resolves the whole picture through the Fat Map's four location-plus-signal patterns. Where two reads
                   are possible, the cautious one wins every time. It names the body state, rates four readiness signals, and
                   prescribes <strong style={{ color: TXT_BODY }}>nothing</strong>.
                 </p>
@@ -433,7 +433,7 @@ export default function EnginePage() {
           <MiniCard title="Non-diagnostic, absolutely" body="No stage names a disease, alters a lab range, or gives medical advice. Markedly abnormal values are referred to a GP in neutral language." />
           <MiniCard title="Pattern, not event" body="Interpretation is pattern-based and conservative resolution always wins. One reading is a hypothesis; the arc is the evidence." />
           <MiniCard title="No aesthetic verdict" body="Photos are signal, not judgment. Words like overweight, lean, soft or athletic are banned from the read." />
-          <MiniCard title="The machinery stays hidden" body="No CFFS, RPE or cortisol language ever reaches the client. The reading family translates everything into one voice." />
+          <MiniCard title="The machinery stays hidden" body="No CFFS, RPE or cortisol language ever reaches the client. The read family translates everything into one voice." />
           <MiniCard title="Brand boundary held" body="Structured compound tracking is Arete’s lane. Body Recode captures it only as free text and never propagates compound names to client prose." />
         </Grid>
       </Section>

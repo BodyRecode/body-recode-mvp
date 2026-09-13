@@ -81,7 +81,7 @@ function CheckInResult({ resultKey, progressScore }: { resultKey: string; progre
 
       {/* Bridge callback line — references Day 7 score without repeating the card */}
       <p style={{ fontSize: '14px', color: '#43474F', lineHeight: 1.7, margin: 0 }}>
-        You finished the 14 days. On Day 7 you logged <strong style={{ color: '#141821' }}>{progressScore} of 8 markers improving</strong>. That signal is what made this reading possible.
+        You finished the 14 days. On Day 7 you logged <strong style={{ color: '#141821' }}>{progressScore} of 8 markers improving</strong>. That signal is what made this read possible.
       </p>
 
       {/* Pattern hero — dark, big, branded */}

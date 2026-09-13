@@ -143,7 +143,7 @@ export function buildPreview(params: PreviewInput): PreviewOutput {
         text: buildTuningBlock(params, 'nutrition'),
       },
       {
-        generator: 'Foundational / trajectory / medications reading',
+        generator: 'Foundational / trajectory / medications read',
         text: buildTuningBlock(params, 'none'),
       },
     ],

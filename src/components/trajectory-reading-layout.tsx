@@ -78,7 +78,7 @@ export default function TrajectoryReadingLayout({
 
   return (
     <ReadingHeroShell
-      eyebrow={hasReScore ? 'Progress Read' : 'Block-End Reading'}
+      eyebrow={hasReScore ? 'Progress Read' : 'Progress Read'}
       heroTitle={reading.block_name}
       heroSub={hasReScore
         ? 'A fresh read of where your body sits now, set against where this block started. Direction held across weeks is the signal, not any single week on its own.'
@@ -87,7 +87,7 @@ export default function TrajectoryReadingLayout({
       clientName={client.name}
       aboutText={
         <p>
-          <b>About this reading.</b> A single week is never the verdict. Direction held across weeks is the signal. This reading is here so you can see the shape of where you have been travelling, trust that the work compounded even on the flat weeks, and carry that into what comes next.
+          <b>About this reading.</b> A single week is never the verdict. Direction held across weeks is the signal. This read is here so you can see the shape of where you have been travelling, trust that the work compounded even on the flat weeks, and carry that into what comes next.
         </p>
       }
       sections={sections}

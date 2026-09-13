@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
 
   if (!program.program_reading_published_at) {
     return NextResponse.json(
-      { error: 'Publish the Program Reading before notifying the client. The reading frames the block.' },
+      { error: 'Publish the Program Read before notifying the client. The read frames the block.' },
       { status: 400 }
     )
   }

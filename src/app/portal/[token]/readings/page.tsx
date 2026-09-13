@@ -42,14 +42,14 @@ export default async function ReadingsArchivePage({ params }: { params: Promise<
       <div className="max-w-lg mx-auto px-6 py-10">
         <div className="mb-10">
           <Link href={`/portal/${token}/resources`} className="text-[12px] text-[#98A0AD] hover:text-[#43474F] transition-colors">← Back to resources</Link>
-          <h1 className="text-[30px] font-extrabold text-[#141821] tracking-tight leading-[1.1] mt-4 mb-2">Your readings</h1>
+          <h1 className="text-[30px] font-extrabold text-[#141821] tracking-tight leading-[1.1] mt-4 mb-2">Your reads</h1>
           <p className="text-[#666D7A] text-[15px]">A read of how your body is currently organising itself. Updated when significant signals shift.</p>
         </div>
 
         {published.length === 0 ? (
           <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-6 text-center">
             <p className="text-[#666D7A] text-[14px] mb-2">No readings yet</p>
-            <p className="text-[#98A0AD] text-[12px] leading-relaxed">Your Foundational Reading will appear here once it has been finalised. Future weekly readings will join it.</p>
+            <p className="text-[#98A0AD] text-[12px] leading-relaxed">Your Foundational Read will appear here once it has been finalised. Future weekly reads will join it.</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -65,7 +65,7 @@ export default async function ReadingsArchivePage({ params }: { params: Promise<
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <p className="text-[15px] font-semibold text-[#141821] group-hover:text-[#1B6DFC] transition-colors">Foundational Reading</p>
+                    <p className="text-[15px] font-semibold text-[#141821] group-hover:text-[#1B6DFC] transition-colors">Foundational Read</p>
                     <span className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-wider">Current</span>
                   </div>
                   <p className="text-[12px] text-[#666D7A] leading-relaxed">
@@ -89,7 +89,7 @@ export default async function ReadingsArchivePage({ params }: { params: Promise<
                         <FileText size={16} className="text-[#98A0AD]" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-[14px] font-semibold text-[#666D7A] mb-1">Foundational Reading</p>
+                        <p className="text-[14px] font-semibold text-[#666D7A] mb-1">Foundational Read</p>
                         <p className="text-[12px] text-[#98A0AD] leading-relaxed">
                           {r.body_state_classification ? `${r.body_state_classification}. ` : ''}Issued {new Date(r.client_reading_published_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}.
                         </p>
