@@ -3,6 +3,7 @@
 import { Zap, ChevronRight, Hand } from 'lucide-react'
 import Link from 'next/link'
 import { brand, coach } from "@/config/tenant";
+import { getTotalQuestions } from '@/lib/intake-questions'
 
 const AUTOMATIC_AUTOMATIONS = [
   // Client-stage automations
@@ -178,7 +179,7 @@ const AUTOMATIC_AUTOMATIONS = [
   {
     id: 'intake-submitted',
     name: 'Foundational Intake Submitted',
-    description: 'Coach notification when a client completes their 234-question intake. Also triggers automatic CFFS generation in the background.',
+    description: `Coach notification when a client completes their ${getTotalQuestions()}-question intake. Also triggers automatic CFFS generation in the background.`,
     trigger: 'Client submits Foundational Intake via portal',
     steps: 1,
   },
@@ -507,7 +508,7 @@ const MANUAL_AUTOMATIONS = [
   {
     id: 'send-intake',
     name: 'Send Foundational Intake Email',
-    description: 'Manually email a client the link to their 234-question foundational intake.',
+    description: `Manually email a client the link to their ${getTotalQuestions()}-question foundational intake.`,
     trigger: 'Click "Send intake email" on the Intake row of the client profile',
     steps: 1,
   },

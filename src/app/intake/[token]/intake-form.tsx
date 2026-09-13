@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { INTAKE_SECTIONS, Question } from '@/lib/intake-questions'
+import { INTAKE_SECTIONS, Question, isQuestionVisible } from '@/lib/intake-questions'
 import { useFormDraft } from '@/lib/use-form-draft'
 import { logoUrl, brand } from '@/config/tenant'
 
@@ -337,9 +337,10 @@ export default function IntakeForm({ token, clientName, portalToken, identity }:
   const showIdentityConfirm = section.id === 'identity' && hasPriorIdentity
   const carried = new Set<string>(CARRIED_IDENTITY_FIELDS)
   const carriedQuestions = showIdentityConfirm ? section.questions.filter(q => carried.has(q.id)) : []
-  const visibleQuestions = showIdentityConfirm
+  const visibleQuestions = (showIdentityConfirm
     ? section.questions.filter(q => !carried.has(q.id))
     : section.questions
+  ).filter(q => isQuestionVisible(q, formData))
 
   function setValue(id: string, value: FormValue) {
     setFormData(prev => ({ ...prev, [id]: value }))
@@ -368,7 +369,11 @@ export default function IntakeForm({ token, clientName, portalToken, identity }:
 
   function findMissedInSection(idx: number): string[] {
     const s = INTAKE_SECTIONS[idx]
+    // Only questions that APPLY can be missing. Uses the same isQuestionVisible
+    // rule as the render, or a hidden required question would stop her moving
+    // on with nothing on screen to tell her why (added 2026-09-13).
     return s.questions
+      .filter(q => isQuestionVisible(q, formData))
       .filter(q => isRequired(q) && !isAnswered(q, formData[q.id]))
       .map(q => q.id)
   }

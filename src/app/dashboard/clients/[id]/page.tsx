@@ -59,6 +59,7 @@ import { BlockProgressPanel } from './block-progress-panel'
 import { loadBlockProgress } from '@/lib/block-progress'
 import ClientPaymentsSection from '@/components/dashboard/client-payments-section'
 import HeightEditor from './height-editor'
+import { getTotalQuestions } from '@/lib/intake-questions'
 
 export default async function ClientPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -1455,7 +1456,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               This is not a summary. It is a structured interpretation of how this client&apos;s system is currently organising itself.
             </p>
             <p className="text-sm text-[#98A0AD] leading-relaxed">
-              The CFFS translates 234 data points across eight signal domains into a single, coherent picture of the client&apos;s current body state. Nothing here prescribes or diagnoses - you remain the interpretive authority.
+              The CFFS translates {getTotalQuestions()} data points across eight signal domains into a single, coherent picture of the client&apos;s current body state. Nothing here prescribes or diagnoses - you remain the interpretive authority.
             </p>
           </div>
 

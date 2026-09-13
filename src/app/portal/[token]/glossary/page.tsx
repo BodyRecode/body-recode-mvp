@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import ClientHeader from '@/components/client-header'
 import { isCoachEmail } from '@/lib/coach-auth'
+import { getTotalQuestions } from '@/lib/intake-questions'
 
 const TERMS: Array<{ term: string; def: string }> = [
   {
@@ -56,7 +57,7 @@ const TERMS: Array<{ term: string; def: string }> = [
   },
   {
     term: 'Reassessment',
-    def: 'A formal re-read of your body state. Happens at block boundaries, when signals deteriorate, or annually. Can be lightweight (your coach re-runs the read against your existing intake plus recent check-ins), a delta intake (a shortened form covering what is most likely to have changed), or a full re-intake (the full 234-question intake again).',
+    def: `A formal re-read of your body state. Happens at block boundaries, when signals deteriorate, or annually. Can be lightweight (your coach re-runs the read against your existing intake plus recent check-ins), a delta intake (a shortened form covering what is most likely to have changed), or a full re-intake (the full ${getTotalQuestions()}-question intake again).`,
   },
   {
     term: 'Drift',

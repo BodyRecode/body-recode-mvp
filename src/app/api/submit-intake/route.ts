@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { INTAKE_SECTIONS, isQuestionVisible } from '@/lib/intake-questions'
 import { getTotalQuestions } from '@/lib/intake-questions'
 import { Resend } from 'resend'
 import { buildCoachNotificationEmail } from '@/lib/coach-notification-email'
@@ -45,6 +46,19 @@ export async function POST(request: NextRequest) {
     return result
   }
 
+  // Hormonal status (2026-09-13). A conditional answer is kept only if its
+  // question APPLIES given the answers submitted — the same isQuestionVisible
+  // rule the form renders with. Without this, a client who picked Female,
+  // answered the period questions, then changed to Male would be stored with a
+  // period pattern. Hidden means NULL, never a stale answer.
+  const hormonalQuestions = INTAKE_SECTIONS.find(sec => sec.id === 'hormonal')?.questions ?? []
+  const hormonal: Record<string, string | null> = {}
+  for (const q of hormonalQuestions) {
+    const raw = formData[q.id]
+    const answered = typeof raw === 'string' && raw.trim() !== ''
+    hormonal[q.id] = answered && isQuestionVisible(q, formData) ? (raw as string).trim() : null
+  }
+
   const intakePayload = {
     client_id: invitation.client_id,
     invitation_id: invitation.id,
@@ -58,6 +72,8 @@ export async function POST(request: NextRequest) {
     emergency_contact_name: (formData.emergency_contact_name as string) || '',
     emergency_contact_phone: (formData.emergency_contact_phone as string) || '',
     how_did_you_hear: (formData.how_did_you_hear as string) || '',
+    // Hormonal status
+    ...hormonal,
     // Scale sections as JSONB
     fat_map_responses: extractScale('fm_'),
     injury_responses: extractScale('inj_'),

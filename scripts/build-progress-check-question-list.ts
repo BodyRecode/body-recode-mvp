@@ -21,6 +21,7 @@ const NOT_REASKED: Record<string, string> = {
   emergency_contact_name: 'Contact detail, managed in her portal.',
   emergency_contact_phone: 'Contact detail, managed in her portal.',
   how_did_you_hear: 'Acquisition. Cannot change.',
+  sex_at_birth: 'Cannot change. If she chose to talk it through with her coach, the coach updates her record after that conversation.',
   intake_confirmation: 'Replaced by the Progress Check’s own confirmation.',
   inj_06: 'Past injury history is fixed. New injuries are captured by "what has changed".',
   final_disclosure: 'Replaced by the Progress Check’s own confirmation.',
@@ -32,7 +33,18 @@ const NOT_REASKED: Record<string, string> = {
 // all 10 intakes on file PREDATE these, so no client has a previous answer. Reveal-on-commit
 // must show the no-previous-answer state, and the change doctrine must not read
 // "nothing, then an answer" as movement.
-const NO_PREVIOUS_FOR_CURRENT_CLIENTS = new Set(['fm_26', 'fm_27', 'fm_28', 'fm_29'])
+const NO_PREVIOUS_FOR_CURRENT_CLIENTS = new Set([
+  'fm_26', 'fm_27', 'fm_28', 'fm_29',
+  // Hormonal status, added 13 Sep 2026 (Progress Check spec §4). Nobody on file has answered it.
+  'hormone_therapy', 'hormone_therapy_detail', 'period_pattern', 'hormonal_contraception',
+  'pregnant_or_postpartum', 'androgen_use',
+  'vitality_energy', 'vitality_drive', 'vitality_libido', 'vitality_recovery',
+])
+
+// Asked "compared with a year ago" at intake. In the Progress Check the window MUST be
+// "compared with your last read", or the same year is asked every quarter and nothing
+// can be said about the last 12 weeks. Progress Check spec §4.0, exception 2.
+const WINDOW_CHANGES = new Set(['vitality_energy', 'vitality_drive', 'vitality_libido', 'vitality_recovery'])
 
 const total = getTotalQuestions()
 let kept = 0, dropped = 0
@@ -49,7 +61,9 @@ for (const section of INTAKE_SECTIONS) {
   const rows: string[] = []
   for (const q of section.questions) {
     const reason = NOT_REASKED[q.id]
-    const flag = NO_PREVIOUS_FOR_CURRENT_CLIENTS.has(q.id) ? ' ⚠ no previous answer for any current client' : ''
+    const flag = (NO_PREVIOUS_FOR_CURRENT_CLIENTS.has(q.id) ? ' ⚠ no previous answer for any current client' : '')
+      + (WINDOW_CHANGES.has(q.id) ? ' · asked "compared with your last read", not "a year ago"' : '')
+      + (q.showIf ? ' · only shown when it applies' : '')
     const text = (q.text || '').replace(/\n/g, ' ').replace(/\|/g, '/').slice(0, 110)
     if (reason) { dropped++; rows.push(`| \`${q.id}\` | ~~${text}~~ | **not re-asked** — ${reason} |`) }
     else { kept++; rows.push(`| \`${q.id}\` | ${text} | re-asked${flag} |`) }
@@ -63,5 +77,5 @@ for (const section of INTAKE_SECTIONS) {
   out.push('')
 }
 
-out.splice(5, 0, `**Re-asked: ${kept}. Not re-asked: ${dropped}.** Plus the new hormonal status questions (spec §4), the measurements and three photos, and "what has changed since your last read".`, '')
+out.splice(5, 0, `**Re-asked: ${kept}. Not re-asked: ${dropped}.** Hormonal status (spec §4) is now part of the intake and is included above. Plus the measurements and three photos, and "what has changed since your last read".`, '')
 console.log(out.join('\n'))

@@ -161,6 +161,26 @@ Rules for reading photos:
 
 If photos are not provided, complete the CFFS from the scale and text intake alone, and explicitly note in your closing_interpretive_notes that visual evidence was not available so Spatial Patterning is inferred from the intake only.
 
+HORMONAL STATUS INTEGRATION (added 2026-09-13; applies only when the HORMONAL STATUS block is present):
+
+Where and how fat is stored depends partly on the hormones a body is running on now. These answers exist so the pattern is typed on hormonal reality, not on the Gender answer, which is a question about the person rather than their physiology.
+
+1. SEX-SPECIFIC PATTERNS FOLLOW CURRENT HORMONES. Estrogen-Shift requires female sex at birth or estrogen-dominant therapy. Androgen-Decline requires male sex at birth or androgen therapy. Where sex at birth and CURRENT hormone therapy point different ways, the current therapy governs distribution. Never type a sex-specific pattern that the hormonal picture rules out.
+
+2. WHEN SEX IS NOT RESOLVED, DO NOT GUESS. If the block is present and sex at birth is Intersex, "talk this through with my coach", or unanswered, and hormone therapy does not resolve it, you may still read Stress-Stored or Insulin-Drift normally, but set pattern_confidence to "low" for any sex-specific pattern and say plainly in the rationale that the coach should confirm. Never infer sex from photos or measurements, and while the block is present never substitute the Gender answer for it.
+
+3. PERIOD PATTERN INFORMS THE ESTROGEN-SHIFT PHASE, IT DOES NOT DECIDE THE PATTERN. Regular: phase 1 is plausible. Irregular: possible perimenopausal transition, weigh a phase change. None for 12 months or more: postmenopausal, phase 2 plausible. Stopped after surgery: a surgical equivalent of menopause. Suppressed by contraception: the bleeding pattern is uninformative, so do not infer a phase from it.
+
+4. HORMONAL CONTRACEPTION AND HORMONE THERAPY CONFOUND CYCLE-LINKED SIGNALS. Fluid variation, appetite swings and mood timing may reflect the preparation rather than an endogenous cycle. Read them with that context and say so where it matters.
+
+5. PREGNANT, OR POSTPARTUM WITHIN 12 MONTHS: body composition in this window is not a pattern signal. Do not read redistribution, central storage or lean mass change off it. Set pattern_confidence to "low", state why, and flag the window for the coach.
+
+6. EXOGENOUS ANDROGENS: composition gains and recovery are not a clean training-stimulus signal, as in the medications rules. Read silently against the context.
+
+7. THE VITALITY ANSWERS (energy, drive, libido, recovery) ARE A MONITORING SIGNAL, NEVER A CAUSE. Never state or imply that low energy, drive or libido explains fat storage, and never name testosterone as the reason someone stores fat. The evidence runs the other way: carrying more fat lowers testosterone, genetic evidence does not support testosterone raising fat, and losing fat restores it in proportion. Use these answers only as a baseline that should improve as the picture changes.
+
+8. ABSENT IS NOT EVIDENCE. Intakes before 13 September 2026 have no hormonal status answers. When the block is absent, read exactly as before. You may note to the coach that hormonal status was not captured, but never treat a missing answer as a negative or as evidence for or against any pattern.
+
 BLOOD MARKER INTEGRATION:
 When a coach-approved blood panel is provided, treat the markers as ONE additional signal stream feeding the Resource Availability and Regulatory Load pillars. They are evidence that must converge with the scale signals, photos, temporal data, and resource context before any interpretation is reached. They are never a conclusion on their own.
 
@@ -259,6 +279,31 @@ Name: ${intake.full_name || 'Not provided'}
 Date of birth: ${intake.date_of_birth || 'Not provided'}
 Gender: ${intake.gender || 'Not provided'}
 Occupation: ${intake.occupation || 'Not provided'}`)
+
+  // Hormonal status (2026-09-13). Rendered only when at least one answer
+  // exists, so intakes from before this date read exactly as they always did —
+  // see HORMONAL STATUS INTEGRATION rule 8. Hidden conditional questions are
+  // stored NULL and simply do not appear.
+  const hormonalLines: Array<[string, string | null | undefined]> = [
+    ['Sex recorded at birth', intake.sex_at_birth],
+    ['Current hormone therapy', intake.hormone_therapy],
+    ['Hormone therapy detail', intake.hormone_therapy_detail],
+    ['Periods now', intake.period_pattern],
+    ['Hormonal contraception', intake.hormonal_contraception],
+    ['Pregnant or postpartum (12 months)', intake.pregnant_or_postpartum],
+    ['Testosterone or anabolic use', intake.androgen_use],
+    ['Energy vs a year ago', intake.vitality_energy],
+    ['Drive vs a year ago', intake.vitality_drive],
+    ['Sex drive vs a year ago', intake.vitality_libido],
+    ['Recovery vs a year ago', intake.vitality_recovery],
+  ]
+  const hormonalPresent = hormonalLines.filter(([, v]) => typeof v === 'string' && v.trim() !== '')
+  if (hormonalPresent.length > 0) {
+    parts.push(
+      `\nHORMONAL STATUS (read under HORMONAL STATUS INTEGRATION; the vitality answers are a monitoring baseline, never a cause):\n` +
+      hormonalPresent.map(([k, v]) => `${k}: ${v}`).join('\n')
+    )
+  }
 
   // Medications - critical context for pattern interpretation. Beta-blockers
   // blunt HR signals, SSRIs flatten affect, stimulants elevate baseline HR,

@@ -92,6 +92,19 @@ export interface Intake {
   emergency_contact_name: string
   emergency_contact_phone: string
   how_did_you_hear: string
+  // Hormonal status (2026-09-13). All nullable: a conditional question that did
+  // not apply is stored NULL, and every intake before this date has none of them.
+  sex_at_birth?: string | null
+  hormone_therapy?: string | null
+  hormone_therapy_detail?: string | null
+  period_pattern?: string | null
+  hormonal_contraception?: string | null
+  pregnant_or_postpartum?: string | null
+  androgen_use?: string | null
+  vitality_energy?: string | null
+  vitality_drive?: string | null
+  vitality_libido?: string | null
+  vitality_recovery?: string | null
   // JSONB diagnostic responses
   fat_map_responses: Record<string, number>
   injury_responses: Record<string, number>

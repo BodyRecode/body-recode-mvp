@@ -394,6 +394,16 @@ const LATER_PHASES: Phase[] = [
         notes: 'SHIPPED 9 Sep 2026, the same day it was identified. The gap was real: cycle-phase-bands.ts existed but was referenced ONLY when picking a blood panel reference range, never by the weekly check-in or the CFWS prompt. Now: clients.last_period_start (new column, sql/2026-09-09_client_cycle_context.sql, RUN against the live project 9 Sep and verified), one optional question on both check-in forms refreshing it weekly, parsePeriodStart() day-first and deliberately strict, cycleContextFor() resolving day and phase at read time, and a CYCLE PHASE section in the CFWS system prompt governing what it may and may not be used for. Absent whenever it cannot be resolved, because a phase two weeks wrong is worse than no phase. Excluded from the client-facing feedback email, which has no such doctrine. Highest value per unit of effort on this whole phase: costs nothing, needs no device, and one of the four profiles (Estrogen-Shift) is entirely hormonal. Related: the banked "ask for period date at upload" item.',
       },
       {
+        id: 'input-hormonal-status',
+        title: 'The read knows her hormonal status, and his',
+        description: 'Sex at birth, hormone therapy, periods, contraception, pregnancy, testosterone use, and four how-do-you-feel questions. Asked of everyone.',
+        status: 'shipped',
+        shippedAt: '2026-09-13',
+        effort: 'M',
+        surfaces: ['src/lib/intake-questions.ts', 'src/app/intake/[token]/intake-form.tsx', 'src/app/api/submit-intake/route.ts', 'src/lib/cffs-prompt.ts', 'sql/2026-09-13_intake_hormonal_status.sql'],
+        notes: 'SHIPPED 13 Sep 2026. The gap: the intake asked nothing about hormones for anyone, and the pattern choice between Estrogen-Shift and Androgen-Decline leaned on a Gender answer that allows "Prefer not to say". A licensed coach\'s client never came through the funnel, so the only other source (the lead record) was always empty for her. Now: an 11-question Hormonal Status section straight after identity, with questions that only appear when they apply (no periods question for someone who answered Male), stored in 11 new intake columns (SQL run and verified). Hidden questions are stored empty on the server, not trusted from the browser. The read gets a HORMONAL STATUS block plus eight rules: current hormone therapy outranks sex at birth; an unresolved sex never gets a sex-specific pattern above low confidence; periods inform the Estrogen-Shift phase but never decide the pattern; contraception confounds cycle signals; pregnancy or birth in the last 12 months means body shape is not a pattern signal; energy, drive, sex drive and recovery are a monitoring baseline and NEVER a cause (fat lowers testosterone, not the reverse, Eriksson 2017); intakes from before today read exactly as they did. Intake is now 245 questions; every visible count reads the live number. Progress Check list regenerated: 231 of 245 re-asked, sex at birth not re-asked. OPEN: existing clients have no answers; "pregnant now" raises no alert to the coach; morning erections question deliberately left out.',
+      },
+      {
         id: 'input-apnoea-screen',
         title: 'Sleep apnoea screening questions',
         description: 'Eight questions, no device. A referral pathway, never a finding.',

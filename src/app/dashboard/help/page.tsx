@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { ArrowUp } from 'lucide-react'
 import { PageHeader } from '@/components/dashboard/ui'
 import { coach, brand } from "@/config/tenant";
+import { getTotalQuestions } from '@/lib/intake-questions'
 
 type Category = 'flows' | 'coaching' | 'business' | 'content' | 'challenge' | 'blueprint' | 'membership'
 
@@ -669,7 +670,7 @@ export default function HelpPage() {
             <ol className="space-y-1.5 list-decimal list-inside text-[#43474F] text-sm">
               <li>Client profile created in the Clients dashboard.</li>
               <li>Welcome email sent to the client with their intake link.</li>
-              <li>Client completes the foundational intake (234 questions, 15-20 min).</li>
+              <li>Client completes the foundational intake ({getTotalQuestions()} questions, 15-20 min).</li>
               <li>CFFS generated automatically and appears on the client profile.</li>
             </ol>
             <p>Your manual steps after conversion:</p>
@@ -820,13 +821,14 @@ export default function HelpPage() {
               <li><strong>Coaching Agreement</strong> - reviewed and e-signed in the portal. You receive a notification when signed.</li>
               <li><strong>Health Declaration</strong> - health and readiness screening. You receive a notification when submitted. If medical clearance is flagged, a Medical Clearance step is automatically inserted before intake unlocks.</li>
               <li><strong>Medical Clearance</strong> (if required) - the moment the health declaration flags clearance, the client gets an auto-email (Kade voice, dark template) pointing them at the Medical Clearance card on their portal. They download a real PDF (server-rendered via puppeteer, pre-filled with their name), take it to their GP, and upload the completed form. You review it and mark clearance received on the client profile, which unlocks the intake.</li>
-              <li><strong>Foundational Intake</strong> - 234-question intake covering all signal domains. You receive a notification when submitted.</li>
+              <li><strong>Foundational Intake</strong> - {getTotalQuestions()}-question intake covering all signal domains. You receive a notification when submitted.</li>
               <li><strong>Baseline Documentation</strong> - bodyweight, waist, hips, chest, and three progress photos (front, side, back). You receive a notification when submitted. Once both intake and baseline are in, you get a second &quot;completed onboarding - CFFS ready&quot; email and the Generate CFFS button becomes available on the client profile.</li>
             </ol>
             <p>You receive a notification email at every step as the client completes it. All submitted documents (agreement, health declaration, intake, baseline) are viewable and printable from the client profile.</p>
             <Note>CFFS is coach-triggered, not auto-generated. After both intake and baseline are submitted, click <strong>Generate CFFS</strong> on the client profile. Auto-generation was removed 2026-05-13 so coach can review intake responses before locking the read.</Note>
             <Training title="What the intake is building">
-              <p>The 234-question intake is not a form. It is the raw material for the CFFS - a structured read of the client&apos;s current body state across all signal domains. The questions exist because body response patterns don&apos;t reveal themselves in a short intake. Depth matters.</p>
+              <p>The {getTotalQuestions()}-question intake is not a form. It is the raw material for the CFFS - a structured read of the client&apos;s current body state across all signal domains. The questions exist because body response patterns don&apos;t reveal themselves in a short intake. Depth matters.</p>
+              <p className="mt-3"><strong>Hormonal Status (added 2026-09-13).</strong> A short section straight after the identity questions: sex recorded at birth, current hormone therapy, periods, hormonal contraception, pregnancy or a birth in the last 12 months, testosterone or anabolic use, and how energy, drive, sex drive and recovery compare with a year ago. Questions only show when they apply, so someone who answers Male is never asked about periods. The read uses these to decide between the hormone-linked patterns: current hormone therapy outranks sex at birth, an unresolved answer holds a hormone-linked pattern at low confidence, and a recent pregnancy means body shape is not read as a pattern signal. The how-do-you-feel answers are a baseline to watch improve, never a reason given for where fat sits. <strong>If a client says they are pregnant now, nothing alerts you</strong>: check the intake.</p>
               <p className="mt-2">The baseline measurements taken here are the reference point for everything that follows. Week 1 data only becomes meaningful because of what was captured here. Encourage the client to be accurate rather than aspirational with their numbers.</p>
             </Training>
 
@@ -834,7 +836,7 @@ export default function HelpPage() {
             <p>The <strong>Updates</strong> section on the client profile (under the Intake row) is the container for any post-onboarding task the coach has queued for the client to complete on their portal. It only appears once the foundational intake is complete &mdash; there&apos;s nothing to &quot;update&quot; before the baseline is in. Each item below is its own named card so when more update types ship (delta intake, full re-intake, block-end auto-prompt &mdash; see <a href="https://github.com/BodyRecode/body-recode-mvp" className="text-[#1056D6]">project_deferred_reassessment_flows</a>) they slot in alongside without restructuring.</p>
 
             <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">Updates &middot; Supplementary intake (backfilling new fields)</p>
-            <p>When new fields are added to the foundational intake after a client has already submitted theirs (e.g. medications on 2026-05-11, dietary context on 2026-05-12, consumption detail &ndash; meals per day, fluids, caffeine, alcohol &ndash; on 2026-06-03), existing clients don&apos;t lose access to those fields. The supplementary intake card on the Updates section has three states:</p>
+            <p>When new fields are added to the foundational intake after a client has already submitted theirs (e.g. medications on 2026-05-11, dietary context on 2026-05-12, consumption detail &ndash; meals per day, fluids, caffeine, alcohol &ndash; on 2026-06-03), existing clients don&apos;t lose access to those fields. <strong>Exception: Hormonal Status (added 2026-09-13) is NOT in the follow-up form.</strong> Clients who submitted before that date have no hormonal status answers, and their read carries on exactly as before; how to collect it from them is still an open decision. The supplementary intake card on the Updates section has three states:</p>
             <ul className="space-y-1 list-disc list-inside text-[#43474F] text-sm">
               <li><strong>Not sent yet</strong> &mdash; click <strong>Add follow-up to portal</strong> to create a pending supplementary <code className="bg-[#EFF1F4] px-1 rounded text-[#1056D6] text-[12.5px]">intake_invitations</code> row with <code className="bg-[#EFF1F4] px-1 rounded text-[#1056D6] text-[12.5px]">kind=&apos;supplementary&apos;</code>. The portal landing page detects this and surfaces a teal &quot;A quick follow-up from Kade&quot; card next time the client signs in.</li>
               <li><strong>Pending</strong> &mdash; once the card exists, two extra actions appear: <strong>Email link</strong> (sends the client a branded reminder via Resend with the Outlook-safe shell + plain-text URL fallback, logged as <code className="bg-[#EFF1F4] px-1 rounded text-[#1056D6] text-[12.5px]">supplementary_intake_invite</code> in client_communications) and <strong>Copy follow-up link</strong> (puts the <code className="bg-[#EFF1F4] px-1 rounded text-[#1056D6] text-[12.5px]">/intake-supplement/&#123;token&#125;</code> URL on the clipboard for DM/SMS). The default is still portal-only; the email is the explicit escape hatch for clients who don&apos;t log in between weeks.</li>

@@ -20,6 +20,30 @@ export interface Question {
    * the banned list without one of these.
    */
   promptText?: string
+  /**
+   * Show this question only when another answer allows it. Declarative rather
+   * than a function so the same rule can be read by the form, the read's prompt
+   * and the Progress Check list generator.
+   *
+   * Added 2026-09-13 for the hormonal status section: a man should not be asked
+   * about his periods. An unanswered controlling question counts as '' so
+   * everything stays visible until she has told us enough to hide it.
+   */
+  showIf?: { id: string; in?: string[]; notIn?: string[] }
+}
+
+/**
+ * Whether a question applies, given the answers so far. The ONE rule for this:
+ * the form uses it to render AND to decide what is missing, so a hidden required
+ * question can never block her from moving on.
+ */
+export function isQuestionVisible(q: Question, answers: Record<string, unknown>): boolean {
+  if (!q.showIf) return true
+  const raw = answers[q.showIf.id]
+  const val = typeof raw === 'string' ? raw : ''
+  if (q.showIf.in) return q.showIf.in.includes(val)
+  if (q.showIf.notIn) return !q.showIf.notIn.includes(val)
+  return true
 }
 
 export interface Section {
@@ -45,6 +69,29 @@ export const INTAKE_SECTIONS: Section[] = [
       { id: 'how_did_you_hear', text: 'How did you hear about Body Recode™?', type: 'text', required: false },
       { id: 'intake_confirmation', text: 'I confirm that I have read the introduction above and will answer all sections honestly and accurately.', type: 'checkbox', required: true },
     ]
+  },
+  {
+    // Added 2026-09-13. The intake asked nothing about hormonal status for men
+    // or women: no cycle, no menopause stage, no hormone therapy. The read typed
+    // the pattern on "Gender", which is the right question to ask a person and
+    // the wrong one for choosing between Estrogen-Shift and Androgen-Decline.
+    // See 06_SAAS_PLATFORM_BUILD/02_FEATURE_SPECS/2026-09-13_Progress_Check_Spec.md §4.
+    id: 'hormonal',
+    title: 'Hormonal Status',
+    description: 'A few questions about hormones. Where and how your body stores fat depends partly on the hormones it is running on, so these help us read you properly. Answer what applies to you. Anything that does not apply has a way to say so.',
+    questions: [
+      { id: 'sex_at_birth', text: 'Sex recorded at birth', type: 'select', options: ['Female', 'Male', 'Intersex', "I'd rather talk this through with my coach"], required: true },
+      { id: 'hormone_therapy', text: 'Are you currently taking any hormone therapy?', type: 'select', options: ['None', 'Menopausal hormone therapy (HRT)', 'Testosterone therapy', 'Gender-affirming hormones', 'Other'], required: true },
+      { id: 'hormone_therapy_detail', text: 'Tell us about it: what you take, and roughly how long you have been on it.', type: 'text', required: false, showIf: { id: 'hormone_therapy', notIn: ['None', ''] } },
+      { id: 'period_pattern', text: 'Which best describes your periods now?', type: 'select', options: ['Regular', 'Irregular', 'None for 12 months or more', 'Stopped after surgery', 'Suppressed by contraception', 'Not applicable'], required: true, showIf: { id: 'sex_at_birth', notIn: ['Male'] } },
+      { id: 'hormonal_contraception', text: 'Are you using hormonal contraception?', type: 'select', options: ['No', 'Pill', 'Hormonal IUD', 'Implant', 'Injection', 'Other', 'Not applicable'], required: true, showIf: { id: 'sex_at_birth', notIn: ['Male'] } },
+      { id: 'pregnant_or_postpartum', text: 'Are you pregnant now, or have you given birth in the last 12 months?', type: 'select', options: ['No', 'Yes, pregnant now', 'Yes, given birth in the last 12 months', 'Not applicable'], required: true, showIf: { id: 'sex_at_birth', notIn: ['Male'] } },
+      { id: 'androgen_use', text: 'Are you using testosterone, or any anabolic compound?', type: 'select', options: ['No', 'Yes, prescribed testosterone', 'Yes, not prescribed', "I'd rather talk this through with my coach"], required: true },
+      { id: 'vitality_energy', text: 'Compared with a year ago, your energy is', type: 'select', options: ['Better', 'About the same', 'Worse'], required: true },
+      { id: 'vitality_drive', text: 'Compared with a year ago, your drive and motivation are', type: 'select', options: ['Better', 'About the same', 'Worse'], required: true },
+      { id: 'vitality_libido', text: 'Compared with a year ago, your sex drive is', type: 'select', options: ['Better', 'About the same', 'Worse', "I'd rather not say"], required: true },
+      { id: 'vitality_recovery', text: 'Compared with a year ago, how well you recover from training is', type: 'select', options: ['Better', 'About the same', 'Worse'], required: true },
+    ],
   },
   {
     id: 'fat_map',
