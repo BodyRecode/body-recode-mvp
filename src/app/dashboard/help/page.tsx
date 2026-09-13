@@ -263,6 +263,7 @@ export default function HelpPage() {
                 <p className="text-[12.5px] font-medium text-[#666D7A] mb-3">Phase 3 - Coaching Entry</p>
                 <div className="space-y-2">
                   <ChecklistItem text="From the lead detail page, click Send to Client under Coaching Entry - this emails the $297 commencement fee link directly. It covers onboarding, which finishes with the Foundational Read, and the Progress Check at 12 weeks, and it is the only way to charge the fee: the old static Stripe commencement links were switched off on 14 Sep 2026" />
+                  <ChecklistItem text="The line under the buttons says what has happened: not sent yet, emailed to which address and when, until when the payment link works (24 hours), how many times it has been sent, or paid. Copy Link does not email anyone and is not recorded there" />
                   <ChecklistItem text="Wait for the payment notification email to confirm payment received" />
                   <ChecklistItem text="Client profile, welcome email, and intake link are all created automatically - no action needed" />
                 </div>

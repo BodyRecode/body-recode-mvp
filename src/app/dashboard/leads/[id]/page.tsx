@@ -124,6 +124,20 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   const sections = lead.scorecard_section_scores as Record<string, number> | null
   const checkInAnswers = lead.check_in_answers as Record<string, number> | null
 
+  // Every commencement fee link emailed to this lead, newest first. Both
+  // subjects count: the event was logged as "Foundational Read link sent"
+  // until 14 Sep 2026. Shown under the Send to Client button so the coach can
+  // see what has already happened without opening the timeline. That line was
+  // dropped by accident in the 12 Aug lead page rebuild.
+  const feeSends = (events ?? []).filter(e =>
+    e.type === 'email_sent' && (e.subject === 'Commencement fee link sent' || e.subject === 'Foundational Read link sent'))
+  const lastFeeSend = feeSends[0] ?? null
+  const feeLinkExpiresAt = lastFeeSend
+    ? (String(lastFeeSend.notes ?? '').match(/Link expires (\S+?)\.?$/)?.[1]
+        ?? new Date(new Date(lastFeeSend.sent_at).getTime() + 24 * 36e5).toISOString())
+    : null
+  const feePaid = ['commencement_fee_paid', 'active_deliberate_start', 'active_coaching'].includes(lead.status)
+
   // ── Command bar ──────────────────────────────────────────────────────
   const commandBar = (
     <div
@@ -444,7 +458,14 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           <CardTitle>Coaching entry</CardTitle>
           <div className="flex flex-wrap gap-2">
             <ConvertButton leadId={lead.id} leadName={lead.name} alreadyConverted={!!lead.converted_to_client_id} clientId={lead.converted_to_client_id} />
-            <CommencementFeeButton leadId={lead.id} />
+            <CommencementFeeButton
+              leadId={lead.id}
+              email={lead.email ?? null}
+              paid={feePaid}
+              lastSentAt={lastFeeSend?.sent_at ?? null}
+              linkExpiresAt={feeLinkExpiresAt}
+              timesSent={feeSends.length}
+            />
             <DownsellButton leadId={lead.id} alreadyPurchased={!!lead.downsell_purchased} />
           </div>
         </Card>
