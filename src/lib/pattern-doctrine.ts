@@ -209,6 +209,7 @@ const FUNNEL_DIRECTION_WORDS: Record<string, string> = {
   gluteofemoral: 'It has stayed on her hips, thighs and glutes',
   to_middle: 'It used to be hips and thighs, now it is moving to her middle',
   always_central: 'It has always been her middle',
+  always_even: 'It has always been fairly even all over',
   unsure: 'She is not sure',
 }
 const FUNNEL_CYCLE_WORDS: Record<string, string> = {

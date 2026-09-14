@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
     section_scores?: Record<string, number>
     approach_response?: 'A' | 'B' | 'C' | 'D'
     investment_readiness?: 'A' | 'B' | 'C' | 'D'
-    storage_direction?: 'gluteofemoral' | 'to_middle' | 'always_central' | 'unsure' | null
+    storage_direction?: 'gluteofemoral' | 'to_middle' | 'always_central' | 'always_even' | 'unsure' | null
     biological_sex?: BiologicalSex
     age_band?: AgeBand
     fat_storage?: FatStorage
@@ -113,8 +113,12 @@ export async function POST(request: NextRequest) {
   // Direction of travel. Women only, and the discriminator the doctrine names
   // for Estrogen-Shift. Null for men and for anyone who answered before it
   // existed, in which case no phase is claimed downstream.
-  const directionVal = (sexVal === 'F' ? (storage_direction ?? null) : null) as
-    'gluteofemoral' | 'to_middle' | 'always_central' | 'unsure' | null
+  // Whitelisted (15 Sep 2026): this passed any value straight to the insert, so
+  // an answer the leads CHECK constraint did not know would have failed the
+  // whole save and lost the lead.
+  const directionVal = (sexVal === 'F' && ['gluteofemoral', 'to_middle', 'always_central', 'always_even', 'unsure'].includes(storage_direction as string)
+    ? storage_direction : null) as
+    'gluteofemoral' | 'to_middle' | 'always_central' | 'always_even' | 'unsure' | null
 
   // Is she training right now? When she is not, sections 04/05 were worded for
   // her life (everyday capacity, shape change) on the same 1-3 scale, so the

@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     age_band?: AgeBand
     fat_storage?: FatStorage
     cycle_status?: CycleStatus
-    storage_direction?: 'gluteofemoral' | 'to_middle' | 'always_central' | 'unsure' | null
+    storage_direction?: 'gluteofemoral' | 'to_middle' | 'always_central' | 'always_even' | 'unsure' | null
     training_status?: 'regular' | 'on_off' | 'none'
   }
 
@@ -86,8 +86,8 @@ export async function POST(request: NextRequest) {
   const storageVal: FatStorage | null = ['midsection', 'posterior', 'hips_thighs', 'all_over', 'low_tone'].includes(fat_storage as string) ? (fat_storage as FatStorage) : null
   const cycleVal: CycleStatus | null = sexVal === 'F' && ['regular', 'irregular', 'perimenopausal', 'postmenopausal'].includes(cycle_status as string) ? (cycle_status as CycleStatus) : null
   // Women only. Sets the Estrogen-Shift phase from what she actually said.
-  const directionVal = (sexVal === 'F' && ['gluteofemoral', 'to_middle', 'always_central', 'unsure'].includes(storage_direction as string)
-    ? storage_direction : null) as 'gluteofemoral' | 'to_middle' | 'always_central' | 'unsure' | null
+  const directionVal = (sexVal === 'F' && ['gluteofemoral', 'to_middle', 'always_central', 'always_even', 'unsure'].includes(storage_direction as string)
+    ? storage_direction : null) as 'gluteofemoral' | 'to_middle' | 'always_central' | 'always_even' | 'unsure' | null
 
   const admin = createAdminClient()
 
@@ -122,7 +122,7 @@ export async function POST(request: NextRequest) {
   const mergedStorage = storageVal ?? (existing?.fat_storage as FatStorage | null) ?? null
   const mergedCycle = cycleVal ?? (mergedSex === 'F' ? (existing?.cycle_status as CycleStatus | null) ?? null : null)
   const mergedDirection = directionVal ?? (mergedSex === 'F'
-    ? (existing?.storage_direction as 'gluteofemoral' | 'to_middle' | 'always_central' | 'unsure' | null) ?? null
+    ? (existing?.storage_direction as 'gluteofemoral' | 'to_middle' | 'always_central' | 'always_even' | 'unsure' | null) ?? null
     : null)
   const mergedTraining = trainingVal ?? (existing?.training_status as 'regular' | 'on_off' | 'none' | null) ?? null
   const mergedApproach = approach_response ?? (existing?.approach_response as 'A' | 'B' | 'C' | 'D' | null) ?? null

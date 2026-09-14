@@ -50,7 +50,7 @@ export type CycleStatus = 'regular' | 'irregular' | 'perimenopausal' | 'postmeno
  * did it move?" Asked of women on the scorecard and the Day 0 intake. Null means
  * never asked, in which case no phase is claimed.
  */
-export type StorageDirection = 'gluteofemoral' | 'to_middle' | 'always_central' | 'unsure'
+export type StorageDirection = 'gluteofemoral' | 'to_middle' | 'always_central' | 'always_even' | 'unsure'
 
 export interface ProfileSignals {
   sex?: BiologicalSex | null
@@ -126,7 +126,7 @@ export function leadDescriptor(profile: Profile, signals: ProfileSignals = {}): 
     case 'to_middle':
       return `You have told me it used to sit on your hips and thighs and it is moving to your middle. That movement is the signal, more than where it ends up, and muscle usually goes the same way even when the scale does not move. Which is why cutting hard is the wrong tool here: it takes fat off, and it takes more muscle with it than a steadier approach does. ${closer}`
     default:
-      // Includes 'always_central', 'unsure' and never-asked, so no phase can be
+      // Includes 'always_central', 'always_even', 'unsure' and never-asked, so no phase can be
       // claimed. It CAN still name hips and thighs, because that is true in
       // both phases: phase 1 it sits there, phase 2 it came from there. The
       // only woman it would be wrong for is one whose fat was always central,

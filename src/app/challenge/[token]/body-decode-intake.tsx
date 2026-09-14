@@ -135,11 +135,12 @@ const STORAGE_OPTIONS: { value: FatStorage; label: string }[] = [
 ]
 // Direction of travel. The Estrogen-Shift discriminator per 03_ESTROGEN_SHIFT.md
 // section 4. Asked directly rather than inferred from age and cycle status.
-type StorageDirection = 'gluteofemoral' | 'to_middle' | 'always_central' | 'unsure'
+type StorageDirection = 'gluteofemoral' | 'to_middle' | 'always_central' | 'always_even' | 'unsure'
 const DIRECTION_OPTIONS: { value: StorageDirection; label: string }[] = [
   { value: 'gluteofemoral', label: 'It has stayed on my hips, thighs and glutes' },
   { value: 'to_middle', label: 'It used to be hips and thighs, now it is moving to my middle' },
   { value: 'always_central', label: 'It has always been my middle' },
+  { value: 'always_even', label: 'It has always been fairly even all over' },
   { value: 'unsure', label: 'I am not sure' },
 ]
 

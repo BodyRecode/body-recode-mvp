@@ -108,6 +108,7 @@ export const DIRECTION_OPTIONS = [
   { value: 'gluteofemoral', label: 'It has stayed on my hips, thighs and glutes' },
   { value: 'to_middle', label: 'It used to be hips and thighs, now it is moving to my middle' },
   { value: 'always_central', label: 'It has always been my middle' },
+  { value: 'always_even', label: 'It has always been fairly even all over' },
   { value: 'unsure', label: 'I am not sure' },
 ] as const
 

@@ -95,7 +95,7 @@ export const INTAKE_SECTIONS: Section[] = [
       // answered on the scorecard the form carries that answer instead of asking,
       // because it was given before any pattern was shown to her (Interpretation
       // Logic v2.0 rule 5).
-      { id: 'storage_direction', text: 'Has where your body stores fat changed over the last few years?', type: 'select', options: ['It has stayed on my hips, thighs and glutes', 'It used to be hips and thighs, now it is moving to my middle', 'It has always been my middle', 'I am not sure'], required: true, showIf: { id: 'sex_at_birth', notIn: ['Male'] } },
+      { id: 'storage_direction', text: 'Has where your body stores fat changed over the last few years?', type: 'select', options: ['It has stayed on my hips, thighs and glutes', 'It used to be hips and thighs, now it is moving to my middle', 'It has always been my middle', 'It has always been fairly even all over', 'I am not sure'], required: true, showIf: { id: 'sex_at_birth', notIn: ['Male'] } },
       { id: 'androgen_use', text: 'Are you using testosterone or any anabolic compound, or have you in the past?', type: 'select', options: ['No, never', 'Yes, now, prescribed', 'Yes, now, not prescribed', 'Not now, but I have in the past', "I'd rather talk this through with my coach"], required: true },
       { id: 'vitality_energy', text: 'Compared with a year ago, your energy is', type: 'select', options: ['Better', 'About the same', 'Worse'], required: true },
       { id: 'vitality_drive', text: 'Compared with a year ago, your drive and motivation are', type: 'select', options: ['Better', 'About the same', 'Worse'], required: true },
@@ -486,6 +486,7 @@ export const DIRECTION_LABEL_FOR_CODE: Record<string, string> = {
   gluteofemoral: 'It has stayed on my hips, thighs and glutes',
   to_middle: 'It used to be hips and thighs, now it is moving to my middle',
   always_central: 'It has always been my middle',
+  always_even: 'It has always been fairly even all over',
   unsure: 'I am not sure',
 }
 
