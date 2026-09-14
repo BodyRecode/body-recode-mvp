@@ -11,6 +11,7 @@ import NutritionReadingPanel from './nutrition-reading-panel'
 import NotifyClientButton from './notify-client-button'
 import NutritionCoachGuidanceEditor from './coach-guidance-editor'
 import NutritionRegenerateButton from './regenerate-button'
+import ReviseOneChange from './revise-one-change'
 import StickyScrollNav from '@/components/sticky-scroll-nav'
 import MealLoggingToggle from './meal-logging-toggle'
 import { GlanceCard } from '@/components/glance-card'
@@ -834,6 +835,8 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
             nutritionPlanId={activePlan.id}
             initial={activePlan.coach_guidance ?? null}
           />
+
+          <ReviseOneChange clientId={id} hasDraft={!!draftPlan} />
 
           <div className="mb-3 flex items-center justify-end">
             <NutritionRegenerateButton nutritionPlanId={activePlan.id} />

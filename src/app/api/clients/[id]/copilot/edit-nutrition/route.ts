@@ -6,6 +6,7 @@ import { isCoachEmail } from '@/lib/coach-auth'
 import { renderMealsIndexed, applyNutritionEdits, validateNutritionEditOps } from '@/lib/nutrition-patch'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { withTemporalContext } from '@/lib/temporal-context'
+import { NUTRITION_EDIT_SYSTEM_DRAFT } from '@/lib/nutrition-edit-prompt'
 
 export const maxDuration = 120
 
@@ -28,23 +29,6 @@ async function loadLatestDraft(admin: any, clientId: string) {
   return data?.[0] ?? null
 }
 
-const EDIT_SYSTEM = `You surgically edit a DRAFT Body Recode NUTRITION plan on behalf of a COACH. Apply ONLY the change the coach asks for. Do NOT rewrite or re-balance anything they did not name — everything you don't touch stays exactly as it is.
-
-You return a minimal set of operations that target exact indices from the MEALS list you are given. Whenever you add or change a food, supply its macros (protein_g, carb_g, fat_g) for the portion implied — the server recomputes every meal and the day total from the foods, so accurate per-food macros matter.
-- update_food: change one food (meal_index, food_index; "changes" = name and/or protein_g/carb_g/fat_g).
-- add_food: add a food to a meal (meal_index; optional position; "food" = {name, protein_g, carb_g, fat_g}).
-- remove_food: remove one food (meal_index, food_index).
-- remove_meal: remove a whole meal (meal_index).
-- add_meal: add a whole meal ("meal" = {meal_name, foods:[{name, protein_g, carb_g, fat_g}, ...]}).
-
-Hard rules:
-- Change ONLY what is named. "Swap the oats for berries" = one update_food (name + macros). "Drop to 3 meals" = remove the least-essential meal(s). Keep each proposal to ONE coherent change.
-- Doctrine still binds: keep the change consistent with the plan's protein anchor and the client's dietary restrictions/allergies. A change that would blow the protein anchor, drop below the calorie floor, or violate a stated restriction should be flagged — return an empty operations array and explain the concern in summary, or pick portions/meals that hold the targets.
-- If the target is ambiguous or you cannot find it, return an empty operations array and say what you need.
-- summary: one or two plain sentences the coach reads before approving. Name exactly what will change (and the macro effect), and confirm the rest is untouched. No em dashes.
-
-Return ONLY JSON, no prose:
-{"operations":[{"kind":"update_food","meal_index":0,"food_index":1,"changes":{"name":"Mixed berries","protein_g":1,"carb_g":18,"fat_g":0}}],"summary":"..."}`
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id: clientId } = await params
@@ -86,7 +70,7 @@ Return ONLY the JSON described in your instructions.`
         const resp = await anthropic.messages.create({
           model: 'claude-sonnet-5',
           max_tokens: 1500,
-          system: withTemporalContext(EDIT_SYSTEM),
+          system: withTemporalContext(NUTRITION_EDIT_SYSTEM_DRAFT),
           messages: [{ role: 'user', content: userContent }],
         })
         const block = resp.content.find(b => b.type === 'text')
