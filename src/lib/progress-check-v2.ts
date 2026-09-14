@@ -45,6 +45,7 @@ export const TEXT_OVERRIDES: Record<string, string> = {
   vitality_drive: 'Compared with your last read, your drive and motivation are',
   vitality_libido: 'Compared with your last read, your sex drive is',
   vitality_recovery: 'Compared with your last read, how well you recover from training is',
+  storage_direction: 'Since your last read, has where your body stores fat changed?',
 }
 
 export const WHAT_CHANGED_ID = 'what_changed'

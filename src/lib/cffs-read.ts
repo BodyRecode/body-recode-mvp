@@ -53,6 +53,7 @@ import { generateGovernedJson, stripEmDashes } from '@/lib/governed-generation'
 export { READ_TIME_BUDGET_MS } from '@/lib/governed-generation'
 import { isCanonicalPattern, isReadPattern } from '@/lib/pattern-doctrine'
 import { Intake } from '@/types'
+import type { IncomingPattern } from './pattern-doctrine'
 
 /** A baseline photo, already fetched and encoded. Fetching is the caller's job:
  *  the bucket is private here and would be an HTTP call somewhere else. */
@@ -89,11 +90,7 @@ export interface CFFSReadInput {
   priorReadiness?: FoundationalReadiness | null
   /** What the funnel already concluded, so the read can agree with it or depart
    *  from it deliberately rather than never knowing it existed. */
-  incomingPattern?: {
-    pattern: string | null
-    source: string | null
-    confidence: string | null
-  } | null
+  incomingPattern?: IncomingPattern | null
   /** Log prefix only. Never reaches the model. */
   label?: string
   /** Total time the read may take across every attempt, in ms. A host with a

@@ -1,14 +1,10 @@
-import { patternTaxonomyPromptSection } from './pattern-doctrine'
+import { patternTaxonomyPromptSection, type IncomingPattern } from './pattern-doctrine'
 import { anthropometryPromptSection } from './anthropometry-plausibility'
 
 import { Intake } from '@/types'
 import { INTAKE_SECTIONS, Question } from '@/lib/intake-questions'
 
-export function buildCFFSSystemPrompt(incomingPattern?: {
-  pattern: string | null
-  source: string | null
-  confidence: string | null
-}): string {
+export function buildCFFSSystemPrompt(incomingPattern?: IncomingPattern): string {
   return `You are the Body Recode™ interpretation engine — a governed AI system that produces Coach-Facing Foundational Syntheses (CFFS).
 
 SYSTEM DOCTRINE:
@@ -175,6 +171,8 @@ These answers exist so the read no longer has to lean on the Gender answer, and 
 
 4. PERIODS: ESTABLISH CYCLE STATUS BEFORE TYPING, AND IT DETERMINES THE ESTROGEN-SHIFT PHASE (03, section 4). Regular points toward phase 1. Irregular is the transition, where both compartments are still gaining and the middle gains faster; do not describe fat as having left the hips and thighs. None for 12 months or more is where absolute loss from the lower body can begin. Stopped after surgery changes the picture entirely; treat it as rule 3 and hold at "low". Suppressed by contraception makes the bleeding pattern uninformative, so do not infer a phase from it. NEVER label anyone perimenopausal, postmenopausal or menopausal in any field: that is a clinical determination (03, section 10). Describe what she reported ("no period for 12 months or more"), not a stage.
 
+4a. DIRECTION OF CHANGE IS THE OTHER HALF OF THE ESTROGEN-SHIFT DISCRIMINATOR (Fat Map LOCKED v2.2: "cycle status and the direction of travel"). It can arrive in this block, from the intake, or in her scorecard answers under the incoming read, which she gave before any pattern was shown. Where both exist and disagree, name the disagreement in pattern_rationale rather than silently choosing one. "Used to be hips and thighs, now moving to the middle" is phase 2 movement and strong support for Estrogen-Shift in a woman. "Stayed on hips, thighs and glutes" is phase 1 and supports it. "Always been the middle" argues AGAINST Estrogen-Shift, which arrives at the middle from the hips and thighs; central from the start points toward Stress-Stored or Insulin-Drift. "Not sure", or no answer, supports nothing. Direction is history over years, so never infer it from one photograph or one set of measurements. Where periods are suppressed by contraception or stopped after surgery, direction is the only phase evidence left (rule 4). Never label anyone perimenopausal or menopausal from it.
+
 5. HORMONAL CONTRACEPTION IS NOT A BODY COMPOSITION SIGNAL. Randomised evidence does not support combination contraception causing weight change (03 evidence, C-14), so never attribute weight, fat or composition to it. Its only role here is that a suppressed or altered bleeding pattern cannot stage the transition (rule 4).
 
 6. PREGNANT NOW, OR GIVEN BIRTH IN THE LAST 12 MONTHS: DIFFERENT PHYSIOLOGY ALTOGETHER (03, section 7). Composition in this window is not a pattern signal. Do not read redistribution, central storage or lean mass change off it. Set pattern_confidence to "low", say why, and put the window at the top of pattern_watch_for so the coach sees it first.
@@ -297,6 +295,7 @@ Occupation: ${intake.occupation || 'Not provided'}`)
     ['Periods now', intake.period_pattern],
     ['Hormonal contraception', intake.hormonal_contraception],
     ['Pregnant or postpartum (12 months)', intake.pregnant_or_postpartum],
+    ['Direction of change in where fat is stored (last few years)', intake.storage_direction],
     ['Testosterone or anabolic use', intake.androgen_use],
     ['Energy vs a year ago', intake.vitality_energy],
     ['Drive vs a year ago', intake.vitality_drive],

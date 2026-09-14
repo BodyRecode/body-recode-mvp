@@ -180,12 +180,68 @@ export const STATE_DEFINITIONS: Record<string, string> = {
     'Foundations are intact and the body responds to inputs the way it should. What is in the way is the prescription rather than the biology, the right stimulus or timing or a missing quality. The work is to sharpen and periodise, not to repair.',
 }
 
-/** The prompt block that teaches the CFFS the taxonomy it was never given. */
-export function patternTaxonomyPromptSection(incoming?: {
+/**
+ * Her own answers on the scorecard (or Body Decode / founding page), as stored
+ * codes. Added 2026-09-14: the read used to receive only the funnel's pattern
+ * NAME, never the answers behind it, so direction of change never reached it.
+ */
+export interface FunnelAnswers {
+  storageDirection?: string | null
+  fatStorage?: string | null
+  cycleStatus?: string | null
+}
+
+export interface IncomingPattern {
   pattern: string | null
   source: string | null
   confidence: string | null
-}): string {
+  answers?: FunnelAnswers | null
+}
+
+const FUNNEL_STORAGE_WORDS: Record<string, string> = {
+  midsection: 'Belly and front of the stomach',
+  posterior: 'Lower back, love handles and upper back',
+  hips_thighs: 'Hips, thighs and lower body',
+  all_over: "Fairly even, she could not pick one spot",
+  low_tone: 'Losing muscle tone and definition',
+}
+const FUNNEL_DIRECTION_WORDS: Record<string, string> = {
+  gluteofemoral: 'It has stayed on her hips, thighs and glutes',
+  to_middle: 'It used to be hips and thighs, now it is moving to her middle',
+  always_central: 'It has always been her middle',
+  unsure: 'She is not sure',
+}
+const FUNNEL_CYCLE_WORDS: Record<string, string> = {
+  regular: 'Regular cycle',
+  irregular: 'Irregular cycle',
+  perimenopausal: 'Perimenopausal',
+  postmenopausal: 'Postmenopausal',
+}
+
+/**
+ * The block that puts her pre-reveal answers in front of the read. Empty when
+ * she gave none. These are the one set of self-reports that are NOT echoes of a
+ * pattern description, because she gave them before any result was shown.
+ */
+export function funnelAnswersBlock(answers?: FunnelAnswers | null): string {
+  if (!answers) return ''
+  const lines: string[] = []
+  const storage = answers.fatStorage ? FUNNEL_STORAGE_WORDS[answers.fatStorage] : null
+  const direction = answers.storageDirection ? FUNNEL_DIRECTION_WORDS[answers.storageDirection] : null
+  const cycle = answers.cycleStatus ? FUNNEL_CYCLE_WORDS[answers.cycleStatus] : null
+  if (storage) lines.push(`Where she tends to store fat: ${storage}`)
+  if (direction) lines.push(`How that has changed over the last few years: ${direction}`)
+  if (cycle) lines.push(`Cycle, as she selected it: ${cycle} (her own selection; never label her with it, per HORMONAL STATUS INTEGRATION rule 4)`)
+  if (lines.length === 0) return ''
+  return `
+HER OWN SCORECARD ANSWERS, GIVEN BEFORE ANY PATTERN WAS SHOWN TO HER
+${lines.join('\n')}
+These were answered before she saw any read, so unlike her intake self-report they are not echoes of a pattern description (Interpretation Logic v2.0, rule 5). Weight them as independent reports. Direction of change is read under HORMONAL STATUS INTEGRATION rule 4a. Where one of these disagrees with the same thing answered in the intake, say so in pattern_rationale and let it lower confidence; the scorecard's location options are coarser than the intake's, so a difference in wording alone is not a disagreement. A report is still not a measurement: a plausible tape outranks either for where fat sits now.
+`
+}
+
+/** The prompt block that teaches the CFFS the taxonomy it was never given. */
+export function patternTaxonomyPromptSection(incoming?: IncomingPattern): string {
   const definitions = CANONICAL_PATTERNS.map(p => `- ${p}: ${PATTERN_DEFINITIONS[p]}`).join('\n')
 
   // A Progress Read passes her PREVIOUS READ, not a funnel read. That is not
@@ -210,7 +266,7 @@ Treat agreement between the funnel read and the client's self-report as WEAK con
     : `\nINCOMING READ
 None. This client has no prior pattern read, so yours is the first.\n`
 
-  return patternSection(definitions, incomingBlock)
+  return patternSection(definitions, incomingBlock + funnelAnswersBlock(incoming?.answers))
 }
 
 function patternSection(definitions: string, incomingBlock: string): string {

@@ -104,6 +104,8 @@ export interface Intake {
   vitality_energy?: string | null
   vitality_drive?: string | null
   vitality_libido?: string | null
+  /** Direction of change in where fat is stored, over years. Women only. Added 2026-09-14. */
+  storage_direction?: string | null
   vitality_recovery?: string | null
   // JSONB diagnostic responses
   fat_map_responses: Record<string, number>

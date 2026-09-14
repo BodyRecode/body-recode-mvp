@@ -86,6 +86,16 @@ export const INTAKE_SECTIONS: Section[] = [
       { id: 'period_pattern', text: 'Which best describes your periods now?', type: 'select', options: ['Regular', 'Irregular', 'None for 12 months or more', 'Stopped after surgery', 'Suppressed by contraception', 'Not applicable'], required: true, showIf: { id: 'sex_at_birth', notIn: ['Male'] } },
       { id: 'hormonal_contraception', text: 'Are you using hormonal contraception?', type: 'select', options: ['No', 'Pill', 'Hormonal IUD', 'Implant', 'Injection', 'Other', 'Not applicable'], required: true, showIf: { id: 'sex_at_birth', notIn: ['Male'] } },
       { id: 'pregnant_or_postpartum', text: 'Are you pregnant now, or have you given birth in the last 12 months?', type: 'select', options: ['No', 'Yes, pregnant now', 'Yes, given birth in the last 12 months', 'Not applicable'], required: true, showIf: { id: 'sex_at_birth', notIn: ['Male'] } },
+      // Added 2026-09-14. Estrogen-Shift is decided by cycle status AND the
+      // direction of travel (Fat_Map_Definitions_LOCKED v2.2), and the intake
+      // never asked the second half. Only the scorecard did, and the read never
+      // received that answer. It is history over years, so no photo, tape or
+      // later check can supply it. Same options as the scorecard so a carried
+      // answer maps one to one (see DIRECTION_LABEL_FOR_CODE). When she already
+      // answered on the scorecard the form carries that answer instead of asking,
+      // because it was given before any pattern was shown to her (Interpretation
+      // Logic v2.0 rule 5).
+      { id: 'storage_direction', text: 'Has where your body stores fat changed over the last few years?', type: 'select', options: ['It has stayed on my hips, thighs and glutes', 'It used to be hips and thighs, now it is moving to my middle', 'It has always been my middle', 'I am not sure'], required: true, showIf: { id: 'sex_at_birth', notIn: ['Male'] } },
       { id: 'androgen_use', text: 'Are you using testosterone or any anabolic compound, or have you in the past?', type: 'select', options: ['No, never', 'Yes, now, prescribed', 'Yes, now, not prescribed', 'Not now, but I have in the past', "I'd rather talk this through with my coach"], required: true },
       { id: 'vitality_energy', text: 'Compared with a year ago, your energy is', type: 'select', options: ['Better', 'About the same', 'Worse'], required: true },
       { id: 'vitality_drive', text: 'Compared with a year ago, your drive and motivation are', type: 'select', options: ['Better', 'About the same', 'Worse'], required: true },
@@ -466,6 +476,18 @@ export const INTAKE_SECTIONS: Section[] = [
     ]
   }
 ]
+
+/**
+ * The scorecard, Body Decode and founding page store direction of change as a
+ * code. The intake stores the answer text. One map so a carried answer lands on
+ * exactly the option she would have picked.
+ */
+export const DIRECTION_LABEL_FOR_CODE: Record<string, string> = {
+  gluteofemoral: 'It has stayed on my hips, thighs and glutes',
+  to_middle: 'It used to be hips and thighs, now it is moving to my middle',
+  always_central: 'It has always been my middle',
+  unsure: 'I am not sure',
+}
 
 export function getTotalQuestions(): number {
   return INTAKE_SECTIONS.reduce((total, section) => total + section.questions.length, 0)

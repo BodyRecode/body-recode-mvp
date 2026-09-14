@@ -4,7 +4,7 @@
  * WHY THIS EXISTS (2026-09-14)
  *
  * Two front ends will ask the same questions again after twelve weeks: the
- * coaching Progress Check re-asks 231 of the 245 intake questions, and Rey's
+ * coaching Progress Check re-asks 232 of the 246 intake questions, and Rey's
  * re-read re-asks only what can change (~10 minutes). One comparison has to
  * serve both, so nothing here assumes how many questions were asked. It works on
  * whatever the two answer sets have in common.
@@ -122,7 +122,7 @@ export interface CategoricalChange {
  * two answers cover different windows, so comparing them is meaningless: the
  * current answer is itself the change. Progress Check spec 4.0, exception 2.
  */
-export const SELF_REPORTED_CHANGE_IDS = new Set(['vitality_energy', 'vitality_drive', 'vitality_libido', 'vitality_recovery'])
+export const SELF_REPORTED_CHANGE_IDS = new Set(['vitality_energy', 'vitality_drive', 'vitality_libido', 'vitality_recovery', 'storage_direction'])
 
 export interface AnswerComparison {
   clusters: ClusterChange[]

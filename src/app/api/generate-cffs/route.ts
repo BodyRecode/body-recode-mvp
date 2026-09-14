@@ -96,7 +96,7 @@ export async function runCFFSGenerationInternal(body: any): Promise<NextResponse
   // that converted into this client.
   const { data: leadRow } = await admin
     .from('leads')
-    .select('scorecard_profile, scorecard_profile_confidence')
+    .select('scorecard_profile, scorecard_profile_confidence, storage_direction, fat_storage, cycle_status')
     .eq('converted_to_client_id', client_id)
     .order('created_at', { ascending: false })
     .limit(1)
@@ -105,6 +105,14 @@ export async function runCFFSGenerationInternal(body: any): Promise<NextResponse
     pattern: leadRow?.scorecard_profile ?? null,
     source: leadRow?.scorecard_profile ? 'scorecard' : null,
     confidence: leadRow?.scorecard_profile_confidence ?? null,
+    // Her own answers behind that read, given before any pattern was shown.
+    // Until 14 Sep 2026 only the pattern name reached the read, so direction of
+    // change, half of the Estrogen-Shift discriminator, never did.
+    answers: {
+      storageDirection: leadRow?.storage_direction ?? null,
+      fatStorage: leadRow?.fat_storage ?? null,
+      cycleStatus: leadRow?.cycle_status ?? null,
+    },
   }
 
   // Download baseline photos in parallel. Each can fail independently without

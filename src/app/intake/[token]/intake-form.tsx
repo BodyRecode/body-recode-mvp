@@ -12,6 +12,14 @@ interface Props {
   clientName?: string
   portalToken?: string | null
   identity?: Record<string, string>
+  /**
+   * Answers she already gave on the scorecard, before any pattern was shown to
+   * her, keyed by intake question id and already in the intake's answer text.
+   * Carried in rather than asked again: asking after she has read about a
+   * pattern would get an answer shaped by the description (Interpretation Logic
+   * v2.0 rule 5). Added 2026-09-14 for direction of change.
+   */
+  carriedAnswers?: Record<string, string>
 }
 
 // Identity fields the client already provided in the Health Declaration. In the
@@ -49,7 +57,7 @@ function formatIdentityValue(id: string, value: FormValue | undefined): string {
 
 type Draft = { sectionIndex: number; formData: FormData }
 
-export default function IntakeForm({ token, clientName, portalToken, identity }: Props) {
+export default function IntakeForm({ token, clientName, portalToken, identity, carriedAnswers }: Props) {
   const [draft, setDraft, clearDraft, hydrated] = useFormDraft<Draft>(`intake:${token}`, { sectionIndex: 0, formData: {} })
 
   // True when the client already supplied identity in the Health Declaration,
@@ -67,12 +75,12 @@ export default function IntakeForm({ token, clientName, portalToken, identity }:
   // overwritten.
   const prefillApplied = useRef(false)
   useEffect(() => {
-    if (!hydrated || prefillApplied.current || !identity) return
+    if (!hydrated || prefillApplied.current || (!identity && !carriedAnswers)) return
     prefillApplied.current = true
     setDraft(prev => {
       const merged = { ...prev.formData }
       let changed = false
-      for (const [key, val] of Object.entries(identity)) {
+      for (const [key, val] of Object.entries({ ...(identity ?? {}), ...(carriedAnswers ?? {}) })) {
         const existing = merged[key]
         if (val && (existing === undefined || existing === '')) {
           merged[key] = val
@@ -119,10 +127,16 @@ export default function IntakeForm({ token, clientName, portalToken, identity }:
   const showIdentityConfirm = section.id === 'identity' && hasPriorIdentity
   const carried = new Set<string>(CARRIED_IDENTITY_FIELDS)
   const carriedQuestions = showIdentityConfirm ? section.questions.filter(q => carried.has(q.id)) : []
+  // A scorecard answer she already gave is not asked again. It stays in the
+  // form data, so it is submitted and counts as answered.
+  const carriedFromScorecard = new Set(Object.keys(carriedAnswers ?? {}))
   const visibleQuestions = (showIdentityConfirm
     ? section.questions.filter(q => !carried.has(q.id))
     : section.questions
-  ).filter(q => isQuestionVisible(q, formData))
+  ).filter(q => isQuestionVisible(q, formData) && !carriedFromScorecard.has(q.id))
+  const carriedInThisSection = section.questions.some(
+    q => carriedFromScorecard.has(q.id) && isQuestionVisible(q, formData),
+  )
 
   function setValue(id: string, value: FormValue) {
     setFormData(prev => ({ ...prev, [id]: value }))
@@ -300,6 +314,11 @@ export default function IntakeForm({ token, clientName, portalToken, identity }:
           {section.description && (
             <p className="text-[13px] text-[#98A0AD] whitespace-pre-line leading-relaxed">
               {section.description}
+            </p>
+          )}
+          {carriedInThisSection && (
+            <p className="text-[13px] text-[#666D7A] leading-relaxed mt-3">
+              You already told us how where your body stores fat has changed when you did the scorecard, so we will not ask it again.
             </p>
           )}
         </div>

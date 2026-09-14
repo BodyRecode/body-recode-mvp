@@ -1,5 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import IntakeForm from './intake-form'
+import { DIRECTION_LABEL_FOR_CODE } from '@/lib/intake-questions'
 
 export default async function IntakePage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
@@ -80,5 +81,18 @@ export default async function IntakePage({ params }: { params: Promise<{ token: 
     )
   }
 
-  return <IntakeForm token={token} clientName={clientRecord?.name} portalToken={portalToken} identity={identity} />
+  // Her scorecard answer to direction of change, if she gave one. Given before
+  // any pattern was shown, so it is carried rather than asked again after she
+  // has read about a pattern. Added 2026-09-14.
+  const { data: lead } = await admin
+    .from('leads')
+    .select('storage_direction')
+    .eq('converted_to_client_id', invitation.client_id)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+  const carriedDirection = lead?.storage_direction ? DIRECTION_LABEL_FOR_CODE[lead.storage_direction] : undefined
+  const carriedAnswers = carriedDirection ? { storage_direction: carriedDirection } : undefined
+
+  return <IntakeForm token={token} clientName={clientRecord?.name} portalToken={portalToken} identity={identity} carriedAnswers={carriedAnswers} />
 }
