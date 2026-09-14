@@ -64,38 +64,104 @@ const STAGES: Stage[] = [
     ],
   },
   {
-    label: 'Stage 0',
+    label: 'Stage 0 · Engine',
     title: 'The engine runs without Kade',
-    description: 'Everything that currently depends on a coach reviewing, deciding or judging. Required before anyone pays.',
+    description: 'Everything that currently depends on a coach reviewing, deciding or judging, plus the reliability a coach used to provide by noticing. Required before anyone pays.',
     longDescription: [
       'The engine was built to help a coach, not to replace one. Every plan is reviewed by Kade, every next block is built when Kade decides, and progress happens when Kade judges it. Rey removes Kade entirely.',
       'The auto-memory already names the core of this as the single biggest thing blocking licensing: the doctrine lives in the written instructions to the model, and almost nothing in code checks the output obeys it.',
-      'None of this is Rey-only. The same work unblocks the Body Recode read sold on its own and any future coach product, so it is never wasted whichever product ships first. The company and trade mark work runs alongside, because a name takes months to register whenever it is started.',
+      'Kade was also the engine\'s test suite. Faults were found because he logged real sessions and read every plan. The regression tests, the model-change test set and the hardened AI calls replace that noticing. None of this is Rey-only; it serves every product.',
     ],
     steps: [
-      ...at(ALL, 'solo-doctrine-checked-in-code', 'engine-nutrition-revise', 'solo-next-block-auto', 'solo-progression', 'solo-equipment-programming', 'reread-generator'),
-      ...at(ALL, 'oliver-question-zero', 'incorporate', 'head-licence', 'trade-marks'),
+      ...at(ALL, 'solo-doctrine-checked-in-code', 'engine-nutrition-revise', 'solo-regression-tests', 'solo-ai-call-hardening', 'solo-model-change-evaluation'),
+      ...at(ALL, 'solo-next-block-auto', 'solo-progression', 'solo-equipment-programming', 'reread-generator', 'solo-cost-at-scale'),
     ],
   },
   {
-    label: 'Stage 1',
-    title: 'Rey on the web',
-    description: 'The first thing she can pay for: signup, her read, her plan, the weekly check-in and the re-read. No voice yet.',
+    label: 'Stage 0 · Company',
+    title: 'The company, the name and the records',
+    description: 'Not development work, blocked by nothing, and slow. Runs alongside the engine work from now.',
     longDescription: [
-      'Everything the Rey specification places on the web rather than in the app. Almost all of it already exists as the coaching portal, pointed at a consumer instead of a client.',
-      'It tests the question that matters most, whether women will pay $199 a year for the read and the loop, before months are spent on voice. The read is the differentiator; voice is how Rey delivers it. The first can be proven without the second.',
-      'This stage is blocked more by doctrine than by code: choosing the 30 to 40 questions, and writing the read for her rather than for a coach. Both are Kade\'s work. The evidence steps apply to her directly in Rey: did the read land, and does she stay, measured from the very first customer with a baseline.',
+      'A name takes months to register whenever it is started, so parking it costs those months for nothing. Customer contracts, data processing terms and insurance need a company to sit with, and an investor or acquirer checks that the business accounts and the intellectual property belong to it.',
+      'The research and development records start now because the 43.5% refund is only as strong as records written at the time the work happens.',
+    ],
+    steps: [
+      ...at(ALL, 'oliver-question-zero', 'incorporate', 'head-licence', 'company-accounts-transfer', 'trade-marks', 'rd-records'),
+    ],
+  },
+  {
+    label: 'Stage 1 · Name and demand',
+    title: 'Prove the name is available and the price sells',
+    description: 'Before building Stage 1: is "Rey" free to use, what is the brand, and will this woman pay $199 a year.',
+    longDescription: [
+      'The cheapest steps on the board and the ones that can save the most. A trade mark conflict found after the app, domain and marketing are built is expensive. A price nobody clicks, found after Stage 1 is built, is more expensive still.',
+      'The price test can start today against the audience already held, in parallel with Stage 0.',
+    ],
+    steps: [
+      ...at(['Rey'], 'rey-price-test', 'rey-trade-mark', 'rey-brand-decision', 'rey-landing-site'),
+    ],
+  },
+  {
+    label: 'Stage 1 · Product',
+    title: 'Rey on the web',
+    description: 'The first thing she can pay for: an account, her read, her plan, the first week, the weekly check-in and the re-read. No voice yet.',
+    longDescription: [
+      'Everything the Rey specification places on the web rather than in the app. Much of it already exists as the coaching portal, pointed at a consumer instead of a client.',
+      'It tests the question that matters most, whether women will pay $199 a year for the read and the loop, before months are spent on voice. The read is the differentiator; voice is how Rey delivers it.',
+      'Blocked more by doctrine than by code: choosing the 30 to 40 questions, and writing the read for her rather than for a coach. Both are Kade\'s work.',
     ],
     steps: [
       ...at(['Rey', 'Read'], 'minimum-question-set'),
       ...at(['Rey'], 'rey-consumer-read', 'rey-name-voice'),
-      ...at(['Rey'], 'rey-progressive-intake', 'rey-signup-subscription', 'rey-plan-on-screen', 'rey-weekly-checkin', 'rey-progress-view'),
+      ...at(['Rey'], 'rey-consumer-accounts', 'rey-progressive-intake', 'rey-signup-subscription', 'rey-first-week', 'rey-plan-on-screen', 'rey-weekly-checkin', 'rey-progress-view', 'rey-journey-edges'),
       ...at(['Rey', 'Read'], 'reread-outputs-changes'),
       ...at(['Rey'], 'rey-reread-moment', 'rey-cancel-pause-delete'),
-      ...at(['Rey', 'Read'], 'reread-pause-on-freeze', 'evidence-did-the-read-land', 'evidence-client-retention'),
-      ...at(['Rey'], 'rey-consent-privacy', 'rey-coachless-position'),
-      ...at(ALL, 'health-data-position'),
-      ...at(ALL, 'security-subprocessor-register', 'security-route-guard-audit', 'security-access-control', 'security-retention-deletion', 'security-breach-process'),
+      ...at(['Rey', 'Read'], 'reread-pause-on-freeze'),
+      ...at(['Rey'], 'rey-support', 'rey-accessibility', 'rey-metrics'),
+      ...at(['Rey', 'Read'], 'evidence-did-the-read-land', 'evidence-client-retention'),
+    ],
+  },
+  {
+    label: 'Stage 1 · Clinical safety',
+    title: 'Safe with nobody watching',
+    description: 'The screening and governance a coach provides by judgement, made explicit, before any woman pays.',
+    longDescription: [
+      'In the coaching practice Kade screens every client, reads every plan and notices when something is wrong. Rey has no Kade, so each of those judgements has to become a step: who Rey must not program for, who must not receive nutrition targets, and what happens when Rey gets it wrong.',
+      'Pre-exercise screening is probably the single most important liability control in the product. An independent clinician reviewing the doctrine is what makes the rest credible.',
+    ],
+    steps: [
+      ...at(ALL, 'rey-clinical-advisor', 'rey-pre-exercise-screening', 'rey-pregnancy-screen', 'rey-disordered-eating-screen', 'rey-medication-handling', 'rey-adverse-events'),
+    ],
+  },
+  {
+    label: 'Stage 1 · Legal, privacy and tax',
+    title: 'Allowed to sell it',
+    description: 'Medical device status, claims, terms, privacy, health data sent overseas, automated decisions, liability, insurance and GST.',
+    longDescription: [
+      'The first step decides much of the rest. The TGA regulates software that diagnoses or guides treatment of a condition as a medical device. Wellness software and coaching software are excluded, but only while they make no claims about a disease or condition, and every function must qualify for the whole product to stay excluded. Get that opinion before building the functions that test it, and keep every word inside it.',
+      'Privacy obligations apply regardless of the size of the business, because a business providing a health service and holding health information is not covered by the small business exemption. From 10 December 2026, privacy policies must also describe automated decisions that significantly affect people.',
+      'Most of these steps are a lawyer\'s or an accountant\'s work. None can be skipped by building faster.',
+    ],
+    steps: [
+      ...at(ALL, 'rey-tga-samd-position', 'rey-claims-language'),
+      ...at(['Rey'], 'rey-terms-of-service', 'rey-consent-privacy'),
+      ...at(ALL, 'health-data-position', 'rey-privacy-cross-border', 'rey-automated-decisions-disclosure', 'rey-state-health-records'),
+      ...at(['Rey'], 'rey-ai-disclosure'),
+      ...at(ALL, 'rey-spam-compliance'),
+      ...at(['Rey'], 'rey-coachless-position'),
+      ...at(ALL, 'rey-insurance', 'rey-gst-tax'),
+    ],
+  },
+  {
+    label: 'Stage 1 · Security',
+    title: 'Safe to hold health information from strangers',
+    description: 'What the system does to protect health information once the public, not twelve known clients, can sign up.',
+    longDescription: [
+      'The coaching practice holds twelve clients whom Kade knows, and only Kade can start a read. Open public signup changes the exposure: strangers store health information, and anyone, or any script, can trigger work that costs money.',
+      'The penetration test comes last deliberately, so it finds what the earlier steps missed.',
+    ],
+    steps: [
+      ...at(ALL, 'security-subprocessor-register', 'security-route-guard-audit', 'security-access-control', 'security-access-logging', 'security-encryption-verified', 'security-backups-restore', 'security-monitoring', 'security-ai-abuse-limits', 'security-retention-deletion', 'security-breach-process', 'security-pen-test'),
     ],
   },
   {
@@ -108,7 +174,7 @@ const STAGES: Stage[] = [
     ],
     steps: [
       ...at(['Rey', 'Coaching'], 'session-readiness-adapts', 'session-soreness-triage', 'session-system-swap'),
-      ...at(['Rey'], 'rey-phone-app', 'rey-voice', 'rey-session-flow', 'rey-override-rules', 'rey-injury-disclosure', 'rey-music-ducking', 'rey-offline-sessions', 'rey-talk-level', 'rey-first-refusal', 'rey-distress-tested'),
+      ...at(['Rey'], 'rey-phone-app', 'rey-app-store-compliance', 'rey-voice', 'rey-voice-data-policy', 'rey-session-flow', 'rey-exercise-content', 'rey-override-rules', 'rey-injury-disclosure', 'rey-music-ducking', 'rey-offline-sessions', 'rey-talk-level', 'rey-first-refusal', 'rey-distress-tested', 'security-prompt-injection'),
     ],
   },
   {
