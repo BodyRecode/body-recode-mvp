@@ -135,7 +135,7 @@ THIS IS A PROGRESS READ, NOT A FIRST READ (Progress Read spec v2.4). Everything 
 
 5. FOR_HER IS WRITTEN TO HER. Second person, plain words, the voice of a coach who knows her. It holds only findings: headline, where she is now, what changed, what held, her pattern and why, what the photos and measurements show, what is holding things back, tensions and trade-offs. NEVER in for_her: confidence levels, competing reads, what to watch for, risk flags, capacity constraints, non-directives, operating rules, or any suspicion about her reporting. The test: if getting it wrong in the other direction would hurt her, it is coach-only.
 
-6. HER VOCABULARY. Never use in for_her: CFFS, Remediation, Optimisation, Post-Optimisation, Indeterminate, cluster, convergence, competing read, Fat Map zone codes. Say readiness rather than body state; her readiness words are Depleted, Transitioning and Ready. For no clear pattern, say no single pattern stands out yet and what would show it. ${PATTERN_HORMONE_GUARDRAIL}
+6. HER VOCABULARY. Never use in for_her: Green, Amber or Red as rating words, CFFS, Remediation, Optimisation, Post-Optimisation, Indeterminate, cluster, convergence, competing read, Fat Map zone codes. Say readiness rather than body state; her readiness words are Depleted, Transitioning and Ready. For no clear pattern, say no single pattern stands out yet and what would show it. ${PATTERN_HORMONE_GUARDRAIL}
 
 7. A CHANGED PATTERN IS THE READ LEARNING, NOT THE FIRST READ BEING WRONG. With twelve more weeks of evidence the picture is clearer; say that. Never say or imply the earlier read was a mistake.
 
@@ -160,7 +160,13 @@ const PROGRESS_OUTPUT_ADDITIONS = `Return ONE JSON object containing EVERY field
     "your_pattern": "2-4 sentences. Her pattern and what points to it, or that no single pattern stands out yet. If it changed, rule 7.",
     "what_the_photos_and_measurements_show": "2-3 sentences. OMIT this field when there are no new measurements and no photos.",
     "what_is_holding_things_back": "1-2 sentences naming the single biggest limiter plainly.",
-    "tensions_and_tradeoffs": "2-3 sentences."
+    "tensions_and_tradeoffs": "2-3 sentences.",
+    "readiness_in_plain_words": {
+      "capacity": "1 sentence to her on how much work her body can take and recover from right now. Name whether it is holding things back, without the word Green, Amber or Red.",
+      "schedule": "1 sentence on how reliably her week lets training and eating happen. About the shape of her week, never her willingness.",
+      "regulation": "1 sentence on sleep and stress load, how settled her system is.",
+      "behaviour": "1 sentence on how consistently the plan has happened when the week allowed it. Never a judgement of her character; if it is the limiter, say what would help, not what she failed at."
+    }
   }
 
 The read schema:
@@ -269,7 +275,10 @@ ${PROGRESS_OUTPUT_ADDITIONS}${CFFS_OUTPUT_SCHEMA}`,
     const her = c.for_her as Record<string, unknown> | undefined
     if (!her || typeof her !== 'object') return 'missing for_her'
     for (const k of FOR_HER_REQUIRED) if (typeof her[k] !== 'string' || !(her[k] as string).trim()) return `for_her.${k} missing`
-    const leak = Object.values(her).map(String).join(' ').match(INTERNAL_VOCABULARY)
+    const flat = (v: unknown): string => typeof v === 'string' ? v : v && typeof v === 'object' ? Object.values(v).map(flat).join(' ') : ''
+    const plain = her.readiness_in_plain_words as Record<string, unknown> | undefined
+    if (!plain || typeof plain !== 'object' || !['capacity', 'schedule', 'regulation', 'behaviour'].every(k => typeof plain[k] === 'string' && (plain[k] as string).trim())) return 'for_her.readiness_in_plain_words missing a rating'
+    const leak = flat(her).match(INTERNAL_VOCABULARY) ?? flat(her).match(/\b(Green|Amber|Red)\b/)
     if (leak) return `for_her uses internal vocabulary ("${leak[0]}")`
     // The sex gate, in code.
     if (sexAtBirth === 'Male' && c.pattern_classification === 'Estrogen-Shift') return 'Estrogen-Shift returned for a client recorded male at birth'

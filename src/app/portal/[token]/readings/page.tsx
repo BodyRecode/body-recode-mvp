@@ -36,6 +36,18 @@ export default async function ReadingsArchivePage({ params }: { params: Promise<
 
   const published = (readings || []).filter(r => !r.is_archived)
 
+  // Progress Reads (from 14 Sep 2026). The newest published one is her current
+  // read; the Foundational Read stays as her first read, not archived.
+  const { data: progressReads } = await admin
+    .from('progress_reads')
+    .select('id, published_at, body_state_classification')
+    .eq('client_id', client.id)
+    .eq('status', 'published')
+    .eq('is_archived', false)
+    .order('published_at', { ascending: false })
+  const PUBLIC_STATE: Record<string, string> = { Remediation: 'Depleted', Optimisation: 'Transitioning', 'Post-Optimisation': 'Ready' }
+  const issued = (d: string) => new Date(d).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })
+
   return (
     <div className="min-h-screen bg-[#FFFFFF] text-[#141821]">
       <ClientHeader />
@@ -45,6 +57,34 @@ export default async function ReadingsArchivePage({ params }: { params: Promise<
           <h1 className="text-[30px] font-extrabold text-[#141821] tracking-tight leading-[1.1] mt-4 mb-2">Your reads</h1>
           <p className="text-[#666D7A] text-[15px]">A read of how your body is currently organising itself. Updated when significant signals shift.</p>
         </div>
+
+        {(progressReads ?? []).length > 0 && (
+          <div className="space-y-3 mb-3">
+            {(progressReads ?? []).map((r, i) => (
+              <Link
+                key={r.id}
+                href={`/portal/${token}/progress-read${i === 0 ? '' : `?id=${r.id}`}`}
+                className={`group block rounded-2xl border p-5 transition-colors ${i === 0 ? 'border-[#B5CFFC] bg-[#EFF5FE] hover:border-[#1B6DFC]/50' : 'border-[#E8EAEE] bg-[#FFFFFF] hover:border-[#B5CFFC]'}`}
+              >
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-[#FFFFFF] border border-[#B5CFFC] flex items-center justify-center shrink-0 mt-0.5">
+                    <FileText size={16} className="text-[#1B6DFC]" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="text-[15px] font-semibold text-[#141821] group-hover:text-[#1B6DFC] transition-colors">Progress Read</p>
+                      {i === 0 && <span className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-wider">Current</span>}
+                    </div>
+                    <p className="text-[12px] text-[#666D7A] leading-relaxed">
+                      {PUBLIC_STATE[r.body_state_classification] ? `Readiness: ${PUBLIC_STATE[r.body_state_classification]}. ` : ''}Written {issued(r.published_at!)}.
+                    </p>
+                  </div>
+                  <ArrowUpRight size={14} className="text-[#1B6DFC] shrink-0 mt-2" />
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
 
         {published.length === 0 ? (
           <div className="rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-6 text-center">
@@ -66,7 +106,7 @@ export default async function ReadingsArchivePage({ params }: { params: Promise<
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <p className="text-[15px] font-semibold text-[#141821] group-hover:text-[#1B6DFC] transition-colors">Foundational Read</p>
-                    <span className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-wider">Current</span>
+                    <span className="text-[10px] font-bold text-[#1B6DFC] uppercase tracking-wider">{(progressReads ?? []).length ? 'Your first read' : 'Current'}</span>
                   </div>
                   <p className="text-[12px] text-[#666D7A] leading-relaxed">
                     {published[0].body_state_classification ? `Currently in ${published[0].body_state_classification}.` : ''} Issued {new Date(published[0].client_reading_published_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}.

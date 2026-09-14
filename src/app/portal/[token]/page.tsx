@@ -134,6 +134,16 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     .order('client_reading_published_at', { ascending: false })
     .limit(1)
   const publishedReading = publishedReadingRows?.[0] ?? null
+  // Her newest published Progress Read (14 Sep 2026) leads the reads card.
+  const { data: latestProgressRead } = await admin
+    .from('progress_reads')
+    .select('id, published_at')
+    .eq('client_id', client.id)
+    .eq('status', 'published')
+    .eq('is_archived', false)
+    .order('published_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
 
   // Client-facing state (2026-08-30). requirePublished: the client should meet
   // a new state inside a Progress Read the coach has approved, never via this
@@ -622,6 +632,22 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         {publishedReading && (
           <div className="mb-10">
             <SectionLabel icon={FileText} text="Your Read" />
+            {latestProgressRead && (
+              <Link
+                href={`/portal/${token}/progress-read`}
+                className="block rounded-2xl border border-[#B5CFFC] bg-[#EFF5FE] p-5 hover:border-[#1B6DFC]/60 transition-colors mb-3"
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-[#141821] mb-1">Progress Read</p>
+                    <p className="text-xs text-[#666D7A] leading-relaxed">
+                      What has moved since your last read, written {new Date(latestProgressRead.published_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'long' })}.
+                    </p>
+                  </div>
+                  <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
+                </div>
+              </Link>
+            )}
             <Link
               href={`/portal/${token}/foundational-reading`}
               className="block rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-[#EFF5FE] transition-colors mb-3"

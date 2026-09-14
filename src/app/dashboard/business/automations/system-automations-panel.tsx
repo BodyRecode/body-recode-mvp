@@ -15,6 +15,13 @@ const AUTOMATIC_AUTOMATIONS = [
     steps: 2,
   },
   {
+    id: 'progress-read-ready',
+    name: 'Progress Read Ready - Client Email (coach click)',
+    description: `Not automatic. When you click Notify her on a published Progress Read (client tab Progress Read), she gets "your Progress Read is ready" linking to her Progress Read in the portal, BCC to you. Publishing alone sends nothing. Logged to her communications; the button then reads Notify again.`,
+    trigger: 'POST /api/progress-read/notify (coach clicks Notify her)',
+    steps: 1,
+  },
+  {
     id: 'progress-check-submitted',
     name: 'Progress Check Submitted - Coach Notification',
     description: `When a client submits their Progress Check (from 14 Sep 2026 the near-full re-ask of 231 intake questions; older checks are the 24-question form), a notification email fires to ${coach().email} with a link to their program page. Nothing publishes automatically: you open the program, click Generate on the Progress Read panel to re-score their body state from the answers, review, then Publish and Notify. Best-effort - a failed notification never blocks the client's submission.\n\nFrom 27 Aug the notification also says whether the milestone capture landed: her measurements, and how many of the three photos. Both are required on the form, so a submission arriving without them is flagged as an anomaly worth checking the logs for rather than read as a choice she made. That capture writes a fresh baselines row stamped with her coaching week - which is what finally makes a before-and-after possible, after every baseline on file sat in week one.`,

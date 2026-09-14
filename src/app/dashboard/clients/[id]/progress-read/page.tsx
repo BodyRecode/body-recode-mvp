@@ -6,12 +6,13 @@ import { PageHeader } from '@/components/dashboard/ui'
 import { readPatternLabel } from '@/lib/pattern-doctrine'
 import type { LintFinding } from '@/lib/reading-lint'
 import GenerateProgressReadButton from './generate-progress-read-button'
+import ProgressReadActions from './progress-read-actions'
 
 /**
  * The Progress Read, coach view (Progress Read spec v2.4). One generation, two
  * levels: "Her version" shows exactly the sections she will see; everything
- * below it is for the coach only. Drafts only for now: publishing to her portal
- * is the next step on the Build board.
+ * below it is for the coach only. Publish shows her version in her portal;
+ * Notify emails her; both are the coach's clicks.
  */
 
 const PUBLIC_STATE: Record<string, string> = { Remediation: 'Depleted', Optimisation: 'Transitioning', 'Post-Optimisation': 'Ready' }
@@ -122,11 +123,16 @@ export default async function ProgressReadPage({ params }: { params: Promise<{ i
                 </p>
               </div>
             </div>
-            <div className="px-6 py-3.5 flex items-center gap-2 flex-wrap text-[12.5px] text-[#666D7A]">
-              <span className="font-semibold text-[#A96A12]">Draft</span>
-              <span>· follows the {read.previous_read_kind === 'foundational' ? 'Foundational Read' : 'last Progress Read'}</span>
-              <span>· photos {read.photos_used ?? 0}/3</span>
-              <span>· not visible to her</span>
+            <div className="px-6 py-3.5 flex items-center justify-between gap-4 flex-wrap">
+              <div className="flex items-center gap-2 flex-wrap text-[12.5px] text-[#666D7A]">
+                {read.status === 'published'
+                  ? <span className="font-semibold text-[#177245]">Published {fmt(read.published_at)}</span>
+                  : <span className="font-semibold text-[#A96A12]">Draft</span>}
+                <span>· follows the {read.previous_read_kind === 'foundational' ? 'Foundational Read' : 'last Progress Read'}</span>
+                <span>· photos {read.photos_used ?? 0}/3</span>
+                <span>· {read.status === 'published' ? 'her version is in her portal' : 'not visible to her'}</span>
+              </div>
+              <ProgressReadActions readId={read.id} status={read.status} emailSentAt={read.email_sent_at} />
             </div>
           </div>
 
