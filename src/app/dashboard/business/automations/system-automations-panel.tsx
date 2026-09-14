@@ -583,6 +583,13 @@ const MANUAL_AUTOMATIONS = [
     steps: 2,
   },
   {
+    id: 'rey-founding-confirmation',
+    name: 'Founding List Confirmation (Rey price test)',
+    description: 'bodyrecode.au/founding: a woman answers the scorecard questions plus four unscored ones (how soon, spend in the last year, where she would train, a coach in her ear), sees her readiness and likely pattern, then the new app at $199 a year or $29 a month. The moment her result shows, saw_price_at is written; that is the denominator of the pass mark. Joining the founding list sends ONE branded confirmation (BCC Kade): founding price kept while subscribed, email when it opens, no app name, no date. Rows live in rey_founding_interest, not leads, so nothing here enters the scorecard sequence or the Pipeline. Results on the SaaS Launch board against the pass mark set before it ran. Added 2026-09-14.',
+    trigger: 'POST /api/founding (join, first time only)',
+    steps: 1,
+  },
+  {
     id: 'recovery-plan-suggestions',
     name: 'Recovery Plan Suggestions (coach-triggered, suggests only)',
     description: 'Whole-file counterpart to the RRS-state banner, which only appears when a client is in a recovery state. This works for every client and folds the state in as an input when there is one. Reads the foundational synthesis, intake domain scores, recent syntheses and check-ins, active program, medications and equipment access, then builds a plan from the 25-protocol library. Gated in code before the model sees it: protocols needing equipment the client lacks, already-assigned protocols, anything the active recovery state contraindicates, and any sleep-breathing tool whose lower levels have not been tried (13D_16, never skip levels). The model never writes dosing. Approve plan assigns the whole set in one action; per-protocol Assign remains for partial approval. Saved to recovery_plan_suggestions and re-shown on page load. Added 2026-08-17.',

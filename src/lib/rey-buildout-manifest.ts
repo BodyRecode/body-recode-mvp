@@ -272,9 +272,10 @@ export const REY_STEPS: Step[] = [
     id: 'rey-price-test',
     title: 'Put the price in front of real people first',
     description: 'A page with the offer, $199 a year, and a pre-order or waitlist button, shown to the audience already held.',
-    status: 'planned',
+    status: 'in_progress',
     effort: 'S',
-    notes: 'Can start now, alongside Stage 0. Stated willingness to pay is unreliable; who clicks is data. The warm audience is 131 leads, 93 scorecard completions, 12 clients and a dormant list, all this exact woman. Answers the demand question before Stage 1 is built rather than after.',
+    surfaces: ['/founding', '/dashboard/saas'],
+    notes: 'BUILT 14 Sep: bodyrecode.au/founding, results on the SaaS Launch board. Priestley scorecard method, $199/yr with $29/mo, founding list (no payment). Pass mark set before it ran: 1 in 5 of women who see the price join = go, under 1 in 10 = rethink. Stays in progress until the warm list has been sent to it and 30 women have seen the price. Can start now, alongside Stage 0. Stated willingness to pay is unreliable; who clicks is data. The warm audience is 131 leads, 93 scorecard completions, 12 clients and a dormant list, all this exact woman. Answers the demand question before Stage 1 is built rather than after.',
   },
   {
     id: 'rey-trade-mark',

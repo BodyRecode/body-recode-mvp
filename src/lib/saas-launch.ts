@@ -16,6 +16,7 @@
  */
 
 import { createAdminClient } from '@/lib/supabase/admin'
+import { summariseFounding, type FoundingRow, type FoundingSummary } from '@/lib/rey-founding'
 
 export type ApplicationRow = {
   id: string
@@ -51,6 +52,8 @@ export type LaunchSnapshot = {
   plansGenerated: number
   /** Weekly check-ins processed through the loop. */
   checkins: number
+  /** The Rey price test at bodyrecode.au/founding, read against the pass mark set before it ran. */
+  founding: FoundingSummary
   /** Set when a count could not be read, so the page says so instead of showing 0. */
   errors: string[]
 }
@@ -87,7 +90,7 @@ export async function getLaunchSnapshot(): Promise<LaunchSnapshot> {
   const db = createAdminClient()
   const errors: string[] = []
 
-  const [appsRes, tenantsRes, leadsRes, clients, programs, nutrition, checkins] = await Promise.all([
+  const [appsRes, tenantsRes, leadsRes, clients, programs, nutrition, checkins, foundingRes] = await Promise.all([
     db
       .from('collective_applications')
       .select('id,name,business_name,modality,tier,timeline,status,created_at')
@@ -98,11 +101,13 @@ export async function getLaunchSnapshot(): Promise<LaunchSnapshot> {
     countOf(db, 'programs', errors),
     countOf(db, 'nutrition_plans', errors),
     countOf(db, 'weekly_checkins', errors),
+    db.from('rey_founding_interest').select('biological_sex,training_status,saw_price_at,joined_at,price_reaction,start_timing,voice_coach'),
   ])
 
   if (appsRes.error) errors.push(`collective_applications: ${appsRes.error.message}`)
   if (tenantsRes.error) errors.push(`tenant_config: ${tenantsRes.error.message}`)
   if (leadsRes.error) errors.push(`leads: ${leadsRes.error.message}`)
+  if (foundingRes.error) errors.push(`rey_founding_interest: ${foundingRes.error.message}`)
 
   const applications: ApplicationRow[] = (appsRes.data ?? []).map((r) => ({
     id: String(r.id),
@@ -139,6 +144,7 @@ export async function getLaunchSnapshot(): Promise<LaunchSnapshot> {
     clients,
     plansGenerated: programs + nutrition,
     checkins,
+    founding: summariseFounding((foundingRes.data ?? []) as FoundingRow[]),
     errors,
   }
 }

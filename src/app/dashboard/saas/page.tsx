@@ -4,6 +4,10 @@ import { PHASES } from '@/lib/saas-buildout-manifest'
 import { boardStats, phaseProgress } from '@/lib/buildout-types'
 import { BUILD_PHASES } from '@/lib/build-sequence'
 import {
+  PASS_MARK_GO, PASS_MARK_RETHINK, PRICE_YEAR, PRICE_REACTION_OPTIONS, START_OPTIONS, VOICE_OPTIONS,
+  type Split,
+} from '@/lib/rey-founding'
+import {
   Card,
   PageHeader,
   SectionLabel,
@@ -19,6 +23,7 @@ import {
   Building2,
   AlertTriangle,
   ArrowRight,
+  Tag,
 } from 'lucide-react'
 
 /**
@@ -78,6 +83,8 @@ export default async function SaasLaunchPage() {
           </p>
         </Card>
       )}
+
+      <FoundingTest founding={snap.founding} />
 
       {/* ============================================================
        * THE GATE. Top of the page on purpose. Nothing below it moves.
@@ -358,5 +365,92 @@ export default async function SaasLaunchPage() {
         </ul>
       </Card>
     </div>
+  )
+}
+
+/* ============================================================
+ * THE REY PRICE TEST. Added 14 Sep 2026.
+ *
+ * The pass mark was agreed before the page went live, and it is printed here
+ * so it cannot be quietly moved once results arrive. Women only: the test is
+ * for her, and men are shown separately so they cannot flatter or sink it.
+ * ============================================================ */
+const pct = (s: Split) => (s.saw ? Math.round((s.joined / s.saw) * 100) : 0)
+const oneIn = (r: number) => `1 in ${Math.round(1 / r)}`
+
+function Tally({ counts, options }: { counts: Record<string, number>; options: readonly { value: string; label: string }[] }) {
+  const total = Object.values(counts).reduce((a, b) => a + b, 0)
+  if (total === 0) return <p className="text-[12.5px] text-[#98A0AD] italic">No answers yet.</p>
+  return (
+    <div className="space-y-1.5">
+      {options.map((o) => {
+        const n = counts[o.value] ?? 0
+        return (
+          <div key={o.value} className="flex items-center gap-2 text-[12.5px]">
+            <span className="w-40 shrink-0 text-[#4A5160] truncate">{o.label}</span>
+            <span className="flex-1 h-2 rounded-full bg-[#EEF0F3] overflow-hidden">
+              <span className="block h-full bg-[#1B6DFC]" style={{ width: `${(n / total) * 100}%` }} />
+            </span>
+            <span className="w-8 text-right text-[#141821] font-semibold" style={{ fontVariantNumeric: 'tabular-nums' }}>{n}</span>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+function FoundingTest({ founding: f }: { founding: import('@/lib/rey-founding').FoundingSummary }) {
+  const verdict = {
+    too_early: { text: `Too early to read. ${f.minimumSample - f.women.saw > 0 ? `${f.minimumSample - f.women.saw} more women need to see the price` : 'Nearly there'} before the rate means anything.`, accent: 'neutral' as const },
+    go: { text: `Above the pass mark. At least ${oneIn(PASS_MARK_GO)} women who saw $${PRICE_YEAR} joined. That is the go signal you set.`, accent: 'teal' as const },
+    rethink: { text: `Below ${oneIn(PASS_MARK_RETHINK)}. That is the rethink line you set: the price or the offer needs to change before building on it.`, accent: 'red' as const },
+    keep_testing: { text: `Between the two lines. Not a yes and not a no: keep sending people to it.`, accent: 'neutral' as const },
+  }[f.verdict]
+
+  return (
+    <>
+      <SectionLabel>Rey price test · bodyrecode.au/founding</SectionLabel>
+      <Card className="mb-4" accent={verdict.accent} tint={verdict.accent !== 'neutral'}>
+        <div className="flex items-start gap-4 flex-wrap">
+          <span className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(27,109,252,0.12)' }}>
+            <Tag size={17} className="text-[#1B6DFC]" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h2 className="text-[16px] font-semibold text-[#141821] leading-snug mb-1.5">{verdict.text}</h2>
+            <p className="text-[13px] text-[#4A5160] leading-relaxed max-w-3xl">
+              Pass mark agreed 14 Sep 2026, before any results: of the women who see ${PRICE_YEAR} a year,{' '}
+              <strong className="text-[#141821]">{oneIn(PASS_MARK_GO)} or more join = go ahead</strong>,{' '}
+              <strong className="text-[#141821]">fewer than {oneIn(PASS_MARK_RETHINK)} = rethink the price or the offer</strong>.
+              Do not move these lines after the results come in. Share the page with <code className="text-[12px]">?source=</code> on the end so you can see where each woman came from.
+            </p>
+          </div>
+        </div>
+      </Card>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+        <StatCard label="Women who saw the price" value={f.women.saw} sub={`Men, kept out of the pass mark: ${f.men.saw}`} accent="neutral" icon={Tag} />
+        <StatCard label="Joined the founding list" value={`${f.women.joined} · ${pct(f.women)}%`} sub={`Go line ${Math.round(PASS_MARK_GO * 100)}%, rethink below ${Math.round(PASS_MARK_RETHINK * 100)}%`} accent={f.verdict === 'go' ? 'teal' : f.verdict === 'rethink' ? 'red' : 'neutral'} icon={ClipboardCheck} />
+        <StatCard label="Training now" value={`${f.training.joined} of ${f.training.saw} · ${pct(f.training)}%`} sub="Regularly, or on and off" accent="neutral" />
+        <StatCard label="Not training" value={`${f.notTraining.joined} of ${f.notTraining.saw} · ${pct(f.notTraining)}%`} sub="Which woman the first ads should speak to" accent="neutral" />
+      </div>
+      <Card className="mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <p className="text-[11px] font-semibold text-[#98A0AD] mb-2">At ${PRICE_YEAR} a year, is this</p>
+            <Tally counts={f.reactions} options={PRICE_REACTION_OPTIONS} />
+          </div>
+          <div>
+            <p className="text-[11px] font-semibold text-[#98A0AD] mb-2">How soon she wants to start</p>
+            <Tally counts={f.startTiming} options={START_OPTIONS} />
+          </div>
+          <div>
+            <p className="text-[11px] font-semibold text-[#98A0AD] mb-2">A coach in her ear</p>
+            <Tally counts={f.voice} options={VOICE_OPTIONS} />
+          </div>
+        </div>
+        <p className="text-[11.5px] text-[#98A0AD] mt-4">
+          Women only. Counted live from every result shown, including women who left without joining.
+        </p>
+      </Card>
+    </>
   )
 }
