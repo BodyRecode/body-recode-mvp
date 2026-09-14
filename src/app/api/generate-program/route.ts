@@ -7,6 +7,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { resolveEffectiveTier, clampProgramToDoctrine, requiresFullBodySessions, enforceUpperLowerBias } from '@/lib/training-doctrine'
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
 import { clampProgramToRecoveryManifest, buildRecoveryPromptSection } from '@/lib/recovery-program-clamp'
+import { checkProgramDoctrine, injuredJointsFromIntake } from '@/lib/program-doctrine-check'
 import {
   buildProgramSystemPrompt,
   buildProgramUserPrompt,
@@ -540,10 +541,13 @@ export async function runProgramGenerationInternal(body: any): Promise<NextRespo
     )
     if (libraryNames.size > 0) {
       const unknownExercises: string[] = []
-      for (const session of candidate.sessions as Array<{ blocks?: Array<{ exercises?: Array<{ name?: string }> }> }>) {
+      for (const session of candidate.sessions as Array<{ blocks?: Array<{ exercises?: Array<{ exercise_name?: string; name?: string }> }> }>) {
         for (const block of session.blocks ?? []) {
           for (const ex of block.exercises ?? []) {
-            const nm = (ex?.name ?? '').trim()
+            // exercise_name is the stored field. This read `name` until 14 Sep
+            // 2026, which is undefined on every exercise, so this check skipped
+            // every name and never refused anything.
+            const nm = (ex?.exercise_name ?? ex?.name ?? '').trim()
             if (nm && !libraryNames.has(nm.toLowerCase())) unknownExercises.push(nm)
           }
         }
@@ -609,6 +613,20 @@ export async function runProgramGenerationInternal(body: any): Promise<NextRespo
     programData.sessions = biased.sessions
     clamp.notes.push(...biased.notes)
     console.log('[generate-program] Upper/lower bias:', { bias: upper_lower_bias, setsMoved: biased.setsMoved })
+  }
+
+  // Doctrine check (14 Sep 2026): the rules that lived only in the prompt, run
+  // in code. Reported into the coach-only doctrine note, not enforced, until Kade
+  // decides how each should behave. See program-doctrine-check.ts for why.
+  const doctrineViolations = checkProgramDoctrine(programData.sessions || [], {
+    bodyState: (effectiveCffs?.body_state_classification as string | null) ?? null,
+    regulationReadiness: (effectiveCffs?.exposure_readiness_regulation as string | null) ?? null,
+    injuredJoints: injuredJointsFromIntake(injuryContext.injury_location_current),
+    exerciseByName: new Map((exercises ?? []).map((e: { name: string; axial_loading: boolean | null; stability_demand: string | null; primary_joint_stress: string | null }) => [e.name.trim().toLowerCase(), e])),
+  })
+  if (doctrineViolations.length) {
+    clamp.notes.push(`DOCTRINE CHECK, ${doctrineViolations.length} rule break${doctrineViolations.length === 1 ? '' : 's'} to review: ${[...new Set(doctrineViolations.map(v => v.message))].join(' ')}`)
+    console.warn('[generate-program] doctrine check:', doctrineViolations.map(v => `${v.code}:${v.exercise}`).join(', '))
   }
 
   if (clamp.notes.length > 0) {

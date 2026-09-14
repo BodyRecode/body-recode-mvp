@@ -233,7 +233,7 @@ interface Session {
   blocks?: Block[]
 }
 
-function blockRole(label: string | undefined): 'primary' | 'secondary' | 'capacity' | 'trunk' {
+export function blockRole(label: string | undefined): 'primary' | 'secondary' | 'capacity' | 'trunk' {
   if (!label) return 'capacity'
   const l = label.toLowerCase()
   if (/primary|main load|primary load|primary compound/.test(l)) return 'primary'
