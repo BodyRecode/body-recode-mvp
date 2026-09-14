@@ -43,14 +43,16 @@ export function scorecardSteps(): ScorecardStep[] {
     {
       position: 1, type: 'action', action_type: 'send_email',
       config: {
-        subject: `Why your body has stopped responding, {{first_name}}`,
+        subject: `Why your body doesn't feel like yours, {{first_name}}`,
         body: `Hi {{first_name}},
 
 You just took the scorecard. Result: {{scorecard_score}}/15. Readiness: {{scorecard_state}}.
 
-That number is the starting point, not the answer. It tells you which of three states your body is currently in. It does not tell you why fat loss has stalled, what specifically is making things worse, or what to fix first.
+That number is the starting point, not the answer. It tells you which of three states your body is currently in. It does not tell you why your body has changed, what specifically is making things worse, or what to fix first.
 
-The Body Decode does.
+That is true whether you have been training hard and getting nowhere, or you are not training right now and your body just does not feel like yours. The reason is readable either way.
+
+The Body Decode reads it.
 
 It is the full read of your result: the pattern your body is working through, why it has been holding what it holds, where that shows up in an ordinary week, what it commonly gets mistaken for, and the three things that actually move it.
 
@@ -77,13 +79,13 @@ Body Recode`,
 
 Your score was {{scorecard_score}}/15. Readiness: {{scorecard_state}}.
 
-Most people in your situation think they need to train harder or eat less. That is usually the wrong call.
+Most people in your situation think the answer is to train harder or eat less. That is usually the wrong call.
 
-When a body has stopped responding to effort, the issue is rarely the effort itself. It is the prescription. Pushing harder against a body that is already resisting is what got it stuck in the first place.
+When a body changes like this, the issue is rarely a lack of effort. It is what the body is already carrying. Piling more on top of a body that is struggling to recover is what keeps it stuck.
 
 Your result named the pattern behind that. What it could not do is explain it, because a result page is a summary.
 
-The Body Decode is the whole read. What {{scorecard_state}} actually means for your training, your nutrition and your recovery, why fat loss has stalled, what to stop immediately, and the order to fix what is left. Written to your specific result.
+The Body Decode is the whole read. What {{scorecard_state}} actually means for your training, your nutrition and your recovery, why your body has been holding on to what it holds, what to stop immediately, and the order to fix what is left. Written to your specific result.
 
 Then five short lessons, one a day, walking you through it.
 

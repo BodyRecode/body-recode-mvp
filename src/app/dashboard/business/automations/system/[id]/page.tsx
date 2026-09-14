@@ -66,25 +66,26 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
     steps: [
       {
         day: 'Immediately',
-        subject: 'Why your body has stopped responding, {firstName}',
+        subject: 'Why your body doesn\'t feel like yours, {firstName}',
         paragraphs: [
           'Hi {firstName},',
-          'You just took the scorecard. Result: {score}/15. Body state: {state}.',
-          'That number is the starting point, not the answer. It tells you which of three states your body is currently in. It does not tell you why fat loss has stalled, what specifically is making things worse, or what to fix first.',
-          'The Body Decode Report does. $37. Delivered in 5 minutes. Yours to keep.',
+          'You just took the scorecard. Result: {score}/15. Readiness: {state}.',
+          'That number is the starting point, not the answer. It tells you which of three states your body is currently in. It does not tell you why your body has changed, what specifically is making things worse, or what to fix first.',
+          'That is true whether you have been training hard and getting nowhere, or you are not training right now and your body just does not feel like yours. The reason is readable either way.',
+          'The Body Decode reads it. Free. No card.',
         ],
-        cta: 'Get your report →',
+        cta: 'Start here →',
       },
       {
         day: 'Day 2',
         subject: 'What your {state} result actually means',
         paragraphs: [
           'Hi {firstName},',
-          'Most people in your situation think they need to train harder or eat less. That is usually the wrong call.',
-          'When a body has stopped responding to effort, the issue is rarely the effort itself. It is the prescription. Pushing harder against a body that is already resisting is what got it stuck in the first place.',
-          'The Body Decode Report walks through what {state} actually means for your training, nutrition, recovery, and most importantly, why fat loss has stalled.',
+          'Most people in your situation think the answer is to train harder or eat less. That is usually the wrong call.',
+          'When a body changes like this, the issue is rarely a lack of effort. It is what the body is already carrying. Piling more on top of a body that is struggling to recover is what keeps it stuck.',
+          'The Body Decode is the whole read: what {state} actually means for your training, nutrition and recovery, and why your body has been holding on to what it holds.',
         ],
-        cta: 'Get your report →',
+        cta: 'Start here →',
       },
       {
         day: 'Day 4',
