@@ -393,7 +393,7 @@ export function buildNoShowEmails(firstName: string, bookingLink: string): {
       body: [
         p(`Hi ${firstName},`),
         p(`Looks like we missed each other yesterday. No problem at all. These things happen.`),
-        p(`Your scorecard read does not change because of one missed call. When you are ready, the conversation is still available. It is a 30-minute call to go through what showed up, identify the specific reason your body has stopped responding, and work out what to do first.`),
+        p(`Your scorecard read does not change because of one missed call. When you are ready, the conversation is still available. It is a 30-minute call to go through what showed up, identify the specific reason your body has changed, and work out what to do first.`),
         p(`No pressure. Just lock in a time when it suits.`),
       ].join(''),
       ctaText: 'Rebook a time',
@@ -508,7 +508,7 @@ export function buildZoom1DeclinedEmails(firstName: string, bookingLink: string)
         p(`Hi ${firstName},`),
         p(`Good speaking with you yesterday. Appreciate you taking the time.`),
         p(`Completely understood that the timing is not right. These things only work when the timing is right for you, not when it fits someone else's schedule.`),
-        p(`What we talked through does not expire. The pattern we identified is still there. The reason your body has stopped responding is still there. The conversation is still available the moment it makes sense to pick it back up.`),
+        p(`What we talked through does not expire. The pattern we identified is still there. The reason your body has changed is still there. The conversation is still available the moment it makes sense to pick it back up.`),
       ].join(''),
       ctaText: "Book a time when you're ready",
       bookingLink,
