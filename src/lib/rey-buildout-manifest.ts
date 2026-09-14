@@ -281,9 +281,9 @@ export const REY_STEPS: Step[] = [
     id: 'rey-trade-mark',
     title: 'Clear, then file, the Rey name',
     description: 'A clearance search before any brand money is spent, then filing, the domain and the social handles.',
-    status: 'planned',
+    status: 'in_progress',
     effort: 'M',
-    notes: 'Not covered by the Body Recode trade mark step. "Rey" is short and common, so a conflict is likely and must be found before the name is built into an app, a domain and marketing. Relevant classes are likely 9, 41, 42 and 44.',
+    notes: 'FIRST CHECK 14 Sep: REY itself looks registrable in Australia (no live REY mark in classes 9, 41, 42 or 44), but the name is not safe to build on. RAY (Ray Fitness Systems Inc, US, funded, rayfit.com, since 2024) is a voice-guided AI personal trainer that adapts to injuries: identical sound, near-identical product. KC REY Fitness (Kasey Tapara, NZ/AU) is a fat loss coaching app for women on Trainerize. Every obvious domain is taken (rey.com, rey.app, rey.ai, rey.health, rey.com.au, heyrey.com, getrey.com, reyapp.com); rey.fit, meetrey.com and heyrey.com.au were unregistered. Recommendation: choose a new name and run the same checks, then an attorney clearance before filing. Not covered by the Body Recode trade mark step. "Rey" is short and common, so a conflict is likely and must be found before the name is built into an app, a domain and marketing. Relevant classes are likely 9, 41, 42 and 44.',
   },
   {
     id: 'rey-brand-decision',
