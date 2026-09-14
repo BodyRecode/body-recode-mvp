@@ -7,6 +7,7 @@ import { clampMacroArcToDoctrine, allowedPhasesForBodyState, type MacroBlock } f
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { AI_MODELS } from '@/lib/ai-models'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
+import { currentReadRow } from '@/lib/current-read'
 
 export const maxDuration = 300
 
@@ -44,7 +45,7 @@ export async function runSuggestPlanInternal(body: any): Promise<NextResponse> {
     { data: existingPlans },
   ] = await Promise.all([
     admin.from('clients').select('id, name, coaching_started_at, medications').eq('id', client_id).maybeSingle(),
-    admin.from('cffs').select('body_state_classification, resolution_state, exposure_readiness_capacity, exposure_readiness_schedule, exposure_readiness_regulation, exposure_readiness_behaviour, capacity_constraints_and_guardrails, primary_patterns_and_signals, client_context_summary').eq('client_id', client_id).eq('is_archived', false).maybeSingle(),
+    currentReadRow(admin, client_id),
     admin.from('intakes').select('id, date_of_birth, gender, primary_goal, secondary_goals, desired_timeline, subjective_motivator, training_days_available, injury_location_current, injury_primary_concern, training_responses, sleep_responses, stress_responses, fat_map_responses, submitted_at').eq('client_id', client_id).order('submitted_at', { ascending: false }).limit(1).maybeSingle(),
     admin.from('baselines').select('bodyweight_kg, captured_at').eq('client_id', client_id).order('captured_at', { ascending: false }).limit(1).maybeSingle(),
     admin.from('programs').select('block_name, progression_phase, training_goal, training_frequency, week_duration, generated_at').eq('client_id', client_id).eq('is_active', true).maybeSingle(),

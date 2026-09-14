@@ -239,9 +239,20 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
     .not('tr_new_body_state', 'is', null)
     .order('generated_at', { ascending: false })
     .limit(1)
+  // Her newest PUBLISHED Progress Read is her current read (14 Sep 2026).
+  const { data: currentProgressRead } = await admin
+    .from('progress_reads')
+    .select('id, published_at, body_state_classification, state_direction, pattern_classification')
+    .eq('client_id', id)
+    .eq('status', 'published')
+    .eq('is_archived', false)
+    .order('published_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
   const bodyState = resolveCurrentBodyState({
     foundational: activeCffs?.body_state_classification ?? null,
     reScore: reScoreRows?.[0] ?? null,
+    progressRead: currentProgressRead ?? null,
   })
   const archivedCffs = cffsRecords?.filter(c => c.is_archived) || []
   // Split by kind. The foundational invitation is the original 234-question
@@ -538,7 +549,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     }
                   >
                     <Pill accent="teal">
-                      {readPatternLabel(client.pattern)}
+                      {readPatternLabel(currentProgressRead?.pattern_classification ?? client.pattern)}
                       {client.pattern_source !== 'cffs' && ' (provisional)'}
                     </Pill>
                   </span>

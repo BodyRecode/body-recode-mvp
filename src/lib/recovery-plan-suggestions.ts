@@ -49,6 +49,7 @@ import { extractFirstJsonObject } from './extract-json'
 import { AI_MODELS } from './ai-models'
 import { INTAKE_SECTIONS } from './intake-questions'
 import { summarizeScaleSection } from './cffs-prompt'
+import { currentReadRows } from '@/lib/current-read'
 
 export interface RecoverySuggestion {
   slug: string
@@ -228,13 +229,7 @@ export async function generateRecoveryPlanSuggestions(
     rrsState,
   ] = await Promise.all([
     admin.from('intakes').select('*').eq('client_id', clientId).order('submitted_at', { ascending: false }).limit(1).maybeSingle(),
-    admin
-      .from('cffs')
-      .select('body_state_classification, resolution_state, client_context_summary, primary_patterns_and_signals, capacity_constraints_and_guardrails, risk_flags_and_watch_items, exposure_readiness_capacity, exposure_readiness_regulation, exposure_readiness_behaviour')
-      .eq('client_id', clientId)
-      .eq('is_archived', false)
-      .order('generated_at', { ascending: false })
-      .limit(1),
+    currentReadRows(admin, clientId),
     admin
       .from('cfws')
       .select('week_number, dominant_weekly_patterns, weekly_capacity_constraints, weekly_risk_flags')
@@ -286,7 +281,8 @@ export async function generateRecoveryPlanSuggestions(
 
   const picture: RecoveryClientPicture = {
     firstName: client.name?.split(' ')[0] ?? 'the client',
-    pattern: client.pattern ?? null,
+    // Her current read's pattern (a published Progress Read re-types it), then the record.
+    pattern: (cffs?.pattern_classification as string | null | undefined) ?? client.pattern ?? null,
     medications: client.medications ?? null,
     bodyState: cffs?.body_state_classification ?? null,
     resolutionState: cffs?.resolution_state ?? null,

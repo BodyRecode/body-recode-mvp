@@ -7,6 +7,7 @@ import { extractFirstJsonObject } from '@/lib/extract-json'
 import { withTemporalContext } from '@/lib/temporal-context'
 import { AI_MODELS } from '@/lib/ai-models'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
+import { currentReadRow } from '@/lib/current-read'
 
 export const maxDuration = 300
 
@@ -35,7 +36,7 @@ export async function POST(request: NextRequest) {
     { data: recentReviews },
   ] = await Promise.all([
     admin.from('clients').select('id, name, medications').eq('id', client_id).maybeSingle(),
-    admin.from('cffs').select('*').eq('client_id', client_id).eq('is_archived', false).maybeSingle(),
+    currentReadRow(admin, client_id),
     admin.from('intakes')
       .select('id, date_of_birth, gender, primary_goal, secondary_goals, desired_timeline, subjective_motivator, training_days_available, injury_location_current, injury_location_history, injury_primary_concern, injury_aggravating_movements, training_responses, sleep_responses, stress_responses')
       .eq('client_id', client_id)

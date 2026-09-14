@@ -11,6 +11,7 @@ import {
 } from '@/lib/coach-guidance-nutrition-suggest-prompt'
 import { AI_MODELS } from '@/lib/ai-models'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
+import { currentReadRows } from '@/lib/current-read'
 
 export const maxDuration = 60
 
@@ -68,13 +69,7 @@ export async function POST(request: NextRequest) {
   // Latest non-archived CFFS for body-state + pattern context. Guidance is
   // coach-only so use ANY active CFFS, not only published ones (mirrors the
   // program-side suggester rule).
-  const { data: cffsRows } = await admin
-    .from('cffs')
-    .select('body_state_classification, client_context_summary, primary_patterns_and_signals, capacity_constraints_and_guardrails, risk_flags_and_watch_items')
-    .eq('client_id', client.id)
-    .eq('is_archived', false)
-    .order('created_at', { ascending: false })
-    .limit(1)
+  const { data: cffsRows } = await currentReadRows(admin, client.id)
 
   const cffs = cffsRows?.[0] ?? null
 

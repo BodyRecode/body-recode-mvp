@@ -35,6 +35,7 @@ import { cycleContextFor } from '@/lib/cycle-phase-bands'
 import { withTemporalContext } from '@/lib/temporal-context'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { AI_MODELS } from '@/lib/ai-models'
+import { currentReadRows } from '@/lib/current-read'
 
 /**
  * Sized from a measured generation, not a guess. See the header note.
@@ -143,15 +144,7 @@ export async function generateCFWS(
   // /api/generate-cfws has always fetched this. This path never did, so every
   // CFWS generated from a live check-in since the extraction on 2026-08-20 has
   // been unanchored. Added 2026-09-07.
-  const { data: cffsRows, error: cffsError } = await admin
-    .from('cffs')
-    .select(
-      'body_state_classification, resolution_state, exposure_readiness_capacity, exposure_readiness_schedule, exposure_readiness_regulation, exposure_readiness_behaviour, capacity_constraints_and_guardrails, risk_flags_and_watch_items, generated_at'
-    )
-    .eq('client_id', client.id)
-    .eq('is_archived', false)
-    .order('generated_at', { ascending: false })
-    .limit(1)
+  const { data: cffsRows, error: cffsError } = await currentReadRows(admin, client.id)
   if (cffsError) {
     throw new Error(
       `CFWS week ${weekNumber} for ${client.name}: CFFS baseline lookup failed: ${cffsError.message}`

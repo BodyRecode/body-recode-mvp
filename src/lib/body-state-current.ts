@@ -40,9 +40,24 @@ export interface ResolvedBodyState {
   blockName: string | null
 }
 
+/** A PUBLISHED Progress Read (v2, 14 Sep 2026). Internal vocabulary. */
+export interface ProgressReadStateSource {
+  body_state_classification: string | null
+  state_direction?: string | null
+  published_at: string | null
+}
+
+const PUBLIC_LABEL: Record<string, string> = { Remediation: 'Depleted', Optimisation: 'Transitioning', 'Post-Optimisation': 'Ready' }
+
 export function resolveCurrentBodyState(opts: {
   foundational: string | null
   reScore: ReScoreSource | null
+  /**
+   * The newest published Progress Read, if any. It is her current read (Kade,
+   * 14 Sep 2026), so it wins over the older block-end re-score unless that
+   * re-score was published later.
+   */
+  progressRead?: ProgressReadStateSource | null
   /**
    * Client-facing surfaces pass true: the client should meet a new state in a
    * Progress Read the coach has approved, not via a pill quietly changing
@@ -50,7 +65,7 @@ export function resolveCurrentBodyState(opts: {
    */
   requirePublished?: boolean
 }): ResolvedBodyState {
-  const { foundational, reScore, requirePublished = false } = opts
+  const { foundational, reScore, requirePublished = false, progressRead } = opts
   const base: ResolvedBodyState = {
     label: foundational,
     foundational,
@@ -58,6 +73,20 @@ export function resolveCurrentBodyState(opts: {
     reScoredPublicLabel: null,
     direction: null,
     blockName: null,
+  }
+
+  const reScorePublishedMs = reScore?.trajectory_reading_published_at ? new Date(reScore.trajectory_reading_published_at).getTime() : 0
+  if (progressRead?.body_state_classification && progressRead.published_at && new Date(progressRead.published_at).getTime() >= reScorePublishedMs) {
+    const label = progressRead.body_state_classification
+    if (label === foundational) return base
+    return {
+      label,
+      foundational,
+      reScored: true,
+      reScoredPublicLabel: PUBLIC_LABEL[label] ?? label,
+      direction: progressRead.state_direction ?? null,
+      blockName: null,
+    }
   }
 
   if (!reScore?.tr_new_body_state) return base

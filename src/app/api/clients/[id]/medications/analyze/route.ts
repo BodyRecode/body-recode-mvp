@@ -12,6 +12,7 @@ import { extractFirstJsonObject } from '@/lib/extract-json'
 import { withTemporalContext } from '@/lib/temporal-context'
 import { AI_MODELS } from '@/lib/ai-models'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
+import { currentReadRows } from '@/lib/current-read'
 
 /**
  * Generate the coach-facing Medications Analysis for a client. Writes the
@@ -55,13 +56,7 @@ export async function POST(
 
   // Pull context: latest active CFFS + latest intake + active program/nutrition.
   const [{ data: cffsRows }, { data: intakes }, { data: program }, { data: nutrition }] = await Promise.all([
-    admin
-      .from('cffs')
-      .select('body_state_classification, client_context_summary, primary_patterns_and_signals, capacity_constraints_and_guardrails, risk_flags_and_watch_items, generated_at, is_archived')
-      .eq('client_id', id)
-      .eq('is_archived', false)
-      .order('generated_at', { ascending: false })
-      .limit(1),
+    currentReadRows(admin, id),
     admin
       .from('intakes')
       .select('date_of_birth, gender, occupation, full_name, primary_goal, desired_timeline, training_responses, nutrition_responses, sleep_responses, stress_responses')

@@ -16,6 +16,7 @@ import { resolveHeightCm, heightPromptLine } from '@/lib/client-height'
 import { temporalContext } from '@/lib/temporal-context'
 import { AI_MODELS } from '@/lib/ai-models'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
+import { currentReadRow } from '@/lib/current-read'
 
 export const maxDuration = 300
 
@@ -108,7 +109,7 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
     { data: previousPlans },
   ] = await Promise.all([
     admin.from('clients').select('id, name, medications, height_cm, height_recorded_at, height_source').eq('id', client_id).maybeSingle(),
-    admin.from('cffs').select('*').eq('client_id', client_id).eq('is_archived', false).maybeSingle(),
+    currentReadRow(admin, client_id),
     admin.from('intakes')
       .select('id, date_of_birth, gender, primary_goal, training_days_available, injury_location_current, injury_primary_concern, nutrition_responses, sleep_responses, stress_responses, training_responses, dietary_restrictions, dietary_preferences, typical_day_eating, meals_per_day, fluid_intake, caffeine_intake, alcohol_intake, eating_context')
       .eq('client_id', client_id)

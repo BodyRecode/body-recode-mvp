@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import ClientPageNav from '../client-page-nav'
 import { PageHeader } from '@/components/dashboard/ui'
+import { currentReadRow } from '@/lib/current-read'
 
 const phaseColour: Record<string, string> = {
   accumulation: 'text-[#1056D6] bg-[rgba(27,109,252,0.08)] border-[#B5CFFC]',
@@ -50,7 +51,7 @@ export default async function ClientDirectionPage({ params }: { params: Promise<
     { data: activeNutritionPlan },
   ] = await Promise.all([
     admin.from('clients').select('id, name, coaching_started_at').eq('id', id).maybeSingle(),
-    admin.from('cffs').select('body_state_classification, resolution_state, exposure_readiness_capacity, exposure_readiness_schedule, exposure_readiness_regulation, exposure_readiness_behaviour, generated_at').eq('client_id', id).eq('is_archived', false).maybeSingle(),
+    currentReadRow(admin, id),
     admin.from('cfws').select('week_number, exposure_readiness_capacity, exposure_readiness_schedule, exposure_readiness_regulation, exposure_readiness_behaviour, generated_at').eq('client_id', id).order('week_number', { ascending: false }).limit(1).maybeSingle(),
     admin.from('training_plans').select('*, plan_blocks(*)').eq('client_id', id).maybeSingle(),
     admin.from('programs').select('id, block_name, progression_phase, training_goal, training_frequency, week_duration, generated_at').eq('client_id', id).eq('is_active', true).maybeSingle(),

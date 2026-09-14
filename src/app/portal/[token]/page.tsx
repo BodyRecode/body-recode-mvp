@@ -137,7 +137,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   // Her newest published Progress Read (14 Sep 2026) leads the reads card.
   const { data: latestProgressRead } = await admin
     .from('progress_reads')
-    .select('id, published_at')
+    .select('id, published_at, body_state_classification, state_direction')
     .eq('client_id', client.id)
     .eq('status', 'published')
     .eq('is_archived', false)
@@ -158,6 +158,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   const portalBodyState = resolveCurrentBodyState({
     foundational: publishedReading?.body_state_classification ?? null,
     reScore: portalReScoreRows?.[0] ?? null,
+    progressRead: latestProgressRead ?? null,
     requirePublished: true,
   })
 

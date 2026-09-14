@@ -4,6 +4,7 @@ import PrescriptionSuggest from './prescription-suggest'
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
 import { cffsStateForAnyStateLabel } from '@/lib/pattern-doctrine'
 import { deriveReadinessCarryForward } from '@/lib/readiness-carry-forward'
+import { currentReadRow } from '@/lib/current-read'
 
 export default async function SuggestPage({
   params,
@@ -82,12 +83,7 @@ export default async function SuggestPage({
       .order('generated_at', { ascending: false })
       .limit(1)
       .maybeSingle(),
-    admin
-      .from('cffs')
-      .select('body_state_classification')
-      .eq('client_id', id)
-      .eq('is_archived', false)
-      .maybeSingle(),
+    currentReadRow(admin, id),
   ])
 
   // Readiness carry-forward. Derived here purely so the coach can SEE which
@@ -100,12 +96,7 @@ export default async function SuggestPage({
     .order('week_number', { ascending: false })
     .limit(12)
 
-  const { data: cffsReadiness } = await admin
-    .from('cffs')
-    .select('exposure_readiness_capacity, exposure_readiness_schedule, exposure_readiness_regulation, exposure_readiness_behaviour')
-    .eq('client_id', id)
-    .eq('is_archived', false)
-    .maybeSingle()
+  const { data: cffsReadiness } = await currentReadRow(admin, id)
 
   const readinessCarry = cffsReadiness
     ? deriveReadinessCarryForward(weeklyReadiness ?? [], cffsReadiness)

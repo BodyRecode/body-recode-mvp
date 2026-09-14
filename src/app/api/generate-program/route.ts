@@ -17,6 +17,7 @@ import { extractFirstJsonObject } from '@/lib/extract-json'
 import { withTemporalContext } from '@/lib/temporal-context'
 import { AI_MODELS, AI_EFFORT } from '@/lib/ai-models'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
+import { currentReadRow } from '@/lib/current-read'
 
 export const maxDuration = 300
 
@@ -128,12 +129,7 @@ export async function runProgramGenerationInternal(body: any): Promise<NextRespo
     cffs = data
   } else {
     // Use active CFFS if no specific cffs_id provided
-    const { data } = await admin
-      .from('cffs')
-      .select('*')
-      .eq('client_id', client_id)
-      .eq('is_archived', false)
-      .maybeSingle()
+    const { data } = await currentReadRow(admin, client_id)
     cffs = data
   }
 

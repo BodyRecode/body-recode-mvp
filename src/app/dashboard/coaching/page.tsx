@@ -14,6 +14,7 @@ import { loadOpenTriggersWithClients } from '@/lib/reassessment-digest'
 import { REASON_LABEL, OVERDUE_AFTER_DAYS } from '@/lib/reassessment-triggers'
 import { evaluateRpeCreep } from '@/lib/rpe-creep-monitor'
 import { currentBlockWeek } from '@/lib/workout-logging'
+import { overlayPublishedProgressRead, PROGRESS_READ_OVERLAY_COLUMNS } from '@/lib/current-read'
 
 export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ view?: string; type?: string }> }) {
   const supabase = createAdminClient()
@@ -84,6 +85,21 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     .eq('is_active', true)
     .eq('current_direction', 'rebuild')
 
+  // Her newest PUBLISHED Progress Read is her current read (14 Sep 2026): the
+  // readiness monitor and the state label use it in place of the Foundational
+  // Read.
+  const progressReadByClient = new Map<string, Record<string, unknown>>()
+  if ((clients ?? []).length) {
+    const { data: prRows } = await supabase
+      .from('progress_reads')
+      .select(PROGRESS_READ_OVERLAY_COLUMNS)
+      .in('client_id', (clients ?? []).map(c => c.id))
+      .eq('status', 'published')
+      .eq('is_archived', false)
+      .order('published_at', { ascending: false })
+    for (const r of prRows ?? []) if (!progressReadByClient.has(r.client_id)) progressReadByClient.set(r.client_id, r)
+  }
+
   const rebuildTrainingIds = new Set((rebuildPrograms || []).map(r => r.client_id))
   const rebuildNutritionIds = new Set((rebuildNutrition || []).map(r => r.client_id))
 
@@ -96,11 +112,14 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     const daysUntilStart = startDate ? Math.ceil((startDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)) : null
     const weekNumber = client.coaching_started_at ? getWeekNumber(client.coaching_started_at) : null
 
-    const latestCffs = client.cffs
+    const foundationalCffs = client.cffs
       ?.filter((c: { is_archived: boolean }) => !c.is_archived)
       .sort((a: { generated_at: string }, b: { generated_at: string }) =>
         new Date(b.generated_at).getTime() - new Date(a.generated_at).getTime()
       )[0] || null
+    const latestCffs = foundationalCffs
+      ? (overlayPublishedProgressRead(foundationalCffs, progressReadByClient.get(client.id) ?? null) as typeof foundationalCffs)
+      : null
 
     const cfwsRowsSorted = (client.cfws || [])
       .filter((c: { is_archived: boolean }) => !c.is_archived)

@@ -8,6 +8,7 @@ import { extractFirstJsonObject } from '@/lib/extract-json'
 import { withTemporalContext } from '@/lib/temporal-context'
 import { AI_MODELS } from '@/lib/ai-models'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
+import { currentReadRows } from '@/lib/current-read'
 
 export const maxDuration = 300
 
@@ -80,13 +81,7 @@ export async function POST(request: NextRequest) {
   // established baseline. Without this the prompt has no reference and tends
   // to over-call Amber on single-week deviations (see readiness-monitor.ts
   // notes on Ruby-Cate's W2 CFWS, 2026-05-18).
-  const { data: cffsRows } = await admin
-    .from('cffs')
-    .select('body_state_classification, resolution_state, exposure_readiness_capacity, exposure_readiness_schedule, exposure_readiness_regulation, exposure_readiness_behaviour, capacity_constraints_and_guardrails, risk_flags_and_watch_items, generated_at, is_archived')
-    .eq('client_id', client_id)
-    .eq('is_archived', false)
-    .order('generated_at', { ascending: false })
-    .limit(1)
+  const { data: cffsRows } = await currentReadRows(admin, client_id)
   const cffsBaseline = cffsRows?.[0] ?? null
 
   // Generation + parse retry loop + truncation guard (2026-07-11), matching

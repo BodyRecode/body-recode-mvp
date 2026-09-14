@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
+import { currentReadRow } from '@/lib/current-read'
 
 export const maxDuration = 300
 
@@ -65,12 +66,7 @@ export async function POST(request: NextRequest) {
 
   // Active CFFS — same lookup pattern as generate-program when cffs_id absent.
   // Pull the history-bearing fields so we can re-classify training age.
-  const { data: activeCffs } = await admin
-    .from('cffs')
-    .select('id, body_state_classification, client_context_summary, primary_patterns_and_signals')
-    .eq('client_id', program.client_id)
-    .eq('is_archived', false)
-    .maybeSingle()
+  const { data: activeCffs } = await currentReadRow(admin, program.client_id)
 
   // Re-classify training age from HISTORY on every regenerate, so the fixed
   // classification doctrine (2026-07-12) reaches existing programs instead of

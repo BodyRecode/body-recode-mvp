@@ -11,6 +11,7 @@
 
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { computeRosterNextActions } from '@/lib/roster-next-actions'
+import { currentReadRows } from '@/lib/current-read'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -148,7 +149,7 @@ export async function buildCopilotContext(
   if (!client) return null
 
   const [{ data: cffsRows }, { data: cfwsRows }, { data: programRows }, { data: nutritionRows }, { data: checkinRows }, { data: intakeRows }] = await Promise.all([
-    admin.from('cffs').select('*').eq('client_id', clientId).eq('is_archived', false).order('generated_at', { ascending: false }).limit(1),
+    currentReadRows(admin, clientId),
     admin.from('cfws').select('*').eq('client_id', clientId).order('week_number', { ascending: false }).limit(1),
     // Draft-first: a pending draft is exactly what the coach wants reviewed
     // BEFORE approving, so prefer it (newest) over the active plan; fall back to
@@ -180,7 +181,9 @@ export async function buildCopilotContext(
   }
 
   if (cffs) {
-    S.push(`\nFOUNDATIONAL SYNTHESIS (CFFS):`)
+    S.push(cffs.current_read_source === 'progress'
+      ? `\nCURRENT READ (her published Progress Read, ${String(cffs.current_read_at ?? '').slice(0, 10)}; its findings replace the Foundational Read's):`
+      : `\nFOUNDATIONAL SYNTHESIS (CFFS):`)
     S.push(`Body state: ${cffs.body_state_classification} · Resolution: ${cffs.resolution_state}`)
     S.push(`Readiness — capacity: ${cffs.exposure_readiness_capacity}, schedule: ${cffs.exposure_readiness_schedule}, regulation: ${cffs.exposure_readiness_regulation}, behaviour: ${cffs.exposure_readiness_behaviour}`)
     const sum = fmtSummary(cffs.rationale_summary)

@@ -31,6 +31,7 @@ import { getActiveConstraintManifest } from './recovery-state-machine'
 import { RECOVERY_PROTOCOLS } from './recovery-protocols-seed'
 import { SUPPLEMENT_SUBSTANCES } from './supplement-substances-seed'
 import type { NutritionConstraintManifest, TrainingConstraintManifest } from './recovery-doctrine'
+import { currentReadRows } from '@/lib/current-read'
 
 export interface GenerateFeedbackSuccess {
   ok: true
@@ -93,15 +94,7 @@ export async function generateFeedbackDraft(
       .order('submitted_at', { ascending: false })
       .limit(1)
       .maybeSingle(),
-    admin
-      .from('cffs')
-      .select(
-        'body_state_classification, resolution_state, client_context_summary, primary_patterns_and_signals, capacity_constraints_and_guardrails, risk_flags_and_watch_items, exposure_readiness_capacity, exposure_readiness_regulation, exposure_readiness_behaviour, generated_at, is_archived'
-      )
-      .eq('client_id', checkin.client_id)
-      .eq('is_archived', false)
-      .order('generated_at', { ascending: false })
-      .limit(1),
+    currentReadRows(admin, checkin.client_id),
     admin
       .from('weekly_checkins')
       .select('week_number, form_type, submitted_at, responses')

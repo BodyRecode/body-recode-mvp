@@ -51,6 +51,7 @@ import { getActiveConstraintManifest } from './recovery-state-machine'
 import { RECOVERY_PROTOCOLS } from './recovery-protocols-seed'
 import { INTAKE_SECTIONS } from './intake-questions'
 import { summarizeScaleSection } from './cffs-prompt'
+import { currentReadRows } from '@/lib/current-read'
 
 export type SuggestedTier = 'essential' | 'enhanced' | 'elite'
 
@@ -224,13 +225,7 @@ export async function generateSupplementSuggestions(
       .order('submitted_at', { ascending: false })
       .limit(1)
       .maybeSingle(),
-    admin
-      .from('cffs')
-      .select('body_state_classification, resolution_state, client_context_summary, primary_patterns_and_signals, capacity_constraints_and_guardrails, risk_flags_and_watch_items, exposure_readiness_capacity, exposure_readiness_regulation, exposure_readiness_behaviour')
-      .eq('client_id', clientId)
-      .eq('is_archived', false)
-      .order('generated_at', { ascending: false })
-      .limit(1),
+    currentReadRows(admin, clientId),
     admin
       .from('cfws')
       .select('week_number, dominant_weekly_patterns, weekly_capacity_constraints, weekly_risk_flags, exposure_readiness_capacity, exposure_readiness_regulation, exposure_readiness_behaviour')
@@ -293,7 +288,8 @@ export async function generateSupplementSuggestions(
     firstName: client.name?.split(' ')[0] ?? 'the client',
     age: ageFrom(client.date_of_birth ?? null),
     sex,
-    pattern: client.pattern ?? null,
+    // Her current read's pattern (a published Progress Read re-types it), then the record.
+    pattern: (cffs?.pattern_classification as string | null | undefined) ?? client.pattern ?? null,
     bodyState: cffs?.body_state_classification ?? null,
     resolutionState: cffs?.resolution_state ?? null,
     cffsContextSummary: cffs?.client_context_summary ?? null,

@@ -13,6 +13,7 @@ import { extractFirstJsonObject } from '@/lib/extract-json'
 import { withTemporalContext } from '@/lib/temporal-context'
 import { AI_MODELS } from '@/lib/ai-models'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
+import { currentReadRows } from '@/lib/current-read'
 
 /**
  * Generate the client-facing Medications Reading. Requires the coach
@@ -53,13 +54,7 @@ export async function POST(
     )
   }
 
-  const { data: cffsRows } = await admin
-    .from('cffs')
-    .select('body_state_classification, client_context_summary, primary_patterns_and_signals, capacity_constraints_and_guardrails, risk_flags_and_watch_items, generated_at, is_archived')
-    .eq('client_id', id)
-    .eq('is_archived', false)
-    .order('generated_at', { ascending: false })
-    .limit(1)
+  const { data: cffsRows } = await currentReadRows(admin, id)
   const cffsRow = cffsRows?.[0] ?? null
   const cffs: MedicationsCFFSContext | null = cffsRow
     ? {
