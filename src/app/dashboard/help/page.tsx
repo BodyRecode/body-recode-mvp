@@ -37,7 +37,7 @@ const SECTIONS = [
   { id: 'assets',           title: '16b. Assets',            colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'admin-actions',    title: '17. Admin Actions',      colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'system-health',    title: '17b. System Health',     colour: 'teal' as const, category: 'coaching' as Category },
-  { id: 'platform-buildout', title: '17e. Buildout boards', colour: 'teal' as const, category: 'coaching' as Category },
+  { id: 'platform-buildout', title: '17e. The Build board', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'speed-to-lead-sms', title: '17f. Speed-to-Lead SMS', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'partner-billing',  title: '17g. Partner Billing (SOT)', colour: 'teal' as const, category: 'coaching' as Category },
   { id: 'doctrine-parameters', title: '17h. Doctrine Parameters (Mode A+)', colour: 'teal' as const, category: 'coaching' as Category },
@@ -1751,8 +1751,25 @@ export default function HelpPage() {
             <Note>The health check runs on Vercel&apos;s servers and cannot write directly to your local Dropbox. The download button in the dashboard is the bridge - one click saves the file locally.</Note>
           </Section>
 
-          <Section id="platform-buildout" title="17e. Buildout boards (Body Recode + Performance Coaching)" colour="teal">
-            <p><strong>There are TWO boards as of 9 Sep 2026</strong>, split along the Layer 1 / Layer 2 line the whole go-to-market rests on. Both render from the same component and behave identically; only the manifest behind them differs.</p>
+          <Section id="platform-buildout" title="17e. The Build board, and the two boards it replaced" colour="teal">
+            <p><strong>Since 14 Sep 2026 there is ONE build board: Dashboard → Product → Build.</strong> It shows everything being built, for the Body Recode read, the coaching engine and Rey, in the order it actually gets built. Each step carries a label for the products it serves: <strong>Rey</strong>, <strong>Read</strong> (the Body Recode read sold on its own) and <strong>Coaching</strong>.</p>
+            <p className="font-semibold text-[#141821] mt-4">Why one board</p>
+            <p className="text-[#43474F] text-sm">Three boards meant three percentages and three &quot;next up&quot;s for one person building one engine. The Build board is the only build order. The SaaS Launch board stays separate because it answers a different question: whether anybody is buying.</p>
+            <p className="font-semibold text-[#141821] mt-4">The stages</p>
+            <ul className="space-y-1 list-disc list-inside text-[#43474F] text-sm">
+              <li><strong>Already built</strong> — the finished parts of the read and the engine, verified against the code on 14 Sep.</li>
+              <li><strong>Stage 0 · The engine runs without Kade</strong> — doctrine checked in code before a plan saves, the next block building itself, progression without a coach, equipment-aware programming, the re-read generator, and the company and trade marks running alongside. Serves every product.</li>
+              <li><strong>Stage 1 · Rey on the web</strong> — the first thing a customer can pay for: the 30 to 40 questions, the read written for her, signup and the $199 subscription, her plan on screen, the weekly check-in, the re-read, consent and privacy. Blocked more by doctrine than by code.</li>
+              <li><strong>Stage 2 · Rey in her ear</strong> — the phone app, voice, and the session engine underneath it: readiness changing today&apos;s session, the soreness triage, safe swaps.</li>
+              <li><strong>Stage 3 · The loop gets smart</strong> — Rey answering from her read between sessions, noticing things, symptom check-ins, bloodwork, clinician access.</li>
+              <li><strong>Stage 4 · The engine&apos;s second customer</strong> — the coach&apos;s screen and other companies&apos; software. Door 1 conflicts with Rey; no exclusive platform deal while Rey is the direction.</li>
+              <li><strong>Later</strong> — wearables, machine measurements, full meal plans behind an evidence gate, the second audience.</li>
+            </ul>
+            <p className="font-semibold text-[#141821] mt-4">How it stays honest</p>
+            <p className="text-[#43474F] text-sm">Nothing is written on the Build board itself. Every step is recorded once, in the file for its part of the system (<code>saas-buildout-manifest.ts</code> for the read, <code>performance-coaching-buildout-manifest.ts</code> for the engine, <code>rey-buildout-manifest.ts</code> for Rey), and <code>src/lib/build-sequence.ts</code> arranges them. A step cannot be done in one place and open in another. A step added without a place in the order appears at the top as <strong>Unsorted</strong> instead of vanishing. The Today page reads the same order, so it can never disagree about what is next.</p>
+            <p className="font-semibold text-[#141821] mt-4">The two older boards (history)</p>
+            <p className="text-[#43474F] text-sm">Still reachable under Settings, no longer in the sidebar. They hold the phase-by-phase history and are where statuses are edited. Their original description follows.</p>
+            <p className="mt-3">Until 14 Sep 2026 there were TWO boards, split along the Layer 1 / Layer 2 line. Both render from the same component; only the manifest behind them differs.</p>
             <ul className="space-y-1 list-disc list-inside text-[#43474F] text-sm">
               <li><strong>Dashboard → Settings → Body Recode buildout</strong> — the read as a sellable product. The engine, the loop, the re-read, and the two front doors. Manifest: <code>src/lib/saas-buildout-manifest.ts</code>.</li>
               <li><strong>Dashboard → Settings → Performance Coaching buildout</strong> — Layer 2, the application that consumes the read. Programs, nutrition, the portal, the coaching loop. Manifest: <code>src/lib/performance-coaching-buildout-manifest.ts</code>. <strong>First pass</strong> — only Coach Co-Pilot and the Operator Console are audited; the rest is deliberately empty rather than guessed at.</li>

@@ -62,6 +62,7 @@ const ROUTE_TIERS: Array<{ prefix: string; tier: ProductTier }> = [
   { prefix: '/dashboard/settings/tenants', tier: 'owner' },
   { prefix: '/dashboard/settings/tenants-health', tier: 'owner' },
   { prefix: '/dashboard/settings/partner-billing', tier: 'owner' },
+  { prefix: '/dashboard/build', tier: 'owner' },
   { prefix: '/dashboard/settings/platform-buildout', tier: 'owner' },
   { prefix: '/dashboard/settings/coaching-buildout', tier: 'owner' },
 

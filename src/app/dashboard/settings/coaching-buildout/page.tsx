@@ -11,7 +11,7 @@ export default function CoachingBuildoutPage() {
       crossPhaseDocs={CROSS_PHASE_DOCS}
       eyebrow="Settings · Performance Coaching buildout"
       title="Performance Coaching SaaS buildout"
-      subtitle="The application that consumes the read. Programs, nutrition, the portal, the coaching loop. src/lib/performance-coaching-buildout-manifest.ts is the source of truth."
+      subtitle="History. Superseded as a plan by the Build board (Dashboard → Product → Build) on 14 Sep 2026, which arranges these steps into one build order. Statuses are still edited in this board's file. The application that consumes the read. Programs, nutrition, the portal, the coaching loop. src/lib/performance-coaching-buildout-manifest.ts is the source of truth."
       progressNote="This board is a first pass — most of Layer 2 has not been audited into phases yet, so treat the percentage as covering only what is listed."
       explainer={
         <details className="mb-6 p-4 rounded-xl border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)]/40">

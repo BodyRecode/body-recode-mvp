@@ -57,6 +57,9 @@ export type Step = {
   surfaces?: string[]
   /** Why deferred / current blocker / next-action */
   notes?: string
+  /** Which products this step serves. Set by the Build board when it arranges
+   *  steps into the sequence; the per-product manifests leave it empty. */
+  tags?: string[]
 }
 
 export type Phase = {
@@ -73,6 +76,9 @@ export type Phase = {
   docs?: Doc[]
   /** Order in which phases should be tackled (matches build plan) */
   order: number
+  /** Heading shown instead of "Phase N". The Build board uses it for stage
+   *  names, because its phases are stages rather than numbered work units. */
+  label?: string
   steps: Step[]
 }
 

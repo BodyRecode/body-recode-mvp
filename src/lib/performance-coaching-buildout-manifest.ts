@@ -1119,7 +1119,7 @@ const APP_PHASES: Phase[] = [
     longDescription: [
       'The single biggest gap in the engine, and the auto-memory already names it as the main thing blocking licensing: the doctrine lives in the written instructions to the model, and almost nothing in code checks the output obeys it. That is why every generated plan becomes a line-by-line review with Kade in the loop.',
       'Rey removes the coach entirely. So does any licensee without Kade standing behind them. The same work therefore serves Rey, the Body Recode read sold on its own, and any future coach product. It is not Rey-only work, and none of it is wasted whichever product ships first.',
-      'These steps are pulled live onto the Rey board. Update them HERE; the Rey board reads this file, so the status can never disagree between the two.',
+      'These steps are arranged onto the Build board (/dashboard/build) by src/lib/build-sequence.ts. Update their status HERE; the Build board reads this file, so the two can never disagree.',
     ],
     order: 8,
     steps: [
@@ -1165,7 +1165,7 @@ const APP_PHASES: Phase[] = [
     description: 'What the engine must do DURING a session, with nobody watching. Required for Rey\'s voice sessions.',
     longDescription: [
       'The engine produces a block in advance. It does not change anything once a session has started, and it does not look at how someone slept before deciding what today holds.',
-      'These are the capabilities that make a voice-guided session possible. Pulled live onto the Rey board.',
+      'These are the capabilities that make a voice-guided session possible. They sit in Stage 2 of the Build board.',
     ],
     order: 9,
     steps: [

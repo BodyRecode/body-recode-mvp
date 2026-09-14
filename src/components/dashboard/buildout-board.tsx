@@ -144,7 +144,7 @@ export function BuildoutBoard({
           <div className="p-4 rounded-xl border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)]">
             <div className="text-[11px] font-medium text-[#1056D6] mb-1">Next up</div>
             <div className="text-[15px] font-semibold text-[#141821] mb-1">
-              Phase {next.phase.id} · {next.step.title}
+              {next.phase.label ?? `Phase ${next.phase.id}`} · {next.step.title}
             </div>
             <p className="text-[13px] text-[#141821] leading-relaxed mb-2">{next.step.description}</p>
             <p className="text-[11px] text-[#0B4FCB]/80 italic leading-relaxed">
@@ -156,7 +156,7 @@ export function BuildoutBoard({
           <div className="p-4 rounded-xl border border-[#CAE7D5] bg-[#EDF8F1]">
             <div className="text-[11px] font-medium text-[#177245] mb-1">Phase gate</div>
             <div className="text-[15px] font-semibold text-[#141821] mb-1">
-              Phase {gate.id} complete — review before starting Phase {gate.id + 1}
+              {gate.label ?? `Phase ${gate.id}`} complete — review before starting the next one
             </div>
             <p className="text-[13px] text-[#141821] leading-relaxed mb-2">
               All non-deferred steps in this phase have shipped. Take a beat to validate outcomes before absorbing the next phase&apos;s cost.
@@ -168,7 +168,9 @@ export function BuildoutBoard({
         )}
       </div>
 
-      {/* Reference library — cross-phase docs */}
+      {/* Reference library — cross-phase docs. Hidden when a board has none,
+          rather than rendering an empty card. */}
+      {crossPhaseDocs.length > 0 && (
       <div className="mb-8 br-card overflow-hidden">
         <div className="px-5 py-4 border-b border-[#E8EAEE] bg-[#FBFCFD]">
           <div className="text-[10px] font-medium text-[#666D7A]">Reference library</div>
@@ -183,6 +185,7 @@ export function BuildoutBoard({
           ))}
         </div>
       </div>
+      )}
 
       {/* Phases */}
       <div className="space-y-6">
@@ -205,7 +208,7 @@ function PhaseCard({ phase }: { phase: Phase }) {
       <div className="px-5 py-4 border-b border-[#E8EAEE] bg-[#FBFCFD]">
         <div className="flex items-baseline justify-between gap-3 flex-wrap">
           <div>
-            <div className="text-[10px] font-medium text-[#666D7A]">Phase {phase.id}</div>
+            <div className="text-[10px] font-medium text-[#666D7A]">{phase.label ?? `Phase ${phase.id}`}</div>
             <h2 className="text-[18px] font-bold text-[#141821] mt-0.5">{phase.title}</h2>
           </div>
           <div className="text-right">
@@ -322,7 +325,21 @@ function StepRow({ step }: { step: Step }) {
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-baseline justify-between gap-3 flex-wrap mb-1">
-            <div className="text-[14px] font-semibold text-[#141821]">{step.title}</div>
+            <div className="flex items-baseline gap-2 flex-wrap">
+              <div className="text-[14px] font-semibold text-[#141821]">{step.title}</div>
+              {step.tags && step.tags.length > 0 && (
+                <span className="flex gap-1">
+                  {step.tags.map((t) => (
+                    <span
+                      key={t}
+                      className="inline-block text-[10px] font-medium px-1.5 py-0.5 rounded bg-[#F4F6F9] text-[#4A5160] border border-[#E8EAEE]"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </span>
+              )}
+            </div>
             <div className="flex items-center gap-2 text-[10px] font-mono text-[#98A0AD]">
               <span className="uppercase tracking-widest">{step.effort}</span>
               {step.shippedAt && <span>· shipped {step.shippedAt}</span>}

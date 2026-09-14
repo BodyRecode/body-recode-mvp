@@ -99,9 +99,8 @@ const GROUPS: NavGroup[] = [
     key: 'saas',
     label: 'Product',
     items: [
+      { href: '/dashboard/build', label: 'Build', icon: Blocks },
       { href: '/dashboard/saas', label: 'SaaS Launch', icon: Flag, exact: true },
-      { href: '/dashboard/settings/platform-buildout', label: 'Body Recode Build', icon: Blocks },
-      { href: '/dashboard/settings/coaching-buildout', label: 'Coaching Build', icon: Blocks },
     ],
   },
   {

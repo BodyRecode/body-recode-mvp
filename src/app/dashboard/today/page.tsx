@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { getRunbookForDate, getUpcomingDecisions, RUNBOOK } from '@/lib/today-runbook'
-import { nextUpStep, phaseGateReview } from '@/lib/saas-buildout-manifest'
+import { nextUpStepIn, phaseGateReviewIn } from '@/lib/buildout-types'
+import { BUILD_PHASES } from '@/lib/build-sequence'
 import { getLeadStatusLabel } from '@/lib/utils'
 import { Zap, Calendar, Camera, Target, BarChart3, Gavel, Inbox, BookOpen, Palmtree, Construction, Clock, UserCheck } from 'lucide-react'
 
@@ -471,21 +472,21 @@ export default function TodayDashboardPage() {
   )
 }
 
-// Body Recode board only. The Performance Coaching board is deliberately not surfaced
-// here — Layer 2 is not being waited for, and two buildout cards would compete for the
-// same attention. See /dashboard/settings/coaching-buildout.
+// The single build order (src/lib/build-sequence.ts), which arranges the read, the
+// coaching engine and Rey into one sequence. Replaced the Body-Recode-only card on
+// 14 Sep 2026, so Today and the Build board can never disagree about what is next.
 function SaasBuildoutSection() {
-  const next = nextUpStep()
-  const gate = phaseGateReview()
+  const next = nextUpStepIn(BUILD_PHASES)
+  const gate = phaseGateReviewIn(BUILD_PHASES)
   if (!next && !gate) return null
 
   return (
-    <Section icon={Construction} title="Body Recode buildout" tone={gate ? 'success' : 'default'}>
+    <Section icon={Construction} title="Build" tone={gate ? 'success' : 'default'}>
       {gate && (
         <Row>
           <div className="flex items-start gap-2 mb-1">
             <span className="text-[12.5px] font-medium text-[#177245] bg-[#D8EFE1] border border-green-300 px-2 py-0.5 rounded shrink-0">GATE</span>
-            <span className="text-sm font-semibold text-[#141821]">Phase {gate.id} complete — review before starting Phase {gate.id + 1}</span>
+            <span className="text-sm font-semibold text-[#141821]">{gate.label ?? `Phase ${gate.id}`} complete — review before starting the next one</span>
           </div>
           <p className="text-[12.5px] text-[#666D7A] leading-relaxed ml-14">
             All non-deferred steps in this phase have shipped. Take a beat to validate outcomes before absorbing the next phase&apos;s cost.
@@ -496,13 +497,13 @@ function SaasBuildoutSection() {
         <Row>
           <div className="flex items-start gap-2 mb-1">
             <span className="text-[12.5px] font-medium text-[#1056D6] bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] px-2 py-0.5 rounded shrink-0">NEXT UP</span>
-            <span className="text-sm font-semibold text-[#141821]">Phase {next.phase.id} · {next.step.title}</span>
+            <span className="text-sm font-semibold text-[#141821]">{next.phase.label ?? `Phase ${next.phase.id}`} · {next.step.title}</span>
           </div>
           <p className="text-[12.5px] text-[#666D7A] leading-relaxed ml-14">{next.step.description}</p>
         </Row>
       )}
       <Row>
-        <a href="/dashboard/settings/platform-buildout" className="text-[12.5px] font-semibold text-[#1560E0] hover:text-[#1056D6]">→ Open Body Recode buildout</a>
+        <a href="/dashboard/build" className="text-[12.5px] font-semibold text-[#1560E0] hover:text-[#1056D6]">→ Open the Build board</a>
       </Row>
     </Section>
   )

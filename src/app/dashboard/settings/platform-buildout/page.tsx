@@ -11,7 +11,7 @@ export default function PlatformBuildoutPage() {
       crossPhaseDocs={[]}
       eyebrow="Settings · Body Recode buildout"
       title="Body Recode SaaS buildout"
-      subtitle="The read as a sellable product. Every phase, every step, current status. src/lib/saas-buildout-manifest.ts is the source of truth — the ship checklist requires updating it on every commit that moves a step."
+      subtitle="History. Superseded as a plan by the Build board (Dashboard → Product → Build) on 14 Sep 2026, which arranges these steps into one build order. Statuses are still edited in this board's file. The read as a sellable product. Every phase, every step, current status. src/lib/saas-buildout-manifest.ts is the source of truth — the ship checklist requires updating it on every commit that moves a step."
       progressNote="100% means the read can be sold and run by a coach who is not Kade. The realistic near-term target is all of the read, the loop and door 2."
       explainer={
         <details className="mb-6 p-4 rounded-xl border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)]/40">

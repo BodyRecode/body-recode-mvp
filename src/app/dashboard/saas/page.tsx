@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { getLaunchSnapshot } from '@/lib/saas-launch'
 import { PHASES } from '@/lib/saas-buildout-manifest'
 import { boardStats, phaseProgress } from '@/lib/buildout-types'
+import { BUILD_PHASES } from '@/lib/build-sequence'
 import {
   Card,
   PageHeader,
@@ -23,7 +24,7 @@ import {
 /**
  * The SaaS launch board.
  *
- * This is NOT a second buildout board. `/dashboard/settings/platform-buildout`
+ * This is NOT a build board. `/dashboard/build`
  * already tracks what has been built, phase by phase, and stays the source of
  * truth for that. This page answers the other question, the one that has never
  * had a home: is anybody buying it, and what is actually in the way.
@@ -40,7 +41,7 @@ export const metadata = { title: 'SaaS Launch · Body Recode' }
 export default async function SaasLaunchPage() {
   const snap = await getLaunchSnapshot()
 
-  const build = boardStats(PHASES)
+  const build = boardStats(BUILD_PHASES)
   const companyPhase = PHASES.find((p) => p.title === 'The company and the name')
   const companyProgress = companyPhase ? phaseProgress(companyPhase) : null
 
@@ -57,10 +58,10 @@ export default async function SaasLaunchPage() {
             The read, sold as a product to coaches who are not you. This board tracks whether anyone
             is buying it. What has been <em>built</em> lives on the{' '}
             <Link
-              href="/dashboard/settings/platform-buildout"
+              href="/dashboard/build"
               className="text-[#1560E0] hover:text-[#1056D6] underline"
             >
-              buildout board
+              Build board
             </Link>
             , and stays there. Every number below is counted from real rows at the moment you opened
             this page.
@@ -160,7 +161,7 @@ export default async function SaasLaunchPage() {
           value={`${build.pct}%`}
           sub={`${build.shipped} of ${build.shipped + build.inProgress + build.planned + build.blocked + build.deferred} steps shipped`}
           accent="neutral"
-          href="/dashboard/settings/platform-buildout"
+          href="/dashboard/build"
           icon={ClipboardCheck}
         />
       </div>
@@ -348,10 +349,10 @@ export default async function SaasLaunchPage() {
           <li className="flex items-start gap-2.5">
             <ArrowRight size={14} className="text-[#98A0AD] mt-[3px] shrink-0" />
             <Link
-              href="/dashboard/settings/platform-buildout"
+              href="/dashboard/build"
               className="text-[#1560E0] hover:text-[#1056D6] underline"
             >
-              The buildout board — every phase and step, and what shipped when
+              The Build board, everything being built in the order it gets built
             </Link>
           </li>
         </ul>

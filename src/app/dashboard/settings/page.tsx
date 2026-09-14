@@ -19,14 +19,19 @@ export default async function SettingsIndex() {
       description: 'Your brand shell, coach identity, product wrapping, custom domains, and Stripe Connect. Applies to how the platform renders when a client interacts with your surfaces.',
     },
     {
+      href: '/dashboard/build',
+      title: 'Build',
+      description: 'The single build order for the read, the coaching engine and Rey. What is done and what happens next, in sequence.',
+    },
+    {
       href: '/dashboard/settings/platform-buildout',
-      title: 'Body Recode buildout',
-      description: 'The read as a sellable product. Intake, read, weekly check-in, re-read, and the two front doors. Every phase, every step, current status.',
+      title: 'Body Recode buildout (history)',
+      description: 'The read, phase by phase, with commit history. Superseded as a plan by the Build board on 14 Sep 2026; statuses are still edited in its file.',
     },
     {
       href: '/dashboard/settings/coaching-buildout',
-      title: 'Performance Coaching buildout',
-      description: 'Layer 2 — the application that consumes the read. Programs, nutrition, the portal, the coaching loop. Split from the Body Recode board on 9 Sep 2026.',
+      title: 'Performance Coaching buildout (history)',
+      description: 'The coaching engine and the parked plumbing for other coaches, with history. Superseded as a plan by the Build board on 14 Sep 2026.',
     },
     isKade && {
       href: '/dashboard/settings/tenants',
