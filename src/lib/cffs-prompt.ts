@@ -248,7 +248,7 @@ export interface CFFSBaselineContext {
   has_photos: boolean
 }
 
-export function buildCFFSUserPrompt(
+export function buildCFFSEvidence(
   intake: Partial<Intake>,
   medications?: string | null,
   baseline?: CFFSBaselineContext | null,
@@ -406,14 +406,17 @@ Secondary goals: ${intake.secondary_goals || 'None'}
 Timeline: ${intake.desired_timeline || 'Not specified'}
 Motivation: "${intake.subjective_motivator || 'Not provided'}"`)
 
-  return `Generate a Coach-Facing Foundational Synthesis (CFFS) for the following client.
+  return parts.join('\n')
+}
 
-${parts.join('\n')}
-
----
-
-Produce the CFFS as JSON only — no markdown, no commentary:
-
+/**
+ * The JSON shape a read must return, and the quality bars that go with it.
+ * Split out on 2026-09-14 so the Progress Read can require every field of the
+ * Foundational Read and add its own, instead of keeping a second copy of the
+ * schema that would drift. buildCFFSUserPrompt's output is byte-identical to
+ * before the split.
+ */
+export const CFFS_OUTPUT_SCHEMA = `
 {
   "body_state_classification": "Remediation" | "Optimisation" | "Post-Optimisation",
   "pattern_classification": "Stress-Stored" | "Insulin-Drift" | "Estrogen-Shift" | "Androgen-Decline" | "Indeterminate",
@@ -472,4 +475,16 @@ At intake-time CFFS generation there is no trajectory to evaluate, so the
 field is set by the system separately and your output must omit it entirely.
 
 Conservative language throughout. No prescriptions. No causal claims. No diagnostic labels.`
+
+export function buildCFFSUserPrompt(
+  ...args: Parameters<typeof buildCFFSEvidence>
+): string {
+  return `Generate a Coach-Facing Foundational Synthesis (CFFS) for the following client.
+
+${buildCFFSEvidence(...args)}
+
+---
+
+Produce the CFFS as JSON only — no markdown, no commentary:
+${CFFS_OUTPUT_SCHEMA}`
 }

@@ -105,7 +105,7 @@ export function isVisibleV2(q: Question, current: Answers, previous: Answers, ge
 }
 
 /** Intake text and multi-select answers live in their own columns, not in the scale JSON. */
-const INTAKE_COLUMN_FOR: Record<string, string> = {
+export const INTAKE_COLUMN_FOR: Record<string, string> = {
   inj_21: 'injury_location_current',
   inj_22: 'injury_location_history',
   inj_23: 'injury_primary_concern',

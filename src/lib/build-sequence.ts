@@ -117,6 +117,7 @@ const STAGES: Stage[] = [
       ...at(['Rey'], 'rey-consumer-read', 'rey-name-voice'),
       ...at(['Rey'], 'rey-consumer-accounts', 'rey-progressive-intake', 'rey-signup-subscription', 'rey-first-week', 'rey-starting-from-zero', 'rey-plan-on-screen', 'rey-weekly-checkin', 'rey-progress-view', 'rey-journey-edges'),
       ...at(['Rey', 'Read'], 'reread-outputs-changes'),
+      ...at(['Rey', 'Read'], 'progress-read-her-view', 'progress-read-becomes-current'),
       ...at(['Rey'], 'rey-reread-moment', 'rey-cancel-pause-delete'),
       ...at(['Rey', 'Read'], 'reread-pause-on-freeze'),
       ...at(['Rey'], 'rey-support', 'rey-accessibility', 'rey-metrics'),

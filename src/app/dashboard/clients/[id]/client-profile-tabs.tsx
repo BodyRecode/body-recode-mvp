@@ -32,6 +32,7 @@ const TAB_LABELS = new Set<string>(TABS.map(t => t.label))
 /** Every page that hangs off a client record. One list, used by this tab row
  *  and by ClientPageNav on the pages themselves. */
 export const CLIENT_PAGES = [
+  { slug: 'progress-read', label: 'Progress Read' },
   { slug: 'program', label: 'Training' },
   { slug: 'nutrition', label: 'Nutrition' },
   { slug: 'direction', label: 'Direction' },

@@ -46,10 +46,11 @@ import {
   type WeeklyReadinessRow,
   type FoundationalReadiness,
 } from '@/lib/readiness-carry-forward'
-import { extractFirstJsonObject } from '@/lib/extract-json'
 import { withTemporalContext } from '@/lib/temporal-context'
 import { type ImageMediaType } from '@/lib/image-media-type'
 import { CFFS_MODEL } from '@/lib/ai-models'
+import { generateGovernedJson, stripEmDashes } from '@/lib/governed-generation'
+export { READ_TIME_BUDGET_MS } from '@/lib/governed-generation'
 import { isCanonicalPattern, isReadPattern } from '@/lib/pattern-doctrine'
 import { Intake } from '@/types'
 
@@ -107,51 +108,28 @@ export type CFFSReadResult =
   | { ok: false; error: string }
 
 /**
- * Output budget, measured 13 Sep 2026 on four reads: 7,828 to 10,963 output
- * tokens (thinking + JSON) against the old 12,000. One read used 91%, and the
- * reads that came back EMPTY with stop_reason=max_tokens were the ones that
- * tipped over. Doubled for headroom. A budget is a ceiling, not a target: an
- * unused allowance costs nothing and does not lengthen the read.
- *
- * Above ~21k the SDK refuses a non-streaming call, which is one more reason the
- * call below streams.
+ * The Foundational Read's own content checks, run on every attempt. Exported so
+ * the Progress Read, which must return every read field too, applies the same.
  */
-const MAX_TOKENS = 24000
-const ATTEMPTS = 3
-
-/**
- * TIME, and why the read streams (13 Sep 2026).
- *
- * The call used to be a single request that waited for the whole answer. A
- * dropped connection looked identical to a model still thinking, so a read could
- * hang for the SDK's 10-minute timeout, times five SDK retries, times three
- * attempts. In production the 5-minute function limit cut it off first with a
- * generic error; anywhere else (a host embedding the read) nothing did.
- *
- * Measured on a live read: with thinking display left at its hidden default the
- * API sends nothing but a ping every ~30s (and the SDK hides pings), so the
- * stream looked silent for 120s while the model was working perfectly. With
- * display 'summarized' it streams thinking deltas continuously; the longest gap
- * observed was 6.7s. So the read asks for summaries purely as a heartbeat. The
- * summary text is never stored, never shown, never parsed.
- *
- *   IDLE_TIMEOUT_MS      no event at all for this long = the connection is dead.
- *                        ~13x the longest healthy gap observed.
- *   READ_TIME_BUDGET_MS  all attempts together. Normal reads took 87 to 235s.
- *   MIN_ATTEMPT_MS       do not start an attempt that cannot plausibly finish.
- */
-const IDLE_TIMEOUT_MS = 90_000
-export const READ_TIME_BUDGET_MS = 12 * 60_000
-const MIN_ATTEMPT_MS = 2 * 60_000
-
-/** Em dash stripper, applied to every string the model returns. */
-function stripEmDashes(obj: unknown): unknown {
-  if (typeof obj === 'string') return obj.replace(/\s*—\s*/g, ', ')
-  if (Array.isArray(obj)) return obj.map(stripEmDashes)
-  if (obj && typeof obj === 'object') {
-    return Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, stripEmDashes(v)]))
+export function validateReadOutput(candidate: Record<string, unknown>): string | null {
+  // Structurally valid but content-empty output (`{}`, or the core
+  // classification dropped) must never be saved as a real read.
+  if (typeof candidate.body_state_classification !== 'string' || !candidate.body_state_classification.trim()) {
+    return 'AI output missing body_state_classification'
   }
-  return obj
+
+  // The database accepts only these values, and a refused save used to cost
+  // the whole read. An unrecognised pattern is a content failure: retry.
+  if (candidate.pattern_classification != null && !isReadPattern(candidate.pattern_classification)) {
+    return `AI returned an unrecognised pattern (${String(candidate.pattern_classification).slice(0, 40)})`
+  }
+  // "No clear pattern" is never a competitor, and the competing read only
+  // accepts the four or None.
+  if (candidate.pattern_competing_read != null && !isCanonicalPattern(candidate.pattern_competing_read)) {
+    candidate.pattern_competing_read = 'None'
+  }
+
+  return null
 }
 
 /**
@@ -207,117 +185,17 @@ export async function runRead(input: CFFSReadInput): Promise<CFFSReadResult> {
     ),
   })
 
-  // SDK retries cover a failed CONNECT only; a stall mid-stream is ours to catch.
-  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY!, maxRetries: 2 })
-  let parsed: Record<string, unknown> | null = null
-  let lastError = 'unknown error'
-  const readStartedAt = Date.now()
-  const budgetMs = input.timeBudgetMs ?? READ_TIME_BUDGET_MS
-  let attemptsMade = 0
-
-  for (let attempt = 1; attempt <= ATTEMPTS; attempt++) {
-    const remainingMs = budgetMs - (Date.now() - readStartedAt)
-    if (remainingMs < MIN_ATTEMPT_MS) {
-      lastError = `${lastError}; not enough time left for another attempt`
-      console.warn(`${tag} stopping before attempt ${attempt}: ${Math.round(remainingMs / 1000)}s left`)
-      break
-    }
-    attemptsMade = attempt
-
-    let message
-    const attemptStartedAt = Date.now()
-    const stream = anthropic.messages.stream({
-      model: CFFS_MODEL,
-      max_tokens: MAX_TOKENS,
-      thinking: { type: 'adaptive', display: 'summarized' },
-      system: withTemporalContext(buildCFFSSystemPrompt(input.incomingPattern ?? undefined)),
-      messages: [{ role: 'user', content: userContent }],
-    })
-    let stalled: 'idle' | 'deadline' | null = null
-    let idleTimer: ReturnType<typeof setTimeout> | undefined
-    const armIdle = () => {
-      clearTimeout(idleTimer)
-      idleTimer = setTimeout(() => { stalled = 'idle'; stream.abort() }, IDLE_TIMEOUT_MS)
-    }
-    const deadlineTimer = setTimeout(() => { stalled = 'deadline'; stream.abort() }, remainingMs)
-    try {
-      armIdle()
-      for await (const _event of stream) armIdle() // eslint-disable-line @typescript-eslint/no-unused-vars
-      message = await stream.finalMessage()
-    } catch (err) {
-      lastError = stalled === 'idle'
-        ? `the AI stopped responding for ${IDLE_TIMEOUT_MS / 1000}s (connection lost)`
-        : stalled === 'deadline'
-          ? `the read ran out of time after ${Math.round((Date.now() - readStartedAt) / 1000)}s`
-          : `AI error: ${err instanceof Error ? err.message : String(err)}`
-      console.error(`${tag} attempt ${attempt}/${ATTEMPTS} failed after ${Math.round((Date.now() - attemptStartedAt) / 1000)}s: ${lastError}`)
-      if (stalled === 'deadline') break
-      continue
-    } finally {
-      clearTimeout(idleTimer)
-      clearTimeout(deadlineTimer)
-    }
-
-    // Measured, not guessed: time, where the output budget went, and why it stopped.
-    console.log(`${tag} attempt ${attempt}/${ATTEMPTS} timing: ${Math.round((Date.now() - attemptStartedAt) / 1000)}s stop=${message.stop_reason} output_tokens=${message.usage?.output_tokens} input_tokens=${message.usage?.input_tokens} max_tokens=${MAX_TOKENS}`)
-
-    const textBlock = message.content.find(b => b.type === 'text')
-    if (!textBlock || textBlock.type !== 'text') {
-      lastError = `AI returned no text content (stop_reason=${message.stop_reason})`
-      console.warn(`${tag} attempt ${attempt}/${ATTEMPTS}: ${lastError}`)
-      continue
-    }
-
-    console.log(`${tag} attempt ${attempt}/${ATTEMPTS} raw (stop_reason=${message.stop_reason}):`, textBlock.text.slice(0, 200))
-
-    // Truncated mid-object: the JSON never closed, so parsing is guaranteed to
-    // fail. Retry rather than dumping a garbled half-object into extraction.
-    if (message.stop_reason === 'max_tokens') {
-      lastError = `AI output was truncated at the ${MAX_TOKENS}-token limit`
-      console.warn(`${tag} attempt ${attempt}/${ATTEMPTS}: ${lastError}`)
-      continue
-    }
-
-    const jsonText = extractFirstJsonObject(textBlock.text)
-    if (!jsonText) {
-      lastError = `Could not locate a JSON object in AI output: ${textBlock.text.slice(0, 200)}`
-      console.warn(`${tag} attempt ${attempt}/${ATTEMPTS}: ${lastError}`)
-      continue
-    }
-
-    let candidate: Record<string, unknown>
-    try {
-      candidate = JSON.parse(jsonText)
-    } catch (err) {
-      lastError = `JSON parse failed: ${(err as Error).message}`
-      console.warn(`${tag} attempt ${attempt}/${ATTEMPTS}: ${lastError}`)
-      continue
-    }
-
-    // Structurally valid but content-empty output (`{}`, or the core
-    // classification dropped) must never be saved as a real read.
-    if (typeof candidate.body_state_classification !== 'string' || !candidate.body_state_classification.trim()) {
-      lastError = 'AI output missing body_state_classification'
-      console.warn(`${tag} attempt ${attempt}/${ATTEMPTS}: ${lastError}`)
-      continue
-    }
-
-    // The database accepts only these values, and a refused save used to cost
-    // the whole read. An unrecognised pattern is a content failure: retry.
-    if (candidate.pattern_classification != null && !isReadPattern(candidate.pattern_classification)) {
-      lastError = `AI returned an unrecognised pattern (${String(candidate.pattern_classification).slice(0, 40)})`
-      console.warn(`${tag} attempt ${attempt}/${ATTEMPTS}: ${lastError}`)
-      continue
-    }
-    // "No clear pattern" is never a competitor, and the competing read only
-    // accepts the four or None.
-    if (candidate.pattern_competing_read != null && !isCanonicalPattern(candidate.pattern_competing_read)) {
-      candidate.pattern_competing_read = 'None'
-    }
-
-    parsed = candidate
-    break
-  }
+  const result = await generateGovernedJson({
+    tag,
+    model: CFFS_MODEL,
+    system: withTemporalContext(buildCFFSSystemPrompt(input.incomingPattern ?? undefined)),
+    userContent,
+    timeBudgetMs: input.timeBudgetMs,
+    validate: validateReadOutput,
+  })
+  const parsed = result.ok ? result.value : null
+  const attemptsMade = result.attempts
+  const lastError = result.ok ? '' : result.error
 
   if (!parsed) {
     console.error(`${tag} generation failed after ${attemptsMade} attempt(s):`, lastError)

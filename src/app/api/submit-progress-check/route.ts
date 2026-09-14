@@ -239,10 +239,10 @@ export async function POST(request: NextRequest) {
             v2Summary.disputes ? `${v2Summary.disputes} previous answer${v2Summary.disputes === 1 ? ' was' : 's were'} marked as never right. The originals are kept beside the corrections.` : 'No previous answers were disputed.',
             ...(v2Summary.medicationsDiffer ? [`Her medications answer differs from the profile, which has not been changed: "${v2Summary.medicationsDiffer}". Update the profile if her medications have actually changed.`] : []),
             captureLine,
-            'Open their program, then use Generate on the Progress Read panel to draft the read. Review it, then publish.',
+            'Open their Progress Read page and click Generate. It takes a few minutes and saves as a draft for you to review; nothing reaches her.',
           ],
-          ctaLabel: 'Open their program',
-          ctaUrl: programUrl,
+          ctaLabel: 'Open their Progress Read',
+          ctaUrl: `${appUrl()}/dashboard/clients/${pc.client_id}/progress-read`,
         }),
       })
       return NextResponse.json({ ok: true })

@@ -188,6 +188,17 @@ export function patternTaxonomyPromptSection(incoming?: {
 }): string {
   const definitions = CANONICAL_PATTERNS.map(p => `- ${p}: ${PATTERN_DEFINITIONS[p]}`).join('\n')
 
+  // A Progress Read passes her PREVIOUS READ, not a funnel read. That is not
+  // "far less evidence than you hold", and her answers were not primed by it the
+  // way a scorecard reveal primes an intake, so it gets its own framing. Existing
+  // callers never pass this source, so the Foundational Read prompt is unchanged.
+  if (incoming?.source === 'previous_read') {
+    const block = incoming.pattern
+      ? `\nPREVIOUS READ\nHer last read typed her as ${incoming.pattern} (confidence: ${incoming.confidence ?? 'unknown'}). You now hold comparable or better evidence, so you are entitled to re-type her. A change must rest on converging evidence from at least two independent sources, never on one shifted answer, and pattern_change must name that evidence. Where the evidence does not converge, hold the previous pattern and say so.\n`
+      : `\nPREVIOUS READ\nHer last read named no pattern. Type her on the evidence you now hold.\n`
+    return patternSection(definitions, block)
+  }
+
   const incomingBlock = incoming?.pattern
     ? `\nINCOMING READ
 The funnel already read this client as ${incoming.pattern} (source: ${incoming.source ?? 'unknown'}, confidence: ${incoming.confidence ?? 'unknown'}).
@@ -199,6 +210,10 @@ Treat agreement between the funnel read and the client's self-report as WEAK con
     : `\nINCOMING READ
 None. This client has no prior pattern read, so yours is the first.\n`
 
+  return patternSection(definitions, incomingBlock)
+}
+
+function patternSection(definitions: string, incomingBlock: string): string {
   return `PATTERN CLASSIFICATION (required)
 
 Body Recode names four patterns. These are doctrine and the vocabulary is fixed. Classify this client as exactly one of the four, OR as Indeterminate under the rule below.
