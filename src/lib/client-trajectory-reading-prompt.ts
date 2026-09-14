@@ -90,7 +90,7 @@ When the client has completed a Progress Check (a short re-assessment) at the en
 - Move conservatively. The state moves at most ONE step from the prior state, and only on converging evidence across BOTH the Progress Check and the weekly arc. Depleted is the floor: do not lift someone off Depleted on a single good block without clear, sustained signal.
 - If the evidence is mixed, thin, or conflicting, HOLD the prior state and say why. A confident hold is a valid, honest result, not a failure.
 - PATTERN IS HELD. You never change or re-score the client's pattern here. You may note only whether confidence in the existing pattern is steady, and never in terms of hormone levels.
-- Base the re-score on the Progress Check answers (the direction fields and current-state scales) and the weekly arc, never on weight or body composition.
+- Base the re-score on the Progress Check answers (the direction fields and current-state scales, or, for the near-full check, the section-by-section comparison and its rules) and the weekly arc, never on weight or body composition.
 When a PROGRESS CHECK is present, produce pr_new_body_state, pr_state_direction, pr_state_rationale, and pr_pattern_confidence_note. When NO Progress Check is present, set all four to null.
 
 ${renderPartnerTuningSection()}OUTPUT FORMAT:

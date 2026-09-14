@@ -23,9 +23,10 @@ export interface ProgressCheckInviteEmailParams {
  * answers let the system re-read where the client sits now (Depleted /
  * Transitioning / Ready) and produce the Progress Read.
  *
- * It is far lighter than the 234-question intake, but it is NOT five minutes:
- * as of 27 Aug it also requires her measurements and three photos, which is
- * what finally makes a before-and-after possible. This email has to say so.
+ * From 14 Sep 2026 it is the near-full re-ask: 231 of the intake questions,
+ * answered fresh with her last answer revealed after each one, plus her
+ * measurements and three photos. About 15 to 20 minutes, saved as she goes.
+ * This email has to say so.
  * A client who opens it expecting five minutes and meets a tape measure has
  * been ambushed, and the one who abandons there loses her answers too.
  *
@@ -39,7 +40,7 @@ export function buildProgressCheckInviteEmail({
   portalUrl,
 }: ProgressCheckInviteEmailParams): { subject: string; html: string; previewText: string } {
   const subject = `${firstName}, your Progress Check before the next block`
-  const previewText = `${firstName}, a few questions plus your measurements and photos, so I can re-read where you're at.`
+  const previewText = `${firstName}, your intake questions again plus your measurements and photos, so I can show you what has moved.`
 
   const bodyParagraphs = [
     emailBody(`Hi ${firstName},`),
@@ -47,7 +48,7 @@ export function buildProgressCheckInviteEmail({
       'You have just finished a block, so this is a good moment to stop and take stock. Before I read the whole block back to you, I want a fresh sense of where you are sitting right now: your energy, your recovery, your stress, how training and food have been landing.',
     ),
     emailBody(
-      'It is a handful of questions - ten minutes or so. There are no right or wrong answers, just where you are at today, not your best or worst days.',
+      'You will recognise most of the questions: they are the ones from your intake, asked again so they can be compared. Answer each one fresh, and once you have, you will see what you said last time beside it. It takes about 15 to 20 minutes, most of it tapping a number, and it saves as you go so you can stop and come back.',
     ),
     emailBody(
       'Two things to have ready before you start: your scales and a tape measure, and somewhere you can take three photos - front, side and back. Both are needed to finish. They are the part that lets me show you what has changed rather than just tell you, and only I ever see the photos.',

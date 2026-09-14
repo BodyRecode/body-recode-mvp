@@ -23,6 +23,7 @@ import { extractFirstJsonObject } from '@/lib/extract-json'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 import { AI_MODELS } from './ai-models'
 import { PROGRESS_CHECK_SECTIONS } from './progress-check-questions'
+import { compareAnswers, formatComparisonForPrompt, type Answers, type Dispute } from './answer-comparison'
 
 /** Public body states in progression order, for the one-step clamp. */
 const STATE_ORDER = ['Depleted', 'Transitioning', 'Ready'] as const
@@ -177,13 +178,31 @@ export async function generateTrajectoryReadingForProgram(
   // answers drive the state re-score; absent = no re-score (all pr_ fields null).
   const { data: pcRows } = await admin
     .from('progress_checks')
-    .select('id, responses, program_id, submitted_at')
+    .select('id, responses, program_id, submitted_at, form_version, previous_answers, what_changed')
     .eq('client_id', client.id)
     .eq('status', 'complete')
     .order('submitted_at', { ascending: false })
     .limit(5)
   const pc = pcRows?.find(r => r.program_id === programId) ?? pcRows?.[0] ?? null
-  const progressCheckText = pc ? formatProgressCheck((pc.responses ?? {}) as Record<string, string>) : null
+  let progressCheckText: string | null = null
+  if (pc && pc.form_version === 'v2') {
+    // The near-full check (14 Sep 2026). The model is given the computed
+    // comparison, which carries the change doctrine with it, not 231 raw answers
+    // it would read noise into. Progress Read spec 3a.
+    const { data: disputeRows } = await admin
+      .from('progress_check_disputes')
+      .select('question_id, should_have_been, note, created_at')
+      .eq('progress_check_id', pc.id)
+    const disputes: Dispute[] = (disputeRows ?? []).map(d => ({ questionId: d.question_id, shouldHaveBeen: d.should_have_been, note: d.note, at: d.created_at }))
+    const comparison = compareAnswers((pc.previous_answers ?? {}) as Answers, (pc.responses ?? {}) as Answers, disputes)
+    progressCheckText = [
+      `WHAT HAS CHANGED, in the client's words: ${pc.what_changed?.trim() || 'nothing written'}`,
+      '',
+      formatComparisonForPrompt(comparison),
+    ].join('\n')
+  } else if (pc) {
+    progressCheckText = formatProgressCheck((pc.responses ?? {}) as Record<string, string>)
+  }
   const priorStatePublic = toPublicState(frContext.body_state_classification)
 
   const { data: cfwsRows, error: cfwsErr } = await admin

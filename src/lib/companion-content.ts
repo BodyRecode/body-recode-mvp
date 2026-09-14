@@ -275,9 +275,9 @@ export const HOW_IT_WORKS_STAGES = [
     subtitle: 'Stage Five · End of every block',
     heading: 'At the end of every block, I read you again',
     body: 'A training block is a chapter, not the whole story. When one finishes, I don\'t just roll into the next. I read your body again and set where it sits now against where it started. This is your Progress Read: proof, in plain terms, of how far the block actually moved you.',
-    detail: 'You answer a short check-in, about five minutes, and I read it alongside everything from the block. Your readiness is scored again, so the shift is something you can see, not just something you have to take on faith.',
+    detail: 'You answer your intake questions again, about fifteen to twenty minutes, seeing what you said last time after each one, and I read it alongside everything since your last read. Your readiness is scored again, so the shift is something you can see, not just something you have to take on faith.',
     note: 'Your Progress Read never changes the pattern I identified in your Foundational Read. It measures the one thing that matters to you between blocks: are you actually moving, and in the right direction.',
-    coachScript: '"A block is a stretch of weeks working on one thing. When one finishes, instead of rolling straight into the next, I get you to answer a short check-in and send me your measurements and three photos - ten minutes - and I write up where you started against where you are now. Whether you can handle more than you could at the start, and by how much. I call that your Progress Read. It means you can see the shift instead of taking my word for it."',
+    coachScript: '"A block is a stretch of weeks working on one thing. When one finishes, instead of rolling straight into the next, I get you to answer your intake questions again, with your measurements and three photos - fifteen to twenty minutes - and I write up where you started against where you are now. Whether you can handle more than you could at the start, and by how much. I call that your Progress Read. It means you can see the shift instead of taking my word for it."',
   },
 ] as const
 

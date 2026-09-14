@@ -9,26 +9,10 @@
  *   npx tsx scripts/build-progress-check-question-list.ts > <spec folder>/..._APPENDIX_question_list.md
  */
 import { INTAKE_SECTIONS, getTotalQuestions } from '../src/lib/intake-questions'
+import { NOT_REASKED, PROGRESS_CHECK_V2_QUESTION_IDS } from '../src/lib/progress-check-v2'
 
-// Every question is RE-ASKED unless it is listed here with a reason. Subtract from
-// the full intake; never add to a short form. See Progress Read spec §2a.
-const NOT_REASKED: Record<string, string> = {
-  full_name: 'Identity. Held on her record.',
-  date_of_birth: 'Identity. Cannot change.',
-  gender: 'Identity. Re-asked only if she chooses to update it, never as part of the check.',
-  occupation: 'Identity. A change is captured by "what has changed since your last read".',
-  mobile_number: 'Contact detail, managed in her portal.',
-  emergency_contact_name: 'Contact detail, managed in her portal.',
-  emergency_contact_phone: 'Contact detail, managed in her portal.',
-  how_did_you_hear: 'Acquisition. Cannot change.',
-  sex_at_birth: 'Cannot change. If she chose to talk it through with her coach, the coach updates her record after that conversation.',
-  intake_confirmation: 'Replaced by the Progress Check’s own confirmation.',
-  inj_06: 'Past injury history is fixed. New injuries are captured by "what has changed".',
-  final_disclosure: 'Replaced by the Progress Check’s own confirmation.',
-  final_system_alignment: 'Replaced by the Progress Check’s own confirmation.',
-  final_accuracy: 'Replaced by the Progress Check’s own confirmation.',
-}
-
+// Every question is RE-ASKED unless it is listed in NOT_REASKED with a reason.
+// The list lives in src/lib/progress-check-v2.ts so the form and this document share it.
 // Added to the intake around 9 Sep 2026 by the Extended Zones rebuild. Verified 13 Sep:
 // all 10 intakes on file PREDATE these, so no client has a previous answer. Reveal-on-commit
 // must show the no-previous-answer state, and the change doctrine must not read
@@ -77,5 +61,6 @@ for (const section of INTAKE_SECTIONS) {
   out.push('')
 }
 
+if (kept !== PROGRESS_CHECK_V2_QUESTION_IDS.length) throw new Error(`appendix counts ${kept} re-asked but the form asks ${PROGRESS_CHECK_V2_QUESTION_IDS.length}`)
 out.splice(5, 0, `**Re-asked: ${kept}. Not re-asked: ${dropped}.** Hormonal status (spec §4) is now part of the intake and is included above. Plus the measurements and three photos, and "what has changed since your last read".`, '')
 console.log(out.join('\n'))

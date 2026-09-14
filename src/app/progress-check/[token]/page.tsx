@@ -1,17 +1,20 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getCheckInWindowStatus, getWeekNumber } from '@/lib/weekly-checkin-questions'
 import ProgressCheckForm from './progress-check-form'
+import ProgressCheckV2Form, { type DisputeDraft } from './progress-check-v2-form'
+import { loadPreviousAnswers, PROGRESS_CHECK_V2_QUESTION_IDS, WHAT_CHANGED_ID } from '@/lib/progress-check-v2'
+import { coach } from '@/config/tenant'
 
-// Client-facing Progress Check (delta re-assessment). Reached via the unique
-// token link. Renders the short state re-assessment; on submit the Progress Read
-// (Phase 2) is drafted for coach review.
+// Client-facing Progress Check. Reached via the unique token link. Version 2
+// (from 14 Sep 2026) is the near-full re-ask with reveal on commit; version 1 is
+// the original 24-question form, kept for checks created before then.
 export default async function ProgressCheckPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
   const admin = createAdminClient()
 
   const { data: pc } = await admin
     .from('progress_checks')
-    .select('token, status, client_id, clients(name, onboarding_token, coaching_started_at)')
+    .select('id, token, status, client_id, form_version, responses, what_changed, draft_section, clients(name, onboarding_token, coaching_started_at)')
     .eq('token', token)
     .maybeSingle()
 
@@ -67,6 +70,42 @@ export default async function ProgressCheckPage({ params }: { params: Promise<{ 
     if (!count) checkinFirstHref = `/portal/${client.onboarding_token}/checkin`
   }
 
+  if (pc.form_version === 'v2') {
+    // What she said last time, sent only for the questions this check asks
+    // (plus sex at birth, which decides which hormonal questions apply).
+    const prev = await loadPreviousAnswers(admin, pc.client_id, pc.id)
+    const previous: Record<string, string | number | boolean | string[]> = {}
+    for (const id of [...PROGRESS_CHECK_V2_QUESTION_IDS, 'sex_at_birth']) {
+      const v = prev.answers[id]
+      if (v != null) previous[id] = v as string | number | boolean | string[]
+    }
+    const { data: disputeRows } = await admin
+      .from('progress_check_disputes')
+      .select('question_id, should_have_been, note')
+      .eq('progress_check_id', pc.id)
+    const initialAnswers = { ...((pc.responses ?? {}) as Record<string, string | number | boolean | string[]>) }
+    if (pc.what_changed) initialAnswers[WHAT_CHANGED_ID] = pc.what_changed
+    const initialDisputes: DisputeDraft[] = (disputeRows ?? []).map(d => ({
+      questionId: d.question_id,
+      shouldHaveBeen: d.should_have_been as string | number,
+      note: d.note ?? '',
+    }))
+    return (
+      <ProgressCheckV2Form
+        token={token}
+        firstName={firstName}
+        coachFirstName={coach().firstName}
+        checkinFirstHref={checkinFirstHref}
+        previous={previous}
+        gender={prev.gender}
+        initialAnswers={initialAnswers}
+        initialDisputes={initialDisputes}
+        initialSection={pc.draft_section ?? 0}
+      />
+    )
+  }
+
+  // Version 1: the 24-question form, kept for any check created before 14 Sep 2026.
   return (
     <ProgressCheckForm token={token} firstName={firstName} checkinFirstHref={checkinFirstHref} />
   )

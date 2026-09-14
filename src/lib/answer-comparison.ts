@@ -188,7 +188,8 @@ function compareScaleItem(q: Question, previous: Answers, current: Answers, disp
   const corrected = dispute ? asScale(dispute.shouldHaveBeen) : null
   const baseline = corrected ?? prev
   const cur = asScale(current[q.id])
-  const base = { questionId: q.id, text: q.text, direction, previous: prev, baseline, current: cur, disputed: !!dispute && corrected !== null }
+  // promptText, not text: this is what a generator sees (see Question.promptText).
+  const base = { questionId: q.id, text: q.promptText ?? q.text, direction, previous: prev, baseline, current: cur, disputed: !!dispute && corrected !== null }
   if (cur === null) return { ...base, status: 'not_asked_now', delta: null, towardCapacity: null }
   if (baseline === null) return { ...base, status: 'first_answer', delta: null, towardCapacity: null }
   const delta = cur - baseline
@@ -266,7 +267,7 @@ export function compareAnswers(previous: Answers, current: Answers, disputes: Di
 
       const cur = asText(current[q.id])
       if (SELF_REPORTED_CHANGE_IDS.has(q.id)) {
-        if (cur !== null) { askedNow++; selfReportedChange.push({ questionId: q.id, text: q.text, current: cur }) }
+        if (cur !== null) { askedNow++; selfReportedChange.push({ questionId: q.id, text: q.promptText ?? q.text, current: cur }) }
         else notAskedNow++
         continue
       }
@@ -277,12 +278,12 @@ export function compareAnswers(previous: Answers, current: Answers, disputes: Di
         cur === null ? 'not_asked_now' : baseline === null ? 'first_answer' : cur === baseline ? 'same' : 'changed'
       if (status === 'not_asked_now') notAskedNow++
       else { askedNow++; if (status === 'first_answer') firstAnswers++; else compared++ }
-      categorical.push({ questionId: q.id, text: q.text, status, previous: prevRaw, current: cur, disputed: corrected !== null })
+      categorical.push({ questionId: q.id, text: q.promptText ?? q.text, status, previous: prevRaw, current: cur, disputed: corrected !== null })
     }
     if (scaleItems.length > 0) clusters.push(readCluster(section.id, section.title, scaleItems))
   }
 
-  const textById = new Map(INTAKE_SECTIONS.flatMap(s => s.questions).map(q => [q.id, q.text]))
+  const textById = new Map(INTAKE_SECTIONS.flatMap(s => s.questions).map(q => [q.id, q.promptText ?? q.text]))
   return {
     clusters,
     categorical,
@@ -343,10 +344,15 @@ export function formatComparisonForPrompt(c: AnswerComparison): string {
     const corrections = cl.restsOnCorrections ? `; ${cl.restsOnCorrections} of the moving items rest on corrected answers` : ''
     lines.push(`- ${cl.title}: ${VERDICT_WORDS[cl.verdict]}${strength}. ${counts}${corrections}.`)
   }
-  const large = c.clusters.flatMap(cl => cl.largeMoves.map(i => ({ cl, i })))
+  // Only where the cluster verdict does not already carry them: inside a cluster
+  // that moved, its large moves are part of that finding and listing them again
+  // is noise. Injury is always listed, because a new injury matters either way.
+  const large = c.clusters
+    .filter(cl => SAFETY_CLUSTERS.has(cl.sectionId) || (cl.verdict !== 'moved_toward_capacity' && cl.verdict !== 'moved_toward_strain'))
+    .flatMap(cl => cl.largeMoves.map(i => ({ cl, i })))
   if (large.length) {
     lines.push('')
-    lines.push(`Individual items that moved ${LARGE_ITEM_MOVE} or more points (informational: never a change on their own, but never ignore them; in Injury, a move toward strain is a watch item for the coach):`)
+    lines.push(`Individual items that moved ${LARGE_ITEM_MOVE} or more points in sections that did not move as a whole (informational: never a change on their own, but never ignore them; in Injury, a move toward strain is a watch item for the coach):`)
     for (const { cl, i } of large) {
       const flag = SAFETY_CLUSTERS.has(cl.sectionId) && (i.towardCapacity ?? 0) < 0 ? ' [WATCH]' : ''
       lines.push(`- ${cl.title}: "${i.text}" ${i.baseline} -> ${i.current}${flag}`)

@@ -422,7 +422,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
       return {
         eyebrow: 'Next for you',
         headline: 'Your Progress Check',
-        body: `You have finished this block. A few questions, your measurements and three photos - about ten minutes. It is what lets ${coach().firstName} read the whole block back to you and show you what has moved.`,
+        body: `It is time to look at everything again. The questions from your intake, your measurements and three photos: about 15 to 20 minutes, and it saves as you go. It is what lets ${coach().firstName} show you what has moved since your last read.`,
         cta: { label: 'Start my Progress Check', href: `/progress-check/${pendingProgressCheck.token}` },
       }
     }
@@ -671,9 +671,9 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
               >
                 <p className="text-sm font-semibold text-[#141821] mb-1">Your Progress Check is ready</p>
                 <p className="text-xs text-[#666D7A] leading-relaxed">
-                  You have reached the end of a block. A few questions, your measurements and three
-                  photos - this is what lets {coach().firstName} re-read where you are now and show
-                  you what has moved. →
+                  It is time to look at everything again. The questions from your intake, your
+                  measurements and three photos, about 15 to 20 minutes, saved as you go. It is what
+                  lets {coach().firstName} show you what has moved since your last read. →
                 </p>
               </Link>
             )}
@@ -762,10 +762,10 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                           different answers and telling her the wrong one is
                           worse than telling her nothing. */}
                       {blockPhase === 'final_week'
-                        ? `Finish the week and send your check-in, and your Progress Check opens next: a few questions plus your measurements and photos, so ${coach().firstName} can read the whole block back to you.`
+                        ? `Finish the week and send your check-in, and your Progress Check opens next: the questions from your intake again, plus your measurements and photos, so ${coach().firstName} can show you what has moved.`
                         : progressCheckUnlocked
-                          ? `Your Progress Check is on its way through - it will appear here. A few questions plus your measurements and photos, so ${coach().firstName} can read the whole block back to you and show you what has moved.`
-                          : `Your Progress Check opens once this week's check-in is in: a few questions plus your measurements and photos, so ${coach().firstName} can read the whole block back to you and show you what has moved.`}
+                          ? `Your Progress Check is on its way through - it will appear here. The questions from your intake again, plus your measurements and photos, so ${coach().firstName} can show you what has moved.`
+                          : `Your Progress Check opens once this week's check-in is in: the questions from your intake again, plus your measurements and photos, so ${coach().firstName} can show you what has moved.`}
                     </p>
                   </div>
                 </div>
