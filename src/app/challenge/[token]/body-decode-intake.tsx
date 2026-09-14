@@ -54,6 +54,34 @@ const SECTIONS = [
   },
 ]
 
+// When she is not training, 04 and 05 ask the same signal worded for her life.
+// Same keys, same 1-3 scale. Kept word for word with the Performance scorecard.
+const NOT_TRAINING_SECTIONS: Record<'04' | '05', { title: string; rows: { score: number; desc: string }[] }> = {
+  '04': {
+    title: 'Everyday Capacity',
+    rows: [
+      { score: 1, desc: 'A busy day or a long walk wipes you out. It takes days to feel normal again.' },
+      { score: 2, desc: 'You get through, but you feel it the next day more than you used to.' },
+      { score: 3, desc: 'You handle a full, active day and bounce back overnight.' },
+    ],
+  },
+  '05': {
+    title: 'Body Shape',
+    rows: [
+      { score: 1, desc: 'Your shape is changing and you have not changed anything. Weight is settling where it never used to.' },
+      { score: 2, desc: 'Some drift. Clothes fit differently to a year or two ago.' },
+      { score: 3, desc: 'Your shape is steady and still feels like yours.' },
+    ],
+  },
+}
+
+export type TrainingStatus = 'regular' | 'on_off' | 'none'
+const TRAINING_OPTIONS: { value: TrainingStatus; label: string }[] = [
+  { value: 'regular', label: 'Yes, regularly' },
+  { value: 'on_off', label: 'On and off' },
+  { value: 'none', label: 'Not at the moment' },
+]
+
 type QualifierAnswer = 'A' | 'B' | 'C' | 'D'
 
 const APPROACH_OPTIONS: { value: QualifierAnswer; label: string }[] = [
@@ -126,6 +154,7 @@ export interface IntakeResult {
   score: number
   body_state: 'Depleted State' | 'Transitioning State' | 'Ready State'
   section_scores?: Partial<Record<'01' | '02' | '03' | '04' | '05', number>>
+  training_status?: TrainingStatus | null
   profile: string | null
   profile_confidence: 'high' | 'low' | null
   profile_driver: string | null
@@ -170,7 +199,7 @@ function PillOption({ selected, label, onClick, compact }: {
 // public scorecard's section card pattern (score 1 = red Depleted,
 // score 2 = amber Transitioning, score 3 = Signal Blue Ready).
 function ScoreSection({ section, selected, onSelect }: {
-  section: typeof SECTIONS[number]
+  section: { key: string; title: string; rows: { score: number; desc: string }[] }
   selected: number | null
   onSelect: (score: number) => void
 }) {
@@ -251,6 +280,7 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
   knownSex: 'M' | 'F' | null
 }) {
   const [scores, setScores] = useState<Partial<Record<'01' | '02' | '03' | '04' | '05', number>>>({})
+  const [trainingStatus, setTrainingStatus] = useState<TrainingStatus | null>(null)
   const [approach, setApproach] = useState<QualifierAnswer | null>(null)
   const [ascensionIntent, setAscensionIntent] = useState<QualifierAnswer | null>(null)
   const [sex, setSex] = useState<BiologicalSex | null>(knownSex)
@@ -261,8 +291,20 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
 
+  const visibleSections = SECTIONS.map(s =>
+    trainingStatus === 'none' && (s.key === '04' || s.key === '05') ? { ...s, ...NOT_TRAINING_SECTIONS[s.key] } : s,
+  )
+  // Switching to or from "not at the moment" changes what 04 and 05 asked, so
+  // an answer given to the other wording no longer counts.
+  function chooseTraining(next: TrainingStatus) {
+    if ((next === 'none') !== (trainingStatus === 'none')) {
+      setScores(prev => ({ ...prev, '04': undefined, '05': undefined }))
+    }
+    setTrainingStatus(next)
+  }
+
   const sectionsAnswered = SECTIONS.filter(s => scores[s.key] != null).length
-  const allScores = known.scores || sectionsAnswered === SECTIONS.length
+  const allScores = known.scores || (sectionsAnswered === SECTIONS.length && !!trainingStatus)
   const allDemo =
     (known.sex || !!sex) && (known.age || !!age) && (known.storage || !!storage)
     && (sex !== 'F' || ((known.cycle || !!cycle) && (known.direction || !!direction)))
@@ -272,12 +314,12 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
   // Live progress out of 9 question groups (5 sections + sex + age + storage + 2 qualifiers
   // — cycle only counts for females, so unweighted denominator is 9 male / 10 female).
   const totalQuestions =
-    (known.scores ? 0 : SECTIONS.length) +
+    (known.scores ? 0 : SECTIONS.length + 1) +
     (known.sex ? 0 : 1) + (known.age ? 0 : 1) + (known.storage ? 0 : 1) +
     (sex === 'F' && !known.cycle ? 1 : 0) +
     (known.approach ? 0 : 1) + (known.ascensionIntent ? 0 : 1)
   const answeredQuestions =
-    (known.scores ? 0 : sectionsAnswered) +
+    (known.scores ? 0 : sectionsAnswered + (trainingStatus ? 1 : 0)) +
     (known.sex ? 0 : (sex ? 1 : 0)) +
     (known.age ? 0 : (age ? 1 : 0)) +
     (known.storage ? 0 : (storage ? 1 : 0)) +
@@ -306,6 +348,7 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
           // from the lead row server-side, so a partial submit never blanks
           // an answer we already had.
           section_scores: known.scores ? undefined : scores,
+          training_status: known.scores ? undefined : trainingStatus,
           approach_response: known.approach ? undefined : approach,
           ascension_intent: known.ascensionIntent ? undefined : ascensionIntent,
           biological_sex: known.sex ? undefined : sex,
@@ -425,7 +468,18 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
           Part 1 · Where you are right now
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
-          {SECTIONS.map(s => (
+          {/* Asked first because it decides how 04 and 05 are worded. */}
+          <div>
+            <h2 style={{ fontSize: '18px', fontWeight: 800, letterSpacing: '-0.01em', color: '#141821', margin: '0 0 14px' }}>
+              Are you training at the moment?
+            </h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '8px' }}>
+              {TRAINING_OPTIONS.map(o => (
+                <PillOption key={o.value} selected={trainingStatus === o.value} label={o.label} onClick={() => chooseTraining(o.value)} compact />
+              ))}
+            </div>
+          </div>
+          {visibleSections.map(s => (
             <ScoreSection
               key={s.key}
               section={s}

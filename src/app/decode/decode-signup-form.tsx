@@ -148,7 +148,7 @@ export default function DecodeSignupForm({ position }: { position: string }) {
       )}
 
       {/* A man who picks Male is offered the call instead of being enrolled.
-          The page says "for women whose bodies have stopped responding" in its
+          The page says "for women whose bodies have changed" in its
           first line, the report is built on female hormonal patterns, and
           typeFatMapProfile hard-gates him out of Estrogen-Shift. Enrolling him
           would spend five days telling him about a pattern set that was never

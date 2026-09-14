@@ -15,7 +15,7 @@ import { brand } from '@/config/tenant'
  */
 
 export const runtime = 'edge'
-export const alt = "The Body Decode. A free assessment for women whose bodies have stopped responding: two minutes of questions, then a written report naming which of four causes is behind it."
+export const alt = "The Body Decode. A free assessment for women whose bodies have changed and nobody can tell them why: two minutes of questions, then a written report naming which of four causes is behind it."
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -46,14 +46,14 @@ export default async function Image() {
           </div>
 
           <div style={{ fontSize: '76px', fontWeight: 800, color: INK, letterSpacing: '-3.2px', lineHeight: 1.03, display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex' }}>You&apos;re training. You&apos;re eating well.</div>
-            <div style={{ display: 'flex', color: BLUE }}>And the fat won&apos;t move.</div>
+            <div style={{ display: 'flex' }}>Your body has changed.</div>
+            <div style={{ display: 'flex', color: BLUE }}>And nobody can tell you why.</div>
           </div>
 
           <div style={{ width: '76px', height: '5px', background: BLUE, borderRadius: '3px', margin: '34px 0 30px', display: 'flex' }} />
 
           <div style={{ fontSize: '29px', color: '#43474F', lineHeight: 1.45, maxWidth: '900px', display: 'flex' }}>
-            A free assessment for women whose bodies have stopped responding. Two minutes of questions, then a report naming which of four causes is behind it, and the three things that shift it.
+            A free assessment for women whose bodies have changed. Two minutes of questions, then a report naming which of four causes is behind it, and the three things that shift it.
           </div>
         </div>
 

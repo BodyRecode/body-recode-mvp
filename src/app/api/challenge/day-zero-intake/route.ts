@@ -40,6 +40,7 @@ export async function POST(request: NextRequest) {
     fat_storage,
     cycle_status,
     storage_direction,
+    training_status,
   } = body as {
     token: string
     section_scores: Record<'01' | '02' | '03' | '04' | '05', number>
@@ -50,7 +51,15 @@ export async function POST(request: NextRequest) {
     fat_storage?: FatStorage
     cycle_status?: CycleStatus
     storage_direction?: 'gluteofemoral' | 'to_middle' | 'always_central' | 'unsure' | null
+    training_status?: 'regular' | 'on_off' | 'none'
   }
+
+  // Is she training right now? When she is not, sections 04/05 were worded for
+  // her life on the same 1-3 scale, so typing reads them unchanged. Mirrors the
+  // Performance scorecard (14 Sep 2026).
+  const trainingVal = (['regular', 'on_off', 'none'] as const).includes(training_status as 'regular')
+    ? (training_status as 'regular' | 'on_off' | 'none')
+    : null
 
   // ascension_intent replaces the scorecard's investment_readiness for the
   // Day 0 context. Stored on the enrolment, never on leads, so it doesn't
@@ -100,7 +109,7 @@ export async function POST(request: NextRequest) {
 
   const { data: existing } = await admin
     .from('leads')
-    .select('scorecard_section_scores, approach_response, biological_sex, age_band, fat_storage, cycle_status, storage_direction')
+    .select('scorecard_section_scores, approach_response, biological_sex, age_band, fat_storage, cycle_status, storage_direction, training_status')
     .eq('id', enrollment.lead_id)
     .single()
 
@@ -115,6 +124,7 @@ export async function POST(request: NextRequest) {
   const mergedDirection = directionVal ?? (mergedSex === 'F'
     ? (existing?.storage_direction as 'gluteofemoral' | 'to_middle' | 'always_central' | 'unsure' | null) ?? null
     : null)
+  const mergedTraining = trainingVal ?? (existing?.training_status as 'regular' | 'on_off' | 'none' | null) ?? null
   const mergedApproach = approach_response ?? (existing?.approach_response as 'A' | 'B' | 'C' | 'D' | null) ?? null
 
   // After the merge there must still be a full set of scores, or there is
@@ -172,6 +182,7 @@ export async function POST(request: NextRequest) {
       fat_storage: mergedStorage,
       cycle_status: mergedCycle,
       storage_direction: mergedDirection,
+      training_status: mergedTraining,
       scorecard_profile: fatMapProfile,
       scorecard_profile_confidence: profileConfidence,
       updated_at: new Date().toISOString(),
@@ -205,7 +216,7 @@ export async function POST(request: NextRequest) {
     leadId: enrollment.lead_id,
     type: 'day_zero_intake_completed',
     subject: 'Day 0 Body Decode Intake completed',
-    notes: `Score ${total}/15 · ${bodyState} · Zone: ${fatMapProfile}${profileConfidence === 'low' ? ' (provisional)' : ''}${leadQuality ? ` · Quality ${leadQuality}` : ''}${ascensionIntentVal ? ` · Intent ${ascensionIntentVal}` : ''}.`,
+    notes: `Score ${total}/15 · ${bodyState} · Zone: ${fatMapProfile}${profileConfidence === 'low' ? ' (provisional)' : ''}${leadQuality ? ` · Quality ${leadQuality}` : ''}${ascensionIntentVal ? ` · Intent ${ascensionIntentVal}` : ''}${mergedTraining === 'none' ? ' · Not training' : mergedTraining === 'on_off' ? ' · Training on and off' : ''}.`,
   })
 
   const namedZone = fatMapProfile !== 'Indeterminate'
@@ -214,6 +225,7 @@ export async function POST(request: NextRequest) {
     score: total,
     body_state: bodyState,
     section_scores,
+    training_status: mergedTraining,
     profile: namedZone ? fatMapProfile : null,
     profile_confidence: namedZone ? profileConfidence : null,
     profile_driver: namedZone ? PROFILE_DRIVERS[fatMapProfile].replace(/\s*\([^)]*\)\s*$/, '') : null,

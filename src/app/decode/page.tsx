@@ -84,8 +84,8 @@ const VOICES: Voice[] = [
 ]
 
 const FAQS = [
-  { q: 'What is this, exactly?', a: 'A free online assessment. You answer questions about your sleep, stress load, energy, and how your body responds to training and to fat loss. Those five things get scored, and the pattern across them tells us which of four common causes is behind your body not responding. You get that as a written report, and then five short videos walk you through it, one a day.' },
-  { q: 'How long does it actually take?', a: 'The questions are twelve taps and four boxes to type in, so about two minutes. Your report is on screen straight after. Then five short videos, one a day, a few minutes each. Nothing is timed and nothing expires.' },
+  { q: 'What is this, exactly?', a: 'A free online assessment. You answer questions about your sleep, stress load, energy, and how your body is handling what you ask of it, whether that is training or just a full day, and whether your shape is changing. Those five things get scored, and the pattern across them tells us which of four common causes is behind the change. You get that as a written report, and then five short videos walk you through it, one a day.' },
+  { q: 'How long does it actually take?', a: 'The questions are thirteen taps and four boxes to type in, so about two minutes. Your report is on screen straight after. Then five short videos, one a day, a few minutes each. Nothing is timed and nothing expires.' },
   { q: 'Is anything held back until later?', a: 'No. Your full read is there from the start and stays there. The five lessons walk you through it a part at a time because it is a lot to take in at once, not because it unlocks.' },
   { q: 'Do I need to know my pattern before I start?', a: 'No, and that is the point. Working it out is what the read does. If you already know it from the scorecard it carries straight over and you are not asked anything twice.' },
   { q: 'Is there anything to buy?', a: 'Not to get the read. It is free and there is no card at signup. There is a paid next step if you want to correct what the read finds, and it is entirely optional.' },
@@ -104,11 +104,11 @@ export default function DecodeLandingPage() {
         badge="Free · The Body Decode"
         coachName={c.fullName}
         credentials={c.credentials}
-        headline="You're training. You're eating well."
-        headlineAccent="And the fat won't move."
+        headline="Your body has changed."
+        headlineAccent="And nobody can tell you why."
         videoSlot={<DecodeExplainer src={DECODE_EXPLAINER_VIDEO} poster={DECODE_EXPLAINER_POSTER} hideWhenMissing />}
         leads={[
-          'The Body Decode is a free online assessment for women whose bodies have stopped responding. About two minutes of questions, and at the end you get a written report naming which of four common causes is behind it, why it is happening, what it usually gets mistaken for, and the three things that shift it.',
+          'The Body Decode is a free online assessment for women whose bodies have changed, whether you are training hard and getting nowhere, or not training and just do not feel like yourself. About two minutes of questions, and at the end you get a written report naming which of four common causes is behind it, why it is happening, what it usually gets mistaken for, and the three things that shift it.',
           'The report is yours to keep. Then five short videos, one a day, walking you through it.',
         ]}
         stats={[
@@ -351,7 +351,7 @@ export default function DecodeLandingPage() {
       <Section bg="grey" pad="72px 24px">
         <Eyebrow>Is this for you</Eyebrow>
         <div style={{ marginBottom: '24px' }}>
-          <Heading muted="You do not need to know which one you are yet.">This is for women whose bodies have stopped responding.</Heading>
+          <Heading muted="You do not need to know which one you are yet.">This is for women whose bodies have changed.</Heading>
         </div>
 
         {/* woman-3 is the gym portrait: she is already doing the work, which is
@@ -367,7 +367,7 @@ export default function DecodeLandingPage() {
         />
 
         <p style={{ fontSize: '17px', color: '#43474F', lineHeight: 1.75, margin: '0 0 22px' }}>
-          Almost everyone who does this is a woman, and most have been doing the right things for a while and getting less back for it. Of the women we have assessed:
+          Almost everyone who does this is a woman. Some have been doing the right things for a while and getting less back for it. Others stopped training a while ago and their body just does not feel like theirs. Of the women we have assessed:
         </p>
 
         <div style={{ marginBottom: '24px' }}>
@@ -382,7 +382,7 @@ export default function DecodeLandingPage() {
           The read works out which one you are <strong style={{ color: INK }}>before anyone writes you a plan</strong>, so you do not need to know before you start. That is the part everybody skips.
         </p>
         <p style={{ fontSize: '17px', color: '#43474F', lineHeight: 1.75, margin: 0 }}>
-          If you are training well and progressing, this is not for you and it will not tell you much.
+          If you feel like yourself and your body is doing what you ask of it, this is not for you and it will not tell you much.
         </p>
       </Section>
 

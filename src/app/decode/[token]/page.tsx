@@ -23,7 +23,7 @@ export default async function DecodePortalPage({ params }: { params: Promise<{ t
 
   const { data: enrollment } = await admin
     .from('challenge_enrollments')
-    .select('id, lead_id, enrolled_at, status, ascension_intent, leads(name, gender, scorecard_profile, scorecard_body_state, scorecard_section_scores, approach_response, biological_sex, age_band, fat_storage, cycle_status, storage_direction)')
+    .select('id, lead_id, enrolled_at, status, ascension_intent, leads(name, gender, scorecard_profile, scorecard_body_state, scorecard_section_scores, approach_response, biological_sex, age_band, fat_storage, cycle_status, storage_direction, training_status)')
     .eq('token', token)
     .in('status', PORTAL_ACCESS_STATUSES)
     .single()
@@ -158,6 +158,7 @@ export default async function DecodePortalPage({ params }: { params: Promise<{ t
       knownSex={sex === 'M' || sex === 'F' ? sex : null}
       bodyState={bodyState}
       sectionScores={scores}
+      trainingStatus={(lead?.training_status as string | null) ?? null}
       profile={profile}
       patternKey={patternKey}
       plainDesc={plainDesc}

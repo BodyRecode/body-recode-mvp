@@ -7,14 +7,8 @@ import { Nav } from '@/components/landing/kit'
 import { logoUrl, brand, coach } from '@/config/tenant'
 import { CHECKIN_PATTERNS } from '@/lib/checkin-patterns'
 import { DECODE_DAYS, isDayUnlocked, readinessPlain } from '@/lib/decode-days'
+import { decodeSectionLabel } from '@/lib/decode-section-labels'
 
-const SECTION_LABELS: Record<'01' | '02' | '03' | '04' | '05', string> = {
-  '01': 'Energy',
-  '02': 'Sleep',
-  '03': 'Stress load',
-  '04': 'Training response',
-  '05': 'Fat loss response',
-}
 
 // Floor priority mirrors pickFloor() in fat-map-profile.ts: stress beats sleep
 // beats energy beats training beats fat loss. On a tie at the lowest score the
@@ -39,6 +33,7 @@ export default function DecodePortalClient({
   hasRead,
   bodyState,
   sectionScores,
+  trainingStatus,
   profile,
   patternKey,
   plainDesc,
@@ -52,6 +47,7 @@ export default function DecodePortalClient({
   hasRead: boolean
   bodyState: string | null
   sectionScores: Record<string, number> | null
+  trainingStatus: string | null
   profile: string | null
   patternKey: string | null
   plainDesc: string | null
@@ -140,7 +136,7 @@ export default function DecodePortalClient({
                   background: 'rgba(27,109,252,0.07)', border: '1px solid rgba(27,109,252,0.22)',
                   padding: '7px 12px', borderRadius: '8px',
                 }}>
-                  {SECTION_LABELS[k]} · {sectionScores?.[k]} out of 3
+                  {decodeSectionLabel(k, trainingStatus)} · {sectionScores?.[k]} out of 3
                 </span>
               ))}
             </div>

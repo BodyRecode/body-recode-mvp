@@ -9,18 +9,12 @@ import { currentDecodeDay, patternKeyForProfile, readinessPlain, DECODE_DAYS } f
 import { Nav } from '@/components/landing/kit'
 import { logoUrl, brand } from '@/config/tenant'
 import { DecodeFeedbackCard } from '../decode-feedback-card'
+import { decodeSectionLabel } from '@/lib/decode-section-labels'
 
 const BLUE = '#1B6DFC'
 const INK = '#141821'
 const MUTED = '#666D7A'
 
-const SECTION_LABELS: Record<'01' | '02' | '03' | '04' | '05', string> = {
-  '01': 'Energy',
-  '02': 'Sleep',
-  '03': 'Stress load',
-  '04': 'Training response',
-  '05': 'Fat loss response',
-}
 
 /**
  * Her full read. NEVER GATED.
@@ -47,7 +41,7 @@ export default async function DecodeReadPage({ params }: { params: Promise<{ tok
 
   const { data: enrollment } = await admin
     .from('challenge_enrollments')
-    .select('id, lead_id, enrolled_at, status, leads(name, scorecard_profile, scorecard_body_state, scorecard_section_scores, biological_sex, age_band, fat_storage, cycle_status, storage_direction)')
+    .select('id, lead_id, enrolled_at, status, leads(name, scorecard_profile, scorecard_body_state, scorecard_section_scores, biological_sex, age_band, fat_storage, cycle_status, storage_direction, training_status)')
     .eq('token', token)
     .in('status', PORTAL_ACCESS_STATUSES)
     .single()
@@ -155,7 +149,7 @@ export default async function DecodeReadPage({ params }: { params: Promise<{ tok
               return (
                 <div key={k}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '6px' }}>
-                    <span style={{ fontSize: '15px', fontWeight: 700, color: v === 1 ? colour : INK }}>{SECTION_LABELS[k]}</span>
+                    <span style={{ fontSize: '15px', fontWeight: 700, color: v === 1 ? colour : INK }}>{decodeSectionLabel(k, lead?.training_status)}</span>
                     <span style={{ fontSize: '14px', fontWeight: 800, color: colour, fontVariantNumeric: 'tabular-nums' }}>
                       {v} out of 3
                     </span>

@@ -56,6 +56,24 @@ const SECTION_READS: Record<'01' | '02' | '03' | '04' | '05', Record<1 | 2 | 3, 
   },
 }
 
+// Her wording when she is not training. Same signals, no assumed effort.
+const NOT_TRAINING_LABELS: Record<'04' | '05', string> = {
+  '04': 'Everyday Capacity',
+  '05': 'Body Shape',
+}
+const NOT_TRAINING_READS: Record<'04' | '05', Record<1 | 2 | 3, string>> = {
+  '04': {
+    1: 'Low. An ordinary demanding day is costing more than your body can repay overnight.',
+    2: 'Mixed. You get through, but the recovery is slower than it used to be.',
+    3: 'Solid. Your body absorbs a full day and resets. The capacity is there.',
+  },
+  '05': {
+    1: 'Shifting. Your shape is changing without you changing anything. This is the downstream symptom of everything upstream.',
+    2: 'Drifting. Some change, slow enough to explain away.',
+    3: 'Steady. Your shape is holding. Nothing downstream is showing strain yet.',
+  },
+}
+
 // Floor priority (mirrors pickFloor() in fat-map-profile.ts):
 // Stress > Sleep > Energy > Training > Fat Loss. When sections tie at the
 // lowest score, the higher-priority section is the floor — stress drives
@@ -160,7 +178,10 @@ export default function BodyDecodeIntakeResult({ result, onContinue }: {
             {(['01', '02', '03', '04', '05'] as const).map(key => {
               const score = result.section_scores?.[key]
               if (score == null) return null
-              const read = SECTION_READS[key][score as 1 | 2 | 3]
+              const notTraining = result.training_status === 'none' && (key === '04' || key === '05')
+              const read = notTraining
+                ? NOT_TRAINING_READS[key as '04' | '05'][score as 1 | 2 | 3]
+                : SECTION_READS[key][score as 1 | 2 | 3]
               const isFloor = floor === key
               const scoreColor = score === 1 ? '#DC2626' : score === 2 ? '#B7791F' : '#1056D6'
               const accentRgba = score === 1 ? '239,68,68' : score === 2 ? '245,158,11' : '27,109,252'
@@ -184,7 +205,7 @@ export default function BodyDecodeIntakeResult({ result, onContinue }: {
                   <div style={{ flex: 1 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                       <p style={{ fontSize: '13px', fontWeight: 800, color: '#141821', letterSpacing: '-0.005em', margin: 0 }}>
-                        {SECTION_LABELS[key]}
+                        {notTraining ? NOT_TRAINING_LABELS[key as '04' | '05'] : SECTION_LABELS[key]}
                       </p>
                       {isFloor && (
                         <span style={{

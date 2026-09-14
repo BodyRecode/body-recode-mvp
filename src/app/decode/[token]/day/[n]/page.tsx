@@ -17,6 +17,7 @@ import DecodeExplainer from '../../../decode-explainer'
 import { Nav } from '@/components/landing/kit'
 import { logoUrl, brand, coach } from '@/config/tenant'
 import { DecodeFeedbackCard } from '../../decode-feedback-card'
+import { decodeSectionLabel } from '@/lib/decode-section-labels'
 
 const BLUE = '#1B6DFC'
 const INK = '#141821'
@@ -47,7 +48,7 @@ export default async function DecodeDayPage({
   const admin = createAdminClient()
   const { data: enrollment } = await admin
     .from('challenge_enrollments')
-    .select('id, lead_id, enrolled_at, status, leads(name, scorecard_profile, scorecard_body_state, scorecard_section_scores, biological_sex, age_band, fat_storage, cycle_status, storage_direction)')
+    .select('id, lead_id, enrolled_at, status, leads(name, scorecard_profile, scorecard_body_state, scorecard_section_scores, biological_sex, age_band, fat_storage, cycle_status, storage_direction, training_status)')
     .eq('token', token)
     .in('status', PORTAL_ACCESS_STATUSES)
     .single()
@@ -93,10 +94,7 @@ export default async function DecodeDayPage({
   // rather than her pattern. Without this it was the thinnest page in the whole
   // product - a title, one line and a video - and it is the first lesson she
   // opens. Her own scores are the content, worst first.
-  const SECTION_LABELS: Record<string, string> = {
-    '01': 'Energy', '02': 'Sleep', '03': 'Stress load',
-    '04': 'Training response', '05': 'Fat loss response',
-  }
+  const notTraining = lead?.training_status === 'none'
   const ordered = scores
     ? (['03', '02', '01', '05', '04'] as const)
         .filter(k => typeof scores[k] === 'number')
@@ -150,7 +148,7 @@ export default async function DecodeDayPage({
                 <div key={k}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '6px', gap: '10px' }}>
                     <span style={{ fontSize: '15px', fontWeight: 700, color: i < 2 ? colour : INK }}>
-                      {SECTION_LABELS[k]}{i < 2 ? ' · one of your two lowest' : ''}
+                      {decodeSectionLabel(k, lead?.training_status)}{i < 2 ? ' · one of your two lowest' : ''}
                     </span>
                     <span style={{ fontSize: '14px', fontWeight: 800, color: colour, fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' }}>
                       {v} out of 3
@@ -166,9 +164,13 @@ export default async function DecodeDayPage({
           <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.72, margin: '22px 0 0' }}>
             Look at the bottom two. Those are the ones deciding whether anything you do turns into a result, and they are almost always the two nobody has ever measured.
           </p>
+          {/* Only for the woman who trains: the point is that her effort went into
+              the least broken thing. Said to a woman who is not training it is false. */}
+          {!notTraining && (
           <p style={{ fontSize: '15px', color: '#43474F', lineHeight: 1.72, margin: '14px 0 0' }}>
             Now look at the top one. If it is training response, that is not good news. It means the thing you have been working hardest at is the thing that was least wrong, which is exactly why doing more of it has not paid off.
           </p>
+          )}
         </section>
       )}
 
