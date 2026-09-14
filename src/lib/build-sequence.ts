@@ -75,6 +75,7 @@ const STAGES: Stage[] = [
     steps: [
       ...at(ALL, 'solo-doctrine-checked-in-code', 'engine-nutrition-revise', 'solo-regression-tests', 'solo-ai-call-hardening', 'solo-model-change-evaluation'),
       ...at(['Rey', 'Read'], 'read-no-clear-pattern', 'progress-check-any-answers'),
+      ...at(['Read', 'Coaching'], 'progress-check-coaching-form'),
       ...at(ALL, 'solo-next-block-auto', 'solo-progression', 'solo-equipment-programming', 'reread-generator', 'solo-cost-at-scale'),
     ],
   },

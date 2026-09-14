@@ -17,6 +17,7 @@ import { PROGRESS_CHECK_SECTIONS } from '@/lib/progress-check-questions'
 import { FORM_A_SECTIONS, FORM_B_SECTIONS } from '@/lib/weekly-checkin-questions'
 import { INTAKE_SECTIONS, type Section } from '@/lib/intake-questions'
 import { ALERT_ANSWERS } from '@/lib/hormonal-safety-alerts'
+import { ANSWER_DIRECTION } from '@/lib/answer-direction'
 
 const SOURCES: { label: string; sections: Section[] }[] = [
   { label: 'PROGRESS_CHECK', sections: PROGRESS_CHECK_SECTIONS },
@@ -57,6 +58,16 @@ for (const [id, answer] of Object.entries(ALERT_ANSWERS)) {
   if (!q?.options?.includes(answer)) {
     failures++
     console.error(`FAIL  coach alert: intake question ${id} no longer offers "${answer}", so the alert in hormonal-safety-alerts.ts would never fire\n`)
+  }
+}
+
+// The Progress Check comparison turns each 0-4 answer by its direction. A scale
+// question with no direction would be silently treated as neutral and never
+// counted toward a change, so a missing entry is a failure here.
+for (const q of INTAKE_SECTIONS.flatMap(sec => sec.questions)) {
+  if (q.type === 'scale' && !ANSWER_DIRECTION[q.id]) {
+    failures++
+    console.error(`FAIL  answer direction: intake scale question ${q.id} has no entry in lib/answer-direction.ts, so the Progress Check comparison would ignore it\n`)
   }
 }
 
