@@ -320,6 +320,15 @@ export const REY_STEPS: Step[] = [
     notes: 'Spec 11.3. The web half ships in Stage 1; the planned first refusal joins it in Stage 2.',
   },
   {
+    id: 'rey-starting-from-zero',
+    title: 'Starting from zero, for the woman who is not training',
+    description: 'A first month of walking, sleep, food rhythm and short home sessions, ordered by her read, progressing into real training only as her readiness shows she can take it.',
+    status: 'planned',
+    effort: 'M',
+    blockedBy: 'rey-pre-exercise-screening',
+    notes: 'Added 14 Sep when Kade widened the audience: "I don\u2019t want to attract just women whose body has stopped responding." Every engine plan assumes a trained body. The scorecard already asks whether she is training (live 14 Sep) and records it on the lead. Spec 2 and 11.8.',
+  },
+  {
     id: 'rey-journey-edges',
     title: 'Missed weeks, illness, travel, and a read that does not fit',
     description: 'Lighter return after a week away, a re-check after a month, rest that counts when unwell, the same read with travel equipment, and a re-check when she says the read is not her.',

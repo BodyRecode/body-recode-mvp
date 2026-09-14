@@ -665,7 +665,7 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
   lines.push(`LEAD QUALITY: ${quality}  (${redCount} red flag${redCount === 1 ? '' : 's'})`)
   lines.push('')
   if (approach) {
-    lines.push('Q "When your training or nutrition stops producing results, what is your honest first response?"')
+    lines.push('Q "When something you are doing for your body stops working, what is your honest first response?"')
     lines.push(`  → ${approach}: "${APPROACH_LABELS[approach]}"${approachFlag}`)
     lines.push('')
   }
