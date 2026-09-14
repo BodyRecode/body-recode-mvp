@@ -38,6 +38,8 @@ export interface LeadRowForBrief {
   age_band: string | null
   fat_storage: string | null
   cycle_status: string | null
+  /** Added 14 Sep 2026. Optional so rows selected without it still type. */
+  training_status?: string | null
   pre_call_brief: string | null
 }
 
@@ -107,6 +109,7 @@ export function buildLeadBrief(
     age_band: (lead.age_band as AgeBand | null) ?? null,
     fat_storage: (lead.fat_storage as FatStorage | null) ?? null,
     cycle_status: (lead.cycle_status as CycleStatus | null) ?? null,
+    training_status: (['regular', 'on_off', 'none'].includes(lead.training_status as string) ? lead.training_status as 'regular' | 'on_off' | 'none' : null),
     prep_notes: prepNotes,
     call_date: callDate ?? null,
   }

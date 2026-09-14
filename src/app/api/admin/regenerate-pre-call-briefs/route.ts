@@ -21,7 +21,7 @@ export async function POST(req: Request) {
     // signals. They were missing here until 2026-08-06, so every regenerated
     // brief was typed as if the lead had given no storage answer and no sex —
     // silently overwriting a correct profile with a score-pattern guess.
-    .select('id, name, scorecard_score, scorecard_body_state, scorecard_section_scores, approach_response, investment_readiness, lead_quality, pre_call_brief, biological_sex, age_band, fat_storage, cycle_status')
+    .select('id, name, scorecard_score, scorecard_body_state, scorecard_section_scores, approach_response, investment_readiness, lead_quality, pre_call_brief, biological_sex, age_band, fat_storage, cycle_status, training_status')
     .not('scorecard_score', 'is', null)
     .not('scorecard_body_state', 'is', null)
 
@@ -62,6 +62,7 @@ export async function POST(req: Request) {
         age_band: lead.age_band,
         fat_storage: lead.fat_storage,
         cycle_status: lead.cycle_status,
+        training_status: (['regular', 'on_off', 'none'].includes(lead.training_status as string) ? lead.training_status as 'regular' | 'on_off' | 'none' : null),
       })
       const { error: updateErr } = await admin
         .from('leads')

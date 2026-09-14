@@ -45,6 +45,9 @@ export interface LeadBriefInput {
   cycle_status?: CycleStatus | null
   /** Estrogen-Shift phase discriminator. Women only. */
   storage_direction?: StorageDirection | null
+  /** Training right now. 'none' means sections 04/05 were answered as everyday
+   *  capacity and shape change, not training response and fat loss. */
+  training_status?: 'regular' | 'on_off' | 'none' | null
   /**
    * Verbatim pre-call form answers (the `prep_form_completed` lead event notes).
    * Drives the "What they told you" block and the scope-flag scan. Optional —
@@ -625,6 +628,12 @@ export function generatePreCallBrief(input: LeadBriefInput): string {
     .map(k => `${SECTIONS[k].name} ${scores[k]}`)
     .join(' · ')
   if (sectionLine) lines.push(sectionLine)
+  if (input.training_status === 'none') {
+    lines.push('NOT TRAINING right now. Training Response was answered as everyday capacity and')
+    lines.push('Fat Loss as shape changing without her changing anything. Do not assume effort.')
+  } else if (input.training_status === 'on_off') {
+    lines.push('Training on and off, not consistently.')
+  }
   lines.push(patternRead(input, floor))
   lines.push('')
 

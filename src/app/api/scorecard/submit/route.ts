@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
     console.error('[scorecard/submit] Failed to parse JSON body:', e)
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400, headers: CORS })
   }
-  const { first_name, last_name, email, phone, sms_opt_in, score, body_state, source, section_scores, approach_response, investment_readiness, biological_sex, age_band, fat_storage, cycle_status, storage_direction, situation_text } = body as {
+  const { first_name, last_name, email, phone, sms_opt_in, score, body_state, source, section_scores, approach_response, investment_readiness, biological_sex, age_band, fat_storage, cycle_status, storage_direction, situation_text, training_status } = body as {
 
     first_name: string
     last_name?: string
@@ -90,6 +90,7 @@ export async function POST(request: NextRequest) {
     fat_storage?: FatStorage
     cycle_status?: CycleStatus
     situation_text?: string
+    training_status?: 'regular' | 'on_off' | 'none'
   }
   // Phone is optional here, so an unusable number must never cost us the lead
   // capture. Normalise when we can, store null when we cannot, and never
@@ -114,6 +115,13 @@ export async function POST(request: NextRequest) {
   // existed, in which case no phase is claimed downstream.
   const directionVal = (sexVal === 'F' ? (storage_direction ?? null) : null) as
     'gluteofemoral' | 'to_middle' | 'always_central' | 'unsure' | null
+
+  // Is she training right now? When she is not, sections 04/05 were worded for
+  // her life (everyday capacity, shape change) on the same 1-3 scale, so the
+  // scores feed typing unchanged. Null for anyone who answered before 14 Sep.
+  const trainingVal = (['regular', 'on_off', 'none'] as const).includes(training_status as 'regular')
+    ? (training_status as 'regular' | 'on_off' | 'none')
+    : null
 
   // Type the lead into one of the four Fat Map zones (sex-gated, storage-led).
   const { profile: fatMapProfile, confidence: profileConfidence } = typeFatMapProfile(
@@ -264,6 +272,7 @@ export async function POST(request: NextRequest) {
       scorecard_profile: fatMapProfile,
       scorecard_profile_confidence: profileConfidence,
       situation_text: situationText,
+      training_status: trainingVal,
       updated_at: new Date().toISOString(),
     })
     .eq('id', leadId)
@@ -315,6 +324,7 @@ export async function POST(request: NextRequest) {
       fat_storage: storageVal,
       cycle_status: cycleVal,
       storage_direction: directionVal,
+      training_status: trainingVal,
     })
     await supabase.from('leads').update({ pre_call_brief: brief }).eq('id', leadId)
     console.log('[scorecard/submit] Pre-call brief generated for lead:', leadId)
@@ -329,6 +339,9 @@ export async function POST(request: NextRequest) {
   const resurfaceNote = Object.keys(resurface).length
     ? ` Returning lead — reactivated from ${existing?.active === false ? 'inactive' : 'active'}/${existing?.status}.`
     : ''
+  const trainingNote = trainingVal
+    ? ` Training: ${trainingVal === 'none' ? 'not at the moment' : trainingVal === 'on_off' ? 'on and off' : 'regularly'}.`
+    : ''
   const qualifierNote = leadQuality
     ? ` Quality: ${leadQuality}${redFlag ? ' (RED FLAG)' : ''}. Approach: ${approach_response}. Investment: ${investment_readiness}.`
     : ''
@@ -337,7 +350,7 @@ export async function POST(request: NextRequest) {
       leadId,
       type: 'scorecard_completed',
       subject: 'Scorecard completed',
-      notes: `Score: ${score}/15. Body state: ${body_state}.${qualifierNote}${resurfaceNote}${section_scores ? ' Sections: ' + JSON.stringify(section_scores) : ''}`,
+      notes: `Score: ${score}/15. Body state: ${body_state}.${trainingNote}${qualifierNote}${resurfaceNote}${section_scores ? ' Sections: ' + JSON.stringify(section_scores) : ''}`,
     })
     console.log('[scorecard/submit] Event logged for lead:', leadId)
   } catch (logErr) {

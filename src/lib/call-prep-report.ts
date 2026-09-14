@@ -43,6 +43,7 @@ export interface CallPrepInput {
   age_band?: string | null
   fat_storage?: string | null
   cycle_status?: string | null
+  training_status?: string | null
   /** Verbatim pre-call form answers, for the brief's scope-flag scan. */
   prep_notes?: string | null
 }
@@ -75,6 +76,7 @@ function deterministicBrief(input: CallPrepInput): string | null {
     fat_storage: (input.fat_storage ?? null) as any,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     cycle_status: (input.cycle_status ?? null) as any,
+    training_status: (['regular', 'on_off', 'none'].includes(input.training_status as string) ? input.training_status as 'regular' | 'on_off' | 'none' : null),
     // The prep answers are the whole reason this path runs. Passing them in
     // drives the "What they told you" block AND the scope-flag scan, which is
     // what surfaces things like a GLP-1 or a thyroid condition before the call.

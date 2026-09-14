@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
   const { data: lead } = await admin
     .from('leads')
     .select(
-      'id, name, email, scorecard_score, scorecard_body_state, scorecard_section_scores, approach_response, investment_readiness, lead_quality, biological_sex, age_band, fat_storage, cycle_status',
+      'id, name, email, scorecard_score, scorecard_body_state, scorecard_section_scores, approach_response, investment_readiness, lead_quality, biological_sex, age_band, fat_storage, cycle_status, training_status',
     )
     .eq('id', leadId)
     .maybeSingle()
@@ -89,6 +89,7 @@ export async function POST(request: NextRequest) {
       age_band: lead.age_band as string | null,
       fat_storage: lead.fat_storage as string | null,
       cycle_status: lead.cycle_status as string | null,
+      training_status: lead.training_status as string | null,
       // Same text that goes onto the timeline, so the deterministic brief can
       // run its scope-flag scan over what they actually wrote.
       prep_notes: notesLines.join('\n'),
