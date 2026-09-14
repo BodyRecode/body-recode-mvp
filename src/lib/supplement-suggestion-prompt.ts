@@ -145,7 +145,7 @@ export function buildSupplementSuggestionUserPrompt(
   lines.push(`Name: ${p.firstName}`)
   if (p.age != null) lines.push(`Age: ${p.age}`)
   lines.push(`Sex: ${p.sex === 'unknown' ? 'not recorded (do not assume; if a sex-specific substance would otherwise fit, say the sex needs confirming)' : p.sex}`)
-  if (p.pattern) lines.push(`Fat Map pattern: ${p.pattern}`)
+  if (p.pattern) lines.push(p.pattern === 'Indeterminate' ? 'Fat Map pattern: no clear pattern yet (the read found none). Do not tailor to any one pattern.' : `Fat Map pattern: ${p.pattern}`)
   if (p.primaryGoal) lines.push(`Primary goal: ${p.primaryGoal}`)
   lines.push('')
 

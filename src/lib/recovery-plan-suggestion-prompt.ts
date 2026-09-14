@@ -122,7 +122,7 @@ export function buildRecoveryPlanUserPrompt(
 
   lines.push('CLIENT')
   lines.push(`Name: ${p.firstName}`)
-  if (p.pattern) lines.push(`Fat Map pattern: ${p.pattern}`)
+  if (p.pattern) lines.push(p.pattern === 'Indeterminate' ? 'Fat Map pattern: no clear pattern yet (the read found none). Do not tailor to any one pattern.' : `Fat Map pattern: ${p.pattern}`)
   lines.push('')
 
   lines.push('MEDICATIONS')

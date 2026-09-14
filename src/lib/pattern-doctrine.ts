@@ -46,6 +46,32 @@ export function isCanonicalPattern(v: unknown): v is CanonicalPattern {
   return typeof v === 'string' && (CANONICAL_PATTERNS as readonly string[]).includes(v)
 }
 
+/**
+ * What a READ may return: one of the four, or Indeterminate.
+ *
+ * Fat Map LOCKED v2.2: "Returned when nothing points cleanly at one of the
+ * four, and returned by design for a Ready body, because the patterns describe
+ * compensation and a Ready body has none to describe." The funnel typing engine
+ * has always returned it; until 14 Sep 2026 the read could not, and the database
+ * refused it, so an honest "nothing fits" was forced into a label.
+ *
+ * The MODEL is still four patterns. Indeterminate is a result, not a fifth
+ * pattern, so it is deliberately not in CANONICAL_PATTERNS and never appears as
+ * a competing read.
+ */
+export const INDETERMINATE = 'Indeterminate' as const
+export type ReadPattern = CanonicalPattern | typeof INDETERMINATE
+
+export function isReadPattern(v: unknown): v is ReadPattern {
+  return v === INDETERMINATE || isCanonicalPattern(v)
+}
+
+/** Plain words for a coach screen or a prompt. Never shown to a client as "Indeterminate". */
+export function readPatternLabel(v: string | null | undefined): string | null {
+  if (!v) return null
+  return v === INDETERMINATE ? 'No clear pattern yet' : v
+}
+
 /** What each pattern means, for the prompt. Kept short: the CFFS reasons, this only names. */
 export const PATTERN_DEFINITIONS: Record<CanonicalPattern, string> = {
   'Stress-Stored':
@@ -175,11 +201,25 @@ None. This client has no prior pattern read, so yours is the first.\n`
 
   return `PATTERN CLASSIFICATION (required)
 
-Body Recode names four patterns. These are doctrine and the vocabulary is fixed. You must classify this client as exactly one.
+Body Recode names four patterns. These are doctrine and the vocabulary is fixed. Classify this client as exactly one of the four, OR as Indeterminate under the rule below.
 
 ${definitions}
 ${incomingBlock}
 Patterns are read, not diagnosed, and they describe how a body is currently organising itself rather than a permanent type. Choose the pattern the convergent evidence best supports. Where two are plausible, choose the one the intake evidence supports most strongly and say in your rationale what would need to be true for the other.
+
+INDETERMINATE (Fat Map LOCKED v2.2). Return "Indeterminate" when, and only when, one of these is true:
+1. NOTHING POINTS CLEANLY AT ONE OF THE FOUR. No pattern's discriminator converges: the storage signals are scattered or low, and the accompanying signal that decides a pattern (limbs versus middle for Stress-Stored, timing for Insulin-Drift, cycle status and direction of travel for Estrogen-Shift, falling muscle and drive for Androgen-Decline) is absent for every pattern.
+2. A READY BODY. Body state is Post-Optimisation. The patterns describe compensation, and a Ready body has none to describe. Return Indeterminate by design, and do not treat this as a gap.
+3. THE ONLY SUPPORTED PATTERN IS RULED OUT OR UNCONFIRMED. The evidence converges only on a sex-specific pattern that the sex gate rules out, or that cannot be confirmed because sex at birth is unresolved, and none of the patterns that do apply has real support of its own.
+4. TOO LITTLE EVIDENCE TO READ. The questions that carry the discriminators were not answered, so no pattern can be supported from what is present.
+
+Indeterminate is NOT a hedge. If one pattern genuinely leads, even weakly, name it at "low" confidence: low means one pattern leads but the evidence is thin; Indeterminate means nothing leads. Never return Indeterminate to avoid a hard call, and never because two patterns are close (that is a named pattern with a competing read).
+
+When the result is Indeterminate:
+- pattern_competing_read names the pattern the evidence LEANS toward, if any, otherwise "None". It is never "Indeterminate".
+- pattern_rationale says which of the four conditions above applies and what the evidence does and does not show.
+- pattern_watch_for tells the coach the specific evidence that would settle a pattern and where it would come from (a re-measure, photos, a check-in signal, a question not yet answered). For a Ready body, say plainly that no pattern is expected.
+- pattern_confidence is how settled the absence of a single pattern is: high for a Ready body or clearly scattered signals, low where a pattern may emerge with more evidence.
 
 Set pattern_confidence honestly:
 - high: multiple independent signal domains converge and nothing meaningful contradicts

@@ -86,6 +86,16 @@ const READ_PHASES: Phase[] = [
         notes: 'SHIPPED 9 Sep 2026. runRead() in src/lib/cffs-read.ts takes structured answers and returns a CFFS: no database, no login, no client id, and no knowledge that a coaching application exists. generate-cffs is now a thin wrapper that gathers the data and calls it — 447 lines down to 310, and it no longer imports Anthropic, the model id, the prompts or the JSON extractor. Only `intake` is required; everything else sharpens the read and its absence is handled by the prompt rules rather than by refusing to run. PROVEN by running it on a person invented in a script with no database row, no client id and no login: full 21-field read in 130s, correctly typed Stress-Stored / Remediation / regulation Red off a high-stress, poor-sleep, late-eating profile. Nothing changed for Kade or his clients.',
       },
       {
+        id: 'read-no-clear-pattern',
+        title: 'The read can say no single pattern fits',
+        description: 'Indeterminate, as the locked Fat Map definitions allow, instead of forcing one of the four at low confidence.',
+        status: 'shipped',
+        shippedAt: '2026-09-14',
+        effort: 'M',
+        surfaces: ['src/lib/pattern-doctrine.ts', 'src/lib/cffs-prompt.ts', 'src/lib/cffs-read.ts', 'src/app/api/generate-cffs/route.ts', 'sql/2026-09-14_pattern_indeterminate.sql'],
+        notes: 'SHIPPED 14 Sep 2026. Four conditions, from LOCKED v2.2: nothing points cleanly; a Ready (Post-Optimisation) body by design; the only supported pattern is ruled out by the sex gate or unconfirmable because sex at birth is unresolved; the deciding questions unanswered. Explicitly not a hedge: a pattern that leads even weakly is named at low. The competing read becomes the lean. Database rules widened (run and verified), unrecognised pattern values now retried instead of failing the save, the new read is saved BEFORE the old one is archived (a failed save used to leave a client with no active read), the client record takes Indeterminate from the read, coach screens show "No clear pattern yet" and "Leaning toward", and the recovery and supplement prompts are told not to tailor. PROVEN with six real reads: scattered signals, sex unresolved with only Estrogen-Shift signals, and unanswered sections all returned Indeterminate; a clear Estrogen-Shift woman and a stress-heavy intake still named their patterns; a man with Estrogen-Shift-looking answers returned Indeterminate with no ruled-out competing read. Plus one full save end to end on a temporary client. BEFORE: Fat Map LOCKED v2.2 has an Indeterminate result: nothing points cleanly at one of the four, and by design for a Ready body. The funnel typing engine has always returned it; the read never could, and the database refused anything but the four, so an honest "nothing fits" was forced into a label. Matters more under Rey: a read from 30 to 40 questions will fit a clear pattern less often. Needs the database rules, the read rules (including the hormonal mismatch rule, which currently forces a low-confidence pattern), the client record, the coach screens and the two suggestion prompts that print the pattern.',
+      },
+      {
         id: 'minimum-question-set',
         title: 'The smallest set of questions that still gives a good read',
         description: 'Decide which of the 230 carry the read, which are enrichment, and what it may say on partial input.',
@@ -155,6 +165,14 @@ const READ_PHASES: Phase[] = [
         effort: 'M',
         surfaces: ['src/lib/progress-check-readiness.ts', 'src/lib/progress-check-dispatch.ts'],
         notes: 'There is NO time gate in the code at all today — the "12-week/84-day backstop" in the design notes was never built (verified 9 Sep, grep for 84 returns nothing). Keep the check-in gate: it is the weekly signal, not a coaching concept, and it exists so the big ask never arrives before the weekly one and displaces it. Drift may pull the re-read earlier since drift is computed from BR’s own signal; 12 weeks is the ceiling, not the schedule.',
+      },
+      {
+        id: 'progress-check-any-answers',
+        title: 'The Progress Check compares whatever answers exist',
+        description: 'One comparison engine behind both the coaching form (231 questions) and Rey\'s short re-ask (only what can change).',
+        status: 'planned',
+        effort: 'L',
+        notes: 'Added 14 Sep 2026 when the coaching Progress Check spec (231 of 245 intake questions re-asked, answered blind then revealed, disputes kept as their own record, 15 to 20 minutes) met the Rey spec (a ~10 minute re-ask of only what can change, the rest from 12 weeks of real data). Hard-wiring 231 would serve one and not the other. The comparison must work on any overlap between the last answers and the new ones, treat a question with no previous answer as a first answer rather than movement, and read change at the cluster level, not the item. Specs: 02_FEATURE_SPECS/2026-09-13_Progress_Check_Spec.md and the Rey spec section 14.',
       },
       {
         id: 'reread-generator',

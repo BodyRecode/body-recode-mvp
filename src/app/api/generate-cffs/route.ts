@@ -6,7 +6,7 @@ import { type BloodMarker } from '@/lib/blood-panel-prompt'
 import { runRead } from '@/lib/cffs-read'
 import { resolveHeightCm } from '@/lib/client-height'
 import { signedBaselinePhotoUrl } from '@/lib/baseline-photos'
-import { isCanonicalPattern, supersedes, type PatternSource } from '@/lib/pattern-doctrine'
+import { isReadPattern, supersedes, type PatternSource } from '@/lib/pattern-doctrine'
 import {
   sniffImageMediaType,
   describeImageFormat,
@@ -262,14 +262,10 @@ export async function runCFFSGenerationInternal(body: any): Promise<NextResponse
 
   const cffsData = result.cffs
 
-  // Archive any existing CFFS for this client
-  await admin
-    .from('cffs')
-    .update({ is_archived: true })
-    .eq('client_id', client_id)
-    .eq('is_archived', false)
-
-  // Save CFFS to database
+  // Save the new read FIRST, then archive the old one. The order used to be the
+  // other way round, so any save failure (a value the database refuses, a
+  // dropped connection) left the client with no active read at all. Found
+  // 14 Sep 2026 while widening what the pattern column accepts.
   const { data: cffs, error: cffsError } = await admin
     .from('cffs')
     .insert({ client_id, intake_id, ...(cffsData as Record<string, unknown>) })
@@ -278,16 +274,26 @@ export async function runCFFSGenerationInternal(body: any): Promise<NextResponse
 
   if (cffsError) {
     console.error('[CFFS] failed to save CFFS:', cffsError.message)
-    return NextResponse.json({ error: `Failed to save CFFS: ${cffsError.message}` }, { status: 500 })
+    return NextResponse.json({ error: `Failed to save CFFS: ${cffsError.message}. The previous read is still active.` }, { status: 500 })
   }
+
+  await admin
+    .from('cffs')
+    .update({ is_archived: true })
+    .eq('client_id', client_id)
+    .eq('is_archived', false)
+    .neq('id', cffs.id)
 
   // Resolve the pattern onto the client. The CFFS read supersedes a funnel
   // read because it draws on an order of magnitude more evidence, not because
   // it is newer. The per-generation read stays on the cffs row, so history
   // survives regeneration and "what did we think, when, and why" is always
-  // answerable.
+  // answerable. Indeterminate is stored too: a full read that finds no clear
+  // pattern supersedes a funnel label drawn from 25 answers, and leaving the
+  // funnel label in place would keep showing the coach a pattern the read
+  // could not support.
   const readPattern = (cffsData as Record<string, unknown>).pattern_classification
-  if (isCanonicalPattern(readPattern)) {
+  if (isReadPattern(readPattern)) {
     const { data: current } = await admin
       .from('clients')
       .select('pattern, pattern_source')

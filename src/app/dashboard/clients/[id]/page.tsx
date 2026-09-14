@@ -60,6 +60,7 @@ import { loadBlockProgress } from '@/lib/block-progress'
 import ClientPaymentsSection from '@/components/dashboard/client-payments-section'
 import HeightEditor from './height-editor'
 import { hormonalSafetyAlerts } from '@/lib/hormonal-safety-alerts'
+import { INDETERMINATE, readPatternLabel } from '@/lib/pattern-doctrine'
 import { getTotalQuestions } from '@/lib/intake-questions'
 
 export default async function ClientPage({ params }: { params: Promise<{ id: string }> }) {
@@ -537,7 +538,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     }
                   >
                     <Pill accent="teal">
-                      {client.pattern}
+                      {readPatternLabel(client.pattern)}
                       {client.pattern_source !== 'cffs' && ' (provisional)'}
                     </Pill>
                   </span>
@@ -1151,7 +1152,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               <p className="text-[10px] font-medium text-[#1B6DFC] mb-2">
                 Watch for
                 {activeCffs.pattern_competing_read && activeCffs.pattern_competing_read !== 'None'
-                  ? ` — competing read: ${activeCffs.pattern_competing_read}`
+                  ? activeCffs.pattern_classification === INDETERMINATE
+                    ? ` — leaning toward: ${activeCffs.pattern_competing_read}`
+                    : ` — competing read: ${activeCffs.pattern_competing_read}`
                   : ''}
               </p>
               <p className="text-[13px] text-[#43474F] leading-relaxed">{activeCffs.pattern_watch_for}</p>
@@ -1178,8 +1181,11 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 {activeCffs.pattern_classification && (
                   <div className="mt-4 pt-4 border-t border-[#E8EAEE]">
                     <p className="text-[10px] font-medium text-[#98A0AD] mb-2">Pattern Classification</p>
-                    <p className="text-lg font-bold text-[#141821] leading-tight mb-2">{activeCffs.pattern_classification}</p>
-                    {activeCffs.pattern_confidence && (
+                    <p className="text-lg font-bold text-[#141821] leading-tight mb-2">{readPatternLabel(activeCffs.pattern_classification)}</p>
+                    {activeCffs.pattern_classification === INDETERMINATE && activeCffs.pattern_competing_read && activeCffs.pattern_competing_read !== 'None' && (
+                      <p className="text-[12px] text-[#666D7A] -mt-1 mb-2">Leaning toward {activeCffs.pattern_competing_read}. See Watch for.</p>
+                    )}
+                    {activeCffs.pattern_confidence && activeCffs.pattern_classification !== INDETERMINATE && (
                       <div className="flex items-center gap-2">
                         <div className="w-1 h-3.5 bg-[#1B6DFC]" />
                         <p className="text-[12.5px] text-[#666D7A]">

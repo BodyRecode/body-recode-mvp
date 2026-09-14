@@ -2,6 +2,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import PrintTrigger from './print-trigger'
 import { brand } from "@/config/tenant";
+import { INDETERMINATE, readPatternLabel } from '@/lib/pattern-doctrine'
 import { getTotalQuestions } from '@/lib/intake-questions'
 
 const TEAL = '#1B6DFC'
@@ -167,17 +168,18 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
               </div>
 
               {/* Pattern sits with the state because the two labels are the
-                  whole read. The CFFS names one of the four canonical patterns
-                  and must justify it against whatever the funnel read first. */}
+                  whole read. The CFFS names one of the four canonical patterns,
+                  or no clear pattern (Indeterminate, Fat Map LOCKED v2.2), and
+                  must justify it against whatever the funnel read first. */}
               {cffs.pattern_classification && (
                 <div style={{ marginTop: 20, paddingTop: 20, borderTop: `1px solid ${CARD_BORDER}` }}>
                   <p style={{ fontSize: 9, fontWeight: 700, color: '#98A0AD', textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: 10 }}>
                     Pattern Classification
                   </p>
                   <p style={{ fontSize: 22, fontWeight: 800, color: INK, letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 8 }}>
-                    {cffs.pattern_classification}
+                    {readPatternLabel(cffs.pattern_classification)}
                   </p>
-                  {cffs.pattern_confidence && (
+                  {cffs.pattern_confidence && cffs.pattern_classification !== INDETERMINATE && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
                       <div style={{ width: 3, height: 14, background: TEAL, borderRadius: 2 }} />
                       <p style={{ fontSize: 12, fontWeight: 500, color: '#666666' }}>
@@ -198,7 +200,9 @@ export default async function CFFSReportPage({ params }: { params: Promise<{ id:
                       <p style={{ fontSize: 9, fontWeight: 700, color: '#1B6DFC', textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: 8 }}>
                         Watch for
                         {cffs.pattern_competing_read && cffs.pattern_competing_read !== 'None'
-                          ? ` — competing read: ${cffs.pattern_competing_read}`
+                          ? cffs.pattern_classification === INDETERMINATE
+                            ? ` — leaning toward: ${cffs.pattern_competing_read}`
+                            : ` — competing read: ${cffs.pattern_competing_read}`
                           : ''}
                       </p>
                       <p style={{ fontSize: 13, lineHeight: 1.7, color: '#43474F', margin: 0 }}>

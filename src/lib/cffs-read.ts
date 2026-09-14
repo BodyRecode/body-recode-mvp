@@ -50,6 +50,7 @@ import { extractFirstJsonObject } from '@/lib/extract-json'
 import { withTemporalContext } from '@/lib/temporal-context'
 import { type ImageMediaType } from '@/lib/image-media-type'
 import { CFFS_MODEL } from '@/lib/ai-models'
+import { isCanonicalPattern, isReadPattern } from '@/lib/pattern-doctrine'
 import { Intake } from '@/types'
 
 /** A baseline photo, already fetched and encoded. Fetching is the caller's job:
@@ -299,6 +300,19 @@ export async function runRead(input: CFFSReadInput): Promise<CFFSReadResult> {
       lastError = 'AI output missing body_state_classification'
       console.warn(`${tag} attempt ${attempt}/${ATTEMPTS}: ${lastError}`)
       continue
+    }
+
+    // The database accepts only these values, and a refused save used to cost
+    // the whole read. An unrecognised pattern is a content failure: retry.
+    if (candidate.pattern_classification != null && !isReadPattern(candidate.pattern_classification)) {
+      lastError = `AI returned an unrecognised pattern (${String(candidate.pattern_classification).slice(0, 40)})`
+      console.warn(`${tag} attempt ${attempt}/${ATTEMPTS}: ${lastError}`)
+      continue
+    }
+    // "No clear pattern" is never a competitor, and the competing read only
+    // accepts the four or None.
+    if (candidate.pattern_competing_read != null && !isCanonicalPattern(candidate.pattern_competing_read)) {
+      candidate.pattern_competing_read = 'None'
     }
 
     parsed = candidate

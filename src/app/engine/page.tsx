@@ -88,7 +88,7 @@ const CFFS_INPUTS = [
 
 const CFFS_OUTPUTS = [
   'body_state_classification',
-  'pattern_classification (one of four) + confidence',
+  'pattern_classification (one of four, or no clear pattern) + confidence',
   'pattern_rationale + competing read',
   'resolution_state',
   'client_context_summary',
