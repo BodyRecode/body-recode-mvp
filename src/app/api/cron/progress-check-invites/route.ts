@@ -20,6 +20,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { dispatchProgressCheckIfDue } from '@/lib/progress-check-dispatch'
+import { sendProgressCheckHeadsUpIfDue } from '@/lib/progress-check-heads-up'
 import { fromCoach } from '@/lib/email-shell'
 import { coach } from '@/config/tenant'
 
@@ -63,6 +64,19 @@ export async function GET(request: NextRequest) {
       held.push({ client: result.client, why: result.why })
   }
 
+  // A week's notice before a Progress Check (14 Sep 2026). Same daily run, same
+  // clock; capped separately so a heads-up can never crowd out a real check.
+  const headsUp: string[] = []
+  for (const c of clients ?? []) {
+    if (headsUp.length >= MAX_PER_RUN) break
+    try {
+      const r = await sendProgressCheckHeadsUpIfDue(admin, c.id)
+      if (r.sent) headsUp.push(r.client)
+    } catch (e) {
+      console.error('progress-check-invites: heads-up failed (non-fatal)', c.id, e)
+    }
+  }
+
   // The backstop firing at all means the event missed one, which is worth
   // knowing about rather than quietly patching over.
   if (process.env.RESEND_API_KEY && sent.length > 0) {
@@ -79,5 +93,5 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  return NextResponse.json({ ok: true, sent, held })
+  return NextResponse.json({ ok: true, sent, held, headsUp })
 }

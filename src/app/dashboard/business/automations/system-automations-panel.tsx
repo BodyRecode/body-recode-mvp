@@ -15,6 +15,13 @@ const AUTOMATIC_AUTOMATIONS = [
     steps: 2,
   },
   {
+    id: 'progress-check-heads-up',
+    name: 'Progress Check Heads-up - a week before',
+    description: 'She gets a week\'s notice before her Progress Check: what it is, about 15 to 20 minutes, have scales, a tape measure and somewhere for three photos ready. Once per cycle, only while no check has been raised since her last read, and not when the check is already due within a day. Same clock as the check: 12 weeks from her last read, or earlier when a dated block reaches its final week.',
+    trigger: 'GET /api/cron/progress-check-invites (daily 8am Brisbane), after the Progress Check backstop',
+    steps: 1,
+  },
+  {
     id: 'progress-read-ready',
     name: 'Progress Read Ready - Client Email (coach click)',
     description: `Not automatic. When you click Notify her on a published Progress Read (client tab Progress Read), she gets "your Progress Read is ready" linking to her Progress Read in the portal, BCC to you. Publishing alone sends nothing. Logged to her communications; the button then reads Notify again.`,

@@ -27,6 +27,7 @@ export type ClientCommunicationKind =
   | 'coach_message_reply_sms'
   | 'progress_check_invite'
   | 'progress_read_ready'
+  | 'progress_check_heads_up'
 
 export const COMMUNICATION_KIND_LABELS: Record<ClientCommunicationKind, string> = {
   subscription_link: 'Subscription link',
@@ -50,6 +51,7 @@ export const COMMUNICATION_KIND_LABELS: Record<ClientCommunicationKind, string> 
   coach_message_reply_sms: 'Coach reply SMS nudge (retired 2026-07-29)',
   progress_check_invite: 'Progress Check invite',
   progress_read_ready: 'Progress Read ready',
+  progress_check_heads_up: 'Progress Check heads-up (a week before)',
 }
 
 export interface LogClientCommunicationInput {
