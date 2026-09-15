@@ -12,6 +12,7 @@ import CopyField from './copy-field'
 import Link from 'next/link'
 import { MONO_FONT, Avatar } from '@/components/dashboard/ui'
 import { buildLeadBrief } from '@/lib/lead-brief'
+import { CYCLE_STATUS_WORDS, type CycleStatus } from '@/lib/fat-map-profile'
 import BriefCard from './brief-card'
 import PrepAnswers from '@/components/prep-answers'
 
@@ -360,7 +361,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                 ['Body state', lead.scorecard_body_state],
                 ['Pattern', lead.scorecard_profile ? `${lead.scorecard_profile}${lead.scorecard_profile_confidence === 'low' ? ' (provisional)' : ''}` : null],
                 ['Sex', lead.biological_sex], ['Age band', lead.age_band?.replace('_', '-')],
-                ['Fat storage', lead.fat_storage?.replace('_', ' ')], ['Cycle', lead.cycle_status],
+                ['Fat storage', lead.fat_storage?.replace('_', ' ')], ['Periods', lead.cycle_status ? (CYCLE_STATUS_WORDS[lead.cycle_status as CycleStatus] ?? lead.cycle_status) : null],
                 ['Approach', lead.approach_response], ['Investment', lead.investment_readiness],
               ].filter(([, v]) => v).map(([k, v]) => (
                 <div key={k as string} className="flex justify-between gap-3 border-b border-[#F4F4F4] py-1">

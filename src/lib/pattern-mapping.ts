@@ -46,6 +46,8 @@ export function isMenopausalBand(gender: Gender, cycleStatus?: string | null, ag
   if (gender !== 'female') return false
   return cycleStatus === 'perimenopausal'
     || cycleStatus === 'postmenopausal'
+    || cycleStatus === 'treatment_ovaries_out'
+    || (cycleStatus === 'irregular' && ageBand === '35_44')
     || ageBand === '45_54'
     || ageBand === '55_plus'
 }

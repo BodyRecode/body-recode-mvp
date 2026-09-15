@@ -32,6 +32,8 @@
  * first read, not a verdict.
  */
 
+import { CYCLE_STATUS_WORDS } from '@/lib/fat-map-profile'
+
 /** The four canonical patterns. Scorecard/doctrine names are authoritative. */
 export const CANONICAL_PATTERNS = [
   'Stress-Stored',
@@ -212,12 +214,9 @@ const FUNNEL_DIRECTION_WORDS: Record<string, string> = {
   always_even: 'It has always been fairly even all over',
   unsure: 'She is not sure',
 }
-const FUNNEL_CYCLE_WORDS: Record<string, string> = {
-  regular: 'Regular cycle',
-  irregular: 'Irregular cycle',
-  perimenopausal: 'Perimenopausal',
-  postmenopausal: 'Postmenopausal',
-}
+// Her periods as she described them. "Perimenopausal" is an older answer she
+// could self-select before 15 Sep 2026; the rest describe what her periods do.
+const FUNNEL_CYCLE_WORDS: Record<string, string> = CYCLE_STATUS_WORDS
 
 /**
  * The block that puts her pre-reveal answers in front of the read. Empty when
@@ -232,7 +231,7 @@ export function funnelAnswersBlock(answers?: FunnelAnswers | null): string {
   const cycle = answers.cycleStatus ? FUNNEL_CYCLE_WORDS[answers.cycleStatus] : null
   if (storage) lines.push(`Where she tends to store fat: ${storage}`)
   if (direction) lines.push(`How that has changed over the last few years: ${direction}`)
-  if (cycle) lines.push(`Cycle, as she selected it: ${cycle} (her own selection; never label her with it, per HORMONAL STATUS INTEGRATION rule 4)`)
+  if (cycle) lines.push(`Periods, as she selected it: ${cycle} (her own selection; never label her with it, per HORMONAL STATUS INTEGRATION rule 4)`)
   if (lines.length === 0) return ''
   return `
 HER OWN SCORECARD ANSWERS, GIVEN BEFORE ANY PATTERN WAS SHOWN TO HER

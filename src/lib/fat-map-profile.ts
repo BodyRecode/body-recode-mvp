@@ -42,7 +42,69 @@ export type Profile = 'Stress-Stored' | 'Insulin-Drift' | 'Estrogen-Shift' | 'An
 export type BiologicalSex = 'M' | 'F'
 export type AgeBand = 'under_35' | '35_44' | '45_54' | '55_plus'
 export type FatStorage = 'midsection' | 'posterior' | 'hips_thighs' | 'all_over' | 'low_tone'
-export type CycleStatus = 'regular' | 'irregular' | 'perimenopausal' | 'postmenopausal'
+/**
+ * "Which best describes your periods now?" (15 Sep 2026). Replaced "Where are
+ * you in your cycle?", which had no true answer for a woman with no periods who
+ * is not past menopause (a hysterectomy, a hormonal IUD, pregnancy) and asked
+ * her to label herself perimenopausal or postmenopausal, a clinical call we
+ * never make (03_ESTROGEN_SHIFT section 10). 'perimenopausal' is no longer
+ * offered but stays valid for the leads that already hold it; 'postmenopausal'
+ * is now the code for "no period for 12 months or more".
+ */
+export type CycleStatus =
+  | 'regular' | 'irregular' | 'perimenopausal' | 'postmenopausal'
+  | 'treatment_ovaries_out' | 'treatment_ovaries_kept' | 'treatment_unsure'
+  | 'contraception' | 'pregnant_postpartum' | 'none_other'
+
+export const CYCLE_STATUSES: CycleStatus[] = [
+  'regular', 'irregular', 'perimenopausal', 'postmenopausal',
+  'treatment_ovaries_out', 'treatment_ovaries_kept', 'treatment_unsure',
+  'contraception', 'pregnant_postpartum', 'none_other',
+]
+
+/** What a form offers. 'treatment' is never saved: it opens the ovaries question. */
+export type CycleChoice = 'regular' | 'irregular' | 'postmenopausal' | 'treatment' | 'contraception' | 'pregnant_postpartum' | 'none_other'
+export const CYCLE_QUESTION = 'Which best describes your periods now?'
+export const CYCLE_CHOICE_OPTIONS: { value: CycleChoice; label: string }[] = [
+  { value: 'regular', label: 'Regular periods' },
+  { value: 'irregular', label: 'Irregular periods' },
+  { value: 'postmenopausal', label: 'No period for 12 months or more, naturally' },
+  { value: 'treatment', label: 'Stopped after surgery or medical treatment' },
+  { value: 'contraception', label: 'Stopped or changed by hormonal contraception' },
+  { value: 'pregnant_postpartum', label: 'Pregnant, or had a baby in the last 12 months' },
+  { value: 'none_other', label: 'No periods for another reason' },
+]
+export type OvariesAnswer = 'out' | 'kept' | 'unsure'
+export const OVARIES_QUESTION = 'Were your ovaries removed, or did treatment stop them working?'
+export const OVARIES_OPTIONS: { value: OvariesAnswer; label: string }[] = [
+  { value: 'out', label: 'Yes' },
+  { value: 'kept', label: 'No, they still work' },
+  { value: 'unsure', label: 'I am not sure' },
+]
+
+/** The saved answer, or null while the ovaries question is still open. */
+export function cycleStatusFromChoice(choice: CycleChoice | null, ovaries: OvariesAnswer | null): CycleStatus | null {
+  if (!choice) return null
+  if (choice !== 'treatment') return choice
+  if (ovaries === 'out') return 'treatment_ovaries_out'
+  if (ovaries === 'kept') return 'treatment_ovaries_kept'
+  if (ovaries === 'unsure') return 'treatment_unsure'
+  return null
+}
+
+/** Coach-facing words for a saved answer, including the retired ones. */
+export const CYCLE_STATUS_WORDS: Record<CycleStatus, string> = {
+  regular: 'Regular periods',
+  irregular: 'Irregular periods',
+  perimenopausal: 'Selected "Perimenopausal" (older question)',
+  postmenopausal: 'No period for 12 months or more',
+  treatment_ovaries_out: 'Periods stopped after surgery or treatment, ovaries removed or stopped working',
+  treatment_ovaries_kept: 'Periods stopped after surgery or treatment, ovaries still working',
+  treatment_unsure: 'Periods stopped after surgery or treatment, not sure about her ovaries',
+  contraception: 'Periods stopped or changed by hormonal contraception',
+  pregnant_postpartum: 'Pregnant, or had a baby in the last 12 months',
+  none_other: 'No periods for another reason (worth a conversation)',
+}
 
 /**
  * Direction of travel. The discriminator `03_ESTROGEN_SHIFT.md` §4 names for
@@ -276,6 +338,25 @@ export function typeFatMapProfile(
   state: StateName,
   signals: ProfileSignals = {}
 ): ProfileResult {
+  const result = typeUncapped(scores, state, signals)
+  // Answers the doctrine says change the picture entirely are held at low
+  // confidence, whatever the pattern (03_ESTROGEN_SHIFT sections 4 and 7):
+  // ovaries removed or stopped by treatment, not knowing whether they were,
+  // pregnancy or a birth in the last year, and periods stopped for a reason we
+  // were not told. Indeterminate keeps its definite "nothing points cleanly".
+  const heldLow = signals.sex === 'F' && (
+    signals.cycleStatus === 'treatment_ovaries_out' || signals.cycleStatus === 'treatment_unsure' ||
+    signals.cycleStatus === 'pregnant_postpartum' || signals.cycleStatus === 'none_other'
+  )
+  if (heldLow && result.profile !== 'Indeterminate') return { profile: result.profile, confidence: 'low' }
+  return result
+}
+
+function typeUncapped(
+  scores: SectionScores,
+  state: StateName,
+  signals: ProfileSignals
+): ProfileResult {
   const { sex, ageBand, fatStorage, cycleStatus } = signals
   const floor = pickFloor(scores)
   const pattern = patternFromScores(scores, floor, state)
@@ -285,9 +366,16 @@ export function typeFatMapProfile(
     return pattern
   }
 
+  // Irregular periods at 35 to 44 count, because irregular is the transition
+  // (03 section 4) and "Perimenopausal" is no longer offered to self-select.
+  // Under 35 irregular periods have too many other causes to count. Ovaries
+  // removed or stopped by treatment is "a surgical or pharmacological
+  // equivalent" of menopause in the LOCKED Estrogen-Shift definition.
   const femaleMenopausal =
     sex === 'F' &&
     (cycleStatus === 'perimenopausal' || cycleStatus === 'postmenopausal' ||
+      cycleStatus === 'treatment_ovaries_out' ||
+      (cycleStatus === 'irregular' && ageBand === '35_44') ||
       ageBand === '45_54' || ageBand === '55_plus')
 
   // Resolve a profile against biological sex. The two hard-gated zones
@@ -322,8 +410,10 @@ export function typeFatMapProfile(
   // support it. §4: "Estrogen-Shift arrives at the middle FROM the hips and
   // thighs. Stress-Stored was central from the start." So a woman who says it
   // has always been central must not be routed to Estrogen-Shift by the
-  // menopausal-band fallback below.
-  const centralFromTheStart = sex === 'F' && signals.storageDirection === 'always_central'
+  // menopausal-band fallback below. "It has always been fairly even" is the
+  // same argument (15 Sep 2026): nothing ever moved, so there is no arrival at
+  // the middle to read.
+  const centralFromTheStart = sex === 'F' && (signals.storageDirection === 'always_central' || signals.storageDirection === 'always_even')
 
   // 'all_over' is an admitted failure to localise, not a storage signal, and v2.0
   // explicitly retires it as an insulin tell. It must not lead the read.

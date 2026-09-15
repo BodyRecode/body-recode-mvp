@@ -98,6 +98,7 @@ export interface Intake {
   hormone_therapy?: string | null
   hormone_therapy_detail?: string | null
   period_pattern?: string | null
+  ovaries_after_treatment?: string | null
   hormonal_contraception?: string | null
   pregnant_or_postpartum?: string | null
   androgen_use?: string | null

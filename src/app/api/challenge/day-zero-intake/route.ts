@@ -10,6 +10,7 @@ import {
   type AgeBand,
   type FatStorage,
   type CycleStatus,
+  CYCLE_STATUSES,
 } from '@/lib/fat-map-profile'
 
 // POST /api/challenge/day-zero-intake
@@ -84,7 +85,7 @@ export async function POST(request: NextRequest) {
   const sexVal: BiologicalSex | null = biological_sex === 'M' || biological_sex === 'F' ? biological_sex : null
   const ageVal: AgeBand | null = ['under_35', '35_44', '45_54', '55_plus'].includes(age_band as string) ? (age_band as AgeBand) : null
   const storageVal: FatStorage | null = ['midsection', 'posterior', 'hips_thighs', 'all_over', 'low_tone'].includes(fat_storage as string) ? (fat_storage as FatStorage) : null
-  const cycleVal: CycleStatus | null = sexVal === 'F' && ['regular', 'irregular', 'perimenopausal', 'postmenopausal'].includes(cycle_status as string) ? (cycle_status as CycleStatus) : null
+  const cycleVal: CycleStatus | null = sexVal === 'F' && CYCLE_STATUSES.includes(cycle_status as CycleStatus) ? (cycle_status as CycleStatus) : null
   // Women only. Sets the Estrogen-Shift phase from what she actually said.
   const directionVal = (sexVal === 'F' && ['gluteofemoral', 'to_middle', 'always_central', 'always_even', 'unsure'].includes(storage_direction as string)
     ? storage_direction : null) as 'gluteofemoral' | 'to_middle' | 'always_central' | 'always_even' | 'unsure' | null

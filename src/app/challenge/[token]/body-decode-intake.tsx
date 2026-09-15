@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { brand } from "@/config/tenant";
+import { CYCLE_QUESTION, CYCLE_CHOICE_OPTIONS, OVARIES_QUESTION, OVARIES_OPTIONS, cycleStatusFromChoice, type CycleChoice, type OvariesAnswer } from '@/lib/fat-map-profile'
 
 // Mirrors the public scorecard SECTIONS structure verbatim. Same 5 sections,
 // same 1-3 scoring, same wording. An enroller's signal here reads the same
@@ -114,7 +115,6 @@ const ASCENSION_INTENT_OPTIONS: { value: QualifierAnswer; label: string }[] = [
 type BiologicalSex = 'M' | 'F'
 type AgeBand = 'under_35' | '35_44' | '45_54' | '55_plus'
 type FatStorage = 'midsection' | 'posterior' | 'hips_thighs' | 'all_over' | 'low_tone'
-type CycleStatus = 'regular' | 'irregular' | 'perimenopausal' | 'postmenopausal'
 
 const SEX_OPTIONS: { value: BiologicalSex; label: string }[] = [
   { value: 'M', label: 'Male' },
@@ -144,12 +144,6 @@ const DIRECTION_OPTIONS: { value: StorageDirection; label: string }[] = [
   { value: 'unsure', label: 'I am not sure' },
 ]
 
-const CYCLE_OPTIONS: { value: CycleStatus; label: string }[] = [
-  { value: 'regular', label: 'Regular cycle' },
-  { value: 'irregular', label: 'Irregular cycle' },
-  { value: 'perimenopausal', label: 'Perimenopausal' },
-  { value: 'postmenopausal', label: 'Postmenopausal' },
-]
 
 export interface IntakeResult {
   score: number
@@ -287,7 +281,9 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
   const [sex, setSex] = useState<BiologicalSex | null>(knownSex)
   const [age, setAge] = useState<AgeBand | null>(null)
   const [storage, setStorage] = useState<FatStorage | null>(null)
-  const [cycle, setCycle] = useState<CycleStatus | null>(null)
+  const [cycleChoice, setCycleChoice] = useState<CycleChoice | null>(null)
+  const [ovaries, setOvaries] = useState<OvariesAnswer | null>(null)
+  const cycle = cycleStatusFromChoice(cycleChoice, ovaries)
   const [direction, setDirection] = useState<StorageDirection | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
@@ -550,12 +546,22 @@ export default function BodyDecodeIntakeForm({ token, onComplete, known, knownSe
               )}
               {!known.cycle && (
                 <>
-                  <p style={{ fontSize: '14px', fontWeight: 700, color: '#141821', marginBottom: '10px' }}>Cycle status</p>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
-                    {CYCLE_OPTIONS.map(o => (
-                      <PillOption key={o.value} selected={cycle === o.value} label={o.label} onClick={() => setCycle(o.value)} compact />
+                  <p style={{ fontSize: '14px', fontWeight: 700, color: '#141821', marginBottom: '10px' }}>{CYCLE_QUESTION}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {CYCLE_CHOICE_OPTIONS.map(o => (
+                      <PillOption key={o.value} selected={cycleChoice === o.value} label={o.label} onClick={() => { setCycleChoice(o.value); setOvaries(null) }} compact />
                     ))}
                   </div>
+                  {cycleChoice === 'treatment' && (
+                    <>
+                      <p style={{ fontSize: '14px', fontWeight: 700, color: '#141821', margin: '18px 0 10px' }}>{OVARIES_QUESTION}</p>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
+                        {OVARIES_OPTIONS.map(o => (
+                          <PillOption key={o.value} selected={ovaries === o.value} label={o.label} onClick={() => setOvaries(o.value)} compact />
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </>
               )}
             </div>

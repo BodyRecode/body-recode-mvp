@@ -16,6 +16,7 @@ import {
   type AgeBand,
   type FatStorage,
   type CycleStatus,
+  CYCLE_STATUSES,
 } from '@/lib/fat-map-profile'
 import { appUrl } from '@/lib/app-url'
 import { fireMetaCapiEvent, extractClientContext } from '@/lib/meta-capi'
@@ -108,7 +109,7 @@ export async function POST(request: NextRequest) {
   const ageVal: AgeBand | null = ['under_35', '35_44', '45_54', '55_plus'].includes(age_band as string) ? (age_band as AgeBand) : null
   const storageVal: FatStorage | null = ['midsection', 'posterior', 'hips_thighs', 'all_over', 'low_tone'].includes(fat_storage as string) ? (fat_storage as FatStorage) : null
   // Cycle status only applies to females.
-  const cycleVal: CycleStatus | null = sexVal === 'F' && ['regular', 'irregular', 'perimenopausal', 'postmenopausal'].includes(cycle_status as string) ? (cycle_status as CycleStatus) : null
+  const cycleVal: CycleStatus | null = sexVal === 'F' && CYCLE_STATUSES.includes(cycle_status as CycleStatus) ? (cycle_status as CycleStatus) : null
 
   // Direction of travel. Women only, and the discriminator the doctrine names
   // for Estrogen-Shift. Null for men and for anyone who answered before it

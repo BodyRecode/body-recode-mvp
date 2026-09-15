@@ -4,9 +4,10 @@ import { useState, type ReactNode } from 'react'
 import { useSearchParams } from 'next/navigation'
 import {
   sectionsFor, TRAINING_OPTIONS, SEX_OPTIONS, AGE_OPTIONS, STORAGE_OPTIONS, DIRECTION_OPTIONS,
-  CYCLE_OPTIONS, START_OPTIONS, SPENT_OPTIONS, WHERE_OPTIONS, VOICE_OPTIONS, PRICE_REACTION_OPTIONS,
+  CYCLE_QUESTION, CYCLE_CHOICE_OPTIONS, OVARIES_QUESTION, OVARIES_OPTIONS, START_OPTIONS, SPENT_OPTIONS, WHERE_OPTIONS, VOICE_OPTIONS, PRICE_REACTION_OPTIONS,
   PRICE_YEAR, PRICE_MONTH, PRICE_WEEK, type TrainingStatus, type SectionKey,
 } from '@/lib/rey-founding'
+import { cycleStatusFromChoice, type CycleChoice, type OvariesAnswer } from '@/lib/fat-map-profile'
 
 const BLUE = '#1B6DFC'
 const BLUE_DARK = '#1056D6'
@@ -102,7 +103,9 @@ export default function FoundingFlow() {
   const [age, setAge] = useState<string | null>(null)
   const [storage, setStorage] = useState<string | null>(null)
   const [direction, setDirection] = useState<string | null>(null)
-  const [cycle, setCycle] = useState<string | null>(null)
+  const [cycleChoice, setCycleChoice] = useState<CycleChoice | null>(null)
+  const [ovaries, setOvaries] = useState<OvariesAnswer | null>(null)
+  const cycle = cycleStatusFromChoice(cycleChoice, ovaries)
   const [start, setStart] = useState<string | null>(null)
   const [spent, setSpent] = useState<string | null>(null)
   const [where, setWhere] = useState<string | null>(null)
@@ -354,7 +357,10 @@ export default function FoundingFlow() {
         {female && (
           <>
             <Question title="Has where it sits changed over the last few years?" options={DIRECTION_OPTIONS} value={direction} onChange={setDirection} />
-            <Question title="Where are you in your cycle?" options={CYCLE_OPTIONS} value={cycle} onChange={setCycle} grid />
+            <Question title={CYCLE_QUESTION} options={CYCLE_CHOICE_OPTIONS} value={cycleChoice} onChange={v => { setCycleChoice(v); setOvaries(null) }} />
+            {cycleChoice === 'treatment' && (
+              <Question title={OVARIES_QUESTION} options={OVARIES_OPTIONS} value={ovaries} onChange={setOvaries} grid />
+            )}
           </>
         )}
       </Part>

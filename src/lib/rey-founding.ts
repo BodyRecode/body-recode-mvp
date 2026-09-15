@@ -112,12 +112,9 @@ export const DIRECTION_OPTIONS = [
   { value: 'unsure', label: 'I am not sure' },
 ] as const
 
-export const CYCLE_OPTIONS = [
-  { value: 'regular', label: 'Regular cycle' },
-  { value: 'irregular', label: 'Irregular cycle' },
-  { value: 'perimenopausal', label: 'Perimenopausal' },
-  { value: 'postmenopausal', label: 'Postmenopausal' },
-] as const
+// Her periods, and the ovaries follow-up when they stopped after surgery or
+// treatment. One definition shared with the scorecard and the Body Decode.
+export { CYCLE_QUESTION, CYCLE_CHOICE_OPTIONS, OVARIES_QUESTION, OVARIES_OPTIONS } from '@/lib/fat-map-profile'
 
 // ── The four unscored questions ─────────────────────────────────────────
 
@@ -153,6 +150,8 @@ export const PRICE_REACTION_OPTIONS = [
   { value: 'too_much', label: 'Too much for me' },
 ] as const
 
+import { CYCLE_STATUSES } from '@/lib/fat-map-profile'
+
 const valuesOf = <T extends readonly { value: string }[]>(opts: T) => opts.map(o => o.value) as string[]
 export const ALLOWED = {
   training: valuesOf(TRAINING_OPTIONS),
@@ -160,7 +159,7 @@ export const ALLOWED = {
   age: valuesOf(AGE_OPTIONS),
   storage: valuesOf(STORAGE_OPTIONS),
   direction: valuesOf(DIRECTION_OPTIONS),
-  cycle: valuesOf(CYCLE_OPTIONS),
+  cycle: CYCLE_STATUSES as string[],
   start: valuesOf(START_OPTIONS),
   spent: valuesOf(SPENT_OPTIONS),
   where: valuesOf(WHERE_OPTIONS),

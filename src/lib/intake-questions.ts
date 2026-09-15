@@ -83,7 +83,12 @@ export const INTAKE_SECTIONS: Section[] = [
       { id: 'sex_at_birth', text: 'Sex recorded at birth', type: 'select', options: ['Female', 'Male', 'Intersex', "I'd rather talk this through with my coach"], required: true },
       { id: 'hormone_therapy', text: 'Are you currently taking any hormone therapy?', type: 'select', options: ['None', 'Menopausal hormone therapy (HRT)', 'Testosterone therapy', 'Gender-affirming hormones', 'Other'], required: true },
       { id: 'hormone_therapy_detail', text: 'Tell us about it: what you take, and roughly how long you have been on it.', type: 'text', required: false, showIf: { id: 'hormone_therapy', notIn: ['None', ''] } },
-      { id: 'period_pattern', text: 'Which best describes your periods now?', type: 'select', options: ['Regular', 'Irregular', 'None for 12 months or more', 'Stopped after surgery', 'Suppressed by contraception', 'Not applicable'], required: true, showIf: { id: 'sex_at_birth', notIn: ['Male'] } },
+      // Split 15 Sep 2026. "Stopped after surgery" covered a hysterectomy that
+      // keeps the ovaries (hormones unchanged, just no bleed) and one that
+      // removes them (a surgical menopause) as if they were the same. Treatment
+      // such as pelvic radiotherapy or chemotherapy can also stop the ovaries.
+      { id: 'period_pattern', text: 'Which best describes your periods now?', type: 'select', options: ['Regular', 'Irregular', 'None for 12 months or more', 'Stopped after surgery or medical treatment', 'Suppressed by contraception', 'None for another reason', 'Not applicable'], required: true, showIf: { id: 'sex_at_birth', notIn: ['Male'] } },
+      { id: 'ovaries_after_treatment', text: 'Were your ovaries removed, or did treatment stop them working?', type: 'select', options: ['Yes', 'No, they still work', 'I am not sure'], required: true, showIf: { id: 'period_pattern', in: ['Stopped after surgery or medical treatment'] } },
       { id: 'hormonal_contraception', text: 'Are you using hormonal contraception?', type: 'select', options: ['No', 'Pill', 'Hormonal IUD', 'Implant', 'Injection', 'Other', 'Not applicable'], required: true, showIf: { id: 'sex_at_birth', notIn: ['Male'] } },
       { id: 'pregnant_or_postpartum', text: 'Are you pregnant now, or have you given birth in the last 12 months?', type: 'select', options: ['No', 'Yes, pregnant now', 'Yes, given birth in the last 12 months', 'Not applicable'], required: true, showIf: { id: 'sex_at_birth', notIn: ['Male'] } },
       // Added 2026-09-14. Estrogen-Shift is decided by cycle status AND the
