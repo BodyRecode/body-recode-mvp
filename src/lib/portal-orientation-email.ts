@@ -37,17 +37,22 @@ function inlinePng(slug: string): string {
 }
 
 /**
- * Portal Orientation email. Fires automatically when the client submits their
+ * Portal Orientation email.
+ *
+ * The mockups are drawn by scripts/generate-portal-mockups.py. Rerun it when
+ * the palette or the section names change: on 16 Sep 2026 a client received
+ * this email carrying pictures of the retired dark-teal portal, drawn in May,
+ * one of them greeting her by another client's name. Fires automatically when the client submits their
  * baseline (last onboarding step), so they have time to read through the portal
  * while the coach builds their program.
  *
  * Includes 3 PIL-rendered mockups (saved at /public/email-assets/) showing the
- * portal landing, Resources hub, and Foundational Reading layout.
+ * portal home, the Your portal menu, and the Foundational Read layout.
  *
  * Visual tour:
- *   1. Portal landing (Welcome screen, weekly check-in / reading / resources cards)
- *   2. Resources hub (the 6-card menu)
- *   3. Foundational Reading (cream/black premium deliverable)
+ *   1. Portal home (This week, Your Read, Your portal, From your coach)
+ *   2. Your portal (the six-card menu)
+ *   3. Foundational Read (dark hero, white cards, as reading-hero-shell renders it)
  */
 export function buildPortalOrientationEmail({
   firstName,
@@ -80,19 +85,19 @@ ${mockup('portal-landing', 'Portal home page mockup')}
 ${emailBody(`When you sign in, you land here. The page is split into sections so you always know what is current.`)}
               <ul style="padding-left:18px;margin:0 0 16px;color:#6B6B6B;">
                 <li style="margin-bottom:6px;"><strong style="color:#1A1A1A;">This week</strong>: your weekly check-in (when the window is open) or a status note when it is not</li>
-                <li style="margin-bottom:6px;"><strong style="color:#1A1A1A;">Your read</strong>: your Foundational Read appears here once it is ready</li>
-                <li style="margin-bottom:6px;"><strong style="color:#1A1A1A;">Resources</strong>: the all-in-one menu shown next</li>
+                <li style="margin-bottom:6px;"><strong style="color:#1A1A1A;">Your Read</strong>: your Foundational Read appears here once it is ready</li>
+                <li style="margin-bottom:6px;"><strong style="color:#1A1A1A;">Your portal</strong>: the all-in-one menu shown next<br/><strong style="color:#1A1A1A;">From your coach</strong>: notes and replies from me</li>
               </ul>
 
-${emailEyebrow('02 · Resources', '#1A1A1A')}
-${mockup('portal-resources', 'Portal resources hub mockup')}
+${emailEyebrow('02 · Your Portal', '#1A1A1A')}
+${mockup('portal-resources', 'Portal menu mockup')}
 ${emailBody(`Six cards, one for each thing you might need beyond your weekly check-in and program:`)}
               <ul style="padding-left:18px;margin:0 0 16px;color:#6B6B6B;">
                 <li style="margin-bottom:6px;"><strong style="color:#1A1A1A;">Your progress</strong>: measurements over time, side by side with your starting baseline</li>
                 <li style="margin-bottom:6px;"><strong style="color:#1A1A1A;">Your reads</strong>: every Foundational Read we generate for you, current and archived</li>
                 <li style="margin-bottom:6px;"><strong style="color:#1A1A1A;">Glossary</strong>: plain-language definitions of every term you hear from me. RPE, body state, regulation, recovery margin, all of it</li>
                 <li style="margin-bottom:6px;"><strong style="color:#1A1A1A;">Practical guides</strong>: short, actionable. Sleep hygiene, stress regulation, pre-session prep, post-session recovery, weekly structure</li>
-                <li style="margin-bottom:6px;"><strong style="color:#1A1A1A;">Message your coach</strong>: a non-urgent message form. I reply by email. For anything urgent, the WhatsApp link is at the bottom of the portal</li>
+                <li style="margin-bottom:6px;"><strong style="color:#1A1A1A;">Messages</strong>: a non-urgent message form. I reply by email. For anything urgent, the WhatsApp link is at the bottom of the portal</li>
                 <li style="margin-bottom:0;"><strong style="color:#1A1A1A;">Account and service</strong>: update your contact details, request a pause, refer a friend, download all your data</li>
               </ul>
 

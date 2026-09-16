@@ -1,356 +1,204 @@
 #!/usr/bin/env python3
 """
-Generates the 3 mockup images embedded in the Portal Orientation email.
+The three mockups embedded in the Portal Orientation email.
 
-Style brief: phone-frame silhouettes against the locked palette, evocative not
-literal. No real client data. Don't need regenerating when the portal UI changes
-because they don't claim pixel-perfect accuracy, they communicate WHAT IS THERE.
+    python3 scripts/generate-portal-mockups.py
 
-Outputs to ~/body-recode-mvp/public/email-assets/
-  portal-landing.png
-  portal-resources.png
-  portal-reading.png
+WHY THIS WAS REWRITTEN, 16 Sep 2026. Kim Hamilton received the orientation
+email and the pictures in it were of a portal that no longer exists. They were
+drawn on 7 May in the dark palette with a teal accent, which was retired on
+21 May for Pure White / Graphite Black / Signal Blue, and they showed a card
+stack and labels the portal has since replaced twice. One of them also greeted
+the reader as "Samantha", a real client, in an email sent to everyone else.
 
-Each rendered at 2x density (e.g. 1200x900) so it looks sharp on retina email
-clients. Email HTML references at width=600 (logical width) for half-density.
+The rule the old file set itself still holds and is worth keeping: these are
+evocative, not pixel-perfect. They communicate WHAT IS IN THERE, so they do not
+need redrawing every time a margin moves. They DO need redrawing when the
+palette changes or the sections are renamed, which is what happened here.
+
+No client names, no real data. Output lands in public/email-assets/ and is
+inlined as base64 by src/lib/portal-orientation-email.ts, so a regenerated PNG
+reaches clients on the next deploy with no other step.
 """
 
 from PIL import Image, ImageDraw, ImageFont
-import os
 from pathlib import Path
 
-# Locked palette
-INK = '#0c0a09'
-SURFACE = '#111110'
-BORDER = '#1c1917'
-BORDER_2 = '#292524'
-MUTED = '#57534e'
-SOFT = '#a8a29e'
-BODY = '#d4cfc9'
-WHITE = '#ffffff'
-TEAL = '#14b8a6'
-TEAL_HOVER = '#5eead4'
-AMBER = '#f59e0b'
-RED = '#ef4444'
+# The locked platform palette. Same values as the portal and the emails.
+WHITE = '#FFFFFF'
+GROUND = '#F5F7FA'
+INK = '#141821'
+BODY = '#43474F'
+MUTED = '#666D7A'
+FAINT = '#98A0AD'
+HAIRLINE = '#E8EAEE'
+BLUE = '#1B6DFC'
+BLUE_TINT = '#EFF5FE'
+BLUE_EDGE = '#B5CFFC'
+# The reading document keeps its dark hero (reading-hero-shell.tsx).
+HERO = '#17191F'
+HERO_SUB = '#8FB4F5'
 
-# Cream layout palette (for foundational reading mockup)
-PAPER = '#fafaf7'
-PAPER_BORDER = '#e7e5e0'
-PAPER_SOFT = '#f5f3ee'
-PAPER_INK = '#0f0f0f'
+# Helvetica.ttc rendered oblique at every index Pillow exposes on this machine,
+# which is how the first regenerated set came out italic. Arial ships as plain
+# single-face files, so the weight asked for is the weight drawn.
+REGULAR = '/System/Library/Fonts/Supplemental/Arial.ttf'
+BOLD = '/System/Library/Fonts/Supplemental/Arial Bold.ttf'
 
-OUT_DIR = Path.home() / 'body-recode-mvp' / 'public' / 'email-assets'
-OUT_DIR.mkdir(parents=True, exist_ok=True)
-
-# Fonts (macOS system fonts that ship with every Mac)
-HELV = '/System/Library/Fonts/Helvetica.ttc'
-HELV_NEUE = '/System/Library/Fonts/HelveticaNeue.ttc'
 
 def font(size, weight='regular'):
-    """weight: regular | medium | bold | black"""
-    # Helvetica.ttc indices (macOS): 0 light, 1 regular-italic, 2 bold, 3 bold-italic
-    if weight == 'bold' or weight == 'black':
-        return ImageFont.truetype(HELV, size, index=2)
-    if weight == 'medium':
-        return ImageFont.truetype(HELV_NEUE, size, index=1)
-    return ImageFont.truetype(HELV, size, index=0)
+    return ImageFont.truetype(BOLD if weight == 'bold' else REGULAR, size)
 
-def hex_to_rgb(h):
+
+def rgb(h):
     h = h.lstrip('#')
-    return tuple(int(h[i:i+2], 16) for i in (0, 2, 4))
-
-def rounded_rect(draw, xy, radius, fill=None, outline=None, width=1):
-    """Wrapper because Pillow's API is a little awkward."""
-    draw.rounded_rectangle(xy, radius=radius, fill=fill, outline=outline, width=width)
+    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
 
 
-def render_landing():
-    """Mockup 1: portal landing showing the card stack."""
-    W, H = 1200, 900
-    img = Image.new('RGB', (W, H), hex_to_rgb(INK))
-    draw = ImageDraw.Draw(img)
-
-    # Phone frame - tall card centred horizontally
-    frame_w = 720
-    frame_x = (W - frame_w) // 2
-    frame_y = 60
-    frame_h = H - 120
-    rounded_rect(draw, (frame_x, frame_y, frame_x + frame_w, frame_y + frame_h),
-                 radius=32, fill=hex_to_rgb('#0a0a0a'),
-                 outline=hex_to_rgb(BORDER), width=2)
-
-    # Top sticky chrome (BR mark + sign out)
-    inner_x = frame_x + 32
-    inner_w = frame_w - 64
-    chrome_y = frame_y + 32
-    # BR teal pill
-    pill_x = inner_x
-    pill_y = chrome_y
-    pill_w = 80
-    pill_h = 38
-    rounded_rect(draw, (pill_x, pill_y, pill_x + pill_w, pill_y + pill_h),
-                 radius=8, fill=hex_to_rgb(TEAL))
-    # Centre "BR" text vertically and horizontally inside the pill
-    br_font = font(20, 'bold')
-    bbox = draw.textbbox((0, 0), 'BR', font=br_font)
-    text_w = bbox[2] - bbox[0]
-    text_h = bbox[3] - bbox[1]
-    draw.text((pill_x + (pill_w - text_w) / 2, pill_y + (pill_h - text_h) / 2 - 3),
-              'BR', fill=hex_to_rgb(INK), font=br_font)
-    # Sign out (right)
-    so_text = 'Sign out'
-    so_font = font(16)
-    bbox = draw.textbbox((0, 0), so_text, font=so_font)
-    so_w = bbox[2] - bbox[0]
-    draw.text((inner_x + inner_w - so_w, pill_y + 12), so_text,
-              fill=hex_to_rgb(MUTED), font=so_font)
-
-    # Welcome heading
-    head_y = chrome_y + 80
-    draw.text((inner_x, head_y), 'Welcome, Samantha',
-              fill=hex_to_rgb(WHITE), font=font(38, 'bold'))
-    draw.text((inner_x, head_y + 56), 'Your coaching portal, everything in one place.',
-              fill=hex_to_rgb(SOFT), font=font(18))
-
-    # "This week" section
-    sec_y = head_y + 110
-    # accent bar
-    draw.rounded_rectangle((inner_x, sec_y, inner_x + 36, sec_y + 4),
-                           radius=2, fill=hex_to_rgb(TEAL))
-    draw.text((inner_x + 48, sec_y - 6), 'THIS WEEK',
-              fill=hex_to_rgb(WHITE), font=font(13, 'bold'))
-
-    # Weekly check-in card
-    card_y = sec_y + 24
-    card_h = 90
-    rounded_rect(draw, (inner_x, card_y, inner_x + inner_w, card_y + card_h),
-                 radius=20, fill=hex_to_rgb(SURFACE),
-                 outline=hex_to_rgb(BORDER), width=2)
-    draw.text((inner_x + 24, card_y + 22),
-              'Weekly check-in, Form A', fill=hex_to_rgb(WHITE), font=font(20, 'bold'))
-    draw.text((inner_x + 24, card_y + 50),
-              'Week 3 - Closes Sunday at 6:30pm', fill=hex_to_rgb(SOFT), font=font(15))
-    # Start arrow
-    arrow_text = 'Start ->'
-    bbox = draw.textbbox((0, 0), arrow_text, font=font(15, 'bold'))
-    aw = bbox[2] - bbox[0]
-    draw.text((inner_x + inner_w - aw - 24, card_y + 36),
-              arrow_text, fill=hex_to_rgb(TEAL), font=font(15, 'bold'))
-
-    # "Your reading" section
-    sec_y = card_y + card_h + 32
-    draw.rounded_rectangle((inner_x, sec_y, inner_x + 36, sec_y + 4),
-                           radius=2, fill=hex_to_rgb(TEAL))
-    draw.text((inner_x + 48, sec_y - 6), 'YOUR READING',
-              fill=hex_to_rgb(WHITE), font=font(13, 'bold'))
-
-    card_y = sec_y + 24
-    rounded_rect(draw, (inner_x, card_y, inner_x + inner_w, card_y + card_h),
-                 radius=20, fill=hex_to_rgb(SURFACE),
-                 outline=hex_to_rgb(BORDER), width=2)
-    draw.text((inner_x + 24, card_y + 22),
-              'Foundational Reading', fill=hex_to_rgb(WHITE), font=font(20, 'bold'))
-    draw.text((inner_x + 24, card_y + 50),
-              'A read of how your body is currently organising itself',
-              fill=hex_to_rgb(SOFT), font=font(15))
-    bbox = draw.textbbox((0, 0), 'View ->', font=font(15, 'bold'))
-    aw = bbox[2] - bbox[0]
-    draw.text((inner_x + inner_w - aw - 24, card_y + 36),
-              'View ->', fill=hex_to_rgb(TEAL), font=font(15, 'bold'))
-
-    # "Resources" section
-    sec_y = card_y + card_h + 32
-    draw.rounded_rectangle((inner_x, sec_y, inner_x + 36, sec_y + 4),
-                           radius=2, fill=hex_to_rgb(TEAL))
-    draw.text((inner_x + 48, sec_y - 6), 'RESOURCES',
-              fill=hex_to_rgb(WHITE), font=font(13, 'bold'))
-
-    card_y = sec_y + 24
-    rounded_rect(draw, (inner_x, card_y, inner_x + inner_w, card_y + card_h),
-                 radius=20, fill=hex_to_rgb(SURFACE),
-                 outline=hex_to_rgb(BORDER), width=2)
-    draw.text((inner_x + 24, card_y + 22),
-              'All resources', fill=hex_to_rgb(WHITE), font=font(20, 'bold'))
-    draw.text((inner_x + 24, card_y + 50),
-              'Progress, glossary, guides, message your coach...',
-              fill=hex_to_rgb(SOFT), font=font(15))
-    bbox = draw.textbbox((0, 0), 'View ->', font=font(15, 'bold'))
-    aw = bbox[2] - bbox[0]
-    draw.text((inner_x + inner_w - aw - 24, card_y + 36),
-              'View ->', fill=hex_to_rgb(TEAL), font=font(15, 'bold'))
-
-    out = OUT_DIR / 'portal-landing.png'
-    img.save(out, 'PNG', optimize=True)
-    print(f'  wrote {out}')
+def box(draw, xy, radius=16, fill=None, outline=None, width=2):
+    draw.rounded_rectangle(xy, radius=radius, fill=rgb(fill) if fill else None,
+                           outline=rgb(outline) if outline else None, width=width)
 
 
-def render_resources():
-    """Mockup 2: Resources hub - 6 cards in a grid."""
-    W, H = 1200, 900
-    img = Image.new('RGB', (W, H), hex_to_rgb(INK))
-    draw = ImageDraw.Draw(img)
+def text(draw, xy, s, size=20, weight='regular', colour=INK):
+    draw.text(xy, s, fill=rgb(colour), font=font(size, weight))
 
-    frame_w = 720
-    frame_x = (W - frame_w) // 2
-    frame_y = 60
-    frame_h = H - 120
-    rounded_rect(draw, (frame_x, frame_y, frame_x + frame_w, frame_y + frame_h),
-                 radius=32, fill=hex_to_rgb('#0a0a0a'),
-                 outline=hex_to_rgb(BORDER), width=2)
 
-    inner_x = frame_x + 40
-    inner_w = frame_w - 80
+def label(draw, xy, s, colour=FAINT, size=15):
+    """The small uppercase micro-label the portal uses above a section."""
+    draw.text(xy, s.upper(), fill=rgb(colour), font=font(size, 'bold'))
 
-    # Heading
-    head_y = frame_y + 60
-    draw.text((inner_x, head_y), '< Back to portal',
-              fill=hex_to_rgb(MUTED), font=font(14))
-    draw.text((inner_x, head_y + 32), 'Resources',
-              fill=hex_to_rgb(WHITE), font=font(38, 'bold'))
-    draw.text((inner_x, head_y + 88),
-              'Everything you need beyond your weekly check-ins.',
-              fill=hex_to_rgb(SOFT), font=font(16))
 
-    # 6 cards stacked
-    cards = [
-        ('Your progress', 'Measurements over time, side by side with your starting point.'),
-        ('Your readings', 'Foundational Reading and any future weekly readings.'),
-        ('Glossary', 'Plain-language definitions of every term you hear.'),
-        ('Practical guides', 'Sleep, stress, pre-session, post-session, weekly structure.'),
-        ('Message your coach', 'Send a non-urgent question. Reply by email.'),
-        ('Account and service', 'Update details, pause, refer a friend, download data.'),
+def line(draw, x, y, w, colour=HAIRLINE, h=2):
+    draw.rectangle((x, y, x + w, y + h), fill=rgb(colour))
+
+
+def chrome(draw, x, y, w):
+    """Blue BR mark and Sign out, as the portal header carries them."""
+    box(draw, (x, y, x + 74, y + 36), radius=9, fill=BLUE)
+    b = draw.textbbox((0, 0), 'BR', font=font(19, 'bold'))
+    draw.text((x + (74 - (b[2] - b[0])) / 2, y + 7), 'BR', fill=rgb(WHITE), font=font(19, 'bold'))
+    s = 'Sign out'
+    b = draw.textbbox((0, 0), s, font=font(15))
+    draw.text((x + w - (b[2] - b[0]), y + 11), s, fill=rgb(FAINT), font=font(15))
+
+
+# The card is sized to what it holds. A fixed 900px canvas left the first two
+# mockups with dead space under the last card and pushed the reading's fifth
+# section off the bottom edge.
+PAD = 50      # ground showing around the card
+INSET = 38    # card padding
+CARD_W = 760
+
+
+def frame(content_h):
+    """A page card on the portal's ground, 2x density for retina email."""
+    H = content_h + (PAD + INSET) * 2
+    img = Image.new('RGB', (1200, H), rgb(GROUND))
+    d = ImageDraw.Draw(img)
+    fx = (1200 - CARD_W) // 2
+    box(d, (fx, PAD, fx + CARD_W, H - PAD), radius=28, fill=WHITE, outline=HAIRLINE)
+    return img, d, fx + INSET, PAD + INSET, CARD_W - INSET * 2
+
+
+def render_landing(out):
+    """1. Portal home: the sections the client lands on."""
+    rows_h = 152 + 116 * 3
+    img, d, x, y, w = frame(176 + rows_h - 20)
+    chrome(d, x, y, w)
+
+    text(d, (x, y + 74), 'Welcome back', 34, 'bold')
+    text(d, (x, y + 118), 'Everything current, in one place.', 19, colour=MUTED)
+
+    rows = [
+        ('This week', 'Your weekly check-in, when the window is open', True),
+        ('Your Read', 'Your Foundational Read, once it is ready', False),
+        ('Your portal', 'Progress, reads, guides, glossary, messages', False),
+        ('From your coach', 'Notes and replies from Kade', False),
     ]
+    cy = y + 176
+    for name, sub, active in rows:
+        box(d, (x, cy, x + w, cy + (132 if active else 96)), radius=16,
+            fill=BLUE_TINT if active else WHITE, outline=BLUE_EDGE if active else HAIRLINE)
+        label(d, (x + 26, cy + 24), name, BLUE if active else FAINT)
+        text(d, (x + 26, cy + 52), sub, 19, colour=BODY)
+        if active:
+            box(d, (x + 26, cy + 86, x + 232, cy + 122), radius=9, fill=BLUE)
+            text(d, (x + 52, cy + 95), 'Start check-in', 17, 'bold', WHITE)
+        cy += (152 if active else 116)
 
-    card_y = head_y + 140
-    card_h = 78
-    gap = 12
-    for title, desc in cards:
-        rounded_rect(draw, (inner_x, card_y, inner_x + inner_w, card_y + card_h),
-                     radius=18, fill=hex_to_rgb(SURFACE),
-                     outline=hex_to_rgb(BORDER), width=2)
-        # Icon square (teal accent)
-        icon_x = inner_x + 18
-        icon_y = card_y + 17
-        rounded_rect(draw, (icon_x, icon_y, icon_x + 44, icon_y + 44),
-                     radius=10, fill=hex_to_rgb(INK),
-                     outline=hex_to_rgb(BORDER), width=1)
-        # Tiny teal accent inside the icon square
-        draw.rounded_rectangle((icon_x + 14, icon_y + 18, icon_x + 30, icon_y + 22),
-                               radius=2, fill=hex_to_rgb(TEAL))
-
-        text_x = icon_x + 60
-        draw.text((text_x, card_y + 14), title,
-                  fill=hex_to_rgb(WHITE), font=font(18, 'bold'))
-        draw.text((text_x, card_y + 42), desc,
-                  fill=hex_to_rgb(SOFT), font=font(13))
-        card_y += card_h + gap
-
-    out = OUT_DIR / 'portal-resources.png'
-    img.save(out, 'PNG', optimize=True)
-    print(f'  wrote {out}')
+    img.save(out / 'portal-landing.png')
 
 
-def render_reading():
-    """Mockup 3: Foundational Reading - cream/black premium layout."""
-    W, H = 1200, 900
-    img = Image.new('RGB', (W, H), hex_to_rgb(INK))
-    draw = ImageDraw.Draw(img)
+def render_resources(out):
+    """2. The six cards under Your portal."""
+    img, d, x, y, w = frame(176 + 168 * 2 + 148)
+    chrome(d, x, y, w)
 
-    frame_w = 720
-    frame_x = (W - frame_w) // 2
-    frame_y = 60
-    frame_h = H - 120
-    rounded_rect(draw, (frame_x, frame_y, frame_x + frame_w, frame_y + frame_h),
-                 radius=24, fill=hex_to_rgb(PAPER),
-                 outline=hex_to_rgb(BORDER), width=2)
+    text(d, (x, y + 74), 'Your portal', 34, 'bold')
+    text(d, (x, y + 118), 'Six places, one for each thing you might need.', 19, colour=MUTED)
 
-    # Black header band
-    bx0 = frame_x
-    by0 = frame_y
-    bx1 = frame_x + frame_w
-    by1 = frame_y + 220
-    # Render solid black header with rounded top
-    draw.rounded_rectangle((bx0, by0, bx1, by1 + 30), radius=24,
-                           fill=(0, 0, 0))
-    # Cover bottom of rounded so the band ends square
-    draw.rectangle((bx0, by1 - 1, bx1, by1 + 30), fill=(0, 0, 0))
-    # Re-render cream shape to mask the bottom corners
-    draw.rectangle((bx0, by1, bx1, by1 + 4), fill=hex_to_rgb(TEAL))
+    cards = [
+        ('Your progress', 'Measurements over time'),
+        ('Your reads', 'Current and archived'),
+        ('Glossary', 'Every term, in plain words'),
+        ('Practical guides', 'Sleep, stress, recovery'),
+        ('Messages', 'Message your coach'),
+        ('Account and service', 'Details, pause, your data'),
+    ]
+    cw = (w - 24) // 2
+    cy = y + 176
+    for i, (name, sub) in enumerate(cards):
+        cx = x + (i % 2) * (cw + 24)
+        row_y = cy + (i // 2) * 168
+        box(d, (cx, row_y, cx + cw, row_y + 148), radius=16, fill=WHITE, outline=HAIRLINE)
+        box(d, (cx + 24, row_y + 24, cx + 68, row_y + 68), radius=11, fill=BLUE_TINT, outline=BLUE_EDGE)
+        text(d, (cx + 24, row_y + 86), name, 21, 'bold')
+        text(d, (cx + 24, row_y + 114), sub, 17, colour=MUTED)
 
-    pad_x = frame_x + 40
-    head_y = by0 + 28
-    # BR pill in white
-    pill_w = 70
-    pill_h = 32
-    rounded_rect(draw, (pad_x, head_y, pad_x + pill_w, head_y + pill_h),
-                 radius=8, fill=hex_to_rgb(TEAL))
-    br_font = font(16, 'bold')
-    bbox = draw.textbbox((0, 0), 'BR', font=br_font)
-    tw = bbox[2] - bbox[0]
-    draw.text((pad_x + (pill_w - tw) / 2, head_y + 7),
-              'BR', fill=(0, 0, 0), font=br_font)
+    img.save(out / 'portal-resources.png')
 
-    # Eyebrow
-    eb_y = head_y + 52
-    draw.text((pad_x, eb_y), 'FOUNDATIONAL READING',
-              fill=hex_to_rgb(TEAL), font=font(13, 'bold'))
-    # Headline
-    draw.text((pad_x, eb_y + 24), 'Your Starting Position',
-              fill=(255, 255, 255), font=font(36, 'bold'))
-    # Subhead
-    draw.text((pad_x, eb_y + 78),
-              'A read of how your body is currently organising itself',
-              fill=(140, 140, 140), font=font(14))
 
-    # Cream body
-    body_y = by1 + 30 + 28
-    # About card (black inset)
-    card_h = 130
-    rounded_rect(draw, (pad_x, body_y, pad_x + frame_w - 80, body_y + card_h),
-                 radius=10, fill=(15, 15, 15))
-    draw.text((pad_x + 24, body_y + 20), 'ABOUT THIS READING',
-              fill=hex_to_rgb(TEAL), font=font(11, 'bold'))
-    draw.text((pad_x + 24, body_y + 44),
-              'This is not a verdict. It is a read of what your',
-              fill=hex_to_rgb(WHITE), font=font(15, 'bold'))
-    draw.text((pad_x + 24, body_y + 66),
-              'body is currently doing and why we will move',
-              fill=hex_to_rgb(WHITE), font=font(15, 'bold'))
-    draw.text((pad_x + 24, body_y + 88),
-              'the way we are about to.',
-              fill=hex_to_rgb(WHITE), font=font(15, 'bold'))
+def render_reading(out):
+    """3. The Foundational Read: dark hero, white cards, as it renders now."""
+    img, d, x, y, w = frame(240 + 116 * 5 - 12)
 
-    # Reading section preview (cream card)
-    body_y += card_h + 28
-    card_h = 110
-    rounded_rect(draw, (pad_x, body_y, pad_x + frame_w - 80, body_y + card_h),
-                 radius=8, fill=(255, 255, 255),
-                 outline=hex_to_rgb(PAPER_BORDER), width=2)
-    # Section header strip
-    draw.rounded_rectangle((pad_x + 1, body_y + 1, pad_x + frame_w - 80 - 1, body_y + 36),
-                           radius=8, fill=hex_to_rgb(PAPER_SOFT))
-    draw.rectangle((pad_x + 1, body_y + 30, pad_x + frame_w - 80 - 1, body_y + 36),
-                   fill=hex_to_rgb(PAPER_SOFT))
-    draw.text((pad_x + 18, body_y + 12), '01',
-              fill=hex_to_rgb(TEAL), font=font(14, 'bold'))
-    draw.text((pad_x + 50, body_y + 12), 'WHERE YOU ARE RIGHT NOW',
-              fill=hex_to_rgb(PAPER_INK), font=font(13, 'bold'))
-    # Section body excerpt
-    draw.text((pad_x + 18, body_y + 50),
-              'Your body is in what we call a Remediation state...',
-              fill=(42, 42, 42), font=font(13))
-    draw.text((pad_x + 18, body_y + 72),
-              'managing competing demands while storing energy in...',
-              fill=(42, 42, 42), font=font(13))
+    # Hero
+    box(d, (x, y, x + w, y + 210), radius=18, fill=HERO)
+    label(d, (x + 30, y + 30), 'Foundational Read', HERO_SUB, 14)
+    text(d, (x + 30, y + 62), 'Where your body is', 33, 'bold', WHITE)
+    text(d, (x + 30, y + 104), 'right now', 33, 'bold', WHITE)
+    box(d, (x + 30, y + 154, x + 214, y + 186), radius=16, fill='#243049', outline='#35507F')
+    text(d, (x + 48, y + 161), 'Prepared for you', 15, colour=HERO_SUB)
 
-    out = OUT_DIR / 'portal-reading.png'
-    img.save(out, 'PNG', optimize=True)
-    print(f'  wrote {out}')
+    sections = [
+        'Where you are right now',
+        'What your body is telling us',
+        'What we are focusing on first',
+        'What we are not doing yet',
+        'A note from Kade',
+    ]
+    cy = y + 240
+    for i, name in enumerate(sections):
+        box(d, (x, cy, x + w, cy + 104), radius=14, fill=WHITE, outline=HAIRLINE)
+        label(d, (x + 26, cy + 22), f'0{i + 1}', BLUE, 14)
+        text(d, (x + 64, cy + 18), name, 20, 'bold')
+        line(d, x + 64, cy + 58, w - 128)
+        line(d, x + 64, cy + 74, int((w - 128) * 0.72))
+        cy += 116
+
+    img.save(out / 'portal-reading.png')
+
+
+def main():
+    out = Path(__file__).resolve().parent.parent / 'public' / 'email-assets'
+    out.mkdir(parents=True, exist_ok=True)
+    render_landing(out)
+    render_resources(out)
+    render_reading(out)
+    for f in sorted(out.glob('portal-*.png')):
+        print(f'{f.name:24s} {f.stat().st_size // 1024} KB')
 
 
 if __name__ == '__main__':
-    print(f'Rendering portal mockups to {OUT_DIR}')
-    render_landing()
-    render_resources()
-    render_reading()
-    print('Done.')
+    main()
