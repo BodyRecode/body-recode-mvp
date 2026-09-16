@@ -27,6 +27,41 @@ import { emailUnsubscribeFooter } from '@/lib/email-shell'
 import { isSuppressed, unsubscribeUrl, unsubscribePostUrl } from '@/lib/unsubscribe'
 import { coach } from '@/config/tenant'
 
+/**
+ * A plain-text version of the email, derived from the HTML that is actually
+ * sent so the two can never drift apart.
+ *
+ * Added 2026-09-16. Every marketing send went out HTML-only. Microsoft treats a
+ * missing text part as a mark against an unfamiliar sender, and the Body Recode
+ * domain is exactly that: new and low volume. Kimberly Hamilton's scorecard
+ * result landed in her Live.com junk folder, and while the cause there is mostly
+ * reputation, this is the one part of it that is ours to fix rather than wait
+ * out. A text part also covers the readers and clients that never render HTML.
+ *
+ * Links are kept as "label (url)", because a text part with the links stripped
+ * out is worse than none: it reads like the shell of a message.
+ */
+export function htmlToPlainText(html: string): string {
+  return html
+    .replace(/<head[\s\S]*?<\/head>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<a\b[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi, (_m, href, label) => {
+      const text = String(label).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
+      const url = String(href).trim()
+      if (!text) return url
+      return text.toLowerCase() === url.toLowerCase() ? url : `${text} (${url})`
+    })
+    .replace(/<\/(p|div|tr|h[1-6]|li|table)>/gi, '\n\n')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&#39;|&apos;/g, "'").replace(/&quot;/g, '"').replace(/&mdash;/g, ', ')
+    .split('\n').map(l => l.replace(/[ \t]+/g, ' ').trim()).join('\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+}
+
 export interface MarketingEmailInput {
   to: string
   subject: string
@@ -76,6 +111,7 @@ export async function sendMarketingEmail(
     replyTo: input.replyTo ?? coach().email,
     subject: input.subject,
     html,
+    text: htmlToPlainText(html),
     headers: {
       // RFC 8058 one-click. Points at the API route, not the page: the
       // provider sends an unauthenticated POST that must act immediately, and
