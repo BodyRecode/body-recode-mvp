@@ -43,7 +43,7 @@ export function scorecardSteps(): ScorecardStep[] {
     {
       position: 1, type: 'action', action_type: 'send_email',
       config: {
-        subject: `Why your body doesn't feel like yours, {{first_name}}`,
+        subject: `Your scorecard result, {{first_name}}`,
         body: `Hi {{first_name}},
 
 You just took the scorecard. Result: {{scorecard_score}}/15. Readiness: {{scorecard_state}}.
@@ -60,7 +60,7 @@ Then five short lessons, one a day, walking you through it, because it is a lot 
 
 You have already answered the questions, so it opens with your read rather than asking you anything again.
 
-Free. No card.
+It costs nothing and there is no card.
 
 Start here: ${domain}/decode?source=scorecard_email_1
 

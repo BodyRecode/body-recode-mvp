@@ -72,7 +72,7 @@ const AUTOMATIONS: Record<string, SystemAutomation> = {
           'You just took the scorecard. Result: {score}/15. Readiness: {state}.',
           'That number is the starting point, not the answer. It tells you which of three states your body is currently in. It does not tell you why your body has changed, what specifically is making things worse, or what to fix first.',
           'That is true whether you have been training hard and getting nowhere, or you are not training right now and your body just does not feel like yours. The reason is readable either way.',
-          'The Body Decode reads it. Free. No card.',
+          'The Body Decode reads it. It costs nothing and there is no card.',
         ],
         cta: 'Start here →',
       },
