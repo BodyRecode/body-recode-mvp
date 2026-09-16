@@ -18,6 +18,9 @@ interface PackageManagerProps {
   currentPackage?: string
   subscriptionLinkSendAt?: string | null
   subscriptionLinkSentAt?: string | null
+  /** Cents per week when this client pays something other than the list price. */
+  negotiatedWeeklyPriceCents?: number | null
+  negotiatedStripeLink?: string | null
 }
 
 export default function PackageManager({
@@ -25,6 +28,8 @@ export default function PackageManager({
   currentPackage,
   subscriptionLinkSendAt,
   subscriptionLinkSentAt,
+  negotiatedWeeklyPriceCents,
+  negotiatedStripeLink,
 }: PackageManagerProps) {
   const router = useRouter()
   const [pkg, setPkg] = useState(currentPackage ?? '')
@@ -38,6 +43,9 @@ export default function PackageManager({
   const [scheduling, setScheduling] = useState(false)
   const [scheduleSaved, setScheduleSaved] = useState(false)
   const [cancelling, setCancelling] = useState(false)
+  const [rateInput, setRateInput] = useState(negotiatedWeeklyPriceCents ? String(negotiatedWeeklyPriceCents / 100) : '')
+  const [savingRate, setSavingRate] = useState(false)
+  const [rateError, setRateError] = useState<string | null>(null)
 
   const packages = PACKAGES
 
@@ -58,7 +66,10 @@ export default function PackageManager({
   const copyLink = async () => {
     const found = packages.find(p => p.value === pkg)
     if (!found) return
-    const url = `${found.stripe}?client_reference_id=${clientId}`
+    // The client's own link when they are on an agreed rate, so Copy never
+    // hands out the list price for someone who was quoted something else.
+    const base = negotiatedStripeLink || found.stripe
+    const url = `${base}?client_reference_id=${clientId}`
     await navigator.clipboard.writeText(url)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
@@ -103,7 +114,36 @@ export default function PackageManager({
     router.refresh()
   }
 
+  const saveRate = async () => {
+    setSavingRate(true)
+    setRateError(null)
+    const res = await fetch(`/api/clients/${clientId}/negotiated-rate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ weeklyDollars: Number(rateInput) }),
+    })
+    const data = await res.json().catch(() => ({}))
+    setSavingRate(false)
+    if (!res.ok) { setRateError(data.error ?? 'Could not save the rate'); return }
+    router.refresh()
+  }
+
+  const clearRate = async () => {
+    if (!confirm('Put this client back on the list price? Any subscription they already have keeps billing at the agreed rate until you cancel it in Stripe.')) return
+    setSavingRate(true)
+    setRateError(null)
+    const res = await fetch(`/api/clients/${clientId}/negotiated-rate`, { method: 'DELETE' })
+    setSavingRate(false)
+    if (!res.ok) { setRateError('Could not clear the rate'); return }
+    setRateInput('')
+    router.refresh()
+  }
+
   const currentInfo = packages.find(p => p.value === pkg)
+  const negotiated = !!negotiatedWeeklyPriceCents
+  const negotiatedLabel = negotiatedWeeklyPriceCents
+    ? (Number.isInteger(negotiatedWeeklyPriceCents / 100) ? `$${negotiatedWeeklyPriceCents / 100}` : `$${(negotiatedWeeklyPriceCents / 100).toFixed(2)}`)
+    : ''
   // Repriced 26 Aug 2026 with no new Stripe link yet. Everything that could
   // send or copy a link is suppressed until one exists, because the old link
   // charges the old amount under the new label.
@@ -202,6 +242,51 @@ export default function PackageManager({
       {currentInfo && isNonBilling && !linkPending && (
         <div className="text-[12.5px] text-[#666D7A] bg-[#F4F6F9]/40 border border-[#EFF1F4] rounded-lg px-3 py-2">
           Non-billing arrangement - no subscription link to send.
+        </div>
+      )}
+
+      {currentInfo && !isNonBilling && !linkPending && (
+        <div className="rounded-lg border border-[#E8EAEE] px-3 py-2.5 space-y-2">
+          <p className="text-[10px] font-semibold text-[#98A0AD]">Agreed rate for this client</p>
+          {negotiated ? (
+            <p className="text-[12.5px] text-[#141821]">
+              Pays <strong>{negotiatedLabel}/week</strong> instead of the {currentInfo.label.split(' - ')[1]} list price.
+              {negotiatedStripeLink ? ' Send and Copy use their own link.' : ' No Stripe link yet, so nothing can be sent. Save the rate again.'}
+            </p>
+          ) : (
+            <p className="text-[12.5px] text-[#666D7A]">Paying the {currentInfo.label.split(' - ')[1]} list price.</p>
+          )}
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-[12.5px] text-[#666D7A]">$</span>
+            <input
+              value={rateInput}
+              onChange={e => setRateInput(e.target.value)}
+              inputMode="decimal"
+              placeholder="205"
+              className="w-24 text-[12.5px] px-2 py-1.5 border border-[#E8EAEE] rounded-lg focus:border-[#1B6DFC] outline-none"
+            />
+            <span className="text-[12.5px] text-[#666D7A]">per week</span>
+            <button
+              onClick={saveRate}
+              disabled={savingRate || !rateInput.trim()}
+              className="text-[12.5px] font-medium px-3 py-1.5 border border-[#1B6DFC] text-[#1B6DFC] rounded-lg hover:bg-[rgba(27,109,252,0.06)] transition-colors disabled:opacity-40"
+            >
+              {savingRate ? 'Saving...' : negotiated ? 'Update rate' : 'Set rate'}
+            </button>
+            {negotiated && (
+              <button
+                onClick={clearRate}
+                disabled={savingRate}
+                className="text-[12.5px] text-[#98A0AD] hover:text-[#C82626] transition-colors disabled:opacity-40"
+              >
+                Back to list price
+              </button>
+            )}
+          </div>
+          {rateError && <p className="text-[12.5px] text-[#C82626]">{rateError}</p>}
+          <p className="text-[10px] text-[#98A0AD] leading-relaxed">
+            Creates their own Stripe link at that amount, on the same product as the package, so the payment reports with everyone else.
+          </p>
         </div>
       )}
 

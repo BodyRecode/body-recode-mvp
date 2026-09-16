@@ -1286,6 +1286,7 @@ export default function HelpPage() {
 
           {/* Section 10 */}
           <Section id="coaching-package" title="12. Coaching Package and Upgrades" colour="teal">
+            <p className="mt-2"><strong>Agreed rate for one client (16 Sep 2026).</strong> When someone pays something other than the list price, type the weekly amount into <strong>Agreed rate for this client</strong> on the Coaching Package card and click <strong>Set rate</strong>. That creates their own Stripe link at that amount, on the same product as their package so the money reports with everyone else&apos;s, and from then on <strong>Send to Client</strong>, <strong>Copy Link</strong> and <strong>Schedule Send</strong> all use it. Their profile and their subscription email show the agreed price, and the revenue figures count it. <strong>Back to list price</strong> clears it; a subscription they already have keeps billing at the old amount until you cancel it in Stripe. If a rate is ever saved without a link, nothing will send until you save it again, on purpose: the alternative is the profile saying $205 while the only link charges $225.</p>
             <p>On the client profile, set the client&apos;s <strong>Coaching Package</strong> to record which plan they are on:</p>
             <ul className="space-y-1 list-disc list-inside text-[#43474F] text-sm">
               <li><strong>In-Person 1x + self-led - $139/week</strong> (lead with this)</li>

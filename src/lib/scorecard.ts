@@ -149,6 +149,21 @@ export function formatValue(value: number, unit: Unit): string {
 /** Monthly value of a coaching package for an off-platform (no-Stripe) client.
  * Reads the package price string ("$189/week") and normalises to monthly.
  * Returns 0 for non-billing (contra/comp) packages or unparseable prices. */
+/**
+ * What a client contributes monthly when they pay outside Stripe.
+ *
+ * Reads their agreed rate first. Before 16 Sep 2026 this only knew the package
+ * list price, so any client on a negotiated number was reported wrong: the
+ * 26 Aug reprice note is blunt that NOBODY HAS EVER PAID A LIST PRICE.
+ */
+function clientMonthly(client: Row): number {
+  const cents = client.negotiated_weekly_price_cents as number | null | undefined
+  if (cents && cents > 0 && !isNonBillingPackage(client.package as string)) {
+    return toMonthly(cents / 100, 'week')
+  }
+  return packageMonthly(client.package as string)
+}
+
 function packageMonthly(pkg: string | null): number {
   if (!pkg || isNonBillingPackage(pkg)) return 0
   const def = getCoachingPackage(pkg)
@@ -223,7 +238,7 @@ export async function computeScorecard(admin: SupabaseClient, now = new Date()):
     challenge, blueprint, membership, checkins, manualPayments,
   ] = await Promise.all([
     safe<Row>(admin.from('leads').select('created_at, zoom_1_date').gte('created_at', windowStart)),
-    safe<Row>(admin.from('clients').select('id, name, coaching_started_at, active, package')),
+    safe<Row>(admin.from('clients').select('id, name, coaching_started_at, active, package, negotiated_weekly_price_cents')),
     safe<Row>(admin.from('client_subscriptions').select('client_id, status, amount, billing_interval, current_period_end, canceled_at, created_at').order('created_at', { ascending: false })),
     safe<Row>(admin.from('client_payment_plan').select('client_id, commencement_fee_paid_at, payment_plan_id')),
     safe<Row>(admin.from('payment_plans').select('id, commencement_fee')),
@@ -320,8 +335,8 @@ export async function computeScorecard(admin: SupabaseClient, now = new Date()):
   // the package price, normalised monthly. This makes off-platform clients
   // (Greg, $299/wk '2x') visible in MRR without manual modelling.
   const clientsWithAnySub = new Set((subs as Row[]).map(s => s.client_id as string))
-  const offPlatform = activeClientRows.filter(c => !clientsWithAnySub.has(c.id as string) && packageMonthly(c.package as string) > 0)
-  const offPlatformMrr = offPlatform.reduce((sum, c) => sum + packageMonthly(c.package as string), 0)
+  const offPlatform = activeClientRows.filter(c => !clientsWithAnySub.has(c.id as string) && clientMonthly(c) > 0)
+  const offPlatformMrr = offPlatform.reduce((sum, c) => sum + clientMonthly(c), 0)
   const mrr = stripeMrr + offPlatformMrr
   const activeMembers = membership.filter(m => !m.cancelled_at).length
 

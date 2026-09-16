@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
 import { fromCoach, darkEmailShell } from '@/lib/email-shell'
 import { getCoachingPackage } from '@/lib/coaching-packages'
+import { resolveClientBilling } from '@/lib/client-billing'
 import { logClientCommunication } from '@/lib/client-communications'
 import { createSubscriptionCheckoutForClient } from '@/lib/subscription-checkout'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
@@ -24,7 +25,7 @@ export async function POST(
   const admin = createAdminClient()
   const { data: client, error: clientError } = await admin
     .from('clients')
-    .select('id, name, email, package, onboarding_token')
+    .select('id, name, email, package, onboarding_token, negotiated_weekly_price_cents, negotiated_stripe_link')
     .eq('id', id)
     .maybeSingle()
 
@@ -42,6 +43,16 @@ export async function POST(
     )
   }
 
+  // What this client actually pays. Null only when the package is unknown,
+  // which the check above has already ruled out.
+  const billing = resolveClientBilling(client)
+  if (billing?.incomplete) {
+    return NextResponse.json(
+      { error: 'This client has an agreed rate with no Stripe link. Save the rate again on their profile before sending.' },
+      { status: 400 },
+    )
+  }
+
   const firstName = client.name.split(' ')[0]
 
   let subscriptionUrl: string
@@ -50,6 +61,7 @@ export async function POST(
     const session = await createSubscriptionCheckoutForClient({
       client: { id: client.id, email: client.email, onboarding_token: client.onboarding_token },
       pkg,
+      paymentLinkUrl: billing?.negotiated ? (client.negotiated_stripe_link ?? undefined) : undefined,
     })
     subscriptionUrl = session.url
     sessionId = session.sessionId
@@ -72,7 +84,7 @@ export async function POST(
       </div>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Hi ${firstName},</p>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Your CFFS is in. Your program is being built around it. The last step before we start coaching is locking in your weekly subscription.</p>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 28px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Package: <strong style="color:#1A1A1A;">${pkg.label} at ${pkg.price}</strong></p>
+      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 28px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Package: <strong style="color:#1A1A1A;">${billing?.label ?? pkg.label} at ${billing?.priceLabel ?? pkg.price}</strong></p>
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;">
         <tr>
           <td bgcolor="#1B6DFC" style="background-color:#1B6DFC;border-radius:8px;">
@@ -84,7 +96,7 @@ export async function POST(
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Any questions, reply to this email.</p>
       ${darkEmailSignature()}
       <p style="margin:20px 0 0;font-size:13px;color:#6B6B6B;line-height:1.5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Or copy this link: ${subscriptionUrl}</p>
-`, { previewText: `${firstName}, lock in your ${pkg.label} subscription.` }),
+`, { previewText: `${firstName}, lock in your ${billing?.label ?? pkg.label} subscription.` }),
   })
 
   // Mark as sent on the client row so the dashboard knows
@@ -102,7 +114,7 @@ export async function POST(
     toAddress: client.email,
     sentAt,
     sentBy: user.id,
-    meta: { package: client.package, package_label: pkg.label, price: pkg.price, url: subscriptionUrl, trigger: 'manual', stripe_session_id: sessionId },
+    meta: { package: client.package, package_label: billing?.label ?? pkg.label, price: billing?.priceLabel ?? pkg.price, url: subscriptionUrl, trigger: 'manual', stripe_session_id: sessionId },
   })
 
   console.log('Subscription email sent to:', client.email, 'package:', client.package)

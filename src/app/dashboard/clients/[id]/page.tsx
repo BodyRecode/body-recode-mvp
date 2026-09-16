@@ -761,6 +761,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           clientId={client.id}
           currentPackage={client.package}
           subscriptionLinkSendAt={client.subscription_link_send_at ?? null}
+          negotiatedWeeklyPriceCents={client.negotiated_weekly_price_cents ?? null}
+          negotiatedStripeLink={client.negotiated_stripe_link ?? null}
           subscriptionLinkSentAt={client.subscription_link_sent_at ?? null}
         />
         {(() => {

@@ -73,18 +73,25 @@ export interface SubscriptionCheckoutClient {
 export async function createSubscriptionCheckoutForClient(opts: {
   client: SubscriptionCheckoutClient
   pkg: CoachingPackage
+  /**
+   * Use this payment link's price instead of the package's own. Set for a
+   * client on a negotiated rate, so they still get a single-use session rather
+   * than the reusable link that billed Samantha three times.
+   */
+  paymentLinkUrl?: string
 }): Promise<{ url: string; sessionId: string; expiresAt: Date }> {
   const { client, pkg } = opts
-  if (!pkg.stripe) {
+  const linkUrl = opts.paymentLinkUrl || pkg.stripe
+  if (!linkUrl) {
     throw new Error(`Package ${pkg.value} is non-billing — no Stripe Payment Link configured.`)
   }
   if (!client.email) {
     throw new Error(`Client ${client.id} has no email on file — cannot send subscription link.`)
   }
 
-  const priceId = await resolvePriceIdForPaymentLink(pkg.stripe)
+  const priceId = await resolvePriceIdForPaymentLink(linkUrl)
   if (!priceId) {
-    throw new Error(`Could not resolve Stripe Price ID for package ${pkg.value} (URL ${pkg.stripe}). The Payment Link may have been archived.`)
+    throw new Error(`Could not resolve Stripe Price ID for package ${pkg.value} (URL ${linkUrl}). The Payment Link may have been archived.`)
   }
 
   // Land them on their portal after successful payment. Onboarded clients
