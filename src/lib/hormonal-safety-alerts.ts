@@ -32,16 +32,17 @@
 export const ALERT_ANSWERS = {
   pregnant_or_postpartum: 'Yes, pregnant now',
   androgen_use: 'Yes, now, not prescribed',
+  cancer_history: 'Yes, and I am currently receiving treatment',
 } as const
 
 export interface HormonalSafetyAlert {
-  key: 'pregnant_now' | 'androgen_not_prescribed'
+  key: 'pregnant_now' | 'androgen_not_prescribed' | 'cancer_in_treatment'
   headline: string
   detail: string
 }
 
 export function hormonalSafetyAlerts(
-  answers: { pregnant_or_postpartum?: string | null; androgen_use?: string | null } | null | undefined,
+  answers: { pregnant_or_postpartum?: string | null; androgen_use?: string | null; cancer_history?: string | null } | null | undefined,
 ): HormonalSafetyAlert[] {
   if (!answers) return []
   const alerts: HormonalSafetyAlert[] = []
@@ -61,5 +62,18 @@ export function hormonalSafetyAlerts(
         'Reported on the intake. Raise it this week, without judgement, and refer to Arete or a GP. Do not advise on the compound, the dose or stopping it. Changes in muscle and recovery will not read as a clean training signal.',
     })
   }
+  // Added 2026-09-16 with the cancer question. Someone mid-treatment is the one
+  // answer here that should reach the coach before a program is written: fatigue,
+  // bone health and exercise tolerance can all be affected, and their oncology
+  // team, not us, sets what they can do.
+  if (answers.cancer_history === ALERT_ANSWERS.cancer_history) {
+    alerts.push({
+      key: 'cancer_in_treatment',
+      headline: 'Currently receiving cancer treatment',
+      detail:
+        'Reported on the intake. Talk with her before writing anything, and confirm her treating team is happy for her to train and at what level. Do not advise on the treatment. Expect capacity and recovery to move week to week, so read a quiet week as treatment, not as behaviour.',
+    })
+  }
+
   return alerts
 }

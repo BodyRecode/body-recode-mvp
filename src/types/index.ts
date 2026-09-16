@@ -97,6 +97,9 @@ export interface Intake {
   sex_at_birth?: string | null
   hormone_therapy?: string | null
   hormone_therapy_detail?: string | null
+  gynae_surgery?: string | null
+  cancer_history?: string | null
+  cancer_hormonal_effect?: string | null
   period_pattern?: string | null
   ovaries_after_treatment?: string | null
   hormonal_contraception?: string | null

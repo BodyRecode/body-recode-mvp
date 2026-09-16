@@ -173,6 +173,10 @@ These answers exist so the read no longer has to lean on the Gender answer, and 
 
 4a. DIRECTION OF CHANGE IS THE OTHER HALF OF THE ESTROGEN-SHIFT DISCRIMINATOR (Fat Map LOCKED v2.2: "cycle status and the direction of travel"). It can arrive in this block, from the intake, or in her scorecard answers under the incoming read, which she gave before any pattern was shown. Where both exist and disagree, name the disagreement in pattern_rationale rather than silently choosing one. "Used to be hips and thighs, now moving to the middle" is phase 2 movement and strong support for Estrogen-Shift in a woman. "Stayed on hips, thighs and glutes" is phase 1 and supports it. "Always been the middle" argues AGAINST Estrogen-Shift, which arrives at the middle from the hips and thighs; central from the start points toward Stress-Stored or Insulin-Drift. "Not sure", or no answer, supports nothing. Direction is history over years, so never infer it from one photograph or one set of measurements. Where periods are suppressed by contraception, stopped after surgery or treatment, or stopped for another reason, direction is the only phase evidence left (rule 4). Never label anyone perimenopausal or menopausal from it.
 
+4b. SURGERY: WHAT WAS REMOVED DECIDES WHETHER THIS IS A MENOPAUSE AT ALL. A hysterectomy that keeps the ovaries ends periods and changes NOTHING hormonally: she is still cycling, she simply does not bleed, so absent periods here are not evidence of menopause and must not be read as it. Ovaries removed is a surgical menopause, immediate and complete. ONE OVARY KEPT is the middle case: still producing, on less reserve, and typically an earlier transition, so hold the phase loosely and say the uncertainty out loud rather than picking a phase to sound decisive. Where the surgery answer and the periods answer disagree, the surgery answer wins, because it is the physical fact.
+
+4c. CANCER AND ITS TREATMENT. Treatment can stop the ovaries working, temporarily or permanently, and hormone-blocking or suppressing medication removes the hormonal signal you would otherwise be reading. When either is present, the hormonal picture is medical, not behavioural: do not type a pattern confidently off it, and never comment on the treatment, the medication or the prognosis. Someone in treatment now also has capacity and recovery set by their treating team, not by training: read a flat week as treatment rather than as behaviour, and route anything clinical to that team.
+
 5. HORMONAL CONTRACEPTION IS NOT A BODY COMPOSITION SIGNAL. Randomised evidence does not support combination contraception causing weight change (03 evidence, C-14), so never attribute weight, fat or composition to it. Its only role here is that a suppressed or altered bleeding pattern cannot stage the transition (rule 4).
 
 6. PREGNANT NOW, OR GIVEN BIRTH IN THE LAST 12 MONTHS: DIFFERENT PHYSIOLOGY ALTOGETHER (03, section 7). Composition in this window is not a pattern signal. Do not read redistribution, central storage or lean mass change off it. Set pattern_confidence to "low", say why, and put the window at the top of pattern_watch_for so the coach sees it first.
@@ -292,6 +296,9 @@ Occupation: ${intake.occupation || 'Not provided'}`)
     ['Sex recorded at birth', intake.sex_at_birth],
     ['Current hormone therapy', intake.hormone_therapy],
     ['Hormone therapy detail', intake.hormone_therapy_detail],
+    ['Hysterectomy or ovarian surgery', intake.gynae_surgery],
+    ['Cancer', intake.cancer_history],
+    ['Cancer or its treatment affected hormones', intake.cancer_hormonal_effect],
     ['Periods now', intake.period_pattern],
     ['Ovaries removed or stopped by treatment', intake.ovaries_after_treatment],
     ['Hormonal contraception', intake.hormonal_contraception],

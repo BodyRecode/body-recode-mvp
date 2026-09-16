@@ -296,7 +296,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   // flag pointing toward a hormonal-shift pattern + a panel/GP. Non-diagnostic.
   const { data: fatMapIntake } = await admin
     .from('intakes')
-    .select('fat_map_responses, gender, pregnant_or_postpartum, androgen_use, sex_at_birth')
+    .select('fat_map_responses, gender, pregnant_or_postpartum, androgen_use, sex_at_birth, cancer_history, gynae_surgery')
     .eq('client_id', id)
     .order('submitted_at', { ascending: false })
     .limit(1)
@@ -310,7 +310,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
   // Pregnant now / non-prescribed androgen use. Also emailed on submit, but an
   // email can be missed or fail, so the profile carries it too.
-  const hormonalAlerts = hormonalSafetyAlerts(fatMapIntake as { pregnant_or_postpartum?: string | null; androgen_use?: string | null } | null)
+  const hormonalAlerts = hormonalSafetyAlerts(fatMapIntake as { pregnant_or_postpartum?: string | null; androgen_use?: string | null; cancer_history?: string | null } | null)
 
   // Progress photos live in a private bucket; sign them for this render only.
   const baselinePhotos = await signedBaselinePhotoSet(admin, latestBaseline)

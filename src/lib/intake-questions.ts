@@ -29,8 +29,16 @@ export interface Question {
    * about his periods. An unanswered controlling question counts as '' so
    * everything stays visible until she has told us enough to hide it.
    */
-  showIf?: { id: string; in?: string[]; notIn?: string[] }
+  showIf?: ShowIfCondition | ShowIfCondition[]
 }
+
+/**
+ * One condition on another answer. An array means ALL must hold, added
+ * 2026-09-16 so a question can depend on two answers at once: a woman whose
+ * uterus has been removed should not be asked about pregnancy, and neither
+ * should a man, and those are two different controlling questions.
+ */
+export interface ShowIfCondition { id: string; in?: string[]; notIn?: string[] }
 
 /**
  * Whether a question applies, given the answers so far. The ONE rule for this:
@@ -39,11 +47,14 @@ export interface Question {
  */
 export function isQuestionVisible(q: Question, answers: Record<string, unknown>): boolean {
   if (!q.showIf) return true
-  const raw = answers[q.showIf.id]
-  const val = typeof raw === 'string' ? raw : ''
-  if (q.showIf.in) return q.showIf.in.includes(val)
-  if (q.showIf.notIn) return !q.showIf.notIn.includes(val)
-  return true
+  const conditions = Array.isArray(q.showIf) ? q.showIf : [q.showIf]
+  return conditions.every(c => {
+    const raw = answers[c.id]
+    const val = typeof raw === 'string' ? raw : ''
+    if (c.in) return c.in.includes(val)
+    if (c.notIn) return !c.notIn.includes(val)
+    return true
+  })
 }
 
 export interface Section {
@@ -78,19 +89,33 @@ export const INTAKE_SECTIONS: Section[] = [
     // See 06_SAAS_PLATFORM_BUILD/02_FEATURE_SPECS/2026-09-13_Progress_Check_Spec.md §4.
     id: 'hormonal',
     title: 'Hormonal Status',
-    description: 'A few questions about hormones. Where and how your body stores fat depends partly on the hormones it is running on, so these help us read you properly. Answer what applies to you. Anything that does not apply has a way to say so.',
+    description: 'Some surgeries, health conditions and medical treatments can affect hormones, energy, body composition and recovery. We ask these questions so your program can be better tailored to you. Where and how your body stores fat depends partly on the hormones it is running on. Answer what applies to you, anything that does not apply has a way to say so, and you can choose to discuss anything privately with your coach instead.',
     questions: [
       { id: 'sex_at_birth', text: 'Sex recorded at birth', type: 'select', options: ['Female', 'Male', 'Intersex', "I'd rather talk this through with my coach"], required: true },
-      { id: 'hormone_therapy', text: 'Are you currently taking any hormone therapy?', type: 'select', options: ['None', 'Menopausal hormone therapy (HRT)', 'Testosterone therapy', 'Gender-affirming hormones', 'Other'], required: true },
+      { id: 'hormone_therapy', text: 'Are you currently taking any hormone therapy?', type: 'select', options: ['None', 'Menopausal hormone therapy (HRT)', 'Oestrogen', 'Progesterone', 'Testosterone therapy', 'Hormone-blocking or suppressing medication', 'Gender-affirming hormones', 'Other', 'I am not sure', "I'd rather talk this through with my coach"], required: true },
       { id: 'hormone_therapy_detail', text: 'Tell us about it: what you take, and roughly how long you have been on it.', type: 'text', required: false, showIf: { id: 'hormone_therapy', notIn: ['None', ''] } },
+      // Added 2026-09-16, written by a client. Kimberly Hamilton, who has had a
+      // hysterectomy with one ovary kept, wrote in after her intake: the form
+      // reached her situation sideways, through a question about periods, and
+      // then asked a woman with no uterus whether she was pregnant. It also
+      // could not record ONE ovary, which is the difference between a normal
+      // hormonal picture and reduced reserve with an earlier menopause.
+      { id: 'gynae_surgery', text: 'Have you had a hysterectomy or surgery involving your ovaries?', type: 'select', options: ['No', 'Yes, my uterus was removed and I have both ovaries', 'Yes, my uterus was removed and I have one ovary', 'Yes, my uterus and both ovaries were removed', 'I have had other ovarian surgery', 'I am not sure what was removed', "I'd rather talk this through with my coach"], required: true, showIf: { id: 'sex_at_birth', notIn: ['Male'] } },
+      // Cancer, its treatment and hormone-blocking medicines can stop the
+      // ovaries working, and they change what a body tolerates in training.
+      // Nothing in the intake asked, and the only other place it could surface
+      // was a free-text box in the health declaration. The detail stays with
+      // the coach in private: this asks what changes the program, not a history.
+      { id: 'cancer_history', text: 'Have you ever been diagnosed with cancer?', type: 'select', options: ['No', 'Yes, and I have completed treatment', 'Yes, and I am currently receiving treatment', 'Yes, and I am being monitored or taking ongoing medication', "I'd rather talk this through with my coach"], required: true },
+      { id: 'cancer_hormonal_effect', text: 'Did the cancer or its treatment affect your hormones?', type: 'select', options: ['Yes', 'No', 'I am not sure'], required: true, showIf: { id: 'cancer_history', in: ['Yes, and I have completed treatment', 'Yes, and I am currently receiving treatment', 'Yes, and I am being monitored or taking ongoing medication'] } },
       // Split 15 Sep 2026. "Stopped after surgery" covered a hysterectomy that
       // keeps the ovaries (hormones unchanged, just no bleed) and one that
       // removes them (a surgical menopause) as if they were the same. Treatment
       // such as pelvic radiotherapy or chemotherapy can also stop the ovaries.
-      { id: 'period_pattern', text: 'Which best describes your periods now?', type: 'select', options: ['Regular', 'Irregular', 'None for 12 months or more', 'Stopped after surgery or medical treatment', 'Suppressed by contraception', 'None for another reason', 'Not applicable'], required: true, showIf: { id: 'sex_at_birth', notIn: ['Male'] } },
+      { id: 'period_pattern', text: 'Which best describes your periods now?', type: 'select', options: ['Regular', 'Irregular', 'None for 12 months or more', 'Stopped after surgery or medical treatment', 'Suppressed by contraception', 'None for another reason', 'Not applicable'], required: true, showIf: [{ id: 'sex_at_birth', notIn: ['Male'] }, { id: 'gynae_surgery', notIn: ['Yes, my uterus was removed and I have both ovaries', 'Yes, my uterus was removed and I have one ovary', 'Yes, my uterus and both ovaries were removed'] }] },
       { id: 'ovaries_after_treatment', text: 'Were your ovaries removed, or did treatment stop them working?', type: 'select', options: ['Yes', 'No, they still work', 'I am not sure'], required: true, showIf: { id: 'period_pattern', in: ['Stopped after surgery or medical treatment'] } },
       { id: 'hormonal_contraception', text: 'Are you using hormonal contraception?', type: 'select', options: ['No', 'Pill', 'Hormonal IUD', 'Implant', 'Injection', 'Other', 'Not applicable'], required: true, showIf: { id: 'sex_at_birth', notIn: ['Male'] } },
-      { id: 'pregnant_or_postpartum', text: 'Are you pregnant now, or have you given birth in the last 12 months?', type: 'select', options: ['No', 'Yes, pregnant now', 'Yes, given birth in the last 12 months', 'Not applicable'], required: true, showIf: { id: 'sex_at_birth', notIn: ['Male'] } },
+      { id: 'pregnant_or_postpartum', text: 'Are you pregnant now, or have you given birth in the last 12 months?', type: 'select', options: ['No', 'Yes, pregnant now', 'Yes, given birth in the last 12 months', 'Not applicable'], required: true, showIf: [{ id: 'sex_at_birth', notIn: ['Male'] }, { id: 'gynae_surgery', notIn: ['Yes, my uterus was removed and I have both ovaries', 'Yes, my uterus was removed and I have one ovary', 'Yes, my uterus and both ovaries were removed'] }] },
       // Added 2026-09-14. Estrogen-Shift is decided by cycle status AND the
       // direction of travel (Fat_Map_Definitions_LOCKED v2.2), and the intake
       // never asked the second half. Only the scorecard did, and the read never
