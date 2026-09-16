@@ -616,8 +616,17 @@ export function detectAppetiteSuppression(medications: string | null | undefined
     return { has_stimulant: false, has_glp1: false, has_serotonergic: false, any: false }
   }
   const m = medications.toLowerCase()
-  const has_stimulant = /\b(vyvanse|lisdexamfetamine|adderall|amphetamine|ritalin|concerta|methylphenidate|dexamfetamine|dexedrine)\b/.test(m)
-  const has_glp1 = /\b(glp-?1|ozempic|wegovy|mounjaro|zepbound|semaglutide|tirzepatide|liraglutide|saxenda|rybelsus)\b/.test(m)
+  // Spellings and plurals matter here. Kim Hamilton wrote "Dexamphetamines",
+  // which matched nothing: the list had the -fetamine spelling, and the word
+  // boundaries meant neither "amphetamine" nor a trailing s could match inside
+  // it. A missed stimulant means her plan is built for an appetite she has not
+  // got, which is the exact failure these rules exist to prevent.
+  // am(ph|f)etamine covers both spellings: "amphetamine" and "amfetamine" are
+  // the same drug, and the -ph- form is what people write. No leading \b before
+  // the amfetamine alternatives, so "dexamphetamine" is caught inside a longer
+  // word; a trailing s? so plurals match.
+  const has_stimulant = /(vyvanse|lisdexam(?:ph|f)etamine|adderall|am(?:ph|f)etamine|ritalin|concerta|methylphenidate|dexam(?:ph|f)etamine|dexedrine)s?\b/.test(m)
+  const has_glp1 = /\b(glp-?1|ozempic|wegovy|mounjaro|munjaro|zepbound|semaglutide|tirzepatide|liraglutide|saxenda|rybelsus)s?\b/.test(m)
   const has_serotonergic = /\b(brintellix|brintillex|vortioxetine|lexapro|escitalopram|zoloft|sertraline|prozac|fluoxetine|effexor|venlafaxine|cymbalta|duloxetine|paxil|paroxetine|celexa|citalopram|trintellix)\b/.test(m)
   return { has_stimulant, has_glp1, has_serotonergic, any: has_stimulant || has_glp1 || has_serotonergic }
 }
