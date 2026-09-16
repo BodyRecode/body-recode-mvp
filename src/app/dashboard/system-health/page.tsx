@@ -18,6 +18,23 @@ export default async function SystemHealthPage({
   const { run: selectedRunId } = await searchParams
   const admin = createAdminClient()
 
+  // Email that did not arrive. Resend reports success on acceptance, so until
+  // the delivery webhook was built on 16 Sep 2026 a bounce looked exactly like
+  // a delivery. Junk is still invisible: no provider reports it.
+  const since = new Date(Date.now() - 30 * 86400000).toISOString()
+  const [{ data: badEmail }, { count: deliveredCount }] = await Promise.all([
+    admin.from('email_delivery_events')
+      .select('id, event_type, to_address, subject, detail, occurred_at, client_id, lead_id')
+      .in('event_type', ['bounced', 'complained', 'failed', 'delivery_delayed'])
+      .gte('occurred_at', since)
+      .order('occurred_at', { ascending: false })
+      .limit(25),
+    admin.from('email_delivery_events')
+      .select('id', { count: 'exact', head: true })
+      .eq('event_type', 'delivered')
+      .gte('occurred_at', since),
+  ])
+
   const { data: runs } = await admin
     .from('health_check_runs')
     .select('id, ran_at, status, failures_count, fixes_count')
@@ -73,6 +90,46 @@ export default async function SystemHealthPage({
           RRS suggestion acceptance →
         </Link>
       </div>
+
+      <Card className="mb-6">
+        <div className="flex items-center gap-2.5 mb-3">
+          <span className="w-6 h-[3px] rounded-full bg-[#1B6DFC]" />
+          <h2 className="text-[11px] font-medium text-[#141821]">Email delivery, last 30 days</h2>
+        </div>
+        {(badEmail?.length ?? 0) === 0 ? (
+          <p className="text-[12.5px] text-[#666D7A]">
+            {deliveredCount
+              ? `${deliveredCount} emails confirmed delivered. None bounced, refused or reported as spam.`
+              : 'Nothing recorded yet. This fills once the Resend webhook is connected and the next email goes out.'}
+          </p>
+        ) : (
+          <div className="space-y-2">
+            <p className="text-[12.5px] text-[#B45309]">
+              {badEmail!.length} email{badEmail!.length === 1 ? '' : 's'} did not arrive. {deliveredCount ?? 0} delivered in the same period.
+            </p>
+            <div className="overflow-x-auto">
+              <table className="w-full text-[12px]">
+                <tbody>
+                  {badEmail!.map(e => (
+                    <tr key={e.id} className="border-b border-[#EFF1F4] last:border-0">
+                      <td className="py-2 pr-3 whitespace-nowrap text-[#141821] font-medium">{e.event_type}</td>
+                      <td className="py-2 pr-3 text-[#43474F]">{e.to_address}</td>
+                      <td className="py-2 pr-3 text-[#666D7A]">{e.subject}</td>
+                      <td className="py-2 pr-3 text-[#666D7A]">{e.detail}</td>
+                      <td className="py-2 whitespace-nowrap text-[#98A0AD]">
+                        {new Date(e.occurred_at).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+        <p className="text-[10.5px] text-[#98A0AD] mt-3 leading-relaxed">
+          Bounced, refused and spam complaints are reported and show here. Being filed as junk is never reported by any provider, so a quiet list does not prove everything was read.
+        </p>
+      </Card>
 
       {!runs || runs.length === 0 ? (
         <Card>
