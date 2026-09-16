@@ -46,3 +46,12 @@ alter table email_delivery_events enable row level security;
 drop policy if exists email_delivery_events_coach_read on email_delivery_events;
 create policy email_delivery_events_coach_read on email_delivery_events
   for select using (public.is_coach());
+
+-- Grants. Since 2026-05-28 this project opts out of default grants on new
+-- public tables, so without these the service role gets 42501 and the webhook
+-- silently records nothing. Found the same day this table shipped, by querying
+-- it. See sql/SCHEMA_TEMPLATE.sql.
+grant select, insert, update, delete on public.email_delivery_events to service_role;
+-- The System Health page reads it through the SSR client as the signed-in coach,
+-- filtered by the RLS policy above.
+grant select on public.email_delivery_events to authenticated;
