@@ -103,7 +103,8 @@ const STAGES: Stage[] = [
     ],
     steps: [
       ...at(['SaaS', 'Read'], 'measurement-list-model', 'measurement-typed-entry', 'measurement-document-extract', 'measurement-competence-doctrine', 'measurement-plausibility-trust', 'measurement-in-reread'),
-      ...at(['SaaS', 'Read', 'Strenn'], 'watch-data-slot'),
+      ...at(['SaaS', 'Read', 'Strenn'], 'watch-data-slot', 'capture-wearables-aggregator'),
+      ...at(['SaaS', 'Read'], 'capture-scan-vendor', 'capture-scan-competence-rule', 'capture-scan-integration'),
     ],
   },
   {

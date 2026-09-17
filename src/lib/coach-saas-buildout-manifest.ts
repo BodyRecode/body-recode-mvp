@@ -226,6 +226,43 @@ export const COACH_SAAS_STEPS: Step[] = [
     notes: '150 messages per Brisbane day for a coach who is not the owner, across both co-pilots, counted before generating so a refused message costs nothing. Adjustable by environment setting. The refusal is friendly and says the limit resets at midnight. Decision made on actions: a pilot coach\'s co-pilot ANSWERS, it does not act. The two routes that edit a nutrition plan or a reading draft stay owner-only until doctrine enforcement lands, and the code now says why.',
   },
 
+  /* ── Capture: the measurement has to come from somewhere ─────────────── */
+  {
+    id: 'capture-scan-vendor',
+    title: 'Pick a phone body scan to integrate',
+    description: 'Pricing and validation from three vendors, then a choice.',
+    status: 'planned',
+    effort: 'S',
+    surfaces: ['06_SAAS_PLATFORM_BUILD/2026-09-17_Capture_Scan_and_Wearables.md'],
+    notes: 'Kade, 17 Sep: most clubs do NOT have a body composition machine, so capture has to ship inside the product. Integrate, never build: a phone scanner is a computer vision company. Ask 3DLOOK, Prism Labs and Size Stream for cost per scan at low volume, what the interface returns, and their accuracy evidence. Price decides this: our model cost is about a dollar a cycle, so a scan at fifteen dollars changes the pricing of the whole product.',
+  },
+  {
+    id: 'capture-scan-competence-rule',
+    title: 'What a scan is allowed to say',
+    description: 'Authoritative for change and distribution. Never for absolute body fat.',
+    status: 'planned',
+    effort: 'S',
+    blockedBy: 'capture-scan-vendor',
+    notes: 'Published work is consistent: phone scans are good at group level and imprecise for one person\'s absolute numbers, but scan-to-scan repeatability is under a centimetre, better than a human with a tape. We need direction of change over twelve weeks, not a body fat percentage. The rule goes into doctrine BEFORE the first scan lands, not after a client is quoted a number that contradicts her mirror.',
+  },
+  {
+    id: 'capture-scan-integration',
+    title: 'The scan in the portal and in the re-read',
+    description: 'She scans on a Sunday in her bedroom and the numbers arrive.',
+    status: 'planned',
+    effort: 'M',
+    blockedBy: 'capture-scan-competence-rule',
+    notes: 'The point of the whole thing. Almost every baseline held is week one, with one re-capture across six clients, because re-doing a tape measure and three photographs is a chore nobody does. Consent wording, retention and the privacy policy need updating first: a 3D body model is closer to biometric information than a tape measurement.',
+  },
+  {
+    id: 'capture-wearables-aggregator',
+    title: 'Device data through one aggregator, not four integrations',
+    description: 'Sleep and heart rate variability into the slot the engine already has.',
+    status: 'planned',
+    effort: 'M',
+    notes: 'Do not integrate Whoop, Oura, Garmin and Apple Health separately. ROOK is the obvious aggregator and is already connected to one of the scan vendors. The receiver already exists; this is the feed.',
+  },
+
   /* ── Evidence: the research passes that gate go-live ─────────────────── */
   {
     id: 'research-g1-regulatory',
