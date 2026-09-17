@@ -91,6 +91,22 @@ const STAGES: Stage[] = [
     ],
   },
   {
+    label: 'First · Better inputs',
+    title: 'What the read is built from',
+    description: 'Machine measurements and device data as inputs to the reading. Never hardware, never an app, and never a requirement.',
+    longDescription: [
+      'Moved forward from Later on 17 September 2026. These belong with the SaaS rather than after it, for two reasons.',
+      'First, they are inputs to the reading, which is exactly what is sold. A body scan and a watch make the read more accurate without touching programs or meal plans, so they extend the product without crossing the line that keeps platforms willing to embed it.',
+      'Second, the twelve-week re-read is the whole recurring-revenue argument, and the thing stopping it is capture rather than interpretation: almost every baseline held is week one. Asking somebody to re-do a tape measure and three photographs is why. Sixty seconds on a scanner the club already owns is not.',
+      'THE RULE, unchanged: the read works on her answers alone and always will. Every measurement is enrichment, never a requirement, and each source may only speak to what it is actually competent to measure.',
+      'DO NOT BUILD HARDWARE. Premium clubs already own scanners, and a host app usually already has the watch data. The work is accepting what exists, not manufacturing a capture device. A phone-based consumer scan of the ZOZOFIT kind is a different product and belongs with Strenn.',
+    ],
+    steps: [
+      ...at(['SaaS', 'Read'], 'measurement-list-model', 'measurement-typed-entry', 'measurement-document-extract', 'measurement-competence-doctrine', 'measurement-plausibility-trust', 'measurement-in-reread'),
+      ...at(['SaaS', 'Read', 'Strenn'], 'watch-data-slot'),
+    ],
+  },
+  {
     label: 'First · Evidence',
     title: 'What the system says, and whether it holds up',
     description: 'Six research passes over the advice the platform already gives, because other people\'s clients will receive it.',
@@ -256,7 +272,6 @@ const STAGES: Stage[] = [
       'Real work with a real case, deliberately after the stages above. Full meal plans are gated on evidence rather than scheduled.',
     ],
     steps: [
-      ...at(['Strenn', 'Read'], 'watch-data-slot'),
       ...at(['Strenn'], 'rey-full-meal-plans', 'rey-audience-b', 'rey-gym-portability'),
       ...at(['Read'], 'measurement-list-model', 'measurement-typed-entry', 'measurement-document-extract', 'measurement-competence-doctrine', 'measurement-plausibility-trust', 'measurement-typing-input', 'measurement-in-reread', 'measurement-partner-integration'),
       ...at(['Read'], 'input-apnoea-screen', 'input-grip-strength', 'input-bp-resting-hr', 'input-measured-rmr', 'input-cgm', 'input-salivary-cortisol'),
