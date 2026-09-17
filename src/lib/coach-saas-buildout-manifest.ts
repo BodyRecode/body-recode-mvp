@@ -230,11 +230,11 @@ export const COACH_SAAS_STEPS: Step[] = [
   {
     id: 'capture-scan-vendor',
     title: 'Pick a phone body scan to integrate',
-    description: 'Pricing and validation from three vendors, then a choice.',
-    status: 'planned',
+    description: 'Vendors and pricing researched. Deferred until the pilot is close.',
+    status: 'deferred',
     effort: 'S',
     surfaces: ['06_SAAS_PLATFORM_BUILD/2026-09-17_Capture_Scan_and_Wearables.md'],
-    notes: 'Kade, 17 Sep: most clubs do NOT have a body composition machine, so capture has to ship inside the product. Integrate, never build: a phone scanner is a computer vision company. Ask 3DLOOK, Prism Labs and Size Stream for cost per scan at low volume, what the interface returns, and their accuracy evidence. Price decides this: our model cost is about a dollar a cycle, so a scan at fifteen dollars changes the pricing of the whole product.',
+    notes: 'Kade, 17 Sep: most clubs do NOT have a body composition machine, so capture has to ship inside the product. Integrate, never build: a phone scanner is a computer vision company. DEFERRED 17 Sep 2026: not close enough to a pilot, and every vendor starts a monthly bill on signature. Research is banked so nobody repeats it. Prism Labs fits best (from $500/mo, from $2 per ACTIVE user, unlimited scans, inactive months free, so about $4 per client per year, plus a free 90-day sandbox and an existing ROOK wearable connection). 3DLOOK has the best published accuracy (repeatability under 1cm) but a $499-1,000/mo floor. Size Stream is SOC 2 Type 2, price unknown. Trigger to restart: coaches are using the platform and the re-read is the next thing blocking the subscription argument.',
   },
   {
     id: 'capture-scan-competence-rule',
