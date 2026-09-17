@@ -44,6 +44,29 @@ export async function sendSms({
    */
   skipLog?: boolean
 }): Promise<void> {
+  // A merge tag that survived rendering means the person gets "{{name}}" and a
+  // dead link instead of their name and the page. Kim got exactly that on
+  // 16 Sep 2026 (decode_day1: the Decode templates used {{name}}/{{url}} while
+  // the renderer only replaced %FIRST%/%URL%). Refuse the send and log it
+  // loudly: no text is recoverable, a broken one is not.
+  const leftover = message.match(/\{\{[^}]+\}\}|%[A-Z_]{3,}%/)
+  if (leftover) {
+    console.error(`[SMS] BLOCKED, unresolved merge tag ${leftover[0]} in ${trigger ?? 'untriggered'} message to ${to}`)
+    if (!skipLog) {
+      try {
+        const admin = createAdminClient()
+        await admin.from('sms_logs').insert({
+          lead_id: leadId, direction: 'outbound', trigger, to_number: to,
+          body: message, status: 'failed',
+          error: `Unresolved merge tag ${leftover[0]}. Not sent.`,
+        })
+      } catch (e) {
+        console.error('[SMS] could not log blocked send', e)
+      }
+    }
+    return
+  }
+
   const platformAccountSid = process.env.TWILIO_ACCOUNT_SID
   const platformAuthToken = process.env.TWILIO_AUTH_TOKEN
   const platformMessagingServiceSid = process.env.TWILIO_MESSAGING_SERVICE_SID

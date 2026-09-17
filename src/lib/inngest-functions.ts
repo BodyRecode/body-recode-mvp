@@ -78,8 +78,20 @@ const SMS_AFTERNOON_BOOST: Partial<Record<number, string>> = {
   14: `Your Body Decode Report is in your inbox %FIRST%. The full pattern read, what it means, where it shows up, and what comes next. Open the email.`,
 }
 
+/**
+ * Both token styles, because both exist in the templates: the Challenge sets
+ * use %FIRST% / %URL%, the Decode sets use {{name}} / {{url}}. Handling only
+ * one is how Kim's day 1 text went out reading "{{name}}" with a dead
+ * "{{url}}" in place of the link on 16 September 2026. sendSms now also
+ * refuses any message that still carries a tag, so a mismatch fails loudly
+ * instead of reaching a person.
+ */
 function renderSms(template: string, firstName: string, portalUrl: string): string {
-  return template.replace(/%FIRST%/g, firstName).replace(/%URL%/g, portalUrl)
+  return template
+    .replace(/%FIRST%/g, firstName)
+    .replace(/%URL%/g, portalUrl)
+    .replace(/\{\{\s*(name|first_name|firstName)\s*\}\}/g, firstName)
+    .replace(/\{\{\s*(url|link|portal_url)\s*\}\}/g, portalUrl)
 }
 
 
