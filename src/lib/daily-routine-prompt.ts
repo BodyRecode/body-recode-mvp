@@ -1,3 +1,5 @@
+import { electrolyteGates, electrolyteGatePromptBlock } from './electrolyte-safety-gates'
+
 /**
  * Daily Routine LLM prompt builder.
  *
@@ -161,6 +163,18 @@ export function buildDailyRoutineUserPrompt(data: DailyRoutineClientData): strin
   if (data.health_flags.length > 0) {
     parts.push('')
     parts.push(`Health flags (safety-relevant): ${data.health_flags.join(', ')}`)
+  }
+
+  // Added 17 Sep 2026, research pass E1a section 5. The routine generator is
+  // the surface most likely to reach for a morning water or salt habit, so the
+  // two gates are stated here in the client's own words rather than left to
+  // the model's judgement.
+  const gateBlock = electrolyteGatePromptBlock(
+    electrolyteGates(data.medications_summary, data.health_flags.join(' ')),
+  )
+  if (gateBlock) {
+    parts.push('')
+    parts.push(gateBlock)
   }
 
   parts.push('')

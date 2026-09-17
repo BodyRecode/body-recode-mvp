@@ -1,3 +1,5 @@
+import { electrolyteGates, electrolyteGatePromptBlock } from './electrolyte-safety-gates'
+
 export interface NutritionPrescriptionInputs {
   entry_state: 'stabilisation' | 'training_support' | 'high_output_support' | 'recovery_reset'
   plan_name: string
@@ -629,6 +631,16 @@ export function buildNutritionUserPrompt(
     lines.push('- SSRIs / SNRIs / many antidepressants: appetite and bodyweight may shift independent of intake. Anchor compliance to protein/meal-rhythm targets, not bodyweight drift, for the first 4-6 weeks of any new prescription.')
     lines.push('- Stimulants (ADHD meds): appetite is suppressed during the day. Protein anchor floor must be met; structure meals around the appetite window rather than fighting it.')
     lines.push('')
+
+    // Added 17 Sep 2026, research pass E1a section 5. The class rules above
+    // tell the model what each medicine does; these two gates tell it what it
+    // is not allowed to write, in the client's own words. A gate REPLACES the
+    // advice rather than qualifying it.
+    const gateBlock = electrolyteGatePromptBlock(electrolyteGates(medications, cffsText, intakeText))
+    if (gateBlock) {
+      lines.push(gateBlock)
+      lines.push('')
+    }
     lines.push('APPETITE-SUPPRESSION HARD RULES (ENFORCED BY VALIDATOR — non-compliant plans are rejected):')
     lines.push('If the MEDICATIONS field contains ANY of: stimulants (Vyvanse, Adderall, Ritalin, Concerta, methylphenidate, dexamfetamine), GLP-1 agonists (Ozempic, Wegovy, Mounjaro, Zepbound, semaglutide, tirzepatide, liraglutide), or appetite-affecting serotonergics (Brintellix/vortioxetine, Lexapro, Zoloft, Prozac, Effexor, Cymbalta, Paxil) — ALL of the following are mandatory:')
     lines.push('  (a) meal_frequency MUST be ≥ 4. Three large meals is rejected — a suppressed client cannot finish 50g+ protein in a single sitting.')
