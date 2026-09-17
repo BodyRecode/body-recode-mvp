@@ -85,7 +85,7 @@ export default function PrivacyPage() {
           </h1>
           <div style={{ width: '48px', height: '3px', background: '#1B6DFC', borderRadius: '2px', marginBottom: '16px' }} />
           <p style={{ fontSize: '13px', color: '#8A8E9B', margin: 0 }}>
-            Last updated: December 2025
+            Last updated: September 2026
           </p>
         </div>
       </div>
@@ -97,8 +97,7 @@ export default function PrivacyPage() {
           padding: '24px 26px',
         }}>
           <p style={{ fontSize: '15px', color: '#C5C8D2', lineHeight: 1.75, margin: 0 }}>
-            This Privacy Policy explains how {brand().name} collects, uses, and protects your information when you visit bodyrecode.au, participate in the 14-Day Body Decode Challenge, join the {brand().name} Blueprint or Membership, or interact with our coaching programs, content, or communications. By using our website or participating in our programs, you agree to the practices described in this Privacy Policy.
-                                </p>
+            This Privacy Policy explains how {brand().name} collects, uses, and protects your information when you visit bodyrecode.au, take the Readiness Scorecard, complete The Body Decode, receive a read, or work with us in coaching. Most of what we hold about you is health information, which Australian privacy law treats as sensitive and protects more tightly than ordinary personal information. This policy is written to be read, not to be got past.</p>
         </div>
       </div>
 
@@ -106,36 +105,48 @@ export default function PrivacyPage() {
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '40px 24px 0' }}>
 
         {section(1, 'Information We Collect', <>
-          {subheading('A. Personal information you provide')}
-          {bullets(['Name', 'Email address', 'Phone number', 'Age range', 'Fitness goals', 'Challenge form responses', 'Information provided through WhatsApp coaching flows', 'Payment information processed through secure third-party providers'])}
-          {subheading('B. Automatically collected information')}
+          {subheading('A. Who you are')}
+          {bullets(['Name', 'Email address', 'Phone number', 'Age and biological sex', 'Payment details, handled by our payment provider and never seen or stored by us'])}
+          {subheading('B. Health information')}
+          {p('This is the heart of what we hold, and Australian privacy law treats it as sensitive information. Depending on how far you go with us, it includes:')}
+          {bullets([
+            'Your answers about sleep, stress, energy, digestion, recovery and how your body is responding',
+            'Menstrual and hormonal status, including menopause status and any hormone therapy',
+            'Medications and supplements you tell us you take',
+            'Injuries, surgeries, diagnosed conditions and anything you raise as a health concern',
+            'Body measurements, weight and progress photographs, if you provide them',
+            'Blood test results your doctor ordered, if you choose to upload them',
+            'The read we write about you, which is itself health information we have created and hold',
+          ])}
+          {p('We ask for your consent before collecting this, and we only ask for what your read and your program actually need. You can decline any question, and you can withdraw your consent at any time by emailing us.')}
+          {subheading('C. Collected automatically')}
           {bullets(['IP address', 'Device and browser details', 'Pages viewed and time spent on site', 'Cookies and tracking technologies'])}
-          {subheading('C. Health and lifestyle information (voluntary)')}
-          {p('To support personalised coaching, you may choose to share training history, activity levels, body goals, lifestyle details, and sleep patterns or stress levels. We do not collect or store medical records.')}
         </>)}
 
         {section(2, 'How We Use Your Information', <>
           {p('We use your information to:')}
-          {bullets(['Deliver Body Recode programs', 'Send challenge emails, WhatsApp coaching messages, and updates', 'Provide support', 'Improve program quality', 'Send marketing related to Body Recode', 'Run advertising campaigns and retargeting', 'Process payments', 'Meet legal obligations'])}
+          {bullets(['Write your read and build your training, nutrition and daily routine', 'Send you your read, your daily lessons, reminders and coaching messages', 'Provide support', 'Improve the method, using information that does not identify you', 'Send marketing related to Body Recode', 'Run advertising campaigns and retargeting', 'Process payments', 'Meet legal obligations'])}
         </>)}
 
         {section(3, 'Sharing Your Information', <>
           {p('We use a small number of trusted providers to run Body Recode. Each one only receives what it needs to do its job, and each is bound by its own confidentiality and security obligations.')}
           {subheading('A. Providers that handle your information')}
           {bullets([
-            'Supabase — our database and secure file storage. Hosted in Sydney, Australia.',
-            'Anthropic — the interpretation engine that produces your read. See below.',
-            'Vercel — website and application hosting.',
-            'Inngest — runs scheduled and background tasks, such as reminders.',
-            'Resend — sends our emails.',
-            'Twilio — sends our SMS messages.',
-            'Stripe — processes payments. We never see or store your full card details.',
-            'Coaching and administrative contractors, bound by confidentiality agreements.',
+            'Supabase, our database and secure file storage. Your records are held in Sydney, Australia.',
+            'Anthropic, the interpretation engine that writes your read. Processed in the United States. See below.',
+            'Vercel, website and application hosting. United States.',
+            'Inngest, runs scheduled and background tasks such as reminders. United States.',
+            'Resend, sends our emails. United States.',
+            'Twilio, sends our text messages. United States.',
+            'Stripe, processes payments. Australia and the United States. We never see or store your full card details.',
+            'Coaching and administrative contractors, bound by confidentiality agreements. Australia.',
           ])}
           {subheading('B. Advertising and analytics')}
           {p('Meta and Google receive information about website visits and purchases so we can measure and target advertising. They do NOT receive your assessment answers, your photos, your measurements, or any other health information.')}
           {subheading('C. How your health information is interpreted')}
           {p('Your assessment answers, and where you provide them your photos, measurements and blood results, are processed by Anthropic to produce your read. Anthropic processes this on our instructions only, and under its commercial terms it does not use it to train its models. Body Recode does not use your identifiable information to train any model.')}
+          {subheading('If you came to us through a coach or a gym')}
+          {p('Where a coach or a gym uses Body Recode with you, both they and we hold your information. They see what they need to coach you, and their own privacy obligations apply to them as well as ours to us. We never hand your information to another business to use for its own purposes.')}
           {p('We never sell your information.')}
         </>)}
 
@@ -151,19 +162,43 @@ export default function PrivacyPage() {
           {p(`If a data breach occurs that is likely to cause you serious harm, we will notify you and the Office of the Australian Information Commissioner, as required by the Notifiable Data Breaches scheme. Email ${brand().supportEmail} to report a security concern.`)}
         </>)}
 
-        {section(6, 'Your Rights (Australia)', <>
-          {p(`You may request to access your personal information, correct your information, request deletion, or opt out of marketing. Email ${brand().supportEmail} for any privacy-related requests.`)}
+        {section(6, 'How decisions about you are made', <>
+          {p('Part of what we do is automated. A computer program, using an artificial intelligence model, reads your answers and writes your read, your training program, your nutrition plan and your daily routine. We are telling you this plainly because from 10 December 2026 Australian privacy law requires it, and because you should know either way.')}
+          {subheading('What the program uses')}
+          {p('Your questionnaire answers, your check-ins, your measurements and photographs where you provide them, your medications, your menstrual and hormonal status, and your blood results where you upload them.')}
+          {subheading('What it decides on its own')}
+          {bullets([
+            'Which pattern your answers point to, and what your read says',
+            'The shape of your training program and your nutrition plan',
+            'When an answer means we stop and ask you to see your doctor before we go further',
+          ])}
+          {subheading('Where a person is involved')}
+          {p('Your read is a draft until a coach reviews it and publishes it to you. A coach can change it, hold it, or throw it out. Nothing about your safety is left to the model alone: the rules that stop a program and send you to your doctor are fixed rules, not a judgement the model makes.')}
+          {subheading('If you disagree with it')}
+          {p(`Tell us. Email ${brand().supportEmail} and a person will look at it. You can ask for the read to be corrected, redone, or removed.`)}
         </>)}
 
-        {section(7, "Children's Privacy", <>
-          {p('Body Recode programs are not intended for individuals under 18.')}
+        {section(7, 'How long we keep your information', <>
+          {p('We keep your health information while we are working with you, and then for seven years, which is the period health record law requires of health service providers in some Australian states. After that we delete it or strip it of anything that identifies you.')}
+          {p('Photographs and blood test results are the most sensitive things we hold and the least often needed twice. You can ask us to delete either at any time, and we will, unless we are required to keep them.')}
+          {p(`If you want your information deleted sooner, email ${brand().supportEmail}. We will tell you what we can delete, what we have to keep, and why.`)}
         </>)}
 
-        {section(8, 'Changes to This Policy', <>
+        {section(8, 'Your Rights (Australia)', <>
+          {p(`You can ask to see what we hold about you, ask us to correct it, ask us to delete it, withdraw your consent, or opt out of marketing. Email ${brand().supportEmail} and we will answer within 30 days.`)}
+          {subheading('If you are not happy with how we handled it')}
+          {p(`Tell us first, at ${brand().supportEmail}, and we will try to sort it out. If you are still not satisfied, you can complain to the Office of the Australian Information Commissioner at oaic.gov.au or on 1300 363 992.`)}
+        </>)}
+
+        {section(9, "Children's Privacy", <>
+          {p('Body Recode is for adults. We do not knowingly accept anyone under 18, and we do not knowingly collect their information. If you believe a person under 18 has signed up, email us and we will delete what we hold.')}
+        </>)}
+
+        {section(10, 'Changes to This Policy', <>
           {p('We may update this policy at any time. The latest version will always appear here.')}
         </>)}
 
-        {section(9, 'Contact Us', <>
+        {section(11, 'Contact Us', <>
           <div style={{
             background: '#121419', border: '1px solid rgba(255,255,255,0.08)', borderLeft: '3px solid #1B6DFC',
             borderRadius: '10px', padding: '16px 18px',
