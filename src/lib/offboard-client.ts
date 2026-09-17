@@ -40,15 +40,24 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 /**
  * How long client records are kept after the engagement ends.
  *
- * Kade's instruction: five years. Worth confirming against your obligations
- * rather than taking this number from code. Body Recode holds HEALTH
- * information (diagnoses, medications, blood panels, body photos), which is
- * treated more strictly than ordinary personal information under the Privacy
- * Act, and several Australian jurisdictions use SEVEN years from last service
- * for adult health records. This is a business decision, not a legal opinion:
- * if seven is the right number, change it here and re-derive retain_until.
+ * SEVEN years from the end of the engagement, changed from five on
+ * 17 September 2026.
+ *
+ * Why it moved: the regulatory research (chat G1b) confirmed that New South
+ * Wales and Victorian health records law require seven years from the last
+ * service for adult health records, and the published privacy policy now
+ * promises seven. Code saying five while the policy says seven is the mismatch
+ * worth avoiding, and the longer number is the one the law names.
+ *
+ * Kade's original instruction was five, and this overrides it deliberately
+ * rather than by accident. Still a business decision resting on desk research,
+ * not a legal opinion: the lawyer engaged on device status can confirm whether
+ * those state Acts reach a Queensland online business.
+ *
+ * Records collected from someone under 18 are kept until they turn 25 in those
+ * states. We do not accept anyone under 18, so that case should never arise.
  */
-export const RETENTION_YEARS = 5
+export const RETENTION_YEARS = 7
 
 export type EndReason =
   | 'client_ended'
