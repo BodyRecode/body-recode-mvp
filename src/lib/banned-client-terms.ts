@@ -34,6 +34,17 @@
  */
 
 export const BANNED_CLIENT_TERMS: RegExp[] = [
+  // 0. Claims the evidence does not support.
+  //    "Adrenal fatigue" is not a recognised condition: a systematic review of
+  //    58 studies found no substantiation (Cadegiani 2016), and no endocrine
+  //    society recognises it. It reached this list on 17 Sep 2026 from research
+  //    pass E1a, which found our salt-craving question scored as a strain
+  //    signal on the strength of that idea. Saying it to a client would be
+  //    telling her she has something that does not exist.
+  /\badrenal fatigue\b/i,
+  /\badrenal burnout\b/i,
+  /\badrenal exhaustion\b/i,
+
   // 1. Acronyms
   /\bCFFS\b/i,
   /\bCFWS\b/i,

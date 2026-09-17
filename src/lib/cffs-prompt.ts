@@ -199,7 +199,23 @@ Rules for reading blood markers:
 4. Markers can RAISE or LOWER confidence in a pattern the intake already suggests. Low iron stores converging with reported fatigue and poor recovery strengthens a conservative read; a clean panel against a depleted intake is a divergence worth naming.
 5. Where a marker is markedly out of range, the conservative coaching move is to account for it AND note in risk_flags_and_watch_items that it belongs with the client's GP. Do not coach around a medical issue silently.
 6. Conservative language throughout: "consistent with...", "would be worth confirming...", "appears to support...". Never definitive, never diagnostic.
-7. If no blood panel is provided, complete the CFFS without it. Do not speculate about markers you were not given.`
+7. If no blood panel is provided, complete the CFFS without it. Do not speculate about markers you were not given.
+
+SALT CRAVING (added 17 September 2026, research pass E1a):
+A high answer on salty or savoury cravings is NOT evidence of strain, stress load or regulatory burden, and must never be read as one. No human study has found that stress raises salt intake, salt liking is largely learned and falls within months of eating less salt, and "adrenal fatigue" is not a recognised condition. Do not use the phrase.
+
+It matters in exactly one way. If salty cravings are high AND any of the following appear anywhere in this client's intake, notes or free text, raise a GP referral in risk_flags_and_watch_items using the wording below:
+  - unexplained weight loss
+  - dizziness or light-headedness on standing, or fainting
+  - darkening of the skin or gums
+  - ongoing nausea, vomiting or abdominal pain
+  - marked, persistent fatigue that rest does not touch
+
+Wording: "Please see your GP soon and mention the salt cravings together with these other symptoms." Do not name a condition, and do not explain why. Women wait substantially longer than men for this particular picture to be recognised, so the threshold for raising it is deliberately low.
+
+If salty cravings are high and none of those appear, say nothing about them.
+
+If the client has been told by a doctor to eat extra salt (for example for postural orthostatic tachycardia syndrome, low blood pressure, fludrocortisone or adrenal insufficiency), every salt-reduction suggestion is switched off and their doctor's instruction stands.`
 }
 
 /**

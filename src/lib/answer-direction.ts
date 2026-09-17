@@ -37,7 +37,15 @@ const N = 'neutral' as const
 
 export const ANSWER_DIRECTION: Record<string, AnswerDirection> = {
   // Section A: body pattern signals. Higher = more of the signal present.
-  fm_01: S, fm_02: S, fm_03: S, fm_04: S, fm_05: S, fm_06: S, fm_07: S, fm_08: S, fm_09: S, fm_10: S,
+  // fm_04 (salty cravings) moved from strain to NEUTRAL on 17 Sep 2026, from
+  // research pass E1a. It was scored as a strain signal on no evidence: no
+  // human study found stress raises salt intake (Torres 2010), salt liking is
+  // largely learned and falls within months of eating less salt (Bertino 1982),
+  // and "adrenal fatigue" is not a recognised condition (Cadegiani 2016,
+  // systematic review of 58 studies). It still earns its place in the intake,
+  // but as a referral input alongside other symptoms, not as load. See
+  // 00_PLAYBOOK/electrolyte_research/2026-09-17_E1a_RESULT_base_and_safety_gates.md, A8.
+  fm_01: S, fm_02: S, fm_03: S, fm_04: N, fm_05: S, fm_06: S, fm_07: S, fm_08: S, fm_09: S, fm_10: S,
   fm_11: S, fm_12: S, fm_13: S, fm_14: S, fm_15: S, fm_16: S, fm_17: S, fm_18: S, fm_19: S, fm_20: S,
   fm_21: S, fm_22: S, fm_23: S, fm_24: S, fm_25: S, fm_26: S, fm_27: S, fm_28: S,
   fm_29: N, // attribution ("tracks with how demanding life is"), not an amount
