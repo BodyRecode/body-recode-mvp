@@ -11,12 +11,24 @@ import { notifyOnboardingCompleteIfReady } from '@/lib/onboarding-complete-notif
 import { appUrl } from '@/lib/app-url'
 import { fromCoach, fromBrand } from '@/lib/email-shell'
 import { coach } from '@/config/tenant'
+import { ageFromDob } from '@/lib/energy-requirement'
 
 export const maxDuration = 300
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
   const { token, formData, healthConsent } = body
+
+  // Adults only. Reading where a developing body holds fat risks feeding
+  // disordered eating, and the doctrine's exclusions were written for adults.
+  // Refused at the route, not only in the form, so it cannot be posted around.
+  const dobAge = ageFromDob(typeof formData?.date_of_birth === 'string' ? formData.date_of_birth : null)
+  if (dobAge !== null && dobAge < 18) {
+    return NextResponse.json(
+      { error: 'Body Recode is for adults. Please speak to your doctor, or an accredited exercise physiologist or dietitian who works with younger athletes.' },
+      { status: 403 },
+    )
+  }
 
   if (!token || !formData) {
     return NextResponse.json({ error: 'Missing token or form data' }, { status: 400 })
