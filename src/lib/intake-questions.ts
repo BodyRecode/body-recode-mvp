@@ -146,6 +146,15 @@ export const INTAKE_SECTIONS: Section[] = [
       // Same collision that deadlocked the Progress Read. See Question.promptText.
       { id: 'fm_03', text: 'I feel wired but tired most days.', promptText: 'I feel activated but unable to settle most days, and rest does not restore me.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
       { id: 'fm_04', text: 'I experience frequent cravings for salty or savoury foods.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
+      // fm_04a to fm_04c added 17 Sep 2026, research pass E1a (A8). Salt
+      // craving on its own means nothing and is scored neutral. Alongside ANY
+      // of these three it is worth a same-week GP conversation, and the read
+      // raises one. Asked here, next to the craving, so the answer is reliable
+      // rather than hoped for in free text. All three are neutral for scoring:
+      // they are referral inputs, not load.
+      { id: 'fm_04a', text: 'I have lost weight over the last six months without trying to.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
+      { id: 'fm_04b', text: 'I feel dizzy or light-headed when I stand up.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
+      { id: 'fm_04c', text: 'I have noticed my skin or gums looking darker than usual.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
       { id: 'fm_05', text: 'My sleep quality declines noticeably during high-pressure weeks.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
       { id: 'fm_06', text: 'I store fat predominantly around my hips and thighs.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },
       { id: 'fm_07', text: 'My lower body fat is resistant even when weight elsewhere decreases.', type: 'scale', scaleLabel: { low: 'Not present', high: 'Strong / Consistent' } },

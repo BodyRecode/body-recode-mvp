@@ -204,12 +204,12 @@ Rules for reading blood markers:
 SALT CRAVING (added 17 September 2026, research pass E1a):
 A high answer on salty or savoury cravings is NOT evidence of strain, stress load or regulatory burden, and must never be read as one. No human study has found that stress raises salt intake, salt liking is largely learned and falls within months of eating less salt, and "adrenal fatigue" is not a recognised condition. Do not use the phrase.
 
-It matters in exactly one way. If salty cravings are high AND any of the following appear anywhere in this client's intake, notes or free text, raise a GP referral in risk_flags_and_watch_items using the wording below:
-  - unexplained weight loss
-  - dizziness or light-headedness on standing, or fainting
-  - darkening of the skin or gums
-  - ongoing nausea, vomiting or abdominal pain
-  - marked, persistent fatigue that rest does not touch
+It matters in exactly one way. If salty cravings are high AND any of the following is present, raise a GP referral in risk_flags_and_watch_items using the wording below:
+  - weight lost over six months without trying (asked directly)
+  - dizziness or light-headedness on standing (asked directly)
+  - skin or gums looking darker than usual (asked directly)
+  - ongoing nausea, vomiting or abdominal pain (from her notes or free text)
+  - marked, persistent fatigue that rest does not touch (from the sleep and stress sections, or her free text)
 
 Wording: "Please see your GP soon and mention the salt cravings together with these other symptoms." Do not name a condition, and do not explain why. Women wait substantially longer than men for this particular picture to be recognised, so the threshold for raising it is deliberately low.
 

@@ -46,6 +46,9 @@ export const ANSWER_DIRECTION: Record<string, AnswerDirection> = {
   // but as a referral input alongside other symptoms, not as load. See
   // 00_PLAYBOOK/electrolyte_research/2026-09-17_E1a_RESULT_base_and_safety_gates.md, A8.
   fm_01: S, fm_02: S, fm_03: S, fm_04: N, fm_05: S, fm_06: S, fm_07: S, fm_08: S, fm_09: S, fm_10: S,
+  // Referral inputs, not load. A "yes" here is a reason to send her to a GP,
+  // never a reason to read her as more strained. Same reasoning as fm_04.
+  fm_04a: N, fm_04b: N, fm_04c: N,
   fm_11: S, fm_12: S, fm_13: S, fm_14: S, fm_15: S, fm_16: S, fm_17: S, fm_18: S, fm_19: S, fm_20: S,
   fm_21: S, fm_22: S, fm_23: S, fm_24: S, fm_25: S, fm_26: S, fm_27: S, fm_28: S,
   fm_29: N, // attribution ("tracks with how demanding life is"), not an amount
