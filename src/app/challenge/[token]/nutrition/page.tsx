@@ -227,8 +227,8 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {[
-                { num: '01', when: 'Pre', timing: '30-60 min before training', what: 'Salt + water. Add fruit or honey if you need a boost.' },
-                { num: '02', when: 'During', timing: 'Throughout the session', what: 'Water + electrolytes.' },
+                { num: '01', when: 'Pre', timing: '30-60 min before training', what: 'Water. Add fruit or honey if you need a boost.' },
+                { num: '02', when: 'During', timing: 'Throughout the session', what: 'Water. An electrolyte drink only if the session is long or you are sweating heavily in heat.' },
                 { num: '03', when: 'Post', timing: 'Within 30 minutes', what: 'Whey + fruit. Start the recovery window.' },
                 { num: '04', when: 'Post-training meal', timing: '1-2 hours after training', what: 'Protein + clean carbs. Beef + rice, chicken + potato, ground turkey + sweet potato.' },
               ].map(p => (
@@ -265,7 +265,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {[
-                { time: 'On waking', what: '500ml water + pinch of salt', note: 'Before anything else. Rehydrate first.' },
+                { time: 'On waking', what: 'A glass of water', note: 'Before anything else. Start the day hydrated.' },
                 { time: 'Breakfast', what: 'Protein + fat', note: 'Eggs in butter + avocado, or yoghurt + berries.' },
                 { time: 'Lunch', what: 'Protein + fat', note: 'Beef mince + avocado, salmon + cucumber, chicken thighs + butter.' },
                 { time: 'Dinner', what: 'Protein + fat', note: 'Salmon + avocado, eggs + ghee, steak + butter.' },
@@ -295,9 +295,9 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
                   label: 'Morning trainer',
                   sub: 'Training ~6am, pre-breakfast',
                   timeline: [
-                    { time: '5:30am', text: 'Water + salt', kind: 'anchor' as const },
-                    { time: '5:45am', text: 'Pre — salt + water (+ fruit if needed)', kind: 'peri' as const },
-                    { time: '6-7am', text: 'During — water + electrolytes', kind: 'peri' as const },
+                    { time: '5:30am', text: 'A glass of water', kind: 'anchor' as const },
+                    { time: '5:45am', text: 'Pre — water (+ fruit if needed)', kind: 'peri' as const },
+                    { time: '6-7am', text: 'During — water', kind: 'peri' as const },
                     { time: '7am', text: 'Post — whey + fruit', kind: 'peri' as const },
                     { time: '8:30am', text: 'Breakfast / post-training meal — protein + clean carbs (beef + rice)', kind: 'peri-meal' as const },
                     { time: '1pm', text: 'Lunch — protein + fat', kind: 'anchor' as const },
@@ -308,10 +308,10 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
                   label: 'Midday trainer',
                   sub: 'Training ~12pm, between meals',
                   timeline: [
-                    { time: '7am', text: 'Water + salt', kind: 'anchor' as const },
+                    { time: '7am', text: 'A glass of water', kind: 'anchor' as const },
                     { time: '8am', text: 'Breakfast — protein + fat', kind: 'anchor' as const },
-                    { time: '11:30am', text: 'Pre — salt + water (+ fruit if needed)', kind: 'peri' as const },
-                    { time: '12-1pm', text: 'During — water + electrolytes', kind: 'peri' as const },
+                    { time: '11:30am', text: 'Pre — water (+ fruit if needed)', kind: 'peri' as const },
+                    { time: '12-1pm', text: 'During — water', kind: 'peri' as const },
                     { time: '1pm', text: 'Post — whey + fruit', kind: 'peri' as const },
                     { time: '2pm', text: 'Lunch / post-training meal — protein + clean carbs (chicken + potato)', kind: 'peri-meal' as const },
                     { time: '7pm', text: 'Dinner — protein + fat', kind: 'anchor' as const },
@@ -321,11 +321,11 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
                   label: 'Evening trainer',
                   sub: 'Training ~5pm, after work',
                   timeline: [
-                    { time: '7am', text: 'Water + salt', kind: 'anchor' as const },
+                    { time: '7am', text: 'A glass of water', kind: 'anchor' as const },
                     { time: '8am', text: 'Breakfast — protein + fat', kind: 'anchor' as const },
                     { time: '12pm', text: 'Lunch — protein + fat', kind: 'anchor' as const },
-                    { time: '4:30pm', text: 'Pre — salt + water (+ fruit if needed)', kind: 'peri' as const },
-                    { time: '5-6pm', text: 'During — water + electrolytes', kind: 'peri' as const },
+                    { time: '4:30pm', text: 'Pre — water (+ fruit if needed)', kind: 'peri' as const },
+                    { time: '5-6pm', text: 'During — water', kind: 'peri' as const },
                     { time: '6pm', text: 'Post — whey + fruit', kind: 'peri' as const },
                     { time: '7:30pm', text: 'Dinner / post-training meal — protein + clean carbs (turkey + sweet potato)', kind: 'peri-meal' as const },
                   ],
@@ -529,7 +529,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
           <div style={card}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
               {[
-                { name: 'Electrolytes', timing: 'Daily', note: 'Especially important on training days and in the morning' },
+                { name: 'Electrolytes', timing: 'Situational', note: 'Long sessions, heavy sweating in heat, or illness. Not a daily habit' },
                 { name: 'Whey protein', timing: 'Post-training', note: 'Fast-digesting protein to kickstart recovery' },
                 { name: 'FocusFuel', timing: 'Pre-training', note: 'Clean energy without seed oils or artificial sweeteners', comingSoon: true },
                 { name: 'Creatine', timing: 'Daily', note: '5g per day. Supports performance and recovery' },
@@ -570,7 +570,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
               { cat: 'Fats', items: 'Butter, ghee, coconut oil, avocados, cheese (cheddar or parmesan), egg yolks' },
               { cat: 'Fruit', items: 'Bananas, mixed berries (fresh or frozen), pineapple, apples, oranges, grapes, mango' },
               { cat: 'Post-Training Carbs', items: 'White rice, potatoes (white and sweet), raw honey' },
-              { cat: 'Hydration', items: 'Quality sea salt or Himalayan salt, electrolyte powder (no sugar), sparkling water' },
+              { cat: 'Hydration', items: 'Sparkling water, herbal tea. Electrolyte powder (no sugar) only if you train long or sweat heavily' },
               { cat: 'Kitchen basics', items: 'Bone broth, herbs, spices, garlic, lemon' },
             ].map((s) => (
               <div key={s.cat} style={{ ...card, padding: '16px 18px' }}>

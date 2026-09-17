@@ -19,8 +19,16 @@ export default async function PreSessionGuide({ params }: { params: Promise<{ to
         {
           heading: 'Hydrate intentionally',
           body: <>
-            <p>500ml of water in the hour before. Add a pinch of salt or an electrolyte tab if you sweat heavily or train fasted in the morning.</p>
-            <p>Dehydration before training drops performance more than people realise. You feel flat, your loads feel heavier, your output is lower.</p>
+            {/* Rewritten 17 Sep 2026, research pass E1a (A4, A5). The old
+                copy told everyone to add salt or an electrolyte tab, which has
+                no support and works against the two in three Australian adults
+                already over the sodium target, and it claimed dehydration costs
+                more performance than people realise. The measured threshold is
+                around 3 per cent of body mass (Savoie 2015), which an ordinary
+                session does not reach if you drink when thirsty. */}
+            <p>A glass or two of water in the hour or two before, so you start the session already topped up rather than catching up during it. Drink when you are thirsty, not to a number.</p>
+            <p>You do not need salt or an electrolyte tab for a normal session. They start to matter when you are out for well over an hour, or sweating hard in heat, and even then food covers most of it.</p>
+            <p>Arriving properly dehydrated does cost you, but it takes a lot more than a busy morning to get there. If you are thirsty, drink. If your urine is pale, you are fine.</p>
           </>,
         },
         {

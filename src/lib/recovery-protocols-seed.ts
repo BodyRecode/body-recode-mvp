@@ -99,7 +99,7 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
       'Stay 15 to 20 minutes per round',
       'Exit, cool down for 5 to 10 minutes with water and rest',
       'Optional second round of 10 to 15 minutes',
-      'Rehydrate with electrolytes afterward',
+      'Drink water afterwards until your urine is pale again',
     ],
     dosing: {
       frequency: '2 to 4 sessions per week',
@@ -126,7 +126,7 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
       'Enter preheated infrared sauna at 55 to 65 degrees Celsius',
       'Sit upright, breathe through the nose',
       'Stay 30 to 45 minutes',
-      'Exit, shower cool, rehydrate with electrolytes',
+      'Exit, shower cool, drink water until your urine is pale again',
     ],
     dosing: {
       frequency: '3 to 5 sessions per week',

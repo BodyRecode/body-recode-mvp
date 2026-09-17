@@ -11,6 +11,14 @@
  * portal surfaces. Routines are the two short daily sequences that hold
  * baseline. Supplement steps stay generic (substance + timing) until the
  * coach's tier-branded stack is wired in.
+ *
+ * 17 Sep 2026, research pass E1a (A5): the supplements gate used to give
+ * "electrolytes on waking" as its worked example, which handed the model an
+ * unsupported habit as the pattern to copy. Nothing supports routine
+ * electrolyte or salt supplementation in someone eating normally, and about
+ * two in three Australian adults already exceed the 2,000 mg sodium target.
+ * The example is now magnesium only, and electrolytes are gated to the
+ * situations that actually call for them.
  */
 
 export interface DailyRoutineClientData {
@@ -83,7 +91,9 @@ SAFETY GATES (NON-NEGOTIABLE)
 - Never prescribe Wim Hof cycles or hyperventilation-style breathwork in the daily sequences (Recovery only, needs supervision).
 
 **Supplements**
-- Reference substances by generic name only (e.g. "electrolytes on waking", "magnesium glycinate 30 minutes before bed"). Never name a brand.
+- Reference substances by generic name only (e.g. "magnesium glycinate 30 minutes before bed"). Never name a brand.
+- Do NOT prescribe electrolytes, salt or an electrolyte drink as a daily or on-waking habit. Plain water or a normal breakfast drink is the default. Electrolytes belong only to a specific situation the client is actually in: a long session, heavy sweating in heat, or vomiting and diarrhoea (where the advice is a pharmacy rehydration product, not a sports drink).
+- Never suggest salt, salt substitutes or an electrolyte product to a client flagged on a fluid or salt limit, or on a potassium-holding blood pressure medicine.
 - If unsure whether a supp fits, leave it out.
 - Never prescribe a Schedule 4 or Schedule 8 substance.
 

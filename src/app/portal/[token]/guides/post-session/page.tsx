@@ -26,7 +26,12 @@ export default async function PostSessionGuide({ params }: { params: Promise<{ t
         {
           heading: 'Hydrate',
           body: <>
-            <p>Replace fluid losses. Most people undershoot. A glass or two of water with electrolytes within 30 minutes of finishing, then keep drinking through the day.</p>
+            {/* Rewritten 17 Sep 2026, research pass E1a (A5). Was "a glass or
+                two of water with electrolytes". Plain water plus the next meal
+                replaces what an ordinary session loses; an electrolyte drink
+                only earns its place after long or very sweaty work. */}
+            <p>Replace fluid losses. Most people undershoot. A glass or two of water within 30 minutes of finishing, then keep drinking through the day. Your next meal replaces the salt you sweated out, so plain water is enough after a normal session.</p>
+            <p>After a long session, or heavy sweating in heat, an electrolyte drink is worth it. Not otherwise.</p>
             <p>If your urine is darker than pale straw the next morning, you under-hydrated yesterday. Adjust upward.</p>
           </>,
         },

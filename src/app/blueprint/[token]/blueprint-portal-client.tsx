@@ -706,15 +706,15 @@ function MorningToggle({ preTrainingNote }: { preTrainingNote: string }) {
 
   const rhythms = {
     later: [
-      { time: 'On waking', food: '500ml water + pinch of salt', note: 'Before anything else' },
+      { time: 'On waking', food: 'A glass of water', note: 'Before anything else' },
       { time: 'Breakfast', food: 'Protein + fat', note: 'Eggs in butter, yoghurt + berries, or similar' },
-      { time: 'Pre-training', food: 'Salt + water', note: 'Add small fruit or honey if needed' },
+      { time: 'Pre-training', food: 'Water', note: 'Add small fruit or honey if needed' },
       { time: 'Post-training', food: 'Whey + fruit', note: 'Within 30 minutes' },
       { time: 'Post-training meal', food: 'Protein + starchy carbs', note: 'Beef + rice, chicken + potato' },
       { time: 'Evening meal', food: 'Protein + fat', note: 'No starchy carbs' },
     ],
     morning: [
-      { time: 'On waking', food: '500ml water + pinch of salt', note: 'Before anything else' },
+      { time: 'On waking', food: 'A glass of water', note: 'Before anything else' },
       { time: 'Pre-training', food: preTrainingNote, note: '15-20 min before training' },
       { time: 'Post-training', food: 'Whey + fruit', note: 'Within 30 minutes of finishing' },
       { time: 'Breakfast', food: 'Protein + starchy carbs', note: 'This is your post-training meal - beef + rice, eggs + potato' },
@@ -986,7 +986,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
             const isStressStored = pattern === 'stress-stored'
             const isSystemOverload = pattern === 'system-overload'
             const preTrainingNote = isMetabolic
-              ? 'Water + electrolytes only. Fasted is ideal for this pattern.'
+              ? 'Water only. Fasted is ideal for this pattern.'
               : isStressStored || isSystemOverload
               ? 'Small snack required - banana, honey, or yoghurt. Never fully fasted.'
               : 'Small snack - banana or yoghurt. Keep it light.'
@@ -1060,7 +1060,7 @@ function NutritionTab({ pattern }: { pattern: string }) {
               { label: 'Fats', items: 'Butter, ghee, coconut oil, avocados, cheddar cheese, egg yolks' },
               { label: 'Fruit', items: 'Bananas, mixed berries (fresh or frozen), pineapple, apples, oranges, mango' },
               { label: 'Post-Training Carbs', items: 'White rice, potatoes, sweet potato, raw honey' },
-              { label: 'Hydration', items: 'Quality sea salt or Himalayan salt, electrolyte powder (no sugar)' },
+              { label: 'Hydration', items: 'Sparkling water, herbal tea. Electrolyte powder (no sugar) only if you train long or sweat heavily' },
               { label: 'Kitchen', items: 'Bone broth, herbs, spices, garlic, lemon' },
             ].map((row, i) => (
               <div key={i} style={{ display: 'flex', gap: 12, paddingBottom: i < 5 ? 12 : 0, marginBottom: i < 5 ? 12 : 0, borderBottom: i < 5 ? '1px solid #E8EAEE' : 'none' }}>
