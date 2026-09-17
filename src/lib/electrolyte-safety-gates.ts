@@ -187,3 +187,90 @@ export const REFERRALS: Referral[] = [
 
 export const EMERGENCY_REFERRALS = REFERRALS.filter(r => r.action === 'call-000')
 export const GP_REFERRALS = REFERRALS.filter(r => r.action === 'gp-soon')
+
+/**
+ * Referral flags the system can raise on its own, from what the client has
+ * already told us.
+ *
+ * Added 17 September 2026. The referral list above is the full set, most of
+ * which depends on something happening later (heat stroke signs, vomiting that
+ * will not stop). These are the ones we can see at intake, so they should not
+ * wait for a coach to notice them.
+ *
+ * Scale answers run 0 to 4, and 3 or more is what the rest of the system reads
+ * as an elevated signal (see summarizeScaleSection), so that is the threshold
+ * used here.
+ *
+ * NOT A DIAGNOSIS. Every flag says what she reported and who to see. It never
+ * names a condition, and the referral wording is fixed rather than written by
+ * a model.
+ */
+export interface ReferralFlag {
+  key: 'salt_craving_combined' | 'dizzy_on_standing_on_medicines' | 'treating_team_owns_fluid'
+  headline: string
+  detail: string
+  action: 'gp-soon'
+}
+
+const ELEVATED = 3
+
+export function intakeReferralFlags(
+  fatMapResponses: Record<string, unknown> | null | undefined,
+  medicationsAndConditions?: string | null,
+): ReferralFlag[] {
+  const flags: ReferralFlag[] = []
+  const score = (id: string): number => {
+    const v = fatMapResponses?.[id]
+    return typeof v === 'number' ? v : -1
+  }
+
+  const craving = score('fm_04')
+  const companions: Array<[string, string]> = [
+    ['fm_04a', 'weight lost over six months without trying'],
+    ['fm_04b', 'dizzy or light-headed on standing'],
+    ['fm_04c', 'skin or gums looking darker than usual'],
+  ]
+  const present = companions.filter(([id]) => score(id) >= ELEVATED).map(([, label]) => label)
+
+  if (craving >= ELEVATED && present.length > 0) {
+    flags.push({
+      key: 'salt_craving_combined',
+      action: 'gp-soon',
+      headline: 'Salt craving alongside ' + present.join(' and '),
+      detail:
+        'Strong salt cravings on their own mean nothing and the read stays quiet about them. Together with ' +
+        present.join(' and ') +
+        ', it is worth a same-week GP conversation, so raise it with her and say plainly that it is a question for her doctor, not something we can answer. Do not name a condition and do not change her salt intake while she waits.',
+    })
+  }
+
+  if (score('fm_04b') >= ELEVATED) {
+    const gates = electrolyteGates(medicationsAndConditions)
+    if (gates.potassium || gates.fluid) {
+      flags.push({
+        key: 'dizzy_on_standing_on_medicines',
+        action: 'gp-soon',
+        headline: 'Dizzy on standing, and on a medicine that affects fluid or salt',
+        detail:
+          'She reports feeling dizzy or light-headed when she stands up, and her medicines include ' +
+          gates.matched.join(', ') +
+          '. That combination is a GP conversation about the tablets, not a hydration problem to coach around. Sauna and heat work stay off until it is sorted.',
+      })
+    }
+  }
+
+  const gates = electrolyteGates(medicationsAndConditions)
+  if (gates.fluid || gates.potassium) {
+    flags.push({
+      key: 'treating_team_owns_fluid',
+      action: 'gp-soon',
+      headline: 'Her treating team sets the fluid and salt rules, not us',
+      detail:
+        'Triggered by: ' +
+        gates.matched.join(', ') +
+        '. The plans she gets will carry no daily water target and no potassium or electrolyte products. If she asks for a number, the answer is her doctor or pharmacist.',
+    })
+  }
+
+  return flags
+}

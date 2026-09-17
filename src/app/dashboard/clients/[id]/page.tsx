@@ -60,6 +60,7 @@ import { loadBlockProgress } from '@/lib/block-progress'
 import ClientPaymentsSection from '@/components/dashboard/client-payments-section'
 import HeightEditor from './height-editor'
 import { hormonalSafetyAlerts } from '@/lib/hormonal-safety-alerts'
+import { intakeReferralFlags } from '@/lib/electrolyte-safety-gates'
 import { INDETERMINATE, readPatternLabel } from '@/lib/pattern-doctrine'
 import { getTotalQuestions } from '@/lib/intake-questions'
 
@@ -311,6 +312,21 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   // Pregnant now / non-prescribed androgen use. Also emailed on submit, but an
   // email can be missed or fail, so the profile carries it too.
   const hormonalAlerts = hormonalSafetyAlerts(fatMapIntake as { pregnant_or_postpartum?: string | null; androgen_use?: string | null; cancer_history?: string | null } | null)
+
+  // Fluid, salt and potassium referral flags the system can raise on its own,
+  // from what she has already told us. Added 17 Sep 2026 from research pass
+  // E1a section 6. Non-diagnostic: each one says what she reported and who to
+  // see, never what it might be.
+  const referralFlags = intakeReferralFlags(
+    (fatMapIntake?.fat_map_responses ?? null) as Record<string, unknown> | null,
+    [
+      client.medications as string | null,
+      client.medical_clearance_conditions as string | null,
+      typeof client.health_declaration_data === 'object' && client.health_declaration_data !== null
+        ? JSON.stringify(client.health_declaration_data)
+        : null,
+    ].filter(Boolean).join(' \n '),
+  )
 
   // Progress photos live in a private bucket; sign them for this render only.
   const baselinePhotos = await signedBaselinePhotoSet(admin, latestBaseline)
@@ -870,6 +886,21 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               <p className="text-[12px] font-medium text-[#962D22] mb-1">Needs attention</p>
               <p className="text-sm font-semibold text-[#141821] mb-1.5">{alert.headline}</p>
               <p className="text-[13px] text-[#43474F] leading-relaxed">{alert.detail}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+
+      {referralFlags.map(flag => (
+        <div key={flag.key} className="bg-[#FDF6E9] border border-[#F1DEB8] border-l-[3px] border-l-[#C08A2D] rounded-xl p-5 mb-4">
+          <div className="flex items-start gap-3">
+            <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#C08A2D]/15 flex items-center justify-center">
+              <span className="text-[#8A6218] text-[13px] font-bold leading-none">!</span>
+            </div>
+            <div className="min-w-0">
+              <p className="text-[12px] font-medium text-[#8A6218] mb-1">Raise with her, and with her GP</p>
+              <p className="text-sm font-semibold text-[#141821] mb-1.5">{flag.headline}</p>
+              <p className="text-[13px] text-[#43474F] leading-relaxed">{flag.detail}</p>
             </div>
           </div>
         </div>
