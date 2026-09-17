@@ -34,6 +34,7 @@ import {
 } from '@/lib/client-next-action'
 import { derivePaymentSignal } from '@/lib/payment-signal'
 import { getPlaybook, type RecoveryPlaybookId } from '@/lib/recovery-doctrine'
+import { coachFilter, requireCoachScope } from '@/lib/coach-scope'
 
 /**
  * How old an unanswered check-in can be before Today's Focus stops asking for
@@ -51,6 +52,17 @@ export default async function TodayWidget() {
   today.setHours(0, 0, 0, 0)
 
   // ── Batch fetch everything needed to compute the state machine ─────────
+  const scope = await requireCoachScope()
+  const onlyMine = coachFilter(scope)
+
+  // Scoped to this coach; the owner sees everyone. See lib/coach-scope.ts.
+  let clientsQuery = admin
+    .from('clients')
+    .select('id, name, coaching_started_at, package')
+    .eq('active', true)
+    .order('name', { ascending: true })
+  if (onlyMine) clientsQuery = clientsQuery.eq('coach_id', onlyMine)
+
   // Single round-trip per table. All Promise.all'd. Joins are done in-memory
   // so we keep the SQL simple and predictable.
   const [
@@ -73,11 +85,7 @@ export default async function TodayWidget() {
     { data: supplementAssignmentRows },
     { data: recoveryStateRows },
   ] = await Promise.all([
-    admin
-      .from('clients')
-      .select('id, name, coaching_started_at, package')
-      .eq('active', true)
-      .order('name', { ascending: true }),
+    clientsQuery,
     admin.from('intakes').select('client_id'),
     admin.from('baselines').select('client_id'),
     admin

@@ -1,4 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
+import { createClient } from '@supabase/supabase-js'
+import { isCoachEmail } from '@/lib/coach-auth'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { resolveTenantIdFromHost } from '@/lib/tenant-resolver'
@@ -102,6 +104,41 @@ export async function middleware(request: NextRequest) {
    *    gated per-route, so middleware only needs to refresh the cookie
    *    for those — not redirect.
    * ---------------------------------------------------------------- */
+  /* ----------------------------------------------------------------
+   * 4a. Client ownership gate for /api/clients/<id>/*.
+   *
+   *     Added 17 September 2026. Forty-nine routes sit under a client id and
+   *     each checked only "are you a coach", never "is this your client".
+   *     Doing it here means a route added later is covered before anyone
+   *     remembers to think about it, and a route that forgets cannot leak.
+   *
+   *     The owner passes straight through. Anyone else has to own the client.
+   *     Answered from the database with the service role, because the clients
+   *     policy would hide the very row being checked.
+   * ---------------------------------------------------------------- */
+  const clientApi = pathname.match(/^\/api\/clients\/([0-9a-fA-F-]{36})(\/|$)/)
+  if (clientApi) {
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+    }
+    if (!isCoachEmail(user.email)) {
+      const admin = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!,
+        { auth: { persistSession: false } },
+      )
+      const { data } = await admin
+        .from('clients')
+        .select('coach_id')
+        .eq('id', clientApi[1])
+        .maybeSingle()
+
+      if (!data || data.coach_id !== user.id) {
+        return NextResponse.json({ error: 'Not found' }, { status: 404 })
+      }
+    }
+  }
+
   if (pathname.startsWith('/portal') && !user) {
     const loginUrl = new URL('/portal/login', request.url)
     loginUrl.searchParams.set('redirect', pathname)

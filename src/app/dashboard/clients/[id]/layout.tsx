@@ -1,4 +1,5 @@
 import { createAdminClient } from '@/lib/supabase/admin'
+import { requireCoachScope, assertOwnsClient } from '@/lib/coach-scope'
 import CopilotBubble from './copilot-bubble'
 
 /**
@@ -15,6 +16,15 @@ export default async function ClientLayout({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
+
+  // THE ownership check for every page under /dashboard/clients/[id]. One gate
+  // here covers the profile, plan, program, nutrition, bloods, readings and
+  // everything added later, the same way the product tier gate covers every
+  // dashboard page. A coach who is not the owner and does not own this client
+  // gets the not-found page, so identifiers cannot be probed.
+  const scope = await requireCoachScope()
+  await assertOwnsClient(id, scope)
+
   const admin = createAdminClient()
 
   // Only the light client-name lookup runs on every client sub-page now. The

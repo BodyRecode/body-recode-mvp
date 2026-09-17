@@ -1,5 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import ClientListColumn, { type ClientListEntry } from './client-list-column'
+import { coachFilter, requireCoachScope } from '@/lib/coach-scope'
 
 /**
  * Three-pane layout for every client route: the section rail, then the client
@@ -12,11 +13,17 @@ import ClientListColumn, { type ClientListEntry } from './client-list-column'
  */
 export default async function ClientsLayout({ children }: { children: React.ReactNode }) {
   const admin = createAdminClient()
+  const scope = await requireCoachScope()
 
-  const { data } = await admin
+  // Only this coach's clients. The owner sees everyone. See lib/coach-scope.ts.
+  let query = admin
     .from('clients')
     .select('id, name, coaching_started_at, ended_at')
     .order('name', { ascending: true })
+  const onlyMine = coachFilter(scope)
+  if (onlyMine) query = query.eq('coach_id', onlyMine)
+
+  const { data } = await query
 
   const today = new Date()
   today.setHours(0, 0, 0, 0)

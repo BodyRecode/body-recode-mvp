@@ -1,5 +1,5 @@
-import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import { requireCoachScope } from '@/lib/coach-scope'
 import { headers } from 'next/headers'
 import LogoutButton from '@/components/LogoutButton'
 import DashboardShell from './shell'
@@ -16,10 +16,12 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-
-  if (!user) redirect('/login')
+  // A signed-in person is not the same as a coach. Until 17 Sep 2026 this
+  // checked only that somebody was signed in, so any account could open the
+  // dashboard. requireCoachScope sends anyone who is not a coach to the login
+  // page, and hands back which clients this coach may see.
+  const scope = await requireCoachScope()
+  const user = { id: scope.coachId, email: scope.email }
 
   // Product tier gate. Every dashboard page renders through this layout, so one
   // check here covers all of them — including any page added later, which fails
