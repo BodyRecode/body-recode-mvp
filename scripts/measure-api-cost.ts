@@ -157,7 +157,9 @@ async function main() {
   // shrink with a smaller client.
   const DOCTRINE_ESTIMATE = 6000
 
-  // Generations per client over a coaching lifetime, from observed DB counts
+  // Generations per client over ONE READ CYCLE (~12 weeks), from observed DB counts.
+  // NOT a lifetime: 5.5 weekly reads is about three months of weeks. Corrected
+  // 17 Sep 2026 after the old wording reached an investor document.
   // (21 cffs / 8 clients, 18 programs / 8, 18 nutrition / 7, 33 cfws / 6,
   // 49 weekly checkins / 6) rounded to the realistic served pattern.
   const rows: Row[] = [
@@ -214,7 +216,8 @@ async function main() {
     const monthlyRevenue = (weekly * 52 / 12) * 0.15
     console.log(`  ${label.padEnd(22)} $${monthlyRevenue.toFixed(0)}/mo revenue per active client`)
   }
-  console.log(`\n  Lifetime COGS above is a ONE-OFF per client, not monthly.`)
+  console.log(`\n  The figure above is ONE READ CYCLE per client, roughly 12 weeks, not a lifetime`)
+  console.log(`  and not a month. It recurs every cycle: about 4x this figure per client per year.`)
 
   // ── Sensitivity: regeneration is the only per-client lever that matters ────
   console.log(`\nIF COACHES REGENERATE MORE (the main per-client variable)`)

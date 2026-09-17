@@ -160,7 +160,7 @@ export const COACH_SAAS_STEPS: Step[] = [
     status: 'planned',
     effort: 'S',
     blockedBy: 'saas-pilot-agreement',
-    notes: 'Cost is not the constraint: about $1.18 per client for their whole coaching lifetime, measured. Tiers gated on how many clients are being read, inside the $50-250/month band coaching software already sits in. NOT per active client, which is Collective language and must never appear in Body Recode SaaS material. Solo coaches are proof; premium clubs are the business (~35 at $1,200 beats ~230 solo at $180).',
+    notes: 'Cost is not the constraint: about $1.18 per client per read cycle (~12 weeks), measured, so under $5 per client per year. Tiers gated on how many clients are being read, inside the $50-250/month band coaching software already sits in. NOT per active client, which is Collective language and must never appear in Body Recode SaaS material. Solo coaches are proof; premium clubs are the business (~35 at $1,200 beats ~230 solo at $180).',
   },
   {
     id: 'saas-coach-billing',
