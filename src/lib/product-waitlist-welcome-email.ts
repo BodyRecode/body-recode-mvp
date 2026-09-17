@@ -43,7 +43,7 @@ import { coach } from '@/config/tenant'
  * with restraint. No hype, no scarcity language, no fake urgency.
  */
 
-export type WaitlistProduct = 'challenge' | 'blueprint' | 'membership'
+export type WaitlistProduct = 'challenge' | 'blueprint' | 'membership' | 'decode'
 
 export interface ProductWaitlistWelcomeParams {
   to: string
@@ -70,12 +70,14 @@ ${darkEmailSignature()}
 function subjectFor(product: WaitlistProduct, firstName: string | null): string {
   const name = firstName?.trim() || null
   const prefix = name ? `You're on the list, ${name}.` : `You're on the list.`
+  if (product === 'decode') return `${prefix} I'll email you the moment The Body Decode reopens.`
   if (product === 'challenge') return `${prefix} I'll email you the moment doors open.`
   if (product === 'blueprint') return `${prefix} I'll email you the moment the Blueprint opens.`
   return `${prefix} I'll email you the moment the Membership opens.` // membership
 }
 
 function previewTextFor(product: WaitlistProduct): string {
+  if (product === 'decode') return 'You are on the list for The Body Decode. Five days, one read of what your body is actually doing, and you are first in when it reopens.'
   if (product === 'challenge') return 'You are on the waitlist for the 14-Day Body Decode Challenge. I will email you the moment doors open with the link to enrol.'
   if (product === 'blueprint') return 'You are on the waitlist for the 6-Week Body Rewire Blueprint. Six weeks of pattern-specific corrective work, calibrated to a Transitioning-state result. I will email you the moment doors open.'
   return 'You are on the waitlist for the Body Recode Membership. Long-arc infrastructure calibrated to a Ready-state result. $49 per week, cancel anytime. I will email you the moment doors open.'
@@ -86,6 +88,30 @@ const IG_URL_KADE = 'https://www.instagram.com/kade_dunstone_/'
 
 function bodyFor(product: WaitlistProduct, firstName: string | null): string {
   const name = firstName?.trim() || 'there'
+
+  if (product === 'decode') {
+    return `
+${emailEyebrow('The Body Decode · waitlist')}
+${emailHeading(`You're on the list, ${name}.`)}
+${emailDivider()}
+${emailBody(`Hi ${name},`)}
+${emailBody('The Body Decode is closed for a short while. I am re-recording the five daily videos so the whole thing is in my own voice, start to finish, rather than pieced together.')}
+${emailBody('You are on the list. I will email you the moment it reopens, and you will be first in. Nothing to pay, nothing to do between now and then.')}
+${emailFeaturedCard(
+  emailNumberedList([
+    'Day 1, what your body is doing right now',
+    'Day 2, why it started',
+    'Day 3, what it costs you day to day',
+    'Day 4, what will not shift it',
+    'Day 5, what moves it, and the order to do it in',
+  ]),
+  { eyebrow: 'What the five days are' },
+)}
+${emailBody('If you want a sense of it before then, the pattern breakdowns on Instagram are the closest thing:', { bottom: 12 })}
+${emailCta({ href: IG_URL_BRAND, label: 'Follow @body_recode_ on Instagram' })}
+${emailUrlFallback(IG_URL_BRAND, 'The reopening email lands in your inbox first.')}
+`
+  }
 
   if (product === 'challenge') {
     return `
@@ -246,6 +272,7 @@ export async function sendCoachWaitlistNotification(
 
   const fullName = [params.firstName, params.lastName].filter(Boolean).join(' ').trim() || null
   const productLabel =
+    params.product === 'decode' ? 'The Body Decode' :
     params.product === 'challenge' ? '14-Day Body Decode Challenge' :
     params.product === 'blueprint' ? '6-Week Body Rewire Blueprint' :
                                      'Body Recode Membership'

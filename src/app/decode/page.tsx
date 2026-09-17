@@ -110,6 +110,7 @@ export default function DecodeLandingPage() {
         leads={[
           'The Body Decode is a free online assessment for women whose bodies have changed, whether you are training hard and getting nowhere, or not training and just do not feel like yourself. About two minutes of questions, and at the end you get a written report naming which of four common causes is behind it, why it is happening, what it usually gets mistaken for, and the three things that shift it.',
           'The report is yours to keep. Then five short videos, one a day, walking you through it.',
+          'It is closed for a short while: the five daily videos are being re-recorded. Put your details in below and you are first in when it reopens.',
         ]}
         stats={[
           { value: '2 min', label: 'of questions' },

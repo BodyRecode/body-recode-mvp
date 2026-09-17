@@ -13,7 +13,7 @@
 // NEXT_PUBLIC_* literals (Next inlines them at build time); do not access via a
 // computed key.
 
-export type LaunchProduct = 'challenge' | 'blueprint' | 'membership' | 'extension'
+export type LaunchProduct = 'challenge' | 'blueprint' | 'membership' | 'extension' | 'decode'
 
 export function isProductLive(product: LaunchProduct): boolean {
   switch (product) {
@@ -25,5 +25,9 @@ export function isProductLive(product: LaunchProduct): boolean {
       return process.env.NEXT_PUBLIC_MEMBERSHIP_LIVE === 'true'
     case 'extension':
       return process.env.NEXT_PUBLIC_EXTENSION_LIVE === 'true'
+    // Decode paused 17 Sep 2026: the five daily videos are being re-recorded.
+    // Signups go to the waitlist until NEXT_PUBLIC_DECODE_LIVE is 'true'.
+    case 'decode':
+      return process.env.NEXT_PUBLIC_DECODE_LIVE === 'true'
   }
 }

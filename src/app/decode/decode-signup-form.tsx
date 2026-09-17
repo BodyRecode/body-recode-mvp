@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import { normalisePhone } from '@/lib/phone'
 import { InboxNote } from '@/components/inbox-note'
+import { isProductLive } from '@/lib/product-launch'
+import { WaitlistCTA } from '@/components/product-waitlist-cta'
 
 const BLUE = '#1B6DFC'
 
@@ -21,6 +23,26 @@ const BLUE = '#1B6DFC'
  * sends as the way back in later.
  */
 export default function DecodeSignupForm({ position }: { position: string }) {
+  // Paused 17 Sep 2026 while the five daily videos are re-recorded. Everything
+  // below stays intact; flipping NEXT_PUBLIC_DECODE_LIVE to 'true' turns
+  // signups back on with no code change. Interest pools into product_waitlist
+  // alongside the other pre-launch products, visible at /dashboard/business/waitlist.
+  if (!isProductLive('decode')) {
+    return (
+      <WaitlistCTA
+        product="decode"
+        productName="Body Decode"
+        position={position}
+        eyebrow="Reopening soon"
+        headline="The Body Decode reopens shortly."
+        copy="The five daily videos are being re-recorded. Put your details in and you are first in when it opens, with nothing to pay and nothing to do until then."
+      />
+    )
+  }
+  return <DecodeSignupFormLive position={position} />
+}
+
+function DecodeSignupFormLive({ position }: { position: string }) {
   const [form, setForm] = useState({ first_name: '', last_name: '', email: '', phone: '', gender: '' })
   const [smsOptIn, setSmsOptIn] = useState(true)
   const [submitting, setSubmitting] = useState(false)

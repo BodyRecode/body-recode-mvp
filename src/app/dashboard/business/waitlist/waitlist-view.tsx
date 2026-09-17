@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react'
 import { Download, Users, Calendar, Mail, MapPin } from 'lucide-react'
 
-type Product = 'challenge' | 'blueprint' | 'membership'
+type Product = 'challenge' | 'blueprint' | 'membership' | 'decode'
 
 type WaitlistRow = {
   id: string
@@ -24,7 +24,9 @@ const PRODUCT_META: Record<Product, { label: string; accent: string; bg: string 
   // what three historical rows hold. Only the label moves, because the offer
   // those people joined a list for is now The Body Decode. Signal Blue to match
   // Stage 1 everywhere else; the old red read like a warning.
-  challenge: { label: 'The Body Decode', accent: '#1B6DFC', bg: 'rgba(27,109,252,0.06)' },
+  challenge: { label: 'The Body Decode (old key)', accent: '#1B6DFC', bg: 'rgba(27,109,252,0.06)' },
+  // Written by /decode while it is paused, 17 Sep 2026.
+  decode: { label: 'The Body Decode', accent: '#1B6DFC', bg: 'rgba(27,109,252,0.06)' },
   blueprint: { label: '6-Week Body Rewire Blueprint', accent: '#f59e0b', bg: 'rgba(245,158,11,0.06)' },
   membership: { label: 'Body Recode Membership', accent: '#1B6DFC', bg: 'rgba(27,109,252,0.06)' },
 }
@@ -81,13 +83,15 @@ export default function WaitlistView({ rows }: { rows: WaitlistRow[] }) {
   const grouped = useMemo(() => ({
     all: rows,
     challenge: rows.filter(r => r.product === 'challenge'),
+    decode: rows.filter(r => r.product === 'decode'),
     blueprint: rows.filter(r => r.product === 'blueprint'),
     membership: rows.filter(r => r.product === 'membership'),
   }), [rows])
 
   const tabs: Array<{ key: Product | 'all'; label: string; count: number; accent: string }> = [
     { key: 'all',        label: 'All',        count: grouped.all.length,        accent: '#141821' },
-    { key: 'challenge',  label: 'Body Decode',  count: grouped.challenge.length,  accent: PRODUCT_META.challenge.accent },
+    { key: 'decode',     label: 'Body Decode',  count: grouped.decode.length,     accent: PRODUCT_META.decode.accent },
+    { key: 'challenge',  label: 'Decode (old key)',  count: grouped.challenge.length,  accent: PRODUCT_META.challenge.accent },
     { key: 'blueprint',  label: 'Blueprint',  count: grouped.blueprint.length,  accent: PRODUCT_META.blueprint.accent },
     { key: 'membership', label: 'Membership', count: grouped.membership.length, accent: PRODUCT_META.membership.accent },
   ]

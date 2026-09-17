@@ -62,7 +62,7 @@ You have already answered the questions, so it opens with your read rather than 
 
 It costs nothing and there is no card.
 
-Start here: ${domain}/decode?source=scorecard_email_1
+It is closed for a few weeks while I re-record the five daily lessons. Put your name down and you are first in when it reopens: ${domain}/decode?source=scorecard_email_1
 
 If you would rather talk it through first, you can book a free 30-minute strategy call: ${domain}/book
 
@@ -91,7 +91,7 @@ Then five short lessons, one a day, walking you through it.
 
 Free, and there is nothing to buy at the end of it to get the read.
 
-Start here: ${domain}/decode?source=scorecard_email_2
+It reopens shortly, and the list goes first: ${domain}/decode?source=scorecard_email_2
 
 Kade
 Body Recode`,
@@ -114,7 +114,7 @@ Knowing your state is the first piece. Knowing what to do about it is the second
 
 Book here: ${domain}/book
 
-If you would rather have the full read in writing first, that is free at ${domain}/decode?source=scorecard_email_3.
+If you would rather have the full read in writing first, that is free, and it reopens shortly: ${domain}/decode?source=scorecard_email_3.
 
 Kade
 Body Recode`,
@@ -152,11 +152,11 @@ Last email from me on this.
 
 Your scorecard result is still there whenever you want to act on it. Two doors based on your {{scorecard_state}} score:
 
-1. The Body Decode. Free. The full read of your result, the pattern you are working through, and the order to fix it, plus five short lessons walking you through it. Best if you want to act on it yourself.
+1. The Body Decode. Free, reopening shortly. The full read of your result, the pattern you are working through, and the order to fix it, plus five short lessons walking you through it. Best if you want to act on it yourself.
 
 2. Free 30-minute call. Best if you would rather talk it through first.
 
-Start The Body Decode: ${domain}/decode?source=scorecard_email_5
+Join the Body Decode list: ${domain}/decode?source=scorecard_email_5
 Book the call: ${domain}/book
 
 No follow-up after this.

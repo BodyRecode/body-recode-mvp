@@ -14,9 +14,9 @@ import { getDefaultCoachId } from '@/lib/default-coach'
 import { brand } from "@/config/tenant";
 import { sendProductWaitlistWelcomeEmail, sendCoachWaitlistNotification, type WaitlistProduct } from '@/lib/product-waitlist-welcome-email'
 
-type Product = 'challenge' | 'blueprint' | 'membership' | 'extension'
+type Product = 'challenge' | 'blueprint' | 'membership' | 'extension' | 'decode'
 
-const ALLOWED_PRODUCTS: Product[] = ['challenge', 'blueprint', 'membership', 'extension']
+const ALLOWED_PRODUCTS: Product[] = ['challenge', 'blueprint', 'membership', 'extension', 'decode']
 
 // CORS: performance.bodyrecode.au and localhost (dev). Matches the pattern
 // already used by /api/scorecard/submit and /api/scorecard-report/checkout.
@@ -108,7 +108,7 @@ export async function POST(req: Request) {
   // and only for the three consumer products (skip 'extension' which is an
   // internal signup path). Silent-fail so waitlist response never depends
   // on email pipeline health.
-  const EMAIL_PRODUCTS: Product[] = ['challenge', 'blueprint', 'membership']
+  const EMAIL_PRODUCTS: Product[] = ['challenge', 'blueprint', 'membership', 'decode']
   if (isNewRow && EMAIL_PRODUCTS.includes(product)) {
     try {
       await sendProductWaitlistWelcomeEmail({

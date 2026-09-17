@@ -13,7 +13,7 @@ type WaitlistRow = {
   phone: string | null
   gender: string | null
   body_state: string | null
-  product: 'challenge' | 'blueprint' | 'membership'
+  product: 'challenge' | 'blueprint' | 'membership' | 'decode'
   source: string | null
   notified_at: string | null
   created_at: string
