@@ -139,6 +139,9 @@ export default function PrivacyPage() {
             'Resend, sends our emails. United States.',
             'Twilio, sends our text messages. United States.',
             'Stripe, processes payments. Australia and the United States. We never see or store your full card details.',
+            'Zoom, runs coaching calls. We do not record them. United States.',
+            'Postmark, receives email replies you send us. United States.',
+            'Our own email and file storage (Google Workspace and Dropbox), where signed forms, medical clearances and correspondence are held. United States.',
             'Coaching and administrative contractors, bound by confidentiality agreements. Australia.',
           ])}
           {subheading('B. Advertising and analytics')}
