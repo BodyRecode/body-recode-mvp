@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import GenerationProgressOverlay from '@/components/generation-progress-overlay'
+import { CLIENT_BLOOD_READ_ENABLED } from '@/lib/blood-read-gate'
 
 interface Marker {
   name: string
@@ -376,19 +377,26 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
             <button type="button" onClick={analyze} disabled={!!busy} className="br-btn disabled:opacity-50">
               {busy === 'analyze' ? 'Analyzing…' : analysis ? 'Regenerate analysis' : 'Generate analysis'}
             </button>
-            {analysis && (
+            {analysis && CLIENT_BLOOD_READ_ENABLED && (
               <button type="button" onClick={generateReading} disabled={!!busy} className="br-btn disabled:opacity-50">
                 {busy === 'reading' ? 'Generating…' : reading ? 'Regenerate reading' : 'Generate reading'}
               </button>
             )}
-            {reading && (
-              <button type="button" onClick={togglePublish} disabled={!!busy} className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${publishedAt ? 'border border-[#E8EAEE] text-[#141821] hover:border-[#CFD4DC]' : 'bg-[#1B6DFC] text-white hover:bg-[#1560E0]'}`}>
+            {reading && (CLIENT_BLOOD_READ_ENABLED || publishedAt) && (
+              <button type="button" onClick={togglePublish} disabled={!!busy || (!CLIENT_BLOOD_READ_ENABLED && !publishedAt)} className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${publishedAt ? 'border border-[#E8EAEE] text-[#141821] hover:border-[#CFD4DC]' : 'bg-[#1B6DFC] text-white hover:bg-[#1560E0]'}`}>
                 {busy === 'publish' ? 'Working…' : publishedAt ? 'Unpublish reading' : 'Publish reading'}
               </button>
             )}
             <button type="button" onClick={toggleApprove} disabled={!!busy} className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${approved ? 'border border-[#9CC0FB] text-[#1056D6] hover:border-[#1B6DFC]' : 'bg-[#1B6DFC] text-white hover:bg-[#1560E0]'}`}>
               {busy === 'approve' ? 'Working…' : approved ? 'Revoke plan approval' : 'Approve for plan'}
             </button>
+          </div>
+        )}
+
+        {/* Why the client read button is missing. See lib/blood-read-gate.ts. */}
+        {hasMarkers && !CLIENT_BLOOD_READ_ENABLED && (
+          <div className="text-[11px] leading-relaxed text-[#6B7280] bg-[#F7F8FA] border border-[#E8EAEE] rounded-lg px-3 py-2">
+            <strong className="text-[#141821]">Client blood read paused.</strong> Writing a client a plain-language read of what her results mean is the one thing most likely to put Body Recode inside the medical device rules, so it is switched off until that is settled with a lawyer. Everything else is unchanged: the panel still reads her markers, still flags anything the lab marked out of range for her GP, still feeds her plan once you approve it, and the coach analysis below is yours to use on a call.
           </div>
         )}
 

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
+import { CLIENT_BLOOD_READ_ENABLED, CLIENT_BLOOD_READ_PAUSED_MESSAGE } from '@/lib/blood-read-gate'
 
 /**
  * Toggle client-portal visibility of a Blood Panel Reading. Visibility only;
@@ -20,6 +21,13 @@ export async function POST(
   if (!(await isCoachUser(user))) return forbidden()
 
   const { action } = await req.json().catch(() => ({ action: 'publish' }))
+
+  // Unpublishing stays available while the read is paused: pulling one down is
+  // always allowed, putting a new one up is not. See lib/blood-read-gate.ts.
+  if (action === 'publish' && !CLIENT_BLOOD_READ_ENABLED) {
+    return NextResponse.json({ error: CLIENT_BLOOD_READ_PAUSED_MESSAGE }, { status: 403 })
+  }
+
   const admin = createAdminClient()
 
   const { data: panel } = await admin

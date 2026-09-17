@@ -16,6 +16,7 @@ import { withTemporalContext } from '@/lib/temporal-context'
 import { AI_MODELS } from '@/lib/ai-models'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
 import { currentReadRows } from '@/lib/current-read'
+import { CLIENT_BLOOD_READ_ENABLED, CLIENT_BLOOD_READ_PAUSED_MESSAGE } from '@/lib/blood-read-gate'
 
 /**
  * Generate the client-facing Blood Panel Reading for a panel. Requires the
@@ -36,6 +37,10 @@ export async function POST(
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
   if (!(await isCoachUser(user))) return forbidden()
+
+  if (!CLIENT_BLOOD_READ_ENABLED) {
+    return NextResponse.json({ error: CLIENT_BLOOD_READ_PAUSED_MESSAGE }, { status: 403 })
+  }
 
   const admin = createAdminClient()
 
