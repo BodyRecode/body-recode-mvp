@@ -86,6 +86,30 @@ export interface RecoveryProtocol {
   progression?: ProgressionMeta
 }
 
+/**
+ * Shared heat gates for the sauna and steam protocols.
+ *
+ * Rewritten 17 September 2026 from research pass E1a, section A3. The old
+ * per-protocol lists were four lines each and two of them were wrong: the
+ * "fasted more than 16 hours" threshold had no source anywhere, and pregnancy
+ * was a flat exclusion where the evidence supports a gated yes at 70 degrees
+ * for 20 minutes with the doctor or midwife's agreement. The medicine gates
+ * that actually matter were missing entirely. Age alone was never a gate here
+ * and must not become one: healthy older adults tolerate sauna.
+ */
+const HEAT_CONTRAINDICATIONS = [
+  'Heart: a heart attack, heart procedure or chest pain in recent months, chest pain on exertion, a known valve problem, heart failure, or fainting',
+  'Blood pressure that is not under control, or not known, or dizziness or fainting when standing up',
+  'Medicines that change how the body handles heat or fluid: fluid tablets (diuretics), beta-blockers, lithium, SGLT2 inhibitors (the "-gliflozin" medicines), antipsychotics, anticholinergics, stimulants, ACE inhibitors or sartans, or regular anti-inflammatory painkillers',
+  'Kidney, liver or adrenal conditions, or diabetes',
+  'Unwell right now: fever, vomiting, diarrhoea, or already dehydrated',
+  'HARD NO: on an SGLT2 inhibitor ("-gliflozin" medicine) and fasting, on a very low carbohydrate diet, or in a hard cut',
+  'Has not eaten or had anything to drink for most of the day',
+  'Any vomiting, laxative or fluid tablet use to control weight: stop and refer, do not prescribe heat',
+  'Pregnant or trying to conceive: doctor or midwife first. If they agree, 70 degrees or less, 20 minutes or less, and out at the first sign of feeling hot or unwell. Hard no with a fever in early pregnancy or with high blood pressure in pregnancy',
+  'Men trying to conceive: regular sauna can lower sperm count for a few months. It recovers after stopping',
+]
+
 export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
   {
     slug: 'sauna-traditional',
@@ -107,13 +131,8 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
       timing: 'Post-training or standalone recovery day. Not immediately before bed.',
     },
     required_equipment: ['sauna_traditional'],
-    contraindications: [
-      'Uncontrolled high blood pressure',
-      'Recent heart attack or cardiac event',
-      'Pregnancy',
-      'Currently dehydrated or fasted more than 16 hours',
-    ],
-    safety_notes: 'Exit immediately if dizzy, nauseous, or heart rate feels irregular. Never drink alcohol before or during. Hydrate before, during, and after.',
+    contraindications: HEAT_CONTRAINDICATIONS,
+    safety_notes: 'Exit immediately if dizzy, nauseous, or heart rate feels irregular. Never drink alcohol before or during. Drink when thirsty before and after and do not force large volumes. Age on its own is NOT a reason to exclude anyone: healthy older adults tolerate sauna, so gate on the conditions and medicines above instead.',
     coach_doctrine: 'Heat exposure is a hormetic stressor. Dose it like training: enough to trigger adaptation, not so much it adds to the recovery debt. If the client is already in an RRS acute_fatigue or ns_overload state, defer sauna until state clears.',
   },
   {
@@ -134,12 +153,8 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
       timing: 'Any time. Well tolerated pre-bed if session ends 90 minutes before sleep.',
     },
     required_equipment: ['sauna_infrared'],
-    contraindications: [
-      'Uncontrolled high blood pressure',
-      'Recent heart attack or cardiac event',
-      'Pregnancy',
-    ],
-    safety_notes: 'Lower temperature so heat stress is less. Still hydrate. Exit if dizzy.',
+    contraindications: HEAT_CONTRAINDICATIONS,
+    safety_notes: 'Lower temperature so heat stress is less, but the same gates apply: the research pass found no measured basis for a softer fluid or safety rule in an infrared room. Drink water, exit if dizzy. Age on its own is NOT a reason to exclude anyone.',
     coach_doctrine: 'Preferred over traditional sauna for clients in remediation, depleted, or heat-intolerant. Same hormetic principle but wider tolerance window.',
   },
   {
@@ -160,7 +175,7 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
       timing: 'Post-training or standalone.',
     },
     required_equipment: ['steam_room'],
-    contraindications: ['Uncontrolled high blood pressure', 'Recent cardiac event', 'Respiratory infection'],
+    contraindications: [...HEAT_CONTRAINDICATIONS, 'Respiratory infection'],
     safety_notes: 'Do not stay if breathing becomes uncomfortable. High humidity limits sweating so core temperature can rise faster than in dry sauna.',
     coach_doctrine: 'Underrated for depleted clients who cannot tolerate dry sauna. Also good adjunct during upper respiratory recovery.',
   },
