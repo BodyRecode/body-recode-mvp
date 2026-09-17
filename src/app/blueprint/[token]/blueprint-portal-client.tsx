@@ -932,9 +932,19 @@ function NutritionTab({ pattern }: { pattern: string }) {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {[
-                '2-3 litres of water daily',
-                'Pinch of salt in your first glass every morning',
-                'Electrolytes during training',
+                // Rewritten 17 Sep 2026, research pass E1a (A6, A1, A5).
+                // Was: "2-3 litres of water daily", "Pinch of salt in morning
+                // water", "Electrolytes during training". The volume is above
+                // the Australian reference for most women (2.1 L from ALL
+                // drinks, not plain water) and unsafe for anyone on a fluid
+                // limit; the salt and electrolyte lines had no support, and
+                // about two in three Australian adults already exceed the
+                // 2,000 mg sodium target.
+                'About 2 litres of drinks a day, roughly 8 cups. Water, tea, coffee and milk all count. Men need closer to 2.5 litres',
+                'More on hot days and when you sweat a lot',
+                'Pale yellow urine is a good sign you have had enough',
+                'Water during training. An electrolyte drink only for long sessions or heavy sweating in heat',
+                'If your doctor has set you a fluid or salt limit, theirs wins over anything here',
                 'Coffee is fine - maximum 2 cups, before noon',
                 'No flavoured drinks, juice, or soft drinks',
               ].map((item, i) => (

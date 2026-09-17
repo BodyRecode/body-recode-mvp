@@ -467,18 +467,28 @@ export default async function NutritionPage({ params }: { params: Promise<{ toke
         {/* Hydration */}
         <div style={{ marginBottom: '48px' }}>
           <p style={label}>Hydration and Electrolytes</p>
-          <p style={sectionTitle}>Salt and water are your base</p>
+          <p style={sectionTitle}>Water through the day</p>
           <p style={{ fontSize: '14px', color: '#666D7A', marginTop: '8px', marginBottom: '16px', lineHeight: 1.6 }}>
-            Most people are chronically under-hydrated and low on electrolytes. Fixing this alone improves energy, focus, and training performance.
+            Steady fluid through the day beats big catch-up drinks. Most people do not need to add salt or electrolytes to hit this.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
             <div style={card}>
               <p style={{ fontSize: '13px', fontWeight: 700, color: '#1B6DFC', marginBottom: '12px' }}>Daily targets</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {[
-                  '2-3 litres of water daily',
-                  'Pinch of salt in morning water',
-                  'Electrolytes during training',
+                  // Rewritten 17 Sep 2026, research pass E1a (A6, A1, A5).
+                  // Was: "2-3 litres of water daily", "Pinch of salt in morning
+                  // water", "Electrolytes during training". The volume is above
+                  // the Australian reference for most women (2.1 L from ALL
+                  // drinks, not plain water) and unsafe for anyone on a fluid
+                  // limit; the salt and electrolyte lines had no support, and
+                  // about two in three Australian adults already exceed the
+                  // 2,000 mg sodium target.
+                  'About 2 litres of drinks a day, roughly 8 cups. Water, tea, coffee and milk all count. Men need closer to 2.5 litres',
+                  'More on hot days and when you sweat a lot',
+                  'Pale yellow urine is a good sign you have had enough',
+                  'Water during training. An electrolyte drink only for long sessions or heavy sweating in heat',
+                  'If your doctor has set you a fluid or salt limit, theirs wins over anything here',
                   'No flavoured drinks or juice',
                   'Coffee is fine, just not first thing',
                 ].map(i => (
