@@ -156,9 +156,9 @@ const AUTOMATIC_AUTOMATIONS = [
   },
   {
     id: 'decode-daily-arc',
-    name: 'The Body Decode · daily arc',
+    name: 'The Body Decode · daily arc (paused, signups closed)',
     description: 'One email at 7am Brisbane and one SMS four hours later, five days, each pointing at that day\'s lesson. Plus a single day-1 nudge that replaces the lesson for anyone who signed up and never answered the questions, since she has no read for the lessons to explain. Fires on challenge/enrolled ONLY when product is "decode" - /challenge and /decode share the enrol route, and the five Challenge functions bail on decode so a Body Decode signup never receives the 14-day arc. Every send logs a lead event with its Resend id, re-anchors to 7am daily so it cannot drift, and re-reads the enrolment before each send so an inactive one stops it mid-flight.',
-    trigger: 'challenge/enrolled with product = decode',
+    trigger: 'challenge/enrolled with product = decode (no new enrolments while /decode is a waitlist, 17 Sep 2026)',
     steps: 6,
   },
   {

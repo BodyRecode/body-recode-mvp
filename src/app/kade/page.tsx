@@ -67,7 +67,7 @@ export default function KadePage() {
               <span className="text-[9px] font-bold tracking-[0.25em] text-[#E8B89A] uppercase">Free assessment</span>
               <span className="inline-flex items-center gap-1.5 text-[9px] font-bold tracking-[0.2em] text-[#2A1E16] uppercase bg-[#E8B89A] px-2.5 py-1 rounded-full">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#B5552F]" />
-                Open Now
+                Coming Soon
               </span>
             </div>
 
@@ -78,8 +78,7 @@ export default function KadePage() {
 
             {/* Description */}
             <p className="relative text-[15px] text-[#D8CDB5] italic leading-relaxed mb-6">
-              A free assessment for women whose bodies have stopped responding. About two minutes of questions, and at the end you get a written report naming your pattern &mdash; the one driving how your body has been responding. Then five short videos, one a day, walking you through it.
-            </p>
+              A free assessment for women whose bodies have stopped responding. About two minutes of questions, and at the end you get a written report naming your pattern &mdash; the one driving how your body has been responding. Then five short videos, one a day, walking you through it. It opens soon, so put your name down and you are first in the day it does.</p>
 
             {/* Value props — slightly larger, divided cleanly */}
             <div className="relative grid grid-cols-3 gap-3 mb-7 pt-5 border-t border-[#5a4a3a]/50">
@@ -113,14 +112,14 @@ export default function KadePage() {
                     2
                   </span>
                   <p className="text-[13px] text-[#D8CDB5] leading-relaxed">
-                    Your <span className="text-[#FAF3EB] font-semibold">written report arrives straight away</span>, then a short video each day for five days</p>
+                    Your <span className="text-[#FAF3EB] font-semibold">written report arrives straight away</span> once it opens, then a short video each day for five days</p>
                 </div>
               </div>
             </div>
 
             {/* Full-width CTA button — more presence, clearer click target */}
             <div className="relative flex items-center justify-center gap-2 bg-[#B5552F] group-hover:bg-[#C9633A] text-[#FAF3EB] font-semibold text-base px-5 py-3.5 rounded-lg transition-colors w-full text-center">
-              Start the Body Decode
+              Join the list
               <span aria-hidden className="text-lg transition-transform group-hover:translate-x-0.5">→</span>
             </div>
           </a>
