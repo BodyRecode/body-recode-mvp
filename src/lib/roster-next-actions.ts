@@ -29,7 +29,16 @@ export interface RosterNextActions {
   totalFeedback: number
 }
 
-export async function computeRosterNextActions(admin: SupabaseClient): Promise<RosterNextActions> {
+export async function computeRosterNextActions(admin: SupabaseClient, onlyCoachId: string | null = null): Promise<RosterNextActions> {
+  let clientsQuery = admin
+    .from('clients')
+    .select('id, name, coaching_started_at, package')
+    .eq('active', true)
+    .order('name', { ascending: true })
+  // A coach's co-pilot must never be handed another coach's roster. Null means
+  // the owner, who sees everyone. See lib/coach-scope.ts.
+  if (onlyCoachId) clientsQuery = clientsQuery.eq('coach_id', onlyCoachId)
+
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
@@ -53,11 +62,7 @@ export async function computeRosterNextActions(admin: SupabaseClient): Promise<R
     { data: supplementAssignmentRows },
     { data: recoveryStateRows },
   ] = await Promise.all([
-    admin
-      .from('clients')
-      .select('id, name, coaching_started_at, package')
-      .eq('active', true)
-      .order('name', { ascending: true }),
+    clientsQuery,
     admin.from('intakes').select('client_id'),
     admin.from('baselines').select('client_id'),
     admin

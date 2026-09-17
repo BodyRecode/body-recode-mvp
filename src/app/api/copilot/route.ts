@@ -3,6 +3,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { isCoachEmail } from '@/lib/coach-auth'
+import { coachOwnsAnyClient } from '@/lib/coach-scope'
 import { buildGeneralCopilotSystemPrompt } from '@/lib/copilot-prompt'
 import { buildRosterContext, getCoachPreferences } from '@/lib/copilot-context'
 import { extractFirstJsonObject } from '@/lib/extract-json'
@@ -41,7 +42,14 @@ export async function POST(request: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
-  if (!isCoachEmail(user.email)) return NextResponse.json({ error: 'Coach access only' }, { status: 403 })
+  // Any coach, not only the owner: the co-pilot is part of what a coach pays
+  // for. What changes is WHAT IT SEES. A coach's roster context is built from
+  // their own clients, never the practice. See lib/coach-scope.ts.
+  const isOwner = isCoachEmail(user.email)
+  if (!isOwner && !(await coachOwnsAnyClient(user.id))) {
+    return NextResponse.json({ error: 'Coach access only' }, { status: 403 })
+  }
+  const onlyMine = isOwner ? null : user.id
 
   const body = (await request.json().catch(() => ({}))) as Record<string, unknown>
   const message = typeof body.message === 'string' ? body.message.trim() : ''
@@ -56,7 +64,7 @@ export async function POST(request: NextRequest) {
   let coachPreferences = ''
   try {
     ;[rosterContext, coachPreferences] = await Promise.all([
-      buildRosterContext(admin),
+      buildRosterContext(admin, onlyMine),
       getCoachPreferences(admin, user.email),
     ])
   } catch (err) {

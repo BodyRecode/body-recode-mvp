@@ -83,7 +83,7 @@ const STAGES: Stage[] = [
       'The shape is a capped pilot, not an open cheap subscription. Ten to twenty hand-picked coaches, ninety days, free, in exchange for data rights and structured reviews. Free rather than nine dollars a week, because free attracts commitment and sets no price anchor.',
     ],
     steps: [
-      ...at(['SaaS'], 'saas-coach-scoping', 'saas-rls-alignment', 'saas-coach-signup'),
+      ...at(['SaaS'], 'saas-coach-scoping', 'saas-copilot-for-coaches', 'saas-copilot-limits', 'saas-rls-alignment', 'saas-coach-signup'),
       ...at(['SaaS', 'Read', 'Coaching'], 'saas-doctrine-enforcement'),
       ...at(['SaaS'], 'saas-licence-agreement', 'saas-pilot-agreement', 'saas-pricing-decision', 'saas-coach-billing', 'saas-support-loop'),
       ...at(['SaaS', 'Read'], 'saas-client-data-rights'),

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { isCoachEmail } from '@/lib/coach-auth'
+import { coachOwnsAnyClient } from '@/lib/coach-scope'
 
 // Coach Co-Pilot Phase 8 — coach-style memory. A coach-owned free-text note the
 // co-pilot reads as SOFT guidance. Explicit (the coach edits it), never
@@ -13,7 +14,7 @@ export async function GET() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
-  if (!isCoachEmail(user.email)) return NextResponse.json({ error: 'Coach access only' }, { status: 403 })
+  if (!isCoachEmail(user.email) && !(await coachOwnsAnyClient(user.id))) return NextResponse.json({ error: 'Coach access only' }, { status: 403 })
 
   const admin = createAdminClient()
   const { data } = await admin
@@ -28,7 +29,7 @@ export async function PUT(request: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
-  if (!isCoachEmail(user.email)) return NextResponse.json({ error: 'Coach access only' }, { status: 403 })
+  if (!isCoachEmail(user.email) && !(await coachOwnsAnyClient(user.id))) return NextResponse.json({ error: 'Coach access only' }, { status: 403 })
 
   const body = await request.json().catch(() => ({}))
   const text = (typeof body?.preferences === 'string' ? body.preferences : '').slice(0, MAX_PREFERENCES)

@@ -32,8 +32,8 @@ export async function getCoachPreferences(admin: SupabaseClient, coachEmail: str
 // so the everywhere-bubble can answer "who needs attention?", "who's due to
 // progress?", "state of my roster?" — grounded in real data, not invented.
 // Read-only. Priority: 10 = most urgent (awaiting the coach) → 50 = steady.
-export async function buildRosterContext(admin: SupabaseClient): Promise<string> {
-  const { actions, totalFeedback } = await computeRosterNextActions(admin)
+export async function buildRosterContext(admin: SupabaseClient, onlyCoachId: string | null = null): Promise<string> {
+  const { actions, totalFeedback } = await computeRosterNextActions(admin, onlyCoachId)
   if (!actions.length) return 'ROSTER: no active clients right now.'
 
   const awaiting = actions.filter(a => a.priority <= 20)

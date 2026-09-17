@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { isCoachEmail } from '@/lib/coach-auth'
+import { coachOwnsAnyClient } from '@/lib/coach-scope'
 import { computeRosterNextActions } from '@/lib/roster-next-actions'
 
 // Lightweight counts for the co-pilot bubble's attention badge (Phase 6).
@@ -11,10 +12,12 @@ export async function GET() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
-  if (!isCoachEmail(user.email)) return NextResponse.json({ error: 'Coach access only' }, { status: 403 })
+  const isOwner = isCoachEmail(user.email)
+  if (!isOwner && !(await coachOwnsAnyClient(user.id))) return NextResponse.json({ error: 'Coach access only' }, { status: 403 })
 
   try {
-    const { actions } = await computeRosterNextActions(createAdminClient())
+    // Their own roster, never the practice. See lib/coach-scope.ts.
+    const { actions } = await computeRosterNextActions(createAdminClient(), isOwner ? null : user.id)
     const awaiting = actions.filter(a => a.priority <= 20).length
     const drifting = actions.filter(a => a.priority === 30).length
     return NextResponse.json({ awaiting, drifting, total: actions.length })

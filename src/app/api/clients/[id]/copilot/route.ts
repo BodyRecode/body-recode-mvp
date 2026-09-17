@@ -3,6 +3,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { isCoachEmail } from '@/lib/coach-auth'
+import { coachOwnsAnyClient } from '@/lib/coach-scope'
 import { buildCopilotContext, getCoachPreferences } from '@/lib/copilot-context'
 import { buildCopilotSystemPrompt } from '@/lib/copilot-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
@@ -25,7 +26,12 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
-  if (!isCoachEmail(user.email)) return NextResponse.json({ error: 'Coach access only' }, { status: 403 })
+  // Any coach may use the co-pilot on a client they own. Middleware has
+  // already refused this route for a client that is not theirs, so reaching
+  // here means the client is theirs or they are the owner.
+  if (!isCoachEmail(user.email) && !(await coachOwnsAnyClient(user.id))) {
+    return NextResponse.json({ error: 'Coach access only' }, { status: 403 })
+  }
 
   const { message, session_id: sessionId } = await request.json().catch(() => ({ message: null, session_id: null }))
   if (!message || typeof message !== 'string' || !message.trim()) {

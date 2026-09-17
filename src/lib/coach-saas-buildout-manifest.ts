@@ -205,6 +205,26 @@ export const COACH_SAAS_STEPS: Step[] = [
     notes: 'The reason the pilot exists. Solo coaches are proof; the business is clubs, and evidence is what makes that conversation short.',
   },
 
+  {
+    id: 'saas-copilot-for-coaches',
+    title: 'The co-pilot works for a coach, on their own clients',
+    description: 'Opened past the owner allowlist, and scoped so the roster it sees is theirs.',
+    status: 'shipped',
+    shippedAt: '2026-09-17',
+    effort: 'M',
+    surfaces: ['src/app/api/copilot/route.ts', 'src/app/api/clients/[id]/copilot/route.ts', 'src/lib/roster-next-actions.ts'],
+    notes: 'Kade: the co-pilot belongs in the pilot. It was gated to his email alone, so a second coach got a refusal, and the practice-wide roster it reads was unscoped, so opening it naively would have handed one coach every client in the system. Now any coach may use it, and what it sees is their own roster and their own clients.',
+  },
+  {
+    id: 'saas-copilot-limits',
+    title: 'Limits on what the co-pilot costs and can do for a coach',
+    description: 'Per-coach usage caps, and a decision on which tools it may run.',
+    status: 'planned',
+    effort: 'S',
+    blockedBy: 'saas-copilot-for-coaches',
+    notes: 'The console already caps tool turns and searches per turn. A paying coach needs a usage ceiling of its own, so one enthusiastic pilot coach cannot run up the model bill, and a decision on whether their co-pilot may take actions or only answer.',
+  },
+
   /* ── Evidence: the research passes that gate go-live ─────────────────── */
   {
     id: 'research-g1-regulatory',

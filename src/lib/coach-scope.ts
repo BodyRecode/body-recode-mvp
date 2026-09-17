@@ -122,3 +122,17 @@ export async function coachOwnsClient(clientId: string, userId: string, email: s
 
   return !!data && data.coach_id === userId
 }
+
+/**
+ * Is this user a coach at all? Used by surfaces that are coach-only but not
+ * tied to one client, such as the co-pilot. Ownership of a specific client is
+ * a separate question, answered by coachOwnsClient or by the middleware gate.
+ */
+export async function coachOwnsAnyClient(userId: string): Promise<boolean> {
+  const admin = createAdminClient()
+  const { count } = await admin
+    .from('clients')
+    .select('id', { count: 'exact', head: true })
+    .eq('coach_id', userId)
+  return (count ?? 0) > 0
+}
