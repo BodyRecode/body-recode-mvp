@@ -219,10 +219,11 @@ export const COACH_SAAS_STEPS: Step[] = [
     id: 'saas-copilot-limits',
     title: 'Limits on what the co-pilot costs and can do for a coach',
     description: 'Per-coach usage caps, and a decision on which tools it may run.',
-    status: 'planned',
+    status: 'shipped',
+    shippedAt: '2026-09-17',
     effort: 'S',
-    blockedBy: 'saas-copilot-for-coaches',
-    notes: 'The console already caps tool turns and searches per turn. A paying coach needs a usage ceiling of its own, so one enthusiastic pilot coach cannot run up the model bill, and a decision on whether their co-pilot may take actions or only answer.',
+    surfaces: ['src/lib/copilot-limits.ts', 'sql/2026-09-17_copilot_usage.sql'],
+    notes: '150 messages per Brisbane day for a coach who is not the owner, across both co-pilots, counted before generating so a refused message costs nothing. Adjustable by environment setting. The refusal is friendly and says the limit resets at midnight. Decision made on actions: a pilot coach\'s co-pilot ANSWERS, it does not act. The two routes that edit a nutrition plan or a reading draft stay owner-only until doctrine enforcement lands, and the code now says why.',
   },
 
   /* ── Evidence: the research passes that gate go-live ─────────────────── */

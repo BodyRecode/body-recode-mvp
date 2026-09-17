@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { isCoachEmail } from '@/lib/coach-auth'
 import { coachOwnsAnyClient } from '@/lib/coach-scope'
+import { checkCopilotAllowance } from '@/lib/copilot-limits'
 import { buildCopilotContext, getCoachPreferences } from '@/lib/copilot-context'
 import { buildCopilotSystemPrompt } from '@/lib/copilot-prompt'
 import { extractFirstJsonObject } from '@/lib/extract-json'
@@ -31,6 +32,11 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   // here means the client is theirs or they are the owner.
   if (!isCoachEmail(user.email) && !(await coachOwnsAnyClient(user.id))) {
     return NextResponse.json({ error: 'Coach access only' }, { status: 403 })
+  }
+
+  const allowance = await checkCopilotAllowance(user.id, isCoachEmail(user.email))
+  if (!allowance.allowed) {
+    return NextResponse.json({ error: allowance.message }, { status: 429 })
   }
 
   const { message, session_id: sessionId } = await request.json().catch(() => ({ message: null, session_id: null }))

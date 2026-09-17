@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { isCoachEmail } from '@/lib/coach-auth'
 import { coachOwnsAnyClient } from '@/lib/coach-scope'
+import { checkCopilotAllowance } from '@/lib/copilot-limits'
 import { buildGeneralCopilotSystemPrompt } from '@/lib/copilot-prompt'
 import { buildRosterContext, getCoachPreferences } from '@/lib/copilot-context'
 import { extractFirstJsonObject } from '@/lib/extract-json'
@@ -50,6 +51,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Coach access only' }, { status: 403 })
   }
   const onlyMine = isOwner ? null : user.id
+
+  // A day's worth of co-pilot, for coaches who are not the owner. Checked
+  // before anything is generated, so a refused message costs nothing.
+  const allowance = await checkCopilotAllowance(user.id, isOwner)
+  if (!allowance.allowed) {
+    return NextResponse.json({ error: allowance.message }, { status: 429 })
+  }
 
   const body = (await request.json().catch(() => ({}))) as Record<string, unknown>
   const message = typeof body.message === 'string' ? body.message.trim() : ''

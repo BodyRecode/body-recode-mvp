@@ -36,6 +36,9 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
+  // OWNER ONLY, deliberately. A pilot coach's co-pilot answers; it does not
+  // act. This route edits a nutrition plan, which is a change to a real person's plan, and
+  // nothing checks it afterwards. Revisit when doctrine enforcement lands.
   if (!isCoachEmail(user.email)) return NextResponse.json({ error: 'Coach access only' }, { status: 403 })
 
   const body = await request.json().catch(() => ({}))
