@@ -23,7 +23,7 @@ const BLUE = '#1B6DFC'
  * sends as the way back in later.
  */
 export default function DecodeSignupForm({ position }: { position: string }) {
-  // Paused 17 Sep 2026 while the five daily videos are re-recorded. Everything
+  // Not open yet, 17 Sep 2026: the five daily videos are being finished. Everything
   // below stays intact; flipping NEXT_PUBLIC_DECODE_LIVE to 'true' turns
   // signups back on with no code change. Interest pools into product_waitlist
   // alongside the other pre-launch products, visible at /dashboard/business/waitlist.
@@ -33,9 +33,9 @@ export default function DecodeSignupForm({ position }: { position: string }) {
         product="decode"
         productName="Body Decode"
         position={position}
-        eyebrow="Reopening soon"
-        headline="The Body Decode reopens shortly."
-        copy="The five daily videos are being re-recorded. Put your details in and you are first in when it opens, with nothing to pay and nothing to do until then."
+        eyebrow="Coming soon"
+        headline="The Body Decode opens soon."
+        copy="The five daily videos are being finished now. Put your details in and you are first in the day it opens, with nothing to pay and nothing to do until then."
       />
     )
   }

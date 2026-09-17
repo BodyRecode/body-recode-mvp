@@ -76,7 +76,7 @@ export default function LinksPage() {
                 style={{ background: '#1B6DFC', color: '#FFFFFF' }}
               >
                 <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#FFFFFF' }} />
-                Reopening soon
+                Coming soon
               </span>
             </div>
 
@@ -86,7 +86,7 @@ export default function LinksPage() {
             <p className="text-[14px] leading-relaxed mb-6" style={{ color: 'rgba(255,255,255,0.68)' }}>
               About two minutes of questions, then a written report naming which pattern is behind your body not
               responding, why it is happening, and the three things that shift it. Then five short videos, one a day.
-              It is closed for a few weeks while the videos are re-recorded, so put your name down and you are first in.
+              It opens soon, so put your name down and you are first in the day it does.
             </p>
 
             <div className="grid grid-cols-3 gap-3 mb-6 pt-5" style={{ borderTop: '1px solid rgba(255,255,255,0.12)' }}>
@@ -110,7 +110,7 @@ export default function LinksPage() {
               <span aria-hidden className="transition-transform group-hover:translate-x-0.5">&rarr;</span>
             </div>
             <p className="text-center text-[11px] mt-3" style={{ color: 'rgba(255,255,255,0.45)' }}>
-              Free, no card, and nothing to buy to get it, now or when it reopens.
+              Free, no card, and nothing to buy to get it, now or when it opens.
             </p>
           </div>
         </a>

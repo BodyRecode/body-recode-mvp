@@ -25,7 +25,7 @@ export function isProductLive(product: LaunchProduct): boolean {
       return process.env.NEXT_PUBLIC_MEMBERSHIP_LIVE === 'true'
     case 'extension':
       return process.env.NEXT_PUBLIC_EXTENSION_LIVE === 'true'
-    // Decode paused 17 Sep 2026: the five daily videos are being re-recorded.
+    // Decode held closed 17 Sep 2026 while the five daily videos are finished.
     // Signups go to the waitlist until NEXT_PUBLIC_DECODE_LIVE is 'true'.
     case 'decode':
       return process.env.NEXT_PUBLIC_DECODE_LIVE === 'true'

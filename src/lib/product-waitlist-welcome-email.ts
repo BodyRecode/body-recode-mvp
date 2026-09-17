@@ -70,14 +70,14 @@ ${darkEmailSignature()}
 function subjectFor(product: WaitlistProduct, firstName: string | null): string {
   const name = firstName?.trim() || null
   const prefix = name ? `You're on the list, ${name}.` : `You're on the list.`
-  if (product === 'decode') return `${prefix} I'll email you the moment The Body Decode reopens.`
+  if (product === 'decode') return `${prefix} I'll email you the day The Body Decode opens.`
   if (product === 'challenge') return `${prefix} I'll email you the moment doors open.`
   if (product === 'blueprint') return `${prefix} I'll email you the moment the Blueprint opens.`
   return `${prefix} I'll email you the moment the Membership opens.` // membership
 }
 
 function previewTextFor(product: WaitlistProduct): string {
-  if (product === 'decode') return 'You are on the list for The Body Decode. Five days, one read of what your body is actually doing, and you are first in when it reopens.'
+  if (product === 'decode') return 'You are on the list for The Body Decode. Five days, one read of what your body is actually doing, and you are first in the day it opens.'
   if (product === 'challenge') return 'You are on the waitlist for the 14-Day Body Decode Challenge. I will email you the moment doors open with the link to enrol.'
   if (product === 'blueprint') return 'You are on the waitlist for the 6-Week Body Rewire Blueprint. Six weeks of pattern-specific corrective work, calibrated to a Transitioning-state result. I will email you the moment doors open.'
   return 'You are on the waitlist for the Body Recode Membership. Long-arc infrastructure calibrated to a Ready-state result. $49 per week, cancel anytime. I will email you the moment doors open.'
@@ -95,8 +95,8 @@ ${emailEyebrow('The Body Decode · waitlist')}
 ${emailHeading(`You're on the list, ${name}.`)}
 ${emailDivider()}
 ${emailBody(`Hi ${name},`)}
-${emailBody('The Body Decode is closed for a short while. I am re-recording the five daily videos so the whole thing is in my own voice, start to finish, rather than pieced together.')}
-${emailBody('You are on the list. I will email you the moment it reopens, and you will be first in. Nothing to pay, nothing to do between now and then.')}
+${emailBody('The Body Decode opens soon. I am finishing the five daily videos so the whole thing is in my own voice, start to finish, rather than pieced together.')}
+${emailBody('You are on the list. I will email you the day it opens, and you will be first in. Nothing to pay, nothing to do between now and then.')}
 ${emailFeaturedCard(
   emailNumberedList([
     'Day 1, what your body is doing right now',
@@ -109,7 +109,7 @@ ${emailFeaturedCard(
 )}
 ${emailBody('If you want a sense of it before then, the pattern breakdowns on Instagram are the closest thing:', { bottom: 12 })}
 ${emailCta({ href: IG_URL_BRAND, label: 'Follow @body_recode_ on Instagram' })}
-${emailUrlFallback(IG_URL_BRAND, 'The reopening email lands in your inbox first.')}
+${emailUrlFallback(IG_URL_BRAND, 'The opening email lands in your inbox first.')}
 `
   }
 
