@@ -277,9 +277,9 @@ export const COACH_SAAS_STEPS: Step[] = [
     id: 'research-e1-electrolytes',
     title: 'Electrolytes, fluid and minerals',
     description: 'Nine unsourced statements the system already makes, and 24 practitioner claims to test.',
-    status: 'planned',
+    status: 'in_progress',
     effort: 'M',
-    notes: 'Briefed 15 Sep, two chats. Includes whether "electrolytes on waking", the sauna advice and the salt cravings question earn their place.',
+    notes: 'E1a run, verified at PubMed and APPLIED IN FULL on 17 Sep: the blood pressure medicine rule (it was backwards for the potassium-holding classes), the salt craving question, the water target, electrolytes as a daily habit, and the sauna gates are all corrected and live, plus a new shared library holding the standard fluid and potassium gates and the 23-item referral list. Still open: the referral list does not fire on its own yet, and E1b (trained lifters, contest prep, the 24 practitioner claims) has not been run.',
   },
   {
     id: 'research-r2-recovery',
