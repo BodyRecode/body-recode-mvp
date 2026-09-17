@@ -612,7 +612,20 @@ export function buildNutritionUserPrompt(
     lines.push('- Other peptides / hormonal therapies: surface in rationale; reference how the regimen modulates the prescription.')
     lines.push('')
     lines.push('Non-hormonal category awareness (do NOT change calorie/macro targets unless explicitly indicated, but surface in rationale and note flags):')
-    lines.push('- Beta-blockers / antihypertensives: hydration and electrolyte balance matter more. Note in rationale; emphasise hydration habit.')
+    // REWRITTEN 17 Sep 2026 from research pass E1a. The old line read
+    // "Beta-blockers / antihypertensives: hydration and electrolyte balance
+    // matter more", which is BACKWARDS for half the drugs it covered.
+    // "Antihypertensives" spans classes with opposite effects: thiazide and
+    // loop diuretics LOSE potassium, while ACE inhibitors, sartans and
+    // spironolactone HOLD it, so pushing electrolytes at that second group is
+    // the wrong advice for the people most at risk. Evidence and wording:
+    // 00_PLAYBOOK/electrolyte_research/2026-09-17_E1a_RESULT_base_and_safety_gates.md, A7.
+    lines.push('- Beta-blockers (metoprolol, atenolol, bisoprolol, propranolol, carvedilol, nebivolol): the issue is NOT hydration. They cap heart rate at rest and in exercise, so heart-rate zones and 220-minus-age targets do not work; intensity is set by effort or the talk test. They also reduce heat shedding through the skin, so hot sessions, sauna and summer training build up gradually. If the client also uses insulin or a sulfonylurea, the usual warning signs of low blood sugar may be dulled; defer to their diabetes team.')
+    lines.push('- Fluid tablets / diuretics (hydrochlorothiazide, indapamide, chlorthalidone, furosemide): extra sodium, potassium and fluid are lost, especially in heat. Drink to thirst plus a planned amount for long or hot sessions. Do NOT advise forcing large volumes of plain water, do NOT start a low-salt diet, and do NOT suggest potassium or electrolyte products.')
+    lines.push('- Potassium-sparing classes (ACE inhibitors, sartans, spironolactone, eplerenone, amiloride, triamterene, sacubitril/valsartan): these HOLD potassium. Never suggest potassium salt substitutes (lite or low-sodium salt), potassium supplements or high-potassium electrolyte drinks. Normal fruit, vegetables and dairy are fine unless their doctor has said otherwise. Vomiting or diarrhoea means see the GP or pharmacist about the tablets, and do not train.')
+    lines.push('- Calcium channel blockers (amlodipine, felodipine, nifedipine): ankle swelling is a known side effect of the drug, not salt or fluid. Never advise cutting fluid or salt for it; surface it for the GP.')
+    lines.push('- SGLT2 inhibitors (empagliflozin, dapagliflozin, any "-gliflozin"): HARD GATE. No ketogenic or very low carbohydrate plan, no fasting protocol and no aggressive cut without the prescriber. Ketoacidosis can occur with normal blood glucose.')
+    lines.push('- Lithium: HARD GATE. No change to salt or fluid intake, no heat or sauna block, and no routine anti-inflammatory use, without the prescriber. Dehydration raises lithium levels.')
     lines.push('- SSRIs / SNRIs / many antidepressants: appetite and bodyweight may shift independent of intake. Anchor compliance to protein/meal-rhythm targets, not bodyweight drift, for the first 4-6 weeks of any new prescription.')
     lines.push('- Stimulants (ADHD meds): appetite is suppressed during the day. Protein anchor floor must be met; structure meals around the appetite window rather than fighting it.')
     lines.push('')
