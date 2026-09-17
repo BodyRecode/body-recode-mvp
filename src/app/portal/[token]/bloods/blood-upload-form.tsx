@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { CollectionNotice, HealthConsent } from '@/components/collection-notice'
 import { useRouter } from 'next/navigation'
 import { compressImage, MAX_UPLOAD_BYTES } from '@/lib/compress-image'
 
@@ -21,6 +22,8 @@ export default function BloodUploadForm({ clientId }: { clientId: string }) {
   const [error, setError] = useState('')
   const [missingFile, setMissingFile] = useState(false)
   const [done, setDone] = useState(false)
+  const [consented, setConsented] = useState(false)
+  const [consentMissing, setConsentMissing] = useState(false)
 
   async function handleFilePick(picked: File | null) {
     if (!picked) { setFile(null); return }
@@ -41,6 +44,10 @@ export default function BloodUploadForm({ clientId }: { clientId: string }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!file) { setMissingFile(true); setError(''); return }
+    // Pathology results are the most sensitive thing a client can hand us.
+    // Consent is asked here, at the point of upload, not inherited from the
+    // intake she filled in months ago.
+    if (!consented) { setConsentMissing(true); setError(''); return }
     if (optimising) { setError('Your file is still being optimised. Try again in a moment.'); return }
     if (file.size > MAX_UPLOAD_BYTES) {
       setError(`This file is ${(file.size / 1024 / 1024).toFixed(1)} MB, which is too large. PDFs need to be under 4 MB. Try a lower-resolution scan, or take a photo of the page instead.`)
@@ -57,6 +64,7 @@ export default function BloodUploadForm({ clientId }: { clientId: string }) {
     if (collectedOn) formData.append('collectedOn', collectedOn)
     if (clientNote.trim()) formData.append('clientNote', clientNote.trim())
     if (lastPeriodStart) formData.append('lastPeriodStart', lastPeriodStart)
+    formData.append('healthConsent', 'true')
 
     let res: Response
     try {
@@ -175,6 +183,18 @@ export default function BloodUploadForm({ clientId }: { clientId: string }) {
           placeholder="e.g. my GP ordered these for fatigue"
           className="w-full rounded-xl border border-[#E8EAEE] bg-[#FFFFFF] px-3 py-2.5 text-sm text-[#141821] placeholder:text-[#C4C4C4] focus:border-[#1B6DFC] focus:outline-none resize-none"
         />
+      </div>
+
+      <div className="space-y-3 pt-1">
+        <CollectionNotice compact />
+        <HealthConsent
+          checked={consented}
+          onChange={v => { setConsented(v); if (v) setConsentMissing(false) }}
+          label="I agree to Body Recode holding this blood test result and using it to shape my coaching. I understand my doctor is the one who interprets it medically."
+        />
+        {consentMissing && (
+          <p className="text-[13px] font-medium text-[#C82626]">Please tick this before uploading.</p>
+        )}
       </div>
 
       {error && <p className="text-[#C82626] text-sm">{error}</p>}

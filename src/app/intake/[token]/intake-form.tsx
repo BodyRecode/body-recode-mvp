@@ -57,6 +57,8 @@ function formatIdentityValue(id: string, value: FormValue | undefined): string {
 
 type Draft = { sectionIndex: number; formData: FormData }
 
+import { CollectionNotice, HealthConsent } from '@/components/collection-notice'
+
 export default function IntakeForm({ token, clientName, portalToken, identity, carriedAnswers }: Props) {
   const [draft, setDraft, clearDraft, hydrated] = useFormDraft<Draft>(`intake:${token}`, { sectionIndex: 0, formData: {} })
 
@@ -91,6 +93,11 @@ export default function IntakeForm({ token, clientName, portalToken, identity, c
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hydrated])
+  // Consent lives in the draft alongside the answers, so a refresh does not
+  // re-ask, and an unfinished intake keeps it. Section 0 only.
+  const [consented, setConsented] = useState(false)
+  const [consentMissing, setConsentMissing] = useState(false)
+
   const sectionIndex = draft.sectionIndex
   const formData = draft.formData
   const setSectionIndex = (next: number | ((p: number) => number)) =>
@@ -194,6 +201,13 @@ export default function IntakeForm({ token, clientName, portalToken, identity, c
   }
 
   function handleContinue() {
+    // Sensitive information needs consent before it is collected, not after.
+    if (sectionIndex === 0 && !consented) {
+      setConsentMissing(true)
+      setValidationMessage('')
+      document.getElementById('health-consent')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      return
+    }
     const missed = findMissedInSection(sectionIndex)
     if (missed.length > 0) {
       setErrors(prev => {
@@ -242,7 +256,7 @@ export default function IntakeForm({ token, clientName, portalToken, identity, c
       const res = await fetch('/api/submit-intake', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token, formData }),
+        body: JSON.stringify({ token, formData, healthConsent: consented }),
       })
       if (!res.ok) {
         const data = await res.json()
@@ -322,6 +336,24 @@ export default function IntakeForm({ token, clientName, portalToken, identity, c
             </p>
           )}
         </div>
+
+        {/* Collection notice and consent, shown where collection actually
+            happens rather than as a footer link. Section 0 only: once she has
+            agreed, repeating it on every section is noise. */}
+        {sectionIndex === 0 && (
+          <div id="health-consent" className="mb-8 space-y-3">
+            <CollectionNotice />
+            <HealthConsent
+              checked={consented}
+              onChange={v => { setConsented(v); if (v) setConsentMissing(false) }}
+            />
+            {consentMissing && (
+              <p className="text-[13px] font-medium text-[#C82626]">
+                We need this before we can take your answers.
+              </p>
+            )}
+          </div>
+        )}
 
         {/* Validation message */}
         {validationMessage && (

@@ -130,6 +130,8 @@ export async function POST(req: NextRequest) {
       lab_name: labName,
       collected_on: collectedOn,
       client_note: clientNote,
+      // See sql/2026-09-17_intake_health_consent.sql. Recorded, not assumed.
+      health_consent_at: formData.get('healthConsent') === 'true' ? new Date().toISOString() : null,
       last_period_start: lastPeriodStart,
       // Derived here from the date she gave. Recomputed after extraction, where
       // the report's own printed date wins over her guess and would otherwise

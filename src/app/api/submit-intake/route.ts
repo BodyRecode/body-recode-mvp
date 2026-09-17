@@ -16,7 +16,7 @@ export const maxDuration = 300
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
-  const { token, formData } = body
+  const { token, formData, healthConsent } = body
 
   if (!token || !formData) {
     return NextResponse.json({ error: 'Missing token or form data' }, { status: 400 })
@@ -112,6 +112,9 @@ export async function POST(request: NextRequest) {
     final_disclosure: (formData.final_disclosure as string) || '',
     final_system_alignment: Boolean(formData.final_system_alignment),
     final_accuracy: Boolean(formData.final_accuracy),
+    // Proof, not decoration: a tick nobody recorded is the same as no tick.
+    // See sql/2026-09-17_intake_health_consent.sql.
+    health_consent_at: healthConsent ? new Date().toISOString() : null,
   }
 
   // Save intake
