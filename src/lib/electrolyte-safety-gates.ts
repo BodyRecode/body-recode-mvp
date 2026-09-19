@@ -148,9 +148,15 @@ export interface Referral {
   /** What the client reports. */
   trigger: string
   /** Where they go. */
-  action: 'call-000' | 'gp-soon'
-  /** The source E1a cited. */
+  action: 'call-000' | 'gp-soon' | 'sports-dietitian'
+  /** The source the research pass cited. */
   source: string
+  /**
+   * Who it applies to. 'everyone' is the E1a list. 'training' and 'competitor'
+   * came from E1b and only show where they are relevant, so a woman who does
+   * not train is not handed a list about shows and diuretics.
+   */
+  audience?: 'everyone' | 'training' | 'competitor'
 }
 
 /**
@@ -183,6 +189,29 @@ export const REFERRALS: Referral[] = [
   { action: 'gp-soon', trigger: 'Drenching night sweats outside the menopause transition, or with fever or weight loss', source: 'E1a reasoning' },
   { action: 'gp-soon', trigger: 'Ankle swelling on a calcium channel blocker, or any new swelling', source: 'NHS Specialist Pharmacy Service' },
   { action: 'gp-soon', trigger: 'Known kidney, heart, liver or adrenal condition, diabetes or POTS: general fluid and salt advice is off, follow the treating team', source: 'E1a section 5.3' },
+]
+
+/**
+ * Additions from research pass E1b, 19 September 2026. Lifters and physique
+ * competitors only. They sit on top of the list above rather than replacing
+ * any of it.
+ */
+export const TRAINING_REFERRALS: Referral[] = [
+  { audience: 'training', action: 'call-000', trigger: 'Collapse, confusion, poor coordination or odd behaviour while training in heat. Treat as possible heat stroke and start cooling immediately', source: 'Sports Medicine Australia; Roberts 2023' },
+  { audience: 'training', action: 'call-000', trigger: 'Severe muscle pain, swelling or weakness with dark, tea-coloured or cola-coloured urine after a hard, new or heavy-lowering session', source: 'Nye 2021 (PMID 33655999)' },
+  { audience: 'competitor', action: 'call-000', trigger: 'Sudden weakness, or being unable to stand or move the limbs, in a competitor, especially around a show, after fluid tablets, or after heavy carbohydrate loading', source: 'Cheung 2014; Lee 2017; Mayr 2012' },
+  { audience: 'competitor', action: 'call-000', trigger: 'Palpitations, an irregular or racing heartbeat with dizziness, or chest pain, in a competitor using fluid tablets, insulin, thyroid hormone, clenbuterol or potassium products', source: 'E1b section 8' },
+  { audience: 'competitor', action: 'call-000', trigger: 'Unable to keep fluids down during a cut or a carbohydrate load', source: 'E1b section 8' },
+
+  { audience: 'training', action: 'gp-soon', trigger: 'Cramps at rest or at night, or cramps with numbness or lasting weakness', source: 'E1b section 8' },
+  { audience: 'training', action: 'gp-soon', trigger: 'Repeated dizziness, faintness or feeling unwell in heat despite sensible drinking', source: 'E1b section 8' },
+  { audience: 'competitor', action: 'gp-soon', trigger: 'A heart check before any prep, and particularly for anyone enhanced, professional, or over 35. Sudden cardiac death in male competitors runs at 32.83 per 100,000 athlete-years, mean age at death 34.7', source: 'Vecchiato 2025 (PMID 40393525)' },
+  { audience: 'competitor', action: 'gp-soon', trigger: 'Blood tests including electrolytes and kidney function with cystatin C, for anyone using fluid tablets, insulin, thyroid hormone, growth hormone, anabolic steroids, SARMs or clenbuterol, and for any competitor who has never had kidney function checked', source: 'E1b section 8' },
+  { audience: 'competitor', action: 'gp-soon', trigger: 'Any competitor using fluid tablets (diuretics), as harm reduction, whatever their federation', source: 'E1b section 8' },
+  { audience: 'competitor', action: 'gp-soon', trigger: 'Periods stopped or become irregular in a female competitor', source: 'E1b section 8' },
+  { audience: 'competitor', action: 'gp-soon', trigger: 'Suspected overdose of potassium, clenbuterol, thyroid hormone, insulin or fluid tablets: Poisons Information Centre, 13 11 26', source: 'E1b section 8; verify the number on the label before publishing it' },
+
+  { audience: 'competitor', action: 'sports-dietitian', trigger: 'Any show-week or show-day plan, any sweat test, and any competitor asking for sodium or potassium numbers', source: 'Sports Dietitians Australia' },
 ]
 
 export const EMERGENCY_REFERRALS = REFERRALS.filter(r => r.action === 'call-000')
@@ -274,3 +303,34 @@ export function intakeReferralFlags(
 
   return flags
 }
+export const SPORTS_DIETITIAN_REFERRALS = TRAINING_REFERRALS.filter(r => r.action === 'sports-dietitian')
+
+/**
+ * The contest prep rule, from research pass E1b, 19 September 2026.
+ *
+ * NOTE ON THE WORDS: "peak week" inside Body Recode means the hardest training
+ * week of a block, which is an ordinary programming term and is not affected by
+ * any of this. THIS rule is about a physique competitor's show week, where the
+ * practice is water loading, sodium cutting, carbohydrate loading and often
+ * fluid tablets.
+ *
+ * WHY THE SYSTEM MUST NOT GENERATE THOSE NUMBERS: they do not exist. No trial
+ * has measured the visual outcome of water or sodium manipulation at all, the
+ * whole carbohydrate loading trial evidence is four men, and the documented
+ * harms in this exact population are paralysis, near-fatal potassium
+ * disturbance and death. None of the peak week evidence includes women.
+ *
+ * Written before any contest prep feature is built, deliberately, so that the
+ * first person who builds one finds the rule already here.
+ */
+export const CONTEST_PREP_RULE = `CONTEST PREP HARD RULE. Never generate show-week or show-day numbers for a physique competitor: no carbohydrate loading grams, no water load, no sodium or potassium targets, no backstage formula, and no diuretic or "water tablet" guidance of any kind. There is no evidence base for any of it and the documented harms in competitors are paralysis, dangerous potassium disturbance and death. What you MAY say: rehearse any change two to four weeks out, change one thing at a time, keep records, keep salt and fluid near the client's habitual intake through the final week, and eat on show day what has already been rehearsed. Say plainly that water and sodium manipulation has no efficacy evidence behind it. Then refer: an Accredited Sports Dietitian for any number, and a doctor as well where any drug, medicine or condition is involved. If the client is female, add that none of the published peak week evidence includes women.`
+
+/** Situations where the system refuses to produce any competitor numbers at all. */
+export const CONTEST_PREP_REFUSAL_TRIGGERS = [
+  'using or planning fluid tablets (diuretics), insulin, thyroid hormone, growth hormone, anabolic steroids, SARMs, clenbuterol or salbutamol',
+  'any potassium tablet, powder or salt substitute',
+  'a past cramp, collapse, palpitations or confusion around a show or a hard cut',
+  'any medicine or condition that triggers the standard fluid or potassium gate',
+  'kidney, heart or blood pressure problems, or diabetes',
+  'a female competitor asking for show-week numbers, because none of the evidence includes women',
+]

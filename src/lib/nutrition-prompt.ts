@@ -1,4 +1,4 @@
-import { electrolyteGates, electrolyteGatePromptBlock } from './electrolyte-safety-gates'
+import { electrolyteGates, electrolyteGatePromptBlock, CONTEST_PREP_RULE } from './electrolyte-safety-gates'
 
 export interface NutritionPrescriptionInputs {
   entry_state: 'stabilisation' | 'training_support' | 'high_output_support' | 'recovery_reset'
@@ -360,6 +360,8 @@ COOKING FATS vs FINISHING FATS (CRITICAL):
 - Finishing / dressing only (never cooked): olive oil, raw butter on cooked food, avocado oil where flavoured. Olive oil is heat-sensitive — instruct the client to drizzle, not fry.
 - NEVER prescribe seed oils (canola, sunflower, soybean, vegetable oil) under any circumstances.
 - NEVER instruct the client to "cook in olive oil" or "fry in olive oil". If a meal needs heat, the cooking fat is tallow / butter / ghee.
+
+${CONTEST_PREP_RULE}
 
 CARBOHYDRATE PERMISSION GATING:
 - Stabilisation / Recovery Reset entry states: low carb only (3–4 g/kg max), placed around training if any. Default to no carbs on rest days.

@@ -5,7 +5,7 @@ import { ArrowUp } from 'lucide-react'
 import { PageHeader } from '@/components/dashboard/ui'
 import { coach, brand } from "@/config/tenant";
 import { getTotalQuestions } from '@/lib/intake-questions'
-import { EMERGENCY_REFERRALS, GP_REFERRALS, STANDARD_POTASSIUM_GATE, STANDARD_FLUID_GATE } from '@/lib/electrolyte-safety-gates'
+import { EMERGENCY_REFERRALS, GP_REFERRALS, TRAINING_REFERRALS, STANDARD_POTASSIUM_GATE, STANDARD_FLUID_GATE } from '@/lib/electrolyte-safety-gates'
 
 type Category = 'flows' | 'coaching' | 'business' | 'content' | 'challenge' | 'blueprint' | 'membership'
 
@@ -1534,6 +1534,13 @@ export default function HelpPage() {
             <p><strong>Still to do:</strong> the portal does not yet ask for the period date at upload, so it has to be entered by hand for now. Picking the range does not interpret it: an out-of-range hormone result still goes to her GP.</p>
             <p>Review and act on the panel from the <strong>Health Markers</strong> section on the client profile (<code>/dashboard/clients/[id]#bloods</code>). Each uploaded panel is a card with the transcribed markers table, any lab-flagged values routed to the GP, and a row of actions that mirror the Medications Analysis flow: <strong>View file</strong> (10-minute signed URL to the original), <strong>Re-read file</strong> (re-run the transcription if the auto-read missed), <strong>Generate analysis</strong> (coach-facing structured read — what the markers mean for programming, nutrition, recovery, how they converge with the CFFS), <strong>Generate reading</strong> (client-facing four-section prose), <strong>Publish reading</strong> (surfaces it on the client&apos;s portal under Health Markers), and <strong>Approve for plan</strong>.</p>
             <p><strong>Approve for plan is the gate.</strong> Nothing a client uploads touches their plan until you click Approve for plan. Only an approved panel&apos;s markers inject into the next CFFS regeneration (which then propagates to the Foundational Read, program, and nutrition exactly like the baseline-photo signal does). The most recently approved panel wins. After approving, click <strong>Regenerate CFFS</strong> to fold the markers in.</p>
+            <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">Lifters, heat and competitors (added 19 September 2026, research pass E1b)</p>
+            <p><strong>Nothing we say should suggest electrolytes help a lifter who is not dehydrated.</strong> No trial has ever measured sodium, potassium or pre-loading fluid against a strength, size or volume outcome. Not a weak result, no result: the study has not been done. The same pass clears creatine of the cramp and dehydration warnings it usually carries, and finds cramps are better explained by fatigue and neuromuscular control than by salt, so neither belongs in anything we write.</p>
+            <p><strong>What does change is heat.</strong> Brisbane is hot or humid most of the year and plenty of gyms here have no air conditioning, so the pre-session guide now carries a block for hot days, hot rooms and sessions over about 90 minutes: start topped up, drink to thirst, finish no more than about two per cent lighter and never heavier, and for over an hour in heat use a drink with roughly 500 to 700 mg of sodium per litre. Below that threshold the honest answer is that a normal gym session needs none of it, and saying so stops clients buying things that do nothing.</p>
+            <p><strong>Contest prep: the system will never generate show-week numbers.</strong> That rule is now in the nutrition generator, written before any contest feature exists rather than after. Not squeamishness: the numbers do not exist. No trial has measured the visual effect of water or sodium manipulation, the entire carbohydrate loading trial evidence is four men, none of the peak week evidence includes women, and the documented harms in this exact group are paralysis, near-fatal potassium disturbance and death. What the system may say is the state of the evidence, rehearse changes two to four weeks out, change one thing at a time, keep salt and fluid near normal in the final week, and eat on show day what you have already rehearsed. Every number goes to an accredited sports dietitian, and a doctor as well wherever a drug or condition is involved. Note the word collision: <em>our</em> "peak week" means the hardest training week of a block and is unaffected by any of this.</p>
+            <p><strong>Adam Omachy's claims, tested.</strong> Fourteen do not survive, including his potassium targets of 80 to 120 mg per kilogram (no reference body sets potassium per kilogram, and at 125 kg that is three to four times the Australian intake and unreachable from food), the whole of his own peak week, "the pump is a nutrient delivery system", and "my body wasn't hungry for food, it was lacking minerals", which is contradicted outright. Thirteen are right and worth adopting, the best being: rehearse beforehand, control your variables, change as little as possible, because aggressive manipulation has very weak evidence.</p>
+            <p><strong>Twelve referrals were added</strong> for people who train and people who compete, below the general list. They are tagged by who they apply to, so a client who does not train is not shown a list about shows and fluid tablets.</p>
+
             <p className="text-[12.5px] font-medium text-[#666D7A] mt-4 mb-2">The fluid and potassium gates, and the referral list (added 17 September 2026)</p>
             <p>Research pass E1a handed us two pieces of safety wording that every surface needed and none of them had. They are written once now and quoted everywhere, so when one of them is wrong it is wrong in one place.</p>
             <p><strong>A gate replaces the advice, it does not soften it.</strong> When the potassium gate is on, the system does not suggest a gentler potassium product, it stops suggesting potassium products. When the fluid gate is on, it does not lower the daily water figure, it stops giving one.</p>
@@ -1554,6 +1561,17 @@ export default function HelpPage() {
             <ul className="list-disc ml-5 space-y-1 mt-1">
               {GP_REFERRALS.map(r => (
                 <li key={r.trigger}>{r.trigger} <span className="text-[#98A0AD]">({r.source})</span></li>
+              ))}
+            </ul>
+            <p className="mt-3"><strong>Added for people who train and people who compete</strong></p>
+            <ul className="list-disc ml-5 space-y-1 mt-1">
+              {TRAINING_REFERRALS.map(r => (
+                <li key={r.trigger}>
+                  <span className="text-[#8A6218] font-medium">
+                    {r.action === 'call-000' ? '000: ' : r.action === 'sports-dietitian' ? 'Sports dietitian: ' : 'GP: '}
+                  </span>
+                  {r.trigger} <span className="text-[#98A0AD]">({r.source})</span>
+                </li>
               ))}
             </ul>
 

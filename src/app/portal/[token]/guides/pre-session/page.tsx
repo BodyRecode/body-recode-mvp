@@ -29,6 +29,20 @@ export default async function PreSessionGuide({ params }: { params: Promise<{ to
             <p>A glass or two of water in the hour or two before, so you start the session already topped up rather than catching up during it. Drink when you are thirsty, not to a number.</p>
             <p>You do not need salt or an electrolyte tab for a normal session. They start to matter when you are out for well over an hour, or sweating hard in heat, and even then food covers most of it.</p>
             <p>Arriving properly dehydrated does cost you, but it takes a lot more than a busy morning to get there. If you are thirsty, drink. If your urine is pale, you are fine.</p>
+            {/* Heat and long-session block added 19 Sep 2026, research pass E1b
+                section 5. Brisbane is hot or humid for most of the year and a
+                lot of gyms here are not air-conditioned, so this is the case
+                where fluid and sodium genuinely start to matter. */}
+            <p className="mt-4"><strong>Hot or humid days, a gym without air conditioning, or a session over about 90 minutes.</strong> This is the one case where it changes:</p>
+            <ul>
+              <li>Have a drink with your pre-training meal so you start topped up.</li>
+              <li>Drink to thirst through the session. Aim to finish no more than about 2 per cent lighter than you started, which is about 1.6 kg for an 80 kg person, and never heavier than you started.</li>
+              <li>For more than an hour in the heat, a drink with roughly 500 to 700 mg of sodium per litre is worth it. Most sports drinks and a half-strength pharmacy rehydration sachet land in that range. Check the label.</li>
+              <li>Afterwards, a meal with some salt in it plus fluids does the rest.</li>
+              <li>In your first week or two of hot weather, pull the volume back a little while your body adapts. Your sweat gets less salty as it does.</li>
+              <li>If you want your own numbers rather than a rule of thumb, weigh yourself before and after two or three similar sessions and tell your coach, or ask us about a sweat test with an accredited sports dietitian.</li>
+            </ul>
+            <p>If a doctor has set you a fluid or salt limit, theirs overrides all of this.</p>
           </>,
         },
         {
