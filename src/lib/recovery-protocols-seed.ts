@@ -456,8 +456,8 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     slug: 'contrast-shower',
     name: 'Contrast Shower',
     category: 'contrast',
-    short_description: 'Alternating hot and cold in one shower for circulatory training.',
-    what_it_does: 'Vascular pumping (dilate-constrict-dilate) may reduce muscle soreness and support recovery from swelling. Autonomic training via repeated stress-relax cycles.',
+    short_description: 'Alternating hot and cold in one shower. Free, and mildly useful for soreness.',
+    what_it_does: 'Modestly better than doing nothing for how sore a client feels, at no cost. Rewritten 20 Sep 2026: the "vascular pumping, dilate-constrict-dilate" mechanism is gone because it was MEASURED and found to be nothing. With an ultrasound on the femoral artery during immersion, warm water raised leg blood flow about 75 per cent, cold lowered it 16 per cent, and contrast changed it not at all.',
     steps: [
       'Start warm, get comfortable',
       'Switch to fully cold for 60 seconds',
@@ -480,7 +480,7 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     name: 'Contrast Pool Plunge',
     category: 'contrast',
     short_description: 'Alternating hot pool / plunge pool at gyms with both, for stronger contrast dose.',
-    what_it_does: 'Same vascular pumping as contrast shower but a much larger cold dose (full submersion). Popular post-training in commercial gym recovery centres.',
+    what_it_does: 'The same modest soreness effect as the contrast shower, with a much larger cold dose because it is full submersion. Rewritten 20 Sep 2026: there is no vascular pumping to inherit, since that mechanism was measured with ultrasound and found to change leg blood flow not at all. Popular post-training in commercial gym recovery centres, and not superior to the shower.',
     steps: [
       'Warm pool or hot tub, 3 to 5 minutes',
       'Cold plunge, 30 to 60 seconds',
