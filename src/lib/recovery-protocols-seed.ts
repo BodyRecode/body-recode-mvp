@@ -110,6 +110,60 @@ const HEAT_CONTRAINDICATIONS = [
   'Men trying to conceive: regular sauna can lower sperm count for a few months. It recovers after stopping',
 ]
 
+/**
+ * Shared cold gates for the plunge, the cold shower, the face immersion and the
+ * cryotherapy chamber.
+ *
+ * Written 20 September 2026 from research pass R2 group 2, and aligned to the
+ * Royal Life Saving Society Australia / AUSactive / SPASA joint Position
+ * Statement on Cold Water Immersion Therapy (26 February 2024). Unlike sauna,
+ * an Australian standard for this exists, so there is no excuse for inventing
+ * our own.
+ *
+ * WHY THE OLD GATE WAS WRONG IN BOTH DIRECTIONS. It asked for cardiovascular
+ * clearance, which screens for the wrong thing. Death in cold water usually
+ * happens BEFORE the body cools: the cold shock response starts within seconds
+ * and kills through inhaling water, through hyperventilation, or through an
+ * arrhythmia, all at a normal core temperature. So a cardiology sign-off filters
+ * out people who would have been fine and waves through the risk that actually
+ * occurs, which is the first few seconds of the first few exposures.
+ *
+ * THREE THINGS THAT FOLLOW, and they change the instructions, not just the list:
+ *   1. The danger window is the first seconds to minutes, not the end.
+ *   2. Getting out is itself a risk moment (circum-rescue collapse, as the
+ *      water's pressure comes off).
+ *   3. "Hold your breath going in" is the WRONG instruction. Breath-holding
+ *      plus cold skin is the autonomic conflict that may explain sudden deaths
+ *      in apparently healthy people.
+ *
+ * The cold shock response habituates after roughly four immersions, which is
+ * why the first four sessions are named rather than left to judgement.
+ */
+const COLD_CONTRAINDICATIONS = [
+  'Pregnancy',
+  'Any heart condition, an irregular heartbeat, a pacemaker or implanted defibrillator, or a family history of unexplained sudden death under 40',
+  'Blood pressure that is high and not currently controlled',
+  'A circulatory condition, Raynaud\'s, or fingers and toes that go white, blue or numb in the cold',
+  'Cold has ever brought up hives, welts or swelling on the skin. About one in five people with cold-triggered hives has had a severe whole-body allergic reaction, and whole-body immersion is the highest-risk version of that trigger: refer for an immunology opinion',
+  'An autoimmune condition',
+  'Epilepsy, or any condition that could cause a loss of consciousness',
+  'A chronic or serious illness, a current treatment program, or medicines not yet checked against this',
+  'Peripheral neuropathy or reduced sensation, including from diabetes, so cold injury cannot be felt developing',
+  'A history of an eating disorder, or being very underweight, where cold tolerance is compromised',
+]
+
+/** The rules that apply to everyone, with no exceptions and no coach discretion. */
+const COLD_RULES_FOR_EVERYONE =
+  'NEVER ALONE: someone else present and watching, every time. Head and neck stay above the water. 10 to 15 degrees, and colder is NOT better. Do NOT hold your breath going in: breathe out slowly and get the breathing under control first, because breath-holding with cold skin is the autonomic conflict that kills apparently healthy people. Treat the FIRST FOUR sessions as the risky ones and keep them shorter and warmer, because the cold shock response only habituates after about four immersions. Never after alcohol. Get out slowly and sit down, because being lifted or standing up fast out of cold water is itself a risk moment. Stop immediately for faintness, chest pain, an irregular racing heart, or welts on the skin. Cold is never a substitute for mental health care: if someone is being treated for low mood or anxiety, this is an addition to that care, not a replacement for it.'
+
+/**
+ * What the cold evidence does NOT cover, which is most of our clients.
+ * The cold literature is 92 per cent male, aged 20 to 26. Kade's call,
+ * 20 September 2026: say so rather than quietly extrapolating.
+ */
+const COLD_EVIDENCE_GAP =
+  'EVIDENCE GAP, say it rather than extrapolate: the cold water literature is about 92 per cent male and aged 20 to 26. Almost none of it was measured in women aged 35 to 60, and none of it in perimenopause. Effects quoted from it are an extrapolation to this client, not a finding about her.'
+
 export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
   {
     slug: 'sauna-traditional',
@@ -221,9 +275,9 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
       timing: 'Morning before caffeine, or anytime autonomic reset is needed.',
     },
     required_equipment: ['ice_water_bowl'],
-    contraindications: ['Uncontrolled cardiac condition', 'Recent facial surgery', 'Cold urticaria'],
-    safety_notes: 'Do not exceed 20 seconds per round. Sit or kneel over the bowl (do not stand). Never combine with breath-hold beyond one comfortable breath.',
-    coach_doctrine: 'Trigeminal-driven dive reflex is the fastest parasympathetic lever available. Kade\'s personal morning protocol. Underused because clients think they need a full plunge to get the effect. They do not.',
+    contraindications: [...COLD_CONTRAINDICATIONS, 'Recent facial surgery'],
+    safety_notes: 'Do not exceed 20 seconds per round. SIT OR KNEEL over the bowl, never stand, and never do it alone: a faint over a bowl of water is a drowning risk. Never combine with breath-hold beyond one comfortable breath. ' + COLD_RULES_FOR_EVERYONE,
+    coach_doctrine: 'Rewritten 20 Sep 2026 from research pass R2 group 2. It used to say "the fastest parasympathetic lever available", which is CONTRADICTED as a lasting effect: pooled across 17 papers and 311 people the vagal effect DURING exposure is real (g = 0.59) and after it ends it is g = 0.11, not significant, confidence interval crossing zero. So this is an in-the-moment state change and nothing more. Prescribe it for the next two minutes, never as something that resets, retrains or rebalances a nervous system. It is still worth having: 30 seconds, no equipment, and a real effect while it is happening. ' + COLD_EVIDENCE_GAP,
   },
   {
     // Added 2026-08-17 from the Deep Research report at
@@ -280,7 +334,7 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     name: 'Cold Shower Finish',
     category: 'cold',
     short_description: 'Finish a shower with 1 to 3 minutes fully cold.',
-    what_it_does: 'Elevates dopamine and norepinephrine, sharpens alertness, builds psychological resilience through voluntary discomfort.',
+    what_it_does: 'Sharpens alertness in the moment, and is a small voluntary discomfort a client can complete before 7am. It does NOT do what the internet says: the catecholamine study everyone quotes measured plasma, during an hour at 14 degrees, in young men, and plasma dopamine is not brain dopamine.',
     steps: [
       'Shower normally',
       'Turn water fully cold at the end',
@@ -291,48 +345,45 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     dosing: {
       frequency: 'Daily to 5 times per week',
       duration: '1 to 3 minutes fully cold',
-      timing: 'Morning for alertness. Not within 4 hours of a strength session if hypertrophy is the primary goal.',
+      timing: 'Morning for alertness. The old "not within 4 hours of a strength session" rule was removed on 20 Sep 2026: no trial has ever tested any delay, and the hypertrophy evidence applies to cold within about 15 minutes of training. If hypertrophy is the goal, leave a sensible gap and say plainly that the size of the gap is unknown.',
     },
     required_equipment: ['shower'],
-    contraindications: ['Uncontrolled cardiac condition', 'Raynaud\'s syndrome', 'Recent cardiac event'],
-    safety_notes: 'Never combine with breath-hold. Do not exceed 3 minutes without acclimation. Skip if feeling unwell.',
-    coach_doctrine: 'Entry-level cold exposure. Adherence-friendly. Same dopamine effect as a full plunge, roughly 40 percent of the magnitude, at zero setup cost.',
+    contraindications: COLD_CONTRAINDICATIONS,
+    safety_notes: 'Never combine with breath-hold. Do not exceed 3 minutes without acclimation. Skip if feeling unwell. ' + COLD_RULES_FOR_EVERYONE,
+    coach_doctrine: 'Rewritten 20 Sep 2026 from research pass R2 group 2. Two numbers were deleted because they had NO source: "roughly 40 per cent of the magnitude" of a plunge (nothing exists to derive it from) and the 4-hour rule. The dopamine framing also went: the study behind it measured PLASMA catecholamines during a full hour at 14 degrees in young men, and plasma dopamine is not brain dopamine, which does not cross the blood brain barrier. It measured a stress response in the blood, not mood or motivation, and our copy stretched it to a 1 to 3 minute shower. What IS true is better than the invented version: this has the largest trial behind it of anything in the cold set, and in that trial DURATION DID NOT MATTER, so 30 seconds is the honest prescription and the cheapest thing in the library. ' + COLD_EVIDENCE_GAP,
   },
   {
     slug: 'cold-plunge-extended',
     name: 'Extended Cold Plunge',
     category: 'cold',
     short_description: 'Full-body cold water immersion, 8 to 12 degrees Celsius.',
-    what_it_does: 'Strong sympathetic spike then large parasympathetic rebound, dopamine and norepinephrine surge, brown fat activation, mental resilience training.',
+    what_it_does: 'A strong sympathetic spike with a parasympathetic rebound afterwards, and a measurable effect on how sore a client feels. Removed 20 Sep 2026: the dopamine surge (plasma, not brain), brown fat activation (contradicted as a body composition lever) and mental resilience training (never measured).',
     steps: [
-      'Fill tub or plunge with cold water at 8 to 12 degrees Celsius',
-      'Enter slowly, submerge to shoulders',
-      'Control breathing, slow exhale bias',
-      'Stay 2 to 5 minutes (advanced 10 minutes)',
-      'Exit, rewarm naturally',
+      // 10 to 15 degrees, from the Royal Life Saving position statement, which
+      // says that range is generally safe. Was 8 to 12. Colder is not better.
+      'Fill the tub or plunge with cold water at 10 to 15 degrees Celsius',
+      'Have someone else present, every time, before you get in',
+      'Enter slowly, submerge to the shoulders. Head and neck stay above the water',
+      'Breathe OUT slowly and get your breathing under control. Do not hold your breath going in',
+      'Stay 2 to 5 minutes. For the first four sessions, keep it shorter and warmer',
+      'Get out slowly and sit down. Rewarm naturally',
     ],
     dosing: {
       frequency: '2 to 4 sessions per week',
-      duration: '2 to 5 minutes per session (10 minute max for advanced)',
-      timing: 'Morning for dopamine peak. Not within 6 hours post-strength session if hypertrophy is the goal.',
+      duration: '2 to 5 minutes per session',
+      timing: 'The old "not within 6 hours of a strength session" rule was removed on 20 Sep 2026: no trial has ever tested any delay, and the two different numbers we used for showers and plunges implied a measured dose-response that does not exist. If hypertrophy is the goal, leave a sensible gap and say the size of it is unknown.',
     },
     required_equipment: ['cold_plunge_full'],
-    contraindications: [
-      'Uncontrolled cardiac condition',
-      'Recent cardiac event',
-      'Raynaud\'s syndrome',
-      'Uncontrolled hypertension',
-      'Pregnancy',
-    ],
-    safety_notes: 'Never plunge alone at extended durations. Never combine with breath-hold cycles. Do not force through severe shivering.',
-    coach_doctrine: 'Higher-dose cold. Only for clients in optimisation or post-optimisation body state, with cardiovascular clearance. Do not confuse with the face immersion protocol - different dose, different application.',
+    contraindications: COLD_CONTRAINDICATIONS,
+    safety_notes: 'NEVER ALONE, at any duration. Never combine with breath-hold cycles. Do not force through severe shivering. ' + COLD_RULES_FOR_EVERYONE,
+    coach_doctrine: 'Rewritten 20 Sep 2026 from research pass R2 group 2. Removed: the 6 hour rule, "brown fat activation" (contradicted as a body composition lever by a direct 10-day trial) and "mental resilience training". The gate moved OFF cardiovascular clearance, which screens for the wrong thing: death in cold water usually happens before the body cools, through the cold shock response in the first seconds, at a normal core temperature. A cardiology sign-off filters out people who would be fine and waves through the risk that actually occurs. BLUNTING, stated honestly: three meta-analyses disagree by threefold, the hypertrophy interval crosses zero, and the whole-body subgroup was not significant. Worth saying out loud, because it is a point in our favour: OUR dose sits below anything that has ever been tested for blunting. Do not confuse with the face immersion protocol, different dose and different application. ' + COLD_EVIDENCE_GAP,
   },
   {
     slug: 'cryo-chamber',
     name: 'Whole-Body Cryotherapy Chamber',
     category: 'cold',
     short_description: 'Standing cold-air chamber at minus 110 to minus 140 degrees Celsius for 2 to 3 minutes.',
-    what_it_does: 'Extreme brief cold. Elevates norepinephrine sharply, may reduce muscle soreness, popular for recovery from acute inflammation.',
+    what_it_does: 'Extreme brief cold in dry air. Popular for recovery from acute inflammation. The honest position, from research pass R2: this is the least verified thing we carry, it is not established as equivalent to a water plunge, and its claimed mental effect is contradicted.',
     steps: [
       'Enter dry, in undergarments plus dry gloves and socks',
       'Stand, breathe normally',
@@ -345,15 +396,9 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
       timing: 'Post-training if targeting acute inflammation. Not the same day as extended cold plunge.',
     },
     required_equipment: ['cryo_chamber'],
-    contraindications: [
-      'Uncontrolled cardiac condition',
-      'Raynaud\'s syndrome',
-      'Cold urticaria',
-      'Pregnancy',
-      'Peripheral neuropathy',
-    ],
-    safety_notes: 'Must be dry entering the chamber (moisture causes frostbite). Never stay past the operator\'s time limit.',
-    coach_doctrine: 'Available in some commercial gyms and dedicated recovery centres. Evidence for muscle soreness modest, evidence for mental effect strong. Do not use if hypertrophy is the primary training goal in the same 24-hour window.',
+    contraindications: COLD_CONTRAINDICATIONS,
+    safety_notes: 'Must be dry entering the chamber, because moisture causes frostbite. Never stay past the operator\'s time limit. The in-water rules about breathing and getting out do not apply in a dry chamber, but every gate above does.',
+    coach_doctrine: 'Rewritten 20 Sep 2026 from research pass R2 group 2. "Evidence for mental effect strong" is CONTRADICTED by a 2025 review and is gone. Say plainly what this is: the LEAST evidenced protocol in the whole library, and NOT established as equivalent to a water plunge. The cold-water blunting warning must not be carried across to a chamber either, because the source that establishes blunting explicitly does not permit that extrapolation. If a client has a choice between this and a plunge, the plunge has the evidence and the chamber has the marketing. Do not use if hypertrophy is the primary training goal in the same 24-hour window. ' + COLD_EVIDENCE_GAP,
   },
   {
     slug: 'contrast-shower',
@@ -374,9 +419,9 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
       timing: 'Morning to finish cold. Evening to finish warm.',
     },
     required_equipment: ['shower'],
-    contraindications: ['Uncontrolled cardiac condition', 'Recent cardiac event'],
-    safety_notes: 'Do not push cold cycles beyond 90 seconds without acclimation. Skip if feeling unwell.',
-    coach_doctrine: 'Best entry-point contrast tool - no equipment beyond a shower. Adherence-friendly. Broadly safe. Layered onto the daily cold shower protocol once tolerance is established.',
+    contraindications: COLD_CONTRAINDICATIONS,
+    safety_notes: 'Do not push cold cycles beyond 90 seconds without acclimation. Skip if feeling unwell. ' + COLD_RULES_FOR_EVERYONE,
+    coach_doctrine: 'Best entry-point contrast tool, no equipment beyond a shower, adherence-friendly, and free. Rewritten 20 Sep 2026 from research pass R2 group 3: the "vascular pumping, dilate-constrict-dilate" mechanism is GONE, because it was measured directly and found to be nothing. With an ultrasound on the femoral artery during immersion, warm water raised leg blood flow about 75 per cent, cold lowered it 16 per cent, and contrast changed it NOT AT ALL, and the warm-water rise was hydrostatic pressure rather than the alternation. Prescribe it for soreness versus doing nothing, which is a real and modest effect, and for the fact that it costs a client nothing. ' + COLD_EVIDENCE_GAP,
   },
   {
     slug: 'contrast-pool',
@@ -394,19 +439,19 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     dosing: {
       frequency: '1 to 3 sessions per week',
       duration: '15 to 25 minutes total',
-      timing: 'Post-training. Not within 6 hours of a hypertrophy session.',
+      timing: 'Post-training. The "not within 6 hours of a hypertrophy session" rule was removed on 20 Sep 2026: no trial has tested any delay, and it was the same invented number the cold group found.',
     },
     required_equipment: ['cold_plunge_full'],
-    contraindications: ['Uncontrolled cardiac condition', 'Recent cardiac event', 'Pregnancy', 'Uncontrolled hypertension'],
-    safety_notes: 'Never exceed 60 seconds in cold plunge in contrast cycles without acclimation. Rewarm fully in the warm pool between cycles.',
-    coach_doctrine: 'Higher-dose contrast for clients with commercial gym access. Not superior to contrast shower for most goals - the shower version is enough.',
+    contraindications: COLD_CONTRAINDICATIONS,
+    safety_notes: 'Never exceed 60 seconds of cold in a contrast cycle without acclimation. Rewarm fully in the warm pool between cycles. ' + COLD_RULES_FOR_EVERYONE,
+    coach_doctrine: 'Higher-dose contrast for clients with commercial gym access. The existing note that it is NOT superior to the contrast shower is correct and stays: research pass R2 group 3 confirmed it, and the shower is free. Removed 20 Sep 2026: the 6 hour rule, and the vascular pumping mechanism, which was measured with ultrasound and found to change leg blood flow not at all. ' + COLD_EVIDENCE_GAP,
   },
   {
     slug: 'compression-boots',
     name: 'Compression Boots',
     category: 'compression',
     short_description: 'Sequential pneumatic compression of the legs, 20 to 30 minutes.',
-    what_it_does: 'Sequential inflation from feet to hips pushes fluid centrally, may reduce muscle soreness and support venous return. Popular after long-duration training and standing days.',
+    what_it_does: 'Twenty to thirty minutes of feeling better, and roughly two hours of it afterwards. That is the honest claim. The "pushes fluid centrally, supports venous return" mechanism is the manufacturers\' story rather than a measured one: the systematic review theorises it and presents no pooled measurement, and the one included study that actually measured calf and thigh circumference found no change.',
     steps: [
       'Sit or lie down comfortably',
       'Fit compression boots and connect to the compressor',
@@ -427,14 +472,14 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
       'Open wounds or infections on the legs',
     ],
     safety_notes: 'Skip on legs with fresh injuries. Do not exceed 100 mmHg pressure without professional supervision.',
-    coach_doctrine: 'Best recovery tool for training loads where legs bear the biggest fatigue. Common in commercial gyms including Anytime Fitness. Client should tag if their gym has them so we can prescribe.',
+    coach_doctrine: 'Rewritten 20 Sep 2026 from research pass R2 group 3. Prescribe it as COMFORT, which it genuinely delivers, and never as fluid movement or performance recovery: every performance estimate out to 72 hours was trivial and not significant. It is the most expensive thing in the library per unit of effect, so a client with 30 minutes should not be spending it in boots when a walk, an earlier night or more protein is available. Keep the deep vein thrombosis gate tight, because that is the one way this device can actually hurt somebody.',
   },
   {
     slug: 'massage-gun',
     name: 'Percussion Massage Gun',
     category: 'compression',
     short_description: 'Handheld percussive therapy device for targeted muscle release.',
-    what_it_does: 'Localised percussive stimulation may reduce muscle stiffness, improve range of motion in the short term. Best used before or between sessions, not during acute injury.',
+    what_it_does: 'Buys range of motion for a short while, right now. It does NOT reduce soreness: pooled across 12 randomised trials and 393 people the effect on delayed onset muscle soreness was nil, and longer sessions were associated with MORE soreness rather than less.',
     steps: [
       'Select a soft or medium attachment for muscle bellies',
       'Turn on at low speed, 2000 rpm',
@@ -445,22 +490,28 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     dosing: {
       frequency: 'Daily as needed',
       duration: '1 to 2 minutes per muscle group, 10 minutes max per session',
-      timing: 'Pre-training for mobility. Post-training for perceived recovery.',
+      timing: 'AFTER a session, or between sessions, for range of motion. NOT inside a warm-up: 12 minutes of it added to a dynamic warm-up made trained athletes jump lower, lose reactive strength and run a slower 20 metres. A brief 30 seconds per muscle before lifting is untested rather than disproved, so it is allowed but never presented as a benefit.',
     },
     required_equipment: ['massage_gun'],
-    contraindications: ['Acute injury with swelling', 'Blood thinners without medical clearance', 'Fracture or open wound'],
-    safety_notes: 'Never use over the front of the neck, spine, or joint capsules. Reduce speed if bruising occurs.',
-    coach_doctrine: 'Symptom-management tool, not a driver of adaptation. Useful for adherence and perceived recovery. Do not oversell the recovery benefit.',
+    contraindications: [
+      'Acute injury with swelling',
+      'Blood thinners without medical clearance',
+      'Fracture or open wound',
+      'NEVER on the front or sides of the neck: a vertebral artery dissection has been reported from a handheld massage gun used there',
+      'Diagnosed osteoporosis or a previous minimal-trauma fracture: keep it off bone entirely',
+    ],
+    safety_notes: 'NEVER over the front or sides of the neck, the spine, or joint capsules. Keep sessions short: a published case of rhabdomyolysis followed heavy use. Reduce speed if bruising occurs.',
+    coach_doctrine: 'Rewritten 20 Sep 2026 from research pass R2 group 3. The existing note was already right that this is symptom management rather than adaptation, and that stands. What changed: the soreness claim is gone (12 trials, 393 people, no effect, and longer sessions associated with more soreness), and it moves OUT of the warm-up because 12 minutes of it before training measurably cost jump height, reactive strength and sprint speed in trained athletes. Prescribe it for acute range of motion when a client needs range right now: cheap, two minutes, real effect, short-lived. Of everything in the devices group this is the one with the most honest use per minute.',
   },
   {
     slug: 'vibration-plate',
     name: 'Whole-Body Vibration Plate',
     category: 'compression',
-    short_description: 'Standing on a vibrating platform for neuromuscular activation and circulation.',
-    what_it_does: 'Vibration triggers muscle spindle reflex activity. May improve circulation, warm-up efficiency, and mild bone-loading stimulus.',
+    short_description: 'Standing work made harder. A way in for someone who cannot yet load, and NOT a bone strategy.',
+    what_it_does: 'A vibration plate makes standing work harder. For an older or deconditioned client it modestly improves leg strength, sit-to-stand, walking speed and balance scores, and that is its real use. It does NOT reliably build bone: changes in bone density in older women are either absent or so small that nobody knows whether they mean anything, the results that do reach significance turn up at minor hip sub-sites rather than the total hip or the whole lumbar spine, and the largest trial (202 postmenopausal women, 20 minutes daily for 12 months) found no change anywhere. No trial has ever measured whether vibration reduces fractures. Almost all of this research is in women aged 60 to 93, so for a client aged 35 to 60 there is no evidence base at all.',
     steps: [
       'Stand on the plate with slightly bent knees',
-      'Set to low frequency (25 to 40 Hz) and low amplitude',
+      'Use the LOWEST setting that does the job. Many home and gym platforms deliver accelerations far above international occupational vibration limits, so more is not better and longer is not safer',
       'Hold static positions or do slow bodyweight movements',
       'Stay 5 to 10 minutes total',
     ],
@@ -470,9 +521,24 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
       timing: 'Warm-up before training, or standalone on recovery days.',
     },
     required_equipment: ['vibration_plate'],
-    contraindications: ['Pregnancy', 'Acute deep vein thrombosis', 'Uncontrolled hypertension', 'Recent joint replacement'],
-    safety_notes: 'Never stand fully straight-legged (vibration transmits to spine). Keep sessions short.',
-    coach_doctrine: 'Modest evidence for bone-density support in older clients. Adjunct tool, not a driver. Use for adherence-friendly warm-up.',
+    // PRECAUTION, NOT EVIDENCE. Research pass R2 group 3 went looking for the
+    // clinical basis of the standard vibration contraindication list and found
+    // that every retrievable source was a vibration plate retailer. No
+    // published clinical guidance could be verified. The list stays, because
+    // caution costs nothing here, but it must not be presented as evidence.
+    contraindications: [
+      'Pregnancy',
+      'An implanted cardiac device',
+      'A fracture or joint replacement in the last 12 months',
+      'Acute radicular back pain',
+      'Retinal disease or recent eye surgery',
+      'Vertigo',
+      'Acute deep vein thrombosis',
+      'Blood pressure that is high and not currently controlled',
+      'HARD STOP as a bone strategy: diagnosed osteoporosis, a previous minimal-trauma fracture, or taking bone medication. Refer to their GP and to an Accredited Exercise Physiologist',
+    ],
+    safety_notes: 'Never stand fully straight-legged, because vibration transmits to the spine. Keep sessions short and the setting low. The list above is PRECAUTION rather than evidence: every retrievable source for it was a device retailer, and no published clinical guidance could be verified.',
+    coach_doctrine: 'Rewritten 20 Sep 2026 from research pass R2 group 3, and this is the most important correction in that group. The old note claimed "modest evidence for bone-density support in older clients". That is not merely thin, it is unsafe through what it leaves out: NO TRIAL HAS EVER REPORTED A FRACTURE OUTCOME, not one, and the peak review of this literature explicitly recommends against using vibration for bone density in postmenopausal women. Thirteen of fifteen systematic reviews in the overview were rated critically low quality. The trial population is 60 to 93 years old, which is not our audience. Bone is a genuine concern for the women this platform is built for, and a plate was sitting where resistance and impact loading belong. PRESCRIBE IT for what it can do: a low-barrier way in for someone who cannot yet load, with fair evidence for leg strength, sit-to-stand, walking speed and balance. NEVER as a bone strategy and never as a substitute for lifting. The muscle spindle line is gone: a described reflex is not a result.',
   },
   {
     // Added 2026-08-17 from the Deep Research report at
@@ -550,22 +616,21 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     name: 'Red / Near-Infrared Light Therapy',
     category: 'light',
     short_description: 'Red (630 to 680 nm) plus near-infrared (810 to 850 nm) light exposure.',
-    what_it_does: 'Photobiomodulation supports mitochondrial function via cytochrome c oxidase. Evidence base is strongest for skin health, moderate for musculoskeletal recovery, moderate for sleep quality when timed correctly.',
+    what_it_does: 'Honest position, 20 Sep 2026: this is the least supported thing in the library and WE CANNOT GIVE A DOSE. The mitochondrial explanation is contested inside photobiomodulation research itself and is inferred from cell studies rather than shown in people, so it is no longer stated as fact. The sleep claim is gone entirely: every result found for red light and sleep was a device retailer\'s blog and no academic source exists. Skin has the best evidence of the uses, and even there the studied doses come from lasers and LED clusters aimed at a few discrete points at close range, which is not what a consumer panel does.',
     steps: [
-      'Position 15 to 30 cm from the panel or use full-body bed',
-      'Expose target area (torso, legs, or full body) for 10 to 20 minutes',
+      'Follow the manufacturer\'s instructions for distance and time, because we cannot give you a dose and neither can a panel',
       'Eyes closed or protected during direct panel exposure',
-      'Ideal in the morning or midday, avoid within 3 hours of bed if bright panel',
+      'Stop if the skin heats: that means too much, too close',
     ],
     dosing: {
-      frequency: '3 to 5 sessions per week',
-      duration: '10 to 20 minutes per session',
-      timing: 'Morning to midday preferred. Full-body bed sessions can go longer (up to 30 minutes).',
+      frequency: 'Not specified, because it cannot be sourced',
+      duration: 'Not specified. The studied wavelengths are 660 to 950 nanometres applied to 1 to 6 discrete points on a muscle, and the irradiance, the joules per square centimetre and the distance could not be recovered from any source read',
+      timing: 'Not before bed if the panel is bright, which is a general light rule rather than a finding about this device',
     },
     required_equipment: ['red_light_panel'],
     contraindications: ['Active melanoma or recent skin cancer treatment', 'Photosensitising medications', 'Pregnancy - avoid direct abdominal exposure'],
     safety_notes: 'Do not stare into the panel. Skin heating means dose is too high or too close. Some medications increase photosensitivity (check with prescribing doctor).',
-    coach_doctrine: 'Strongest evidence: skin, wound healing, mild musculoskeletal recovery. Modest evidence: sleep, mood, cognitive. Do not oversell. Best as an adherence-friendly daily anchor.',
+    coach_doctrine: 'FLAGGED FOR A DECISION, 20 Sep 2026, research pass R2 group 3. This is the one protocol where we were prescribing a dose we cannot source and a safety profile nobody had read, and the pass said to either say "we cannot give you a dose" on screen or pull it until a later pass can settle it. It now says exactly that on screen. Removed: the sleep claim (no academic source exists at all), the cytochrome c oxidase mechanism as fact (contested within its own field), and every dose figure. Kade to decide whether it stays in the library. If it stays, prescribe it as something a client already owns and enjoys, never as a recovery driver, and never ahead of sleep, walking or food.',
   },
   {
     slug: 'breathwork-wim-hof',
