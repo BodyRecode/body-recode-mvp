@@ -31,6 +31,12 @@
 import { blockRole, type EffectiveTier } from '@/lib/training-doctrine'
 
 export interface DoctrineExerciseMeta {
+  /**
+   * How the exercise is loaded, from the library. Added 19 September 2026 to
+   * make the injured-joint rule mean something: 'bodyweight_profile' marks the
+   * exercises that are typically prescribed FOR a joint rather than loading it.
+   */
+  load_profile?: string | null
   axial_loading: boolean | null
   stability_demand: string | null
   primary_joint_stress: string | null
@@ -106,8 +112,19 @@ export function checkProgramDoctrine(sessions: Session[], ctx: ProgramDoctrineCo
         if (remediation && (meta.stability_demand ?? '').toLowerCase() === 'high') {
           violations.push({ code: 'REMEDIATION_STABILITY', session, exercise: name, message: `${name} (${session}) has a high stability demand; Remediation allows low or moderate only.` })
         }
-        if (meta.primary_joint_stress && injured.has(meta.primary_joint_stress)) {
-          violations.push({ code: 'INJURED_JOINT', session, exercise: name, message: `${name} (${session}) mainly stresses the ${JOINT_WORDS[meta.primary_joint_stress] ?? meta.primary_joint_stress}, where the client currently reports pain: exercises stressing an injured joint are excluded.` })
+        // Injured joint, narrowed 19 September 2026 on Kade's decision after the
+        // audit. The rule as originally worded fired 34 times across 22 blocks,
+        // and 13 of those were Dead Bug, Bird Dog, Plank and Glute Bridge for
+        // someone with back or hip pain: exercises prescribed FOR the joint,
+        // not loads on it. Flagging those taught everyone to ignore the note.
+        // A bodyweight exercise is therefore no longer a break; an externally
+        // loaded one still is, and still only writes a note.
+        if (
+          meta.primary_joint_stress &&
+          injured.has(meta.primary_joint_stress) &&
+          (meta.load_profile ?? '') !== 'bodyweight_profile'
+        ) {
+          violations.push({ code: 'INJURED_JOINT', session, exercise: name, message: `${name} (${session}) loads the ${JOINT_WORDS[meta.primary_joint_stress] ?? meta.primary_joint_stress}, where the client currently reports pain. Check it is deliberate.` })
         }
       }
     }

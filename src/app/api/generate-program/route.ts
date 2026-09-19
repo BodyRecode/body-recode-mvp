@@ -7,7 +7,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { resolveEffectiveTier, clampProgramToDoctrine, requiresFullBodySessions, enforceUpperLowerBias } from '@/lib/training-doctrine'
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
 import { clampProgramToRecoveryManifest, buildRecoveryPromptSection } from '@/lib/recovery-program-clamp'
-import { checkProgramDoctrine, injuredJointsFromIntake } from '@/lib/program-doctrine-check'
+import { checkProgramDoctrine, injuredJointsFromIntake, doctrineCorrectionNote } from '@/lib/program-doctrine-check'
 import {
   buildProgramSystemPrompt,
   buildProgramUserPrompt,
@@ -376,7 +376,7 @@ export async function runProgramGenerationInternal(body: any): Promise<NextRespo
   // Fetch exercises filtered by equipment access
   const { data: exercises, error: exError } = await admin
     .from('exercises')
-    .select('name, primary_pattern, secondary_pattern, mechanical_bias, primary_joint_stress, secondary_joint_stress, stability_demand, equipment, tier, axial_loading, grip_demand, bilateral')
+    .select('name, primary_pattern, secondary_pattern, mechanical_bias, primary_joint_stress, secondary_joint_stress, stability_demand, equipment, tier, axial_loading, grip_demand, bilateral, load_profile')
     .in('equipment', equipment_access)
     .eq('is_active', true)
     .order('tier', { ascending: true })
@@ -618,12 +618,70 @@ export async function runProgramGenerationInternal(body: any): Promise<NextRespo
   // Doctrine check (14 Sep 2026): the rules that lived only in the prompt, run
   // in code. Reported into the coach-only doctrine note, not enforced, until Kade
   // decides how each should behave. See program-doctrine-check.ts for why.
-  const doctrineViolations = checkProgramDoctrine(programData.sessions || [], {
+  const doctrineContext = {
     bodyState: (effectiveCffs?.body_state_classification as string | null) ?? null,
     regulationReadiness: (effectiveCffs?.exposure_readiness_regulation as string | null) ?? null,
     injuredJoints: injuredJointsFromIntake(injuryContext.injury_location_current),
-    exerciseByName: new Map((exercises ?? []).map((e: { name: string; axial_loading: boolean | null; stability_demand: string | null; primary_joint_stress: string | null }) => [e.name.trim().toLowerCase(), e])),
-  })
+    exerciseByName: new Map((exercises ?? []).map((e: { name: string; axial_loading: boolean | null; stability_demand: string | null; primary_joint_stress: string | null; load_profile?: string | null }) => [e.name.trim().toLowerCase(), e])),
+  }
+  let doctrineViolations = checkProgramDoctrine(programData.sessions || [], doctrineContext)
+
+  // Remediation rules retry once (Kade's decision, 19 Sep 2026, after the audit
+  // measured them firing on one exercise in 22 blocks). One targeted correction
+  // call, swapping only the offending exercises: cheap, because it almost never
+  // runs, and if the second attempt still breaks the rule the block saves with
+  // the break written into the coach note rather than failing. The injured-joint
+  // rule never retries, because after narrowing it to externally loaded work
+  // it is a judgement call the coach makes, not a mistake.
+  const retryable = doctrineViolations.filter(
+    v => v.code === 'REMEDIATION_AXIAL' || v.code === 'REMEDIATION_STABILITY'
+  )
+  if (retryable.length > 0) {
+    console.warn('[generate-program] remediation rule break, one correction attempt:', retryable.map(v => `${v.code}:${v.exercise}`).join(', '))
+    try {
+      const allowed = (exercises ?? []).map((e: { name: string }) => e.name).join(', ')
+      const correction = await anthropic.messages.stream({
+        model: AI_MODELS.clinical,
+        max_tokens: MAX_TOKENS,
+        output_config: { effort: AI_EFFORT.assembly } as never,
+        system: withTemporalContext(buildProgramSystemPrompt() + recoveryPromptSection),
+        messages: [
+          { role: 'user', content: 'Here is a generated training block that broke a safety rule. Return the corrected block.' },
+          { role: 'assistant', content: JSON.stringify(programData) },
+          {
+            role: 'user',
+            content:
+              `${doctrineCorrectionNote(retryable)}\n\nSwap ONLY the exercises named above, keeping everything else identical: same sessions, same block names, same set and rep counts, same order. Choose replacements from this list only: ${allowed}.\n\nReturn the complete corrected JSON object and nothing else.`,
+          },
+        ],
+      }).finalMessage()
+      const correctedText = correction.content.find(b => b.type === 'text')
+      if (correctedText && correctedText.type === 'text') {
+        const json = extractFirstJsonObject(correctedText.text)
+        if (json) {
+          const candidate = JSON.parse(json) as typeof programData
+          const afterViolations = checkProgramDoctrine(candidate.sessions || [], doctrineContext)
+          const stillBroken = afterViolations.filter(
+            v => v.code === 'REMEDIATION_AXIAL' || v.code === 'REMEDIATION_STABILITY'
+          )
+          if (stillBroken.length < retryable.length) {
+            programData = candidate
+            doctrineViolations = afterViolations
+            clamp.notes.push(
+              `REMEDIATION RULE: the first attempt broke it (${[...new Set(retryable.map(v => v.exercise))].join(', ')}). The block was regenerated once and ${stillBroken.length === 0 ? 'the break is gone' : `${stillBroken.length} remain`}.`
+            )
+          } else {
+            clamp.notes.push(`REMEDIATION RULE: the correction attempt did not fix it, so the original block stands and the break is listed below for you to judge.`)
+          }
+        }
+      }
+    } catch (err) {
+      // A failed correction must never cost the coach the block they waited for.
+      console.error('[generate-program] correction attempt failed, keeping the original block:', err)
+      clamp.notes.push('REMEDIATION RULE: a correction attempt was made and failed, so the original block stands. The break is listed below.')
+    }
+  }
+
   if (doctrineViolations.length) {
     clamp.notes.push(`DOCTRINE CHECK, ${doctrineViolations.length} rule break${doctrineViolations.length === 1 ? '' : 's'} to review: ${[...new Set(doctrineViolations.map(v => v.message))].join(' ')}`)
     console.warn('[generate-program] doctrine check:', doctrineViolations.map(v => `${v.code}:${v.exercise}`).join(', '))
@@ -718,15 +776,33 @@ export async function runProgramGenerationInternal(body: any): Promise<NextRespo
       concurrent_endurance_sessions: enduranceSessions,
       // What readiness this block was actually clamped on, and which weeks
       // justified it. NULL means the CFFS values were used unchanged.
+      // ALWAYS recorded since 19 Sep 2026. It used to be written only when a
+      // weekly carry-forward changed something, and NULL otherwise, which read
+      // as "this block has no readiness" when it actually meant "the assessment
+      // values were used unchanged". Only 2 of 22 blocks carried one, so the
+      // red-day rule had almost no history to be judged against. Now every
+      // block records what it was built on, and `source` says where it came
+      // from.
       readiness_at_generation: appliedReadinessCarry
         ? {
+            source: 'weekly_carry',
             weeks: appliedReadinessCarry.weeksExamined,
             applied: Object.fromEntries(
               appliedReadinessCarry.domains.map(d => [d.domain, d.carried ? d.weekly : d.foundational])
             ),
             carried: appliedReadinessCarry.domains.filter(d => d.carried).map(d => d.domain),
           }
-        : null,
+        : {
+            source: 'assessment',
+            weeks: [],
+            applied: {
+              regulation: effectiveCffs?.exposure_readiness_regulation ?? null,
+              capacity: effectiveCffs?.exposure_readiness_capacity ?? null,
+              behaviour: effectiveCffs?.exposure_readiness_behaviour ?? null,
+              schedule: effectiveCffs?.exposure_readiness_schedule ?? null,
+            },
+            carried: [],
+          },
       block_name: programData.block_name || block_name,
       progression_phase,
       training_goal,

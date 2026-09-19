@@ -45,6 +45,7 @@ async function main() {
       axial_loading: Boolean(e.axial_loading),
       stability_demand: (e.stability_demand as string) ?? null,
       primary_joint_stress: (e.primary_joint_stress as string) ?? null,
+      load_profile: (e.load_profile as string) ?? null,
     })
     loadProfileByName.set(String(e.name).toLowerCase(), String(e.load_profile ?? ''))
   }
