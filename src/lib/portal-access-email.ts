@@ -5,7 +5,6 @@ import { fromCoach, darkEmailShell, COACH_BCC } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 import { logoUrl } from '@/config/tenant'
 import { appUrl } from "@/lib/app-url";
-import { getTotalQuestions } from '@/lib/intake-questions';
 
 interface PortalAccessClient {
   id: string
@@ -70,7 +69,7 @@ export async function sendPortalAccessEmail({
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Your portal is open. Four steps to complete before we start coaching:</p>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;"><strong style="color:#1A1A1A;">1.</strong> Coaching Agreement</p>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;"><strong style="color:#1A1A1A;">2.</strong> Health Declaration</p>
-      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;"><strong style="color:#1A1A1A;">3.</strong> Foundational Intake (${getTotalQuestions()} questions across 8 areas. Take your time. The more accurate it is, the better your read.)</p>
+      <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;"><strong style="color:#1A1A1A;">3.</strong> Foundational Intake (15 to 20 minutes, mostly sliders, across 8 areas. Take your time. The more accurate it is, the better your read.)</p>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;"><strong style="color:#1A1A1A;">4.</strong> Baseline Documentation</p>
       <p style="font-size:15px;color:#4A4A4A;line-height:1.9;margin:0 0 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Once your intake is in, your CFFS generates automatically. That is the read I work from to write your program. No template. Built around what your body is actually doing.</p>
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px;">
