@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { recordGenerationFailure } from '@/lib/generation-failure'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { cffsStateForAnyStateLabel } from '@/lib/pattern-doctrine'
@@ -565,6 +566,12 @@ export async function runProgramGenerationInternal(body: any): Promise<NextRespo
 
   if (!programData) {
     console.error('[generate-program] generation failed after 3 attempts:', lastError)
+    void recordGenerationFailure({
+      surface: 'program',
+      reason: (lastError ?? '').includes('truncat') ? 'truncated' : (lastError ?? '').includes('parse') ? 'parse_failure' : 'ai_error',
+      clientId: client_id,
+      detail: lastError ?? null, attempts: 3,
+    })
     return NextResponse.json(
       { error: `Program generation failed after 3 attempts (${lastError}). Please try again.` },
       { status: 500 }

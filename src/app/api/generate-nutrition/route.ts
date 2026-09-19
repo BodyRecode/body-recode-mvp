@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { recordGenerationFailure } from '@/lib/generation-failure'
 import { estimateEnergyRequirement, ageFromDob, normaliseSex, type ActivityLevel, type EntryState } from '@/lib/energy-requirement'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
@@ -665,10 +666,23 @@ function collectClientFacingText(plan: Record<string, unknown>): string {
     }
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
+    // Recorded and, when the coach is not Kade, emailed to him: a failure
+    // another coach sees and he does not is how a pilot dies quietly.
+    void recordGenerationFailure({
+      surface: 'nutrition', reason: 'ai_error', clientId: client_id,
+      detail: msg,
+    })
     return NextResponse.json({ error: `AI error: ${msg}` }, { status: 500 })
   }
 
   if (!validation || !validation.ok) {
+    const codes = (validation?.issues ?? []).map(i => i.code)
+    void recordGenerationFailure({
+      surface: 'nutrition', reason: codes.some(c => c.includes('BREACH')) ? 'safety_gate' : 'validation_exhausted',
+      clientId: client_id,
+      detail: 'Generated plan failed validation across every attempt, including the Sonnet escalation.',
+      codes,
+    })
     return NextResponse.json({
       error: 'Generated plan failed validation across all Haiku attempts + Sonnet escalation',
       issues: validation?.issues ?? [],

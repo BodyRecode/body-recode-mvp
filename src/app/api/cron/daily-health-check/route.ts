@@ -1001,6 +1001,55 @@ async function checkPersonalBrandCadence(admin: ReturnType<typeof createAdminCli
 // failing before the Body Decode arc was added. Whoever added the 25th did not
 // bump it. The trip-wire works; it was just not being read.
 const EXPECTED_INNGEST_FUNCTION_COUNT = 26
+
+/**
+ * Generation failures a coach actually saw in the last 24 hours.
+ *
+ * Added 19 September 2026. Every other check here watches Kade's funnel. This
+ * one watches whether the engine is working in someone else's hands, which is
+ * the thing that decides whether a pilot survives. A coach who clicks Generate
+ * twice, gets an error twice and says nothing is the failure mode, so silence
+ * is not evidence of health.
+ */
+async function checkGenerationFailures(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
+  try {
+    const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+    const { data, error } = await admin
+      .from('generation_failures')
+      .select('surface, reason, client_id, coach_id, occurred_at')
+      .gte('occurred_at', since)
+      .order('occurred_at', { ascending: false })
+
+    if (error) {
+      return {
+        name: 'Generation failures',
+        status: 'failed',
+        detail: `Could not read the failure log: ${error.message}`,
+        manualFix: 'Check that generation_failures exists and the service role has a grant on it.',
+      }
+    }
+    const rows = data ?? []
+    if (rows.length === 0) {
+      return { name: 'Generation failures', status: 'ok', detail: 'No coach hit a generation failure in the last 24 hours' }
+    }
+
+    const bySurface = new Map<string, number>()
+    for (const r of rows) bySurface.set(r.surface as string, (bySurface.get(r.surface as string) ?? 0) + 1)
+    const summary = [...bySurface.entries()].map(([k, n]) => `${n} ${k}`).join(', ')
+    const coaches = new Set(rows.map(r => r.coach_id).filter(Boolean))
+
+    return {
+      name: 'Generation failures',
+      status: 'failed',
+      detail: `${rows.length} failure${rows.length === 1 ? '' : 's'} in 24 hours across ${coaches.size || 1} coach${coaches.size === 1 ? '' : 'es'}: ${summary}`,
+      action: 'Each one is a coach who saw an error. Open the failure log and work out whether it is one client or the engine.',
+      manualFix: 'Query generation_failures ordered by occurred_at. The detail column holds what the coach was told.',
+    }
+  } catch (e) {
+    return { name: 'Generation failures', status: 'failed', detail: e instanceof Error ? e.message : String(e) }
+  }
+}
+
 async function checkInngestRegistration(): Promise<CheckResult> {
   try {
     const res = await fetch(`${appUrl()}/api/inngest`, { method: 'GET', cache: 'no-store' })
@@ -1185,6 +1234,7 @@ export async function GET(request: NextRequest) {
     funnel,
     personalBrandCadence,
     igAccounts,
+    generationFailures,
   ] = await Promise.all([
     checkBookingWrite(admin),
     checkLeadWrite(admin),
@@ -1203,6 +1253,7 @@ export async function GET(request: NextRequest) {
     checkFunnelActivity(admin),
     checkPersonalBrandCadence(admin),
     checkInstagramAccounts(),
+    checkGenerationFailures(admin),
   ])
 
   const checks: CheckResult[] = [
@@ -1214,6 +1265,8 @@ export async function GET(request: NextRequest) {
     clientsIntake, activePrograms, activeNutrition, stuckLeads, pendingIntakes, missedCheckins,
     // Automation + pipeline
     automation, publishingPulse, inngestRegistration, funnel, personalBrandCadence, igAccounts,
+    // Is the engine working in somebody else's hands?
+    generationFailures,
   ]
 
   const failures = checks.filter(c => c.status === 'failed')

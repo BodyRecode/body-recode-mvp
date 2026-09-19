@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { requireCoachScope, coachOwnsClient } from '@/lib/coach-scope'
+import { recordGenerationFailure } from '@/lib/generation-failure'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { isCoachEmail } from '@/lib/coach-auth'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { buildDailyRoutineSystemPrompt, buildDailyRoutineUserPrompt, DailyRoutineClientData } from '@/lib/daily-routine-prompt'
 import { validateDailyRoutine, summariseIssuesForRetry } from '@/lib/daily-routine-validation'
@@ -19,20 +20,21 @@ const HAIKU_MODEL = 'claude-haiku-4-5-20251001'
 const SONNET_MODEL = 'claude-sonnet-4-6'
 
 export async function POST(request: NextRequest) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
-  if (!isCoachEmail((user.email ?? '').toLowerCase())) {
-    return NextResponse.json({ error: 'Coach only' }, { status: 403 })
-  }
+  // Was gated on isCoachEmail, which is Kade's allowlist, so no other coach
+  // could generate a routine at all. Replaced 19 Sep 2026 with the standard
+  // scope: a coach, and only for a client they own.
+  const scope = await requireCoachScope()
 
   const { client_id } = await request.json()
   if (!client_id) return NextResponse.json({ error: 'client_id required' }, { status: 400 })
+  if (!(await coachOwnsClient(client_id, scope.coachId, scope.email))) {
+    return NextResponse.json({ error: 'Client not found' }, { status: 404 })
+  }
 
-  return generateDailyRoutineInternal(client_id)
+  return generateDailyRoutineInternal(client_id, scope.coachId)
 }
 
-export async function generateDailyRoutineInternal(clientId: string): Promise<NextResponse> {
+export async function generateDailyRoutineInternal(clientId: string, coachId?: string | null): Promise<NextResponse> {
   const admin = createAdminClient()
 
   const { data: client, error: clientError } = await admin
@@ -156,6 +158,13 @@ export async function generateDailyRoutineInternal(clientId: string): Promise<Ne
     }
 
     if (!validation.ok || !validation.routine) {
+      const codes = validation.issues.map(i => i.code)
+      void recordGenerationFailure({
+        surface: 'routine',
+        reason: codes.some(c => c.includes('BREACH')) ? 'safety_gate' : 'validation_exhausted',
+        clientId, coachId: coachId ?? null, codes,
+        detail: 'Could not produce a routine that passed the rules after every retry.',
+      })
       return NextResponse.json({
         error: 'Could not generate a valid routine after retries',
         issues: validation.issues,
