@@ -202,9 +202,14 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         title="Clients"
         subtitle={`${clients?.length || 0} ${showInactive ? 'inactive' : 'active'} ${(clients?.length || 0) === 1 ? 'client' : 'clients'}`}
         cta={
-          <Btn href="/dashboard/clients/new" variant="primary" icon={UserPlus} size="sm">
-            New Client
-          </Btn>
+          <div className="flex items-center gap-2">
+            <Btn href="/dashboard/clients/import" variant="secondary" size="sm">
+              Import a list
+            </Btn>
+            <Btn href="/dashboard/clients/new" variant="primary" icon={UserPlus} size="sm">
+              New Client
+            </Btn>
+          </div>
         }
       />
 

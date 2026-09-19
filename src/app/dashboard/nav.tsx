@@ -109,6 +109,7 @@ const GROUPS: NavGroup[] = [
     items: [
       { href: '/dashboard/business/personal-brand', label: 'Personal Brand', icon: User },
       { href: '/dashboard/business/collective', label: 'The Collective', icon: Users2 },
+      { href: '/dashboard/business/coaches', label: 'Coaches', icon: Users2 },
     ],
   },
   {

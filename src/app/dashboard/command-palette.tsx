@@ -59,6 +59,7 @@ const COMMANDS: CommandItem[] = [
   // Actions
   { id: 'act-new-lead',   label: 'New Lead',             hint: 'Create a lead manually',           href: '/dashboard/leads/new',     icon: UserPlus,      group: 'Actions' },
   { id: 'act-new-client', label: 'New Client',           hint: 'Add a new coaching client',        href: '/dashboard/clients/new',   icon: UserPlus,      group: 'Actions' },
+  { id: 'act-import-clients', label: 'Import Clients',   hint: 'Paste a list of clients at once',  href: '/dashboard/clients/import', icon: UserPlus,     group: 'Actions' },
   { id: 'act-inbox',      label: 'Open Inbox',           hint: 'Latest scorecards awaiting work',  href: '/dashboard/leads?status=new_check_in', icon: Inbox, group: 'Actions' },
   { id: 'act-zoom-due',   label: 'Leads needing Zoom',   hint: 'Reports sent, no call booked',     href: '/dashboard/leads?status=report_sent',  icon: CalendarClock, group: 'Actions' },
 
