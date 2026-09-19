@@ -60,7 +60,7 @@ import { loadBlockProgress } from '@/lib/block-progress'
 import ClientPaymentsSection from '@/components/dashboard/client-payments-section'
 import HeightEditor from './height-editor'
 import { hormonalSafetyAlerts } from '@/lib/hormonal-safety-alerts'
-import { intakeReferralFlags } from '@/lib/electrolyte-safety-gates'
+import { intakeReferralFlags, trainingReferralFlags, type TrainingContext } from '@/lib/electrolyte-safety-gates'
 import { INDETERMINATE, readPatternLabel } from '@/lib/pattern-doctrine'
 import { getTotalQuestions } from '@/lib/intake-questions'
 
@@ -297,7 +297,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   // flag pointing toward a hormonal-shift pattern + a panel/GP. Non-diagnostic.
   const { data: fatMapIntake } = await admin
     .from('intakes')
-    .select('fat_map_responses, gender, pregnant_or_postpartum, androgen_use, sex_at_birth, cancer_history, gynae_surgery')
+    .select('fat_map_responses, gender, pregnant_or_postpartum, androgen_use, sex_at_birth, cancer_history, gynae_surgery, training_context')
     .eq('client_id', id)
     .order('submitted_at', { ascending: false })
     .limit(1)
@@ -327,6 +327,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         : null,
     ].filter(Boolean).join(' \n '),
   )
+
+  // Lifter and competitor flags from the E1b intake questions (19 Sep 2026).
+  const trainingFlags = trainingReferralFlags((fatMapIntake?.training_context ?? null) as TrainingContext | null)
+  const allReferralFlags = [...referralFlags, ...trainingFlags]
 
   // Progress photos live in a private bucket; sign them for this render only.
   const baselinePhotos = await signedBaselinePhotoSet(admin, latestBaseline)
@@ -891,8 +895,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         </div>
       ))}
 
-      {referralFlags.map(flag => (
-        <div key={flag.key} className="bg-[#FDF6E9] border border-[#F1DEB8] border-l-[3px] border-l-[#C08A2D] rounded-xl p-5 mb-4">
+      {allReferralFlags.map(flag => (
+        <div key={flag.key + flag.headline} className="bg-[#FDF6E9] border border-[#F1DEB8] border-l-[3px] border-l-[#C08A2D] rounded-xl p-5 mb-4">
           <div className="flex items-start gap-3">
             <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#C08A2D]/15 flex items-center justify-center">
               <span className="text-[#8A6218] text-[13px] font-bold leading-none">!</span>

@@ -1,4 +1,4 @@
-import { electrolyteGates, electrolyteGatePromptBlock, CONTEST_PREP_RULE } from './electrolyte-safety-gates'
+import { electrolyteGates, electrolyteGatePromptBlock, trainingContextPromptBlock, CONTEST_PREP_RULE, type TrainingContext } from './electrolyte-safety-gates'
 
 export interface NutritionPrescriptionInputs {
   entry_state: 'stabilisation' | 'training_support' | 'high_output_support' | 'recovery_reset'
@@ -588,6 +588,7 @@ export function buildNutritionUserPrompt(
   previousPlans: Array<{ plan_name: string; entry_state: string; generated_at: string }> | null,
   medications?: string | null,
   coachGuidance?: string | null,
+  trainingContext?: TrainingContext | null,
 ): string {
   const lines: string[] = []
 
@@ -641,6 +642,17 @@ export function buildNutritionUserPrompt(
     const gateBlock = electrolyteGatePromptBlock(electrolyteGates(medications, cffsText, intakeText))
     if (gateBlock) {
       lines.push(gateBlock)
+      lines.push('')
+    }
+  }
+
+  // Training environment, heat and competition (19 Sep 2026, research pass
+  // E1b). Outside the medications block on purpose: it applies whether or not
+  // the client takes anything.
+  {
+    const trainingBlock = trainingContextPromptBlock(trainingContext)
+    if (trainingBlock) {
+      lines.push(trainingBlock)
       lines.push('')
     }
     lines.push('APPETITE-SUPPRESSION HARD RULES (ENFORCED BY VALIDATOR — non-compliant plans are rejected):')

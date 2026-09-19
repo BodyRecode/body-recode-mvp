@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { attachSupplementsToPlan } from '@/lib/consumption-plan-generate'
 import { buildNutritionSystemPrompt, buildNutritionUserPrompt, NutritionPrescriptionInputs } from '@/lib/nutrition-prompt'
+import type { TrainingContext } from '@/lib/electrolyte-safety-gates'
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
 import { buildRecoveryNutritionPromptSection } from '@/lib/recovery-program-clamp'
 import { validateNutritionPlan, normalizeMealAndDayTotals, rebalanceFirstMealProtein, trimDayToKcalTarget, MealLike, BRIDGE_CEILING_BUFFER, detectAppetiteSuppression } from '@/lib/nutrition-validation'
@@ -111,7 +112,7 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
     admin.from('clients').select('id, name, medications, height_cm, height_recorded_at, height_source').eq('id', client_id).maybeSingle(),
     currentReadRow(admin, client_id),
     admin.from('intakes')
-      .select('id, date_of_birth, gender, primary_goal, training_days_available, injury_location_current, injury_primary_concern, nutrition_responses, sleep_responses, stress_responses, training_responses, dietary_restrictions, dietary_preferences, typical_day_eating, meals_per_day, fluid_intake, caffeine_intake, alcohol_intake, eating_context')
+      .select('id, date_of_birth, gender, primary_goal, training_days_available, injury_location_current, injury_primary_concern, nutrition_responses, sleep_responses, stress_responses, training_responses, dietary_restrictions, dietary_preferences, typical_day_eating, meals_per_day, fluid_intake, caffeine_intake, alcohol_intake, eating_context, training_context')
       .eq('client_id', client_id)
       .order('submitted_at', { ascending: false })
       .limit(1)
@@ -323,7 +324,11 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
   }
 
   const systemPrompt = buildNutritionSystemPrompt() + recoveryPromptSection
-  const userPrompt = buildNutritionUserPrompt(inputs, cffsText, intakeText, previousPlans, client.medications, resolvedCoachGuidance)
+  // training_context added 19 Sep 2026 (research pass E1b): gym heat, session
+  // length, sweat level, cramps, past heat illness, creatine use and whether
+  // they compete. It decides whether in-session fluid and sodium wording is
+  // earned at all, and switches the contest prep refusal on.
+  const userPrompt = buildNutritionUserPrompt(inputs, cffsText, intakeText, previousPlans, client.medications, resolvedCoachGuidance, (intake?.training_context ?? null) as TrainingContext | null)
 
   // Tiered model strategy:
   //   Tier 1: Haiku 4.5 — fast (~15s), passes for typical clients without

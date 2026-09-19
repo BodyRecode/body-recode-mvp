@@ -334,3 +334,102 @@ export const CONTEST_PREP_REFUSAL_TRIGGERS = [
   'kidney, heart or blood pressure problems, or diabetes',
   'a female competitor asking for show-week numbers, because none of the evidence includes women',
 ]
+
+/**
+ * The training environment and competition answers, turned into behaviour.
+ *
+ * Added 19 September 2026 with the E1b intake questions. Written at the same
+ * time as the questions deliberately: a question that changes nothing is worse
+ * than no question, because it costs the client time and teaches them we ask
+ * things we do not use.
+ */
+export interface TrainingContext {
+  tr_gym_heat?: string
+  tr_session_length?: string
+  tr_work_heat?: string
+  tr_sweat_level?: string
+  tr_salt_marks?: string
+  tr_cramps?: string
+  tr_heat_illness?: string
+  tr_dark_urine?: string
+  tr_performance_supps?: string[]
+  tr_competes?: string
+  cp_compounds?: string[]
+  cp_potassium_products?: string
+  cp_past_event?: string
+  cp_cycle_prep?: string
+  cp_weeks_out?: string
+}
+
+/** True when this client trains somewhere hot, long, or sweats heavily: the only case where in-session fluid and sodium wording is earned. */
+export function needsHeatGuidance(ctx: TrainingContext | null | undefined): boolean {
+  if (!ctx) return false
+  return (
+    ctx.tr_gym_heat === 'Usually hot or outdoors' ||
+    ctx.tr_gym_heat === 'Sometimes hot' ||
+    ctx.tr_session_length === 'Over 90 minutes' ||
+    ctx.tr_sweat_level === 'Heavy sweater' ||
+    ctx.tr_work_heat === 'Most days'
+  )
+}
+
+/** Prompt block for the generators. Empty when nothing applies, so callers can push it unconditionally. */
+export function trainingContextPromptBlock(ctx: TrainingContext | null | undefined): string {
+  if (!ctx) return ''
+  const out: string[] = []
+
+  if (needsHeatGuidance(ctx)) {
+    out.push('HEAT AND FLUID CONTEXT: this client trains hot, long or sweats heavily, so in-session fluid and sodium wording is EARNED here. Start topped up, drink to thirst, finish no more than about 2 per cent lighter than they started and never heavier. For more than an hour in heat, a drink with about 500 to 700 mg of sodium per litre. Afterwards a meal with salt in it plus fluids. Pull volume back for the first week or two of hot weather.')
+  } else if (ctx.tr_session_length || ctx.tr_gym_heat) {
+    out.push('HEAT AND FLUID CONTEXT: ordinary sessions in a cool gym. Do NOT prescribe electrolyte drinks, salt tablets or a drinking target. Water, drink to thirst, and the next meal replaces what was sweated out. No trial has ever shown electrolytes help a lifter who is not dehydrated.')
+  }
+
+  if (ctx.tr_heat_illness === 'Yes') {
+    out.push('PAST HEAT ILLNESS: no sauna, heat block or hot-weather session progression without medical clearance. Treat every hot day as a higher gate for this client.')
+  }
+  if (ctx.tr_dark_urine === 'Yes') {
+    out.push('PAST DARK URINE AFTER TRAINING: a history consistent with muscle breakdown. Progress load slowly, avoid novel high-volume eccentric work, keep the heat gate strict, and the coach should have had this checked by a GP.')
+  }
+  if (ctx.tr_cramps === 'Also at rest or at night') {
+    out.push('CRAMPS AT REST OR AT NIGHT: do NOT treat as a salt or hydration problem and do not suggest electrolytes for it. It is a GP question.')
+  }
+  if ((ctx.tr_performance_supps || []).includes('Creatine')) {
+    out.push('USES CREATINE: never warn that creatine causes cramps, dehydration or heat intolerance. A review of ten trials found no effect on heat tolerance or fluid balance. Note only that a creatinine-based kidney result can read high on creatine, which is a lab interpretation point for their GP.')
+  }
+  if (ctx.tr_competes === 'Yes' || ctx.tr_competes === 'Thinking about it') {
+    out.push(CONTEST_PREP_RULE)
+  }
+  return out.join('\n\n')
+}
+
+/** Referral flags specific to lifters and competitors. Same shape and same rules as the intake flags. */
+export function trainingReferralFlags(ctx: TrainingContext | null | undefined): ReferralFlag[] {
+  if (!ctx) return []
+  const flags: ReferralFlag[] = []
+  const add = (headline: string, detail: string) =>
+    flags.push({ key: 'treating_team_owns_fluid', action: 'gp-soon', headline, detail })
+
+  if (ctx.tr_cramps === 'Also at rest or at night') {
+    add('Cramps at rest or at night', 'Cramps that happen at rest or wake her at night are a different thing from training cramps, and they are a GP question rather than a salt or hydration problem. Do not suggest electrolytes for them.')
+  }
+  if (ctx.tr_dark_urine === 'Yes') {
+    add('Has passed dark or cola-coloured urine after training', 'That history is consistent with muscle breakdown after hard training. Load progresses slowly, the heat gate stays strict, and it is worth a GP conversation including kidney function before any heavy eccentric block.')
+  }
+  if (ctx.tr_heat_illness === 'Yes') {
+    add('Past heat exhaustion, heat stroke or collapse while exercising', 'No sauna, heat block or hot-weather progression without medical clearance, and a stronger heat gate through summer.')
+  }
+  const compounds = (ctx.cp_compounds || []).filter(c => c !== 'None of these')
+  if (compounds.length > 0) {
+    add('Competing and using compounds that change fluid, salt or potassium', `Reported: ${compounds.join(', ')}. The system will produce no show-week numbers at all for this client. Blood tests including electrolytes and kidney function, and a doctor rather than a coach, for anything to do with the final week.`)
+  }
+  if (ctx.cp_potassium_products === 'Yes') {
+    add('Plans to use potassium tablets, powders or salt substitutes', 'Block this and refer. Oral potassium at medicinal strength is prescription only in Australia, and potassium products are where the published competitor harms concentrate.')
+  }
+  if (ctx.cp_past_event === 'Yes') {
+    add('Has cramped badly, collapsed, had palpitations or become confused around a show', 'No show-week guidance of any kind, and a sports physician before the next prep. That history is the presentation in every published competitor case.')
+  }
+  if (ctx.cp_cycle_prep === 'Yes') {
+    add('Periods stopped or became irregular during prep', 'A GP referral for low energy availability. Worth saying plainly that none of the published show-week evidence includes women at all.')
+  }
+  return flags
+}

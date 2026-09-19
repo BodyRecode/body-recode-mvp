@@ -286,6 +286,33 @@ export const INTAKE_SECTIONS: Section[] = [
       { id: 'tr_28', text: 'I train better with accountability.', type: 'scale', scaleLabel: { low: 'Never', high: 'Long-term and consistent' } },
       { id: 'tr_29', text: 'I struggle to train without external structure.', type: 'scale', scaleLabel: { low: 'Never', high: 'Long-term and consistent' } },
       { id: 'tr_30', text: 'I feel overwhelmed by complex programs.', type: 'scale', scaleLabel: { low: 'Never', high: 'Long-term and consistent' } },
+
+      // Training environment, heat and competition. Added 19 Sep 2026 from
+      // research pass E1b, sections 7 and 8. Every one changes an output;
+      // none is asked for completeness. The heat questions matter because
+      // Brisbane is hot or humid most of the year and many gyms here are not
+      // air-conditioned, which is the only situation where fluid and sodium
+      // advice genuinely changes. The competition questions stay hidden
+      // unless the client says they compete, so almost nobody sees them.
+      { id: 'tr_gym_heat', text: 'Is your gym air-conditioned, or do you train outdoors or somewhere hot?', type: 'select', options: ['Always cool or air-conditioned', 'Sometimes hot', 'Usually hot or outdoors'], required: true },
+      { id: 'tr_session_length', text: 'How long is a typical session?', type: 'select', options: ['Under 60 minutes', '60 to 90 minutes', 'Over 90 minutes'], required: true },
+      { id: 'tr_work_heat', text: 'Do you work outdoors or in a hot workplace?', type: 'select', options: ['No', 'Sometimes', 'Most days'], required: true },
+      { id: 'tr_sweat_level', text: 'Compared with the people around you, how heavily do you sweat? For example, soaked through within 20 to 30 minutes.', type: 'select', options: ['Barely sweat', 'About average', 'Heavy sweater'], required: true },
+      { id: 'tr_salt_marks', text: 'Do you see white salt marks on your clothing or cap after training?', type: 'select', options: ['No', 'Yes', 'Not sure'], required: false },
+      { id: 'tr_weigh_sessions', text: 'Have you ever weighed yourself before and after a session? If so, what was the change, and did you use the toilet in between?', type: 'text', required: false },
+      { id: 'tr_cramps', text: 'Do you get muscle cramps?', type: 'select', options: ['Never', 'Sometimes during or after training', 'Also at rest or at night'], required: true },
+      { id: 'tr_heat_illness', text: 'Have you ever had heat exhaustion or heat stroke, or collapsed while exercising?', type: 'select', options: ['No', 'Yes'], required: true },
+      { id: 'tr_dark_urine', text: 'Have you ever passed dark or cola-coloured urine after training?', type: 'select', options: ['No', 'Yes'], required: true },
+      { id: 'tr_performance_supps', text: 'Do you use any of these?', type: 'multiselect', options: ['Creatine', 'Pre-workout', 'Stimulant fat burner', 'Electrolyte products', 'None of these'], required: false },
+
+      { id: 'tr_competes', text: 'Are you preparing for a physique or bodybuilding competition?', type: 'select', options: ['No', 'Thinking about it', 'Yes'], required: true },
+      { id: 'cp_federation', text: 'Which federation, and is it drug tested?', type: 'text', required: false, showIf: { id: 'tr_competes', in: ['Yes', 'Thinking about it'] } },
+      { id: 'cp_weeks_out', text: 'How many weeks until your show?', type: 'text', required: false, showIf: { id: 'tr_competes', in: ['Yes'] } },
+      { id: 'cp_compounds', text: 'Are you using, or planning to use, any of these?', type: 'multiselect', options: ['Fluid tablets or water tablets (diuretics)', 'Insulin', 'Thyroid hormone', 'Growth hormone', 'Anabolic steroids', 'SARMs', 'Clenbuterol or salbutamol', 'None of these'], required: false, showIf: { id: 'tr_competes', in: ['Yes', 'Thinking about it'] } },
+      { id: 'cp_potassium_products', text: 'Do you plan to use potassium tablets, powders or salt substitutes?', type: 'select', options: ['No', 'Yes', 'Not sure'], required: false, showIf: { id: 'tr_competes', in: ['Yes', 'Thinking about it'] } },
+      { id: 'cp_past_event', text: 'Have you ever cramped badly, collapsed, had palpitations, or become confused around a show or a hard cut?', type: 'select', options: ['No', 'Yes'], required: false, showIf: { id: 'tr_competes', in: ['Yes', 'Thinking about it'] } },
+      { id: 'cp_bloods', text: 'When did you last have blood tests including kidney function, and were you using creatine or eating high protein at the time?', type: 'text', required: false, showIf: { id: 'tr_competes', in: ['Yes', 'Thinking about it'] } },
+      { id: 'cp_cycle_prep', text: 'Have your periods stopped or become irregular during prep?', type: 'select', options: ['No', 'Yes', 'Not applicable'], required: false, showIf: [{ id: 'tr_competes', in: ['Yes'] }, { id: 'sex_at_birth', notIn: ['Male'] }] },
     ]
   },
   {

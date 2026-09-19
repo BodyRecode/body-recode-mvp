@@ -72,6 +72,21 @@ export async function POST(request: NextRequest) {
     hormonal[q.id] = answered && isQuestionVisible(q, formData) ? (raw as string).trim() : null
   }
 
+  // Training environment and competition answers (19 Sep 2026, research pass
+  // E1b). Same visibility rule as the hormonal section: an answer to a question
+  // that no longer applies is not stored, so someone who says they compete,
+  // answers the show questions, then changes their mind does not keep a
+  // federation on file.
+  const trainingQuestions = INTAKE_SECTIONS.find(sec => sec.id === 'training')?.questions ?? []
+  const trainingContext: Record<string, string | string[]> = {}
+  for (const q of trainingQuestions) {
+    if (q.type === 'scale') continue // those go to training_responses as numbers
+    const raw = formData[q.id]
+    if (!isQuestionVisible(q, formData)) continue
+    if (typeof raw === 'string' && raw.trim() !== '') trainingContext[q.id] = raw.trim()
+    if (Array.isArray(raw) && raw.length > 0) trainingContext[q.id] = raw as string[]
+  }
+
   const intakePayload = {
     client_id: invitation.client_id,
     invitation_id: invitation.id,
@@ -91,6 +106,7 @@ export async function POST(request: NextRequest) {
     fat_map_responses: extractScale('fm_'),
     injury_responses: extractScale('inj_'),
     training_responses: extractScale('tr_'),
+    training_context: trainingContext,
     nutrition_responses: extractScale('nut_'),
     schedule_responses: extractScale('sch_'),
     sleep_responses: extractScale('sl_'),
