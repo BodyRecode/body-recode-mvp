@@ -6,6 +6,21 @@ import { brand, coach } from "@/config/tenant";
 import { getTotalQuestions } from '@/lib/intake-questions'
 
 const AUTOMATIC_AUTOMATIONS = [
+  // Coach onboarding (added 19 Sep 2026)
+  {
+    id: 'coach-invitation',
+    name: 'Coach Invitation - they set their own password (coach click)',
+    description: `Not automatic. You fill in a name, an email and their business name on Business > Coaches, and they get one email with a link that works once and lasts 14 days. They choose their own password; nobody else knows it, including us. When they accept, their account and their platform configuration are created together, and the invitation is marked spent only after BOTH succeed, so a failure halfway leaves a working link rather than a person locked out.\n\nThey land on an empty dashboard, which is correct: a coach sees only their own clients and nobody sees theirs. Re-inviting the same email revokes the previous link rather than leaving two working ones. If the email fails to send, the invitation still exists and the link still works, so you can read it out or send it another way rather than starting again.\n\nThis replaced the only previous method, which was Kade signing in and typing somebody else's password into a provisioning form.`,
+    trigger: 'POST /api/coach/invitations (you click Send invitation on Business > Coaches)',
+    steps: 1,
+  },
+  {
+    id: 'bulk-client-import',
+    name: 'Import Clients - one intake email each (coach click, optional)',
+    description: `Not automatic, and the emailing is a separate choice. Paste a list of clients at Clients > Import a list, check it, add them. Each new client gets an intake waiting for them, and ONLY if you tick "email each of them their intake now" does anything send. That send is the standard Foundational Intake Invite, one per client, BCC to you as usual - so importing 30 clients with the box ticked sends 30 of them at once.\n\nCheck the list is a dry run: it writes nothing and shows what would happen to every row. Anyone already on your list is skipped rather than duplicated, so running it twice is safe. A client with no email address is added but cannot be invited, and says so.`,
+    trigger: 'POST /api/clients/bulk-import with sendInvites (you tick the box and click Add)',
+    steps: 1,
+  },
   // Client-stage automations
   {
     id: 'progress-check-invite',

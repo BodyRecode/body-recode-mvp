@@ -123,11 +123,11 @@ export const COACH_SAAS_STEPS: Step[] = [
   {
     id: 'saas-coach-signup',
     title: 'A coach can be set up without Kade doing it by hand',
-    description: 'Invitation, first-run setup, their own details.',
-    status: 'planned',
+    description: 'Invitation, first-run setup, their own details, and their existing clients.',
+    status: 'shipped',
     effort: 'M',
     blockedBy: 'saas-coach-scoping',
-    notes: 'Today a coach is created by hand. The pilot can survive that for ten. Nothing beyond ten can.',
+    notes: 'DONE 19 Sep. Business > Coaches sends an invitation that works once and lasts 14 days; the coach sets their own password, and their account and configuration are created together so a half-failure leaves a working link rather than a locked-out person. Kade never types anyone else\'s password again. ALSO BUILT, from Kade\'s question about a coach joining with 30 clients: Clients > Import a list, a paste box with a dry run that writes nothing, skips anyone already on that coach\'s list, and optionally emails every new client their intake. A coach never enters client details anyway, only a name and an email, because the rest comes from the client\'s own intake.',
   },
   {
     id: 'saas-doctrine-enforcement',
