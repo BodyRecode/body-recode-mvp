@@ -1,3 +1,7 @@
+// Red / near-infrared light was removed from every suggestion list on
+// 20 Sep 2026 when the protocol itself was PULLED 20 Sep 2026 from the library
+// (research pass R2 group 3: we were prescribing a dose that cannot be sourced).
+// Suggesting a protocol that no longer exists would surface a dead slug.
 /**
  * RRS -> Recovery Protocol suggestion mapping.
  *
@@ -308,7 +312,6 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
       'caffeine-load-management',
       'morning-light-exposure',
       'evening-light-reduction',
-      'red-light-therapy',
       'restorative-yoga',
       'magnesium-bath',
       'breathwork-box',
@@ -394,7 +397,6 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
     playbook_id: 'post_diet',
     suggested_protocol_slugs: [
       'sleep-debt-recovery',
-      'red-light-therapy',
       'magnesium-bath',
       'sauna-infrared',
       'breathwork-coherent',
@@ -417,7 +419,6 @@ export const SUGGESTED_PROTOCOLS_BY_RRS_STATE: Record<RecoveryPlaybookId, RrsSta
       'deload-week',
       'recovery-walk',
       'sauna-infrared',
-      'red-light-therapy',
       'breathwork-coherent',
       'massage-gun',
     ],

@@ -663,27 +663,28 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     safety_notes: 'Essentially no physiological risk, because the intervention is subtraction. The practical risks are domestic: tripping in a dim house, and friction with the rest of the household, who did not agree to this.',
     coach_doctrine: 'Rank it second, behind morning light and ahead of anything worn on the face, and be blunt about the two things clients will ask for. FIRST, blue-blocking glasses. The Cochrane review of blue-light-filtering lenses (17 RCTs) found they probably make no difference to eye strain, could draw no conclusion on sleep, and no included trial even measured melatonin. For evening amber glasses specifically, the only meta-analysis restricted to double-blind crossover actigraphy found nothing significant on any objective endpoint, while subjective effects were large. That gap is the unblinding signature. Worse, the lenses that produce the biggest effects are the ones that also dim everything (30 to 45% light transmission), so the wavelength intervention is partly an intensity intervention in a costume. They are a legitimate behavioural bookend for ending the evening. They are not a photobiological tool and should not be sold as one. SECOND, screen night-mode. A 167-person randomised trial found no difference between Night Shift on, Night Shift off, and no phone at all, and a separate study found spectral warming without a brightness change did not reduce melatonin suppression. It is effectively zero as a standalone. Enable it because it is free, not because it works. The instruction that actually carries the effect is "make the house dim", not "make the light orange". One classification note for the platform: this is NOT a downregulator, it adds nothing. It removes a stressor that should not have been there. It never needs clamping and its ceiling does not move with recovery state.',
   },
-  {
-    slug: 'red-light-therapy',
-    name: 'Red / Near-Infrared Light Therapy',
-    category: 'light',
-    short_description: 'Red (630 to 680 nm) plus near-infrared (810 to 850 nm) light exposure.',
-    what_it_does: 'Honest position, 20 Sep 2026: this is the least supported thing in the library and WE CANNOT GIVE A DOSE. The mitochondrial explanation is contested inside photobiomodulation research itself and is inferred from cell studies rather than shown in people, so it is no longer stated as fact. The sleep claim is gone entirely: every result found for red light and sleep was a device retailer\'s blog and no academic source exists. Skin has the best evidence of the uses, and even there the studied doses come from lasers and LED clusters aimed at a few discrete points at close range, which is not what a consumer panel does.',
-    steps: [
-      'Follow the manufacturer\'s instructions for distance and time, because we cannot give you a dose and neither can a panel',
-      'Eyes closed or protected during direct panel exposure',
-      'Stop if the skin heats: that means too much, too close',
-    ],
-    dosing: {
-      frequency: 'Not specified, because it cannot be sourced',
-      duration: 'Not specified. The studied wavelengths are 660 to 950 nanometres applied to 1 to 6 discrete points on a muscle, and the irradiance, the joules per square centimetre and the distance could not be recovered from any source read',
-      timing: 'Not before bed if the panel is bright, which is a general light rule rather than a finding about this device',
-    },
-    required_equipment: ['red_light_panel'],
-    contraindications: ['Active melanoma or recent skin cancer treatment', 'Photosensitising medications', 'Pregnancy - avoid direct abdominal exposure'],
-    safety_notes: 'Do not stare into the panel. Skin heating means dose is too high or too close. Some medications increase photosensitivity (check with prescribing doctor).',
-    coach_doctrine: 'FLAGGED FOR A DECISION, 20 Sep 2026, research pass R2 group 3. This is the one protocol where we were prescribing a dose we cannot source and a safety profile nobody had read, and the pass said to either say "we cannot give you a dose" on screen or pull it until a later pass can settle it. It now says exactly that on screen. Removed: the sleep claim (no academic source exists at all), the cytochrome c oxidase mechanism as fact (contested within its own field), and every dose figure. Kade to decide whether it stays in the library. If it stays, prescribe it as something a client already owns and enjoys, never as a recovery driver, and never ahead of sleep, walking or food.',
-  },
+  // RED / NEAR-INFRARED LIGHT THERAPY: PULLED 20 September 2026, on Kade's
+  // decision, after research pass R2 group 3.
+  //
+  // It was the only protocol in the library where we prescribed a dose we
+  // could not source from any paper that was actually read, a mechanism
+  // (cytochrome c oxidase) contested inside photobiomodulation research
+  // itself, a sleep benefit whose only findings were device retailers' blogs,
+  // and a safety profile nobody had verified. The verified evidence was one
+  // clean null (adding it to resistance training did not improve strength in
+  // older adults) and one weak positive for soreness from four trials whose
+  // participants were never described.
+  //
+  // The research offered two honest options: keep it with "we cannot give you
+  // a dose" written on the screen, or pull it until a pass can settle it.
+  // Kade chose to pull it. Nobody had it assigned, so nothing was interrupted.
+  //
+  // WHAT WOULD BRING IT BACK: a pass that recovers an actual dose, meaning
+  // wavelength, irradiance, distance and joules per square centimetre, from a
+  // trial in people rather than in cells, plus a verified safety profile. The
+  // equipment tags red_light_panel and red_light_bed are deliberately kept
+  // below so old client equipment answers still resolve.
+
   {
     slug: 'breathwork-wim-hof',
     name: 'Wim Hof Style Breathing',
