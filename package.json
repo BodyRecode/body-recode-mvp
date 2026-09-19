@@ -23,6 +23,8 @@
     "test:answer-comparison": "npx tsx scripts/test-answer-comparison.ts",
     "test:heads-up": "npx tsx scripts/test-progress-check-heads-up.ts",
     "test:program-doctrine": "npx tsx scripts/test-program-doctrine-check.ts",
+    "backup": "npx tsx scripts/backup-database.ts",
+    "backup:verify": "npx tsx scripts/verify-backup.ts",
     "send:vicki-closeout": "set -a && source .env.local && set +a && npx tsx scripts/send-vicki-closeout.ts",
     "test:pdf-token": "npx tsx scripts/test-pdf-access-token.ts",
     "test:reassessment": "npx tsx scripts/test-reassessment-triggers.ts"
