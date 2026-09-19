@@ -3,7 +3,7 @@ import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { darkEmailSignature } from '@/lib/email-signature'
-import { fromCoach, darkEmailShell } from '@/lib/email-shell'
+import { fromCoach, darkEmailShell, COACH_BCC } from '@/lib/email-shell'
 import { getCoachingPackage } from '@/lib/coaching-packages'
 import { resolveClientBilling } from '@/lib/client-billing'
 import { logClientCommunication } from '@/lib/client-communications'
@@ -77,6 +77,10 @@ export async function POST(
   await resend.emails.send({
     from: fromCoach(),
     to: client.email,
+    // Kade, 19 Sep 2026: copy him on the ONBOARDING emails, because this is the
+    // window where he needs to see that a new client is actually receiving
+    // things. Session reminders, check-in windows and drip steps stay uncopied.
+    bcc: COACH_BCC,
     subject,
     html: darkEmailShell(`
       <div style="margin-bottom:40px;">

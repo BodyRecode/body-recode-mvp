@@ -1,12 +1,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { Resend } from 'resend'
 import { darkEmailSignature } from '@/lib/email-signature'
-import {
-  darkEmailShell, emailUrlFallback,
-  emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody,
-  emailCta, emailFeaturedCard, emailNumberedList,
-  fromCoach,
-} from '@/lib/email-shell'
+import { darkEmailShell, emailUrlFallback, emailLogo, emailEyebrow, emailHeading, emailDivider, emailBody, emailCta, emailFeaturedCard, emailNumberedList, fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from "@/lib/app-url";
 
@@ -53,6 +48,10 @@ export async function sendMedicalClearanceRequiredEmail({
   await resend.emails.send({
     from: fromCoach(),
     to: client.email,
+    // Kade, 19 Sep 2026: copy him on the ONBOARDING emails, because this is the
+    // window where he needs to see that a new client is actually receiving
+    // things. Session reminders, check-in windows and drip steps stay uncopied.
+    bcc: COACH_BCC,
     subject,
     html: darkEmailShell(`
 ${emailLogo()}
