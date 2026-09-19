@@ -191,9 +191,9 @@ export const COACH_SAAS_STEPS: Step[] = [
     id: 'saas-monitoring',
     title: 'Know when it breaks before a coach tells you',
     description: 'Error alerting, failed job alerts, and a restore test.',
-    status: 'planned',
+    status: 'in_progress',
     effort: 'M',
-    notes: 'With his own clients Kade notices. With other people\'s clients, silence is not safety. Includes proving a backup can actually be restored, which has never been tested.',
+    notes: 'STARTED 19 Sep. Generation failures are now recorded with what the coach was told, and Kade is emailed immediately when the coach is not him (his own stay in the daily report so the alert never becomes noise). The daily health check reports the last 24 hours. Only failures a coach actually SAW are recorded; a retry that succeeded is not one. Fixed on the way: the daily routine route was gated on Kade\'s email so no other coach could generate one at all. STILL TO DO: alerting on failed background jobs, and proving a backup can actually be restored, which has never been tested.',
   },
   {
     id: 'saas-evidence-pack',

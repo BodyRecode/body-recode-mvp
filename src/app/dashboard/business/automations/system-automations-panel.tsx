@@ -21,6 +21,13 @@ const AUTOMATIC_AUTOMATIONS = [
     trigger: 'POST /api/clients/bulk-import with sendInvites (you tick the box and click Add)',
     steps: 1,
   },
+  {
+    id: 'generation-failure-alert',
+    name: 'Generation Failure Alert - only when it is not you',
+    description: `When an eating plan, training block or daily routine gives up after every attempt, the failure is recorded with what the coach was told. If the coach who hit it is NOT you, you are emailed straight away, because that is the case you cannot see: a coach clicks Generate, gets an error, tries once more, decides the thing is broken and says nothing.\n\nYour own failures do NOT email you, on purpose. You are the person clicking the button, so the error is already on your screen, and alerting on it would teach you to ignore the alert. They still appear in the daily health check, which now reports every failure from the last 24 hours grouped by what failed.\n\nOnly failures a coach actually SAW are recorded. An attempt that failed and then succeeded on retry is the system working as designed, and logging those would bury the ones that matter.`,
+    trigger: 'Any generator exhausting its attempts (nutrition, program, daily routine) → src/lib/generation-failure.ts',
+    steps: 1,
+  },
   // Client-stage automations
   {
     id: 'progress-check-invite',
