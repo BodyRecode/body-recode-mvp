@@ -486,8 +486,38 @@ export async function runNutritionGenerationInternal(body: any): Promise<NextRes
       // validation fails and the model gets a retry message naming the
       // drift. Stops Ruby-Cate-style swap errors at generation time.
       substitution_options: (p.substitution_options as Record<string, string[]>) || null,
+      // Safety gates (19 Sep 2026, research passes E1a and E1b). Everything
+      // the client could read is joined and checked: a potassium product for
+      // someone whose medicines hold potassium, a daily fluid target for
+      // someone on a fluid limit, fasting for someone on an SGLT2 inhibitor,
+      // or show-week numbers for a competitor, each fails the plan and the
+      // model is told why on the retry.
+      client_facing_text: collectClientFacingText(p),
+      training_context: (intake?.training_context ?? null) as TrainingContext | null,
     })
   }
+
+
+/**
+ * Every part of a generated plan a client could read, as one string.
+ *
+ * Deliberately generous: meal names, food names, notes, rules, priorities and
+ * the coach reasoning all count, because a rule broken in the reasoning still
+ * reaches the coach and usually reaches the client through them. Missing a
+ * field here would make the safety check quietly weaker, so it walks the whole
+ * object rather than naming fields.
+ */
+function collectClientFacingText(plan: Record<string, unknown>): string {
+  const out: string[] = []
+  const walk = (v: unknown, depth: number) => {
+    if (depth > 6 || v == null) return
+    if (typeof v === 'string') { out.push(v); return }
+    if (Array.isArray(v)) { for (const item of v) walk(item, depth + 1); return }
+    if (typeof v === 'object') { for (const item of Object.values(v as Record<string, unknown>)) walk(item, depth + 1) }
+  }
+  walk(plan, 0)
+  return out.join('\n')
+}
 
   // Phase 4 commit 4: telemetry. One request_id ties all validation attempts
   // for a single coach generation request together. Helper below emits a row

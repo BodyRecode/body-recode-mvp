@@ -1,3 +1,5 @@
+import { findGateViolations } from './safety-gate-enforcement'
+import type { TrainingContext } from './electrolyte-safety-gates'
 /**
  * Nutrition plan validation and totals.
  *
@@ -199,6 +201,17 @@ export function humaniseValidationIssue(issue: ValidationIssue): string {
       return `${issue.message} The substitution line doesn't follow the "Food (Ng state) ↔ alternative (Ng state)" shape so it can't be checked against the food-reference table. Coach reviews manually.`
     case 'SUBSTITUTION_UNKNOWN_FOOD':
       return `${issue.message} The food-reference table covers Tier 1 + Tier 2 of the nutrition prompt's allowed list; foods outside that need coach verification.`
+    // Safety gates (19 Sep 2026). The message already says what to do, because
+    // it is written to be read by the model on retry AND by the coach here.
+    // What the coach needs added is that this is not a generation wobble.
+    case 'POTASSIUM_GATE_BREACH':
+    case 'POTASSIUM_DRINK_BREACH':
+    case 'FLUID_GATE_BREACH':
+    case 'SALT_CHANGE_BREACH':
+    case 'SGLT2_FASTING_BREACH':
+    case 'LITHIUM_SALT_FLUID_BREACH':
+    case 'CONTEST_NUMBERS_BREACH':
+      return `${issue.message} This is a hard safety rule for this client rather than a formatting problem, so the plan will not be published until it is gone.`
     default:
       return issue.message
   }
@@ -471,6 +484,21 @@ export interface NutritionValidationInput {
    * have three swap-math errors that would mislead the client.
    */
   substitution_options?: Record<string, string[]> | null
+  /**
+   * Everything in the plan the client could read, joined into one string, plus
+   * the training and competition answers. Checked against the safety gates
+   * from research passes E1a and E1b (19 Sep 2026): a plan that names a
+   * potassium product for someone whose medicines hold potassium, states a
+   * daily fluid target for someone behind the fluid gate, prescribes fasting
+   * to someone on an SGLT2 inhibitor, or produces show-week numbers for a
+   * competitor, is rejected and retried with the reason.
+   *
+   * Those rules were already in the prompt. A prompt is a request; this is the
+   * check. It matters because with other people's clients Kade is not reading
+   * every plan before it is published.
+   */
+  client_facing_text?: string | null
+  training_context?: TrainingContext | null
 }
 
 /**
@@ -691,6 +719,21 @@ export function normalizeMealAndDayTotals<T extends { meals?: MealLike[]; estima
     plan.estimated_calorie_band = formatCalorieBand(low, high)
   }
   return plan
+}
+
+
+/**
+ * Safety gates from research passes E1a and E1b, checked against what the model
+ * actually wrote. Always blocking: these are the rules where being wrong reaches
+ * a person rather than costing a coach a re-read.
+ */
+function validateSafetyGates(input: NutritionValidationInput): ValidationIssue[] {
+  if (!input.client_facing_text) return []
+  return findGateViolations({
+    text: input.client_facing_text,
+    medications: input.medications,
+    trainingContext: input.training_context ?? null,
+  }).map(v => ({ code: v.code, message: v.message, severity: 'error' as const }))
 }
 
 export function validateNutritionPlan(
@@ -942,6 +985,9 @@ export function validateNutritionPlan(
     // accuracy, not safety floors). Substitution findings are warnings, not
     // blockers — they surface for coach review but do not fail the plan.
     issues.push(...validateSubstitutionOptions(input.substitution_options))
+    // Safety gates run under the override too: an override is about energy
+    // floors, never about who may be told to take potassium.
+    issues.push(...validateSafetyGates(input))
     // Skip the standard carb/fat floors when the override is active —
     // that's the point of the override.
     return { ok: !issues.some(isBlocking), issues, totals, band }
@@ -982,6 +1028,7 @@ export function validateNutritionPlan(
   // floors so the report shows safety-floor issues first. Substitution
   // findings are warnings — surfaced for coach review, not blocking.
   issues.push(...validateSubstitutionOptions(input.substitution_options))
+  issues.push(...validateSafetyGates(input))
 
   return { ok: !issues.some(isBlocking), issues, totals, band }
 }

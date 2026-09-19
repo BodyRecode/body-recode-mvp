@@ -115,10 +115,10 @@ export const COACH_SAAS_STEPS: Step[] = [
     id: 'saas-rls-alignment',
     title: 'Database policies match the ownership model',
     description: 'The second layer behind the service-role connection.',
-    status: 'planned',
+    status: 'shipped',
     effort: 'M',
     blockedBy: 'saas-coach-scoping',
-    notes: 'The policies still say "is a coach" rather than "owns this client". They do not bite today because the dashboard uses the service role, which bypasses them, and that is exactly why they should be right before anyone else is invited.',
+    notes: 'DONE 19 Sep. Seven rules said "is a coach" rather than "owns this client", and the coach check is only "do you have at least one client", so a second coach with one client would have satisfied it. Invitations (which hold the invite token), feedback and scorecard reports are now scoped through the client or lead to the owning coach; co-pilot preferences to the signed-in email; three server-only tables lost their browser rule. Proved by creating a second coach inside a rolled-back transaction: they saw their own client and nothing else. The same audit found five tables open to the public key and closed them, and found that the server had no permission on the preferences table, so co-pilot preferences had never saved.',
   },
   {
     id: 'saas-coach-signup',
