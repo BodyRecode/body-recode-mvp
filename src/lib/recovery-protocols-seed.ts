@@ -98,6 +98,15 @@ export interface RecoveryProtocol {
  * and must not become one: healthy older adults tolerate sauna.
  */
 const HEAT_CONTRAINDICATIONS = [
+  // Promoted to the top on 20 Sep 2026 by research pass R2 group 1. E1a listed
+  // alcohol at item 7 with the honest note "Reasoning; not verified this pass".
+  // It is now verified, and it is the single biggest safety hole we had:
+  // across three independent forensic series, 50 per cent of Finnish sauna
+  // deaths involved alcohol, 76 of 103 Korean autopsy cases were at or above
+  // 0.08 per cent, and the authors' own prevention message is to drink less
+  // and never leave a drunk bather alone.
+  'HARD NO: any alcohol. Not before, not during, not "just one". Alcohol is involved in half or more of sauna deaths, and a person who has been drinking must never be left alone in a hot room',
+  'Never alone after drinking, and preferably never alone at all',
   'Heart: a heart attack, heart procedure or chest pain in recent months, chest pain on exertion, a known valve problem, heart failure, or fainting',
   'Blood pressure that is not under control, or not known, or dizziness or fainting when standing up',
   'Medicines that change how the body handles heat or fluid: fluid tablets (diuretics), beta-blockers, lithium, SGLT2 inhibitors (the "-gliflozin" medicines), antipsychotics, anticholinergics, stimulants, ACE inhibitors or sartans, or regular anti-inflammatory painkillers',
@@ -170,7 +179,7 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     name: 'Traditional Sauna',
     category: 'heat',
     short_description: 'Dry heat exposure for cardiovascular conditioning and recovery.',
-    what_it_does: 'Increases plasma volume, activates heat shock proteins, mimics moderate cardiovascular training, supports parasympathetic recovery after use.',
+    what_it_does: 'Heat the body cannot ignore, which it answers by moving blood to the skin. Rewritten 20 Sep 2026: it does NOT mimic moderate cardiovascular training (tested head to head against cycling in the same women, blood pressure, arterial stiffness and heart rate variability did not differ from rest, and a heart rate of 115 with a FALLING blood pressure is heat being shed, not oxygen being delivered to muscle), the plasma volume claim is unsupported at our dose, and heat shock proteins are a mechanism with nothing verified downstream of them. The parasympathetic effect is real but belongs to the COOL-DOWN window afterwards, not to the session.',
     steps: [
       'Enter a preheated sauna at 80 to 100 degrees Celsius',
       'Sit or lie down, breathe through the nose',
@@ -187,36 +196,41 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     required_equipment: ['sauna_traditional'],
     contraindications: HEAT_CONTRAINDICATIONS,
     safety_notes: 'Exit immediately if dizzy, nauseous, or heart rate feels irregular. Never drink alcohol before or during. Drink when thirsty before and after and do not force large volumes. Age on its own is NOT a reason to exclude anyone: healthy older adults tolerate sauna, so gate on the conditions and medicines above instead.',
-    coach_doctrine: 'Heat exposure is a hormetic stressor. Dose it like training: enough to trigger adaptation, not so much it adds to the recovery debt. If the client is already in an RRS acute_fatigue or ns_overload state, defer sauna until state clears.',
+    coach_doctrine: 'Heat exposure is a hormetic stressor. Dose it like training: enough to trigger adaptation, not so much it adds to the recovery debt. If the client is already in an RRS acute_fatigue or ns_overload state, defer sauna until the state clears. Rewritten 20 Sep 2026 from research pass R2 group 1: stop selling it as cardiovascular exercise. What survives is a real if small blood pressure effect in people who already have risk factors, heat tolerance, and the fact that clients enjoy it, which is worth more than it sounds for adherence. The alcohol gate above is now the first thing to check, because it is the one that turns up in the death series.',
   },
   {
     slug: 'sauna-infrared',
     name: 'Far-Infrared Sauna',
     category: 'heat',
-    short_description: 'Lower-temperature radiant heat, easier to tolerate long sessions.',
-    what_it_does: 'Deeper tissue penetration at lower ambient temperature. Better tolerated by heat-sensitive clients. Supports parasympathetic shift and recovery.',
+    short_description: 'Radiant heat in a cooler room. Cooler is not the same as gentler, and the dose decides which it is.',
+    what_it_does: 'Heats the skin, which then conducts heat inwards, exactly as a hot-air room does. Rewritten 20 Sep 2026: "deeper tissue penetration" is CONTRADICTED. Far infrared is absorbed in the outermost dead layer of skin, about 95 per cent of it within a quarter of a millimetre, and when probes were put in a quadriceps during a session the muscle warmed MOST at the shallowest depth and least at the deepest, which is heat conducting in from hot skin rather than anything penetrating.',
     steps: [
-      'Enter preheated infrared sauna at 55 to 65 degrees Celsius',
+      // Split into an entry dose and a full dose, 20 Sep 2026. At 63.9 degrees
+      // for 45 minutes, inside the range we used to prescribe as gentle, heart
+      // rate reached 153, plasma volume fell 11.6 per cent, sweat losses ran at
+      // 1.4 litres an hour, and 2 of 12 healthy young adults could not finish.
+      'ENTRY DOSE, and where a depleted or heat-sensitive client starts: 55 degrees Celsius for 20 to 30 minutes',
+      'FULL DOSE, only once the entry dose is comfortable: up to 65 degrees for 30 to 45 minutes',
       'Sit upright, breathe through the nose',
-      'Stay 30 to 45 minutes',
+      'Get out at the first sign of feeling unwell, whatever the clock says',
       'Exit, shower cool, drink water until your urine is pale again',
     ],
     dosing: {
       frequency: '3 to 5 sessions per week',
-      duration: '30 to 45 minutes per session',
-      timing: 'Any time. Well tolerated pre-bed if session ends 90 minutes before sleep.',
+      duration: 'Start at 20 to 30 minutes at 55 degrees. Build to 30 to 45 minutes only if it stays comfortable',
+      timing: 'Any time. Well tolerated pre-bed if the session ends 90 minutes before sleep.',
     },
     required_equipment: ['sauna_infrared'],
     contraindications: HEAT_CONTRAINDICATIONS,
     safety_notes: 'Lower temperature so heat stress is less, but the same gates apply: the research pass found no measured basis for a softer fluid or safety rule in an infrared room. Drink water, exit if dizzy. Age on its own is NOT a reason to exclude anyone.',
-    coach_doctrine: 'Preferred over traditional sauna for clients in remediation, depleted, or heat-intolerant. Same hormetic principle but wider tolerance window.',
+    coach_doctrine: 'REVERSED 20 Sep 2026 by research pass R2 group 1. This protocol used to be the one we sent depleted and heat-intolerant clients to, on the belief that infrared is gentler. It is not gentler at a matched thermal load, and at the top of the range we ourselves prescribed (about 64 degrees for 45 minutes) it produced a heart rate of 153, an 11.6 per cent drop in plasma volume, sweat losses of 1.4 litres an hour, thermal discomfort rated extremely uncomfortable, and two of twelve healthy young adults could not finish. Sending a depleted client into that is the opposite of what we intended. Tolerance tracks cabin TEMPERATURE and TIME, not wavelength: a 55 degree cabin is easier than a 90 degree room because it is 35 degrees cooler, full stop. So prescribe the entry dose for anyone who needs it gentle, and treat the full dose as equivalent in load to a traditional sauna. Choose between them on access and preference, noting infrared costs 30 to 45 minutes for the same or less benefit.',
   },
   {
     slug: 'steam-room',
     name: 'Steam Room',
     category: 'heat',
-    short_description: 'Warm humid environment for respiratory and mild parasympathetic recovery.',
-    what_it_does: 'Humidified heat supports respiratory clearance, mild sweating, moderate parasympathetic shift. Gentler than sauna.',
+    short_description: 'A warm humid room some clients prefer. Comfort, on the evidence we have.',
+    what_it_does: 'Warm humid heat that some people simply like more than dry heat. Rewritten 20 Sep 2026: the respiratory clearance claim is CONTRADICTED. A Cochrane review of heated humidified air for the common cold, 6 trials and 387 people, found results that flipped depending on the statistical model, no difference in viral shedding, one trial where nasal resistance got WORSE, and concluded the evidence shows neither benefit nor harm. In 871 adults with sinus symptoms across 72 general practices, steam inhalation improved headache only, and not the sinus outcome it was tested for.',
     steps: [
       'Enter steam room at 40 to 45 degrees Celsius, near 100 percent humidity',
       'Sit or lie down, breathe slowly',
@@ -231,17 +245,21 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     required_equipment: ['steam_room'],
     contraindications: [...HEAT_CONTRAINDICATIONS, 'Respiratory infection'],
     safety_notes: 'Do not stay if breathing becomes uncomfortable. High humidity limits sweating so core temperature can rise faster than in dry sauna.',
-    coach_doctrine: 'Underrated for depleted clients who cannot tolerate dry sauna. Also good adjunct during upper respiratory recovery.',
+    coach_doctrine: 'Rewritten 20 Sep 2026 from research pass R2 group 1. Removed: "a good adjunct during upper respiratory recovery", which the Cochrane evidence contradicts, and "gentler than sauna", which was never measured at a matched thermal load. What it is: a preference protocol. If a client likes steam and will use it where they would skip a sauna, that is a real reason to prescribe it, and it is the only one we can stand behind. All the heat gates above apply unchanged, alcohol first.',
   },
   {
     slug: 'magnesium-bath',
-    name: 'Warm Magnesium Bath',
+    // Renamed 20 Sep 2026. It was "Warm Magnesium Bath", which put the mineral
+    // in the title of a protocol whose effect is the warm water. The slug is
+    // left alone so existing assignments keep working.
+    name: 'Warm Bath',
     category: 'heat',
-    short_description: 'Warm bath with magnesium chloride or Epsom salts, evening use.',
-    what_it_does: 'Warm water triggers vasodilation and parasympathetic shift. Magnesium (transdermal absorption modest but present) plus the ritual itself supports sleep onset.',
+    short_description: 'A warm bath before bed. The water is the active ingredient; salts are optional.',
+    what_it_does: 'Warm water widens the blood vessels in the skin, and the drop in core temperature afterwards is what helps a person fall asleep faster. Rewritten 20 Sep 2026: the magnesium absorption claim is CONTRADICTED, so the salts are there because people like them, not because the mineral is getting in.',
     steps: [
-      'Fill bath with warm water, 37 to 40 degrees Celsius',
-      'Add 2 cups of magnesium chloride flakes or Epsom salts',
+      'Fill the bath with warm water, 37 to 40 degrees Celsius',
+      'Salts are optional. If you enjoy them, add them. They are not doing what the packet says',
+      'NEVER drink Epsom salts or any magnesium bath product: a near-fatal case of magnesium poisoning has been reported from drinking them',
       'Soak 20 to 30 minutes, breathing slowly',
       'Rinse off, cool slightly, head to bed within 60 minutes',
     ],
@@ -253,7 +271,7 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     required_equipment: ['magnesium_bath'],
     contraindications: ['Pregnancy without OB clearance', 'Open wounds or infections', 'Uncontrolled high blood pressure'],
     safety_notes: 'Stand up slowly after long soaks (blood pressure drop). Do not exceed 40 degrees Celsius.',
-    coach_doctrine: 'Sleep-onset tool for high-stress clients. Effect is 70 percent thermal parasympathetic shift, 20 percent ritual, 10 percent magnesium. Do not oversell the mineral absorption.',
+    coach_doctrine: 'Rewritten 20 Sep 2026 from research pass R2 group 1. The old note said the effect was 70 per cent thermal, 20 per cent ritual, 10 per cent magnesium. The magnesium tenth is gone: transdermal absorption is contradicted, so it is the warm water and the ritual, and that is plenty. THIS IS THE BEST PROTOCOL IN THE HEAT GROUP per minute of client time: it is the only one with a decent-grade outcome a client actually cares about, falling asleep faster, at the lowest cost and the lowest risk. Prescribe it ahead of any sauna for a client whose problem is sleep onset. One hard rule to say out loud, because people do it: never drink the salts.',
   },
   {
     slug: 'face-ice-immersion',
