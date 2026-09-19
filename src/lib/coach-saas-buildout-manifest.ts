@@ -277,9 +277,9 @@ export const COACH_SAAS_STEPS: Step[] = [
     id: 'research-e1-electrolytes',
     title: 'Electrolytes, fluid and minerals',
     description: 'Nine unsourced statements the system already makes, and 24 practitioner claims to test.',
-    status: 'in_progress',
+    status: 'shipped',
     effort: 'M',
-    notes: 'E1a run, verified at PubMed and APPLIED IN FULL on 17 Sep: the blood pressure medicine rule (it was backwards for the potassium-holding classes), the salt craving question, the water target, electrolytes as a daily habit, and the sauna gates are all corrected and live, plus a new shared library holding the standard fluid and potassium gates and the 23-item referral list. Still open: the referral list does not fire on its own yet, and E1b (trained lifters, contest prep, the 24 practitioner claims) has not been run.',
+    notes: 'DONE 19 Sep. Both chats run, verified at PubMed (22 identifiers, all correct, no fabrications) and applied. E1a fixed the blood pressure medicine rule that was backwards for the potassium-holding classes, the salt craving question, the water target, electrolytes as a daily habit and the sauna gates. E1b added the contest prep refusal, the heat and long-session wording, 12 lifter and competitor referrals, and 18 intake questions gated so a non-competitor only sees 11 of them. Intake is now 271 questions. Still open: most of the general referral list is documentation rather than something the system fires by itself, because it depends on events rather than intake answers.',
   },
   {
     id: 'research-r2-recovery',
