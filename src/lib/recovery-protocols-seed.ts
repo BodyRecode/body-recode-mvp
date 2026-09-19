@@ -173,6 +173,40 @@ const COLD_RULES_FOR_EVERYONE =
 const COLD_EVIDENCE_GAP =
   'EVIDENCE GAP, say it rather than extrapolate: the cold water literature is about 92 per cent male and aged 20 to 26. Almost none of it was measured in women aged 35 to 60, and none of it in perimenopause. Effects quoted from it are an extrapolation to this client, not a finding about her.'
 
+/**
+ * Shared breathwork gates, from research pass R2 group 4, 20 September 2026.
+ *
+ * THE RULE THAT PREVENTS DEATHS, and the one our library did not carry:
+ * hyperventilating before a breath hold drives arterial carbon dioxide down,
+ * and it is the CARBON DIOXIDE that triggers the urge to breathe. Lower it and
+ * the urge is delayed while oxygen keeps falling, so a person can lose
+ * consciousness with no warning. In water that is drowning. It kills about
+ * 4,000 people a year in the United States, most often males under 40, and the
+ * diving and medical communities have issued joint warnings that the public
+ * misunderstanding needs correcting.
+ *
+ * We already restricted Wim Hof style breathing to coach prescription and kept
+ * it out of the daily sequences, which was sensible. It was not enough, because
+ * the water rule was nowhere.
+ *
+ * The exclusion list below is the one the Balban 2023 trial used. It is an
+ * eligibility list rather than a clinical guideline, and it is labelled as such
+ * on purpose: we should not run a broader population than the trial that
+ * produced the evidence did.
+ */
+const BREATH_HOLD_WATER_RULE =
+  'ABSOLUTE, NOT A CAUTION: never hyperventilate before a breath hold, and never do any breath-hold practice in water, near water, in a bath, or before swimming or diving. Hyperventilating removes the urge to breathe while oxygen keeps falling, so consciousness can go without warning. Do this sitting or lying on the floor, away from anything you could fall against. Light-headed means stop and breathe normally.'
+
+const BREATHWORK_CONTRAINDICATIONS = [
+  'A heart condition',
+  'Glaucoma',
+  'A seizure disorder or epilepsy',
+  'Pregnancy',
+  'Bipolar disorder, a psychotic illness, or current suicidality',
+  'A substance use disorder',
+  'Asthma or chronic lung disease, low blood pressure, or panic disorder: refer to their GP or an accredited exercise physiologist, because we do not have a specific rule to give',
+]
+
 export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
   {
     slug: 'sauna-traditional',
@@ -655,9 +689,9 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     name: 'Wim Hof Style Breathing',
     category: 'breathwork',
     short_description: '30 to 40 deep breaths followed by breath retention, repeated in rounds.',
-    what_it_does: 'Cycles of hyperventilation followed by breath-hold shift blood chemistry (respiratory alkalosis then CO2 tolerance) and produce a strong sympathetic-then-parasympathetic wave. Mental resilience and stress inoculation are the strongest documented benefits.',
+    what_it_does: 'Cycles of fast deep breathing followed by breath holds. The blood chemistry is real: respiratory alkalosis then a raised carbon dioxide tolerance, with a large adrenaline response. What was actually MEASURED, once, is that 12 healthy young men trained for 10 days blunted their inflammatory response to an injected bacterial toxin. That is not the same as preventing illness, aiding recovery or improving performance, none of which has been shown, and it has never been tested in women. Rewritten 20 Sep 2026: "mental resilience and stress inoculation are the strongest documented benefits" is gone, because nobody measured them.',
     steps: [
-      'Lie down or sit safely (never near water, never driving)',
+      'Lie down or sit on the floor. NEVER in or near water, never in a bath, never before swimming, never driving',
       '30 to 40 deep breaths, full inhale, passive exhale',
       'On the last exhale, hold breath as long as comfortable',
       'When the urge to breathe is strong, take one deep breath and hold 15 seconds',
@@ -669,22 +703,16 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
       timing: 'Morning for alertness. Not within 4 hours of bed.',
     },
     required_equipment: ['none_needed'],
-    contraindications: [
-      'Pregnancy',
-      'Uncontrolled cardiac condition',
-      'Epilepsy or seizure disorder',
-      'Anxiety or panic disorder (unless supervised)',
-      'History of syncope or vaso-vagal episodes',
-    ],
-    safety_notes: 'NEVER perform while driving, near water (pool, bath, ocean), or standing. Fainting risk from prolonged breath-holds is real. If dizzy, stop.',
-    coach_doctrine: 'Strong tool for the right client - active, no contraindications, mentally ready. Not for depleted or anxious clients. Never as a first-line breathwork tool.',
+    contraindications: BREATHWORK_CONTRAINDICATIONS,
+    safety_notes: BREATH_HOLD_WATER_RULE + ' Never drive during or after a round. Stop at the first sign of tingling that does not settle, or any faintness.',
+    coach_doctrine: 'Rewritten 20 Sep 2026 from research pass R2 group 4, which found our restriction was sensible but NOT ENOUGH. Keeping it out of the daily sequences was right; what was missing is the rule that prevents deaths, and it is now attached as an absolute rather than a caution. Hyperventilating before a breath hold lowers the carbon dioxide that triggers the urge to breathe, so the urge is delayed while oxygen keeps falling and consciousness can go without warning. In water that is drowning, and it kills about 4,000 people a year in the United States, most often males under 40. On benefit, be blunt with clients: this is the ONLY protocol in the breathwork group with a documented fatal mechanism and no demonstrated everyday benefit, and it sits last in the ordering for exactly that reason. If a client wants a nervous system tool, slow breathing at 5 to 7 breaths a minute has a meta-analysis behind it and no way to kill anybody.'
   },
   {
     slug: 'breathwork-box',
     name: 'Box Breathing (4-4-4-4)',
     category: 'breathwork',
     short_description: 'Equal-count inhale, hold, exhale, hold.',
-    what_it_does: 'Slows respiratory rate to 4 to 6 breaths per minute, activates the parasympathetic system, sharpens focus while lowering physiological arousal.',
+    what_it_does: 'Slows the breath to 4 to 6 breaths a minute. It has one direct trial arm behind it, and it works as an on-demand state change. Note that it CONTAINS A BREATH HOLD, so the water rule applies to it as much as to anything else.',
     steps: [
       'Sit upright, hands resting',
       'Inhale through the nose for 4 seconds',
@@ -700,15 +728,15 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     },
     required_equipment: ['none_needed'],
     contraindications: ['Pregnancy - avoid breath-holds, use 4-6 breathing instead'],
-    safety_notes: 'Safe for almost everyone. If the 4-count hold is uncomfortable, drop to 3-3-3-3.',
-    coach_doctrine: 'The universal safe breathwork tool. First-line prescription for stress regulation. Anyone can do it, anywhere, no equipment.',
+    safety_notes: 'Safe for almost everyone. If the 4-count hold is uncomfortable, drop to 3-3-3-3. ' + BREATH_HOLD_WATER_RULE,
+    coach_doctrine: 'First-line prescription for stress regulation: anyone can do it, anywhere, with no equipment. Qualified 20 Sep 2026: it was called "the universal safe breathwork tool", and it contains a breath hold, so the water rule above applies to it exactly as it does to the others. If the hold is what a client struggles with, drop to slow breathing at 5 to 7 breaths a minute, which has more evidence behind it anyway.',
   },
   {
     slug: 'breathwork-physiological-sigh',
     name: 'Physiological Sigh',
     category: 'breathwork',
     short_description: 'Double inhale followed by extended exhale for rapid stress reset.',
-    what_it_does: 'Fastest documented way to lower heart rate and physiological arousal. Two nasal inhales stack alveolar recruitment, extended exhale clears CO2 and activates parasympathetic tone.',
+    what_it_does: 'Two inhales stacked, then a long exhale. Rewritten 20 Sep 2026: "the fastest documented way to lower heart rate" is gone, and it was contradicted by its own source. The trial behind it ran 5 minutes DAILY FOR 28 DAYS, not 30 seconds on demand, and it measured NO change in resting heart rate or heart rate variability. What it did improve was mood. Nobody has ever measured speed of onset, so there is no "fastest" finding to quote.',
     steps: [
       'Inhale through the nose deeply',
       'On top of that inhale, take a second short sharp inhale (through the nose)',
@@ -730,7 +758,7 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     name: '4-7-8 Breathing (Sleep Onset)',
     category: 'breathwork',
     short_description: 'Inhale 4, hold 7, exhale 8 - designed for sleep-onset.',
-    what_it_does: 'Extended exhale relative to inhale strongly activates parasympathetic tone. Repeated cycles reliably shift the body toward sleep.',
+    what_it_does: 'A long exhale relative to the inhale, done lying in bed. Rewritten 20 Sep 2026: "reliably shift the body toward sleep" is removed, because no trial of it was found and the nearest evidence found no change in sleep. Prescribe it as a pleasant bedtime ritual that a client will actually do, with no sleep claim attached. It contains a breath hold, so the water rule applies.',
     steps: [
       'Lie down in bed',
       'Inhale through the nose for 4 counts',
@@ -745,15 +773,15 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     },
     required_equipment: ['none_needed'],
     contraindications: ['Pregnancy - modify to 4-4-6 without the extended hold'],
-    safety_notes: 'Safe for adults. If the 7-count hold is uncomfortable, drop to 4-6-8 or 4-4-6.',
+    safety_notes: 'Safe for adults. If the 7-count hold is uncomfortable, drop to 4-6-8 or 4-4-6. ' + BREATH_HOLD_WATER_RULE,
     coach_doctrine: 'First-line sleep-onset tool. Prescribe when the client reports racing mind at night or long sleep latency.',
   },
   {
     slug: 'breathwork-coherent',
-    name: 'Coherent Breathing (5.5 bpm)',
+    name: 'Slow Breathing (5 to 7 breaths a minute)',
     category: 'breathwork',
-    short_description: 'Slow steady breathing at 5.5 breaths per minute (about 6 seconds in, 6 seconds out).',
-    what_it_does: 'Synchronises heart rate variability with breathing (respiratory sinus arrhythmia), improves HRV, supports baroreflex sensitivity, best-documented tool for sustained parasympathetic tone.',
+    short_description: 'Slow steady breathing at any rate between 5 and 7 breaths a minute. The range is the finding.',
+    what_it_does: 'Slow steady breathing that raises heart rate variability WHILE YOU DO IT. Rewritten 20 Sep 2026 on two counts. First, 5.5 is not a magic number: the only head-to-head comparison found every rate from 5 to 7 breaths a minute beat the control and none beat the others, so the honest prescription is a range. Second, "sustained" confused a rise during the practice with a lasting change at rest, and a 28-day trial measuring resting heart rate variability found no change in any group. There is also no blood pressure benefit: 22 trials and 17,214 people with hypertension, no reduction.',
     steps: [
       'Sit or lie down',
       'Inhale slowly for 5 to 6 seconds',
@@ -776,7 +804,7 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     name: 'Deload Week Protocol',
     category: 'systemic',
     short_description: 'Structured reduction in training volume and intensity for one week to allow full recovery.',
-    what_it_does: 'Reduces cumulative training stress while preserving movement patterns and skill. Allows tissue, neuromuscular, and endocrine recovery. Every 4 to 8 weeks depending on training age and RRS state.',
+    what_it_does: 'Reduces cumulative training stress while keeping the movement patterns and the skill. Rewritten 20 Sep 2026: the 4 to 8 week interval is PRACTITIONER CONSENSUS, not physiology, and the authors of that recommendation say themselves that the experimental evidence is absent. Keep the interval, because it costs nothing and it gets the clients who most need a break to take one, but never present it as a physiological requirement.',
     steps: [
       'Reduce training volume by 40 to 60 percent (fewer sets, same movements)',
       'Reduce intensity by 20 to 30 percent (leave 3 to 4 reps in reserve on every set)',
@@ -786,14 +814,14 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
       'Add one extra recovery modality (sauna, walk, breathwork)',
     ],
     dosing: {
-      frequency: 'Every 4 to 8 weeks',
+      frequency: 'Every 4 to 8 weeks, as consensus rather than as a measured requirement',
       duration: '7 days',
       timing: 'Scheduled proactively. Or reactively when RRS acute_fatigue or ns_overload state activates.',
     },
     required_equipment: ['none_needed'],
     contraindications: [],
     safety_notes: 'Do not confuse with a training break. Deload keeps training going at reduced load - protects skill and neuromuscular pattern.',
-    coach_doctrine: 'Deload is training, not rest. Skill maintenance and lower endocrine load. If RRS routes the client into acute_fatigue, deload week is the first coach-side prescription alongside the RRS constraint envelope.',
+    coach_doctrine: 'Deload is training, not rest. Skill maintenance and lower endocrine load. If RRS routes the client into acute_fatigue, deload week is the first coach-side prescription alongside the RRS constraint envelope. Two limits added 20 Sep 2026 from research pass R2 group 4: the interval is consensus rather than physiology, and NONE of the deload literature covers beginners, midlife clients or peri and post menopausal women. For our core audience this is extrapolated. The strongest argument for it is behavioural rather than physiological: the clients who most need a lighter week are the least likely to take one unless it is written down.',
   },
   {
     slug: 'sleep-debt-recovery',
@@ -818,7 +846,7 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     contraindications: [
       'SCREEN BEFORE PRESCRIBING. Snoring plus witnessed pauses plus daytime sleepiness, or an Epworth of 16 or more, means suspected obstructive sleep apnoea: refer, do not prescribe. Treating apnoea as insomnia is the specific harm this screen exists to prevent. Note the STOP-Bang under-detects in women (77% sensitivity, 45% specificity, AUC 0.67 in midlife women) and the most sensitive single item for them is observed apnoeas, while OSA prevalence reaches 27% in perimenopause and 29% after it. A low score in a midlife woman does not clear her. Also refer rather than prescribe if the complaint has run three months or more and looks like chronic insomnia disorder, if she is on a hypnotic, or if restless legs or a parasomnia is suspected','Do not oversleep by more than 90 minutes in one night (rebound insomnia risk)'],
     safety_notes: 'Naps longer than 30 minutes risk sleep inertia and evening sleep-onset problems.',
-    coach_doctrine: 'Sleep debt cannot be paid off in one long night. Requires a full week of consistent extension. Pair with reduced training intensity for that week.',
+    coach_doctrine: 'Sleep debt cannot be paid off in one long night, and that half is well supported. Corrected 20 Sep 2026: "a full week is enough" is NOT supported and is probably optimistic. After a week at 5 to 7 hours a night, three full nights of 8 hours produced no measurable recovery of vigilance at all. So run the week, and tell the client honestly that a week of catching up may not put them back where they were, because the real answer is not getting into the debt. This is the highest-value protocol in the whole library per minute of client time: nothing else moves as much, and the evidence that short sleep costs you is the strongest evidence in the entire R2 pass. NOTE on the screen above: research pass R2 flagged a missing insomnia screen as the most consequential gap in its group. It is not missing, it was added by the earlier sleep work, and it already routes chronic insomnia to referral rather than to more time in bed. That ordering matters, because the evidence-based treatment RESTRICTS time in bed before extending it, so extending it first can make insomnia worse.',
   },
   {
     // Added 2026-08-17 from the Deep Research report at
@@ -1069,15 +1097,19 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     slug: 'jet-lag-protocol',
     name: 'Jet Lag Recovery Protocol',
     category: 'systemic',
-    short_description: 'Light, meal, and fasting protocol to accelerate circadian re-alignment after travel.',
-    what_it_does: 'Uses fasting during flight plus timed light exposure at destination to shift circadian clock faster than passive adaptation.',
+    short_description: 'Light and sleep timing first, everything else after. Reordered 20 Sep 2026.',
+    what_it_does: 'Shifts the body clock faster than waiting it out. The order matters and ours was inverted: four reviews spanning 2002 to 2026 converge on LIGHT, melatonin and sleep scheduling as the intervention set, and NOT ONE of them names meal timing as a lever at all, let alone the biggest one.',
     steps: [
-      'Fast 12 to 16 hours during and after the flight (water only)',
-      'Break the fast at the local time of your first destination breakfast',
-      'Get 15 to 30 minutes of bright outdoor light at local sunrise for the first 3 days',
+      // Reordered 20 Sep 2026, research pass R2 group 4. Light moved to the top
+      // and fasting to the bottom, labelled unproven: its only human evidence is
+      // a non-randomised, self-selected, self-reported military survey, and the
+      // circadian biology usually quoted beside it is in mice.
+      'FIRST: get 15 to 30 minutes of bright outdoor light at local sunrise for the first 3 days',
       'Avoid bright light and screens after local sunset for the first 3 days',
+      'Put yourself on local sleep times from the first night, even when it is uncomfortable',
       'No caffeine after local noon for the first 3 days',
-      'Physiological sighs every hour on the flight',
+      'Physiological sighs on the flight if they help you settle',
+      'LAST, AND UNPROVEN: some people fast 12 to 16 hours during and after the flight and break it at the local breakfast time. The only human study is a non-randomised self-reported survey and the supporting biology is mouse work, so treat this as optional and never as the main lever',
     ],
     dosing: {
       frequency: 'Per travel event',
@@ -1086,7 +1118,7 @@ export const RECOVERY_PROTOCOLS: RecoveryProtocol[] = [
     required_equipment: ['none_needed'],
     contraindications: ['Diabetes without medical clearance to fast', 'Pregnancy', 'Eating disorders'],
     safety_notes: 'Fasting during long-haul flights is well tolerated for most healthy adults. Adjust if diabetic or pregnant.',
-    coach_doctrine: 'The single biggest lever for jet lag is meal timing followed by light exposure. Everything else (melatonin, sleep meds) is secondary. Pair with reduced training intensity for the first 3 days at destination.',
+    coach_doctrine: 'REVERSED 20 Sep 2026 by research pass R2 group 4. We had meal timing as the single biggest lever with light second. The ranking is inverted: light, melatonin and sleep scheduling are what the reviews actually name, and meal timing appears in none of them. Fasting during the flight is now last and labelled unproven. On melatonin, say nothing specific yet: its Australian scheduling has to be settled before any wording ships, so refer the client to a pharmacist rather than giving a dose. Pair with reduced training intensity for the first 3 days at destination.'
   },
   {
     slug: 'sbst-nose-tape',
