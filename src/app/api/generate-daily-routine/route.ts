@@ -6,6 +6,7 @@ import { isCoachEmail } from '@/lib/coach-auth'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { buildDailyRoutineSystemPrompt, buildDailyRoutineUserPrompt, DailyRoutineClientData } from '@/lib/daily-routine-prompt'
 import { validateDailyRoutine, summariseIssuesForRetry } from '@/lib/daily-routine-validation'
+import type { TrainingContext } from '@/lib/electrolyte-safety-gates'
 import { readHormonalLoad } from '@/lib/training-doctrine'
 import { temporalContext } from '@/lib/temporal-context'
 import { AI_MODELS } from '@/lib/ai-models'
@@ -46,7 +47,7 @@ export async function generateDailyRoutineInternal(clientId: string): Promise<Ne
 
   const { data: intake } = await admin
     .from('intakes')
-    .select('gender, date_of_birth, primary_goal, sleep_responses, stress_responses, schedule_responses, training_days_available')
+    .select('gender, date_of_birth, primary_goal, sleep_responses, stress_responses, schedule_responses, training_days_available, training_context')
     .eq('client_id', clientId)
     .order('submitted_at', { ascending: false })
     .limit(1)
@@ -60,6 +61,9 @@ export async function generateDailyRoutineInternal(clientId: string): Promise<Ne
 
   const healthFlags: string[] = []
   const medsLower = (client.medications || '').toLowerCase()
+  // Captured here because the narrowing above does not survive into runValidate,
+  // which is a function declaration hoisted past it.
+  const clientMedications: string | null = client.medications ?? null
   if (/\b(cardiac|heart\s+condition|arrhythmia|afib|angina|heart\s+attack|myocardial|beta.?blocker|ace.?inhibitor)\b/i.test(medsLower)) {
     healthFlags.push('cardiac')
   }
@@ -125,6 +129,10 @@ export async function generateDailyRoutineInternal(clientId: string): Promise<Ne
       client_age: age,
       client_has_cardiac_flag: cardiacFlag,
       client_body_state: bodyStateNormalized,
+      // Safety gates (19 Sep 2026): the routine is checked against the rules
+      // that apply to this client, not just the cold and breathwork limits.
+      medications: clientMedications,
+      training_context: (intake?.training_context ?? null) as TrainingContext | null,
     })
   }
 

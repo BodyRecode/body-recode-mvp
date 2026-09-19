@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { loadGateContext, findReadingGateViolations, readingGateRetryMessage } from '@/lib/reading-safety-check'
 import { loadClientFactualContext, formatFactualContextForPrompt } from '@/lib/client-factual-context'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@/lib/supabase/server'
@@ -193,6 +194,10 @@ export async function POST(request: NextRequest) {
   ]
   let cleaned: Record<string, string> | null = null
   let leaksSeen: string[] = []
+  // Safety gates (19 Sep 2026, research passes E1a and E1b): the medicines
+  // and competition answers that decide which rules apply to this client.
+  let gatesSeen: string[] = []
+  const gateContext = await loadGateContext(admin, cffs.client_id)
   let lastError: string | null = null
 
   for (let attempt = 1; attempt <= 3; attempt++) {
@@ -247,6 +252,10 @@ export async function POST(request: NextRequest) {
 
     const audit = auditClientReadingFields(reading as Record<string, string>, required as unknown as string[])
 
+    // A reading that breaks a safety gate is refused the same way leaked
+    // jargon is: fail, tell the model exactly what it did, try again.
+    const gateViolations = findReadingGateViolations(reading as Record<string, unknown>, gateContext)
+
     // Partner-specific banned phrase check (Mode A+ overlay). Additive.
     const { findPartnerBannedPhrase } = await import('@/lib/doctrine-parameters')
     const partnerLeaks: string[] = []
@@ -257,7 +266,7 @@ export async function POST(request: NextRequest) {
       if (hit && !partnerLeaks.includes(hit)) partnerLeaks.push(hit)
     }
 
-    if (audit.ok && partnerLeaks.length === 0) {
+    if (audit.ok && partnerLeaks.length === 0 && gateViolations.length === 0) {
       // Apply partner terminology substitutions post-audit. No-op for BR.
       const { applyPartnerTerminology } = await import('@/lib/doctrine-parameters')
       const rewritten: Record<string, string> = {}
@@ -269,12 +278,22 @@ export async function POST(request: NextRequest) {
     }
 
     const allLeaks = [...audit.leaks, ...partnerLeaks]
+    if (gateViolations.length > 0) {
+      gatesSeen = Array.from(new Set([...gatesSeen, ...gateViolations.map(v => v.code)]))
+      console.warn('[client-reading] safety gate breach:', gateViolations.map(v => v.code).join(', '))
+    }
     leaksSeen = Array.from(new Set([...leaksSeen, ...allLeaks].map(t => t.toLowerCase())))
     if (attempt < 3) {
       conversation.push({ role: 'assistant', content: jsonText })
       conversation.push({
         role: 'user',
-        content: `That draft contained internal terminology the client has never seen and the system will reject. These terms must not appear anywhere in the output: ${allLeaks.map(t => `"${t}"`).join(', ')}. Rewrite the entire JSON object using ONLY plain client-facing words to express the same idea. Return only the corrected JSON, no commentary.`,
+        content: [
+          allLeaks.length > 0
+            ? `That draft contained internal terminology the client has never seen and the system will reject. These terms must not appear anywhere in the output: ${allLeaks.map(t => `"${t}"`).join(', ')}. Rewrite the entire JSON object using ONLY plain client-facing words to express the same idea.`
+            : '',
+          readingGateRetryMessage(gateViolations),
+          'Return only the corrected JSON, no commentary.',
+        ].filter(Boolean).join('\n\n'),
       })
       lastError = `Leaked: ${allLeaks.join(', ')}`
     }
@@ -286,7 +305,11 @@ export async function POST(request: NextRequest) {
         // Two different failures used to share one message. A generation that
         // never produced parseable text was reported as a terminology leak,
         // which sent the coach hunting for banned words that were never there.
-        error: leaksSeen.length
+        // Three different failures now, and they send the coach to three
+        // different places, so they must not share a message.
+        error: gatesSeen.length
+          ? `The reading broke a safety rule for this client on every attempt (${gatesSeen.join(', ')}). That is a hard gate rather than a wording problem: check the client's medications and competition answers, and tell Kade, because it means the engine is reaching for something it must not say for this person.`
+          : leaksSeen.length
           ? `Reading leaked internal terminology after 3 attempts (${leaksSeen.join(', ')}). Click Regenerate to try a fresh start.`
           : `Reading generation failed after 3 attempts: ${lastError ?? 'unknown error'}. This is not a terminology problem. Click Regenerate to try again.`,
       },

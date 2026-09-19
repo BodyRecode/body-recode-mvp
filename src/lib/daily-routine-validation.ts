@@ -1,3 +1,5 @@
+import { findGateViolations } from './safety-gate-enforcement'
+import type { TrainingContext } from './electrolyte-safety-gates'
 /**
  * Daily Routine LLM output validator.
  *
@@ -20,6 +22,17 @@ export interface DailyRoutineValidationInput {
   client_age: number | null
   client_has_cardiac_flag: boolean
   client_body_state: 'remediation' | 'optimisation' | 'post_optimisation' | null
+  /**
+   * Medicines and conditions, free text, plus the training and competition
+   * answers. Added 19 September 2026 so the safety gates from research passes
+   * E1a and E1b are enforced here as well as on the nutrition plan.
+   *
+   * The routine generator is the surface most likely to reach for a morning
+   * water or salt habit, which is exactly what the research took away, so it
+   * needs the check more than most.
+   */
+  medications?: string | null
+  training_context?: TrainingContext | null
 }
 
 export interface DailyRoutineValidationIssue {
@@ -178,6 +191,24 @@ function validateSequence(
   return { title, tagline, steps: cleanSteps.slice(0, MAX_STEPS), coach_note }
 }
 
+
+/**
+ * Every string in a generated routine, as one block of text. Walks the object
+ * rather than naming fields, so a rule broken in a step's note or its reason
+ * is caught as surely as one in its title.
+ */
+function collectRoutineText(routine: Record<string, unknown>): string {
+  const out: string[] = []
+  const walk = (v: unknown, depth: number) => {
+    if (depth > 6 || v == null) return
+    if (typeof v === 'string') { out.push(v); return }
+    if (Array.isArray(v)) { for (const item of v) walk(item, depth + 1); return }
+    if (typeof v === 'object') { for (const item of Object.values(v as Record<string, unknown>)) walk(item, depth + 1) }
+  }
+  walk(routine, 0)
+  return out.join('\n')
+}
+
 export function validateDailyRoutine(input: DailyRoutineValidationInput): DailyRoutineValidationResult {
   const issues: DailyRoutineValidationIssue[] = []
 
@@ -195,6 +226,19 @@ export function validateDailyRoutine(input: DailyRoutineValidationInput): DailyR
 
   const morning = validateSequence(r.morning, 'morning', strictCold, issues)
   const evening = validateSequence(r.evening, 'evening', strictCold, issues)
+
+  // Safety gates (19 Sep 2026, research passes E1a and E1b). Everything the
+  // client could read in the routine, checked against the rules that apply to
+  // THIS client. A breach rejects the routine and the reason is fed back on
+  // the retry, the same as every other reject-level issue here.
+  const routineText = collectRoutineText(r)
+  for (const v of findGateViolations({
+    text: routineText,
+    medications: input.medications ?? null,
+    trainingContext: input.training_context ?? null,
+  })) {
+    issues.push(issue(v.code, v.message, 'reject'))
+  }
 
   const hasRejectIssue = issues.some(i => i.severity === 'reject')
   if (hasRejectIssue || !morning || !evening) {

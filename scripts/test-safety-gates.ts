@@ -85,6 +85,30 @@ expect('an ordinary plan for an ordinary client raises nothing',
   run('Breakfast: three eggs in butter with half an avocado. Drink water with each meal.', NONE), [])
 expect('no text at all raises nothing', run('', SPIRO), [])
 
+// The readings path: same rules, applied across every section of a reading.
+import { findReadingGateViolations, readingGateRetryMessage } from '../src/lib/reading-safety-check'
+
+const readingFields = {
+  nr_why_this_plan: 'Your plan is built around steady meals.',
+  nr_what_this_nutrition_is_doing: 'Aim for 3 litres of water a day to support this.',
+  nr_how_well_know_its_working: 'We will look at your energy through the week.',
+}
+expect('a reading section breaking the fluid gate is caught',
+  findReadingGateViolations(readingFields, { medications: 'Sertraline 100mg', trainingContext: null }).map(v => v.code),
+  ['FLUID_GATE_BREACH'])
+expect('the same reading for an ungated client passes',
+  findReadingGateViolations(readingFields, { medications: 'Vitamin D', trainingContext: null }).map(v => v.code),
+  [])
+expect('one rule broken in two sections is reported once',
+  findReadingGateViolations(
+    { a: 'Drink 2 litres a day.', b: 'Remember, 2 litres a day.' },
+    { medications: 'Sertraline 100mg', trainingContext: null },
+  ).map(v => v.code),
+  ['FLUID_GATE_BREACH'])
+expect('a reading retry message is produced',
+  [readingGateRetryMessage(findReadingGateViolations(readingFields, { medications: 'Sertraline 100mg', trainingContext: null })).length > 0 ? 'yes' : 'no'],
+  ['yes'])
+
 console.log('')
 const sample = findGateViolations({ text: 'Aim for 3 litres of water a day and use a lite salt.', medications: 'Ramipril and indapamide' })
 console.log('Sample retry instruction sent back to the model:\n')
