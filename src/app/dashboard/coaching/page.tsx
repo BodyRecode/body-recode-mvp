@@ -1,4 +1,5 @@
 import { createAdminClient } from '@/lib/supabase/admin'
+import { requireCoachScope, coachFilter } from '@/lib/coach-scope'
 import { WeekStrip } from '@/components/dashboard/week-strip'
 import { buildWeekStrips } from '@/lib/week-strip-data'
 import Link from 'next/link'
@@ -18,6 +19,17 @@ import { overlayPublishedProgressRead, PROGRESS_READ_OVERLAY_COLUMNS } from '@/l
 
 export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ view?: string; type?: string }> }) {
   const supabase = createAdminClient()
+
+  // WHOSE CLIENTS. Added 21 September 2026, found by signing in as a test coach
+  // and seeing seven of Kade's clients by name, with their states and their
+  // readiness, on the first page after the sidebar.
+  //
+  // The September work scoped the client DETAIL pages and the client API
+  // routes, and the layout on a single client still refuses somebody else's.
+  // The LIST pages were missed, and a list is where the names are.
+  const scope = await requireCoachScope()
+  const onlyCoach = coachFilter(scope)
+
   const { view, type } = await searchParams
   const showInactive = view === 'inactive'
   const typeFilter = type === 'online' ? 'online' : type === 'face_to_face' ? 'face_to_face' : 'all'
@@ -63,6 +75,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     .eq('active', !showInactive)
     .order('created_at', { ascending: false })
 
+  if (onlyCoach) query = query.eq('coach_id', onlyCoach)
   if (typeFilter === 'online') query = query.in('package', ONLINE_PACKAGE_VALUES)
   if (typeFilter === 'face_to_face') query = query.in('package', IN_PERSON_PACKAGE_VALUES)
 
@@ -170,7 +183,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
   // Roster-level reassessment queue. This is what the Monday digest links to:
   // the per-client panel only helps once you have already opened that client.
-  const openTriggers = await loadOpenTriggersWithClients(supabase)
+  const openTriggers = await loadOpenTriggersWithClients(supabase, onlyCoach)
 
   const flaggedCount = clientsProcessed.filter(c => c.latestCffs?.reassessment_flagged).length
   const upgradeCandidateCount = clientsProcessed.filter(c => c.upgradeCandidate).length

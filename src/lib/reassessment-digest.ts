@@ -115,12 +115,24 @@ export function buildReassessmentDigest(rows: DigestRow[], now = new Date()): Di
 }
 
 /** Load every open trigger with its client name, newest first. */
-export async function loadOpenTriggersWithClients(admin: SupabaseClient): Promise<DigestRow[]> {
-  const { data, error } = await admin
+/**
+ * @param onlyCoach  Restrict to this coach's clients. Null means the owner,
+ *   who sees everybody. Added 21 September 2026: the roster queue named other
+ *   coaches' clients on the first page a coach opens.
+ */
+export async function loadOpenTriggersWithClients(
+  admin: SupabaseClient,
+  onlyCoach: string | null = null,
+): Promise<DigestRow[]> {
+  let q = admin
     .from('reassessment_triggers')
-    .select('*, clients!inner(name, email, ended_at, frozen_at)')
+    .select('*, clients!inner(name, email, ended_at, frozen_at, coach_id)')
     .eq('status', 'open')
     .order('fired_at', { ascending: false })
+
+  if (onlyCoach) q = q.eq('clients.coach_id', onlyCoach)
+
+  const { data, error } = await q
 
   if (error) {
     console.error('[reassessment-digest] load failed', error)
