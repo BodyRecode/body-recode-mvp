@@ -184,9 +184,9 @@ export const COACH_SAAS_STEPS: Step[] = [
     id: 'saas-client-data-rights',
     title: 'Export and delete a client\'s information on request',
     description: 'What the privacy policy promises, as a thing a coach can actually do.',
-    status: 'planned',
+    status: 'in_progress',
     effort: 'M',
-    notes: 'The policy says a person can ask to see what we hold, correct it, or have it deleted, answered within 30 days. Today that is a person with database access doing it by hand.',
+    notes: 'BUILT 20 Sep, as a command Kade runs rather than a button a coach presses, which is the right shape for a pilot where the agreement says the coach asks and we do it. The export that existed covered SEVEN tables; sixty-four hold a client\'s information. The table list is now asked of the database every time rather than written down, because a written list is exactly how the seven-table version happened. Two hops: rows pointing at the client, then rows hanging off those with no client link of their own. Deletion goes deepest first and the client row last, explicitly rather than by cascade, since some references are set to null and that leaves her information in a row that no longer says whose it is. Also removes her uploaded files, and her name where a saved report quoted it rather than referencing her by id, which no amount of walking the database would find. Dry run by default. Proven on live data: 420 records across 29 places for an active client, 166 records and 5 files for a former one. STILL OPEN: a coach-facing button, and the fact that backups are not touched, which needs the pruning schedule.',
   },
   {
     id: 'saas-monitoring',
