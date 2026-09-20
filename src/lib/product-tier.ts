@@ -47,7 +47,15 @@ const ROUTE_TIERS: Array<{ prefix: string; tier: ProductTier }> = [
   { prefix: '/dashboard/coaching', tier: 'interpret' },
   { prefix: '/dashboard/clients', tier: 'interpret' },
   { prefix: '/dashboard/checkins', tier: 'interpret' },
-  { prefix: '/dashboard/messages', tier: 'interpret' },
+  // Messages: OUT of the interpretation product, Kade's decision 21 Sep 2026.
+  // "the coach is using this software for the read and communicates with their
+  // clients how they already communicate". A second inbox a coach forgets to
+  // open makes the product look broken, and every coach already has WhatsApp
+  // and email with their clients.
+  //
+  // NOT deleted: Kade uses it with his own clients, so it stays at owner. The
+  // coach's RESPONSE to a weekly check-in is a different thing and is unaffected.
+  { prefix: '/dashboard/messages', tier: 'owner' },
   { prefix: '/dashboard/feedback', tier: 'interpret' },
   // Their own account and getting help.
   { prefix: '/dashboard/getting-started', tier: 'interpret' },

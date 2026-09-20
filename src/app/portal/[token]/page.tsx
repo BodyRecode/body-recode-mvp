@@ -1,6 +1,7 @@
 import { ListChecks, MessageCircle, FileText, CalendarDays, NotebookPen, LayoutGrid, type LucideIcon } from 'lucide-react'
 import { resolveCurrentBodyState } from '@/lib/body-state-current'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { portalFeaturesForClient } from '@/lib/portal-features'
 import { createClient } from '@/lib/supabase/server'
 import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
@@ -35,6 +36,10 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
     .single()
 
   if (!client) return notFound()
+
+  // What her own coach is licensed to give her. Fails closed: a client whose
+  // coach cannot be resolved sees the interpretation half and nothing else.
+  const features = await portalFeaturesForClient(admin, client.id as string)
 
   const userEmail = (user.email ?? '').toLowerCase()
   const clientEmail = (client.email ?? '').toLowerCase()
@@ -852,17 +857,21 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
             <div className="rounded-2xl border border-[#E8EAEE] overflow-hidden bg-white">
               {([
                 { href: `/portal/${token}/program`, label: 'Training program', meta: activeProgram?.block_name ?? null, show: true },
-                { href: `/portal/${token}/my-plan`, label: 'Nutrition plan', meta: null, show: true },
-                { href: `/portal/${token}/routine`, label: 'Daily sequences', meta: null, show: true },
-                { href: `/portal/${token}/recovery`, label: 'Recovery protocols', meta: null, show: (activeRecoveryCount ?? 0) > 0 },
-                { href: `/portal/${token}/supplements`, label: 'Supplement stack', meta: null, show: (activeSupplementCount ?? 0) > 0 },
-                { href: `/portal/${token}/sessions`, label: 'Your sessions', meta: null, show: client.session_type === 'face_to_face' },
+                // Every prescriptive link is gated on what HER COACH licenses.
+                // Before 21 Sep 2026 these were all show:true, so a client of a
+                // read-only coach saw an eating plan, daily sequences and a
+                // supplement stack that nobody could give her.
+                { href: `/portal/${token}/my-plan`, label: 'Nutrition plan', meta: null, show: features.prescription },
+                { href: `/portal/${token}/routine`, label: 'Daily sequences', meta: null, show: features.prescription },
+                { href: `/portal/${token}/recovery`, label: 'Recovery protocols', meta: null, show: features.prescription && (activeRecoveryCount ?? 0) > 0 },
+                { href: `/portal/${token}/supplements`, label: 'Supplement stack', meta: null, show: features.prescription && (activeSupplementCount ?? 0) > 0 },
+                { href: `/portal/${token}/sessions`, label: 'Your sessions', meta: null, show: features.prescription && client.session_type === 'face_to_face' },
                 { href: `/portal/${token}/progress`, label: 'Progress', meta: null, show: true },
                 { href: `/portal/${token}/bloods`, label: 'Health markers', meta: null, show: true },
                 { href: `/portal/${token}/checkin-history`, label: 'Your check-ins', meta: recentCheckins.length > 0 ? `${recentCheckins.length} recent` : null, show: true },
-                { href: `/portal/${token}/message`, label: `Message ${coach().firstName}`, meta: null, show: true },
-                { href: `/portal/${token}/resources`, label: 'Readings and guides', meta: null, show: true },
-                { href: `/portal/${token}/feedback`, label: 'Share feedback', meta: null, show: true },
+                { href: `/portal/${token}/message`, label: `Message ${coach().firstName}`, meta: null, show: features.messaging },
+                { href: `/portal/${token}/resources`, label: 'Readings and guides', meta: null, show: features.resources },
+                { href: `/portal/${token}/feedback`, label: 'Share feedback', meta: null, show: features.feedback },
               ] as { href: string; label: string; meta: string | null; show: boolean }[])
                 .filter(i => i.show)
                 .map(i => (
