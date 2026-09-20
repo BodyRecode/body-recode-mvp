@@ -270,7 +270,7 @@ const COLLECTIVE_PHASES: Phase[] = [
         status: 'blocked',
         effort: 'M',
         blockedBy: 'provision-melisa-account',
-        notes: 'BLOCKED 2026-08-18: no candidate. Melisa (yoga, FP#1 since July) withdrew. The pipeline behind her is one application in six weeks — Dylan Shields, strength, self-scored "building" not "ready", timeline "exploring", and unactioned for 26 days because the applications dashboard was never built. So this is not waiting on engineering; it is waiting on demand. 30-day observation period after live before deciding GO/NO-GO on partner #2. NOTE the yoga modality was built as modality 2 specifically for Melisa and now has no partner behind it — a strength partner needs modality 1, which already ships.',
+        notes: 'BLOCKED 2026-08-18: no candidate. Melisa (yoga, FP#1 since July) withdrew. The pipeline behind her was one application in six weeks, a strength coach who self-scored "building" not "ready" with a timeline of "exploring", unactioned for 26 days because the applications dashboard was never built. That application was removed on 20 Sep 2026 and the pipeline is now empty. So this is not waiting on engineering; it is waiting on demand. 30-day observation period after live before deciding GO/NO-GO on partner #2. NOTE the yoga modality was built as modality 2 specifically for Melisa and now has no partner behind it — a strength partner needs modality 1, which already ships.',
       },
     ],
   },

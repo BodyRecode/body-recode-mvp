@@ -291,7 +291,7 @@ const READ_PHASES: Phase[] = [
         description: 'The gate. Nothing past this moves until a coach who is not Kade has run the read.',
         status: 'blocked',
         effort: 'M',
-        notes: 'BLOCKED ON A NAME, and it is the only thing blocking the whole board. Candidates: Dylan Shields (strength coach, applied 23 Jul, self-scored building, never contacted) or one of the personal trainers Kade stands beside at AF Newstead several times a week. Every previous attempt failed the same way — the Collective was 86% built and got one enquiry in six weeks, because the building happened before anyone had been asked. What is measured is whether the read LANDS, not whether anyone lost weight.',
+        notes: 'BLOCKED ON A NAME, and it is the only thing blocking the whole board. The one inbound application was removed on 20 Sep 2026, so there is no pipeline: the candidates are the personal trainers Kade stands beside at AF Newstead several times a week, and the peer reviewers who have already read the doctrine. Every previous attempt failed the same way — the Collective was 86% built and got one enquiry in six weeks, because the building happened before anyone had been asked. What is measured is whether the read LANDS, not whether anyone lost weight.',
       },
     ],
   },

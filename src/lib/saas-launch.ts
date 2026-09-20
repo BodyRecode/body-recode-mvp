@@ -3,8 +3,9 @@
  *
  * Every figure here is READ FROM THE DATABASE at request time. Nothing on the
  * launch page is typed by hand, deliberately: the Collective page once said
- * "3 founding members admitted" when the real number was zero, and Dylan
- * Shields' application sat unactioned for 26 days because nothing surfaced it.
+ * "3 founding members admitted" when the real number was zero, and the one
+ * application ever received sat unactioned for 26 days, because nothing
+ * surfaced it.
  * A plan that reports its own status from a manifest can drift; one that counts
  * real rows cannot.
  *
