@@ -5,7 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { buildPortalOrientationEmail } from '@/lib/portal-orientation-email'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
-import { fromCoach } from '@/lib/email-shell'
+import { fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { isCoachUser, forbidden } from '@/lib/api-auth'
 export async function POST(
   _req: NextRequest,
@@ -41,6 +41,10 @@ export async function POST(
   await resend.emails.send({
     from: fromCoach(),
     to: client.email,
+    // Kade, 19 Sep 2026: copy him on the ONBOARDING emails, because this is the
+    // window where he needs to see that a new client is actually receiving
+    // things. Session reminders, check-in windows and drip steps stay uncopied.
+    bcc: COACH_BCC,
     subject,
     html,
   })

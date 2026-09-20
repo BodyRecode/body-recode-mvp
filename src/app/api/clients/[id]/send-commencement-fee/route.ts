@@ -15,7 +15,7 @@ import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCommencementFeeEmail } from '@/lib/commencement-fee-email'
-import { fromCoach } from '@/lib/email-shell'
+import { fromCoach, COACH_BCC } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
 import { brand } from '@/config/tenant'
@@ -92,6 +92,10 @@ export async function POST(
   const sendResult = await resend.emails.send({
     from: fromCoach(),
     to: client.email,
+    // Kade, 19 Sep 2026: copy him on the ONBOARDING emails, because this is the
+    // window where he needs to see that a new client is actually receiving
+    // things. Session reminders, check-in windows and drip steps stay uncopied.
+    bcc: COACH_BCC,
     subject,
     html,
   })
