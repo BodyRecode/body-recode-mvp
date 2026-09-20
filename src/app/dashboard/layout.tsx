@@ -10,6 +10,7 @@ import SupportLauncher from '@/components/support/support-launcher'
 import { brand, productTier } from '@/config/tenant'
 import { canAccess, tierForPath } from '@/lib/product-tier'
 import { getNavBadges } from '@/lib/dashboard-badges'
+import { agreementGateActive, hasAcceptedCurrent } from '@/lib/coach-agreement'
 
 export default async function DashboardLayout({
   children,
@@ -40,6 +41,20 @@ export default async function DashboardLayout({
       `[tier] ${user.email} (tier=${tier}) blocked from ${pathname}, which needs ${tierForPath(pathname)}`
     )
     redirect('/dashboard/today')
+  }
+
+  // The agreement gate. A coach who has not accepted the agreement currently in
+  // force sees the agreement and nothing else, the same way a client cannot get
+  // past their own agreement in the portal.
+  //
+  // Switched OFF while the agreement is a draft, because recording somebody's
+  // acceptance of terms no lawyer has read would be worse than having none. One
+  // line in coach-agreement.ts turns it on, and it then covers every page here,
+  // including any added later.
+  if (agreementGateActive() && !pathname.startsWith('/dashboard/agreement')) {
+    const { createAdminClient } = await import('@/lib/supabase/admin')
+    const accepted = await hasAcceptedCurrent(createAdminClient(), scope.coachId)
+    if (!accepted) redirect('/dashboard/agreement')
   }
 
   const badges = await getNavBadges()
