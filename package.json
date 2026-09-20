@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "client:export": "npx tsx scripts/client-data-request.ts export",
+    "client:delete": "npx tsx scripts/client-data-request.ts delete",
     "test:job-monitoring": "npx tsx scripts/test-job-monitoring.ts",
     "test:coach-agreement": "npx tsx scripts/test-coach-agreement.ts",
     "test:nutrition": "npx tsx scripts/test-nutrition-corpus.ts",
