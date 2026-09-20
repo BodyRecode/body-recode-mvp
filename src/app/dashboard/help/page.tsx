@@ -1878,6 +1878,8 @@ export default function HelpPage() {
               <li><strong>Leads - Stuck Bookings</strong> - finds leads marked as zoom_1_booked for 7+ days with no Zoom date set.</li>
               <li><strong>Intake - Pending 10+ Days</strong> - finds clients who have not completed their intake form after 10 days.</li>
               <li><strong>Active Clients - Check-Ins</strong> - finds active clients with no check-in submitted in the last 14 days.</li>
+              <li><strong>Generation failures</strong> (added 19 September 2026) - every generation failure a coach actually saw in the last 24 hours, grouped by what failed and across how many coaches. A retry that then succeeded is not counted, because logging those would bury the ones that matter.</li>
+              <li><strong>Backup age</strong> (added 20 September 2026) - how old the newest database and file backups are, failing past eight days. The backup is run by hand, so the failure mode is not that it breaks, it is that a busy fortnight goes by and nobody remembers. It reads the folder rather than trusting a log, because the question is whether the files exist.</li>
             </ul>
 
             <p className="font-semibold text-[#141821] mt-3">4. Automation + Pipeline</p>
