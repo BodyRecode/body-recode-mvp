@@ -95,7 +95,14 @@ export default function IntakeForm({ token, clientName, portalToken, identity, c
   }, [hydrated])
   // Consent lives in the draft alongside the answers, so a refresh does not
   // re-ask, and an unfinished intake keeps it. Section 0 only.
-  const [consented, setConsented] = useState(false)
+  //
+  // It used to be plain component state, which meant the comment above was
+  // wrong: a refresh on the first screen made her tick it again. It also has
+  // to be in the draft for the cross-device save below, which refuses to store
+  // anything until the tick is present.
+  const consented = draft.formData.health_consent === true
+  const setConsented = (v: boolean) =>
+    setDraft(prev => ({ ...prev, formData: { ...prev.formData, health_consent: v } }))
   const [consentMissing, setConsentMissing] = useState(false)
 
   const sectionIndex = draft.sectionIndex
@@ -104,6 +111,64 @@ export default function IntakeForm({ token, clientName, portalToken, identity, c
     setDraft(prev => ({ ...prev, sectionIndex: typeof next === 'function' ? next(prev.sectionIndex) : next }))
   const setFormData = (next: FormData | ((p: FormData) => FormData)) =>
     setDraft(prev => ({ ...prev, formData: typeof next === 'function' ? next(prev.formData) : next }))
+
+  // Saving that follows her to another device (20 Sep 2026).
+  //
+  // The browser copy above is the instant layer and stays the source of truth
+  // while she is typing. This is the layer that lets her start on her phone
+  // and finish on her laptop, which matters now the form is a 25 to 35 minute
+  // job and we tell her in four places that it saves as she goes.
+  //
+  // Debounced, because a write per keystroke would be hundreds of requests for
+  // no benefit. Fire and forget: a failure here must never cost her an answer.
+  const serverSyncRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const lastSyncedRef = useRef<string>('')
+  useEffect(() => {
+    if (!hydrated || !consented) return
+    const payload = JSON.stringify({ formData: draft.formData, sectionIndex: draft.sectionIndex })
+    if (payload === lastSyncedRef.current) return
+    if (serverSyncRef.current) clearTimeout(serverSyncRef.current)
+    serverSyncRef.current = setTimeout(() => {
+      lastSyncedRef.current = payload
+      void fetch(`/api/intake/${token}/draft`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: payload,
+        keepalive: true,
+      }).catch(() => {})
+    }, 1500)
+    return () => { if (serverSyncRef.current) clearTimeout(serverSyncRef.current) }
+  }, [draft, hydrated, consented, token])
+
+  // On arrival, take whichever copy is further along. A client who switched
+  // devices has an empty browser and a full server draft; a client who carried
+  // on offline has the opposite. Comparing how many questions are answered is
+  // a blunter rule than comparing timestamps and a safer one, because it can
+  // never throw away answers she can see.
+  const serverDraftChecked = useRef(false)
+  useEffect(() => {
+    if (!hydrated || serverDraftChecked.current) return
+    serverDraftChecked.current = true
+    void fetch(`/api/intake/${token}/draft`)
+      .then(r => r.json())
+      .then((d: { draft?: { formData?: FormData; sectionIndex?: number } | null }) => {
+        const remote = d.draft
+        if (!remote?.formData) return
+        setDraft(prev => {
+          const localCount = Object.keys(prev.formData).length
+          const remoteCount = Object.keys(remote.formData ?? {}).length
+          if (remoteCount <= localCount) return prev
+          return {
+            // Local wins per field, because those are answers she can see on
+            // the screen in front of her. The server only fills the gaps.
+            formData: { ...(remote.formData ?? {}), ...prev.formData },
+            sectionIndex: Math.max(prev.sectionIndex, remote.sectionIndex ?? 0),
+          }
+        })
+      })
+      .catch(() => {})
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hydrated])
 
   // Dev affordance: `?section=N` jumps straight to that section index. Lets
   // you verify form rendering without clicking through every prior section.

@@ -174,7 +174,17 @@ export async function POST(request: NextRequest) {
   // Mark invitation as complete
   await admin
     .from('intake_invitations')
-    .update({ status: 'complete', completed_at: new Date().toISOString() })
+    .update({
+      status: 'complete',
+      completed_at: new Date().toISOString(),
+      // The cross-device draft is cleared on submit rather than left inert.
+      // The answers now live properly on the intake row, and a second copy of
+      // somebody's health information sitting on an invitation is a copy we
+      // would have to explain.
+      draft_data: null,
+      draft_section: null,
+      draft_updated_at: null,
+    })
     .eq('id', invitation.id)
 
   // Persist the client's medications statement to clients.medications so the
