@@ -27,6 +27,18 @@ set search_path = public
 as $$
   select jsonb_build_object(
     'taken_at', now(),
+    -- Custom types, added after the 20 Sep rehearsal: four tables failed to
+    -- create because an enum they use (progression_phase) was nowhere in the
+    -- snapshot. A table that cannot be created takes its data with it.
+    'types', (
+      select coalesce(jsonb_agg(jsonb_build_object(
+        'name', t.typname,
+        'values', (select jsonb_agg(e.enumlabel order by e.enumsortorder) from pg_enum e where e.enumtypid = t.oid)
+      ) order by t.typname), '[]'::jsonb)
+      from pg_type t
+      join pg_namespace n on n.oid = t.typnamespace
+      where n.nspname = 'public' and t.typtype = 'e'
+    ),
     'tables', (
       select coalesce(jsonb_agg(t order by t->>'table'), '[]'::jsonb) from (
         select jsonb_build_object(
