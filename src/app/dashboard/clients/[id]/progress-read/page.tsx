@@ -2,6 +2,8 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import ClientPageNav from '../client-page-nav'
+import { tierAllows } from '@/lib/product-tier'
+import { productTier } from '@/config/tenant'
 import { PageHeader } from '@/components/dashboard/ui'
 import { readPatternLabel } from '@/lib/pattern-doctrine'
 import type { LintFinding } from '@/lib/reading-lint'
@@ -71,7 +73,7 @@ export default async function ProgressReadPage({ params }: { params: Promise<{ i
         title="Progress Read"
         subtitle="The read re-derived from her Progress Check, measurements, photos and weekly check-ins since the last read."
       />
-      <ClientPageNav clientId={id} />
+      <ClientPageNav clientId={id} canPrescribe={tierAllows(productTier(), 'coach')} />
 
       {!latestCheck && (
         <div className="br-card p-6 mb-6">

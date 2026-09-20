@@ -85,11 +85,64 @@ const ROUTE_TIERS: Array<{ prefix: string; tier: ProductTier }> = [
   // system-health, and all of /dashboard/business.
 ]
 
+/**
+ * Prescription, which Body Recode sold on its own does NOT include.
+ *
+ * Kade, 20 September 2026: *"no they should not get the generators at all
+ * that's performance coaching... it's only interpretation nothing to do with
+ * prescription"*.
+ *
+ * The line is the product. Body Recode reads a body and explains it. Deciding
+ * what somebody should DO about it, the training block, the eating plan, the
+ * supplements, the recovery protocols, the daily routine, the training phase,
+ * is Performance Coaching, and it is the one thing the go-to-market forbids
+ * selling: it turns a neutral supplier into a competitor to every platform
+ * that might otherwise carry the read.
+ *
+ * These sit UNDER a client, so they were all granted by the blanket rule on
+ * '/dashboard/clients'. The top-level Programs page was correctly hidden while
+ * the tab inside her file was wide open: the door in the corridor locked and
+ * the door in her room open.
+ *
+ * A '*' matches exactly one path segment, which is what a client id is.
+ */
+const PRESCRIPTION_PATTERNS: Array<{ pattern: string; tier: ProductTier }> = [
+  { pattern: '/dashboard/clients/*/program', tier: 'coach' },
+  { pattern: '/dashboard/clients/*/nutrition', tier: 'coach' },
+  { pattern: '/dashboard/clients/*/plan', tier: 'coach' },
+  { pattern: '/dashboard/clients/*/supplements', tier: 'coach' },
+  { pattern: '/dashboard/clients/*/recovery', tier: 'coach' },
+  { pattern: '/dashboard/clients/*/routine', tier: 'coach' },
+  { pattern: '/dashboard/clients/*/train', tier: 'coach' },
+  { pattern: '/dashboard/clients/*/direction', tier: 'coach' },
+  { pattern: '/dashboard/clients/*/fixed-session', tier: 'coach' },
+]
+
+/** True when the path matches, allowing '*' to stand for one whole segment. */
+function matchesPattern(pathname: string, pattern: string): boolean {
+  const path = pathname.split('/').filter(Boolean)
+  const pat = pattern.split('/').filter(Boolean)
+  if (path.length < pat.length) return false
+  for (let i = 0; i < pat.length; i++) {
+    if (pat[i] === '*') continue
+    if (pat[i] !== path[i]) return false
+  }
+  // Equal length is the page itself; longer means a page beneath it, such as
+  // the generate and suggest screens, which are the same product decision.
+  return true
+}
+
 /** The tier a path requires. Unclassified paths require `owner`. */
 export function tierForPath(pathname: string): ProductTier {
   // '/dashboard' exactly is the Live view, which any tenant may see. Handled
   // separately because every other path also starts with it.
   if (pathname === '/dashboard' || pathname === '/dashboard/') return 'interpret'
+
+  // Prescription wins over the blanket clients rule, whatever the prefix
+  // lengths say, because it is a product boundary rather than a route detail.
+  for (const entry of PRESCRIPTION_PATTERNS) {
+    if (matchesPattern(pathname, entry.pattern)) return entry.tier
+  }
 
   let best: { prefix: string; tier: ProductTier } | null = null
   for (const entry of ROUTE_TIERS) {

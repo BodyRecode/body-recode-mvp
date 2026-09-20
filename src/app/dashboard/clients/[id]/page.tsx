@@ -34,6 +34,8 @@ import RegenerateCFWSButton from '@/components/regenerate-cfws-button'
 import CoachResponseCard from './coach-response-card'
 import MajorSection from './major-section'
 import ClientProfileTabs from './client-profile-tabs'
+import { tierAllows } from '@/lib/product-tier'
+import { productTier } from '@/config/tenant'
 import ArtefactAuditPill from './artefact-audit-pill'
 import { auditFoundationalReading, auditProgramReading, auditNutritionPlan } from '@/lib/artefact-audit'
 import AutoResponseToggle from './auto-response-toggle'
@@ -681,7 +683,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         </div>
       )}
 
-      <ClientProfileTabs clientId={id}>
+      <ClientProfileTabs clientId={id} canPrescribe={tierAllows(productTier(), 'coach')}>
       <div data-tab="admin">
 
       {/* Deliberate Start Window */}

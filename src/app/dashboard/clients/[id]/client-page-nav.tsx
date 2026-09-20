@@ -2,14 +2,14 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { CLIENT_PAGES } from './client-profile-tabs'
+import { visibleClientPages } from './client-profile-tabs'
 
 /**
  * The same row as the client record's tabs, for the client's other pages.
  * Was a 160px column headed "More on this client"; a column is a poor home
  * for four links, and once the client list arrived it made a fourth column.
  */
-export default function ClientPageNav({ clientId }: { clientId: string }) {
+export default function ClientPageNav({ clientId, canPrescribe = true }: { clientId: string; canPrescribe?: boolean }) {
   const pathname = usePathname() || ''
   const base = `/dashboard/clients/${clientId}`
   const onProfile = pathname === base
@@ -31,7 +31,7 @@ export default function ClientPageNav({ clientId }: { clientId: string }) {
         Profile
       </Link>
       <span className="mx-2 h-4 w-px bg-[#E8EAEE] shrink-0" aria-hidden />
-      {CLIENT_PAGES.map(p => {
+      {visibleClientPages(canPrescribe).map(p => {
         const href = `${base}/${p.slug}`
         const on = pathname === href || pathname.startsWith(href + '/')
         return (
