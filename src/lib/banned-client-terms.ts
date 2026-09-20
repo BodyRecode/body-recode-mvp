@@ -34,7 +34,24 @@
  */
 
 export const BANNED_CLIENT_TERMS: RegExp[] = [
-  // 0. Claims the evidence does not support.
+
+  // Thyroid, from research pass T1 (20 Sep 2026). Naming the organ as a cause
+  // IS an interpretation, and a symptom questionnaire cannot support one: a
+  // thirteen-symptom score runs at 0.64 in older women, close to a coin toss.
+  // "Optimal range" and "low-normal" are here too: across 21 trials and 2,192
+  // adults, treating a mildly raised thyroid stimulating hormone moved thyroid
+  // symptoms by 0.01. A lower number is not a better number.
+  /\bsluggish thyroid\b/i,
+  /\bunderactive thyroid\b/i,
+  /\boveractive thyroid\b/i,
+  /\bthyroid (?:reset|repair|support)\b/i,
+  /\bmetabolism (?:damaged|broken|repair|reset)\b/i,
+  /\bdamaged metabolism\b/i,
+  /\boptimal range\b/i,
+  /\bfunctional range\b/i,
+  /\blow[- ]normal\b/i,
+  /\bsuboptimal\b/i,
+  /\bhormonal imbalance\b/i,  // 0. Claims the evidence does not support.
   //    "Adrenal fatigue" is not a recognised condition: a systematic review of
   //    58 studies found no substantiation (Cadegiani 2016), and no endocrine
   //    society recognises it. It reached this list on 17 Sep 2026 from research

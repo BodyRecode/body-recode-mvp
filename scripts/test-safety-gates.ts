@@ -85,6 +85,33 @@ expect('an ordinary plan for an ordinary client raises nothing',
   run('Breakfast: three eggs in butter with half an avocado. Drink water with each meal.', NONE), [])
 expect('no text at all raises nothing', run('', SPIRO), [])
 
+// Thyroid, from research pass T1 (20 September 2026).
+function runT(text: string, hold = false) {
+  return findGateViolations({ text, medications: NONE, thyroidHold: hold }).map(v => v.code)
+}
+expect('kelp is blocked for everyone, flag or no flag',
+  runT('Add a kelp supplement for iodine.'), ['THYROID_PRODUCT_BREACH'])
+// "thyroid support" is both a banned product and an interpretation, so both
+// rules firing is correct rather than a duplicate.
+expect('a thyroid support formula is blocked, on both counts',
+  runT('A thyroid support complex may help here.'), ['THYROID_PRODUCT_BREACH', 'THYROID_INTERPRETATION_BREACH'])
+expect('naming the thyroid as a cause is caught',
+  runT('This looks thyroid-driven, which explains the stall.'), ['THYROID_INTERPRETATION_BREACH'])
+expect('"sluggish thyroid" is caught',
+  runT('A sluggish thyroid would account for this.'), ['THYROID_INTERPRETATION_BREACH'])
+expect('"metabolism repair" is caught',
+  runT('We will start with metabolism repair.'), ['THYROID_INTERPRETATION_BREACH'])
+expect('saying what she reported, without attributing it, passes',
+  runT('You told us your energy has dropped and you feel the cold more. That is worth your doctor looking at.'), [])
+expect('cutting food while the hold is open is refused',
+  runT('We will reduce your calories by 200 to restart progress.', true), ['THYROID_HOLD_BREACH'])
+expect('the same sentence with NO hold passes',
+  runT('We will reduce your calories by 200 to restart progress.', false), [])
+expect('holding intake while the flag is open passes',
+  runT('Your intake stays exactly where it is until you have been seen.', true), [])
+expect('a fasting window while the hold is open is refused',
+  runT('Try eating less in the mornings to sharpen the deficit.', true), ['THYROID_HOLD_BREACH'])
+
 // The readings path: same rules, applied across every section of a reading.
 import { findReadingGateViolations, readingGateRetryMessage } from '../src/lib/reading-safety-check'
 

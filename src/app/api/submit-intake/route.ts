@@ -87,6 +87,17 @@ export async function POST(request: NextRequest) {
     if (Array.isArray(raw) && raw.length > 0) trainingContext[q.id] = raw as string[]
   }
 
+  // Thyroid screen (20 Sep 2026, research pass T1). Same treatment as the
+  // training context: only questions visible under the answers given are kept.
+  const thyroidScreen: Record<string, string | string[]> = {}
+  for (const q of INTAKE_SECTIONS.flatMap(sec => sec.questions)) {
+    if (!q.id.startsWith('tq_')) continue
+    const raw = formData[q.id]
+    if (!isQuestionVisible(q, formData)) continue
+    if (typeof raw === 'string' && raw.trim() !== '') thyroidScreen[q.id] = raw.trim()
+    if (Array.isArray(raw) && raw.length > 0) thyroidScreen[q.id] = raw as string[]
+  }
+
   const intakePayload = {
     client_id: invitation.client_id,
     invitation_id: invitation.id,
@@ -107,6 +118,7 @@ export async function POST(request: NextRequest) {
     injury_responses: extractScale('inj_'),
     training_responses: extractScale('tr_'),
     training_context: trainingContext,
+    thyroid_screen: thyroidScreen,
     nutrition_responses: extractScale('nut_'),
     schedule_responses: extractScale('sch_'),
     sleep_responses: extractScale('sl_'),

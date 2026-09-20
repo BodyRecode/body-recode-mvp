@@ -30,6 +30,7 @@
  */
 
 import { electrolyteGates, type TrainingContext } from './electrolyte-safety-gates'
+import { BLOCKED_THYROID_PRODUCTS } from './thyroid-hold'
 
 export interface GateViolation {
   code: string
@@ -56,6 +57,20 @@ const LOW_SALT_DIET = /\b(?:low[- ]salt|low[- ]sodium|salt[- ]restricted|reduce 
 const SALT_LOADING =
   /\b(?:salt|sodium)\b[^.]{0,30}\b(?:load(?:ing)?|increase|add)\b|\b(?:add(?:ing)?|increase|extra|more)\b[^.]{0,30}\b(?:salt|sodium)\b|\bpinch of salt\b/i
 
+/**
+ * A deeper deficit, in the shapes a plan actually writes it: a calorie target
+ * below what she is eating, a cut, a drop, a reduction, a fasting window.
+ */
+const DEFICIT_LANGUAGE =
+  /\b(?:reduce|reducing|lower|lowering|drop|dropping|cut|cutting|decrease|decreasing|tighten|tightening)\b[^.]{0,40}\b(?:calories?|kcals?|energy|intake|portions?|food)\b|\b(?:calories?|kcals?|energy)\b[^.]{0,30}\b(?:deficit|reduction)\b|\bdeeper\s+deficit\b|\beat(?:ing)?\s+(?:less|fewer)\b/i
+
+/** Any named thyroid product, which is blocked whether or not a flag is open. */
+const THYROID_PRODUCT = new RegExp('\\b(?:' + BLOCKED_THYROID_PRODUCTS.map(p => p.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')).join('|') + ')\\b', 'i')
+
+/** Naming the organ IS an interpretation, and it is outside a coach's scope. */
+const THYROID_INTERPRETATION =
+  /\b(?:sluggish|slow|underactive|overactive|struggling|tired)\s+thyroid\b|\bthyroid\b[^.]{0,40}\b(?:cause|causing|explains|driving|driven|issue|problem|pattern)\b|\b(?:classic|typical)\b[^.]{0,20}\bthyroid\b|\bthyroid\s+(?:reset|repair|support)\b|\bmetabolism\s+(?:damaged|broken|repair|reset)\b/i
+
 /** Show-week numbers: carbohydrate loading grams, water loads, sodium or potassium milligram targets. */
 const CONTEST_NUMBERS = [
   // Any of the three orders a carbohydrate load gets written in: the number
@@ -77,6 +92,13 @@ export interface SafetyGateInput {
   medications?: string | null
   /** Training and competition answers, when the client has given them. */
   trainingContext?: TrainingContext | null
+  /**
+   * True while a possible thyroid cause is unchecked. Added 20 Sep 2026 from
+   * research pass T1: the engine must not deepen a deficit before the blood
+   * test, because eating less will not fix a medical cause AND because a
+   * deficit shifts the very results the doctor is about to read.
+   */
+  thyroidHold?: boolean
 }
 
 /**
@@ -141,6 +163,34 @@ export function findGateViolations(input: SafetyGateInput): GateViolation[] {
       code: 'LITHIUM_SALT_FLUID_BREACH',
       message:
         'This client takes lithium, where a change in salt or fluid changes the level of the medicine in their blood. Remove the target or the salt instruction and say it has to come from their prescriber.',
+    })
+  }
+
+  // Thyroid products are blocked for everyone, flag or no flag: nine of ten
+  // marketed thyroid supplements tested contained real thyroid hormone, and
+  // Australia is iodine sufficient, where excess iodine roughly triples the
+  // odds of overt underactive thyroid function.
+  if (THYROID_PRODUCT.test(text)) {
+    out.push({
+      code: 'THYROID_PRODUCT_BREACH',
+      message:
+        'The plan recommends iodine, kelp, seaweed, a thyroid support or glandular product, or high-dose selenium. Remove it. Nine of ten marketed thyroid supplements tested contained real thyroid hormone, Australia is iodine sufficient, and excess iodine is associated with roughly 2.8 times the odds of an underactive thyroid. None of these is ever ours to recommend.',
+    })
+  }
+
+  if (THYROID_INTERPRETATION.test(text)) {
+    out.push({
+      code: 'THYROID_INTERPRETATION_BREACH',
+      message:
+        'The plan names the thyroid as a cause, a pattern or a likelihood. That is an interpretation and it is outside scope. A questionnaire cannot separate these symptoms from under-recovery, a long deficit, low iron or the menopause transition: a thirteen-symptom score performs at 0.64 in older women, close to a coin toss. Remove the attribution entirely. You may say what she reported and that it is worth a doctor looking at. You may not say what it is.',
+    })
+  }
+
+  if (input.thyroidHold && DEFICIT_LANGUAGE.test(text)) {
+    out.push({
+      code: 'THYROID_HOLD_BREACH',
+      message:
+        'This client has a possible medical cause that has not been checked yet, and the plan still cuts her food. Hold her energy target at her current intake: no new deficit, no deepening of an existing one, no fasting window and no food group removed. Eating less will not fix a medical cause, and being in a deficit changes the very blood results her doctor is about to read.',
     })
   }
 

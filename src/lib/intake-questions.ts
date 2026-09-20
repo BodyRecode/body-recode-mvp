@@ -483,6 +483,26 @@ export const INTAKE_SECTIONS: Section[] = [
       { id: 'sup_23', text: 'I have experienced adverse reactions.', type: 'scale', scaleLabel: { low: 'Never', high: 'Daily / multiple times' } },
       { id: 'sup_24', text: 'I have been advised to limit stimulant use.', type: 'scale', scaleLabel: { low: 'Never', high: 'Daily / multiple times' } },
       { id: 'sup_25', text: 'I feel confident managing supplement intake.', type: 'scale', scaleLabel: { low: 'Never', high: 'Daily / multiple times' } },
+
+      // Thyroid screen, added 20 Sep 2026 from research pass T1.
+      //
+      // These do NOT exist to work out whether she has a thyroid problem. A
+      // thirteen-symptom score separates underactive thyroid function from
+      // normal function at 0.91 in younger men and 0.64 in older women, which
+      // in half our audience is close to a coin toss, and only three of the
+      // thirteen symptoms were more common in the people who had it. So the
+      // questionnaire may TRIGGER a referral and may never produce a
+      // likelihood, a score or a pattern.
+      //
+      // Most of this is the case-finding list Australian guidelines already
+      // use, and we were collecting some of it and doing nothing with it.
+      // tq_changed asks about CHANGE over the past year rather than current
+      // state, because change is the only framing with published
+      // discriminating value (Canaris 1997).
+      { id: 'tq_history', text: 'Tick anything that applies to you.', type: 'multiselect', required: false, options: ['A thyroid problem in the past', 'Thyroid surgery or radioactive iodine treatment', 'A parent, brother, sister or child with a thyroid problem', 'Type 1 diabetes', 'Coeliac disease', 'Another autoimmune condition', 'A lump or swelling in the front of my neck', 'Radiotherapy to my neck', 'I take amiodarone or lithium', 'Down syndrome or Turner syndrome', 'An irregular heartbeat I have been told about', 'None of these'] },
+      { id: 'tq_medication', text: 'Do you take thyroid medication? If so, which one, and roughly when was your last thyroid blood test?', type: 'text', required: false },
+      { id: 'tq_changed', text: 'In the last 12 months, have any of these CHANGED for you? Tick any that have.', type: 'multiselect', required: false, options: ['Feeling the cold more than people around me', 'Bowels slower', 'Skin drier', 'Voice hoarser or deeper', 'Breathless or wheezy on stairs', 'Something feeling stuck in my throat', 'Tiredness that sleep does not fix', 'Heart racing, pounding or skipping', 'Shaking or tremor', 'Feeling hot or sweating more than others', 'Weight dropping without me changing anything', 'None of these'] },
+      { id: 'tq_products', text: 'Do you take any of these?', type: 'multiselect', required: false, options: ['Biotin, or a hair, skin and nails supplement', 'Kelp, seaweed or iodine', 'A product sold for thyroid health, a glandular product, or "natural thyroid"', 'A high-dose selenium supplement', 'None of these'] },
     ]
   },
   {

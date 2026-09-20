@@ -211,6 +211,9 @@ export function humaniseValidationIssue(issue: ValidationIssue): string {
     case 'SGLT2_FASTING_BREACH':
     case 'LITHIUM_SALT_FLUID_BREACH':
     case 'CONTEST_NUMBERS_BREACH':
+    case 'THYROID_PRODUCT_BREACH':
+    case 'THYROID_INTERPRETATION_BREACH':
+    case 'THYROID_HOLD_BREACH':
       return `${issue.message} This is a hard safety rule for this client rather than a formatting problem, so the plan will not be published until it is gone.`
     default:
       return issue.message
@@ -499,6 +502,13 @@ export interface NutritionValidationInput {
    */
   client_facing_text?: string | null
   training_context?: TrainingContext | null
+  /**
+   * True while a possible thyroid cause is unchecked (research pass T1,
+   * 20 Sep 2026). A plan that cuts her food while this is open is rejected:
+   * eating less will not fix a medical cause, and a deficit shifts the blood
+   * results her doctor is about to read.
+   */
+  thyroid_hold?: boolean
 }
 
 /**
@@ -733,6 +743,7 @@ function validateSafetyGates(input: NutritionValidationInput): ValidationIssue[]
     text: input.client_facing_text,
     medications: input.medications,
     trainingContext: input.training_context ?? null,
+    thyroidHold: input.thyroid_hold ?? false,
   }).map(v => ({ code: v.code, message: v.message, severity: 'error' as const }))
 }
 

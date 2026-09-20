@@ -61,6 +61,7 @@ import ClientPaymentsSection from '@/components/dashboard/client-payments-sectio
 import HeightEditor from './height-editor'
 import { hormonalSafetyAlerts } from '@/lib/hormonal-safety-alerts'
 import { intakeReferralFlags, trainingReferralFlags, type TrainingContext } from '@/lib/electrolyte-safety-gates'
+import { thyroidFlagFromScreen, THYROID_REFERRAL_TEXT } from '@/lib/thyroid-hold'
 import { INDETERMINATE, readPatternLabel } from '@/lib/pattern-doctrine'
 import { getTotalQuestions } from '@/lib/intake-questions'
 
@@ -297,7 +298,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   // flag pointing toward a hormonal-shift pattern + a panel/GP. Non-diagnostic.
   const { data: fatMapIntake } = await admin
     .from('intakes')
-    .select('fat_map_responses, gender, pregnant_or_postpartum, androgen_use, sex_at_birth, cancer_history, gynae_surgery, training_context')
+    .select('fat_map_responses, gender, pregnant_or_postpartum, androgen_use, sex_at_birth, cancer_history, gynae_surgery, training_context, thyroid_screen')
     .eq('client_id', id)
     .order('submitted_at', { ascending: false })
     .limit(1)
@@ -330,6 +331,14 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
   // Lifter and competitor flags from the E1b intake questions (19 Sep 2026).
   const trainingFlags = trainingReferralFlags((fatMapIntake?.training_context ?? null) as TrainingContext | null)
+
+  // Thyroid hold (20 Sep 2026, research pass T1). It never says what it might
+  // be, because a questionnaire cannot support that. It says what she ticked,
+  // that her eating targets are held, and where she goes.
+  const thyroid = thyroidFlagFromScreen(
+    (fatMapIntake?.thyroid_screen ?? null) as Record<string, unknown> | null,
+    { pregnancyState: /pregnant now|given birth/i.test(String(fatMapIntake?.pregnant_or_postpartum ?? '')) },
+  )
   const allReferralFlags = [...referralFlags, ...trainingFlags]
 
   // Progress photos live in a private bucket; sign them for this render only.
@@ -894,6 +903,33 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           </div>
         </div>
       ))}
+
+      {thyroid.open && (
+        <div className="bg-[#FDF0EF] border border-[#F2CFCB] border-l-[3px] border-l-[#C0392B] rounded-xl p-5 mb-4">
+          <div className="flex items-start gap-3">
+            <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#C0392B]/15 flex items-center justify-center">
+              <span className="text-[#962D22] text-[13px] font-bold leading-none">!</span>
+            </div>
+            <div className="min-w-0">
+              <p className="text-[12px] font-medium text-[#962D22] mb-1">Eating targets are held until she has seen a GP</p>
+              <p className="text-sm font-semibold text-[#141821] mb-1.5">Refer for thyroid function tests</p>
+              <p className="text-[13px] text-[#43474F] leading-relaxed mb-2">
+                Triggered because {thyroid.reasons.join('; and ')}.
+              </p>
+              <p className="text-[13px] text-[#43474F] leading-relaxed mb-2">
+                The engine will not build or deepen a deficit for her while this is open. That is deliberate: eating less does not
+                fix a medical cause, and being in a deficit changes the blood results her doctor is about to read. <strong>Do not tell
+                her what you think it is.</strong> A symptom questionnaire cannot separate this from under-recovery, a long deficit,
+                low iron or the menopause transition, and it performs close to chance in women in this age range.
+              </p>
+              <details className="text-[13px] text-[#43474F]">
+                <summary className="cursor-pointer font-medium text-[#1B6DFC]">The wording to send her</summary>
+                <p className="mt-2 whitespace-pre-line leading-relaxed">{THYROID_REFERRAL_TEXT}</p>
+              </details>
+            </div>
+          </div>
+        </div>
+      )}
 
       {allReferralFlags.map(flag => (
         <div key={flag.key + flag.headline} className="bg-[#FDF6E9] border border-[#F1DEB8] border-l-[3px] border-l-[#C08A2D] rounded-xl p-5 mb-4">
