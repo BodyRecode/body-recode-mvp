@@ -47,10 +47,31 @@ async function main() {
   for (const t of backed) if (!live.has(t)) console.log(`  note     ${t} is in the backup and no longer in the database`)
   console.log(`  ${live.size} tables live, ${backed.size} in the backup`)
 
-  // 2. Did anything fail when it was taken?
+  // 2. Is the shape of the database in there? Added 20 Sep 2026. Rows with no
+  //    schema are rows with nowhere to go back to, and six core tables have no
+  //    CREATE TABLE anywhere in the repository.
+  const schemaSql = join(dir, '_schema.sql')
+  const schemaJson = join(dir, '_schema.json')
+  if (!existsSync(schemaSql) || !existsSync(schemaJson)) {
+    problem('this backup has no schema, so the rows in it have nowhere to be put back')
+  } else {
+    const sql = readFileSync(schemaSql, 'utf8')
+    const tablesInSchema = (sql.match(/create table if not exists/g) ?? []).length
+    console.log(`  schema present: ${tablesInSchema} tables described`)
+    if (tablesInSchema < manifest.tables.length) {
+      problem(`the schema describes ${tablesInSchema} tables and the backup holds ${manifest.tables.length}`)
+    }
+    for (const core of ['clients', 'intakes', 'cffs', 'weekly_checkins', 'baselines', 'leads']) {
+      if (!sql.includes(`create table if not exists public.${core} (`)) {
+        problem(`the schema is missing ${core}, which is one of the tables that exists nowhere else`)
+      }
+    }
+  }
+
+  // 3. Did anything fail when it was taken?
   if (manifest.failed > 0) problem(`${manifest.failed} table(s) failed when this backup was taken, so it is incomplete`)
 
-  // 3. Does the file on disk hold what the manifest claims?
+  // 4. Does the file on disk hold what the manifest claims?
   let filesChecked = 0
   for (const t of manifest.tables) {
     if (t.error) continue
@@ -62,7 +83,7 @@ async function main() {
   }
   console.log(`  ${filesChecked} files read back and counted`)
 
-  // 4. Does it still match the live database? Reported, not failed: the
+  // 5. Does it still match the live database? Reported, not failed: the
   //    database has moved on since the backup was taken, and it should have.
   const sample = manifest.tables.filter(t => !t.error && t.rows > 0).slice(0, 200)
   let drifted = 0
@@ -72,7 +93,7 @@ async function main() {
   }
   console.log(`  ${drifted} of ${sample.length} tables have changed since this backup was taken (expected, not a fault)`)
 
-  // 5. Is the data actually usable, or is it empty objects?
+  // 6. Is the data actually usable, or is it empty objects?
   const withRows = manifest.tables.filter(t => t.rows > 0)
   const clients = JSON.parse(readFileSync(join(dir, 'clients.json'), 'utf8')) as Array<Record<string, unknown>>
   if (clients.length === 0) problem('clients.json is empty, which cannot be right')
