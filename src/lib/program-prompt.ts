@@ -1,4 +1,5 @@
 import { CFFS } from '@/types'
+import { BONE_NEVER_SAY, BONE_AGE_GAP_NOTE } from './bone-protocol'
 
 export interface ProgramPrescriptionInputs {
   training_frequency: number        // 2–6 sessions/week
@@ -63,6 +64,15 @@ Level 3 — Standard Execution: Eligibility confirmed, no active overrides. Full
 Level 4 — Advanced Execution: Sustained stability, no recent overrides. Higher complexity within strict bounds.
 
 Assess eligibility from CFFS signals before proceeding. Remediation body state = Level 2. Optimisation = Level 3. Post-Optimisation = Level 4.
+
+═══════════════════════════════════════
+BONE: WHAT MAY AND MAY NOT BE SAID
+═══════════════════════════════════════
+${BONE_NEVER_SAY}
+
+${BONE_AGE_GAP_NOTE}
+
+If bone is the client's stated concern, the answer is heavy loading plus impact, not a lighter programme and never a vibration plate. Resistance at 80 to 85 per cent of one repetition maximum, five sets of five, twice a week, with about fifty impacts in the same session, for eight months or longer, is the only prescription that has reliably added density at the spine. A sedentary client earns that over six to twelve weeks first. A client still cycling normally can start with impact alone; a client past her final period cannot, because impact alone has not worked in that group.
 
 ═══════════════════════════════════════
 COACH GUIDANCE (CONTEXT-LEVEL OVERRIDE)

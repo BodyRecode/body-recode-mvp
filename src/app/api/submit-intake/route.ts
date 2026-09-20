@@ -87,11 +87,13 @@ export async function POST(request: NextRequest) {
     if (Array.isArray(raw) && raw.length > 0) trainingContext[q.id] = raw as string[]
   }
 
-  // Thyroid screen (20 Sep 2026, research pass T1). Same treatment as the
-  // training context: only questions visible under the answers given are kept.
+  // Thyroid and bone screens (20 Sep 2026, research passes T1 and B1). Same
+  // treatment as the training context: only questions visible under the
+  // answers given are kept. They share a column because they are read
+  // together as "what must a clinician look at before we program her".
   const thyroidScreen: Record<string, string | string[]> = {}
   for (const q of INTAKE_SECTIONS.flatMap(sec => sec.questions)) {
-    if (!q.id.startsWith('tq_')) continue
+    if (!q.id.startsWith('tq_') && !q.id.startsWith('bq_')) continue
     const raw = formData[q.id]
     if (!isQuestionVisible(q, formData)) continue
     if (typeof raw === 'string' && raw.trim() !== '') thyroidScreen[q.id] = raw.trim()

@@ -62,6 +62,7 @@ import HeightEditor from './height-editor'
 import { hormonalSafetyAlerts } from '@/lib/hormonal-safety-alerts'
 import { intakeReferralFlags, trainingReferralFlags, type TrainingContext } from '@/lib/electrolyte-safety-gates'
 import { thyroidFlagFromScreen, THYROID_REFERRAL_TEXT } from '@/lib/thyroid-hold'
+import { boneFlagFromScreen, BONE_REFERRAL_SENTENCE } from '@/lib/bone-protocol'
 import { INDETERMINATE, readPatternLabel } from '@/lib/pattern-doctrine'
 import { getTotalQuestions } from '@/lib/intake-questions'
 
@@ -335,6 +336,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   // Thyroid hold (20 Sep 2026, research pass T1). It never says what it might
   // be, because a questionnaire cannot support that. It says what she ticked,
   // that her eating targets are held, and where she goes.
+  const bone = boneFlagFromScreen((fatMapIntake?.thyroid_screen ?? null) as Record<string, unknown> | null)
+
   const thyroid = thyroidFlagFromScreen(
     (fatMapIntake?.thyroid_screen ?? null) as Record<string, unknown> | null,
     { pregnancyState: /pregnant now|given birth/i.test(String(fatMapIntake?.pregnant_or_postpartum ?? '')) },
@@ -903,6 +906,33 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           </div>
         </div>
       ))}
+
+      {bone.open && (
+        <div className={`${bone.urgency === 'same-week' ? 'bg-[#FDF0EF] border-[#F2CFCB] border-l-[#C0392B]' : 'bg-[#FDF6E9] border-[#F1DEB8] border-l-[#C08A2D]'} border border-l-[3px] rounded-xl p-5 mb-4`}>
+          <div className="flex items-start gap-3">
+            <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#C0392B]/15 flex items-center justify-center">
+              <span className="text-[#962D22] text-[13px] font-bold leading-none">!</span>
+            </div>
+            <div className="min-w-0">
+              <p className="text-[12px] font-medium text-[#962D22] mb-1">
+                {bone.urgency === 'same-week' ? 'Bone: refer this week, and do not add load' : 'Bone: sort this out before load goes on'}
+              </p>
+              <p className="text-sm font-semibold text-[#141821] mb-1.5">Stop increasing load or impact until her GP has looked at this</p>
+              <ul className="text-[13px] text-[#43474F] leading-relaxed list-disc ml-4 mb-2">
+                {bone.reasons.map(r => <li key={r}>{r}</li>)}
+              </ul>
+              <p className="text-[13px] text-[#43474F] leading-relaxed mb-2">
+                <strong>Say this, verbatim:</strong> &ldquo;{BONE_REFERRAL_SENTENCE}&rdquo;
+              </p>
+              <p className="text-[12.5px] text-[#6B6B6B] leading-relaxed">
+                Do not interpret a scan or a T-score, do not comment on her medicines, and never attach a fracture-reduction
+                percentage to training: no exercise trial has ever been powered to show one.
+                {bone.barbellNotOptional && ' She is past her final period, so impact alone will not do it: the barbell is not optional once she is cleared.'}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {thyroid.open && (
         <div className="bg-[#FDF0EF] border border-[#F2CFCB] border-l-[3px] border-l-[#C0392B] rounded-xl p-5 mb-4">
