@@ -1011,6 +1011,71 @@ const EXPECTED_INNGEST_FUNCTION_COUNT = 26
  * twice, gets an error twice and says nothing is the failure mode, so silence
  * is not evidence of health.
  */
+
+/**
+ * How old is the newest backup, and has anybody noticed it stopping?
+ *
+ * Added 20 September 2026, the day the backup was built and the restore
+ * rehearsed. The backup is run by hand on Kade's machine, which means the
+ * failure mode is not that it breaks, it is that a busy fortnight goes by and
+ * nobody remembers. This is the part that notices.
+ *
+ * It reads the backup folder rather than trusting a log, because the question
+ * is whether the files exist, not whether something claimed to write them.
+ */
+async function checkBackupAge(): Promise<CheckResult> {
+  const { readdirSync, existsSync, statSync } = await import('fs')
+  const { join } = await import('path')
+  const root = join(process.env.HOME ?? '', 'Dropbox', '01_BODY_RECODE', '00_Project_HQ', '09_Archive_and_Backups')
+
+  try {
+    if (!existsSync(root)) {
+      return {
+        name: 'Backup age',
+        status: 'info',
+        detail: 'Backup folder not reachable from here (expected on the server: backups are taken on Kade\'s machine)',
+      }
+    }
+    const newest = (dir: string): Date | null => {
+      const p = join(root, dir)
+      if (!existsSync(p)) return null
+      const stamps = readdirSync(p).filter(d => /^\d{4}-/.test(d)).sort()
+      if (stamps.length === 0) return null
+      return statSync(join(p, stamps[stamps.length - 1])).mtime
+    }
+    const db = newest('database')
+    const files = newest('files')
+    const days = (d: Date | null) => (d ? Math.floor((Date.now() - d.getTime()) / 86400000) : null)
+    const dbDays = days(db)
+    const fileDays = days(files)
+
+    if (dbDays === null) {
+      return {
+        name: 'Backup age',
+        status: 'failed',
+        detail: 'No database backup has ever been taken',
+        action: 'Run npm run backup, then npm run backup:verify',
+      }
+    }
+    const worst = Math.max(dbDays, fileDays ?? 999)
+    if (worst > 8) {
+      return {
+        name: 'Backup age',
+        status: 'failed',
+        detail: `Newest database backup is ${dbDays} days old${fileDays === null ? ', and the files have never been backed up' : `, files ${fileDays} days`}`,
+        action: 'Run npm run backup and npm run backup:files. A backup nobody takes is the same as no backup.',
+      }
+    }
+    return {
+      name: 'Backup age',
+      status: 'ok',
+      detail: `Database backup ${dbDays} day(s) old, files ${fileDays} day(s) old`,
+    }
+  } catch (e) {
+    return { name: 'Backup age', status: 'failed', detail: e instanceof Error ? e.message : String(e) }
+  }
+}
+
 async function checkGenerationFailures(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
   try {
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
@@ -1235,6 +1300,7 @@ export async function GET(request: NextRequest) {
     personalBrandCadence,
     igAccounts,
     generationFailures,
+    backupAge,
   ] = await Promise.all([
     checkBookingWrite(admin),
     checkLeadWrite(admin),
@@ -1254,6 +1320,7 @@ export async function GET(request: NextRequest) {
     checkPersonalBrandCadence(admin),
     checkInstagramAccounts(),
     checkGenerationFailures(admin),
+    checkBackupAge(),
   ])
 
   const checks: CheckResult[] = [
@@ -1267,6 +1334,8 @@ export async function GET(request: NextRequest) {
     automation, publishingPulse, inngestRegistration, funnel, personalBrandCadence, igAccounts,
     // Is the engine working in somebody else's hands?
     generationFailures,
+    // Is anybody still taking the backup?
+    backupAge,
   ]
 
   const failures = checks.filter(c => c.status === 'failed')

@@ -173,6 +173,23 @@ export const INTAKE_SECTIONS: Section[] = [
       { id: 'bq_medicines', text: 'Are you taking any bone medicine, any steroid tablets or inhalers, or any medicine for breast or prostate cancer? If you are on a six-monthly bone injection, when was your last one?', type: 'text', required: false },
       { id: 'bq_height_back', text: 'Have you lost height, noticed your upper back rounding, or had new mid-back or lower-back pain?', type: 'multiselect', required: false, options: ['I have lost height', 'My upper back looks more rounded', 'New mid-back or lower-back pain', 'None of these'] },
       { id: 'bq_calcium', text: 'Roughly how many serves of dairy or calcium-fortified food do you have a day? A serve is a glass of milk, a tub of yoghurt, or two slices of cheese.', type: 'select', required: false, options: ['None', 'About 1', 'About 2', '3 or more', 'Not sure'] },
+
+      // Iron screen, added 20 Sep 2026 from research pass I1. These exist to
+      // FIRE A REFERRAL, never to work out whether she is iron deficient:
+      // nothing in a symptom picture distinguishes low iron from ordinary
+      // under-recovery, and no sensitivity, specificity or likelihood ratio
+      // exists for symptoms against ferritin. The answers never combine into a
+      // score, and the system never tells her which one is the worrying one.
+      //
+      // There is deliberately no tiredness question. We already ask about
+      // fatigue, and a tiredness answer would change nothing. Tiredness is
+      // what makes the pattern exclusion necessary; it is not what fires the
+      // gate.
+      { id: 'iq_bleeding', text: 'In the last 12 months, have you had a period where you soaked through a pad or tampon in an hour or less, or that lasted more than 8 days, or where you passed clots bigger than a 50 cent coin?', type: 'select', required: false, options: ['No', 'Yes', 'Not sure'], showIf: { id: 'sex_at_birth', notIn: ['Male'] } },
+      { id: 'iq_postmenopausal_bleeding', text: 'Have you gone 12 months or more without any period at all, and then had any bleeding or spotting since?', type: 'select', required: false, options: ['No', 'Yes', 'Not applicable'], showIf: { id: 'sex_at_birth', notIn: ['Male'] } },
+      { id: 'iq_bowel', text: 'In the last 3 months, have you seen blood in your poo, or poo that was black and tarry, or lost weight you were not trying to lose?', type: 'select', required: false, options: ['No', 'Yes'] },
+      { id: 'iq_cardiac', text: 'In the last month, have you had any of these?', type: 'multiselect', required: false, options: ['Chest pain or tightness', 'Feeling faint, or actually fainting', 'Short of breath while sitting still', 'Heart racing when I am not moving', 'None of these'] },
+      { id: 'iq_pica_rls', text: 'Have you had either of these?', type: 'multiselect', required: false, options: ['A strong urge to chew or eat ice', 'An urge to eat things that are not food, such as dirt, chalk or paper', 'An urge to move my legs at night that eases when I move them', 'None of these'] },
     ]
   },
   {

@@ -1,4 +1,5 @@
 import { patternTaxonomyPromptSection, type IncomingPattern } from './pattern-doctrine'
+import { IRON_PATTERN_EXCLUSION, IRON_NEVER_SAY } from './iron-gate'
 import { anthropometryPromptSection } from './anthropometry-plausibility'
 
 import { Intake } from '@/types'
@@ -200,6 +201,10 @@ Rules for reading blood markers:
 5. Where a marker is markedly out of range, the conservative coaching move is to account for it AND note in risk_flags_and_watch_items that it belongs with the client's GP. Do not coach around a medical issue silently.
 6. Conservative language throughout: "consistent with...", "would be worth confirming...", "appears to support...". Never definitive, never diagnostic.
 7. If no blood panel is provided, complete the CFFS without it. Do not speculate about markers you were not given.
+
+${IRON_PATTERN_EXCLUSION}
+
+${IRON_NEVER_SAY}
 
 SALT CRAVING (added 17 September 2026, research pass E1a):
 A high answer on salty or savoury cravings is NOT evidence of strain, stress load or regulatory burden, and must never be read as one. No human study has found that stress raises salt intake, salt liking is largely learned and falls within months of eating less salt, and "adrenal fatigue" is not a recognised condition. Do not use the phrase.

@@ -63,6 +63,7 @@ import { hormonalSafetyAlerts } from '@/lib/hormonal-safety-alerts'
 import { intakeReferralFlags, trainingReferralFlags, type TrainingContext } from '@/lib/electrolyte-safety-gates'
 import { thyroidFlagFromScreen, THYROID_REFERRAL_TEXT } from '@/lib/thyroid-hold'
 import { boneFlagFromScreen, BONE_REFERRAL_SENTENCE } from '@/lib/bone-protocol'
+import { ironFlag, IRON_REFERRAL_SENTENCE, IRON_TIER_TIMEFRAME, type IronScreen } from '@/lib/iron-gate'
 import { INDETERMINATE, readPatternLabel } from '@/lib/pattern-doctrine'
 import { getTotalQuestions } from '@/lib/intake-questions'
 
@@ -336,6 +337,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   // Thyroid hold (20 Sep 2026, research pass T1). It never says what it might
   // be, because a questionnaire cannot support that. It says what she ticked,
   // that her eating targets are held, and where she goes.
+  const iron = ironFlag((fatMapIntake?.thyroid_screen ?? null) as IronScreen | null)
+
   const bone = boneFlagFromScreen((fatMapIntake?.thyroid_screen ?? null) as Record<string, unknown> | null)
 
   const thyroid = thyroidFlagFromScreen(
@@ -906,6 +909,42 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           </div>
         </div>
       ))}
+
+      {iron.open && (
+        <div className={`${iron.tier === 'emergency' || iron.tier === 'same-day' ? 'bg-[#FDF0EF] border-[#F2CFCB] border-l-[#C0392B]' : 'bg-[#FDF6E9] border-[#F1DEB8] border-l-[#C08A2D]'} border border-l-[3px] rounded-xl p-5 mb-4`}>
+          <div className="flex items-start gap-3">
+            <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#C0392B]/15 flex items-center justify-center">
+              <span className="text-[#962D22] text-[13px] font-bold leading-none">!</span>
+            </div>
+            <div className="min-w-0">
+              <p className="text-[12px] font-medium text-[#962D22] mb-1">
+                {iron.tier === 'emergency' ? 'Emergency: she needs to be seen now' : iron.tier === 'same-day' ? 'Today, and no training until she has been seen' : iron.tier === 'same-week' ? 'This week, before anything else on her plan' : 'Refer, routine'}
+              </p>
+              <p className="text-sm font-semibold text-[#141821] mb-1.5">
+                No pattern is assigned for her until she has seen a doctor
+              </p>
+              <p className="text-[13px] text-[#43474F] leading-relaxed mb-2">What she answered, unranked:</p>
+              <ul className="text-[13px] text-[#43474F] leading-relaxed list-disc ml-4 mb-2">
+                {iron.answers.map(a => <li key={a}>{a}</li>)}
+              </ul>
+              <p className="text-[13px] text-[#43474F] leading-relaxed mb-2">{IRON_TIER_TIMEFRAME[iron.tier!]}</p>
+              {iron.stopTraining && (
+                <p className="text-[13px] font-semibold text-[#962D22] mb-2">Training stops entirely until she has been seen.</p>
+              )}
+              <p className="text-[12.5px] text-[#6B6B6B] leading-relaxed mb-2">
+                Do not name a cause, do not reassure her, and do not suggest waiting or trying the plan first. <strong>If she feels
+                better in a few weeks, that is not evidence her iron is fine</strong>: in the trials, women on a dummy tablet
+                reported their tiredness dropping 13 to 29 per cent. Her measured numbers are not a check either, because iron
+                improves how someone feels without improving what they can do.
+              </p>
+              <details className="text-[13px] text-[#43474F]">
+                <summary className="cursor-pointer font-medium text-[#1B6DFC]">The wording to send her</summary>
+                <p className="mt-2 whitespace-pre-line leading-relaxed">{IRON_REFERRAL_SENTENCE}</p>
+              </details>
+            </div>
+          </div>
+        </div>
+      )}
 
       {bone.open && (
         <div className={`${bone.urgency === 'same-week' ? 'bg-[#FDF0EF] border-[#F2CFCB] border-l-[#C0392B]' : 'bg-[#FDF6E9] border-[#F1DEB8] border-l-[#C08A2D]'} border border-l-[3px] rounded-xl p-5 mb-4`}>

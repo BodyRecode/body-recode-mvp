@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
   // together as "what must a clinician look at before we program her".
   const thyroidScreen: Record<string, string | string[]> = {}
   for (const q of INTAKE_SECTIONS.flatMap(sec => sec.questions)) {
-    if (!q.id.startsWith('tq_') && !q.id.startsWith('bq_')) continue
+    if (!q.id.startsWith('tq_') && !q.id.startsWith('bq_') && !q.id.startsWith('iq_')) continue
     const raw = formData[q.id]
     if (!isQuestionVisible(q, formData)) continue
     if (typeof raw === 'string' && raw.trim() !== '') thyroidScreen[q.id] = raw.trim()
