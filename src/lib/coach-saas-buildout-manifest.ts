@@ -176,9 +176,9 @@ export const COACH_SAAS_STEPS: Step[] = [
     id: 'saas-support-loop',
     title: 'A way for a coach to report something wrong, and be answered',
     description: 'And the 30, 60 and 90 day reviews that make the pilot worth running.',
-    status: 'planned',
+    status: 'shipped',
     effort: 'S',
-    notes: 'A pilot with no structured feedback is free usage. This is the part that turns coaches into evidence.',
+    notes: 'ALREADY BUILT, confirmed 20 Sep 2026 by following the path end to end rather than trusting this board. A support button sits on every dashboard page; a coach files a ticket with the page they were on; it lands in Kade\'s inbox; setting a status with a note emails the coach the status AND the note. So "report something wrong and be answered" works today. The board said planned because nobody went back and changed it after the support work shipped in July. The structured part of the feedback is the 30/60/90 reviews and the eleven-point list of what to test, both in the first-five-coaches document.',
   },
   {
     id: 'saas-client-data-rights',
