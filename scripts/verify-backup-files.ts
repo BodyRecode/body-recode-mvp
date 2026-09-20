@@ -7,6 +7,22 @@ import { createClient } from '@supabase/supabase-js'
 import { readFileSync, readdirSync, existsSync, statSync } from 'fs'
 import { join } from 'path'
 
+// Load .env.local ourselves. THE BACKUP HAS TO WORK FROM A PLAIN TERMINAL,
+// because these are run by hand, and one that only works when the environment
+// happens to be loaded is one that does not run. Found 20 Sep 2026, when the
+// first use from a clean shell failed outright.
+try {
+  const envPath = join(process.cwd(), '.env.local')
+  if (existsSync(envPath)) {
+    for (const line of readFileSync(envPath, 'utf8').split('\n')) {
+      const m = line.match(/^([A-Z0-9_]+)=(.*)$/)
+      if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^["']|["']$/g, '')
+    }
+  }
+} catch {
+  // Fall back to whatever is already set.
+}
+
 const admin = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
 const ROOT = join(process.env.HOME!, 'Dropbox', '01_BODY_RECODE', '00_Project_HQ', '09_Archive_and_Backups', 'files')
 

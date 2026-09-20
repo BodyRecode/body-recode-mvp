@@ -26,8 +26,22 @@
  * indefinitely: prune them when the practice has a retention routine.
  */
 import { createClient } from '@supabase/supabase-js'
-import { mkdirSync, writeFileSync } from 'fs'
+import { mkdirSync, writeFileSync, readFileSync } from 'fs'
 import { join } from 'path'
+
+// Load .env.local ourselves. THE BACKUP HAS TO WORK FROM A PLAIN TERMINAL,
+// because this is the one command Kade runs by hand, and a backup that only
+// runs when the environment happens to be loaded is a backup that does not run.
+// Found 20 Sep 2026: the first attempt to use it from a clean shell failed
+// outright.
+try {
+  for (const line of readFileSync(join(process.cwd(), '.env.local'), 'utf8').split('\n')) {
+    const m = line.match(/^([A-Z0-9_]+)=(.*)$/)
+    if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^["']|["']$/g, '')
+  }
+} catch {
+  // Running somewhere without the file: fall back to whatever is set already.
+}
 
 const admin = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
 
