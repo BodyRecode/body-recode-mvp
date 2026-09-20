@@ -24,7 +24,9 @@ export default function LoginPage() {
       setError(error.message)
       setLoading(false)
     } else {
-      router.push('/dashboard')
+      // Today rather than the Live view: Live is the owner's business overview,
+      // and a coach would be bounced straight off it.
+      router.push('/dashboard/today')
     }
   }
 

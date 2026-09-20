@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { requireCoachScope, coachClientIds } from '@/lib/coach-scope'
 import { isCoachEmail } from '@/lib/coach-auth'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
@@ -47,27 +48,35 @@ export default async function MessagesInboxPage({
   const sp = await searchParams
 
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
-  if (!isCoachEmail(user.email)) redirect('/dashboard')
+  // Was: anyone who is not Kade by email is sent away. That made the Messages
+  // link in the sidebar a door that opens onto the page you just came from,
+  // for every coach who is not him. Replaced 21 Sep 2026 with the same scope
+  // check every other client page uses, which lets a coach in and shows them
+  // their own conversations.
+  const scope = await requireCoachScope()
+  const mine = await coachClientIds(scope)
 
   const admin = createAdminClient()
 
-  const { data: messageRows } = await admin
+  const messageQuery = admin
     .from('client_messages')
     .select('id, client_id, body, sender, created_at, read_at, responded_at, handled_at, client_read_at, anchor_kind, anchor_label')
     .order('created_at', { ascending: false })
     .limit(2000)
+
+  const { data: messageRows } = mine === null ? await messageQuery : await messageQuery.in('client_id', mine)
 
   const messages = (messageRows ?? []) as MessageRow[]
 
   // Every client, not only those who have written. The coach must be able to
   // start a conversation with someone who has never messaged - most of the
   // valuable messages a coach sends are unprompted.
-  const { data: clientRows } = await admin
+  const clientQuery = admin
     .from('clients')
     .select('id, name, email, onboarding_token, ended_at')
     .order('name', { ascending: true })
+
+  const { data: clientRows } = mine === null ? await clientQuery : await clientQuery.in('id', mine)
   const allClients = (clientRows ?? []) as ClientRow[]
   const clientsById = new Map(allClients.map(c => [c.id, c]))
   const clientIds = allClients.map(c => c.id)

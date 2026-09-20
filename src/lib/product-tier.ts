@@ -134,9 +134,12 @@ function matchesPattern(pathname: string, pattern: string): boolean {
 
 /** The tier a path requires. Unclassified paths require `owner`. */
 export function tierForPath(pathname: string): ProductTier {
-  // '/dashboard' exactly is the Live view, which any tenant may see. Handled
-  // separately because every other path also starts with it.
-  if (pathname === '/dashboard' || pathname === '/dashboard/') return 'interpret'
+  // '/dashboard' exactly is the Live view. It was interpret, meaning any coach
+  // could open it, and it shows leads, recent enquiries, subscriptions and
+  // payment status: a business overview, not a coaching page. Moved to owner
+  // on 21 September 2026. A coach is redirected to Today, which is the page
+  // written for them.
+  if (pathname === '/dashboard' || pathname === '/dashboard/') return 'owner'
 
   // Prescription wins over the blanket clients rule, whatever the prefix
   // lengths say, because it is a product boundary rather than a route detail.

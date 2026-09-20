@@ -157,3 +157,24 @@ export async function coachOwnsAnyClient(userId: string): Promise<boolean> {
     .eq('coach_id', userId)
   return (count ?? 0) > 0
 }
+
+/**
+ * The ids of the clients this coach may see, or null for the owner.
+ *
+ * Added 21 September 2026 after a test coach was shown seven of Kade's clients
+ * by name on the roster, and the same names again in the reassessment queue,
+ * the check-in list and the Live view. The September work scoped the client
+ * DETAIL pages and the client API routes. The LIST pages were missed, and a
+ * list is where the names are.
+ *
+ * Returning null for the owner rather than every id keeps their queries
+ * unfiltered and fast. An EMPTY array is meaningful and must not be treated as
+ * "no filter": a coach with no clients yet must see nothing, not everything.
+ */
+export async function coachClientIds(scope: CoachScope): Promise<string[] | null> {
+  const onlyCoach = coachFilter(scope)
+  if (!onlyCoach) return null
+  const admin = createAdminClient()
+  const { data } = await admin.from('clients').select('id').eq('coach_id', onlyCoach)
+  return (data ?? []).map(r => r.id as string)
+}

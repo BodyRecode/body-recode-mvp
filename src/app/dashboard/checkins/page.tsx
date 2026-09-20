@@ -15,6 +15,7 @@
 
 import Link from 'next/link'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { requireCoachScope, coachClientIds } from '@/lib/coach-scope'
 import { ChevronRight, Check, Inbox, Clock } from 'lucide-react'
 import { PageHeader, Card, Avatar, Ring, RangeTabs, EmptyState } from '@/components/dashboard/ui'
 
@@ -73,12 +74,20 @@ export default async function CheckInsPage({
 
   const admin = createAdminClient()
 
-  const { data: checkins } = await admin
+  // Only this coach's clients. See coachClientIds: an empty list means this
+  // coach has nobody yet and must see nothing, which is not the same as no
+  // filter at all.
+  const scope = await requireCoachScope()
+  const mine = await coachClientIds(scope)
+
+  const checkinQuery = admin
     .from('weekly_checkins')
     .select('id, client_id, week_number, form_type, submitted_at, coach_skipped_at, clients(name)')
     .gte('submitted_at', from.toISOString())
     .lt('submitted_at', to.toISOString())
     .order('submitted_at', { ascending: false })
+
+  const { data: checkins } = mine === null ? await checkinQuery : await checkinQuery.in('client_id', mine)
 
   const rows = checkins || []
   const ids = rows.map(r => r.id)
