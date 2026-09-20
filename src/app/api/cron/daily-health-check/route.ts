@@ -1001,7 +1001,7 @@ async function checkPersonalBrandCadence(admin: ReturnType<typeof createAdminCli
 // the endpoint exposed 25, so the nightly Inngest Registration row had been
 // failing before the Body Decode arc was added. Whoever added the 25th did not
 // bump it. The trip-wire works; it was just not being read.
-const EXPECTED_INNGEST_FUNCTION_COUNT = 26
+const EXPECTED_INNGEST_FUNCTION_COUNT = 27
 
 /**
  * Generation failures a coach actually saw in the last 24 hours.
