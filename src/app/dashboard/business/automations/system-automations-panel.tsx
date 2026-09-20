@@ -639,6 +639,28 @@ const MANUAL_AUTOMATIONS = [
     trigger: 'Manual: click "Suggest a stack" on /dashboard/clients/[id]/supplements',
     steps: 1,
   },
+  // Monitoring alerts. Internal only, never to a client.
+  {
+    id: 'background-job-failed-alert',
+    name: 'Background Job Failed (internal alert)',
+    description: 'Every scheduled job records its run. If one throws or returns an error, Kade is emailed at the time with the job name and the error, because whatever that job was due to do has not happened and will not happen by itself before its next run. Repeat failures of the SAME job stay quiet for six hours, so a job failing every four hours is one email rather than six a day. An unauthorised call is deliberately not recorded as a run: it would reset the quiet window and hide a job that has genuinely stopped. Added 2026-09-20.',
+    trigger: 'Automatic: any scheduled job fails',
+    steps: 1,
+  },
+  {
+    id: 'background-function-failed-alert',
+    name: 'Background Function Gave Up (internal alert)',
+    description: 'One listener covers all twenty-six background functions, and any added later, by watching the platform\'s own failure event rather than wrapping each function by hand. When a function exhausts its retries Kade is emailed with which one and why. Added 2026-09-20.',
+    trigger: 'Automatic: a background function exhausts its retries',
+    steps: 1,
+  },
+  {
+    id: 'generation-failure-alert',
+    name: 'Generation Failure (internal alert)',
+    description: 'One email per failure a coach actually saw, across the nutrition, program and routine generators. Sent only when the coach is NOT Kade: his own failures are already on his screen, and alerting on them would turn the alert into noise. A retry that succeeded is not a failure and is not recorded. Added 2026-09-19.',
+    trigger: 'Automatic: a generation fails for a coach other than Kade',
+    steps: 1,
+  },
   // Terminal-triggered broadcast scripts (single-event launch comms)
   {
     id: 'launch-day-waitlist-email',

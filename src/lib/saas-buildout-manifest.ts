@@ -645,9 +645,9 @@ const LATER_PHASES: Phase[] = [
         id: 'security-monitoring',
         title: 'Errors and failures raise an alert',
         description: 'Error tracking and alerts in production, so a failing read is known before a customer reports it.',
-        status: 'in_progress',
+        status: 'shipped',
         effort: 'S',
-        notes: 'PART DONE 19 Sep: a failed generation that a coach actually saw is recorded and emailed straight to Kade when the coach is somebody else, and the daily health check reports the last 24 hours and the age of the last backup. STILL OPEN: background jobs that fail silently raise nothing, which is how weekly syntheses once went quiet after a model change with no alarm.',
+        notes: 'DONE 20 Sep. A failed generation a coach actually saw emails Kade when the coach is somebody else. Every scheduled job and every background function now raises an alert when it fails, and the daily health check names any job that has not run inside its own window. That last one is the piece that matters: a job which stops being scheduled produces no error anywhere, because nothing runs, which is how weekly syntheses once went quiet after a model change with nothing raising an alarm.',
       },
       {
         id: 'security-ai-abuse-limits',
