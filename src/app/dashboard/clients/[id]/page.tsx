@@ -35,7 +35,8 @@ import CoachResponseCard from './coach-response-card'
 import MajorSection from './major-section'
 import ClientProfileTabs from './client-profile-tabs'
 import { tierAllows } from '@/lib/product-tier'
-import { productTier } from '@/config/tenant'
+import { productTierForCoach } from '@/lib/coach-tier'
+import { requireCoachScope } from '@/lib/coach-scope'
 import ArtefactAuditPill from './artefact-audit-pill'
 import { auditFoundationalReading, auditProgramReading, auditNutritionPlan } from '@/lib/artefact-audit'
 import AutoResponseToggle from './auto-response-toggle'
@@ -71,6 +72,8 @@ import { getTotalQuestions } from '@/lib/intake-questions'
 
 export default async function ClientPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
+  const scope = await requireCoachScope()
+  const canPrescribe = tierAllows(await productTierForCoach(createAdminClient(), scope.coachId), 'coach')
   const admin = createAdminClient()
   const { data: client, error: clientError } = await admin
     .from('clients')
@@ -683,7 +686,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         </div>
       )}
 
-      <ClientProfileTabs clientId={id} canPrescribe={tierAllows(productTier(), 'coach')}>
+      <ClientProfileTabs clientId={id} canPrescribe={canPrescribe}>
       <div data-tab="admin">
 
       {/* Deliberate Start Window */}

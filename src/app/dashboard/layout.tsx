@@ -35,7 +35,12 @@ export default async function DashboardLayout({
   // The pathname comes from middleware via x-pathname: a server component
   // cannot read it directly.
   const pathname = (await headers()).get('x-pathname') ?? '/dashboard'
-  const tier = productTier()
+  // The tier belongs to the PERSON signed in, not to the domain they signed in
+  // on. Reading it from the tenant resolved by host handed every coach on
+  // Kade's domain Kade's own tier, which is owner. See src/lib/coach-tier.ts.
+  const { productTierForCoach } = await import('@/lib/coach-tier')
+  const { createAdminClient } = await import('@/lib/supabase/admin')
+  const tier = await productTierForCoach(createAdminClient(), scope.coachId)
   if (!canAccess(tier, pathname)) {
     console.warn(
       `[tier] ${user.email} (tier=${tier}) blocked from ${pathname}, which needs ${tierForPath(pathname)}`
@@ -70,6 +75,7 @@ export default async function DashboardLayout({
         hint={<CommandKHint />}
         logout={<LogoutButton />}
         badges={badges}
+        tier={tier}
       >
         {children}
       </DashboardShell>

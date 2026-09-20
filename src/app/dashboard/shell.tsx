@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Menu, X } from 'lucide-react'
 import DashboardNav from './nav'
+import type { ProductTier } from '@/lib/product-tier'
 import type { NavBadges } from '@/lib/dashboard-badges'
 
 /**
@@ -19,6 +20,7 @@ export default function DashboardShell({
   hint,
   logout,
   badges,
+  tier,
   children,
 }: {
   brandName: string
@@ -27,6 +29,8 @@ export default function DashboardShell({
   hint?: ReactNode
   logout?: ReactNode
   badges?: NavBadges
+  /** This coach's own tier, resolved on the server. */
+  tier: ProductTier
   children: ReactNode
 }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -73,7 +77,7 @@ export default function DashboardShell({
       </div>
       {hint && <div className="px-3 pb-1.5">{hint}</div>}
       <div className="flex-1 min-h-0 overflow-y-auto">
-        <DashboardNav onNavigate={() => setDrawerOpen(false)} badges={badges} />
+        <DashboardNav onNavigate={() => setDrawerOpen(false)} badges={badges} tier={tier} />
       </div>
       <div className="border-t border-[#E8EAEE] bg-white/60 px-3.5 py-2.5 flex items-center justify-between gap-2">
         <span className="text-[11px] text-[#98A0AD] truncate min-w-0">{userEmail}</span>

@@ -1,8 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { productTier } from '@/config/tenant'
-import { canAccess } from '@/lib/product-tier'
+import { canAccess, type ProductTier } from '@/lib/product-tier'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import type { ComponentType } from 'react'
@@ -140,8 +139,7 @@ const DEV_ONLY_ROUTES = new Set([DEV_ONLY.href])
  * This exists so a licensee is not shown doors that will not open. A group whose
  * every item is out of reach disappears entirely rather than sitting there empty.
  */
-function visibleGroups(): NavGroup[] {
-  const tier = productTier()
+function visibleGroups(tier: ProductTier): NavGroup[] {
   if (tier === 'owner') return GROUPS
   return GROUPS
     .map(g => ({ ...g, items: g.items.filter(i => canAccess(tier, i.href)) }))
@@ -155,9 +153,9 @@ function isLinkActive(pathname: string, link: NavLink): boolean {
 }
 
 /** Label for the page you are on - used by the panel header breadcrumb. */
-export function useNavLocation(): { group: string; label: string } | null {
+export function useNavLocation(tier: ProductTier = 'owner'): { group: string; label: string } | null {
   const pathname = usePathname() || '/dashboard'
-  for (const group of visibleGroups()) {
+  for (const group of visibleGroups(tier)) {
     for (const item of group.items) {
       if (isLinkActive(pathname, item)) return { group: group.label, label: item.label }
     }
@@ -221,9 +219,12 @@ function NavItem({
 export default function DashboardNav({
   onNavigate,
   badges = {},
+  tier,
 }: {
   onNavigate?: () => void
   badges?: NavBadges
+  /** This coach's own tier, resolved on the server. See src/lib/coach-tier.ts. */
+  tier: ProductTier
 }) {
   const pathname = usePathname() || '/dashboard'
   const [devMode, setDevMode] = useState(false)
@@ -241,7 +242,7 @@ export default function DashboardNav({
 
   return (
     <nav className="px-2.5 pb-4 pt-1">
-      {visibleGroups().map((group) => {
+      {visibleGroups(tier).map((group) => {
         const items =
           group.key === 'meta' && showDev ? [...group.items, DEV_ONLY] : group.items
         return (
