@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "map:saas-pages": "npx tsx scripts/generate-saas-page-map.ts",
     "client:export": "npx tsx scripts/client-data-request.ts export",
     "client:delete": "npx tsx scripts/client-data-request.ts delete",
     "test:job-monitoring": "npx tsx scripts/test-job-monitoring.ts",
