@@ -22,8 +22,8 @@ import { productTierForCoach } from '../src/lib/coach-tier'
 const admin = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
 const anon = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
 
-const EMAIL = 'kade+testcoach@bodyrecode.au'
-const PASSWORD = 'TestCoach-Pilot-2026'
+const EMAIL = 'testcoach@bodyrecode.au'
+const PASSWORD = 'testcoach2026'
 
 let failed = 0
 const check = (n: string, ok: boolean, d = '') => {

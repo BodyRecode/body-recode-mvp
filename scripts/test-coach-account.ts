@@ -30,8 +30,8 @@ import { createClient } from '@supabase/supabase-js'
 
 const admin = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
 
-const EMAIL = 'kade+testcoach@bodyrecode.au'
-const PASSWORD = 'TestCoach-Pilot-2026'
+const EMAIL = 'testcoach@bodyrecode.au'
+const PASSWORD = 'testcoach2026'
 const FULL_NAME = 'Test Coach'
 const BUSINESS = 'Test Coach Strength'
 const TENANT_ID = 'test-coach'
