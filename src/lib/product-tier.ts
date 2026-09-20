@@ -54,6 +54,12 @@ const ROUTE_TIERS: Array<{ prefix: string; tier: ProductTier }> = [
   { prefix: '/dashboard/help', tier: 'interpret' },
   { prefix: '/dashboard/support', tier: 'interpret' },
   { prefix: '/dashboard/settings', tier: 'interpret' },
+  // Their own agreement, added 20 Sep 2026. It was missed when the agreement
+  // page was built the same day and fell through to owner, which would have
+  // sent a coach held at the agreement to a page they are not allowed to open.
+  // Caught by listing every page against this map rather than by anyone using
+  // it, which is the argument for doing that listing regularly.
+  { prefix: '/dashboard/agreement', tier: 'interpret' },
   // ...but not the pages underneath it that are Kade's. Longest prefix wins, so
   // these override the line above. The settings index already hides them from
   // the nav behind an isKade check; without these entries the PAGES would still
