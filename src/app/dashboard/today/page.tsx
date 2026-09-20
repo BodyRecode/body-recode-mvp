@@ -473,7 +473,7 @@ export default function TodayDashboardPage() {
 }
 
 // The single build order (src/lib/build-sequence.ts), which arranges the read, the
-// coaching engine and Rey into one sequence. Replaced the Body-Recode-only card on
+// coaching engine and Strenn into one sequence. Replaced the Body-Recode-only card on
 // 14 Sep 2026, so Today and the Build board can never disagree about what is next.
 function SaasBuildoutSection() {
   const next = nextUpStepIn(BUILD_PHASES)

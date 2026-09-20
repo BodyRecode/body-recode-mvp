@@ -21,7 +21,7 @@ export default async function SettingsIndex() {
     {
       href: '/dashboard/build',
       title: 'Build',
-      description: 'The single build order for the read, the coaching engine and Rey. What is done and what happens next, in sequence.',
+      description: 'The single build order for the read, the coaching engine and Strenn. What is done and what happens next, in sequence.',
     },
     {
       href: '/dashboard/settings/platform-buildout',

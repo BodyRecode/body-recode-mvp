@@ -8,7 +8,7 @@ import { ALLOWED, stateFor, stateDescription, type SectionKey, type TrainingStat
 import { sendFoundingConfirmationEmail } from '@/lib/rey-founding-email'
 
 /**
- * The Rey price test (bodyrecode.au/founding).
+ * The Strenn price test (bodyrecode.au/founding).
  *
  *   action 'result'   her answers in, her result out. Writes saw_price_at,
  *                     because the price is on her screen the moment this

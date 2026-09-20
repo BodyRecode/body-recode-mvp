@@ -4,7 +4,7 @@
  * WHY THIS EXISTS (2026-09-14)
  *
  * Two front ends will ask the same questions again after twelve weeks: the
- * coaching Progress Check re-asks 232 of the 246 intake questions, and Rey's
+ * coaching Progress Check re-asks 232 of the 246 intake questions, and Strenn's
  * re-read re-asks only what can change (~10 minutes). One comparison has to
  * serve both, so nothing here assumes how many questions were asked. It works on
  * whatever the two answer sets have in common.
@@ -240,7 +240,7 @@ function readCluster(sectionId: string, title: string, items: ScaleItemChange[])
  * Compare a previous answer set with a current one.
  *
  * `previous` and `current` are keyed by intake question id. Either can hold any
- * subset of the intake: a full coaching Progress Check, a short Rey re-ask, or a
+ * subset of the intake: a full coaching Progress Check, a short Strenn re-ask, or a
  * later answer set compared with an earlier Progress Check.
  */
 export function compareAnswers(previous: Answers, current: Answers, disputes: Dispute[] = []): AnswerComparison {

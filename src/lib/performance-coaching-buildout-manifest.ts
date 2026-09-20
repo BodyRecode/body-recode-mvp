@@ -1081,7 +1081,7 @@ const APP_PHASES: Phase[] = [
         effort: 'S',
         commits: ['ae8c0977'],
         surfaces: ['src/lib/nutrition-revise.ts', 'src/lib/nutrition-revise-preview.ts', 'src/lib/nutrition-edit-prompt.ts', 'src/app/api/clients/[id]/nutrition/revise/route.ts', 'src/app/dashboard/clients/[id]/nutrition/revise-one-change.tsx'],
-        notes: 'CONNECTED 14 Sep 2026. "Change one thing" on the client\'s Nutrition page, above Regenerate: the coach describes the change, the co-pilot\'s edit instructions (shared, draft version proven byte-identical) plus the one-variable rule turn it into minimal edits against the LIVE plan, and a preview shows each food that changes, calories and macros before and after, warnings when more than one macro moves by over 8g, the meal count changes or a food is swapped rather than resized, and any validator issue the change INTRODUCES. Apply re-previews on the server, refuses while a draft exists, requires explicit acceptance of new issues, and writes a DRAFT through reviseNutritionPlan; Approve makes it live. PROVEN on a copy of Samantha\'s live plan: carbs +50g spread over three meals with protein and fat unchanged, draft created, live plan untouched, untouched meals and every other field carried across, change recorded, second revision refused, a protein swap flagged, removing all fat refused by the model. Found and fixed in testing: food names carry quantities at the start ("260g white rice") and in size words, so resizes were first reported as swaps; matching now checked against all 111 foods in the 7 live plans. BEFORE: BUILT 8 SEP, NEVER CONNECTED. Verified 14 Sep: reviseNutritionPlan has ZERO call sites anywhere in src or scripts, and git history shows the only commit that ever mentions it is the one that created it. No route, button or script reaches it. The auto-memory said the system does this; it does not. What remains is wiring it to a route and a dashboard action. Rey needs it: a weekly nutrition adjustment with no coach cannot regenerate her whole week every time.',
+        notes: 'CONNECTED 14 Sep 2026. "Change one thing" on the client\'s Nutrition page, above Regenerate: the coach describes the change, the co-pilot\'s edit instructions (shared, draft version proven byte-identical) plus the one-variable rule turn it into minimal edits against the LIVE plan, and a preview shows each food that changes, calories and macros before and after, warnings when more than one macro moves by over 8g, the meal count changes or a food is swapped rather than resized, and any validator issue the change INTRODUCES. Apply re-previews on the server, refuses while a draft exists, requires explicit acceptance of new issues, and writes a DRAFT through reviseNutritionPlan; Approve makes it live. PROVEN on a copy of Samantha\'s live plan: carbs +50g spread over three meals with protein and fat unchanged, draft created, live plan untouched, untouched meals and every other field carried across, change recorded, second revision refused, a protein swap flagged, removing all fat refused by the model. Found and fixed in testing: food names carry quantities at the start ("260g white rice") and in size words, so resizes were first reported as swaps; matching now checked against all 111 foods in the 7 live plans. BEFORE: BUILT 8 SEP, NEVER CONNECTED. Verified 14 Sep: reviseNutritionPlan has ZERO call sites anywhere in src or scripts, and git history shows the only commit that ever mentions it is the one that created it. No route, button or script reaches it. The auto-memory said the system does this; it does not. What remains is wiring it to a route and a dashboard action. Strenn needs it: a weekly nutrition adjustment with no coach cannot regenerate her whole week every time.',
       },
       {
         id: 'engine-workout-logging',
@@ -1116,10 +1116,10 @@ const APP_PHASES: Phase[] = [
   {
     id: 8,
     title: 'The engine runs without Kade',
-    description: 'Everything that currently depends on a coach reviewing, deciding or judging. Required before Rey, and before licensing to anyone.',
+    description: 'Everything that currently depends on a coach reviewing, deciding or judging. Required before Strenn, and before licensing to anyone.',
     longDescription: [
       'The single biggest gap in the engine, and the auto-memory already names it as the main thing blocking licensing: the doctrine lives in the written instructions to the model, and almost nothing in code checks the output obeys it. That is why every generated plan becomes a line-by-line review with Kade in the loop.',
-      'Rey removes the coach entirely. So does any licensee without Kade standing behind them. The same work therefore serves Rey, the Body Recode read sold on its own, and any future coach product. It is not Rey-only work, and none of it is wasted whichever product ships first.',
+      'Strenn removes the coach entirely. So does any licensee without Kade standing behind them. The same work therefore serves Strenn, the Body Recode read sold on its own, and any future coach product. It is not Strenn-only work, and none of it is wasted whichever product ships first.',
       'These steps are arranged onto the Build board (/dashboard/build) by src/lib/build-sequence.ts. Update their status HERE; the Build board reads this file, so the two can never disagree.',
     ],
     order: 8,
@@ -1156,7 +1156,7 @@ const APP_PHASES: Phase[] = [
         description: 'An equipment profile, gym and home, that constrains which exercises can be generated.',
         status: 'planned',
         effort: 'M',
-        notes: 'Verified 14 Sep: equipment only exists today for RECOVERY protocols (saunas, cold plunges, massage guns). Nothing constrains TRAINING generation to what someone has access to. Rey\'s spec requires gym and home contexts picked on the day.',
+        notes: 'Verified 14 Sep: equipment only exists today for RECOVERY protocols (saunas, cold plunges, massage guns). Nothing constrains TRAINING generation to what someone has access to. Strenn\'s spec requires gym and home contexts picked on the day.',
       },
       {
         id: 'solo-regression-tests',
@@ -1195,7 +1195,7 @@ const APP_PHASES: Phase[] = [
   {
     id: 9,
     title: 'The live session',
-    description: 'What the engine must do DURING a session, with nobody watching. Required for Rey\'s voice sessions.',
+    description: 'What the engine must do DURING a session, with nobody watching. Required for Strenn\'s voice sessions.',
     longDescription: [
       'The engine produces a block in advance. It does not change anything once a session has started, and it does not look at how someone slept before deciding what today holds.',
       'These are the capabilities that make a voice-guided session possible. They sit in Stage 2 of the Build board.',
@@ -1209,7 +1209,7 @@ const APP_PHASES: Phase[] = [
         status: 'planned',
         effort: 'M',
         blockedBy: 'solo-doctrine-checked-in-code',
-        notes: 'Verified 14 Sep: nothing reads readiness before a session and modifies it. Readiness is rated weekly and constrains the next generation, but a bad night does not change today. This is the most differentiating thirty seconds in Rey. A prescribed rest day must count as completing the plan.',
+        notes: 'Verified 14 Sep: nothing reads readiness before a session and modifies it. Readiness is rated weekly and constrains the next generation, but a bad night does not change today. This is the most differentiating thirty seconds in Strenn. A prescribed rest day must count as completing the plan.',
       },
       {
         id: 'session-system-swap',
@@ -1225,7 +1225,7 @@ const APP_PHASES: Phase[] = [
         description: 'A fixed rule for telling normal training soreness from injury pain: where, which side, onset, quality, at rest.',
         status: 'planned',
         effort: 'S',
-        notes: 'Doctrinal work, Kade\'s call. "Sore" must trigger follow-up questions, never acceptance: muscle, both sides, dull, a day or two after training usually means soreness; joint, one side, sharp, sudden, or painful at rest means stop. It belongs in the doctrine as a rule applied identically every time, not improvised by the model. Specified in the Rey spec section 13.3.',
+        notes: 'Doctrinal work, Kade\'s call. "Sore" must trigger follow-up questions, never acceptance: muscle, both sides, dull, a day or two after training usually means soreness; joint, one side, sharp, sudden, or painful at rest means stop. It belongs in the doctrine as a rule applied identically every time, not improvised by the model. Specified in the Strenn spec section 13.3.',
       },
     ],
   },

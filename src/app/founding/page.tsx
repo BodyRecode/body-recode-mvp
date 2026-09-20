@@ -5,7 +5,7 @@ import { logoUrl, brand } from '@/config/tenant'
 import FoundingFlow from './founding-flow'
 
 /**
- * The Rey price test. Sent to warm audiences only, so it is kept out of search:
+ * The Strenn price test. Sent to warm audiences only, so it is kept out of search:
  * a stranger arriving from Google is not the woman the pass mark was set for.
  */
 export const metadata: Metadata = {

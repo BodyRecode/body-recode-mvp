@@ -1,11 +1,11 @@
 import type { Step } from './buildout-types'
 
 /**
- * Rey's own build steps: the things only Rey needs.
+ * Strenn's own build steps: the things only Strenn needs.
  *
- * Rey is the consumer product built on the Body Recode read and the coaching
+ * Strenn is the consumer product built on the Body Recode read and the coaching
  * engine (spec: Dropbox 05_REY/2026-09-13_REY_Product_Specification_v2.0.md).
- * Most of what Rey depends on is NOT here, because it is shared work and
+ * Most of what Strenn depends on is NOT here, because it is shared work and
  * already lives on the read or engine manifests. Duplicating it here would let
  * the same step exist twice and disagree.
  *
@@ -13,7 +13,7 @@ import type { Step } from './buildout-types'
  * arranges these steps, together with the read and engine steps, into the
  * order they are actually built. Update a step's status HERE.
  *
- * Section numbers in notes refer to the Rey specification.
+ * Section numbers in notes refer to the Strenn specification.
  *
  * Added 14 Sep 2026.
  */
@@ -22,7 +22,7 @@ export const REY_STEPS: Step[] = [
   {
     id: 'rey-origin-recovered',
     title: 'The 2024 origin recovered',
-    description: 'The original November 2024 Rey concept reconstructed and filed, so the later narrowing is visible.',
+    description: 'The original November 2024 Strenn concept reconstructed and filed, so the later narrowing is visible.',
     status: 'shipped',
     shippedAt: '2026-09-13',
     effort: 'S',
@@ -37,10 +37,10 @@ export const REY_STEPS: Step[] = [
     shippedAt: '2026-09-14',
     effort: 'M',
     surfaces: ['Dropbox 05_REY/2026-09-13_REY_Product_Specification_v2.0.md'],
-    notes: 'Supersedes the two April 2026 documents, which had Rey as a delivery layer. Rey is now the whole product. The spec grows by section and is never rewritten.',
+    notes: 'Supersedes the two April 2026 documents, which had Strenn as a delivery layer. Strenn is now the whole product. The spec grows by section and is never rewritten.',
   },
 
-  /* ── Stage 1: Rey on the web ─────────────────────────────── */
+  /* ── Stage 1: Strenn on the web ─────────────────────────────── */
   {
     id: 'rey-consumer-read',
     title: 'The consumer read',
@@ -52,7 +52,7 @@ export const REY_STEPS: Step[] = [
   {
     id: 'rey-progressive-intake',
     title: 'Progressive intake',
-    description: '30 to 40 questions up front for a defensible read in about fifteen minutes, the rest asked by Rey across her first weeks.',
+    description: '30 to 40 questions up front for a defensible read in about fifteen minutes, the rest asked by Strenn across her first weeks.',
     status: 'planned',
     effort: 'M',
     blockedBy: 'minimum-question-set',
@@ -102,7 +102,7 @@ export const REY_STEPS: Step[] = [
   {
     id: 'rey-consent-privacy',
     title: 'Tiered consent and the privacy policy',
-    description: 'Run and improve Rey required; research and trial invitations her choice; her data never sold.',
+    description: 'Run and improve Strenn required; research and trial invitations her choice; her data never sold.',
     status: 'planned',
     effort: 'M',
     notes: 'A lawyer reviews it before launch. Consent cannot be retrofitted onto existing users, so this must be right on day one. Includes the clause that data moves with the business under the same promises if it is acquired. Spec 15.4 to 15.6.',
@@ -110,7 +110,7 @@ export const REY_STEPS: Step[] = [
   {
     id: 'rey-coachless-position',
     title: 'The position on running with no coach',
-    description: 'A formal clinical and liability position, and insurance, for a product where nobody reviews what Rey tells her.',
+    description: 'A formal clinical and liability position, and insurance, for a product where nobody reviews what Strenn tells her.',
     status: 'planned',
     effort: 'M',
     notes: 'A lawyer\'s work. Required before anyone pays.',
@@ -125,14 +125,14 @@ export const REY_STEPS: Step[] = [
   },
   {
     id: 'rey-name-voice',
-    title: 'Rey\'s name and voice',
+    title: 'Strenn\'s name and voice',
     description: 'The actual name and the actual voice. Female, warm but direct is already decided.',
     status: 'planned',
     effort: 'S',
-    notes: 'Brand decision, Kade\'s call. Governs every line Rey says. A synthetic voice needs a licence for commercial use, and a voice modelled on a real person needs that person\'s written consent. Spec 10.1.',
+    notes: 'Brand decision, Kade\'s call. Governs every line Strenn says. A synthetic voice needs a licence for commercial use, and a voice modelled on a real person needs that person\'s written consent. Spec 10.1.',
   },
 
-  /* ── Stage 2: Rey in her ear ─────────────────────────────── */
+  /* ── Stage 2: Strenn in her ear ─────────────────────────────── */
   {
     id: 'rey-phone-app',
     title: 'The phone app',
@@ -155,12 +155,12 @@ export const REY_STEPS: Step[] = [
     description: 'Warm-up, each exercise introduced with one cue, tempo called, effort asked as easy, about right or hard, rest timed, logged from the conversation.',
     status: 'planned',
     effort: 'M',
-    notes: 'Rey paces tempo rather than counting reps, because it cannot see her. Spec 10.5 to 10.10.',
+    notes: 'Strenn paces tempo rather than counting reps, because it cannot see her. Spec 10.5 to 10.10.',
   },
   {
     id: 'rey-override-rules',
-    title: 'When she can overrule Rey',
-    description: 'Amber: yes, with a warning. Red: no, and Rey explains why. Pain stops the exercise immediately.',
+    title: 'When she can overrule Strenn',
+    description: 'Amber: yes, with a warning. Red: no, and Strenn explains why. Pain stops the exercise immediately.',
     status: 'planned',
     effort: 'S',
     blockedBy: 'session-readiness-adapts',
@@ -169,7 +169,7 @@ export const REY_STEPS: Step[] = [
   {
     id: 'rey-music-ducking',
     title: 'Music ducking',
-    description: 'Her music lowers when Rey speaks and comes back afterwards, across her own music apps.',
+    description: 'Her music lowers when Strenn speaks and comes back afterwards, across her own music apps.',
     status: 'planned',
     effort: 'M',
     notes: 'Critical and easy to overlook. If she has to choose between her playlist and her coach, she chooses the playlist. Spec 10.11.',
@@ -193,10 +193,10 @@ export const REY_STEPS: Step[] = [
   {
     id: 'rey-first-refusal',
     title: 'The first refusal, planned into week one',
-    description: 'Her first week is shaped so she experiences Rey holding a genuine line.',
+    description: 'Her first week is shaped so she experiences Strenn holding a genuine line.',
     status: 'planned',
     effort: 'S',
-    notes: 'Must be a real limit her read supports, never invented to make a point. If her first week is all green days she never discovers what makes Rey different. Spec 11.5.',
+    notes: 'Must be a real limit her read supports, never invented to make a point. If her first week is all green days she never discovers what makes Strenn different. Spec 11.5.',
   },
   {
     id: 'rey-injury-disclosure',
@@ -205,29 +205,29 @@ export const REY_STEPS: Step[] = [
     status: 'planned',
     effort: 'S',
     blockedBy: 'session-soreness-triage',
-    notes: 'Rey cannot see her. If telling Rey feels like it will cost her a month, she will hide it. Anything significant pauses that area and sends her to a physiotherapist or GP. Rey is not a rehabilitation tool. Spec 13.3.',
+    notes: 'Strenn cannot see her. If telling Strenn feels like it will cost her a month, she will hide it. Anything significant pauses that area and sends her to a physiotherapist or GP. Strenn is not a rehabilitation tool. Spec 13.3.',
   },
   {
     id: 'rey-distress-tested',
     title: 'Distress response, tested',
-    description: 'Rey recognises distress, suggests her GP for low mood, and gives Lifeline 13 11 14 or 000 in a crisis.',
+    description: 'Strenn recognises distress, suggests her GP for low mood, and gives Lifeline 13 11 14 or 000 in a crisis.',
     status: 'planned',
     effort: 'M',
-    notes: 'A responsibility, not a feature. Rey never counsels or diagnoses. Must be proven to work before launch, not assumed. Spec 13.9.',
+    notes: 'A responsibility, not a feature. Strenn never counsels or diagnoses. Must be proven to work before launch, not assumed. Spec 13.9.',
   },
 
   /* ── Stage 3: the loop gets smart ────────────────────────── */
   {
     id: 'rey-between-sessions',
-    title: 'Rey answers from her read, any time',
-    description: 'She asks why she is so tired at nine at night, and Rey answers from her read rather than from the internet.',
+    title: 'Strenn answers from her read, any time',
+    description: 'She asks why she is so tired at nine at night, and Strenn answers from her read rather than from the internet.',
     status: 'planned',
     effort: 'L',
-    notes: 'The capability no competitor can offer, because none has a read to answer from. When a question is outside her read or belongs with a clinician, Rey says so. Spec 12.7.',
+    notes: 'The capability no competitor can offer, because none has a read to answer from. When a question is outside her read or belongs with a clinician, Strenn says so. Spec 12.7.',
   },
   {
     id: 'rey-notices',
-    title: 'Rey notices things',
+    title: 'Strenn notices things',
     description: 'Small weekly observations drawn from her own record.',
     status: 'planned',
     effort: 'M',
@@ -279,28 +279,28 @@ export const REY_STEPS: Step[] = [
   },
   {
     id: 'rey-trade-mark',
-    title: 'Clear, then file, the Rey name',
+    title: 'Clear, then file, the Strenn name',
     description: 'A clearance search before any brand money is spent, then filing, the domain and the social handles.',
     status: 'in_progress',
     effort: 'M',
-    notes: 'FIRST CHECK 14 Sep: REY itself looks registrable in Australia (no live REY mark in classes 9, 41, 42 or 44), but the name is not safe to build on. RAY (Ray Fitness Systems Inc, US, funded, rayfit.com, since 2024) is a voice-guided AI personal trainer that adapts to injuries: identical sound, near-identical product. KC REY Fitness (Kasey Tapara, NZ/AU) is a fat loss coaching app for women on Trainerize. Every obvious domain is taken (rey.com, rey.app, rey.ai, rey.health, rey.com.au, heyrey.com, getrey.com, reyapp.com); rey.fit, meetrey.com and heyrey.com.au were unregistered. Recommendation: choose a new name and run the same checks, then an attorney clearance before filing. Not covered by the Body Recode trade mark step. "Rey" is short and common, so a conflict is likely and must be found before the name is built into an app, a domain and marketing. Relevant classes are likely 9, 41, 42 and 44.',
+    notes: 'NAME CHOSEN 14 Sep: STRENN, after REY was checked and rejected. REY itself looked registrable in Australia, but RAY (Ray Fitness Systems Inc, US, funded, since 2024) is a voice-guided AI personal trainer that adapts to injuries, which is an identical sound on a near-identical product, and KC REY Fitness is a fat loss coaching app for women. Every obvious REY domain was taken. A fresh brand round put STRENN cleanest: no live marks in Australia or the US, no apps using it, and getstrenn.com and strenn.com.au both free. SINEW and READE were the runners-up, and Ballast, Mettle, Kairos, Cipher and about twenty others were ruled out on conflicts. STILL OPEN: an attorney clearance in classes 9, 41, 42 and 44 before filing, plus the domains and the social handles. It is a working name until that comes back.',
   },
   {
     id: 'rey-brand-decision',
-    title: 'How Rey relates to Body Recode',
-    description: 'Whether Rey is its own brand, "Rey, powered by Body Recode", or sits under Body Recode, and the visual identity that follows.',
+    title: 'How Strenn relates to Body Recode',
+    description: 'Whether Strenn is its own brand, "Strenn, powered by Body Recode", or sits under Body Recode, and the visual identity that follows.',
     status: 'planned',
     effort: 'S',
-    notes: 'Brand decision, Kade\'s call. Affects the trade mark, the landing page, the app and whether an acquirer is buying Rey or Body Recode.',
+    notes: 'Brand decision, Kade\'s call. Affects the trade mark, the landing page, the app and whether an acquirer is buying Strenn or Body Recode.',
   },
   {
     id: 'rey-landing-site',
-    title: 'Rey\'s website',
+    title: 'Strenn\'s website',
     description: 'The pages she lands on, signs up from, and reads before paying.',
     status: 'planned',
     effort: 'M',
     blockedBy: 'rey-claims-language',
-    notes: 'Every word must stay inside the wellness and coaching claims that keep Rey outside medical device regulation. See the claims step.',
+    notes: 'Every word must stay inside the wellness and coaching claims that keep Strenn outside medical device regulation. See the claims step.',
   },
 
   /* ── Stage 1: product gaps found in the 14 Sep audit ─────────── */
@@ -340,15 +340,15 @@ export const REY_STEPS: Step[] = [
   {
     id: 'rey-support',
     title: 'Support, and the route to a human',
-    description: 'Rey answers "how do I" questions; billing, bad experiences and anything Rey should not answer reach a person within one business day.',
+    description: 'Strenn answers "how do I" questions; billing, bad experiences and anything Strenn should not answer reach a person within one business day.',
     status: 'planned',
     effort: 'S',
-    notes: 'At launch the person is Kade. Needs an inbox, a written process and a way for Rey to hand over. Spec 7.3 and 15.7.',
+    notes: 'At launch the person is Kade. Needs an inbox, a written process and a way for Strenn to hand over. Spec 7.3 and 15.7.',
   },
   {
     id: 'rey-accessibility',
     title: 'Accessibility',
-    description: 'Adjustable text, captions for anything Rey says, nothing conveyed by colour alone, usable with a screen reader.',
+    description: 'Adjustable text, captions for anything Strenn says, nothing conveyed by colour alone, usable with a screen reader.',
     status: 'planned',
     effort: 'S',
     notes: 'Spec 15.9. The Disability Discrimination Act applies to online services.',
@@ -366,7 +366,7 @@ export const REY_STEPS: Step[] = [
   {
     id: 'rey-clinical-advisor',
     title: 'An independent clinician reviews the doctrine before launch',
-    description: 'A women\'s health GP or sports physician reviews what Rey will tell women, before any woman pays.',
+    description: 'A women\'s health GP or sports physician reviews what Strenn will tell women, before any woman pays.',
     status: 'planned',
     effort: 'M',
     notes: 'For safety, credibility and liability. The peer review portal already exists and is ready to invite reviewers, so the mechanism is built; the reviewer is not chosen.',
@@ -374,18 +374,18 @@ export const REY_STEPS: Step[] = [
   {
     id: 'rey-pre-exercise-screening',
     title: 'Pre-exercise screening before any training',
-    description: 'The standard adult pre-exercise screen, with anyone flagged needing clearance from a doctor before Rey programs anything.',
+    description: 'The standard adult pre-exercise screen, with anyone flagged needing clearance from a doctor before Strenn programs anything.',
     status: 'planned',
     effort: 'M',
-    notes: 'The coaching practice uses a health declaration and medical clearance with Kade checking. Rey has no Kade. The recognised tool is the Adult Pre-Exercise Screening System from Exercise and Sports Science Australia, Fitness Australia and Sports Medicine Australia. Probably the single most important liability control for a coachless training product.',
+    notes: 'The coaching practice uses a health declaration and medical clearance with Kade checking. Strenn has no Kade. The recognised tool is the Adult Pre-Exercise Screening System from Exercise and Sports Science Australia, Fitness Australia and Sports Medicine Australia. Probably the single most important liability control for a coachless training product.',
   },
   {
     id: 'rey-pregnancy-screen',
     title: 'Pregnancy, postpartum and breastfeeding at intake',
-    description: 'Asked at the start, with Rey declining and explaining rather than programming.',
+    description: 'Asked at the start, with Strenn declining and explaining rather than programming.',
     status: 'planned',
     effort: 'S',
-    notes: 'Spec 13.6 covers becoming pregnant while subscribed. This covers already being pregnant or postpartum at signup. The coaching intake gained a pregnant-now coach alert on 13 Sep; Rey needs the consumer version, which has no coach to alert.',
+    notes: 'Spec 13.6 covers becoming pregnant while subscribed. This covers already being pregnant or postpartum at signup. The coaching intake gained a pregnant-now coach alert on 13 Sep; Strenn needs the consumer version, which has no coach to alert.',
   },
   {
     id: 'rey-disordered-eating-screen',
@@ -398,7 +398,7 @@ export const REY_STEPS: Step[] = [
   {
     id: 'rey-medication-handling',
     title: 'Medications that change the rules',
-    description: 'Decide what Rey declines and what it adjusts for medications that alter appetite, heart rate, recovery or hormones.',
+    description: 'Decide what Strenn declines and what it adjusts for medications that alter appetite, heart rate, recovery or hormones.',
     status: 'planned',
     effort: 'S',
     notes: 'Appetite-suppressing weight medications, hormone therapy, thyroid medication, beta blockers and some antidepressants all change what safe training and nutrition look like. Medication capture already exists in the intake; the consumer rules do not. Internal only: medication names are never used in marketing.',
@@ -406,7 +406,7 @@ export const REY_STEPS: Step[] = [
   {
     id: 'rey-adverse-events',
     title: 'Recording and responding to harm',
-    description: 'A log of anything Rey said that hurt someone, who reviews it, and when it changes the doctrine.',
+    description: 'A log of anything Strenn said that hurt someone, who reviews it, and when it changes the doctrine.',
     status: 'planned',
     effort: 'S',
     notes: 'Clinical governance. The doctrine\'s own rule is that evidence wins over doctrine; this is where that evidence is recorded. Includes how a complaint about harm is received and answered.',
@@ -415,8 +415,8 @@ export const REY_STEPS: Step[] = [
   /* ── Stage 1: legal, privacy and tax (14 Sep audit) ───────────── */
   {
     id: 'rey-tga-samd-position',
-    title: 'Is Rey a regulated medical device',
-    description: 'A regulatory opinion on whether Rey stays inside the wellness and coaching software exclusions, and what it may therefore say.',
+    title: 'Is Strenn a regulated medical device',
+    description: 'A regulatory opinion on whether Strenn stays inside the wellness and coaching software exclusions, and what it may therefore say.',
     status: 'planned',
     effort: 'M',
     notes: 'The TGA regulates software that diagnoses or guides treatment of a condition as a medical device. General wellness software (exclusion 14B) and behavioural change or coaching software (exclusion 14C) are excluded, but only while they make no claims about a serious disease or condition, and every function in the product must qualify for the whole product to be excluded. The risk functions are interpreting perimenopause symptoms and interpreting bloodwork. Get the opinion before building them, because the answer shapes what they are allowed to say.',
@@ -451,7 +451,7 @@ export const REY_STEPS: Step[] = [
     description: 'The privacy policy explains the decisions software makes about her using her information.',
     status: 'planned',
     effort: 'S',
-    notes: 'Required from 10 December 2026 under the Privacy and Other Legislation Amendment Act 2024: a privacy policy must describe decisions made or substantially supported by a computer program that could significantly affect someone. Rey restricting her training, refusing her, or setting nutrition targets very likely qualifies. The regulator can issue infringement notices for a non-compliant policy.',
+    notes: 'Required from 10 December 2026 under the Privacy and Other Legislation Amendment Act 2024: a privacy policy must describe decisions made or substantially supported by a computer program that could significantly affect someone. Strenn restricting her training, refusing her, or setting nutrition targets very likely qualifies. The regulator can issue infringement notices for a non-compliant policy.',
   },
   {
     id: 'rey-state-health-records',
@@ -463,7 +463,7 @@ export const REY_STEPS: Step[] = [
   },
   {
     id: 'rey-ai-disclosure',
-    title: 'Rey says it is software',
+    title: 'Strenn says it is software',
     description: 'She always knows she is talking to software, never to a person, and the AI providers\' own rules for health use are met.',
     status: 'planned',
     effort: 'S',

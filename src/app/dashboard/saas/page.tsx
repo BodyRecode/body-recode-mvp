@@ -409,7 +409,7 @@ function FoundingTest({ founding: f }: { founding: import('@/lib/rey-founding').
 
   return (
     <>
-      <SectionLabel>Rey price test · bodyrecode.au/founding</SectionLabel>
+      <SectionLabel>Strenn price test · bodyrecode.au/founding</SectionLabel>
       <Card className="mb-4" accent={verdict.accent} tint={verdict.accent !== 'neutral'}>
         <div className="flex items-start gap-4 flex-wrap">
           <span className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(27,109,252,0.12)' }}>

@@ -620,7 +620,7 @@ const MANUAL_AUTOMATIONS = [
   },
   {
     id: 'rey-founding-confirmation',
-    name: 'Founding List Confirmation (Rey price test)',
+    name: 'Founding List Confirmation (Strenn price test)',
     description: 'bodyrecode.au/founding: a woman answers the scorecard questions plus four unscored ones (how soon, spend in the last year, where she would train, a coach in her ear), sees her readiness and likely pattern, then the new app at $199 a year or $29 a month. The moment her result shows, saw_price_at is written; that is the denominator of the pass mark. Joining the founding list sends ONE branded confirmation (BCC Kade): founding price kept while subscribed, email when it opens, no app name, no date. Rows live in rey_founding_interest, not leads, so nothing here enters the scorecard sequence or the Pipeline. Results on the SaaS Launch board against the pass mark set before it ran. Added 2026-09-14.',
     trigger: 'POST /api/founding (join, first time only)',
     steps: 1,
