@@ -134,6 +134,48 @@ export const INTAKE_SECTIONS: Section[] = [
     ],
   },
   {
+    id: 'health_screen',
+    title: 'Health screen',
+    description: 'A short screen before the long part. These are the questions that decide whether something should be looked at by a doctor before we build you a plan, so they are asked first, while you are fresh, rather than at the end of two hundred sliders.\n\nNone of it is a test and none of it produces a result. We cannot tell you anything about your thyroid, your bones or your iron from a questionnaire, and we will not try. All these answers can do is tell us to stop and send you to your GP, which is a good outcome, not a bad one.\n\nThree to four minutes. Tick what applies, leave the rest.',
+    questions: [
+      // Thyroid screen, added 20 Sep 2026 from research pass T1.
+      //
+      // These do NOT exist to work out whether she has a thyroid problem. A
+      // thirteen-symptom score separates underactive thyroid function from
+      // normal function at 0.91 in younger men and 0.64 in older women, which
+      // in half our audience is close to a coin toss, and only three of the
+      // thirteen symptoms were more common in the people who had it. So the
+      // questionnaire may TRIGGER a referral and may never produce a
+      // likelihood, a score or a pattern.
+      //
+      // Most of this is the case-finding list Australian guidelines already
+      // use, and we were collecting some of it and doing nothing with it.
+      // tq_changed asks about CHANGE over the past year rather than current
+      // state, because change is the only framing with published
+      // discriminating value (Canaris 1997).
+      { id: 'tq_history', text: 'Tick anything that applies to you.', type: 'multiselect', required: false, options: ['A thyroid problem in the past', 'Thyroid surgery or radioactive iodine treatment', 'A parent, brother, sister or child with a thyroid problem', 'Type 1 diabetes', 'Coeliac disease', 'Another autoimmune condition', 'A lump or swelling in the front of my neck', 'Radiotherapy to my neck', 'I take amiodarone or lithium', 'Down syndrome or Turner syndrome', 'An irregular heartbeat I have been told about', 'None of these'] },
+      { id: 'tq_medication', text: 'Do you take thyroid medication? If so, which one, and roughly when was your last thyroid blood test?', type: 'text', required: false },
+      { id: 'tq_changed', text: 'In the last 12 months, have any of these CHANGED for you? Tick any that have.', type: 'multiselect', required: false, options: ['Feeling the cold more than people around me', 'Bowels slower', 'Skin drier', 'Voice hoarser or deeper', 'Breathless or wheezy on stairs', 'Something feeling stuck in my throat', 'Tiredness that sleep does not fix', 'Heart racing, pounding or skipping', 'Shaking or tremor', 'Feeling hot or sweating more than others', 'Weight dropping without me changing anything', 'None of these'] },
+      { id: 'tq_products', text: 'Do you take any of these?', type: 'multiselect', required: false, options: ['Biotin, or a hair, skin and nails supplement', 'Kelp, seaweed or iodine', 'A product sold for thyroid health, a glandular product, or "natural thyroid"', 'A high-dose selenium supplement', 'None of these'] },
+
+      // Bone screen, added 20 Sep 2026 from research pass B1. Five questions,
+      // each tied to something it changes, and written so she can answer
+      // without us naming anything.
+      //
+      // bq_fracture is the one that matters most: in Australia a bone broken
+      // from a fall from standing height counts as osteoporosis on its own,
+      // whatever a scan says, and it roughly doubles the risk of the next one.
+      //
+      // bq_height is the one a coach can miss by not asking. It is the pattern
+      // that can be a spinal fracture.
+      { id: 'bq_fracture', text: 'Since the age of 50, have you broken any bone from a fall from standing height or less? And at any age, have you broken a bone from a minor knock or fall?', type: 'select', required: false, options: ['No', 'Yes, since I turned 50', 'Yes, at some point from a minor knock or fall', 'Not sure'] },
+      { id: 'bq_periods_age', text: 'At what age did your periods stop or become irregular? If you have had your ovaries or uterus removed, at what age?', type: 'text', required: false, showIf: { id: 'sex_at_birth', notIn: ['Male'] } },
+      { id: 'bq_medicines', text: 'Are you taking any bone medicine, any steroid tablets or inhalers, or any medicine for breast or prostate cancer? If you are on a six-monthly bone injection, when was your last one?', type: 'text', required: false },
+      { id: 'bq_height_back', text: 'Have you lost height, noticed your upper back rounding, or had new mid-back or lower-back pain?', type: 'multiselect', required: false, options: ['I have lost height', 'My upper back looks more rounded', 'New mid-back or lower-back pain', 'None of these'] },
+      { id: 'bq_calcium', text: 'Roughly how many serves of dairy or calcium-fortified food do you have a day? A serve is a glass of milk, a tub of yoghurt, or two slices of cheese.', type: 'select', required: false, options: ['None', 'About 1', 'About 2', '3 or more', 'Not sure'] },
+    ]
+  },
+  {
     id: 'fat_map',
     title: 'Section A: Body Pattern Signals',
     description: 'This section captures recurring physical and recovery patterns that may not always be obvious day to day. Answer based on your usual experience across recent months. Focus on patterns rather than temporary spikes or short-term changes. There are no right or wrong responses.\n\n0 = Not present · 1 = Mild · 2 = Moderate · 3 = Frequent · 4 = Strong / Consistent',
@@ -484,41 +526,6 @@ export const INTAKE_SECTIONS: Section[] = [
       { id: 'sup_24', text: 'I have been advised to limit stimulant use.', type: 'scale', scaleLabel: { low: 'Never', high: 'Daily / multiple times' } },
       { id: 'sup_25', text: 'I feel confident managing supplement intake.', type: 'scale', scaleLabel: { low: 'Never', high: 'Daily / multiple times' } },
 
-      // Thyroid screen, added 20 Sep 2026 from research pass T1.
-      //
-      // These do NOT exist to work out whether she has a thyroid problem. A
-      // thirteen-symptom score separates underactive thyroid function from
-      // normal function at 0.91 in younger men and 0.64 in older women, which
-      // in half our audience is close to a coin toss, and only three of the
-      // thirteen symptoms were more common in the people who had it. So the
-      // questionnaire may TRIGGER a referral and may never produce a
-      // likelihood, a score or a pattern.
-      //
-      // Most of this is the case-finding list Australian guidelines already
-      // use, and we were collecting some of it and doing nothing with it.
-      // tq_changed asks about CHANGE over the past year rather than current
-      // state, because change is the only framing with published
-      // discriminating value (Canaris 1997).
-      { id: 'tq_history', text: 'Tick anything that applies to you.', type: 'multiselect', required: false, options: ['A thyroid problem in the past', 'Thyroid surgery or radioactive iodine treatment', 'A parent, brother, sister or child with a thyroid problem', 'Type 1 diabetes', 'Coeliac disease', 'Another autoimmune condition', 'A lump or swelling in the front of my neck', 'Radiotherapy to my neck', 'I take amiodarone or lithium', 'Down syndrome or Turner syndrome', 'An irregular heartbeat I have been told about', 'None of these'] },
-      { id: 'tq_medication', text: 'Do you take thyroid medication? If so, which one, and roughly when was your last thyroid blood test?', type: 'text', required: false },
-      { id: 'tq_changed', text: 'In the last 12 months, have any of these CHANGED for you? Tick any that have.', type: 'multiselect', required: false, options: ['Feeling the cold more than people around me', 'Bowels slower', 'Skin drier', 'Voice hoarser or deeper', 'Breathless or wheezy on stairs', 'Something feeling stuck in my throat', 'Tiredness that sleep does not fix', 'Heart racing, pounding or skipping', 'Shaking or tremor', 'Feeling hot or sweating more than others', 'Weight dropping without me changing anything', 'None of these'] },
-      { id: 'tq_products', text: 'Do you take any of these?', type: 'multiselect', required: false, options: ['Biotin, or a hair, skin and nails supplement', 'Kelp, seaweed or iodine', 'A product sold for thyroid health, a glandular product, or "natural thyroid"', 'A high-dose selenium supplement', 'None of these'] },
-
-      // Bone screen, added 20 Sep 2026 from research pass B1. Five questions,
-      // each tied to something it changes, and written so she can answer
-      // without us naming anything.
-      //
-      // bq_fracture is the one that matters most: in Australia a bone broken
-      // from a fall from standing height counts as osteoporosis on its own,
-      // whatever a scan says, and it roughly doubles the risk of the next one.
-      //
-      // bq_height is the one a coach can miss by not asking. It is the pattern
-      // that can be a spinal fracture.
-      { id: 'bq_fracture', text: 'Since the age of 50, have you broken any bone from a fall from standing height or less? And at any age, have you broken a bone from a minor knock or fall?', type: 'select', required: false, options: ['No', 'Yes, since I turned 50', 'Yes, at some point from a minor knock or fall', 'Not sure'] },
-      { id: 'bq_periods_age', text: 'At what age did your periods stop or become irregular? If you have had your ovaries or uterus removed, at what age?', type: 'text', required: false, showIf: { id: 'sex_at_birth', notIn: ['Male'] } },
-      { id: 'bq_medicines', text: 'Are you taking any bone medicine, any steroid tablets or inhalers, or any medicine for breast or prostate cancer? If you are on a six-monthly bone injection, when was your last one?', type: 'text', required: false },
-      { id: 'bq_height_back', text: 'Have you lost height, noticed your upper back rounding, or had new mid-back or lower-back pain?', type: 'multiselect', required: false, options: ['I have lost height', 'My upper back looks more rounded', 'New mid-back or lower-back pain', 'None of these'] },
-      { id: 'bq_calcium', text: 'Roughly how many serves of dairy or calcium-fortified food do you have a day? A serve is a glass of milk, a tub of yoghurt, or two slices of cheese.', type: 'select', required: false, options: ['None', 'About 1', 'About 2', '3 or more', 'Not sure'] },
     ]
   },
   {

@@ -73,7 +73,7 @@ export function buildIntakeInviteEmail({
     )
     bodyParagraphs.push(
       emailBody(
-        'Give it 15 to 20 minutes when you have a quiet block. Most of it is sliders, so it moves quickly. There are no right or wrong answers, just where you are at now, not your best or worst days.',
+        'Give it 25 to 35 minutes when you have a quiet block. Most of it is sliders, so it moves quickly, and it saves as you go so you can stop and come back. There are no right or wrong answers, just where you are at now, not your best or worst days.',
         { bottom: 28 },
       ),
     )
@@ -85,7 +85,7 @@ export function buildIntakeInviteEmail({
     )
     bodyParagraphs.push(
       emailBody(
-        'It takes around 15 to 20 minutes and there are no right or wrong answers. Just answer based on your typical experience, not your best or worst days. This intake forms the foundation of everything we do together, so take your time with it.',
+        'It takes around 25 to 35 minutes, it saves as you go, and there are no right or wrong answers. Just answer based on your typical experience, not your best or worst days. This intake forms the foundation of everything we do together, so take your time with it.',
         { bottom: 28 },
       ),
     )
