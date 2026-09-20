@@ -357,17 +357,53 @@ async function checkWeeklyCheckinWrite(admin: ReturnType<typeof createAdminClien
 // `clients.active` is NOT the gate and must not be used here — see
 // src/lib/offboard-client.ts for why.
 
+/**
+ * Who counts as an active client, in one place.
+ *
+ * 20 September 2026. Four separate checks each wrote their own version of this
+ * and every one of them filtered on ended_at while ignoring frozen_at. So the
+ * daily report chased four offboarded clients to finish their intake, and two
+ * frozen ones to submit a check-in, for weeks.
+ *
+ * A report that lists people who are deliberately not being coached trains the
+ * reader to skim it, and the day a real client goes quiet that line looks
+ * exactly like the noise above it. That is the damage: not the wrong names, but
+ * what the wrong names do to the right ones.
+ *
+ * Written once so a check added later cannot forget the second condition.
+ */
+type ActiveClient = { id: string; name: string; coaching_started_at?: string | null; weekly_checkins_exempt?: boolean }
+
+async function loadActiveClients(
+  admin: ReturnType<typeof createAdminClient>,
+  opts: { startedOnly?: boolean; startedBefore?: string } = {},
+): Promise<ActiveClient[]> {
+  let q = admin
+    .from('clients')
+    .select('id, name, coaching_started_at, weekly_checkins_exempt')
+    .is('ended_at', null)
+    .is('frozen_at', null)
+
+  if (opts.startedOnly || opts.startedBefore) q = q.not('coaching_started_at', 'is', null)
+  if (opts.startedBefore) q = q.lt('coaching_started_at', opts.startedBefore)
+
+  const { data } = await q
+  return (data ?? []) as ActiveClient[]
+}
+
 async function checkClientsWithoutIntakeInvitation(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
   try {
-    const { data: clients, error } = await admin
+    const { data: withPortal, error } = await admin
       .from('clients')
-      .select('id, name, onboarding_token')
+      .select('id')
       .not('onboarding_token', 'is', null)
-      .is('ended_at', null)
 
     if (error) {
       return { name: 'Clients — Intake Invitation', status: 'info', detail: 'Could not query clients table' }
     }
+
+    const portalIds = new Set((withPortal ?? []).map((c: { id: string }) => c.id))
+    const clients = (await loadActiveClients(admin)).filter(c => portalIds.has(c.id))
 
     if (!clients || clients.length === 0) {
       return { name: 'Clients — Intake Invitation', status: 'ok', detail: 'No clients in the system yet' }
@@ -397,13 +433,9 @@ async function checkClientsWithoutIntakeInvitation(admin: ReturnType<typeof crea
 
 async function checkActiveClientsWithoutProgram(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
   try {
-    const { data: activeClients, error } = await admin
-      .from('clients')
-      .select('id, name')
-      .not('coaching_started_at', 'is', null)
-      .is('ended_at', null)
+    const activeClients = await loadActiveClients(admin, { startedOnly: true })
 
-    if (error || !activeClients || activeClients.length === 0) {
+    if (activeClients.length === 0) {
       return { name: 'Active Clients — Programs', status: 'ok', detail: 'No active clients in the system yet' }
     }
 
@@ -432,13 +464,9 @@ async function checkActiveClientsWithoutProgram(admin: ReturnType<typeof createA
 
 async function checkActiveClientsWithoutNutrition(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
   try {
-    const { data: activeClients, error } = await admin
-      .from('clients')
-      .select('id, name')
-      .not('coaching_started_at', 'is', null)
-      .is('ended_at', null)
+    const activeClients = await loadActiveClients(admin, { startedOnly: true })
 
-    if (error || !activeClients || activeClients.length === 0) {
+    if (activeClients.length === 0) {
       return { name: 'Active Clients — Nutrition', status: 'ok', detail: 'No active clients in the system yet' }
     }
 
@@ -508,7 +536,12 @@ async function checkPendingIntakes(admin: ReturnType<typeof createAdminClient>):
       return { name: 'Intake — Pending 10+ Days', status: 'info', detail: 'Could not query intake_invitations table' }
     }
 
-    const stale = data ?? []
+    // Only chase somebody who is still being coached. Four offboarded clients
+    // were listed here every day for weeks because this asked the invitation
+    // table what was outstanding and never asked whether the person was still
+    // a client.
+    const active = new Set((await loadActiveClients(admin)).map(c => c.id))
+    const stale = (data ?? []).filter((i: { client_id: string }) => active.has(i.client_id))
     if (stale.length > 0) {
       const names = stale.map((i: { clients: { name: string }[] | { name: string } | null }) => {
         const c = i.clients
@@ -533,14 +566,15 @@ async function checkClientsWithMissedCheckins(admin: ReturnType<typeof createAdm
   try {
     const fourteenDaysAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString()
 
-    const { data: activeClients, error } = await admin
-      .from('clients')
-      .select('id, name, coaching_started_at')
-      .not('coaching_started_at', 'is', null)
-      .lt('coaching_started_at', fourteenDaysAgo)
-      .is('ended_at', null)
+    const started = await loadActiveClients(admin, { startedBefore: fourteenDaysAgo })
 
-    if (error || !activeClients || activeClients.length === 0) {
+    // A client who will not do check-ins by arrangement is not a client who has
+    // stopped. Chasing them every day for seven weeks is how a report stops
+    // being read, and then a real silence looks like all the others.
+    const activeClients = started.filter(c => !c.weekly_checkins_exempt)
+    const exemptCount = started.length - activeClients.length
+
+    if (activeClients.length === 0) {
       return { name: 'Active Clients — Check-Ins', status: 'ok', detail: 'No clients have been active for 14+ days yet' }
     }
 
@@ -561,7 +595,11 @@ async function checkClientsWithMissedCheckins(admin: ReturnType<typeof createAdm
       }
     }
 
-    return { name: 'Active Clients — Check-Ins', status: 'ok', detail: `All ${activeClients.length} active client${activeClients.length === 1 ? '' : 's'} have checked in within the last 14 days` }
+    return {
+      name: 'Active Clients — Check-Ins',
+      status: 'ok',
+      detail: `All ${activeClients.length} active client${activeClients.length === 1 ? '' : 's'} have checked in within the last 14 days${exemptCount > 0 ? `, and ${exemptCount} is excluded by arrangement` : ''}`,
+    }
   } catch (e) {
     return { name: 'Active Clients — Check-Ins', status: 'info', detail: String(e) }
   }
