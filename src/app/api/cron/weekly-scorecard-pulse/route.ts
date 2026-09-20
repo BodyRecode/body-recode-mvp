@@ -7,6 +7,7 @@ import {
 } from '@/lib/scorecard'
 import { buildWeeklyPulseEmail } from '@/lib/scorecard-pulse-email'
 import { coach } from '@/config/tenant'
+import { withJobRun } from '@/lib/job-run'
 
 /**
  * Weekly Pulse — the CEO Dashboard's notification + pre-read.
@@ -19,7 +20,7 @@ import { coach } from '@/config/tenant'
  *   2. Compute the scorecard + persist this (just-closed) week's snapshot.
  *   3. Build the week-over-week digest and email it to kade@bodyrecode.au.
  */
-export async function GET(request: NextRequest) {
+async function handler(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
@@ -63,3 +64,9 @@ export async function GET(request: NextRequest) {
     snapshotRows: data.flow.length + data.snapshots.length,
   })
 }
+
+/**
+ * Recorded on every run, 20 Sep 2026. A failure emails immediately; a run that
+ * stops happening at all is reported by the daily health check.
+ */
+export const GET = withJobRun('weekly-scorecard-pulse', handler)

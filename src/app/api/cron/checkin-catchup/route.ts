@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { runCheckinCatchup, PRE_DEPLOY_CUTOFF } from '@/lib/checkin-catchup'
+import { withJobRun } from '@/lib/job-run'
 
 /**
  * Daily Body Decode Check-In catch-up for the pre-deploy cohort.
@@ -22,7 +23,7 @@ import { runCheckinCatchup, PRE_DEPLOY_CUTOFF } from '@/lib/checkin-catchup'
  *
  * Auth: Bearer ${CRON_SECRET}.
  */
-export async function GET(request: NextRequest) {
+async function handler(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -52,3 +53,9 @@ export async function GET(request: NextRequest) {
     )
   }
 }
+
+/**
+ * Recorded on every run, 20 Sep 2026. A failure emails immediately; a run that
+ * stops happening at all is reported by the daily health check.
+ */
+export const GET = withJobRun('checkin-catchup', handler)

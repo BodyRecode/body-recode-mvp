@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test:job-monitoring": "npx tsx scripts/test-job-monitoring.ts",
     "test:nutrition": "npx tsx scripts/test-nutrition-corpus.ts",
     "test:research-lens": "npx tsx scripts/test-research-lens.ts",
     "test:doctrine-params": "npx tsx scripts/test-doctrine-parameters-validator.ts && npx tsx scripts/test-doctrine-parameters-runtime.ts && npx tsx scripts/test-doctrine-parameters-presets-and-preview.ts",

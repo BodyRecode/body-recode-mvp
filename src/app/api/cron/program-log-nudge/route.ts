@@ -4,6 +4,7 @@ import { sendSms, formatPhone } from '@/lib/twilio'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
 import { parsePrescribedSessions, currentBlockWeek, todayBrisbaneDayName, sessionMatchesDay } from '@/lib/workout-logging'
+import { withJobRun } from '@/lib/job-run'
 
 /**
  * Evening SMS nudge: if TODAY is a client's prescribed training day and they
@@ -20,7 +21,7 @@ import { parsePrescribedSessions, currentBlockWeek, todayBrisbaneDayName, sessio
  * the existing checkin-window crons — we gate on the client having a phone,
  * and add our own dedup + decency cap here: at most 1 nudge/day and 3/7 days.
  */
-export async function GET(request: NextRequest) {
+async function handler(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
@@ -146,3 +147,9 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json({ smsSent, skippedNotTrainingDay, skippedAlreadyLogged, skippedNoProgram, skippedCapped })
 }
+
+/**
+ * Recorded on every run, 20 Sep 2026. A failure emails immediately; a run that
+ * stops happening at all is reported by the daily health check.
+ */
+export const GET = withJobRun('program-log-nudge', handler)

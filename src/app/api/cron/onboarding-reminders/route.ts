@@ -9,6 +9,7 @@ import {
 } from '@/lib/email-shell'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
+import { withJobRun } from '@/lib/job-run'
 
 type Threshold = 3 | 7 | 14
 
@@ -87,7 +88,7 @@ function pickThreshold(days: number): Threshold | null {
   return null
 }
 
-export async function GET(request: NextRequest) {
+async function handler(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
@@ -225,3 +226,9 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json({ sent, considered })
 }
+
+/**
+ * Recorded on every run, 20 Sep 2026. A failure emails immediately; a run that
+ * stops happening at all is reported by the daily health check.
+ */
+export const GET = withJobRun('onboarding-reminders', handler)

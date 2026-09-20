@@ -23,6 +23,7 @@ import { dispatchProgressCheckIfDue } from '@/lib/progress-check-dispatch'
 import { sendProgressCheckHeadsUpIfDue } from '@/lib/progress-check-heads-up'
 import { fromCoach } from '@/lib/email-shell'
 import { coach } from '@/config/tenant'
+import { withJobRun } from '@/lib/job-run'
 
 /**
  * A ceiling on one run. Nothing should ever produce more than a handful, so a
@@ -32,7 +33,7 @@ import { coach } from '@/config/tenant'
  */
 const MAX_PER_RUN = 5
 
-export async function GET(request: NextRequest) {
+async function handler(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
@@ -95,3 +96,9 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json({ ok: true, sent, held, headsUp })
 }
+
+/**
+ * Recorded on every run, 20 Sep 2026. A failure emails immediately; a run that
+ * stops happening at all is reported by the daily health check.
+ */
+export const GET = withJobRun('progress-check-invites', handler)

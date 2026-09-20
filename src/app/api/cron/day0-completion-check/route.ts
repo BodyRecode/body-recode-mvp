@@ -9,6 +9,7 @@ import {
   emailStatusCard, emailFeaturedCard,
   EMAIL_FF, EMAIL_BODY_SOFT, EMAIL_MUTED,
 } from '@/lib/email-shell'
+import { withJobRun } from '@/lib/job-run'
 
 /**
  * Day 0 scorecard completion check.
@@ -25,7 +26,7 @@ import {
  * The one-off "nudged cohort" tracking from the original script is deliberately
  * dropped. That was a July 2026 experiment and it has served its purpose.
  */
-export async function GET() {
+async function handler() {
   const supabase = createAdminClient()
 
   const since = new Date(Date.now() - 21 * 24 * 60 * 60 * 1000).toISOString()
@@ -102,3 +103,9 @@ ${emailFeaturedCard(pendingInner, { eyebrow: 'Still pending' })}
 
   return NextResponse.json({ total: all.length, done: done.length, pending: pending.length, rate })
 }
+
+/**
+ * Recorded on every run, 20 Sep 2026. A failure emails immediately; a run that
+ * stops happening at all is reported by the daily health check.
+ */
+export const GET = withJobRun('day0-completion-check', handler)

@@ -3082,3 +3082,79 @@ export const decodeDailyArcFunction = inngest.createFunction(
     }
   }
 )
+
+/**
+ * Every background function that exhausts its retries, in one place.
+ *
+ * 20 September 2026. Twenty-six functions run here and, until now, a function
+ * that gave up after its last retry told nobody. The work simply did not
+ * happen: a sequence step never sent, an auto-response never drafted, a lead
+ * never advanced. It is the same hole the scheduled jobs had, one layer down.
+ *
+ * Inngest publishes `inngest/function.failed` after the final retry, so one
+ * listener covers all of them, including any function added later. That is the
+ * point: a per-function try/catch would have to be remembered every time, and
+ * the failures that hurt are the ones nobody remembered to catch.
+ *
+ * Recorded in the same place as the scheduled jobs, so the daily health check
+ * reports both without knowing the difference.
+ */
+export const inngestFailureAlert = inngest.createFunction(
+  {
+    id: 'background-function-failed',
+    name: 'Alert · a background function gave up',
+    // One retry only. If the alert itself cannot send, retrying it many times
+    // just delays the next real alert behind it.
+    retries: 1,
+    triggers: [{ event: 'inngest/function.failed' }],
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async ({ event, step }: { event: any; step: any }) => {
+    const failedId: string = event?.data?.function_id ?? 'unknown function'
+    const message: string = event?.data?.error?.message ?? 'No message recorded'
+    const runId: string = event?.data?.run_id ?? ''
+
+    // A readable name rather than an identifier, because this is read by a
+    // person at seven in the morning, not by a machine.
+    const label = failedId
+      .replace(/^body-recode-/, '')
+      .replace(/-/g, ' ')
+      .replace(/^./, (c) => c.toUpperCase())
+
+    await step.run('record', async () => {
+      const admin = createAdminClient()
+      await admin.from('job_runs').insert({
+        job: `inngest:${failedId}`,
+        started_at: new Date().toISOString(),
+        finished_at: new Date().toISOString(),
+        status: 'failed',
+        error: message.slice(0, 2000),
+        summary: runId ? { run_id: runId } : null,
+        alerted_at: new Date().toISOString(),
+      })
+    })
+
+    await step.run('alert', async () => {
+      if (!process.env.RESEND_API_KEY) return
+      const { coach } = await import('@/config/tenant')
+      const resend = new Resend(process.env.RESEND_API_KEY)
+      const safe = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      await resend.emails.send({
+        from: `Body Recode System <${coach().email}>`,
+        to: coach().email,
+        subject: `Background function failed: ${label}`,
+        html: `
+          <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#141821">
+            <p style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#8A909B;margin:0 0 8px">Background function</p>
+            <h1 style="font-size:20px;margin:0 0 16px">${safe(label)} gave up</h1>
+            <p style="font-size:14px;line-height:1.6;margin:0 0 16px">It retried and failed every time. Whatever this run was due to do has not happened and will not happen by itself.</p>
+            <div style="background:#F7F8FA;border-left:3px solid #D94F4F;padding:12px 14px;border-radius:4px;font-size:13px;line-height:1.5;margin:0 0 16px">${safe(message)}</div>
+            ${runId ? `<p style="font-size:12px;color:#8A909B;margin:0 0 16px">Run ${safe(runId)}</p>` : ''}
+          </div>
+        `,
+      })
+    })
+
+    return { alerted: failedId }
+  },
+)

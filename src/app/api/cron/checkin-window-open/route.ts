@@ -11,8 +11,9 @@ import {
 import { sendSms, formatPhone } from '@/lib/twilio'
 import { logClientCommunication } from '@/lib/client-communications'
 import { appUrl } from '@/lib/app-url'
+import { withJobRun } from '@/lib/job-run'
 
-export async function GET(request: NextRequest) {
+async function handler(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
@@ -126,3 +127,9 @@ ${darkEmailSignature()}
 
   return NextResponse.json({ emailsSent, smsSent, skippedNoProgram })
 }
+
+/**
+ * Recorded on every run, 20 Sep 2026. A failure emails immediately; a run that
+ * stops happening at all is reported by the daily health check.
+ */
+export const GET = withJobRun('checkin-window-open', handler)

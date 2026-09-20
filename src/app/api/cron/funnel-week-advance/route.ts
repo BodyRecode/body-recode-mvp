@@ -43,6 +43,7 @@ import { fromCoach } from '@/lib/email-shell'
 import { buildBlueprintCheckinPromptEmail } from '@/lib/blueprint-emails'
 import { buildMembershipCheckinPromptEmail } from '@/lib/membership-emails'
 import { buildExtensionWeekEmail } from '@/lib/extension-emails'
+import { withJobRun } from '@/lib/job-run'
 
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000
 
@@ -69,7 +70,7 @@ function expectedWeek(startedAt: string, cap: number): number {
 
 type Advance = { product: string; email: string; from: string; to: string; emailed: boolean }
 
-export async function GET(request: NextRequest) {
+async function handler(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
@@ -242,3 +243,9 @@ export async function GET(request: NextRequest) {
     errors,
   })
 }
+
+/**
+ * Recorded on every run, 20 Sep 2026. A failure emails immediately; a run that
+ * stops happening at all is reported by the daily health check.
+ */
+export const GET = withJobRun('funnel-week-advance', handler)

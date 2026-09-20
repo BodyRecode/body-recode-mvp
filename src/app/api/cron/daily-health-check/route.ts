@@ -12,6 +12,7 @@ import {
   EMAIL_HAIRLINE, EMAIL_FF,
 } from '@/lib/email-shell'
 import { coach, brand } from '@/config/tenant'
+import { withJobRun } from '@/lib/job-run'
 
 type CheckStatus = 'ok' | 'fixed' | 'failed' | 'info'
 
@@ -1115,6 +1116,57 @@ async function checkGenerationFailures(admin: ReturnType<typeof createAdminClien
   }
 }
 
+/**
+ * The two ways a background job fails, 20 Sep 2026.
+ *
+ * A job that ran and threw is the easy case; it alerted at the time and this is
+ * the daily summary. A job that has stopped being scheduled at all is the one
+ * worth having: it raises no error anywhere, because nothing ran, so only a
+ * check that knows when each job was DUE can ever see it.
+ */
+async function checkBackgroundJobs(admin: ReturnType<typeof createAdminClient>): Promise<CheckResult> {
+  try {
+    const { jobHealth } = await import('@/lib/job-run')
+    const health = await jobHealth(admin, 24)
+
+    const problems: string[] = []
+    if (health.silent.length > 0) {
+      problems.push(
+        health.silent
+          .map(j => j.lastOk
+            ? `${j.label} has not run since ${new Date(j.lastOk).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane' })}`
+            : `${j.label} has never run`)
+          .join('; '),
+      )
+    }
+    if (health.failures.length > 0) {
+      const byJob = new Map<string, number>()
+      for (const f of health.failures) byJob.set(f.label, (byJob.get(f.label) ?? 0) + 1)
+      problems.push([...byJob.entries()].map(([label, n]) => `${label} failed ${n}x`).join('; '))
+    }
+
+    if (problems.length === 0) {
+      return {
+        name: 'Background jobs',
+        status: 'ok',
+        detail: `${health.ranOk} run${health.ranOk === 1 ? '' : 's'} completed in 24 hours, none failed, none overdue`,
+      }
+    }
+
+    return {
+      name: 'Background jobs',
+      status: 'failed',
+      detail: problems.join(' · '),
+      action: health.silent.length > 0
+        ? 'A job that has stopped running does the damage quietly. Check the schedule is still deployed before looking for an error, because there will not be one.'
+        : 'Each failure already emailed at the time. This is the daily total, so a job failing every few hours shows up here as a pattern rather than as separate emails.',
+      manualFix: 'Vercel project settings, Cron Jobs, confirms what is actually scheduled. The run history is in job_runs.',
+    }
+  } catch (e) {
+    return { name: 'Background jobs', status: 'failed', detail: e instanceof Error ? e.message : String(e) }
+  }
+}
+
 async function checkInngestRegistration(): Promise<CheckResult> {
   try {
     const res = await fetch(`${appUrl()}/api/inngest`, { method: 'GET', cache: 'no-store' })
@@ -1266,7 +1318,7 @@ ${checkLines}
 
 // ─── Main handler ──────────────────────────────────────────────────────────
 
-export async function GET(request: NextRequest) {
+async function handler(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
@@ -1301,6 +1353,7 @@ export async function GET(request: NextRequest) {
     igAccounts,
     generationFailures,
     backupAge,
+    backgroundJobs,
   ] = await Promise.all([
     checkBookingWrite(admin),
     checkLeadWrite(admin),
@@ -1321,6 +1374,7 @@ export async function GET(request: NextRequest) {
     checkInstagramAccounts(),
     checkGenerationFailures(admin),
     checkBackupAge(),
+    checkBackgroundJobs(admin),
   ])
 
   const checks: CheckResult[] = [
@@ -1336,6 +1390,8 @@ export async function GET(request: NextRequest) {
     generationFailures,
     // Is anybody still taking the backup?
     backupAge,
+    // Did the scheduled work actually happen?
+    backgroundJobs,
   ]
 
   const failures = checks.filter(c => c.status === 'failed')
@@ -1451,3 +1507,9 @@ ${darkEmailSignature()}
 
   return NextResponse.json({ ok: allGood, checks, fixes: fixes.map(f => f.name), failures: failures.map(f => f.name) })
 }
+
+/**
+ * Recorded on every run, 20 Sep 2026. A failure emails immediately; a run that
+ * stops happening at all is reported by the daily health check.
+ */
+export const GET = withJobRun('daily-health-check', handler)

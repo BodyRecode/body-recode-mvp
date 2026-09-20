@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { inngest } from '@/lib/inngest'
+import { withJobRun } from '@/lib/job-run'
 
 // Weekly Check-in Auto-Response Safety Net (2026-06-14).
 //
@@ -22,7 +23,7 @@ import { inngest } from '@/lib/inngest'
 // attempt. With no diagnostic stamp and no rescue cron, the only way we
 // noticed was Kade asking.
 
-export async function GET(request: NextRequest) {
+async function handler(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
@@ -119,3 +120,9 @@ export async function GET(request: NextRequest) {
     skipped_details: skipped,
   })
 }
+
+/**
+ * Recorded on every run, 20 Sep 2026. A failure emails immediately; a run that
+ * stops happening at all is reported by the daily health check.
+ */
+export const GET = withJobRun('weekly-checkin-auto-rescue', handler)

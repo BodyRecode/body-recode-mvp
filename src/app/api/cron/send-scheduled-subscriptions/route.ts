@@ -8,8 +8,9 @@ import { resolveClientBilling } from '@/lib/client-billing'
 import { logClientCommunication } from '@/lib/client-communications'
 import { createSubscriptionCheckoutForClient } from '@/lib/subscription-checkout'
 import { logoUrl } from '@/config/tenant'
+import { withJobRun } from '@/lib/job-run'
 
-export async function GET(request: NextRequest) {
+async function handler(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorised' }, { status: 401 })
@@ -123,3 +124,9 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json({ sent })
 }
+
+/**
+ * Recorded on every run, 20 Sep 2026. A failure emails immediately; a run that
+ * stops happening at all is reported by the daily health check.
+ */
+export const GET = withJobRun('send-scheduled-subscriptions', handler)
