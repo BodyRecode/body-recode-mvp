@@ -56,9 +56,30 @@ export async function requireCoachScope(): Promise<CoachScope> {
     return { coachId: user.id, email, isOwner: true }
   }
 
-  // Not the owner. A coach is someone who owns at least one client, which is
-  // how the database answers the same question.
+  // Not the owner. A coach is someone who has been SET UP as one, or who owns
+  // at least one client.
+  //
+  // The second half alone was the whole test, and it locked out every new coach
+  // on their first sign-in (21 Sep 2026). They accept an invitation, set a
+  // password, sign in, own nobody yet, fail this check and land back on the
+  // login page. From the outside that reads as "the password is wrong", which
+  // is exactly how it was reported.
+  //
+  // Being provisioned is the better answer anyway: the configuration row is the
+  // record that says this person is a coach here, it is created only by an
+  // invitation or by Kade, and it is the same row the product tier is read
+  // from. Owning a client stays as a fallback so nothing that worked before
+  // stops working.
   const admin = createAdminClient()
+
+  const { data: config } = await admin
+    .from('tenant_config')
+    .select('coach_id')
+    .eq('coach_id', user.id)
+    .maybeSingle()
+
+  if (config) return { coachId: user.id, email, isOwner: false }
+
   const { count } = await admin
     .from('clients')
     .select('id', { count: 'exact', head: true })

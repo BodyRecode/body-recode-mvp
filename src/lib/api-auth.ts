@@ -63,11 +63,25 @@ export async function isCoachUser(user: AuthedUser | null | undefined): Promise<
   if (!user) return false
   if (isCoachEmail(user.email)) return true
 
-  // Not on the allowlist. Fall back to "owns at least one client", which is how
-  // the database decides the same question. Uses the admin client on purpose:
-  // the `clients` RLS policy would filter this lookup and return zero rows for
-  // the very people it is meant to identify.
+  // Not on the allowlist. A coach is someone who has been SET UP as one, or who
+  // owns at least one client. Kept identical to requireCoachScope on purpose:
+  // a route guard and a page guard that disagree about who a coach is produce
+  // the worst kind of bug, where the page loads and everything on it fails.
+  //
+  // "Owns a client" alone locked out every new coach on their first sign-in
+  // (21 Sep 2026). Uses the admin client on purpose: the RLS policy on clients
+  // would filter this lookup and return zero rows for the very people it is
+  // meant to identify.
   const admin = createAdminClient()
+
+  const { data: config } = await admin
+    .from('tenant_config')
+    .select('coach_id')
+    .eq('coach_id', user.id)
+    .maybeSingle()
+
+  if (config) return true
+
   const { count } = await admin
     .from('clients')
     .select('id', { count: 'exact', head: true })
