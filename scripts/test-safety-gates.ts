@@ -141,5 +141,91 @@ const sample = findGateViolations({ text: 'Aim for 3 litres of water a day and u
 console.log('Sample retry instruction sent back to the model:\n')
 console.log(gateViolationInstruction(sample))
 console.log('')
+
+/* ── The four surfaces gated on 20 September 2026 ────────────────────────
+ *
+ * The read itself, the weekly read, the progress read and the trajectory
+ * reading all reached a client while three sibling readings were gated and
+ * these four were not. They share one check, so what is proven here is that
+ * the check fires on the SHAPE each of them actually passes: a flat object of
+ * client-facing prose under that route's own field names.
+ *
+ * As above, half of these prove the same sentence PASSES for a client the rule
+ * does not cover. A gate that fires on everyone gets switched off.
+ */
+console.log('\n--- the four surfaces gated 20 Sep 2026 ---')
+
+const POTASSIUM_MEDS = 'Spironolactone 50mg daily'
+const ON_LITHIUM = 'Lithium carbonate 400mg'
+const SAFE_MEDS = 'Vitamin D, fish oil'
+
+function readingCodes(fields: Record<string, unknown>, meds: string | null) {
+  return findReadingGateViolations(fields, { medications: meds, trainingContext: null }).map(v => v.code)
+}
+
+// The read itself. Its fields are the ones a client opens first, and anything
+// wrong here propagates into every plan and weekly read afterwards.
+const aRead = {
+  what_is_happening: 'Your fatigue pattern fits a regulation picture.',
+  what_to_do: 'Add a lite salt to your eggs each morning for the potassium.',
+}
+expect(
+  'the read: potassium advice is refused for a client whose medicine holds potassium',
+  readingCodes(aRead, POTASSIUM_MEDS),
+  ['POTASSIUM_GATE_BREACH'],
+)
+expect(
+  'the read: THE SAME SENTENCE passes for a client it does not apply to',
+  readingCodes(aRead, SAFE_MEDS),
+  [],
+)
+
+// The weekly read. Shorter, but it is the one she gets every week.
+const aWeeklyRead = {
+  resolution_state: 'Holding steady',
+  what_moved: 'Sleep improved on the nights you finished training before seven.',
+}
+expect(
+  'the weekly read: ordinary prose passes',
+  readingCodes(aWeeklyRead, POTASSIUM_MEDS),
+  [],
+)
+expect(
+  'the weekly read: a fluid target is refused on lithium',
+  readingCodes({ ...aWeeklyRead, this_week: 'Aim for three litres of water a day.' }, ON_LITHIUM),
+  ['LITHIUM_SALT_FLUID_BREACH', 'FLUID_GATE_BREACH'],
+)
+
+// Her version of the progress read, which is the half that goes in her portal.
+// The coach-only half is deliberately NOT checked: it is allowed to discuss her
+// medicines, and that is the point of it being coach-only.
+const herProgressRead = {
+  where_you_are: 'Your capacity has come up since the last read.',
+  what_changed: 'Consistency is the clearest mover.',
+}
+expect(
+  'her progress read: ordinary prose passes',
+  readingCodes(herProgressRead, ON_LITHIUM),
+  [],
+)
+expect(
+  'her progress read: a salt change is refused on lithium',
+  readingCodes({ ...herProgressRead, one_thing: 'Start adding more salt to your food.' }, ON_LITHIUM),
+  ['LITHIUM_SALT_FLUID_BREACH', 'SALT_CHANGE_BREACH'],
+)
+
+// The trajectory reading, written at the end of a block.
+expect(
+  'the trajectory reading: a thyroid product is refused for everyone',
+  readingCodes({ what_this_block_did: 'Consider a thyroid support supplement to lift your metabolism.' }, SAFE_MEDS),
+  ['THYROID_PRODUCT_BREACH', 'THYROID_INTERPRETATION_BREACH'],
+)
+expect(
+  'the trajectory reading: the same paragraph without the product passes',
+  readingCodes({ what_this_block_did: 'Your work capacity rose across the block.' }, SAFE_MEDS),
+  [],
+)
+
+
 console.log(failed === 0 ? 'SAFETY GATES HOLD' : `${failed} CASE(S) FAILED`)
 process.exit(failed === 0 ? 0 : 1)

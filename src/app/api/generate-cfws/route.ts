@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { buildCFWSSystemPrompt, buildCFWSUserPrompt, WeeklyCheckInPair } from '@/lib/cfws-prompt'
 import { resolveCycleContext } from '@/lib/cfws-generate'
+import { loadGateContext, findReadingGateViolations, readingGateRetryMessage } from '@/lib/reading-safety-check'
 import { extractFirstJsonObject } from '@/lib/extract-json'
 import { withTemporalContext } from '@/lib/temporal-context'
 import { AI_MODELS } from '@/lib/ai-models'
@@ -98,6 +99,14 @@ export async function POST(request: NextRequest) {
   let parsed: Record<string, unknown> | null = null
   let lastError = 'unknown error'
 
+  // Safety gates, 20 Sep 2026. The weekly read is a document a client opens,
+  // and it talks about fluid, salt, energy and supplements, so it can breach a
+  // gate exactly as readily as an eating plan can. Three other reading routes
+  // were gated on 19 September and this one was missed.
+  const gateContext = await loadGateContext(admin, client_id)
+  let gateFeedback = ''
+  let gatesSeen: string[] = []
+
   for (let attempt = 1; attempt <= 3; attempt++) {
     let message
     try {
@@ -108,7 +117,8 @@ export async function POST(request: NextRequest) {
         messages: [
           {
             role: 'user',
-            content: buildCFWSUserPrompt(client.name, currentPair, recentPairs, cffsBaseline, cycleContext),
+            content: buildCFWSUserPrompt(client.name, currentPair, recentPairs, cffsBaseline, cycleContext)
+              + (gateFeedback ? `\n\n${gateFeedback}` : ''),
           },
         ],
       })
@@ -155,6 +165,17 @@ export async function POST(request: NextRequest) {
       continue
     }
 
+    // A weekly read that breaks a safety gate is refused the same way a
+    // nutrition reading is: fail, tell the model exactly what it did, try again.
+    const gateViolations = findReadingGateViolations(candidate, gateContext)
+    if (gateViolations.length > 0) {
+      gatesSeen = Array.from(new Set([...gatesSeen, ...gateViolations.map(v => v.code)]))
+      gateFeedback = readingGateRetryMessage(gateViolations)
+      lastError = `Safety gate breach: ${gateViolations.map(v => v.code).join(', ')}`
+      console.warn(`[CFWS] attempt ${attempt}/3 safety gate breach:`, gatesSeen.join(', '))
+      continue
+    }
+
     parsed = candidate
     break
   }
@@ -162,7 +183,11 @@ export async function POST(request: NextRequest) {
   if (!parsed) {
     console.error('[CFWS] generation failed after 3 attempts:', lastError)
     return NextResponse.json(
-      { error: `CFWS generation failed after 3 attempts (${lastError}). Please try again.` },
+      {
+        error: gatesSeen.length > 0
+          ? `The weekly read broke a safety rule for this client on every attempt (${gatesSeen.join(', ')}). That is a hard gate rather than a wording problem: check her medications and her health screen answers, and tell Kade, because it means the engine is reaching for something it must not say for this person.`
+          : `CFWS generation failed after 3 attempts (${lastError}). Please try again.`,
+      },
       { status: 500 }
     )
   }

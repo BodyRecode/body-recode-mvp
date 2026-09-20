@@ -38,8 +38,20 @@ export interface GateViolation {
 }
 
 /** Matches "2 litres", "2-3L a day", "3000ml daily", "8 glasses of water a day". */
-const DAILY_FLUID_TARGET =
-  /(\b\d(?:[.,]\d)?\s*(?:to|-|–)?\s*\d?(?:[.,]\d)?\s*(?:litres?|liters?|l)\b|\b\d{3,4}\s*(?:ml|mls)\b|\b\d{1,2}\s*(?:glasses|cups)\b)[^.]{0,40}\b(?:a day|per day|daily|each day)\b/i
+// Written numbers as well as digits. A plan is structured and numeric, so
+// digits were enough while this only ran on plans. Client-facing prose is not:
+// a read says "three litres a day", never "3 litres a day", and the gate
+// missed every one of them. Found 20 Sep 2026 when the same check was extended
+// to the four readings, by a test whose expectation turned out to be right.
+const WRITTEN_NUMBER = '(?:one|two|three|four|five|six|seven|eight|nine|ten)'
+const DAILY_FLUID_TARGET = new RegExp(
+  '(' +
+    `\\b(?:\\d(?:[.,]\\d)?|${WRITTEN_NUMBER})\\s*(?:to|-|–|or)?\\s*(?:\\d?(?:[.,]\\d)?|${WRITTEN_NUMBER})?\\s*(?:litres?|liters?|l)\\b` +
+    '|\\b\\d{3,4}\\s*(?:ml|mls)\\b' +
+    `|\\b(?:\\d{1,2}|${WRITTEN_NUMBER})\\s*(?:glasses|cups)\\b` +
+  ')[^.]{0,40}\\b(?:a day|per day|daily|each day)\\b',
+  'i',
+)
 
 const POTASSIUM_PRODUCTS =
   /\b(?:salt substitute|lite salt|low[- ]sodium salt|potassium chloride|potassium supplement|potassium tablet|no salt salt|lo salt)\b/i

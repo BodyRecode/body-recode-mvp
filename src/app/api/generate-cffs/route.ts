@@ -233,6 +233,29 @@ export async function runCFFSGenerationInternal(body: any): Promise<NextResponse
 
   const cffsData = result.cffs
 
+  // Safety gates, 20 Sep 2026. The read is the document everything else is
+  // built from, and it is the one the client opens first, so a gate breached
+  // here propagates into every plan and every weekly read afterwards. The three
+  // downstream readings were gated on 19 September and the source was not.
+  //
+  // It REFUSES and saves nothing, rather than saving with a note, because a
+  // read that must not say a thing has not simply said it badly.
+  {
+    const { loadGateContext, findReadingGateViolations } = await import('@/lib/reading-safety-check')
+    const gateContext = await loadGateContext(admin, client_id)
+    const violations = findReadingGateViolations(cffsData as Record<string, unknown>, gateContext)
+    if (violations.length > 0) {
+      const codes = violations.map(v => v.code).join(', ')
+      console.warn('[CFFS] safety gate breach, nothing saved:', codes)
+      return NextResponse.json(
+        {
+          error: `This read broke a safety rule for this client (${codes}). That is a hard gate rather than a wording problem, so nothing was saved and her previous read is untouched. Click Regenerate, and if it repeats, check her medications and her health screen answers and tell Kade: it means the engine is reaching for something it must not say for this person.`,
+        },
+        { status: 422 },
+      )
+    }
+  }
+
   // Save the new read FIRST, then archive the old one. The order used to be the
   // other way round, so any save failure (a value the database refuses, a
   // dropped connection) left the client with no active read at all. Found

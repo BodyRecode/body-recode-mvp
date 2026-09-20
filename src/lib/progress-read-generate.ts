@@ -161,6 +161,27 @@ export async function generateAndStoreProgressRead(admin: SupabaseClient, progre
   const her = (r.for_her ?? {}) as Record<string, string>
   const lintFindings = lintClientReading({ sections: her, sourceMaterial: JSON.stringify(input.currentIntake) + '\n' + (input.whatChanged ?? '') + '\n' + comparisonText })
 
+  // Safety gates, 20 Sep 2026. Her version of the read is a document she opens
+  // in her portal, and it talks about fluid, salt, energy and supplements, so
+  // it can breach a gate exactly as readily as an eating plan can. The other
+  // client-facing readings were gated on 19 September; this one, the newest of
+  // them, was missed.
+  //
+  // It REFUSES rather than recording a finding, because a safety gate is not a
+  // wording note for the coach to weigh up. The coach-only half is deliberately
+  // not checked: it is allowed to discuss her medicines, and that is the point
+  // of it being coach-only.
+  const { loadGateContext, findReadingGateViolations } = await import('@/lib/reading-safety-check')
+  const gateContext = await loadGateContext(admin, pc.client_id as string)
+  const gateViolations = findReadingGateViolations(her as unknown as Record<string, unknown>, gateContext)
+  if (gateViolations.length > 0) {
+    const codes = gateViolations.map(v => v.code).join(', ')
+    throw new ProgressReadError(
+      `Her version of this read broke a safety rule for this client (${codes}). That is a hard gate rather than a wording problem, so nothing was saved. Generate it again, and if it repeats, check her medications and her health screen answers and tell Kade: it means the engine is reaching for something it must not say for this person.`,
+      422,
+    )
+  }
+
   const { data: row, error } = await admin.from('progress_reads').insert({
     client_id: pc.client_id,
     progress_check_id: pc.id,

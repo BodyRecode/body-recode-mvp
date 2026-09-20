@@ -67,6 +67,22 @@ export async function runTrajectoryReadingGenerationInternal(body: any): Promise
   let audit: ReturnType<typeof auditClientReadingFields> | null = null
   let lastLeaks: string[] = []
 
+  // Safety gates, 20 Sep 2026. This reading is client-facing and talks about
+  // fluid, salt, energy and supplements, so it can breach a gate exactly as
+  // readily as an eating plan. Three sibling reading routes were gated on
+  // 19 September and this one was missed. The client is resolved from the
+  // programme, because this route is called with a programme rather than a
+  // person.
+  const { loadGateContext, findReadingGateViolations } = await import('@/lib/reading-safety-check')
+  const gateAdmin = createAdminClient()
+  const { data: programRow } = await gateAdmin
+    .from('programs')
+    .select('client_id')
+    .eq('id', program_id)
+    .maybeSingle()
+  const gateContext = await loadGateContext(gateAdmin, (programRow?.client_id as string) ?? '')
+  let gatesSeen: string[] = []
+
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     let candidate
     try {
@@ -89,7 +105,16 @@ export async function runTrajectoryReadingGenerationInternal(body: any): Promise
       if (hit && !partnerLeaks.includes(hit)) partnerLeaks.push(hit)
     }
 
-    if (candidateAudit.ok && partnerLeaks.length === 0) {
+    const gateViolations = findReadingGateViolations(
+      candidate.sections as unknown as Record<string, unknown>,
+      gateContext,
+    )
+    if (gateViolations.length > 0) {
+      gatesSeen = Array.from(new Set([...gatesSeen, ...gateViolations.map(v => v.code)]))
+      console.warn(`[trajectory] attempt ${attempt}/${MAX_ATTEMPTS} safety gate breach: ${gatesSeen.join(', ')}`)
+    }
+
+    if (candidateAudit.ok && partnerLeaks.length === 0 && gateViolations.length === 0) {
       result = candidate
       audit = candidateAudit
       break
@@ -102,7 +127,11 @@ export async function runTrajectoryReadingGenerationInternal(body: any): Promise
     // Name the phrase and say it is repeating, so a structural collision reads
     // as structural rather than as bad luck.
     return NextResponse.json(
-      { error: `Reading leaked internal terminology on all ${MAX_ATTEMPTS} attempts (${lastLeaks.join(', ')}). This is likely a source collision rather than a bad draft: check whether a question or the doctrine feeds that phrase into the prompt.` },
+      {
+        error: gatesSeen.length > 0
+          ? `The reading broke a safety rule for this client on every attempt (${gatesSeen.join(', ')}). That is a hard gate rather than a wording problem: check her medications and her health screen answers, and tell Kade, because it means the engine is reaching for something it must not say for this person.`
+          : `Reading leaked internal terminology on all ${MAX_ATTEMPTS} attempts (${lastLeaks.join(', ')}). This is likely a source collision rather than a bad draft: check whether a question or the doctrine feeds that phrase into the prompt.`,
+      },
       { status: 500 }
     )
   }
