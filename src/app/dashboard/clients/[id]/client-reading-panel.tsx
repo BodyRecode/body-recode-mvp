@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useTransition, useEffect, useRef } from 'react'
+import ExplainThis from './explain-this'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import ClientViewModal from '@/components/dashboard/client-view-modal'
@@ -45,10 +46,12 @@ export default function ClientReadingPanel({
   cffs,
   clientId,
   clientToken,
+  clientFirstName,
 }: {
   cffs: Reading
   clientId: string
   clientToken: string | null
+  clientFirstName: string
 }) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
@@ -198,6 +201,19 @@ export default function ClientReadingPanel({
             >
               <Mail size={10} /> Notified
             </span>
+          )}
+          {/* "Explain this", 21 Sep 2026. A read-only coach gets this rather
+              than an open chat box: the question a coach actually has, at the
+              moment they have it, about the finding in front of them. An empty
+              box asks a coach to know what to ask, and the coach who most needs
+              the answer is the one least able to phrase the question. */}
+          {generated && (
+            <ExplainThis
+              clientId={clientId}
+              clientFirstName={clientFirstName}
+              question={`Explain ${clientFirstName}'s read to me the way I would say it back to her. Why did she land where she did, what is driving it, and what would I say if she asked me why it says this about her?`}
+              label="Explain this read"
+            />
           )}
           {/* Sent is not read. Added 21 Sep 2026: the coach could see that the
               email went and nothing about whether she took it in, which in a

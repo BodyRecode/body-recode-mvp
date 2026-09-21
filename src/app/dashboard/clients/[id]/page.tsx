@@ -1701,6 +1701,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             cffs={activeCffs as Parameters<typeof ClientReadingPanel>[0]['cffs']}
             clientId={client.id}
             clientToken={client.onboarding_token ?? null}
+            clientFirstName={String(client.name ?? '').split(/\s+/)[0] || 'your client'}
           />
 
           {/* Archived CFFS */}

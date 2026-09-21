@@ -7,8 +7,8 @@ import CommandPalette from './command-palette'
 import CommandKHint from './command-k-hint'
 import GlobalCopilotBubble from '@/components/global-copilot-bubble'
 import SupportLauncher from '@/components/support/support-launcher'
-import { brand, productTier } from '@/config/tenant'
-import { canAccess, tierForPath } from '@/lib/product-tier'
+import { brand } from '@/config/tenant'
+import { canAccess, tierForPath, tierAllows } from '@/lib/product-tier'
 import { getNavBadges } from '@/lib/dashboard-badges'
 import { agreementGateActive, hasAcceptedCurrent } from '@/lib/coach-agreement'
 
@@ -80,7 +80,9 @@ export default async function DashboardLayout({
         {children}
       </DashboardShell>
       <CommandPalette />
-      <GlobalCopilotBubble brandName={tenantBrand.name} />
+      {/* The open co-pilot is part of the coaching product. A read-only coach
+          gets "Explain this read" on the read itself instead. Kade, 21 Sep 2026. */}
+      {tierAllows(tier, 'coach') && <GlobalCopilotBubble brandName={tenantBrand.name} />}
       <SupportLauncher />
     </>
   )

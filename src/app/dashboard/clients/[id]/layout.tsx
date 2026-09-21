@@ -1,5 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { requireCoachScope, assertOwnsClient } from '@/lib/coach-scope'
+import { productTierForCoach } from '@/lib/coach-tier'
+import { tierAllows } from '@/lib/product-tier'
 import CopilotBubble from './copilot-bubble'
 
 /**
@@ -33,10 +35,17 @@ export default async function ClientLayout({
   // the chat was ever opened, taxing every navigation.
   const { data: client } = await admin.from('clients').select('name').eq('id', id).maybeSingle()
 
+  // Whether this coach gets the free-form co-pilot at all. See the note below.
+  const canChat = tierAllows(await productTierForCoach(admin, scope.coachId), 'coach')
+
   return (
     <>
       {children}
-      {client && (
+      {/* The open co-pilot is for the coaching product. A read-only coach gets
+          "Explain this read" on the read itself instead: the question they
+          actually have, at the moment they have it, rather than a blank box
+          that asks them to know what to ask. Kade's decision, 21 Sep 2026. */}
+      {client && canChat && (
         <CopilotBubble
           clientId={id}
           clientFirstName={client.name?.split(' ')[0] ?? 'this client'}

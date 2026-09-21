@@ -79,6 +79,7 @@ export default function CopilotPanel({
   sessionId,
   onClose,
   className,
+  seedQuestion,
 }: {
   clientId: string
   clientFirstName: string
@@ -91,6 +92,16 @@ export default function CopilotPanel({
   onClose?: () => void
   /** Extra classes for the outer card (bubble mode makes it fill its popover). */
   className?: string
+  /**
+   * A question to ask the moment this opens, instead of an empty box.
+   *
+   * 21 September 2026. A read-only coach does not get a blank co-pilot. They
+   * get "explain this" on the read itself, which opens here with the question
+   * already asked. The difference matters: an empty box asks a coach to know
+   * what to ask, and the coach who most needs the answer is the one least able
+   * to phrase the question.
+   */
+  seedQuestion?: string
 }) {
   const pathname = usePathname() ?? ''
   const [messages, setMessages] = useState<Msg[]>([])
@@ -117,6 +128,17 @@ export default function CopilotPanel({
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
   }, [messages, loading, proposing, generatingIdx, proposingNutrition, generatingNutritionIdx, proposingEdit, applyingIdx])
+
+  // Ask the seeded question once, as soon as this opens. Guarded by a ref
+  // rather than the message list so a re-render cannot ask it twice, which
+  // would cost a coach two questions against their daily limit for one click.
+  const seeded = useRef(false)
+  useEffect(() => {
+    if (!seedQuestion || seeded.current) return
+    seeded.current = true
+    void send(seedQuestion)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seedQuestion])
 
   async function send(text: string) {
     const q = text.trim()
