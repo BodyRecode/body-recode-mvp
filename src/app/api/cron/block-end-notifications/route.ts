@@ -36,6 +36,12 @@ async function handler(request: NextRequest) {
   const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
 
   // Pull every active program with its client
+  // Prescribing work never reaches a read-only coach's client. Without this a
+  // pilot coach's client is emailed about a training block she was never given,
+  // in her coach's name, and he has to explain it. See lib/prescription-clients.ts.
+  const { prescriptionClientIds, onlyPrescriptionClients } = await import('@/lib/prescription-clients')
+  const allowedClients = await prescriptionClientIds(admin)
+
   const { data: programs, error } = await admin
     .from('programs')
     .select('id, client_id, block_name, week_duration, generated_at, activated_at, clients!inner(id, name, ended_at, frozen_at)')
@@ -45,12 +51,14 @@ async function handler(request: NextRequest) {
     .is('clients.ended_at', null)
     .is('clients.frozen_at', null)
 
+  const programsScoped = onlyPrescriptionClients((programs ?? []) as { client_id?: string | null }[], allowedClients) as typeof programs
+
   if (error) {
     console.error('[block-end-notifications] programs query failed:', error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  if (!programs || programs.length === 0) {
+  if (!programsScoped || programsScoped.length === 0) {
     return NextResponse.json({ scanned: 0, sent: 0, skipped: 0 })
   }
 
@@ -61,7 +69,7 @@ async function handler(request: NextRequest) {
   let skipped = 0
   const events: Array<{ client: string; event: string; days: number }> = []
 
-  for (const program of programs) {
+  for (const program of programsScoped) {
     if (!program.generated_at || !program.week_duration) continue
     const days = daysUntilBlockEnd(program.activated_at ?? program.generated_at, program.week_duration)
     const client = (program.clients as unknown) as { id: string; name: string } | null
@@ -147,7 +155,7 @@ async function handler(request: NextRequest) {
     events.push({ client: client.name, event: eventType, days })
   }
 
-  return NextResponse.json({ scanned: programs.length, sent, skipped, events })
+  return NextResponse.json({ scanned: programsScoped.length, sent, skipped, events })
 }
 
 /**

@@ -28,6 +28,12 @@ async function handler(request: NextRequest) {
   const tomorrowEnd = new Date(tomorrow)
   tomorrowEnd.setHours(23, 59, 59, 999)
 
+  // Prescribing work never reaches a read-only coach's client. Without this a
+  // pilot coach's client is emailed about a training block she was never given,
+  // in her coach's name, and he has to explain it. See lib/prescription-clients.ts.
+  const { prescriptionClientIds, onlyPrescriptionClients } = await import('@/lib/prescription-clients')
+  const allowedClients = await prescriptionClientIds(admin)
+
   const { data: clients } = await admin
     .from('clients')
     .select('id, name, email, onboarding_token, coaching_started_at')
@@ -39,13 +45,19 @@ async function handler(request: NextRequest) {
     .gte('coaching_started_at', tomorrowStart.toISOString())
     .lte('coaching_started_at', tomorrowEnd.toISOString())
 
-  if (!clients || clients.length === 0) {
+  // These query clients directly, so the filter is on the id rather than a
+  // client_id column. See lib/prescription-clients.ts.
+  const clientsScoped = allowedClients === null
+    ? (clients ?? [])
+    : (clients ?? []).filter(c => allowedClients.includes(c.id as string))
+
+  if (clientsScoped.length === 0) {
     return NextResponse.json({ sent: 0 })
   }
 
   let sent = 0
   const subject = 'Coaching begins tomorrow'
-  for (const client of clients) {
+  for (const client of clientsScoped) {
     if (!client.email) continue
     const firstName = client.name.split(' ')[0]
     const portalUrl = client.onboarding_token

@@ -31,14 +31,22 @@ async function handler(request: NextRequest) {
   const today = todayBrisbaneDayName()
 
   // Active programs keyed by client.
+  // Prescribing work never reaches a read-only coach's client. Without this a
+  // pilot coach's client is emailed about a training block she was never given,
+  // in her coach's name, and he has to explain it. See lib/prescription-clients.ts.
+  const { prescriptionClientIds, onlyPrescriptionClients } = await import('@/lib/prescription-clients')
+  const allowedClients = await prescriptionClientIds(admin)
+
   const { data: activePrograms } = await admin
     .from('programs')
     .select('id, client_id, sessions, generated_at, week_duration')
     .eq('is_active', true)
 
+  const activeProgramsScoped = onlyPrescriptionClients((activePrograms ?? []) as { client_id?: string | null }[], allowedClients) as typeof activePrograms
+
   type ProgramRow = { id: string; client_id: string; sessions: unknown; generated_at: string; week_duration: number }
   const programByClient = new Map<string, ProgramRow>()
-  for (const p of (activePrograms ?? []) as ProgramRow[]) programByClient.set(p.client_id, p)
+  for (const p of (activeProgramsScoped ?? []) as ProgramRow[]) programByClient.set(p.client_id, p)
 
   if (programByClient.size === 0) {
     return NextResponse.json({ smsSent: 0, skippedNotTrainingDay: 0, skippedAlreadyLogged: 0, skippedNoProgram: 0, skippedCapped: 0 })

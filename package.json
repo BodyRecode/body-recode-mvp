@@ -9,6 +9,7 @@
     "lint": "eslint",
     "map:saas-pages": "npx tsx scripts/generate-saas-page-map.ts",
     "test:new-coach": "npx tsx scripts/test-new-coach-can-sign-in.ts",
+    "test:prescription-jobs": "npx tsx scripts/test-prescription-jobs.ts",
     "coach:test-create": "npx tsx scripts/test-coach-account.ts create",
     "coach:test-client": "npx tsx scripts/test-coach-client.ts",
     "coach:test-remove": "npx tsx scripts/test-coach-account.ts remove",

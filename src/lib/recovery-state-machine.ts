@@ -332,9 +332,18 @@ export async function sweepStaleRecoveryStates(
 
   if (!activeStates || activeStates.length === 0) return []
 
+  // Recovery protocols are prescription, so this never touches a read-only
+  // coach's client. See lib/prescription-clients.ts.
+  const { prescriptionClientIds, onlyPrescriptionClients } = await import('@/lib/prescription-clients')
+  const allowedClients = await prescriptionClientIds(admin)
+  const scoped = onlyPrescriptionClients(
+    activeStates as unknown as { client_id?: string | null }[],
+    allowedClients,
+  ) as typeof activeStates
+
   const closures: StaleStateClosure[] = []
 
-  for (const row of activeStates) {
+  for (const row of scoped) {
     const joined = row.clients as unknown
     const client = (Array.isArray(joined) ? joined[0] : joined) as
       | { id: string; name: string; ended_at: string | null; frozen_at: string | null }

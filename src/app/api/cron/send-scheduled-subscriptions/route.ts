@@ -20,6 +20,12 @@ async function handler(request: NextRequest) {
   const resend = new Resend(process.env.RESEND_API_KEY)
 
   // Find clients with a scheduled send date that has passed and hasn't been sent yet
+  // Prescribing work never reaches a read-only coach's client. Without this a
+  // pilot coach's client is emailed about a training block she was never given,
+  // in her coach's name, and he has to explain it. See lib/prescription-clients.ts.
+  const { prescriptionClientIds, onlyPrescriptionClients } = await import('@/lib/prescription-clients')
+  const allowedClients = await prescriptionClientIds(admin)
+
   const { data: clients } = await admin
     .from('clients')
     .select('id, name, email, package, onboarding_token, negotiated_weekly_price_cents, negotiated_stripe_link')
@@ -32,12 +38,18 @@ async function handler(request: NextRequest) {
     .is('subscription_link_sent_at', null)
     .not('subscription_link_send_at', 'is', null)
 
-  if (!clients || clients.length === 0) {
+  // These query clients directly, so the filter is on the id rather than a
+  // client_id column. See lib/prescription-clients.ts.
+  const clientsScoped = allowedClients === null
+    ? (clients ?? [])
+    : (clients ?? []).filter(c => allowedClients.includes(c.id as string))
+
+  if (clientsScoped.length === 0) {
     return NextResponse.json({ sent: 0 })
   }
 
   let sent = 0
-  for (const client of clients) {
+  for (const client of clientsScoped) {
     if (!client.email || !client.package) continue
 
     const pkg = getCoachingPackage(client.package)

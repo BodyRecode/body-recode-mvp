@@ -25,6 +25,12 @@ async function handler(request: NextRequest) {
   const windowStart = new Date(Date.now() + 20 * 60 * 60 * 1000)
   const windowEnd = new Date(Date.now() + 28 * 60 * 60 * 1000)
 
+  // Prescribing work never reaches a read-only coach's client. Without this a
+  // pilot coach's client is emailed about a training block she was never given,
+  // in her coach's name, and he has to explain it. See lib/prescription-clients.ts.
+  const { prescriptionClientIds, onlyPrescriptionClients } = await import('@/lib/prescription-clients')
+  const allowedClients = await prescriptionClientIds(admin)
+
   const { data: sessions } = await admin
     .from('client_sessions')
     .select('id, client_id, scheduled_at, duration_minutes, clients!inner(id, name, email, ended_at, frozen_at)')
@@ -36,13 +42,15 @@ async function handler(request: NextRequest) {
     .gte('scheduled_at', windowStart.toISOString())
     .lte('scheduled_at', windowEnd.toISOString())
 
-  if (!sessions || sessions.length === 0) {
+  const sessionsScoped = onlyPrescriptionClients((sessions ?? []) as { client_id?: string | null }[], allowedClients) as typeof sessions
+
+  if (!sessionsScoped || sessionsScoped.length === 0) {
     return NextResponse.json({ sent: 0 })
   }
 
   let sent = 0
 
-  for (const session of sessions) {
+  for (const session of sessionsScoped) {
     const client = Array.isArray(session.clients) ? session.clients[0] : session.clients
     if (!client?.email) continue
 
