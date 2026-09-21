@@ -22,13 +22,19 @@ export function BrandMark({
   tone = 'light',
   size = 'md',
   showName = true,
+  name: nameOverride,
 }: {
   /** 'light' for a dark background, 'dark' for a light one. */
   tone?: 'light' | 'dark'
   size?: 'sm' | 'md' | 'lg'
   showName?: boolean
+  /**
+   * Passed by a client component that already holds the tenant's name, so this
+   * does not have to reach for the tenant cache from the browser.
+   */
+  name?: string
 }) {
-  const name = brand().name
+  const name = nameOverride ?? brand().name
   const initials =
     name.split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase() || name.slice(0, 2).toUpperCase()
 

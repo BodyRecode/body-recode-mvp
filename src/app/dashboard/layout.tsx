@@ -64,13 +64,11 @@ export default async function DashboardLayout({
 
   const badges = await getNavBadges(scope)
   const tenantBrand = brand()
-  const brandInitials = tenantBrand.name.split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase() || tenantBrand.name.slice(0, 2).toUpperCase()
 
   return (
     <>
       <DashboardShell
         brandName={tenantBrand.name}
-        brandInitials={brandInitials}
         userEmail={user.email}
         hint={<CommandKHint />}
         logout={<LogoutButton />}

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Menu, X } from 'lucide-react'
 import DashboardNav from './nav'
+import { BrandMark } from '@/components/brand-mark'
 import type { ProductTier } from '@/lib/product-tier'
 import type { NavBadges } from '@/lib/dashboard-badges'
 
@@ -15,7 +16,6 @@ import type { NavBadges } from '@/lib/dashboard-badges'
  */
 export default function DashboardShell({
   brandName,
-  brandInitials,
   userEmail,
   hint,
   logout,
@@ -24,7 +24,6 @@ export default function DashboardShell({
   children,
 }: {
   brandName: string
-  brandInitials: string
   userEmail?: string
   hint?: ReactNode
   logout?: ReactNode
@@ -43,22 +42,13 @@ export default function DashboardShell({
     return () => document.removeEventListener('keydown', onKey)
   }, [drawerOpen])
 
+  // One lockup, 22 Sep 2026. This was a third variant: a blue gradient square
+  // with monospace initials, different again from the branded documents and
+  // from the sign-in page. Three versions of one mark is the inconsistency the
+  // brand book exists to stop, in miniature.
   const brandBlock = (
-    <Link href="/dashboard" onClick={() => setDrawerOpen(false)} className="flex items-center gap-2.5 min-w-0">
-      <span
-        className="inline-flex items-center justify-center w-7 h-7 rounded-lg text-white text-[11px] font-medium shrink-0"
-        style={{
-          background: 'linear-gradient(160deg,#4B8DFF,#1B6DFC 55%,#0B4FCB)',
-          boxShadow: '0 2px 6px -1px rgba(27,109,252,0.5), inset 0 1px 0 rgba(255,255,255,0.35)',
-          fontFamily: "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace",
-          letterSpacing: '-0.02em',
-        }}
-      >
-        {brandInitials}
-      </span>
-      <span className="text-[14px] font-semibold text-[#141821] tracking-[-0.015em] truncate">
-        {brandName}
-      </span>
+    <Link href="/dashboard" onClick={() => setDrawerOpen(false)} className="flex items-center min-w-0">
+      <BrandMark tone="dark" size="sm" name={brandName} />
     </Link>
   )
 
