@@ -39,7 +39,10 @@ const GROUPS: NavGroup[] = [
     key: 'clients',
     label: 'Clients',
     items: [
-      { href: '/dashboard/coaching', label: 'Coaching', icon: Users },
+      // "Coaching" under a group called Clients read as two names for one
+      // thing, and it is the wrong word for a product that does not do the
+      // coaching. 21 Sep 2026.
+      { href: '/dashboard/coaching', label: 'All Clients', icon: Users },
       { href: '/dashboard/checkins', label: 'Check Ins', icon: ClipboardCheck },
       { href: '/dashboard/practice', label: 'Your Practice', icon: Activity },
       { href: '/dashboard/messages', label: 'Messages', icon: MessageCircle },
