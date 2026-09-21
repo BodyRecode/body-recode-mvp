@@ -41,6 +41,7 @@ const GROUPS: NavGroup[] = [
     items: [
       { href: '/dashboard/coaching', label: 'Coaching', icon: Users },
       { href: '/dashboard/checkins', label: 'Check Ins', icon: ClipboardCheck },
+      { href: '/dashboard/practice', label: 'Your Practice', icon: Activity },
       { href: '/dashboard/messages', label: 'Messages', icon: MessageCircle },
       { href: '/dashboard/programs', label: 'Programs', icon: ListChecks },
       { href: '/dashboard/gym-sessions', label: 'Gym', icon: Dumbbell },

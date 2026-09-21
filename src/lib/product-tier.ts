@@ -47,6 +47,9 @@ const ROUTE_TIERS: Array<{ prefix: string; tier: ProductTier }> = [
   { prefix: '/dashboard/coaching', tier: 'interpret' },
   { prefix: '/dashboard/clients', tier: 'interpret' },
   { prefix: '/dashboard/checkins', tier: 'interpret' },
+  // The coach's own practice: who is slipping, and what their book is made of.
+  // The first screen built for the coach rather than for a client. 21 Sep 2026.
+  { prefix: '/dashboard/practice', tier: 'interpret' },
   // Messages: OUT of the interpretation product, Kade's decision 21 Sep 2026.
   // "the coach is using this software for the read and communicates with their
   // clients how they already communicate". A second inbox a coach forgets to
