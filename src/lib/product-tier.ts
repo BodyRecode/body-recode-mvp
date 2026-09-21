@@ -56,7 +56,10 @@ const ROUTE_TIERS: Array<{ prefix: string; tier: ProductTier }> = [
   // NOT deleted: Kade uses it with his own clients, so it stays at owner. The
   // coach's RESPONSE to a weekly check-in is a different thing and is unaffected.
   { prefix: '/dashboard/messages', tier: 'owner' },
-  { prefix: '/dashboard/feedback', tier: 'interpret' },
+  // Feedback: OUT of the interpretation product, Kade 21 Sep 2026. It gathers
+  // testimonials and product opinion, which is OUR business rather than the
+  // coach's. Kept at owner for Kade's own clients.
+  { prefix: '/dashboard/feedback', tier: 'owner' },
   // Their own account and getting help.
   { prefix: '/dashboard/getting-started', tier: 'interpret' },
   { prefix: '/dashboard/help', tier: 'interpret' },

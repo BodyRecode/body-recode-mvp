@@ -31,6 +31,17 @@ export type PortalFeatures = {
   resources: boolean
   /** Asking her what she thinks of the product. Ours, not the coach's. */
   feedback: boolean
+  /**
+   * A separate written interpretation of what she takes.
+   *
+   * OUT, Kade 21 Sep 2026: "this crosses over from our area". Reading somebody's
+   * medicines back to them is closer to a pharmacist's job than a coach's.
+   *
+   * Her medicines are still COLLECTED at intake and still drive the safety
+   * gates, which is what stops a read telling a woman on spironolactone to add
+   * potassium. Only the document she reads is gone.
+   */
+  medicationsReading: boolean
 }
 
 /**
@@ -50,6 +61,7 @@ export async function portalFeaturesForClient(
     messaging: false,
     resources: false,
     feedback: false,
+    medicationsReading: false,
   }
 
   try {
@@ -74,6 +86,7 @@ export async function portalFeaturesForClient(
       messaging: isOwner,
       resources: isOwner,
       feedback: isOwner,
+      medicationsReading: isOwner,
     }
   } catch {
     return closed

@@ -37,6 +37,7 @@ const PRESCRIPTION_PAGES = [
 
 const OUT_OF_PRODUCT: Record<string, keyof Awaited<ReturnType<typeof portalFeaturesForClient>>> = {
   message: 'messaging',
+  'medications-reading': 'medicationsReading',
   resources: 'resources',
   guides: 'resources',
   feedback: 'feedback',

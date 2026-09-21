@@ -669,7 +669,7 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
                 <span className="text-xs font-bold text-[#1B6DFC] ml-4 shrink-0">View →</span>
               </div>
             </Link>
-            {client.medications_reading_published_at && (
+            {features.medicationsReading && client.medications_reading_published_at && (
               <Link
                 href={`/portal/${token}/medications-reading`}
                 className="block rounded-2xl border border-[#E8EAEE] bg-[#FFFFFF] p-5 hover:border-[#1B6DFC]/40 hover:bg-[#EFF5FE] transition-colors"
