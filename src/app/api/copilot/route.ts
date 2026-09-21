@@ -83,6 +83,19 @@ export async function POST(request: NextRequest) {
 
   // Retry loop mirrors the client-scoped route: the model occasionally returns
   // an empty text block; try up to 3 times before failing.
+  // SAFETY GATES, 21 September 2026. No single client is loaded here, so there
+  // are no medicines to check against and the client-specific rules cannot
+  // fire. The rules that apply to EVERYONE still do: thyroid products, which
+  // are blocked for all comers because nine in ten marketed ones contained real
+  // thyroid hormone, and show-week numbers.
+  //
+  // A partial gate is the honest thing here. The alternative was no gate, and
+  // this is the surface a coach uses to ask general questions that they then
+  // apply to a real person.
+  const { findGateViolations, gateViolationInstruction } = await import('@/lib/safety-gate-enforcement')
+  let gateFeedback = ''
+  let gatesSeen: string[] = []
+
   let answer = ''
   let lastErr = 'unknown error'
   for (let attempt = 1; attempt <= 3; attempt++) {
@@ -97,7 +110,20 @@ export async function POST(request: NextRequest) {
         messages: [...history, { role: 'user', content: message }],
       })
       const block = resp.content.find(b => b.type === 'text')
-      answer = block && block.type === 'text' ? block.text.trim() : ''
+      const candidate = block && block.type === 'text' ? block.text.trim() : ''
+
+      if (candidate) {
+        const violations = findGateViolations({ text: candidate, medications: null, trainingContext: null })
+        if (violations.length > 0) {
+          gatesSeen = Array.from(new Set([...gatesSeen, ...violations.map(v => v.code)]))
+          gateFeedback = gateViolationInstruction(violations)
+          lastErr = `safety gate breach: ${violations.map(v => v.code).join(', ')}`
+          console.warn(`[copilot] attempt ${attempt}/3 ${lastErr}`)
+          // The unsafe text is never kept, so it can never be shown.
+          continue
+        }
+        answer = candidate
+      }
       if (answer) break
       lastErr = `empty response (stop_reason=${resp.stop_reason})`
       console.warn(`[copilot-general] attempt ${attempt}/3: ${lastErr}`)
@@ -107,6 +133,14 @@ export async function POST(request: NextRequest) {
     }
   }
   if (!answer) {
+    if (gatesSeen.length > 0) {
+      return NextResponse.json(
+        {
+          error: `Every answer to that broke a safety rule (${gatesSeen.join(', ')}), so none of them is being shown to you. These are rules that hold for everybody rather than for one client, so it usually means the question itself is reaching for something the system will not say. Tell Kade.`,
+        },
+        { status: 422 },
+      )
+    }
     return NextResponse.json({ error: `The co-pilot couldn't respond after 3 tries (${lastErr}). Please try again.` }, { status: 502 })
   }
 

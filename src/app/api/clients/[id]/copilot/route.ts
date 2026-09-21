@@ -75,6 +75,22 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   // blip the SDK's own retries don't cover). Try up to 3 times before failing,
   // so the chat doesn't surface an "empty response" for a one-off.
   let answer = ''
+  // SAFETY GATES ON THE ANSWER, 21 September 2026.
+  //
+  // Every read and every plan is checked before it saves and refused if it
+  // breaks a rule for this client. The co-pilot answered in a conversation and
+  // nothing checked it at all, which made it the one surface where the engine
+  // could tell a coach to do something for a woman on spironolactone that the
+  // read itself would have been refused for saying.
+  //
+  // Survivable with Kade's own clients, because he would catch it. Not
+  // survivable with somebody else's.
+  const { loadGateContext, findReadingGateViolations, readingGateRetryMessage } =
+    await import('@/lib/reading-safety-check')
+  const gateContext = await loadGateContext(admin, clientId)
+  let gateFeedback = ''
+  let gatesSeen: string[] = []
+
   let lastErr = 'unknown error'
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
@@ -99,10 +115,23 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
             cache_control: { type: 'ephemeral' as const },
           },
         ],
-        messages: [...history, { role: 'user', content: message }],
+        messages: [...history, { role: 'user', content: gateFeedback ? `${message}\n\n${gateFeedback}` : message }],
       })
       const block = resp.content.find(b => b.type === 'text')
-      answer = block && block.type === 'text' ? block.text.trim() : ''
+      const candidate = block && block.type === 'text' ? block.text.trim() : ''
+
+      if (candidate) {
+        const violations = findReadingGateViolations({ answer: candidate }, gateContext)
+        if (violations.length > 0) {
+          gatesSeen = Array.from(new Set([...gatesSeen, ...violations.map(v => v.code)]))
+          gateFeedback = readingGateRetryMessage(violations)
+          lastErr = `safety gate breach: ${violations.map(v => v.code).join(', ')}`
+          console.warn(`[copilot] attempt ${attempt}/3 ${lastErr}`)
+          // The unsafe text is never kept, so it can never be shown.
+          continue
+        }
+        answer = candidate
+      }
       if (answer) break
       lastErr = `empty response (stop_reason=${resp.stop_reason})`
       console.warn(`[copilot] attempt ${attempt}/3: ${lastErr}`)
@@ -112,6 +141,14 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     }
   }
   if (!answer) {
+    if (gatesSeen.length > 0) {
+      return NextResponse.json(
+        {
+          error: `Every answer to that broke a safety rule for this client (${gatesSeen.join(', ')}), so none of them is being shown to you. That is a hard gate rather than a wording problem: it usually means the question is reaching for something her medicines or her health screen answers rule out. Check those, and tell Kade.`,
+        },
+        { status: 422 },
+      )
+    }
     return NextResponse.json({ error: `The co-pilot couldn't respond after 3 tries (${lastErr}). Please try again.` }, { status: 502 })
   }
 
