@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "brand:assets": "npx tsx scripts/generate-brand-assets.ts",
     "map:saas-pages": "npx tsx scripts/generate-saas-page-map.ts",
     "test:new-coach": "npx tsx scripts/test-new-coach-can-sign-in.ts",
     "test:prescription-jobs": "npx tsx scripts/test-prescription-jobs.ts",
