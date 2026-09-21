@@ -17,10 +17,19 @@
 import Link from 'next/link'
 import { Children, isValidElement, useState, type ReactNode } from 'react'
 
+/**
+ * The in-page tabs. `prescribes` marks the ones that belong to the coaching
+ * product rather than the read.
+ *
+ * 21 September 2026: the page LINKS were gated yesterday and these were missed,
+ * so a read-only coach still saw Training and Nutrition sitting in the tab row
+ * over an empty panel. Two lists describing the same boundary, and only one of
+ * them was told about it.
+ */
 const TABS = [
   { id: 'overview', label: 'Overview' },
-  { id: 'training', label: 'Training' },
-  { id: 'nutrition', label: 'Nutrition' },
+  { id: 'training', label: 'Training', prescribes: true },
+  { id: 'nutrition', label: 'Nutrition', prescribes: true },
   { id: 'health', label: 'Health' },
   { id: 'admin', label: 'Admin' },
 ] as const
@@ -74,7 +83,7 @@ export default function ClientProfileTabs({
   return (
     <div>
       <nav className="flex items-center gap-0.5 border-b border-[#E8EAEE] mb-6 overflow-x-auto">
-        {TABS.map(t => (
+        {TABS.filter(t => canPrescribe || !('prescribes' in t && t.prescribes)).map(t => (
           <button
             key={t.id}
             type="button"
