@@ -390,10 +390,19 @@ export default function BaselineForm(props: Props) {
                           </svg>
                           <p className="text-[#666D7A] text-sm">Tap to upload</p>
                         </div>
+                        {/* No `capture` attribute, removed 21 Sep 2026. It forced
+                            the rear camera and, on an iPhone, removed "Photo
+                            Library" from the sheet entirely. These are photos
+                            somebody else usually takes, or she takes in a mirror
+                            on a timer, so the library is the common case and it
+                            was the one option she did not have.
+
+                            accept lists HEIC explicitly as well as image/*,
+                            because some Android browsers filter an iPhone photo
+                            out of the picker otherwise. */}
                         <input
                           type="file"
-                          accept="image/*"
-                          capture="environment"
+                          accept="image/*,.heic,.heif"
                           className="hidden"
                           onChange={e => handlePhotoPick(id, e.target.files?.[0] ?? null, set)}
                         />
@@ -402,10 +411,15 @@ export default function BaselineForm(props: Props) {
                     {hasError && <p className="text-[#C82626] text-xs mt-2 font-medium">Please upload this photo.</p>}
                     {unreadable.has(id) && (
                       <p className="text-[#A96A12] text-xs mt-2 leading-relaxed">
-                        This photo is in HEIC format, which we can&apos;t read for the visual assessment.
-                        Your baseline will still save, but to get the full read please switch your camera
-                        to JPEG and retake it — iPhone: Settings → Camera → Formats → Most Compatible.
-                        Samsung: Camera → Settings → turn off HEIF/high efficiency pictures.
+                        {/* Rewritten 21 Sep 2026. This used to tell her to open her
+                            iPhone settings and change her camera format, which is
+                            not a thing to ask of somebody sending a photograph of
+                            her own body. Conversion now happens here and works on
+                            the phone that took the photo, so this only appears on
+                            a browser that cannot read the format at all. */}
+                        This photo did not convert on this device. Your baseline will still save.
+                        If you can, open this page on the phone the photo was taken on and add it
+                        again there, and it will convert by itself.
                       </p>
                     )}
                   </div>

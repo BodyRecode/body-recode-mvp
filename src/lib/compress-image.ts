@@ -9,7 +9,28 @@
 // Returns the original File when:
 //   - The input is not an image (e.g. a PDF)
 //   - createImageBitmap or canvas encoding fails
-//   - Re-encoding produced a larger file than the original
+//   - Re-encoding produced a larger file AND the original is already readable
+//
+// THE HEIC BUG, fixed 21 September 2026. An iPhone shoots HEIC by default and
+// this function already converts it correctly: iOS has the decoder, so
+// createImageBitmap reads it and the canvas writes JPEG. The conversion then
+// got THROWN AWAY by the size check, because HEIC is a much better format than
+// JPEG and the converted file is often bigger than the original.
+//
+// So the one case the check existed to optimise was the one case where keeping
+// the original made the photo unreadable to everything downstream. The client
+// was then shown a message telling her to go into her iPhone settings and
+// change her camera format, which is not a thing to ask of somebody sending
+// you a photograph of her own body.
+//
+// Size now loses to readability. A slightly larger JPEG we can actually read
+// beats a smaller HEIC we cannot.
+
+export function isUnreadableImageFormat(file: File): boolean {
+  const type = (file.type || '').toLowerCase()
+  if (/heic|heif|avif|tiff/.test(type)) return true
+  return /\.(heic|heif|avif|tiff?)$/i.test(file.name)
+}
 
 export async function compressImage(
   file: File,
@@ -31,7 +52,12 @@ export async function compressImage(
     ctx.drawImage(bitmap, 0, 0, targetW, targetH)
     bitmap.close?.()
     const blob: Blob | null = await new Promise(res => canvas.toBlob(res, 'image/jpeg', quality))
-    if (!blob || blob.size >= file.size) return file
+    if (!blob) return file
+
+    // Keep the conversion whenever the source cannot be read downstream, even
+    // if it came out larger. See the HEIC note above.
+    const mustConvert = isUnreadableImageFormat(file)
+    if (!mustConvert && blob.size >= file.size) return file
     const baseName = file.name.replace(/\.[^.]+$/, '') || 'photo'
     return new File([blob], `${baseName}.jpg`, { type: 'image/jpeg', lastModified: Date.now() })
   } catch {
@@ -50,8 +76,4 @@ export const MAX_UPLOAD_BYTES = 4 * 1024 * 1024
 // fine in the coach dashboard, and only fails much later when we try to read
 // it. Call this after compressImage — if it is still true, re-encoding did
 // not happen and the photo will not be readable.
-export function isUnreadableImageFormat(file: File): boolean {
-  const type = (file.type || '').toLowerCase()
-  if (/heic|heif|avif|tiff/.test(type)) return true
-  return /\.(heic|heif|avif|tiff?)$/i.test(file.name)
-}
+
