@@ -139,9 +139,9 @@ export default async function PracticePage() {
         </div>
 
         <p className="text-[12px] text-[#6B7280] mt-4 leading-relaxed">
-          Attendance is what she has actually done: whether she answered, and whether she opened her read.
-          It is never a judgement about her body, and a client is left alone for her first three weeks
-          because there is nothing yet to read into.
+          Attendance is what a client has actually done: whether they answered, and whether they opened
+          their read. It is never a judgement about their body, and a client is left alone for their first
+          three weeks because there is nothing yet to read into.
         </p>
       </div>
     </div>

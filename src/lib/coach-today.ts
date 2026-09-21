@@ -8,16 +8,22 @@
  * morning, showed them nothing they could act on.
  *
  * THE SHAPE OF A COACH'S WEEK, which is what this has to serve. Add a client,
- * she completes her intake. Generate her read, review it, publish it, send it.
- * Every week her check-in arrives and gets a response. At twelve weeks, a
+ * they complete an intake. Generate the read, review it, publish it, send it.
+ * Every week a check-in arrives and gets a response. At twelve weeks, a
  * progress check and a re-read.
  *
  * So the queue is the read pipeline plus the weekly loop plus who has gone
  * quiet. Nothing else.
  *
- * ORDERED BY WHO IS WAITING ON THE COACH, not by what is oldest. A woman who
- * finished a long intake and has heard nothing is the first thing on the list,
- * because she is the one currently forming a view of whether this was worth it.
+ * ORDERED BY WHO IS WAITING ON THE COACH, not by what is oldest. A client who
+ * finished a long intake and has heard nothing is first on the list, because
+ * they are the one currently forming a view of whether this was worth it.
+ *
+ * LANGUAGE STAYS UNIVERSAL. Kade, 21 Sep: the pilot coaches and he both train
+ * men. Ninety-three per cent of the audience being women is a fact about who
+ * arrives, not a licence to write as though the rest do not exist, and a coach
+ * reading "her" on every line is being told the product is not for half their
+ * book.
  */
 
 import type { SupabaseClient } from '@supabase/supabase-js'
@@ -92,24 +98,24 @@ export async function coachToday(admin: SupabaseClient, coachId: string | null):
       const intakeAt = intakeBy.get(id) ?? null
       const read = readBy.get(id)
 
-      // 1. She finished her intake and nothing has happened.
+      // 1. The intake is in and nothing has happened.
       if (intakeAt && !read?.generated_at) {
         const d = daysSince(intakeAt) ?? 0
         items.push({
           clientId: id, clientName: name,
-          action: 'Generate her read',
-          detail: d === 0 ? 'Her intake came in today.' : `Her intake has been in for ${d} day${d === 1 ? '' : 's'}.`,
+          action: 'Generate their read',
+          detail: d === 0 ? 'Their intake came in today.' : `Their intake has been in for ${d} day${d === 1 ? '' : 's'}.`,
           href: base, urgency: d >= 2 ? 'now' : 'soon', waitingDays: d,
         })
         continue
       }
 
-      // 2. The read exists and she has not been told.
+      // 2. The read exists and the client has not been told.
       if (read?.client_reading_generated_at && !read?.client_reading_published_at) {
         const d = daysSince(read.client_reading_generated_at as string) ?? 0
         items.push({
           clientId: id, clientName: name,
-          action: 'Review and publish her read',
+          action: 'Review and publish their read',
           detail: `Written ${d === 0 ? 'today' : `${d} day${d === 1 ? '' : 's'} ago`}, still unpublished.`,
           href: base, urgency: d >= 2 ? 'now' : 'soon', waitingDays: d,
         })
@@ -118,8 +124,8 @@ export async function coachToday(admin: SupabaseClient, coachId: string | null):
       if (read?.client_reading_published_at && !read?.client_reading_email_sent_at) {
         items.push({
           clientId: id, clientName: name,
-          action: 'Send her the read',
-          detail: 'Published to her portal, but she has not been told it is there.',
+          action: 'Send them the read',
+          detail: 'Published to their portal, but they have not been told it is there.',
           href: base, urgency: 'now',
         })
         continue
@@ -139,7 +145,7 @@ export async function coachToday(admin: SupabaseClient, coachId: string | null):
       if (d > 21) continue // Too old to chase; the weekly loop has moved on.
       items.push({
         clientId: id, clientName: nameOf.get(id) ?? 'Unnamed',
-        action: `Answer her week ${ci.week_number} check-in`,
+        action: `Answer the week ${ci.week_number} check-in`,
         detail: d === 0 ? 'Came in today.' : `Waiting ${d} day${d === 1 ? '' : 's'}.`,
         href: `/dashboard/clients/${id}/checkins/${ci.week_number}/${ci.form_type}`,
         urgency: d >= 3 ? 'now' : 'soon', waitingDays: d,
@@ -155,13 +161,13 @@ export async function coachToday(admin: SupabaseClient, coachId: string | null):
       if (d < 7) continue
       items.push({
         clientId: id, clientName: nameOf.get(id) ?? 'Unnamed',
-        action: 'Chase her intake',
+        action: 'Chase their intake',
         detail: `Invited ${d} days ago, not started.`,
         href: `/dashboard/clients/${id}`, urgency: d >= 14 ? 'now' : 'watch', waitingDays: d,
       })
     }
 
-    // 5. Sent, and she has never opened it. Quiet, but it is the product going
+    // 5. Sent, and never opened. Quiet, but it is the product going
     //    unread, so it belongs on the list rather than in a report.
     for (const [id, read] of readBy) {
       if (!read.client_reading_email_sent_at || read.client_opened_at) continue
@@ -169,7 +175,7 @@ export async function coachToday(admin: SupabaseClient, coachId: string | null):
       if (d < 3) continue
       items.push({
         clientId: id, clientName: nameOf.get(id) ?? 'Unnamed',
-        action: 'She has not opened her read',
+        action: 'Read not opened yet',
         detail: `Sent ${d} days ago, never opened.`,
         href: `/dashboard/clients/${id}`, urgency: 'watch', waitingDays: d,
       })

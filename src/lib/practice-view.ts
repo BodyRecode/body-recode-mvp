@@ -5,8 +5,8 @@
  * of data we already hold.
  *
  * WHO IS ABOUT TO LEAVE. The system already watches readiness drift, meaning
- * her body: notch drops, reds, instability. It has never watched ENGAGEMENT
- * drift, meaning whether she is still turning up. Those are different
+ * the body: notch drops, reds, instability. It has never watched ENGAGEMENT
+ * drift, meaning whether they are still turning up. Those are different
  * questions, and a client can hold perfect readiness while being three weeks
  * from cancelling. A solo coach almost always finds out at the cancellation. We
  * can see it four weeks earlier, and nothing else in their stack can, because
@@ -17,10 +17,13 @@
  * clients to stop taking. No coach has ever been able to see that about their
  * own practice.
  *
- * WHAT THIS DELIBERATELY IS NOT. It does not score the client, rank her, or
- * predict anything about her body. It reports what she has done: whether she
- * answered, whether she opened her read. Turning attendance into a judgement
- * about a woman is the line, and it is not crossed here.
+ * WHAT THIS DELIBERATELY IS NOT. It does not score the client, rank them, or
+ * predict anything about their body. It reports what they have done: whether
+ * they answered, whether they opened the read. Turning attendance into a
+ * judgement about a person is the line, and it is not crossed here.
+ *
+ * LANGUAGE STAYS UNIVERSAL. Kade, 21 Sep: the pilot coaches and he both train
+ * men, so a coach must not read one gender on every line of their own dashboard.
  */
 
 import type { SupabaseClient } from '@supabase/supabase-js'
@@ -30,11 +33,11 @@ export type Attendance = 'steady' | 'slipping' | 'quiet' | 'too_new'
 export type ClientStanding = {
   id: string
   name: string
-  /** Whole weeks since her last check-in. Null when she has never sent one. */
+  /** Whole weeks since the last check-in. Null when none has ever been sent. */
   weeksSinceCheckin: number | null
-  /** Of the last six weeks, how many she answered. */
+  /** Of the last six weeks, how many were answered. */
   answeredOfSix: number
-  /** True when her most recent published read was opened by her. */
+  /** True when the most recent published read was opened by the client. */
   openedLastRead: boolean | null
   attendance: Attendance
   /** Why the verdict says what it says, in words a coach can act on. */
@@ -126,7 +129,7 @@ export async function practiceView(admin: SupabaseClient, coachId: string | null
         because = 'Too new to say. Three weeks of answers before this means anything.'
       } else if (weeksSince === null) {
         attendance = 'quiet'
-        because = 'She has never sent a check-in.'
+        because = 'No check-in has ever been sent.'
       } else if (weeksSince >= 3) {
         attendance = 'quiet'
         because = `No check-in for ${weeksSince} weeks.`
@@ -136,9 +139,9 @@ export async function practiceView(admin: SupabaseClient, coachId: string | null
           ? `Last check-in was two weeks ago. ${answeredOfSix} of the last six.`
           : `Only ${answeredOfSix} of the last six weeks answered.`
       } else if (sent && openedLastRead === false) {
-        // Turning up but not reading what she gets is its own kind of leaving.
+        // Turning up but not reading what arrives is its own kind of leaving.
         attendance = 'slipping'
-        because = 'Answering her check-ins, but has not opened her last read.'
+        because = 'Answering check-ins, but has not opened the last read.'
       } else {
         attendance = 'steady'
         because = `${answeredOfSix} of the last six weeks answered.`

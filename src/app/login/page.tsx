@@ -19,6 +19,12 @@ import { logoUrl, brand } from '@/config/tenant'
  * becomes a weekly read, twelve weeks becomes proof. Somebody who reads only
  * that and never signs in still understands what we sell.
  *
+ * LANGUAGE STAYS UNIVERSAL. Kade, 21 Sep: the pilot coaches and he both train
+ * men. Ninety-three per cent of the audience being women is a fact about who
+ * arrives, not a licence to write as though the other seven per cent do not
+ * exist, and a coach reading "her" on every line is being told the product is
+ * not for half their book.
+ *
  * Dark on purpose, matching the panels built the same day. It also does the
  * quiet work of not looking like the fitness software they already have.
  */
@@ -77,8 +83,8 @@ export default function LoginPage() {
 
           <div className="space-y-5">
             {[
-              ['Her intake becomes a read', 'A long assessment turned into one written interpretation of what is actually going on with her.'],
-              ['Her check-in becomes a weekly read', 'Every week, what she reports is read back against her own baseline rather than against a target.'],
+              ['An intake becomes a read', 'A long assessment turned into one written interpretation of what is actually going on.'],
+              ['A check-in becomes a weekly read', 'Every week, what they report is read back against their own baseline rather than against a target.'],
               ['Twelve weeks becomes proof', 'The re-read sits against the first one, so what changed is visible instead of claimed.'],
             ].map(([title, body], i) => (
               <div key={title} className="flex gap-3.5">

@@ -6,12 +6,15 @@ import { PageHeader } from '@/components/dashboard/ui'
  * A coach's Today.
  *
  * Every line is something they do, written as the action rather than the
- * state: "Generate her read", not "read outstanding". A queue that describes
+ * state: "Generate their read", not "read outstanding". A queue that describes
  * conditions asks the reader to translate before they can act.
  *
  * Ordered by who is waiting on the coach rather than by what is oldest. A
- * woman who finished a long intake and has heard nothing sits at the top,
- * because she is the one currently deciding whether this was worth it.
+ * client who finished a long intake and has heard nothing sits at the top,
+ * because they are the one currently deciding whether this was worth it.
+ *
+ * LANGUAGE STAYS UNIVERSAL. Kade, 21 Sep: the pilot coaches and he both train
+ * men, so a coach must not read one gender on every line of their dashboard.
  */
 
 const TONE: Record<TodayItem['urgency'], { dot: string; label: string; cls: string }> = {
