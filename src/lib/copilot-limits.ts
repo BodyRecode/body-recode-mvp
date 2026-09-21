@@ -16,7 +16,22 @@ import { createAdminClient } from '@/lib/supabase/admin'
  * an unexplained error assumes the product is broken.
  */
 
-const DAILY_LIMIT = Number(process.env.COPILOT_DAILY_LIMIT ?? 150)
+/**
+ * Forty, set from a measurement rather than a feeling, 21 September 2026.
+ *
+ * It was 150, chosen before anybody knew what a question cost. Measured: about
+ * A$0.099 for the first question about a client and A$0.038 for each one after,
+ * because her file is cached once and re-read cheaply. 150 a day would be roughly
+ * A$180 a month for one coach, which is more than the product will charge.
+ *
+ * Forty is generous against real use. A coach with eight clients asking two or
+ * three questions about each in a week is three a day. Forty leaves room for a
+ * bad Monday and still caps the worst case near A$47 a month.
+ *
+ * The number is an env var because the right answer changes the moment the
+ * pilot tells us what coaches actually do.
+ */
+const DAILY_LIMIT = Number(process.env.COPILOT_DAILY_LIMIT ?? 40)
 
 /** Brisbane day, because that is the day the coach is having. */
 function today(): string {

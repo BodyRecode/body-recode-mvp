@@ -67,17 +67,25 @@ async function main() {
     const res = await anthropic.messages.create({
       model: 'claude-sonnet-5',
       max_tokens: 4096,
-      system,
+      // Cached the same way the route now does, so the measurement reflects
+      // what a coach actually pays rather than a worse version of it.
+      system: [{ type: 'text' as const, text: system, cache_control: { type: 'ephemeral' as const } }],
       messages: [{ role: 'user', content: q }],
     })
     const p = PRICES['claude-sonnet-5']
     const inTok = res.usage.input_tokens
     const outTok = res.usage.output_tokens
     const cached = (res.usage as { cache_read_input_tokens?: number }).cache_read_input_tokens ?? 0
-    const usd = (inTok / 1_000_000) * p.input + (outTok / 1_000_000) * p.output
+    const written = (res.usage as { cache_creation_input_tokens?: number }).cache_creation_input_tokens ?? 0
+    // Cache writes cost 1.25x input, cache reads 0.1x.
+    const usd =
+      (inTok / 1_000_000) * p.input +
+      (written / 1_000_000) * p.input * 1.25 +
+      (cached / 1_000_000) * p.input * 0.1 +
+      (outTok / 1_000_000) * p.output
     totalUsd += usd
     console.log(`  "${q.slice(0, 52)}..."`)
-    console.log(`     in ${inTok.toLocaleString()} tokens, out ${outTok.toLocaleString()}, cached ${cached.toLocaleString()}`)
+    console.log(`     in ${inTok.toLocaleString()} fresh, ${written.toLocaleString()} cache write, ${cached.toLocaleString()} cache read, out ${outTok.toLocaleString()}`)
     console.log(`     US$${usd.toFixed(4)}  ≈  A$${(usd * USD_TO_AUD).toFixed(4)}\n`)
   }
 

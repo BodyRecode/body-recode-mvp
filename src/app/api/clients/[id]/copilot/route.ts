@@ -84,7 +84,21 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
         // what goes in every training-program field?") were hitting the cap and
         // returning an empty text block with stop_reason=max_tokens.
         max_tokens: 4096,
-        system: withTemporalContext(buildCopilotSystemPrompt(ctx.clientName, ctx.context, coachPreferences)),
+        // CACHED, 21 Sep 2026. Measuring the cost found the whole client file,
+        // about 34,000 characters, being re-sent at full price on every single
+        // question. A coach asking five questions about one woman paid for her
+        // file five times.
+        //
+        // The file does not change inside a conversation, which is exactly what
+        // caching is for. Marking the system prompt makes every question after
+        // the first read it at a tenth of the price.
+        system: [
+          {
+            type: 'text' as const,
+            text: withTemporalContext(buildCopilotSystemPrompt(ctx.clientName, ctx.context, coachPreferences)),
+            cache_control: { type: 'ephemeral' as const },
+          },
+        ],
         messages: [...history, { role: 'user', content: message }],
       })
       const block = resp.content.find(b => b.type === 'text')
