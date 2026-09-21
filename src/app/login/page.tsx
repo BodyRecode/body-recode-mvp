@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
-import { logoUrl, brand } from '@/config/tenant'
+import { BrandMark } from '@/components/brand-mark'
 
 /**
  * The coach sign-in.
@@ -71,8 +71,11 @@ export default function LoginPage() {
           aria-hidden
         />
         <div className="relative max-w-[440px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoUrl('dark')} width="200" alt={brand().name} className="mb-11 opacity-95" />
+          {/* Drawn rather than loaded: the dark logo file has never existed, so
+              this page showed nothing at all. See components/brand-mark.tsx. */}
+          <div className="mb-11">
+            <BrandMark tone="light" size="lg" />
+          </div>
 
           <p className="text-[11px] font-medium uppercase" style={{ letterSpacing: '0.18em', color: '#6C7788' }}>
             Coach sign in
