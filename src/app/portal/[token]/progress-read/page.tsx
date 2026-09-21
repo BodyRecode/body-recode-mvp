@@ -1,4 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
+import { markReadOpened } from '@/lib/read-opened'
+import PortalReadingDownload from '../foundational-reading/portal-reading-download'
 import { createClient } from '@/lib/supabase/server'
 import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -34,12 +36,19 @@ export default async function PortalProgressReadPage({ params, searchParams }: {
   const { data: rows } = await query
   const read = rows?.[0]
 
+  // She is on the page, so she has seen it. First open only, and never a count.
+  if (read) void markReadOpened(admin, 'progress_reads', read.id as string)
+
+  // The same back-and-download bar the foundational read has. Added 21 Sep
+  // 2026: the first read could be kept as a file and the twelve-week re-read
+  // could not, which is the wrong way round. The re-read is the one that shows
+  // her what changed, so it is the one she is most likely to want to keep.
   const back = (
-    <div className="no-print" style={{ position: 'fixed', top: 16, left: 16, zIndex: 50 }}>
-      <Link href={`/portal/${token}/readings`} className="inline-flex items-center gap-1.5 text-[12px] font-medium px-3 py-1.5 rounded-lg bg-[#FFFFFF]/80 backdrop-blur border border-[#E8EAEE] text-[#43474F] hover:text-[#1B6DFC] hover:border-[#1B6DFC] transition-colors">
-        <ChevronLeft size={13} /> Your reads
-      </Link>
-    </div>
+    <PortalReadingDownload
+      backHref={`/portal/${token}/readings`}
+      pdfHref={`/api/portal/${token}/progress-read/pdf`}
+      filename={`progress-read-${token}.pdf`}
+    />
   )
 
   if (!read) {

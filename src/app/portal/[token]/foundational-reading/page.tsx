@@ -1,4 +1,5 @@
 import { createAdminClient } from '@/lib/supabase/admin'
+import { markReadOpened } from '@/lib/read-opened'
 import { createClient } from '@/lib/supabase/server'
 import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -44,6 +45,10 @@ export default async function PortalFoundationalReadingPage({
     .limit(1)
 
   const cffs = cffsRows?.[0] ?? null
+
+  // She is on the page, so she has seen it. First open only, and never a count.
+  if (cffs) void markReadOpened(admin, 'cffs', cffs.id as string)
+
   if (!cffs) {
     return (
       <div className="min-h-screen bg-[#FFFFFF] text-[#141821] flex flex-col items-center justify-center px-6 py-12">

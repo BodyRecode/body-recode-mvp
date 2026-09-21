@@ -30,6 +30,7 @@ interface Reading {
   client_reading_generated_at: string | null
   client_reading_published_at: string | null
   client_reading_email_sent_at: string | null
+  client_opened_at: string | null
 }
 
 const SECTION_LABELS: { field: SectionField; label: string }[] = [
@@ -63,6 +64,7 @@ export default function ClientReadingPanel({
   const generated = !!cffs.client_reading_generated_at
   const published = !!cffs.client_reading_published_at
   const emailSent = !!cffs.client_reading_email_sent_at
+  const opened = !!cffs.client_opened_at
 
   async function notifyClient() {
     if (notifying) return
@@ -195,6 +197,27 @@ export default function ClientReadingPanel({
               title={`Notification sent ${new Date(cffs.client_reading_email_sent_at!).toLocaleString('en-AU')}`}
             >
               <Mail size={10} /> Notified
+            </span>
+          )}
+          {/* Sent is not read. Added 21 Sep 2026: the coach could see that the
+              email went and nothing about whether she took it in, which in a
+              pilot is the only question that matters. First open only, never a
+              count: how many times she has read something about her own body is
+              not ours to watch. */}
+          {emailSent && (
+            <span
+              className={`inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border ${
+                opened
+                  ? 'border-[#CFE3D2] bg-[#F3F9F4] text-[#255C33]'
+                  : 'border-[#F0DCC0] bg-[#FDF8F1] text-[#7A5A24]'
+              }`}
+              title={
+                opened
+                  ? `She opened it ${new Date(cffs.client_opened_at!).toLocaleString('en-AU')}`
+                  : 'The email went, but she has not opened the read yet'
+              }
+            >
+              {opened ? 'She has read it' : 'Not opened yet'}
             </span>
           )}
           <button
