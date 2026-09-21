@@ -94,22 +94,48 @@ function brisbaneStartOfDay(iso: string): number {
 }
 
 /**
- * Compute which week of the block we're currently in (1-indexed).
+ * Midnight Brisbane on the MONDAY of the week containing this date.
  *
- * Anchored to MIDNIGHT BRISBANE on the block's start date, not the exact
- * activation timestamp. Anchoring to the raw timestamp meant the block week
- * rolled over at whatever time of day the program was activated, so a client
- * could be mid-training-day in one week and in the next by lunchtime.
- *
- * Cristobal, 2026-09-07: Block 3 was activated 31 Aug at 12:20pm Brisbane. At
- * 8am on Monday 7 Sep the log page still reported block week 1, whose three
- * sessions were all logged, so there was no session left to start and no way
- * to log the session Kade was actually running with him. It would have flipped
- * to week 2 at 12:20pm, after the session finished. If now < start, returns 1.
+ * 1 Jan 1970 was a Thursday, so day number % 7 gives Thursday = 0 and Monday
+ * = 4; adding 3 rotates Monday to 0. Brisbane has no daylight saving, which is
+ * why a fixed offset is safe here and would not be in a DST timezone.
  */
-export function currentBlockWeek(programGeneratedAt: string): number {
-  const start = brisbaneStartOfDay(programGeneratedAt)
-  const ms = Date.now() - start
+function brisbaneStartOfWeek(iso: string): number {
+  const dayStart = brisbaneStartOfDay(iso)
+  const dayNumber = Math.floor((dayStart + BRISBANE_OFFSET_MS) / DAY_MS)
+  const daysSinceMonday = (dayNumber + 3) % 7
+  return dayStart - daysSinceMonday * DAY_MS
+}
+
+/**
+ * Which week of the block we are in, 1-indexed.
+ *
+ * Anchored to MONDAY of the week the block started, at midnight Brisbane. Not
+ * the activation timestamp, and not the activation date either.
+ *
+ * Two faults produced the same symptom, five weeks apart, and both looked to
+ * the coach like "it has not clicked over to the new week".
+ *
+ * Cristobal, 7 Sep 2026: anchored to the raw timestamp, so the week rolled at
+ * whatever time of day the program was activated. His block was activated at
+ * 12:20pm, so at 8am on Monday the page still showed the previous week, fully
+ * logged, and the session Kade was running could not be recorded. Fixed by
+ * anchoring to midnight.
+ *
+ * Razia and Samantha, 21 Sep 2026: both blocks were activated on a TUESDAY, so
+ * weeks ran Tuesday to Monday. On Monday 21 Sep at 5:30pm the page showed
+ * Razia in week 2, whose three sessions were logged the previous Tuesday to
+ * Friday, and it would not have rolled to week 3 until the Tuesday. A coach and
+ * a client both count weeks from Monday; only the machine was counting from
+ * whichever day the block happened to be generated.
+ *
+ * Anchoring to Monday makes the block week agree with the calendar week, which
+ * is the thing everyone else in the conversation means. If now is before the
+ * start, returns 1.
+ */
+export function currentBlockWeek(programGeneratedAt: string, now: number = Date.now()): number {
+  const start = brisbaneStartOfWeek(programGeneratedAt)
+  const ms = now - start
   if (ms < 0) return 1
   return Math.floor(ms / (7 * DAY_MS)) + 1
 }

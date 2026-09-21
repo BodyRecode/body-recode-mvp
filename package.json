@@ -30,6 +30,7 @@
     "test:height": "npx tsx scripts/test-client-height.ts",
     "test:anthro": "npx tsx scripts/test-anthropometry-plausibility.ts",
     "test:reading-lint": "npx tsx scripts/test-reading-lint.ts",
+    "test:block-week": "npx tsx scripts/test-block-week.ts",
     "test:resend-webhook": "npx tsx scripts/test-resend-webhook.ts",
     "test:answer-comparison": "npx tsx scripts/test-answer-comparison.ts",
     "test:heads-up": "npx tsx scripts/test-progress-check-heads-up.ts",
