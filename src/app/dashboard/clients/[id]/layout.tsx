@@ -1,6 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { requireCoachScope, assertOwnsClient } from '@/lib/coach-scope'
-import { productTierForCoach } from '@/lib/coach-tier'
+import { productTierForScope } from '@/lib/coach-tier'
 import { tierAllows } from '@/lib/product-tier'
 import CopilotBubble from './copilot-bubble'
 
@@ -36,7 +36,7 @@ export default async function ClientLayout({
   const { data: client } = await admin.from('clients').select('name').eq('id', id).maybeSingle()
 
   // Whether this coach gets the free-form co-pilot at all. See the note below.
-  const canChat = tierAllows(await productTierForCoach(admin, scope.coachId), 'coach')
+  const canChat = tierAllows(await productTierForScope(admin, scope), 'coach')
 
   return (
     <>

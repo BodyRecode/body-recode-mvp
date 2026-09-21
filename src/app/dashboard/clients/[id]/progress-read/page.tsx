@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import ClientPageNav from '../client-page-nav'
 import { tierAllows } from '@/lib/product-tier'
-import { productTierForCoach } from '@/lib/coach-tier'
+import { productTierForScope } from '@/lib/coach-tier'
 import { requireCoachScope } from '@/lib/coach-scope'
 import { PageHeader } from '@/components/dashboard/ui'
 import { readPatternLabel } from '@/lib/pattern-doctrine'
@@ -48,7 +48,7 @@ function fmt(d: string | null) {
 export default async function ProgressReadPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const scope = await requireCoachScope()
-  const canPrescribe = tierAllows(await productTierForCoach(createAdminClient(), scope.coachId), 'coach')
+  const canPrescribe = tierAllows(await productTierForScope(createAdminClient(), scope), 'coach')
   const admin = createAdminClient()
   const { data: client } = await admin.from('clients').select('id, name').eq('id', id).maybeSingle()
   if (!client) notFound()

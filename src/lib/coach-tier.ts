@@ -60,3 +60,23 @@ export async function productTierForCoach(
     return 'interpret'
   }
 }
+
+/**
+ * The tier for a resolved scope. Use this wherever a scope is already in hand.
+ *
+ * THE OWNER IS THE OWNER, 21 September 2026. Reading the tier from a coach's
+ * own record was right, and it had one hole: Kade has two logins and only one
+ * of them has a record. Signed in on the other, he was silently demoted to a
+ * read-only coach and lost his own business pages and his co-pilot.
+ *
+ * The allowlist IS the definition of owner, so it does not need looking up. A
+ * record can be missing, wrong or not created yet; being on the allowlist
+ * cannot.
+ */
+export async function productTierForScope(
+  admin: SupabaseClient,
+  scope: { coachId: string; isOwner: boolean },
+): Promise<ProductTier> {
+  if (scope.isOwner) return 'owner'
+  return productTierForCoach(admin, scope.coachId)
+}

@@ -35,7 +35,7 @@ import CoachResponseCard from './coach-response-card'
 import MajorSection from './major-section'
 import ClientProfileTabs from './client-profile-tabs'
 import { tierAllows } from '@/lib/product-tier'
-import { productTierForCoach } from '@/lib/coach-tier'
+import { productTierForScope } from '@/lib/coach-tier'
 import { requireCoachScope } from '@/lib/coach-scope'
 import ArtefactAuditPill from './artefact-audit-pill'
 import { auditFoundationalReading, auditProgramReading, auditNutritionPlan } from '@/lib/artefact-audit'
@@ -73,7 +73,7 @@ import { getTotalQuestions } from '@/lib/intake-questions'
 export default async function ClientPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const scope = await requireCoachScope()
-  const canPrescribe = tierAllows(await productTierForCoach(createAdminClient(), scope.coachId), 'coach')
+  const canPrescribe = tierAllows(await productTierForScope(createAdminClient(), scope), 'coach')
   const admin = createAdminClient()
   const { data: client, error: clientError } = await admin
     .from('clients')
