@@ -671,7 +671,11 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         )
       })()}
 
-      {weekStrip && weekStrip.length > 0 && (
+      {/* The week strip counts meal logging and logged sessions, both of which
+          need a plan somebody prescribed. For a read-only coach's client there
+          is nothing to log against, so it is seven empty squares explaining a
+          legend for a feature she does not have. 21 Sep 2026. */}
+      {canPrescribe && weekStrip && weekStrip.length > 0 && (
         <div className="br-card px-5 py-4 mb-4 flex items-start justify-between gap-5 flex-wrap">
           <div>
             <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em] mb-0.5">Last seven days</p>

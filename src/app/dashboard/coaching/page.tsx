@@ -30,6 +30,12 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
   const scope = await requireCoachScope()
   const onlyCoach = coachFilter(scope)
 
+  // The week strip counts meal logging and logged sessions, which need a plan
+  // somebody prescribed. Nothing to show for a read-only coach. 21 Sep 2026.
+  const { productTierForScope } = await import('@/lib/coach-tier')
+  const { tierAllows } = await import('@/lib/product-tier')
+  const canPrescribe = tierAllows(await productTierForScope(supabase, scope), 'coach')
+
   const { view, type } = await searchParams
   const showInactive = view === 'inactive'
   const typeFilter = type === 'online' ? 'online' : type === 'face_to_face' ? 'face_to_face' : 'all'
@@ -437,7 +443,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               </div>
 
               <div className="flex items-center gap-3.5 shrink-0 ml-3">
-                {weekStrips[client.id] && (
+                {canPrescribe && weekStrips[client.id] && (
                   <span className="hidden md:inline-flex" title="Meal logging over the last 7 days. A green dot is a logged session.">
                     <WeekStrip days={weekStrips[client.id]} />
                   </span>
