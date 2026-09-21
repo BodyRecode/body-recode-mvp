@@ -1323,7 +1323,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           <div className="br-card overflow-hidden mb-4">
             <div className="px-5 pt-5 pb-4 grid grid-cols-2 gap-4 border-b border-[#E8EAEE]">
               <div>
-                <p className="text-[10px] font-medium text-[#98A0AD] mb-2">Body State Classification</p>
+                <p className="text-[10px] font-medium text-[#98A0AD] mb-2">Readiness</p>
                 <p className="text-lg font-bold text-[#141821] leading-tight mb-2">{bodyState.label}</p>
                 {bodyState.reScored && (
                   <p className="text-[11px] text-[#666D7A] -mt-1 mb-2">
