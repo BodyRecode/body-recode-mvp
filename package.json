@@ -44,7 +44,9 @@
     "backup:restore-test": "npx tsx scripts/restore-into-local.ts",
     "send:vicki-closeout": "set -a && source .env.local && set +a && npx tsx scripts/send-vicki-closeout.ts",
     "test:pdf-token": "npx tsx scripts/test-pdf-access-token.ts",
-    "test:reassessment": "npx tsx scripts/test-reassessment-triggers.ts"
+    "test:reassessment": "npx tsx scripts/test-reassessment-triggers.ts",
+    "coach:test-book": "npx tsx scripts/test-coach-book.ts",
+    "coach:test-book-wipe": "npx tsx scripts/test-coach-book.ts wipe"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.79.0",

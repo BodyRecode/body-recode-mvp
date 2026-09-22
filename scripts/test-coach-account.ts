@@ -36,10 +36,50 @@ const FULL_NAME = 'Test Coach'
 const BUSINESS = 'Test Coach Strength'
 const TENANT_ID = 'test-coach'
 
+/**
+ * 22 September 2026. This said "No test coach exists" while the account was
+ * sitting there, and `create` then failed with "already registered", which is
+ * the only reason anybody looked.
+ *
+ * TWO FAULTS, and the second one is not this script's.
+ *
+ * 1. IT NEVER CHECKED `error`. One page was requested, the call failed, `data`
+ *    came back null, and the function returned null, which reads as "no such
+ *    user". A lookup that answers "no" when it means "I could not look" is
+ *    worse than one that throws.
+ *
+ * 2. THE AUTH USER LIST IS ACTUALLY BROKEN. One row has `banned_until` set to
+ *    the Postgres value `infinity`, which Postgres stores happily and the auth
+ *    service cannot deserialise, so EVERY page that contains that row fails
+ *    with "Database error finding users". At 25 users a page size of 20 or more
+ *    always contains it; a page size of 5 mostly does not. Hence the small
+ *    page size here: it is a workaround, not a preference, and it stops working
+ *    the moment another row goes the same way.
+ *
+ * The row is a real client account and fixing it is Kade's call, so this pages
+ * around the problem and REPORTS it rather than silently skipping.
+ */
 async function findUser(): Promise<{ id: string; email: string } | null> {
-  const { data } = await admin.auth.admin.listUsers({ page: 1, perPage: 1000 })
-  const u = data?.users?.find((x) => (x.email ?? '').toLowerCase() === EMAIL)
-  return u ? { id: u.id, email: u.email ?? EMAIL } : null
+  let unreadable = 0
+  for (let page = 1; page <= 200; page++) {
+    const { data, error } = await admin.auth.admin.listUsers({ page, perPage: 5 })
+    if (error) {
+      // One unreadable page must not be reported as "user not found".
+      unreadable++
+      continue
+    }
+    const users = data?.users ?? []
+    const u = users.find((x) => (x.email ?? '').toLowerCase() === EMAIL)
+    if (u) return { id: u.id, email: u.email ?? EMAIL }
+    if (users.length < 5) {
+      if (unreadable > 0) {
+        console.warn(`\n  WARNING: ${unreadable} page(s) of the auth user list could not be read.`)
+        console.warn(`  A "not found" here may be wrong. See the note on findUser().`)
+      }
+      return null
+    }
+  }
+  return null
 }
 
 async function create() {
