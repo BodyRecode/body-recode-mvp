@@ -186,15 +186,15 @@ function NavItem({
       aria-current={active ? 'page' : undefined}
       className={`relative flex items-center gap-2.5 px-2.5 py-[7px] rounded-lg text-[13px] transition-colors ${
         active
-          ? 'bg-white text-[#0F1115] font-semibold shadow-[0_1px_3px_rgba(15,17,21,0.08),0_1px_2px_-1px_rgba(15,17,21,0.05)]'
-          : 'text-[#4A4F57] hover:bg-white/85 hover:text-[#0F1115]'
+          ? 'bg-[#1A1E26] text-[#FAFAF8] font-semibold shadow-[0_1px_3px_rgba(15,17,21,0.08),0_1px_2px_-1px_rgba(15,17,21,0.05)]'
+          : 'text-[#C2C6CC] hover:bg-white/[0.06] hover:text-[#FAFAF8]'
       }`}
     >
       {active && (
         <span
           aria-hidden
           className="absolute left-0 top-[7px] bottom-[7px] w-[3px] rounded-r-[3px]"
-          style={{ background: '#0F1115' }}
+          style={{ background: '#FAFAF8' }}
         />
       )}
       <Icon size={15} strokeWidth={2} className={active ? 'opacity-100' : 'opacity-60'} />
@@ -202,14 +202,15 @@ function NavItem({
       {badge && badge.count > 0 && (
         <span
           title={`${badge.count} waiting`}
-          className="ml-auto shrink-0 text-[10.5px] font-semibold text-white rounded-full px-1.5 py-px min-w-[18px] text-center"
+          className="ml-auto shrink-0 text-[10.5px] font-bold rounded-full px-1.5 py-px min-w-[18px] text-center"
           style={{
             fontVariantNumeric: 'tabular-nums',
             // A count of things waiting is NOT a meaning colour. It is a
             // number, and it is graphite like every other number in the
             // product. 'alert' is the exception and stays coloured, because
             // that one does mean something.
-            background: badge.tone === 'alert' ? '#8F2D2D' : '#0F1115',
+            background: badge.tone === 'alert' ? '#8F2D2D' : '#FAFAF8',
+            color: badge.tone === 'alert' ? '#FAFAF8' : '#0B0D10',
             boxShadow: badge.tone === 'alert'
               ? '0 1px 2px rgba(143,45,45,0.30)'
               : '0 1px 2px rgba(15,17,21,0.24)',
@@ -253,7 +254,7 @@ export default function DashboardNav({
           group.key === 'meta' && showDev ? [...group.items, DEV_ONLY] : group.items
         return (
           <div key={group.key} className="mb-0.5">
-            <p className="px-2 pt-3.5 pb-1.5 text-[10.5px] font-semibold text-[#9CA2AB]">
+            <p className="px-2 pt-3.5 pb-1.5 text-[10.5px] font-semibold text-[#676D76]">
               {group.label}
             </p>
             <div className="flex flex-col gap-[1px]">

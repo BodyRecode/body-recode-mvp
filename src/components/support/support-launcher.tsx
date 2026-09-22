@@ -13,10 +13,10 @@ import { LAUNCHER_BUTTON, launcherStyle, LAUNCHER_PANEL_SHADOW } from '@/compone
  * pathname as ticket context so Kade sees where the coach was when they filed.
  */
 
-const SIGNAL = '#1B6DFC'
-const AMBER = '#B7791F'
-const RED = '#DC2626'
-const SAGE = '#7A8A6B'
+const SIGNAL = '#FAFAF8'
+const AMBER = '#E0A254'
+const RED = '#D4817E'
+const SAGE = '#6FA98B'
 
 type Ticket = {
   id: string
@@ -39,7 +39,7 @@ function accentToHex(a: 'red' | 'amber' | 'blue' | 'sage' | 'neutral'): string {
   if (a === 'amber') return AMBER
   if (a === 'blue') return SIGNAL
   if (a === 'sage') return SAGE
-  return '#666D7A'
+  return '#8A9099'
 }
 
 export default function SupportLauncher() {
@@ -59,15 +59,15 @@ export default function SupportLauncher() {
           aria-label="Support"
         >
           <div className="br-card overflow-hidden flex flex-col h-full">
-            <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[linear-gradient(180deg,#FFFFFF,#FBFCFD)] shrink-0">
-              <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Support</p>
-              <span className="ml-auto text-[11.5px] text-[#98A0AD]">Kade sees every ticket</span>
-              <button onClick={() => setOpen(false)} aria-label="Close support" className="text-[#98A0AD] hover:text-[#141821] -my-1">
+            <div className="flex items-center gap-3 px-5 py-3 border-b border-[#2A2F39] bg-[linear-gradient(180deg,#0F1115,#14171D)] shrink-0">
+              <p className="text-[13.5px] font-semibold text-[#0F1115] tracking-[-0.015em]">Support</p>
+              <span className="ml-auto text-[11.5px] text-[#676D76]">Kade sees every ticket</span>
+              <button onClick={() => setOpen(false)} aria-label="Close support" className="text-[#676D76] hover:text-[#0F1115] -my-1">
                 <X size={16} />
               </button>
             </div>
 
-            <div className="flex border-b border-[#EFF1F4] bg-white shrink-0">
+            <div className="flex border-b border-[#1F242C] bg-white shrink-0">
               <TabBtn active={tab === 'report'} onClick={() => setTab('report')}>Report</TabBtn>
               <TabBtn active={tab === 'mine'} onClick={() => setTab('mine')}>My tickets</TabBtn>
             </div>
@@ -99,7 +99,7 @@ function TabBtn({ active, onClick, children }: { active: boolean; onClick: () =>
       className="flex-1 text-[13px] py-2.5 border-b-2 -mb-px transition-colors"
       style={{
         fontWeight: active ? 500 : 400,
-        color: active ? SIGNAL : '#666D7A',
+        color: active ? SIGNAL : '#8A9099',
         borderColor: active ? SIGNAL : 'transparent',
       }}
     >
@@ -149,11 +149,11 @@ function ReportForm({ pathname, onSubmitted }: { pathname: string; onSubmitted: 
   if (done) {
     return (
       <div className="p-6 flex flex-col items-center text-center gap-3">
-        <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(122,138,107,0.15)' }}>
+        <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(111,169,139,0.15)' }}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke={SAGE} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
         </div>
-        <p className="text-[14px] font-semibold text-[#141821]">Ticket filed.</p>
-        <p className="text-[12.5px] text-[#666D7A] leading-relaxed">Kade sees it now. You will get an email when the status changes.</p>
+        <p className="text-[14px] font-semibold text-[#0F1115]">Ticket filed.</p>
+        <p className="text-[12.5px] text-[#8A9099] leading-relaxed">Kade sees it now. You will get an email when the status changes.</p>
       </div>
     )
   }
@@ -161,7 +161,7 @@ function ReportForm({ pathname, onSubmitted }: { pathname: string; onSubmitted: 
   return (
     <form onSubmit={submit} className="p-5 space-y-4">
       <div>
-        <label className="block text-[12.5px] text-[#666D7A] mb-2">What kind of thing?</label>
+        <label className="block text-[12.5px] text-[#8A9099] mb-2">What kind of thing?</label>
         <div className="grid grid-cols-2 gap-2">
           {CATEGORIES.map(c => {
             const active = c === category
@@ -173,9 +173,9 @@ function ReportForm({ pathname, onSubmitted }: { pathname: string; onSubmitted: 
                 onClick={() => setCategory(c)}
                 className="text-left text-[12.5px] rounded-lg px-3 py-2 border transition-colors"
                 style={{
-                  borderColor: active ? hex : '#E8EAEE',
-                  background: active ? `${hex}12` : '#FFFFFF',
-                  color: active ? '#141821' : '#43474F',
+                  borderColor: active ? hex : '#2A2F39',
+                  background: active ? `${hex}12` : '#0F1115',
+                  color: active ? '#0F1115' : '#C2C6CC',
                 }}
               >
                 <span className="block font-semibold">{CATEGORY_LABELS[c]}</span>
@@ -186,7 +186,7 @@ function ReportForm({ pathname, onSubmitted }: { pathname: string; onSubmitted: 
       </div>
 
       <div>
-        <label htmlFor="support-subject" className="block text-[12.5px] text-[#666D7A] mb-2">Subject</label>
+        <label htmlFor="support-subject" className="block text-[12.5px] text-[#8A9099] mb-2">Subject</label>
         <input
           id="support-subject"
           type="text"
@@ -195,12 +195,12 @@ function ReportForm({ pathname, onSubmitted }: { pathname: string; onSubmitted: 
           maxLength={120}
           required
           placeholder="One-line summary"
-          className="w-full text-[13.5px] border border-[#E8EAEE] rounded-lg px-3 py-2 focus:outline-none focus:border-[#B9D0FD] focus:ring-[3px] focus:ring-[rgba(27,109,252,0.13)]"
+          className="w-full text-[13.5px] border border-[#2A2F39] rounded-lg px-3 py-2 focus:outline-none focus:border-[#2A2F39] focus:ring-[3px] focus:ring-[rgba(27,109,252,0.13)]"
         />
       </div>
 
       <div>
-        <label htmlFor="support-body" className="block text-[12.5px] text-[#666D7A] mb-2">Detail</label>
+        <label htmlFor="support-body" className="block text-[12.5px] text-[#8A9099] mb-2">Detail</label>
         <textarea
           id="support-body"
           value={body}
@@ -209,20 +209,20 @@ function ReportForm({ pathname, onSubmitted }: { pathname: string; onSubmitted: 
           required
           rows={5}
           placeholder="What happened, what you expected, what you were doing…"
-          className="w-full text-[13.5px] resize-none border border-[#E8EAEE] rounded-lg px-3 py-2 focus:outline-none focus:border-[#B9D0FD] focus:ring-[3px] focus:ring-[rgba(27,109,252,0.13)]"
+          className="w-full text-[13.5px] resize-none border border-[#2A2F39] rounded-lg px-3 py-2 focus:outline-none focus:border-[#2A2F39] focus:ring-[3px] focus:ring-[rgba(27,109,252,0.13)]"
         />
       </div>
 
-      <div className="text-[11px] text-[#98A0AD]">
+      <div className="text-[11px] text-[#676D76]">
         We include the page you are on ({pathname || 'unknown'}) automatically.
       </div>
 
-      {error && <div className="text-[12.5px] text-[#C82626]">{error}</div>}
+      {error && <div className="text-[12.5px] text-[#D4817E]">{error}</div>}
 
       <button
         type="submit"
         disabled={submitting || subject.trim().length < 3 || body.trim().length < 4}
-        className="w-full text-[13px] font-semibold px-4 py-2.5 text-white rounded-lg border border-[#1560E0] bg-[linear-gradient(180deg,#3B82F9,#1B6DFC)] hover:bg-[linear-gradient(180deg,#2E77F7,#1560E0)] shadow-[0_1px_2px_rgba(27,109,252,0.4),inset_0_1px_0_rgba(255,255,255,0.28)] transition-all active:translate-y-[0.5px] disabled:opacity-40"
+        className="w-full text-[13px] font-semibold px-4 py-2.5 text-[#0B0D10] rounded-lg border border-[#E4E4E0] bg-[linear-gradient(180deg,#FFFFFF,#FAFAF8)] hover:bg-[linear-gradient(180deg,#FFFFFF,#E4E4E0)] shadow-[0_1px_2px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.28)] transition-all active:translate-y-[0.5px] disabled:opacity-40"
       >
         {submitting ? 'Sending…' : 'File ticket'}
       </button>
@@ -250,13 +250,13 @@ function MyTicketsList({ visible }: { visible: boolean }) {
     return () => { cancelled = true }
   }, [visible])
 
-  if (error) return <div className="p-5 text-[12.5px] text-[#C82626]">{error}</div>
-  if (tickets === null) return <div className="p-5 text-[12.5px] text-[#98A0AD]">Loading…</div>
+  if (error) return <div className="p-5 text-[12.5px] text-[#D4817E]">{error}</div>
+  if (tickets === null) return <div className="p-5 text-[12.5px] text-[#676D76]">Loading…</div>
   if (tickets.length === 0) {
     return (
       <div className="p-6 text-center">
-        <p className="text-[13px] text-[#666D7A]">No tickets yet.</p>
-        <p className="text-[12px] text-[#98A0AD] mt-1">The ones you file will show here.</p>
+        <p className="text-[13px] text-[#8A9099]">No tickets yet.</p>
+        <p className="text-[12px] text-[#676D76] mt-1">The ones you file will show here.</p>
       </div>
     )
   }
@@ -270,12 +270,12 @@ function MyTicketsList({ visible }: { visible: boolean }) {
             key={t.id}
             className="br-card px-3.5 py-2.5"
             style={{
-              background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
-              boxShadow: '0 1px 2px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
+              background: 'linear-gradient(180deg,#0F1115,#14171D)',
+              boxShadow: '0 1px 2px rgba(16,24,40,0.05), inset 0 1px 0 #0F1115',
             }}
           >
             <div className="flex items-start gap-2 mb-1">
-              <p className="text-[13px] font-semibold text-[#141821] flex-1 min-w-0 truncate">{t.subject}</p>
+              <p className="text-[13px] font-semibold text-[#0F1115] flex-1 min-w-0 truncate">{t.subject}</p>
               <span
                 className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-[3px] rounded-full whitespace-nowrap shrink-0"
                 style={{ color: stHex, background: `${stHex}14`, border: `1px solid ${stHex}44` }}
@@ -284,12 +284,12 @@ function MyTicketsList({ visible }: { visible: boolean }) {
                 {STATUS_LABELS[t.status]}
               </span>
             </div>
-            <p className="text-[11.5px] text-[#98A0AD]">
+            <p className="text-[11.5px] text-[#676D76]">
               {CATEGORY_LABELS[t.category]} · {formatDate(t.created_at)}
             </p>
             {t.status_note && (
-              <p className="text-[12.5px] text-[#43474F] mt-2 whitespace-pre-wrap leading-relaxed border-t border-[#EFF1F4] pt-2">
-                <span className="font-semibold text-[#141821]">Kade:</span> {t.status_note}
+              <p className="text-[12.5px] text-[#C2C6CC] mt-2 whitespace-pre-wrap leading-relaxed border-t border-[#1F242C] pt-2">
+                <span className="font-semibold text-[#0F1115]">Kade:</span> {t.status_note}
               </p>
             )}
           </div>

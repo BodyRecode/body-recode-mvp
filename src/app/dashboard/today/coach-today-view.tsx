@@ -1,106 +1,231 @@
 import Link from 'next/link'
-import type { CoachToday, TodayItem } from '@/lib/coach-today'
-import { PageHeader } from '@/components/dashboard/ui'
+import type { CoachToday, ClientToday, Band } from '@/lib/coach-today'
+import { BRAND } from '@/lib/brand-tokens'
 
 /**
- * A coach's Today.
+ * A coach's Today. Dark, because a tool is dark and a document is light: this
+ * is a workspace a coach sits in all day, while everything a client READS
+ * stays on paper. Locked with Kade, 22 September 2026.
  *
- * Every line is something they do, written as the action rather than the
- * state: "Generate their read", not "read outstanding". A queue that describes
- * conditions asks the reader to translate before they can act.
+ * WHAT CARRIES THE PAGE, given there is no brand colour to lean on: scale, hard
+ * contrast, and space. The three panels are the only place a chart earns its
+ * keep, and the last of them is the one that makes this feel like a system
+ * rather than a list, because it shows a coach their whole book in one line.
  *
- * Ordered by who is waiting on the coach rather than by what is oldest. A
- * client who finished a long intake and has heard nothing sits at the top,
- * because they are the one currently deciding whether this was worth it.
- *
- * LANGUAGE STAYS UNIVERSAL. Kade, 21 Sep: the pilot coaches and he both train
- * men, so a coach must not read one gender on every line of their dashboard.
+ * COLOUR APPEARS FOUR TIMES AND EVERY ONE MEANS SOMETHING. The old page used
+ * the Attention colour fifty-eight times, on urgency, which is not a meaning:
+ * it is a queue position. Spending the colour that means A SAFETY GATE HAS
+ * FIRED on THIS CHECK-IN IS A BIT OLD is how a coach learns to ignore it.
+ * Urgency is now carried by the band heading, in words.
  */
 
-const TONE: Record<TodayItem['urgency'], { dot: string; label: string; cls: string }> = {
-  now: { dot: '#D4817E', label: 'Now', cls: 'text-[#D4817E]' },
-  soon: { dot: '#E0A254', label: 'Soon', cls: 'text-[#E0A254]' },
-  watch: { dot: '#6E747D', label: 'Watch', cls: 'text-[#9CA2AB]' },
+const READINESS_ON_DARK: Record<string, string> = {
+  Remediation: BRAND.remediationOnDark,
+  Optimisation: BRAND.optimisationOnDark,
+  'Post-Optimisation': BRAND.postOptimisationOnDark,
 }
 
-function Row({ item }: { item: TodayItem }) {
-  const tone = TONE[item.urgency]
+const BANDS: Array<{ key: Band; title: string }> = [
+  { key: 'need', title: 'Need you' },
+  { key: 'look', title: 'Worth a look' },
+  { key: 'fine', title: 'Nothing needed' },
+]
+
+function Dot({ c }: { c: ClientToday }) {
+  const colour = c.gateOpen
+    ? BRAND.attentionOnDark
+    : (c.readiness ? READINESS_ON_DARK[c.readiness] : BRAND.darkLine)
   return (
-    <Link
-      href={item.href}
-      className="flex items-center gap-3 px-4 py-3.5 border-b border-[#1F242C] last:border-b-0 hover:bg-[#1A1E26] transition-colors"
-    >
-      <span className="w-2 h-2 rounded-full shrink-0" style={{ background: tone.dot }} />
-      <div className="min-w-0 flex-1">
-        <p className="text-[14px] text-white">
-          {item.action} <span className="text-[#9CA2AB]">· {item.clientName}</span>
-        </p>
-        <p className="text-[12.5px] text-[#9CA2AB] mt-0.5">{item.detail}</p>
-      </div>
-      <span className={`text-[11.5px] font-medium shrink-0 ${tone.cls}`}>{tone.label}</span>
-    </Link>
+    <span
+      aria-hidden
+      className="inline-block rounded-full shrink-0 mt-[8px]"
+      style={{
+        width: 10, height: 10, background: colour,
+        // The ring is the rule from the brand guidelines: when a colour is the
+        // only thing separating two states, it is not enough. Under red-green
+        // colour blindness Attention and Remediation are both olive.
+        boxShadow: c.gateOpen ? `0 0 0 4px rgba(212,129,126,0.18), 0 0 16px rgba(212,129,126,0.5)` : undefined,
+      }}
+    />
   )
 }
 
-function Stat({ label, value, colour }: { label: string; value: number; colour?: string }) {
+function Row({ c, quiet }: { c: ClientToday; quiet: boolean }) {
+  const colour = c.gateOpen
+    ? BRAND.attentionOnDark
+    : (c.readiness ? READINESS_ON_DARK[c.readiness] : BRAND.darkInkSoft)
+  const label = c.gateOpen ? 'Attention' : (c.readiness ?? 'No reading yet')
+
   return (
-    <div className="rounded-2xl border border-[#2A2F39] bg-[#14171D] p-5">
-      <p className="text-[10px] font-medium tracking-[0.12em] uppercase text-[#6E747D] mb-2">{label}</p>
-      <p className="text-[34px] leading-none font-semibold tabular-nums" style={{ color: colour ?? '#FFFFFF' }}>
-        {value}
-      </p>
+    <div
+      className="grid gap-4 items-start py-4 border-b"
+      style={{ gridTemplateColumns: '24px 1fr max-content', borderColor: BRAND.darkLineSoft, opacity: quiet ? 0.66 : 1 }}
+    >
+      <Dot c={c} />
+      <div className="min-w-0">
+        <div className="flex items-center gap-2.5 flex-wrap">
+          <Link
+            href={c.href}
+            className={`${quiet ? 'text-[16px] font-semibold' : 'text-[20px] font-bold'} tracking-[-0.028em] leading-tight hover:underline`}
+            style={{ color: BRAND.darkInk }}
+          >
+            {c.clientName}
+          </Link>
+          <span
+            className="text-[10px] font-extrabold uppercase rounded-full px-2 py-[2.5px]"
+            style={{ color: colour, background: `${colour}1F`, letterSpacing: '0.1em' }}
+          >
+            {label}
+          </span>
+        </div>
+        <p className="text-[13.5px] leading-[1.55] mt-1.5 max-w-[620px]" style={{ color: BRAND.darkInkMuted }}>
+          {c.why}
+        </p>
+      </div>
+      <div className="text-right shrink-0">
+        {c.action && (
+          <Link
+            href={c.href}
+            className="inline-block text-[12.5px] font-bold rounded-lg px-3.5 py-[7px] transition-colors"
+            style={{ background: BRAND.darkInk, color: BRAND.base }}
+          >
+            {c.action}
+          </Link>
+        )}
+        {c.waitLabel && (
+          <div className="text-[11px] mt-2 tabular-nums" style={{ color: BRAND.darkInkFaint }}>{c.waitLabel}</div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function Panel({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div
+      className="rounded-2xl p-5 relative overflow-hidden"
+      style={{ background: BRAND.darkBase, border: `1px solid ${BRAND.darkLineSoft}` }}
+    >
+      <span
+        aria-hidden className="absolute inset-x-0 top-0 h-px"
+        style={{ background: 'linear-gradient(90deg,transparent,rgba(250,250,248,0.12),transparent)' }}
+      />
+      <div className="text-[9.5px] font-bold uppercase" style={{ letterSpacing: '0.16em', color: BRAND.darkInkFaint }}>{label}</div>
+      {children}
     </div>
   )
 }
 
 export default function CoachTodayView({ today, firstName }: { today: CoachToday; firstName: string }) {
-  const nothing = today.items.length === 0
+  const { clients, counts, book, readsThisWeek, held } = today
+  const total = clients.length
+  const peak = Math.max(1, ...readsThisWeek)
+  const bookColours: Record<string, string> = {
+    Remediation: BRAND.remediationOnDark,
+    Optimisation: BRAND.optimisationOnDark,
+    'Post-Optimisation': BRAND.postOptimisationOnDark,
+    'Not read yet': BRAND.darkLine,
+  }
+  const booked = book.filter(b => b.count > 0)
+  const bookTotal = booked.reduce((n, b) => n + b.count, 0) || 1
 
   return (
-    <div className="max-w-[900px]">
-      <PageHeader
-        eyebrow={new Date().toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' })}
-        title={`Today${firstName ? `, ${firstName}` : ''}`}
-        subtitle={
-          nothing
-            ? 'Nothing is waiting on you. That is the whole list, not a shortened one.'
-            : 'Everything waiting on you, with whoever has been waiting longest at the top.'
-        }
-      />
-
-      <div className="rounded-3xl bg-[#0B0D10] p-5 sm:p-6 mt-2">
-        <div className="grid grid-cols-3 gap-3 mb-3">
-          <Stat label="Now" value={today.counts.now} colour={today.counts.now > 0 ? '#D4817E' : undefined} />
-          <Stat label="Soon" value={today.counts.soon} colour={today.counts.soon > 0 ? '#E0A254' : undefined} />
-          <Stat label="Clients" value={today.activeClients} />
+    <div className="-mx-6 -mt-6 min-h-screen" style={{ background: BRAND.darkWell, color: BRAND.darkInk }}>
+      <div className="px-8 pt-8 pb-6 flex items-end justify-between gap-8 flex-wrap">
+        <div>
+          <div className="text-[10px] font-bold uppercase" style={{ letterSpacing: '0.18em', color: BRAND.darkInkFaint }}>
+            {new Date().toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' })}
+          </div>
+          <h1 className="text-[46px] sm:text-[52px] font-extrabold tracking-[-0.04em] leading-[0.95] mt-2">Today</h1>
+          <p className="text-[13.5px] mt-2.5" style={{ color: BRAND.darkInkSoft }}>
+            {total === 0
+              ? `Nothing here yet, ${firstName}. Add your first client and this fills itself in.`
+              : `${total} client${total === 1 ? '' : 's'}. ${counts.need === 0 ? 'None of them need you right now.' : `${counts.need} want${counts.need === 1 ? 's' : ''} something from you, and the reason is on the line.`}`}
+          </p>
         </div>
-
-        <div className="rounded-2xl border border-[#2A2F39] bg-[#14171D] overflow-hidden">
-          {nothing ? (
-            <div className="px-5 py-10 text-center">
-              <p className="text-[15px] text-white mb-1.5">Nothing needs you.</p>
-              <p className="text-[13px] text-[#9CA2AB] max-w-sm mx-auto leading-relaxed">
-                Every read is written and sent, and every check-in has an answer.
-                {today.activeClients === 0 && ' Add your first client to get started.'}
-              </p>
-              {today.activeClients === 0 && (
-                <Link
-                  href="/dashboard/clients/new"
-                  className="inline-block mt-5 px-4 py-2 rounded-lg bg-[#0F1115] text-white text-[13px] font-medium"
-                >
-                  Add a client
-                </Link>
-              )}
+        {total > 0 && (
+          <div className="text-right shrink-0">
+            <div
+              className="text-[68px] font-extrabold leading-[0.85] tabular-nums"
+              style={{ background: 'linear-gradient(180deg,#FFFFFF,#8A9099)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+            >
+              {counts.need}
             </div>
-          ) : (
-            today.items.map((item, i) => <Row key={`${item.clientId}-${item.action}-${i}`} item={item} />)
-          )}
-        </div>
+            <div className="text-[10px] font-bold uppercase mt-2" style={{ letterSpacing: '0.18em', color: BRAND.darkInkFaint }}>need you</div>
+          </div>
+        )}
+      </div>
 
-        <p className="text-[12px] text-[#6E747D] mt-4 leading-relaxed">
-          This list is built from where each client actually is, not from anything you have to tick off.
-          It empties by itself as you work.
-        </p>
+      {total > 0 && (
+        <div className="px-8 grid gap-3" style={{ gridTemplateColumns: 'repeat(2, minmax(0,1fr)) 1.45fr' }}>
+          <Panel label="Read this week">
+            <div className="text-[34px] font-extrabold tracking-[-0.045em] mt-2.5 leading-none tabular-nums">
+              {readsThisWeek.reduce((a, b) => a + b, 0)}
+            </div>
+            <div className="flex items-end gap-1 h-9 mt-3" aria-hidden>
+              {readsThisWeek.map((n, i) => (
+                <span key={i} className="flex-1 rounded-sm block" style={{
+                  height: `${Math.max(6, (n / peak) * 100)}%`,
+                  background: i === readsThisWeek.length - 1 ? BRAND.darkInk : BRAND.darkLine,
+                }} />
+              ))}
+            </div>
+          </Panel>
+
+          <Panel label="Held">
+            <div className="text-[34px] font-extrabold tracking-[-0.045em] mt-2.5 leading-none tabular-nums"
+              style={{ color: held > 0 ? BRAND.attentionOnDark : BRAND.darkInk }}>
+              {held}
+            </div>
+            <p className="text-[11.5px] mt-2" style={{ color: BRAND.darkInkSoft }}>
+              {held === 0 ? 'Nothing waiting on a doctor.' : `waiting on a doctor, not on you`}
+            </p>
+          </Panel>
+
+          <Panel label="Where the book sits">
+            <div className="flex h-2.5 rounded-full overflow-hidden gap-[2px] mt-3.5">
+              {booked.map(b => (
+                <span key={b.label} style={{
+                  width: `${(b.count / bookTotal) * 100}%`,
+                  background: bookColours[b.label] ?? BRAND.darkLine,
+                  boxShadow: b.label === 'Not read yet' ? undefined : `0 0 14px ${bookColours[b.label]}66`,
+                }} />
+              ))}
+            </div>
+            <div className="flex gap-4 flex-wrap mt-3">
+              {booked.map(b => (
+                <span key={b.label} className="flex items-center gap-1.5 text-[10.5px]" style={{ color: BRAND.darkInkSoft }}>
+                  <span className="w-2 h-2 rounded-full" style={{ background: bookColours[b.label] ?? BRAND.darkLine }} />
+                  {b.count} {b.label}
+                </span>
+              ))}
+            </div>
+          </Panel>
+        </div>
+      )}
+
+      <div className="px-8 pb-12">
+        {BANDS.map(band => {
+          const inBand = clients.filter(c => c.band === band.key)
+          if (inBand.length === 0) return null
+          return (
+            <div key={band.key}>
+              <div className="flex items-center gap-3 mt-8 mb-0">
+                <h2 className="text-[11px] font-extrabold uppercase" style={{ letterSpacing: '0.17em', color: BRAND.darkInk }}>{band.title}</h2>
+                <span className="text-[10.5px] font-extrabold rounded-full px-2 py-px"
+                  style={{ background: BRAND.darkInkSoft, color: BRAND.darkWell }}>{inBand.length}</span>
+                <span className="flex-1 h-px" style={{ background: BRAND.darkLineSoft }} />
+              </div>
+              {inBand.map(c => <Row key={c.clientId} c={c} quiet={band.key === 'fine'} />)}
+            </div>
+          )
+        })}
+
+        {total === 0 && (
+          <p className="text-[13.5px] mt-6" style={{ color: BRAND.darkInkSoft }}>
+            Once a client finishes their assessment, their read and everything that follows it appears here.
+          </p>
+        )}
       </div>
     </div>
   )
