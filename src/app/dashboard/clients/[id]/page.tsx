@@ -10,7 +10,7 @@ import { ChevronLeft, ChevronRight, ArrowRight, CheckCircle2, Activity, RefreshC
 import { getActiveConstraintManifest } from '@/lib/recovery-state-machine'
 import { getSuggestionsForState } from '@/lib/rrs-protocol-suggestions'
 import type { RecoveryPlaybookId } from '@/lib/recovery-doctrine'
-import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
+import { formatDate, readinessPillStyle, getReadinessColour } from '@/lib/utils'
 import Link from 'next/link'
 import { PageHeader, MONO_FONT } from '@/components/dashboard/ui'
 import { GlanceCard, flagsPill, type GlancePill } from '@/components/glance-card'
@@ -1720,7 +1720,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   >
                     <span className="text-sm text-[#6E747D]">{formatDate(c.generated_at)}</span>
                     <span
-                      className={`text-xs px-2 py-0.5 rounded-full border ${getStateColour(c.body_state_classification)}`}
+                      className="text-xs px-2 py-0.5 rounded-full border"
+                      style={readinessPillStyle(c.body_state_classification, true)}
                     >
                       {c.body_state_classification}
                     </span>

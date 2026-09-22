@@ -1,3 +1,4 @@
+import { BRAND } from './brand-tokens'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
@@ -13,13 +14,37 @@ export function formatDate(dateString: string) {
   })
 }
 
-export function getStateColour(state: string) {
-  switch (state) {
-    case 'Remediation': return 'bg-red-100 text-red-800 border-red-200'
-    case 'Optimisation': return 'bg-amber-100 text-amber-800 border-amber-200'
-    case 'Post-Optimisation': return 'bg-green-100 text-green-800 border-green-200'
-    default: return 'bg-gray-100 text-gray-800 border-gray-200'
-  }
+/**
+ * The readiness pill.
+ *
+ * 22 September 2026. THIS WAS PAINTING REMEDIATION RED AND OPTIMISATION AMBER,
+ * which is not a near miss, it is the doctrine inverted. Remediation is never
+ * red: somebody in Remediation is not in trouble, they are being asked for
+ * less, and red tells a coach the opposite of what the read says, on a screen
+ * they look at before they speak to a client. Amber is Remediation's colour, so
+ * giving it to Optimisation meant the two states a coach most needs to tell
+ * apart were wearing each other's clothes.
+ *
+ * It survived because it was a Tailwind palette name rather than a hex code, so
+ * every sweep that counted colours walked straight past it. Worth remembering:
+ * `bg-red-100` is a colour decision that no search for `#` will ever find.
+ *
+ * Returns inline styles rather than classes, so it reads from the one palette
+ * (lib/brand-tokens) instead of a second set of colours that can drift again.
+ */
+export function readinessPillStyle(state: string, onDark = false): React.CSSProperties {
+  const c =
+    state === 'Remediation' ? (onDark ? BRAND.remediationOnDark : BRAND.remediation)
+    : state === 'Optimisation' ? (onDark ? BRAND.optimisationOnDark : BRAND.optimisation)
+    : state === 'Post-Optimisation' ? (onDark ? BRAND.postOptimisationOnDark : BRAND.postOptimisation)
+    : state === 'Attention' ? (onDark ? BRAND.attentionOnDark : BRAND.attention)
+    : (onDark ? BRAND.darkInkSoft : BRAND.inkSoft)
+  return { color: c, background: `${c}1F`, borderColor: `${c}44` }
+}
+
+/** @deprecated Use readinessPillStyle. Kept so nothing breaks mid-sweep. */
+export function getStateColour(_state: string) {
+  return 'border'
 }
 
 export function getLeadStatusLabel(status: string) {
@@ -100,11 +125,17 @@ export const LEAD_SOURCES = [
   { value: 'other', label: 'Other' },
 ]
 
-export function getReadinessColour(status: string) {
-  switch (status) {
-    case 'Green': return 'bg-green-500'
-    case 'Amber': return 'bg-amber-500'
-    case 'Red': return 'bg-red-500'
-    default: return 'bg-gray-300'
-  }
+/**
+ * The four Green/Amber/Red signals from a read. Unlike readiness, these ARE a
+ * traffic light and mean what a traffic light means, so they keep that shape.
+ * They now come from the palette rather than from Tailwind's defaults, which
+ * were louder than anything else on a screen whose only colour is a readiness.
+ */
+export function getReadinessColour(status: string): React.CSSProperties {
+  const c =
+    status === 'Green' ? BRAND.postOptimisation
+    : status === 'Amber' ? BRAND.remediation
+    : status === 'Red' ? BRAND.attention
+    : BRAND.noReading
+  return { background: c }
 }

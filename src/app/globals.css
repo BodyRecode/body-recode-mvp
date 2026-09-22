@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #FFFFFF;
-  --foreground: #1A1A1A;
+  --background: #14171D;
+  --foreground: #FAFAF8;
 }
 
 @theme inline {
@@ -13,7 +13,7 @@
 }
 
 html, body {
-  background: #FFFFFF;
+  background: #14171D;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -38,40 +38,44 @@ html {
  * agreeing on elevation. They are one thing, so they get one class. Change
  * the card here and every page follows.
  */
+/* 22 Sep 2026: a tool is dark. These three were the last place colour was
+   hiding from the palette pass, because every sweep looked at component files
+   and a stylesheet is not one. Worth remembering alongside Tailwind's colour
+   names: neither is findable by searching components for a hex code. */
 .br-card {
-  background: linear-gradient(180deg, #FFFFFF, #FBFCFD);
-  border: 1px solid #E8EAEE;
+  background: linear-gradient(180deg, #14171D, #12151B);
+  border: 1px solid #2A2F39;
   border-radius: 12px;
   box-shadow:
-    0 1px 3px rgba(16, 24, 40, 0.09),
-    0 1px 2px -1px rgba(16, 24, 40, 0.05),
-    inset 0 1px 0 #FFFFFF;
+    0 1px 3px rgba(0, 0, 0, 0.09),
+    0 1px 2px -1px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(250, 250, 248, 0.05);
 }
 
 /* Inset surface: a panel INSIDE a card, which must not look like a second card. */
 .br-card-inset {
-  background: #FBFCFD;
-  border: 1px solid #EFF1F4;
+  background: #12151B;
+  border: 1px solid #1F242C;
   border-radius: 10px;
 }
 
 /* The one card on a page that needs you. Used sparingly - if everything is
    flagged, nothing is. */
 .br-card-flagged {
-  background: linear-gradient(180deg, #F7FAFF, #F1F6FE);
-  border: 1px solid #B9D0FD;
+  background: linear-gradient(180deg, #1A1E26, #1A1E26);
+  border: 1px solid #676D76;
   border-radius: 12px;
   box-shadow:
-    0 1px 3px rgba(16, 24, 40, 0.09),
-    0 1px 2px -1px rgba(16, 24, 40, 0.05),
-    inset 0 1px 0 #FFFFFF;
+    0 1px 3px rgba(0, 0, 0, 0.09),
+    0 1px 2px -1px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(250, 250, 248, 0.05);
 }
 
 .br-card-hover:hover {
   box-shadow:
-    0 6px 16px -6px rgba(16, 24, 40, 0.16),
-    0 2px 4px -2px rgba(16, 24, 40, 0.08),
-    inset 0 1px 0 #FFFFFF;
+    0 6px 16px -6px rgba(0, 0, 0, 0.16),
+    0 2px 4px -2px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(250, 250, 248, 0.05);
 }
 
 /*
@@ -89,19 +93,19 @@ html {
   color: #141821;
   padding: 7px 14px;
   border-radius: 8px;
-  border: 1px solid #E8EAEE;
-  background: linear-gradient(180deg, #FFFFFF, #FAFBFC);
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+  border: 1px solid #2A2F39;
+  background: linear-gradient(180deg, #14171D, #12151B);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   transition: box-shadow 0.15s, border-color 0.15s, transform 0.1s;
 }
-.br-btn:hover { border-color: #CFD4DC; box-shadow: 0 1px 3px rgba(16, 24, 40, 0.09), 0 1px 2px -1px rgba(16, 24, 40, 0.05); }
+.br-btn:hover { border-color: #2A2F39; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.09), 0 1px 2px -1px rgba(0, 0, 0, 0.05); }
 .br-btn:active { transform: translateY(0.5px); }
 .br-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .br-btn-primary {
-  color: #FFFFFF;
-  border-color: #1560E0;
-  background: linear-gradient(180deg, #3B82F9, #1B6DFC);
+  color: #14171D;
+  border-color: #E4E4E0;
+  background: linear-gradient(180deg, #FFFFFF, #FAFAF8);
   box-shadow: 0 1px 2px rgba(27, 109, 252, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.28);
 }
-.br-btn-primary:hover { background: linear-gradient(180deg, #2E77F7, #1560E0); border-color: #1560E0; }
+.br-btn-primary:hover { background: linear-gradient(180deg, #FFFFFF, #E4E4E0); border-color: #E4E4E0; }

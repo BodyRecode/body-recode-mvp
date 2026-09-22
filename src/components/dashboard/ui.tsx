@@ -26,11 +26,17 @@ export const MONO_FONT = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, mono
  * a screen is now the only thing on it competing for a coach's eye.
  *
  * ANYTHING NEW SHOULD PASS A MEANING NAME OR NOTHING AT ALL.
+ *
+ * 22 September 2026, DARK. A tool is dark and a document is light: the coach
+ * dashboard is a workspace somebody sits in all day. These components are the
+ * frame every page is built from, so they move once and the pages follow,
+ * which is the same reason the accent map above is the only place accents are
+ * decided.
  */
 type Accent = 'teal' | 'amber' | 'red' | 'neutral' | 'blue' | 'sage' | 'ink' | 'terracotta'
 
-const NEUTRAL_ACCENT = { bar: BRAND.inkFaint, text: BRAND.inkSoft, bg: 'rgba(15,17,21,0.04)', ring: BRAND.line }
-const GRAPHITE_ACCENT = { bar: BRAND.ink, text: BRAND.ink, bg: 'rgba(15,17,21,0.05)', ring: BRAND.line }
+const NEUTRAL_ACCENT = { bar: BRAND.darkInkFaint, text: BRAND.darkInkSoft, bg: 'rgba(250,250,248,0.05)', ring: BRAND.darkLine }
+const GRAPHITE_ACCENT = { bar: BRAND.darkInk, text: BRAND.darkInk, bg: 'rgba(250,250,248,0.07)', ring: BRAND.darkLine }
 
 const ACCENT: Record<Accent, { bar: string; text: string; bg: string; ring: string }> = {
   // Decorative. These carried no information and now carry no colour.
@@ -40,17 +46,17 @@ const ACCENT: Record<Accent, { bar: string; text: string; bg: string; ring: stri
   neutral:    NEUTRAL_ACCENT,
   // Meaning. These did carry information, so they keep it, in the four colours
   // Kade chose on 22 Sep. See lib/brand-tokens.
-  amber:      { bar: BRAND.remediation, text: BRAND.remediation, bg: 'rgba(176,110,31,0.08)', ring: 'rgba(176,110,31,0.30)' },
-  terracotta: { bar: BRAND.remediation, text: BRAND.remediation, bg: 'rgba(176,110,31,0.08)', ring: 'rgba(176,110,31,0.30)' },
-  red:        { bar: BRAND.attention,   text: BRAND.attention,   bg: 'rgba(143,45,45,0.07)',  ring: 'rgba(143,45,45,0.28)' },
-  sage:       { bar: BRAND.postOptimisation, text: BRAND.postOptimisation, bg: 'rgba(43,94,69,0.07)', ring: 'rgba(43,94,69,0.26)' },
+  amber:      { bar: BRAND.remediationOnDark, text: BRAND.remediationOnDark, bg: 'rgba(176,110,31,0.08)', ring: 'rgba(176,110,31,0.30)' },
+  terracotta: { bar: BRAND.remediationOnDark, text: BRAND.remediationOnDark, bg: 'rgba(176,110,31,0.08)', ring: 'rgba(176,110,31,0.30)' },
+  red:        { bar: BRAND.attentionOnDark,   text: BRAND.attentionOnDark,   bg: 'rgba(143,45,45,0.07)',  ring: 'rgba(143,45,45,0.28)' },
+  sage:       { bar: BRAND.postOptimisationOnDark, text: BRAND.postOptimisationOnDark, bg: 'rgba(43,94,69,0.07)', ring: 'rgba(43,94,69,0.26)' },
 }
 
 /* Shared elevation. One light source from above: a hairline border, a 1px
  * white highlight along the top edge, and a short soft shadow. Deep shadows
  * and glows are deliberately absent - depth comes from stacking surfaces. */
-const SH1 = '0 1px 2px rgba(15,17,21,0.05)'
-const SH2 = '0 1px 3px rgba(15,17,21,0.08), 0 1px 2px -1px rgba(15,17,21,0.05)'
+const SH1 = '0 1px 2px rgba(0,0,0,0.45)'
+const SH2 = '0 1px 3px rgba(0,0,0,0.5), 0 1px 2px -1px rgba(0,0,0,0.4)'
 
 export function accentColour(a: Accent = 'teal') {
   return ACCENT[a]
@@ -97,14 +103,14 @@ export function Avatar({
     <span
       aria-hidden
       title={name}
-      className="inline-flex items-center justify-center rounded-full shrink-0 text-white font-semibold select-none"
+      className="inline-flex items-center justify-center rounded-full shrink-0 text-[#0B0D10] font-semibold select-none"
       style={{
         width: size,
         height: size,
         fontSize: Math.round(size * 0.35),
         letterSpacing: '-0.01em',
-        background: `linear-gradient(160deg, hsl(220 6% ${l + 6}%), hsl(220 7% ${l}%))`,
-        boxShadow: `inset 0 1px 0 rgba(255,255,255,0.14), 0 1px 2px rgba(15,17,21,0.16)${ring ? `, 0 0 0 2px ${BRAND.surface}` : ''}`,
+        background: `linear-gradient(160deg, hsl(220 6% ${Math.min(74, l + 30)}%), hsl(220 7% ${Math.min(66, l + 22)}%))`,
+        boxShadow: `inset 0 1px 0 rgba(255,255,255,0.06), 0 1px 2px rgba(0,0,0,0.16)${ring ? `, 0 0 0 2px ${BRAND.darkSurface}` : ''}`,
       }}
     >
       {initialsFor(name || '?')}
@@ -134,8 +140,8 @@ export function PageHeader({
   const a = ACCENT[accent]
   return (
     <div
-      className="sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E4E4E0] flex items-start justify-between gap-5 flex-wrap print:static print:bg-transparent print:backdrop-blur-none"
-      style={{ background: 'rgba(255,255,255,0.88)', backdropFilter: 'blur(10px) saturate(1.5)' }}
+      className="sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#2A2F39] flex items-start justify-between gap-5 flex-wrap print:static print:bg-transparent print:backdrop-blur-none"
+      style={{ background: 'rgba(11,13,16,0.86)', backdropFilter: 'blur(10px) saturate(1.5)' }}
     >
       <div className="min-w-0">
         {eyebrow && (
@@ -143,11 +149,11 @@ export function PageHeader({
             {eyebrow}
           </p>
         )}
-        <h1 className="text-[22px] font-semibold text-[#0F1115] leading-[1.2] tracking-[-0.025em]">
+        <h1 className="text-[22px] font-semibold text-[#FAFAF8] leading-[1.2] tracking-[-0.025em]">
           {title}
         </h1>
         {subtitle && (
-          <div className="text-[13.5px] text-[#6E747D] max-w-2xl leading-relaxed mt-1.5">
+          <div className="text-[13.5px] text-[#8A9099] max-w-2xl leading-relaxed mt-1.5">
             {subtitle}
           </div>
         )}
@@ -183,15 +189,15 @@ export function Card({
     padding === 'md' ? 'p-5' : 'p-6'
   const a = accent ? ACCENT[accent] : null
   const style: React.CSSProperties = {
-    background: tint ? 'linear-gradient(180deg,#F2F2EF,#EDEDEA)' : 'linear-gradient(180deg,#FFFFFF,#FAFAF8)',
-    boxShadow: `${SH2}, inset 0 1px 0 #FFFFFF`,
+    background: tint ? 'linear-gradient(180deg,#171B22,#14171D)' : 'linear-gradient(180deg,#14171D,#12151B)',
+    boxShadow: `${SH2}, inset 0 1px 0 rgba(250,250,248,0.05)`,
   }
   if (a) style.borderLeft = `3px solid ${a.bar}`
   return (
     <div
       style={style}
       className={`br-card ${pad} ${
-        hover ? 'transition-shadow hover:shadow-[0_6px_16px_-6px_rgba(15,17,21,0.14),0_2px_4px_-2px_rgba(15,17,21,0.07)]' : ''
+        hover ? 'transition-shadow hover:shadow-[0_6px_16px_-6px_rgba(0,0,0,0.14),0_2px_4px_-2px_rgba(0,0,0,0.07)]' : ''
       } ${className}`}
     >
       {children}
@@ -227,10 +233,10 @@ export function SectionLabel({
         >
           <span className="w-[7px] h-[7px] rounded-[2px]" style={{ background: a.bar }} />
         </span>
-        <h2 className="text-[13.5px] font-semibold text-[#0F1115] tracking-[-0.015em] truncate">
+        <h2 className="text-[13.5px] font-semibold text-[#FAFAF8] tracking-[-0.015em] truncate">
           {children}
         </h2>
-        {meta && <span className="text-[11.5px] text-[#9CA2AB] ml-1 shrink-0">{meta}</span>}
+        {meta && <span className="text-[11.5px] text-[#676D76] ml-1 shrink-0">{meta}</span>}
       </div>
       {cta && <div className="shrink-0">{cta}</div>}
     </div>
@@ -252,7 +258,7 @@ export function Pill({
   const a = ACCENT[accent]
   const styles =
     variant === 'outline'
-      ? { background: '#FFFFFF', color: a.text, borderColor: a.ring }
+      ? { background: '#0F1115', color: a.text, borderColor: a.ring }
       : { background: a.bg, color: a.text, borderColor: a.ring }
   return (
     <span
@@ -288,8 +294,8 @@ export function StatCard({
     <div
       className="relative br-card p-4 overflow-hidden h-full transition-shadow"
       style={{
-        background: 'linear-gradient(180deg,#FFFFFF,#FAFAF8)',
-        boxShadow: `${SH2}, inset 0 1px 0 #FFFFFF`,
+        background: 'linear-gradient(180deg,#14171D,#12151B)',
+        boxShadow: `${SH2}, inset 0 1px 0 rgba(250,250,248,0.05)`,
       }}
     >
       {Icon && (
@@ -300,18 +306,18 @@ export function StatCard({
           <Icon size={12} className="opacity-90" />
         </span>
       )}
-      <p className="text-[11.5px] text-[#6E747D] mb-1.5 pr-7">{label}</p>
+      <p className="text-[11.5px] text-[#8A9099] mb-1.5 pr-7">{label}</p>
       <p
-        className="text-[26px] font-semibold text-[#0F1115] tracking-[-0.035em] leading-none"
+        className="text-[26px] font-semibold text-[#FAFAF8] tracking-[-0.035em] leading-none"
         style={{ fontVariantNumeric: 'tabular-nums' }}
       >
         {value}
       </p>
-      {sub && <p className="text-[11.5px] text-[#9CA2AB] truncate mt-1.5">{sub}</p>}
+      {sub && <p className="text-[11.5px] text-[#676D76] truncate mt-1.5">{sub}</p>}
     </div>
   )
   return href ? (
-    <Link href={href} className="block group [&>div]:hover:shadow-[0_6px_16px_-6px_rgba(15,17,21,0.14),0_2px_4px_-2px_rgba(15,17,21,0.07)]">{Inner}</Link>
+    <Link href={href} className="block group [&>div]:hover:shadow-[0_6px_16px_-6px_rgba(0,0,0,0.14),0_2px_4px_-2px_rgba(0,0,0,0.07)]">{Inner}</Link>
   ) : (
     <div>{Inner}</div>
   )
@@ -349,7 +355,7 @@ export function Ring({
         <svg width={size} height={size} className="-rotate-90" aria-hidden>
           <circle
             cx={size / 2} cy={size / 2} r={r}
-            fill="none" stroke="#EDEDEA" strokeWidth={stroke}
+            fill="none" stroke="#1A1E26" strokeWidth={stroke}
           />
           <circle
             cx={size / 2} cy={size / 2} r={r}
@@ -359,7 +365,7 @@ export function Ring({
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
           <span
-            className="text-[20px] font-semibold text-[#0F1115] tracking-[-0.03em]"
+            className="text-[20px] font-semibold text-[#FAFAF8] tracking-[-0.03em]"
             style={{ fontVariantNumeric: 'tabular-nums' }}
           >
             {label ?? `${Math.round(pct)}%`}
@@ -372,10 +378,10 @@ export function Ring({
             const la = ACCENT[item.accent ?? 'neutral']
             return (
               <span key={item.label} className="flex items-center gap-3">
-                {i > 0 && <span className="text-[#E4E4E0]" aria-hidden>|</span>}
-                <span className="inline-flex items-center gap-1.5 text-[12px] text-[#6E747D]">
+                {i > 0 && <span className="text-[#2A2F39]" aria-hidden>|</span>}
+                <span className="inline-flex items-center gap-1.5 text-[12px] text-[#8A9099]">
                   <span className="w-[6px] h-[6px] rounded-full" style={{ background: la.bar }} aria-hidden />
-                  <span style={{ fontVariantNumeric: 'tabular-nums' }} className="font-medium text-[#0F1115]">
+                  <span style={{ fontVariantNumeric: 'tabular-nums' }} className="font-medium text-[#FAFAF8]">
                     {item.count}
                   </span>
                   {item.label}
@@ -402,7 +408,7 @@ export function RangeTabs({
   active: string
 }) {
   return (
-    <div className="flex items-center gap-5 border-b border-[#E4E4E0] mb-5">
+    <div className="flex items-center gap-5 border-b border-[#2A2F39] mb-5">
       {options.map((o) => {
         const on = o.key === active
         return (
@@ -411,7 +417,7 @@ export function RangeTabs({
             href={o.href}
             aria-current={on ? 'true' : undefined}
             className={`relative pb-2.5 text-[13.5px] transition-colors ${
-              on ? 'text-[#0F1115] font-semibold' : 'text-[#6E747D] hover:text-[#0F1115]'
+              on ? 'text-[#FAFAF8] font-semibold' : 'text-[#8A9099] hover:text-[#FAFAF8]'
             }`}
           >
             {o.label}
@@ -447,14 +453,14 @@ export function DataRow({
   avatar?: string
 }) {
   const inner = (
-    <div className="flex items-center gap-3 py-2.5 px-2.5 -mx-2.5 rounded-lg hover:bg-[#F2F2EF] transition-colors group">
+    <div className="flex items-center gap-3 py-2.5 px-2.5 -mx-2.5 rounded-lg hover:bg-[#14171D] transition-colors group">
       {avatar && <Avatar name={avatar} size={31} />}
       <div className="min-w-0 flex-1">
-        <p className="text-[13.5px] font-medium text-[#0F1115] tracking-[-0.012em] group-hover:text-[#0F1115] transition-colors truncate">
+        <p className="text-[13.5px] font-medium text-[#FAFAF8] tracking-[-0.012em] group-hover:text-[#FAFAF8] transition-colors truncate">
           {primary}
         </p>
         {secondary && (
-          <p className="text-[12px] text-[#6E747D] truncate">{secondary}</p>
+          <p className="text-[12px] text-[#8A9099] truncate">{secondary}</p>
         )}
       </div>
       {trailing && <div className="shrink-0">{trailing}</div>}
@@ -479,14 +485,14 @@ export function EmptyState({
     <div className="flex flex-col items-center text-center py-8 px-4">
       {Icon && (
         <div
-          className="w-10 h-10 rounded-full border border-[#E4E4E0] flex items-center justify-center mb-3"
-          style={{ background: 'linear-gradient(180deg,#FFFFFF,#F2F2EF)', boxShadow: SH1 }}
+          className="w-10 h-10 rounded-full border border-[#2A2F39] flex items-center justify-center mb-3"
+          style={{ background: 'linear-gradient(180deg,#0F1115,#14171D)', boxShadow: SH1 }}
         >
-          <Icon size={16} className="text-[#9CA2AB]" />
+          <Icon size={16} className="text-[#676D76]" />
         </div>
       )}
-      <p className="text-[13px] text-[#6E747D]">{title}</p>
-      {hint && <p className="text-[12px] text-[#9CA2AB] mt-1">{hint}</p>}
+      <p className="text-[13px] text-[#8A9099]">{title}</p>
+      {hint && <p className="text-[12px] text-[#676D76] mt-1">{hint}</p>}
     </div>
   )
 }
@@ -516,12 +522,12 @@ export function Btn({
   const sizing = size === 'sm' ? 'text-[12px] px-3 py-1.5' : 'text-[12.5px] px-3.5 py-[7px]'
   const palette =
     variant === 'primary'
-      ? 'text-[#FAFAF8] border border-[#000000] font-semibold bg-[#0F1115] hover:bg-[#242932] active:bg-[#000000] shadow-[0_1px_2px_rgba(15,17,21,0.24),inset_0_1px_0_rgba(255,255,255,0.10)]'
+      ? 'text-[#0B0D10] border border-[#FFFFFF] font-semibold bg-[#FAFAF8] hover:bg-[#242932] active:bg-[#FFFFFF] shadow-[0_1px_2px_rgba(0,0,0,0.24),inset_0_1px_0_rgba(255,255,255,0.10)]'
       : variant === 'caution'
-      ? 'text-[#B06E1F] border border-[rgba(176,110,31,0.30)] bg-[#FDF8F1] hover:border-[rgba(176,110,31,0.55)] hover:text-[#8A5514] shadow-[0_1px_2px_rgba(15,17,21,0.05)]'
+      ? 'text-[#E0A254] border border-[rgba(176,110,31,0.30)] bg-[#1A1E26] hover:border-[rgba(176,110,31,0.55)] hover:text-[#E0A254] shadow-[0_1px_2px_rgba(0,0,0,0.05)]'
       : variant === 'ghost'
-      ? 'bg-transparent text-[#6E747D] hover:text-[#0F1115] hover:bg-[#F2F2EF] border border-transparent'
-      : 'text-[#0F1115] border border-[#E4E4E0] bg-[linear-gradient(180deg,#FFFFFF,#FAFAF8)] hover:border-[#DCDCD7] shadow-[0_1px_2px_rgba(15,17,21,0.05)] hover:shadow-[0_1px_3px_rgba(15,17,21,0.08),0_1px_2px_-1px_rgba(15,17,21,0.05)]'
+      ? 'bg-transparent text-[#8A9099] hover:text-[#FAFAF8] hover:bg-[#14171D] border border-transparent'
+      : 'text-[#FAFAF8] border border-[#2A2F39] bg-[linear-gradient(180deg,#14171D,#12151B)] hover:border-[#2A2F39] shadow-[0_1px_2px_rgba(0,0,0,0.05)] hover:shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_-1px_rgba(0,0,0,0.05)]'
   const base = `inline-flex items-center gap-2 rounded-lg font-medium transition-all active:translate-y-[0.5px] disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap ${sizing} ${palette}`
   const content = (
     <>

@@ -3,7 +3,7 @@ import { requireCoachScope, coachFilter } from '@/lib/coach-scope'
 import { WeekStrip } from '@/components/dashboard/week-strip'
 import { buildWeekStrips } from '@/lib/week-strip-data'
 import Link from 'next/link'
-import { formatDate, getStateColour, getReadinessColour } from '@/lib/utils'
+import { formatDate, readinessPillStyle, getReadinessColour } from '@/lib/utils'
 import { AlertTriangle, ArrowUpRight, ChevronRight, UserPlus, Users, Activity, RefreshCw } from 'lucide-react'
 import { resolveCurrentBodyState, latestReScore } from '@/lib/body-state-current'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
@@ -240,7 +240,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
       {/* Filters */}
       <div className="flex items-center gap-3 mb-7 flex-wrap">
-        <div className="inline-flex items-center bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg p-0.5">
+        <div className="inline-flex items-center bg-[#0F1115] border border-[#2A2F39] rounded-lg p-0.5">
           {[
             { label: 'All', value: 'all' },
             { label: 'Face-to-Face', value: 'face_to_face' },
@@ -250,7 +250,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               key={opt.value}
               href={buildHref({ type: opt.value === 'all' ? null : opt.value })}
               className={`text-[12px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
-                typeFilter === opt.value ? 'bg-[#0F1115] text-[#FFFFFF]' : 'text-[#6E747D] hover:text-[#0F1115]'
+                typeFilter === opt.value ? 'bg-[#FAFAF8] text-[#0F1115]' : 'text-[#8A9099] hover:text-[#FAFAF8]'
               }`}
             >
               {opt.label}
@@ -258,9 +258,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           ))}
         </div>
 
-        <div className="h-4 w-px bg-[#EDEDEA]" />
+        <div className="h-4 w-px bg-[#1A1E26]" />
 
-        <div className="inline-flex items-center bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg p-0.5">
+        <div className="inline-flex items-center bg-[#0F1115] border border-[#2A2F39] rounded-lg p-0.5">
           {[
             { label: 'Active', inactive: false },
             { label: 'Inactive', inactive: true },
@@ -269,7 +269,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               key={opt.label}
               href={buildHref({ view: opt.inactive ? 'inactive' : null })}
               className={`text-[12px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
-                showInactive === opt.inactive ? 'bg-[#EDEDEA] text-[#0F1115]' : 'text-[#6E747D] hover:text-[#0F1115]'
+                showInactive === opt.inactive ? 'bg-[#1A1E26] text-[#FAFAF8]' : 'text-[#8A9099] hover:text-[#FAFAF8]'
               }`}
             >
               {opt.label}
@@ -281,7 +281,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       {/* Action queue - clients needing attention */}
       {clientsProcessed.some(c => c.rebuildTraining || c.rebuildNutrition) && (
         <div
-          className="mb-5 bg-[#FFFFFF] border rounded-xl overflow-hidden"
+          className="mb-5 bg-[#0F1115] border rounded-xl overflow-hidden"
           style={{ borderColor: red.ring }}
         >
           <div
@@ -296,16 +296,16 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               Needs attention
             </p>
           </div>
-          <div className="divide-y divide-[#EDEDEA]">
+          <div className="divide-y divide-[#1A1E26]">
             {clientsProcessed.filter(c => c.rebuildTraining || c.rebuildNutrition).map(client => (
               <div key={client.id} className="px-4 py-3 flex items-center justify-between gap-4">
                 <div className="min-w-0 flex items-center gap-3">
                   <Avatar name={client.name} size={31} />
                   <div className="min-w-0">
-                  <p className="text-[14px] font-semibold text-[#0F1115] truncate">{client.name}</p>
+                  <p className="text-[14px] font-semibold text-[#FAFAF8] truncate">{client.name}</p>
                   <div className="flex items-center gap-2 mt-0.5">
                     {client.rebuildTraining && <span className="text-[12px]" style={{ color: red.text }}>Training: Rebuild</span>}
-                    {client.rebuildTraining && client.rebuildNutrition && <span className="text-[#E4E4E0] text-[12.5px]">·</span>}
+                    {client.rebuildTraining && client.rebuildNutrition && <span className="text-[#2A2F39] text-[12.5px]">·</span>}
                     {client.rebuildNutrition && <span className="text-[12px]" style={{ color: red.text }}>Nutrition: Rebuild</span>}
                   </div>
                   </div>
@@ -314,7 +314,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                   {client.rebuildTraining && (
                     <Link
                       href={`/dashboard/clients/${client.id}/program`}
-                      className="text-[11px] font-semibold border px-2.5 py-1 rounded-lg transition-colors hover:bg-[#FFFFFF]"
+                      className="text-[11px] font-semibold border px-2.5 py-1 rounded-lg transition-colors hover:bg-[#0F1115]"
                       style={{ color: red.text, borderColor: red.ring }}
                     >
                       Training →
@@ -323,7 +323,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                   {client.rebuildNutrition && (
                     <Link
                       href={`/dashboard/clients/${client.id}/nutrition`}
-                      className="text-[11px] font-semibold border px-2.5 py-1 rounded-lg transition-colors hover:bg-[#FFFFFF]"
+                      className="text-[11px] font-semibold border px-2.5 py-1 rounded-lg transition-colors hover:bg-[#0F1115]"
                       style={{ color: red.text, borderColor: red.ring }}
                     >
                       Nutrition →
@@ -339,7 +339,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       {/* Doctrine: Signal Monitoring v1.0 - active regression banner (highest priority) */}
       {regressionCount > 0 && (
         <div
-          className="mb-3 bg-[#FFFFFF] border rounded-xl px-4 py-3 flex items-center gap-3"
+          className="mb-3 bg-[#0F1115] border rounded-xl px-4 py-3 flex items-center gap-3"
           style={{ borderColor: red.ring }}
         >
           <Activity size={14} style={{ color: red.text }} />
@@ -352,12 +352,12 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       {/* Doctrine: Signal Monitoring v1.0 - reassessment recommended banner */}
       {reassessmentCount > 0 && (
         <div
-          className="mb-3 bg-[#FFFFFF] border rounded-xl px-4 py-3 flex items-center gap-3"
+          className="mb-3 bg-[#0F1115] border rounded-xl px-4 py-3 flex items-center gap-3"
           style={{ borderColor: amber.ring }}
         >
           <RefreshCw size={14} style={{ color: amber.text }} />
           <p className="text-[13px]" style={{ color: amber.text }}>
-            <span className="font-semibold">{reassessmentCount} client{reassessmentCount > 1 ? 's' : ''}</span> recommended for CFFS reassessment.
+            <span className="font-semibold">{reassessmentCount} client{reassessmentCount > 1 ? 's' : ''}</span> due to be read again.
           </p>
         </div>
       )}
@@ -367,28 +367,28 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         <div
           className="mb-3 br-card px-4 py-3 flex items-center gap-3"
         >
-          <ArrowUpRight size={14} className="text-[#6E747D]" />
-          <p className="text-[13px] text-[#6E747D]">
-            <span className="font-semibold text-[#0F1115]">{driftAdvisoryCount} client{driftAdvisoryCount > 1 ? 's' : ''}</span> with drift advisories this week.
+          <ArrowUpRight size={14} className="text-[#8A9099]" />
+          <p className="text-[13px] text-[#8A9099]">
+            <span className="font-semibold text-[#FAFAF8]">{driftAdvisoryCount} client{driftAdvisoryCount > 1 ? 's' : ''}</span> with drift advisories this week.
           </p>
         </div>
       )}
 
       {flaggedCount > 0 && (
         <div
-          className="mb-5 bg-[#FFFFFF] border rounded-xl px-4 py-3 flex items-center gap-3"
+          className="mb-5 bg-[#0F1115] border rounded-xl px-4 py-3 flex items-center gap-3"
           style={{ borderColor: amber.ring }}
         >
           <AlertTriangle size={14} style={{ color: amber.text }} />
           <p className="text-[13px]" style={{ color: amber.text }}>
-            <span className="font-semibold">{flaggedCount} client{flaggedCount > 1 ? 's' : ''}</span> flagged on intake CFFS for reassessment consideration
+            <span className="font-semibold">{flaggedCount} client{flaggedCount > 1 ? 's' : ''}</span> flagged at their first read as worth looking at again
           </p>
         </div>
       )}
 
       {upgradeCandidateCount > 0 && (
         <div
-          className="mb-5 bg-[#FFFFFF] border rounded-xl px-4 py-3 flex items-center gap-3"
+          className="mb-5 bg-[#0F1115] border rounded-xl px-4 py-3 flex items-center gap-3"
           style={{ borderColor: teal.ring }}
         >
           <ArrowUpRight size={14} style={{ color: teal.text }} />
@@ -414,26 +414,26 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                 <Avatar name={client.name} size={36} />
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-[14px] font-medium text-[#0F1115] group-hover:text-[#0F1115] transition-colors truncate">{client.name}</span>
+                    <span className="text-[14px] font-medium text-[#FAFAF8] group-hover:text-[#FAFAF8] transition-colors truncate">{client.name}</span>
                     {client.latestCffs?.reassessment_flagged && (
                       <AlertTriangle size={13} style={{ color: amber.text }} />
                     )}
                   </div>
                   <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                    <p className="text-[11px] text-[#9CA2AB]">
+                    <p className="text-[11px] text-[#676D76]">
                       Added {formatDate(client.created_at)}
                     </p>
                     {client.weekNumber !== null && client.daysUntilStart !== null && client.daysUntilStart <= 0 && (
                       <>
-                        <span className="text-[#E4E4E0] text-[12.5px]">·</span>
-                        <span className="text-[11px] text-[#6E747D] font-medium">Week {client.weekNumber}</span>
-                        <span className="text-[#E4E4E0] text-[12.5px]">·</span>
+                        <span className="text-[#2A2F39] text-[12.5px]">·</span>
+                        <span className="text-[11px] text-[#8A9099] font-medium">Week {client.weekNumber}</span>
+                        <span className="text-[#2A2F39] text-[12.5px]">·</span>
                         <span
-                          className={`text-[11px] font-semibold ${client.hasFormA ? 'text-[#0F1115]' : 'text-[#9CA2AB]'}`}
+                          className={`text-[11px] font-semibold ${client.hasFormA ? 'text-[#FAFAF8]' : 'text-[#676D76]'}`}
                           style={{ fontFamily: MONO_FONT }}
                         >A</span>
                         <span
-                          className={`text-[11px] font-semibold ${client.hasFormB ? 'text-[#0F1115]' : 'text-[#9CA2AB]'}`}
+                          className={`text-[11px] font-semibold ${client.hasFormB ? 'text-[#FAFAF8]' : 'text-[#676D76]'}`}
                           style={{ fontFamily: MONO_FONT }}
                         >B</span>
                       </>
@@ -469,7 +469,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                 {client.readiness?.status === 'advisory' && (
                   <span
                     className="text-[10px] font-semibold px-2 py-0.5 rounded-full border"
-                    style={{ color: '#6E747D', borderColor: '#E4E4E0', background: '#FFFFFF' }}
+                    style={{ color: '#8A9099', borderColor: '#2A2F39', background: '#0F1115' }}
                     title={client.readiness.drift.map((d: { message: string }) => d.message).join(' · ')}
                   >
                     Drift
@@ -492,7 +492,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                       client.latestCfws.exposure_readiness_regulation,
                       client.latestCfws.exposure_readiness_behaviour,
                     ].map((r, i) => (
-                      <div key={i} className={`w-2 h-2 rounded-full ${getReadinessColour(r)}`} />
+                      <div key={i} className="w-2 h-2 rounded-full" style={getReadinessColour(r)} />
                     ))}
                   </div>
                 )}
@@ -513,17 +513,18 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                   </span>
                 ) : client.latestCffs ? (
                   <span
-                    className={`text-[11px] font-medium px-2.5 py-1 rounded-full border whitespace-nowrap ${getStateColour(client.bodyState.label)}`}
+                    className="text-[11px] font-semibold px-2.5 py-1 rounded-full border whitespace-nowrap"
+                    style={readinessPillStyle(client.bodyState.label, true)}
                     title={client.bodyState.reScored ? `Re-scored at the last Progress Check. Foundational read: ${client.bodyState.foundational}` : undefined}
                   >
                     {client.bodyState.label}{client.bodyState.reScored ? ' ·' : ''}
                   </span>
                 ) : (
-                  <span className="text-[11px] text-[#9CA2AB] px-2.5 py-1 rounded-full border border-[#E4E4E0]">
-                    No CFFS
+                  <span className="text-[11px] text-[#676D76] px-2.5 py-1 rounded-full border border-[#2A2F39]">
+                    Not read yet
                   </span>
                 )}
-                <ChevronRight size={16} className="text-[#9CA2AB] group-hover:text-[#0F1115] transition-colors" />
+                <ChevronRight size={16} className="text-[#676D76] group-hover:text-[#FAFAF8] transition-colors" />
               </div>
             </Link>
           ))}
