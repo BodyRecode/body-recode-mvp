@@ -78,6 +78,26 @@ import { BrandMark } from '@/components/brand-mark'
  * THE CARD IS GONE. It existed to give a dark void a shape. The split does that
  * now, and a bordered card floating on paper beside a full-bleed graphite panel
  * is fussy: two competing ideas about where the structure lives.
+ *
+ * FOURTH PASS, the copy. Kade: reads flat. Three reasons, and they are the
+ * usual three:
+ *
+ *   1. EVERY STEP TITLE WAS THE SAME SHAPE. "An intake becomes a read", "A
+ *      check-in becomes a weekly read", "Twelve weeks becomes proof". Parallel
+ *      structure three times in a row stops reading as rhythm and starts
+ *      reading as a spec sheet.
+ *   2. THE BODIES DESCRIBED MECHANICS, NOT STAKES. Accurate sentences about
+ *      what the system does, with no reason for a coach to care.
+ *   3. NOTHING NAMED THE COACH'S ACTUAL PROBLEM. The whole page talked about
+ *      the product. The brand book has the line it should have been built on:
+ *      they already write good programmes, what they cannot do is read a body
+ *      in a way they can defend to the person in front of them. That is now
+ *      the subheading, and it is the only sentence on the page a coach will
+ *      recognise as their own.
+ *
+ * DELIBERATELY NOT USED: the question count. It is a real number and it is a
+ * retired claim. Counting inputs is the register of the market this is
+ * positioned away from.
  */
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -131,15 +151,19 @@ export default function LoginPage() {
           <p className="text-[11px] font-medium uppercase" style={{ letterSpacing: '0.18em', color: '#8A9099' }}>
             Coach sign in
           </p>
-          <h1 className="text-[38px] sm:text-[48px] lg:text-[54px] leading-[1.06] font-semibold tracking-[-0.03em] mt-4 mb-11">
+          <h1 className="text-[38px] sm:text-[48px] lg:text-[54px] leading-[1.06] font-semibold tracking-[-0.03em] mt-4 mb-5">
             Read the body,<br />then read the week.
           </h1>
+          <p className="text-[16px] sm:text-[17px] text-[#C2C6CC] leading-[1.55] mb-11 max-w-[456px]">
+            You already write good training. The hard part is explaining why this
+            person is stuck, in words you can say to their face and stand behind.
+          </p>
 
           <div className="space-y-6">
             {[
-              ['An intake becomes a read', 'A long assessment turned into one written interpretation of what is actually going on.'],
-              ['A check-in becomes a weekly read', 'Every week, what they report is read back against their own baseline rather than against a target.'],
-              ['Twelve weeks becomes proof', 'The re-read sits against the first one, so what changed is visible instead of claimed.'],
+              ['They fill in one long assessment', 'It comes back as an explanation rather than a score: how ready they are for load, the pattern underneath it, and what is holding the whole thing in place.'],
+              ['Then they check in each week', 'Read against where they started, never against a target. You get what moved, what did not, and what that probably means, before the session rather than during it.'],
+              ['Twelve weeks later, it reads them again', 'The new one sits beside the first. What changed is on the page in writing, so progress is something they can see instead of something you have to keep insisting on.'],
             ].map(([title, body], i) => (
               <div key={title} className="flex gap-4">
                 <span className="mt-[2px] w-7 h-7 shrink-0 rounded-full border border-[#2A2F39] flex items-center justify-center text-[11.5px] font-semibold text-[#8A9099] tabular-nums">
@@ -154,7 +178,8 @@ export default function LoginPage() {
           </div>
 
           <p className="text-[12.5px] text-[#676D76] mt-11 leading-relaxed">
-            You write the training and the food. This reads the person.
+            It never tells you what to prescribe. That is still your job, and it
+            always will be.
           </p>
         </div>
       </div>
@@ -217,8 +242,8 @@ export default function LoginPage() {
           </form>
 
           <p className="text-[12.5px] text-[#6E747D] mt-7 leading-relaxed">
-            Invited and cannot get in? Use the link in your invitation email to set your password, or reply to
-            it and we will sort it.
+            Invited but cannot get in? Set your password from the link in your invitation, or just reply to
+            that email and we will sort it out.
           </p>
         </div>
       </div>
