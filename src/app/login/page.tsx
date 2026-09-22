@@ -98,6 +98,32 @@ import { BrandMark } from '@/components/brand-mark'
  * DELIBERATELY NOT USED: the question count. It is a real number and it is a
  * retired claim. Counting inputs is the register of the market this is
  * positioned away from.
+ *
+ * FIFTH PASS, and the copy above was wrong in a way worth recording. Kade: "its
+ * not just about people who are stuck, this is so they can finally properly
+ * read a person's readiness, this platform and its capabilities is next level,
+ * this currently undersells it".
+ *
+ * HE IS RIGHT AND THE ERROR WAS A FRAMING ONE. Leading on "why is this person
+ * stuck" turns a reading system into a troubleshooting tool, and quietly says
+ * it is for the hard cases. It is for every client, every week. A coach who
+ * only reaches for it when somebody stalls has been sold the wrong product.
+ *
+ * SO IT NOW LEADS ON THE CAPABILITY. Readiness is the core: how much load this
+ * person can carry right now, named and explained, which is the thing a coach
+ * actually programmes against and has never been able to do anything but
+ * estimate. Then the pattern underneath it. Then the same read every week.
+ *
+ * THE THIRD BLOCK IS THE ONE NOTHING ELSE DOES, and it took five passes to put
+ * it on the page: the system knows when to stop. When the picture needs a
+ * doctor rather than a coach it holds and says so, rather than guessing past
+ * it. The safety gates are not a disclaimer, they are the reason to trust the
+ * other two blocks, and they are genuinely uncopyable by a questionnaire.
+ *
+ * HELD BACK ON PURPOSE: bloodwork, which is in the read and is the single
+ * highest item on the medical-device risk note. It is a real capability and it
+ * is not going on a public page until that has been through a lawyer. Flagged
+ * to Kade rather than quietly omitted.
  */
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -141,29 +167,30 @@ export default function LoginPage() {
           }}
           aria-hidden
         />
-        <div className="relative max-w-[540px]">
+        <div className="relative max-w-[600px]">
           {/* Drawn rather than loaded: the dark logo file has never existed, so
               this page showed nothing at all. See components/brand-mark.tsx. */}
-          <div className="mb-11">
+          <div className="mb-9">
             <BrandMark tone="light" size="lg" />
           </div>
 
           <p className="text-[11px] font-medium uppercase" style={{ letterSpacing: '0.18em', color: '#8A9099' }}>
             Coach sign in
           </p>
-          <h1 className="text-[38px] sm:text-[48px] lg:text-[54px] leading-[1.06] font-semibold tracking-[-0.03em] mt-4 mb-5">
-            Read the body,<br />then read the week.
+          <h1 className="text-[36px] sm:text-[44px] lg:text-[50px] leading-[1.05] font-semibold tracking-[-0.03em] mt-4 mb-5">
+            Read the whole person,<br />every week.
           </h1>
-          <p className="text-[16px] sm:text-[17px] text-[#C2C6CC] leading-[1.55] mb-11 max-w-[456px]">
-            You already write good training. The hard part is explaining why this
-            person is stuck, in words you can say to their face and stand behind.
+          <p className="text-[16px] sm:text-[16.5px] text-[#C2C6CC] leading-[1.55] mb-9 max-w-[500px]">
+            Not a score and not a category. A written interpretation of how much
+            load they can carry right now, the pattern driving it, and what is
+            holding it there.
           </p>
 
-          <div className="space-y-6">
+          <div className="space-y-5">
             {[
-              ['They fill in one long assessment', 'It comes back as an explanation rather than a score: how ready they are for load, the pattern underneath it, and what is holding the whole thing in place.'],
-              ['Then they check in each week', 'Read against where they started, never against a target. You get what moved, what did not, and what that probably means, before the session rather than during it.'],
-              ['Twelve weeks later, it reads them again', 'The new one sits beside the first. What changed is on the page in writing, so progress is something they can see instead of something you have to keep insisting on.'],
+              ['It reads everything at once', 'Sleep, stress, training history, recovery, storage, hormonal status, medications, what they actually eat. Read together rather than one at a time, because the interaction is usually where the answer is.'],
+              ['You get a readiness, with the reason attached', 'How much they can take right now, named and explained in writing. You programme against something real rather than against how they looked on Monday, and you can say why out loud.'],
+              ['It knows when to stop', 'When the picture needs a doctor rather than a coach, it holds and says so instead of guessing past it. No questionnaire does that, and it is why the rest of the read is worth trusting.'],
             ].map(([title, body], i) => (
               <div key={title} className="flex gap-4">
                 <span className="mt-[2px] w-7 h-7 shrink-0 rounded-full border border-[#2A2F39] flex items-center justify-center text-[11.5px] font-semibold text-[#8A9099] tabular-nums">
@@ -177,9 +204,9 @@ export default function LoginPage() {
             ))}
           </div>
 
-          <p className="text-[12.5px] text-[#676D76] mt-11 leading-relaxed">
-            It never tells you what to prescribe. That is still your job, and it
-            always will be.
+          <p className="text-[12.5px] text-[#676D76] mt-9 leading-relaxed">
+            Always against their own baseline, never against a target. And it
+            never tells you what to prescribe: that part is still yours.
           </p>
         </div>
       </div>
@@ -188,7 +215,7 @@ export default function LoginPage() {
       <div className="lg:w-[52%] lg:min-h-screen flex items-center justify-center px-7 sm:px-12 pb-16 pt-12 lg:py-16 bg-[#FAFAF8] text-[#0F1115]">
         <div className="w-full max-w-[392px]">
           <h2 className="text-[24px] font-semibold tracking-[-0.02em] mb-1.5">Sign in</h2>
-          <p className="text-[13.5px] text-[#6E747D] mb-8">Your clients, your reads, your week.</p>
+          <p className="text-[13.5px] text-[#6E747D] mb-8">Every client, read properly.</p>
 
           {error && (
             <div
