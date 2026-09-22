@@ -84,14 +84,14 @@ export function EditableSection({
             <button
               onClick={cancel}
               disabled={saving}
-              className="text-[12px] px-3 py-1 rounded-md text-[#6E747D] hover:bg-[#F2F2EF] disabled:opacity-50"
+              className="text-[12.5px] px-3 py-1 rounded-md text-[#6E747D] hover:bg-[#F2F2EF] disabled:opacity-50"
             >
               Cancel
             </button>
             <button
               onClick={save}
               disabled={saving || !dirty}
-              className="text-[12px] px-3 py-1 rounded-md bg-[#0F1115] text-white font-semibold hover:bg-[#000000] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="text-[12.5px] px-3 py-1 rounded-md bg-[#0F1115] text-white font-semibold hover:bg-[#000000] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {saving ? 'Saving…' : 'Save'}
             </button>
@@ -99,7 +99,7 @@ export function EditableSection({
         ) : (
           <button
             onClick={() => setEditing(true)}
-            className="text-[12px] px-3 py-1 rounded-md text-[#000000] hover:bg-[rgba(27,109,252,0.06)] font-semibold"
+            className="text-[12.5px] px-3 py-1 rounded-md text-[#000000] hover:bg-[rgba(27,109,252,0.06)] font-semibold"
           >
             Edit
           </button>
@@ -107,7 +107,7 @@ export function EditableSection({
       </div>
 
       {error && (
-        <div className="px-5 py-2 bg-[#FBF1F1] border-b border-[#E8C9C9] text-[#8A1919] text-[12px]">
+        <div className="px-5 py-2 bg-[#FBF1F1] border-b border-[#E8C9C9] text-[#8A1919] text-[12.5px]">
           Error: {error}
         </div>
       )}
@@ -120,14 +120,14 @@ export function EditableSection({
           const inputType = isColor ? 'color' : isNumeric ? 'number' : 'text'
           return (
             <div key={f.label} className="px-5 py-2.5 flex items-center gap-4">
-              <div className="w-52 shrink-0 text-[12px] text-[#6E747D] font-mono">{f.label}</div>
+              <div className="w-52 shrink-0 text-[12.5px] text-[#6E747D] font-mono">{f.label}</div>
               <div className="flex-1">
                 {editing ? (
                   isBool ? (
                     <select
                       value={values[f.label]}
                       onChange={(e) => setValues({ ...values, [f.label]: e.target.value })}
-                      className="w-full px-2 py-1 text-[13px] font-mono border border-[#E4E4E0] rounded focus:outline-none focus:border-[#0F1115]"
+                      className="w-full px-2 py-1 text-[13.5px] font-mono border border-[#E4E4E0] rounded focus:outline-none focus:border-[#0F1115]"
                     >
                       <option value="true">true</option>
                       <option value="false">false</option>
@@ -137,11 +137,11 @@ export function EditableSection({
                       type={inputType}
                       value={values[f.label]}
                       onChange={(e) => setValues({ ...values, [f.label]: e.target.value })}
-                      className={`px-2 py-1 text-[13px] font-mono border border-[#E4E4E0] rounded focus:outline-none focus:border-[#0F1115] ${isColor ? 'w-24 h-8 p-1' : 'w-full'}`}
+                      className={`px-2 py-1 text-[13.5px] font-mono border border-[#E4E4E0] rounded focus:outline-none focus:border-[#0F1115] ${isColor ? 'w-24 h-8 p-1' : 'w-full'}`}
                     />
                   )
                 ) : (
-                  <div className="text-[13px] text-[#0F1115] font-mono break-all">
+                  <div className="text-[13.5px] text-[#0F1115] font-mono break-all">
                     {f.value || <span className="text-[#9CA2AB] italic">(empty)</span>}
                   </div>
                 )}

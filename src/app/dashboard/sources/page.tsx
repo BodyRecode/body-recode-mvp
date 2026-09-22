@@ -45,8 +45,8 @@ function SourceItem({
     <div className="br-card p-4">
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="min-w-0">
-          <p className="text-[14px] font-semibold text-[#141821]">{label}</p>
-          <p className="text-[12px] text-[#98A0AD] mt-0.5">{desc}</p>
+          <p className="text-[13.5px] font-semibold text-[#141821]">{label}</p>
+          <p className="text-[12.5px] text-[#98A0AD] mt-0.5">{desc}</p>
         </div>
         {showCount && (
           <Pill accent={count > 0 ? 'teal' : 'neutral'}>
@@ -143,7 +143,7 @@ export default async function SourcesPage() {
           All Leads by Source
         </SectionLabel>
         {total === 0 ? (
-          <p className="text-[#98A0AD] text-[13px]">No leads yet.</p>
+          <p className="text-[#98A0AD] text-[13.5px]">No leads yet.</p>
         ) : (
           <div className="space-y-3">
             {LEAD_SOURCES.map(src => {
@@ -153,9 +153,9 @@ export default async function SourcesPage() {
               return (
                 <div key={src.value}>
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-[13px] text-[#43474F]">{src.label}</span>
+                    <span className="text-[13.5px] text-[#43474F]">{src.label}</span>
                     <span
-                      className="text-[13px] font-semibold text-[#141821]"
+                      className="text-[13.5px] font-semibold text-[#141821]"
                       style={{ fontVariantNumeric: 'tabular-nums' }}
                     >
                       {count}
@@ -171,9 +171,9 @@ export default async function SourcesPage() {
             {unknownCount > 0 && (
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[13px] text-[#98A0AD]">Unknown</span>
+                  <span className="text-[13.5px] text-[#98A0AD]">Unknown</span>
                   <span
-                    className="text-[13px] font-semibold text-[#666D7A]"
+                    className="text-[13.5px] font-semibold text-[#666D7A]"
                     style={{ fontVariantNumeric: 'tabular-nums' }}
                   >
                     {unknownCount}

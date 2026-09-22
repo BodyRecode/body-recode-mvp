@@ -43,9 +43,9 @@ export default function ProgressReadActions({ readId, status, emailSentAt }: { r
           </>
         )}
       </div>
-      {emailSentAt && status === 'published' && <p className="text-[12px] text-[#9CA2AB]">Emailed {new Date(emailSentAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}</p>}
+      {emailSentAt && status === 'published' && <p className="text-[12.5px] text-[#9CA2AB]">Emailed {new Date(emailSentAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}</p>}
       {error && <p className="text-[12.5px] text-[#8F2D2D] text-right max-w-[360px]">{error}</p>}
-      {findings.map((f, i) => <p key={i} className="text-[12px] text-[#8F2D2D] text-right max-w-[360px]">{f.message}{f.excerpt ? ` "${f.excerpt}"` : ''}</p>)}
+      {findings.map((f, i) => <p key={i} className="text-[12.5px] text-[#8F2D2D] text-right max-w-[360px]">{f.message}{f.excerpt ? ` "${f.excerpt}"` : ''}</p>)}
     </div>
   )
 }

@@ -265,7 +265,7 @@ export default function RecoveryManager({
                       {isNewProgressionGroup && p.progression && (
                         <div className="rounded-xl border border-[#EADCC4] bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)]/50 px-4 py-3 mb-2">
                           <p className="text-[10px] font-medium text-[#B06E1F] mb-1">{p.progression.group_label} - tiered progression</p>
-                          <p className="text-[12px] text-[#8A5514] leading-relaxed">{p.progression.group_rule}</p>
+                          <p className="text-[12.5px] text-[#8A5514] leading-relaxed">{p.progression.group_rule}</p>
                         </div>
                       )}
                     <div className={`rounded-xl border overflow-hidden transition-colors ${isActive ? 'border-[#0F1115]/30 bg-[rgba(27,109,252,0.08)]/30' : 'border-[#E4E4E0] bg-white'}`}>
@@ -279,14 +279,14 @@ export default function RecoveryManager({
                             <div>
                               <div className="flex items-center gap-2 flex-wrap">
                                 {p.progression && (
-                                  <span className="text-[9px] font-medium text-[#B06E1F] bg-[#FDF8F1] border border-[#EADCC4] px-1.5 py-0.5 rounded">
+                                  <span className="text-[10px] font-medium text-[#B06E1F] bg-[#FDF8F1] border border-[#EADCC4] px-1.5 py-0.5 rounded">
                                     Level {p.progression.level}
                                   </span>
                                 )}
                                 <span className="text-sm font-semibold text-[#0F1115]">{p.name}</span>
-                                {isActive && <span className="text-[9px] font-medium text-[#0F1115] bg-[#0F1115]/10 px-1.5 py-0.5 rounded">Active</span>}
+                                {isActive && <span className="text-[10px] font-medium text-[#0F1115] bg-[#0F1115]/10 px-1.5 py-0.5 rounded">Active</span>}
                               </div>
-                              <p className="text-[12px] text-[#6E747D] mt-0.5">{p.short_description}</p>
+                              <p className="text-[12.5px] text-[#6E747D] mt-0.5">{p.short_description}</p>
                             </div>
                           </button>
                         </div>
@@ -307,7 +307,7 @@ export default function RecoveryManager({
                             <p className="text-[10px] font-medium text-[#6E747D] mb-1">Steps</p>
                             <ol className="space-y-1">
                               {p.steps.map((s, i) => (
-                                <li key={i} className="text-[12px] text-[#0F1115] leading-relaxed flex gap-2">
+                                <li key={i} className="text-[12.5px] text-[#0F1115] leading-relaxed flex gap-2">
                                   <span className="text-[#9CA2AB]">{i + 1}.</span>
                                   <span>{s}</span>
                                 </li>
@@ -323,7 +323,7 @@ export default function RecoveryManager({
                           {p.contraindications.length > 0 && (
                             <div>
                               <p className="text-[10px] font-medium text-[#8F2D2D] mb-1">Contraindications</p>
-                              <ul className="text-[12px] text-[#0F1115] leading-relaxed space-y-0.5">
+                              <ul className="text-[12.5px] text-[#0F1115] leading-relaxed space-y-0.5">
                                 {p.contraindications.map((c, i) => <li key={i}>- {c}</li>)}
                               </ul>
                             </div>
@@ -331,7 +331,7 @@ export default function RecoveryManager({
                           <ProtocolDetail label="Safety" body={p.safety_notes} />
                           <div className="rounded-lg bg-white border border-[#E4E4E0] px-3 py-2">
                             <p className="text-[10px] font-medium text-[#0F1115] mb-1">Coach doctrine</p>
-                            <p className="text-[12px] text-[#0F1115] leading-relaxed">{p.coach_doctrine}</p>
+                            <p className="text-[12.5px] text-[#0F1115] leading-relaxed">{p.coach_doctrine}</p>
                           </div>
                         </div>
                       )}
@@ -443,13 +443,13 @@ function RrsSuggestionBanner({
             <X size={16} />
           </button>
         </div>
-        <p className={`text-[13px] ${textColour} leading-relaxed mb-3 pl-6`}>{suggestion.rationale}</p>
+        <p className={`text-[13.5px] ${textColour} leading-relaxed mb-3 pl-6`}>{suggestion.rationale}</p>
 
         {/* SBST-specific alert */}
         {suggestion.sbst_action && (
           <div className={`ml-6 mb-3 rounded-lg border ${showSbstRemovalAlert ? 'border-red-400 bg-white' : 'border-[#EADCC4] bg-white'} px-3 py-2`}>
             <p className={`text-[10px] font-bold ${eyebrowColour} uppercase tracking-widest mb-1`}>SBST action required</p>
-            <p className={`text-[12px] ${textColour} leading-relaxed`}>{sbstActionLabel(suggestion.sbst_action)}</p>
+            <p className={`text-[12.5px] ${textColour} leading-relaxed`}>{sbstActionLabel(suggestion.sbst_action)}</p>
             {showSbstRemovalAlert && !sbstRemovalConfirmed && (
               <button
                 onClick={markSbstRemoved}
@@ -475,7 +475,7 @@ function RrsSuggestionBanner({
               return (
                 <div key={p.slug} className="flex items-center justify-between gap-3 rounded-lg bg-white border border-[#E4E4E0] px-3 py-2">
                   <div className="flex-1 min-w-0">
-                    <p className="text-[13px] font-semibold text-[#0F1115]">{p.name}</p>
+                    <p className="text-[13.5px] font-semibold text-[#0F1115]">{p.name}</p>
                     <p className="text-[11px] text-[#6E747D] mt-0.5 line-clamp-1">{p.short_description}</p>
                   </div>
                   <button
@@ -510,7 +510,7 @@ function ProtocolDetail({ label, body }: { label: string; body: string }) {
   return (
     <div>
       <p className="text-[10px] font-medium text-[#6E747D] mb-1">{label}</p>
-      <p className="text-[12px] text-[#0F1115] leading-relaxed">{body}</p>
+      <p className="text-[12.5px] text-[#0F1115] leading-relaxed">{body}</p>
     </div>
   )
 }
@@ -531,7 +531,7 @@ function AccessGroup({ title, icon, tags, access, onToggle }: { title: string; i
               onChange={() => onToggle(tag)}
               className="w-4 h-4 rounded border-[#E4E4E0] text-[#0F1115] focus:ring-[#0F1115]"
             />
-            <span className="text-[13px] text-[#0F1115] group-hover:text-[#0F1115]">{EQUIPMENT_LABELS[tag]}</span>
+            <span className="text-[13.5px] text-[#0F1115] group-hover:text-[#0F1115]">{EQUIPMENT_LABELS[tag]}</span>
           </label>
         ))}
       </div>
@@ -563,13 +563,13 @@ function AssignmentCard({ assignment, onEditNote, onPause, onResume, onComplete,
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <span className="text-sm font-semibold text-[#0F1115]">{protocol.name}</span>
-            <span className={`text-[9px] font-bold uppercase tracking-widest ${statusColour}`}>{assignment.status}</span>
+            <span className={`text-[10px] font-bold uppercase tracking-widest ${statusColour}`}>{assignment.status}</span>
           </div>
           <p className="text-[11px] text-[#6E747D] mt-0.5">{protocol.dosing.frequency} · {protocol.dosing.duration}</p>
           {assignment.coach_note && (
             <div className="mt-2 rounded-lg bg-[#FAFAF8] border border-[#E4E4E0] px-3 py-2">
               <p className="text-[10px] font-medium text-[#6E747D] mb-0.5">Coach note (shown to client)</p>
-              <p className="text-[12px] text-[#0F1115] leading-relaxed whitespace-pre-line">{assignment.coach_note}</p>
+              <p className="text-[12.5px] text-[#0F1115] leading-relaxed whitespace-pre-line">{assignment.coach_note}</p>
             </div>
           )}
         </div>

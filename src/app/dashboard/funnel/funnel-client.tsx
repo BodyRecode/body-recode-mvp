@@ -61,7 +61,7 @@ function OnboardTicks({ scorecard, parq, health }: { scorecard: boolean; parq: b
 // otherwise a muted "Pending". Colour keyed to body state.
 function ScorecardResult({ done, score, bodyState }: { done: boolean; score: number | null; bodyState: string | null }) {
   if (!done) {
-    return <span className="text-[#98A0AD] text-[12px]" style={{ fontFamily: MONO_FONT }}>Pending</span>
+    return <span className="text-[#98A0AD] text-[12.5px]" style={{ fontFamily: MONO_FONT }}>Pending</span>
   }
   const state = (bodyState ?? '').replace(/ State$/, '') || 'Done'
   const colour = state === 'Depleted' ? '#DC2626' : state === 'Transitioning' ? '#1B6DFC' : state === 'Ready' ? '#15803D' : '#666666'
@@ -113,7 +113,7 @@ function PatternBadge({ pattern }: { pattern: string }) {
   const label = PATTERN_LABELS[pattern] ?? pattern
   return (
     <span
-      className="inline-flex items-center text-[11.5px] font-medium px-2 py-0.5 rounded-full border whitespace-nowrap"
+      className="inline-flex items-center text-[11px] font-medium px-2 py-0.5 rounded-full border whitespace-nowrap"
       style={{ color: colour, background: colour + '14', borderColor: colour + '33' }}
     >
       {label}
@@ -124,7 +124,7 @@ function PatternBadge({ pattern }: { pattern: string }) {
 function StatusBadge({ label, colour }: { label: string; colour: string }) {
   return (
     <span
-      className="inline-flex items-center text-[11.5px] font-medium px-2 py-0.5 rounded-full border whitespace-nowrap"
+      className="inline-flex items-center text-[11px] font-medium px-2 py-0.5 rounded-full border whitespace-nowrap"
       style={{ color: colour, background: colour + '14', borderColor: colour + '33' }}
     >
       {label}
@@ -135,7 +135,7 @@ function StatusBadge({ label, colour }: { label: string; colour: string }) {
 function Table({ headers, children }: { headers: string[]; children: React.ReactNode }) {
   return (
     <div className="overflow-x-auto">
-      <table className="w-full border-collapse text-[13px]">
+      <table className="w-full border-collapse text-[13.5px]">
         <thead>
           <tr className="border-b border-[#E8EAEE] bg-[#FFFFFF]">
             {headers.map(h => (
@@ -175,7 +175,7 @@ function TD({ children }: { children: React.ReactNode }) {
 function TDName({ name, email, drillHref }: { name: string; email: string; drillHref?: string }) {
   const inner = (
     <>
-      <div className="text-[13px] font-semibold text-[#141821]">{name}</div>
+      <div className="text-[13.5px] font-semibold text-[#141821]">{name}</div>
       <div className="text-[11px] text-[#98A0AD]">{email}</div>
     </>
   )
@@ -293,19 +293,19 @@ export default function FunnelClient({
           <div className="inline-flex items-center gap-2 shrink-0">
             <AlertTriangle size={14} style={{ color: amber.text }} />
             <span
-              className="text-[11.5px] font-medium"
+              className="text-[11px] font-medium"
               style={{ color: amber.text }}
             >
               Needs attention
             </span>
           </div>
           {blueprintAtRisk > 0 && (
-            <div className="text-[13px] text-[#666D7A]">
+            <div className="text-[13.5px] text-[#666D7A]">
               <span className="font-semibold text-[#141821]">{blueprintAtRisk}</span> Blueprint buyer{blueprintAtRisk > 1 ? 's' : ''} at Week 6 - not yet in membership
             </div>
           )}
           {membershipNoCheckin > 0 && (
-            <div className="text-[13px] text-[#666D7A]">
+            <div className="text-[13.5px] text-[#666D7A]">
               <span className="font-semibold text-[#141821]">{membershipNoCheckin}</span> active member{membershipNoCheckin > 1 ? 's' : ''} with no check-in submitted
             </div>
           )}
@@ -324,7 +324,7 @@ export default function FunnelClient({
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`text-[12px] font-semibold px-3 py-1.5 rounded-md transition-colors whitespace-nowrap ${
+              className={`text-[12.5px] font-semibold px-3 py-1.5 rounded-md transition-colors whitespace-nowrap ${
                 tab === t.id ? 'bg-[#1B6DFC] text-[#FFFFFF]' : 'text-[#666D7A] hover:text-[#141821]'
               }`}
             >
@@ -338,7 +338,7 @@ export default function FunnelClient({
             placeholder="Search name or email..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="text-[13px] bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg pl-8 pr-3 py-2 text-[#141821] placeholder:text-[#98A0AD] outline-none focus:border-[#1B6DFC] w-[220px] transition-colors"
+            className="text-[13.5px] bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg pl-8 pr-3 py-2 text-[#141821] placeholder:text-[#98A0AD] outline-none focus:border-[#1B6DFC] w-[220px] transition-colors"
           />
         </div>
       </div>
@@ -361,7 +361,7 @@ export default function FunnelClient({
                     <span className="font-bold text-[#141821]" style={{ fontFamily: MONO_FONT, fontVariantNumeric: 'tabular-nums' }}>Day {Math.min(e.currentDay, lastDay)}</span>
                     <span className="text-[11px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}> / {lastDay}</span>
                     {e.product !== 'decode' && (
-                      <span className="ml-2 text-[10.5px] text-[#98A0AD]" title="Enrolled on the retired 14-day Challenge">legacy</span>
+                      <span className="ml-2 text-[10px] text-[#98A0AD]" title="Enrolled on the retired 14-day Challenge">legacy</span>
                     )}
                   </TD>
                   <TD>
@@ -371,7 +371,7 @@ export default function FunnelClient({
                     <ScorecardResult done={e.scorecardDone} score={e.scorecardScore} bodyState={e.scorecardBodyState} />
                   </TD>
                   <TD>
-                    {e.quizResult ? <PatternBadge pattern={e.quizResult} /> : <span className="text-[#98A0AD] text-[12px]">No quiz</span>}
+                    {e.quizResult ? <PatternBadge pattern={e.quizResult} /> : <span className="text-[#98A0AD] text-[12.5px]">No quiz</span>}
                   </TD>
                   <TD>
                     {e.quizCompleted
@@ -415,10 +415,10 @@ export default function FunnelClient({
                   </TD>
                   <TD>
                     {e.lastCheckin
-                      ? <span className="text-[12px] text-[#666D7A]">Week {e.lastCheckin.week} · {formatDate(e.lastCheckin.date)}</span>
-                      : <span className="text-[12px] text-[#DC2626]">None submitted</span>}
+                      ? <span className="text-[12.5px] text-[#666D7A]">Week {e.lastCheckin.week} · {formatDate(e.lastCheckin.date)}</span>
+                      : <span className="text-[12.5px] text-[#DC2626]">None submitted</span>}
                   </TD>
-                  <TD>{e.lastCheckin ? <AvgBadge avg={e.lastCheckin.avg} /> : <span className="text-[#98A0AD] text-[12px]">-</span>}</TD>
+                  <TD>{e.lastCheckin ? <AvgBadge avg={e.lastCheckin.avg} /> : <span className="text-[#98A0AD] text-[12.5px]">-</span>}</TD>
                   <TD>
                     {e.hasMembership
                       ? <StatusBadge label="Active" colour="#1B6DFC" />
@@ -451,10 +451,10 @@ export default function FunnelClient({
                   </TD>
                   <TD>
                     {e.lastCheckin
-                      ? <span className="text-[12px] text-[#666D7A]">Week {e.lastCheckin.week} · {formatDate(e.lastCheckin.date)}</span>
-                      : <span className="text-[12px] text-[#DC2626]">None submitted</span>}
+                      ? <span className="text-[12.5px] text-[#666D7A]">Week {e.lastCheckin.week} · {formatDate(e.lastCheckin.date)}</span>
+                      : <span className="text-[12.5px] text-[#DC2626]">None submitted</span>}
                   </TD>
-                  <TD>{e.lastCheckin ? <AvgBadge avg={e.lastCheckin.avg} /> : <span className="text-[#98A0AD] text-[12px]">-</span>}</TD>
+                  <TD>{e.lastCheckin ? <AvgBadge avg={e.lastCheckin.avg} /> : <span className="text-[#98A0AD] text-[12.5px]">-</span>}</TD>
                   <TD>
                     {e.cancelledAt
                       ? <StatusBadge label="Cancelled" colour="#DC2626" />

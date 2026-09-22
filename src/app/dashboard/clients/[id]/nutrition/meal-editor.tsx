@@ -354,7 +354,7 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals, 
                     ))}
                   </select>
                   {lookupFood(f.name) && (
-                    <span className="text-[9px] text-[#2B5E45] bg-[#F2F2EF] px-1.5 py-0.5 rounded">In table</span>
+                    <span className="text-[10px] text-[#2B5E45] bg-[#F2F2EF] px-1.5 py-0.5 rounded">In table</span>
                   )}
                 </div>
               </div>
@@ -415,7 +415,7 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals, 
         </button>
 
         <div className="mt-4">
-          <label className="text-[11.5px] font-medium text-[#6E747D] mb-1 block">Meal notes</label>
+          <label className="text-[11px] font-medium text-[#6E747D] mb-1 block">Meal notes</label>
           <textarea
             value={draftNotes}
             onChange={e => setDraftNotes(e.target.value)}

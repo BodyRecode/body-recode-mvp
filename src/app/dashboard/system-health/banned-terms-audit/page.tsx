@@ -152,22 +152,22 @@ export default async function BannedTermsAuditPage() {
 
       <div className="grid grid-cols-3 gap-3 mb-6">
         <Card padding="md">
-          <p className="text-[11.5px] font-medium text-[#98A0AD] mb-1">Active clients scanned</p>
-          <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">{(clients ?? []).length}</p>
+          <p className="text-[11px] font-medium text-[#98A0AD] mb-1">Active clients scanned</p>
+          <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em]">{(clients ?? []).length}</p>
         </Card>
         <Card padding="md">
-          <p className="text-[11.5px] font-medium text-[#98A0AD] mb-1">Published artefacts checked</p>
-          <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">{totalArtefactsChecked}</p>
+          <p className="text-[11px] font-medium text-[#98A0AD] mb-1">Published artefacts checked</p>
+          <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em]">{totalArtefactsChecked}</p>
         </Card>
         <Card padding="md">
-          <p className="text-[11.5px] font-medium text-[#98A0AD] mb-1">Leak rate</p>
+          <p className="text-[11px] font-medium text-[#98A0AD] mb-1">Leak rate</p>
           <p className={`text-2xl font-bold ${leakRate > 30 ? 'text-[#C82626]' : leakRate > 10 ? 'text-[#A96A12]' : 'text-[#177245]'}`}>{leakRate}%</p>
           <p className="text-[10px] text-[#666D7A] mt-1">{totalArtefactsLeaked} of {totalArtefactsChecked} artefacts</p>
         </Card>
       </div>
 
       <Card padding="md" className="mb-6">
-        <p className="text-[11.5px] font-medium text-[#98A0AD] mb-3">Doctrine version coverage</p>
+        <p className="text-[11px] font-medium text-[#98A0AD] mb-3">Doctrine version coverage</p>
         <div className="space-y-2">
           {doctrineSummary.map(d => {
             const total = d.onCurrent + d.stale
@@ -244,7 +244,7 @@ function LeakRow({ label, terms, clientHref, publishedAt, storedVersion, isStale
           {flags.map((f, i) => <span key={i}> · <span className="font-mono">{f}</span></span>)}
         </p>
       </div>
-      <Link href={clientHref} className={`shrink-0 text-[11.5px] font-medium ${hasLeaks ? 'text-[#8A5A14] hover:text-[#A96A12]' : 'text-[#0A46B2] hover:text-[#1056D6]'}`}>
+      <Link href={clientHref} className={`shrink-0 text-[11px] font-medium ${hasLeaks ? 'text-[#8A5A14] hover:text-[#A96A12]' : 'text-[#0A46B2] hover:text-[#1056D6]'}`}>
         Open to regenerate →
       </Link>
     </div>

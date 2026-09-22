@@ -108,7 +108,7 @@ export default async function SystemHealthPage({
               {badEmail!.length} email{badEmail!.length === 1 ? '' : 's'} did not arrive. {deliveredCount ?? 0} delivered in the same period.
             </p>
             <div className="overflow-x-auto">
-              <table className="w-full text-[12px]">
+              <table className="w-full text-[12.5px]">
                 <tbody>
                   {badEmail!.map(e => (
                     <tr key={e.id} className="border-b border-[#EFF1F4] last:border-0">
@@ -126,7 +126,7 @@ export default async function SystemHealthPage({
             </div>
           </div>
         )}
-        <p className="text-[10.5px] text-[#98A0AD] mt-3 leading-relaxed">
+        <p className="text-[10px] text-[#98A0AD] mt-3 leading-relaxed">
           Bounced, refused and spam complaints are reported and show here. Being filed as junk is never reported by any provider, so a quiet list does not prove everything was read.
         </p>
       </Card>
@@ -177,7 +177,7 @@ export default async function SystemHealthPage({
                       style={{ background: tone.bar }}
                     />
                     <div className="min-w-0">
-                      <p className={`text-[12px] font-semibold ${isSelected ? 'text-[#141821]' : 'text-[#43474F]'}`}>{label}</p>
+                      <p className={`text-[12.5px] font-semibold ${isSelected ? 'text-[#141821]' : 'text-[#43474F]'}`}>{label}</p>
                       <p className="text-[10px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}>{time}</p>
                       {run.status !== 'ok' && (
                         <p className="text-[10px] font-medium mt-0.5" style={{ color: tone.text }}>
@@ -199,7 +199,7 @@ export default async function SystemHealthPage({
               <RunDetail run={selectedRun} />
             ) : (
               <Card>
-                <p className="text-[#98A0AD] text-[13px] text-center py-6">Select a run to view details.</p>
+                <p className="text-[#98A0AD] text-[13.5px] text-center py-6">Select a run to view details.</p>
               </Card>
             )}
           </div>

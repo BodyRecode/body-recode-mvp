@@ -353,7 +353,7 @@ export default function PrescriptionSuggest({
           <span>/</span>
           <span className="text-[#0F1115]">Prescription Suggestion</span>
         </div>
-        <h1 className="text-[22px] font-semibold text-[#0F1115] tracking-[-0.025em]">Prescription Suggestion</h1>
+        <h1 className="text-[20px] font-semibold text-[#0F1115] tracking-[-0.025em]">Prescription Suggestion</h1>
         <p className="text-sm text-[#6E747D] mt-1">
           Generated from CFFS, intake, and training history. Review the reasoning, edit if needed, then approve to generate the program.
         </p>

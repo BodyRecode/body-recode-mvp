@@ -170,9 +170,9 @@ export default function SupplementsManager({
                           <div className="min-w-0">
                             <div className="flex items-center gap-2">
                               <span className="text-sm font-semibold text-[#0F1115]">{s.name}</span>
-                              {isActive && <span className="text-[9px] font-medium text-[#0F1115] bg-[#0F1115]/10 px-1.5 py-0.5 rounded">Active</span>}
+                              {isActive && <span className="text-[10px] font-medium text-[#0F1115] bg-[#0F1115]/10 px-1.5 py-0.5 rounded">Active</span>}
                             </div>
-                            <p className="text-[12px] text-[#6E747D] mt-0.5">{s.short_description}</p>
+                            <p className="text-[12.5px] text-[#6E747D] mt-0.5">{s.short_description}</p>
                           </div>
                         </button>
                         <button
@@ -197,7 +197,7 @@ export default function SupplementsManager({
                           {s.contraindications.length > 0 && (
                             <div>
                               <p className="text-[10px] font-medium text-[#8F2D2D] mb-1">Contraindications</p>
-                              <ul className="text-[12px] text-[#0F1115] leading-relaxed space-y-0.5">
+                              <ul className="text-[12.5px] text-[#0F1115] leading-relaxed space-y-0.5">
                                 {s.contraindications.map((c, i) => <li key={i}>- {c}</li>)}
                               </ul>
                             </div>
@@ -205,7 +205,7 @@ export default function SupplementsManager({
                           <Detail label="Safety" body={s.safety_notes} />
                           <div className="rounded-lg bg-white border border-[#E4E4E0] px-3 py-2">
                             <p className="text-[10px] font-medium text-[#0F1115] mb-1">Coach doctrine</p>
-                            <p className="text-[12px] text-[#0F1115] leading-relaxed">{s.coach_doctrine}</p>
+                            <p className="text-[12.5px] text-[#0F1115] leading-relaxed">{s.coach_doctrine}</p>
                           </div>
                           {s.research_reference && (
                             <div className="flex items-start gap-2 text-[11px] text-[#6E747D]">
@@ -231,7 +231,7 @@ function Detail({ label, body }: { label: string; body: string }) {
   return (
     <div>
       <p className="text-[10px] font-medium text-[#6E747D] mb-1">{label}</p>
-      <p className="text-[12px] text-[#0F1115] leading-relaxed">{body}</p>
+      <p className="text-[12.5px] text-[#0F1115] leading-relaxed">{body}</p>
     </div>
   )
 }
@@ -242,7 +242,7 @@ function TierCard({ tier }: { tier: { label: string; form: string; dose: string;
       <div className="flex items-center gap-2 mb-1.5">
         <span className="text-[10px] font-medium text-[#0F1115]">{tier.label}</span>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-[12px] text-[#0F1115]">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-[12.5px] text-[#0F1115]">
         <div><span className="text-[#6E747D] font-medium">Form:</span> {tier.form}</div>
         <div><span className="text-[#6E747D] font-medium">Dose:</span> {tier.dose}</div>
         <div className="md:col-span-2"><span className="text-[#6E747D] font-medium">Timing:</span> {tier.timing}</div>
@@ -277,13 +277,13 @@ function AssignmentRow({ assignment, onEditNote, onPause, onResume, onComplete, 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <span className="text-sm font-semibold text-[#0F1115]">{substance.name}</span>
-            <span className={`text-[9px] font-bold uppercase tracking-widest ${statusColour}`}>{assignment.status}</span>
+            <span className={`text-[10px] font-bold uppercase tracking-widest ${statusColour}`}>{assignment.status}</span>
           </div>
           <p className="text-[11px] text-[#6E747D] mt-0.5">3 tiers visible on portal · Essential / Enhanced / Elite</p>
           {assignment.coach_note && (
             <div className="mt-2 rounded-lg bg-[#FAFAF8] border border-[#E4E4E0] px-3 py-2">
               <p className="text-[10px] font-medium text-[#6E747D] mb-0.5">Coach note (shown to client)</p>
-              <p className="text-[12px] text-[#0F1115] leading-relaxed whitespace-pre-line">{assignment.coach_note}</p>
+              <p className="text-[12.5px] text-[#0F1115] leading-relaxed whitespace-pre-line">{assignment.coach_note}</p>
             </div>
           )}
         </div>

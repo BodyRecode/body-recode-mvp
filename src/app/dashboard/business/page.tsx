@@ -47,8 +47,8 @@ export default function BusinessHubPage() {
           {publicLinks.map(link => (
             <div key={link.url} className="flex items-center justify-between py-3 first:pt-0 last:pb-0">
               <div className="min-w-0">
-                <p className="text-[14px] text-[#141821] font-medium">{link.label}</p>
-                <p className="text-[12px] text-[#98A0AD] mt-0.5">{link.desc}</p>
+                <p className="text-[13.5px] text-[#141821] font-medium">{link.label}</p>
+                <p className="text-[12.5px] text-[#98A0AD] mt-0.5">{link.desc}</p>
               </div>
               <div className="flex items-center gap-3 shrink-0">
                 <span
@@ -75,8 +75,8 @@ export default function BusinessHubPage() {
       <Card padding="md">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="min-w-0">
-            <p className="text-[14px] font-semibold text-[#141821] mb-1">Scorecard Follow-up Automation</p>
-            <p className="text-[12px] text-[#666D7A] leading-relaxed max-w-xl">
+            <p className="text-[13.5px] font-semibold text-[#141821] mb-1">Scorecard Follow-up Automation</p>
+            <p className="text-[12.5px] text-[#666D7A] leading-relaxed max-w-xl">
               A 4-email sequence that fires when someone completes the Readiness Scorecard. Directs leads to book a free call or get the $37 Body Decode Report.
             </p>
           </div>

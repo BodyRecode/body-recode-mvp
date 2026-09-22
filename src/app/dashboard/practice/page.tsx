@@ -80,9 +80,9 @@ function Standing({ c }: { c: ClientStanding }) {
       <span className="w-2 h-2 rounded-full shrink-0" style={{ background: tone.dot }} />
       <div className="min-w-0 flex-1">
         <p className="text-[13.5px] text-white truncate">{c.name}</p>
-        <p className="text-[12px] text-[#8A9099] truncate">{c.because}</p>
+        <p className="text-[12.5px] text-[#8A9099] truncate">{c.because}</p>
       </div>
-      <span className={`text-[11.5px] font-medium shrink-0 ${tone.cls}`}>{tone.word}</span>
+      <span className={`text-[11px] font-medium shrink-0 ${tone.cls}`}>{tone.word}</span>
     </Link>
   )
 }
@@ -110,17 +110,17 @@ export default async function PracticePage() {
           </Panel>
           <Panel label="Steady">
             <p className="text-[34px] leading-none font-semibold text-[#6FA98B] tabular-nums">{steady}</p>
-            <p className="text-[12px] text-[#676D76] mt-2">answering most weeks</p>
+            <p className="text-[12.5px] text-[#676D76] mt-2">answering most weeks</p>
           </Panel>
           <Panel label="Need you">
             <p className={`text-[34px] leading-none font-semibold tabular-nums ${needsYou > 0 ? 'text-[#E0A254]' : 'text-white'}`}>{needsYou}</p>
-            <p className="text-[12px] text-[#676D76] mt-2">slipping or gone quiet</p>
+            <p className="text-[12.5px] text-[#676D76] mt-2">slipping or gone quiet</p>
           </Panel>
           <Panel label="Read but not opened">
             <p className="text-[34px] leading-none font-semibold text-white tabular-nums">
               {view.clients.filter(c => c.openedLastRead === false).length}
             </p>
-            <p className="text-[12px] text-[#676D76] mt-2">sent, never read</p>
+            <p className="text-[12.5px] text-[#676D76] mt-2">sent, never read</p>
           </Panel>
         </div>
 
@@ -138,13 +138,13 @@ export default async function PracticePage() {
             <p className="text-[10px] font-medium tracking-[0.12em] uppercase text-[#676D76]">Everyone, quietest first</p>
           </div>
           {view.clients.length === 0 ? (
-            <p className="px-4 py-6 text-[13px] text-[#8A9099]">No active clients yet.</p>
+            <p className="px-4 py-6 text-[13.5px] text-[#8A9099]">No active clients yet.</p>
           ) : (
             view.clients.map(c => <Standing key={c.id} c={c} />)
           )}
         </div>
 
-        <p className="text-[12px] text-[#676D76] mt-4 leading-relaxed">
+        <p className="text-[12.5px] text-[#676D76] mt-4 leading-relaxed">
           Attendance is what a client has actually done: whether they answered, and whether they opened
           their read. It is never a judgement about their body, and a client is left alone for their first
           three weeks because there is nothing yet to read into.

@@ -83,7 +83,7 @@ export function HarmonyShell({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-[#FFFFFF] text-[#141821]">
       {/* Preview banner - thin strip */}
       <div
-        className="text-center py-1 text-[11.5px] font-medium"
+        className="text-center py-1 text-[11px] font-medium"
         style={{ backgroundColor: '#141821', color: '#F8F8F8', letterSpacing: '0.14em' }}
       >
         Preview mockup · not a live tenant · <Link href="/dashboard/preview" className="underline">back to previews</Link>
@@ -98,7 +98,7 @@ export function HarmonyShell({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-9 min-w-0">
             <Link href={BASE} className="flex items-center gap-3 shrink-0">
               <span
-                className="inline-flex items-center justify-center w-9 h-9 rounded-lg font-bold text-[13px] tracking-tight text-white"
+                className="inline-flex items-center justify-center w-9 h-9 rounded-lg font-bold text-[13.5px] tracking-tight text-white"
                 style={{ background: HARMONY.accentBar, fontFamily: MONO }}
               >
                 {HARMONY.initials}
@@ -160,7 +160,7 @@ function TopLink({ link, pathname }: { link: NavLink; pathname: string }) {
   return (
     <Link
       href={link.href}
-      className={`relative text-[13px] px-3.5 py-2 rounded-md transition-colors whitespace-nowrap ${
+      className={`relative text-[13.5px] px-3.5 py-2 rounded-md transition-colors whitespace-nowrap ${
         active
           ? 'text-[#141821] bg-[#EFF1F4]'
           : 'text-[#666D7A] hover:text-[#141821] hover:bg-[#F4F6F9]'
@@ -184,7 +184,7 @@ function ClusterButton({ cluster, pathname }: { cluster: NavCluster; pathname: s
   return (
     <Link
       href={target}
-      className={`relative flex items-center gap-1 text-[13px] px-3.5 py-2 rounded-md transition-colors whitespace-nowrap ${
+      className={`relative flex items-center gap-1 text-[13.5px] px-3.5 py-2 rounded-md transition-colors whitespace-nowrap ${
         active
           ? 'text-[#141821] bg-[#EFF1F4]'
           : 'text-[#666D7A] hover:text-[#141821] hover:bg-[#F4F6F9]'

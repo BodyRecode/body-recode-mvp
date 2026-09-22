@@ -96,7 +96,7 @@ export default function ReplyBox({
         onChange={e => { setBody(e.target.value); if (isDraft) setIsDraft(false) }}
         placeholder={`Reply to ${clientFirstName}...`}
         rows={4}
-        className={`w-full bg-[#FFFFFF] border rounded-xl px-3 py-3 text-[14px] text-[#141821] placeholder:text-[#98A0AD] focus:outline-none focus:border-[#1B6DFC] leading-relaxed resize-y ${
+        className={`w-full bg-[#FFFFFF] border rounded-xl px-3 py-3 text-[13.5px] text-[#141821] placeholder:text-[#98A0AD] focus:outline-none focus:border-[#1B6DFC] leading-relaxed resize-y ${
           isDraft ? 'border-[rgba(27,109,252,0.4)]' : 'border-[#E8EAEE]'
         }`}
       />
@@ -111,7 +111,7 @@ export default function ReplyBox({
               type="button"
               onClick={draft}
               disabled={drafting || sending}
-              className="inline-flex items-center gap-1.5 border border-[#E8EAEE] text-[#43474F] text-[13px] font-semibold px-3 py-2 rounded-lg hover:border-[#1B6DFC]/40 hover:text-[#1B6DFC] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-1.5 border border-[#E8EAEE] text-[#43474F] text-[13.5px] font-semibold px-3 py-2 rounded-lg hover:border-[#1B6DFC]/40 hover:text-[#1B6DFC] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {drafting ? <Loader2 size={13} className="animate-spin" /> : <Sparkles size={13} />}
               {drafting ? 'Drafting...' : 'Draft a reply'}
@@ -120,7 +120,7 @@ export default function ReplyBox({
           <button
             type="submit"
             disabled={!body.trim() || sending}
-            className="inline-flex items-center gap-2 bg-[#1B6DFC] text-[#FFFFFF] text-[13px] font-bold px-4 py-2 rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-2 bg-[#1B6DFC] text-[#FFFFFF] text-[13.5px] font-bold px-4 py-2 rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {sending ? <Loader2 size={13} className="animate-spin" /> : <Send size={13} />}
             {sending ? 'Sending...' : 'Send reply'}
@@ -129,12 +129,12 @@ export default function ReplyBox({
       </div>
 
       {notice && (
-        <div className="mt-3 bg-[#FDF6E9] border border-[#F1DEB8] rounded-lg px-3 py-2 text-[12px] text-[#8A5A14]">
+        <div className="mt-3 bg-[#FDF6E9] border border-[#F1DEB8] rounded-lg px-3 py-2 text-[12.5px] text-[#8A5A14]">
           {notice}
         </div>
       )}
       {error && (
-        <div className="mt-3 bg-[#FDF6E9] border border-[#F1DEB8] rounded-lg px-3 py-2 text-[12px] text-[#8A5A14]">
+        <div className="mt-3 bg-[#FDF6E9] border border-[#F1DEB8] rounded-lg px-3 py-2 text-[12.5px] text-[#8A5A14]">
           {error}
         </div>
       )}

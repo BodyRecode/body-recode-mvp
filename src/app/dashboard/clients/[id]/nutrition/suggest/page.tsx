@@ -36,7 +36,7 @@ export default async function NutritionSuggestPage({ params }: { params: Promise
           <span>/</span>
           <span className="text-[#0F1115]">Prescription</span>
         </div>
-        <h1 className="text-[22px] font-semibold text-[#0F1115] tracking-[-0.025em]">Nutrition Prescription</h1>
+        <h1 className="text-[20px] font-semibold text-[#0F1115] tracking-[-0.025em]">Nutrition Prescription</h1>
         <p className="text-[#6E747D] text-sm mt-1">Review the suggested prescription before generating the plan.</p>
       </div>
 

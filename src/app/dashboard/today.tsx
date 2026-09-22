@@ -546,19 +546,19 @@ function ActionRow({
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2 flex-wrap">
-          <p className="text-[13px] font-bold text-[#141821] group-hover:text-[#1B6DFC] transition-colors truncate">
+          <p className="text-[13.5px] font-bold text-[#141821] group-hover:text-[#1B6DFC] transition-colors truncate">
             {action.clientName}
           </p>
           {action.badge && (
             <span
-              className="inline-flex items-center text-[9px] px-1.5 py-0.5 rounded-full border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)] text-[#1B6DFC]"
+              className="inline-flex items-center text-[10px] px-1.5 py-0.5 rounded-full border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)] text-[#1B6DFC]"
             >
               {action.badge}
             </span>
           )}
         </div>
         <p
-          className="text-[13px] mt-0.5 truncate"
+          className="text-[13.5px] mt-0.5 truncate"
           style={{ color: a.text }}
         >
           {action.headline}
@@ -630,8 +630,8 @@ function iconFor(action: ClientNextAction) {
 function EmptyStateBlock() {
   return (
     <div className="py-8 text-center">
-      <p className="text-[14px] text-[#666D7A] mb-1">No active clients yet</p>
-      <p className="text-[12px] text-[#98A0AD]">
+      <p className="text-[13.5px] text-[#666D7A] mb-1">No active clients yet</p>
+      <p className="text-[12.5px] text-[#98A0AD]">
         Per-client focus board will populate as clients onboard.
       </p>
     </div>

@@ -34,7 +34,7 @@ export default function LeadTabs({ tabs, initial }: { tabs: LeadTab[]; initial?:
             <button
               key={tab.id}
               onClick={() => setActive(tab.id)}
-              className={`relative shrink-0 px-3.5 py-2.5 text-[13px] font-semibold transition-colors ${
+              className={`relative shrink-0 px-3.5 py-2.5 text-[13.5px] font-semibold transition-colors ${
                 on ? 'text-[#1B6DFC]' : 'text-[#666D7A] hover:text-[#141821]'
               }`}
             >

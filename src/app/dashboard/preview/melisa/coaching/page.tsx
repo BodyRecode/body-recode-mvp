@@ -27,7 +27,7 @@ export default function HermonyCoaching() {
         accent="terracotta"
         cta={
           <button
-            className="inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-2 rounded-lg border border-[#E8EAEE] bg-white text-[#141821] hover:bg-[#F4F6F9] transition-colors"
+            className="inline-flex items-center gap-2 text-[12.5px] font-semibold px-3 py-2 rounded-lg border border-[#E8EAEE] bg-white text-[#141821] hover:bg-[#F4F6F9] transition-colors"
           >
             <UserPlus size={14} /> Invite a student
           </button>
@@ -55,7 +55,7 @@ export default function HermonyCoaching() {
               {s.label}
             </p>
             <p
-              className="text-[40px] font-extrabold text-[#141821] tracking-tight leading-none mb-2.5"
+              className="text-[46px] font-extrabold text-[#141821] tracking-tight leading-none mb-2.5"
               style={{ fontVariantNumeric: 'tabular-nums' }}
             >
               {s.value}
@@ -70,9 +70,9 @@ export default function HermonyCoaching() {
           accent="terracotta"
           cta={
             <div className="flex items-center gap-2">
-              <button className="text-[12px] text-[#666D7A] hover:text-[#141821]">Active</button>
+              <button className="text-[12.5px] text-[#666D7A] hover:text-[#141821]">Active</button>
               <span className="text-[#E8EAEE]">·</span>
-              <button className="text-[12px] text-[#666D7A] hover:text-[#141821]">Inactive</button>
+              <button className="text-[12.5px] text-[#666D7A] hover:text-[#141821]">Inactive</button>
             </div>
           }
         >
@@ -107,7 +107,7 @@ export default function HermonyCoaching() {
                       {s.name.split(' ').map((n) => n[0]).join('')}
                     </div>
                     <div>
-                      <div className="text-[13px] font-semibold text-[#141821]">{s.name}</div>
+                      <div className="text-[13.5px] font-semibold text-[#141821]">{s.name}</div>
                       <div className="text-[11px] text-[#98A0AD]">{s.email}</div>
                     </div>
                   </div>
@@ -115,9 +115,9 @@ export default function HermonyCoaching() {
                 <div>
                   <Pill accent={pill.accent}>{pill.label}</Pill>
                 </div>
-                <div className="text-[13px] text-[#4B4B4B]">{s.block}</div>
-                <div className="text-[13px] text-[#4B4B4B]" style={{ fontFamily: MONO_FONT }}>W{s.week}</div>
-                <div className="text-[13px] text-[#4B4B4B]">Fri</div>
+                <div className="text-[13.5px] text-[#4B4B4B]">{s.block}</div>
+                <div className="text-[13.5px] text-[#4B4B4B]" style={{ fontFamily: MONO_FONT }}>W{s.week}</div>
+                <div className="text-[13.5px] text-[#4B4B4B]">Fri</div>
                 <div className="text-right">
                   <ArrowUpRight size={14} className="inline-block text-[#98A0AD]" />
                 </div>
@@ -130,20 +130,20 @@ export default function HermonyCoaching() {
       <div className="grid md:grid-cols-2 gap-4 mt-8">
         <Card>
           <SectionLabel accent="amber">Waiting on your reply</SectionLabel>
-          <p className="text-[13px] text-[#4B4B4B] leading-relaxed mb-3">
+          <p className="text-[13.5px] text-[#4B4B4B] leading-relaxed mb-3">
             2 weekly check-ins ready. Both have AI-drafted feedback in your voice waiting for your review and send.
           </p>
-          <Link href="#" className="inline-flex items-center gap-1 text-[12px] font-semibold" style={{ color: HARMONY.accentText }}>
+          <Link href="#" className="inline-flex items-center gap-1 text-[12.5px] font-semibold" style={{ color: HARMONY.accentText }}>
             Open queue <ArrowUpRight size={12} />
           </Link>
         </Card>
 
         <Card>
           <SectionLabel accent="terracotta">Readings ready to notify</SectionLabel>
-          <p className="text-[13px] text-[#4B4B4B] leading-relaxed mb-3">
+          <p className="text-[13.5px] text-[#4B4B4B] leading-relaxed mb-3">
             1 nutrition plan and 1 Progress Read are drafted and waiting for you to click Notify.
           </p>
-          <Link href="#" className="inline-flex items-center gap-1 text-[12px] font-semibold" style={{ color: HARMONY.accentText }}>
+          <Link href="#" className="inline-flex items-center gap-1 text-[12.5px] font-semibold" style={{ color: HARMONY.accentText }}>
             Review + send <ArrowUpRight size={12} />
           </Link>
         </Card>

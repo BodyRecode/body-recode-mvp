@@ -159,7 +159,7 @@ export default function CopilotGuidePage() {
             <BookOpen size={17} className="text-[#1B6DFC]" />
           </div>
           <div className="min-w-0">
-            <p className="text-[15px] font-bold text-[#141821] mb-1.5">Start here</p>
+            <p className="text-[16px] font-bold text-[#141821] mb-1.5">Start here</p>
             <p className="text-[13.5px] text-[#4B4B4B] leading-relaxed mb-3">
               The co-pilot is a doctrine-trained mentor you talk with. It rides on every page as a floating bubble.
               On a <strong>client’s profile</strong> it has read that client’s file and answers grounded in it.
@@ -167,11 +167,11 @@ export default function CopilotGuidePage() {
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
               <div className="br-card px-3.5 py-2.5">
-                <p className="text-[12px] font-medium text-[#141821] mb-0.5">Rule 1 — You approve everything</p>
+                <p className="text-[12.5px] font-medium text-[#141821] mb-0.5">Rule 1 — You approve everything</p>
                 <p className="text-[12.5px] text-[#666D7A] leading-relaxed">Nothing it drafts or edits reaches a client on its own. It’s always a draft you review and publish.</p>
               </div>
               <div className="br-card px-3.5 py-2.5">
-                <p className="text-[12px] font-medium text-[#141821] mb-0.5">Rule 2 — Doctrine always wins</p>
+                <p className="text-[12.5px] font-medium text-[#141821] mb-0.5">Rule 2 — Doctrine always wins</p>
                 <p className="text-[12.5px] text-[#666D7A] leading-relaxed">It never overrides a client’s readiness gates, phase order, injuries, or safety — not for your instruction, not for your preferences.</p>
               </div>
             </div>
@@ -185,20 +185,20 @@ export default function CopilotGuidePage() {
         {LESSONS.map((l) => (
           <Card key={l.n}>
             <div className="flex items-start gap-3.5">
-              <div className="w-8 h-8 rounded-lg bg-[#141821] text-white flex items-center justify-center shrink-0 text-[13px] font-bold tabular-nums" style={{ fontFamily: MONO_FONT }}>
+              <div className="w-8 h-8 rounded-lg bg-[#141821] text-white flex items-center justify-center shrink-0 text-[13.5px] font-bold tabular-nums" style={{ fontFamily: MONO_FONT }}>
                 {String(l.n).padStart(2, '0')}
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2 flex-wrap mb-1.5">
-                  <h3 className="text-[15px] font-bold text-[#141821]">{l.title}</h3>
-                  <span className="text-[11.5px] font-mediumr px-1.5 py-0.5 rounded-full border border-[#B5CFFC] bg-[rgba(27,109,252,0.06)] text-[#1B6DFC]" style={{ fontFamily: MONO_FONT }}>
+                  <h3 className="text-[16px] font-bold text-[#141821]">{l.title}</h3>
+                  <span className="text-[11px] font-mediumr px-1.5 py-0.5 rounded-full border border-[#B5CFFC] bg-[rgba(27,109,252,0.06)] text-[#1B6DFC]" style={{ fontFamily: MONO_FONT }}>
                     {l.where === 'Client' ? 'On a client' : 'Anywhere'}
                   </span>
                 </div>
                 <p className="text-[13.5px] text-[#4B4B4B] leading-relaxed mb-3">{l.forWhat}</p>
 
                 <p className="text-[11px] font-medium text-[#98A0AD] mb-1">How</p>
-                <ol className="list-decimal list-inside space-y-0.5 text-[13px] text-[#43474F] mb-3">
+                <ol className="list-decimal list-inside space-y-0.5 text-[13.5px] text-[#43474F] mb-3">
                   {l.how.map((s, i) => <li key={i}>{s}</li>)}
                 </ol>
 
@@ -223,8 +223,8 @@ export default function CopilotGuidePage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         {WALKTHROUGHS.map((w) => (
           <Card key={w.title}>
-            <p className="text-[14px] font-bold text-[#141821] mb-2">{w.title}</p>
-            <ol className="list-decimal list-inside space-y-1.5 text-[13px] text-[#43474F] leading-relaxed">
+            <p className="text-[13.5px] font-bold text-[#141821] mb-2">{w.title}</p>
+            <ol className="list-decimal list-inside space-y-1.5 text-[13.5px] text-[#43474F] leading-relaxed">
               {w.steps.map((s, i) => <li key={i}>{s}</li>)}
             </ol>
           </Card>
@@ -238,7 +238,7 @@ export default function CopilotGuidePage() {
             <ShieldCheck size={17} className="text-[#B4780E]" />
           </div>
           <div className="min-w-0">
-            <p className="text-[15px] font-bold text-[#141821] mb-1.5">Keeping it honest — the flag loop</p>
+            <p className="text-[16px] font-bold text-[#141821] mb-1.5">Keeping it honest — the flag loop</p>
             <p className="text-[13.5px] text-[#4B4B4B] leading-relaxed mb-2">
               Every answer has a quiet <strong>thumbs-down</strong>. Use it whenever an answer is wrong or drifts from the doctrine.
               Flagged exchanges land in <Link href="/dashboard/copilot-review" className="text-[#1B6DFC] hover:underline">Clients → Co-Pilot Review</Link> to
@@ -256,20 +256,20 @@ export default function CopilotGuidePage() {
         <p className="text-[11px] font-medium text-[#98A0AD] mb-3" style={{ fontFamily: MONO_FONT }}>Take it with you</p>
         <div className="flex flex-wrap items-center gap-3">
           <a href="/docs/copilot-guide/COACH_COPILOT_GUIDE.pdf" target="_blank" rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-[13px] font-semibold px-3.5 py-2 bg-[#141821] text-white rounded-lg hover:bg-black transition-colors">
+            className="inline-flex items-center gap-2 text-[13.5px] font-semibold px-3.5 py-2 bg-[#141821] text-white rounded-lg hover:bg-black transition-colors">
             <Download size={14} /> Download the guide (PDF)
           </a>
           <a href="/docs/copilot-guide/COACH_COPILOT_GUIDE.md" target="_blank" rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-[13px] font-medium px-3.5 py-2 border border-[#E8EAEE] text-[#4B4B4B] rounded-lg hover:bg-[#F6F6F6] transition-colors">
+            className="inline-flex items-center gap-2 text-[13.5px] font-medium px-3.5 py-2 border border-[#E8EAEE] text-[#4B4B4B] rounded-lg hover:bg-[#F6F6F6] transition-colors">
             <FileText size={14} /> View as text
           </a>
-          <Link href="/dashboard/help#coach-copilot" className="inline-flex items-center gap-1.5 text-[13px] text-[#1B6DFC] hover:underline ml-1">
+          <Link href="/dashboard/help#coach-copilot" className="inline-flex items-center gap-1.5 text-[13.5px] text-[#1B6DFC] hover:underline ml-1">
             Co-Pilot in the full guide <ArrowUpRight size={13} />
           </Link>
         </div>
       </Card>
 
-      <div className="flex items-center gap-2 mt-8 text-[12px] text-[#98A0AD]">
+      <div className="flex items-center gap-2 mt-8 text-[12.5px] text-[#98A0AD]">
         <MessageSquare size={13} />
         <span>The co-pilot is coach-facing only — it never speaks to a client, and nothing it produces is sent without you.</span>
       </div>

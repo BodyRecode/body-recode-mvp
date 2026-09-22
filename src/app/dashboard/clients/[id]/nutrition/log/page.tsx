@@ -78,7 +78,7 @@ export default async function CoachMealLogPage({ params }: { params: Promise<{ i
       <Link href={backHref} className="text-[12.5px] font-semibold text-[#0F1115] hover:text-[#242932]">← Back to nutrition</Link>
       <div className="mt-4 br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E4E4E0] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
         <p className="text-[10px] font-medium text-[#9CA2AB] mb-1">Log meals · {client.name}</p>
-        <h1 className="text-[22px] font-semibold text-[#0F1115] tracking-[-0.025em] tracking-tight">{plan.plan_name}</h1>
+        <h1 className="text-[20px] font-semibold text-[#0F1115] tracking-[-0.025em] tracking-tight">{plan.plan_name}</h1>
       </div>
       <MealLogClient
         token=""

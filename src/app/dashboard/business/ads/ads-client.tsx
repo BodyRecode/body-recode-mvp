@@ -184,7 +184,7 @@ export default function AdsClient({ initialCampaigns }: Props) {
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h1 className="text-[22px] font-semibold tracking-[-0.025em] mb-1">Ads</h1>
+          <h1 className="text-[20px] font-semibold tracking-[-0.025em] mb-1">Ads</h1>
           <p className="text-[#666D7A] text-sm">Track Meta and Google performance. Spend, leads, cost-per-lead.</p>
         </div>
         <button

@@ -211,7 +211,7 @@ export default async function DashboardHomePage() {
         <Card>
           <SectionLabel
             cta={
-              <Link href="/dashboard/leads" className="text-[12px] text-[#1B6DFC] hover:text-[#5390FF] transition-colors">
+              <Link href="/dashboard/leads" className="text-[12.5px] text-[#1B6DFC] hover:text-[#5390FF] transition-colors">
                 View all →
               </Link>
             }
@@ -243,7 +243,7 @@ export default async function DashboardHomePage() {
         <Card>
           <SectionLabel
             cta={
-              <Link href="/dashboard/checkins" className="text-[12px] text-[#1B6DFC] hover:text-[#5390FF] transition-colors">
+              <Link href="/dashboard/checkins" className="text-[12.5px] text-[#1B6DFC] hover:text-[#5390FF] transition-colors">
                 Review queue →
               </Link>
             }
@@ -333,7 +333,7 @@ function PaymentsStatusCard({
             Payments
           </p>
           <p
-            className="text-[14px] font-bold truncate"
+            className="text-[13.5px] font-bold truncate"
             style={{ color: a.text }}
           >
             {isCurrent
@@ -341,7 +341,7 @@ function PaymentsStatusCard({
               : `${overdueCount} ${overdueCount === 1 ? 'client' : 'clients'} overdue`}
           </p>
           {!isCurrent && namePreview && (
-            <p className="text-[12px] text-[#666D7A] truncate mt-0.5">{namePreview}</p>
+            <p className="text-[12.5px] text-[#666D7A] truncate mt-0.5">{namePreview}</p>
           )}
         </div>
         <ArrowUpRight

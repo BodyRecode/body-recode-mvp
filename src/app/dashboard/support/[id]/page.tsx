@@ -33,7 +33,7 @@ export default async function SupportTicketPage({ params }: { params: Promise<{ 
   return (
     <div className="max-w-[860px]">
       <div className="mb-6">
-        <Link href="/dashboard/support" className="text-[12px] text-[#6E747D] hover:text-[#0F1115]">← All tickets</Link>
+        <Link href="/dashboard/support" className="text-[12.5px] text-[#6E747D] hover:text-[#0F1115]">← All tickets</Link>
       </div>
 
       <PageHeader
@@ -54,7 +54,7 @@ export default async function SupportTicketPage({ params }: { params: Promise<{ 
         <p className="text-[11px] font-medium text-[#6E747D] mb-3" style={{ fontFamily: "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace" }}>
           What they said
         </p>
-        <div className="text-[14px] text-[#0F1115] whitespace-pre-wrap leading-relaxed">
+        <div className="text-[13.5px] text-[#0F1115] whitespace-pre-wrap leading-relaxed">
           {ticket.body as string}
         </div>
       </Card>
@@ -64,7 +64,7 @@ export default async function SupportTicketPage({ params }: { params: Promise<{ 
           <p className="text-[11px] font-medium text-[#0F1115] mb-3" style={{ fontFamily: "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace" }}>
             Current note to filer
           </p>
-          <div className="text-[14px] text-[#0F1115] whitespace-pre-wrap leading-relaxed">
+          <div className="text-[13.5px] text-[#0F1115] whitespace-pre-wrap leading-relaxed">
             {ticket.status_note as string}
           </div>
         </Card>

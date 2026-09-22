@@ -178,7 +178,7 @@ export default async function GettingStartedPage() {
             Setup progress
           </span>
           <span
-            className="text-[12px] font-semibold"
+            className="text-[12.5px] font-semibold"
             style={{ color: '#0F1115', fontFamily: MONO_FONT, letterSpacing: '0.08em' }}
           >
             {completed} / {total} · {pct}%
@@ -218,11 +218,11 @@ export default async function GettingStartedPage() {
                   </div>
                   <h3 className="text-[16px] font-bold text-[#0F1115] mb-1">{step.title}</h3>
                   <div className="text-[11px] text-[#6E747D] mb-3" style={{ fontFamily: MONO_FONT }}>{step.subtitle}</div>
-                  <p className="text-[13px] leading-relaxed text-[#0F1115] mb-4">{step.description}</p>
+                  <p className="text-[13.5px] leading-relaxed text-[#0F1115] mb-4">{step.description}</p>
                   {!step.done && (
                     <Link
                       href={step.href}
-                      className="inline-flex items-center gap-2 text-[12px] font-semibold px-4 py-2 rounded-md border border-[#E4E4E0] bg-white hover:bg-[#FAFAF8] transition-colors"
+                      className="inline-flex items-center gap-2 text-[12.5px] font-semibold px-4 py-2 rounded-md border border-[#E4E4E0] bg-white hover:bg-[#FAFAF8] transition-colors"
                     >
                       {step.external ? 'Kade to complete' : 'Open the settings'}
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -243,7 +243,7 @@ export default async function GettingStartedPage() {
             <div className="text-[10px] mb-1" style={{ fontFamily: MONO_FONT, color: '#6E747D', letterSpacing: '0.14em' }}>
               Hard Safety Floors
             </div>
-            <p className="text-[12px] text-[#6E747D] leading-relaxed">
+            <p className="text-[12.5px] text-[#6E747D] leading-relaxed">
               Some things cannot be tuned by you or by us: RRS clamps, Fat Map training limits, injury contraindications, eligibility floors, minimum protein and calorie floors, platform-wide banned client terms. Your Mode A+ tuning layers ON TOP of these. This is what makes it legally defensible for you to run other people&apos;s practice on the platform.
             </p>
             <p className="text-[11px] text-[#6E747D] italic mt-2">

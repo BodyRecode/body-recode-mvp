@@ -43,7 +43,7 @@ export default async function AutomationsPage() {
     <div className="max-w-3xl">
       <div className="flex items-center justify-between br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
         <div>
-          <h1 className="text-[22px] font-semibold tracking-[-0.025em] mb-1">Automations</h1>
+          <h1 className="text-[20px] font-semibold tracking-[-0.025em] mb-1">Automations</h1>
           <p className="text-[#666D7A] text-sm">{active} active · {total} total</p>
         </div>
         <Link
@@ -57,22 +57,22 @@ export default async function AutomationsPage() {
 
       {duplicateGroups.length > 0 && (
         <div className="mb-6 rounded-xl bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] p-4">
-          <p className="text-[13px] font-bold text-[#8A5A14] mb-1.5 flex items-center gap-1.5">
+          <p className="text-[13.5px] font-bold text-[#8A5A14] mb-1.5 flex items-center gap-1.5">
             <AlertTriangle size={14} /> Duplicate workflows on the same trigger
           </p>
-          <p className="text-[13px] text-[#8A5A14] leading-relaxed mb-3">
+          <p className="text-[13.5px] text-[#8A5A14] leading-relaxed mb-3">
             More than one active workflow fires on the same trigger with the same conditions. Only the
             oldest one runs, the rest are skipped, so nobody is being double-sent right now. But one of
             these is not doing anything and should be turned off.
           </p>
           {duplicateGroups.map((group, i) => (
             <div key={i} className="mb-2 last:mb-0">
-              <p className="text-[12px] font-mediumr text-[#A96A12] mb-1">
+              <p className="text-[12.5px] font-mediumr text-[#A96A12] mb-1">
                 Trigger: {group[0].trigger_type}
               </p>
               {group.map((w, j) => (
                 <Link key={w.id} href={`/dashboard/business/automations/${w.id}`}
-                  className="block text-[13px] text-[#8A5A14] hover:underline">
+                  className="block text-[13.5px] text-[#8A5A14] hover:underline">
                   {j === 0 ? '✓ running' : '✗ skipped'} · {w.name}
                   <span className="text-[#A96A12]"> · created {new Date(w.created_at).toLocaleDateString('en-AU')}</span>
                 </Link>

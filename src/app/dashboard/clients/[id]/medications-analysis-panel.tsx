@@ -174,14 +174,14 @@ export default function MedicationsAnalysisPanel({
       <div className="br-card overflow-hidden">
         <div className="px-4 py-3 border-b border-[#E4E4E0] flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-2.5 flex-wrap">
-            <p className="text-[12px] font-medium text-[#0F1115]">Medications Analysis (coach)</p>
+            <p className="text-[12.5px] font-medium text-[#0F1115]">Medications Analysis (coach)</p>
             {analyzedAt && (
               <span className="text-[10px] text-[#9CA2AB]">
                 Generated {new Date(analyzedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
               </span>
             )}
             {analysisStale && (
-              <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] border border-[#EADCC4] text-[#B06E1F]">
+              <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] border border-[#EADCC4] text-[#B06E1F]">
                 Rebuild recommended
               </span>
             )}
@@ -221,7 +221,7 @@ export default function MedicationsAnalysisPanel({
             )}
             {analysis.combined_picture && (
               <div className="bg-[#FFFFFF] border border-[#DCDCD7] rounded-lg p-4">
-                <p className="text-[11.5px] font-medium text-[#0F1115] mb-1.5">Combined picture</p>
+                <p className="text-[11px] font-medium text-[#0F1115] mb-1.5">Combined picture</p>
                 <p className="text-[12.5px] text-[#4A4F57] leading-relaxed whitespace-pre-wrap">{analysis.combined_picture}</p>
               </div>
             )}
@@ -233,17 +233,17 @@ export default function MedicationsAnalysisPanel({
         <div className="br-card overflow-hidden">
           <div className="px-4 py-3 border-b border-[#E4E4E0] flex items-center justify-between gap-3 flex-wrap">
             <div className="flex items-center gap-2.5 flex-wrap">
-              <p className="text-[12px] font-medium text-[#0F1115]">Medications Read (client)</p>
+              <p className="text-[12.5px] font-medium text-[#0F1115]">Medications Read (client)</p>
               {readingGeneratedAt && (
                 <span className="text-[10px] text-[#9CA2AB]">
                   Generated {new Date(readingGeneratedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
                 </span>
               )}
-              <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${readingPublishedAt ? 'bg-[rgba(27,109,252,0.08)] border border-[#DCDCD7] text-[#000000]' : 'bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] border border-[#EADCC4] text-[#B06E1F]'}`}>
+              <span className={`text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${readingPublishedAt ? 'bg-[rgba(27,109,252,0.08)] border border-[#DCDCD7] text-[#000000]' : 'bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] border border-[#EADCC4] text-[#B06E1F]'}`}>
                 {readingPublishedAt ? 'Published' : 'Draft (not on portal)'}
               </span>
               {(readingStale || readingOutOfDateVsMeds) && (
-                <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] border border-[#EADCC4] text-[#B06E1F]">
+                <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] border border-[#EADCC4] text-[#B06E1F]">
                   Rebuild recommended
                 </span>
               )}
@@ -295,7 +295,7 @@ export default function MedicationsAnalysisPanel({
 function InfluenceRow({ label, body }: { label: string; body: string }) {
   return (
     <div>
-      <p className="text-[11.5px] font-medium text-[#9CA2AB] mb-1">{label}</p>
+      <p className="text-[11px] font-medium text-[#9CA2AB] mb-1">{label}</p>
       <p className="text-[12.5px] text-[#4A4F57] leading-relaxed whitespace-pre-wrap">{body}</p>
     </div>
   )
@@ -304,7 +304,7 @@ function InfluenceRow({ label, body }: { label: string; body: string }) {
 function ReadingSection({ title, body, accent }: { title: string; body: string; accent?: boolean }) {
   return (
     <div className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg p-4">
-      <p className={`text-[11.5px] font-medium mb-2 ${accent ? 'text-[#0F1115]' : 'text-[#9CA2AB]'}`}>{title}</p>
+      <p className={`text-[11px] font-medium mb-2 ${accent ? 'text-[#0F1115]' : 'text-[#9CA2AB]'}`}>{title}</p>
       <div className="text-[12.5px] text-[#4A4F57] leading-relaxed whitespace-pre-wrap">{body}</div>
     </div>
   )

@@ -48,13 +48,13 @@ function Hero() {
               A studio for practitioners
             </div>
             <h1
-              className="text-[68px] leading-[1.05] mb-8 -tracking-[0.01em]"
+              className="text-[58px] leading-[1.05] mb-8 -tracking-[0.01em]"
               style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}
             >
               Yoga that meets the body you brought this week.
             </h1>
             <p
-              className="text-[17px] leading-[1.65] mb-10 max-w-[52ch]"
+              className="text-[16px] leading-[1.65] mb-10 max-w-[52ch]"
               style={{ color: H.inkSoft }}
             >
               Every week you arrive with a different body. Different sleep. Different load carried. Most yoga programmes ignore that and hand you the same class. We don&apos;t. Practice at Harmony is written for the body you brought today, and evolves as your body evolves.
@@ -62,7 +62,7 @@ function Hero() {
             <div className="flex items-center gap-5">
               <Link
                 href={`${BASE}/assessment`}
-                className="inline-flex items-center gap-2 px-6 py-4 rounded-full text-[13px] font-semibold uppercase transition-transform hover:scale-[1.02]"
+                className="inline-flex items-center gap-2 px-6 py-4 rounded-full text-[13.5px] font-semibold uppercase transition-transform hover:scale-[1.02]"
                 style={{
                   background: H.terracotta,
                   color: H.cream,
@@ -75,7 +75,7 @@ function Hero() {
               </Link>
               <Link
                 href={`${BASE}/method`}
-                className="text-[13px] font-semibold uppercase"
+                className="text-[13.5px] font-semibold uppercase"
                 style={{ color: H.ink, fontFamily: H.mono, letterSpacing: '0.16em' }}
               >
                 Read the method →
@@ -114,7 +114,7 @@ function Hero() {
                   Founded 2026
                 </div>
                 <div
-                  className="text-[15px]"
+                  className="text-[16px]"
                   style={{ fontFamily: H.serif, color: H.ink, letterSpacing: '0.02em' }}
                 >
                   {H.founder} · {H.location}
@@ -162,7 +162,7 @@ function FunnelStrip() {
           <span className="w-6 h-[1px]" style={{ backgroundColor: H.terracottaDeep }} />
         </div>
         <h2
-          className="text-[48px] leading-[1.1] mb-6 -tracking-[0.01em]"
+          className="text-[46px] leading-[1.1] mb-6 -tracking-[0.01em]"
           style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}
         >
           The Practice Readiness Assessment
@@ -176,7 +176,7 @@ function FunnelStrip() {
         <div className="flex items-center justify-center gap-3 mb-8">
           <Link
             href={`${BASE}/assessment`}
-            className="inline-flex items-center gap-2 px-8 py-5 rounded-full text-[13px] font-semibold uppercase transition-transform hover:scale-[1.02]"
+            className="inline-flex items-center gap-2 px-8 py-5 rounded-full text-[13.5px] font-semibold uppercase transition-transform hover:scale-[1.02]"
             style={{
               background: H.terracotta,
               color: H.cream,
@@ -233,7 +233,7 @@ function TheMethod() {
             <span className="w-6 h-[1px]" style={{ backgroundColor: H.terracottaDeep }} />
           </div>
           <h2
-            className="text-[44px] leading-[1.15] mb-4 -tracking-[0.01em] max-w-[22ch] mx-auto"
+            className="text-[46px] leading-[1.15] mb-4 -tracking-[0.01em] max-w-[22ch] mx-auto"
             style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}
           >
             Three pillars, held together across every practice.
@@ -255,12 +255,12 @@ function TheMethod() {
                   {String(i + 1).padStart(2, '0')} · {p.label}
                 </div>
                 <h3
-                  className="text-[26px] leading-tight mb-4"
+                  className="text-[34px] leading-tight mb-4"
                   style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}
                 >
                   {p.label}.
                 </h3>
-                <p className="text-[13px] leading-[1.7]" style={{ color: H.inkSoft }}>
+                <p className="text-[13.5px] leading-[1.7]" style={{ color: H.inkSoft }}>
                   {p.body}
                 </p>
               </div>
@@ -271,7 +271,7 @@ function TheMethod() {
         <div className="text-center mt-16">
           <Link
             href={`${BASE}/method`}
-            className="text-[13px] font-semibold uppercase inline-flex items-center gap-2"
+            className="text-[13.5px] font-semibold uppercase inline-flex items-center gap-2"
             style={{ color: H.ink, fontFamily: H.mono, letterSpacing: '0.16em' }}
           >
             Read the method in full <ArrowRight size={14} />
@@ -304,12 +304,12 @@ function HowItWorks() {
             The Path
           </div>
           <h2
-            className="text-[44px] leading-[1.15] mb-4 -tracking-[0.01em] max-w-[24ch]"
+            className="text-[46px] leading-[1.15] mb-4 -tracking-[0.01em] max-w-[24ch]"
             style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}
           >
             Every practitioner walks the same five steps.
           </h2>
-          <p className="text-[15px] leading-[1.7] max-w-[62ch]" style={{ color: H.inkSoft }}>
+          <p className="text-[16px] leading-[1.7] max-w-[62ch]" style={{ color: H.inkSoft }}>
             Not every practitioner will walk all five. The Assessment is the door. The Read decides whether you want to keep going. The Studio is where the work happens.
           </p>
         </div>
@@ -322,14 +322,14 @@ function HowItWorks() {
               style={{ borderColor: H.border, backgroundColor: H.cream }}
             >
               <div
-                className="text-[52px] leading-none shrink-0"
+                className="text-[58px] leading-none shrink-0"
                 style={{ fontFamily: H.serif, color: H.terracotta, fontWeight: 500 }}
               >
                 {String(i + 1).padStart(2, '0')}
               </div>
               <div className="flex-1">
                 <div className="flex items-baseline justify-between gap-4 mb-2 flex-wrap">
-                  <h3 className="text-[22px]" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
+                  <h3 className="text-[20px]" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
                     {s.label}
                   </h3>
                   <div
@@ -339,7 +339,7 @@ function HowItWorks() {
                     {s.price}
                   </div>
                 </div>
-                <p className="text-[14px] leading-[1.7]" style={{ color: H.inkSoft }}>{s.hook}</p>
+                <p className="text-[13.5px] leading-[1.7]" style={{ color: H.inkSoft }}>{s.hook}</p>
               </div>
             </div>
           ))}
@@ -398,7 +398,7 @@ function Programmes() {
             <span className="w-6 h-[1px]" style={{ backgroundColor: H.terracottaDeep }} />
           </div>
           <h2
-            className="text-[44px] leading-[1.15] max-w-[20ch] mx-auto -tracking-[0.01em]"
+            className="text-[46px] leading-[1.15] max-w-[20ch] mx-auto -tracking-[0.01em]"
             style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}
           >
             Three ways to begin.
@@ -418,7 +418,7 @@ function Programmes() {
             >
               {c.feature && (
                 <div
-                  className="absolute top-0 right-0 px-3 py-1 text-[9px]"
+                  className="absolute top-0 right-0 px-3 py-1 text-[10px]"
                   style={{
                     background: H.terracotta,
                     color: H.cream,
@@ -436,18 +436,18 @@ function Programmes() {
               >
                 {c.tag}
               </div>
-              <h3 className="text-[26px] leading-tight mb-4" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
+              <h3 className="text-[34px] leading-tight mb-4" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
                 {c.title}
               </h3>
               <div className="flex items-baseline gap-2 mb-5">
-                <div className="text-[42px] leading-none" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
+                <div className="text-[46px] leading-none" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
                   {c.price}
                 </div>
                 <div className="text-[11px]" style={{ color: H.inkLight, fontFamily: H.mono, letterSpacing: '0.08em' }}>
                   {c.priceSub}
                 </div>
               </div>
-              <p className="text-[13px] leading-[1.7] mb-8" style={{ color: H.inkSoft }}>{c.body}</p>
+              <p className="text-[13.5px] leading-[1.7] mb-8" style={{ color: H.inkSoft }}>{c.body}</p>
               <Link
                 href={c.href}
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-[11px] font-semibold"
@@ -489,7 +489,7 @@ function SocialProof() {
             Practitioners
           </div>
           <h2
-            className="text-[44px] leading-[1.15] max-w-[22ch] -tracking-[0.01em]"
+            className="text-[46px] leading-[1.15] max-w-[22ch] -tracking-[0.01em]"
             style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}
           >
             Written by the people already in the studio.
@@ -499,16 +499,16 @@ function SocialProof() {
           {quotes.map((q, i) => (
             <blockquote key={i} className="p-8 rounded-sm border" style={{ borderColor: H.border, backgroundColor: H.cream }}>
               <div
-                className="text-[48px] leading-none mb-4"
+                className="text-[46px] leading-none mb-4"
                 style={{ fontFamily: H.serif, color: H.terracotta, fontWeight: 500 }}
               >
                 &ldquo;
               </div>
-              <p className="text-[15px] leading-[1.7] mb-6" style={{ color: H.ink, fontFamily: H.serif }}>
+              <p className="text-[16px] leading-[1.7] mb-6" style={{ color: H.ink, fontFamily: H.serif }}>
                 {q.body}
               </p>
               <footer>
-                <div className="text-[13px] font-semibold" style={{ color: H.ink }}>{q.who}</div>
+                <div className="text-[13.5px] font-semibold" style={{ color: H.ink }}>{q.who}</div>
                 <div className="text-[10px] mt-1" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.18em' }}>{q.tag}</div>
               </footer>
             </blockquote>
@@ -533,7 +533,7 @@ function AboutMelisa() {
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center px-6">
               <div
-                className="text-[80px] leading-none mb-2"
+                className="text-[58px] leading-none mb-2"
                 style={{ fontFamily: H.serif, color: H.terracotta, fontWeight: 500, letterSpacing: '-0.02em' }}
               >
                 M
@@ -552,12 +552,12 @@ function AboutMelisa() {
             About Melisa
           </div>
           <h2
-            className="text-[42px] leading-[1.15] mb-6 -tracking-[0.01em] max-w-[22ch]"
+            className="text-[46px] leading-[1.15] mb-6 -tracking-[0.01em] max-w-[22ch]"
             style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}
           >
             A teacher who wanted her practice to actually adapt to her students.
           </h2>
-          <div className="space-y-5 text-[15px] leading-[1.8]" style={{ color: H.inkSoft }}>
+          <div className="space-y-5 text-[16px] leading-[1.8]" style={{ color: H.inkSoft }}>
             <p>
               Melisa has taught yoga in Brisbane for over a decade. She built Harmony after years of watching the same students hit the same wall around month six of any group programme - the wall where a class calendar stops being enough and the body needs something written for it.
             </p>
@@ -611,7 +611,7 @@ function FAQ() {
             Questions
           </div>
           <h2
-            className="text-[42px] leading-[1.15] -tracking-[0.01em]"
+            className="text-[46px] leading-[1.15] -tracking-[0.01em]"
             style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}
           >
             What you might be wondering.
@@ -633,7 +633,7 @@ function FAQ() {
                   +
                 </span>
               </summary>
-              <p className="text-[14px] leading-[1.75] mt-4" style={{ color: H.inkSoft }}>
+              <p className="text-[13.5px] leading-[1.75] mt-4" style={{ color: H.inkSoft }}>
                 {f.a}
               </p>
             </details>
@@ -660,14 +660,14 @@ function FinalCTA() {
           <span className="w-6 h-[1px]" style={{ backgroundColor: H.terracotta }} />
         </div>
         <h2
-          className="text-[52px] leading-[1.1] mb-8 -tracking-[0.01em]"
+          className="text-[58px] leading-[1.1] mb-8 -tracking-[0.01em]"
           style={{ fontFamily: H.serif, color: H.cream, fontWeight: 500 }}
         >
           Twelve questions. One Practice Read. Nothing else on your calendar.
         </h2>
         <Link
           href={`${BASE}/assessment`}
-          className="inline-flex items-center gap-2 px-8 py-5 rounded-full text-[13px] font-semibold uppercase transition-transform hover:scale-[1.02]"
+          className="inline-flex items-center gap-2 px-8 py-5 rounded-full text-[13.5px] font-semibold uppercase transition-transform hover:scale-[1.02]"
           style={{
             background: H.terracotta,
             color: H.cream,

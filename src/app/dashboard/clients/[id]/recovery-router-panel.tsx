@@ -128,7 +128,7 @@ export function RecoveryRouterPanel({
               </span>
             </div>
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[14px] text-[#0F1115]">{actionLabel(latest.action)}</span>
+              <span className="text-[13.5px] text-[#0F1115]">{actionLabel(latest.action)}</span>
               {latestPlaybook && (
                 <span
                   className="inline-flex items-center text-[10px] px-2 py-0.5 rounded-full border whitespace-nowrap"
@@ -150,13 +150,13 @@ export function RecoveryRouterPanel({
               )}
             </div>
             {snapshot.recentEvaluations[0]?.uncertainties_held && (
-              <p className="text-[12px] text-[#6E747D] mt-2 leading-relaxed">
+              <p className="text-[12.5px] text-[#6E747D] mt-2 leading-relaxed">
                 {snapshot.recentEvaluations[0].uncertainties_held}
               </p>
             )}
           </>
         ) : (
-          <div className="text-[12px] text-[#6E747D]">
+          <div className="text-[12.5px] text-[#6E747D]">
             {snapshot.recentRsib.length === 0
               ? 'No RSIB rows yet for this client. Router runs after the next weekly check-in submission.'
               : 'No router evaluations recorded yet. Run the router by submitting a weekly check-in (or use the backfill API to evaluate historical weeks).'}
@@ -172,13 +172,13 @@ export function RecoveryRouterPanel({
               Active state
             </span>
           </div>
-          <p className="text-[13px] text-[#0F1115]">
+          <p className="text-[13.5px] text-[#0F1115]">
             {getPlaybook(snapshot.activeState.playbook_id).name} (T{snapshot.activeState.tier})
           </p>
           <p className="text-[11px] text-[#6E747D] mt-1" style={{ fontFamily: MONO_FONT }}>
             entered {new Date(snapshot.activeState.entered_at).toLocaleString('en-AU', { dateStyle: 'medium' })} · lock-in {snapshot.activeState.min_duration_days}d · max {snapshot.activeState.max_duration_days}d
           </p>
-          <p className="text-[12px] text-[#0F1115] mt-2">{snapshot.activeState.entry_rationale}</p>
+          <p className="text-[12.5px] text-[#0F1115] mt-2">{snapshot.activeState.entry_rationale}</p>
         </div>
       )}
 

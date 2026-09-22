@@ -75,7 +75,7 @@ export default function ClientListColumn({ clients }: { clients: ClientListEntry
           ) : (
             groups.map(group => (
               <div key={group.status}>
-                <p className="px-3 pt-2.5 pb-1 text-[10.5px] font-semibold text-[#9CA2AB]">
+                <p className="px-3 pt-2.5 pb-1 text-[10px] font-semibold text-[#9CA2AB]">
                   {STATUS_LABEL[group.status]}
                   <span className="ml-1.5 font-normal tracking-normal">{group.items.length}</span>
                 </p>
@@ -86,7 +86,7 @@ export default function ClientListColumn({ clients }: { clients: ClientListEntry
                       key={c.id}
                       href={`/dashboard/clients/${c.id}`}
                       aria-current={on ? 'page' : undefined}
-                      className={`flex items-center gap-2.5 mx-1.5 px-2 py-[7px] rounded-lg text-[13px] transition-colors ${
+                      className={`flex items-center gap-2.5 mx-1.5 px-2 py-[7px] rounded-lg text-[13.5px] transition-colors ${
                         on
                           ? 'bg-[rgba(27,109,252,0.09)] text-[#0F1115] font-medium'
                           : 'text-[#4A4F57] hover:bg-[#F2F2EF] hover:text-[#0F1115]'

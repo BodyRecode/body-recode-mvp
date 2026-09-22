@@ -230,7 +230,7 @@ function NutritionPlanBody({
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div className="min-w-0 flex-1">
-              <p className="text-[12px] font-medium text-[#6E747D] mb-1">Doctrine update available</p>
+              <p className="text-[12.5px] font-medium text-[#6E747D] mb-1">Doctrine update available</p>
               <p className="text-sm text-[#0F1115] leading-relaxed">
                 This plan was generated under <span className="font-mono text-[#0F1115]">v{plan.doctrine_version}</span>. Current doctrine is <span className="font-mono text-[#0F1115]">v{DOCTRINE_VERSIONS.nutrition_plan}</span>. Regenerating will apply the latest validator rules (e.g. tightened appetite-suppression caps, bridge-mode behaviour, carb-demand mapping). Existing plan stays valid until you regenerate.
               </p>
@@ -450,7 +450,7 @@ function NutritionPlanBody({
             <div className="px-5 py-4 space-y-3">
               <div className="flex items-baseline justify-between">
                 <div>
-                  <p className="text-[22px] font-semibold text-[#0F1115] tracking-[-0.025em] tabular-nums">{totals.kcal.toLocaleString()} <span className="text-sm font-normal text-[#6E747D]">kcal</span></p>
+                  <p className="text-[20px] font-semibold text-[#0F1115] tracking-[-0.025em] tabular-nums">{totals.kcal.toLocaleString()} <span className="text-sm font-normal text-[#6E747D]">kcal</span></p>
                   <p className="text-[12.5px] text-[#6E747D] mt-1 tabular-nums">
                     {totals.protein_g}g P · {totals.carb_g}g C · {totals.fat_g}g F
                   </p>
@@ -761,14 +761,14 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
         >
           <div className="flex items-center justify-between mb-2.5">
             <p className="text-[12.5px] text-[#6E747D]">Meal adherence, last 7 days</p>
-            <span className="text-[13px] font-semibold text-[#0F1115] tabular-nums">{mealAdherence.pct}% on plan</span>
+            <span className="text-[13.5px] font-semibold text-[#0F1115] tabular-nums">{mealAdherence.pct}% on plan</span>
           </div>
           <div className="flex h-2 rounded-full overflow-hidden bg-[#EDEDEA]">
             <div className="bg-[#0F1115]" style={{ width: `${mealAdherence.total ? (mealAdherence.ate / mealAdherence.total) * 100 : 0}%` }} />
             <div className="bg-[#B06E1F]" style={{ width: `${mealAdherence.total ? (mealAdherence.swapped / mealAdherence.total) * 100 : 0}%` }} />
             <div className="bg-[#E4E4E0]" style={{ width: `${mealAdherence.total ? (mealAdherence.skipped / mealAdherence.total) * 100 : 0}%` }} />
           </div>
-          <div className="flex gap-4 mt-2.5 text-[12px] text-[#6E747D]">
+          <div className="flex gap-4 mt-2.5 text-[12.5px] text-[#6E747D]">
             <span><span className="font-semibold text-[#0F1115] tabular-nums">{mealAdherence.ate}</span> ate</span>
             <span><span className="font-semibold text-[#B06E1F] tabular-nums">{mealAdherence.swapped}</span> swapped</span>
             <span><span className="font-semibold text-[#6E747D] tabular-nums">{mealAdherence.skipped}</span> skipped</span>

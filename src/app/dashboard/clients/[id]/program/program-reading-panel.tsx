@@ -195,7 +195,7 @@ export default function ProgramReadingPanel({
           <button
             onClick={generate}
             disabled={generating || isPending}
-            className={`inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
+            className={`inline-flex items-center gap-2 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
               generated
                 ? 'border border-[#E4E4E0] bg-[#FFFFFF] text-[#4A4F57] hover:border-[#0F1115] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#0F1115]'
                 : 'bg-[#0F1115] text-[#FFFFFF] hover:bg-[#000000] border border-[#0F1115]'
@@ -210,7 +210,7 @@ export default function ProgramReadingPanel({
             <button
               onClick={togglePublish}
               disabled={publishing || isPending}
-              className="inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg border border-[#E4E4E0] bg-[#FFFFFF] text-[#4A4F57] hover:border-[#0F1115] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#0F1115] transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-2 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg border border-[#E4E4E0] bg-[#FFFFFF] text-[#4A4F57] hover:border-[#0F1115] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#0F1115] transition-colors disabled:opacity-50"
             >
               {publishing ? <Loader2 size={13} className="animate-spin" /> : (published ? <EyeOff size={13} /> : <Eye size={13} />)}
               {/* "Publish" in both directions. This said "Republish" even for a
@@ -252,12 +252,12 @@ export default function ProgramReadingPanel({
 
 
       {error && (
-        <div className="bg-[#FDF8F1] border border-[#EADCC4] rounded-lg px-3 py-2 text-[12px] text-[#8A5514] mb-3">
+        <div className="bg-[#FDF8F1] border border-[#EADCC4] rounded-lg px-3 py-2 text-[12.5px] text-[#8A5514] mb-3">
           {error}
         </div>
       )}
       {emailNotice && (
-        <div className="bg-[rgba(27,109,252,0.08)] border border-[#DCDCD7] rounded-lg px-3 py-2 text-[12px] text-[#0F1115] mb-3">
+        <div className="bg-[rgba(27,109,252,0.08)] border border-[#DCDCD7] rounded-lg px-3 py-2 text-[12.5px] text-[#0F1115] mb-3">
           {emailNotice}
         </div>
       )}
@@ -275,8 +275,8 @@ export default function ProgramReadingPanel({
 
       {!generated ? (
         <div className="br-card p-8 text-center">
-          <p className="text-[#6E747D] text-[14px] mb-2">No Program Read yet</p>
-          <p className="text-[#9CA2AB] text-[12px]">
+          <p className="text-[#6E747D] text-[13.5px] mb-2">No Program Read yet</p>
+          <p className="text-[#9CA2AB] text-[12.5px]">
             Click Generate &amp; Publish. The read appears at the top of the client&apos;s program page and an email is sent to let them know the new block is ready.
           </p>
           <p className="text-[#4A4F57] text-[11px] mt-3">
@@ -405,7 +405,7 @@ function CoachGuidance({ programId, initial }: { programId: string; initial: str
             onChange={e => setValue(e.target.value)}
             placeholder="e.g. This block follows a stressful 8 weeks at work. Frame the deload framing strongly. Avoid any language that implies they should be pushing harder."
             rows={4}
-            className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2.5 text-[13px] text-[#0F1115] placeholder:text-[#4A4F57] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
+            className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2.5 text-[13.5px] text-[#0F1115] placeholder:text-[#4A4F57] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
           />
           {error && (
             <div className="mt-2 text-[11px] text-[#8A5514]">{error}</div>
@@ -417,7 +417,7 @@ function CoachGuidance({ programId, initial }: { programId: string; initial: str
             <button
               onClick={save}
               disabled={!dirty || saving || isPending}
-              className={`inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
+              className={`inline-flex items-center gap-1.5 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
                 dirty
                   ? 'bg-[#0F1115] text-[#FFFFFF] hover:bg-[#000000] border border-[#0F1115]'
                   : 'border border-[#E4E4E0] bg-[#FFFFFF] text-[#6E747D]'
@@ -526,7 +526,7 @@ function EditableSection({
             value={draft}
             onChange={e => setDraft(e.target.value)}
             rows={Math.max(4, draft.split('\n').length + 1)}
-            className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2.5 text-[14px] text-[#0F1115] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
+            className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2.5 text-[13.5px] text-[#0F1115] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
           />
           {error && <p className="mt-2 text-[11px] text-[#8A5514]">{error}</p>}
           <div className="flex items-center justify-end gap-2 mt-2">
@@ -548,7 +548,7 @@ function EditableSection({
           </div>
         </>
       ) : (
-        <p className="text-[14px] text-[#0F1115] leading-relaxed whitespace-pre-line">
+        <p className="text-[13.5px] text-[#0F1115] leading-relaxed whitespace-pre-line">
           {value || '(empty)'}
         </p>
       )}

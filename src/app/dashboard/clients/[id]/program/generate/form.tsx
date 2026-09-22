@@ -190,7 +190,7 @@ export default function GenerateProgramForm({
         >
           ← Back
         </button>
-        <h1 className="text-[22px] font-semibold text-[#0F1115] tracking-[-0.025em]">Generate Training Program</h1>
+        <h1 className="text-[20px] font-semibold text-[#0F1115] tracking-[-0.025em]">Generate Training Program</h1>
         <p className="text-sm text-[#6E747D] mt-1">
           Set prescription inputs. All doctrine rules will be applied automatically.
         </p>

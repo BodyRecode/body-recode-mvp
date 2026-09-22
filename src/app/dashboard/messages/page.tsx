@@ -167,7 +167,7 @@ export default async function MessagesInboxPage({
             <MessageSearch initialQuery={sp.q ?? ''} selectedClientId={selected.clientId} />
 
             {visible.length === 0 && (
-              <p className="text-[12px] text-[#98A0AD] px-1 py-3">
+              <p className="text-[12.5px] text-[#98A0AD] px-1 py-3">
                 Nothing matches &ldquo;{sp.q}&rdquo;.
               </p>
             )}
@@ -189,12 +189,12 @@ export default async function MessagesInboxPage({
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2 mb-1">
-                    <p className={`text-[13px] font-bold truncate ${isSelected ? 'text-[#1B6DFC]' : 'text-[#141821]'}`}>
+                    <p className={`text-[13.5px] font-bold truncate ${isSelected ? 'text-[#1B6DFC]' : 'text-[#141821]'}`}>
                       {name}
                     </p>
                     <div className="flex items-center gap-1.5 shrink-0">
                       {c.ended && (
-                        <span className="text-[9px] font-medium text-[#98A0AD] border border-[#E8EAEE] rounded px-1 py-px">
+                        <span className="text-[10px] font-medium text-[#98A0AD] border border-[#E8EAEE] rounded px-1 py-px">
                           Ended
                         </span>
                       )}
@@ -248,7 +248,7 @@ export default async function MessagesInboxPage({
                 >
                   {selectedName}
                 </Link>
-                <p className="text-[12px] text-[#98A0AD] mt-0.5">
+                <p className="text-[12.5px] text-[#98A0AD] mt-0.5">
                   {selected.thread.length} message{selected.thread.length === 1 ? '' : 's'}
                   {selected.awaitingReply && ' · awaiting your reply'}
                   {selected.handled && ' · handled elsewhere'}
@@ -285,7 +285,7 @@ export default async function MessagesInboxPage({
             />
 
             {selected.thread.length === 0 && (
-              <p className="text-[12px] text-[#98A0AD] mt-6 text-center py-6 border-t border-[#E8EAEE]">
+              <p className="text-[12.5px] text-[#98A0AD] mt-6 text-center py-6 border-t border-[#E8EAEE]">
                 No messages with {selectedFirstName} yet. Whatever you send lands in their portal and their inbox.
               </p>
             )}
@@ -301,7 +301,7 @@ export default async function MessagesInboxPage({
                   }
                 >
                   <div className="flex items-center justify-between mb-1.5">
-                    <p className="text-[11.5px] font-medium text-[#98A0AD]">
+                    <p className="text-[11px] font-medium text-[#98A0AD]">
                       {m.sender === 'coach' ? 'You' : selectedFirstName}
                     </p>
                     <div className="flex items-center gap-2 shrink-0">
@@ -339,7 +339,7 @@ export default async function MessagesInboxPage({
                       {anchorChipLabel(m.anchor_kind, m.anchor_label)} →
                     </Link>
                   )}
-                  <p className="text-[14px] text-[#43474F] leading-relaxed whitespace-pre-wrap">{m.body}</p>
+                  <p className="text-[13.5px] text-[#43474F] leading-relaxed whitespace-pre-wrap">{m.body}</p>
                 </div>
               ))}
             </div>

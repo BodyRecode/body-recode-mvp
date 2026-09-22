@@ -200,7 +200,7 @@ export default function GymSessionsPage() {
               key={s.id}
               onClick={() => setActiveState(s.id)}
               style={active ? { borderColor: s.border, color: s.color, background: s.bg } : undefined}
-              className={`flex-1 py-3 px-4 rounded-xl border text-[13px] font-semibold transition-colors ${
+              className={`flex-1 py-3 px-4 rounded-xl border text-[13.5px] font-semibold transition-colors ${
                 active ? '' : 'border-[#E8EAEE] bg-[#FFFFFF] text-[#666D7A] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)]'
               }`}
             >
@@ -237,7 +237,7 @@ export default function GymSessionsPage() {
 
       {/* Summary */}
       <div className="rounded-xl p-4 mb-6 border" style={{ background: state.bg, borderColor: state.border }}>
-        <p className="text-[14px] font-medium leading-relaxed" style={{ color: state.color }}>{state.summary}</p>
+        <p className="text-[13.5px] font-medium leading-relaxed" style={{ color: state.color }}>{state.summary}</p>
       </div>
 
       {/* Session */}
@@ -246,7 +246,7 @@ export default function GymSessionsPage() {
           {state.warmup.map((item, i) => (
             <div key={i} className="flex items-start gap-2">
               <div className="w-1 h-1 rounded-full bg-[#98A0AD] mt-2 shrink-0" />
-              <p className="text-[14px] text-[#43474F]">{item}</p>
+              <p className="text-[13.5px] text-[#43474F]">{item}</p>
             </div>
           ))}
         </ScriptSection>
@@ -272,14 +272,14 @@ export default function GymSessionsPage() {
             {program.exercises.map((ex, i) => <ExerciseCard key={i} ex={ex} />)}
           </div>
           {program.note && (
-            <p className="text-[12px] text-[#98A0AD] mt-3 italic">{program.note}</p>
+            <p className="text-[12.5px] text-[#98A0AD] mt-3 italic">{program.note}</p>
           )}
         </ScriptSection>
         <ScriptSection label="Close - 2 min">
           {state.close.map((item, i) => (
             <div key={i} className="flex items-start gap-2">
               <div className="w-1 h-1 rounded-full bg-[#98A0AD] mt-2 shrink-0" />
-              <p className="text-[14px] text-[#43474F]">{item}</p>
+              <p className="text-[13.5px] text-[#43474F]">{item}</p>
             </div>
           ))}
         </ScriptSection>
@@ -291,7 +291,7 @@ export default function GymSessionsPage() {
           <p className="text-[10px] font-medium text-[#98A0AD] mb-2">
             Bridge from training → table
           </p>
-          <p className="text-[14px] text-[#43474F] leading-relaxed italic">"{state.handoff}"</p>
+          <p className="text-[13.5px] text-[#43474F] leading-relaxed italic">"{state.handoff}"</p>
         </div>
       </ScriptCard>
 
@@ -311,8 +311,8 @@ export default function GymSessionsPage() {
               Locking in now
             </p>
           </div>
-          <p className="text-[14px] text-[#43474F] leading-relaxed italic mb-3">"Good. Here's exactly what happens next. I'll send you a link straight to your inbox now for the $297 Foundational Read. Once that's through, three things happen automatically. Welcome email with portal access. Your foundational intake unlocks - 234 questions across 8 areas. And I get notified at every step. Once your intake's in, your CFFS generates. I review it, send you the subscription link at the launch rate, and we lock in your start date. Sound good?"</p>
-          <p className="text-[12px] text-[#98A0AD] leading-relaxed">Open the lead in <span className="text-[#666D7A]">/dashboard/leads</span>, run companion → Path C → pick pathway (in-person / online) → Send Foundational Read → Mark Complete. Stripe link goes to her instantly.</p>
+          <p className="text-[13.5px] text-[#43474F] leading-relaxed italic mb-3">"Good. Here's exactly what happens next. I'll send you a link straight to your inbox now for the $297 Foundational Read. Once that's through, three things happen automatically. Welcome email with portal access. Your foundational intake unlocks - 234 questions across 8 areas. And I get notified at every step. Once your intake's in, your CFFS generates. I review it, send you the subscription link at the launch rate, and we lock in your start date. Sound good?"</p>
+          <p className="text-[12.5px] text-[#98A0AD] leading-relaxed">Open the lead in <span className="text-[#666D7A]">/dashboard/leads</span>, run companion → Path C → pick pathway (in-person / online) → Send Foundational Read → Mark Complete. Stripe link goes to her instantly.</p>
         </div>
 
         {/* PATH B — needs time */}
@@ -329,8 +329,8 @@ export default function GymSessionsPage() {
               Needs time · most common
             </p>
           </div>
-          <p className="text-[14px] text-[#43474F] leading-relaxed italic mb-3">"Take whatever time you need to sit with it. The launch rate stays open. If anything comes up between now and when you decide, message me and I'll answer it. No pressure either way."</p>
-          <p className="text-[12px] text-[#98A0AD] leading-relaxed">Send the post-session recap email same day (Post Session Email Template). Companion → Path B → Mark Complete. Follow up ~5-7 days out if no reply (Follow-up Email Template).</p>
+          <p className="text-[13.5px] text-[#43474F] leading-relaxed italic mb-3">"Take whatever time you need to sit with it. The launch rate stays open. If anything comes up between now and when you decide, message me and I'll answer it. No pressure either way."</p>
+          <p className="text-[12.5px] text-[#98A0AD] leading-relaxed">Send the post-session recap email same day (Post Session Email Template). Companion → Path B → Mark Complete. Follow up ~5-7 days out if no reply (Follow-up Email Template).</p>
         </div>
 
         {/* PATH A — out */}
@@ -347,8 +347,8 @@ export default function GymSessionsPage() {
               Not the right fit
             </p>
           </div>
-          <p className="text-[14px] text-[#43474F] leading-relaxed italic mb-3">"All good. The scorecard read still stands on its own and you've got the breakdown to sit with. If anything shifts in your thinking later, the door's open."</p>
-          <p className="text-[12px] text-[#98A0AD] leading-relaxed">Companion → Path A → Mark Complete. Click 'Send declined follow-up' to fire the 3-email re-engagement sequence + $97 downsell offer.</p>
+          <p className="text-[13.5px] text-[#43474F] leading-relaxed italic mb-3">"All good. The scorecard read still stands on its own and you've got the breakdown to sit with. If anything shifts in your thinking later, the door's open."</p>
+          <p className="text-[12.5px] text-[#98A0AD] leading-relaxed">Companion → Path A → Mark Complete. Click 'Send declined follow-up' to fire the 3-email re-engagement sequence + $97 downsell offer.</p>
         </div>
       </ScriptCard>
     </div>
@@ -379,7 +379,7 @@ function ScriptSection({ label, sublabel, children }: { label: string; sublabel?
       >
         {label}
       </p>
-      {sublabel && <p className="text-[12px] text-[#98A0AD] mb-3">{sublabel}</p>}
+      {sublabel && <p className="text-[12.5px] text-[#98A0AD] mb-3">{sublabel}</p>}
       <div className="space-y-2">{children}</div>
     </div>
   )
@@ -389,7 +389,7 @@ function ExerciseCard({ ex }: { ex: Exercise }) {
   return (
     <div className="br-card px-3 py-3">
       <div className="flex items-start justify-between gap-3 mb-2">
-        <span className="text-[14px] font-semibold text-[#141821]">{ex.name}</span>
+        <span className="text-[13.5px] font-semibold text-[#141821]">{ex.name}</span>
         <span
           className="text-[11px] text-[#666D7A] shrink-0"
           style={{ fontFamily: MONO_FONT }}
@@ -399,10 +399,10 @@ function ExerciseCard({ ex }: { ex: Exercise }) {
       </div>
       <div className="space-y-1 mb-2">
         {ex.cues.map((cue, i) => (
-          <p key={i} className="text-[12px] text-[#666D7A]">→ {cue}</p>
+          <p key={i} className="text-[12.5px] text-[#666D7A]">→ {cue}</p>
         ))}
       </div>
-      <p className="text-[12px] text-[#98A0AD] italic">{ex.why}</p>
+      <p className="text-[12.5px] text-[#98A0AD] italic">{ex.why}</p>
     </div>
   )
 }

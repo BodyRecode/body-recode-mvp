@@ -183,7 +183,7 @@ export default function DraftPanel({
                 <FileText size={12} className="text-[#6E747D] mt-0.5 shrink-0" />
                 <div>
                   <p className="text-[10px] font-medium text-[#6E747D] mb-1">Why this fits {clientName} (coach only, not shown to client)</p>
-                  <p className="text-[13px] text-[#0F1115] leading-relaxed">{rationale}</p>
+                  <p className="text-[13.5px] text-[#0F1115] leading-relaxed">{rationale}</p>
                 </div>
               </div>
             </div>
@@ -235,7 +235,7 @@ function SequencePreview({ icon, sequence }: { icon: React.ReactNode; sequence: 
         <div className="w-6 h-6 rounded-lg bg-[#0F1115]/10 flex items-center justify-center shrink-0 mt-0.5">{icon}</div>
         <div className="flex-1 min-w-0">
           <h3 className="text-sm font-semibold text-[#0F1115]">{sequence.title}</h3>
-          <p className="text-[12px] text-[#6E747D] mt-0.5">{sequence.tagline}</p>
+          <p className="text-[12.5px] text-[#6E747D] mt-0.5">{sequence.tagline}</p>
         </div>
       </div>
       <div className="px-4 py-3 bg-white">
@@ -243,14 +243,14 @@ function SequencePreview({ icon, sequence }: { icon: React.ReactNode; sequence: 
           {sequence.steps.map((step, i) => (
             <li key={i} className="flex items-start gap-2">
               <span className="w-5 h-5 rounded-full bg-[#0F1115]/10 text-[#0F1115] text-[10px] font-medium flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
-              <p className="text-[13px] text-[#0F1115] leading-relaxed flex-1">{step}</p>
+              <p className="text-[13.5px] text-[#0F1115] leading-relaxed flex-1">{step}</p>
             </li>
           ))}
         </ol>
         {sequence.coach_note && sequence.coach_note.trim().length > 0 && (
           <div className="mt-3 pt-3 border-t border-[#F2F2EF]">
-            <p className="text-[9px] font-medium text-[#0F1115] mb-1">Coach note</p>
-            <p className="text-[12px] text-[#6E747D] leading-relaxed">{sequence.coach_note}</p>
+            <p className="text-[10px] font-medium text-[#0F1115] mb-1">Coach note</p>
+            <p className="text-[12.5px] text-[#6E747D] leading-relaxed">{sequence.coach_note}</p>
           </div>
         )}
       </div>

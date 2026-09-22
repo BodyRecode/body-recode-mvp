@@ -168,7 +168,7 @@ export default function HeightEditor({
         </div>
       ) : resolved.heightCm ? (
         <div className="space-y-2">
-          <p className="text-[22px] font-semibold text-[#0F1115] tracking-[-0.025em]">
+          <p className="text-[20px] font-semibold text-[#0F1115] tracking-[-0.025em]">
             {resolved.heightCm}
             <span className="text-sm text-[#9CA2AB] ml-1.5">cm</span>
           </p>

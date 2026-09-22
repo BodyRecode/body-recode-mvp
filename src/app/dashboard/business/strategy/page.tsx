@@ -180,15 +180,15 @@ function getFirstDayOfMonth(year: number, month: number) {
 function StrategyDocCard({ doc }: { doc: StrategyDoc }) {
   return (
     <div className="p-3 rounded-xl border border-[#E8EAEE] bg-white hover:border-[#9CC0FB] transition-colors">
-      <div className="text-[13px] font-semibold text-[#141821] mb-1">{doc.title}</div>
+      <div className="text-[13.5px] font-semibold text-[#141821] mb-1">{doc.title}</div>
       <p className="text-[11px] text-[#666D7A] leading-relaxed mb-2">{doc.description}</p>
       <div className="flex items-center gap-2 flex-wrap">
         <a href={doc.pdfUrl} target="_blank" rel="noopener noreferrer"
-          className="text-[12px] font-medium px-2 py-1 rounded bg-[#1560E0] text-white hover:bg-[#1056D6]">View .pdf</a>
+          className="text-[12.5px] font-medium px-2 py-1 rounded bg-[#1560E0] text-white hover:bg-[#1056D6]">View .pdf</a>
         <a href={doc.mdUrl} target="_blank" rel="noopener noreferrer"
-          className="text-[12px] font-medium px-2 py-1 rounded bg-[#F4F6F9] text-[#141821] hover:bg-[#DDE9FD] hover:text-[#1056D6]">View .md</a>
+          className="text-[12.5px] font-medium px-2 py-1 rounded bg-[#F4F6F9] text-[#141821] hover:bg-[#DDE9FD] hover:text-[#1056D6]">View .md</a>
         <a href={doc.docxUrl} download
-          className="text-[12px] font-medium px-2 py-1 rounded bg-[#F4F6F9] text-[#141821] hover:bg-[#DDE9FD] hover:text-[#1056D6]">Download .docx</a>
+          className="text-[12.5px] font-medium px-2 py-1 rounded bg-[#F4F6F9] text-[#141821] hover:bg-[#DDE9FD] hover:text-[#1056D6]">Download .docx</a>
       </div>
     </div>
   )
@@ -478,7 +478,7 @@ function ContentCalendar() {
                         {p.scheduled && <span className="text-[#1B6DFC] shrink-0">✓</span>}
                         <span className="opacity-70 mr-0.5">{p.time ?? POST_TYPE_DEFAULT_TIMES[p.type as PostType] ?? '07:00'}</span>
                         <span className="truncate">{p.title}</span>
-                        <span className={`shrink-0 text-[9px] px-1 rounded border ${pl.badge}`}>{pl.label}</span>
+                        <span className={`shrink-0 text-[10px] px-1 rounded border ${pl.badge}`}>{pl.label}</span>
                       </div>
                     )
                   })}
@@ -694,8 +694,8 @@ function ContentCalendar() {
                         <p className="text-[12.5px] font-semibold text-[#141821]">{bd.handle}</p>
                         <div className="flex items-center gap-1.5">
                           <p className="text-[12.5px] text-[#98A0AD]">{bd.label}</p>
-                          {isAicmPost(activePost) && <span className={`text-[9px] px-1.5 py-0.5 rounded border font-medium ${AICM_BADGE_CLASS}`}>AICM</span>}
-                          {isCollabPost(activePost) && <span className={`inline-flex items-center gap-0.5 text-[9px] px-1.5 py-0.5 rounded border font-medium ${COLLAB_BADGE_CLASS}`}><Handshake size={10} strokeWidth={2.5} /> Collab</span>}
+                          {isAicmPost(activePost) && <span className={`text-[10px] px-1.5 py-0.5 rounded border font-medium ${AICM_BADGE_CLASS}`}>AICM</span>}
+                          {isCollabPost(activePost) && <span className={`inline-flex items-center gap-0.5 text-[10px] px-1.5 py-0.5 rounded border font-medium ${COLLAB_BADGE_CLASS}`}><Handshake size={10} strokeWidth={2.5} /> Collab</span>}
                         </div>
                       </div>
                     </div>
@@ -843,7 +843,7 @@ function Card({ children, className = '' }: { children: React.ReactNode; classNa
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-[11.5px] font-medium text-[#666D7A] mb-3">{children}</p>
+    <p className="text-[11px] font-medium text-[#666D7A] mb-3">{children}</p>
   )
 }
 
@@ -893,7 +893,7 @@ function CopyButton({ value, label }: { value: string; label?: string }) {
         setCopied(true)
         setTimeout(() => setCopied(false), 1500)
       }}
-      className={`text-[11.5px] font-medium px-2 py-0.5 rounded transition-colors ${
+      className={`text-[11px] font-medium px-2 py-0.5 rounded transition-colors ${
         copied ? 'bg-[#1B6DFC] text-[#FBFCFD]' : 'bg-[#EFF1F4] text-[#666D7A] hover:bg-[#E8EAEE]'
       }`}
     >
@@ -1548,7 +1548,7 @@ function WaveStatusCard() {
     return (
       <Card className="border-[#22A05A]/30 bg-[#22A05A]/5">
         <SectionLabel>Wave Status · Evergreen</SectionLabel>
-        <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em] mt-1">Open enrolment</p>
+        <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em] mt-1">Open enrolment</p>
         <p className="text-[12.5px] text-[#666D7A] mt-2 leading-relaxed">All capped waves complete. Doors stay open - no cap, no cohort, evergreen as locked in the original spec.</p>
       </Card>
     )
@@ -1567,7 +1567,7 @@ function WaveStatusCard() {
         </span>
       </div>
       <div className="flex items-baseline justify-between mb-2">
-        <p className="text-[26px] font-semibold text-[#141821] tracking-[-0.035em]">{data.taken}<span className="text-base font-medium text-[#666D7A]"> / {cap}</span></p>
+        <p className="text-[34px] font-semibold text-[#141821] tracking-[-0.035em]">{data.taken}<span className="text-base font-medium text-[#666D7A]"> / {cap}</span></p>
         <p className="text-[12.5px] text-[#666D7A]">{data.remaining} spots left</p>
       </div>
       <div className="w-full h-2 bg-[#EFF1F4] rounded-full overflow-hidden">
@@ -1625,8 +1625,8 @@ function Round1AdCard({ ad }: { ad: Round1Ad }) {
       <div className="p-3 space-y-2.5 text-[12.5px]">
         <div className="flex items-center gap-1.5 flex-wrap">
           <span className="text-[10px] font-medium text-[#666D7A]">{ad.short}</span>
-          <span className={`text-[11.5px] font-medium px-1.5 py-0.5 rounded ${ad.layer === 'round1' ? 'bg-[#1B6DFC]/10 text-[#1056D6]' : 'bg-[#EFF1F4] text-[#141821]'}`}>{ad.layer === 'round1' ? 'Round 1' : ad.layer === 'deferred' ? 'Round 2' : ad.layer === 'variety' ? 'Format test' : 'Layer 2'}</span>
-          <span className="text-[11.5px] font-medium px-1.5 py-0.5 rounded bg-[#B7791F]/10 text-[#A96A12]">{ad.audience}</span>
+          <span className={`text-[11px] font-medium px-1.5 py-0.5 rounded ${ad.layer === 'round1' ? 'bg-[#1B6DFC]/10 text-[#1056D6]' : 'bg-[#EFF1F4] text-[#141821]'}`}>{ad.layer === 'round1' ? 'Round 1' : ad.layer === 'deferred' ? 'Round 2' : ad.layer === 'variety' ? 'Format test' : 'Layer 2'}</span>
+          <span className="text-[11px] font-medium px-1.5 py-0.5 rounded bg-[#B7791F]/10 text-[#A96A12]">{ad.audience}</span>
         </div>
 
         <div className="pt-1.5 border-t border-[#E8EAEE] space-y-2">
@@ -1637,7 +1637,7 @@ function Round1AdCard({ ad }: { ad: Round1Ad }) {
           <div>
             <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-medium text-[#666D7A]">Primary text</p><CopyButton value={ad.primaryText} /></div>
             <div className={`text-[#141821] leading-relaxed whitespace-pre-line ${open ? '' : 'line-clamp-4'}`}>{ad.primaryText}</div>
-            <button onClick={() => setOpen(o => !o)} className="mt-1 text-[11.5px] font-medium text-[#1056D6] hover:text-[#0A46B2]">{open ? 'Show less' : 'Show all'}</button>
+            <button onClick={() => setOpen(o => !o)} className="mt-1 text-[11px] font-medium text-[#1056D6] hover:text-[#0A46B2]">{open ? 'Show less' : 'Show all'}</button>
           </div>
           <div>
             <div className="flex items-center justify-between mb-1"><p className="text-[10px] font-medium text-[#666D7A]">Link description</p><CopyButton value={ad.description} /></div>
@@ -1667,8 +1667,8 @@ function ColdAdCard({ ad }: { ad: ColdAd }) {
       <div className="p-3 space-y-2.5 text-[12.5px]">
         <div className="flex items-center gap-1.5 flex-wrap">
           <span className="text-[10px] font-medium text-[#666D7A]">{ad.slug.split('-')[0].toUpperCase()} {ad.slug.split('-').slice(1).join(' ')}</span>
-          <span className={`text-[11.5px] font-medium px-1.5 py-0.5 rounded ${ad.format === 'Photo' ? 'bg-[#1B6DFC]/10 text-[#1056D6]' : 'bg-[#EFF1F4] text-[#141821]'}`}>{ad.format}</span>
-          {ad.photo && <span className="text-[11.5px] font-medium px-1.5 py-0.5 rounded bg-[#B7791F]/10 text-[#A96A12]">{ad.photo}</span>}
+          <span className={`text-[11px] font-medium px-1.5 py-0.5 rounded ${ad.format === 'Photo' ? 'bg-[#1B6DFC]/10 text-[#1056D6]' : 'bg-[#EFF1F4] text-[#141821]'}`}>{ad.format}</span>
+          {ad.photo && <span className="text-[11px] font-medium px-1.5 py-0.5 rounded bg-[#B7791F]/10 text-[#A96A12]">{ad.photo}</span>}
         </div>
         <p className="text-[#141821] font-semibold leading-snug">&ldquo;{ad.hook}&rdquo;</p>
 
@@ -1720,16 +1720,16 @@ function PostBlock({ number, title, day, format, graphic, caption, hashtags }: {
       {expanded && (
         <div className="mt-4 space-y-3">
           <div className="bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg p-3">
-            <p className="text-[11.5px] font-medium text-[#98A0AD] mb-1">Graphic</p>
+            <p className="text-[11px] font-medium text-[#98A0AD] mb-1">Graphic</p>
             <p className="text-[12.5px] text-[#666D7A]">{graphic}</p>
           </div>
           <div className="bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg p-3">
-            <p className="text-[11.5px] font-medium text-[#98A0AD] mb-2">Caption</p>
+            <p className="text-[11px] font-medium text-[#98A0AD] mb-2">Caption</p>
             <p className="text-sm text-[#141821] leading-relaxed whitespace-pre-line">{caption}</p>
           </div>
           {hashtags && (
             <div className="bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg p-3">
-              <p className="text-[11.5px] font-medium text-[#98A0AD] mb-1">Hashtags</p>
+              <p className="text-[11px] font-medium text-[#98A0AD] mb-1">Hashtags</p>
               <p className="text-[12.5px] text-[#666D7A]">{hashtags}</p>
             </div>
           )}
@@ -1797,7 +1797,7 @@ export default function StrategyPage() {
     <div className="max-w-4xl">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-[22px] font-semibold tracking-[-0.025em] mb-1">Marketing Strategy</h1>
+        <h1 className="text-[20px] font-semibold tracking-[-0.025em] mb-1">Marketing Strategy</h1>
         <p className="text-[#666D7A] text-sm">The complete acquisition system for Body Recode Performance Coaching.</p>
       </div>
 
@@ -2009,10 +2009,10 @@ export default function StrategyPage() {
                     <div className="flex items-center gap-3 mb-2 flex-wrap">
                       <span className={`text-lg font-bold font-mono ${colorMap.accent} opacity-70`}>{a.num}</span>
                       <p className={`text-sm font-semibold ${colorMap.accent}`}>{a.title}</p>
-                      <span className={`text-[11.5px] font-medium border px-2 py-0.5 rounded-full ${colorMap.accent} ${colorMap.badgeBg}`}>{a.badge}</span>
+                      <span className={`text-[11px] font-medium border px-2 py-0.5 rounded-full ${colorMap.accent} ${colorMap.badgeBg}`}>{a.badge}</span>
                       <span className="text-[11px] text-[#666D7A] italic">{a.pattern}</span>
                     </div>
-                    <div className="space-y-1.5 text-[13px]">
+                    <div className="space-y-1.5 text-[13.5px]">
                       <p><span className="text-[#141821] font-medium text-[11px]">Who: </span><span className="text-[#141821]">{a.who}</span></p>
                       <p><span className="text-[#141821] font-medium text-[11px]">Presenting: </span><span className="text-[#141821]">{a.presenting}</span></p>
                       <p><span className="text-[#141821] font-medium text-[11px]">Self-story: </span><span className="text-[#141821]">{a.selfStory}</span></p>
@@ -2305,7 +2305,7 @@ export default function StrategyPage() {
               ].map(row => (
                 <div key={row.temp} className={`p-3 rounded-lg border ${row.bg}`}>
                   <div className="flex items-center justify-between mb-1">
-                    <span className={`text-[12px] font-mediumr ${row.colour}`}>{row.temp}</span>
+                    <span className={`text-[12.5px] font-mediumr ${row.colour}`}>{row.temp}</span>
                     <span className="text-[12.5px] text-[#666D7A]">{row.ratio}</span>
                   </div>
                   <p className="text-sm text-[#141821] leading-relaxed mb-1">{row.desc}</p>
@@ -2573,7 +2573,7 @@ export default function StrategyPage() {
                     <p className={`text-sm font-semibold mb-2 ${colorMap.accent}`}>{a.arch}</p>
                     <ul className="space-y-1.5">
                       {a.hooks.map((h, i) => (
-                        <li key={i} className="text-[13px] text-[#141821] leading-relaxed flex gap-2">
+                        <li key={i} className="text-[13.5px] text-[#141821] leading-relaxed flex gap-2">
                           <span className="text-[#666D7A] shrink-0">·</span>
                           {h}
                         </li>
@@ -3063,11 +3063,11 @@ export default function StrategyPage() {
             <Body>Every field for all seven ads, ready to paste into Ads Manager: headline, primary text, link description, creative filename. <strong>Stream A</strong> (neurowellness) goes up first at $25/day; <strong>Stream B</strong> (readiness) and the metabolic disqualifier are created but paused until the week-2 gate. Carries the <strong>hyper-dopamine structure</strong> unchanged, the 13-point pre-flight checklist, the seven-part visual system, and the numbers rule for which sample sizes can be quoted exactly.</Body>
             <div className="flex gap-2 mt-3">
               <a href={`/docs/ads/br-round2-two-streams-${ROUND2_PACK_VERSION}.pdf`} target="_blank" rel="noopener noreferrer"
-                className="text-[12px] font-medium px-2 py-1 rounded bg-[#1560E0] text-white hover:bg-[#1056D6]">View .pdf</a>
+                className="text-[12.5px] font-medium px-2 py-1 rounded bg-[#1560E0] text-white hover:bg-[#1056D6]">View .pdf</a>
               <a href={`/docs/ads/br-round2-two-streams-${ROUND2_PACK_VERSION}.md`} target="_blank" rel="noopener noreferrer"
-                className="text-[12px] font-medium px-2 py-1 rounded border border-[#E8EAEE] text-[#141821] hover:bg-[#F4F6F9]">View .md</a>
+                className="text-[12.5px] font-medium px-2 py-1 rounded border border-[#E8EAEE] text-[#141821] hover:bg-[#F4F6F9]">View .md</a>
               <a href={`/docs/ads/br-funnelb-round1-launch-pack-${LAUNCH_PACK_VERSION}.pdf`} target="_blank" rel="noopener noreferrer"
-                className="text-[12px] font-medium px-2 py-1 rounded border border-[#E8EAEE] text-[#666D7A] hover:bg-[#F4F6F9]">Round 1 (archived)</a>
+                className="text-[12.5px] font-medium px-2 py-1 rounded border border-[#E8EAEE] text-[#666D7A] hover:bg-[#F4F6F9]">Round 1 (archived)</a>
             </div>
             <p className="text-[12.5px] text-[#666D7A] mt-2">Source of truth: <code className="text-[11px]">~/Dropbox/01_BODY_RECODE/07_ADS/BR_ROUND2_TWO_STREAMS.md</code>. After editing, re-run <code className="text-[11px]">scripts/gen-round2-ads.ts</code> and re-copy the pack into <code className="text-[11px]">public/docs/ads/</code> so the cards, the download and the doc cannot drift apart.</p>
           </Card>
@@ -3086,17 +3086,17 @@ export default function StrategyPage() {
           <div className="grid sm:grid-cols-3 gap-3">
             <Card>
               <SectionLabel>Daily Budget · Phase 1</SectionLabel>
-              <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">$25/day</p>
+              <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em]">$25/day</p>
               <p className="text-[12.5px] text-[#666D7A] mt-1">One broad ad set. Budget at campaign level.</p>
             </Card>
             <Card>
               <SectionLabel>Minimum Test Period</SectionLabel>
-              <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">2 weeks</p>
+              <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em]">2 weeks</p>
               <p className="text-[12.5px] text-[#666D7A] mt-1">Before judging the stage gate</p>
             </Card>
             <Card>
               <SectionLabel>Phase 1 Spend</SectionLabel>
-              <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">~$350</p>
+              <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em]">~$350</p>
               <p className="text-[12.5px] text-[#666D7A] mt-1">Before scale-or-debug decision</p>
             </Card>
           </div>
@@ -3267,8 +3267,8 @@ export default function StrategyPage() {
                     return (
                       <div key={a.arch} className={`p-3 rounded-lg border ${colorMap.split(' ').slice(0, 2).join(' ')}`}>
                         <p className={`text-xs font-bold mb-1.5 ${colorMap.split(' ').slice(2).join(' ')}`}>{a.arch}</p>
-                        <p className="text-[12px] text-[#141821] mb-1.5"><span className="text-[#666D7A] text-[10px] font-semibold">Demo: </span>{a.demo}</p>
-                        <p className="text-[12px] text-[#141821]"><span className="text-[#666D7A] text-[10px] font-semibold">Interests: </span>{a.interests}</p>
+                        <p className="text-[12.5px] text-[#141821] mb-1.5"><span className="text-[#666D7A] text-[10px] font-semibold">Demo: </span>{a.demo}</p>
+                        <p className="text-[12.5px] text-[#141821]"><span className="text-[#666D7A] text-[10px] font-semibold">Interests: </span>{a.interests}</p>
                       </div>
                     )
                   })}
@@ -3406,7 +3406,7 @@ export default function StrategyPage() {
 
               <div>
                 <p className="text-[11px] font-medium text-[#666D7A] mb-2">Retired copy doctrine · Amanda-audited, locked 2026-06-27</p>
-                <div className="space-y-2 text-[12px] text-[#666D7A]">
+                <div className="space-y-2 text-[12.5px] text-[#666D7A]">
                   <p><span className="font-bold text-[#141821]">1. Meta personal-attributes policy.</span> Hooks name the audience or life stage, NEVER the viewer&apos;s body. <strong className="text-[#141821]">This one still applies</strong> and carries over to the current creative: it is Meta policy, not a style choice.</p>
                   <p><span className="font-bold text-[#141821]">2. &quot;Decode&quot; terminology locked.</span> Use Body Decode / Find your pattern, NOT &quot;Fat Map&quot;. <em>Superseded.</em> The current ads name the Fat Map and the four drivers directly, because the pattern is the product.</p>
                   <p><span className="font-bold text-[#141821]">3. Two-sentence subs.</span> <em>Superseded</em> by the hyper-dopamine structure: pattern interrupt, burning intrigue, specific benefit.</p>
@@ -3444,8 +3444,8 @@ export default function StrategyPage() {
                 <p className="text-[10px] font-medium text-emerald-800 mb-1">Week 1 scripts · ready to film</p>
                 <p className="text-[#141821] leading-relaxed mb-2">Five talking-head scripts, one per day of the spine, each built on a message Round 1 is already spending money on. All land 42&ndash;46 seconds. Includes which Captions AI tools to use and which to avoid.</p>
                 <div className="flex gap-2">
-                  <a href="/docs/organic/br-reel-scripts-week1-v1.0.pdf" target="_blank" rel="noopener noreferrer" className="text-[12px] font-medium px-2 py-1 rounded bg-[#177245] text-white hover:bg-emerald-800">View .pdf</a>
-                  <a href="/docs/organic/br-reel-scripts-week1-v1.0.md" target="_blank" rel="noopener noreferrer" className="text-[12px] font-medium px-2 py-1 rounded border border-[#E8EAEE] text-[#141821] hover:bg-[#F4F6F9]">View .md</a>
+                  <a href="/docs/organic/br-reel-scripts-week1-v1.0.pdf" target="_blank" rel="noopener noreferrer" className="text-[12.5px] font-medium px-2 py-1 rounded bg-[#177245] text-white hover:bg-emerald-800">View .pdf</a>
+                  <a href="/docs/organic/br-reel-scripts-week1-v1.0.md" target="_blank" rel="noopener noreferrer" className="text-[12.5px] font-medium px-2 py-1 rounded border border-[#E8EAEE] text-[#141821] hover:bg-[#F4F6F9]">View .md</a>
                 </div>
               </div>
               <div className="bg-white/70 border border-[#22A05A]/20 rounded-lg p-3">
@@ -3597,7 +3597,7 @@ export default function StrategyPage() {
                       <div className="flex-1">
                         <p className={`text-sm font-semibold ${colorMap.accent} mb-1`}>{p.title}</p>
                         <p className="text-[12.5px] text-[#141821] mb-2 leading-relaxed">{p.desc}</p>
-                        <p className="text-[13px] text-[#141821] italic leading-relaxed mb-2">{p.hook}</p>
+                        <p className="text-[13.5px] text-[#141821] italic leading-relaxed mb-2">{p.hook}</p>
                         <p className="text-[11px] text-[#141821]"><span className="font-bold text-[#141821] uppercase tracking-widest">Targets: </span>{p.targets}</p>
                       </div>
                     </div>
@@ -3705,7 +3705,7 @@ export default function StrategyPage() {
                         <p className={`text-sm font-medium ${colorMap.accent}`}>{a.name}</p>
                         <span className="text-[11px] text-[#666D7A] italic">- {a.strength}</span>
                       </div>
-                      <p className="text-[13px] text-[#141821] leading-relaxed">{a.note}</p>
+                      <p className="text-[13.5px] text-[#141821] leading-relaxed">{a.note}</p>
                     </div>
                   </div>
                 )
@@ -3820,7 +3820,7 @@ export default function StrategyPage() {
             <Card className="border-[#B5CFFC] bg-[#1B6DFC]/5">
               <SectionLabel>You Are Here</SectionLabel>
               <div className="flex items-baseline gap-3">
-                <span className="text-[26px] font-semibold tracking-[-0.035em] text-[#1B6DFC]">Day {dayNumber}</span>
+                <span className="text-[34px] font-semibold tracking-[-0.035em] text-[#1B6DFC]">Day {dayNumber}</span>
                 <span className="text-sm text-[#666D7A]">{currentPhase.phase}</span>
               </div>
               <p className="text-[12.5px] text-[#666D7A] mt-2">{currentPhase.dateRange}</p>
@@ -4067,7 +4067,7 @@ export default function StrategyPage() {
                     <div className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border ${done ? 'bg-[#DDE9FD] border-[#9CC0FB]' : 'bg-[#F4F6F9] border-[#E8EAEE]'}`}>
                       {done && <span className="text-[#1B6DFC] text-[10px] font-medium">✓</span>}
                     </div>
-                    <span className={`text-[11.5px] font-medium w-16 shrink-0 ${groupColor}`}>{group}</span>
+                    <span className={`text-[11px] font-medium w-16 shrink-0 ${groupColor}`}>{group}</span>
                     <span className={done ? 'text-[#666D7A] line-through' : 'text-[#141821]'}>{item}</span>
                   </button>
                 )

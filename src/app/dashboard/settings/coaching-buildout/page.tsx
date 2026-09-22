@@ -15,10 +15,10 @@ export default function CoachingBuildoutPage() {
       progressNote="This board is a first pass — most of Layer 2 has not been audited into phases yet, so treat the percentage as covering only what is listed."
       explainer={
         <details className="mb-6 p-4 rounded-xl border border-[#DCDCD7] bg-[rgba(27,109,252,0.08)]/40">
-          <summary className="cursor-pointer text-[13px] font-bold text-[#000000] uppercase tracking-widest select-none">
+          <summary className="cursor-pointer text-[13.5px] font-bold text-[#000000] uppercase tracking-widest select-none">
             How to read this page
           </summary>
-          <div className="mt-3 space-y-3 text-[13px] text-[#0F1115] leading-relaxed">
+          <div className="mt-3 space-y-3 text-[13.5px] text-[#0F1115] leading-relaxed">
             <p><strong>What this is.</strong> Layer 2 — the coaching application that consumes the read. Programs, nutrition, the client portal, the weekly coaching loop, and the tooling Kade runs his own practice on.</p>
             <p><strong>The Collective lives here</strong> (moved 9 Sep 2026). It was designed for coaches running the whole Performance Coaching product — their programs, their nutrition, their portal — under their own brand on BR doctrine. That is this product white-labelled, not the read, so every Collective phase came across: decide, pilot zero, tenancy, billing and doctrine mode B.</p>
             <p><strong>One thing that is genuinely shared.</strong> The multi-coach plumbing built for the Collective — tenant_config, the resolver, per-tenant branding, Stripe Connect — is what door 2 on the Body Recode board runs on too. It is tracked here because this is what it was built for, rather than duplicated on both boards.</p>
@@ -31,7 +31,7 @@ export default function CoachingBuildoutPage() {
         </details>
       }
       footer={
-        <div className="mt-10 p-4 rounded-xl border border-[#E4E4E0] bg-[#FAFAF8] text-[12px] text-[#6E747D] leading-relaxed">
+        <div className="mt-10 p-4 rounded-xl border border-[#E4E4E0] bg-[#FAFAF8] text-[12.5px] text-[#6E747D] leading-relaxed">
           <strong className="text-[#0F1115]">Source of truth:</strong> <code className="bg-[#F2F2EF] px-1 py-0.5 rounded text-[11px]">src/lib/performance-coaching-buildout-manifest.ts</code>. Every commit that moves a Layer 2 step MUST update its entry in the same commit (see <code className="bg-[#F2F2EF] px-1 py-0.5 rounded text-[11px]">feedback_ship_checklist</code>). Sibling board:{' '}
           <Link href="/dashboard/settings/platform-buildout" className="text-[#000000] hover:text-[#000000] underline">
             Body Recode buildout

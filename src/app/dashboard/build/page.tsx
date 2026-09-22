@@ -25,7 +25,7 @@ export default function BuildPage() {
         <>
           {problems > 0 && (
             <div className="mb-6 p-4 rounded-xl border border-[#F5C9C9] bg-[#FDF3F3]">
-              <p className="text-[13px] text-[#8A2B12] leading-relaxed">
+              <p className="text-[13.5px] text-[#8A2B12] leading-relaxed">
                 <strong>The build order needs attention.</strong>{' '}
                 {health.unsorted.length > 0 && <>{health.unsorted.length} step{health.unsorted.length === 1 ? ' has' : 's have'} no stage yet (shown at the top). </>}
                 {health.missing.length > 0 && <>{health.missing.length} placed step{health.missing.length === 1 ? ' no longer exists' : 's no longer exist'}. </>}
@@ -34,10 +34,10 @@ export default function BuildPage() {
             </div>
           )}
           <details className="mb-6 p-4 rounded-xl border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)]/40">
-            <summary className="cursor-pointer text-[13px] font-semibold text-[#0A46B2] select-none">
+            <summary className="cursor-pointer text-[13.5px] font-semibold text-[#0A46B2] select-none">
               How to read this page
             </summary>
-            <div className="mt-3 space-y-3 text-[13px] text-[#141821] leading-relaxed">
+            <div className="mt-3 space-y-3 text-[13.5px] text-[#141821] leading-relaxed">
               <p>
                 <strong>One board instead of three.</strong> Until 14 Sep 2026 the read, the coaching
                 engine and Strenn each had their own board, which meant three percentages and three
@@ -88,7 +88,7 @@ export default function BuildPage() {
         </>
       }
       footer={
-        <div className="mt-10 p-4 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] text-[12px] text-[#666D7A] leading-relaxed">
+        <div className="mt-10 p-4 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] text-[12.5px] text-[#666D7A] leading-relaxed">
           <strong className="text-[#141821]">Where to change things:</strong> the order and the product
           labels live in <code className="bg-[#F4F6F9] px-1 py-0.5 rounded text-[11px]">src/lib/build-sequence.ts</code>.
           A step&apos;s status lives in its source file:{' '}

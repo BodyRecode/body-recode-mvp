@@ -127,7 +127,7 @@ export function BlockProgressPanel({ data }: { data: BlockProgressData | null })
       )}
 
       {data.totalSessionsLoggedThisBlock === 0 && (
-        <p className="text-[12px] text-[#6E747D] italic">
+        <p className="text-[12.5px] text-[#6E747D] italic">
           Client hasn&apos;t logged any sessions yet.{' '}
           <Link href="/dashboard/help#training-program" className="text-[#0F1115] hover:underline">
             How logging works

@@ -462,15 +462,15 @@ const CLASSES = [
 function ExerciseCard({ exercise }: { exercise: Exercise }) {
   return (
     <div className="br-card px-3 py-3">
-      <p className="text-[14px] font-semibold text-[#141821] mb-2">{exercise.name}</p>
+      <p className="text-[13.5px] font-semibold text-[#141821] mb-2">{exercise.name}</p>
       <div className="space-y-1 mb-2">
         {exercise.cues.map((cue, i) => (
-          <p key={i} className="text-[12px] text-[#666D7A]">
+          <p key={i} className="text-[12.5px] text-[#666D7A]">
             <span className="text-[#1B6DFC] mr-1">→</span>{cue}
           </p>
         ))}
       </div>
-      <p className="text-[12px] text-[#98A0AD] italic">{exercise.why}</p>
+      <p className="text-[12.5px] text-[#98A0AD] italic">{exercise.why}</p>
     </div>
   )
 }
@@ -547,7 +547,7 @@ export default function GroupClassesPage() {
             <button
               key={c.id}
               onClick={() => setActiveClass(c.id)}
-              className={`flex-1 min-w-[120px] py-3 px-4 rounded-xl border text-[13px] font-semibold transition-colors ${
+              className={`flex-1 min-w-[120px] py-3 px-4 rounded-xl border text-[13.5px] font-semibold transition-colors ${
                 active
                   ? 'border-[#B5CFFC] text-[#1B6DFC] bg-[rgba(27,109,252,0.08)]'
                   : 'border-[#E8EAEE] bg-[#FFFFFF] text-[#666D7A] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)]'
@@ -584,11 +584,11 @@ export default function GroupClassesPage() {
         <div className="px-5 py-4 space-y-4">
           <div>
             <FieldLabel>Objective</FieldLabel>
-            <p className="text-[14px] text-[#43474F] leading-relaxed">{cls.objective}</p>
+            <p className="text-[13.5px] text-[#43474F] leading-relaxed">{cls.objective}</p>
           </div>
           <div>
             <FieldLabel>Primary Goal</FieldLabel>
-            <p className="text-[14px] text-[#43474F] leading-relaxed">{cls.goal}</p>
+            <p className="text-[13.5px] text-[#43474F] leading-relaxed">{cls.goal}</p>
           </div>
           <div>
             <FieldLabel>Target Member</FieldLabel>
@@ -602,17 +602,17 @@ export default function GroupClassesPage() {
         {cls.sections.map((section, i) => (
           <div key={i} className="px-5 py-4">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-[14px] font-bold text-[#141821]">{section.title}</p>
+              <p className="text-[13.5px] font-bold text-[#141821]">{section.title}</p>
               <span
                 className="text-[11px] text-[#98A0AD]"
               >
                 {section.time}
               </span>
             </div>
-            <p className="text-[12px] text-[#98A0AD] mb-3">{section.objective}</p>
+            <p className="text-[12.5px] text-[#98A0AD] mb-3">{section.objective}</p>
 
             {'format' in section && section.format && (
-              <p className="text-[12px] text-[#1B6DFC] mb-3">{section.format}</p>
+              <p className="text-[12.5px] text-[#1B6DFC] mb-3">{section.format}</p>
             )}
 
             <div className="space-y-2 mb-3">
@@ -637,7 +637,7 @@ export default function GroupClassesPage() {
           {cls.principles.map((p, i) => (
             <div key={i} className="flex items-start gap-2">
               <div className="w-1 h-1 rounded-full bg-[#98A0AD] mt-2 shrink-0" />
-              <p className="text-[14px] text-[#43474F]">{p}</p>
+              <p className="text-[13.5px] text-[#43474F]">{p}</p>
             </div>
           ))}
         </div>
@@ -647,12 +647,12 @@ export default function GroupClassesPage() {
       <ScriptCard label="Primary Cues">
         <div className="px-5 py-4 space-y-2">
           {cls.cues.map((c, i) => (
-            <p key={i} className="text-[14px] text-[#43474F] italic">{c}</p>
+            <p key={i} className="text-[13.5px] text-[#43474F] italic">{c}</p>
           ))}
         </div>
         <div className="px-5 py-4">
           <FieldLabel>Member Experience Goal</FieldLabel>
-          <p className="text-[14px] text-[#1B6DFC] font-medium italic">{cls.memberExperience}</p>
+          <p className="text-[13.5px] text-[#1B6DFC] font-medium italic">{cls.memberExperience}</p>
         </div>
       </ScriptCard>
     </div>

@@ -40,23 +40,23 @@ export function StripeConnectSection({
 
   const resultBanner =
     searchStatus === 'active' ? (
-      <div className="mb-3 p-3 rounded-lg border border-[#EDEDEA] bg-[#F2F2EF] text-[13px] text-[#2B5E45]">
+      <div className="mb-3 p-3 rounded-lg border border-[#EDEDEA] bg-[#F2F2EF] text-[13.5px] text-[#2B5E45]">
         <strong>Connected.</strong> Your Stripe account is ready to accept payments. Checkout callsites now route to your account when you update them to pass the tenant context.
       </div>
     ) : searchStatus === 'restricted' ? (
-      <div className="mb-3 p-3 rounded-lg border border-[#E8C9C9] bg-[#FBF1F1] text-[13px] text-[#8A1919]">
+      <div className="mb-3 p-3 rounded-lg border border-[#E8C9C9] bg-[#FBF1F1] text-[13.5px] text-[#8A1919]">
         <strong>Restricted.</strong> Stripe needs more information (usually ID docs). Click Continue onboarding to finish.
       </div>
     ) : searchStatus === 'pending' ? (
-      <div className="mb-3 p-3 rounded-lg border border-[#EADCC4] bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] text-[13px] text-[#8A5514]">
+      <div className="mb-3 p-3 rounded-lg border border-[#EADCC4] bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] text-[13.5px] text-[#8A5514]">
         <strong>Onboarding not complete.</strong> Click Continue onboarding to finish the Stripe form.
       </div>
     ) : searchStatus === 'retrieve_failed' ? (
-      <div className="mb-3 p-3 rounded-lg border border-[#E8C9C9] bg-[#FBF1F1] text-[13px] text-[#8A1919]">
+      <div className="mb-3 p-3 rounded-lg border border-[#E8C9C9] bg-[#FBF1F1] text-[13.5px] text-[#8A1919]">
         Couldn&apos;t reach Stripe to check your account. Try again or reach out to Kade.
       </div>
     ) : searchStatus === 'no_account' ? (
-      <div className="mb-3 p-3 rounded-lg border border-[#E8C9C9] bg-[#FBF1F1] text-[13px] text-[#8A1919]">
+      <div className="mb-3 p-3 rounded-lg border border-[#E8C9C9] bg-[#FBF1F1] text-[13.5px] text-[#8A1919]">
         No Stripe account on file. Click Connect Stripe to start onboarding.
       </div>
     ) : null
@@ -67,19 +67,19 @@ export function StripeConnectSection({
         <h3 className="text-[13.5px] font-semibold text-[#0F1115] tracking-[-0.015em]">Stripe Connect</h3>
       </div>
       <div className="p-5">
-        <p className="text-[13px] text-[#6E747D] leading-relaxed mb-4">
+        <p className="text-[13.5px] text-[#6E747D] leading-relaxed mb-4">
           Connect your Stripe account to accept payments directly from your clients. Your customers pay you, and Stripe deposits into your bank account. The platform is the payment processor; your clients never see &quot;Body Recode&quot; on a receipt.
         </p>
 
         {resultBanner}
 
         {error && (
-          <div className="mb-3 p-3 rounded-lg border border-[#E8C9C9] bg-[#FBF1F1] text-[12px] text-[#8F2D2D]">{error}</div>
+          <div className="mb-3 p-3 rounded-lg border border-[#E8C9C9] bg-[#FBF1F1] text-[12.5px] text-[#8F2D2D]">{error}</div>
         )}
 
         <div className="mb-4 flex items-center gap-3">
           <span className="text-[11px] font-medium text-[#6E747D]">Status</span>
-          <span className={`text-[12px] font-medium px-2 py-0.5 rounded ${statusTone}`}>{statusLabel}</span>
+          <span className={`text-[12.5px] font-medium px-2 py-0.5 rounded ${statusTone}`}>{statusLabel}</span>
           {stripeAccountId && (
             <span className="text-[11px] font-mono text-[#6E747D] break-all">{stripeAccountId}</span>
           )}
@@ -89,12 +89,12 @@ export function StripeConnectSection({
           <button
             onClick={handleOnboard}
             disabled={pending}
-            className="px-4 py-2 rounded-md bg-[#000000] text-white text-[13px] font-semibold hover:bg-[#000000] disabled:opacity-40"
+            className="px-4 py-2 rounded-md bg-[#000000] text-white text-[13.5px] font-semibold hover:bg-[#000000] disabled:opacity-40"
           >
             {pending ? 'Opening Stripe…' : stripeAccountId ? 'Continue onboarding' : 'Connect Stripe'}
           </button>
         ) : (
-          <div className="text-[13px] text-[#6E747D] leading-relaxed">
+          <div className="text-[13.5px] text-[#6E747D] leading-relaxed">
             Fully onboarded. To view your Stripe dashboard, log in at{' '}
             <a href="https://dashboard.stripe.com" target="_blank" rel="noopener noreferrer" className="text-[#000000] hover:text-[#000000] underline">
               dashboard.stripe.com

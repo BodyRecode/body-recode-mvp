@@ -70,24 +70,24 @@ export default function DormantReactivationButton() {
     <div className="mb-6 rounded-xl border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)]/50 p-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-[13px] font-bold text-[#141821] flex items-center gap-1.5">
+          <p className="text-[13.5px] font-bold text-[#141821] flex items-center gap-1.5">
             <Users size={14} className="text-[#1B6DFC]" /> Dormant Lead Reactivation
           </p>
-          <p className="text-[13px] text-[#43474F] leading-relaxed mt-1 max-w-xl">
+          <p className="text-[13.5px] text-[#43474F] leading-relaxed mt-1 max-w-xl">
             Leads who did a scorecard and were never followed up. Sends their read, an SMS four days
             later, then the next step that matches their state. Anyone who replies drops out.
           </p>
           {sent !== null && (
-            <p className="text-[13px] font-bold text-[#177245] mt-2">
+            <p className="text-[13.5px] font-bold text-[#177245] mt-2">
               Sent. {sent} leads are now in the sequence.
             </p>
           )}
-          {error && <p className="text-[13px] font-bold text-[#C82626] mt-2">{error}</p>}
+          {error && <p className="text-[13.5px] font-bold text-[#C82626] mt-2">{error}</p>}
         </div>
         <button
           onClick={preview}
           disabled={busy}
-          className="shrink-0 inline-flex items-center gap-1.5 text-[13px] font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-50"
+          className="shrink-0 inline-flex items-center gap-1.5 text-[13.5px] font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-50"
         >
           <Send size={13} /> {busy ? 'Working...' : 'See who gets it'}
         </button>
@@ -97,18 +97,18 @@ export default function DormantReactivationButton() {
         <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={() => setOpen(false)}>
           <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[85vh] flex flex-col" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#E8EAEE]">
-              <p className="text-[14px] font-bold">Who would receive this</p>
+              <p className="text-[13.5px] font-bold">Who would receive this</p>
               <button onClick={() => setOpen(false)} className="text-[#98A0AD] hover:text-[#141821]"><X size={16} /></button>
             </div>
 
             <div className="px-5 py-4 border-b border-[#E8EAEE]">
-              <p className="text-[15px]">
-                <b className="text-[#1B6DFC] text-[22px]">{dry.wouldSend}</b> leads would receive it.
+              <p className="text-[16px]">
+                <b className="text-[#1B6DFC] text-[20px]">{dry.wouldSend}</b> leads would receive it.
                 <span className="text-[#666D7A]"> {dry.excludedCount} excluded of {dry.totalDormant} dormant.</span>
               </p>
               <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2">
                 {Object.entries(dry.excludedByReason).map(([reason, n]) => (
-                  <span key={reason} className="text-[12px] text-[#666D7A]">{n} · {reason}</span>
+                  <span key={reason} className="text-[12.5px] text-[#666D7A]">{n} · {reason}</span>
                 ))}
               </div>
             </div>
@@ -131,15 +131,15 @@ export default function DormantReactivationButton() {
             </div>
 
             <div className="px-5 py-3.5 border-t border-[#E8EAEE] flex items-center justify-between gap-3">
-              <p className="text-[12px] text-[#666D7A] flex items-center gap-1.5">
+              <p className="text-[12.5px] text-[#666D7A] flex items-center gap-1.5">
                 <AlertTriangle size={13} className="text-[#B7791F]" /> This sends real emails. It cannot be undone.
               </p>
               <div className="flex gap-2">
-                <button onClick={() => setOpen(false)} className="text-[13px] font-semibold px-4 py-2 border border-[#E8EAEE] rounded-lg hover:bg-[#F4F6F9]">
+                <button onClick={() => setOpen(false)} className="text-[13.5px] font-semibold px-4 py-2 border border-[#E8EAEE] rounded-lg hover:bg-[#F4F6F9]">
                   Not yet
                 </button>
                 <button onClick={send} disabled={busy}
-                  className="text-[13px] font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] disabled:opacity-50">
+                  className="text-[13.5px] font-bold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] disabled:opacity-50">
                   {busy ? 'Sending...' : `Send to ${dry.wouldSend}`}
                 </button>
               </div>

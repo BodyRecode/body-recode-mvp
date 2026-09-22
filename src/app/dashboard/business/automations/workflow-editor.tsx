@@ -410,7 +410,7 @@ export default function WorkflowEditor({ initial }: Props) {
             value={name}
             onChange={e => setName(e.target.value)}
             placeholder="Workflow name..."
-            className="w-full bg-transparent text-[22px] font-semibold text-[#141821] tracking-[-0.025em] placeholder-[#98A0AD] focus:outline-none border-b border-transparent focus:border-[#E8EAEE] pb-1 transition-colors"
+            className="w-full bg-transparent text-[20px] font-semibold text-[#141821] tracking-[-0.025em] placeholder-[#98A0AD] focus:outline-none border-b border-transparent focus:border-[#E8EAEE] pb-1 transition-colors"
           />
         </div>
         <div className="flex items-center gap-2">

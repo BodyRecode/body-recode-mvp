@@ -66,7 +66,7 @@ export default async function SettingsIndex() {
             className="block br-card p-5 hover:border-[#DCDCD7] transition-colors"
           >
             <h2 className="text-[16px] font-bold text-[#0F1115] mb-2">{s.title}</h2>
-            <p className="text-[13px] text-[#6E747D] leading-relaxed">{s.description}</p>
+            <p className="text-[13.5px] text-[#6E747D] leading-relaxed">{s.description}</p>
           </Link>
         ))}
       </div>

@@ -211,8 +211,8 @@ export default function CheckinFeedbackForm({
       <div className="bg-[#F2F2EF] br-card overflow-hidden">
         <div className="px-5 py-3 border-b border-[#E4E4E0] flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-3 flex-wrap">
-            <p className="text-[12px] font-medium text-[#6E747D]">Coach response</p>
-            <span className="text-[11.5px] font-medium px-2 py-0.5 rounded bg-[#EDEDEA] border border-[#DCDCD7] text-[#6E747D]">
+            <p className="text-[12.5px] font-medium text-[#6E747D]">Coach response</p>
+            <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-[#EDEDEA] border border-[#DCDCD7] text-[#6E747D]">
               Skipped {new Date(skippedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
             </span>
           </div>
@@ -232,7 +232,7 @@ export default function CheckinFeedbackForm({
           </p>
           {skipReason && (
             <div className="mt-3 rounded-lg bg-[#FFFFFF] border border-[#E4E4E0] p-3">
-              <p className="text-[11.5px] font-medium text-[#6E747D] mb-1">Your note</p>
+              <p className="text-[11px] font-medium text-[#6E747D] mb-1">Your note</p>
               <p className="text-[12.5px] text-[#0F1115] whitespace-pre-wrap leading-relaxed">{skipReason}</p>
             </div>
           )}
@@ -254,7 +254,7 @@ export default function CheckinFeedbackForm({
     return (
       <div className="mb-3 rounded-lg border border-[#0F1115]/30 bg-[#0F1115]/5 px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
         <div className="min-w-0">
-          <p className="text-[12px] font-medium text-[#0F1115]">AI draft, awaiting your approval</p>
+          <p className="text-[12.5px] font-medium text-[#0F1115]">AI draft, awaiting your approval</p>
           <p className="text-[12.5px] text-[#4A4F57] mt-1 leading-relaxed">
             This response was AI-generated when {clientFirstName} submitted the check-in. Nothing has been sent to {clientFirstName}. The Approve &amp; Send button in your inbox does the same thing as Send now below.
           </p>
@@ -290,7 +290,7 @@ export default function CheckinFeedbackForm({
     if (!autoResponseAttemptedAt || !autoResponseFailedReason) return null
     return (
       <div className="mb-3 rounded-lg border border-[#EADCC4] bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] px-4 py-3">
-        <p className="text-[12px] font-medium text-[#B06E1F]">AI auto-response failed</p>
+        <p className="text-[12.5px] font-medium text-[#B06E1F]">AI auto-response failed</p>
         <p className="text-[12.5px] text-[#4A4F57] mt-1 leading-relaxed">
           The auto-response pipeline ran at {new Date(autoResponseAttemptedAt).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane', weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })} but could not produce a clean draft. Reason: <span className="font-mono text-[10px]">{autoResponseFailedReason}</span>. Please write the response manually below, or click Generate response to try again.
         </p>
@@ -307,9 +307,9 @@ export default function CheckinFeedbackForm({
       <div className="bg-[#F2F2EF] br-card overflow-hidden">
         <div className="px-5 py-3 border-b border-[#E4E4E0] flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-3 flex-wrap">
-            <p className="text-[12px] font-medium text-[#0F1115]">Coach response</p>
+            <p className="text-[12.5px] font-medium text-[#0F1115]">Coach response</p>
             <span
-              className={`text-[11.5px] font-medium px-2 py-0.5 rounded ${
+              className={`text-[11px] font-medium px-2 py-0.5 rounded ${
                 sent
                   ? 'bg-[rgba(27,109,252,0.08)] border border-[#DCDCD7] text-[#000000]'
                   : 'bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] border border-[#EADCC4] text-[#B06E1F]'
@@ -363,7 +363,7 @@ export default function CheckinFeedbackForm({
     <AiFailureBanner />
     <div className="bg-[#F2F2EF] br-card p-5">
       <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
-        <p className="text-[12px] font-medium text-[#0F1115]">
+        <p className="text-[12.5px] font-medium text-[#0F1115]">
           {existing ? 'Edit coach response' : 'Coach response'}
         </p>
         <div className="flex items-center gap-3">
@@ -391,7 +391,7 @@ export default function CheckinFeedbackForm({
       <div className="mb-5 rounded-lg border border-[#E4E4E0] bg-[#FFFFFF] px-4 py-3">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-[12px] font-medium text-[#0F1115]">Draft with AI</p>
+            <p className="text-[12.5px] font-medium text-[#0F1115]">Draft with AI</p>
             <p className="text-[12.5px] text-[#6E747D] mt-1 leading-relaxed">
               Pulls this check-in (including the training and nutrition answers), the synthesis, the last 4 check-ins, the active program and nutrition plan, and the last 3 responses {clientFirstName} was sent. You review and approve before anything sends.
             </p>
@@ -407,7 +407,7 @@ export default function CheckinFeedbackForm({
         </div>
 
         <div className="mt-3 pt-3 border-t border-[#E4E4E0]">
-          <label className="block text-[12px] font-medium text-[#6E747D] mb-1">
+          <label className="block text-[12.5px] font-medium text-[#6E747D] mb-1">
             Add details for the AI (optional)
           </label>
           <p className="text-[12.5px] text-[#6E747D] mb-2 leading-relaxed">
@@ -511,7 +511,7 @@ function Field({
 }) {
   return (
     <div>
-      <label className="block text-[12px] font-medium text-[#6E747D] mb-1">{label}</label>
+      <label className="block text-[12.5px] font-medium text-[#6E747D] mb-1">{label}</label>
       <p className="text-[12.5px] text-[#6E747D] mb-2 leading-relaxed">{hint}</p>
       <textarea
         value={value}
@@ -527,7 +527,7 @@ function Field({
 function SavedSection({ title, body, accent }: { title: string; body: string; accent?: boolean }) {
   return (
     <div>
-      <p className={`text-[12px] font-medium mb-2 ${accent ? 'text-[#0F1115]' : 'text-[#6E747D]'}`}>{title}</p>
+      <p className={`text-[12.5px] font-medium mb-2 ${accent ? 'text-[#0F1115]' : 'text-[#6E747D]'}`}>{title}</p>
       <div className="text-sm text-[#0F1115] leading-relaxed space-y-3 whitespace-pre-wrap">{body}</div>
     </div>
   )

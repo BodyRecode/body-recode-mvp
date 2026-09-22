@@ -110,7 +110,7 @@ export default async function SaasLaunchPage() {
                 ? `${snap.outsideCoaches} coach${snap.outsideCoaches === 1 ? '' : 'es'} who ${snap.outsideCoaches === 1 ? 'is' : 'are'} not you ${snap.outsideCoaches === 1 ? 'has' : 'have'} an account`
                 : 'No coach who is not you has ever run the read'}
             </h2>
-            <p className="text-[13px] text-[#4A5160] leading-relaxed max-w-3xl">
+            <p className="text-[13.5px] text-[#4A5160] leading-relaxed max-w-3xl">
               {gateOpen ? (
                 <>
                   The gate is open. The question stops being whether anyone will use it and becomes
@@ -125,7 +125,7 @@ export default async function SaasLaunchPage() {
                 </>
               )}
             </p>
-            <p className="text-[11.5px] text-[#98A0AD] mt-2.5">
+            <p className="text-[11px] text-[#98A0AD] mt-2.5">
               Measured as coach accounts on the platform other than your own: {snap.tenantsTotal}{' '}
               configured in total.
             </p>
@@ -174,7 +174,7 @@ export default async function SaasLaunchPage() {
       </div>
 
       <Card className="mb-8">
-        <p className="text-[13px] text-[#4A5160] leading-relaxed mb-4 max-w-3xl">
+        <p className="text-[13.5px] text-[#4A5160] leading-relaxed mb-4 max-w-3xl">
           Six functions run this business. You hold four of them, your accountant takes finance and
           structure, your lawyer takes legal. <strong className="text-[#141821]">Commercial has
           never been staffed</strong> and it is the one the gate is waiting on.
@@ -187,14 +187,14 @@ export default async function SaasLaunchPage() {
         </p>
 
         {snap.applications.length === 0 ? (
-          <p className="text-[13px] text-[#98A0AD] italic">
+          <p className="text-[13.5px] text-[#98A0AD] italic">
             No applications yet. Nothing to answer.
           </p>
         ) : (
           <div className="overflow-x-auto -mx-1">
             <table className="w-full text-[12.5px] min-w-[560px]">
               <thead>
-                <tr className="text-left text-[10.5px] text-[#98A0AD] border-b border-[#E8EAEE]">
+                <tr className="text-left text-[10px] text-[#98A0AD] border-b border-[#E8EAEE]">
                   <th className="py-2 pr-3 font-semibold">Who</th>
                   <th className="py-2 pr-3 font-semibold">Focus</th>
                   <th className="py-2 pr-3 font-semibold">Self-scored</th>
@@ -208,7 +208,7 @@ export default async function SaasLaunchPage() {
                     <td className="py-2.5 pr-3">
                       <span className="text-[#141821] font-medium">{a.name ?? 'Unnamed'}</span>
                       {a.businessName && (
-                        <span className="block text-[11.5px] text-[#98A0AD]">{a.businessName}</span>
+                        <span className="block text-[11px] text-[#98A0AD]">{a.businessName}</span>
                       )}
                     </td>
                     <td className="py-2.5 pr-3 text-[#4A5160]">{a.modality ?? '—'}</td>
@@ -274,7 +274,7 @@ export default async function SaasLaunchPage() {
             <Building2 size={17} className="text-[#B7791F]" />
           </span>
           <div className="min-w-0 flex-1">
-            <p className="text-[13px] text-[#4A5160] leading-relaxed max-w-3xl">
+            <p className="text-[13.5px] text-[#4A5160] leading-relaxed max-w-3xl">
               Body Recode trades as a sole trader with the engine owned personally and no registered
               name. No software company signs a health-data agreement with an unincorporated sole
               trader, and there is nothing an investor could buy into.{' '}
@@ -285,7 +285,7 @@ export default async function SaasLaunchPage() {
               time that cannot be compressed.
             </p>
             {companyProgress && (
-              <p className="text-[11.5px] text-[#98A0AD] mt-2.5">
+              <p className="text-[11px] text-[#98A0AD] mt-2.5">
                 {companyProgress.shipped} of {companyProgress.total} steps shipped on this phase.
               </p>
             )}
@@ -417,11 +417,11 @@ function FoundingTest({ founding: f }: { founding: import('@/lib/rey-founding').
           </span>
           <div className="min-w-0 flex-1">
             <h2 className="text-[16px] font-semibold text-[#141821] leading-snug mb-1.5">{verdict.text}</h2>
-            <p className="text-[13px] text-[#4A5160] leading-relaxed max-w-3xl">
+            <p className="text-[13.5px] text-[#4A5160] leading-relaxed max-w-3xl">
               Pass mark agreed 14 Sep 2026, before any results: of the women who see ${PRICE_YEAR} a year,{' '}
               <strong className="text-[#141821]">{oneIn(PASS_MARK_GO)} or more join = go ahead</strong>,{' '}
               <strong className="text-[#141821]">fewer than {oneIn(PASS_MARK_RETHINK)} = rethink the price or the offer</strong>.
-              Do not move these lines after the results come in. Share the page with <code className="text-[12px]">?source=</code> on the end so you can see where each woman came from.
+              Do not move these lines after the results come in. Share the page with <code className="text-[12.5px]">?source=</code> on the end so you can see where each woman came from.
             </p>
           </div>
         </div>
@@ -447,7 +447,7 @@ function FoundingTest({ founding: f }: { founding: import('@/lib/rey-founding').
             <Tally counts={f.voice} options={VOICE_OPTIONS} />
           </div>
         </div>
-        <p className="text-[11.5px] text-[#98A0AD] mt-4">
+        <p className="text-[11px] text-[#98A0AD] mt-4">
           Women only. Counted live from every result shown, including women who left without joining.
         </p>
       </Card>

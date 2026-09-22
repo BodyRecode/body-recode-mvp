@@ -110,7 +110,7 @@ export default async function CoachTrainIndexPage({ params }: { params: Promise<
 
       <div className="mt-4 br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E4E4E0] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
         <p className="text-[10px] font-medium text-[#9CA2AB] mb-1">Log a session · {client.name}</p>
-        <h1 className="text-[22px] font-semibold text-[#0F1115] tracking-[-0.025em] tracking-tight">{program.block_name ?? 'Training'}</h1>
+        <h1 className="text-[20px] font-semibold text-[#0F1115] tracking-[-0.025em] tracking-tight">{program.block_name ?? 'Training'}</h1>
         <div className="flex flex-wrap items-center gap-2 mt-2 text-[12.5px]">
           <span className="bg-white border border-[#E4E4E0] rounded-full px-2.5 py-0.5">Week <span className="text-[#0F1115] font-semibold">{blockWeek}</span> of {program.week_duration}</span>
           <span className="bg-white border border-[#E4E4E0] rounded-full px-2.5 py-0.5 text-[#6E747D]">{daysLeftLabel}</span>
@@ -123,7 +123,7 @@ export default async function CoachTrainIndexPage({ params }: { params: Promise<
           <div className="flex items-center justify-between mb-2">
             <p className="text-[10px] font-medium text-[#6E747D]">This block</p>
             {momentum.streakWeeks >= 2 && (
-              <span className="text-[11.5px] font-medium text-[#0F1115] bg-[rgba(27,109,252,0.08)] border border-[#0F1115]/30 rounded-full px-2 py-0.5">{momentum.streakWeeks} weeks fully logged</span>
+              <span className="text-[11px] font-medium text-[#0F1115] bg-[rgba(27,109,252,0.08)] border border-[#0F1115]/30 rounded-full px-2 py-0.5">{momentum.streakWeeks} weeks fully logged</span>
             )}
           </div>
           <div className="flex items-center gap-3">

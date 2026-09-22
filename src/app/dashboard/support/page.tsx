@@ -41,7 +41,7 @@ export default async function SupportInboxPage({ searchParams }: { searchParams:
     return (
       <div className="max-w-[1100px]">
         <PageHeader eyebrow="Admin" title="Support inbox" />
-        <div className="p-4 rounded-xl border border-[#E8C9C9] bg-[#FBF1F1] text-[#8A1919] text-[13px]">
+        <div className="p-4 rounded-xl border border-[#E8C9C9] bg-[#FBF1F1] text-[#8A1919] text-[13.5px]">
           Error loading tickets: {error.message}
         </div>
       </div>
@@ -101,8 +101,8 @@ export default async function SupportInboxPage({ searchParams }: { searchParams:
                         <Pill accent={statusAccent(t.status)}>{STATUS_LABELS[t.status]}</Pill>
                         <span className="text-[11px] text-[#9CA2AB]">{formatDate(t.created_at)}</span>
                       </div>
-                      <p className="text-[14px] font-semibold text-[#0F1115] truncate">{t.subject}</p>
-                      <p className="text-[12px] text-[#6E747D] mt-0.5">
+                      <p className="text-[13.5px] font-semibold text-[#0F1115] truncate">{t.subject}</p>
+                      <p className="text-[12.5px] text-[#6E747D] mt-0.5">
                         {emailById.get(t.coach_id) ?? 'unknown'}
                         {t.page_url ? ` · ${t.page_url}` : ''}
                       </p>
@@ -122,7 +122,7 @@ function FilterChip({ href, active, children }: { href: string; active: boolean;
   return (
     <Link
       href={href}
-      className="text-[12px] px-3 py-1.5 rounded-full border transition-colors"
+      className="text-[12.5px] px-3 py-1.5 rounded-full border transition-colors"
       style={{
         background: active ? '#0F1115' : '#FFFFFF',
         color: active ? '#FFFFFF' : '#4A4F57',

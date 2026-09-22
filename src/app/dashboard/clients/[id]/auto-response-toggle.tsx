@@ -45,7 +45,7 @@ export default function AutoResponseToggle({
   return (
     <div className="rounded-lg border border-[#E4E4E0] bg-white px-4 py-3 flex items-center justify-between gap-3 flex-wrap mb-4">
       <div className="min-w-0">
-        <p className="text-[12px] font-medium text-[#0F1115]">Auto check-in response</p>
+        <p className="text-[12.5px] font-medium text-[#0F1115]">Auto check-in response</p>
         <p className="text-[12.5px] text-[#6E747D] mt-1 leading-relaxed">
           {enabled
             ? 'On — when this client submits a check-in, an AI draft is generated and auto-sent 4 hours later unless you intervene. You can Edit, Send-now, or Skip from the response form during the window.'

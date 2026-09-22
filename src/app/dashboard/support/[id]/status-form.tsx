@@ -64,7 +64,7 @@ export default function TicketStatusForm({
               key={s}
               type="button"
               onClick={() => setStatus(s)}
-              className="text-[13px] font-semibold px-3 py-2 rounded-lg border transition-colors"
+              className="text-[13.5px] font-semibold px-3 py-2 rounded-lg border transition-colors"
               style={{
                 background: active ? `${hex}14` : '#FFFFFF',
                 color: active ? hex : '#4A4F57',
@@ -90,7 +90,7 @@ export default function TicketStatusForm({
         className="w-full text-[13.5px] resize-none border border-[#E4E4E0] rounded-lg px-3 py-2 focus:outline-none focus:border-[#0F1115] bg-white mb-3"
       />
 
-      <label className="flex items-center gap-2 text-[13px] text-[#4A4F57] mb-4">
+      <label className="flex items-center gap-2 text-[13.5px] text-[#4A4F57] mb-4">
         <input type="checkbox" checked={notify} onChange={e => setNotify(e.target.checked)} disabled={filerIsKade} />
         Email the filer about this change
         {filerIsKade && <span className="text-[11px] text-[#9CA2AB]">(you filed this — no email sent)</span>}
@@ -103,7 +103,7 @@ export default function TicketStatusForm({
         type="button"
         onClick={save}
         disabled={pending}
-        className="text-[13px] font-semibold px-4 py-2 bg-[#0F1115] text-white rounded-lg hover:bg-[#000000] transition-colors disabled:opacity-40"
+        className="text-[13.5px] font-semibold px-4 py-2 bg-[#0F1115] text-white rounded-lg hover:bg-[#000000] transition-colors disabled:opacity-40"
       >
         {pending ? 'Saving…' : 'Save update'}
       </button>

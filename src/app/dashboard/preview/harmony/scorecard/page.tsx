@@ -30,12 +30,12 @@ export default function HarmonyScorecard() {
             Step 01 of the Path
           </div>
           <h1
-            className="text-[56px] leading-[1.08] mb-6 -tracking-[0.01em]"
+            className="text-[58px] leading-[1.08] mb-6 -tracking-[0.01em]"
             style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}
           >
             The Practice Readiness Assessment
           </h1>
-          <p className="text-[17px] leading-[1.7] max-w-[56ch] mx-auto" style={{ color: H.inkSoft }}>
+          <p className="text-[16px] leading-[1.7] max-w-[56ch] mx-auto" style={{ color: H.inkSoft }}>
             Twelve questions. Melisa reads every answer personally. You receive a written Practice Read within 24 hours - a two-page document that reads like a letter from a coach who has just met you.
           </p>
         </div>
@@ -59,7 +59,7 @@ export default function HarmonyScorecard() {
                 >
                   <Check size={12} style={{ color: H.terracottaDeep }} strokeWidth={2.5} />
                 </span>
-                <span className="text-[15px] leading-relaxed" style={{ color: H.ink }}>{p}</span>
+                <span className="text-[16px] leading-relaxed" style={{ color: H.ink }}>{p}</span>
               </li>
             ))}
           </ul>
@@ -74,7 +74,7 @@ export default function HarmonyScorecard() {
               What we ask
             </div>
             <h2
-              className="text-[36px] leading-[1.15] max-w-[28ch] mx-auto -tracking-[0.01em]"
+              className="text-[46px] leading-[1.15] max-w-[28ch] mx-auto -tracking-[0.01em]"
               style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}
             >
               Twelve questions across three domains.
@@ -92,7 +92,7 @@ export default function HarmonyScorecard() {
                 </div>
                 <ul className="space-y-3">
                   {q.items.map((item, j) => (
-                    <li key={j} className="text-[13px] leading-relaxed" style={{ color: H.inkSoft }}>
+                    <li key={j} className="text-[13.5px] leading-relaxed" style={{ color: H.inkSoft }}>
                       <span style={{ color: H.terracotta, fontFamily: H.serif, fontSize: '15px', marginRight: '6px' }}>·</span>
                       {item}
                     </li>
@@ -114,16 +114,16 @@ export default function HarmonyScorecard() {
             When you&apos;re ready
           </div>
           <h2
-            className="text-[44px] leading-[1.1] mb-6 -tracking-[0.01em]"
+            className="text-[46px] leading-[1.1] mb-6 -tracking-[0.01em]"
             style={{ fontFamily: H.serif, color: H.cream, fontWeight: 500 }}
           >
             Two minutes. No card. No pressure.
           </h2>
-          <p className="text-[15px] leading-[1.7] mb-10 max-w-[52ch] mx-auto" style={{ color: '#B8AA95' }}>
+          <p className="text-[16px] leading-[1.7] mb-10 max-w-[52ch] mx-auto" style={{ color: '#B8AA95' }}>
             After you submit, Melisa reads it and writes your Practice Read the same evening or the next morning. It lands in your inbox within 24 hours. You can act on it, or not.
           </p>
           <button
-            className="inline-flex items-center gap-2 px-8 py-5 rounded-full text-[13px] font-semibold uppercase transition-transform hover:scale-[1.02]"
+            className="inline-flex items-center gap-2 px-8 py-5 rounded-full text-[13.5px] font-semibold uppercase transition-transform hover:scale-[1.02]"
             style={{
               background: H.terracotta,
               color: H.cream,
@@ -140,11 +140,11 @@ export default function HarmonyScorecard() {
             </div>
             <div className="grid grid-cols-2 gap-4 text-left">
               <div>
-                <div className="text-[13px] font-semibold mb-1" style={{ color: H.cream }}>{LADDER.read.label}</div>
+                <div className="text-[13.5px] font-semibold mb-1" style={{ color: H.cream }}>{LADDER.read.label}</div>
                 <div className="text-[11px]" style={{ color: '#8A8175' }}>{LADDER.read.price}</div>
               </div>
               <div>
-                <div className="text-[13px] font-semibold mb-1" style={{ color: H.cream }}>{LADDER.call.label}</div>
+                <div className="text-[13.5px] font-semibold mb-1" style={{ color: H.cream }}>{LADDER.call.label}</div>
                 <div className="text-[11px]" style={{ color: '#8A8175' }}>{LADDER.call.price}</div>
               </div>
             </div>

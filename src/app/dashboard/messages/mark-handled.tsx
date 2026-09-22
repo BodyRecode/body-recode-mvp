@@ -51,14 +51,14 @@ export default function MarkHandled({
         title={handled
           ? 'Reopen this conversation in your inbox'
           : 'Close this off without sending anything. Use when you answered by phone or text.'}
-        className="inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg border border-[#E8EAEE] text-[#43474F] hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
+        className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg border border-[#E8EAEE] text-[#43474F] hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors disabled:opacity-50"
       >
         {busy
           ? <Loader2 size={12} className="animate-spin" />
           : handled ? <RotateCcw size={12} /> : <CheckCheck size={12} />}
         {handled ? 'Reopen' : 'Handled elsewhere'}
       </button>
-      {error && <span className="text-[12px] font-semibold text-[#C82626]">{error}</span>}
+      {error && <span className="text-[12.5px] font-semibold text-[#C82626]">{error}</span>}
     </div>
   )
 }

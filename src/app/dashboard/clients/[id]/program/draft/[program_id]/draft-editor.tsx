@@ -269,7 +269,7 @@ export default function DraftEditor({
         </div>
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-[22px] font-semibold text-[#0F1115] tracking-[-0.025em]">{program.block_name}</h1>
+            <h1 className="text-[20px] font-semibold text-[#0F1115] tracking-[-0.025em]">{program.block_name}</h1>
             <p className={`text-sm mt-1 ${isActive ? 'text-[#6E747D]' : 'text-[#B06E1F]'}`}>
               {isActive ? 'Editing active program - changes save in place' : 'Draft - pending coach review'}
             </p>

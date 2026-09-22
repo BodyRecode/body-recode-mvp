@@ -217,7 +217,7 @@ export default function TrajectoryReadingPanel({
           <button
             onClick={generate}
             disabled={generating || isPending}
-            className={`inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
+            className={`inline-flex items-center gap-2 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
               generated
                 ? 'border border-[#E4E4E0] bg-[#FFFFFF] text-[#4A4F57] hover:border-[#0F1115] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#0F1115]'
                 : 'bg-[#0F1115] text-[#FFFFFF] hover:bg-[#000000] border border-[#0F1115]'
@@ -230,7 +230,7 @@ export default function TrajectoryReadingPanel({
             <button
               onClick={togglePublish}
               disabled={publishing || isPending}
-              className={`inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
+              className={`inline-flex items-center gap-2 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
                 published
                   ? 'border border-[#E4E4E0] bg-[#FFFFFF] text-[#4A4F57] hover:border-[#0F1115] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#0F1115]'
                   : 'bg-[#0F1115] text-[#FFFFFF] hover:bg-[#000000] border border-[#0F1115]'
@@ -244,7 +244,7 @@ export default function TrajectoryReadingPanel({
             <button
               onClick={notifyClient}
               disabled={notifying || isPending}
-              className={`inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
+              className={`inline-flex items-center gap-2 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
                 emailSent
                   ? 'border border-[#E4E4E0] bg-[#FFFFFF] text-[#4A4F57] hover:border-[#0F1115] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#0F1115]'
                   : 'bg-[#0F1115] text-[#FFFFFF] hover:bg-[#000000] border border-[#0F1115]'
@@ -258,12 +258,12 @@ export default function TrajectoryReadingPanel({
       </div>
 
       {error && (
-        <div className="bg-[#FDF8F1] border border-[#EADCC4] rounded-lg px-3 py-2 text-[12px] text-[#8A5514] mb-3">
+        <div className="bg-[#FDF8F1] border border-[#EADCC4] rounded-lg px-3 py-2 text-[12.5px] text-[#8A5514] mb-3">
           {error}
         </div>
       )}
       {notice && (
-        <div className="bg-[rgba(27,109,252,0.08)] border border-[#DCDCD7] rounded-lg px-3 py-2 text-[12px] text-[#0F1115] mb-3">
+        <div className="bg-[rgba(27,109,252,0.08)] border border-[#DCDCD7] rounded-lg px-3 py-2 text-[12.5px] text-[#0F1115] mb-3">
           {notice}
         </div>
       )}
@@ -276,8 +276,8 @@ export default function TrajectoryReadingPanel({
         <div className="br-card p-8 text-center">
           {atBlockEnd ? (
             <>
-              <p className="text-[#6E747D] text-[14px] mb-2">Block complete - Progress Read available</p>
-              <p className="text-[#9CA2AB] text-[12px]">
+              <p className="text-[#6E747D] text-[13.5px] mb-2">Block complete - Progress Read available</p>
+              <p className="text-[#9CA2AB] text-[12.5px]">
                 Click Generate draft. It reads every weekly synthesis across this block into one arc. Review it, then Publish to surface it on the client portal. After publishing, a Notify Client button appears for the explicit email send (mirror of the Program / Nutrition pattern).
               </p>
             </>
@@ -289,8 +289,8 @@ export default function TrajectoryReadingPanel({
                   ? `Block in progress - week ${blockStatus.currentWeek} of ${blockStatus.weekDuration}`
                   : 'Block in progress'}
               </div>
-              <p className="text-[#6E747D] text-[14px] mb-2">Progress Read is for block end</p>
-              <p className="text-[#9CA2AB] text-[12px]">
+              <p className="text-[#6E747D] text-[13.5px] mb-2">Progress Read is for block end</p>
+              <p className="text-[#9CA2AB] text-[12.5px]">
                 This read is designed to read the whole block once it has finished{blockStatus?.weeksRemaining ? `, about ${blockStatus.weeksRemaining} week${blockStatus.weeksRemaining === 1 ? '' : 's'} from now` : ''}. You can still generate an early draft from the weeks completed so far.
               </p>
             </>
@@ -362,13 +362,13 @@ function ReScoreCard({ program }: { program: Reading }) {
         <div className="flex items-center gap-3 flex-wrap mb-3">
           {prev && (
             <>
-              <span className="inline-flex items-center px-2.5 py-1 rounded-full border border-[#E4E4E0] bg-[#FAFAF8] text-[13px] font-semibold text-[#6E747D]">
+              <span className="inline-flex items-center px-2.5 py-1 rounded-full border border-[#E4E4E0] bg-[#FAFAF8] text-[13.5px] font-semibold text-[#6E747D]">
                 {prev}
               </span>
-              <span className="text-[#9CA2AB] text-[13px]">{moved ? 'moved to' : 'held at'}</span>
+              <span className="text-[#9CA2AB] text-[13.5px]">{moved ? 'moved to' : 'held at'}</span>
             </>
           )}
-          <span className="inline-flex items-center px-2.5 py-1 rounded-full border border-[#DCDCD7] bg-[rgba(27,109,252,0.10)] text-[13px] font-semibold text-[#0F1115]">
+          <span className="inline-flex items-center px-2.5 py-1 rounded-full border border-[#DCDCD7] bg-[rgba(27,109,252,0.10)] text-[13.5px] font-semibold text-[#0F1115]">
             {next}
           </span>
           {program.tr_state_direction && (
@@ -378,14 +378,14 @@ function ReScoreCard({ program }: { program: Reading }) {
           )}
         </div>
         {program.tr_state_rationale && (
-          <p className="text-[14px] text-[#0F1115] leading-relaxed whitespace-pre-line mb-3">
+          <p className="text-[13.5px] text-[#0F1115] leading-relaxed whitespace-pre-line mb-3">
             {program.tr_state_rationale}
           </p>
         )}
         {program.tr_pattern_confidence_note && (
           <div className="flex items-start gap-2 pt-3 border-t border-[#EDEDEA]">
             <Info size={12} className="text-[#9CA2AB] mt-0.5 shrink-0" />
-            <p className="text-[12px] text-[#6E747D] leading-relaxed">
+            <p className="text-[12.5px] text-[#6E747D] leading-relaxed">
               <span className="font-semibold text-[#4A4F57]">Pattern held. </span>
               {program.tr_pattern_confidence_note}
             </p>
@@ -474,7 +474,7 @@ function CoachGuidance({ programId, initial }: { programId: string; initial: str
             onChange={e => setValue(e.target.value)}
             placeholder="e.g. Weeks 3 and 4 were disrupted by travel, not a loss of capacity. Frame the dip as expected and the recovery as the real signal."
             rows={4}
-            className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2.5 text-[13px] text-[#0F1115] placeholder:text-[#4A4F57] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
+            className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2.5 text-[13.5px] text-[#0F1115] placeholder:text-[#4A4F57] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
           />
           {error && (
             <div className="mt-2 text-[11px] text-[#8A5514]">{error}</div>
@@ -486,7 +486,7 @@ function CoachGuidance({ programId, initial }: { programId: string; initial: str
             <button
               onClick={save}
               disabled={!dirty || saving || isPending}
-              className={`inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
+              className={`inline-flex items-center gap-1.5 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
                 dirty
                   ? 'bg-[#0F1115] text-[#FFFFFF] hover:bg-[#000000] border border-[#0F1115]'
                   : 'border border-[#E4E4E0] bg-[#FFFFFF] text-[#6E747D]'
@@ -595,7 +595,7 @@ function EditableSection({
             value={draft}
             onChange={e => setDraft(e.target.value)}
             rows={Math.max(4, draft.split('\n').length + 1)}
-            className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2.5 text-[14px] text-[#0F1115] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
+            className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2.5 text-[13.5px] text-[#0F1115] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
           />
           {error && <p className="mt-2 text-[11px] text-[#8A5514]">{error}</p>}
           <div className="flex items-center justify-end gap-2 mt-2">
@@ -617,7 +617,7 @@ function EditableSection({
           </div>
         </>
       ) : (
-        <p className="text-[14px] text-[#0F1115] leading-relaxed whitespace-pre-line">
+        <p className="text-[13.5px] text-[#0F1115] leading-relaxed whitespace-pre-line">
           {value || '(empty)'}
         </p>
       )}

@@ -18,7 +18,7 @@ export default function OrientationPage() {
           <p className="text-[#666D7A] text-sm leading-relaxed italic">A calm introduction to the structure, pacing, and the philosophy behind {brand().name} Performance Coaching.</p>
         </div>
 
-        <div className="space-y-14 text-[#141821] text-[15px] leading-relaxed">
+        <div className="space-y-14 text-[#141821] text-[16px] leading-relaxed">
 
           <OrientationSection title="A Note on How to Read This">
             <p>This orientation is not something to get through quickly. It is designed to be read slowly, in your own time, without needing to take notes, make decisions, or figure anything out as you go. You don&apos;t need to agree with everything you read, and you don&apos;t need to be certain about anything by the end.</p>

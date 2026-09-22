@@ -144,7 +144,7 @@ export default async function RecoveryRegulationPage() {
         accent="teal"
       />
 
-      <div className="mt-6 flex items-center gap-3 text-[13px]" style={{ fontFamily: MONO_FONT }}>
+      <div className="mt-6 flex items-center gap-3 text-[13.5px]" style={{ fontFamily: MONO_FONT }}>
         <span className="text-[#666D7A]">Router mode:</span>
         {modePill(mode)}
         <span className="text-[#98A0AD]">·</span>
@@ -164,7 +164,7 @@ export default async function RecoveryRegulationPage() {
           =========================================================== */}
       <section className="mt-12">
         <SectionLabel>Applied Execution Playbooks (13D)</SectionLabel>
-        <p className="text-[13px] text-[#666D7A] mt-2 max-w-3xl">
+        <p className="text-[13.5px] text-[#666D7A] mt-2 max-w-3xl">
           One dominant playbook may govern execution at a time. Priority order (13D_15): tier 1 overrides
           all others. Single-dominant rule: states do not stack. Lock-in durations (13D_14) prevent oscillation.
         </p>
@@ -185,16 +185,16 @@ export default async function RecoveryRegulationPage() {
                       <span className="text-[#98A0AD]">·</span>
                       <span>{p.permissibleCategory.replace(/_/g, ' ')}</span>
                     </div>
-                    <h3 className="text-[18px] text-[#141821] mt-1">{p.name}</h3>
-                    <p className="text-[13px] text-[#666D7A] mt-1 max-w-2xl">{p.purpose}</p>
+                    <h3 className="text-[20px] text-[#141821] mt-1">{p.name}</h3>
+                    <p className="text-[13.5px] text-[#666D7A] mt-1 max-w-2xl">{p.purpose}</p>
                   </div>
-                  <div className="text-right text-[12px] text-[#666D7A] shrink-0" style={{ fontFamily: MONO_FONT }}>
+                  <div className="text-right text-[12.5px] text-[#666D7A] shrink-0" style={{ fontFamily: MONO_FONT }}>
                     Lock-in {p.minDurationDays}d<br />
                     Max {p.maxDurationDays === 9999 ? '∞' : `${p.maxDurationDays}d`}
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4 text-[12px]" style={{ fontFamily: MONO_FONT }}>
+                <div className="grid md:grid-cols-2 gap-4 text-[12.5px]" style={{ fontFamily: MONO_FONT }}>
                   <div>
                     <div className="text-[10px] text-[#98A0AD] mb-2">Training constraints</div>
                     <dl className="space-y-1 text-[#141821]">
@@ -240,10 +240,10 @@ export default async function RecoveryRegulationPage() {
 
                 {p.prohibitions.length > 0 && (
                   <details className="mt-4 group">
-                    <summary className="text-[12px] text-[#666D7A] cursor-pointer hover:text-[#141821]" style={{ fontFamily: MONO_FONT }}>
+                    <summary className="text-[12.5px] text-[#666D7A] cursor-pointer hover:text-[#141821]" style={{ fontFamily: MONO_FONT }}>
                       Prohibitions ({p.prohibitions.length}) · Common failures ({p.commonFailures.length})
                     </summary>
-                    <div className="grid md:grid-cols-2 gap-4 mt-3 text-[12px]" style={{ fontFamily: MONO_FONT }}>
+                    <div className="grid md:grid-cols-2 gap-4 mt-3 text-[12.5px]" style={{ fontFamily: MONO_FONT }}>
                       <div>
                         <div className="text-[10px] text-[#98A0AD] mb-2">Prohibited</div>
                         <ul className="space-y-1 text-[#141821] list-disc list-inside">
@@ -270,7 +270,7 @@ export default async function RecoveryRegulationPage() {
           =========================================================== */}
       <section className="mt-16">
         <SectionLabel>Layer 2 doctrine — sourced live from Dropbox</SectionLabel>
-        <p className="text-[13px] text-[#666D7A] mt-2 max-w-3xl">
+        <p className="text-[13.5px] text-[#666D7A] mt-2 max-w-3xl">
           Read directly from <code className="text-[#1B6DFC]">~/Dropbox/01_BODY_RECODE/.../12_Recovery_and_Regulation_System/</code>{' '}
           and <code className="text-[#1B6DFC]">.../04_Recovery_and_Regulation_System/</code>. This page is the canonical
           coach-facing reference; if a file changes in Dropbox, this page reflects it on next request.
@@ -279,18 +279,18 @@ export default async function RecoveryRegulationPage() {
         <div className="mt-6 space-y-2">
           {Array.from(groupBySection(folder12).entries()).map(([section, files]) => (
             <details key={section} className="border border-[#E8EAEE] rounded-md">
-              <summary className="px-4 py-3 cursor-pointer text-[14px] text-[#141821] hover:bg-[#FFFFFF]">
-                <span className="text-[12px] text-[#1B6DFC] mr-2" style={{ fontFamily: MONO_FONT }}>PCF</span>
+              <summary className="px-4 py-3 cursor-pointer text-[13.5px] text-[#141821] hover:bg-[#FFFFFF]">
+                <span className="text-[12.5px] text-[#1B6DFC] mr-2" style={{ fontFamily: MONO_FONT }}>PCF</span>
                 {section.replace(/^\d+[A-Z]?_/, '').replace(/_/g, ' ')}
-                <span className="text-[12px] text-[#98A0AD] ml-2">({files.length} {files.length === 1 ? 'file' : 'files'})</span>
+                <span className="text-[12.5px] text-[#98A0AD] ml-2">({files.length} {files.length === 1 ? 'file' : 'files'})</span>
               </summary>
               <div className="border-t border-[#E8EAEE] divide-y divide-[#EFF1F4]">
                 {files.map(f => (
                   <details key={f.filename} className="px-4 py-2.5">
-                    <summary className="cursor-pointer text-[13px] text-[#141821] hover:text-[#141821]">
+                    <summary className="cursor-pointer text-[13.5px] text-[#141821] hover:text-[#141821]">
                       {f.title}
                     </summary>
-                    <pre className="mt-3 text-[12px] text-[#666D7A] whitespace-pre-wrap leading-relaxed font-sans max-h-[60vh] overflow-y-auto">
+                    <pre className="mt-3 text-[12.5px] text-[#666D7A] whitespace-pre-wrap leading-relaxed font-sans max-h-[60vh] overflow-y-auto">
                       {f.body}
                     </pre>
                   </details>
@@ -301,18 +301,18 @@ export default async function RecoveryRegulationPage() {
 
           {msaRrs.length > 0 && Array.from(groupBySection(msaRrs).entries()).map(([section, files]) => (
             <details key={`msa-${section}`} className="border border-[#E8EAEE] rounded-md">
-              <summary className="px-4 py-3 cursor-pointer text-[14px] text-[#141821] hover:bg-[#FFFFFF]">
-                <span className="text-[12px] text-[#B7791F] mr-2" style={{ fontFamily: MONO_FONT }}>MSA</span>
+              <summary className="px-4 py-3 cursor-pointer text-[13.5px] text-[#141821] hover:bg-[#FFFFFF]">
+                <span className="text-[12.5px] text-[#B7791F] mr-2" style={{ fontFamily: MONO_FONT }}>MSA</span>
                 {section.replace(/^\d+[A-Z]?_/, '').replace(/_/g, ' ')}
-                <span className="text-[12px] text-[#98A0AD] ml-2">({files.length} {files.length === 1 ? 'file' : 'files'})</span>
+                <span className="text-[12.5px] text-[#98A0AD] ml-2">({files.length} {files.length === 1 ? 'file' : 'files'})</span>
               </summary>
               <div className="border-t border-[#E8EAEE] divide-y divide-[#EFF1F4]">
                 {files.map(f => (
                   <details key={f.filename} className="px-4 py-2.5">
-                    <summary className="cursor-pointer text-[13px] text-[#141821] hover:text-[#141821]">
+                    <summary className="cursor-pointer text-[13.5px] text-[#141821] hover:text-[#141821]">
                       {f.title}
                     </summary>
-                    <pre className="mt-3 text-[12px] text-[#666D7A] whitespace-pre-wrap leading-relaxed font-sans max-h-[60vh] overflow-y-auto">
+                    <pre className="mt-3 text-[12.5px] text-[#666D7A] whitespace-pre-wrap leading-relaxed font-sans max-h-[60vh] overflow-y-auto">
                       {f.body}
                     </pre>
                   </details>
@@ -326,7 +326,7 @@ export default async function RecoveryRegulationPage() {
       {/* ===========================================================
           Footer / cross-links
           =========================================================== */}
-      <section className="mt-12 text-[12px] text-[#666D7A]" style={{ fontFamily: MONO_FONT }}>
+      <section className="mt-12 text-[12.5px] text-[#666D7A]" style={{ fontFamily: MONO_FONT }}>
         <p>
           Code:{' '}
           <Link href="https://github.com/BodyRecode/body-recode-mvp/blob/main/src/lib/recovery-doctrine.ts" className="text-[#1B6DFC] hover:underline">recovery-doctrine.ts</Link>{' '}·{' '}

@@ -184,7 +184,7 @@ function NavItem({
       href={link.href}
       onClick={onNavigate}
       aria-current={active ? 'page' : undefined}
-      className={`relative flex items-center gap-2.5 px-2.5 py-[7px] rounded-lg text-[13px] transition-colors ${
+      className={`relative flex items-center gap-2.5 px-2.5 py-[7px] rounded-lg text-[13.5px] transition-colors ${
         active
           ? 'bg-[#1A1E26] text-[#FAFAF8] font-semibold shadow-[0_1px_3px_rgba(15,17,21,0.08),0_1px_2px_-1px_rgba(15,17,21,0.05)]'
           : 'text-[#C2C6CC] hover:bg-white/[0.06] hover:text-[#FAFAF8]'
@@ -202,7 +202,7 @@ function NavItem({
       {badge && badge.count > 0 && (
         <span
           title={`${badge.count} waiting`}
-          className="ml-auto shrink-0 text-[10.5px] font-bold rounded-full px-1.5 py-px min-w-[18px] text-center"
+          className="ml-auto shrink-0 text-[10px] font-bold rounded-full px-1.5 py-px min-w-[18px] text-center"
           style={{
             fontVariantNumeric: 'tabular-nums',
             // A count of things waiting is NOT a meaning colour. It is a
@@ -254,7 +254,7 @@ export default function DashboardNav({
           group.key === 'meta' && showDev ? [...group.items, DEV_ONLY] : group.items
         return (
           <div key={group.key} className="mb-0.5">
-            <p className="px-2 pt-3.5 pb-1.5 text-[10.5px] font-semibold text-[#676D76]">
+            <p className="px-2 pt-3.5 pb-1.5 text-[10px] font-semibold text-[#676D76]">
               {group.label}
             </p>
             <div className="flex flex-col gap-[1px]">
@@ -273,7 +273,7 @@ export default function DashboardNav({
       })}
       {showDev && (
         <p
-          className="mt-3 mx-2 text-[11.5px] font-medium text-[#B06E1F] bg-[#FDF8F1] px-1.5 py-0.5 rounded inline-block"
+          className="mt-3 mx-2 text-[11px] font-medium text-[#B06E1F] bg-[#FDF8F1] px-1.5 py-0.5 rounded inline-block"
           title="Dev-only nav items are visible (append ?dev=1 to any dashboard URL to toggle)"
         >
           dev

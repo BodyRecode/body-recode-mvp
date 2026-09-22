@@ -10,7 +10,7 @@ export const revalidate = 0
 
 function BriefingSkeleton({ persona }: { persona: string }) {
   return (
-    <div className="mb-8 p-4 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] text-[13px] text-[#666D7A] leading-relaxed">
+    <div className="mb-8 p-4 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] text-[13.5px] text-[#666D7A] leading-relaxed">
       <strong className="text-[#141821]">{persona}</strong> is drafting the briefing…
     </div>
   )
@@ -32,7 +32,7 @@ export default async function CcoPage() {
       </Suspense>
 
       <div className="mb-6 flex items-center gap-3">
-        <span className="text-[9px] font-medium bg-[#D8EFE1] text-[#177245] px-1.5 py-0.5 rounded">Live data</span>
+        <span className="text-[10px] font-medium bg-[#D8EFE1] text-[#177245] px-1.5 py-0.5 rounded">Live data</span>
         <span className="text-[11px] text-[#666D7A] font-mono">
           Snapshot at {new Date(snap.computedAt).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane' })} AEST
         </span>
@@ -200,7 +200,7 @@ export default async function CcoPage() {
         />
       </div>
 
-      <div className="mb-8 flex items-center gap-3 text-[13px]">
+      <div className="mb-8 flex items-center gap-3 text-[13.5px]">
         <Link href="/dashboard/feedback" className="text-[#1560E0] hover:text-[#1056D6] underline font-semibold">
           → Open Feedback Triage
         </Link>
@@ -210,7 +210,7 @@ export default async function CcoPage() {
         </Link>
       </div>
 
-      <Link href="/dashboard/boardroom" className="text-[12px] text-[#1560E0] hover:text-[#1056D6] underline">
+      <Link href="/dashboard/boardroom" className="text-[12.5px] text-[#1560E0] hover:text-[#1056D6] underline">
         ← Back to Boardroom
       </Link>
     </div>
@@ -237,7 +237,7 @@ function Metric({
     amber: 'text-[#A96A12]',
     red: 'text-[#C82626]',
   }[tone]
-  const size = large ? 'text-[28px]' : 'text-[22px]'
+  const size = large ? 'text-[34px]' : 'text-[20px]'
   return (
     <div className="br-card p-5">
       <div className="text-[11px] font-medium text-[#666D7A] mb-2">{label}</div>

@@ -33,7 +33,7 @@ export default function HermonySettings() {
                 <img src={HARMONY.logoUrl} alt={`${HARMONY.name} logo`} className="w-full h-full object-cover" />
               </span>
               <div>
-                <div className="text-[26px] font-semibold text-[#141821] tracking-tight" style={{ letterSpacing: '0.02em' }}>{HARMONY.name.toUpperCase()}</div>
+                <div className="text-[34px] font-semibold text-[#141821] tracking-tight" style={{ letterSpacing: '0.02em' }}>{HARMONY.name.toUpperCase()}</div>
                 <div className="text-[11px] text-[#666D7A]">
                   {HARMONY.sub.toUpperCase()}
                 </div>
@@ -55,21 +55,21 @@ export default function HermonySettings() {
             <div className="flex items-center gap-2">
               <div className="w-12 h-10 rounded-lg border" style={{ background: HARMONY.accentBar, borderColor: '#E8EAEE' }} />
               <div>
-                <div className="text-[13px] font-semibold text-[#141821]">Terracotta</div>
+                <div className="text-[13.5px] font-semibold text-[#141821]">Terracotta</div>
                 <div className="text-[10px] text-[#666D7A]" style={{ fontFamily: MONO_FONT }}>{HARMONY.accentBar}</div>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-12 h-10 rounded-lg border" style={{ background: '#141821', borderColor: '#E8EAEE' }} />
               <div>
-                <div className="text-[13px] font-semibold text-[#141821]">Ink</div>
+                <div className="text-[13.5px] font-semibold text-[#141821]">Ink</div>
                 <div className="text-[10px] text-[#666D7A]" style={{ fontFamily: MONO_FONT }}>#141821</div>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-12 h-10 rounded-lg border" style={{ background: '#FAF6EF', borderColor: '#E8EAEE' }} />
               <div>
-                <div className="text-[13px] font-semibold text-[#141821]">Cream</div>
+                <div className="text-[13.5px] font-semibold text-[#141821]">Cream</div>
                 <div className="text-[10px] text-[#666D7A]" style={{ fontFamily: MONO_FONT }}>#FAF6EF</div>
               </div>
             </div>
@@ -103,10 +103,10 @@ export default function HermonySettings() {
         <SectionLabel accent="amber" meta="Immutable">
           Safety floors
         </SectionLabel>
-        <p className="text-[13px] text-[#4B4B4B] leading-relaxed mb-4">
+        <p className="text-[13.5px] text-[#4B4B4B] leading-relaxed mb-4">
           The engine holds a set of safety limits that your voice + guidance tuning cannot override. This is what makes it legally defensible for you to run other people&apos;s practice on the platform.
         </p>
-        <ul className="text-[13px] text-[#141821] leading-relaxed space-y-2 list-disc pl-5">
+        <ul className="text-[13.5px] text-[#141821] leading-relaxed space-y-2 list-disc pl-5">
           <li>Regulation Readiness Score clamps + drift monitoring</li>
           <li>Fat Map training limits per body state</li>
           <li>Injury contraindications applied to every prescribed session</li>
@@ -125,15 +125,15 @@ export default function HermonySettings() {
         <div className="grid md:grid-cols-3 gap-4">
           <div className="p-4 rounded-xl border border-[#E8EAEE] bg-[#FAFBFD]">
             <div className="text-[10px] text-[#666D7A] mb-2">Tier</div>
-            <div className="text-[15px] font-semibold text-[#141821]">Launch (founding rate)</div>
+            <div className="text-[16px] font-semibold text-[#141821]">Launch (founding rate)</div>
           </div>
           <div className="p-4 rounded-xl border border-[#E8EAEE] bg-[#FAFBFD]">
             <div className="text-[10px] text-[#666D7A] mb-2">Platform subscription</div>
-            <div className="text-[15px] font-semibold text-[#141821]">$400 / month</div>
+            <div className="text-[16px] font-semibold text-[#141821]">$400 / month</div>
           </div>
           <div className="p-4 rounded-xl border border-[#E8EAEE] bg-[#FAFBFD]">
             <div className="text-[10px] text-[#666D7A] mb-2">Per active student</div>
-            <div className="text-[15px] font-semibold text-[#141821]">$40 / mo · arrears</div>
+            <div className="text-[16px] font-semibold text-[#141821]">$40 / mo · arrears</div>
           </div>
         </div>
         <p className="text-[11px] text-[#98A0AD] italic mt-4">
@@ -153,7 +153,7 @@ function KV({ label, value }: { label: string; value: string }) {
   return (
     <div>
       <div className="text-[10px] text-[#666D7A] mb-1">{label}</div>
-      <div className="text-[13px] text-[#141821] leading-relaxed">{value}</div>
+      <div className="text-[13.5px] text-[#141821] leading-relaxed">{value}</div>
     </div>
   )
 }

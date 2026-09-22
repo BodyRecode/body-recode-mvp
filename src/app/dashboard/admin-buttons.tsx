@@ -29,7 +29,7 @@ function ActionButton({
     : state === 'error' ? 'Failed'
     : label
 
-  const base = 'text-[12px] font-semibold px-3.5 py-2 rounded-lg transition-colors disabled:opacity-50 whitespace-nowrap'
+  const base = 'text-[12.5px] font-semibold px-3.5 py-2 rounded-lg transition-colors disabled:opacity-50 whitespace-nowrap'
   const palette =
     tone === 'caution'
       ? 'border border-[#F1DEB8] text-[#B7791F] bg-[#FDF6E9] hover:border-[#D9B976] hover:text-[#8A5A14]'
@@ -135,7 +135,7 @@ export default function AdminButtons() {
         <select
           value={reportBodyState}
           onChange={e => setReportBodyState(e.target.value)}
-          className="text-[12px] bg-[#FFFFFF] border border-[#E8EAEE] text-[#43474F] rounded-lg px-2.5 py-2 focus:outline-none focus:border-[#1B6DFC]"
+          className="text-[12.5px] bg-[#FFFFFF] border border-[#E8EAEE] text-[#43474F] rounded-lg px-2.5 py-2 focus:outline-none focus:border-[#1B6DFC]"
         >
           <option>Depleted State</option>
           <option>Transitioning State</option>

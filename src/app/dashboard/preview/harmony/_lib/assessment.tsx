@@ -117,7 +117,7 @@ function IntroScreen({ onBegin }: { onBegin: () => void }) {
           The Practice Readiness Assessment
           <span className="w-6 h-[1px]" style={{ backgroundColor: H.terracottaDeep }} />
         </div>
-        <h1 className="text-[56px] leading-[1.1] mb-8 -tracking-[0.01em]" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
+        <h1 className="text-[58px] leading-[1.1] mb-8 -tracking-[0.01em]" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
           Twelve questions. One Practice Read. Nothing else on your calendar.
         </h1>
         <p className="text-[16px] leading-[1.75] mb-12 max-w-[54ch] mx-auto" style={{ color: H.inkSoft }}>
@@ -125,7 +125,7 @@ function IntroScreen({ onBegin }: { onBegin: () => void }) {
         </p>
         <button
           onClick={onBegin}
-          className="inline-flex items-center gap-2 px-8 py-5 rounded-full text-[13px] font-semibold uppercase transition-transform hover:scale-[1.02]"
+          className="inline-flex items-center gap-2 px-8 py-5 rounded-full text-[13.5px] font-semibold uppercase transition-transform hover:scale-[1.02]"
           style={{ background: H.terracotta, color: H.cream, fontFamily: H.mono, letterSpacing: '0.16em' }}
         >
           Begin
@@ -165,7 +165,7 @@ function QuestionScreen({
           <div className="text-[10px] mb-6" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
             {domainLabel} · Question {index + 1} of {TOTAL_QS}
           </div>
-          <h2 className="text-[36px] leading-[1.2] mb-10 -tracking-[0.005em] max-w-[24ch]" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
+          <h2 className="text-[46px] leading-[1.2] mb-10 -tracking-[0.005em] max-w-[24ch]" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
             {q.text}
           </h2>
           <div className="space-y-3">
@@ -192,7 +192,7 @@ function QuestionScreen({
                     >
                       {isSelected && <Check size={11} strokeWidth={3} style={{ color: H.cream }} />}
                     </span>
-                    <span className="text-[15px] leading-relaxed flex-1" style={{ color: H.ink }}>{opt.label}</span>
+                    <span className="text-[16px] leading-relaxed flex-1" style={{ color: H.ink }}>{opt.label}</span>
                   </div>
                 </button>
               )
@@ -232,15 +232,15 @@ function SectionBreakScreen({
         <div className="text-[10px] mb-8" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
           {meta.eyebrow}
         </div>
-        <h2 className="text-[42px] leading-[1.15] mb-6 -tracking-[0.01em]" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
+        <h2 className="text-[46px] leading-[1.15] mb-6 -tracking-[0.01em]" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
           {meta.title}
         </h2>
-        <p className="text-[15px] leading-[1.7] mb-12 max-w-[48ch] mx-auto" style={{ color: H.inkSoft }}>
+        <p className="text-[16px] leading-[1.7] mb-12 max-w-[48ch] mx-auto" style={{ color: H.inkSoft }}>
           {meta.sub}
         </p>
         <button
           onClick={onContinue}
-          className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-[12px] font-semibold"
+          className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-[12.5px] font-semibold"
           style={{ background: H.ink, color: H.cream, fontFamily: H.mono, letterSpacing: '0.16em' }}
         >
           Continue <ArrowRight size={12} />
@@ -276,10 +276,10 @@ function EmailScreen({
           <div className="text-[10px] mb-6" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
             Where should Melisa send it?
           </div>
-          <h2 className="text-[38px] leading-[1.2] mb-4 -tracking-[0.005em]" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
+          <h2 className="text-[46px] leading-[1.2] mb-4 -tracking-[0.005em]" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
             Your Practice Read is ready to write.
           </h2>
-          <p className="text-[14px] leading-relaxed mb-10" style={{ color: H.inkSoft }}>
+          <p className="text-[13.5px] leading-relaxed mb-10" style={{ color: H.inkSoft }}>
             It lands in your inbox within 24 hours, signed by Melisa. No sales sequence follows.
           </p>
 
@@ -294,7 +294,7 @@ function EmailScreen({
                 onChange={(e) => onFirstName(e.target.value)}
                 required
                 autoFocus
-                className="w-full px-4 py-3 rounded-sm border text-[15px] bg-white"
+                className="w-full px-4 py-3 rounded-sm border text-[16px] bg-white"
                 style={{ borderColor: H.border, color: H.ink, fontFamily: H.sans }}
               />
             </div>
@@ -307,7 +307,7 @@ function EmailScreen({
                 value={email}
                 onChange={(e) => onEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 rounded-sm border text-[15px] bg-white"
+                className="w-full px-4 py-3 rounded-sm border text-[16px] bg-white"
                 style={{ borderColor: H.border, color: H.ink, fontFamily: H.sans }}
               />
             </div>
@@ -322,7 +322,7 @@ function EmailScreen({
               </button>
               <button
                 type="submit"
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-[12px] font-semibold disabled:opacity-40"
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-[12.5px] font-semibold disabled:opacity-40"
                 style={{ background: H.terracotta, color: H.cream, fontFamily: H.mono, letterSpacing: '0.16em' }}
                 disabled={!firstName.trim() || !email.trim()}
               >
@@ -361,7 +361,7 @@ function WritingScreen({ firstName }: { firstName: string }) {
         <div className="text-[10px] mb-4" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
           Reading your answers
         </div>
-        <h2 className="text-[32px] leading-[1.2] -tracking-[0.005em]" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
+        <h2 className="text-[34px] leading-[1.2] -tracking-[0.005em]" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
           Writing {firstName}&apos;s Practice Read.
         </h2>
         <style>{`
@@ -397,7 +397,7 @@ function ResultScreen({ firstName, state, score }: { firstName: string; state: P
           <h1 className="text-[46px] leading-[1.1] mb-4 -tracking-[0.01em]" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
             Thank you, {firstName}.
           </h1>
-          <p className="text-[15px] max-w-[52ch] mx-auto leading-[1.7]" style={{ color: H.inkSoft }}>
+          <p className="text-[16px] max-w-[52ch] mx-auto leading-[1.7]" style={{ color: H.inkSoft }}>
             While it lands, this is what we already know about where you are today.
           </p>
         </div>
@@ -409,14 +409,14 @@ function ResultScreen({ firstName, state, score }: { firstName: string; state: P
               {meta.eyebrow}
             </div>
             <div className="grid md:grid-cols-[2fr_1fr] gap-8 items-baseline">
-              <h2 className="text-[42px] leading-[1.1] -tracking-[0.01em]" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
+              <h2 className="text-[46px] leading-[1.1] -tracking-[0.01em]" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
                 {meta.headline}
               </h2>
               <div className="text-right">
                 <div className="text-[10px] mb-1" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.18em' }}>
                   Practice State
                 </div>
-                <div className="text-[38px] leading-none" style={{ fontFamily: H.serif, color: H.terracotta, fontWeight: 500 }}>
+                <div className="text-[46px] leading-none" style={{ fontFamily: H.serif, color: H.terracotta, fontWeight: 500 }}>
                   {meta.label}
                 </div>
                 <div className="text-[11px] mt-2" style={{ color: H.inkLight, fontFamily: H.mono }}>
@@ -438,7 +438,7 @@ function ResultScreen({ firstName, state, score }: { firstName: string; state: P
               <div className="text-[10px] mb-2" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.18em' }}>
                 What the practice looks like from here
               </div>
-              <p className="text-[14px] leading-[1.7]" style={{ color: H.ink }}>
+              <p className="text-[13.5px] leading-[1.7]" style={{ color: H.ink }}>
                 {meta.bodySignal}
               </p>
             </div>
@@ -449,14 +449,14 @@ function ResultScreen({ firstName, state, score }: { firstName: string; state: P
               </div>
               <div className="space-y-4">
                 {meta.practiceReadPreview.map((para, i) => (
-                  <p key={i} className="text-[14px] leading-[1.75]" style={{ color: H.inkSoft, fontFamily: H.serif, fontStyle: 'italic' }}>
+                  <p key={i} className="text-[13.5px] leading-[1.75]" style={{ color: H.inkSoft, fontFamily: H.serif, fontStyle: 'italic' }}>
                     &ldquo;{para}&rdquo;
                   </p>
                 ))}
               </div>
             </div>
 
-            <p className="text-[13px] italic" style={{ color: H.inkLight }}>
+            <p className="text-[13.5px] italic" style={{ color: H.inkLight }}>
               {meta.callToAction}
             </p>
           </div>
@@ -467,14 +467,14 @@ function ResultScreen({ firstName, state, score }: { firstName: string; state: P
           <div className="text-[10px] mb-4" style={{ fontFamily: H.mono, color: H.terracottaDeep, letterSpacing: '0.24em' }}>
             The Next Step, if you want it
           </div>
-          <h3 className="text-[30px] leading-tight mb-4 -tracking-[0.005em]" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
+          <h3 className="text-[34px] leading-tight mb-4 -tracking-[0.005em]" style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}>
             {LADDER.call.label}
           </h3>
-          <p className="text-[14px] leading-[1.7] mb-8" style={{ color: H.inkSoft }}>
+          <p className="text-[13.5px] leading-[1.7] mb-8" style={{ color: H.inkSoft }}>
             After you have sat with your Read for a day or two, book a 30-minute conversation with Melisa. It is a one-time free call for practitioners who feel the studio might be their next place. No sales pitch; if the fit isn&apos;t there, she will tell you so.
           </p>
           <button
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-[12px] font-semibold"
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-[12.5px] font-semibold"
             style={{ background: H.ink, color: H.cream, fontFamily: H.mono, letterSpacing: '0.16em' }}
           >
             Book the Foundation Call <ArrowRight size={12} />

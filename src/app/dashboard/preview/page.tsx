@@ -120,17 +120,17 @@ export default function PreviewIndexPage() {
                     >
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-[14px] font-semibold text-[#141821] group-hover:text-[#1B6DFC] transition-colors truncate">{asset.label}</span>
+                          <span className="text-[13.5px] font-semibold text-[#141821] group-hover:text-[#1B6DFC] transition-colors truncate">{asset.label}</span>
                           {asset.tag && tag && (
                             <span
-                              className="text-[11.5px] font-medium px-2 py-0.5 rounded-full border whitespace-nowrap"
+                              className="text-[11px] font-medium px-2 py-0.5 rounded-full border whitespace-nowrap"
                               style={{ color: tag.text, background: tag.bg, borderColor: tag.ring }}
                             >
                               {asset.tag}
                             </span>
                           )}
                         </div>
-                        <p className="text-[12px] text-[#98A0AD] leading-relaxed">{asset.description}</p>
+                        <p className="text-[12.5px] text-[#98A0AD] leading-relaxed">{asset.description}</p>
                       </div>
                       <ArrowIcon size={14} className="text-[#98A0AD] group-hover:text-[#1B6DFC] transition-colors shrink-0" />
                     </Link>

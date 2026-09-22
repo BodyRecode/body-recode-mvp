@@ -200,7 +200,7 @@ export default async function NutritionEngineHealthPage({
                 }`}
               >
                 v{v}
-                {v === DOCTRINE_VERSIONS.nutrition_plan && <span className="ml-1 text-[9px] opacity-70">(current)</span>}
+                {v === DOCTRINE_VERSIONS.nutrition_plan && <span className="ml-1 text-[10px] opacity-70">(current)</span>}
               </Link>
             ))}
           </div>
@@ -224,7 +224,7 @@ export default async function NutritionEngineHealthPage({
             </p>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               <div>
-                <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em] tabular-nums">{totalRequests.toLocaleString()}</p>
+                <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em] tabular-nums">{totalRequests.toLocaleString()}</p>
                 <p className="text-[11px] text-[#666D7A] mt-0.5">Total requests</p>
               </div>
               <div>

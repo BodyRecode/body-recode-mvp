@@ -78,7 +78,7 @@ export default function HermonyHome() {
             >
               Payments
             </p>
-            <p className="text-[14px] font-bold truncate" style={{ color: HARMONY.accentText }}>
+            <p className="text-[13.5px] font-bold truncate" style={{ color: HARMONY.accentText }}>
               All students current
             </p>
           </div>
@@ -127,7 +127,7 @@ export default function HermonyHome() {
           <SectionLabel
             accent="terracotta"
             cta={
-              <span className="text-[12px]" style={{ color: HARMONY.accentText }}>View all →</span>
+              <span className="text-[12.5px]" style={{ color: HARMONY.accentText }}>View all →</span>
             }
           >
             Recent Leads
@@ -153,7 +153,7 @@ export default function HermonyHome() {
           <SectionLabel
             accent="terracotta"
             cta={
-              <span className="text-[12px]" style={{ color: HARMONY.accentText }}>View coaching →</span>
+              <span className="text-[12.5px]" style={{ color: HARMONY.accentText }}>View coaching →</span>
             }
           >
             Recent Check-Ins
@@ -186,7 +186,7 @@ export default function HermonyHome() {
           {['Send bulk email', 'Recalculate scores', 'Publish weekly brief', 'Roll block boundaries', 'Backfill readings', 'System diagnostics'].map((label) => (
             <button
               key={label}
-              className="text-[12px] px-3 py-2 rounded-lg border border-[#E8EAEE] bg-[#FAFBFC] text-[#4B4B4B] hover:text-[#141821] hover:bg-[#EFF1F4] transition-colors"
+              className="text-[12.5px] px-3 py-2 rounded-lg border border-[#E8EAEE] bg-[#FAFBFC] text-[#4B4B4B] hover:text-[#141821] hover:bg-[#EFF1F4] transition-colors"
             >
               {label}
             </button>

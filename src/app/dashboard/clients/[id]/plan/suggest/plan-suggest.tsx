@@ -262,7 +262,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
           <button
             onClick={regenerate}
             disabled={loading || !coachGuidance.trim()}
-            className="text-[13px] font-semibold px-4 py-2 rounded-lg bg-[#0F1115] text-white hover:bg-[#000000] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="text-[13.5px] font-semibold px-4 py-2 rounded-lg bg-[#0F1115] text-white hover:bg-[#000000] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             Regenerate arc with guidance
           </button>
@@ -284,7 +284,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
               </p>
               <ul className="space-y-1.5 mb-3">
                 {doctrine.corrections.map((c, i) => (
-                  <li key={i} className="text-[13px] text-[#0F1115] leading-relaxed flex gap-2">
+                  <li key={i} className="text-[13.5px] text-[#0F1115] leading-relaxed flex gap-2">
                     <span className="text-[#0F1115] shrink-0">·</span>
                     <span>{c}</span>
                   </li>
@@ -299,7 +299,7 @@ export default function MacroPlanSuggest({ clientId }: { clientId: string }) {
               </p>
               <ul className="space-y-1.5">
                 {doctrine.warnings.map((w, i) => (
-                  <li key={i} className="text-[13px] text-[#B06E1F] leading-relaxed flex gap-2">
+                  <li key={i} className="text-[13.5px] text-[#B06E1F] leading-relaxed flex gap-2">
                     <span className="shrink-0">·</span>
                     <span>{w}</span>
                   </li>

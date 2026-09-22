@@ -165,7 +165,7 @@ export default function HelpPage() {
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         aria-label="Back to top"
-        className={`fixed bottom-6 right-6 z-50 inline-flex items-center gap-2 pl-3.5 pr-4 h-11 rounded-full bg-[#0F1115] text-[#FFFFFF] text-[13px] font-semibold border border-[#0F1115] hover:bg-[#000000] transition-all shadow-[0_12px_32px_-8px_rgba(27,109,252,0.45),0_4px_12px_-4px_rgba(0,0,0,0.6)] ${
+        className={`fixed bottom-6 right-6 z-50 inline-flex items-center gap-2 pl-3.5 pr-4 h-11 rounded-full bg-[#0F1115] text-[#FFFFFF] text-[13.5px] font-semibold border border-[#0F1115] hover:bg-[#000000] transition-all shadow-[0_12px_32px_-8px_rgba(27,109,252,0.45),0_4px_12px_-4px_rgba(0,0,0,0.6)] ${
           showTop ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-3 pointer-events-none'
         }`}
       >
@@ -4369,7 +4369,7 @@ function Section({ id, title, colour, children }: { id: string; title: string; c
           style={{ background: accent }}
         />
         <h2
-          className="text-[12px] font-medium"
+          className="text-[12.5px] font-medium"
           style={{
             fontFamily: "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace",
             letterSpacing: '0.14em',
@@ -4379,7 +4379,7 @@ function Section({ id, title, colour, children }: { id: string; title: string; c
           {title}
         </h2>
       </div>
-      <div className="px-6 py-5 space-y-3 text-[#4A4F57] text-[14px] leading-relaxed">
+      <div className="px-6 py-5 space-y-3 text-[#4A4F57] text-[13.5px] leading-relaxed">
         {children}
       </div>
     </div>
@@ -4421,7 +4421,7 @@ function StatusList({ items }: { items: { label: string; desc: string }[] }) {
 
 function Note({ children }: { children: React.ReactNode }) {
   return (
-    <div className="br-card px-4 py-3 text-[12px] text-[#6E747D] leading-relaxed">
+    <div className="br-card px-4 py-3 text-[12.5px] text-[#6E747D] leading-relaxed">
       <span className="font-bold text-[#4A4F57]">Note: </span>{children}
     </div>
   )

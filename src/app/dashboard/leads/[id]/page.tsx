@@ -134,7 +134,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2.5 mb-1.5">
             <Avatar name={lead.name} size={34} />
-            <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">{lead.name}</h1>
+            <h1 className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em]">{lead.name}</h1>
             <span className={`text-[11px] font-medium px-2.5 py-[3px] rounded-full border ${getLeadStatusColour(lead.status)}`}>
               {getLeadStatusLabel(lead.status)}
             </span>
@@ -164,7 +164,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           {lead.scorecard_score != null && lead.scorecard_body_state && (
             <div className="text-right">
               <div className="flex items-baseline gap-1.5 justify-end">
-                <span className="text-[30px] font-semibold leading-none tracking-[-0.035em]" style={{ color: stateColour, fontVariantNumeric: 'tabular-nums' }}>{lead.scorecard_score}</span>
+                <span className="text-[34px] font-semibold leading-none tracking-[-0.035em]" style={{ color: stateColour, fontVariantNumeric: 'tabular-nums' }}>{lead.scorecard_score}</span>
                 <span className="text-[12.5px] text-[#98A0AD]">/ 15</span>
               </div>
               <p className="text-[11px] font-medium mt-0.5" style={{ color: stateColour }}>
@@ -183,7 +183,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
       {/* Next action strip */}
       <div className="mt-4 pt-4 border-t border-[#E8EAEE] flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2 text-[13px]">
+        <div className="flex items-center gap-2 text-[13.5px]">
           {nextBooking ? (
             <>
               <CalendarClock size={14} className="text-[#1B6DFC]" />
@@ -197,12 +197,12 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         <div className="flex items-center gap-2">
           {nextBooking?.meeting_link && (
             <Link href={nextBooking.meeting_link} target="_blank"
-              className="inline-flex items-center gap-1.5 text-[13px] font-bold px-3 py-1.5 border border-[#E8EAEE] text-[#43474F] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors">
+              className="inline-flex items-center gap-1.5 text-[13.5px] font-bold px-3 py-1.5 border border-[#E8EAEE] text-[#43474F] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors">
               <Video size={13} /> Join Zoom
             </Link>
           )}
           <Link href={`/companion/${lead.id}/zoom`} target="_blank"
-            className="text-[13px] font-bold px-3 py-1.5 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] transition-colors">
+            className="text-[13.5px] font-bold px-3 py-1.5 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] transition-colors">
             Call companion ↗
           </Link>
         </div>
@@ -213,7 +213,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           <p className="text-[11px] font-medium text-[#8A5A14] mb-1.5 flex items-center gap-1.5">
             <AlertTriangle size={12} /> Scope flags from their own words
           </p>
-          <p className="text-[13px] text-[#8A5A14] leading-relaxed">
+          <p className="text-[13.5px] text-[#8A5A14] leading-relaxed">
             {scopeFlags.map(f => f.flag).join(' · ')}
             <span className="text-[#A96A12]"> — what to do about each is in the Brief tab.</span>
           </p>
@@ -232,7 +232,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
     content: (
       <div className="space-y-4">
         {isStoredFallback && (
-          <p className="text-[12px] text-[#B7791F] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] rounded-lg px-3 py-2">
+          <p className="text-[12.5px] text-[#B7791F] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] rounded-lg px-3 py-2">
             Showing the stored brief. Not enough scorecard data on file to rebuild it live.
           </p>
         )}
@@ -242,11 +242,11 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           : <Card><p className="text-sm text-[#666D7A]">No brief yet. It builds automatically once a scorecard is on file.</p></Card>}
         {supplement && (
           <details className="br-card group">
-            <summary className="px-5 py-3.5 cursor-pointer select-none text-[13px] font-semibold text-[#666D7A] hover:text-[#141821]">
+            <summary className="px-5 py-3.5 cursor-pointer select-none text-[13.5px] font-semibold text-[#666D7A] hover:text-[#141821]">
               In-person session supplement
               <span className="font-normal text-[#98A0AD]"> — only if you are running this at AF Newstead</span>
             </summary>
-            <pre className="mx-5 mb-5 text-[12px] leading-relaxed text-[#43474F] whitespace-pre-wrap font-sans bg-[#FAFAFA] border border-[#E8EAEE] rounded-lg p-4 max-h-[420px] overflow-y-auto">
+            <pre className="mx-5 mb-5 text-[12.5px] leading-relaxed text-[#43474F] whitespace-pre-wrap font-sans bg-[#FAFAFA] border border-[#E8EAEE] rounded-lg p-4 max-h-[420px] overflow-y-auto">
               {supplement}
             </pre>
           </details>
@@ -276,7 +276,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         {lead.situation_text && (
           <Card>
             <CardTitle>In their own words, from the scorecard</CardTitle>
-            <p className="text-[13px] leading-relaxed text-[#43474F] whitespace-pre-wrap">{lead.situation_text}</p>
+            <p className="text-[13.5px] leading-relaxed text-[#43474F] whitespace-pre-wrap">{lead.situation_text}</p>
           </Card>
         )}
         {enrollment?.quiz_answers && (
@@ -284,7 +284,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             <CardTitle>Day 7 Check-In answers</CardTitle>
             <div className="grid grid-cols-2 gap-x-6 gap-y-1.5">
               {Object.entries(enrollment.quiz_answers as Record<string, string>).map(([k, v]) => (
-                <div key={k} className="flex justify-between gap-3 text-[12px] border-b border-[#F4F4F4] py-1">
+                <div key={k} className="flex justify-between gap-3 text-[12.5px] border-b border-[#F4F4F4] py-1">
                   <span className="text-[#98A0AD]">{k}</span>
                   <span className="text-[#43474F] font-medium">{v}</span>
                 </div>
@@ -309,7 +309,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                 <span className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${EVENT_COLOURS[e.type] ?? 'bg-[#D4D4D4]'}`} />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-baseline justify-between gap-3">
-                    <p className="text-[13px] font-semibold text-[#141821]">
+                    <p className="text-[13.5px] font-semibold text-[#141821]">
                       {e.subject || EVENT_LABELS[e.type] || e.type}
                     </p>
                     <span className="text-[11px] text-[#98A0AD] shrink-0" style={{ fontFamily: MONO_FONT }}>
@@ -320,7 +320,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                     <p className="text-[11px] text-[#98A0AD]">{EVENT_LABELS[e.type]}</p>
                   )}
                   {e.notes && e.type !== 'prep_form_completed' && (
-                    <p className="text-[12px] text-[#666D7A] mt-0.5 whitespace-pre-wrap">{e.notes}</p>
+                    <p className="text-[12.5px] text-[#666D7A] mt-0.5 whitespace-pre-wrap">{e.notes}</p>
                   )}
                 </div>
               </div>
@@ -356,7 +356,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                 })}
               </div>
             )}
-            <div className="grid grid-cols-2 gap-x-6 gap-y-1.5 text-[12px] pt-3 border-t border-[#E8EAEE]">
+            <div className="grid grid-cols-2 gap-x-6 gap-y-1.5 text-[12.5px] pt-3 border-t border-[#E8EAEE]">
               {[
                 ['Body state', lead.scorecard_body_state],
                 ['Pattern', lead.scorecard_profile ? `${lead.scorecard_profile}${lead.scorecard_profile_confidence === 'low' ? ' (provisional)' : ''}` : null],
@@ -372,7 +372,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             </div>
             {scorecardReport?.token && (
               <Link href={`/report/${scorecardReport.token}`} target="_blank"
-                className="inline-block mt-4 text-[13px] font-bold text-[#1B6DFC] hover:underline">
+                className="inline-block mt-4 text-[13.5px] font-bold text-[#1B6DFC] hover:underline">
                 Open their scorecard report ↗
               </Link>
             )}
@@ -384,7 +384,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         {enrollment && (
           <Card>
             <CardTitle>14-Day Challenge</CardTitle>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-1.5 text-[12px]">
+            <div className="grid grid-cols-2 gap-x-6 gap-y-1.5 text-[12.5px]">
               {[
                 ['Status', enrollment.status],
                 ['Enrolled', bne(enrollment.enrolled_at, false)],
@@ -400,7 +400,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             </div>
             {enrollment.token && (
               <Link href={`/decode/${enrollment.token}`} target="_blank"
-                className="inline-block mt-3 text-[13px] font-bold text-[#1B6DFC] hover:underline">
+                className="inline-block mt-3 text-[13.5px] font-bold text-[#1B6DFC] hover:underline">
                 Open their Challenge portal ↗
               </Link>
             )}
@@ -410,7 +410,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         {checkInAnswers && Object.keys(checkInAnswers).length > 0 && (
           <Card>
             <CardTitle>Legacy performance check-in</CardTitle>
-            <p className="text-[12px] text-[#666D7A]">{Object.keys(checkInAnswers).length} answers on file from the old check-in form.</p>
+            <p className="text-[12.5px] text-[#666D7A]">{Object.keys(checkInAnswers).length} answers on file from the old check-in form.</p>
           </Card>
         )}
       </div>
@@ -441,7 +441,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         {lead.notes && (
           <Card>
             <CardTitle>Notes</CardTitle>
-            <p className="text-[13px] text-[#43474F] whitespace-pre-wrap leading-relaxed">{lead.notes}</p>
+            <p className="text-[13.5px] text-[#43474F] whitespace-pre-wrap leading-relaxed">{lead.notes}</p>
           </Card>
         )}
         <Card>
@@ -454,7 +454,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
   return (
     <div className="max-w-[900px]">
-      <Link href="/dashboard/leads" className="inline-flex items-center gap-1 text-[12px] text-[#98A0AD] hover:text-[#43474F] transition-colors mb-3">
+      <Link href="/dashboard/leads" className="inline-flex items-center gap-1 text-[12.5px] text-[#98A0AD] hover:text-[#43474F] transition-colors mb-3">
         <ChevronLeft size={13} /> All Leads
       </Link>
       {commandBar}

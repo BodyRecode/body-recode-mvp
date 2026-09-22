@@ -24,7 +24,7 @@ function Card({ children, className = '' }: { children: React.ReactNode; classNa
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-[11.5px] font-medium text-[#666D7A] mb-3">
+    <p className="text-[11px] font-medium text-[#666D7A] mb-3">
       {children}
     </p>
   )
@@ -209,7 +209,7 @@ function PositioningTab() {
 
       <Card>
         <SectionLabel>Core Philosophy</SectionLabel>
-        <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em] mb-3">Interpret before you act.</p>
+        <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em] mb-3">Interpret before you act.</p>
         <p className="text-[#666D7A] text-sm leading-relaxed">
           Without correct interpretation - effort is misdirected, progress stalls, burnout increases.<br />
           With correct interpretation - decisions become clear, execution becomes effective, results become repeatable.
@@ -858,7 +858,7 @@ export default function PersonalBrandPage() {
       {/* Header */}
       <div className="px-6 pt-6 pb-0 border-b border-[#E8EAEE]">
         <div className="flex items-center gap-3 mb-1">
-          <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">Personal Brand</h1>
+          <h1 className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em]">Personal Brand</h1>
           <span className="text-[12.5px] text-[#666D7A] bg-[#EFF1F4] px-2 py-0.5 rounded font-mono">@kade_dunstone_</span>
         </div>
         <p className="text-sm text-[#666D7A] mb-4">Instagram - the thinking, the journey, the builder</p>

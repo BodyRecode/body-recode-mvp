@@ -138,7 +138,7 @@ export default async function MacroPlanPage({ params }: { params: Promise<{ id: 
             <span>/</span>
             <span className="text-[#0F1115]">Macro Plan</span>
           </div>
-          <h1 className="text-[22px] font-semibold text-[#0F1115] tracking-[-0.025em]">Macro Training Arc</h1>
+          <h1 className="text-[20px] font-semibold text-[#0F1115] tracking-[-0.025em]">Macro Training Arc</h1>
           <p className="text-sm text-[#6E747D] mt-1">Plan the full sequence of meso blocks. Each block links to a generated program.</p>
         </div>
         <Link

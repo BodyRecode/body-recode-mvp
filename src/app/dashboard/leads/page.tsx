@@ -106,7 +106,7 @@ export default async function LeadsPage({
             <div className="inline-flex items-center bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg p-0.5">
               <Link
                 href="/dashboard/leads"
-                className={`text-[12px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
+                className={`text-[12.5px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
                   !showInactive ? 'bg-[#1B6DFC] text-[#FFFFFF]' : 'text-[#666D7A] hover:text-[#141821]'
                 }`}
               >
@@ -114,7 +114,7 @@ export default async function LeadsPage({
               </Link>
               <Link
                 href="/dashboard/leads?view=inactive"
-                className={`text-[12px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
+                className={`text-[12.5px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
                   showInactive ? 'bg-[#EFF1F4] text-[#141821]' : 'text-[#666D7A] hover:text-[#141821]'
                 }`}
               >
@@ -192,8 +192,8 @@ export default async function LeadsPage({
                   )}
                 </div>
                 <div className="min-w-0">
-                  <p className="text-[14px] font-medium text-[#141821] truncate group-hover:text-[#1B6DFC] transition-colors">{lead.name}</p>
-                  <p className="text-[12px] text-[#98A0AD] truncate mt-0.5">
+                  <p className="text-[13.5px] font-medium text-[#141821] truncate group-hover:text-[#1B6DFC] transition-colors">{lead.name}</p>
+                  <p className="text-[12.5px] text-[#98A0AD] truncate mt-0.5">
                     {lead.email}
                     {lead.phone ? ` · ${lead.phone}` : ''}
                     {' · '}

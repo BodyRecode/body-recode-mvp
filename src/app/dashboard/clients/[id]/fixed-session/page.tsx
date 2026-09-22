@@ -38,7 +38,7 @@ export default async function FixedSessionPage({ params }: { params: Promise<{ i
         <Link href={`/dashboard/clients/${id}`} className="text-[12.5px] text-[#6E747D] hover:text-[#0F1115] transition-colors block mb-4">
           ← Back to {client.name}
         </Link>
-        <h1 className="text-[22px] font-semibold text-[#0F1115] tracking-[-0.025em]">Face-to-Face Sessions</h1>
+        <h1 className="text-[20px] font-semibold text-[#0F1115] tracking-[-0.025em]">Face-to-Face Sessions</h1>
         <p className="text-[#6E747D] text-sm mt-1">Set recurring weekly slots and manage individual bookings.</p>
       </div>
 

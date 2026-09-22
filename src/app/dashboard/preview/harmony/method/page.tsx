@@ -46,12 +46,12 @@ export default function HarmonyMethod() {
             The Method
           </div>
           <h1
-            className="text-[56px] leading-[1.1] mb-8 -tracking-[0.01em]"
+            className="text-[58px] leading-[1.1] mb-8 -tracking-[0.01em]"
             style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}
           >
             Three pillars, held together across every practice.
           </h1>
-          <p className="text-[17px] leading-[1.7]" style={{ color: H.inkSoft }}>
+          <p className="text-[16px] leading-[1.7]" style={{ color: H.inkSoft }}>
             Breath, body, presence. These are not stages you graduate through - they are the three parts of a single practice, held together in every session brief we write for you.
           </p>
         </div>
@@ -77,7 +77,7 @@ export default function HarmonyMethod() {
                   Pillar {String(i + 1).padStart(2, '0')}
                 </div>
                 <h2
-                  className="text-[52px] leading-none"
+                  className="text-[58px] leading-none"
                   style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}
                 >
                   {p.label}
@@ -85,13 +85,13 @@ export default function HarmonyMethod() {
               </div>
               <div>
                 <p
-                  className="text-[24px] leading-[1.35] mb-6"
+                  className="text-[20px] leading-[1.35] mb-6"
                   style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500 }}
                 >
                   {p.lede}
                 </p>
                 {p.body.map((para, j) => (
-                  <p key={j} className="text-[15px] leading-[1.8] mb-4" style={{ color: H.inkSoft }}>
+                  <p key={j} className="text-[16px] leading-[1.8] mb-4" style={{ color: H.inkSoft }}>
                     {para}
                   </p>
                 ))}
@@ -104,14 +104,14 @@ export default function HarmonyMethod() {
       <section className="py-24 px-8" style={{ backgroundColor: H.ink }}>
         <div className="max-w-[820px] mx-auto text-center">
           <h2
-            className="text-[38px] leading-[1.2] mb-8 -tracking-[0.01em]"
+            className="text-[46px] leading-[1.2] mb-8 -tracking-[0.01em]"
             style={{ fontFamily: H.serif, color: H.cream, fontWeight: 500 }}
           >
             The way to see how the method meets your body is to take the Assessment.
           </h2>
           <Link
             href={`${BASE}/assessment`}
-            className="inline-flex items-center gap-2 px-8 py-5 rounded-full text-[13px] font-semibold uppercase"
+            className="inline-flex items-center gap-2 px-8 py-5 rounded-full text-[13.5px] font-semibold uppercase"
             style={{
               background: H.terracotta,
               color: H.cream,

@@ -73,7 +73,7 @@ export function BuildoutBoard({
         <summary className="cursor-pointer text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em] select-none">
           Legend · statuses + effort
         </summary>
-        <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-4 text-[13px] text-[#141821] leading-relaxed">
+        <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-4 text-[13.5px] text-[#141821] leading-relaxed">
           <div>
             <div className="text-[11px] font-medium text-[#666D7A] mb-2">Status badges</div>
             <ul className="space-y-2">
@@ -116,13 +116,13 @@ export function BuildoutBoard({
         <div className="flex items-baseline justify-between mb-3 gap-3 flex-wrap">
           <div>
             <div className="text-[11px] font-medium text-[#666D7A]">Overall progress</div>
-            <div className="text-[36px] font-bold text-[#141821] mt-1 font-mono">
+            <div className="text-[46px] font-bold text-[#141821] mt-1 font-mono">
               {overallPct}<span className="text-[20px] text-[#98A0AD]">%</span>
             </div>
           </div>
           <div className="text-right">
             <div className="text-[11px] font-medium text-[#666D7A]">Steps</div>
-            <div className="text-[13px] text-[#141821] mt-1 font-mono">
+            <div className="text-[13.5px] text-[#141821] mt-1 font-mono">
               {shippedSteps} shipped · {inProgressSteps} in progress · {plannedSteps} planned · {deferredSteps} deferred
               {blockedSteps > 0 && <> · <span className="text-[#C82626]">{blockedSteps} blocked</span></>}
             </div>
@@ -143,10 +143,10 @@ export function BuildoutBoard({
         {next && (
           <div className="p-4 rounded-xl border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)]">
             <div className="text-[11px] font-medium text-[#1056D6] mb-1">Next up</div>
-            <div className="text-[15px] font-semibold text-[#141821] mb-1">
+            <div className="text-[16px] font-semibold text-[#141821] mb-1">
               {next.phase.label ?? `Phase ${next.phase.id}`} · {next.step.title}
             </div>
-            <p className="text-[13px] text-[#141821] leading-relaxed mb-2">{next.step.description}</p>
+            <p className="text-[13.5px] text-[#141821] leading-relaxed mb-2">{next.step.description}</p>
             <p className="text-[11px] text-[#0B4FCB]/80 italic leading-relaxed">
               Why this: it&apos;s the first in-progress step (or the first planned step with no active blocker) across all phases in order.
             </p>
@@ -155,10 +155,10 @@ export function BuildoutBoard({
         {gate && (
           <div className="p-4 rounded-xl border border-[#CAE7D5] bg-[#EDF8F1]">
             <div className="text-[11px] font-medium text-[#177245] mb-1">Phase gate</div>
-            <div className="text-[15px] font-semibold text-[#141821] mb-1">
+            <div className="text-[16px] font-semibold text-[#141821] mb-1">
               {gate.label ?? `Phase ${gate.id}`} complete — review before starting the next one
             </div>
-            <p className="text-[13px] text-[#141821] leading-relaxed mb-2">
+            <p className="text-[13.5px] text-[#141821] leading-relaxed mb-2">
               All non-deferred steps in this phase have shipped. Take a beat to validate outcomes before absorbing the next phase&apos;s cost.
             </p>
             <p className="text-[11px] text-[#125C37]/80 italic leading-relaxed">
@@ -175,7 +175,7 @@ export function BuildoutBoard({
         <div className="px-5 py-4 border-b border-[#E8EAEE] bg-[#FBFCFD]">
           <div className="text-[10px] font-medium text-[#666D7A]">Reference library</div>
           <h2 className="text-[16px] font-bold text-[#141821] mt-0.5">Cross-phase docs</h2>
-          <p className="text-[12px] text-[#666D7A] leading-relaxed mt-1">
+          <p className="text-[12.5px] text-[#666D7A] leading-relaxed mt-1">
             The strategic + operational docs that span multiple phases. Both .md (source) and .docx (Word-friendly) versions served from the deployment — click either to open.
           </p>
         </div>
@@ -209,7 +209,7 @@ function PhaseCard({ phase }: { phase: Phase }) {
         <div className="flex items-baseline justify-between gap-3 flex-wrap">
           <div>
             <div className="text-[10px] font-medium text-[#666D7A]">{phase.label ?? `Phase ${phase.id}`}</div>
-            <h2 className="text-[18px] font-bold text-[#141821] mt-0.5">{phase.title}</h2>
+            <h2 className="text-[20px] font-bold text-[#141821] mt-0.5">{phase.title}</h2>
           </div>
           <div className="text-right">
             <div className="text-[11px] text-[#666D7A] font-mono">
@@ -218,12 +218,12 @@ function PhaseCard({ phase }: { phase: Phase }) {
                 <span className="text-[#98A0AD]"> · {phase.steps.filter((s) => s.status === 'deferred').length} deferred</span>
               )}
             </div>
-            <div className="text-[18px] font-bold font-mono mt-0.5" style={{ color: p.pct === 100 ? '#059669' : '#1B6DFC' }}>
+            <div className="text-[20px] font-bold font-mono mt-0.5" style={{ color: p.pct === 100 ? '#059669' : '#1B6DFC' }}>
               {p.pct}%
             </div>
           </div>
         </div>
-        <p className="text-[13px] text-[#666D7A] leading-relaxed mt-2">{phase.description}</p>
+        <p className="text-[13.5px] text-[#666D7A] leading-relaxed mt-2">{phase.description}</p>
         <div className="w-full h-1.5 bg-[#EFF1F4] rounded-full overflow-hidden mt-3">
           <div className={`h-full ${barColor}`} style={{ width: `${p.pct}%` }} />
         </div>
@@ -234,7 +234,7 @@ function PhaseCard({ phase }: { phase: Phase }) {
         <summary className="cursor-pointer text-[11px] font-medium text-[#0A46B2] select-none">
           What this phase means
         </summary>
-        <div className="mt-3 space-y-2 text-[13px] text-[#141821] leading-relaxed">
+        <div className="mt-3 space-y-2 text-[13.5px] text-[#141821] leading-relaxed">
           {phase.longDescription.map((para, i) => (
             <p key={i}>{para}</p>
           ))}
@@ -266,7 +266,7 @@ function DocCard({ doc }: { doc: Doc }) {
   const isSql = doc.mdUrl.endsWith('.sql')
   return (
     <div className="p-3 rounded-xl border border-[#E8EAEE] bg-white hover:border-[#9CC0FB] transition-colors">
-      <div className="text-[13px] font-semibold text-[#141821] mb-1 break-all">{doc.title}</div>
+      <div className="text-[13.5px] font-semibold text-[#141821] mb-1 break-all">{doc.title}</div>
       <p className="text-[11px] text-[#666D7A] leading-relaxed mb-2">{doc.description}</p>
       <div className="flex items-center gap-2 flex-wrap">
         {doc.pdfUrl && (
@@ -274,7 +274,7 @@ function DocCard({ doc }: { doc: Doc }) {
             href={doc.pdfUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[12px] font-medium px-2 py-1 rounded bg-[#1560E0] text-white hover:bg-[#1056D6]"
+            className="text-[12.5px] font-medium px-2 py-1 rounded bg-[#1560E0] text-white hover:bg-[#1056D6]"
           >
             View .pdf
           </a>
@@ -283,7 +283,7 @@ function DocCard({ doc }: { doc: Doc }) {
           href={doc.mdUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[12px] font-medium px-2 py-1 rounded bg-[#F4F6F9] text-[#141821] hover:bg-[#DDE9FD] hover:text-[#1056D6]"
+          className="text-[12.5px] font-medium px-2 py-1 rounded bg-[#F4F6F9] text-[#141821] hover:bg-[#DDE9FD] hover:text-[#1056D6]"
         >
           {isSql ? 'View .sql' : 'View .md'}
         </a>
@@ -291,7 +291,7 @@ function DocCard({ doc }: { doc: Doc }) {
           <a
             href={doc.docxUrl}
             download
-            className="text-[12px] font-medium px-2 py-1 rounded bg-[#F4F6F9] text-[#141821] hover:bg-[#DDE9FD] hover:text-[#1056D6]"
+            className="text-[12.5px] font-medium px-2 py-1 rounded bg-[#F4F6F9] text-[#141821] hover:bg-[#DDE9FD] hover:text-[#1056D6]"
           >
             Download .docx
           </a>
@@ -304,7 +304,7 @@ function DocCard({ doc }: { doc: Doc }) {
 function StatusChip({ status }: { status: StepStatus }) {
   const badge = statusBadge(status)
   return (
-    <span className={`inline-block text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded flex-shrink-0 ${badge.classes}`}>
+    <span className={`inline-block text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded flex-shrink-0 ${badge.classes}`}>
       {badge.label}
     </span>
   )
@@ -319,14 +319,14 @@ function StepRow({ step }: { step: Step }) {
     <li className={`px-5 py-4 ${rowTint}`}>
       <div className="flex items-start gap-4">
         <div className="flex-shrink-0 pt-0.5">
-          <span className={`inline-block text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded ${badge.classes}`}>
+          <span className={`inline-block text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded ${badge.classes}`}>
             {badge.label}
           </span>
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-baseline justify-between gap-3 flex-wrap mb-1">
             <div className="flex items-baseline gap-2 flex-wrap">
-              <div className="text-[14px] font-semibold text-[#141821]">{step.title}</div>
+              <div className="text-[13.5px] font-semibold text-[#141821]">{step.title}</div>
               {step.tags && step.tags.length > 0 && (
                 <span className="flex gap-1">
                   {step.tags.map((t) => (
@@ -345,10 +345,10 @@ function StepRow({ step }: { step: Step }) {
               {step.shippedAt && <span>· shipped {step.shippedAt}</span>}
             </div>
           </div>
-          <p className="text-[13px] text-[#141821] leading-relaxed mb-2">{step.description}</p>
+          <p className="text-[13.5px] text-[#141821] leading-relaxed mb-2">{step.description}</p>
 
           {step.notes && (
-            <p className="text-[12px] text-[#666D7A] leading-relaxed mb-2 italic">
+            <p className="text-[12.5px] text-[#666D7A] leading-relaxed mb-2 italic">
               {step.notes}
             </p>
           )}

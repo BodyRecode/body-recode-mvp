@@ -80,8 +80,8 @@ export default async function ProgressReadPage({ params }: { params: Promise<{ i
 
       {!latestCheck && (
         <div className="br-card p-6 mb-6">
-          <p className="text-[14px] text-[#0F1115] font-semibold mb-1">No new Progress Check submitted yet</p>
-          <p className="text-[13px] text-[#6E747D] leading-relaxed">
+          <p className="text-[13.5px] text-[#0F1115] font-semibold mb-1">No new Progress Check submitted yet</p>
+          <p className="text-[13.5px] text-[#6E747D] leading-relaxed">
             {pendingCheck
               ? `Her Progress Check was sent ${fmt(pendingCheck.created_at)} and is ${pendingCheck.status === 'started' ? 'in progress' : 'not started'}. The Progress Read can be generated once she submits it.`
               : 'A Progress Read is generated from the near-full Progress Check (from 14 Sep 2026). Checks from before then use the Progress Read panel on the Training page.'}
@@ -92,8 +92,8 @@ export default async function ProgressReadPage({ params }: { params: Promise<{ i
       {latestCheck && (
         <div className="br-card p-6 mb-6 flex items-start justify-between gap-6 flex-wrap">
           <div>
-            <p className="text-[14px] text-[#0F1115] font-semibold mb-1">Progress Check submitted {fmt(latestCheck.submitted_at)}</p>
-            <p className="text-[13px] text-[#6E747D] leading-relaxed max-w-[520px]">
+            <p className="text-[13.5px] text-[#0F1115] font-semibold mb-1">Progress Check submitted {fmt(latestCheck.submitted_at)}</p>
+            <p className="text-[13.5px] text-[#6E747D] leading-relaxed max-w-[520px]">
               {readIsForLatestCheck ? `Draft generated ${fmt(read!.generated_at)}. Regenerating keeps this one on record.` : 'Not read yet.'}
             </p>
           </div>
@@ -107,14 +107,14 @@ export default async function ProgressReadPage({ params }: { params: Promise<{ i
             <div className="px-6 pt-5 pb-5 grid grid-cols-1 sm:grid-cols-3 gap-5 border-b border-[#E4E4E0]">
               <div>
                 <p className="text-[11px] font-medium text-[#9CA2AB] mb-1.5">Readiness</p>
-                <p className="text-[17px] font-bold text-[#0F1115]">
+                <p className="text-[16px] font-bold text-[#0F1115]">
                   {PUBLIC_STATE[read.previous_body_state ?? ''] ?? read.previous_body_state ?? 'Unknown'} → {PUBLIC_STATE[read.body_state_classification] ?? read.body_state_classification}
                 </p>
                 <p className="text-[12.5px] text-[#6E747D] capitalize">{read.state_direction}{read.state_clamped ? ' · held to one step by the rules' : ''}</p>
               </div>
               <div>
                 <p className="text-[11px] font-medium text-[#9CA2AB] mb-1.5">Pattern</p>
-                <p className="text-[17px] font-bold text-[#0F1115]">{readPatternLabel(read.pattern_classification) ?? 'Not named'}</p>
+                <p className="text-[16px] font-bold text-[#0F1115]">{readPatternLabel(read.pattern_classification) ?? 'Not named'}</p>
                 <p className="text-[12.5px] text-[#6E747D]">
                   {read.pattern_classification !== 'Indeterminate' && read.pattern_confidence ? `Confidence ${read.pattern_confidence}` : ''}
                   {read.pattern_changed ? ` · changed from ${change.from}` : change.from ? ' · unchanged' : ' · first pattern named'}
@@ -122,7 +122,7 @@ export default async function ProgressReadPage({ params }: { params: Promise<{ i
               </div>
               <div>
                 <p className="text-[11px] font-medium text-[#9CA2AB] mb-1.5">Four readiness ratings</p>
-                <p className="text-[13px] text-[#4A4F57] leading-relaxed">
+                <p className="text-[13.5px] text-[#4A4F57] leading-relaxed">
                   Capacity {read.exposure_readiness_capacity} · Schedule {read.exposure_readiness_schedule}<br />
                   Regulation {read.exposure_readiness_regulation} · Behaviour {read.exposure_readiness_behaviour}
                 </p>
@@ -144,16 +144,16 @@ export default async function ProgressReadPage({ params }: { params: Promise<{ i
           {read.pattern_changed && change.evidence && (
             <div className="br-card-flagged px-5 py-4 mb-6">
               <p className="text-[11px] font-medium text-[#0F1115] mb-1.5">Why the pattern changed</p>
-              <p className="text-[13px] text-[#4A4F57] leading-relaxed">{change.evidence}</p>
+              <p className="text-[13.5px] text-[#4A4F57] leading-relaxed">{change.evidence}</p>
             </div>
           )}
 
           {lint.length > 0 && (
             <div className="rounded-xl border border-[#EADCC4] bg-[#FDF8F1] px-5 py-4 mb-6">
-              <p className="text-[12px] font-medium text-[#8A5514] mb-2">Pre-publish check on her version</p>
+              <p className="text-[12.5px] font-medium text-[#8A5514] mb-2">Pre-publish check on her version</p>
               <ul className="space-y-1.5">
                 {lint.map((f, i) => (
-                  <li key={i} className="text-[13px] text-[#4A4F57] leading-relaxed">
+                  <li key={i} className="text-[13.5px] text-[#4A4F57] leading-relaxed">
                     <span className="font-semibold">{f.severity === 'block' ? 'Must fix' : 'Check'}:</span> {f.message}{f.excerpt ? ` "${f.excerpt}"` : ''}
                   </li>
                 ))}
@@ -161,18 +161,18 @@ export default async function ProgressReadPage({ params }: { params: Promise<{ i
             </div>
           )}
 
-          <h2 className="text-[15px] font-semibold text-[#0F1115] mb-1">Her version</h2>
+          <h2 className="text-[16px] font-semibold text-[#0F1115] mb-1">Her version</h2>
           <p className="text-[12.5px] text-[#6E747D] mb-3">Exactly what she will see, written to her. Nothing below this box reaches her.</p>
           <div className="br-card p-6 mb-8 space-y-5">
             {HER_SECTIONS.filter(([k]) => her[k]).map(([k, label]) => (
               <div key={k}>
                 <p className="text-[11px] font-medium text-[#9CA2AB] mb-1">{label}</p>
-                <p className={`leading-relaxed ${k === 'headline' ? 'text-[16px] font-semibold text-[#0F1115]' : 'text-[14px] text-[#4A4F57]'}`}>{her[k]}</p>
+                <p className={`leading-relaxed ${k === 'headline' ? 'text-[16px] font-semibold text-[#0F1115]' : 'text-[13.5px] text-[#4A4F57]'}`}>{her[k]}</p>
               </div>
             ))}
           </div>
 
-          <h2 className="text-[15px] font-semibold text-[#0F1115] mb-3">For you only</h2>
+          <h2 className="text-[16px] font-semibold text-[#0F1115] mb-3">For you only</h2>
           {rules.length > 0 && (
             <div className="br-card px-6 py-4 mb-4">
               <p className="text-[11px] font-medium text-[#9CA2AB] mb-2">Operating rules</p>
@@ -183,21 +183,21 @@ export default async function ProgressReadPage({ params }: { params: Promise<{ i
             {typeof content.pattern_competing_read === 'string' && content.pattern_competing_read !== 'None' && (
               <div>
                 <p className="text-[11px] font-medium text-[#9CA2AB] mb-1">{read.pattern_classification === 'Indeterminate' ? 'Leaning toward' : 'Competing read'}</p>
-                <p className="text-[14px] text-[#4A4F57]">{content.pattern_competing_read}</p>
+                <p className="text-[13.5px] text-[#4A4F57]">{content.pattern_competing_read}</p>
               </div>
             )}
             {COACH_SECTIONS.filter(([k]) => typeof content[k] === 'string' && (content[k] as string).trim()).map(([k, label]) => (
               <div key={k}>
                 <p className="text-[11px] font-medium text-[#9CA2AB] mb-1">{label}</p>
-                <p className="text-[14px] text-[#4A4F57] leading-relaxed whitespace-pre-line">{content[k] as string}</p>
+                <p className="text-[13.5px] text-[#4A4F57] leading-relaxed whitespace-pre-line">{content[k] as string}</p>
               </div>
             ))}
           </div>
 
           {read.comparison_text && (
             <details className="br-card px-6 py-4 mb-10">
-              <summary className="text-[13px] font-medium text-[#0F1115] cursor-pointer">The computed comparison the read was given</summary>
-              <pre className="mt-3 text-[12px] text-[#4A4F57] whitespace-pre-wrap leading-relaxed font-sans">{read.comparison_text}</pre>
+              <summary className="text-[13.5px] font-medium text-[#0F1115] cursor-pointer">The computed comparison the read was given</summary>
+              <pre className="mt-3 text-[12.5px] text-[#4A4F57] whitespace-pre-wrap leading-relaxed font-sans">{read.comparison_text}</pre>
             </details>
           )}
         </>

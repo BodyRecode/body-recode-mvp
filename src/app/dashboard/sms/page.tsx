@@ -88,7 +88,7 @@ export default async function SmsPulsePage() {
           <span className="text-[11px] text-[#666D7A] font-mono">Newest first</span>
         </div>
         {recentLogs.length === 0 ? (
-          <div className="p-8 text-center text-[13px] text-[#666D7A]">No SMS activity yet. Consented scorecard + challenge submissions will land here.</div>
+          <div className="p-8 text-center text-[13.5px] text-[#666D7A]">No SMS activity yet. Consented scorecard + challenge submissions will land here.</div>
         ) : (
           <ul className="divide-y divide-[#F4F6F9]">
             {recentLogs.map((row) => (
@@ -98,12 +98,12 @@ export default async function SmsPulsePage() {
         )}
       </div>
 
-      <div className="mb-8 p-4 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] text-[12px] text-[#666D7A] leading-relaxed">
+      <div className="mb-8 p-4 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] text-[12.5px] text-[#666D7A] leading-relaxed">
         <p><strong className="text-[#141821]">How this works.</strong> Every outbound SMS routes through <code className="bg-white px-1 py-0.5 rounded border border-[#E8EAEE]">sendLeadSms()</code> which checks the lead&apos;s <code className="bg-white px-1 py-0.5 rounded border border-[#E8EAEE]">sms_opt_in_at</code>, hard-stops on <code className="bg-white px-1 py-0.5 rounded border border-[#E8EAEE]">sms_opted_out_at</code>, enforces frequency caps (1 per 24h + 3 per 7d), then logs to <code className="bg-white px-1 py-0.5 rounded border border-[#E8EAEE]">sms_logs</code>. The Inngest function respects AEST send-window rules and queues to next 08:30 if outside window.</p>
         <p className="mt-2">Compliance: <strong className="text-[#141821]">STOP / STOPALL / UNSUBSCRIBE / CANCEL / QUIT / END / REVOKE</strong> all trigger hard opt-out at <Link href="/dashboard/leads" className="text-[#1560E0] hover:text-[#1056D6] underline">the lead level</Link>. Non-STOP replies email you at your admin address so you can respond from the CRM inbox.</p>
       </div>
 
-      <Link href="/dashboard" className="text-[12px] text-[#1560E0] hover:text-[#1056D6] underline">← Back to dashboard</Link>
+      <Link href="/dashboard" className="text-[12.5px] text-[#1560E0] hover:text-[#1056D6] underline">← Back to dashboard</Link>
     </div>
   )
 }
@@ -132,7 +132,7 @@ function Tile({
   return (
     <div className="br-card p-3">
       <div className="text-[10px] font-medium text-[#666D7A] mb-1">{label}</div>
-      <div className={`text-[22px] font-bold ${valueColor} font-mono`}>{prefix ?? ''}{value.toLocaleString?.() ?? value}</div>
+      <div className={`text-[20px] font-bold ${valueColor} font-mono`}>{prefix ?? ''}{value.toLocaleString?.() ?? value}</div>
       {hint && <div className="text-[10px] text-[#666D7A] mt-0.5">{hint}</div>}
     </div>
   )
@@ -150,16 +150,16 @@ function LogRowView({ row }: { row: LogRow }) {
   return (
     <li className="px-5 py-3">
       <div className="flex items-center gap-3 mb-1 flex-wrap">
-        <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${isOutbound ? 'bg-[#DDE9FD] text-[#1056D6]' : 'bg-purple-100 text-purple-700'}`}>
+        <span className={`text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${isOutbound ? 'bg-[#DDE9FD] text-[#1056D6]' : 'bg-purple-100 text-purple-700'}`}>
           {row.direction}
         </span>
-        <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${statusTone}`}>
+        <span className={`text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${statusTone}`}>
           {row.status ?? 'unknown'}
         </span>
         {row.trigger && <span className="text-[10px] font-mono text-[#666D7A]">{row.trigger}</span>}
         <span className="text-[10px] font-mono text-[#98A0AD] ml-auto">{new Date(row.created_at).toLocaleString('en-AU', { timeZone: 'Australia/Brisbane' })} AEST</span>
       </div>
-      <div className="text-[12px] font-mono text-[#141821] break-all">
+      <div className="text-[12.5px] font-mono text-[#141821] break-all">
         {isOutbound ? `→ ${row.to_number}` : `← ${row.from_number}`}
         {row.lead_id && (
           <>
@@ -170,7 +170,7 @@ function LogRowView({ row }: { row: LogRow }) {
           </>
         )}
       </div>
-      <div className="text-[13px] text-[#141821] mt-1">{row.body}</div>
+      <div className="text-[13.5px] text-[#141821] mt-1">{row.body}</div>
       {row.error && <div className="text-[11px] text-[#C82626] mt-1 font-mono">{row.error}</div>}
     </li>
   )

@@ -482,7 +482,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       <div id="overview" className="scroll-mt-8">
         <Link
           href="/dashboard/coaching"
-          className="xl:hidden inline-flex items-center gap-1 text-[12px] text-[#9CA2AB] hover:text-[#0F1115] transition-colors mb-4"
+          className="xl:hidden inline-flex items-center gap-1 text-[12.5px] text-[#9CA2AB] hover:text-[#0F1115] transition-colors mb-4"
         >
           <ChevronLeft size={13} /> All clients
         </Link>
@@ -523,7 +523,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         <div className="mb-4">
           <Link
             href={`/dashboard/clients/${id}/recovery`}
-            className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-[12px] transition-colors ${
+            className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-[12.5px] transition-colors ${
               rrsChip.sbst_remove
                 ? 'border-[#D4817E] bg-[#FBF1F1] text-[#8A1919] hover:bg-[#FBF1F1]'
                 : 'border-[#EADCC4] bg-[#FDF8F1] text-[#8A5514] hover:bg-[#FDF8F1]'
@@ -598,7 +598,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 {!hasActiveProgram && <Pill accent="neutral">No active plan</Pill>}
                 {/* Readiness reads as one instrument with four needles, not as
                     four unrelated chips, so the four sit in a single control. */}
-                <span className="inline-flex items-center gap-3 text-[11.5px] text-[#6E747D] pl-2.5 pr-3 py-[3px] rounded-full border border-[#E4E4E0] bg-[linear-gradient(180deg,#FFFFFF,#FAFAF8)] shadow-[0_1px_2px_rgba(16,24,40,0.05)]">
+                <span className="inline-flex items-center gap-3 text-[11px] text-[#6E747D] pl-2.5 pr-3 py-[3px] rounded-full border border-[#E4E4E0] bg-[linear-gradient(180deg,#FFFFFF,#FAFAF8)] shadow-[0_1px_2px_rgba(16,24,40,0.05)]">
                   {READY.map(r => (
                     <span key={r.label} className="inline-flex items-center gap-1.5" title={r.v ? `${r.label}: ${r.v}` : `${r.label}: not read yet`}>
                       <span className={`w-[7px] h-[7px] rounded-full ${dot(r.v)}`} /> {r.label}
@@ -629,11 +629,11 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     {allClear ? <CheckCircle2 size={15} /> : <ArrowRight size={15} />}
                   </span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[12px] text-[#9CA2AB] mb-0.5">
+                    <p className="text-[12.5px] text-[#9CA2AB] mb-0.5">
                       {allClear ? 'Nothing waiting' : 'Next step'}
                     </p>
-                    <p className="text-[15px] font-semibold text-[#0F1115] tracking-[-0.015em] leading-snug">{next.t}</p>
-                    <p className="text-[13px] text-[#6E747D] mt-0.5">{next.s}</p>
+                    <p className="text-[16px] font-semibold text-[#0F1115] tracking-[-0.015em] leading-snug">{next.t}</p>
+                    <p className="text-[13.5px] text-[#6E747D] mt-0.5">{next.s}</p>
                   </div>
                   {next.href && (
                     <Link
@@ -663,7 +663,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             href={`/dashboard/clients/${id}/program`}
             className="block rounded-xl p-4 mb-4 border border-[#EADCC4] bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] hover:border-[#EADCC4] transition-colors"
           >
-            <p className="text-[12px] font-medium text-[#B06E1F] mb-1">Pending Progress Read</p>
+            <p className="text-[12.5px] font-medium text-[#B06E1F] mb-1">Pending Progress Read</p>
             <p className="text-sm text-[#8A5514]">
               <span className="font-semibold">{pendingTrajectory.block_name}</span> ended{endedAt ? ` around ${endedAt}` : ''} but its Progress Read was never generated. Click through to generate it now →
             </p>
@@ -908,12 +908,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         <div key={alert.key} className="bg-[#FBF1F1] border border-[#E8C9C9] border-l-[3px] border-l-[#8F2D2D] rounded-xl p-5 mb-4">
           <div className="flex items-start gap-3">
             <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#8F2D2D]/15 flex items-center justify-center">
-              <span className="text-[#8A1919] text-[13px] font-bold leading-none">!</span>
+              <span className="text-[#8A1919] text-[13.5px] font-bold leading-none">!</span>
             </div>
             <div className="min-w-0">
-              <p className="text-[12px] font-medium text-[#8A1919] mb-1">Needs attention</p>
+              <p className="text-[12.5px] font-medium text-[#8A1919] mb-1">Needs attention</p>
               <p className="text-sm font-semibold text-[#0F1115] mb-1.5">{alert.headline}</p>
-              <p className="text-[13px] text-[#4A4F57] leading-relaxed">{alert.detail}</p>
+              <p className="text-[13.5px] text-[#4A4F57] leading-relaxed">{alert.detail}</p>
             </div>
           </div>
         </div>
@@ -923,22 +923,22 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         <div className={`${iron.tier === 'emergency' || iron.tier === 'same-day' ? 'bg-[#FBF1F1] border-[#E8C9C9] border-l-[#8F2D2D]' : 'bg-[#FDF8F1] border-[#EADCC4] border-l-[#B06E1F]'} border border-l-[3px] rounded-xl p-5 mb-4`}>
           <div className="flex items-start gap-3">
             <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#8F2D2D]/15 flex items-center justify-center">
-              <span className="text-[#8A1919] text-[13px] font-bold leading-none">!</span>
+              <span className="text-[#8A1919] text-[13.5px] font-bold leading-none">!</span>
             </div>
             <div className="min-w-0">
-              <p className="text-[12px] font-medium text-[#8A1919] mb-1">
+              <p className="text-[12.5px] font-medium text-[#8A1919] mb-1">
                 {iron.tier === 'emergency' ? 'Emergency: she needs to be seen now' : iron.tier === 'same-day' ? 'Today, and no training until she has been seen' : iron.tier === 'same-week' ? 'This week, before anything else on her plan' : 'Refer, routine'}
               </p>
               <p className="text-sm font-semibold text-[#0F1115] mb-1.5">
                 No pattern is assigned for her until she has seen a doctor
               </p>
-              <p className="text-[13px] text-[#4A4F57] leading-relaxed mb-2">What she answered, unranked:</p>
-              <ul className="text-[13px] text-[#4A4F57] leading-relaxed list-disc ml-4 mb-2">
+              <p className="text-[13.5px] text-[#4A4F57] leading-relaxed mb-2">What she answered, unranked:</p>
+              <ul className="text-[13.5px] text-[#4A4F57] leading-relaxed list-disc ml-4 mb-2">
                 {iron.answers.map(a => <li key={a}>{a}</li>)}
               </ul>
-              <p className="text-[13px] text-[#4A4F57] leading-relaxed mb-2">{IRON_TIER_TIMEFRAME[iron.tier!]}</p>
+              <p className="text-[13.5px] text-[#4A4F57] leading-relaxed mb-2">{IRON_TIER_TIMEFRAME[iron.tier!]}</p>
               {iron.stopTraining && (
-                <p className="text-[13px] font-semibold text-[#8A1919] mb-2">Training stops entirely until she has been seen.</p>
+                <p className="text-[13.5px] font-semibold text-[#8A1919] mb-2">Training stops entirely until she has been seen.</p>
               )}
               <p className="text-[12.5px] text-[#6E747D] leading-relaxed mb-2">
                 Do not name a cause, do not reassure her, and do not suggest waiting or trying the plan first. <strong>If she feels
@@ -946,7 +946,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 reported their tiredness dropping 13 to 29 per cent. Her measured numbers are not a check either, because iron
                 improves how someone feels without improving what they can do.
               </p>
-              <details className="text-[13px] text-[#4A4F57]">
+              <details className="text-[13.5px] text-[#4A4F57]">
                 <summary className="cursor-pointer font-medium text-[#0F1115]">The wording to send her</summary>
                 <p className="mt-2 whitespace-pre-line leading-relaxed">{IRON_REFERRAL_SENTENCE}</p>
               </details>
@@ -959,17 +959,17 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         <div className={`${bone.urgency === 'same-week' ? 'bg-[#FBF1F1] border-[#E8C9C9] border-l-[#8F2D2D]' : 'bg-[#FDF8F1] border-[#EADCC4] border-l-[#B06E1F]'} border border-l-[3px] rounded-xl p-5 mb-4`}>
           <div className="flex items-start gap-3">
             <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#8F2D2D]/15 flex items-center justify-center">
-              <span className="text-[#8A1919] text-[13px] font-bold leading-none">!</span>
+              <span className="text-[#8A1919] text-[13.5px] font-bold leading-none">!</span>
             </div>
             <div className="min-w-0">
-              <p className="text-[12px] font-medium text-[#8A1919] mb-1">
+              <p className="text-[12.5px] font-medium text-[#8A1919] mb-1">
                 {bone.urgency === 'same-week' ? 'Bone: refer this week, and do not add load' : 'Bone: sort this out before load goes on'}
               </p>
               <p className="text-sm font-semibold text-[#0F1115] mb-1.5">Stop increasing load or impact until her GP has looked at this</p>
-              <ul className="text-[13px] text-[#4A4F57] leading-relaxed list-disc ml-4 mb-2">
+              <ul className="text-[13.5px] text-[#4A4F57] leading-relaxed list-disc ml-4 mb-2">
                 {bone.reasons.map(r => <li key={r}>{r}</li>)}
               </ul>
-              <p className="text-[13px] text-[#4A4F57] leading-relaxed mb-2">
+              <p className="text-[13.5px] text-[#4A4F57] leading-relaxed mb-2">
                 <strong>Say this, verbatim:</strong> &ldquo;{BONE_REFERRAL_SENTENCE}&rdquo;
               </p>
               <p className="text-[12.5px] text-[#6E747D] leading-relaxed">
@@ -986,21 +986,21 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         <div className="bg-[#FBF1F1] border border-[#E8C9C9] border-l-[3px] border-l-[#8F2D2D] rounded-xl p-5 mb-4">
           <div className="flex items-start gap-3">
             <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#8F2D2D]/15 flex items-center justify-center">
-              <span className="text-[#8A1919] text-[13px] font-bold leading-none">!</span>
+              <span className="text-[#8A1919] text-[13.5px] font-bold leading-none">!</span>
             </div>
             <div className="min-w-0">
-              <p className="text-[12px] font-medium text-[#8A1919] mb-1">Eating targets are held until she has seen a GP</p>
+              <p className="text-[12.5px] font-medium text-[#8A1919] mb-1">Eating targets are held until she has seen a GP</p>
               <p className="text-sm font-semibold text-[#0F1115] mb-1.5">Refer for thyroid function tests</p>
-              <p className="text-[13px] text-[#4A4F57] leading-relaxed mb-2">
+              <p className="text-[13.5px] text-[#4A4F57] leading-relaxed mb-2">
                 Triggered because {thyroid.reasons.join('; and ')}.
               </p>
-              <p className="text-[13px] text-[#4A4F57] leading-relaxed mb-2">
+              <p className="text-[13.5px] text-[#4A4F57] leading-relaxed mb-2">
                 The engine will not build or deepen a deficit for her while this is open. That is deliberate: eating less does not
                 fix a medical cause, and being in a deficit changes the blood results her doctor is about to read. <strong>Do not tell
                 her what you think it is.</strong> A symptom questionnaire cannot separate this from under-recovery, a long deficit,
                 low iron or the menopause transition, and it performs close to chance in women in this age range.
               </p>
-              <details className="text-[13px] text-[#4A4F57]">
+              <details className="text-[13.5px] text-[#4A4F57]">
                 <summary className="cursor-pointer font-medium text-[#0F1115]">The wording to send her</summary>
                 <p className="mt-2 whitespace-pre-line leading-relaxed">{THYROID_REFERRAL_TEXT}</p>
               </details>
@@ -1013,12 +1013,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         <div key={flag.key + flag.headline} className="bg-[#FDF8F1] border border-[#EADCC4] border-l-[3px] border-l-[#B06E1F] rounded-xl p-5 mb-4">
           <div className="flex items-start gap-3">
             <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#B06E1F]/15 flex items-center justify-center">
-              <span className="text-[#8A5514] text-[13px] font-bold leading-none">!</span>
+              <span className="text-[#8A5514] text-[13.5px] font-bold leading-none">!</span>
             </div>
             <div className="min-w-0">
-              <p className="text-[12px] font-medium text-[#8A5514] mb-1">Raise with her, and with her GP</p>
+              <p className="text-[12.5px] font-medium text-[#8A5514] mb-1">Raise with her, and with her GP</p>
               <p className="text-sm font-semibold text-[#0F1115] mb-1.5">{flag.headline}</p>
-              <p className="text-[13px] text-[#4A4F57] leading-relaxed">{flag.detail}</p>
+              <p className="text-[13.5px] text-[#4A4F57] leading-relaxed">{flag.detail}</p>
             </div>
           </div>
         </div>
@@ -1030,12 +1030,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         <div className="bg-[#FDF8F1] border border-[#EADCC4] border-l-[3px] border-l-[#B06E1F] rounded-xl p-5 mb-4">
           <div className="flex items-start gap-3">
             <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#B06E1F]/15 flex items-center justify-center">
-              <span className="text-[#8A5514] text-[13px] font-bold leading-none">!</span>
+              <span className="text-[#8A5514] text-[13.5px] font-bold leading-none">!</span>
             </div>
             <div className="min-w-0">
-              <p className="text-[12px] font-medium text-[#8A5514] mb-1">Signals to reconcile</p>
+              <p className="text-[12.5px] font-medium text-[#8A5514] mb-1">Signals to reconcile</p>
               <p className="text-sm font-semibold text-[#0F1115] mb-1.5">{fatDivergence.headline}</p>
-              <p className="text-[13px] text-[#4A4F57] leading-relaxed">{fatDivergence.detail}</p>
+              <p className="text-[13.5px] text-[#4A4F57] leading-relaxed">{fatDivergence.detail}</p>
             </div>
           </div>
         </div>
@@ -1143,7 +1143,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 <p className="text-[12.5px] text-[#9CA2AB]">Not sent yet — adds a follow-up card to the client&apos;s portal asking only what they have not answered.</p>
               )}
               {fatMapIntake && !fatMapIntake.sex_at_birth && latestSupplementaryInvitation?.status !== 'pending' && (
-                <p className="text-[12px] text-[#B06E1F] mt-1.5">No hormonal status on file. Send a fresh follow-up and it will ask only those questions (about a minute).</p>
+                <p className="text-[12.5px] text-[#B06E1F] mt-1.5">No hormonal status on file. Send a fresh follow-up and it will ask only those questions (about a minute).</p>
               )}
               {latestSupplementaryInvitation?.status === 'complete' && fatMapIntake?.sex_at_birth && (
                 <p className="text-[11px] text-[#9CA2AB] mt-1">Need to update meds or dietary context again? Send a fresh one.</p>
@@ -1319,7 +1319,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     : ` — competing read: ${activeCffs.pattern_competing_read}`
                   : ''}
               </p>
-              <p className="text-[13px] text-[#4A4F57] leading-relaxed">{activeCffs.pattern_watch_for}</p>
+              <p className="text-[13.5px] text-[#4A4F57] leading-relaxed">{activeCffs.pattern_watch_for}</p>
             </div>
           )}
 
@@ -1345,7 +1345,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     <p className="text-[10px] font-medium text-[#9CA2AB] mb-2">Pattern Classification</p>
                     <p className="text-lg font-bold text-[#0F1115] leading-tight mb-2">{readPatternLabel(activeCffs.pattern_classification)}</p>
                     {activeCffs.pattern_classification === INDETERMINATE && activeCffs.pattern_competing_read && activeCffs.pattern_competing_read !== 'None' && (
-                      <p className="text-[12px] text-[#6E747D] -mt-1 mb-2">Leaning toward {activeCffs.pattern_competing_read}. See Watch for.</p>
+                      <p className="text-[12.5px] text-[#6E747D] -mt-1 mb-2">Leaning toward {activeCffs.pattern_competing_read}. See Watch for.</p>
                     )}
                     {activeCffs.pattern_confidence && activeCffs.pattern_classification !== INDETERMINATE && (
                       <div className="flex items-center gap-2">
@@ -1454,7 +1454,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     <AlertTriangleIcon size={13} className="text-[#6E747D]" />
                   )}
                   <p
-                    className="text-[11.5px] font-medium"
+                    className="text-[11px] font-medium"
                     style={{
                       fontFamily: MONO_FONT,
                       letterSpacing: '0.14em',
@@ -1482,7 +1482,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   </p>
                   <ul className="space-y-1.5">
                     {readinessReport.drift.map((d, i) => (
-                      <li key={i} className="flex items-start gap-2 text-[13px]">
+                      <li key={i} className="flex items-start gap-2 text-[13.5px]">
                         <span
                           className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0"
                           style={{ background: d.severity === 'high' ? '#8F2D2D' : '#6E747D' }}
@@ -1511,7 +1511,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     </div>
                     <ul className="space-y-1">
                       {creep.findings.slice(0, 6).map((f, i) => (
-                        <li key={i} className="flex items-center justify-between gap-3 text-[12px]">
+                        <li key={i} className="flex items-center justify-between gap-3 text-[12.5px]">
                           <span className={f.severe ? 'text-[#0F1115]' : 'text-[#6E747D]'}>{f.exerciseName}</span>
                           <span className="shrink-0 tabular-nums" style={{ fontFamily: MONO_FONT }}>
                             <span className="text-[#9CA2AB]">RPE</span>{' '}
@@ -1544,7 +1544,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   </p>
                   <ul className="space-y-2">
                     {readinessReport.reassessmentReasons.map((r, i) => (
-                      <li key={i} className="text-[13px]">
+                      <li key={i} className="text-[13.5px]">
                         <p className="text-[#0F1115]">{r.message}</p>
                         <p className="text-[11px] text-[#9CA2AB] mt-0.5" style={{ fontFamily: MONO_FONT }}>
                           Recommended depth: <span className="text-[#6E747D]">{r.recommendedDepth}</span>
@@ -1563,7 +1563,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               {/* Block status */}
               {readinessReport.block && (
                 <div className="px-5 py-3">
-                  <div className="flex items-center justify-between text-[12px]">
+                  <div className="flex items-center justify-between text-[12.5px]">
                     <span className="text-[#9CA2AB]">
                       Block <span className="text-[#4A4F57]">{readinessReport.block.blockName ?? '-'}</span>
                       {readinessReport.block.weekDuration != null && (
@@ -1986,12 +1986,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     <div className="flex items-center gap-2 min-w-0">
                       <span className="text-[#6E747D]">Week {ci.week_number} · Form {ci.form_type}</span>
                       {fb && (
-                        <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${sent ? 'bg-[rgba(27,109,252,0.08)] border border-[#DCDCD7] text-[#000000]' : 'bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] border border-[#EADCC4] text-[#B06E1F]'}`}>
+                        <span className={`text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${sent ? 'bg-[rgba(27,109,252,0.08)] border border-[#DCDCD7] text-[#000000]' : 'bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] border border-[#EADCC4] text-[#B06E1F]'}`}>
                           {sent ? 'Response sent' : 'Draft'}
                         </span>
                       )}
                       {skipped && (
-                        <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-[#EDEDEA] border border-[#DCDCD7] text-[#6E747D]">
+                        <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-[#EDEDEA] border border-[#DCDCD7] text-[#6E747D]">
                           Skipped
                         </span>
                       )}

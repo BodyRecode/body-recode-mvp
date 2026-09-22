@@ -106,11 +106,11 @@ function ReviewAgenda() {
       <summary className="flex items-center justify-between gap-4 cursor-pointer list-none px-5 py-4 select-none">
         <span className="flex items-center gap-2.5 min-w-0">
           <span className="w-7 h-[3px] rounded-full shrink-0" style={{ background: '#1B6DFC' }} />
-          <span className="text-[12px] font-medium" style={{ color: '#1B6DFC' }}>
+          <span className="text-[12.5px] font-medium" style={{ color: '#1B6DFC' }}>
             Run the weekly review · 15 min, every Monday
           </span>
         </span>
-        <span className="text-[12px] text-[#1B6DFC] shrink-0">open ↓</span>
+        <span className="text-[12.5px] text-[#1B6DFC] shrink-0">open ↓</span>
       </summary>
       <div className="px-5 pb-5 pt-1">
         <ol className="space-y-2.5">
@@ -122,7 +122,7 @@ function ReviewAgenda() {
           ].map((step, i) => (
             <li key={i} className="flex gap-3">
               <span className="shrink-0 w-5 h-5 rounded-full bg-[#1B6DFC] text-white text-[11px] font-medium flex items-center justify-center mt-0.5" style={{ fontVariantNumeric: 'tabular-nums' }}>{i + 1}</span>
-              <span className="text-[13px] text-[#43474F] leading-relaxed">{step}</span>
+              <span className="text-[13.5px] text-[#43474F] leading-relaxed">{step}</span>
             </li>
           ))}
         </ol>
@@ -138,7 +138,7 @@ function ReviewAgenda() {
 function TrendTable({ weeks, rows }: { weeks: WeekRange[]; rows: FlowResult[] }) {
   return (
     <div className="overflow-x-auto">
-      <table className="w-full border-collapse text-[13px]">
+      <table className="w-full border-collapse text-[13.5px]">
         <thead>
           <tr className="border-b border-[#E8EAEE]">
             <th className="text-left font-semibold text-[#141821] px-5 py-3 whitespace-nowrap">Metric</th>
@@ -207,12 +207,12 @@ function SnapshotRow({ m }: { m: SnapshotResult }) {
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full shrink-0" style={{ background: STATUS_DOT[m.status] }} />
-            <span className="font-semibold text-[#141821] text-[14px] truncate">{m.label}</span>
+            <span className="font-semibold text-[#141821] text-[13.5px] truncate">{m.label}</span>
           </div>
           <div className="text-[11px] text-[#98A0AD] mt-1 ml-4">{m.hint}</div>
         </div>
         <div className="text-right shrink-0">
-          <div className="text-[24px] font-extrabold text-[#141821] tabular-nums leading-none" style={{ fontVariantNumeric: 'tabular-nums' }}>
+          <div className="text-[20px] font-extrabold text-[#141821] tabular-nums leading-none" style={{ fontVariantNumeric: 'tabular-nums' }}>
             {formatValue(m.actual, m.unit)}
           </div>
           <div className="text-[11px] text-[#98A0AD] mt-1" style={{ fontFamily: MONO_FONT }}>

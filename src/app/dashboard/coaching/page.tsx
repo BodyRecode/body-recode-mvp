@@ -250,7 +250,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
             <Link
               key={opt.value}
               href={buildHref({ type: opt.value === 'all' ? null : opt.value })}
-              className={`text-[12px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
+              className={`text-[12.5px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
                 typeFilter === opt.value ? 'bg-[#FAFAF8] text-[#0F1115]' : 'text-[#8A9099] hover:text-[#FAFAF8]'
               }`}
             >
@@ -269,7 +269,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
             <Link
               key={opt.label}
               href={buildHref({ view: opt.inactive ? 'inactive' : null })}
-              className={`text-[12px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
+              className={`text-[12.5px] font-semibold px-3 py-1.5 rounded-md transition-colors ${
                 showInactive === opt.inactive ? 'bg-[#1A1E26] text-[#FAFAF8]' : 'text-[#8A9099] hover:text-[#FAFAF8]'
               }`}
             >
@@ -291,7 +291,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           >
             <AlertTriangle size={14} style={{ color: red.text }} />
             <p
-              className="text-[11.5px] font-medium"
+              className="text-[11px] font-medium"
               style={{ color: red.text }}
             >
               Needs attention
@@ -305,9 +305,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                   <div className="min-w-0">
                   <p className="text-[20px] font-bold tracking-[-0.028em] text-[#FAFAF8] truncate">{client.name}</p>
                   <div className="flex items-center gap-2 mt-0.5">
-                    {client.rebuildTraining && <span className="text-[12px]" style={{ color: red.text }}>Training: Rebuild</span>}
+                    {client.rebuildTraining && <span className="text-[12.5px]" style={{ color: red.text }}>Training: Rebuild</span>}
                     {client.rebuildTraining && client.rebuildNutrition && <span className="text-[#2A2F39] text-[12.5px]">·</span>}
-                    {client.rebuildNutrition && <span className="text-[12px]" style={{ color: red.text }}>Nutrition: Rebuild</span>}
+                    {client.rebuildNutrition && <span className="text-[12.5px]" style={{ color: red.text }}>Nutrition: Rebuild</span>}
                   </div>
                   </div>
                 </div>
@@ -344,7 +344,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           style={{ borderColor: red.ring }}
         >
           <Activity size={14} style={{ color: red.text }} />
-          <p className="text-[13px]" style={{ color: red.text }}>
+          <p className="text-[13.5px]" style={{ color: red.text }}>
             <span className="font-semibold">{regressionCount} client{regressionCount > 1 ? 's' : ''}</span> in active regression. Coach review required.
           </p>
         </div>
@@ -357,7 +357,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           style={{ borderColor: amber.ring }}
         >
           <RefreshCw size={14} style={{ color: amber.text }} />
-          <p className="text-[13px]" style={{ color: amber.text }}>
+          <p className="text-[13.5px]" style={{ color: amber.text }}>
             <span className="font-semibold">{reassessmentCount} client{reassessmentCount > 1 ? 's' : ''}</span> due to be read again.
           </p>
         </div>
@@ -369,7 +369,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           className="mb-3 br-card px-4 py-3 flex items-center gap-3"
         >
           <ArrowUpRight size={14} className="text-[#8A9099]" />
-          <p className="text-[13px] text-[#8A9099]">
+          <p className="text-[13.5px] text-[#8A9099]">
             <span className="font-semibold text-[#FAFAF8]">{driftAdvisoryCount} client{driftAdvisoryCount > 1 ? 's' : ''}</span> with drift advisories this week.
           </p>
         </div>
@@ -381,7 +381,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           style={{ borderColor: amber.ring }}
         >
           <AlertTriangle size={14} style={{ color: amber.text }} />
-          <p className="text-[13px]" style={{ color: amber.text }}>
+          <p className="text-[13.5px]" style={{ color: amber.text }}>
             <span className="font-semibold">{flaggedCount} client{flaggedCount > 1 ? 's' : ''}</span> flagged at their first read as worth looking at again
           </p>
         </div>
@@ -393,7 +393,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           style={{ borderColor: teal.ring }}
         >
           <ArrowUpRight size={14} style={{ color: teal.text }} />
-          <p className="text-[13px]" style={{ color: teal.text }}>
+          <p className="text-[13.5px]" style={{ color: teal.text }}>
             <span className="font-semibold">{upgradeCandidateCount} client{upgradeCandidateCount > 1 ? 's' : ''}</span> eligible for the 2x to 3x upgrade conversation
           </p>
         </div>

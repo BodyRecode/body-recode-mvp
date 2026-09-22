@@ -143,7 +143,7 @@ export default async function RrsSuggestionsDashboard() {
     <div className="max-w-[1100px]">
       <Link
         href="/dashboard/system-health"
-        className="inline-flex items-center gap-1 text-[12px] text-[#98A0AD] hover:text-[#43474F] transition-colors mb-4"
+        className="inline-flex items-center gap-1 text-[12.5px] text-[#98A0AD] hover:text-[#43474F] transition-colors mb-4"
       >
         <ChevronLeft size={13} /> System Health
       </Link>
@@ -179,11 +179,11 @@ export default async function RrsSuggestionsDashboard() {
               <p className="text-[10px] font-medium text-[#A11D1D] mb-2">SBST removal follow-through (ns_overload)</p>
               <p className="text-sm text-[#8A1919]">
                 <span className="font-bold">{sbstRemovalStats.removals_confirmed}</span> of <span className="font-bold">{sbstRemovalStats.alerts_shown}</span> removal alerts actioned
-                <span className="ml-2 text-[13px] opacity-80">
+                <span className="ml-2 text-[13.5px] opacity-80">
                   ({sbstRemovalStats.alerts_shown > 0 ? Math.round((sbstRemovalStats.removals_confirmed / sbstRemovalStats.alerts_shown) * 100) : 0}%)
                 </span>
               </p>
-              <p className="text-[12px] text-[#A11D1D] mt-1 leading-relaxed">
+              <p className="text-[12.5px] text-[#A11D1D] mt-1 leading-relaxed">
                 Per 13D_16 sec 15, SBST assignments must be removed when a client enters ns_overload. This measures follow-through on that doctrine rule.
               </p>
             </div>
@@ -219,13 +219,13 @@ export default async function RrsSuggestionsDashboard() {
                     return (
                       <tr key={state} className={s.shown === 0 ? 'opacity-50' : ''}>
                         <td className="px-4 py-2">
-                          <div className="text-[13px] text-[#141821]">{playbook.name}</div>
+                          <div className="text-[13.5px] text-[#141821]">{playbook.name}</div>
                           <div className="text-[10px] text-[#666D7A] font-mono">{state}</div>
                         </td>
-                        <td className="text-right px-4 py-2 text-[13px]">{s.shown}</td>
-                        <td className="text-right px-4 py-2 text-[13px]">{s.assigned}</td>
-                        <td className="text-right px-4 py-2 text-[13px]">{s.dismissed}</td>
-                        <td className="text-right px-4 py-2 text-[13px] font-semibold">
+                        <td className="text-right px-4 py-2 text-[13.5px]">{s.shown}</td>
+                        <td className="text-right px-4 py-2 text-[13.5px]">{s.assigned}</td>
+                        <td className="text-right px-4 py-2 text-[13.5px]">{s.dismissed}</td>
+                        <td className="text-right px-4 py-2 text-[13.5px] font-semibold">
                           {rate === null ? <span className="text-[#98A0AD]">-</span> : `${rate.toFixed(0)}%`}
                         </td>
                         <td className="text-right px-4 py-2 text-[10px]">
@@ -263,12 +263,12 @@ export default async function RrsSuggestionsDashboard() {
                     return (
                       <tr key={slug}>
                         <td className="px-4 py-2">
-                          <div className="text-[13px] text-[#141821]">{protocol?.name ?? slug}</div>
+                          <div className="text-[13.5px] text-[#141821]">{protocol?.name ?? slug}</div>
                           <div className="text-[10px] text-[#666D7A] font-mono">{slug}</div>
                         </td>
-                        <td className="text-right px-4 py-2 text-[13px]">{s.suggested_count}</td>
-                        <td className="text-right px-4 py-2 text-[13px]">{s.assigned_count}</td>
-                        <td className="text-right px-4 py-2 text-[13px] font-semibold">
+                        <td className="text-right px-4 py-2 text-[13.5px]">{s.suggested_count}</td>
+                        <td className="text-right px-4 py-2 text-[13.5px]">{s.assigned_count}</td>
+                        <td className="text-right px-4 py-2 text-[13.5px] font-semibold">
                           <span className={rate === 0 ? 'text-[#C82626]' : rate < 30 ? 'text-[#A96A12]' : rate < 60 ? 'text-[#141821]' : 'text-[#177245]'}>
                             {rate.toFixed(0)}%
                           </span>
@@ -307,7 +307,7 @@ export default async function RrsSuggestionsDashboard() {
                         <td className="px-4 py-2 text-[11px] text-[#666D7A] font-mono">
                           {new Date(r.shown_at).toLocaleString('en-AU', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' })}
                         </td>
-                        <td className="px-4 py-2 text-[12px]">
+                        <td className="px-4 py-2 text-[12.5px]">
                           <Link href={`/dashboard/clients/${r.client_id}/recovery`} className="text-[#1B6DFC] hover:underline">{clientName}</Link>
                         </td>
                         <td className="px-4 py-2 text-[11px] font-mono text-[#141821]">{r.rrs_playbook_id}</td>

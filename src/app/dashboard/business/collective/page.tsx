@@ -18,7 +18,7 @@ function Card({ children, className = '' }: { children: React.ReactNode; classNa
 }
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
-  return <p className="text-[11.5px] font-medium text-[#666D7A] mb-3">{children}</p>
+  return <p className="text-[11px] font-medium text-[#666D7A] mb-3">{children}</p>
 }
 
 function Tag({ children, color = 'sky' }: { children: React.ReactNode; color?: 'sky' | 'amber' | 'violet' | 'stone' | 'green' | 'red' }) {
@@ -58,7 +58,7 @@ function OverviewTab() {
         </p>
         <div className="mt-4">
           <a href="/docs/strategy/collective/collective-gtm-content-strategy-v1.pdf" target="_blank" rel="noopener noreferrer"
-            className="text-[12px] font-medium px-2 py-1 rounded bg-[#1B6DFC] text-white hover:bg-[#1056D6]">View full strategy .pdf</a>
+            className="text-[12.5px] font-medium px-2 py-1 rounded bg-[#1B6DFC] text-white hover:bg-[#1056D6]">View full strategy .pdf</a>
         </div>
       </Card>
 
@@ -280,7 +280,7 @@ export default function CollectivePage() {
     <div className="flex flex-col h-full">
       <div className="px-6 pt-6 pb-0 border-b border-[#E8EAEE]">
         <div className="flex items-center gap-3 mb-1">
-          <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">The Body Recode Collective</h1>
+          <h1 className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em]">The Body Recode Collective</h1>
           <span className="text-[12.5px] text-[#666D7A] bg-[#EFF1F4] px-2 py-0.5 rounded font-mono">bodyrecode.au/collective</span>
         </div>
         <p className="text-sm text-[#666D7A] mb-4">The B2B licensing arm - a collective of coaches practising to one standard</p>

@@ -255,7 +255,7 @@ export default function NutritionCoachGuidanceEditor({
                     onChange={e => setCoachNote(e.target.value)}
                     placeholder="One line of context the engine cannot read from CFFS / intake. e.g. 'Going from 3 to 4 meals is the real ask. Design meal 4 as a no-cook protein anchor.'"
                     rows={2}
-                    className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-2.5 py-2 text-[12px] text-[#0F1115] placeholder:text-[#4A4F57] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
+                    className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-2.5 py-2 text-[12.5px] text-[#0F1115] placeholder:text-[#4A4F57] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
                   />
                 </div>
 
@@ -270,7 +270,7 @@ export default function NutritionCoachGuidanceEditor({
                   <button
                     onClick={suggest}
                     disabled={suggesting}
-                    className="inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed border border-[#0F1115] bg-[rgba(27,109,252,0.10)] text-[#0F1115] hover:bg-[rgba(27,109,252,0.18)]"
+                    className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed border border-[#0F1115] bg-[rgba(27,109,252,0.10)] text-[#0F1115] hover:bg-[rgba(27,109,252,0.18)]"
                   >
                     {suggesting ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
                     {suggesting ? 'Drafting...' : 'Draft guidance'}
@@ -285,7 +285,7 @@ export default function NutritionCoachGuidanceEditor({
             onChange={e => setValue(e.target.value)}
             placeholder="e.g. Meal 4 designed as a no-cook 20g protein anchor (Greek yoghurt, eggs, protein shake). Bias meal 4 mid-afternoon to land on the client's 3-4pm crash and break the caffeine-bridge habit. Hold meals 1-3 structurally close to current plan; the change should read additive."
             rows={6}
-            className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2.5 text-[13px] text-[#0F1115] placeholder:text-[#4A4F57] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
+            className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2.5 text-[13.5px] text-[#0F1115] placeholder:text-[#4A4F57] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
           />
           {error && (
             <div className="mt-2 text-[11px] text-[#8A5514]">{error}</div>
@@ -297,7 +297,7 @@ export default function NutritionCoachGuidanceEditor({
             <button
               onClick={save}
               disabled={!dirty || saving || isPending}
-              className={`inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
+              className={`inline-flex items-center gap-1.5 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
                 dirty
                   ? 'bg-[#0F1115] text-[#FFFFFF] hover:bg-[#000000] border border-[#0F1115]'
                   : 'border border-[#E4E4E0] bg-[#FFFFFF] text-[#6E747D]'

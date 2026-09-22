@@ -116,7 +116,7 @@ export default function WaitlistView({ rows }: { rows: WaitlistRow[] }) {
           >
             <div className="flex items-center justify-between mb-2">
               <span
-                className="text-[11.5px] font-medium"
+                className="text-[11px] font-medium"
                 style={{ color: t.accent }}
               >
                 {t.label}
@@ -172,16 +172,16 @@ export default function WaitlistView({ rows }: { rows: WaitlistRow[] }) {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-[#FBFCFD] border-b border-[#E8EAEE]">
-                <th className="text-left text-[12px] font-medium text-[#666D7A] px-4 py-3">Email</th>
-                <th className="text-left text-[12px] font-medium text-[#666D7A] px-4 py-3">Name</th>
-                <th className="text-left text-[12px] font-medium text-[#666D7A] px-4 py-3">Phone</th>
-                <th className="text-left text-[12px] font-medium text-[#666D7A] px-4 py-3">Sex</th>
-                <th className="text-left text-[12px] font-medium text-[#666D7A] px-4 py-3">Body state</th>
+                <th className="text-left text-[12.5px] font-medium text-[#666D7A] px-4 py-3">Email</th>
+                <th className="text-left text-[12.5px] font-medium text-[#666D7A] px-4 py-3">Name</th>
+                <th className="text-left text-[12.5px] font-medium text-[#666D7A] px-4 py-3">Phone</th>
+                <th className="text-left text-[12.5px] font-medium text-[#666D7A] px-4 py-3">Sex</th>
+                <th className="text-left text-[12.5px] font-medium text-[#666D7A] px-4 py-3">Body state</th>
                 {activeTab === 'all' && (
-                  <th className="text-left text-[12px] font-medium text-[#666D7A] px-4 py-3">Product</th>
+                  <th className="text-left text-[12.5px] font-medium text-[#666D7A] px-4 py-3">Product</th>
                 )}
-                <th className="text-left text-[12px] font-medium text-[#666D7A] px-4 py-3">Source</th>
-                <th className="text-left text-[12px] font-medium text-[#666D7A] px-4 py-3">Joined</th>
+                <th className="text-left text-[12.5px] font-medium text-[#666D7A] px-4 py-3">Source</th>
+                <th className="text-left text-[12.5px] font-medium text-[#666D7A] px-4 py-3">Joined</th>
               </tr>
             </thead>
             <tbody>
@@ -209,7 +209,7 @@ export default function WaitlistView({ rows }: { rows: WaitlistRow[] }) {
                     {activeTab === 'all' && (
                       <td className="px-4 py-3">
                         <span
-                          className="inline-block text-[11.5px] font-medium px-2 py-1 rounded"
+                          className="inline-block text-[11px] font-medium px-2 py-1 rounded"
                           style={{ color: meta.accent, background: meta.bg }}
                         >
                           {r.product}

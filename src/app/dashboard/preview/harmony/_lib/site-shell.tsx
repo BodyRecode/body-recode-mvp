@@ -28,7 +28,7 @@ export function HarmonySite({ children }: { children: React.ReactNode }) {
     <div style={{ backgroundColor: H.cream, color: H.ink, fontFamily: H.sans }}>
       {/* Preview strip - dark thin line at very top */}
       <div
-        className="text-center py-1 text-[11.5px] font-medium sticky top-0 z-[60]"
+        className="text-center py-1 text-[11px] font-medium sticky top-0 z-[60]"
         style={{ backgroundColor: H.ink, color: H.cream, letterSpacing: '0.14em' }}
       >
         Preview mockup · not a live site · <Link href="/dashboard/preview" className="underline">back to previews</Link>
@@ -58,13 +58,13 @@ function SiteHeader({ pathname }: { pathname: string }) {
           </span>
           <div>
             <div
-              className="text-[22px] leading-none tracking-[0.12em] uppercase"
+              className="text-[20px] leading-none tracking-[0.12em] uppercase"
               style={{ fontFamily: H.serif, color: H.ink, fontWeight: 500, letterSpacing: '0.12em' }}
             >
               {H.name}
             </div>
             <div
-              className="text-[9px] mt-1"
+              className="text-[10px] mt-1"
               style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.24em' }}
             >
               {H.sub}
@@ -79,7 +79,7 @@ function SiteHeader({ pathname }: { pathname: string }) {
               <Link
                 key={n.href}
                 href={n.href}
-                className="text-[13px] transition-colors"
+                className="text-[13.5px] transition-colors"
                 style={{
                   color: active ? H.ink : H.inkSoft,
                   fontWeight: active ? 600 : 400,
@@ -93,7 +93,7 @@ function SiteHeader({ pathname }: { pathname: string }) {
 
         <Link
           href={`${BASE}/assessment`}
-          className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-full text-[12px] font-semibold transition-transform hover:scale-[1.02]"
+          className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-full text-[12.5px] font-semibold transition-transform hover:scale-[1.02]"
           style={{
             background: H.terracotta,
             color: H.cream,
@@ -121,13 +121,13 @@ function SiteFooter() {
               </span>
               <div className="text-[20px] uppercase tracking-[0.12em]" style={{ fontFamily: H.serif, color: H.ink, letterSpacing: '0.12em' }}>{H.name}</div>
             </div>
-            <p className="text-[13px] leading-relaxed" style={{ color: H.inkSoft }}>
+            <p className="text-[13.5px] leading-relaxed" style={{ color: H.inkSoft }}>
               A studio for practitioners who want their yoga to actually work with their body over time - not against it.
             </p>
           </div>
           <div>
             <div className="text-[10px] mb-4" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.2em' }}>Practice</div>
-            <ul className="space-y-2 text-[13px]" style={{ color: H.inkSoft }}>
+            <ul className="space-y-2 text-[13.5px]" style={{ color: H.inkSoft }}>
               <li><Link href={`${BASE}/assessment`}>The Assessment</Link></li>
               <li><Link href={`${BASE}/method`}>The Method</Link></li>
               <li><Link href={`${BASE}#programmes`}>Programmes</Link></li>
@@ -136,7 +136,7 @@ function SiteFooter() {
           </div>
           <div>
             <div className="text-[10px] mb-4" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.2em' }}>Studio</div>
-            <ul className="space-y-2 text-[13px]" style={{ color: H.inkSoft }}>
+            <ul className="space-y-2 text-[13.5px]" style={{ color: H.inkSoft }}>
               <li>{H.location}</li>
               <li>studio@harmony.com.au</li>
               <li>@harmony.practice</li>
@@ -144,7 +144,7 @@ function SiteFooter() {
           </div>
           <div>
             <div className="text-[10px] mb-4" style={{ fontFamily: H.mono, color: H.inkLight, letterSpacing: '0.2em' }}>Fine print</div>
-            <ul className="space-y-2 text-[13px]" style={{ color: H.inkSoft }}>
+            <ul className="space-y-2 text-[13.5px]" style={{ color: H.inkSoft }}>
               <li>Terms of practice</li>
               <li>Privacy</li>
               <li>Refund policy</li>

@@ -66,7 +66,7 @@ function DailyChart({ data }: { data: DayData[] }) {
                   style={{ height: `${height}%`, minHeight: d.views > 0 ? '4px' : '2px' }}
                 />
                 {data.length <= 14 && (
-                  <span className="text-[9px] text-[#98A0AD] rotate-0 truncate w-full text-center">{label}</span>
+                  <span className="text-[10px] text-[#98A0AD] rotate-0 truncate w-full text-center">{label}</span>
                 )}
               </div>
             )
@@ -131,7 +131,7 @@ export default function WebsitePage() {
       {/* Header */}
       <div className="flex items-center justify-between br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
         <div>
-          <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">Website</h1>
+          <h1 className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em]">Website</h1>
           <p className="text-sm text-[#666D7A] mt-0.5">performance.bodyrecode.au</p>
         </div>
         <div className="flex items-center gap-2">

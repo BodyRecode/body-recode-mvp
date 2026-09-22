@@ -261,8 +261,8 @@ export default function ParticipantView({
       {/* Day timeline progress bar */}
       <div className="rounded-xl border border-[#E8EAEE] bg-white p-5 mb-6">
         <div className="flex items-center justify-between mb-3">
-          <p className="text-[11.5px] font-medium text-[#666D7A]">Day-by-day progress</p>
-          <span className="text-[12px] font-medium" style={{ color: isComplete ? '#1B6DFC' : '#141821' }}>
+          <p className="text-[11px] font-medium text-[#666D7A]">Day-by-day progress</p>
+          <span className="text-[12.5px] font-medium" style={{ color: isComplete ? '#1B6DFC' : '#141821' }}>
             {isComplete ? 'Completed' : `Day ${currentDay} · ${14 - currentDay} day${14 - currentDay === 1 ? '' : 's'} to go`}
           </span>
         </div>
@@ -283,7 +283,7 @@ export default function ParticipantView({
                   className={`w-2 h-2 rounded-full ${isToday ? 'ring-2 ring-[#1B6DFC] ring-offset-1' : ''}`}
                   style={{ background: isPast ? '#1B6DFC' : '#E8EAEE' }}
                 />
-                <span className={`text-[9px] font-bold mt-1 ${isMilestone ? 'text-[#141821]' : 'text-[#98A0AD]'}`} style={{ fontVariantNumeric: 'tabular-nums' }}>
+                <span className={`text-[10px] font-bold mt-1 ${isMilestone ? 'text-[#141821]' : 'text-[#98A0AD]'}`} style={{ fontVariantNumeric: 'tabular-nums' }}>
                   {d}
                 </span>
               </div>
@@ -299,7 +299,7 @@ export default function ParticipantView({
             <div className="flex items-center justify-between mb-3">
               <div className="inline-flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#1560E0]" />
-                <span className="text-[12px] font-medium text-[#1056D6]">Completed</span>
+                <span className="text-[12.5px] font-medium text-[#1056D6]">Completed</span>
               </div>
               <span className="text-[12.5px] text-[#666D7A]">{fmtDate(enrollment.quiz_completed_at!)}</span>
             </div>
@@ -317,7 +317,7 @@ export default function ParticipantView({
           <div className="rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] p-5">
             <div className="inline-flex items-center gap-2 mb-2">
               {currentDay < 7 ? <Clock className="w-4 h-4 text-[#98A0AD]" /> : <AlertCircle className="w-4 h-4 text-[#B7791F]" />}
-              <span className="text-[12px] font-medium" style={{ color: currentDay < 7 ? '#666D7A' : '#B7791F' }}>
+              <span className="text-[12.5px] font-medium" style={{ color: currentDay < 7 ? '#666D7A' : '#B7791F' }}>
                 {currentDay < 7 ? 'Locked until Day 7' : 'Pending — Day 7+'}
               </span>
             </div>
@@ -356,11 +356,11 @@ export default function ParticipantView({
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-[#FBFCFD] border-b border-[#E8EAEE]">
-                <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Day</th>
-                <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Send</th>
-                <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Status</th>
-                <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">When</th>
-                <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Resend ID</th>
+                <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Day</th>
+                <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Send</th>
+                <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Status</th>
+                <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">When</th>
+                <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Resend ID</th>
               </tr>
             </thead>
             <tbody>
@@ -390,11 +390,11 @@ export default function ParticipantView({
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-[#FBFCFD] border-b border-[#E8EAEE]">
-                <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Day</th>
-                <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Window</th>
-                <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Title</th>
-                <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Status</th>
-                <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Scheduled</th>
+                <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Day</th>
+                <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Window</th>
+                <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Title</th>
+                <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Status</th>
+                <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Scheduled</th>
               </tr>
             </thead>
             <tbody>
@@ -424,10 +424,10 @@ export default function ParticipantView({
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-[#FBFCFD] border-b border-[#E8EAEE]">
-                  <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Type</th>
-                  <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Subject</th>
-                  <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">When</th>
-                  <th className="text-left text-[11.5px] font-medium text-[#666D7A] px-4 py-2.5">Notes</th>
+                  <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Type</th>
+                  <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Subject</th>
+                  <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">When</th>
+                  <th className="text-left text-[11px] font-medium text-[#666D7A] px-4 py-2.5">Notes</th>
                 </tr>
               </thead>
               <tbody>
@@ -451,7 +451,7 @@ export default function ParticipantView({
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="mb-6">
-      <h2 className="text-[12px] font-medium text-[#666D7A] mb-3">{title}</h2>
+      <h2 className="text-[12.5px] font-medium text-[#666D7A] mb-3">{title}</h2>
       {children}
     </div>
   )
@@ -462,7 +462,7 @@ function InfoTile({ icon: Icon, label, value }: { icon: typeof User; label: stri
     <div className="rounded-xl border border-[#E8EAEE] bg-white p-3.5">
       <div className="flex items-center gap-1.5 mb-1.5">
         <Icon className="w-3 h-3 text-[#98A0AD]" />
-        <span className="text-[11.5px] font-medium text-[#666D7A]">{label}</span>
+        <span className="text-[11px] font-medium text-[#666D7A]">{label}</span>
       </div>
       <p className="text-sm text-[#141821] font-medium truncate">{value}</p>
     </div>
@@ -472,7 +472,7 @@ function InfoTile({ icon: Icon, label, value }: { icon: typeof User; label: stri
 function Stat({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div>
-      <p className="text-[11.5px] font-medium text-[#666D7A] mb-1.5">{label}</p>
+      <p className="text-[11px] font-medium text-[#666D7A] mb-1.5">{label}</p>
       <p className="text-sm font-semibold text-[#141821]">{value}</p>
     </div>
   )
@@ -510,7 +510,7 @@ function StatusPill({ status }: { status: string }) {
   const c = config[status] ?? config.scheduled
   return (
     <span
-      className="inline-block text-[11.5px] font-medium px-2 py-1 rounded"
+      className="inline-block text-[11px] font-medium px-2 py-1 rounded"
       style={{ color: c.color, background: c.bg }}
     >
       {c.label}

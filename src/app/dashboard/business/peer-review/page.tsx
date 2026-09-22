@@ -234,7 +234,7 @@ export default function PeerReviewPage() {
           <div className="w-1.5 h-1.5 rounded-full bg-[#1B6DFC]" />
           <span className="text-[12.5px] font-semibold text-[#1B6DFC]">System Development</span>
         </div>
-        <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em] mb-2">Peer Review Program</h1>
+        <h1 className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em] mb-2">Peer Review Program</h1>
         <p className="text-sm text-[#666D7A] max-w-2xl">
           Manage the {brand().name}™ peer review process. Track outreach, reviewer status, and feedback from medical, allied health, and performance professionals.
                           </p>
@@ -249,7 +249,7 @@ export default function PeerReviewPage() {
           { label: 'Complete', value: stats.complete },
         ].map(stat => (
           <div key={stat.label} className="bg-[#F4F6F9] br-card p-4">
-            <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em] mb-1">{stat.value}</p>
+            <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em] mb-1">{stat.value}</p>
             <p className="text-[12.5px] text-[#666D7A]">{stat.label}</p>
           </div>
         ))}

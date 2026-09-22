@@ -73,7 +73,7 @@ export function WeekStrip({
               )}
             </span>
             {showInitials && (
-              <span className="text-[9.5px] leading-none text-[#98A0AD]">{d.initial}</span>
+              <span className="text-[10px] leading-none text-[#98A0AD]">{d.initial}</span>
             )}
           </div>
         ))}
@@ -88,7 +88,7 @@ export function WeekStrip({
  */
 export function WeekStripLegend() {
   return (
-    <div className="flex items-center gap-4 text-[11.5px] text-[#666D7A] flex-wrap">
+    <div className="flex items-center gap-4 text-[11px] text-[#666D7A] flex-wrap">
       <span className="inline-flex items-center gap-1.5">
         <span className="w-[11px] h-[11px] rounded-[3px]" style={{ background: '#1B6DFC' }} />
         Meals all logged

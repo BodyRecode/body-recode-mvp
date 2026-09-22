@@ -294,13 +294,13 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
       {/* Header */}
       <div className="px-4 py-3 border-b border-[#E4E4E0] flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2.5 flex-wrap">
-          <p className="text-[12px] font-medium text-[#0F1115]">Blood panel · {dateLabel}</p>
+          <p className="text-[12.5px] font-medium text-[#0F1115]">Blood panel · {dateLabel}</p>
           {panel.lab_name && <span className="text-[10px] text-[#9CA2AB]">{panel.lab_name}</span>}
           {approved && (
-            <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-[rgba(27,109,252,0.08)] border border-[#DCDCD7] text-[#000000]">Approved for plan</span>
+            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-[rgba(27,109,252,0.08)] border border-[#DCDCD7] text-[#000000]">Approved for plan</span>
           )}
           {isFailed && (
-            <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-[#FBF1F1] border border-[#E8C9C9] text-[#8F2D2D]">Read failed</span>
+            <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-[#FBF1F1] border border-[#E8C9C9] text-[#8F2D2D]">Read failed</span>
           )}
         </div>
         <div className="flex items-center gap-2">
@@ -364,7 +364,7 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
 
         {(panel.gp_flags?.length ?? 0) > 0 && (
           <div className="bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] border border-[#EADCC4] rounded-lg p-3">
-            <p className="text-[11.5px] font-medium text-[#B06E1F] mb-1.5">Lab-flagged · route to GP</p>
+            <p className="text-[11px] font-medium text-[#B06E1F] mb-1.5">Lab-flagged · route to GP</p>
             <ul className="space-y-1">
               {panel.gp_flags!.map((f, i) => <li key={i} className="text-[12.5px] text-[#B06E1F] leading-relaxed">{f}</li>)}
             </ul>
@@ -403,7 +403,7 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
         {/* Coach analysis render */}
         {analysis && (
           <div className="space-y-3 pt-1">
-            <p className="text-[11.5px] font-medium text-[#0F1115]">Analysis (coach) {panel.analyzed_at && <span className="text-[#9CA2AB] font-normal ml-1">· {shortDate(panel.analyzed_at)}</span>}</p>
+            <p className="text-[11px] font-medium text-[#0F1115]">Analysis (coach) {panel.analyzed_at && <span className="text-[#9CA2AB] font-normal ml-1">· {shortDate(panel.analyzed_at)}</span>}</p>
             {analysis.groups.map((g, i) => (
               <div key={i} className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg p-4 space-y-2">
                 <div>
@@ -420,7 +420,7 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
             ))}
             {analysis.combined_picture && (
               <div className="bg-[#FFFFFF] border border-[#DCDCD7] rounded-lg p-4">
-                <p className="text-[11.5px] font-medium text-[#0F1115] mb-1.5">Combined picture</p>
+                <p className="text-[11px] font-medium text-[#0F1115] mb-1.5">Combined picture</p>
                 <p className="text-[12.5px] text-[#4A4F57] leading-relaxed whitespace-pre-wrap">{analysis.combined_picture}</p>
               </div>
             )}
@@ -431,8 +431,8 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
         {reading && (
           <div className="space-y-3 pt-1">
             <div className="flex items-center gap-2.5 flex-wrap">
-              <p className="text-[11.5px] font-medium text-[#0F1115]">Reading (client)</p>
-              <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${publishedAt ? 'bg-[rgba(27,109,252,0.08)] border border-[#DCDCD7] text-[#000000]' : 'bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] border border-[#EADCC4] text-[#B06E1F]'}`}>
+              <p className="text-[11px] font-medium text-[#0F1115]">Reading (client)</p>
+              <span className={`text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${publishedAt ? 'bg-[rgba(27,109,252,0.08)] border border-[#DCDCD7] text-[#000000]' : 'bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] border border-[#EADCC4] text-[#B06E1F]'}`}>
                 {publishedAt ? 'Published' : 'Draft (not on portal)'}
               </span>
             </div>
@@ -452,8 +452,8 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
               className="w-full px-4 py-2.5 flex items-center justify-between gap-3 text-left hover:bg-violet-50 transition-colors"
             >
               <span className="flex items-center gap-2 flex-wrap">
-                <span className="text-[12px] font-medium text-violet-700">Research Lens</span>
-                <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-violet-100 border border-violet-200 text-violet-700">coach only · exploratory · not shared · not in plan</span>
+                <span className="text-[12.5px] font-medium text-violet-700">Research Lens</span>
+                <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-violet-100 border border-violet-200 text-violet-700">coach only · exploratory · not shared · not in plan</span>
               </span>
               <span className="text-[12.5px] font-medium text-violet-700 shrink-0">{busy === 'lens' ? 'Running…' : lensOpen ? 'Hide' : lens ? 'Show' : 'Run'}</span>
             </button>
@@ -482,7 +482,7 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
                         <div key={i} className="bg-white border border-violet-200 rounded-lg p-3 space-y-2">
                           <div className="flex items-center gap-2 flex-wrap">
                             <p className="text-sm font-semibold text-[#0F1115]">{p.label}</p>
-                            <span className="text-[9px] font-medium text-violet-600">{p.confidence}</span>
+                            <span className="text-[10px] font-medium text-violet-600">{p.confidence}</span>
                           </div>
                           <p className="text-[12.5px] text-[#4A4F57] leading-relaxed">{p.observation}</p>
                           {p.whatWouldClarify.length > 0 && (
@@ -525,7 +525,7 @@ function BloodPanelCard({ clientId, clientFirstName, panel }: { clientId: string
 function Metric({ label, v }: { label: string; v: string }) {
   return (
     <span className="inline-flex items-baseline gap-1.5 bg-white border border-violet-200 rounded-md px-2 py-1">
-      <span className="text-[9px] font-medium text-violet-600">{label}</span>
+      <span className="text-[10px] font-medium text-violet-600">{label}</span>
       <span className="text-[12.5px] font-medium text-[#0F1115]">{v}</span>
     </span>
   )
@@ -534,7 +534,7 @@ function Metric({ label, v }: { label: string; v: string }) {
 function Influence({ label, body }: { label: string; body: string }) {
   return (
     <div>
-      <p className="text-[11.5px] font-medium text-[#9CA2AB] mb-0.5">{label}</p>
+      <p className="text-[11px] font-medium text-[#9CA2AB] mb-0.5">{label}</p>
       <p className="text-[12.5px] text-[#4A4F57] leading-relaxed whitespace-pre-wrap">{body}</p>
     </div>
   )
@@ -543,7 +543,7 @@ function Influence({ label, body }: { label: string; body: string }) {
 function ReadingSection({ title, body, accent }: { title: string; body: string; accent?: boolean }) {
   return (
     <div className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg p-4">
-      <p className={`text-[11.5px] font-medium mb-2 ${accent ? 'text-[#0F1115]' : 'text-[#9CA2AB]'}`}>{title}</p>
+      <p className={`text-[11px] font-medium mb-2 ${accent ? 'text-[#0F1115]' : 'text-[#9CA2AB]'}`}>{title}</p>
       <div className="text-[12.5px] text-[#4A4F57] leading-relaxed whitespace-pre-wrap">{body}</div>
     </div>
   )

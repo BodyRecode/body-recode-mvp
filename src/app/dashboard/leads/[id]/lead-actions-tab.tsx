@@ -49,8 +49,8 @@ function Outcome({ title, active, children }: { title: string; active: boolean; 
   return (
     <div className={`rounded-xl border p-4 space-y-3 ${active ? 'border-[#1B6DFC] bg-[rgba(27,109,252,0.04)]' : 'border-[#E8EAEE]'}`}>
       <div className="flex items-center justify-between gap-3">
-        <h3 className="text-[14px] font-semibold text-[#141821]">{title}</h3>
-        {active && <span className="text-[10.5px] font-medium text-[#1B6DFC] bg-[rgba(27,109,252,0.1)] px-2 py-0.5 rounded-full">Where this lead is</span>}
+        <h3 className="text-[13.5px] font-semibold text-[#141821]">{title}</h3>
+        {active && <span className="text-[10px] font-medium text-[#1B6DFC] bg-[rgba(27,109,252,0.1)] px-2 py-0.5 rounded-full">Where this lead is</span>}
       </div>
       {children}
     </div>
@@ -58,12 +58,12 @@ function Outcome({ title, active, children }: { title: string; active: boolean; 
 }
 
 function Label({ children }: { children: React.ReactNode }) {
-  return <p className="text-[12px] font-medium text-[#43474F]">{children}</p>
+  return <p className="text-[12.5px] font-medium text-[#43474F]">{children}</p>
 }
 
 function Status({ children, tone = 'muted' }: { children: React.ReactNode; tone?: 'muted' | 'done' | 'warn' }) {
   const c = tone === 'done' ? 'text-[#15803D]' : tone === 'warn' ? 'text-[#B45309]' : 'text-[#666D7A]'
-  return <p className={`text-[12px] leading-relaxed ${c}`}>{children}</p>
+  return <p className={`text-[12.5px] leading-relaxed ${c}`}>{children}</p>
 }
 
 /**
@@ -166,7 +166,7 @@ export default function LeadActionsTab({
         {bookings.length > 0 && (
           <div className="mt-4 pt-3 border-t border-[#E8EAEE] space-y-1.5">
             {bookings.map(b => (
-              <div key={b.id} className="flex items-center justify-between text-[12px]">
+              <div key={b.id} className="flex items-center justify-between text-[12.5px]">
                 <span className="text-[#43474F]">{bne(b.scheduled_at)} · {b.duration_minutes} min</span>
                 <span className={b.status === 'scheduled' ? 'text-[#1B6DFC] font-semibold' : 'text-[#98A0AD]'}>{b.status}</span>
               </div>

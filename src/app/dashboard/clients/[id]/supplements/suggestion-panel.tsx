@@ -159,7 +159,7 @@ export default function SuggestionPanel({
     <div className="mb-8 rounded-xl border border-[#E4E4E0] bg-[#FAFAF8] overflow-hidden">
       <div className="px-5 py-4 border-b border-[#E4E4E0] flex items-start justify-between gap-4 flex-wrap">
         <div className="min-w-0">
-          <p className="text-[12px] font-medium text-[#0F1115] flex items-center gap-1.5">
+          <p className="text-[12.5px] font-medium text-[#0F1115] flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5" />
             Suggested for {clientName}
           </p>
@@ -213,7 +213,7 @@ export default function SuggestionPanel({
 
           {clientMedications?.trim() && (
             <div className="mb-4 rounded-lg border border-[#EADCC4] bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] px-3 py-2.5">
-              <p className="text-[11.5px] font-medium text-[#B06E1F] mb-1 flex items-center gap-1">
+              <p className="text-[11px] font-medium text-[#B06E1F] mb-1 flex items-center gap-1">
                 <AlertTriangle className="w-3 h-3" />
                 On medication, verify every interaction yourself
               </p>
@@ -236,10 +236,10 @@ export default function SuggestionPanel({
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className="text-[10px] font-medium text-[#9CA2AB]">{i + 1}</span>
                           <p className="text-sm font-semibold text-[#0F1115]">{s.name}</p>
-                          <span className="text-[11.5px] font-medium px-2 py-0.5 rounded bg-[rgba(27,109,252,0.08)] border border-[#DCDCD7] text-[#000000]">
+                          <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-[rgba(27,109,252,0.08)] border border-[#DCDCD7] text-[#000000]">
                             Start at {TIER_LABEL[s.recommendedTier]}
                           </span>
-                          <span className={`text-[11.5px] font-medium px-2 py-0.5 rounded border ${CONFIDENCE_STYLE[s.confidence]}`}>
+                          <span className={`text-[11px] font-medium px-2 py-0.5 rounded border ${CONFIDENCE_STYLE[s.confidence]}`}>
                             {s.confidence} confidence
                           </span>
                         </div>
@@ -260,7 +260,7 @@ export default function SuggestionPanel({
 
                     {s.watch && (
                       <div className="mt-2.5 rounded border border-[#E4E4E0] bg-[#FAFAF8] px-3 py-2">
-                        <p className="text-[11.5px] font-medium text-[#6E747D] mb-1">Watch</p>
+                        <p className="text-[11px] font-medium text-[#6E747D] mb-1">Watch</p>
                         <p className="text-[12.5px] text-[#0F1115] leading-relaxed">{s.watch}</p>
                       </div>
                     )}
@@ -278,13 +278,13 @@ export default function SuggestionPanel({
                         {safetyOpen && (
                           <div className="mt-2 space-y-2.5 text-[12.5px]">
                             <div>
-                              <p className="text-[11.5px] font-medium text-[#6E747D] mb-1">{TIER_LABEL[s.recommendedTier]} protocol</p>
+                              <p className="text-[11px] font-medium text-[#6E747D] mb-1">{TIER_LABEL[s.recommendedTier]} protocol</p>
                               <p className="text-[#0F1115] leading-relaxed">
                                 {substance.tiers[s.recommendedTier].form}. {substance.tiers[s.recommendedTier].dose}, {substance.tiers[s.recommendedTier].timing}.
                               </p>
                             </div>
                             <div>
-                              <p className="text-[11.5px] font-medium text-[#6E747D] mb-1">Contraindications</p>
+                              <p className="text-[11px] font-medium text-[#6E747D] mb-1">Contraindications</p>
                               {substance.contraindications.length > 0 ? (
                                 <ul className="list-disc list-inside text-[#0F1115] leading-relaxed space-y-0.5">
                                   {substance.contraindications.map(c => <li key={c}>{c}</li>)}
@@ -292,7 +292,7 @@ export default function SuggestionPanel({
                               ) : <p className="text-[#6E747D]">None listed.</p>}
                             </div>
                             <div>
-                              <p className="text-[11.5px] font-medium text-[#6E747D] mb-1">Safety notes</p>
+                              <p className="text-[11px] font-medium text-[#6E747D] mb-1">Safety notes</p>
                               <p className="text-[#0F1115] leading-relaxed">{substance.safety_notes}</p>
                             </div>
                           </div>

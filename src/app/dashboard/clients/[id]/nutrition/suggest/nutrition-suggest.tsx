@@ -789,7 +789,7 @@ export default function NutritionPrescriptionSuggest({
             className="mt-0.5 w-4 h-4 accent-[#000000]"
           />
           <div className="min-w-0 flex-1">
-            <p className="text-[12px] font-medium text-[#6E747D] mb-1">Transitional plan (bridge mode)</p>
+            <p className="text-[12.5px] font-medium text-[#6E747D] mb-1">Transitional plan (bridge mode)</p>
             <p className="text-[12.5px] text-[#6E747D] leading-relaxed">
               Enable when the client cannot physically execute the bodyweight-derived calorie floor (chronic under-eating, severe appetite suppression, post-illness recovery). Replaces the standard carb / fat g/kg floors with an explicit kcal floor you set. Auto-expires after 4 weeks — regenerate then.
             </p>
@@ -879,7 +879,7 @@ export default function NutritionPrescriptionSuggest({
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
             </svg>
             <div className="min-w-0 flex-1">
-              <p className="text-[12px] font-medium text-[#B06E1F] mb-1">Prescription can&apos;t be generated as-is</p>
+              <p className="text-[12.5px] font-medium text-[#B06E1F] mb-1">Prescription can&apos;t be generated as-is</p>
               <p className="text-[12.5px] text-[#8A5514] leading-relaxed">
                 This combination violates the appetite-suppression hard rules. The engine would burn a generation attempt only to fail validation. Adjust before clicking Generate.
               </p>

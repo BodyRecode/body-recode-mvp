@@ -243,7 +243,7 @@ export default function CampaignEditor({ campaign, tags }: CampaignEditorProps) 
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-[22px] font-semibold tracking-[-0.025em] mb-1">{isNew ? 'New Campaign' : 'Edit Campaign'}</h1>
+          <h1 className="text-[20px] font-semibold tracking-[-0.025em] mb-1">{isNew ? 'New Campaign' : 'Edit Campaign'}</h1>
           {campaign?.status && (
             <p className="text-[12.5px] text-[#666D7A] capitalize">{campaign.status}</p>
           )}

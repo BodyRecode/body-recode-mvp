@@ -193,7 +193,7 @@ export default async function CheckInsPage({
                     <p className="text-[13.5px] font-medium text-[#0F1115] tracking-[-0.012em] truncate group-hover:text-[#0F1115] transition-colors min-w-0 flex-1">
                       {name}
                     </p>
-                    <span className="text-[11.5px] text-[#9CA2AB] shrink-0">
+                    <span className="text-[11px] text-[#9CA2AB] shrink-0">
                       {row.submitted_at ? relativeTime(row.submitted_at) : ''}
                     </span>
                   </div>
@@ -220,7 +220,7 @@ export default async function CheckInsPage({
 function StatusSlot({ status }: { status: Status }) {
   if (status === 'pending') {
     return (
-      <span className="inline-flex items-center gap-1 text-[12px] font-medium px-2.5 py-[3px] rounded-full border border-[#EADCC4] text-[#B06E1F] bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] shadow-[0_1px_2px_rgba(16,24,40,0.05)] group-hover:border-[#EADCC4] transition-colors shrink-0">
+      <span className="inline-flex items-center gap-1 text-[12.5px] font-medium px-2.5 py-[3px] rounded-full border border-[#EADCC4] text-[#B06E1F] bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] shadow-[0_1px_2px_rgba(16,24,40,0.05)] group-hover:border-[#EADCC4] transition-colors shrink-0">
         Review now
         <ChevronRight size={12} />
       </span>
@@ -228,7 +228,7 @@ function StatusSlot({ status }: { status: Status }) {
   }
   if (status === 'drafted') {
     return (
-      <span className="inline-flex items-center gap-1 text-[12px] font-medium px-2.5 py-[3px] rounded-full border border-[#DCDCD7] text-[#0F1115] bg-[rgba(27,109,252,0.08)] shadow-[0_1px_2px_rgba(16,24,40,0.05)] shrink-0">
+      <span className="inline-flex items-center gap-1 text-[12.5px] font-medium px-2.5 py-[3px] rounded-full border border-[#DCDCD7] text-[#0F1115] bg-[rgba(27,109,252,0.08)] shadow-[0_1px_2px_rgba(16,24,40,0.05)] shrink-0">
         Draft ready
         <ChevronRight size={12} />
       </span>
@@ -236,14 +236,14 @@ function StatusSlot({ status }: { status: Status }) {
   }
   if (status === 'skipped') {
     return (
-      <span className="inline-flex items-center gap-1.5 text-[12px] px-2.5 py-[3px] rounded-full border border-[#E4E4E0] text-[#6E747D] bg-[#FAFAF8] shrink-0">
+      <span className="inline-flex items-center gap-1.5 text-[12.5px] px-2.5 py-[3px] rounded-full border border-[#E4E4E0] text-[#6E747D] bg-[#FAFAF8] shrink-0">
         <Clock size={11} />
         Skipped
       </span>
     )
   }
   return (
-    <span className="inline-flex items-center gap-1.5 text-[12px] px-2.5 py-[3px] rounded-full border border-[#E4E4E0] text-[#6E747D] bg-[#FAFAF8] shrink-0">
+    <span className="inline-flex items-center gap-1.5 text-[12.5px] px-2.5 py-[3px] rounded-full border border-[#E4E4E0] text-[#6E747D] bg-[#FAFAF8] shrink-0">
       <Check size={11} />
       Sent
     </span>

@@ -211,7 +211,7 @@ export default function TodayDashboardPage() {
             <span className="text-[12.5px] font-medium text-[#000000]">Today</span>
             {runbookEntry && <span className="text-[12.5px] font-semibold text-[#6E747D] bg-white border border-[#E4E4E0] px-2 py-0.5 rounded">{runbookEntry.label}</span>}
           </div>
-          <h1 className="text-2xl sm:text-[26px] font-semibold tracking-[-0.035em] tracking-tight">{dateLabel}</h1>
+          <h1 className="text-2xl sm:text-[34px] font-semibold tracking-[-0.035em] tracking-tight">{dateLabel}</h1>
           <div className="flex items-center gap-2 mt-3 flex-wrap">
             <button onClick={() => setDate(dateOffset(-1))} className="text-[12.5px] bg-white border border-[#E4E4E0] px-3 py-1.5 rounded font-medium hover:bg-[#F2F2EF]">← Yesterday</button>
             <button onClick={() => setDate(todayIso())} className="text-[12.5px] bg-[#0F1115] text-white px-3 py-1.5 rounded font-medium hover:bg-[#000000]">Today</button>

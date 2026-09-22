@@ -37,7 +37,7 @@ export default async function BaselinePage({ params }: { params: Promise<{ id: s
             <span>/</span>
             <span className="text-[#0F1115]">Baseline</span>
           </div>
-          <h1 className="text-[22px] font-semibold text-[#0F1115] tracking-[-0.025em]">Baseline</h1>
+          <h1 className="text-[20px] font-semibold text-[#0F1115] tracking-[-0.025em]">Baseline</h1>
           <p className="text-sm text-[#6E747D] mt-1">Baseline measurements and progress photos.</p>
         </div>
         {baselineToken && (

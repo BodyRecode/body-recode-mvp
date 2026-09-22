@@ -153,7 +153,7 @@ export function PageHeader({
           </p>
         )}
         <h1
-          className="text-[38px] sm:text-[46px] font-extrabold leading-[0.98] tracking-[-0.038em]"
+          className="text-[46px] sm:text-[46px] font-extrabold leading-[0.98] tracking-[-0.038em]"
           style={{ color: BRAND.darkInk }}
         >
           {title}
@@ -191,7 +191,7 @@ export function SectionHead({ title, count }: { title: string; count?: number })
     <div className="flex items-center gap-3 mt-8 mb-0">
       <h2 className="text-[11px] font-extrabold uppercase" style={{ letterSpacing: '0.17em', color: BRAND.darkInk }}>{title}</h2>
       {count !== undefined && (
-        <span className="text-[10.5px] font-extrabold rounded-full px-2 py-px"
+        <span className="text-[10px] font-extrabold rounded-full px-2 py-px"
           style={{ background: BRAND.darkInkSoft, color: BRAND.darkWell }}>{count}</span>
       )}
       <span className="flex-1 h-px" style={{ background: BRAND.darkLineSoft }} />
@@ -235,7 +235,7 @@ export function PersonRow({
           </Link>
           {badge}
         </div>
-        {meta && <div className="text-[11.5px] mt-1" style={{ color: BRAND.darkInkFaint }}>{meta}</div>}
+        {meta && <div className="text-[11px] mt-1" style={{ color: BRAND.darkInkFaint }}>{meta}</div>}
         {detail && (
           <p className="text-[13.5px] leading-[1.55] mt-1.5 max-w-[620px]" style={{ color: BRAND.darkInkMuted }}>{detail}</p>
         )}
@@ -318,7 +318,7 @@ export function SectionLabel({
         <h2 className="text-[13.5px] font-semibold text-[#FAFAF8] tracking-[-0.015em] truncate">
           {children}
         </h2>
-        {meta && <span className="text-[11.5px] text-[#676D76] ml-1 shrink-0">{meta}</span>}
+        {meta && <span className="text-[11px] text-[#676D76] ml-1 shrink-0">{meta}</span>}
       </div>
       {cta && <div className="shrink-0">{cta}</div>}
     </div>
@@ -388,14 +388,14 @@ export function StatCard({
           <Icon size={12} className="opacity-90" />
         </span>
       )}
-      <p className="text-[11.5px] text-[#8A9099] mb-1.5 pr-7">{label}</p>
+      <p className="text-[11px] text-[#8A9099] mb-1.5 pr-7">{label}</p>
       <p
-        className="text-[26px] font-semibold text-[#FAFAF8] tracking-[-0.035em] leading-none"
+        className="text-[34px] font-semibold text-[#FAFAF8] tracking-[-0.035em] leading-none"
         style={{ fontVariantNumeric: 'tabular-nums' }}
       >
         {value}
       </p>
-      {sub && <p className="text-[11.5px] text-[#676D76] truncate mt-1.5">{sub}</p>}
+      {sub && <p className="text-[11px] text-[#676D76] truncate mt-1.5">{sub}</p>}
     </div>
   )
   return href ? (
@@ -461,7 +461,7 @@ export function Ring({
             return (
               <span key={item.label} className="flex items-center gap-3">
                 {i > 0 && <span className="text-[#2A2F39]" aria-hidden>|</span>}
-                <span className="inline-flex items-center gap-1.5 text-[12px] text-[#8A9099]">
+                <span className="inline-flex items-center gap-1.5 text-[12.5px] text-[#8A9099]">
                   <span className="w-[6px] h-[6px] rounded-full" style={{ background: la.bar }} aria-hidden />
                   <span style={{ fontVariantNumeric: 'tabular-nums' }} className="font-medium text-[#FAFAF8]">
                     {item.count}
@@ -542,7 +542,7 @@ export function DataRow({
           {primary}
         </p>
         {secondary && (
-          <p className="text-[12px] text-[#8A9099] truncate">{secondary}</p>
+          <p className="text-[12.5px] text-[#8A9099] truncate">{secondary}</p>
         )}
       </div>
       {trailing && <div className="shrink-0">{trailing}</div>}
@@ -573,8 +573,8 @@ export function EmptyState({
           <Icon size={16} className="text-[#676D76]" />
         </div>
       )}
-      <p className="text-[13px] text-[#8A9099]">{title}</p>
-      {hint && <p className="text-[12px] text-[#676D76] mt-1">{hint}</p>}
+      <p className="text-[13.5px] text-[#8A9099]">{title}</p>
+      {hint && <p className="text-[12.5px] text-[#676D76] mt-1">{hint}</p>}
     </div>
   )
 }
@@ -601,7 +601,7 @@ export function Btn({
   type?: 'button' | 'submit'
   disabled?: boolean
 }) {
-  const sizing = size === 'sm' ? 'text-[12px] px-3 py-1.5' : 'text-[12.5px] px-3.5 py-[7px]'
+  const sizing = size === 'sm' ? 'text-[12.5px] px-3 py-1.5' : 'text-[12.5px] px-3.5 py-[7px]'
   const palette =
     variant === 'primary'
       ? 'text-[#0B0D10] border border-[#FFFFFF] font-semibold bg-[#FAFAF8] hover:bg-[#242932] active:bg-[#FFFFFF] shadow-[0_1px_2px_rgba(0,0,0,0.24),inset_0_1px_0_rgba(255,255,255,0.10)]'

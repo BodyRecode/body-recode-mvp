@@ -200,7 +200,7 @@ export default function CommandPalette() {
             value={query}
             onChange={e => setQuery(e.target.value)}
             placeholder="Search pages, actions…"
-            className="flex-1 bg-transparent text-[14px] text-[#141821] placeholder:text-[#98A0AD] outline-none"
+            className="flex-1 bg-transparent text-[13.5px] text-[#141821] placeholder:text-[#98A0AD] outline-none"
           />
           <span
             className="hidden sm:inline-flex items-center gap-1 text-[10px] text-[#98A0AD] px-1.5 py-0.5 rounded border border-[#E8EAEE] bg-[#FFFFFF]"
@@ -214,7 +214,7 @@ export default function CommandPalette() {
         <div ref={listRef} className="max-h-[420px] overflow-y-auto p-2">
           {filtered.length === 0 ? (
             <div className="text-center py-10">
-              <p className="text-[13px] text-[#666D7A]">No matches</p>
+              <p className="text-[13.5px] text-[#666D7A]">No matches</p>
               <p className="text-[11px] text-[#98A0AD] mt-1">Try a different search</p>
             </div>
           ) : (
@@ -242,7 +242,7 @@ export default function CommandPalette() {
                     >
                       <Icon size={15} className={active ? 'text-[#1B6DFC]' : 'text-[#666D7A]'} />
                       <div className="flex-1 min-w-0">
-                        <p className="text-[13px] text-[#141821] truncate">{item.label}</p>
+                        <p className="text-[13.5px] text-[#141821] truncate">{item.label}</p>
                         {item.hint && (
                           <p className="text-[11px] text-[#98A0AD] truncate">{item.hint}</p>
                         )}

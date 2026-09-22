@@ -75,7 +75,7 @@ export default async function AnalyticsPage() {
   return (
     <div className="max-w-4xl">
       <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
-        <h1 className="text-[22px] font-semibold tracking-[-0.025em] mb-1">Analytics</h1>
+        <h1 className="text-[20px] font-semibold tracking-[-0.025em] mb-1">Analytics</h1>
         <p className="text-[#666D7A] text-sm">Live view of your business performance</p>
       </div>
 
@@ -86,7 +86,7 @@ export default async function AnalyticsPage() {
             <DollarSign size={14} className="text-[#1B6DFC]" />
             <p className="text-[12.5px] font-semibold text-[#666D7A]">Total Revenue</p>
           </div>
-          <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">${totalRevenue.toLocaleString('en-AU')}</p>
+          <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em]">${totalRevenue.toLocaleString('en-AU')}</p>
           <p className="text-[12.5px] text-[#666D7A] mt-1">${revenueThisMonth.toLocaleString('en-AU')} this month</p>
         </div>
 
@@ -95,7 +95,7 @@ export default async function AnalyticsPage() {
             <Users size={14} className="text-[#1B6DFC]" />
             <p className="text-[12.5px] font-semibold text-[#666D7A]">Total Leads</p>
           </div>
-          <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">{totalLeads}</p>
+          <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em]">{totalLeads}</p>
           <p className="text-[12.5px] text-[#666D7A] mt-1">{leadsThisWeek} this week · {activeLeads} active</p>
         </div>
 
@@ -104,7 +104,7 @@ export default async function AnalyticsPage() {
             <TrendingUp size={14} className="text-[#1B6DFC]" />
             <p className="text-[12.5px] font-semibold text-[#666D7A]">Conversion</p>
           </div>
-          <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">{conversionRate}%</p>
+          <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em]">{conversionRate}%</p>
           <p className="text-[12.5px] text-[#666D7A] mt-1">{converted} of {totalLeads} converted</p>
         </div>
 
@@ -113,7 +113,7 @@ export default async function AnalyticsPage() {
             <CheckCircle2 size={14} className="text-[#1B6DFC]" />
             <p className="text-[12.5px] font-semibold text-[#666D7A]">Show-up Rate</p>
           </div>
-          <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">{showUpRate}%</p>
+          <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em]">{showUpRate}%</p>
           <p className="text-[12.5px] text-[#666D7A] mt-1">{completedBookings} completed · {noShows} no show</p>
         </div>
       </div>

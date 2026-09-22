@@ -24,7 +24,7 @@ export default function ArtefactAuditPill({ audit }: { audit: ArtefactAuditResul
 
   if (!audit) {
     return (
-      <span className="inline-flex items-center gap-1 text-[11.5px] font-medium px-1.5 py-0.5 rounded bg-[#F2F2EF] border border-[#E4E4E0] text-[#9CA2AB]">
+      <span className="inline-flex items-center gap-1 text-[11px] font-medium px-1.5 py-0.5 rounded bg-[#F2F2EF] border border-[#E4E4E0] text-[#9CA2AB]">
         Not published
       </span>
     )
@@ -48,7 +48,7 @@ export default function ArtefactAuditPill({ audit }: { audit: ArtefactAuditResul
       <button
         type="button"
         onClick={() => setExpanded(e => !e)}
-        className={`inline-flex items-center gap-1.5 text-[11.5px] font-medium px-2 py-1 rounded border ${s.border} ${s.bg} ${s.text} hover:opacity-90 transition-opacity`}
+        className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-2 py-1 rounded border ${s.border} ${s.bg} ${s.text} hover:opacity-90 transition-opacity`}
         aria-expanded={expanded}
       >
         <Icon size={11} className={s.icon} />
@@ -72,7 +72,7 @@ export default function ArtefactAuditPill({ audit }: { audit: ArtefactAuditResul
           />
           {audit.issues.length > 0 && (
             <div>
-              <p className="text-[11.5px] font-medium text-[#6E747D] mb-1">Validator findings</p>
+              <p className="text-[11px] font-medium text-[#6E747D] mb-1">Validator findings</p>
               <ul className="space-y-1">
                 {audit.issues.map((issue, i) => (
                   <li key={i} className="flex items-start gap-2 leading-snug">
@@ -99,7 +99,7 @@ function DetailRow({ label, value, ok }: { label: string; value: string; ok: boo
     <div className="flex items-start gap-2">
       <span className={`mt-0.5 inline-block w-1.5 h-1.5 rounded-full shrink-0 ${ok ? 'bg-[#2B5E45]' : 'bg-[#B06E1F]'}`} />
       <div className="min-w-0">
-        <p className="text-[11.5px] font-medium text-[#6E747D]">{label}</p>
+        <p className="text-[11px] font-medium text-[#6E747D]">{label}</p>
         <p className="text-[11px] text-[#0F1115] break-words">{value}</p>
       </div>
     </div>

@@ -111,7 +111,7 @@ function Panel({ label, children }: { label: string; children: React.ReactNode }
         aria-hidden className="absolute inset-x-0 top-0 h-px"
         style={{ background: 'linear-gradient(90deg,transparent,rgba(250,250,248,0.12),transparent)' }}
       />
-      <div className="text-[9.5px] font-bold uppercase" style={{ letterSpacing: '0.16em', color: BRAND.darkInkFaint }}>{label}</div>
+      <div className="text-[10px] font-bold uppercase" style={{ letterSpacing: '0.16em', color: BRAND.darkInkFaint }}>{label}</div>
       {children}
     </div>
   )
@@ -164,7 +164,7 @@ export default function CoachTodayView({ today, firstName }: { today: CoachToday
               style={{ color: held > 0 ? BRAND.attentionOnDark : BRAND.darkInk }}>
               {held}
             </div>
-            <p className="text-[11.5px] mt-2" style={{ color: BRAND.darkInkSoft }}>
+            <p className="text-[11px] mt-2" style={{ color: BRAND.darkInkSoft }}>
               {held === 0 ? 'Nothing waiting on a doctor.' : `waiting on a doctor, not on you`}
             </p>
           </Panel>
@@ -181,7 +181,7 @@ export default function CoachTodayView({ today, firstName }: { today: CoachToday
             </div>
             <div className="flex gap-4 flex-wrap mt-3">
               {booked.map(b => (
-                <span key={b.label} className="flex items-center gap-1.5 text-[10.5px]" style={{ color: BRAND.darkInkSoft }}>
+                <span key={b.label} className="flex items-center gap-1.5 text-[10px]" style={{ color: BRAND.darkInkSoft }}>
                   <span className="w-2 h-2 rounded-full" style={{ background: bookColours[b.label] ?? BRAND.darkLine }} />
                   {b.count} {b.label}
                 </span>

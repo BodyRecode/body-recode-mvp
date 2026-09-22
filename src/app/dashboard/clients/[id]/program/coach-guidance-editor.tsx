@@ -237,7 +237,7 @@ export default function CoachGuidanceEditor({
                     onChange={e => setCoachNote(e.target.value)}
                     placeholder="One line of context the engine cannot read from CFFS / intake. e.g. 'Came off two weeks of high work stress, now back to normal sleep.'"
                     rows={2}
-                    className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-2.5 py-2 text-[12px] text-[#0F1115] placeholder:text-[#4A4F57] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
+                    className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-2.5 py-2 text-[12.5px] text-[#0F1115] placeholder:text-[#4A4F57] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
                   />
                 </div>
 
@@ -252,7 +252,7 @@ export default function CoachGuidanceEditor({
                   <button
                     onClick={suggest}
                     disabled={suggesting}
-                    className="inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed border border-[#0F1115] bg-[rgba(27,109,252,0.10)] text-[#0F1115] hover:bg-[rgba(27,109,252,0.18)]"
+                    className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed border border-[#0F1115] bg-[rgba(27,109,252,0.10)] text-[#0F1115] hover:bg-[rgba(27,109,252,0.18)]"
                   >
                     {suggesting ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
                     {suggesting ? 'Drafting...' : 'Draft guidance'}
@@ -267,7 +267,7 @@ export default function CoachGuidanceEditor({
             onChange={e => setValue(e.target.value)}
             placeholder="e.g. Training-age advanced (10+ years). Target RPE 8 on primaries from week 1. No machine variations where a barbell or dumbbell version exists. Supersets allowed. Bias volume to the top of the range. He can handle and wants intensity."
             rows={6}
-            className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2.5 text-[13px] text-[#0F1115] placeholder:text-[#4A4F57] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
+            className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2.5 text-[13.5px] text-[#0F1115] placeholder:text-[#4A4F57] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
           />
           {error && (
             <div className="mt-2 text-[11px] text-[#8A5514]">{error}</div>
@@ -279,7 +279,7 @@ export default function CoachGuidanceEditor({
             <button
               onClick={save}
               disabled={!dirty || saving || isPending}
-              className={`inline-flex items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
+              className={`inline-flex items-center gap-1.5 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
                 dirty
                   ? 'bg-[#0F1115] text-[#FFFFFF] hover:bg-[#000000] border border-[#0F1115]'
                   : 'border border-[#E4E4E0] bg-[#FFFFFF] text-[#6E747D]'

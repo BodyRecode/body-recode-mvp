@@ -154,7 +154,7 @@ export default function ContentClient({ initialHooks, initialMessages, initialCt
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h1 className="text-[22px] font-semibold tracking-[-0.025em] mb-1">Content Engine</h1>
+          <h1 className="text-[20px] font-semibold tracking-[-0.025em] mb-1">Content Engine</h1>
           <p className="text-[#666D7A] text-sm">Build hook, message, and CTA libraries. Generate batches of ad copy and reels.</p>
         </div>
       </div>
@@ -731,7 +731,7 @@ function GenerateTab({
         <div className="flex items-center justify-between mb-4">
           <div>
             <p className="text-[12.5px] text-[#666D7A] mb-0.5">Variants to generate</p>
-            <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">
+            <p className="text-[20px] font-semibold text-[#141821] tracking-[-0.025em]">
               {variantCount > 0 ? variantCount.toLocaleString() : '-'}
             </p>
             {variantCount > 0 && (

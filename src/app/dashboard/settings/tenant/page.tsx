@@ -104,11 +104,11 @@ export default async function TenantSettingsPage({
           <ReadOnlyCard title="Licence" fields={licenceFields(displayed.licence)} />
           <ReadOnlyCard title="Modality" fields={modalityFields(displayed.modality)} />
 
-          <div className="mt-6 p-4 rounded-xl border border-[#EADCC4] bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] text-[13px] text-[#8A5514] leading-relaxed">
+          <div className="mt-6 p-4 rounded-xl border border-[#EADCC4] bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] text-[13.5px] text-[#8A5514] leading-relaxed">
             <strong>Read-only:</strong> no tenant_config row exists for your coach_id yet. Values shown are the in-code fallback from
-            <code className="mx-1 bg-[#FDF8F1] px-1 py-0.5 rounded text-[12px]">src/config/tenant.ts</code>.
+            <code className="mx-1 bg-[#FDF8F1] px-1 py-0.5 rounded text-[12.5px]">src/config/tenant.ts</code>.
             To enable editing, ensure a row exists in the
-            <code className="mx-1 bg-[#FDF8F1] px-1 py-0.5 rounded text-[12px]">tenant_config</code>
+            <code className="mx-1 bg-[#FDF8F1] px-1 py-0.5 rounded text-[12.5px]">tenant_config</code>
             table with your coach_id.
           </div>
         </>
@@ -143,11 +143,11 @@ function StatusBanner({
   return (
     <div className={`mb-6 p-4 rounded-xl border ${toneStyles}`}>
       <div className="flex items-center gap-3 mb-1">
-        <span className="text-[12px] font-medium">{status.label}</span>
+        <span className="text-[12.5px] font-medium">{status.label}</span>
         <span className="text-[11px] font-mono opacity-70">tenant_id: {tenantId}</span>
-        {canEdit && <span className="text-[11.5px] font-medium bg-[#F2F2EF] text-[#000000] px-1.5 py-0.5 rounded">Editable</span>}
+        {canEdit && <span className="text-[11px] font-medium bg-[#F2F2EF] text-[#000000] px-1.5 py-0.5 rounded">Editable</span>}
       </div>
-      <p className="text-[13px] leading-relaxed">{status.detail}</p>
+      <p className="text-[13.5px] leading-relaxed">{status.detail}</p>
     </div>
   )
 }
@@ -167,8 +167,8 @@ function ReadOnlyCard({
       <div className="divide-y divide-[#F2F2EF]">
         {fields.map((f) => (
           <div key={f.label} className="px-5 py-3 flex items-baseline gap-4">
-            <div className="w-52 shrink-0 text-[12px] text-[#6E747D] font-mono">{f.label}</div>
-            <div className="flex-1 text-[13px] text-[#0F1115] font-mono break-all">
+            <div className="w-52 shrink-0 text-[12.5px] text-[#6E747D] font-mono">{f.label}</div>
+            <div className="flex-1 text-[13.5px] text-[#0F1115] font-mono break-all">
               {f.value || <span className="text-[#9CA2AB] italic">(empty)</span>}
             </div>
           </div>

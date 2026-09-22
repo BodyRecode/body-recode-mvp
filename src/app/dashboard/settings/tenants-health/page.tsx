@@ -79,7 +79,7 @@ export default async function TenantsHealthPage() {
       <div className="max-w-[1200px]">
         <PageHeader eyebrow="Settings · Tenants Health" title="Tenants Health" accent="amber" />
         <Card>
-          <div className="text-[#8F2D2D] text-[13px]">Failed to load tenants: {tenantsErr.message}</div>
+          <div className="text-[#8F2D2D] text-[13.5px]">Failed to load tenants: {tenantsErr.message}</div>
         </Card>
       </div>
     )
@@ -162,7 +162,7 @@ export default async function TenantsHealthPage() {
           <SectionLabel meta={`${rows.length} rows`}>All Tenants</SectionLabel>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-[12px]">
+          <table className="w-full text-[12.5px]">
             <thead>
               <tr className="text-[10px] text-[#6E747D] border-t border-b border-[#E4E4E0]">
                 <th className="text-left px-4 py-2 font-normal">Tenant</th>
@@ -255,7 +255,7 @@ function TenantRow({
         <span className={lastLoginStale ? 'text-[#B06E1F]' : 'text-[#0F1115]'}>{lastLoginText}</span>
       </td>
       <td className="px-4 py-3 align-top">
-        <div className="flex items-center gap-2 text-[12px]">
+        <div className="flex items-center gap-2 text-[12.5px]">
           <span className={capFull ? 'font-bold text-[#8F2D2D]' : capWarn ? 'font-bold text-[#B06E1F]' : 'text-[#0F1115]'}>
             {activeClients} / {cap}
           </span>
@@ -322,7 +322,7 @@ function StatMini({ label, value, sub }: { label: string; value: number; sub: st
   return (
     <div className="p-4 rounded-xl border border-[#E4E4E0] bg-white">
       <div className="text-[10px] text-[#6E747D] mb-2">{label}</div>
-      <div className="text-[28px] font-extrabold text-[#0F1115] leading-none mb-1" style={{ fontVariantNumeric: 'tabular-nums' }}>{value}</div>
+      <div className="text-[34px] font-extrabold text-[#0F1115] leading-none mb-1" style={{ fontVariantNumeric: 'tabular-nums' }}>{value}</div>
       <div className="text-[11px] text-[#6E747D]">{sub}</div>
     </div>
   )

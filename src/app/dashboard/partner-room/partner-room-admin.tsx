@@ -105,14 +105,14 @@ export default function PartnerRoomAdmin({ initialGuests }: { initialGuests: Gue
   }
 
   const inputCls =
-    'w-full text-[14px] px-3.5 py-2.5 rounded-lg bg-[#FFFFFF] border border-[#E8EAEE] text-[#141821] placeholder:text-[#B0B0B0] focus:outline-none focus:border-[#1B6DFC] transition-colors'
+    'w-full text-[13.5px] px-3.5 py-2.5 rounded-lg bg-[#FFFFFF] border border-[#E8EAEE] text-[#141821] placeholder:text-[#B0B0B0] focus:outline-none focus:border-[#1B6DFC] transition-colors'
 
   return (
     <div className="grid gap-8">
       {/* Add a guest */}
       <Card padding="lg" accent="blue">
         <p
-          className="text-[12px] font-medium mb-4"
+          className="text-[12.5px] font-medium mb-4"
           style={{ color: '#1B6DFC' }}
         >
           New guest link
@@ -120,7 +120,7 @@ export default function PartnerRoomAdmin({ initialGuests }: { initialGuests: Gue
         <form onSubmit={addGuest} className="grid gap-3">
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
-              <label className="block text-[12px] font-medium text-[#43474F] mb-1.5">Name</label>
+              <label className="block text-[12.5px] font-medium text-[#43474F] mb-1.5">Name</label>
               <input
                 className={inputCls}
                 value={name}
@@ -130,7 +130,7 @@ export default function PartnerRoomAdmin({ initialGuests }: { initialGuests: Gue
               />
             </div>
             <div>
-              <label className="block text-[12px] font-medium text-[#43474F] mb-1.5">
+              <label className="block text-[12.5px] font-medium text-[#43474F] mb-1.5">
                 Company <span className="text-[#B0B0B0]">(optional)</span>
               </label>
               <input
@@ -142,7 +142,7 @@ export default function PartnerRoomAdmin({ initialGuests }: { initialGuests: Gue
             </div>
           </div>
           <div>
-            <label className="block text-[12px] font-medium text-[#43474F] mb-1.5">
+            <label className="block text-[12.5px] font-medium text-[#43474F] mb-1.5">
               Private note <span className="text-[#B0B0B0]">(optional, only you see this)</span>
             </label>
             <input
@@ -156,18 +156,18 @@ export default function PartnerRoomAdmin({ initialGuests }: { initialGuests: Gue
             <Btn type="submit" variant="primary" icon={Plus} disabled={busy || !name.trim()}>
               {busy ? 'Creating…' : 'Create link'}
             </Btn>
-            <span className="text-[12px] text-[#98A0AD]">
+            <span className="text-[12.5px] text-[#98A0AD]">
               We&rsquo;ll copy the link to your clipboard automatically.
             </span>
           </div>
-          {error && <p className="text-[13px] text-[#DC2626] mt-1">{error}</p>}
+          {error && <p className="text-[13.5px] text-[#DC2626] mt-1">{error}</p>}
         </form>
       </Card>
 
       {/* Guest list */}
       <div>
         <p
-          className="text-[12px] font-medium mb-4"
+          className="text-[12.5px] font-medium mb-4"
           style={{ color: '#666D7A' }}
         >
           Guests ({initialGuests.length})
@@ -188,8 +188,8 @@ export default function PartnerRoomAdmin({ initialGuests }: { initialGuests: Gue
                 <div className="flex items-start justify-between gap-4 flex-wrap">
                   <div className="min-w-0">
                     <div className="flex items-center gap-2.5 flex-wrap">
-                      <p className="text-[15px] font-semibold text-[#141821]">{g.name}</p>
-                      {g.company && <span className="text-[13px] text-[#98A0AD]">{g.company}</span>}
+                      <p className="text-[16px] font-semibold text-[#141821]">{g.name}</p>
+                      {g.company && <span className="text-[13.5px] text-[#98A0AD]">{g.company}</span>}
                       {g.revoked ? (
                         <Pill accent="red">Revoked</Pill>
                       ) : g.visit_count > 0 ? (
@@ -198,25 +198,25 @@ export default function PartnerRoomAdmin({ initialGuests }: { initialGuests: Gue
                         <Pill accent="neutral">Not opened</Pill>
                       )}
                     </div>
-                    {g.note && <p className="text-[12px] text-[#98A0AD] mt-1.5 truncate">{g.note}</p>}
+                    {g.note && <p className="text-[12.5px] text-[#98A0AD] mt-1.5 truncate">{g.note}</p>}
 
                     <div className="flex items-center gap-4 mt-3 flex-wrap">
                       <span
-                        className="inline-flex items-center gap-1.5 text-[12px] text-[#666D7A]"
+                        className="inline-flex items-center gap-1.5 text-[12.5px] text-[#666D7A]"
                         style={{ fontVariantNumeric: 'tabular-nums' }}
                         title="Times opened"
                       >
                         <Eye size={13} className="text-[#98A0AD]" />
                         {g.visit_count} {g.visit_count === 1 ? 'view' : 'views'}
                       </span>
-                      <span className="text-[12px] text-[#98A0AD]">Last: {relTime(g.last_seen_at)}</span>
-                      <span className="text-[12px] text-[#98A0AD]">Added {formatDate(g.created_at)}</span>
+                      <span className="text-[12.5px] text-[#98A0AD]">Last: {relTime(g.last_seen_at)}</span>
+                      <span className="text-[12.5px] text-[#98A0AD]">Added {formatDate(g.created_at)}</span>
                     </div>
 
                     {/* The link */}
                     <div className="mt-3 flex items-center gap-2 flex-wrap">
                       <code
-                        className="text-[12px] text-[#43474F] bg-[#F4F6F9] border border-[#E8EAEE] rounded-md px-2.5 py-1.5 max-w-full truncate"
+                        className="text-[12.5px] text-[#43474F] bg-[#F4F6F9] border border-[#E8EAEE] rounded-md px-2.5 py-1.5 max-w-full truncate"
                         style={{ fontFamily: MONO_FONT }}
                         title={g.url}
                       >

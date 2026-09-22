@@ -174,14 +174,14 @@ export default function ConsoleClient({
         <div className="p-3 border-b border-[#E8EAEE]">
           <button
             onClick={newThread}
-            className="w-full text-[13px] font-semibold px-3 py-2 rounded-lg bg-[#1B6DFC] text-white hover:bg-[#1560E0] transition-colors"
+            className="w-full text-[13.5px] font-semibold px-3 py-2 rounded-lg bg-[#1B6DFC] text-white hover:bg-[#1560E0] transition-colors"
           >
             ＋ New conversation
           </button>
         </div>
         <div className="flex-1 overflow-y-auto p-2">
           {threads.length === 0 && (
-            <p className="text-[12px] text-[#98A0AD] px-2 py-3 leading-relaxed">
+            <p className="text-[12.5px] text-[#98A0AD] px-2 py-3 leading-relaxed">
               Your conversations show up here and stay put, so you can pick a piece of work back up.
             </p>
           )}
@@ -206,13 +206,13 @@ export default function ConsoleClient({
       <section className="flex-1 min-w-0 flex flex-col rounded-xl border border-[#E8EAEE] bg-white overflow-hidden">
         <header className="px-5 py-3 border-b border-[#E8EAEE] flex items-center justify-between gap-3">
           <div className="min-w-0">
-            <h1 className="text-[15px] font-semibold text-[#141821] truncate">Operator Console</h1>
-            <p className="text-[11.5px] text-[#666D7A] truncate">
+            <h1 className="text-[16px] font-semibold text-[#141821] truncate">Operator Console</h1>
+            <p className="text-[11px] text-[#666D7A] truncate">
               Reads your live data · you approve anything that sends
             </p>
           </div>
           <span
-            className="hidden sm:inline-flex items-center gap-1.5 text-[10.5px] text-[#666D7A] px-2 py-1 rounded-full border border-[#E8EAEE] bg-[#FAFBFC] shrink-0"
+            className="hidden sm:inline-flex items-center gap-1.5 text-[10px] text-[#666D7A] px-2 py-1 rounded-full border border-[#E8EAEE] bg-[#FAFBFC] shrink-0"
             style={{ fontFamily: MONO }}
           >
             <span className="w-1.5 h-1.5 rounded-full bg-[#1B6DFC]" />
@@ -223,7 +223,7 @@ export default function ConsoleClient({
         <div ref={scrollRef} className="flex-1 overflow-y-auto px-5 py-5">
           {empty && (
             <div className="max-w-[620px] mx-auto pt-8">
-              <h2 className="text-[19px] font-semibold text-[#141821] mb-2">
+              <h2 className="text-[20px] font-semibold text-[#141821] mb-2">
                 What do you want to look at, {coachFirstName}?
               </h2>
               <p className="text-[13.5px] text-[#666D7A] leading-relaxed mb-6">
@@ -236,7 +236,7 @@ export default function ConsoleClient({
                   <button
                     key={s}
                     onClick={() => send(s)}
-                    className="text-left text-[13px] text-[#141821] px-3.5 py-2.5 rounded-xl border border-[#E8EAEE] hover:border-[#1B6DFC] hover:bg-[#F8FAFF] transition-colors"
+                    className="text-left text-[13.5px] text-[#141821] px-3.5 py-2.5 rounded-xl border border-[#E8EAEE] hover:border-[#1B6DFC] hover:bg-[#F8FAFF] transition-colors"
                   >
                     {s}
                   </button>
@@ -262,7 +262,7 @@ export default function ConsoleClient({
                           <span
                             key={j}
                             title={t.error ?? undefined}
-                            className={`text-[10.5px] px-2 py-0.5 rounded-full border ${
+                            className={`text-[10px] px-2 py-0.5 rounded-full border ${
                               t.ok
                                 ? 'border-[#E8EAEE] bg-[#FAFBFC] text-[#666D7A]'
                                 : 'border-[#F5C2C2] bg-[#FDF2F2] text-[#B42318]'
@@ -327,7 +327,7 @@ export default function ConsoleClient({
             <button
               onClick={() => void send(input)}
               disabled={busy || !input.trim()}
-              className="shrink-0 text-[13px] font-semibold px-4 py-2.5 rounded-xl bg-[#1B6DFC] text-white hover:bg-[#1560E0] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="shrink-0 text-[13.5px] font-semibold px-4 py-2.5 rounded-xl bg-[#1B6DFC] text-white hover:bg-[#1560E0] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               Send
             </button>
@@ -361,10 +361,10 @@ function ApprovalCard({
   return (
     <div className="rounded-xl border-2 border-[#F0A73F] bg-[#FFFBF3] p-4">
       <div className="flex items-start gap-2.5 mb-3">
-        <span className="text-[15px] leading-none mt-0.5">⏸</span>
+        <span className="text-[16px] leading-none mt-0.5">⏸</span>
         <div className="min-w-0">
           <p className="text-[13.5px] font-semibold text-[#141821]">{action.summary}</p>
-          <p className="text-[11.5px] text-[#8A6D3B] mt-0.5">
+          <p className="text-[11px] text-[#8A6D3B] mt-0.5">
             Nothing has happened yet. This waits for you.
           </p>
         </div>
@@ -377,7 +377,7 @@ function ApprovalCard({
         {typeof p.excluded_count === 'number' && p.excluded_count > 0 && (
           <div>
             <p><strong className="text-[#141821]">{p.excluded_count}</strong> excluded:</p>
-            <ul className="mt-1 ml-4 space-y-0.5 text-[12px] text-[#666D7A]">
+            <ul className="mt-1 ml-4 space-y-0.5 text-[12.5px] text-[#666D7A]">
               {Object.entries(excludedByReason).map(([reason, n]) => (
                 <li key={reason}>{n} · {reason}</li>
               ))}
@@ -385,7 +385,7 @@ function ApprovalCard({
           </div>
         )}
         {typeof p.sequence === 'string' && (
-          <p className="text-[12px] text-[#666D7A] pt-1">{p.sequence}</p>
+          <p className="text-[12.5px] text-[#666D7A] pt-1">{p.sequence}</p>
         )}
         {typeof p.lead === 'string' && <p>Lead: <strong className="text-[#141821]">{p.lead}</strong></p>}
         {typeof p.date === 'string' && <p>Date: <strong className="text-[#141821]">{p.date}</strong></p>}
@@ -396,7 +396,7 @@ function ApprovalCard({
         <div className="mb-3">
           <button
             onClick={() => setShowList(v => !v)}
-            className="text-[12px] text-[#1B6DFC] hover:underline"
+            className="text-[12.5px] text-[#1B6DFC] hover:underline"
           >
             {showList ? 'Hide the list' : `Show me exactly who (${recipients.length})`}
           </button>
@@ -405,7 +405,7 @@ function ApprovalCard({
               {recipients.map((r, i) => (
                 <div
                   key={i}
-                  className="text-[11.5px] px-2.5 py-1.5 border-b border-[#F0F0F0] last:border-0 flex justify-between gap-2"
+                  className="text-[11px] px-2.5 py-1.5 border-b border-[#F0F0F0] last:border-0 flex justify-between gap-2"
                 >
                   <span className="text-[#141821] truncate">{String(r.name ?? r.email ?? '—')}</span>
                   <span className="text-[#666D7A] shrink-0" style={{ fontFamily: MONO }}>
@@ -422,14 +422,14 @@ function ApprovalCard({
         <button
           onClick={() => onDecide(action, true)}
           disabled={busy}
-          className="text-[13px] font-semibold px-4 py-2 rounded-lg bg-[#141821] text-white hover:bg-black disabled:opacity-50 transition-colors"
+          className="text-[13.5px] font-semibold px-4 py-2 rounded-lg bg-[#141821] text-white hover:bg-black disabled:opacity-50 transition-colors"
         >
           {busy ? 'Working…' : 'Confirm and send'}
         </button>
         <button
           onClick={() => onDecide(action, false)}
           disabled={busy}
-          className="text-[13px] px-4 py-2 rounded-lg border border-[#E8EAEE] bg-white text-[#43474F] hover:bg-[#FAFBFC] disabled:opacity-50 transition-colors"
+          className="text-[13.5px] px-4 py-2 rounded-lg border border-[#E8EAEE] bg-white text-[#43474F] hover:bg-[#FAFBFC] disabled:opacity-50 transition-colors"
         >
           Cancel
         </button>

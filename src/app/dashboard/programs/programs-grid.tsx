@@ -98,7 +98,7 @@ export default function ProgramsGrid({ items }: { items: ProgramCard[] }) {
               <button
                 key={f.id}
                 onClick={() => setFilter(f.id)}
-                className={`text-[12px] px-3 py-1.5 rounded-md border transition-colors whitespace-nowrap ${
+                className={`text-[12.5px] px-3 py-1.5 rounded-md border transition-colors whitespace-nowrap ${
                   active
                     ? 'bg-[#EFF1F4] text-[#141821] border-[#CFD4DC]'
                     : 'bg-transparent text-[#666D7A] border-[#E8EAEE] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)]'
@@ -122,7 +122,7 @@ export default function ProgramsGrid({ items }: { items: ProgramCard[] }) {
             placeholder="Search clients..."
             value={query}
             onChange={e => setQuery(e.target.value)}
-            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-md pl-9 pr-3 py-2 text-[13px] text-[#141821] placeholder:text-[#98A0AD] focus:outline-none focus:border-[#CFD4DC]"
+            className="w-full bg-[#FFFFFF] border border-[#E8EAEE] rounded-md pl-9 pr-3 py-2 text-[13.5px] text-[#141821] placeholder:text-[#98A0AD] focus:outline-none focus:border-[#CFD4DC]"
           />
         </div>
       </div>
@@ -180,7 +180,7 @@ function ProgramCardTile({ item }: { item: ProgramCard }) {
 
         {item.has_program ? (
           <>
-            <p className="text-[13px] text-[#d6d3d1] leading-snug mb-3 line-clamp-2">
+            <p className="text-[13.5px] text-[#d6d3d1] leading-snug mb-3 line-clamp-2">
               {item.block_name}
             </p>
 
@@ -216,7 +216,7 @@ function ProgramCardTile({ item }: { item: ProgramCard }) {
             </div>
           </>
         ) : (
-          <p className="text-[13px] text-[#666D7A] leading-snug">
+          <p className="text-[13.5px] text-[#666D7A] leading-snug">
             No active program. Tap to open the macro plan and build one.
           </p>
         )}
