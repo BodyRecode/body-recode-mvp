@@ -7,7 +7,14 @@
  * circle, both on a heavy drop shadow. Once the rest of the dashboard stopped
  * shouting, the pair became the loudest thing on the screen.
  *
- * 22 September 2026, and the same thing happened again in reverse. The
+ * 22 September 2026, twice. The sidebar then went PAPER while the work surface
+ * stayed graphite, and the Support launcher sits over the sidebar, so a paper
+ * button on a paper ground vanished. It is graphite now: a control is the
+ * highest-contrast thing against whatever it is sitting on, and these two sit
+ * on different grounds, which is why they are not the same colour as each
+ * other any more.
+ *
+ * Earlier the same day, and in reverse: The
  * dashboard went dark and these two stayed Signal Blue, so on a page whose
  * only colour is a readiness they were the brightest objects on it, saying
  * nothing. A launcher is a control, not a state: it is paper on graphite like
@@ -23,15 +30,14 @@ export const LAUNCHER_BUTTON =
 export function launcherStyle(open: boolean): React.CSSProperties {
   return open
     ? {
-        background: '#1A1E26',
+        background: '#4A4F57',
         color: '#FAFAF8',
-        border: '1px solid #2A2F39',
-        boxShadow: '0 6px 16px -4px rgba(0,0,0,0.5)',
+        boxShadow: '0 6px 16px -4px rgba(0,0,0,0.35)',
       }
     : {
-        background: '#FAFAF8',
-        color: '#0B0D10',
-        boxShadow: '0 6px 16px -4px rgba(0,0,0,0.55), inset 0 -1px 0 rgba(0,0,0,0.12)',
+        background: '#0F1115',
+        color: '#FAFAF8',
+        boxShadow: '0 6px 16px -4px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.10)',
       }
 }
 

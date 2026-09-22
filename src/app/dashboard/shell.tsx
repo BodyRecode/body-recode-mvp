@@ -48,7 +48,7 @@ export default function DashboardShell({
   // brand book exists to stop, in miniature.
   const brandBlock = (
     <Link href="/dashboard" onClick={() => setDrawerOpen(false)} className="flex items-center min-w-0">
-      <BrandMark tone="light" size="sm" name={brandName} />
+      <BrandMark tone="dark" size="sm" name={brandName} />
     </Link>
   )
 
@@ -59,7 +59,7 @@ export default function DashboardShell({
         <button
           type="button"
           onClick={() => setDrawerOpen(false)}
-          className="lg:hidden text-[#8A9099] hover:text-[#FAFAF8] p-1 -mr-1"
+          className="lg:hidden text-[#6E747D] hover:text-[#0F1115] p-1 -mr-1"
           aria-label="Close menu"
         >
           <X size={18} />
@@ -69,8 +69,8 @@ export default function DashboardShell({
       <div className="flex-1 min-h-0 overflow-y-auto">
         <DashboardNav onNavigate={() => setDrawerOpen(false)} badges={badges} tier={tier} />
       </div>
-      <div className="border-t border-[#2A2F39] bg-white/[0.03] px-3.5 py-2.5 flex items-center justify-between gap-2">
-        <span className="text-[11px] text-[#676D76] truncate min-w-0">{userEmail}</span>
+      <div className="border-t border-[#E4E4E0] bg-[#EDEDEA] px-3.5 py-2.5 flex items-center justify-between gap-2">
+        <span className="text-[11px] text-[#6E747D] truncate min-w-0">{userEmail}</span>
         {logout}
       </div>
     </div>
@@ -100,8 +100,8 @@ export default function DashboardShell({
             aria-hidden
           />
           <aside
-            className="absolute inset-y-0 left-0 w-[264px] border-r border-[#2A2F39] shadow-[0_20px_50px_-20px_rgba(15,17,21,0.45)]"
-            style={{ background: 'linear-gradient(180deg,#14171D 0%,#0F1115 100%)' }}
+            className="absolute inset-y-0 left-0 w-[264px] border-r border-[#E4E4E0] shadow-[0_20px_50px_-20px_rgba(15,17,21,0.45)]"
+            style={{ background: 'linear-gradient(180deg,#FAFAF8 0%,#F2F2EF 100%)' }}
           >
             {rail}
           </aside>
@@ -111,9 +111,9 @@ export default function DashboardShell({
       <div className="lg:grid lg:grid-cols-[236px_1fr]">
         {/* Rail */}
         <aside
-          className="hidden lg:flex flex-col sticky top-0 h-screen border-r border-[#2A2F39] print:hidden"
+          className="hidden lg:flex flex-col sticky top-0 h-screen border-r border-[#E4E4E0] print:hidden"
           style={{
-            background: 'linear-gradient(180deg,#14171D 0%,#0F1115 100%)',
+            background: 'linear-gradient(180deg,#FAFAF8 0%,#F2F2EF 100%)',
             boxShadow: 'inset -1px 0 0 rgba(255,255,255,0.9)',
           }}
         >
