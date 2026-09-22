@@ -19,14 +19,20 @@ import { BRAND } from '@/lib/brand-tokens'
  * sidebar, so it is the de facto identity rather than a new one. Whether it
  * REPLACES the current logo is Kade's decision, not this component's.
  *
- * THE SYMBOL IS TEAL, on light and on dark alike. 22 September 2026: the
- * designer's 2025 guideline specifies Electric Teal as the primary preferred
- * for DIGITAL use, and it had never appeared on a screen. The mark is the one
- * place that is not negotiable, because the mark is what identifies us. The
- * blue stays where it belongs, on things you press.
+ * THE MARK HAS NO COLOUR, and that is the decision rather than an omission.
+ * 22 September 2026: I first made it teal, on the strength of a line in the
+ * 2025 guideline. Teal is the cover of that document. Restoring it rebuilt the
+ * old brand and Kade said so immediately. The identity is now graphite and
+ * paper, with colour reserved for the things in this product that MEAN
+ * something, which is readiness and attention. A mark that is a colour is what
+ * every product in this market has, and they have all picked the same blue.
+ *
+ * So it inverts rather than recolours: graphite square with paper letters on a
+ * pale ground, paper square with graphite letters on a dark one. Same mark
+ * either way, which is the point.
  *
  * A white-label tenant passes its own `colour`, which is the whole reason this
- * is drawn rather than loaded.
+ * is drawn rather than loaded. Body Recode itself does not pass one.
  */
 export function BrandMark({
   tone = 'light',
@@ -58,11 +64,8 @@ export function BrandMark({
   }[size]
 
   const onDark = tone === 'light'
-  // The symbol keeps its colour on both grounds. Only the letters inside it and
-  // the wordmark beside it change, which is what keeps it one recognisable mark
-  // rather than two that happen to share a name.
-  const markBg = colour ?? BRAND.brand
-  const markFg = BRAND.ink
+  const markBg = colour ?? (onDark ? BRAND.paper : BRAND.ink)
+  const markFg = colour ? BRAND.paper : onDark ? BRAND.ink : BRAND.paper
   const wordFg = onDark ? BRAND.darkInk : BRAND.ink
 
   return (

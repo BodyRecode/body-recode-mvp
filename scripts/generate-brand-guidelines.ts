@@ -35,12 +35,20 @@ const OUT = join(homedir(), 'Dropbox', '01_BODY_RECODE', '00_Project_HQ', 'Logo'
 const FONT = join(homedir(), 'Dropbox', '01_BODY_RECODE', '06_SAAS_PLATFORM_BUILD', '_pdf_build', 'Montserrat.ttf')
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 
-const TEAL = '#10E1C2'
-const BLUE = '#1B6DFC'
-const INK = '#1A1A1A'
+// GRAPHITE AND PAPER. There is no brand colour, and that is the decision.
+// This document is itself the argument: colour appears on exactly one page,
+// 3.0, and every colour on it is carrying meaning rather than identity.
+const INK = '#0F1115'      // graphite
+const PAPER = '#FAFAF8'    // off-white, very slightly warm
 const WHITE = '#FFFFFF'
-const GREY = '#57606A'
-const WASH = '#F3F4F6'
+const GREY = '#6E747D'
+const WASH = '#F2F2EF'
+const LINE = '#E4E4E0'
+// The meaning colours, shown on 3.0 and used nowhere else in this document.
+const HOLD = '#B5803C'
+const CALM = '#3A7D8C'
+const STEADY = '#4A7C59'
+const STOP = '#A63D3D'
 
 const BOX = 200, RADIUS = 50, MARK = 108, WORD = 132, GAP = 58
 
@@ -113,7 +121,7 @@ const pages: string[] = []
 pageNo = -1
 pages.push(`<section class="page cover"><div class="bar"></div><div class="coverwrap">
   <div class="ast">✳</div>
-  <div style="margin-bottom:34px">${lock(TEAL, INK, INK, 62)}</div>
+  <div style="margin-bottom:34px">${lock(INK, PAPER, INK, 62)}</div>
   <h1>BRAND<br>GUIDELINES</h1>
   <p class="cv">Version 2.0 &middot; September 2026</p>
 </div></section>`)
@@ -124,8 +132,9 @@ pages.push(page(`${head('', 'WHAT THESE<br>GUIDELINES<br>ARE FOR')}
   <div></div>
   <div>
     <p>This document covers the use and application of the <b>Body Recode</b> identity, so that it stays consistent wherever it appears.</p>
-    <p>It replaces the 2025 guideline. The structure is the same because the structure was right. What changed is the mark, and one correction: <b>Electric Teal is the primary for anything on a screen</b>, which the original said and the product never did.</p>
+    <p>It replaces the 2025 guideline. The structure is the same because the structure was right. What changed is the mark and the palette.</p>
     <p><b>The helix has been retired.</b> DNA means genetics. Body Recode reads what somebody reports about their sleep, stress, training and storage. It has never read a gene, and a claim we do not make should not sit on the first thing anybody sees.</p>
+    <p><b>There is no brand colour, and that is the decision rather than an omission.</b> The identity is graphite and paper. Colour is reserved for the things in this product that mean something, which is somebody's readiness and anything needing attention. Nothing is coloured to look nice, and that is exactly what makes a coloured thing read when it does appear.</p>
     <p>Voice, positioning and the line between Body Recode and Performance Coaching live in the Brand Book, which sits beside this document rather than inside it.</p>
   </div>
 </div>`))
@@ -157,9 +166,9 @@ pages.push(page(`<h2 class="toc-h">TABLE OF CONTENTS</h2>
 
 pages.push(page(`${head('1.0', 'BRAND MARK', 'The lockup is treated as one unit. The symbol may be used on its own. The logotype may not: the name without the symbol is just type.')}
 <div class="panel center"><div style="display:flex;align-items:center;gap:74px">
-  ${mark(TEAL, INK, 132)}
+  ${mark(INK, PAPER, 132)}
   <div style="width:1px;height:132px;background:#D6DAE0"></div>
-  <div style="display:grid;gap:28px">${lock(TEAL, INK, INK, 54)}${lock(INK, WHITE, INK, 40)}</div>
+  <div style="display:grid;gap:28px">${lock(INK, PAPER, INK, 54)}${lock(PAPER, INK, INK, 40)}</div>
 </div></div>`))
 
 pages.push(page(`${head('1.1', 'THE KEY ELEMENTS', 'Two elements. The symbol, and the logotype. Applied consistently they make one recognisable mark.')}
@@ -167,23 +176,23 @@ pages.push(page(`${head('1.1', 'THE KEY ELEMENTS', 'Two elements. The symbol, an
   <div style="display:flex;align-items:center;gap:26px">
     <div style="text-align:right"><div class="lbl">Symbol</div></div>
     <div style="width:44px;height:1px;background:#C8CDD4"></div>
-    ${lock(TEAL, INK, INK, 78)}
+    ${lock(INK, PAPER, INK, 78)}
   </div>
   <div style="margin-left:280px;margin-top:10px"><div style="height:16px;border-left:1px solid #C8CDD4;margin-left:190px"></div><div class="lbl" style="margin-left:120px">Logotype</div></div>
 </div>`))
 
 pages.push(page(`${head('1.2', 'STRUCTURE &amp;<br>CONFIGURATION', 'Three approved configurations. Choose the one that fits the space. Never rebuild, respace or redraw them.')}
 <div class="grid3">
-  <div class="cell"><div class="cap">Symbol only</div><div class="ctr">${mark(TEAL, INK, 92)}</div></div>
-  <div class="cell"><div class="cap">Horizontal lockup</div><div class="ctr">${lock(TEAL, INK, INK, 44)}</div></div>
+  <div class="cell"><div class="cap">Symbol only</div><div class="ctr">${mark(INK, PAPER, 92)}</div></div>
+  <div class="cell"><div class="cap">Horizontal lockup</div><div class="ctr">${lock(INK, PAPER, INK, 44)}</div></div>
   <div class="cell"><div class="cap">Logotype (with symbol only)</div><div class="ctr">${wordOnly(INK, 30)}</div></div>
 </div>
 <p class="note">The horizontal lockup is the default. Use the symbol alone where the name is already present, such as an app icon, a profile picture or a favicon.</p>`))
 
 pages.push(page(`${head('1.3', 'CLEAR SPACE', 'Keep the width of the symbol clear on every side. Nothing sits inside it: no text, no rule, no edge of a photograph.')}
 <div class="panel center">
-  <div style="position:relative;padding:74px;outline:1px dashed ${TEAL};outline-offset:0">
-    ${lock(TEAL, INK, INK, 56)}
+  <div style="position:relative;padding:74px;outline:1px dashed #B9BDC4;outline-offset:0">
+    ${lock(INK, PAPER, INK, 56)}
     <div class="xdim" style="top:0;left:0;right:0;height:74px"><span>x</span></div>
     <div class="xdim" style="bottom:0;left:0;right:0;height:74px"><span>x</span></div>
   </div>
@@ -195,15 +204,15 @@ pages.push(page(`${head('1.4', 'MINIMUM SIZE', 'Below these the logotype stops b
   <div class="panel">
     <div class="cap">PRINT</div>
     <div style="display:flex;align-items:flex-end;gap:44px;margin-top:22px">
-      <div>${mark(TEAL, INK, 30)}<div class="dim">Symbol<br>8 mm</div></div>
-      <div>${lock(TEAL, INK, INK, 20)}<div class="dim">Lockup<br>42 mm wide</div></div>
+      <div>${mark(INK, PAPER, 30)}<div class="dim">Symbol<br>8 mm</div></div>
+      <div>${lock(INK, PAPER, INK, 20)}<div class="dim">Lockup<br>42 mm wide</div></div>
     </div>
   </div>
   <div class="panel">
     <div class="cap">ON SCREEN</div>
     <div style="display:flex;align-items:flex-end;gap:44px;margin-top:22px">
-      <div>${mark(TEAL, INK, 32)}<div class="dim">Symbol<br>32 px</div></div>
-      <div>${lock(TEAL, INK, INK, 22)}<div class="dim">Lockup<br>160 px wide</div></div>
+      <div>${mark(INK, PAPER, 32)}<div class="dim">Symbol<br>32 px</div></div>
+      <div>${lock(INK, PAPER, INK, 22)}<div class="dim">Lockup<br>160 px wide</div></div>
     </div>
   </div>
 </div>`))
@@ -211,19 +220,19 @@ pages.push(page(`${head('1.4', 'MINIMUM SIZE', 'Below these the logotype stops b
 const dont = (label: string, inner: string) => `<div class="cell"><div class="ctr dontbox">${inner}</div><div class="cap2">${label}</div></div>`
 pages.push(page(`${head('1.5', 'INCORRECT USAGE', 'The mark is one shape. Anything that changes that shape weakens it, and most of these happen by accident in a hurry.')}
 <div class="grid3 tight">
-  ${dont('Do not rotate it.', `<div style="transform:rotate(-12deg)">${lock(TEAL, INK, INK, 30)}</div>`)}
-  ${dont('Do not stretch it.', `<div style="transform:scaleX(1.5)">${lock(TEAL, INK, INK, 21)}</div>`)}
+  ${dont('Do not rotate it.', `<div style="transform:rotate(-12deg)">${lock(INK, PAPER, INK, 30)}</div>`)}
+  ${dont('Do not stretch it.', `<div style="transform:scaleX(1.5)">${lock(INK, PAPER, INK, 21)}</div>`)}
   ${dont('Do not recolour it.', lock('#C86AD9', WHITE, '#C86AD9', 30))}
-  ${dont('Do not fade it.', `<div style="opacity:.35">${lock(TEAL, INK, INK, 30)}</div>`)}
-  ${dont('Do not outline or shadow it.', `<div style="filter:drop-shadow(0 4px 6px rgba(0,0,0,.45))">${lock(TEAL, INK, INK, 30)}</div>`)}
-  ${dont('Do not separate the elements.', `<div style="display:flex;gap:46px;align-items:center">${mark(TEAL, INK, 30)}${wordOnly(INK, 18)}</div>`)}
+  ${dont('Do not fade it.', `<div style="opacity:.35">${lock(INK, PAPER, INK, 30)}</div>`)}
+  ${dont('Do not outline or shadow it.', `<div style="filter:drop-shadow(0 4px 6px rgba(0,0,0,.45))">${lock(INK, PAPER, INK, 30)}</div>`)}
+  ${dont('Do not separate the elements.', `<div style="display:flex;gap:46px;align-items:center">${mark(INK, PAPER, 30)}${wordOnly(INK, 18)}</div>`)}
 </div>`))
 
 pages.push(page(`${head('1.6', 'ALTERNATIVE USAGE', 'For a profile picture, an app icon or a favicon, use the symbol in a container. It holds contrast at small sizes where the lockup does not.')}
 <div class="grid3">
-  <div class="cell"><div class="ctr" style="background:${TEAL};border-radius:18px;padding:30px">${mark(WHITE, TEAL, 74)}</div><div class="cap2">Profile picture</div></div>
-  <div class="cell"><div class="ctr" style="background:${INK};border-radius:18px;padding:30px">${mark(TEAL, INK, 74)}</div><div class="cap2">On dark</div></div>
-  <div class="cell"><div class="ctr" style="background:${WASH};border-radius:18px;padding:30px">${mark(TEAL, INK, 74)}</div><div class="cap2">On a pale ground</div></div>
+  <div class="cell"><div class="ctr" style="background:${INK};border-radius:18px;padding:30px">${mark(PAPER, INK, 74)}</div><div class="cap2">Profile picture, the default</div></div>
+  <div class="cell"><div class="ctr" style="background:${WASH};border-radius:18px;padding:30px">${mark(INK, PAPER, 74)}</div><div class="cap2">On a pale ground</div></div>
+  <div class="cell"><div class="ctr" style="background:${WHITE};border-radius:18px;padding:30px;border:1px solid ${LINE}">${mark(INK, PAPER, 74)}</div><div class="cap2">On white</div></div>
 </div>
 <p class="note">Ready-made files for every platform, already at the right size, are in <b>01_BRAND_ASSETS / social</b>.</p>`))
 
@@ -237,7 +246,7 @@ pages.push(page(`${head('2.0', 'TYPEFACES &amp;<br>TYPESETTING', 'Montserrat thr
 pages.push(page(`${head('2.1', 'TYPOGRAPHY IN PRACTICE', 'Weight and spacing carry the hierarchy, not size. Headings sit tight at minus two per cent tracking. Numbers are always tabular so a column lines up.')}
 <div class="two">
   <div class="panel">
-    <div style="margin-bottom:16px">${lock(TEAL, INK, INK, 26)}</div>
+    <div style="margin-bottom:16px">${lock(INK, PAPER, INK, 26)}</div>
     <div class="ex-h">Where you are right now</div>
     <div class="ex-b">Your readiness is Remediation, which means the system is settling rather than building. It is a sensible allocation of resources, not a fault.</div>
     <div class="ex-n">298 <span>questions read</span></div>
@@ -253,27 +262,40 @@ pages.push(page(`${head('2.1', 'TYPOGRAPHY IN PRACTICE', 'Weight and spacing car
 const sw = (name: string, hex: string, role: string, dark = false) =>
   `<div class="sw"><div class="chip" style="background:${hex};${hex === WHITE ? 'border:1px solid #E1E4E8' : ''}"></div>
   <div class="swn">${name}</div><div class="swh">${hex}</div><div class="swr">${role}</div></div>`
-pages.push(page(`${head('3.0', 'COLOUR PALETTE &amp;<br>COLOUR CODES', 'Two primaries and two neutrals. The split is the important part and it has been wrong in the product for a year.')}
-<div class="grid4">
-  ${sw('Electric Teal', TEAL, 'Primary. Anything on a screen: the mark, accents, highlights.')}
-  ${sw('Signal Blue', BLUE, 'Primary. Print, and interface actions such as buttons and links.')}
-  ${sw('Graphite Black', INK, 'Neutral. Text, and the dark ground the mark sits on.')}
-  ${sw('Pure White', WHITE, 'Neutral. Backgrounds, and the mark reversed out.')}
+pages.push(page(`${head('3.0', 'COLOUR PALETTE &amp;<br>COLOUR CODES', 'Two colours are the brand. The rest of this page is not decoration, it is vocabulary.')}
+<div class="two" style="gap:34px">
+  <div>
+    <div class="cap">THE IDENTITY</div>
+    <div class="grid2" style="margin-top:14px">
+      ${sw('Graphite', INK, 'The ground, the mark, the type, and every button.')}
+      ${sw('Paper', PAPER, 'Backgrounds, and the mark reversed out. Off-white on purpose: pure white is the default nobody chose.')}
+    </div>
+  </div>
+  <div>
+    <div class="cap">MEANING, AND NOTHING ELSE</div>
+    <div class="grid2" style="margin-top:14px">
+      ${sw('Hold', HOLD, 'Remediation. Being asked for less, which is not the same as being in trouble.')}
+      ${sw('Calm', CALM, 'Optimisation.')}
+      ${sw('Steady', STEADY, 'Post-Optimisation.')}
+      ${sw('Stop', STOP, 'Something needs attention now.')}
+    </div>
+  </div>
 </div>
-<p class="note"><b>Teal is the brand. Blue is the interface.</b> If it identifies Body Recode, it is teal. If it is something to press, it is blue. The product currently uses blue for both, which is why it reads as generic.</p>`))
+<p class="note"><b>Colour only appears where it means something.</b> Structure, type, surfaces, the mark and every button are graphite or paper. The moment a colour appears on a screen it is carrying information about somebody. Nothing is coloured to look nice, which is what makes a coloured thing read. <b>Remediation is never red</b>, because red would tell a coach the opposite of what the reading says.</p>`))
 
 const bg = (c: string, light = true) =>
-  `<div class="bgcell" style="background:${c}">${light ? lock(WHITE, c, WHITE, 26) : lock(INK, c, INK, 26)}</div>`
-pages.push(page(`${head('3.1', 'LOGO ON COLOUR<br>BACKGROUNDS', 'On any strong colour, reverse the mark out in white. Do not place the teal mark on a coloured ground.')}
+  `<div class="bgcell" style="background:${c}">${light ? lock(PAPER, c, PAPER, 26) : lock(INK, c, INK, 26)}</div>`
+pages.push(page(`${head('3.1', 'LOGO ON A<br>COLOURED GROUND', 'It happens: a partner deck, a sponsor board, somebody else\u2019s brand. Reverse the mark out in paper and leave it alone. Never recolour the square to match.')}
 <div class="grid3 tight">
-  ${bg(INK)} ${bg(BLUE)} ${bg('#0B7A66')}
-  ${bg('#7A3FA8')} ${bg('#B0341F')} ${bg('#1F3A5F')}
-</div>`))
+  ${bg(INK)} ${bg('#1F3A5F')} ${bg('#0B7A66')}
+  ${bg('#7A3FA8')} ${bg('#B0341F')} ${bg('#2B2B2B')}
+</div>
+<p class="note">Body Recode does not put its own logo on a colour. These exist so that when somebody else does, it is still the same mark.</p>`))
 
-pages.push(page(`${head('3.2', 'POSITIVE &amp;<br>NEGATIVE SPACE', 'Positive on a pale ground. Negative on teal or on graphite, with the symbol reversed so it stays a shape rather than a hole.')}
+pages.push(page(`${head('3.2', 'POSITIVE &amp;<br>NEGATIVE SPACE', 'Positive on a pale ground, negative on graphite. The square inverts with the ground so the letters stay a shape rather than a hole. It is one mark, not two.')}
 <div class="two">
-  <div class="panel center" style="background:${WHITE};border:1px solid #E6E9ED">${lock(TEAL, INK, INK, 50)}</div>
-  <div class="panel center" style="background:${TEAL}">${lock(WHITE, TEAL, INK, 50)}</div>
+  <div class="panel center" style="background:${PAPER};border:1px solid ${LINE}">${lock(INK, PAPER, INK, 50)}</div>
+  <div class="panel center" style="background:${INK}">${lock(PAPER, INK, PAPER, 50)}</div>
 </div>`))
 
 pages.push(page(`${head('4.0', 'IMAGERY', 'Photographs of real people, doing ordinary things, lit plainly. No clinical renders, no gym heroics, no stock triumph.')}
@@ -291,7 +313,7 @@ pages.push(page(`${head('4.0', 'IMAGERY', 'Photographs of real people, doing ord
 
 pages.push(`<section class="page cover end"><div class="bar"></div><div class="coverwrap">
   <div class="ast">✳</div>
-  <div>${lock(TEAL, INK, INK, 56)}</div>
+  <div>${lock(INK, PAPER, INK, 56)}</div>
   <p class="cv" style="margin-top:30px">Files: <b>01_BRAND_ASSETS</b><br>Voice and positioning: <b>00_PLAYBOOK / 02_BRAND_BOOK</b></p>
 </div></section>`)
 
@@ -302,7 +324,7 @@ const html = `<!DOCTYPE html><html><head><meta charset="utf-8">
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Mont,-apple-system,sans-serif;color:${INK};-webkit-font-smoothing:antialiased}
 .page{width:1100px;height:850px;position:relative;background:${WHITE};page-break-after:always;overflow:hidden}
-.bar{position:absolute;left:0;top:0;bottom:0;width:70px;background:${TEAL}}
+.bar{position:absolute;left:0;top:0;bottom:0;width:70px;background:${INK}}
 .side{position:absolute;left:96px;top:50%;transform:translateY(-50%) rotate(180deg);writing-mode:vertical-rl;font-size:9.5px;letter-spacing:.24em;color:#9AA1AA;line-height:1.9}
 .body{position:absolute;left:170px;right:64px;top:74px;bottom:74px}
 .pn{position:absolute;right:52px;bottom:40px;font-size:11px;color:#A8AEB6}
@@ -312,7 +334,7 @@ body{font-family:Mont,-apple-system,sans-serif;color:${INK};-webkit-font-smoothi
 h1{font-size:62px;font-weight:800;letter-spacing:-.02em;line-height:1.02;color:${INK}}
 .cv{margin-top:20px;font-size:12.5px;color:${GREY};letter-spacing:.04em;line-height:1.8}
 .hd{display:flex;align-items:flex-start;gap:26px;margin-bottom:22px}
-.num{font-size:64px;font-weight:800;color:${TEAL};line-height:.82;letter-spacing:-.03em}
+.num{font-size:64px;font-weight:800;color:${INK};line-height:.82;letter-spacing:-.03em}
 h2{font-size:23px;font-weight:800;letter-spacing:.01em;line-height:1.22;padding-top:6px}
 .lede{font-size:13.5px;line-height:1.72;color:${GREY};max-width:660px;margin-bottom:26px}
 .toc-h{font-size:34px;font-weight:400;letter-spacing:.01em;margin-bottom:34px}
@@ -325,6 +347,7 @@ h2{font-size:23px;font-weight:800;letter-spacing:.01em;line-height:1.22;padding-
 .two{display:grid;grid-template-columns:1fr 1fr;gap:22px}
 .two p{font-size:13.5px;line-height:1.75;color:${GREY};margin-bottom:14px}
 .two p b{color:${INK}}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .grid3.tight{gap:14px}
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
@@ -338,18 +361,18 @@ h2{font-size:23px;font-weight:800;letter-spacing:.01em;line-height:1.22;padding-
 .note b{color:${INK}}
 .dim{font-size:10.5px;color:#8A929B;margin-top:10px;line-height:1.55}
 .xdim{position:absolute;display:flex;align-items:center;justify-content:center}
-.xdim span{font-size:10px;color:${TEAL};letter-spacing:.1em}
+.xdim span{font-size:10px;color:${GREY};letter-spacing:.1em}
 .tfrow{display:grid;grid-template-columns:96px 1fr;gap:26px;padding:20px 0;border-bottom:1px solid #2E3339;align-items:start}
 .tf{font-size:44px;line-height:1}
 .tfn{font-size:13px;font-weight:700;margin-bottom:7px}
 .tfs{font-size:10.5px;color:#9AA1AA;line-height:1.75;letter-spacing:.02em}
-.tfu{font-size:11px;color:${TEAL};margin-top:8px}
+.tfu{font-size:11px;color:${GREY};margin-top:8px}
 .ex-h{font-size:17px;font-weight:700;letter-spacing:-.02em;margin-bottom:9px}
 .ex-h2{font-size:17px;font-weight:700;letter-spacing:-.02em;margin:6px 0 9px}
 .ex-b{font-size:12.5px;line-height:1.72;color:${GREY};margin-bottom:10px}
 .ex-n{font-size:30px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:14px}
 .ex-n span{font-size:11px;font-weight:400;color:${GREY};letter-spacing:0}
-.ex-eyebrow{font-size:9.5px;letter-spacing:.14em;color:${BLUE};font-weight:700}
+.ex-eyebrow{font-size:9.5px;letter-spacing:.14em;color:${GREY};font-weight:700}
 .sw{display:flex;flex-direction:column}
 .chip{height:150px;border-radius:12px;margin-bottom:14px}
 .swn{font-size:13px;font-weight:700}
@@ -358,7 +381,7 @@ h2{font-size:23px;font-weight:800;letter-spacing:.01em;line-height:1.22;padding-
 .bgcell{border-radius:10px;height:112px;display:flex;align-items:center;justify-content:center}
 .ul{list-style:none;font-size:12.5px;line-height:1.85;color:${GREY}}
 .ul li{padding-left:16px;position:relative;margin-bottom:9px}
-.ul li:before{content:"";position:absolute;left:0;top:9px;width:5px;height:5px;border-radius:50%;background:${TEAL}}
+.ul li:before{content:"";position:absolute;left:0;top:9px;width:5px;height:5px;border-radius:50%;background:${INK}}
 .ul li b{color:${INK}}
 @page{size:1100px 850px;margin:0}
 </style></head><body>${pages.join('')}</body></html>`
