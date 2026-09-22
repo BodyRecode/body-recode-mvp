@@ -247,7 +247,7 @@ export default function TodayDashboardPage() {
                 {feedPosts.map(p => {
                   const status = p.posted_at ? 'posted' : p.scheduled_publish_at ? 'scheduled' : p.scheduled ? 'marked_scheduled' : 'pending'
                   const statusEl = status === 'posted'
-                    ? <a href={p.ig_post_url ?? '#'} target="_blank" rel="noopener noreferrer" className="text-[12.5px] font-semibold text-[#2B5E45] bg-[#F2F2EF] border border-green-300 px-2 py-0.5 rounded">✓ Posted</a>
+                    ? <a href={p.ig_post_url ?? '#'} target="_blank" rel="noopener noreferrer" className="text-[12.5px] font-semibold text-[#2B5E45] bg-[#F2F2EF] border border-[#6FA98B] px-2 py-0.5 rounded">✓ Posted</a>
                     : status === 'scheduled' ? <span className="text-[12.5px] font-semibold text-[#000000] bg-[rgba(27,109,252,0.08)] border border-[#DCDCD7] px-2 py-0.5 rounded inline-flex items-center gap-1"><Clock size={11} strokeWidth={2.5} /> Scheduled</span>
                     : status === 'marked_scheduled' ? <span className="text-[12.5px] font-semibold text-[#000000] bg-[rgba(27,109,252,0.08)] border border-[#DCDCD7] px-2 py-0.5 rounded inline-flex items-center gap-1"><Clock size={11} strokeWidth={2.5} /> Marked</span>
                     : <span className="text-[12.5px] font-semibold text-[#B06E1F] bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] border border-[#EADCC4] px-2 py-0.5 rounded">Pending</span>
@@ -485,7 +485,7 @@ function SaasBuildoutSection() {
       {gate && (
         <Row>
           <div className="flex items-start gap-2 mb-1">
-            <span className="text-[12.5px] font-medium text-[#2B5E45] bg-[#EDEDEA] border border-green-300 px-2 py-0.5 rounded shrink-0">GATE</span>
+            <span className="text-[12.5px] font-medium text-[#2B5E45] bg-[#EDEDEA] border border-[#6FA98B] px-2 py-0.5 rounded shrink-0">GATE</span>
             <span className="text-sm font-semibold text-[#0F1115]">{gate.label ?? `Phase ${gate.id}`} complete — review before starting the next one</span>
           </div>
           <p className="text-[12.5px] text-[#6E747D] leading-relaxed ml-14">
@@ -510,7 +510,7 @@ function SaasBuildoutSection() {
 }
 
 function Section({ icon: Icon, title, tone, children }: { icon?: React.ElementType; title: string; tone: 'urgent' | 'default' | 'success'; children: React.ReactNode }) {
-  const border = tone === 'urgent' ? 'border-[#D4817E]' : tone === 'success' ? 'border-green-300' : 'border-[#E4E4E0]'
+  const border = tone === 'urgent' ? 'border-[#D4817E]' : tone === 'success' ? 'border-[#6FA98B]' : 'border-[#E4E4E0]'
   const chip = tone === 'urgent' ? 'bg-[#8F2D2D]/10 text-[#8F2D2D]' : tone === 'success' ? 'bg-[#2B5E45]/10 text-[#2B5E45]' : 'bg-[#0F1115]/10 text-[#0F1115]'
   return (
     <div className={`bg-white border ${border} rounded-xl p-4 sm:p-5 mb-4`}>
@@ -621,7 +621,7 @@ function RunbookLink({ label, path }: { label: string; path: string }) {
       >
         {labelText}
       </button>
-      <button onClick={copy} className={`text-[10px] font-semibold px-2 py-0.5 rounded border transition-colors ${status === 'copied' ? 'bg-[#F2F2EF] text-[#2B5E45] border-green-300' : 'bg-[#F2F2EF] text-[#6E747D] border-[#E4E4E0] hover:bg-[#EDEDEA]'}`}>
+      <button onClick={copy} className={`text-[10px] font-semibold px-2 py-0.5 rounded border transition-colors ${status === 'copied' ? 'bg-[#F2F2EF] text-[#2B5E45] border-[#6FA98B]' : 'bg-[#F2F2EF] text-[#6E747D] border-[#E4E4E0] hover:bg-[#EDEDEA]'}`}>
         {status === 'copied' ? '✓ Copied path' : 'Copy path'}
       </button>
     </div>

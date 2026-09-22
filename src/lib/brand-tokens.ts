@@ -77,6 +77,8 @@ export const BRAND = {
      full-bleed panel that another surface sits against, such as one half
      of a split screen. Added 22 Sep after the login page invented it. */
   darkWell: '#0B0D10',
+  /* A row lifting off the deepest ground on hover. Between well and surface. */
+  darkHover: '#12151B',
   darkBase: '#0F1115',
   darkSurface: '#14171D',
   darkPanel: '#1A1E26',

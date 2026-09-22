@@ -207,7 +207,7 @@ export default function LoginPage() {
   }
 
   const field =
-    'w-full bg-[#FFFFFF] border border-[#DCDCD7] text-[#0F1115] rounded-xl px-4 py-3.5 text-[15px] ' +
+    'w-full bg-[#FFFFFF] border border-[#DCDCD7] text-[#0F1115] rounded-xl px-4 py-3.5 text-[16px] ' +
     'placeholder:text-[#9CA2AB] focus:outline-none focus:border-[#0F1115] focus:ring-[3px] focus:ring-[#0F1115]/8 transition-[border-color,box-shadow]'
 
   return (
@@ -233,10 +233,10 @@ export default function LoginPage() {
           <p className="text-[11px] font-medium uppercase" style={{ letterSpacing: '0.18em', color: '#8A9099' }}>
             Coach sign in
           </p>
-          <h1 className="text-[36px] sm:text-[44px] lg:text-[50px] leading-[1.05] font-semibold tracking-[-0.03em] mt-4 mb-5">
+          <h1 className="text-[34px] sm:text-[46px] lg:text-[46px] leading-[1.05] font-semibold tracking-[-0.03em] mt-4 mb-5">
             Read the whole person,<br />every week.
           </h1>
-          <p className="text-[16px] sm:text-[16.5px] text-[#C2C6CC] leading-[1.55] mb-9 max-w-[500px]">
+          <p className="text-[16px] sm:text-[16px] text-[#C2C6CC] leading-[1.55] mb-9 max-w-[500px]">
             It tells you how hard you can push someone right now, what is going on
             underneath that, and why. Written out in plain words, so you can read
             it straight to them.
@@ -245,15 +245,15 @@ export default function LoginPage() {
           {/* An example read rather than three claims about reads. Everything
               here is interpretation: nothing on this card tells a coach what to
               do, because the product never does. */}
-          <p className="text-[10.5px] font-medium uppercase mb-3" style={{ letterSpacing: '0.16em', color: '#676D76' }}>
+          <p className="text-[10px] font-medium uppercase mb-3" style={{ letterSpacing: '0.16em', color: '#676D76' }}>
             An example read
           </p>
           <div className="rounded-2xl border border-[#2A2F39] bg-[#14171D] px-6 py-5 sm:px-7 sm:py-6">
             <div className="flex items-baseline gap-2.5">
-              <span className="text-[10.5px] font-medium uppercase text-[#676D76]" style={{ letterSpacing: '0.14em' }}>
+              <span className="text-[10px] font-medium uppercase text-[#676D76]" style={{ letterSpacing: '0.14em' }}>
                 Readiness
               </span>
-              <span className="flex items-center gap-2 text-[15px] font-semibold text-[#FAFAF8]">
+              <span className="flex items-center gap-2 text-[16px] font-semibold text-[#FAFAF8]">
                 {/* The one colour on this half of the page, and it is carrying
                     meaning. Amber, never red: Remediation is not trouble, it is
                     being asked for less. */}
@@ -270,10 +270,10 @@ export default function LoginPage() {
             <div className="h-px bg-[#2A2F39] my-5" />
 
             <div className="flex items-baseline gap-2.5">
-              <span className="text-[10.5px] font-medium uppercase text-[#676D76]" style={{ letterSpacing: '0.14em' }}>
+              <span className="text-[10px] font-medium uppercase text-[#676D76]" style={{ letterSpacing: '0.14em' }}>
                 Pattern
               </span>
-              <span className="text-[15px] font-semibold text-[#FAFAF8]">Stress-Stored</span>
+              <span className="text-[16px] font-semibold text-[#FAFAF8]">Stress-Stored</span>
             </div>
             <p className="text-[13.5px] text-[#C2C6CC] leading-[1.6] mt-2.5">
               Cortisol driven. Fat sitting around the middle, puffy in the morning,
@@ -292,7 +292,7 @@ export default function LoginPage() {
       {/* The form. */}
       <div className="lg:w-[52%] lg:min-h-screen flex items-center justify-center px-7 sm:px-12 pb-16 pt-12 lg:py-16 bg-[#FAFAF8] text-[#0F1115]">
         <div className="w-full max-w-[392px]">
-          <h2 className="text-[24px] font-semibold tracking-[-0.02em] mb-1.5">Sign in</h2>
+          <h2 className="text-[20px] font-semibold tracking-[-0.02em] mb-1.5">Sign in</h2>
           <p className="text-[13.5px] text-[#6E747D] mb-8">Every client, read properly.</p>
 
           {error && (
@@ -300,13 +300,13 @@ export default function LoginPage() {
               className="mb-6 rounded-xl px-4 py-3 border border-[#E8C9C9] bg-[#FBF1F1]"
               role="alert"
             >
-              <p className="text-[13px] text-[#8F2D2D] leading-relaxed">{error}</p>
+              <p className="text-[13.5px] text-[#8F2D2D] leading-relaxed">{error}</p>
             </div>
           )}
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-[12px] font-medium text-[#4A4F57] mb-2">
+              <label htmlFor="email" className="block text-[12.5px] font-medium text-[#4A4F57] mb-2">
                 Email
               </label>
               <input
@@ -322,7 +322,7 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-[12px] font-medium text-[#4A4F57] mb-2">
+              <label htmlFor="password" className="block text-[12.5px] font-medium text-[#4A4F57] mb-2">
                 Password
               </label>
               <input
@@ -340,7 +340,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#0F1115] text-[#FAFAF8] font-semibold rounded-xl py-3.5 text-[15px] hover:bg-[#242932] active:bg-[#000000] transition-colors disabled:opacity-30 disabled:cursor-not-allowed mt-2"
+              className="w-full bg-[#0F1115] text-[#FAFAF8] font-semibold rounded-xl py-3.5 text-[16px] hover:bg-[#242932] active:bg-[#000000] transition-colors disabled:opacity-30 disabled:cursor-not-allowed mt-2"
             >
               {loading ? 'Signing in…' : 'Sign in'}
             </button>

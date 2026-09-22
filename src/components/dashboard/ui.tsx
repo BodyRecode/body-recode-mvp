@@ -271,7 +271,7 @@ export function Card({
     padding === 'md' ? 'p-5' : 'p-6'
   const a = accent ? ACCENT[accent] : null
   const style: React.CSSProperties = {
-    background: tint ? 'linear-gradient(180deg,#171B22,#14171D)' : 'linear-gradient(180deg,#14171D,#12151B)',
+    background: tint ? 'linear-gradient(180deg,#1A1E26,#14171D)' : 'linear-gradient(180deg,#14171D,#12151B)',
     boxShadow: `${SH2}, inset 0 1px 0 rgba(250,250,248,0.05)`,
   }
   if (a) style.borderLeft = `3px solid ${a.bar}`
