@@ -5,8 +5,11 @@
  * project_body_recode_collective). Distinct visual identity from
  * consumer BR emails so coach-facing sends read as their own brand:
  *
- *   Consumer BR:   Signal Blue (#1B6DFC), DNA-double-helix logo,
- *                  broad practitioner voice.
+ *   Consumer BR:   Electric Teal (#10E1C2) mark on a graphite ground,
+ *                  Signal Blue (#1B6DFC) for anything pressable,
+ *                  broad practitioner voice. (The DNA-double-helix logo
+ *                  was retired on 22 September 2026: DNA means genetics
+ *                  and Body Recode has never read a gene.)
  *   The Collective: warm-charcoal (#2C2418) accent, editorial serif-ish
  *                   wordmark, coach-facing voice ("a collective of
  *                   coaches practising to one standard").
@@ -36,7 +39,7 @@ export const COLLECTIVE_FF = `-apple-system,BlinkMacSystemFont,'Segoe UI',sans-s
 /**
  * Editorial wordmark: small BODY RECODE eyebrow above a large "The Collective"
  * heading. Sits at the top of every Collective email in place of the
- * consumer DNA-double-helix logo.
+ * consumer lockup.
  */
 export function collectiveLogo(): string {
   return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 24px;"><tr><td>

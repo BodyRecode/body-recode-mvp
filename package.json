@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "brand:assets": "npx tsx scripts/generate-brand-assets.ts",
+    "brand:guidelines": "npx tsx scripts/generate-brand-guidelines.ts",
     "map:saas-pages": "npx tsx scripts/generate-saas-page-map.ts",
     "test:new-coach": "npx tsx scripts/test-new-coach-can-sign-in.ts",
     "test:prescription-jobs": "npx tsx scripts/test-prescription-jobs.ts",

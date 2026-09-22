@@ -1,4 +1,5 @@
 import { brand } from '@/config/tenant'
+import { BRAND } from '@/lib/brand-tokens'
 
 /**
  * The wordmark, drawn rather than loaded.
@@ -17,12 +18,22 @@ import { brand } from '@/config/tenant'
  * It is the lockup already used on every branded PDF and in the dashboard
  * sidebar, so it is the de facto identity rather than a new one. Whether it
  * REPLACES the current logo is Kade's decision, not this component's.
+ *
+ * THE SYMBOL IS TEAL, on light and on dark alike. 22 September 2026: the
+ * designer's 2025 guideline specifies Electric Teal as the primary preferred
+ * for DIGITAL use, and it had never appeared on a screen. The mark is the one
+ * place that is not negotiable, because the mark is what identifies us. The
+ * blue stays where it belongs, on things you press.
+ *
+ * A white-label tenant passes its own `colour`, which is the whole reason this
+ * is drawn rather than loaded.
  */
 export function BrandMark({
   tone = 'light',
   size = 'md',
   showName = true,
   name: nameOverride,
+  colour,
 }: {
   /** 'light' for a dark background, 'dark' for a light one. */
   tone?: 'light' | 'dark'
@@ -33,6 +44,8 @@ export function BrandMark({
    * does not have to reach for the tenant cache from the browser.
    */
   name?: string
+  /** A white-label tenant's own mark colour. Defaults to Electric Teal. */
+  colour?: string
 }) {
   const name = nameOverride ?? brand().name
   const initials =
@@ -45,9 +58,12 @@ export function BrandMark({
   }[size]
 
   const onDark = tone === 'light'
-  const markBg = onDark ? '#FFFFFF' : '#141821'
-  const markFg = onDark ? '#0B0E13' : '#FFFFFF'
-  const wordFg = onDark ? '#FFFFFF' : '#141821'
+  // The symbol keeps its colour on both grounds. Only the letters inside it and
+  // the wordmark beside it change, which is what keeps it one recognisable mark
+  // rather than two that happen to share a name.
+  const markBg = colour ?? BRAND.brand
+  const markFg = BRAND.ink
+  const wordFg = onDark ? BRAND.darkInk : BRAND.ink
 
   return (
     <span className="inline-flex items-center gap-3 select-none">

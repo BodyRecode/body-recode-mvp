@@ -1,0 +1,372 @@
+/**
+ * The Body Recode brand guidelines, as a document.
+ *
+ * Run: npm run brand:guidelines
+ *
+ * 22 September 2026. Built to sit where the 2025 guideline sat, in the same
+ * shape and to the same job, with the identity that replaced it. Kade: the
+ * helix goes, and he wanted a document like the original rather than a rewrite
+ * of the written brand book, which covers different ground.
+ *
+ * WHAT CHANGED FROM THE 2025 GUIDELINE, and why each one.
+ *
+ * The helix is gone. DNA means genetics, and Body Recode reads what somebody
+ * reports about their sleep, stress, training and storage. It has never read a
+ * gene. That was a claim sitting on the first thing anybody saw.
+ *
+ * Electric Teal is restored to the job the original gave it. The 2025 document
+ * specified it as the primary "preferred for digital and accent use", and the
+ * product had zero uses of it and 2,614 of Signal Blue, which that document
+ * reserved for print. The two primaries had been swapped for a year.
+ *
+ * Montserrat stays. It was already specified and is already what the documents
+ * are set in.
+ *
+ * Generated rather than designed by hand, so a change to the mark rebuilds the
+ * document that describes it, instead of the two drifting apart.
+ */
+
+import { execFileSync } from 'child_process'
+import { writeFileSync, mkdirSync, rmSync } from 'fs'
+import { join } from 'path'
+import { homedir } from 'os'
+
+const OUT = join(homedir(), 'Dropbox', '01_BODY_RECODE', '00_Project_HQ', 'Logo', 'Brand Guide')
+const FONT = join(homedir(), 'Dropbox', '01_BODY_RECODE', '06_SAAS_PLATFORM_BUILD', '_pdf_build', 'Montserrat.ttf')
+const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+
+const TEAL = '#10E1C2'
+const BLUE = '#1B6DFC'
+const INK = '#1A1A1A'
+const WHITE = '#FFFFFF'
+const GREY = '#57606A'
+const WASH = '#F3F4F6'
+
+const BOX = 200, RADIUS = 50, MARK = 108, WORD = 132, GAP = 58
+
+function textToPath(text: string, size: number, weight: number, tracking: number) {
+  const py = `
+import json
+from fontTools.ttLib import TTFont
+from fontTools.varLib.instancer import instantiateVariableFont
+from fontTools.pens.svgPathPen import SVGPathPen
+from fontTools.pens.transformPen import TransformPen
+from fontTools.misc.transform import Transform
+font = instantiateVariableFont(TTFont(${JSON.stringify(FONT)}), {"wght": ${weight}})
+upem = font["head"].unitsPerEm
+gs = font.getGlyphSet(); cmap = font.getBestCmap(); scale = ${size}/upem
+pen = SVGPathPen(gs); x = 0.0
+for ch in ${JSON.stringify(text)}:
+    n = cmap.get(ord(ch))
+    if n is None:
+        x += ${size}*0.4; continue
+    g = gs[n]
+    g.draw(TransformPen(pen, Transform(scale,0,0,-scale,x,0)))
+    x += g.width*scale + ${tracking}
+print(json.dumps({"d": pen.getCommands(), "width": x - ${tracking}}))
+`
+  return JSON.parse(execFileSync('python3', ['-c', py], { encoding: 'utf8', maxBuffer: 32e6 }).trim()) as { d: string; width: number }
+}
+
+const BR = textToPath('BR', MARK, 800, -MARK * 0.04)
+const WM = textToPath('Body Recode', WORD, 700, -WORD * 0.025)
+
+function mark(sq: string, letter: string, size = 80) {
+  const s = size / BOX
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${BOX} ${BOX}" style="display:block">
+<rect width="${BOX}" height="${BOX}" rx="${RADIUS}" fill="${sq}"/>
+<path transform="translate(${((BOX - BR.width) / 2).toFixed(1)} ${(BOX / 2 + MARK * 0.36).toFixed(1)})" d="${BR.d}" fill="${letter}"/></svg>`.replace('viewBox', `data-s="${s}" viewBox`)
+}
+
+function lock(sq: string, letter: string, word: string, h = 60) {
+  const w = BOX + GAP + WM.width
+  return `<svg height="${h}" viewBox="0 0 ${w.toFixed(1)} ${BOX}" style="display:block">
+<rect width="${BOX}" height="${BOX}" rx="${RADIUS}" fill="${sq}"/>
+<path transform="translate(${((BOX - BR.width) / 2).toFixed(1)} ${(BOX / 2 + MARK * 0.36).toFixed(1)})" d="${BR.d}" fill="${letter}"/>
+<path transform="translate(${BOX + GAP} ${(BOX / 2 + WORD * 0.36).toFixed(1)})" d="${WM.d}" fill="${word}"/></svg>`
+}
+
+function wordOnly(fill: string, h = 40) {
+  const hh = WORD * 1.34
+  return `<svg height="${h}" viewBox="0 0 ${WM.width.toFixed(1)} ${hh.toFixed(1)}" style="display:block">
+<path transform="translate(0 ${(hh * 0.78).toFixed(1)})" d="${WM.d}" fill="${fill}"/></svg>`
+}
+
+/* ── Page furniture ──────────────────────────────────────────────────── */
+let pageNo = 0
+function page(inner: string, opts: { bar?: boolean; side?: string } = {}) {
+  pageNo++
+  const bar = opts.bar === false ? '' : `<div class="bar"></div>`
+  const side = opts.side === undefined
+    ? `<div class="side">BODY RECODE<br>BRAND GUIDELINES</div>` : opts.side
+  return `<section class="page">${bar}${side}<div class="body">${inner}</div><div class="pn">${pageNo}</div></section>`
+}
+
+function head(num: string, title: string, intro?: string) {
+  return `<div class="hd"><div class="num">${num}</div><h2>${title}</h2></div>${intro ? `<p class="lede">${intro}</p>` : ''}`
+}
+
+/* ── Pages ───────────────────────────────────────────────────────────── */
+const pages: string[] = []
+
+// Cover
+pageNo = -1
+pages.push(`<section class="page cover"><div class="bar"></div><div class="coverwrap">
+  <div class="ast">✳</div>
+  <div style="margin-bottom:34px">${lock(TEAL, INK, INK, 62)}</div>
+  <h1>BRAND<br>GUIDELINES</h1>
+  <p class="cv">Version 2.0 &middot; September 2026</p>
+</div></section>`)
+pageNo = 0
+
+pages.push(page(`${head('', 'WHAT THESE<br>GUIDELINES<br>ARE FOR')}
+<div class="two">
+  <div></div>
+  <div>
+    <p>This document covers the use and application of the <b>Body Recode</b> identity, so that it stays consistent wherever it appears.</p>
+    <p>It replaces the 2025 guideline. The structure is the same because the structure was right. What changed is the mark, and one correction: <b>Electric Teal is the primary for anything on a screen</b>, which the original said and the product never did.</p>
+    <p><b>The helix has been retired.</b> DNA means genetics. Body Recode reads what somebody reports about their sleep, stress, training and storage. It has never read a gene, and a claim we do not make should not sit on the first thing anybody sees.</p>
+    <p>Voice, positioning and the line between Body Recode and Performance Coaching live in the Brand Book, which sits beside this document rather than inside it.</p>
+  </div>
+</div>`))
+
+pages.push(page(`<h2 class="toc-h">TABLE OF CONTENTS</h2>
+<div class="toc">
+  <div class="tg">
+    <div class="tr"><span>1.0</span><span>Brand Mark</span><span>03</span></div>
+    <div class="tr"><span>1.1</span><span>The Key Elements</span><span>04</span></div>
+    <div class="tr"><span>1.2</span><span>Structure &amp; Configuration</span><span>05</span></div>
+    <div class="tr"><span>1.3</span><span>Clear Space</span><span>06</span></div>
+    <div class="tr"><span>1.4</span><span>Minimum Size</span><span>07</span></div>
+    <div class="tr"><span>1.5</span><span>Incorrect Usage</span><span>08</span></div>
+    <div class="tr"><span>1.6</span><span>Alternative Usage</span><span>09</span></div>
+  </div>
+  <div class="tg">
+    <div class="tr"><span>2.0</span><span>Typefaces &amp; Typesetting</span><span>10</span></div>
+    <div class="tr"><span>2.1</span><span>Typography in Practice</span><span>11</span></div>
+  </div>
+  <div class="tg">
+    <div class="tr"><span>3.0</span><span>Colour Palette &amp; Codes</span><span>12</span></div>
+    <div class="tr"><span>3.1</span><span>Logo on Colour Backgrounds</span><span>13</span></div>
+    <div class="tr"><span>3.2</span><span>Positive &amp; Negative Space</span><span>14</span></div>
+  </div>
+  <div class="tg">
+    <div class="tr"><span>4.0</span><span>Imagery</span><span>15</span></div>
+  </div>
+</div>`, { bar: false, side: '' }))
+
+pages.push(page(`${head('1.0', 'BRAND MARK', 'The lockup is treated as one unit. The symbol may be used on its own. The logotype may not: the name without the symbol is just type.')}
+<div class="panel center"><div style="display:flex;align-items:center;gap:74px">
+  ${mark(TEAL, INK, 132)}
+  <div style="width:1px;height:132px;background:#D6DAE0"></div>
+  <div style="display:grid;gap:28px">${lock(TEAL, INK, INK, 54)}${lock(INK, WHITE, INK, 40)}</div>
+</div></div>`))
+
+pages.push(page(`${head('1.1', 'THE KEY ELEMENTS', 'Two elements. The symbol, and the logotype. Applied consistently they make one recognisable mark.')}
+<div class="panel center" style="gap:0">
+  <div style="display:flex;align-items:center;gap:26px">
+    <div style="text-align:right"><div class="lbl">Symbol</div></div>
+    <div style="width:44px;height:1px;background:#C8CDD4"></div>
+    ${lock(TEAL, INK, INK, 78)}
+  </div>
+  <div style="margin-left:280px;margin-top:10px"><div style="height:16px;border-left:1px solid #C8CDD4;margin-left:190px"></div><div class="lbl" style="margin-left:120px">Logotype</div></div>
+</div>`))
+
+pages.push(page(`${head('1.2', 'STRUCTURE &amp;<br>CONFIGURATION', 'Three approved configurations. Choose the one that fits the space. Never rebuild, respace or redraw them.')}
+<div class="grid3">
+  <div class="cell"><div class="cap">Symbol only</div><div class="ctr">${mark(TEAL, INK, 92)}</div></div>
+  <div class="cell"><div class="cap">Horizontal lockup</div><div class="ctr">${lock(TEAL, INK, INK, 44)}</div></div>
+  <div class="cell"><div class="cap">Logotype (with symbol only)</div><div class="ctr">${wordOnly(INK, 30)}</div></div>
+</div>
+<p class="note">The horizontal lockup is the default. Use the symbol alone where the name is already present, such as an app icon, a profile picture or a favicon.</p>`))
+
+pages.push(page(`${head('1.3', 'CLEAR SPACE', 'Keep the width of the symbol clear on every side. Nothing sits inside it: no text, no rule, no edge of a photograph.')}
+<div class="panel center">
+  <div style="position:relative;padding:74px;outline:1px dashed ${TEAL};outline-offset:0">
+    ${lock(TEAL, INK, INK, 56)}
+    <div class="xdim" style="top:0;left:0;right:0;height:74px"><span>x</span></div>
+    <div class="xdim" style="bottom:0;left:0;right:0;height:74px"><span>x</span></div>
+  </div>
+</div>
+<p class="note"><b>x</b> equals the width of the symbol. It scales with the logo, so the rule holds at any size.</p>`))
+
+pages.push(page(`${head('1.4', 'MINIMUM SIZE', 'Below these the logotype stops being legible. Use the symbol alone instead, which holds down to 16 pixels.')}
+<div class="two">
+  <div class="panel">
+    <div class="cap">PRINT</div>
+    <div style="display:flex;align-items:flex-end;gap:44px;margin-top:22px">
+      <div>${mark(TEAL, INK, 30)}<div class="dim">Symbol<br>8 mm</div></div>
+      <div>${lock(TEAL, INK, INK, 20)}<div class="dim">Lockup<br>42 mm wide</div></div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="cap">ON SCREEN</div>
+    <div style="display:flex;align-items:flex-end;gap:44px;margin-top:22px">
+      <div>${mark(TEAL, INK, 32)}<div class="dim">Symbol<br>32 px</div></div>
+      <div>${lock(TEAL, INK, INK, 22)}<div class="dim">Lockup<br>160 px wide</div></div>
+    </div>
+  </div>
+</div>`))
+
+const dont = (label: string, inner: string) => `<div class="cell"><div class="ctr dontbox">${inner}</div><div class="cap2">${label}</div></div>`
+pages.push(page(`${head('1.5', 'INCORRECT USAGE', 'The mark is one shape. Anything that changes that shape weakens it, and most of these happen by accident in a hurry.')}
+<div class="grid3 tight">
+  ${dont('Do not rotate it.', `<div style="transform:rotate(-12deg)">${lock(TEAL, INK, INK, 30)}</div>`)}
+  ${dont('Do not stretch it.', `<div style="transform:scaleX(1.5)">${lock(TEAL, INK, INK, 21)}</div>`)}
+  ${dont('Do not recolour it.', lock('#C86AD9', WHITE, '#C86AD9', 30))}
+  ${dont('Do not fade it.', `<div style="opacity:.35">${lock(TEAL, INK, INK, 30)}</div>`)}
+  ${dont('Do not outline or shadow it.', `<div style="filter:drop-shadow(0 4px 6px rgba(0,0,0,.45))">${lock(TEAL, INK, INK, 30)}</div>`)}
+  ${dont('Do not separate the elements.', `<div style="display:flex;gap:46px;align-items:center">${mark(TEAL, INK, 30)}${wordOnly(INK, 18)}</div>`)}
+</div>`))
+
+pages.push(page(`${head('1.6', 'ALTERNATIVE USAGE', 'For a profile picture, an app icon or a favicon, use the symbol in a container. It holds contrast at small sizes where the lockup does not.')}
+<div class="grid3">
+  <div class="cell"><div class="ctr" style="background:${TEAL};border-radius:18px;padding:30px">${mark(WHITE, TEAL, 74)}</div><div class="cap2">Profile picture</div></div>
+  <div class="cell"><div class="ctr" style="background:${INK};border-radius:18px;padding:30px">${mark(TEAL, INK, 74)}</div><div class="cap2">On dark</div></div>
+  <div class="cell"><div class="ctr" style="background:${WASH};border-radius:18px;padding:30px">${mark(TEAL, INK, 74)}</div><div class="cap2">On a pale ground</div></div>
+</div>
+<p class="note">Ready-made files for every platform, already at the right size, are in <b>01_BRAND_ASSETS / social</b>.</p>`))
+
+pages.push(page(`${head('2.0', 'TYPEFACES &amp;<br>TYPESETTING', 'Montserrat throughout. It is what the logotype is drawn in, so everything set in it belongs to the same family as the mark.')}
+<div class="panel" style="background:${INK};color:${WHITE}">
+  <div class="tfrow"><div class="tf" style="font-weight:400">Aa</div><div><div class="tfn">Montserrat Regular</div><div class="tfs">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789</div><div class="tfu">Body text. Everything somebody reads at length.</div></div></div>
+  <div class="tfrow"><div class="tf" style="font-weight:700">Aa</div><div><div class="tfn">Montserrat Bold</div><div class="tfs">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789</div><div class="tfu">Headings, subheadings, navigation, buttons.</div></div></div>
+  <div class="tfrow" style="border-bottom:0"><div class="tf" style="font-weight:800">Aa</div><div><div class="tfn">Montserrat ExtraBold</div><div class="tfs">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789</div><div class="tfu">The logotype, and display headings only. Never body text.</div></div></div>
+</div>`))
+
+pages.push(page(`${head('2.1', 'TYPOGRAPHY IN PRACTICE', 'Weight and spacing carry the hierarchy, not size. Headings sit tight at minus two per cent tracking. Numbers are always tabular so a column lines up.')}
+<div class="two">
+  <div class="panel">
+    <div style="margin-bottom:16px">${lock(TEAL, INK, INK, 26)}</div>
+    <div class="ex-h">Where you are right now</div>
+    <div class="ex-b">Your readiness is Remediation, which means the system is settling rather than building. It is a sensible allocation of resources, not a fault.</div>
+    <div class="ex-n">298 <span>questions read</span></div>
+  </div>
+  <div class="panel">
+    <div class="ex-eyebrow">SECTION LABEL</div>
+    <div class="ex-h2">A heading, set in Bold</div>
+    <div class="ex-b">Body text is Regular. It is set at a comfortable measure, because the product is read rather than scanned.</div>
+    <div class="ex-b" style="color:${GREY}">A quieter line uses grey, never a lighter weight.</div>
+  </div>
+</div>`))
+
+const sw = (name: string, hex: string, role: string, dark = false) =>
+  `<div class="sw"><div class="chip" style="background:${hex};${hex === WHITE ? 'border:1px solid #E1E4E8' : ''}"></div>
+  <div class="swn">${name}</div><div class="swh">${hex}</div><div class="swr">${role}</div></div>`
+pages.push(page(`${head('3.0', 'COLOUR PALETTE &amp;<br>COLOUR CODES', 'Two primaries and two neutrals. The split is the important part and it has been wrong in the product for a year.')}
+<div class="grid4">
+  ${sw('Electric Teal', TEAL, 'Primary. Anything on a screen: the mark, accents, highlights.')}
+  ${sw('Signal Blue', BLUE, 'Primary. Print, and interface actions such as buttons and links.')}
+  ${sw('Graphite Black', INK, 'Neutral. Text, and the dark ground the mark sits on.')}
+  ${sw('Pure White', WHITE, 'Neutral. Backgrounds, and the mark reversed out.')}
+</div>
+<p class="note"><b>Teal is the brand. Blue is the interface.</b> If it identifies Body Recode, it is teal. If it is something to press, it is blue. The product currently uses blue for both, which is why it reads as generic.</p>`))
+
+const bg = (c: string, light = true) =>
+  `<div class="bgcell" style="background:${c}">${light ? lock(WHITE, c, WHITE, 26) : lock(INK, c, INK, 26)}</div>`
+pages.push(page(`${head('3.1', 'LOGO ON COLOUR<br>BACKGROUNDS', 'On any strong colour, reverse the mark out in white. Do not place the teal mark on a coloured ground.')}
+<div class="grid3 tight">
+  ${bg(INK)} ${bg(BLUE)} ${bg('#0B7A66')}
+  ${bg('#7A3FA8')} ${bg('#B0341F')} ${bg('#1F3A5F')}
+</div>`))
+
+pages.push(page(`${head('3.2', 'POSITIVE &amp;<br>NEGATIVE SPACE', 'Positive on a pale ground. Negative on teal or on graphite, with the symbol reversed so it stays a shape rather than a hole.')}
+<div class="two">
+  <div class="panel center" style="background:${WHITE};border:1px solid #E6E9ED">${lock(TEAL, INK, INK, 50)}</div>
+  <div class="panel center" style="background:${TEAL}">${lock(WHITE, TEAL, INK, 50)}</div>
+</div>`))
+
+pages.push(page(`${head('4.0', 'IMAGERY', 'Photographs of real people, doing ordinary things, lit plainly. No clinical renders, no gym heroics, no stock triumph.')}
+<div class="two">
+  <div>
+    <div class="cap">THE TONE</div>
+    <ul class="ul"><li>Considered</li><li>Honest</li><li>Unhurried</li><li>Capable</li><li>Ordinary, in a good way</li></ul>
+  </div>
+  <div>
+    <div class="cap">NOT THIS</div>
+    <ul class="ul"><li><b>No glowing anatomy renders.</b> They imply we see inside somebody. We read what they tell us.</li><li><b>No gym intensity.</b> Grimacing under a barbell is the market we are not in.</li><li><b>No before and afters.</b> The product is an explanation, not a transformation.</li><li><b>Not only women.</b> Most clients are women. Not all of them are.</li></ul>
+  </div>
+</div>
+<p class="note">The 2025 guideline showed a red anatomical render and two men straining in a gym. Both are the opposite of this.</p>`))
+
+pages.push(`<section class="page cover end"><div class="bar"></div><div class="coverwrap">
+  <div class="ast">✳</div>
+  <div>${lock(TEAL, INK, INK, 56)}</div>
+  <p class="cv" style="margin-top:30px">Files: <b>01_BRAND_ASSETS</b><br>Voice and positioning: <b>00_PLAYBOOK / 02_BRAND_BOOK</b></p>
+</div></section>`)
+
+/* ── Document ────────────────────────────────────────────────────────── */
+const html = `<!DOCTYPE html><html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Mont;src:url("file://${FONT}");font-weight:100 900;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Mont,-apple-system,sans-serif;color:${INK};-webkit-font-smoothing:antialiased}
+.page{width:1100px;height:850px;position:relative;background:${WHITE};page-break-after:always;overflow:hidden}
+.bar{position:absolute;left:0;top:0;bottom:0;width:70px;background:${TEAL}}
+.side{position:absolute;left:96px;top:50%;transform:translateY(-50%) rotate(180deg);writing-mode:vertical-rl;font-size:9.5px;letter-spacing:.24em;color:#9AA1AA;line-height:1.9}
+.body{position:absolute;left:170px;right:64px;top:74px;bottom:74px}
+.pn{position:absolute;right:52px;bottom:40px;font-size:11px;color:#A8AEB6}
+.cover .coverwrap{position:absolute;left:170px;top:200px}
+.cover.end .coverwrap{top:255px}
+.ast{font-size:40px;color:${GREY};margin-bottom:120px;line-height:1}
+h1{font-size:62px;font-weight:800;letter-spacing:-.02em;line-height:1.02;color:${INK}}
+.cv{margin-top:20px;font-size:12.5px;color:${GREY};letter-spacing:.04em;line-height:1.8}
+.hd{display:flex;align-items:flex-start;gap:26px;margin-bottom:22px}
+.num{font-size:64px;font-weight:800;color:${TEAL};line-height:.82;letter-spacing:-.03em}
+h2{font-size:23px;font-weight:800;letter-spacing:.01em;line-height:1.22;padding-top:6px}
+.lede{font-size:13.5px;line-height:1.72;color:${GREY};max-width:660px;margin-bottom:26px}
+.toc-h{font-size:34px;font-weight:400;letter-spacing:.01em;margin-bottom:34px}
+.toc{max-width:640px}
+.tg{border-top:1px solid #DFE3E8;padding:14px 0}
+.tr{display:grid;grid-template-columns:54px 1fr 40px;font-size:12.5px;padding:5px 0;color:${INK}}
+.tr span:last-child{text-align:right;color:#A8AEB6}
+.panel{background:${WASH};border-radius:14px;padding:30px}
+.center{display:flex;align-items:center;justify-content:center;min-height:330px;flex-direction:column;gap:18px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.two p{font-size:13.5px;line-height:1.75;color:${GREY};margin-bottom:14px}
+.two p b{color:${INK}}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.grid3.tight{gap:14px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.cell{background:${WASH};border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.ctr{flex:1;display:flex;align-items:center;justify-content:center;min-height:110px}
+.dontbox{background:${WHITE};border-radius:8px;padding:14px;overflow:hidden}
+.cap{font-size:9.5px;letter-spacing:.14em;color:#8A929B;font-weight:700}
+.cap2{font-size:11.5px;color:${GREY};line-height:1.5}
+.lbl{font-size:11px;letter-spacing:.2em;color:#8A929B}
+.note{margin-top:20px;font-size:12px;line-height:1.7;color:${GREY}}
+.note b{color:${INK}}
+.dim{font-size:10.5px;color:#8A929B;margin-top:10px;line-height:1.55}
+.xdim{position:absolute;display:flex;align-items:center;justify-content:center}
+.xdim span{font-size:10px;color:${TEAL};letter-spacing:.1em}
+.tfrow{display:grid;grid-template-columns:96px 1fr;gap:26px;padding:20px 0;border-bottom:1px solid #2E3339;align-items:start}
+.tf{font-size:44px;line-height:1}
+.tfn{font-size:13px;font-weight:700;margin-bottom:7px}
+.tfs{font-size:10.5px;color:#9AA1AA;line-height:1.75;letter-spacing:.02em}
+.tfu{font-size:11px;color:${TEAL};margin-top:8px}
+.ex-h{font-size:17px;font-weight:700;letter-spacing:-.02em;margin-bottom:9px}
+.ex-h2{font-size:17px;font-weight:700;letter-spacing:-.02em;margin:6px 0 9px}
+.ex-b{font-size:12.5px;line-height:1.72;color:${GREY};margin-bottom:10px}
+.ex-n{font-size:30px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:14px}
+.ex-n span{font-size:11px;font-weight:400;color:${GREY};letter-spacing:0}
+.ex-eyebrow{font-size:9.5px;letter-spacing:.14em;color:${BLUE};font-weight:700}
+.sw{display:flex;flex-direction:column}
+.chip{height:150px;border-radius:12px;margin-bottom:14px}
+.swn{font-size:13px;font-weight:700}
+.swh{font-size:11px;color:#8A929B;margin:3px 0 8px;letter-spacing:.04em}
+.swr{font-size:11.5px;line-height:1.6;color:${GREY}}
+.bgcell{border-radius:10px;height:112px;display:flex;align-items:center;justify-content:center}
+.ul{list-style:none;font-size:12.5px;line-height:1.85;color:${GREY}}
+.ul li{padding-left:16px;position:relative;margin-bottom:9px}
+.ul li:before{content:"";position:absolute;left:0;top:9px;width:5px;height:5px;border-radius:50%;background:${TEAL}}
+.ul li b{color:${INK}}
+@page{size:1100px 850px;margin:0}
+</style></head><body>${pages.join('')}</body></html>`
+
+mkdirSync(OUT, { recursive: true })
+const htmlPath = join(OUT, '_guidelines.html')
+writeFileSync(htmlPath, html)
+const pdfPath = join(OUT, 'Body_Recode_Brand_Guidelines_v2.0.pdf')
+execFileSync(CHROME, ['--headless', '--disable-gpu', '--no-pdf-header-footer', `--print-to-pdf=${pdfPath}`, htmlPath], { stdio: 'ignore' })
+rmSync(htmlPath, { force: true })
+console.log(`\n${pages.length} pages written to\n${pdfPath}\n`)

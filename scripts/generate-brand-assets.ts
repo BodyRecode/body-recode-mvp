@@ -30,8 +30,13 @@ const FONT = join(homedir(), 'Dropbox', '01_BODY_RECODE', '06_SAAS_PLATFORM_BUIL
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 
 /* ── The palette, matching src/lib/brand-tokens.ts ───────────────────── */
-const INK = '#141821'
-const ACCENT = '#1B6DFC'
+// From the 2025 brand guideline, section 3.0, and now honoured properly.
+// Electric Teal is the PRIMARY and is specified as preferred for digital and
+// accent use. It had zero uses in the product. Signal Blue is the other
+// primary, preferred for print and structural use, and had 2,614.
+const TEAL = '#10E1C2'
+const INK = '#1A1A1A'          // Graphite Black, the guideline's neutral
+const ACCENT = '#1B6DFC'       // Signal Blue
 const WHITE = '#FFFFFF'
 
 /* ── Geometry, in a 1000-unit grid so every size scales cleanly ──────── */
@@ -144,11 +149,11 @@ function banner(w: number, h: number, safeW: number, safeH: number): string {
     `  <rect width="${w}" height="${h}" fill="${INK}"/>
   <rect width="${w}" height="${h}" fill="url(#g)"/>
   <defs><radialGradient id="g" cx="50%" cy="0%" r="90%">
-    <stop offset="0%" stop-color="${ACCENT}" stop-opacity="0.20"/>
-    <stop offset="100%" stop-color="${ACCENT}" stop-opacity="0"/>
+    <stop offset="0%" stop-color="${TEAL}" stop-opacity="0.22"/>
+    <stop offset="100%" stop-color="${TEAL}" stop-opacity="0"/>
   </radialGradient></defs>
   <g transform="translate(${x.toFixed(2)} ${y.toFixed(2)}) scale(${scale.toFixed(4)})">
-    <rect width="${BOX}" height="${BOX}" rx="${RADIUS}" fill="${WHITE}"/>
+    <rect width="${BOX}" height="${BOX}" rx="${RADIUS}" fill="${TEAL}"/>
     <path transform="translate(${((BOX - initials.width) / 2).toFixed(2)} ${(BOX / 2 + MARK_SIZE * 0.36).toFixed(2)})" d="${initials.d}" fill="${INK}"/>
     <path transform="translate(${(BOX + GAP).toFixed(2)} ${wy.toFixed(2)})" d="${wordmark.d}" fill="${WHITE}"/>
   </g>`)
@@ -185,14 +190,14 @@ type PlatformAsset = { name: string; svg: string; w: number; h: number; note: st
 
 const PLATFORM: PlatformAsset[] = [
   // Profile pictures. All square, all the same artwork, sized per platform.
-  { name: 'instagram-profile', svg: avatar(ACCENT, WHITE, ACCENT), w: 320, h: 320, note: 'Instagram profile picture.' },
-  { name: 'facebook-profile', svg: avatar(ACCENT, WHITE, ACCENT), w: 360, h: 360, note: 'Facebook profile or page picture.' },
-  { name: 'linkedin-profile', svg: avatar(ACCENT, WHITE, ACCENT), w: 400, h: 400, note: 'LinkedIn personal profile picture.' },
-  { name: 'linkedin-company-logo', svg: avatar(ACCENT, WHITE, ACCENT), w: 300, h: 300, note: 'LinkedIn company page logo.' },
-  { name: 'x-profile', svg: avatar(ACCENT, WHITE, ACCENT), w: 400, h: 400, note: 'X profile picture.' },
-  { name: 'youtube-channel', svg: avatar(ACCENT, WHITE, ACCENT), w: 800, h: 800, note: 'YouTube channel picture.' },
-  { name: 'google-business', svg: avatar(ACCENT, WHITE, ACCENT), w: 720, h: 720, note: 'Google Business Profile.' },
-  { name: 'whatsapp-business', svg: avatar(ACCENT, WHITE, ACCENT), w: 500, h: 500, note: 'WhatsApp Business picture.' },
+  { name: 'instagram-profile', svg: avatar(TEAL, INK, TEAL), w: 320, h: 320, note: 'Instagram profile picture.' },
+  { name: 'facebook-profile', svg: avatar(TEAL, INK, TEAL), w: 360, h: 360, note: 'Facebook profile or page picture.' },
+  { name: 'linkedin-profile', svg: avatar(TEAL, INK, TEAL), w: 400, h: 400, note: 'LinkedIn personal profile picture.' },
+  { name: 'linkedin-company-logo', svg: avatar(TEAL, INK, TEAL), w: 300, h: 300, note: 'LinkedIn company page logo.' },
+  { name: 'x-profile', svg: avatar(TEAL, INK, TEAL), w: 400, h: 400, note: 'X profile picture.' },
+  { name: 'youtube-channel', svg: avatar(TEAL, INK, TEAL), w: 800, h: 800, note: 'YouTube channel picture.' },
+  { name: 'google-business', svg: avatar(TEAL, INK, TEAL), w: 720, h: 720, note: 'Google Business Profile.' },
+  { name: 'whatsapp-business', svg: avatar(TEAL, INK, TEAL), w: 500, h: 500, note: 'WhatsApp Business picture.' },
 
   // Banners and covers. Each one a different shape, which is why a square does not do.
   { name: 'linkedin-personal-cover', svg: banner(1584, 396, 1128, 300), w: 1584, h: 396, note: 'LinkedIn personal profile cover.' },
@@ -206,18 +211,21 @@ const PLATFORM: PlatformAsset[] = [
 const ASSETS: Asset[] = [
   { name: 'lockup-on-light', svg: lockup(INK, WHITE, INK), pngSizes: [2400, 1200, 600, 300], note: 'The default. Use on white and on any pale background.' },
   { name: 'lockup-on-dark', svg: lockup(WHITE, INK, WHITE), pngSizes: [2400, 1200, 600, 300], note: 'For dark backgrounds. The square inverts, so the mark stays readable.' },
-  { name: 'lockup-accent', svg: lockup(ACCENT, WHITE, INK), pngSizes: [2400, 1200, 600], note: 'When the brand blue is wanted and the background is pale.' },
+  { name: 'lockup-teal', svg: lockup(TEAL, INK, INK), pngSizes: [2400, 1200, 600], note: 'The primary for anything on a screen. Electric Teal is the brand colour.' },
+  { name: 'lockup-accent', svg: lockup(ACCENT, WHITE, INK), pngSizes: [2400, 1200, 600], note: 'Signal Blue. For print and structural use.' },
   { name: 'lockup-all-black', svg: lockup(INK, WHITE, INK), pngSizes: [2400, 1200], note: 'One-colour black, for a printer or a partner who asks for mono.' },
   { name: 'lockup-all-white', svg: lockup(WHITE, INK, WHITE), pngSizes: [2400, 1200], note: 'One-colour white, for a photograph or a dark print.' },
 
   { name: 'mark-on-light', svg: markOnly(INK, WHITE), pngSizes: [1024, 512, 256, 128], note: 'The square alone.' },
   { name: 'mark-on-dark', svg: markOnly(WHITE, INK), pngSizes: [1024, 512, 256, 128], note: 'The square alone, inverted.' },
-  { name: 'mark-accent', svg: markOnly(ACCENT, WHITE), pngSizes: [1024, 512, 256, 128, 64, 32, 16], note: 'The square in brand blue. This is the favicon and the app icon.' },
+  { name: 'mark-teal', svg: markOnly(TEAL, INK), pngSizes: [1024, 512, 256, 128, 64, 32, 16], note: 'The symbol in Electric Teal. This is the favicon and the app icon.' },
+  { name: 'mark-accent', svg: markOnly(ACCENT, WHITE), pngSizes: [1024, 512, 256, 128], note: 'The symbol in Signal Blue, for print.' },
 
   { name: 'wordmark-on-light', svg: wordOnly(INK), pngSizes: [2400, 1200, 600], note: 'The name alone, where a mark would be redundant.' },
   { name: 'wordmark-on-dark', svg: wordOnly(WHITE), pngSizes: [2400, 1200, 600], note: 'The name alone, on dark.' },
 
-  { name: 'avatar-accent', svg: avatar(ACCENT, WHITE, ACCENT), pngSizes: [1024, 512, 400, 180], keepPadding: true, note: 'Square profile picture for Instagram, LinkedIn or a directory.' },
+  { name: 'avatar-teal', svg: avatar(TEAL, INK, TEAL), pngSizes: [1024, 512, 400, 180], keepPadding: true, note: 'Square profile picture. The primary one.' },
+  { name: 'avatar-accent', svg: avatar(ACCENT, WHITE, ACCENT), pngSizes: [1024, 512, 400, 180], keepPadding: true, note: 'Square profile picture in Signal Blue.' },
   { name: 'avatar-ink', svg: avatar(INK, WHITE, INK), pngSizes: [1024, 512, 400, 180], keepPadding: true, note: 'Square profile picture, near-black.' },
 ]
 
@@ -337,8 +345,9 @@ Leave at least the width of the square on every side. Do not use the full lockup
 
 ## Colours
 
-- Ink \`${INK}\`
-- Accent \`${ACCENT}\`
+- Electric Teal \`${TEAL}\` (primary, digital)
+- Signal Blue \`${ACCENT}\` (primary, print and structural)
+- Graphite Black \`${INK}\`
 - White \`${WHITE}\`
 
 The full palette is in \`src/lib/brand-tokens.ts\`, which is the source of truth.

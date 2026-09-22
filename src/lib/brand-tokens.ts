@@ -11,9 +11,19 @@
  * wrong. There was simply no palette, only an accumulation, and inconsistent
  * greys are most of what reads as flat and unfinished.
  *
- * So the accent stays: 2,614 uses, and it is the identity. What is new is
- * everything around it being named, including the dark surfaces, which until
- * this week did not exist and were invented one hex code at a time.
+ * THE SECOND FINDING, found later the same day in the designer's 2025
+ * guideline: THE TWO PRIMARIES HAD BEEN THE WRONG WAY ROUND FOR A YEAR.
+ * Electric Teal #10E1C2 is specified as preferred for digital and had ZERO
+ * uses. Signal Blue #1B6DFC is specified for print and structural use and had
+ * 2,614. The brand colour had never once appeared on a screen.
+ *
+ * So: TEAL IS THE BRAND, BLUE IS THE INTERFACE. If it identifies Body Recode
+ * it is teal. If it is there to be pressed it is blue. Most of the 2,614 blues
+ * are correct and should not move, which is why this is not a sweep.
+ *
+ * What is also new is everything around them being named, including the dark
+ * surfaces, which until this week did not exist and were invented one hex code
+ * at a time.
  *
  * HOW TO USE IT. New work references these names. Existing work is swept in
  * passes rather than in one change, because a single sweep across six hundred
@@ -21,8 +31,21 @@
  */
 
 export const BRAND = {
+  /* ── Brand ───────────────────────────────────────────────────────────
+     Electric Teal. The 2025 guideline names it a primary and specifies it
+     as PREFERRED FOR DIGITAL. It had zero uses in the product. This is the
+     colour that says Body Recode: the mark, an accent, a highlight, a
+     section number. It is not a button. */
+  brand: '#10E1C2',
+  brandDeep: '#0BBFA4',
+  brandOnDark: '#3BEBD2',
+  brandWash: 'rgba(16,225,194,0.10)',
+
   /* ── Accent ──────────────────────────────────────────────────────────
-     Unchanged. It is the most-used colour in the product and the identity. */
+     Signal Blue, the other primary, specified for print and structural
+     use. 2,614 uses, and it stays: it is the INTERFACE colour. Anything
+     that is there to be pressed is this. Teal is the brand, blue is the
+     interface, and using blue for both is why the product reads generic. */
   accent: '#1B6DFC',
   accentHover: '#3D7DFF',
   accentPressed: '#1056D6',
