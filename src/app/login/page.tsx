@@ -254,8 +254,9 @@ export default function LoginPage() {
               </span>
               <span className="flex items-center gap-2 text-[15px] font-semibold text-[#FAFAF8]">
                 {/* The one colour on this half of the page, and it is carrying
-                    meaning. Amber, never red: Remediation is not trouble. */}
-                <span aria-hidden className="w-[7px] h-[7px] rounded-full" style={{ background: '#D9AE73' }} />
+                    meaning. Amber, never red: Remediation is not trouble, it is
+                    being asked for less. Value chosen by Kade 22 Sep. */}
+                <span aria-hidden className="w-[7px] h-[7px] rounded-full" style={{ background: '#E0A254' }} />
                 Remediation
               </span>
             </div>
@@ -298,7 +299,7 @@ export default function LoginPage() {
               className="mb-6 rounded-xl px-4 py-3 border border-[#E8C9C9] bg-[#FBF1F1]"
               role="alert"
             >
-              <p className="text-[13px] text-[#A63D3D] leading-relaxed">{error}</p>
+              <p className="text-[13px] text-[#8F2D2D] leading-relaxed">{error}</p>
             </div>
           )}
 

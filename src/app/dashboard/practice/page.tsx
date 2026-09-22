@@ -3,6 +3,7 @@ import { requireCoachScope, coachFilter } from '@/lib/coach-scope'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { practiceView, type ClientStanding } from '@/lib/practice-view'
 import { PageHeader } from '@/components/dashboard/ui'
+import { BRAND, READINESS_COLOUR as READINESS_TOKENS } from '@/lib/brand-tokens'
 
 export const metadata = { title: 'Your practice' }
 
@@ -18,13 +19,18 @@ export const metadata = { title: 'Your practice' }
  * writing about somebody's body does not want a donut on it.
  */
 
-const READINESS_COLOUR: Record<string, string> = {
-  Remediation: '#C8823A',
-  Optimisation: '#3A8FC8',
-  'Post-Optimisation': '#3AA76D',
-}
+// Was a second, unconnected copy of this map with a third set of values,
+// written before the palette file existed. Two maps of the same three states is
+// how a coach sees one colour on one screen and a different one on the next,
+// for the same client. There is now one map. See lib/brand-tokens.
+const READINESS_COLOUR: Record<string, string> = Object.fromEntries(
+  Object.entries(READINESS_TOKENS).map(([level, c]) => [level, c.light]),
+)
 
-const PATTERN_COLOUR = ['#5B8DEF', '#38B2AC', '#D97757', '#9F7AEA', '#8A909B']
+// Patterns are a different axis from readiness and must never borrow the
+// readiness colours, or a coach reads a pattern chart as a verdict. Neutral
+// steps rather than hues: this chart shows composition, which is not a state.
+const PATTERN_COLOUR = ['#0F1115', '#3A4049', '#6E747D', '#9CA2AB', '#C7CBD1']
 
 function Bar({ rows, colours }: { rows: { label: string; count: number }[]; colours: (l: string, i: number) => string }) {
   const total = rows.reduce((n, r) => n + r.count, 0)
@@ -120,7 +126,7 @@ export default async function PracticePage() {
 
         <div className="grid lg:grid-cols-2 gap-3 mb-3">
           <Panel label="Readiness across your book">
-            <Bar rows={view.byReadiness} colours={(l) => READINESS_COLOUR[l] ?? '#8A909B'} />
+            <Bar rows={view.byReadiness} colours={(l) => READINESS_COLOUR[l] ?? BRAND.noReading} />
           </Panel>
           <Panel label="What is driving it">
             <Bar rows={view.byPattern} colours={(_l, i) => PATTERN_COLOUR[i % PATTERN_COLOUR.length]} />

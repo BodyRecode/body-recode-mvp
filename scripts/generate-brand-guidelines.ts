@@ -45,10 +45,13 @@ const GREY = '#6E747D'
 const WASH = '#F2F2EF'
 const LINE = '#E4E4E0'
 // The meaning colours, shown on 3.0 and used nowhere else in this document.
-const HOLD = '#B5803C'
-const CALM = '#3A7D8C'
-const STEADY = '#4A7C59'
-const STOP = '#A63D3D'
+// Chosen by Kade on 22 Sep 2026 from six rendered directions, each shown on
+// paper, on graphite, simulated for red-green colour blindness, and in the list
+// a coach actually scans. The deep, saturated set.
+const REM = '#B06E1F'
+const OPT = '#2F6F7C'
+const POST = '#2B5E45'
+const ATT = '#8F2D2D'
 
 const BOX = 200, RADIUS = 50, MARK = 108, WORD = 132, GAP = 58
 
@@ -268,7 +271,7 @@ const grp = (title: string, rows: string) => `<div class="cgrp"><div class="cap"
 const sw = (name: string, hex: string, role: string, dark = false) =>
   `<div class="sw"><div class="chip" style="background:${hex};${hex === WHITE ? 'border:1px solid #E1E4E8' : ''}"></div>
   <div class="swn">${name}</div><div class="swh">${hex}</div><div class="swr">${role}</div></div>`
-pages.push(page(`${head('3.0', 'COLOUR PALETTE &amp;<br>COLOUR CODES', 'Two colours are the brand. The rest of this page is not decoration, it is vocabulary.')}
+pages.push(page(`${head('3.0', 'COLOUR PALETTE &amp;<br>COLOUR CODES', 'Two colours are the brand. The other four are not decoration, they are vocabulary.')}
 <div class="two" style="gap:34px">
   <div>
     <div class="cap">THE IDENTITY</div>
@@ -280,14 +283,14 @@ pages.push(page(`${head('3.0', 'COLOUR PALETTE &amp;<br>COLOUR CODES', 'Two colo
   <div>
     <div class="cap">MEANING, AND NOTHING ELSE</div>
     <div class="grid2" style="margin-top:14px">
-      ${sw('Hold', HOLD, 'Remediation. Being asked for less, which is not the same as being in trouble.')}
-      ${sw('Calm', CALM, 'Optimisation.')}
-      ${sw('Steady', STEADY, 'Post-Optimisation.')}
-      ${sw('Stop', STOP, 'Something needs attention now.')}
+      ${sw('Remediation', REM, 'Being asked for less, which is not the same as being in trouble.')}
+      ${sw('Optimisation', OPT, 'Building.')}
+      ${sw('Post-Optimisation', POST, 'Established.')}
+      ${sw('Attention', ATT, 'A safety gate has fired. Not a fourth level: a different axis.')}
     </div>
   </div>
 </div>
-<p class="note"><b>Colour only appears where it means something.</b> Structure, type, surfaces, the mark and every button are graphite or paper. The moment a colour appears on a screen it is carrying information about somebody. Nothing is coloured to look nice, which is what makes a coloured thing read. <b>Remediation is never red</b>, because red would tell a coach the opposite of what the reading says.</p>`))
+<p class="note"><b>Colour only appears where it means something.</b> Structure, type, surfaces, the mark and every button are graphite or paper. The moment a colour appears on a screen it is carrying information about a person. Nothing is coloured to look nice, which is what makes a coloured thing read. <b>Remediation is never red</b>, because red would tell a coach the opposite of what the reading says. <b>And Attention is not a fourth readiness level</b>, it is a different axis: it means a safety gate has fired, not that somebody is worse than Post-Optimisation.</p>`))
 
 pages.push(page(`${head('3.1', 'EVERY COLOUR,<br>AND WHERE IT GOES', 'The complete set. If a colour is not on this page it is not in the product, and the way to add one is to add it here first with a reason.')}
 <div class="two" style="gap:38px">
@@ -330,15 +333,16 @@ pages.push(page(`${head('3.1', 'EVERY COLOUR,<br>AND WHERE IT GOES', 'The comple
       row('Faint', '#9CA2AB', 'Placeholders and the quietest thing on a screen.'),
     ].join(''))}
     ${grp('MEANING. PAPER VALUE, THEN DARK VALUE', [
-      row('Hold', '#B5803C', 'Remediation. On dark: #D9AE73'),
-      row('Calm', '#3A7D8C', 'Optimisation. On dark: #7FB3BF'),
-      row('Steady', '#4A7C59', 'Post-Optimisation. On dark: #8FB79A'),
-      row('Stop', '#A63D3D', 'Needs attention now. On dark: #D98C8C'),
-      row('None', '#9CA2AB', 'No reading yet. Absence, not a verdict.'),
-      row('Stop wash', '#FBF1F1', 'An error panel on paper, edged #E8C9C9. The only tinted surfaces in the product.'),
+      row('Remediation', '#B06E1F', 'Being asked for less. On dark: #E0A254'),
+      row('Optimisation', '#2F6F7C', 'Building. On dark: #71ADB8'),
+      row('Post-Optimisation', '#2B5E45', 'Established. On dark: #6FA98B'),
+      row('Attention', '#8F2D2D', 'A gate has fired. A different axis, not a fourth level. On dark: #D4817E'),
+      row('No reading', '#9CA2AB', 'Nothing read yet. Absence, not a verdict.'),
+      row('Attention wash', '#FBF1F1', 'An error panel on paper, edged #E8C9C9. The only tinted surfaces in the product.'),
     ].join(''))}
   </div>
 </div>
+<p class="note" style="margin-bottom:10px"><b>The four meaning colours are the only part of this palette chosen rather than inherited.</b> Six directions were rendered on paper, on graphite, simulated for red-green colour blindness, and shown in the list a coach actually scans, before this one was picked. <b>One thing to watch:</b> under red-green colour blindness Remediation and Attention are both olive and separate mainly by lightness. The level is always named in words beside the dot, so nothing rests on colour alone, but on a list that is scanned rather than read those two are the pair to keep an eye on.</p>
 <p class="note"><b>Retired, and being removed surface by surface:</b> Signal Blue #1B6DFC and Electric Teal #10E1C2, the two 2025 primaries. They remain in the palette file marked as legacy so the sweep is deliberate rather than a build breaking at an awkward moment. <b>Neither is the brand any more and neither goes on anything new.</b></p>`))
 
 const bg = (c: string, light = true) =>

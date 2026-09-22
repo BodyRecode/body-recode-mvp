@@ -99,24 +99,43 @@ export const BRAND = {
   actionQuiet: '#F2F2EF',
 
   /* ── Meaning ─────────────────────────────────────────────────────────
-     THE ONLY COLOUR IN THE PRODUCT. If one of these appears, it is
-     telling somebody something. Muted on purpose: this product says
-     things to people about their bodies, and a fire-engine red is a tone
-     of voice, not a status. */
-  signalCalm: '#3A7D8C',
-  signalCalmOnDark: '#7FB3BF',
-  signalSteady: '#4A7C59',
-  signalSteadyOnDark: '#8FB79A',
-  signalHold: '#B5803C',
-  signalHoldOnDark: '#D9AE73',
-  signalStop: '#A63D3D',
-  signalStopOnDark: '#D98C8C',
-  signalNone: '#9CA2AB',
-  /* The Stop state as a panel on paper rather than as a dot. The only
-     tinted surfaces in the product, and they exist because an error has to
-     read as an error without shouting. */
-  stopWash: '#FBF1F1',
-  stopWashLine: '#E8C9C9',
+     THE ONLY COLOUR IN THE PRODUCT, and the only part of the palette Kade
+     chose rather than inherited. Six directions were rendered on paper, on
+     graphite, simulated for red-green colour blindness, and shown in the
+     list a coach actually scans. He picked the deep, saturated one, on
+     22 September 2026.
+
+     WHY IT IS DEEP RATHER THAN MUTED. Everything else in this product is
+     restrained, so the four colours that carry meaning can afford to be
+     confident. They also have to survive a phone held up in daylight in a
+     gym, which is where a coach reads them, and the muted versions do not.
+
+     NAMED FOR WHAT THEY MEAN, NOT FOR A FEELING. An earlier version called
+     these Hold, Calm, Steady and Stop, which was a second vocabulary sitting
+     on top of the readiness names and made a coach learn two words for one
+     thing. These are the readiness levels. That is all they are.
+
+     THE ONE THING TO WATCH: under red-green colour blindness Remediation
+     and Attention are both olive and separate mainly by lightness. The level
+     is always NAMED beside the dot so nothing depends on colour alone, but
+     on a list that gets scanned rather than read, those two are the pair to
+     keep an eye on. */
+  remediation: '#B06E1F',
+  remediationOnDark: '#E0A254',
+  optimisation: '#2F6F7C',
+  optimisationOnDark: '#71ADB8',
+  postOptimisation: '#2B5E45',
+  postOptimisationOnDark: '#6FA98B',
+  attention: '#8F2D2D',
+  attentionOnDark: '#D4817E',
+  /* No reading yet. Absence, not a verdict, so it is a neutral rather than
+     a fifth meaning colour. */
+  noReading: '#9CA2AB',
+  /* Attention as a panel on paper rather than as a dot. The only tinted
+     surfaces in the product, and they exist because an error has to read as
+     an error without shouting. */
+  attentionWash: '#FBF1F1',
+  attentionWashLine: '#E8C9C9',
 
   /* ── Retired, kept so old references still compile ───────────────────
      These are the 2025 colours. They are no longer the brand. Nothing new
@@ -136,9 +155,16 @@ export const BRAND = {
  * the doctrine says, on a screen they read before they speak to a client.
  */
 export const READINESS_COLOUR: Record<string, { light: string; dark: string }> = {
-  Remediation: { light: BRAND.signalHold, dark: BRAND.signalHoldOnDark },
-  Optimisation: { light: BRAND.signalCalm, dark: BRAND.signalCalmOnDark },
-  'Post-Optimisation': { light: BRAND.signalSteady, dark: BRAND.signalSteadyOnDark },
+  Remediation: { light: BRAND.remediation, dark: BRAND.remediationOnDark },
+  Optimisation: { light: BRAND.optimisation, dark: BRAND.optimisationOnDark },
+  'Post-Optimisation': { light: BRAND.postOptimisation, dark: BRAND.postOptimisationOnDark },
 }
+
+/**
+ * THIS MAP IS THE ONLY ONE. A second copy lived in the practice dashboard with
+ * a third set of values, written before this file existed. Two maps of the same
+ * three states is how a coach ends up seeing one colour on one screen and a
+ * different one on the next, for the same client.
+ */
 
 export type BrandToken = keyof typeof BRAND
