@@ -17,7 +17,8 @@ import Link from 'next/link'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { requireCoachScope, coachClientIds } from '@/lib/coach-scope'
 import { ChevronRight, Check, Inbox, Clock } from 'lucide-react'
-import { PageHeader, Card, Avatar, Ring, RangeTabs, EmptyState } from '@/components/dashboard/ui'
+import { PageHeader, Card, RangeTabs, EmptyState, PersonRow } from '@/components/dashboard/ui'
+import { BRAND } from '@/lib/brand-tokens'
 
 type Range = 'week' | 'today' | 'yesterday'
 
@@ -137,8 +138,11 @@ export default async function CheckInsPage({
         subtitle={
           total === 0
             ? `No check-ins came in ${rangeLabel}.`
-            : `${total} ${total === 1 ? 'check-in' : 'check-ins'} ${rangeLabel}, ${counts.pending + counts.drafted} still waiting on you.`
+            : `${total} ${total === 1 ? 'check-in' : 'check-ins'} ${rangeLabel}. What they report, read against where they started.`
         }
+        metric={counts.pending + counts.drafted > 0
+          ? { value: counts.pending + counts.drafted, label: 'to read' }
+          : undefined}
       />
 
       <RangeTabs
@@ -150,64 +154,50 @@ export default async function CheckInsPage({
         }))}
       />
 
-      {total > 0 && (
-        <Card className="mb-5" padding="md">
-          <Ring
-            value={pct}
-            accent="teal"
-            legend={[
-              { label: 'waiting', count: counts.pending + counts.drafted, accent: counts.pending + counts.drafted > 0 ? 'amber' : 'neutral' },
-              { label: 'answered', count: answered, accent: 'teal' },
-            ]}
-          />
-        </Card>
-      )}
-
       {total === 0 ? (
-        <Card padding="none">
+        <div>
           <EmptyState
             icon={Inbox}
             title={`Nothing came in ${rangeLabel}`}
             hint="Check-ins land here the moment a client submits one."
           />
-        </Card>
+        </div>
       ) : (
-        <Card padding="none">
-          <div className="divide-y divide-[#EDEDEA]">
+        <div>
+          <div>
             {withStatus.map(({ row, status }) => {
               const clientName = Array.isArray(row.clients)
                 ? row.clients[0]?.name
                 : (row.clients as { name?: string } | null)?.name
               const name = clientName || 'Unknown client'
               const href = `/dashboard/clients/${row.client_id}/checkins/${row.week_number}/${String(row.form_type).toLowerCase()}`
-              const formLabel = String(row.form_type).toUpperCase() === 'B' ? 'Weekly check-in' : 'Daily check-in'
+              // BOTH FORMS ARE WEEKLY. A was labelled "Daily check-in" and is
+              // not daily: A asks for overall context, B asks about friction.
+              // A coach reading "daily" on a weekly loop is being told the
+              // product does something it does not.
+              const formLabel = String(row.form_type).toUpperCase() === 'B' ? 'Friction check-in' : 'Weekly check-in'
 
               return (
-                <Link
+                <PersonRow
                   key={row.id}
                   href={href}
-                  className="block px-4 py-3.5 hover:bg-[#F2F2EF] transition-colors group"
-                >
-                  <div className="flex items-center gap-3">
-                    <Avatar name={name} size={31} />
-                    <p className="text-[13.5px] font-medium text-[#0F1115] tracking-[-0.012em] truncate group-hover:text-[#0F1115] transition-colors min-w-0 flex-1">
-                      {name}
-                    </p>
-                    <span className="text-[11px] text-[#9CA2AB] shrink-0">
-                      {row.submitted_at ? relativeTime(row.submitted_at) : ''}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3 mt-1.5 pl-[43px]">
-                    <span className="text-[12.5px] text-[#6E747D] min-w-0 flex-1 truncate">
-                      {formLabel} · Week {row.week_number}
-                    </span>
-                    <StatusSlot status={status} />
-                  </div>
-                </Link>
+                  name={name}
+                  detail={`${formLabel} · week ${row.week_number}`}
+                  dot={<span className="inline-block w-2.5 h-2.5 rounded-full" style={{ background: status === 'pending' ? BRAND.remediationOnDark : BRAND.darkLine }} />}
+                  trailing={
+                    <div className="text-right">
+                      <StatusSlot status={status} />
+                      <div className="text-[10px] mt-2 tabular-nums" style={{ color: BRAND.darkInkFaint }}>
+                        {row.submitted_at ? relativeTime(row.submitted_at) : ''}
+                      </div>
+                    </div>
+                  }
+                  quiet={status !== 'pending'}
+                />
               )
             })}
           </div>
-        </Card>
+        </div>
       )}
     </div>
   )
@@ -220,8 +210,9 @@ export default async function CheckInsPage({
 function StatusSlot({ status }: { status: Status }) {
   if (status === 'pending') {
     return (
-      <span className="inline-flex items-center gap-1 text-[12.5px] font-medium px-2.5 py-[3px] rounded-full border border-[#EADCC4] text-[#B06E1F] bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] shadow-[0_1px_2px_rgba(16,24,40,0.05)] group-hover:border-[#EADCC4] transition-colors shrink-0">
-        Review now
+      <span className="inline-flex items-center gap-1 text-[12.5px] font-bold px-3.5 py-[7px] rounded-lg shrink-0"
+        style={{ background: BRAND.darkInk, color: BRAND.darkWell }}>
+        Read it
         <ChevronRight size={12} />
       </span>
     )

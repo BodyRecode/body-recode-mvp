@@ -42,6 +42,7 @@ const ROOTS = [
   'src/app/dashboard/command-k-hint.tsx',
   'src/app/dashboard/today',
   'src/app/dashboard/coaching',
+  'src/app/dashboard/checkins',
   'src/app/login',
   'src/lib/coach-today.ts',
 ]
