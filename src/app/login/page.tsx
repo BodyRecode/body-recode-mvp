@@ -57,11 +57,27 @@ import { BrandMark } from '@/components/brand-mark'
  *   1. THE HEADLINE NOW MATCHES THE FRAME IT IS IN. It was 36px in a 900px
  *      space. Scale is what carries a monochrome layout, and polite type in a
  *      big frame is most of what "flat" actually means.
- *   2. THE TWO HALVES ARE PROPERLY APART. They were four points of lightness
- *      from each other, so the split read accidental. Now the left is the
- *      deepest surface on the page and the right is visibly raised off it.
- *   3. THE FORM IS AN OBJECT, NOT FLOATING TEXT. It sits in a bordered card, so
- *      the empty space around it is framing rather than absence.
+ *   2. THE TWO HALVES ARE PROPERLY APART.
+ *   3. THE FORM IS AN OBJECT, NOT FLOATING TEXT.
+ *
+ * THIRD PASS, same day. Kade on the second: "dark and grey are not enough of a
+ * contrast", and he was right. Two dark halves a few points of lightness apart
+ * is not a split, it is a seam, and no amount of widening the gap between two
+ * near-blacks fixes that.
+ *
+ * So it is now GRAPHITE AND PAPER, which is the identity doing the work rather
+ * than a shade of it: the story side is the deepest surface in the product and
+ * the form side is paper. That is section 3.2 of the brand guidelines, positive
+ * and negative space, applied to a whole screen instead of a swatch.
+ *
+ * It also sorts out a thing the dark version fudged. On the dark side the mark
+ * is paper on graphite. On the paper side the button is graphite on paper. Both
+ * are the highest-contrast object on their own half, which is exactly how a
+ * monochrome system says "this is the thing" without reaching for a colour.
+ *
+ * THE CARD IS GONE. It existed to give a dark void a shape. The split does that
+ * now, and a bordered card floating on paper beside a full-bleed graphite panel
+ * is fussy: two competing ideas about where the structure lives.
  */
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -89,8 +105,8 @@ export default function LoginPage() {
   }
 
   const field =
-    'w-full bg-[#101319] border border-[#2A2F39] text-[#FAFAF8] rounded-xl px-4 py-3.5 text-[15px] ' +
-    'placeholder:text-[#676D76] focus:outline-none focus:border-[#8A9099] focus:bg-[#14181F] transition-colors'
+    'w-full bg-[#FFFFFF] border border-[#DCDCD7] text-[#0F1115] rounded-xl px-4 py-3.5 text-[15px] ' +
+    'placeholder:text-[#9CA2AB] focus:outline-none focus:border-[#0F1115] focus:ring-[3px] focus:ring-[#0F1115]/8 transition-[border-color,box-shadow]'
 
   return (
     <div className="min-h-screen bg-[#0B0D10] text-[#FAFAF8] flex flex-col lg:flex-row">
@@ -144,23 +160,23 @@ export default function LoginPage() {
       </div>
 
       {/* The form. */}
-      <div className="lg:w-[52%] lg:min-h-screen flex items-center justify-center px-7 sm:px-12 pb-16 pt-2 lg:py-16 bg-[#14181F] lg:border-l border-[#262B34]">
-        <div className="w-full max-w-[404px] rounded-2xl border border-[#272C36] bg-[#191D25] px-7 sm:px-8 py-8 sm:py-9 shadow-[0_24px_60px_-28px_rgba(0,0,0,0.9)]">
-          <h2 className="text-[22px] font-semibold tracking-[-0.015em] mb-1.5">Sign in</h2>
-          <p className="text-[13.5px] text-[#8A9099] mb-7">Your clients, your reads, your week.</p>
+      <div className="lg:w-[52%] lg:min-h-screen flex items-center justify-center px-7 sm:px-12 pb-16 pt-12 lg:py-16 bg-[#FAFAF8] text-[#0F1115]">
+        <div className="w-full max-w-[392px]">
+          <h2 className="text-[24px] font-semibold tracking-[-0.02em] mb-1.5">Sign in</h2>
+          <p className="text-[13.5px] text-[#6E747D] mb-8">Your clients, your reads, your week.</p>
 
           {error && (
             <div
-              className="mb-6 rounded-xl px-4 py-3 border border-[#4A2222] bg-[#1A1214]"
+              className="mb-6 rounded-xl px-4 py-3 border border-[#E8C9C9] bg-[#FBF1F1]"
               role="alert"
             >
-              <p className="text-[13px] text-[#D98C8C] leading-relaxed">{error}</p>
+              <p className="text-[13px] text-[#A63D3D] leading-relaxed">{error}</p>
             </div>
           )}
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-[12px] font-medium text-[#C2C6CC] mb-2">
+              <label htmlFor="email" className="block text-[12px] font-medium text-[#4A4F57] mb-2">
                 Email
               </label>
               <input
@@ -176,7 +192,7 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-[12px] font-medium text-[#C2C6CC] mb-2">
+              <label htmlFor="password" className="block text-[12px] font-medium text-[#4A4F57] mb-2">
                 Password
               </label>
               <input
@@ -194,13 +210,13 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#FAFAF8] text-[#0F1115] font-semibold rounded-xl py-3.5 text-[15px] hover:bg-[#FFFFFF] active:bg-[#E4E4E0] transition-colors disabled:opacity-30 disabled:cursor-not-allowed mt-2"
+              className="w-full bg-[#0F1115] text-[#FAFAF8] font-semibold rounded-xl py-3.5 text-[15px] hover:bg-[#242932] active:bg-[#000000] transition-colors disabled:opacity-30 disabled:cursor-not-allowed mt-2"
             >
               {loading ? 'Signing in…' : 'Sign in'}
             </button>
           </form>
 
-          <p className="text-[12.5px] text-[#676D76] mt-7 leading-relaxed">
+          <p className="text-[12.5px] text-[#6E747D] mt-7 leading-relaxed">
             Invited and cannot get in? Use the link in your invitation email to set your password, or reply to
             it and we will sort it.
           </p>
