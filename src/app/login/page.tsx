@@ -124,6 +124,25 @@ import { BrandMark } from '@/components/brand-mark'
  * highest item on the medical-device risk note. It is a real capability and it
  * is not going on a public page until that has been through a lawyer. Flagged
  * to Kade rather than quietly omitted.
+ *
+ * SIXTH PASS, plain words. Kade: could be said in plainer terms. He is right,
+ * and the offenders were all mine rather than the product's:
+ *
+ *   "a written interpretation of how much load they can carry"  -> how hard
+ *       you can push someone
+ *   "storage"                -> where they carry body fat. "Storage" is an
+ *       internal label and it means nothing to a coach reading this cold.
+ *   "hormonal status"        -> hormones
+ *   "you get a readiness"    -> a readiness is not a thing you get. Say what
+ *       it tells you first, then name it.
+ *   "programme against something real" -> not a guess
+ *   "the interaction is usually where the answer is" -> most problems only
+ *       show up when you look at them side by side
+ *   "it holds and says so"   -> it says so and waits. "Holds" is ours.
+ *
+ * THE ORDER IS THE RULE, not just the vocabulary: say the plain thing first,
+ * then name it. "How hard you can push them. That is their readiness." A coach
+ * learns the word from the sentence instead of having to already know it.
  */
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -181,16 +200,16 @@ export default function LoginPage() {
             Read the whole person,<br />every week.
           </h1>
           <p className="text-[16px] sm:text-[16.5px] text-[#C2C6CC] leading-[1.55] mb-9 max-w-[500px]">
-            Not a score and not a category. A written interpretation of how much
-            load they can carry right now, the pattern driving it, and what is
-            holding it there.
+            It tells you how hard you can push someone right now, what is going on
+            underneath that, and why. Written out in plain words, so you can read
+            it straight to them.
           </p>
 
           <div className="space-y-5">
             {[
-              ['It reads everything at once', 'Sleep, stress, training history, recovery, storage, hormonal status, medications, what they actually eat. Read together rather than one at a time, because the interaction is usually where the answer is.'],
-              ['You get a readiness, with the reason attached', 'How much they can take right now, named and explained in writing. You programme against something real rather than against how they looked on Monday, and you can say why out loud.'],
-              ['It knows when to stop', 'When the picture needs a doctor rather than a coach, it holds and says so instead of guessing past it. No questionnaire does that, and it is why the rest of the read is worth trusting.'],
+              ['It looks at everything together', 'Sleep, stress, training, recovery, where they carry body fat, hormones, medications, what they actually eat. Most of it only makes sense side by side, which is the bit nobody has time to do by hand.'],
+              ['It tells you how hard to push', 'Not a guess off how they looked on Monday. A straight answer, with the reason written next to it, so you can say it out loud and back it up. That is their readiness.'],
+              ['It stops when it should', 'If something looks like it needs a doctor rather than a coach, it says so and waits instead of carrying on and guessing. Nothing else does this, and it is why you can trust the rest of it.'],
             ].map(([title, body], i) => (
               <div key={title} className="flex gap-4">
                 <span className="mt-[2px] w-7 h-7 shrink-0 rounded-full border border-[#2A2F39] flex items-center justify-center text-[11.5px] font-semibold text-[#8A9099] tabular-nums">
@@ -205,8 +224,9 @@ export default function LoginPage() {
           </div>
 
           <p className="text-[12.5px] text-[#676D76] mt-9 leading-relaxed">
-            Always against their own baseline, never against a target. And it
-            never tells you what to prescribe: that part is still yours.
+            It always measures them against where they started, never against a
+            target. And it never tells you what to do about it. That part is
+            still yours.
           </p>
         </div>
       </div>
