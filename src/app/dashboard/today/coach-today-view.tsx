@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import type { CoachToday, ClientToday, Band } from '@/lib/coach-today'
 import { BRAND } from '@/lib/brand-tokens'
-import { PageHeader, SectionHead } from '@/components/dashboard/ui'
+import { PageHeader, SectionHead, PageBody } from '@/components/dashboard/ui'
 
 /**
  * A coach's Today. Dark, because a tool is dark and a document is light: this
@@ -131,8 +131,8 @@ export default function CoachTodayView({ today, firstName }: { today: CoachToday
   const bookTotal = booked.reduce((n, b) => n + b.count, 0) || 1
 
   return (
-    <div className="-mx-6 -mt-6 min-h-screen" style={{ background: BRAND.darkWell, color: BRAND.darkInk }}>
-      <div className="px-8">
+    <PageBody>
+      <div>
         <PageHeader
           eyebrow={new Date().toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' })}
           title="Today"
@@ -144,7 +144,7 @@ export default function CoachTodayView({ today, firstName }: { today: CoachToday
       </div>
 
       {total > 0 && (
-        <div className="px-8 grid gap-3" style={{ gridTemplateColumns: 'repeat(2, minmax(0,1fr)) 1.45fr' }}>
+        <div className="grid gap-3" style={{ gridTemplateColumns: 'repeat(2, minmax(0,1fr)) 1.45fr' }}>
           <Panel label="Read this week">
             <div className="text-[34px] font-extrabold tracking-[-0.045em] mt-2.5 leading-none tabular-nums">
               {readsThisWeek.reduce((a, b) => a + b, 0)}
@@ -191,7 +191,7 @@ export default function CoachTodayView({ today, firstName }: { today: CoachToday
         </div>
       )}
 
-      <div className="px-8 pb-12">
+      <div className="pb-12">
         {BANDS.map(band => {
           const inBand = clients.filter(c => c.band === band.key)
           if (inBand.length === 0) return null
@@ -209,6 +209,6 @@ export default function CoachTodayView({ today, firstName }: { today: CoachToday
           </p>
         )}
       </div>
-    </div>
+    </PageBody>
   )
 }

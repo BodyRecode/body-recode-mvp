@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { requireCoachScope, coachFilter } from '@/lib/coach-scope'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { practiceView, type ClientStanding } from '@/lib/practice-view'
-import { PageHeader } from '@/components/dashboard/ui'
+import { PageHeader, PageBody } from '@/components/dashboard/ui'
 import { BRAND, READINESS_COLOUR as READINESS_TOKENS } from '@/lib/brand-tokens'
 
 export const metadata = { title: 'Your practice' }
@@ -96,7 +96,7 @@ export default async function PracticePage() {
   const needsYou = view.slipping.length
 
   return (
-    <div className="max-w-[1100px]">
+    <PageBody>
       <PageHeader
         eyebrow="Your practice"
         title="Your practice"
@@ -150,6 +150,6 @@ export default async function PracticePage() {
           three weeks because there is nothing yet to read into.
         </p>
       </div>
-    </div>
+    </PageBody>
   )
 }

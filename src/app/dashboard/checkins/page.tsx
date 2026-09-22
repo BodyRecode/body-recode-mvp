@@ -17,7 +17,7 @@ import Link from 'next/link'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { requireCoachScope, coachClientIds } from '@/lib/coach-scope'
 import { ChevronRight, Check, Inbox, Clock } from 'lucide-react'
-import { PageHeader, Card, RangeTabs, EmptyState, PersonRow } from '@/components/dashboard/ui'
+import { PageHeader, Card, RangeTabs, EmptyState, PersonRow, PageBody } from '@/components/dashboard/ui'
 import { BRAND } from '@/lib/brand-tokens'
 
 type Range = 'week' | 'today' | 'yesterday'
@@ -131,7 +131,7 @@ export default async function CheckInsPage({
     range === 'today' ? 'today' : range === 'yesterday' ? 'yesterday' : 'in the last 7 days'
 
   return (
-    <div className="max-w-[1100px]">
+    <PageBody>
       <PageHeader
         eyebrow="Clients"
         title="Check Ins"
@@ -216,7 +216,7 @@ export default async function CheckInsPage({
           </div>
         </div>
       )}
-    </div>
+    </PageBody>
   )
 }
 

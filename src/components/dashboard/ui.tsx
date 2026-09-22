@@ -183,6 +183,34 @@ export function PageHeader({
 }
 
 /**
+ * THE CONTENT WIDTH, decided once.
+ *
+ * 22 September 2026. Kade: "why does the content on screen go out further on
+ * the today page than the other pages?" Because Today cancelled the shell's
+ * padding with negative margins and ran to the full 1320, while every other
+ * page capped itself at 1100. Two hundred and twenty pixels apart, on pages a
+ * coach moves between all day.
+ *
+ * The breakout existed for a reason that has since gone: Today was dark inside
+ * a light shell and needed its own ground. The shell is dark now, so the hack
+ * is not a trade-off any more, it is just a difference.
+ *
+ * ONE MEASURE, AND IT IS THE FULL WIDTH. Kade: "i like the whole screen to be
+ * used so i like how the today page is." Every page now runs to the shell's
+ * measure rather than stopping at 1100, which is what Today was doing and what
+ * made it look like the odd one out.
+ *
+ * THE THING THAT MADE 1100 TEMPTING IS STILL TRUE and is handled a better way:
+ * a sentence running the full width of a wide monitor stops being readable. So
+ * the SENTENCE is capped, not the page. Today already did this, at 620px on the
+ * line that explains each client, which is why it reads comfortably at full
+ * width. Any page adding prose should cap the prose, never the container.
+ */
+export function PageBody({ children }: { children: ReactNode }) {
+  return <div className="w-full">{children}</div>
+}
+
+/**
  * A section heading inside a page: a word, a count, and a rule running to the
  * edge. The one shape every list on every page uses, so a coach learns it once.
  */

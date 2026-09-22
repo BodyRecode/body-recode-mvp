@@ -125,7 +125,9 @@ export default function DashboardShell({
           className="min-w-0 px-6 py-8 lg:px-9 lg:py-9 print:p-0"
           style={{ background: 'linear-gradient(180deg,#0B0D10,#0F1115 260px)' }}
         >
-          <div className="max-w-[1320px] print:max-w-none">{children}</div>
+          {/* No cap: Kade, 22 Sep, "it could go out even further to fill entire
+              screen page". Prose is capped instead of the page. See PageBody. */}
+          <div className="w-full print:max-w-none">{children}</div>
         </main>
       </div>
     </div>

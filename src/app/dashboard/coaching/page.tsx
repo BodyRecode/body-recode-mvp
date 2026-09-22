@@ -8,7 +8,7 @@ import { AlertTriangle, ArrowUpRight, ChevronRight, UserPlus, Users, Activity, R
 import { resolveCurrentBodyState, latestReScore } from '@/lib/body-state-current'
 import { getWeekNumber } from '@/lib/weekly-checkin-questions'
 import { ONLINE_PACKAGE_VALUES, IN_PERSON_PACKAGE_VALUES, TWO_SESSION_PACKAGE_VALUES } from '@/lib/coaching-packages'
-import { PageHeader, Btn, EmptyState, Avatar, MONO_FONT, accentColour } from '@/components/dashboard/ui'
+import { PageHeader, Btn, EmptyState, Avatar, MONO_FONT, accentColour, PageBody } from '@/components/dashboard/ui'
 import { evaluateReadiness, type ReadinessReport } from '@/lib/readiness-monitor'
 import ReassessmentQueue from '@/components/reassessment-queue'
 import { loadOpenTriggersWithClients } from '@/lib/reassessment-digest'
@@ -215,7 +215,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
   const weekStrips = await buildWeekStrips(clientsProcessed.map(c => c.id))
 
   return (
-    <div className="max-w-[1100px]">
+    <PageBody>
       <PageHeader
         eyebrow="Your book"
         title="Clients"
@@ -531,6 +531,6 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           ))}
         </div>
       )}
-    </div>
+    </PageBody>
   )
 }
