@@ -138,6 +138,8 @@ export const BRAND = {
      it is deliberate: it is the button you should hesitate over. */
   remediationWash: '#FDF8F1',
   remediationWashLine: '#EADCC4',
+  /* The same wash edge on a dark ground. */
+  remediationWashLineOnDark: '#4A3A22',
   remediationPressed: '#8A5514',
   /* Attention as a panel on paper rather than as a dot. The only tinted
      surfaces in the product, and they exist because an error has to read as
