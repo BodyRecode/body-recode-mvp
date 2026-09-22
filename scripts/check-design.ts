@@ -44,6 +44,7 @@ const ROOTS = [
   'src/app/dashboard/coaching',
   'src/app/dashboard/checkins',
   'src/app/dashboard/practice',
+  'src/app/dashboard/getting-started',
   'src/app/login',
   'src/lib/coach-today.ts',
 ]
