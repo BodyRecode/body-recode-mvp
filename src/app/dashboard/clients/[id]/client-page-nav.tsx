@@ -18,19 +18,19 @@ export default function ClientPageNav({ clientId, canPrescribe = true }: { clien
     'relative px-3 py-2.5 text-[13px] whitespace-nowrap border-b-2 -mb-px transition-colors'
 
   return (
-    <nav className="flex items-center gap-0.5 border-b border-[#E8EAEE] mb-6 overflow-x-auto">
+    <nav className="flex items-center gap-0.5 border-b border-[#E4E4E0] mb-6 overflow-x-auto">
       <Link
         href={base}
         aria-current={onProfile ? 'page' : undefined}
         className={`${item} ${
           onProfile
-            ? 'border-[#1B6DFC] text-[#1B6DFC] font-medium'
-            : 'border-transparent text-[#666D7A] hover:text-[#141821]'
+            ? 'border-[#0F1115] text-[#0F1115] font-medium'
+            : 'border-transparent text-[#6E747D] hover:text-[#0F1115]'
         }`}
       >
         Profile
       </Link>
-      <span className="mx-2 h-4 w-px bg-[#E8EAEE] shrink-0" aria-hidden />
+      <span className="mx-2 h-4 w-px bg-[#E4E4E0] shrink-0" aria-hidden />
       {visibleClientPages(canPrescribe).map(p => {
         const href = `${base}/${p.slug}`
         const on = pathname === href || pathname.startsWith(href + '/')
@@ -41,8 +41,8 @@ export default function ClientPageNav({ clientId, canPrescribe = true }: { clien
             aria-current={on ? 'page' : undefined}
             className={`${item} ${
               on
-                ? 'border-[#1B6DFC] text-[#1B6DFC] font-medium'
-                : 'border-transparent text-[#666D7A] hover:text-[#141821]'
+                ? 'border-[#0F1115] text-[#0F1115] font-medium'
+                : 'border-transparent text-[#6E747D] hover:text-[#0F1115]'
             }`}
           >
             {p.label}

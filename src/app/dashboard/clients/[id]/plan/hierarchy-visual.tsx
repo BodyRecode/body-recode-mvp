@@ -29,25 +29,25 @@ interface NutritionPlan {
 }
 
 const phaseColour: Record<string, string> = {
-  accumulation: 'bg-[rgba(27,109,252,0.08)] border-[#B5CFFC] text-[#1056D6]',
+  accumulation: 'bg-[rgba(27,109,252,0.08)] border-[#DCDCD7] text-[#000000]',
   intensification: 'bg-orange-400/10 border-orange-400/30 text-orange-400',
-  realization: 'bg-[#FDEDED] border-[#F5C9C9] text-[#C82626]',
+  realization: 'bg-[#FBF1F1] border-[#E8C9C9] text-[#8F2D2D]',
   restoration: 'bg-green-400/10 border-green-400/30 text-green-400',
 }
 
 const statusDot: Record<string, string> = {
-  planned: 'bg-[#98A0AD]',
-  in_progress: 'bg-[#C08A2D]',
-  complete: 'bg-[#22A05A]',
-  skipped: 'bg-[#EFF1F4]',
+  planned: 'bg-[#9CA2AB]',
+  in_progress: 'bg-[#B06E1F]',
+  complete: 'bg-[#2B5E45]',
+  skipped: 'bg-[#EDEDEA]',
 }
 
 const PILLARS = [
-  { label: 'RRS', full: 'Recovery + Regulation', colour: 'text-[#C82626]', desc: 'Governs all execution' },
+  { label: 'RRS', full: 'Recovery + Regulation', colour: 'text-[#8F2D2D]', desc: 'Governs all execution' },
   { label: 'Fat Map', full: 'Fat Map Method', colour: 'text-orange-400', desc: 'Constraint authority' },
   { label: 'BIRS', full: 'Behaviour + Identity', colour: 'text-yellow-400', desc: 'Complexity limits' },
-  { label: 'PTS', full: 'Progressive Training', colour: 'text-[#1056D6]', desc: 'Training demand' },
-  { label: 'HABNS', full: 'Nutrition Support', colour: 'text-[#1B6DFC]', desc: 'Nutrition support' },
+  { label: 'PTS', full: 'Progressive Training', colour: 'text-[#000000]', desc: 'Training demand' },
+  { label: 'HABNS', full: 'Nutrition Support', colour: 'text-[#0F1115]', desc: 'Nutrition support' },
 ]
 
 export default function HierarchyVisual({
@@ -63,27 +63,27 @@ export default function HierarchyVisual({
   const currentBlock = plan?.plan_blocks.find(b => b.status === 'in_progress')
 
   return (
-    <div className="bg-[#F4F6F9] br-card overflow-hidden">
-      <div className="px-5 py-3 border-b border-[#E8EAEE]">
-        <p className="text-[10px] font-medium text-[#666D7A]">System Hierarchy</p>
-        <p className="text-[12.5px] text-[#98A0AD] mt-0.5">How macro, meso, micro and nutrition interact</p>
+    <div className="bg-[#F2F2EF] br-card overflow-hidden">
+      <div className="px-5 py-3 border-b border-[#E4E4E0]">
+        <p className="text-[10px] font-medium text-[#6E747D]">System Hierarchy</p>
+        <p className="text-[12.5px] text-[#9CA2AB] mt-0.5">How macro, meso, micro and nutrition interact</p>
       </div>
 
       <div className="p-5 flex gap-6">
 
         {/* Left: Pillar stack */}
         <div className="shrink-0 w-40">
-          <p className="text-[9px] font-medium text-[#98A0AD] mb-3">Cross-Pillar Order</p>
+          <p className="text-[9px] font-medium text-[#9CA2AB] mb-3">Cross-Pillar Order</p>
           <div className="space-y-1">
             {PILLARS.map((p, i) => (
               <div key={p.label} className="flex items-start gap-2">
                 <div className="flex flex-col items-center shrink-0 mt-1">
-                  <div className={`w-1.5 h-1.5 rounded-full ${i === 3 ? 'bg-[#5390FF]' : i === 4 ? 'bg-[#1B6DFC]' : 'bg-[#98A0AD]'}`} />
-                  {i < PILLARS.length - 1 && <div className="w-px h-4 bg-[#E8EAEE]" />}
+                  <div className={`w-1.5 h-1.5 rounded-full ${i === 3 ? 'bg-[#242932]' : i === 4 ? 'bg-[#0F1115]' : 'bg-[#9CA2AB]'}`} />
+                  {i < PILLARS.length - 1 && <div className="w-px h-4 bg-[#E4E4E0]" />}
                 </div>
                 <div>
                   <p className={`text-[10px] font-bold ${p.colour}`}>{p.label}</p>
-                  <p className="text-[9px] text-[#98A0AD] leading-tight">{p.desc}</p>
+                  <p className="text-[9px] text-[#9CA2AB] leading-tight">{p.desc}</p>
                 </div>
               </div>
             ))}
@@ -91,7 +91,7 @@ export default function HierarchyVisual({
         </div>
 
         {/* Vertical divider */}
-        <div className="w-px bg-[#EFF1F4] shrink-0" />
+        <div className="w-px bg-[#EDEDEA] shrink-0" />
 
         {/* Right: Macro → Meso → Micro → Nutrition */}
         <div className="flex-1 min-w-0 space-y-4">
@@ -99,16 +99,16 @@ export default function HierarchyVisual({
           {/* Layer 1: Macro Arc */}
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-[#5390FF] shrink-0" />
-              <p className="text-[9px] font-medium text-[#666D7A]">Macro Arc</p>
-              {plan && <p className="text-[9px] text-[#98A0AD] ml-auto">{totalWeeks}w total</p>}
+              <div className="w-1.5 h-1.5 rounded-full bg-[#242932] shrink-0" />
+              <p className="text-[9px] font-medium text-[#6E747D]">Macro Arc</p>
+              {plan && <p className="text-[9px] text-[#9CA2AB] ml-auto">{totalWeeks}w total</p>}
             </div>
 
             {plan ? (
               <div>
-                <p className="text-[12.5px] font-semibold text-[#141821] mb-2">{plan.plan_name}</p>
+                <p className="text-[12.5px] font-semibold text-[#0F1115] mb-2">{plan.plan_name}</p>
                 {plan.macro_objective && (
-                  <p className="text-[10px] text-[#666D7A] mb-2 leading-relaxed">{plan.macro_objective}</p>
+                  <p className="text-[10px] text-[#6E747D] mb-2 leading-relaxed">{plan.macro_objective}</p>
                 )}
                 {plan.plan_blocks.length > 0 && (
                   <div className="flex items-center gap-1 flex-wrap">
@@ -116,17 +116,17 @@ export default function HierarchyVisual({
                       <div key={block.id} className="flex items-center gap-1">
                         <div className={`flex items-center gap-1.5 px-2 py-1 rounded border text-[9px] ${
                           block.status === 'in_progress'
-                            ? `${phaseColour[block.progression_phase] || 'bg-[#EFF1F4] border-[#E8EAEE] text-[#666D7A]'} ring-1 ring-[#C08A2D]/50`
+                            ? `${phaseColour[block.progression_phase] || 'bg-[#EDEDEA] border-[#E4E4E0] text-[#6E747D]'} ring-1 ring-[#B06E1F]/50`
                             : block.status === 'complete'
-                            ? 'bg-[#EFF1F4]/30 border-[#E8EAEE] text-[#98A0AD]'
-                            : phaseColour[block.progression_phase] || 'bg-[#EFF1F4] border-[#E8EAEE] text-[#666D7A]'
+                            ? 'bg-[#EDEDEA]/30 border-[#E4E4E0] text-[#9CA2AB]'
+                            : phaseColour[block.progression_phase] || 'bg-[#EDEDEA] border-[#E4E4E0] text-[#6E747D]'
                         }`}>
                           <div className={`w-1 h-1 rounded-full shrink-0 ${statusDot[block.status]}`} />
                           <span className="font-medium truncate max-w-[80px]">{block.block_name}</span>
                           <span className="opacity-60">{block.week_duration}w</span>
                         </div>
                         {i < plan.plan_blocks.length - 1 && (
-                          <span className="text-[#141821] text-[9px]">›</span>
+                          <span className="text-[#0F1115] text-[9px]">›</span>
                         )}
                       </div>
                     ))}
@@ -134,91 +134,91 @@ export default function HierarchyVisual({
                 )}
               </div>
             ) : (
-              <p className="text-[10px] text-[#98A0AD] italic">No macro arc planned</p>
+              <p className="text-[10px] text-[#9CA2AB] italic">No macro arc planned</p>
             )}
           </div>
 
           {/* Connector */}
           <div className="flex items-center gap-2 pl-1">
-            <div className="w-px h-3 bg-[#E8EAEE] ml-0.5" />
-            <span className="text-[9px] text-[#141821]">current block</span>
+            <div className="w-px h-3 bg-[#E4E4E0] ml-0.5" />
+            <span className="text-[9px] text-[#0F1115]">current block</span>
           </div>
 
           {/* Layer 2: Meso Block */}
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-[#C08A2D] shrink-0" />
-              <p className="text-[9px] font-medium text-[#666D7A]">Meso Block</p>
+              <div className="w-1.5 h-1.5 rounded-full bg-[#B06E1F] shrink-0" />
+              <p className="text-[9px] font-medium text-[#6E747D]">Meso Block</p>
             </div>
 
             {currentBlock ? (
-              <div className={`px-3 py-2 rounded-lg border ${phaseColour[currentBlock.progression_phase] || 'bg-[#EFF1F4] border-[#E8EAEE]'}`}>
+              <div className={`px-3 py-2 rounded-lg border ${phaseColour[currentBlock.progression_phase] || 'bg-[#EDEDEA] border-[#E4E4E0]'}`}>
                 <p className="text-[12.5px] font-semibold">{currentBlock.block_name}</p>
                 <p className="text-[9px] opacity-70 mt-0.5 capitalize">{currentBlock.progression_phase} · {currentBlock.training_goal} · {currentBlock.week_duration}w</p>
               </div>
             ) : (
-              <p className="text-[10px] text-[#98A0AD] italic">{plan ? 'No block in progress' : 'No meso block active'}</p>
+              <p className="text-[10px] text-[#9CA2AB] italic">{plan ? 'No block in progress' : 'No meso block active'}</p>
             )}
           </div>
 
           {/* Connector */}
           <div className="flex items-center gap-2 pl-1">
-            <div className="w-px h-3 bg-[#E8EAEE] ml-0.5" />
-            <span className="text-[9px] text-[#141821]">generates program</span>
+            <div className="w-px h-3 bg-[#E4E4E0] ml-0.5" />
+            <span className="text-[9px] text-[#0F1115]">generates program</span>
           </div>
 
           {/* Layer 3: Micro Program */}
           <div>
             <div className="flex items-center gap-2 mb-2">
               <div className="w-1.5 h-1.5 rounded-full bg-violet-400 shrink-0" />
-              <p className="text-[9px] font-medium text-[#666D7A]">Micro Program</p>
+              <p className="text-[9px] font-medium text-[#6E747D]">Micro Program</p>
             </div>
 
             {activeProgram ? (
-              <div className="px-3 py-2 rounded-lg bg-[#EFF1F4]/50 border border-[#E8EAEE]">
-                <p className="text-[12.5px] font-semibold text-[#141821]">{activeProgram.block_name}</p>
-                <p className="text-[9px] text-[#666D7A] mt-0.5 capitalize">
+              <div className="px-3 py-2 rounded-lg bg-[#EDEDEA]/50 border border-[#E4E4E0]">
+                <p className="text-[12.5px] font-semibold text-[#0F1115]">{activeProgram.block_name}</p>
+                <p className="text-[9px] text-[#6E747D] mt-0.5 capitalize">
                   {activeProgram.progression_phase} · {activeProgram.training_goal} · {activeProgram.training_frequency}x/week · {activeProgram.week_duration}w
                 </p>
               </div>
             ) : (
-              <p className="text-[10px] text-[#98A0AD] italic">No active program</p>
+              <p className="text-[10px] text-[#9CA2AB] italic">No active program</p>
             )}
           </div>
 
           {/* Connector */}
           <div className="flex items-center gap-2 pl-1">
-            <div className="w-px h-3 bg-[#E8EAEE] ml-0.5" />
-            <span className="text-[9px] text-[#141821]">supported by</span>
+            <div className="w-px h-3 bg-[#E4E4E0] ml-0.5" />
+            <span className="text-[9px] text-[#0F1115]">supported by</span>
           </div>
 
           {/* Layer 4: Nutrition */}
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-[#1B6DFC] shrink-0" />
-              <p className="text-[9px] font-medium text-[#666D7A]">Nutrition Support</p>
+              <div className="w-1.5 h-1.5 rounded-full bg-[#0F1115] shrink-0" />
+              <p className="text-[9px] font-medium text-[#6E747D]">Nutrition Support</p>
             </div>
 
             {nutritionPlan ? (
               <div className="flex gap-2 flex-wrap">
                 {nutritionPlan.entry_state && (
-                  <span className="text-[9px] px-2 py-1 bg-[rgba(27,109,252,0.08)] border border-[#1B6DFC]/20 rounded text-[#1B6DFC] capitalize">
+                  <span className="text-[9px] px-2 py-1 bg-[rgba(27,109,252,0.08)] border border-[#0F1115]/20 rounded text-[#0F1115] capitalize">
                     {nutritionPlan.entry_state}
                   </span>
                 )}
                 {nutritionPlan.carb_demand_level && (
-                  <span className="text-[9px] px-2 py-1 bg-[#EFF1F4] border border-[#E8EAEE] rounded text-[#666D7A] capitalize">
+                  <span className="text-[9px] px-2 py-1 bg-[#EDEDEA] border border-[#E4E4E0] rounded text-[#6E747D] capitalize">
                     Carbs: {nutritionPlan.carb_demand_level}
                   </span>
                 )}
                 {nutritionPlan.modulation_level && (
-                  <span className="text-[9px] px-2 py-1 bg-[#EFF1F4] border border-[#E8EAEE] rounded text-[#666D7A] capitalize">
+                  <span className="text-[9px] px-2 py-1 bg-[#EDEDEA] border border-[#E4E4E0] rounded text-[#6E747D] capitalize">
                     Modulation: {nutritionPlan.modulation_level}
                   </span>
                 )}
               </div>
             ) : (
-              <p className="text-[10px] text-[#98A0AD] italic">No active nutrition plan</p>
+              <p className="text-[10px] text-[#9CA2AB] italic">No active nutrition plan</p>
             )}
           </div>
 
@@ -226,15 +226,15 @@ export default function HierarchyVisual({
       </div>
 
       {/* Footer legend */}
-      <div className="px-5 py-3 border-t border-[#E8EAEE] flex items-center gap-4 flex-wrap">
+      <div className="px-5 py-3 border-t border-[#E4E4E0] flex items-center gap-4 flex-wrap">
         {[
-          { dot: 'bg-[#98A0AD]', label: 'Planned' },
-          { dot: 'bg-[#C08A2D]', label: 'In Progress' },
-          { dot: 'bg-[#22A05A]', label: 'Complete' },
+          { dot: 'bg-[#9CA2AB]', label: 'Planned' },
+          { dot: 'bg-[#B06E1F]', label: 'In Progress' },
+          { dot: 'bg-[#2B5E45]', label: 'Complete' },
         ].map(item => (
           <div key={item.label} className="flex items-center gap-1.5">
             <div className={`w-1.5 h-1.5 rounded-full ${item.dot}`} />
-            <span className="text-[9px] text-[#98A0AD]">{item.label}</span>
+            <span className="text-[9px] text-[#9CA2AB]">{item.label}</span>
           </div>
         ))}
       </div>

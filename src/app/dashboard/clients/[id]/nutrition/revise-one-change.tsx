@@ -45,12 +45,12 @@ export default function ReviseOneChange({ clientId, hasDraft }: { clientId: stri
 
   return (
     <div className="br-card p-5 mb-4">
-      <p className="text-[14px] font-semibold text-[#141821] mb-1">Change one thing</p>
-      <p className="text-[12.5px] text-[#666D7A] leading-relaxed mb-3">
+      <p className="text-[14px] font-semibold text-[#0F1115] mb-1">Change one thing</p>
+      <p className="text-[12.5px] text-[#6E747D] leading-relaxed mb-3">
         Adjust her live plan without rewriting it: same foods, same meals, only the change you name. For a new block or a new direction, use Regenerate instead.
       </p>
       {hasDraft ? (
-        <p className="text-[12.5px] text-[#A96A12]">There is a draft plan waiting. Approve or discard it before making another change.</p>
+        <p className="text-[12.5px] text-[#B06E1F]">There is a draft plan waiting. Approve or discard it before making another change.</p>
       ) : (
         <>
           <textarea
@@ -58,38 +58,38 @@ export default function ReviseOneChange({ clientId, hasDraft }: { clientId: stri
             onChange={e => setInstruction(e.target.value)}
             rows={2}
             placeholder="e.g. Carbs up 60g, spread over lunch and dinner"
-            className="w-full bg-[#F4F6F9] rounded-xl px-3 py-2.5 text-[14px] text-[#141821] border border-[#EFF1F4] focus:outline-none focus:ring-2 focus:ring-[#1B6DFC]/30 resize-none"
+            className="w-full bg-[#F2F2EF] rounded-xl px-3 py-2.5 text-[14px] text-[#0F1115] border border-[#EDEDEA] focus:outline-none focus:ring-2 focus:ring-[#0F1115]/30 resize-none"
           />
           <div className="flex items-center gap-3 mt-2">
             <button onClick={propose} disabled={!instruction.trim() || !!busy} className="br-btn disabled:opacity-50">
               {busy === 'propose' ? 'Working it out…' : 'Show me the change'}
             </button>
-            {error && <p className="text-[12.5px] text-[#C82626]">{error}</p>}
+            {error && <p className="text-[12.5px] text-[#8F2D2D]">{error}</p>}
           </div>
 
-          {summary && !preview && <p className="mt-3 text-[13px] text-[#43474F] leading-relaxed">{summary}</p>}
+          {summary && !preview && <p className="mt-3 text-[13px] text-[#4A4F57] leading-relaxed">{summary}</p>}
 
           {preview && (
-            <div className="mt-4 rounded-xl border border-[#E8EAEE] p-4">
-              {summary && <p className="text-[13px] text-[#43474F] leading-relaxed mb-3">{summary}</p>}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3 text-[12.5px] text-[#43474F]">
-                <div><p className="text-[11px] text-[#98A0AD]">Calories</p>{delta(preview.before.kcal, preview.after.kcal, '')}</div>
-                <div><p className="text-[11px] text-[#98A0AD]">Protein</p>{delta(preview.before.protein, preview.after.protein, 'g')}</div>
-                <div><p className="text-[11px] text-[#98A0AD]">Carbs</p>{delta(preview.before.carbs, preview.after.carbs, 'g')}</div>
-                <div><p className="text-[11px] text-[#98A0AD]">Fat</p>{delta(preview.before.fat, preview.after.fat, 'g')}</div>
+            <div className="mt-4 rounded-xl border border-[#E4E4E0] p-4">
+              {summary && <p className="text-[13px] text-[#4A4F57] leading-relaxed mb-3">{summary}</p>}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3 text-[12.5px] text-[#4A4F57]">
+                <div><p className="text-[11px] text-[#9CA2AB]">Calories</p>{delta(preview.before.kcal, preview.after.kcal, '')}</div>
+                <div><p className="text-[11px] text-[#9CA2AB]">Protein</p>{delta(preview.before.protein, preview.after.protein, 'g')}</div>
+                <div><p className="text-[11px] text-[#9CA2AB]">Carbs</p>{delta(preview.before.carbs, preview.after.carbs, 'g')}</div>
+                <div><p className="text-[11px] text-[#9CA2AB]">Fat</p>{delta(preview.before.fat, preview.after.fat, 'g')}</div>
               </div>
-              <p className="text-[11px] text-[#98A0AD] mb-1">What changes</p>
-              <ul className="text-[13px] text-[#43474F] space-y-0.5 mb-3">{preview.changes.map((c, i) => <li key={i}>· {c}</li>)}</ul>
-              {preview.warnings.map((w, i) => <p key={i} className="text-[12.5px] text-[#A96A12] mb-1">Check: {w}</p>)}
+              <p className="text-[11px] text-[#9CA2AB] mb-1">What changes</p>
+              <ul className="text-[13px] text-[#4A4F57] space-y-0.5 mb-3">{preview.changes.map((c, i) => <li key={i}>· {c}</li>)}</ul>
+              {preview.warnings.map((w, i) => <p key={i} className="text-[12.5px] text-[#B06E1F] mb-1">Check: {w}</p>)}
               {preview.newIssues.length > 0 && (
                 <div className="mt-2">
-                  {preview.newIssues.map((w, i) => <p key={i} className="text-[12.5px] text-[#C82626] mb-1">Would break: {w}</p>)}
-                  <label className="flex items-center gap-2 text-[12.5px] text-[#43474F] mt-1">
+                  {preview.newIssues.map((w, i) => <p key={i} className="text-[12.5px] text-[#8F2D2D] mb-1">Would break: {w}</p>)}
+                  <label className="flex items-center gap-2 text-[12.5px] text-[#4A4F57] mt-1">
                     <input type="checkbox" checked={accept} onChange={e => setAccept(e.target.checked)} /> I have checked this and still want the draft
                   </label>
                 </div>
               )}
-              <p className="text-[12px] text-[#98A0AD] mt-3">Everything else in the plan stays exactly as it is. This creates a draft; her live plan does not change until you approve it.</p>
+              <p className="text-[12px] text-[#9CA2AB] mt-3">Everything else in the plan stays exactly as it is. This creates a draft; her live plan does not change until you approve it.</p>
               <button onClick={apply} disabled={!!busy || !preview.changes.length || (preview.newIssues.length > 0 && !accept)} className="br-btn mt-2 disabled:opacity-50">
                 {busy === 'apply' ? 'Creating draft…' : 'Create revised draft'}
               </button>

@@ -6,17 +6,17 @@ function Row({ label, value }: { label: string; value: string | number | boolean
   if (value === null || value === undefined || value === '') return null
   const display = typeof value === 'boolean' ? (value ? 'Yes' : 'No') : String(value)
   return (
-    <div className="flex items-start justify-between gap-4 py-2.5 border-b border-[#E8EAEE] last:border-0">
-      <p className="text-[12.5px] text-[#666D7A] flex-shrink-0 w-44">{label}</p>
-      <p className="text-sm text-[#141821] text-right">{display}</p>
+    <div className="flex items-start justify-between gap-4 py-2.5 border-b border-[#E4E4E0] last:border-0">
+      <p className="text-[12.5px] text-[#6E747D] flex-shrink-0 w-44">{label}</p>
+      <p className="text-sm text-[#0F1115] text-right">{display}</p>
     </div>
   )
 }
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-[#F4F6F9] br-card p-5 mb-4">
-      <p className="text-[12.5px] font-medium text-[#666D7A] mb-3">{title}</p>
+    <div className="bg-[#F2F2EF] br-card p-5 mb-4">
+      <p className="text-[12.5px] font-medium text-[#6E747D] mb-3">{title}</p>
       {children}
     </div>
   )
@@ -37,11 +37,11 @@ export default async function HealthDeclarationViewPage({ params }: { params: Pr
     return (
       <div className="max-w-2xl">
         <div className="flex items-center gap-3 mb-8">
-          <Link href={`/dashboard/clients/${id}`} className="text-[#666D7A] hover:text-[#141821] text-sm transition-colors">← Back</Link>
-          <span className="text-[#141821]">/</span>
-          <p className="text-sm text-[#666D7A]">Health Declaration - {client.name}</p>
+          <Link href={`/dashboard/clients/${id}`} className="text-[#6E747D] hover:text-[#0F1115] text-sm transition-colors">← Back</Link>
+          <span className="text-[#0F1115]">/</span>
+          <p className="text-sm text-[#6E747D]">Health Declaration - {client.name}</p>
         </div>
-        <p className="text-[#666D7A] text-sm">Health declaration not yet submitted.</p>
+        <p className="text-[#6E747D] text-sm">Health declaration not yet submitted.</p>
       </div>
     )
   }
@@ -55,26 +55,26 @@ export default async function HealthDeclarationViewPage({ params }: { params: Pr
   return (
     <div className="max-w-2xl">
       <div className="flex items-center gap-3 mb-8">
-        <Link href={`/dashboard/clients/${id}`} className="text-[#666D7A] hover:text-[#141821] text-sm transition-colors">← Back</Link>
-        <span className="text-[#141821]">/</span>
-        <p className="text-sm text-[#666D7A]">Health Declaration - {client.name}</p>
+        <Link href={`/dashboard/clients/${id}`} className="text-[#6E747D] hover:text-[#0F1115] text-sm transition-colors">← Back</Link>
+        <span className="text-[#0F1115]">/</span>
+        <p className="text-sm text-[#6E747D]">Health Declaration - {client.name}</p>
       </div>
 
-      <div className="flex items-center justify-between br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
+      <div className="flex items-center justify-between br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E4E4E0] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
         <div>
-          <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">{client.name}</h1>
-          <p className="text-[12.5px] text-[#666D7A] mt-1">Submitted {submittedDate}</p>
+          <h1 className="text-[22px] font-semibold text-[#0F1115] tracking-[-0.025em]">{client.name}</h1>
+          <p className="text-[12.5px] text-[#6E747D] mt-1">Submitted {submittedDate}</p>
         </div>
         <div className="flex items-center gap-2">
           {client.medical_clearance_required && (
-            <span className="text-[12.5px] font-semibold text-[#A96A12] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] px-3 py-1.5 rounded-lg">
+            <span className="text-[12.5px] font-semibold text-[#B06E1F] bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] border border-[#EADCC4] px-3 py-1.5 rounded-lg">
               Clearance required
             </span>
           )}
           <Link
             href={`/dashboard/clients/${id}/health-declaration/print`}
             target="_blank"
-            className="text-sm font-medium px-4 py-2.5 rounded-lg border border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC] hover:text-[#141821] transition-colors"
+            className="text-sm font-medium px-4 py-2.5 rounded-lg border border-[#E4E4E0] text-[#6E747D] hover:border-[#DCDCD7] hover:text-[#0F1115] transition-colors"
           >
             Download PDF
           </Link>
@@ -82,8 +82,8 @@ export default async function HealthDeclarationViewPage({ params }: { params: Pr
       </div>
 
       {!d ? (
-        <div className="bg-[#F4F6F9] br-card p-5">
-          <p className="text-[#666D7A] text-sm">Form was submitted but detailed answers were not saved (submitted before this feature was added).</p>
+        <div className="bg-[#F2F2EF] br-card p-5">
+          <p className="text-[#6E747D] text-sm">Form was submitted but detailed answers were not saved (submitted before this feature was added).</p>
         </div>
       ) : (
         <>
@@ -118,13 +118,13 @@ export default async function HealthDeclarationViewPage({ params }: { params: Pr
             {d.cardiovascularScreening?.symptoms?.length > 0 ? (
               <div className="space-y-1.5">
                 {d.cardiovascularScreening.symptoms.map((s: string) => (
-                  <div key={s} className={`text-sm px-3 py-2 rounded-lg ${s === 'None of the above' ? 'text-[#1B6DFC] bg-[rgba(27,109,252,0.08)]' : 'text-[#A96A12] bg-[#FDF6E9]'}`}>
+                  <div key={s} className={`text-sm px-3 py-2 rounded-lg ${s === 'None of the above' ? 'text-[#0F1115] bg-[rgba(27,109,252,0.08)]' : 'text-[#B06E1F] bg-[#FDF8F1]'}`}>
                     {s}
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-[#666D7A]">No symptoms reported</p>
+              <p className="text-sm text-[#6E747D]">No symptoms reported</p>
             )}
           </Section>
 
@@ -159,10 +159,10 @@ export default async function HealthDeclarationViewPage({ params }: { params: Pr
           <Section title="Barriers & Goals">
             {d.barriersAndGoals?.barriers?.length > 0 && (
               <div className="mb-3">
-                <p className="text-[12.5px] text-[#666D7A] mb-2">Barriers</p>
+                <p className="text-[12.5px] text-[#6E747D] mb-2">Barriers</p>
                 <div className="flex flex-wrap gap-2">
                   {d.barriersAndGoals.barriers.map((b: string) => (
-                    <span key={b} className="text-[12.5px] bg-[#EFF1F4] text-[#141821] px-2.5 py-1 rounded-lg border border-[#E8EAEE]">{b}</span>
+                    <span key={b} className="text-[12.5px] bg-[#EDEDEA] text-[#0F1115] px-2.5 py-1 rounded-lg border border-[#E4E4E0]">{b}</span>
                   ))}
                 </div>
               </div>

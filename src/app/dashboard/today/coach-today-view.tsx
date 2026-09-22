@@ -18,9 +18,9 @@ import { PageHeader } from '@/components/dashboard/ui'
  */
 
 const TONE: Record<TodayItem['urgency'], { dot: string; label: string; cls: string }> = {
-  now: { dot: '#D96A6A', label: 'Now', cls: 'text-[#E88C8C]' },
-  soon: { dot: '#D9A34A', label: 'Soon', cls: 'text-[#E3B871]' },
-  watch: { dot: '#6B7280', label: 'Watch', cls: 'text-[#8A909B]' },
+  now: { dot: '#D4817E', label: 'Now', cls: 'text-[#D4817E]' },
+  soon: { dot: '#E0A254', label: 'Soon', cls: 'text-[#E0A254]' },
+  watch: { dot: '#6E747D', label: 'Watch', cls: 'text-[#9CA2AB]' },
 }
 
 function Row({ item }: { item: TodayItem }) {
@@ -28,14 +28,14 @@ function Row({ item }: { item: TodayItem }) {
   return (
     <Link
       href={item.href}
-      className="flex items-center gap-3 px-4 py-3.5 border-b border-[#1C212A] last:border-b-0 hover:bg-[#161B23] transition-colors"
+      className="flex items-center gap-3 px-4 py-3.5 border-b border-[#1F242C] last:border-b-0 hover:bg-[#1A1E26] transition-colors"
     >
       <span className="w-2 h-2 rounded-full shrink-0" style={{ background: tone.dot }} />
       <div className="min-w-0 flex-1">
         <p className="text-[14px] text-white">
-          {item.action} <span className="text-[#8A909B]">· {item.clientName}</span>
+          {item.action} <span className="text-[#9CA2AB]">· {item.clientName}</span>
         </p>
-        <p className="text-[12.5px] text-[#8A909B] mt-0.5">{item.detail}</p>
+        <p className="text-[12.5px] text-[#9CA2AB] mt-0.5">{item.detail}</p>
       </div>
       <span className={`text-[11.5px] font-medium shrink-0 ${tone.cls}`}>{tone.label}</span>
     </Link>
@@ -44,8 +44,8 @@ function Row({ item }: { item: TodayItem }) {
 
 function Stat({ label, value, colour }: { label: string; value: number; colour?: string }) {
   return (
-    <div className="rounded-2xl border border-[#242A35] bg-[#12161D] p-5">
-      <p className="text-[10px] font-medium tracking-[0.12em] uppercase text-[#6B7280] mb-2">{label}</p>
+    <div className="rounded-2xl border border-[#2A2F39] bg-[#14171D] p-5">
+      <p className="text-[10px] font-medium tracking-[0.12em] uppercase text-[#6E747D] mb-2">{label}</p>
       <p className="text-[34px] leading-none font-semibold tabular-nums" style={{ color: colour ?? '#FFFFFF' }}>
         {value}
       </p>
@@ -68,25 +68,25 @@ export default function CoachTodayView({ today, firstName }: { today: CoachToday
         }
       />
 
-      <div className="rounded-3xl bg-[#0C1015] p-5 sm:p-6 mt-2">
+      <div className="rounded-3xl bg-[#0B0D10] p-5 sm:p-6 mt-2">
         <div className="grid grid-cols-3 gap-3 mb-3">
-          <Stat label="Now" value={today.counts.now} colour={today.counts.now > 0 ? '#E88C8C' : undefined} />
-          <Stat label="Soon" value={today.counts.soon} colour={today.counts.soon > 0 ? '#E3B871' : undefined} />
+          <Stat label="Now" value={today.counts.now} colour={today.counts.now > 0 ? '#D4817E' : undefined} />
+          <Stat label="Soon" value={today.counts.soon} colour={today.counts.soon > 0 ? '#E0A254' : undefined} />
           <Stat label="Clients" value={today.activeClients} />
         </div>
 
-        <div className="rounded-2xl border border-[#242A35] bg-[#12161D] overflow-hidden">
+        <div className="rounded-2xl border border-[#2A2F39] bg-[#14171D] overflow-hidden">
           {nothing ? (
             <div className="px-5 py-10 text-center">
               <p className="text-[15px] text-white mb-1.5">Nothing needs you.</p>
-              <p className="text-[13px] text-[#8A909B] max-w-sm mx-auto leading-relaxed">
+              <p className="text-[13px] text-[#9CA2AB] max-w-sm mx-auto leading-relaxed">
                 Every read is written and sent, and every check-in has an answer.
                 {today.activeClients === 0 && ' Add your first client to get started.'}
               </p>
               {today.activeClients === 0 && (
                 <Link
                   href="/dashboard/clients/new"
-                  className="inline-block mt-5 px-4 py-2 rounded-lg bg-[#1B6DFC] text-white text-[13px] font-medium"
+                  className="inline-block mt-5 px-4 py-2 rounded-lg bg-[#0F1115] text-white text-[13px] font-medium"
                 >
                   Add a client
                 </Link>
@@ -97,7 +97,7 @@ export default function CoachTodayView({ today, firstName }: { today: CoachToday
           )}
         </div>
 
-        <p className="text-[12px] text-[#6B7280] mt-4 leading-relaxed">
+        <p className="text-[12px] text-[#6E747D] mt-4 leading-relaxed">
           This list is built from where each client actually is, not from anything you have to tick off.
           It empties by itself as you work.
         </p>

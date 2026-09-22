@@ -32,13 +32,13 @@ export default async function BaselinePage({ params }: { params: Promise<{ id: s
     <div className="max-w-[980px]">
       <div className="mb-8 flex items-start justify-between">
         <div>
-          <div className="flex items-center gap-2 text-[#666D7A] text-sm br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
-            <Link href={`/dashboard/clients/${id}`} className="hover:text-[#141821] transition-colors">{client.name}</Link>
+          <div className="flex items-center gap-2 text-[#6E747D] text-sm br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E4E4E0] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
+            <Link href={`/dashboard/clients/${id}`} className="hover:text-[#0F1115] transition-colors">{client.name}</Link>
             <span>/</span>
-            <span className="text-[#141821]">Baseline</span>
+            <span className="text-[#0F1115]">Baseline</span>
           </div>
-          <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">Baseline</h1>
-          <p className="text-sm text-[#666D7A] mt-1">Baseline measurements and progress photos.</p>
+          <h1 className="text-[22px] font-semibold text-[#0F1115] tracking-[-0.025em]">Baseline</h1>
+          <p className="text-sm text-[#6E747D] mt-1">Baseline measurements and progress photos.</p>
         </div>
         {baselineToken && (
           <CopyLinkButton
@@ -51,13 +51,13 @@ export default async function BaselinePage({ params }: { params: Promise<{ id: s
 
       {latestBaseline ? (
         <div className="space-y-4">
-          <p className="text-[12.5px] text-[#666D7A]">
+          <p className="text-[12.5px] text-[#6E747D]">
             Week {latestBaseline.re_capture_week} capture · {new Date(latestBaseline.captured_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}
           </p>
 
           {/* Measurements */}
-          <div className="bg-[#F4F6F9] br-card p-5">
-            <p className="text-[10px] font-medium text-[#666D7A] mb-4">Measurements</p>
+          <div className="bg-[#F2F2EF] br-card p-5">
+            <p className="text-[10px] font-medium text-[#6E747D] mb-4">Measurements</p>
             <div className="grid grid-cols-4 gap-3">
               {[
                 { label: 'Bodyweight', value: latestBaseline.bodyweight_kg, unit: 'kg' },
@@ -69,11 +69,11 @@ export default async function BaselinePage({ params }: { params: Promise<{ id: s
                 // height exists for them. Editable on the client file.
                 { label: 'Height', value: resolvedHeight.heightCm, unit: 'cm' },
               ].map(m => (
-                <div key={m.label} className="bg-[#EFF1F4]/50 rounded-xl p-3 text-center">
-                  <p className="text-[12.5px] text-[#666D7A] mb-1">{m.label}</p>
-                  <p className="text-base font-semibold text-[#141821]">
+                <div key={m.label} className="bg-[#EDEDEA]/50 rounded-xl p-3 text-center">
+                  <p className="text-[12.5px] text-[#6E747D] mb-1">{m.label}</p>
+                  <p className="text-base font-semibold text-[#0F1115]">
                     {m.value ?? '-'}
-                    <span className="text-[12.5px] text-[#666D7A] ml-1">{m.unit}</span>
+                    <span className="text-[12.5px] text-[#6E747D] ml-1">{m.unit}</span>
                   </p>
                 </div>
               ))}
@@ -82,8 +82,8 @@ export default async function BaselinePage({ params }: { params: Promise<{ id: s
 
           {/* Photos */}
           {(baselinePhotos.front || baselinePhotos.side || baselinePhotos.back) && (
-            <div className="bg-[#F4F6F9] br-card p-5">
-              <p className="text-[10px] font-medium text-[#666D7A] mb-4">Progress Photos</p>
+            <div className="bg-[#F2F2EF] br-card p-5">
+              <p className="text-[10px] font-medium text-[#6E747D] mb-4">Progress Photos</p>
               <div className="grid grid-cols-3 gap-4">
                 {[
                   { label: 'Front', url: baselinePhotos.front },
@@ -91,7 +91,7 @@ export default async function BaselinePage({ params }: { params: Promise<{ id: s
                   { label: 'Back', url: baselinePhotos.back },
                 ].map(photo => (
                   <div key={photo.label} className="space-y-1.5">
-                    <p className="text-[12.5px] text-[#666D7A] text-center">{photo.label}</p>
+                    <p className="text-[12.5px] text-[#6E747D] text-center">{photo.label}</p>
                     {photo.url ? (
                       <a href={photo.url} target="_blank" rel="noopener noreferrer">
                         <img
@@ -101,8 +101,8 @@ export default async function BaselinePage({ params }: { params: Promise<{ id: s
                         />
                       </a>
                     ) : (
-                      <div className="w-full aspect-[3/4] bg-[#EFF1F4] rounded-xl flex items-center justify-center">
-                        <p className="text-[#98A0AD] text-[12.5px]">No photo</p>
+                      <div className="w-full aspect-[3/4] bg-[#EDEDEA] rounded-xl flex items-center justify-center">
+                        <p className="text-[#9CA2AB] text-[12.5px]">No photo</p>
                       </div>
                     )}
                   </div>
@@ -114,12 +114,12 @@ export default async function BaselinePage({ params }: { params: Promise<{ id: s
           {/* Previous captures */}
           {baselines && baselines.length > 1 && (
             <div>
-              <p className="text-[#666D7A] text-sm mb-3">Previous Captures ({baselines.length - 1})</p>
+              <p className="text-[#6E747D] text-sm mb-3">Previous Captures ({baselines.length - 1})</p>
               <div className="space-y-2">
                 {baselines.slice(1).map(b => (
-                  <div key={b.id} className="bg-[#F4F6F9]/50 border border-[#E8EAEE] rounded-lg px-4 py-3 flex items-center justify-between opacity-60">
-                    <span className="text-sm text-[#666D7A]">Week {b.re_capture_week} capture</span>
-                    <span className="text-[12.5px] text-[#98A0AD]">
+                  <div key={b.id} className="bg-[#F2F2EF]/50 border border-[#E4E4E0] rounded-lg px-4 py-3 flex items-center justify-between opacity-60">
+                    <span className="text-sm text-[#6E747D]">Week {b.re_capture_week} capture</span>
+                    <span className="text-[12.5px] text-[#9CA2AB]">
                       {new Date(b.captured_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
                       {b.bodyweight_kg && ` · ${b.bodyweight_kg}kg`}
                     </span>
@@ -130,9 +130,9 @@ export default async function BaselinePage({ params }: { params: Promise<{ id: s
           )}
         </div>
       ) : (
-        <div className="text-center py-16 border-2 border-dashed border-[#E8EAEE] rounded-xl">
-          <p className="text-[#666D7A] mb-2">No baseline submitted yet.</p>
-          <p className="text-[#98A0AD] text-[12.5px]">Send the client their baseline link to begin.</p>
+        <div className="text-center py-16 border-2 border-dashed border-[#E4E4E0] rounded-xl">
+          <p className="text-[#6E747D] mb-2">No baseline submitted yet.</p>
+          <p className="text-[#9CA2AB] text-[12.5px]">Send the client their baseline link to begin.</p>
         </div>
       )}
     </div>

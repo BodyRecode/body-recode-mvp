@@ -104,11 +104,11 @@ export default async function TenantSettingsPage({
           <ReadOnlyCard title="Licence" fields={licenceFields(displayed.licence)} />
           <ReadOnlyCard title="Modality" fields={modalityFields(displayed.modality)} />
 
-          <div className="mt-6 p-4 rounded-xl border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] text-[13px] text-[#8A5A14] leading-relaxed">
+          <div className="mt-6 p-4 rounded-xl border border-[#EADCC4] bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] text-[13px] text-[#8A5514] leading-relaxed">
             <strong>Read-only:</strong> no tenant_config row exists for your coach_id yet. Values shown are the in-code fallback from
-            <code className="mx-1 bg-[#FAEFD8] px-1 py-0.5 rounded text-[12px]">src/config/tenant.ts</code>.
+            <code className="mx-1 bg-[#FDF8F1] px-1 py-0.5 rounded text-[12px]">src/config/tenant.ts</code>.
             To enable editing, ensure a row exists in the
-            <code className="mx-1 bg-[#FAEFD8] px-1 py-0.5 rounded text-[12px]">tenant_config</code>
+            <code className="mx-1 bg-[#FDF8F1] px-1 py-0.5 rounded text-[12px]">tenant_config</code>
             table with your coach_id.
           </div>
         </>
@@ -135,9 +135,9 @@ function StatusBanner({
     : { label: 'In-code only', tone: 'stone' as const, detail: 'NEXT_PUBLIC_TENANT_DB_ENABLED=false — flip to true to activate DB path' }
 
   const toneStyles = {
-    green: 'bg-[#EDF8F1] border-[#CAE7D5] text-[#0F4A2D]',
-    amber: 'bg-[#FDF6E9] border-[#F1DEB8] text-[#8A5A14]',
-    stone: 'bg-[#FBFCFD] border-[#E8EAEE] text-[#141821]',
+    green: 'bg-[#F2F2EF] border-[#EDEDEA] text-[#2B5E45]',
+    amber: 'bg-[#FDF8F1] border-[#EADCC4] text-[#8A5514]',
+    stone: 'bg-[#FAFAF8] border-[#E4E4E0] text-[#0F1115]',
   }[status.tone]
 
   return (
@@ -145,7 +145,7 @@ function StatusBanner({
       <div className="flex items-center gap-3 mb-1">
         <span className="text-[12px] font-medium">{status.label}</span>
         <span className="text-[11px] font-mono opacity-70">tenant_id: {tenantId}</span>
-        {canEdit && <span className="text-[11.5px] font-medium bg-[#DDE9FD] text-[#1056D6] px-1.5 py-0.5 rounded">Editable</span>}
+        {canEdit && <span className="text-[11.5px] font-medium bg-[#F2F2EF] text-[#000000] px-1.5 py-0.5 rounded">Editable</span>}
       </div>
       <p className="text-[13px] leading-relaxed">{status.detail}</p>
     </div>
@@ -161,15 +161,15 @@ function ReadOnlyCard({
 }) {
   return (
     <div className="mb-4 br-card overflow-hidden">
-      <div className="px-5 py-3 border-b border-[#E8EAEE] bg-[#FBFCFD]">
-        <h3 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">{title}</h3>
+      <div className="px-5 py-3 border-b border-[#E4E4E0] bg-[#FAFAF8]">
+        <h3 className="text-[13.5px] font-semibold text-[#0F1115] tracking-[-0.015em]">{title}</h3>
       </div>
-      <div className="divide-y divide-[#F4F6F9]">
+      <div className="divide-y divide-[#F2F2EF]">
         {fields.map((f) => (
           <div key={f.label} className="px-5 py-3 flex items-baseline gap-4">
-            <div className="w-52 shrink-0 text-[12px] text-[#666D7A] font-mono">{f.label}</div>
-            <div className="flex-1 text-[13px] text-[#141821] font-mono break-all">
-              {f.value || <span className="text-[#98A0AD] italic">(empty)</span>}
+            <div className="w-52 shrink-0 text-[12px] text-[#6E747D] font-mono">{f.label}</div>
+            <div className="flex-1 text-[13px] text-[#0F1115] font-mono break-all">
+              {f.value || <span className="text-[#9CA2AB] italic">(empty)</span>}
             </div>
           </div>
         ))}

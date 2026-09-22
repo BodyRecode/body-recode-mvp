@@ -37,9 +37,9 @@ export default async function CoachMealLogPage({ params }: { params: Promise<{ i
   if (!plan) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-8">
-        <Link href={`/dashboard/clients/${id}/nutrition`} className="text-[12.5px] font-semibold text-[#1B6DFC] hover:text-[#5390FF]">← Back to nutrition</Link>
-        <div className="mt-6 rounded-xl border border-[#E8EAEE] bg-white p-6 text-center">
-          <p className="text-sm text-[#666D7A]">No active nutrition plan for {firstName} yet. Publish a plan first.</p>
+        <Link href={`/dashboard/clients/${id}/nutrition`} className="text-[12.5px] font-semibold text-[#0F1115] hover:text-[#242932]">← Back to nutrition</Link>
+        <div className="mt-6 rounded-xl border border-[#E4E4E0] bg-white p-6 text-center">
+          <p className="text-sm text-[#6E747D]">No active nutrition plan for {firstName} yet. Publish a plan first.</p>
         </div>
       </div>
     )
@@ -75,10 +75,10 @@ export default async function CoachMealLogPage({ params }: { params: Promise<{ i
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
-      <Link href={backHref} className="text-[12.5px] font-semibold text-[#1B6DFC] hover:text-[#5390FF]">← Back to nutrition</Link>
-      <div className="mt-4 br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
-        <p className="text-[10px] font-medium text-[#98A0AD] mb-1">Log meals · {client.name}</p>
-        <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em] tracking-tight">{plan.plan_name}</h1>
+      <Link href={backHref} className="text-[12.5px] font-semibold text-[#0F1115] hover:text-[#242932]">← Back to nutrition</Link>
+      <div className="mt-4 br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E4E4E0] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
+        <p className="text-[10px] font-medium text-[#9CA2AB] mb-1">Log meals · {client.name}</p>
+        <h1 className="text-[22px] font-semibold text-[#0F1115] tracking-[-0.025em] tracking-tight">{plan.plan_name}</h1>
       </div>
       <MealLogClient
         token=""

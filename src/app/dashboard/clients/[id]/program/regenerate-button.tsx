@@ -118,12 +118,12 @@ export default function RegenerateButton({ programId }: { programId: string }) {
       <button
         onClick={regenerate}
         disabled={busy || isPending}
-        className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold px-3 py-1.5 border border-[#E8EAEE] text-[#141821] rounded-lg hover:border-[#CFD4DC] hover:text-[#141821] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+        className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold px-3 py-1.5 border border-[#E4E4E0] text-[#0F1115] rounded-lg hover:border-[#DCDCD7] hover:text-[#0F1115] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
       >
         {busy || isPending ? <Loader2 size={12} className="animate-spin" /> : <RefreshCcw size={12} />}
         {busy ? 'Regenerating...' : isPending ? 'Loading...' : 'Regenerate with guidance'}
       </button>
-      {error && <p className="text-[11px] text-[#A96A12]">{error}</p>}
+      {error && <p className="text-[11px] text-[#B06E1F]">{error}</p>}
     </div>
   )
 }

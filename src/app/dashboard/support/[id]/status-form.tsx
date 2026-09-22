@@ -7,10 +7,10 @@ import { STATUSES, STATUS_LABELS, statusAccent, type SupportStatus } from '@/lib
 const MONO = "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace"
 
 const STATUS_HEX: Record<ReturnType<typeof statusAccent>, string> = {
-  amber: '#B7791F',
-  blue: '#1B6DFC',
-  sage: '#7A8A6B',
-  neutral: '#666D7A',
+  amber: '#B06E1F',
+  blue: '#0F1115',
+  sage: '#2B5E45',
+  neutral: '#6E747D',
 }
 
 export default function TicketStatusForm({
@@ -50,8 +50,8 @@ export default function TicketStatusForm({
   }
 
   return (
-    <div className="border border-[#E8EAEE] bg-[#FAFBFD] rounded-xl p-6">
-      <p className="text-[11px] font-medium text-[#666D7A] mb-4" style={{ fontFamily: MONO }}>
+    <div className="border border-[#E4E4E0] bg-[#FAFAF8] rounded-xl p-6">
+      <p className="text-[11px] font-medium text-[#6E747D] mb-4" style={{ fontFamily: MONO }}>
         Update status
       </p>
 
@@ -67,8 +67,8 @@ export default function TicketStatusForm({
               className="text-[13px] font-semibold px-3 py-2 rounded-lg border transition-colors"
               style={{
                 background: active ? `${hex}14` : '#FFFFFF',
-                color: active ? hex : '#43474F',
-                borderColor: active ? hex : '#E8EAEE',
+                color: active ? hex : '#4A4F57',
+                borderColor: active ? hex : '#E4E4E0',
               }}
             >
               {STATUS_LABELS[s]}
@@ -77,7 +77,7 @@ export default function TicketStatusForm({
         })}
       </div>
 
-      <label htmlFor="status-note" className="block text-[11px] font-medium text-[#666D7A] mb-2" style={{ fontFamily: MONO }}>
+      <label htmlFor="status-note" className="block text-[11px] font-medium text-[#6E747D] mb-2" style={{ fontFamily: MONO }}>
         Note to filer (optional)
       </label>
       <textarea
@@ -87,23 +87,23 @@ export default function TicketStatusForm({
         maxLength={2000}
         rows={4}
         placeholder={`Shown to the filer verbatim. Use plain language, no jargon. Blank means no note.`}
-        className="w-full text-[13.5px] resize-none border border-[#E8EAEE] rounded-lg px-3 py-2 focus:outline-none focus:border-[#1B6DFC] bg-white mb-3"
+        className="w-full text-[13.5px] resize-none border border-[#E4E4E0] rounded-lg px-3 py-2 focus:outline-none focus:border-[#0F1115] bg-white mb-3"
       />
 
-      <label className="flex items-center gap-2 text-[13px] text-[#43474F] mb-4">
+      <label className="flex items-center gap-2 text-[13px] text-[#4A4F57] mb-4">
         <input type="checkbox" checked={notify} onChange={e => setNotify(e.target.checked)} disabled={filerIsKade} />
         Email the filer about this change
-        {filerIsKade && <span className="text-[11px] text-[#98A0AD]">(you filed this — no email sent)</span>}
+        {filerIsKade && <span className="text-[11px] text-[#9CA2AB]">(you filed this — no email sent)</span>}
       </label>
 
-      {error && <div className="text-[12.5px] text-[#C82626] mb-3">{error}</div>}
-      {saved && <div className="text-[12.5px] text-[#4D5A41] mb-3">Saved.</div>}
+      {error && <div className="text-[12.5px] text-[#8F2D2D] mb-3">{error}</div>}
+      {saved && <div className="text-[12.5px] text-[#2B5E45] mb-3">Saved.</div>}
 
       <button
         type="button"
         onClick={save}
         disabled={pending}
-        className="text-[13px] font-semibold px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1056D6] transition-colors disabled:opacity-40"
+        className="text-[13px] font-semibold px-4 py-2 bg-[#0F1115] text-white rounded-lg hover:bg-[#000000] transition-colors disabled:opacity-40"
       >
         {pending ? 'Saving…' : 'Save update'}
       </button>

@@ -163,28 +163,28 @@ export function DoctrineParametersSection({
 
   return (
     <div className="mb-4 br-card overflow-hidden">
-      <div className="px-5 py-3 border-b border-[#E8EAEE] bg-[#FBFCFD]">
-        <h3 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Doctrine parameters (Mode A+)</h3>
+      <div className="px-5 py-3 border-b border-[#E4E4E0] bg-[#FAFAF8]">
+        <h3 className="text-[13.5px] font-semibold text-[#0F1115] tracking-[-0.015em]">Doctrine parameters (Mode A+)</h3>
       </div>
       <div className="p-5">
-        <p className="text-[13px] text-[#666D7A] leading-relaxed mb-4">
+        <p className="text-[13px] text-[#6E747D] leading-relaxed mb-4">
           Middle ground between running BR&apos;s doctrine unchanged (Mode A) and injecting your own method (Mode B, reserved for later-stage). Tune tone, add banned phrases, substitute terminology, add coaching-style guidance. <strong>Hard Safety Floors cannot be tuned here</strong> — RRS clamps, Fat Map limits, injury contraindications, eligibility floors remain immutable per the Collective Partner Agreement.
         </p>
 
         {error && (
-          <div className="mb-3 p-3 rounded-lg border border-[#F5C9C9] bg-[#FDEDED] text-[12px] text-[#A11D1D]">{error}</div>
+          <div className="mb-3 p-3 rounded-lg border border-[#E8C9C9] bg-[#FBF1F1] text-[12px] text-[#8F2D2D]">{error}</div>
         )}
         {success && (
-          <div className="mb-3 p-3 rounded-lg border border-[#CAE7D5] bg-[#EDF8F1] text-[12px] text-[#125C37]">{success}</div>
+          <div className="mb-3 p-3 rounded-lg border border-[#EDEDEA] bg-[#F2F2EF] text-[12px] text-[#2B5E45]">{success}</div>
         )}
 
-        <div className="mb-5 p-4 rounded-lg border border-[#DDE9FD] bg-[rgba(27,109,252,0.08)]/40">
-          <div className="text-[11px] font-medium text-[#666D7A] mb-1">Start from a preset</div>
-          <p className="text-[11px] text-[#666D7A] leading-relaxed mb-2">Overwrites the current form values. Nothing is saved until you click Save; tune the loaded shape as you like.</p>
+        <div className="mb-5 p-4 rounded-lg border border-[#F2F2EF] bg-[rgba(27,109,252,0.08)]/40">
+          <div className="text-[11px] font-medium text-[#6E747D] mb-1">Start from a preset</div>
+          <p className="text-[11px] text-[#6E747D] leading-relaxed mb-2">Overwrites the current form values. Nothing is saved until you click Save; tune the loaded shape as you like.</p>
           <select
             defaultValue=""
             onChange={(e) => { applyPreset(e.target.value); e.target.value = '' }}
-            className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] bg-white focus:outline-none focus:ring-2 focus:ring-[#5390FF]"
+            className="w-full px-3 py-2 rounded-md border border-[#E4E4E0] text-[13px] bg-white focus:outline-none focus:ring-2 focus:ring-[#242932]"
             disabled={pending || previewPending}
           >
             <option value="" disabled>Choose a preset...</option>
@@ -204,7 +204,7 @@ export function DoctrineParametersSection({
               value={voiceTone}
               onChange={(e) => setVoiceTone(e.target.value)}
               placeholder="warm and grounded"
-              className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5390FF]"
+              className="w-full px-3 py-2 rounded-md border border-[#E4E4E0] text-[13px] focus:outline-none focus:ring-2 focus:ring-[#242932]"
               disabled={pending}
             />
           </Field>
@@ -218,7 +218,7 @@ export function DoctrineParametersSection({
               onChange={(e) => setBannedPhrasesText(e.target.value)}
               rows={4}
               placeholder="downregulate\nsympathetic dominance"
-              className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] font-mono focus:outline-none focus:ring-2 focus:ring-[#5390FF]"
+              className="w-full px-3 py-2 rounded-md border border-[#E4E4E0] text-[13px] font-mono focus:outline-none focus:ring-2 focus:ring-[#242932]"
               disabled={pending}
             />
           </Field>
@@ -232,7 +232,7 @@ export function DoctrineParametersSection({
               onChange={(e) => setTerminologyText(e.target.value)}
               rows={4}
               placeholder="winding down => settling\ndownregulate => soften"
-              className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] font-mono focus:outline-none focus:ring-2 focus:ring-[#5390FF]"
+              className="w-full px-3 py-2 rounded-md border border-[#E4E4E0] text-[13px] font-mono focus:outline-none focus:ring-2 focus:ring-[#242932]"
               disabled={pending}
             />
           </Field>
@@ -246,7 +246,7 @@ export function DoctrineParametersSection({
               onChange={(e) => setCheckinGuidance(e.target.value)}
               rows={3}
               placeholder="Emphasise breath awareness in every regulation cue. Never prescribe measurable metrics."
-              className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5390FF]"
+              className="w-full px-3 py-2 rounded-md border border-[#E4E4E0] text-[13px] focus:outline-none focus:ring-2 focus:ring-[#242932]"
               disabled={pending}
             />
           </Field>
@@ -260,7 +260,7 @@ export function DoctrineParametersSection({
               onChange={(e) => setProgramGuidance(e.target.value)}
               rows={3}
               placeholder="Prefer 4 sessions per week over 5. Always include one restorative session."
-              className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5390FF]"
+              className="w-full px-3 py-2 rounded-md border border-[#E4E4E0] text-[13px] focus:outline-none focus:ring-2 focus:ring-[#242932]"
               disabled={pending}
             />
           </Field>
@@ -274,20 +274,20 @@ export function DoctrineParametersSection({
               onChange={(e) => setNutritionGuidance(e.target.value)}
               rows={3}
               placeholder="Emphasise plant-forward proteins. Prefer whole-food-first substitutions."
-              className="w-full px-3 py-2 rounded-md border border-[#E8EAEE] text-[13px] focus:outline-none focus:ring-2 focus:ring-[#5390FF]"
+              className="w-full px-3 py-2 rounded-md border border-[#E4E4E0] text-[13px] focus:outline-none focus:ring-2 focus:ring-[#242932]"
               disabled={pending}
             />
           </Field>
 
-          <div className="flex items-center justify-between pt-2 border-t border-[#F4F6F9] gap-3 flex-wrap">
-            <p className="text-[11px] text-[#666D7A] italic flex-1 min-w-[220px]">
+          <div className="flex items-center justify-between pt-2 border-t border-[#F2F2EF] gap-3 flex-wrap">
+            <p className="text-[11px] text-[#6E747D] italic flex-1 min-w-[220px]">
               Cache invalidates on save. Generators read new values on their next call.
             </p>
             <button
               type="button"
               onClick={handlePreview}
               disabled={pending || previewPending || livePending}
-              className="px-4 py-2 rounded-md border border-[#E8EAEE] bg-white text-[#141821] text-[13px] font-semibold hover:bg-[#FBFCFD] disabled:opacity-40"
+              className="px-4 py-2 rounded-md border border-[#E4E4E0] bg-white text-[#0F1115] text-[13px] font-semibold hover:bg-[#FAFAF8] disabled:opacity-40"
               title="Deterministic. Free. Fast. Renders the exact system-prompt block + shows terminology substitutions on a sample sentence."
             >
               {previewPending ? 'Previewing…' : 'Preview'}
@@ -296,7 +296,7 @@ export function DoctrineParametersSection({
               type="button"
               onClick={handleLivePreview}
               disabled={pending || previewPending || livePending}
-              className="px-4 py-2 rounded-md border border-[#E8EAEE] bg-white text-[#141821] text-[13px] font-semibold hover:bg-[#FBFCFD] disabled:opacity-40"
+              className="px-4 py-2 rounded-md border border-[#E4E4E0] bg-white text-[#0F1115] text-[13px] font-semibold hover:bg-[#FAFAF8] disabled:opacity-40"
               title="One real Anthropic call using your current tuning applied to a fixed stub check-in. Costs ~$0.001/click."
             >
               {livePending ? 'Generating…' : 'Generate a real sample'}
@@ -304,7 +304,7 @@ export function DoctrineParametersSection({
             <button
               type="submit"
               disabled={pending || previewPending || livePending}
-              className="px-4 py-2 rounded-md bg-[#1560E0] text-white text-[13px] font-semibold hover:bg-[#1056D6] disabled:opacity-40"
+              className="px-4 py-2 rounded-md bg-[#000000] text-white text-[13px] font-semibold hover:bg-[#000000] disabled:opacity-40"
             >
               {pending ? 'Saving…' : 'Save doctrine parameters'}
             </button>
@@ -322,66 +322,66 @@ function LivePreviewPanel({ live, onDismiss }: { live: LivePreviewResult; onDism
   const platformClean = live.meta.platformBannedHits.length === 0
   const partnerClean = live.meta.partnerBannedHits.length === 0
   return (
-    <div className="mt-5 border border-[#CAE7D5] rounded-xl bg-[#EDF8F1]/30 overflow-hidden">
-      <div className="px-5 py-3 border-b border-[#CAE7D5] bg-[#EDF8F1] flex items-center justify-between">
+    <div className="mt-5 border border-[#EDEDEA] rounded-xl bg-[#F2F2EF]/30 overflow-hidden">
+      <div className="px-5 py-3 border-b border-[#EDEDEA] bg-[#F2F2EF] flex items-center justify-between">
         <h4 className="text-[12px] font-medium text-emerald-900">Live sample · one Anthropic call</h4>
         <button
           type="button"
           onClick={onDismiss}
-          className="text-[11px] text-[#177245] hover:text-emerald-900 underline"
+          className="text-[11px] text-[#2B5E45] hover:text-emerald-900 underline"
         >
           Dismiss
         </button>
       </div>
       <div className="p-5 space-y-5">
-        <div className="grid gap-2 md:grid-cols-4 text-[11px] text-[#666D7A]">
+        <div className="grid gap-2 md:grid-cols-4 text-[11px] text-[#6E747D]">
           <div>Model · <span className="font-mono">{live.meta.modelId.replace(/-\d{8}$/, '')}</span></div>
           <div>Latency · <span className="font-mono">{live.meta.latencyMs} ms</span></div>
           <div>Tokens in · <span className="font-mono">{live.meta.inputTokens ?? '?'}</span></div>
           <div>Tokens out · <span className="font-mono">{live.meta.outputTokens ?? '?'}</span></div>
         </div>
 
-        <div className="p-4 rounded-md border border-[#E8EAEE] bg-white">
-          <div className="text-[10px] font-medium text-[#666D7A] mb-2">Interpretation</div>
-          <p className="text-[13px] text-[#141821] leading-relaxed">{live.interpretation}</p>
+        <div className="p-4 rounded-md border border-[#E4E4E0] bg-white">
+          <div className="text-[10px] font-medium text-[#6E747D] mb-2">Interpretation</div>
+          <p className="text-[13px] text-[#0F1115] leading-relaxed">{live.interpretation}</p>
         </div>
-        <div className="p-4 rounded-md border border-[#E8EAEE] bg-white">
-          <div className="text-[10px] font-medium text-[#666D7A] mb-2">Reframe</div>
-          <p className="text-[13px] text-[#141821] leading-relaxed">{live.reframe}</p>
+        <div className="p-4 rounded-md border border-[#E4E4E0] bg-white">
+          <div className="text-[10px] font-medium text-[#6E747D] mb-2">Reframe</div>
+          <p className="text-[13px] text-[#0F1115] leading-relaxed">{live.reframe}</p>
         </div>
-        <div className="p-4 rounded-md border border-[#E8EAEE] bg-white">
-          <div className="text-[10px] font-medium text-[#666D7A] mb-2">Next focus</div>
-          <p className="text-[13px] text-[#141821] leading-relaxed">{live.next_focus}</p>
+        <div className="p-4 rounded-md border border-[#E4E4E0] bg-white">
+          <div className="text-[10px] font-medium text-[#6E747D] mb-2">Next focus</div>
+          <p className="text-[13px] text-[#0F1115] leading-relaxed">{live.next_focus}</p>
         </div>
 
         <div className="grid gap-3 md:grid-cols-3">
-          <div className={`p-3 rounded-md border ${platformClean ? 'border-[#CAE7D5] bg-[#EDF8F1]/50' : 'border-[#F5C9C9] bg-[#FDEDED]'}`}>
-            <div className="text-[11.5px] font-medium mb-1" style={{ color: platformClean ? '#047857' : '#b91c1c' }}>Platform audit</div>
+          <div className={`p-3 rounded-md border ${platformClean ? 'border-[#EDEDEA] bg-[#F2F2EF]/50' : 'border-[#E8C9C9] bg-[#FBF1F1]'}`}>
+            <div className="text-[11.5px] font-medium mb-1" style={{ color: platformClean ? '#2B5E45' : '#8F2D2D' }}>Platform audit</div>
             {platformClean ? (
               <div className="text-[11px] text-emerald-800">Clean · no platform-banned terms leaked</div>
             ) : (
-              <div className="text-[11px] text-[#A11D1D]">Leaked: {live.meta.platformBannedHits.join(', ')}</div>
+              <div className="text-[11px] text-[#8F2D2D]">Leaked: {live.meta.platformBannedHits.join(', ')}</div>
             )}
           </div>
-          <div className={`p-3 rounded-md border ${partnerClean ? 'border-[#CAE7D5] bg-[#EDF8F1]/50' : 'border-[#F5C9C9] bg-[#FDEDED]'}`}>
-            <div className="text-[11.5px] font-medium mb-1" style={{ color: partnerClean ? '#047857' : '#b91c1c' }}>Partner audit</div>
+          <div className={`p-3 rounded-md border ${partnerClean ? 'border-[#EDEDEA] bg-[#F2F2EF]/50' : 'border-[#E8C9C9] bg-[#FBF1F1]'}`}>
+            <div className="text-[11.5px] font-medium mb-1" style={{ color: partnerClean ? '#2B5E45' : '#8F2D2D' }}>Partner audit</div>
             {partnerClean ? (
               <div className="text-[11px] text-emerald-800">Clean · none of your banned phrases fired</div>
             ) : (
-              <div className="text-[11px] text-[#A11D1D]">Fired: {live.meta.partnerBannedHits.join(', ')}</div>
+              <div className="text-[11px] text-[#8F2D2D]">Fired: {live.meta.partnerBannedHits.join(', ')}</div>
             )}
           </div>
-          <div className="p-3 rounded-md border border-[#E8EAEE] bg-white">
-            <div className="text-[10px] font-medium text-[#666D7A] mb-1">Substitutions applied</div>
+          <div className="p-3 rounded-md border border-[#E4E4E0] bg-white">
+            <div className="text-[10px] font-medium text-[#6E747D] mb-1">Substitutions applied</div>
             {live.meta.terminologySubsApplied.length === 0 ? (
-              <div className="text-[11px] text-[#666D7A] italic">None matched the output</div>
+              <div className="text-[11px] text-[#6E747D] italic">None matched the output</div>
             ) : (
-              <div className="text-[11px] text-[#141821] font-mono">{live.meta.terminologySubsApplied.join('  ·  ')}</div>
+              <div className="text-[11px] text-[#0F1115] font-mono">{live.meta.terminologySubsApplied.join('  ·  ')}</div>
             )}
           </div>
         </div>
 
-        <p className="text-[10px] text-[#666D7A] italic pt-2 border-t border-[#F4F6F9]">
+        <p className="text-[10px] text-[#6E747D] italic pt-2 border-t border-[#F2F2EF]">
           Sample based on a fixed stub check-in (Sarah, Week 3). Comparable across previews so you can iterate on tuning. Real check-ins use the full generator with retry-on-leak.
         </p>
       </div>
@@ -397,21 +397,21 @@ function PreviewPanel({
   onDismiss: () => void
 }) {
   return (
-    <div className="mt-5 border border-[#B5CFFC] rounded-xl bg-[rgba(27,109,252,0.08)]/30 overflow-hidden">
-      <div className="px-5 py-3 border-b border-[#B5CFFC] bg-[rgba(27,109,252,0.08)] flex items-center justify-between">
-        <h4 className="text-[12px] font-medium text-[#0A46B2]">Preview (deterministic - no LLM call)</h4>
+    <div className="mt-5 border border-[#DCDCD7] rounded-xl bg-[rgba(27,109,252,0.08)]/30 overflow-hidden">
+      <div className="px-5 py-3 border-b border-[#DCDCD7] bg-[rgba(27,109,252,0.08)] flex items-center justify-between">
+        <h4 className="text-[12px] font-medium text-[#000000]">Preview (deterministic - no LLM call)</h4>
         <button
           type="button"
           onClick={onDismiss}
-          className="text-[11px] text-[#1056D6] hover:text-[#0A46B2] underline"
+          className="text-[11px] text-[#000000] hover:text-[#000000] underline"
         >
           Dismiss
         </button>
       </div>
       <div className="p-5 space-y-5">
         <div>
-          <div className="text-[11px] font-medium text-[#666D7A] mb-1">Summary</div>
-          <div className="text-[12px] text-[#141821] flex flex-wrap gap-2">
+          <div className="text-[11px] font-medium text-[#6E747D] mb-1">Summary</div>
+          <div className="text-[12px] text-[#0F1115] flex flex-wrap gap-2">
             <SummaryChip on={preview.summary.hasVoiceTone} label="voice tone" />
             <SummaryChip on={preview.summary.bannedPhraseCount > 0} label={`${preview.summary.bannedPhraseCount} banned phrase${preview.summary.bannedPhraseCount === 1 ? '' : 's'}`} />
             <SummaryChip on={preview.summary.substitutionCount > 0} label={`${preview.summary.substitutionCount} substitution${preview.summary.substitutionCount === 1 ? '' : 's'}`} />
@@ -420,32 +420,32 @@ function PreviewPanel({
         </div>
 
         <div>
-          <div className="text-[11px] font-medium text-[#666D7A] mb-1">What gets added to each generator&apos;s system prompt</div>
+          <div className="text-[11px] font-medium text-[#6E747D] mb-1">What gets added to each generator&apos;s system prompt</div>
           <div className="space-y-2">
             {preview.systemPromptBlocks.map((block) => (
-              <div key={block.generator} className="border border-[#E8EAEE] rounded-md bg-white">
-                <div className="px-3 py-1.5 border-b border-[#F4F6F9] text-[11px] font-medium text-[#666D7A]">{block.generator}</div>
-                <pre className="p-3 text-[11px] text-[#141821] whitespace-pre-wrap font-mono leading-relaxed">{block.text}</pre>
+              <div key={block.generator} className="border border-[#E4E4E0] rounded-md bg-white">
+                <div className="px-3 py-1.5 border-b border-[#F2F2EF] text-[11px] font-medium text-[#6E747D]">{block.generator}</div>
+                <pre className="p-3 text-[11px] text-[#0F1115] whitespace-pre-wrap font-mono leading-relaxed">{block.text}</pre>
               </div>
             ))}
           </div>
         </div>
 
         <div>
-          <div className="text-[11px] font-medium text-[#666D7A] mb-1">Terminology substitution demo</div>
+          <div className="text-[11px] font-medium text-[#6E747D] mb-1">Terminology substitution demo</div>
           {preview.substitutionDemo.substitutionsApplied.length === 0 ? (
-            <p className="text-[12px] text-[#666D7A] italic">No substitutions matched the demo sentence.</p>
+            <p className="text-[12px] text-[#6E747D] italic">No substitutions matched the demo sentence.</p>
           ) : (
             <>
-              <p className="text-[11px] text-[#666D7A] mb-1">Applied: {preview.substitutionDemo.substitutionsApplied.join(', ')}</p>
+              <p className="text-[11px] text-[#6E747D] mb-1">Applied: {preview.substitutionDemo.substitutionsApplied.join(', ')}</p>
               <div className="grid gap-2 md:grid-cols-2">
-                <div className="p-3 rounded-md border border-[#E8EAEE] bg-white">
-                  <div className="text-[10px] font-medium text-[#666D7A] mb-1">Before</div>
-                  <p className="text-[12px] text-[#141821] leading-relaxed">{preview.substitutionDemo.before}</p>
+                <div className="p-3 rounded-md border border-[#E4E4E0] bg-white">
+                  <div className="text-[10px] font-medium text-[#6E747D] mb-1">Before</div>
+                  <p className="text-[12px] text-[#0F1115] leading-relaxed">{preview.substitutionDemo.before}</p>
                 </div>
-                <div className="p-3 rounded-md border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)]/60">
-                  <div className="text-[10px] font-medium text-[#1056D6] mb-1">After (post-generation rewrite)</div>
-                  <p className="text-[12px] text-[#141821] leading-relaxed">{preview.substitutionDemo.after}</p>
+                <div className="p-3 rounded-md border border-[#DCDCD7] bg-[rgba(27,109,252,0.08)]/60">
+                  <div className="text-[10px] font-medium text-[#000000] mb-1">After (post-generation rewrite)</div>
+                  <p className="text-[12px] text-[#0F1115] leading-relaxed">{preview.substitutionDemo.after}</p>
                 </div>
               </div>
             </>
@@ -453,17 +453,17 @@ function PreviewPanel({
         </div>
 
         <div>
-          <div className="text-[11px] font-medium text-[#666D7A] mb-1">Banned phrase demo</div>
-          <p className="text-[11px] text-[#666D7A] mb-1">If a draft contained the sentence below, these phrases would fire the audit + trigger regeneration:</p>
-          <div className="p-3 rounded-md border border-[#E8EAEE] bg-white mb-2">
-            <p className="text-[12px] text-[#141821] leading-relaxed italic">&quot;{preview.bannedPhraseDemo.sample}&quot;</p>
+          <div className="text-[11px] font-medium text-[#6E747D] mb-1">Banned phrase demo</div>
+          <p className="text-[11px] text-[#6E747D] mb-1">If a draft contained the sentence below, these phrases would fire the audit + trigger regeneration:</p>
+          <div className="p-3 rounded-md border border-[#E4E4E0] bg-white mb-2">
+            <p className="text-[12px] text-[#0F1115] leading-relaxed italic">&quot;{preview.bannedPhraseDemo.sample}&quot;</p>
           </div>
           {preview.bannedPhraseDemo.hits.length === 0 ? (
-            <p className="text-[12px] text-[#666D7A] italic">No configured banned phrases matched the demo sentence. Add phrases above to see hits.</p>
+            <p className="text-[12px] text-[#6E747D] italic">No configured banned phrases matched the demo sentence. Add phrases above to see hits.</p>
           ) : (
             <div className="flex flex-wrap gap-1.5">
               {preview.bannedPhraseDemo.hits.map((hit, i) => (
-                <span key={i} className="px-2 py-0.5 rounded-md bg-[#FBDCDC] text-[#A11D1D] text-[11px] font-mono">{hit}</span>
+                <span key={i} className="px-2 py-0.5 rounded-md bg-[#FBF1F1] text-[#8F2D2D] text-[11px] font-mono">{hit}</span>
               ))}
             </div>
           )}
@@ -478,8 +478,8 @@ function SummaryChip({ on, label }: { on: boolean; label: string }) {
     <span
       className={
         on
-          ? 'px-2 py-0.5 rounded-md bg-[#DDE9FD] text-[#0B4FCB] text-[11px] font-semibold'
-          : 'px-2 py-0.5 rounded-md bg-[#F4F6F9] text-[#666D7A] text-[11px]'
+          ? 'px-2 py-0.5 rounded-md bg-[#F2F2EF] text-[#000000] text-[11px] font-semibold'
+          : 'px-2 py-0.5 rounded-md bg-[#F2F2EF] text-[#6E747D] text-[11px]'
       }
     >
       {label}
@@ -490,9 +490,9 @@ function SummaryChip({ on, label }: { on: boolean; label: string }) {
 function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
   return (
     <div>
-      <div className="text-[11px] font-medium text-[#666D7A] mb-1">{label}</div>
+      <div className="text-[11px] font-medium text-[#6E747D] mb-1">{label}</div>
       {children}
-      {hint && <p className="text-[11px] text-[#666D7A] leading-relaxed mt-1.5">{hint}</p>}
+      {hint && <p className="text-[11px] text-[#6E747D] leading-relaxed mt-1.5">{hint}</p>}
     </div>
   )
 }

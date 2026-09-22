@@ -77,21 +77,21 @@ export function EditableSection({
 
   return (
     <div className="mb-4 br-card overflow-hidden">
-      <div className="px-5 py-3 border-b border-[#E8EAEE] bg-[#FBFCFD] flex items-center justify-between gap-3">
-        <h3 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">{title}</h3>
+      <div className="px-5 py-3 border-b border-[#E4E4E0] bg-[#FAFAF8] flex items-center justify-between gap-3">
+        <h3 className="text-[13.5px] font-semibold text-[#0F1115] tracking-[-0.015em]">{title}</h3>
         {editing ? (
           <div className="flex items-center gap-2">
             <button
               onClick={cancel}
               disabled={saving}
-              className="text-[12px] px-3 py-1 rounded-md text-[#666D7A] hover:bg-[#F4F6F9] disabled:opacity-50"
+              className="text-[12px] px-3 py-1 rounded-md text-[#6E747D] hover:bg-[#F2F2EF] disabled:opacity-50"
             >
               Cancel
             </button>
             <button
               onClick={save}
               disabled={saving || !dirty}
-              className="text-[12px] px-3 py-1 rounded-md bg-[#1B6DFC] text-white font-semibold hover:bg-[#1560E0] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="text-[12px] px-3 py-1 rounded-md bg-[#0F1115] text-white font-semibold hover:bg-[#000000] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {saving ? 'Saving…' : 'Save'}
             </button>
@@ -99,7 +99,7 @@ export function EditableSection({
         ) : (
           <button
             onClick={() => setEditing(true)}
-            className="text-[12px] px-3 py-1 rounded-md text-[#1560E0] hover:bg-[rgba(27,109,252,0.06)] font-semibold"
+            className="text-[12px] px-3 py-1 rounded-md text-[#000000] hover:bg-[rgba(27,109,252,0.06)] font-semibold"
           >
             Edit
           </button>
@@ -107,12 +107,12 @@ export function EditableSection({
       </div>
 
       {error && (
-        <div className="px-5 py-2 bg-[#FDEDED] border-b border-[#F5C9C9] text-[#8A1919] text-[12px]">
+        <div className="px-5 py-2 bg-[#FBF1F1] border-b border-[#E8C9C9] text-[#8A1919] text-[12px]">
           Error: {error}
         </div>
       )}
 
-      <div className="divide-y divide-[#F4F6F9]">
+      <div className="divide-y divide-[#F2F2EF]">
         {fields.map((f) => {
           const isNumeric = numericKeys.has(f.label)
           const isBool = booleanKeys.has(f.label)
@@ -120,14 +120,14 @@ export function EditableSection({
           const inputType = isColor ? 'color' : isNumeric ? 'number' : 'text'
           return (
             <div key={f.label} className="px-5 py-2.5 flex items-center gap-4">
-              <div className="w-52 shrink-0 text-[12px] text-[#666D7A] font-mono">{f.label}</div>
+              <div className="w-52 shrink-0 text-[12px] text-[#6E747D] font-mono">{f.label}</div>
               <div className="flex-1">
                 {editing ? (
                   isBool ? (
                     <select
                       value={values[f.label]}
                       onChange={(e) => setValues({ ...values, [f.label]: e.target.value })}
-                      className="w-full px-2 py-1 text-[13px] font-mono border border-[#E8EAEE] rounded focus:outline-none focus:border-[#1B6DFC]"
+                      className="w-full px-2 py-1 text-[13px] font-mono border border-[#E4E4E0] rounded focus:outline-none focus:border-[#0F1115]"
                     >
                       <option value="true">true</option>
                       <option value="false">false</option>
@@ -137,12 +137,12 @@ export function EditableSection({
                       type={inputType}
                       value={values[f.label]}
                       onChange={(e) => setValues({ ...values, [f.label]: e.target.value })}
-                      className={`px-2 py-1 text-[13px] font-mono border border-[#E8EAEE] rounded focus:outline-none focus:border-[#1B6DFC] ${isColor ? 'w-24 h-8 p-1' : 'w-full'}`}
+                      className={`px-2 py-1 text-[13px] font-mono border border-[#E4E4E0] rounded focus:outline-none focus:border-[#0F1115] ${isColor ? 'w-24 h-8 p-1' : 'w-full'}`}
                     />
                   )
                 ) : (
-                  <div className="text-[13px] text-[#141821] font-mono break-all">
-                    {f.value || <span className="text-[#98A0AD] italic">(empty)</span>}
+                  <div className="text-[13px] text-[#0F1115] font-mono break-all">
+                    {f.value || <span className="text-[#9CA2AB] italic">(empty)</span>}
                   </div>
                 )}
               </div>

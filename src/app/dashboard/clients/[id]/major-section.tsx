@@ -47,10 +47,10 @@ export default function MajorSection({
           aria-expanded={open}
         >
           <span
-            className="w-[22px] h-[22px] rounded-md shrink-0 flex items-center justify-center text-[#1B6DFC] transition-colors group-hover:text-[#1056D6]"
+            className="w-[22px] h-[22px] rounded-md shrink-0 flex items-center justify-center text-[#0F1115] transition-colors group-hover:text-[#000000]"
             style={{
               background: 'rgba(27,109,252,0.08)',
-              boxShadow: 'inset 0 0 0 1px #B5CFFC',
+              boxShadow: 'inset 0 0 0 1px #DCDCD7',
             }}
             aria-hidden
           >
@@ -60,12 +60,12 @@ export default function MajorSection({
               className={`transition-transform duration-150 ${open ? '' : '-rotate-90'}`}
             />
           </span>
-          <h2 className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em] truncate">
+          <h2 className="text-[13.5px] font-semibold text-[#0F1115] tracking-[-0.015em] truncate">
             {title}
-            {subtitle && <span className="text-[#98A0AD] font-normal"> {subtitle}</span>}
+            {subtitle && <span className="text-[#9CA2AB] font-normal"> {subtitle}</span>}
           </h2>
           {attentionLabel && !open && (
-            <span className="shrink-0 inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-[3px] rounded-full border border-[#F1DEB8] text-[#A96A12] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] shadow-[0_1px_2px_rgba(16,24,40,0.05)]">
+            <span className="shrink-0 inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-[3px] rounded-full border border-[#EADCC4] text-[#B06E1F] bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] shadow-[0_1px_2px_rgba(16,24,40,0.05)]">
               <span className="w-[5px] h-[5px] rounded-full bg-current" aria-hidden />
               {attentionLabel}
             </span>

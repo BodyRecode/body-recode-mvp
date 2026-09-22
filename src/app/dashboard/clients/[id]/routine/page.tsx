@@ -37,13 +37,13 @@ export default async function CoachRoutineEditorPage({
   return (
     <div className="max-w-[860px]">
       <PageHeader
-        eyebrow={<Link href={`/dashboard/clients/${id}`} className="hover:text-[#1B6DFC] transition-colors">{client.name}</Link>}
+        eyebrow={<Link href={`/dashboard/clients/${id}`} className="hover:text-[#0F1115] transition-colors">{client.name}</Link>}
         title="Morning Reset + Evening Rhythm"
         subtitle={`Generate a personalised routine from ${client.name}'s data. Review the draft, tweak any step, then publish. The client sees only the live version.`}
       />
       <ClientPageNav clientId={id} />
       {!hasCustomisations && !hasDraft && (
-        <p className="text-[12.5px] text-[#98A0AD] -mt-2 mb-6">
+        <p className="text-[12.5px] text-[#9CA2AB] -mt-2 mb-6">
           No live routine and no draft yet. Click Generate to create one from client data.
         </p>
       )}
@@ -58,8 +58,8 @@ export default async function CoachRoutineEditorPage({
       />
 
       <div className="mt-10 mb-4 flex items-center gap-3">
-        <h2 className="text-lg font-semibold text-[#141821]">Live routine</h2>
-        <span className="text-[10px] text-[#666D7A]">What the client sees on their portal</span>
+        <h2 className="text-lg font-semibold text-[#0F1115]">Live routine</h2>
+        <span className="text-[10px] text-[#6E747D]">What the client sees on their portal</span>
       </div>
 
       <RoutineEditor

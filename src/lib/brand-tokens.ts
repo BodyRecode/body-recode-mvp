@@ -131,9 +131,16 @@ export const BRAND = {
   /* No reading yet. Absence, not a verdict, so it is a neutral rather than
      a fifth meaning colour. */
   noReading: '#9CA2AB',
+  /* Remediation as a panel or a button on paper rather than as a dot. The
+     caution button is the only place a meaning colour becomes a control, and
+     it is deliberate: it is the button you should hesitate over. */
+  remediationWash: '#FDF8F1',
+  remediationWashLine: '#EADCC4',
+  remediationPressed: '#8A5514',
   /* Attention as a panel on paper rather than as a dot. The only tinted
      surfaces in the product, and they exist because an error has to read as
      an error without shouting. */
+  attentionPressed: '#8A1919',
   attentionWash: '#FBF1F1',
   attentionWashLine: '#E8C9C9',
 

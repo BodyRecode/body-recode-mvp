@@ -30,14 +30,14 @@ const READINESS_COLOUR: Record<string, string> = Object.fromEntries(
 // Patterns are a different axis from readiness and must never borrow the
 // readiness colours, or a coach reads a pattern chart as a verdict. Neutral
 // steps rather than hues: this chart shows composition, which is not a state.
-const PATTERN_COLOUR = ['#0F1115', '#3A4049', '#6E747D', '#9CA2AB', '#C7CBD1']
+const PATTERN_COLOUR = ['#0F1115', '#4A4F57', '#6E747D', '#9CA2AB', '#DCDCD7']
 
 function Bar({ rows, colours }: { rows: { label: string; count: number }[]; colours: (l: string, i: number) => string }) {
   const total = rows.reduce((n, r) => n + r.count, 0)
-  if (total === 0) return <p className="text-[12.5px] text-[#98A0AD]">Nothing read yet.</p>
+  if (total === 0) return <p className="text-[12.5px] text-[#9CA2AB]">Nothing read yet.</p>
   return (
     <>
-      <div className="flex h-2.5 rounded-full overflow-hidden bg-[#1F242E]">
+      <div className="flex h-2.5 rounded-full overflow-hidden bg-[#1F242C]">
         {rows.map((r, i) => (
           <div key={r.label} style={{ width: `${(r.count / total) * 100}%`, background: colours(r.label, i) }} />
         ))}
@@ -46,9 +46,9 @@ function Bar({ rows, colours }: { rows: { label: string; count: number }[]; colo
         {rows.map((r, i) => (
           <div key={r.label} className="flex items-center gap-2 text-[12.5px]">
             <span className="w-2 h-2 rounded-full shrink-0" style={{ background: colours(r.label, i) }} />
-            <span className="text-[#C7CCD4] flex-1 truncate">{r.label}</span>
+            <span className="text-[#C2C6CC] flex-1 truncate">{r.label}</span>
             <span className="text-white font-semibold tabular-nums">{r.count}</span>
-            <span className="text-[#6B7280] tabular-nums w-9 text-right">{Math.round((r.count / total) * 100)}%</span>
+            <span className="text-[#676D76] tabular-nums w-9 text-right">{Math.round((r.count / total) * 100)}%</span>
           </div>
         ))}
       </div>
@@ -58,8 +58,8 @@ function Bar({ rows, colours }: { rows: { label: string; count: number }[]; colo
 
 function Panel({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-[#242A35] bg-[#12161D] p-5">
-      <p className="text-[10px] font-medium tracking-[0.12em] uppercase text-[#6B7280] mb-3">{label}</p>
+    <div className="rounded-2xl border border-[#2A2F39] bg-[#14171D] p-5">
+      <p className="text-[10px] font-medium tracking-[0.12em] uppercase text-[#676D76] mb-3">{label}</p>
       {children}
     </div>
   )
@@ -67,20 +67,20 @@ function Panel({ label, children }: { label: string; children: React.ReactNode }
 
 function Standing({ c }: { c: ClientStanding }) {
   const tone =
-    c.attendance === 'quiet' ? { dot: '#D96A6A', word: 'Gone quiet', cls: 'text-[#E88C8C]' }
-    : c.attendance === 'slipping' ? { dot: '#D9A34A', word: 'Slipping', cls: 'text-[#E3B871]' }
-    : c.attendance === 'too_new' ? { dot: '#6B7280', word: 'Too new', cls: 'text-[#8A909B]' }
-    : { dot: '#4FA97A', word: 'Steady', cls: 'text-[#79C79C]' }
+    c.attendance === 'quiet' ? { dot: '#D4817E', word: 'Gone quiet', cls: 'text-[#D4817E]' }
+    : c.attendance === 'slipping' ? { dot: '#E0A254', word: 'Slipping', cls: 'text-[#E0A254]' }
+    : c.attendance === 'too_new' ? { dot: '#676D76', word: 'Too new', cls: 'text-[#8A9099]' }
+    : { dot: '#6FA98B', word: 'Steady', cls: 'text-[#6FA98B]' }
 
   return (
     <Link
       href={`/dashboard/clients/${c.id}`}
-      className="flex items-center gap-3 px-4 py-3 border-b border-[#1C212A] last:border-b-0 hover:bg-[#161B23] transition-colors"
+      className="flex items-center gap-3 px-4 py-3 border-b border-[#1F242C] last:border-b-0 hover:bg-[#1A1E26] transition-colors"
     >
       <span className="w-2 h-2 rounded-full shrink-0" style={{ background: tone.dot }} />
       <div className="min-w-0 flex-1">
         <p className="text-[13.5px] text-white truncate">{c.name}</p>
-        <p className="text-[12px] text-[#8A909B] truncate">{c.because}</p>
+        <p className="text-[12px] text-[#8A9099] truncate">{c.because}</p>
       </div>
       <span className={`text-[11.5px] font-medium shrink-0 ${tone.cls}`}>{tone.word}</span>
     </Link>
@@ -103,24 +103,24 @@ export default async function PracticePage() {
         subtitle="Who is slipping away, and what your book is actually made of. Both come out of the reads, so neither needs you to record anything."
       />
 
-      <div className="rounded-3xl bg-[#0C1015] p-5 sm:p-6 mt-2">
+      <div className="rounded-3xl bg-[#0B0D10] p-5 sm:p-6 mt-2">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
           <Panel label="Active clients">
             <p className="text-[34px] leading-none font-semibold text-white tabular-nums">{view.totalActive}</p>
           </Panel>
           <Panel label="Steady">
-            <p className="text-[34px] leading-none font-semibold text-[#79C79C] tabular-nums">{steady}</p>
-            <p className="text-[12px] text-[#6B7280] mt-2">answering most weeks</p>
+            <p className="text-[34px] leading-none font-semibold text-[#6FA98B] tabular-nums">{steady}</p>
+            <p className="text-[12px] text-[#676D76] mt-2">answering most weeks</p>
           </Panel>
           <Panel label="Need you">
-            <p className={`text-[34px] leading-none font-semibold tabular-nums ${needsYou > 0 ? 'text-[#E3B871]' : 'text-white'}`}>{needsYou}</p>
-            <p className="text-[12px] text-[#6B7280] mt-2">slipping or gone quiet</p>
+            <p className={`text-[34px] leading-none font-semibold tabular-nums ${needsYou > 0 ? 'text-[#E0A254]' : 'text-white'}`}>{needsYou}</p>
+            <p className="text-[12px] text-[#676D76] mt-2">slipping or gone quiet</p>
           </Panel>
           <Panel label="Read but not opened">
             <p className="text-[34px] leading-none font-semibold text-white tabular-nums">
               {view.clients.filter(c => c.openedLastRead === false).length}
             </p>
-            <p className="text-[12px] text-[#6B7280] mt-2">sent, never read</p>
+            <p className="text-[12px] text-[#676D76] mt-2">sent, never read</p>
           </Panel>
         </div>
 
@@ -133,18 +133,18 @@ export default async function PracticePage() {
           </Panel>
         </div>
 
-        <div className="rounded-2xl border border-[#242A35] bg-[#12161D] overflow-hidden">
-          <div className="px-4 py-3 border-b border-[#1C212A]">
-            <p className="text-[10px] font-medium tracking-[0.12em] uppercase text-[#6B7280]">Everyone, quietest first</p>
+        <div className="rounded-2xl border border-[#2A2F39] bg-[#14171D] overflow-hidden">
+          <div className="px-4 py-3 border-b border-[#1F242C]">
+            <p className="text-[10px] font-medium tracking-[0.12em] uppercase text-[#676D76]">Everyone, quietest first</p>
           </div>
           {view.clients.length === 0 ? (
-            <p className="px-4 py-6 text-[13px] text-[#8A909B]">No active clients yet.</p>
+            <p className="px-4 py-6 text-[13px] text-[#8A9099]">No active clients yet.</p>
           ) : (
             view.clients.map(c => <Standing key={c.id} c={c} />)
           )}
         </div>
 
-        <p className="text-[12px] text-[#6B7280] mt-4 leading-relaxed">
+        <p className="text-[12px] text-[#676D76] mt-4 leading-relaxed">
           Attendance is what a client has actually done: whether they answered, and whether they opened
           their read. It is never a judgement about their body, and a client is left alone for their first
           three weeks because there is nothing yet to read into.

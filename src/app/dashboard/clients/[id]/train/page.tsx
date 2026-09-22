@@ -47,9 +47,9 @@ export default async function CoachTrainIndexPage({ params }: { params: Promise<
   if (!program) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-8">
-        <Link href={`/dashboard/clients/${id}`} className="text-[12.5px] font-semibold text-[#1B6DFC] hover:text-[#5390FF]">← Back to {firstName}</Link>
-        <div className="mt-6 rounded-xl border border-[#E8EAEE] bg-white p-6 text-center">
-          <p className="text-sm text-[#666D7A]">No active training program for {firstName} yet. Publish a program first, then you can log sessions here.</p>
+        <Link href={`/dashboard/clients/${id}`} className="text-[12.5px] font-semibold text-[#0F1115] hover:text-[#242932]">← Back to {firstName}</Link>
+        <div className="mt-6 rounded-xl border border-[#E4E4E0] bg-white p-6 text-center">
+          <p className="text-sm text-[#6E747D]">No active training program for {firstName} yet. Publish a program first, then you can log sessions here.</p>
         </div>
       </div>
     )
@@ -106,41 +106,41 @@ export default async function CoachTrainIndexPage({ params }: { params: Promise<
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
-      <Link href={`/dashboard/clients/${id}`} className="text-[12.5px] font-semibold text-[#1B6DFC] hover:text-[#5390FF]">← Back to {firstName}</Link>
+      <Link href={`/dashboard/clients/${id}`} className="text-[12.5px] font-semibold text-[#0F1115] hover:text-[#242932]">← Back to {firstName}</Link>
 
-      <div className="mt-4 br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
-        <p className="text-[10px] font-medium text-[#98A0AD] mb-1">Log a session · {client.name}</p>
-        <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em] tracking-tight">{program.block_name ?? 'Training'}</h1>
+      <div className="mt-4 br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E4E4E0] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
+        <p className="text-[10px] font-medium text-[#9CA2AB] mb-1">Log a session · {client.name}</p>
+        <h1 className="text-[22px] font-semibold text-[#0F1115] tracking-[-0.025em] tracking-tight">{program.block_name ?? 'Training'}</h1>
         <div className="flex flex-wrap items-center gap-2 mt-2 text-[12.5px]">
-          <span className="bg-white border border-[#E8EAEE] rounded-full px-2.5 py-0.5">Week <span className="text-[#141821] font-semibold">{blockWeek}</span> of {program.week_duration}</span>
-          <span className="bg-white border border-[#E8EAEE] rounded-full px-2.5 py-0.5 text-[#666D7A]">{daysLeftLabel}</span>
+          <span className="bg-white border border-[#E4E4E0] rounded-full px-2.5 py-0.5">Week <span className="text-[#0F1115] font-semibold">{blockWeek}</span> of {program.week_duration}</span>
+          <span className="bg-white border border-[#E4E4E0] rounded-full px-2.5 py-0.5 text-[#6E747D]">{daysLeftLabel}</span>
         </div>
       </div>
 
       {/* Momentum */}
       {momentum.blockTotal > 0 && (
-        <div className="mb-6 rounded-xl border border-[#E8EAEE] bg-white p-4">
+        <div className="mb-6 rounded-xl border border-[#E4E4E0] bg-white p-4">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-[10px] font-medium text-[#666D7A]">This block</p>
+            <p className="text-[10px] font-medium text-[#6E747D]">This block</p>
             {momentum.streakWeeks >= 2 && (
-              <span className="text-[11.5px] font-medium text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border border-[#1B6DFC]/30 rounded-full px-2 py-0.5">{momentum.streakWeeks} weeks fully logged</span>
+              <span className="text-[11.5px] font-medium text-[#0F1115] bg-[rgba(27,109,252,0.08)] border border-[#0F1115]/30 rounded-full px-2 py-0.5">{momentum.streakWeeks} weeks fully logged</span>
             )}
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex-1 h-2 rounded-full bg-[#EFF1F4] overflow-hidden">
-              <div className="h-full bg-[#1B6DFC]" style={{ width: `${momentumPct}%` }} />
+            <div className="flex-1 h-2 rounded-full bg-[#EDEDEA] overflow-hidden">
+              <div className="h-full bg-[#0F1115]" style={{ width: `${momentumPct}%` }} />
             </div>
-            <p className="text-[12.5px] font-semibold text-[#141821] tabular-nums whitespace-nowrap">{momentum.loggedThisBlock} / {momentum.blockTotal} logged</p>
+            <p className="text-[12.5px] font-semibold text-[#0F1115] tabular-nums whitespace-nowrap">{momentum.loggedThisBlock} / {momentum.blockTotal} logged</p>
           </div>
         </div>
       )}
 
       {/* Today */}
       {todaySessionIndex >= 0 && (
-        <div className="mb-6 rounded-xl border border-[#1B6DFC] bg-[rgba(27,109,252,0.08)] p-5">
-          <p className="text-[10px] font-medium text-[#1B6DFC] mb-2">Today · {today}</p>
-          <h2 className="text-xl font-bold text-[#141821] mb-1">{prescribedSessions[todaySessionIndex].day_label}{prescribedSessions[todaySessionIndex].skeleton ? ` · ${prescribedSessions[todaySessionIndex].skeleton}` : ''}</h2>
-          <p className="text-sm text-[#666D7A] mb-4">{prescribedSessions[todaySessionIndex].flatExercises.length} exercise{prescribedSessions[todaySessionIndex].flatExercises.length === 1 ? '' : 's'}</p>
+        <div className="mb-6 rounded-xl border border-[#0F1115] bg-[rgba(27,109,252,0.08)] p-5">
+          <p className="text-[10px] font-medium text-[#0F1115] mb-2">Today · {today}</p>
+          <h2 className="text-xl font-bold text-[#0F1115] mb-1">{prescribedSessions[todaySessionIndex].day_label}{prescribedSessions[todaySessionIndex].skeleton ? ` · ${prescribedSessions[todaySessionIndex].skeleton}` : ''}</h2>
+          <p className="text-sm text-[#6E747D] mb-4">{prescribedSessions[todaySessionIndex].flatExercises.length} exercise{prescribedSessions[todaySessionIndex].flatExercises.length === 1 ? '' : 's'}</p>
           <StartSessionButton
             token=""
             clientId={client.id}
@@ -155,7 +155,7 @@ export default async function CoachTrainIndexPage({ params }: { params: Promise<
         </div>
       )}
 
-      <p className="text-[10px] text-[#666D7A] font-semibold mb-3">All sessions, week {blockWeek}</p>
+      <p className="text-[10px] text-[#6E747D] font-semibold mb-3">All sessions, week {blockWeek}</p>
       <div className="space-y-2">
         {prescribedSessions.map((s, idx) => {
           const completion = completionByIndex.get(idx)
@@ -164,19 +164,19 @@ export default async function CoachTrainIndexPage({ params }: { params: Promise<
               key={idx}
               className={`bg-white border rounded-xl p-4 ${
                 completion?.status === 'completed'
-                  ? 'border-[#1B6DFC]/60'
+                  ? 'border-[#0F1115]/60'
                   : completion?.status === 'in_progress'
-                    ? 'border-[#E5C98F]'
-                    : 'border-[#E8EAEE]'
+                    ? 'border-[#EADCC4]'
+                    : 'border-[#E4E4E0]'
               }`}
             >
               <div className="flex items-center justify-between gap-3 mb-1">
                 <div className="min-w-0">
-                  <p className="text-sm font-bold text-[#141821]">{s.day_label}{s.skeleton ? ` · ${s.skeleton}` : ''}</p>
-                  <p className="text-[12.5px] text-[#666D7A]">{s.flatExercises.length} exercise{s.flatExercises.length === 1 ? '' : 's'}</p>
+                  <p className="text-sm font-bold text-[#0F1115]">{s.day_label}{s.skeleton ? ` · ${s.skeleton}` : ''}</p>
+                  <p className="text-[12.5px] text-[#6E747D]">{s.flatExercises.length} exercise{s.flatExercises.length === 1 ? '' : 's'}</p>
                 </div>
-                {completion?.status === 'completed' && <span className="text-[10px] text-[#1B6DFC] shrink-0">Completed</span>}
-                {completion?.status === 'in_progress' && <span className="text-[10px] text-[#A96A12] shrink-0">In progress</span>}
+                {completion?.status === 'completed' && <span className="text-[10px] text-[#0F1115] shrink-0">Completed</span>}
+                {completion?.status === 'in_progress' && <span className="text-[10px] text-[#B06E1F] shrink-0">In progress</span>}
               </div>
               <StartSessionButton
                 token=""

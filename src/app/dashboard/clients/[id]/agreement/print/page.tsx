@@ -20,8 +20,8 @@ export default async function AgreementPrintPage({ params }: { params: Promise<{
     day: 'numeric', month: 'long', year: 'numeric',
   })
 
-  const G = '#0f0f0f'
-  const TEAL = '#1B6DFC'
+  const G = '#0F1115'
+  const TEAL = '#0F1115'
 
   return (
     <>
@@ -101,7 +101,7 @@ export default async function AgreementPrintPage({ params }: { params: Promise<{
         </div>
 
         {/* Footer */}
-        <div style={{ marginTop: '32px', paddingTop: '16px', borderTop: '1px solid #e5e5e5', display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{ marginTop: '32px', paddingTop: '16px', borderTop: '1px solid #E4E4E0', display: 'flex', justifyContent: 'space-between' }}>
           <p style={{ fontSize: '10px', color: '#aaa' }}>© {brand().name}™ · www.bodyrecode.au</p>
           <p style={{ fontSize: '10px', color: '#aaa' }}>Confidential</p>
         </div>

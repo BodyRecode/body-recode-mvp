@@ -59,7 +59,7 @@ export default function DashboardShell({
         <button
           type="button"
           onClick={() => setDrawerOpen(false)}
-          className="lg:hidden text-[#666D7A] hover:text-[#141821] p-1 -mr-1"
+          className="lg:hidden text-[#6E747D] hover:text-[#0F1115] p-1 -mr-1"
           aria-label="Close menu"
         >
           <X size={18} />
@@ -69,21 +69,21 @@ export default function DashboardShell({
       <div className="flex-1 min-h-0 overflow-y-auto">
         <DashboardNav onNavigate={() => setDrawerOpen(false)} badges={badges} tier={tier} />
       </div>
-      <div className="border-t border-[#E8EAEE] bg-white/60 px-3.5 py-2.5 flex items-center justify-between gap-2">
-        <span className="text-[11px] text-[#98A0AD] truncate min-w-0">{userEmail}</span>
+      <div className="border-t border-[#E4E4E0] bg-white/60 px-3.5 py-2.5 flex items-center justify-between gap-2">
+        <span className="text-[11px] text-[#9CA2AB] truncate min-w-0">{userEmail}</span>
         {logout}
       </div>
     </div>
   )
 
   return (
-    <div className="min-h-screen bg-white text-[#141821]">
+    <div className="min-h-screen bg-white text-[#0F1115]">
       {/* Mobile bar */}
-      <div className="lg:hidden sticky top-0 z-40 flex items-center gap-3 h-14 px-4 border-b border-[#E8EAEE] bg-white/90 backdrop-blur-xl print:hidden">
+      <div className="lg:hidden sticky top-0 z-40 flex items-center gap-3 h-14 px-4 border-b border-[#E4E4E0] bg-white/90 backdrop-blur-xl print:hidden">
         <button
           type="button"
           onClick={() => setDrawerOpen(true)}
-          className="text-[#43474F] hover:text-[#141821] p-1 -ml-1"
+          className="text-[#4A4F57] hover:text-[#0F1115] p-1 -ml-1"
           aria-label="Open menu"
         >
           <Menu size={20} />
@@ -95,13 +95,13 @@ export default function DashboardShell({
       {drawerOpen && (
         <div className="lg:hidden fixed inset-0 z-50 print:hidden">
           <div
-            className="absolute inset-0 bg-[#101828]/35"
+            className="absolute inset-0 bg-[#0F1115]/35"
             onClick={() => setDrawerOpen(false)}
             aria-hidden
           />
           <aside
-            className="absolute inset-y-0 left-0 w-[264px] border-r border-[#E8EAEE] shadow-[0_20px_50px_-20px_rgba(16,24,40,0.45)]"
-            style={{ background: 'linear-gradient(180deg,#F8F9FB 0%,#F3F5F8 100%)' }}
+            className="absolute inset-y-0 left-0 w-[264px] border-r border-[#E4E4E0] shadow-[0_20px_50px_-20px_rgba(15,17,21,0.45)]"
+            style={{ background: 'linear-gradient(180deg,#F2F2EF 0%,#EDEDEA 100%)' }}
           >
             {rail}
           </aside>
@@ -111,9 +111,9 @@ export default function DashboardShell({
       <div className="lg:grid lg:grid-cols-[236px_1fr]">
         {/* Rail */}
         <aside
-          className="hidden lg:flex flex-col sticky top-0 h-screen border-r border-[#E8EAEE] print:hidden"
+          className="hidden lg:flex flex-col sticky top-0 h-screen border-r border-[#E4E4E0] print:hidden"
           style={{
-            background: 'linear-gradient(180deg,#F8F9FB 0%,#F3F5F8 100%)',
+            background: 'linear-gradient(180deg,#F2F2EF 0%,#EDEDEA 100%)',
             boxShadow: 'inset -1px 0 0 rgba(255,255,255,0.9)',
           }}
         >
@@ -123,7 +123,7 @@ export default function DashboardShell({
         {/* Panel */}
         <main
           className="min-w-0 px-6 py-8 lg:px-9 lg:py-9 print:p-0"
-          style={{ background: 'linear-gradient(180deg,#FDFDFE,#FFFFFF 260px)' }}
+          style={{ background: 'linear-gradient(180deg,#FAFAF8,#FFFFFF 260px)' }}
         >
           <div className="max-w-[1320px] print:max-w-none">{children}</div>
         </main>

@@ -34,42 +34,42 @@ export default async function FixedSessionPage({ params }: { params: Promise<{ i
 
   return (
     <div className="max-w-lg">
-      <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E8EAEE] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
-        <Link href={`/dashboard/clients/${id}`} className="text-[12.5px] text-[#666D7A] hover:text-[#141821] transition-colors block mb-4">
+      <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E4E4E0] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
+        <Link href={`/dashboard/clients/${id}`} className="text-[12.5px] text-[#6E747D] hover:text-[#0F1115] transition-colors block mb-4">
           ← Back to {client.name}
         </Link>
-        <h1 className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em]">Face-to-Face Sessions</h1>
-        <p className="text-[#666D7A] text-sm mt-1">Set recurring weekly slots and manage individual bookings.</p>
+        <h1 className="text-[22px] font-semibold text-[#0F1115] tracking-[-0.025em]">Face-to-Face Sessions</h1>
+        <p className="text-[#6E747D] text-sm mt-1">Set recurring weekly slots and manage individual bookings.</p>
       </div>
 
       {/* Fixed recurring slots */}
       <FixedSlotsManager clientId={id} slots={slots ?? []} />
 
       {/* Individual session bookings */}
-      <div className="mt-6 bg-[#F4F6F9] br-card p-5">
-        <p className="text-[12.5px] text-[#666D7A] mb-4">Booked Sessions</p>
+      <div className="mt-6 bg-[#F2F2EF] br-card p-5">
+        <p className="text-[12.5px] text-[#6E747D] mb-4">Booked Sessions</p>
 
         {(sessions ?? []).length === 0 ? (
-          <p className="text-sm text-[#98A0AD]">No sessions booked yet.</p>
+          <p className="text-sm text-[#9CA2AB]">No sessions booked yet.</p>
         ) : (
           <div className="space-y-2 mb-2">
             {sessions!.map(s => (
-              <div key={s.id} className="flex items-center justify-between py-2 border-b border-[#E8EAEE] last:border-0">
+              <div key={s.id} className="flex items-center justify-between py-2 border-b border-[#E4E4E0] last:border-0">
                 <div>
-                  <span className="text-sm text-[#141821]">
+                  <span className="text-sm text-[#0F1115]">
                     {new Date(s.scheduled_at).toLocaleDateString('en-AU', {
                       timeZone: 'Australia/Brisbane',
                       weekday: 'short', day: 'numeric', month: 'short',
                     })}
                   </span>
-                  <span className="text-[12.5px] text-[#666D7A] ml-2">
+                  <span className="text-[12.5px] text-[#6E747D] ml-2">
                     {new Date(s.scheduled_at).toLocaleTimeString('en-AU', {
                       timeZone: 'Australia/Brisbane',
                       hour: 'numeric', minute: '2-digit', hour12: true,
                     })} · {s.duration_minutes} min
                   </span>
                 </div>
-                <span className={`text-xs ${s.confirmed_at ? 'text-[#1B6DFC]' : 'text-[#666D7A]'}`}>
+                <span className={`text-xs ${s.confirmed_at ? 'text-[#0F1115]' : 'text-[#6E747D]'}`}>
                   {s.confirmed_at ? 'Confirmed' : 'Pending'}
                 </span>
               </div>

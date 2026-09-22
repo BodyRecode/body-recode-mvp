@@ -79,7 +79,7 @@ export default async function TenantsHealthPage() {
       <div className="max-w-[1200px]">
         <PageHeader eyebrow="Settings · Tenants Health" title="Tenants Health" accent="amber" />
         <Card>
-          <div className="text-[#C82626] text-[13px]">Failed to load tenants: {tenantsErr.message}</div>
+          <div className="text-[#8F2D2D] text-[13px]">Failed to load tenants: {tenantsErr.message}</div>
         </Card>
       </div>
     )
@@ -131,13 +131,13 @@ export default async function TenantsHealthPage() {
       <div className="mb-4 flex items-center justify-between">
         <Link
           href="/dashboard/settings"
-          className="inline-flex items-center gap-1 text-[11px] text-[#666D7A] hover:text-[#141821]"
+          className="inline-flex items-center gap-1 text-[11px] text-[#6E747D] hover:text-[#0F1115]"
         >
           <ArrowLeft className="w-3 h-3" /> BACK TO SETTINGS
         </Link>
         <Link
           href="/dashboard/settings/tenants-health"
-          className="inline-flex items-center gap-1 text-[11px] text-[#666D7A] hover:text-[#141821]"
+          className="inline-flex items-center gap-1 text-[11px] text-[#6E747D] hover:text-[#0F1115]"
         >
           <RefreshCw className="w-3 h-3" /> REFRESH
         </Link>
@@ -164,7 +164,7 @@ export default async function TenantsHealthPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-[12px]">
             <thead>
-              <tr className="text-[10px] text-[#666D7A] border-t border-b border-[#E8EAEE]">
+              <tr className="text-[10px] text-[#6E747D] border-t border-b border-[#E4E4E0]">
                 <th className="text-left px-4 py-2 font-normal">Tenant</th>
                 <th className="text-left px-4 py-2 font-normal">Coach</th>
                 <th className="text-left px-4 py-2 font-normal">Last login</th>
@@ -192,7 +192,7 @@ export default async function TenantsHealthPage() {
         </div>
       </Card>
 
-      <div className="mt-6 text-[11px] text-[#666D7A] italic">
+      <div className="mt-6 text-[11px] text-[#6E747D] italic">
         Signal legend: ● configured · ○ not configured. Active-clients cap: Launch tier = 10, Studio tier = 30 (from Collective Partner Agreement). Last-login yellows after 14 days idle.
       </div>
     </div>
@@ -232,40 +232,40 @@ function TenantRow({
   const capFull = capPct >= 100
 
   return (
-    <tr className="border-b border-[#F4F6F9] hover:bg-[#FBFCFD]">
+    <tr className="border-b border-[#F2F2EF] hover:bg-[#FAFAF8]">
       <td className="px-4 py-3 align-top">
         <div className="flex items-center gap-2">
           <span
             className="inline-flex items-center justify-center w-7 h-7 rounded font-medium text-[11px] text-white shrink-0"
-            style={{ backgroundColor: tenant.brand?.accentColor ?? '#1B6DFC', fontFamily: MONO_FONT }}
+            style={{ backgroundColor: tenant.brand?.accentColor ?? '#0F1115', fontFamily: MONO_FONT }}
           >
             {(brand[0] ?? '?').toUpperCase()}
           </span>
           <div>
-            <div className="font-semibold text-[#141821]">{brand}</div>
-            <div className="text-[10px] text-[#666D7A]" style={{ fontFamily: MONO_FONT }}>{tenant.licence?.tenantId ?? '—'}</div>
+            <div className="font-semibold text-[#0F1115]">{brand}</div>
+            <div className="text-[10px] text-[#6E747D]" style={{ fontFamily: MONO_FONT }}>{tenant.licence?.tenantId ?? '—'}</div>
           </div>
         </div>
       </td>
       <td className="px-4 py-3 align-top">
-        <div className="text-[#141821]">{coachName}</div>
-        <div className="text-[10px] text-[#666D7A]">{coachEmail}</div>
+        <div className="text-[#0F1115]">{coachName}</div>
+        <div className="text-[10px] text-[#6E747D]">{coachEmail}</div>
       </td>
       <td className="px-4 py-3 align-top">
-        <span className={lastLoginStale ? 'text-[#A96A12]' : 'text-[#141821]'}>{lastLoginText}</span>
+        <span className={lastLoginStale ? 'text-[#B06E1F]' : 'text-[#0F1115]'}>{lastLoginText}</span>
       </td>
       <td className="px-4 py-3 align-top">
         <div className="flex items-center gap-2 text-[12px]">
-          <span className={capFull ? 'font-bold text-[#C82626]' : capWarn ? 'font-bold text-[#A96A12]' : 'text-[#141821]'}>
+          <span className={capFull ? 'font-bold text-[#8F2D2D]' : capWarn ? 'font-bold text-[#B06E1F]' : 'text-[#0F1115]'}>
             {activeClients} / {cap}
           </span>
         </div>
-        <div className="h-[3px] w-24 rounded-full bg-[#EFF1F4] mt-1 overflow-hidden">
+        <div className="h-[3px] w-24 rounded-full bg-[#EDEDEA] mt-1 overflow-hidden">
           <div
             className="h-full"
             style={{
               width: `${capPct}%`,
-              background: capFull ? '#DC2626' : capWarn ? '#B7791F' : (tenant.brand?.accentColor ?? '#1B6DFC'),
+              background: capFull ? '#8F2D2D' : capWarn ? '#B06E1F' : (tenant.brand?.accentColor ?? '#0F1115'),
             }}
           />
         </div>
@@ -284,14 +284,14 @@ function TenantRow({
       </td>
       <td className="px-4 py-3 align-top">
         {domainPrimary ? (
-          <div className="text-[#141821]">{domainPrimary}</div>
+          <div className="text-[#0F1115]">{domainPrimary}</div>
         ) : (
           <SignalDot on={false} label="unset" />
         )}
       </td>
       <td className="px-4 py-3 align-top">
         {modeAPlusFields > 0 ? (
-          <span className="text-[#141821]">{modeAPlusFields} / 6 fields</span>
+          <span className="text-[#0F1115]">{modeAPlusFields} / 6 fields</span>
         ) : (
           <SignalDot on={false} label="empty" />
         )}
@@ -305,25 +305,25 @@ function SignalDot({ on, label }: { on: boolean; label: string }) {
   if (on) {
     return (
       <span className="inline-flex items-center gap-1.5">
-        <CheckCircle2 className="w-3.5 h-3.5 text-[#177245]" />
-        <span className="text-[11px] text-[#141821]">{label}</span>
+        <CheckCircle2 className="w-3.5 h-3.5 text-[#2B5E45]" />
+        <span className="text-[11px] text-[#0F1115]">{label}</span>
       </span>
     )
   }
   return (
     <span className="inline-flex items-center gap-1.5">
-      <Circle className="w-3.5 h-3.5 text-[#98A0AD]" />
-      <span className="text-[11px] text-[#666D7A]">{label}</span>
+      <Circle className="w-3.5 h-3.5 text-[#9CA2AB]" />
+      <span className="text-[11px] text-[#6E747D]">{label}</span>
     </span>
   )
 }
 
 function StatMini({ label, value, sub }: { label: string; value: number; sub: string }) {
   return (
-    <div className="p-4 rounded-xl border border-[#E8EAEE] bg-white">
-      <div className="text-[10px] text-[#666D7A] mb-2">{label}</div>
-      <div className="text-[28px] font-extrabold text-[#141821] leading-none mb-1" style={{ fontVariantNumeric: 'tabular-nums' }}>{value}</div>
-      <div className="text-[11px] text-[#666D7A]">{sub}</div>
+    <div className="p-4 rounded-xl border border-[#E4E4E0] bg-white">
+      <div className="text-[10px] text-[#6E747D] mb-2">{label}</div>
+      <div className="text-[28px] font-extrabold text-[#0F1115] leading-none mb-1" style={{ fontVariantNumeric: 'tabular-nums' }}>{value}</div>
+      <div className="text-[11px] text-[#6E747D]">{sub}</div>
     </div>
   )
 }

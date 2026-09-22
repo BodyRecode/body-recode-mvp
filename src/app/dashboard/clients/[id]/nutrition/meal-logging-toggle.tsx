@@ -48,11 +48,11 @@ export default function MealLoggingToggle({
   }
 
   return (
-    <div className="rounded-xl border border-[#E8EAEE] bg-white p-5">
+    <div className="rounded-xl border border-[#E4E4E0] bg-white p-5">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-sm font-semibold text-[#141821]">Daily meal logging</p>
-          <p className="text-[12.5px] text-[#666D7A] mt-1 leading-relaxed">
+          <p className="text-sm font-semibold text-[#0F1115]">Daily meal logging</p>
+          <p className="text-[12.5px] text-[#6E747D] mt-1 leading-relaxed">
             {enabled
               // No pronoun: this said "her nutrition plan" for every client,
               // including the men. The client's own name and "their" carry it.
@@ -65,14 +65,14 @@ export default function MealLoggingToggle({
           disabled={busy}
           className={`flex-none px-4 py-2 rounded-lg text-xs font-bold transition-colors disabled:opacity-40 ${
             enabled
-              ? 'bg-[#EFF1F4] text-[#141821] hover:bg-[#E8EAEE]'
-              : 'bg-[#1B6DFC] text-white hover:bg-[#1560E0]'
+              ? 'bg-[#EDEDEA] text-[#0F1115] hover:bg-[#E4E4E0]'
+              : 'bg-[#0F1115] text-white hover:bg-[#000000]'
           }`}
         >
           {busy ? 'Saving…' : enabled ? 'Turn off' : 'Turn on'}
         </button>
       </div>
-      {error && <p className="text-[12.5px] text-[#C82626] mt-3">{error}</p>}
+      {error && <p className="text-[12.5px] text-[#8F2D2D] mt-3">{error}</p>}
     </div>
   )
 }

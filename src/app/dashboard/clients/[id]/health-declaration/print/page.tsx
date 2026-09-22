@@ -10,9 +10,9 @@ function Row({ label, value }: { label: string; value: unknown }) {
   else if (typeof value === 'boolean') { display = value ? 'Yes' : 'No' }
   else { display = String(value) }
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', gap: '24px', padding: '8px 0', borderBottom: '1px solid #e5e5e5' }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', gap: '24px', padding: '8px 0', borderBottom: '1px solid #E4E4E0' }}>
       <p style={{ fontSize: '11px', color: '#888', flexShrink: 0, width: '180px' }}>{label}</p>
-      <p style={{ fontSize: '12px', color: '#1a1a1a', textAlign: 'right' }}>{display}</p>
+      <p style={{ fontSize: '12px', color: '#0F1115', textAlign: 'right' }}>{display}</p>
     </div>
   )
 }
@@ -30,8 +30,8 @@ export default async function HealthDeclarationPrintPage({ params }: { params: P
   if (!client || !client.health_declaration_submitted_at) return notFound()
 
   const d = client.health_declaration_data as Record<string, any> | null
-  const G = '#0f0f0f'
-  const TEAL = '#1B6DFC'
+  const G = '#0F1115'
+  const TEAL = '#0F1115'
 
   const submittedDate = new Date(client.health_declaration_submitted_at).toLocaleDateString('en-AU', {
     day: 'numeric', month: 'long', year: 'numeric',
@@ -68,7 +68,7 @@ export default async function HealthDeclarationPrintPage({ params }: { params: P
             {client.medical_clearance_required && (
               <div>
                 <p style={{ fontSize: '9px', fontWeight: 700, color: '#999', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '4px' }}>Note</p>
-                <p style={{ fontSize: '13px', fontWeight: 700, color: '#d97706' }}>Medical clearance required</p>
+                <p style={{ fontSize: '13px', fontWeight: 700, color: '#B06E1F' }}>Medical clearance required</p>
               </div>
             )}
           </div>
@@ -137,7 +137,7 @@ export default async function HealthDeclarationPrintPage({ params }: { params: P
           </div>
         )}
 
-        <div style={{ marginTop: '40px', paddingTop: '16px', borderTop: '1px solid #e5e5e5', display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{ marginTop: '40px', paddingTop: '16px', borderTop: '1px solid #E4E4E0', display: 'flex', justifyContent: 'space-between' }}>
           <p style={{ fontSize: '10px', color: '#aaa' }}>© {brand().name}™ · www.bodyrecode.au</p>
           <p style={{ fontSize: '10px', color: '#aaa' }}>Confidential</p>
         </div>

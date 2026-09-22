@@ -79,8 +79,8 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
           onClick={() => setter(opt)}
           className={`px-3 py-1.5 rounded-lg border text-xs capitalize transition-colors ${
             val === opt
-              ? 'border-[#1B6DFC] bg-[rgba(27,109,252,0.08)] text-[#1056D6]'
-              : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
+              ? 'border-[#0F1115] bg-[rgba(27,109,252,0.08)] text-[#000000]'
+              : 'border-[#E4E4E0] text-[#6E747D] hover:border-[#DCDCD7]'
           }`}
         >
           {opt}
@@ -107,19 +107,19 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
 
       {/* Plan Name */}
       <div>
-        <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">Plan Name</label>
+        <label className="block text-[12.5px] font-medium text-[#6E747D] mb-2">Plan Name</label>
         <input
           value={planName}
           onChange={e => setPlanName(e.target.value)}
           placeholder="e.g. Foundation Nutrition - Training Support"
-          className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1056D6]"
+          className="w-full bg-[#F2F2EF] border border-[#E4E4E0] rounded-lg px-4 py-2.5 text-sm text-[#0F1115] placeholder-[#9CA2AB] focus:outline-none focus:border-[#000000]"
           required
         />
       </div>
 
       {/* Entry State */}
       <div>
-        <label className="block text-[12.5px] font-medium text-[#666D7A] mb-3">Entry State</label>
+        <label className="block text-[12.5px] font-medium text-[#6E747D] mb-3">Entry State</label>
         <div className="grid grid-cols-2 gap-2">
           {ENTRY_STATE_OPTIONS.map(opt => (
             <button
@@ -128,12 +128,12 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
               onClick={() => setEntryState(opt.value)}
               className={`text-left px-4 py-3 rounded-xl border transition-colors ${
                 entryState === opt.value
-                  ? 'border-[#1B6DFC] bg-[rgba(27,109,252,0.08)]'
-                  : 'border-[#E8EAEE] bg-[#F4F6F9] hover:border-[#CFD4DC]'
+                  ? 'border-[#0F1115] bg-[rgba(27,109,252,0.08)]'
+                  : 'border-[#E4E4E0] bg-[#F2F2EF] hover:border-[#DCDCD7]'
               }`}
             >
-              <p className={`text-sm font-semibold ${entryState === opt.value ? 'text-[#1056D6]' : 'text-[#141821]'}`}>{opt.label}</p>
-              <p className="text-[12.5px] text-[#666D7A] mt-1 leading-snug">{opt.desc}</p>
+              <p className={`text-sm font-semibold ${entryState === opt.value ? 'text-[#000000]' : 'text-[#0F1115]'}`}>{opt.label}</p>
+              <p className="text-[12.5px] text-[#6E747D] mt-1 leading-snug">{opt.desc}</p>
             </button>
           ))}
         </div>
@@ -141,7 +141,7 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
 
       {/* Body State */}
       <div>
-        <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">Body State</label>
+        <label className="block text-[12.5px] font-medium text-[#6E747D] mb-2">Body State</label>
         <div className="flex gap-2">
           {BODY_STATE_OPTIONS.map(opt => (
             <button
@@ -150,8 +150,8 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
               onClick={() => setBodyState(opt.value)}
               className={`px-4 py-2 rounded-lg border text-sm transition-colors ${
                 bodyState === opt.value
-                  ? 'border-[#1B6DFC] bg-[rgba(27,109,252,0.08)] text-[#1056D6]'
-                  : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
+                  ? 'border-[#0F1115] bg-[rgba(27,109,252,0.08)] text-[#000000]'
+                  : 'border-[#E4E4E0] text-[#6E747D] hover:border-[#DCDCD7]'
               }`}
             >
               {opt.label}
@@ -162,42 +162,42 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
 
       {/* PTS Phase */}
       <div>
-        <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">PTS Phase (Training Context)</label>
+        <label className="block text-[12.5px] font-medium text-[#6E747D] mb-2">PTS Phase (Training Context)</label>
         <input
           value={ptsPhase}
           onChange={e => setPtsPhase(e.target.value)}
           placeholder="e.g. Accumulation - Hypertrophy, or No active program"
-          className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1056D6]"
+          className="w-full bg-[#F2F2EF] border border-[#E4E4E0] rounded-lg px-4 py-2.5 text-sm text-[#0F1115] placeholder-[#9CA2AB] focus:outline-none focus:border-[#000000]"
         />
       </div>
 
       {/* Protein Anchor */}
       <div>
-        <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">Protein Anchor (g/day)</label>
+        <label className="block text-[12.5px] font-medium text-[#6E747D] mb-2">Protein Anchor (g/day)</label>
         <div className="flex items-center gap-3">
           <input
             type="number"
             value={proteinAnchorG}
             onChange={e => setProteinAnchorG(Number(e.target.value))}
-            className="w-28 bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] focus:outline-none focus:border-[#1056D6]"
+            className="w-28 bg-[#F2F2EF] border border-[#E4E4E0] rounded-lg px-4 py-2.5 text-sm text-[#0F1115] focus:outline-none focus:border-[#000000]"
             min={80}
             max={300}
             step={5}
           />
-          <span className="text-[#666D7A] text-sm">grams/day - non-variable, distributed evenly across meals</span>
+          <span className="text-[#6E747D] text-sm">grams/day - non-variable, distributed evenly across meals</span>
         </div>
       </div>
 
       {/* Carb Demand */}
       <div>
-        <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">Carbohydrate Demand Level</label>
+        <label className="block text-[12.5px] font-medium text-[#6E747D] mb-2">Carbohydrate Demand Level</label>
         {toggle3(carbDemandLevel, ['low', 'moderate', 'high'], setCarbDemandLevel)}
-        <p className="text-[12.5px] text-[#98A0AD] mt-2">Must respect entry state ceiling: Stabilisation/Recovery Reset → Low only. Training Support → Moderate. High Output → High.</p>
+        <p className="text-[12.5px] text-[#9CA2AB] mt-2">Must respect entry state ceiling: Stabilisation/Recovery Reset → Low only. Training Support → Moderate. High Output → High.</p>
       </div>
 
       {/* Meal Frequency */}
       <div>
-        <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">Meal Frequency</label>
+        <label className="block text-[12.5px] font-medium text-[#6E747D] mb-2">Meal Frequency</label>
         <div className="flex gap-2">
           {[3, 4, 5].map(n => (
             <button
@@ -206,8 +206,8 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
               onClick={() => setMealFrequency(n)}
               className={`px-4 py-2 rounded-lg border text-sm transition-colors ${
                 mealFrequency === n
-                  ? 'border-[#1B6DFC] bg-[rgba(27,109,252,0.08)] text-[#1056D6]'
-                  : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
+                  ? 'border-[#0F1115] bg-[rgba(27,109,252,0.08)] text-[#000000]'
+                  : 'border-[#E4E4E0] text-[#6E747D] hover:border-[#DCDCD7]'
               }`}
             >
               {n} meals
@@ -218,7 +218,7 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
 
       {/* Training Days */}
       <div>
-        <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">Training Days Per Week</label>
+        <label className="block text-[12.5px] font-medium text-[#6E747D] mb-2">Training Days Per Week</label>
         <div className="flex gap-2">
           {[2, 3, 4, 5, 6].map(n => (
             <button
@@ -227,8 +227,8 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
               onClick={() => setTrainingDaysPerWeek(n)}
               className={`px-4 py-2 rounded-lg border text-sm transition-colors ${
                 trainingDaysPerWeek === n
-                  ? 'border-[#1B6DFC] bg-[rgba(27,109,252,0.08)] text-[#1056D6]'
-                  : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#CFD4DC]'
+                  ? 'border-[#0F1115] bg-[rgba(27,109,252,0.08)] text-[#000000]'
+                  : 'border-[#E4E4E0] text-[#6E747D] hover:border-[#DCDCD7]'
               }`}
             >
               {n}x
@@ -240,60 +240,60 @@ export default function NutritionGenerateForm({ clientId }: { clientId: string }
       {/* Context fields */}
       <div className="grid grid-cols-3 gap-4">
         <div>
-          <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">Constraint Level</label>
+          <label className="block text-[12.5px] font-medium text-[#6E747D] mb-2">Constraint Level</label>
           {toggle3(constraintLevel, ['low', 'moderate', 'high'], setConstraintLevel)}
         </div>
         <div>
-          <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">Recovery Status</label>
+          <label className="block text-[12.5px] font-medium text-[#6E747D] mb-2">Recovery Status</label>
           {toggle3(recoveryStatus, ['stable', 'impaired', 'strong'], setRecoveryStatus)}
         </div>
         <div>
-          <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">Uncertainty Level</label>
+          <label className="block text-[12.5px] font-medium text-[#6E747D] mb-2">Uncertainty Level</label>
           {toggle3(uncertaintyLevel, ['low', 'moderate', 'high'], setUncertaintyLevel)}
         </div>
       </div>
 
       {/* Food Exclusions */}
       <div>
-        <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">Food Exclusions</label>
+        <label className="block text-[12.5px] font-medium text-[#6E747D] mb-2">Food Exclusions</label>
         <input
           value={foodExclusions}
           onChange={e => setFoodExclusions(e.target.value)}
           placeholder="e.g. dairy, shellfish, eggs (comma separated)"
-          className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-2.5 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1056D6]"
+          className="w-full bg-[#F2F2EF] border border-[#E4E4E0] rounded-lg px-4 py-2.5 text-sm text-[#0F1115] placeholder-[#9CA2AB] focus:outline-none focus:border-[#000000]"
         />
       </div>
 
       {/* Coach Guidance (standing free-text steering — mirrors training_plans.coach_guidance) */}
       <div>
-        <label className="block text-[12.5px] font-medium text-[#666D7A] mb-2">Coach Guidance (optional)</label>
+        <label className="block text-[12.5px] font-medium text-[#6E747D] mb-2">Coach Guidance (optional)</label>
         <textarea
           value={coachGuidance}
           onChange={e => setCoachGuidance(e.target.value)}
           placeholder="Standing context for this plan — travel block, recent dietary change, post-illness framing, life event constraints. Read at every generation. Persists on the plan; leave blank to keep the prior plan's guidance."
-          className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-lg px-4 py-3 text-sm text-[#141821] placeholder-[#98A0AD] focus:outline-none focus:border-[#1056D6] min-h-[120px]"
+          className="w-full bg-[#F2F2EF] border border-[#E4E4E0] rounded-lg px-4 py-3 text-sm text-[#0F1115] placeholder-[#9CA2AB] focus:outline-none focus:border-[#000000] min-h-[120px]"
           rows={5}
         />
-        <p className="text-[12.5px] text-[#98A0AD] mt-2">Bounded by HABNS doctrine: cannot override validator floors, appetite-suppression hard rules, dietary restrictions or preferences. See nutrition-prompt.ts § COACH GUIDANCE.</p>
+        <p className="text-[12.5px] text-[#9CA2AB] mt-2">Bounded by HABNS doctrine: cannot override validator floors, appetite-suppression hard rules, dietary restrictions or preferences. See nutrition-prompt.ts § COACH GUIDANCE.</p>
       </div>
 
       {error && (
-        <div className="bg-[#FDEDED] border border-[#F5C9C9] rounded-lg px-4 py-3">
-          <p className="text-[#C82626] text-sm">{error}</p>
+        <div className="bg-[#FBF1F1] border border-[#E8C9C9] rounded-lg px-4 py-3">
+          <p className="text-[#8F2D2D] text-sm">{error}</p>
         </div>
       )}
 
       <div className="flex items-center justify-between pt-2">
         <a
           href={`/dashboard/clients/${clientId}/nutrition/suggest`}
-          className="text-[12.5px] text-[#98A0AD] hover:text-[#666D7A] transition-colors"
+          className="text-[12.5px] text-[#9CA2AB] hover:text-[#6E747D] transition-colors"
         >
           ← Use prescription suggestion instead
         </a>
         <button
           type="submit"
           disabled={loading}
-          className="px-5 py-2.5 bg-[#1B6DFC] hover:bg-[#1560E0] disabled:bg-[#E8EAEE] disabled:text-[#666D7A] text-white font-semibold text-sm rounded-lg transition-colors"
+          className="px-5 py-2.5 bg-[#0F1115] hover:bg-[#000000] disabled:bg-[#E4E4E0] disabled:text-[#6E747D] text-white font-semibold text-sm rounded-lg transition-colors"
         >
           {loading ? 'Generating plan...' : 'Generate Plan'}
         </button>

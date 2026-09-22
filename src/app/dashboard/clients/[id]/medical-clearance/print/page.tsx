@@ -20,13 +20,13 @@ export default async function MedicalClearancePrintPage({ params }: { params: Pr
 
       <div className="flex items-start justify-between mb-10">
         <div>
-          <p className="text-[12.5px] font-medium text-[#666D7A] mb-1">{brand().name}™</p>
+          <p className="text-[12.5px] font-medium text-[#6E747D] mb-1">{brand().name}™</p>
           <h1 className="text-2xl font-bold text-black">Medical Clearance Request Form</h1>
-          <p className="text-sm text-[#666D7A] mt-1">Version 1.1</p>
+          <p className="text-sm text-[#6E747D] mt-1">Version 1.1</p>
         </div>
         <button
           onClick={() => window.print()}
-          className="text-sm bg-white text-[#141821] px-4 py-2 rounded-lg hover:bg-[#EFF1F4] transition-colors print:hidden"
+          className="text-sm bg-white text-[#0F1115] px-4 py-2 rounded-lg hover:bg-[#EDEDEA] transition-colors print:hidden"
         >
           Print / Save as PDF
         </button>
@@ -35,71 +35,71 @@ export default async function MedicalClearancePrintPage({ params }: { params: Pr
       <div className="space-y-8 text-sm">
         <section>
           <h2 className="font-bold text-base mb-2">1. Purpose</h2>
-          <p className="text-[#98A0AD] leading-relaxed">This document requests confirmation that the individual named below is medically cleared to participate in supervised progressive resistance and conditioning training within {brand().name}™ Performance Coaching.</p>
-          <p className="text-[#98A0AD] leading-relaxed mt-2">This form does not request diagnosis, treatment planning, or clinical interpretation. It requests confirmation of exercise participation eligibility only.</p>
+          <p className="text-[#9CA2AB] leading-relaxed">This document requests confirmation that the individual named below is medically cleared to participate in supervised progressive resistance and conditioning training within {brand().name}™ Performance Coaching.</p>
+          <p className="text-[#9CA2AB] leading-relaxed mt-2">This form does not request diagnosis, treatment planning, or clinical interpretation. It requests confirmation of exercise participation eligibility only.</p>
         </section>
 
         <section>
           <h2 className="font-bold text-base mb-3">2. Client Details</h2>
           <div className="space-y-4">
             <div>
-              <p className="text-[12.5px] font-semibold text-[#666D7A] mb-1">Full Legal Name</p>
-              <p className="font-semibold text-base border-b border-[#E8EAEE] pb-1">{client.name}</p>
+              <p className="text-[12.5px] font-semibold text-[#6E747D] mb-1">Full Legal Name</p>
+              <p className="font-semibold text-base border-b border-[#E4E4E0] pb-1">{client.name}</p>
             </div>
             <div>
-              <p className="text-[12.5px] font-semibold text-[#666D7A] mb-1">Date of Birth</p>
-              <div className="border-b border-[#E8EAEE] pb-1 h-6" />
+              <p className="text-[12.5px] font-semibold text-[#6E747D] mb-1">Date of Birth</p>
+              <div className="border-b border-[#E4E4E0] pb-1 h-6" />
             </div>
             <div>
-              <p className="text-[12.5px] font-semibold text-[#666D7A] mb-1">Primary Contact Details</p>
-              <p className="border-b border-[#E8EAEE] pb-1">{client.email ?? ''}</p>
+              <p className="text-[12.5px] font-semibold text-[#6E747D] mb-1">Primary Contact Details</p>
+              <p className="border-b border-[#E4E4E0] pb-1">{client.email ?? ''}</p>
             </div>
           </div>
         </section>
 
         <section>
           <h2 className="font-bold text-base mb-3">3. Reason for Clearance Request</h2>
-          <p className="text-[#98A0AD] mb-3">Medical clearance has been requested due to the following self-declared condition or screening response:</p>
+          <p className="text-[#9CA2AB] mb-3">Medical clearance has been requested due to the following self-declared condition or screening response:</p>
           <div className="space-y-2">
-            <div className="border-b border-[#E8EAEE] pb-1 h-6" />
-            <div className="border-b border-[#E8EAEE] pb-1 h-6" />
-            <div className="border-b border-[#E8EAEE] pb-1 h-6" />
+            <div className="border-b border-[#E4E4E0] pb-1 h-6" />
+            <div className="border-b border-[#E4E4E0] pb-1 h-6" />
+            <div className="border-b border-[#E4E4E0] pb-1 h-6" />
           </div>
-          <p className="text-[#666D7A] text-[12.5px] mt-2">This request is precautionary and relates only to exercise participation eligibility.</p>
+          <p className="text-[#6E747D] text-[12.5px] mt-2">This request is precautionary and relates only to exercise participation eligibility.</p>
         </section>
 
         <section>
           <h2 className="font-bold text-base mb-3">4. Nature of Training Exposure</h2>
-          <p className="text-[#98A0AD] mb-2">{brand().name}™ Performance Coaching includes supervised progressive exercise exposure, which may involve:</p>
-          <ul className="list-disc list-inside text-[#98A0AD] space-y-1 ml-2">
+          <p className="text-[#9CA2AB] mb-2">{brand().name}™ Performance Coaching includes supervised progressive exercise exposure, which may involve:</p>
+          <ul className="list-disc list-inside text-[#9CA2AB] space-y-1 ml-2">
             <li>Progressive resistance training</li>
             <li>Moderate to high effort strength training</li>
             <li>Structured conditioning exposure</li>
             <li>Controlled increases in training load over time</li>
             <li>Gym-based sessions under supervision</li>
           </ul>
-          <p className="text-[#98A0AD] mt-2">No medical treatment or rehabilitation services are provided. Training exposure is adjusted according to tolerance and any medical limitations specified below.</p>
+          <p className="text-[#9CA2AB] mt-2">No medical treatment or rehabilitation services are provided. Training exposure is adjusted according to tolerance and any medical limitations specified below.</p>
         </section>
 
-        <section className="border border-[#E8EAEE] rounded-lg p-5">
-          <h2 className="font-bold text-base mb-3">5. Medical Clearance Declaration <span className="font-normal text-[#666D7A]">(Completed by Medical Practitioner)</span></h2>
-          <p className="text-[#98A0AD] mb-4">I confirm that I am a qualified medical practitioner authorised to provide exercise participation clearance.</p>
+        <section className="border border-[#E4E4E0] rounded-lg p-5">
+          <h2 className="font-bold text-base mb-3">5. Medical Clearance Declaration <span className="font-normal text-[#6E747D]">(Completed by Medical Practitioner)</span></h2>
+          <p className="text-[#9CA2AB] mb-4">I confirm that I am a qualified medical practitioner authorised to provide exercise participation clearance.</p>
           <div className="space-y-4">
             {['Medical Practitioner Name', 'Provider Number', 'Practice Name', 'Contact Details'].map(label => (
               <div key={label}>
-                <p className="text-[12.5px] font-semibold text-[#666D7A] mb-1">{label}</p>
-                <div className="border-b border-[#E8EAEE] pb-1 h-6" />
+                <p className="text-[12.5px] font-semibold text-[#6E747D] mb-1">{label}</p>
+                <div className="border-b border-[#E4E4E0] pb-1 h-6" />
               </div>
             ))}
           </div>
           <div className="mt-5">
-            <p className="text-[12.5px] font-semibold text-[#666D7A] mb-3">Participation Status (Select One)</p>
+            <p className="text-[12.5px] font-semibold text-[#6E747D] mb-3">Participation Status (Select One)</p>
             <div className="space-y-2">
               <label className="flex items-center gap-3"><input type="checkbox" className="w-4 h-4" /><span>Cleared for participation without restriction</span></label>
               <label className="flex items-center gap-3"><input type="checkbox" className="w-4 h-4" /><span>Cleared for participation with the following limitations or precautions:</span></label>
               <div className="ml-7 space-y-2">
-                <div className="border-b border-[#E8EAEE] pb-1 h-6" />
-                <div className="border-b border-[#E8EAEE] pb-1 h-6" />
+                <div className="border-b border-[#E4E4E0] pb-1 h-6" />
+                <div className="border-b border-[#E4E4E0] pb-1 h-6" />
               </div>
               <label className="flex items-center gap-3"><input type="checkbox" className="w-4 h-4" /><span>Not cleared for progressive exercise participation at this time</span></label>
             </div>
@@ -108,39 +108,39 @@ export default async function MedicalClearancePrintPage({ params }: { params: Pr
 
         <section>
           <h2 className="font-bold text-base mb-2">6. Scope Acknowledgement</h2>
-          <p className="text-[#98A0AD]">This declaration confirms medical permission for participation only. It does not transfer clinical responsibility to {brand().name}™. {brand().name}™ will operate within any limitations specified above and within its professional scope of practice.</p>
+          <p className="text-[#9CA2AB]">This declaration confirms medical permission for participation only. It does not transfer clinical responsibility to {brand().name}™. {brand().name}™ will operate within any limitations specified above and within its professional scope of practice.</p>
         </section>
 
         <section>
           <h2 className="font-bold text-base mb-3">7. Validity</h2>
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <p className="text-[12.5px] font-semibold text-[#666D7A] mb-1">Effective Date</p>
-              <div className="border-b border-[#E8EAEE] pb-1 h-6" />
+              <p className="text-[12.5px] font-semibold text-[#6E747D] mb-1">Effective Date</p>
+              <div className="border-b border-[#E4E4E0] pb-1 h-6" />
             </div>
             <div>
-              <p className="text-[12.5px] font-semibold text-[#666D7A] mb-1">Review / Expiry Date</p>
-              <div className="border-b border-[#E8EAEE] pb-1 h-6" />
+              <p className="text-[12.5px] font-semibold text-[#6E747D] mb-1">Review / Expiry Date</p>
+              <div className="border-b border-[#E4E4E0] pb-1 h-6" />
             </div>
           </div>
         </section>
 
         <section>
           <h2 className="font-bold text-base mb-3">8. Practitioner Declaration</h2>
-          <p className="text-[#98A0AD] mb-4">I confirm that the above clearance reflects my professional opinion regarding exercise participation suitability at this time.</p>
+          <p className="text-[#9CA2AB] mb-4">I confirm that the above clearance reflects my professional opinion regarding exercise participation suitability at this time.</p>
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <p className="text-[12.5px] font-semibold text-[#666D7A] mb-1">Signature</p>
-              <div className="border-b border-[#E8EAEE] pb-1 h-10" />
+              <p className="text-[12.5px] font-semibold text-[#6E747D] mb-1">Signature</p>
+              <div className="border-b border-[#E4E4E0] pb-1 h-10" />
             </div>
             <div>
-              <p className="text-[12.5px] font-semibold text-[#666D7A] mb-1">Date</p>
-              <div className="border-b border-[#E8EAEE] pb-1 h-10" />
+              <p className="text-[12.5px] font-semibold text-[#6E747D] mb-1">Date</p>
+              <div className="border-b border-[#E4E4E0] pb-1 h-10" />
             </div>
           </div>
         </section>
 
-        <div className="border-t border-[#E8EAEE] pt-6 text-[12.5px] text-[#666D7A]">
+        <div className="border-t border-[#E4E4E0] pt-6 text-[12.5px] text-[#6E747D]">
           <p>{brand().name}™ | Kade Dunstone | ABN 90 535 525 708 | Anytime Fitness Newstead, Brisbane</p>
         </div>
       </div>

@@ -41,7 +41,7 @@ export default async function SupportInboxPage({ searchParams }: { searchParams:
     return (
       <div className="max-w-[1100px]">
         <PageHeader eyebrow="Admin" title="Support inbox" />
-        <div className="p-4 rounded-xl border border-[#F5C9C9] bg-[#FDEDED] text-[#8A1919] text-[13px]">
+        <div className="p-4 rounded-xl border border-[#E8C9C9] bg-[#FBF1F1] text-[#8A1919] text-[13px]">
           Error loading tickets: {error.message}
         </div>
       </div>
@@ -90,19 +90,19 @@ export default async function SupportInboxPage({ searchParams }: { searchParams:
         <Card><EmptyState title="Nothing here." hint={filter ? `No tickets with status "${STATUS_LABELS[filter]}" yet.` : 'When a coach files a ticket it will show up here.'} /></Card>
       ) : (
         <Card padding="none">
-          <ul className="divide-y divide-[#EFF1F4]">
+          <ul className="divide-y divide-[#EDEDEA]">
             {shown.map(t => (
               <li key={t.id}>
-                <Link href={`/dashboard/support/${t.id}`} className="block px-5 py-4 hover:bg-[#FAFBFC] transition-colors">
+                <Link href={`/dashboard/support/${t.id}`} className="block px-5 py-4 hover:bg-[#FAFAF8] transition-colors">
                   <div className="flex items-start gap-3">
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 mb-1 flex-wrap">
                         <Pill accent={categoryAccent(t.category)}>{CATEGORY_LABELS[t.category]}</Pill>
                         <Pill accent={statusAccent(t.status)}>{STATUS_LABELS[t.status]}</Pill>
-                        <span className="text-[11px] text-[#98A0AD]">{formatDate(t.created_at)}</span>
+                        <span className="text-[11px] text-[#9CA2AB]">{formatDate(t.created_at)}</span>
                       </div>
-                      <p className="text-[14px] font-semibold text-[#141821] truncate">{t.subject}</p>
-                      <p className="text-[12px] text-[#666D7A] mt-0.5">
+                      <p className="text-[14px] font-semibold text-[#0F1115] truncate">{t.subject}</p>
+                      <p className="text-[12px] text-[#6E747D] mt-0.5">
                         {emailById.get(t.coach_id) ?? 'unknown'}
                         {t.page_url ? ` · ${t.page_url}` : ''}
                       </p>
@@ -124,9 +124,9 @@ function FilterChip({ href, active, children }: { href: string; active: boolean;
       href={href}
       className="text-[12px] px-3 py-1.5 rounded-full border transition-colors"
       style={{
-        background: active ? '#1B6DFC' : '#FFFFFF',
-        color: active ? '#FFFFFF' : '#43474F',
-        borderColor: active ? '#1B6DFC' : '#E8EAEE',
+        background: active ? '#0F1115' : '#FFFFFF',
+        color: active ? '#FFFFFF' : '#4A4F57',
+        borderColor: active ? '#0F1115' : '#E4E4E0',
       }}
     >
       {children}

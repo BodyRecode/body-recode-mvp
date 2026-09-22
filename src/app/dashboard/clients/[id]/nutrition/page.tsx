@@ -136,22 +136,22 @@ function nutritionNavSections(plan: NutritionPlan) {
 }
 
 const entryStateColour: Record<string, string> = {
-  stabilisation: 'text-[#A96A12] bg-[#FDF6E9] border-[#F1DEB8]',
-  training_support: 'text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] border-[#B5CFFC]',
+  stabilisation: 'text-[#B06E1F] bg-[#FDF8F1] border-[#EADCC4]',
+  training_support: 'text-[#0F1115] bg-[rgba(27,109,252,0.08)] border-[#DCDCD7]',
   high_output_support: 'text-violet-700 bg-violet-50 border-violet-200',
-  recovery_reset: 'text-[#C82626] bg-[#FDEDED] border-[#F5C9C9]',
+  recovery_reset: 'text-[#8F2D2D] bg-[#FBF1F1] border-[#E8C9C9]',
 }
 
 const carbColour: Record<string, string> = {
-  low: 'text-[#1056D6] bg-[rgba(27,109,252,0.08)] border-[#B5CFFC]',
+  low: 'text-[#000000] bg-[rgba(27,109,252,0.08)] border-[#DCDCD7]',
   moderate: 'text-orange-400 bg-orange-400/10 border-orange-400/30',
   high: 'text-green-400 bg-green-400/10 border-green-400/30',
 }
 
 const directionColour: Record<string, string> = {
   progress: 'text-green-400 bg-green-400/10 border-green-400/30',
-  hold: 'text-[#A96A12] bg-[#FDF6E9] border-[#F1DEB8]',
-  rebuild: 'text-[#C82626] bg-[#FDEDED] border-[#F5C9C9]',
+  hold: 'text-[#B06E1F] bg-[#FDF8F1] border-[#EADCC4]',
+  rebuild: 'text-[#8F2D2D] bg-[#FBF1F1] border-[#E8C9C9]',
 }
 
 const directionLabel: Record<string, string> = {
@@ -185,35 +185,35 @@ function NutritionPlanBody({
     <div className="space-y-4">
 
       {/* Identity card */}
-      <div id={`${idPrefix}identity`} className="scroll-mt-8 bg-[#F4F6F9] br-card p-5">
+      <div id={`${idPrefix}identity`} className="scroll-mt-8 bg-[#F2F2EF] br-card p-5">
         <div className="flex items-start justify-between mb-3">
           <div>
-            <h2 className="text-lg font-semibold text-[#141821]">{plan.plan_name}</h2>
-            <p className="text-[12.5px] text-[#666D7A] mt-1">
+            <h2 className="text-lg font-semibold text-[#0F1115]">{plan.plan_name}</h2>
+            <p className="text-[12.5px] text-[#6E747D] mt-1">
               {plan.meal_frequency} meals/day · {plan.protein_anchor_g}g protein · {plan.pts_phase}
             </p>
           </div>
           <div className="flex gap-1.5 flex-wrap justify-end">
-            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${entryStateColour[plan.entry_state] || 'text-[#666D7A] bg-[#EFF1F4] border-[#E8EAEE]'}`}>
+            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${entryStateColour[plan.entry_state] || 'text-[#6E747D] bg-[#EDEDEA] border-[#E4E4E0]'}`}>
               {plan.entry_state.replace(/_/g, ' ')}
             </span>
-            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${carbColour[plan.carb_demand_level] || 'text-[#666D7A] bg-[#EFF1F4] border-[#E8EAEE]'}`}>
+            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border capitalize ${carbColour[plan.carb_demand_level] || 'text-[#6E747D] bg-[#EDEDEA] border-[#E4E4E0]'}`}>
               {plan.carb_demand_level} carbs
             </span>
           </div>
         </div>
         {plan.estimated_calorie_band && (
-          <p className="text-[12.5px] text-[#666D7A]">~{plan.estimated_calorie_band}</p>
+          <p className="text-[12.5px] text-[#6E747D]">~{plan.estimated_calorie_band}</p>
         )}
         {plan.current_direction && (
           <span className={`inline-block mt-2 text-xs font-semibold px-2.5 py-1 rounded-full border ${directionColour[plan.current_direction] || ''}`}>
             {directionLabel[plan.current_direction] ?? plan.current_direction}
           </span>
         )}
-        <p className="text-[12.5px] text-[#98A0AD] mt-3">
+        <p className="text-[12.5px] text-[#9CA2AB] mt-3">
           Generated {new Date(plan.generated_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}
           {plan.doctrine_version && (
-            <span className="text-[#98A0AD]"> · Doctrine v{plan.doctrine_version}</span>
+            <span className="text-[#9CA2AB]"> · Doctrine v{plan.doctrine_version}</span>
           )}
         </p>
       </div>
@@ -224,19 +224,19 @@ function NutritionPlanBody({
           valid until the coach regenerates. Plans with null doctrine_version
           are grandfathered and show no hint. */}
       {plan.doctrine_version && isDoctrineStale(plan.doctrine_version, 'nutrition_plan') && (
-        <div className="scroll-mt-8 bg-[#F4F6F9] br-card p-5">
+        <div className="scroll-mt-8 bg-[#F2F2EF] br-card p-5">
           <div className="flex items-start gap-3">
-            <svg className="w-5 h-5 text-[#666D7A] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-5 h-5 text-[#6E747D] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div className="min-w-0 flex-1">
-              <p className="text-[12px] font-medium text-[#666D7A] mb-1">Doctrine update available</p>
-              <p className="text-sm text-[#141821] leading-relaxed">
-                This plan was generated under <span className="font-mono text-[#141821]">v{plan.doctrine_version}</span>. Current doctrine is <span className="font-mono text-[#141821]">v{DOCTRINE_VERSIONS.nutrition_plan}</span>. Regenerating will apply the latest validator rules (e.g. tightened appetite-suppression caps, bridge-mode behaviour, carb-demand mapping). Existing plan stays valid until you regenerate.
+              <p className="text-[12px] font-medium text-[#6E747D] mb-1">Doctrine update available</p>
+              <p className="text-sm text-[#0F1115] leading-relaxed">
+                This plan was generated under <span className="font-mono text-[#0F1115]">v{plan.doctrine_version}</span>. Current doctrine is <span className="font-mono text-[#0F1115]">v{DOCTRINE_VERSIONS.nutrition_plan}</span>. Regenerating will apply the latest validator rules (e.g. tightened appetite-suppression caps, bridge-mode behaviour, carb-demand mapping). Existing plan stays valid until you regenerate.
               </p>
               <Link
                 href={`/dashboard/clients/${plan.client_id}/nutrition/suggest`}
-                className="inline-block mt-2 text-[12.5px] font-semibold text-[#1560E0] hover:text-[#1056D6]"
+                className="inline-block mt-2 text-[12.5px] font-semibold text-[#000000] hover:text-[#000000]"
               >
                 Regenerate with current doctrine →
               </Link>
@@ -296,21 +296,21 @@ function NutritionPlanBody({
           ? Math.min(startKcal + STAGE_KCAL, targetKcal ?? startKcal)
           : startKcal
         return (
-          <div id={`${idPrefix}bridge-mode`} className="scroll-mt-8 bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] rounded-xl p-5">
+          <div id={`${idPrefix}bridge-mode`} className="scroll-mt-8 bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] border border-[#EADCC4] rounded-xl p-5">
             <div className="flex items-start gap-3 mb-4">
-              <svg className="w-5 h-5 text-[#A96A12] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-5 h-5 text-[#B06E1F] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               <div className="min-w-0 flex-1">
-                <p className="text-[11px] font-black text-[#A96A12] mb-1">Bridge Mode (Staged Ramp)</p>
-                <p className="text-sm text-[#141821] leading-relaxed">
+                <p className="text-[11px] font-black text-[#B06E1F] mb-1">Bridge Mode (Staged Ramp)</p>
+                <p className="text-sm text-[#0F1115] leading-relaxed">
                   Currently feeding at <span className="font-semibold tabular-nums">{startKcal} kcal</span>{targetKcal && stagesRemaining > 0 && (
                     <>, ramping to <span className="font-semibold tabular-nums">~{targetKcal} kcal</span> over <span className="font-semibold">{stagesRemaining} more stage{stagesRemaining === 1 ? '' : 's'}</span> (~{totalRampWeeks} weeks at +{STAGE_KCAL} kcal per 2-week stage).</>
                   )}{targetKcal && stagesRemaining === 0 && (
                     <>. Already at the target floor — remove the override on next regenerate.</>
                   )}{!targetKcal && <>. Target unknown (baseline bodyweight missing).</>}
                 </p>
-                <p className="text-[12.5px] text-[#666D7A] mt-1 leading-relaxed">
+                <p className="text-[12.5px] text-[#6E747D] mt-1 leading-relaxed">
                   Reverse-dieting pace: ~100 kcal/week. Each stage = 2 weeks at the current floor; step up if check-ins show eating consistency, hold if not.
                 </p>
               </div>
@@ -320,16 +320,16 @@ function NutritionPlanBody({
             {targetKcal && (
               <div className="pl-8 mb-4">
                 <div className="flex items-baseline justify-between text-[12.5px] mb-1.5">
-                  <span className="text-[#666D7A]"><span className="font-mono tabular-nums">{startKcal}</span> current stage</span>
-                  <span className="text-[#98A0AD] text-[10px]">
+                  <span className="text-[#6E747D]"><span className="font-mono tabular-nums">{startKcal}</span> current stage</span>
+                  <span className="text-[#9CA2AB] text-[10px]">
                     {gapKcal && gapKcal > 0 ? <>next: <span className="font-mono">{nextStageKcal}</span> · target: <span className="font-mono">{targetKcal}</span></> : 'at target'}
                   </span>
-                  <span className="text-[#666D7A]"><span className="font-mono tabular-nums">{targetKcal}</span> target</span>
+                  <span className="text-[#6E747D]"><span className="font-mono tabular-nums">{targetKcal}</span> target</span>
                 </div>
-                <div className="h-2 bg-[#EFF1F4] rounded-full overflow-hidden">
-                  <div className="h-full bg-[#B7791F] rounded-full transition-all" style={{ width: `${progressPct}%` }} />
+                <div className="h-2 bg-[#EDEDEA] rounded-full overflow-hidden">
+                  <div className="h-full bg-[#B06E1F] rounded-full transition-all" style={{ width: `${progressPct}%` }} />
                 </div>
-                <p className="text-[11px] text-[#666D7A] mt-1">
+                <p className="text-[11px] text-[#6E747D] mt-1">
                   Stage progress: {daysIntoBridge}/{totalBridgeDays} days through this 2-week stage{stagesRemaining > 0 && <> · {stagesRemaining} stage{stagesRemaining === 1 ? '' : 's'} remaining</>}
                 </p>
               </div>
@@ -338,14 +338,14 @@ function NutritionPlanBody({
             {/* Check-in readiness signal */}
             {bridgeReadinessSignal && (
               <div className="pl-8 mb-4">
-                <p className="text-[10px] font-medium text-[#A96A12] mb-1.5">Step-up readiness (from recent check-ins)</p>
+                <p className="text-[10px] font-medium text-[#B06E1F] mb-1.5">Step-up readiness (from recent check-ins)</p>
                 {bridgeReadinessSignal.ready ? (
-                  <div className="bg-[#EDF8F1] border border-emerald-300 rounded-lg px-3 py-2.5">
+                  <div className="bg-[#F2F2EF] border border-emerald-300 rounded-lg px-3 py-2.5">
                     <div className="flex items-start gap-2">
-                      <span className="text-[#177245] mt-0.5">✓</span>
+                      <span className="text-[#2B5E45] mt-0.5">✓</span>
                       <div className="min-w-0 flex-1">
                         <p className="text-sm font-semibold text-emerald-800">Ready to step up</p>
-                        <p className="text-[12.5px] text-[#177245] mt-1 leading-relaxed">{bridgeReadinessSignal.reason}</p>
+                        <p className="text-[12.5px] text-[#2B5E45] mt-1 leading-relaxed">{bridgeReadinessSignal.reason}</p>
                         <Link
                           href={`/dashboard/clients/${plan.client_id}/nutrition/suggest`}
                           className="inline-block mt-2 text-[12.5px] font-semibold text-emerald-800 hover:text-emerald-900 underline"
@@ -356,12 +356,12 @@ function NutritionPlanBody({
                     </div>
                   </div>
                 ) : (
-                  <div className="bg-[#FBFCFD] border border-[#E8EAEE] rounded-lg px-3 py-2.5">
+                  <div className="bg-[#FAFAF8] border border-[#E4E4E0] rounded-lg px-3 py-2.5">
                     <div className="flex items-start gap-2">
-                      <span className="text-[#666D7A] mt-0.5">·</span>
+                      <span className="text-[#6E747D] mt-0.5">·</span>
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-semibold text-[#141821]">Hold the current bridge</p>
-                        <p className="text-[12.5px] text-[#666D7A] mt-1 leading-relaxed">{bridgeReadinessSignal.reason}</p>
+                        <p className="text-sm font-semibold text-[#0F1115]">Hold the current bridge</p>
+                        <p className="text-[12.5px] text-[#6E747D] mt-1 leading-relaxed">{bridgeReadinessSignal.reason}</p>
                       </div>
                     </div>
                   </div>
@@ -371,15 +371,15 @@ function NutritionPlanBody({
 
             {plan.transitional_override_justification && (
               <div className="pl-8 mb-4">
-                <p className="text-[10px] font-medium text-[#A96A12] mb-1">Coach justification</p>
-                <p className="text-[12.5px] text-[#141821] leading-relaxed italic">{plan.transitional_override_justification}</p>
+                <p className="text-[10px] font-medium text-[#B06E1F] mb-1">Coach justification</p>
+                <p className="text-[12.5px] text-[#0F1115] leading-relaxed italic">{plan.transitional_override_justification}</p>
               </div>
             )}
 
             {expiry && (
-              <div className="pl-8 pt-3 border-t border-[#F1DEB8]">
-                <p className="text-[12.5px] text-[#666D7A]">
-                  <span className="font-semibold text-[#A96A12]">Bridge window expires:</span>{' '}
+              <div className="pl-8 pt-3 border-t border-[#EADCC4]">
+                <p className="text-[12.5px] text-[#6E747D]">
+                  <span className="font-semibold text-[#B06E1F]">Bridge window expires:</span>{' '}
                   {expiry.toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}
                   {daysToExpiry !== null && daysToExpiry >= 0 && <> (in {daysToExpiry} day{daysToExpiry === 1 ? '' : 's'})</>}
                   {daysToExpiry !== null && daysToExpiry < 0 && <> ({-daysToExpiry} day{daysToExpiry === -1 ? '' : 's'} overdue)</>}
@@ -409,18 +409,18 @@ function NutritionPlanBody({
       {plan.weekly_structure_notes && (() => {
         const { intro, points } = parseText(clean(plan.weekly_structure_notes))
         return (
-          <div id={`${idPrefix}structure`} className="scroll-mt-8 bg-[#F4F6F9] br-card overflow-hidden">
-            <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE]">
-              <span className="text-[11px] font-black text-[#1B6DFC]">01</span>
-              <p className="text-[10px] font-medium text-[#666D7A]">Structure Logic</p>
+          <div id={`${idPrefix}structure`} className="scroll-mt-8 bg-[#F2F2EF] br-card overflow-hidden">
+            <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E4E4E0]">
+              <span className="text-[11px] font-black text-[#0F1115]">01</span>
+              <p className="text-[10px] font-medium text-[#6E747D]">Structure Logic</p>
             </div>
             <div className="px-5 py-4 space-y-2">
-              {intro && <p className="text-sm text-[#141821] leading-relaxed">{intro}</p>}
+              {intro && <p className="text-sm text-[#0F1115] leading-relaxed">{intro}</p>}
               {points.length > 1 ? points.map((point, i) => (
-                <div key={i} className="flex items-start gap-2.5 border-l-2 border-[#E8EAEE] pl-3">
-                  <p className="text-sm text-[#141821] leading-relaxed">{point}</p>
+                <div key={i} className="flex items-start gap-2.5 border-l-2 border-[#E4E4E0] pl-3">
+                  <p className="text-sm text-[#0F1115] leading-relaxed">{point}</p>
                 </div>
-              )) : <p className="text-sm text-[#141821] leading-relaxed">{points[0]}</p>}
+              )) : <p className="text-sm text-[#0F1115] leading-relaxed">{points[0]}</p>}
             </div>
           </div>
         )
@@ -442,49 +442,49 @@ function NutritionPlanBody({
         const carbPct = Math.round((carbKcal / denom) * 100)
         const fatPct = 100 - proteinPct - carbPct
         return (
-          <div id={`${idPrefix}daily-totals`} className="scroll-mt-8 bg-[#F4F6F9] br-card overflow-hidden">
-            <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE]">
-              <span className="text-[11px] font-black text-[#1B6DFC]">↑</span>
-              <p className="text-[10px] font-medium text-[#666D7A]">Daily Totals (sum of meals)</p>
+          <div id={`${idPrefix}daily-totals`} className="scroll-mt-8 bg-[#F2F2EF] br-card overflow-hidden">
+            <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E4E4E0]">
+              <span className="text-[11px] font-black text-[#0F1115]">↑</span>
+              <p className="text-[10px] font-medium text-[#6E747D]">Daily Totals (sum of meals)</p>
             </div>
             <div className="px-5 py-4 space-y-3">
               <div className="flex items-baseline justify-between">
                 <div>
-                  <p className="text-[22px] font-semibold text-[#141821] tracking-[-0.025em] tabular-nums">{totals.kcal.toLocaleString()} <span className="text-sm font-normal text-[#666D7A]">kcal</span></p>
-                  <p className="text-[12.5px] text-[#666D7A] mt-1 tabular-nums">
+                  <p className="text-[22px] font-semibold text-[#0F1115] tracking-[-0.025em] tabular-nums">{totals.kcal.toLocaleString()} <span className="text-sm font-normal text-[#6E747D]">kcal</span></p>
+                  <p className="text-[12.5px] text-[#6E747D] mt-1 tabular-nums">
                     {totals.protein_g}g P · {totals.carb_g}g C · {totals.fat_g}g F
                   </p>
                 </div>
                 <div className="text-right text-[12.5px]">
                   {band ? (
-                    <div className={kcalInBand ? 'text-[#1B6DFC]' : 'text-[#C82626]'}>
+                    <div className={kcalInBand ? 'text-[#0F1115]' : 'text-[#8F2D2D]'}>
                       <p className="font-semibold">{kcalInBand ? 'Inside band' : 'Outside band'}</p>
-                      <p className="text-[#666D7A] mt-0.5 tabular-nums">Target {band.low}–{band.high} kcal</p>
+                      <p className="text-[#6E747D] mt-0.5 tabular-nums">Target {band.low}–{band.high} kcal</p>
                     </div>
                   ) : (
-                    <p className="text-[#666D7A]">No band stated</p>
+                    <p className="text-[#6E747D]">No band stated</p>
                   )}
                 </div>
               </div>
               <div className="pt-1">
-                <div className="flex h-2 rounded-full overflow-hidden bg-[#EFF1F4]">
-                  <div style={{ width: `${proteinPct}%` }} className="bg-[#1B6DFC]" />
-                  <div style={{ width: `${carbPct}%` }} className="bg-[#B7791F]" />
+                <div className="flex h-2 rounded-full overflow-hidden bg-[#EDEDEA]">
+                  <div style={{ width: `${proteinPct}%` }} className="bg-[#0F1115]" />
+                  <div style={{ width: `${carbPct}%` }} className="bg-[#B06E1F]" />
                   <div style={{ width: `${fatPct}%` }} className="bg-violet-400" />
                 </div>
                 <div className="flex justify-between mt-2 text-[10px] tabular-nums">
-                  <span className="text-[#1B6DFC]">P {proteinPct}%</span>
-                  <span className="text-[#A96A12]">C {carbPct}%</span>
+                  <span className="text-[#0F1115]">P {proteinPct}%</span>
+                  <span className="text-[#B06E1F]">C {carbPct}%</span>
                   <span className="text-violet-300">F {fatPct}%</span>
                 </div>
               </div>
               {proteinAnchor > 0 && (
-                <div className="flex items-center justify-between text-[12.5px] pt-3 border-t border-[#E8EAEE]">
-                  <p className="text-[#666D7A]">Protein anchor</p>
-                  <p className={proteinOk ? 'text-[#1B6DFC]' : 'text-[#C82626]'}>
+                <div className="flex items-center justify-between text-[12.5px] pt-3 border-t border-[#E4E4E0]">
+                  <p className="text-[#6E747D]">Protein anchor</p>
+                  <p className={proteinOk ? 'text-[#0F1115]' : 'text-[#8F2D2D]'}>
                     <span className="tabular-nums">{totals.protein_g}g</span> vs anchor <span className="tabular-nums">{proteinAnchor}g</span>
                     {proteinDelta !== null && (
-                      <span className="text-[#666D7A] ml-1">({proteinDelta > 0 ? '+' : ''}{proteinDelta}g)</span>
+                      <span className="text-[#6E747D] ml-1">({proteinDelta > 0 ? '+' : ''}{proteinDelta}g)</span>
                     )}
                   </p>
                 </div>
@@ -499,11 +499,11 @@ function NutritionPlanBody({
           per-food + macro editing including a "Swap food" dropdown backed by
           the FOOD_DB reference table. */}
       <div id={`${idPrefix}meals`} className="scroll-mt-8">
-        <p className="text-[12.5px] font-medium text-[#666D7A] mb-3 px-1">Meal Structure</p>
+        <p className="text-[12.5px] font-medium text-[#6E747D] mb-3 px-1">Meal Structure</p>
         {/* What the last adjustment did. Kade, 1 Sep 2026: adjustments change
             only the named thing, and the change must be easy to spot. */}
         {lastStep && (
-          <div className="mb-3 rounded-lg border border-[#EFAFAF] bg-[#FDEDED] px-4 py-3">
+          <div className="mb-3 rounded-lg border border-[#D4817E] bg-[#FBF1F1] px-4 py-3">
             <p className="text-[12.5px] font-semibold text-[#8A1919]">{lastStep.summary}</p>
             <p className="text-[11px] text-[#8A1919] opacity-80 mt-0.5">
               Changed items are marked in red below. Everything else is unchanged.
@@ -534,23 +534,23 @@ function NutritionPlanBody({
 
       {/* Training Day Adjustments */}
       {plan.training_day_adjustments && (
-        <div id={`${idPrefix}adjustments`} className="scroll-mt-8 bg-[#F4F6F9] br-card overflow-hidden">
-          <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE]">
-            <span className="text-[11px] font-black text-[#1B6DFC]">02</span>
-            <p className="text-[10px] font-medium text-[#666D7A]">Training Day Adjustments</p>
+        <div id={`${idPrefix}adjustments`} className="scroll-mt-8 bg-[#F2F2EF] br-card overflow-hidden">
+          <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E4E4E0]">
+            <span className="text-[11px] font-black text-[#0F1115]">02</span>
+            <p className="text-[10px] font-medium text-[#6E747D]">Training Day Adjustments</p>
           </div>
           <div className="px-5 py-4 space-y-2">
             <div className="flex gap-4 text-sm">
-              <span className="text-[#666D7A]">+{plan.training_day_adjustments.carb_increase_g}g carbs</span>
+              <span className="text-[#6E747D]">+{plan.training_day_adjustments.carb_increase_g}g carbs</span>
               {plan.training_day_adjustments.fat_reduction_g > 0 && (
-                <span className="text-[#666D7A]">−{plan.training_day_adjustments.fat_reduction_g}g fat</span>
+                <span className="text-[#6E747D]">−{plan.training_day_adjustments.fat_reduction_g}g fat</span>
               )}
             </div>
             {plan.training_day_adjustments.timing_note && (
-              <p className="text-sm text-[#141821]">{clean(plan.training_day_adjustments.timing_note)}</p>
+              <p className="text-sm text-[#0F1115]">{clean(plan.training_day_adjustments.timing_note)}</p>
             )}
             {plan.training_day_adjustments.meals_affected?.length > 0 && (
-              <p className="text-[12.5px] text-[#666D7A]">Applies to: {plan.training_day_adjustments.meals_affected.join(', ')}</p>
+              <p className="text-[12.5px] text-[#6E747D]">Applies to: {plan.training_day_adjustments.meals_affected.join(', ')}</p>
             )}
           </div>
         </div>
@@ -558,16 +558,16 @@ function NutritionPlanBody({
 
       {/* Execution Rules */}
       {plan.execution_rules?.length > 0 && (
-        <div id={`${idPrefix}execution`} className="scroll-mt-8 bg-[#F4F6F9] br-card overflow-hidden">
-          <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE]">
-            <span className="text-[11px] font-black text-[#1B6DFC]">03</span>
-            <p className="text-[10px] font-medium text-[#666D7A]">Execution Rules</p>
+        <div id={`${idPrefix}execution`} className="scroll-mt-8 bg-[#F2F2EF] br-card overflow-hidden">
+          <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E4E4E0]">
+            <span className="text-[11px] font-black text-[#0F1115]">03</span>
+            <p className="text-[10px] font-medium text-[#6E747D]">Execution Rules</p>
           </div>
           <div className="px-5 py-4 space-y-2">
             {plan.execution_rules.map((rule, i) => (
               <div key={i} className="flex items-start gap-2">
-                <span className="text-[#1B6DFC] mt-0.5 shrink-0">•</span>
-                <p className="text-sm text-[#141821]">{clean(rule)}</p>
+                <span className="text-[#0F1115] mt-0.5 shrink-0">•</span>
+                <p className="text-sm text-[#0F1115]">{clean(rule)}</p>
               </div>
             ))}
           </div>
@@ -576,13 +576,13 @@ function NutritionPlanBody({
 
       {/* What Not to Change */}
       {plan.what_not_to_change?.length > 0 && (
-        <div className="bg-[#EFF1F4]/40 br-card px-5 py-4">
-          <p className="text-[10px] font-medium text-[#666D7A] mb-2">What Not to Change</p>
+        <div className="bg-[#EDEDEA]/40 br-card px-5 py-4">
+          <p className="text-[10px] font-medium text-[#6E747D] mb-2">What Not to Change</p>
           <div className="space-y-1.5">
             {plan.what_not_to_change.map((item, i) => (
               <div key={i} className="flex items-start gap-2">
-                <span className="text-[#98A0AD] mt-0.5 shrink-0">-</span>
-                <p className="text-[12.5px] text-[#666D7A]">{clean(item)}</p>
+                <span className="text-[#9CA2AB] mt-0.5 shrink-0">-</span>
+                <p className="text-[12.5px] text-[#6E747D]">{clean(item)}</p>
               </div>
             ))}
           </div>
@@ -593,18 +593,18 @@ function NutritionPlanBody({
       {plan.progression_notes && (() => {
         const { intro, points } = parseText(clean(plan.progression_notes))
         return (
-          <div id={`${idPrefix}progression`} className="scroll-mt-8 bg-[#F4F6F9] br-card overflow-hidden">
-            <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE]">
-              <span className="text-[11px] font-black text-[#1B6DFC]">04</span>
-              <p className="text-[10px] font-medium text-[#666D7A]">Progression Notes</p>
+          <div id={`${idPrefix}progression`} className="scroll-mt-8 bg-[#F2F2EF] br-card overflow-hidden">
+            <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E4E4E0]">
+              <span className="text-[11px] font-black text-[#0F1115]">04</span>
+              <p className="text-[10px] font-medium text-[#6E747D]">Progression Notes</p>
             </div>
             <div className="px-5 py-4 space-y-2">
-              {intro && <p className="text-sm text-[#141821] leading-relaxed">{intro}</p>}
+              {intro && <p className="text-sm text-[#0F1115] leading-relaxed">{intro}</p>}
               {points.length > 1 ? points.map((point, i) => (
-                <div key={i} className="flex items-start gap-2.5 border-l-2 border-[#E8EAEE] pl-3">
-                  <p className="text-sm text-[#141821] leading-relaxed">{point}</p>
+                <div key={i} className="flex items-start gap-2.5 border-l-2 border-[#E4E4E0] pl-3">
+                  <p className="text-sm text-[#0F1115] leading-relaxed">{point}</p>
                 </div>
-              )) : <p className="text-sm text-[#141821] leading-relaxed">{points[0]}</p>}
+              )) : <p className="text-sm text-[#0F1115] leading-relaxed">{points[0]}</p>}
             </div>
           </div>
         )
@@ -612,16 +612,16 @@ function NutritionPlanBody({
 
       {/* Substitutions */}
       {plan.substitution_options && (
-        <div id={`${idPrefix}substitutions`} className="scroll-mt-8 bg-[#F4F6F9] br-card p-5">
-          <p className="text-[10px] font-medium text-[#666D7A] mb-3">Food Substitutions</p>
+        <div id={`${idPrefix}substitutions`} className="scroll-mt-8 bg-[#F2F2EF] br-card p-5">
+          <p className="text-[10px] font-medium text-[#6E747D] mb-3">Food Substitutions</p>
           <div className="grid grid-cols-3 gap-4">
             {(['protein', 'carbohydrate', 'fat'] as const).map(cat => (
               plan.substitution_options![cat]?.length > 0 && (
                 <div key={cat}>
-                  <p className="text-[10px] font-medium text-[#98A0AD] mb-2 capitalize">{cat}</p>
+                  <p className="text-[10px] font-medium text-[#9CA2AB] mb-2 capitalize">{cat}</p>
                   <div className="space-y-1">
                     {plan.substitution_options![cat].map((item, i) => (
-                      <p key={i} className="text-[12.5px] text-[#666D7A]">• {clean(item)}</p>
+                      <p key={i} className="text-[12.5px] text-[#6E747D]">• {clean(item)}</p>
                     ))}
                   </div>
                 </div>
@@ -718,7 +718,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
   return (
     <div className="max-w-[980px]">
       <PageHeader
-        eyebrow={<Link href={`/dashboard/clients/${id}`} className="hover:text-[#1B6DFC] transition-colors">{client.name}</Link>}
+        eyebrow={<Link href={`/dashboard/clients/${id}`} className="hover:text-[#0F1115] transition-colors">{client.name}</Link>}
         title="Nutrition Plan"
         cta={<>
           {activePlan && (
@@ -753,26 +753,26 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
       {/* Daily meal adherence — last 7 days */}
       {activePlan && mealAdherence && mealAdherence.days > 0 && (
         <div
-          className="mb-8 rounded-xl border border-[#E8EAEE] p-4"
+          className="mb-8 rounded-xl border border-[#E4E4E0] p-4"
           style={{
-            background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
+            background: 'linear-gradient(180deg,#FFFFFF,#FAFAF8)',
             boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
           }}
         >
           <div className="flex items-center justify-between mb-2.5">
-            <p className="text-[12.5px] text-[#666D7A]">Meal adherence, last 7 days</p>
-            <span className="text-[13px] font-semibold text-[#141821] tabular-nums">{mealAdherence.pct}% on plan</span>
+            <p className="text-[12.5px] text-[#6E747D]">Meal adherence, last 7 days</p>
+            <span className="text-[13px] font-semibold text-[#0F1115] tabular-nums">{mealAdherence.pct}% on plan</span>
           </div>
-          <div className="flex h-2 rounded-full overflow-hidden bg-[#EFF1F4]">
-            <div className="bg-[#1B6DFC]" style={{ width: `${mealAdherence.total ? (mealAdherence.ate / mealAdherence.total) * 100 : 0}%` }} />
-            <div className="bg-[#C08A2D]" style={{ width: `${mealAdherence.total ? (mealAdherence.swapped / mealAdherence.total) * 100 : 0}%` }} />
-            <div className="bg-[#D4D4D4]" style={{ width: `${mealAdherence.total ? (mealAdherence.skipped / mealAdherence.total) * 100 : 0}%` }} />
+          <div className="flex h-2 rounded-full overflow-hidden bg-[#EDEDEA]">
+            <div className="bg-[#0F1115]" style={{ width: `${mealAdherence.total ? (mealAdherence.ate / mealAdherence.total) * 100 : 0}%` }} />
+            <div className="bg-[#B06E1F]" style={{ width: `${mealAdherence.total ? (mealAdherence.swapped / mealAdherence.total) * 100 : 0}%` }} />
+            <div className="bg-[#E4E4E0]" style={{ width: `${mealAdherence.total ? (mealAdherence.skipped / mealAdherence.total) * 100 : 0}%` }} />
           </div>
-          <div className="flex gap-4 mt-2.5 text-[12px] text-[#666D7A]">
-            <span><span className="font-semibold text-[#1B6DFC] tabular-nums">{mealAdherence.ate}</span> ate</span>
-            <span><span className="font-semibold text-[#A96A12] tabular-nums">{mealAdherence.swapped}</span> swapped</span>
-            <span><span className="font-semibold text-[#666D7A] tabular-nums">{mealAdherence.skipped}</span> skipped</span>
-            <span className="ml-auto text-[#98A0AD]">{mealAdherence.days} day{mealAdherence.days === 1 ? '' : 's'} logged</span>
+          <div className="flex gap-4 mt-2.5 text-[12px] text-[#6E747D]">
+            <span><span className="font-semibold text-[#0F1115] tabular-nums">{mealAdherence.ate}</span> ate</span>
+            <span><span className="font-semibold text-[#B06E1F] tabular-nums">{mealAdherence.swapped}</span> swapped</span>
+            <span><span className="font-semibold text-[#6E747D] tabular-nums">{mealAdherence.skipped}</span> skipped</span>
+            <span className="ml-auto text-[#9CA2AB]">{mealAdherence.days} day{mealAdherence.days === 1 ? '' : 's'} logged</span>
           </div>
         </div>
       )}
@@ -781,7 +781,7 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
       {draftPlan && (
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-[12.5px] font-medium px-2.5 py-1 rounded-full bg-[#FDF6E9] border border-[#A96A12] text-[#A96A12]">
+            <span className="text-[12.5px] font-medium px-2.5 py-1 rounded-full bg-[#FDF8F1] border border-[#B06E1F] text-[#B06E1F]">
               Draft - Pending Approval
             </span>
             <div className="flex items-center gap-2">
@@ -799,15 +799,15 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
 
       {/* Rebuild alert */}
       {activePlan?.current_direction === 'rebuild' && (
-        <div className="mb-4 flex items-start gap-3 bg-[#FDEDED] border border-[#F5C9C9]/60 rounded-xl px-4 py-3">
-          <svg className="w-4 h-4 text-[#C82626] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <div className="mb-4 flex items-start gap-3 bg-[#FBF1F1] border border-[#E8C9C9]/60 rounded-xl px-4 py-3">
+          <svg className="w-4 h-4 text-[#8F2D2D] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
           </svg>
           <div className="flex-1">
-            <p className="text-sm font-semibold text-[#C82626]">Client is struggling with nutrition</p>
-            <p className="text-[12.5px] text-[#C82626]/70 mt-0.5">Latest check-in direction is Rebuild. Consider adjusting the plan or generating a new one.</p>
+            <p className="text-sm font-semibold text-[#8F2D2D]">Client is struggling with nutrition</p>
+            <p className="text-[12.5px] text-[#8F2D2D]/70 mt-0.5">Latest check-in direction is Rebuild. Consider adjusting the plan or generating a new one.</p>
           </div>
-          <Link href="./nutrition/suggest" className="text-[12.5px] font-semibold text-[#C82626] hover:text-[#C82626] shrink-0 mt-0.5">Regenerate →</Link>
+          <Link href="./nutrition/suggest" className="text-[12.5px] font-semibold text-[#8F2D2D] hover:text-[#8F2D2D] shrink-0 mt-0.5">Regenerate →</Link>
         </div>
       )}
 
@@ -816,9 +816,9 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
         <div>
           {draftPlan && (
             <div className="flex items-center gap-3 mb-4 mt-2">
-              <div className="flex-1 h-px bg-[#EFF1F4]" />
-              <p className="text-[12.5px] text-[#98A0AD]">Current Active Plan</p>
-              <div className="flex-1 h-px bg-[#EFF1F4]" />
+              <div className="flex-1 h-px bg-[#EDEDEA]" />
+              <p className="text-[12.5px] text-[#9CA2AB]">Current Active Plan</p>
+              <div className="flex-1 h-px bg-[#EDEDEA]" />
             </div>
           )}
 
@@ -867,13 +867,13 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
           {/* Archived */}
           {archivedPlans.length > 0 && (
             <div className="mt-6">
-              <p className="text-[#666D7A] text-sm mb-3">Previous Plans ({archivedPlans.length})</p>
+              <p className="text-[#6E747D] text-sm mb-3">Previous Plans ({archivedPlans.length})</p>
               <div className="space-y-2">
                 {archivedPlans.map(p => (
-                  <div key={p.id} className="bg-[#F4F6F9]/50 border border-[#E8EAEE] rounded-lg px-4 py-3 flex items-center justify-between">
-                    <span className="text-sm text-[#666D7A] opacity-70">{p.plan_name}</span>
+                  <div key={p.id} className="bg-[#F2F2EF]/50 border border-[#E4E4E0] rounded-lg px-4 py-3 flex items-center justify-between">
+                    <span className="text-sm text-[#6E747D] opacity-70">{p.plan_name}</span>
                     <div className="flex items-center gap-3">
-                      <span className="text-[12.5px] text-[#98A0AD]">
+                      <span className="text-[12.5px] text-[#9CA2AB]">
                         {new Date(p.generated_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
                         {' · '}<span className="capitalize">{p.entry_state.replace(/_/g, ' ')}</span>
                       </span>
@@ -890,11 +890,11 @@ export default async function NutritionPage({ params }: { params: Promise<{ id: 
           )}
         </div>
       ) : !draftPlan ? (
-        <div className="text-center py-16 border-2 border-dashed border-[#E8EAEE] rounded-xl">
-          <p className="text-[#666D7A] mb-4">No nutrition plan generated yet.</p>
+        <div className="text-center py-16 border-2 border-dashed border-[#E4E4E0] rounded-xl">
+          <p className="text-[#6E747D] mb-4">No nutrition plan generated yet.</p>
           <Link
             href={`/dashboard/clients/${id}/nutrition/suggest`}
-            className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#CFD4DC] hover:text-[#141821] transition-colors"
+            className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E4E4E0] text-[#6E747D] rounded-lg hover:border-[#DCDCD7] hover:text-[#0F1115] transition-colors"
           >
             Generate Plan
           </Link>

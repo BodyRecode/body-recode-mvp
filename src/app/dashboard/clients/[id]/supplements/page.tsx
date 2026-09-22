@@ -61,13 +61,13 @@ export default async function CoachSupplementsPage({
   return (
     <div className="max-w-[980px]">
       <PageHeader
-        eyebrow={<Link href={`/dashboard/clients/${id}`} className="hover:text-[#1B6DFC] transition-colors">{client.name}</Link>}
+        eyebrow={<Link href={`/dashboard/clients/${id}`} className="hover:text-[#0F1115] transition-colors">{client.name}</Link>}
         title="Supplement stack"
         subtitle={`Layer 3 coach-assigned supplements for ${client.name}. Assign a substance from the library - ${client.name} sees all three tiers (Essential / Enhanced / Elite) and picks what fits their budget and commitment.`}
       />
       <ClientPageNav clientId={id} />
-      <p className="text-[12.5px] text-[#98A0AD] -mt-2 mb-6 leading-relaxed">
-        The substance library lives in code. Research reports and doctrine rationale sit at <code className="bg-[#F4F6F9] px-1 rounded">~/Dropbox/01_BODY_RECODE/00_PLAYBOOK/supplement_research/</code>; add substances in <code className="bg-[#F4F6F9] px-1 rounded">src/lib/supplement-substances-seed.ts</code>.
+      <p className="text-[12.5px] text-[#9CA2AB] -mt-2 mb-6 leading-relaxed">
+        The substance library lives in code. Research reports and doctrine rationale sit at <code className="bg-[#F2F2EF] px-1 rounded">~/Dropbox/01_BODY_RECODE/00_PLAYBOOK/supplement_research/</code>; add substances in <code className="bg-[#F2F2EF] px-1 rounded">src/lib/supplement-substances-seed.ts</code>.
       </p>
 
       <SuggestionPanel

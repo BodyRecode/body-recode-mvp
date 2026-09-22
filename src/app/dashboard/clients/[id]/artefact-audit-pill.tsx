@@ -24,16 +24,16 @@ export default function ArtefactAuditPill({ audit }: { audit: ArtefactAuditResul
 
   if (!audit) {
     return (
-      <span className="inline-flex items-center gap-1 text-[11.5px] font-medium px-1.5 py-0.5 rounded bg-[#F3F3F0] border border-[#E8EAEE] text-[#98A0AD]">
+      <span className="inline-flex items-center gap-1 text-[11.5px] font-medium px-1.5 py-0.5 rounded bg-[#F2F2EF] border border-[#E4E4E0] text-[#9CA2AB]">
         Not published
       </span>
     )
   }
 
   const statusColours: Record<typeof audit.status, { border: string; bg: string; text: string; icon: string }> = {
-    green: { border: 'border-[#CAE7D5]', bg: 'bg-[#EDF8F1]', text: 'text-[#177245]', icon: 'text-[#177245]' },
-    amber: { border: 'border-[#F1DEB8]', bg: 'bg-[#FDF6E9]', text: 'text-[#A96A12]', icon: 'text-[#A96A12]' },
-    red:   { border: 'border-[#F5C9C9]',   bg: 'bg-[#FDEDED]',   text: 'text-[#C82626]',   icon: 'text-[#C82626]' },
+    green: { border: 'border-[#EDEDEA]', bg: 'bg-[#F2F2EF]', text: 'text-[#2B5E45]', icon: 'text-[#2B5E45]' },
+    amber: { border: 'border-[#EADCC4]', bg: 'bg-[#FDF8F1]', text: 'text-[#B06E1F]', icon: 'text-[#B06E1F]' },
+    red:   { border: 'border-[#E8C9C9]',   bg: 'bg-[#FBF1F1]',   text: 'text-[#8F2D2D]',   icon: 'text-[#8F2D2D]' },
   }
   const s = statusColours[audit.status]
   const Icon = audit.status === 'green' ? CheckCircle : audit.status === 'amber' ? AlertCircle : AlertTriangle
@@ -57,7 +57,7 @@ export default function ArtefactAuditPill({ audit }: { audit: ArtefactAuditResul
       </button>
 
       {expanded && (
-        <div className={`mt-1 rounded-md border ${s.border} ${s.bg} px-3 py-2 text-[11px] text-[#43474F] max-w-md space-y-2`}>
+        <div className={`mt-1 rounded-md border ${s.border} ${s.bg} px-3 py-2 text-[11px] text-[#4A4F57] max-w-md space-y-2`}>
           <DetailRow
             label="Doctrine version"
             value={audit.storedDoctrineVersion
@@ -72,11 +72,11 @@ export default function ArtefactAuditPill({ audit }: { audit: ArtefactAuditResul
           />
           {audit.issues.length > 0 && (
             <div>
-              <p className="text-[11.5px] font-medium text-[#666D7A] mb-1">Validator findings</p>
+              <p className="text-[11.5px] font-medium text-[#6E747D] mb-1">Validator findings</p>
               <ul className="space-y-1">
                 {audit.issues.map((issue, i) => (
                   <li key={i} className="flex items-start gap-2 leading-snug">
-                    <span className={`mt-0.5 inline-block w-1.5 h-1.5 rounded-full shrink-0 ${issue.severity === 'error' ? 'bg-[#DC2626]' : 'bg-[#B7791F]'}`} />
+                    <span className={`mt-0.5 inline-block w-1.5 h-1.5 rounded-full shrink-0 ${issue.severity === 'error' ? 'bg-[#8F2D2D]' : 'bg-[#B06E1F]'}`} />
                     <span><span className="font-mono text-[10px]">{issue.code}</span> · {issue.message}</span>
                   </li>
                 ))}
@@ -84,7 +84,7 @@ export default function ArtefactAuditPill({ audit }: { audit: ArtefactAuditResul
             </div>
           )}
           {audit.publishedAt && (
-            <p className="text-[10px] text-[#98A0AD]">
+            <p className="text-[10px] text-[#9CA2AB]">
               Published {new Date(audit.publishedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
             </p>
           )}
@@ -97,10 +97,10 @@ export default function ArtefactAuditPill({ audit }: { audit: ArtefactAuditResul
 function DetailRow({ label, value, ok }: { label: string; value: string; ok: boolean }) {
   return (
     <div className="flex items-start gap-2">
-      <span className={`mt-0.5 inline-block w-1.5 h-1.5 rounded-full shrink-0 ${ok ? 'bg-[#22A05A]' : 'bg-[#B7791F]'}`} />
+      <span className={`mt-0.5 inline-block w-1.5 h-1.5 rounded-full shrink-0 ${ok ? 'bg-[#2B5E45]' : 'bg-[#B06E1F]'}`} />
       <div className="min-w-0">
-        <p className="text-[11.5px] font-medium text-[#666D7A]">{label}</p>
-        <p className="text-[11px] text-[#141821] break-words">{value}</p>
+        <p className="text-[11.5px] font-medium text-[#6E747D]">{label}</p>
+        <p className="text-[11px] text-[#0F1115] break-words">{value}</p>
       </div>
     </div>
   )

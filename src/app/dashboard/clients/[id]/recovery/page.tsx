@@ -99,12 +99,12 @@ export default async function CoachRecoveryPage({
   return (
     <div className="max-w-[980px]">
       <PageHeader
-        eyebrow={<Link href={`/dashboard/clients/${id}`} className="hover:text-[#1B6DFC] transition-colors">{client.name}</Link>}
+        eyebrow={<Link href={`/dashboard/clients/${id}`} className="hover:text-[#0F1115] transition-colors">{client.name}</Link>}
         title="Recovery Protocols"
         subtitle={`Layer 3 coach-assigned recovery protocols for ${client.name}. First tag what equipment they have access to at home and their gym. Then assign protocols from the filtered library - the client only sees what you assign.`}
       />
       <ClientPageNav clientId={id} />
-      <p className="text-[12.5px] text-[#98A0AD] -mt-2 mb-6 leading-relaxed">
+      <p className="text-[12.5px] text-[#9CA2AB] -mt-2 mb-6 leading-relaxed">
         Separate from the RRS constraint governor, which reads signals and clamps programs. This surface is the prescription tool: RRS state can inform which protocols to assign, but assigns nothing itself.
       </p>
 

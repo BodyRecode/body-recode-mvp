@@ -413,9 +413,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
   } | null)?.rationale_summary ?? null
 
   const statusColour = {
-    pending: 'text-[#666D7A] bg-[#F4F6F9] border-[#E8EAEE]',
-    started: 'text-[#A96A12] bg-[#FDF6E9] border-[#F1DEB8]',
-    complete: 'text-[#177245] bg-[#EDF8F1] border-[#CAE7D5]',
+    pending: 'text-[#6E747D] bg-[#F2F2EF] border-[#E4E4E0]',
+    started: 'text-[#B06E1F] bg-[#FDF8F1] border-[#EADCC4]',
+    complete: 'text-[#2B5E45] bg-[#F2F2EF] border-[#EDEDEA]',
   }
 
   // ── Per-section defaultOpen flags ──────────────────────────────────────
@@ -482,7 +482,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       <div id="overview" className="scroll-mt-8">
         <Link
           href="/dashboard/coaching"
-          className="xl:hidden inline-flex items-center gap-1 text-[12px] text-[#98A0AD] hover:text-[#141821] transition-colors mb-4"
+          className="xl:hidden inline-flex items-center gap-1 text-[12px] text-[#9CA2AB] hover:text-[#0F1115] transition-colors mb-4"
         >
           <ChevronLeft size={13} /> All clients
         </Link>
@@ -495,11 +495,11 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           }
           subtitle={
             <span className="inline-flex items-center gap-2.5 flex-wrap">
-              <span className="text-[#666D7A]">Added {formatDate(client.created_at)}</span>
+              <span className="text-[#6E747D]">Added {formatDate(client.created_at)}</span>
               {client.email && (
                 <>
-                  <span className="text-[#E8EAEE]">·</span>
-                  <a href={`mailto:${client.email}`} className="text-[#666D7A] hover:text-[#1B6DFC] transition-colors">{client.email}</a>
+                  <span className="text-[#E4E4E0]">·</span>
+                  <a href={`mailto:${client.email}`} className="text-[#6E747D] hover:text-[#0F1115] transition-colors">{client.email}</a>
                 </>
               )}
               <EditClientPhone clientId={client.id} currentPhone={client.phone ?? null} />
@@ -525,8 +525,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             href={`/dashboard/clients/${id}/recovery`}
             className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-[12px] transition-colors ${
               rrsChip.sbst_remove
-                ? 'border-[#EFAFAF] bg-[#FDEDED] text-[#8A1919] hover:bg-[#FBDCDC]'
-                : 'border-[#E5C98F] bg-[#FDF6E9] text-[#8A5A14] hover:bg-[#FAEFD8]'
+                ? 'border-[#D4817E] bg-[#FBF1F1] text-[#8A1919] hover:bg-[#FBF1F1]'
+                : 'border-[#EADCC4] bg-[#FDF8F1] text-[#8A5514] hover:bg-[#FDF8F1]'
             }`}
           >
             <AlertTriangleIcon size={14} className="shrink-0" />
@@ -549,7 +549,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           slice: additive, reads existing data). Full tabbed restructure to follow post-launch. */}
       {(() => {
         const dot = (v?: string | null) =>
-          v === 'Green' ? 'bg-[#22A05A]' : v === 'Amber' ? 'bg-[#B7791F]' : v === 'Red' ? 'bg-[#DC2626]' : 'bg-[#E8EAEE]'
+          v === 'Green' ? 'bg-[#2B5E45]' : v === 'Amber' ? 'bg-[#B06E1F]' : v === 'Red' ? 'bg-[#8F2D2D]' : 'bg-[#E4E4E0]'
         const READY = [
           { label: 'Capacity', v: activeCffs?.exposure_readiness_capacity as string | null | undefined },
           { label: 'Schedule', v: activeCffs?.exposure_readiness_schedule as string | null | undefined },
@@ -574,7 +574,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               <div className="flex flex-wrap items-center gap-2">
                 <Pill accent="ink">{bodyState.label}</Pill>
                 {bodyState.reScored && (
-                  <span className="text-[11px] text-[#666D7A]">
+                  <span className="text-[11px] text-[#6E747D]">
                     re-scored{bodyState.blockName ? ` at the end of ${bodyState.blockName}` : ''} · foundational read said {bodyState.foundational}
                   </span>
                 )}
@@ -598,7 +598,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 {!hasActiveProgram && <Pill accent="neutral">No active plan</Pill>}
                 {/* Readiness reads as one instrument with four needles, not as
                     four unrelated chips, so the four sit in a single control. */}
-                <span className="inline-flex items-center gap-3 text-[11.5px] text-[#666D7A] pl-2.5 pr-3 py-[3px] rounded-full border border-[#E8EAEE] bg-[linear-gradient(180deg,#FFFFFF,#FAFBFC)] shadow-[0_1px_2px_rgba(16,24,40,0.05)]">
+                <span className="inline-flex items-center gap-3 text-[11.5px] text-[#6E747D] pl-2.5 pr-3 py-[3px] rounded-full border border-[#E4E4E0] bg-[linear-gradient(180deg,#FFFFFF,#FAFAF8)] shadow-[0_1px_2px_rgba(16,24,40,0.05)]">
                   {READY.map(r => (
                     <span key={r.label} className="inline-flex items-center gap-1.5" title={r.v ? `${r.label}: ${r.v}` : `${r.label}: not read yet`}>
                       <span className={`w-[7px] h-[7px] rounded-full ${dot(r.v)}`} /> {r.label}
@@ -620,25 +620,25 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   <span
                     className="w-[30px] h-[30px] rounded-lg shrink-0 flex items-center justify-center"
                     style={{
-                      color: allClear ? '#177245' : '#1B6DFC',
+                      color: allClear ? '#2B5E45' : '#0F1115',
                       background: allClear ? 'rgba(23,114,69,0.09)' : 'rgba(27,109,252,0.10)',
-                      boxShadow: `inset 0 0 0 1px ${allClear ? '#CAE7D5' : '#B5CFFC'}`,
+                      boxShadow: `inset 0 0 0 1px ${allClear ? '#EDEDEA' : '#DCDCD7'}`,
                     }}
                     aria-hidden
                   >
                     {allClear ? <CheckCircle2 size={15} /> : <ArrowRight size={15} />}
                   </span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[12px] text-[#98A0AD] mb-0.5">
+                    <p className="text-[12px] text-[#9CA2AB] mb-0.5">
                       {allClear ? 'Nothing waiting' : 'Next step'}
                     </p>
-                    <p className="text-[15px] font-semibold text-[#141821] tracking-[-0.015em] leading-snug">{next.t}</p>
-                    <p className="text-[13px] text-[#666D7A] mt-0.5">{next.s}</p>
+                    <p className="text-[15px] font-semibold text-[#0F1115] tracking-[-0.015em] leading-snug">{next.t}</p>
+                    <p className="text-[13px] text-[#6E747D] mt-0.5">{next.s}</p>
                   </div>
                   {next.href && (
                     <Link
                       href={next.href}
-                      className="shrink-0 inline-flex items-center gap-1.5 text-[12.5px] font-medium px-3.5 py-[7px] rounded-lg text-white border border-[#1560E0] bg-[linear-gradient(180deg,#3B82F9,#1B6DFC)] hover:bg-[linear-gradient(180deg,#2E77F7,#1560E0)] shadow-[0_1px_2px_rgba(27,109,252,0.4),inset_0_1px_0_rgba(255,255,255,0.28)] transition-all active:translate-y-[0.5px]"
+                      className="shrink-0 inline-flex items-center gap-1.5 text-[12.5px] font-medium px-3.5 py-[7px] rounded-lg text-white border border-[#000000] bg-[linear-gradient(180deg,#242932,#0F1115)] hover:bg-[linear-gradient(180deg,#242932,#000000)] shadow-[0_1px_2px_rgba(27,109,252,0.4),inset_0_1px_0_rgba(255,255,255,0.28)] transition-all active:translate-y-[0.5px]"
                     >
                       Go
                       <ChevronRight size={14} />
@@ -661,10 +661,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         return (
           <Link
             href={`/dashboard/clients/${id}/program`}
-            className="block rounded-xl p-4 mb-4 border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] hover:border-[#D9B976] transition-colors"
+            className="block rounded-xl p-4 mb-4 border border-[#EADCC4] bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] hover:border-[#EADCC4] transition-colors"
           >
-            <p className="text-[12px] font-medium text-[#A96A12] mb-1">Pending Progress Read</p>
-            <p className="text-sm text-[#8A5A14]">
+            <p className="text-[12px] font-medium text-[#B06E1F] mb-1">Pending Progress Read</p>
+            <p className="text-sm text-[#8A5514]">
               <span className="font-semibold">{pendingTrajectory.block_name}</span> ended{endedAt ? ` around ${endedAt}` : ''} but its Progress Read was never generated. Click through to generate it now →
             </p>
           </Link>
@@ -678,8 +678,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       {canPrescribe && weekStrip && weekStrip.length > 0 && (
         <div className="br-card px-5 py-4 mb-4 flex items-start justify-between gap-5 flex-wrap">
           <div>
-            <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em] mb-0.5">Last seven days</p>
-            <p className="text-[12.5px] text-[#666D7A] mb-3">
+            <p className="text-[13.5px] font-semibold text-[#0F1115] tracking-[-0.015em] mb-0.5">Last seven days</p>
+            <p className="text-[12.5px] text-[#6E747D] mb-3">
               Meal logging fills the square. A logged session is the green dot, and only ever adds.
             </p>
             <WeekStrip days={weekStrip} showInitials />
@@ -696,14 +696,14 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       {/* Deliberate Start Window */}
       <div className="br-card p-5 mb-4"
         style={{
-          background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
+          background: 'linear-gradient(180deg,#FFFFFF,#FAFAF8)',
           boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
         }}>
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em] mb-1">Coaching Start Date</p>
+            <p className="text-[13.5px] font-semibold text-[#0F1115] tracking-[-0.015em] mb-1">Coaching Start Date</p>
             {client.coaching_started_at ? (
-              <p className="text-sm text-[#43474F]">
+              <p className="text-sm text-[#4A4F57]">
                 {(() => {
                   const start = new Date(client.coaching_started_at)
                   const today = new Date()
@@ -716,7 +716,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 })()}
               </p>
             ) : (
-              <p className="text-sm text-[#98A0AD]">Not set - set a start date to begin the Deliberate Start Window</p>
+              <p className="text-sm text-[#9CA2AB]">Not set - set a start date to begin the Deliberate Start Window</p>
             )}
           </div>
           <SetStartDate clientId={client.id} currentDate={client.coaching_started_at} />
@@ -726,14 +726,14 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       {/* Fixed Session Slot */}
       <div className="br-card p-5 mb-4"
         style={{
-          background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
+          background: 'linear-gradient(180deg,#FFFFFF,#FAFAF8)',
           boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
         }}>
         <div className="flex items-center justify-between mb-3">
-          <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Face-to-Face Session</p>
+          <p className="text-[13.5px] font-semibold text-[#0F1115] tracking-[-0.015em]">Face-to-Face Session</p>
           <Link
             href={`/dashboard/clients/${id}/fixed-session`}
-            className="text-[12.5px] text-[#1B6DFC] hover:text-[#1056D6] transition-colors"
+            className="text-[12.5px] text-[#0F1115] hover:text-[#000000] transition-colors"
           >
             {(clientFixedSlots ?? []).length > 0 ? 'Manage →' : 'Set up →'}
           </Link>
@@ -742,36 +742,36 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           <div className="space-y-1">
             {(clientFixedSlots ?? []).map(slot => (
               <div key={slot.id}>
-                <span className="text-sm text-[#141821] font-medium">
+                <span className="text-sm text-[#0F1115] font-medium">
                   {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][slot.day_of_week]}s
                 </span>
-                <span className="text-[12.5px] text-[#98A0AD] ml-2">
+                <span className="text-[12.5px] text-[#9CA2AB] ml-2">
                   · {new Date(`1970-01-01T${slot.session_time}`).toLocaleTimeString('en-AU', { hour: 'numeric', minute: '2-digit', hour12: true })} · {slot.duration_minutes} min
                 </span>
               </div>
             ))}
           </div>
         ) : (
-          <p className="text-sm text-[#43474F]">No fixed slots assigned yet.</p>
+          <p className="text-sm text-[#4A4F57]">No fixed slots assigned yet.</p>
         )}
         {(upcomingClientSessions ?? []).length > 0 && (
-          <div className="mt-4 pt-4 border-t border-[#E8EAEE] space-y-2">
-            <p className="text-[12.5px] text-[#43474F] mb-2">Booked sessions</p>
+          <div className="mt-4 pt-4 border-t border-[#E4E4E0] space-y-2">
+            <p className="text-[12.5px] text-[#4A4F57] mb-2">Booked sessions</p>
             {(upcomingClientSessions ?? []).map(s => (
               <div key={s.id} className="flex items-center justify-between">
                 <div>
-                  <span className="text-[12.5px] text-[#43474F]">
+                  <span className="text-[12.5px] text-[#4A4F57]">
                     {new Date(s.scheduled_at).toLocaleDateString('en-AU', {
                       timeZone: 'Australia/Brisbane', weekday: 'short', day: 'numeric', month: 'short',
                     })}
                   </span>
-                  <span className="text-[12.5px] text-[#43474F] ml-2">
+                  <span className="text-[12.5px] text-[#4A4F57] ml-2">
                     {new Date(s.scheduled_at).toLocaleTimeString('en-AU', {
                       timeZone: 'Australia/Brisbane', hour: 'numeric', minute: '2-digit', hour12: true,
                     })} · {s.duration_minutes} min
                   </span>
                 </div>
-                <span className={`text-xs ${s.confirmed_at ? 'text-[#1B6DFC]' : 'text-[#98A0AD]'}`}>
+                <span className={`text-xs ${s.confirmed_at ? 'text-[#0F1115]' : 'text-[#9CA2AB]'}`}>
                   {s.confirmed_at ? 'Confirmed' : 'Pending'}
                 </span>
               </div>
@@ -783,18 +783,18 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       {/* Package */}
       <div className="br-card p-5 mb-4"
         style={{
-          background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
+          background: 'linear-gradient(180deg,#FFFFFF,#FAFAF8)',
           boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
         }}>
         <div className="flex items-center justify-between mb-3">
-          <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Coaching Package</p>
+          <p className="text-[13.5px] font-semibold text-[#0F1115] tracking-[-0.015em]">Coaching Package</p>
           {client.subscription_active ? (
-            <span className="text-[12.5px] font-semibold px-2.5 py-1 rounded-full border border-[#B5CFFC] text-[#1B6DFC] bg-[rgba(27,109,252,0.08)]">
+            <span className="text-[12.5px] font-semibold px-2.5 py-1 rounded-full border border-[#DCDCD7] text-[#0F1115] bg-[rgba(27,109,252,0.08)]">
               Subscription Active
             </span>
           ) : (
             <div className="flex items-center gap-2">
-              <span className="text-[12.5px] font-semibold px-2.5 py-1 rounded-full border border-[#E8EAEE] text-[#98A0AD]">
+              <span className="text-[12.5px] font-semibold px-2.5 py-1 rounded-full border border-[#E4E4E0] text-[#9CA2AB]">
                 Awaiting Payment
               </span>
               <OverrideSubscriptionButton clientId={client.id} />
@@ -814,8 +814,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           const isUpgradeCandidate = TWO_SESSION_PACKAGE_VALUES.includes(client.package) && (weekNumber ?? 0) >= 8
           if (!isUpgradeCandidate) return null
           return (
-            <div className="mt-3 pt-3 border-t border-[#E8EAEE] flex items-center justify-between">
-              <p className="text-[12.5px] text-[#1B6DFC]">Eligible for 2x to 3x upgrade (Week {weekNumber})</p>
+            <div className="mt-3 pt-3 border-t border-[#E4E4E0] flex items-center justify-between">
+              <p className="text-[12.5px] text-[#0F1115]">Eligible for 2x to 3x upgrade (Week {weekNumber})</p>
               <Link
                 href={`/companion/${id}/upgrade`}
                 className="br-btn"
@@ -833,11 +833,11 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       {/* Onboarding status */}
       <div className="br-card p-5 mb-4"
         style={{
-          background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
+          background: 'linear-gradient(180deg,#FFFFFF,#FAFAF8)',
           boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
         }}>
         <div className="flex items-center justify-between mb-3">
-          <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Onboarding</p>
+          <p className="text-[13.5px] font-semibold text-[#0F1115] tracking-[-0.015em]">Onboarding</p>
           <div className="flex items-center gap-2 flex-wrap">
             <SendPortalEmailButton clientId={client.id} />
             <SendPortalOrientationButton clientId={client.id} />
@@ -855,11 +855,11 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             { label: (bloodPanels?.length ?? 0) > 0 ? 'Blood Work' : (client.bloodwork_arranged_at ? 'Blood Work (arranging)' : 'Blood Work'), done: (bloodPanels?.length ?? 0) > 0 || !!client.bloodwork_arranged_at, href: null },
           ].map(item => (
             <div key={item.label} className="flex items-center gap-2">
-              <div className={`w-2 h-2 rounded-full flex-shrink-0 ${item.done ? 'bg-[#1B6DFC]' : 'bg-[#EFF1F4]'}`} />
+              <div className={`w-2 h-2 rounded-full flex-shrink-0 ${item.done ? 'bg-[#0F1115]' : 'bg-[#EDEDEA]'}`} />
               {item.href ? (
-                <Link href={item.href} className="text-[12.5px] text-[#1B6DFC] hover:text-[#1056D6] transition-colors">{item.label} →</Link>
+                <Link href={item.href} className="text-[12.5px] text-[#0F1115] hover:text-[#000000] transition-colors">{item.label} →</Link>
               ) : (
-                <span className={`text-xs ${item.done ? 'text-[#43474F]' : 'text-[#43474F]'}`}>{item.label}</span>
+                <span className={`text-xs ${item.done ? 'text-[#4A4F57]' : 'text-[#4A4F57]'}`}>{item.label}</span>
               )}
             </div>
           ))}
@@ -873,27 +873,27 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           const clearanceEmail = communications.find(c => c.kind === 'medical_clearance_required')
           const emailSentAt = clearanceEmail?.sent_at as string | undefined
           return (
-            <div className="mt-3 pt-3 border-t border-[#E8EAEE] space-y-2">
+            <div className="mt-3 pt-3 border-t border-[#E4E4E0] space-y-2">
               <div className="flex items-center justify-between">
                 {client.medical_clearance_received_at ? (
-                  <p className="text-[12.5px] text-[#1B6DFC]">Medical clearance received</p>
+                  <p className="text-[12.5px] text-[#0F1115]">Medical clearance received</p>
                 ) : (
                   <>
-                    <p className="text-[12.5px] text-[#A96A12]">Medical clearance required</p>
-                    <Link href={`/dashboard/clients/${id}/medical-clearance`} className="text-[12.5px] text-[#A96A12] hover:text-[#A96A12] underline transition-colors">Manage →</Link>
+                    <p className="text-[12.5px] text-[#B06E1F]">Medical clearance required</p>
+                    <Link href={`/dashboard/clients/${id}/medical-clearance`} className="text-[12.5px] text-[#B06E1F] hover:text-[#B06E1F] underline transition-colors">Manage →</Link>
                   </>
                 )}
               </div>
               {!client.medical_clearance_received_at && (
                 <div className="flex items-center gap-2">
-                  <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${emailSentAt ? 'bg-[#1B6DFC]' : 'bg-[#DC2626]'}`} />
+                  <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${emailSentAt ? 'bg-[#0F1115]' : 'bg-[#8F2D2D]'}`} />
                   {emailSentAt ? (
-                    <p className="text-[10px] text-[#666D7A]" title={new Date(emailSentAt).toLocaleString('en-AU')}>
+                    <p className="text-[10px] text-[#6E747D]" title={new Date(emailSentAt).toLocaleString('en-AU')}>
                       Client auto-email sent {new Date(emailSentAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
                     </p>
                   ) : (
-                    <p className="text-[10px] text-[#C82626]">
-                      Client auto-email not sent. Run <code className="bg-[#EFF1F4] px-1 rounded">scripts/send-clearance-required-email.ts {client.id}</code> or nudge manually.
+                    <p className="text-[10px] text-[#8F2D2D]">
+                      Client auto-email not sent. Run <code className="bg-[#EDEDEA] px-1 rounded">scripts/send-clearance-required-email.ts {client.id}</code> or nudge manually.
                     </p>
                   )}
                 </div>
@@ -905,49 +905,49 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
       {/* Needs attention: hormonal status answers that must not wait for the read. */}
       {hormonalAlerts.map(alert => (
-        <div key={alert.key} className="bg-[#FDF0EF] border border-[#F2CFCB] border-l-[3px] border-l-[#C0392B] rounded-xl p-5 mb-4">
+        <div key={alert.key} className="bg-[#FBF1F1] border border-[#E8C9C9] border-l-[3px] border-l-[#8F2D2D] rounded-xl p-5 mb-4">
           <div className="flex items-start gap-3">
-            <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#C0392B]/15 flex items-center justify-center">
-              <span className="text-[#962D22] text-[13px] font-bold leading-none">!</span>
+            <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#8F2D2D]/15 flex items-center justify-center">
+              <span className="text-[#8A1919] text-[13px] font-bold leading-none">!</span>
             </div>
             <div className="min-w-0">
-              <p className="text-[12px] font-medium text-[#962D22] mb-1">Needs attention</p>
-              <p className="text-sm font-semibold text-[#141821] mb-1.5">{alert.headline}</p>
-              <p className="text-[13px] text-[#43474F] leading-relaxed">{alert.detail}</p>
+              <p className="text-[12px] font-medium text-[#8A1919] mb-1">Needs attention</p>
+              <p className="text-sm font-semibold text-[#0F1115] mb-1.5">{alert.headline}</p>
+              <p className="text-[13px] text-[#4A4F57] leading-relaxed">{alert.detail}</p>
             </div>
           </div>
         </div>
       ))}
 
       {iron.open && (
-        <div className={`${iron.tier === 'emergency' || iron.tier === 'same-day' ? 'bg-[#FDF0EF] border-[#F2CFCB] border-l-[#C0392B]' : 'bg-[#FDF6E9] border-[#F1DEB8] border-l-[#C08A2D]'} border border-l-[3px] rounded-xl p-5 mb-4`}>
+        <div className={`${iron.tier === 'emergency' || iron.tier === 'same-day' ? 'bg-[#FBF1F1] border-[#E8C9C9] border-l-[#8F2D2D]' : 'bg-[#FDF8F1] border-[#EADCC4] border-l-[#B06E1F]'} border border-l-[3px] rounded-xl p-5 mb-4`}>
           <div className="flex items-start gap-3">
-            <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#C0392B]/15 flex items-center justify-center">
-              <span className="text-[#962D22] text-[13px] font-bold leading-none">!</span>
+            <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#8F2D2D]/15 flex items-center justify-center">
+              <span className="text-[#8A1919] text-[13px] font-bold leading-none">!</span>
             </div>
             <div className="min-w-0">
-              <p className="text-[12px] font-medium text-[#962D22] mb-1">
+              <p className="text-[12px] font-medium text-[#8A1919] mb-1">
                 {iron.tier === 'emergency' ? 'Emergency: she needs to be seen now' : iron.tier === 'same-day' ? 'Today, and no training until she has been seen' : iron.tier === 'same-week' ? 'This week, before anything else on her plan' : 'Refer, routine'}
               </p>
-              <p className="text-sm font-semibold text-[#141821] mb-1.5">
+              <p className="text-sm font-semibold text-[#0F1115] mb-1.5">
                 No pattern is assigned for her until she has seen a doctor
               </p>
-              <p className="text-[13px] text-[#43474F] leading-relaxed mb-2">What she answered, unranked:</p>
-              <ul className="text-[13px] text-[#43474F] leading-relaxed list-disc ml-4 mb-2">
+              <p className="text-[13px] text-[#4A4F57] leading-relaxed mb-2">What she answered, unranked:</p>
+              <ul className="text-[13px] text-[#4A4F57] leading-relaxed list-disc ml-4 mb-2">
                 {iron.answers.map(a => <li key={a}>{a}</li>)}
               </ul>
-              <p className="text-[13px] text-[#43474F] leading-relaxed mb-2">{IRON_TIER_TIMEFRAME[iron.tier!]}</p>
+              <p className="text-[13px] text-[#4A4F57] leading-relaxed mb-2">{IRON_TIER_TIMEFRAME[iron.tier!]}</p>
               {iron.stopTraining && (
-                <p className="text-[13px] font-semibold text-[#962D22] mb-2">Training stops entirely until she has been seen.</p>
+                <p className="text-[13px] font-semibold text-[#8A1919] mb-2">Training stops entirely until she has been seen.</p>
               )}
-              <p className="text-[12.5px] text-[#6B6B6B] leading-relaxed mb-2">
+              <p className="text-[12.5px] text-[#6E747D] leading-relaxed mb-2">
                 Do not name a cause, do not reassure her, and do not suggest waiting or trying the plan first. <strong>If she feels
                 better in a few weeks, that is not evidence her iron is fine</strong>: in the trials, women on a dummy tablet
                 reported their tiredness dropping 13 to 29 per cent. Her measured numbers are not a check either, because iron
                 improves how someone feels without improving what they can do.
               </p>
-              <details className="text-[13px] text-[#43474F]">
-                <summary className="cursor-pointer font-medium text-[#1B6DFC]">The wording to send her</summary>
+              <details className="text-[13px] text-[#4A4F57]">
+                <summary className="cursor-pointer font-medium text-[#0F1115]">The wording to send her</summary>
                 <p className="mt-2 whitespace-pre-line leading-relaxed">{IRON_REFERRAL_SENTENCE}</p>
               </details>
             </div>
@@ -956,23 +956,23 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       )}
 
       {bone.open && (
-        <div className={`${bone.urgency === 'same-week' ? 'bg-[#FDF0EF] border-[#F2CFCB] border-l-[#C0392B]' : 'bg-[#FDF6E9] border-[#F1DEB8] border-l-[#C08A2D]'} border border-l-[3px] rounded-xl p-5 mb-4`}>
+        <div className={`${bone.urgency === 'same-week' ? 'bg-[#FBF1F1] border-[#E8C9C9] border-l-[#8F2D2D]' : 'bg-[#FDF8F1] border-[#EADCC4] border-l-[#B06E1F]'} border border-l-[3px] rounded-xl p-5 mb-4`}>
           <div className="flex items-start gap-3">
-            <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#C0392B]/15 flex items-center justify-center">
-              <span className="text-[#962D22] text-[13px] font-bold leading-none">!</span>
+            <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#8F2D2D]/15 flex items-center justify-center">
+              <span className="text-[#8A1919] text-[13px] font-bold leading-none">!</span>
             </div>
             <div className="min-w-0">
-              <p className="text-[12px] font-medium text-[#962D22] mb-1">
+              <p className="text-[12px] font-medium text-[#8A1919] mb-1">
                 {bone.urgency === 'same-week' ? 'Bone: refer this week, and do not add load' : 'Bone: sort this out before load goes on'}
               </p>
-              <p className="text-sm font-semibold text-[#141821] mb-1.5">Stop increasing load or impact until her GP has looked at this</p>
-              <ul className="text-[13px] text-[#43474F] leading-relaxed list-disc ml-4 mb-2">
+              <p className="text-sm font-semibold text-[#0F1115] mb-1.5">Stop increasing load or impact until her GP has looked at this</p>
+              <ul className="text-[13px] text-[#4A4F57] leading-relaxed list-disc ml-4 mb-2">
                 {bone.reasons.map(r => <li key={r}>{r}</li>)}
               </ul>
-              <p className="text-[13px] text-[#43474F] leading-relaxed mb-2">
+              <p className="text-[13px] text-[#4A4F57] leading-relaxed mb-2">
                 <strong>Say this, verbatim:</strong> &ldquo;{BONE_REFERRAL_SENTENCE}&rdquo;
               </p>
-              <p className="text-[12.5px] text-[#6B6B6B] leading-relaxed">
+              <p className="text-[12.5px] text-[#6E747D] leading-relaxed">
                 Do not interpret a scan or a T-score, do not comment on her medicines, and never attach a fracture-reduction
                 percentage to training: no exercise trial has ever been powered to show one.
                 {bone.barbellNotOptional && ' She is past her final period, so impact alone will not do it: the barbell is not optional once she is cleared.'}
@@ -983,25 +983,25 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       )}
 
       {thyroid.open && (
-        <div className="bg-[#FDF0EF] border border-[#F2CFCB] border-l-[3px] border-l-[#C0392B] rounded-xl p-5 mb-4">
+        <div className="bg-[#FBF1F1] border border-[#E8C9C9] border-l-[3px] border-l-[#8F2D2D] rounded-xl p-5 mb-4">
           <div className="flex items-start gap-3">
-            <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#C0392B]/15 flex items-center justify-center">
-              <span className="text-[#962D22] text-[13px] font-bold leading-none">!</span>
+            <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#8F2D2D]/15 flex items-center justify-center">
+              <span className="text-[#8A1919] text-[13px] font-bold leading-none">!</span>
             </div>
             <div className="min-w-0">
-              <p className="text-[12px] font-medium text-[#962D22] mb-1">Eating targets are held until she has seen a GP</p>
-              <p className="text-sm font-semibold text-[#141821] mb-1.5">Refer for thyroid function tests</p>
-              <p className="text-[13px] text-[#43474F] leading-relaxed mb-2">
+              <p className="text-[12px] font-medium text-[#8A1919] mb-1">Eating targets are held until she has seen a GP</p>
+              <p className="text-sm font-semibold text-[#0F1115] mb-1.5">Refer for thyroid function tests</p>
+              <p className="text-[13px] text-[#4A4F57] leading-relaxed mb-2">
                 Triggered because {thyroid.reasons.join('; and ')}.
               </p>
-              <p className="text-[13px] text-[#43474F] leading-relaxed mb-2">
+              <p className="text-[13px] text-[#4A4F57] leading-relaxed mb-2">
                 The engine will not build or deepen a deficit for her while this is open. That is deliberate: eating less does not
                 fix a medical cause, and being in a deficit changes the blood results her doctor is about to read. <strong>Do not tell
                 her what you think it is.</strong> A symptom questionnaire cannot separate this from under-recovery, a long deficit,
                 low iron or the menopause transition, and it performs close to chance in women in this age range.
               </p>
-              <details className="text-[13px] text-[#43474F]">
-                <summary className="cursor-pointer font-medium text-[#1B6DFC]">The wording to send her</summary>
+              <details className="text-[13px] text-[#4A4F57]">
+                <summary className="cursor-pointer font-medium text-[#0F1115]">The wording to send her</summary>
                 <p className="mt-2 whitespace-pre-line leading-relaxed">{THYROID_REFERRAL_TEXT}</p>
               </details>
             </div>
@@ -1010,15 +1010,15 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       )}
 
       {allReferralFlags.map(flag => (
-        <div key={flag.key + flag.headline} className="bg-[#FDF6E9] border border-[#F1DEB8] border-l-[3px] border-l-[#C08A2D] rounded-xl p-5 mb-4">
+        <div key={flag.key + flag.headline} className="bg-[#FDF8F1] border border-[#EADCC4] border-l-[3px] border-l-[#B06E1F] rounded-xl p-5 mb-4">
           <div className="flex items-start gap-3">
-            <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#C08A2D]/15 flex items-center justify-center">
-              <span className="text-[#8A6218] text-[13px] font-bold leading-none">!</span>
+            <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#B06E1F]/15 flex items-center justify-center">
+              <span className="text-[#8A5514] text-[13px] font-bold leading-none">!</span>
             </div>
             <div className="min-w-0">
-              <p className="text-[12px] font-medium text-[#8A6218] mb-1">Raise with her, and with her GP</p>
-              <p className="text-sm font-semibold text-[#141821] mb-1.5">{flag.headline}</p>
-              <p className="text-[13px] text-[#43474F] leading-relaxed">{flag.detail}</p>
+              <p className="text-[12px] font-medium text-[#8A5514] mb-1">Raise with her, and with her GP</p>
+              <p className="text-sm font-semibold text-[#0F1115] mb-1.5">{flag.headline}</p>
+              <p className="text-[13px] text-[#4A4F57] leading-relaxed">{flag.detail}</p>
             </div>
           </div>
         </div>
@@ -1027,15 +1027,15 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       {/* Signals to reconcile: reported-vs-measured fat distribution divergence.
           Non-diagnostic coach prompt. Only renders when both signals exist and clash. */}
       {fatDivergence && (
-        <div className="bg-[#FDF6E9] border border-[#F1DEB8] border-l-[3px] border-l-[#C08A2D] rounded-xl p-5 mb-4">
+        <div className="bg-[#FDF8F1] border border-[#EADCC4] border-l-[3px] border-l-[#B06E1F] rounded-xl p-5 mb-4">
           <div className="flex items-start gap-3">
-            <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#C08A2D]/15 flex items-center justify-center">
-              <span className="text-[#8A5A14] text-[13px] font-bold leading-none">!</span>
+            <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-[#B06E1F]/15 flex items-center justify-center">
+              <span className="text-[#8A5514] text-[13px] font-bold leading-none">!</span>
             </div>
             <div className="min-w-0">
-              <p className="text-[12px] font-medium text-[#8A5A14] mb-1">Signals to reconcile</p>
-              <p className="text-sm font-semibold text-[#141821] mb-1.5">{fatDivergence.headline}</p>
-              <p className="text-[13px] text-[#43474F] leading-relaxed">{fatDivergence.detail}</p>
+              <p className="text-[12px] font-medium text-[#8A5514] mb-1">Signals to reconcile</p>
+              <p className="text-sm font-semibold text-[#0F1115] mb-1.5">{fatDivergence.headline}</p>
+              <p className="text-[13px] text-[#4A4F57] leading-relaxed">{fatDivergence.detail}</p>
             </div>
           </div>
         </div>
@@ -1045,12 +1045,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       {latestFoundationalInvitation && (
         <div className="br-card p-5 mb-4"
         style={{
-          background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
+          background: 'linear-gradient(180deg,#FFFFFF,#FAFAF8)',
           boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
         }}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em] mb-1">Intake</p>
+              <p className="text-[13.5px] font-semibold text-[#0F1115] tracking-[-0.015em] mb-1">Intake</p>
               <div className="flex items-center gap-2">
                 <span
                   className={`text-xs font-medium px-2.5 py-1 rounded-full border capitalize ${
@@ -1060,7 +1060,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   {latestFoundationalInvitation.status}
                 </span>
                 {latestFoundationalInvitation.status === 'complete' && latestFoundationalInvitation.completed_at && (
-                  <span className="text-[12.5px] text-[#98A0AD]">
+                  <span className="text-[12.5px] text-[#9CA2AB]">
                     Completed {formatDate(latestFoundationalInvitation.completed_at)}
                   </span>
                 )}
@@ -1095,9 +1095,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       {latestFoundationalInvitation?.status === 'complete' && (
         <div id="updates" className="flex items-center justify-between mb-3 mt-2 scroll-mt-8">
           <div className="flex items-center gap-2.5">
-            <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
-            <h2 className="text-[11px] font-medium text-[#1B6DFC]" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>
-              Updates <span className="text-[#43474F] font-normal">- post-onboarding follow-ups</span>
+            <span className="w-7 h-[3px] rounded-full bg-[#0F1115]" />
+            <h2 className="text-[11px] font-medium text-[#0F1115]" style={{ fontFamily: MONO_FONT, letterSpacing: "0.14em" }}>
+              Updates <span className="text-[#4A4F57] font-normal">- post-onboarding follow-ups</span>
             </h2>
           </div>
         </div>
@@ -1113,12 +1113,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       {latestFoundationalInvitation?.status === 'complete' && (
         <div className="br-card p-5 mb-4"
         style={{
-          background: 'linear-gradient(180deg,#FFFFFF,#FBFCFD)',
+          background: 'linear-gradient(180deg,#FFFFFF,#FAFAF8)',
           boxShadow: '0 1px 3px rgba(16,24,40,0.09), 0 1px 2px -1px rgba(16,24,40,0.05), inset 0 1px 0 #FFFFFF',
         }}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em] mb-1">Supplementary intake</p>
+              <p className="text-[13.5px] font-semibold text-[#0F1115] tracking-[-0.015em] mb-1">Supplementary intake</p>
               {latestSupplementaryInvitation ? (
                 <div className="flex items-center gap-2">
                   <span
@@ -1129,24 +1129,24 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     {latestSupplementaryInvitation.status}
                   </span>
                   {latestSupplementaryInvitation.status === 'complete' && latestSupplementaryInvitation.completed_at && (
-                    <span className="text-[12.5px] text-[#98A0AD]">
+                    <span className="text-[12.5px] text-[#9CA2AB]">
                       Completed {formatDate(latestSupplementaryInvitation.completed_at)}
                     </span>
                   )}
                   {latestSupplementaryInvitation.status === 'pending' && (
-                    <span className="text-[12.5px] text-[#98A0AD]">
+                    <span className="text-[12.5px] text-[#9CA2AB]">
                       Sitting in their portal since {formatDate(latestSupplementaryInvitation.created_at)}
                     </span>
                   )}
                 </div>
               ) : (
-                <p className="text-[12.5px] text-[#98A0AD]">Not sent yet — adds a follow-up card to the client&apos;s portal asking only what they have not answered.</p>
+                <p className="text-[12.5px] text-[#9CA2AB]">Not sent yet — adds a follow-up card to the client&apos;s portal asking only what they have not answered.</p>
               )}
               {fatMapIntake && !fatMapIntake.sex_at_birth && latestSupplementaryInvitation?.status !== 'pending' && (
-                <p className="text-[12px] text-[#A96A12] mt-1.5">No hormonal status on file. Send a fresh follow-up and it will ask only those questions (about a minute).</p>
+                <p className="text-[12px] text-[#B06E1F] mt-1.5">No hormonal status on file. Send a fresh follow-up and it will ask only those questions (about a minute).</p>
               )}
               {latestSupplementaryInvitation?.status === 'complete' && fatMapIntake?.sex_at_birth && (
-                <p className="text-[11px] text-[#98A0AD] mt-1">Need to update meds or dietary context again? Send a fresh one.</p>
+                <p className="text-[11px] text-[#9CA2AB] mt-1">Need to update meds or dietary context again? Send a fresh one.</p>
               )}
             </div>
             <div className="flex items-center gap-2">
@@ -1277,9 +1277,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       >
       {latestSupplementaryInvitation?.status === 'complete' && latestSupplementaryInvitation.completed_at && activeCffs?.generated_at &&
        new Date(latestSupplementaryInvitation.completed_at).getTime() > new Date(activeCffs.generated_at).getTime() && (
-        <div className="mb-4 rounded-xl border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] p-4">
-          <p className="text-[11px] font-medium text-[#A96A12] mb-1">Supplementary intake newer than CFFS</p>
-          <p className="text-sm text-[#43474F] leading-relaxed mb-3">
+        <div className="mb-4 rounded-xl border border-[#EADCC4] bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] p-4">
+          <p className="text-[11px] font-medium text-[#B06E1F] mb-1">Supplementary intake newer than CFFS</p>
+          <p className="text-sm text-[#4A4F57] leading-relaxed mb-3">
             {client.name?.split(' ')[0] ?? 'The client'} submitted a supplementary intake on {formatDate(latestSupplementaryInvitation.completed_at)}. The dietary + medication context is saved on their file, but the CFFS still reflects the pre-update state. Click Regenerate below to refresh the CFFS so downstream artefacts (program, nutrition, weekly synthesis) read the new context.
           </p>
           {latestIntakeId && (
@@ -1289,8 +1289,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
       )}
       {!activeCffs ? (
         <div className="br-card p-8 text-center">
-          <p className="text-[#666D7A] mb-2">No CFFS generated yet</p>
-          <p className="text-[#43474F] text-sm mb-4">
+          <p className="text-[#6E747D] mb-2">No CFFS generated yet</p>
+          <p className="text-[#4A4F57] text-sm mb-4">
             {latestFoundationalInvitation?.status === 'pending'
               ? 'Waiting for the client to complete their intake.'
               : latestIntakeId
@@ -1311,7 +1311,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               coach has to go looking for is a note nobody reads. */}
           {activeCffs?.pattern_watch_for && (
             <div className="br-card-flagged px-5 py-4 mb-4">
-              <p className="text-[10px] font-medium text-[#1B6DFC] mb-2">
+              <p className="text-[10px] font-medium text-[#0F1115] mb-2">
                 Watch for
                 {activeCffs.pattern_competing_read && activeCffs.pattern_competing_read !== 'None'
                   ? activeCffs.pattern_classification === INDETERMINATE
@@ -1319,39 +1319,39 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     : ` — competing read: ${activeCffs.pattern_competing_read}`
                   : ''}
               </p>
-              <p className="text-[13px] text-[#43474F] leading-relaxed">{activeCffs.pattern_watch_for}</p>
+              <p className="text-[13px] text-[#4A4F57] leading-relaxed">{activeCffs.pattern_watch_for}</p>
             </div>
           )}
 
           {/* State + Exposure Readiness */}
           <div className="br-card overflow-hidden mb-4">
-            <div className="px-5 pt-5 pb-4 grid grid-cols-2 gap-4 border-b border-[#E8EAEE]">
+            <div className="px-5 pt-5 pb-4 grid grid-cols-2 gap-4 border-b border-[#E4E4E0]">
               <div>
-                <p className="text-[10px] font-medium text-[#98A0AD] mb-2">Readiness</p>
-                <p className="text-lg font-bold text-[#141821] leading-tight mb-2">{bodyState.label}</p>
+                <p className="text-[10px] font-medium text-[#9CA2AB] mb-2">Readiness</p>
+                <p className="text-lg font-bold text-[#0F1115] leading-tight mb-2">{bodyState.label}</p>
                 {bodyState.reScored && (
-                  <p className="text-[11px] text-[#666D7A] -mt-1 mb-2">
+                  <p className="text-[11px] text-[#6E747D] -mt-1 mb-2">
                     Re-scored to {bodyState.reScoredPublicLabel}{bodyState.direction ? ` (${bodyState.direction})` : ''} at the last Progress Check. The foundational read said {bodyState.foundational} and is unchanged.
                   </p>
                 )}
                 <div className="flex items-center gap-2">
-                  <div className="w-1 h-3.5 bg-[#1B6DFC]" />
-                  <p className="text-[12.5px] text-[#666D7A]">Resolution: <span className="text-[#141821] font-semibold">{activeCffs.resolution_state}</span></p>
+                  <div className="w-1 h-3.5 bg-[#0F1115]" />
+                  <p className="text-[12.5px] text-[#6E747D]">Resolution: <span className="text-[#0F1115] font-semibold">{activeCffs.resolution_state}</span></p>
                 </div>
                 {/* Pattern sits with the state on the screen the coach actually
                     works from, not only on the printable report. */}
                 {activeCffs.pattern_classification && (
-                  <div className="mt-4 pt-4 border-t border-[#E8EAEE]">
-                    <p className="text-[10px] font-medium text-[#98A0AD] mb-2">Pattern Classification</p>
-                    <p className="text-lg font-bold text-[#141821] leading-tight mb-2">{readPatternLabel(activeCffs.pattern_classification)}</p>
+                  <div className="mt-4 pt-4 border-t border-[#E4E4E0]">
+                    <p className="text-[10px] font-medium text-[#9CA2AB] mb-2">Pattern Classification</p>
+                    <p className="text-lg font-bold text-[#0F1115] leading-tight mb-2">{readPatternLabel(activeCffs.pattern_classification)}</p>
                     {activeCffs.pattern_classification === INDETERMINATE && activeCffs.pattern_competing_read && activeCffs.pattern_competing_read !== 'None' && (
-                      <p className="text-[12px] text-[#666D7A] -mt-1 mb-2">Leaning toward {activeCffs.pattern_competing_read}. See Watch for.</p>
+                      <p className="text-[12px] text-[#6E747D] -mt-1 mb-2">Leaning toward {activeCffs.pattern_competing_read}. See Watch for.</p>
                     )}
                     {activeCffs.pattern_confidence && activeCffs.pattern_classification !== INDETERMINATE && (
                       <div className="flex items-center gap-2">
-                        <div className="w-1 h-3.5 bg-[#1B6DFC]" />
-                        <p className="text-[12.5px] text-[#666D7A]">
-                          Confidence: <span className="text-[#141821] font-semibold capitalize">{activeCffs.pattern_confidence}</span>
+                        <div className="w-1 h-3.5 bg-[#0F1115]" />
+                        <p className="text-[12.5px] text-[#6E747D]">
+                          Confidence: <span className="text-[#0F1115] font-semibold capitalize">{activeCffs.pattern_confidence}</span>
                         </p>
                       </div>
                     )}
@@ -1359,22 +1359,22 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 )}
               </div>
               <div>
-                <p className="text-[10px] font-medium text-[#98A0AD] mb-3">Exposure Readiness</p>
+                <p className="text-[10px] font-medium text-[#9CA2AB] mb-3">Exposure Readiness</p>
                 <div className="grid grid-cols-2 gap-2">
                   {readinessItems.map(item => (
                     <div key={item.label} className={`px-3 py-2 rounded-lg border-l-2 ${
-                      item.value === 'Green' ? 'bg-[#EDF8F1] border-[#22A05A]' :
-                      item.value === 'Amber' ? 'bg-[#FDF6E9] border-[#B7791F]' :
-                      item.value === 'Red' ? 'bg-[#FDEDED] border-[#DC2626]' :
-                      'bg-[#EFF1F4] border-[#CFD4DC]'
+                      item.value === 'Green' ? 'bg-[#F2F2EF] border-[#2B5E45]' :
+                      item.value === 'Amber' ? 'bg-[#FDF8F1] border-[#B06E1F]' :
+                      item.value === 'Red' ? 'bg-[#FBF1F1] border-[#8F2D2D]' :
+                      'bg-[#EDEDEA] border-[#DCDCD7]'
                     }`}>
                       <p className={`text-xs font-bold mb-0.5 ${
                         item.value === 'Green' ? 'text-green-400' :
-                        item.value === 'Amber' ? 'text-[#A96A12]' :
-                        item.value === 'Red' ? 'text-[#C82626]' :
-                        'text-[#666D7A]'
+                        item.value === 'Amber' ? 'text-[#B06E1F]' :
+                        item.value === 'Red' ? 'text-[#8F2D2D]' :
+                        'text-[#6E747D]'
                       }`}>{item.value}</p>
-                      <p className="text-[10px] text-[#98A0AD] font-medium">{item.label}</p>
+                      <p className="text-[10px] text-[#9CA2AB] font-medium">{item.label}</p>
                     </div>
                   ))}
                 </div>
@@ -1382,14 +1382,14 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             </div>
             <div className="flex items-center justify-between px-5 py-3">
               <div className="flex items-center gap-3 flex-wrap">
-                <p className="text-[#43474F] text-[12.5px]">Generated {formatDate(activeCffs.generated_at)}</p>
+                <p className="text-[#4A4F57] text-[12.5px]">Generated {formatDate(activeCffs.generated_at)}</p>
                 {/* Visual Signal Integration: shows whether photos were read at generation time. */}
                 {typeof activeCffs.photos_used === 'number' && (
                   <span
                     className={`inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border uppercase ${
                       activeCffs.photos_used > 0
-                        ? 'text-[#1B6DFC] bg-[rgba(27,109,252,0.10)] border-[#B5CFFC]'
-                        : 'text-[#98A0AD] bg-[#FFFFFF] border-[#E8EAEE]'
+                        ? 'text-[#0F1115] bg-[rgba(27,109,252,0.10)] border-[#DCDCD7]'
+                        : 'text-[#9CA2AB] bg-[#FFFFFF] border-[#E4E4E0]'
                     }`}
                     title={
                       activeCffs.photos_used > 0
@@ -1399,7 +1399,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   >
                     <span
                       className="w-1 h-1 rounded-full"
-                      style={{ background: activeCffs.photos_used > 0 ? '#1B6DFC' : '#98A0AD' }}
+                      style={{ background: activeCffs.photos_used > 0 ? '#0F1115' : '#9CA2AB' }}
                     />
                     Photos {activeCffs.photos_used > 0 ? `✓ ${activeCffs.photos_used}/3` : '✗ Not provided'}
                   </span>
@@ -1439,28 +1439,28 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
             <div
               className="bg-[#FFFFFF] border rounded-xl overflow-hidden mb-4"
               style={{
-                borderColor: readinessReport.status === 'regression' ? '#FEE7E7'
-                  : readinessReport.status === 'reassessment' ? '#F0DCB4'
-                  : '#E8EAEE',
+                borderColor: readinessReport.status === 'regression' ? '#FBF1F1'
+                  : readinessReport.status === 'reassessment' ? '#EADCC4'
+                  : '#E4E4E0',
               }}
             >
-              <div className="flex items-center justify-between px-5 py-3 border-b border-[#E8EAEE]">
+              <div className="flex items-center justify-between px-5 py-3 border-b border-[#E4E4E0]">
                 <div className="flex items-center gap-2.5">
                   {readinessReport.status === 'regression' ? (
-                    <Activity size={13} className="text-[#DC2626]" />
+                    <Activity size={13} className="text-[#8F2D2D]" />
                   ) : readinessReport.status === 'reassessment' ? (
-                    <RefreshCw size={13} className="text-[#B7791F]" />
+                    <RefreshCw size={13} className="text-[#B06E1F]" />
                   ) : (
-                    <AlertTriangleIcon size={13} className="text-[#666D7A]" />
+                    <AlertTriangleIcon size={13} className="text-[#6E747D]" />
                   )}
                   <p
                     className="text-[11.5px] font-medium"
                     style={{
                       fontFamily: MONO_FONT,
                       letterSpacing: '0.14em',
-                      color: readinessReport.status === 'regression' ? '#DC2626'
-                        : readinessReport.status === 'reassessment' ? '#B7791F'
-                        : '#3A3A3A',
+                      color: readinessReport.status === 'regression' ? '#8F2D2D'
+                        : readinessReport.status === 'reassessment' ? '#B06E1F'
+                        : '#4A4F57',
                     }}
                   >
                     {readinessReport.status === 'regression' ? 'Active Regression - Coach Review Required'
@@ -1469,15 +1469,15 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                       : 'Block Status'}
                   </p>
                 </div>
-                <span className="text-[10px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}>
+                <span className="text-[10px] text-[#9CA2AB]" style={{ fontFamily: MONO_FONT }}>
                   Signal Monitoring v1.0
                 </span>
               </div>
 
               {/* Drift conditions */}
               {readinessReport.drift.length > 0 && (
-                <div className="px-5 py-4 border-b border-[#E8EAEE]">
-                  <p className="text-[10px] font-medium text-[#98A0AD] mb-2">
+                <div className="px-5 py-4 border-b border-[#E4E4E0]">
+                  <p className="text-[10px] font-medium text-[#9CA2AB] mb-2">
                     Drift this week
                   </p>
                   <ul className="space-y-1.5">
@@ -1485,9 +1485,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                       <li key={i} className="flex items-start gap-2 text-[13px]">
                         <span
                           className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0"
-                          style={{ background: d.severity === 'high' ? '#DC2626' : '#666D7A' }}
+                          style={{ background: d.severity === 'high' ? '#8F2D2D' : '#6E747D' }}
                         />
-                        <span className={d.severity === 'high' ? 'text-[#141821]' : 'text-[#666D7A]'}>{d.message}</span>
+                        <span className={d.severity === 'high' ? 'text-[#0F1115]' : 'text-[#6E747D]'}>{d.message}</span>
                       </li>
                     ))}
                   </ul>
@@ -1500,35 +1500,35 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 const creep = creepEntry?.rpeCreep
                 if (!creep || creep.findings.length === 0) return null
                 return (
-                  <div className="px-5 py-4 border-b border-[#E8EAEE]">
+                  <div className="px-5 py-4 border-b border-[#E4E4E0]">
                     <div className="flex items-center justify-between mb-2">
-                      <p className="text-[10px] font-medium text-[#98A0AD]">
+                      <p className="text-[10px] font-medium text-[#9CA2AB]">
                         RPE creep — week {creep.weekNumberInBlock}
                       </p>
-                      <span className="text-[10px] text-[#98A0AD]" style={{ fontFamily: MONO_FONT }}>
+                      <span className="text-[10px] text-[#9CA2AB]" style={{ fontFamily: MONO_FONT }}>
                         {creep.creepingCount} exercise{creep.creepingCount === 1 ? '' : 's'}{creep.severeCount > 0 ? ` · ${creep.severeCount} severe` : ''}
                       </span>
                     </div>
                     <ul className="space-y-1">
                       {creep.findings.slice(0, 6).map((f, i) => (
                         <li key={i} className="flex items-center justify-between gap-3 text-[12px]">
-                          <span className={f.severe ? 'text-[#141821]' : 'text-[#666D7A]'}>{f.exerciseName}</span>
+                          <span className={f.severe ? 'text-[#0F1115]' : 'text-[#6E747D]'}>{f.exerciseName}</span>
                           <span className="shrink-0 tabular-nums" style={{ fontFamily: MONO_FONT }}>
-                            <span className="text-[#98A0AD]">RPE</span>{' '}
-                            <span className="text-[#98A0AD]">{f.prescribedRpe}</span>
-                            <span className="text-[#98A0AD]"> → </span>
-                            <span className={f.severe ? 'text-[#DC2626]' : 'text-[#B7791F]'}>{f.avgLoggedRpe}</span>
-                            <span className={f.severe ? 'text-[#DC2626]' : 'text-[#B7791F]'}> (+{f.delta})</span>
+                            <span className="text-[#9CA2AB]">RPE</span>{' '}
+                            <span className="text-[#9CA2AB]">{f.prescribedRpe}</span>
+                            <span className="text-[#9CA2AB]"> → </span>
+                            <span className={f.severe ? 'text-[#8F2D2D]' : 'text-[#B06E1F]'}>{f.avgLoggedRpe}</span>
+                            <span className={f.severe ? 'text-[#8F2D2D]' : 'text-[#B06E1F]'}> (+{f.delta})</span>
                             {f.maxLoggedRpe >= 9.5 && (
-                              <span className="text-[#DC2626]"> · max {f.maxLoggedRpe}</span>
+                              <span className="text-[#8F2D2D]"> · max {f.maxLoggedRpe}</span>
                             )}
-                            <span className="text-[#98A0AD]"> · {f.setCount} set{f.setCount === 1 ? '' : 's'}</span>
+                            <span className="text-[#9CA2AB]"> · {f.setCount} set{f.setCount === 1 ? '' : 's'}</span>
                           </span>
                         </li>
                       ))}
                     </ul>
                     {creep.findings.length > 6 && (
-                      <p className="text-[11px] text-[#98A0AD] mt-2" style={{ fontFamily: MONO_FONT }}>
+                      <p className="text-[11px] text-[#9CA2AB] mt-2" style={{ fontFamily: MONO_FONT }}>
                         +{creep.findings.length - 6} more not shown
                       </p>
                     )}
@@ -1538,16 +1538,16 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
               {/* Reassessment reasons */}
               {readinessReport.reassessmentReasons.length > 0 && (
-                <div className="px-5 py-4 border-b border-[#E8EAEE]">
-                  <p className="text-[10px] font-medium text-[#98A0AD] mb-2">
+                <div className="px-5 py-4 border-b border-[#E4E4E0]">
+                  <p className="text-[10px] font-medium text-[#9CA2AB] mb-2">
                     Reassessment triggers
                   </p>
                   <ul className="space-y-2">
                     {readinessReport.reassessmentReasons.map((r, i) => (
                       <li key={i} className="text-[13px]">
-                        <p className="text-[#141821]">{r.message}</p>
-                        <p className="text-[11px] text-[#98A0AD] mt-0.5" style={{ fontFamily: MONO_FONT }}>
-                          Recommended depth: <span className="text-[#666D7A]">{r.recommendedDepth}</span>
+                        <p className="text-[#0F1115]">{r.message}</p>
+                        <p className="text-[11px] text-[#9CA2AB] mt-0.5" style={{ fontFamily: MONO_FONT }}>
+                          Recommended depth: <span className="text-[#6E747D]">{r.recommendedDepth}</span>
                         </p>
                       </li>
                     ))}
@@ -1564,8 +1564,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               {readinessReport.block && (
                 <div className="px-5 py-3">
                   <div className="flex items-center justify-between text-[12px]">
-                    <span className="text-[#98A0AD]">
-                      Block <span className="text-[#43474F]">{readinessReport.block.blockName ?? '-'}</span>
+                    <span className="text-[#9CA2AB]">
+                      Block <span className="text-[#4A4F57]">{readinessReport.block.blockName ?? '-'}</span>
                       {readinessReport.block.weekDuration != null && (
                         <> · {readinessReport.block.weekDuration}-week duration</>
                       )}
@@ -1574,7 +1574,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                       className="text-[11px] font-medium"
                       style={{
                         fontFamily: MONO_FONT,
-                        color: readinessReport.block.isAtBlockEnd ? '#B7791F' : '#98A0AD',
+                        color: readinessReport.block.isAtBlockEnd ? '#B06E1F' : '#9CA2AB',
                       }}
                     >
                       {readinessReport.block.isAtBlockEnd
@@ -1606,7 +1606,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               >
                 Log a session →
               </Link>
-              <p className="mt-1.5 text-[12.5px] text-[#98A0AD]">Log a workout on {(client.name ?? 'the client').split(' ')[0]}&apos;s behalf when you train them in person. It appears in their portal too.</p>
+              <p className="mt-1.5 text-[12.5px] text-[#9CA2AB]">Log a workout on {(client.name ?? 'the client').split(' ')[0]}&apos;s behalf when you train them in person. It appears in their portal too.</p>
             </div>
           )}
 
@@ -1643,11 +1643,11 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
           {/* What is a CFFS */}
           <div className="br-card p-5 mb-4">
-            <p className="text-[10px] font-medium text-[#1B6DFC] mb-3">About This Report</p>
-            <p className="text-sm font-semibold text-[#141821] leading-relaxed mb-3">
+            <p className="text-[10px] font-medium text-[#0F1115] mb-3">About This Report</p>
+            <p className="text-sm font-semibold text-[#0F1115] leading-relaxed mb-3">
               This is not a summary. It is a structured interpretation of how this client&apos;s system is currently organising itself.
             </p>
-            <p className="text-sm text-[#98A0AD] leading-relaxed">
+            <p className="text-sm text-[#9CA2AB] leading-relaxed">
               The CFFS translates {getTotalQuestions()} data points across eight signal domains into a single, coherent picture of the client&apos;s current readiness and the pattern driving it. Nothing here prescribes or diagnoses - you remain the interpretive authority.
             </p>
           </div>
@@ -1657,22 +1657,22 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               above the standard CFFS sections so coaches can scan the visual layer
               at a glance. */}
           {activeCffs.visual_signal_summary && (
-            <div className="mb-3 bg-[#FFFFFF] border border-[#B5CFFC] rounded-xl overflow-hidden">
-              <div className="flex items-center gap-3 px-5 py-3 border-b border-[#B5CFFC] bg-[rgba(27,109,252,0.06)]">
-                <Eye size={13} className="text-[#1B6DFC]" />
+            <div className="mb-3 bg-[#FFFFFF] border border-[#DCDCD7] rounded-xl overflow-hidden">
+              <div className="flex items-center gap-3 px-5 py-3 border-b border-[#DCDCD7] bg-[rgba(27,109,252,0.06)]">
+                <Eye size={13} className="text-[#0F1115]" />
                 <p
-                  className="text-[10px] font-medium text-[#1B6DFC]"
+                  className="text-[10px] font-medium text-[#0F1115]"
                 >
                   Visual Signal Summary
                 </p>
                 <span
-                  className="ml-auto text-[10px] text-[#43474F]"
+                  className="ml-auto text-[10px] text-[#4A4F57]"
                 >
                   What the {activeCffs.photos_used ?? 3} baseline photo{(activeCffs.photos_used ?? 3) === 1 ? '' : 's'} contributed
                 </span>
               </div>
               <div className="px-5 py-4">
-                <p className="text-sm text-[#141821] leading-relaxed">{activeCffs.visual_signal_summary}</p>
+                <p className="text-sm text-[#0F1115] leading-relaxed">{activeCffs.visual_signal_summary}</p>
               </div>
             </div>
           )}
@@ -1682,19 +1682,19 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               coach scans the card first. Legacy rows with no summary render the
               sections open by default (unchanged behaviour). */}
           <details className="mb-6 group" open={!cffsSummary?.headline}>
-            <summary className="cursor-pointer text-[11px] font-semibold text-[#1B6DFC] hover:text-[#1056D6] select-none list-none flex items-center gap-1.5 mb-3">
+            <summary className="cursor-pointer text-[11px] font-semibold text-[#0F1115] hover:text-[#000000] select-none list-none flex items-center gap-1.5 mb-3">
               <span className="transition-transform group-open:rotate-90">▸</span>
               Full interpretive analysis ({cffsSections.length} sections)
             </summary>
             <div className="space-y-2">
               {cffsSections.map((section, i) => (
                 <div key={section.label} className="br-card overflow-hidden">
-                  <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[#FFFFFF]/80">
-                    <span className="text-[11px] font-black text-[#1B6DFC]">{String(i + 1).padStart(2, '0')}</span>
-                    <p className="text-[10px] font-medium text-[#666D7A]">{section.label}</p>
+                  <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E4E4E0] bg-[#FFFFFF]/80">
+                    <span className="text-[11px] font-black text-[#0F1115]">{String(i + 1).padStart(2, '0')}</span>
+                    <p className="text-[10px] font-medium text-[#6E747D]">{section.label}</p>
                   </div>
                   <div className="px-5 py-4">
-                    <p className="text-sm text-[#141821] leading-relaxed">{section.content}</p>
+                    <p className="text-sm text-[#0F1115] leading-relaxed">{section.content}</p>
                   </div>
                 </div>
               ))}
@@ -1711,14 +1711,14 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           {/* Archived CFFS */}
           {archivedCffs.length > 0 && (
             <div className="mt-8">
-              <p className="text-[#98A0AD] text-sm mb-3">Previous CFFS ({archivedCffs.length})</p>
+              <p className="text-[#9CA2AB] text-sm mb-3">Previous CFFS ({archivedCffs.length})</p>
               <div className="space-y-2">
                 {archivedCffs.map(c => (
                   <div
                     key={c.id}
                     className="br-card-inset px-4 py-3 flex items-center justify-between opacity-60"
                   >
-                    <span className="text-sm text-[#666D7A]">{formatDate(c.generated_at)}</span>
+                    <span className="text-sm text-[#6E747D]">{formatDate(c.generated_at)}</span>
                     <span
                       className={`text-xs px-2 py-0.5 rounded-full border ${getStateColour(c.body_state_classification)}`}
                     >
@@ -1767,7 +1767,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         {latestBaseline ? (
           <div className="br-card p-5 space-y-4">
             <div className="flex items-center justify-between">
-              <p className="text-[12.5px] text-[#98A0AD]">Week {latestBaseline.re_capture_week} capture · {new Date(latestBaseline.captured_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+              <p className="text-[12.5px] text-[#9CA2AB]">Week {latestBaseline.re_capture_week} capture · {new Date(latestBaseline.captured_at).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
               {baselineToken && (
                 <CopyLinkButton token={baselineToken} label="Re-capture link" path="/baseline" />
               )}
@@ -1781,9 +1781,9 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                 { label: 'Hips', value: latestBaseline.hips_cm, unit: 'cm' },
                 { label: 'Chest', value: latestBaseline.chest_cm, unit: 'cm' },
               ].map(m => (
-                <div key={m.label} className="bg-[#EFF1F4]/50 rounded-xl p-3 text-center">
-                  <p className="text-[12.5px] text-[#98A0AD] mb-1">{m.label}</p>
-                  <p className="text-base font-semibold text-[#141821]">{m.value ?? '-'}<span className="text-[12.5px] text-[#98A0AD] ml-1">{m.unit}</span></p>
+                <div key={m.label} className="bg-[#EDEDEA]/50 rounded-xl p-3 text-center">
+                  <p className="text-[12.5px] text-[#9CA2AB] mb-1">{m.label}</p>
+                  <p className="text-base font-semibold text-[#0F1115]">{m.value ?? '-'}<span className="text-[12.5px] text-[#9CA2AB] ml-1">{m.unit}</span></p>
                 </div>
               ))}
             </div>
@@ -1797,14 +1797,14 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   { label: 'Back', url: baselinePhotos.back },
                 ].map(photo => (
                   <div key={photo.label} className="space-y-1.5">
-                    <p className="text-[12.5px] text-[#98A0AD] text-center">{photo.label}</p>
+                    <p className="text-[12.5px] text-[#9CA2AB] text-center">{photo.label}</p>
                     {photo.url ? (
                       <a href={photo.url} target="_blank" rel="noopener noreferrer">
                         <img src={photo.url} alt={photo.label} className="w-full aspect-[3/4] object-cover rounded-xl hover:opacity-80 transition-opacity" />
                       </a>
                     ) : (
-                      <div className="w-full aspect-[3/4] bg-[#EFF1F4] rounded-xl flex items-center justify-center">
-                        <p className="text-[#43474F] text-[12.5px]">No photo</p>
+                      <div className="w-full aspect-[3/4] bg-[#EDEDEA] rounded-xl flex items-center justify-center">
+                        <p className="text-[#4A4F57] text-[12.5px]">No photo</p>
                       </div>
                     )}
                   </div>
@@ -1814,8 +1814,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           </div>
         ) : (
           <div className="br-card p-5 text-center">
-            <p className="text-[#98A0AD] text-sm">No baseline submitted yet</p>
-            <p className="text-[#43474F] text-[12.5px] mt-1">Send the client their baseline link to begin</p>
+            <p className="text-[#9CA2AB] text-sm">No baseline submitted yet</p>
+            <p className="text-[#4A4F57] text-[12.5px] mt-1">Send the client their baseline link to begin</p>
           </div>
         )}
       </MajorSection>
@@ -1848,10 +1848,10 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           <>
             {/* Readiness grid */}
             <div className="br-card overflow-hidden mb-4">
-              <div className="px-5 pt-5 pb-4 border-b border-[#E8EAEE]">
+              <div className="px-5 pt-5 pb-4 border-b border-[#E4E4E0]">
                 <div className="flex items-center justify-between mb-3">
-                  <p className="text-[10px] font-medium text-[#98A0AD]">Exposure Readiness</p>
-                  <p className="text-[10px] font-medium text-[#1B6DFC]">Week {latestCfws.week_number}</p>
+                  <p className="text-[10px] font-medium text-[#9CA2AB]">Exposure Readiness</p>
+                  <p className="text-[10px] font-medium text-[#0F1115]">Week {latestCfws.week_number}</p>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   {[
@@ -1861,24 +1861,24 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                     { label: 'Behaviour', value: latestCfws.exposure_readiness_behaviour },
                   ].map(item => (
                     <div key={item.label} className={`px-3 py-2 rounded-lg border-l-2 ${
-                      item.value === 'Green' ? 'bg-[#EDF8F1] border-[#22A05A]' :
-                      item.value === 'Amber' ? 'bg-[#FDF6E9] border-[#B7791F]' :
-                      item.value === 'Red' ? 'bg-[#FDEDED] border-[#DC2626]' :
-                      'bg-[#EFF1F4] border-[#CFD4DC]'
+                      item.value === 'Green' ? 'bg-[#F2F2EF] border-[#2B5E45]' :
+                      item.value === 'Amber' ? 'bg-[#FDF8F1] border-[#B06E1F]' :
+                      item.value === 'Red' ? 'bg-[#FBF1F1] border-[#8F2D2D]' :
+                      'bg-[#EDEDEA] border-[#DCDCD7]'
                     }`}>
                       <p className={`text-xs font-bold mb-0.5 ${
                         item.value === 'Green' ? 'text-green-400' :
-                        item.value === 'Amber' ? 'text-[#A96A12]' :
-                        item.value === 'Red' ? 'text-[#C82626]' :
-                        'text-[#666D7A]'
+                        item.value === 'Amber' ? 'text-[#B06E1F]' :
+                        item.value === 'Red' ? 'text-[#8F2D2D]' :
+                        'text-[#6E747D]'
                       }`}>{item.value}</p>
-                      <p className="text-[10px] text-[#98A0AD] font-medium">{item.label}</p>
+                      <p className="text-[10px] text-[#9CA2AB] font-medium">{item.label}</p>
                     </div>
                   ))}
                 </div>
               </div>
               <div className="flex items-center justify-between px-5 py-3">
-                <p className="text-[#43474F] text-[12.5px]">Generated {formatDate(latestCfws.generated_at)}</p>
+                <p className="text-[#4A4F57] text-[12.5px]">Generated {formatDate(latestCfws.generated_at)}</p>
                 <div className="flex items-center gap-2">
                   <Link
                     href={`/dashboard/clients/${client.id}/cfws-report`}
@@ -1911,11 +1911,11 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
 
             {/* About block */}
             <div className="br-card p-5 mb-4">
-              <p className="text-[10px] font-medium text-[#1B6DFC] mb-3">About This Report</p>
-              <p className="text-sm font-semibold text-[#141821] leading-relaxed mb-3">
+              <p className="text-[10px] font-medium text-[#0F1115] mb-3">About This Report</p>
+              <p className="text-sm font-semibold text-[#0F1115] leading-relaxed mb-3">
                 This is not a summary. It is a structured interpretation of how this client&apos;s system is behaving this week.
               </p>
-              <p className="text-sm text-[#98A0AD] leading-relaxed">
+              <p className="text-sm text-[#9CA2AB] leading-relaxed">
                 The CFWS translates weekly check-in signals across training load, recovery, regulation, and lifestyle into a coherent picture. Nothing here prescribes or diagnoses - you remain the interpretive authority.
               </p>
             </div>
@@ -1933,19 +1933,19 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               ].filter(s => s.content)
               return (
                 <details className="mb-6 group" open={!cfwsSummary?.headline}>
-                  <summary className="cursor-pointer text-[11px] font-semibold text-[#1B6DFC] hover:text-[#1056D6] select-none list-none flex items-center gap-1.5 mb-3">
+                  <summary className="cursor-pointer text-[11px] font-semibold text-[#0F1115] hover:text-[#000000] select-none list-none flex items-center gap-1.5 mb-3">
                     <span className="transition-transform group-open:rotate-90">▸</span>
                     Full weekly analysis ({cfwsSections.length} sections)
                   </summary>
                   <div className="space-y-2">
                     {cfwsSections.map((section, i) => (
                       <div key={section.label} className="br-card overflow-hidden">
-                        <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[#FFFFFF]/80">
-                          <span className="text-[11px] font-black text-[#1B6DFC]">{String(i + 1).padStart(2, '0')}</span>
-                          <p className="text-[10px] font-medium text-[#666D7A]">{section.label}</p>
+                        <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E4E4E0] bg-[#FFFFFF]/80">
+                          <span className="text-[11px] font-black text-[#0F1115]">{String(i + 1).padStart(2, '0')}</span>
+                          <p className="text-[10px] font-medium text-[#6E747D]">{section.label}</p>
                         </div>
                         <div className="px-5 py-4">
-                          <p className="text-sm text-[#141821] leading-relaxed">{section.content}</p>
+                          <p className="text-sm text-[#0F1115] leading-relaxed">{section.content}</p>
                         </div>
                       </div>
                     ))}
@@ -1956,13 +1956,13 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           </>
         ) : (
           <div className="br-card p-5 mb-3 text-center">
-            <p className="text-[#98A0AD] text-sm">No weekly synthesis yet</p>
+            <p className="text-[#9CA2AB] text-sm">No weekly synthesis yet</p>
             {latestCompleteWeek ? (
               <div className="mt-3">
                 <RegenerateCFWSButton clientId={id} weekNumber={latestCompleteWeek} />
               </div>
             ) : (
-              <p className="text-[#43474F] text-[12.5px] mt-1">Generated after each A+B check-in pair is complete</p>
+              <p className="text-[#4A4F57] text-[12.5px] mt-1">Generated after each A+B check-in pair is complete</p>
             )}
           </div>
         )}
@@ -1970,7 +1970,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         {/* Check-in submission log */}
         {recentCheckins && recentCheckins.length > 0 && (
           <div className="br-card p-4">
-            <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em] mb-3">Recent Submissions</p>
+            <p className="text-[13.5px] font-semibold text-[#0F1115] tracking-[-0.015em] mb-3">Recent Submissions</p>
             <div className="space-y-2">
               {recentCheckins.slice(0, 8).map((ci, i) => {
                 const fb = ci.id ? feedbackByCheckinId.get(ci.id) : undefined
@@ -1980,22 +1980,22 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                   <Link
                     key={i}
                     href={`/dashboard/clients/${id}/checkins/${ci.week_number}/${ci.form_type}`}
-                    className="flex items-center justify-between text-[12.5px] hover:bg-[#EFF1F4]/50 -mx-2 px-2 py-1 rounded-lg transition-colors"
+                    className="flex items-center justify-between text-[12.5px] hover:bg-[#EDEDEA]/50 -mx-2 px-2 py-1 rounded-lg transition-colors"
                   >
                     <div className="flex items-center gap-2 min-w-0">
-                      <span className="text-[#666D7A]">Week {ci.week_number} · Form {ci.form_type}</span>
+                      <span className="text-[#6E747D]">Week {ci.week_number} · Form {ci.form_type}</span>
                       {fb && (
-                        <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${sent ? 'bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] text-[#1056D6]' : 'bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] text-[#A96A12]'}`}>
+                        <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${sent ? 'bg-[rgba(27,109,252,0.08)] border border-[#DCDCD7] text-[#000000]' : 'bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] border border-[#EADCC4] text-[#B06E1F]'}`}>
                           {sent ? 'Response sent' : 'Draft'}
                         </span>
                       )}
                       {skipped && (
-                        <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-[#EFF1F4] border border-[#CFD4DC] text-[#666D7A]">
+                        <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-[#EDEDEA] border border-[#DCDCD7] text-[#6E747D]">
                           Skipped
                         </span>
                       )}
                     </div>
-                    <span className="text-[#43474F]">{formatDate(ci.submitted_at)}</span>
+                    <span className="text-[#4A4F57]">{formatDate(ci.submitted_at)}</span>
                   </Link>
                 )
               })}
@@ -2007,8 +2007,8 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         {feedbackHistory && feedbackHistory.length > 0 && (
           <div className="br-card p-4">
             <div className="flex items-center justify-between mb-3">
-              <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">Coach Response History</p>
-              <p className="text-[10px] text-[#43474F]">{feedbackHistory.length} total</p>
+              <p className="text-[13.5px] font-semibold text-[#0F1115] tracking-[-0.015em]">Coach Response History</p>
+              <p className="text-[10px] text-[#4A4F57]">{feedbackHistory.length} total</p>
             </div>
             <div className="space-y-3">
               {feedbackHistory.map(fb => (
@@ -2054,17 +2054,17 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               className="block br-card p-5 br-card-hover transition-shadow"
             >
               <div className="flex items-start justify-between mb-2">
-                <p className="text-sm font-semibold text-[#141821]">{draftProgram.block_name}</p>
+                <p className="text-sm font-semibold text-[#0F1115]">{draftProgram.block_name}</p>
                 <div className="flex gap-1.5">
-                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#FDF6E9] border border-[#A96A12] text-[#A96A12]">Draft</span>
-                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EFF1F4] text-[#666D7A] capitalize">{draftProgram.progression_phase}</span>
-                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EFF1F4] text-[#666D7A] capitalize">{draftProgram.training_goal}</span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#FDF8F1] border border-[#B06E1F] text-[#B06E1F]">Draft</span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EDEDEA] text-[#6E747D] capitalize">{draftProgram.progression_phase}</span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EDEDEA] text-[#6E747D] capitalize">{draftProgram.training_goal}</span>
                 </div>
               </div>
-              <p className="text-[12.5px] text-[#98A0AD]">
+              <p className="text-[12.5px] text-[#9CA2AB]">
                 {draftProgram.training_frequency}x/week · {draftProgram.week_duration} weeks · Generated {formatDate(draftProgram.generated_at)}
               </p>
-              <p className="text-[12.5px] text-[#1B6DFC] mt-2">Review &amp; edit draft →</p>
+              <p className="text-[12.5px] text-[#0F1115] mt-2">Review &amp; edit draft →</p>
             </Link>
           )}
 
@@ -2075,28 +2075,28 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               className="block br-card p-5 br-card-hover transition-shadow"
             >
               <div className="flex items-start justify-between mb-2">
-                <p className="text-sm font-semibold text-[#141821]">{activeProgram.block_name}</p>
+                <p className="text-sm font-semibold text-[#0F1115]">{activeProgram.block_name}</p>
                 <div className="flex gap-1.5">
-                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EFF1F4] text-[#666D7A] capitalize">
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EDEDEA] text-[#6E747D] capitalize">
                     {activeProgram.progression_phase}
                   </span>
-                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EFF1F4] text-[#666D7A] capitalize">
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EDEDEA] text-[#6E747D] capitalize">
                     {activeProgram.training_goal}
                   </span>
                 </div>
               </div>
-              <p className="text-[12.5px] text-[#98A0AD]">
+              <p className="text-[12.5px] text-[#9CA2AB]">
                 {activeProgram.training_frequency}x/week · {activeProgram.week_duration} weeks · Generated {formatDate(activeProgram.generated_at)}
               </p>
               {activeProgram.pr_why_this_block && (
-                <p className="text-[12.5px] text-[#666D7A] mt-2 leading-relaxed line-clamp-3">{activeProgram.pr_why_this_block}</p>
+                <p className="text-[12.5px] text-[#6E747D] mt-2 leading-relaxed line-clamp-3">{activeProgram.pr_why_this_block}</p>
               )}
-              <p className="text-[12.5px] text-[#1B6DFC] mt-2">View full program →</p>
+              <p className="text-[12.5px] text-[#0F1115] mt-2">View full program →</p>
             </Link>
           ) : !draftProgram ? (
             <div className="br-card p-5 text-center">
-              <p className="text-[#98A0AD] text-sm">No program generated yet</p>
-              <p className="text-[#43474F] text-[12.5px] mt-1">Generate a program once the CFFS is complete</p>
+              <p className="text-[#9CA2AB] text-sm">No program generated yet</p>
+              <p className="text-[#4A4F57] text-[12.5px] mt-1">Generate a program once the CFFS is complete</p>
             </div>
           ) : null}
         </div>
@@ -2132,15 +2132,15 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               className="block br-card p-5 br-card-hover transition-shadow"
             >
               <div className="flex items-start justify-between mb-2">
-                <p className="text-sm font-semibold text-[#141821]">{draftNutritionPlan.plan_name}</p>
+                <p className="text-sm font-semibold text-[#0F1115]">{draftNutritionPlan.plan_name}</p>
                 <div className="flex gap-1.5">
-                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#FDF6E9] border border-[#A96A12] text-[#A96A12]">Draft</span>
-                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EFF1F4] text-[#666D7A] capitalize">{draftNutritionPlan.entry_state.replace(/_/g, ' ')}</span>
-                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EFF1F4] text-[#666D7A] capitalize">{draftNutritionPlan.carb_demand_level} carbs</span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#FDF8F1] border border-[#B06E1F] text-[#B06E1F]">Draft</span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EDEDEA] text-[#6E747D] capitalize">{draftNutritionPlan.entry_state.replace(/_/g, ' ')}</span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EDEDEA] text-[#6E747D] capitalize">{draftNutritionPlan.carb_demand_level} carbs</span>
                 </div>
               </div>
-              <p className="text-[12.5px] text-[#98A0AD]">Generated {formatDate(draftNutritionPlan.generated_at)}</p>
-              <p className="text-[12.5px] text-[#1B6DFC] mt-2">Review &amp; approve draft →</p>
+              <p className="text-[12.5px] text-[#9CA2AB]">Generated {formatDate(draftNutritionPlan.generated_at)}</p>
+              <p className="text-[12.5px] text-[#0F1115] mt-2">Review &amp; approve draft →</p>
             </Link>
           )}
 
@@ -2151,29 +2151,29 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
               className="block br-card p-5 br-card-hover transition-shadow"
             >
               <div className="flex items-start justify-between mb-2">
-                <p className="text-sm font-semibold text-[#141821]">{activeNutritionPlan.plan_name}</p>
+                <p className="text-sm font-semibold text-[#0F1115]">{activeNutritionPlan.plan_name}</p>
                 <div className="flex gap-1.5">
-                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EFF1F4] text-[#666D7A] capitalize">{activeNutritionPlan.entry_state.replace(/_/g, ' ')}</span>
-                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EFF1F4] text-[#666D7A] capitalize">{activeNutritionPlan.carb_demand_level} carbs</span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EDEDEA] text-[#6E747D] capitalize">{activeNutritionPlan.entry_state.replace(/_/g, ' ')}</span>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#EDEDEA] text-[#6E747D] capitalize">{activeNutritionPlan.carb_demand_level} carbs</span>
                   {activeNutritionPlan.current_direction && (
                     <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full capitalize ${
-                      activeNutritionPlan.current_direction === 'progress' ? 'bg-[rgba(27,109,252,0.08)] text-[#1B6DFC]' :
-                      activeNutritionPlan.current_direction === 'rebuild' ? 'bg-[#FDEDED] text-[#C82626]' :
-                      'bg-[#EFF1F4] text-[#666D7A]'
+                      activeNutritionPlan.current_direction === 'progress' ? 'bg-[rgba(27,109,252,0.08)] text-[#0F1115]' :
+                      activeNutritionPlan.current_direction === 'rebuild' ? 'bg-[#FBF1F1] text-[#8F2D2D]' :
+                      'bg-[#EDEDEA] text-[#6E747D]'
                     }`}>{activeNutritionPlan.current_direction}</span>
                   )}
                 </div>
               </div>
-              <p className="text-[12.5px] text-[#98A0AD]">Generated {formatDate(activeNutritionPlan.generated_at)}</p>
+              <p className="text-[12.5px] text-[#9CA2AB]">Generated {formatDate(activeNutritionPlan.generated_at)}</p>
               {activeNutritionPlan.nr_what_this_nutrition_is_doing && (
-                <p className="text-[12.5px] text-[#666D7A] mt-2 leading-relaxed line-clamp-3">{activeNutritionPlan.nr_what_this_nutrition_is_doing}</p>
+                <p className="text-[12.5px] text-[#6E747D] mt-2 leading-relaxed line-clamp-3">{activeNutritionPlan.nr_what_this_nutrition_is_doing}</p>
               )}
-              <p className="text-[12.5px] text-[#1B6DFC] mt-2">View full nutrition plan →</p>
+              <p className="text-[12.5px] text-[#0F1115] mt-2">View full nutrition plan →</p>
             </Link>
           ) : !draftNutritionPlan ? (
             <div className="br-card p-5 text-center">
-              <p className="text-[#98A0AD] text-sm">No nutrition plan generated yet</p>
-              <p className="text-[#43474F] text-[12.5px] mt-1">Generate a plan once the CFFS is complete</p>
+              <p className="text-[#9CA2AB] text-sm">No nutrition plan generated yet</p>
+              <p className="text-[#4A4F57] text-[12.5px] mt-1">Generate a plan once the CFFS is complete</p>
             </div>
           ) : null}
         </div>

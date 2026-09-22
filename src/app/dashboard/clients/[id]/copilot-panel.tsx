@@ -403,13 +403,13 @@ export default function CopilotPanel({
 
   return (
     <div className={`br-card overflow-hidden flex flex-col ${className ?? ''}`}>
-      <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E8EAEE] bg-[#FBFCFD] shrink-0">
-        <p className="text-[13.5px] font-semibold text-[#141821] tracking-[-0.015em]">
+      <div className="flex items-center gap-3 px-5 py-3 border-b border-[#E4E4E0] bg-[#FAFAF8] shrink-0">
+        <p className="text-[13.5px] font-semibold text-[#0F1115] tracking-[-0.015em]">
           Co-Pilot · Doctrine tutor
         </p>
-        <span className="ml-auto text-[11.5px] text-[#98A0AD]">coach only · you approve every change</span>
+        <span className="ml-auto text-[11.5px] text-[#9CA2AB]">coach only · you approve every change</span>
         {onClose && (
-          <button onClick={onClose} aria-label="Close co-pilot" className="text-[#98A0AD] hover:text-[#141821] text-lg leading-none -my-1">✕</button>
+          <button onClick={onClose} aria-label="Close co-pilot" className="text-[#9CA2AB] hover:text-[#0F1115] text-lg leading-none -my-1">✕</button>
         )}
       </div>
 
@@ -417,34 +417,34 @@ export default function CopilotPanel({
       <button
         onClick={() => setShowHelp(s => !s)}
         aria-expanded={showHelp}
-        className="flex items-center gap-2 px-5 py-2 border-b border-[#EFF1F4] bg-white text-[#1B6DFC] hover:bg-[rgba(27,109,252,0.04)] transition-colors shrink-0"
+        className="flex items-center gap-2 px-5 py-2 border-b border-[#EDEDEA] bg-white text-[#0F1115] hover:bg-[rgba(27,109,252,0.04)] transition-colors shrink-0"
       >
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle cx="12" cy="12" r="9" stroke="#1B6DFC" strokeWidth="1.6" />
-          <path d="M9.5 9.2a2.5 2.5 0 1 1 3.2 2.4c-.7.25-1.2.9-1.2 1.65v.35" stroke="#1B6DFC" strokeWidth="1.6" strokeLinecap="round" />
-          <circle cx="12" cy="16.4" r="1" fill="#1B6DFC" />
+          <circle cx="12" cy="12" r="9" stroke="#0F1115" strokeWidth="1.6" />
+          <path d="M9.5 9.2a2.5 2.5 0 1 1 3.2 2.4c-.7.25-1.2.9-1.2 1.65v.35" stroke="#0F1115" strokeWidth="1.6" strokeLinecap="round" />
+          <circle cx="12" cy="16.4" r="1" fill="#0F1115" />
         </svg>
         <span className="text-[13px] font-semibold">What I can help with</span>
-        <ChevronDown size={14} className={`ml-auto text-[#98A0AD] transition-transform duration-150 ${showHelp ? 'rotate-180' : ''}`} />
+        <ChevronDown size={14} className={`ml-auto text-[#9CA2AB] transition-transform duration-150 ${showHelp ? 'rotate-180' : ''}`} />
       </button>
 
       <div ref={scrollRef} className="px-5 py-4 space-y-4 flex-1 min-h-0 overflow-y-auto">
         {showHelp && (
-          <div className="text-sm text-[#43474F]">
-            <p className="mb-3 text-[#141821] font-semibold">Here for {clientFirstName}. What I can help with:</p>
+          <div className="text-sm text-[#4A4F57]">
+            <p className="mb-3 text-[#0F1115] font-semibold">Here for {clientFirstName}. What I can help with:</p>
             <div className="space-y-2.5 mb-3">
               {CAPABILITIES.map(c => (
-                <div key={c.title} className="border border-[#EFF1F4] rounded-xl px-3.5 py-2.5">
-                  <p className="text-[13px] font-semibold text-[#141821] mb-0.5">{c.title}</p>
-                  <p className="text-[12.5px] text-[#666D7A] leading-relaxed">{c.body}</p>
+                <div key={c.title} className="border border-[#EDEDEA] rounded-xl px-3.5 py-2.5">
+                  <p className="text-[13px] font-semibold text-[#0F1115] mb-0.5">{c.title}</p>
+                  <p className="text-[12.5px] text-[#6E747D] leading-relaxed">{c.body}</p>
                 </div>
               ))}
             </div>
-            <p className="text-[12.5px] text-[#666D7A] leading-relaxed">I read {clientFirstName}’s file to answer. I never publish anything to the client, and any plan I draft is a draft you review and approve.</p>
+            <p className="text-[12.5px] text-[#6E747D] leading-relaxed">I read {clientFirstName}’s file to answer. I never publish anything to the client, and any plan I draft is a draft you review and approve.</p>
           </div>
         )}
         {!showHelp && messages.length === 0 && (
-          <div className="text-sm text-[#666D7A]">
+          <div className="text-sm text-[#6E747D]">
             <p className="mb-3">Ask about {clientFirstName} and the doctrine behind their read. It explains, pressure-tests, and reviews plans, grounded in their file. It can also draft a program for you to approve. Pick a category to see the questions worth asking here.</p>
             <CopilotStarters categories={clientStarterCategories(pathname, clientFirstName)} onPick={send} />
           </div>
@@ -464,30 +464,30 @@ export default function CopilotPanel({
               ['Movement competency', cap(d.movement_competency), d.reasons.movement_competency],
             ]
             return (
-              <div key={i} className="border border-[#B5CFFC] bg-[rgba(27,109,252,0.04)] rounded-xl px-4 py-3.5">
-                <p className="text-[12.5px] font-medium text-[#1B6DFC] mb-2.5">Proposed program draft</p>
-                <label className="block text-[11px] font-medium text-[#666D7A] mb-1">Block name</label>
+              <div key={i} className="border border-[#DCDCD7] bg-[rgba(27,109,252,0.04)] rounded-xl px-4 py-3.5">
+                <p className="text-[12.5px] font-medium text-[#0F1115] mb-2.5">Proposed program draft</p>
+                <label className="block text-[11px] font-medium text-[#6E747D] mb-1">Block name</label>
                 <input
                   value={d.block_name}
                   onChange={e => updateDraft(i, { block_name: e.target.value })}
                   disabled={gen}
-                  className="w-full text-sm border border-[#CBD9F2] rounded-lg px-2.5 py-1.5 mb-3 bg-white focus:outline-none focus:border-[#B9D0FD] focus:ring-[3px] focus:ring-[rgba(27,109,252,0.13)] disabled:opacity-60"
+                  className="w-full text-sm border border-[#DCDCD7] rounded-lg px-2.5 py-1.5 mb-3 bg-white focus:outline-none focus:border-[#DCDCD7] focus:ring-[3px] focus:ring-[rgba(27,109,252,0.13)] disabled:opacity-60"
                 />
                 <div className="space-y-2 mb-3">
                   {rows.map(([label, val, reason]) => (
                     <div key={label}>
                       <div className="flex items-baseline justify-between gap-3">
-                        <span className="text-[12px] text-[#666D7A]">{label}</span>
-                        <span className="text-[13px] font-semibold text-[#141821] text-right">{val}</span>
+                        <span className="text-[12px] text-[#6E747D]">{label}</span>
+                        <span className="text-[13px] font-semibold text-[#0F1115] text-right">{val}</span>
                       </div>
-                      {reason && <p className="text-[11.5px] text-[#666D7A] leading-snug mt-0.5">{reason}</p>}
+                      {reason && <p className="text-[11.5px] text-[#6E747D] leading-snug mt-0.5">{reason}</p>}
                     </div>
                   ))}
                 </div>
-                <p className="text-[11.5px] text-[#666D7A] leading-snug mb-3">Equipment defaults to barbell, dumbbell, bodyweight. Change it on the full generator if this client differs. Generating creates a <strong>draft</strong> only. Nothing reaches {clientFirstName} until you publish it.</p>
+                <p className="text-[11.5px] text-[#6E747D] leading-snug mb-3">Equipment defaults to barbell, dumbbell, bodyweight. Change it on the full generator if this client differs. Generating creates a <strong>draft</strong> only. Nothing reaches {clientFirstName} until you publish it.</p>
                 {gen ? (
-                  <div className="flex items-center gap-2 text-[13px] text-[#1B6DFC]">
-                    <span className="w-2 h-2 rounded-full bg-[#1B6DFC] animate-bounce motion-reduce:animate-none" />
+                  <div className="flex items-center gap-2 text-[13px] text-[#0F1115]">
+                    <span className="w-2 h-2 rounded-full bg-[#0F1115] animate-bounce motion-reduce:animate-none" />
                     Generating the draft. This takes 1 to 2 minutes, keep the panel open.
                   </div>
                 ) : (
@@ -495,14 +495,14 @@ export default function CopilotPanel({
                     <button
                       onClick={() => generateDraft(i)}
                       disabled={busy}
-                      className="text-[13px] font-semibold px-3.5 py-1.5 text-white rounded-lg border border-[#1560E0] bg-[linear-gradient(180deg,#3B82F9,#1B6DFC)] hover:bg-[linear-gradient(180deg,#2E77F7,#1560E0)] shadow-[0_1px_2px_rgba(27,109,252,0.4),inset_0_1px_0_rgba(255,255,255,0.28)] transition-all active:translate-y-[0.5px] disabled:opacity-40"
+                      className="text-[13px] font-semibold px-3.5 py-1.5 text-white rounded-lg border border-[#000000] bg-[linear-gradient(180deg,#242932,#0F1115)] hover:bg-[linear-gradient(180deg,#242932,#000000)] shadow-[0_1px_2px_rgba(27,109,252,0.4),inset_0_1px_0_rgba(255,255,255,0.28)] transition-all active:translate-y-[0.5px] disabled:opacity-40"
                     >
                       Generate this draft
                     </button>
                     <button
                       onClick={() => dismissProposal(i)}
                       disabled={busy}
-                      className="text-[13px] px-3 py-1.5 text-[#666D7A] hover:text-[#141821] transition-colors disabled:opacity-40"
+                      className="text-[13px] px-3 py-1.5 text-[#6E747D] hover:text-[#0F1115] transition-colors disabled:opacity-40"
                     >
                       Dismiss
                     </button>
@@ -515,12 +515,12 @@ export default function CopilotPanel({
           // Draft created — link the coach to the program page to review + publish.
           if (m.role === 'assistant' && m.kind === 'draft-done' && m.draft) {
             return (
-              <div key={i} className="border border-[#BBE3C8] bg-[rgba(34,160,84,0.06)] rounded-xl px-4 py-3.5">
-                <p className="text-[13px] font-semibold text-[#141821] mb-1">Draft created: {m.draft.block_name}</p>
-                <p className="text-[12.5px] text-[#666D7A] leading-relaxed mb-2.5">It’s saved as a draft (not live). Open the program page to review every session, edit if needed, and publish when you’re happy.</p>
+              <div key={i} className="border border-[#EDEDEA] bg-[rgba(34,160,84,0.06)] rounded-xl px-4 py-3.5">
+                <p className="text-[13px] font-semibold text-[#0F1115] mb-1">Draft created: {m.draft.block_name}</p>
+                <p className="text-[12.5px] text-[#6E747D] leading-relaxed mb-2.5">It’s saved as a draft (not live). Open the program page to review every session, edit if needed, and publish when you’re happy.</p>
                 <a
                   href={`/dashboard/clients/${clientId}/program`}
-                  className="inline-block text-[13px] font-semibold px-3.5 py-1.5 bg-[#141821] text-white rounded-lg hover:bg-black transition-colors"
+                  className="inline-block text-[13px] font-semibold px-3.5 py-1.5 bg-[#0F1115] text-white rounded-lg hover:bg-black transition-colors"
                 >
                   Review the draft
                 </a>
@@ -539,30 +539,30 @@ export default function CopilotPanel({
               ['Meals/day', `${n.meal_frequency}`, n.reasons.meal_frequency],
             ]
             return (
-              <div key={i} className="border border-[#B5CFFC] bg-[rgba(27,109,252,0.04)] rounded-xl px-4 py-3.5">
-                <p className="text-[12.5px] font-medium text-[#1B6DFC] mb-2.5">Proposed nutrition draft</p>
-                <label className="block text-[11px] font-medium text-[#666D7A] mb-1">Plan name</label>
+              <div key={i} className="border border-[#DCDCD7] bg-[rgba(27,109,252,0.04)] rounded-xl px-4 py-3.5">
+                <p className="text-[12.5px] font-medium text-[#0F1115] mb-2.5">Proposed nutrition draft</p>
+                <label className="block text-[11px] font-medium text-[#6E747D] mb-1">Plan name</label>
                 <input
                   value={n.plan_name}
                   onChange={e => setMessages(prev => prev.map((mm, ii) => (ii === i && mm.nutrition ? { ...mm, nutrition: { ...mm.nutrition, plan_name: e.target.value } } : mm)))}
                   disabled={gen}
-                  className="w-full text-sm border border-[#CBD9F2] rounded-lg px-2.5 py-1.5 mb-3 bg-white focus:outline-none focus:border-[#B9D0FD] focus:ring-[3px] focus:ring-[rgba(27,109,252,0.13)] disabled:opacity-60"
+                  className="w-full text-sm border border-[#DCDCD7] rounded-lg px-2.5 py-1.5 mb-3 bg-white focus:outline-none focus:border-[#DCDCD7] focus:ring-[3px] focus:ring-[rgba(27,109,252,0.13)] disabled:opacity-60"
                 />
                 <div className="space-y-2 mb-3">
                   {rows.map(([label, val, reason]) => (
                     <div key={label}>
                       <div className="flex items-baseline justify-between gap-3">
-                        <span className="text-[12px] text-[#666D7A]">{label}</span>
-                        <span className="text-[13px] font-semibold text-[#141821] text-right">{val}</span>
+                        <span className="text-[12px] text-[#6E747D]">{label}</span>
+                        <span className="text-[13px] font-semibold text-[#0F1115] text-right">{val}</span>
                       </div>
-                      {reason && <p className="text-[11.5px] text-[#666D7A] leading-snug mt-0.5">{reason}</p>}
+                      {reason && <p className="text-[11.5px] text-[#6E747D] leading-snug mt-0.5">{reason}</p>}
                     </div>
                   ))}
                 </div>
-                <p className="text-[11.5px] text-[#666D7A] leading-snug mb-3">Generating builds the meals against the protein anchor and calorie floor, and creates a <strong>draft</strong> only. Nothing reaches {clientFirstName} until you publish it.</p>
+                <p className="text-[11.5px] text-[#6E747D] leading-snug mb-3">Generating builds the meals against the protein anchor and calorie floor, and creates a <strong>draft</strong> only. Nothing reaches {clientFirstName} until you publish it.</p>
                 {gen ? (
-                  <div className="flex items-center gap-2 text-[13px] text-[#1B6DFC]">
-                    <span className="w-2 h-2 rounded-full bg-[#1B6DFC] animate-bounce motion-reduce:animate-none" />
+                  <div className="flex items-center gap-2 text-[13px] text-[#0F1115]">
+                    <span className="w-2 h-2 rounded-full bg-[#0F1115] animate-bounce motion-reduce:animate-none" />
                     Generating the nutrition draft. This takes a minute or two, keep the panel open.
                   </div>
                 ) : (
@@ -570,14 +570,14 @@ export default function CopilotPanel({
                     <button
                       onClick={() => generateNutritionDraft(i)}
                       disabled={busy}
-                      className="text-[13px] font-semibold px-3.5 py-1.5 text-white rounded-lg border border-[#1560E0] bg-[linear-gradient(180deg,#3B82F9,#1B6DFC)] hover:bg-[linear-gradient(180deg,#2E77F7,#1560E0)] shadow-[0_1px_2px_rgba(27,109,252,0.4),inset_0_1px_0_rgba(255,255,255,0.28)] transition-all active:translate-y-[0.5px] disabled:opacity-40"
+                      className="text-[13px] font-semibold px-3.5 py-1.5 text-white rounded-lg border border-[#000000] bg-[linear-gradient(180deg,#242932,#0F1115)] hover:bg-[linear-gradient(180deg,#242932,#000000)] shadow-[0_1px_2px_rgba(27,109,252,0.4),inset_0_1px_0_rgba(255,255,255,0.28)] transition-all active:translate-y-[0.5px] disabled:opacity-40"
                     >
                       Generate this draft
                     </button>
                     <button
                       onClick={() => dismissProposal(i)}
                       disabled={busy}
-                      className="text-[13px] px-3 py-1.5 text-[#666D7A] hover:text-[#141821] transition-colors disabled:opacity-40"
+                      className="text-[13px] px-3 py-1.5 text-[#6E747D] hover:text-[#0F1115] transition-colors disabled:opacity-40"
                     >
                       Dismiss
                     </button>
@@ -590,12 +590,12 @@ export default function CopilotPanel({
           // Nutrition draft created — link to the nutrition page to review + publish.
           if (m.role === 'assistant' && m.kind === 'nutrition-done' && m.nutrition) {
             return (
-              <div key={i} className="border border-[#BBE3C8] bg-[rgba(34,160,84,0.06)] rounded-xl px-4 py-3.5">
-                <p className="text-[13px] font-semibold text-[#141821] mb-1">Nutrition draft created: {m.nutrition.plan_name}</p>
-                <p className="text-[12.5px] text-[#666D7A] leading-relaxed mb-2.5">It’s saved as a draft (not live). Open the nutrition page to review the meals, edit if needed, and publish when you’re happy.</p>
+              <div key={i} className="border border-[#EDEDEA] bg-[rgba(34,160,84,0.06)] rounded-xl px-4 py-3.5">
+                <p className="text-[13px] font-semibold text-[#0F1115] mb-1">Nutrition draft created: {m.nutrition.plan_name}</p>
+                <p className="text-[12.5px] text-[#6E747D] leading-relaxed mb-2.5">It’s saved as a draft (not live). Open the nutrition page to review the meals, edit if needed, and publish when you’re happy.</p>
                 <a
                   href={`/dashboard/clients/${clientId}/nutrition`}
-                  className="inline-block text-[13px] font-semibold px-3.5 py-1.5 bg-[#141821] text-white rounded-lg hover:bg-black transition-colors"
+                  className="inline-block text-[13px] font-semibold px-3.5 py-1.5 bg-[#0F1115] text-white rounded-lg hover:bg-black transition-colors"
                 >
                   Review the draft
                 </a>
@@ -607,13 +607,13 @@ export default function CopilotPanel({
           if (m.role === 'assistant' && m.kind === 'edit-proposal' && m.edit) {
             const applying = applyingIdx === i
             return (
-              <div key={i} className="border border-[#E7C9A0] bg-[rgba(180,120,20,0.05)] rounded-xl px-4 py-3.5">
-                <p className="text-[12.5px] font-medium text-[#A96A12] mb-2">Proposed change</p>
-                <p className="text-[13px] text-[#141821] leading-relaxed mb-3 whitespace-pre-wrap">{m.edit.summary || 'Apply this change to the draft.'}</p>
-                <p className="text-[11.5px] text-[#666D7A] leading-snug mb-3">Only this changes. The rest of the draft stays exactly as it is, and it stays a draft until you publish it.</p>
+              <div key={i} className="border border-[#EADCC4] bg-[rgba(180,120,20,0.05)] rounded-xl px-4 py-3.5">
+                <p className="text-[12.5px] font-medium text-[#B06E1F] mb-2">Proposed change</p>
+                <p className="text-[13px] text-[#0F1115] leading-relaxed mb-3 whitespace-pre-wrap">{m.edit.summary || 'Apply this change to the draft.'}</p>
+                <p className="text-[11.5px] text-[#6E747D] leading-snug mb-3">Only this changes. The rest of the draft stays exactly as it is, and it stays a draft until you publish it.</p>
                 {applying ? (
-                  <div className="flex items-center gap-2 text-[13px] text-[#B4780E]">
-                    <span className="w-2 h-2 rounded-full bg-[#B4780E] animate-bounce motion-reduce:animate-none" />
+                  <div className="flex items-center gap-2 text-[13px] text-[#B06E1F]">
+                    <span className="w-2 h-2 rounded-full bg-[#B06E1F] animate-bounce motion-reduce:animate-none" />
                     Applying to the draft…
                   </div>
                 ) : (
@@ -621,14 +621,14 @@ export default function CopilotPanel({
                     <button
                       onClick={() => applyEdit(i)}
                       disabled={busy}
-                      className="text-[13px] font-semibold px-3.5 py-1.5 bg-[#B4780E] text-white rounded-lg hover:bg-[#996408] transition-colors disabled:opacity-40"
+                      className="text-[13px] font-semibold px-3.5 py-1.5 bg-[#B06E1F] text-white rounded-lg hover:bg-[#8A5514] transition-colors disabled:opacity-40"
                     >
                       Apply this change
                     </button>
                     <button
                       onClick={() => dismissProposal(i)}
                       disabled={busy}
-                      className="text-[13px] px-3 py-1.5 text-[#666D7A] hover:text-[#141821] transition-colors disabled:opacity-40"
+                      className="text-[13px] px-3 py-1.5 text-[#6E747D] hover:text-[#0F1115] transition-colors disabled:opacity-40"
                     >
                       Dismiss
                     </button>
@@ -642,12 +642,12 @@ export default function CopilotPanel({
           if (m.role === 'assistant' && m.kind === 'edit-done') {
             const nutritionEdit = m.editTarget === 'nutrition'
             return (
-              <div key={i} className="border border-[#BBE3C8] bg-[rgba(34,160,84,0.06)] rounded-xl px-4 py-3.5">
-                <p className="text-[13px] font-semibold text-[#141821] mb-1">Change applied to the {nutritionEdit ? 'nutrition draft' : 'draft'}</p>
-                {m.content && <p className="text-[12.5px] text-[#666D7A] leading-relaxed mb-2.5">{m.content}</p>}
+              <div key={i} className="border border-[#EDEDEA] bg-[rgba(34,160,84,0.06)] rounded-xl px-4 py-3.5">
+                <p className="text-[13px] font-semibold text-[#0F1115] mb-1">Change applied to the {nutritionEdit ? 'nutrition draft' : 'draft'}</p>
+                {m.content && <p className="text-[12.5px] text-[#6E747D] leading-relaxed mb-2.5">{m.content}</p>}
                 <a
                   href={`/dashboard/clients/${clientId}/${nutritionEdit ? 'nutrition' : 'program'}`}
-                  className="inline-block text-[13px] font-semibold px-3.5 py-1.5 bg-[#141821] text-white rounded-lg hover:bg-black transition-colors"
+                  className="inline-block text-[13px] font-semibold px-3.5 py-1.5 bg-[#0F1115] text-white rounded-lg hover:bg-black transition-colors"
                 >
                   Review the draft
                 </a>
@@ -659,14 +659,14 @@ export default function CopilotPanel({
           return (
             <div key={i} className={m.role === 'user' ? 'flex justify-end' : ''}>
               <div className={m.role === 'user'
-                ? 'max-w-[85%] bg-[linear-gradient(180deg,#3B82F9,#1B6DFC)] text-white rounded-xl rounded-br-sm px-4 py-2.5 text-sm leading-relaxed shadow-[0_1px_2px_rgba(27,109,252,0.35)]'
-                : 'max-w-[92%] bg-[#F4F6F9] border border-[#E8EAEE] text-[#141821] rounded-xl rounded-bl-sm px-4 py-3 text-sm leading-relaxed'}>
+                ? 'max-w-[85%] bg-[linear-gradient(180deg,#242932,#0F1115)] text-white rounded-xl rounded-br-sm px-4 py-2.5 text-sm leading-relaxed shadow-[0_1px_2px_rgba(27,109,252,0.35)]'
+                : 'max-w-[92%] bg-[#F2F2EF] border border-[#E4E4E0] text-[#0F1115] rounded-xl rounded-bl-sm px-4 py-3 text-sm leading-relaxed'}>
                 <p className="whitespace-pre-wrap">{m.content}</p>
                 {m.role === 'assistant' && m.id && (
                   <button
                     onClick={() => toggleFlag(i)}
                     title={m.flagged ? 'Flagged for review — click to unflag' : 'Flag this answer for review'}
-                    className={`mt-2 inline-flex items-center gap-1 text-[11px] ${m.flagged ? 'text-[#A96A12] font-semibold' : 'text-[#98A0AD] hover:text-[#666D7A]'} transition-colors`}
+                    className={`mt-2 inline-flex items-center gap-1 text-[11px] ${m.flagged ? 'text-[#B06E1F] font-semibold' : 'text-[#9CA2AB] hover:text-[#6E747D]'} transition-colors`}
                   >
                     👎 {m.flagged ? 'Flagged for review' : 'Flag'}
                   </button>
@@ -677,10 +677,10 @@ export default function CopilotPanel({
         })}
 
         {(loading || proposing || proposingNutrition || proposingEdit) && (
-          <div className="bg-[#F4F6F9] br-card rounded-bl-sm px-4 py-3 inline-flex items-center gap-1.5 w-fit" aria-label="Co-pilot is working">
-            <span className="w-2 h-2 rounded-full bg-[#98A0AD] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '0ms' }} />
-            <span className="w-2 h-2 rounded-full bg-[#98A0AD] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '150ms' }} />
-            <span className="w-2 h-2 rounded-full bg-[#98A0AD] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '300ms' }} />
+          <div className="bg-[#F2F2EF] br-card rounded-bl-sm px-4 py-3 inline-flex items-center gap-1.5 w-fit" aria-label="Co-pilot is working">
+            <span className="w-2 h-2 rounded-full bg-[#9CA2AB] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '0ms' }} />
+            <span className="w-2 h-2 rounded-full bg-[#9CA2AB] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '150ms' }} />
+            <span className="w-2 h-2 rounded-full bg-[#9CA2AB] animate-bounce motion-reduce:animate-none" style={{ animationDelay: '300ms' }} />
           </div>
         )}
 
@@ -690,12 +690,12 @@ export default function CopilotPanel({
           if (!last || last.role !== 'assistant' || !last.followups?.length) return null
           return (
             <div className="flex flex-col gap-1.5 pt-1">
-              <p className="text-[11.5px] text-[#98A0AD]">Follow up</p>
+              <p className="text-[11.5px] text-[#9CA2AB]">Follow up</p>
               {last.followups.map((f, i) => (
                 <button
                   key={i}
                   onClick={() => send(f)}
-                  className="text-left text-[13px] text-[#1B6DFC] border border-[#B5CFFC] bg-[rgba(27,109,252,0.05)] hover:bg-[rgba(27,109,252,0.1)] rounded-lg px-3 py-1.5 transition-colors"
+                  className="text-left text-[13px] text-[#0F1115] border border-[#DCDCD7] bg-[rgba(27,109,252,0.05)] hover:bg-[rgba(27,109,252,0.1)] rounded-lg px-3 py-1.5 transition-colors"
                 >
                   {f}
                 </button>
@@ -705,7 +705,7 @@ export default function CopilotPanel({
         })()}
 
         {error && (
-          <div className="text-[13px] text-[#C82626]">{error}</div>
+          <div className="text-[13px] text-[#8F2D2D]">{error}</div>
         )}
       </div>
 
@@ -715,7 +715,7 @@ export default function CopilotPanel({
           <button
             onClick={() => { setEditMode(null); proposeDraft() }}
             disabled={busy}
-            className="flex-1 text-[13px] font-medium px-3 py-2 border border-[#B5CFFC] text-[#1B6DFC] rounded-xl hover:bg-[rgba(27,109,252,0.05)] transition-colors disabled:opacity-40"
+            className="flex-1 text-[13px] font-medium px-3 py-2 border border-[#DCDCD7] text-[#0F1115] rounded-xl hover:bg-[rgba(27,109,252,0.05)] transition-colors disabled:opacity-40"
           >
             ＋ Draft a program
           </button>
@@ -725,8 +725,8 @@ export default function CopilotPanel({
             aria-pressed={editMode === 'program'}
             className={`flex-1 text-[13px] font-medium px-3 py-2 border rounded-xl transition-colors disabled:opacity-40 ${
               editMode === 'program'
-                ? 'border-[#E7C9A0] bg-[rgba(180,120,20,0.08)] text-[#B4780E]'
-                : 'border-[#E7C9A0] text-[#B4780E] hover:bg-[rgba(180,120,20,0.05)]'
+                ? 'border-[#EADCC4] bg-[rgba(180,120,20,0.08)] text-[#B06E1F]'
+                : 'border-[#EADCC4] text-[#B06E1F] hover:bg-[rgba(180,120,20,0.05)]'
             }`}
           >
             ✎ Refine program
@@ -736,7 +736,7 @@ export default function CopilotPanel({
           <button
             onClick={() => { setEditMode(null); proposeNutritionDraft() }}
             disabled={busy}
-            className="flex-1 text-[13px] font-medium px-3 py-2 border border-[#B5CFFC] text-[#1B6DFC] rounded-xl hover:bg-[rgba(27,109,252,0.05)] transition-colors disabled:opacity-40"
+            className="flex-1 text-[13px] font-medium px-3 py-2 border border-[#DCDCD7] text-[#0F1115] rounded-xl hover:bg-[rgba(27,109,252,0.05)] transition-colors disabled:opacity-40"
           >
             ＋ Draft nutrition
           </button>
@@ -746,8 +746,8 @@ export default function CopilotPanel({
             aria-pressed={editMode === 'nutrition'}
             className={`flex-1 text-[13px] font-medium px-3 py-2 border rounded-xl transition-colors disabled:opacity-40 ${
               editMode === 'nutrition'
-                ? 'border-[#E7C9A0] bg-[rgba(180,120,20,0.08)] text-[#B4780E]'
-                : 'border-[#E7C9A0] text-[#B4780E] hover:bg-[rgba(180,120,20,0.05)]'
+                ? 'border-[#EADCC4] bg-[rgba(180,120,20,0.08)] text-[#B06E1F]'
+                : 'border-[#EADCC4] text-[#B06E1F] hover:bg-[rgba(180,120,20,0.05)]'
             }`}
           >
             ✎ Refine nutrition
@@ -755,12 +755,12 @@ export default function CopilotPanel({
         </div>
       </div>
       {editMode && (
-        <p className="px-4 pt-1.5 text-[11.5px] text-[#666D7A] leading-snug shrink-0">
+        <p className="px-4 pt-1.5 text-[11.5px] text-[#6E747D] leading-snug shrink-0">
           Refine mode ({editMode}): describe one change to the {editMode} draft ({editMode === 'nutrition' ? '“swap the oats for berries”, “drop to 3 meals”' : '“swap the barbell squat for a hip thrust”, “drop the bench to 3 sets”'}). I’ll show it before it’s applied.
         </p>
       )}
 
-      <div className="border-t border-[#E8EAEE] p-3 mt-2">
+      <div className="border-t border-[#E4E4E0] p-3 mt-2">
         <form
           onSubmit={e => { e.preventDefault(); editMode ? proposeEdit(input) : send(input) }}
           className="flex items-end gap-2"
@@ -771,12 +771,12 @@ export default function CopilotPanel({
             onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); editMode ? proposeEdit(input) : send(input) } }}
             placeholder={editMode ? `Describe one change to the ${editMode} draft…` : `Ask about ${clientFirstName}…`}
             rows={2}
-            className={`flex-1 resize-none text-sm border rounded-xl px-3 py-2 focus:outline-none ${editMode ? 'border-[#E7C9A0] focus:border-[#B4780E]' : 'border-[#E8EAEE] focus:border-[#1B6DFC]'}`}
+            className={`flex-1 resize-none text-sm border rounded-xl px-3 py-2 focus:outline-none ${editMode ? 'border-[#EADCC4] focus:border-[#B06E1F]' : 'border-[#E4E4E0] focus:border-[#0F1115]'}`}
           />
           <button
             type="submit"
             disabled={busy || !input.trim()}
-            className={`text-sm font-medium px-4 py-2 text-white rounded-xl transition-colors disabled:opacity-40 ${editMode ? 'bg-[#B4780E] hover:bg-[#996408]' : 'bg-[#1B6DFC] hover:bg-[#1560E0]'}`}
+            className={`text-sm font-medium px-4 py-2 text-white rounded-xl transition-colors disabled:opacity-40 ${editMode ? 'bg-[#B06E1F] hover:bg-[#8A5514]' : 'bg-[#0F1115] hover:bg-[#000000]'}`}
           >
             {editMode ? 'Propose' : 'Ask'}
           </button>

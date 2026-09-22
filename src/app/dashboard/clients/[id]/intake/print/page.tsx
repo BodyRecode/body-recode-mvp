@@ -10,9 +10,9 @@ function Row({ label, value }: { label: string; value: unknown }) {
   else if (typeof value === 'boolean') { display = value ? 'Yes' : 'No' }
   else { display = String(value) }
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', gap: '24px', padding: '8px 0', borderBottom: '1px solid #e5e5e5' }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', gap: '24px', padding: '8px 0', borderBottom: '1px solid #E4E4E0' }}>
       <p style={{ fontSize: '11px', color: '#888', flexShrink: 0, width: '200px', textTransform: 'capitalize' }}>{label.replace(/_/g, ' ')}</p>
-      <p style={{ fontSize: '12px', color: '#1a1a1a', textAlign: 'right' }}>{display}</p>
+      <p style={{ fontSize: '12px', color: '#0F1115', textAlign: 'right' }}>{display}</p>
     </div>
   )
 }
@@ -46,8 +46,8 @@ export default async function IntakePrintPage({ params }: { params: Promise<{ id
 
   if (!intake) return notFound()
 
-  const G = '#0f0f0f'
-  const TEAL = '#1B6DFC'
+  const G = '#0F1115'
+  const TEAL = '#0F1115'
 
   const submittedDate = new Date(intake.created_at).toLocaleDateString('en-AU', {
     day: 'numeric', month: 'long', year: 'numeric',
@@ -130,7 +130,7 @@ export default async function IntakePrintPage({ params }: { params: Promise<{ id
           </div>
         </div>
 
-        <div style={{ marginTop: '40px', paddingTop: '16px', borderTop: '1px solid #e5e5e5', display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{ marginTop: '40px', paddingTop: '16px', borderTop: '1px solid #E4E4E0', display: 'flex', justifyContent: 'space-between' }}>
           <p style={{ fontSize: '10px', color: '#aaa' }}>© {brand().name}™ · www.bodyrecode.au</p>
           <p style={{ fontSize: '10px', color: '#aaa' }}>Confidential</p>
         </div>

@@ -34,18 +34,18 @@ export default function CoachResponseCard({ clientId, feedback, meta }: CoachRes
     : 'Draft (not sent)'
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg overflow-hidden">
-      <div className="px-4 py-2.5 border-b border-[#E8EAEE] flex items-center justify-between gap-3 flex-wrap">
+    <div className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg overflow-hidden">
+      <div className="px-4 py-2.5 border-b border-[#E4E4E0] flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2.5 flex-wrap">
-          <p className="text-[12.5px] font-semibold text-[#141821]">Week {week} · Form {form}</p>
-          <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${sent ? 'bg-[rgba(27,109,252,0.08)] border border-[#B5CFFC] text-[#1056D6]' : 'bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] text-[#A96A12]'}`}>
+          <p className="text-[12.5px] font-semibold text-[#0F1115]">Week {week} · Form {form}</p>
+          <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${sent ? 'bg-[rgba(27,109,252,0.08)] border border-[#DCDCD7] text-[#000000]' : 'bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] border border-[#EADCC4] text-[#B06E1F]'}`}>
             {sentLabel}
           </span>
         </div>
         {meta && (
           <Link
             href={`/dashboard/clients/${clientId}/checkins/${meta.week_number}/${meta.form_type}`}
-            className="text-[11.5px] font-medium text-[#1B6DFC] hover:text-[#1056D6]"
+            className="text-[11.5px] font-medium text-[#0F1115] hover:text-[#000000]"
           >
             Open check-in →
           </Link>
@@ -63,28 +63,28 @@ export default function CoachResponseCard({ clientId, feedback, meta }: CoachRes
 function CollapsibleSection({ title, body, accent }: { title: string; body: string; accent?: boolean }) {
   const [open, setOpen] = useState(false)
   const preview = previewLine(body)
-  const titleClass = accent ? 'text-[#1B6DFC]' : 'text-[#98A0AD]'
+  const titleClass = accent ? 'text-[#0F1115]' : 'text-[#9CA2AB]'
 
   return (
-    <div className="rounded-md border border-[#E8EAEE] bg-[#FFFFFF]/40">
+    <div className="rounded-md border border-[#E4E4E0] bg-[#FFFFFF]/40">
       <button
         type="button"
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between gap-3 px-3 py-2 hover:bg-[#EFF1F4]/40 transition-colors text-left"
+        className="w-full flex items-center justify-between gap-3 px-3 py-2 hover:bg-[#EDEDEA]/40 transition-colors text-left"
       >
         <div className="min-w-0 flex-1">
           <p className={`text-[11.5px] font-medium mb-0.5 ${titleClass}`}>{title}</p>
           {!open && (
-            <p className="text-[12.5px] text-[#666D7A] truncate">{preview}</p>
+            <p className="text-[12.5px] text-[#6E747D] truncate">{preview}</p>
           )}
         </div>
-        <span className="shrink-0 text-[11.5px] font-medium text-[#1B6DFC] hover:text-[#1056D6]">
+        <span className="shrink-0 text-[11.5px] font-medium text-[#0F1115] hover:text-[#000000]">
           {open ? 'Close' : 'Open'}
         </span>
       </button>
       {open && (
         <div className="px-3 pb-3 pt-1">
-          <div className="text-[12.5px] text-[#43474F] leading-relaxed whitespace-pre-wrap">{body}</div>
+          <div className="text-[12.5px] text-[#4A4F57] leading-relaxed whitespace-pre-wrap">{body}</div>
         </div>
       )}
     </div>

@@ -14,25 +14,25 @@ export default function PlatformBuildoutPage() {
       subtitle="History. Superseded as a plan by the Build board (Dashboard → Product → Build) on 14 Sep 2026, which arranges these steps into one build order. Statuses are still edited in this board's file. The read as a sellable product. Every phase, every step, current status. src/lib/saas-buildout-manifest.ts is the source of truth — the ship checklist requires updating it on every commit that moves a step."
       progressNote="100% means the read can be sold and run by a coach who is not Kade. The realistic near-term target is all of the read, the loop and door 2."
       explainer={
-        <details className="mb-6 p-4 rounded-xl border border-[#B5CFFC] bg-[rgba(27,109,252,0.08)]/40">
-          <summary className="cursor-pointer text-[13px] font-bold text-[#0A46B2] uppercase tracking-widest select-none">
+        <details className="mb-6 p-4 rounded-xl border border-[#DCDCD7] bg-[rgba(27,109,252,0.08)]/40">
+          <summary className="cursor-pointer text-[13px] font-bold text-[#000000] uppercase tracking-widest select-none">
             How to read this page
           </summary>
-          <div className="mt-3 space-y-3 text-[13px] text-[#141821] leading-relaxed">
-            <p><strong>What this is.</strong> The plan to take the read — the part that works out what is going on with someone — and sell it separately from the coaching. Decided 29 August 2026. The strategic doc is <code className="bg-white px-1 py-0.5 rounded border border-[#B5CFFC] text-[11px]">2026-09-01_Read_As_A_Product_Roadmap.md</code> in Dropbox; this board is its operational counterpart.</p>
+          <div className="mt-3 space-y-3 text-[13px] text-[#0F1115] leading-relaxed">
+            <p><strong>What this is.</strong> The plan to take the read — the part that works out what is going on with someone — and sell it separately from the coaching. Decided 29 August 2026. The strategic doc is <code className="bg-white px-1 py-0.5 rounded border border-[#DCDCD7] text-[11px]">2026-09-01_Read_As_A_Product_Roadmap.md</code> in Dropbox; this board is its operational counterpart.</p>
             <p><strong>The product is four steps.</strong> Initial intake, initial read, weekly check-in, and a re-read every 12 weeks. The re-read trigger is <strong>time, never block-end</strong> — a block is Performance Coaching vocabulary, and other coaches write 4, 8 or 12 week blocks or none at all.</p>
             <p><strong>Two front doors.</strong> Door 2 is a coach with no software of their own, running clients on Body Recode screens. Door 1 is a company that already has coaching software, embedding the read in the product they already sell. <strong>Door 2 first.</strong> A gym is not a third door — it is door 2 with an owner layer on top.</p>
             <p><strong>Scope.</strong> This board tracks Layer 1 only: the engine, the loop, the re-read, and the two front doors. <strong>The Collective is NOT here</strong> — it was designed for coaches running the whole Performance Coaching product under their own brand, which is Layer 2 white-labelled, so it moved (9 Sep) along with the tenancy, branding and billing work built for it. Door 2 depends on that multi-coach plumbing, which already shipped; it is tracked on the{' '}
-              <Link href="/dashboard/settings/coaching-buildout" className="text-[#1560E0] hover:text-[#1056D6] underline">Performance Coaching board</Link>.</p>
+              <Link href="/dashboard/settings/coaching-buildout" className="text-[#000000] hover:text-[#000000] underline">Performance Coaching board</Link>.</p>
             <p><strong>The one thing blocking everything.</strong> Phase 2 ends with a real coach who is not Kade using it. Nothing past that moves until there is a name. Every previous attempt failed the same way: the Collective was 86% built and got one enquiry in six weeks. Worth knowing the reason though — across 23 posts in a month it reached 447 people total, so it was never really shown to anyone. The offer was not rejected; it was never tested.</p>
             <p><strong>What the statuses mean.</strong> Every status on this board was verified against the code on 9 September 2026, not taken from a design note. That matters — a note claiming a 12-week re-read backstop already existed turned out to be wrong, and it had been wrong for weeks.</p>
           </div>
         </details>
       }
       footer={
-        <div className="mt-10 p-4 rounded-xl border border-[#E8EAEE] bg-[#FBFCFD] text-[12px] text-[#666D7A] leading-relaxed">
-          <strong className="text-[#141821]">Source of truth:</strong> <code className="bg-[#F4F6F9] px-1 py-0.5 rounded text-[11px]">src/lib/saas-buildout-manifest.ts</code>. Every commit that moves a step MUST update its entry in the same commit (see <code className="bg-[#F4F6F9] px-1 py-0.5 rounded text-[11px]">feedback_ship_checklist</code>). Strategic doc: <code className="bg-[#F4F6F9] px-1 py-0.5 rounded text-[11px]">06_SAAS_PLATFORM_BUILD/2026-09-01_Read_As_A_Product_Roadmap.md</code>. Sibling board:{' '}
-          <Link href="/dashboard/settings/coaching-buildout" className="text-[#1560E0] hover:text-[#1056D6] underline">
+        <div className="mt-10 p-4 rounded-xl border border-[#E4E4E0] bg-[#FAFAF8] text-[12px] text-[#6E747D] leading-relaxed">
+          <strong className="text-[#0F1115]">Source of truth:</strong> <code className="bg-[#F2F2EF] px-1 py-0.5 rounded text-[11px]">src/lib/saas-buildout-manifest.ts</code>. Every commit that moves a step MUST update its entry in the same commit (see <code className="bg-[#F2F2EF] px-1 py-0.5 rounded text-[11px]">feedback_ship_checklist</code>). Strategic doc: <code className="bg-[#F2F2EF] px-1 py-0.5 rounded text-[11px]">06_SAAS_PLATFORM_BUILD/2026-09-01_Read_As_A_Product_Roadmap.md</code>. Sibling board:{' '}
+          <Link href="/dashboard/settings/coaching-buildout" className="text-[#000000] hover:text-[#000000] underline">
             Performance Coaching buildout
           </Link>.
         </div>

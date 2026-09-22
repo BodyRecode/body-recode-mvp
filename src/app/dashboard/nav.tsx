@@ -186,15 +186,15 @@ function NavItem({
       aria-current={active ? 'page' : undefined}
       className={`relative flex items-center gap-2.5 px-2.5 py-[7px] rounded-lg text-[13px] transition-colors ${
         active
-          ? 'bg-white text-[#1B6DFC] font-medium shadow-[0_1px_3px_rgba(16,24,40,0.09),0_1px_2px_-1px_rgba(16,24,40,0.05)]'
-          : 'text-[#464C58] hover:bg-white/85 hover:text-[#141821]'
+          ? 'bg-white text-[#0F1115] font-semibold shadow-[0_1px_3px_rgba(15,17,21,0.08),0_1px_2px_-1px_rgba(15,17,21,0.05)]'
+          : 'text-[#4A4F57] hover:bg-white/85 hover:text-[#0F1115]'
       }`}
     >
       {active && (
         <span
           aria-hidden
           className="absolute left-0 top-[7px] bottom-[7px] w-[3px] rounded-r-[3px]"
-          style={{ background: 'linear-gradient(180deg,#4B8DFF,#1B6DFC)' }}
+          style={{ background: '#0F1115' }}
         />
       )}
       <Icon size={15} strokeWidth={2} className={active ? 'opacity-100' : 'opacity-60'} />
@@ -205,12 +205,14 @@ function NavItem({
           className="ml-auto shrink-0 text-[10.5px] font-semibold text-white rounded-full px-1.5 py-px min-w-[18px] text-center"
           style={{
             fontVariantNumeric: 'tabular-nums',
-            background: badge.tone === 'alert'
-              ? 'linear-gradient(180deg,#EF4444,#DC2626)'
-              : 'linear-gradient(180deg,#3B82F9,#1B6DFC)',
+            // A count of things waiting is NOT a meaning colour. It is a
+            // number, and it is graphite like every other number in the
+            // product. 'alert' is the exception and stays coloured, because
+            // that one does mean something.
+            background: badge.tone === 'alert' ? '#8F2D2D' : '#0F1115',
             boxShadow: badge.tone === 'alert'
-              ? '0 1px 2px rgba(220,38,38,0.35)'
-              : '0 1px 2px rgba(27,109,252,0.35)',
+              ? '0 1px 2px rgba(143,45,45,0.30)'
+              : '0 1px 2px rgba(15,17,21,0.24)',
           }}
         >
           {badge.count > 99 ? '99+' : badge.count}
@@ -251,7 +253,7 @@ export default function DashboardNav({
           group.key === 'meta' && showDev ? [...group.items, DEV_ONLY] : group.items
         return (
           <div key={group.key} className="mb-0.5">
-            <p className="px-2 pt-3.5 pb-1.5 text-[10.5px] font-semibold text-[#9AA2B0]">
+            <p className="px-2 pt-3.5 pb-1.5 text-[10.5px] font-semibold text-[#9CA2AB]">
               {group.label}
             </p>
             <div className="flex flex-col gap-[1px]">
@@ -270,7 +272,7 @@ export default function DashboardNav({
       })}
       {showDev && (
         <p
-          className="mt-3 mx-2 text-[11.5px] font-medium text-[#B45309] bg-[#FEF3C7] px-1.5 py-0.5 rounded inline-block"
+          className="mt-3 mx-2 text-[11.5px] font-medium text-[#B06E1F] bg-[#FDF8F1] px-1.5 py-0.5 rounded inline-block"
           title="Dev-only nav items are visible (append ?dev=1 to any dashboard URL to toggle)"
         >
           dev

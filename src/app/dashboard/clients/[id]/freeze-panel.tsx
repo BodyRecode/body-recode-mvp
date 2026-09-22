@@ -51,28 +51,28 @@ export default function FreezePanel({
 
   if (frozenAt) {
     return (
-      <div className="rounded-xl border border-[#F1DEB8] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] p-5">
-        <p className="text-sm font-semibold text-[#8A5A14]">Engagement paused</p>
-        <p className="text-[12.5px] text-[#A96A12] mt-1">
+      <div className="rounded-xl border border-[#EADCC4] bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] p-5">
+        <p className="text-sm font-semibold text-[#8A5514]">Engagement paused</p>
+        <p className="text-[12.5px] text-[#B06E1F] mt-1">
           Frozen on {new Date(frozenAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}
           {freezeNotes ? ` · ${freezeNotes}` : ''}
         </p>
-        <p className="text-[12.5px] text-[#A96A12] mt-2">
+        <p className="text-[12.5px] text-[#B06E1F] mt-2">
           Portal locked, all automated contact stopped, Stripe subscription cancelled, email suppressed.
           Everything reversible with one click.
         </p>
-        {error && <p className="text-[12.5px] text-[#C82626] bg-[#FDEDED] border border-[#F5C9C9] rounded-md px-3 py-2 mt-3">{error}</p>}
+        {error && <p className="text-[12.5px] text-[#8F2D2D] bg-[#FBF1F1] border border-[#E8C9C9] rounded-md px-3 py-2 mt-3">{error}</p>}
         {steps && (
           <ul className="text-[12.5px] space-y-1 mt-3">
             {steps.map((s, i) => (
-              <li key={i} className={s.done ? 'text-[#A96A12]' : 'text-[#C82626]'}>
+              <li key={i} className={s.done ? 'text-[#B06E1F]' : 'text-[#8F2D2D]'}>
                 {s.done ? '✓' : '!'} {s.step}{s.detail ? ` · ${s.detail}` : ''}
               </li>
             ))}
           </ul>
         )}
         <div className="mt-3">
-          <button onClick={unfreeze} disabled={busy} className="px-4 py-2 rounded-lg text-[12.5px] font-medium bg-[#A96A12] text-white hover:bg-[#A96A12] disabled:opacity-40 transition-colors">
+          <button onClick={unfreeze} disabled={busy} className="px-4 py-2 rounded-lg text-[12.5px] font-medium bg-[#B06E1F] text-white hover:bg-[#B06E1F] disabled:opacity-40 transition-colors">
             {busy ? 'Unfreezing…' : 'Unfreeze'}
           </button>
         </div>
@@ -104,55 +104,55 @@ export default function FreezePanel({
   }
 
   return (
-    <div className="rounded-xl border border-[#E8EAEE] bg-white p-5">
+    <div className="rounded-xl border border-[#E4E4E0] bg-white p-5">
       {!open ? (
         <div className="flex items-center justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold text-[#141821]">Pause engagement</p>
-            <p className="text-[12.5px] text-[#666D7A] mt-1">
+            <p className="text-sm font-semibold text-[#0F1115]">Pause engagement</p>
+            <p className="text-[12.5px] text-[#6E747D] mt-1">
               Same lockout as offboarding, none of the finality. Their file stays intact. Reverse in one click.
             </p>
           </div>
-          <button onClick={() => setOpen(true)} className="flex-none px-4 py-2 rounded-lg text-[12.5px] font-medium bg-[#FAEFD8] text-[#A96A12] hover:bg-[#F1DEB8] transition-colors">
+          <button onClick={() => setOpen(true)} className="flex-none px-4 py-2 rounded-lg text-[12.5px] font-medium bg-[#FDF8F1] text-[#B06E1F] hover:bg-[#EADCC4] transition-colors">
             Freeze
           </button>
         </div>
       ) : (
         <div className="space-y-4">
-          <p className="text-sm font-semibold text-[#141821]">Pause engagement with {firstName}</p>
+          <p className="text-sm font-semibold text-[#0F1115]">Pause engagement with {firstName}</p>
 
           <div>
-            <label className="block text-[12.5px] font-medium text-[#666D7A] mb-1.5">
-              Why the freeze <span className="font-normal normal-case text-[#98A0AD]">(optional)</span>
+            <label className="block text-[12.5px] font-medium text-[#6E747D] mb-1.5">
+              Why the freeze <span className="font-normal normal-case text-[#9CA2AB]">(optional)</span>
             </label>
             <textarea
               value={notes}
               onChange={e => setNotes(e.target.value)}
               rows={2}
               placeholder="Saving up, on holiday, surgery recovery. A few words for future you."
-              className="w-full bg-[#F4F6F9] border border-[#E8EAEE] rounded-md px-3 py-2 text-sm"
+              className="w-full bg-[#F2F2EF] border border-[#E4E4E0] rounded-md px-3 py-2 text-sm"
             />
           </div>
 
-          <div className="rounded-lg bg-[#FBFCFD] border border-[#E8EAEE] p-3">
-            <p className="text-[12.5px] font-semibold text-[#141821] mb-1.5">This will:</p>
-            <ul className="text-[12.5px] text-[#666D7A] space-y-0.5 list-disc pl-4">
+          <div className="rounded-lg bg-[#FAFAF8] border border-[#E4E4E0] p-3">
+            <p className="text-[12.5px] font-semibold text-[#0F1115] mb-1.5">This will:</p>
+            <ul className="text-[12.5px] text-[#6E747D] space-y-0.5 list-disc pl-4">
               <li>Lock their portal (they see a friendly &quot;on pause&quot; page)</li>
               <li>Stop every automated email: check-ins, log nudges, block-end, reminders</li>
               <li>Cancel any active Stripe subscription (no more weekly charges)</li>
               <li>Suppress their email address</li>
             </ul>
-            <p className="text-[12.5px] text-[#666D7A] mt-2">
+            <p className="text-[12.5px] text-[#6E747D] mt-2">
               Their plans, readings, photos, messages and history are unchanged and still open to you.
               Unfreeze restores the portal and email; Stripe billing needs a fresh payment link when they return.
             </p>
           </div>
 
-          {error && <p className="text-[12.5px] text-[#C82626] bg-[#FDEDED] border border-[#F5C9C9] rounded-md px-3 py-2">{error}</p>}
+          {error && <p className="text-[12.5px] text-[#8F2D2D] bg-[#FBF1F1] border border-[#E8C9C9] rounded-md px-3 py-2">{error}</p>}
           {steps && (
             <ul className="text-[12.5px] space-y-1">
               {steps.map((s, i) => (
-                <li key={i} className={s.done ? 'text-[#666D7A]' : 'text-[#A96A12]'}>
+                <li key={i} className={s.done ? 'text-[#6E747D]' : 'text-[#B06E1F]'}>
                   {s.done ? '✓' : '!'} {s.step}{s.detail ? ` · ${s.detail}` : ''}
                 </li>
               ))}
@@ -160,10 +160,10 @@ export default function FreezePanel({
           )}
 
           <div className="flex gap-2">
-            <button onClick={freeze} disabled={busy} className="px-4 py-2 rounded-lg text-[12.5px] font-medium bg-[#A96A12] text-white hover:bg-[#A96A12] disabled:opacity-40 transition-colors">
+            <button onClick={freeze} disabled={busy} className="px-4 py-2 rounded-lg text-[12.5px] font-medium bg-[#B06E1F] text-white hover:bg-[#B06E1F] disabled:opacity-40 transition-colors">
               {busy ? 'Freezing…' : 'Freeze'}
             </button>
-            <button onClick={() => { setOpen(false); setError(null) }} disabled={busy} className="px-4 py-2 rounded-lg text-[12.5px] font-medium bg-[#F4F6F9] text-[#141821] hover:bg-[#EFF1F4] transition-colors">
+            <button onClick={() => { setOpen(false); setError(null) }} disabled={busy} className="px-4 py-2 rounded-lg text-[12.5px] font-medium bg-[#F2F2EF] text-[#0F1115] hover:bg-[#EDEDEA] transition-colors">
               Cancel
             </button>
           </div>

@@ -148,25 +148,25 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals, 
     const cp = Math.round((meal.carb_g * 4 / denom) * 100)
     const fp = 100 - pp - cp
     return (
-      <div className="bg-[#F4F6F9] br-card overflow-hidden">
-        <div className="px-5 py-3 border-b border-[#E8EAEE] flex items-center justify-between">
+      <div className="bg-[#F2F2EF] br-card overflow-hidden">
+        <div className="px-5 py-3 border-b border-[#E4E4E0] flex items-center justify-between">
           <div>
-            <h3 className="font-semibold text-[#141821] text-sm">{meal.meal_name}</h3>
-            <p className="text-[10px] text-[#98A0AD] mt-0.5">{meal.timing}</p>
+            <h3 className="font-semibold text-[#0F1115] text-sm">{meal.meal_name}</h3>
+            <p className="text-[10px] text-[#9CA2AB] mt-0.5">{meal.timing}</p>
           </div>
           <div className="flex items-center gap-3">
             <div className="text-right">
-              <p className="text-sm font-semibold text-[#141821] tabular-nums">{view.kcal} kcal</p>
-              <p className="text-[10px] text-[#666D7A] mt-0.5 tabular-nums">
+              <p className="text-sm font-semibold text-[#0F1115] tabular-nums">{view.kcal} kcal</p>
+              <p className="text-[10px] text-[#6E747D] mt-0.5 tabular-nums">
                 {meal.protein_g}g P · {meal.carb_g}g C · {meal.fat_g}g F
               </p>
-              <p className="text-[10px] text-[#98A0AD] mt-0.5 tabular-nums">
+              <p className="text-[10px] text-[#9CA2AB] mt-0.5 tabular-nums">
                 P {pp}% · C {cp}% · F {fp}%
               </p>
             </div>
             <button
               onClick={() => setEditing(true)}
-              className="text-[10px] font-semibold px-2.5 py-1 border border-[#E8EAEE] text-[#666D7A] rounded-md hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors"
+              className="text-[10px] font-semibold px-2.5 py-1 border border-[#E4E4E0] text-[#6E747D] rounded-md hover:border-[#0F1115] hover:text-[#0F1115] transition-colors"
             >
               Edit
             </button>
@@ -183,16 +183,16 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals, 
               const wasChanged = changed.length > 0
               const macro = (field: string, label: string, value: number | null) =>
                 changedFields.has(field)
-                  ? <span className="text-[#DC2626] font-semibold"><span className="text-[10px]">{label}</span> {value}g</span>
-                  : <span className="text-[#666D7A]"><span className="text-[10px] text-[#98A0AD]">{label}</span> {value}g</span>
+                  ? <span className="text-[#8F2D2D] font-semibold"><span className="text-[10px]">{label}</span> {value}g</span>
+                  : <span className="text-[#6E747D]"><span className="text-[10px] text-[#9CA2AB]">{label}</span> {value}g</span>
               return (
-                <div key={i} className={`flex items-start justify-between gap-3${wasChanged ? ' bg-[#FDEDED] -mx-2 px-2 py-1 rounded' : ''}`}>
+                <div key={i} className={`flex items-start justify-between gap-3${wasChanged ? ' bg-[#FBF1F1] -mx-2 px-2 py-1 rounded' : ''}`}>
                   <div className="flex items-start gap-2 flex-1 min-w-0">
-                    <span className={`mt-0.5 shrink-0 ${wasChanged ? 'text-[#DC2626]' : 'text-[#98A0AD]'}`}>•</span>
-                    <p className="text-sm text-[#141821]">
+                    <span className={`mt-0.5 shrink-0 ${wasChanged ? 'text-[#8F2D2D]' : 'text-[#9CA2AB]'}`}>•</span>
+                    <p className="text-sm text-[#0F1115]">
                       {f.name}
                       {wasChanged && (
-                        <span className="ml-2 text-[10px] font-semibold text-[#DC2626]">changed</span>
+                        <span className="ml-2 text-[10px] font-semibold text-[#8F2D2D]">changed</span>
                       )}
                     </p>
                   </div>
@@ -201,7 +201,7 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals, 
                       {macro('protein_g', 'P', f.protein_g)}
                       {macro('carb_g', 'C', f.carb_g)}
                       {macro('fat_g', 'F', f.fat_g)}
-                      <span className="text-[#666D7A] font-medium w-[60px] text-right">{f.kcal} kcal</span>
+                      <span className="text-[#6E747D] font-medium w-[60px] text-right">{f.kcal} kcal</span>
                     </div>
                   )}
                 </div>
@@ -209,7 +209,7 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals, 
             })}
           </div>
           {meal.notes && (
-            <p className="text-[12.5px] text-[#98A0AD] italic mt-2">{meal.notes}</p>
+            <p className="text-[12.5px] text-[#9CA2AB] italic mt-2">{meal.notes}</p>
           )}
         </div>
       </div>
@@ -301,27 +301,27 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals, 
   }
 
   return (
-    <div className="bg-white border-2 border-[#1B6DFC] rounded-xl overflow-hidden">
-      <div className="px-5 py-3 border-b border-[#E8EAEE] bg-[rgba(27,109,252,0.08)]/40 flex items-center justify-between gap-4">
+    <div className="bg-white border-2 border-[#0F1115] rounded-xl overflow-hidden">
+      <div className="px-5 py-3 border-b border-[#E4E4E0] bg-[rgba(27,109,252,0.08)]/40 flex items-center justify-between gap-4">
         <div className="flex-1 min-w-0 space-y-1">
           <input
             type="text"
             value={draftName}
             onChange={e => setDraftName(e.target.value)}
-            className="w-full font-semibold text-[#141821] text-sm bg-white border border-[#E8EAEE] rounded px-2 py-1 focus:outline-none focus:border-[#1B6DFC]"
+            className="w-full font-semibold text-[#0F1115] text-sm bg-white border border-[#E4E4E0] rounded px-2 py-1 focus:outline-none focus:border-[#0F1115]"
             placeholder="Meal name"
           />
           <input
             type="text"
             value={draftTiming}
             onChange={e => setDraftTiming(e.target.value)}
-            className="w-full text-[10px] text-[#666D7A] bg-white border border-[#E8EAEE] rounded px-2 py-1 focus:outline-none focus:border-[#1B6DFC]"
+            className="w-full text-[10px] text-[#6E747D] bg-white border border-[#E4E4E0] rounded px-2 py-1 focus:outline-none focus:border-[#0F1115]"
             placeholder="Timing (e.g. 07:00–08:00)"
           />
         </div>
         <div className="text-right shrink-0">
-          <p className="text-sm font-semibold text-[#141821] tabular-nums">{mealKcal} kcal</p>
-          <p className="text-[10px] text-[#666D7A] mt-0.5 tabular-nums">
+          <p className="text-sm font-semibold text-[#0F1115] tabular-nums">{mealKcal} kcal</p>
+          <p className="text-[10px] text-[#6E747D] mt-0.5 tabular-nums">
             {Math.round(mealMacros.protein_g)}g P · {Math.round(mealMacros.carb_g)}g C · {Math.round(mealMacros.fat_g)}g F
           </p>
         </div>
@@ -337,7 +337,7 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals, 
                   value={f.name}
                   onChange={e => updateFood(i, { name: e.target.value })}
                   placeholder="e.g. 150g chicken thigh (raw)"
-                  className="w-full text-sm text-[#141821] bg-[#FBFCFD] border border-[#E8EAEE] rounded px-2 py-1 focus:outline-none focus:border-[#1B6DFC]"
+                  className="w-full text-sm text-[#0F1115] bg-[#FAFAF8] border border-[#E4E4E0] rounded px-2 py-1 focus:outline-none focus:border-[#0F1115]"
                 />
                 <div className="flex items-center gap-2">
                   <select
@@ -346,7 +346,7 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals, 
                       if (e.target.value) swapFood(i, e.target.value)
                       e.target.value = ''
                     }}
-                    className="text-[10px] text-[#666D7A] bg-white border border-[#E8EAEE] rounded px-1.5 py-0.5 hover:border-[#1B6DFC] focus:outline-none focus:border-[#1B6DFC] max-w-[220px]"
+                    className="text-[10px] text-[#6E747D] bg-white border border-[#E4E4E0] rounded px-1.5 py-0.5 hover:border-[#0F1115] focus:outline-none focus:border-[#0F1115] max-w-[220px]"
                   >
                     <option value="">🔄 Swap food from reference table…</option>
                     {FOOD_DB_KEYS.map(k => (
@@ -354,50 +354,50 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals, 
                     ))}
                   </select>
                   {lookupFood(f.name) && (
-                    <span className="text-[9px] text-[#177245] bg-[#EDF8F1] px-1.5 py-0.5 rounded">In table</span>
+                    <span className="text-[9px] text-[#2B5E45] bg-[#F2F2EF] px-1.5 py-0.5 rounded">In table</span>
                   )}
                 </div>
               </div>
               <div className="flex items-center gap-1.5 shrink-0">
-                <label className="flex items-center gap-1 text-[10px] text-[#98A0AD] tabular-nums">
+                <label className="flex items-center gap-1 text-[10px] text-[#9CA2AB] tabular-nums">
                   P
                   <input
                     type="number"
                     value={f.protein_g}
                     onChange={e => updateFood(i, { protein_g: Number(e.target.value) })}
-                    className="w-14 text-[12.5px] text-[#141821] bg-[#FBFCFD] border border-[#E8EAEE] rounded px-1.5 py-1 focus:outline-none focus:border-[#1B6DFC]"
+                    className="w-14 text-[12.5px] text-[#0F1115] bg-[#FAFAF8] border border-[#E4E4E0] rounded px-1.5 py-1 focus:outline-none focus:border-[#0F1115]"
                     step="0.1"
                     min="0"
                   />g
                 </label>
-                <label className="flex items-center gap-1 text-[10px] text-[#98A0AD] tabular-nums">
+                <label className="flex items-center gap-1 text-[10px] text-[#9CA2AB] tabular-nums">
                   C
                   <input
                     type="number"
                     value={f.carb_g}
                     onChange={e => updateFood(i, { carb_g: Number(e.target.value) })}
-                    className="w-14 text-[12.5px] text-[#141821] bg-[#FBFCFD] border border-[#E8EAEE] rounded px-1.5 py-1 focus:outline-none focus:border-[#1B6DFC]"
+                    className="w-14 text-[12.5px] text-[#0F1115] bg-[#FAFAF8] border border-[#E4E4E0] rounded px-1.5 py-1 focus:outline-none focus:border-[#0F1115]"
                     step="0.1"
                     min="0"
                   />g
                 </label>
-                <label className="flex items-center gap-1 text-[10px] text-[#98A0AD] tabular-nums">
+                <label className="flex items-center gap-1 text-[10px] text-[#9CA2AB] tabular-nums">
                   F
                   <input
                     type="number"
                     value={f.fat_g}
                     onChange={e => updateFood(i, { fat_g: Number(e.target.value) })}
-                    className="w-14 text-[12.5px] text-[#141821] bg-[#FBFCFD] border border-[#E8EAEE] rounded px-1.5 py-1 focus:outline-none focus:border-[#1B6DFC]"
+                    className="w-14 text-[12.5px] text-[#0F1115] bg-[#FAFAF8] border border-[#E4E4E0] rounded px-1.5 py-1 focus:outline-none focus:border-[#0F1115]"
                     step="0.1"
                     min="0"
                   />g
                 </label>
-                <div className="w-[60px] text-right text-[12.5px] font-medium text-[#141821] tabular-nums pt-1">
+                <div className="w-[60px] text-right text-[12.5px] font-medium text-[#0F1115] tabular-nums pt-1">
                   {kcalFromMacros(Number(f.protein_g) || 0, Number(f.carb_g) || 0, Number(f.fat_g) || 0)} kcal
                 </div>
                 <button
                   onClick={() => deleteFood(i)}
-                  className="text-[11px] text-[#98A0AD] hover:text-[#C82626] transition-colors px-1"
+                  className="text-[11px] text-[#9CA2AB] hover:text-[#8F2D2D] transition-colors px-1"
                   title="Delete food"
                 >
                   ✕
@@ -409,33 +409,33 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals, 
 
         <button
           onClick={addFood}
-          className="mt-3 text-[12.5px] font-semibold px-3 py-1.5 border border-dashed border-[#E8EAEE] text-[#666D7A] rounded hover:border-[#1B6DFC] hover:text-[#1B6DFC] transition-colors"
+          className="mt-3 text-[12.5px] font-semibold px-3 py-1.5 border border-dashed border-[#E4E4E0] text-[#6E747D] rounded hover:border-[#0F1115] hover:text-[#0F1115] transition-colors"
         >
           + Add food
         </button>
 
         <div className="mt-4">
-          <label className="text-[11.5px] font-medium text-[#666D7A] mb-1 block">Meal notes</label>
+          <label className="text-[11.5px] font-medium text-[#6E747D] mb-1 block">Meal notes</label>
           <textarea
             value={draftNotes}
             onChange={e => setDraftNotes(e.target.value)}
             placeholder="Optional preparation / execution note for this meal"
             rows={2}
-            className="w-full text-[12.5px] text-[#141821] bg-[#FBFCFD] border border-[#E8EAEE] rounded px-2 py-1.5 focus:outline-none focus:border-[#1B6DFC]"
+            className="w-full text-[12.5px] text-[#0F1115] bg-[#FAFAF8] border border-[#E4E4E0] rounded px-2 py-1.5 focus:outline-none focus:border-[#0F1115]"
           />
         </div>
 
-        <div className="mt-4 pt-3 border-t border-[#E8EAEE] flex items-center justify-between">
-          <div className="text-[11px] text-[#666D7A]">
+        <div className="mt-4 pt-3 border-t border-[#E4E4E0] flex items-center justify-between">
+          <div className="text-[11px] text-[#6E747D]">
             Daily preview:{' '}
-            <span className="font-semibold text-[#141821] tabular-nums">
+            <span className="font-semibold text-[#0F1115] tabular-nums">
               {dailyPreview.kcal} kcal
             </span>
             {' '}·{' '}
             <span className="tabular-nums">
               {dailyPreview.protein_g}g P
               {proteinAnchor ? (
-                <span className={`ml-1 text-[10px] ${Math.abs(dailyPreview.protein_g - proteinAnchor) > 20 ? 'text-[#A96A12]' : 'text-[#177245]'}`}>
+                <span className={`ml-1 text-[10px] ${Math.abs(dailyPreview.protein_g - proteinAnchor) > 20 ? 'text-[#B06E1F]' : 'text-[#2B5E45]'}`}>
                   vs {proteinAnchor}g anchor
                 </span>
               ) : null}
@@ -449,14 +449,14 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals, 
             <button
               onClick={cancel}
               disabled={pending}
-              className="text-[12.5px] font-semibold px-3 py-1.5 text-[#666D7A] rounded hover:text-[#141821] transition-colors disabled:opacity-50"
+              className="text-[12.5px] font-semibold px-3 py-1.5 text-[#6E747D] rounded hover:text-[#0F1115] transition-colors disabled:opacity-50"
             >
               Cancel
             </button>
             <button
               onClick={save}
               disabled={pending}
-              className="text-[12.5px] font-semibold px-4 py-1.5 bg-[#1B6DFC] text-white rounded hover:bg-[#1057CC] transition-colors disabled:opacity-50"
+              className="text-[12.5px] font-semibold px-4 py-1.5 bg-[#0F1115] text-white rounded hover:bg-[#000000] transition-colors disabled:opacity-50"
             >
               {pending ? 'Saving…' : 'Save meal'}
             </button>
@@ -464,7 +464,7 @@ export default function MealEditor({ planId, meal, proteinAnchor, siblingMeals, 
         </div>
 
         {error && (
-          <p className="mt-2 text-[11px] text-[#C82626]">{error}</p>
+          <p className="mt-2 text-[11px] text-[#8F2D2D]">{error}</p>
         )}
       </div>
     </div>

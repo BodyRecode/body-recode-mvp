@@ -173,7 +173,7 @@ export default async function CheckInsPage({
         </Card>
       ) : (
         <Card padding="none">
-          <div className="divide-y divide-[#EFF1F4]">
+          <div className="divide-y divide-[#EDEDEA]">
             {withStatus.map(({ row, status }) => {
               const clientName = Array.isArray(row.clients)
                 ? row.clients[0]?.name
@@ -186,19 +186,19 @@ export default async function CheckInsPage({
                 <Link
                   key={row.id}
                   href={href}
-                  className="block px-4 py-3.5 hover:bg-[#F7F9FC] transition-colors group"
+                  className="block px-4 py-3.5 hover:bg-[#F2F2EF] transition-colors group"
                 >
                   <div className="flex items-center gap-3">
                     <Avatar name={name} size={31} />
-                    <p className="text-[13.5px] font-medium text-[#141821] tracking-[-0.012em] truncate group-hover:text-[#1B6DFC] transition-colors min-w-0 flex-1">
+                    <p className="text-[13.5px] font-medium text-[#0F1115] tracking-[-0.012em] truncate group-hover:text-[#0F1115] transition-colors min-w-0 flex-1">
                       {name}
                     </p>
-                    <span className="text-[11.5px] text-[#98A0AD] shrink-0">
+                    <span className="text-[11.5px] text-[#9CA2AB] shrink-0">
                       {row.submitted_at ? relativeTime(row.submitted_at) : ''}
                     </span>
                   </div>
                   <div className="flex items-center gap-3 mt-1.5 pl-[43px]">
-                    <span className="text-[12.5px] text-[#666D7A] min-w-0 flex-1 truncate">
+                    <span className="text-[12.5px] text-[#6E747D] min-w-0 flex-1 truncate">
                       {formLabel} · Week {row.week_number}
                     </span>
                     <StatusSlot status={status} />
@@ -220,7 +220,7 @@ export default async function CheckInsPage({
 function StatusSlot({ status }: { status: Status }) {
   if (status === 'pending') {
     return (
-      <span className="inline-flex items-center gap-1 text-[12px] font-medium px-2.5 py-[3px] rounded-full border border-[#F1DEB8] text-[#A96A12] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] shadow-[0_1px_2px_rgba(16,24,40,0.05)] group-hover:border-[#D9B976] transition-colors shrink-0">
+      <span className="inline-flex items-center gap-1 text-[12px] font-medium px-2.5 py-[3px] rounded-full border border-[#EADCC4] text-[#B06E1F] bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] shadow-[0_1px_2px_rgba(16,24,40,0.05)] group-hover:border-[#EADCC4] transition-colors shrink-0">
         Review now
         <ChevronRight size={12} />
       </span>
@@ -228,7 +228,7 @@ function StatusSlot({ status }: { status: Status }) {
   }
   if (status === 'drafted') {
     return (
-      <span className="inline-flex items-center gap-1 text-[12px] font-medium px-2.5 py-[3px] rounded-full border border-[#B5CFFC] text-[#1B6DFC] bg-[rgba(27,109,252,0.08)] shadow-[0_1px_2px_rgba(16,24,40,0.05)] shrink-0">
+      <span className="inline-flex items-center gap-1 text-[12px] font-medium px-2.5 py-[3px] rounded-full border border-[#DCDCD7] text-[#0F1115] bg-[rgba(27,109,252,0.08)] shadow-[0_1px_2px_rgba(16,24,40,0.05)] shrink-0">
         Draft ready
         <ChevronRight size={12} />
       </span>
@@ -236,14 +236,14 @@ function StatusSlot({ status }: { status: Status }) {
   }
   if (status === 'skipped') {
     return (
-      <span className="inline-flex items-center gap-1.5 text-[12px] px-2.5 py-[3px] rounded-full border border-[#E8EAEE] text-[#666D7A] bg-[#FAFBFC] shrink-0">
+      <span className="inline-flex items-center gap-1.5 text-[12px] px-2.5 py-[3px] rounded-full border border-[#E4E4E0] text-[#6E747D] bg-[#FAFAF8] shrink-0">
         <Clock size={11} />
         Skipped
       </span>
     )
   }
   return (
-    <span className="inline-flex items-center gap-1.5 text-[12px] px-2.5 py-[3px] rounded-full border border-[#E8EAEE] text-[#666D7A] bg-[#FAFBFC] shrink-0">
+    <span className="inline-flex items-center gap-1.5 text-[12px] px-2.5 py-[3px] rounded-full border border-[#E4E4E0] text-[#6E747D] bg-[#FAFAF8] shrink-0">
       <Check size={11} />
       Sent
     </span>
