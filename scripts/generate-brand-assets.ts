@@ -125,6 +125,40 @@ function avatar(bg: string, squareFill: string, letterFill: string): string {
     `  <rect width="${size}" height="${size}" fill="${bg}"/>\n` + markGroup(squareFill, letterFill, pad).replace(/y="0"/, `y="${pad}"`).replace(/translate\(([\d.]+) ([\d.]+)\)/, (_m, a, b) => `translate(${a} ${(parseFloat(b) + pad).toFixed(2)})`))
 }
 
+
+/**
+ * A banner: the lockup on a dark field, sized for one platform.
+ *
+ * Every platform crops a banner differently, and several crop it hard on a
+ * phone. The mark sits in the middle of a stated safe area rather than in the
+ * middle of the file, so it survives the crop instead of losing its edge.
+ */
+function banner(w: number, h: number, safeW: number, safeH: number): string {
+  const scale = Math.min((safeW * 0.42) / (BOX + GAP + wordmark.width), (safeH * 0.34) / BOX)
+  const lw = (BOX + GAP + wordmark.width) * scale
+  const lh = BOX * scale
+  const x = (w - lw) / 2
+  const y = (h - lh) / 2
+  const wy = BOX / 2 + WORD_SIZE * 0.36
+  return svg(w, h,
+    `  <rect width="${w}" height="${h}" fill="${INK}"/>
+  <rect width="${w}" height="${h}" fill="url(#g)"/>
+  <defs><radialGradient id="g" cx="50%" cy="0%" r="90%">
+    <stop offset="0%" stop-color="${ACCENT}" stop-opacity="0.20"/>
+    <stop offset="100%" stop-color="${ACCENT}" stop-opacity="0"/>
+  </radialGradient></defs>
+  <g transform="translate(${x.toFixed(2)} ${y.toFixed(2)}) scale(${scale.toFixed(4)})">
+    <rect width="${BOX}" height="${BOX}" rx="${RADIUS}" fill="${WHITE}"/>
+    <path transform="translate(${((BOX - initials.width) / 2).toFixed(2)} ${(BOX / 2 + MARK_SIZE * 0.36).toFixed(2)})" d="${initials.d}" fill="${INK}"/>
+    <path transform="translate(${(BOX + GAP).toFixed(2)} ${wy.toFixed(2)})" d="${wordmark.d}" fill="${WHITE}"/>
+  </g>`)
+}
+
+/** A link-preview card: what shows when somebody pastes a Body Recode link. */
+function ogCard(): string {
+  return banner(1200, 630, 1000, 500)
+}
+
 /* ── What gets written ───────────────────────────────────────────────── */
 type Asset = {
   name: string
@@ -138,6 +172,36 @@ type Asset = {
    */
   keepPadding?: boolean
 }
+
+
+/**
+ * Named for the platform, so nobody has to remember which number goes where.
+ *
+ * Sizes are what each platform asks for today. A square uploads fine almost
+ * anywhere because platforms resize, but a file named for the job removes the
+ * guessing, and the guessing is where a stretched logo comes from.
+ */
+type PlatformAsset = { name: string; svg: string; w: number; h: number; note: string }
+
+const PLATFORM: PlatformAsset[] = [
+  // Profile pictures. All square, all the same artwork, sized per platform.
+  { name: 'instagram-profile', svg: avatar(ACCENT, WHITE, ACCENT), w: 320, h: 320, note: 'Instagram profile picture.' },
+  { name: 'facebook-profile', svg: avatar(ACCENT, WHITE, ACCENT), w: 360, h: 360, note: 'Facebook profile or page picture.' },
+  { name: 'linkedin-profile', svg: avatar(ACCENT, WHITE, ACCENT), w: 400, h: 400, note: 'LinkedIn personal profile picture.' },
+  { name: 'linkedin-company-logo', svg: avatar(ACCENT, WHITE, ACCENT), w: 300, h: 300, note: 'LinkedIn company page logo.' },
+  { name: 'x-profile', svg: avatar(ACCENT, WHITE, ACCENT), w: 400, h: 400, note: 'X profile picture.' },
+  { name: 'youtube-channel', svg: avatar(ACCENT, WHITE, ACCENT), w: 800, h: 800, note: 'YouTube channel picture.' },
+  { name: 'google-business', svg: avatar(ACCENT, WHITE, ACCENT), w: 720, h: 720, note: 'Google Business Profile.' },
+  { name: 'whatsapp-business', svg: avatar(ACCENT, WHITE, ACCENT), w: 500, h: 500, note: 'WhatsApp Business picture.' },
+
+  // Banners and covers. Each one a different shape, which is why a square does not do.
+  { name: 'linkedin-personal-cover', svg: banner(1584, 396, 1128, 300), w: 1584, h: 396, note: 'LinkedIn personal profile cover.' },
+  { name: 'linkedin-company-cover', svg: banner(1128, 191, 1000, 160), w: 1128, h: 191, note: 'LinkedIn company page cover.' },
+  { name: 'facebook-cover', svg: banner(1200, 630, 820, 360), w: 1200, h: 630, note: 'Facebook page cover. The safe area is narrow because a phone crops the sides.' },
+  { name: 'x-header', svg: banner(1500, 500, 1200, 380), w: 1500, h: 500, note: 'X header.' },
+  { name: 'youtube-banner', svg: banner(2560, 1440, 1546, 423), w: 2560, h: 1440, note: 'YouTube channel banner. Everything sits inside the 1546x423 area a television shows.' },
+  { name: 'link-preview', svg: ogCard(), w: 1200, h: 630, note: 'What appears when somebody pastes a Body Recode link into a message or a post.' },
+]
 
 const ASSETS: Asset[] = [
   { name: 'lockup-on-light', svg: lockup(INK, WHITE, INK), pngSizes: [2400, 1200, 600, 300], note: 'The default. Use on white and on any pale background.' },
@@ -181,6 +245,23 @@ function renderPng(svgPath: string, outPath: string, size: number, transparent: 
   rmSync(tmp, { force: true })
 }
 
+/** Render at an exact width and height, with no trimming. */
+function renderPngExact(svgPath: string, outPath: string, w: number, h: number) {
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+    html,body{margin:0;padding:0;background:transparent;}
+    img{display:block;width:${w}px;height:${h}px;}
+  </style></head><body><img src="file://${svgPath}"></body></html>`
+  const tmp = join(OUT, '_tmp2.html')
+  writeFileSync(tmp, html)
+  execFileSync(CHROME, [
+    '--headless', '--disable-gpu', '--hide-scrollbars',
+    '--default-background-color=00000000',
+    `--screenshot=${outPath}`, `--window-size=${w},${h}`, tmp,
+  ], { stdio: 'ignore' })
+  execFileSync('magick', [outPath, '-crop', `${w}x${h}+0+0`, '+repage', outPath])
+  rmSync(tmp, { force: true })
+}
+
 function main() {
   if (existsSync(OUT)) rmSync(OUT, { recursive: true, force: true })
   mkdirSync(join(OUT, 'svg'), { recursive: true })
@@ -200,6 +281,18 @@ function main() {
     console.log(`  ${a.name.padEnd(22)} svg + ${sizes.length} png`)
   }
 
+  // Platform files, in their own folder so nobody has to choose.
+  mkdirSync(join(OUT, 'social'), { recursive: true })
+  const platformLines: string[] = []
+  for (const p of PLATFORM) {
+    const svgPath = join(OUT, 'social', `${p.name}.svg`)
+    writeFileSync(svgPath, p.svg)
+    const pngPath = join(OUT, 'social', `${p.name}-${p.w}x${p.h}.png`)
+    renderPngExact(svgPath, pngPath, p.w, p.h)
+    platformLines.push(`| \`${p.name}\` | ${p.w} x ${p.h} | ${p.note} |`)
+    console.log(`  ${p.name.padEnd(24)} ${p.w}x${p.h}`)
+  }
+
   writeFileSync(join(OUT, 'README.md'), `# Body Recode logo files
 
 Generated ${new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })} by \`npm run brand:assets\`.
@@ -213,6 +306,18 @@ Generated ${new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'lon
 | File | What it is for | PNG sizes |
 |---|---|---|
 ${lines.join('\n')}
+
+## Social media, already the right size
+
+Every file in \`social/\` is named for where it goes and is already at that platform's size. Upload it as it is.
+
+| File | Size | Where |
+|---|---|---|
+${platformLines.join('\n')}
+
+**Profile pictures are all the same artwork**, just cut to each platform's number. If a platform you use is not listed, \`linkedin-profile\` at 400 works almost everywhere.
+
+**Banners are not interchangeable.** Each is a different shape, and several crop hard on a phone, so the mark sits inside the area that survives the crop rather than in the middle of the file. The YouTube banner keeps everything inside the 1546 by 423 area a television shows.
 
 ## Which one do I use
 
