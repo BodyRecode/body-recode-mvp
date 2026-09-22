@@ -196,6 +196,23 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
   const regressionCount = clientsProcessed.filter(c => c.readiness?.status === 'regression').length
   const reassessmentCount = clientsProcessed.filter(c => c.readiness?.reassessmentRecommended).length
   const driftAdvisoryCount = clientsProcessed.filter(c => c.readiness?.status === 'advisory').length
+  // The book in one line. This is the legitimate place for colour on this
+  // page: it is the readiness of everybody on it, which is the only thing here
+  // that colour is allowed to say. Same object as Today and Your Practice, so
+  // a coach learns it once rather than three times.
+  const BOOK_ORDER = ['Remediation', 'Optimisation', 'Post-Optimisation'] as const
+  const bookColour: Record<string, string> = {
+    Remediation: '#E0A254',
+    Optimisation: '#71ADB8',
+    'Post-Optimisation': '#6FA98B',
+    'Not read yet': '#2A2F39',
+  }
+  const book = [
+    ...BOOK_ORDER.map(label => ({ label, count: clientsProcessed.filter(c => c.bodyState.label === label).length })),
+    { label: 'Not read yet', count: clientsProcessed.filter(c => !c.latestCffs).length },
+  ].filter(b => b.count > 0)
+  const bookTotal = book.reduce((n, b) => n + b.count, 0) || 1
+
   const teal = accentColour('teal')
   const red = accentColour('red')
   const amber = accentColour('amber')
@@ -232,6 +249,31 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           </div>
         }
       />
+
+      {book.length > 0 && (
+        <div className="rounded-2xl p-5 mb-5" style={{ background: '#0F1115', border: '1px solid #1F242C' }}>
+          <div className="text-[10px] font-bold uppercase" style={{ letterSpacing: '0.16em', color: '#676D76' }}>
+            Where the book sits
+          </div>
+          <div className="flex h-2.5 rounded-full overflow-hidden gap-[2px] mt-3.5">
+            {book.map(b => (
+              <span key={b.label} style={{
+                width: `${(b.count / bookTotal) * 100}%`,
+                background: bookColour[b.label],
+                boxShadow: b.label === 'Not read yet' ? undefined : `0 0 14px ${bookColour[b.label]}66`,
+              }} />
+            ))}
+          </div>
+          <div className="flex gap-4 flex-wrap mt-3">
+            {book.map(b => (
+              <span key={b.label} className="flex items-center gap-1.5 text-[10px]" style={{ color: '#8A9099' }}>
+                <span className="w-2 h-2 rounded-full" style={{ background: bookColour[b.label] }} />
+                {b.count} {b.label}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
 
       <ReassessmentQueue
         rows={openTriggers}
@@ -422,7 +464,11 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                   </div>
                   <div className="flex items-center gap-2 mt-0.5 flex-wrap">
                     <p className="text-[11px] text-[#676D76]">
-                      Added {formatDate(client.created_at)}
+                      {client.bodyState.label === 'Remediation' ? 'Being asked for less at the moment'
+                        : client.bodyState.label === 'Optimisation' ? 'Capacity is holding'
+                        : client.bodyState.label === 'Post-Optimisation' ? 'Established and steady'
+                        : client.latestCffs ? 'Read, and up to date'
+                        : 'Waiting on their assessment'}
                     </p>
                     {client.weekNumber !== null && client.daysUntilStart !== null && client.daysUntilStart <= 0 && (
                       <>
