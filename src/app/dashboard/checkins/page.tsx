@@ -171,11 +171,28 @@ export default async function CheckInsPage({
                 : (row.clients as { name?: string } | null)?.name
               const name = clientName || 'Unknown client'
               const href = `/dashboard/clients/${row.client_id}/checkins/${row.week_number}/${String(row.form_type).toLowerCase()}`
-              // BOTH FORMS ARE WEEKLY. A was labelled "Daily check-in" and is
-              // not daily: A asks for overall context, B asks about friction.
-              // A coach reading "daily" on a weekly loop is being told the
-              // product does something it does not.
-              const formLabel = String(row.form_type).toUpperCase() === 'B' ? 'Friction check-in' : 'Weekly check-in'
+              // BOTH FORMS ARE THE WEEKLY CHECK-IN. A was labelled "Daily
+              // check-in" and nothing here is daily.
+              //
+              // A AND B ALTERNATE BY WEEK, globally: odd system weeks ask A,
+              // even weeks ask B, so every client gets one then the other.
+              // They are two sets of questions, not two kinds of check-in.
+              //
+              //   A  Overall Context, Salience and Patterns, Capacity and
+              //      Resources, Expression Without Fixing, Acknowledgement
+              //   B  Week Friction and Mismatch, Repeating Pressures, Tensions
+              //      and Trade-Offs, Capacity Awareness, Meaning Without
+              //      Action, Closing Reflection
+              //
+              // Both then carry Recovery, Nutrition, Training and Cycle, so a
+              // client has ONE thing to fill in each week.
+              //
+              // So neither gets a name of its own here. Calling B "the friction
+              // one" is reading its first section title and guessing, which is
+              // exactly how "Daily" got there. If a coach ever needs to know
+              // which set they are reading, that is a naming decision for Kade,
+              // not something to infer from a heading.
+              const formLabel = 'Weekly check-in'
 
               return (
                 <PersonRow
