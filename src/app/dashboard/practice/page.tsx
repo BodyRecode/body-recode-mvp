@@ -65,24 +65,79 @@ function Panel({ label, children }: { label: string; children: React.ReactNode }
   )
 }
 
+/**
+ * A client's standing.
+ *
+ * 22 September 2026, and this fixes a fault worse than a styling one.
+ *
+ * THE DOT MEANT SOMETHING DIFFERENT HERE THAN ON EVERY OTHER PAGE. It used the
+ * readiness colours exactly, for attendance: amber for Slipping, coral for
+ * Gone quiet, green for Steady. So a coach learns on Today that an amber dot
+ * means Remediation, somebody being asked for less, then comes here two clicks
+ * later and an amber dot means they have stopped answering. Coral is worse: on
+ * Today it means a safety gate has fired.
+ *
+ * Attendance is a DIFFERENT AXIS from readiness, in the same way Attention is.
+ * Borrowing the colours does not just look inconsistent, it teaches a coach the
+ * wrong thing and then contradicts it.
+ *
+ * So the dot is readiness, here and everywhere. And attendance, which is what
+ * this page is FOR, gets something better than a colour: the last six weeks
+ * drawn as six marks, filled where they answered. That is the evidence itself
+ * rather than a verdict about it, it needs no colour at all, and it survives
+ * any colour vision and a greyscale print.
+ */
+function WeekStrip({ answered }: { answered: number }) {
+  return (
+    <span className="inline-flex items-center gap-[3px]" aria-label={`${answered} of the last six weeks answered`}>
+      {[0, 1, 2, 3, 4, 5].map(i => (
+        <span
+          key={i}
+          className="block rounded-[1px]"
+          style={{
+            width: 5, height: 12,
+            background: i < answered ? BRAND.darkInkMuted : BRAND.darkLine,
+          }}
+        />
+      ))}
+    </span>
+  )
+}
+
 function Standing({ c }: { c: ClientStanding }) {
-  const tone =
-    c.attendance === 'quiet' ? { dot: '#D4817E', word: 'Gone quiet', cls: 'text-[#D4817E]' }
-    : c.attendance === 'slipping' ? { dot: '#E0A254', word: 'Slipping', cls: 'text-[#E0A254]' }
-    : c.attendance === 'too_new' ? { dot: '#676D76', word: 'Too new', cls: 'text-[#8A9099]' }
-    : { dot: '#6FA98B', word: 'Steady', cls: 'text-[#6FA98B]' }
+  const word =
+    c.attendance === 'quiet' ? 'Gone quiet'
+    : c.attendance === 'slipping' ? 'Slipping'
+    : c.attendance === 'too_new' ? 'Too new'
+    : 'Steady'
+
+  const readiness = c.readiness ? READINESS_TOKENS[c.readiness]?.dark : null
 
   return (
     <Link
       href={`/dashboard/clients/${c.id}`}
-      className="flex items-center gap-3 px-4 py-3 border-b border-[#1F242C] last:border-b-0 hover:bg-[#1A1E26] transition-colors"
+      className="grid gap-4 items-start py-4 border-b border-[#1F242C] last:border-b-0 hover:bg-[#12151B] transition-colors px-2"
+      style={{ gridTemplateColumns: '24px 1fr max-content' }}
     >
-      <span className="w-2 h-2 rounded-full shrink-0" style={{ background: tone.dot }} />
-      <div className="min-w-0 flex-1">
-        <p className="text-[13.5px] text-white truncate">{c.name}</p>
-        <p className="text-[12.5px] text-[#8A9099] truncate">{c.because}</p>
+      <span className="w-2.5 h-2.5 rounded-full shrink-0 mt-[7px]" style={{ background: readiness ?? BRAND.darkLine }} />
+      <div className="min-w-0">
+        <div className="flex items-center gap-2.5 flex-wrap">
+          <span className="text-[20px] font-bold tracking-[-0.028em] leading-tight text-[#FAFAF8]">{c.name}</span>
+          {c.readiness && (
+            <span
+              className="text-[10px] font-extrabold uppercase rounded-full px-2 py-[2.5px]"
+              style={{ color: readiness ?? BRAND.darkInkSoft, background: `${readiness ?? BRAND.darkInkSoft}1F`, letterSpacing: '0.1em' }}
+            >
+              {c.readiness}
+            </span>
+          )}
+        </div>
+        <p className="text-[13.5px] leading-[1.55] mt-1.5 text-[#C2C6CC] max-w-[620px]">{c.because}</p>
       </div>
-      <span className={`text-[11px] font-medium shrink-0 ${tone.cls}`}>{tone.word}</span>
+      <div className="text-right shrink-0">
+        <WeekStrip answered={c.answeredOfSix} />
+        <div className="text-[11px] mt-2 text-[#8A9099]">{word}</div>
+      </div>
     </Link>
   )
 }
@@ -98,26 +153,27 @@ export default async function PracticePage() {
   return (
     <PageBody>
       <PageHeader
-        eyebrow="Your practice"
+        eyebrow="Your book"
         title="Your practice"
         subtitle="Who is slipping away, and what your book is actually made of. Both come out of the reads, so neither needs you to record anything."
+        metric={needsYou > 0 ? { value: needsYou, label: 'need you' } : undefined}
       />
 
-      <div className="rounded-3xl bg-[#0B0D10] p-5 sm:p-6 mt-2">
+      <div className="mt-2">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
           <Panel label="Active clients">
-            <p className="text-[34px] leading-none font-semibold text-white tabular-nums">{view.totalActive}</p>
+            <p className="text-[34px] leading-none font-extrabold tracking-[-0.045em] text-white tabular-nums">{view.totalActive}</p>
           </Panel>
           <Panel label="Steady">
-            <p className="text-[34px] leading-none font-semibold text-[#6FA98B] tabular-nums">{steady}</p>
+            <p className="text-[34px] leading-none font-extrabold tracking-[-0.045em] text-[#FAFAF8] tabular-nums">{steady}</p>
             <p className="text-[12.5px] text-[#676D76] mt-2">answering most weeks</p>
           </Panel>
           <Panel label="Need you">
-            <p className={`text-[34px] leading-none font-semibold tabular-nums ${needsYou > 0 ? 'text-[#E0A254]' : 'text-white'}`}>{needsYou}</p>
+            <p className="text-[34px] leading-none font-extrabold tracking-[-0.045em] text-[#FAFAF8] tabular-nums">{needsYou}</p>
             <p className="text-[12.5px] text-[#676D76] mt-2">slipping or gone quiet</p>
           </Panel>
           <Panel label="Read but not opened">
-            <p className="text-[34px] leading-none font-semibold text-white tabular-nums">
+            <p className="text-[34px] leading-none font-extrabold tracking-[-0.045em] text-white tabular-nums">
               {view.clients.filter(c => c.openedLastRead === false).length}
             </p>
             <p className="text-[12.5px] text-[#676D76] mt-2">sent, never read</p>
