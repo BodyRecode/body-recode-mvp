@@ -64,6 +64,9 @@ type Person = {
    */
   /** Opens the safety gate, which is the state that carries the ring. */
   gateOpen?: boolean
+  /** Capacity, Schedule, Regulation, Behaviour. Green / Amber / Red. */
+  signals: [string, string, string, string]
+  guardrail: string
 }
 
 const BOOK: Person[] = [
@@ -72,6 +75,8 @@ const BOOK: Person[] = [
     startedDaysAgo: 96, lastCheckinDaysAgo: 3,
     readiness: 'Remediation', pattern: 'Stress-Stored',
     goal: 'Lose the weight around my middle and stop feeling wrecked by Wednesday',
+    signals: ['Red', 'Amber', 'Red', 'Green'],
+    guardrail: 'No added load while sleep is under six hours. Hold volume where it is and let recovery catch up before anything is increased.',
     note: 'The system is settling rather than building. Sleep has been under six hours for three weeks and recovery has not come back up between sessions.',
   },
   {
@@ -79,6 +84,8 @@ const BOOK: Person[] = [
     startedDaysAgo: 74, lastCheckinDaysAgo: 5,
     readiness: 'Optimisation', pattern: 'Insulin-Drift',
     goal: 'Get back to the shape I was in before the business took over',
+    signals: ['Green', 'Amber', 'Green', 'Amber'],
+    guardrail: 'Capacity is there. The limiter is the calendar rather than the body.',
     note: 'Capacity is holding and recovery is keeping up with the load. There is room here, and the limiter is consistency rather than anything physiological.',
   },
   {
@@ -86,6 +93,8 @@ const BOOK: Person[] = [
     startedDaysAgo: 188, lastCheckinDaysAgo: 4,
     readiness: 'Post-Optimisation', pattern: 'Stress-Stored',
     goal: 'Hold what I have built and stop yo-yoing every winter',
+    signals: ['Green', 'Green', 'Green', 'Green'],
+    guardrail: 'Nothing is asking for attention. Stability is the finding.',
     note: 'Established and stable across the last three reads. Nothing here is asking for attention, which is itself the finding.',
   },
   {
@@ -93,6 +102,8 @@ const BOOK: Person[] = [
     startedDaysAgo: 61, lastCheckinDaysAgo: 19,
     readiness: 'Remediation', pattern: 'Estrogen-Shift',
     goal: 'Feel like myself again',
+    signals: ['Amber', 'Green', 'Red', 'Amber'],
+    guardrail: 'Held. Nothing is read further until the open question has been answered by somebody qualified.',
     note: 'A question in the intake has not been answered by anybody qualified to answer it, so the read is held there rather than guessed past.',
     gateOpen: true,
   },
@@ -101,6 +112,8 @@ const BOOK: Person[] = [
     startedDaysAgo: 41, lastCheckinDaysAgo: 34,
     readiness: 'Optimisation', pattern: 'Stress-Stored',
     goal: 'Build strength without wrecking my sleep',
+    signals: ['Amber', 'Red', 'Amber', 'Red'],
+    guardrail: 'Nothing new has been reported for a month, so the picture is older than it looks.',
     note: 'Reads as capable, but there has been nothing new to read for a month.',
   },
   {
@@ -108,6 +121,8 @@ const BOOK: Person[] = [
     startedDaysAgo: 9, lastCheckinDaysAgo: null,
     readiness: null, pattern: null,
     goal: 'Get a proper look at where I actually am',
+    signals: ['Unknown', 'Unknown', 'Unknown', 'Unknown'],
+    guardrail: '',
     note: '',
   },
 ]
@@ -235,6 +250,15 @@ async function create() {
         client_reading_email_sent_at: days(p.startedDaysAgo - 1),
         client_opened_at: p.lastCheckinDaysAgo === null ? null : days(p.startedDaysAgo - 2),
         reassessment_flagged: p.gateOpen ?? false,
+        // The four signals a coach reads at the top of a client's file. Left
+        // at their 'Unknown' default the whole header renders grey, which
+        // reads as a bland page rather than as missing data.
+        exposure_readiness_capacity: p.signals[0],
+        exposure_readiness_schedule: p.signals[1],
+        exposure_readiness_regulation: p.signals[2],
+        exposure_readiness_behaviour: p.signals[3],
+        capacity_constraints_and_guardrails: p.guardrail,
+        primary_patterns_and_signals: p.note,
       })
       if (ce) console.log(`  ${p.name} reading: ${ce.message}`)
     }

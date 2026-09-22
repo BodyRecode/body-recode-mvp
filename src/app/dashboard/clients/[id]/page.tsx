@@ -559,12 +559,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
         const hasActiveProgram = !!activePrograms
         const hasActiveNutrition = !!activeNutritionPlans
         const next =
-          !intakeDone ? { t: 'Waiting on intake', s: 'Client to complete their foundational intake.', href: null } :
+          !intakeDone ? { t: 'Waiting on their assessment', s: 'Nothing can be read until it is in.', href: null } :
           !latestBaseline ? { t: 'Waiting on baseline', s: 'Client to upload measurements and progress photos.', href: `/dashboard/clients/${id}/baseline` } :
-          !activeCffs ? { t: 'Generate the Foundational Synthesis', s: 'Onboarding complete - ready to synthesise.', href: `#cffs` } :
-          !frPublished ? { t: 'Publish the Foundational Read', s: 'Synthesis done - the client is waiting on their reading.', href: `#cffs` } :
-          latestCheckinDraftUnsent ? { t: 'Send the check-in reply', s: 'A draft is written and waiting. It has not been sent, so she has heard nothing.', href: `#cfws` } :
-          latestCheckinNeedsResponse ? { t: 'Respond to the weekly check-in', s: 'Latest check-in needs your response.', href: `#cfws` } :
+          !activeCffs ? { t: 'Generate their read', s: 'Their assessment is in and nothing has been written yet.', href: `#cffs` } :
+          !frPublished ? { t: 'Publish their read', s: 'It is written. They have not seen it yet.', href: `#cffs` } :
+          latestCheckinDraftUnsent ? { t: 'Send the check-in reply', s: 'A draft is written and waiting. It has not been sent, so they have heard nothing.', href: `#cfws` } :
+          latestCheckinNeedsResponse ? { t: 'Read this week', s: 'Their latest check-in has not been read.', href: `#cfws` } :
           !hasActiveProgram ? { t: 'Generate the first training plan', s: 'Reading published. Design the first block.', href: `/dashboard/clients/${id}/program` } :
           !hasActiveNutrition ? { t: 'Generate the nutrition plan', s: 'Training plan is live - add nutrition.', href: `/dashboard/clients/${id}/nutrition` } :
           { t: 'Weekly loop active', s: 'Everything is up to date - watch the weekly check-ins.', href: null }
@@ -572,7 +572,12 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
           <div className="mb-6 space-y-3">
             {activeCffs && (
               <div className="flex flex-wrap items-center gap-2">
-                <Pill accent="ink">{bodyState.label}</Pill>
+                <span
+                  className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase px-2.5 py-[3px] rounded-full border whitespace-nowrap"
+                  style={{ letterSpacing: '0.08em', ...readinessPillStyle(bodyState.label ?? '', true) }}
+                >
+                  {bodyState.label}
+                </span>
                 {bodyState.reScored && (
                   <span className="text-[11px] text-[#8A9099]">
                     re-scored{bodyState.blockName ? ` at the end of ${bodyState.blockName}` : ''} · foundational read said {bodyState.foundational}
@@ -588,7 +593,7 @@ export default async function ClientPage({ params }: { params: Promise<{ id: str
                         : `Provisional read from the ${client.pattern_source ?? 'funnel'}. Sharpens at the next CFFS.`
                     }
                   >
-                    <Pill accent="teal">
+                    <Pill accent="neutral">
                       {readPatternLabel(currentProgressRead?.pattern_classification ?? client.pattern)}
                       {client.pattern_source !== 'cffs' && ' (provisional)'}
                     </Pill>
