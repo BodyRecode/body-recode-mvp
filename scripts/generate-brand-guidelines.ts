@@ -156,11 +156,12 @@ pages.push(page(`<h2 class="toc-h">TABLE OF CONTENTS</h2>
   </div>
   <div class="tg">
     <div class="tr"><span>3.0</span><span>Colour Palette &amp; Codes</span><span>12</span></div>
-    <div class="tr"><span>3.1</span><span>Logo on Colour Backgrounds</span><span>13</span></div>
-    <div class="tr"><span>3.2</span><span>Positive &amp; Negative Space</span><span>14</span></div>
+    <div class="tr"><span>3.1</span><span>Every Colour, and Where It Goes</span><span>13</span></div>
+    <div class="tr"><span>3.2</span><span>Logo on a Coloured Ground</span><span>14</span></div>
+    <div class="tr"><span>3.3</span><span>Positive &amp; Negative Space</span><span>15</span></div>
   </div>
   <div class="tg">
-    <div class="tr"><span>4.0</span><span>Imagery</span><span>15</span></div>
+    <div class="tr"><span>4.0</span><span>Imagery</span><span>16</span></div>
   </div>
 </div>`, { bar: false, side: '' }))
 
@@ -259,6 +260,11 @@ pages.push(page(`${head('2.1', 'TYPOGRAPHY IN PRACTICE', 'Weight and spacing car
   </div>
 </div>`))
 
+/** A compact row for the full system page: swatch, name, code, where it goes. */
+const row = (name: string, hex: string, use: string) =>
+  `<div class="crow"><span class="cchip" style="background:${hex};${['#FFFFFF','#FAFAF8','#F2F2EF','#EDEDEA','#FBF1F1'].includes(hex) ? 'box-shadow:inset 0 0 0 1px #DCDCD7' : ''}"></span><span class="cn">${name}</span><span class="ch">${hex}</span><span class="cu">${use}</span></div>`
+const grp = (title: string, rows: string) => `<div class="cgrp"><div class="cap">${title}</div>${rows}</div>`
+
 const sw = (name: string, hex: string, role: string, dark = false) =>
   `<div class="sw"><div class="chip" style="background:${hex};${hex === WHITE ? 'border:1px solid #E1E4E8' : ''}"></div>
   <div class="swn">${name}</div><div class="swh">${hex}</div><div class="swr">${role}</div></div>`
@@ -283,16 +289,68 @@ pages.push(page(`${head('3.0', 'COLOUR PALETTE &amp;<br>COLOUR CODES', 'Two colo
 </div>
 <p class="note"><b>Colour only appears where it means something.</b> Structure, type, surfaces, the mark and every button are graphite or paper. The moment a colour appears on a screen it is carrying information about somebody. Nothing is coloured to look nice, which is what makes a coloured thing read. <b>Remediation is never red</b>, because red would tell a coach the opposite of what the reading says.</p>`))
 
+pages.push(page(`${head('3.1', 'EVERY COLOUR,<br>AND WHERE IT GOES', 'The complete set. If a colour is not on this page it is not in the product, and the way to add one is to add it here first with a reason.')}
+<div class="two" style="gap:38px">
+  <div>
+    ${grp('GROUNDS, DARK', [
+      row('Well', '#0B0D10', 'The deepest ground. A full-bleed panel another surface sits against.'),
+      row('Base', '#0F1115', 'The default dark page.'),
+      row('Surface', '#14171D', 'A panel on the base.'),
+      row('Panel', '#1A1E26', 'A card on a surface.'),
+      row('Panel raised', '#21262F', 'A card on a card. Rare, and usually a sign of too many layers.'),
+      row('Line', '#2A2F39', 'Hairlines and card edges.'),
+      row('Line soft', '#1F242C', 'A divider inside a card.'),
+    ].join(''))}
+    ${grp('INK, ON DARK', [
+      row('Ink', '#FAFAF8', 'Headings and anything that must be read.'),
+      row('Muted', '#C2C6CC', 'Body text.'),
+      row('Soft', '#8A9099', 'Labels, captions, secondary lines.'),
+      row('Faint', '#676D76', 'Legal, help text, the quietest thing on a screen.'),
+    ].join(''))}
+    ${grp('ACTION', [
+      row('Action', '#0F1115', 'A button on paper. On dark it is Paper instead: the thing you press is the highest contrast object, not a colour.'),
+      row('Hover', '#242932', 'Pointer over a graphite button.'),
+      row('Pressed', '#000000', 'Held down.'),
+      row('Quiet', '#F2F2EF', 'A secondary button, which is a surface rather than a fill.'),
+    ].join(''))}
+  </div>
+  <div>
+    ${grp('GROUNDS, PAPER', [
+      row('Surface', '#FFFFFF', 'A field or a card sitting on paper.'),
+      row('Paper', '#FAFAF8', 'The default light page.'),
+      row('Raised', '#F2F2EF', 'A panel on paper.'),
+      row('Line', '#E4E4E0', 'Hairlines and card edges.'),
+      row('Line strong', '#DCDCD7', 'The edge of something a person types into, where the ordinary line is too quiet.'),
+      row('Line soft', '#EDEDEA', 'A divider inside a card.'),
+    ].join(''))}
+    ${grp('INK, ON PAPER', [
+      row('Ink', '#0F1115', 'Headings and anything that must be read.'),
+      row('Muted', '#4A4F57', 'Body text and field labels.'),
+      row('Soft', '#6E747D', 'Captions and secondary lines.'),
+      row('Faint', '#9CA2AB', 'Placeholders and the quietest thing on a screen.'),
+    ].join(''))}
+    ${grp('MEANING. PAPER VALUE, THEN DARK VALUE', [
+      row('Hold', '#B5803C', 'Remediation. On dark: #D9AE73'),
+      row('Calm', '#3A7D8C', 'Optimisation. On dark: #7FB3BF'),
+      row('Steady', '#4A7C59', 'Post-Optimisation. On dark: #8FB79A'),
+      row('Stop', '#A63D3D', 'Needs attention now. On dark: #D98C8C'),
+      row('None', '#9CA2AB', 'No reading yet. Absence, not a verdict.'),
+      row('Stop wash', '#FBF1F1', 'An error panel on paper, edged #E8C9C9. The only tinted surfaces in the product.'),
+    ].join(''))}
+  </div>
+</div>
+<p class="note"><b>Retired, and being removed surface by surface:</b> Signal Blue #1B6DFC and Electric Teal #10E1C2, the two 2025 primaries. They remain in the palette file marked as legacy so the sweep is deliberate rather than a build breaking at an awkward moment. <b>Neither is the brand any more and neither goes on anything new.</b></p>`))
+
 const bg = (c: string, light = true) =>
   `<div class="bgcell" style="background:${c}">${light ? lock(PAPER, c, PAPER, 26) : lock(INK, c, INK, 26)}</div>`
-pages.push(page(`${head('3.1', 'LOGO ON A<br>COLOURED GROUND', 'It happens: a partner deck, a sponsor board, somebody else\u2019s brand. Reverse the mark out in paper and leave it alone. Never recolour the square to match.')}
+pages.push(page(`${head('3.2', 'LOGO ON A<br>COLOURED GROUND', 'It happens: a partner deck, a sponsor board, somebody else\u2019s brand. Reverse the mark out in paper and leave it alone. Never recolour the square to match.')}
 <div class="grid3 tight">
   ${bg(INK)} ${bg('#1F3A5F')} ${bg('#0B7A66')}
   ${bg('#7A3FA8')} ${bg('#B0341F')} ${bg('#2B2B2B')}
 </div>
 <p class="note">Body Recode does not put its own logo on a colour. These exist so that when somebody else does, it is still the same mark.</p>`))
 
-pages.push(page(`${head('3.2', 'POSITIVE &amp;<br>NEGATIVE SPACE', 'Positive on a pale ground, negative on graphite. The square inverts with the ground so the letters stay a shape rather than a hole. It is one mark, not two.')}
+pages.push(page(`${head('3.3', 'POSITIVE &amp;<br>NEGATIVE SPACE', 'Positive on a pale ground, negative on graphite. The square inverts with the ground so the letters stay a shape rather than a hole. It is one mark, not two.')}
 <div class="two">
   <div class="panel center" style="background:${PAPER};border:1px solid ${LINE}">${lock(INK, PAPER, INK, 50)}</div>
   <div class="panel center" style="background:${INK}">${lock(PAPER, INK, PAPER, 50)}</div>
@@ -348,6 +406,13 @@ h2{font-size:23px;font-weight:800;letter-spacing:.01em;line-height:1.22;padding-
 .two p{font-size:13.5px;line-height:1.75;color:${GREY};margin-bottom:14px}
 .two p b{color:${INK}}
 .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.cgrp{margin-bottom:16px}
+.cgrp .cap{margin-bottom:6px}
+.crow{display:grid;grid-template-columns:14px 74px 62px 1fr;align-items:center;gap:8px;padding:3.5px 0;font-size:9.5px;line-height:1.35}
+.cchip{width:14px;height:14px;border-radius:4px;display:inline-block}
+.cn{font-weight:700;color:#0F1115}
+.ch{color:#8A929B;letter-spacing:.01em}
+.cu{color:#6E747D}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .grid3.tight{gap:14px}
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}

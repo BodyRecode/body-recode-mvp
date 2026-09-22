@@ -144,6 +144,12 @@ import { BrandMark } from '@/components/brand-mark'
  * then name it. "How hard you can push them. That is their readiness." A coach
  * learns the word from the sentence instead of having to already know it.
  *
+ * COLOURS ON THIS PAGE ARE ALL IN src/lib/brand-tokens.ts. They were not when
+ * it shipped: this page invented six, three of them within four points of a
+ * token that already existed. Three were real gaps and are now named in the
+ * palette (darkWell, lineStrong, the Stop wash pair) and three were snapped
+ * back. Nothing here may be a hex code that is not in that file.
+ *
  * SEVENTH PASS, and it stops describing the product. Kade, after six: "I think
  * we can still do better." He was right and more words were not going to fix
  * it. Two things were actually wrong:
@@ -241,7 +247,7 @@ export default function LoginPage() {
           <p className="text-[10.5px] font-medium uppercase mb-3" style={{ letterSpacing: '0.16em', color: '#676D76' }}>
             An example read
           </p>
-          <div className="rounded-2xl border border-[#262B34] bg-[#14181F] px-6 py-5 sm:px-7 sm:py-6">
+          <div className="rounded-2xl border border-[#2A2F39] bg-[#14171D] px-6 py-5 sm:px-7 sm:py-6">
             <div className="flex items-baseline gap-2.5">
               <span className="text-[10.5px] font-medium uppercase text-[#676D76]" style={{ letterSpacing: '0.14em' }}>
                 Readiness
@@ -259,7 +265,7 @@ export default function LoginPage() {
               sessions. Anything added now lands on top of that.
             </p>
 
-            <div className="h-px bg-[#262B34] my-5" />
+            <div className="h-px bg-[#2A2F39] my-5" />
 
             <div className="flex items-baseline gap-2.5">
               <span className="text-[10.5px] font-medium uppercase text-[#676D76]" style={{ letterSpacing: '0.14em' }}>

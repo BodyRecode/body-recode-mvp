@@ -30,6 +30,17 @@
  * HOW TO USE IT. New work references these names. Existing work is swept in
  * passes, never in one change, because one sweep across six hundred references
  * is how a client-facing email quietly breaks.
+ *
+ * THIS FILE IS THE LOCK, AND IT IS ALREADY BEEN TESTED ONCE. The login page was
+ * built the same day this file was written and introduced SIX colours that are
+ * not in it, three of them within four points of a token that already existed:
+ * #14181F beside darkSurface #14171D, #262B34 beside darkLine #2A2F39. That is
+ * how 419 happens, and it happens in a day, to somebody who knows the rule.
+ *
+ * So: THREE were real gaps and are now named here (darkWell, lineStrong, and
+ * the Stop wash pair). THREE were drift and were snapped back. If a screen
+ * needs a colour that is not in this file, add it here first with a reason, or
+ * use the one that is already within four points of it.
  */
 
 export const BRAND = {
@@ -54,10 +65,18 @@ export const BRAND = {
   surfaceRaised: '#F2F2EF',
   line: '#E4E4E0',
   lineSoft: '#EDEDEA',
+  /* A stronger hairline for something a person types into, where the
+     ordinary line is too quiet to read as an edge. */
+  lineStrong: '#DCDCD7',
 
   /* ── Surfaces, on graphite ───────────────────────────────────────────
      Named because before this week there were no dark screens and each
-     one was inventing its own hex code. */
+     one was inventing its own hex code.
+
+     `darkWell` is the deepest ground in the product and exists for a
+     full-bleed panel that another surface sits against, such as one half
+     of a split screen. Added 22 Sep after the login page invented it. */
+  darkWell: '#0B0D10',
   darkBase: '#0F1115',
   darkSurface: '#14171D',
   darkPanel: '#1A1E26',
@@ -75,6 +94,7 @@ export const BRAND = {
      highest-contrast thing on the screen, which is what contrast is for. */
   action: '#0F1115',
   actionHover: '#242932',
+  actionPressed: '#000000',
   actionInk: '#FAFAF8',
   actionQuiet: '#F2F2EF',
 
@@ -92,6 +112,11 @@ export const BRAND = {
   signalStop: '#A63D3D',
   signalStopOnDark: '#D98C8C',
   signalNone: '#9CA2AB',
+  /* The Stop state as a panel on paper rather than as a dot. The only
+     tinted surfaces in the product, and they exist because an error has to
+     read as an error without shouting. */
+  stopWash: '#FBF1F1',
+  stopWashLine: '#E8C9C9',
 
   /* ── Retired, kept so old references still compile ───────────────────
      These are the 2025 colours. They are no longer the brand. Nothing new
