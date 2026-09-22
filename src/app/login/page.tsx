@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { BrandMark } from '@/components/brand-mark'
+import { ReadinessDot } from '@/components/readiness-dot'
 
 /**
  * The coach sign-in.
@@ -255,8 +256,8 @@ export default function LoginPage() {
               <span className="flex items-center gap-2 text-[15px] font-semibold text-[#FAFAF8]">
                 {/* The one colour on this half of the page, and it is carrying
                     meaning. Amber, never red: Remediation is not trouble, it is
-                    being asked for less. Value chosen by Kade 22 Sep. */}
-                <span aria-hidden className="w-[7px] h-[7px] rounded-full" style={{ background: '#E0A254' }} />
+                    being asked for less. */}
+                <ReadinessDot level="Remediation" tone="dark" size={7} />
                 Remediation
               </span>
             </div>
