@@ -46,7 +46,8 @@
     "test:pdf-token": "npx tsx scripts/test-pdf-access-token.ts",
     "test:reassessment": "npx tsx scripts/test-reassessment-triggers.ts",
     "coach:test-book": "npx tsx scripts/test-coach-book.ts",
-    "coach:test-book-wipe": "npx tsx scripts/test-coach-book.ts wipe"
+    "coach:test-book-wipe": "npx tsx scripts/test-coach-book.ts wipe",
+    "test:coach-isolation": "npx tsx scripts/test-coach-isolation.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.79.0",

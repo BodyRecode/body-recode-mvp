@@ -139,6 +139,64 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  /* ----------------------------------------------------------------
+   * 4b. The same gate, for a client id carried in the BODY.
+   *
+   *     Added 22 September 2026, after a test that actually made the requests
+   *     rather than reading the code for them. 4a above covers every operation
+   *     that names the client in the ADDRESS, which is most of them and
+   *     includes the co-pilot. It cannot fire for the ones that name the client
+   *     in the body, because there is nothing in the path to match, and that is
+   *     51 operations including GENERATING AND PUBLISHING SOMEBODY'S READ.
+   *
+   *     Done here rather than in 51 routes for the same reason 4a was: a route
+   *     added next month is covered before anyone remembers to think about it,
+   *     and a route that forgets cannot leak.
+   *
+   *     The body is read from a CLONE, so the route still gets its own copy.
+   *     No client id in the body means there is nothing to check and the
+   *     request passes, which is correct rather than lenient: this gate exists
+   *     to answer "is this your client", not to police requests in general.
+   * ---------------------------------------------------------------- */
+  if (
+    pathname.startsWith('/api/') &&
+    !clientApi &&
+    !pathname.startsWith('/api/portal/') &&
+    !pathname.startsWith('/api/cron/') &&
+    !pathname.startsWith('/api/webhooks/') &&
+    (request.method === 'POST' || request.method === 'PUT' || request.method === 'PATCH') &&
+    (request.headers.get('content-type') ?? '').includes('application/json') &&
+    user &&
+    !isCoachEmail(user.email)
+  ) {
+    let bodyClientId: string | null = null
+    try {
+      const body = await request.clone().json()
+      const raw = body?.client_id ?? body?.clientId
+      if (typeof raw === 'string' && /^[0-9a-fA-F-]{36}$/.test(raw)) bodyClientId = raw
+    } catch {
+      // Not JSON we can read, so there is nothing to check here. The route
+      // will reject a malformed body on its own terms.
+    }
+
+    if (bodyClientId) {
+      const admin = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!,
+        { auth: { persistSession: false } },
+      )
+      const { data } = await admin
+        .from('clients')
+        .select('coach_id')
+        .eq('id', bodyClientId)
+        .maybeSingle()
+
+      if (!data || data.coach_id !== user.id) {
+        return NextResponse.json({ error: 'Not found' }, { status: 404 })
+      }
+    }
+  }
+
   if (pathname.startsWith('/portal') && !user) {
     const loginUrl = new URL('/portal/login', request.url)
     loginUrl.searchParams.set('redirect', pathname)
