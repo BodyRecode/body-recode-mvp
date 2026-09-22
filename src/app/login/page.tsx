@@ -143,6 +143,36 @@ import { BrandMark } from '@/components/brand-mark'
  * THE ORDER IS THE RULE, not just the vocabulary: say the plain thing first,
  * then name it. "How hard you can push them. That is their readiness." A coach
  * learns the word from the sentence instead of having to already know it.
+ *
+ * SEVENTH PASS, and it stops describing the product. Kade, after six: "I think
+ * we can still do better." He was right and more words were not going to fix
+ * it. Two things were actually wrong:
+ *
+ *   - ALL THREE BLOCKS BEGAN WITH "IT". The spec-sheet rhythm I removed in the
+ *     fourth pass had grown back in a new vocabulary.
+ *   - IT WAS ALL CLAIMS. Every line asserted a capability and nothing let a
+ *     coach see one. "Next level" is not a thing you can say about yourself.
+ *
+ * SO IT SHOWS A READ INSTEAD. Readiness and pattern, which are the two axes,
+ * with the reason written underneath exactly as the product writes it. A coach
+ * knows within five seconds whether this is worth their time, which is more
+ * than three paragraphs of claims ever got them.
+ *
+ * FOUR THINGS ABOUT THE EXAMPLE, all deliberate:
+ *
+ *   1. IT INTERPRETS, IT DOES NOT INSTRUCT. The first draft of this card said
+ *      "push less this block", which is the read telling the coach what to do
+ *      and is the one line this product may never write. It now says what is
+ *      happening and what follows from it. The coach decides.
+ *   2. NO NAME, AND IT IS LABELLED AS AN EXAMPLE. A card with a client's name
+ *      on a page anyone can load reads like leaked data even when invented.
+ *   3. STRESS-STORED, because it is the only universal pattern. Any of the
+ *      other three would gender the example on a page that is deliberately
+ *      universal.
+ *   4. THE AMBER DOT IS THE ONLY COLOUR ON THE DARK HALF, and it is carrying
+ *      meaning rather than decoration, which is the palette rule demonstrated
+ *      rather than asserted. Remediation is amber and never red: somebody in
+ *      Remediation is not in trouble, they are being asked for less.
  */
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -205,28 +235,48 @@ export default function LoginPage() {
             it straight to them.
           </p>
 
-          <div className="space-y-5">
-            {[
-              ['It looks at everything together', 'Sleep, stress, training, recovery, where they carry body fat, hormones, medications, what they actually eat. Most of it only makes sense side by side, which is the bit nobody has time to do by hand.'],
-              ['It tells you how hard to push', 'Not a guess off how they looked on Monday. A straight answer, with the reason written next to it, so you can say it out loud and back it up. That is their readiness.'],
-              ['It stops when it should', 'If something looks like it needs a doctor rather than a coach, it says so and waits instead of carrying on and guessing. Nothing else does this, and it is why you can trust the rest of it.'],
-            ].map(([title, body], i) => (
-              <div key={title} className="flex gap-4">
-                <span className="mt-[2px] w-7 h-7 shrink-0 rounded-full border border-[#2A2F39] flex items-center justify-center text-[11.5px] font-semibold text-[#8A9099] tabular-nums">
-                  {i + 1}
-                </span>
-                <div>
-                  <p className="text-[15.5px] font-medium text-[#FAFAF8]">{title}</p>
-                  <p className="text-[13.5px] text-[#8A9099] leading-relaxed mt-1">{body}</p>
-                </div>
-              </div>
-            ))}
+          {/* An example read rather than three claims about reads. Everything
+              here is interpretation: nothing on this card tells a coach what to
+              do, because the product never does. */}
+          <p className="text-[10.5px] font-medium uppercase mb-3" style={{ letterSpacing: '0.16em', color: '#676D76' }}>
+            An example read
+          </p>
+          <div className="rounded-2xl border border-[#262B34] bg-[#14181F] px-6 py-5 sm:px-7 sm:py-6">
+            <div className="flex items-baseline gap-2.5">
+              <span className="text-[10.5px] font-medium uppercase text-[#676D76]" style={{ letterSpacing: '0.14em' }}>
+                Readiness
+              </span>
+              <span className="flex items-center gap-2 text-[15px] font-semibold text-[#FAFAF8]">
+                {/* The one colour on this half of the page, and it is carrying
+                    meaning. Amber, never red: Remediation is not trouble. */}
+                <span aria-hidden className="w-[7px] h-[7px] rounded-full" style={{ background: '#D9AE73' }} />
+                Remediation
+              </span>
+            </div>
+            <p className="text-[13.5px] text-[#C2C6CC] leading-[1.6] mt-2.5">
+              The system is settling rather than building. Sleep has been under six
+              hours for three weeks and recovery has not come back up between
+              sessions. Anything added now lands on top of that.
+            </p>
+
+            <div className="h-px bg-[#262B34] my-5" />
+
+            <div className="flex items-baseline gap-2.5">
+              <span className="text-[10.5px] font-medium uppercase text-[#676D76]" style={{ letterSpacing: '0.14em' }}>
+                Pattern
+              </span>
+              <span className="text-[15px] font-semibold text-[#FAFAF8]">Stress-Stored</span>
+            </div>
+            <p className="text-[13.5px] text-[#C2C6CC] leading-[1.6] mt-2.5">
+              Cortisol driven. Fat sitting around the middle, puffy in the morning,
+              flat by mid afternoon. Wired and tired rather than simply tired.
+            </p>
           </div>
 
-          <p className="text-[12.5px] text-[#676D76] mt-9 leading-relaxed">
-            It always measures them against where they started, never against a
-            target. And it never tells you what to do about it. That part is
-            still yours.
+          <p className="text-[12.5px] text-[#676D76] mt-7 leading-relaxed">
+            Every client gets one of these, and a fresh one every week, measured
+            against where they started rather than against a target. What to do
+            about it is still your call.
           </p>
         </div>
       </div>
