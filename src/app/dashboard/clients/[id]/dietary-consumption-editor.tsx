@@ -180,9 +180,9 @@ export default function DietaryConsumptionEditor({
     <div className="br-card p-6 mb-4">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2.5">
-          <span className="w-7 h-[3px] rounded-full bg-[#0F1115]" />
+          <span className="w-7 h-[3px] rounded-full bg-[#FAFAF8]" />
           <h2
-            className="text-[11px] font-medium text-[#0F1115]"
+            className="text-[11px] font-medium text-[#FAFAF8]"
           >
             Dietary &amp; Consumption
           </h2>
@@ -196,15 +196,15 @@ export default function DietaryConsumptionEditor({
           </button>
         )}
       </div>
-      <p className="text-[#9CA2AB] text-[12.5px] mb-4">
+      <p className="text-[#676D76] text-[12.5px] mb-4">
         Section D dietary and consumption answers, captured at intake and editable here without sending a supplementary intake. Restrictions and preferences are hard constraints; the rest is the baseline the nutrition engine designs from. Saving flags the active program / nutrition plan as stale so you know to regenerate.
       </p>
       {showStaleBanner && (
-        <div className="mb-4 px-3 py-2.5 rounded-lg border border-[#B06E1F]/50 bg-[#B06E1F]/5">
-          <p className="text-[12.5px] font-medium text-[#B06E1F] mb-1">
+        <div className="mb-4 px-3 py-2.5 rounded-lg border border-[#E0A254]/50 bg-[#E0A254]/5">
+          <p className="text-[12.5px] font-medium text-[#E0A254] mb-1">
             Prescription is older than current dietary context
           </p>
-          <p className="text-[12.5px] text-[#4A4F57] leading-relaxed">
+          <p className="text-[12.5px] text-[#C2C6CC] leading-relaxed">
             Dietary context {daysSinceUpdate !== null ? `was updated ${daysSinceUpdate}d ago` : 'has been updated'}. The active{' '}
             {programStale && nutritionStale ? 'training program and nutrition plan' : programStale ? 'training program' : 'nutrition plan'}{' '}
             {programStale && nutritionStale ? 'were' : 'was'} generated before that change. Constraints, calorie band, and meal structure may no longer match. Consider regenerating from the macro plan / nutrition page (and regenerating the CFFS if the change is material).
@@ -215,34 +215,34 @@ export default function DietaryConsumptionEditor({
         <div className="space-y-4">
           {FIELDS.map(f => (
             <div key={f.key}>
-              <label className="block text-[12.5px] font-medium text-[#0F1115] mb-1">
+              <label className="block text-[12.5px] font-medium text-[#FAFAF8] mb-1">
                 {f.label}
-                {f.required && <span className="text-[#0F1115] ml-1">*</span>}
+                {f.required && <span className="text-[#FAFAF8] ml-1">*</span>}
               </label>
-              <p className="text-[11px] text-[#9CA2AB] mb-2 leading-relaxed">{f.hint}</p>
+              <p className="text-[11px] text-[#676D76] mb-2 leading-relaxed">{f.hint}</p>
               <textarea
                 value={values[f.key]}
                 onChange={e => setField(f.key, e.target.value)}
                 rows={f.rows}
-                className={`w-full bg-[#FFFFFF] border rounded-lg p-3 text-[#0F1115] text-sm leading-relaxed focus:outline-none focus:border-[#DCDCD7] placeholder-[#4A4F57] resize-y ${
-                  f.required && missingRequired.includes(f.key) ? 'border-[#8F2D2D]/60' : 'border-[#E4E4E0]'
+                className={`w-full bg-[#14171D] border rounded-lg p-3 text-[#FAFAF8] text-sm leading-relaxed focus:outline-none focus:border-[#2A2F39] placeholder-[#C2C6CC] resize-y ${
+                  f.required && missingRequired.includes(f.key) ? 'border-[#D4817E]/60' : 'border-[#2A2F39]'
                 }`}
               />
             </div>
           ))}
-          {error && <p className="text-[12.5px] text-[#8F2D2D]">{error}</p>}
+          {error && <p className="text-[12.5px] text-[#D4817E]">{error}</p>}
           <div className="flex items-center gap-2">
             <button
               onClick={save}
               disabled={saving || !dirty}
-              className="text-sm font-bold px-4 py-2 bg-[#0F1115] text-white rounded-lg hover:bg-[#000000] transition-colors disabled:opacity-40"
+              className="text-sm font-bold px-4 py-2 bg-[#FAFAF8] text-[#0B0D10] rounded-lg hover:bg-[#FFFFFF] transition-colors disabled:opacity-40"
             >
               {saving ? 'Saving…' : 'Save'}
             </button>
             <button
               onClick={cancel}
               disabled={saving}
-              className="text-sm font-bold px-4 py-2 border border-[#E4E4E0] text-[#6E747D] rounded-lg hover:border-[#0F1115] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#0F1115] transition-colors"
+              className="text-sm font-bold px-4 py-2 border border-[#2A2F39] text-[#8A9099] rounded-lg hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#FAFAF8] transition-colors"
             >
               Cancel
             </button>
@@ -252,17 +252,17 @@ export default function DietaryConsumptionEditor({
         <div className="space-y-3">
           {FIELDS.map(f => (
             <div key={f.key}>
-              <p className="text-[10px] font-medium text-[#6E747D] mb-0.5">{f.label}</p>
+              <p className="text-[10px] font-medium text-[#8A9099] mb-0.5">{f.label}</p>
               {original[f.key].trim() ? (
-                <p className="text-sm text-[#4A4F57] leading-relaxed whitespace-pre-line">{original[f.key]}</p>
+                <p className="text-sm text-[#C2C6CC] leading-relaxed whitespace-pre-line">{original[f.key]}</p>
               ) : (
-                <p className="text-sm text-[#4A4F57] italic">Not captured.</p>
+                <p className="text-sm text-[#C2C6CC] italic">Not captured.</p>
               )}
             </div>
           ))}
         </div>
       ) : (
-        <p className="text-sm text-[#4A4F57] italic">Not captured. This intake predates the Section D dietary/consumption fields — click Add to capture them, or send a supplementary intake.</p>
+        <p className="text-sm text-[#C2C6CC] italic">Not captured. This intake predates the Section D dietary/consumption fields — click Add to capture them, or send a supplementary intake.</p>
       )}
     </div>
   )

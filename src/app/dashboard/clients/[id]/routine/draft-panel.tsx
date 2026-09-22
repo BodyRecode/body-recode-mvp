@@ -136,15 +136,15 @@ export default function DraftPanel({
   }
 
   return (
-    <div className="rounded-xl border border-[#E4E4E0] bg-white overflow-hidden">
-      <div className="flex items-center justify-between gap-4 px-5 py-4 border-b border-[#E4E4E0]">
+    <div className="rounded-xl border border-[#2A2F39] bg-[#14171D] overflow-hidden">
+      <div className="flex items-center justify-between gap-4 px-5 py-4 border-b border-[#2A2F39]">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-[#0F1115]/10 flex items-center justify-center">
-            <Sparkles size={16} className="text-[#0F1115]" />
+          <div className="w-8 h-8 rounded-lg bg-[#FAFAF8]/10 flex items-center justify-center">
+            <Sparkles size={16} className="text-[#FAFAF8]" />
           </div>
           <div>
-            <h2 className="text-base font-semibold text-[#0F1115]">Personalised draft</h2>
-            <p className="text-[11px] text-[#6E747D]">
+            <h2 className="text-base font-semibold text-[#FAFAF8]">Personalised draft</h2>
+            <p className="text-[11px] text-[#8A9099]">
               {draft
                 ? `Generated ${generatedAt ? new Date(generatedAt).toLocaleString('en-AU', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }) : 'recently'}`
                 : 'No draft yet. Generate from client data to see it here.'}
@@ -154,7 +154,7 @@ export default function DraftPanel({
         <button
           onClick={generate}
           disabled={busy || isPending || publishing || discarding}
-          className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold px-3 py-1.5 bg-[#0F1115] text-white rounded-lg hover:bg-[#000000] transition-colors disabled:opacity-40"
+          className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold px-3 py-1.5 bg-[#FAFAF8] text-[#0B0D10] rounded-lg hover:bg-[#FFFFFF] transition-colors disabled:opacity-40"
         >
           {busy ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
           {busy ? 'Generating...' : draft ? 'Regenerate' : 'Generate from client data'}
@@ -162,43 +162,43 @@ export default function DraftPanel({
       </div>
 
       {busy && (
-        <div className="px-5 py-4 bg-[rgba(27,109,252,0.08)] border-b border-[#E4E4E0]">
-          <p className="text-[12.5px] text-[#0F1115] leading-relaxed">
+        <div className="px-5 py-4 bg-[rgba(27,109,252,0.08)] border-b border-[#2A2F39]">
+          <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed">
             Reading intake, body state, medications, and training schedule. Then writing morning + evening sequences tailored to {clientName}. Typical 40 to 90 seconds - the page is not frozen, please don&apos;t refresh.
           </p>
         </div>
       )}
 
       {error && (
-        <div className="px-5 py-3 bg-[#FDF8F1] border-b border-[#EADCC4]">
-          <p className="text-[12.5px] text-[#B06E1F]">{error}</p>
+        <div className="px-5 py-3 bg-[#1A1E26] border-b border-[#4A3A22]">
+          <p className="text-[12.5px] text-[#E0A254]">{error}</p>
         </div>
       )}
 
       {draft ? (
         <>
           {rationale && (
-            <div className="px-5 py-4 bg-[#FAFAF8] border-b border-[#E4E4E0]">
+            <div className="px-5 py-4 bg-[#0B0D10] border-b border-[#2A2F39]">
               <div className="flex items-start gap-2">
-                <FileText size={12} className="text-[#6E747D] mt-0.5 shrink-0" />
+                <FileText size={12} className="text-[#8A9099] mt-0.5 shrink-0" />
                 <div>
-                  <p className="text-[10px] font-medium text-[#6E747D] mb-1">Why this fits {clientName} (coach only, not shown to client)</p>
-                  <p className="text-[13.5px] text-[#0F1115] leading-relaxed">{rationale}</p>
+                  <p className="text-[10px] font-medium text-[#8A9099] mb-1">Why this fits {clientName} (coach only, not shown to client)</p>
+                  <p className="text-[13.5px] text-[#FAFAF8] leading-relaxed">{rationale}</p>
                 </div>
               </div>
             </div>
           )}
 
           <div className="px-5 py-4 space-y-4">
-            <SequencePreview icon={<Sunrise size={14} className="text-[#0F1115]" />} sequence={draft.morning} />
-            <SequencePreview icon={<Moon size={14} className="text-[#0F1115]" />} sequence={draft.evening} />
+            <SequencePreview icon={<Sunrise size={14} className="text-[#FAFAF8]" />} sequence={draft.morning} />
+            <SequencePreview icon={<Moon size={14} className="text-[#FAFAF8]" />} sequence={draft.evening} />
           </div>
 
-          <div className="flex items-center justify-between gap-3 px-5 py-3 border-t border-[#E4E4E0] bg-[#FAFAF8]">
+          <div className="flex items-center justify-between gap-3 px-5 py-3 border-t border-[#2A2F39] bg-[#0B0D10]">
             <button
               onClick={discard}
               disabled={discarding || publishing || busy}
-              className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-[#6E747D] hover:text-[#8F2D2D] disabled:opacity-40 transition-colors"
+              className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-[#8A9099] hover:text-[#D4817E] disabled:opacity-40 transition-colors"
             >
               <X size={12} />
               {discarding ? 'Discarding...' : 'Discard draft'}
@@ -206,7 +206,7 @@ export default function DraftPanel({
             <button
               onClick={publish}
               disabled={publishing || discarding || busy}
-              className="inline-flex items-center gap-1.5 text-[12.5px] font-medium px-4 py-2 bg-[#0F1115] text-white rounded-lg hover:bg-[#000000] disabled:opacity-40 transition-colors"
+              className="inline-flex items-center gap-1.5 text-[12.5px] font-medium px-4 py-2 bg-[#FAFAF8] text-[#0B0D10] rounded-lg hover:bg-[#FFFFFF] disabled:opacity-40 transition-colors"
             >
               {publishing ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
               {publishing ? 'Publishing...' : hasLive ? 'Replace live routine' : 'Publish as live'}
@@ -216,10 +216,10 @@ export default function DraftPanel({
       ) : (
         !busy && (
           <div className="px-5 py-8 text-center">
-            <p className="text-sm text-[#6E747D] leading-relaxed">
-              Click <span className="font-medium text-[#0F1115]">Generate from client data</span> above to create a personalised morning and evening sequence for {clientName}.
+            <p className="text-sm text-[#8A9099] leading-relaxed">
+              Click <span className="font-medium text-[#FAFAF8]">Generate from client data</span> above to create a personalised morning and evening sequence for {clientName}.
               <br />
-              <span className="text-[11px] text-[#9CA2AB] mt-1 inline-block">Uses their intake, body state, medications, training days, and health flags to shape the steps.</span>
+              <span className="text-[11px] text-[#676D76] mt-1 inline-block">Uses their intake, body state, medications, training days, and health flags to shape the steps.</span>
             </p>
           </div>
         )
@@ -230,27 +230,27 @@ export default function DraftPanel({
 
 function SequencePreview({ icon, sequence }: { icon: React.ReactNode; sequence: { title: string; tagline: string; steps: string[]; coach_note?: string | null } }) {
   return (
-    <div className="rounded-xl border border-[#E4E4E0] overflow-hidden">
-      <div className="flex items-start gap-2 px-4 py-3 border-b border-[#E4E4E0] bg-white">
-        <div className="w-6 h-6 rounded-lg bg-[#0F1115]/10 flex items-center justify-center shrink-0 mt-0.5">{icon}</div>
+    <div className="rounded-xl border border-[#2A2F39] overflow-hidden">
+      <div className="flex items-start gap-2 px-4 py-3 border-b border-[#2A2F39] bg-[#14171D]">
+        <div className="w-6 h-6 rounded-lg bg-[#FAFAF8]/10 flex items-center justify-center shrink-0 mt-0.5">{icon}</div>
         <div className="flex-1 min-w-0">
-          <h3 className="text-sm font-semibold text-[#0F1115]">{sequence.title}</h3>
-          <p className="text-[12.5px] text-[#6E747D] mt-0.5">{sequence.tagline}</p>
+          <h3 className="text-sm font-semibold text-[#FAFAF8]">{sequence.title}</h3>
+          <p className="text-[12.5px] text-[#8A9099] mt-0.5">{sequence.tagline}</p>
         </div>
       </div>
-      <div className="px-4 py-3 bg-white">
+      <div className="px-4 py-3 bg-[#14171D]">
         <ol className="space-y-2">
           {sequence.steps.map((step, i) => (
             <li key={i} className="flex items-start gap-2">
-              <span className="w-5 h-5 rounded-full bg-[#0F1115]/10 text-[#0F1115] text-[10px] font-medium flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
-              <p className="text-[13.5px] text-[#0F1115] leading-relaxed flex-1">{step}</p>
+              <span className="w-5 h-5 rounded-full bg-[#FAFAF8]/10 text-[#FAFAF8] text-[10px] font-medium flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
+              <p className="text-[13.5px] text-[#FAFAF8] leading-relaxed flex-1">{step}</p>
             </li>
           ))}
         </ol>
         {sequence.coach_note && sequence.coach_note.trim().length > 0 && (
-          <div className="mt-3 pt-3 border-t border-[#F2F2EF]">
-            <p className="text-[10px] font-medium text-[#0F1115] mb-1">Coach note</p>
-            <p className="text-[12.5px] text-[#6E747D] leading-relaxed">{sequence.coach_note}</p>
+          <div className="mt-3 pt-3 border-t border-[#14171D]">
+            <p className="text-[10px] font-medium text-[#FAFAF8] mb-1">Coach note</p>
+            <p className="text-[12.5px] text-[#8A9099] leading-relaxed">{sequence.coach_note}</p>
           </div>
         )}
       </div>

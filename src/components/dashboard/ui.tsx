@@ -103,7 +103,7 @@ export function Avatar({
     <span
       aria-hidden
       title={name}
-      className="inline-flex items-center justify-center rounded-full shrink-0 text-[#0B0D10] font-semibold select-none"
+      className="inline-flex items-center justify-center rounded-full shrink-0 text-[#FAFAF8] font-semibold select-none"
       style={{
         width: size,
         height: size,

@@ -58,7 +58,7 @@ export default function NotifyClientButton({
     return (
       <span
         title="Publish the Program Read first. The read frames the block."
-        className="text-[12.5px] px-3 py-1.5 border border-[#E4E4E0] text-[#9CA2AB] rounded-lg cursor-not-allowed"
+        className="text-[12.5px] px-3 py-1.5 border border-[#2A2F39] text-[#676D76] rounded-lg cursor-not-allowed"
       >
         Notify Client
       </span>
@@ -68,7 +68,7 @@ export default function NotifyClientButton({
   return (
     <div className="flex items-center gap-2">
       {notified && (
-        <span className="text-[11px] text-[#6E747D]">
+        <span className="text-[11px] text-[#8A9099]">
           Notified {formatDate(publishedToClientAt!)}
         </span>
       )}
@@ -77,14 +77,14 @@ export default function NotifyClientButton({
         disabled={loading}
         className={`text-xs px-3 py-1.5 rounded-lg border transition-colors disabled:opacity-50 ${
           notified
-            ? 'border-[#E4E4E0] text-[#6E747D] hover:border-[#DCDCD7] hover:text-[#0F1115]'
-            : 'border-[#0F1115] text-[#0F1115] hover:bg-[rgba(27,109,252,0.06)]'
+            ? 'border-[#2A2F39] text-[#8A9099] hover:border-[#2A2F39] hover:text-[#FAFAF8]'
+            : 'border-[#FAFAF8] text-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)]'
         }`}
       >
         {loading ? 'Sending...' : notified ? 'Notify Again' : 'Notify Client'}
       </button>
       {error && (
-        <span className="text-[11px] text-[#8F2D2D]">{error}</span>
+        <span className="text-[11px] text-[#D4817E]">{error}</span>
       )}
     </div>
   )

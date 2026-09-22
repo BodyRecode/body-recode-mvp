@@ -47,8 +47,8 @@ function StatusLine({
   }
   if (latestSentAt) {
     return (
-      <p className="text-[11px] font-medium text-[#1B6DFC] mb-2 flex items-center gap-1.5">
-        <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#1B6DFC]" />
+      <p className="text-[11px] font-medium text-[#FAFAF8] mb-2 flex items-center gap-1.5">
+        <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#FAFAF8]" />
         Re-intake sent {formatWhen(latestSentAt)} · awaiting submission
       </p>
     )
@@ -101,7 +101,7 @@ export default function ReintakeButton({ clientId, clientName, clientEmail, late
         <button
           onClick={createInvitation}
           disabled={status === 'loading'}
-          className="text-sm px-4 py-2 border border-[#E8EAEE] text-[#43474F] rounded-lg hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] transition-colors disabled:opacity-50"
+          className="text-sm px-4 py-2 border border-[#2A2F39] text-[#C2C6CC] rounded-lg hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)] transition-colors disabled:opacity-50"
           title={status === 'error' ? errorMsg : 'Send a fresh 234-question intake to an existing client for reassessment (block-end, life-context shift, etc). Uses the same form as New Intake but with re-intake email copy.'}
         >
           {status === 'loading' ? 'Creating…' : status === 'error' ? `Error: ${errorMsg}` : 'Re-intake'}
@@ -113,17 +113,17 @@ export default function ReintakeButton({ clientId, clientName, clientEmail, late
   return (
     <div className="br-card p-5 mt-4">
       <StatusLine latestInvitation={latestInvitation} latestSentAt={latestSentAt} />
-      <p className="text-[12px] font-medium text-[#1B6DFC] mb-3">Re-intake link ready</p>
-      <p className="text-[12.5px] text-[#666D7A] mb-3">
+      <p className="text-[12px] font-medium text-[#FAFAF8] mb-3">Re-intake link ready</p>
+      <p className="text-[12.5px] text-[#8A9099] mb-3">
         This will send the re-intake email variant when you click Send email — copy acknowledges the client is already coaching and asks for a fresh read for reassessment.
       </p>
-      <div className="bg-[#FFFFFF] rounded-lg px-4 py-3 flex items-center gap-3 mb-4">
-        <p className="text-[#666D7A] text-[12.5px] font-mono flex-1 truncate">
+      <div className="bg-[#14171D] rounded-lg px-4 py-3 flex items-center gap-3 mb-4">
+        <p className="text-[#8A9099] text-[12.5px] font-mono flex-1 truncate">
           {window.location.origin}/intake/{token}
         </p>
         <button
           onClick={copy}
-          className="shrink-0 text-[12.5px] font-medium px-3 py-1.5 rounded-md border border-[#CFD4DC] text-[#43474F] hover:border-[#98A0AD] hover:text-[#141821] transition-colors"
+          className="shrink-0 text-[12.5px] font-medium px-3 py-1.5 rounded-md border border-[#CFD4DC] text-[#C2C6CC] hover:border-[#676D76] hover:text-[#FAFAF8] transition-colors"
         >
           {copied ? 'Copied!' : 'Copy'}
         </button>
@@ -140,7 +140,7 @@ export default function ReintakeButton({ clientId, clientName, clientEmail, late
         )}
         <button
           onClick={() => { setStatus('idle'); setToken('') }}
-          className="text-[12.5px] text-[#98A0AD] hover:text-[#43474F] transition-colors"
+          className="text-[12.5px] text-[#676D76] hover:text-[#C2C6CC] transition-colors"
         >
           Dismiss
         </button>

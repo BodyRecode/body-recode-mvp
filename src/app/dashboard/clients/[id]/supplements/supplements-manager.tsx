@@ -106,16 +106,16 @@ export default function SupplementsManager({
   return (
     <div className="space-y-8">
       {error && (
-        <div className="rounded-lg border border-[#EADCC4] bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] px-4 py-3">
-          <p className="text-[12.5px] text-[#B06E1F]">{error}</p>
+        <div className="rounded-lg border border-[#4A3A22] bg-[linear-gradient(180deg,#1A1E26,#1A1E26)] px-4 py-3">
+          <p className="text-[12.5px] text-[#E0A254]">{error}</p>
         </div>
       )}
 
       {activeAssignments.length > 0 && (
         <div>
           <div className="mb-3 flex items-center gap-3">
-            <h2 className="text-base font-semibold text-[#0F1115]">Active for {clientName}</h2>
-            <span className="text-[10px] text-[#6E747D]">Shown on their portal</span>
+            <h2 className="text-base font-semibold text-[#FAFAF8]">Active for {clientName}</h2>
+            <span className="text-[10px] text-[#8A9099]">Shown on their portal</span>
           </div>
           <div className="space-y-3">
             {activeAssignments.map(a => (
@@ -126,11 +126,11 @@ export default function SupplementsManager({
       )}
 
       {(pausedAssignments.length > 0 || completedAssignments.length > 0) && (
-        <details className="rounded-lg border border-[#E4E4E0] bg-white">
-          <summary className="cursor-pointer px-5 py-3 text-sm font-medium text-[#0F1115]">
+        <details className="rounded-lg border border-[#2A2F39] bg-[#14171D]">
+          <summary className="cursor-pointer px-5 py-3 text-sm font-medium text-[#FAFAF8]">
             History: {pausedAssignments.length} paused, {completedAssignments.length} completed
           </summary>
-          <div className="px-5 py-3 border-t border-[#E4E4E0] space-y-3">
+          <div className="px-5 py-3 border-t border-[#2A2F39] space-y-3">
             {pausedAssignments.map(a => (
               <AssignmentRow key={a.id} assignment={a} onEditNote={editNote} onResume={id => update(id, { status: 'active' })} onDelete={del} />
             ))}
@@ -143,8 +143,8 @@ export default function SupplementsManager({
 
       <div>
         <div className="mb-3">
-          <h2 className="text-base font-semibold text-[#0F1115]">Substance library</h2>
-          <p className="text-[11px] text-[#6E747D] mt-1">
+          <h2 className="text-base font-semibold text-[#FAFAF8]">Substance library</h2>
+          <p className="text-[11px] text-[#8A9099] mt-1">
             {allSubstances.length} substance{allSubstances.length === 1 ? '' : 's'} in the library. More added as research completes.
           </p>
         </div>
@@ -154,31 +154,31 @@ export default function SupplementsManager({
           if (catSubs.length === 0) return null
           return (
             <div key={cat} className="mb-6">
-              <h3 className="text-[10px] font-medium text-[#6E747D] mb-2">{CATEGORY_LABELS[cat]}</h3>
+              <h3 className="text-[10px] font-medium text-[#8A9099] mb-2">{CATEGORY_LABELS[cat]}</h3>
               <div className="space-y-2">
                 {catSubs.map(s => {
                   const isActive = activeSlugs.has(s.slug)
                   const isExpanded = expanded === s.slug
                   return (
-                    <div key={s.slug} className={`rounded-xl border overflow-hidden transition-colors ${isActive ? 'border-[#0F1115]/30 bg-[rgba(27,109,252,0.08)]/30' : 'border-[#E4E4E0] bg-white'}`}>
+                    <div key={s.slug} className={`rounded-xl border overflow-hidden transition-colors ${isActive ? 'border-[#FAFAF8]/30 bg-[rgba(27,109,252,0.08)]/30' : 'border-[#2A2F39] bg-[#14171D]'}`}>
                       <div className="flex items-start justify-between gap-3 px-4 py-3">
                         <button
                           onClick={() => setExpanded(isExpanded ? null : s.slug)}
                           className="flex items-start gap-2 text-left flex-1 min-w-0"
                         >
-                          {isExpanded ? <ChevronUp size={14} className="text-[#9CA2AB] mt-1 shrink-0" /> : <ChevronDown size={14} className="text-[#9CA2AB] mt-1 shrink-0" />}
+                          {isExpanded ? <ChevronUp size={14} className="text-[#676D76] mt-1 shrink-0" /> : <ChevronDown size={14} className="text-[#676D76] mt-1 shrink-0" />}
                           <div className="min-w-0">
                             <div className="flex items-center gap-2">
-                              <span className="text-sm font-semibold text-[#0F1115]">{s.name}</span>
-                              {isActive && <span className="text-[10px] font-medium text-[#0F1115] bg-[#0F1115]/10 px-1.5 py-0.5 rounded">Active</span>}
+                              <span className="text-sm font-semibold text-[#FAFAF8]">{s.name}</span>
+                              {isActive && <span className="text-[10px] font-medium text-[#FAFAF8] bg-[#FAFAF8]/10 px-1.5 py-0.5 rounded">Active</span>}
                             </div>
-                            <p className="text-[12.5px] text-[#6E747D] mt-0.5">{s.short_description}</p>
+                            <p className="text-[12.5px] text-[#8A9099] mt-0.5">{s.short_description}</p>
                           </div>
                         </button>
                         <button
                           onClick={() => assign(s.slug)}
                           disabled={isActive || assigning === s.slug}
-                          className="shrink-0 inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1.5 border border-[#0F1115] text-[#0F1115] rounded-lg hover:bg-[#0F1115] hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                          className="shrink-0 inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1.5 border border-[#FAFAF8] text-[#FAFAF8] rounded-lg hover:bg-[#FAFAF8] hover:text-[#0B0D10] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                         >
                           {assigning === s.slug ? <Loader2 size={10} className="animate-spin" /> : <Plus size={10} />}
                           {isActive ? 'Assigned' : 'Assign'}
@@ -186,31 +186,31 @@ export default function SupplementsManager({
                       </div>
 
                       {isExpanded && (
-                        <div className="px-4 pb-4 pt-1 border-t border-[#E4E4E0] bg-[#FAFAF8] space-y-4">
+                        <div className="px-4 pb-4 pt-1 border-t border-[#2A2F39] bg-[#0B0D10] space-y-4">
                           <Detail label="What it does" body={s.what_it_does} />
                           <div className="space-y-2">
-                            <p className="text-[10px] font-medium text-[#6E747D]">Three tiers (client picks)</p>
+                            <p className="text-[10px] font-medium text-[#8A9099]">Three tiers (client picks)</p>
                             <TierCard tier={s.tiers.essential} />
                             <TierCard tier={s.tiers.enhanced} />
                             <TierCard tier={s.tiers.elite} />
                           </div>
                           {s.contraindications.length > 0 && (
                             <div>
-                              <p className="text-[10px] font-medium text-[#8F2D2D] mb-1">Contraindications</p>
-                              <ul className="text-[12.5px] text-[#0F1115] leading-relaxed space-y-0.5">
+                              <p className="text-[10px] font-medium text-[#D4817E] mb-1">Contraindications</p>
+                              <ul className="text-[12.5px] text-[#FAFAF8] leading-relaxed space-y-0.5">
                                 {s.contraindications.map((c, i) => <li key={i}>- {c}</li>)}
                               </ul>
                             </div>
                           )}
                           <Detail label="Safety" body={s.safety_notes} />
-                          <div className="rounded-lg bg-white border border-[#E4E4E0] px-3 py-2">
-                            <p className="text-[10px] font-medium text-[#0F1115] mb-1">Coach doctrine</p>
-                            <p className="text-[12.5px] text-[#0F1115] leading-relaxed">{s.coach_doctrine}</p>
+                          <div className="rounded-lg bg-[#14171D] border border-[#2A2F39] px-3 py-2">
+                            <p className="text-[10px] font-medium text-[#FAFAF8] mb-1">Coach doctrine</p>
+                            <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed">{s.coach_doctrine}</p>
                           </div>
                           {s.research_reference && (
-                            <div className="flex items-start gap-2 text-[11px] text-[#6E747D]">
+                            <div className="flex items-start gap-2 text-[11px] text-[#8A9099]">
                               <FileText size={12} className="mt-0.5 shrink-0" />
-                              <span>Research report: <code className="bg-[#F2F2EF] px-1 rounded">{s.research_reference}</code></span>
+                              <span>Research report: <code className="bg-[#14171D] px-1 rounded">{s.research_reference}</code></span>
                             </div>
                           )}
                         </div>
@@ -230,25 +230,25 @@ export default function SupplementsManager({
 function Detail({ label, body }: { label: string; body: string }) {
   return (
     <div>
-      <p className="text-[10px] font-medium text-[#6E747D] mb-1">{label}</p>
-      <p className="text-[12.5px] text-[#0F1115] leading-relaxed">{body}</p>
+      <p className="text-[10px] font-medium text-[#8A9099] mb-1">{label}</p>
+      <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed">{body}</p>
     </div>
   )
 }
 
 function TierCard({ tier }: { tier: { label: string; form: string; dose: string; timing: string; notes: string; fits_client_profile: string } }) {
   return (
-    <div className="rounded-lg border border-[#E4E4E0] bg-white px-3 py-3">
+    <div className="rounded-lg border border-[#2A2F39] bg-[#14171D] px-3 py-3">
       <div className="flex items-center gap-2 mb-1.5">
-        <span className="text-[10px] font-medium text-[#0F1115]">{tier.label}</span>
+        <span className="text-[10px] font-medium text-[#FAFAF8]">{tier.label}</span>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-[12.5px] text-[#0F1115]">
-        <div><span className="text-[#6E747D] font-medium">Form:</span> {tier.form}</div>
-        <div><span className="text-[#6E747D] font-medium">Dose:</span> {tier.dose}</div>
-        <div className="md:col-span-2"><span className="text-[#6E747D] font-medium">Timing:</span> {tier.timing}</div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-[12.5px] text-[#FAFAF8]">
+        <div><span className="text-[#8A9099] font-medium">Form:</span> {tier.form}</div>
+        <div><span className="text-[#8A9099] font-medium">Dose:</span> {tier.dose}</div>
+        <div className="md:col-span-2"><span className="text-[#8A9099] font-medium">Timing:</span> {tier.timing}</div>
       </div>
-      <p className="text-[11px] text-[#6E747D] mt-2 leading-relaxed">{tier.notes}</p>
-      <p className="text-[11px] text-[#6E747D] mt-1 italic leading-relaxed">Fits: {tier.fits_client_profile}</p>
+      <p className="text-[11px] text-[#8A9099] mt-2 leading-relaxed">{tier.notes}</p>
+      <p className="text-[11px] text-[#8A9099] mt-1 italic leading-relaxed">Fits: {tier.fits_client_profile}</p>
     </div>
   )
 }
@@ -264,35 +264,35 @@ function AssignmentRow({ assignment, onEditNote, onPause, onResume, onComplete, 
   const substance = substanceBySlug(assignment.substance_slug)
   if (!substance) {
     return (
-      <div className="rounded-xl border border-[#EADCC4] bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] px-4 py-3">
-        <p className="text-[12.5px] text-[#B06E1F]">Unknown substance slug: {assignment.substance_slug}</p>
-        <button onClick={() => onDelete(assignment.id)} className="text-[11px] text-[#B06E1F] underline mt-1">Delete</button>
+      <div className="rounded-xl border border-[#4A3A22] bg-[linear-gradient(180deg,#1A1E26,#1A1E26)] px-4 py-3">
+        <p className="text-[12.5px] text-[#E0A254]">Unknown substance slug: {assignment.substance_slug}</p>
+        <button onClick={() => onDelete(assignment.id)} className="text-[11px] text-[#E0A254] underline mt-1">Delete</button>
       </div>
     )
   }
-  const statusColour = assignment.status === 'active' ? 'text-[#0F1115]' : assignment.status === 'paused' ? 'text-[#B06E1F]' : 'text-[#6E747D]'
+  const statusColour = assignment.status === 'active' ? 'text-[#FAFAF8]' : assignment.status === 'paused' ? 'text-[#E0A254]' : 'text-[#8A9099]'
   return (
-    <div className="rounded-xl border border-[#E4E4E0] bg-white overflow-hidden">
+    <div className="rounded-xl border border-[#2A2F39] bg-[#14171D] overflow-hidden">
       <div className="flex items-start justify-between gap-3 px-4 py-3">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-[#0F1115]">{substance.name}</span>
+            <span className="text-sm font-semibold text-[#FAFAF8]">{substance.name}</span>
             <span className={`text-[10px] font-bold uppercase tracking-widest ${statusColour}`}>{assignment.status}</span>
           </div>
-          <p className="text-[11px] text-[#6E747D] mt-0.5">3 tiers visible on portal · Essential / Enhanced / Elite</p>
+          <p className="text-[11px] text-[#8A9099] mt-0.5">3 tiers visible on portal · Essential / Enhanced / Elite</p>
           {assignment.coach_note && (
-            <div className="mt-2 rounded-lg bg-[#FAFAF8] border border-[#E4E4E0] px-3 py-2">
-              <p className="text-[10px] font-medium text-[#6E747D] mb-0.5">Coach note (shown to client)</p>
-              <p className="text-[12.5px] text-[#0F1115] leading-relaxed whitespace-pre-line">{assignment.coach_note}</p>
+            <div className="mt-2 rounded-lg bg-[#0B0D10] border border-[#2A2F39] px-3 py-2">
+              <p className="text-[10px] font-medium text-[#8A9099] mb-0.5">Coach note (shown to client)</p>
+              <p className="text-[12.5px] text-[#FAFAF8] leading-relaxed whitespace-pre-line">{assignment.coach_note}</p>
             </div>
           )}
         </div>
         <div className="flex items-center gap-1 shrink-0">
-          <button onClick={() => onEditNote(assignment)} className="text-[10px] font-medium text-[#6E747D] hover:text-[#0F1115] px-2 py-1">Edit note</button>
-          {onPause && <button onClick={() => onPause(assignment.id)} title="Pause" className="p-1.5 text-[#6E747D] hover:text-[#B06E1F] rounded transition-colors"><Pause size={12} /></button>}
-          {onResume && <button onClick={() => onResume(assignment.id)} title="Resume" className="p-1.5 text-[#6E747D] hover:text-[#0F1115] rounded transition-colors"><Play size={12} /></button>}
-          {onComplete && <button onClick={() => onComplete(assignment.id)} title="Mark complete" className="p-1.5 text-[#6E747D] hover:text-[#2B5E45] rounded transition-colors"><Check size={12} /></button>}
-          <button onClick={() => onDelete(assignment.id)} title="Delete" className="p-1.5 text-[#6E747D] hover:text-[#8F2D2D] rounded transition-colors"><Trash2 size={12} /></button>
+          <button onClick={() => onEditNote(assignment)} className="text-[10px] font-medium text-[#8A9099] hover:text-[#FAFAF8] px-2 py-1">Edit note</button>
+          {onPause && <button onClick={() => onPause(assignment.id)} title="Pause" className="p-1.5 text-[#8A9099] hover:text-[#E0A254] rounded transition-colors"><Pause size={12} /></button>}
+          {onResume && <button onClick={() => onResume(assignment.id)} title="Resume" className="p-1.5 text-[#8A9099] hover:text-[#FAFAF8] rounded transition-colors"><Play size={12} /></button>}
+          {onComplete && <button onClick={() => onComplete(assignment.id)} title="Mark complete" className="p-1.5 text-[#8A9099] hover:text-[#6FA98B] rounded transition-colors"><Check size={12} /></button>}
+          <button onClick={() => onDelete(assignment.id)} title="Delete" className="p-1.5 text-[#8A9099] hover:text-[#D4817E] rounded transition-colors"><Trash2 size={12} /></button>
         </div>
       </div>
     </div>

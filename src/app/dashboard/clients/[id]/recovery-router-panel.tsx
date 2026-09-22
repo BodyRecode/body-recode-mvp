@@ -19,21 +19,21 @@ import type { RouterMode } from '@/lib/recovery-state-machine'
 function modeLabel(mode: RouterMode): { label: string; colour: string; bg: string } {
   switch (mode) {
     case 'disabled':
-      return { label: 'Router disabled', colour: '#6E747D', bg: 'rgba(168,162,158,0.06)' }
+      return { label: 'Router disabled', colour: '#8A9099', bg: 'rgba(168,162,158,0.06)' }
     case 'observe_only':
-      return { label: 'Observe-only (Phase 2 — shadow log)', colour: '#B06E1F', bg: 'rgba(245,158,11,0.10)' }
+      return { label: 'Observe-only (Phase 2 — shadow log)', colour: '#E0A254', bg: 'rgba(245,158,11,0.10)' }
     case 'live_soft_gate':
-      return { label: 'Live — soft gate', colour: '#4A4F57', bg: 'rgba(96,165,250,0.10)' }
+      return { label: 'Live — soft gate', colour: '#C2C6CC', bg: 'rgba(96,165,250,0.10)' }
     case 'live_hard_gate':
-      return { label: 'Live — hard gate', colour: '#0F1115', bg: 'rgba(27,109,252,0.12)' }
+      return { label: 'Live — hard gate', colour: '#FAFAF8', bg: 'rgba(27,109,252,0.12)' }
   }
 }
 
 function tierColour(tier: number): string {
-  if (tier === 1) return '#8F2D2D'
-  if (tier === 2) return '#B06E1F'
-  if (tier <= 4) return '#4A4F57'
-  return '#6E747D'
+  if (tier === 1) return '#D4817E'
+  if (tier === 2) return '#E0A254'
+  if (tier <= 4) return '#C2C6CC'
+  return '#8A9099'
 }
 
 function actionLabel(action: string | null | undefined): string {
@@ -58,20 +58,20 @@ function actionLabel(action: string | null | undefined): string {
 function rsibPill(value: string | undefined, kind: 'recovery' | 'sessions' | 'sleep'): { label: string; colour: string } {
   if (kind === 'recovery') {
     const n = Number(value)
-    if (!Number.isFinite(n)) return { label: '—', colour: '#6E747D' }
-    if (n <= 2) return { label: `Recovery ${n}`, colour: '#8F2D2D' }
-    if (n === 3) return { label: `Recovery 3`, colour: '#B06E1F' }
-    return { label: `Recovery ${n}`, colour: '#0F1115' }
+    if (!Number.isFinite(n)) return { label: '—', colour: '#8A9099' }
+    if (n <= 2) return { label: `Recovery ${n}`, colour: '#D4817E' }
+    if (n === 3) return { label: `Recovery 3`, colour: '#E0A254' }
+    return { label: `Recovery ${n}`, colour: '#FAFAF8' }
   }
   if (kind === 'sessions') {
-    if (value === 'harder') return { label: 'Sessions harder', colour: '#8F2D2D' }
-    if (value === 'easier') return { label: 'Sessions easier', colour: '#0F1115' }
-    return { label: 'Sessions same', colour: '#4A4F57' }
+    if (value === 'harder') return { label: 'Sessions harder', colour: '#D4817E' }
+    if (value === 'easier') return { label: 'Sessions easier', colour: '#FAFAF8' }
+    return { label: 'Sessions same', colour: '#C2C6CC' }
   }
   // sleep
-  if (value === 'severely_inconsistent') return { label: 'Sleep severely inconsistent', colour: '#8F2D2D' }
-  if (value === 'inconsistent') return { label: 'Sleep inconsistent', colour: '#B06E1F' }
-  return { label: 'Sleep consistent', colour: '#0F1115' }
+  if (value === 'severely_inconsistent') return { label: 'Sleep severely inconsistent', colour: '#D4817E' }
+  if (value === 'inconsistent') return { label: 'Sleep inconsistent', colour: '#E0A254' }
+  return { label: 'Sleep consistent', colour: '#FAFAF8' }
 }
 
 export function RecoveryRouterPanel({
@@ -88,7 +88,7 @@ export function RecoveryRouterPanel({
   return (
     <div className="br-card overflow-hidden mb-6">
       {/* Header */}
-      <div className="flex items-center justify-between gap-3 px-5 py-3 border-b border-[#E4E4E0]">
+      <div className="flex items-center justify-between gap-3 px-5 py-3 border-b border-[#2A2F39]">
         <div className="flex items-center gap-2.5 min-w-0">
           <span
             className="inline-flex items-center text-[10px] px-2 py-0.5 rounded-full border whitespace-nowrap"
@@ -102,13 +102,13 @@ export function RecoveryRouterPanel({
           >
             {modeStyle.label}
           </span>
-          <span className="text-[11px] font-medium text-[#6E747D]" style={{ fontFamily: MONO_FONT }}>
+          <span className="text-[11px] font-medium text-[#8A9099]" style={{ fontFamily: MONO_FONT }}>
             Recovery Router
           </span>
         </div>
         <Link
           href="/dashboard/recovery-regulation"
-          className="text-[11px] text-[#0F1115] hover:underline"
+          className="text-[11px] text-[#FAFAF8] hover:underline"
           style={{ fontFamily: MONO_FONT }}
         >
           doctrine →
@@ -116,19 +116,19 @@ export function RecoveryRouterPanel({
       </div>
 
       {/* Latest decision summary */}
-      <div className="px-5 py-4 border-b border-[#E4E4E0]">
+      <div className="px-5 py-4 border-b border-[#2A2F39]">
         {latest ? (
           <>
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-[10px] text-[#9CA2AB]" style={{ fontFamily: MONO_FONT }}>
+              <span className="text-[10px] text-[#676D76]" style={{ fontFamily: MONO_FONT }}>
                 Latest decision
               </span>
-              <span className="text-[10px] text-[#9CA2AB]" style={{ fontFamily: MONO_FONT }}>
+              <span className="text-[10px] text-[#676D76]" style={{ fontFamily: MONO_FONT }}>
                 {new Date(latest.documented_at).toLocaleString('en-AU', { dateStyle: 'medium', timeStyle: 'short' })}
               </span>
             </div>
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[13.5px] text-[#0F1115]">{actionLabel(latest.action)}</span>
+              <span className="text-[13.5px] text-[#FAFAF8]">{actionLabel(latest.action)}</span>
               {latestPlaybook && (
                 <span
                   className="inline-flex items-center text-[10px] px-2 py-0.5 rounded-full border whitespace-nowrap"
@@ -144,19 +144,19 @@ export function RecoveryRouterPanel({
                 </span>
               )}
               {latest.observed_only && (
-                <span className="text-[10px] text-[#6E747D]" style={{ fontFamily: MONO_FONT }}>
+                <span className="text-[10px] text-[#8A9099]" style={{ fontFamily: MONO_FONT }}>
                   shadow only
                 </span>
               )}
             </div>
             {snapshot.recentEvaluations[0]?.uncertainties_held && (
-              <p className="text-[12.5px] text-[#6E747D] mt-2 leading-relaxed">
+              <p className="text-[12.5px] text-[#8A9099] mt-2 leading-relaxed">
                 {snapshot.recentEvaluations[0].uncertainties_held}
               </p>
             )}
           </>
         ) : (
-          <div className="text-[12.5px] text-[#6E747D]">
+          <div className="text-[12.5px] text-[#8A9099]">
             {snapshot.recentRsib.length === 0
               ? 'No RSIB rows yet for this client. Router runs after the next weekly check-in submission.'
               : 'No router evaluations recorded yet. Run the router by submitting a weekly check-in (or use the backfill API to evaluate historical weeks).'}
@@ -166,26 +166,26 @@ export function RecoveryRouterPanel({
 
       {/* Active state (Phase 3+ — shows in observe-only mode if data accidentally present) */}
       {snapshot.activeState && (
-        <div className="px-5 py-4 border-b border-[#E4E4E0] bg-[#FFFFFF]">
+        <div className="px-5 py-4 border-b border-[#2A2F39] bg-[#14171D]">
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-[10px] text-[#8F2D2D]" style={{ fontFamily: MONO_FONT }}>
+            <span className="text-[10px] text-[#D4817E]" style={{ fontFamily: MONO_FONT }}>
               Active state
             </span>
           </div>
-          <p className="text-[13.5px] text-[#0F1115]">
+          <p className="text-[13.5px] text-[#FAFAF8]">
             {getPlaybook(snapshot.activeState.playbook_id).name} (T{snapshot.activeState.tier})
           </p>
-          <p className="text-[11px] text-[#6E747D] mt-1" style={{ fontFamily: MONO_FONT }}>
+          <p className="text-[11px] text-[#8A9099] mt-1" style={{ fontFamily: MONO_FONT }}>
             entered {new Date(snapshot.activeState.entered_at).toLocaleString('en-AU', { dateStyle: 'medium' })} · lock-in {snapshot.activeState.min_duration_days}d · max {snapshot.activeState.max_duration_days}d
           </p>
-          <p className="text-[12.5px] text-[#0F1115] mt-2">{snapshot.activeState.entry_rationale}</p>
+          <p className="text-[12.5px] text-[#FAFAF8] mt-2">{snapshot.activeState.entry_rationale}</p>
         </div>
       )}
 
       {/* Recent RSIB history */}
       {snapshot.recentRsib.length > 0 && (
-        <div className="px-5 py-4 border-b border-[#E4E4E0]">
-          <div className="text-[10px] text-[#9CA2AB] mb-3" style={{ fontFamily: MONO_FONT }}>
+        <div className="px-5 py-4 border-b border-[#2A2F39]">
+          <div className="text-[10px] text-[#676D76] mb-3" style={{ fontFamily: MONO_FONT }}>
             RSIB history (last {snapshot.recentRsib.length})
           </div>
           <div className="space-y-1.5">
@@ -195,11 +195,11 @@ export function RecoveryRouterPanel({
               const sleepPill = rsibPill(r.sleep_consistency, 'sleep')
               return (
                 <div key={r.week_number} className="flex items-center gap-2 flex-wrap text-[11px]" style={{ fontFamily: MONO_FONT }}>
-                  <span className="text-[#6E747D] w-14 shrink-0">Wk {r.week_number}</span>
+                  <span className="text-[#8A9099] w-14 shrink-0">Wk {r.week_number}</span>
                   <span style={{ color: recoveryPill.colour }}>{recoveryPill.label}</span>
-                  <span className="text-[#9CA2AB]">·</span>
+                  <span className="text-[#676D76]">·</span>
                   <span style={{ color: sessionsPill.colour }}>{sessionsPill.label}</span>
-                  <span className="text-[#9CA2AB]">·</span>
+                  <span className="text-[#676D76]">·</span>
                   <span style={{ color: sleepPill.colour }}>{sleepPill.label}</span>
                 </div>
               )
@@ -211,7 +211,7 @@ export function RecoveryRouterPanel({
       {/* Recent router evaluations */}
       {snapshot.recentEvaluations.length > 0 && (
         <div className="px-5 py-4">
-          <div className="text-[10px] text-[#9CA2AB] mb-3" style={{ fontFamily: MONO_FONT }}>
+          <div className="text-[10px] text-[#676D76] mb-3" style={{ fontFamily: MONO_FONT }}>
             Recent router runs ({snapshot.totalEvaluations} total)
           </div>
           <div className="space-y-2">
@@ -221,15 +221,15 @@ export function RecoveryRouterPanel({
               return (
                 <div key={e.id} className="text-[11px]" style={{ fontFamily: MONO_FONT }}>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-[#9CA2AB]">
+                    <span className="text-[#676D76]">
                       {new Date(e.documented_at).toLocaleString('en-AU', { dateStyle: 'short', timeStyle: 'short' })}
                     </span>
-                    <span className="text-[#0F1115]">{actionLabel(action)}</span>
-                    {pid && pid !== 'null' && <span className="text-[#6E747D]">→ {pid}</span>}
-                    {e.observe_only && <span className="text-[#6E747D]">(shadow)</span>}
+                    <span className="text-[#FAFAF8]">{actionLabel(action)}</span>
+                    {pid && pid !== 'null' && <span className="text-[#8A9099]">→ {pid}</span>}
+                    {e.observe_only && <span className="text-[#8A9099]">(shadow)</span>}
                   </div>
                   {e.trigger_type && (
-                    <div className="text-[10px] text-[#9CA2AB] pl-1 truncate max-w-full">
+                    <div className="text-[10px] text-[#676D76] pl-1 truncate max-w-full">
                       trigger: {e.trigger_type}
                     </div>
                   )}

@@ -28,9 +28,9 @@ export type WeekDayState = {
 }
 
 const FILL: Record<WeekDayState['meals'], string> = {
-  full: '#1B6DFC',
+  full: '#FAFAF8',
   partial: 'rgba(27,109,252,0.32)',
-  none: '#EFF1F4',
+  none: '#1F242C',
   'not-asked': 'transparent',
 }
 
@@ -56,9 +56,9 @@ export function WeekStrip({
                 background: FILL[d.meals],
                 boxShadow:
                   d.meals === 'not-asked'
-                    ? 'inset 0 0 0 1px #EFF1F4'
+                    ? 'inset 0 0 0 1px #1F242C'
                     : d.meals === 'none'
-                      ? 'inset 0 0 0 1px #E8EAEE'
+                      ? 'inset 0 0 0 1px #2A2F39'
                       : 'none',
                 outline: d.isToday ? '1.5px solid #B9D0FD' : undefined,
                 outlineOffset: d.isToday ? '1.5px' : undefined,
@@ -67,13 +67,13 @@ export function WeekStrip({
               {d.workout && (
                 <span
                   className="absolute -top-[3px] -right-[3px] w-[6px] h-[6px] rounded-full"
-                  style={{ background: '#177245', boxShadow: '0 0 0 1.5px #FFFFFF' }}
+                  style={{ background: '#177245', boxShadow: '0 0 0 1.5px #14171D' }}
                   aria-hidden
                 />
               )}
             </span>
             {showInitials && (
-              <span className="text-[10px] leading-none text-[#98A0AD]">{d.initial}</span>
+              <span className="text-[10px] leading-none text-[#676D76]">{d.initial}</span>
             )}
           </div>
         ))}
@@ -88,9 +88,9 @@ export function WeekStrip({
  */
 export function WeekStripLegend() {
   return (
-    <div className="flex items-center gap-4 text-[11px] text-[#666D7A] flex-wrap">
+    <div className="flex items-center gap-4 text-[11px] text-[#8A9099] flex-wrap">
       <span className="inline-flex items-center gap-1.5">
-        <span className="w-[11px] h-[11px] rounded-[3px]" style={{ background: '#1B6DFC' }} />
+        <span className="w-[11px] h-[11px] rounded-[3px]" style={{ background: '#FAFAF8' }} />
         Meals all logged
       </span>
       <span className="inline-flex items-center gap-1.5">
@@ -98,11 +98,11 @@ export function WeekStripLegend() {
         Some logged
       </span>
       <span className="inline-flex items-center gap-1.5">
-        <span className="w-[11px] h-[11px] rounded-[3px]" style={{ background: '#EFF1F4', boxShadow: 'inset 0 0 0 1px #E8EAEE' }} />
+        <span className="w-[11px] h-[11px] rounded-[3px]" style={{ background: '#1F242C', boxShadow: 'inset 0 0 0 1px #2A2F39' }} />
         Nothing logged
       </span>
       <span className="inline-flex items-center gap-1.5">
-        <span className="w-[11px] h-[11px] rounded-[3px]" style={{ boxShadow: 'inset 0 0 0 1px #EFF1F4' }} />
+        <span className="w-[11px] h-[11px] rounded-[3px]" style={{ boxShadow: 'inset 0 0 0 1px #1F242C' }} />
         No plan yet
       </span>
       <span className="inline-flex items-center gap-1.5">

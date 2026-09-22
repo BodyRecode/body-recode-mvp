@@ -50,8 +50,8 @@ export default function StickyScrollNav({ sections }: { sections: Section[] }) {
             aria-current={active === id ? 'true' : undefined}
             className={`w-full text-left px-3 py-2 rounded-lg text-[13px] transition-colors ${
               active === id
-                ? 'bg-[rgba(27,109,252,0.09)] text-[#1B6DFC] font-medium'
-                : 'text-[#666D7A] hover:text-[#141821] hover:bg-[#F4F6F9]'
+                ? 'bg-[rgba(27,109,252,0.09)] text-[#FAFAF8] font-medium'
+                : 'text-[#8A9099] hover:text-[#FAFAF8] hover:bg-[#1A1E26]'
             }`}
           >
             {title}

@@ -19,7 +19,7 @@ export default function MarkClearanceButton({ clientId }: { clientId: string }) 
     <button
       onClick={handleClick}
       disabled={loading}
-      className="text-[12.5px] bg-[#B06E1F] text-black font-medium px-3 py-1.5 rounded-lg hover:bg-[#EADCC4] transition-colors disabled:opacity-50 whitespace-nowrap"
+      className="text-[12.5px] bg-[#E0A254] text-black font-medium px-3 py-1.5 rounded-lg hover:bg-[#4A3A22] transition-colors disabled:opacity-50 whitespace-nowrap"
     >
       {loading ? 'Saving…' : 'Mark received'}
     </button>

@@ -27,19 +27,19 @@ export default function ReviewCoachNotes({ reviewId, existingNotes }: { reviewId
     return (
       <div className="mt-2">
         {notes ? (
-          <div className="bg-[#EDEDEA]/50 rounded-lg px-3 py-2 text-[12.5px] text-[#0F1115] leading-relaxed">
-            <span className="text-[#0F1115] font-semibold mr-1">Your note:</span>{notes}
-            <button onClick={() => setEditing(true)} className="ml-2 text-[#6E747D] hover:text-[#0F1115] underline text-[10px]">edit</button>
+          <div className="bg-[#1A1E26]/50 rounded-lg px-3 py-2 text-[12.5px] text-[#FAFAF8] leading-relaxed">
+            <span className="text-[#FAFAF8] font-semibold mr-1">Your note:</span>{notes}
+            <button onClick={() => setEditing(true)} className="ml-2 text-[#8A9099] hover:text-[#FAFAF8] underline text-[10px]">edit</button>
           </div>
         ) : (
           <button
             onClick={() => setEditing(true)}
-            className="text-[11px] text-[#9CA2AB] hover:text-[#0F1115] transition-colors"
+            className="text-[11px] text-[#676D76] hover:text-[#FAFAF8] transition-colors"
           >
             + Add feedback for client
           </button>
         )}
-        {saved && <span className="text-[11px] text-[#0F1115] ml-2">Saved</span>}
+        {saved && <span className="text-[11px] text-[#FAFAF8] ml-2">Saved</span>}
       </div>
     )
   }
@@ -51,20 +51,20 @@ export default function ReviewCoachNotes({ reviewId, existingNotes }: { reviewId
         onChange={e => setNotes(e.target.value)}
         placeholder="Write feedback for the client. This will appear on their portal home page."
         rows={3}
-        className="w-full bg-[#EDEDEA] border border-[#E4E4E0] rounded-lg px-3 py-2 text-[12.5px] text-[#0F1115] placeholder-[#9CA2AB] focus:outline-none focus:border-[#0F1115] resize-none"
+        className="w-full bg-[#1A1E26] border border-[#2A2F39] rounded-lg px-3 py-2 text-[12.5px] text-[#FAFAF8] placeholder-[#676D76] focus:outline-none focus:border-[#FAFAF8] resize-none"
         autoFocus
       />
       <div className="flex gap-2">
         <button
           onClick={handleSave}
           disabled={saving}
-          className="text-[12.5px] font-semibold bg-[#0F1115] hover:bg-[#DCDCD7] disabled:bg-[#E4E4E0] text-white px-3 py-1.5 rounded-lg transition-colors"
+          className="text-[12.5px] font-semibold bg-[#FAFAF8] hover:bg-[#2A2F39] disabled:bg-[#2A2F39] text-[#0B0D10] px-3 py-1.5 rounded-lg transition-colors"
         >
           {saving ? 'Saving...' : 'Save'}
         </button>
         <button
           onClick={() => { setEditing(false); setNotes(existingNotes ?? '') }}
-          className="text-[12.5px] text-[#6E747D] hover:text-[#0F1115] px-3 py-1.5"
+          className="text-[12.5px] text-[#8A9099] hover:text-[#FAFAF8] px-3 py-1.5"
         >
           Cancel
         </button>

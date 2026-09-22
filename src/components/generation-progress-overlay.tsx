@@ -67,17 +67,17 @@ export default function GenerationProgressOverlay({
   const visibleStages = stages.filter((s, i, arr) => i < arr.length - 1)
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#141821]/60 backdrop-blur-sm flex items-center justify-center px-6">
-      <div className="bg-white border border-[#EFF1F4] rounded-xl shadow-2xl max-w-md w-full p-6">
+    <div className="fixed inset-0 z-50 bg-[#FAFAF8]/60 backdrop-blur-sm flex items-center justify-center px-6">
+      <div className="bg-[#14171D] border border-[#1F242C] rounded-xl shadow-2xl max-w-md w-full p-6">
         <div className="flex items-center gap-3 mb-4">
           <div className="relative w-3 h-3">
-            <div className="absolute inset-0 bg-[#1B6DFC] rounded-full animate-ping opacity-75" />
-            <div className="relative w-3 h-3 bg-[#1B6DFC] rounded-full" />
+            <div className="absolute inset-0 bg-[#FAFAF8] rounded-full animate-ping opacity-75" />
+            <div className="relative w-3 h-3 bg-[#FAFAF8] rounded-full" />
           </div>
-          <p className="text-[12px] font-medium text-[#1560E0]">{title}</p>
-          <span className="ml-auto text-[12.5px] font-mono text-[#666D7A] tabular-nums">{elapsed}s</span>
+          <p className="text-[12px] font-medium text-[#E4E4E0]">{title}</p>
+          <span className="ml-auto text-[12.5px] font-mono text-[#8A9099] tabular-nums">{elapsed}s</span>
         </div>
-        <p className="text-sm text-[#43474F] leading-relaxed mb-4 min-h-[2.5rem]">
+        <p className="text-sm text-[#C2C6CC] leading-relaxed mb-4 min-h-[2.5rem]">
           {currentStage.label}…
         </p>
         <div className="space-y-1.5">
@@ -86,14 +86,14 @@ export default function GenerationProgressOverlay({
             const active = currentStage.start === s.start
             return (
               <div key={s.start} className="flex items-center gap-2">
-                <div className={`w-1.5 h-1.5 rounded-full ${done ? 'bg-[#1B6DFC]' : active ? 'bg-[#9CC0FB] animate-pulse' : 'bg-[#E8EAEE]'}`} />
-                <span className={`text-xs ${done ? 'text-[#666D7A] line-through' : active ? 'text-[#141821]' : 'text-[#98A0AD]'}`}>{s.label}</span>
+                <div className={`w-1.5 h-1.5 rounded-full ${done ? 'bg-[#FAFAF8]' : active ? 'bg-[#9CC0FB] animate-pulse' : 'bg-[#2A2F39]'}`} />
+                <span className={`text-xs ${done ? 'text-[#8A9099] line-through' : active ? 'text-[#FAFAF8]' : 'text-[#676D76]'}`}>{s.label}</span>
               </div>
             )
           })}
         </div>
         {disclaimer && (
-          <p className="text-[11px] text-[#98A0AD] mt-4 leading-relaxed">{disclaimer}</p>
+          <p className="text-[11px] text-[#676D76] mt-4 leading-relaxed">{disclaimer}</p>
         )}
       </div>
     </div>

@@ -43,15 +43,15 @@ export default function AutoResponseToggle({
   }
 
   return (
-    <div className="rounded-lg border border-[#E4E4E0] bg-white px-4 py-3 flex items-center justify-between gap-3 flex-wrap mb-4">
+    <div className="rounded-lg border border-[#2A2F39] bg-[#14171D] px-4 py-3 flex items-center justify-between gap-3 flex-wrap mb-4">
       <div className="min-w-0">
-        <p className="text-[12.5px] font-medium text-[#0F1115]">Auto check-in response</p>
-        <p className="text-[12.5px] text-[#6E747D] mt-1 leading-relaxed">
+        <p className="text-[12.5px] font-medium text-[#FAFAF8]">Auto check-in response</p>
+        <p className="text-[12.5px] text-[#8A9099] mt-1 leading-relaxed">
           {enabled
             ? 'On — when this client submits a check-in, an AI draft is generated and auto-sent 4 hours later unless you intervene. You can Edit, Send-now, or Skip from the response form during the window.'
             : 'Off — you write every check-in response manually for this client. The check-in still appears in Today\'s Focus as "needs response".'}
         </p>
-        {error && <p className="text-[12.5px] text-[#8F2D2D] mt-1">{error}</p>}
+        {error && <p className="text-[12.5px] text-[#D4817E] mt-1">{error}</p>}
       </div>
       <button
         type="button"
@@ -59,13 +59,13 @@ export default function AutoResponseToggle({
         disabled={pending}
         className={`shrink-0 inline-flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-colors disabled:opacity-50 ${
           enabled
-            ? 'bg-[#0F1115] text-white hover:bg-[#000000]'
-            : 'bg-white border border-[#E4E4E0] text-[#6E747D] hover:border-[#0F1115] hover:text-[#0F1115]'
+            ? 'bg-[#0B0D10] text-[#FAFAF8] hover:bg-[#14171D]'
+            : 'bg-[#14171D] border border-[#2A2F39] text-[#8A9099] hover:border-[#0B0D10] hover:text-[#FAFAF8]'
         }`}
         aria-pressed={enabled}
       >
-        <span className={`inline-block w-7 h-4 rounded-full relative transition-colors ${enabled ? 'bg-white/30' : 'bg-[#EDEDEA]'}`}>
-          <span className={`absolute top-0.5 ${enabled ? 'left-3.5 bg-white' : 'left-0.5 bg-[#6E747D]'} w-3 h-3 rounded-full transition-all`} />
+        <span className={`inline-block w-7 h-4 rounded-full relative transition-colors ${enabled ? 'bg-[#14171D]/30' : 'bg-[#1A1E26]'}`}>
+          <span className={`absolute top-0.5 ${enabled ? 'left-3.5 bg-[#14171D]' : 'left-0.5 bg-[#8A9099]'} w-3 h-3 rounded-full transition-all`} />
         </span>
         {pending ? 'Working…' : enabled ? 'On' : 'Off'}
       </button>

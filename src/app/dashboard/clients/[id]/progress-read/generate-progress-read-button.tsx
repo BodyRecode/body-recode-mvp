@@ -38,9 +38,9 @@ export default function GenerateProgressReadButton({ progressCheckId, hasRead }:
         {state === 'running' ? 'Writing the Progress Read…' : hasRead ? 'Regenerate Progress Read' : 'Generate Progress Read'}
       </button>
       {state === 'running' && (
-        <p className="text-[12.5px] text-[#6E747D] mt-2 leading-relaxed">Usually 4 to 6 minutes. It reads everything since the last read. The page is not frozen, please don&apos;t refresh.</p>
+        <p className="text-[12.5px] text-[#8A9099] mt-2 leading-relaxed">Usually 4 to 6 minutes. It reads everything since the last read. The page is not frozen, please don&apos;t refresh.</p>
       )}
-      {state === 'error' && <p className="text-[12.5px] text-[#8F2D2D] mt-2 leading-relaxed">{error}</p>}
+      {state === 'error' && <p className="text-[12.5px] text-[#D4817E] mt-2 leading-relaxed">{error}</p>}
     </div>
   )
 }

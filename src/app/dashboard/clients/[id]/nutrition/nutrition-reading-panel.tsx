@@ -137,12 +137,12 @@ export default function NutritionReadingPanel({
       />
       <div className="flex items-center justify-between gap-4 mb-3 flex-wrap">
         <div className="flex items-center gap-2.5">
-          <span className="w-7 h-[3px] rounded-full bg-[#0F1115]" />
+          <span className="w-7 h-[3px] rounded-full bg-[#FAFAF8]" />
           <h2
-            className="text-[11px] font-medium text-[#0F1115]"
+            className="text-[11px] font-medium text-[#FAFAF8]"
           >
             Nutrition Read{' '}
-            <span className="text-[#4A4F57] font-normal">- Client Facing</span>
+            <span className="text-[#C2C6CC] font-normal">- Client Facing</span>
           </h2>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
@@ -152,21 +152,21 @@ export default function NutritionReadingPanel({
               style={{
                 fontFamily: MONO_FONT,
                 letterSpacing: '0.06em',
-                color: published ? '#0F1115' : '#6E747D',
-                background: published ? 'rgba(27,109,252,0.10)' : '#FFFFFF',
-                borderColor: published ? '#DCDCD7' : '#E4E4E0',
+                color: published ? '#FAFAF8' : '#8A9099',
+                background: published ? 'rgba(27,109,252,0.10)' : '#14171D',
+                borderColor: published ? '#2A2F39' : '#2A2F39',
               }}
             >
               <span
                 className="w-1 h-1 rounded-full"
-                style={{ background: published ? '#0F1115' : '#9CA2AB' }}
+                style={{ background: published ? '#FAFAF8' : '#676D76' }}
               />
               {published ? 'Live in portal' : generated ? 'Unpublished' : 'Not generated yet'}
             </span>
           )}
           {emailSent && (
             <span
-              className="inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border border-[#E4E4E0] bg-[#FFFFFF] text-[#6E747D]"
+              className="inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border border-[#2A2F39] bg-[#14171D] text-[#8A9099]"
               title={`Notification sent ${new Date(plan.nutrition_reading_email_sent_at!).toLocaleString('en-AU')}`}
             >
               <Mail size={10} /> Notified
@@ -177,8 +177,8 @@ export default function NutritionReadingPanel({
             disabled={generating || isPending}
             className={`inline-flex items-center gap-2 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
               generated
-                ? 'border border-[#E4E4E0] bg-[#FFFFFF] text-[#4A4F57] hover:border-[#0F1115] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#0F1115]'
-                : 'bg-[#0F1115] text-[#FFFFFF] hover:bg-[#000000] border border-[#0F1115]'
+                ? 'border border-[#2A2F39] bg-[#14171D] text-[#C2C6CC] hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#FAFAF8]'
+                : 'bg-[#FAFAF8] text-[#14171D] hover:bg-[#FFFFFF] border border-[#FAFAF8]'
             }`}
           >
             {generating ? <Loader2 size={13} className="animate-spin" /> : <Sparkles size={13} />}
@@ -190,7 +190,7 @@ export default function NutritionReadingPanel({
             <button
               onClick={togglePublish}
               disabled={publishing || isPending}
-              className="inline-flex items-center gap-2 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg border border-[#E4E4E0] bg-[#FFFFFF] text-[#4A4F57] hover:border-[#0F1115] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#0F1115] transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-2 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg border border-[#2A2F39] bg-[#14171D] text-[#C2C6CC] hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#FAFAF8] transition-colors disabled:opacity-50"
             >
               {publishing ? <Loader2 size={13} className="animate-spin" /> : (published ? <EyeOff size={13} /> : <Eye size={13} />)}
               {/* "Publish", not "Republish": this said Republish even on a reading
@@ -205,21 +205,21 @@ export default function NutritionReadingPanel({
 
       {lintFindings.length > 0 && (
 
-        <div className="mb-3 rounded-xl border border-[#D4817E] bg-[#FBF1F1] p-4">
+        <div className="mb-3 rounded-xl border border-[#D4817E] bg-[#1A1214] p-4">
 
-          <p className="text-[12.5px] font-medium text-[#8A1919]">Not published</p>
+          <p className="text-[12.5px] font-medium text-[#D4817E]">Not published</p>
 
-          <p className="text-[12.5px] text-[#8F2D2D] mt-1">These have to be fixed before the client can see this. Edit the section or regenerate.</p>
+          <p className="text-[12.5px] text-[#D4817E] mt-1">These have to be fixed before the client can see this. Edit the section or regenerate.</p>
 
           <ul className="mt-2 space-y-2">
 
             {lintFindings.map((f, i) => (
 
-              <li key={i} className="text-[12.5px] text-[#8F2D2D]">
+              <li key={i} className="text-[12.5px] text-[#D4817E]">
 
                 <span className="font-semibold">{f.message}</span>
 
-                {f.excerpt && <span className="block mt-0.5 italic text-[#8F2D2D]">&ldquo;{f.excerpt}&rdquo;</span>}
+                {f.excerpt && <span className="block mt-0.5 italic text-[#D4817E]">&ldquo;{f.excerpt}&rdquo;</span>}
 
               </li>
 
@@ -233,12 +233,12 @@ export default function NutritionReadingPanel({
 
 
       {error && (
-        <div className="bg-[#FDF8F1] border border-[#EADCC4] rounded-lg px-3 py-2 text-[12.5px] text-[#8A5514] mb-3">
+        <div className="bg-[#1A1E26] border border-[#4A3A22] rounded-lg px-3 py-2 text-[12.5px] text-[#E0A254] mb-3">
           {error}
         </div>
       )}
       {emailNotice && (
-        <div className="bg-[rgba(27,109,252,0.08)] border border-[#DCDCD7] rounded-lg px-3 py-2 text-[12.5px] text-[#0F1115] mb-3">
+        <div className="bg-[rgba(27,109,252,0.08)] border border-[#2A2F39] rounded-lg px-3 py-2 text-[12.5px] text-[#FAFAF8] mb-3">
           {emailNotice}
         </div>
       )}
@@ -249,19 +249,19 @@ export default function NutritionReadingPanel({
 
       {!generated ? (
         <div className="br-card p-8 text-center">
-          <p className="text-[#6E747D] text-[13.5px] mb-2">No Nutrition Read yet</p>
-          <p className="text-[#9CA2AB] text-[12.5px]">
+          <p className="text-[#8A9099] text-[13.5px] mb-2">No Nutrition Read yet</p>
+          <p className="text-[#676D76] text-[12.5px]">
             Click Generate &amp; Publish. The read appears at the top of the client&apos;s nutrition plan and an email is sent to let them know the new plan is ready.
           </p>
-          <p className="text-[#4A4F57] text-[11px] mt-3">
+          <p className="text-[#C2C6CC] text-[11px] mt-3">
             Requires a published Foundational Read. The Nutrition Read builds from it.
           </p>
         </div>
       ) : (
         <div className="br-card overflow-hidden mb-3">
-          <div className="flex items-center justify-between px-5 py-3 border-b border-[#E4E4E0] flex-wrap gap-2">
+          <div className="flex items-center justify-between px-5 py-3 border-b border-[#2A2F39] flex-wrap gap-2">
             <p
-              className="text-[11px] text-[#9CA2AB]"
+              className="text-[11px] text-[#676D76]"
             >
               Last updated {new Date(plan.nutrition_reading_generated_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
             </p>
@@ -278,12 +278,12 @@ export default function NutritionReadingPanel({
                   portalUrl={`/portal/${clientToken}/my-plan/reading`}
                   title="Nutrition Read — Document"
                   triggerLabel="Document"
-                  triggerClassName="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E4E4E0] bg-[#FFFFFF] text-[#4A4F57] hover:border-[#0F1115] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#0F1115] transition-colors"
+                  triggerClassName="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#2A2F39] bg-[#14171D] text-[#C2C6CC] hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#FAFAF8] transition-colors"
                 />
               )}
             </div>
           </div>
-          <div className="divide-y divide-[#EDEDEA]">
+          <div className="divide-y divide-[#1A1E26]">
             {SECTION_LABELS.map(({ field, label }, i) => (
               <EditableSection
                 key={field}
@@ -347,30 +347,30 @@ function CoachGuidance({ planId, initial }: { planId: string; initial: string | 
     <div className="br-card overflow-hidden mb-3">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between gap-3 px-5 py-3 hover:bg-[#EDEDEA]/40 transition-colors text-left"
+        className="w-full flex items-center justify-between gap-3 px-5 py-3 hover:bg-[#1A1E26]/40 transition-colors text-left"
       >
         <div className="flex items-center gap-2.5">
-          <MessageSquare size={13} className="text-[#0F1115]" />
+          <MessageSquare size={13} className="text-[#FAFAF8]" />
           <p
-            className="text-[11px] font-medium text-[#0F1115]"
+            className="text-[11px] font-medium text-[#FAFAF8]"
           >
             Coach Guidance
           </p>
           {savedValue && (
             <span
-              className="text-[10px] text-[#0F1115] px-1.5 py-0.5 rounded-full border border-[#DCDCD7] bg-[rgba(27,109,252,0.10)]"
+              className="text-[10px] text-[#FAFAF8] px-1.5 py-0.5 rounded-full border border-[#2A2F39] bg-[rgba(27,109,252,0.10)]"
             >
               SET
             </span>
           )}
         </div>
-        <span className="text-[11px] text-[#9CA2AB]">{open ? 'Hide' : 'Edit'}</span>
+        <span className="text-[11px] text-[#676D76]">{open ? 'Hide' : 'Edit'}</span>
       </button>
       {open && (
-        <div className="px-5 pb-4 border-t border-[#E4E4E0]">
+        <div className="px-5 pb-4 border-t border-[#2A2F39]">
           <div className="flex items-start gap-2 pt-3 mb-3">
-            <Info size={12} className="text-[#9CA2AB] mt-0.5 shrink-0" />
-            <p className="text-[11px] text-[#9CA2AB] leading-relaxed">
+            <Info size={12} className="text-[#676D76] mt-0.5 shrink-0" />
+            <p className="text-[11px] text-[#676D76] leading-relaxed">
               Standing notes for the AI. Applied on every Generate and Regenerate of this plan&apos;s reading. Use this to steer framing for THIS plan. Each new nutrition plan starts fresh.
             </p>
           </div>
@@ -379,13 +379,13 @@ function CoachGuidance({ planId, initial }: { planId: string; initial: string | 
             onChange={e => setValue(e.target.value)}
             placeholder="e.g. Client has a long history of restrictive dieting. Frame this plan strongly around fuel and stabilisation, never deficit. Avoid any language that hints at restriction."
             rows={4}
-            className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2.5 text-[13.5px] text-[#0F1115] placeholder:text-[#4A4F57] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
+            className="w-full bg-[#14171D] border border-[#2A2F39] rounded-lg px-3 py-2.5 text-[13.5px] text-[#FAFAF8] placeholder:text-[#C2C6CC] focus:outline-none focus:border-[#2A2F39] leading-relaxed resize-y"
           />
           {error && (
-            <div className="mt-2 text-[11px] text-[#8A5514]">{error}</div>
+            <div className="mt-2 text-[11px] text-[#E0A254]">{error}</div>
           )}
           <div className="flex items-center justify-between mt-3">
-            <p className="text-[10px] text-[#9CA2AB]">
+            <p className="text-[10px] text-[#676D76]">
               {savedAt ? 'Saved.' : (savedValue ? 'Last applied to next regeneration.' : 'No guidance set yet.')}
             </p>
             <button
@@ -393,8 +393,8 @@ function CoachGuidance({ planId, initial }: { planId: string; initial: string | 
               disabled={!dirty || saving || isPending}
               className={`inline-flex items-center gap-1.5 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
                 dirty
-                  ? 'bg-[#0F1115] text-[#FFFFFF] hover:bg-[#000000] border border-[#0F1115]'
-                  : 'border border-[#E4E4E0] bg-[#FFFFFF] text-[#6E747D]'
+                  ? 'bg-[#FAFAF8] text-[#14171D] hover:bg-[#FFFFFF] border border-[#FAFAF8]'
+                  : 'border border-[#2A2F39] bg-[#14171D] text-[#8A9099]'
               }`}
             >
               {saving ? <Loader2 size={12} className="animate-spin" /> : <Save size={12} />}
@@ -471,13 +471,13 @@ function EditableSection({
       <div className="flex items-center justify-between gap-3 mb-2">
         <div className="flex items-center gap-3 min-w-0">
           <span
-            className="text-[11px] font-black text-[#0F1115] shrink-0"
+            className="text-[11px] font-black text-[#FAFAF8] shrink-0"
             style={{ fontFamily: MONO_FONT }}
           >
             {String(index + 1).padStart(2, '0')}
           </span>
           <p
-            className="text-[10px] font-medium text-[#6E747D] truncate"
+            className="text-[10px] font-medium text-[#8A9099] truncate"
           >
             {label}
           </p>
@@ -485,7 +485,7 @@ function EditableSection({
         {!editing && (
           <button
             onClick={() => setEditing(true)}
-            className="inline-flex items-center gap-1 text-[10px] text-[#9CA2AB] hover:text-[#0F1115] transition-colors"
+            className="inline-flex items-center gap-1 text-[10px] text-[#676D76] hover:text-[#FAFAF8] transition-colors"
             aria-label="Edit section"
           >
             <Pencil size={11} /> Edit
@@ -500,21 +500,21 @@ function EditableSection({
             value={draft}
             onChange={e => setDraft(e.target.value)}
             rows={Math.max(4, draft.split('\n').length + 1)}
-            className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2.5 text-[13.5px] text-[#0F1115] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
+            className="w-full bg-[#14171D] border border-[#2A2F39] rounded-lg px-3 py-2.5 text-[13.5px] text-[#FAFAF8] focus:outline-none focus:border-[#2A2F39] leading-relaxed resize-y"
           />
-          {error && <p className="mt-2 text-[11px] text-[#8A5514]">{error}</p>}
+          {error && <p className="mt-2 text-[11px] text-[#E0A254]">{error}</p>}
           <div className="flex items-center justify-end gap-2 mt-2">
             <button
               onClick={cancel}
               disabled={saving}
-              className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E4E4E0] text-[#6E747D] hover:text-[#0F1115] hover:border-[#0F1115] hover:bg-[rgba(27,109,252,0.06)] transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#2A2F39] text-[#8A9099] hover:text-[#FAFAF8] hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)] transition-colors disabled:opacity-50"
             >
               <X size={11} /> Cancel
             </button>
             <button
               onClick={save}
               disabled={saving || isPending || draft === (value ?? '')}
-              className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-md bg-[#0F1115] text-[#FFFFFF] hover:bg-[#000000] border border-[#0F1115] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-md bg-[#FAFAF8] text-[#14171D] hover:bg-[#FFFFFF] border border-[#FAFAF8] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {saving ? <Loader2 size={11} className="animate-spin" /> : <Check size={11} />}
               {saving ? 'Saving' : 'Save'}
@@ -522,7 +522,7 @@ function EditableSection({
           </div>
         </>
       ) : (
-        <p className="text-[13.5px] text-[#0F1115] leading-relaxed whitespace-pre-line">
+        <p className="text-[13.5px] text-[#FAFAF8] leading-relaxed whitespace-pre-line">
           {value || '(empty)'}
         </p>
       )}

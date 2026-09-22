@@ -34,16 +34,16 @@ interface Plan {
 }
 
 const phaseColour: Record<string, string> = {
-  accumulation: 'text-[#000000] bg-[rgba(27,109,252,0.08)] border-[#DCDCD7]',
-  intensification: 'text-orange-400 bg-orange-400/10 border-orange-400/30',
-  realization: 'text-[#8F2D2D] bg-[#FBF1F1] border-[#E8C9C9]',
-  restoration: 'text-green-400 bg-green-400/10 border-green-400/30',
+  accumulation: 'text-[#FFFFFF] bg-[rgba(27,109,252,0.08)] border-[#2A2F39]',
+  intensification: 'text-[#C2C6CC] bg-[#1A1E26]/10 border-[#2A2F39]/30',
+  realization: 'text-[#D4817E] bg-[#1A1214] border-[#4A2222]',
+  restoration: 'text-[#C2C6CC] bg-[#1A1E26]/10 border-[#2A2F39]/30',
 }
 
 const goalColour: Record<string, string> = {
-  strength: 'text-violet-700 bg-violet-50 border-violet-200',
-  hypertrophy: 'text-pink-400 bg-pink-400/10 border-pink-400/30',
-  capacity: 'text-[#0F1115] bg-[rgba(27,109,252,0.08)] border-[#DCDCD7]',
+  strength: 'text-[#C2C6CC] bg-[#1A1E26] border-[#2A2F39]',
+  hypertrophy: 'text-[#C2C6CC] bg-[#1A1E26]/10 border-[#2A2F39]/30',
+  capacity: 'text-[#FAFAF8] bg-[rgba(27,109,252,0.08)] border-[#2A2F39]',
 }
 
 function DraftPlanPreview({ plan }: { plan: Plan }) {
@@ -52,12 +52,12 @@ function DraftPlanPreview({ plan }: { plan: Plan }) {
   return (
     <div className="space-y-3">
       {/* Plan identity */}
-      <div className="bg-[#F2F2EF] br-card p-5">
-        <h2 className="text-base font-semibold text-[#0F1115]">{plan.plan_name}</h2>
+      <div className="bg-[#14171D] br-card p-5">
+        <h2 className="text-base font-semibold text-[#FAFAF8]">{plan.plan_name}</h2>
         {plan.macro_objective && (
-          <p className="text-sm text-[#6E747D] mt-1">{plan.macro_objective}</p>
+          <p className="text-sm text-[#8A9099] mt-1">{plan.macro_objective}</p>
         )}
-        <p className="text-[12.5px] text-[#9CA2AB] mt-2">{plan.plan_blocks.length} blocks · {totalWeeks} weeks total</p>
+        <p className="text-[12.5px] text-[#676D76] mt-2">{plan.plan_blocks.length} blocks · {totalWeeks} weeks total</p>
       </div>
 
       {/* Block timeline */}
@@ -66,31 +66,31 @@ function DraftPlanPreview({ plan }: { plan: Plan }) {
           <div key={block.id}>
             {i > 0 && (
               <div className="flex justify-center py-1">
-                <div className="w-px h-4 bg-[#E4E4E0]" />
+                <div className="w-px h-4 bg-[#2A2F39]" />
               </div>
             )}
-            <div className="bg-[#F2F2EF] br-card p-4">
+            <div className="bg-[#14171D] br-card p-4">
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-[12.5px] font-medium text-[#9CA2AB] w-5">{block.position}</span>
-                  <p className="text-sm font-semibold text-[#0F1115]">{block.block_name}</p>
+                  <span className="text-[12.5px] font-medium text-[#676D76] w-5">{block.position}</span>
+                  <p className="text-sm font-semibold text-[#FAFAF8]">{block.block_name}</p>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border capitalize ${phaseColour[block.progression_phase] || 'text-[#6E747D] bg-[#EDEDEA] border-[#E4E4E0]'}`}>
+                  <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border capitalize ${phaseColour[block.progression_phase] || 'text-[#8A9099] bg-[#1A1E26] border-[#2A2F39]'}`}>
                     {block.progression_phase}
                   </span>
-                  <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border capitalize ${goalColour[block.training_goal] || 'text-[#6E747D] bg-[#EDEDEA] border-[#E4E4E0]'}`}>
+                  <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border capitalize ${goalColour[block.training_goal] || 'text-[#8A9099] bg-[#1A1E26] border-[#2A2F39]'}`}>
                     {block.training_goal}
                   </span>
                 </div>
               </div>
-              <div className="flex items-center gap-4 text-[12.5px] text-[#6E747D] pl-7">
+              <div className="flex items-center gap-4 text-[12.5px] text-[#8A9099] pl-7">
                 <span>{block.week_duration} weeks</span>
                 {block.execution_arc && <span className="capitalize">{block.execution_arc} arc</span>}
                 {block.phase_category && <span>{block.phase_category}</span>}
               </div>
               {block.notes && (
-                <p className="text-[12.5px] text-[#9CA2AB] italic pl-7 mt-1">{block.notes}</p>
+                <p className="text-[12.5px] text-[#676D76] italic pl-7 mt-1">{block.notes}</p>
               )}
             </div>
           </div>
@@ -133,17 +133,17 @@ export default async function MacroPlanPage({ params }: { params: Promise<{ id: 
       {/* Header */}
       <div className="mb-8 flex items-start justify-between">
         <div>
-          <div className="flex items-center gap-2 text-[#6E747D] text-sm br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E4E4E0] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
-            <Link href={`/dashboard/clients/${id}`} className="hover:text-[#0F1115] transition-colors">{client.name}</Link>
+          <div className="flex items-center gap-2 text-[#8A9099] text-sm br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#2A2F39] bg-[#14171D]/[0.88] backdrop-blur-md print:static print:bg-transparent">
+            <Link href={`/dashboard/clients/${id}`} className="hover:text-[#FAFAF8] transition-colors">{client.name}</Link>
             <span>/</span>
-            <span className="text-[#0F1115]">Macro Plan</span>
+            <span className="text-[#FAFAF8]">Macro Plan</span>
           </div>
-          <h1 className="text-[20px] font-semibold text-[#0F1115] tracking-[-0.025em]">Macro Training Arc</h1>
-          <p className="text-sm text-[#6E747D] mt-1">Plan the full sequence of meso blocks. Each block links to a generated program.</p>
+          <h1 className="text-[20px] font-semibold text-[#FAFAF8] tracking-[-0.025em]">Macro Training Arc</h1>
+          <p className="text-sm text-[#8A9099] mt-1">Plan the full sequence of meso blocks. Each block links to a generated program.</p>
         </div>
         <Link
           href={`/dashboard/clients/${id}/plan/suggest`}
-          className="text-[12.5px] font-medium px-3 py-1.5 border border-[#E4E4E0] text-[#6E747D] rounded-lg hover:border-[#DCDCD7] hover:text-[#0F1115] transition-colors shrink-0"
+          className="text-[12.5px] font-medium px-3 py-1.5 border border-[#2A2F39] text-[#8A9099] rounded-lg hover:border-[#2A2F39] hover:text-[#FAFAF8] transition-colors shrink-0"
         >
           {activePlan || draftPlan ? 'Suggest New Arc' : 'Suggest Arc'}
         </Link>
@@ -162,7 +162,7 @@ export default async function MacroPlanPage({ params }: { params: Promise<{ id: 
       {draftPlan && (
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-[12.5px] font-medium px-2.5 py-1 rounded-full bg-[#FDF8F1] border border-[#B06E1F] text-[#B06E1F]">
+            <span className="text-[12.5px] font-medium px-2.5 py-1 rounded-full bg-[#1A1E26] border border-[#E0A254] text-[#E0A254]">
               Draft Arc - Pending Approval
             </span>
             <PlanDraftActions planId={draftPlan.id} clientId={id} />
@@ -176,9 +176,9 @@ export default async function MacroPlanPage({ params }: { params: Promise<{ id: 
         <div>
           {draftPlan && (
             <div className="flex items-center gap-3 mb-6 mt-2">
-              <div className="flex-1 h-px bg-[#EDEDEA]" />
-              <p className="text-[12.5px] text-[#9CA2AB]">Current Active Arc</p>
-              <div className="flex-1 h-px bg-[#EDEDEA]" />
+              <div className="flex-1 h-px bg-[#1A1E26]" />
+              <p className="text-[12.5px] text-[#676D76]">Current Active Arc</p>
+              <div className="flex-1 h-px bg-[#1A1E26]" />
             </div>
           )}
           <MacroPlanEditor clientId={id} clientName={client.name} initialPlan={activePlan} />
@@ -189,9 +189,9 @@ export default async function MacroPlanPage({ params }: { params: Promise<{ id: 
       {!activePlan && !draftPlan && (
         <div>
           <div className="flex items-center gap-3 mb-6">
-            <div className="flex-1 h-px bg-[#EDEDEA]" />
-            <p className="text-[12.5px] text-[#9CA2AB]">Manual Entry</p>
-            <div className="flex-1 h-px bg-[#EDEDEA]" />
+            <div className="flex-1 h-px bg-[#1A1E26]" />
+            <p className="text-[12.5px] text-[#676D76]">Manual Entry</p>
+            <div className="flex-1 h-px bg-[#1A1E26]" />
           </div>
           <MacroPlanEditor clientId={id} clientName={client.name} initialPlan={null} />
         </div>

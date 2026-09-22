@@ -59,24 +59,24 @@ export default async function CheckInDetailPage({
   })
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] p-6 md:p-10">
+    <div className="min-h-screen bg-[#14171D] p-6 md:p-10">
       <div className="max-w-2xl mx-auto">
 
         <div className="mb-8">
           <Link
             href={`/dashboard/clients/${id}`}
-            className="text-[12.5px] text-[#6E747D] hover:text-[#0F1115] transition-colors"
+            className="text-[12.5px] text-[#8A9099] hover:text-[#FAFAF8] transition-colors"
           >
             ← Back to {client.name}
           </Link>
         </div>
 
-        <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E4E4E0] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
-          <p className="text-[12.5px] font-medium text-[#0F1115] mb-1">
+        <div className="br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#2A2F39] bg-[#14171D]/[0.88] backdrop-blur-md print:static print:bg-transparent">
+          <p className="text-[12.5px] font-medium text-[#FAFAF8] mb-1">
             Week {weekNumber} · Form {formType}
           </p>
-          <h1 className="text-[20px] font-semibold text-[#0F1115] tracking-[-0.025em] tracking-tight">{client.name}</h1>
-          <p className="text-[#6E747D] text-sm mt-1">Submitted {submittedAt}</p>
+          <h1 className="text-[20px] font-semibold text-[#FAFAF8] tracking-[-0.025em] tracking-tight">{client.name}</h1>
+          <p className="text-[#8A9099] text-sm mt-1">Submitted {submittedAt}</p>
         </div>
 
         <div className="space-y-6">
@@ -97,13 +97,13 @@ export default async function CheckInDetailPage({
             const answered = section.questions.filter(q => responses[q.id])
             if (answered.length === 0) return null
             return (
-              <div key={section.title} className="bg-[#F2F2EF] br-card p-5">
-                <p className="text-[12.5px] font-medium text-[#6E747D] mb-4">{section.title}</p>
+              <div key={section.title} className="bg-[#14171D] br-card p-5">
+                <p className="text-[12.5px] font-medium text-[#8A9099] mb-4">{section.title}</p>
                 <div className="space-y-5">
                   {answered.map(q => (
                     <div key={q.id}>
-                      <p className="text-[12.5px] text-[#6E747D] mb-1.5 leading-relaxed">{q.text}</p>
-                      <p className="text-sm text-[#0F1115] leading-relaxed">{responses[q.id]}</p>
+                      <p className="text-[12.5px] text-[#8A9099] mb-1.5 leading-relaxed">{q.text}</p>
+                      <p className="text-sm text-[#FAFAF8] leading-relaxed">{responses[q.id]}</p>
                     </div>
                   ))}
                 </div>

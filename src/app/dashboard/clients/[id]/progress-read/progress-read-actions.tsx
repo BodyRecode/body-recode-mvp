@@ -37,15 +37,15 @@ export default function ProgressReadActions({ readId, status, emailSentAt }: { r
             <button onClick={() => call('/api/progress-read/notify', { progress_read_id: readId }, 'notify')} disabled={!!busy} className="br-btn disabled:opacity-50">
               {busy === 'notify' ? 'Sending…' : emailSentAt ? 'Notify again' : 'Notify her'}
             </button>
-            <button onClick={() => call('/api/progress-read/publish', { progress_read_id: readId, action: 'unpublish' }, 'unpublish')} disabled={!!busy} className="text-[12.5px] font-medium text-[#6E747D] hover:text-[#0F1115] px-2 disabled:opacity-50">
+            <button onClick={() => call('/api/progress-read/publish', { progress_read_id: readId, action: 'unpublish' }, 'unpublish')} disabled={!!busy} className="text-[12.5px] font-medium text-[#8A9099] hover:text-[#FAFAF8] px-2 disabled:opacity-50">
               {busy === 'unpublish' ? 'Unpublishing…' : 'Unpublish'}
             </button>
           </>
         )}
       </div>
-      {emailSentAt && status === 'published' && <p className="text-[12.5px] text-[#9CA2AB]">Emailed {new Date(emailSentAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}</p>}
-      {error && <p className="text-[12.5px] text-[#8F2D2D] text-right max-w-[360px]">{error}</p>}
-      {findings.map((f, i) => <p key={i} className="text-[12.5px] text-[#8F2D2D] text-right max-w-[360px]">{f.message}{f.excerpt ? ` "${f.excerpt}"` : ''}</p>)}
+      {emailSentAt && status === 'published' && <p className="text-[12.5px] text-[#676D76]">Emailed {new Date(emailSentAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}</p>}
+      {error && <p className="text-[12.5px] text-[#D4817E] text-right max-w-[360px]">{error}</p>}
+      {findings.map((f, i) => <p key={i} className="text-[12.5px] text-[#D4817E] text-right max-w-[360px]">{f.message}{f.excerpt ? ` "${f.excerpt}"` : ''}</p>)}
     </div>
   )
 }

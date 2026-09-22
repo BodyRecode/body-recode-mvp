@@ -106,9 +106,9 @@ export default function HeightEditor({
     <div className="br-card p-6 mb-4">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2.5">
-          <span className="w-7 h-[3px] rounded-full bg-[#0F1115]" />
+          <span className="w-7 h-[3px] rounded-full bg-[#FAFAF8]" />
           <h2
-            className="text-[11px] font-medium text-[#0F1115]"
+            className="text-[11px] font-medium text-[#FAFAF8]"
           >
             Height
           </h2>
@@ -123,7 +123,7 @@ export default function HeightEditor({
         )}
       </div>
 
-      <p className="text-[#9CA2AB] text-[12.5px] mb-4">
+      <p className="text-[#676D76] text-[12.5px] mb-4">
         The measurement every BMR equation needs. Without it the nutrition engine cannot say whether a
         day&apos;s calories suit the person eating them — it can only report what the meals happened to add up
         to. Enter it once; it carries forward and is not re-asked at check-ins.
@@ -141,26 +141,26 @@ export default function HeightEditor({
               value={value}
               onChange={e => setValue(e.target.value)}
               placeholder="e.g. 172"
-              className="w-32 px-3 py-2 border border-[#E4E4E0] rounded-lg text-sm text-[#0F1115] focus:outline-none focus:border-[#0F1115]"
+              className="w-32 px-3 py-2 border border-[#2A2F39] rounded-lg text-sm text-[#FAFAF8] focus:outline-none focus:border-[#FAFAF8]"
             />
-            <span className="text-sm text-[#6E747D]">cm</span>
+            <span className="text-sm text-[#8A9099]">cm</span>
           </div>
-          <p className="text-[11px] text-[#9CA2AB]">
+          <p className="text-[11px] text-[#676D76]">
             Centimetres, not feet and inches. 5&apos;9&quot; is 175cm. Leave blank and save to clear.
           </p>
-          {error && <p className="text-[12.5px] text-[#8F2D2D]">{error}</p>}
+          {error && <p className="text-[12.5px] text-[#D4817E]">{error}</p>}
           <div className="flex gap-2">
             <button
               onClick={save}
               disabled={saving}
-              className="text-[12.5px] font-medium px-4 py-2 bg-[#0F1115] text-white rounded-lg hover:bg-[#000000] transition-colors disabled:opacity-50"
+              className="text-[12.5px] font-medium px-4 py-2 bg-[#FAFAF8] text-[#0B0D10] rounded-lg hover:bg-[#FFFFFF] transition-colors disabled:opacity-50"
             >
               {saving ? 'Saving…' : 'Save'}
             </button>
             <button
               onClick={cancel}
               disabled={saving}
-              className="text-[12.5px] font-medium px-4 py-2 border border-[#E4E4E0] text-[#6E747D] rounded-lg hover:border-[#0F1115] transition-colors disabled:opacity-50"
+              className="text-[12.5px] font-medium px-4 py-2 border border-[#2A2F39] text-[#8A9099] rounded-lg hover:border-[#FAFAF8] transition-colors disabled:opacity-50"
             >
               Cancel
             </button>
@@ -168,26 +168,26 @@ export default function HeightEditor({
         </div>
       ) : resolved.heightCm ? (
         <div className="space-y-2">
-          <p className="text-[20px] font-semibold text-[#0F1115] tracking-[-0.025em]">
+          <p className="text-[20px] font-semibold text-[#FAFAF8] tracking-[-0.025em]">
             {resolved.heightCm}
-            <span className="text-sm text-[#9CA2AB] ml-1.5">cm</span>
+            <span className="text-sm text-[#676D76] ml-1.5">cm</span>
           </p>
-          <p className="text-[11px] text-[#9CA2AB]">Source: {resolved.label}</p>
+          <p className="text-[11px] text-[#676D76]">Source: {resolved.label}</p>
           {stillMissing.length > 0 && (
-            <div className="mt-3 px-3 py-2.5 rounded-lg border border-[#B06E1F]/50 bg-[#B06E1F]/5">
-              <p className="text-[12.5px] font-medium text-[#B06E1F] mb-1">
+            <div className="mt-3 px-3 py-2.5 rounded-lg border border-[#E0A254]/50 bg-[#E0A254]/5">
+              <p className="text-[12.5px] font-medium text-[#E0A254] mb-1">
                 Energy estimate still blocked
               </p>
-              <p className="text-[12.5px] text-[#4A4F57] leading-relaxed">
+              <p className="text-[12.5px] text-[#C2C6CC] leading-relaxed">
                 Height is on file, but a BMR still cannot run without {stillMissing.join(', ')}.
               </p>
             </div>
           )}
         </div>
       ) : (
-        <div className="px-3 py-2.5 rounded-lg border border-[#B06E1F]/50 bg-[#B06E1F]/5">
-          <p className="text-[12.5px] font-medium text-[#B06E1F] mb-1">No height on file</p>
-          <p className="text-[12.5px] text-[#4A4F57] leading-relaxed">
+        <div className="px-3 py-2.5 rounded-lg border border-[#E0A254]/50 bg-[#E0A254]/5">
+          <p className="text-[12.5px] font-medium text-[#E0A254] mb-1">No height on file</p>
+          <p className="text-[12.5px] text-[#C2C6CC] leading-relaxed">
             Nutrition plans for this client cannot carry an energy requirement. Add the height and regenerate
             the plan from the Nutrition page to pick it up.
           </p>

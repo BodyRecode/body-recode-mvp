@@ -38,12 +38,24 @@ const admin = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SU
  * afternoon.
  *
  *   npx tsx scripts/coach-shot.ts /dashboard/today
+ *
+ * POINT IT AT A REAL BUILD, NOT THE DEV SERVER. 22 September 2026: screenshots
+ * were showing stale styling for hours. Tailwind compiles arbitrary values like
+ * `bg-[#14171D]` on demand, and a dev server that has been running through
+ * hundreds of edits serves CSS that never learned the new ones. The class was
+ * in the HTML and absent from the stylesheet, so the element rendered with no
+ * background at all and I read that as "still light".
+ *
+ * So SHOT_BASE defaults to a production preview:
+ *   npm run build && npx next start -p 3100
+ *
+ * A screenshot is only evidence if it came from the same code that ships.
  */
 import { writeFileSync } from 'fs'
 import { execSync } from 'child_process'
 
 const REF = process.env.NEXT_PUBLIC_SUPABASE_URL!.split('//')[1].split('.')[0]
-const BASE = process.env.SHOT_BASE ?? 'http://localhost:3000'
+const BASE = process.env.SHOT_BASE ?? 'http://localhost:3100'
 const OUT = process.env.SHOT_OUT ?? '/tmp/coach-shot'
 
 async function main() {

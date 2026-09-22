@@ -49,7 +49,7 @@ export default function AddSessionForm({ clientId, defaultDuration }: { clientId
     return (
       <button
         onClick={() => setOpen(true)}
-        className="mt-4 pt-4 border-t border-[#E4E4E0] w-full text-left text-[12.5px] text-[#0F1115] hover:text-[#000000] transition-colors"
+        className="mt-4 pt-4 border-t border-[#2A2F39] w-full text-left text-[12.5px] text-[#FAFAF8] hover:text-[#FFFFFF] transition-colors"
       >
         + Book a session
       </button>
@@ -57,42 +57,42 @@ export default function AddSessionForm({ clientId, defaultDuration }: { clientId
   }
 
   return (
-    <div className="mt-4 pt-4 border-t border-[#E4E4E0] space-y-3">
-      <p className="text-[12.5px] text-[#6E747D] mb-1">Book a session</p>
+    <div className="mt-4 pt-4 border-t border-[#2A2F39] space-y-3">
+      <p className="text-[12.5px] text-[#8A9099] mb-1">Book a session</p>
       <div className="grid grid-cols-3 gap-2">
         <input
           type="date"
           value={date}
           min={todayBrisbane()}
           onChange={e => setDate(e.target.value)}
-          className="col-span-1 bg-[#EDEDEA] border border-[#E4E4E0] rounded-lg px-3 py-2.5 text-sm text-[#0F1115] focus:outline-none focus:border-[#0F1115] w-full"
+          className="col-span-1 bg-[#1A1E26] border border-[#2A2F39] rounded-lg px-3 py-2.5 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#FAFAF8] w-full"
         />
         <input
           type="time"
           value={time}
           onChange={e => setTime(e.target.value)}
-          className="bg-[#EDEDEA] border border-[#E4E4E0] rounded-lg px-3 py-2.5 text-sm text-[#0F1115] focus:outline-none focus:border-[#0F1115]"
+          className="bg-[#1A1E26] border border-[#2A2F39] rounded-lg px-3 py-2.5 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#FAFAF8]"
         />
         <select
           value={duration}
           onChange={e => setDuration(Number(e.target.value))}
-          className="bg-[#EDEDEA] border border-[#E4E4E0] rounded-lg px-3 py-2.5 text-sm text-[#0F1115] focus:outline-none focus:border-[#0F1115]"
+          className="bg-[#1A1E26] border border-[#2A2F39] rounded-lg px-3 py-2.5 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#FAFAF8]"
         >
           {[45, 60, 75, 90].map(d => <option key={d} value={d}>{d} min</option>)}
         </select>
       </div>
-      {error && <p className="text-[12.5px] text-[#8F2D2D]">{error}</p>}
+      {error && <p className="text-[12.5px] text-[#D4817E]">{error}</p>}
       <div className="flex gap-2">
         <button
           onClick={handleSave}
           disabled={saving}
-          className="px-4 py-2 bg-[#0F1115] text-white text-[12.5px] font-medium rounded-lg disabled:opacity-40 hover:bg-[#000000] transition-colors"
+          className="px-4 py-2 bg-[#FAFAF8] text-[#0B0D10] text-[12.5px] font-medium rounded-lg disabled:opacity-40 hover:bg-[#FFFFFF] transition-colors"
         >
           {saving ? 'Saving...' : 'Confirm booking'}
         </button>
         <button
           onClick={() => { setOpen(false); setError('') }}
-          className="px-4 py-2 text-[12.5px] text-[#6E747D] hover:text-[#0F1115] transition-colors"
+          className="px-4 py-2 text-[12.5px] text-[#8A9099] hover:text-[#FAFAF8] transition-colors"
         >
           Cancel
         </button>

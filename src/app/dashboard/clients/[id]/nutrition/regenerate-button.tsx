@@ -79,12 +79,12 @@ export default function NutritionRegenerateButton({ nutritionPlanId }: { nutriti
         <button
           onClick={regenerate}
           disabled={busy || isPending}
-          className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold px-3 py-1.5 border border-[#E4E4E0] text-[#0F1115] rounded-lg hover:border-[#DCDCD7] hover:text-[#0F1115] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold px-3 py-1.5 border border-[#2A2F39] text-[#FAFAF8] rounded-lg hover:border-[#2A2F39] hover:text-[#FAFAF8] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {busy || isPending ? <Loader2 size={12} className="animate-spin" /> : <RefreshCcw size={12} />}
           {busy ? 'Regenerating...' : isPending ? 'Loading...' : 'Regenerate with guidance'}
         </button>
-        {error && <p className="text-[11px] text-[#B06E1F]">{error}</p>}
+        {error && <p className="text-[11px] text-[#E0A254]">{error}</p>}
       </div>
     </>
   )

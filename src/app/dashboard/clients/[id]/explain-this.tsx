@@ -45,7 +45,7 @@ export default function ExplainThis({
           setSessionId(`explain-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`)
           setOpen(true)
         }}
-        className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-lg border border-[#E4E4E0] bg-[#FFFFFF] text-[#4A4F57] hover:border-[#0F1115] hover:text-[#0F1115] hover:bg-[rgba(27,109,252,0.05)] transition-colors"
+        className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-lg border border-[#2A2F39] bg-[#14171D] text-[#C2C6CC] hover:border-[#FAFAF8] hover:text-[#FAFAF8] hover:bg-[rgba(27,109,252,0.05)] transition-colors"
         title={question}
       >
         {label}
@@ -61,7 +61,7 @@ export default function ExplainThis({
           <button
             onClick={() => setOpen(false)}
             aria-label="Close"
-            className="absolute -top-3 -right-3 z-10 w-7 h-7 rounded-full bg-[#0F1115] text-white flex items-center justify-center shadow-lg"
+            className="absolute -top-3 -right-3 z-10 w-7 h-7 rounded-full bg-[#FAFAF8] text-[#0B0D10] flex items-center justify-center shadow-lg"
           >
             <X size={14} />
           </button>

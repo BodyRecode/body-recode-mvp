@@ -182,12 +182,12 @@ export default function TrajectoryReadingPanel({
       />
       <div className="flex items-center justify-between gap-4 mb-3 flex-wrap">
         <div className="flex items-center gap-2.5">
-          <span className="w-7 h-[3px] rounded-full bg-[#0F1115]" />
+          <span className="w-7 h-[3px] rounded-full bg-[#FAFAF8]" />
           <h2
-            className="text-[11px] font-medium text-[#0F1115]"
+            className="text-[11px] font-medium text-[#FAFAF8]"
           >
             Progress Read{' '}
-            <span className="text-[#4A4F57] font-normal">- Client Facing</span>
+            <span className="text-[#C2C6CC] font-normal">- Client Facing</span>
           </h2>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
@@ -197,18 +197,18 @@ export default function TrajectoryReadingPanel({
               style={{
                 fontFamily: MONO_FONT,
                 letterSpacing: '0.06em',
-                color: published ? '#0F1115' : '#6E747D',
-                background: published ? 'rgba(27,109,252,0.10)' : '#FFFFFF',
-                borderColor: published ? '#DCDCD7' : '#E4E4E0',
+                color: published ? '#FAFAF8' : '#8A9099',
+                background: published ? 'rgba(27,109,252,0.10)' : '#14171D',
+                borderColor: published ? '#2A2F39' : '#2A2F39',
               }}
             >
-              <span className="w-1 h-1 rounded-full" style={{ background: published ? '#0F1115' : '#9CA2AB' }} />
+              <span className="w-1 h-1 rounded-full" style={{ background: published ? '#FAFAF8' : '#676D76' }} />
               {published ? 'Live in portal' : 'Draft'}
             </span>
           )}
           {emailSent && (
             <span
-              className="inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border border-[#E4E4E0] bg-[#FFFFFF] text-[#6E747D]"
+              className="inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 rounded-full border border-[#2A2F39] bg-[#14171D] text-[#8A9099]"
               title={`Notification sent ${new Date(program.trajectory_reading_email_sent_at!).toLocaleString('en-AU')}`}
             >
               <Mail size={10} /> Notified
@@ -219,8 +219,8 @@ export default function TrajectoryReadingPanel({
             disabled={generating || isPending}
             className={`inline-flex items-center gap-2 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
               generated
-                ? 'border border-[#E4E4E0] bg-[#FFFFFF] text-[#4A4F57] hover:border-[#0F1115] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#0F1115]'
-                : 'bg-[#0F1115] text-[#FFFFFF] hover:bg-[#000000] border border-[#0F1115]'
+                ? 'border border-[#2A2F39] bg-[#14171D] text-[#C2C6CC] hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#FAFAF8]'
+                : 'bg-[#FAFAF8] text-[#14171D] hover:bg-[#FFFFFF] border border-[#FAFAF8]'
             }`}
           >
             {generating ? <Loader2 size={13} className="animate-spin" /> : <Sparkles size={13} />}
@@ -232,8 +232,8 @@ export default function TrajectoryReadingPanel({
               disabled={publishing || isPending}
               className={`inline-flex items-center gap-2 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
                 published
-                  ? 'border border-[#E4E4E0] bg-[#FFFFFF] text-[#4A4F57] hover:border-[#0F1115] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#0F1115]'
-                  : 'bg-[#0F1115] text-[#FFFFFF] hover:bg-[#000000] border border-[#0F1115]'
+                  ? 'border border-[#2A2F39] bg-[#14171D] text-[#C2C6CC] hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#FAFAF8]'
+                  : 'bg-[#FAFAF8] text-[#14171D] hover:bg-[#FFFFFF] border border-[#FAFAF8]'
               }`}
             >
               {publishing ? <Loader2 size={13} className="animate-spin" /> : (published ? <EyeOff size={13} /> : <Eye size={13} />)}
@@ -246,8 +246,8 @@ export default function TrajectoryReadingPanel({
               disabled={notifying || isPending}
               className={`inline-flex items-center gap-2 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
                 emailSent
-                  ? 'border border-[#E4E4E0] bg-[#FFFFFF] text-[#4A4F57] hover:border-[#0F1115] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#0F1115]'
-                  : 'bg-[#0F1115] text-[#FFFFFF] hover:bg-[#000000] border border-[#0F1115]'
+                  ? 'border border-[#2A2F39] bg-[#14171D] text-[#C2C6CC] hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#FAFAF8]'
+                  : 'bg-[#FAFAF8] text-[#14171D] hover:bg-[#FFFFFF] border border-[#FAFAF8]'
               }`}
             >
               {notifying ? <Loader2 size={13} className="animate-spin" /> : <Mail size={13} />}
@@ -258,12 +258,12 @@ export default function TrajectoryReadingPanel({
       </div>
 
       {error && (
-        <div className="bg-[#FDF8F1] border border-[#EADCC4] rounded-lg px-3 py-2 text-[12.5px] text-[#8A5514] mb-3">
+        <div className="bg-[#1A1E26] border border-[#4A3A22] rounded-lg px-3 py-2 text-[12.5px] text-[#E0A254] mb-3">
           {error}
         </div>
       )}
       {notice && (
-        <div className="bg-[rgba(27,109,252,0.08)] border border-[#DCDCD7] rounded-lg px-3 py-2 text-[12.5px] text-[#0F1115] mb-3">
+        <div className="bg-[rgba(27,109,252,0.08)] border border-[#2A2F39] rounded-lg px-3 py-2 text-[12.5px] text-[#FAFAF8] mb-3">
           {notice}
         </div>
       )}
@@ -276,21 +276,21 @@ export default function TrajectoryReadingPanel({
         <div className="br-card p-8 text-center">
           {atBlockEnd ? (
             <>
-              <p className="text-[#6E747D] text-[13.5px] mb-2">Block complete - Progress Read available</p>
-              <p className="text-[#9CA2AB] text-[12.5px]">
+              <p className="text-[#8A9099] text-[13.5px] mb-2">Block complete - Progress Read available</p>
+              <p className="text-[#676D76] text-[12.5px]">
                 Click Generate draft. It reads every weekly synthesis across this block into one arc. Review it, then Publish to surface it on the client portal. After publishing, a Notify Client button appears for the explicit email send (mirror of the Program / Nutrition pattern).
               </p>
             </>
           ) : (
             <>
-              <div className="inline-flex items-center gap-1.5 text-[11px] text-[#9CA2AB] mb-2" style={{ fontFamily: MONO_FONT }}>
+              <div className="inline-flex items-center gap-1.5 text-[11px] text-[#676D76] mb-2" style={{ fontFamily: MONO_FONT }}>
                 <CalendarClock size={12} />
                 {blockStatus?.currentWeek && blockStatus?.weekDuration
                   ? `Block in progress - week ${blockStatus.currentWeek} of ${blockStatus.weekDuration}`
                   : 'Block in progress'}
               </div>
-              <p className="text-[#6E747D] text-[13.5px] mb-2">Progress Read is for block end</p>
-              <p className="text-[#9CA2AB] text-[12.5px]">
+              <p className="text-[#8A9099] text-[13.5px] mb-2">Progress Read is for block end</p>
+              <p className="text-[#676D76] text-[12.5px]">
                 This read is designed to read the whole block once it has finished{blockStatus?.weeksRemaining ? `, about ${blockStatus.weeksRemaining} week${blockStatus.weeksRemaining === 1 ? '' : 's'} from now` : ''}. You can still generate an early draft from the weeks completed so far.
               </p>
             </>
@@ -302,9 +302,9 @@ export default function TrajectoryReadingPanel({
           <ReScoreCard program={program} />
         )}
         <div className="br-card overflow-hidden mb-3">
-          <div className="flex items-center justify-between px-5 py-3 border-b border-[#E4E4E0] flex-wrap gap-2">
+          <div className="flex items-center justify-between px-5 py-3 border-b border-[#2A2F39] flex-wrap gap-2">
             <p
-              className="text-[11px] text-[#9CA2AB]"
+              className="text-[11px] text-[#676D76]"
             >
               Last updated {new Date(program.trajectory_reading_generated_at!).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })}
             </p>
@@ -314,12 +314,12 @@ export default function TrajectoryReadingPanel({
                   portalUrl={`/portal/${clientToken}/program/trajectory-reading`}
                   title="Progress Read — Document"
                   triggerLabel="Document"
-                  triggerClassName="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E4E4E0] bg-[#FFFFFF] text-[#4A4F57] hover:border-[#0F1115] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#0F1115] transition-colors"
+                  triggerClassName="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#2A2F39] bg-[#14171D] text-[#C2C6CC] hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#FAFAF8] transition-colors"
                 />
               )}
             </div>
           </div>
-          <div className="divide-y divide-[#EDEDEA]">
+          <div className="divide-y divide-[#1A1E26]">
             {SECTION_LABELS.map(({ field, label }, i) => (
               <EditableSection
                 key={field}
@@ -350,10 +350,10 @@ function ReScoreCard({ program }: { program: Reading }) {
   const moved = !!prev && prev.toLowerCase() !== next.toLowerCase()
   return (
     <div className="br-card overflow-hidden mb-3">
-      <div className="flex items-center gap-2.5 px-5 py-3 border-b border-[#E4E4E0]">
-        <span className="w-1 h-1 rounded-full bg-[#0F1115]" />
+      <div className="flex items-center gap-2.5 px-5 py-3 border-b border-[#2A2F39]">
+        <span className="w-1 h-1 rounded-full bg-[#FAFAF8]" />
         <p
-          className="text-[10px] font-medium text-[#6E747D]"
+          className="text-[10px] font-medium text-[#8A9099]"
         >
           Progress Read - State Re-Score
         </p>
@@ -362,31 +362,31 @@ function ReScoreCard({ program }: { program: Reading }) {
         <div className="flex items-center gap-3 flex-wrap mb-3">
           {prev && (
             <>
-              <span className="inline-flex items-center px-2.5 py-1 rounded-full border border-[#E4E4E0] bg-[#FAFAF8] text-[13.5px] font-semibold text-[#6E747D]">
+              <span className="inline-flex items-center px-2.5 py-1 rounded-full border border-[#2A2F39] bg-[#0B0D10] text-[13.5px] font-semibold text-[#8A9099]">
                 {prev}
               </span>
-              <span className="text-[#9CA2AB] text-[13.5px]">{moved ? 'moved to' : 'held at'}</span>
+              <span className="text-[#676D76] text-[13.5px]">{moved ? 'moved to' : 'held at'}</span>
             </>
           )}
-          <span className="inline-flex items-center px-2.5 py-1 rounded-full border border-[#DCDCD7] bg-[rgba(27,109,252,0.10)] text-[13.5px] font-semibold text-[#0F1115]">
+          <span className="inline-flex items-center px-2.5 py-1 rounded-full border border-[#2A2F39] bg-[rgba(27,109,252,0.10)] text-[13.5px] font-semibold text-[#FAFAF8]">
             {next}
           </span>
           {program.tr_state_direction && (
-            <span className="text-[11px] text-[#9CA2AB]">
+            <span className="text-[11px] text-[#676D76]">
               {program.tr_state_direction}
             </span>
           )}
         </div>
         {program.tr_state_rationale && (
-          <p className="text-[13.5px] text-[#0F1115] leading-relaxed whitespace-pre-line mb-3">
+          <p className="text-[13.5px] text-[#FAFAF8] leading-relaxed whitespace-pre-line mb-3">
             {program.tr_state_rationale}
           </p>
         )}
         {program.tr_pattern_confidence_note && (
-          <div className="flex items-start gap-2 pt-3 border-t border-[#EDEDEA]">
-            <Info size={12} className="text-[#9CA2AB] mt-0.5 shrink-0" />
-            <p className="text-[12.5px] text-[#6E747D] leading-relaxed">
-              <span className="font-semibold text-[#4A4F57]">Pattern held. </span>
+          <div className="flex items-start gap-2 pt-3 border-t border-[#1A1E26]">
+            <Info size={12} className="text-[#676D76] mt-0.5 shrink-0" />
+            <p className="text-[12.5px] text-[#8A9099] leading-relaxed">
+              <span className="font-semibold text-[#C2C6CC]">Pattern held. </span>
               {program.tr_pattern_confidence_note}
             </p>
           </div>
@@ -442,30 +442,30 @@ function CoachGuidance({ programId, initial }: { programId: string; initial: str
     <div className="br-card overflow-hidden mb-3">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between gap-3 px-5 py-3 hover:bg-[#EDEDEA]/40 transition-colors text-left"
+        className="w-full flex items-center justify-between gap-3 px-5 py-3 hover:bg-[#1A1E26]/40 transition-colors text-left"
       >
         <div className="flex items-center gap-2.5">
-          <MessageSquare size={13} className="text-[#0F1115]" />
+          <MessageSquare size={13} className="text-[#FAFAF8]" />
           <p
-            className="text-[11px] font-medium text-[#0F1115]"
+            className="text-[11px] font-medium text-[#FAFAF8]"
           >
             Coach Guidance
           </p>
           {savedValue && (
             <span
-              className="text-[10px] text-[#0F1115] px-1.5 py-0.5 rounded-full border border-[#DCDCD7] bg-[rgba(27,109,252,0.10)]"
+              className="text-[10px] text-[#FAFAF8] px-1.5 py-0.5 rounded-full border border-[#2A2F39] bg-[rgba(27,109,252,0.10)]"
             >
               SET
             </span>
           )}
         </div>
-        <span className="text-[11px] text-[#9CA2AB]">{open ? 'Hide' : 'Edit'}</span>
+        <span className="text-[11px] text-[#676D76]">{open ? 'Hide' : 'Edit'}</span>
       </button>
       {open && (
-        <div className="px-5 pb-4 border-t border-[#E4E4E0]">
+        <div className="px-5 pb-4 border-t border-[#2A2F39]">
           <div className="flex items-start gap-2 pt-3 mb-3">
-            <Info size={12} className="text-[#9CA2AB] mt-0.5 shrink-0" />
-            <p className="text-[11px] text-[#9CA2AB] leading-relaxed">
+            <Info size={12} className="text-[#676D76] mt-0.5 shrink-0" />
+            <p className="text-[11px] text-[#676D76] leading-relaxed">
               Standing notes for the AI. Applied on every Generate and Regenerate of this block&apos;s Progress Read. Use it to steer how the arc is framed (e.g. account for a known life event mid-block). Each block starts fresh.
             </p>
           </div>
@@ -474,13 +474,13 @@ function CoachGuidance({ programId, initial }: { programId: string; initial: str
             onChange={e => setValue(e.target.value)}
             placeholder="e.g. Weeks 3 and 4 were disrupted by travel, not a loss of capacity. Frame the dip as expected and the recovery as the real signal."
             rows={4}
-            className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2.5 text-[13.5px] text-[#0F1115] placeholder:text-[#4A4F57] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
+            className="w-full bg-[#14171D] border border-[#2A2F39] rounded-lg px-3 py-2.5 text-[13.5px] text-[#FAFAF8] placeholder:text-[#C2C6CC] focus:outline-none focus:border-[#2A2F39] leading-relaxed resize-y"
           />
           {error && (
-            <div className="mt-2 text-[11px] text-[#8A5514]">{error}</div>
+            <div className="mt-2 text-[11px] text-[#E0A254]">{error}</div>
           )}
           <div className="flex items-center justify-between mt-3">
-            <p className="text-[10px] text-[#9CA2AB]">
+            <p className="text-[10px] text-[#676D76]">
               {savedAt ? 'Saved.' : (savedValue ? 'Last applied to next regeneration.' : 'No guidance set yet.')}
             </p>
             <button
@@ -488,8 +488,8 @@ function CoachGuidance({ programId, initial }: { programId: string; initial: str
               disabled={!dirty || saving || isPending}
               className={`inline-flex items-center gap-1.5 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
                 dirty
-                  ? 'bg-[#0F1115] text-[#FFFFFF] hover:bg-[#000000] border border-[#0F1115]'
-                  : 'border border-[#E4E4E0] bg-[#FFFFFF] text-[#6E747D]'
+                  ? 'bg-[#FAFAF8] text-[#14171D] hover:bg-[#FFFFFF] border border-[#FAFAF8]'
+                  : 'border border-[#2A2F39] bg-[#14171D] text-[#8A9099]'
               }`}
             >
               {saving ? <Loader2 size={12} className="animate-spin" /> : <Save size={12} />}
@@ -566,13 +566,13 @@ function EditableSection({
       <div className="flex items-center justify-between gap-3 mb-2">
         <div className="flex items-center gap-3 min-w-0">
           <span
-            className="text-[11px] font-black text-[#0F1115] shrink-0"
+            className="text-[11px] font-black text-[#FAFAF8] shrink-0"
             style={{ fontFamily: MONO_FONT }}
           >
             {String(index + 1).padStart(2, '0')}
           </span>
           <p
-            className="text-[10px] font-medium text-[#6E747D] truncate"
+            className="text-[10px] font-medium text-[#8A9099] truncate"
           >
             {label}
           </p>
@@ -580,7 +580,7 @@ function EditableSection({
         {!editing && (
           <button
             onClick={() => setEditing(true)}
-            className="inline-flex items-center gap-1 text-[10px] text-[#9CA2AB] hover:text-[#0F1115] transition-colors"
+            className="inline-flex items-center gap-1 text-[10px] text-[#676D76] hover:text-[#FAFAF8] transition-colors"
             aria-label="Edit section"
           >
             <Pencil size={11} /> Edit
@@ -595,21 +595,21 @@ function EditableSection({
             value={draft}
             onChange={e => setDraft(e.target.value)}
             rows={Math.max(4, draft.split('\n').length + 1)}
-            className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2.5 text-[13.5px] text-[#0F1115] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
+            className="w-full bg-[#14171D] border border-[#2A2F39] rounded-lg px-3 py-2.5 text-[13.5px] text-[#FAFAF8] focus:outline-none focus:border-[#2A2F39] leading-relaxed resize-y"
           />
-          {error && <p className="mt-2 text-[11px] text-[#8A5514]">{error}</p>}
+          {error && <p className="mt-2 text-[11px] text-[#E0A254]">{error}</p>}
           <div className="flex items-center justify-end gap-2 mt-2">
             <button
               onClick={cancel}
               disabled={saving}
-              className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#E4E4E0] text-[#6E747D] hover:text-[#0F1115] hover:border-[#0F1115] hover:bg-[rgba(27,109,252,0.06)] transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-md border border-[#2A2F39] text-[#8A9099] hover:text-[#FAFAF8] hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)] transition-colors disabled:opacity-50"
             >
               <X size={11} /> Cancel
             </button>
             <button
               onClick={save}
               disabled={saving || isPending || draft === (value ?? '')}
-              className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-md bg-[#0F1115] text-[#FFFFFF] hover:bg-[#000000] border border-[#0F1115] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-md bg-[#FAFAF8] text-[#14171D] hover:bg-[#FFFFFF] border border-[#FAFAF8] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {saving ? <Loader2 size={11} className="animate-spin" /> : <Check size={11} />}
               {saving ? 'Saving' : 'Save'}
@@ -617,7 +617,7 @@ function EditableSection({
           </div>
         </>
       ) : (
-        <p className="text-[13.5px] text-[#0F1115] leading-relaxed whitespace-pre-line">
+        <p className="text-[13.5px] text-[#FAFAF8] leading-relaxed whitespace-pre-line">
           {value || '(empty)'}
         </p>
       )}

@@ -42,7 +42,7 @@ export default function NewIntakeButton({ clientId, clientName, clientEmail }: P
       <button
         onClick={createInvitation}
         disabled={status === 'loading'}
-        className="text-sm px-4 py-2 border border-[#E8EAEE] text-[#43474F] rounded-lg hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] transition-colors disabled:opacity-50"
+        className="text-sm px-4 py-2 border border-[#2A2F39] text-[#C2C6CC] rounded-lg hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)] transition-colors disabled:opacity-50"
       >
         {status === 'loading' ? 'Creating…' : 'New intake'}
       </button>
@@ -51,14 +51,14 @@ export default function NewIntakeButton({ clientId, clientName, clientEmail }: P
 
   return (
     <div className="br-card p-5 mt-4">
-      <p className="text-[12px] font-medium text-[#1B6DFC] mb-3">New intake link ready</p>
-      <div className="bg-[#FFFFFF] rounded-lg px-4 py-3 flex items-center gap-3 mb-4">
-        <p className="text-[#666D7A] text-[12.5px] font-mono flex-1 truncate">
+      <p className="text-[12px] font-medium text-[#FAFAF8] mb-3">New intake link ready</p>
+      <div className="bg-[#14171D] rounded-lg px-4 py-3 flex items-center gap-3 mb-4">
+        <p className="text-[#8A9099] text-[12.5px] font-mono flex-1 truncate">
           {window.location.origin}/intake/{token}
         </p>
         <button
           onClick={copy}
-          className="shrink-0 text-[12.5px] font-medium px-3 py-1.5 rounded-md border border-[#CFD4DC] text-[#43474F] hover:border-[#98A0AD] hover:text-[#141821] transition-colors"
+          className="shrink-0 text-[12.5px] font-medium px-3 py-1.5 rounded-md border border-[#CFD4DC] text-[#C2C6CC] hover:border-[#676D76] hover:text-[#FAFAF8] transition-colors"
         >
           {copied ? 'Copied!' : 'Copy'}
         </button>
@@ -75,7 +75,7 @@ export default function NewIntakeButton({ clientId, clientName, clientEmail }: P
         )}
         <button
           onClick={() => { setStatus('idle'); setToken('') }}
-          className="text-[12.5px] text-[#98A0AD] hover:text-[#43474F] transition-colors"
+          className="text-[12.5px] text-[#676D76] hover:text-[#C2C6CC] transition-colors"
         >
           Dismiss
         </button>

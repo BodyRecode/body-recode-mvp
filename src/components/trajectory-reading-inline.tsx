@@ -53,13 +53,13 @@ export default function TrajectoryReadingInline({
     .filter(s => !!s.content)
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl overflow-hidden">
+    <div className="bg-[#14171D] border border-[#2A2F39] rounded-2xl overflow-hidden">
       {/* Header strip */}
-      <div className="flex items-center justify-between gap-3 px-5 py-3 border-b border-[#E5E5E5]">
+      <div className="flex items-center justify-between gap-3 px-5 py-3 border-b border-[#2A2F39]">
         <div className="flex items-center gap-2.5 min-w-0">
-          <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC] shrink-0" />
+          <span className="w-7 h-[3px] rounded-full bg-[#FAFAF8] shrink-0" />
           <p
-            className="text-[10px] font-bold text-[#1A1A1A] uppercase truncate"
+            className="text-[10px] font-bold text-[#FAFAF8] uppercase truncate"
             style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
           >
             Progress Read
@@ -67,21 +67,21 @@ export default function TrajectoryReadingInline({
         </div>
         <Link
           href={documentHref}
-          className="inline-flex items-center gap-1.5 text-[10px] font-medium px-2 py-1 rounded-md border border-[#E5E5E5] bg-[#FFFFFF] text-[#6B6B6B] hover:text-[#1B6DFC] hover:border-[#1B6DFC] hover:bg-blue-50 transition-colors shrink-0"
+          className="inline-flex items-center gap-1.5 text-[10px] font-medium px-2 py-1 rounded-md border border-[#2A2F39] bg-[#14171D] text-[#6B6B6B] hover:text-[#FAFAF8] hover:border-[#FAFAF8] hover:bg-[#1A1E26] transition-colors shrink-0"
         >
           <FileText size={10} /> View as document
         </Link>
       </div>
 
       {/* Anchor section - always visible */}
-      <div className="px-5 py-4 border-b border-[#E5E5E5]/60">
+      <div className="px-5 py-4 border-b border-[#2A2F39]/60">
         <p
-          className="text-[10px] font-bold text-[#1B6DFC] uppercase mb-2"
+          className="text-[10px] font-bold text-[#FAFAF8] uppercase mb-2"
           style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
         >
           01 · Where this block started
         </p>
-        <p className="text-[14px] text-[#1A1A1A] leading-relaxed whitespace-pre-line">
+        <p className="text-[14px] text-[#FAFAF8] leading-relaxed whitespace-pre-line">
           {anchorContent}
         </p>
       </div>
@@ -90,16 +90,16 @@ export default function TrajectoryReadingInline({
       {rest.length > 0 && (
         <>
           {expanded && (
-            <div className="divide-y divide-[#E5E5E5]/60">
+            <div className="divide-y divide-[#2A2F39]/60">
               {rest.map((s, i) => (
                 <div key={s.key} className="px-5 py-4">
                   <p
-                    className="text-[10px] font-bold text-[#1B6DFC] uppercase mb-2"
+                    className="text-[10px] font-bold text-[#FAFAF8] uppercase mb-2"
                     style={{ fontFamily: MONO_FONT, letterSpacing: '0.14em' }}
                   >
                     {String(i + 2).padStart(2, '0')} · {s.label}
                   </p>
-                  <p className="text-[14px] text-[#1A1A1A] leading-relaxed whitespace-pre-line">
+                  <p className="text-[14px] text-[#FAFAF8] leading-relaxed whitespace-pre-line">
                     {s.content}
                   </p>
                 </div>
@@ -108,7 +108,7 @@ export default function TrajectoryReadingInline({
           )}
           <button
             onClick={() => setExpanded(v => !v)}
-            className="w-full flex items-center justify-center gap-1.5 px-5 py-3 text-[12px] font-semibold text-[#6B6B6B] hover:text-[#1A1A1A] hover:bg-[#E5E5E5]/40 transition-colors border-t border-[#E5E5E5]"
+            className="w-full flex items-center justify-center gap-1.5 px-5 py-3 text-[12px] font-semibold text-[#6B6B6B] hover:text-[#FAFAF8] hover:bg-[#2A2F39]/40 transition-colors border-t border-[#2A2F39]"
           >
             {expanded ? (
               <>

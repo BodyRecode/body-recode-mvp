@@ -166,12 +166,12 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
     <>
       {/* First-time nudge — points at the bubble on first sight, once ever. */}
       {!open && !introSeen && (
-        <div className="fixed bottom-24 right-5 z-50 w-[264px] max-w-[calc(100vw-2.5rem)] bg-[#0F1115] text-[#0B0D10] rounded-xl shadow-2xl p-4 print:hidden">
+        <div className="fixed bottom-24 right-5 z-50 w-[264px] max-w-[calc(100vw-2.5rem)] bg-[#0F1115] text-[#FAFAF8] rounded-xl shadow-2xl p-4 print:hidden">
           <p className="text-[10px] font-medium text-[#8A9099] mb-1">New · Co-Pilot</p>
           <p className="text-[13px] leading-relaxed text-[#2A2F39] mb-3">Ask me anything about the {brandName} method — I&apos;m on every page. Explain a read, teach the doctrine, or pressure-test a call.</p>
           <div className="flex items-center gap-2">
             <button onClick={openPanel} className="text-[13px] font-semibold bg-[#FAFAF8] hover:bg-[#E4E4E0] text-[#0B0D10] rounded-lg px-3 py-1.5 transition-colors">See what I can do</button>
-            <button onClick={dismissIntro} className="text-[13px] text-[#676D76] hover:text-[#0B0D10] px-2 py-1.5">Dismiss</button>
+            <button onClick={dismissIntro} className="text-[13px] text-[#676D76] hover:text-[#FAFAF8] px-2 py-1.5">Dismiss</button>
           </div>
           <div className="absolute -bottom-1.5 right-9 w-3 h-3 bg-[#0F1115] rotate-45" />
         </div>
@@ -229,7 +229,7 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
                     <button
                       onClick={savePrefs}
                       disabled={prefsBusy}
-                      className="text-[13px] font-semibold px-3.5 py-1.5 text-[#0B0D10] rounded-lg border border-[#E4E4E0] bg-[linear-gradient(180deg,#FFFFFF,#FAFAF8)] hover:bg-[linear-gradient(180deg,#FFFFFF,#E4E4E0)] shadow-[0_1px_2px_rgba(27,109,252,0.4),inset_0_1px_0_rgba(255,255,255,0.28)] transition-all active:translate-y-[0.5px] disabled:opacity-40"
+                      className="text-[13px] font-semibold px-3.5 py-1.5 text-[#FAFAF8] rounded-lg border border-[#E4E4E0] bg-[linear-gradient(180deg,#FFFFFF,#FAFAF8)] hover:bg-[linear-gradient(180deg,#FFFFFF,#E4E4E0)] shadow-[0_1px_2px_rgba(27,109,252,0.4),inset_0_1px_0_rgba(255,255,255,0.28)] transition-all active:translate-y-[0.5px] disabled:opacity-40"
                     >
                       {prefsBusy ? 'Saving…' : 'Save'}
                     </button>
@@ -267,7 +267,7 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
                   {messages.map((m, i) => (
                     <div key={i} className={m.role === 'user' ? 'flex justify-end' : ''}>
                       <div className={m.role === 'user'
-                        ? 'max-w-[85%] bg-[linear-gradient(180deg,#FFFFFF,#FAFAF8)] text-[#0B0D10] rounded-xl rounded-br-sm px-4 py-2.5 text-sm leading-relaxed shadow-[0_1px_2px_rgba(27,109,252,0.35)]'
+                        ? 'max-w-[85%] bg-[linear-gradient(180deg,#FFFFFF,#FAFAF8)] text-[#FAFAF8] rounded-xl rounded-br-sm px-4 py-2.5 text-sm leading-relaxed shadow-[0_1px_2px_rgba(27,109,252,0.35)]'
                         : 'max-w-[92%] bg-[#14171D] border border-[#2A2F39] text-[#0F1115] rounded-xl rounded-bl-sm px-4 py-3 text-sm leading-relaxed'}>
                         <p className="whitespace-pre-wrap">{m.content}</p>
                       </div>
@@ -312,7 +312,7 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
                 <span aria-hidden>☀</span>
                 Morning brief
                 {!!awaiting && awaiting > 0 && (
-                  <span className="text-[11px] font-medium text-[#0B0D10] bg-[#E0A254] rounded-full px-1.5 py-0.5 leading-none">
+                  <span className="text-[11px] font-medium text-[#FAFAF8] bg-[#E0A254] rounded-full px-1.5 py-0.5 leading-none">
                     {awaiting} awaiting
                   </span>
                 )}
@@ -364,7 +364,7 @@ export default function GlobalCopilotBubble({ brandName = 'Body Recode' }: { bra
         {!open && !!awaiting && awaiting > 0 && (
           <span
             aria-label={`${awaiting} clients awaiting you`}
-            className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full text-[#0B0D10] text-[11px] font-semibold flex items-center justify-center border-2 border-white"
+            className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full text-[#FAFAF8] text-[11px] font-semibold flex items-center justify-center border-2 border-white"
             style={{
               background: 'linear-gradient(180deg,#D4817E,#D4817E)',
               boxShadow: '0 1px 2px rgba(220,38,38,0.35)',

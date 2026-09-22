@@ -72,23 +72,23 @@ export default function FixedSlotsManager({
   }
 
   return (
-    <div className="bg-[#F2F2EF] br-card p-6">
-      <p className="text-[12.5px] text-[#6E747D] mb-4">Fixed Weekly Slots</p>
+    <div className="bg-[#14171D] br-card p-6">
+      <p className="text-[12.5px] text-[#8A9099] mb-4">Fixed Weekly Slots</p>
 
       {slots.length === 0 ? (
-        <p className="text-sm text-[#9CA2AB] mb-4">No fixed slots set up yet.</p>
+        <p className="text-sm text-[#676D76] mb-4">No fixed slots set up yet.</p>
       ) : (
         <div className="space-y-2 mb-4">
           {slots.map(slot => (
-            <div key={slot.id} className="flex items-center justify-between rounded-lg bg-[#EDEDEA] px-4 py-3">
+            <div key={slot.id} className="flex items-center justify-between rounded-lg bg-[#1A1E26] px-4 py-3">
               <div>
-                <span className="text-sm font-medium text-[#0F1115]">{DAYS[slot.day_of_week]}</span>
-                <span className="text-sm text-[#6E747D] ml-2">· {formatTime(slot.session_time)} · {slot.duration_minutes} min</span>
+                <span className="text-sm font-medium text-[#FAFAF8]">{DAYS[slot.day_of_week]}</span>
+                <span className="text-sm text-[#8A9099] ml-2">· {formatTime(slot.session_time)} · {slot.duration_minutes} min</span>
               </div>
               <button
                 onClick={() => handleRemove(slot.id)}
                 disabled={removing === slot.id}
-                className="text-[#9CA2AB] hover:text-[#8F2D2D] transition-colors text-[12.5px] disabled:opacity-40"
+                className="text-[#676D76] hover:text-[#D4817E] transition-colors text-[12.5px] disabled:opacity-40"
               >
                 {removing === slot.id ? '...' : '✕'}
               </button>
@@ -100,14 +100,14 @@ export default function FixedSlotsManager({
       {!adding ? (
         <button
           onClick={() => setAdding(true)}
-          className="text-[12.5px] text-[#0F1115] hover:text-[#000000] transition-colors"
+          className="text-[12.5px] text-[#FAFAF8] hover:text-[#FFFFFF] transition-colors"
         >
           + Add slot
         </button>
       ) : (
-        <div className="border-t border-[#E4E4E0] pt-4 mt-2 space-y-4">
+        <div className="border-t border-[#2A2F39] pt-4 mt-2 space-y-4">
           <div>
-            <p className="text-[12.5px] text-[#6E747D] mb-2">Day</p>
+            <p className="text-[12.5px] text-[#8A9099] mb-2">Day</p>
             <div className="flex flex-wrap gap-2">
               {DAYS.map((d, i) => (
                 <button
@@ -115,8 +115,8 @@ export default function FixedSlotsManager({
                   onClick={() => setDay(i)}
                   className={`px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${
                     day === i
-                      ? 'border-[#0F1115] bg-[rgba(27,109,252,0.08)] text-[#0F1115]'
-                      : 'border-[#E4E4E0] text-[#6E747D] hover:border-[#DCDCD7]'
+                      ? 'border-[#FAFAF8] bg-[rgba(27,109,252,0.08)] text-[#FAFAF8]'
+                      : 'border-[#2A2F39] text-[#8A9099] hover:border-[#2A2F39]'
                   }`}
                 >
                   {d}
@@ -127,16 +127,16 @@ export default function FixedSlotsManager({
 
           <div className="flex gap-3 items-end">
             <div>
-              <p className="text-[12.5px] text-[#6E747D] mb-2">Time</p>
+              <p className="text-[12.5px] text-[#8A9099] mb-2">Time</p>
               <input
                 type="time"
                 value={time}
                 onChange={e => setTime(e.target.value)}
-                className="bg-[#EDEDEA] border border-[#E4E4E0] rounded-lg px-3 py-2.5 text-sm text-[#0F1115] focus:outline-none focus:border-[#0F1115]"
+                className="bg-[#1A1E26] border border-[#2A2F39] rounded-lg px-3 py-2.5 text-sm text-[#FAFAF8] focus:outline-none focus:border-[#FAFAF8]"
               />
             </div>
             <div>
-              <p className="text-[12.5px] text-[#6E747D] mb-2">Duration</p>
+              <p className="text-[12.5px] text-[#8A9099] mb-2">Duration</p>
               <div className="flex gap-2">
                 {DURATIONS.map(d => (
                   <button
@@ -144,8 +144,8 @@ export default function FixedSlotsManager({
                     onClick={() => setDuration(d)}
                     className={`px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${
                       duration === d
-                        ? 'border-[#0F1115] bg-[rgba(27,109,252,0.08)] text-[#0F1115]'
-                        : 'border-[#E4E4E0] text-[#6E747D] hover:border-[#DCDCD7]'
+                        ? 'border-[#FAFAF8] bg-[rgba(27,109,252,0.08)] text-[#FAFAF8]'
+                        : 'border-[#2A2F39] text-[#8A9099] hover:border-[#2A2F39]'
                     }`}
                   >
                     {d}
@@ -155,19 +155,19 @@ export default function FixedSlotsManager({
             </div>
           </div>
 
-          {error && <p className="text-[12.5px] text-[#8F2D2D]">{error}</p>}
+          {error && <p className="text-[12.5px] text-[#D4817E]">{error}</p>}
 
           <div className="flex gap-2">
             <button
               onClick={handleAdd}
               disabled={saving}
-              className="px-4 py-2 bg-[#0F1115] text-white text-[12.5px] font-medium rounded-lg disabled:opacity-40 hover:bg-[#000000] transition-colors"
+              className="px-4 py-2 bg-[#FAFAF8] text-[#0B0D10] text-[12.5px] font-medium rounded-lg disabled:opacity-40 hover:bg-[#FFFFFF] transition-colors"
             >
               {saving ? 'Saving...' : 'Add slot'}
             </button>
             <button
               onClick={() => { setAdding(false); setError('') }}
-              className="px-4 py-2 text-[12.5px] text-[#6E747D] hover:text-[#0F1115] transition-colors"
+              className="px-4 py-2 text-[12.5px] text-[#8A9099] hover:text-[#FAFAF8] transition-colors"
             >
               Cancel
             </button>

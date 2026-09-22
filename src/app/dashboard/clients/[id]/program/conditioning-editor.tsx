@@ -51,22 +51,22 @@ export default function ConditioningEditor({
   return (
     <div className="br-card p-5 mb-4">
       <div className="flex items-center gap-2 mb-2 flex-wrap">
-        <p className="text-[10px] font-medium text-[#0F1115]">Conditioning / Cardio</p>
-        <span className="text-[10px] text-[#9CA2AB]">shown to the client with their program</span>
+        <p className="text-[10px] font-medium text-[#FAFAF8]">Conditioning / Cardio</p>
+        <span className="text-[10px] text-[#676D76]">shown to the client with their program</span>
       </div>
       <textarea
         value={value}
         onChange={e => setValue(e.target.value)}
         rows={4}
         placeholder="e.g. 1-2 easy runs per week, 5-6km, conversational pace, on non-lifting days. No intervals, tempo, or long runs this phase. Ease off if the Achilles complains."
-        className="w-full resize-none text-sm text-[#0F1115] border border-[#E4E4E0] rounded-lg px-3 py-2 focus:outline-none focus:border-[#0F1115]"
+        className="w-full resize-none text-sm text-[#FAFAF8] border border-[#2A2F39] rounded-lg px-3 py-2 focus:outline-none focus:border-[#FAFAF8]"
       />
-      {error && <p className="text-[12.5px] text-[#8F2D2D] mt-1">{error}</p>}
+      {error && <p className="text-[12.5px] text-[#D4817E] mt-1">{error}</p>}
       <div className="flex justify-end mt-2">
         <button
           onClick={save}
           disabled={!dirty || saving || isPending}
-          className="text-[13.5px] font-semibold px-4 py-2 rounded-lg bg-[#0F1115] text-[#FFFFFF] hover:bg-[#000000] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="text-[13.5px] font-semibold px-4 py-2 rounded-lg bg-[#FAFAF8] text-[#14171D] hover:bg-[#FFFFFF] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           {saving ? 'Saving…' : dirty ? 'Save conditioning' : 'Saved'}
         </button>

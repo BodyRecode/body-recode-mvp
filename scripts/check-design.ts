@@ -33,6 +33,15 @@ import { join, relative } from 'path'
  * The owner-only screens are deliberately absent. They are Kade's own business
  * pages, still light, and they join when their turn comes.
  */
+/**
+ * A DOCUMENT IS LIGHT, so the print and report pages under a client are
+ * deliberately not in here. They generate the PDFs a CLIENT reads, and the
+ * dark sweep had to be reverted on all seven of them: it would have shipped
+ * dark PDFs to people, which is the exact thing the tool/document line exists
+ * to stop.
+ */
+const SKIP = /\/(print|cffs-report|cfws-report|foundational-reading-preview)(\/|$)/
+
 const ROOTS = [
   'src/app/globals.css',
   'src/components/dashboard/ui.tsx',
@@ -51,6 +60,7 @@ const ROOTS = [
   'src/app/dashboard/support/page.tsx',
   'src/app/dashboard/help/page.tsx',
   'src/app/dashboard/help/coach-guide.tsx',
+  'src/app/dashboard/clients',
   'src/components/LogoutButton.tsx',
   'src/app/login',
   'src/lib/coach-today.ts',
@@ -68,7 +78,8 @@ function files(p: string): string[] {
   } catch { return [] }
   return readdirSync(p).flatMap(n => {
     const full = join(p, n)
-    if (statSync(full).isDirectory()) return files(full)
+    if (statSync(full).isDirectory()) return SKIP.test(full) ? [] : files(full)
+    if (SKIP.test(full)) return []
     return /\.(tsx?|css)$/.test(full) ? [full] : []
   })
 }

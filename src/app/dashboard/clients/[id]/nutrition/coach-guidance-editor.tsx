@@ -141,60 +141,60 @@ export default function NutritionCoachGuidanceEditor({
     <div className="br-card overflow-hidden mb-3">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between gap-3 px-5 py-3 hover:bg-[#EDEDEA]/40 transition-colors text-left"
+        className="w-full flex items-center justify-between gap-3 px-5 py-3 hover:bg-[#1A1E26]/40 transition-colors text-left"
       >
         <div className="flex items-center gap-2.5">
-          <MessageSquare size={13} className="text-[#0F1115]" />
+          <MessageSquare size={13} className="text-[#FAFAF8]" />
           <p
-            className="text-[11px] font-medium text-[#0F1115]"
+            className="text-[11px] font-medium text-[#FAFAF8]"
           >
             Coach Guidance (nutrition plan)
           </p>
           {savedValue && (
             <span
-              className="text-[10px] text-[#0F1115] px-1.5 py-0.5 rounded-full border border-[#DCDCD7] bg-[rgba(27,109,252,0.10)]"
+              className="text-[10px] text-[#FAFAF8] px-1.5 py-0.5 rounded-full border border-[#2A2F39] bg-[rgba(27,109,252,0.10)]"
             >
               SET
             </span>
           )}
         </div>
-        <span className="text-[11px] text-[#9CA2AB]">{open ? 'Hide' : 'Edit'}</span>
+        <span className="text-[11px] text-[#676D76]">{open ? 'Hide' : 'Edit'}</span>
       </button>
       {open && (
-        <div className="px-5 pb-4 border-t border-[#E4E4E0]">
+        <div className="px-5 pb-4 border-t border-[#2A2F39]">
           <div className="flex items-start gap-2 pt-3 mb-3">
-            <Info size={12} className="text-[#9CA2AB] mt-0.5 shrink-0" />
-            <p className="text-[11px] text-[#9CA2AB] leading-relaxed">
+            <Info size={12} className="text-[#676D76] mt-0.5 shrink-0" />
+            <p className="text-[11px] text-[#676D76] leading-relaxed">
               Standing steering for the nutrition generator. Applied to every Generate and Regenerate. Use it to override engine-default conservatism (meal frequency, food selection bias, substitution generosity, structure rigidity). Does not override appetite-suppression hard rules, validator floors, dietary restrictions, or RRS recovery-state constraints.
             </p>
           </div>
 
           {/* AI assist panel */}
-          <div className="mb-3 border border-[#E4E4E0] rounded-lg bg-[#FFFFFF]">
+          <div className="mb-3 border border-[#2A2F39] rounded-lg bg-[#14171D]">
             <button
               onClick={() => setAssistOpen(o => !o)}
-              className="w-full flex items-center justify-between gap-2 px-3 py-2 hover:bg-[#EDEDEA]/40 transition-colors text-left"
+              className="w-full flex items-center justify-between gap-2 px-3 py-2 hover:bg-[#1A1E26]/40 transition-colors text-left"
             >
               <div className="flex items-center gap-2">
-                <Sparkles size={12} className="text-[#0F1115]" />
+                <Sparkles size={12} className="text-[#FAFAF8]" />
                 <span
-                  className="text-[10px] font-medium text-[#4A4F57]"
+                  className="text-[10px] font-medium text-[#C2C6CC]"
                 >
                   Suggest with AI
                 </span>
               </div>
-              <span className="text-[10px] text-[#9CA2AB]">{assistOpen ? 'Close' : 'Open'}</span>
+              <span className="text-[10px] text-[#676D76]">{assistOpen ? 'Close' : 'Open'}</span>
             </button>
             {assistOpen && (
-              <div className="px-3 pb-3 border-t border-[#E4E4E0]">
+              <div className="px-3 pb-3 border-t border-[#2A2F39]">
                 {!savedValue && (
-                  <div className="mt-3 -mx-1 mb-3 px-3 py-2 rounded-md bg-[rgba(27,109,252,0.06)] border border-[rgba(27,109,252,0.18)] text-[11px] text-[#0F1115] leading-relaxed">
+                  <div className="mt-3 -mx-1 mb-3 px-3 py-2 rounded-md bg-[rgba(27,109,252,0.06)] border border-[rgba(27,109,252,0.18)] text-[11px] text-[#FAFAF8] leading-relaxed">
                     Sensible defaults are pre-selected (Simplify execution, Food friction + Meal count). Tap <span className="font-semibold">Draft guidance</span> at the bottom for a one-click starter you can edit, then Save.
                   </div>
                 )}
                 <div className="pt-3 mb-3">
                   <p
-                    className="text-[10px] font-medium text-[#6E747D] mb-1.5"
+                    className="text-[10px] font-medium text-[#8A9099] mb-1.5"
                   >
                     Intent
                   </p>
@@ -207,8 +207,8 @@ export default function NutritionCoachGuidanceEditor({
                           onClick={() => setIntent(opt.value)}
                           className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${
                             active
-                              ? 'bg-[rgba(27,109,252,0.12)] border-[#DCDCD7] text-[#0F1115]'
-                              : 'bg-[#FFFFFF] border-[#E4E4E0] text-[#6E747D] hover:border-[#0F1115] hover:bg-[rgba(27,109,252,0.06)]'
+                              ? 'bg-[rgba(27,109,252,0.12)] border-[#2A2F39] text-[#FAFAF8]'
+                              : 'bg-[#14171D] border-[#2A2F39] text-[#8A9099] hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)]'
                           }`}
                         >
                           {opt.label}
@@ -220,7 +220,7 @@ export default function NutritionCoachGuidanceEditor({
 
                 <div className="mb-3">
                   <p
-                    className="text-[10px] font-medium text-[#6E747D] mb-1.5"
+                    className="text-[10px] font-medium text-[#8A9099] mb-1.5"
                   >
                     Levers
                   </p>
@@ -233,8 +233,8 @@ export default function NutritionCoachGuidanceEditor({
                           onClick={() => toggleLever(opt.value)}
                           className={`text-[11px] px-2.5 py-1 rounded-full border transition-colors ${
                             active
-                              ? 'bg-[rgba(27,109,252,0.12)] border-[#DCDCD7] text-[#0F1115]'
-                              : 'bg-[#FFFFFF] border-[#E4E4E0] text-[#6E747D] hover:border-[#0F1115] hover:bg-[rgba(27,109,252,0.06)]'
+                              ? 'bg-[rgba(27,109,252,0.12)] border-[#2A2F39] text-[#FAFAF8]'
+                              : 'bg-[#14171D] border-[#2A2F39] text-[#8A9099] hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)]'
                           }`}
                         >
                           {opt.label}
@@ -246,7 +246,7 @@ export default function NutritionCoachGuidanceEditor({
 
                 <div className="mb-3">
                   <p
-                    className="text-[10px] font-medium text-[#6E747D] mb-1.5"
+                    className="text-[10px] font-medium text-[#8A9099] mb-1.5"
                   >
                     Coach note (optional)
                   </p>
@@ -255,22 +255,22 @@ export default function NutritionCoachGuidanceEditor({
                     onChange={e => setCoachNote(e.target.value)}
                     placeholder="One line of context the engine cannot read from CFFS / intake. e.g. 'Going from 3 to 4 meals is the real ask. Design meal 4 as a no-cook protein anchor.'"
                     rows={2}
-                    className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-2.5 py-2 text-[12.5px] text-[#0F1115] placeholder:text-[#4A4F57] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
+                    className="w-full bg-[#14171D] border border-[#2A2F39] rounded-lg px-2.5 py-2 text-[12.5px] text-[#FAFAF8] placeholder:text-[#C2C6CC] focus:outline-none focus:border-[#2A2F39] leading-relaxed resize-y"
                   />
                 </div>
 
                 {assistError && (
-                  <div className="mb-2 text-[11px] text-[#8A5514]">{assistError}</div>
+                  <div className="mb-2 text-[11px] text-[#E0A254]">{assistError}</div>
                 )}
 
                 <div className="flex items-center justify-between">
-                  <p className="text-[10px] text-[#9CA2AB]">
+                  <p className="text-[10px] text-[#676D76]">
                     Draft is editable before saving. CFFS, medications, and dietary context are pulled automatically.
                   </p>
                   <button
                     onClick={suggest}
                     disabled={suggesting}
-                    className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed border border-[#0F1115] bg-[rgba(27,109,252,0.10)] text-[#0F1115] hover:bg-[rgba(27,109,252,0.18)]"
+                    className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed border border-[#FAFAF8] bg-[rgba(27,109,252,0.10)] text-[#FAFAF8] hover:bg-[rgba(27,109,252,0.18)]"
                   >
                     {suggesting ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
                     {suggesting ? 'Drafting...' : 'Draft guidance'}
@@ -285,13 +285,13 @@ export default function NutritionCoachGuidanceEditor({
             onChange={e => setValue(e.target.value)}
             placeholder="e.g. Meal 4 designed as a no-cook 20g protein anchor (Greek yoghurt, eggs, protein shake). Bias meal 4 mid-afternoon to land on the client's 3-4pm crash and break the caffeine-bridge habit. Hold meals 1-3 structurally close to current plan; the change should read additive."
             rows={6}
-            className="w-full bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg px-3 py-2.5 text-[13.5px] text-[#0F1115] placeholder:text-[#4A4F57] focus:outline-none focus:border-[#DCDCD7] leading-relaxed resize-y"
+            className="w-full bg-[#14171D] border border-[#2A2F39] rounded-lg px-3 py-2.5 text-[13.5px] text-[#FAFAF8] placeholder:text-[#C2C6CC] focus:outline-none focus:border-[#2A2F39] leading-relaxed resize-y"
           />
           {error && (
-            <div className="mt-2 text-[11px] text-[#8A5514]">{error}</div>
+            <div className="mt-2 text-[11px] text-[#E0A254]">{error}</div>
           )}
           <div className="flex items-center justify-between mt-3">
-            <p className="text-[10px] text-[#9CA2AB]">
+            <p className="text-[10px] text-[#676D76]">
               {savedAt ? 'Saved. Will apply on next Regenerate.' : (savedValue ? 'Applied on every Generate or Regenerate of this plan.' : 'No guidance set yet.')}
             </p>
             <button
@@ -299,8 +299,8 @@ export default function NutritionCoachGuidanceEditor({
               disabled={!dirty || saving || isPending}
               className={`inline-flex items-center gap-1.5 text-[12.5px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
                 dirty
-                  ? 'bg-[#0F1115] text-[#FFFFFF] hover:bg-[#000000] border border-[#0F1115]'
-                  : 'border border-[#E4E4E0] bg-[#FFFFFF] text-[#6E747D]'
+                  ? 'bg-[#FAFAF8] text-[#14171D] hover:bg-[#FFFFFF] border border-[#FAFAF8]'
+                  : 'border border-[#2A2F39] bg-[#14171D] text-[#8A9099]'
               }`}
             >
               {saving ? <Loader2 size={12} className="animate-spin" /> : <Save size={12} />}

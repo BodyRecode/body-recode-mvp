@@ -59,12 +59,12 @@ export default function ClientCommunicationsPanel({ rows }: { rows: ClientCommun
   return (
     <div className="br-card p-5 mb-4">
       <div className="flex items-center justify-between mb-3">
-        <p className="text-[12.5px] font-medium text-[#1B6DFC]">Communications</p>
-        <span className="text-[10px] text-[#666D7A]">{rows.length === 0 ? 'Nothing sent yet' : `Last ${rows.length}`}</span>
+        <p className="text-[12.5px] font-medium text-[#FAFAF8]">Communications</p>
+        <span className="text-[10px] text-[#8A9099]">{rows.length === 0 ? 'Nothing sent yet' : `Last ${rows.length}`}</span>
       </div>
 
       {rows.length === 0 ? (
-        <p className="text-[12.5px] text-[#98A0AD]">
+        <p className="text-[12.5px] text-[#676D76]">
           Every email or SMS sent to this client will appear here with a timestamp.
         </p>
       ) : (
@@ -76,22 +76,22 @@ export default function ClientCommunicationsPanel({ rows }: { rows: ClientCommun
             return (
               <li
                 key={row.id}
-                className="flex items-start gap-3 px-3 py-2.5 bg-[#FFFFFF] border border-[#E8EAEE] rounded-lg"
+                className="flex items-start gap-3 px-3 py-2.5 bg-[#14171D] border border-[#2A2F39] rounded-lg"
               >
-                <div className="mt-0.5 w-7 h-7 rounded-md bg-[rgba(27,109,252,0.08)] border border-[#1B6DFC]/20 flex items-center justify-center flex-shrink-0">
-                  <Icon className="w-3.5 h-3.5 text-[#1B6DFC]" />
+                <div className="mt-0.5 w-7 h-7 rounded-md bg-[rgba(27,109,252,0.08)] border border-[#FAFAF8]/20 flex items-center justify-center flex-shrink-0">
+                  <Icon className="w-3.5 h-3.5 text-[#FAFAF8]" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-[12.5px] font-semibold text-[#141821]">{kindLabel(row.kind)}</span>
-                    <span className="text-[10px] text-[#666D7A]">
+                    <span className="text-[12.5px] font-semibold text-[#FAFAF8]">{kindLabel(row.kind)}</span>
+                    <span className="text-[10px] text-[#8A9099]">
                       {isEmail ? 'Email' : 'SMS'}
                     </span>
                   </div>
                   {row.subject && (
-                    <p className="text-[12.5px] text-[#43474F] truncate mt-0.5">{row.subject}</p>
+                    <p className="text-[12.5px] text-[#C2C6CC] truncate mt-0.5">{row.subject}</p>
                   )}
-                  <div className="flex items-center gap-2 flex-wrap mt-1 text-[11px] text-[#666D7A]">
+                  <div className="flex items-center gap-2 flex-wrap mt-1 text-[11px] text-[#8A9099]">
                     <span title={fullTimestamp(row.sent_at)}>{formatSentAt(row.sent_at)}</span>
                     {row.to_address && (
                       <>
@@ -106,7 +106,7 @@ export default function ClientCommunicationsPanel({ rows }: { rows: ClientCommun
                           href={url}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-[#1B6DFC] hover:text-[#1056D6] transition-colors"
+                          className="text-[#FAFAF8] hover:text-[#1056D6] transition-colors"
                         >
                           link
                         </a>

@@ -146,6 +146,9 @@ export const BRAND = {
      an error without shouting. */
   attentionPressed: '#8A1919',
   attentionWash: '#FBF1F1',
+  /* The same panel on a dark ground. */
+  attentionWashOnDark: '#1A1214',
+  attentionWashLineOnDark: '#4A2222',
   attentionWashLine: '#E8C9C9',
 
   /* ── Retired, kept so old references still compile ───────────────────

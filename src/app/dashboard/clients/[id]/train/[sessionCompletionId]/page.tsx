@@ -99,12 +99,12 @@ export default async function CoachLogSessionPage({
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
-      <Link href={completeHref} className="text-[12.5px] font-semibold text-[#0F1115] hover:text-[#242932]">← Back to sessions</Link>
-      <div className="mt-4 br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#E4E4E0] bg-white/[0.88] backdrop-blur-md print:static print:bg-transparent">
-        <p className="text-[10px] font-medium text-[#9CA2AB] mb-1">Logging for {client.name} · Week {session.week_number_in_block}</p>
-        <h1 className="text-[20px] font-semibold text-[#0F1115] tracking-[-0.025em] tracking-tight">{session.day_label}{session.session_name ? ` · ${session.session_name}` : ''}</h1>
+      <Link href={completeHref} className="text-[12.5px] font-semibold text-[#FAFAF8] hover:text-[#242932]">← Back to sessions</Link>
+      <div className="mt-4 br-page-header sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#2A2F39] bg-[#14171D]/[0.88] backdrop-blur-md print:static print:bg-transparent">
+        <p className="text-[10px] font-medium text-[#676D76] mb-1">Logging for {client.name} · Week {session.week_number_in_block}</p>
+        <h1 className="text-[20px] font-semibold text-[#FAFAF8] tracking-[-0.025em] tracking-tight">{session.day_label}{session.session_name ? ` · ${session.session_name}` : ''}</h1>
         {session.status === 'completed' && session.completed_at && (
-          <p className="text-[12.5px] text-[#0F1115] mt-1">Logged {new Date(session.completed_at).toLocaleString('en-AU', { dateStyle: 'medium', timeStyle: 'short' })}</p>
+          <p className="text-[12.5px] text-[#FAFAF8] mt-1">Logged {new Date(session.completed_at).toLocaleString('en-AU', { dateStyle: 'medium', timeStyle: 'short' })}</p>
         )}
       </div>
 

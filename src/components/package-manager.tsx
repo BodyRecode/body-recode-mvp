@@ -167,7 +167,7 @@ export default function PackageManager({
     <div className="space-y-3">
       <div className="space-y-2">
         <div>
-          <p className="text-[10px] font-semibold text-[#98A0AD] mb-1.5">Standard</p>
+          <p className="text-[10px] font-semibold text-[#676D76] mb-1.5">Standard</p>
           <div className="flex flex-wrap gap-2">
             {packages.filter(p => p.tier === 'standard').map(p => (
               <button
@@ -176,8 +176,8 @@ export default function PackageManager({
                 disabled={saving}
                 className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
                   pkg === p.value
-                    ? 'bg-[rgba(27,109,252,0.08)] border-[#B5CFFC] text-[#1B6DFC]'
-                    : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC]'
+                    ? 'bg-[rgba(27,109,252,0.08)] border-[#B5CFFC] text-[#FAFAF8]'
+                    : 'border-[#2A2F39] text-[#8A9099] hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#FAFAF8]'
                 }`}
               >
                 {p.label}
@@ -197,7 +197,7 @@ export default function PackageManager({
                 className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
                   pkg === p.value
                     ? 'bg-[#FDF6E9] border-[#E5C98F] text-[#A96A12]'
-                    : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#E5C98F] hover:text-[#A96A12]'
+                    : 'border-[#2A2F39] text-[#8A9099] hover:border-[#E5C98F] hover:text-[#A96A12]'
                 }`}
               >
                 {p.label}
@@ -207,7 +207,7 @@ export default function PackageManager({
         </div>
         )}
         <div>
-          <p className="text-[10px] font-semibold text-[#666D7A] mb-1.5">Non-billing (Contra / Comp)</p>
+          <p className="text-[10px] font-semibold text-[#8A9099] mb-1.5">Non-billing (Contra / Comp)</p>
           <div className="flex flex-wrap gap-2">
             {packages.filter(p => p.tier === 'comp').map(p => (
               <button
@@ -216,20 +216,20 @@ export default function PackageManager({
                 disabled={saving}
                 className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors ${
                   pkg === p.value
-                    ? 'bg-[#666D7A]/15 border-[#666D7A]/40 text-[#141821]'
-                    : 'border-[#E8EAEE] text-[#666D7A] hover:border-[#666D7A]/40 hover:text-[#141821]'
+                    ? 'bg-[#8A9099]/15 border-[#8A9099]/40 text-[#FAFAF8]'
+                    : 'border-[#2A2F39] text-[#8A9099] hover:border-[#8A9099]/40 hover:text-[#FAFAF8]'
                 }`}
               >
                 {p.label}
               </button>
             ))}
           </div>
-          <p className="text-[10px] text-[#98A0AD] mt-1.5">
+          <p className="text-[10px] text-[#676D76] mt-1.5">
             Skips the Payments tracker. No Stripe link sent, no Foundational Read flag, no overdue indicator.
           </p>
         </div>
       </div>
-      {saved && <p className="text-[12.5px] text-[#1B6DFC]">Package updated</p>}
+      {saved && <p className="text-[12.5px] text-[#FAFAF8]">Package updated</p>}
 
       {currentInfo && linkPending && (
         <div className="text-[12.5px] text-[#8A5A14] bg-[linear-gradient(180deg,#FEFAF2,#FDF6E9)] border border-[#F1DEB8] rounded-lg px-3 py-2">
@@ -240,36 +240,36 @@ export default function PackageManager({
       )}
 
       {currentInfo && isNonBilling && !linkPending && (
-        <div className="text-[12.5px] text-[#666D7A] bg-[#F4F6F9]/40 border border-[#EFF1F4] rounded-lg px-3 py-2">
+        <div className="text-[12.5px] text-[#8A9099] bg-[#1A1E26]/40 border border-[#1F242C] rounded-lg px-3 py-2">
           Non-billing arrangement - no subscription link to send.
         </div>
       )}
 
       {currentInfo && !isNonBilling && !linkPending && (
-        <div className="rounded-lg border border-[#E8EAEE] px-3 py-2.5 space-y-2">
-          <p className="text-[10px] font-semibold text-[#98A0AD]">Agreed rate for this client</p>
+        <div className="rounded-lg border border-[#2A2F39] px-3 py-2.5 space-y-2">
+          <p className="text-[10px] font-semibold text-[#676D76]">Agreed rate for this client</p>
           {negotiated ? (
-            <p className="text-[12.5px] text-[#141821]">
+            <p className="text-[12.5px] text-[#FAFAF8]">
               Pays <strong>{negotiatedLabel}/week</strong> instead of the {currentInfo.label.split(' - ')[1]} list price.
               {negotiatedStripeLink ? ' Send and Copy use their own link.' : ' No Stripe link yet, so nothing can be sent. Save the rate again.'}
             </p>
           ) : (
-            <p className="text-[12.5px] text-[#666D7A]">Paying the {currentInfo.label.split(' - ')[1]} list price.</p>
+            <p className="text-[12.5px] text-[#8A9099]">Paying the {currentInfo.label.split(' - ')[1]} list price.</p>
           )}
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[12.5px] text-[#666D7A]">$</span>
+            <span className="text-[12.5px] text-[#8A9099]">$</span>
             <input
               value={rateInput}
               onChange={e => setRateInput(e.target.value)}
               inputMode="decimal"
               placeholder="205"
-              className="w-24 text-[12.5px] px-2 py-1.5 border border-[#E8EAEE] rounded-lg focus:border-[#1B6DFC] outline-none"
+              className="w-24 text-[12.5px] px-2 py-1.5 border border-[#2A2F39] rounded-lg focus:border-[#FAFAF8] outline-none"
             />
-            <span className="text-[12.5px] text-[#666D7A]">per week</span>
+            <span className="text-[12.5px] text-[#8A9099]">per week</span>
             <button
               onClick={saveRate}
               disabled={savingRate || !rateInput.trim()}
-              className="text-[12.5px] font-medium px-3 py-1.5 border border-[#1B6DFC] text-[#1B6DFC] rounded-lg hover:bg-[rgba(27,109,252,0.06)] transition-colors disabled:opacity-40"
+              className="text-[12.5px] font-medium px-3 py-1.5 border border-[#FAFAF8] text-[#FAFAF8] rounded-lg hover:bg-[rgba(27,109,252,0.06)] transition-colors disabled:opacity-40"
             >
               {savingRate ? 'Saving...' : negotiated ? 'Update rate' : 'Set rate'}
             </button>
@@ -277,14 +277,14 @@ export default function PackageManager({
               <button
                 onClick={clearRate}
                 disabled={savingRate}
-                className="text-[12.5px] text-[#98A0AD] hover:text-[#C82626] transition-colors disabled:opacity-40"
+                className="text-[12.5px] text-[#676D76] hover:text-[#C82626] transition-colors disabled:opacity-40"
               >
                 Back to list price
               </button>
             )}
           </div>
           {rateError && <p className="text-[12.5px] text-[#C82626]">{rateError}</p>}
-          <p className="text-[10px] text-[#98A0AD] leading-relaxed">
+          <p className="text-[10px] text-[#676D76] leading-relaxed">
             Creates their own Stripe link at that amount, on the same product as the package, so the payment reports with everyone else.
           </p>
         </div>
@@ -301,7 +301,7 @@ export default function PackageManager({
               <button
                 onClick={cancelSchedule}
                 disabled={cancelling}
-                className="text-[#98A0AD] hover:text-[#C82626] transition-colors"
+                className="text-[#676D76] hover:text-[#C82626] transition-colors"
               >
                 {cancelling ? 'Cancelling...' : 'Cancel'}
               </button>
@@ -309,9 +309,9 @@ export default function PackageManager({
           )}
 
           {alreadySent && (
-            <div className="text-[12.5px] text-[#98A0AD]">
+            <div className="text-[12.5px] text-[#676D76]">
               Subscription link sent {new Date(subscriptionLinkSentAt!).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Australia/Brisbane' })}
-              {subscriptionLinkSendAt && <span className="ml-1 text-[#98A0AD]">(scheduled send)</span>}
+              {subscriptionLinkSendAt && <span className="ml-1 text-[#676D76]">(scheduled send)</span>}
             </div>
           )}
 
@@ -321,20 +321,20 @@ export default function PackageManager({
             <button
               onClick={sendLink}
               disabled={sending || sent}
-              className="text-[12.5px] font-medium px-4 py-2 bg-[#1B6DFC] text-white rounded-lg hover:bg-[#1560E0] transition-colors disabled:opacity-50"
+              className="text-[12.5px] font-medium px-4 py-2 bg-[#FAFAF8] text-[#0B0D10] rounded-lg hover:bg-[#E4E4E0] transition-colors disabled:opacity-50"
             >
               {sending ? 'Sending...' : sent ? 'Sent!' : 'Send to Client'}
             </button>
             <button
               onClick={copyLink}
-              className="text-[12.5px] font-medium px-4 py-2 border border-[#E8EAEE] text-[#43474F] rounded-lg hover:border-[#1B6DFC] hover:text-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] transition-colors"
+              className="text-[12.5px] font-medium px-4 py-2 border border-[#2A2F39] text-[#C2C6CC] rounded-lg hover:border-[#FAFAF8] hover:text-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)] transition-colors"
             >
               {copied ? 'Copied!' : 'Copy Link'}
             </button>
             {!isScheduled && (
               <button
                 onClick={() => setShowSchedule(v => !v)}
-                className="text-[12.5px] font-medium px-4 py-2 border border-[#E8EAEE] text-[#666D7A] rounded-lg hover:border-[#E5C98F] hover:text-[#A96A12] transition-colors"
+                className="text-[12.5px] font-medium px-4 py-2 border border-[#2A2F39] text-[#8A9099] rounded-lg hover:border-[#E5C98F] hover:text-[#A96A12] transition-colors"
               >
                 Schedule Send
               </button>
@@ -348,7 +348,7 @@ export default function PackageManager({
                 value={scheduleDate || todayStr}
                 min={todayStr}
                 onChange={e => setScheduleDate(e.target.value)}
-                className="text-[12.5px] bg-[#EFF1F4] border border-[#E8EAEE] text-[#141821] rounded-lg px-3 py-1.5 focus:outline-none focus:border-[#B7791F]/50"
+                className="text-[12.5px] bg-[#1F242C] border border-[#2A2F39] text-[#FAFAF8] rounded-lg px-3 py-1.5 focus:outline-none focus:border-[#B7791F]/50"
               />
               <button
                 onClick={scheduleLink}
@@ -359,11 +359,11 @@ export default function PackageManager({
               </button>
               <button
                 onClick={() => setShowSchedule(false)}
-                className="text-[12.5px] text-[#98A0AD] hover:text-[#666D7A] transition-colors"
+                className="text-[12.5px] text-[#676D76] hover:text-[#8A9099] transition-colors"
               >
                 Cancel
               </button>
-              <span className="text-[12.5px] text-[#98A0AD]">Will send at 8am Brisbane time</span>
+              <span className="text-[12.5px] text-[#676D76]">Will send at 8am Brisbane time</span>
             </div>
           )}
         </div>

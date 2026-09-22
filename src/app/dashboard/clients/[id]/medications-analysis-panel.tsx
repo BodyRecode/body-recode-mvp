@@ -138,8 +138,8 @@ export default function MedicationsAnalysisPanel({
 
   if (!hasMeds) {
     return (
-      <div className="mt-3 bg-[#FFFFFF]/40 br-card p-4">
-        <p className="text-[12.5px] text-[#9CA2AB]">No medications recorded. Once {clientFirstName}&apos;s medications are saved above, Generate Analysis to produce the coach breakdown + client reading.</p>
+      <div className="mt-3 bg-[#14171D]/40 br-card p-4">
+        <p className="text-[12.5px] text-[#676D76]">No medications recorded. Once {clientFirstName}&apos;s medications are saved above, Generate Analysis to produce the coach breakdown + client reading.</p>
       </div>
     )
   }
@@ -172,16 +172,16 @@ export default function MedicationsAnalysisPanel({
         disclaimer="Medications Read generation uses Claude Haiku 4.5 with automatic banned-term retry. Typical: 20 to 40 seconds. The page is not frozen, please don't refresh."
       />
       <div className="br-card overflow-hidden">
-        <div className="px-4 py-3 border-b border-[#E4E4E0] flex items-center justify-between gap-3 flex-wrap">
+        <div className="px-4 py-3 border-b border-[#2A2F39] flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-2.5 flex-wrap">
-            <p className="text-[12.5px] font-medium text-[#0F1115]">Medications Analysis (coach)</p>
+            <p className="text-[12.5px] font-medium text-[#FAFAF8]">Medications Analysis (coach)</p>
             {analyzedAt && (
-              <span className="text-[10px] text-[#9CA2AB]">
+              <span className="text-[10px] text-[#676D76]">
                 Generated {new Date(analyzedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
               </span>
             )}
             {analysisStale && (
-              <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] border border-[#EADCC4] text-[#B06E1F]">
+              <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-[linear-gradient(180deg,#1A1E26,#1A1E26)] border border-[#4A3A22] text-[#E0A254]">
                 Rebuild recommended
               </span>
             )}
@@ -198,19 +198,19 @@ export default function MedicationsAnalysisPanel({
 
         {!analysis ? (
           <div className="px-4 py-6 text-center">
-            <p className="text-sm text-[#6E747D] mb-1">No analysis generated yet</p>
-            <p className="text-[12.5px] text-[#9CA2AB]">Click Generate analysis to draft the structured per-medication breakdown.</p>
+            <p className="text-sm text-[#8A9099] mb-1">No analysis generated yet</p>
+            <p className="text-[12.5px] text-[#676D76]">Click Generate analysis to draft the structured per-medication breakdown.</p>
           </div>
         ) : (
           <div className="px-4 py-4 space-y-4">
             {analysis.medications.length === 0 ? (
-              <p className="text-sm text-[#6E747D]">No medications recorded.</p>
+              <p className="text-sm text-[#8A9099]">No medications recorded.</p>
             ) : (
               analysis.medications.map((med, i) => (
-                <div key={i} className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg p-4 space-y-3">
+                <div key={i} className="bg-[#14171D] border border-[#2A2F39] rounded-lg p-4 space-y-3">
                   <div>
-                    <p className="text-sm font-semibold text-[#0F1115]">{med.name}</p>
-                    <p className="text-[12.5px] text-[#6E747D] mt-1 leading-relaxed">{med.purpose}</p>
+                    <p className="text-sm font-semibold text-[#FAFAF8]">{med.name}</p>
+                    <p className="text-[12.5px] text-[#8A9099] mt-1 leading-relaxed">{med.purpose}</p>
                   </div>
                   <InfluenceRow label="Client influence" body={med.client_influence} />
                   <InfluenceRow label="Program influence" body={med.program_influence} />
@@ -220,9 +220,9 @@ export default function MedicationsAnalysisPanel({
               ))
             )}
             {analysis.combined_picture && (
-              <div className="bg-[#FFFFFF] border border-[#DCDCD7] rounded-lg p-4">
-                <p className="text-[11px] font-medium text-[#0F1115] mb-1.5">Combined picture</p>
-                <p className="text-[12.5px] text-[#4A4F57] leading-relaxed whitespace-pre-wrap">{analysis.combined_picture}</p>
+              <div className="bg-[#14171D] border border-[#2A2F39] rounded-lg p-4">
+                <p className="text-[11px] font-medium text-[#FAFAF8] mb-1.5">Combined picture</p>
+                <p className="text-[12.5px] text-[#C2C6CC] leading-relaxed whitespace-pre-wrap">{analysis.combined_picture}</p>
               </div>
             )}
           </div>
@@ -231,19 +231,19 @@ export default function MedicationsAnalysisPanel({
 
       {analysis && (
         <div className="br-card overflow-hidden">
-          <div className="px-4 py-3 border-b border-[#E4E4E0] flex items-center justify-between gap-3 flex-wrap">
+          <div className="px-4 py-3 border-b border-[#2A2F39] flex items-center justify-between gap-3 flex-wrap">
             <div className="flex items-center gap-2.5 flex-wrap">
-              <p className="text-[12.5px] font-medium text-[#0F1115]">Medications Read (client)</p>
+              <p className="text-[12.5px] font-medium text-[#FAFAF8]">Medications Read (client)</p>
               {readingGeneratedAt && (
-                <span className="text-[10px] text-[#9CA2AB]">
+                <span className="text-[10px] text-[#676D76]">
                   Generated {new Date(readingGeneratedAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
                 </span>
               )}
-              <span className={`text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${readingPublishedAt ? 'bg-[rgba(27,109,252,0.08)] border border-[#DCDCD7] text-[#000000]' : 'bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] border border-[#EADCC4] text-[#B06E1F]'}`}>
+              <span className={`text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded ${readingPublishedAt ? 'bg-[rgba(27,109,252,0.08)] border border-[#2A2F39] text-[#FFFFFF]' : 'bg-[linear-gradient(180deg,#1A1E26,#1A1E26)] border border-[#4A3A22] text-[#E0A254]'}`}>
                 {readingPublishedAt ? 'Published' : 'Draft (not on portal)'}
               </span>
               {(readingStale || readingOutOfDateVsMeds) && (
-                <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-[linear-gradient(180deg,#FDF8F1,#FDF8F1)] border border-[#EADCC4] text-[#B06E1F]">
+                <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-[linear-gradient(180deg,#1A1E26,#1A1E26)] border border-[#4A3A22] text-[#E0A254]">
                   Rebuild recommended
                 </span>
               )}
@@ -262,7 +262,7 @@ export default function MedicationsAnalysisPanel({
                   type="button"
                   onClick={togglePublish}
                   disabled={publishing}
-                  className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${readingPublishedAt ? 'border border-[#E4E4E0] text-[#0F1115] hover:border-[#DCDCD7]' : 'bg-[#0F1115] text-white hover:bg-[#000000]'}`}
+                  className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${readingPublishedAt ? 'border border-[#2A2F39] text-[#FAFAF8] hover:border-[#2A2F39]' : 'bg-[#FAFAF8] text-[#0B0D10] hover:bg-[#FFFFFF]'}`}
                 >
                   {publishing ? 'Working…' : readingPublishedAt ? 'Unpublish' : 'Publish to portal'}
                 </button>
@@ -272,8 +272,8 @@ export default function MedicationsAnalysisPanel({
 
           {!reading ? (
             <div className="px-4 py-6 text-center">
-              <p className="text-sm text-[#6E747D] mb-1">No client read generated yet</p>
-              <p className="text-[12.5px] text-[#9CA2AB]">Click Generate reading to produce the client-facing version. Reviews before you publish.</p>
+              <p className="text-sm text-[#8A9099] mb-1">No client read generated yet</p>
+              <p className="text-[12.5px] text-[#676D76]">Click Generate reading to produce the client-facing version. Reviews before you publish.</p>
             </div>
           ) : (
             <div className="px-4 py-4 space-y-4">
@@ -286,8 +286,8 @@ export default function MedicationsAnalysisPanel({
         </div>
       )}
 
-      {error && <p className="text-[12.5px] text-[#8F2D2D]">{error}</p>}
-      {status && <p className="text-[12.5px] text-[#0F1115]">{status}</p>}
+      {error && <p className="text-[12.5px] text-[#D4817E]">{error}</p>}
+      {status && <p className="text-[12.5px] text-[#FAFAF8]">{status}</p>}
     </div>
   )
 }
@@ -295,17 +295,17 @@ export default function MedicationsAnalysisPanel({
 function InfluenceRow({ label, body }: { label: string; body: string }) {
   return (
     <div>
-      <p className="text-[11px] font-medium text-[#9CA2AB] mb-1">{label}</p>
-      <p className="text-[12.5px] text-[#4A4F57] leading-relaxed whitespace-pre-wrap">{body}</p>
+      <p className="text-[11px] font-medium text-[#676D76] mb-1">{label}</p>
+      <p className="text-[12.5px] text-[#C2C6CC] leading-relaxed whitespace-pre-wrap">{body}</p>
     </div>
   )
 }
 
 function ReadingSection({ title, body, accent }: { title: string; body: string; accent?: boolean }) {
   return (
-    <div className="bg-[#FFFFFF] border border-[#E4E4E0] rounded-lg p-4">
-      <p className={`text-[11px] font-medium mb-2 ${accent ? 'text-[#0F1115]' : 'text-[#9CA2AB]'}`}>{title}</p>
-      <div className="text-[12.5px] text-[#4A4F57] leading-relaxed whitespace-pre-wrap">{body}</div>
+    <div className="bg-[#14171D] border border-[#2A2F39] rounded-lg p-4">
+      <p className={`text-[11px] font-medium mb-2 ${accent ? 'text-[#FAFAF8]' : 'text-[#676D76]'}`}>{title}</p>
+      <div className="text-[12.5px] text-[#C2C6CC] leading-relaxed whitespace-pre-wrap">{body}</div>
     </div>
   )
 }

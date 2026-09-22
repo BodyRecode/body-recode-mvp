@@ -70,8 +70,8 @@ export default function ProgressCheckButton({
         disabled={status === 'sending' || status === 'sent'}
         className={`inline-flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-60 ${
           status === 'sent'
-            ? 'border border-[#B5CFFC] bg-[rgba(27,109,252,0.10)] text-[#1B6DFC]'
-            : 'border border-[#E8EAEE] bg-[#FFFFFF] text-[#43474F] hover:border-[#1B6DFC] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#1B6DFC]'
+            ? 'border border-[#B5CFFC] bg-[rgba(27,109,252,0.10)] text-[#FAFAF8]'
+            : 'border border-[#2A2F39] bg-[#14171D] text-[#C2C6CC] hover:border-[#FAFAF8] hover:bg-[rgba(27,109,252,0.06)] hover:text-[#FAFAF8]'
         }`}
         title="Email the client a short re-assessment so the Progress Read can re-score her body state."
       >
@@ -84,7 +84,7 @@ export default function ProgressCheckButton({
           <p className="text-[11px] text-[#8A5A14] leading-relaxed">{error}</p>
           <button
             onClick={() => send(true)}
-            className="mt-1 text-[11px] font-medium text-[#1B6DFC] hover:text-[#1056D6] transition-colors"
+            className="mt-1 text-[11px] font-medium text-[#FAFAF8] hover:text-[#1056D6] transition-colors"
           >
             Send it anyway
           </button>
@@ -93,7 +93,7 @@ export default function ProgressCheckButton({
       {url && (
         <button
           onClick={copy}
-          className="inline-flex items-center gap-1 text-[10px] text-[#98A0AD] hover:text-[#1B6DFC] transition-colors"
+          className="inline-flex items-center gap-1 text-[10px] text-[#676D76] hover:text-[#FAFAF8] transition-colors"
         >
           <Copy size={10} /> {copied ? 'Link copied' : 'Copy link'}
         </button>

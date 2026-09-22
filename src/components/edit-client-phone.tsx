@@ -30,12 +30,12 @@ export default function EditClientPhone({ clientId, currentPhone }: { clientId: 
           onKeyDown={e => { if (e.key === 'Enter') save(); if (e.key === 'Escape') setEditing(false) }}
           placeholder="+61 400 000 000"
           autoFocus
-          className="bg-[#EFF1F4] border border-[#CFD4DC] text-[#141821] rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-[#1B6DFC] w-48"
+          className="bg-[#1F242C] border border-[#CFD4DC] text-[#FAFAF8] rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-[#FAFAF8] w-48"
         />
-        <button onClick={save} disabled={loading} className="text-[12.5px] text-[#1B6DFC] hover:text-[#1056D6] font-medium">
+        <button onClick={save} disabled={loading} className="text-[12.5px] text-[#FAFAF8] hover:text-[#1056D6] font-medium">
           {loading ? 'Saving…' : 'Save'}
         </button>
-        <button onClick={() => { setValue(saved); setEditing(false) }} className="text-[12.5px] text-[#98A0AD] hover:text-[#43474F]">
+        <button onClick={() => { setValue(saved); setEditing(false) }} className="text-[12.5px] text-[#676D76] hover:text-[#C2C6CC]">
           Cancel
         </button>
       </div>
@@ -44,8 +44,8 @@ export default function EditClientPhone({ clientId, currentPhone }: { clientId: 
 
   return (
     <div className="flex items-center gap-2">
-      <span className="text-sm text-[#43474F]">{saved || <span className="text-[#98A0AD]">No mobile number</span>}</span>
-      <button onClick={() => setEditing(true)} className="text-[12.5px] text-[#98A0AD] hover:text-[#43474F] underline">
+      <span className="text-sm text-[#C2C6CC]">{saved || <span className="text-[#676D76]">No mobile number</span>}</span>
+      <button onClick={() => setEditing(true)} className="text-[12.5px] text-[#676D76] hover:text-[#C2C6CC] underline">
         {saved ? 'edit' : 'add'}
       </button>
     </div>

@@ -60,12 +60,12 @@ export default function ReassessmentTriggersPanel({
   return (
     <div className="br-card p-6 mb-6">
       <div className="flex items-center gap-2.5 mb-1">
-        <span className="w-7 h-[3px] rounded-full bg-[#1B6DFC]" />
-        <h2 className="text-[11px] font-medium text-[#141821]">
+        <span className="w-7 h-[3px] rounded-full bg-[#FAFAF8]" />
+        <h2 className="text-[11px] font-medium text-[#FAFAF8]">
           Reassessment queue
         </h2>
       </div>
-      <p className="text-sm text-[#666D7A] mb-5">
+      <p className="text-sm text-[#8A9099] mb-5">
         {triggers.length} open. Each stays here until you send a Progress Check or dismiss it with a reason.
       </p>
 
@@ -84,20 +84,20 @@ export default function ReassessmentTriggersPanel({
             <li
               key={t.id}
               className="border rounded-xl p-4"
-              style={{ borderColor: overdue ? '#F5C6C6' : '#E8EAEE', background: overdue ? '#FEF7F7' : '#FFFFFF' }}
+              style={{ borderColor: overdue ? '#F5C6C6' : '#2A2F39', background: overdue ? '#FEF7F7' : '#14171D' }}
             >
               <div className="flex items-start justify-between gap-4 flex-wrap">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
-                    <span className="text-sm font-bold text-[#141821]">
+                    <span className="text-sm font-bold text-[#FAFAF8]">
                       {reasonLabels[t.reason] ?? t.reason}
                     </span>
                     {t.trigger_class === 'deterministic' ? (
-                      <span className="text-[11.5px] font-mediumr px-2 py-0.5 rounded-full bg-[#F4F6F9] text-[#666D7A]">
+                      <span className="text-[11.5px] font-mediumr px-2 py-0.5 rounded-full bg-[#1A1E26] text-[#8A9099]">
                         Scheduled
                       </span>
                     ) : (
-                      <span className="text-[11.5px] font-mediumr px-2 py-0.5 rounded-full bg-[rgba(27,109,252,0.08)] text-[#1B6DFC]">
+                      <span className="text-[11.5px] font-mediumr px-2 py-0.5 rounded-full bg-[rgba(27,109,252,0.08)] text-[#FAFAF8]">
                         Signal
                       </span>
                     )}
@@ -107,8 +107,8 @@ export default function ReassessmentTriggersPanel({
                       </span>
                     )}
                   </div>
-                  <p className="text-sm text-[#43474F] leading-relaxed">{t.message}</p>
-                  <p className="text-[12.5px] text-[#98A0AD] mt-1.5 inline-flex items-center gap-1">
+                  <p className="text-sm text-[#C2C6CC] leading-relaxed">{t.message}</p>
+                  <p className="text-[12.5px] text-[#676D76] mt-1.5 inline-flex items-center gap-1">
                     <Clock size={11} />
                     {age === 0 ? 'Fired today' : age === 1 ? 'Open 1 day' : `Open ${age} days`}
                     {' · suggests a '}
@@ -127,7 +127,7 @@ export default function ReassessmentTriggersPanel({
                       resolve(t.id, 'send_progress_check')
                     }}
                     disabled={busy}
-                    className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg text-[12.5px] font-medium text-white bg-[#1B6DFC] hover:bg-[#1560E0] disabled:opacity-60 transition-colors"
+                    className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg text-[12.5px] font-medium text-[#0B0D10] bg-[#FAFAF8] hover:bg-[#E4E4E0] disabled:opacity-60 transition-colors"
                   >
                     {busy ? <Loader2 size={13} className="animate-spin" /> : <Send size={13} />}
                     Send Progress Check
@@ -135,7 +135,7 @@ export default function ReassessmentTriggersPanel({
                   <button
                     onClick={() => setDismissingId(dismissingId === t.id ? null : t.id)}
                     disabled={busy}
-                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-[12.5px] font-medium border border-[#E8EAEE] text-[#43474F] hover:border-[#CFD4DC] disabled:opacity-60 transition-colors"
+                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-[12.5px] font-medium border border-[#2A2F39] text-[#C2C6CC] hover:border-[#CFD4DC] disabled:opacity-60 transition-colors"
                   >
                     <X size={13} /> Dismiss
                   </button>
@@ -143,8 +143,8 @@ export default function ReassessmentTriggersPanel({
               </div>
 
               {dismissingId === t.id && (
-                <div className="mt-3 pt-3 border-t border-[#E8EAEE]">
-                  <label className="block text-[12.5px] font-medium text-[#141821] mb-1.5">
+                <div className="mt-3 pt-3 border-t border-[#2A2F39]">
+                  <label className="block text-[12.5px] font-medium text-[#FAFAF8] mb-1.5">
                     Why are you dismissing this? Required.
                   </label>
                   <textarea
@@ -152,19 +152,19 @@ export default function ReassessmentTriggersPanel({
                     onChange={(e) => setNote(e.target.value)}
                     rows={2}
                     placeholder="e.g. Spoke to her Friday, the amber week was a work trip and she is back to normal."
-                    className="w-full text-sm border border-[#E8EAEE] rounded-lg px-3 py-2 focus:outline-none focus:border-[#1B6DFC]"
+                    className="w-full text-sm border border-[#2A2F39] rounded-lg px-3 py-2 focus:outline-none focus:border-[#FAFAF8]"
                   />
                   <div className="flex items-center gap-2 mt-2">
                     <button
                       onClick={() => resolve(t.id, 'dismiss', note)}
                       disabled={busy || note.trim().length < 3}
-                      className="px-3.5 py-2 rounded-lg text-[12.5px] font-medium text-white bg-[#141821] hover:bg-[#3A3A3A] disabled:opacity-40 transition-colors"
+                      className="px-3.5 py-2 rounded-lg text-[12.5px] font-medium text-[#0B0D10] bg-[#FAFAF8] hover:bg-[#3A3A3A] disabled:opacity-40 transition-colors"
                     >
                       {busy ? 'Saving…' : 'Confirm dismissal'}
                     </button>
                     <button
                       onClick={() => { setDismissingId(null); setNote('') }}
-                      className="px-3 py-2 rounded-lg text-[12.5px] font-medium text-[#666D7A] hover:text-[#141821]"
+                      className="px-3 py-2 rounded-lg text-[12.5px] font-medium text-[#8A9099] hover:text-[#FAFAF8]"
                     >
                       Cancel
                     </button>

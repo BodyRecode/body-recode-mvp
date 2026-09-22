@@ -27,10 +27,10 @@ export function CopilotStarters({
             <button
               onClick={() => setOpen(isOpen ? null : cat.label)}
               aria-expanded={isOpen}
-              className="text-left text-[13px] font-semibold text-[#141821] border border-[#E8EAEE] hover:border-[#B5CFFC] bg-white rounded-lg px-3 py-2 transition-colors flex items-center justify-between"
+              className="text-left text-[13px] font-semibold text-[#FAFAF8] border border-[#2A2F39] hover:border-[#B5CFFC] bg-[#14171D] rounded-lg px-3 py-2 transition-colors flex items-center justify-between"
             >
               <span>{cat.label}</span>
-              <span className={`text-[#1B6DFC] transition-transform ${isOpen ? 'rotate-90' : ''}`}>›</span>
+              <span className={`text-[#FAFAF8] transition-transform ${isOpen ? 'rotate-90' : ''}`}>›</span>
             </button>
             {isOpen && (
               <div className="flex flex-col gap-1.5 pl-2">
@@ -38,7 +38,7 @@ export function CopilotStarters({
                   <button
                     key={q}
                     onClick={() => onPick(q)}
-                    className="text-left text-[13px] text-[#1B6DFC] border border-[#B5CFFC] bg-[rgba(27,109,252,0.05)] hover:bg-[rgba(27,109,252,0.1)] rounded-lg px-3 py-2 transition-colors"
+                    className="text-left text-[13px] text-[#FAFAF8] border border-[#B5CFFC] bg-[rgba(27,109,252,0.05)] hover:bg-[rgba(27,109,252,0.1)] rounded-lg px-3 py-2 transition-colors"
                   >
                     {q}
                   </button>

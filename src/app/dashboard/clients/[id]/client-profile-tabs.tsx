@@ -82,7 +82,7 @@ export default function ClientProfileTabs({
 
   return (
     <div>
-      <nav className="flex items-center gap-0.5 border-b border-[#E4E4E0] mb-6 overflow-x-auto">
+      <nav className="flex items-center gap-0.5 border-b border-[#2A2F39] mb-6 overflow-x-auto">
         {TABS.filter(t => canPrescribe || !('prescribes' in t && t.prescribes)).map(t => (
           <button
             key={t.id}
@@ -91,14 +91,14 @@ export default function ClientProfileTabs({
             aria-current={active === t.id ? 'true' : undefined}
             className={`${ITEM} ${
               active === t.id
-                ? 'border-[#0F1115] text-[#0F1115] font-medium'
-                : 'border-transparent text-[#6E747D] hover:text-[#0F1115]'
+                ? 'border-[#FAFAF8] text-[#FAFAF8] font-medium'
+                : 'border-transparent text-[#8A9099] hover:text-[#FAFAF8]'
             }`}
           >
             {t.label}
           </button>
         ))}
-        <span className="mx-2 h-4 w-px bg-[#E4E4E0] shrink-0" aria-hidden />
+        <span className="mx-2 h-4 w-px bg-[#2A2F39] shrink-0" aria-hidden />
         {/* Training and Nutrition have an in-page tab AND a full page. Only the
             tab shows here - two entries reading "Training" in one row would be
             a puzzle. The tab links through to the page. */}
@@ -106,7 +106,7 @@ export default function ClientProfileTabs({
           <Link
             key={p.slug}
             href={`/dashboard/clients/${clientId}/${p.slug}`}
-            className={`${ITEM} border-transparent text-[#6E747D] hover:text-[#0F1115]`}
+            className={`${ITEM} border-transparent text-[#8A9099] hover:text-[#FAFAF8]`}
           >
             {p.label}
           </Link>

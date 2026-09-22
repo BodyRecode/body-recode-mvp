@@ -222,7 +222,7 @@ function ReportForm({ pathname, onSubmitted }: { pathname: string; onSubmitted: 
       <button
         type="submit"
         disabled={submitting || subject.trim().length < 3 || body.trim().length < 4}
-        className="w-full text-[13px] font-semibold px-4 py-2.5 text-[#0B0D10] rounded-lg border border-[#E4E4E0] bg-[linear-gradient(180deg,#FFFFFF,#FAFAF8)] hover:bg-[linear-gradient(180deg,#FFFFFF,#E4E4E0)] shadow-[0_1px_2px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.28)] transition-all active:translate-y-[0.5px] disabled:opacity-40"
+        className="w-full text-[13px] font-semibold px-4 py-2.5 text-[#FAFAF8] rounded-lg border border-[#E4E4E0] bg-[linear-gradient(180deg,#FFFFFF,#FAFAF8)] hover:bg-[linear-gradient(180deg,#FFFFFF,#E4E4E0)] shadow-[0_1px_2px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.28)] transition-all active:translate-y-[0.5px] disabled:opacity-40"
       >
         {submitting ? 'Sending…' : 'File ticket'}
       </button>

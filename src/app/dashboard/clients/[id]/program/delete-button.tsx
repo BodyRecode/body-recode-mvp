@@ -37,11 +37,11 @@ export default function DeleteProgramButton({
 
   return (
     <div className="flex items-center gap-2">
-      {error && <span className="text-[12.5px] text-[#8F2D2D]">{error}</span>}
+      {error && <span className="text-[12.5px] text-[#D4817E]">{error}</span>}
       <button
         onClick={handleDelete}
         disabled={loading}
-        className="text-[12.5px] px-3 py-1.5 border border-[#E4E4E0] text-[#6E747D] rounded-lg hover:border-[#E8C9C9] hover:text-[#8F2D2D] hover:bg-[#FBF1F1] transition-colors disabled:opacity-50"
+        className="text-[12.5px] px-3 py-1.5 border border-[#2A2F39] text-[#8A9099] rounded-lg hover:border-[#4A2222] hover:text-[#D4817E] hover:bg-[#1A1214] transition-colors disabled:opacity-50"
       >
         {loading ? 'Deleting...' : label}
       </button>
