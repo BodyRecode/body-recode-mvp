@@ -48,7 +48,8 @@
     "coach:test-book": "npx tsx scripts/test-coach-book.ts",
     "coach:test-book-wipe": "npx tsx scripts/test-coach-book.ts wipe",
     "test:coach-isolation": "npx tsx scripts/test-coach-isolation.ts",
-    "check:design": "npx tsx scripts/check-design.ts"
+    "check:design": "npx tsx scripts/check-design.ts",
+    "test:ended-portal": "npx tsx scripts/test-ended-portal.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.79.0",

@@ -1,6 +1,8 @@
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { createClient } from '@/lib/supabase/server'
+import { isCoachEmail } from '@/lib/coach-auth'
 import { portalFeaturesForClient } from '@/lib/portal-features'
 
 /**
@@ -57,14 +59,47 @@ export default async function PortalLayout({
   const after = pathname.split(`/portal/${token}`)[1] ?? ''
   const page = after.split('/').filter(Boolean)[0]
 
-  if (page) {
-    const admin = createAdminClient()
-    const { data: client } = await admin
-      .from('clients')
-      .select('id')
-      .eq('onboarding_token', token)
-      .maybeSingle()
+  const admin = createAdminClient()
+  const { data: client } = await admin
+    .from('clients')
+    .select('id, email, ended_at, frozen_at')
+    .eq('onboarding_token', token)
+    .maybeSingle()
 
+  /**
+   * THE ENDED AND FROZEN GATE, IN ONE PLACE.
+   *
+   * 23 September 2026. There was a guard that did this and it was applied to
+   * TWELVE of the forty-one portal pages. The twenty-nine without it included
+   * the foundational read, the progress read, bloods and nutrition, and none
+   * of them checked whether the engagement had ended: they checked that
+   * somebody was signed in and that the email matched.
+   *
+   * So the only thing stopping an offboarded client from opening their read
+   * was the BAN ON THEIR LOGIN, applied at offboarding. A ban is not a gate.
+   * It is the blunt instrument you reach for when there is no gate, and it
+   * cost this: a client who cancelled from her own portal was met with
+   * "your account is disabled" rather than the page written to explain it.
+   *
+   * Signing in does not even need the old link. The auth callback looks a
+   * client up by email and redirects to their CURRENT token, so rotating the
+   * token on offboarding protects nothing either.
+   *
+   * Done in the layout because the layout runs for every page under the token,
+   * including the portal home, which the old guard's own callers missed.
+   * A coach keeps access: the records are retained and they may need to read
+   * them.
+   */
+  if (client?.ended_at || client?.frozen_at) {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    const viewedByCoach = isCoachEmail(user?.email)
+    if (!viewedByCoach) {
+      redirect(client.ended_at ? '/portal/ended' : '/portal/frozen')
+    }
+  }
+
+  if (page) {
     if (client) {
       const features = await portalFeaturesForClient(admin, client.id as string)
 
