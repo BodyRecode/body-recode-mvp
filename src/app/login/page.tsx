@@ -27,6 +27,23 @@ import { BrandMark } from '@/components/brand-mark'
  *
  * Dark on purpose, matching the panels built the same day. It also does the
  * quiet work of not looking like the fitness software they already have.
+ *
+ * 22 September 2026, the palette pass. First surface converted to graphite and
+ * paper. There is no brand colour: see src/lib/brand-tokens.ts. The interest
+ * here comes from contrast, scale and space instead, which is the thing that
+ * has to be true on every screen for a monochrome identity to work rather than
+ * turn into grey soup:
+ *
+ *   - the sign-in button is PAPER, the brightest thing on the page, because in
+ *     a monochrome system the thing you press is the highest contrast thing
+ *     rather than the most coloured one
+ *   - the neutrals are warm-grey, not blue-grey. The old ones were all shifted
+ *     towards blue to sit beside the accent, and with the accent gone they read
+ *     cold for no reason
+ *   - the wash behind the left panel is paper at 5 per cent, not a colour
+ *
+ * The one colour on the page is the error state, which is the rule working: it
+ * appears only when it means something.
  */
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -54,11 +71,11 @@ export default function LoginPage() {
   }
 
   const field =
-    'w-full bg-[#141922] border border-[#262D3A] text-white rounded-xl px-4 py-3.5 text-[15px] ' +
-    'placeholder:text-[#5B6474] focus:outline-none focus:border-[#3D7DFF] focus:bg-[#171D27] transition-colors'
+    'w-full bg-[#14171D] border border-[#2A2F39] text-[#FAFAF8] rounded-xl px-4 py-3.5 text-[15px] ' +
+    'placeholder:text-[#676D76] focus:outline-none focus:border-[#8A9099] focus:bg-[#1A1E26] transition-colors'
 
   return (
-    <div className="min-h-screen bg-[#090C11] text-white flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-[#0F1115] text-[#FAFAF8] flex flex-col lg:flex-row">
       {/* What they are signing in to. Stacked above the form on a phone, which
           is where a coach reading an invitation email will open it. */}
       <div className="lg:w-[48%] lg:min-h-screen flex flex-col justify-center px-7 sm:px-12 lg:px-16 pt-14 pb-10 lg:py-16 relative overflow-hidden">
@@ -66,7 +83,7 @@ export default function LoginPage() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              'radial-gradient(90rem 50rem at 8% 0%, rgba(61,125,255,0.16), transparent 58%), radial-gradient(60rem 40rem at 90% 100%, rgba(56,178,172,0.10), transparent 60%)',
+              'radial-gradient(90rem 50rem at 8% 0%, rgba(250,250,248,0.05), transparent 58%), radial-gradient(60rem 40rem at 90% 100%, rgba(250,250,248,0.03), transparent 60%)',
           }}
           aria-hidden
         />
@@ -77,7 +94,7 @@ export default function LoginPage() {
             <BrandMark tone="light" size="lg" />
           </div>
 
-          <p className="text-[11px] font-medium uppercase" style={{ letterSpacing: '0.18em', color: '#6C7788' }}>
+          <p className="text-[11px] font-medium uppercase" style={{ letterSpacing: '0.18em', color: '#8A9099' }}>
             Coach sign in
           </p>
           <h1 className="text-[30px] sm:text-[36px] leading-[1.12] font-semibold tracking-[-0.02em] mt-3 mb-9">
@@ -91,41 +108,41 @@ export default function LoginPage() {
               ['Twelve weeks becomes proof', 'The re-read sits against the first one, so what changed is visible instead of claimed.'],
             ].map(([title, body], i) => (
               <div key={title} className="flex gap-3.5">
-                <span className="mt-[3px] w-6 h-6 shrink-0 rounded-full border border-[#2A3342] flex items-center justify-center text-[11px] font-semibold text-[#7D8798] tabular-nums">
+                <span className="mt-[3px] w-6 h-6 shrink-0 rounded-full border border-[#2A2F39] flex items-center justify-center text-[11px] font-semibold text-[#8A9099] tabular-nums">
                   {i + 1}
                 </span>
                 <div>
-                  <p className="text-[14.5px] font-medium text-[#E8EBF0]">{title}</p>
-                  <p className="text-[13px] text-[#828C9C] leading-relaxed mt-0.5">{body}</p>
+                  <p className="text-[14.5px] font-medium text-[#FAFAF8]">{title}</p>
+                  <p className="text-[13px] text-[#8A9099] leading-relaxed mt-0.5">{body}</p>
                 </div>
               </div>
             ))}
           </div>
 
-          <p className="text-[12.5px] text-[#5B6474] mt-11 leading-relaxed">
+          <p className="text-[12.5px] text-[#676D76] mt-11 leading-relaxed">
             You write the training and the food. This reads the person.
           </p>
         </div>
       </div>
 
       {/* The form. */}
-      <div className="lg:w-[52%] lg:min-h-screen flex items-center justify-center px-7 sm:px-12 pb-16 pt-2 lg:py-16 bg-[#0C1017] lg:border-l border-[#181E28]">
+      <div className="lg:w-[52%] lg:min-h-screen flex items-center justify-center px-7 sm:px-12 pb-16 pt-2 lg:py-16 bg-[#14171D] lg:border-l border-[#2A2F39]">
         <div className="w-full max-w-[380px]">
           <h2 className="text-[20px] font-semibold tracking-[-0.01em] mb-1.5">Sign in</h2>
-          <p className="text-[13.5px] text-[#828C9C] mb-8">Your clients, your reads, your week.</p>
+          <p className="text-[13.5px] text-[#8A9099] mb-8">Your clients, your reads, your week.</p>
 
           {error && (
             <div
-              className="mb-6 rounded-xl px-4 py-3 border border-[#4A2630] bg-[#1C1216]"
+              className="mb-6 rounded-xl px-4 py-3 border border-[#4A2222] bg-[#1A1214]"
               role="alert"
             >
-              <p className="text-[13px] text-[#F0A0A0] leading-relaxed">{error}</p>
+              <p className="text-[13px] text-[#D98C8C] leading-relaxed">{error}</p>
             </div>
           )}
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-[12px] font-medium text-[#9AA4B4] mb-2">
+              <label htmlFor="email" className="block text-[12px] font-medium text-[#C2C6CC] mb-2">
                 Email
               </label>
               <input
@@ -141,7 +158,7 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-[12px] font-medium text-[#9AA4B4] mb-2">
+              <label htmlFor="password" className="block text-[12px] font-medium text-[#C2C6CC] mb-2">
                 Password
               </label>
               <input
@@ -159,13 +176,13 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#1B6DFC] text-white font-semibold rounded-xl py-3.5 text-[15px] hover:bg-[#3D7DFF] active:bg-[#1560E0] transition-colors disabled:opacity-40 disabled:cursor-not-allowed mt-2"
+              className="w-full bg-[#FAFAF8] text-[#0F1115] font-semibold rounded-xl py-3.5 text-[15px] hover:bg-[#FFFFFF] active:bg-[#E4E4E0] transition-colors disabled:opacity-30 disabled:cursor-not-allowed mt-2"
             >
               {loading ? 'Signing in…' : 'Sign in'}
             </button>
           </form>
 
-          <p className="text-[12.5px] text-[#5B6474] mt-8 leading-relaxed">
+          <p className="text-[12.5px] text-[#676D76] mt-8 leading-relaxed">
             Invited and cannot get in? Use the link in your invitation email to set your password, or reply to
             it and we will sort it.
           </p>
