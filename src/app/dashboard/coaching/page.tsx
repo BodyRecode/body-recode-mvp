@@ -217,9 +217,10 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
   return (
     <div className="max-w-[1100px]">
       <PageHeader
-        eyebrow="Coaching"
+        eyebrow="Your book"
         title="Clients"
-        subtitle={`${clients?.length || 0} ${showInactive ? 'inactive' : 'active'} ${(clients?.length || 0) === 1 ? 'client' : 'clients'}`}
+        subtitle={`${clients?.length || 0} ${showInactive ? 'inactive' : 'active'} ${(clients?.length || 0) === 1 ? 'client' : 'clients'}. Newest read first.`}
+        metric={{ value: clients?.length || 0, label: showInactive ? 'inactive' : 'active' }}
         cta={
           <div className="flex items-center gap-2">
             <Btn href="/dashboard/clients/import" variant="secondary" size="sm">
@@ -302,7 +303,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                 <div className="min-w-0 flex items-center gap-3">
                   <Avatar name={client.name} size={31} />
                   <div className="min-w-0">
-                  <p className="text-[14px] font-semibold text-[#FAFAF8] truncate">{client.name}</p>
+                  <p className="text-[20px] font-bold tracking-[-0.028em] text-[#FAFAF8] truncate">{client.name}</p>
                   <div className="flex items-center gap-2 mt-0.5">
                     {client.rebuildTraining && <span className="text-[12px]" style={{ color: red.text }}>Training: Rebuild</span>}
                     {client.rebuildTraining && client.rebuildNutrition && <span className="text-[#2A2F39] text-[12.5px]">·</span>}
@@ -399,7 +400,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       )}
 
       {clientsProcessed.length === 0 ? (
-        <div className="br-card">
+        <div>
           <EmptyState icon={Users} title="No clients yet" hint="Add your first client to get started" />
         </div>
       ) : (
@@ -408,13 +409,13 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
             <Link
               key={client.id}
               href={`/dashboard/clients/${client.id}`}
-              className="br-card px-5 py-4 flex items-center justify-between br-card-hover transition-shadow group"
+              className="px-2 py-4 flex items-center justify-between border-b border-[#1F242C] hover:bg-[#12151B] transition-colors group"
             >
               <div className="flex items-center gap-4 min-w-0">
                 <Avatar name={client.name} size={36} />
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-[14px] font-medium text-[#FAFAF8] group-hover:text-[#FAFAF8] transition-colors truncate">{client.name}</span>
+                    <span className="text-[20px] font-bold tracking-[-0.028em] text-[#FAFAF8] group-hover:text-[#FAFAF8] transition-colors truncate">{client.name}</span>
                     {client.latestCffs?.reassessment_flagged && (
                       <AlertTriangle size={13} style={{ color: amber.text }} />
                     )}

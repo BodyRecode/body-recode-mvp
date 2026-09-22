@@ -128,37 +128,119 @@ export function PageHeader({
   subtitle,
   accent = 'teal',
   cta,
+  metric,
 }: {
   eyebrow?: ReactNode
   title: ReactNode
   subtitle?: ReactNode
   accent?: Accent
   cta?: ReactNode
+  /** A single number that belongs to the page, shown large on the right. */
+  metric?: { value: ReactNode; label: string }
   /** Retained for call-site compatibility; the header no longer paints a glow. */
   glow?: boolean
 }) {
   const a = ACCENT[accent]
   return (
     <div
-      className="sticky top-0 z-20 mb-7 pt-4 pb-3.5 border-b border-[#2A2F39] flex items-start justify-between gap-5 flex-wrap print:static print:bg-transparent print:backdrop-blur-none"
-      style={{ background: 'rgba(11,13,16,0.86)', backdropFilter: 'blur(10px) saturate(1.5)' }}
+      className="sticky top-0 z-20 mb-7 pt-6 pb-5 border-b flex items-end justify-between gap-8 flex-wrap print:static print:bg-transparent print:backdrop-blur-none"
+      style={{ borderColor: BRAND.darkLineSoft, background: 'rgba(11,13,16,0.86)', backdropFilter: 'blur(10px) saturate(1.5)' }}
     >
       <div className="min-w-0">
         {eyebrow && (
-          <p className="text-[11px] mb-1.5" style={{ color: a.text }}>
+          <p className="text-[10px] font-bold uppercase mb-2" style={{ letterSpacing: '0.18em', color: BRAND.darkInkFaint }}>
             {eyebrow}
           </p>
         )}
-        <h1 className="text-[22px] font-semibold text-[#FAFAF8] leading-[1.2] tracking-[-0.025em]">
+        <h1
+          className="text-[38px] sm:text-[46px] font-extrabold leading-[0.98] tracking-[-0.038em]"
+          style={{ color: BRAND.darkInk }}
+        >
           {title}
         </h1>
         {subtitle && (
-          <div className="text-[13.5px] text-[#8A9099] max-w-2xl leading-relaxed mt-1.5">
+          <div className="text-[13.5px] max-w-2xl leading-relaxed mt-2.5" style={{ color: BRAND.darkInkSoft }}>
             {subtitle}
           </div>
         )}
       </div>
-      {cta && <div className="shrink-0 flex items-center gap-2 flex-wrap">{cta}</div>}
+      {metric && (
+        <div className="text-right shrink-0 ml-auto">
+          <div
+            className="text-[58px] font-extrabold leading-[0.85] tabular-nums"
+            style={{ background: 'linear-gradient(180deg,#FFFFFF,#8A9099)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+          >
+            {metric.value}
+          </div>
+          <div className="text-[10px] font-bold uppercase mt-2" style={{ letterSpacing: '0.18em', color: BRAND.darkInkFaint }}>
+            {metric.label}
+          </div>
+        </div>
+      )}
+      {cta && <div className="shrink-0 flex items-center gap-2 flex-wrap self-center">{cta}</div>}
+    </div>
+  )
+}
+
+/**
+ * A section heading inside a page: a word, a count, and a rule running to the
+ * edge. The one shape every list on every page uses, so a coach learns it once.
+ */
+export function SectionHead({ title, count }: { title: string; count?: number }) {
+  return (
+    <div className="flex items-center gap-3 mt-8 mb-0">
+      <h2 className="text-[11px] font-extrabold uppercase" style={{ letterSpacing: '0.17em', color: BRAND.darkInk }}>{title}</h2>
+      {count !== undefined && (
+        <span className="text-[10.5px] font-extrabold rounded-full px-2 py-px"
+          style={{ background: BRAND.darkInkSoft, color: BRAND.darkWell }}>{count}</span>
+      )}
+      <span className="flex-1 h-px" style={{ background: BRAND.darkLineSoft }} />
+    </div>
+  )
+}
+
+/**
+ * A row in a list of people. Divider, not a card: a card per row doubles the
+ * visual weight of a list and adds no information. Name is the loudest thing
+ * on it, because a coach thinks in people.
+ */
+export function PersonRow({
+  href, name, meta, detail, dot, badge, trailing, quiet = false,
+}: {
+  href: string
+  name: ReactNode
+  /** Small line under the name. */
+  meta?: ReactNode
+  /** The sentence that says what is happening. */
+  detail?: ReactNode
+  dot?: ReactNode
+  badge?: ReactNode
+  trailing?: ReactNode
+  quiet?: boolean
+}) {
+  return (
+    <div
+      className="grid gap-4 items-start py-4 border-b"
+      style={{ gridTemplateColumns: '24px 1fr max-content', borderColor: BRAND.darkLineSoft, opacity: quiet ? 0.66 : 1 }}
+    >
+      <div className="pt-[7px]">{dot}</div>
+      <div className="min-w-0">
+        <div className="flex items-center gap-2.5 flex-wrap">
+          <Link
+            href={href}
+            className={`${quiet ? 'text-[16px] font-semibold' : 'text-[20px] font-bold'} tracking-[-0.028em] leading-tight hover:underline`}
+            style={{ color: BRAND.darkInk }}
+          >
+            {name}
+          </Link>
+          {badge}
+        </div>
+        {meta && <div className="text-[11.5px] mt-1" style={{ color: BRAND.darkInkFaint }}>{meta}</div>}
+        {detail && (
+          <p className="text-[13.5px] leading-[1.55] mt-1.5 max-w-[620px]" style={{ color: BRAND.darkInkMuted }}>{detail}</p>
+        )}
+      </div>
+      <div className="text-right shrink-0">{trailing}</div>
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { CoachToday, ClientToday, Band } from '@/lib/coach-today'
 import { BRAND } from '@/lib/brand-tokens'
+import { PageHeader, SectionHead } from '@/components/dashboard/ui'
 
 /**
  * A coach's Today. Dark, because a tool is dark and a document is light: this
@@ -131,29 +132,15 @@ export default function CoachTodayView({ today, firstName }: { today: CoachToday
 
   return (
     <div className="-mx-6 -mt-6 min-h-screen" style={{ background: BRAND.darkWell, color: BRAND.darkInk }}>
-      <div className="px-8 pt-8 pb-6 flex items-end justify-between gap-8 flex-wrap">
-        <div>
-          <div className="text-[10px] font-bold uppercase" style={{ letterSpacing: '0.18em', color: BRAND.darkInkFaint }}>
-            {new Date().toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' })}
-          </div>
-          <h1 className="text-[46px] sm:text-[52px] font-extrabold tracking-[-0.04em] leading-[0.95] mt-2">Today</h1>
-          <p className="text-[13.5px] mt-2.5" style={{ color: BRAND.darkInkSoft }}>
-            {total === 0
-              ? `Nothing here yet, ${firstName}. Add your first client and this fills itself in.`
-              : `${total} client${total === 1 ? '' : 's'}. ${counts.need === 0 ? 'None of them need you right now.' : `${counts.need} want${counts.need === 1 ? 's' : ''} something from you, and the reason is on the line.`}`}
-          </p>
-        </div>
-        {total > 0 && (
-          <div className="text-right shrink-0">
-            <div
-              className="text-[68px] font-extrabold leading-[0.85] tabular-nums"
-              style={{ background: 'linear-gradient(180deg,#FFFFFF,#8A9099)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
-            >
-              {counts.need}
-            </div>
-            <div className="text-[10px] font-bold uppercase mt-2" style={{ letterSpacing: '0.18em', color: BRAND.darkInkFaint }}>need you</div>
-          </div>
-        )}
+      <div className="px-8">
+        <PageHeader
+          eyebrow={new Date().toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' })}
+          title="Today"
+          subtitle={total === 0
+            ? `Nothing here yet, ${firstName}. Add your first client and this fills itself in.`
+            : `${total} client${total === 1 ? '' : 's'}. ${counts.need === 0 ? 'None of them need you right now.' : `${counts.need} want${counts.need === 1 ? 's' : ''} something from you, and the reason is on the line.`}`}
+          metric={total > 0 ? { value: counts.need, label: 'need you' } : undefined}
+        />
       </div>
 
       {total > 0 && (
@@ -210,12 +197,7 @@ export default function CoachTodayView({ today, firstName }: { today: CoachToday
           if (inBand.length === 0) return null
           return (
             <div key={band.key}>
-              <div className="flex items-center gap-3 mt-8 mb-0">
-                <h2 className="text-[11px] font-extrabold uppercase" style={{ letterSpacing: '0.17em', color: BRAND.darkInk }}>{band.title}</h2>
-                <span className="text-[10.5px] font-extrabold rounded-full px-2 py-px"
-                  style={{ background: BRAND.darkInkSoft, color: BRAND.darkWell }}>{inBand.length}</span>
-                <span className="flex-1 h-px" style={{ background: BRAND.darkLineSoft }} />
-              </div>
+              <SectionHead title={band.title} count={inBand.length} />
               {inBand.map(c => <Row key={c.clientId} c={c} quiet={band.key === 'fine'} />)}
             </div>
           )
