@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 
 /**
  * Publish and Notify, as two separate clicks like every other read. Publishing
- * shows her sections in her portal and sends nothing; Notify emails her.
+ * shows their sections in their portal and sends nothing; Notify emails them.
  */
 export default function ProgressReadActions({ readId, status, emailSentAt }: { readId: string; status: 'draft' | 'published'; emailSentAt: string | null }) {
   const router = useRouter()
@@ -30,12 +30,12 @@ export default function ProgressReadActions({ readId, status, emailSentAt }: { r
       <div className="flex items-center gap-2 flex-wrap justify-end">
         {status === 'draft' ? (
           <button onClick={() => call('/api/progress-read/publish', { progress_read_id: readId, action: 'publish' }, 'publish')} disabled={!!busy} className="br-btn disabled:opacity-50">
-            {busy === 'publish' ? 'Publishing…' : 'Publish to her portal'}
+            {busy === 'publish' ? 'Publishing…' : 'Publish to their portal'}
           </button>
         ) : (
           <>
             <button onClick={() => call('/api/progress-read/notify', { progress_read_id: readId }, 'notify')} disabled={!!busy} className="br-btn disabled:opacity-50">
-              {busy === 'notify' ? 'Sending…' : emailSentAt ? 'Notify again' : 'Notify her'}
+              {busy === 'notify' ? 'Sending…' : emailSentAt ? 'Notify again' : 'Notify them'}
             </button>
             <button onClick={() => call('/api/progress-read/publish', { progress_read_id: readId, action: 'unpublish' }, 'unpublish')} disabled={!!busy} className="text-[12.5px] font-medium text-[#8A9099] hover:text-[#FAFAF8] px-2 disabled:opacity-50">
               {busy === 'unpublish' ? 'Unpublishing…' : 'Unpublish'}

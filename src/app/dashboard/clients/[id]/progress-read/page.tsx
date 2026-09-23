@@ -13,11 +13,24 @@ import ProgressReadActions from './progress-read-actions'
 
 /**
  * The Progress Read, coach view (Progress Read spec v2.4). One generation, two
- * levels: "Her version" shows exactly the sections she will see; everything
- * below it is for the coach only. Publish shows her version in her portal;
- * Notify emails her; both are the coach's clicks.
+ * levels: "Their version" shows exactly the sections they will see; everything
+ * below it is for the coach only. Publish shows their version in their portal;
+ * Notify emails them; both are the coach's clicks.
  */
 
+/**
+ * The plain-language names a CLIENT sees. Depleted, Transitioning, Ready.
+ *
+ * 23 September 2026: this page was showing these INSTEAD of the readiness
+ * names, so a coach who had learned Remediation, Optimisation and
+ * Post-Optimisation on every other screen arrived here and found the same
+ * three states called something else, with nothing saying they were the same
+ * three states.
+ *
+ * They are not wrong, they are for a different reader. A coach gets the
+ * doctrine name, and the client's wording second, because this page is
+ * specifically about what the client receives.
+ */
 const PUBLIC_STATE: Record<string, string> = { Remediation: 'Depleted', Optimisation: 'Transitioning', 'Post-Optimisation': 'Ready' }
 const HER_SECTIONS: Array<[string, string]> = [
   ['headline', 'Headline'],
@@ -50,7 +63,7 @@ export default async function ProgressReadPage({ params }: { params: Promise<{ i
   const scope = await requireCoachScope()
   const canPrescribe = tierAllows(await productTierForScope(createAdminClient(), scope), 'coach')
   const admin = createAdminClient()
-  const { data: client } = await admin.from('clients').select('id, name').eq('id', id).maybeSingle()
+  const { data: client } = await admin.from('clients').select('id, name, onboarding_token').eq('id', id).maybeSingle()
   if (!client) notFound()
 
   const [{ data: checks }, { data: reads }] = await Promise.all([
@@ -74,7 +87,36 @@ export default async function ProgressReadPage({ params }: { params: Promise<{ i
       <PageHeader
         eyebrow={<Link href={`/dashboard/clients/${id}`} className="hover:text-[#FAFAF8] transition-colors">{client.name}</Link>}
         title="Progress Read"
-        subtitle="The read re-derived from her Progress Check, measurements, photos and weekly check-ins since the last read."
+        subtitle="The read re-derived from their Progress Check, measurements, photos and weekly check-ins since the last read."
+        cta={client.onboarding_token ? (
+          /* 23 Sep 2026: there was no way from here to what the CLIENT sees.
+             A coach checking what they are about to send had to know the URL
+             and build it by hand, which is the kind of gap a pilot coach hits
+             on day one. Both are links because the portal page and the PDF are
+             two different things and a coach may want to check either. */
+          <div className="flex items-center gap-2 flex-wrap">
+            <Link
+              href={`/portal/${client.onboarding_token}/progress-read`}
+              target="_blank"
+              className="text-[12.5px] font-semibold px-3.5 py-[7px] rounded-lg border border-[#2A2F39] text-[#C2C6CC] hover:text-[#FAFAF8] hover:border-[#676D76]"
+            >
+              What they see
+            </Link>
+            <Link
+              href={`/api/portal/${client.onboarding_token}/progress-read/pdf`}
+              target="_blank"
+              className="text-[12.5px] font-semibold px-3.5 py-[7px] rounded-lg border border-[#2A2F39] text-[#C2C6CC] hover:text-[#FAFAF8] hover:border-[#676D76]"
+            >
+              Their PDF
+            </Link>
+            <Link
+              href={`/dashboard/clients/${id}/proof`}
+              className="text-[12.5px] font-bold px-3.5 py-[7px] rounded-lg bg-[#FAFAF8] text-[#0B0D10]"
+            >
+              Twelve weeks
+            </Link>
+          </div>
+        ) : undefined}
       />
       <ClientPageNav clientId={id} canPrescribe={canPrescribe} />
 
@@ -83,7 +125,7 @@ export default async function ProgressReadPage({ params }: { params: Promise<{ i
           <p className="text-[13.5px] text-[#FAFAF8] font-semibold mb-1">No new Progress Check submitted yet</p>
           <p className="text-[13.5px] text-[#8A9099] leading-relaxed">
             {pendingCheck
-              ? `Her Progress Check was sent ${fmt(pendingCheck.created_at)} and is ${pendingCheck.status === 'started' ? 'in progress' : 'not started'}. The Progress Read can be generated once she submits it.`
+              ? `Their Progress Check was sent ${fmt(pendingCheck.created_at)} and is ${pendingCheck.status === 'started' ? 'in progress' : 'not started'}. The Progress Read can be generated once they submit it.`
               : 'A Progress Read is generated from the near-full Progress Check (from 14 Sep 2026). Checks from before then use the Progress Read panel on the Training page.'}
           </p>
         </div>
@@ -108,9 +150,14 @@ export default async function ProgressReadPage({ params }: { params: Promise<{ i
               <div>
                 <p className="text-[11px] font-medium text-[#676D76] mb-1.5">Readiness</p>
                 <p className="text-[16px] font-bold text-[#FAFAF8]">
-                  {PUBLIC_STATE[read.previous_body_state ?? ''] ?? read.previous_body_state ?? 'Unknown'} → {PUBLIC_STATE[read.body_state_classification] ?? read.body_state_classification}
+                  {read.previous_body_state ?? 'Unknown'} → {read.body_state_classification}
                 </p>
-                <p className="text-[12.5px] text-[#8A9099] capitalize">{read.state_direction}{read.state_clamped ? ' · held to one step by the rules' : ''}</p>
+                <p className="text-[12.5px] text-[#8A9099]">
+                  <span className="capitalize">{read.state_direction}</span>{read.state_clamped ? ' · held to one step by the rules' : ''}
+                </p>
+                <p className="text-[11px] text-[#676D76] mt-1">
+                  They read it as {PUBLIC_STATE[read.previous_body_state ?? ''] ?? read.previous_body_state ?? 'Unknown'} → {PUBLIC_STATE[read.body_state_classification] ?? read.body_state_classification}
+                </p>
               </div>
               <div>
                 <p className="text-[11px] font-medium text-[#676D76] mb-1.5">Pattern</p>
@@ -135,7 +182,7 @@ export default async function ProgressReadPage({ params }: { params: Promise<{ i
                   : <span className="font-semibold text-[#8A9099]">Draft</span>}
                 <span>· follows the {read.previous_read_kind === 'foundational' ? 'Foundational Read' : 'last Progress Read'}</span>
                 <span>· photos {read.photos_used ?? 0}/3</span>
-                <span>· {read.status === 'published' ? 'her version is in her portal' : 'not visible to her'}</span>
+                <span>· {read.status === 'published' ? 'their version is in their portal' : 'not visible to them'}</span>
               </div>
               <ProgressReadActions readId={read.id} status={read.status} emailSentAt={read.email_sent_at} />
             </div>
@@ -150,7 +197,7 @@ export default async function ProgressReadPage({ params }: { params: Promise<{ i
 
           {lint.length > 0 && (
             <div className="rounded-xl border border-[#4A3A22] bg-[#1A1E26] px-5 py-4 mb-6">
-              <p className="text-[12.5px] font-medium text-[#E0A254] mb-2">Pre-publish check on her version</p>
+              <p className="text-[12.5px] font-medium text-[#E0A254] mb-2">Pre-publish check on their version</p>
               <ul className="space-y-1.5">
                 {lint.map((f, i) => (
                   <li key={i} className="text-[13.5px] text-[#C2C6CC] leading-relaxed">
@@ -161,8 +208,8 @@ export default async function ProgressReadPage({ params }: { params: Promise<{ i
             </div>
           )}
 
-          <h2 className="text-[16px] font-semibold text-[#FAFAF8] mb-1">Her version</h2>
-          <p className="text-[12.5px] text-[#8A9099] mb-3">Exactly what she will see, written to her. Nothing below this box reaches her.</p>
+          <h2 className="text-[16px] font-semibold text-[#FAFAF8] mb-1">Their version</h2>
+          <p className="text-[12.5px] text-[#8A9099] mb-3">Exactly what they will see, written to them. Nothing below this box reaches them.</p>
           <div className="br-card p-6 mb-8 space-y-5">
             {HER_SECTIONS.filter(([k]) => her[k]).map(([k, label]) => (
               <div key={k}>
