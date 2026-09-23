@@ -197,6 +197,68 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  /* ----------------------------------------------------------------
+   * 4c. The ended-and-frozen gate for /api/portal/*.
+   *
+   *     Added 23 September 2026. The portal PAGES were gated the same day, in
+   *     their layout. The API was not: ZERO of the twenty-nine portal routes
+   *     asked whether the engagement had ended, and they are not reading
+   *     endpoints. They send a message to the coach, submit feedback, reschedule
+   *     a session, submit a programme review, refer a friend, upload a
+   *     clearance, accept an agreement. Three of them hand back the PDF of the
+   *     read itself.
+   *
+   *     So a client who cancelled six months ago could still write into their
+   *     old coach's system, and the only thing stopping them was the BAN on
+   *     their login, which is the blunt instrument this pass exists to retire.
+   *
+   *     Done here for the same reason 4a and 4b are: a route added next month
+   *     is covered before anyone remembers, and a route that forgets cannot
+   *     leak. Twenty-two name the client in the body; three carry a portal
+   *     token in the path. Both are resolved.
+   *
+   *     A COACH PASSES. The records are retained and they may need to read them.
+   * ---------------------------------------------------------------- */
+  if (pathname.startsWith('/api/portal/') && !isCoachEmail(user?.email)) {
+    let clientRow: { ended_at: string | null; frozen_at: string | null } | null = null
+    const admin = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      { auth: { persistSession: false } },
+    )
+
+    // /api/portal/<token>/... — the PDF routes.
+    const tokenPath = pathname.match(/^\/api\/portal\/([0-9a-fA-F-]{36})(\/|$)/)
+    if (tokenPath) {
+      const { data } = await admin
+        .from('clients').select('ended_at, frozen_at')
+        .eq('onboarding_token', tokenPath[1]).maybeSingle()
+      clientRow = data ?? null
+    } else if (
+      (request.method === 'POST' || request.method === 'PUT' || request.method === 'PATCH') &&
+      (request.headers.get('content-type') ?? '').includes('application/json')
+    ) {
+      try {
+        const body = await request.clone().json()
+        const raw = body?.client_id ?? body?.clientId
+        if (typeof raw === 'string' && /^[0-9a-fA-F-]{36}$/.test(raw)) {
+          const { data } = await admin
+            .from('clients').select('ended_at, frozen_at').eq('id', raw).maybeSingle()
+          clientRow = data ?? null
+        }
+      } catch {
+        // Not JSON we can read. Nothing to check; the route rejects it itself.
+      }
+    }
+
+    if (clientRow?.ended_at || clientRow?.frozen_at) {
+      return NextResponse.json(
+        { error: clientRow.ended_at ? 'This engagement has ended.' : 'This engagement is paused.' },
+        { status: 403 },
+      )
+    }
+  }
+
   if (pathname.startsWith('/portal') && !user) {
     const loginUrl = new URL('/portal/login', request.url)
     loginUrl.searchParams.set('redirect', pathname)

@@ -56,6 +56,10 @@ async function main() {
   if (c.ended_at) { console.log('\nThat client is already ended; restore it first.\n'); process.exit(1) }
 
   const token = c.onboarding_token as string
+  // Hoisted: TypeScript does not carry the null-narrowing from the guard above
+  // into the closures below.
+  const clientId = c.id as string
+  const clientName = c.name as string
   const EMAIL = 'alison.whelan@testbook.bodyrecode.au'
   const PASSWORD = 'portal-test-2026'
 
@@ -88,11 +92,36 @@ async function main() {
     }
   }
 
+  // The API matters more than the pages: these WRITE. A client who left should
+  // not be able to message their old coach or book a session.
+  async function apiSweep(label: string) {
+    console.log(`\n${label}`)
+    const calls: Array<[string, string, Record<string, unknown> | null]> = [
+      ['POST', '/api/portal/send-message', { client_id: clientId, body: 'test' }],
+      ['POST', '/api/portal/submit-feedback', { client_id: clientId, category: 'other', body: 'test' }],
+      ['POST', '/api/portal/refer-friend', { client_id: clientId, name: 'A', email: 'a@example.com' }],
+      ['POST', '/api/portal/reschedule-session', { client_id: clientId }],
+      ['GET', `/api/portal/${token}/foundational-reading/pdf`, null],
+    ]
+    for (const [method, path, payload] of calls) {
+      const r = await fetch(BASE + path, {
+        method,
+        headers: payload ? { 'content-type': 'application/json', cookie } : { cookie },
+        body: payload ? JSON.stringify(payload) : undefined,
+        redirect: 'manual',
+      })
+      const blocked = r.status === 403
+      console.log(`  ${blocked ? 'blocked ' : `OPEN (${r.status})`} ${method} ${path.replace(token, '…')}`)
+    }
+  }
+
   await sweep('While the engagement is live:')
-  await admin.from('clients').update({ ended_at: new Date().toISOString(), active: false }).eq('id', c.id)
+  await apiSweep('And the API while it is live:')
+  await admin.from('clients').update({ ended_at: new Date().toISOString(), active: false }).eq('id', clientId)
   await sweep('After it ends (every line must read "closed"):')
-  await admin.from('clients').update({ ended_at: null, active: true }).eq('id', c.id)
+  await apiSweep('And the API after it ends (every line must read "blocked"):')
+  await admin.from('clients').update({ ended_at: null, active: true }).eq('id', clientId)
   if (madeUser) await admin.auth.admin.deleteUser(madeUser)
-  console.log(`\n${c.name} restored${madeUser ? ', portal login removed' : ''}.\n`)
+  console.log(`\n${clientName} restored${madeUser ? ', portal login removed' : ''}.\n`)
 }
 main().catch(e => { console.error(e); process.exit(1) })
